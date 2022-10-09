@@ -50,6 +50,8 @@ namespace GeoMaps
          */
         explicit WaypointLibrary(QObject *parent = nullptr);
 
+        ~WaypointLibrary() override = default;
+
         //
         // Properties
         //
@@ -68,7 +70,7 @@ namespace GeoMaps
          *
          * @returns Property waypoints
          */
-        [[nodiscard]] QVector<GeoMaps::Waypoint> waypoints() const
+        [[nodiscard]] auto waypoints() const -> QVector<GeoMaps::Waypoint>
         {
             return m_waypoints;
         }
@@ -94,7 +96,7 @@ namespace GeoMaps
          * @returns True if an exact copy of the waypoint is found in the
          * library
          */
-        [[nodiscard]] Q_INVOKABLE bool contains(const GeoMaps::Waypoint &waypoint) const
+        [[nodiscard]] Q_INVOKABLE auto contains(const GeoMaps::Waypoint &waypoint) const -> bool
         {
             return m_waypoints.contains(waypoint);
         }
@@ -108,7 +110,7 @@ namespace GeoMaps
          *
          * @returns A filtered list with of waypoint, in alphabetical order
          */
-        [[nodiscard]] Q_INVOKABLE QVector<GeoMaps::Waypoint> filteredWaypoints(const QString &filter) const;
+        [[nodiscard]] Q_INVOKABLE auto filteredWaypoints(const QString &filter) const -> QVector<GeoMaps::Waypoint>;
 
         /*! \brief Check if the library contains a waypoint near to a given one
          *
@@ -118,7 +120,7 @@ namespace GeoMaps
          *
          *  @returns True if yes
          */
-        [[nodiscard]] Q_INVOKABLE bool hasNearbyEntry(const GeoMaps::Waypoint &waypoint) const;
+        [[nodiscard]] Q_INVOKABLE auto hasNearbyEntry(const GeoMaps::Waypoint &waypoint) const -> bool;
 
         /*! \brief Import waypoints into the library
          *
@@ -130,7 +132,7 @@ namespace GeoMaps
          *
          *  @return Human-readable error message, or an empty string on success
          */
-        [[nodiscard]] Q_INVOKABLE QString import(const QString& fileName, bool skip);
+        [[nodiscard]] Q_INVOKABLE auto import(const QString& fileName, bool skip) -> QString;
 
         /*! \brief Read from file
          *
@@ -145,7 +147,7 @@ namespace GeoMaps
          * @returns An empty string on success and a human-readable tranlated
          * error message otherwise.
          */
-        [[nodiscard]] Q_INVOKABLE QString loadFromGeoJSON(QString fileName = {});
+        [[nodiscard]] Q_INVOKABLE auto loadFromGeoJSON(QString fileName = {}) -> QString;
 
         /*! \brief Remove waypoint
          *
@@ -156,7 +158,7 @@ namespace GeoMaps
          *
          * @returns True if a waypoint has indeed been removed.
          */
-        [[nodiscard]] Q_INVOKABLE bool remove(const GeoMaps::Waypoint &waypoint);
+        [[nodiscard]] Q_INVOKABLE auto remove(const GeoMaps::Waypoint &waypoint) -> bool;
 
         /*! \brief Replace waypoint
          *
@@ -171,7 +173,7 @@ namespace GeoMaps
          *
          * @returns True if a waypoint has indeed been replaced.
          */
-        [[nodiscard]] Q_INVOKABLE bool replace(const GeoMaps::Waypoint &oldWaypoint, const GeoMaps::Waypoint &newWaypoint);
+        [[nodiscard]] Q_INVOKABLE auto replace(const GeoMaps::Waypoint &oldWaypoint, const GeoMaps::Waypoint &newWaypoint) -> bool;
 
         /*! \brief Save to file
          *
@@ -184,7 +186,7 @@ namespace GeoMaps
          * @returns An empty string on success and a human-readable tranlated
          * error message otherwise.
          */
-        [[nodiscard]] Q_INVOKABLE QString save(QString fileName = {}) const;
+        [[nodiscard]] Q_INVOKABLE auto save(QString fileName = {}) const -> QString;
 
         /*! \brief Serialize into GeoJSON document
          *
@@ -194,7 +196,7 @@ namespace GeoMaps
          *
          * @returns GeoJSON data
          */
-        [[nodiscard]] Q_INVOKABLE QByteArray toGeoJSON() const;
+        [[nodiscard]] Q_INVOKABLE auto toGeoJSON() const -> QByteArray;
 
         /*! \brief Serialize into GPX document
          *
@@ -204,7 +206,7 @@ namespace GeoMaps
          *
          * @returns QByteArray containing GPX data describing the flight route
          */
-        [[nodiscard]] Q_INVOKABLE QByteArray toGpx() const;
+        [[nodiscard]] Q_INVOKABLE auto toGpx() const -> QByteArray;
 
     signals:
         /*! \brief Notification signal for the property with the same name */

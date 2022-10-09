@@ -72,20 +72,20 @@ namespace GeoMaps
      *  @returns A human-readable HTML-String with attribution, or an empty
      *  string on error.
      */
-    [[nodiscard]] QString attribution();
+    [[nodiscard]] auto attribution() -> QString;
 
     /*! \brief Determine type of data contain in an MBTILES file
      *
      *  @returns Type of data, or Unknown on error.
      */
-    [[nodiscard]] GeoMaps::MBTILES::Format format();
+    [[nodiscard]] auto format() -> GeoMaps::MBTILES::Format;
 
     /*! \brief Information about an MBTILES file
      *
      *  @returns A human-readable HTML-String with information about the MBTILES
      *  file, or an empty string on error.
      */
-    [[nodiscard]] QString info();
+    [[nodiscard]] auto info() -> QString;
 
     /*! \brief Retrieve tile from an MBTILES file
      *
@@ -98,7 +98,7 @@ namespace GeoMaps
      *  @returns A QByteArray with the tile data, or an empty QByteArray on
      *  error.
      */
-    [[nodiscard]] QByteArray tile(int zoom, int x, int y);
+    [[nodiscard]] auto tile(int zoom, int x, int y) -> QByteArray;
 
     /*! \brief Retrieve metadata of the MBTILES file
      *
@@ -107,7 +107,7 @@ namespace GeoMaps
      *
      *  @returns A QMap containing the metadata, or an empty QMap on error.
      */
-    [[nodiscard]] QMap<QString, QString> metaData() const
+    [[nodiscard]] auto metaData() const -> QMap<QString, QString>
     {
       return m_metadata;
     }
@@ -116,7 +116,7 @@ namespace GeoMaps
      *
      *  @returns Filename, as given in the constructor
      */
-    [[nodiscard]] QString fileName() const
+    [[nodiscard]] auto fileName() const -> QString
     {
       return m_fileName;
     }

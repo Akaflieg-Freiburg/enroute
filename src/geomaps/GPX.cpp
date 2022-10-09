@@ -26,7 +26,7 @@
 // Helper functions
 //
 
-GeoMaps::Waypoint readWP(QXmlStreamReader& xml) {
+auto readWP(QXmlStreamReader& xml) -> GeoMaps::Waypoint {
 
     auto tag = xml.name().toString();
 
@@ -121,7 +121,7 @@ GeoMaps::Waypoint readWP(QXmlStreamReader& xml) {
 // Methods
 //
 
-bool GeoMaps::GPX::isValid(const QString& fileName)
+auto GeoMaps::GPX::isValid(const QString& fileName) -> bool
 {
     return !read(fileName).isEmpty();
 }

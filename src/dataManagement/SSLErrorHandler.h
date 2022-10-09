@@ -46,16 +46,17 @@ namespace DataManagement
      */
     explicit SSLErrorHandler(QObject *parent = nullptr);
 
+    ~SSLErrorHandler() override = default;
+
   signals:
     /*! \brief Notification signal for the property with the same name */
     void sslError(QString description);
 
-  private slots:
-    // This is the actual error handler.
-    void onSSLError(QNetworkReply *reply, const QList<QSslError> &errors);
-
   private:
     Q_DISABLE_COPY_MOVE(SSLErrorHandler)
+
+    // This is the actual error handler.
+    void onSSLError(QNetworkReply *reply, const QList<QSslError> &errors);
 
     // Re-implemented from base class. See documentation there.
     void deferredInitialization() override;

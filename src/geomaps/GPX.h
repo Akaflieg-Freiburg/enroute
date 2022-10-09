@@ -40,7 +40,7 @@ namespace GeoMaps
          *
          *  @returns True if the file is likely to contain valid GPX data.
          */
-        static bool isValid(const QString &fileName);
+        static auto isValid(const QString &fileName) -> bool;
 
         /*! \brief Read a GPX file
          *
@@ -50,7 +50,7 @@ namespace GeoMaps
          *
          *  @returns QVector with waypoints. The vector is empty in case of an error.
          */
-        static QVector<GeoMaps::Waypoint> read(const QString &fileName);
+        static auto read(const QString &fileName) -> QVector<GeoMaps::Waypoint>;
     };
 
 };

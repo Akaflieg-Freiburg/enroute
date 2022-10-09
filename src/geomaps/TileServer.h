@@ -89,7 +89,6 @@ public:
   */
   [[nodiscard]] auto serverUrl() const -> QString;
 			   
-public slots:
   /*! \brief Add a new set of tile files
     
     This method adds a new set of tile files, that will be available under

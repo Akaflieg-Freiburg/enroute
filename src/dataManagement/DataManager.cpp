@@ -303,7 +303,6 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
         auto obj = map.toObject();
         auto mapFileName = obj.value(QStringLiteral("path")).toString();
         auto localFileName = m_dataDirectory + "/" + mapFileName;
-        auto mapName = mapFileName.section('.', -2, -2);
         auto mapUrlName = baseURL + "/" + obj.value(QStringLiteral("path")).toString();
         QUrl mapUrl(mapUrlName);
         auto fileModificationDateTime = QDateTime::fromString(obj.value(QStringLiteral("time")).toString(), QStringLiteral("yyyyMMdd"));
@@ -326,39 +325,6 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
     }
     qDeleteAll(oldMaps);
 
-
-    // Now the lists of downloadable items should be complete. Finally, we find and match up map sets.
-    /*
-    m_mapSets.clear();
-    QMap<QString, Downloadable_MultiFile*> mapSetsByName;
-    foreach (auto itemX, m_items.downloadables())
-    {
-        auto* item = qobject_cast<DataManagement::Downloadable_SingleFile*>(itemX);
-        if ((item == nullptr) || (item->contentType() == Downloadable_SingleFile::Data))
-        {
-            continue;
-        }
-
-        QString key = item->section() + "/" + item->objectName();
-        DataManagement::Downloadable_MultiFile* mapSet = nullptr;
-        if (mapSetsByName.contains(key))
-        {
-            mapSet = mapSetsByName[key];
-        }
-        else
-        {
-            mapSet = new Downloadable_MultiFile(DataManagement::Downloadable_MultiFile::MultiUpdate, this);
-            m_mapSets.add(mapSet);
-            mapSetsByName[key] = mapSet;
-        }
-
-        if (mapSet == nullptr)
-        {
-            continue;
-        }
-        mapSet->add(item);
-    }
-    */
     // Delete empty map sets
     QVector<DataManagement::Downloadable_MultiFile*> dump;
     foreach (auto mapSetX, m_mapSets.downloadables())
@@ -378,7 +344,6 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
     {
         m_mapSets.remove(mapSet);
     }
-#warning need to delete empty map sets
 
     // Update the whatsNew property
     auto newWhatsNew = top.value(QStringLiteral("whatsNew")).toString();

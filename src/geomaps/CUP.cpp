@@ -26,7 +26,7 @@
 // Private helper functions
 //
 
-QStringList GeoMaps::CUP::parseCSV(const QString& string)
+auto GeoMaps::CUP::parseCSV(const QString& string) -> QStringList
 {
     // Thanks to https://stackoverflow.com/questions/27318631/parsing-through-a-csv-file-in-qt
 
@@ -122,7 +122,7 @@ QStringList GeoMaps::CUP::parseCSV(const QString& string)
     return fields;
 }
 
-GeoMaps::Waypoint GeoMaps::CUP::readWaypoint(const QString &line)
+auto GeoMaps::CUP::readWaypoint(const QString &line) -> GeoMaps::Waypoint
 {
     auto fields = parseCSV(line);
     if (fields.size() < 6)
@@ -217,7 +217,7 @@ GeoMaps::Waypoint GeoMaps::CUP::readWaypoint(const QString &line)
 // Methods
 //
 
-bool GeoMaps::CUP::isValid(const QString &fileName)
+auto GeoMaps::CUP::isValid(const QString &fileName) -> bool
 {
 
     QFile file(fileName);

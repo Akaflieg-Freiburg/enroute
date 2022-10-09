@@ -41,7 +41,7 @@ namespace GeoMaps
          *
          *  @returns True if the file is likely to contain valid CUP data.
          */
-        static bool isValid(const QString &fileName);
+        static auto isValid(const QString &fileName) -> bool;
 
         /*! \brief Read a CUP file
          *
@@ -51,12 +51,12 @@ namespace GeoMaps
          *
          *  @returns QVector with waypoints. The vector is empty in case of an error.
          */
-        static QVector<GeoMaps::Waypoint> read(const QString &fileName);
+        static auto read(const QString &fileName) -> QVector<GeoMaps::Waypoint>;
 
     private:
         // Private helper functions
-        static QStringList parseCSV(const QString& string);
-        static GeoMaps::Waypoint readWaypoint(const QString &line);
+        static auto parseCSV(const QString& string) -> QStringList;
+        static auto readWaypoint(const QString &line) -> GeoMaps::Waypoint;
     };
 
 };

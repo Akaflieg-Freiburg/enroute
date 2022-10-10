@@ -356,6 +356,10 @@ Page {
         id: noMapListWarning
 
         anchors.fill: parent
+        anchors.bottomMargin: view.font.pixelSize
+        anchors.leftMargin: view.font.pixelSize
+        anchors.rightMargin: view.font.pixelSize
+        anchors.topMargin: view.font.pixelSize
 
         background: Rectangle {color: "white"}
         visible: !global.dataManager().mapList.downloading && !global.dataManager().mapList.hasFile
@@ -392,6 +396,10 @@ Page {
                 verticalAlignment : Text.AlignVCenter
                 textFormat: Text.RichText
                 wrapMode: Text.Wrap
+
+                leftPadding: view.font.pixelSize*2
+                rightPadding: view.font.pixelSize*2
+
                 text: qsTr("<h3>Download in progress…</h3><p>Please stand by while we download the list of available maps from the server…</p>")
             }
 

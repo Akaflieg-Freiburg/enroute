@@ -404,11 +404,16 @@ Page {
 
             Label {
                 anchors.fill: parent
+
                 visible: global.navigator().flightRoute.size === 0
 
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment : Text.AlignVCenter
                 textFormat: Text.RichText
+                wrapMode: Text.Wrap
+
+                leftPadding: view.font.pixelSize*2
+                rightPadding: view.font.pixelSize*2
 
                 text: qsTr("<h3>Empty Route</h3><p>Use the button <strong>Add Waypoint</strong> below or double click on any point in the moving map.</p>")
             }

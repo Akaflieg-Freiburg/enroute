@@ -80,8 +80,6 @@ public:
      */
     explicit DataManager(QObject* parent=nullptr);
 
-    ~DataManager() override = default;
-
     // deferred initialization
     void deferredInitialization() override;
 
@@ -252,6 +250,7 @@ public:
      */
     Q_INVOKABLE auto import(const QString& fileName, const QString& newName) -> QString;
 
+public slots:
     /*! \brief Triggers an update of the list of remotely available data items
      *
      *  This will trigger a download the file maps.json from the remote server.
@@ -302,7 +301,7 @@ private:
     // created and added to _items. Depending on localFileName, it will also be
     // added to _aviationMap, _baseMaps, or _databases. A pointer to that item is
     // then returned.
-    auto createOrRecycleItem(const QUrl& url, const QString& localFileName) -> DataManagement::Downloadable_SingleFile*;
+    DataManagement::Downloadable_SingleFile* createOrRecycleItem(const QUrl& url, const QString& localFileName);
 
     // Full path name of data directory, without trailing slash
     QString m_dataDirectory {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/aviation_maps"};

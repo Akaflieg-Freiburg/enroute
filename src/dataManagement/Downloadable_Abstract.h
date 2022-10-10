@@ -56,7 +56,7 @@ public:
      */
     explicit Downloadable_Abstract(QObject *parent = nullptr);
 
-    ~Downloadable_Abstract() override = default;
+
 
     //
     // PROPERTIES

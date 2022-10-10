@@ -50,7 +50,7 @@ namespace GeoMaps
          *
          *  @returns Indicator string
          */
-        static auto indicatorFlightRoute() -> QString
+        static QString indicatorFlightRoute()
         {
             return QStringLiteral("flight route");
         }
@@ -62,7 +62,7 @@ namespace GeoMaps
          *
          *  @returns Indicator string
          */
-        static auto indicatorWaypointLibrary() -> QString
+        static QString indicatorWaypointLibrary()
         {
             return QStringLiteral("waypoint library");
         }
@@ -76,7 +76,7 @@ namespace GeoMaps
          *
          *  @returns Most probably file type
          */
-        static auto inspect(const QString& fileName) -> fileContent;
+        static fileContent inspect(const QString& fileName);
 
         /*! \brief Read a GeoJSON file
          *
@@ -86,7 +86,7 @@ namespace GeoMaps
          *
          *  @returns QVector with waypoints. The vector is empty in case of an error.
          */
-        static auto read(const QString &fileName) -> QVector<GeoMaps::Waypoint>;
+        static QVector<GeoMaps::Waypoint> read(const QString &fileName);
     };
 
 };

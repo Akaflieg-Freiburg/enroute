@@ -127,8 +127,6 @@ public:
      *  This instance does not take ownership of the map.
      *
      *  It is perfectly possible that a map is child of more than one Downloadable_MultiFile.
-     *
-     *  @param map map to be added
      */
     Q_INVOKABLE void add(DataManagement::Downloadable_Abstract* map);
 
@@ -138,10 +136,7 @@ public:
     /*! \brief Implementation of pure virtual method from Downloadable_Abstract */
     Q_INVOKABLE void deleteFiles() override;
 
-    /*! \brief Remove a Downloadable_SingleFile from this Downloadable_MultiFile
-     *
-     *  @param map Map to be removed
-     */
+    /*! \brief Remove a Downloadable_SingleFile from this Downloadable_MultiFile */
     Q_INVOKABLE void remove(DataManagement::Downloadable_Abstract* map);
 
     /*! \brief Implementation of pure virtual method from Downloadable_Abstract */

@@ -28,7 +28,7 @@
 // Methods
 //
 
-auto GeoMaps::GeoJSON::inspect(const QString& fileName) -> GeoMaps::GeoJSON::fileContent
+GeoMaps::GeoJSON::fileContent GeoMaps::GeoJSON::inspect(const QString& fileName)
 {
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly))

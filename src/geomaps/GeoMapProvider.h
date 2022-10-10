@@ -121,7 +121,7 @@ namespace GeoMaps
      *
      * @returns Property baseMapRasterTiles
      */
-    auto baseMapRasterTiles() const -> QVector<QPointer<GeoMaps::MBTILES>>
+    QVector<QPointer<GeoMaps::MBTILES>> baseMapRasterTiles() const
     {
         return m_baseMapRasterTiles;
     }
@@ -130,7 +130,7 @@ namespace GeoMaps
      *
      * @returns Property baseMapVectorTiles
      */
-    auto baseMapVectorTiles() const -> QVector<QPointer<GeoMaps::MBTILES>>
+    QVector<QPointer<GeoMaps::MBTILES>> baseMapVectorTiles() const
     {
         return m_baseMapVectorTiles;
     }
@@ -158,7 +158,7 @@ namespace GeoMaps
      *
      * @returns Property terrainMapTiles
      */
-    auto terrainMapTiles() const -> QVector<QPointer<GeoMaps::MBTILES>>
+    QVector<QPointer<GeoMaps::MBTILES>> terrainMapTiles() const
     {
         return m_terrainMapTiles;
     }
@@ -175,7 +175,7 @@ namespace GeoMaps
      * cooperation with QML the list returns contains elements of type QObject*,
      * and not Airspace*.
      */
-    Q_INVOKABLE auto airspaces(const QGeoCoordinate &position) -> QVariantList;
+    Q_INVOKABLE QVariantList airspaces(const QGeoCoordinate &position);
 
     /*! \brief Find closest waypoint to a given position
      *
@@ -189,7 +189,7 @@ namespace GeoMaps
      * appropriate coordinate is returned. The method checks waypoints from the
      * map, and waypoints from the library.
      */
-    Q_INVOKABLE auto closestWaypoint(QGeoCoordinate position, const QGeoCoordinate &distPosition) -> GeoMaps::Waypoint;
+    Q_INVOKABLE GeoMaps::Waypoint closestWaypoint(QGeoCoordinate position, const QGeoCoordinate &distPosition);
 
     /*! \brief Create invalid waypoint
      *
@@ -198,7 +198,7 @@ namespace GeoMaps
      *
      *  @returns An invalid waypoint
      */
-    Q_INVOKABLE static auto createWaypoint() -> GeoMaps::Waypoint
+    Q_INVOKABLE static GeoMaps::Waypoint createWaypoint()
     {
       return {};
     }
@@ -210,13 +210,13 @@ namespace GeoMaps
      *  @return Elevation of the terrain at coordinate over MSP, or
      *  NaN if the terrain elevation is unknown
      */
-    [[nodiscard]] Q_INVOKABLE auto terrainElevationAMSL(const QGeoCoordinate& coordinate) -> Units::Distance;
+    [[nodiscard]] Q_INVOKABLE Units::Distance terrainElevationAMSL(const QGeoCoordinate& coordinate);
 
     /*! \brief Create empty GeoJSON document
      *
      *  @returns Empty, but valid GeoJSON document
      */
-    Q_INVOKABLE static auto emptyGeoJSON() -> QByteArray;
+    Q_INVOKABLE static QByteArray emptyGeoJSON();
 
     /*! \brief Waypoints containing a given substring
      *
@@ -226,7 +226,7 @@ namespace GeoMaps
      * the words in filter. The list contains both waypoints from the map, and
      * waypoints from the library and is sorted alphabetically.
      */
-    Q_INVOKABLE auto filteredWaypoints(const QString &filter) -> QVector<GeoMaps::Waypoint>;
+    Q_INVOKABLE QVector<GeoMaps::Waypoint> filteredWaypoints(const QString &filter);
 
     /*! Find a waypoint by its ICAO code
      *
@@ -249,7 +249,7 @@ namespace GeoMaps
      * 20 items.  For better cooperation with QML the list does not contain
      * elements of type Waypoint*, but elements of type QObject*
      */
-    Q_INVOKABLE auto nearbyWaypoints(const QGeoCoordinate &position, const QString &type) -> QVariantList;
+    Q_INVOKABLE QVariantList nearbyWaypoints(const QGeoCoordinate &position, const QString &type);
 
     /*! \brief Waypoints
      *

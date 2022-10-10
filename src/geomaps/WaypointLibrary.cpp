@@ -65,7 +65,7 @@ void GeoMaps::WaypointLibrary::clear()
     emit waypointsChanged();
 }
 
-auto GeoMaps::WaypointLibrary::filteredWaypoints(const QString &filter) const -> QVector<GeoMaps::Waypoint>
+QVector<GeoMaps::Waypoint> GeoMaps::WaypointLibrary::filteredWaypoints(const QString &filter) const
 {
     QVector<GeoMaps::Waypoint> result;
 
@@ -81,7 +81,7 @@ auto GeoMaps::WaypointLibrary::filteredWaypoints(const QString &filter) const ->
     return result;
 }
 
-auto GeoMaps::WaypointLibrary::hasNearbyEntry(const GeoMaps::Waypoint &waypoint) const -> bool
+bool GeoMaps::WaypointLibrary::hasNearbyEntry(const GeoMaps::Waypoint &waypoint) const
 {
     for (const auto &wp : qAsConst(m_waypoints))
     {
@@ -184,7 +184,7 @@ auto GeoMaps::WaypointLibrary::import(const QString& fileName, bool skip) -> QSt
     return {};
 }
 
-auto GeoMaps::WaypointLibrary::remove(const GeoMaps::Waypoint &waypoint) -> bool
+bool GeoMaps::WaypointLibrary::remove(const GeoMaps::Waypoint &waypoint)
 {
     if (m_waypoints.removeOne(waypoint))
     {
@@ -194,7 +194,7 @@ auto GeoMaps::WaypointLibrary::remove(const GeoMaps::Waypoint &waypoint) -> bool
     return false;
 }
 
-auto GeoMaps::WaypointLibrary::replace(const GeoMaps::Waypoint &oldWaypoint, const GeoMaps::Waypoint &newWaypoint) -> bool
+bool GeoMaps::WaypointLibrary::replace(const GeoMaps::Waypoint &oldWaypoint, const GeoMaps::Waypoint &newWaypoint)
 {
     if (!newWaypoint.isValid())
     {

@@ -70,8 +70,6 @@ public:
   */
   explicit TileHandler(const QVector<QPointer<GeoMaps::MBTILES>>& mbtileFiles, const QString& baseURLName, QObject *parent = nullptr);
   
-  ~TileHandler() override = default;
-
   /*! \brief Attribution property, as found in the metadata table of the mbtile file
     
     This property is empty if no attribution is found.

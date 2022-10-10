@@ -300,7 +300,6 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
         auto obj = map.toObject();
         auto mapFileName = obj.value(QStringLiteral("path")).toString();
         auto localFileName = m_dataDirectory + "/" + mapFileName;
-        auto mapName = mapFileName.section('.', -2, -2);
         auto mapUrlName = baseURL + "/" + obj.value(QStringLiteral("path")).toString();
         QUrl mapUrl(mapUrlName);
         auto fileModificationDateTime = QDateTime::fromString(obj.value(QStringLiteral("time")).toString(), QStringLiteral("yyyyMMdd"));

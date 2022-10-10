@@ -20,10 +20,10 @@
 
 #include <QSettings>
 
-#include "navigation/Navigator.h"
-#include "platform/Notifier.h"
 #include "GlobalObject.h"
 #include "UpdateNotifier.h"
+#include "navigation/Navigator.h"
+#include "platform/Notifier.h"
 #include <chrono>
 
 using namespace std::chrono_literals;

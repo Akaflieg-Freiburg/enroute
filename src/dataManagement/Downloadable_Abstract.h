@@ -288,4 +288,4 @@ private:
     QTimer emitFileContentChanged_delayedTimer;
 };
 
-};
+} // namespace DataManagement

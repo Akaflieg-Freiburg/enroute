@@ -25,8 +25,8 @@
 
 #include "Librarian.h"
 #include "geomaps/CUP.h"
-#include "geomaps/GeoJSON.h"
 #include "geomaps/GPX.h"
+#include "geomaps/GeoJSON.h"
 #include "geomaps/WaypointLibrary.h"
 
 GeoMaps::WaypointLibrary::WaypointLibrary(QObject *parent)

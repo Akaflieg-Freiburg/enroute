@@ -328,4 +328,4 @@ private:
     DataManagement::Downloadable_MultiFile m_mapSets  {DataManagement::Downloadable_MultiFile::SingleUpdate};
 };
 
-};
+} // namespace DataManagement

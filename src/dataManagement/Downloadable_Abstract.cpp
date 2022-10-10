@@ -19,8 +19,8 @@
  ***************************************************************************/
 
 #include "Downloadable_Abstract.h"
-#include <chrono>
 #include <QLocale>
+#include <chrono>
 
 using namespace std::chrono_literals;
 

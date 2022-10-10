@@ -21,8 +21,8 @@
 #pragma once
 
 #include <QGeoCoordinate>
-#include <QMap>
 #include <QJsonObject>
+#include <QMap>
 #include <QXmlStreamWriter>
 
 
@@ -348,7 +348,7 @@ auto operator!=(const GeoMaps::Waypoint&, const GeoMaps::Waypoint&) -> bool;
  */
 auto qHash(const GeoMaps::Waypoint& wp) -> uint;
 
-}
+} // namespace GeoMaps
 
 // Declare meta types
 Q_DECLARE_METATYPE(GeoMaps::Waypoint)

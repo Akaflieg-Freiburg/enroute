@@ -134,4 +134,4 @@ namespace GeoMaps
     QMap<QString, QString> m_metadata;
   };
 
-}
+} // namespace GeoMaps

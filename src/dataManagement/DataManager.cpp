@@ -19,14 +19,14 @@
  ***************************************************************************/
 
 #include <QDirIterator>
-#include <QJsonDocument>
 #include <QJsonArray>
+#include <QJsonDocument>
 #include <QJsonObject>
 #include <QLockFile>
 #include <QSettings>
 
-#include "dataManagement/UpdateNotifier.h"
 #include "dataManagement/DataManager.h"
+#include "dataManagement/UpdateNotifier.h"
 #include "geomaps/MBTILES.h"
 #include <chrono>
 

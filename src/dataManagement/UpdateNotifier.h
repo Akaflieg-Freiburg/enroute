@@ -55,4 +55,4 @@ private:
     Q_DISABLE_COPY_MOVE(UpdateNotifier)
 };
 
-};
+} // namespace DataManagement

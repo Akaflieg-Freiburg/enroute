@@ -175,4 +175,4 @@ private:
     DataManagement::Downloadable_MultiFile::UpdatePolicy m_updatePolicy;
 };
 
-};
+} // namespace DataManagement

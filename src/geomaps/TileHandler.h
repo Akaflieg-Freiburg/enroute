@@ -204,4 +204,4 @@ private:
   bool hasDBError {false};
 };
 
-};
+} // namespace GeoMaps

@@ -23,10 +23,10 @@
 #include <QJsonObject>
 #include <QLockFile>
 
-#include "geomaps/MBTILES.h"
-#include "GlobalObject.h"
 #include "Downloadable_SingleFile.h"
+#include "GlobalObject.h"
 #include "Settings.h"
+#include "geomaps/MBTILES.h"
 
 
 DataManagement::Downloadable_SingleFile::Downloadable_SingleFile(QUrl url, const QString &fileName, QObject *parent)

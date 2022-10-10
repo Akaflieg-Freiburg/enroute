@@ -59,4 +59,4 @@ namespace GeoMaps
         static GeoMaps::Waypoint readWaypoint(const QString &line);
     };
 
-};
+} // namespace GeoMaps

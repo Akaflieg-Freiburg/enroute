@@ -18,11 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QtConcurrent/QtConcurrentRun>
 #include <QImage>
 #include <QJsonArray>
 #include <QLockFile>
 #include <QRandomGenerator>
+#include <QtConcurrent/QtConcurrentRun>
 
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/MBTILES.h"

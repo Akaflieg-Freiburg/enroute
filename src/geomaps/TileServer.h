@@ -129,4 +129,4 @@ private:
   QUrl _baseUrl;
 };
 
-};
+} // namespace GeoMaps

@@ -19,8 +19,8 @@
  ***************************************************************************/
 
 #include <QFile>
-#include <QJsonParseError>
 #include <QJsonArray>
+#include <QJsonParseError>
 
 #include "geomaps/GeoJSON.h"
 

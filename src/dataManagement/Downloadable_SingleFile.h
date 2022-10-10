@@ -389,4 +389,4 @@ private:
     qint64 m_remoteFileSize{-1};
 };
 
-};
+} // namespace DataManagement

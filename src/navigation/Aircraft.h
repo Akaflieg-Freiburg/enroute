@@ -389,7 +389,7 @@ private:
     VerticalDistanceUnit m_verticalDistanceUnit {Feet};
 };
 
-}
+} // namespace Navigation
 
 // Declare meta types
 Q_DECLARE_METATYPE(Navigation::Aircraft)

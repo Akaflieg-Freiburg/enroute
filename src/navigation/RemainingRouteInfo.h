@@ -157,7 +157,7 @@ private:
 auto operator==(const Navigation::RemainingRouteInfo&, const Navigation::RemainingRouteInfo&) -> bool;
 
 
-}
+} // namespace Navigation
 
 // Declare meta types
 Q_DECLARE_METATYPE(Navigation::RemainingRouteInfo)

@@ -72,4 +72,4 @@ private:
     QDBusInterface notificationInterface {QStringLiteral("org.freedesktop.Notifications"), QStringLiteral("/org/freedesktop/Notifications"), QStringLiteral("org.freedesktop.Notifications"), QDBusConnection::sessionBus()};
 };
 
-}
+} // namespace Platform

@@ -21,11 +21,11 @@
 #include <QPainter>
 #include <cmath>
 
-#include "navigation/Navigator.h"
-#include "navigation/Aircraft.h"
 #include "GlobalObject.h"
 #include "ScaleQuickItem.h"
 #include "Settings.h"
+#include "navigation/Aircraft.h"
+#include "navigation/Navigator.h"
 
 
 Ui::ScaleQuickItem::ScaleQuickItem(QQuickItem *parent)

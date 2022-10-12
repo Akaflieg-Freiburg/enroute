@@ -128,4 +128,4 @@ private:
     Units::Angle m_lastValidTT {};
 };
 
-}
+} // namespace Positioning

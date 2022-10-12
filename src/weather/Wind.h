@@ -116,7 +116,7 @@ private:
     Units::Angle m_directionFrom {};
 };
 
-}
+} // namespace Weather
 
 // Declare meta types
 Q_DECLARE_METATYPE(Weather::Wind)

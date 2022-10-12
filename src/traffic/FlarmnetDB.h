@@ -79,4 +79,4 @@ private:
     QCache<QString, QString> m_cache {};
 };
 
-}
+} // namespace Traffic

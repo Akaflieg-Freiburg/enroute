@@ -77,4 +77,4 @@ private:
     const static qint32 egm96_size = egm96_rows * egm96_cols;
 };
 
-}
+} // namespace Positioning

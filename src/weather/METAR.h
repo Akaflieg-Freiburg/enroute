@@ -286,4 +286,4 @@ private:
     // Wind speed, as returned by the Aviation Weather Center
     Units::Speed _wind;
 };
-}
+} // namespace Weather

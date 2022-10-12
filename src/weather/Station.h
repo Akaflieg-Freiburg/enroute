@@ -27,7 +27,7 @@
 
 namespace GeoMaps {
 class GeoMapProvider;
-}
+} // namespace GeoMaps
 
 
 namespace Weather {
@@ -305,4 +305,4 @@ private:
     bool hasWaypointData {false};
 };
 
-} // Namespace
+} // namespace Weather

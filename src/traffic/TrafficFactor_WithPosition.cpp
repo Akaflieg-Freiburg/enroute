@@ -19,9 +19,9 @@
  ***************************************************************************/
 
 #include "GlobalObject.h"
+#include "Settings.h"
 #include "navigation/Aircraft.h"
 #include "navigation/Navigator.h"
-#include "Settings.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/TrafficFactor_WithPosition.h"
 

@@ -196,4 +196,4 @@ private:
     bool _receivingPositionInfo {false};
 };
 
-}
+} // namespace Positioning

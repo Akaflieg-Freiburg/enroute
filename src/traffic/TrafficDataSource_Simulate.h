@@ -155,4 +155,4 @@ private:
     QPointer<TrafficFactor_DistanceOnly> trafficFactor_DistanceOnly;
 };
 
-}
+} // namespace Traffic

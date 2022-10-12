@@ -153,7 +153,7 @@ private:
     Units::Distance m_vDist;
 };
 
-}
+} // namespace Traffic
 
 // Declare meta types
 Q_DECLARE_METATYPE(Traffic::Warning)

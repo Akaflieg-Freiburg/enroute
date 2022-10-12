@@ -57,4 +57,4 @@ private:
     QPointer<QGeoPositionInfoSource> source {nullptr};
 };
 
-}
+} // namespace Positioning

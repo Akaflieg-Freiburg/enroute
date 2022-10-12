@@ -29,8 +29,10 @@
 #include <QObject>
 
 #include <cstring> // Necessary to work around an issue in metaf
+
 #include "../3rdParty/metaf/include/metaf.hpp"
 using namespace metaf;
+
 
 namespace Weather {
 
@@ -214,4 +216,4 @@ private:
     ParseResult parseResult;
 };
 
-}
+} // namespace Weather

@@ -123,4 +123,4 @@ private:
     QGeoCoordinate m_coordinate {};
 };
 
-}
+} // namespace Traffic

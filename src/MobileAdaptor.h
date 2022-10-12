@@ -20,8 +20,8 @@
 
 #pragma once
 
-#include <QtGlobal>
 #include <QTimer>
+#include <QtGlobal>
 
 #include <QObject>
 

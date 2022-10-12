@@ -139,4 +139,4 @@ private:
 
 };
 
-}
+} // namespace Traffic

@@ -194,4 +194,4 @@ private:
     QString passwordRequest_password;
 };
 
-}
+} // namespace Traffic

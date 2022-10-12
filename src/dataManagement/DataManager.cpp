@@ -305,7 +305,7 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
         auto fileModificationDateTime = QDateTime::fromString(obj.value(QStringLiteral("time")).toString(), QStringLiteral("yyyyMMdd"));
         qint64 fileSize = qRound64(obj.value(QStringLiteral("size")).toDouble());
 
-        auto *downloadable = createOrRecycleItem(mapUrl, localFileName);
+        auto* downloadable = createOrRecycleItem(mapUrl, localFileName);
         oldMaps.removeAll(downloadable);
         downloadable->setRemoteFileDate(fileModificationDateTime);
         downloadable->setRemoteFileSize(fileSize);

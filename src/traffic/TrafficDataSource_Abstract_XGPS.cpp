@@ -143,7 +143,7 @@ void Traffic::TrafficDataSource_Abstract::processXGPSString(const QByteArray& da
         m_factor.setCallSign(callsign);
         m_factor.setHDist(hDist);
         m_factor.setID(targetID);
-        m_factor.setPositionInfo(geoPositionInfo);
+        m_factor.setPositionInfo( Positioning::PositionInfo(geoPositionInfo) );
         m_factor.setType(Traffic::TrafficFactor_Abstract::unknown);
         m_factor.setVDist(vDist);
         m_factor.startLiveTime();

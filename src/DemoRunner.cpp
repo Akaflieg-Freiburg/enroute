@@ -202,7 +202,7 @@ void DemoRunner::run()
                     trafficFactor1->setAlarmLevel(0);
                     trafficFactor1->setID(QStringLiteral("newID"));
                     trafficFactor1->setType(Traffic::TrafficFactor_Abstract::Aircraft);
-                    trafficFactor1->setPositionInfo(trafficInfo);
+                    trafficFactor1->setPositionInfo( Positioning::PositionInfo(trafficInfo) );
                     trafficFactor1->setHDist( Units::Distance::fromM(1000) );
                     trafficFactor1->setVDist( Units::Distance::fromM(17) );
                     trafficSimulator->addTraffic(trafficFactor1);
@@ -425,7 +425,7 @@ void DemoRunner::run()
         trafficFactor1->setAlarmLevel(0);
         trafficFactor1->setID(QStringLiteral("newID"));
         trafficFactor1->setType(Traffic::TrafficFactor_Abstract::Aircraft);
-        trafficFactor1->setPositionInfo(trafficInfo);
+        trafficFactor1->setPositionInfo( Positioning::PositionInfo(trafficInfo) );
         trafficFactor1->setHDist( Units::Distance::fromM(1000) );
         trafficFactor1->setVDist( Units::Distance::fromM(17) );
         trafficSimulator->addTraffic(trafficFactor1);

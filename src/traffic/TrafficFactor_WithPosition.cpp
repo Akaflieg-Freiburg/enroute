@@ -42,7 +42,7 @@ Traffic::TrafficFactor_WithPosition::TrafficFactor_WithPosition(QObject *parent)
 }
 
 
-void Traffic::TrafficFactor_WithPosition::setPositionInfo(const QGeoPositionInfo& newPositionInfo)
+void Traffic::TrafficFactor_WithPosition::setPositionInfo(const Positioning::PositionInfo& newPositionInfo)
 {
 
     if (m_positionInfo == newPositionInfo) {

@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classDataManagement_1_1Downloadable.html" title="Base class for all downloadable objects." alt="" coords="5,5,245,32"/>
+<area shape="rect" id="node1" href="$classDataManagement_1_1Downloadable__Abstract.html" title="Abstract base class for Downloadable_SingleFile and Downloadable_MultiFile." alt="" coords="5,39,245,80"/>
+<area shape="rect" id="node2" href="$classDataManagement_1_1Downloadable__MultiFile.html" title="Group of closely related downloadable items." alt="" coords="293,5,533,47"/>
+<area shape="rect" id="node3" href="$classDataManagement_1_1Downloadable__SingleFile.html" title="Downloadable object." alt="" coords="293,71,533,112"/>
 </map>

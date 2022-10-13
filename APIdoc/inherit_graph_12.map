@@ -1,8 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classGlobalObject.html" title="Base class for global singleton objects." alt="" coords="5,123,112,149"/>
-<area shape="rect" id="node2" href="$classDataManagement_1_1DataManager.html" title="Manages the list of geographic maps." alt="" coords="160,5,395,32"/>
-<area shape="rect" id="node3" href="$classDataManagement_1_1SSLErrorHandler.html" title="Handles SSL error." alt="" coords="177,57,378,98"/>
-<area shape="rect" id="node4" href="$classGeoMaps_1_1GeoMapProvider.html" title="Provides geographic information." alt="" coords="178,123,377,149"/>
-<area shape="rect" id="node5" href="$classGeoMaps_1_1WaypointLibrary.html" title="Library of user&#45;defined waypoints." alt="" coords="179,173,376,200"/>
-<area shape="rect" id="node6" href="$classNavigation_1_1Navigator.html" title="Main hub for navigation data." alt="" coords="195,224,360,251"/>
+<area shape="rect" id="node1" href="$classLibrarian.html" title="Manage libraries and text assets." alt="" coords="5,5,84,32"/>
 </map>

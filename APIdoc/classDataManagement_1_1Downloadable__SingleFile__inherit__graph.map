@@ -1,0 +1,4 @@
+<map id="DataManagement::Downloadable_SingleFile" name="DataManagement::Downloadable_SingleFile">
+<area shape="rect" id="node1" title="Downloadable object." alt="" coords="5,95,245,136"/>
+<area shape="rect" id="node2" href="$classDataManagement_1_1Downloadable__Abstract.html" title="Abstract base class for Downloadable_SingleFile and Downloadable_MultiFile." alt="" coords="5,5,245,47"/>
+</map>

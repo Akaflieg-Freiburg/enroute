@@ -23,7 +23,7 @@
 #include <QCache>
 #include <QObject>
 
-#include "dataManagement/Downloadable.h"
+#include "dataManagement/Downloadable_SingleFile.h"
 
 namespace Traffic {
 
@@ -74,9 +74,9 @@ private slots:
 private:
     auto getRegistrationFromFile(const QString& key) -> QString;
 
-    QPointer<DataManagement::Downloadable> flarmnetDBDownloadable;
+    QPointer<DataManagement::Downloadable_SingleFile> flarmnetDBDownloadable;
 
     QCache<QString, QString> m_cache {};
 };
 
-}
+} // namespace Traffic

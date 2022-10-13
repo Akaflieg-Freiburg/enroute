@@ -22,8 +22,8 @@
 
 #include <QStandardPaths>
 
-#include "geomaps/Waypoint.h"
 #include "GlobalObject.h"
+#include "geomaps/Waypoint.h"
 
 namespace GeoMaps
 {
@@ -220,4 +220,4 @@ namespace GeoMaps
         QVector<GeoMaps::Waypoint> m_waypoints;
     };
 
-};
+} // namespace GeoMaps

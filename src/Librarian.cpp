@@ -255,13 +255,13 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 
 <p>Thank you for using Enroute Flight Navigation, we appreciate your engagement very much.</p>
 
-<p>However, we'd like to ask you <strong>to limit yourself to 8 %1.</strong>
+<p>However, we'd like to ask you <strong>to download only the maps that you really need.</strong>
 
 <p>On the one hand, the bandwidth for map downloads is kindly sponsored by the University of Freiburg, under the assumption that <strong>the costs stays within reasonable limits.</strong></p>
 
 <p>On the other, the app will perform much better if it doesn't have to process many megabytes of map data.</p>
 
-<p>We are trying our best to avoid a hard limit on the number of maps in the future. Please help us with that. You already have <strong>%2 maps</strong>.</p>)html");
+<p>We are trying our best to avoid a hard limit on the number of maps in the future. Please help us with that.</p>)html");
     }
 
     if (name == QLatin1String(":text/weatherPermissions.html")) {
@@ -275,8 +275,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     }
 
     if (name == QLatin1String(":text/whatsnew.html")) {
-        return tr("<p>The altimeter can now show your altitude above ground level. To try this new feature, open the main menu and go to 'Settings'. Make sure that terrain data is installed.</p>") +
-                tr("<p>The app can now show a shaded terrain relief. To download terrain data for your region, open the main menu and go to 'Library/Maps and Data'.</p>") +
+        return tr("<p>The page 'Map and Data Library' has been redesigned for simplicity of use.</p>") +
                 tr("<p>We could need help with French translations. If you would like to help, if speak French and know how to use the GIT version control system, please let us know.</p>");
     }
 

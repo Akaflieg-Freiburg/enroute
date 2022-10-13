@@ -408,4 +408,4 @@ private:
     Traffic::TrafficFactor_DistanceOnly m_factorDistanceOnly;
 };
 
-}
+} // namespace Traffic

@@ -27,25 +27,28 @@
 #include <QPointer>
 #include <QSaveFile>
 
+#include "Downloadable_Abstract.h"
 
-namespace DataManagement {
+namespace DataManagement
+{
 
-/*! \brief Base class for all downloadable objects
+/*! \brief Downloadable object
+ *
+ *  This class represents a downloadable item, such as an aviation map file.
+ *  The class is able to do the following.
+ *
+ *  - Download the file asynchronously from the server.
+ *
+ *  - Check if a newer version of the file is available at the URL and update
+ *    the file if desired.
+ *
+ *  The URL and the name of the local file are given in the constructor and
+ *  cannot be changed. See the description of the method startDownload() to see
+ *  how downloads work.
+ */
 
-  This class represents a downloadable item, such as an aviation map file.  The
-  class is able to do the following.
-
-  - Download the file asynchronously from the server.
-
-  - Check if a newer version of the file is available at the URL and update the
-    file if desired.
-
-  The URL and the name of the local file are given in the constructor and cannot
-  be changed. See the description of the method startFileDownload() to see how
-  downloads work.
-*/
-
-class Downloadable : public QObject {
+class Downloadable_SingleFile : public Downloadable_Abstract
+{
     Q_OBJECT
 
 public:
@@ -72,28 +75,20 @@ public:
      *
      * Use the method startFileDownload() to initiate the download process.
      */
-    explicit Downloadable(QUrl url, const QString &localFileName, QObject *parent = nullptr);
+    explicit Downloadable_SingleFile(QUrl url, const QString &localFileName, QObject *parent = nullptr);
 
     /*! \brief Standard destructor
      *
      * This destructor will stop all running downloads and delete all temporary
      * files.  It will not delete the local file.
      */
-    ~Downloadable() override;
+    ~Downloadable_SingleFile() override;
 
-    /*! \brief Indicates whether a download process is currently running
-     *
-     * This property indicates whether a download process is currently running
-     *
-     * @see startFileDownload(), stopFileDownload()
-     */
-    Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
 
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property downloading
-     */
-    [[nodiscard]] auto downloading() const -> bool { return !_networkReplyDownloadFile.isNull(); }
+
+    //
+    // Properties
+    //
 
     /*! \brief Download progress
      *
@@ -102,52 +97,8 @@ public:
      */
     Q_PROPERTY(int downloadProgress READ downloadProgress NOTIFY downloadProgressChanged)
 
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property downloadProgress
-     */
-    [[nodiscard]] auto downloadProgress() const -> int { return _downloadProgress; }
-
     /*! \brief File name, as set in the constructor */
     Q_PROPERTY(QString fileName READ fileName CONSTANT)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property fileName
-     */
-    [[nodiscard]] auto fileName() const -> QString { return _fileName; }
-
-    /*! \brief Convenience property, returns 'true' if the file has been downloaded
-     *
-     * @warning The notification signal is emitted whenever this class changes
-     * the downloaded file. The signal is not emitted when another process touches
-     * the file.
-     */
-    Q_PROPERTY(bool hasFile READ hasFile NOTIFY hasFileChanged)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property hasFile
-     */
-    [[nodiscard]] auto hasFile() const -> bool { return QFile::exists(_fileName); }
-
-    /*! \brief Short info text describing the state of the downloadable
-     *
-     * The text is typically of the form
-     *
-     * - "downloading … 47% complete"
-     *
-     * - "installed • 203 kB • update available"
-     *
-     * It might be translated to the local language.
-     */
-    Q_PROPERTY(QString infoText READ infoText NOTIFY infoTextChanged)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property infoText
-     */
-    [[nodiscard]] auto infoText() const -> QString;
 
     /*! \brief Content of the downloaded file
      *
@@ -155,12 +106,6 @@ public:
      * QByteArray, if nothing has been downloaded
      */
     Q_PROPERTY(QByteArray fileContent READ fileContent NOTIFY fileContentChanged)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property fileContent
-     */
-    [[nodiscard]] auto fileContent() const -> QByteArray;
 
     /*! \brief Modification date of the remote file
      *
@@ -170,18 +115,6 @@ public:
      */
     Q_PROPERTY(QDateTime remoteFileDate READ remoteFileDate WRITE setRemoteFileDate NOTIFY remoteFileDateChanged)
 
-    /*! \brief Setter function for the property with the same name
-     *
-     * @param date Property remoteFileDate
-     */
-    void setRemoteFileDate(const QDateTime &date);
-
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property remoteFileDate
-     */
-    [[nodiscard]] auto remoteFileDate() const -> QDateTime { return _remoteFileDate; }
-
     /*! \brief Size of the remote file
      *
      * This property holds the size of the remote file.  If the size date of the
@@ -190,11 +123,98 @@ public:
      */
     Q_PROPERTY(qint64 remoteFileSize READ remoteFileSize WRITE setRemoteFileSize NOTIFY remoteFileSizeChanged)
 
+    /*! \brief URL, as set in the constructor */
+    Q_PROPERTY(QUrl url READ url CONSTANT)
+
+
+
+    //
+    // Getter Methods
+    //
+
+    /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
+     *
+     * @returns Property description
+     */
+    [[nodiscard]] auto description() -> QString override;
+
+    /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
+     *
+     * @returns Property downloading
+     */
+    [[nodiscard]] auto downloading() -> bool override { return !m_networkReplyDownloadFile.isNull(); }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property downloadProgress
+     */
+    [[nodiscard]] auto downloadProgress() const -> int { return m_downloadProgress; }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property fileName
+     */
+    [[nodiscard]] auto fileName() const -> QString { return m_fileName; }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property fileContent
+     */
+    [[nodiscard]] auto fileContent() const -> QByteArray;
+
+    /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
+     *
+     * @returns Property files
+     */
+    [[nodiscard]] auto files() -> QStringList override;
+
+    /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
+     *
+     * @returns Property hasFile
+     */
+    [[nodiscard]] auto hasFile() -> bool override { return QFile::exists(m_fileName); }
+
+    /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
+     *
+     * @returns Property infoText
+     */
+    [[nodiscard]] auto infoText() -> QString override;
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property remoteFileDate
+     */
+    [[nodiscard]] auto remoteFileDate() const -> QDateTime { return m_remoteFileDate; }
+
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property remoteFileSize
      */
-    [[nodiscard]] auto remoteFileSize() const -> qint64 { return _remoteFileSize; }
+    [[nodiscard]] auto remoteFileSize() -> qint64 override { return m_remoteFileSize; }
+
+    /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
+     *
+     * @returns Property updateSize
+     */
+    [[nodiscard]] auto updateSize() -> qint64 override;
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property url
+     */
+    [[nodiscard]] auto url() const -> QUrl { return m_url; }
+
+
+
+    //
+    // Setter Methods
+    //
+
+    /*! \brief Setter function for the property with the same name
+     *
+     * @param date Property remoteFileDate
+     */
+    void setRemoteFileDate(const QDateTime &date);
 
     /*! \brief Setter function for the property with the same name
      *
@@ -202,66 +222,19 @@ public:
      */
     void setRemoteFileSize(qint64 size);
 
-    /*! \brief Headline name for the Downloadable
-     *
-     * This property is a convenience storing one string along with the
-     * Downloadable. The enroute app uses this to store the continent name for a
-     * Dowloadable that represents a geographic map.  The GUI then generate
-     * section headings in the list of downloadable aviation maps.
-     */
-    Q_PROPERTY(QString section READ section NOTIFY sectionChanged)
 
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property section
-     */
-    [[nodiscard]] auto section() const -> QString { return _section; }
 
-    /*! \brief Setter function for the property with the same name
-     *
-     * @param sectionName Property section
-     */
-    void setSection(const QString& sectionName);
+    //
+    // Methods
+    //
 
-    /*! \brief Indicates if the file the has been downloaded is known to be updatable
+    /*! \brief Implementation of pure virtual method from Downloadable_Abstract
      *
-     * This property is true if all of the following conditions are met.
-     *
-     * - No download is in progress
-     *
-     * - The file has been downloaded
-     *
-     * - The modification date of the file on the remote server
-     *   is newer than the modification date of the local file.
-     *
-     * @warning The notification signal is not emitted when another process
-     * touches the local file.
-     */
-    Q_PROPERTY(bool updatable READ updatable NOTIFY updatableChanged)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property updatable
-     */
-    [[nodiscard]] auto updatable() const -> bool;
-
-    /*! \brief URL, as set in the constructor */
-    Q_PROPERTY(QUrl url READ url CONSTANT)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property url
-     */
-    [[nodiscard]] auto url() const -> QUrl { return _url; }
-
-public slots:
-    /*! \brief The convenience method deletes the local file.
-     *
-     * This convenience method deletes the local file. The singals
+     * This method deletes the local file. The singals
      * aboutToChangeLocalFile() and localFileChanged() are emitted
      * appropriately, and a QLockFile is used at fileName()+".lock".
      */
-    void deleteFile();
+    Q_INVOKABLE void deleteFiles() override;
 
     /*! \brief Initiate a download
      *
@@ -269,7 +242,7 @@ public slots:
      * already in progress, nothing will happen.  Otherwise, the following will
      * take place.
      *
-     * -# Data is retrieved from the remote server and stored in temporary
+     * -# Data is retrieved from the remote server and stored in a temporary
      *    file. The signal downloadProgress() will be emitted regularly.
      *
      * -# In case of an error, the signal error() is emitted and the download
@@ -294,7 +267,7 @@ public slots:
      * -# The signal fileChanged() is emitted to indicate that the file is
      *    again ready to be used.
      */
-    void startFileDownload();
+    Q_INVOKABLE void startDownload() override;
 
     /*! \brief Contacts the server and downloads information about the remote
      *  file
@@ -308,7 +281,7 @@ public slots:
      * @warning This method fails silently if the server cannot be contacted or
      * if the server is unable to provide the requested data.
      */
-    void startInfoDownload();
+    Q_INVOKABLE void startInfoDownload();
 
     /*! \brief Stops download process
      *
@@ -316,7 +289,10 @@ public slots:
      * deletes any partially downloaded data. No signal will be emitted.  If no
      * download is in progress, nothing will happen.
      */
-    void stopFileDownload();
+    Q_INVOKABLE void stopDownload() override;
+
+    /*! \brief Implementation of pure virtual method from Downloadable_Abstract */
+    Q_INVOKABLE void update() override;
 
 signals:
     /*! \brief Warning that local file is about to change
@@ -333,9 +309,6 @@ signals:
      */
     void aboutToChangeFile(QString localFileName);
 
-    /*! \brief Notifier signal for property downloading */
-    void downloadingChanged();
-
     /*! \brief Download progress
      *
      * While the download process is running, this signal is emitted at regular
@@ -344,34 +317,6 @@ signals:
      * @param percentage An integer between 0 and 100
      */
     void downloadProgressChanged(int percentage);
-
-    /*! \brief Download error
-     *
-     * This signal is emitted if the download process fails for whatever
-     * reason. Once the signal is emitted, the download process is deleted and
-     * no further actions will take place. The local file will not be touched.
-     *
-     * @param objectName Name of this QObject, as obtained by the method
-     * objectName()
-     *
-     * @param message A brief error message of the form "the requested resource
-     * is no longer available at the server", possibly translated.
-     */
-    void error(QString objectName, QString message);
-
-    /*! \brief Notifier signal for the property infoText */
-    void infoTextChanged();
-
-    /*! \brief Notifier signal for the property hasFile
-     */
-    void hasFileChanged();
-
-    /*! \brief Notifier signal for the properties fileContent
-     *
-     * This signal is also emitted when the local file get deleted by the method
-     * Downloadable::deleteFile(), and when a file is first downloaded.
-     */
-    void fileContentChanged();
 
     /*! \brief Notifier signal for the properties remoteFileDate and remoteFileSize
      *
@@ -382,23 +327,9 @@ signals:
      */
     void remoteFileDateChanged();
 
-    /*! \brief Notifier signal for the properties remoteFileDate and
-     *  remoteFileSize
-     *
-     * This signal is emitted once one of the property remoteFileSize changes,
-     * either in response to a use of the setter methods, or because
-     * downloadRemoteFileData() has been called and data has been retrieved from
-     * the server.
-     */
-    void remoteFileSizeChanged();
+private:
+    Q_DISABLE_COPY_MOVE(Downloadable_SingleFile)
 
-    /*! \brief Notifier signal for the property section */
-    void sectionChanged();
-
-    /*! \brief Notifier signal for the property updatable */
-    void updatableChanged();
-
-private slots:
     // Called when an error occurs during the download of the remote file, this
     // method deletes QTemporaryFile _tmpFile, emits the signal error() and
     // deletes _networkReplyDownload by calling deleteLater.  Connected to
@@ -428,40 +359,34 @@ private slots:
     // &QNetworkReply::finished of _networkReplyDownloadHeader.
     void downloadHeaderFinished();
 
-private:
-     Q_DISABLE_COPY_MOVE(Downloadable)
-
     // This member holds the download progress.
-    int _downloadProgress{0};
+    int m_downloadProgress{0};
 
     // NetworkReply for downloading of remote file data. Set to nullptr when no
     // download is in progress.
-    QPointer<QNetworkReply> _networkReplyDownloadFile;
+    QPointer<QNetworkReply> m_networkReplyDownloadFile;
 
     // NetworkReply for downloading of remote file header. Set to nullptr when
     // no download is in progress.
-    QPointer<QNetworkReply> _networkReplyDownloadHeader;
+    QPointer<QNetworkReply> m_networkReplyDownloadHeader;
 
     // Temporary file for storing partiall data when downloading the remote
     // file. Set to nullptr when no download is in progress.
-    QPointer<QSaveFile> _saveFile{};
+    QPointer<QSaveFile> m_saveFile{};
 
     // URL of the remote file, as set in the constructor
-    QUrl _url;
+    QUrl m_url;
 
     // Name of the local file, as set in the constructor
-    QString _fileName{};
+    QString m_fileName{};
 
     // Modification date of the remote file, set directly via a setter method or
     // by calling downloadRemoteFileInfo().
-    QDateTime _remoteFileDate;
+    QDateTime m_remoteFileDate;
 
     // Size of the remote file, set directly via a setter method or by calling
     // downloadRemoteFileInfo().
-    qint64 _remoteFileSize{-1};
-
-    // Section name
-    QString _section {};
+    qint64 m_remoteFileSize{-1};
 };
 
-};
+} // namespace DataManagement

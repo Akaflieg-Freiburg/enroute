@@ -231,7 +231,7 @@ private:
     QGeoPath m_geoPath;
 };
 
-}
+} // namespace Navigation
 
 // Declare meta types
 Q_DECLARE_METATYPE(Navigation::Leg)

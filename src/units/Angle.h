@@ -20,8 +20,8 @@
 
 #pragma once
 
-#include <QtMath>
 #include <QObject>
+#include <QtMath>
 
 /*! \brief Conversion between units used in aviation
  *
@@ -199,7 +199,7 @@ namespace Units {
         // Angle in Radians
         double m_angleInRAD{qQNaN()};
     };
-};
+} // namespace Units
 
 // Declare meta types
 Q_DECLARE_METATYPE(Units::Angle)

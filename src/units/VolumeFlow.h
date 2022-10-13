@@ -20,8 +20,8 @@
 
 #pragma once
 
-#include <QtMath>
 #include <QObject>
+#include <QtMath>
 
 
 namespace Units {
@@ -138,7 +138,7 @@ namespace Units {
         // Speed in meters per second
         double m_volumeFlowInLPH{ NAN };
     };
-};
+} // namespace Units
 
 
 // Declare meta types

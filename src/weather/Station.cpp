@@ -18,9 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "geomaps/GeoMapProvider.h"
 #include "navigation/Aircraft.h"
 #include "navigation/Navigator.h"
-#include "geomaps/GeoMapProvider.h"
 #include "units/Units.h"
 #include "weather/Station.h"
 

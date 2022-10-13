@@ -23,6 +23,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
 import QtQuick.Layouts 1.15
 
+import enroute 1.0
 import "../dialogs"
 import "../items"
 
@@ -53,177 +54,16 @@ Page {
             height: gridLayout.height
 
             function startFileDownload() {
-                // check how many files are already downloaded:
-                var nFilesTotal;
-                var mapTypeString;
-                if (sv.currentIndex == 0) {  // swipe view shows aviation maps
-                    nFilesTotal = global.dataManager().aviationMaps.numberOfFilesTotal();
-                    mapTypeString = qsTr("aviation maps")
-                } else {  // swipe view shows base maps
-                    nFilesTotal = global.dataManager().baseMaps.numberOfFilesTotal();
-                    mapTypeString = qsTr("base maps")
-                }
-
-                // if the user downloads more than 8 files, show them a dialog telling them that
+                // if the user downloads too many, show them a dialog telling them that
                 // the bandwidth is sponsored and they shouldn't over-consume.
-                if (nFilesTotal > 7) {
+                var nFilesTotal = global.dataManager().items.files.length
+                if (nFilesTotal > 15) {
                     dialogLoader.active = false;
-                    dialogLoader.dialogArgs = {onAcceptedCallback: model.modelData.startFileDownload,
-                        nFilesTotal: nFilesTotal,
-                        mapTypeString: mapTypeString};
-                    dialogLoader.source = "dialogs/TooManyDownloadsDialog.qml";
-                    dialogLoader.active = true;
-                } else {
-                    model.modelData.startFileDownload();
-                }
-            }
-
-            GridLayout {
-                id: gridLayout
-
-                columnSpacing: 0
-                rowSpacing: 0
-
-                anchors.right: parent.right
-                anchors.rightMargin: 0
-                anchors.left: parent.left
-                anchors.leftMargin: 0
-                columns: 6
-
-                ItemDelegate {
-                    text: model.modelData.objectName + `<br><font color="#606060" size="2">${model.modelData.infoText}</font>`
-                    icon.source: model.modelData.updatable ? "/icons/material/ic_new_releases.svg" : "/icons/material/ic_map.svg"
-                    Layout.fillWidth: true
-                    enabled: !model.modelData.hasFile
-                    onClicked: {
-                        if (!model.modelData.downloading && (!model.modelData.hasFile || model.modelData.updatable)) {
-                            global.mobileAdaptor().vibrateBrief()
-
-                            if (model.modelData.fileName.endsWith("mbtiles") && global.dataManager().baseMapsRaster.hasFile) {
-                                uninstallRasterMapDialog.vectorMap = element
-                                uninstallRasterMapDialog.open()
-                            } else
-                                startFileDownload()
-                        }
-                    }
-                }
-
-                ToolButton {
-                    id: downloadButton
-                    icon.source: "/icons/material/ic_file_download.svg"
-                    visible: !model.modelData.hasFile && !model.modelData.downloading
-                    onClicked: {
-                        global.mobileAdaptor().vibrateBrief()
-                        model.modelData.startFileDownload()
-                    }
-                }
-
-                ToolButton {
-                    id: updateButton
-                    icon.source: "/icons/material/ic_refresh.svg"
-                    visible: model.modelData.updatable
-                    onClicked: {
-                        global.mobileAdaptor().vibrateBrief()
-                        model.modelData.startFileDownload()
-                    }
-                }
-
-                ToolButton {
-                    id: cancelButton
-                    icon.source: "/icons/material/ic_cancel.svg"
-                    visible: model.modelData.downloading
-                    onClicked: {
-                        global.mobileAdaptor().vibrateBrief()
-                        model.modelData.stopFileDownload()
-                    }
-                }
-
-                ToolButton {
-                    id: removeButton
-                    icon.source: "/icons/material/ic_more_horiz.svg"
-
-                    visible: model.modelData.hasFile & !model.modelData.downloading
-                    onClicked: {
-                        global.mobileAdaptor().vibrateBrief()
-                        removeMenu.popup()
-                    }
-
-                    AutoSizingMenu {
-                        id: removeMenu
-
-                        Action {
-                            id: infoAction
-
-                            text: qsTr("Info")
-
-                            onTriggered: {
-                                global.mobileAdaptor().vibrateBrief()
-                                infoDialog.title = model.modelData.objectName
-                                infoDialog.text = global.dataManager().describeDataItem(model.modelData.fileName)
-                                infoDialog.open()
-                            }
-                        }
-                        Action {
-                            id: removeAction
-
-                            text: qsTr("Uninstall")
-
-                            onTriggered: {
-                                global.mobileAdaptor().vibrateBrief()
-                                model.modelData.deleteFile()
-                            }
-                        }
-                    }
-
-                } // ToolButton
-            }
-
-            Connections {
-                target: model.modelData
-                function onError(objectName, message) {
-                    dialogLoader.active = false
-                    dialogLoader.title = qsTr("Download Error")
-                    dialogLoader.text = qsTr("<p>Failed to download <strong>%1</strong>.</p><p>Reason: %2.</p>").arg(objectName).arg(message)
-                    dialogLoader.source = "/qml/dialogs/ErrorDialog.qml"
-                    dialogLoader.active = true
-                }
-            }
-
-        }
-
-    }
-
-    Component {
-        id: terrainItem
-
-        Item {
-            id: element
-            width: pg.width
-            height: gridLayout.height
-
-            function startFileDownload() {
-                // check how many files are already downloaded:
-                var nFilesTotal;
-                var mapTypeString;
-                if (sv.currentIndex == 0) {  // swipe view shows aviation maps
-                    nFilesTotal = global.dataManager().aviationMaps.numberOfFilesTotal();
-                    mapTypeString = qsTr("aviation maps")
-                } else {  // swipe view shows base maps
-                    nFilesTotal = global.dataManager().baseMaps.numberOfFilesTotal();
-                    mapTypeString = qsTr("base maps")
-                }
-
-                // if the user downloads more than 8 files, show them a dialog telling them that
-                // the bandwidth is sponsored and they shouldn't over-consume.
-                if (nFilesTotal > 7) {
-                    dialogLoader.active = false;
-                    dialogLoader.dialogArgs = {onAcceptedCallback: model.modelData.startFileDownload,
-                        nFilesTotal: nFilesTotal,
-                        mapTypeString: mapTypeString};
+                    dialogLoader.dialogArgs = {onAcceptedCallback: model.modelData.startDownload};
                     dialogLoader.source = "../dialogs/TooManyDownloadsDialog.qml";
                     dialogLoader.active = true;
                 } else {
-                    model.modelData.startFileDownload();
+                    model.modelData.startDownload();
                 }
             }
 
@@ -239,9 +79,17 @@ Page {
                 anchors.leftMargin: 0
                 columns: 6
 
-                ItemDelegate {
+                WordWrappingItemDelegate {
                     text: model.modelData.objectName + `<br><font color="#606060" size="2">${model.modelData.infoText}</font>`
-                    icon.source: model.modelData.updatable ? "/icons/material/ic_new_releases.svg" : "/icons/material/ic_terrain.svg"
+                    icon.source: {
+                        if (model.modelData.updatable)
+                            return "/icons/material/ic_new_releases.svg";
+                        if (model.modelData.contentType === Downloadable_Abstract.TerrainMap)
+                            return "/icons/material/ic_terrain.svg";
+                        if (model.modelData.contentType === Downloadable_Abstract.Data)
+                            return "/icons/material/ic_library_books.svg"
+                        return "/icons/material/ic_map.svg";
+                    }
                     Layout.fillWidth: true
                     enabled: !model.modelData.hasFile
                     onClicked: {
@@ -258,17 +106,17 @@ Page {
                     visible: !model.modelData.hasFile && !model.modelData.downloading
                     onClicked: {
                         global.mobileAdaptor().vibrateBrief()
-                        model.modelData.startFileDownload()
+                        startFileDownload()
                     }
                 }
 
                 ToolButton {
                     id: updateButton
                     icon.source: "/icons/material/ic_refresh.svg"
-                    visible: model.modelData.updatable
+                    visible: (model.modelData.updateSize !== 0) && !model.modelData.downloading
                     onClicked: {
                         global.mobileAdaptor().vibrateBrief()
-                        model.modelData.startFileDownload()
+                        model.modelData.update()
                     }
                 }
 
@@ -278,7 +126,7 @@ Page {
                     visible: model.modelData.downloading
                     onClicked: {
                         global.mobileAdaptor().vibrateBrief()
-                        model.modelData.stopFileDownload()
+                        model.modelData.stopDownload()
                     }
                 }
 
@@ -303,7 +151,7 @@ Page {
                             onTriggered: {
                                 global.mobileAdaptor().vibrateBrief()
                                 infoDialog.title = model.modelData.objectName
-                                infoDialog.text = global.dataManager().describeDataItem(model.modelData.fileName)
+                                infoDialog.text = model.modelData.description
                                 infoDialog.open()
                             }
                         }
@@ -314,7 +162,7 @@ Page {
 
                             onTriggered: {
                                 global.mobileAdaptor().vibrateBrief()
-                                model.modelData.deleteFile()
+                                model.modelData.deleteFiles()
                             }
                         }
                     }
@@ -336,125 +184,6 @@ Page {
         }
 
     }
-
-    Component {
-        id: databaseItem
-
-        Item {
-            id: element
-            width: pg.width
-            height: gridLayout.height
-
-            GridLayout {
-                id: gridLayout
-
-                columnSpacing: 0
-                rowSpacing: 0
-
-                anchors.right: parent.right
-                anchors.rightMargin: 0
-                anchors.left: parent.left
-                anchors.leftMargin: 0
-                columns: 6
-
-                ItemDelegate {
-                    text: model.modelData.objectName + `<br><font color="#606060" size="2">${model.modelData.infoText}</font>`
-                    icon.source: model.modelData.updatable ? "/icons/material/ic_new_releases.svg" : "/icons/material/ic_library_books.svg"
-                    Layout.fillWidth: true
-                    enabled: !model.modelData.hasFile
-                    onClicked: {
-                        if (!model.modelData.downloading && (!model.modelData.hasFile || model.modelData.updatable)) {
-                            global.mobileAdaptor().vibrateBrief()
-                            model.modelData.startFileDownload();
-                        }
-                    }
-                }
-
-                ToolButton {
-                    id: downloadButton
-                    icon.source: "/icons/material/ic_file_download.svg"
-                    visible: !model.modelData.hasFile && !model.modelData.downloading
-                    onClicked: {
-                        global.mobileAdaptor().vibrateBrief()
-                        model.modelData.startFileDownload()
-                    }
-                }
-
-                ToolButton {
-                    id: updateButton
-                    icon.source: "/icons/material/ic_refresh.svg"
-                    visible: model.modelData.updatable
-                    onClicked: {
-                        global.mobileAdaptor().vibrateBrief()
-                        model.modelData.startFileDownload()
-                    }
-                }
-
-                ToolButton {
-                    id: cancelButton
-                    icon.source: "/icons/material/ic_cancel.svg"
-                    visible: model.modelData.downloading
-                    onClicked: {
-                        global.mobileAdaptor().vibrateBrief()
-                        model.modelData.stopFileDownload()
-                    }
-                }
-
-                ToolButton {
-                    id: removeButton
-                    icon.source: "/icons/material/ic_more_horiz.svg"
-
-                    visible: model.modelData.hasFile & !model.modelData.downloading
-                    onClicked: {
-                        global.mobileAdaptor().vibrateBrief()
-                        removeMenu.popup()
-                    }
-
-                    AutoSizingMenu {
-                        id: removeMenu
-
-                        Action {
-                            id: infoAction
-
-                            text: qsTr("Info")
-
-                            onTriggered: {
-                                global.mobileAdaptor().vibrateBrief()
-                                infoDialog.title = model.modelData.objectName
-                                infoDialog.text = global.dataManager().describeDataItem(model.modelData.fileName)
-                                infoDialog.open()
-                            }
-                        }
-                        Action {
-                            id: removeAction
-
-                            text: qsTr("Uninstall")
-
-                            onTriggered: {
-                                global.mobileAdaptor().vibrateBrief()
-                                model.modelData.deleteFile()
-                            }
-                        }
-                    }
-
-                } // ToolButton
-            }
-
-            Connections {
-                target: model.modelData
-                function onError(objectName, message) {
-                    dialogLoader.active = false
-                    dialogLoader.title = qsTr("Download Error")
-                    dialogLoader.text = qsTr("<p>Failed to download <strong>%1</strong>.</p><p>Reason: %2.</p>").arg(objectName).arg(message)
-                    dialogLoader.source = "/qml/dialogs/ErrorDialog.qml"
-                    dialogLoader.active = true
-                }
-            }
-
-        }
-
-    }
-
 
     header: ToolBar {
 
@@ -526,7 +255,7 @@ Page {
                 id: downloadUpdatesMenu
 
                 text: qsTr("Download all updates…")
-                enabled: global.dataManager().items.updatable
+                enabled: (global.dataManager().items.updateSize !== 0)
 
                 onTriggered: {
                     global.mobileAdaptor().vibrateBrief()
@@ -549,13 +278,7 @@ Page {
 
         currentIndex: sv.currentIndex
         TabButton {
-            text: qsTr("Aviation maps")
-        }
-        TabButton {
-            text: qsTr("Base maps")
-        }
-        TabButton {
-            text: qsTr("Terrain")
+            text: qsTr("Maps")
         }
         TabButton {
             text: qsTr("Data")
@@ -579,63 +302,10 @@ Page {
             Layout.fillHeight: true
 
             ListView {
-                clip: true
-                model: global.dataManager().aviationMaps.downloadablesAsObjectList
-                delegate: mapItem
-                ScrollIndicator.vertical: ScrollIndicator {}
-
-                section.property: "modelData.section"
-                section.delegate: sectionHeading
-
-                footer: ColumnLayout {
-                    width: parent.width
-
-                    Rectangle {
-                        Layout.fillWidth: true
-                        height: 1
-                        color: "gray"
-                    }
-
-                    WordWrappingItemDelegate {
-                        Layout.fillWidth: true
-                        icon.source: "/icons/material/ic_info_outline.svg"
-                        text: qsTr("How to request additional aviation maps…")
-                        onClicked: ltd.open()
-
-                        LongTextDialog {
-                            id: ltd
-                            standardButtons: Dialog.Ok
-
-                            title: qsTr("Request Additional Aviation Maps")
-                            text: global.librarian().getStringFromRessource(":text/aviationMapMissing.html")
-                        }
-
-                    }
-
-                    Item { // Spacer
-                        height: 3
-                    }
-
-                }
-
-                // Refresh list of maps on overscroll
-                property int refreshFlick: 0
-                onFlickStarted: {
-                    refreshFlick = atYBeginning
-                }
-                onFlickEnded: {
-                    if ( atYBeginning && refreshFlick ) {
-                        global.mobileAdaptor().vibrateBrief()
-                        global.dataManager().updateRemoteDataItemList()
-                    }
-                }
-            }
-
-            ListView {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 clip: true
-                model: global.dataManager().baseMaps.downloadablesAsObjectList
+                model: global.dataManager().mapSets.downloadables
                 delegate: mapItem
                 ScrollIndicator.vertical: ScrollIndicator {}
 
@@ -659,8 +329,8 @@ Page {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 clip: true
-                model: global.dataManager().terrainMaps.downloadablesAsObjectList
-                delegate: terrainItem
+                model: global.dataManager().databases.downloadables
+                delegate: mapItem
                 ScrollIndicator.vertical: ScrollIndicator {}
 
                 section.property: "modelData.section"
@@ -678,93 +348,69 @@ Page {
                     }
                 }
             }
-
-            ListView {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                clip: true
-                model: global.dataManager().databases.downloadablesAsObjectList
-                delegate: databaseItem
-                ScrollIndicator.vertical: ScrollIndicator {}
-
-                section.property: "modelData.section"
-                section.delegate: sectionHeading
-
-                // Refresh list of maps on overscroll
-                property int refreshFlick: 0
-                onFlickStarted: {
-                    refreshFlick = atYBeginning
-                }
-                onFlickEnded: {
-                    if ( atYBeginning && refreshFlick ) {
-                        global.mobileAdaptor().vibrateBrief()
-                        global.dataManager().updateRemoteDataItemList()
-                    }
-                }
-            }
-
-        } // SwipeView
+        }
 
     }
 
-
-    Rectangle {
+    Label {
         id: noMapListWarning
 
-        anchors.top: bar.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
+        anchors.fill: parent
+        anchors.bottomMargin: view.font.pixelSize
+        anchors.leftMargin: view.font.pixelSize
+        anchors.rightMargin: view.font.pixelSize
+        anchors.topMargin: view.font.pixelSize
 
-        color: "white"
-        visible: !global.dataManager().downloadingRemoteItemList && !global.dataManager().hasRemoteItemList
+        background: Rectangle {color: "white"}
+        visible: !global.dataManager().mapList.downloading && !global.dataManager().mapList.hasFile
 
-        Label {
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: parent.top
-            anchors.topMargin: view.font.pixelSize*2
-            anchors.leftMargin: view.font.pixelSize*2
-            anchors.rightMargin: view.font.pixelSize*2
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment : Text.AlignVCenter
+        textFormat: Text.RichText
+        wrapMode: Text.Wrap
 
-            horizontalAlignment: Text.AlignHCenter
-            textFormat: Text.RichText
-            wrapMode: Text.Wrap
-            text: qsTr("<h3>Sorry!</h3><p>The list of available maps has not yet been downloaded from the server. You can restart the download manually using button below.</p>")
-        }
+        text: qsTr("<h3>Sorry!</h3><p>The list of available maps has not yet been downloaded from the server. You can restart the download manually using button below.</p>")
     }
 
     Rectangle {
         id: downloadIndicator
 
-        anchors.top: bar.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
+        anchors.fill: parent
 
         color: "white"
-        visible: global.dataManager().downloadingRemoteItemList
+        visible: global.dataManager().mapList.downloading
 
-        Label {
-            id: downloadIndicatorLabel
+        ColumnLayout {
+            anchors.fill: parent
 
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: parent.top
-            anchors.topMargin: view.font.pixelSize*2
-            anchors.leftMargin: view.font.pixelSize*2
-            anchors.rightMargin: view.font.pixelSize*2
+            Item {
+                Layout.fillHeight: true
+            }
 
-            horizontalAlignment: Text.AlignHCenter
-            textFormat: Text.RichText
-            wrapMode: Text.Wrap
-            text: qsTr("<h3>Download in progress…</h3><p>Please stand by while we download the list of available maps from the server…</p>")
-        }
+            Label {
+                id: downloadIndicatorLabel
 
-        BusyIndicator {
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: downloadIndicatorLabel.bottom
-            anchors.topMargin: 10
+                Layout.fillWidth: true
+
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment : Text.AlignVCenter
+                textFormat: Text.RichText
+                wrapMode: Text.Wrap
+
+                leftPadding: view.font.pixelSize*2
+                rightPadding: view.font.pixelSize*2
+
+                text: qsTr("<h3>Download in progress…</h3><p>Please stand by while we download the list of available maps from the server…</p>")
+            }
+
+            BusyIndicator {
+                Layout.fillWidth: true
+            }
+
+            Item {
+                Layout.fillHeight: true
+            }
+
         }
 
         // The Connections and the SequentialAnimation here provide a fade-out animation for the downloadindicator.
@@ -788,17 +434,18 @@ Page {
         }
     }
 
+
     footer: Pane {
         width: parent.width
 
         Material.elevation: 3
-        visible: (!global.dataManager().downloadingRemoteItemList && !global.dataManager().hasRemoteItemList) || (!global.dataManager().items.downloading && global.dataManager().items.updatable)
+        visible: (!global.dataManager().mapList.downloading && !global.dataManager().mapList.hasFile) || ((!global.dataManager().items.downloading) && (global.dataManager().mapsAndData.updateSize > 0))
         contentHeight: Math.max(downloadMapListActionButton.height, downloadUpdatesActionButton.height)
 
         ToolButton {
             id: downloadMapListActionButton
             anchors.centerIn: parent
-            visible: !global.dataManager().downloadingRemoteItemList && !global.dataManager().hasRemoteItemList
+            visible: !global.dataManager().mapList.downloading && !global.dataManager().mapList.hasFile
 
             text: qsTr("Download list of maps…")
             icon.source: "/icons/material/ic_file_download.svg"
@@ -812,14 +459,14 @@ Page {
         ToolButton {
             id: downloadUpdatesActionButton
             anchors.centerIn: parent
-            visible: !global.dataManager().items.downloading && global.dataManager().items.updatable
+            visible: (!global.dataManager().items.downloading) && (global.dataManager().mapsAndData.updateSize > 0)
 
             text: qsTr("Update")
             icon.source: "/icons/material/ic_file_download.svg"
 
             onClicked: {
                 global.mobileAdaptor().vibrateBrief()
-                global.dataManager().items.updateAll()
+                global.dataManager().mapsAndData.update()
             }
         }
     }
@@ -831,7 +478,7 @@ Page {
             dialogLoader.active = false
             dialogLoader.title = qsTr("Download Error")
             dialogLoader.text = qsTr("<p>Failed to download the list of aviation maps.</p><p>Reason: %1.</p>").arg(message)
-            dialogLoader.source = "/qml/dialogs/ErrorDialog.qml"
+            dialogLoader.source = "../dialogs/ErrorDialog.qml"
             dialogLoader.active = true
         }
     }
@@ -843,41 +490,5 @@ Page {
         standardButtons: Dialog.Ok
     }
 
-    Dialog {
-        id: uninstallRasterMapDialog
-
-        property var vectorMap
-
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(view.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: Math.min(view.height-view.font.pixelSize, implicitHeight)
-
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 5.15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
-
-        title: qsTr("Uninstall Raster Maps")
-
-        Label {
-            width: uninstallRasterMapDialog.availableWidth
-            text: qsTr("To avoid conflicts between raster and vector maps, all raster maps will be uninstalled before new vector maps are downloaded.")
-
-            wrapMode: Text.Wrap
-            textFormat: Text.StyledText
-        }
-
-        standardButtons: Dialog.Ok | Dialog.Cancel
-        modal: true
-
-        onAccepted: {
-            global.mobileAdaptor().vibrateBrief()
-            global.dataManager().baseMapsRaster.deleteAllFiles()
-            vectorMap.startFileDownload()
-            toast.doToast( qsTr("Raster maps uninstalled") )
-        }
-
-    } // importDialog
-
 } // Page
+

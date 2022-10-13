@@ -115,4 +115,4 @@ private:
     Q_DISABLE_COPY_MOVE(Notifier)
 };
 
-}
+} // namespace Platform

@@ -20,10 +20,10 @@
 
 #include <QSettings>
 
-#include "navigation/Navigator.h"
-#include "platform/Notifier.h"
 #include "GlobalObject.h"
 #include "UpdateNotifier.h"
+#include "navigation/Navigator.h"
+#include "platform/Notifier.h"
 #include <chrono>
 
 using namespace std::chrono_literals;
@@ -34,7 +34,7 @@ DataManagement::UpdateNotifier::UpdateNotifier(DataManager* parent) :
     QObject(parent)
 {
 
-    connect(GlobalObject::dataManager()->items(), &DataManagement::DownloadableGroup::updatableChanged, this, &DataManagement::UpdateNotifier::updateNotification);
+    connect(GlobalObject::dataManager()->mapsAndData(), &DataManagement::Downloadable_Abstract::updateSizeChanged, this, &DataManagement::UpdateNotifier::updateNotification);
     connect(&notificationTimer, &QTimer::timeout, this, &DataManagement::UpdateNotifier::updateNotification);
 
     notificationTimer.setInterval(11min);
@@ -47,16 +47,8 @@ DataManagement::UpdateNotifier::UpdateNotifier(DataManager* parent) :
 void DataManagement::UpdateNotifier::updateNotification()
 {
 
-    // Get pointer to items
-    auto* items = GlobalObject::dataManager()->items();
-    if (items == nullptr) {
-        GlobalObject::notifier()->hideNotification(Platform::Notifier::GeoMapUpdatePending);
-        notificationTimer.start();
-        return;
-    }
-
     // If there is no update, then we end here.
-    if (!items->updatable()) {
+    if (GlobalObject::dataManager()->mapsAndData()->updateSize() == 0) {
         GlobalObject::notifier()->hideNotification(Platform::Notifier::GeoMapUpdatePending);
         return;
     }
@@ -81,7 +73,7 @@ void DataManagement::UpdateNotifier::updateNotification()
     }
 
     // Notify!
-    auto text = tr("The estimated download size is %1.").arg(items->updateSize());
+    auto text = tr("The estimated download size is %1.").arg(GlobalObject::dataManager()->mapsAndData()->updateSizeString());
     GlobalObject::notifier()->showNotification(Platform::Notifier::GeoMapUpdatePending, text, text);
     settings.setValue(QStringLiteral("lastGeoMapUpdateNotification"), QDateTime::currentDateTimeUtc());
 

@@ -19,9 +19,9 @@
  ***************************************************************************/
 
 #include "GlobalObject.h"
+#include "Settings.h"
 #include "navigation/Aircraft.h"
 #include "navigation/Navigator.h"
-#include "Settings.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/TrafficFactor_WithPosition.h"
 
@@ -42,7 +42,7 @@ Traffic::TrafficFactor_WithPosition::TrafficFactor_WithPosition(QObject *parent)
 }
 
 
-void Traffic::TrafficFactor_WithPosition::setPositionInfo(const QGeoPositionInfo& newPositionInfo)
+void Traffic::TrafficFactor_WithPosition::setPositionInfo(const Positioning::PositionInfo& newPositionInfo)
 {
 
     if (m_positionInfo == newPositionInfo) {

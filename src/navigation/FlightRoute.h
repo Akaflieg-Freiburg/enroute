@@ -20,21 +20,21 @@
 
 #pragma once
 
+#include <QFile>
 #include <QGeoRectangle>
 #include <QJsonDocument>
-#include <QFile>
 #include <QLocale>
 #include <QPointer>
 #include <QXmlStreamReader>
 
-#include "navigation/Leg.h"
 #include "geomaps/Waypoint.h"
+#include "navigation/Leg.h"
 
 namespace GeoMaps
 {
     class GeoMapProvider;
     class Waypoint;
-}
+} // namespace GeoMaps
 
 class Settings;
 
@@ -385,4 +385,4 @@ namespace Navigation
         QLocale myLocale;
     };
 
-}
+} // namespace Navigation

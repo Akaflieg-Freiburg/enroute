@@ -21,8 +21,8 @@
 #pragma once
 
 #include <QDataStream>
-#include <QtMath>
 #include <QObject>
+#include <QtMath>
 
 
 namespace Units {
@@ -267,7 +267,7 @@ namespace Units {
         double _speedInMPS{ NAN };
     };
 
-};
+} // namespace Units
 
 
 //

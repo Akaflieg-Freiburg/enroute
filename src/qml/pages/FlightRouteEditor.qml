@@ -375,6 +375,7 @@ Page {
 
     }
 
+
     TabBar {
         id: bar
         anchors.top: parent.top
@@ -403,13 +404,18 @@ Page {
 
             Label {
                 anchors.fill: parent
+
                 visible: global.navigator().flightRoute.size === 0
 
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment : Text.AlignVCenter
                 textFormat: Text.RichText
+                wrapMode: Text.Wrap
 
-                text: qsTr("<h3>Empty Route</h3><p>Use the button <strong>Add Waypoint</strong> below.</p>")
+                leftPadding: view.font.pixelSize*2
+                rightPadding: view.font.pixelSize*2
+
+                text: qsTr("<h3>Empty Route</h3><p>Use the button <strong>Add Waypoint</strong> below or double click on any point in the moving map.</p>")
             }
 
             ScrollView {
@@ -622,6 +628,7 @@ Page {
         }
 
     }
+
 
     footer: Pane {
         width: parent.width

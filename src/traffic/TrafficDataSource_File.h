@@ -103,4 +103,4 @@ private:
     QString lastPayload;
 };
 
-}
+} // namespace Traffic

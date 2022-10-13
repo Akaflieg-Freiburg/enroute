@@ -224,4 +224,4 @@ private:
     RemainingRouteInfo m_remainingRouteInfo;
 };
 
-}
+} // namespace Navigation

@@ -66,4 +66,4 @@ private slots:
 
 };
 
-}
+} // namespace Traffic

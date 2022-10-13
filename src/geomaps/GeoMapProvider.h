@@ -25,14 +25,15 @@
 #include <QImage>
 #include <QTimer>
 #include <QTemporaryFile>
+#include <QTimer>
 
-#include "dataManagement/DataManager.h"
-#include "geomaps/MBTILES.h"
-#include "Librarian.h"
 #include "Airspace.h"
+#include "Librarian.h"
 #include "Settings.h"
 #include "TileServer.h"
 #include "Waypoint.h"
+#include "dataManagement/DataManager.h"
+#include "geomaps/MBTILES.h"
 
 namespace GeoMaps
 {
@@ -329,4 +330,4 @@ namespace GeoMaps
     QCache<qint64,QImage> terrainTileCache {6}; // Hold 6 tiles, roughly 1.2MB
   };
 
-};
+} // namespace GeoMaps

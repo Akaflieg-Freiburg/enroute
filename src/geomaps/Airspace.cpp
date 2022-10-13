@@ -20,8 +20,8 @@
 
 #include <QJsonArray>
 
-#include "units/Distance.h"
 #include "Airspace.h"
+#include "units/Distance.h"
 
 
 GeoMaps::Airspace::Airspace(const QJsonObject &geoJSONObject) {

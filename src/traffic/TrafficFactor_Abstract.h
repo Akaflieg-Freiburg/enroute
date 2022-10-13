@@ -20,8 +20,8 @@
 
 #pragma once
 
-#include <chrono>
 #include <QTimer>
+#include <chrono>
 
 #include "units/Distance.h"
 
@@ -480,4 +480,4 @@ private:
     QTimer lifeTimeCounter;
 };
 
-}
+} // namespace Traffic

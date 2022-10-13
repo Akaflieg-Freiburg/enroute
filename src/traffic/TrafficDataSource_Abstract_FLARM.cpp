@@ -361,7 +361,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
         m_factor.setCallSign( GlobalObject::flarmnetDB()->getRegistration(targetID) );
         m_factor.setHDist(hDist);
         m_factor.setID(targetID);
-        m_factor.setPositionInfo(pInfo);
+        m_factor.setPositionInfo( Positioning::PositionInfo(pInfo) );
         m_factor.setType(type);
         m_factor.setVDist(vDist);
         m_factor.startLiveTime();

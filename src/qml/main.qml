@@ -210,7 +210,7 @@ ApplicationWindow {
 
                         ItemDelegate {
                             text: qsTr("Maps and Data")
-                                  + (global.dataManager().items.updatable ? `<br><font color="#606060" size="2">` +qsTr("Updates available") + "</font>" : "")
+                                  + ((global.dataManager().mapsAndData.updateSize > 0) ? `<br><font color="#606060" size="2">` +qsTr("Updates available") + "</font>" : "")
                                   + ( (global.navigator().flightStatus === Navigator.Flight) ? `<br><font color="#606060" size="2">` +qsTr("Item not available in flight") + "</font>" : "")
                             icon.source: "/icons/material/ic_map.svg"
                             Layout.fillWidth: true
@@ -756,7 +756,7 @@ ApplicationWindow {
                 stackView.push("pages/DataManager.qml")
             }
             if (act === Notifier.GeoMapUpdatePending_UpdateRequested) {
-                global.dataManager().items.updateAll()
+                global.dataManager().mapsAndData.update()
                 toast.doToast(qsTr("Starting map update"))
             }
         }

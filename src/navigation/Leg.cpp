@@ -20,10 +20,10 @@
 
 #include "Leg.h"
 
-#include <utility>
 #include "GlobalObject.h"
-#include "navigation/Navigator.h"
 #include "Settings.h"
+#include "navigation/Navigator.h"
+#include <utility>
 
 
 //

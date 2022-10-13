@@ -89,4 +89,4 @@ namespace GeoMaps
         static QVector<GeoMaps::Waypoint> read(const QString &fileName);
     };
 
-};
+} // namespace GeoMaps

@@ -19,32 +19,36 @@
  ***************************************************************************/
 
 #include <QDirIterator>
-#include <QJsonDocument>
 #include <QJsonArray>
+#include <QJsonDocument>
 #include <QJsonObject>
 #include <QLockFile>
 #include <QSettings>
 
-#include "dataManagement/UpdateNotifier.h"
 #include "dataManagement/DataManager.h"
+#include "dataManagement/UpdateNotifier.h"
 #include "geomaps/MBTILES.h"
+#include <chrono>
+
+using namespace std::chrono_literals;
 
 DataManagement::DataManager::DataManager(QObject* parent) : GlobalObject(parent)
 {
     // Delete funny files that might have made their way into our data directory
-    cleanDataDirectory();
+    cleanDataDirectory();   
 
     // Wire up the Dowloadable object "_maps_json"
-    connect(&m_mapsJSON, &DataManagement::Downloadable::downloadingChanged, this, &DataManager::downloadingRemoteItemListChanged);
-    connect(&m_mapsJSON, &DataManagement::Downloadable::fileContentChanged, this, &DataManager::updateDataItemListAndWhatsNew);
-    connect(&m_mapsJSON, &DataManagement::Downloadable::hasFileChanged, this, &DataManager::hasRemoteItemListChanged);
-    connect(&m_mapsJSON, &DataManagement::Downloadable::fileContentChanged, this, []()
+    connect(&m_mapList, &DataManagement::Downloadable_SingleFile::fileContentChanged, this, &DataManager::updateDataItemListAndWhatsNew);
+    connect(&m_mapList, &DataManagement::Downloadable_SingleFile::fileContentChanged, this, []()
     { QSettings().setValue(QStringLiteral("DataManager/MapListTimeStamp"), QDateTime::currentDateTimeUtc()); });
-    connect(&m_mapsJSON, &DataManagement::Downloadable::error, this, [this](const QString & /*unused*/, QString message)
-    { emit error(std::move(message)); });
+    connect(&m_mapList, &DataManagement::Downloadable_SingleFile::error, this, [this](const QString & /*unused*/, const QString& message)
+    { emit error(message); });
 
     // Wire up the DownloadableGroup _items
-    connect(&m_items, &DataManagement::DownloadableGroup::filesChanged, this, &DataManager::onItemFileChanged);
+    connect(&m_items, &DataManagement::Downloadable_MultiFile::filesChanged, this, &DataManager::onItemFileChanged);
+
+    m_mapsAndData.add(&m_mapSets);
+    m_mapsAndData.add(&m_databases);
 
     // If there is a downloaded maps.json file, we read it.
     updateDataItemListAndWhatsNew();
@@ -111,60 +115,6 @@ void DataManagement::DataManager::cleanDataDirectory()
     } while (didDelete);
 }
 
-auto DataManagement::DataManager::describeDataItem(const QString &fileName) -> QString
-{
-    QFileInfo fi(fileName);
-    if (!fi.exists())
-    {
-        return tr("No information available.");
-    }
-    QString result = QStringLiteral("<table><tr><td><strong>%1 :&nbsp;&nbsp;</strong></td><td>%2</td></tr><tr><td><strong>%3 :&nbsp;&nbsp;</strong></td><td>%4</td></tr></table>")
-            .arg(tr("Installed"),
-                 fi.lastModified().toUTC().toString(),
-                 tr("File Size"),
-                 QLocale::system().formattedDataSize(fi.size(), 1, QLocale::DataSizeSIFormat));
-
-    // Extract infomation from GeoJSON
-    if (fileName.endsWith(u".geojson"))
-    {
-        QLockFile lockFile(fileName + ".lock");
-        lockFile.lock();
-        QFile file(fileName);
-        file.open(QIODevice::ReadOnly);
-        auto document = QJsonDocument::fromJson(file.readAll());
-        file.close();
-        lockFile.unlock();
-        QString concatInfoString = document.object()[QStringLiteral("info")].toString();
-        if (!concatInfoString.isEmpty())
-        {
-            result += "<p>" + tr("The map data was compiled from the following sources.") + "</p><ul>";
-            auto infoStrings = concatInfoString.split(QStringLiteral(";"));
-            foreach (auto infoString, infoStrings)
-                result += "<li>" + infoString + "</li>";
-            result += u"</ul>";
-        }
-    }
-
-    // Extract infomation from MBTILES
-    if (fileName.endsWith(u".mbtiles") || fileName.endsWith(u".terrain"))
-    {
-        GeoMaps::MBTILES mbtiles(fileName);
-        result += mbtiles.info();
-    }
-
-    // Extract infomation from text file - this is simply the first line
-    if (fileName.endsWith(u".txt"))
-    {
-        // Open file and read first line
-        QFile dataFile(fileName);
-        dataFile.open(QIODevice::ReadOnly);
-        auto description = dataFile.readLine();
-        result += QStringLiteral("<p>%1</p>").arg(QString::fromLatin1(description));
-    }
-
-    return result;
-}
-
 auto DataManagement::DataManager::import(const QString& fileName, const QString& newName) -> QString
 {
 
@@ -176,23 +126,9 @@ auto DataManagement::DataManager::import(const QString& fileName, const QString&
     {
     case GeoMaps::MBTILES::Raster:
         newFileName += QLatin1String(".raster");
-        foreach(auto downloadable, m_baseMapsVector.downloadablesWithFile())
-        {
-            if (!downloadable.isNull())
-            {
-                downloadable->deleteFile();
-            }
-        }
         break;
     case GeoMaps::MBTILES::Vector:
         newFileName += QLatin1String(".mbtiles");
-        foreach(auto downloadable, m_baseMapsRaster.downloadablesWithFile())
-        {
-            if (!downloadable.isNull())
-            {
-                downloadable->deleteFile();
-            }
-        }
         break;
     case GeoMaps::MBTILES::Unknown:
         return tr("Unable to recognize map file format.");
@@ -218,8 +154,13 @@ auto DataManagement::DataManager::import(const QString& fileName, const QString&
 void DataManagement::DataManager::onItemFileChanged()
 {
     auto items = m_items.downloadables();
-    foreach (auto geoMapPtr, items)
+    foreach (auto geoMapPtrX, items)
     {
+        auto* geoMapPtr = qobject_cast<DataManagement::Downloadable_SingleFile*>(geoMapPtrX);
+        if (geoMapPtr == nullptr)
+        {
+            continue;
+        }
         if (geoMapPtr->url().isValid())
         {
             continue;
@@ -231,19 +172,21 @@ void DataManagement::DataManager::onItemFileChanged()
 
         // Ok, we found an unsupported map without local file. Let's get rid of
         // that.
-        m_items.removeFromGroup(geoMapPtr);
+        m_items.remove(geoMapPtr);
         geoMapPtr->deleteLater();
+        QTimer::singleShot(100ms, this, &DataManagement::DataManager::updateDataItemListAndWhatsNew);
     }
 }
 
-DataManagement::Downloadable *DataManagement::DataManager::createOrRecycleItem(const QUrl &url, const QString &localFileName)
+auto DataManagement::DataManager::createOrRecycleItem(const QUrl &url, const QString &localFileName) -> DataManagement::Downloadable_SingleFile *
 {
     // If a data item with the given local file name and the given URL already exists,
     // update that remoteFileDate and remoteFileSize of that element, annd delete its
     // entry in oldMaps
-    foreach (auto mapPtr, m_items.downloadables())
+    foreach (auto mapPtrX, m_items.downloadables())
     {
-        if (mapPtr.isNull())
+        auto* mapPtr = qobject_cast<DataManagement::Downloadable_SingleFile*>(mapPtrX);
+        if (mapPtr == nullptr)
         {
             continue;
         }
@@ -254,7 +197,8 @@ DataManagement::Downloadable *DataManagement::DataManager::createOrRecycleItem(c
     }
 
     // Construct a new downloadable object and add to appropriate groups
-    auto* downloadable = new DataManagement::Downloadable(url, localFileName, this);
+    auto* downloadable = new DataManagement::Downloadable_SingleFile(url, localFileName, this);
+    downloadable->setObjectName(localFileName.section(QStringLiteral("/"), -1, -1).section(QStringLiteral("."), 0, -2));
     if (localFileName.endsWith(QLatin1String("geojson")) ||
             localFileName.endsWith(QLatin1String("mbtiles")) ||
             localFileName.endsWith(QLatin1String("raster")) ||
@@ -269,37 +213,59 @@ DataManagement::Downloadable *DataManagement::DataManager::createOrRecycleItem(c
             // The noope tag "<a name>" guarantees that this section will come first alphabetically
             downloadable->setSection("<a name>"+tr("Manually Imported"));
         }
+
+        bool hasMapSet = false;
+        foreach(auto mapSetX, m_mapSets.downloadables())
+        {
+            auto* mapSet = qobject_cast<DataManagement::Downloadable_MultiFile*>(mapSetX);
+            if (mapSet == nullptr)
+            {
+                continue;
+            }
+            if ((mapSet->objectName() == downloadable->objectName()) && (mapSet->section() == downloadable->section()))
+            {
+                mapSet->add(downloadable);
+                hasMapSet = true;
+                break;
+            }
+        }
+        if (!hasMapSet)
+        {
+            auto* newMapSet = new DataManagement::Downloadable_MultiFile(Downloadable_MultiFile::MultiUpdate, this);
+            newMapSet->add(downloadable);
+            m_mapSets.add(newMapSet);
+        }
     }
 
-    m_items.addToGroup(downloadable);
+    m_items.add(downloadable);
     if (localFileName.endsWith(QLatin1String("terrain")))
     {
-        m_terrainMaps.addToGroup(downloadable);
+        m_terrainMaps.add(downloadable);
     }
     if (localFileName.endsWith(QLatin1String("geojson")))
     {
-        m_aviationMaps.addToGroup(downloadable);
+        m_aviationMaps.add(downloadable);
     }
     if (localFileName.endsWith(QLatin1String("raster")))
     {
-        m_baseMaps.addToGroup(downloadable);
-        m_baseMapsRaster.addToGroup(downloadable);
+        m_baseMapsRaster.add(downloadable);
+        m_baseMaps.add(downloadable);
     }
     if (localFileName.endsWith(QLatin1String("mbtiles")))
     {
-        m_baseMaps.addToGroup(downloadable);
-        m_baseMapsVector.addToGroup(downloadable);
+        m_baseMapsVector.add(downloadable);
+        m_baseMaps.add(downloadable);
     }
     if (localFileName.endsWith(QLatin1String("txt")))
     {
-        m_databases.addToGroup(downloadable);
+        m_databases.add(downloadable);
     }
     return downloadable;
 }
 
 void DataManagement::DataManager::updateDataItemListAndWhatsNew()
 {
-    if (!m_mapsJSON.hasFile())
+    if (!m_mapList.hasFile())
     {
         return;
     }
@@ -320,7 +286,7 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
     // maps were already present in the old list, we re-use them. Otherwise, we
     // create new Downloadable objects.
     QJsonParseError parseError{};
-    auto doc = QJsonDocument::fromJson(m_mapsJSON.fileContent(), &parseError);
+    auto doc = QJsonDocument::fromJson(m_mapList.fileContent(), &parseError);
     if (parseError.error != QJsonParseError::NoError)
     {
         return;
@@ -334,29 +300,47 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
         auto obj = map.toObject();
         auto mapFileName = obj.value(QStringLiteral("path")).toString();
         auto localFileName = m_dataDirectory + "/" + mapFileName;
-        auto mapName = mapFileName.section('.', -2, -2);
         auto mapUrlName = baseURL + "/" + obj.value(QStringLiteral("path")).toString();
         QUrl mapUrl(mapUrlName);
         auto fileModificationDateTime = QDateTime::fromString(obj.value(QStringLiteral("time")).toString(), QStringLiteral("yyyyMMdd"));
         auto fileSize = obj.value(QStringLiteral("size")).toInteger();
 
-        auto *downloadable = createOrRecycleItem(mapUrl, localFileName);
+        auto* downloadable = createOrRecycleItem(mapUrl, localFileName);
         oldMaps.removeAll(downloadable);
         downloadable->setRemoteFileDate(fileModificationDateTime);
         downloadable->setRemoteFileSize(fileSize);
-        downloadable->setObjectName(mapName.section(QStringLiteral("/"), -1, -1));
 
         files.removeAll(localFileName);
     }
 
+    // Next, we create or recycle items for all files that that we have found in the directory.
     foreach (auto localFileName, files)
     {
         auto *downloadable = createOrRecycleItem(QUrl(), localFileName);
         oldMaps.removeAll(downloadable);
         downloadable->setObjectName(localFileName.section(QStringLiteral("/"), -1, -1));
     }
-
     qDeleteAll(oldMaps);
+
+    // Delete empty map sets
+    QVector<DataManagement::Downloadable_MultiFile*> dump;
+    foreach (auto mapSetX, m_mapSets.downloadables())
+    {
+        auto* mapSet = qobject_cast<DataManagement::Downloadable_MultiFile*>(mapSetX);
+        if (mapSet == nullptr)
+        {
+            continue;
+        }
+        if (mapSet->downloadables().isEmpty())
+        {
+            dump << mapSet;
+        }
+
+    }
+    foreach(auto mapSet, dump)
+    {
+        m_mapSets.remove(mapSet);
+    }
 
     // Update the whatsNew property
     auto newWhatsNew = top.value(QStringLiteral("whatsNew")).toString();

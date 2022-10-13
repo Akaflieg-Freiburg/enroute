@@ -20,8 +20,8 @@
 
 #pragma once
 
-#include <chrono>
 #include <QGeoPositionInfo>
+#include <chrono>
 
 #include "units/Angle.h"
 #include "units/Distance.h"
@@ -179,6 +179,6 @@ private:
     Units::Distance m_trueAltitudeAGL {};
 };
 
-}
+} // namespace Positioning
 
 Q_DECLARE_METATYPE(Positioning::PositionInfo)

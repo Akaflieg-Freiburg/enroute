@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2022 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,43 +18,62 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#pragma once
+#include "Downloadable_Abstract.h"
+#include <QLocale>
+#include <chrono>
 
-#include <QGeoPositionInfoSource>
-#include <QPointer>
-
-#include "positioning/PositionInfoSource_Abstract.h"
+using namespace std::chrono_literals;
 
 
-namespace Positioning {
-
-/*! \brief Satellite Navigator
- *
- *  This class is a thin wrapper around QGeoPositionInfoSource. It constructs a
- *  default QGeoPositionInfoSource and forwards the data provided by that source
- *  via the PositionInfoSource_Abstract interface that it implements.
- */
-
-class PositionInfoSource_Satellite : public PositionInfoSource_Abstract
+DataManagement::Downloadable_Abstract::Downloadable_Abstract(QObject *parent)
+    : QObject(parent)
 {
-    Q_OBJECT
+    emitFileContentChanged_delayedTimer.setInterval(2s);
+    connect(this, &Downloadable_Abstract::fileContentChanged, &emitFileContentChanged_delayedTimer, qOverload<>(&QTimer::start));
+    connect(&emitFileContentChanged_delayedTimer, &QTimer::timeout, this, &Downloadable_Abstract::emitFileContentChanged_delayed);
+}
 
-public:
-    /*! \brief Standard constructor
-     *
-     * @param parent The standard QObject parent pointer
-     */
-    explicit PositionInfoSource_Satellite(QObject *parent = nullptr);
 
-private slots:
-    void onPositionUpdated(const QGeoPositionInfo &info);
 
-    void updateStatusString();
+//
+// Getter methods
+//
 
-private:
-    Q_DISABLE_COPY_MOVE(PositionInfoSource_Satellite)
+auto DataManagement::Downloadable_Abstract::updateSizeString() -> QString
+{
+    qsizetype size = qMax((qint64)0,updateSize());
 
-    QPointer<QGeoPositionInfoSource> source {nullptr};
-};
+    return QLocale::system().formattedDataSize(size, 1, QLocale::DataSizeSIFormat);
+}
 
-} // namespace Positioning
+
+
+//
+// Setter methods
+//
+
+
+void DataManagement::Downloadable_Abstract::setSection(const QString& sectionName)
+{
+    if (sectionName == m_section) {
+        return;
+    }
+    m_section = sectionName;
+    emit sectionChanged();
+}
+
+
+
+//
+// Private methods
+//
+
+
+void DataManagement::Downloadable_Abstract::emitFileContentChanged_delayed()
+{
+    if (downloading()) {
+        return;
+    }
+    emitFileContentChanged_delayedTimer.stop();
+    emit fileContentChanged_delayed();
+}

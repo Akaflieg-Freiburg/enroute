@@ -61,4 +61,4 @@ namespace DataManagement
     void deferredInitialization() override;
   };
 
-};
+} // namespace DataManagement

@@ -32,40 +32,40 @@ namespace DataManagement
 {
   class DataManager;
   class SSLErrorHandler;
-}
+} // namespace DataManagement
 
 namespace GeoMaps
 {
   class GeoMapProvider;
   class WaypointLibrary;
-};
+} // namespace GeoMaps
 
 namespace Navigation
 {
   class Navigator;
-}
+} // namespace Navigation
 
 namespace Traffic
 {
   class FlarmnetDB;
   class PasswordDB;
   class TrafficDataProvider;
-}
+} // namespace Traffic
 
 namespace Platform
 {
   class Notifier;
-}
+} // namespace Platform
 
 namespace Positioning
 {
   class PositionProvider;
-}
+} // namespace Positioning
 
 namespace Weather
 {
   class WeatherDataProvider;
-}
+} // namespace Weather
 
 /*! \brief Base class for global singleton objects
  *

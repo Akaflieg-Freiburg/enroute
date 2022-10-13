@@ -106,7 +106,7 @@ public:
      *
      *  @param newPositionInfo Property positionInfo
      */
-    void setPositionInfo(const QGeoPositionInfo& newPositionInfo);
+    void setPositionInfo(const Positioning::PositionInfo& newPositionInfo);
 
 
 signals:
@@ -139,4 +139,4 @@ private:
 
 };
 
-}
+} // namespace Traffic

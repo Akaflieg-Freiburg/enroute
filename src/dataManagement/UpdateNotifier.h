@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include <QTimer>
+
 #include "dataManagement/DataManager.h"
 
 
@@ -53,4 +55,4 @@ private:
     Q_DISABLE_COPY_MOVE(UpdateNotifier)
 };
 
-};
+} // namespace DataManagement

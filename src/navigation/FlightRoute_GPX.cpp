@@ -22,9 +22,9 @@
 #include <QQmlEngine>
 
 #include "FlightRoute.h"
-#include "geomaps/GeoMapProvider.h"
-#include "geomaps/GeoJSON.h"
 #include "geomaps/GPX.h"
+#include "geomaps/GeoJSON.h"
+#include "geomaps/GeoMapProvider.h"
 
 auto Navigation::FlightRoute::toGpx() const -> QByteArray
 {

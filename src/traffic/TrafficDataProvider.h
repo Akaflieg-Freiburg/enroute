@@ -25,9 +25,9 @@
 #include <QUdpSocket>
 
 #include "positioning/PositionInfoSource_Abstract.h"
-#include "traffic/Warning.h"
 #include "traffic/TrafficFactor_DistanceOnly.h"
 #include "traffic/TrafficFactor_WithPosition.h"
+#include "traffic/Warning.h"
 
 
 namespace Traffic {
@@ -326,4 +326,4 @@ private:
     bool m_receivingHeartbeat {false};
 };
 
-}
+} // namespace Traffic

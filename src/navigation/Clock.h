@@ -125,4 +125,4 @@ private:
     void setSingleShotTimer();
 };
 
-}
+} // namespace Navigation

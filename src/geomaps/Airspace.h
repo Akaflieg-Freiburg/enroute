@@ -174,7 +174,7 @@ auto operator==(const GeoMaps::Airspace&, const GeoMaps::Airspace&) -> bool;
  */
 auto qHash(const GeoMaps::Airspace& as) -> uint;
 
-}
+} // namespace GeoMaps
 
 
 // Declare meta types

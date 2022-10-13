@@ -141,4 +141,4 @@ private:
     QHash<QString, QString> m_passwordDB {};
 };
 
-}
+} // namespace Traffic

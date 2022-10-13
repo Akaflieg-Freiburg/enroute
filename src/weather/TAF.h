@@ -193,4 +193,4 @@ private:
     QString _raw_text;
 };
 
-}
+} // namespace Weather

@@ -23,8 +23,8 @@
 #include "units/Distance.h"
 #include "units/Speed.h"
 
-#include <QtMath>
 #include <QObject>
+#include <QtMath>
 
 
 namespace Units {
@@ -153,7 +153,7 @@ namespace Units {
         // Speed in meters per second
         double m_timeInS{qQNaN()};
     };
-};
+} // namespace Units
 
 
 // Declare meta types

@@ -276,6 +276,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 
     if (name == QLatin1String(":text/whatsnew.html")) {
         return tr("<p>The page 'Map and Data Library' has been redesigned for simplicity of use.</p>") +
+                tr("<p>The boundaries of our aviation maps have been adjusted to match the base maps. <strong>Users in Canada, Slovenia, the UK and the USA: please re-install your aviation maps if necessary.</strong> We apologize for the inconvenience.</p>") +
                 tr("<p>We could need help with French translations. If you would like to help, if speak French and know how to use the GIT version control system, please let us know.</p>");
     }
 

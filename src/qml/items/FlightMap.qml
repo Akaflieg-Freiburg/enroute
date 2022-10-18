@@ -84,6 +84,7 @@ Map {
 
     /*
      * FIS - Flight Information Sector
+     * FIR - Flight Information Region
      */
 
     DynamicParameter {
@@ -92,7 +93,7 @@ Map {
         property string name: "FIS"
         property string layerType: "line"
         property string source: "aviationData"
-        property var filter: ["==", ["get", "CAT"], "FIS"]
+        property var filter: ["any", ["==", ["get", "CAT"], "FIR"], ["==", ["get", "CAT"], "FIS"]]
     }
 
     DynamicParameter {
@@ -164,6 +165,7 @@ Map {
 
 
     /*
+     * ATZ - Aerodrome Traffic Zone
      * RMZ - Radio Mandatory Zone
      */
     
@@ -173,7 +175,7 @@ Map {
         property string name: "RMZ"
         property string layerType: "fill"
         property string source: "aviationData"
-        property var filter: ["==", ["get", "CAT"], "RMZ"]
+        property var filter: ["any", ["==", ["get", "CAT"], "ATZ"], ["==", ["get", "CAT"], "RMZ"]]
     }
     
     DynamicParameter {
@@ -189,7 +191,7 @@ Map {
         property string name: "RMZoutline"
         property string layerType: "line"
         property string source: "aviationData"
-        property var filter: ["==", ["get", "CAT"], "RMZ"]
+        property var filter: ["any", ["==", ["get", "CAT"], "ATZ"], ["==", ["get", "CAT"], "RMZ"]]
     }
     
     DynamicParameter {

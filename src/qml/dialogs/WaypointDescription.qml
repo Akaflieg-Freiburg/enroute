@@ -185,6 +185,8 @@ Dialog {
                                 return "red";
                             case "ATZ":
                             case "RMZ":
+                            case "TIZ":
+                            case "TIA":
                                 return "blue";
                             case "TMZ":
                                 return "black";
@@ -248,6 +250,8 @@ Dialog {
                             return "#40ff0000";
                         case "ATZ":
                         case "RMZ":
+                        case "TIZ":
+                        case "TIA":
                             return "#400000ff";
                         case "NRA":
                             return "#4000ff00";
@@ -264,6 +268,8 @@ Dialog {
                             return "#40ffff00";
                         case "ATZ":
                         case "RMZ":
+                        case "TIZ":
+                        case "TIA":
                             return "#400000ff";
                         }
                         return "transparent"

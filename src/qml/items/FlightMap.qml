@@ -167,6 +167,8 @@ Map {
     /*
      * ATZ - Aerodrome Traffic Zone
      * RMZ - Radio Mandatory Zone
+     * TIZ - Traffic Information Zone
+     * TIA - Traffic Information Area
      */
     
     DynamicParameter {
@@ -175,7 +177,7 @@ Map {
         property string name: "RMZ"
         property string layerType: "fill"
         property string source: "aviationData"
-        property var filter: ["any", ["==", ["get", "CAT"], "ATZ"], ["==", ["get", "CAT"], "RMZ"]]
+        property var filter: ["any", ["==", ["get", "CAT"], "ATZ"], ["==", ["get", "CAT"], "RMZ"], ["==", ["get", "CAT"], "TIZ"], ["==", ["get", "CAT"], "TIA"]]
     }
     
     DynamicParameter {
@@ -191,7 +193,7 @@ Map {
         property string name: "RMZoutline"
         property string layerType: "line"
         property string source: "aviationData"
-        property var filter: ["any", ["==", ["get", "CAT"], "ATZ"], ["==", ["get", "CAT"], "RMZ"]]
+        property var filter: ["any", ["==", ["get", "CAT"], "ATZ"], ["==", ["get", "CAT"], "RMZ"], ["==", ["get", "CAT"], "TIZ"], ["==", ["get", "CAT"], "TIA"]]
     }
     
     DynamicParameter {

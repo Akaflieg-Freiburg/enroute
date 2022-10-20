@@ -183,10 +183,14 @@ Dialog {
                             case "PJE":
                             case "R":
                                 return "red";
+                            case "ATZ":
                             case "RMZ":
+                            case "TIZ":
+                            case "TIA":
                                 return "blue";
                             case "TMZ":
                                 return "black";
+                            case "FIR":
                             case "FIS":
                             case "NRA":
                                 return "green";
@@ -214,6 +218,7 @@ Dialog {
                             switch(airspace.CAT) {
                             case "TMZ":
                                 return [4, 2, 1, 2];
+                            case "FIR":
                             case "FIS":
                                 return [4, 0]
                             }
@@ -243,7 +248,10 @@ Dialog {
                         case "P":
                         case "R":
                             return "#40ff0000";
+                        case "ATZ":
                         case "RMZ":
+                        case "TIZ":
+                        case "TIA":
                             return "#400000ff";
                         case "NRA":
                             return "#4000ff00";
@@ -258,7 +266,10 @@ Dialog {
                             return "#40ff0000";
                         case "GLD":
                             return "#40ffff00";
+                        case "ATZ":
                         case "RMZ":
+                        case "TIZ":
+                        case "TIA":
                             return "#400000ff";
                         }
                         return "transparent"

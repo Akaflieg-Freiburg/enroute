@@ -149,6 +149,7 @@ void DataManagement::Downloadable_MultiFile::add(DataManagement::Downloadable_Ab
     connect(map, &DataManagement::Downloadable_Abstract::remoteFileSizeChanged, this, &DataManagement::Downloadable_MultiFile::evaluateRemoteFileSize, Qt::QueuedConnection);
     evaluateRemoteFileSize();
 
+    connect(this, &DataManagement::Downloadable_MultiFile::downloadingChanged, this, &DataManagement::Downloadable_MultiFile::evaluateUpdateSize, Qt::QueuedConnection);
     connect(map, &DataManagement::Downloadable_Abstract::hasFileChanged, this, &DataManagement::Downloadable_MultiFile::evaluateUpdateSize, Qt::QueuedConnection);
     connect(map, &DataManagement::Downloadable_Abstract::remoteFileSizeChanged, this, &DataManagement::Downloadable_MultiFile::evaluateUpdateSize, Qt::QueuedConnection);
     connect(map, &DataManagement::Downloadable_Abstract::updateSizeChanged, this, &DataManagement::Downloadable_MultiFile::evaluateUpdateSize, Qt::QueuedConnection);
@@ -383,7 +384,7 @@ void DataManagement::Downloadable_MultiFile::evaluateRemoteFileSize()
 void DataManagement::Downloadable_MultiFile::evaluateUpdateSize()
 {
     qint64 newUpdateSize = 0;
-    if (hasFile())
+    if (!downloading() && hasFile())
     {
         m_downloadables.removeAll(nullptr);
         foreach(auto map, m_downloadables)
@@ -401,6 +402,7 @@ void DataManagement::Downloadable_MultiFile::evaluateUpdateSize()
             }
         }
     }
+
     if (newUpdateSize != m_updateSize)
     {
         m_updateSize = newUpdateSize;

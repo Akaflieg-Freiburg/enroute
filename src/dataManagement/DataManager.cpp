@@ -57,7 +57,7 @@ DataManagement::DataManager::DataManager(QObject* parent) : GlobalObject(parent)
 
 void DataManagement::DataManager::deferredInitialization()
 {
-    // If the last update is more than one day ago, automatically initiate an
+    // If the last update is more than six days ago, automatically initiate an
     // update, so that maps stay at least roughly current.
     auto lastUpdate = QSettings().value(QStringLiteral("DataManager/MapListTimeStamp"), QDateTime()).toDateTime();
     if (!lastUpdate.isValid() || (qAbs(lastUpdate.daysTo(QDateTime::currentDateTime()) > 6)))
@@ -71,6 +71,7 @@ void DataManagement::DataManager::deferredInitialization()
 
 void DataManagement::DataManager::cleanDataDirectory()
 {
+
     QStringList misnamedFiles;
     QStringList unexpectedFiles;
     QDirIterator fileIterator(m_dataDirectory, QDir::Files, QDirIterator::Subdirectories);
@@ -86,6 +87,16 @@ void DataManagement::DataManager::cleanDataDirectory()
                 !fileIterator.filePath().endsWith(QLatin1String(".mbtiles")) &&
                 !fileIterator.filePath().endsWith(QLatin1String(".raster")) &&
                 !fileIterator.filePath().endsWith(QLatin1String(".txt")))
+        {
+            unexpectedFiles += fileIterator.filePath();
+        }
+
+        // Delete aviation map files that are no longer supported, though they existed in earlier versions of this app
+        if (fileIterator.filePath().endsWith(QLatin1String("Ireland and Northern Ireland.terrain")) ||
+                fileIterator.filePath().endsWith(QLatin1String("Slowenia.geojson")) ||
+                fileIterator.filePath().endsWith(QLatin1String("United Kingdom.geojson")) ||
+                fileIterator.filePath().endsWith(QLatin1String("Canada.geojson")) ||
+                fileIterator.filePath().endsWith(QLatin1String("United States.geojson")))
         {
             unexpectedFiles += fileIterator.filePath();
         }

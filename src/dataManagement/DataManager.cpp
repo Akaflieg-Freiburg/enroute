@@ -335,15 +335,22 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
         }
     }
 
-    qWarning() << minVersionString << currentVersionString;
     if (minVersionString > currentVersionString)
     {
-        qWarning() << "Outdated!";
+        if (!m_appUpdateRequired)
+        {
+            m_appUpdateRequired = true;
+            emit appUpdateRequiredChanged();
+        }
     }
     else
     {
-        qWarning() << "Not Outdated!";
-#warning need further implementation
+        if (m_appUpdateRequired)
+        {
+            m_appUpdateRequired = false;
+            emit appUpdateRequiredChanged();
+        }
+
         auto baseURL = top.value(QStringLiteral("url")).toString();
         foreach (auto map, top.value(QStringLiteral("maps")).toArray())
         {

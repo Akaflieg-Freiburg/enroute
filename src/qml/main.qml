@@ -724,7 +724,7 @@ ApplicationWindow {
         }
     }
 
-    Connections { // Notifier
+    Connections { // Navigator
         target: global.navigator()
 
         function onAirspaceAltitudeLimitAdjusted() {

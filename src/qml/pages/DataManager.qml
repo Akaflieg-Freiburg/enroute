@@ -369,7 +369,7 @@ Page {
         wrapMode: Text.Wrap
 
         text: qsTr("<h3>Update required!</h3>")
-              + qsTr("<p>This version of <strong>Enroute Flight Navigation</strong> is outdated and will no longer receive map updates. <strong>Please update this app at your earliest convencience.</strong> Updates are free and readily available.</p>")
+              + global.librarian().getStringFromRessource("appUpdateRequired")
     }
 
     Label {

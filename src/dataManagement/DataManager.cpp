@@ -306,7 +306,7 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
     auto top = doc.object();
 
     // Prepare strings to check if the present version
-    auto minVersionString = top.value(QStringLiteral("minVersion")).toString();
+    auto minVersionString = top.value(QStringLiteral("minAppVersion")).toString();
     QString currentVersionString(QStringLiteral(PROJECT_VERSION));
     { // Ensure that strings have the format xx.yy.zz
         if ((minVersionString.size() >= 2) && (minVersionString[1] == '.'))

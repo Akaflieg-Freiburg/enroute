@@ -532,6 +532,19 @@ ApplicationWindow {
                 return
             }
 
+            if (global.dataManager().appUpdateRequired) {
+                dialogLoader.active = false
+                dialogLoader.setSource("dialogs/LongTextDialog.qml",
+                                       {
+                                           title: qsTr("Update required!"),
+                                           text: global.librarian().getStringFromRessource("appUpdateRequired"),
+                                           standardButtons: Dialog.Ok
+                                       }
+                                       )
+                dialogLoader.active = true
+                return
+            }
+
             if ((global.settings().lastWhatsNewHash !== global.librarian().getStringHashFromRessource(":text/whatsnew.html")) && (global.navigator().flightStatus !== Navigator.Flight)) {
                 whatsNewDialog.open()
                 return

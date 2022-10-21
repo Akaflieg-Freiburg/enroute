@@ -46,6 +46,11 @@ Librarian::Librarian(QObject *parent) : QObject(parent)
 
 auto Librarian::getStringFromRessource(const QString &name) -> QString
 {
+    if (name == QLatin1String("appUpdateRequired"))
+    {
+        return tr("<p>This version of <strong>Enroute Flight Navigation</strong> is outdated and will no longer receive map updates. "
+                  "<strong>Please update this app at your earliest convencience.</strong></p>");
+    }
 
     if (name == QLatin1String(":text/authors.html")) {
         return tr(R"html(<h3>Authors</h3>

@@ -353,6 +353,26 @@ Page {
     }
 
     Label {
+        id: appUpdateRequiredWarning
+
+        anchors.fill: parent
+
+        leftPadding: view.font.pixelSize*2
+        rightPadding: view.font.pixelSize*2
+
+        background: Rectangle {color: "white"}
+        visible: global.dataManager().appUpdateRequired
+
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment : Text.AlignVCenter
+        textFormat: Text.RichText
+        wrapMode: Text.Wrap
+
+        text: qsTr("<h3>Update required!</h3>")
+              + qsTr("<p>This version of <strong>Enroute Flight Navigation</strong> is outdated and will no longer receive map updates. <strong>Please update this app at your earliest convencience.</strong> Updates are free and readily available.</p>")
+    }
+
+    Label {
         id: noMapListWarning
 
         anchors.fill: parent
@@ -371,6 +391,7 @@ Page {
 
         text: qsTr("<h3>Sorry!</h3><p>The list of available maps has not yet been downloaded from the server. You can restart the download manually using button below.</p>")
     }
+
 
     Rectangle {
         id: downloadIndicator

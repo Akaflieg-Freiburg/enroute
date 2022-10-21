@@ -512,6 +512,9 @@ ApplicationWindow {
         focus: true
 
         Component.onCompleted: {
+            // Start accepting files
+            global.mobileAdaptor().startReceiveOpenFileRequests()
+
             // Things to do on startup. If the user has not yet accepted terms and conditions, show that.
             // Otherwise, if the user has not used this version of the app before, show the "what's new" dialog.
             // Otherwise, if the maps need updating, show the "update map" dialog.
@@ -528,9 +531,6 @@ ApplicationWindow {
                 dialogLoader.active = true
                 return
             }
-
-            // Start accepting files
-            global.mobileAdaptor().startReceiveOpenFileRequests()
 
             if ((global.settings().lastWhatsNewHash !== global.librarian().getStringHashFromRessource(":text/whatsnew.html")) && (global.navigator().flightStatus !== Navigator.Flight)) {
                 whatsNewDialog.open()

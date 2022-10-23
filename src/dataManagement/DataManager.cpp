@@ -35,7 +35,7 @@ using namespace std::chrono_literals;
 DataManagement::DataManager::DataManager(QObject* parent) : GlobalObject(parent)
 {
     // Delete funny files that might have made their way into our data directory
-    cleanDataDirectory();   
+    cleanDataDirectory();
 
     // Wire up the Dowloadable object "_maps_json"
     connect(&m_mapList, &DataManagement::Downloadable_SingleFile::fileContentChanged, this, &DataManager::updateDataItemListAndWhatsNew);
@@ -304,24 +304,71 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
     }
 
     auto top = doc.object();
-    auto baseURL = top.value(QStringLiteral("url")).toString();
 
-    foreach (auto map, top.value(QStringLiteral("maps")).toArray())
+    // Prepare strings to check if the present version
+    auto minVersionString = top.value(QStringLiteral("minAppVersion")).toString();
+    QString currentVersionString(QStringLiteral(PROJECT_VERSION));
+    { // Ensure that strings have the format xx.yy.zz
+        if ((minVersionString.size() >= 2) && (minVersionString[1] == '.'))
+        {
+            minVersionString.prepend('0');
+        }
+        if ((minVersionString.size() >= 5) && (minVersionString[4] == '.'))
+        {
+            minVersionString.insert(3, '0');
+        }
+        if (minVersionString.size() < 8)
+        {
+            minVersionString.insert(7, '0');
+        }
+        if (currentVersionString[1] == '.')
+        {
+            currentVersionString.prepend('0');
+        }
+        if (currentVersionString[4] == '.')
+        {
+            currentVersionString.insert(3, '0');
+        }
+        if (currentVersionString.size() < 8)
+        {
+            currentVersionString.insert(7, '0');
+        }
+    }
+
+    if (minVersionString > currentVersionString)
     {
-        auto obj = map.toObject();
-        auto mapFileName = obj.value(QStringLiteral("path")).toString();
-        auto localFileName = m_dataDirectory + "/" + mapFileName;
-        auto mapUrlName = baseURL + "/" + obj.value(QStringLiteral("path")).toString();
-        QUrl mapUrl(mapUrlName);
-        auto fileModificationDateTime = QDateTime::fromString(obj.value(QStringLiteral("time")).toString(), QStringLiteral("yyyyMMdd"));
-        auto fileSize = obj.value(QStringLiteral("size")).toInteger();
+        if (!m_appUpdateRequired)
+        {
+            m_appUpdateRequired = true;
+            emit appUpdateRequiredChanged();
+        }
+    }
+    else
+    {
+        if (m_appUpdateRequired)
+        {
+            m_appUpdateRequired = false;
+            emit appUpdateRequiredChanged();
+        }
 
-        auto* downloadable = createOrRecycleItem(mapUrl, localFileName);
-        oldMaps.removeAll(downloadable);
-        downloadable->setRemoteFileDate(fileModificationDateTime);
-        downloadable->setRemoteFileSize(fileSize);
+        auto baseURL = top.value(QStringLiteral("url")).toString();
+        foreach (auto map, top.value(QStringLiteral("maps")).toArray())
+        {
+            auto obj = map.toObject();
+            auto mapFileName = obj.value(QStringLiteral("path")).toString();
+            auto localFileName = m_dataDirectory + "/" + mapFileName;
+            auto mapUrlName = baseURL + "/" + obj.value(QStringLiteral("path")).toString();
+            QUrl mapUrl(mapUrlName);
+            auto fileModificationDateTime = QDateTime::fromString(obj.value(QStringLiteral("time")).toString(), QStringLiteral("yyyyMMdd"));
+            qint64 fileSize = qRound64(obj.value(QStringLiteral("size")).toDouble());
 
-        files.removeAll(localFileName);
+            auto* downloadable = createOrRecycleItem(mapUrl, localFileName);
+            oldMaps.removeAll(downloadable);
+            downloadable->setRemoteFileDate(fileModificationDateTime);
+            downloadable->setRemoteFileSize(fileSize);
+
+            files.removeAll(localFileName);
+        }
     }
 
     // Next, we create or recycle items for all files that that we have found in the directory.

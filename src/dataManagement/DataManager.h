@@ -88,6 +88,14 @@ public:
     // PROPERTIES
     //
 
+    /*! \brief Indiates that the app needs to be updated
+     *
+     *  This property indicates that this version of the app is too old
+     *  and cannot interpret maps and data that reside on the server.  If this is the case,
+     *  the GUI should yell at the user and block any attempt to download or update maps and data.
+     */
+    Q_PROPERTY(bool appUpdateRequired READ appUpdateRequired NOTIFY appUpdateRequiredChanged)
+
     /*! \brief Downloadable_MultiFile that holds all aviation maps
      *
      *  Pointer to a Downloadable_MultiFile that holds all aviation maps.
@@ -153,6 +161,12 @@ public:
     //
     // Getter Methods
     //
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property aviationMaps
+     */
+    [[nodiscard]] auto appUpdateRequired() const -> bool { return m_appUpdateRequired; }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -261,6 +275,9 @@ public slots:
     }
 
 signals:
+    /*! Notifier signal */
+    void appUpdateRequiredChanged();
+
     /*! \brief Error message for user
      *
      *  This signal is emitted if an error occurs and the GUI should display a
@@ -302,6 +319,8 @@ private:
     // added to _aviationMap, _baseMaps, or _databases. A pointer to that item is
     // then returned.
     DataManagement::Downloadable_SingleFile* createOrRecycleItem(const QUrl& url, const QString& localFileName);
+
+    bool m_appUpdateRequired {false};
 
     // Full path name of data directory, without trailing slash
     QString m_dataDirectory {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/aviation_maps"};

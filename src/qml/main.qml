@@ -512,6 +512,9 @@ ApplicationWindow {
         focus: true
 
         Component.onCompleted: {
+            // Start accepting files
+            global.mobileAdaptor().startReceiveOpenFileRequests()
+
             // Things to do on startup. If the user has not yet accepted terms and conditions, show that.
             // Otherwise, if the user has not used this version of the app before, show the "what's new" dialog.
             // Otherwise, if the maps need updating, show the "update map" dialog.
@@ -529,8 +532,18 @@ ApplicationWindow {
                 return
             }
 
-            // Start accepting files
-            global.mobileAdaptor().startReceiveOpenFileRequests()
+            if (global.dataManager().appUpdateRequired) {
+                dialogLoader.active = false
+                dialogLoader.setSource("dialogs/LongTextDialog.qml",
+                                       {
+                                           title: qsTr("Update required!"),
+                                           text: global.librarian().getStringFromRessource("appUpdateRequired"),
+                                           standardButtons: Dialog.Ok
+                                       }
+                                       )
+                dialogLoader.active = true
+                return
+            }
 
             if ((global.settings().lastWhatsNewHash !== global.librarian().getStringHashFromRessource(":text/whatsnew.html")) && (global.navigator().flightStatus !== Navigator.Flight)) {
                 whatsNewDialog.open()
@@ -724,7 +737,7 @@ ApplicationWindow {
         }
     }
 
-    Connections { // Notifier
+    Connections { // Navigator
         target: global.navigator()
 
         function onAirspaceAltitudeLimitAdjusted() {

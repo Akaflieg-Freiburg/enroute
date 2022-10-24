@@ -75,7 +75,7 @@ Page {
                 icon.source: "/icons/material/ic_map.svg"
                 Layout.fillWidth: true
                 onClicked: {
-                    global.mobileAdaptor().vibrateBrief()
+                    global.platformAdaptor().vibrateBrief()
                     heightLimitDialog.open()
                 }
             }
@@ -95,7 +95,7 @@ Page {
                     hideGlidingSectors.checked = global.settings().hideGlidingSectors
                 }
                 onToggled: {
-                    global.mobileAdaptor().vibrateBrief()
+                    global.platformAdaptor().vibrateBrief()
                     global.settings().hideGlidingSectors = hideGlidingSectors.checked
                 }
             }
@@ -125,7 +125,7 @@ Page {
                     showAltAGL.checked = global.settings().showAltitudeAGL
                 }
                 onToggled: {
-                    global.mobileAdaptor().vibrateBrief()
+                    global.platformAdaptor().vibrateBrief()
                     global.settings().showAltitudeAGL = showAltAGL.checked
                     var pInfo = global.positionProvider().positionInfo
                     if (showAltAGL.checked &&
@@ -161,7 +161,7 @@ Page {
                 icon.source: "/icons/material/ic_satellite.svg"
                 Layout.fillWidth: true
                 onClicked: {
-                    global.mobileAdaptor().vibrateBrief()
+                    global.platformAdaptor().vibrateBrief()
                     primaryPositionDataSourceDialog.open()
                 }
             }
@@ -175,7 +175,7 @@ Page {
                     nightMode.checked = global.settings().nightMode
                 }
                 onToggled: {
-                    global.mobileAdaptor().vibrateBrief()
+                    global.platformAdaptor().vibrateBrief()
                     global.settings().nightMode = nightMode.checked
                 }
             }
@@ -190,7 +190,7 @@ Page {
                     ignoreSSL.checked = global.settings().ignoreSSLProblems
                 }
                 onToggled: {
-                    global.mobileAdaptor().vibrateBrief()
+                    global.platformAdaptor().vibrateBrief()
                     global.settings().ignoreSSLProblems = ignoreSSL.checked
                 }
             }
@@ -250,13 +250,13 @@ Page {
         } // DialogButtonBox
 
         onRejected: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
             showAltAGL.checked = false
             close()
         }
 
         onAccepted: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
             close()
             stackView.pop()
             stackView.push("../pages/DataManager.qml")

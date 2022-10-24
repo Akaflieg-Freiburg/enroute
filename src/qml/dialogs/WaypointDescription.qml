@@ -94,7 +94,7 @@ Dialog {
             leftPadding: 0.2*view.font.pixelSize
             rightPadding: 0.2*view.font.pixelSize
             onLinkActivated: {
-                global.mobileAdaptor().vibrateBrief()
+                global.platformAdaptor().vibrateBrief()
                 weatherReport.open()
             }
 
@@ -389,7 +389,7 @@ Dialog {
             text: qsTr("Route")
 
             onClicked: {
-                global.mobileAdaptor().vibrateBrief()
+                global.platformAdaptor().vibrateBrief()
                 addMenu.open()
             }
 
@@ -401,7 +401,7 @@ Dialog {
                     enabled: global.positionProvider().receivingPositionInfo && (dialogLoader.text !== "noRouteButton")
 
                     onTriggered: {
-                        global.mobileAdaptor().vibrateBrief()
+                        global.platformAdaptor().vibrateBrief()
                         if (global.navigator().flightRoute.size > 0)
                             overwriteDialog.open()
                         else {
@@ -432,7 +432,7 @@ Dialog {
                     }
 
                     onTriggered: {
-                        global.mobileAdaptor().vibrateBrief()
+                        global.platformAdaptor().vibrateBrief()
                         global.navigator().flightRoute.append(waypoint)
                         close()
                         toast.doToast(qsTr("Added %1 to route.").arg(waypoint.extendedName))
@@ -450,7 +450,7 @@ Dialog {
                     }
 
                     onTriggered: {
-                        global.mobileAdaptor().vibrateBrief()
+                        global.platformAdaptor().vibrateBrief()
                         global.navigator().flightRoute.insert(waypoint)
                         close()
                         toast.doToast(qsTr("Inserted %1 into route.").arg(waypoint.extendedName))
@@ -468,7 +468,7 @@ Dialog {
                         return global.navigator().flightRoute.contains(waypoint)
                     }
                     onTriggered: {
-                        global.mobileAdaptor().vibrateBrief()
+                        global.platformAdaptor().vibrateBrief()
                         close()
                         var index = global.navigator().flightRoute.lastIndexOf(waypoint)
                         if (index < 0)
@@ -486,7 +486,7 @@ Dialog {
             enabled: waypoint.category === "WP"
 
             onClicked: {
-                global.mobileAdaptor().vibrateBrief()
+                global.platformAdaptor().vibrateBrief()
                 libraryMenu.open()
             }
 
@@ -498,7 +498,7 @@ Dialog {
                     enabled: !global.waypointLibrary().hasNearbyEntry(waypoint)
 
                     onTriggered: {
-                        global.mobileAdaptor().vibrateBrief()
+                        global.platformAdaptor().vibrateBrief()
                         wpAdd.waypoint = waypoint
                         wpAdd.open()
                         close()
@@ -510,7 +510,7 @@ Dialog {
                     enabled: global.waypointLibrary().contains(waypoint)
 
                     onTriggered: {
-                        global.mobileAdaptor().vibrateBrief()
+                        global.platformAdaptor().vibrateBrief()
                         removeDialog.waypoint = waypoint
                         removeDialog.open()
                         close()
@@ -528,7 +528,7 @@ Dialog {
                     enabled: global.waypointLibrary().contains(waypoint)
 
                     onTriggered: {
-                        global.mobileAdaptor().vibrateBrief()
+                        global.platformAdaptor().vibrateBrief()
                         wpEdit.waypoint = waypoint
                         wpEdit.open()
                         close()
@@ -566,14 +566,14 @@ Dialog {
         modal: true
 
         onAccepted: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
             global.navigator().flightRoute.clear()
             global.navigator().flightRoute.append(waypoint)
             close()
             toast.doToast(qsTr("New flight route: direct to %1.").arg(waypoint.extendedName))
         }
         onRejected: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
             close()
             waypointDescriptionDialog.open()
         }
@@ -588,7 +588,7 @@ Dialog {
         id: wpEdit
 
         onAccepted: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
             var newWP = waypoint.renamed(newName)
             newWP = newWP.relocated( QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter) )
             global.waypointLibrary().replace(waypoint, newWP)
@@ -602,7 +602,7 @@ Dialog {
         title: qsTr("Add Waypoint to Library")
 
         onAccepted: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
             var newWP = waypoint.renamed(newName)
             newWP = newWP.relocated( QtPositioning.coordinate(newLatitude, newLongitude) )
             global.waypointLibrary().add(newWP)
@@ -640,12 +640,12 @@ Dialog {
         modal: true
 
         onAccepted: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
             global.waypointLibrary().remove(removeDialog.waypoint)
             toast.doToast(qsTr("Waypoint removed from device"))
         }
         onRejected: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
             close()
         }
 

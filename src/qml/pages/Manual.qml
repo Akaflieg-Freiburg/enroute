@@ -44,7 +44,7 @@ Page {
             icon.source: "/icons/material/ic_clear.svg"
 
             onClicked: {
-                global.mobileAdaptor().vibrateBrief()
+                global.platformAdaptor().vibrateBrief()
                 stackView.pop()
             }
         }

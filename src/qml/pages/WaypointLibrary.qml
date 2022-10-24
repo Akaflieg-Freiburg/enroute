@@ -49,7 +49,7 @@ Page {
             icon.source: "/icons/material/ic_arrow_back.svg"
 
             onClicked: {
-                global.mobileAdaptor().vibrateBrief()
+                global.platformAdaptor().vibrateBrief()
                 stackView.pop()
             }
         }
@@ -77,7 +77,7 @@ Page {
 
             icon.source: "/icons/material/ic_more_vert.svg"
             onClicked: {
-                global.mobileAdaptor().vibrateBrief()
+                global.platformAdaptor().vibrateBrief()
                 headerMenuX.popup()
             }
 
@@ -91,9 +91,9 @@ Page {
                     height: enabled ? undefined : 0
 
                     onTriggered: {
-                        global.mobileAdaptor().vibrateBrief()
+                        global.platformAdaptor().vibrateBrief()
                         highlighted = false
-                        global.mobileAdaptor().importContent()
+                        global.platformAdaptor().importContent()
                     }
                 }
 
@@ -105,10 +105,10 @@ Page {
                         text: qsTr("… to GeoJSON file")
                         onTriggered: {
                             headerMenuX.close()
-                            global.mobileAdaptor().vibrateBrief()
+                            global.platformAdaptor().vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            var errorString = global.mobileAdaptor().exportContent(global.waypointLibrary().toGeoJSON(), "application/geo+json", qsTr("Waypoint Library"))
+                            var errorString = global.platformAdaptor().exportContent(global.waypointLibrary().toGeoJSON(), "application/geo+json", qsTr("Waypoint Library"))
                             if (errorString === "abort") {
                                 toast.doToast(qsTr("Aborted"))
                                 return
@@ -129,10 +129,10 @@ Page {
                         text: qsTr("… to GPX file")
                         onTriggered: {
                             headerMenuX.close()
-                            global.mobileAdaptor().vibrateBrief()
+                            global.platformAdaptor().vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            var errorString = global.mobileAdaptor().exportContent(global.waypointLibrary().toGpx(), "application/gpx+xml", qsTr("Waypoint Library"))
+                            var errorString = global.platformAdaptor().exportContent(global.waypointLibrary().toGpx(), "application/gpx+xml", qsTr("Waypoint Library"))
                             if (errorString === "abort") {
                                 toast.doToast(qsTr("Aborted"))
                                 return
@@ -158,11 +158,11 @@ Page {
                         text: qsTr("… in GeoJSON format")
 
                         onTriggered: {
-                            global.mobileAdaptor().vibrateBrief()
+                            global.platformAdaptor().vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
 
-                            var errorString = global.mobileAdaptor().viewContent(global.waypointLibrary().toGeoJSON(), "application/geo+json", "WaypointLibrary-%1.geojson")
+                            var errorString = global.platformAdaptor().viewContent(global.waypointLibrary().toGeoJSON(), "application/geo+json", "WaypointLibrary-%1.geojson")
                             if (errorString !== "") {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
@@ -175,11 +175,11 @@ Page {
                         text: qsTr("… in GPX format")
 
                         onTriggered: {
-                            global.mobileAdaptor().vibrateBrief()
+                            global.platformAdaptor().vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
 
-                            var errorString = global.mobileAdaptor().viewContent(global.waypointLibrary().toGpx(), "application/gpx+xml", "WaypointLibrary-%1.gpx")
+                            var errorString = global.platformAdaptor().viewContent(global.waypointLibrary().toGpx(), "application/gpx+xml", "WaypointLibrary-%1.gpx")
                             if (errorString !== "") {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
@@ -197,7 +197,7 @@ Page {
                     enabled: global.waypointLibrary().waypoints.length > 0
 
                     onTriggered: {
-                        global.mobileAdaptor().vibrateBrief()
+                        global.platformAdaptor().vibrateBrief()
                         highlighted = false
                         clearDialog.open()
                     }
@@ -235,13 +235,13 @@ Page {
                 icon.source: modelData.icon
 
                 onClicked: {
-                    global.mobileAdaptor().vibrateBrief()
+                    global.platformAdaptor().vibrateBrief()
                     waypointDescription.waypoint = modelData
                     waypointDescription.open()
                 }
 
                 swipe.onCompleted: {
-                    global.mobileAdaptor().vibrateBrief()
+                    global.platformAdaptor().vibrateBrief()
                     removeDialog.waypoint = modelData
                     removeDialog.open()
                 }
@@ -253,7 +253,7 @@ Page {
 
                 icon.source: "/icons/material/ic_mode_edit.svg"
                 onClicked: {
-                    global.mobileAdaptor().vibrateBrief()
+                    global.platformAdaptor().vibrateBrief()
                     wpEditor.waypoint = modelData
                     wpEditor.open()
                 }
@@ -265,7 +265,7 @@ Page {
                 icon.source: "/icons/material/ic_more_horiz.svg"
 
                 onClicked: {
-                    global.mobileAdaptor().vibrateBrief()
+                    global.platformAdaptor().vibrateBrief()
                     cptMenu.popup()
                 }
 
@@ -276,7 +276,7 @@ Page {
                         id: removeAction
                         text: qsTr("Remove…")
                         onTriggered: {
-                            global.mobileAdaptor().vibrateBrief()
+                            global.platformAdaptor().vibrateBrief()
                             removeDialog.waypoint = modelData
                             removeDialog.open()
                         }
@@ -385,13 +385,13 @@ Page {
         modal: true
 
         onAccepted: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
             global.waypointLibrary().remove(removeDialog.waypoint)
             page.reloadWaypointList()
             toast.doToast(qsTr("Waypoint removed from device"))
         }
         onRejected: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
             page.reloadWaypointList() // Re-display aircraft that have been swiped out
             close()
         }
@@ -426,7 +426,7 @@ Page {
         modal: true
 
         onAccepted: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
             global.waypointLibrary().clear()
             page.reloadWaypointList()
             toast.doToast(qsTr("Waypoint library cleared"))

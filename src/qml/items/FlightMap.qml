@@ -54,7 +54,7 @@ Map {
     
     onMapReadyChanged: {
         onZoomLevelChanged(zoomLevel)
-        global.mobileAdaptor().hideSplashScreen()
+        global.platformAdaptor().hideSplashScreen()
     }
 
     maximumZoomLevel: 13.5

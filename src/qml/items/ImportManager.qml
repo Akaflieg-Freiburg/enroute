@@ -29,10 +29,10 @@ Item {
     id: importManager
 
     property string filePath: ""
-    property int fileFunction: MobileAdaptor.UnknownFunction
+    property int fileFunction: platformAdaptor.UnknownFunction
 
     Connections {
-        target: global.mobileAdaptor()
+        target: global.platformAdaptor()
 
         function onOpenFileRequest(fileName, fileFunction) {
             view.raise()
@@ -42,24 +42,24 @@ Item {
             if (fileName === "")
                 return
 
-            if (fileFunction === MobileAdaptor.WaypointLibrary) {
+            if (fileFunction === platformAdaptor.WaypointLibrary) {
                 importWPLibraryDialog.open()
                 return
             }
-            if (fileFunction === MobileAdaptor.FlightRouteOrWaypointLibrary) {
+            if (fileFunction === platformAdaptor.FlightRouteOrWaypointLibrary) {
                 chooseFRorWPDialog.open()
                 return
             }
 
-            if (fileFunction === MobileAdaptor.VectorMap) {
+            if (fileFunction === platformAdaptor.VectorMap) {
                 importVectorMapDialog.open()
                 return
             }
-            if (fileFunction === MobileAdaptor.RasterMap) {
+            if (fileFunction === platformAdaptor.RasterMap) {
                 importRasterMapDialog.open()
                 return
             }
-            if (fileFunction === MobileAdaptor.FlightRoute) {
+            if (fileFunction === platformAdaptor.FlightRoute) {
                 if (global.navigator().flightRoute.size > 0)
                     importFlightRouteDialog.open()
                 else
@@ -107,8 +107,8 @@ Item {
                 text: qsTr("Route")
 
                 onClicked: {
-                    global.mobileAdaptor().vibrateBrief()
-                    importManager.fileFunction = MobileAdaptor.FlightRoute
+                    global.platformAdaptor().vibrateBrief()
+                    importManager.fileFunction = platformAdaptor.FlightRoute
                     chooseFRorWPDialog.close()
                     if (global.navigator().flightRoute.size > 0)
                         importFlightRouteDialog.open()
@@ -121,8 +121,8 @@ Item {
                     text: qsTr("Library")
 
                     onClicked: {
-                        global.mobileAdaptor().vibrateBrief()
-                        importManager.fileFunction = MobileAdaptor.WaypointLibrary
+                        global.platformAdaptor().vibrateBrief()
+                        importManager.fileFunction = platformAdaptor.WaypointLibrary
                         chooseFRorWPDialog.close()
                         importWPLibraryDialog.open()
                     }
@@ -197,7 +197,7 @@ Item {
         }
 
         onAccepted: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
 
             var errorString = global.dataManager().import(importManager.filePath, mapNameRaster.text)
             if (errorString !== "") {
@@ -271,7 +271,7 @@ Item {
         }
 
         onAccepted: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
 
             var errorString = global.dataManager().import(importManager.filePath, mapNameVector.text)
             if (errorString !== "") {
@@ -315,7 +315,7 @@ Item {
         modal: true
 
         onAccepted: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
 
             var errorString = global.waypointLibrary().import(importManager.filePath, skip.checked)
             if (errorString !== "") {
@@ -362,11 +362,11 @@ Item {
         modal: true
 
         onAccepted: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
 
             var errorString = ""
 
-            if (importManager.fileFunction === MobileAdaptor.FlightRoute)
+            if (importManager.fileFunction === platformAdaptor.FlightRoute)
                 errorString = global.navigator().flightRoute.load(importManager.filePath)
 
             if (errorString !== "") {

@@ -53,7 +53,7 @@ QPointer<DemoRunner> g_demoRunner {};
 QPointer<Traffic::FlarmnetDB> g_flarmnetDB {};
 QPointer<GeoMaps::GeoMapProvider> g_geoMapProvider {};
 QPointer<Librarian> g_librarian {};
-QPointer<PlatformAdaptor> g_platformAdaptor {};
+QPointer<Platform::PlatformAdaptor> g_platformAdaptor {};
 QPointer<Navigation::Navigator> g_navigator {};
 QPointer<QNetworkAccessManager> g_networkAccessManager {};
 #if defined(Q_OS_ANDROID)
@@ -136,9 +136,9 @@ auto GlobalObject::librarian() -> Librarian*
 }
 
 
-auto GlobalObject::platformAdaptor() -> PlatformAdaptor*
+auto GlobalObject::platformAdaptor() -> Platform::PlatformAdaptor*
 {
-    return allocateInternal<PlatformAdaptor>(g_platformAdaptor);
+    return allocateInternal<Platform::PlatformAdaptor>(g_platformAdaptor);
 }
 
 

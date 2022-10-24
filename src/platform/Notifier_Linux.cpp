@@ -23,8 +23,6 @@
 #include <QDBusReply>
 #include <QImage>
 
-#include "GlobalObject.h"
-#include "dataManagement/DataManager.h"
 #include "platform/Notifier_Linux.h"
 
 

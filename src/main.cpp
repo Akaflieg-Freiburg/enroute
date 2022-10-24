@@ -85,7 +85,7 @@ auto main(int argc, char *argv[]) -> int
     qRegisterMetaType<Traffic::Warning>();
     qRegisterMetaType<Platform::Notifier::NotificationActions>();
 
-    qRegisterMetaType<PlatformAdaptor::FileFunction>("MobileAdaptor::FileFunction");
+    qRegisterMetaType<Platform::PlatformAdaptor::FileFunction>("MobileAdaptor::FileFunction");
     qRegisterMetaType<Platform::Notifier::NotificationTypes>("Platform::Notifier::Notifications");
     qmlRegisterUncreatableType<DemoRunner>("enroute", 1, 0, "DemoRunner", QStringLiteral("DemoRunner objects cannot be created in QML"));
     qmlRegisterUncreatableType<Navigation::Aircraft>("enroute", 1, 0, "Aircraft", QStringLiteral("Aircraft objects cannot be created in QML"));
@@ -99,7 +99,7 @@ auto main(int argc, char *argv[]) -> int
     qmlRegisterUncreatableType<GeoMaps::WaypointLibrary>("enroute", 1, 0, "WaypointLibrary", QStringLiteral("WaypointLibrary objects cannot be created in QML"));
     qmlRegisterUncreatableType<DataManagement::DataManager>("enroute", 1, 0, "DataManager", QStringLiteral("DataManager objects cannot be created in QML"));
     qmlRegisterType<Settings>("enroute", 1, 0, "GlobalSettings");
-    qmlRegisterUncreatableType<PlatformAdaptor>("enroute", 1, 0, "MobileAdaptor", QStringLiteral("MobileAdaptor objects cannot be created in QML"));
+    qmlRegisterUncreatableType<Platform::PlatformAdaptor>("enroute", 1, 0, "PlatformAdaptor", QStringLiteral("PlatformAdaptor objects cannot be created in QML"));
     qmlRegisterUncreatableType<Navigation::Navigator>("enroute", 1, 0, "Navigator", QStringLiteral("Navigator objects cannot be created in QML"));
     qmlRegisterUncreatableType<Traffic::PasswordDB>("enroute", 1, 0, "PasswordDB", QStringLiteral("PasswordDB objects cannot be created in QML"));
     qmlRegisterUncreatableType<Traffic::TrafficDataProvider>("enroute", 1, 0, "TrafficDataProvider", QStringLiteral("TrafficDataProvider objects cannot be created in QML"));
@@ -178,7 +178,7 @@ auto main(int argc, char *argv[]) -> int
     if (positionalArguments.length() == 1) {
         GlobalObject::platformAdaptor()->processFileOpenRequest(positionalArguments[0]);
     }
-    QTimer::singleShot(4s, GlobalObject::platformAdaptor(), &PlatformAdaptor::hideSplashScreen);
+    QTimer::singleShot(4s, GlobalObject::platformAdaptor(), &Platform::PlatformAdaptor::hideSplashScreen);
 #if !defined(Q_OS_ANDROID)
     QObject::connect(&kdsingleapp, SIGNAL(messageReceived(QByteArray)), GlobalObject::platformAdaptor(), SLOT(processFileOpenRequest(QByteArray)));
 #endif

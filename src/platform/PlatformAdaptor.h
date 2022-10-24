@@ -25,6 +25,8 @@
 
 #include <QObject>
 
+namespace Platform {
+
 /*! \brief Interface to platform-specific capabilities of mobile devices
  *
  * This class is an interface to capabilities of mobile devices (e.g. vibration)
@@ -266,3 +268,5 @@ private:
     QString pendingReceiveOpenFileRequest {};
     bool splashScreenHidden {false};
 };
+
+} // namespace Platform

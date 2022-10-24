@@ -47,7 +47,7 @@
 #endif
 
 
-void PlatformAdaptor::importContent()
+void Platform::PlatformAdaptor::importContent()
 {
 #if !defined(Q_OS_ANDROID)
     auto fileNameX = QFileDialog::getOpenFileName(nullptr,
@@ -62,7 +62,7 @@ void PlatformAdaptor::importContent()
 }
 
 
-auto PlatformAdaptor::exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
+auto Platform::PlatformAdaptor::exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
 {
     // Avoids warnings on Linux/Desktop
     Q_UNUSED(content)
@@ -104,7 +104,7 @@ auto PlatformAdaptor::exportContent(const QByteArray& content, const QString& mi
 }
 
 
-auto PlatformAdaptor::viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
+auto Platform::PlatformAdaptor::viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
 {
     Q_UNUSED(content)
     Q_UNUSED(mimeType)
@@ -127,7 +127,7 @@ auto PlatformAdaptor::viewContent(const QByteArray& content, const QString& mime
 }
 
 
-auto PlatformAdaptor::contentToTempFile(const QByteArray& content, const QString& fileNameTemplate) -> QString
+auto Platform::PlatformAdaptor::contentToTempFile(const QByteArray& content, const QString& fileNameTemplate) -> QString
 {
     QDateTime now = QDateTime::currentDateTimeUtc();
     QString fname = fileNameTemplate.arg(now.toString(QStringLiteral("yyyy-MM-dd_hh.mm.ss")));
@@ -151,7 +151,7 @@ auto PlatformAdaptor::contentToTempFile(const QByteArray& content, const QString
 
 
 
-void PlatformAdaptor::startReceiveOpenFileRequests()
+void Platform::PlatformAdaptor::startReceiveOpenFileRequests()
 {
     receiveOpenFileRequestsStarted = true;
 
@@ -174,13 +174,13 @@ void PlatformAdaptor::startReceiveOpenFileRequests()
 }
 
 
-void PlatformAdaptor::processFileOpenRequest(const QByteArray &path)
+void Platform::PlatformAdaptor::processFileOpenRequest(const QByteArray &path)
 {
     processFileOpenRequest(QString::fromUtf8(path).simplified());
 }
 
 
-void PlatformAdaptor::processFileOpenRequest(const QString &path)
+void Platform::PlatformAdaptor::processFileOpenRequest(const QString &path)
 {
     if (!receiveOpenFileRequestsStarted) {
         pendingReceiveOpenFileRequest = path;
@@ -261,7 +261,7 @@ void PlatformAdaptor::processFileOpenRequest(const QString &path)
 
 
 #if defined(Q_OS_ANDROID)
-auto PlatformAdaptor::outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType) -> bool
+auto Platform::PlatformAdaptor::outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType) -> bool
 {
     if (filePath == nullptr) {
         return false;

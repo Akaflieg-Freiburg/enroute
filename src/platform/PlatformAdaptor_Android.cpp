@@ -34,7 +34,7 @@
 #include "traffic/TrafficDataProvider.h"
 
 
-void PlatformAdaptor::hideSplashScreen()
+void Platform::PlatformAdaptor::hideSplashScreen()
 {
 
     if (splashScreenHidden) {
@@ -46,7 +46,7 @@ void PlatformAdaptor::hideSplashScreen()
 }
 
 
-void PlatformAdaptor::lockWifi(bool lock)
+void Platform::PlatformAdaptor::lockWifi(bool lock)
 {
 
     QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/PlatformAdaptor", "lockWiFi", "(Z)V", lock);
@@ -54,7 +54,7 @@ void PlatformAdaptor::lockWifi(bool lock)
 }
 
 
-Q_INVOKABLE auto PlatformAdaptor::missingPermissionsExist() -> bool
+Q_INVOKABLE auto Platform::PlatformAdaptor::missingPermissionsExist() -> bool
 {
 
     // Check is required permissions have been granted
@@ -68,13 +68,13 @@ Q_INVOKABLE auto PlatformAdaptor::missingPermissionsExist() -> bool
 }
 
 
-void PlatformAdaptor::vibrateBrief()
+void Platform::PlatformAdaptor::vibrateBrief()
 {
     QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/PlatformAdaptor", "vibrateBrief");
 }
 
 
-auto PlatformAdaptor::getSSID() -> QString
+auto Platform::PlatformAdaptor::getSSID() -> QString
 {
     QAndroidJniObject stringObject = QAndroidJniObject::callStaticObjectMethod("de/akaflieg_freiburg/enroute/PlatformAdaptor",
                                                                                "getSSID", "()Ljava/lang/String;");
@@ -83,7 +83,7 @@ auto PlatformAdaptor::getSSID() -> QString
 
 
 
-auto PlatformAdaptor::manufacturer() -> QString
+auto Platform::PlatformAdaptor::manufacturer() -> QString
 {
     QAndroidJniObject stringObject = QAndroidJniObject::callStaticObjectMethod("de/akaflieg_freiburg/enroute/PlatformAdaptor",
                                                                                "manufacturer", "()Ljava/lang/String;");

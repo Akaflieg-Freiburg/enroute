@@ -24,7 +24,6 @@
 
 class DemoRunner;
 class Librarian;
-class PlatformAdaptor;
 class QNetworkAccessManager;
 class Settings;
 
@@ -55,6 +54,7 @@ namespace Traffic
 namespace Platform
 {
   class Notifier;
+  class PlatformAdaptor;
 } // namespace Platform
 
 namespace Positioning
@@ -154,7 +154,7 @@ public:
    *
    * @returns Pointer to appplication-wide static instance.
    */
-  Q_INVOKABLE static PlatformAdaptor *platformAdaptor();
+  Q_INVOKABLE static Platform::PlatformAdaptor *platformAdaptor();
 
   /*! \brief Pointer to appplication-wide static Navigation::Navigator instance
    *

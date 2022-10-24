@@ -31,7 +31,7 @@
 #include "platform/PlatformAdaptor.h"
 
 
-PlatformAdaptor::PlatformAdaptor(QObject *parent)
+Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
     : QObject(parent)
 {
 
@@ -91,7 +91,7 @@ PlatformAdaptor::PlatformAdaptor(QObject *parent)
 }
 
 
-void PlatformAdaptor::deferredInitialization()
+void Platform::PlatformAdaptor::deferredInitialization()
 {
 #if defined(Q_OS_ANDROID)
     QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "startWiFiMonitor");

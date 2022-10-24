@@ -21,36 +21,36 @@
 #include "platform/PlatformAdaptor.h"
 
 
-void PlatformAdaptor::hideSplashScreen()
+void Platform::PlatformAdaptor::hideSplashScreen()
 {
 }
 
 
-void PlatformAdaptor::lockWifi(bool lock)
+void Platform::PlatformAdaptor::lockWifi(bool lock)
 {
     Q_UNUSED(lock)
 }
 
 
-auto PlatformAdaptor::manufacturer() -> QString
+auto Platform::PlatformAdaptor::manufacturer() -> QString
 {
     return {};
 }
 
 
-auto PlatformAdaptor::missingPermissionsExist() -> bool
+auto Platform::PlatformAdaptor::missingPermissionsExist() -> bool
 {
     Q_UNUSED(this);
     return false;
 }
 
 
-void PlatformAdaptor::vibrateBrief()
+void Platform::PlatformAdaptor::vibrateBrief()
 {
 }
 
 
-auto PlatformAdaptor::getSSID() -> QString
+auto Platform::PlatformAdaptor::getSSID() -> QString
 {
     return QStringLiteral("<unknown ssid>");
 }

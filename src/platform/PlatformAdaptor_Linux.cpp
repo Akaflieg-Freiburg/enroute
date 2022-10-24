@@ -18,39 +18,39 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "MobileAdaptor.h"
+#include "platform/PlatformAdaptor.h"
 
 
-void MobileAdaptor::hideSplashScreen()
+void PlatformAdaptor::hideSplashScreen()
 {
 }
 
 
-void MobileAdaptor::lockWifi(bool lock)
+void PlatformAdaptor::lockWifi(bool lock)
 {
     Q_UNUSED(lock)
 }
 
 
-auto MobileAdaptor::manufacturer() -> QString
+auto PlatformAdaptor::manufacturer() -> QString
 {
     return {};
 }
 
 
-auto MobileAdaptor::missingPermissionsExist() -> bool
+auto PlatformAdaptor::missingPermissionsExist() -> bool
 {
     Q_UNUSED(this);
     return false;
 }
 
 
-void MobileAdaptor::vibrateBrief()
+void PlatformAdaptor::vibrateBrief()
 {
 }
 
 
-auto MobileAdaptor::getSSID() -> QString
+auto PlatformAdaptor::getSSID() -> QString
 {
     return QStringLiteral("<unknown ssid>");
 }

@@ -22,11 +22,11 @@
 
 
 #include "GlobalObject.h"
-#include "MobileAdaptor.h"
 #include "geomaps/CUP.h"
 #include "geomaps/GeoJSON.h"
 #include "geomaps/MBTILES.h"
 #include "navigation/FlightRoute.h"
+#include "platform/PlatformAdaptor.h"
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficDataSource_File.h"
 
@@ -47,7 +47,7 @@
 #endif
 
 
-void MobileAdaptor::importContent()
+void PlatformAdaptor::importContent()
 {
 #if !defined(Q_OS_ANDROID)
     auto fileNameX = QFileDialog::getOpenFileName(nullptr,
@@ -62,7 +62,7 @@ void MobileAdaptor::importContent()
 }
 
 
-auto MobileAdaptor::exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
+auto PlatformAdaptor::exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
 {
     // Avoids warnings on Linux/Desktop
     Q_UNUSED(content)
@@ -104,7 +104,7 @@ auto MobileAdaptor::exportContent(const QByteArray& content, const QString& mime
 }
 
 
-auto MobileAdaptor::viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
+auto PlatformAdaptor::viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
 {
     Q_UNUSED(content)
     Q_UNUSED(mimeType)
@@ -127,7 +127,7 @@ auto MobileAdaptor::viewContent(const QByteArray& content, const QString& mimeTy
 }
 
 
-auto MobileAdaptor::contentToTempFile(const QByteArray& content, const QString& fileNameTemplate) -> QString
+auto PlatformAdaptor::contentToTempFile(const QByteArray& content, const QString& fileNameTemplate) -> QString
 {
     QDateTime now = QDateTime::currentDateTimeUtc();
     QString fname = fileNameTemplate.arg(now.toString(QStringLiteral("yyyy-MM-dd_hh.mm.ss")));
@@ -151,7 +151,7 @@ auto MobileAdaptor::contentToTempFile(const QByteArray& content, const QString& 
 
 
 
-void MobileAdaptor::startReceiveOpenFileRequests()
+void PlatformAdaptor::startReceiveOpenFileRequests()
 {
     receiveOpenFileRequestsStarted = true;
 
@@ -174,13 +174,13 @@ void MobileAdaptor::startReceiveOpenFileRequests()
 }
 
 
-void MobileAdaptor::processFileOpenRequest(const QByteArray &path)
+void PlatformAdaptor::processFileOpenRequest(const QByteArray &path)
 {
     processFileOpenRequest(QString::fromUtf8(path).simplified());
 }
 
 
-void MobileAdaptor::processFileOpenRequest(const QString &path)
+void PlatformAdaptor::processFileOpenRequest(const QString &path)
 {
     if (!receiveOpenFileRequestsStarted) {
         pendingReceiveOpenFileRequest = path;
@@ -261,7 +261,7 @@ void MobileAdaptor::processFileOpenRequest(const QString &path)
 
 
 #if defined(Q_OS_ANDROID)
-auto MobileAdaptor::outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType) -> bool
+auto PlatformAdaptor::outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType) -> bool
 {
     if (filePath == nullptr) {
         return false;
@@ -284,7 +284,7 @@ extern "C" {
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setFileReceived(JNIEnv* env, jobject /*unused*/, jstring jfname)
 {
     const char* fname = env->GetStringUTFChars(jfname, nullptr);
-    GlobalObject::mobileAdaptor()->processFileOpenRequest(QString::fromUtf8(fname));
+    GlobalObject::platformAdaptor()->processFileOpenRequest(QString::fromUtf8(fname));
     env->ReleaseStringUTFChars(jfname, fname);
 }
 

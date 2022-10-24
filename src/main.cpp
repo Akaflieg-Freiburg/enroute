@@ -40,7 +40,6 @@
 #include "DemoRunner.h"
 #include "GlobalObject.h"
 #include "Librarian.h"
-#include "MobileAdaptor.h"
 #include "Settings.h"
 #include "dataManagement/DataManager.h"
 #include "dataManagement/SSLErrorHandler.h"
@@ -51,6 +50,7 @@
 #include "navigation/Clock.h"
 #include "navigation/Navigator.h"
 #include "platform/Notifier.h"
+#include "platform/PlatformAdaptor.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/PasswordDB.h"
 #include "traffic/TrafficDataProvider.h"
@@ -85,7 +85,7 @@ auto main(int argc, char *argv[]) -> int
     qRegisterMetaType<Traffic::Warning>();
     qRegisterMetaType<Platform::Notifier::NotificationActions>();
 
-    qRegisterMetaType<MobileAdaptor::FileFunction>("MobileAdaptor::FileFunction");
+    qRegisterMetaType<PlatformAdaptor::FileFunction>("MobileAdaptor::FileFunction");
     qRegisterMetaType<Platform::Notifier::NotificationTypes>("Platform::Notifier::Notifications");
     qmlRegisterUncreatableType<DemoRunner>("enroute", 1, 0, "DemoRunner", QStringLiteral("DemoRunner objects cannot be created in QML"));
     qmlRegisterUncreatableType<Navigation::Aircraft>("enroute", 1, 0, "Aircraft", QStringLiteral("Aircraft objects cannot be created in QML"));
@@ -99,7 +99,7 @@ auto main(int argc, char *argv[]) -> int
     qmlRegisterUncreatableType<GeoMaps::WaypointLibrary>("enroute", 1, 0, "WaypointLibrary", QStringLiteral("WaypointLibrary objects cannot be created in QML"));
     qmlRegisterUncreatableType<DataManagement::DataManager>("enroute", 1, 0, "DataManager", QStringLiteral("DataManager objects cannot be created in QML"));
     qmlRegisterType<Settings>("enroute", 1, 0, "GlobalSettings");
-    qmlRegisterUncreatableType<MobileAdaptor>("enroute", 1, 0, "MobileAdaptor", QStringLiteral("MobileAdaptor objects cannot be created in QML"));
+    qmlRegisterUncreatableType<PlatformAdaptor>("enroute", 1, 0, "MobileAdaptor", QStringLiteral("MobileAdaptor objects cannot be created in QML"));
     qmlRegisterUncreatableType<Navigation::Navigator>("enroute", 1, 0, "Navigator", QStringLiteral("Navigator objects cannot be created in QML"));
     qmlRegisterUncreatableType<Traffic::PasswordDB>("enroute", 1, 0, "PasswordDB", QStringLiteral("PasswordDB objects cannot be created in QML"));
     qmlRegisterUncreatableType<Traffic::TrafficDataProvider>("enroute", 1, 0, "TrafficDataProvider", QStringLiteral("TrafficDataProvider objects cannot be created in QML"));
@@ -176,11 +176,11 @@ auto main(int argc, char *argv[]) -> int
 
     // Create mobile platform adaptor. We do this before creating the application engine because this also asks for permissions
     if (positionalArguments.length() == 1) {
-        GlobalObject::mobileAdaptor()->processFileOpenRequest(positionalArguments[0]);
+        GlobalObject::platformAdaptor()->processFileOpenRequest(positionalArguments[0]);
     }
-    QTimer::singleShot(4s, GlobalObject::mobileAdaptor(), &MobileAdaptor::hideSplashScreen);
+    QTimer::singleShot(4s, GlobalObject::platformAdaptor(), &PlatformAdaptor::hideSplashScreen);
 #if !defined(Q_OS_ANDROID)
-    QObject::connect(&kdsingleapp, SIGNAL(messageReceived(QByteArray)), GlobalObject::mobileAdaptor(), SLOT(processFileOpenRequest(QByteArray)));
+    QObject::connect(&kdsingleapp, SIGNAL(messageReceived(QByteArray)), GlobalObject::platformAdaptor(), SLOT(processFileOpenRequest(QByteArray)));
 #endif
 
     /*

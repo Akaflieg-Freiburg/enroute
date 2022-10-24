@@ -28,13 +28,13 @@
 #include <QTimer>
 
 #include "GlobalObject.h"
-#include "MobileAdaptor.h"
+#include "platform/PlatformAdaptor.h"
 #include "geomaps/GeoMapProvider.h"
 #include "platform/Notifier_Android.h"
 #include "traffic/TrafficDataProvider.h"
 
 
-void MobileAdaptor::hideSplashScreen()
+void PlatformAdaptor::hideSplashScreen()
 {
 
     if (splashScreenHidden) {
@@ -46,15 +46,15 @@ void MobileAdaptor::hideSplashScreen()
 }
 
 
-void MobileAdaptor::lockWifi(bool lock)
+void PlatformAdaptor::lockWifi(bool lock)
 {
 
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "lockWiFi", "(Z)V", lock);
+    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/PlatformAdaptor", "lockWiFi", "(Z)V", lock);
 
 }
 
 
-Q_INVOKABLE auto MobileAdaptor::missingPermissionsExist() -> bool
+Q_INVOKABLE auto PlatformAdaptor::missingPermissionsExist() -> bool
 {
 
     // Check is required permissions have been granted
@@ -68,24 +68,24 @@ Q_INVOKABLE auto MobileAdaptor::missingPermissionsExist() -> bool
 }
 
 
-void MobileAdaptor::vibrateBrief()
+void PlatformAdaptor::vibrateBrief()
 {
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "vibrateBrief");
+    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/PlatformAdaptor", "vibrateBrief");
 }
 
 
-auto MobileAdaptor::getSSID() -> QString
+auto PlatformAdaptor::getSSID() -> QString
 {
-    QAndroidJniObject stringObject = QAndroidJniObject::callStaticObjectMethod("de/akaflieg_freiburg/enroute/MobileAdaptor",
+    QAndroidJniObject stringObject = QAndroidJniObject::callStaticObjectMethod("de/akaflieg_freiburg/enroute/PlatformAdaptor",
                                                                                "getSSID", "()Ljava/lang/String;");
     return stringObject.toString();
 }
 
 
 
-auto MobileAdaptor::manufacturer() -> QString
+auto PlatformAdaptor::manufacturer() -> QString
 {
-    QAndroidJniObject stringObject = QAndroidJniObject::callStaticObjectMethod("de/akaflieg_freiburg/enroute/MobileAdaptor",
+    QAndroidJniObject stringObject = QAndroidJniObject::callStaticObjectMethod("de/akaflieg_freiburg/enroute/PlatformAdaptor",
                                                                                "manufacturer", "()Ljava/lang/String;");
     return stringObject.toString();
 }
@@ -93,7 +93,7 @@ auto MobileAdaptor::manufacturer() -> QString
 
 extern "C" {
 
-JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiConnected(JNIEnv* /*unused*/, jobject /*unused*/)
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_PlatformAdaptor_onWifiConnected(JNIEnv* /*unused*/, jobject /*unused*/)
 {
 
     // This method gets called from Java before main() has executed
@@ -101,7 +101,7 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiCo
     // In these cases, the methods of the Global class must not be called
     // and we simply return.
     if (GlobalObject::canConstruct()) {
-        GlobalObject::mobileAdaptor()->emitWifiConnected();
+        GlobalObject::platformAdaptor()->emitWifiConnected();
     }
 
 }
@@ -109,7 +109,7 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiCo
 // This method is called from Java to indicate that the user has clicked into the Android
 // notification for reporting traffic data receiver errors
 
-JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onNotificationClicked(JNIEnv* /*unused*/, jobject /*unused*/, jint notifyID, jint actionID)
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_PlatformAdaptor_onNotificationClicked(JNIEnv* /*unused*/, jobject /*unused*/, jint notifyID, jint actionID)
 {
 
     // This method gets called from Java before main() has executed

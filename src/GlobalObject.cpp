@@ -25,13 +25,13 @@
 #include "DemoRunner.h"
 #include "GlobalObject.h"
 #include "Librarian.h"
-#include "MobileAdaptor.h"
 #include "Settings.h"
 #include "dataManagement/DataManager.h"
 #include "dataManagement/SSLErrorHandler.h"
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/WaypointLibrary.h"
 #include "navigation/Navigator.h"
+#include "platform/PlatformAdaptor.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/FlarmnetDB.h"
 #include "traffic/PasswordDB.h"
@@ -53,7 +53,7 @@ QPointer<DemoRunner> g_demoRunner {};
 QPointer<Traffic::FlarmnetDB> g_flarmnetDB {};
 QPointer<GeoMaps::GeoMapProvider> g_geoMapProvider {};
 QPointer<Librarian> g_librarian {};
-QPointer<MobileAdaptor> g_mobileAdaptor {};
+QPointer<PlatformAdaptor> g_platformAdaptor {};
 QPointer<Navigation::Navigator> g_navigator {};
 QPointer<QNetworkAccessManager> g_networkAccessManager {};
 #if defined(Q_OS_ANDROID)
@@ -136,9 +136,9 @@ auto GlobalObject::librarian() -> Librarian*
 }
 
 
-auto GlobalObject::mobileAdaptor() -> MobileAdaptor*
+auto GlobalObject::platformAdaptor() -> PlatformAdaptor*
 {
-    return allocateInternal<MobileAdaptor>(g_mobileAdaptor);
+    return allocateInternal<PlatformAdaptor>(g_platformAdaptor);
 }
 
 

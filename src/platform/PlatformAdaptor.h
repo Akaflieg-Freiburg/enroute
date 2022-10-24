@@ -38,7 +38,7 @@
  * file open requests (that might need user interaction).
  */
 
-class MobileAdaptor : public QObject
+class PlatformAdaptor : public QObject
 {
     Q_OBJECT
 
@@ -50,9 +50,9 @@ public:
      *
      * @param parent Standard QObject parent pointer
     */
-    explicit MobileAdaptor(QObject *parent = nullptr);
+    explicit PlatformAdaptor(QObject *parent = nullptr);
 
-    ~MobileAdaptor() override = default;
+    ~PlatformAdaptor() override = default;
 
     /*! \brief Function and type of a file that we have been requested to
      * open */
@@ -82,7 +82,7 @@ public:
     */
     Q_INVOKABLE static QString manufacturer();
 
-    /*! \brief Checks if all requred permissions have been granted
+    /*! \brief Checks if all required permissions have been granted
      *
      * On Android, the app requirs certain permissions to run. This method can
      * be used to check if all permissions have been granted.
@@ -231,7 +231,7 @@ signals:
      * On Android, other apps can request that enroute 'views' a file, via
      * Android's INTENT system.
      */
-    void openFileRequest(QString fileName, MobileAdaptor::FileFunction fileFunction);
+    void openFileRequest(QString fileName, PlatformAdaptor::FileFunction fileFunction);
 
     /*! \brief Emitted when a new WiFi connections becomes available
      *
@@ -245,7 +245,7 @@ private slots:
     void deferredInitialization();
 
 private:
-    Q_DISABLE_COPY_MOVE(MobileAdaptor)
+    Q_DISABLE_COPY_MOVE(PlatformAdaptor)
   
     // Helper function. Saves content to a file in a directory from where
     // sharing to other android apps is possible

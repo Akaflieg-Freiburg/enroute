@@ -28,10 +28,10 @@
 #include <QtAndroidExtras/QAndroidJniObject>
 #endif
 
-#include "MobileAdaptor.h"
+#include "platform/PlatformAdaptor.h"
 
 
-MobileAdaptor::MobileAdaptor(QObject *parent)
+PlatformAdaptor::PlatformAdaptor(QObject *parent)
     : QObject(parent)
 {
 
@@ -86,12 +86,12 @@ MobileAdaptor::MobileAdaptor(QObject *parent)
     getSSID();
 
     // Don't forget the deferred initialization
-    QTimer::singleShot(0, this, &MobileAdaptor::deferredInitialization);
+    QTimer::singleShot(0, this, &PlatformAdaptor::deferredInitialization);
 
 }
 
 
-void MobileAdaptor::deferredInitialization()
+void PlatformAdaptor::deferredInitialization()
 {
 #if defined(Q_OS_ANDROID)
     QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "startWiFiMonitor");

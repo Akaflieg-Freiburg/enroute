@@ -24,7 +24,7 @@
 
 class DemoRunner;
 class Librarian;
-class MobileAdaptor;
+class PlatformAdaptor;
 class QNetworkAccessManager;
 class Settings;
 
@@ -150,11 +150,11 @@ public:
    */
   Q_INVOKABLE static Librarian *librarian();
 
-  /*! \brief Pointer to appplication-wide static MobileAdaptor instance
+  /*! \brief Pointer to appplication-wide static PlatformAdaptor instance
    *
    * @returns Pointer to appplication-wide static instance.
    */
-  Q_INVOKABLE static MobileAdaptor *mobileAdaptor();
+  Q_INVOKABLE static PlatformAdaptor *platformAdaptor();
 
   /*! \brief Pointer to appplication-wide static Navigation::Navigator instance
    *

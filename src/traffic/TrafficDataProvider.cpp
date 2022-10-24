@@ -23,7 +23,7 @@
 #include <chrono>
 
 #include "GlobalObject.h"
-#include "MobileAdaptor.h"
+#include "platform/PlatformAdaptor.h"
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficDataSource_File.h"
 #include "traffic/TrafficDataSource_Tcp.h"
@@ -131,7 +131,7 @@ void Traffic::TrafficDataProvider::connectToTrafficReceiver()
 void Traffic::TrafficDataProvider::deferredInitialization() const
 {
     // Try to (re)connect whenever the network situation changes
-    connect(GlobalObject::mobileAdaptor(), &MobileAdaptor::wifiConnected, this, &Traffic::TrafficDataProvider::connectToTrafficReceiver);
+    connect(GlobalObject::platformAdaptor(), &PlatformAdaptor::wifiConnected, this, &Traffic::TrafficDataProvider::connectToTrafficReceiver);
 }
 
 

@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "MobileAdaptor.h"
+#include "platform/PlatformAdaptor.h"
 #include "traffic/TrafficDataSource_AbstractSocket.h"
 
 
@@ -116,7 +116,7 @@ void Traffic::TrafficDataSource_AbstractSocket::onErrorOccurred(QAbstractSocket:
 void Traffic::TrafficDataSource_AbstractSocket::onReceivingHeartbeatChanged(bool receivingHB)
 {
     // Acquire or release WiFi lock as appropriate
-    MobileAdaptor::lockWifi(receivingHB);
+    PlatformAdaptor::lockWifi(receivingHB);
 }
 
 

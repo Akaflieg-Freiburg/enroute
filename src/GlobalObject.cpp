@@ -31,7 +31,9 @@
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/WaypointLibrary.h"
 #include "navigation/Navigator.h"
-#include "platform/PlatformAdaptor.h"
+#include "platform/PlatformAdaptor_Abstract.h"
+#include "platform/PlatformAdaptor_Android.h"
+#include "platform/PlatformAdaptor_Linux.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/FlarmnetDB.h"
 #include "traffic/PasswordDB.h"
@@ -138,7 +140,7 @@ auto GlobalObject::librarian() -> Librarian*
 }
 
 
-auto GlobalObject::platformAdaptor() -> Platform::PlatformAdaptor*
+auto GlobalObject::platformAdaptor() -> Platform::PlatformAdaptor_Abstract*
 {
     return allocateInternal<Platform::PlatformAdaptor>(g_platformAdaptor);
 }

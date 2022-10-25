@@ -98,7 +98,9 @@ set(SOURCES
     navigation/Navigator.h
     navigation/RemainingRouteInfo.h
     platform/Notifier.h
-    platform/PlatformAdaptor.h
+    platform/PlatformAdaptor_Abstract.h
+    platform/PlatformAdaptor_Android.h
+    platform/PlatformAdaptor_Linux.h
     positioning/Geoid.h
     positioning/PositionInfo.h
     positioning/PositionInfoSource_Abstract.h

@@ -20,10 +20,13 @@
 
 #pragma once
 
-#include <QTimer>
 #include <QtGlobal>
+#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
 
+#include <QTimer>
 #include <QObject>
+
+#include "PlatformAdaptor_Abstract.h"
 
 namespace Platform {
 
@@ -40,24 +43,12 @@ namespace Platform {
  * file open requests (that might need user interaction).
  */
 
-class PlatformAdaptor : public QObject
+class PlatformAdaptor : public PlatformAdaptor_Abstract
 {
     Q_OBJECT
 
 public:
-    /*! \brief Standard constructor
-     *
-     * On Android, this constructor disables the screen lock and asks for the
-     * permissions that are needed to run the app.
-     *
-     * @param parent Standard QObject parent pointer
-    */
-    explicit PlatformAdaptor(QObject *parent = nullptr);
-
-    ~PlatformAdaptor() override = default;
-
-    /*! \brief Function and type of a file that we have been requested to
-     * open */
+    /*! \brief Function and type of a file that we have been requested to open */
     enum FileFunction
       {
         UnknownFunction,
@@ -78,21 +69,29 @@ public:
     };
     Q_ENUM(NotificationType)
 
-    /*! \brief Device manufacturer
-     *
-     * @returns On Android, returns device manufacturer. On other systems, always returns an empty string.
-    */
-    Q_INVOKABLE static QString manufacturer();
 
-    /*! \brief Checks if all required permissions have been granted
+    /*! \brief Standard constructor
      *
-     * On Android, the app requirs certain permissions to run. This method can
-     * be used to check if all permissions have been granted.
+     * On Android, this constructor disables the screen lock and asks for the
+     * permissions that are needed to run the app.
      *
-     * @returns On Android, returns 'true' if not all required permissions have
-     * been granted. On other systems, always returns 'false'
+     * @param parent Standard QObject parent pointer
     */
-    Q_INVOKABLE bool missingPermissionsExist();
+    explicit PlatformAdaptor(QObject *parent = nullptr);
+
+    ~PlatformAdaptor() override = default;
+
+
+    //
+    // Methods
+    //
+
+    /*! \brief SSID of current Wi-Fi network
+     *
+     * @returns The SSID of the current Wi-Fi networks, or an empty of generic string
+     * if the device is not connected to a Wi-Fi or if the SSID could not be determined.
+     */
+    Q_INVOKABLE static QString currentSSID();
 
     /*! \brief Export content to file or to file sending app
      *
@@ -114,6 +113,24 @@ public:
      */
     Q_INVOKABLE QString exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate);
 
+    /*! \brief Hides the android splash screen.
+     *
+     * On Android, hides the android splash screen.
+     *
+     * On other platforms, this does nothing. The implementation ensures that
+     * QtAndroid::hideSplashScreen is called (only once, regardless of how often
+     * this slot is used).
+    */
+    Q_INVOKABLE void hideSplashScreen();
+
+    /*! \brief Import content from file
+     *
+     * On Android systems, this method does nothing.
+     *
+     * On other desktop systems, this method uses a file dialog to import a file.
+     */
+    Q_INVOKABLE void importContent();
+
     /*! \brief Lock connection to Wi-Fi network
      *
      * Under Android, this method can lock the Wi-Fi connection by acquiring a
@@ -123,20 +140,65 @@ public:
      */
     Q_INVOKABLE static void lockWifi(bool lock);
 
-    /*! \brief Get SSID of current Wi-Fi network
+    /*! \brief Device manufacturer
      *
-     * @returns The SSID of the current Wi-Fi networks, or an empty of generic string
-     * if the device is not connected to a Wi-Fi or if the SSID could not be determined.
-     */
-    Q_INVOKABLE static QString getSSID();
+     * @returns On Android, returns device manufacturer. On other systems, always returns an empty string.
+    */
+    Q_INVOKABLE static QString manufacturer();
 
-    /*! \brief Import content from file
+    /*! \brief Checks if all required permissions have been granted
      *
-     * On Android systems, this method does nothing.
+     * On Android, the app requirs certain permissions to run. This method can
+     * be used to check if all permissions have been granted.
      *
-     * On other desktop systems, this method uses a file dialog to import a file.
+     * @returns On Android, returns 'true' if not all required permissions have
+     * been granted. On other systems, always returns 'false'
+    */
+    Q_INVOKABLE bool missingPermissionsExist();
+
+    /*! \brief Helper function, not for public consumption
+     *
+     * This helper function is called by platform-dependent code whenever the
+     * app is asked to open a file.  It will look at the file, determine the
+     * file function and emit the signal openFileRequest() as appropriate.
+     *
+     * On Android, the slot is called from JAVA.
+     *
+     * @param path File name
+     *
      */
-    Q_INVOKABLE void importContent();
+    Q_INVOKABLE void processFileOpenRequest(const QString &path);
+
+    /*! \brief Helper function, not for public consumption
+     *
+     * Overloaded function for convenience
+     *
+     * @param path UTF8-Encoded strong
+     */
+    Q_INVOKABLE void processFileOpenRequest(const QByteArray &path);
+
+    /*! \brief Start receiving "open file" requests from platform
+     *
+     * This method should be called to indicate that the GUI is set up and ready
+     * to receive platform-specific requests to open files.  The
+     * openFileRequest() might be emitted immediately
+     *
+     * On Android, this method checks if there are pending intents which should
+     * be processed in the java activity
+     * de.akaflieg_freiburg.enroute.ShareActivity.  This is usually necessary if
+     * the app has been launched by an incoming intent and the java
+     * ShareActivity postponed processing of the intent until enroute has been
+     * fully initialized.
+     */
+     Q_INVOKABLE void startReceiveOpenFileRequests();
+
+    /*! \brief Make the device briefly vibrate
+     *
+     * On Android, make the device briefly vibrate if haptic feedback is enabled in the system settings.
+     *
+     * On other platforms, this does nothing.
+    */
+    Q_INVOKABLE static void vibrateBrief();
 
     /*! \brief View content in other app
      *
@@ -158,67 +220,12 @@ public:
      */
     Q_INVOKABLE QString viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate);
 
-    /*! \brief Start receiving "open file" requests from platform
-     *
-     * This method should be called to indicate that the GUI is set up and ready
-     * to receive platform-specific requests to open files.  The
-     * openFileRequest() might be emitted immediately
-     *
-     * On Android, this method checks if there are pending intents which should
-     * be processed in the java activity
-     * de.akaflieg_freiburg.enroute.ShareActivity.  This is usually necessary if
-     * the app has been launched by an incoming intent and the java
-     * ShareActivity postponed processing of the intent until enroute has been
-     * fully initialized.
-     */
-     Q_INVOKABLE void startReceiveOpenFileRequests();
-
 #if defined (Q_OS_ANDROID)
     // Emits the signal "WifiConnected".
     void emitWifiConnected() {
         emit wifiConnected();
     }
 #endif
-
-public slots:
-    /*! \brief Hides the android splash screen.
-     *
-     * On Android, hides the android splash screen.
-     *
-     * On other platforms, this does nothing. The implementation ensures that
-     * QtAndroid::hideSplashScreen is called (only once, regardless of how often
-     * this slot is used).
-    */
-    void hideSplashScreen();
-
-    /*! \brief Make the device briefly vibrate
-     *
-     * On Android, make the device briefly vibrate if haptic feedback is enabled in the system settings.
-     *
-     * On other platforms, this does nothing.
-    */
-    static void vibrateBrief();
-
-    /*! \brief Helper function, not for public consumption
-     *
-     * This helper function is called by platform-dependent code whenever the
-     * app is asked to open a file.  It will look at the file, determine the
-     * file function and emit the signal openFileRequest() as appropriate.
-     *
-     * On Android, the slot is called from JAVA.
-     *
-     * @param path File name
-     *
-     */
-    void processFileOpenRequest(const QString &path);
-
-    /*! \brief Helper function, not for public consumption
-     *
-     * Overloaded function for convenience
-     *
-     * @param path UTF8-Encoded strong
-     */
-    void processFileOpenRequest(const QByteArray &path);
 
 signals:
     /*! \brief Emitted when platform asks this app to open a file
@@ -241,14 +248,13 @@ signals:
      */
     void wifiConnected();
 
-private slots:
+private:
+    Q_DISABLE_COPY_MOVE(PlatformAdaptor)
+
     // Intializations that are moved out of the constructor, in order to avoid
     // nested uses of Global.
     void deferredInitialization();
 
-private:
-    Q_DISABLE_COPY_MOVE(PlatformAdaptor)
-  
     // Helper function. Saves content to a file in a directory from where
     // sharing to other android apps is possible
     auto contentToTempFile(const QByteArray& content, const QString& fileNameTemplate) -> QString;
@@ -270,3 +276,5 @@ private:
 };
 
 } // namespace Platform
+
+#endif // defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)

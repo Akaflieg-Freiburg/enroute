@@ -104,7 +104,7 @@ Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
         }
     });
 
-    getSSID();
+    currentSSID();
 
     // Don't forget the deferred initialization
     QTimer::singleShot(0, this, &PlatformAdaptor::deferredInitialization);
@@ -158,7 +158,7 @@ void Platform::PlatformAdaptor::vibrateBrief()
 }
 
 
-auto Platform::PlatformAdaptor::getSSID() -> QString
+auto Platform::PlatformAdaptor::currentSSID() -> QString
 {
     QAndroidJniObject stringObject = QAndroidJniObject::callStaticObjectMethod("de/akaflieg_freiburg/enroute/PlatformAdaptor",
                                                                                "getSSID", "()Ljava/lang/String;");

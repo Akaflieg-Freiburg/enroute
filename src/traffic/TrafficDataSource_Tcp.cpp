@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "GlobalObject.h"
-#include "platform/PlatformAdaptor.h"
+#include "platform/PlatformAdaptor_Abstract.h"
 #include "traffic/PasswordDB.h"
 #include "traffic/TrafficDataSource_Tcp.h"
 
@@ -103,7 +103,7 @@ void Traffic::TrafficDataSource_Tcp::onReadyRead()
         // Check if the TCP connection asks for a password
         if (sentence.startsWith(QLatin1String("PASS?"))) {
             passwordRequest_Status = waitingForPassword;
-            passwordRequest_SSID = Platform::PlatformAdaptor::getSSID();
+            passwordRequest_SSID = Platform::PlatformAdaptor_Abstract::currentSSID();
             auto* passwordDB = GlobalObject::passwordDB();
             if (passwordDB->contains(passwordRequest_SSID)) {
                 setPassword(passwordRequest_SSID, passwordDB->getPassword(passwordRequest_SSID));

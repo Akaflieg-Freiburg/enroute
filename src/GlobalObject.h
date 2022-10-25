@@ -55,6 +55,7 @@ namespace Platform
 {
   class Notifier;
   class PlatformAdaptor;
+  class PlatformAdaptor_Abstract;
 } // namespace Platform
 
 namespace Positioning
@@ -154,7 +155,7 @@ public:
    *
    * @returns Pointer to appplication-wide static instance.
    */
-  Q_INVOKABLE static Platform::PlatformAdaptor *platformAdaptor();
+  Q_INVOKABLE static Platform::PlatformAdaptor_Abstract* platformAdaptor();
 
   /*! \brief Pointer to appplication-wide static Navigation::Navigator instance
    *

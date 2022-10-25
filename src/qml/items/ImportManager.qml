@@ -29,7 +29,7 @@ Item {
     id: importManager
 
     property string filePath: ""
-    property int fileFunction: platformAdaptor.UnknownFunction
+    property int fileFunction: PlatformAdaptor.UnknownFunction
 
     Connections {
         target: global.platformAdaptor()
@@ -42,24 +42,24 @@ Item {
             if (fileName === "")
                 return
 
-            if (fileFunction === platformAdaptor.WaypointLibrary) {
+            if (fileFunction === PlatformAdaptor.WaypointLibrary) {
                 importWPLibraryDialog.open()
                 return
             }
-            if (fileFunction === platformAdaptor.FlightRouteOrWaypointLibrary) {
+            if (fileFunction === PlatformAdaptor.FlightRouteOrWaypointLibrary) {
                 chooseFRorWPDialog.open()
                 return
             }
 
-            if (fileFunction === platformAdaptor.VectorMap) {
+            if (fileFunction === PlatformAdaptor.VectorMap) {
                 importVectorMapDialog.open()
                 return
             }
-            if (fileFunction === platformAdaptor.RasterMap) {
+            if (fileFunction === PlatformAdaptor.RasterMap) {
                 importRasterMapDialog.open()
                 return
             }
-            if (fileFunction === platformAdaptor.FlightRoute) {
+            if (fileFunction === PlatformAdaptor.FlightRoute) {
                 if (global.navigator().flightRoute.size > 0)
                     importFlightRouteDialog.open()
                 else
@@ -108,7 +108,7 @@ Item {
 
                 onClicked: {
                     global.platformAdaptor().vibrateBrief()
-                    importManager.fileFunction = platformAdaptor.FlightRoute
+                    importManager.fileFunction = PlatformAdaptor.FlightRoute
                     chooseFRorWPDialog.close()
                     if (global.navigator().flightRoute.size > 0)
                         importFlightRouteDialog.open()
@@ -122,7 +122,7 @@ Item {
 
                     onClicked: {
                         global.platformAdaptor().vibrateBrief()
-                        importManager.fileFunction = platformAdaptor.WaypointLibrary
+                        importManager.fileFunction = PlatformAdaptor.WaypointLibrary
                         chooseFRorWPDialog.close()
                         importWPLibraryDialog.open()
                     }
@@ -366,7 +366,7 @@ Item {
 
             var errorString = ""
 
-            if (importManager.fileFunction === platformAdaptor.FlightRoute)
+            if (importManager.fileFunction === PlatformAdaptor.FlightRoute)
                 errorString = global.navigator().flightRoute.load(importManager.filePath)
 
             if (errorString !== "") {

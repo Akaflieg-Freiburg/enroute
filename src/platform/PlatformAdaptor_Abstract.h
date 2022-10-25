@@ -20,24 +20,15 @@
 
 #pragma once
 
-#include <QTimer>
-#include <QtGlobal>
-
 #include <QObject>
 
 namespace Platform {
 
-/*! \brief Interface to platform-specific capabilities of mobile devices
+/*! \brief Interface to platform-specific functionality
  *
- * This class is an interface to capabilities of mobile devices (e.g. vibration)
- * that need platform-specific code to operate.
- *
- * This class also receives platform-specific requests to open files and exposes
- * these requests to C++ and QML via the signal openFileRequest().  The signal
- * openFileRequest() is however only emitted after the method
- * startReceiveOpenFileRequests() has been called, requests that come in earlier
- * will be put on hold.  This allows apps to set up their GUI before processing
- * file open requests (that might need user interaction).
+ * This pure virtual class is an interface to capabilities of mobile devices (e.g. vibration)
+ * that need platform-specific code to operate.  The files PlatformAdaptor_XXX.(h|cpp) implement
+ * a child class PlatformAdaptor that contains the actual implementation.
  */
 
 class PlatformAdaptor_Abstract : public QObject
@@ -45,10 +36,10 @@ class PlatformAdaptor_Abstract : public QObject
     Q_OBJECT
 
 public:
-    /*! \brief Function and type of a file that we have been requested to open */
+    /*! \brief Functions and types of a file that this app handles */
     enum FileFunction
       {
-        UnknownFunction,
+        UnknownFunction, /*< Unknown file */
         FlightRouteOrWaypointLibrary, /*< File contains a flight route or a waypoint library. */
         FlightRoute, /*< File contains a flight route. */
         VectorMap, /*< File contains a vector map. */
@@ -69,9 +60,6 @@ public:
 
     /*! \brief Standard constructor
      *
-     * On Android, this constructor disables the screen lock and asks for the
-     * permissions that are needed to run the app.
-     *
      * @param parent Standard QObject parent pointer
     */
     explicit PlatformAdaptor_Abstract(QObject *parent = nullptr);
@@ -85,30 +73,58 @@ public:
 
     /*! \brief SSID of current Wi-Fi network
      *
-     * @returns The SSID of the current Wi-Fi networks, or an empty of generic string
-     * if the device is not connected to a Wi-Fi or if the SSID could not be determined.
+     * @returns The SSID of the current Wi-Fi networks, an empty string
+     * if the device is not connected to a Wi-Fi or a generic string if the SSID cannot be determined.
      */
     Q_INVOKABLE virtual QString currentSSID() = 0;
 
     /*! \brief Export content to file or to file sending app
      *
-     * On Android systems, this method will save content to temporary file in
-     * the app's private cache and call the corresponding java static method
-     * where a SEND intent is created and startActivity is called
+     * On desktop systems, this method is supposed to show a file dialog to save the file.
+     * On mobile devices, this method is supposed to open a dialog that allows to chose the method to send this file (e-mail, dropbox, signal chat, …)
      *
-     * On other desktop systems, this method uses a file dialog to save the file.
-     *
-     * @param content content text
+     * @param content File content
      *
      * @param mimeType the mimeType of the content
      *
      * @param fileNameTemplate A string of the form "EDTF - EDTG", without suffix of path. This
-     * file name is visible to the user. It appears for instance as the name of
+     * can be used, e.g. as the name of
      * the attachment when sending files by e-mail.
      *
      * @returns Empty string on success, the string "abort" on abort, and a translated error message otherwise
      */
-    Q_INVOKABLE QString exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate);
+    Q_INVOKABLE virtual QString exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) = 0;
+
+    /*! \brief Import content from file
+     *
+     * On desktop systems, this method is supposed to open a file dialog to import a file.
+     * On mobile systems, this method is supposed to do nothing.
+     *
+     */
+    Q_INVOKABLE virtual void importContent() = 0;
+
+    /*! \brief Lock connection to Wi-Fi network
+     *
+     * If supported by the platform, this method is supposed to lock the current Wi-Fi
+     * connection, that is, to prevent the device from dropping the connection or shutting down the Wi-Fi interface.
+     *
+     * The app calls that method after connecting to a traffic data receiver, in order to ensure that traffic data is continuously received.
+     *
+     * @param lock If true, then lock the network. If false, then release the lock.
+     */
+    Q_INVOKABLE virtual void lockWifi(bool lock) = 0;
+
+    /*! \brief Checks if all required permissions have been granted
+     *
+     * Depending on the platform, the app needs to ask for permissions to operate properly.
+     * This method can
+     * be used to check if all permissions have been granted.
+     *
+     * @returns 'False' if all required permissions have been granted.
+    */
+    Q_INVOKABLE virtual bool hasMissingPermissions() = 0;
+
+    // ------------------
 
     /*! \brief Hides the android splash screen.
      *
@@ -118,40 +134,15 @@ public:
      * QtAndroid::hideSplashScreen is called (only once, regardless of how often
      * this slot is used).
     */
+#warning do I need this here?
     Q_INVOKABLE virtual void hideSplashScreen() = 0;
-
-    /*! \brief Import content from file
-     *
-     * On Android systems, this method does nothing.
-     *
-     * On other desktop systems, this method uses a file dialog to import a file.
-     */
-    Q_INVOKABLE void importContent();
-
-    /*! \brief Lock connection to Wi-Fi network
-     *
-     * Under Android, this method can lock the Wi-Fi connection by acquiring a
-     * WifiManager.WifiLock. On other platforms, this method does nothing.
-     *
-     * @param lock If true, then lock the network. If false, then release the lock.
-     */
-    Q_INVOKABLE static void lockWifi(bool lock);
 
     /*! \brief Device manufacturer
      *
      * @returns On Android, returns device manufacturer. On other systems, always returns an empty string.
     */
-    Q_INVOKABLE static QString manufacturer();
-
-    /*! \brief Checks if all required permissions have been granted
-     *
-     * On Android, the app requirs certain permissions to run. This method can
-     * be used to check if all permissions have been granted.
-     *
-     * @returns On Android, returns 'true' if not all required permissions have
-     * been granted. On other systems, always returns 'false'
-    */
-    Q_INVOKABLE bool missingPermissionsExist();
+#warning do I need this here?
+    Q_INVOKABLE virtual QString manufacturer() = 0;
 
     /*! \brief Helper function, not for public consumption
      *
@@ -164,7 +155,8 @@ public:
      * @param path File name
      *
      */
-    Q_INVOKABLE void processFileOpenRequest(const QString &path);
+#warning do I need this here?
+    Q_INVOKABLE virtual void processFileOpenRequest(const QString &path) = 0;
 
     /*! \brief Helper function, not for public consumption
      *
@@ -172,7 +164,8 @@ public:
      *
      * @param path UTF8-Encoded strong
      */
-    Q_INVOKABLE void processFileOpenRequest(const QByteArray &path);
+#warning do I need this here?
+    Q_INVOKABLE virtual void processFileOpenRequest(const QByteArray &path) = 0;
 
     /*! \brief Start receiving "open file" requests from platform
      *
@@ -187,7 +180,8 @@ public:
      * ShareActivity postponed processing of the intent until enroute has been
      * fully initialized.
      */
-     Q_INVOKABLE void startReceiveOpenFileRequests();
+#warning do I need this here?
+     Q_INVOKABLE virtual void startReceiveOpenFileRequests() = 0;
 
     /*! \brief Make the device briefly vibrate
      *
@@ -195,7 +189,7 @@ public:
      *
      * On other platforms, this does nothing.
     */
-    Q_INVOKABLE static void vibrateBrief();
+    Q_INVOKABLE virtual void vibrateBrief() = 0;
 
     /*! \brief View content in other app
      *
@@ -215,7 +209,7 @@ public:
      *
      * @returns Empty string on success, a translated error message otherwise
      */
-    Q_INVOKABLE QString viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate);
+    Q_INVOKABLE virtual QString viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) = 0;
 
 #if defined (Q_OS_ANDROID)
     // Emits the signal "WifiConnected".
@@ -243,7 +237,7 @@ signals:
      *
      *  This signal is emitted when a new WiFi connection becomes available.
      */
-    virtual void wifiConnected() = 0;
+    void wifiConnected();
 
 private:
     Q_DISABLE_COPY_MOVE(PlatformAdaptor_Abstract)

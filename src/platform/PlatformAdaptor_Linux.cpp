@@ -140,7 +140,7 @@ auto Platform::PlatformAdaptor::manufacturer() -> QString
 }
 
 
-auto Platform::PlatformAdaptor::missingPermissionsExist() -> bool
+auto Platform::PlatformAdaptor::hasMissingPermissions() -> bool
 {
     Q_UNUSED(this);
     return false;

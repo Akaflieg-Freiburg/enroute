@@ -164,6 +164,7 @@ set(SOURCES
     navigation/Navigator.cpp
     navigation/RemainingRouteInfo.cpp
     platform/Notifier.cpp
+    platform/PlatformAdaptor_Abstract.cpp
     platform/PlatformAdaptor_Android.cpp
     platform/PlatformAdaptor_Linux.cpp
     positioning/Geoid.cpp

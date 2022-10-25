@@ -48,28 +48,6 @@ class PlatformAdaptor : public PlatformAdaptor_Abstract
     Q_OBJECT
 
 public:
-    /*! \brief Function and type of a file that we have been requested to open */
-    enum FileFunction
-      {
-        UnknownFunction,
-        FlightRouteOrWaypointLibrary, /*< File contains a flight route or a waypoint library. */
-        FlightRoute, /*< File contains a flight route. */
-        VectorMap, /*< File contains a vector map. */
-        RasterMap, /*< File contains a raster map. */
-        WaypointLibrary /*< Waypoint library in CUP or GeoJSON format */
-      };
-    Q_ENUM(FileFunction)
-
-    /*! \brief Notification types */
-    enum NotificationType
-    {
-        DownloadInfo = 0,                 /*< Info that  download is in progress */
-        TrafficReceiverSelfTestError = 1, /*< Traffic receiver reports problem on self-test */
-        TrafficReceiverProblem = 2        /*< Traffic receiver reports problem while running */
-    };
-    Q_ENUM(NotificationType)
-
-
     /*! \brief Standard constructor
      *
      * On Android, this constructor disables the screen lock and asks for the
@@ -91,7 +69,7 @@ public:
      * @returns The SSID of the current Wi-Fi networks, or an empty of generic string
      * if the device is not connected to a Wi-Fi or if the SSID could not be determined.
      */
-    Q_INVOKABLE static QString currentSSID();
+    Q_INVOKABLE QString currentSSID() override;
 
     /*! \brief Export content to file or to file sending app
      *
@@ -111,7 +89,7 @@ public:
      *
      * @returns Empty string on success, the string "abort" on abort, and a translated error message otherwise
      */
-    Q_INVOKABLE QString exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate);
+    Q_INVOKABLE QString exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) override;
 
     /*! \brief Hides the android splash screen.
      *
@@ -121,7 +99,7 @@ public:
      * QtAndroid::hideSplashScreen is called (only once, regardless of how often
      * this slot is used).
     */
-    Q_INVOKABLE void hideSplashScreen();
+    Q_INVOKABLE void hideSplashScreen() override;
 
     /*! \brief Import content from file
      *
@@ -129,7 +107,7 @@ public:
      *
      * On other desktop systems, this method uses a file dialog to import a file.
      */
-    Q_INVOKABLE void importContent();
+    Q_INVOKABLE void importContent() override;
 
     /*! \brief Lock connection to Wi-Fi network
      *
@@ -138,13 +116,13 @@ public:
      *
      * @param lock If true, then lock the network. If false, then release the lock.
      */
-    Q_INVOKABLE static void lockWifi(bool lock);
+    Q_INVOKABLE void lockWifi(bool lock) override;
 
     /*! \brief Device manufacturer
      *
      * @returns On Android, returns device manufacturer. On other systems, always returns an empty string.
     */
-    Q_INVOKABLE static QString manufacturer();
+    Q_INVOKABLE QString manufacturer() override;
 
     /*! \brief Checks if all required permissions have been granted
      *
@@ -154,7 +132,7 @@ public:
      * @returns On Android, returns 'true' if not all required permissions have
      * been granted. On other systems, always returns 'false'
     */
-    Q_INVOKABLE bool missingPermissionsExist();
+    Q_INVOKABLE bool hasMissingPermissions() override;
 
     /*! \brief Helper function, not for public consumption
      *
@@ -167,7 +145,7 @@ public:
      * @param path File name
      *
      */
-    Q_INVOKABLE void processFileOpenRequest(const QString &path);
+    Q_INVOKABLE void processFileOpenRequest(const QString &path) override;
 
     /*! \brief Helper function, not for public consumption
      *
@@ -175,7 +153,7 @@ public:
      *
      * @param path UTF8-Encoded strong
      */
-    Q_INVOKABLE void processFileOpenRequest(const QByteArray &path);
+    Q_INVOKABLE void processFileOpenRequest(const QByteArray &path) override;
 
     /*! \brief Start receiving "open file" requests from platform
      *
@@ -190,7 +168,7 @@ public:
      * ShareActivity postponed processing of the intent until enroute has been
      * fully initialized.
      */
-     Q_INVOKABLE void startReceiveOpenFileRequests();
+     Q_INVOKABLE void startReceiveOpenFileRequests() override;
 
     /*! \brief Make the device briefly vibrate
      *
@@ -198,7 +176,7 @@ public:
      *
      * On other platforms, this does nothing.
     */
-    Q_INVOKABLE static void vibrateBrief();
+    Q_INVOKABLE void vibrateBrief() override;
 
     /*! \brief View content in other app
      *
@@ -218,7 +196,7 @@ public:
      *
      * @returns Empty string on success, a translated error message otherwise
      */
-    Q_INVOKABLE QString viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate);
+    Q_INVOKABLE QString viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) override;
 
 #if defined (Q_OS_ANDROID)
     // Emits the signal "WifiConnected".
@@ -226,27 +204,6 @@ public:
         emit wifiConnected();
     }
 #endif
-
-signals:
-    /*! \brief Emitted when platform asks this app to open a file
-     *
-     * This signal is emitted whenever the platform-dependent code receives
-     * information that enroute is requested to open a file.
-     *
-     * @param fileName Path of the file on the local file system
-     *
-     * @param fileFunction Function and file type.
-     *
-     * On Android, other apps can request that enroute 'views' a file, via
-     * Android's INTENT system.
-     */
-    void openFileRequest(QString fileName, PlatformAdaptor::FileFunction fileFunction);
-
-    /*! \brief Emitted when a new WiFi connections becomes available
-     *
-     *  This signal is emitted when a new WiFi connection becomes available.
-     */
-    void wifiConnected();
 
 private:
     Q_DISABLE_COPY_MOVE(PlatformAdaptor)

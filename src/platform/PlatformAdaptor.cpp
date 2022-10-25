@@ -30,10 +30,3 @@
 
 #include "platform/PlatformAdaptor.h"
 
-
-void Platform::PlatformAdaptor::deferredInitialization()
-{
-#if defined(Q_OS_ANDROID)
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "startWiFiMonitor");
-#endif
-}

@@ -63,6 +63,11 @@ Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
 }
 
 
+void Platform::PlatformAdaptor::deferredInitialization()
+{
+}
+
+
 void Platform::PlatformAdaptor::hideSplashScreen()
 {
 }

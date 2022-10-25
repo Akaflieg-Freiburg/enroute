@@ -111,6 +111,12 @@ Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
 }
 
 
+void Platform::PlatformAdaptor::deferredInitialization()
+{
+    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "startWiFiMonitor");
+}
+
+
 void Platform::PlatformAdaptor::hideSplashScreen()
 {
     if (splashScreenHidden)

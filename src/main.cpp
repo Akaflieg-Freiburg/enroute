@@ -133,9 +133,12 @@ auto main(int argc, char *argv[]) -> int
 
     // Install translator
     auto* enrouteTranslator = new QTranslator(&app);
-    if (enrouteTranslator->load(QStringLiteral(":enroute_%1.qm").arg(QLocale::system().name().left(2)))) {
+    if (enrouteTranslator->load(QStringLiteral(":enroute_%1.qm").arg(QLocale::system().name().left(2))))
+    {
         QCoreApplication::installTranslator(enrouteTranslator);
-    } else {
+    }
+    else
+    {
         delete enrouteTranslator;
     }
 
@@ -157,17 +160,22 @@ auto main(int argc, char *argv[]) -> int
     parser.addPositionalArgument(QStringLiteral("[fileName]"), QCoreApplication::translate("main", "File to import."));
     parser.process(app);
     auto positionalArguments = parser.positionalArguments();
-    if (positionalArguments.length() > 1) {
+    if (positionalArguments.length() > 1)
+    {
         parser.showHelp();
     }
 
 #if !defined(Q_OS_ANDROID)
     // Single application on desktops
     KDSingleApplication kdsingleapp;
-    if (!kdsingleapp.isPrimaryInstance()) {
-        if (positionalArguments.length() > 0) {
+    if (!kdsingleapp.isPrimaryInstance())
+    {
+        if (positionalArguments.length() > 0)
+        {
             kdsingleapp.sendMessage(positionalArguments[0].toUtf8());
-        } else {
+        }
+        else
+        {
             kdsingleapp.sendMessage(QByteArray());
         }
         return 0;
@@ -175,7 +183,8 @@ auto main(int argc, char *argv[]) -> int
 #endif
 
     // Create mobile platform adaptor. We do this before creating the application engine because this also asks for permissions
-    if (positionalArguments.length() == 1) {
+    if (positionalArguments.length() == 1)
+    {
         GlobalObject::platformAdaptor()->processFileOpenRequest(positionalArguments[0]);
     }
     QTimer::singleShot(4s, GlobalObject::platformAdaptor(), &Platform::PlatformAdaptor::hideSplashScreen);
@@ -195,7 +204,8 @@ auto main(int argc, char *argv[]) -> int
     engine.rootContext()->setContextProperty(QStringLiteral("speed"), QVariant::fromValue(Units::Speed()) );
     engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
 
-    if (parser.isSet(screenshotOption)) {
+    if (parser.isSet(screenshotOption))
+    {
         GlobalObject::demoRunner()->setEngine(&engine);
         QTimer::singleShot(1s, GlobalObject::demoRunner(), &DemoRunner::run);
     }

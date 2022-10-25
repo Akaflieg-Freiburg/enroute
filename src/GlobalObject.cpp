@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -40,7 +40,8 @@
 
 #if defined(Q_OS_ANDROID)
 #include "platform/Notifier_Android.h"
-#else
+#endif
+#if defined(Q_OS_LINUX)
 #include "platform/Notifier_Linux.h"
 #endif
 
@@ -58,7 +59,8 @@ QPointer<Navigation::Navigator> g_navigator {};
 QPointer<QNetworkAccessManager> g_networkAccessManager {};
 #if defined(Q_OS_ANDROID)
 QPointer<Platform::Notifier_Android> g_notifier {};
-#else
+#endif
+#if defined(Q_OS_LINUX)
 QPointer<Platform::Notifier_Linux> g_notifier {};
 #endif
 QPointer<Traffic::PasswordDB> g_passwordDB {};
@@ -158,7 +160,8 @@ auto GlobalObject::notifier() -> Platform::Notifier*
 {
 #if defined(Q_OS_ANDROID)
     return allocateInternal<Platform::Notifier_Android>(g_notifier);
-#else
+#endif
+#if defined(Q_OS_LINUX)
     return allocateInternal<Platform::Notifier_Linux>(g_notifier);
 #endif
 

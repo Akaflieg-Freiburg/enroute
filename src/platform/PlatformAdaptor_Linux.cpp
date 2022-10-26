@@ -45,7 +45,7 @@
 Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
     : PlatformAdaptor_Abstract(parent)
 {
-
+#warning is any of this ever used?
     // Do all the set-up required for sharing files
     // Android requires you to use a subdirectory within the AppDataLocation for
     // sending and receiving files. We create this and clear this directory on creation of the Share object -- even if the
@@ -55,16 +55,6 @@ Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
     QDir exchangeDir(fileExchangeDirectoryName);
     exchangeDir.removeRecursively();
     exchangeDir.mkpath(fileExchangeDirectoryName);
-
-    currentSSID();
-
-    // Don't forget the deferred initialization
-    QTimer::singleShot(0, this, &PlatformAdaptor::deferredInitialization);
-}
-
-
-void Platform::PlatformAdaptor::deferredInitialization()
-{
 }
 
 
@@ -81,9 +71,31 @@ auto Platform::PlatformAdaptor::currentSSID() -> QString
 }
 
 
-auto Platform::PlatformAdaptor::exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
+auto Platform::PlatformAdaptor::hasMissingPermissions() -> bool
 {
-    // Avoids warnings on Linux/Desktop
+    Q_UNUSED(this);
+    return false;
+}
+
+
+void Platform::PlatformAdaptor::importContent()
+{
+    auto fileNameX = QFileDialog::getOpenFileName(nullptr, tr("Import data"), QDir::homePath(), tr("All files (*)"));
+    if (!fileNameX.isEmpty())
+    {
+        processFileOpenRequest(fileNameX);
+    }
+}
+
+
+void Platform::PlatformAdaptor::lockWifi(bool lock)
+{
+    Q_UNUSED(lock)
+}
+
+
+auto Platform::PlatformAdaptor::shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
+{
     Q_UNUSED(content)
     Q_UNUSED(mimeType)
     Q_UNUSED(fileNameTemplate)
@@ -113,24 +125,56 @@ auto Platform::PlatformAdaptor::exportContent(const QByteArray& content, const Q
 }
 
 
+void Platform::PlatformAdaptor::vibrateBrief()
+{
+}
+
+
+auto Platform::PlatformAdaptor::viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
+{
+    Q_UNUSED(content)
+    Q_UNUSED(mimeType)
+    Q_UNUSED(fileNameTemplate)
+
+    QString tmpPath = contentToTempFile(content, fileNameTemplate);
+    bool success = QDesktopServices::openUrl(QUrl("file://" + tmpPath, QUrl::TolerantMode));
+    if (success)
+    {
+        return {};
+    }
+    return tr("Unable to open data in other app.");
+}
+
+
+// -------- Methods of questionable value start here.
+
+
+auto Platform::PlatformAdaptor::contentToTempFile(const QByteArray& content, const QString& fileNameTemplate) -> QString
+{
+    QDateTime now = QDateTime::currentDateTimeUtc();
+    QString fname = fileNameTemplate.arg(now.toString(QStringLiteral("yyyy-MM-dd_hh.mm.ss")));
+
+    // in Qt, resources are not stored absolute file paths, so in order to
+    // share the content we save it to disk. We save these temporary files
+    // when creating new Share objects.
+    //
+    auto filePath = fileExchangeDirectoryName + fname;
+
+    QFile file(filePath);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
+        return {};
+    }
+
+    file.write(content);
+    file.close();
+
+    return filePath;
+}
+
+
 void Platform::PlatformAdaptor::hideSplashScreen()
 {
-}
 
-
-void Platform::PlatformAdaptor::importContent()
-{
-    auto fileNameX = QFileDialog::getOpenFileName(nullptr, tr("Import data"), QDir::homePath(), tr("All files (*)"));
-    if (!fileNameX.isEmpty())
-    {
-        processFileOpenRequest(fileNameX);
-    }
-}
-
-
-void Platform::PlatformAdaptor::lockWifi(bool lock)
-{
-    Q_UNUSED(lock)
 }
 
 
@@ -140,10 +184,9 @@ auto Platform::PlatformAdaptor::manufacturer() -> QString
 }
 
 
-auto Platform::PlatformAdaptor::hasMissingPermissions() -> bool
+void Platform::PlatformAdaptor::processFileOpenRequest(const QByteArray &path)
 {
-    Q_UNUSED(this);
-    return false;
+    processFileOpenRequest(QString::fromUtf8(path).simplified());
 }
 
 
@@ -233,56 +276,6 @@ void Platform::PlatformAdaptor::processFileOpenRequest(const QString &path)
 }
 
 
-void Platform::PlatformAdaptor::vibrateBrief()
-{
-}
-
-
-auto Platform::PlatformAdaptor::viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
-{
-    Q_UNUSED(content)
-    Q_UNUSED(mimeType)
-    Q_UNUSED(fileNameTemplate)
-
-    QString tmpPath = contentToTempFile(content, fileNameTemplate);
-    bool success = QDesktopServices::openUrl(QUrl("file://" + tmpPath, QUrl::TolerantMode));
-    if (success)
-    {
-        return {};
-    }
-    return tr("Unable to open data in other app.");
-}
-
-
-// ----------------------------
-
-
-
-
-auto Platform::PlatformAdaptor::contentToTempFile(const QByteArray& content, const QString& fileNameTemplate) -> QString
-{
-    QDateTime now = QDateTime::currentDateTimeUtc();
-    QString fname = fileNameTemplate.arg(now.toString(QStringLiteral("yyyy-MM-dd_hh.mm.ss")));
-
-    // in Qt, resources are not stored absolute file paths, so in order to
-    // share the content we save it to disk. We save these temporary files
-    // when creating new Share objects.
-    //
-    auto filePath = fileExchangeDirectoryName + fname;
-
-    QFile file(filePath);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
-        return {};
-    }
-
-    file.write(content);
-    file.close();
-
-    return filePath;
-}
-
-
-
 void Platform::PlatformAdaptor::startReceiveOpenFileRequests()
 {
     receiveOpenFileRequestsStarted = true;
@@ -292,14 +285,6 @@ void Platform::PlatformAdaptor::startReceiveOpenFileRequests()
     }
     pendingReceiveOpenFileRequest = QString();
 }
-
-
-void Platform::PlatformAdaptor::processFileOpenRequest(const QByteArray &path)
-{
-    processFileOpenRequest(QString::fromUtf8(path).simplified());
-}
-
-
 
 
 #endif // defined(Q_OS_LINUX)

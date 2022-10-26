@@ -172,7 +172,7 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_PlatformAdaptor_onWifi
     // and we simply return.
     if (GlobalObject::canConstruct())
     {
-        GlobalObject::platformAdaptor()->emitWifiConnected();
+        GlobalObject::platformAdaptor()->wifiConnected();
     }
 
 }
@@ -208,7 +208,7 @@ void Platform::PlatformAdaptor::importContent()
 }
 
 
-auto Platform::PlatformAdaptor::exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
+auto Platform::PlatformAdaptor::shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
 {
     // Avoids warnings on Linux/Desktop
     Q_UNUSED(content)

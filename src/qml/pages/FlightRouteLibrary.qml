@@ -181,7 +181,7 @@ Page {
                                 highlighted = false
                                 parent.highlighted = false
 
-                                var errorString = global.platformAdaptor().exportContent(global.librarian().get(Librarian.Routes, modelData).toGeoJSON(), "application/geo+json", global.librarian().get(Librarian.Routes, modelData).suggestedFilename())
+                                var errorString = global.platformAdaptor().shareContent(global.librarian().get(Librarian.Routes, modelData).toGeoJSON(), "application/geo+json", global.librarian().get(Librarian.Routes, modelData).suggestedFilename())
                                 if (errorString === "abort") {
                                     toast.doToast(qsTr("Aborted"))
                                     return
@@ -206,7 +206,7 @@ Page {
                                 highlighted = false
                                 parent.highlighted = false
 
-                                var errorString = global.platformAdaptor().exportContent(global.librarian().get(Librarian.Routes, modelData).toGpx(), "application/gpx+xml", global.librarian().get(Librarian.Routes, modelData).suggestedFilename())
+                                var errorString = global.platformAdaptor().shareContent(global.librarian().get(Librarian.Routes, modelData).toGpx(), "application/gpx+xml", global.librarian().get(Librarian.Routes, modelData).suggestedFilename())
                                 if (errorString === "abort") {
                                     toast.doToast(qsTr("Aborted"))
                                     return

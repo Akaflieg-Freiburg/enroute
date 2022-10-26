@@ -108,7 +108,7 @@ Page {
                             global.platformAdaptor().vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            var errorString = global.platformAdaptor().exportContent(global.waypointLibrary().toGeoJSON(), "application/geo+json", qsTr("Waypoint Library"))
+                            var errorString = global.platformAdaptor().shareContent(global.waypointLibrary().toGeoJSON(), "application/geo+json", qsTr("Waypoint Library"))
                             if (errorString === "abort") {
                                 toast.doToast(qsTr("Aborted"))
                                 return
@@ -132,7 +132,7 @@ Page {
                             global.platformAdaptor().vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            var errorString = global.platformAdaptor().exportContent(global.waypointLibrary().toGpx(), "application/gpx+xml", qsTr("Waypoint Library"))
+                            var errorString = global.platformAdaptor().shareContent(global.waypointLibrary().toGpx(), "application/gpx+xml", qsTr("Waypoint Library"))
                             if (errorString === "abort") {
                                 toast.doToast(qsTr("Aborted"))
                                 return

@@ -518,7 +518,7 @@ ApplicationWindow {
             // Things to do on startup. If the user has not yet accepted terms and conditions, show that.
             // Otherwise, if the user has not used this version of the app before, show the "what's new" dialog.
             // Otherwise, if the maps need updating, show the "update map" dialog.
-            if (global.platformAdaptor().missingPermissionsExist()) {
+            if (global.platformAdaptor().hasMissingPermissions()) {
                 dialogLoader.active = false
                 dialogLoader.source = "dialogs/MissingPermissionsDialog.qml"
                 dialogLoader.active = true

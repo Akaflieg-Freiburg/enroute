@@ -29,6 +29,14 @@ namespace Platform {
  * This pure virtual class is an interface to capabilities of mobile devices (e.g. vibration)
  * that need platform-specific code to operate.  The files PlatformAdaptor_XXX.(h|cpp) implement
  * a child class PlatformAdaptor that contains the actual implementation.
+ *
+ * Child classes need to implement all pure virtual functions, and need to provide the following additional functionality.
+ *
+ * - Child classes need to monitor the Wi-Fi network and emit the signal wifiConnected() whenever a new Wi-Fi connection becomes available. The
+ *   app will then check if a traffic data receiver is active in the network.
+ *
+ * - If supported by the platform, child classes need to react to requests by the platform to open a file (e.g. a GeoJSON file containing a flight route).
+ *   Once a request is received, the signal openFileRequest() must be emitted.
  */
 
 class PlatformAdaptor_Abstract : public QObject
@@ -78,22 +86,15 @@ public:
      */
     Q_INVOKABLE virtual QString currentSSID() = 0;
 
-    /*! \brief Export content to file or to file sending app
+    /*! \brief Checks if all required permissions have been granted
      *
-     * On desktop systems, this method is supposed to show a file dialog to save the file.
-     * On mobile devices, this method is supposed to open a dialog that allows to chose the method to send this file (e-mail, dropbox, signal chat, …)
+     * Depending on the platform, the app needs to ask for permissions to operate properly.
+     * This method can
+     * be used to check if all permissions have been granted.
      *
-     * @param content File content
-     *
-     * @param mimeType the mimeType of the content
-     *
-     * @param fileNameTemplate A string of the form "EDTF - EDTG", without suffix of path. This
-     * can be used, e.g. as the name of
-     * the attachment when sending files by e-mail.
-     *
-     * @returns Empty string on success, the string "abort" on abort, and a translated error message otherwise
-     */
-    Q_INVOKABLE virtual QString exportContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) = 0;
+     * @returns 'False' if all required permissions have been granted.
+    */
+    Q_INVOKABLE virtual bool hasMissingPermissions() = 0;
 
     /*! \brief Import content from file
      *
@@ -114,15 +115,43 @@ public:
      */
     Q_INVOKABLE virtual void lockWifi(bool lock) = 0;
 
-    /*! \brief Checks if all required permissions have been granted
+    /*! \brief Export content to file or to file sending app
      *
-     * Depending on the platform, the app needs to ask for permissions to operate properly.
-     * This method can
-     * be used to check if all permissions have been granted.
+     * On desktop systems, this method is supposed to show a file dialog to save the file.
+     * On mobile devices, this method is supposed to open a dialog that allows to chose the method to send this file (e-mail, dropbox, signal chat, …)
      *
-     * @returns 'False' if all required permissions have been granted.
-    */
-    Q_INVOKABLE virtual bool hasMissingPermissions() = 0;
+     * @param content File content
+     *
+     * @param mimeType the mimeType of the content
+     *
+     * @param fileNameTemplate A string of the form "EDTF - EDTG", without suffix of path. This
+     * can be used, e.g. as the name of
+     * the attachment when sending files by e-mail.
+     *
+     * @returns Empty string on success, the string "abort" on abort, and a translated error message otherwise
+     */
+    Q_INVOKABLE virtual QString shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) = 0;
+
+    /*! \brief Make the device briefly vibrate
+     *
+     * On platforms that support this, make the device briefly vibrate if haptic feedback is enabled in the system settings.
+     */
+    Q_INVOKABLE virtual void vibrateBrief() = 0;
+
+    /*! \brief View content
+     *
+     * This method is supposed open the content in an appropriate app.  Example: if the content is GeoJSON, the content might be opened in Google Earth, or in a mobile
+     * mapping application.
+     *
+     * @param content content text
+     *
+     * @param mimeType the mimeType of the content
+     *
+     * @param fileNameTemplate A string of the form "EDTF - EDTG", without suffix of path.
+     *
+     * @returns Empty string on success, a translated error message otherwise
+     */
+    Q_INVOKABLE virtual QString viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) = 0;
 
     // ------------------
 
@@ -183,41 +212,6 @@ public:
 #warning do I need this here?
      Q_INVOKABLE virtual void startReceiveOpenFileRequests() = 0;
 
-    /*! \brief Make the device briefly vibrate
-     *
-     * On Android, make the device briefly vibrate if haptic feedback is enabled in the system settings.
-     *
-     * On other platforms, this does nothing.
-    */
-    Q_INVOKABLE virtual void vibrateBrief() = 0;
-
-    /*! \brief View content in other app
-     *
-     * On Android systems, this method will save content to temporary file in
-     * the app's private cache and call the corresponding java static method
-     * where a SEND intent is created and startActivity is called.
-     *
-     * On other systems, this method opens the file using QDesktopServices.
-     *
-     * @param content content text
-     *
-     * @param mimeType the mimeType of the content
-     *
-     * @param fileNameTemplate A string of the form "EDTF - EDTG", without suffix of path. This
-     * file name is visible to the user. It appears for instance as the name of
-     * the attachment when sending files by e-mail.
-     *
-     * @returns Empty string on success, a translated error message otherwise
-     */
-    Q_INVOKABLE virtual QString viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) = 0;
-
-#if defined (Q_OS_ANDROID)
-    // Emits the signal "WifiConnected".
-    void emitWifiConnected() {
-        emit wifiConnected();
-    }
-#endif
-
 signals:
     /*! \brief Emitted when platform asks this app to open a file
      *
@@ -253,13 +247,6 @@ private:
     // Name of a subdirectory within the AppDataLocation for sending and
     // receiving files.
     QString fileExchangeDirectoryName;
-
-#if defined (Q_OS_ANDROID)
-    // @returns True if an app could be started, false if no app was found
-    static bool outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType);
-
-    QStringList permissions;
-#endif
 
     bool receiveOpenFileRequestsStarted {false};
     QString pendingReceiveOpenFileRequest {};

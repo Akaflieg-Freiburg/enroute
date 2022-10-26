@@ -21,39 +21,25 @@
 #include <QtGlobal>
 #if defined(Q_OS_ANDROID)
 
-
 #include <QAndroidJniEnvironment>
-#include <QtAndroid>
-#include <QtAndroidExtras/QAndroidJniObject>
-#include <QAndroidJniEnvironment>
-#include <QCoreApplication>
 #include <QDir>
-#include <QPointer>
-#include <QStandardPaths>
-#include <QtAndroid>
-#include <QtAndroidExtras/QAndroidJniObject>
-#include <QTimer>
-#include <QDateTime>
-#include <QDebug>
-#include <QDesktopServices>
 #include <QFile>
 #include <QMimeDatabase>
-#include <QUrl>
+#include <QStandardPaths>
+#include <QtAndroid>
 
 #include "GlobalObject.h"
 #include "geomaps/CUP.h"
 #include "geomaps/GeoJSON.h"
 #include "geomaps/MBTILES.h"
-#include "platform/PlatformAdaptor.h"
+#include "platform/PlatformAdaptor_Android.h"
+#include "platform/Notifier_Android.h"
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficDataSource_File.h"
-#include "GlobalObject.h"
-#include "platform/PlatformAdaptor.h"
-#include "platform/Notifier_Android.h"
 
 
 Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
-    : QObject(parent)
+    : Platform::PlatformAdaptor_Abstract(parent)
 {
 
     // Do all the set-up required for sharing files
@@ -136,7 +122,7 @@ void Platform::PlatformAdaptor::lockWifi(bool lock)
 }
 
 
-Q_INVOKABLE auto Platform::PlatformAdaptor::missingPermissionsExist() -> bool
+auto Platform::PlatformAdaptor::hasMissingPermissions() -> bool
 {
 
     // Check is required permissions have been granted
@@ -219,16 +205,6 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_PlatformAdaptor_onNoti
 
 void Platform::PlatformAdaptor::importContent()
 {
-#if !defined(Q_OS_ANDROID)
-    auto fileNameX = QFileDialog::getOpenFileName(nullptr,
-                                                  tr("Import data"),
-                                                  QDir::homePath(),
-                                                  tr("All files (*)")
-                                                  );
-    if (!fileNameX.isEmpty()) {
-        processFileOpenRequest(fileNameX);
-    }
-#endif
 }
 
 

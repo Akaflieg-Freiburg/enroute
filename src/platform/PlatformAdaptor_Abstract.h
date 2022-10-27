@@ -115,25 +115,6 @@ public:
      */
     Q_INVOKABLE virtual void lockWifi(bool lock) = 0;
 
-    /*! \brief Determine file function and emit openFileRequest()
-     *
-     * This helper function is called by platform-dependent code whenever the
-     * app is asked to open a file.  It will look at the file, determine the
-     * file function and emit the signal openFileRequest() as appropriate.
-     *
-     * @param path File name
-     *
-     */
-    virtual void processFileOpenRequest(const QString& path);
-
-    /*! \brief Determine file function and emit openFileRequest()
-     *
-     * Overloaded function for convenience
-     *
-     * @param QByteArray containing an UTF8-Encoded strong
-     */
-    void processFileOpenRequest(const QByteArray& path);
-
     /*! \brief Export content to file or to file sending app
      *
      * On desktop systems, this method is supposed to show a file dialog to save the file.
@@ -212,6 +193,27 @@ signals:
      *  This signal is emitted when a new WiFi connection becomes available.
      */
     void wifiConnected();
+
+public slots:
+    /*! \brief Determine file function and emit openFileRequest()
+     *
+     * This helper function is called by platform-dependent code whenever the
+     * app is asked to open a file.  It will look at the file, determine the
+     * file function and emit the signal openFileRequest() as appropriate.
+     *
+     * @param path File name
+     *
+     */
+    virtual void processFileOpenRequest(const QString& path);
+
+    /*! \brief Determine file function and emit openFileRequest()
+     *
+     * Overloaded function for convenience
+     *
+     * @param QByteArray containing an UTF8-Encoded strong
+     */
+    void processFileOpenRequest(const QByteArray& path);
+
 
 private:
     Q_DISABLE_COPY_MOVE(PlatformAdaptor_Abstract)

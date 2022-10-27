@@ -22,20 +22,17 @@
 #if defined(Q_OS_ANDROID)
 
 #include <QAndroidJniEnvironment>
+#include <QDateTime>
 #include <QDir>
 #include <QFile>
+#include <QHash>
 #include <QMimeDatabase>
 #include <QStandardPaths>
 #include <QtAndroid>
 
 #include "GlobalObject.h"
-#include "geomaps/CUP.h"
-#include "geomaps/GeoJSON.h"
-#include "geomaps/MBTILES.h"
 #include "platform/PlatformAdaptor_Android.h"
 #include "platform/Notifier_Android.h"
-#include "traffic/TrafficDataProvider.h"
-#include "traffic/TrafficDataSource_File.h"
 
 
 Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
@@ -111,7 +108,6 @@ void Platform::PlatformAdaptor::hideSplashScreen()
     }
     splashScreenHidden = true;
     QtAndroid::hideSplashScreen(200);
-
 }
 
 
@@ -152,7 +148,6 @@ auto Platform::PlatformAdaptor::currentSSID() -> QString
 }
 
 
-
 auto Platform::PlatformAdaptor::manufacturer() -> QString
 {
     QAndroidJniObject stringObject = QAndroidJniObject::callStaticObjectMethod("de/akaflieg_freiburg/enroute/PlatformAdaptor",
@@ -160,48 +155,6 @@ auto Platform::PlatformAdaptor::manufacturer() -> QString
     return stringObject.toString();
 }
 
-
-extern "C" {
-
-JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_PlatformAdaptor_onWifiConnected(JNIEnv* /*unused*/, jobject /*unused*/)
-{
-
-    // This method gets called from Java before main() has executed
-    // and thus before a QApplication instance has been constructed.
-    // In these cases, the methods of the Global class must not be called
-    // and we simply return.
-    if (GlobalObject::canConstruct())
-    {
-        GlobalObject::platformAdaptor()->wifiConnected();
-    }
-
-}
-
-// This method is called from Java to indicate that the user has clicked into the Android
-// notification for reporting traffic data receiver errors
-
-JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_PlatformAdaptor_onNotificationClicked(JNIEnv* /*unused*/, jobject /*unused*/, jint notifyID, jint actionID)
-{
-
-    // This method gets called from Java before main() has executed
-    // and thus before a QApplication instance has been constructed.
-    // In these cases, the methods of the Global class must not be called
-    // and we simply return.
-    if (!GlobalObject::canConstruct())
-    {
-        return;
-    }
-    auto* ptr = qobject_cast<Platform::Notifier_Android*>(GlobalObject::notifier());
-
-    if (ptr == nullptr)
-    {
-        return;
-    }
-    ptr->onNotificationClicked((Platform::Notifier::NotificationTypes)notifyID, actionID);
-
-}
-
-} // extern "C"
 
 void Platform::PlatformAdaptor::importContent()
 {
@@ -267,7 +220,6 @@ auto Platform::PlatformAdaptor::contentToTempFile(const QByteArray& content, con
 }
 
 
-
 void Platform::PlatformAdaptor::startReceiveOpenFileRequests()
 {
     receiveOpenFileRequestsStarted = true;
@@ -289,92 +241,6 @@ void Platform::PlatformAdaptor::startReceiveOpenFileRequests()
 }
 
 
-void Platform::PlatformAdaptor::processFileOpenRequest(const QByteArray &path)
-{
-    processFileOpenRequest(QString::fromUtf8(path).simplified());
-}
-
-
-void Platform::PlatformAdaptor::processFileOpenRequest(const QString &path)
-{
-    if (!receiveOpenFileRequestsStarted) {
-        pendingReceiveOpenFileRequest = path;
-        return;
-    }
-
-    QString myPath;
-    if (path.startsWith(u"file:")) {
-        QUrl url(path.trimmed());
-        myPath = url.toLocalFile();
-    } else {
-        myPath = path;
-    }
-
-    QMimeDatabase db;
-    auto mimeType = db.mimeTypeForFile(myPath);
-
-    /*
-     * Check for various possible file formats/contents
-     */
-
-    // Flight Route in GPX format
-    if ((mimeType.inherits(QStringLiteral("application/xml"))) || (mimeType.name() == u"application/x-gpx+xml")) {
-        emit openFileRequest(myPath, FlightRouteOrWaypointLibrary);
-        return;
-    }
-
-    // GeoJSON file
-    auto fileContent = GeoMaps::GeoJSON::inspect(myPath);
-    if (fileContent == GeoMaps::GeoJSON::flightRoute)
-    {
-        emit openFileRequest(myPath, FlightRoute);
-        return;
-    }
-    if (fileContent == GeoMaps::GeoJSON::waypointLibrary)
-    {
-        emit openFileRequest(myPath, WaypointLibrary);
-        return;
-    }
-    if (fileContent == GeoMaps::GeoJSON::valid)
-    {
-        emit openFileRequest(myPath, FlightRouteOrWaypointLibrary);
-        return;
-    }
-
-    // FLARM Simulator file
-    if (Traffic::TrafficDataSource_File::containsFLARMSimulationData(myPath)) {
-        auto *source = new Traffic::TrafficDataSource_File(myPath);
-        GlobalObject::trafficDataProvider()->addDataSource(source); // Will take ownership of source
-        source->connectToTrafficReceiver();
-        return;
-    }
-
-    // MBTiles containing a vector map
-    GeoMaps::MBTILES mbtiles(myPath);
-    if (mbtiles.format() == GeoMaps::MBTILES::Vector)
-    {
-        emit openFileRequest(myPath, VectorMap);
-        return;
-    }
-
-    // MBTiles containing a raster map
-    if (mbtiles.format() == GeoMaps::MBTILES::Raster)
-    {
-        emit openFileRequest(myPath, RasterMap);
-        return;
-    }
-
-    // CUP file
-    if (GeoMaps::CUP::isValid(myPath))
-    {
-        emit openFileRequest(myPath, WaypointLibrary);
-        return;
-    }
-
-    emit openFileRequest(myPath, UnknownFunction);
-}
-
-
 auto Platform::PlatformAdaptor::outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType) -> bool
 {
     if (filePath == nullptr) {
@@ -393,6 +259,18 @@ auto Platform::PlatformAdaptor::outgoingIntent(const QString& methodName, const 
 }
 
 
+void Platform::PlatformAdaptor::processFileOpenRequest(const QString& path)
+{
+    if (!receiveOpenFileRequestsStarted)
+    {
+        pendingReceiveOpenFileRequest = path;
+        return;
+    }
+    Platform::PlatformAdaptor_Abstract::processFileOpenRequest(path);
+}
+
+
+
 extern "C" {
 
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setFileReceived(JNIEnv* env, jobject /*unused*/, jstring jfname)
@@ -402,6 +280,42 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setFileR
     env->ReleaseStringUTFChars(jfname, fname);
 }
 
+
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_PlatformAdaptor_onWifiConnected(JNIEnv* /*unused*/, jobject /*unused*/)
+{
+    // This method gets called from Java before main() has executed
+    // and thus before a QApplication instance has been constructed.
+    // In these cases, the methods of the Global class must not be called
+    // and we simply return.
+    if (GlobalObject::canConstruct())
+    {
+        GlobalObject::platformAdaptor()->wifiConnected();
+    }
+}
+
+// This method is called from Java to indicate that the user has clicked into the Android
+// notification for reporting traffic data receiver errors
+
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_PlatformAdaptor_onNotificationClicked(JNIEnv* /*unused*/, jobject /*unused*/, jint notifyID, jint actionID)
+{
+
+    // This method gets called from Java before main() has executed
+    // and thus before a QApplication instance has been constructed.
+    // In these cases, the methods of the Global class must not be called
+    // and we simply return.
+    if (!GlobalObject::canConstruct())
+    {
+        return;
+    }
+    auto* ptr = qobject_cast<Platform::Notifier_Android*>(GlobalObject::notifier());
+
+    if (ptr == nullptr)
+    {
+        return;
+    }
+    ptr->onNotificationClicked((Platform::Notifier::NotificationTypes)notifyID, actionID);
+
+}
 
 }
 

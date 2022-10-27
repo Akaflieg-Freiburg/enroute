@@ -18,10 +18,110 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QMimeDatabase>
+#include <QUrl>
+
+#include "GlobalObject.h"
+#include "geomaps/CUP.h"
+#include "geomaps/GeoJSON.h"
+#include "geomaps/MBTILES.h"
 #include "platform/PlatformAdaptor_Abstract.h"
+#include "traffic/TrafficDataProvider.h"
+#include "traffic/TrafficDataSource_File.h"
 
 
 Platform::PlatformAdaptor_Abstract::PlatformAdaptor_Abstract(QObject *parent)
     : QObject(parent)
 {
+}
+
+
+
+//
+// Methods
+//
+
+void Platform::PlatformAdaptor_Abstract::processFileOpenRequest(const QByteArray& path)
+{
+    processFileOpenRequest(QString::fromUtf8(path).simplified());
+}
+
+
+void Platform::PlatformAdaptor_Abstract::processFileOpenRequest(const QString& path)
+{
+    QString myPath;
+    if (path.startsWith(u"file:"))
+    {
+        QUrl url(path.trimmed());
+        myPath = url.toLocalFile();
+    }
+    else
+    {
+        myPath = path;
+    }
+
+    QMimeDatabase db;
+    auto mimeType = db.mimeTypeForFile(myPath);
+
+    /*
+     * Check for various possible file formats/contents
+     */
+
+    // Flight Route in GPX format
+    if ((mimeType.inherits(QStringLiteral("application/xml"))) || (mimeType.name() == u"application/x-gpx+xml"))
+    {
+        emit openFileRequest(myPath, FlightRouteOrWaypointLibrary);
+        return;
+    }
+
+    // GeoJSON file
+    auto fileContent = GeoMaps::GeoJSON::inspect(myPath);
+    if (fileContent == GeoMaps::GeoJSON::flightRoute)
+    {
+        emit openFileRequest(myPath, FlightRoute);
+        return;
+    }
+    if (fileContent == GeoMaps::GeoJSON::waypointLibrary)
+    {
+        emit openFileRequest(myPath, WaypointLibrary);
+        return;
+    }
+    if (fileContent == GeoMaps::GeoJSON::valid)
+    {
+        emit openFileRequest(myPath, FlightRouteOrWaypointLibrary);
+        return;
+    }
+
+    // FLARM Simulator file
+    if (Traffic::TrafficDataSource_File::containsFLARMSimulationData(myPath))
+    {
+        auto *source = new Traffic::TrafficDataSource_File(myPath);
+        GlobalObject::trafficDataProvider()->addDataSource(source); // Will take ownership of source
+        source->connectToTrafficReceiver();
+        return;
+    }
+
+    // MBTiles containing a vector map
+    GeoMaps::MBTILES mbtiles(myPath);
+    if (mbtiles.format() == GeoMaps::MBTILES::Vector)
+    {
+        emit openFileRequest(myPath, VectorMap);
+        return;
+    }
+
+    // MBTiles containing a raster map
+    if (mbtiles.format() == GeoMaps::MBTILES::Raster)
+    {
+        emit openFileRequest(myPath, RasterMap);
+        return;
+    }
+
+    // CUP file
+    if (GeoMaps::CUP::isValid(myPath))
+    {
+        emit openFileRequest(myPath, WaypointLibrary);
+        return;
+    }
+
+    emit openFileRequest(myPath, UnknownFunction);
 }

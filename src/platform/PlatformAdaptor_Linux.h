@@ -23,8 +23,8 @@
 #include <QtGlobal>
 #if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
 
-#include <QTimer>
 #include <QObject>
+#include <QTimer>
 
 #include "PlatformAdaptor_Abstract.h"
 
@@ -98,7 +98,7 @@ public:
      */
     Q_INVOKABLE void lockWifi(bool lock) override;
 
-    /*! \brief Export content to file or to file sending app
+    /*! \brief Share content to file or to file sending app
      *
      * On Android systems, this method will save content to temporary file in
      * the app's private cache and call the corresponding java static method
@@ -164,55 +164,8 @@ public:
     */
     Q_INVOKABLE QString manufacturer() override;
 
-    /*! \brief Helper function, not for public consumption
-     *
-     * This helper function is called by platform-dependent code whenever the
-     * app is asked to open a file.  It will look at the file, determine the
-     * file function and emit the signal openFileRequest() as appropriate.
-     *
-     * On Android, the slot is called from JAVA.
-     *
-     * @param path File name
-     *
-     */
-    Q_INVOKABLE void processFileOpenRequest(const QString &path) override;
-
-    /*! \brief Helper function, not for public consumption
-     *
-     * Overloaded function for convenience
-     *
-     * @param path UTF8-Encoded strong
-     */
-    Q_INVOKABLE void processFileOpenRequest(const QByteArray &path) override;
-
-    /*! \brief Start receiving "open file" requests from platform
-     *
-     * This method should be called to indicate that the GUI is set up and ready
-     * to receive platform-specific requests to open files.  The
-     * openFileRequest() might be emitted immediately
-     *
-     * On Android, this method checks if there are pending intents which should
-     * be processed in the java activity
-     * de.akaflieg_freiburg.enroute.ShareActivity.  This is usually necessary if
-     * the app has been launched by an incoming intent and the java
-     * ShareActivity postponed processing of the intent until enroute has been
-     * fully initialized.
-     */
-     Q_INVOKABLE void startReceiveOpenFileRequests() override;
-
 private:
     Q_DISABLE_COPY_MOVE(PlatformAdaptor)
-
-    // Helper function. Saves content to a file in a directory from where
-    // sharing to other android apps is possible
-    auto contentToTempFile(const QByteArray& content, const QString& fileNameTemplate) -> QString;
-
-    // Name of a subdirectory within the AppDataLocation for sending and
-    // receiving files.
-    QString fileExchangeDirectoryName;
-    bool receiveOpenFileRequestsStarted {false};
-    QString pendingReceiveOpenFileRequest {};
-    bool splashScreenHidden {false};
 };
 
 } // namespace Platform

@@ -21,6 +21,7 @@
 #include <QtGlobal>
 #if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
 
+
 #include <QDateTime>
 #include <QDebug>
 #include <QDesktopServices>
@@ -30,31 +31,17 @@
 #include <QMimeDatabase>
 #include <QProcess>
 #include <QStandardPaths>
+#include <QTemporaryFile>
 #include <QUrl>
 
-#include "GlobalObject.h"
-#include "geomaps/CUP.h"
-#include "geomaps/GeoJSON.h"
-#include "geomaps/MBTILES.h"
 #include "platform/PlatformAdaptor_Linux.h"
-#include "traffic/TrafficDataProvider.h"
-#include "traffic/TrafficDataSource_File.h"
 
 
 
 Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
     : PlatformAdaptor_Abstract(parent)
 {
-#warning is any of this ever used?
-    // Do all the set-up required for sharing files
-    // Android requires you to use a subdirectory within the AppDataLocation for
-    // sending and receiving files. We create this and clear this directory on creation of the Share object -- even if the
-    // app didn't exit gracefully, the directory is still cleared when starting
-    // the app next time.
-    fileExchangeDirectoryName = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/exchange/";
-    QDir exchangeDir(fileExchangeDirectoryName);
-    exchangeDir.removeRecursively();
-    exchangeDir.mkpath(fileExchangeDirectoryName);
+    ;
 }
 
 
@@ -63,10 +50,9 @@ Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
 // Methods
 //
 
-
-
 auto Platform::PlatformAdaptor::currentSSID() -> QString
 {
+    Q_UNUSED(this);
     return QStringLiteral("<unknown ssid>");
 }
 
@@ -80,6 +66,8 @@ auto Platform::PlatformAdaptor::hasMissingPermissions() -> bool
 
 void Platform::PlatformAdaptor::importContent()
 {
+    Q_UNUSED(this);
+
     auto fileNameX = QFileDialog::getOpenFileName(nullptr, tr("Import data"), QDir::homePath(), tr("All files (*)"));
     if (!fileNameX.isEmpty())
     {
@@ -99,8 +87,7 @@ auto Platform::PlatformAdaptor::shareContent(const QByteArray& content, const QS
     Q_UNUSED(content)
     Q_UNUSED(mimeType)
     Q_UNUSED(fileNameTemplate)
-    (void)this;
-
+    Q_UNUSED(this);
 
     QMimeDatabase db;
     QMimeType mime = db.mimeTypeForName(mimeType);
@@ -127,17 +114,24 @@ auto Platform::PlatformAdaptor::shareContent(const QByteArray& content, const QS
 
 void Platform::PlatformAdaptor::vibrateBrief()
 {
+    Q_UNUSED(this);
 }
 
 
 auto Platform::PlatformAdaptor::viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
 {
-    Q_UNUSED(content)
     Q_UNUSED(mimeType)
-    Q_UNUSED(fileNameTemplate)
+    Q_UNUSED(this);
 
-    QString tmpPath = contentToTempFile(content, fileNameTemplate);
-    bool success = QDesktopServices::openUrl(QUrl("file://" + tmpPath, QUrl::TolerantMode));
+    QTemporaryFile tmpFile(fileNameTemplate.arg(QStringLiteral("XXXXXX")));
+    tmpFile.setAutoRemove(false);
+    if (!tmpFile.open()) {
+        return tr("Unable to open temporary file.");
+    }
+    tmpFile.write(content);
+    tmpFile.close();
+
+    bool success = QDesktopServices::openUrl(QUrl("file://" + tmpFile.fileName(), QUrl::TolerantMode));
     if (success)
     {
         return {};
@@ -147,30 +141,6 @@ auto Platform::PlatformAdaptor::viewContent(const QByteArray& content, const QSt
 
 
 // -------- Methods of questionable value start here.
-
-
-auto Platform::PlatformAdaptor::contentToTempFile(const QByteArray& content, const QString& fileNameTemplate) -> QString
-{
-    QDateTime now = QDateTime::currentDateTimeUtc();
-    QString fname = fileNameTemplate.arg(now.toString(QStringLiteral("yyyy-MM-dd_hh.mm.ss")));
-
-    // in Qt, resources are not stored absolute file paths, so in order to
-    // share the content we save it to disk. We save these temporary files
-    // when creating new Share objects.
-    //
-    auto filePath = fileExchangeDirectoryName + fname;
-
-    QFile file(filePath);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
-        return {};
-    }
-
-    file.write(content);
-    file.close();
-
-    return filePath;
-}
-
 
 void Platform::PlatformAdaptor::hideSplashScreen()
 {
@@ -182,109 +152,5 @@ auto Platform::PlatformAdaptor::manufacturer() -> QString
 {
     return {};
 }
-
-
-void Platform::PlatformAdaptor::processFileOpenRequest(const QByteArray &path)
-{
-    processFileOpenRequest(QString::fromUtf8(path).simplified());
-}
-
-
-void Platform::PlatformAdaptor::processFileOpenRequest(const QString &path)
-{
-    if (!receiveOpenFileRequestsStarted)
-    {
-        pendingReceiveOpenFileRequest = path;
-        return;
-    }
-
-    QString myPath;
-    if (path.startsWith(u"file:"))
-    {
-        QUrl url(path.trimmed());
-        myPath = url.toLocalFile();
-    }
-    else
-    {
-        myPath = path;
-    }
-
-    QMimeDatabase db;
-    auto mimeType = db.mimeTypeForFile(myPath);
-
-    /*
-     * Check for various possible file formats/contents
-     */
-
-    // Flight Route in GPX format
-    if ((mimeType.inherits(QStringLiteral("application/xml"))) || (mimeType.name() == u"application/x-gpx+xml"))
-    {
-        emit openFileRequest(myPath, FlightRouteOrWaypointLibrary);
-        return;
-    }
-
-    // GeoJSON file
-    auto fileContent = GeoMaps::GeoJSON::inspect(myPath);
-    if (fileContent == GeoMaps::GeoJSON::flightRoute)
-    {
-        emit openFileRequest(myPath, FlightRoute);
-        return;
-    }
-    if (fileContent == GeoMaps::GeoJSON::waypointLibrary)
-    {
-        emit openFileRequest(myPath, WaypointLibrary);
-        return;
-    }
-    if (fileContent == GeoMaps::GeoJSON::valid)
-    {
-        emit openFileRequest(myPath, FlightRouteOrWaypointLibrary);
-        return;
-    }
-
-    // FLARM Simulator file
-    if (Traffic::TrafficDataSource_File::containsFLARMSimulationData(myPath))
-    {
-        auto *source = new Traffic::TrafficDataSource_File(myPath);
-        GlobalObject::trafficDataProvider()->addDataSource(source); // Will take ownership of source
-        source->connectToTrafficReceiver();
-        return;
-    }
-
-    // MBTiles containing a vector map
-    GeoMaps::MBTILES mbtiles(myPath);
-    if (mbtiles.format() == GeoMaps::MBTILES::Vector)
-    {
-        emit openFileRequest(myPath, VectorMap);
-        return;
-    }
-
-    // MBTiles containing a raster map
-    if (mbtiles.format() == GeoMaps::MBTILES::Raster)
-    {
-        emit openFileRequest(myPath, RasterMap);
-        return;
-    }
-
-    // CUP file
-    if (GeoMaps::CUP::isValid(myPath))
-    {
-        emit openFileRequest(myPath, WaypointLibrary);
-        return;
-    }
-
-    emit openFileRequest(myPath, UnknownFunction);
-}
-
-
-void Platform::PlatformAdaptor::startReceiveOpenFileRequests()
-{
-    receiveOpenFileRequestsStarted = true;
-
-    if (!pendingReceiveOpenFileRequest.isEmpty()) {
-        processFileOpenRequest(pendingReceiveOpenFileRequest);
-    }
-    pendingReceiveOpenFileRequest = QString();
-}
-
 
 #endif // defined(Q_OS_LINUX)

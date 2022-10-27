@@ -36,7 +36,7 @@ namespace Platform {
  *   app will then check if a traffic data receiver is active in the network.
  *
  * - If supported by the platform, child classes need to react to requests by the platform to open a file (e.g. a GeoJSON file containing a flight route).
- *   Once a request is received, the signal openFileRequest() must be emitted.
+ *   Once a request is received, the method processFileRequest() should be called.
  */
 
 class PlatformAdaptor_Abstract : public QObject
@@ -115,6 +115,25 @@ public:
      */
     Q_INVOKABLE virtual void lockWifi(bool lock) = 0;
 
+    /*! \brief Determine file function and emit openFileRequest()
+     *
+     * This helper function is called by platform-dependent code whenever the
+     * app is asked to open a file.  It will look at the file, determine the
+     * file function and emit the signal openFileRequest() as appropriate.
+     *
+     * @param path File name
+     *
+     */
+    virtual void processFileOpenRequest(const QString& path);
+
+    /*! \brief Determine file function and emit openFileRequest()
+     *
+     * Overloaded function for convenience
+     *
+     * @param QByteArray containing an UTF8-Encoded strong
+     */
+    void processFileOpenRequest(const QByteArray& path);
+
     /*! \brief Export content to file or to file sending app
      *
      * On desktop systems, this method is supposed to show a file dialog to save the file.
@@ -147,7 +166,7 @@ public:
      *
      * @param mimeType the mimeType of the content
      *
-     * @param fileNameTemplate A string of the form "EDTF - EDTG", without suffix of path.
+     * @param fileNameTemplate A string of the form "FlightRoute-%1.geojson".
      *
      * @returns Empty string on success, a translated error message otherwise
      */
@@ -173,45 +192,6 @@ public:
 #warning do I need this here?
     Q_INVOKABLE virtual QString manufacturer() = 0;
 
-    /*! \brief Helper function, not for public consumption
-     *
-     * This helper function is called by platform-dependent code whenever the
-     * app is asked to open a file.  It will look at the file, determine the
-     * file function and emit the signal openFileRequest() as appropriate.
-     *
-     * On Android, the slot is called from JAVA.
-     *
-     * @param path File name
-     *
-     */
-#warning do I need this here?
-    Q_INVOKABLE virtual void processFileOpenRequest(const QString &path) = 0;
-
-    /*! \brief Helper function, not for public consumption
-     *
-     * Overloaded function for convenience
-     *
-     * @param path UTF8-Encoded strong
-     */
-#warning do I need this here?
-    Q_INVOKABLE virtual void processFileOpenRequest(const QByteArray &path) = 0;
-
-    /*! \brief Start receiving "open file" requests from platform
-     *
-     * This method should be called to indicate that the GUI is set up and ready
-     * to receive platform-specific requests to open files.  The
-     * openFileRequest() might be emitted immediately
-     *
-     * On Android, this method checks if there are pending intents which should
-     * be processed in the java activity
-     * de.akaflieg_freiburg.enroute.ShareActivity.  This is usually necessary if
-     * the app has been launched by an incoming intent and the java
-     * ShareActivity postponed processing of the intent until enroute has been
-     * fully initialized.
-     */
-#warning do I need this here?
-     Q_INVOKABLE virtual void startReceiveOpenFileRequests() = 0;
-
 signals:
     /*! \brief Emitted when platform asks this app to open a file
      *
@@ -235,22 +215,6 @@ signals:
 
 private:
     Q_DISABLE_COPY_MOVE(PlatformAdaptor_Abstract)
-
-    // Intializations that are moved out of the constructor, in order to avoid
-    // nested uses of Global.
-    void deferredInitialization();
-
-    // Helper function. Saves content to a file in a directory from where
-    // sharing to other android apps is possible
-    auto contentToTempFile(const QByteArray& content, const QString& fileNameTemplate) -> QString;
-
-    // Name of a subdirectory within the AppDataLocation for sending and
-    // receiving files.
-    QString fileExchangeDirectoryName;
-
-    bool receiveOpenFileRequestsStarted {false};
-    QString pendingReceiveOpenFileRequest {};
-    bool splashScreenHidden {false};
 };
 
 } // namespace Platform

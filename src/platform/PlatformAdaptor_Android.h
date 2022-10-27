@@ -157,27 +157,6 @@ public:
     */
     Q_INVOKABLE bool hasMissingPermissions() override;
 
-    /*! \brief Helper function, not for public consumption
-     *
-     * This helper function is called by platform-dependent code whenever the
-     * app is asked to open a file.  It will look at the file, determine the
-     * file function and emit the signal openFileRequest() as appropriate.
-     *
-     * On Android, the slot is called from JAVA.
-     *
-     * @param path File name
-     *
-     */
-    Q_INVOKABLE void processFileOpenRequest(const QString& path) override;
-
-    /*! \brief Helper function, not for public consumption
-     *
-     * Overloaded function for convenience
-     *
-     * @param path UTF8-Encoded strong
-     */
-    Q_INVOKABLE void processFileOpenRequest(const QByteArray& path) override;
-
     /*! \brief Start receiving "open file" requests from platform
      *
      * This method should be called to indicate that the GUI is set up and ready
@@ -191,7 +170,7 @@ public:
      * ShareActivity postponed processing of the intent until enroute has been
      * fully initialized.
      */
-     Q_INVOKABLE void startReceiveOpenFileRequests() override;
+     Q_INVOKABLE void startReceiveOpenFileRequests();
 
     /*! \brief Make the device briefly vibrate
      *
@@ -228,6 +207,17 @@ public:
     }
 #endif
 
+    /*! \brief Determine file function and emit openFileRequest()
+     *
+     * This helper function is called by platform-dependent code whenever the
+     * app is asked to open a file.  It will look at the file, determine the
+     * file function and emit the signal openFileRequest() as appropriate.
+     *
+     * @param path File name
+     *
+     */
+    virtual void processFileOpenRequest(const QString& path) override;
+
 signals:
     /*! \brief Emitted when platform asks this app to open a file
      *
@@ -249,6 +239,7 @@ signals:
      */
     void wifiConnected();
 
+
 private:
     Q_DISABLE_COPY_MOVE(PlatformAdaptor)
 
@@ -269,9 +260,11 @@ private:
 
     QStringList permissions;
 
+    bool splashScreenHidden {false};
+
+
     bool receiveOpenFileRequestsStarted {false};
     QString pendingReceiveOpenFileRequest {};
-    bool splashScreenHidden {false};
 };
 
 } // namespace Platform

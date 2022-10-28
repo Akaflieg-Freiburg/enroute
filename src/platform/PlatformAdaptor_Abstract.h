@@ -96,6 +96,13 @@ public:
     */
     Q_INVOKABLE virtual bool hasMissingPermissions() = 0;
 
+    /*! \brief Hides the splash screen.
+     *
+     * On devices that show a splash sceen, hides the splash screen and show the app. This method is called once the GUI is set up and ready to go.
+     * The implementation should ensure that nothing bad happens if this method is called more than once.
+    */
+    Q_INVOKABLE virtual void hideSplashScreen() = 0;
+
     /*! \brief Import content from file
      *
      * On desktop systems, this method is supposed to open a file dialog to import a file.
@@ -152,26 +159,6 @@ public:
      * @returns Empty string on success, a translated error message otherwise
      */
     Q_INVOKABLE virtual QString viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) = 0;
-
-    // ------------------
-
-    /*! \brief Hides the android splash screen.
-     *
-     * On Android, hides the android splash screen.
-     *
-     * On other platforms, this does nothing. The implementation ensures that
-     * QtAndroid::hideSplashScreen is called (only once, regardless of how often
-     * this slot is used).
-    */
-#warning do I need this here?
-    Q_INVOKABLE virtual void hideSplashScreen() = 0;
-
-    /*! \brief Device manufacturer
-     *
-     * @returns On Android, returns device manufacturer. On other systems, always returns an empty string.
-    */
-#warning do I need this here?
-    Q_INVOKABLE virtual QString manufacturer() = 0;
 
 signals:
     /*! \brief Emitted when platform asks this app to open a file

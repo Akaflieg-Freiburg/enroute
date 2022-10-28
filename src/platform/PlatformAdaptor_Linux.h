@@ -158,12 +158,6 @@ public:
     */
     Q_INVOKABLE void hideSplashScreen() override;
 
-    /*! \brief Device manufacturer
-     *
-     * @returns On Android, returns device manufacturer. On other systems, always returns an empty string.
-    */
-    Q_INVOKABLE QString manufacturer() override;
-
 private:
     Q_DISABLE_COPY_MOVE(PlatformAdaptor)
 };

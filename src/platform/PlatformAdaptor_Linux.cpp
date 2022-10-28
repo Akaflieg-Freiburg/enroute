@@ -148,9 +148,4 @@ void Platform::PlatformAdaptor::hideSplashScreen()
 }
 
 
-auto Platform::PlatformAdaptor::manufacturer() -> QString
-{
-    return {};
-}
-
 #endif // defined(Q_OS_LINUX)

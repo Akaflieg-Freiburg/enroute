@@ -141,12 +141,6 @@ public:
      */
     Q_INVOKABLE void lockWifi(bool lock) override;
 
-    /*! \brief Device manufacturer
-     *
-     * @returns On Android, returns device manufacturer. On other systems, always returns an empty string.
-    */
-    Q_INVOKABLE QString manufacturer() override;
-
     /*! \brief Checks if all required permissions have been granted
      *
      * On Android, the app requirs certain permissions to run. This method can

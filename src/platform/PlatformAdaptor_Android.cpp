@@ -148,14 +148,6 @@ auto Platform::PlatformAdaptor::currentSSID() -> QString
 }
 
 
-auto Platform::PlatformAdaptor::manufacturer() -> QString
-{
-    QAndroidJniObject stringObject = QAndroidJniObject::callStaticObjectMethod("de/akaflieg_freiburg/enroute/PlatformAdaptor",
-                                                                               "manufacturer", "()Ljava/lang/String;");
-    return stringObject.toString();
-}
-
-
 void Platform::PlatformAdaptor::importContent()
 {
 }

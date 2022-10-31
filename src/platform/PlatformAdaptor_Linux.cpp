@@ -139,6 +139,10 @@ auto Platform::PlatformAdaptor::viewContent(const QByteArray& content, const QSt
     return tr("Unable to open data in other app.");
 }
 
+void Platform::PlatformAdaptor::requestPermissionsSync()
+{
+}
+
 
 // -------- Methods of questionable value start here.
 

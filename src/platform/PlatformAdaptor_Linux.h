@@ -158,6 +158,9 @@ public:
     */
     Q_INVOKABLE void onGUISetupCompleted() override;
 
+#warning
+    virtual void requestPermissionsSync();
+
 private:
     Q_DISABLE_COPY_MOVE(PlatformAdaptor)
 };

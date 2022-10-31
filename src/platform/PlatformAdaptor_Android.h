@@ -198,6 +198,9 @@ public slots:
     */
     void onGUISetupCompleted() override;
 
+#warning
+    void requestPermissionsSync() override;
+
 signals:
     /*! \brief Emitted when platform asks this app to open a file
      *

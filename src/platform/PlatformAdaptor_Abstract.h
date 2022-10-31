@@ -180,6 +180,9 @@ public slots:
      */
     void processFileOpenRequest(const QByteArray& path);
 
+#warning
+    virtual void requestPermissionsSync() = 0;
+
 signals:
     /*! \brief Emitted when platform asks this app to open a file
      *

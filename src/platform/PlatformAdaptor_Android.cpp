@@ -35,10 +35,11 @@
 #include "platform/Notifier_Android.h"
 
 
+#include <QDebug>
+
 Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
     : Platform::PlatformAdaptor_Abstract(parent)
 {
-
     // Do all the set-up required for sharing files
     // Android requires you to use a subdirectory within the AppDataLocation for
     // sending and receiving files. We create this and clear this directory on creation of the Share object -- even if the
@@ -57,7 +58,6 @@ Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
     permissions << "android.permission.READ_EXTERNAL_STORAGE";
     permissions << "android.permission.WRITE_EXTERNAL_STORAGE";
     permissions << "android.permission.WAKE_LOCK";
-    QtAndroid::requestPermissionsSync(permissions);
 
     // Disable the screen saver so that the screen does not switch off automatically
     bool on=true;
@@ -87,12 +87,14 @@ Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
         }
     });
 
-    currentSSID();
-
     // Don't forget the deferred initialization
     QTimer::singleShot(0, this, &PlatformAdaptor::deferredInitialization);
 }
 
+void Platform::PlatformAdaptor::requestPermissionsSync()
+{
+    QtAndroid::requestPermissionsSync(permissions);
+}
 
 void Platform::PlatformAdaptor::deferredInitialization()
 {
@@ -126,7 +128,6 @@ void Platform::PlatformAdaptor::onGUISetupCompleted()
         processFileOpenRequest(pendingReceiveOpenFileRequest);
     }
     pendingReceiveOpenFileRequest = QString();
-
 }
 
 
@@ -271,7 +272,7 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setFileR
 }
 
 
-JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_PlatformAdaptor_onWifiConnected(JNIEnv* /*unused*/, jobject /*unused*/)
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiConnected(JNIEnv* /*unused*/, jobject /*unused*/)
 {
     // This method gets called from Java before main() has executed
     // and thus before a QApplication instance has been constructed.
@@ -286,7 +287,7 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_PlatformAdaptor_onWifi
 // This method is called from Java to indicate that the user has clicked into the Android
 // notification for reporting traffic data receiver errors
 
-JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_PlatformAdaptor_onNotificationClicked(JNIEnv* /*unused*/, jobject /*unused*/, jint notifyID, jint actionID)
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onNotificationClicked(JNIEnv* /*unused*/, jobject /*unused*/, jint notifyID, jint actionID)
 {
 
     // This method gets called from Java before main() has executed

@@ -77,7 +77,6 @@ template<typename T> auto GlobalObject::allocateInternal(QPointer<T>& pointer) -
 {
     Q_ASSERT( QCoreApplication::instance() != nullptr );
     Q_ASSERT( !isConstructing );
-
     if (pointer.isNull()) {
         isConstructing = true;
         pointer = new T( QCoreApplication::instance() );
@@ -90,7 +89,6 @@ template<typename T> auto GlobalObject::allocateInternal(QPointer<T>& pointer) -
     }
     return pointer;
 }
-
 
 
 GlobalObject::GlobalObject(QObject *parent) : QObject(parent)

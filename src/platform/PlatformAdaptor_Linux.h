@@ -161,6 +161,9 @@ public:
 #warning
     virtual void requestPermissionsSync();
 
+#warning
+    void disableScreenSaver() override;
+
 private:
     Q_DISABLE_COPY_MOVE(PlatformAdaptor)
 };

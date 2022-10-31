@@ -183,6 +183,9 @@ public slots:
 #warning
     virtual void requestPermissionsSync() = 0;
 
+#warning
+    virtual void disableScreenSaver() = 0;
+
 signals:
     /*! \brief Emitted when platform asks this app to open a file
      *
@@ -196,7 +199,8 @@ signals:
      * On Android, other apps can request that enroute 'views' a file, via
      * Android's INTENT system.
      */
-    void openFileRequest(QString fileName, PlatformAdaptor_Abstract::FileFunction fileFunction);
+#warning works with int as second argument, but should be PlatformAdaptor_Abstract::FileFunction
+    void openFileRequest(QString fileName, int fileFunction);
 
     /*! \brief Emitted when a new WiFi connections becomes available
      *

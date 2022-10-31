@@ -37,6 +37,9 @@ Item {
         function onOpenFileRequest(fileName, fileFunction) {
             view.raise()
             view.requestActivate()
+
+            console.warn(fileName)
+            console.warn(fileFunction)
             importManager.filePath = fileName
             importManager.fileFunction = fileFunction
             if (fileName === "")

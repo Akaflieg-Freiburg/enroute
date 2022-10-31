@@ -185,6 +185,7 @@ auto main(int argc, char *argv[]) -> int
 
     // Create mobile platform adaptor. We do this before creating the application engine because this also asks for permissions
     GlobalObject::platformAdaptor()->requestPermissionsSync();
+    GlobalObject::platformAdaptor()->disableScreenSaver();
     if (positionalArguments.length() == 1)
     {
         GlobalObject::platformAdaptor()->processFileOpenRequest(positionalArguments[0]);

@@ -201,6 +201,9 @@ public slots:
 #warning
     void requestPermissionsSync() override;
 
+#warning
+    void disableScreenSaver() override;
+
 signals:
     /*! \brief Emitted when platform asks this app to open a file
      *

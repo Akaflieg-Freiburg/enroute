@@ -59,6 +59,14 @@ Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
     permissions << "android.permission.WRITE_EXTERNAL_STORAGE";
     permissions << "android.permission.WAKE_LOCK";
 
+
+    // Don't forget the deferred initialization
+    QTimer::singleShot(0, this, &PlatformAdaptor::deferredInitialization);
+}
+
+
+void Platform::PlatformAdaptor::disableScreenSaver()
+{
     // Disable the screen saver so that the screen does not switch off automatically
     bool on=true;
     // Implementation follows a suggestion found in https://stackoverflow.com/questions/27758499/how-to-keep-the-screen-on-in-qt-for-android
@@ -86,9 +94,6 @@ Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
             env->ExceptionClear();
         }
     });
-
-    // Don't forget the deferred initialization
-    QTimer::singleShot(0, this, &PlatformAdaptor::deferredInitialization);
 }
 
 void Platform::PlatformAdaptor::requestPermissionsSync()
@@ -133,7 +138,7 @@ void Platform::PlatformAdaptor::onGUISetupCompleted()
 
 void Platform::PlatformAdaptor::lockWifi(bool lock)
 {
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/PlatformAdaptor", "lockWiFi", "(Z)V", lock);
+    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "lockWiFi", "(Z)V", lock);
 
 }
 
@@ -156,13 +161,13 @@ auto Platform::PlatformAdaptor::hasMissingPermissions() -> bool
 
 void Platform::PlatformAdaptor::vibrateBrief()
 {
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/PlatformAdaptor", "vibrateBrief");
+    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "vibrateBrief");
 }
 
 
 auto Platform::PlatformAdaptor::currentSSID() -> QString
 {
-    QAndroidJniObject stringObject = QAndroidJniObject::callStaticObjectMethod("de/akaflieg_freiburg/enroute/PlatformAdaptor",
+    QAndroidJniObject stringObject = QAndroidJniObject::callStaticObjectMethod("de/akaflieg_freiburg/enroute/MobileAdaptor",
                                                                                "getSSID", "()Ljava/lang/String;");
     return stringObject.toString();
 }

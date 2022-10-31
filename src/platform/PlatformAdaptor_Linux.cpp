@@ -144,6 +144,10 @@ void Platform::PlatformAdaptor::requestPermissionsSync()
 }
 
 
+void Platform::PlatformAdaptor::disableScreenSaver()
+{
+}
+
 // -------- Methods of questionable value start here.
 
 void Platform::PlatformAdaptor::onGUISetupCompleted()

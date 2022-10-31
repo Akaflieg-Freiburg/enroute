@@ -100,14 +100,33 @@ void Platform::PlatformAdaptor::deferredInitialization()
 }
 
 
-void Platform::PlatformAdaptor::hideSplashScreen()
+void Platform::PlatformAdaptor::onGUISetupCompleted()
 {
     if (splashScreenHidden)
     {
         return;
     }
+
     splashScreenHidden = true;
+
+    // Hide Splash Screen
     QtAndroid::hideSplashScreen(200);
+
+    // Start receiving file requests
+    receiveOpenFileRequestsStarted = true;
+    QAndroidJniObject activity = QtAndroid::androidActivity();
+    if (activity.isValid()) {
+        QAndroidJniObject jniTempDir = QAndroidJniObject::fromString(fileExchangeDirectoryName);
+        if (!jniTempDir.isValid()) {
+            return;
+        }
+        activity.callMethod<void>("checkPendingIntents", "(Ljava/lang/String;)V", jniTempDir.object<jstring>());
+    }
+    if (!pendingReceiveOpenFileRequest.isEmpty()) {
+        processFileOpenRequest(pendingReceiveOpenFileRequest);
+    }
+    pendingReceiveOpenFileRequest = QString();
+
 }
 
 
@@ -209,27 +228,6 @@ auto Platform::PlatformAdaptor::contentToTempFile(const QByteArray& content, con
     file.close();
 
     return filePath;
-}
-
-
-void Platform::PlatformAdaptor::startReceiveOpenFileRequests()
-{
-    receiveOpenFileRequestsStarted = true;
-
-    QAndroidJniObject activity = QtAndroid::androidActivity();
-
-    if (activity.isValid()) {
-        QAndroidJniObject jniTempDir = QAndroidJniObject::fromString(fileExchangeDirectoryName);
-        if (!jniTempDir.isValid()) {
-            return;
-        }
-        activity.callMethod<void>("checkPendingIntents", "(Ljava/lang/String;)V", jniTempDir.object<jstring>());
-    }
-
-    if (!pendingReceiveOpenFileRequest.isEmpty()) {
-        processFileOpenRequest(pendingReceiveOpenFileRequest);
-    }
-    pendingReceiveOpenFileRequest = QString();
 }
 
 

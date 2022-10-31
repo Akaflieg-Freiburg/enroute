@@ -188,7 +188,6 @@ auto main(int argc, char *argv[]) -> int
     {
         GlobalObject::platformAdaptor()->processFileOpenRequest(positionalArguments[0]);
     }
-    QTimer::singleShot(4s, GlobalObject::platformAdaptor(), &Platform::PlatformAdaptor_Abstract::hideSplashScreen);
 #if !defined(Q_OS_ANDROID)
     QObject::connect(&kdsingleapp, SIGNAL(messageReceived(QByteArray)), GlobalObject::platformAdaptor(), SLOT(processFileOpenRequest(QByteArray)));
 #endif

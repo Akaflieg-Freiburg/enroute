@@ -96,13 +96,6 @@ public:
     */
     Q_INVOKABLE virtual bool hasMissingPermissions() = 0;
 
-    /*! \brief Hides the splash screen.
-     *
-     * On devices that show a splash sceen, hides the splash screen and show the app. This method is called once the GUI is set up and ready to go.
-     * The implementation should ensure that nothing bad happens if this method is called more than once.
-    */
-    Q_INVOKABLE virtual void hideSplashScreen() = 0;
-
     /*! \brief Import content from file
      *
      * On desktop systems, this method is supposed to open a file dialog to import a file.
@@ -160,6 +153,33 @@ public:
      */
     Q_INVOKABLE virtual QString viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) = 0;
 
+public slots:
+    /*! \brief Signal handler: GUI setup completed
+     *
+     *  This method is called as soon as the GUI setup is completed. On Android, this method is used to hide the splash screen and to show the app.
+     *  The implementation should guarentee that nothing bad happens if the method is called more than once.
+     */
+    virtual void onGUISetupCompleted() = 0;
+
+    /*! \brief Determine file function and emit openFileRequest()
+     *
+     * This helper function is called by platform-dependent code whenever the
+     * app is asked to open a file.  It will look at the file, determine the
+     * file function and emit the signal openFileRequest() as appropriate.
+     *
+     * @param path File name
+     *
+     */
+    virtual void processFileOpenRequest(const QString& path);
+
+    /*! \brief Determine file function and emit openFileRequest()
+     *
+     * Overloaded function for convenience
+     *
+     * @param QByteArray containing an UTF8-Encoded strong
+     */
+    void processFileOpenRequest(const QByteArray& path);
+
 signals:
     /*! \brief Emitted when platform asks this app to open a file
      *
@@ -180,26 +200,6 @@ signals:
      *  This signal is emitted when a new WiFi connection becomes available.
      */
     void wifiConnected();
-
-public slots:
-    /*! \brief Determine file function and emit openFileRequest()
-     *
-     * This helper function is called by platform-dependent code whenever the
-     * app is asked to open a file.  It will look at the file, determine the
-     * file function and emit the signal openFileRequest() as appropriate.
-     *
-     * @param path File name
-     *
-     */
-    virtual void processFileOpenRequest(const QString& path);
-
-    /*! \brief Determine file function and emit openFileRequest()
-     *
-     * Overloaded function for convenience
-     *
-     * @param QByteArray containing an UTF8-Encoded strong
-     */
-    void processFileOpenRequest(const QByteArray& path);
 
 
 private:

@@ -156,7 +156,7 @@ public:
      * QtAndroid::hideSplashScreen is called (only once, regardless of how often
      * this slot is used).
     */
-    Q_INVOKABLE void hideSplashScreen() override;
+    Q_INVOKABLE void onGUISetupCompleted() override;
 
 private:
     Q_DISABLE_COPY_MOVE(PlatformAdaptor)

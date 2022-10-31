@@ -114,16 +114,6 @@ public:
      */
     Q_INVOKABLE QString shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) override;
 
-    /*! \brief Hides the android splash screen.
-     *
-     * On Android, hides the android splash screen.
-     *
-     * On other platforms, this does nothing. The implementation ensures that
-     * QtAndroid::hideSplashScreen is called (only once, regardless of how often
-     * this slot is used).
-    */
-    Q_INVOKABLE void hideSplashScreen() override;
-
     /*! \brief Import content from file
      *
      * On Android systems, this method does nothing.
@@ -150,21 +140,6 @@ public:
      * been granted. On other systems, always returns 'false'
     */
     Q_INVOKABLE bool hasMissingPermissions() override;
-
-    /*! \brief Start receiving "open file" requests from platform
-     *
-     * This method should be called to indicate that the GUI is set up and ready
-     * to receive platform-specific requests to open files.  The
-     * openFileRequest() might be emitted immediately
-     *
-     * On Android, this method checks if there are pending intents which should
-     * be processed in the java activity
-     * de.akaflieg_freiburg.enroute.ShareActivity.  This is usually necessary if
-     * the app has been launched by an incoming intent and the java
-     * ShareActivity postponed processing of the intent until enroute has been
-     * fully initialized.
-     */
-     Q_INVOKABLE void startReceiveOpenFileRequests();
 
     /*! \brief Make the device briefly vibrate
      *
@@ -201,6 +176,7 @@ public:
     }
 #endif
 
+public slots:
     /*! \brief Determine file function and emit openFileRequest()
      *
      * This helper function is called by platform-dependent code whenever the
@@ -210,7 +186,17 @@ public:
      * @param path File name
      *
      */
-    virtual void processFileOpenRequest(const QString& path) override;
+    void processFileOpenRequest(const QString& path) override;
+
+    /*! \brief Hides the android splash screen.
+     *
+     * On Android, hides the android splash screen.
+     *
+     * On other platforms, this does nothing. The implementation ensures that
+     * QtAndroid::hideSplashScreen is called (only once, regardless of how often
+     * this slot is used).
+    */
+    void onGUISetupCompleted() override;
 
 signals:
     /*! \brief Emitted when platform asks this app to open a file

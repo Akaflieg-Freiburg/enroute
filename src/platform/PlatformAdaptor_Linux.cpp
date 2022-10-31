@@ -142,7 +142,7 @@ auto Platform::PlatformAdaptor::viewContent(const QByteArray& content, const QSt
 
 // -------- Methods of questionable value start here.
 
-void Platform::PlatformAdaptor::hideSplashScreen()
+void Platform::PlatformAdaptor::onGUISetupCompleted()
 {
 
 }

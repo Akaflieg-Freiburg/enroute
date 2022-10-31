@@ -512,8 +512,7 @@ ApplicationWindow {
         focus: true
 
         Component.onCompleted: {
-            // Start accepting files
-            global.platformAdaptor().startReceiveOpenFileRequests()
+            global.platformAdaptor().onGUISetupCompleted()
 
             // Things to do on startup. If the user has not yet accepted terms and conditions, show that.
             // Otherwise, if the user has not used this version of the app before, show the "what's new" dialog.

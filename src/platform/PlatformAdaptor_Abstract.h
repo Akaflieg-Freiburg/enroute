@@ -200,7 +200,8 @@ signals:
      * Android's INTENT system.
      */
 #warning works with int as second argument, but should be PlatformAdaptor_Abstract::FileFunction
-    void openFileRequest(QString fileName, int fileFunction);
+//    void openFileRequest(QString fileName, int fileFunction);
+    void openFileRequest(QString fileName, Platform::PlatformAdaptor_Abstract::FileFunction fileFunction);
 
     /*! \brief Emitted when a new WiFi connections becomes available
      *

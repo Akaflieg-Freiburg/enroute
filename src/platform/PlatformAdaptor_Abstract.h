@@ -26,17 +26,22 @@ namespace Platform {
 
 /*! \brief Interface to platform-specific functionality
  *
- * This pure virtual class is an interface to capabilities of mobile devices (e.g. vibration)
- * that need platform-specific code to operate.  The files PlatformAdaptor_XXX.(h|cpp) implement
- * a child class PlatformAdaptor that contains the actual implementation.
+ * This pure virtual class is an interface to capabilities of mobile devices
+ * (e.g. vibration) that need platform-specific code to operate.  The files
+ * PlatformAdaptor_XXX.(h|cpp) implement a child class PlatformAdaptor that
+ * contains the actual implementation.
  *
- * Child classes need to implement all pure virtual functions, and need to provide the following additional functionality.
+ * Child classes need to implement all pure virtual functions, and need to
+ * provide the following additional functionality.
  *
- * - Child classes need to monitor the Wi-Fi network and emit the signal wifiConnected() whenever a new Wi-Fi connection becomes available. The
- *   app will then check if a traffic data receiver is active in the network.
+ * - Child classes need to monitor the Wi-Fi network and emit the signal
+ *   wifiConnected() whenever a new Wi-Fi connection becomes available. The app
+ *   will then check if a traffic data receiver is active in the network.
  *
- * - If supported by the platform, child classes need to react to requests by the platform to open a file (e.g. a GeoJSON file containing a flight route).
- *   Once a request is received, the method processFileRequest() should be called.
+ * - If supported by the platform, child classes need to react to requests by
+ *   the platform to open a file (e.g. a GeoJSON file containing a flight
+ *   route). Once a request is received, the method processFileRequest() should
+ *   be called.
  */
 
 class PlatformAdaptor_Abstract : public QObject
@@ -81,16 +86,26 @@ public:
 
     /*! \brief SSID of current Wi-Fi network
      *
-     * @returns The SSID of the current Wi-Fi networks, an empty string
-     * if the device is not connected to a Wi-Fi or a generic string if the SSID cannot be determined.
+     * @returns The SSID of the current Wi-Fi networks, an empty string if the
+     * device is not connected to a Wi-Fi or a generic string if the SSID cannot
+     * be determined.
      */
     Q_INVOKABLE virtual QString currentSSID() = 0;
 
+    /*! \brief Disable the screen saver
+     *
+     * On platforms that support this, this method shall disable to screen
+     * saver, so that the display does not switch off automatically.  This is
+     * meant to ensure that the display remains on while the app is in use (e.g.
+     * while the pilot is following a non-standard traffic pattern).
+     */
+    virtual void disableScreenSaver() = 0;
+
     /*! \brief Checks if all required permissions have been granted
      *
-     * Depending on the platform, the app needs to ask for permissions to operate properly.
-     * This method can
-     * be used to check if all permissions have been granted.
+     * Depending on the platform, the app needs to ask for permissions to
+     * operate properly. This method can be used to check if all permissions
+     * have been granted.
      *
      * @returns 'False' if all required permissions have been granted.
     */
@@ -98,50 +113,69 @@ public:
 
     /*! \brief Import content from file
      *
-     * On desktop systems, this method is supposed to open a file dialog to import a file.
-     * On mobile systems, this method is supposed to do nothing.
+     * On desktop systems, this method is supposed to open a file dialog to
+     * import a file. On mobile systems, this method is supposed to do nothing.
      *
      */
     Q_INVOKABLE virtual void importContent() = 0;
 
     /*! \brief Lock connection to Wi-Fi network
      *
-     * If supported by the platform, this method is supposed to lock the current Wi-Fi
-     * connection, that is, to prevent the device from dropping the connection or shutting down the Wi-Fi interface.
+     * If supported by the platform, this method is supposed to lock the current
+     * Wi-Fi connection, that is, to prevent the device from dropping the
+     * connection or shutting down the Wi-Fi interface.
      *
-     * The app calls that method after connecting to a traffic data receiver, in order to ensure that traffic data is continuously received.
+     * The app calls that method after connecting to a traffic data receiver, in
+     * order to ensure that traffic data is continuously received.
      *
-     * @param lock If true, then lock the network. If false, then release the lock.
+     * @param lock If true, then lock the network. If false, then release the
+     * lock.
      */
-    Q_INVOKABLE virtual void lockWifi(bool lock) = 0;
+    virtual void lockWifi(bool lock) = 0;
 
-    /*! \brief Export content to file or to file sending app
+    /*! \brief Request permissions
      *
-     * On desktop systems, this method is supposed to show a file dialog to save the file.
-     * On mobile devices, this method is supposed to open a dialog that allows to chose the method to send this file (e-mail, dropbox, signal chat, …)
+     * On some platforms, the app needs to ask for permissions to perform
+     * certain functions (e.g. receive location, query Wi-Fi status, …). This
+     * method is called before the GUI is set up and must request ALL
+     * permissions that the app will ever use. The method is meant to run
+     * synchroneously and shall return only once all permissions have been
+     * granted (or not). 
+     */
+    virtual void requestPermissionsSync() = 0;
+
+    /*! \brief Share content
+     *
+     * On desktop systems, this method is supposed to show a file dialog to save
+     * the file. On mobile devices, this method is supposed to open a dialog
+     * that allows to chose the method to send this file (e-mail, dropbox,
+     * signal chat, …)
      *
      * @param content File content
      *
      * @param mimeType the mimeType of the content
      *
-     * @param fileNameTemplate A string of the form "EDTF - EDTG", without suffix of path. This
-     * can be used, e.g. as the name of
-     * the attachment when sending files by e-mail.
+     * @param fileNameTemplate A string of the form "EDTF - EDTG", without
+     * suffix of path. This can be used, e.g. as the name of the attachment when
+     * sending files by e-mail.
      *
-     * @returns Empty string on success, the string "abort" on abort, and a translated error message otherwise
+     * @returns Empty string on success, the string "abort" on abort, and a
+     * translated error message otherwise
      */
     Q_INVOKABLE virtual QString shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) = 0;
 
     /*! \brief Make the device briefly vibrate
      *
-     * On platforms that support this, make the device briefly vibrate if haptic feedback is enabled in the system settings.
+     * On platforms that support this, make the device briefly vibrate if haptic
+     * feedback is enabled in the system settings.
      */
     Q_INVOKABLE virtual void vibrateBrief() = 0;
 
     /*! \brief View content
      *
-     * This method is supposed open the content in an appropriate app.  Example: if the content is GeoJSON, the content might be opened in Google Earth, or in a mobile
-     * mapping application.
+     * This method is supposed open the content in an appropriate app.  Example:
+     * if the content is GeoJSON, the content might be opened in Google Earth,
+     * or in a mobile mapping application.
      *
      * @param content content text
      *
@@ -156,8 +190,11 @@ public:
 public slots:
     /*! \brief Signal handler: GUI setup completed
      *
-     *  This method is called as soon as the GUI setup is completed. On Android, this method is used to hide the splash screen and to show the app.
-     *  The implementation should guarentee that nothing bad happens if the method is called more than once.
+     *  This method is called as soon as the GUI setup is completed. On Android,
+     *  this method is used to hide the splash screen and to show the app.
+     *
+     *  The implementation should guarentee that nothing bad happens if the
+     *  method is called more than once.
      */
     virtual void onGUISetupCompleted() = 0;
 
@@ -168,7 +205,6 @@ public slots:
      * file function and emit the signal openFileRequest() as appropriate.
      *
      * @param path File name
-     *
      */
     virtual void processFileOpenRequest(const QString& path);
 
@@ -179,12 +215,6 @@ public slots:
      * @param QByteArray containing an UTF8-Encoded strong
      */
     void processFileOpenRequest(const QByteArray& path);
-
-#warning
-    virtual void requestPermissionsSync() = 0;
-
-#warning
-    virtual void disableScreenSaver() = 0;
 
 signals:
     /*! \brief Emitted when platform asks this app to open a file
@@ -199,8 +229,6 @@ signals:
      * On Android, other apps can request that enroute 'views' a file, via
      * Android's INTENT system.
      */
-#warning works with int as second argument, but should be PlatformAdaptor_Abstract::FileFunction
-//    void openFileRequest(QString fileName, int fileFunction);
     void openFileRequest(QString fileName, Platform::PlatformAdaptor_Abstract::FileFunction fileFunction);
 
     /*! \brief Emitted when a new WiFi connections becomes available
@@ -208,7 +236,6 @@ signals:
      *  This signal is emitted when a new WiFi connection becomes available.
      */
     void wifiConnected();
-
 
 private:
     Q_DISABLE_COPY_MOVE(PlatformAdaptor_Abstract)

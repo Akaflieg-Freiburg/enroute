@@ -30,18 +30,7 @@
 
 namespace Platform {
 
-/*! \brief Interface to platform-specific capabilities of mobile devices
- *
- * This class is an interface to capabilities of mobile devices (e.g. vibration)
- * that need platform-specific code to operate.
- *
- * This class also receives platform-specific requests to open files and exposes
- * these requests to C++ and QML via the signal openFileRequest().  The signal
- * openFileRequest() is however only emitted after the method
- * startReceiveOpenFileRequests() has been called, requests that come in earlier
- * will be put on hold.  This allows apps to set up their GUI before processing
- * file open requests (that might need user interaction).
- */
+/*! \brief Implementation of PlatformAdaptor for Linux desktop devices */
 
 class PlatformAdaptor : public PlatformAdaptor_Abstract
 {

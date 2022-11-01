@@ -21,18 +21,11 @@
 #include <QtGlobal>
 #if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
 
-
-#include <QDateTime>
-#include <QDebug>
 #include <QDesktopServices>
 #include <QDir>
-#include <QFile>
 #include <QFileDialog>
 #include <QMimeDatabase>
-#include <QProcess>
-#include <QStandardPaths>
 #include <QTemporaryFile>
-#include <QUrl>
 
 #include "platform/PlatformAdaptor_Linux.h"
 
@@ -41,7 +34,6 @@
 Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
     : PlatformAdaptor_Abstract(parent)
 {
-    ;
 }
 
 
@@ -52,22 +44,23 @@ Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
 
 auto Platform::PlatformAdaptor::currentSSID() -> QString
 {
-    Q_UNUSED(this);
     return QStringLiteral("<unknown ssid>");
+}
+
+
+void Platform::PlatformAdaptor::disableScreenSaver()
+{
 }
 
 
 auto Platform::PlatformAdaptor::hasMissingPermissions() -> bool
 {
-    Q_UNUSED(this);
     return false;
 }
 
 
 void Platform::PlatformAdaptor::importContent()
 {
-    Q_UNUSED(this);
-
     auto fileNameX = QFileDialog::getOpenFileName(nullptr, tr("Import data"), QDir::homePath(), tr("All files (*)"));
     if (!fileNameX.isEmpty())
     {
@@ -78,17 +71,21 @@ void Platform::PlatformAdaptor::importContent()
 
 void Platform::PlatformAdaptor::lockWifi(bool lock)
 {
-    Q_UNUSED(lock)
+}
+
+
+void Platform::PlatformAdaptor::onGUISetupCompleted()
+{
+}
+
+
+void Platform::PlatformAdaptor::requestPermissionsSync()
+{
 }
 
 
 auto Platform::PlatformAdaptor::shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
 {
-    Q_UNUSED(content)
-    Q_UNUSED(mimeType)
-    Q_UNUSED(fileNameTemplate)
-    Q_UNUSED(this);
-
     QMimeDatabase db;
     QMimeType mime = db.mimeTypeForName(mimeType);
 
@@ -114,15 +111,11 @@ auto Platform::PlatformAdaptor::shareContent(const QByteArray& content, const QS
 
 void Platform::PlatformAdaptor::vibrateBrief()
 {
-    Q_UNUSED(this);
 }
 
 
 auto Platform::PlatformAdaptor::viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
 {
-    Q_UNUSED(mimeType)
-    Q_UNUSED(this);
-
     QTemporaryFile tmpFile(fileNameTemplate.arg(QStringLiteral("XXXXXX")));
     tmpFile.setAutoRemove(false);
     if (!tmpFile.open()) {
@@ -137,22 +130,6 @@ auto Platform::PlatformAdaptor::viewContent(const QByteArray& content, const QSt
         return {};
     }
     return tr("Unable to open data in other app.");
-}
-
-void Platform::PlatformAdaptor::requestPermissionsSync()
-{
-}
-
-
-void Platform::PlatformAdaptor::disableScreenSaver()
-{
-}
-
-// -------- Methods of questionable value start here.
-
-void Platform::PlatformAdaptor::onGUISetupCompleted()
-{
-
 }
 
 

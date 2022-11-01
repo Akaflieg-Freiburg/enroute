@@ -21,7 +21,6 @@
 #include <QMimeDatabase>
 #include <QUrl>
 
-#include "GlobalObject.h"
 #include "geomaps/CUP.h"
 #include "geomaps/GeoJSON.h"
 #include "geomaps/MBTILES.h"
@@ -31,7 +30,7 @@
 
 
 Platform::PlatformAdaptor_Abstract::PlatformAdaptor_Abstract(QObject *parent)
-    : QObject(parent)
+    : GlobalObject(parent)
 {
 }
 

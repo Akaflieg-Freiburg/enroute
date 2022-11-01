@@ -20,7 +20,7 @@
 
 #pragma once
 
-#include <QObject>
+#include "GlobalObject.h"
 
 namespace Platform {
 
@@ -44,7 +44,7 @@ namespace Platform {
  *   be called.
  */
 
-class PlatformAdaptor_Abstract : public QObject
+class PlatformAdaptor_Abstract : public GlobalObject
 {
     Q_OBJECT
 

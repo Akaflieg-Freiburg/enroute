@@ -24,23 +24,18 @@
 #include <QAndroidJniEnvironment>
 #include <QDateTime>
 #include <QDir>
-#include <QFile>
 #include <QHash>
 #include <QMimeDatabase>
 #include <QStandardPaths>
 #include <QtAndroid>
 
-#include "GlobalObject.h"
 #include "platform/PlatformAdaptor_Android.h"
 #include "platform/Notifier_Android.h"
 
 
-#include <QDebug>
-
 Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
     : Platform::PlatformAdaptor_Abstract(parent)
 {
-    // Do all the set-up required for sharing files
     // Android requires you to use a subdirectory within the AppDataLocation for
     // sending and receiving files. We create this and clear this directory on creation of the Share object -- even if the
     // app didn't exit gracefully, the directory is still cleared when starting
@@ -50,18 +45,26 @@ Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
     exchangeDir.removeRecursively();
     exchangeDir.mkpath(fileExchangeDirectoryName);
 
-    // Ask for permissions
-    permissions << "android.permission.ACCESS_COARSE_LOCATION";
-    permissions << "android.permission.ACCESS_FINE_LOCATION";
-    permissions << "android.permission.ACCESS_NETWORK_STATE";
-    permissions << "android.permission.ACCESS_WIFI_STATE";
-    permissions << "android.permission.READ_EXTERNAL_STORAGE";
-    permissions << "android.permission.WRITE_EXTERNAL_STORAGE";
-    permissions << "android.permission.WAKE_LOCK";
-
-
     // Don't forget the deferred initialization
     QTimer::singleShot(0, this, &PlatformAdaptor::deferredInitialization);
+}
+
+
+void Platform::PlatformAdaptor::deferredInitialization()
+{
+    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "startWiFiMonitor");
+}
+
+
+//
+// Methods
+//
+
+auto Platform::PlatformAdaptor::currentSSID() -> QString
+{
+    QAndroidJniObject stringObject = QAndroidJniObject::callStaticObjectMethod("de/akaflieg_freiburg/enroute/MobileAdaptor",
+                                                                               "getSSID", "()Ljava/lang/String;");
+    return stringObject.toString();
 }
 
 
@@ -90,20 +93,35 @@ void Platform::PlatformAdaptor::disableScreenSaver()
             }
         }
         QAndroidJniEnvironment env;
-        if (env->ExceptionCheck() != 0u) {
+        if (env->ExceptionCheck() != 0U) {
             env->ExceptionClear();
         }
     });
 }
 
-void Platform::PlatformAdaptor::requestPermissionsSync()
+
+auto Platform::PlatformAdaptor::hasMissingPermissions() -> bool
 {
-    QtAndroid::requestPermissionsSync(permissions);
+    // Check is required permissions have been granted
+    foreach(auto permission, permissions)
+    {
+        if (QtAndroid::checkPermission(permission) == QtAndroid::PermissionResult::Denied)
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
-void Platform::PlatformAdaptor::deferredInitialization()
+
+void Platform::PlatformAdaptor::importContent()
 {
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "startWiFiMonitor");
+}
+
+
+void Platform::PlatformAdaptor::lockWifi(bool lock)
+{
+    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "lockWiFi", "(Z)V", static_cast<int>(lock));
 }
 
 
@@ -136,45 +154,20 @@ void Platform::PlatformAdaptor::onGUISetupCompleted()
 }
 
 
-void Platform::PlatformAdaptor::lockWifi(bool lock)
+void Platform::PlatformAdaptor::processFileOpenRequest(const QString& path)
 {
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "lockWiFi", "(Z)V", lock);
-
-}
-
-
-auto Platform::PlatformAdaptor::hasMissingPermissions() -> bool
-{
-
-    // Check is required permissions have been granted
-    foreach(auto permission, permissions)
+    if (!receiveOpenFileRequestsStarted)
     {
-        if (QtAndroid::checkPermission(permission) == QtAndroid::PermissionResult::Denied)
-        {
-            return true;
-        }
+        pendingReceiveOpenFileRequest = path;
+        return;
     }
-    return false;
-
+    Platform::PlatformAdaptor_Abstract::processFileOpenRequest(path);
 }
 
 
-void Platform::PlatformAdaptor::vibrateBrief()
+void Platform::PlatformAdaptor::requestPermissionsSync()
 {
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "vibrateBrief");
-}
-
-
-auto Platform::PlatformAdaptor::currentSSID() -> QString
-{
-    QAndroidJniObject stringObject = QAndroidJniObject::callStaticObjectMethod("de/akaflieg_freiburg/enroute/MobileAdaptor",
-                                                                               "getSSID", "()Ljava/lang/String;");
-    return stringObject.toString();
-}
-
-
-void Platform::PlatformAdaptor::importContent()
-{
+    QtAndroid::requestPermissionsSync(permissions);
 }
 
 
@@ -191,11 +184,17 @@ auto Platform::PlatformAdaptor::shareContent(const QByteArray& content, const QS
     QMimeType mime = db.mimeTypeForName(mimeType);
 
     auto tmpPath = contentToTempFile(content, fileNameTemplate+"-%1."+mime.preferredSuffix());
-    bool success = outgoingIntent("sendFile", tmpPath, mimeType);
+    bool success = outgoingIntent(QStringLiteral("sendFile"), tmpPath, mimeType);
     if (success) {
-        return QString();
+        return {};
     }
     return tr("No suitable file sharing app could be found.");
+}
+
+
+void Platform::PlatformAdaptor::vibrateBrief()
+{
+    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "vibrateBrief");
 }
 
 
@@ -206,13 +205,17 @@ auto Platform::PlatformAdaptor::viewContent(const QByteArray& content, const QSt
     Q_UNUSED(fileNameTemplate)
 
     QString tmpPath = contentToTempFile(content, fileNameTemplate);
-    bool success = outgoingIntent("viewFile", tmpPath, mimeType);
+    bool success = outgoingIntent(QStringLiteral("viewFile"), tmpPath, mimeType);
     if (success) {
-        return QString();
+        return {};
     }
     return tr("No suitable app for viewing this data could be found.");
 }
 
+
+//
+// Private Methods
+//
 
 auto Platform::PlatformAdaptor::contentToTempFile(const QByteArray& content, const QString& fileNameTemplate) -> QString
 {
@@ -255,17 +258,9 @@ auto Platform::PlatformAdaptor::outgoingIntent(const QString& methodName, const 
 }
 
 
-void Platform::PlatformAdaptor::processFileOpenRequest(const QString& path)
-{
-    if (!receiveOpenFileRequestsStarted)
-    {
-        pendingReceiveOpenFileRequest = path;
-        return;
-    }
-    Platform::PlatformAdaptor_Abstract::processFileOpenRequest(path);
-}
-
-
+//
+// C Methods
+//
 
 extern "C" {
 
@@ -285,15 +280,15 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiCo
     // and we simply return.
     if (GlobalObject::canConstruct())
     {
-        GlobalObject::platformAdaptor()->wifiConnected();
+        emit GlobalObject::platformAdaptor()->wifiConnected();
     }
 }
 
-// This method is called from Java to indicate that the user has clicked into the Android
-// notification for reporting traffic data receiver errors
 
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onNotificationClicked(JNIEnv* /*unused*/, jobject /*unused*/, jint notifyID, jint actionID)
 {
+    // This method is called from Java to indicate that the user has clicked into the Android
+    // notification for reporting traffic data receiver errors
 
     // This method gets called from Java before main() has executed
     // and thus before a QApplication instance has been constructed.

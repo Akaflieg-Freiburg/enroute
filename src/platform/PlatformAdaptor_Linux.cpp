@@ -114,7 +114,7 @@ void Platform::PlatformAdaptor::vibrateBrief()
 }
 
 
-auto Platform::PlatformAdaptor::viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
+auto Platform::PlatformAdaptor::viewContent(const QByteArray& content, const QString& /*mimeType*/, const QString& fileNameTemplate) -> QString
 {
     QTemporaryFile tmpFile(fileNameTemplate.arg(QStringLiteral("XXXXXX")));
     tmpFile.setAutoRemove(false);

@@ -49,7 +49,7 @@
 #include "navigation/Aircraft.h"
 #include "navigation/Clock.h"
 #include "navigation/Navigator.h"
-#include "platform/Notifier.h"
+#include "platform/Notifier_Abstract.h"
 #include "platform/PlatformAdaptor.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/PasswordDB.h"
@@ -83,10 +83,10 @@ auto main(int argc, char *argv[]) -> int
     qRegisterMetaType<GeoMaps::Waypoint>();
     qRegisterMetaType<Positioning::PositionInfo>();
     qRegisterMetaType<Traffic::Warning>();
-    qRegisterMetaType<Platform::Notifier::NotificationActions>();
+    qRegisterMetaType<Platform::Notifier_Abstract::NotificationActions>();
 
     qRegisterMetaType<Platform::PlatformAdaptor_Abstract::FileFunction>("Platform::PlatformAdaptor_Abstract::FileFunction");
-    qRegisterMetaType<Platform::Notifier::NotificationTypes>("Platform::Notifier::Notifications");
+    qRegisterMetaType<Platform::Notifier_Abstract::NotificationTypes>("Platform::Notifier::Notifications");
     qmlRegisterUncreatableType<DemoRunner>("enroute", 1, 0, "DemoRunner", QStringLiteral("DemoRunner objects cannot be created in QML"));
     qmlRegisterUncreatableType<Navigation::Aircraft>("enroute", 1, 0, "Aircraft", QStringLiteral("Aircraft objects cannot be created in QML"));
     qmlRegisterUncreatableType<Navigation::RemainingRouteInfo>("enroute", 1, 0, "RemainingRouteInfo", QStringLiteral("RemainingRouteInfo objects cannot be created in QML"));
@@ -103,7 +103,7 @@ auto main(int argc, char *argv[]) -> int
     qmlRegisterUncreatableType<Navigation::Navigator>("enroute", 1, 0, "Navigator", QStringLiteral("Navigator objects cannot be created in QML"));
     qmlRegisterUncreatableType<Traffic::PasswordDB>("enroute", 1, 0, "PasswordDB", QStringLiteral("PasswordDB objects cannot be created in QML"));
     qmlRegisterUncreatableType<Traffic::TrafficDataProvider>("enroute", 1, 0, "TrafficDataProvider", QStringLiteral("TrafficDataProvider objects cannot be created in QML"));
-    qmlRegisterUncreatableType<Platform::Notifier>("enroute", 1, 0, "Notifier", QStringLiteral("Notifier objects cannot be created in QML"));
+    qmlRegisterUncreatableType<Platform::Notifier_Abstract>("enroute", 1, 0, "Notifier", QStringLiteral("Notifier objects cannot be created in QML"));
     qmlRegisterUncreatableType<Positioning::PositionProvider>("enroute", 1, 0, "PositionProvider", QStringLiteral("PositionProvider objects cannot be created in QML"));
     qmlRegisterUncreatableType<Traffic::TrafficFactor_WithPosition>("enroute", 1, 0, "TrafficFactor_WithPosition", QStringLiteral("TrafficFactor_WithPosition objects cannot be created in QML"));
     qmlRegisterType<Ui::ScaleQuickItem>("enroute", 1, 0, "Scale");

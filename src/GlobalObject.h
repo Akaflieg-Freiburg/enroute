@@ -53,7 +53,7 @@ namespace Traffic
 
 namespace Platform
 {
-  class Notifier;
+  class Notifier_Abstract;
   class PlatformAdaptor;
   class PlatformAdaptor_Abstract;
 } // namespace Platform
@@ -179,7 +179,7 @@ public:
    *
    * @returns Pointer to appplication-wide static instance.
    */
-  Q_INVOKABLE static Platform::Notifier *notifier();
+  Q_INVOKABLE static Platform::Notifier_Abstract *notifier();
 
   /*! \brief Pointer to appplication-wide static QNetworkAccessManager instance
    *

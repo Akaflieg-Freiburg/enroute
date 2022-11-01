@@ -298,13 +298,13 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onNotifi
     {
         return;
     }
-    auto* ptr = qobject_cast<Platform::Notifier_Android*>(GlobalObject::notifier());
+    auto* ptr = qobject_cast<Platform::Notifier*>(GlobalObject::notifier());
 
     if (ptr == nullptr)
     {
         return;
     }
-    ptr->onNotificationClicked((Platform::Notifier::NotificationTypes)notifyID, actionID);
+    ptr->onNotificationClicked((Platform::Notifier_Abstract::NotificationTypes)notifyID, actionID);
 
 }
 

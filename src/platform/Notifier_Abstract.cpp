@@ -20,23 +20,25 @@
 
 #include <QGuiApplication>
 
-#include "platform/Notifier.h"
+#include "platform/Notifier_Abstract.h"
 
 
-Platform::Notifier::Notifier(QObject *parent)
+Platform::Notifier_Abstract::Notifier_Abstract(QObject *parent)
     : QObject(parent)
 {
 
     connect(qGuiApp, &QGuiApplication::applicationStateChanged, this,
-            [this](Qt::ApplicationState state) {
-        if (state == Qt::ApplicationSuspended) {
+            [this](Qt::ApplicationState state)
+    {
+        if (state == Qt::ApplicationSuspended)
+        {
             hideAll();
         }
     });
 }
 
 
-void Platform::Notifier::hideAll()
+void Platform::Notifier_Abstract::hideAll()
 {
     hideNotification(DownloadInfo);
     hideNotification(TrafficReceiverSelfTestError);
@@ -45,9 +47,10 @@ void Platform::Notifier::hideAll()
 }
 
 
-auto Platform::Notifier::title(Platform::Notifier::NotificationTypes notification) -> QString
+auto Platform::Notifier_Abstract::title(Platform::Notifier_Abstract::NotificationTypes notification) -> QString
 {
-    switch (notification) {
+    switch (notification)
+    {
     case DownloadInfo:
         return tr("Downloading map and data…");
     case TrafficReceiverRuntimeError:

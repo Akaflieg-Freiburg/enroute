@@ -26,27 +26,27 @@
 #include "platform/Notifier_Android.h"
 
 
-Platform::Notifier_Android::Notifier_Android(QObject *parent)
-    : Platform::Notifier(parent)
+Platform::Notifier::Notifier(QObject *parent)
+    : Platform::Notifier_Abstract(parent)
 {
     ;
 }
 
 
-Platform::Notifier_Android::~Notifier_Android()
+Platform::Notifier::~Notifier()
 {
     ;
 }
 
 
-void Platform::Notifier_Android::hideNotification(Platform::Notifier::NotificationTypes notificationType)
+void Platform::Notifier::hideNotification(Platform::Notifier_Abstract::NotificationTypes notificationType)
 {
     jint jni_ID                   = notificationType;
     QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/Notifier", "hideNotification", "(I)V", jni_ID);
 }
 
 
-void Platform::Notifier_Android::onNotificationClicked(Platform::Notifier::NotificationTypes notificationType, int actionID)
+void Platform::Notifier::onNotificationClicked(Platform::Notifier_Abstract::NotificationTypes notificationType, int actionID)
 {
     hideNotification(notificationType);
     switch (notificationType) {
@@ -70,7 +70,7 @@ void Platform::Notifier_Android::onNotificationClicked(Platform::Notifier::Notif
 }
 
 
-void Platform::Notifier_Android::showNotification(Platform::Notifier::NotificationTypes notificationType, const QString& text, const QString& longText)
+void Platform::Notifier::showNotification(Platform::Notifier_Abstract::NotificationTypes notificationType, const QString& text, const QString& longText)
 {
     jint jni_ID                    = notificationType;
     QAndroidJniObject jni_title    = QAndroidJniObject::fromString(title(notificationType));

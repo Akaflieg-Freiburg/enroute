@@ -98,6 +98,7 @@ set(SOURCES
     navigation/Navigator.h
     navigation/RemainingRouteInfo.h
     platform/Notifier.h
+    platform/Notifier_Abstract.h
     platform/PlatformAdaptor.h
     platform/PlatformAdaptor_Abstract.h
     positioning/Geoid.h
@@ -162,7 +163,7 @@ set(SOURCES
     navigation/Leg.cpp
     navigation/Navigator.cpp
     navigation/RemainingRouteInfo.cpp
-    platform/Notifier.cpp
+    platform/Notifier_Abstract.cpp
     platform/PlatformAdaptor_Abstract.cpp
     positioning/Geoid.cpp
     positioning/PositionInfo.cpp

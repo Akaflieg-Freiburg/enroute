@@ -31,20 +31,13 @@
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/WaypointLibrary.h"
 #include "navigation/Navigator.h"
+#include "platform/Notifier.h"
 #include "platform/PlatformAdaptor.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/FlarmnetDB.h"
 #include "traffic/PasswordDB.h"
 #include "traffic/TrafficDataProvider.h"
 #include "weather/WeatherDataProvider.h"
-
-#if defined(Q_OS_ANDROID)
-#include "platform/Notifier_Android.h"
-#endif
-#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
-#include "platform/Notifier_Linux.h"
-#endif
-
 
 bool isConstructing {false};
 
@@ -57,12 +50,7 @@ QPointer<Librarian> g_librarian {};
 QPointer<Platform::PlatformAdaptor> g_platformAdaptor {};
 QPointer<Navigation::Navigator> g_navigator {};
 QPointer<QNetworkAccessManager> g_networkAccessManager {};
-#if defined(Q_OS_ANDROID)
-QPointer<Platform::Notifier_Android> g_notifier {};
-#endif
-#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
-QPointer<Platform::Notifier_Linux> g_notifier {};
-#endif
+QPointer<Platform::Notifier> g_notifier {};
 QPointer<Traffic::PasswordDB> g_passwordDB {};
 QPointer<Positioning::PositionProvider> g_positionProvider {};
 QPointer<Settings> g_settings {};
@@ -154,15 +142,9 @@ auto GlobalObject::networkAccessManager() -> QNetworkAccessManager*
 }
 
 
-auto GlobalObject::notifier() -> Platform::Notifier*
+auto GlobalObject::notifier() -> Platform::Notifier_Abstract*
 {
-#if defined(Q_OS_ANDROID)
-    return allocateInternal<Platform::Notifier_Android>(g_notifier);
-#endif
-#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
-    return allocateInternal<Platform::Notifier_Linux>(g_notifier);
-#endif
-
+    return allocateInternal<Platform::Notifier>(g_notifier);
 }
 
 

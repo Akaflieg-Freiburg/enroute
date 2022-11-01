@@ -36,12 +36,12 @@
 // see https://specifications.freedesktop.org/notification-spec/latest/ar01s08.html
 
 struct FreeDesktopImageStructure {
-    int width;
-    int height;
-    int rowStride;
-    bool hasAlpha;
-    int bitsPerSample;
-    int channels;
+    int width{};
+    int height{};
+    int rowStride{};
+    bool hasAlpha{};
+    int bitsPerSample{};
+    int channels{};
     QByteArray data;
 };
 Q_DECLARE_METATYPE(FreeDesktopImageStructure)
@@ -75,8 +75,8 @@ auto operator>>(const QDBusArgument &argument, FreeDesktopImageStructure& fdImag
 }
 
 
-Platform::Notifier_Linux::Notifier_Linux(QObject *parent)
-    : Platform::Notifier_Linux::Notifier(parent)
+Platform::Notifier::Notifier(QObject *parent)
+    : Platform::Notifier::Notifier_Abstract(parent)
 {
     connect(&notificationInterface, SIGNAL(ActionInvoked(uint,QString)), this, SLOT(onActionInvoked(uint,QString)));
     connect(&notificationInterface, SIGNAL(NotificationClosed(uint,uint)), this, SLOT(onNotificationClosed(uint,uint)));
@@ -98,7 +98,7 @@ Platform::Notifier_Linux::Notifier_Linux(QObject *parent)
 }
 
 
-Platform::Notifier_Linux::~Notifier_Linux()
+Platform::Notifier::~Notifier()
 {
     foreach(auto notificationID, notificationIDs) {
         if (notificationID == 0) {
@@ -109,7 +109,7 @@ Platform::Notifier_Linux::~Notifier_Linux()
 }
 
 
-void Platform::Notifier_Linux::hideNotification(Platform::Notifier::NotificationTypes notificationType)
+void Platform::Notifier::hideNotification(Platform::Notifier_Abstract::NotificationTypes notificationType)
 {
 
     auto notificationID = notificationIDs.value(notificationType, 0);
@@ -123,7 +123,7 @@ void Platform::Notifier_Linux::hideNotification(Platform::Notifier::Notification
 }
 
 
-void Platform::Notifier_Linux::onActionInvoked(uint /*unused*/, const QString &key)
+void Platform::Notifier::onActionInvoked(uint /*unused*/, const QString &key)
 {
 
     if (key == QLatin1String("GeoMap_Dismiss")) {
@@ -142,7 +142,7 @@ void Platform::Notifier_Linux::onActionInvoked(uint /*unused*/, const QString &k
 }
 
 
-void Platform::Notifier_Linux::onNotificationClosed(uint id, uint reason)
+void Platform::Notifier::onNotificationClosed(uint id, uint reason)
 {
     // reason == 2 means: notification is closed because user clicked on it
     if (reason != 2) {
@@ -181,7 +181,7 @@ void Platform::Notifier_Linux::onNotificationClosed(uint id, uint reason)
 }
 
 
-void Platform::Notifier_Linux::showNotification(NotificationTypes notificationType, const QString& text, const QString& longText)
+void Platform::Notifier::showNotification(NotificationTypes notificationType, const QString& text, const QString& longText)
 {
     Q_UNUSED(text)
     Q_UNUSED(longText)

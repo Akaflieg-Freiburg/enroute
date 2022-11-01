@@ -81,10 +81,10 @@ public slots:
      *
      *  @param notificationType Type of the notification
      */
-    Q_INVOKABLE virtual void hideNotification(Platform::Notifier::NotificationTypes notificationType) = 0;
+    virtual void hideNotification(Platform::Notifier::NotificationTypes notificationType) = 0;
 
     /*! \brief Hides all notifications */
-    Q_INVOKABLE void hideAll();
+    void hideAll();
 
     /*! \brief Shows a notification
      *

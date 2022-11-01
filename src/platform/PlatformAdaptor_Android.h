@@ -20,9 +20,6 @@
 
 #pragma once
 
-#include <QtGlobal>
-#if defined(Q_OS_ANDROID)
-
 #include <QTimer>
 #include <QtGlobal>
 #include <QObject>
@@ -124,5 +121,3 @@ private:
 };
 
 } // namespace Platform
-
-#endif // defined(Q_OS_ANDROID)

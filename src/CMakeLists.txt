@@ -100,8 +100,6 @@ set(SOURCES
     platform/Notifier.h
     platform/PlatformAdaptor.h
     platform/PlatformAdaptor_Abstract.h
-    platform/PlatformAdaptor_Android.h
-    platform/PlatformAdaptor_Linux.h
     positioning/Geoid.h
     positioning/PositionInfo.h
     positioning/PositionInfoSource_Abstract.h
@@ -166,8 +164,6 @@ set(SOURCES
     navigation/RemainingRouteInfo.cpp
     platform/Notifier.cpp
     platform/PlatformAdaptor_Abstract.cpp
-    platform/PlatformAdaptor_Android.cpp
-    platform/PlatformAdaptor_Linux.cpp
     positioning/Geoid.cpp
     positioning/PositionInfo.cpp
     positioning/PositionInfoSource_Abstract.cpp
@@ -232,6 +228,8 @@ if( ANDROID )
         ${QTQUICKCOMPILEDRESOURCES}
         platform/Notifier_Android.h
         platform/Notifier_Android.cpp
+        platform/PlatformAdaptor_Android.h
+        platform/PlatformAdaptor_Android.cpp
         android/src/de/akaflieg_freiburg/enroute/IntentLauncher.java
         android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java
         android/src/de/akaflieg_freiburg/enroute/Notifier.java
@@ -274,6 +272,8 @@ if (NOT ANDROID)
     list(APPEND SOURCES
         platform/Notifier_Linux.h
         platform/Notifier_Linux.cpp
+        platform/PlatformAdaptor_Linux.h
+        platform/PlatformAdaptor_Linux.cpp
         ${CMAKE_CURRENT_BINARY_DIR}/qml.qrc
         )
 

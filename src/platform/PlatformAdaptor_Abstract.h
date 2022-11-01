@@ -61,15 +61,6 @@ public:
       };
     Q_ENUM(FileFunction)
 
-    /*! \brief Notification types */
-    enum NotificationType
-    {
-        DownloadInfo = 0,                 /*< Info that  download is in progress */
-        TrafficReceiverSelfTestError = 1, /*< Traffic receiver reports problem on self-test */
-        TrafficReceiverProblem = 2        /*< Traffic receiver reports problem while running */
-    };
-    Q_ENUM(NotificationType)
-
 
     /*! \brief Standard constructor
      *

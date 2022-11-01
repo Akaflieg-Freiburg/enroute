@@ -23,7 +23,7 @@
 #include <QtGlobal>
 
 #if defined(Q_OS_ANDROID)
-#include "PlatformAdaptor_Linux.h"
+#include "PlatformAdaptor_Android.h"
 #endif
 
 #if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)

@@ -98,9 +98,9 @@ public:
      * operate properly. This method can be used to check if all permissions
      * have been granted.
      *
-     * @returns 'False' if all required permissions have been granted.
+     * @returns 'True' if all required permissions have been granted.
     */
-    Q_INVOKABLE virtual bool hasMissingPermissions() = 0;
+    Q_INVOKABLE virtual bool hasRequiredPermissions() = 0;
 
     /*! \brief Import content from file
      *

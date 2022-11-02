@@ -53,9 +53,9 @@ void Platform::PlatformAdaptor::disableScreenSaver()
 }
 
 
-auto Platform::PlatformAdaptor::hasMissingPermissions() -> bool
+auto Platform::PlatformAdaptor::hasRequiredPermissions() -> bool
 {
-    return false;
+    return true;
 }
 
 

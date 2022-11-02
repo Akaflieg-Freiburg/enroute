@@ -54,7 +54,7 @@ public:
     void disableScreenSaver() override;
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
-    Q_INVOKABLE bool hasMissingPermissions() override;
+    Q_INVOKABLE bool hasRequiredPermissions() override;
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
     Q_INVOKABLE void importContent() override;

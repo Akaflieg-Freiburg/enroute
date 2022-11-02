@@ -44,9 +44,6 @@ Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
     QDir exchangeDir(fileExchangeDirectoryName);
     exchangeDir.removeRecursively();
     exchangeDir.mkpath(fileExchangeDirectoryName);
-
-    // Don't forget the deferred initialization
-    QTimer::singleShot(0, this, &PlatformAdaptor::deferredInitialization);
 }
 
 
@@ -100,17 +97,17 @@ void Platform::PlatformAdaptor::disableScreenSaver()
 }
 
 
-auto Platform::PlatformAdaptor::hasMissingPermissions() -> bool
+auto Platform::PlatformAdaptor::hasRequiredPermissions() -> bool
 {
     // Check is required permissions have been granted
     foreach(auto permission, permissions)
     {
         if (QtAndroid::checkPermission(permission) == QtAndroid::PermissionResult::Denied)
         {
-            return true;
+            return false;
         }
     }
-    return false;
+    return true;
 }
 
 

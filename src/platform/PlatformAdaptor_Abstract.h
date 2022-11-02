@@ -49,19 +49,6 @@ class PlatformAdaptor_Abstract : public GlobalObject
     Q_OBJECT
 
 public:
-    /*! \brief Functions and types of a file that this app handles */
-    enum FileFunction
-      {
-        UnknownFunction, /*< Unknown file */
-        FlightRouteOrWaypointLibrary, /*< File contains a flight route or a waypoint library. */
-        FlightRoute, /*< File contains a flight route. */
-        VectorMap, /*< File contains a vector map. */
-        RasterMap, /*< File contains a raster map. */
-        WaypointLibrary /*< Waypoint library in CUP or GeoJSON format */
-      };
-    Q_ENUM(FileFunction)
-
-
     /*! \brief Standard constructor
      *
      * @param parent Standard QObject parent pointer
@@ -102,14 +89,6 @@ public:
     */
     Q_INVOKABLE virtual bool hasRequiredPermissions() = 0;
 
-    /*! \brief Import content from file
-     *
-     * On desktop systems, this method is supposed to open a file dialog to
-     * import a file. On mobile systems, this method is supposed to do nothing.
-     *
-     */
-    Q_INVOKABLE virtual void importContent() = 0;
-
     /*! \brief Lock connection to Wi-Fi network
      *
      * If supported by the platform, this method is supposed to lock the current
@@ -135,26 +114,6 @@ public:
      */
     virtual void requestPermissionsSync() = 0;
 
-    /*! \brief Share content
-     *
-     * On desktop systems, this method is supposed to show a file dialog to save
-     * the file. On mobile devices, this method is supposed to open a dialog
-     * that allows to chose the method to send this file (e-mail, dropbox,
-     * signal chat, …)
-     *
-     * @param content File content
-     *
-     * @param mimeType the mimeType of the content
-     *
-     * @param fileNameTemplate A string of the form "EDTF - EDTG", without
-     * suffix of path. This can be used, e.g. as the name of the attachment when
-     * sending files by e-mail.
-     *
-     * @returns Empty string on success, the string "abort" on abort, and a
-     * translated error message otherwise
-     */
-    Q_INVOKABLE virtual QString shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) = 0;
-
     /*! \brief Make the device briefly vibrate
      *
      * On platforms that support this, make the device briefly vibrate if haptic
@@ -162,21 +121,6 @@ public:
      */
     Q_INVOKABLE virtual void vibrateBrief() = 0;
 
-    /*! \brief View content
-     *
-     * This method is supposed open the content in an appropriate app.  Example:
-     * if the content is GeoJSON, the content might be opened in Google Earth,
-     * or in a mobile mapping application.
-     *
-     * @param content content text
-     *
-     * @param mimeType the mimeType of the content
-     *
-     * @param fileNameTemplate A string of the form "FlightRoute-%1.geojson".
-     *
-     * @returns Empty string on success, a translated error message otherwise
-     */
-    Q_INVOKABLE virtual QString viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) = 0;
 
 public slots:
     /*! \brief Signal handler: GUI setup completed
@@ -189,39 +133,8 @@ public slots:
      */
     virtual void onGUISetupCompleted() = 0;
 
-    /*! \brief Determine file function and emit openFileRequest()
-     *
-     * This helper function is called by platform-dependent code whenever the
-     * app is asked to open a file.  It will look at the file, determine the
-     * file function and emit the signal openFileRequest() as appropriate.
-     *
-     * @param path File name
-     */
-    virtual void processFileOpenRequest(const QString& path);
-
-    /*! \brief Determine file function and emit openFileRequest()
-     *
-     * Overloaded function for convenience
-     *
-     * @param QByteArray containing an UTF8-Encoded strong
-     */
-    void processFileOpenRequest(const QByteArray& path);
 
 signals:
-    /*! \brief Emitted when platform asks this app to open a file
-     *
-     * This signal is emitted whenever the platform-dependent code receives
-     * information that enroute is requested to open a file.
-     *
-     * @param fileName Path of the file on the local file system
-     *
-     * @param fileFunction Function and file type.
-     *
-     * On Android, other apps can request that enroute 'views' a file, via
-     * Android's INTENT system.
-     */
-    void openFileRequest(QString fileName, Platform::PlatformAdaptor_Abstract::FileFunction fileFunction);
-
     /*! \brief Emitted when a new WiFi connections becomes available
      *
      *  This signal is emitted when a new WiFi connection becomes available.

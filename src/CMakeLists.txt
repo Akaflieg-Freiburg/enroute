@@ -97,6 +97,8 @@ set(SOURCES
     navigation/Leg.h
     navigation/Navigator.h
     navigation/RemainingRouteInfo.h
+    platform/FileExchange.h
+    platform/FileExchange_Abstract.h
     platform/Notifier.h
     platform/Notifier_Abstract.h
     platform/PlatformAdaptor.h
@@ -163,6 +165,7 @@ set(SOURCES
     navigation/Leg.cpp
     navigation/Navigator.cpp
     navigation/RemainingRouteInfo.cpp
+    platform/FileExchange_Abstract.cpp
     platform/Notifier_Abstract.cpp
     platform/PlatformAdaptor_Abstract.cpp
     positioning/Geoid.cpp
@@ -227,6 +230,8 @@ if( ANDROID )
     qtquick_compiler_add_resources(QTQUICKCOMPILEDRESOURCES ${CMAKE_CURRENT_BINARY_DIR}/qml.qrc)
     list(APPEND SOURCES
         ${QTQUICKCOMPILEDRESOURCES}
+        platform/FileExchange_Android.h
+        platform/FileExchange_Android.cpp
         platform/Notifier_Android.h
         platform/Notifier_Android.cpp
         platform/PlatformAdaptor_Android.h
@@ -271,6 +276,8 @@ endif()
 
 if (NOT ANDROID)
     list(APPEND SOURCES
+        platform/FileExchange_Linux.h
+        platform/FileExchange_Linux.cpp
         platform/Notifier_Linux.h
         platform/Notifier_Linux.cpp
         platform/PlatformAdaptor_Linux.h

@@ -29,10 +29,10 @@ Item {
     id: importManager
 
     property string filePath: ""
-    property int fileFunction: PlatformAdaptor_Abstract.UnknownFunction
+    property int fileFunction: FileExchange_Abstract.UnknownFunction
 
     Connections {
-        target: global.platformAdaptor()
+        target: global.fileExchange()
 
         function onOpenFileRequest(fileName, fileFunction) {
             view.raise()
@@ -43,24 +43,24 @@ Item {
             if (fileName === "")
                 return
 
-            if (fileFunction === PlatformAdaptor_Abstract.WaypointLibrary) {
+            if (fileFunction === FileExchange_Abstract.WaypointLibrary) {
                 importWPLibraryDialog.open()
                 return
             }
-            if (fileFunction === PlatformAdaptor_Abstract.FlightRouteOrWaypointLibrary) {
+            if (fileFunction === FileExchange_Abstract.FlightRouteOrWaypointLibrary) {
                 chooseFRorWPDialog.open()
                 return
             }
 
-            if (fileFunction === PlatformAdaptor_Abstract.VectorMap) {
+            if (fileFunction === FileExchange_Abstract.VectorMap) {
                 importVectorMapDialog.open()
                 return
             }
-            if (fileFunction === PlatformAdaptor_Abstract.RasterMap) {
+            if (fileFunction === FileExchange_Abstract.RasterMap) {
                 importRasterMapDialog.open()
                 return
             }
-            if (fileFunction === PlatformAdaptor_Abstract.FlightRoute) {
+            if (fileFunction === FileExchange_Abstract.FlightRoute) {
                 if (global.navigator().flightRoute.size > 0)
                     importFlightRouteDialog.open()
                 else
@@ -109,7 +109,7 @@ Item {
 
                 onClicked: {
                     global.platformAdaptor().vibrateBrief()
-                    importManager.fileFunction = PlatformAdaptor_Abstract.FlightRoute
+                    importManager.fileFunction = FileExchange_Abstract.FlightRoute
                     chooseFRorWPDialog.close()
                     if (global.navigator().flightRoute.size > 0)
                         importFlightRouteDialog.open()
@@ -123,7 +123,7 @@ Item {
 
                     onClicked: {
                         global.platformAdaptor().vibrateBrief()
-                        importManager.fileFunction = PlatformAdaptor_Abstract.WaypointLibrary
+                        importManager.fileFunction = FileExchange_Abstract.WaypointLibrary
                         chooseFRorWPDialog.close()
                         importWPLibraryDialog.open()
                     }
@@ -367,7 +367,7 @@ Item {
 
             var errorString = ""
 
-            if (importManager.fileFunction === PlatformAdaptor_Abstract.FlightRoute)
+            if (importManager.fileFunction === FileExchange_Abstract.FlightRoute)
                 errorString = global.navigator().flightRoute.load(importManager.filePath)
 
             if (errorString !== "") {

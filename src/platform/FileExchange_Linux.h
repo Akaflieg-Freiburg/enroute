@@ -23,13 +23,13 @@
 #include <QObject>
 #include <QTimer>
 
-#include "PlatformAdaptor_Abstract.h"
+#include "FileExchange_Abstract.h"
 
 namespace Platform {
 
-/*! \brief Implementation of PlatformAdaptor for Linux desktop devices */
+/*! \brief Implementation of FileExchange for Linux desktop devices */
 
-class PlatformAdaptor : public PlatformAdaptor_Abstract
+class FileExchange : public FileExchange_Abstract
 {
     Q_OBJECT
 
@@ -38,41 +38,26 @@ public:
      *
      * @param parent Standard QObject parent pointer
     */
-    explicit PlatformAdaptor(QObject *parent = nullptr);
+    explicit FileExchange(QObject *parent = nullptr);
 
-    ~PlatformAdaptor() override = default;
+    ~FileExchange() override = default;
 
 
     //
     // Methods
     //
 
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
-    Q_INVOKABLE QString currentSSID() override;
+    /*! \brief Implements pure virtual method from FileExchange_Abstract */
+    Q_INVOKABLE void importContent() override;
 
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
-    void disableScreenSaver() override;
+    /*! \brief Implements pure virtual method from FileExchange_Abstract */
+    Q_INVOKABLE QString shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) override;
 
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
-    Q_INVOKABLE bool hasRequiredPermissions() override;
-
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
-    Q_INVOKABLE void lockWifi(bool lock) override;
-
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
-    void requestPermissionsSync() override;
-
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
-    Q_INVOKABLE void vibrateBrief() override;
-
-
-public slots:
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
-    Q_INVOKABLE void onGUISetupCompleted() override;
-
+    /*! \brief Implements pure virtual method from FileExchange_Abstract */
+    Q_INVOKABLE QString viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) override;
 
 private:
-    Q_DISABLE_COPY_MOVE(PlatformAdaptor)
+    Q_DISABLE_COPY_MOVE(FileExchange)
 };
 
 } // namespace Platform

@@ -93,3 +93,34 @@ void Platform::Notifier::showNotification(Platform::Notifier_Abstract::Notificat
 
 }
 
+
+
+//
+// C Methods
+//
+
+extern "C" {
+
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onNotificationClicked(JNIEnv* /*unused*/, jobject /*unused*/, jint notifyID, jint actionID)
+{
+    // This method is called from Java to indicate that the user has clicked into the Android
+    // notification for reporting traffic data receiver errors
+
+    // This method gets called from Java before main() has executed
+    // and thus before a QApplication instance has been constructed.
+    // In these cases, the methods of the Global class must not be called
+    // and we simply return.
+    if (!GlobalObject::canConstruct())
+    {
+        return;
+    }
+    auto* ptr = qobject_cast<Platform::Notifier*>(GlobalObject::notifier());
+
+    if (ptr == nullptr)
+    {
+        return;
+    }
+    ptr->onNotificationClicked((Platform::Notifier_Abstract::NotificationTypes)notifyID, actionID);
+}
+
+}

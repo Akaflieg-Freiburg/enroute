@@ -53,8 +53,8 @@ namespace Traffic
 
 namespace Platform
 {
+  class FileExchange_Abstract;
   class Notifier_Abstract;
-  class PlatformAdaptor;
   class PlatformAdaptor_Abstract;
 } // namespace Platform
 
@@ -137,6 +137,12 @@ public:
    * @returns Pointer to appplication-wide static instance.
    */
   Q_INVOKABLE static Traffic::FlarmnetDB *flarmnetDB();
+
+  /*! \brief Pointer to appplication-wide static FileExchange instance
+   *
+   * @returns Pointer to appplication-wide static instance.
+   */
+  Q_INVOKABLE static Platform::FileExchange_Abstract *fileExchange();
 
   /*! \brief Pointer to appplication-wide static GeoMaps::GeoMapProvider
    * instance

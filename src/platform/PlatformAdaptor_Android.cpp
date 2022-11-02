@@ -18,9 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QtGlobal>
-#if defined(Q_OS_ANDROID)
-
 #include <QAndroidJniEnvironment>
 #include <QDateTime>
 #include <QDir>
@@ -30,20 +27,11 @@
 #include <QtAndroid>
 
 #include "platform/PlatformAdaptor_Android.h"
-#include "platform/Notifier_Android.h"
 
 
 Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
     : Platform::PlatformAdaptor_Abstract(parent)
 {
-    // Android requires you to use a subdirectory within the AppDataLocation for
-    // sending and receiving files. We create this and clear this directory on creation of the Share object -- even if the
-    // app didn't exit gracefully, the directory is still cleared when starting
-    // the app next time.
-    fileExchangeDirectoryName = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/exchange/";
-    QDir exchangeDir(fileExchangeDirectoryName);
-    exchangeDir.removeRecursively();
-    exchangeDir.mkpath(fileExchangeDirectoryName);
 }
 
 
@@ -111,11 +99,6 @@ auto Platform::PlatformAdaptor::hasRequiredPermissions() -> bool
 }
 
 
-void Platform::PlatformAdaptor::importContent()
-{
-}
-
-
 void Platform::PlatformAdaptor::lockWifi(bool lock)
 {
     QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "lockWiFi", "(Z)V", static_cast<int>(lock));
@@ -133,32 +116,6 @@ void Platform::PlatformAdaptor::onGUISetupCompleted()
 
     // Hide Splash Screen
     QtAndroid::hideSplashScreen(200);
-
-    // Start receiving file requests
-    receiveOpenFileRequestsStarted = true;
-    QAndroidJniObject activity = QtAndroid::androidActivity();
-    if (activity.isValid()) {
-        QAndroidJniObject jniTempDir = QAndroidJniObject::fromString(fileExchangeDirectoryName);
-        if (!jniTempDir.isValid()) {
-            return;
-        }
-        activity.callMethod<void>("checkPendingIntents", "(Ljava/lang/String;)V", jniTempDir.object<jstring>());
-    }
-    if (!pendingReceiveOpenFileRequest.isEmpty()) {
-        processFileOpenRequest(pendingReceiveOpenFileRequest);
-    }
-    pendingReceiveOpenFileRequest = QString();
-}
-
-
-void Platform::PlatformAdaptor::processFileOpenRequest(const QString& path)
-{
-    if (!receiveOpenFileRequestsStarted)
-    {
-        pendingReceiveOpenFileRequest = path;
-        return;
-    }
-    Platform::PlatformAdaptor_Abstract::processFileOpenRequest(path);
 }
 
 
@@ -168,26 +125,6 @@ void Platform::PlatformAdaptor::requestPermissionsSync()
 }
 
 
-auto Platform::PlatformAdaptor::shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
-{
-    // Avoids warnings on Linux/Desktop
-    Q_UNUSED(content)
-    Q_UNUSED(mimeType)
-    Q_UNUSED(fileNameTemplate)
-    (void)this;
-
-
-    QMimeDatabase db;
-    QMimeType mime = db.mimeTypeForName(mimeType);
-
-    auto tmpPath = contentToTempFile(content, fileNameTemplate+"-%1."+mime.preferredSuffix());
-    bool success = outgoingIntent(QStringLiteral("sendFile"), tmpPath, mimeType);
-    if (success) {
-        return {};
-    }
-    return tr("No suitable file sharing app could be found.");
-}
-
 
 void Platform::PlatformAdaptor::vibrateBrief()
 {
@@ -195,79 +132,12 @@ void Platform::PlatformAdaptor::vibrateBrief()
 }
 
 
-auto Platform::PlatformAdaptor::viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
-{
-    Q_UNUSED(content)
-    Q_UNUSED(mimeType)
-    Q_UNUSED(fileNameTemplate)
-
-    QString tmpPath = contentToTempFile(content, fileNameTemplate);
-    bool success = outgoingIntent(QStringLiteral("viewFile"), tmpPath, mimeType);
-    if (success) {
-        return {};
-    }
-    return tr("No suitable app for viewing this data could be found.");
-}
-
-
-//
-// Private Methods
-//
-
-auto Platform::PlatformAdaptor::contentToTempFile(const QByteArray& content, const QString& fileNameTemplate) -> QString
-{
-    QDateTime now = QDateTime::currentDateTimeUtc();
-    QString fname = fileNameTemplate.arg(now.toString(QStringLiteral("yyyy-MM-dd_hh.mm.ss")));
-
-    // in Qt, resources are not stored absolute file paths, so in order to
-    // share the content we save it to disk. We save these temporary files
-    // when creating new Share objects.
-    //
-    auto filePath = fileExchangeDirectoryName + fname;
-
-    QFile file(filePath);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
-        return {};
-    }
-
-    file.write(content);
-    file.close();
-
-    return filePath;
-}
-
-
-auto Platform::PlatformAdaptor::outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType) -> bool
-{
-    if (filePath == nullptr) {
-        return false;
-    }
-
-    QAndroidJniObject jsPath = QAndroidJniObject::fromString(filePath);
-    QAndroidJniObject jsMimeType = QAndroidJniObject::fromString(mimeType);
-    auto ok = QAndroidJniObject::callStaticMethod<jboolean>(
-                "de/akaflieg_freiburg/enroute/IntentLauncher",
-                methodName.toStdString().c_str(),
-                "(Ljava/lang/String;Ljava/lang/String;)Z",
-                jsPath.object<jstring>(),
-                jsMimeType.object<jstring>());
-    return ok != 0U;
-}
-
 
 //
 // C Methods
 //
 
 extern "C" {
-
-JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setFileReceived(JNIEnv* env, jobject /*unused*/, jstring jfname)
-{
-    const char* fname = env->GetStringUTFChars(jfname, nullptr);
-    GlobalObject::platformAdaptor()->processFileOpenRequest(QString::fromUtf8(fname));
-    env->ReleaseStringUTFChars(jfname, fname);
-}
-
 
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiConnected(JNIEnv* /*unused*/, jobject /*unused*/)
 {
@@ -281,30 +151,4 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiCo
     }
 }
 
-
-JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onNotificationClicked(JNIEnv* /*unused*/, jobject /*unused*/, jint notifyID, jint actionID)
-{
-    // This method is called from Java to indicate that the user has clicked into the Android
-    // notification for reporting traffic data receiver errors
-
-    // This method gets called from Java before main() has executed
-    // and thus before a QApplication instance has been constructed.
-    // In these cases, the methods of the Global class must not be called
-    // and we simply return.
-    if (!GlobalObject::canConstruct())
-    {
-        return;
-    }
-    auto* ptr = qobject_cast<Platform::Notifier*>(GlobalObject::notifier());
-
-    if (ptr == nullptr)
-    {
-        return;
-    }
-    ptr->onNotificationClicked((Platform::Notifier_Abstract::NotificationTypes)notifyID, actionID);
-
 }
-
-}
-
-#endif // defined(Q_OS_ANDROID)

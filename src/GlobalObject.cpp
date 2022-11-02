@@ -31,6 +31,7 @@
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/WaypointLibrary.h"
 #include "navigation/Navigator.h"
+#include "platform/FileExchange.h"
 #include "platform/Notifier.h"
 #include "platform/PlatformAdaptor.h"
 #include "positioning/PositionProvider.h"
@@ -44,6 +45,7 @@ bool isConstructing {false};
 QPointer<DataManagement::DataManager> g_dataManager {};
 QPointer<DataManagement::SSLErrorHandler> g_sslErrorHandler {};
 QPointer<DemoRunner> g_demoRunner {};
+QPointer<Platform::FileExchange> g_fileExchange {};
 QPointer<Traffic::FlarmnetDB> g_flarmnetDB {};
 QPointer<GeoMaps::GeoMapProvider> g_geoMapProvider {};
 QPointer<Librarian> g_librarian {};
@@ -94,11 +96,16 @@ auto GlobalObject::canConstruct() -> bool
 }
 
 
+auto GlobalObject::fileExchange() -> Platform::FileExchange_Abstract*
+{
+    return allocateInternal<Platform::FileExchange>(g_fileExchange);
+}
+
+
 auto GlobalObject::flarmnetDB() -> Traffic::FlarmnetDB*
 {
     return allocateInternal<Traffic::FlarmnetDB>(g_flarmnetDB);
 }
-
 
 auto GlobalObject::geoMapProvider() -> GeoMaps::GeoMapProvider*
 {

@@ -247,7 +247,7 @@ Page {
                         global.platformAdaptor().vibrateBrief()
                         highlighted = false
 
-                        global.platformAdaptor().importContent()
+                        global.fileExchange().importContent()
                     }
                 }
 
@@ -262,7 +262,7 @@ Page {
                             global.platformAdaptor().vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            var errorString = global.platformAdaptor().shareContent(global.navigator().flightRoute.toGeoJSON(), "application/geo+json", global.navigator().flightRoute.suggestedFilename())
+                            var errorString = global.fileExchange().shareContent(global.navigator().flightRoute.toGeoJSON(), "application/geo+json", global.navigator().flightRoute.suggestedFilename())
                             if (errorString === "abort") {
                                 toast.doToast(qsTr("Aborted"))
                                 return
@@ -286,7 +286,7 @@ Page {
                             global.platformAdaptor().vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            var errorString = global.platformAdaptor().shareContent(global.navigator().flightRoute.toGpx(), "application/gpx+xml", global.navigator().flightRoute.suggestedFilename())
+                            var errorString = global.fileExchange().shareContent(global.navigator().flightRoute.toGpx(), "application/gpx+xml", global.navigator().flightRoute.suggestedFilename())
                             if (errorString === "abort") {
                                 toast.doToast(qsTr("Aborted"))
                                 return
@@ -316,7 +316,7 @@ Page {
                             highlighted = false
                             parent.highlighted = false
 
-                            var errorString = global.platformAdaptor().viewContent(global.navigator().flightRoute.toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson")
+                            var errorString = global.fileExchange().viewContent(global.navigator().flightRoute.toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson")
                             if (errorString !== "") {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
@@ -333,7 +333,7 @@ Page {
                             highlighted = false
                             parent.highlighted = false
 
-                            var errorString = global.platformAdaptor().viewContent(global.navigator().flightRoute.toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx")
+                            var errorString = global.fileExchange().viewContent(global.navigator().flightRoute.toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx")
                             if (errorString !== "") {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()

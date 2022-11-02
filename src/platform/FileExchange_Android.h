@@ -24,14 +24,14 @@
 #include <QtGlobal>
 #include <QObject>
 
-#include "platform/PlatformAdaptor_Abstract.h"
+#include "platform/FileExchange_Abstract.h"
 
 namespace Platform {
 
-/*! \brief Implementation of PlatformAdaptor for Android devices */
+/*! \brief Implementation of FileExchange for Android devices */
 
 
-class PlatformAdaptor : public Platform::PlatformAdaptor_Abstract
+class FileExchange : public Platform::FileExchange_Abstract
 {
     Q_OBJECT
 
@@ -40,57 +40,51 @@ public:
      *
      * @param parent Standard QObject parent pointer
     */
-    explicit PlatformAdaptor(QObject *parent = nullptr);
+    explicit FileExchange(QObject *parent = nullptr);
 
-    ~PlatformAdaptor() override = default;
+    ~FileExchange() override = default;
 
 
     //
     // Methods
     //
 
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
-    Q_INVOKABLE QString currentSSID() override;
+    /*! \brief Implements pure virtual method from FileExchange_Abstract */
+    Q_INVOKABLE void importContent() override;
 
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
-    void disableScreenSaver() override;
+    /*! \brief Implements pure virtual method from FileExchange_Abstract */
+    Q_INVOKABLE QString shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) override;
 
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
-    Q_INVOKABLE bool hasRequiredPermissions() override;
-
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
-    Q_INVOKABLE void lockWifi(bool lock) override;
-
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
-    Q_INVOKABLE void vibrateBrief() override;
+    /*! \brief Implements pure virtual method from FileExchange_Abstract */
+    Q_INVOKABLE QString viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) override;
 
 
 public slots:
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
-    void onGUISetupCompleted() override;
-
-    /*! \brief Implements pure virtual method from GlobalObject */
-    void requestPermissionsSync() override;
+    /*! \brief Implements pure virtual method from FileExchange_Abstract */
+    void processFileOpenRequest(const QString& path) override;
 
 
 protected:
-    /*! \brief Implements virtual method from PlatformAdaptor_Abstract */
+    /*! \brief Implements virtual method from FileExchange_Abstract */
     void deferredInitialization() override;
 
 
 private:
-    Q_DISABLE_COPY_MOVE(PlatformAdaptor)
+    Q_DISABLE_COPY_MOVE(FileExchange)
 
-    QStringList permissions {
-        "android.permission.ACCESS_COARSE_LOCATION",
-        "android.permission.ACCESS_FINE_LOCATION",
-        "android.permission.ACCESS_NETWORK_STATE",
-        "android.permission.ACCESS_WIFI_STATE",
-        "android.permission.READ_EXTERNAL_STORAGE",
-        "android.permission.WRITE_EXTERNAL_STORAGE",
-        "android.permission.WAKE_LOCK"};
+    // Helper function. Saves content to a file in a directory from where
+    // sharing to other android apps is possible
+    auto contentToTempFile(const QByteArray& content, const QString& fileNameTemplate) -> QString;
 
-    bool splashScreenHidden {false};
+    // Name of a subdirectory within the AppDataLocation for sending and
+    // receiving files.
+    QString fileExchangeDirectoryName;
+
+    // @returns True if an app could be started, false if no app was found
+    static bool outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType);
+
+    bool receiveOpenFileRequestsStarted {false};
+    QString pendingReceiveOpenFileRequest {};
 };
 
 } // namespace Platform

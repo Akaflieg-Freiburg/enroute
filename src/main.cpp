@@ -49,6 +49,7 @@
 #include "navigation/Aircraft.h"
 #include "navigation/Clock.h"
 #include "navigation/Navigator.h"
+#include "platform/FileExchange_Abstract.h"
 #include "platform/Notifier_Abstract.h"
 #include "platform/PlatformAdaptor.h"
 #include "positioning/PositionProvider.h"
@@ -85,7 +86,7 @@ auto main(int argc, char *argv[]) -> int
     qRegisterMetaType<Traffic::Warning>();
     qRegisterMetaType<Platform::Notifier_Abstract::NotificationActions>();
 
-    qRegisterMetaType<Platform::PlatformAdaptor_Abstract::FileFunction>("Platform::PlatformAdaptor_Abstract::FileFunction");
+    qRegisterMetaType<Platform::FileExchange_Abstract::FileFunction>("Platform::FileExchange_Abstract::FileFunction");
     qRegisterMetaType<Platform::Notifier_Abstract::NotificationTypes>("Platform::Notifier::Notifications");
     qmlRegisterUncreatableType<DemoRunner>("enroute", 1, 0, "DemoRunner", QStringLiteral("DemoRunner objects cannot be created in QML"));
     qmlRegisterUncreatableType<Navigation::Aircraft>("enroute", 1, 0, "Aircraft", QStringLiteral("Aircraft objects cannot be created in QML"));
@@ -187,7 +188,7 @@ auto main(int argc, char *argv[]) -> int
     GlobalObject::platformAdaptor()->disableScreenSaver();
     if (positionalArguments.length() == 1)
     {
-        GlobalObject::platformAdaptor()->processFileOpenRequest(positionalArguments[0]);
+        GlobalObject::fileExchange()->processFileOpenRequest(positionalArguments[0]);
     }
 #if !defined(Q_OS_ANDROID)
     QObject::connect(&kdsingleapp, SIGNAL(messageReceived(QByteArray)), GlobalObject::platformAdaptor(), SLOT(processFileOpenRequest(QByteArray)));

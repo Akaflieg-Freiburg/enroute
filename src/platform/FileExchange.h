@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,10 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "platform/PlatformAdaptor_Abstract.h"
+#pragma once
 
+#include <QtGlobal>
 
-Platform::PlatformAdaptor_Abstract::PlatformAdaptor_Abstract(QObject *parent)
-    : GlobalObject(parent)
-{
-}
+#if defined(Q_OS_ANDROID)
+#include "FileExchange_Android.h"
+#endif
+
+#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
+#include "FileExchange_Linux.h"
+#endif

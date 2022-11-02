@@ -100,6 +100,7 @@ auto main(int argc, char *argv[]) -> int
     qmlRegisterUncreatableType<GeoMaps::WaypointLibrary>("enroute", 1, 0, "WaypointLibrary", QStringLiteral("WaypointLibrary objects cannot be created in QML"));
     qmlRegisterUncreatableType<DataManagement::DataManager>("enroute", 1, 0, "DataManager", QStringLiteral("DataManager objects cannot be created in QML"));
     qmlRegisterType<Settings>("enroute", 1, 0, "GlobalSettings");
+    qmlRegisterUncreatableType<Platform::FileExchange_Abstract>("enroute", 1, 0, "FileExchange_Abstract", QStringLiteral("FileExchange_Abstract objects cannot be created in QML"));
     qmlRegisterUncreatableType<Platform::PlatformAdaptor_Abstract>("enroute", 1, 0, "PlatformAdaptor_Abstract", QStringLiteral("PlatformAdaptor_Abstract objects cannot be created in QML"));
     qmlRegisterUncreatableType<Navigation::Navigator>("enroute", 1, 0, "Navigator", QStringLiteral("Navigator objects cannot be created in QML"));
     qmlRegisterUncreatableType<Traffic::PasswordDB>("enroute", 1, 0, "PasswordDB", QStringLiteral("PasswordDB objects cannot be created in QML"));
@@ -191,7 +192,7 @@ auto main(int argc, char *argv[]) -> int
         GlobalObject::fileExchange()->processFileOpenRequest(positionalArguments[0]);
     }
 #if !defined(Q_OS_ANDROID)
-    QObject::connect(&kdsingleapp, SIGNAL(messageReceived(QByteArray)), GlobalObject::platformAdaptor(), SLOT(processFileOpenRequest(QByteArray)));
+    QObject::connect(&kdsingleapp, SIGNAL(messageReceived(QByteArray)), GlobalObject::fileExchange(), SLOT(processFileOpenRequest(QByteArray)));
 #endif
 
     /*

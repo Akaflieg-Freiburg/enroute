@@ -139,9 +139,6 @@ signals:
      * @param fileName Path of the file on the local file system
      *
      * @param fileFunction Function and file type.
-     *
-     * On Android, other apps can request that enroute 'views' a file, via
-     * Android's INTENT system.
      */
     void openFileRequest(QString fileName, Platform::FileExchange_Abstract::FileFunction fileFunction);
 

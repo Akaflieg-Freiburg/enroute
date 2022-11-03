@@ -20,9 +20,6 @@
 
 #pragma once
 
-#include <QObject>
-#include <QTimer>
-
 #include "PlatformAdaptor_Abstract.h"
 
 namespace Platform {

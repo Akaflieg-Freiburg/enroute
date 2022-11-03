@@ -26,6 +26,18 @@
 #include "PlatformAdaptor_Android.h"
 #endif
 
+#if defined(Q_OS_IOS)
+#include "PlatformAdaptor_iOS.h"
+#endif
+
 #if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
 #include "PlatformAdaptor_Linux.h"
+#endif
+
+#if defined(Q_OS_MACOS)
+#include "PlatformAdaptor_MacOS.h"
+#endif
+
+#if defined(Q_OS_WIN)
+#include "PlatformAdaptor_Windows.h"
 #endif

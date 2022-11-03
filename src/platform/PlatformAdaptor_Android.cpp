@@ -19,11 +19,7 @@
  ***************************************************************************/
 
 #include <QAndroidJniEnvironment>
-#include <QDateTime>
-#include <QDir>
 #include <QHash>
-#include <QMimeDatabase>
-#include <QStandardPaths>
 #include <QtAndroid>
 
 #include "platform/PlatformAdaptor_Android.h"

@@ -20,10 +20,6 @@
 
 #pragma once
 
-#include <QTimer>
-#include <QtGlobal>
-#include <QObject>
-
 #include "platform/FileExchange_Abstract.h"
 
 namespace Platform {

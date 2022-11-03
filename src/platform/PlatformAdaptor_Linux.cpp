@@ -18,12 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QDesktopServices>
-#include <QDir>
-#include <QFileDialog>
-#include <QMimeDatabase>
-#include <QTemporaryFile>
-
 #include "platform/PlatformAdaptor_Linux.h"
 
 

@@ -223,9 +223,11 @@ qt_add_big_resources(SOURCES
     ${CMAKE_CURRENT_BINARY_DIR}/ressources.qrc
     )
 
+
 #
 # Generate android executable
 #
+
 if( ANDROID )
     qtquick_compiler_add_resources(QTQUICKCOMPILEDRESOURCES ${CMAKE_CURRENT_BINARY_DIR}/qml.qrc)
     list(APPEND SOURCES

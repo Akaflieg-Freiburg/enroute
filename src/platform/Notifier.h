@@ -26,6 +26,18 @@
 #include "Notifier_Android.h"
 #endif
 
+#if defined(Q_OS_IOS)
+#include "Notifier_iOS.h"
+#endif
+
 #if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
 #include "Notifier_Linux.h"
+#endif
+
+#if defined(Q_OS_MACOS)
+#include "Notifier_MacOS.h"
+#endif
+
+#if defined(Q_OS_WIN)
+#include "Notifier_Windows.h"
 #endif

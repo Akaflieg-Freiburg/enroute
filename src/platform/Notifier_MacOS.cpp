@@ -18,49 +18,37 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QGuiApplication>
-
-#include "platform/Notifier_Abstract.h"
+#include "platform/Notifier_Linux.h"
 
 
-Platform::Notifier_Abstract::Notifier_Abstract(QObject *parent)
-    : GlobalObject(parent)
+// This is a template file without actual implementation.
+
+Platform::Notifier::Notifier(QObject *parent)
+    : Platform::Notifier::Notifier_Abstract(parent)
 {
-
-    connect(qGuiApp, &QGuiApplication::applicationStateChanged, this,
-            [this](Qt::ApplicationState state)
-    {
-        if (state == Qt::ApplicationSuspended)
-        {
-            hideAll();
-        }
-    });
+    // Standard constructor. Recall that the constructor must not call virtual functions.
+    // If you need virtual functions, use the methode deferredInitialization below.
+#warning Not implemented
 }
 
 
-void Platform::Notifier_Abstract::hideAll()
+void Platform::Notifier::deferredInitialization()
 {
-    hideNotification(DownloadInfo);
-    hideNotification(TrafficReceiverSelfTestError);
-    hideNotification(TrafficReceiverRuntimeError);
-    hideNotification(GeoMapUpdatePending);
+    // This method is called immediately after the instance has been constructed.
+    // It can be used to implement initialization that calls virtual methods.
+#warning Not implemented
 }
 
 
-auto Platform::Notifier_Abstract::title(Platform::Notifier_Abstract::NotificationTypes notification) -> QString
+void Platform::Notifier::hideNotification(Platform::Notifier_Abstract::NotificationTypes notificationType)
 {
-    switch (notification)
-    {
-    case DownloadInfo:
-        return tr("Downloading map and data…");
-    case TrafficReceiverRuntimeError:
-        return tr("Traffic data receiver problem");
-    case TrafficReceiverSelfTestError:
-        return tr("Traffic data receiver self test error");
-    case GeoMapUpdatePending:
-        return tr("Map and data updates available");
-    }
-
-    return {};
+    // This method is supposed to hide the notification "notificationType".
+#warning Not implemented
 }
 
+
+void Platform::Notifier::showNotification(NotificationTypes notificationType, const QString& text, const QString& longText)
+{
+    // This method is supposed to show the notification "notificationType".
+#warning Not implemented
+}

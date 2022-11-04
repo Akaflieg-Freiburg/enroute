@@ -20,7 +20,7 @@
 
 #pragma once
 
-#include <QObject>
+#include "GlobalObject.h"
 
 namespace Platform {
 
@@ -32,7 +32,7 @@ namespace Platform {
  *  clicks on a notification.
  */
 
-class Notifier_Abstract : public QObject
+class Notifier_Abstract : public GlobalObject
 {
     Q_OBJECT
 

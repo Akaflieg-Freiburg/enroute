@@ -18,49 +18,41 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QGuiApplication>
+#pragma once
 
 #include "platform/Notifier_Abstract.h"
 
+namespace Platform {
 
-Platform::Notifier_Abstract::Notifier_Abstract(QObject *parent)
-    : GlobalObject(parent)
+/*! \brief Template implementation of Notifier */
+
+class Notifier: public Notifier_Abstract
 {
+    Q_OBJECT
 
-    connect(qGuiApp, &QGuiApplication::applicationStateChanged, this,
-            [this](Qt::ApplicationState state)
-    {
-        if (state == Qt::ApplicationSuspended)
-        {
-            hideAll();
-        }
-    });
-}
+public:
+    // Constructor
+    explicit Notifier(QObject* parent = nullptr);
+
+    // Destructor
+    ~Notifier() = default;
 
 
-void Platform::Notifier_Abstract::hideAll()
-{
-    hideNotification(DownloadInfo);
-    hideNotification(TrafficReceiverSelfTestError);
-    hideNotification(TrafficReceiverRuntimeError);
-    hideNotification(GeoMapUpdatePending);
-}
+public slots:
+    // Implementation of pure virtual function
+    Q_INVOKABLE void hideNotification(Platform::Notifier_Abstract::NotificationTypes notificationType) override;
+
+    // Implementation of pure virtual function
+    void showNotification(Platform::Notifier_Abstract::NotificationTypes notificationType, const QString& text, const QString& longText) override;
 
 
-auto Platform::Notifier_Abstract::title(Platform::Notifier_Abstract::NotificationTypes notification) -> QString
-{
-    switch (notification)
-    {
-    case DownloadInfo:
-        return tr("Downloading map and data…");
-    case TrafficReceiverRuntimeError:
-        return tr("Traffic data receiver problem");
-    case TrafficReceiverSelfTestError:
-        return tr("Traffic data receiver self test error");
-    case GeoMapUpdatePending:
-        return tr("Map and data updates available");
-    }
+protected:
+    /*! \brief Implements virtual method from GlobalObject */
+    void deferredInitialization() override;
 
-    return {};
-}
 
+private:
+    Q_DISABLE_COPY_MOVE(Notifier)
+};
+
+} // namespace Platform

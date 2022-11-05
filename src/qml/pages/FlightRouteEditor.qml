@@ -549,7 +549,7 @@ Page {
                             case Aircraft.Kilometer:
                                 return global.navigator().wind.minWindSpeed.toKMH()
                             case Aircraft.StatuteMile :
-                                return global.navigator().wind.minWindSpeed.toMIL()
+                                return global.navigator().wind.minWindSpeed.toMPH()
                             }
                             return NaN
                         }
@@ -560,7 +560,7 @@ Page {
                             case Aircraft.Kilometer:
                                 return global.navigator().wind.maxWindSpeed.toKMH()
                             case Aircraft.StatuteMile :
-                                return global.navigator().wind.maxWindSpeed.toMIL()
+                                return global.navigator().wind.maxWindSpeed.toMPH()
                             }
                             return NaN
                         }

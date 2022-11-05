@@ -18,9 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 
 // This is a version of ItemDelegate that does word wrapping in the text
 
@@ -34,7 +34,7 @@ ItemDelegate {
         }
 
         Item { // Spacer
-            width: 5
+            Layout.preferredWidth: 5
         }
 
         Label { // Text

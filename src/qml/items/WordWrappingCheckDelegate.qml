@@ -18,19 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import QtQuick.Controls.Material 2.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import QtQuick.Controls.Material
 
 // This is a version of SwitchDelegate that does word wrapping in the text
 
 CheckDelegate {
     id: itemDelegate
 
-    contentItem: RowLayout {
-
-        Label { // Text
+    contentItem: Label { // Text
             id: b
             Layout.fillWidth: true
             text: itemDelegate.text
@@ -38,10 +36,5 @@ CheckDelegate {
             wrapMode: Text.Wrap
 
         }
-
-        Item { // Spacer
-            width: itemDelegate.indicator.implicitWidth
-        }
-    }
 
 }

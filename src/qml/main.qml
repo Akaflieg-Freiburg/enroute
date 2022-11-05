@@ -42,10 +42,47 @@ ApplicationWindow {
     Material.primary: Material.theme === Material.Dark ? Qt.darker("teal") : "teal"
     Material.accent: Material.theme === Material.Dark ? Qt.lighter("teal") : "teal"
 
+    // These margins are used to avoid the notch area of the display, and areas
+    // covered by system widgets.
+    property int bottomScreenMargin: {
+        if ((Qt.platform.os === "ios") || (Qt.platform.os === "android"))
+        {
+            return primaryScreen.size.height - primaryScreen.availableGeometry.height - primaryScreen.availableGeometry.y
+        }
+
+        return 100
+    }
+    property int leftScreenMargin: {
+        if ((Qt.platform.os === "ios") || (Qt.platform.os === "android"))
+        {
+            return primaryScreen.availableGeometry.x
+        }
+
+        return 100
+    }
+    property int rightScreenMargin: {
+        if ((Qt.platform.os === "ios") || (Qt.platform.os === "android"))
+        {
+            return primaryScreen.size.width - primaryScreen.availableGeometry.width - primaryScreen.availableGeometry.x
+        }
+
+        return 100
+    }
+    property int topScreenMargin: {
+        if ((Qt.platform.os === "ios") || (Qt.platform.os === "android"))
+        {
+            return primaryScreen.availableGeometry.y
+        }
+
+        return 100
+    }
+
+
     Drawer {
         id: drawer
 
         height: view.height
+        width: col.implicitWidth
 
         ScrollView {
             anchors.fill: parent
@@ -55,16 +92,12 @@ ApplicationWindow {
 
                 spacing: 0
 
-                Rectangle {
-                    height: 16
+                Label { // Title
                     Layout.fillWidth: true
-                    color: Material.primary
-                }
 
-                Label {
-                    Layout.fillWidth: true
-                    leftPadding: 16
+                    leftPadding: 16+view.leftScreenMargin
                     rightPadding: 16
+                    topPadding: 16+view.topScreenMargin
 
                     text: "Enroute Flight Navigation " + Qt.application.version
                     color: "white"
@@ -77,15 +110,16 @@ ApplicationWindow {
                 }
 
                 Rectangle {
-                    height: 4
-
                     Layout.fillWidth: true
+                    Layout.preferredHeight: 4
+
                     color: Material.primary
                 }
 
-                Label {
+                Label { // Subtitle
                     Layout.fillWidth: true
-                    leftPadding: 16
+
+                    leftPadding: 16+view.leftScreenMargin
                     rightPadding: 16
                     height: 20
 
@@ -99,17 +133,20 @@ ApplicationWindow {
                 }
 
                 Rectangle {
-                    height: 18
-
+                    Layout.preferredHeight: 18
                     Layout.fillWidth: true
+
                     color: Material.primary
                 }
 
-                ItemDelegate {
+                ItemDelegate { // Aircraft
+                    Layout.fillWidth: true
+
+                    leftPadding: view.leftScreenMargin
+
                     id: menuItemAircraft
                     text: qsTr("Aircraft")
                     icon.source: "/icons/material/ic_airplanemode_active.svg"
-                    Layout.fillWidth: true
 
                     onClicked: {
                         global.mobileAdaptor().vibrateBrief()
@@ -120,10 +157,13 @@ ApplicationWindow {
                 }
 
                 ItemDelegate {
+                    Layout.fillWidth: true
+
+                    leftPadding: view.leftScreenMargin
+
                     id: menuItemRoute
                     text: qsTr("Route and Wind")
                     icon.source: "/icons/material/ic_directions.svg"
-                    Layout.fillWidth: true
 
                     onClicked: {
                         global.mobileAdaptor().vibrateBrief()
@@ -134,11 +174,14 @@ ApplicationWindow {
                 }
 
                 ItemDelegate {
+                    Layout.fillWidth: true
+
+                    leftPadding: view.leftScreenMargin
+
                     id: menuItemNearby
 
                     text: qsTr("Nearby Waypoints")
                     icon.source: "/icons/material/ic_my_location.svg"
-                    Layout.fillWidth: true
 
                     onClicked: {
                         global.mobileAdaptor().vibrateBrief()
@@ -149,11 +192,14 @@ ApplicationWindow {
                 }
 
                 ItemDelegate {
+                    Layout.fillWidth: true
+
+                    leftPadding: view.leftScreenMargin
+
                     id: weatherItem
 
                     text: qsTr("Weather")
                     icon.source: "/icons/material/ic_cloud_queue.svg"
-                    Layout.fillWidth: true
 
                     onClicked: {
                         global.mobileAdaptor().vibrateBrief()
@@ -164,15 +210,19 @@ ApplicationWindow {
                 }
 
                 Rectangle {
-                    height: 1
+                    Layout.preferredHeight: 1
                     Layout.fillWidth: true
+
                     color: Material.primary
                 }
 
-                ItemDelegate { // Library
+                ItemDelegate {
+                    Layout.fillWidth: true
+
+                    leftPadding: view.leftScreenMargin
+
                     text: qsTr("Library")
                     icon.source: "/icons/material/ic_library_books.svg"
-                    Layout.fillWidth: true
 
                     onClicked: {
                         global.mobileAdaptor().vibrateBrief()
@@ -243,11 +293,14 @@ ApplicationWindow {
                 }
 
                 ItemDelegate {
+                    Layout.fillWidth: true
+
+                    leftPadding: view.leftScreenMargin
+
                     id: menuItemSettings
 
                     text: qsTr("Settings")
                     icon.source: "/icons/material/ic_settings.svg"
-                    Layout.fillWidth: true
 
                     onClicked: {
                         global.mobileAdaptor().vibrateBrief()
@@ -258,15 +311,19 @@ ApplicationWindow {
                 }
 
                 Rectangle {
-                    height: 1
+                    Layout.preferredHeight: 1
                     Layout.fillWidth: true
+
                     color: Material.primary
                 }
 
-                ItemDelegate { // Info
+                ItemDelegate {
+                    Layout.fillWidth: true
+
+                    leftPadding: view.leftScreenMargin
+
                     text: qsTr("Information")
                     icon.source: "/icons/material/ic_info_outline.svg"
-                    Layout.fillWidth: true
 
                     onClicked: {
                         global.mobileAdaptor().vibrateBrief()
@@ -367,10 +424,13 @@ ApplicationWindow {
 
                 }
 
-                ItemDelegate { // Manual
+                ItemDelegate {
+                    Layout.fillWidth: true
+
+                    leftPadding: view.leftScreenMargin
+
                     text: qsTr("Manual")
                     icon.source: "/icons/material/ic_book.svg"
-                    Layout.fillWidth: true
 
                     onClicked: {
                         global.mobileAdaptor().vibrateBrief()
@@ -458,9 +518,12 @@ ApplicationWindow {
                 }
 
                 ItemDelegate { // Bug report
+                    Layout.fillWidth: true
+
+                    leftPadding: view.leftScreenMargin
+
                     text: qsTr("Bug report")
                     icon.source: "/icons/material/ic_bug_report.svg"
-                    Layout.fillWidth: true
 
                     onClicked: {
                         global.mobileAdaptor().vibrateBrief()
@@ -472,16 +535,20 @@ ApplicationWindow {
                 }
 
                 Rectangle {
-                    height: 1
+                    Layout.preferredHeight: 1
                     Layout.fillWidth: true
+
                     color: Material.primary
                     visible: global.navigator().flightStatus !== Navigator.Flight
                 }
 
                 ItemDelegate { // Exit
+                    Layout.fillWidth: true
+
+                    leftPadding: view.leftScreenMargin
+
                     text: qsTr("Exit")
                     icon.source: "/icons/material/ic_exit_to_app.svg"
-                    Layout.fillWidth: true
 
                     onClicked: {
                         global.mobileAdaptor().vibrateBrief()
@@ -491,6 +558,10 @@ ApplicationWindow {
                         else
                             Qt.quit()
                     }
+                }
+
+                Item {
+                    Layout.preferredHeight: view.bottomScreenMargin
                 }
 
                 Item {

@@ -25,6 +25,7 @@
 Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
     : PlatformAdaptor_Abstract(parent)
 {
+#warning Want reaction to connectivitiy changes
 }
 
 
@@ -35,6 +36,7 @@ Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
 
 auto Platform::PlatformAdaptor::currentSSID() -> QString
 {
+#warning Want to implement
     return QStringLiteral("<unknown ssid>");
 }
 

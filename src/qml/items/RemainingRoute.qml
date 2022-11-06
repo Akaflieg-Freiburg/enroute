@@ -18,15 +18,15 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 
 import enroute 1.0
 
 Rectangle {   
     color: "#AA000000"
-    height: grid.implicitHeight // grid.rri.isValid ? grid.implicitHeight : 0
+    height: grid.implicitHeight + view.topScreenMargin
 
     visible: grid.rri.status !== RemainingRouteInfo.NoRoute
 
@@ -34,8 +34,9 @@ Rectangle {
         id: grid
 
         anchors.fill: parent
-        anchors.leftMargin: view.font.pixelSize
-        anchors.rightMargin: view.font.pixelSize
+        anchors.leftMargin: view.font.pixelSize + view.leftScreenMargin
+        anchors.topMargin: view.topScreenMargin
+        anchors.rightMargin: view.font.pixelSize + view.rightScreenMargin
         rowSpacing: 0
         columns: 4
 

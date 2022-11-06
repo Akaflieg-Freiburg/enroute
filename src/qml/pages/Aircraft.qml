@@ -18,11 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQml 2.15
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Layouts 1.15
+import QtQml
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Layouts
 
 import enroute 1.0
 import "../dialogs"
@@ -39,74 +39,85 @@ Page {
     header: ToolBar {
 
         Material.foreground: "white"
-        height: 60
+        height: 60 + view.topScreenMargin
 
-        ToolButton {
-            id: backButton
-
+        Item {
             anchors.left: parent.left
-            anchors.verticalCenter: parent.verticalCenter
-
-            icon.source: "/icons/material/ic_arrow_back.svg"
-
-            onClicked: {
-                global.mobileAdaptor().vibrateBrief()
-                stackView.pop()
-            }
-        }
-
-        Label {
-            id: lbl
-
-            anchors.verticalCenter: parent.verticalCenter
-
-            anchors.left: parent.left
-            anchors.leftMargin: 72
-            anchors.right: headerMenuToolButton.left
-
-            text: stackView.currentItem.title
-            elide: Label.ElideRight
-            font.pixelSize: 20
-            verticalAlignment: Qt.AlignVCenter
-        }
-
-        ToolButton {
-            id: headerMenuToolButton
-
             anchors.right: parent.right
-            anchors.verticalCenter: parent.verticalCenter
+            anchors.bottom: parent.bottom
+            anchors.leftMargin: view.leftScreenMargin
+            anchors.rightMargin: view.rightScreenMargin
 
-            icon.source: "/icons/material/ic_more_vert.svg"
-            onClicked: {
-                global.mobileAdaptor().vibrateBrief()
-                headerMenuX.popup()
+            height: 60
+
+            ToolButton {
+                id: backButton
+
+                anchors.left: parent.left
+                anchors.verticalCenter: parent.verticalCenter
+
+                icon.source: "/icons/material/ic_arrow_back.svg"
+
+                onClicked: {
+                    global.mobileAdaptor().vibrateBrief()
+                    stackView.pop()
+                }
             }
 
-            AutoSizingMenu {
-                id: headerMenuX
-                cascade: true
+            Label {
+                id: lbl
 
-                MenuItem {
-                    text: qsTr("View Library…")
-                    onTriggered: {
-                        global.mobileAdaptor().vibrateBrief()
-                        highlighted = false
-                        stackView.push("AircraftLibrary.qml")
-                    }
+                anchors.verticalCenter: parent.verticalCenter
+
+                anchors.left: parent.left
+                anchors.leftMargin: 72
+                anchors.right: headerMenuToolButton.left
+
+                text: stackView.currentItem.title
+                elide: Label.ElideRight
+                font.pixelSize: 20
+                verticalAlignment: Qt.AlignVCenter
+            }
+
+            ToolButton {
+                id: headerMenuToolButton
+
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
+
+                icon.source: "/icons/material/ic_more_vert.svg"
+                onClicked: {
+                    global.mobileAdaptor().vibrateBrief()
+                    headerMenuX.popup()
                 }
 
-                MenuItem {
-                    text: qsTr("Save to library…")
-                    onTriggered: {
-                        global.mobileAdaptor().vibrateBrief()
-                        highlighted = false
-                        dialogLoader.active = false
-                        dialogLoader.source = "../dialogs/AircraftSaveDialog.qml"
-                        dialogLoader.active = true
+                AutoSizingMenu {
+                    id: headerMenuX
+                    cascade: true
+
+                    MenuItem {
+                        text: qsTr("View Library…")
+                        onTriggered: {
+                            global.mobileAdaptor().vibrateBrief()
+                            highlighted = false
+                            stackView.push("AircraftLibrary.qml")
+                        }
+                    }
+
+                    MenuItem {
+                        text: qsTr("Save to library…")
+                        onTriggered: {
+                            global.mobileAdaptor().vibrateBrief()
+                            highlighted = false
+                            dialogLoader.active = false
+                            dialogLoader.source = "../dialogs/AircraftSaveDialog.qml"
+                            dialogLoader.active = true
+                        }
                     }
                 }
             }
         }
+
 
     }
 
@@ -114,6 +125,9 @@ Page {
     ScrollView {
         id: acftTab
         anchors.fill: parent
+        anchors.leftMargin: view.leftScreenMargin
+        anchors.rightMargin: view.rightScreenMargin
+        anchors.bottomMargin: view.bottomScreenMargin
 
         contentWidth: width
         clip: true

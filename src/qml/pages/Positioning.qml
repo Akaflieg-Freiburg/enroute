@@ -131,8 +131,11 @@ Page {
                 }
             }
 
-            Label { text: qsTr("True Altitude") }
-            Label { text: global.navigator().aircraft.verticalDistanceToString( global.positionProvider().positionInfo.trueAltitude() ) }
+            Label { text: qsTr("True Altitude")+" (AMSL)" }
+            Label { text: global.navigator().aircraft.verticalDistanceToString( global.positionProvider().positionInfo.trueAltitudeAMSL() ) }
+
+            Label { text: qsTr("True Altitude")+" (AGL)" }
+            Label { text: global.navigator().aircraft.verticalDistanceToString( global.positionProvider().positionInfo.trueAltitudeAGL() ) }
 
             Label { text: qsTr("Error (horizontal)") }
             Label {

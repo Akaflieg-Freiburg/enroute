@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -100,7 +100,7 @@ with the bank account data.
                 icon.source: "/icons/material/ic_send.svg"
 
                 onClicked: {
-                    global.mobileAdaptor().vibrateBrief()
+                    global.platformAdaptor().vibrateBrief()
                     Qt.openUrlExternally(qsTr("mailto:?subject=Enroute Flight Navigation, Donation&body=%1").arg(lbl1.bankAccountData))
                 }
             }

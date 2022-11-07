@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -65,7 +65,7 @@ Page {
                 icon.source: "/icons/material/ic_airplanemode_active.svg"
 
                 onClicked: {
-                    global.mobileAdaptor().vibrateBrief()
+                    global.platformAdaptor().vibrateBrief()
                     finalFileName = modelData
                     if (global.navigator().flightRoute.size > 0)
                         overwriteDialog.open()
@@ -74,7 +74,7 @@ Page {
                 }
 
                 swipe.onCompleted: {
-                    global.mobileAdaptor().vibrateBrief()
+                    global.platformAdaptor().vibrateBrief()
                     finalFileName = modelData
                     removeDialog.open()
                 }
@@ -87,7 +87,7 @@ Page {
                 icon.source: "/icons/material/ic_more_horiz.svg"
 
                 onClicked: {
-                    global.mobileAdaptor().vibrateBrief()
+                    global.platformAdaptor().vibrateBrief()
                     cptMenu.popup()
                 }
 
@@ -98,7 +98,7 @@ Page {
                         id: renameAction
                         text: qsTr("Rename…")
                         onTriggered: {
-                            global.mobileAdaptor().vibrateBrief()
+                            global.platformAdaptor().vibrateBrief()
                             finalFileName = modelData
                             renameName.text = modelData
                             renameDialog.open()
@@ -110,7 +110,7 @@ Page {
                         id: removeAction
                         text: qsTr("Remove…")
                         onTriggered: {
-                            global.mobileAdaptor().vibrateBrief()
+                            global.platformAdaptor().vibrateBrief()
                             finalFileName = modelData
                             removeDialog.open()
                         }
@@ -255,11 +255,11 @@ Page {
         modal: true
 
         onAccepted: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
             page.openFromLibrary()
         }
         onRejected: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
             close()
         }
     }
@@ -292,13 +292,13 @@ Page {
         modal: true
 
         onAccepted: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
             global.librarian().remove(Librarian.Aircraft, page.finalFileName)
             page.reloadFlightRouteList()
             toast.doToast(qsTr("Aircraft removed from device"))
         }
         onRejected: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
             page.reloadFlightRouteList() // Re-display aircraft that have been swiped out
             close()
         }
@@ -363,7 +363,7 @@ Page {
         }
 
         onAccepted: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
             if ((renameName.text !== "") && !global.librarian().exists(Librarian.Aircraft, renameName.text)) {
                 global.librarian().rename(Librarian.Aircraft, finalFileName, renameName.text)
                 page.reloadFlightRouteList()
@@ -372,7 +372,7 @@ Page {
             }
         }
         onRejected: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
             close()
         }
 

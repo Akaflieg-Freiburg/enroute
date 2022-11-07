@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -58,7 +58,7 @@ Dialog {
             anchors.right: parent.right
 
             onClicked: {
-                global.mobileAdaptor().vibrateBrief()
+                global.platformAdaptor().vibrateBrief()
                 finalFileName = modelData
                 dlg.close()
                 overwriteDialog.open()
@@ -117,12 +117,12 @@ Dialog {
     }
 
     onRejected: {
-        global.mobileAdaptor().vibrateBrief()
+        global.platformAdaptor().vibrateBrief()
         close()
     }
 
     onAccepted: {
-        global.mobileAdaptor().vibrateBrief()
+        global.platformAdaptor().vibrateBrief()
         if (fileName.text === "")
             return
         finalFileName = fileName.text
@@ -208,12 +208,12 @@ Dialog {
         }
 
         onAccepted: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
             dlg.saveToLibrary()
         }
 
         onRejected: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
             close()
             dlg.open()
         }

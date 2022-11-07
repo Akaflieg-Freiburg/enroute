@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -25,42 +25,34 @@
 #include "DemoRunner.h"
 #include "GlobalObject.h"
 #include "Librarian.h"
-#include "MobileAdaptor.h"
 #include "Settings.h"
 #include "dataManagement/DataManager.h"
 #include "dataManagement/SSLErrorHandler.h"
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/WaypointLibrary.h"
 #include "navigation/Navigator.h"
+#include "platform/FileExchange.h"
+#include "platform/Notifier.h"
+#include "platform/PlatformAdaptor.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/FlarmnetDB.h"
 #include "traffic/PasswordDB.h"
 #include "traffic/TrafficDataProvider.h"
 #include "weather/WeatherDataProvider.h"
 
-#if defined(Q_OS_ANDROID)
-#include "platform/Notifier_Android.h"
-#else
-#include "platform/Notifier_Linux.h"
-#endif
-
-
 bool isConstructing {false};
 
 QPointer<DataManagement::DataManager> g_dataManager {};
 QPointer<DataManagement::SSLErrorHandler> g_sslErrorHandler {};
 QPointer<DemoRunner> g_demoRunner {};
+QPointer<Platform::FileExchange> g_fileExchange {};
 QPointer<Traffic::FlarmnetDB> g_flarmnetDB {};
 QPointer<GeoMaps::GeoMapProvider> g_geoMapProvider {};
 QPointer<Librarian> g_librarian {};
-QPointer<MobileAdaptor> g_mobileAdaptor {};
+QPointer<Platform::PlatformAdaptor> g_platformAdaptor {};
 QPointer<Navigation::Navigator> g_navigator {};
 QPointer<QNetworkAccessManager> g_networkAccessManager {};
-#if defined(Q_OS_ANDROID)
-QPointer<Platform::Notifier_Android> g_notifier {};
-#else
-QPointer<Platform::Notifier_Linux> g_notifier {};
-#endif
+QPointer<Platform::Notifier> g_notifier {};
 QPointer<Traffic::PasswordDB> g_passwordDB {};
 QPointer<Positioning::PositionProvider> g_positionProvider {};
 QPointer<Settings> g_settings {};
@@ -73,7 +65,6 @@ template<typename T> auto GlobalObject::allocateInternal(QPointer<T>& pointer) -
 {
     Q_ASSERT( QCoreApplication::instance() != nullptr );
     Q_ASSERT( !isConstructing );
-
     if (pointer.isNull()) {
         isConstructing = true;
         pointer = new T( QCoreApplication::instance() );
@@ -86,7 +77,6 @@ template<typename T> auto GlobalObject::allocateInternal(QPointer<T>& pointer) -
     }
     return pointer;
 }
-
 
 
 GlobalObject::GlobalObject(QObject *parent) : QObject(parent)
@@ -106,11 +96,16 @@ auto GlobalObject::canConstruct() -> bool
 }
 
 
+auto GlobalObject::fileExchange() -> Platform::FileExchange_Abstract*
+{
+    return allocateInternal<Platform::FileExchange>(g_fileExchange);
+}
+
+
 auto GlobalObject::flarmnetDB() -> Traffic::FlarmnetDB*
 {
     return allocateInternal<Traffic::FlarmnetDB>(g_flarmnetDB);
 }
-
 
 auto GlobalObject::geoMapProvider() -> GeoMaps::GeoMapProvider*
 {
@@ -136,9 +131,9 @@ auto GlobalObject::librarian() -> Librarian*
 }
 
 
-auto GlobalObject::mobileAdaptor() -> MobileAdaptor*
+auto GlobalObject::platformAdaptor() -> Platform::PlatformAdaptor_Abstract*
 {
-    return allocateInternal<MobileAdaptor>(g_mobileAdaptor);
+    return allocateInternal<Platform::PlatformAdaptor>(g_platformAdaptor);
 }
 
 
@@ -154,14 +149,9 @@ auto GlobalObject::networkAccessManager() -> QNetworkAccessManager*
 }
 
 
-auto GlobalObject::notifier() -> Platform::Notifier*
+auto GlobalObject::notifier() -> Platform::Notifier_Abstract*
 {
-#if defined(Q_OS_ANDROID)
-    return allocateInternal<Platform::Notifier_Android>(g_notifier);
-#else
-    return allocateInternal<Platform::Notifier_Linux>(g_notifier);
-#endif
-
+    return allocateInternal<Platform::Notifier>(g_notifier);
 }
 
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -60,7 +60,7 @@ Page {
             icon.source: "/icons/material/ic_arrow_back.svg"
 
             onClicked: {
-                global.mobileAdaptor().vibrateBrief()
+                global.platformAdaptor().vibrateBrief()
                 stackView.pop()
             }
         }
@@ -91,7 +91,7 @@ Page {
             icon.color: "white"
 
             onClicked: {
-                global.mobileAdaptor().vibrateBrief()
+                global.platformAdaptor().vibrateBrief()
                 headerMenuX.popup()
             }
 
@@ -102,7 +102,7 @@ Page {
                     text: qsTr("Update METAR/TAF data")
                     enabled: (!global.weatherDataProvider().downloading) && (global.settings().acceptedWeatherTerms)
                     onTriggered: {
-                        global.mobileAdaptor().vibrateBrief()
+                        global.platformAdaptor().vibrateBrief()
                         if (!global.weatherDataProvider().downloading)
                             global.weatherDataProvider().update(false)
                     }
@@ -112,7 +112,7 @@ Page {
                     text: qsTr("Disallow internet connection")
                     enabled: global.settings().acceptedWeatherTerms
                     onTriggered: {
-                        global.mobileAdaptor().vibrateBrief()
+                        global.platformAdaptor().vibrateBrief()
                         global.settings().acceptedWeatherTerms = false
                     }
                 } // MenuItem
@@ -157,7 +157,7 @@ Page {
                 width: parent.width
 
                 onClicked: {
-                    global.mobileAdaptor().vibrateBrief()
+                    global.platformAdaptor().vibrateBrief()
                     weatherReport.weatherStation = model.modelData
                     weatherReport.open()
                 }
@@ -209,7 +209,7 @@ Page {
 
             onFlickEnded: {
                 if ( atYBeginning && refreshFlick ) {
-                    global.mobileAdaptor().vibrateBrief()
+                    global.platformAdaptor().vibrateBrief()
                     global.weatherDataProvider().update(false)
                 }
             }
@@ -295,7 +295,7 @@ Page {
                 Layout.alignment: Qt.AlignHCenter
 
                 onClicked: {
-                    global.mobileAdaptor().vibrateBrief()
+                    global.platformAdaptor().vibrateBrief()
                     global.settings().acceptedWeatherTerms = true
                     global.weatherDataProvider().update()
                 }

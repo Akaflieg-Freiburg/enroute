@@ -20,29 +20,29 @@
 
 #pragma once
 
-#include "platform/Notifier.h"
+#include "platform/Notifier_Abstract.h"
 
 namespace Platform {
 
 // This class implements notifications for the linux desktop
 
-class Notifier_Android: public Notifier
+class Notifier: public Notifier_Abstract
 {
     Q_OBJECT
 
 public:
     // Constructor
-    explicit Notifier_Android(QObject* parent = nullptr);
+    explicit Notifier(QObject* parent = nullptr);
 
     // Destructor
-    ~Notifier_Android();
+    ~Notifier();
 
 public slots:
     // Implementation of pure virtual function
-    Q_INVOKABLE virtual void hideNotification(Platform::Notifier::NotificationTypes notificationType);
+    Q_INVOKABLE virtual void hideNotification(Platform::Notifier_Abstract::NotificationTypes notificationType);
 
     // Implementation of pure virtual function
-    virtual void showNotification(Platform::Notifier::NotificationTypes notificationType, const QString& text, const QString& longText);
+    virtual void showNotification(Platform::Notifier_Abstract::NotificationTypes notificationType, const QString& text, const QString& longText);
 
     // This method is called from JAVA when the user interacts with the notification, via the exported "C" function
     // Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onNotificationClicked
@@ -50,9 +50,9 @@ public slots:
     // @param notificationType … the type of the notification that the user interacted with
     //
     // @param actionID - "0" when the user clicked into the notification body, not zero when the user clicked on a notification action
-    void onNotificationClicked(Platform::Notifier::NotificationTypes notificationType, int actionID);
+    void onNotificationClicked(Platform::Notifier_Abstract::NotificationTypes notificationType, int actionID);
 private:
-    Q_DISABLE_COPY_MOVE(Notifier_Android)
+    Q_DISABLE_COPY_MOVE(Notifier)
 };
 
 }

@@ -455,7 +455,7 @@ Item {
             onPressAndHold: onDoubleClicked(mouse)
 
             onDoubleClicked: {
-                global.mobileAdaptor().vibrateBrief()
+                global.platformAdaptor().vibrateBrief()
                 var wp = global.geoMapProvider().closestWaypoint(flightMap.toCoordinate(Qt.point(mouse.x,mouse.y)),
                                                                  flightMap.toCoordinate(Qt.point(mouse.x+25,mouse.y)),
                                                                  global.navigator().flightRoute)
@@ -552,7 +552,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         width: 66
 
         onClicked: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
             drawer.open()
         }
     }
@@ -607,7 +607,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         width:  66
 
         onClicked: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
             flightMap.followGPS = true
             toast.doToast(qsTr("Map Mode: Autopan"))
         }
@@ -631,8 +631,8 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         width:  66
 
         onClicked: {
-            global.mobileAdaptor().vibrateBrief()
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
             stackView.pop()
             stackView.push("../pages/TrafficReceiver.qml")
         }
@@ -656,7 +656,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
 
         onClicked: {
             centerBindingAnimation.omitAnimationforZoom()
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
             flightMap.zoomLevel += 1
         }
     }
@@ -679,7 +679,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
 
         onClicked: {
             centerBindingAnimation.omitAnimationforZoom()
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
             flightMap.zoomLevel -= 1
         }
     }

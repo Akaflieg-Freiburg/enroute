@@ -24,7 +24,6 @@
 
 class DemoRunner;
 class Librarian;
-class MobileAdaptor;
 class QNetworkAccessManager;
 class Settings;
 
@@ -54,7 +53,9 @@ namespace Traffic
 
 namespace Platform
 {
-  class Notifier;
+  class FileExchange_Abstract;
+  class Notifier_Abstract;
+  class PlatformAdaptor_Abstract;
 } // namespace Platform
 
 namespace Positioning
@@ -137,6 +138,12 @@ public:
    */
   Q_INVOKABLE static Traffic::FlarmnetDB *flarmnetDB();
 
+  /*! \brief Pointer to appplication-wide static FileExchange instance
+   *
+   * @returns Pointer to appplication-wide static instance.
+   */
+  Q_INVOKABLE static Platform::FileExchange_Abstract *fileExchange();
+
   /*! \brief Pointer to appplication-wide static GeoMaps::GeoMapProvider
    * instance
    *
@@ -150,11 +157,11 @@ public:
    */
   Q_INVOKABLE static Librarian *librarian();
 
-  /*! \brief Pointer to appplication-wide static MobileAdaptor instance
+  /*! \brief Pointer to appplication-wide static PlatformAdaptor instance
    *
    * @returns Pointer to appplication-wide static instance.
    */
-  Q_INVOKABLE static MobileAdaptor *mobileAdaptor();
+  Q_INVOKABLE static Platform::PlatformAdaptor_Abstract* platformAdaptor();
 
   /*! \brief Pointer to appplication-wide static Navigation::Navigator instance
    *
@@ -178,7 +185,7 @@ public:
    *
    * @returns Pointer to appplication-wide static instance.
    */
-  Q_INVOKABLE static Platform::Notifier *notifier();
+  Q_INVOKABLE static Platform::Notifier_Abstract *notifier();
 
   /*! \brief Pointer to appplication-wide static QNetworkAccessManager instance
    *

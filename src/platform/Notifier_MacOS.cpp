@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,39 +18,37 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "MobileAdaptor.h"
+#include "platform/Notifier_Linux.h"
 
 
-void MobileAdaptor::hideSplashScreen()
+// This is a template file without actual implementation.
+
+Platform::Notifier::Notifier(QObject *parent)
+    : Platform::Notifier::Notifier_Abstract(parent)
 {
+    // Standard constructor. Recall that the constructor must not call virtual functions.
+    // If you need virtual functions, use the methode deferredInitialization below.
+#warning Not implemented
 }
 
 
-void MobileAdaptor::lockWifi(bool lock)
+void Platform::Notifier::deferredInitialization()
 {
-    Q_UNUSED(lock)
+    // This method is called immediately after the instance has been constructed.
+    // It can be used to implement initialization that calls virtual methods.
+#warning Not implemented
 }
 
 
-auto MobileAdaptor::manufacturer() -> QString
+void Platform::Notifier::hideNotification(Platform::Notifier_Abstract::NotificationTypes notificationType)
 {
-    return {};
+    // This method is supposed to hide the notification "notificationType".
+#warning Not implemented
 }
 
 
-auto MobileAdaptor::missingPermissionsExist() -> bool
+void Platform::Notifier::showNotification(NotificationTypes notificationType, const QString& text, const QString& longText)
 {
-    Q_UNUSED(this);
-    return false;
-}
-
-
-void MobileAdaptor::vibrateBrief()
-{
-}
-
-
-auto MobileAdaptor::getSSID() -> QString
-{
-    return QStringLiteral("<unknown ssid>");
+    // This method is supposed to show the notification "notificationType".
+#warning Not implemented
 }

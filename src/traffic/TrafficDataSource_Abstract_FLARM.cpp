@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "GlobalObject.h"
-#include "MobileAdaptor.h"
+#include "platform/PlatformAdaptor_Abstract.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/FlarmnetDB.h"
 #include "traffic/TrafficDataSource_Abstract.h"

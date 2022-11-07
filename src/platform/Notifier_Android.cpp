@@ -26,27 +26,27 @@
 #include "platform/Notifier_Android.h"
 
 
-Platform::Notifier_Android::Notifier_Android(QObject *parent)
-    : Platform::Notifier(parent)
+Platform::Notifier::Notifier(QObject *parent)
+    : Platform::Notifier_Abstract(parent)
 {
     ;
 }
 
 
-Platform::Notifier_Android::~Notifier_Android()
+Platform::Notifier::~Notifier()
 {
     ;
 }
 
 
-void Platform::Notifier_Android::hideNotification(Platform::Notifier::NotificationTypes notificationType)
+void Platform::Notifier::hideNotification(Platform::Notifier_Abstract::NotificationTypes notificationType)
 {
     jint jni_ID                   = notificationType;
     QJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/Notifier", "hideNotification", "(I)V", jni_ID);
 }
 
 
-void Platform::Notifier_Android::onNotificationClicked(Platform::Notifier::NotificationTypes notificationType, int actionID)
+void Platform::Notifier::onNotificationClicked(Platform::Notifier_Abstract::NotificationTypes notificationType, int actionID)
 {
     hideNotification(notificationType);
     switch (notificationType) {
@@ -70,7 +70,7 @@ void Platform::Notifier_Android::onNotificationClicked(Platform::Notifier::Notif
 }
 
 
-void Platform::Notifier_Android::showNotification(Platform::Notifier::NotificationTypes notificationType, const QString& text, const QString& longText)
+void Platform::Notifier::showNotification(Platform::Notifier_Abstract::NotificationTypes notificationType, const QString& text, const QString& longText)
 {
 
     jint jni_ID                    = notificationType;
@@ -94,3 +94,34 @@ void Platform::Notifier_Android::showNotification(Platform::Notifier::Notificati
 
 }
 
+
+
+//
+// C Methods
+//
+
+extern "C" {
+
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onNotificationClicked(JNIEnv* /*unused*/, jobject /*unused*/, jint notifyID, jint actionID)
+{
+    // This method is called from Java to indicate that the user has clicked into the Android
+    // notification for reporting traffic data receiver errors
+
+    // This method gets called from Java before main() has executed
+    // and thus before a QApplication instance has been constructed.
+    // In these cases, the methods of the Global class must not be called
+    // and we simply return.
+    if (!GlobalObject::canConstruct())
+    {
+        return;
+    }
+    auto* ptr = qobject_cast<Platform::Notifier*>(GlobalObject::notifier());
+
+    if (ptr == nullptr)
+    {
+        return;
+    }
+    ptr->onNotificationClicked((Platform::Notifier_Abstract::NotificationTypes)notifyID, actionID);
+}
+
+}

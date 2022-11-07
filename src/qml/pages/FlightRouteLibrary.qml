@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -48,7 +48,7 @@ Page {
             icon.source: "/icons/material/ic_arrow_back.svg"
 
             onClicked: {
-                global.mobileAdaptor().vibrateBrief()
+                global.platformAdaptor().vibrateBrief()
                 stackView.pop()
             }
         }
@@ -77,7 +77,7 @@ Page {
             icon.color: "white"
 
             onClicked: {
-                global.mobileAdaptor().vibrateBrief()
+                global.platformAdaptor().vibrateBrief()
                 headerMenuX.popup()
             }
 
@@ -87,7 +87,7 @@ Page {
                 MenuItem {
                     text: qsTr("Info…")
                     onTriggered: {
-                        global.mobileAdaptor().vibrateBrief()
+                        global.platformAdaptor().vibrateBrief()
                         infoDialog.open()
                     }
 
@@ -100,9 +100,9 @@ Page {
                     height: Qt.platform.os !== "android" ? undefined : 0
 
                     onTriggered: {
-                        global.mobileAdaptor().vibrateBrief()
+                        global.platformAdaptor().vibrateBrief()
                         highlighted = false
-                        global.mobileAdaptor().importContent()
+                        global.fileExchange().importContent()
                     }
                 }
 
@@ -141,7 +141,7 @@ Page {
                 icon.source: "/icons/material/ic_directions.svg"
 
                 onClicked: {
-                    global.mobileAdaptor().vibrateBrief()
+                    global.platformAdaptor().vibrateBrief()
                     finalFileName = modelData
                     if (global.navigator().flightRoute.size > 0)
                         overwriteDialog.open()
@@ -150,7 +150,7 @@ Page {
                 }
 
                 swipe.onCompleted: {
-                    global.mobileAdaptor().vibrateBrief()
+                    global.platformAdaptor().vibrateBrief()
                     finalFileName = modelData
                     removeDialog.open()
                 }
@@ -163,7 +163,7 @@ Page {
                 icon.source: "/icons/material/ic_more_horiz.svg"
 
                 onClicked: {
-                    global.mobileAdaptor().vibrateBrief()
+                    global.platformAdaptor().vibrateBrief()
                     cptMenu.popup()
                 }
 
@@ -177,11 +177,11 @@ Page {
                             text: qsTr("… to GeoJSON file")
                             onTriggered: {
                                 cptMenu.close()
-                                global.mobileAdaptor().vibrateBrief()
+                                global.platformAdaptor().vibrateBrief()
                                 highlighted = false
                                 parent.highlighted = false
 
-                                var errorString = global.mobileAdaptor().exportContent(global.librarian().get(Librarian.Routes, modelData).toGeoJSON(), "application/geo+json", global.librarian().get(Librarian.Routes, modelData).suggestedFilename())
+                                var errorString = global.fileExchange().shareContent(global.librarian().get(Librarian.Routes, modelData).toGeoJSON(), "application/geo+json", global.librarian().get(Librarian.Routes, modelData).suggestedFilename())
                                 if (errorString === "abort") {
                                     toast.doToast(qsTr("Aborted"))
                                     return
@@ -202,11 +202,11 @@ Page {
                             text: qsTr("… to GPX file")
                             onTriggered: {
                                 cptMenu.close()
-                                global.mobileAdaptor().vibrateBrief()
+                                global.platformAdaptor().vibrateBrief()
                                 highlighted = false
                                 parent.highlighted = false
 
-                                var errorString = global.mobileAdaptor().exportContent(global.librarian().get(Librarian.Routes, modelData).toGpx(), "application/gpx+xml", global.librarian().get(Librarian.Routes, modelData).suggestedFilename())
+                                var errorString = global.fileExchange().shareContent(global.librarian().get(Librarian.Routes, modelData).toGpx(), "application/gpx+xml", global.librarian().get(Librarian.Routes, modelData).suggestedFilename())
                                 if (errorString === "abort") {
                                     toast.doToast(qsTr("Aborted"))
                                     return
@@ -231,11 +231,11 @@ Page {
                             text: qsTr("… in GeoJSON format")
 
                             onTriggered: {
-                                global.mobileAdaptor().vibrateBrief()
+                                global.platformAdaptor().vibrateBrief()
                                 highlighted = false
                                 parent.highlighted = false
 
-                                var errorString = global.mobileAdaptor().viewContent(global.librarian().get(Librarian.Routes, modelData).toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson")
+                                var errorString = global.fileExchange().viewContent(global.librarian().get(Librarian.Routes, modelData).toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson")
                                 if (errorString !== "") {
                                     shareErrorDialogLabel.text = errorString
                                     shareErrorDialog.open()
@@ -248,11 +248,11 @@ Page {
                             text: qsTr("… in GPX format")
 
                             onTriggered: {
-                                global.mobileAdaptor().vibrateBrief()
+                                global.platformAdaptor().vibrateBrief()
                                 highlighted = false
                                 parent.highlighted = false
 
-                                var errorString = global.mobileAdaptor().viewContent(global.librarian().get(Librarian.Routes, modelData).toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx")
+                                var errorString = global.fileExchange().viewContent(global.librarian().get(Librarian.Routes, modelData).toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx")
                                 if (errorString !== "") {
                                     shareErrorDialogLabel.text = errorString
                                     shareErrorDialog.open()
@@ -269,7 +269,7 @@ Page {
                         id: renameAction
                         text: qsTr("Rename…")
                         onTriggered: {
-                            global.mobileAdaptor().vibrateBrief()
+                            global.platformAdaptor().vibrateBrief()
                             finalFileName = modelData
                             renameName.text = modelData
                             renameDialog.open()
@@ -281,7 +281,7 @@ Page {
                         id: removeAction
                         text: qsTr("Remove…")
                         onTriggered: {
-                            global.mobileAdaptor().vibrateBrief()
+                            global.platformAdaptor().vibrateBrief()
                             finalFileName = modelData
                             removeDialog.open()
                         }
@@ -432,11 +432,11 @@ Page {
         modal: true
 
         onAccepted: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
             page.openFromLibrary()
         }
         onRejected: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
             close()
         }
 
@@ -470,13 +470,13 @@ Page {
         modal: true
 
         onAccepted: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
             global.librarian().remove(Librarian.Routes, page.finalFileName)
             page.reloadFlightRouteList()
             toast.doToast(qsTr("Flight route removed from device"))
         }
         onRejected: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
             page.reloadFlightRouteList()
             close()
         }
@@ -541,7 +541,7 @@ Page {
         }
 
         onAccepted: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
             if ((renameName.text !== "") && !global.librarian().exists(Librarian.Routes, renameName.text)) {
                 global.librarian().rename(Librarian.Routes, finalFileName, renameName.text)
                 page.reloadFlightRouteList()
@@ -550,7 +550,7 @@ Page {
             }
         }
         onRejected: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
             close()
         }
 

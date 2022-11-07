@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -54,7 +54,7 @@ Dialog {
             width: wpList.width
 
             onClicked: {
-                global.mobileAdaptor().vibrateBrief()
+                global.platformAdaptor().vibrateBrief()
                 global.navigator().flightRoute.append(model.modelData)
                 close()
             }
@@ -85,7 +85,7 @@ Dialog {
 
             onAccepted: {
                 if (wpList.model.length > 0) {
-                    global.mobileAdaptor().vibrateBrief()
+                    global.platformAdaptor().vibrateBrief()
                     global.navigator().flightRoute.append(wpList.model[0])
                     close()
                 }

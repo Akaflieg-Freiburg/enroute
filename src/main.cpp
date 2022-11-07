@@ -41,7 +41,6 @@
 #include "DemoRunner.h"
 #include "GlobalObject.h"
 #include "Librarian.h"
-#include "MobileAdaptor.h"
 #include "Settings.h"
 #include "dataManagement/DataManager.h"
 #include "dataManagement/SSLErrorHandler.h"
@@ -51,7 +50,9 @@
 #include "navigation/Aircraft.h"
 #include "navigation/Clock.h"
 #include "navigation/Navigator.h"
-#include "platform/Notifier.h"
+#include "platform/FileExchange_Abstract.h"
+#include "platform/Notifier_Abstract.h"
+#include "platform/PlatformAdaptor.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/PasswordDB.h"
 #include "traffic/TrafficDataProvider.h"
@@ -84,10 +85,10 @@ auto main(int argc, char *argv[]) -> int
     qRegisterMetaType<GeoMaps::Waypoint>();
     qRegisterMetaType<Positioning::PositionInfo>();
     qRegisterMetaType<Traffic::Warning>();
-    qRegisterMetaType<Platform::Notifier::NotificationActions>();
+    qRegisterMetaType<Platform::Notifier_Abstract::NotificationActions>();
 
-    qRegisterMetaType<MobileAdaptor::FileFunction>("MobileAdaptor::FileFunction");
-    qRegisterMetaType<Platform::Notifier::NotificationTypes>("Platform::Notifier::Notifications");
+    qRegisterMetaType<Platform::FileExchange_Abstract::FileFunction>("Platform::FileExchange_Abstract::FileFunction");
+    qRegisterMetaType<Platform::Notifier_Abstract::NotificationTypes>("Platform::Notifier::Notifications");
     qmlRegisterUncreatableType<DemoRunner>("enroute", 1, 0, "DemoRunner", QStringLiteral("DemoRunner objects cannot be created in QML"));
     qmlRegisterUncreatableType<Navigation::Aircraft>("enroute", 1, 0, "Aircraft", QStringLiteral("Aircraft objects cannot be created in QML"));
     qmlRegisterUncreatableType<Navigation::RemainingRouteInfo>("enroute", 1, 0, "RemainingRouteInfo", QStringLiteral("RemainingRouteInfo objects cannot be created in QML"));
@@ -100,11 +101,12 @@ auto main(int argc, char *argv[]) -> int
     qmlRegisterUncreatableType<GeoMaps::WaypointLibrary>("enroute", 1, 0, "WaypointLibrary", QStringLiteral("WaypointLibrary objects cannot be created in QML"));
     qmlRegisterUncreatableType<DataManagement::DataManager>("enroute", 1, 0, "DataManager", QStringLiteral("DataManager objects cannot be created in QML"));
     qmlRegisterType<Settings>("enroute", 1, 0, "GlobalSettings");
-    qmlRegisterUncreatableType<MobileAdaptor>("enroute", 1, 0, "MobileAdaptor", QStringLiteral("MobileAdaptor objects cannot be created in QML"));
+    qmlRegisterUncreatableType<Platform::FileExchange_Abstract>("enroute", 1, 0, "FileExchange_Abstract", QStringLiteral("FileExchange_Abstract objects cannot be created in QML"));
+    qmlRegisterUncreatableType<Platform::PlatformAdaptor_Abstract>("enroute", 1, 0, "PlatformAdaptor_Abstract", QStringLiteral("PlatformAdaptor_Abstract objects cannot be created in QML"));
     qmlRegisterUncreatableType<Navigation::Navigator>("enroute", 1, 0, "Navigator", QStringLiteral("Navigator objects cannot be created in QML"));
     qmlRegisterUncreatableType<Traffic::PasswordDB>("enroute", 1, 0, "PasswordDB", QStringLiteral("PasswordDB objects cannot be created in QML"));
     qmlRegisterUncreatableType<Traffic::TrafficDataProvider>("enroute", 1, 0, "TrafficDataProvider", QStringLiteral("TrafficDataProvider objects cannot be created in QML"));
-    qmlRegisterUncreatableType<Platform::Notifier>("enroute", 1, 0, "Notifier", QStringLiteral("Notifier objects cannot be created in QML"));
+    qmlRegisterUncreatableType<Platform::Notifier_Abstract>("enroute", 1, 0, "Notifier", QStringLiteral("Notifier objects cannot be created in QML"));
     qmlRegisterUncreatableType<Positioning::PositionProvider>("enroute", 1, 0, "PositionProvider", QStringLiteral("PositionProvider objects cannot be created in QML"));
     qmlRegisterUncreatableType<Traffic::TrafficFactor_WithPosition>("enroute", 1, 0, "TrafficFactor_WithPosition", QStringLiteral("TrafficFactor_WithPosition objects cannot be created in QML"));
     qmlRegisterType<Ui::ScaleQuickItem>("enroute", 1, 0, "Scale");
@@ -138,9 +140,12 @@ auto main(int argc, char *argv[]) -> int
 
     // Install translator
     auto* enrouteTranslator = new QTranslator(&app);
-    if (enrouteTranslator->load(QStringLiteral(":enroute_%1.qm").arg(QLocale::system().name().left(2)))) {
+    if (enrouteTranslator->load(QStringLiteral(":enroute_%1.qm").arg(QLocale::system().name().left(2))))
+    {
         QCoreApplication::installTranslator(enrouteTranslator);
-    } else {
+    }
+    else
+    {
         delete enrouteTranslator;
     }
 
@@ -162,17 +167,22 @@ auto main(int argc, char *argv[]) -> int
     parser.addPositionalArgument(QStringLiteral("[fileName]"), QCoreApplication::translate("main", "File to import."));
     parser.process(app);
     auto positionalArguments = parser.positionalArguments();
-    if (positionalArguments.length() > 1) {
+    if (positionalArguments.length() > 1)
+    {
         parser.showHelp();
     }
 
 #if !defined(Q_OS_ANDROID)
     // Single application on desktops
     KDSingleApplication kdsingleapp;
-    if (!kdsingleapp.isPrimaryInstance()) {
-        if (positionalArguments.length() > 0) {
+    if (!kdsingleapp.isPrimaryInstance())
+    {
+        if (positionalArguments.length() > 0)
+        {
             kdsingleapp.sendMessage(positionalArguments[0].toUtf8());
-        } else {
+        }
+        else
+        {
             kdsingleapp.sendMessage(QByteArray());
         }
         return 0;
@@ -180,12 +190,14 @@ auto main(int argc, char *argv[]) -> int
 #endif
 
     // Create mobile platform adaptor. We do this before creating the application engine because this also asks for permissions
-    if (positionalArguments.length() == 1) {
-        GlobalObject::mobileAdaptor()->processFileOpenRequest(positionalArguments[0]);
+    GlobalObject::platformAdaptor()->requestPermissionsSync();
+    GlobalObject::platformAdaptor()->disableScreenSaver();
+    if (positionalArguments.length() == 1)
+    {
+        GlobalObject::fileExchange()->processFileOpenRequest(positionalArguments[0]);
     }
-    QTimer::singleShot(4s, GlobalObject::mobileAdaptor(), &MobileAdaptor::hideSplashScreen);
 #if !defined(Q_OS_ANDROID)
-    QObject::connect(&kdsingleapp, SIGNAL(messageReceived(QByteArray)), GlobalObject::mobileAdaptor(), SLOT(processFileOpenRequest(QByteArray)));
+    QObject::connect(&kdsingleapp, SIGNAL(messageReceived(QByteArray)), GlobalObject::fileExchange(), SLOT(processFileOpenRequest(QByteArray)));
 #endif
 
     /*
@@ -200,7 +212,8 @@ auto main(int argc, char *argv[]) -> int
     engine.rootContext()->setContextProperty(QStringLiteral("speed"), QVariant::fromValue(Units::Speed()) );
     engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
 
-    if (parser.isSet(screenshotOption)) {
+    if (parser.isSet(screenshotOption))
+    {
         GlobalObject::demoRunner()->setEngine(&engine);
         QTimer::singleShot(1s, GlobalObject::demoRunner(), &DemoRunner::run);
     }

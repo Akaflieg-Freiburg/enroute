@@ -23,29 +23,29 @@
 #include <QDBusInterface>
 #include <QMap>
 
-#include "platform/Notifier.h"
+#include "platform/Notifier_Abstract.h"
 
 namespace Platform {
 
 // This class implements notifications for the linux desktop
 
-class Notifier_Linux: public Notifier
+class Notifier: public Notifier_Abstract
 {
     Q_OBJECT
 
 public:
     // Constructor
-    explicit Notifier_Linux(QObject* parent = nullptr);
+    explicit Notifier(QObject* parent = nullptr);
 
     // Destructor
-    ~Notifier_Linux() override;
+    ~Notifier() override;
 
 public slots:
     // Implementation of pure virtual function
-    Q_INVOKABLE void hideNotification(Platform::Notifier::NotificationTypes notificationType) override;
+    Q_INVOKABLE void hideNotification(Platform::Notifier_Abstract::NotificationTypes notificationType) override;
 
     // Implementation of pure virtual function
-    void showNotification(Platform::Notifier::NotificationTypes notificationType, const QString& text, const QString& longText) override;
+    void showNotification(Platform::Notifier_Abstract::NotificationTypes notificationType, const QString& text, const QString& longText) override;
 
 private slots:
     // This slot receives ActionInvoked messages from the DBus
@@ -55,13 +55,13 @@ private slots:
     void onNotificationClosed(uint id, uint reason);
 
 private:
-    Q_DISABLE_COPY_MOVE(Notifier_Linux)
+    Q_DISABLE_COPY_MOVE(Notifier)
 
     // App icon in a format that can be transferred via QDBus
     QVariant iconVariant;
 
     // Maps NotificationTypes, to IDs of the ongoing notation for the NotificationType
-    QMap<Platform::Notifier::NotificationTypes, uint> notificationIDs;
+    QMap<Platform::Notifier_Abstract::NotificationTypes, uint> notificationIDs;
 
     // QDBusInterface to org.freedesktop.Notifications
     // This implementation of notifications uses the specification found here:

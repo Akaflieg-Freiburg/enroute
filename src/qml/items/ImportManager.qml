@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -29,37 +29,38 @@ Item {
     id: importManager
 
     property string filePath: ""
-    property int fileFunction: MobileAdaptor.UnknownFunction
+    property int fileFunction: FileExchange_Abstract.UnknownFunction
 
     Connections {
-        target: global.mobileAdaptor()
+        target: global.fileExchange()
 
         function onOpenFileRequest(fileName, fileFunction) {
             view.raise()
             view.requestActivate()
+
             importManager.filePath = fileName
             importManager.fileFunction = fileFunction
             if (fileName === "")
                 return
 
-            if (fileFunction === MobileAdaptor.WaypointLibrary) {
+            if (fileFunction === FileExchange_Abstract.WaypointLibrary) {
                 importWPLibraryDialog.open()
                 return
             }
-            if (fileFunction === MobileAdaptor.FlightRouteOrWaypointLibrary) {
+            if (fileFunction === FileExchange_Abstract.FlightRouteOrWaypointLibrary) {
                 chooseFRorWPDialog.open()
                 return
             }
 
-            if (fileFunction === MobileAdaptor.VectorMap) {
+            if (fileFunction === FileExchange_Abstract.VectorMap) {
                 importVectorMapDialog.open()
                 return
             }
-            if (fileFunction === MobileAdaptor.RasterMap) {
+            if (fileFunction === FileExchange_Abstract.RasterMap) {
                 importRasterMapDialog.open()
                 return
             }
-            if (fileFunction === MobileAdaptor.FlightRoute) {
+            if (fileFunction === FileExchange_Abstract.FlightRoute) {
                 if (global.navigator().flightRoute.size > 0)
                     importFlightRouteDialog.open()
                 else
@@ -107,8 +108,8 @@ Item {
                 text: qsTr("Route")
 
                 onClicked: {
-                    global.mobileAdaptor().vibrateBrief()
-                    importManager.fileFunction = MobileAdaptor.FlightRoute
+                    global.platformAdaptor().vibrateBrief()
+                    importManager.fileFunction = FileExchange_Abstract.FlightRoute
                     chooseFRorWPDialog.close()
                     if (global.navigator().flightRoute.size > 0)
                         importFlightRouteDialog.open()
@@ -121,8 +122,8 @@ Item {
                     text: qsTr("Library")
 
                     onClicked: {
-                        global.mobileAdaptor().vibrateBrief()
-                        importManager.fileFunction = MobileAdaptor.WaypointLibrary
+                        global.platformAdaptor().vibrateBrief()
+                        importManager.fileFunction = FileExchange_Abstract.WaypointLibrary
                         chooseFRorWPDialog.close()
                         importWPLibraryDialog.open()
                     }
@@ -197,7 +198,7 @@ Item {
         }
 
         onAccepted: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
 
             var errorString = global.dataManager().import(importManager.filePath, mapNameRaster.text)
             if (errorString !== "") {
@@ -271,7 +272,7 @@ Item {
         }
 
         onAccepted: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
 
             var errorString = global.dataManager().import(importManager.filePath, mapNameVector.text)
             if (errorString !== "") {
@@ -315,7 +316,7 @@ Item {
         modal: true
 
         onAccepted: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
 
             var errorString = global.waypointLibrary().import(importManager.filePath, skip.checked)
             if (errorString !== "") {
@@ -362,11 +363,11 @@ Item {
         modal: true
 
         onAccepted: {
-            global.mobileAdaptor().vibrateBrief()
+            global.platformAdaptor().vibrateBrief()
 
             var errorString = ""
 
-            if (importManager.fileFunction === MobileAdaptor.FlightRoute)
+            if (importManager.fileFunction === FileExchange_Abstract.FlightRoute)
                 errorString = global.navigator().flightRoute.load(importManager.filePath)
 
             if (errorString !== "") {

@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QNetworkDatagram>
+#include <QPointer>
 #include <QQmlListProperty>
 #include <QUdpSocket>
 

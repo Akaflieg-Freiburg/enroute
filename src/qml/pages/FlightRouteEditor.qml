@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,11 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQml 2.15
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Layouts 1.15
+import QtQml
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Layouts
 
 import enroute 1.0
 import "../dialogs"
@@ -167,7 +167,10 @@ Page {
     header: ToolBar {
 
         Material.foreground: "white"
-        height: 60
+        height: 60 + view.topScreenMargin
+        leftPadding: view.leftScreenMargin
+        rightPadding: view.rightScreenMargin
+        topPadding: view.topScreenMargin
 
         ToolButton {
             id: backButton
@@ -372,7 +375,6 @@ Page {
 
             }
         }
-
     }
 
 
@@ -381,6 +383,8 @@ Page {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
+        leftPadding: view.leftScreenMargin
+        rightPadding: view.rightScreenMargin
 
         currentIndex: sv.currentIndex
         TabButton { text: qsTr("Route") }
@@ -396,7 +400,10 @@ Page {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
+        anchors.leftMargin: view.leftScreenMargin
+        anchors.rightMargin: view.rightScreenMargin
 
+        clip: true
         currentIndex: bar.currentIndex
 
         Item {
@@ -632,11 +639,12 @@ Page {
 
     footer: Pane {
         width: parent.width
+        height: implicitHeight
         Material.elevation: 3
+        bottomPadding: view.bottomScreenMargin
 
         ColumnLayout {
             width: parent.width
-
 
             Label {
                 Layout.fillWidth: true

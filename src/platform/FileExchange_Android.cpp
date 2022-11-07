@@ -18,16 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QtGlobal>
-#if defined(Q_OS_ANDROID)
-
-#include <QAndroidJniEnvironment>
 #include <QDateTime>
 #include <QDir>
 #include <QHash>
+#include <QJniEnvironment>
 #include <QMimeDatabase>
 #include <QStandardPaths>
-#include <QtAndroid>
 
 #include "platform/FileExchange_Android.h"
 #include "platform/Notifier_Android.h"
@@ -186,5 +182,3 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setFileR
 
 
 }
-
-#endif // defined(Q_OS_ANDROID)

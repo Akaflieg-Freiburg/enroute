@@ -1,0 +1,5 @@
+<map id="Platform::PlatformAdaptor" name="Platform::PlatformAdaptor">
+<area shape="rect" id="node1" title="Implementation of PlatformAdaptor for Android devices." alt="" coords="5,169,199,196"/>
+<area shape="rect" id="node2" href="$classPlatform_1_1PlatformAdaptor__Abstract.html" title="Interface to platform&#45;specific functionality." alt="" coords="5,80,199,121"/>
+<area shape="rect" id="node3" href="$classGlobalObject.html" title="Base class for global singleton objects." alt="" coords="49,5,155,32"/>
+</map>

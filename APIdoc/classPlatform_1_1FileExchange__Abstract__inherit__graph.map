@@ -1,0 +1,5 @@
+<map id="Platform::FileExchange_Abstract" name="Platform::FileExchange_Abstract">
+<area shape="rect" id="node1" title="Interface to platform&#45;specific file exchange functionality." alt="" coords="5,80,177,121"/>
+<area shape="rect" id="node3" href="$classPlatform_1_1FileExchange.html" title="Implementation of FileExchange for Android devices." alt="" coords="5,169,177,196"/>
+<area shape="rect" id="node2" href="$classGlobalObject.html" title="Base class for global singleton objects." alt="" coords="38,5,145,32"/>
+</map>

@@ -18,7 +18,19 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
 #include <QApplication>
+
+#include "GlobalObject.h"
+#include "Settings.h"
+#include "geomaps/GeoMapProvider.h"
+#include "navigation/Navigator.h"
+#include "traffic/TrafficDataProvider.h"
+#include "traffic/TrafficDataSource_Simulate.h"
+#include "traffic/TrafficFactor_WithPosition.h"
+#include "weather/WeatherDataProvider.h"
+#endif
+
 #include <QDebug>
 #include <QEventLoop>
 #include <QQuickItem>
@@ -28,14 +40,6 @@
 #include <chrono>
 
 #include "DemoRunner.h"
-#include "GlobalObject.h"
-#include "Settings.h"
-#include "geomaps/GeoMapProvider.h"
-#include "navigation/Navigator.h"
-#include "traffic/TrafficDataProvider.h"
-#include "traffic/TrafficDataSource_Simulate.h"
-#include "traffic/TrafficFactor_WithPosition.h"
-#include "weather/WeatherDataProvider.h"
 
 using namespace std::chrono_literals;
 
@@ -70,6 +74,7 @@ auto findQQuickItem(const QString &objectName, QQmlApplicationEngine* engine) ->
 
 void DemoRunner::run()
 {
+#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
     Q_ASSERT(m_engine != nullptr);
 
     // Obtain pointers to QML items
@@ -468,5 +473,5 @@ void DemoRunner::setLanguage(const QString &language){
         QCoreApplication::installTranslator(enrouteTranslator);
     }
     m_engine->retranslate();
-
+#endif
 }

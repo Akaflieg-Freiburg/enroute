@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QApplication>
+#include <QCoreApplication>
 #include <QSettings>
 
 #include "GlobalObject.h"
@@ -57,7 +57,7 @@ Positioning::PositionProvider::PositionProvider(QObject *parent) : PositionInfoS
     saveTimer->setInterval(1min + 57s);
     saveTimer->setSingleShot(false);
     connect(saveTimer, &QTimer::timeout, this, &Positioning::PositionProvider::savePositionAndTrack);
-    connect(qApp, &QApplication::aboutToQuit, this, &Positioning::PositionProvider::savePositionAndTrack);
+    connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, this, &Positioning::PositionProvider::savePositionAndTrack);
     saveTimer->start();
 
     // Update properties

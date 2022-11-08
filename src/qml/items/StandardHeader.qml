@@ -18,14 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
 
 ToolBar {
 
     Material.foreground: "white"
-    height: 60
+    height: 60 + view.topScreenMargin
+    leftPadding: view.leftScreenMargin
+    rightPadding: view.rightScreenMargin
+    topPadding: view.topScreenMargin
 
     ToolButton {
         id: backButton

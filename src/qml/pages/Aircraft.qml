@@ -40,17 +40,11 @@ Page {
 
         Material.foreground: "white"
         height: 60 + view.topScreenMargin
+        leftPadding: view.leftScreenMargin
+        rightPadding: view.rightScreenMargin
+        topPadding: view.topScreenMargin
 
-        Item {
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
-            anchors.leftMargin: view.leftScreenMargin
-            anchors.rightMargin: view.rightScreenMargin
-
-            height: 60
-
-            ToolButton {
+        ToolButton {
                 id: backButton
 
                 anchors.left: parent.left
@@ -64,7 +58,7 @@ Page {
                 }
             }
 
-            Label {
+        Label {
                 id: lbl
 
                 anchors.verticalCenter: parent.verticalCenter
@@ -79,7 +73,7 @@ Page {
                 verticalAlignment: Qt.AlignVCenter
             }
 
-            ToolButton {
+        ToolButton {
                 id: headerMenuToolButton
 
                 anchors.right: parent.right
@@ -116,9 +110,6 @@ Page {
                     }
                 }
             }
-        }
-
-
     }
 
 

@@ -18,29 +18,16 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Layouts
 
 import enroute 1.0
 import "../dialogs"
 import "../items"
 
-/* TODO
 
-  - Sort entries by distance to current position
-
-  - Give one-line weather description, including time ("23 minutes ago")
-
-  - Perhaps give sunset information in top line
-
-  - Unify/coordinate behaviour with DataManager
-
-  - Handle error messages
-
-  - Give feedback on downloading, for interactivlely triggered updates
- */
 
 Page {
     id: pg
@@ -49,7 +36,10 @@ Page {
     header: ToolBar {
 
         Material.foreground: "white"
-        height: 60
+        height: 60 + view.topScreenMargin
+        leftPadding: view.leftScreenMargin
+        rightPadding: view.rightScreenMargin
+        topPadding: view.topScreenMargin
 
         ToolButton {
             id: backButton
@@ -138,6 +128,9 @@ Page {
             }
 
             WordWrappingItemDelegate {
+                leftPadding: view.leftScreenMargin
+                rightPadding: view.rightScreenMargin
+
                 id: idel
                 text: {
                     var result = model.modelData.twoLineTitle
@@ -167,6 +160,7 @@ Page {
 
     ColumnLayout {
         anchors.fill: parent
+
         visible: global.settings().acceptedWeatherTerms
 
         // List of weather stations
@@ -307,32 +301,35 @@ Page {
     // Manual update button in footer
     footer: Pane {
         width: parent.width
+        bottomPadding: view.bottomScreenMargin
+        leftPadding: view.leftScreenMargin
+        rightPadding: view.rightScreenMargin
 
         Material.elevation: 3
-        visible: (sunLabel.text != "") || (qnhLabel.text != "")
+        visible: (sunLabel.text !== "") || (qnhLabel.text !== "")
 
         GridLayout {
             anchors.fill: parent
             columns: 2
 
             Icon {
-                visible: qnhLabel.text != ""
+                visible: qnhLabel.text !== ""
                 source: "/icons/material/ic_speed.svg"
             }
             Label {
                 id: qnhLabel
-                visible: qnhLabel.text != ""
+                visible: qnhLabel.text !== ""
                 Layout.fillWidth: true
                 text: global.weatherDataProvider().QNHInfo
             }
 
             Icon {
-                visible: sunLabel.text != ""
+                visible: sunLabel.text !== ""
                 source: "/icons/material/ic_wb_sunny.svg"
             }
             Label {
                 id: sunLabel
-                visible: sunLabel.text != ""
+                visible: sunLabel.text !== ""
                 Layout.fillWidth: true
                 text: global.weatherDataProvider().sunInfo
             }
@@ -344,7 +341,7 @@ Page {
     // Try and update METAR/TAF as soon as someone opens this page if the current list of stations
     // is empty. This is not a background update, we want user interaction.
     Component.onCompleted: {
-        if (stationList.count == 0)
+        if (stationList.count === 0)
             global.weatherDataProvider().update(false)
         else
             global.weatherDataProvider().update(true)

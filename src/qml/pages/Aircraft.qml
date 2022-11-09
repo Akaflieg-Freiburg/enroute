@@ -104,7 +104,7 @@ Page {
                             global.platformAdaptor().vibrateBrief()
                             highlighted = false
                             dialogLoader.active = false
-                            dialogLoader.source = "../dialogs/AircraftSaveDialog.qml"
+                            dialogLoader.source = "dialogs/AircraftSaveDialog.qml"
                             dialogLoader.active = true
                         }
                     }

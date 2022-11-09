@@ -43,6 +43,8 @@ Page {
         anchors.rightMargin: view.font.pixelSize*2.0
         anchors.left: parent.left
         anchors.leftMargin: view.font.pixelSize*2.0
+        leftPadding: view.leftScreenMargin
+        rightPadding: view.rightScreenMargin
 
         placeholderText: qsTr("Filter Aircraft Names")
         font.pixelSize: view.font.pixelSize*1.5
@@ -129,6 +131,10 @@ Page {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
+
+        leftMargin: view.leftScreenMargin
+        rightMargin: view.rightScreenMargin
+        bottomMargin: view.bottomScreenMargin
 
         clip: true
 

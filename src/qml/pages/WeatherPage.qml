@@ -356,7 +356,7 @@ Page {
             dialogLoader.active = false
             dialogLoader.title = qsTr("Update Error")
             dialogLoader.text = qsTr("<p>Failed to update the list of stations.</p><p>Reason: %1.</p>").arg(message)
-            dialogLoader.source = "../dialogs/ErrorDialog.qml"
+            dialogLoader.source = "dialogs/ErrorDialog.qml"
             dialogLoader.active = true
         }
     }

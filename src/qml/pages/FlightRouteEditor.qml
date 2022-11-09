@@ -234,7 +234,7 @@ Page {
                         global.platformAdaptor().vibrateBrief()
                         highlighted = false
                         dialogLoader.active = false
-                        dialogLoader.source = "../dialogs/FlightRouteSaveDialog.qml"
+                        dialogLoader.source = "dialogs/FlightRouteSaveDialog.qml"
                         dialogLoader.active = true
                     }
                 }
@@ -775,7 +775,7 @@ Page {
         sequence: "Ctrl+a"
         onActivated: {
             dialogLoader.active = false
-            dialogLoader.source = "../dialogs/FlightRouteAddWPDialog.qml"
+            dialogLoader.source = "dialogs/FlightRouteAddWPDialog.qml"
             dialogLoader.active = true
         }
     }

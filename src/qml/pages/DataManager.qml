@@ -18,10 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Layouts
 
 import enroute 1.0
 import "../dialogs"
@@ -188,7 +188,10 @@ Page {
     header: ToolBar {
 
         Material.foreground: "white"
-        height: 60
+        height: 60 + view.topScreenMargin
+        leftPadding: view.leftScreenMargin
+        rightPadding: view.rightScreenMargin
+        topPadding: view.topScreenMargin
 
         ToolButton {
             id: backButton
@@ -275,6 +278,8 @@ Page {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
+        leftPadding: view.leftScreenMargin
+        rightPadding: view.rightScreenMargin
 
         currentIndex: sv.currentIndex
         TabButton {
@@ -286,20 +291,21 @@ Page {
         Material.elevation: 3
     }
 
-    ColumnLayout {
-        anchors.top: bar.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
 
-        anchors.topMargin: view.font.pixelSize*0.2
-
-        SwipeView{
+    SwipeView{
             id: sv
 
             currentIndex: bar.currentIndex
-            Layout.fillWidth: true
-            Layout.fillHeight: true
+            anchors.top: bar.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+
+            anchors.bottomMargin: footer.visible ? 0 : view.bottomScreenMargin
+            anchors.leftMargin: view.leftScreenMargin
+            anchors.rightMargin: view.rightScreenMargin
+
+            clip: true
 
             ListView {
                 Layout.fillHeight: true
@@ -350,7 +356,6 @@ Page {
             }
         }
 
-    }
 
     Label {
         id: appUpdateRequiredWarning
@@ -391,7 +396,6 @@ Page {
 
         text: qsTr("<h3>Sorry!</h3><p>The list of available maps has not yet been downloaded from the server. You can restart the download manually using button below.</p>")
     }
-
 
     Rectangle {
         id: downloadIndicator
@@ -462,6 +466,7 @@ Page {
         Material.elevation: 3
         visible: (!global.dataManager().mapList.downloading && !global.dataManager().mapList.hasFile) || ((!global.dataManager().items.downloading) && (global.dataManager().mapsAndData.updateSize > 0))
         contentHeight: Math.max(downloadMapListActionButton.height, downloadUpdatesActionButton.height)
+        bottomPadding: view.bottomScreenMargin
 
         ToolButton {
             id: downloadMapListActionButton

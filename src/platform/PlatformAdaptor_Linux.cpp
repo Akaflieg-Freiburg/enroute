@@ -26,8 +26,17 @@ Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
     : PlatformAdaptor_Abstract(parent)
 {
 #warning Want reaction to connectivitiy changes
+    connect(&networkManagerInterface, SIGNAL(StateChanged(uint)), this, SLOT(onStateChanged(uint)));
+
 }
 
+#include <QDebug>
+
+void Platform::PlatformAdaptor::onStateChanged(uint x)
+{
+#warning need to implement
+    qWarning() << "StateChanged" << x;
+}
 
 
 //

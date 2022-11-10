@@ -38,52 +38,16 @@ Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
     }
 
     // get all devices
-    qWarning() << "GetDevices reply: " << nm.call("PrimaryConnection") << Qt::endl;
-
-    QDBusMessage msg = nm.call("GetDevices");
-    qWarning() << "GetDevices reply: " << msg << Qt::endl;
-    QDBusArgument arg = msg.arguments().at(0).value<QDBusArgument>();
-
-    if(arg.currentType() != QDBusArgument::ArrayType)
+    auto primaryConnection = nm.property("PrimaryConnection").value<QDBusObjectPath>();
+    qWarning() << "Primary Connection" << primaryConnection.path();
+    QDBusInterface nm1("org.freedesktop.NetworkManager", primaryConnection.path(),
+            "org.freedesktop.NetworkManager.Connection.Active", QDBusConnection::systemBus());
+    if(!nm1.isValid())
     {
-        qFatal("Something went wrong with getting the device list");
+        qFatal("Failed to connect to the system bus");
     }
-    QList<QDBusObjectPath> pathsLst = qdbus_cast<QList<QDBusObjectPath> >(arg);
-    foreach(QDBusObjectPath p, pathsLst)
-    {
-        qWarning() << "DEV PATH: " << p.path();
-        // creating an interface used to gather this devices properties
-        QDBusInterface device("org.freedesktop.NetworkManager", p.path(),
-        "org.freedesktop.NetworkManager.Device", QDBusConnection::systemBus());
-        // 2 is WiFi dev, see https://people.freedesktop.org/~lkundrak/nm-docs/nm-dbus-types.html#NMDeviceType
-        if (device.property("DeviceType").toInt() != 2)
-        {
-            continue;
-        }
-        // we got a wifi device, let's get an according dbus interface
-        QDBusInterface wifi_device("org.freedesktop.NetworkManager", p.path(),
-        "org.freedesktop.NetworkManager.Device.Wireless", QDBusConnection::systemBus());
-        // we need to call scan on the inteface prior to request the list of interfaces
-        QMap<QString, QVariant> argList;
-        QDBusMessage msg = wifi_device.call("RequestScan", argList);
-        QThread::sleep(2); // not the best solution, but here we just wait for the scan
+    qWarning() << "ID" << nm1.property("Id").value<QString>();
 
-        // doing the actual call
-        msg = wifi_device.call("GetAllAccessPoints");
-        qWarning()<< "Answer for GetAllAccessPoints:  " << msg << Qt::endl << Qt::endl;
-        // dig out the paths of the Access Point objects:
-        QDBusArgument ap_list_arg = msg.arguments().at(0).value<QDBusArgument>();
-        QList<QDBusObjectPath> ap_path_list = qdbus_cast<QList<QDBusObjectPath> >(ap_list_arg);
-        // and iterate through the list
-        foreach(QDBusObjectPath p ,ap_path_list)
-        {
-            // for each Access Point we create an interface
-            QDBusInterface ap_interface("org.freedesktop.NetworkManager", p.path(),
-            "org.freedesktop.NetworkManager.AccessPoint", QDBusConnection::systemBus());
-            // and getting the name of the SSID
-            qWarning() << "SSID: " << ap_interface.property("Ssid").toString();
-        }
-    }
 
 }
 

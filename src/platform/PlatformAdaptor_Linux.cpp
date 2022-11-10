@@ -20,35 +20,11 @@
 
 #include "platform/PlatformAdaptor_Linux.h"
 
-#include <QDBusArgument>
-#include <QDebug>
-#include <QThread>
 
 Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
     : PlatformAdaptor_Abstract(parent)
 {
     connect(&networkManagerInterface, SIGNAL(StateChanged(uint)), this, SLOT(onNetworkStateChanged(uint)));
-
-    // get the interface to nm
-    QDBusInterface nm("org.freedesktop.NetworkManager", "/org/freedesktop/NetworkManager",
-            "org.freedesktop.NetworkManager", QDBusConnection::systemBus());
-    if(!nm.isValid())
-    {
-        qFatal("Failed to connect to the system bus");
-    }
-
-    // get all devices
-    auto primaryConnection = nm.property("PrimaryConnection").value<QDBusObjectPath>();
-    qWarning() << "Primary Connection" << primaryConnection.path();
-    QDBusInterface nm1("org.freedesktop.NetworkManager", primaryConnection.path(),
-            "org.freedesktop.NetworkManager.Connection.Active", QDBusConnection::systemBus());
-    if(!nm1.isValid())
-    {
-        qFatal("Failed to connect to the system bus");
-    }
-    qWarning() << "ID" << nm1.property("Id").value<QString>();
-
-
 }
 
 
@@ -58,8 +34,15 @@ Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
 
 auto Platform::PlatformAdaptor::currentSSID() -> QString
 {
-#warning Want to implement
-    return QStringLiteral("<unknown ssid>");
+    // get primary connection devices
+    auto primaryConnection = networkManagerInterface.property("PrimaryConnection").value<QDBusObjectPath>();
+    QDBusInterface primaryConnectionInterface(QStringLiteral("org.freedesktop.NetworkManager"), primaryConnection.path(),
+            QStringLiteral("org.freedesktop.NetworkManager.Connection.Active"), QDBusConnection::systemBus());
+    if(primaryConnectionInterface.isValid())
+    {
+        return primaryConnectionInterface.property("Id").toString();
+    }
+    return tr("unknown network name");
 }
 
 
@@ -100,6 +83,7 @@ void Platform::PlatformAdaptor::vibrateBrief()
 
 void Platform::PlatformAdaptor::onNetworkStateChanged(uint x)
 {
+    // x >= 50 means that a new connection has come up.
     if (x >= 50)
     {
         emit wifiConnected();

@@ -13,6 +13,7 @@
         "--socket=fallback-x11",
         "--socket=wayland",
         "--system-talk-name=org.freedesktop.GeoClue2",
+        "--system-talk-name=org.freedesktop.NetworkManager",
         "--talk-name=org.freedesktop.Notifications"
     ],
     "modules": [

@@ -21,6 +21,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
+import Qt.labs.settings 1.1
 import QtQuick.Layouts 1.15
 
 import enroute 1.0
@@ -37,6 +38,13 @@ ApplicationWindow {
     title: "Enroute Flight Navigation"
     width: 800
     height: 800
+
+    Settings {
+        property alias x: view.x
+        property alias y: view.y
+        property alias width: view.width
+        property alias height: view.height
+    }
 
     Material.theme: global.settings().nightMode ? Material.Dark : Material.Light
     Material.primary: Material.theme === Material.Dark ? Qt.darker("teal") : "teal"

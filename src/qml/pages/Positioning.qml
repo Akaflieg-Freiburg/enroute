@@ -18,11 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQml 2.15
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Layouts 1.15
+import QtQml
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Layouts
 
 import enroute 1.0
 import "../dialogs"
@@ -35,13 +35,15 @@ Page {
     header: StandardHeader {}
 
     ScrollView {
-        id: view
+        id: sView
         clip: true
-        anchors.fill: parent
-        anchors.topMargin: view.font.pixelSize
-        anchors.bottomMargin: view.font.pixelSize
-        anchors.leftMargin: view.font.pixelSize
-        anchors.rightMargin: view.font.pixelSize
+
+        width: parent.width
+        height: parent.height
+        bottomPadding: view.font.pixelSize + view.bottomScreenMargin
+        leftPadding: view.font.pixelSize + view.leftScreenMargin
+        rightPadding: view.font.pixelSize + view.rightScreenMargin
+        topPadding: view.font.pixelSize
 
         // The visibility behavior of the vertical scroll bar is a little complex.
         // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
@@ -53,8 +55,7 @@ Page {
             columnSpacing: 30
             columns: 2
 
-            width: view.width
-            implicitWidth: view.width
+            width: sView.availableWidth
 
             Label {
                 Layout.columnSpan: 2

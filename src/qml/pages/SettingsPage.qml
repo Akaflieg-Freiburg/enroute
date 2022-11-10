@@ -18,10 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Layouts
 
 import "../dialogs"
 import "../items"
@@ -33,14 +33,18 @@ Page {
     header: StandardHeader {}
 
     ScrollView {
-        id: view
         anchors.fill: parent
         anchors.topMargin: view.font.pixelSize
+        anchors.bottomMargin: view.bottomScreenMargin
+        anchors.leftMargin: view.leftScreenMargin
+        anchors.rightMargin: view.rightScreenMargin
+
         contentWidth: availableWidth
 
+
+        clip: true
+
         ColumnLayout {
-            width: settingsPage.width
-            implicitWidth: settingsPage.width
 
             Label {
                 Layout.leftMargin: view.font.pixelSize

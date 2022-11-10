@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include <QDBusInterface>
+
 #include "PlatformAdaptor_Abstract.h"
 
 namespace Platform {
@@ -67,9 +69,21 @@ public slots:
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
     Q_INVOKABLE void onGUISetupCompleted() override;
 
+private slots:
+    // This slot is called when the networkManagerInterface signals that the
+    // network state has changed. It emits the signal wifiConnected as appropriate.
+    void onNetworkStateChanged(uint);
 
 private:
     Q_DISABLE_COPY_MOVE(PlatformAdaptor)
+
+    // QDBusInterface to org.freedesktop.Notifications
+    // This implementation of notifications uses the specification found here:
+    // https://people.freedesktop.org/~lkundrak/nm-docs/spec.html
+    //
+    // Help with DBus programming is found here:
+    // https://develop.kde.org/docs/d-bus/accessing_dbus_interfaces/
+    QDBusInterface networkManagerInterface {QStringLiteral("org.freedesktop.NetworkManager"), QStringLiteral("/org/freedesktop/NetworkManager"), QStringLiteral("org.freedesktop.NetworkManager"), QDBusConnection::systemBus()};
 };
 
 } // namespace Platform

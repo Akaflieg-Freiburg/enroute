@@ -21,13 +21,11 @@
 #include "platform/PlatformAdaptor_Linux.h"
 
 
-
 Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
     : PlatformAdaptor_Abstract(parent)
 {
-#warning Want reaction to connectivitiy changes
+    connect(&networkManagerInterface, SIGNAL(StateChanged(uint)), this, SLOT(onNetworkStateChanged(uint)));
 }
-
 
 
 //
@@ -36,8 +34,15 @@ Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
 
 auto Platform::PlatformAdaptor::currentSSID() -> QString
 {
-#warning Want to implement
-    return QStringLiteral("<unknown ssid>");
+    // get primary connection devices
+    auto primaryConnection = networkManagerInterface.property("PrimaryConnection").value<QDBusObjectPath>();
+    QDBusInterface primaryConnectionInterface(QStringLiteral("org.freedesktop.NetworkManager"), primaryConnection.path(),
+            QStringLiteral("org.freedesktop.NetworkManager.Connection.Active"), QDBusConnection::systemBus());
+    if(primaryConnectionInterface.isValid())
+    {
+        return primaryConnectionInterface.property("Id").toString();
+    }
+    return tr("unknown network name");
 }
 
 
@@ -69,4 +74,18 @@ void Platform::PlatformAdaptor::requestPermissionsSync()
 
 void Platform::PlatformAdaptor::vibrateBrief()
 {
+}
+
+
+//
+// Private slots
+//
+
+void Platform::PlatformAdaptor::onNetworkStateChanged(uint x)
+{
+    // x >= 50 means that a new connection has come up.
+    if (x >= 50)
+    {
+        emit wifiConnected();
+    }
 }

@@ -18,10 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Layouts
 
 import "../items"
 
@@ -36,6 +36,8 @@ Page {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
+        leftPadding: view.leftScreenMargin
+        rightPadding: view.rightScreenMargin
 
         currentIndex: sv.currentIndex
 
@@ -52,81 +54,67 @@ Page {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
+        anchors.bottomMargin: view.bottomScreenMargin
+        anchors.leftMargin: view.leftScreenMargin
+        anchors.rightMargin: view.rightScreenMargin
 
+        clip: true
         currentIndex: bar.currentIndex
         
         ScrollView {
             clip: true
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+            ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
 
-            // The label that we really want to show is wrapped into an Item. This allows
-            // to set implicitHeight, and thus compute the implicitHeight of the Dialog
-            // without binding loops
-            Item {
-                implicitHeight: lbl1.implicitHeight
-                width: pg.width
+            Label {
+                id: lbl1
+                text: "<style>a:link { color: " + Material.accent + "; }</style>"+global.librarian().getStringFromRessource(":text/info_enroute.html")
+                textFormat: Text.RichText
+                linkColor: Material.accent
+                width: sv.availableWidth
 
-                Label {
-                    id: lbl1
-                    text: "<style>a:link { color: " + Material.accent + "; }</style>"+global.librarian().getStringFromRessource(":text/info_enroute.html")
-                    textFormat: Text.RichText
-                    linkColor: Material.accent
-                    width: pg.width
-
-                    wrapMode: Text.Wrap
-                    topPadding: view.font.pixelSize*1
-                    leftPadding: view.font.pixelSize*0.5
-                    rightPadding: view.font.pixelSize*0.5
-                    onLinkActivated: Qt.openUrlExternally(link)
-                }
+                wrapMode: Text.Wrap
+                topPadding: view.font.pixelSize*1
+                leftPadding: view.font.pixelSize*0.5
+                rightPadding: view.font.pixelSize*0.5
+                onLinkActivated: Qt.openUrlExternally(link)
             }
         }
         
         ScrollView {
             clip: true
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+            ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
 
-            // The label that we really want to show is wrapped into an Item. This allows
-            // to set implicitHeight, and thus compute the implicitHeight of the Dialog
-            // without binding loops
-            Item {
-                implicitHeight: lbl2.implicitHeight
-                width: pg.width
-
-                Label {
-                    id: lbl2
-                    text: "<style>a:link { color: " + Material.accent + "; }</style>"+global.librarian().getStringFromRessource(":text/authors.html")
-                    textFormat: Text.RichText // Link OK
-                    width: pg.width
-                    wrapMode: Text.Wrap
-                    topPadding: view.font.pixelSize*1
-                    leftPadding: view.font.pixelSize*0.5
-                    rightPadding: view.font.pixelSize*0.5
-                    onLinkActivated: Qt.openUrlExternally(link)
-                }
+            Label {
+                id: lbl2
+                text: "<style>a:link { color: " + Material.accent + "; }</style>"+global.librarian().getStringFromRessource(":text/authors.html")
+                textFormat: Text.RichText // Link OK
+                width: sv.availableWidth
+                wrapMode: Text.Wrap
+                topPadding: view.font.pixelSize*1
+                leftPadding: view.font.pixelSize*0.5
+                rightPadding: view.font.pixelSize*0.5
+                onLinkActivated: Qt.openUrlExternally(link)
             }
         }
 
         ScrollView {
             clip: true
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+            ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
 
-            // The label that we really want to show is wrapped into an Item. This allows
-            // to set implicitHeight, and thus compute the implicitHeight of the Dialog
-            // without binding loops
-            Item {
-                implicitHeight: lbl3.implicitHeight
-                width: pg.width
-
-                Label {
-                    id: lbl3
-                    text: "<style>a:link { color: " + Material.accent + "; }</style>"+global.librarian().getStringFromRessource(":text/info_license.html")
-                    textFormat: Text.RichText
-                    linkColor: Material.accent
-                    width: pg.width
-                    wrapMode: Text.Wrap
-                    topPadding: view.font.pixelSize*1
-                    leftPadding: view.font.pixelSize*0.5
-                    rightPadding: view.font.pixelSize*0.5
-                    onLinkActivated: Qt.openUrlExternally(link)
-                }
+            Label {
+                id: lbl3
+                text: "<style>a:link { color: " + Material.accent + "; }</style>"+global.librarian().getStringFromRessource(":text/info_license.html")
+                textFormat: Text.RichText
+                linkColor: Material.accent
+                width: sv.availableWidth
+                wrapMode: Text.Wrap
+                topPadding: view.font.pixelSize*1
+                leftPadding: view.font.pixelSize*0.5
+                rightPadding: view.font.pixelSize*0.5
+                onLinkActivated: Qt.openUrlExternally(link)
             }
         }
 

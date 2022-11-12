@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,10 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Layouts
 
 import "../items"
 
@@ -32,9 +32,14 @@ Page {
     header: StandardHeader {}
 
     ScrollView {
+        id: sView
         clip: true
         anchors.fill: parent
-        
+
+        anchors.bottomMargin: view.bottomScreenMargin
+        anchors.leftMargin: view.leftScreenMargin
+        anchors.rightMargin: view.rightScreenMargin
+
         // The label that we really want to show is wrapped into an Item. This allows
         // to set implicitHeight, and thus compute the implicitHeight of the Dialog
         // without binding loops
@@ -77,7 +82,7 @@ like to port the app to iOS and if you have development
 experience with C++/Qt programming and with Apple systems,
 please get in touch with us by opening a GitHub issue.</p>
 ")
-                width: pg.width
+                width: sView.availableWidth
                 wrapMode: Text.Wrap
                 topPadding: view.font.pixelSize*1
                 leftPadding: view.font.pixelSize*0.5

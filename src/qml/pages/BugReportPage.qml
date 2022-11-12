@@ -18,10 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import QtQuick.Controls.Material 2.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import QtQuick.Controls.Material
 
 import "../items"
 
@@ -35,6 +35,10 @@ Page {
         id: stack
 
         anchors.fill: parent
+        anchors.bottomMargin: footer.visible ? 0 : view.bottomScreenMargin
+        anchors.leftMargin: view.leftScreenMargin
+        anchors.rightMargin: view.rightScreenMargin
+
         initialItem: mainPage
     }
 
@@ -44,6 +48,8 @@ Page {
         visible: stack.depth > 1
 
         ToolButton {
+            anchors.bottomMargin: view.bottomScreenMargin
+
             Material.foreground: Material.accent
 
             text: qsTr("Go back in bug report")
@@ -64,13 +70,6 @@ Page {
 
             clip: true
 
-            topPadding: view.font.pixelSize*1
-            leftPadding: view.font.pixelSize*0.5
-            rightPadding: view.font.pixelSize*0.5
-
-            contentHeight: cL.height
-            contentWidth: pg.width-leftPadding-rightPadding
-
             // The visibility behavior of the vertical scroll bar is a little complex.
             // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
@@ -78,9 +77,14 @@ Page {
             ScrollBar.vertical.interactive: false
 
             ColumnLayout {
-                id: cL
+                width: stack.availableWidth
 
-                width: pg.width-sv.leftPadding-sv.rightPadding
+                anchors.bottomMargin: view.font.pixelSize*1
+                anchors.topMargin: view.font.pixelSize*1
+                anchors.leftMargin: view.font.pixelSize*0.5
+                anchors.rightMargin: view.font.pixelSize*0.5
+
+                id: cL
 
                 Label {
                     Layout.fillWidth: true
@@ -97,7 +101,6 @@ your suggestions for improvement.</p>
                     linkColor: Material.accent
                     wrapMode: Text.Wrap
                 }
-
                 Label {
                     Layout.fillWidth: true
                     text: qsTr("
@@ -227,37 +230,31 @@ below.</p>
     Component {
         id: mainAppPage
 
-        ColumnLayout {
-            ScrollView {
-                id: sv
+        ScrollView {
+            id: sv
 
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+            clip: true
 
-                clip: true
+            // The visibility behavior of the vertical scroll bar is a little complex.
+            // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+            ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
+            ScrollBar.vertical.interactive: false
 
-                topPadding: view.font.pixelSize*1
-                leftPadding: view.font.pixelSize*0.5
-                rightPadding: view.font.pixelSize*0.5
+            ColumnLayout {
+                id: cL
 
-                contentHeight: cL.height
-                contentWidth: pg.width-leftPadding-rightPadding
+                width: stack.availableWidth
 
-                // The visibility behavior of the vertical scroll bar is a little complex.
-                // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
-                ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-                ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
-                ScrollBar.vertical.interactive: false
+                anchors.bottomMargin: view.font.pixelSize*1
+                anchors.topMargin: view.font.pixelSize*1
+                anchors.leftMargin: view.font.pixelSize*0.5
+                anchors.rightMargin: view.font.pixelSize*0.5
 
-                ColumnLayout {
-                    id: cL
+                Label {
+                    Layout.fillWidth: true
 
-                    width: pg.width-sv.leftPadding-sv.rightPadding
-
-                    Label {
-                        Layout.fillWidth: true
-
-                        text: qsTr("
+                    text: qsTr("
 <h3>Report a bug or make a suggestion for improvement</h3>
 
 <h4>Issue in the main application</h4>
@@ -277,32 +274,32 @@ not, please open a new issue. If you prefer to work on
 your desktop computer, you can also send yourself a link to
 GitHub by e-mail.</p>
 ")
-                        textFormat: Text.StyledText
-                        linkColor: Material.accent
-                        wrapMode: Text.Wrap
-                        onLinkActivated: Qt.openUrlExternally(link)
+                    textFormat: Text.StyledText
+                    linkColor: Material.accent
+                    wrapMode: Text.Wrap
+                    onLinkActivated: Qt.openUrlExternally(link)
+                }
+                Button {
+                    Layout.fillWidth: true
+                    text: qsTr("Open GitHub Issue Page")
+                    icon.source: "/icons/material/ic_bug_report.svg"
+                    onClicked: {
+                        global.platformAdaptor().vibrateBrief()
+                        Qt.openUrlExternally("https://github.com/Akaflieg-Freiburg/enroute/issues")
                     }
-                    Button {
-                        Layout.fillWidth: true
-                        text: qsTr("Open GitHub Issue Page")
-                        icon.source: "/icons/material/ic_bug_report.svg"
-                        onClicked: {
-                            global.platformAdaptor().vibrateBrief()
-                            Qt.openUrlExternally("https://github.com/Akaflieg-Freiburg/enroute/issues")
-                        }
+                }
+                Button {
+                    Layout.fillWidth: true
+                    text: qsTr("Send link by e-mail")
+                    icon.source: "/icons/material/ic_bug_report.svg"
+                    onClicked: {
+                        global.platformAdaptor().vibrateBrief()
+                        Qt.openUrlExternally(qsTr("mailto:?subject=Enroute Flight Navigation, Issue Report &body=Link to GitHub: https://github.com/Akaflieg-Freiburg/enroute/issues"))
                     }
-                    Button {
-                        Layout.fillWidth: true
-                        text: qsTr("Send link by e-mail")
-                        icon.source: "/icons/material/ic_bug_report.svg"
-                        onClicked: {
-                            global.platformAdaptor().vibrateBrief()
-                            Qt.openUrlExternally(qsTr("mailto:?subject=Enroute Flight Navigation, Issue Report &body=Link to GitHub: https://github.com/Akaflieg-Freiburg/enroute/issues"))
-                        }
-                    }
-                    Label {
-                        Layout.fillWidth: true
-                        text: qsTr("
+                }
+                Label {
+                    Layout.fillWidth: true
+                    text: qsTr("
 <p>If you have difficulties with GitHub, you can contact
 <a href='mailto:ms@squawk-vfr.de?subject=Enroute Flight
 Navigation, Issue Report'>Markus Sachs</a> by e-mail.
@@ -319,14 +316,12 @@ comes first!</p>
 
 <h3>Thank you for your help!</h3>
 ")
-                        textFormat: Text.StyledText
-                        linkColor: Material.accent
-                        wrapMode: Text.Wrap
-                        onLinkActivated: Qt.openUrlExternally(link)
-                    }
+                    textFormat: Text.StyledText
+                    linkColor: Material.accent
+                    wrapMode: Text.Wrap
+                    onLinkActivated: Qt.openUrlExternally(link)
                 }
-
-            } // ScrollView
+            }
 
         }
 
@@ -335,21 +330,10 @@ comes first!</p>
     Component {
         id: openAIPNNonAirspace
 
-        ColumnLayout {
             ScrollView {
                 id: sv
 
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-
                 clip: true
-
-                topPadding: view.font.pixelSize*1
-                leftPadding: view.font.pixelSize*0.5
-                rightPadding: view.font.pixelSize*0.5
-
-                contentHeight: cL.height
-                contentWidth: pg.width-leftPadding-rightPadding
 
                 // The visibility behavior of the vertical scroll bar is a little complex.
                 // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
@@ -360,7 +344,12 @@ comes first!</p>
                 ColumnLayout {
                     id: cL
 
-                    width: pg.width-sv.leftPadding-sv.rightPadding
+                    width: stack.availableWidth
+
+                    anchors.bottomMargin: view.font.pixelSize*1
+                    anchors.topMargin: view.font.pixelSize*1
+                    anchors.leftMargin: view.font.pixelSize*0.5
+                    anchors.rightMargin: view.font.pixelSize*0.5
 
                     Label {
                         Layout.fillWidth: true
@@ -424,30 +413,17 @@ time. Peter speaks English and German.</p>
                     }
                 }
 
-            } // ScrollView
-
-        }
+            }
 
     }
 
     Component {
         id: openAIPAirspace
 
-        ColumnLayout {
             ScrollView {
                 id: sv
 
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-
                 clip: true
-
-                topPadding: view.font.pixelSize*1
-                leftPadding: view.font.pixelSize*0.5
-                rightPadding: view.font.pixelSize*0.5
-
-                contentHeight: cL.height
-                contentWidth: pg.width-leftPadding-rightPadding
 
                 // The visibility behavior of the vertical scroll bar is a little complex.
                 // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
@@ -458,7 +434,12 @@ time. Peter speaks English and German.</p>
                 ColumnLayout {
                     id: cL
 
-                    width: pg.width-sv.leftPadding-sv.rightPadding
+                    width: stack.availableWidth
+
+                    anchors.bottomMargin: view.font.pixelSize*1
+                    anchors.topMargin: view.font.pixelSize*1
+                    anchors.leftMargin: view.font.pixelSize*0.5
+                    anchors.rightMargin: view.font.pixelSize*0.5
 
                     Label {
                         Layout.fillWidth: true
@@ -494,28 +475,15 @@ discuss your issue in the forum there.</p>
 
             } // ScrollView
 
-        }
-
     }
 
     Component {
         id: checkIfOFMcountry
 
-        ColumnLayout {
             ScrollView {
                 id: sv
 
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-
                 clip: true
-
-                topPadding: view.font.pixelSize*1
-                leftPadding: view.font.pixelSize*0.5
-                rightPadding: view.font.pixelSize*0.5
-
-                contentHeight: cL.height
-                contentWidth: pg.width-leftPadding-rightPadding
 
                 // The visibility behavior of the vertical scroll bar is a little complex.
                 // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
@@ -526,7 +494,12 @@ discuss your issue in the forum there.</p>
                 ColumnLayout {
                     id: cL
 
-                    width: pg.width-sv.leftPadding-sv.rightPadding
+                    width: stack.availableWidth
+
+                    anchors.bottomMargin: view.font.pixelSize*1
+                    anchors.topMargin: view.font.pixelSize*1
+                    anchors.leftMargin: view.font.pixelSize*0.5
+                    anchors.rightMargin: view.font.pixelSize*0.5
 
                     Label {
                         Layout.fillWidth: true
@@ -593,30 +566,17 @@ following countries?</p>
                         wrapMode: Text.Wrap
                     }
                 }
-            } // ScrollView
-
-        }
+            }
 
     }
 
     Component {
         id: ofm
 
-        ColumnLayout {
             ScrollView {
                 id: sv
 
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-
                 clip: true
-
-                topPadding: view.font.pixelSize*1
-                leftPadding: view.font.pixelSize*0.5
-                rightPadding: view.font.pixelSize*0.5
-
-                contentHeight: cL.height
-                contentWidth: pg.width-leftPadding-rightPadding
 
                 // The visibility behavior of the vertical scroll bar is a little complex.
                 // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
@@ -627,7 +587,12 @@ following countries?</p>
                 ColumnLayout {
                     id: cL
 
-                    width: pg.width-sv.leftPadding-sv.rightPadding
+                    width: stack.availableWidth
+
+                    anchors.bottomMargin: view.font.pixelSize*1
+                    anchors.topMargin: view.font.pixelSize*1
+                    anchors.leftMargin: view.font.pixelSize*0.5
+                    anchors.rightMargin: view.font.pixelSize*0.5
 
                     Label {
                         Layout.fillWidth: true
@@ -680,30 +645,17 @@ computer, you can also send yourself a link by e-mail.</p>
 
                 }
 
-            } // ScrollView
-
-        }
+            }
 
     }
 
     Component {
         id: nixofm
 
-        ColumnLayout {
             ScrollView {
                 id: sv
 
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-
                 clip: true
-
-                topPadding: view.font.pixelSize*1
-                leftPadding: view.font.pixelSize*0.5
-                rightPadding: view.font.pixelSize*0.5
-
-                contentHeight: cL.height
-                contentWidth: pg.width-leftPadding-rightPadding
 
                 // The visibility behavior of the vertical scroll bar is a little complex.
                 // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
@@ -714,7 +666,12 @@ computer, you can also send yourself a link by e-mail.</p>
                 ColumnLayout {
                     id: cL
 
-                    width: pg.width-sv.leftPadding-sv.rightPadding
+                    width: stack.availableWidth
+
+                    anchors.bottomMargin: view.font.pixelSize*1
+                    anchors.topMargin: view.font.pixelSize*1
+                    anchors.leftMargin: view.font.pixelSize*0.5
+                    anchors.rightMargin: view.font.pixelSize*0.5
 
                     Label {
                         Layout.fillWidth: true
@@ -738,9 +695,7 @@ no better news.</p>
                         wrapMode: Text.Wrap
                     }
 
-                } // ScrollView
-
-            }
+                }
         }
     }
 

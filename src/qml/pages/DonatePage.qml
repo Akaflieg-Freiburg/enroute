@@ -18,10 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Layouts
 
 import "../items"
 
@@ -40,6 +40,11 @@ Page {
         topPadding: view.font.pixelSize
         leftPadding: view.font.pixelSize
         rightPadding: view.font.pixelSize
+
+        anchors.bottomMargin: view.bottomScreenMargin
+        anchors.leftMargin: view.leftScreenMargin
+        anchors.rightMargin: view.rightScreenMargin
+
 
         // The visibility behavior of the vertical scroll bar is a little complex.
         // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.

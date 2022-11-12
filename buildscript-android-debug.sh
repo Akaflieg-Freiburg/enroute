@@ -35,27 +35,19 @@ set -e
 # Clean up
 #
 
-rm -rf build6-android-debug
-mkdir -p build6-android-debug
-cd build6-android-debug
+rm -rf build-android-debug
+mkdir -p build-android-debug
+cd build-android-debug
 
 #
 # Configure
 #
 
-cmake .. \
+# ~/Software/buildsystems/Qt/6.4.0/android_armv7/bin/qt-cmake .. -GNinja
+$Qt6_DIR_ANDROID\_armv7/bin/qt-cmake .. \
       -G Ninja\
       -DCMAKE_BUILD_TYPE:STRING=Debug \
-      -DCMAKE_PREFIX_PATH:STRING=$Qt6_DIR_ANDROID\_x86 \
       -DOPENSSL_ROOT_DIR:PATH=$OPENSSL_ROOT_DIR \
-      -DANDROID_NATIVE_API_LEVEL:STRING=23 \
-      -DANDROID_NDK:PATH=$ANDROID_NDK_ROOT \
-      -DCMAKE_TOOLCHAIN_FILE:PATH=$ANDROID_NDK_ROOT/build/cmake/android.toolchain.cmake \
-      -DANDROID_ABI:STRING=x86 \
-      -DANDROID_STL:STRING=c++_shared \
-      -DCMAKE_FIND_ROOT_PATH:PATH=$Qt6_DIR_ANDROID\_x86 \
-      -DQT_HOST_PATH:PATH=$Qt6_DIR_LINUX \
-      -DANDROID_SDK_ROOT:PATH=$ANDROID_SDK_ROOT
 
 
 # This is bizarrely necessary, or else 'android_deployment_settings.json'

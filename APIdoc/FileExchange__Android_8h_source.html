@@ -90,43 +90,43 @@ $(function() {
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1FileExchange.html#a089992bad16319b80a6fe0c703d6a2a1">importContent</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    Q_INVOKABLE QString <a class="code" href="classPlatform_1_1FileExchange.html#a49a4be50c83268120c82226ee673e5a1">shareContent</a>(<span class="keyword">const</span> QByteArray&amp; content, <span class="keyword">const</span> QString&amp; mimeType, <span class="keyword">const</span> QString&amp; fileNameTemplate) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    Q_INVOKABLE QString <a class="code" href="classPlatform_1_1FileExchange.html#a5aeee15bb5f5a532090a4c05492be8d6">viewContent</a>(<span class="keyword">const</span> QByteArray&amp; content, <span class="keyword">const</span> QString&amp; mimeType, <span class="keyword">const</span> QString&amp; fileNameTemplate) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">public</span> slots:</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1FileExchange.html#afefafcaf15555bdc3a449d00a939accd">processFileOpenRequest</a>(<span class="keyword">const</span> QString&amp; path) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    Q_INVOKABLE QString <a class="code" href="classPlatform_1_1FileExchange.html#a49a4be50c83268120c82226ee673e5a1">shareContent</a>(<span class="keyword">const</span> QByteArray&amp; content, <span class="keyword">const</span> QString&amp; mimeType, <span class="keyword">const</span> QString&amp; fileNameTemplate) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1FileExchange.html#a83d1fff8813619e716d518cc42956d9a">deferredInitialization</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classPlatform_1_1FileExchange.html#a97263069c5f3ee0ebd4bf802cb368414">FileExchange</a>)</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="comment">// Helper function. Saves content to a file in a directory from where</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="comment">// sharing to other android apps is possible</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keyword">auto</span> contentToTempFile(<span class="keyword">const</span> QByteArray&amp; content, <span class="keyword">const</span> QString&amp; fileNameTemplate) -&gt; QString;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    Q_INVOKABLE QString <a class="code" href="classPlatform_1_1FileExchange.html#a5aeee15bb5f5a532090a4c05492be8d6">viewContent</a>(<span class="keyword">const</span> QByteArray&amp; content, <span class="keyword">const</span> QString&amp; mimeType, <span class="keyword">const</span> QString&amp; fileNameTemplate) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="comment">// Name of a subdirectory within the AppDataLocation for sending and</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="comment">// receiving files.</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    QString fileExchangeDirectoryName;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="comment">// @returns True if an app could be started, false if no app was found</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">bool</span> outgoingIntent(<span class="keyword">const</span> QString&amp; methodName, <span class="keyword">const</span> QString&amp; filePath, <span class="keyword">const</span> QString&amp; mimeType);</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordtype">bool</span> receiveOpenFileRequestsStarted {<span class="keyword">false</span>};</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    QString pendingReceiveOpenFileRequest {};</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;};</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="keyword">public</span> slots:</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1FileExchange.html#afefafcaf15555bdc3a449d00a939accd">processFileOpenRequest</a>(<span class="keyword">const</span> QString&amp; path) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1FileExchange.html#a83d1fff8813619e716d518cc42956d9a">deferredInitialization</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;} <span class="comment">// namespace Platform</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classPlatform_1_1FileExchange.html#a97263069c5f3ee0ebd4bf802cb368414">FileExchange</a>)</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="comment">// Helper function. Saves content to a file in a directory from where</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="comment">// sharing to other android apps is possible</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keyword">auto</span> contentToTempFile(<span class="keyword">const</span> QByteArray&amp; content, <span class="keyword">const</span> QString&amp; fileNameTemplate) -&gt; QString;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="comment">// Name of a subdirectory within the AppDataLocation for sending and</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="comment">// receiving files.</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    QString fileExchangeDirectoryName;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="comment">// @returns True if an app could be started, false if no app was found</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">bool</span> outgoingIntent(<span class="keyword">const</span> QString&amp; methodName, <span class="keyword">const</span> QString&amp; filePath, <span class="keyword">const</span> QString&amp; mimeType);</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keywordtype">bool</span> receiveOpenFileRequestsStarted {<span class="keyword">false</span>};</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    QString pendingReceiveOpenFileRequest {};</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;};</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;} <span class="comment">// namespace Platform</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclassPlatform_1_1FileExchange_html_a5aeee15bb5f5a532090a4c05492be8d6"><div class="ttname"><a href="classPlatform_1_1FileExchange.html#a5aeee15bb5f5a532090a4c05492be8d6">Platform::FileExchange::viewContent</a></div><div class="ttdeci">Q_INVOKABLE QString viewContent(const QByteArray &amp;content, const QString &amp;mimeType, const QString &amp;fileNameTemplate) override</div><div class="ttdoc">Implements pure virtual method from FileExchange_Abstract.</div></div>
 <div class="ttc" id="aclassPlatform_1_1FileExchange_html_afefafcaf15555bdc3a449d00a939accd"><div class="ttname"><a href="classPlatform_1_1FileExchange.html#afefafcaf15555bdc3a449d00a939accd">Platform::FileExchange::processFileOpenRequest</a></div><div class="ttdeci">void processFileOpenRequest(const QString &amp;path) override</div><div class="ttdoc">Implements pure virtual method from FileExchange_Abstract.</div></div>
 <div class="ttc" id="aclassPlatform_1_1FileExchange_html_a83d1fff8813619e716d518cc42956d9a"><div class="ttname"><a href="classPlatform_1_1FileExchange.html#a83d1fff8813619e716d518cc42956d9a">Platform::FileExchange::deferredInitialization</a></div><div class="ttdeci">void deferredInitialization() override</div><div class="ttdoc">Implements virtual method from FileExchange_Abstract.</div></div>
-<div class="ttc" id="aclassPlatform_1_1FileExchange__Abstract_html"><div class="ttname"><a href="classPlatform_1_1FileExchange__Abstract.html">Platform::FileExchange_Abstract</a></div><div class="ttdoc">Interface to platform-specific file exchange functionality.</div><div class="ttdef"><b>Definition:</b> <a href="FileExchange__Abstract_8h_source.html#l00057">FileExchange_Abstract.h:57</a></div></div>
+<div class="ttc" id="aclassPlatform_1_1FileExchange__Abstract_html"><div class="ttname"><a href="classPlatform_1_1FileExchange__Abstract.html">Platform::FileExchange_Abstract</a></div><div class="ttdoc">Interface to platform-specific file exchange functionality.</div><div class="ttdef"><b>Definition:</b> <a href="FileExchange__Abstract_8h_source.html#l00056">FileExchange_Abstract.h:56</a></div></div>
 <div class="ttc" id="aclassPlatform_1_1FileExchange_html_a97263069c5f3ee0ebd4bf802cb368414"><div class="ttname"><a href="classPlatform_1_1FileExchange.html#a97263069c5f3ee0ebd4bf802cb368414">Platform::FileExchange::FileExchange</a></div><div class="ttdeci">FileExchange(QObject *parent=nullptr)</div><div class="ttdoc">Standard constructor.</div></div>
 <div class="ttc" id="aclassPlatform_1_1FileExchange_html_a49a4be50c83268120c82226ee673e5a1"><div class="ttname"><a href="classPlatform_1_1FileExchange.html#a49a4be50c83268120c82226ee673e5a1">Platform::FileExchange::shareContent</a></div><div class="ttdeci">Q_INVOKABLE QString shareContent(const QByteArray &amp;content, const QString &amp;mimeType, const QString &amp;fileNameTemplate) override</div><div class="ttdoc">Implements pure virtual method from FileExchange_Abstract.</div></div>
 <div class="ttc" id="aclassPlatform_1_1FileExchange_html_a089992bad16319b80a6fe0c703d6a2a1"><div class="ttname"><a href="classPlatform_1_1FileExchange.html#a089992bad16319b80a6fe0c703d6a2a1">Platform::FileExchange::importContent</a></div><div class="ttdeci">Q_INVOKABLE void importContent() override</div><div class="ttdoc">Implements pure virtual method from FileExchange_Abstract.</div></div>

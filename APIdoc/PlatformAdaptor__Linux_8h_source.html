@@ -90,40 +90,40 @@ $(function() {
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="comment">// Methods</span></div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="comment">//</span></div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    Q_INVOKABLE QString <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a7ead29f0e028faddb7603f2136c985d4">currentSSID</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1PlatformAdaptor.html#aa576dfcc599121d187d40999654a67a3">disableScreenSaver</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    Q_INVOKABLE QString <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a7ead29f0e028faddb7603f2136c985d4">currentSSID</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    Q_INVOKABLE <span class="keywordtype">bool</span> <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a858768853603609b58072bd7e0ca424d">hasRequiredPermissions</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1PlatformAdaptor.html#aa576dfcc599121d187d40999654a67a3">disableScreenSaver</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a82fb311ae84bff2477c0e57d4bfbf1ba">lockWifi</a>(<span class="keywordtype">bool</span> lock) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a60ff8e7d19d09f8821cc5e5b135c8b86">requestPermissionsSync</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    Q_INVOKABLE <span class="keywordtype">bool</span> <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a858768853603609b58072bd7e0ca424d">hasRequiredPermissions</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a6200b6c2868bfedcab5fbf9d97bde483">vibrateBrief</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keyword">public</span> slots:</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a0594d8a1751db54ebd6155715d179b74">onGUISetupCompleted</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keyword">private</span> slots:</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="comment">// This slot is called when the networkManagerInterface signals that the</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="comment">// network state has changed. It emits the signal wifiConnected as appropriate.</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordtype">void</span> onNetworkStateChanged(uint);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a82fb311ae84bff2477c0e57d4bfbf1ba">lockWifi</a>(<span class="keywordtype">bool</span> lock) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a60ff8e7d19d09f8821cc5e5b135c8b86">requestPermissionsSync</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a6200b6c2868bfedcab5fbf9d97bde483">vibrateBrief</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classPlatform_1_1PlatformAdaptor.html#a2e767fa1e4b2a4e9c2227f3639ff62c0">PlatformAdaptor</a>)</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="comment">// QDBusInterface to org.freedesktop.Notifications</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="comment">// This implementation of notifications uses the specification found here:</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="comment">// https://people.freedesktop.org/~lkundrak/nm-docs/spec.html</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="comment">// Help with DBus programming is found here:</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="comment">// https://develop.kde.org/docs/d-bus/accessing_dbus_interfaces/</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    QDBusInterface networkManagerInterface {QStringLiteral(<span class="stringliteral">&quot;org.freedesktop.NetworkManager&quot;</span>), QStringLiteral(<span class="stringliteral">&quot;/org/freedesktop/NetworkManager&quot;</span>), QStringLiteral(<span class="stringliteral">&quot;org.freedesktop.NetworkManager&quot;</span>), QDBusConnection::systemBus()};</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;};</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keyword">public</span> slots:</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a0594d8a1751db54ebd6155715d179b74">onGUISetupCompleted</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keyword">private</span> slots:</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="comment">// This slot is called when the networkManagerInterface signals that the</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="comment">// network state has changed. It emits the signal wifiConnected as appropriate.</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordtype">void</span> onNetworkStateChanged(uint);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classPlatform_1_1PlatformAdaptor.html#a2e767fa1e4b2a4e9c2227f3639ff62c0">PlatformAdaptor</a>)</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;} <span class="comment">// namespace Platform</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="comment">// QDBusInterface to org.freedesktop.Notifications</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="comment">// This implementation of notifications uses the specification found here:</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="comment">// https://people.freedesktop.org/~lkundrak/nm-docs/spec.html</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="comment">// Help with DBus programming is found here:</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="comment">// https://develop.kde.org/docs/d-bus/accessing_dbus_interfaces/</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    QDBusInterface networkManagerInterface {QStringLiteral(<span class="stringliteral">&quot;org.freedesktop.NetworkManager&quot;</span>), QStringLiteral(<span class="stringliteral">&quot;/org/freedesktop/NetworkManager&quot;</span>), QStringLiteral(<span class="stringliteral">&quot;org.freedesktop.NetworkManager&quot;</span>), QDBusConnection::systemBus()};</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;};</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;} <span class="comment">// namespace Platform</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclassPlatform_1_1PlatformAdaptor_html_a82fb311ae84bff2477c0e57d4bfbf1ba"><div class="ttname"><a href="classPlatform_1_1PlatformAdaptor.html#a82fb311ae84bff2477c0e57d4bfbf1ba">Platform::PlatformAdaptor::lockWifi</a></div><div class="ttdeci">Q_INVOKABLE void lockWifi(bool lock) override</div><div class="ttdoc">Implements pure virtual method from PlatformAdaptor_Abstract.</div></div>
 <div class="ttc" id="aclassPlatform_1_1PlatformAdaptor_html_a0594d8a1751db54ebd6155715d179b74"><div class="ttname"><a href="classPlatform_1_1PlatformAdaptor.html#a0594d8a1751db54ebd6155715d179b74">Platform::PlatformAdaptor::onGUISetupCompleted</a></div><div class="ttdeci">void onGUISetupCompleted() override</div><div class="ttdoc">Implements pure virtual method from PlatformAdaptor_Abstract.</div></div>

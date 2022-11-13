@@ -47,10 +47,28 @@ public:
     /*! \brief Implements pure virtual method from FileExchange_Abstract */
     Q_INVOKABLE void importContent() override;
 
-    /*! \brief Implements pure virtual method from FileExchange_Abstract */
+    /*! \brief Implements pure virtual method from FileExchange_Abstract
+     *
+     *  @param content see documentation for FileExchange_Abstract
+     *
+     *  @param mimeType see documentation for FileExchange_Abstract
+     *
+     *  @param fileNameTemplate see documentation for FileExchange_Abstract
+     *
+     *  @returns see documentation for FileExchange_Abstract
+     */
     Q_INVOKABLE QString shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) override;
 
-    /*! \brief Implements pure virtual method from FileExchange_Abstract */
+    /*! \brief Implements pure virtual method from FileExchange_Abstract
+     *
+     *  @param content see documentation for FileExchange_Abstract
+     *
+     *  @param mimeType see documentation for FileExchange_Abstract
+     *
+     *  @param fileNameTemplate see documentation for FileExchange_Abstract
+     *
+     *  @returns see documentation for FileExchange_Abstract
+     */
     Q_INVOKABLE QString viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) override;
 
 

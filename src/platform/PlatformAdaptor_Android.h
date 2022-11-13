@@ -39,7 +39,7 @@ public:
     /*! \brief Standard constructor
      *
      * @param parent Standard QObject parent pointer
-    */
+     */
     explicit PlatformAdaptor(QObject *parent = nullptr);
 
     ~PlatformAdaptor() override = default;
@@ -49,16 +49,25 @@ public:
     // Methods
     //
 
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
+    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract
+     *
+     *  @returns see PlatformAdaptor_Abstract
+     */
     Q_INVOKABLE QString currentSSID() override;
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
     void disableScreenSaver() override;
 
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
+    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract
+     *
+     *  @returns see PlatformAdaptor_Abstract
+     */
     Q_INVOKABLE bool hasRequiredPermissions() override;
 
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
+    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract
+     *
+     *  @param lock see PlatformAdaptor_Abstract
+     */
     Q_INVOKABLE void lockWifi(bool lock) override;
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */

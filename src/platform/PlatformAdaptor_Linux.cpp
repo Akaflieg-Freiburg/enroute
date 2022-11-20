@@ -59,6 +59,7 @@ auto Platform::PlatformAdaptor::hasRequiredPermissions() -> bool
 
 void Platform::PlatformAdaptor::lockWifi(bool lock)
 {
+    Q_UNUSED(lock)
 }
 
 

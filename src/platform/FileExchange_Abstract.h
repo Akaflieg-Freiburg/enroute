@@ -26,14 +26,13 @@ namespace Platform {
 
 /*! \brief Interface to platform-specific file exchange functionality
  *
- * This pure virtual class is an interface to file exchange functionality that need platform-specific code to operate. The files
- * FileExchange_XXX.(h|cpp) implement a child class FileExchange that
- * contains the actual implementation.
+ * This pure virtual class is an interface to file exchange functionality that
+ * need platform-specific code to operate. The files FileExchange_XXX.(h|cpp)
+ * implement a child class FileExchange that contains the actual implementation.
  *
- * If supported by the platform, child classes need to react to requests by
- * the platform to open a file (e.g. a GeoJSON file containing a flight
- * route). Once a request is received, the method processFileRequest() should
- * be called.
+ * If supported by the platform, child classes need to react to requests by the
+ * platform to open a file (e.g. a GeoJSON file containing a flight route). Once
+ * a request is received, the method processFileRequest() should be called.
  */
 
 class FileExchange_Abstract : public GlobalObject
@@ -126,7 +125,7 @@ public slots:
      *
      * Overloaded function for convenience
      *
-     * @param QByteArray containing an UTF8-Encoded strong
+     * @param path QByteArray containing an UTF8-Encoded strong
      */
     void processFileOpenRequest(const QByteArray& path);
 

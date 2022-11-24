@@ -61,6 +61,13 @@ Dialog {
     standardButtons: Dialog.Cancel|Dialog.Ok
     focus: true
 
+    onWaypointChanged: {
+        // This is necessary, because the initial binding "latInput.value: waypoint.coordinate.latitude"
+        // breaks as soon as the user edits the coordinates manually.
+        latInput.value = waypoint.coordinate.latitude
+        longInput.value = waypoint.coordinate.longitude
+    }
+
     GridLayout {
         width: waypointEditorDialog.availableWidth
         columns: 2

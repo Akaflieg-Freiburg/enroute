@@ -26,7 +26,7 @@
 #include "units/VolumeFlow.h"
 
 #include <QGeoCoordinate>
-
+#include <QQmlEngine>
 
 namespace Navigation {
 
@@ -34,6 +34,7 @@ namespace Navigation {
 
 class Aircraft {
     Q_GADGET
+    QML_VALUE_TYPE(aircraft)
 
 public:
     /*! \brief Units of measurement for volumes */
@@ -390,6 +391,13 @@ private:
 };
 
 } // namespace Navigation
+
+// elsewhere
+namespace ToBeExposedForeign {
+Q_NAMESPACE
+QML_FOREIGN_NAMESPACE(Navigation::Aircraft)
+QML_NAMED_ELEMENT(Aircraft)
+}
 
 // Declare meta types
 Q_DECLARE_METATYPE(Navigation::Aircraft)

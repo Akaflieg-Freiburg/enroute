@@ -296,9 +296,13 @@ if (NOT ANDROID)
     add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
 
     # Add executable and libraries
-    add_executable(${PROJECT_NAME} ${SOURCES})
+    qt_add_executable(${PROJECT_NAME} ${SOURCES})
     target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Concurrent Qt6::Core Qt6::Core5Compat Qt6::DBus Qt6::Positioning Qt6::Quick Qt6::Sql Qt6::Svg Qt6::Widgets kdsingleapplication qhttpengine sunset)
-    target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/3rdParty/sunset/src ${CMAKE_SOURCE_DIR}/3rdParty/GSL/include)
+    target_include_directories(${PROJECT_NAME} PUBLIC
+        ${CMAKE_SOURCE_DIR}/3rdParty/sunset/src
+        ${CMAKE_SOURCE_DIR}/3rdParty/GSL/include
+        navigation
+    )
     target_precompile_headers(${PROJECT_NAME} PRIVATE
         <QObject>
         <QPointer>
@@ -308,6 +312,12 @@ if (NOT ANDROID)
     install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
     install(DIRECTORY ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/docs/manual DESTINATION ${CMAKE_INSTALL_DOCDIR})
 endif()
+
+qt_add_qml_module(${PROJECT_NAME}
+  URI akaflieg_freiburg.enroute
+  VERSION 1.0
+)
+
 
 # Enforce C++17 and no extensions
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)

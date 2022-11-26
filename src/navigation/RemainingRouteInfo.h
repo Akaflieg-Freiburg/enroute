@@ -24,6 +24,8 @@
 #include "units/Distance.h"
 #include "units/Time.h"
 
+#include <QQmlEngine>
+
 
 namespace Navigation {
 
@@ -41,6 +43,7 @@ class Navigator;
 
 class RemainingRouteInfo {
     Q_GADGET
+    QML_VALUE_TYPE(remainingRouteInfo)
 
     /*! \brief Comparison */
     friend auto operator==(const Navigation::RemainingRouteInfo&, const Navigation::RemainingRouteInfo&) -> bool;
@@ -158,6 +161,14 @@ auto operator==(const Navigation::RemainingRouteInfo&, const Navigation::Remaini
 
 
 } // namespace Navigation
+
+// Make enums available in QML
+namespace RemainingRouteInfoQML
+{
+    Q_NAMESPACE
+    QML_FOREIGN_NAMESPACE(Navigation::RemainingRouteInfo)
+    QML_NAMED_ELEMENT(RemainingRouteInfo)
+}
 
 // Declare meta types
 Q_DECLARE_METATYPE(Navigation::RemainingRouteInfo)

@@ -297,16 +297,31 @@ if (NOT ANDROID)
 
     # Add executable and libraries
     qt_add_executable(${PROJECT_NAME} ${SOURCES})
-    target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Concurrent Qt6::Core Qt6::Core5Compat Qt6::DBus Qt6::Positioning Qt6::Quick Qt6::Sql Qt6::Svg Qt6::Widgets kdsingleapplication qhttpengine sunset)
-    target_include_directories(${PROJECT_NAME} PUBLIC
+    target_link_libraries(${PROJECT_NAME}
+        PRIVATE
+        Qt6::Concurrent
+        Qt6::Core
+        Qt6::Core5Compat
+        Qt6::DBus
+        Qt6::Positioning
+        Qt6::Quick
+        Qt6::Sql
+        Qt6::Svg
+        Qt6::Widgets
+        kdsingleapplication
+        qhttpengine
+        sunset)
+    target_include_directories(${PROJECT_NAME}
+        PUBLIC
         ${CMAKE_SOURCE_DIR}/3rdParty/sunset/src
         ${CMAKE_SOURCE_DIR}/3rdParty/GSL/include
         navigation
     )
-    target_precompile_headers(${PROJECT_NAME} PRIVATE
+    target_precompile_headers(${PROJECT_NAME}
+        PRIVATE
         <QObject>
         <QPointer>
-        )
+    )
 
     # Install
     install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
@@ -314,8 +329,8 @@ if (NOT ANDROID)
 endif()
 
 qt_add_qml_module(${PROJECT_NAME}
-  URI akaflieg_freiburg.enroute
-  VERSION 1.0
+    URI akaflieg_freiburg.enroute
+    VERSION 1.0
 )
 
 

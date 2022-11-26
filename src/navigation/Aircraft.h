@@ -392,8 +392,8 @@ private:
 
 } // namespace Navigation
 
-// elsewhere
-namespace ToBeExposedForeign {
+// Make enums available in QML
+namespace AircraftQML {
 Q_NAMESPACE
 QML_FOREIGN_NAMESPACE(Navigation::Aircraft)
 QML_NAMED_ELEMENT(Aircraft)

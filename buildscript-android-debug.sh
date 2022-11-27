@@ -48,13 +48,13 @@ export ANDROID_NDK_ROOT=$ANDROID_SDK_ROOT/ndk/23.1.7779620
 export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-17.0.5.0.8-1.fc37.x86_64
 
 # ~/Software/buildsystems/Qt/6.4.0/android_armv7/bin/qt-cmake .. -GNinja
-$Qt6_DIR_ANDROID\_armv7/bin/qt-cmake .. \
+$Qt6_DIR_ANDROID\_x86_64/bin/qt-cmake .. \
       -G Ninja\
       -DCMAKE_BUILD_TYPE:STRING=Debug \
       -DOPENSSL_ROOT_DIR:PATH=$OPENSSL_ROOT_DIR
 
 # Work around a bug in CMake Script…
-sed -i s/zipalign/31/ src/android-addhoursandminutes-deployment-settings.json
+#sed -i s/zipalign/31/ src/android-addhoursandminutes-deployment-settings.json
 
 
 #

@@ -34,6 +34,7 @@ ApplicationWindow {
     id: view
     objectName: "applicationWindow"
 
+    flags: ((Qt.platform.os === "ios") || (Qt.platform.os === "android")) ? Qt.MaximizeUsingFullscreenGeometryHint : 0
     visible: true
     title: "Enroute Flight Navigation"
     width: 800

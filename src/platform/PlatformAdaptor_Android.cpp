@@ -18,19 +18,97 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QGuiApplication>
 #include <QHash>
 #include <QJniEnvironment>
 #include <QJniObject>
+#include <QScreen>
 #include <QtCore/private/qandroidextras_p.h>
+#include <QTimer>
+#include <chrono>
 
 #include "platform/PlatformAdaptor_Android.h"
+
+using namespace std::chrono_literals;
 
 
 Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
     : Platform::PlatformAdaptor_Abstract(parent)
 {
+   // Update the properties safeInsets* 100ms after the screen orientation changes.
+    // Experience shows that the system calls on Android do not always
+    // reflect updates in the safeInsets* immediately.
+    auto* timer = new QTimer(this);
+    timer->setSingleShot(true);
+    timer->setInterval(100ms);
+    connect(timer, &QTimer::timeout, this, &PlatformAdaptor::updateSafeInsets);
+    connect(QGuiApplication::primaryScreen(), &QScreen::orientationChanged, timer, [timer]{ timer->start(); });
+
+    // Update the properties safeInsets* 100ms from now.
+    timer->start();
 }
 
+
+void Platform::PlatformAdaptor::updateSafeInsets()
+{
+    auto safeInsetBottom {_safeInsetBottom};
+    auto safeInsetLeft {_safeInsetLeft};
+    auto safeInsetRight {_safeInsetRight};
+    auto safeInsetTop {_safeInsetTop};
+
+    auto devicePixelRatio = QGuiApplication::primaryScreen()->devicePixelRatio();
+    if ( qIsFinite(devicePixelRatio) && (devicePixelRatio > 0.0))
+    {
+        double inset = 0.0;
+
+        inset = static_cast<double>(QJniObject::callStaticMethod<jdouble>("de/akaflieg_freiburg/enroute/MobileAdaptor", "safeInsetBottom"));
+        if ( qIsFinite(safeInsetBottom) && (safeInsetBottom >= 0.0) )
+        {
+            safeInsetBottom = inset/devicePixelRatio;
+        }
+
+
+        inset = static_cast<double>(QJniObject::callStaticMethod<jdouble>("de/akaflieg_freiburg/enroute/MobileAdaptor", "safeInsetLeft"));
+        if ( qIsFinite(safeInsetLeft) && (safeInsetLeft >= 0.0) )
+        {
+            safeInsetLeft = inset/devicePixelRatio;
+        }
+
+        inset = static_cast<double>(QJniObject::callStaticMethod<jdouble>("de/akaflieg_freiburg/enroute/MobileAdaptor", "safeInsetRight"));
+        if ( qIsFinite(safeInsetRight) && (safeInsetRight >= 0.0) )
+        {
+            safeInsetRight = inset/devicePixelRatio;
+        }
+
+        inset = static_cast<double>(QJniObject::callStaticMethod<jdouble>("de/akaflieg_freiburg/enroute/MobileAdaptor", "safeInsetTop"));
+        if ( qIsFinite(safeInsetTop) && (safeInsetTop >= 0.0) )
+        {
+            safeInsetTop = inset/devicePixelRatio;
+        }
+    }
+
+    // Update properties and emit notification signals
+    if (safeInsetBottom != _safeInsetBottom)
+    {
+        _safeInsetBottom = safeInsetBottom;
+        emit safeInsetBottomChanged();
+    }
+    if (safeInsetLeft != _safeInsetLeft)
+    {
+        _safeInsetLeft = safeInsetLeft;
+        emit safeInsetLeftChanged();
+    }
+    if (safeInsetRight != _safeInsetRight)
+    {
+        _safeInsetRight = safeInsetRight;
+        emit safeInsetRightChanged();
+    }
+    if (safeInsetTop != _safeInsetTop)
+    {
+        _safeInsetTop = safeInsetTop;
+        emit safeInsetTopChanged();
+    }
+}
 
 void Platform::PlatformAdaptor::deferredInitialization()
 {

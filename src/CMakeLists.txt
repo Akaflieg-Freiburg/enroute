@@ -209,13 +209,6 @@ set(SOURCES
     )
 
 #
-# Compile definitions
-#
-
-add_compile_definitions(QT_DISABLE_DEPRECATED_BEFORE=0x050F00)
-
-
-#
 # We use this macro here to avoid creating extremely large C++ files with binary content
 #
 
@@ -266,7 +259,12 @@ if( ANDROID )
 
     qt_add_executable(${PROJECT_NAME} MANUAL_FINALIZATION ${SOURCES} ${ANDROID_EXTRA_SOURCES})
     target_compile_definitions(${PROJECT_NAME} PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
-    target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/3rdParty/sunset/src ${CMAKE_SOURCE_DIR}/3rdParty/GSL/include)
+    target_include_directories(${PROJECT_NAME}
+      PUBLIC
+      ${CMAKE_SOURCE_DIR}/3rdParty/sunset/src
+      ${CMAKE_SOURCE_DIR}/3rdParty/GSL/include
+      navigation
+    )
     target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Concurrent Qt6::Core Qt::CorePrivate Qt6::Positioning Qt6::Quick Qt6::Sql Qt6::Svg Qt6::WebView qhttpengine sunset)
     set_target_properties(${PROJECT_NAME} PROPERTIES
         QT_ANDROID_EXTRA_LIBS "${ANDROID_EXTRA_LIBS}"

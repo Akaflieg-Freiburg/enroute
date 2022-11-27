@@ -86,6 +86,8 @@ protected:
     /*! \brief Implements virtual method from PlatformAdaptor_Abstract */
     void deferredInitialization() override;
 
+    /*! \brief Implements virtual method from PlatformAdaptor_Abstract */
+    void updateSafeInsets() override;
 
 private:
     Q_DISABLE_COPY_MOVE(PlatformAdaptor)

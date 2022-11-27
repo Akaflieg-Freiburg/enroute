@@ -25,8 +25,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Parcelable;
-import android.support.v4.app.ShareCompat;
-import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.content.ComponentName;
 import android.content.SharedPreferences;
@@ -157,12 +155,16 @@ public class IntentLauncher {
      */
     private static boolean sendOrViewFile(String filePath, String mimeType, String action) {
 
+	return false;
+
+	/*
         if (QtNative.activity() == null) {
             return false;
         }
 
         // Intent intent = new Intent();
         // using v4 support library create the Intent from ShareCompat
+	
         Intent intent = ShareCompat.IntentBuilder.from(QtNative.activity()).getIntent();
         intent.setAction(action);
 
@@ -186,6 +188,7 @@ public class IntentLauncher {
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
         return customStartActivity(intent);
+	*/
     }
 
     /**
@@ -201,6 +204,9 @@ public class IntentLauncher {
      */
     private static Uri fileToUri(String filePath) {
 
+	return null;
+
+	/*
         File fileToShare = new File(filePath);
 
         // Using FileProvider you must get the URI from FileProvider using your
@@ -213,6 +219,7 @@ public class IntentLauncher {
             Log.d(TAG, "error" + e.getMessage());
             return null;
         }
+	*/
     }
 
     /**
@@ -314,6 +321,9 @@ public class IntentLauncher {
      */
     private static boolean openOrSave(String fileName, String mimeType, String action, int requestCode) {
 
+	return false;
+
+	/*
         if (QtNative.activity() == null) {
             return false;
         }
@@ -340,5 +350,6 @@ public class IntentLauncher {
         }
 
         return false;
+	*/
     }
 }

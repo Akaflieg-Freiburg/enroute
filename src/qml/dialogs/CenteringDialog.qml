@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,36 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 
-import akaflieg_freiburg.enroute
+Dialog {
 
-CenteringDialog {
-    id: dialogMain
+    leftMargin: global.platformAdaptor().safeInsetLeft + Qt.application.font.pixelSize
+    rightMargin: global.platformAdaptor().safeInsetRight + Qt.application.font.pixelSize
+    topMargin: global.platformAdaptor().safeInsetTop + Qt.application.font.pixelSize
+    bottomMargin: global.platformAdaptor().safeInsetBottom + Qt.application.font.pixelSize
 
-    // This is the text to be shown
-    property var text: ({})
+    // We center the dialog manually, taking care of safe insets
+    x: global.platformAdaptor().safeInsetLeft + (Overlay.overlay.width-global.platformAdaptor().safeInsetLeft-global.platformAdaptor().safeInsetRight-width)/2.0
+    y: global.platformAdaptor().safeInsetTop + (Overlay.overlay.height-global.platformAdaptor().safeInsetTop-global.platformAdaptor().safeInsetBottom-height)/2.0
 
-    modal: true
+    implicitWidth: 40*Qt.application.font.pixelSize
+
+    parent: Overlay.overlay
     
-    ScrollView{
-        anchors.fill: parent
-        contentWidth: availableWidth // Disable horizontal scrolling
-
-        clip: true
-
-        Label {
-            id: lbl
-            text: "<style>a:link { color: " + Material.accent + "; }</style>"+dialogMain.text
-            width: dialogMain.availableWidth
-            textFormat: Text.RichText
-            linkColor: Material.accent
-            wrapMode: Text.Wrap
-            onLinkActivated: Qt.openUrlExternally(link)
-        } // Label
-
-    } // ScrollView
-
 } // Dialog

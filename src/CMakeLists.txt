@@ -257,8 +257,7 @@ if( ANDROID )
     add_compile_definitions(MANUAL_LOCATION="/android_asset/manual")
     list(APPEND SOURCES ${CMAKE_CURRENT_BINARY_DIR}/qml.qrc)
 
-    qt_add_executable(${PROJECT_NAME} MANUAL_FINALIZATION ${SOURCES} ${ANDROID_EXTRA_SOURCES})
-    target_compile_definitions(${PROJECT_NAME} PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
+    qt_add_executable(${PROJECT_NAME} ${SOURCES} ${ANDROID_EXTRA_SOURCES})
     target_include_directories(${PROJECT_NAME}
       PUBLIC
       ${CMAKE_SOURCE_DIR}/3rdParty/sunset/src
@@ -270,8 +269,6 @@ if( ANDROID )
         QT_ANDROID_EXTRA_LIBS "${ANDROID_EXTRA_LIBS}"
         QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android"
         )
-    qt_import_qml_plugins(${PROJECT_NAME})
-    qt_finalize_executable(${PROJECT_NAME})
 endif()
 
 
@@ -329,6 +326,8 @@ endif()
 qt_add_qml_module(${PROJECT_NAME}
     URI akaflieg_freiburg.enroute
     VERSION 1.0
+    QML_FILES
+    qml/dialogs/CenteringDialog.qml
 )
 
 

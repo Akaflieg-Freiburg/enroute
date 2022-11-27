@@ -3,6 +3,7 @@
     <qresource prefix="/qml">
         <file alias="main.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/main.qml</file>
         <file alias="dialogs/AircraftSaveDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/AircraftSaveDialog.qml</file>
+        <file alias="dialogs/CenteringDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/CenteringDialog.qml</file>
         <file alias="dialogs/ErrorDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/ErrorDialog.qml</file>	
         <file alias="dialogs/FirstRunDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/FirstRunDialog.qml</file>
         <file alias="dialogs/FlightRouteAddWPDialog.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/FlightRouteAddWPDialog.qml</file>

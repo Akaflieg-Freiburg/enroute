@@ -589,6 +589,7 @@ ApplicationWindow {
                 return
             }
 
+            whatsNewDialog.open()
             if ((global.settings().lastWhatsNewHash !== global.librarian().getStringHashFromRessource(":text/whatsnew.html")) && (global.navigator().flightStatus !== Navigator.Flight)) {
                 whatsNewDialog.open()
                 return

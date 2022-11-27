@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,46 +18,26 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Controls
 
 Dialog {
-    id: dlg
+    id: dialogMain
 
     // This is the text to be shown
     property var text: ({})
 
-    // Size is chosen so that the dialog does not cover the parent in full
-    width: Math.min(view.width-view.font.pixelSize, 40*view.font.pixelSize)
-    height: Math.min(view.height-view.font.pixelSize, implicitHeight)
-
-    // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-    // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-    parent: Overlay.overlay
-    x: (view.width-width)/2.0
-    y: (view.height-height)/2.0
-
     modal: true
     
     ScrollView{
-        id: sv
         anchors.fill: parent
-
-        contentHeight: lbl.height
-        contentWidth: dlg.availableWidth
-
-        // The visibility behavior of the vertical scroll bar is a little complex.
-        // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
-        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-        ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
-        ScrollBar.vertical.interactive: false
+        contentWidth: availableWidth // Disable horizontal scrolling
 
         clip: true
 
         Label {
-            id: lbl
-            text: dlg.text
-            width: dlg.availableWidth
+            text: dialogMain.text
+            width: dialogMain.availableWidth
             textFormat: Text.MarkdownText
             wrapMode: Text.Wrap
             onLinkActivated: Qt.openUrlExternally(link)

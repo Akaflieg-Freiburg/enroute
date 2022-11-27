@@ -21,15 +21,14 @@
 import QtQuick.Controls
 
 Dialog {
-
     leftMargin: global.platformAdaptor().safeInsetLeft + Qt.application.font.pixelSize
     rightMargin: global.platformAdaptor().safeInsetRight + Qt.application.font.pixelSize
     topMargin: global.platformAdaptor().safeInsetTop + Qt.application.font.pixelSize
     bottomMargin: global.platformAdaptor().safeInsetBottom + Qt.application.font.pixelSize
 
     // We center the dialog manually, taking care of safe insets
-    x: global.platformAdaptor().safeInsetLeft + (Overlay.overlay.width-global.platformAdaptor().safeInsetLeft-global.platformAdaptor().safeInsetRight-width)/2.0
-    y: global.platformAdaptor().safeInsetTop + (Overlay.overlay.height-global.platformAdaptor().safeInsetTop-global.platformAdaptor().safeInsetBottom-height)/2.0
+    x: global.platformAdaptor().safeInsetLeft + (view.width-global.platformAdaptor().safeInsetLeft-global.platformAdaptor().safeInsetRight-width)/2.0
+    y: global.platformAdaptor().safeInsetTop + (view.height-global.platformAdaptor().safeInsetTop-global.platformAdaptor().safeInsetBottom-height)/2.0
 
     implicitWidth: 40*Qt.application.font.pixelSize
 

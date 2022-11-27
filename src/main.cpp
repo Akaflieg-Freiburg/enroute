@@ -72,6 +72,7 @@ auto main(int argc, char *argv[]) -> int
 {
     // It seems that MapBoxGL does not work well with threaded rendering, so we disallow that.
     qputenv("QSG_RENDER_LOOP", "basic");
+    qputenv("QT_FATAL_WARNINGS", "1");
 
     // Register types
     qRegisterMetaType<Units::Angle>();

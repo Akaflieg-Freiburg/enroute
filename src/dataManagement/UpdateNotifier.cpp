@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QCoreApplication>
 #include <QSettings>
 
 #include "GlobalObject.h"
@@ -46,6 +47,11 @@ DataManagement::UpdateNotifier::UpdateNotifier(DataManager* parent) :
 
 void DataManagement::UpdateNotifier::updateNotification()
 {
+    // If the app is currently terminating, then don't do anything.
+    if (QCoreApplication::instance() == nullptr)
+    {
+        return;
+    }
 
     // If there is no update, then we end here.
     if (GlobalObject::dataManager()->mapsAndData()->updateSize() == 0) {

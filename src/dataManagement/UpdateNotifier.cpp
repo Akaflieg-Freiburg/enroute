@@ -20,21 +20,21 @@
 
 #include <QCoreApplication>
 #include <QSettings>
+#include <chrono>
 
 #include "GlobalObject.h"
 #include "UpdateNotifier.h"
+#include "dataManagement/DataManager.h"
 #include "navigation/Navigator.h"
 #include "platform/Notifier_Abstract.h"
-#include <chrono>
 
 using namespace std::chrono_literals;
 
 
 
-DataManagement::UpdateNotifier::UpdateNotifier(DataManager* parent) :
+DataManagement::UpdateNotifier::UpdateNotifier(QObject* parent) :
     QObject(parent)
 {
-
     connect(GlobalObject::dataManager()->mapsAndData(), &DataManagement::Downloadable_Abstract::updateSizeChanged, this, &DataManagement::UpdateNotifier::updateNotification);
     connect(&notificationTimer, &QTimer::timeout, this, &DataManagement::UpdateNotifier::updateNotification);
 
@@ -47,12 +47,6 @@ DataManagement::UpdateNotifier::UpdateNotifier(DataManager* parent) :
 
 void DataManagement::UpdateNotifier::updateNotification()
 {
-    // If the app is currently terminating, then don't do anything.
-    if (QCoreApplication::instance() == nullptr)
-    {
-        return;
-    }
-
     // If there is no update, then we end here.
     if (GlobalObject::dataManager()->mapsAndData()->updateSize() == 0) {
         GlobalObject::notifier()->hideNotification(Platform::Notifier_Abstract::GeoMapUpdatePending);

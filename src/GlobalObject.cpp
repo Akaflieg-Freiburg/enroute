@@ -40,7 +40,7 @@
 #include "traffic/TrafficDataProvider.h"
 #include "weather/WeatherDataProvider.h"
 
-bool isConstructing {false};
+bool isConstructingOrDeconstructing {false};
 
 QPointer<DataManagement::DataManager> g_dataManager {};
 QPointer<DataManagement::SSLErrorHandler> g_sslErrorHandler {};
@@ -64,11 +64,11 @@ QPointer<Weather::WeatherDataProvider> g_weatherDataProvider {};
 template<typename T> auto GlobalObject::allocateInternal(QPointer<T>& pointer) -> T*
 {
     Q_ASSERT( QCoreApplication::instance() != nullptr );
-    Q_ASSERT( !isConstructing );
+    Q_ASSERT( !isConstructingOrDeconstructing );
     if (pointer.isNull()) {
-        isConstructing = true;
+        isConstructingOrDeconstructing = true;
         pointer = new T( QCoreApplication::instance() );
-        isConstructing = false;
+        isConstructingOrDeconstructing = false;
         QQmlEngine::setObjectOwnership(pointer, QQmlEngine::CppOwnership);
         auto* gobj = qobject_cast<GlobalObject*>(pointer);
         if (gobj != nullptr) {
@@ -84,9 +84,38 @@ GlobalObject::GlobalObject(QObject *parent) : QObject(parent)
 }
 
 
+void GlobalObject::clear()
+{
+    isConstructingOrDeconstructing = true;
+
+    delete g_notifier;
+    delete g_geoMapProvider;
+    delete g_flarmnetDB;
+    delete g_dataManager;
+
+    delete g_sslErrorHandler;
+    delete g_demoRunner;
+    delete g_fileExchange;
+    delete g_librarian;
+    delete g_platformAdaptor;
+    delete g_navigator;
+    delete g_notifier;
+    delete g_passwordDB;
+    delete g_positionProvider;
+    delete g_settings;
+    delete g_trafficDataProvider;
+    delete g_waypointLibrary;
+    delete g_weatherDataProvider;
+
+    delete g_networkAccessManager;
+
+    isConstructingOrDeconstructing = false;
+}
+
+
 auto GlobalObject::canConstruct() -> bool
 {
-    if (isConstructing) {
+    if (isConstructingOrDeconstructing) {
         return false;
     }
     if (QCoreApplication::instance() == nullptr ) {

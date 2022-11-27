@@ -26,7 +26,6 @@
 #include <QSettings>
 
 #include "dataManagement/DataManager.h"
-#include "dataManagement/UpdateNotifier.h"
 #include "geomaps/MBTILES.h"
 #include <chrono>
 
@@ -66,8 +65,15 @@ void DataManagement::DataManager::deferredInitialization()
     }
 
     // Set up and start the updateNotifier
-    new DataManagement::UpdateNotifier(this);
+    _updateNotifier = new DataManagement::UpdateNotifier(this);
 }
+
+
+DataManagement::DataManager::~DataManager()
+{
+    delete _updateNotifier;
+}
+
 
 void DataManagement::DataManager::cleanDataDirectory()
 {

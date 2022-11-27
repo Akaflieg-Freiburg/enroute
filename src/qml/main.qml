@@ -50,41 +50,6 @@ ApplicationWindow {
     Material.primary: Material.theme === Material.Dark ? Qt.darker("teal") : "teal"
     Material.accent: Material.theme === Material.Dark ? Qt.lighter("teal") : "teal"
 
-    // These margins are used to avoid the notch area of the display, and areas
-    // covered by system widgets.
-    property int bottomScreenMargin: {
-        if ((Qt.platform.os === "ios") || (Qt.platform.os === "android"))
-        {
-            return primaryScreen.size.height - primaryScreen.availableGeometry.height - primaryScreen.availableGeometry.y
-        }
-
-        return 100
-    }
-    property int leftScreenMargin: {
-        if ((Qt.platform.os === "ios") || (Qt.platform.os === "android"))
-        {
-            return primaryScreen.availableGeometry.x
-        }
-
-        return 100
-    }
-    property int rightScreenMargin: {
-        if ((Qt.platform.os === "ios") || (Qt.platform.os === "android"))
-        {
-            return primaryScreen.size.width - primaryScreen.availableGeometry.width - primaryScreen.availableGeometry.x
-        }
-
-        return 100
-    }
-    property int topScreenMargin: {
-        if ((Qt.platform.os === "ios") || (Qt.platform.os === "android"))
-        {
-            return primaryScreen.availableGeometry.y
-        }
-
-        return 100
-    }
-
 
     Drawer {
         id: drawer
@@ -103,9 +68,9 @@ ApplicationWindow {
                 Label { // Title
                     Layout.fillWidth: true
 
-                    leftPadding: 16+view.leftScreenMargin
+                    leftPadding: 16+global.platformAdaptor().safeInsetLeft
                     rightPadding: 16
-                    topPadding: 16+view.topScreenMargin
+                    topPadding: 16+global.platformAdaptor().safeInsetTop
 
                     text: "Enroute Flight Navigation " + Qt.application.version
                     color: "white"
@@ -127,7 +92,7 @@ ApplicationWindow {
                 Label { // Subtitle
                     Layout.fillWidth: true
 
-                    leftPadding: 16+view.leftScreenMargin
+                    leftPadding: 16+global.platformAdaptor().safeInsetLeft
                     rightPadding: 16
                     height: 20
 
@@ -150,7 +115,7 @@ ApplicationWindow {
                 ItemDelegate { // Aircraft
                     Layout.fillWidth: true
 
-                    leftPadding: view.leftScreenMargin
+                    leftPadding: global.platformAdaptor().safeInsetLeft
 
                     id: menuItemAircraft
                     text: qsTr("Aircraft")
@@ -167,7 +132,7 @@ ApplicationWindow {
                 ItemDelegate {
                     Layout.fillWidth: true
 
-                    leftPadding: view.leftScreenMargin
+                    leftPadding: global.platformAdaptor().safeInsetLeft
 
                     id: menuItemRoute
                     text: qsTr("Route and Wind")
@@ -184,7 +149,7 @@ ApplicationWindow {
                 ItemDelegate {
                     Layout.fillWidth: true
 
-                    leftPadding: view.leftScreenMargin
+                    leftPadding: global.platformAdaptor().safeInsetLeft
 
                     id: menuItemNearby
 
@@ -202,7 +167,7 @@ ApplicationWindow {
                 ItemDelegate {
                     Layout.fillWidth: true
 
-                    leftPadding: view.leftScreenMargin
+                    leftPadding: global.platformAdaptor().safeInsetLeft
 
                     id: weatherItem
 
@@ -227,7 +192,7 @@ ApplicationWindow {
                 ItemDelegate {
                     Layout.fillWidth: true
 
-                    leftPadding: view.leftScreenMargin
+                    leftPadding: global.platformAdaptor().safeInsetLeft
 
                     text: qsTr("Library")
                     icon.source: "/icons/material/ic_library_books.svg"
@@ -303,7 +268,7 @@ ApplicationWindow {
                 ItemDelegate {
                     Layout.fillWidth: true
 
-                    leftPadding: view.leftScreenMargin
+                    leftPadding: global.platformAdaptor().safeInsetLeft
 
                     id: menuItemSettings
 
@@ -328,7 +293,7 @@ ApplicationWindow {
                 ItemDelegate {
                     Layout.fillWidth: true
 
-                    leftPadding: view.leftScreenMargin
+                    leftPadding: global.platformAdaptor().safeInsetLeft
 
                     text: qsTr("Information")
                     icon.source: "/icons/material/ic_info_outline.svg"
@@ -435,7 +400,7 @@ ApplicationWindow {
                 ItemDelegate {
                     Layout.fillWidth: true
 
-                    leftPadding: view.leftScreenMargin
+                    leftPadding: global.platformAdaptor().safeInsetLeft
 
                     text: qsTr("Manual")
                     icon.source: "/icons/material/ic_book.svg"
@@ -528,7 +493,7 @@ ApplicationWindow {
                 ItemDelegate { // Bug report
                     Layout.fillWidth: true
 
-                    leftPadding: view.leftScreenMargin
+                    leftPadding: global.platformAdaptor().safeInsetLeft
 
                     text: qsTr("Bug report")
                     icon.source: "/icons/material/ic_bug_report.svg"
@@ -553,7 +518,7 @@ ApplicationWindow {
                 ItemDelegate { // Exit
                     Layout.fillWidth: true
 
-                    leftPadding: view.leftScreenMargin
+                    leftPadding: global.platformAdaptor().safeInsetLeft
 
                     text: qsTr("Exit")
                     icon.source: "/icons/material/ic_exit_to_app.svg"
@@ -569,7 +534,7 @@ ApplicationWindow {
                 }
 
                 Item {
-                    Layout.preferredHeight: view.bottomScreenMargin
+                    Layout.preferredHeight: global.platformAdaptor().safeInsetBottom
                 }
 
                 Item {

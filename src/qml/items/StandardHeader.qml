@@ -25,10 +25,10 @@ import QtQuick.Controls.Material
 ToolBar {
 
     Material.foreground: "white"
-    height: 60 + view.topScreenMargin
-    leftPadding: view.leftScreenMargin
-    rightPadding: view.rightScreenMargin
-    topPadding: view.topScreenMargin
+    height: 60 + global.platformAdaptor().safeInsetTop
+    leftPadding: global.platformAdaptor().safeInsetLeft
+    rightPadding: global.platformAdaptor().safeInsetRight
+    topPadding: global.platformAdaptor().safeInsetTop
 
     ToolButton {
         id: backButton

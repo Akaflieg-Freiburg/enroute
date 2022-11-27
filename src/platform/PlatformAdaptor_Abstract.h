@@ -59,8 +59,54 @@ public:
 
 
     //
-    // Methods
+    // Properties
     //
+
+    /*! \brief Safe inset at bottom of screen, so as to avoid system status bars and display cutouts */
+    Q_PROPERTY(double safeInsetBottom READ safeInsetBottom NOTIFY safeInsetBottomChanged)
+
+    /*! \brief Safe inset at left of screen, so as to avoid system status bars and display cutouts */
+    Q_PROPERTY(double safeInsetLeft READ safeInsetLeft NOTIFY safeInsetLeftChanged)
+
+    /*! \brief Safe inset at right of screen, so as to avoid system status bars and display cutouts */
+    Q_PROPERTY(double safeInsetRight READ safeInsetRight NOTIFY safeInsetRightChanged)
+
+    /*! \brief Safe inset at top of screen, so as to avoid system status bars and display cutouts */
+    Q_PROPERTY(double safeInsetTop READ safeInsetTop NOTIFY safeInsetTopChanged)
+
+
+
+    //
+    // Getter Methods
+    //
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property safeInsetBottom
+     */
+    double safeInsetBottom() const {return _safeInsetBottom;}
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property safeInsetLeft
+     */
+    double safeInsetLeft() const {return _safeInsetLeft;}
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property safeInsetRight
+     */
+    double safeInsetRight() const {return _safeInsetRight;}
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property safeInsetTop
+     */
+    double safeInsetTop() const {return _safeInsetTop;}
+
+
+    //
+    // Methods
 
     /*! \brief SSID of current Wi-Fi network
      *
@@ -135,6 +181,18 @@ public slots:
 
 
 signals:
+    /*! \brief Notifier signal */
+    void safeInsetBottomChanged();
+
+    /*! \brief Notifier signal */
+    void safeInsetLeftChanged();
+
+    /*! \brief Notifier signal */
+    void safeInsetRightChanged();
+
+    /*! \brief Notifier signal */
+    void safeInsetTopChanged();
+
     /*! \brief Emitted when a new WiFi connections becomes available
      *
      *  This signal is emitted when a new WiFi connection becomes available.
@@ -143,6 +201,15 @@ signals:
 
 private:
     Q_DISABLE_COPY_MOVE(PlatformAdaptor_Abstract)
+
+    // Computes the values of the member variables _safeInset* and emits the notification signals as appropriate.
+    void updateSafeInsets();
+
+    // Member variables
+    double _safeInsetBottom {0.0};
+    double _safeInsetLeft {0.0};
+    double _safeInsetRight {0.0};
+    double _safeInsetTop {0.0};
 };
 
 } // namespace Platform

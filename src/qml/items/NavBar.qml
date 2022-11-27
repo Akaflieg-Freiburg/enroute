@@ -29,7 +29,7 @@ Rectangle {
     
     color: "#AA000000"
 
-    height: trueAltitude.implicitHeight + view.bottomScreenMargin
+    height: trueAltitude.implicitHeight + global.platformAdaptor().safeInsetBottom
     
 
     function numVisibleItems() {
@@ -44,9 +44,9 @@ Rectangle {
 
     RowLayout {
         anchors.fill: parent
-        anchors.bottomMargin: view.bottomScreenMargin
-        anchors.leftMargin: view.leftScreenMargin
-        anchors.rightMargin: view.rightScreenMargin
+        anchors.bottomMargin: global.platformAdaptor().safeInsetBottom
+        anchors.leftMargin: global.platformAdaptor().safeInsetLeft
+        anchors.rightMargin: global.platformAdaptor().safeInsetRight
 
         Item { Layout.fillWidth: true }
 

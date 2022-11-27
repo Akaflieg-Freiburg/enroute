@@ -38,10 +38,10 @@ Page {
     header: ToolBar {
 
         Material.foreground: "white"
-        height: 60 + view.topScreenMargin
-        leftPadding: view.leftScreenMargin
-        rightPadding: view.rightScreenMargin
-        topPadding: view.topScreenMargin
+        height: 60 + global.platformAdaptor().safeInsetTop
+        leftPadding: global.platformAdaptor().safeInsetLeft
+        rightPadding: global.platformAdaptor().safeInsetRight
+        topPadding: global.platformAdaptor().safeInsetTop
 
         ToolButton {
             id: backButton
@@ -219,8 +219,8 @@ Page {
         anchors.left: parent.left
         anchors.leftMargin: view.font.pixelSize*2.0
 
-        leftPadding: view.leftScreenMargin
-        rightPadding: view.rightScreenMargin
+        leftPadding: global.platformAdaptor().safeInsetLeft
+        rightPadding: global.platformAdaptor().safeInsetRight
 
         placeholderText: qsTr("Filter Waypoint Names")
         font.pixelSize: view.font.pixelSize*1.5
@@ -302,9 +302,9 @@ Page {
         anchors.left: parent.left
         anchors.right: parent.right
 
-        leftMargin: view.leftScreenMargin
-        rightMargin: view.rightScreenMargin
-        bottomMargin: view.bottomScreenMargin
+        leftMargin: global.platformAdaptor().safeInsetLeft
+        rightMargin: global.platformAdaptor().safeInsetRight
+        bottomMargin: global.platformAdaptor().safeInsetBottom
 
         clip: true
 

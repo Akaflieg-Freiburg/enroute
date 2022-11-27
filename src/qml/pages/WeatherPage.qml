@@ -36,10 +36,10 @@ Page {
     header: ToolBar {
 
         Material.foreground: "white"
-        height: 60 + view.topScreenMargin
-        leftPadding: view.leftScreenMargin
-        rightPadding: view.rightScreenMargin
-        topPadding: view.topScreenMargin
+        height: 60 + global.platformAdaptor().safeInsetTop
+        leftPadding: global.platformAdaptor().safeInsetLeft
+        rightPadding: global.platformAdaptor().safeInsetRight
+        topPadding: global.platformAdaptor().safeInsetTop
 
         ToolButton {
             id: backButton
@@ -128,8 +128,8 @@ Page {
             }
 
             WordWrappingItemDelegate {
-                leftPadding: view.leftScreenMargin
-                rightPadding: view.rightScreenMargin
+                leftPadding: global.platformAdaptor().safeInsetLeft
+                rightPadding: global.platformAdaptor().safeInsetRight
 
                 id: idel
                 text: {
@@ -301,9 +301,9 @@ Page {
     // Manual update button in footer
     footer: Pane {
         width: parent.width
-        bottomPadding: view.bottomScreenMargin
-        leftPadding: view.leftScreenMargin
-        rightPadding: view.rightScreenMargin
+        bottomPadding: global.platformAdaptor().safeInsetBottom
+        leftPadding: global.platformAdaptor().safeInsetLeft
+        rightPadding: global.platformAdaptor().safeInsetRight
 
         Material.elevation: 3
         visible: (sunLabel.text !== "") || (qnhLabel.text !== "")

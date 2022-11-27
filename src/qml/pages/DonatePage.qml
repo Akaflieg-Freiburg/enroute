@@ -41,9 +41,9 @@ Page {
         leftPadding: view.font.pixelSize
         rightPadding: view.font.pixelSize
 
-        anchors.bottomMargin: view.bottomScreenMargin
-        anchors.leftMargin: view.leftScreenMargin
-        anchors.rightMargin: view.rightScreenMargin
+        anchors.bottomMargin: global.platformAdaptor().safeInsetBottom
+        anchors.leftMargin: global.platformAdaptor().safeInsetLeft
+        anchors.rightMargin: global.platformAdaptor().safeInsetRight
 
 
         // The visibility behavior of the vertical scroll bar is a little complex.

@@ -36,9 +36,9 @@ Page {
         clip: true
         anchors.fill: parent
 
-        anchors.bottomMargin: view.bottomScreenMargin
-        anchors.leftMargin: view.leftScreenMargin
-        anchors.rightMargin: view.rightScreenMargin
+        anchors.bottomMargin: global.platformAdaptor().safeInsetBottom
+        anchors.leftMargin: global.platformAdaptor().safeInsetLeft
+        anchors.rightMargin: global.platformAdaptor().safeInsetRight
 
         // The label that we really want to show is wrapped into an Item. This allows
         // to set implicitHeight, and thus compute the implicitHeight of the Dialog

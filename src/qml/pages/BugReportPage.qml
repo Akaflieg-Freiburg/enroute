@@ -35,9 +35,9 @@ Page {
         id: stack
 
         anchors.fill: parent
-        anchors.bottomMargin: footer.visible ? 0 : view.bottomScreenMargin
-        anchors.leftMargin: view.leftScreenMargin
-        anchors.rightMargin: view.rightScreenMargin
+        anchors.bottomMargin: footer.visible ? 0 : global.platformAdaptor().safeInsetBottom
+        anchors.leftMargin: global.platformAdaptor().safeInsetLeft
+        anchors.rightMargin: global.platformAdaptor().safeInsetRight
 
         initialItem: mainPage
     }
@@ -48,7 +48,7 @@ Page {
         visible: stack.depth > 1
 
         ToolButton {
-            anchors.bottomMargin: view.bottomScreenMargin
+            anchors.bottomMargin: global.platformAdaptor().safeInsetBottom
 
             Material.foreground: Material.accent
 

@@ -35,9 +35,9 @@ Page {
     ScrollView {
         anchors.fill: parent
         anchors.topMargin: view.font.pixelSize
-        anchors.bottomMargin: view.bottomScreenMargin
-        anchors.leftMargin: view.leftScreenMargin
-        anchors.rightMargin: view.rightScreenMargin
+        anchors.bottomMargin: global.platformAdaptor().safeInsetBottom
+        anchors.leftMargin: global.platformAdaptor().safeInsetLeft
+        anchors.rightMargin: global.platformAdaptor().safeInsetRight
 
         contentWidth: availableWidth
 

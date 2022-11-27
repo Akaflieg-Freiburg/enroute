@@ -168,10 +168,10 @@ Page {
     header: ToolBar {
 
         Material.foreground: "white"
-        height: 60 + view.topScreenMargin
-        leftPadding: view.leftScreenMargin
-        rightPadding: view.rightScreenMargin
-        topPadding: view.topScreenMargin
+        height: 60 + global.platformAdaptor().safeInsetTop
+        leftPadding: global.platformAdaptor().safeInsetLeft
+        rightPadding: global.platformAdaptor().safeInsetRight
+        topPadding: global.platformAdaptor().safeInsetTop
 
         ToolButton {
             id: backButton
@@ -384,8 +384,8 @@ Page {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        leftPadding: view.leftScreenMargin
-        rightPadding: view.rightScreenMargin
+        leftPadding: global.platformAdaptor().safeInsetLeft
+        rightPadding: global.platformAdaptor().safeInsetRight
 
         currentIndex: sv.currentIndex
         TabButton { text: qsTr("Route") }
@@ -401,8 +401,8 @@ Page {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.leftMargin: view.leftScreenMargin
-        anchors.rightMargin: view.rightScreenMargin
+        anchors.leftMargin: global.platformAdaptor().safeInsetLeft
+        anchors.rightMargin: global.platformAdaptor().safeInsetRight
 
         clip: true
         currentIndex: bar.currentIndex
@@ -642,7 +642,7 @@ Page {
         width: parent.width
         height: implicitHeight
         Material.elevation: 3
-        bottomPadding: view.bottomScreenMargin
+        bottomPadding: global.platformAdaptor().safeInsetBottom
 
         ColumnLayout {
             width: parent.width

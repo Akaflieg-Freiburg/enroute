@@ -40,9 +40,9 @@ Page {
 
         width: parent.width
         height: parent.height
-        bottomPadding: view.font.pixelSize + view.bottomScreenMargin
-        leftPadding: view.font.pixelSize + view.leftScreenMargin
-        rightPadding: view.font.pixelSize + view.rightScreenMargin
+        bottomPadding: view.font.pixelSize + global.platformAdaptor().safeInsetBottom
+        leftPadding: view.font.pixelSize + global.platformAdaptor().safeInsetLeft
+        rightPadding: view.font.pixelSize + global.platformAdaptor().safeInsetRight
         topPadding: view.font.pixelSize
 
         // The visibility behavior of the vertical scroll bar is a little complex.

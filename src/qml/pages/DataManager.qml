@@ -188,10 +188,10 @@ Page {
     header: ToolBar {
 
         Material.foreground: "white"
-        height: 60 + view.topScreenMargin
-        leftPadding: view.leftScreenMargin
-        rightPadding: view.rightScreenMargin
-        topPadding: view.topScreenMargin
+        height: 60 + global.platformAdaptor().safeInsetTop
+        leftPadding: global.platformAdaptor().safeInsetLeft
+        rightPadding: global.platformAdaptor().safeInsetRight
+        topPadding: global.platformAdaptor().safeInsetTop
 
         ToolButton {
             id: backButton
@@ -278,8 +278,8 @@ Page {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        leftPadding: view.leftScreenMargin
-        rightPadding: view.rightScreenMargin
+        leftPadding: global.platformAdaptor().safeInsetLeft
+        rightPadding: global.platformAdaptor().safeInsetRight
 
         currentIndex: sv.currentIndex
         TabButton {
@@ -301,9 +301,9 @@ Page {
             anchors.right: parent.right
             anchors.bottom: parent.bottom
 
-            anchors.bottomMargin: footer.visible ? 0 : view.bottomScreenMargin
-            anchors.leftMargin: view.leftScreenMargin
-            anchors.rightMargin: view.rightScreenMargin
+            anchors.bottomMargin: footer.visible ? 0 : global.platformAdaptor().safeInsetBottom
+            anchors.leftMargin: global.platformAdaptor().safeInsetLeft
+            anchors.rightMargin: global.platformAdaptor().safeInsetRight
 
             clip: true
 
@@ -466,7 +466,7 @@ Page {
         Material.elevation: 3
         visible: (!global.dataManager().mapList.downloading && !global.dataManager().mapList.hasFile) || ((!global.dataManager().items.downloading) && (global.dataManager().mapsAndData.updateSize > 0))
         contentHeight: Math.max(downloadMapListActionButton.height, downloadUpdatesActionButton.height)
-        bottomPadding: view.bottomScreenMargin
+        bottomPadding: global.platformAdaptor().safeInsetBottom
 
         ToolButton {
             id: downloadMapListActionButton

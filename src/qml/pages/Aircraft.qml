@@ -40,10 +40,10 @@ Page {
     header: ToolBar {
 
         Material.foreground: "white"
-        height: 60 + view.topScreenMargin
-        leftPadding: view.leftScreenMargin
-        rightPadding: view.rightScreenMargin
-        topPadding: view.topScreenMargin
+        height: 60 + global.platformAdaptor().safeInsetTop
+        leftPadding: global.platformAdaptor().safeInsetLeft
+        rightPadding: global.platformAdaptor().safeInsetRight
+        topPadding: global.platformAdaptor().safeInsetTop
 
         ToolButton {
                 id: backButton
@@ -117,9 +117,9 @@ Page {
     ScrollView {
         id: acftTab
         anchors.fill: parent
-        anchors.leftMargin: view.leftScreenMargin
-        anchors.rightMargin: view.rightScreenMargin
-        anchors.bottomMargin: view.bottomScreenMargin
+        anchors.leftMargin: global.platformAdaptor().safeInsetLeft
+        anchors.rightMargin: global.platformAdaptor().safeInsetRight
+        anchors.bottomMargin: global.platformAdaptor().safeInsetBottom
 
         contentWidth: width
         clip: true

@@ -42,7 +42,7 @@ public:
      *
      *  @param parent The standard QObject parent pointer
      */
-    PasswordDB(QObject* parent);
+    PasswordDB(QObject* parent=nullptr);
 
     ~PasswordDB() override = default;
 

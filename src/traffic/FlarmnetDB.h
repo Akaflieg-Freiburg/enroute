@@ -44,7 +44,7 @@ public:
      *
      *  @param parent The standard QObject parent pointer
      */
-    FlarmnetDB(QObject* parent);
+    FlarmnetDB(QObject* parent=nullptr);
 
     ~FlarmnetDB() override = default;
 

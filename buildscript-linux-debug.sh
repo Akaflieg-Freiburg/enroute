@@ -45,9 +45,7 @@ export CC=/usr/bin/clang
 export CXX=/usr/bin/clang++
 
 $Qt6_DIR_LINUX/bin/qt-cmake \
-    -G Ninja\
-    -DCMAKE_BUILD_TYPE=Debug \
-    -DCMAKE_UNITY_BUILD:BOOL=ON \
+    -G Ninja \
     ..
 
 ninja

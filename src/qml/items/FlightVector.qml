@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtGraphicalEffects 1.15
+//import QtGraphicalEffects 1.15
 import QtLocation 5.15
 import QtPositioning 5.15
 import QtQuick 2.15

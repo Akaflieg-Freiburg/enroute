@@ -43,7 +43,7 @@ set(CMAKE_AUTOUIC ON)
 
 find_package(Doxygen)
 find_package(Git REQUIRED)
-find_package(Qt6 COMPONENTS Concurrent Core Core5Compat Gui LinguistTools Positioning Quick QuickWidgets Sql Svg Widgets REQUIRED)
+find_package(Qt6 COMPONENTS Concurrent Core Core5Compat Gui LinguistTools Location Positioning Quick QuickWidgets Sql Svg Widgets REQUIRED)
 if( ANDROID )
     find_package(Qt6 COMPONENTS WebView REQUIRED)
 else()

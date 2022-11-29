@@ -73,14 +73,14 @@ auto Navigation::FlightRoute::boundingRectangle() const -> QGeoRectangle
     return bbox;
 }
 
-auto Navigation::FlightRoute::geoPath() const -> QVariantList
+auto Navigation::FlightRoute::geoPath() const -> QList<QGeoCoordinate>
 {
-    QVariantList result;
+    QList<QGeoCoordinate> result;
     for(const auto& _waypoint : m_waypoints) {
         if (!_waypoint.isValid()) {
             return {};
         }
-        result.append(QVariant::fromValue(_waypoint.coordinate()));
+        result.append(_waypoint.coordinate());
     }
 
     return result;

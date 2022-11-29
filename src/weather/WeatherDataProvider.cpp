@@ -479,7 +479,7 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate) {
 
     // Generate queries
     const QGeoCoordinate& position = Positioning::PositionProvider::lastValidCoordinate();
-    const QVariantList& steerpts = GlobalObject::navigator()->flightRoute()->geoPath();
+    auto steerpts = GlobalObject::navigator()->flightRoute()->geoPath();
     QList<QString> queries;
     if (position.isValid()) {
         queries.push_back(QStringLiteral("dataSource=metars&radialDistance=85;%1,%2").arg(position.longitude()).arg(position.latitude()));
@@ -487,8 +487,7 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate) {
     }
     if (!steerpts.empty()) {
         QString qpos;
-        foreach(auto var, steerpts) {
-            auto posit = var.value<QGeoCoordinate>();
+        foreach(auto posit, steerpts) {
             qpos += ";" + QString::number(posit.longitude()) + "," + QString::number(posit.latitude());
         }
         queries.push_back(QStringLiteral("dataSource=metars&flightPath=85%1").arg(qpos));

@@ -25,6 +25,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
 import QtQuick.Layouts 1.15
 
+import akaflieg_freiburg.enroute
 import enroute 1.0
 
 import QtQml 2.15

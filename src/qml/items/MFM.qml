@@ -40,7 +40,8 @@ Item {
 
     Plugin {
         id: mapPlugin
-        name: "mapboxgl"
+//        name: "mapboxgl"
+        name: "osm"
 
         PluginParameter {
             name: "mapboxgl.mapping.additional_style_urls"
@@ -371,7 +372,7 @@ Item {
                      (global.navigator().remainingRouteInfo.status === RemainingRouteInfo.OnRoute)
             line.width: 2
             line.color: 'darkred'
-            path: visible ? [global.positionProvider().lastValidCoordinate, global.navigator().remainingRouteInfo.nextWP.coordinate] : undefined
+            path: visible ? [global.positionProvider().lastValidCoordinate, global.navigator().remainingRouteInfo.nextWP.coordinate] : []
         }
 
         MapItemView { // Traffic opponents
@@ -448,7 +449,7 @@ Item {
             anchors.fill: parent
             propagateComposedEvents: true
 
-            onWheel: {
+            onWheel: function (wheel) {
                 flightMap.followGPS = false
                 wheel.accepted = false
             }

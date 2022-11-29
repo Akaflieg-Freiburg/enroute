@@ -454,9 +454,9 @@ Item {
                 wheel.accepted = false
             }
 
-            onPressAndHold: onDoubleClicked(mouse)
+            onPressAndHold: mouse => onDoubleClicked(mouse)
 
-            onDoubleClicked: {
+            onDoubleClicked: function (mouse) {
                 global.platformAdaptor().vibrateBrief()
                 var wp = global.geoMapProvider().closestWaypoint(flightMap.toCoordinate(Qt.point(mouse.x,mouse.y)),
                                                                  flightMap.toCoordinate(Qt.point(mouse.x+25,mouse.y)),

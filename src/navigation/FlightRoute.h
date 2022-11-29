@@ -94,7 +94,7 @@ namespace Navigation
          * QML, the data is returned in the form of a QVariantList rather than
          * QList<QGeoCoordinate>.
          */
-        Q_PROPERTY(QVariantList geoPath READ geoPath NOTIFY waypointsChanged)
+        Q_PROPERTY(QList<QGeoCoordinate> geoPath READ geoPath NOTIFY waypointsChanged)
 
         /*! \brief List of waypoints in the flight route that are not airfields
          *
@@ -143,7 +143,7 @@ namespace Navigation
          *
          *  @returns Property geoPath
          */
-        [[nodiscard]] auto geoPath() const -> QVariantList;
+        [[nodiscard]] auto geoPath() const -> QList<QGeoCoordinate>;
 
         /*! \brief Getter function for the property with the same name
          *

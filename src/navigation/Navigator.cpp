@@ -228,7 +228,7 @@ void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::Position
     }
 
     // If we are closer than 3 nm from endpoint, then we do not give a remaining route info
-    auto finalCoordinate = geoPath[geoPath.size()-1].value<QGeoCoordinate>();
+    auto finalCoordinate = geoPath[geoPath.size()-1];
     if (Units::Distance::fromM(finalCoordinate.distanceTo(info.coordinate())) < Leg::nearThreshold)
     {
         RemainingRouteInfo rrInfo;

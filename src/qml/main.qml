@@ -604,7 +604,7 @@ ApplicationWindow {
 
         }
 
-        Keys.onReleased: {
+        Keys.onReleased: function (event) {
             if (event.key === Qt.Key_Back) {
                 if (stackView.depth > 1)
                     stackView.pop()
@@ -762,7 +762,7 @@ ApplicationWindow {
     }
 
     Shortcut {
-        sequence: StandardKey.Close
+        sequences: [StandardKey.Close]
         onActivated: Qt.quit()
     }
 

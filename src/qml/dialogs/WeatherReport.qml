@@ -31,21 +31,11 @@ import "../items"
 /* This is a dialog with detailed information about a weather station. To use this dialog, all you have to do is to set a WeatherStation in the property "weatherStation" and call open(). */
 
 
-Dialog {
+CenteringDialog {
     id: weatherReportDialog
 
     property WeatherStation weatherStation
     onWeatherStationChanged: sv.ScrollBar.vertical.position = 0.0 // Reset scroll bar if station changes
-
-    // Size is chosen so that the dialog does not cover the parent in full
-    width: Math.min(view.width-view.font.pixelSize, 40*view.font.pixelSize)
-    height: Math.min(view.height-view.font.pixelSize, implicitHeight)
-
-    // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-    // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-    parent: Overlay.overlay
-    x: (view.width-width)/2.0
-    y: (view.height-height)/2.0
 
     modal: true
     standardButtons: Dialog.Close
@@ -86,11 +76,6 @@ Dialog {
 
             contentHeight: co.height
             contentWidth: weatherReportDialog.availableWidth
-
-            // The visibility behavior of the vertical scroll bar is a little complex.
-            // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
-            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-            ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
 
             clip: true
 

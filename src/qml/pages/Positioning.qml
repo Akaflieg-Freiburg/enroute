@@ -36,19 +36,16 @@ Page {
 
     ScrollView {
         id: sView
+
+        anchors.fill: parent
+        contentWidth: availableWidth // Disable horizontal scrolling
+
         clip: true
 
-        width: parent.width
-        height: parent.height
         bottomPadding: view.font.pixelSize + global.platformAdaptor().safeInsetBottom
         leftPadding: view.font.pixelSize + global.platformAdaptor().safeInsetLeft
         rightPadding: view.font.pixelSize + global.platformAdaptor().safeInsetRight
         topPadding: view.font.pixelSize
-
-        // The visibility behavior of the vertical scroll bar is a little complex.
-        // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
-        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-        ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
 
         GridLayout {
             id: gl

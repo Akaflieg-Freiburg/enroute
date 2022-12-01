@@ -116,7 +116,7 @@ ApplicationWindow {
                 ItemDelegate { // Aircraft
                     Layout.fillWidth: true
 
-                    leftPadding: global.platformAdaptor().safeInsetLeft
+                    leftPadding: 16+global.platformAdaptor().safeInsetLeft
 
                     id: menuItemAircraft
                     text: qsTr("Aircraft")
@@ -133,7 +133,7 @@ ApplicationWindow {
                 ItemDelegate {
                     Layout.fillWidth: true
 
-                    leftPadding: global.platformAdaptor().safeInsetLeft
+                    leftPadding: 16+global.platformAdaptor().safeInsetLeft
 
                     id: menuItemRoute
                     text: qsTr("Route and Wind")
@@ -150,7 +150,7 @@ ApplicationWindow {
                 ItemDelegate {
                     Layout.fillWidth: true
 
-                    leftPadding: global.platformAdaptor().safeInsetLeft
+                    leftPadding: 16+global.platformAdaptor().safeInsetLeft
 
                     id: menuItemNearby
 
@@ -168,7 +168,7 @@ ApplicationWindow {
                 ItemDelegate {
                     Layout.fillWidth: true
 
-                    leftPadding: global.platformAdaptor().safeInsetLeft
+                    leftPadding: 16+global.platformAdaptor().safeInsetLeft
 
                     id: weatherItem
 
@@ -193,7 +193,7 @@ ApplicationWindow {
                 ItemDelegate {
                     Layout.fillWidth: true
 
-                    leftPadding: global.platformAdaptor().safeInsetLeft
+                    leftPadding: 16+global.platformAdaptor().safeInsetLeft
 
                     text: qsTr("Library")
                     icon.source: "/icons/material/ic_library_books.svg"
@@ -269,7 +269,7 @@ ApplicationWindow {
                 ItemDelegate {
                     Layout.fillWidth: true
 
-                    leftPadding: global.platformAdaptor().safeInsetLeft
+                    leftPadding: 16+global.platformAdaptor().safeInsetLeft
 
                     id: menuItemSettings
 
@@ -294,7 +294,7 @@ ApplicationWindow {
                 ItemDelegate {
                     Layout.fillWidth: true
 
-                    leftPadding: global.platformAdaptor().safeInsetLeft
+                    leftPadding: 16+global.platformAdaptor().safeInsetLeft
 
                     text: qsTr("Information")
                     icon.source: "/icons/material/ic_info_outline.svg"
@@ -401,7 +401,7 @@ ApplicationWindow {
                 ItemDelegate {
                     Layout.fillWidth: true
 
-                    leftPadding: global.platformAdaptor().safeInsetLeft
+                    leftPadding: 16+global.platformAdaptor().safeInsetLeft
 
                     text: qsTr("Manual")
                     icon.source: "/icons/material/ic_book.svg"
@@ -494,7 +494,7 @@ ApplicationWindow {
                 ItemDelegate { // Bug report
                     Layout.fillWidth: true
 
-                    leftPadding: global.platformAdaptor().safeInsetLeft
+                    leftPadding: 16+global.platformAdaptor().safeInsetLeft
 
                     text: qsTr("Bug report")
                     icon.source: "/icons/material/ic_bug_report.svg"
@@ -519,7 +519,7 @@ ApplicationWindow {
                 ItemDelegate { // Exit
                     Layout.fillWidth: true
 
-                    leftPadding: global.platformAdaptor().safeInsetLeft
+                    leftPadding: 16+global.platformAdaptor().safeInsetLeft
 
                     text: qsTr("Exit")
                     icon.source: "/icons/material/ic_exit_to_app.svg"
@@ -604,7 +604,7 @@ ApplicationWindow {
 
         }
 
-        Keys.onReleased: {
+        Keys.onReleased: function (event) {
             if (event.key === Qt.Key_Back) {
                 if (stackView.depth > 1)
                     stackView.pop()
@@ -762,7 +762,7 @@ ApplicationWindow {
     }
 
     Shortcut {
-        sequence: StandardKey.Close
+        sequences: [StandardKey.Close]
         onActivated: Qt.quit()
     }
 

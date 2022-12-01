@@ -39,12 +39,12 @@ Page {
         anchors.leftMargin: global.platformAdaptor().safeInsetLeft
         anchors.rightMargin: global.platformAdaptor().safeInsetRight
 
-        contentWidth: availableWidth
-
+        contentWidth: availableWidth // Disable horizontal scrolling
 
         clip: true
 
         ColumnLayout {
+            width: settingsPage.width - global.platformAdaptor().safeInsetLeft - global.platformAdaptor().safeInsetRight
 
             Label {
                 Layout.leftMargin: view.font.pixelSize

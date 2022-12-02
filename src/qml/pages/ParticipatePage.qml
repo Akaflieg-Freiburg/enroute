@@ -33,21 +33,17 @@ Page {
 
     ScrollView {
         id: sView
-        clip: true
+
         anchors.fill: parent
+        contentWidth: availableWidth // Disable horizontal scrolling
 
-        anchors.bottomMargin: global.platformAdaptor().safeInsetBottom
-        anchors.leftMargin: global.platformAdaptor().safeInsetLeft
-        anchors.rightMargin: global.platformAdaptor().safeInsetRight
+        clip: true
 
-        // The label that we really want to show is wrapped into an Item. This allows
-        // to set implicitHeight, and thus compute the implicitHeight of the Dialog
-        // without binding loops
-        Item {
-            implicitHeight: lbl1.implicitHeight
-            width: pg.width
+        bottomPadding: global.platformAdaptor().safeInsetBottom
+        leftPadding: global.platformAdaptor().safeInsetLeft
+        rightPadding: global.platformAdaptor().safeInsetRight
             
-            Label {
+        Label {
                 id: lbl1
                 textFormat: Text.StyledText
                 linkColor: Material.accent
@@ -89,7 +85,6 @@ please get in touch with us by opening a GitHub issue.</p>
                 rightPadding: view.font.pixelSize*0.5
                 onLinkActivated: Qt.openUrlExternally(link)
             }
-        } // Item
     }
 
 } // Page

@@ -75,7 +75,7 @@ CenteringDialog {
             Layout.fillWidth: true
 
             contentHeight: co.height
-            contentWidth: weatherReportDialog.availableWidth
+            contentWidth: availableWidth // Disable horizontal scrolling
 
             clip: true
 

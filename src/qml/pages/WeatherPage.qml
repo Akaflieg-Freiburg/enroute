@@ -128,8 +128,8 @@ Page {
             }
 
             WordWrappingItemDelegate {
-                leftPadding: global.platformAdaptor().safeInsetLeft
-                rightPadding: global.platformAdaptor().safeInsetRight
+                leftPadding: global.platformAdaptor().safeInsetLeft+16
+                rightPadding: global.platformAdaptor().safeInsetRight+16
 
                 id: idel
                 text: {
@@ -158,58 +158,55 @@ Page {
         }
     }
 
-    ColumnLayout {
-        anchors.fill: parent
+    // List of weather stations
+    ListView {
+        id: stationList
 
+        anchors.fill: parent
         visible: global.settings().acceptedWeatherTerms
 
-        // List of weather stations
-        ListView {
-            id: stationList
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-            clip: true
+        clip: true
 
-            model: global.weatherDataProvider().weatherStations
-            delegate: stationDelegate
-            ScrollIndicator.vertical: ScrollIndicator {}
+        model: global.weatherDataProvider().weatherStations
+        delegate: stationDelegate
+        ScrollIndicator.vertical: ScrollIndicator {}
 
-            Rectangle {
-                anchors.fill: parent
-                color: "white"
-                visible: stationList.count == 0
+        Rectangle {
+            anchors.fill: parent
+            color: "white"
+            visible: stationList.count == 0
 
-                Text {
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.top: parent.top
+            Text {
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.top: parent.top
 
-                    leftPadding: view.font.pixelSize
-                    rightPadding: view.font.pixelSize
-                    topPadding: 2*view.font.pixelSize
+                leftPadding: view.font.pixelSize
+                rightPadding: view.font.pixelSize
+                topPadding: 2*view.font.pixelSize
 
-                    horizontalAlignment: Text.AlignHCenter
-                    textFormat: Text.StyledText
-                    wrapMode: Text.Wrap
-                    text: qsTr("<h3>Sorry!</h3><p>No METAR/TAF data available. You can restart the download manually using the item 'Update METAR/TAF' from the three-dot menu at the top right corner of the screen.</p>")
-                }
+                horizontalAlignment: Text.AlignHCenter
+                textFormat: Text.StyledText
+                wrapMode: Text.Wrap
+                text: qsTr("<h3>Sorry!</h3><p>No METAR/TAF data available. You can restart the download manually using the item 'Update METAR/TAF' from the three-dot menu at the top right corner of the screen.</p>")
             }
-
-            // Refresh METAR/TAF data on overscroll
-            property int refreshFlick: 0
-            onFlickStarted: {
-                refreshFlick = atYBeginning
-            }
-
-            onFlickEnded: {
-                if ( atYBeginning && refreshFlick ) {
-                    global.platformAdaptor().vibrateBrief()
-                    global.weatherDataProvider().update(false)
-                }
-            }
-
         }
+
+        // Refresh METAR/TAF data on overscroll
+        property int refreshFlick: 0
+        onFlickStarted: {
+            refreshFlick = atYBeginning
+        }
+
+        onFlickEnded: {
+            if ( atYBeginning && refreshFlick ) {
+                global.platformAdaptor().vibrateBrief()
+                global.weatherDataProvider().update(false)
+            }
+        }
+
     }
+
 
     Rectangle {
         id: downloadIndicator
@@ -301,9 +298,9 @@ Page {
     // Manual update button in footer
     footer: Pane {
         width: parent.width
-        bottomPadding: global.platformAdaptor().safeInsetBottom
-        leftPadding: global.platformAdaptor().safeInsetLeft
-        rightPadding: global.platformAdaptor().safeInsetRight
+        bottomPadding: global.platformAdaptor().safeInsetBottom+16
+        leftPadding: global.platformAdaptor().safeInsetLeft+16
+        rightPadding: global.platformAdaptor().safeInsetRight+16
 
         Material.elevation: 3
         visible: (sunLabel.text !== "") || (qnhLabel.text !== "")

@@ -35,17 +35,20 @@ using namespace std::chrono_literals;
 Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
     : Platform::PlatformAdaptor_Abstract(parent)
 {
-   // Update the properties safeInsets* 100ms after the screen orientation changes.
+#warning
+// MUST NOT CALL FROM CONSTRUCTOR    updateSafeInsets();
+
+    // Update the properties safeInsets* 100ms after the screen orientation changes.
     // Experience shows that the system calls on Android do not always
     // reflect updates in the safeInsets* immediately.
     auto* timer = new QTimer(this);
     timer->setSingleShot(true);
     timer->setInterval(100ms);
     connect(timer, &QTimer::timeout, this, &PlatformAdaptor::updateSafeInsets);
-    connect(QGuiApplication::primaryScreen(), &QScreen::orientationChanged, timer, [timer]{ timer->start(); });
-
-    // Update the properties safeInsets* 100ms from now.
     timer->start();
+
+    connect(QGuiApplication::primaryScreen(), &QScreen::orientationChanged, timer, [timer]{ timer->start(); });
+    connect(QGuiApplication::inputMethod(), &QInputMethod::keyboardRectangleChanged, this, &PlatformAdaptor::updateSafeInsets);
 }
 
 
@@ -67,7 +70,6 @@ void Platform::PlatformAdaptor::updateSafeInsets()
             safeInsetBottom = inset/devicePixelRatio;
         }
 
-
         inset = static_cast<double>(QJniObject::callStaticMethod<jdouble>("de/akaflieg_freiburg/enroute/MobileAdaptor", "safeInsetLeft"));
         if ( qIsFinite(safeInsetLeft) && (safeInsetLeft >= 0.0) )
         {
@@ -85,7 +87,21 @@ void Platform::PlatformAdaptor::updateSafeInsets()
         {
             safeInsetTop = inset/devicePixelRatio;
         }
+#warning Stimmt noch nicht. Vermutlich ist alles ein bischen komplizierter
+//        safeInsetBottom += (QGuiApplication::primaryScreen()->availableSize().height()-QGuiApplication::inputMethod()->keyboardRectangle().top())/devicePixelRatio;
+
+        auto* inputMethod = QGuiApplication::inputMethod();
+        if ((inputMethod != nullptr) && inputMethod->isVisible())
+        {
+            auto keyboardRectangle = inputMethod->keyboardRectangle();
+            safeInsetBottom = QGuiApplication::primaryScreen()->availableSize().height() - keyboardRectangle.top()/devicePixelRatio;
+//            safeInsetBottom = (QGuiApplication::inputMethod()->keyboardRectangle().height())/devicePixelRatio;
+            qWarning() << "ScHeight" << QGuiApplication::primaryScreen()->availableSize().height();
+            qWarning() << "KrHeight" << QGuiApplication::inputMethod()->keyboardRectangle().height()/devicePixelRatio;
+            qWarning() << "KrTop   " << QGuiApplication::inputMethod()->keyboardRectangle().top()/devicePixelRatio;
+        }
     }
+    qWarning() << "safeInsetBottom" << safeInsetBottom;
 
     // Update properties and emit notification signals
     if (safeInsetBottom != _safeInsetBottom)

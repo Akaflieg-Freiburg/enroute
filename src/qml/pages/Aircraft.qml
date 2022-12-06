@@ -124,6 +124,10 @@ Page {
         contentWidth: width
         clip: true
 
+        onHeightChanged: {
+            contentItem.contentY = activeFocusControl.y
+        }
+
         GridLayout {
             id: aircraftTab
             anchors.left: parent.left
@@ -584,7 +588,6 @@ Page {
                 }
             }
 
-            Label { Layout.fillHeight: true }
         }
 
     }

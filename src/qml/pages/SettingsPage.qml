@@ -80,23 +80,39 @@ Page {
                 }
             }
 
+            Label {
+                Layout.leftMargin: view.font.pixelSize
+                Layout.fillWidth: true
+                text: qsTr("Map Features")
+                font.bold: true
+                color: Material.accent
+            }
+
             WordWrappingSwitchDelegate {
-                id: hideGlidingSectors
-                text: {
-                    const firstLine = qsTr("Hide Gliding Sectors")
-                    if (!checked) {
-                        return firstLine + `<br><font color="#606060" size="2">` + qsTr("Currently showing gliding sectors") + `</font>`
-                    }
-                    return firstLine + `<br><font color="#606060" size="2">` + qsTr("Currently hiding gliding sectors") + `</font>`
-                }
+                id: glidingSectors
+                text: qsTr("Gliding Sectors")
                 icon.source: "/icons/material/ic_map.svg"
                 Layout.fillWidth: true
                 Component.onCompleted: {
-                    hideGlidingSectors.checked = global.settings().hideGlidingSectors
+                    glidingSectors.checked = !global.settings().hideGlidingSectors
                 }
                 onToggled: {
                     global.platformAdaptor().vibrateBrief()
-                    global.settings().hideGlidingSectors = hideGlidingSectors.checked
+                    global.settings().hideGlidingSectors = !glidingSectors.checked
+                }
+            }
+
+            WordWrappingSwitchDelegate {
+                id: hillshading
+                text: qsTr("Hillshading")
+                icon.source: "/icons/material/ic_map.svg"
+                Layout.fillWidth: true
+                Component.onCompleted: {
+                    hillshading.checked = global.settings().hillshading
+                }
+                onToggled: {
+                    global.platformAdaptor().vibrateBrief()
+                    global.settings().hillshading = hillshading.checked
                 }
             }
 

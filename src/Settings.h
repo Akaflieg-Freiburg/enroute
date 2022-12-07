@@ -107,6 +107,9 @@ public:
     /*! \brief Hide gliding sectors */
     Q_PROPERTY(bool hideGlidingSectors READ hideGlidingSectors WRITE setHideGlidingSectors NOTIFY hideGlidingSectorsChanged)
 
+    /*! \brief Show hillshades on moving msp */
+    Q_PROPERTY(bool hillshading READ hillshading WRITE setHillshading NOTIFY hillshadingChanged)
+
     /*! \brief Ignore SSL security problems */
     Q_PROPERTY(bool ignoreSSLProblems READ ignoreSSLProblems WRITE setIgnoreSSLProblems NOTIFY ignoreSSLProblemsChanged)
 
@@ -167,6 +170,12 @@ public:
      * @returns Property hideGlidingSectors
      */
     [[nodiscard]] auto hideGlidingSectors() const -> bool { return settings.value(QStringLiteral("Map/hideGlidingSectors"), true).toBool(); }
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property hillShading
+     */
+    [[nodiscard]] auto hillshading() const -> bool { return settings.value(QStringLiteral("Map/hillshading"), true).toBool(); }
 
     /*! \brief Getter function for property of the same name
      *
@@ -251,6 +260,12 @@ public:
 
     /*! \brief Setter function for property of the same name
      *
+     * @param hide Property hillshading
+     */
+    void setHillshading(bool show);
+
+    /*! \brief Setter function for property of the same name
+     *
      * @param ignore Property ignoreSSLProblems
      */
     void setIgnoreSSLProblems(bool ignore);
@@ -311,6 +326,9 @@ signals:
 
     /*! \brief Notifier signal */
     void hideGlidingSectorsChanged();
+
+    /*! \brief Notifier signal */
+    void hillshadingChanged();
 
     /*! \brief Notifier signal */
     void ignoreSSLProblemsChanged();

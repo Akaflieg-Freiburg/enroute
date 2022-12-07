@@ -1,0 +1,8 @@
+* Dialogs not centered
+* Three-dot-menus in titlebar do not respect safeInset
+
+* Map does not work
+* In Android wird wegen des Fullscreen.Modus das Keyboard nicht angezeigt, damit sind keine Texteingaben möglich.
+* Donation: layout corrupt -- can scroll horizontally
+* PositionInfoPage -- geht auf meinem Telefon über die Bildschirmbreite hinaus.
+

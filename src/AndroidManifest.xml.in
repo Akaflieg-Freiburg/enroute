@@ -166,7 +166,7 @@
     
     <!-- NOTE: android:authorities must match AUTHORITY in de/akaflieg_freiburg/enroute/IntentLauncher.java -->
     <provider
-        android:name="android.support.v4.content.FileProvider"
+        android:name="androidx.core.content.FileProvider"
         android:authorities="de.akaflieg_freiburg.enroute"
         android:exported="false"
         android:grantUriPermissions="true">

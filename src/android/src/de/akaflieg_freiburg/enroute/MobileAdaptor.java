@@ -40,6 +40,7 @@ import android.provider.Settings;
 import android.provider.Settings.System;
 import android.util.Log;
 import android.view.*;
+import androidx.core.view.WindowCompat;
 
 public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 	public static native void onNotificationClicked(int notifyID, int actionID);
@@ -79,13 +80,22 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 		intentFilter.addAction("de.akaflieg_freiburg.enroute.onNotificationClick");
 		m_instance.registerReceiver(m_notifyClickReceiver, intentFilter);
 
+		//
 		// Set fullscreen
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) 
-		    {
-			getWindow().getAttributes().layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
-		    }
+		//
+		
+		// Draw underneath system windows
+		WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
+		// Draw into cutouts areas. Cutouts are only supported from Version P onwards
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+		    getWindow().getAttributes().layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+		}
+	       
+		// Make status bar and navigation bar translucent
+		Window window = getWindow();
+		window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+		window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION); // Does not seem to work for unknown reasons
 	}
 
 	@Override
@@ -130,7 +140,7 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
         if (Build.VERSION.SDK_INT >= 30)
 	    {
 		return m_instance.getWindow().getDecorView().getRootWindowInsets()
-		    .getInsets(WindowInsets.Type.systemBars()|WindowInsets.Type.displayCutout()).bottom;
+		    .getInsets(WindowInsets.Type.systemBars()|WindowInsets.Type.ime()|WindowInsets.Type.displayCutout()).bottom;
 	    }
 	
         return m_instance.getWindow().getDecorView().getRootWindowInsets().getSystemWindowInsetBottom();
@@ -142,7 +152,7 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
         if (Build.VERSION.SDK_INT >= 30)
 	    {
 		return m_instance.getWindow().getDecorView().getRootWindowInsets()
-		    .getInsets(WindowInsets.Type.systemBars()|WindowInsets.Type.displayCutout()).left;
+		    .getInsets(WindowInsets.Type.systemBars()|WindowInsets.Type.ime()|WindowInsets.Type.displayCutout()).left;
 	    }
 	
         return m_instance.getWindow().getDecorView().getRootWindowInsets().getSystemWindowInsetLeft();
@@ -154,7 +164,7 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
         if (Build.VERSION.SDK_INT >= 30)
 	    {
 		return m_instance.getWindow().getDecorView().getRootWindowInsets()
-		    .getInsets(WindowInsets.Type.systemBars()|WindowInsets.Type.displayCutout()).right;
+		    .getInsets(WindowInsets.Type.systemBars()|WindowInsets.Type.ime()|WindowInsets.Type.displayCutout()).right;
 	    }
 	
         return m_instance.getWindow().getDecorView().getRootWindowInsets().getSystemWindowInsetRight();
@@ -166,7 +176,7 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
         if (Build.VERSION.SDK_INT >= 30)
 	    {
 		return m_instance.getWindow().getDecorView().getRootWindowInsets()
-		    .getInsets(WindowInsets.Type.systemBars()|WindowInsets.Type.displayCutout()).top;
+		    .getInsets(WindowInsets.Type.systemBars()|WindowInsets.Type.ime()|WindowInsets.Type.displayCutout()).top;
 	    }
 	
         return m_instance.getWindow().getDecorView().getRootWindowInsets().getSystemWindowInsetTop();

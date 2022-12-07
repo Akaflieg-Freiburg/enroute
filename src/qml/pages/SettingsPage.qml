@@ -267,27 +267,14 @@ Page {
         }
     }
 
-    Dialog {
+    CenteringDialog {
         id: clearPasswordDialog
 
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
-
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
-
-        topMargin: view.font.pixelSize/2.0
-        bottomMargin: view.font.pixelSize/2.0
-
+        title: qsTr("Clear Password Storage?")
         modal: true
 
-        title: qsTr("Clear Password Storage?")
-
         Label {
-            width: heightLimitDialog.availableWidth
+            width: clearPasswordDialog.availableWidth
 
             text: qsTr("Once the storage is cleared, the passwords can no longer be retrieved.")
             wrapMode: Text.Wrap
@@ -303,8 +290,7 @@ Page {
                 DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
             }
 
-        } // DialogButtonBox
-
+        }
 
         onAccepted: {
             global.passwordDB().clear()
@@ -313,26 +299,12 @@ Page {
 
     }
 
-    Dialog {
+    CenteringDialog {
         id: heightLimitDialog
 
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
-
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
-
-        topMargin: view.font.pixelSize/2.0
-        bottomMargin: view.font.pixelSize/2.0
-
         modal: true
-
         title: qsTr("Airspace Altitude Limit")
         standardButtons: (slider.from < slider.to) ? Dialog.Ok|Dialog.Cancel : Dialog.Cancel
-
 
         ColumnLayout {
             width: heightLimitDialog.availableWidth
@@ -408,26 +380,12 @@ Page {
 
     }
 
-    Dialog {
+    CenteringDialog {
         id: primaryPositionDataSourceDialog
 
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
-
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
-
-        topMargin: view.font.pixelSize/2.0
-        bottomMargin: view.font.pixelSize/2.0
-
         modal: true
-
         title: qsTr("Position Data Source")
         standardButtons: Dialog.Ok|Dialog.Cancel
-
 
         ColumnLayout {
             width: primaryPositionDataSourceDialog.availableWidth

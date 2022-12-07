@@ -345,13 +345,12 @@ Page {
         textInput.text = cache
     }
 
-    Dialog {
+    CenteringDialog {
         id: shareErrorDialog
-        anchors.centerIn: parent
-        parent: Overlay.overlay
 
         title: qsTr("Error Exporting Data…")
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
+        standardButtons: Dialog.Ok
+        modal: true
 
         Label {
             id: shareErrorDialogLabel
@@ -359,10 +358,6 @@ Page {
             wrapMode: Text.Wrap
             textFormat: Text.StyledText
         }
-
-        standardButtons: Dialog.Ok
-        modal: true
-
     }
 
     CenteringDialog {
@@ -371,6 +366,8 @@ Page {
         property var waypoint: global.geoMapProvider().createWaypoint()
 
         title: qsTr("Remove from Device?")
+        standardButtons: Dialog.No | Dialog.Yes
+        modal: true
 
         Label {
             width: removeDialog.availableWidth
@@ -379,9 +376,6 @@ Page {
             wrapMode: Text.Wrap
             textFormat: Text.StyledText
         }
-
-        standardButtons: Dialog.No | Dialog.Yes
-        modal: true
 
         onAccepted: {
             global.platformAdaptor().vibrateBrief()
@@ -397,32 +391,22 @@ Page {
 
     }
 
-    Dialog {
+    CenteringDialog {
         id: clearDialog
 
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
-
         title: qsTr("Clear Waypoint Library?")
+        standardButtons: Dialog.No | Dialog.Yes
+        modal: true
 
-        // Width is chosen so that the dialog does not cover the parent in full, height is automatic
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: Math.min(parent.height-view.font.pixelSize, implicitHeight)
+        Component.onCompleted: open()
 
         Label {
-            width: removeDialog.availableWidth
+            width: clearDialog.availableWidth
 
             text: qsTr("Once cleared, the library cannot be restored.")
             wrapMode: Text.Wrap
             textFormat: Text.StyledText
         }
-
-        standardButtons: Dialog.No | Dialog.Yes
-        modal: true
 
         onAccepted: {
             global.platformAdaptor().vibrateBrief()

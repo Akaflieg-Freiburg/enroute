@@ -745,13 +745,12 @@ Page {
 
     }
 
-    Dialog {
+    CenteringDialog {
         id: shareErrorDialog
-        anchors.centerIn: parent
-        parent: Overlay.overlay
 
         title: qsTr("Error Exporting Data…")
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
+        standardButtons: Dialog.Ok
+        modal: true
 
         Label {
             id: shareErrorDialogLabel
@@ -759,10 +758,6 @@ Page {
             wrapMode: Text.Wrap
             textFormat: Text.StyledText
         }
-
-        standardButtons: Dialog.Ok
-        modal: true
-
     }
 
     Shortcut {

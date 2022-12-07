@@ -140,7 +140,7 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
         if (Build.VERSION.SDK_INT >= 30)
 	    {
 		return m_instance.getWindow().getDecorView().getRootWindowInsets()
-		    .getInsets(WindowInsets.Type.systemBars()|WindowInsets.Type.displayCutout()).bottom;
+		    .getInsets(WindowInsets.Type.systemBars()|WindowInsets.Type.ime()|WindowInsets.Type.displayCutout()).bottom;
 	    }
 	
         return m_instance.getWindow().getDecorView().getRootWindowInsets().getSystemWindowInsetBottom();
@@ -152,7 +152,7 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
         if (Build.VERSION.SDK_INT >= 30)
 	    {
 		return m_instance.getWindow().getDecorView().getRootWindowInsets()
-		    .getInsets(WindowInsets.Type.systemBars()|WindowInsets.Type.displayCutout()).left;
+		    .getInsets(WindowInsets.Type.systemBars()|WindowInsets.Type.ime()|WindowInsets.Type.displayCutout()).left;
 	    }
 	
         return m_instance.getWindow().getDecorView().getRootWindowInsets().getSystemWindowInsetLeft();
@@ -164,7 +164,7 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
         if (Build.VERSION.SDK_INT >= 30)
 	    {
 		return m_instance.getWindow().getDecorView().getRootWindowInsets()
-		    .getInsets(WindowInsets.Type.systemBars()|WindowInsets.Type.displayCutout()).right;
+		    .getInsets(WindowInsets.Type.systemBars()|WindowInsets.Type.ime()|WindowInsets.Type.displayCutout()).right;
 	    }
 	
         return m_instance.getWindow().getDecorView().getRootWindowInsets().getSystemWindowInsetRight();
@@ -176,7 +176,7 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
         if (Build.VERSION.SDK_INT >= 30)
 	    {
 		return m_instance.getWindow().getDecorView().getRootWindowInsets()
-		    .getInsets(WindowInsets.Type.systemBars()|WindowInsets.Type.displayCutout()).top;
+		    .getInsets(WindowInsets.Type.systemBars()|WindowInsets.Type.ime()|WindowInsets.Type.displayCutout()).top;
 	    }
 	
         return m_instance.getWindow().getDecorView().getRootWindowInsets().getSystemWindowInsetTop();

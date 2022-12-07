@@ -548,6 +548,7 @@ ApplicationWindow {
 
     }
 
+
     StackView {
         id: stackView
 

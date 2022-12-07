@@ -6,3 +6,4 @@
 * Donation: layout corrupt -- can scroll horizontally
 * PositionInfoPage -- geht auf meinem Telefon über die Bildschirmbreite hinaus.
 
+Check WaypointEditor (when keyboard comes up) and WeatherReport

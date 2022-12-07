@@ -18,31 +18,19 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Layouts
 
+import akaflieg_freiburg.enroute
 import enroute 1.0
 
-Dialog {
+CenteringDialog {
     id: dlg
     title: qsTr("Save Aircraft…")
 
     modal: true
-    focus: true
-
-    // Width and height are chosen so that the dialog does not cover the parent in full
-    width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
-    height: parent.height-2*view.font.pixelSize
-
-    // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-    // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-    parent: Overlay.overlay
-    x: (parent.width-width)/2.0
-    y: (parent.height-height)/2.0
-
-    implicitHeight: height
 
     standardButtons: DialogButtonBox.Cancel | DialogButtonBox.Save
 
@@ -65,8 +53,7 @@ Dialog {
             }
         }
 
-    } // fileDelegate
-
+    }
 
     ColumnLayout {
         anchors.fill: parent
@@ -101,6 +88,7 @@ Dialog {
 
             Layout.fillWidth: true
             Layout.fillHeight: true
+            Layout.preferredHeight: contentHeight
 
             clip: true
             model: global.librarian().entries(Librarian.Aircraft)
@@ -146,15 +134,8 @@ Dialog {
             toast.doToast(qsTr("Aircraft %1 saved").arg(finalFileName))
     }
 
-    Dialog {
+    CenteringDialog {
         id: fileError
-
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: Math.min(parent.height-view.font.pixelSize, implicitHeight)
-
-        anchors.centerIn: parent
-        parent: Overlay.overlay
 
         modal: true
         title: qsTr("An Error Occurred…")
@@ -185,15 +166,8 @@ Dialog {
 
     }  // Dialog: fileError
 
-    Dialog {
+    CenteringDialog {
         id: overwriteDialog
-        anchors.centerIn: parent
-        parent: Overlay.overlay
-
-        // Width is chosen so that the dialog does not cover the parent in full, height is automatic
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: Math.min(parent.height-view.font.pixelSize, implicitHeight)
 
         title: qsTr("Overwrite Aircraft?")
         standardButtons: Dialog.No | Dialog.Yes

@@ -18,9 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
 import enroute 1.0
@@ -74,22 +74,14 @@ Item {
             errorDialog.open()
             return
         }
-    } // Connections
+    }
 
-    Dialog {
+    CenteringDialog {
         id: chooseFRorWPDialog
 
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(view.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: Math.min(view.height-view.font.pixelSize, implicitHeight)
-
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 5.15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
-
         title: qsTr("Import Waypoint Data")
+        standardButtons: Dialog.Abort
+        modal: true
 
         ColumnLayout {
             anchors.fill: parent
@@ -134,25 +126,14 @@ Item {
             onRejected: close()
         }
 
-
-        standardButtons: Dialog.Abort
-        modal: true
     }
 
-    Dialog {
+    CenteringDialog {
         id: importRasterMapDialog
 
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(view.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: Math.min(view.height-view.font.pixelSize, implicitHeight)
-
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 5.15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
-
         title: qsTr("Import Raster Map")
+        standardButtons: Dialog.Ok | Dialog.Cancel
+        modal: true
 
         ColumnLayout {
             anchors.fill: parent
@@ -191,9 +172,6 @@ Item {
             }
         }
 
-        standardButtons: Dialog.Ok | Dialog.Cancel
-        modal: true
-
         onAboutToShow: {
             mapNameRaster.text = ""
             importRasterMapDialog.standardButton(DialogButtonBox.Ok).enabled = false
@@ -210,23 +188,14 @@ Item {
             }
             toast.doToast( qsTr("Raster map imported") )
         }
-
     }
 
-    Dialog {
+    CenteringDialog {
         id: importVectorMapDialog
 
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(view.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: Math.min(view.height-view.font.pixelSize, implicitHeight)
-
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 5.15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
-
         title: qsTr("Import Vector Map")
+        standardButtons: Dialog.Ok | Dialog.Cancel
+        modal: true
 
         ColumnLayout {
             anchors.fill: parent
@@ -265,9 +234,6 @@ Item {
             }
         }
 
-        standardButtons: Dialog.Ok | Dialog.Cancel
-        modal: true
-
         onAboutToShow: {
             mapNameVector.text = ""
             importRasterMapDialog.standardButton(DialogButtonBox.Ok).enabled = false
@@ -287,20 +253,13 @@ Item {
 
     }
 
-    Dialog {
+    CenteringDialog {
         id: importWPLibraryDialog
 
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(view.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: Math.min(view.height-view.font.pixelSize, implicitHeight)
-
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 5.15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
-
         title: qsTr("Import Waypoint Library")
+
+        standardButtons: Dialog.Ok | Dialog.Cancel
+        modal: true
 
         ColumnLayout {
             anchors.fill: parent
@@ -313,9 +272,6 @@ Item {
             }
 
         }
-
-        standardButtons: Dialog.Ok | Dialog.Cancel
-        modal: true
 
         onAccepted: {
             global.platformAdaptor().vibrateBrief()
@@ -333,13 +289,14 @@ Item {
             }
             toast.doToast( qsTr("Waypoints imported") )
         }
-
     }
 
     CenteringDialog {
         id: importFlightRouteDialog
 
         title: qsTr("Import Flight Route?")
+        standardButtons: Dialog.No | Dialog.Yes
+        modal: true
 
         Label {
             id: lbl
@@ -350,9 +307,6 @@ Item {
             wrapMode: Text.Wrap
             textFormat: Text.StyledText
         }
-
-        standardButtons: Dialog.No | Dialog.Yes
-        modal: true
 
         onAccepted: {
             global.platformAdaptor().vibrateBrief()
@@ -373,21 +327,10 @@ Item {
             }
             toast.doToast( qsTr("Flight route imported") )
         }
-
     }
 
-    Dialog {
+    CenteringDialog {
         id: errorDialog
-
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(view.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: Math.min(view.height-view.font.pixelSize, implicitHeight)
-
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
 
         standardButtons: Dialog.Cancel
         modal: true
@@ -402,7 +345,6 @@ Item {
             wrapMode: Text.Wrap
             textFormat: Text.StyledText
         }
-
     }
 
 }

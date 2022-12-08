@@ -125,31 +125,17 @@ Page {
                 color: Material.accent
             }
 
-            WordWrappingSwitchDelegate {
+            WordWrappingItemDelegate {
                 id: showAltAGL
                 text: {
-                    const firstLine = qsTr("Show Altitude AGL")
-                    if (!checked) {
-                        return firstLine + `<br><font color="#606060" size="2">` + qsTr("Currently showing altitude AMSL") + `</font>`
-                    }
-                    return firstLine
+                    const line1 = qsTr("Altimeter")
+                    const line2 = global.settings().showAltitudeAGL ? qsTr("Currently showing altitude AGL") : qsTr("Currently showing altitude AMSL")
+                    return line1 + `<br><font color="#606060" size="2">` + line2 + `</font>`
                 }
 
                 icon.source: "/icons/material/ic_speed.svg"
                 Layout.fillWidth: true
-                Component.onCompleted: {
-                    showAltAGL.checked = global.settings().showAltitudeAGL
-                }
-                onToggled: {
-                    global.platformAdaptor().vibrateBrief()
-                    global.settings().showAltitudeAGL = showAltAGL.checked
-                    var pInfo = global.positionProvider().positionInfo
-                    if (showAltAGL.checked &&
-                            pInfo.isValid() &&
-                            !pInfo.terrainElevationAMSL().isFinite()) {
-                        missingTerrainDataWarning.open()
-                    }
-                }
+                onClicked: altimeterDialog.open()
             }
 
             Label {
@@ -472,6 +458,61 @@ Page {
         }
 
         onAccepted: global.settings().positioningByTrafficDataReceiver = b.checked
+
+    }
+
+    Dialog {
+        id: altimeterDialog
+
+        // Size is chosen so that the dialog does not cover the parent in full
+        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
+
+        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
+        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
+        parent: Overlay.overlay
+        x: (parent.width-width)/2.0
+        y: (parent.height-height)/2.0
+
+        topMargin: view.font.pixelSize/2.0
+        bottomMargin: view.font.pixelSize/2.0
+
+        modal: true
+
+        title: qsTr("Altimeter Setting")
+        standardButtons: Dialog.Ok|Dialog.Cancel
+
+
+        ColumnLayout {
+            width: altimeterDialog.availableWidth
+
+            Label {
+                text: qsTr("Setting for the altimeter in the Navigation Bar, at the bottom of the moving map screen.")
+                Layout.fillWidth: true
+                wrapMode: Text.Wrap
+            }
+
+            WordWrappingCheckDelegate {
+                id: a1
+                text: qsTr("Height above ground level (AGL)")
+                Layout.fillWidth: true
+                checked: global.settings().showAltitudeAGL
+                onCheckedChanged: b1.checked = !checked
+            }
+
+            WordWrappingCheckDelegate {
+                id: b1
+                text: qsTr("Height above main sea level (MSL)")
+                Layout.fillWidth: true
+                onCheckedChanged: a1.checked = !checked
+            }
+        }
+
+        onAboutToShow: {
+            a1.checked = global.settings().showAltitudeAGL
+            b1.checked = !a1.checked
+        }
+
+        onAccepted: global.settings().showAltitudeAGL = a1.checked
 
     }
 

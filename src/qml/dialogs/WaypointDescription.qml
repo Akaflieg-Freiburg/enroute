@@ -71,7 +71,7 @@ Dialog {
     y: (parent.height-height)/2.0
 
     modal: true
-    standardButtons: Dialog.Cancel
+    standardButtons: Dialog.Close
     focus: true
 
     Component {

@@ -68,112 +68,120 @@ Dialog {
         longInput.value = waypoint.coordinate.longitude
     }
 
-    GridLayout {
-        width: waypointEditorDialog.availableWidth
-        columns: 2
+    ScrollView {
+        id: sv
+        anchors.fill: parent
 
-        Label {
-            Layout.alignment: Qt.AlignBaseline
-            text: qsTr("Name")
+        contentWidth: availableWidth // Disable horizontal scrolling
+
+        clip: true
+
+        GridLayout {
+            width: sv.availableWidth-0.5*view.font.pixelSize
+
+            columns: 2
+
+            Label {
+                Layout.alignment: Qt.AlignBaseline
+                text: qsTr("Name")
+            }
+
+            TextField {
+                id: wpNameField
+
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignBaseline
+                Layout.minimumWidth: view.font.pixelSize*5
+
+                text: waypoint.extendedName
+                focus: true
+
+                placeholderText: qsTr("undefined")
+            }
+
+            Label {
+                Layout.alignment: Qt.AlignBaseline
+                Layout.columnSpan: 2
+            }
+
+            Label {
+                Layout.alignment: Qt.AlignBaseline
+                text: qsTr("Latitude")
+            }
+
+            DegreeInput {
+                id: latInput
+
+                Layout.fillWidth: true
+                currentIndex: formatChoice.currentIndex
+                value: waypoint.coordinate.latitude
+                minValue: -90.0
+                maxValue: 90.0
+
+                onAcceptableInputChanged: enableOk()
+            }
+
+            Label {
+                Layout.alignment: Qt.AlignBaseline
+                text: qsTr("Longitude")
+            }
+
+            DegreeInput {
+                id: longInput
+
+                Layout.fillWidth: true
+                currentIndex: formatChoice.currentIndex
+                value: waypoint.coordinate.longitude
+                minValue: -180.0
+                maxValue: 180.0
+
+                onAcceptableInputChanged: enableOk()
+            }
+
+            Label {
+                Layout.alignment: Qt.AlignBaseline
+                text: qsTr("Format")
+            }
+
+            ComboBox {
+                id: formatChoice
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignBaseline
+
+                model: [ qsTr("Degrees"), qsTr("Degrees and Minutes"), qsTr("Degrees, Minutes and Seconds") ]
+            }
+
+            Label {
+                Layout.alignment: Qt.AlignBaseline
+                Layout.columnSpan: 2
+            }
+
+            Label {
+                Layout.alignment: Qt.AlignBaseline
+                text: qsTr("Elevation")
+            }
+
+            ElevationInput {
+                id: eleField
+
+                Layout.fillWidth: true
+                currentIndex: eleFormatChoice.currentIndex
+                valueMeter: waypoint.coordinate.altitude
+            }
+
+            Label {
+                Layout.alignment: Qt.AlignBaseline
+                text: qsTr("Unit")
+            }
+
+            ComboBox {
+                id: eleFormatChoice
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignBaseline
+
+                model: [ qsTr("Feet"), qsTr("Meter") ]
+            }
         }
-
-        TextField {
-            id: wpNameField
-
-            Layout.fillWidth: true
-            Layout.alignment: Qt.AlignBaseline
-            Layout.minimumWidth: view.font.pixelSize*5
-
-            text: waypoint.extendedName
-            focus: true
-
-            placeholderText: qsTr("undefined")
-        }
-
-        Label {
-            Layout.alignment: Qt.AlignBaseline
-            Layout.columnSpan: 2
-        }
-
-        Label {
-            Layout.alignment: Qt.AlignBaseline
-            text: qsTr("Latitude")
-        }
-
-        DegreeInput {
-            id: latInput
-
-            Layout.fillWidth: true
-            currentIndex: formatChoice.currentIndex
-            value: waypoint.coordinate.latitude
-            minValue: -90.0
-            maxValue: 90.0
-
-            onAcceptableInputChanged: enableOk()
-        }
-
-        Label {
-            Layout.alignment: Qt.AlignBaseline
-            text: qsTr("Longitude")
-        }
-
-        DegreeInput {
-            id: longInput
-
-            Layout.fillWidth: true
-            currentIndex: formatChoice.currentIndex
-            value: waypoint.coordinate.longitude
-            minValue: -180.0
-            maxValue: 180.0
-
-            onAcceptableInputChanged: enableOk()
-        }
-
-        Label {
-            Layout.alignment: Qt.AlignBaseline
-            text: qsTr("Format")
-        }
-
-        ComboBox {
-            id: formatChoice
-            Layout.fillWidth: true
-            Layout.alignment: Qt.AlignBaseline
-
-            model: [ qsTr("Degrees"), qsTr("Degrees and Minutes"), qsTr("Degrees, Minutes and Seconds") ]
-        }
-
-        Label {
-            Layout.alignment: Qt.AlignBaseline
-            Layout.columnSpan: 2
-        }
-
-        Label {
-            Layout.alignment: Qt.AlignBaseline
-            text: qsTr("Elevation")
-        }
-
-        ElevationInput {
-            id: eleField
-
-            Layout.fillWidth: true
-            currentIndex: eleFormatChoice.currentIndex
-            valueMeter: waypoint.coordinate.altitude
-        }
-
-        Label {
-            Layout.alignment: Qt.AlignBaseline
-            text: qsTr("Unit")
-        }
-
-        ComboBox {
-            id: eleFormatChoice
-            Layout.fillWidth: true
-            Layout.alignment: Qt.AlignBaseline
-
-            model: [ qsTr("Feet"), qsTr("Meter") ]
-        }
-
-
     }
 
     function enableOk() {

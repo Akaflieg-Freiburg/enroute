@@ -30,7 +30,55 @@ Page {
     id: settingsPage
     title: qsTr("Settings")
 
-    header: StandardHeader {}
+
+    header: ToolBar {
+
+        Material.foreground: "white"
+        height: 60
+
+        ToolButton {
+            id: backButton
+
+            anchors.left: parent.left
+            anchors.verticalCenter: parent.verticalCenter
+
+            icon.source: "/icons/material/ic_arrow_back.svg"
+
+            onClicked: {
+                global.platformAdaptor().vibrateBrief()
+                stackView.pop()
+            }
+        }
+
+        Label {
+            id: lbl
+
+            anchors.verticalCenter: parent.verticalCenter
+
+            anchors.left: parent.left
+            anchors.leftMargin: 72
+            anchors.right: headerMenuToolButton.left
+
+            text: stackView.currentItem.title
+            elide: Label.ElideRight
+            font.pixelSize: 20
+            verticalAlignment: Qt.AlignVCenter
+        }
+
+        ToolButton {
+            id: headerMenuToolButton
+
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+
+            icon.source: "/icons/material/ic_info_outline.svg"
+            onClicked: {
+                global.platformAdaptor().vibrateBrief()
+                openManual("03-reference/settings.html")
+            }
+        }
+
+    }
 
     ScrollView {
         id: view
@@ -231,7 +279,7 @@ Page {
                 height: 3
             }
 
-        } // ColumnLayout
+        }
     }
 
     LongTextDialog {

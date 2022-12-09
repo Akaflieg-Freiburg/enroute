@@ -433,13 +433,7 @@ Page {
             ScrollView {
                 anchors.fill: parent
 
-                contentHeight: co.height
-                contentWidth: parent.width
-
-                // The visibility behavior of the vertical scroll bar is a little complex.
-                // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
-                ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-                ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
+                contentWidth: availableWidth
 
                 clip: true
 

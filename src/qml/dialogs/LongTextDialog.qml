@@ -46,8 +46,6 @@ CenteringDialog {
             linkColor: Material.accent
             wrapMode: Text.Wrap
             onLinkActivated: Qt.openUrlExternally(link)
-        } // Label
-
-    } // ScrollView
-
-} // Dialog
+        }
+    }
+}

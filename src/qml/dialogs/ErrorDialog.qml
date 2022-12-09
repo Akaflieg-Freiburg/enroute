@@ -22,12 +22,10 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
 
-Dialog {
-    id: dlg
+import akaflieg_freiburg.enroute
 
-    // Size is chosen so that the dialog does not cover the parent in full
-    width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
-    height: Math.min(parent.height-view.font.pixelSize, implicitHeight)
+CenteringDialog {
+    id: dlg
 
     modal: true
     title: dialogLoader.title
@@ -36,14 +34,7 @@ Dialog {
     ScrollView{
         id: sv
         anchors.fill: parent
-
-        contentHeight: lbl.height
-        contentWidth: dlg.availableWidth
-
-        // The visibility behavior of the vertical scroll bar is a little complex.
-        // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
-        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-        ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
+        contentWidth: availableWidth // Disable horizontal scrolling
 
         clip: true
 

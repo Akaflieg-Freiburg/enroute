@@ -354,54 +354,28 @@ Page {
         textInput.text = cache
     }
 
-    Dialog {
+    CenteringDialog {
         id: fileError
-
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: Math.min(parent.height-view.font.pixelSize, implicitHeight)
-
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (view.width-width)/2.0
-        y: (view.height-height)/2.0
 
         modal: true
         title: qsTr("An Error Occurred…")
         standardButtons: Dialog.Ok
 
         ScrollView{
-            id: sv
             anchors.fill: parent
-
-            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-
-            // The visibility behavior of the vertical scroll bar is a little complex.
-            // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
-            ScrollBar.vertical.policy: (height < lbl.implicitHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
-            ScrollBar.vertical.interactive: false
+            contentWidth: availableWidth // Disable horizontal scrolling
 
             clip: true
 
-            // The Label that we really want to show is wrapped into an Item. This allows
-            // to set implicitHeight, and thus compute the implicitHeight of the Dialog
-            // without binding loops
-            Item {
-                implicitHeight: lbl.implicitHeight
+            Label {
+                id: lbl
                 width: fileError.availableWidth
-
-                Label {
-                    id: lbl
-                    width: fileError.availableWidth
-                    textFormat: Text.StyledText
-                    linkColor: Material.accent
-                    wrapMode: Text.Wrap
-                    onLinkActivated: Qt.openUrlExternally(link)
-                } // Label
-            } // Item
-        } // ScrollView
-
+                textFormat: Text.StyledText
+                linkColor: Material.accent
+                wrapMode: Text.Wrap
+                onLinkActivated: Qt.openUrlExternally(link)
+            }
+        }
     }
 
     LongTextDialog {
@@ -416,6 +390,8 @@ Page {
         id: overwriteDialog
 
         title: qsTr("Overwrite Current Flight Route?")
+        standardButtons: Dialog.No | Dialog.Yes
+        modal: true
 
         Label {
             width: overwriteDialog.availableWidth
@@ -425,9 +401,6 @@ Page {
             textFormat: Text.StyledText
         }
 
-        standardButtons: Dialog.No | Dialog.Yes
-        modal: true
-
         onAccepted: {
             global.platformAdaptor().vibrateBrief()
             page.openFromLibrary()
@@ -436,35 +409,22 @@ Page {
             global.platformAdaptor().vibrateBrief()
             close()
         }
-
     }
 
-    Dialog {
+    CenteringDialog {
         id: removeDialog
 
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
-
         title: qsTr("Remove from Device?")
-
-        // Width is chosen so that the dialog does not cover the parent in full, height is automatic
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: Math.min(parent.height-view.font.pixelSize, implicitHeight)
+        standardButtons: Dialog.No | Dialog.Yes
+        modal: true
 
         Label {
-            width: overwriteDialog.availableWidth
+            width: removeDialog.availableWidth
 
             text: qsTr("Once the flight route <strong>%1</strong> is removed, it cannot be restored.").arg(page.finalFileName)
             wrapMode: Text.Wrap
             textFormat: Text.StyledText
         }
-
-        standardButtons: Dialog.No | Dialog.Yes
-        modal: true
 
         onAccepted: {
             global.platformAdaptor().vibrateBrief()
@@ -477,39 +437,23 @@ Page {
             page.reloadFlightRouteList()
             close()
         }
-
     }
 
-    Dialog {
+    CenteringDialog {
         id: renameDialog
 
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
-
         title: qsTr("Rename Flight Route")
-
         standardButtons: Dialog.Cancel
         modal: true
-        focus: true
-
-        // Width is chosen so that the dialog does not cover the parent in full, height is automatic
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: Math.min(parent.height-view.font.pixelSize, implicitHeight)
-
 
         ColumnLayout {
             width: renameDialog.availableWidth
 
             Label {
-                width: overwriteDialog.availableWidth
+                Layout.fillWidth: true
 
                 text: qsTr("Enter new name for the route <strong>%1</strong>.").arg(finalFileName)
                 color: Material.primary
-                Layout.fillWidth: true
                 wrapMode: Text.Wrap
                 textFormat: Text.StyledText
             }
@@ -525,7 +469,7 @@ Page {
                 onAccepted: renameDialog.onAccepted()
             }
 
-        } // ColumnLayout
+        }
 
         footer: DialogButtonBox {
             ToolButton {
@@ -550,20 +494,16 @@ Page {
             global.platformAdaptor().vibrateBrief()
             close()
         }
-
     }
 
-    Dialog {
+    CenteringDialog {
         id: shareErrorDialog
 
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
-
         title: qsTr("Error Exporting Data…")
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
+        standardButtons: Dialog.Ok
+        modal: true
+
+        Component.onCompleted: open()
 
         Label {
             id: shareErrorDialogLabel
@@ -572,10 +512,6 @@ Page {
             wrapMode: Text.Wrap
             textFormat: Text.StyledText
         }
-
-        standardButtons: Dialog.Ok
-        modal: true
-
     }
 
 } // Page

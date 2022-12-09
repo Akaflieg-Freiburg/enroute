@@ -18,12 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtPositioning 5.15
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Layouts 1.15
-import QtQuick.Shapes 1.15
+import QtPositioning
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Layouts
+import QtQuick.Shapes
 
 import akaflieg_freiburg.enroute
 import enroute 1.0
@@ -61,7 +61,7 @@ CenteringDialog {
     }
 
     modal: true
-    standardButtons: Dialog.Cancel
+    standardButtons: Dialog.Close
     focus: true
 
     Component {

@@ -18,11 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Controls
 
 LongTextDialog {
-    id: frRld
 
     closePolicy: Popup.NoAutoClose
     text:  global.librarian().getStringFromRessource(":text/firstStart.html")
@@ -41,5 +40,5 @@ LongTextDialog {
             global.settings().acceptedTerms = 1
         }
         onRejected: Qt.quit()
-    } // DialogButtonBox
+    }
 }

@@ -433,13 +433,7 @@ Page {
             ScrollView {
                 anchors.fill: parent
 
-                contentHeight: co.height
-                contentWidth: parent.width
-
-                // The visibility behavior of the vertical scroll bar is a little complex.
-                // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
-                ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-                ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
+                contentWidth: availableWidth
 
                 clip: true
 
@@ -745,13 +739,12 @@ Page {
 
     }
 
-    Dialog {
+    CenteringDialog {
         id: shareErrorDialog
-        anchors.centerIn: parent
-        parent: Overlay.overlay
 
         title: qsTr("Error Exporting Data…")
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
+        standardButtons: Dialog.Ok
+        modal: true
 
         Label {
             id: shareErrorDialogLabel
@@ -759,10 +752,6 @@ Page {
             wrapMode: Text.Wrap
             textFormat: Text.StyledText
         }
-
-        standardButtons: Dialog.Ok
-        modal: true
-
     }
 
     Shortcut {

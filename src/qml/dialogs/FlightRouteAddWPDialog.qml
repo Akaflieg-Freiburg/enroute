@@ -18,29 +18,19 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Layouts
+
+import akaflieg_freiburg.enroute
 
 import "../items"
 
-Dialog {
+CenteringDialog {
     id: dlg
     title: qsTr("Add Waypoint to Route")
     modal: true
-    focus: true
-
-    // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-    // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-    parent: Overlay.overlay
-    x: (parent.width-width)/2.0
-    y: (parent.height-height)/2.0
-
-    // Size is chosen so that the dialog does not cover the parent in full
-    width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
-    height: parent.height-2*view.font.pixelSize
-    implicitHeight: height
 
     standardButtons: DialogButtonBox.Cancel
 
@@ -97,13 +87,12 @@ Dialog {
 
             Layout.fillHeight: true
             Layout.fillWidth: true
+            Layout.preferredHeight: contentHeight
 
             clip: true
 
-
             model: global.geoMapProvider().filteredWaypoints(textInput.displayText)
             delegate: waypointDelegate
-            ScrollIndicator.vertical: ScrollIndicator {}
 
             Label {
                 anchors.fill: wpList
@@ -120,7 +109,6 @@ Dialog {
             }
 
         }
-
 
     }
 

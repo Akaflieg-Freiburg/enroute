@@ -21,7 +21,9 @@
 import QtQuick
 import QtQuick.Controls
 
-Dialog {
+import akaflieg_freiburg.enroute
+
+CenteringDialog {
     id: dialogMain
 
     // This is the text to be shown
@@ -41,8 +43,6 @@ Dialog {
             textFormat: Text.MarkdownText
             wrapMode: Text.Wrap
             onLinkActivated: Qt.openUrlExternally(link)
-        } // Label
-
-    } // ScrollView
-
-} // Dialog
+        }
+    }
+}

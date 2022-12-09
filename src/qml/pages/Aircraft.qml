@@ -124,8 +124,11 @@ Page {
         contentWidth: width
         clip: true
 
+        // If virtual keyboard come up, make sure that the focused element is visible
         onHeightChanged: {
-            contentItem.contentY = activeFocusControl.y
+            if (activeFocusControl != null) {
+                contentItem.contentY = activeFocusControl.y
+            }
         }
 
         GridLayout {

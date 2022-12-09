@@ -206,9 +206,6 @@ protected:
     double _safeInsetRight {0.0};
     double _safeInsetTop {0.0};
 
-    // Computes the values of the member variables _safeInset* and emits the notification signals as appropriate.
-    virtual void updateSafeInsets() {};
-
 private:
     Q_DISABLE_COPY_MOVE(PlatformAdaptor_Abstract)
 

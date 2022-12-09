@@ -128,7 +128,7 @@ Page {
             WordWrappingItemDelegate {
                 id: showAltAGL
                 text: {
-                    const line1 = qsTr("Altimeter")
+                    const line1 = qsTr("Altimeter Mode")
                     const line2 = global.settings().showAltitudeAGL ? qsTr("Currently showing altitude AGL") : qsTr("Currently showing altitude AMSL")
                     return line1 + `<br><font color="#606060" size="2">` + line2 + `</font>`
                 }
@@ -155,7 +155,7 @@ Page {
                     } else {
                         secondLineString = qsTr("Currently using built-in satnav receiver")
                     }
-                    return qsTr("Primary position data source") +
+                    return qsTr("Primary Position Data Source") +
                             `<br><font color="#606060" size="2">` +
                             secondLineString +
                             `</font>`
@@ -486,7 +486,7 @@ Page {
             width: altimeterDialog.availableWidth
 
             Label {
-                text: qsTr("Setting for the altimeter in the Navigation Bar, at the bottom of the moving map screen.")
+                text: qsTr("This setting applies to the altimeter in the Navigation Bar, at the bottom of the moving map screen.")
                 Layout.fillWidth: true
                 wrapMode: Text.Wrap
             }
@@ -501,7 +501,7 @@ Page {
 
             WordWrappingCheckDelegate {
                 id: b1
-                text: qsTr("Height above main sea level (MSL)")
+                text: qsTr("Height above main sea level (AMSL)")
                 Layout.fillWidth: true
                 onCheckedChanged: a1.checked = !checked
             }

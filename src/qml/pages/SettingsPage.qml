@@ -119,7 +119,7 @@ Page {
             Label {
                 Layout.leftMargin: view.font.pixelSize
                 Layout.fillWidth: true
-                text: qsTr("Navigation")
+                text: qsTr("Navigation Bar")
                 font.pixelSize: view.font.pixelSize*1.2
                 font.bold: true
                 color: Material.accent
@@ -478,7 +478,7 @@ Page {
 
         modal: true
 
-        title: qsTr("Altimeter Setting")
+        title: qsTr("Altimeter Mode")
         standardButtons: Dialog.Ok|Dialog.Cancel
 
 

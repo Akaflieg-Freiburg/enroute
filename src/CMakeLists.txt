@@ -326,6 +326,7 @@ endif()
 qt_add_qml_module(${PROJECT_NAME}
     URI akaflieg_freiburg.enroute
     VERSION 1.0
+    NO_RESOURCE_TARGET_PATH
     QML_FILES
     qml/dialogs/CenteringDialog.qml
 )

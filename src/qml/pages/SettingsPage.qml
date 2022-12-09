@@ -34,7 +34,10 @@ Page {
     header: ToolBar {
 
         Material.foreground: "white"
-        height: 60
+        height: 60 + global.platformAdaptor().safeInsetTop
+        leftPadding: global.platformAdaptor().safeInsetLeft
+        rightPadding: global.platformAdaptor().safeInsetRight
+        topPadding: global.platformAdaptor().safeInsetTop
 
         ToolButton {
             id: backButton

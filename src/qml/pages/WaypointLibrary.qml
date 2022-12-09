@@ -289,7 +289,7 @@ Page {
                     } // removeAction
                 } // AutoSizingMenu
 
-            } // ToolButton
+            }
 
         }
 
@@ -397,8 +397,6 @@ Page {
         title: qsTr("Clear Waypoint Library?")
         standardButtons: Dialog.No | Dialog.Yes
         modal: true
-
-        Component.onCompleted: open()
 
         Label {
             width: clearDialog.availableWidth

@@ -30,7 +30,55 @@ Page {
     id: settingsPage
     title: qsTr("Settings")
 
-    header: StandardHeader {}
+
+    header: ToolBar {
+
+        Material.foreground: "white"
+        height: 60
+
+        ToolButton {
+            id: backButton
+
+            anchors.left: parent.left
+            anchors.verticalCenter: parent.verticalCenter
+
+            icon.source: "/icons/material/ic_arrow_back.svg"
+
+            onClicked: {
+                global.platformAdaptor().vibrateBrief()
+                stackView.pop()
+            }
+        }
+
+        Label {
+            id: lbl
+
+            anchors.verticalCenter: parent.verticalCenter
+
+            anchors.left: parent.left
+            anchors.leftMargin: 72
+            anchors.right: headerMenuToolButton.left
+
+            text: stackView.currentItem.title
+            elide: Label.ElideRight
+            font.pixelSize: 20
+            verticalAlignment: Qt.AlignVCenter
+        }
+
+        ToolButton {
+            id: headerMenuToolButton
+
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+
+            icon.source: "/icons/material/ic_info_outline.svg"
+            onClicked: {
+                global.platformAdaptor().vibrateBrief()
+                openManual("03-reference/settings.html")
+            }
+        }
+
+    }
 
     ScrollView {
         anchors.fill: parent
@@ -123,37 +171,23 @@ Page {
             Label {
                 Layout.leftMargin: view.font.pixelSize
                 Layout.fillWidth: true
-                text: qsTr("Navigation")
+                text: qsTr("Navigation Bar")
                 font.pixelSize: view.font.pixelSize*1.2
                 font.bold: true
                 color: Material.accent
             }
 
-            WordWrappingSwitchDelegate {
+            WordWrappingItemDelegate {
                 id: showAltAGL
                 text: {
-                    const firstLine = qsTr("Show Altitude AGL")
-                    if (!checked) {
-                        return firstLine + `<br><font color="#606060" size="2">` + qsTr("Currently showing altitude AMSL") + `</font>`
-                    }
-                    return firstLine
+                    const line1 = qsTr("Altimeter Mode")
+                    const line2 = global.settings().showAltitudeAGL ? qsTr("Currently showing altitude AGL") : qsTr("Currently showing altitude AMSL")
+                    return line1 + `<br><font color="#606060" size="2">` + line2 + `</font>`
                 }
 
                 icon.source: "/icons/material/ic_speed.svg"
                 Layout.fillWidth: true
-                Component.onCompleted: {
-                    showAltAGL.checked = global.settings().showAltitudeAGL
-                }
-                onToggled: {
-                    global.platformAdaptor().vibrateBrief()
-                    global.settings().showAltitudeAGL = showAltAGL.checked
-                    var pInfo = global.positionProvider().positionInfo
-                    if (showAltAGL.checked &&
-                            pInfo.isValid() &&
-                            !pInfo.terrainElevationAMSL().isFinite()) {
-                        missingTerrainDataWarning.open()
-                    }
-                }
+                onClicked: altimeterDialog.open()
             }
 
             Label {
@@ -173,7 +207,7 @@ Page {
                     } else {
                         secondLineString = qsTr("Currently using built-in satnav receiver")
                     }
-                    return qsTr("Primary position data source") +
+                    return qsTr("Primary Position Data Source") +
                             `<br><font color="#606060" size="2">` +
                             secondLineString +
                             `</font>`
@@ -249,7 +283,7 @@ Page {
                 height: 3
             }
 
-        } // ColumnLayout
+        }
     }
 
     LongTextDialog {
@@ -434,6 +468,61 @@ Page {
         }
 
         onAccepted: global.settings().positioningByTrafficDataReceiver = b.checked
+
+    }
+
+    Dialog {
+        id: altimeterDialog
+
+        // Size is chosen so that the dialog does not cover the parent in full
+        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
+
+        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
+        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
+        parent: Overlay.overlay
+        x: (parent.width-width)/2.0
+        y: (parent.height-height)/2.0
+
+        topMargin: view.font.pixelSize/2.0
+        bottomMargin: view.font.pixelSize/2.0
+
+        modal: true
+
+        title: qsTr("Altimeter Mode")
+        standardButtons: Dialog.Ok|Dialog.Cancel
+
+
+        ColumnLayout {
+            width: altimeterDialog.availableWidth
+
+            Label {
+                text: qsTr("This setting applies to the altimeter in the Navigation Bar, at the bottom of the moving map screen.")
+                Layout.fillWidth: true
+                wrapMode: Text.Wrap
+            }
+
+            WordWrappingCheckDelegate {
+                id: a1
+                text: qsTr("Height above ground level (AGL)")
+                Layout.fillWidth: true
+                checked: global.settings().showAltitudeAGL
+                onCheckedChanged: b1.checked = !checked
+            }
+
+            WordWrappingCheckDelegate {
+                id: b1
+                text: qsTr("Height above main sea level (AMSL)")
+                Layout.fillWidth: true
+                onCheckedChanged: a1.checked = !checked
+            }
+        }
+
+        onAboutToShow: {
+            a1.checked = global.settings().showAltitudeAGL
+            b1.checked = !a1.checked
+        }
+
+        onAccepted: global.settings().showAltitudeAGL = a1.checked
 
     }
 

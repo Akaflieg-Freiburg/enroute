@@ -61,7 +61,7 @@ CenteringDialog {
     }
 
     modal: true
-    standardButtons: Dialog.Cancel
+    standardButtons: Dialog.Close
     focus: true
 
     Component {

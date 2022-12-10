@@ -40,10 +40,10 @@ Page {
     header: ToolBar {
 
         Material.foreground: "white"
-        height: 60 + global.platformAdaptor().safeInsetTop
-        leftPadding: global.platformAdaptor().safeInsetLeft
-        rightPadding: global.platformAdaptor().safeInsetRight
-        topPadding: global.platformAdaptor().safeInsetTop
+        height: 60 + SafeInsets.top
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
+        topPadding: SafeInsets.top
 
         ToolButton {
                 id: backButton
@@ -117,9 +117,9 @@ Page {
     ScrollView {
         id: acftTab
         anchors.fill: parent
-        anchors.leftMargin: global.platformAdaptor().safeInsetLeft
-        anchors.rightMargin: global.platformAdaptor().safeInsetRight
-        anchors.bottomMargin: global.platformAdaptor().safeInsetBottom
+        anchors.leftMargin: SafeInsets.left
+        anchors.rightMargin: SafeInsets.right
+        anchors.bottomMargin: SafeInsets.bottom
 
         contentWidth: width
         clip: true

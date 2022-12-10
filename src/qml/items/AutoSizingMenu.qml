@@ -21,11 +21,13 @@
 import QtQuick
 import QtQuick.Controls
 
+import akaflieg_freiburg.enroute
+
 Menu {
-    bottomMargin: global.platformAdaptor().safeInsetBottom
-    leftMargin: global.platformAdaptor().safeInsetLeft
-    rightMargin: global.platformAdaptor().safeInsetRight
-    topMargin: global.platformAdaptor().safeInsetTop
+    bottomMargin: SafeInsets.bottom
+    leftMargin: SafeInsets.left
+    rightMargin: SafeInsets.right
+    topMargin: SafeInsets.top
 
     width: {
         var result = 0;

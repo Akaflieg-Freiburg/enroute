@@ -23,6 +23,7 @@ import QtQuick.Controls
 import QtQuick.Controls.Material
 import QtQuick.Layouts
 
+import akaflieg_freiburg.enroute
 import "../items"
 
 Page {
@@ -36,8 +37,8 @@ Page {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        leftPadding: global.platformAdaptor().safeInsetLeft
-        rightPadding: global.platformAdaptor().safeInsetRight
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
 
         currentIndex: sv.currentIndex
 
@@ -54,9 +55,9 @@ Page {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: global.platformAdaptor().safeInsetBottom
-        anchors.leftMargin: global.platformAdaptor().safeInsetLeft
-        anchors.rightMargin: global.platformAdaptor().safeInsetRight
+        anchors.bottomMargin: SafeInsets.bottom
+        anchors.leftMargin: SafeInsets.left
+        anchors.rightMargin: SafeInsets.right
 
         clip: true
         currentIndex: bar.currentIndex

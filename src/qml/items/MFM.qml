@@ -547,7 +547,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         icon.source: "/icons/material/ic_menu.svg"
 
         anchors.left: parent.left
-        anchors.leftMargin: 0.5*view.font.pixelSize + global.platformAdaptor().safeInsetLeft
+        anchors.leftMargin: 0.5*view.font.pixelSize + SafeInsets.left
         anchors.top: remainingRoute.bottom
         anchors.topMargin: 0.5*view.font.pixelSize
 
@@ -602,7 +602,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         enabled: !flightMap.followGPS
 
         anchors.left: parent.left
-        anchors.leftMargin: 0.5*view.font.pixelSize + global.platformAdaptor().safeInsetLeft
+        anchors.leftMargin: 0.5*view.font.pixelSize + SafeInsets.left
         anchors.bottom: trafficDataReceiverButton.top
         anchors.bottomMargin: trafficDataReceiverButton.visible ? 0.5*view.font.pixelSize : 1.5*view.font.pixelSize
 
@@ -626,7 +626,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         visible: !global.trafficDataProvider().receivingHeartbeat
 
         anchors.left: parent.left
-        anchors.leftMargin: 0.5*view.font.pixelSize + global.platformAdaptor().safeInsetLeft
+        anchors.leftMargin: 0.5*view.font.pixelSize + SafeInsets.left
         anchors.bottom: navBar.top
         anchors.bottomMargin: visible ? 1.5*view.font.pixelSize : 0
 
@@ -650,7 +650,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         autoRepeat: true
 
         anchors.right: parent.right
-        anchors.rightMargin: 0.5*view.font.pixelSize + global.platformAdaptor().safeInsetRight
+        anchors.rightMargin: 0.5*view.font.pixelSize + SafeInsets.right
         anchors.bottom: zoomOut.top
         anchors.bottomMargin: 0.5*view.font.pixelSize
 
@@ -673,7 +673,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         autoRepeat: true
 
         anchors.right: parent.right
-        anchors.rightMargin: 0.5*view.font.pixelSize + global.platformAdaptor().safeInsetRight
+        anchors.rightMargin: 0.5*view.font.pixelSize + SafeInsets.right
         anchors.bottom: navBar.top
         anchors.bottomMargin: 1.5*view.font.pixelSize
 

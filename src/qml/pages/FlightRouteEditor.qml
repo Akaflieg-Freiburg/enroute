@@ -168,10 +168,10 @@ Page {
     header: ToolBar {
 
         Material.foreground: "white"
-        height: 60 + global.platformAdaptor().safeInsetTop
-        leftPadding: global.platformAdaptor().safeInsetLeft
-        rightPadding: global.platformAdaptor().safeInsetRight
-        topPadding: global.platformAdaptor().safeInsetTop
+        height: 60 + SafeInsets.top
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
+        topPadding: SafeInsets.top
 
         ToolButton {
             id: backButton
@@ -221,7 +221,7 @@ Page {
                 id: headerMenuX
                 cascade: true
 
-                topMargin: global.platformAdaptor().safeInsetTop
+                topMargin: SafeInsets.top
 
                 MenuItem {
                     text: qsTr("View Library…")
@@ -388,8 +388,8 @@ Page {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        leftPadding: global.platformAdaptor().safeInsetLeft
-        rightPadding: global.platformAdaptor().safeInsetRight
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
 
         currentIndex: sv.currentIndex
         TabButton { text: qsTr("Route") }
@@ -405,8 +405,8 @@ Page {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.leftMargin: global.platformAdaptor().safeInsetLeft
-        anchors.rightMargin: global.platformAdaptor().safeInsetRight
+        anchors.leftMargin: SafeInsets.left
+        anchors.rightMargin: SafeInsets.right
 
         clip: true
         currentIndex: bar.currentIndex
@@ -640,7 +640,7 @@ Page {
         width: parent.width
         height: implicitHeight
         Material.elevation: 3
-        bottomPadding: global.platformAdaptor().safeInsetBottom
+        bottomPadding: SafeInsets.bottom
 
         ColumnLayout {
             width: parent.width

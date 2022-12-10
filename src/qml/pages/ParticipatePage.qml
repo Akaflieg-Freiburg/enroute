@@ -23,6 +23,7 @@ import QtQuick.Controls
 import QtQuick.Controls.Material
 import QtQuick.Layouts
 
+import akaflieg_freiburg.enroute
 import "../items"
 
 Page {
@@ -39,9 +40,9 @@ Page {
 
         clip: true
 
-        bottomPadding: global.platformAdaptor().safeInsetBottom
-        leftPadding: global.platformAdaptor().safeInsetLeft
-        rightPadding: global.platformAdaptor().safeInsetRight
+        bottomPadding: SafeInsets.bottom
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
             
         Label {
                 id: lbl1

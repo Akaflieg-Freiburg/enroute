@@ -33,6 +33,7 @@ Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
 {
     connect(QGuiApplication::primaryScreen(), &QScreen::orientationChanged, this, &PlatformAdaptor::updateSafeInsets);
     connect(QGuiApplication::inputMethod(), &QInputMethod::keyboardRectangleChanged, this, &PlatformAdaptor::updateSafeInsets);
+    connect(QGuiApplication::inputMethod(), &QInputMethod::visibleChanged, this, &PlatformAdaptor::updateSafeInsets);
 
     updateSafeInsets();
 }

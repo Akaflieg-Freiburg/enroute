@@ -23,6 +23,7 @@ import QtQuick.Controls
 import QtQuick.Controls.Material
 import QtQuick.Layouts
 
+import akaflieg_freiburg.enroute
 import enroute 1.0
 import "../dialogs"
 import "../items"
@@ -188,10 +189,10 @@ Page {
     header: ToolBar {
 
         Material.foreground: "white"
-        height: 60 + global.platformAdaptor().safeInsetTop
-        leftPadding: global.platformAdaptor().safeInsetLeft
-        rightPadding: global.platformAdaptor().safeInsetRight
-        topPadding: global.platformAdaptor().safeInsetTop
+        height: 60 + SafeInsets.top
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
+        topPadding: SafeInsets.top
 
         ToolButton {
             id: backButton
@@ -278,8 +279,8 @@ Page {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        leftPadding: global.platformAdaptor().safeInsetLeft
-        rightPadding: global.platformAdaptor().safeInsetRight
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
 
         currentIndex: sv.currentIndex
         TabButton {
@@ -301,9 +302,9 @@ Page {
             anchors.right: parent.right
             anchors.bottom: parent.bottom
 
-            anchors.bottomMargin: footer.visible ? 0 : global.platformAdaptor().safeInsetBottom
-            anchors.leftMargin: global.platformAdaptor().safeInsetLeft
-            anchors.rightMargin: global.platformAdaptor().safeInsetRight
+            anchors.bottomMargin: footer.visible ? 0 : SafeInsets.bottom
+            anchors.leftMargin: SafeInsets.left
+            anchors.rightMargin: SafeInsets.right
 
             clip: true
 
@@ -466,7 +467,7 @@ Page {
         Material.elevation: 3
         visible: (!global.dataManager().mapList.downloading && !global.dataManager().mapList.hasFile) || ((!global.dataManager().items.downloading) && (global.dataManager().mapsAndData.updateSize > 0))
         contentHeight: Math.max(downloadMapListActionButton.height, downloadUpdatesActionButton.height)
-        bottomPadding: global.platformAdaptor().safeInsetBottom
+        bottomPadding: SafeInsets.bottom
 
         ToolButton {
             id: downloadMapListActionButton

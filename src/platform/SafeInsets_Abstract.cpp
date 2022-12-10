@@ -18,28 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick
-import QtQuick.Controls
+#include "platform/SafeInsets_Abstract.h"
 
-import akaflieg_freiburg.enroute
 
-LongTextDialog {
-    id: dlg
-
-    closePolicy: Popup.NoAutoClose
-    text: global.librarian().getStringFromRessource(":text/tooManyDownloads.html")
-    property var dialogArgs
-
-    footer: DialogButtonBox {
-        ToolButton {
-            text: qsTr("Download anyways")
-            DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
-        }
-        ToolButton {
-            text: qsTr("Cancel")
-            DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
-        }
-
-        onAccepted: { dialogArgs.onAcceptedCallback() }
-    } // DialogButtonBox
+Platform::SafeInsets_Abstract::SafeInsets_Abstract(QObject *parent)
+    : QObject(parent)
+{
 }

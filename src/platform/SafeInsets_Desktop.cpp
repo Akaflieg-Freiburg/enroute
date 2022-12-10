@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2022 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,28 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick
-import QtQuick.Controls
+#include "platform/SafeInsets_Desktop.h"
 
-import akaflieg_freiburg.enroute
 
-LongTextDialog {
-    id: dlg
-
-    closePolicy: Popup.NoAutoClose
-    text: global.librarian().getStringFromRessource(":text/tooManyDownloads.html")
-    property var dialogArgs
-
-    footer: DialogButtonBox {
-        ToolButton {
-            text: qsTr("Download anyways")
-            DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
-        }
-        ToolButton {
-            text: qsTr("Cancel")
-            DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
-        }
-
-        onAccepted: { dialogArgs.onAcceptedCallback() }
-    } // DialogButtonBox
+Platform::SafeInsets::SafeInsets(QObject *parent)
+    : SafeInsets_Abstract(parent)
+{
 }

@@ -104,6 +104,7 @@ set(SOURCES
     platform/Notifier_Abstract.h
     platform/PlatformAdaptor.h
     platform/PlatformAdaptor_Abstract.h
+    platform/SafeInsets_Abstract.h
     positioning/Geoid.h
     positioning/PositionInfo.h
     positioning/PositionInfoSource_Abstract.h
@@ -169,6 +170,7 @@ set(SOURCES
     platform/FileExchange_Abstract.cpp
     platform/Notifier_Abstract.cpp
     platform/PlatformAdaptor_Abstract.cpp
+    platform/SafeInsets_Abstract.cpp
     positioning/Geoid.cpp
     positioning/PositionInfo.cpp
     positioning/PositionInfoSource_Abstract.cpp
@@ -231,6 +233,8 @@ if( ANDROID )
         platform/Notifier_Android.cpp
         platform/PlatformAdaptor_Android.h
         platform/PlatformAdaptor_Android.cpp
+        platform/SafeInsets_Android.h
+        platform/SafeInsets_Android.cpp
         android/src/de/akaflieg_freiburg/enroute/IntentLauncher.java
         android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java
         android/src/de/akaflieg_freiburg/enroute/Notifier.java
@@ -263,6 +267,7 @@ if( ANDROID )
       ${CMAKE_SOURCE_DIR}/3rdParty/sunset/src
       ${CMAKE_SOURCE_DIR}/3rdParty/GSL/include
       navigation
+      platform
     )
     target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Concurrent Qt6::Core Qt::CorePrivate Qt6::Positioning Qt6::Quick Qt6::Sql Qt6::Svg Qt6::WebView qhttpengine sunset)
     set_target_properties(${PROJECT_NAME} PROPERTIES
@@ -284,6 +289,8 @@ if (NOT ANDROID)
         platform/Notifier_Linux.cpp
         platform/PlatformAdaptor_Linux.h
         platform/PlatformAdaptor_Linux.cpp
+        platform/SafeInsets_Desktop.h
+        platform/SafeInsets_Desktop.cpp
         ${CMAKE_CURRENT_BINARY_DIR}/qml.qrc
         )
 
@@ -311,6 +318,7 @@ if (NOT ANDROID)
         ${CMAKE_SOURCE_DIR}/3rdParty/sunset/src
         ${CMAKE_SOURCE_DIR}/3rdParty/GSL/include
         navigation
+        platform
     )
     target_precompile_headers(${PROJECT_NAME}
         PRIVATE
@@ -326,6 +334,7 @@ endif()
 qt_add_qml_module(${PROJECT_NAME}
     URI akaflieg_freiburg.enroute
     VERSION 1.0
+    NO_RESOURCE_TARGET_PATH
     QML_FILES
     qml/dialogs/CenteringDialog.qml
 )

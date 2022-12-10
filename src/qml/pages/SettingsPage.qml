@@ -23,6 +23,7 @@ import QtQuick.Controls
 import QtQuick.Controls.Material
 import QtQuick.Layouts
 
+import akaflieg_freiburg.enroute
 import "../dialogs"
 import "../items"
 
@@ -34,7 +35,10 @@ Page {
     header: ToolBar {
 
         Material.foreground: "white"
-        height: 60
+        height: 60 + SafeInsets.top
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
+        topPadding: SafeInsets.top
 
         ToolButton {
             id: backButton
@@ -83,16 +87,16 @@ Page {
     ScrollView {
         anchors.fill: parent
         anchors.topMargin: view.font.pixelSize
-        anchors.bottomMargin: global.platformAdaptor().safeInsetBottom
-        anchors.leftMargin: global.platformAdaptor().safeInsetLeft
-        anchors.rightMargin: global.platformAdaptor().safeInsetRight
+        anchors.bottomMargin: SafeInsets.bottom
+        anchors.leftMargin: SafeInsets.left
+        anchors.rightMargin: SafeInsets.right
 
         contentWidth: availableWidth // Disable horizontal scrolling
 
         clip: true
 
         ColumnLayout {
-            width: settingsPage.width - global.platformAdaptor().safeInsetLeft - global.platformAdaptor().safeInsetRight
+            width: settingsPage.width - SafeInsets.left - SafeInsets.right
 
             Label {
                 Layout.leftMargin: view.font.pixelSize

@@ -24,6 +24,7 @@ import QtQuick.Controls.Material
 import Qt.labs.settings
 import QtQuick.Layouts
 
+import akaflieg_freiburg.enroute
 import enroute 1.0
 
 import "dialogs"
@@ -70,9 +71,9 @@ ApplicationWindow {
                 Label { // Title
                     Layout.fillWidth: true
 
-                    leftPadding: 16+global.platformAdaptor().safeInsetLeft
+                    leftPadding: 16+SafeInsets.left
                     rightPadding: 16
-                    topPadding: 16+global.platformAdaptor().safeInsetTop
+                    topPadding: 16+SafeInsets.top
 
                     text: "Enroute Flight Navigation " + Qt.application.version
                     color: "white"
@@ -94,7 +95,7 @@ ApplicationWindow {
                 Label { // Subtitle
                     Layout.fillWidth: true
 
-                    leftPadding: 16+global.platformAdaptor().safeInsetLeft
+                    leftPadding: 16+SafeInsets.left
                     rightPadding: 16
                     height: 20
 
@@ -117,7 +118,7 @@ ApplicationWindow {
                 ItemDelegate { // Aircraft
                     Layout.fillWidth: true
 
-                    leftPadding: 16+global.platformAdaptor().safeInsetLeft
+                    leftPadding: 16+SafeInsets.left
 
                     id: menuItemAircraft
                     text: qsTr("Aircraft")
@@ -134,7 +135,7 @@ ApplicationWindow {
                 ItemDelegate {
                     Layout.fillWidth: true
 
-                    leftPadding: 16+global.platformAdaptor().safeInsetLeft
+                    leftPadding: 16+SafeInsets.left
 
                     id: menuItemRoute
                     text: qsTr("Route and Wind")
@@ -151,7 +152,7 @@ ApplicationWindow {
                 ItemDelegate {
                     Layout.fillWidth: true
 
-                    leftPadding: 16+global.platformAdaptor().safeInsetLeft
+                    leftPadding: 16+SafeInsets.left
 
                     id: menuItemNearby
 
@@ -169,7 +170,7 @@ ApplicationWindow {
                 ItemDelegate {
                     Layout.fillWidth: true
 
-                    leftPadding: 16+global.platformAdaptor().safeInsetLeft
+                    leftPadding: 16+SafeInsets.left
 
                     id: weatherItem
 
@@ -194,7 +195,7 @@ ApplicationWindow {
                 ItemDelegate {
                     Layout.fillWidth: true
 
-                    leftPadding: 16+global.platformAdaptor().safeInsetLeft
+                    leftPadding: 16+SafeInsets.left
 
                     text: qsTr("Library")
                     icon.source: "/icons/material/ic_library_books.svg"
@@ -270,7 +271,7 @@ ApplicationWindow {
                 ItemDelegate {
                     Layout.fillWidth: true
 
-                    leftPadding: 16+global.platformAdaptor().safeInsetLeft
+                    leftPadding: 16+SafeInsets.left
 
                     id: menuItemSettings
 
@@ -295,7 +296,7 @@ ApplicationWindow {
                 ItemDelegate {
                     Layout.fillWidth: true
 
-                    leftPadding: 16+global.platformAdaptor().safeInsetLeft
+                    leftPadding: 16+SafeInsets.left
 
                     text: qsTr("Information")
                     icon.source: "/icons/material/ic_info_outline.svg"
@@ -402,7 +403,7 @@ ApplicationWindow {
                 ItemDelegate {
                     Layout.fillWidth: true
 
-                    leftPadding: 16+global.platformAdaptor().safeInsetLeft
+                    leftPadding: 16+SafeInsets.left
 
                     text: qsTr("Manual")
                     icon.source: "/icons/material/ic_book.svg"
@@ -495,7 +496,7 @@ ApplicationWindow {
                 ItemDelegate { // Bug report
                     Layout.fillWidth: true
 
-                    leftPadding: 16+global.platformAdaptor().safeInsetLeft
+                    leftPadding: 16+SafeInsets.left
 
                     text: qsTr("Bug report")
                     icon.source: "/icons/material/ic_bug_report.svg"
@@ -520,7 +521,7 @@ ApplicationWindow {
                 ItemDelegate { // Exit
                     Layout.fillWidth: true
 
-                    leftPadding: 16+global.platformAdaptor().safeInsetLeft
+                    leftPadding: 16+SafeInsets.left
 
                     text: qsTr("Exit")
                     icon.source: "/icons/material/ic_exit_to_app.svg"
@@ -536,7 +537,7 @@ ApplicationWindow {
                 }
 
                 Item {
-                    Layout.preferredHeight: global.platformAdaptor().safeInsetBottom
+                    Layout.preferredHeight: SafeInsets.bottom
                 }
 
                 Item {

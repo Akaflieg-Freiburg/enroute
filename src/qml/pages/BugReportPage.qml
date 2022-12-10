@@ -23,6 +23,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Controls.Material
 
+import akaflieg_freiburg.enroute
 import "../items"
 
 Page {
@@ -35,9 +36,9 @@ Page {
         id: stack
 
         anchors.fill: parent
-        anchors.bottomMargin: footer.visible ? 0 : global.platformAdaptor().safeInsetBottom
-        anchors.leftMargin: global.platformAdaptor().safeInsetLeft
-        anchors.rightMargin: global.platformAdaptor().safeInsetRight
+        anchors.bottomMargin: footer.visible ? 0 : SafeInsets.bottom
+        anchors.leftMargin: SafeInsets.left
+        anchors.rightMargin: SafeInsets.right
 
         initialItem: mainPage
     }
@@ -46,7 +47,7 @@ Page {
         width: parent.width
         Material.elevation: 3
         visible: stack.depth > 1
-        bottomPadding: global.platformAdaptor().safeInsetBottom
+        bottomPadding: SafeInsets.bottom
 
         ToolButton {
             Material.foreground: Material.accent
@@ -73,9 +74,9 @@ Page {
 
             clip: true
 
-            bottomPadding: view.font.pixelSize + global.platformAdaptor().safeInsetBottom
-            leftPadding: view.font.pixelSize + global.platformAdaptor().safeInsetLeft
-            rightPadding: view.font.pixelSize + global.platformAdaptor().safeInsetRight
+            bottomPadding: view.font.pixelSize + SafeInsets.bottom
+            leftPadding: view.font.pixelSize + SafeInsets.left
+            rightPadding: view.font.pixelSize + SafeInsets.right
             topPadding: view.font.pixelSize
 
             ColumnLayout {
@@ -241,9 +242,9 @@ below.</p>
 
             clip: true
 
-            bottomPadding: view.font.pixelSize + global.platformAdaptor().safeInsetBottom
-            leftPadding: view.font.pixelSize + global.platformAdaptor().safeInsetLeft
-            rightPadding: view.font.pixelSize + global.platformAdaptor().safeInsetRight
+            bottomPadding: view.font.pixelSize + SafeInsets.bottom
+            leftPadding: view.font.pixelSize + SafeInsets.left
+            rightPadding: view.font.pixelSize + SafeInsets.right
             topPadding: view.font.pixelSize
 
             ColumnLayout {
@@ -344,9 +345,9 @@ comes first!</p>
 
             clip: true
 
-            bottomPadding: view.font.pixelSize + global.platformAdaptor().safeInsetBottom
-            leftPadding: view.font.pixelSize + global.platformAdaptor().safeInsetLeft
-            rightPadding: view.font.pixelSize + global.platformAdaptor().safeInsetRight
+            bottomPadding: view.font.pixelSize + SafeInsets.bottom
+            leftPadding: view.font.pixelSize + SafeInsets.left
+            rightPadding: view.font.pixelSize + SafeInsets.right
             topPadding: view.font.pixelSize
 
             ColumnLayout {
@@ -437,9 +438,9 @@ time. Peter speaks English and German.</p>
 
             clip: true
 
-            bottomPadding: view.font.pixelSize + global.platformAdaptor().safeInsetBottom
-            leftPadding: view.font.pixelSize + global.platformAdaptor().safeInsetLeft
-            rightPadding: view.font.pixelSize + global.platformAdaptor().safeInsetRight
+            bottomPadding: view.font.pixelSize + SafeInsets.bottom
+            leftPadding: view.font.pixelSize + SafeInsets.left
+            rightPadding: view.font.pixelSize + SafeInsets.right
             topPadding: view.font.pixelSize
 
             ColumnLayout {
@@ -500,9 +501,9 @@ discuss your issue in the forum there.</p>
 
             clip: true
 
-            bottomPadding: view.font.pixelSize + global.platformAdaptor().safeInsetBottom
-            leftPadding: view.font.pixelSize + global.platformAdaptor().safeInsetLeft
-            rightPadding: view.font.pixelSize + global.platformAdaptor().safeInsetRight
+            bottomPadding: view.font.pixelSize + SafeInsets.bottom
+            leftPadding: view.font.pixelSize + SafeInsets.left
+            rightPadding: view.font.pixelSize + SafeInsets.right
             topPadding: view.font.pixelSize
 
             ColumnLayout {
@@ -596,9 +597,9 @@ following countries?</p>
 
             clip: true
 
-            bottomPadding: view.font.pixelSize + global.platformAdaptor().safeInsetBottom
-            leftPadding: view.font.pixelSize + global.platformAdaptor().safeInsetLeft
-            rightPadding: view.font.pixelSize + global.platformAdaptor().safeInsetRight
+            bottomPadding: view.font.pixelSize + SafeInsets.bottom
+            leftPadding: view.font.pixelSize + SafeInsets.left
+            rightPadding: view.font.pixelSize + SafeInsets.right
             topPadding: view.font.pixelSize
 
             ColumnLayout {
@@ -678,9 +679,9 @@ computer, you can also send yourself a link by e-mail.</p>
 
             clip: true
 
-            bottomPadding: view.font.pixelSize + global.platformAdaptor().safeInsetBottom
-            leftPadding: view.font.pixelSize + global.platformAdaptor().safeInsetLeft
-            rightPadding: view.font.pixelSize + global.platformAdaptor().safeInsetRight
+            bottomPadding: view.font.pixelSize + SafeInsets.bottom
+            leftPadding: view.font.pixelSize + SafeInsets.left
+            rightPadding: view.font.pixelSize + SafeInsets.right
             topPadding: view.font.pixelSize
 
             ColumnLayout {

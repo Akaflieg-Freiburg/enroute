@@ -24,6 +24,7 @@ import QtQuick.Controls
 import QtQuick.Controls.Material
 import QtQuick.Layouts
 
+import akaflieg_freiburg.enroute
 import enroute 1.0
 import "../dialogs"
 import "../items"
@@ -42,9 +43,9 @@ Page {
 
         clip: true
 
-        bottomPadding: view.font.pixelSize + global.platformAdaptor().safeInsetBottom
-        leftPadding: view.font.pixelSize + global.platformAdaptor().safeInsetLeft
-        rightPadding: view.font.pixelSize + global.platformAdaptor().safeInsetRight
+        bottomPadding: view.font.pixelSize + SafeInsets.bottom
+        leftPadding: view.font.pixelSize + SafeInsets.left
+        rightPadding: view.font.pixelSize + SafeInsets.right
         topPadding: view.font.pixelSize
 
         GridLayout {

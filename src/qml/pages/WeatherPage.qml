@@ -23,7 +23,9 @@ import QtQuick.Controls
 import QtQuick.Controls.Material
 import QtQuick.Layouts
 
+import akaflieg_freiburg.enroute
 import enroute 1.0
+
 import "../dialogs"
 import "../items"
 
@@ -36,10 +38,10 @@ Page {
     header: ToolBar {
 
         Material.foreground: "white"
-        height: 60 + global.platformAdaptor().safeInsetTop
-        leftPadding: global.platformAdaptor().safeInsetLeft
-        rightPadding: global.platformAdaptor().safeInsetRight
-        topPadding: global.platformAdaptor().safeInsetTop
+        height: 60 + SafeInsets.top
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
+        topPadding: SafeInsets.top
 
         ToolButton {
             id: backButton
@@ -128,8 +130,8 @@ Page {
             }
 
             WordWrappingItemDelegate {
-                leftPadding: global.platformAdaptor().safeInsetLeft+16
-                rightPadding: global.platformAdaptor().safeInsetRight+16
+                leftPadding: SafeInsets.left+16
+                rightPadding: SafeInsets.right+16
 
                 id: idel
                 text: {
@@ -298,9 +300,9 @@ Page {
     // Manual update button in footer
     footer: Pane {
         width: parent.width
-        bottomPadding: global.platformAdaptor().safeInsetBottom+16
-        leftPadding: global.platformAdaptor().safeInsetLeft+16
-        rightPadding: global.platformAdaptor().safeInsetRight+16
+        bottomPadding: SafeInsets.bottom+16
+        leftPadding: SafeInsets.left+16
+        rightPadding: SafeInsets.right+16
 
         Material.elevation: 3
         visible: (sunLabel.text !== "") || (qnhLabel.text !== "")

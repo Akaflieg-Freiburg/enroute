@@ -24,6 +24,8 @@ import QtQuick.Controls.Material 2.15
 import QtQuick.Layouts 1.15
 import QtWebView 1.15
 
+import akaflieg_freiburg.enroute
+
 Page {
     id: pg
     title: qsTr("Manual")
@@ -34,10 +36,10 @@ Page {
         Material.background: "white"
         Material.foreground: "teal"
 
-        height: 60 + global.platformAdaptor().safeInsetTop
-        leftPadding: global.platformAdaptor().safeInsetLeft
-        rightPadding: global.platformAdaptor().safeInsetRight
-        topPadding: global.platformAdaptor().safeInsetTop
+        height: 60 + SafeInsets.top
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
+        topPadding: SafeInsets.top
 
         ToolButton {
             id: closeButton

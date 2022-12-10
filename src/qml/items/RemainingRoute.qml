@@ -27,7 +27,7 @@ import enroute 1.0
 
 Rectangle {   
     color: "#AA000000"
-    height: grid.implicitHeight + global.platformAdaptor().safeInsetTop
+    height: grid.implicitHeight + SafeInsets.top
 
     visible: grid.rri.status !== RemainingRouteInfo.NoRoute
 
@@ -35,9 +35,9 @@ Rectangle {
         id: grid
 
         anchors.fill: parent
-        anchors.leftMargin: view.font.pixelSize + global.platformAdaptor().safeInsetLeft
-        anchors.topMargin: global.platformAdaptor().safeInsetTop
-        anchors.rightMargin: view.font.pixelSize + global.platformAdaptor().safeInsetRight
+        anchors.leftMargin: view.font.pixelSize + SafeInsets.left
+        anchors.topMargin: SafeInsets.top
+        anchors.rightMargin: view.font.pixelSize + SafeInsets.right
         rowSpacing: 0
         columns: 4
 

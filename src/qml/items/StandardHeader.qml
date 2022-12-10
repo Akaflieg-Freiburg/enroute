@@ -22,13 +22,15 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Material
 
+import akaflieg_freiburg.enroute
+
 ToolBar {
 
     Material.foreground: "white"
-    height: 60 + global.platformAdaptor().safeInsetTop
-    leftPadding: global.platformAdaptor().safeInsetLeft
-    rightPadding: global.platformAdaptor().safeInsetRight
-    topPadding: global.platformAdaptor().safeInsetTop
+    height: 60 + SafeInsets.top
+    leftPadding: SafeInsets.left
+    rightPadding: SafeInsets.right
+    topPadding: SafeInsets.top
 
     ToolButton {
         id: backButton

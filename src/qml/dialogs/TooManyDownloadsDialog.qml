@@ -21,6 +21,8 @@
 import QtQuick
 import QtQuick.Controls
 
+import akaflieg_freiburg.enroute
+
 LongTextDialog {
     id: dlg
 

@@ -23,6 +23,7 @@ import QtQuick.Controls
 import QtQuick.Controls.Material
 import QtQuick.Layouts
 
+import akaflieg_freiburg.enroute
 import enroute 1.0
 
 import "../dialogs"
@@ -43,8 +44,8 @@ Page {
         anchors.rightMargin: view.font.pixelSize*2.0
         anchors.left: parent.left
         anchors.leftMargin: view.font.pixelSize*2.0
-        leftPadding: global.platformAdaptor().safeInsetLeft
-        rightPadding: global.platformAdaptor().safeInsetRight
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
 
         placeholderText: qsTr("Filter Aircraft Names")
         font.pixelSize: view.font.pixelSize*1.5
@@ -132,9 +133,9 @@ Page {
         anchors.left: parent.left
         anchors.right: parent.right
 
-        leftMargin: global.platformAdaptor().safeInsetLeft
-        rightMargin: global.platformAdaptor().safeInsetRight
-        bottomMargin: global.platformAdaptor().safeInsetBottom
+        leftMargin: SafeInsets.left
+        rightMargin: SafeInsets.right
+        bottomMargin: SafeInsets.bottom
 
         clip: true
 

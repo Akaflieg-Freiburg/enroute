@@ -52,25 +52,25 @@ void Platform::SafeInsets::updateSafeInsets()
         double inset = 0.0;
 
         inset = static_cast<double>(QJniObject::callStaticMethod<jdouble>("de/akaflieg_freiburg/enroute/MobileAdaptor", "safeInsetBottom"));
-        if ( qIsFinite(bottom) && (bottom >= 0.0) )
+        if ( qIsFinite(inset) && (inset >= 0.0) )
         {
             bottom = inset/devicePixelRatio;
         }
 
         inset = static_cast<double>(QJniObject::callStaticMethod<jdouble>("de/akaflieg_freiburg/enroute/MobileAdaptor", "safeInsetLeft"));
-        if ( qIsFinite(left) && (left >= 0.0) )
+        if ( qIsFinite(inset) && (inset >= 0.0) )
         {
             left = inset/devicePixelRatio;
         }
 
         inset = static_cast<double>(QJniObject::callStaticMethod<jdouble>("de/akaflieg_freiburg/enroute/MobileAdaptor", "safeInsetRight"));
-        if ( qIsFinite(right) && (right >= 0.0) )
+        if ( qIsFinite(inset) && (inset >= 0.0) )
         {
             right = inset/devicePixelRatio;
         }
 
         inset = static_cast<double>(QJniObject::callStaticMethod<jdouble>("de/akaflieg_freiburg/enroute/MobileAdaptor", "safeInsetTop"));
-        if ( qIsFinite(top) && (top >= 0.0) )
+        if ( qIsFinite(inset) && (inset >= 0.0) )
         {
             top = inset/devicePixelRatio;
         }

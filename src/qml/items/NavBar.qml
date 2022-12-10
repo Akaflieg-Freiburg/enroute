@@ -22,6 +22,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
+import akaflieg_freiburg.enroute
 import enroute 1.0
 
 Rectangle {
@@ -29,7 +30,7 @@ Rectangle {
     
     color: "#AA000000"
 
-    height: trueAltitude.implicitHeight + global.platformAdaptor().safeInsetBottom
+    height: trueAltitude.implicitHeight + SafeInsets.bottom
     
 
     function numVisibleItems() {
@@ -44,9 +45,9 @@ Rectangle {
 
     RowLayout {
         anchors.fill: parent
-        anchors.bottomMargin: global.platformAdaptor().safeInsetBottom
-        anchors.leftMargin: global.platformAdaptor().safeInsetLeft
-        anchors.rightMargin: global.platformAdaptor().safeInsetRight
+        anchors.bottomMargin: SafeInsets.bottom
+        anchors.leftMargin: SafeInsets.left
+        anchors.rightMargin: SafeInsets.right
 
         Item { Layout.fillWidth: true }
 

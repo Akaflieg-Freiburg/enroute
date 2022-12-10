@@ -23,6 +23,7 @@ import QtQuick.Controls
 import QtQuick.Controls.Material
 import QtQuick.Layouts
 
+import akaflieg_freiburg.enroute
 import "../items"
 
 Page {
@@ -41,9 +42,9 @@ Page {
         leftPadding: view.font.pixelSize
         rightPadding: view.font.pixelSize
 
-        anchors.bottomMargin: global.platformAdaptor().safeInsetBottom
-        anchors.leftMargin: global.platformAdaptor().safeInsetLeft
-        anchors.rightMargin: global.platformAdaptor().safeInsetRight
+        anchors.bottomMargin: SafeInsets.bottom
+        anchors.leftMargin: SafeInsets.left
+        anchors.rightMargin: SafeInsets.right
 
 
         // The visibility behavior of the vertical scroll bar is a little complex.

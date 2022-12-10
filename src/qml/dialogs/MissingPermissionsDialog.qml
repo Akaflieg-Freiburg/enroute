@@ -21,6 +21,8 @@
 import QtQuick
 import QtQuick.Controls
 
+import akaflieg_freiburg.enroute
+
 LongTextDialog {
     closePolicy: Popup.NoAutoClose
     text:  global.librarian().getStringFromRessource(":text/missingPermissions.html")

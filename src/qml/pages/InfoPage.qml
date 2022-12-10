@@ -63,9 +63,8 @@ Page {
         currentIndex: bar.currentIndex
         
         ScrollView {
+            contentWidth: availableWidth // Disable horizontal scrolling
             clip: true
-            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-            ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
 
             Label {
                 id: lbl1
@@ -83,9 +82,8 @@ Page {
         }
         
         ScrollView {
+            contentWidth: availableWidth // Disable horizontal scrolling
             clip: true
-            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-            ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
 
             Label {
                 id: lbl2
@@ -101,9 +99,8 @@ Page {
         }
 
         ScrollView {
+            contentWidth: availableWidth // Disable horizontal scrolling
             clip: true
-            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-            ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
 
             Label {
                 id: lbl3

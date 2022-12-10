@@ -31,73 +31,8 @@
 Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
     : Platform::PlatformAdaptor_Abstract(parent)
 {
-    connect(QGuiApplication::primaryScreen(), &QScreen::orientationChanged, this, &PlatformAdaptor::updateSafeInsets);
-    connect(QGuiApplication::inputMethod(), &QInputMethod::keyboardRectangleChanged, this, &PlatformAdaptor::updateSafeInsets);
-    connect(QGuiApplication::inputMethod(), &QInputMethod::visibleChanged, this, &PlatformAdaptor::updateSafeInsets);
-
-    updateSafeInsets();
 }
 
-
-void Platform::PlatformAdaptor::updateSafeInsets()
-{
-    auto safeInsetBottom {_safeInsetBottom};
-    auto safeInsetLeft {_safeInsetLeft};
-    auto safeInsetRight {_safeInsetRight};
-    auto safeInsetTop {_safeInsetTop};
-
-    auto devicePixelRatio = QGuiApplication::primaryScreen()->devicePixelRatio();
-    if ( qIsFinite(devicePixelRatio) && (devicePixelRatio > 0.0))
-    {
-        double inset = 0.0;
-
-        inset = static_cast<double>(QJniObject::callStaticMethod<jdouble>("de/akaflieg_freiburg/enroute/MobileAdaptor", "safeInsetBottom"));
-        if ( qIsFinite(safeInsetBottom) && (safeInsetBottom >= 0.0) )
-        {
-            safeInsetBottom = inset/devicePixelRatio;
-        }
-
-        inset = static_cast<double>(QJniObject::callStaticMethod<jdouble>("de/akaflieg_freiburg/enroute/MobileAdaptor", "safeInsetLeft"));
-        if ( qIsFinite(safeInsetLeft) && (safeInsetLeft >= 0.0) )
-        {
-            safeInsetLeft = inset/devicePixelRatio;
-        }
-
-        inset = static_cast<double>(QJniObject::callStaticMethod<jdouble>("de/akaflieg_freiburg/enroute/MobileAdaptor", "safeInsetRight"));
-        if ( qIsFinite(safeInsetRight) && (safeInsetRight >= 0.0) )
-        {
-            safeInsetRight = inset/devicePixelRatio;
-        }
-
-        inset = static_cast<double>(QJniObject::callStaticMethod<jdouble>("de/akaflieg_freiburg/enroute/MobileAdaptor", "safeInsetTop"));
-        if ( qIsFinite(safeInsetTop) && (safeInsetTop >= 0.0) )
-        {
-            safeInsetTop = inset/devicePixelRatio;
-        }
-    }
-
-    // Update properties and emit notification signals
-    if (safeInsetBottom != _safeInsetBottom)
-    {
-        _safeInsetBottom = safeInsetBottom;
-        emit safeInsetBottomChanged();
-    }
-    if (safeInsetLeft != _safeInsetLeft)
-    {
-        _safeInsetLeft = safeInsetLeft;
-        emit safeInsetLeftChanged();
-    }
-    if (safeInsetRight != _safeInsetRight)
-    {
-        _safeInsetRight = safeInsetRight;
-        emit safeInsetRightChanged();
-    }
-    if (safeInsetTop != _safeInsetTop)
-    {
-        _safeInsetTop = safeInsetTop;
-        emit safeInsetTopChanged();
-    }
-}
 
 void Platform::PlatformAdaptor::deferredInitialization()
 {

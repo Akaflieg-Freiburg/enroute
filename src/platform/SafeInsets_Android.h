@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,22 +18,46 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick.Controls
+#pragma once
 
-import akaflieg_freiburg.enroute
+#include <QQmlEngine>
 
-Dialog {
-    leftMargin: SafeInsets.left + font.pixelSize
-    rightMargin: SafeInsets.right + font.pixelSize
-    topMargin: SafeInsets.top + font.pixelSize
-    bottomMargin: SafeInsets.bottom + font.pixelSize
+#include "platform/SafeInsets_Abstract.h"
 
-    // We center the dialog manually, taking care of safe insets
-    x: SafeInsets.left + (parent.width-SafeInsets.left-SafeInsets.right-width)/2.0
-    y: SafeInsets.top + (parent.height-SafeInsets.top-SafeInsets.bottom-height)/2.0
+namespace Platform {
 
-    implicitWidth: 40*font.pixelSize
+/*! \brief Implementation of SafeInsets for Android devices */
 
-    parent: Overlay.overlay
-    
-} // Dialog
+
+class SafeInsets : public Platform::SafeInsets_Abstract
+{
+    Q_OBJECT
+    QML_ELEMENT
+    QML_SINGLETON
+
+    // Properties need to be repeated, or else the Qt CMake macros cannot find them.
+    Q_PROPERTY(double bottom READ bottom NOTIFY bottomChanged)
+    Q_PROPERTY(double left READ left NOTIFY leftChanged)
+    Q_PROPERTY(double right READ right NOTIFY rightChanged)
+    Q_PROPERTY(double top READ top NOTIFY topChanged)
+
+
+public:
+    /*! \brief Standard constructor
+     *
+     * @param parent Standard QObject parent pointer
+     */
+    explicit SafeInsets(QObject *parent = nullptr);
+
+    ~SafeInsets() override = default;
+
+
+private slots:
+    /*! \brief Implements virtual method from SafeInsets_Abstract */
+    void updateSafeInsets();
+
+private:
+    Q_DISABLE_COPY_MOVE(SafeInsets)
+};
+
+} // namespace Platform

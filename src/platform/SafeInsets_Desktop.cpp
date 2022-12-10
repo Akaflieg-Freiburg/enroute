@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2022 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,22 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick.Controls
+#include "platform/SafeInsets_Desktop.h"
 
-import akaflieg_freiburg.enroute
 
-Dialog {
-    leftMargin: SafeInsets.left + font.pixelSize
-    rightMargin: SafeInsets.right + font.pixelSize
-    topMargin: SafeInsets.top + font.pixelSize
-    bottomMargin: SafeInsets.bottom + font.pixelSize
-
-    // We center the dialog manually, taking care of safe insets
-    x: SafeInsets.left + (parent.width-SafeInsets.left-SafeInsets.right-width)/2.0
-    y: SafeInsets.top + (parent.height-SafeInsets.top-SafeInsets.bottom-height)/2.0
-
-    implicitWidth: 40*font.pixelSize
-
-    parent: Overlay.overlay
-    
-} // Dialog
+Platform::SafeInsets::SafeInsets(QObject *parent)
+    : SafeInsets_Abstract(parent)
+{
+}

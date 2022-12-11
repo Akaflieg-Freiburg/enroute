@@ -504,8 +504,6 @@ Page {
         standardButtons: Dialog.Ok
         modal: true
 
-        Component.onCompleted: open()
-
         Label {
             id: shareErrorDialogLabel
             width: shareErrorDialog.availableWidth

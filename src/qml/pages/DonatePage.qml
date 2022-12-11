@@ -35,24 +35,14 @@ Page {
     ScrollView {
         id: sv
 
-        clip: true
         anchors.fill: parent
+        contentWidth: availableWidth // Disable horizontal scrolling
 
-        topPadding: view.font.pixelSize
-        leftPadding: view.font.pixelSize
-        rightPadding: view.font.pixelSize
+        clip: true
 
-        anchors.bottomMargin: SafeInsets.bottom
-        anchors.leftMargin: SafeInsets.left
-        anchors.rightMargin: SafeInsets.right
-
-
-        // The visibility behavior of the vertical scroll bar is a little complex.
-        // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
-        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-        ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
-        ScrollBar.vertical.interactive: false
-
+        bottomPadding: SafeInsets.bottom
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
         ColumnLayout {
             id: cL
 
@@ -92,11 +82,11 @@ If you prefer to work on
 your desktop computer, you can also send yourself an e-mail
 with the bank account data.
 ").arg(bankAccountData)
-                width: pg.width
+                width: sv.width
                 wrapMode: Text.Wrap
-                topPadding: view.font.pixelSize*1
-                leftPadding: view.font.pixelSize*0.5
-                rightPadding: view.font.pixelSize*0.5
+                topPadding: font.pixelSize*1
+                leftPadding: font.pixelSize*0.5
+                rightPadding: font.pixelSize*0.5
                 onLinkActivated: Qt.openUrlExternally(link)
             }
 

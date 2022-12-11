@@ -115,6 +115,8 @@ auto main(int argc, char *argv[]) -> int
     QtWebView::initialize();
 #endif
 
+    // Required by the maplibre plugin to QtLocation
+    QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGL);
     // Set up application
 
 //QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);

@@ -1,9 +1,12 @@
-* Dialogs not centered
-* Three-dot-menus in titlebar do not respect safeInset
 
 * Map does not work
-* In Android wird wegen des Fullscreen.Modus das Keyboard nicht angezeigt, damit sind keine Texteingaben möglich.
 * Donation: layout corrupt -- can scroll horizontally
 * PositionInfoPage -- geht auf meinem Telefon über die Bildschirmbreite hinaus.
 
 Check WaypointEditor (when keyboard comes up) and WeatherReport
+
+MFM.qml:460
+              var wp = global.geoMapProvider().closestWaypoint(flightMap.toCoordinate(Qt.point(mouse.x,mouse.y)),
+                                                                 flightMap.toCoordinate(Qt.point(mouse.x+25,mouse.y)),
+                                                                 global.navigator().flightRoute)
+  

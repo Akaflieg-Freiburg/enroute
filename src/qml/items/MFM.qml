@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 //import QtGraphicalEffects 1.15
+import QtLocation 5.15
 import QtPositioning 5.15
 import QtQuick 2.15
 import QtQuick.Controls 2.15
@@ -36,13 +37,13 @@ import "../dialogs"
 
 Item {
     id: page
-/*
+
     Plugin {
         id: mapPlugin
-        name: "mapboxgl"
+        name: "maplibregl"
 
         PluginParameter {
-            name: "mapboxgl.mapping.additional_style_urls"
+            name: "maplibregl.mapping.additional_style_urls"
             value: global.geoMapProvider().styleFileURL
         }
 
@@ -163,7 +164,6 @@ Item {
 
 
         // ADDITINAL MAP ITEMS
-        /*
         MapCircle { // Circle for nondirectional traffic warning
             center: global.positionProvider().lastValidCoordinate
 
@@ -371,7 +371,7 @@ Item {
                      (global.navigator().remainingRouteInfo.status === RemainingRouteInfo.OnRoute)
             line.width: 2
             line.color: 'darkred'
-            path: visible ? [global.positionProvider().lastValidCoordinate, global.navigator().remainingRouteInfo.nextWP.coordinate] : undefined
+            path: visible ? [global.positionProvider().lastValidCoordinate, global.navigator().remainingRouteInfo.nextWP.coordinate] : []
         }
 
         MapItemView { // Traffic opponents
@@ -448,14 +448,14 @@ Item {
             anchors.fill: parent
             propagateComposedEvents: true
 
-            onWheel: {
+            onWheel: function (wheel) {
                 flightMap.followGPS = false
                 wheel.accepted = false
             }
 
-            onPressAndHold: onDoubleClicked(mouse)
+            onPressAndHold: mouse => onDoubleClicked(mouse)
 
-            onDoubleClicked: {
+            onDoubleClicked: function (mouse) {
                 global.platformAdaptor().vibrateBrief()
                 var wp = global.geoMapProvider().closestWaypoint(flightMap.toCoordinate(Qt.point(mouse.x,mouse.y)),
                                                                  flightMap.toCoordinate(Qt.point(mouse.x+25,mouse.y)),
@@ -475,6 +475,7 @@ Item {
         }
     }
 
+    /* WARNING
     BrightnessContrast { // Graphical effects: increase contrast, reduce brightness in dark mode
         anchors.fill: flightMap
         source: flightMap
@@ -482,7 +483,7 @@ Item {
         contrast: Material.theme == Material.Dark ? 0.6 : 0.2
         visible: !global.dataManager().baseMapsRaster.hasFile
     }
-*/
+    */
 
     Rectangle {
         id: noMapWarningRect
@@ -576,7 +577,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
             id: northArrow
 
             opacity: global.settings().nightMode ? 0.3 : 1.0
-//            rotation: -flightMap.bearing
+            rotation: -flightMap.bearing
 
             source: "/icons/NorthArrow.svg"
         }
@@ -597,7 +598,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
 
         opacity: 0.9
         icon.source: "/icons/material/ic_my_location.svg"
-//        enabled: !flightMap.followGPS
+        enabled: !flightMap.followGPS
 
         anchors.left: parent.left
         anchors.leftMargin: 0.5*view.font.pixelSize + SafeInsets.left
@@ -644,7 +645,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
 
         opacity: 0.9
         icon.source: "/icons/material/ic_add.svg"
-//        enabled: flightMap.zoomLevel < flightMap.maximumZoomLevel
+        enabled: flightMap.zoomLevel < flightMap.maximumZoomLevel
         autoRepeat: true
 
         anchors.right: parent.right
@@ -667,7 +668,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
 
         opacity: 0.9
         icon.source: "/icons/material/ic_remove.svg"
-//        enabled: flightMap.zoomLevel > flightMap.minimumZoomLevel
+        enabled: flightMap.zoomLevel > flightMap.minimumZoomLevel
         autoRepeat: true
 
         anchors.right: parent.right
@@ -697,7 +698,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         opacity: Material.theme === Material.Dark ? 0.3 : 1.0
         visible: !scale.visible
 
-//        pixelPer10km: flightMap.pixelPer10km
+        pixelPer10km: flightMap.pixelPer10km
         vertical: true
         width: 30
     }
@@ -714,7 +715,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         opacity: Material.theme === Material.Dark ? 0.3 : 1.0
         visible: parent.height > parent.width
 
-//        pixelPer10km: flightMap.pixelPer10km
+        pixelPer10km: flightMap.pixelPer10km
         vertical: false
         height: 30
     }

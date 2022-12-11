@@ -40,11 +40,10 @@ Item {
 
     Plugin {
         id: mapPlugin
-//        name: "mapboxgl"
-        name: "osm"
+        name: "maplibregl"
 
         PluginParameter {
-            name: "mapboxgl.mapping.additional_style_urls"
+            name: "maplibregl.mapping.additional_style_urls"
             value: global.geoMapProvider().styleFileURL
         }
 

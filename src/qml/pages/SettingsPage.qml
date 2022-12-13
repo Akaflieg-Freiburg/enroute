@@ -83,16 +83,22 @@ Page {
     ScrollView {
         id: view
         anchors.fill: parent
-        anchors.topMargin: view.font.pixelSize
         contentWidth: availableWidth
 
-        ColumnLayout {
+        GridLayout {
             width: settingsPage.width
             implicitWidth: settingsPage.width
+            columns: 2
+
+            Item { // Spacer
+                Layout.columnSpan: 2
+                height: 3
+            }
 
             Label {
                 Layout.leftMargin: view.font.pixelSize
                 Layout.fillWidth: true
+                Layout.columnSpan: 2
                 text: qsTr("Moving Map")
                 font.pixelSize: view.font.pixelSize*1.2
                 font.bold: true
@@ -127,10 +133,21 @@ Page {
                     heightLimitDialog.open()
                 }
             }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    global.platformAdaptor().vibrateBrief()
+                    helpDialog.title = qsTr("Airspace Altitude Limit")
+                    helpDialog.text = "<p>"+qsTr("If you never fly higher than 5.000ft, you will probably not be interested in airspaces that begin above FL100. Enroute Flight Navigation allows you to set an altitude limit to improve the readability of the moving map. Once set, the app will show only airspaces below that limit. Tap on the entry “Airspace Altitude Limit” to set or unset the altitude limit.")+"</p>"
+                            +"<p>"+qsTr("Once you set an altitude limit, the moving map will display a little warning (“Airspaces up to 9,500 ft”) to remind you that the moving map does not show all airspaces. The app will automatically increase the limit when your aircraft approaches the altitude limit from below.")+"</p>"
+                    helpDialog.open()
+                }
+            }
 
             Label {
                 Layout.leftMargin: view.font.pixelSize
                 Layout.fillWidth: true
+                Layout.columnSpan: 2
                 text: qsTr("Map Features")
                 font.bold: true
                 color: Material.accent
@@ -149,6 +166,15 @@ Page {
                     global.settings().hideGlidingSectors = !glidingSectors.checked
                 }
             }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    global.platformAdaptor().vibrateBrief()
+                    helpDialog.title = qsTr("Gliding Sectors")
+                    helpDialog.text = "<p>"+qsTr("In regions with high glider traffic, local regulations often allow gliders to fly in airspaces that are otherwise difficult to access, such as control zones. The moving map displays these “Gliding Sectors” in bright yellow. If you are not flying a glider, the gliding sectors are probably not relevant. Hiding the gliding sectors might improve the readability of the moving map.")+"</p>"
+                    helpDialog.open()
+                }
+            }
 
             WordWrappingSwitchDelegate {
                 id: hillshading
@@ -163,10 +189,20 @@ Page {
                     global.settings().hillshading = hillshading.checked
                 }
             }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    global.platformAdaptor().vibrateBrief()
+                    helpDialog.title = qsTr("Hillshading")
+                    helpDialog.text = "<p>"+qsTr("We have received a report from one user, who complained about issues with the hillshading graphics on very old devices, potentially because of buggy system libraries. If you experience problems, use this switch to disable the hillshading feature.")+"</p>"
+                    helpDialog.open()
+                }
+            }
 
             Label {
                 Layout.leftMargin: view.font.pixelSize
                 Layout.fillWidth: true
+                Layout.columnSpan: 2
                 text: qsTr("Navigation Bar")
                 font.pixelSize: view.font.pixelSize*1.2
                 font.bold: true
@@ -185,9 +221,19 @@ Page {
                 Layout.fillWidth: true
                 onClicked: altimeterDialog.open()
             }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    global.platformAdaptor().vibrateBrief()
+                    helpDialog.title = qsTr("Altimeter Mode")
+                    helpDialog.text = "<p>"+qsTr("Use this settings item to chose if the altimeter shows height above ground level (AGL) or height above main sea level (AMSL).")+"</p>"
+                    helpDialog.open()
+                }
+            }
 
             Label {
                 Layout.leftMargin: view.font.pixelSize
+                Layout.columnSpan: 2
                 text: qsTr("System")
                 font.pixelSize: view.font.pixelSize*1.2
                 font.bold: true
@@ -215,6 +261,17 @@ Page {
                     primaryPositionDataSourceDialog.open()
                 }
             }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    global.platformAdaptor().vibrateBrief()
+                    helpDialog.title = qsTr("Primary Position Data Source")
+                    helpDialog.text = "<p>" + qsTr("Enroute Flight Navigation can either use the built-in satnav receiver of your device or a connected traffic receiver as a primary position data source. This setting is essential if your device has reception problems or if you use Enroute Flight Navigation together with a flight simulator.") + "</p>"
+                            + "<p>" + qsTr("You will most likely prefer the built-in satnav receiver for actual flight. The built-in receiver provides one position update per second on a typical Android system, while traffic receivers do not always provide timely position updates.") + "</p>"
+                            + "<p>" + qsTr("If you use Enroute Flight Navigation together with a flight simulator, you must choose the traffic receiver as a primary position data source. As long as the built-in satnav receiver is selected, all position information provided by your flight simulator is ignored.") + "</p>"
+                    helpDialog.open()
+                }
+            }
 
             WordWrappingSwitchDelegate {
                 id: nightMode
@@ -227,6 +284,17 @@ Page {
                 onToggled: {
                     global.platformAdaptor().vibrateBrief()
                     global.settings().nightMode = nightMode.checked
+                }
+            }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    global.platformAdaptor().vibrateBrief()
+                    helpDialog.title = qsTr("Primary Position Data Source")
+                    helpDialog.text = "<p>" + qsTr("Enroute Flight Navigation can either use the built-in satnav receiver of your device or a connected traffic receiver as a primary position data source. This setting is essential if your device has reception problems or if you use Enroute Flight Navigation together with a flight simulator.") + "</p>"
+                            + "<p>" + qsTr("You will most likely prefer the built-in satnav receiver for actual flight. The built-in receiver provides one position update per second on a typical Android system, while traffic receivers do not always provide timely position updates.") + "</p>"
+                            + "<p>" + qsTr("If you use Enroute Flight Navigation together with a flight simulator, you must choose the traffic receiver as a primary position data source. As long as the built-in satnav receiver is selected, all position information provided by your flight simulator is ignored.") + "</p>"
+                    helpDialog.open()
                 }
             }
 
@@ -244,6 +312,16 @@ Page {
                     global.settings().ignoreSSLProblems = ignoreSSL.checked
                 }
             }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                visible: global.settings().ignoreSSLProblems
+                onClicked: {
+                    global.platformAdaptor().vibrateBrief()
+                    helpDialog.title = qsTr("Ignore Network Security Errors")
+                    helpDialog.text = "<p>" + qsTr("The “Night Mode” of Enroute Flight Navigation is similar to the “Dark Mode” found in many other apps. We designed the night mode for pilots performing VFR flights by night, whose eyes have adapted to the darkness. Compared with other apps, you will find that the display is quite dark indeed.") + "</p>"
+                    helpDialog.open()
+                }
+            }
 
             WordWrappingItemDelegate {
                 Layout.fillWidth: true
@@ -252,9 +330,20 @@ Page {
                 onClicked: clearPasswordDialog.open()
                 visible: !global.passwordDB().empty
             }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                visible: !global.passwordDB().empty
+                onClicked: {
+                    global.platformAdaptor().vibrateBrief()
+                    helpDialog.title = qsTr("Clear Password Storage")
+                    helpDialog.text = "<p>" + qsTr("This entry is visible if you have connected to a traffic data receiver that requires a password in addition to the Wi-Fi password and if you have asked the app to remember the password. Tap on this entry to clear the password storage.") + "</p>"
+                    helpDialog.open()
+                }
+            }
 
             Label {
                 Layout.leftMargin: view.font.pixelSize
+                Layout.columnSpan: 2
                 text: qsTr("Help")
                 font.pixelSize: view.font.pixelSize*1.2
                 font.bold: true
@@ -263,6 +352,7 @@ Page {
 
             WordWrappingItemDelegate {
                 Layout.fillWidth: true
+                Layout.columnSpan: 2
                 icon.source: "/icons/material/ic_info_outline.svg"
                 text: qsTr("How to connect your traffic receiver…")
                 onClicked: openManual("02-steps/traffic.html")
@@ -270,16 +360,38 @@ Page {
 
             WordWrappingItemDelegate {
                 Layout.fillWidth: true
+                Layout.columnSpan: 2
                 icon.source: "/icons/material/ic_info_outline.svg"
                 text: qsTr("How to connect your flight simulator…")
                 onClicked: openManual("02-steps/simulator.html")
             }
 
             Item { // Spacer
+                Layout.columnSpan: 2
                 height: 3
             }
 
         }
+    }
+
+    LongTextDialog {
+        id: helpDialog
+
+        // Size is chosen so that the dialog does not cover the parent in full
+        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
+
+        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
+        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
+        parent: Overlay.overlay
+        x: (parent.width-width)/2.0
+        y: (parent.height-height)/2.0
+
+        topMargin: view.font.pixelSize/2.0
+        bottomMargin: view.font.pixelSize/2.0
+
+        modal: true
+
+        standardButtons: Dialog.Ok
     }
 
     LongTextDialog {

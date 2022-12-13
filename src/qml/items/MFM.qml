@@ -458,8 +458,7 @@ Item {
             onDoubleClicked: function (mouse) {
                 global.platformAdaptor().vibrateBrief()
                 var wp = global.geoMapProvider().closestWaypoint(flightMap.toCoordinate(Qt.point(mouse.x,mouse.y)),
-                                                                 flightMap.toCoordinate(Qt.point(mouse.x+25,mouse.y)),
-                                                                 global.navigator().flightRoute)
+                                                                 flightMap.toCoordinate(Qt.point(mouse.x+25,mouse.y)))
                 if (!wp.isValid)
                     return
                 waypointDescription.waypoint = wp

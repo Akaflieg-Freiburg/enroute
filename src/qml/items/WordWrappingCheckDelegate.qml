@@ -20,21 +20,16 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Layouts
-import QtQuick.Controls.Material
 
-// This is a version of SwitchDelegate that does word wrapping in the text
+// This is a version of CheckDelegate that does word wrapping in the text
 
 CheckDelegate {
     id: itemDelegate
 
     contentItem: Label { // Text
-            id: b
-            Layout.fillWidth: true
-            text: itemDelegate.text
-            font: itemDelegate.font
-            wrapMode: Text.Wrap
-
-        }
+        text: itemDelegate.text
+        font: itemDelegate.font
+        wrapMode: Text.Wrap
+    }
 
 }

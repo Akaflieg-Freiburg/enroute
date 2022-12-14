@@ -20,6 +20,7 @@
 
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 // This is a version of ItemDelegate that does word wrapping in the text
@@ -28,9 +29,11 @@ ItemDelegate {
     id: itemDelegate
 
     contentItem: RowLayout {
-        Icon { // Icon
-            id: a
-            source: itemDelegate.icon.source
+        Button {
+            background: Item { }
+            icon.source: itemDelegate.icon.source
+            icon.color: Material.foreground
+            onClicked: itemDelegate.clicked()
         }
 
         Item { // Spacer
@@ -38,7 +41,6 @@ ItemDelegate {
         }
 
         Label { // Text
-            id: b
             Layout.fillWidth: true
             text: itemDelegate.text
             wrapMode: Text.Wrap

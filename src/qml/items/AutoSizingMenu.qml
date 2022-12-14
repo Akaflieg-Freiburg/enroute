@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,6 +24,7 @@ import QtQuick.Controls
 import akaflieg_freiburg.enroute
 
 Menu {
+    id: menu
     bottomMargin: SafeInsets.bottom
     leftMargin: SafeInsets.left
     rightMargin: SafeInsets.right
@@ -32,6 +33,7 @@ Menu {
     width: {
         var result = 0;
         var padding = 0;
+
         for (var i = 0; i < count; ++i) {
             var item = itemAt(i);
             if (item.contentItem !== undefined) {

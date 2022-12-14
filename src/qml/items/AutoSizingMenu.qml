@@ -32,16 +32,14 @@ Menu {
 
     width: {
         var result = 0;
-        var padding = 0;
 
         for (var i = 0; i < count; ++i) {
             var item = itemAt(i);
-            if (item.contentItem !== undefined) {
+            if (item.implicitWidth !== undefined) {
                 result = Math.max(item.implicitWidth, result);
-                padding = Math.max(item.padding, padding);
             }
         }
-        return result + padding * 2;
+        return result;
     }
 
 }

@@ -10,3 +10,5 @@ MFM.qml:460
                                                                  flightMap.toCoordinate(Qt.point(mouse.x+25,mouse.y)),
                                                                  global.navigator().flightRoute)
   
+
+RouteLibrary/Import: crash with message: "QWidget: Cannot create a QWidget without QApplication"

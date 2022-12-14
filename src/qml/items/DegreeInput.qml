@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,13 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Layouts
 
 
 StackLayout {
+    id: stackLayout
 
     property double value
     property int minValue
@@ -79,8 +80,8 @@ StackLayout {
             placeholderText: qsTr("undefined")
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: DoubleValidator {
-                bottom: minValue
-                top: maxValue
+                bottom: stackLayout.minValue
+                top: stackLayout.maxValue
                 notation: DoubleValidator.StandardNotation
             }
             color: (acceptableInput ? Material.foreground : "red")
@@ -117,8 +118,8 @@ StackLayout {
             placeholderText: qsTr("undefined")
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: IntValidator {
-                bottom: minValue
-                top: maxValue
+                bottom: stackLayout.minValue
+                top: stackLayout.maxValue
             }
             color: (acceptableInput ? Material.foreground : "red")
 
@@ -178,8 +179,8 @@ StackLayout {
             placeholderText: qsTr("undefined")
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: IntValidator {
-                bottom: minValue
-                top: maxValue
+                bottom: stackLayout.minValue
+                top: stackLayout.maxValue
             }
             color: (acceptableInput ? Material.foreground : "red")
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)

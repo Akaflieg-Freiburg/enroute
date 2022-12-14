@@ -337,6 +337,7 @@ qt_add_qml_module(${PROJECT_NAME}
     NO_RESOURCE_TARGET_PATH
     QML_FILES
     qml/dialogs/CenteringDialog.qml
+    qml/dialogs/LongTextDialog.qml
     qml/items/AutoSizingMenu.qml
 )
 

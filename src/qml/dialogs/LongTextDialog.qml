@@ -28,7 +28,7 @@ CenteringDialog {
     id: dialogMain
 
     // This is the text to be shown
-    property var text: ({})
+    property string text
 
     modal: true
     
@@ -45,7 +45,7 @@ CenteringDialog {
             textFormat: Text.RichText
             linkColor: Material.accent
             wrapMode: Text.Wrap
-            onLinkActivated: Qt.openUrlExternally(link)
+            onLinkActivated: (link) => Qt.openUrlExternally(link)
         }
     }
 }

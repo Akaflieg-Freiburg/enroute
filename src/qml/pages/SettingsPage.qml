@@ -277,7 +277,7 @@ Page {
                     helpDialog.title = qsTr("Primary Position Data Source")
                     helpDialog.text = "<p>" + qsTr("Enroute Flight Navigation can either use the built-in satnav receiver of your device or a connected traffic receiver as a primary position data source. This setting is essential if your device has reception problems or if you use Enroute Flight Navigation together with a flight simulator.") + "</p>"
                             + "<p>" + qsTr("You will most likely prefer the built-in satnav receiver for actual flight. The built-in receiver provides one position update per second on a typical Android system, while traffic receivers do not always provide timely position updates.") + "</p>"
-                            + "<p>" + qsTr("If you use Enroute Flight Navigation together with a flight simulator, you must choose the traffic receiver as a primary position data source. As long as the built-in satnav receiver is selected, all position information provided by your flight simulator is ignored.") + "</p>"
+                            + "<p>" + qsTr("If you use Enroute Flight Navigation together with a flight simulator, you must choose the traffic receiver as a primary position data source. Flight simulators broadcast position information of simulated aircraft via Wi-Fi, using the same protocol that a traffic data receiver would use in a real plane. As long as the built-in satnav receiver is selected, all position information provided by your flight simulator is ignored.") + "</p>"
                     helpDialog.open()
                 }
             }
@@ -299,10 +299,8 @@ Page {
                 icon.source: "/icons/material/ic_info_outline.svg"
                 onClicked: {
                     global.platformAdaptor().vibrateBrief()
-                    helpDialog.title = qsTr("Primary Position Data Source")
-                    helpDialog.text = "<p>" + qsTr("Enroute Flight Navigation can either use the built-in satnav receiver of your device or a connected traffic receiver as a primary position data source. This setting is essential if your device has reception problems or if you use Enroute Flight Navigation together with a flight simulator.") + "</p>"
-                            + "<p>" + qsTr("You will most likely prefer the built-in satnav receiver for actual flight. The built-in receiver provides one position update per second on a typical Android system, while traffic receivers do not always provide timely position updates.") + "</p>"
-                            + "<p>" + qsTr("If you use Enroute Flight Navigation together with a flight simulator, you must choose the traffic receiver as a primary position data source. As long as the built-in satnav receiver is selected, all position information provided by your flight simulator is ignored.") + "</p>"
+                    helpDialog.title = qsTr("Night Mode")
+                    helpDialog.text = "<p>" + qsTr("The “Night Mode” of Enroute Flight Navigation is similar to the “Dark Mode” found in many other apps. We designed the night mode for pilots performing VFR flights by night, whose eyes have adapted to the darkness. Compared with other apps, you will find that the display is quite dark indeed.") + "</p>"
                     helpDialog.open()
                 }
             }
@@ -327,7 +325,7 @@ Page {
                 onClicked: {
                     global.platformAdaptor().vibrateBrief()
                     helpDialog.title = qsTr("Ignore Network Security Errors")
-                    helpDialog.text = "<p>" + qsTr("The “Night Mode” of Enroute Flight Navigation is similar to the “Dark Mode” found in many other apps. We designed the night mode for pilots performing VFR flights by night, whose eyes have adapted to the darkness. Compared with other apps, you will find that the display is quite dark indeed.") + "</p>"
+                    helpDialog.text = "<p>" + qsTr("This entry is visible if you have asked the app to download data via insecure internet connections after a secure connection attempt failed. Uncheck this item to revert to the standard policy, which enforces secure connections.") + "</p>"
                     helpDialog.open()
                 }
             }

@@ -80,49 +80,6 @@ Map {
      * Airspaces
      *************************************/
 
-
-
-
-    /*
-     * ATZ - Aerodrome Traffic Zone
-     * RMZ - Radio Mandatory Zone
-     * TIZ - Traffic Information Zone
-     * TIA - Traffic Information Area
-     */
-    
-    DynamicParameter {
-        type: "layer"
-        
-        property string name: "RMZ"
-        property string layerType: "fill"
-        property string source: "aviationData"
-        property var filter: ["any", ["==", ["get", "CAT"], "ATZ"], ["==", ["get", "CAT"], "RMZ"], ["==", ["get", "CAT"], "TIZ"], ["==", ["get", "CAT"], "TIA"]]
-    }
-    
-    DynamicParameter {
-        type: "paint"
-        property string layer: "RMZ"
-        property string fillColor: "blue"
-        property real fillOpacity: 0.2
-    }
-    
-    DynamicParameter {
-        type: "layer"
-        
-        property string name: "RMZoutline"
-        property string layerType: "line"
-        property string source: "aviationData"
-        property var filter: ["any", ["==", ["get", "CAT"], "ATZ"], ["==", ["get", "CAT"], "RMZ"], ["==", ["get", "CAT"], "TIZ"], ["==", ["get", "CAT"], "TIA"]]
-    }
-    
-    DynamicParameter {
-        type: "paint"
-        property string layer: "RMZoutline"
-        property string lineColor: "blue"
-        property real lineWidth: 2.0
-        property var lineDasharray: [3.0, 3.0]
-    }
-
     
     /*
      * TMZ - Transponder Mandatory Zone

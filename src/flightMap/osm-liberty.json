@@ -852,6 +852,73 @@
         "line-opacity": 0.8
       }
     },
+    {
+      "id": "RMZ",
+      "type": "fill",
+      "metadata": {},
+      "source": "aviation-data",
+      "filter": [
+      "any",
+      [
+        "==",
+        "CAT",
+        "ATZ"
+      ],
+      [
+        "==",
+        "CAT",
+        "RMZ"
+      ],
+      [
+        "==",
+        "CAT",
+        "TIZ"
+      ],
+      [
+        "==",
+        "CAT",
+        "TIA"
+      ]
+      ],
+      "paint": {
+        "fill-color": "blue",
+        "fill-opacity": 0.2
+      }
+    },
+    {
+      "id": "RMZoutline",
+      "type": "line",
+      "metadata": {},
+      "source": "aviation-data",
+      "filter": [
+      "any",
+      [
+        "==",
+        "CAT",
+        "ATZ"
+      ],
+      [
+        "==",
+        "CAT",
+        "RMZ"
+      ],
+      [
+        "==",
+        "CAT",
+        "TIZ"
+      ],
+      [
+        "==",
+        "CAT",
+        "TIA"
+      ]
+      ],
+      "paint": {
+        "line-color": "blue",
+        "line-width": 2,
+        "line-dasharray": [3.0, 3.0]
+      }
+    },
 
 
 

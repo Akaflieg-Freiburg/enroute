@@ -10,7 +10,11 @@
     "type": "vector",
     "url": "%URL%"
     },
-  "terrarium": {
+  "aviation-data": {
+    "type": "geojson",
+    "data": "https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv003/Europe/Germany.geojson"
+    },
+   "terrarium": {
     "type": "raster-dem",
     "url": "%URLT%"
     }
@@ -775,31 +779,82 @@
         "line-width": 1
       }
     },
+
+
+
     {
-      "id": "aerialway",
+      "id": "FIS",
       "type": "line",
       "metadata": {},
-      "source": "openmaptiles",
-      "source-layer": "transportation",
+      "source": "aviationData",
       "filter": [
-        "all",
+        "any",
         [
           "==",
-          "$type",
-          "LineString"
+          "CAT",
+          "FIR"
         ],
         [
           "==",
-          "class",
-          "aerialway"
+          "CAT",
+          "FIS"
         ]
       ],
       "paint": {
-        "line-color": "#ff0000",
-        "line-opacity": 1,
-        "line-width": 2
+        "line-color": "green",
+        "line-width": 1.5
       }
     },
+    {
+      "id": "SUA",
+      "type": "line",
+      "metadata": {},
+      "source": "aviationData",
+      "filter": [
+        "==",
+        "CAT",
+        "SUA"
+      ],
+      "paint": {
+        "line-color": "red",
+        "line-width": 2,
+        "line-dasharray": [4.0, 3.0]
+      }
+    },
+    {
+      "id": "glidingSector",
+      "type": "fill",
+      "metadata": {},
+      "source": "aviation-data",
+      "filter": [
+        "==",
+        "CAT",
+        "GLD"
+      ],
+      "paint": {
+        "fill-color": "yellow",
+        "fill-opacity": 0.1
+      }
+    },
+    {
+      "id": "glidingSectorOutLines",
+      "type": "line",
+      "metadata": {},
+      "source": "aviation-data",
+      "filter": [
+        "==",
+        "CAT",
+        "GLD"
+      ],
+      "paint": {
+        "line-color": "yellow",
+        "line-width": 2,
+        "line-opacity": 0.8
+      }
+    },
+
+
+
     {
       "id": "aerialway_hatching",
       "type": "line",

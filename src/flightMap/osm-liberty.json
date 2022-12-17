@@ -1078,6 +1078,97 @@
         "line-dasharray": [4.0, 3.0]
       }
     },
+    {
+      "id": "NRAoutlines",
+      "type": "line",
+      "metadata": {},
+      "source": "aviation-data",
+      "filter": [
+        "==",
+        "CAT",
+        "NRA"
+      ],
+      "paint": {
+        "line-color": "green",
+        "line-width": 2
+      }
+    },
+    {
+      "id": "NRA",
+      "type": "line",
+      "metadata": {},
+      "source": "aviation-data",
+      "filter": [
+        "==",
+        "CAT",
+        "NRA"
+      ],
+      "paint": {
+        "line-color": "green",
+        "line-opacity": 0.2,
+        "line-width": 7,
+        "line-offset": 3.5
+      }
+    },
+    {
+      "id": "dangerZonesOutlines",
+      "type": "line",
+      "metadata": {},
+      "source": "aviation-data",
+      "filter": [
+      "any",
+      [
+        "==",
+        "CAT",
+        "DNG"
+      ],
+      [
+        "==",
+        "CAT",
+        "R"
+      ],
+      [
+        "==",
+        "CAT",
+        "P"
+      ]
+      ],
+      "paint": {
+        "line-color": "red",
+        "line-width": 2,
+        "line-dasharray": [4.0, 3.0]
+      }
+    },
+    {
+      "id": "dangerZones",
+      "type": "line",
+      "metadata": {},
+      "source": "aviation-data",
+      "filter": [
+      "any",
+      [
+        "==",
+        "CAT",
+        "DNG"
+      ],
+      [
+        "==",
+        "CAT",
+        "R"
+      ],
+      [
+        "==",
+        "CAT",
+        "P"
+      ]
+      ],
+      "paint": {
+        "line-color": "red",
+        "line-opacity": 0.2,
+        "line-width": 7,
+        "line-offset": 3.5
+      }
+    },
 
 
 

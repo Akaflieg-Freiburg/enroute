@@ -81,43 +81,6 @@ Map {
      *************************************/
 
 
-    /*
-     * Airspace labels
-     */
-
-    DynamicParameter {
-        type: "layer"
-
-        property string name: "AirspaceLabels"
-        property string layerType: "symbol"
-        property string source: "aviationData"
-        property var filter: ["==", ["get", "TYP"], "AS"]
-        property int minzoom: 10
-    }
-
-    DynamicParameter {
-        type: "layout"
-
-        property string layer: "AirspaceLabels"
-        property bool symbolAvoidEdges: true
-        property string symbolPlacement: "line"
-        property bool textAllowOverlap: false
-        property string textAnchor: "center"
-        property var textField: ["get", "NAM"]
-        property bool textIgnorePlacement: false
-        property string textJustify: "center"
-        property var textOffset: [0,1]
-        property bool textOptional: true
-        property real textSize: 12
-
-    }
-
-    DynamicParameter {
-        type: "paint"
-        property string layer: "AirspaceLabels"
-        property real textHaloWidth: 2
-        property string textHaloColor: "white"
-    }
 
     // End of airspaces
 

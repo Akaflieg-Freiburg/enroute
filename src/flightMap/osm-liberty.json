@@ -919,6 +919,165 @@
         "line-dasharray": [3.0, 3.0]
       }
     },
+    {
+      "id": "TMZ",
+      "type": "line",
+      "metadata": {},
+      "source": "aviation-data",
+      "filter": [
+        "==",
+        "CAT",
+        "TMZ"
+      ],
+      "paint": {
+        "line-color": "black",
+        "line-width": 2,
+        "line-dasharray": [4.0, 3.0, 0.5, 3.0]
+      }
+    },
+    {
+      "id": "PJE",
+      "type": "line",
+      "metadata": {},
+      "source": "aviation-data",
+      "filter": [
+        "==",
+        "CAT",
+        "PJE"
+      ],
+      "paint": {
+        "line-color": "red",
+        "line-width": 2,
+        "line-dasharray": [4.0, 3.0]
+      }
+    },
+    {
+      "id": "ABCDOutlines",
+      "type": "line",
+      "metadata": {},
+      "source": "aviation-data",
+      "filter": [
+      "any",
+      [
+        "==",
+        "CAT",
+        "A"
+      ],
+      [
+        "==",
+        "CAT",
+        "B"
+      ],
+      [
+        "==",
+        "CAT",
+        "C"
+      ],
+      [
+        "==",
+        "CAT",
+        "D"
+      ]
+      ],
+      "paint": {
+        "line-color": "blue",
+        "line-width": 2
+      }
+    },
+    {
+      "id": "ABCDs",
+      "type": "line",
+      "metadata": {},
+      "source": "aviation-data",
+      "filter": [
+      "any",
+      [
+        "==",
+        "CAT",
+        "A"
+      ],
+      [
+        "==",
+        "CAT",
+        "B"
+      ],
+      [
+        "==",
+        "CAT",
+        "C"
+      ],
+      [
+        "==",
+        "CAT",
+        "D"
+      ]
+      ],
+      "paint": {
+        "line-color": "blue",
+        "line-opacity": 0.2,
+        "line-width": 7,
+        "line-offset": 3.5
+      }
+    },
+    {
+      "id": "EFGOutlines",
+      "type": "line",
+      "metadata": {},
+      "source": "aviation-data",
+      "filter": [
+      "any",
+      [
+        "==",
+        "CAT",
+        "E"
+      ],
+      [
+        "==",
+        "CAT",
+        "F"
+      ],
+      [
+        "==",
+        "CAT",
+        "G"
+      ]
+      ],
+      "paint": {
+        "line-color": "blue",
+        "line-width": 2
+      }
+    },
+    {
+      "id": "CTR",
+      "type": "fill",
+      "metadata": {},
+      "source": "aviation-data",
+      "filter": [
+        "==",
+        "CAT",
+        "CTR"
+      ],
+      "paint": {
+        "fill-color": "red",
+        "fill-opacity": 0.2
+      }
+    },
+    {
+      "id": "CTRoutline",
+      "type": "line",
+      "metadata": {},
+      "source": "aviation-data",
+      "filter": [
+        "==",
+        "CAT",
+        "CTR"
+      ],
+      "paint": {
+        "line-color": "blue",
+        "line-width": 2,
+        "line-dasharray": [4.0, 3.0]
+      }
+    },
 
 
 

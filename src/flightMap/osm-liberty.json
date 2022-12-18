@@ -1198,6 +1198,83 @@
     },
 
 
+    {
+      "id": "PRC_DEP",
+      "type": "line",
+      "metadata": {},
+      "source": "aviation-data",
+      "filter": [ "all", ["==", "CAT", "PRC"], ["==", "USE", "DEP"] ],
+      "minzoom": 10.0,
+      "paint": {
+        "line-color": ["get", "GAC"],
+        "line-width": 3.0,
+        "line-dasharray": [3.0, 3.0]
+      }
+    },
+    {
+      "id": "PRC_DEP",
+      "type": "line",
+      "metadata": {},
+      "source": "aviation-data",
+      "filter": [ "all", ["==", "CAT", "PRC"], ["==", "USE", "ARR"] ],
+      "minzoom": 10.0,
+      "paint": {
+        "line-color": ["get", "GAC"],
+        "line-width": 3.0,
+        "line-dasharray": [9.0, 3.0]
+      }
+    },
+    {
+      "id": "PRC_OTH",
+      "type": "line",
+      "metadata": {},
+      "source": "aviation-data",
+      "filter": [ "all", ["==", "CAT", "PRC"], ["!=", "USE", "ARR"], ["!=", "USE", "DEP"] ],
+      "minzoom": 10.0,
+      "paint": {
+        "line-color": ["get", "GAC"],
+        "line-width": 3.0
+      }
+    },
+    {
+      "id": "PRCLabels",
+      "type": "symbol",
+      "metadata": {},
+      "source": "aviation-data",
+      "filter": [ "all", ["==", ["get", "CAT"], "PRC"], ["!=", ["get", "USE"], "TFC"] ],
+      "minzoom": 10,
+      "layout": {
+        "symbol-placement": "line",
+        "text-field": ["get", "NAM"],
+        "text-size": 16
+      },
+      "paint": {
+        "text-halo-width": 10,
+        "text-halo-color": "white"
+      }
+    },
+    {
+      "id": "TFCLabels",
+      "type": "symbol",
+      "metadata": {},
+      "source": "aviation-data",
+      "filter": [ "all", ["==", ["get", "CAT"], "PRC"], ["==", ["get", "USE"], "TFC"] ],
+      "minzoom": 10,
+      "layout": {
+        "symbol-placement": "line",
+        "text-field": ["get", "NAM"],
+        "text-size": 16,
+        "symbol-spacing": 140
+
+      },
+      "paint": {
+        "text-halo-width": 10,
+        "text-halo-color": "white"
+      }
+    },
+
+
+
 
     {
       "id": "aerialway_hatching",

@@ -1274,6 +1274,82 @@
     },
 
 
+    {
+      "id": "optionalText",
+      "type": "symbol",
+      "source": "aviationData",
+      "filter": ["==", ["get", "TYP"], "NAV"],
+      "layout": {
+        "text-field": ["get", "COD"],
+        "text-size": 12,
+        "text-anchor": "top",
+        "text-offset": [0, 1],
+        "text-optional": true
+        },
+      "paint": {
+        "text-halo-width": 2,
+        "text-halo-color": "white"
+        } 
+      },
+
+    {
+      "id": "WPs",
+      "type": "symbol",
+      "source": "aviationData",
+      "filter": ["any", ["==", ["get", "CAT"], "AD-GLD"], ["==", ["get", "CAT"], "AD-INOP"], ["==", ["get", "CAT"], "AD-UL"], ["==", ["get", "CAT"], "AD-WATER"]],
+      "layout": {
+        "text-field": ["get", "NAM"],
+        "text-size": 12,
+        "text-anchor": "top",
+        "text-offset": [0, 1],
+        "text-optional": true,
+        "icon-image": ["get", "CAT"]
+        },
+      "paint": {
+        "text-halo-width": 2,
+        "text-halo-color": "white"
+        }
+      },
+    {
+      "id": "RPs",
+      "type": "symbol",
+      "source": "aviationData",
+      "minzoom": 8,
+      "filter": ["any", ["==", ["get", "CAT"], "RP"], ["==", ["get", "CAT"], "MRP"]],
+      "layout": {
+        "text-field": ["get", "SCO"],
+        "text-size": 12,
+        "text-anchor": "top",
+        "text-offset": [0, 1],
+        "text-optional": true,
+        "icon-image": ["get", "CAT"]
+        },
+      "paint": {
+        "text-halo-width": 2,
+        "text-halo-color": "white"
+        }
+      },
+    {
+      "id": "AD-GRASS",
+      "type": "symbol",
+      "source": "aviationData",
+      "filter": ["any", ["==", ["get", "CAT"], "AD-GRASS"], ["==", ["get", "CAT"], "AD-MIL-GRASS"]],
+      "layout": {
+        "text-field": ["get", "NAM"],
+        "text-size": 12,
+        "text-anchor": "top",
+        "text-offset": [0, 1],
+        "text-optional": true,
+        "icon-image": ["get", "CAT"],
+        "icon-rotate": ["get", "ORI"],
+        "icon-rotation-alignment": "map"
+        },
+      "paint": {
+        "text-halo-width": 2,
+        "text-halo-color": "white"
+        }
+      },
+    
 
 
     {

@@ -76,13 +76,6 @@ Map {
         }
     }
 
-    /*
-     * Procedures
-     */
-    
-
-    // We print PRC labels first and then label the traffic circuits. This way,
-    // traffic circuit labels will be printed with higher priority
 
     /*************************************
      * Waypoints
@@ -205,133 +198,7 @@ Map {
         property string sprite: ":flightMap/sprites/VORTAC"
     }
     
-    
-    // NavAids - Text. Will be drawn with least priority
-    
-    DynamicParameter {
-        type: "layer"
-        
-        property string name: "optionalText"
-        property string layerType: "symbol"
-        property string source: "aviationData"
-        property var filter: ["==", ["get", "TYP"], "NAV"]
-    }
-    
-    DynamicParameter {
-        type: "layout"
 
-        property string layer: "optionalText"
-        property var textField: ["get", "COD"]
-        property real textSize: 12
-        property string textAnchor: "top"
-        property var textOffset: [0, 1]
-        property bool textOptional: true
-    }
-    
-    DynamicParameter {
-        type: "paint"
-        property string layer: "optionalText"
-        property real textHaloWidth: 2
-        property string textHaloColor: "white"
-    }
-
-    
-    // Gliding and UL Airfields
-    
-    DynamicParameter {
-        type: "layer"
-        
-        property string name: "WPs"
-        property string layerType: "symbol"
-        property string source: "aviationData"
-        property var filter: ["any", ["==", ["get", "CAT"], "AD-GLD"], ["==", ["get", "CAT"], "AD-INOP"], ["==", ["get", "CAT"], "AD-UL"], ["==", ["get", "CAT"], "AD-WATER"]]
-    }
-
-    DynamicParameter {
-        type: "layout"
-
-        property string layer: "WPs"
-        property var textField: ["get", "NAM"]
-        property real textSize: 12
-        property string textAnchor: "top"
-        property var textOffset: [0, 1]
-        property bool textOptional: true
-        property var iconImage: ["get", "CAT"]
-    }
-    
-    DynamicParameter {
-        type: "paint"
-        property string layer: "WPs"
-        property real textHaloWidth: 2
-        property string textHaloColor: "white"
-    }
-
-
-    // Reporting points
-    
-    DynamicParameter {
-        type: "layer"
-        
-        property string name: "RPs"
-        property string layerType: "symbol"
-        property string source: "aviationData"
-        property int minzoom: 8
-        property var filter: ["any", ["==", ["get", "CAT"], "RP"], ["==", ["get", "CAT"], "MRP"]]
-    }
-    
-    DynamicParameter {
-        type: "layout"
-
-        property string layer: "RPs"
-        property var textField: ["get", "SCO"]
-        property real textSize: 12
-        property string textAnchor: "top"
-        property var textOffset: [0, 1]
-        property bool textOptional: true
-        property var iconImage: ["get", "CAT"]
-    }
-    
-    DynamicParameter {
-        type: "paint"
-        property string layer: "RPs"
-        property real textHaloWidth: 2
-        property string textHaloColor: "white"
-    }
-
-    
-    // GA Airfields with grass runway
-    
-    DynamicParameter {
-        type: "layer"
-        
-        property string name: "AD-GRASS"
-        property string layerType: "symbol"
-        property string source: "aviationData"
-        property var filter: ["any", ["==", ["get", "CAT"], "AD-GRASS"], ["==", ["get", "CAT"], "AD-MIL-GRASS"]]
-    }
-    
-    DynamicParameter {
-        type: "layout"
-
-        property string layer: "AD-GRASS"
-        property var textField: ["get", "NAM"]
-        property real textSize: 12
-        property string textAnchor: "top"
-        property var textOffset: [0, 1]
-        property bool textOptional: true
-        property var iconImage: ["get", "CAT"]
-        property var iconRotate: ["get", "ORI"]
-        property string iconRotationAlignment: "map"
-    }
-    
-    DynamicParameter {
-        type: "paint"
-        property string layer: "AD-GRASS"
-        property real textHaloWidth: 2
-        property string textHaloColor: "white"
-    }
-
-    
     // NavAids - Icons. Will always be drawn, but might be overdrawn by other stuff.
     
     DynamicParameter {

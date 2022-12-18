@@ -1349,7 +1349,19 @@
         "text-halo-color": "white"
         }
       },
+    {
+        "id": "NavAidIcons",
+        "type": "symbol",
+        "source": "aviationData",
+        filter: ["==", ["get", "TYP"], "NAV"]
+        "layout": {
+          "icon-image": ["get", "CAT"],
+          "icon-ignore-placement": true,
+          "icon-allow-overlap": true
+          }
+      },
     
+
 
 
     {

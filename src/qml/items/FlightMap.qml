@@ -199,27 +199,6 @@ Map {
     }
     
 
-    // NavAids - Icons. Will always be drawn, but might be overdrawn by other stuff.
-    
-    DynamicParameter {
-        type: "layer"
-        
-        property string name: "NavAidIcons"
-        property string layerType: "symbol"
-        property string source: "aviationData"
-        property var filter: ["==", ["get", "TYP"], "NAV"]
-    }
-    
-    DynamicParameter {
-        type: "layout"
-
-        property string layer: "NavAidIcons"
-        property var iconImage: ["get", "CAT"]
-        property bool iconIgnorePlacement: true
-        property bool iconAllowOverlap: true
-    }
-
-    
     // GA Airfields with paved or unknown runway
     
     DynamicParameter {

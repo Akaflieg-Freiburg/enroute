@@ -78,11 +78,9 @@ Map {
 
 
     /*************************************
-     * Waypoints
+     * Sprite images
      *************************************/
 
-    // Define the necessary images
-    
     DynamicParameter {
         type: "image"
         
@@ -196,40 +194,6 @@ Map {
         
         property string name: "DVORTAC"
         property string sprite: ":flightMap/sprites/VORTAC"
-    }
-    
-
-    // GA Airfields with paved or unknown runway
-    
-    DynamicParameter {
-        type: "layer"
-        
-        property string name: "AD-PAVED"
-        property string layerType: "symbol"
-        property string source: "aviationData"
-        property var filter: ["any", ["==", ["get", "CAT"], "AD"], ["==", ["get", "CAT"], "AD-PAVED"], ["==", ["get", "CAT"], "AD-MIL"], ["==", ["get", "CAT"], "AD-MIL-PAVED"]]
-    }
-    
-    DynamicParameter {
-        type: "layout"
-
-        property string layer: "AD-PAVED"
-        property var textField: ["get", "NAM"]
-        property real textSize: 12
-        property string textAnchor: "top"
-        property var textOffset: [0, 1]
-        property bool textOptional: true
-        property var iconImage: ["get", "CAT"]
-        property var iconRotate: ["get", "ORI"]
-        property string iconRotationAlignment: "map"
-    }
-    
-    DynamicParameter {
-        type: "paint"
-        property string layer: "AD-PAVED"
-        property real textHaloWidth: 2
-        property string textHaloColor: "white"
-    }
-    
+    }   
 
 } // End of FlightMap

@@ -21,6 +21,7 @@
 #include <QUrl>
 #include <utility>
 
+#include "GeoJSONHandler.h"
 #include "TileHandler.h"
 #include "TileServer.h"
 
@@ -35,6 +36,7 @@ GeoMaps::TileServer::TileServer(QUrl baseUrl, QObject *parent)
 auto GeoMaps::TileServer::serverUrl() const -> QString
 {
     if (isListening()) {
+        qWarning() << QStringLiteral("http://%1:%2").arg(serverAddress().toString(),QString::number(serverPort()));
         return QStringLiteral("http://%1:%2").arg(serverAddress().toString(),QString::number(serverPort()));
     }
     return {};
@@ -63,6 +65,10 @@ void GeoMaps::TileServer::setUpTileHandlers()
     setHandler(newFileSystemHandler);
     delete currentFileSystemHandler;
     currentFileSystemHandler = newFileSystemHandler;
+
+    // Now add a subhandlers for each GeoJSON
+    auto* geoJSONHandlet = new GeoJSONHandler(newFileSystemHandler);
+    newFileSystemHandler->addSubHandler(QRegExp("^aviation"), geoJSONHandlet);
 
     // Now add subhandlers for each tile
     QMapIterator<QString, QVector<QPointer<GeoMaps::MBTILES>>> iterator(mbtileFileNameSets);

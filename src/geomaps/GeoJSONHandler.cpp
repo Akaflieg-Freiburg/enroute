@@ -18,42 +18,40 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtLocation 5.15
-import QtPositioning 5.15
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+#include <QFile>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QRegularExpression>
 
-import enroute 1.0
+#include <qhttpengine/socket.h>
 
-import "../items"
+#include "GeoMapProvider.h"
+#include "GeoJSONHandler.h"
 
-Page {
-    id: page
 
-    title: qsTr("Moving Map")
-
-    Loader {
-        id: mapLoader
-
-        anchors.fill: parent
-    }
-
-    Component.onCompleted: {
-        mapLoader.source = "../items/MFM.qml"
-    }
-
-    Connections {
-        target: global.geoMapProvider()
-
-        function onStyleFileURLChanged() {
-            mapLoader.active = false
-            mapLoader.source = "../items/MFM.qml"
-            mapLoader.active = true
-        }
-        function onGeoJSONChanged() {
-            mapLoader.active = false
-            mapLoader.source = "../items/MFM.qml"
-            mapLoader.active = true
-        }
-    }
+GeoMaps::GeoJSONHandler::GeoJSONHandler(QObject* parent)
+    : Handler(parent)
+{
 }
+
+
+void GeoMaps::GeoJSONHandler::process(QHttpEngine::Socket *socket, const QString &path)
+{
+    // Serve GeoJSONJSON file, if requested
+    if (path.isEmpty() || path.endsWith(QLatin1String("json"), Qt::CaseInsensitive))
+    {
+        socket->setHeader("Content-Type", "application/json");
+        QByteArray json = GlobalObject::geoMapProvider()->geoJSON();
+        qWarning() << "json.size" << json.length();
+        socket->setHeader("Content-Length", QByteArray::number(json.length()));
+        socket->write(json);
+        socket->close();
+        return;
+    }
+
+    // Unknown request, responding with 'not found'
+    socket->writeError(QHttpEngine::Socket::NotFound);
+    socket->close();
+}
+

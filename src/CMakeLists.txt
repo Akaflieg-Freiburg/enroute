@@ -82,6 +82,7 @@ set(SOURCES
     geomaps/Airspace.h
     geomaps/CUP.h
     geomaps/GeoJSON.h
+    geomaps/GeoJSONHandler.h
     geomaps/GeoMapProvider.h
     geomaps/GPX.h
     geomaps/MBTILES.h
@@ -148,6 +149,7 @@ set(SOURCES
     geomaps/Airspace.cpp
     geomaps/CUP.cpp
     geomaps/GeoJSON.cpp
+    geomaps/GeoJSONHandler.cpp
     geomaps/GeoMapProvider.cpp
     geomaps/GPX.cpp
     geomaps/MBTILES.cpp

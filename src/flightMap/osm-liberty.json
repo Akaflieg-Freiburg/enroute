@@ -12,7 +12,7 @@
     },
   "aviation-data": {
     "type": "geojson",
-    "data": "https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv003/Europe/Germany.geojson"
+    "data": "%URL2%/aviationData.geojson"
     },
    "terrarium": {
     "type": "raster-dem",

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,42 +18,42 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtLocation 5.15
-import QtPositioning 5.15
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+#pragma once
 
-import enroute 1.0
 
-import "../items"
+#include <qhttpengine/handler.h>
 
-Page {
-    id: page
 
-    title: qsTr("Moving Map")
+namespace GeoMaps {
 
-    Loader {
-        id: mapLoader
 
-        anchors.fill: parent
-    }
+/*! \brief Implementation of QHttpEngine::Handler that serves GeoJSON from GeoMapProvider
+ *
+ *  This class serves the GeoJSON provided by GeoMapProvider at the URL path "aviationData.geojson".
+ */
 
-    Component.onCompleted: {
-        mapLoader.source = "../items/MFM.qml"
-    }
+class GeoJSONHandler : public QHttpEngine::Handler
+{
+  Q_OBJECT
+  
+public:
+  /*! \brief Create a new  GeoJSON handler
+   *
+   *  This constructor sets up a new GeoJSON handler.
+   *
+   *  @param parent The standard QObject parent
+   */
+  explicit GeoJSONHandler(QObject* parent = nullptr);
+  
+protected:
+  /*
+   * @brief Reimplementation of
+   * [Handler::process()](QHttpEngine::Handler::process)
+   */
+  void process(QHttpEngine::Socket* socket, const QString& path) override;
+  
+private:
+  Q_DISABLE_COPY_MOVE(GeoJSONHandler)
+};
 
-    Connections {
-        target: global.geoMapProvider()
-
-        function onStyleFileURLChanged() {
-            mapLoader.active = false
-            mapLoader.source = "../items/MFM.qml"
-            mapLoader.active = true
-        }
-        function onGeoJSONChanged() {
-            mapLoader.active = false
-            mapLoader.source = "../items/MFM.qml"
-            mapLoader.active = true
-        }
-    }
-}
+} // namespace GeoMaps

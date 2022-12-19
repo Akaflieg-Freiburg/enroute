@@ -64,6 +64,7 @@ Map {
      * Aviation Data
      *************************************/
     
+    /*
     DynamicParameter {
         type: "source"
         
@@ -75,6 +76,7 @@ Map {
             return global.geoMapProvider().geoJSON
         }
     }
+    */
 
 
     /*************************************

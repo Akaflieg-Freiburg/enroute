@@ -83,6 +83,7 @@ Map {
      * Sprite images
      *************************************/
 
+    /*
     DynamicParameter {
         type: "image"
         
@@ -196,6 +197,7 @@ Map {
         
         property string name: "DVORTAC"
         property string sprite: ":flightMap/sprites/VORTAC"
-    }   
+    }
+    */
 
 } // End of FlightMap

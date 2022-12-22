@@ -36,7 +36,6 @@ GeoMaps::TileServer::TileServer(QUrl baseUrl, QObject *parent)
 auto GeoMaps::TileServer::serverUrl() const -> QString
 {
     if (isListening()) {
-        qWarning() << QStringLiteral("http://%1:%2").arg(serverAddress().toString(),QString::number(serverPort()));
         return QStringLiteral("http://%1:%2").arg(serverAddress().toString(),QString::number(serverPort()));
     }
     return {};

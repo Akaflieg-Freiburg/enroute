@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2022 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,16 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QFile>
-#include <QJsonArray>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QRegularExpression>
-
 #include <qhttpengine/socket.h>
 
-#include "GeoMapProvider.h"
 #include "GeoJSONHandler.h"
+#include "GeoMapProvider.h"
 
 
 GeoMaps::GeoJSONHandler::GeoJSONHandler(QObject* parent)
@@ -43,7 +37,6 @@ void GeoMaps::GeoJSONHandler::process(QHttpEngine::Socket *socket, const QString
     {
         socket->setHeader("Content-Type", "application/json");
         QByteArray json = GlobalObject::geoMapProvider()->geoJSON();
-        qWarning() << "json.size" << json.length();
         socket->setHeader("Content-Length", QByteArray::number(json.length()));
         socket->write(json);
         socket->close();

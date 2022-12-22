@@ -32,18 +32,15 @@ Map {
     This read-only propery is set to the number of screen pixel per ten
     kilometers on the map. It is updated whenever the zoom value changes. If the
     value cannot be determined for whatever reason, the property is set to zero.
-    
+
     @warning The value is only a rough approximation and can be wrong at times.
     */
     property real pixelPer10km: 0.0
-    
-    /*! \brief Width of thick lines around airspaces, such as class D */
-    property real airspaceLineWidth: 7.0
 
     /*
     * Handle changes in zoom level
     */
-    
+
     onZoomLevelChanged: {
         var vec1 = flightMap.fromCoordinate(flightMap.center, false)
         var vec2 = flightMap.fromCoordinate(flightMap.center.atDistanceAndAzimuth(10000.0, 0.0), false)
@@ -51,7 +48,7 @@ Map {
         var dy = vec2.y - vec1.y
         pixelPer10km = Math.sqrt(dx*dx+dy*dy);
     }
-    
+
     onMapReadyChanged: {
         onZoomLevelChanged(zoomLevel)
     }

@@ -779,9 +779,31 @@
         "line-width": 1
       }
     },
-
-    
-
+    {
+       "id": "aerialway",
+       "type": "line",
+       "metadata": {},
+       "source": "openmaptiles",
+       "source-layer": "transportation",
+       "filter": [
+         "all",
+         [
+           "==",
+           "$type",
+           "LineString"
+         ],
+         [
+           "==",
+           "class",
+           "aerialway"
+         ]
+       ],
+       "paint": {
+         "line-color": "#ff0000",
+         "line-opacity": 1,
+         "line-width": 2
+       }
+    },
     {
       "id": "aerialway_hatching",
       "type": "line",

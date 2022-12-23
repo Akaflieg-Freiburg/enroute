@@ -285,7 +285,7 @@ namespace GeoMaps
     // Interal function that does most of the work for aviationMapsChanged()
     // emits geoJSONChanged() when done. This function is meant to be run in a
     // separate thread.
-    void fillAviationDataCache(const QStringList &JSONFileNames, Units::Distance airspaceAltitudeLimit, bool hideGlidingSectors);
+    void fillAviationDataCache(QStringList JSONFileNames, Units::Distance airspaceAltitudeLimit, bool hideGlidingSectors);
 
     // Caches used to speed up the method simplifySpecialChars
     QRegularExpression specialChars{QStringLiteral("[^a-zA-Z0-9]")};
@@ -326,6 +326,9 @@ namespace GeoMaps
 
     // TerrainImageCache
     QCache<qint64,QImage> terrainTileCache {6}; // Hold 6 tiles, roughly 1.2MB
+
+    // GeoJSON file
+    QString geoJSONCache {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/aviationData.json"};
   };
 
 } // namespace GeoMaps

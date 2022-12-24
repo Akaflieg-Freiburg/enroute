@@ -126,7 +126,7 @@ auto main(int argc, char *argv[]) -> int
 #else
     QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
     QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGLRhi);
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
 #endif
     QCoreApplication::setOrganizationName(QStringLiteral("Akaflieg Freiburg"));
     QCoreApplication::setOrganizationDomain(QStringLiteral("akaflieg_freiburg.de"));

@@ -1,14 +1,5 @@
 
-* Map does not work
-* Donation: layout corrupt -- can scroll horizontally
-* PositionInfoPage -- geht auf meinem Telefon über die Bildschirmbreite hinaus.
+Check WaypointEditor (Layout right)
 
-Check WaypointEditor (when keyboard comes up) and WeatherReport
-
-MFM.qml:460
-              var wp = global.geoMapProvider().closestWaypoint(flightMap.toCoordinate(Qt.point(mouse.x,mouse.y)),
-                                                                 flightMap.toCoordinate(Qt.point(mouse.x+25,mouse.y)),
-                                                                 global.navigator().flightRoute)
-  
-
-RouteLibrary/Import: crash with message: "QWidget: Cannot create a QWidget without QApplication"
+Nearby Waypoint: Crash on Android when opening many waypoints. Hard to
+reproduce.

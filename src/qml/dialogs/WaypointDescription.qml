@@ -378,7 +378,7 @@ CenteringDialog {
                 addMenu.open()
             }
 
-            Menu {
+            AutoSizingMenu {
                 id: addMenu
 
                 Action {
@@ -475,7 +475,7 @@ CenteringDialog {
                 libraryMenu.open()
             }
 
-            Menu {
+            AutoSizingMenu {
                 id: libraryMenu
 
                 Action {

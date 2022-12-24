@@ -22,6 +22,7 @@
 #include <QUrl>
 #include <utility>
 
+#include "GeoJSONHandler.h"
 #include "TileHandler.h"
 #include "TileServer.h"
 
@@ -64,6 +65,10 @@ void GeoMaps::TileServer::setUpTileHandlers()
     setHandler(newFileSystemHandler);
     delete currentFileSystemHandler;
     currentFileSystemHandler = newFileSystemHandler;
+
+    // Now add a subhandlers for each GeoJSON
+    auto* geoJSONHandlet = new GeoJSONHandler(newFileSystemHandler);
+    newFileSystemHandler->addSubHandler(QRegExp("^aviation"), geoJSONHandlet);
 
     // Now add subhandlers for each tile
     QMapIterator<QString, QVector<QPointer<GeoMaps::MBTILES>>> iterator(mbtileFileNameSets);

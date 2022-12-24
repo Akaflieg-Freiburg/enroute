@@ -37,6 +37,12 @@ GeoMaps::GeoMapProvider::GeoMapProvider(QObject *parent)
     : GlobalObject(parent)
 {
     _combinedGeoJSON_ = emptyGeoJSON();
+
+    QFile geoJSONCacheFile(geoJSONCache);
+    geoJSONCacheFile.open(QFile::ReadOnly);
+    _combinedGeoJSON_ = geoJSONCacheFile.readAll();
+    geoJSONCacheFile.close();
+
     _tileServer.listen(QHostAddress(QStringLiteral("127.0.0.1")));
 }
 
@@ -515,39 +521,52 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
     emit styleFileURLChanged();
 }
 
-void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileNames, Units::Distance airspaceAltitudeLimit, bool hideGlidingSectors)
+void GeoMaps::GeoMapProvider::fillAviationDataCache(QStringList JSONFileNames, Units::Distance airspaceAltitudeLimit, bool hideGlidingSectors)
 {
-
     // Avoid rounding errors
     airspaceAltitudeLimit = airspaceAltitudeLimit-Units::Distance::fromFT(1);
+
+    // Ensure that order is the same every time
+    JSONFileNames.sort();
 
     //
     // Generate new GeoJSON array and new list of waypoints
     //
 
-    // First, create a set of JSON objects, in order to avoid duplicated entries
-    QSet<QJsonObject> objectSet;
-    foreach(auto JSONFileName, JSONFileNames) {
-        // Read the lock file
-        QLockFile lockFile(JSONFileName+".lock");
-        lockFile.lock();
-        QFile file(JSONFileName);
-        file.open(QIODevice::ReadOnly);
-        auto document = QJsonDocument::fromJson(file.readAll());
-        file.close();
-        lockFile.unlock();
+    // First, create a vector of JSON objects.
+    // We use a QSet to keep track of objects that have already been added in order to avoid duplicated entries.
+    // The vector is used to ensure that the order of the objects remains identical during runs.
+    // A QSet seems to have some built-in randomness and does not do that.
+    QVector<QJsonObject> objectVector;
+    {
+        QSet<QJsonObject> objectSet;
+        foreach(auto JSONFileName, JSONFileNames) {
+            // Read the lock file
+            QLockFile lockFile(JSONFileName+".lock");
+            lockFile.lock();
+            QFile file(JSONFileName);
+            file.open(QIODevice::ReadOnly);
+            auto document = QJsonDocument::fromJson(file.readAll());
+            file.close();
+            lockFile.unlock();
 
-        foreach(auto value, document.object()[QStringLiteral("features")].toArray()) {
-            auto object = value.toObject();
-            objectSet += object;
+            foreach(auto value, document.object()[QStringLiteral("features")].toArray())
+            {
+                auto object = value.toObject();
+                if (objectSet.contains(object))
+                {
+                    continue;
+                }
+                objectVector += object;
+                objectSet += object;
+            }
         }
-
     }
 
     // Create vectors of airspaces and waypoints
     QVector<Airspace> newAirspaces;
     QVector<Waypoint> newWaypoints;
-    foreach(auto object, objectSet) {
+    foreach(auto object, objectVector) {
         // Check if the current object is a waypoint. If so, add it to the list of waypoints.
         Waypoint wp(object);
         if (wp.isValid()) {
@@ -565,7 +584,7 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileN
 
     // Then, create a new JSONArray of features and a new list of waypoints
     QJsonArray newFeatures;
-    foreach(auto object, objectSet) {
+    foreach(auto object, objectVector) {
         // Ignore all objects that are airspaces and that begin above the airspaceAltitudeLimit.
         Airspace airspaceTest(object);
         if (airspaceAltitudeLimit.isFinite() && (airspaceTest.estimatedLowerBoundMSL() > airspaceAltitudeLimit)) {
@@ -584,10 +603,15 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileN
         newFeatures += object;
     }
 
-    QJsonObject resultObject;
-    resultObject.insert(QStringLiteral("type"), "FeatureCollection");
-    resultObject.insert(QStringLiteral("features"), newFeatures);
-    QJsonDocument geoDoc(resultObject);
+    QByteArray newGeoJSON;
+    {
+        QJsonObject resultObject;
+        resultObject.insert(QStringLiteral("type"), "FeatureCollection");
+        resultObject.insert(QStringLiteral("features"), newFeatures);
+        QJsonDocument geoDoc(resultObject);
+        newGeoJSON = geoDoc.toJson();
+    }
+    auto _geoJSONChanged = (newGeoJSON != _combinedGeoJSON_);
 
     // Sort waypoints by name
     std::sort(newWaypoints.begin(), newWaypoints.end(), [](const Waypoint &a, const Waypoint &b) {return a.name() < b.name(); });
@@ -595,8 +619,17 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(const QStringList& JSONFileN
     _aviationDataMutex.lock();
     _airspaces_ = newAirspaces;
     _waypoints_ = newWaypoints;
-    _combinedGeoJSON_ = geoDoc.toJson(QJsonDocument::JsonFormat::Compact);
+    if (_geoJSONChanged)
+    {
+        _combinedGeoJSON_ = newGeoJSON;
+        QFile geoJSONCacheFile(geoJSONCache);
+        geoJSONCacheFile.open(QFile::WriteOnly);
+        geoJSONCacheFile.write(_combinedGeoJSON_);
+        geoJSONCacheFile.close();
+    }
     _aviationDataMutex.unlock();
-
-    emit geoJSONChanged();
+    if (_geoJSONChanged)
+    {
+        emit geoJSONChanged();
+    }
 }

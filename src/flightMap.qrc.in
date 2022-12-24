@@ -6,42 +6,9 @@
         <file alias="flightMap/osm-liberty.json">${CMAKE_CURRENT_SOURCE_DIR}/flightMap/osm-liberty.json</file>
 
 	<!-- Sprites -->
-	<file alias="flightMap/sprites/sprite.json">${CMAKE_SOURCE_DIR}/3rdParty/osm-liberty/sprites/osm-liberty.json</file>
-	<file alias="flightMap/sprites/sprite@2x.json">${CMAKE_SOURCE_DIR}/3rdParty/osm-liberty/sprites/osm-liberty@2x.json</file>
-	<file alias="flightMap/sprites/sprite.png">${CMAKE_SOURCE_DIR}/3rdParty/osm-liberty/sprites/osm-liberty.png</file>
-	<file alias="flightMap/sprites/sprite@2x.png">${CMAKE_SOURCE_DIR}/3rdParty/osm-liberty/sprites/osm-liberty@2x.png</file>
-	
-	<file alias="flightMap/sprites/AD.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/AD.png</file>
-	<file alias="flightMap/sprites/AD@2x.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/AD@2x.png</file>
-	<file alias="flightMap/sprites/AD-GLD.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/AD-GLD.png</file>
-	<file alias="flightMap/sprites/AD-GLD@2x.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/AD-GLD@2x.png</file>
-	<file alias="flightMap/sprites/AD-GRASS.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/AD-GRASS.png</file>
-	<file alias="flightMap/sprites/AD-GRASS@2x.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/AD-GRASS@2x.png</file>
-	<file alias="flightMap/sprites/AD-INOP.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/AD-INOP.png</file>
-	<file alias="flightMap/sprites/AD-INOP@2x.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/AD-INOP@2x.png</file>
-	<file alias="flightMap/sprites/AD-MIL.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/AD-MIL.png</file>
-	<file alias="flightMap/sprites/AD-MIL@2x.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/AD-MIL@2x.png</file>
-	<file alias="flightMap/sprites/AD-MIL-GRASS.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/AD-MIL-GRASS.png</file>
-	<file alias="flightMap/sprites/AD-MIL-GRASS@2x.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/AD-MIL-GRASS@2x.png</file>
-	<file alias="flightMap/sprites/AD-MIL-PAVED.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/AD-MIL-PAVED.png</file>
-	<file alias="flightMap/sprites/AD-MIL-PAVED@2x.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/AD-MIL-PAVED@2x.png</file>
-	<file alias="flightMap/sprites/AD-PAVED.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/AD-PAVED.png</file>
-	<file alias="flightMap/sprites/AD-PAVED@2x.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/AD-PAVED@2x.png</file>
-	<file alias="flightMap/sprites/AD-UL.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/AD-UL.png</file>
-	<file alias="flightMap/sprites/AD-UL@2x.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/AD-UL@2x.png</file>
-	<file alias="flightMap/sprites/AD-WATER.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/AD-WATER.png</file>
-	<file alias="flightMap/sprites/AD-WATER@2x.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/AD-WATER@2x.png</file>
-        <file alias="flightMap/sprites/MRP.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/MRP.png</file>
-        <file alias="flightMap/sprites/MRP@2x.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/MRP@2x.png</file>
-        <file alias="flightMap/sprites/NDB.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/NDB.png</file>
-        <file alias="flightMap/sprites/NDB@2x.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/NDB@2x.png</file>
-        <file alias="flightMap/sprites/RP.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/RP.png</file>
-        <file alias="flightMap/sprites/RP@2x.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/RP@2x.png</file>
-        <file alias="flightMap/sprites/VOR.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/VOR.png</file>
-        <file alias="flightMap/sprites/VOR@2x.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/VOR@2x.png</file>
-        <file alias="flightMap/sprites/VORDME.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/VORDME.png</file>
-        <file alias="flightMap/sprites/VORDME@2x.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/VORDME@2x.png</file>
-        <file alias="flightMap/sprites/VORTAC.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/VORTAC.png</file>
-        <file alias="flightMap/sprites/VORTAC@2x.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprites/VORTAC@2x.png</file>
+	<file alias="flightMap/sprites/sprite.json">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprite.json</file>
+	<file alias="flightMap/sprites/sprite@2x.json">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprite@2x.json</file>
+	<file alias="flightMap/sprites/sprite.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprite.png</file>
+	<file alias="flightMap/sprites/sprite@2x.png">${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprite@2x.png</file>
     </qresource>
 </RCC>

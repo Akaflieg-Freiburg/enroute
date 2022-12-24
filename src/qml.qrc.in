@@ -15,7 +15,6 @@
         <file alias="dialogs/WaypointDescription.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/WaypointDescription.qml</file>
         <file alias="dialogs/WaypointEditor.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/WaypointEditor.qml</file>
         <file alias="dialogs/WeatherReport.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/dialogs/WeatherReport.qml</file>
-        <file alias="items/ElevationInput.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/ElevationInput.qml</file>
         <file alias="items/FlightMap.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/FlightMap.qml</file>
         <file alias="items/FlightVector.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/FlightVector.qml</file>
         <file alias="items/Icon.qml">${CMAKE_CURRENT_SOURCE_DIR}/qml/items/Icon.qml</file>

@@ -342,6 +342,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/dialogs/LongTextDialog.qml
     qml/items/AutoSizingMenu.qml
     qml/items/DegreeInput.qml
+    qml/items/ElevationInput.qml
     qml/items/WordWrappingCheckDelegate.qml
     qml/items/WordWrappingItemDelegate.qml
     qml/items/WordWrappingSwitchDelegate.qml

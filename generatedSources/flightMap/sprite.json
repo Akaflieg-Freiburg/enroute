@@ -97,6 +97,13 @@
         "x": 37,
         "y": 103
     },
+    "DVOR": {
+        "height": 20,
+        "pixelRatio": 1,
+        "width": 22,
+        "x": 37,
+        "y": 103
+    },
     "VORDME": {
         "height": 20,
         "pixelRatio": 1,
@@ -104,7 +111,28 @@
         "x": 15,
         "y": 103
     },
+    "VOR-DME": {
+        "height": 20,
+        "pixelRatio": 1,
+        "width": 22,
+        "x": 15,
+        "y": 103
+    },
+    "DVOR-DME": {
+        "height": 20,
+        "pixelRatio": 1,
+        "width": 22,
+        "x": 15,
+        "y": 103
+    },
     "VORTAC": {
+        "height": 22,
+        "pixelRatio": 1,
+        "width": 26,
+        "x": 59,
+        "y": 103
+    },
+    "DVORTAC": {
         "height": 22,
         "pixelRatio": 1,
         "width": 26,

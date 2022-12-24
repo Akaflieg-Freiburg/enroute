@@ -1,5 +1,6 @@
+Map: VORs missing, and perhaps a few other waypoint items
 
-Check WaypointEditor (Layout right)
+WaypointEditor: Check Layout right
 
-Nearby Waypoint: Crash on Android when opening many waypoints. Hard to
+Nearby Waypoints: Crash on Android when opening many waypoints. Hard to
 reproduce.

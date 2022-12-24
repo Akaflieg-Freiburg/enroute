@@ -19,21 +19,31 @@
  ***************************************************************************/
 
 #include <QGuiApplication>
-#include <QHash>
-#include <QJniEnvironment>
 #include <QJniObject>
 #include <QScreen>
-#include <QtCore/private/qandroidextras_p.h>
+#include <QTimer>
 
 #include "platform/SafeInsets_Android.h"
 
 
-Platform::SafeInsets::SafeInsets(QObject *parent)
+Platform::SafeInsets::SafeInsets(QObject* parent)
     : Platform::SafeInsets_Abstract(parent)
 {
     connect(QGuiApplication::primaryScreen(), &QScreen::orientationChanged, this, &SafeInsets::updateSafeInsets);
     connect(QGuiApplication::inputMethod(), &QInputMethod::keyboardRectangleChanged, this, &SafeInsets::updateSafeInsets);
     connect(QGuiApplication::inputMethod(), &QInputMethod::visibleChanged, this, &SafeInsets::updateSafeInsets);
+
+    // The signals above are not always emitted reliably, perhaps because of
+    // a delay caused by the virtual keyboard animation. To be on the safe side,
+    // we re-check the safe insets again after one second.
+    auto* timer = new QTimer(this);
+    timer->setInterval(1000);
+    timer->setSingleShot(true);
+    connect(QGuiApplication::primaryScreen(), &QScreen::orientationChanged, timer, qOverload<>(&QTimer::start));
+    connect(QGuiApplication::inputMethod(), &QInputMethod::keyboardRectangleChanged, timer, qOverload<>(&QTimer::start));
+    connect(QGuiApplication::inputMethod(), &QInputMethod::visibleChanged, timer, qOverload<>(&QTimer::start));
+
+    connect(timer, &QTimer::timeout, this, &SafeInsets::updateSafeInsets);
 
     updateSafeInsets();
 }

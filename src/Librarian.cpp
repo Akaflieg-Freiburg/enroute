@@ -280,7 +280,11 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     }
 
     if (name == QLatin1String(":text/whatsnew.html")) {
-        return tr("<p>To better support older devices, the hillshading feature is now optional. The page 'Settings' has been redesigned for clarity and simplicity.</p>") +
+        return tr("<p>"
+                  "If your device runs Android 5 or earlier, then <strong>this is the last update of Enroute Flight Navigation that your device will receive</strong> and we would like to urge you to move to a newer system. "
+                  "Support for Android 5 has long ended and security updates are no longer available. "
+                  "A good refurbished device costs less than one hour flight time in a typical SEP aircraft!"
+                  "</p>") +
                 tr("<p>We could need help with French translations. If you would like to help, if speak French and know how to use the GIT version control system, please let us know.</p>");
     }
 

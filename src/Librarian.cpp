@@ -280,7 +280,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     }
 
     if (name == QLatin1String(":text/whatsnew.html")) {
-        return tr("<p>To better support older devices, the hillshading feature is now optional. The page 'Settings' has been redesigned for clarity and simplicity.</p>") +
+        return tr("<p>We have updated the technology base underlying this app. Please report any issues!</p>") +
                 tr("<p>We could need help with French translations. If you would like to help, if speak French and know how to use the GIT version control system, please let us know.</p>");
     }
 

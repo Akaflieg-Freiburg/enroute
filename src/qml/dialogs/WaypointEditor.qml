@@ -75,6 +75,7 @@ CenteringDialog {
             width: availableWidth
             columns: 2
 
+
             Label {
                 Layout.alignment: Qt.AlignBaseline
                 text: qsTr("Name")
@@ -124,6 +125,7 @@ CenteringDialog {
                 id: longInput
 
                 Layout.fillWidth: true
+
                 currentIndex: formatChoice.currentIndex
                 value: waypoint.coordinate.longitude
                 minValue: -180.0
@@ -141,6 +143,7 @@ CenteringDialog {
                 id: formatChoice
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
+                Layout.rightMargin: 3
 
                 model: [ qsTr("Degrees"), qsTr("Degrees and Minutes"), qsTr("Degrees, Minutes and Seconds") ]
             }
@@ -172,6 +175,7 @@ CenteringDialog {
                 id: eleFormatChoice
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
+                Layout.rightMargin: 3
 
                 model: [ qsTr("Feet"), qsTr("Meter") ]
             }

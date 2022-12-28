@@ -149,7 +149,7 @@ Page {
                 onClicked: {
                     global.platformAdaptor().vibrateBrief()
                     finalFileName = modelData
-                    if (global.navigator().flightRoute.size > 0)
+                    if (Navigator.flightRoute.size > 0)
                         overwriteDialog.open()
                     else
                         openFromLibrary()
@@ -339,7 +339,7 @@ Page {
     property string finalFileName;
 
     function openFromLibrary() {
-        var errorString = global.navigator().flightRoute.load(global.librarian().fullPath(Librarian.Routes, finalFileName))
+        var errorString = Navigator.flightRoute.load(global.librarian().fullPath(Librarian.Routes, finalFileName))
         if (errorString !== "") {
             lbl.text = errorString
             fileError.open()

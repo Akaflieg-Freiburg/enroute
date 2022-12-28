@@ -285,7 +285,7 @@ CenteringDialog {
             Label {
                 Layout.alignment: Qt.AlignHCenter|Qt.AlignBottom
                 text: {
-                    switch(global.navigator().aircraft.verticalDistanceUnit) {
+                    switch(Navigator.aircraft.verticalDistanceUnit) {
                     case Aircraft.Feet:
                         return gridLYO.airspace.upperBound
                     case Aircraft.Meters:
@@ -303,7 +303,7 @@ CenteringDialog {
             Label {
                 Layout.alignment: Qt.AlignHCenter|Qt.AlignTop
                 text: {
-                    switch(global.navigator().aircraft.verticalDistanceUnit) {
+                    switch(Navigator.aircraft.verticalDistanceUnit) {
                     case Aircraft.Feet:
                         return gridLYO.airspace.lowerBound
                     case Aircraft.Meters:
@@ -337,7 +337,7 @@ CenteringDialog {
         }
 
         Label { // Second header line with distance and QUJ
-            text: global.navigator().aircraft.describeWay(global.positionProvider().positionInfo.coordinate(), waypoint.coordinate)
+            text: Navigator.aircraft.describeWay(global.positionProvider().positionInfo.coordinate(), waypoint.coordinate)
             visible: (text !== "")
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignRight
@@ -387,12 +387,12 @@ CenteringDialog {
 
                     onTriggered: {
                         global.platformAdaptor().vibrateBrief()
-                        if (global.navigator().flightRoute.size > 0)
+                        if (Navigator.flightRoute.size > 0)
                             overwriteDialog.open()
                         else {
-                            global.navigator().flightRoute.clear()
-                            global.navigator().flightRoute.append(global.positionProvider().lastValidCoordinate)
-                            global.navigator().flightRoute.append(waypoint)
+                            Navigator.flightRoute.clear()
+                            Navigator.flightRoute.append(global.positionProvider().lastValidCoordinate)
+                            Navigator.flightRoute.append(waypoint)
                             toast.doToast(qsTr("New flight route: direct to %1.").arg(waypoint.extendedName))
                         }
                         close()
@@ -411,14 +411,14 @@ CenteringDialog {
                     enabled: {
                         // Mention Object to ensure that property gets updated
                         // when flight route changes
-                        global.navigator().flightRoute.size
+                        Navigator.flightRoute.size
 
-                        return global.navigator().flightRoute.canAppend(waypoint)
+                        return Navigator.flightRoute.canAppend(waypoint)
                     }
 
                     onTriggered: {
                         global.platformAdaptor().vibrateBrief()
-                        global.navigator().flightRoute.append(waypoint)
+                        Navigator.flightRoute.append(waypoint)
                         close()
                         toast.doToast(qsTr("Added %1 to route.").arg(waypoint.extendedName))
                     }
@@ -429,14 +429,14 @@ CenteringDialog {
                     enabled: {
                         // Mention Object to ensure that property gets updated
                         // when flight route changes
-                        global.navigator().flightRoute.size
+                        Navigator.flightRoute.size
 
-                        return global.navigator().flightRoute.canInsert(waypoint)
+                        return Navigator.flightRoute.canInsert(waypoint)
                     }
 
                     onTriggered: {
                         global.platformAdaptor().vibrateBrief()
-                        global.navigator().flightRoute.insert(waypoint)
+                        Navigator.flightRoute.insert(waypoint)
                         close()
                         toast.doToast(qsTr("Inserted %1 into route.").arg(waypoint.extendedName))
                     }
@@ -448,17 +448,17 @@ CenteringDialog {
                     enabled:  {
                         // Mention to ensure that property gets updated
                         // when flight route changes
-                        global.navigator().flightRoute.size
+                        Navigator.flightRoute.size
 
-                        return global.navigator().flightRoute.contains(waypoint)
+                        return Navigator.flightRoute.contains(waypoint)
                     }
                     onTriggered: {
                         global.platformAdaptor().vibrateBrief()
                         close()
-                        var index = global.navigator().flightRoute.lastIndexOf(waypoint)
+                        var index = Navigator.flightRoute.lastIndexOf(waypoint)
                         if (index < 0)
                             return
-                        global.navigator().flightRoute.removeWaypoint(index)
+                        Navigator.flightRoute.removeWaypoint(index)
                         toast.doToast(qsTr("Removed %1 from route.").arg(waypoint.extendedName))
                     }
                 }
@@ -545,8 +545,8 @@ CenteringDialog {
 
         onAccepted: {
             global.platformAdaptor().vibrateBrief()
-            global.navigator().flightRoute.clear()
-            global.navigator().flightRoute.append(waypoint)
+            Navigator.flightRoute.clear()
+            Navigator.flightRoute.append(waypoint)
             close()
             toast.doToast(qsTr("New flight route: direct to %1.").arg(waypoint.extendedName))
         }

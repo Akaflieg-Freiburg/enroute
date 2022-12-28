@@ -45,7 +45,7 @@ CenteringDialog {
 
             onClicked: {
                 global.platformAdaptor().vibrateBrief()
-                global.navigator().flightRoute.append(model.modelData)
+                Navigator.flightRoute.append(model.modelData)
                 close()
             }
         }
@@ -76,7 +76,7 @@ CenteringDialog {
             onAccepted: {
                 if (wpList.model.length > 0) {
                     global.platformAdaptor().vibrateBrief()
-                    global.navigator().flightRoute.append(wpList.model[0])
+                    Navigator.flightRoute.append(wpList.model[0])
                     close()
                 }
             }

@@ -101,7 +101,7 @@ CenteringDialog {
 
     onOpened: {
         dlg.standardButton(DialogButtonBox.Save).enabled = (fileName.text !== "")
-        fileName.text = global.navigator().flightRoute.suggestedFilename()
+        fileName.text = Navigator.flightRoute.suggestedFilename()
     }
 
     onRejected: {
@@ -126,7 +126,7 @@ CenteringDialog {
     property string finalFileName;
 
     function saveToLibrary() {
-        var errorString = global.navigator().flightRoute.save(global.librarian().fullPath(Librarian.Routes, finalFileName))
+        var errorString = Navigator.flightRoute.save(global.librarian().fullPath(Librarian.Routes, finalFileName))
         if (errorString !== "") {
             lbl.text = errorString
             fileError.open()

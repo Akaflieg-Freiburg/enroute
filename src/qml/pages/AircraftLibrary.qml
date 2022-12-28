@@ -70,7 +70,7 @@ Page {
                 onClicked: {
                     global.platformAdaptor().vibrateBrief()
                     finalFileName = modelData
-                    if (global.navigator().flightRoute.size > 0)
+                    if (Navigator.flightRoute.size > 0)
                         overwriteDialog.open()
                     else
                         openFromLibrary()
@@ -166,14 +166,14 @@ Page {
     property string finalFileName;
 
     function openFromLibrary() {
-        var acft = global.navigator().aircraft.clone() // Get a copy of the current aircraft that we can modify and write back
+        var acft = Navigator.aircraft.clone() // Get a copy of the current aircraft that we can modify and write back
         var errorString = acft.loadFromJSON(global.librarian().fullPath(Librarian.Aircraft, finalFileName))
         if (errorString !== "") {
             lbl.text = errorString
             fileError.open()
             return
         }
-        global.navigator().aircraft = acft
+        Navigator.aircraft = acft
         toast.doToast( qsTr("Loading aircraft <strong>%1</strong>").arg(finalFileName) )
         stackView.pop()
     }

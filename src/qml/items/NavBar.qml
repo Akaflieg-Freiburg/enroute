@@ -64,15 +64,15 @@ Rectangle {
 
                 text: {
                     // Mention
-                    global.navigator().aircraft.verticalDistanceUnit
+                    Navigator.aircraft.verticalDistanceUnit
 
                     if (global.settings().showAltitudeAGL) {
                         const talt = global.positionProvider().positionInfo.trueAltitudeAGL();
-                        return global.navigator().aircraft.verticalDistanceToString(talt)
+                        return Navigator.aircraft.verticalDistanceToString(talt)
                     }
 
                     const talt = global.positionProvider().positionInfo.trueAltitudeAMSL();
-                    return global.navigator().aircraft.verticalDistanceToString(talt)
+                    return Navigator.aircraft.verticalDistanceToString(talt)
                 }
                 font.weight: Font.Bold
                 font.pixelSize: view.font.pixelSize*1.3
@@ -133,7 +133,7 @@ Rectangle {
 
                 Layout.alignment: Qt.AlignHCenter
 
-                text: global.navigator().aircraft.horizontalSpeedToString( global.positionProvider().positionInfo.groundSpeed() )
+                text: Navigator.aircraft.horizontalSpeedToString( global.positionProvider().positionInfo.groundSpeed() )
                 font.weight: Font.Bold
                 font.pixelSize: view.font.pixelSize*1.3
                 color: "white"
@@ -194,7 +194,7 @@ Rectangle {
                 id: utc_1
                 Layout.alignment: Qt.AlignHCenter
 
-                text: global.navigator().clock.timeAsUTCString
+                text: Navigator.clock.timeAsUTCString
                 font.weight: Font.Bold
                 font.pixelSize: view.font.pixelSize*1.3
                 color: "white"

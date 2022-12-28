@@ -131,10 +131,10 @@ Page {
             }
 
             Label { text: qsTr("True Altitude (AMSL)") }
-            Label { text: global.navigator().aircraft.verticalDistanceToString( global.positionProvider().positionInfo.trueAltitudeAMSL() ) }
+            Label { text: Navigator.aircraft.verticalDistanceToString( global.positionProvider().positionInfo.trueAltitudeAMSL() ) }
 
             Label { text: qsTr("True Altitude (AGL)") }
-            Label { text: global.navigator().aircraft.verticalDistanceToString( global.positionProvider().positionInfo.trueAltitudeAGL() ) }
+            Label { text: Navigator.aircraft.verticalDistanceToString( global.positionProvider().positionInfo.trueAltitudeAGL() ) }
 
             Label { text: qsTr("Error (horizontal)") }
             Label {
@@ -145,7 +145,7 @@ Page {
             }
 
             Label { text: qsTr("Error (vertical)") }
-            Label { text: global.navigator().aircraft.verticalDistanceToString( global.positionProvider().positionInfo.trueAltitudeErrorEstimate() ) }
+            Label { text: Navigator.aircraft.verticalDistanceToString( global.positionProvider().positionInfo.trueAltitudeErrorEstimate() ) }
 
             Label { text: qsTr("Magnetic Variation") }
             Label { text: {
@@ -155,7 +155,7 @@ Page {
             }
 
             Label { text: qsTr("Ground Speed") }
-            Label { text: global.navigator().aircraft.horizontalSpeedToString( global.positionProvider().positionInfo.groundSpeed() ) }
+            Label { text: Navigator.aircraft.horizontalSpeedToString( global.positionProvider().positionInfo.groundSpeed() ) }
 
             Label { text: qsTr("True Track") }
             Label {
@@ -166,10 +166,10 @@ Page {
             }
 
             Label { text: qsTr("Vertical Speed") }
-            Label { text: global.navigator().aircraft.verticalSpeedToString( global.positionProvider().positionInfo.verticalSpeed() ) }
+            Label { text: Navigator.aircraft.verticalSpeedToString( global.positionProvider().positionInfo.verticalSpeed() ) }
 
             Label { text: qsTr("Pressure Altitude") }
-            Label { text: global.navigator().aircraft.verticalDistanceToString( global.positionProvider().pressureAltitude ) }
+            Label { text: Navigator.aircraft.verticalDistanceToString( global.positionProvider().pressureAltitude ) }
 
             Label { text: qsTr("Timestamp") }
             Label { text: global.positionProvider().positionInfo.isValid() ? global.positionProvider().positionInfo.timestampString() : "-" }

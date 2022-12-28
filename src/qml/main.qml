@@ -237,11 +237,11 @@ ApplicationWindow {
                         ItemDelegate {
                             text: qsTr("Maps and Data")
                                   + ((global.dataManager().mapsAndData.updateSize > 0) ? `<br><font color="#606060" size="2">` +qsTr("Updates available") + "</font>" : "")
-                                  + ( (global.navigator().flightStatus === Navigator.Flight) ? `<br><font color="#606060" size="2">` +qsTr("Item not available in flight") + "</font>" : "")
+                                  + ( (Navigator.flightStatus === Navigator.Flight) ? `<br><font color="#606060" size="2">` +qsTr("Item not available in flight") + "</font>" : "")
                             icon.source: "/icons/material/ic_map.svg"
                             Layout.fillWidth: true
 
-                            enabled: global.navigator().flightStatus !== Navigator.Flight
+                            enabled: Navigator.flightStatus !== Navigator.Flight
                             onClicked: {
                                 global.platformAdaptor().vibrateBrief()
                                 stackView.push("pages/DataManager.qml")
@@ -515,7 +515,7 @@ ApplicationWindow {
                     Layout.fillWidth: true
 
                     color: Material.primary
-                    visible: global.navigator().flightStatus !== Navigator.Flight
+                    visible: Navigator.flightStatus !== Navigator.Flight
                 }
 
                 ItemDelegate { // Exit
@@ -529,7 +529,7 @@ ApplicationWindow {
                     onClicked: {
                         global.platformAdaptor().vibrateBrief()
                         drawer.close()
-                        if (global.navigator().flightStatus === Navigator.Flight)
+                        if (Navigator.flightStatus === Navigator.Flight)
                             exitDialog.open()
                         else
                             Qt.quit()
@@ -592,14 +592,14 @@ ApplicationWindow {
                 return
             }
 
-            if ((global.settings().lastWhatsNewHash !== global.librarian().getStringHashFromRessource(":text/whatsnew.html")) && (global.navigator().flightStatus !== Navigator.Flight)) {
+            if ((global.settings().lastWhatsNewHash !== global.librarian().getStringHashFromRessource(":text/whatsnew.html")) && (Navigator.flightStatus !== Navigator.Flight)) {
                 whatsNewDialog.open()
                 return
             }
 
             if ((global.settings().lastWhatsNewInMapsHash !== global.dataManager().whatsNewHash) &&
                     (global.dataManager().whatsNew !== "") &&
-                    (global.navigator().flightStatus !== Navigator.Flight)) {
+                    (Navigator.flightStatus !== Navigator.Flight)) {
                 whatsNewInMapsDialog.open()
                 return
             }
@@ -611,7 +611,7 @@ ApplicationWindow {
                 if (stackView.depth > 1)
                     stackView.pop()
                 else {
-                    if (global.navigator().flightStatus === Navigator.Flight)
+                    if (Navigator.flightStatus === Navigator.Flight)
                         exitDialog.open()
                     else
                         Qt.quit()
@@ -785,12 +785,12 @@ ApplicationWindow {
     }
 
     Connections { // Navigator
-        target: global.navigator()
+        target: Navigator
 
         function onAirspaceAltitudeLimitAdjusted() {
             var airspaceAltitudeLimit = global.settings().airspaceAltitudeLimit
             if (airspaceAltitudeLimit.isFinite()) {
-                var airspaceAltitudeLimitString = global.navigator().aircraft.verticalDistanceToString(airspaceAltitudeLimit)
+                var airspaceAltitudeLimitString = Navigator.aircraft.verticalDistanceToString(airspaceAltitudeLimit)
                 toast.doToast(qsTr("Now showing airspaces up to %1.").arg(airspaceAltitudeLimitString))
             } else {
                 toast.doToast(qsTr("Now showing all airspaces."))

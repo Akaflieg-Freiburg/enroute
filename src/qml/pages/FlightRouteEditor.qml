@@ -85,17 +85,17 @@ Page {
                         enabled: index > 0
                         onTriggered: {
                             global.platformAdaptor().vibrateBrief()
-                            global.navigator().flightRoute.moveUp(index)
+                            Navigator.flightRoute.moveUp(index)
                         }
                     }
 
                     Action {
                         text: qsTr("Move Down")
 
-                        enabled: index < global.navigator().flightRoute.size-1
+                        enabled: index < Navigator.flightRoute.size-1
                         onTriggered: {
                             global.platformAdaptor().vibrateBrief()
-                            global.navigator().flightRoute.moveDown(index)
+                            Navigator.flightRoute.moveDown(index)
                         }
                     }
 
@@ -104,7 +104,7 @@ Page {
 
                         onTriggered: {
                             global.platformAdaptor().vibrateBrief()
-                            global.navigator().flightRoute.removeWaypoint(index)
+                            Navigator.flightRoute.removeWaypoint(index)
                         }
                     }
 
@@ -152,12 +152,12 @@ Page {
                 enabled: false
                 text: {
                     // Mention units
-                    global.navigator().aircraft.horizontalDistanceUnit
-                    global.navigator().aircraft.fuelConsumptionUnit
+                    Navigator.aircraft.horizontalDistanceUnit
+                    Navigator.aircraft.fuelConsumptionUnit
 
                     if (leg === null)
                         return ""
-                    return leg.description(global.navigator().wind, global.navigator().aircraft)
+                    return leg.description(Navigator.wind, Navigator.aircraft)
                 }
             }
 
@@ -234,7 +234,7 @@ Page {
 
                 MenuItem {
                     text: qsTr("Save to library…")
-                    enabled: (global.navigator().flightRoute.size > 0) && (sv.currentIndex === 0)
+                    enabled: (Navigator.flightRoute.size > 0) && (sv.currentIndex === 0)
                     onTriggered: {
                         global.platformAdaptor().vibrateBrief()
                         highlighted = false
@@ -261,7 +261,7 @@ Page {
 
                 AutoSizingMenu {
                     title: Qt.platform.os === "android" ? qsTr("Share…") : qsTr("Export…")
-                    enabled: (global.navigator().flightRoute.size > 0) && (sv.currentIndex === 0)
+                    enabled: (Navigator.flightRoute.size > 0) && (sv.currentIndex === 0)
 
                     MenuItem {
                         text: qsTr("… to GeoJSON file")
@@ -270,7 +270,7 @@ Page {
                             global.platformAdaptor().vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            var errorString = global.fileExchange().shareContent(global.navigator().flightRoute.toGeoJSON(), "application/geo+json", global.navigator().flightRoute.suggestedFilename())
+                            var errorString = global.fileExchange().shareContent(Navigator.flightRoute.toGeoJSON(), "application/geo+json", Navigator.flightRoute.suggestedFilename())
                             if (errorString === "abort") {
                                 toast.doToast(qsTr("Aborted"))
                                 return
@@ -294,7 +294,7 @@ Page {
                             global.platformAdaptor().vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            var errorString = global.fileExchange().shareContent(global.navigator().flightRoute.toGpx(), "application/gpx+xml", global.navigator().flightRoute.suggestedFilename())
+                            var errorString = global.fileExchange().shareContent(Navigator.flightRoute.toGpx(), "application/gpx+xml", Navigator.flightRoute.suggestedFilename())
                             if (errorString === "abort") {
                                 toast.doToast(qsTr("Aborted"))
                                 return
@@ -314,7 +314,7 @@ Page {
 
                 AutoSizingMenu {
                     title: qsTr("Open in Other App…")
-                    enabled: (global.navigator().flightRoute.size > 0) && (sv.currentIndex === 0)
+                    enabled: (Navigator.flightRoute.size > 0) && (sv.currentIndex === 0)
 
                     MenuItem {
                         text: qsTr("… in GeoJSON format")
@@ -324,7 +324,7 @@ Page {
                             highlighted = false
                             parent.highlighted = false
 
-                            var errorString = global.fileExchange().viewContent(global.navigator().flightRoute.toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson")
+                            var errorString = global.fileExchange().viewContent(Navigator.flightRoute.toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson")
                             if (errorString !== "") {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
@@ -341,7 +341,7 @@ Page {
                             highlighted = false
                             parent.highlighted = false
 
-                            var errorString = global.fileExchange().viewContent(global.navigator().flightRoute.toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx")
+                            var errorString = global.fileExchange().viewContent(Navigator.flightRoute.toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx")
                             if (errorString !== "") {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
@@ -356,7 +356,7 @@ Page {
 
                 MenuItem {
                     text: qsTr("Clear")
-                    enabled: (global.navigator().flightRoute.size > 0) && (sv.currentIndex === 0)
+                    enabled: (Navigator.flightRoute.size > 0) && (sv.currentIndex === 0)
 
                     onTriggered: {
                         global.platformAdaptor().vibrateBrief()
@@ -368,12 +368,12 @@ Page {
 
                 MenuItem {
                     text: qsTr("Reverse")
-                    enabled: (global.navigator().flightRoute.size > 0) && (sv.currentIndex === 0)
+                    enabled: (Navigator.flightRoute.size > 0) && (sv.currentIndex === 0)
 
                     onTriggered: {
                         global.platformAdaptor().vibrateBrief()
                         highlighted = false
-                        global.navigator().flightRoute.reverse()
+                        Navigator.flightRoute.reverse()
                         toast.doToast(qsTr("Flight route reversed"))
                     }
                 }
@@ -417,7 +417,7 @@ Page {
             Label {
                 anchors.fill: parent
 
-                visible: global.navigator().flightRoute.size === 0
+                visible: Navigator.flightRoute.size === 0
 
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment : Text.AlignVCenter
@@ -442,7 +442,7 @@ Page {
                     width: parent.width
 
                     Connections {
-                        target: global.navigator().flightRoute
+                        target: Navigator.flightRoute
                         function onWaypointsChanged() {
                             co.createItems()
                         }
@@ -454,12 +454,12 @@ Page {
                         // Delete old text items
                         co.children = {}
 
-                        if (global.navigator().flightRoute.size > 0) {
+                        if (Navigator.flightRoute.size > 0) {
                             // Create first waypointComponent
-                            waypointComponent.createObject(co, {waypoint: global.navigator().flightRoute.waypoints[0], index: 0});
+                            waypointComponent.createObject(co, {waypoint: Navigator.flightRoute.waypoints[0], index: 0});
 
                             // Create leg description items
-                            var legs = global.navigator().flightRoute.legs
+                            var legs = Navigator.flightRoute.legs
                             var j
                             for (j=0; j<legs.length; j++) {
                                 legComponent.createObject(co, {leg: legs[j]});
@@ -511,16 +511,16 @@ Page {
                     }
                     inputMethodHints: Qt.ImhDigitsOnly
                     onEditingFinished: {
-                        global.navigator().wind.directionFrom = angle.fromDEG(text)
+                        Navigator.wind.directionFrom = angle.fromDEG(text)
                         windSpeed.focus = true
                     }
                     color: (acceptableInput ? Material.foreground : "red")
                     KeyNavigation.tab: windSpeed
                     text: {
-                        if (!global.navigator().wind.directionFrom.isFinite()) {
+                        if (!Navigator.wind.directionFrom.isFinite()) {
                             return ""
                         }
-                        return Math.round( global.navigator().wind.directionFrom.toDEG() )
+                        return Math.round( Navigator.wind.directionFrom.toDEG() )
                     }
                     placeholderText: qsTr("undefined")
                 }
@@ -533,7 +533,7 @@ Page {
                     Layout.alignment: Qt.AlignVCenter
                     enabled: windDirection.text !== ""
                     onClicked: {
-                        global.navigator().wind.directionFrom = angle.nan()
+                        Navigator.wind.directionFrom = angle.nan()
                         windDirection.clear()
                     }
                 }
@@ -549,24 +549,24 @@ Page {
                     Layout.minimumWidth: view.font.pixelSize*5
                     validator: DoubleValidator {
                         bottom: {
-                            switch(global.navigator().aircraft.horizontalDistanceUnit) {
+                            switch(Navigator.aircraft.horizontalDistanceUnit) {
                             case Aircraft.NauticalMile:
-                                return global.navigator().wind.minWindSpeed.toKN()
+                                return Navigator.wind.minWindSpeed.toKN()
                             case Aircraft.Kilometer:
-                                return global.navigator().wind.minWindSpeed.toKMH()
+                                return Navigator.wind.minWindSpeed.toKMH()
                             case Aircraft.StatuteMile :
-                                return global.navigator().wind.minWindSpeed.toMPH()
+                                return Navigator.wind.minWindSpeed.toMPH()
                             }
                             return NaN
                         }
                         top: {
-                            switch(global.navigator().aircraft.horizontalDistanceUnit) {
+                            switch(Navigator.aircraft.horizontalDistanceUnit) {
                             case Aircraft.NauticalMile:
-                                return global.navigator().wind.maxWindSpeed.toKN()
+                                return Navigator.wind.maxWindSpeed.toKN()
                             case Aircraft.Kilometer:
-                                return global.navigator().wind.maxWindSpeed.toKMH()
+                                return Navigator.wind.maxWindSpeed.toKMH()
                             case Aircraft.StatuteMile :
-                                return global.navigator().wind.maxWindSpeed.toMPH()
+                                return Navigator.wind.maxWindSpeed.toMPH()
                             }
                             return NaN
                         }
@@ -574,31 +574,31 @@ Page {
                     }
                     inputMethodHints: Qt.ImhDigitsOnly
                     onEditingFinished: {
-                        switch(global.navigator().aircraft.horizontalDistanceUnit) {
+                        switch(Navigator.aircraft.horizontalDistanceUnit) {
                         case Aircraft.NauticalMile:
-                            global.navigator().wind.speed = speed.fromKN(text)
+                            Navigator.wind.speed = speed.fromKN(text)
                             break;
                         case Aircraft.Kilometer:
-                            global.navigator().wind.speed = speed.fromKMH(text)
+                            Navigator.wind.speed = speed.fromKMH(text)
                             break;
                         case Aircraft.StatuteMile :
-                            global.navigator().wind.speed = speed.fromMPH(text)
+                            Navigator.wind.speed = speed.fromMPH(text)
                             break;
                         }
                         focus = false
                     }
                     color: (acceptableInput ? Material.foreground : "red")
                     text: {
-                        if (!global.navigator().wind.speed.isFinite()) {
+                        if (!Navigator.wind.speed.isFinite()) {
                             return ""
                         }
-                        switch(global.navigator().aircraft.horizontalDistanceUnit) {
+                        switch(Navigator.aircraft.horizontalDistanceUnit) {
                         case Aircraft.NauticalMile:
-                            return Math.round( global.navigator().wind.speed.toKN() )
+                            return Math.round( Navigator.wind.speed.toKN() )
                         case Aircraft.Kilometer:
-                            return Math.round( global.navigator().wind.speed.toKMH() )
+                            return Math.round( Navigator.wind.speed.toKMH() )
                         case Aircraft.StatuteMile :
-                            return Math.round( global.navigator().wind.speed.toMPH() )
+                            return Math.round( Navigator.wind.speed.toMPH() )
                         }
                         return NaN
                     }
@@ -606,7 +606,7 @@ Page {
                 }
                 Label {
                     text: {
-                        switch(global.navigator().aircraft.horizontalDistanceUnit) {
+                        switch(Navigator.aircraft.horizontalDistanceUnit) {
                         case Aircraft.NauticalMile:
                             return "kn"
                         case Aircraft.Kilometer:
@@ -624,7 +624,7 @@ Page {
                     Layout.alignment: Qt.AlignVCenter
                     enabled: windSpeed.text !== ""
                     onClicked: {
-                        global.navigator().wind.speed = speed.fromKN(-1)
+                        Navigator.wind.speed = speed.fromKN(-1)
                         windSpeed.clear()
                     }
                 }
@@ -652,14 +652,14 @@ Page {
                 horizontalAlignment: Text.AlignHCenter
                 wrapMode: Text.WordWrap
                 textFormat: Text.StyledText
-                visible: (global.navigator().flightRoute.size === 1)&&(sv.currentIndex === 0)
+                visible: (Navigator.flightRoute.size === 1)&&(sv.currentIndex === 0)
             }
 
             Label {
                 id: summary
 
                 Layout.fillWidth: true
-                text: global.navigator().flightRoute.summary
+                text: Navigator.flightRoute.summary
                 horizontalAlignment: Text.AlignHCenter
                 wrapMode: Text.WordWrap
                 textFormat: Text.StyledText
@@ -714,7 +714,7 @@ Page {
 
         onAccepted: {
             global.platformAdaptor().vibrateBrief()
-            global.navigator().flightRoute.clear()
+            Navigator.flightRoute.clear()
             toast.doToast(qsTr("Flight route cleared"))
         }
         onRejected: {
@@ -773,8 +773,8 @@ Page {
         property int index: -1 // Index of waypoint in flight route
 
         onAccepted: {
-            global.navigator().flightRoute.renameWaypoint(index, newName)
-            global.navigator().flightRoute.relocateWaypoint(index, newLatitude, newLongitude)
+            Navigator.flightRoute.renameWaypoint(index, newName)
+            Navigator.flightRoute.relocateWaypoint(index, newLatitude, newLongitude)
             close()
         }
     }

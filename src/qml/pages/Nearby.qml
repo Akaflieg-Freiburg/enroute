@@ -88,11 +88,11 @@ Page {
 
                     text: {
                         // Mention horizontal distance
-                        global.navigator().aircraft.horizontalDistanceUnit
+                        Navigator.aircraft.horizontalDistanceUnit
 
                         var result = model.modelData.twoLineTitle
 
-                        var wayTo  = global.navigator().aircraft.describeWay(global.positionProvider().positionInfo.coordinate(), model.modelData.coordinate)
+                        var wayTo  = Navigator.aircraft.describeWay(global.positionProvider().positionInfo.coordinate(), model.modelData.coordinate)
                         if (wayTo !== "")
                             result = result + "<br>" + wayTo
 

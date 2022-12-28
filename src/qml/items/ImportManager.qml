@@ -63,7 +63,7 @@ Item {
                 return
             }
             if (fileFunction === FileExchange_Abstract.FlightRoute) {
-                if (global.navigator().flightRoute.size > 0)
+                if (Navigator.flightRoute.size > 0)
                     importFlightRouteDialog.open()
                 else
                     importFlightRouteDialog.onAccepted()
@@ -105,7 +105,7 @@ Item {
                     global.platformAdaptor().vibrateBrief()
                     importManager.fileFunction = FileExchange_Abstract.FlightRoute
                     chooseFRorWPDialog.close()
-                    if (global.navigator().flightRoute.size > 0)
+                    if (Navigator.flightRoute.size > 0)
                         importFlightRouteDialog.open()
                     else
                         importFlightRouteDialog.onAccepted()
@@ -314,7 +314,7 @@ Item {
             var errorString = ""
 
             if (importManager.fileFunction === FileExchange_Abstract.FlightRoute)
-                errorString = global.navigator().flightRoute.load(importManager.filePath)
+                errorString = Navigator.flightRoute.load(importManager.filePath)
 
             if (errorString !== "") {
                 errLbl.text = errorString

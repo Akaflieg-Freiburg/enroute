@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include <QQmlEngine>
+
 #include "FlightRoute.h"
 #include "GlobalObject.h"
 #include "navigation/Clock.h"
@@ -40,9 +42,10 @@ namespace Navigation {
 class Navigator : public GlobalObject
 {
     Q_OBJECT
+    QML_ELEMENT
+    QML_SINGLETON
 
 public:
-
     /*! \brief FlightStatus */
     enum FlightStatus
       {
@@ -60,13 +63,22 @@ public:
      *
      * @param parent The standard QObject parent pointer
      */
-    explicit Navigator(QObject *parent = nullptr);
+    explicit Navigator(QObject* parent = nullptr);
+
+    // deferred initialization
+    void deferredInitialization() override;
+
+    // No default constructor, important for QML singleton
+    explicit Navigator() = delete;
 
     /*! \brief Standard destructor */
     ~Navigator() override = default;
 
-    // deferred initialization
-    void deferredInitialization() override;
+    // factory function for QML singleton
+    static Navigation::Navigator *create(QQmlEngine *, QJSEngine *)
+    {
+        return GlobalObject::navigator();
+    }
 
 
     //

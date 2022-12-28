@@ -100,7 +100,7 @@ CenteringDialog {
     } // ColumnLayout
 
     onOpened: {
-        fileName.text = global.navigator().aircraft.name
+        fileName.text = Navigator.aircraft.name
         dlg.standardButton(DialogButtonBox.Save).enabled = (fileName.text !== "")
     }
 
@@ -126,7 +126,7 @@ CenteringDialog {
     property string finalFileName;
 
     function saveToLibrary() {
-        var errorString = global.navigator().aircraft.save(global.librarian().fullPath(Librarian.Aircraft, finalFileName))
+        var errorString = Navigator.aircraft.save(global.librarian().fullPath(Librarian.Aircraft, finalFileName))
         if (errorString !== "") {
             lbl.text = errorString
             fileError.open()

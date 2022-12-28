@@ -1,13 +1,15 @@
-<?xml version='1.0' encoding='utf-8'?>
-<manifest package="de.akaflieg_freiburg.enroute"
-	  xmlns:android="http://schemas.android.com/apk/res/android"
-	  android:versionName="${PROJECT_VERSION}"
-	  android:versionCode="${PROJECT_VERSION_CODE}0"
-	  android:installLocation="auto">
-  <uses-sdk android:minSdkVersion="23" android:targetSdkVersion="31"/>
+<?xml version='1.0'?>
+
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="de.akaflieg_freiburg.enroute"
+    android:versionName="${PROJECT_VERSION}"
+    android:versionCode="${PROJECT_VERSION_CODE}0"
+    android:installLocation="auto">
+  <uses-sdk
+      android:minSdkVersion="23"
+      android:targetSdkVersion="33"/>
   
-  <!-- The following comment will be replaced upon deployment with default permissions based on the dependencies of the application.
-       Remove the comment if you do not require these default permissions. -->
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -19,27 +21,31 @@
   <uses-permission android:name="android.permission.WAKE_LOCK" />
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-  <!-- The following comment will be replaced upon deployment with default features based on the dependencies of the application.
-       Remove the comment if you do not require these default features. -->
+  <supports-screens
+      android:anyDensity="true"
+      android:largeScreens="true"
+      android:normalScreens="true"
+      android:smallScreens="true"/>
   
-  
-  <supports-screens android:largeScreens="true" android:normalScreens="true" android:anyDensity="true" android:smallScreens="true"/>
-  
-  <application android:allowBackup="false"
-               android:hardwareAccelerated="true"
-	       android:name="org.qtproject.qt.android.bindings.QtApplication"
-	       android:label="Enroute Flight Navigation"
-               android:icon="@mipmap/ic_launcher"
-	       android:requestLegacyExternalStorage="true">
-    <activity android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density"
-	      android:exported="true"
-	      android:name="de.akaflieg_freiburg.enroute.MobileAdaptor"
-              android:label="Enroute Flight Navigation"
-              android:screenOrientation="unspecified"
-              android:launchMode="singleInstance"
-              android:showWhenLocked="true"
-	      android:theme="@style/SplashScreenTheme"
-              android:windowSoftInputMode="adjustResize">
+  <application
+      android:name="org.qtproject.qt.android.bindings.QtApplication"
+      android:hardwareAccelerated="true"
+      android:label="Enroute Flight Navigation"
+      android:requestLegacyExternalStorage="true"
+      android:allowNativeHeapPointerTagging="false"
+      android:allowBackup="false"
+      android:fullBackupOnly="false"
+      android:icon="@mipmap/ic_launcher">
+    <activity
+	android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density"
+	android:exported="true"
+	android:name="de.akaflieg_freiburg.enroute.MobileAdaptor"
+        android:label="Enroute Flight Navigation"
+        android:screenOrientation="unspecified"
+        android:launchMode="singleInstance"
+        android:showWhenLocked="true"
+	android:theme="@style/SplashScreenTheme"
+        android:windowSoftInputMode="adjustResize">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>

@@ -179,8 +179,7 @@ auto GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGe
         }
     }
 
-    for(auto& variant : GlobalObject::navigator()->flightRoute()->midFieldWaypoints() ) {
-        auto wp = variant.value<GeoMaps::Waypoint>();
+    for(auto& wp : GlobalObject::navigator()->flightRoute()->midFieldWaypoints() ) {
         if (!wp.isValid()) {
             continue;
         }
@@ -345,7 +344,7 @@ auto GeoMaps::GeoMapProvider::findByID(const QString &id) -> Waypoint
     return {};
 }
 
-auto GeoMaps::GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, const QString& type) -> QVariantList
+auto GeoMaps::GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, const QString& type) -> QList<GeoMaps::Waypoint>
 {
     auto wps = waypoints();
 
@@ -362,17 +361,7 @@ auto GeoMaps::GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, co
 
     std::sort(tWps.begin(), tWps.end(), [position](const Waypoint &a, const Waypoint &b) {return position.distanceTo(a.coordinate()) < position.distanceTo(b.coordinate()); });
 
-    QVariantList result;
-    int sz = 0;
-    foreach(auto ad, tWps) {
-        result.append( QVariant::fromValue(ad) );
-        sz++;
-        if (sz == 20) {
-            break;
-        }
-    }
-
-    return result;
+    return tWps.mid(0,20);
 }
 
 auto GeoMaps::GeoMapProvider::waypoints() -> QVector<Waypoint>

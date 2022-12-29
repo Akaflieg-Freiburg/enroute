@@ -1,14 +1,14 @@
 {
     "app-id": "${APP_ID}",
-    "runtime": "org.kde.Platform",
-    "runtime-version": "5.15-22.08",
-    "sdk": "org.kde.Sdk",
+    "runtime": "org.freedesktop.Platform",
+    "runtime-version": "22.08",
+    "sdk": "org.freedesktop.Sdk",
     "command": "${PROJECT_NAME}",
     "finish-args": [
         "--device=dri",
         "--device=shm",
-	"--filesystem=host",
-	"--share=ipc",
+    	"--filesystem=host",
+    	"--share=ipc",
         "--share=network",
         "--socket=fallback-x11",
         "--socket=wayland",
@@ -18,6 +18,22 @@
     ],
     "modules": [
         {
+            "name": "qtbase",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/qt/qtbase.git",
+                    "tag": "v${Qt6_VERSION}"
+                }
+            ],
+            "buildsystem": "cmake-ninja",
+            "config-opts": [
+                "-DCMAKE_BUILD_TYPE=Release",
+                "-DQT_BUILD_EXAMPLES_BY_DEFAULT=OFF",
+                "-DQT_BUILD_TESTS_BY_DEFAULT=OFF"
+            ]
+        },
+	{
             "name": "enroute",
             "buildsystem": "cmake-ninja",
             "config-opts": [

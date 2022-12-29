@@ -394,5 +394,13 @@ auto GeoMaps::operator!=(const GeoMaps::Waypoint& A, const GeoMaps::Waypoint& B)
 
 auto GeoMaps::qHash(const GeoMaps::Waypoint& wp) -> uint
 {
-    return qHash(wp.coordinate());
+    auto result = qHash(wp.m_coordinate);
+
+    QMapIterator<QString, QVariant> i(wp.m_properties);
+    while (i.hasNext()) {
+        i.next();
+        result += qHash(i.key());
+        result += qHash(i.value().toString());
+    }
+    return result;
 }

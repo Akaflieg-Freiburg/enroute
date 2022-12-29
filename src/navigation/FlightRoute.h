@@ -90,9 +90,7 @@ namespace Navigation
         /*! \brief List of coordinates for the waypoints
          *
          * This property holds a list of coordinates of the waypoints, suitable
-         * for drawing the flight path on a QML map. For better interaction with
-         * QML, the data is returned in the form of a QVariantList rather than
-         * QList<QGeoCoordinate>.
+         * for drawing the flight path on a QML map.
          */
         Q_PROPERTY(QList<QGeoCoordinate> geoPath READ geoPath NOTIFY waypointsChanged)
 
@@ -101,7 +99,7 @@ namespace Navigation
          * This property lists all the waypoints in the route that are not
          * airfields, navaids, reporting points, etc.
          */
-        Q_PROPERTY(QVariantList midFieldWaypoints READ midFieldWaypoints NOTIFY waypointsChanged)
+        Q_PROPERTY(QList<GeoMaps::Waypoint> midFieldWaypoints READ midFieldWaypoints NOTIFY waypointsChanged)
 
         /*! \brief List of legs
          *
@@ -127,7 +125,7 @@ namespace Navigation
          * This property lists all the waypoints in the route that are not
          * airfields, navaids, reporting points, etc.
          */
-        Q_PROPERTY(QVariantList waypoints READ waypoints NOTIFY waypointsChanged)
+        Q_PROPERTY(QList<GeoMaps::Waypoint> waypoints READ waypoints NOTIFY waypointsChanged)
 
         //
         // Getter Methods
@@ -149,7 +147,7 @@ namespace Navigation
          *
          * @returns Property midFieldWaypoints
          */
-        [[nodiscard]] auto midFieldWaypoints() const -> QVariantList;
+        [[nodiscard]] auto midFieldWaypoints() const -> QList<GeoMaps::Waypoint>;
 
         /*! \brief Getter function for the property with the same name
          *
@@ -173,7 +171,8 @@ namespace Navigation
          *
          * @returns Property waypoints
          */
-        [[nodiscard]] auto waypoints() const -> QVariantList;
+        [[nodiscard]] auto waypoints() const -> QList<GeoMaps::Waypoint> {return m_waypoints;}
+
 
         //
         // METHODS

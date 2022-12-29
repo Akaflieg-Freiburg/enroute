@@ -251,7 +251,7 @@ namespace GeoMaps
      * 20 items.  For better cooperation with QML the list does not contain
      * elements of type Waypoint*, but elements of type QObject*
      */
-    Q_INVOKABLE QVariantList nearbyWaypoints(const QGeoCoordinate &position, const QString &type);
+    Q_INVOKABLE QList<GeoMaps::Waypoint> nearbyWaypoints(const QGeoCoordinate &position, const QString &type);
 
     /*! \brief Waypoints
      *

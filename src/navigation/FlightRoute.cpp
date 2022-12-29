@@ -86,9 +86,9 @@ auto Navigation::FlightRoute::geoPath() const -> QList<QGeoCoordinate>
     return result;
 }
 
-auto Navigation::FlightRoute::midFieldWaypoints() const -> QVariantList
+auto Navigation::FlightRoute::midFieldWaypoints() const -> QList<GeoMaps::Waypoint>
 {
-    QVariantList result;
+    QList<GeoMaps::Waypoint> result;
 
     if (m_waypoints.isEmpty()) {
         return result;
@@ -96,7 +96,7 @@ auto Navigation::FlightRoute::midFieldWaypoints() const -> QVariantList
 
     foreach(auto wpt, m_waypoints) {
         if (wpt.category() == QLatin1String("WP")) {
-            result << QVariant::fromValue(wpt);
+            result << wpt;
         }
     }
 
@@ -161,16 +161,6 @@ auto Navigation::FlightRoute::summary() const -> QString
 
 }
 
-auto Navigation::FlightRoute::waypoints() const -> QVariantList
-{
-    QVariantList result;
-
-    foreach(auto wpt, m_waypoints) {
-        result << QVariant::fromValue(wpt);
-    }
-
-    return result;
-}
 
 
 //

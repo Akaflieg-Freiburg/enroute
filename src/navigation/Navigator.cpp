@@ -247,7 +247,7 @@ void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::Position
     if (flightRoute()->size() == 1)
     {
         auto start = Positioning::PositionProvider::lastValidCoordinate();
-        auto end = flightRoute()->waypoints()[0].value<GeoMaps::Waypoint>();
+        auto end = flightRoute()->waypoints()[0];
         legs += Leg(start, end);
     }
 

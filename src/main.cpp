@@ -67,7 +67,6 @@ auto main(int argc, char *argv[]) -> int
 
     // Register types
     qRegisterMetaType<GeoMaps::Airspace>();
-    qRegisterMetaType<GeoMaps::Waypoint>();
     qRegisterMetaType<Positioning::PositionInfo>();
     qRegisterMetaType<Traffic::Warning>();
     qRegisterMetaType<Platform::Notifier_Abstract::NotificationActions>();

@@ -23,6 +23,7 @@
 #include <QGeoCoordinate>
 #include <QJsonObject>
 #include <QMap>
+#include <QQmlEngine>
 #include <QXmlStreamWriter>
 
 
@@ -39,12 +40,16 @@ namespace GeoMaps {
 class Waypoint
 {
     Q_GADGET
+    QML_VALUE_TYPE(waypoint)
 
     /*! \brief Comparison */
     friend auto operator==(const GeoMaps::Waypoint&, const GeoMaps::Waypoint&) -> bool;
 
     /*! \brief Comparison */
     friend auto operator!=(const GeoMaps::Waypoint&, const GeoMaps::Waypoint&) -> bool;
+
+    /*! \brief qHash */
+    friend auto qHash(const GeoMaps::Waypoint& wp) -> uint;
 
 public:
     /*! \brief Constructs an invalid way point
@@ -77,7 +82,192 @@ public:
      *
      * @param geoJSONObject GeoJSON Object that describes the waypoint
      */
-    explicit Waypoint(const QJsonObject &geoJSONObject);
+    explicit Waypoint(const QJsonObject& geoJSONObject);
+
+
+    //
+    // PROPERTIES
+    //
+
+    /*! \brief Category of the waypoint
+     *
+     *  This property holds the category of  the waypoint.  For a list of
+     *  possible values and explanations, see the GeoJSON file specification
+     *  [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
+     */
+    Q_PROPERTY(QString category READ category CONSTANT)
+
+    /*! \brief Coordinate of the waypoint
+     *
+     *  This property holds the category of the waypoint. The coordinate might
+     *  include the elevation.
+     */
+    Q_PROPERTY(QGeoCoordinate coordinate READ coordinate CONSTANT)
+
+    /*! \brief Extended name of the waypoint
+     *
+     * This property holds an extended name string of the form "Karlsruhe
+     * (DVOR-DME)"
+     */
+    Q_PROPERTY(QString extendedName READ extendedName CONSTANT)
+
+    /*! \brief ICAO Code of the waypoint
+     *
+     *  This property holds the four-letter ICAO code of the waypoint, or an
+     *  empty string if no ICAO code exists.
+     */
+    Q_PROPERTY(QString ICAOCode READ ICAOCode CONSTANT)
+
+    /*! \brief Suggested icon for use in GUI
+     *
+     *  This property holds the URL of an icon, suitable for the representation
+     *  of the waypoint in the GUI.
+     */
+    Q_PROPERTY(QString icon READ icon CONSTANT)
+
+    /* \brief Validity
+     *
+     * This property is set to true if the waypoint has a valid coordinate and
+     * if the properties satisfy the specifications outlined
+     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
+     */
+    Q_PROPERTY(bool isValid READ isValid CONSTANT)
+
+    /*! \brief Name of the waypoint
+     *
+     *  This property holds the name of the waypoint.
+     */
+    Q_PROPERTY(QString name READ name CONSTANT)
+
+    /*! \brief Short name of the waypoint
+     *
+     *  This property holds the ICAO code if it exists, or else the name of the
+     *  waypoint.
+     */
+    Q_PROPERTY(QString shortName READ shortName CONSTANT)
+
+    /* \brief Verbose description of waypoint properties
+     *
+     * This property holds a list of strings in meaningful order that describe
+     * the waypoint properties.  This includes airport frequency, runway
+     * information, etc. The data is returned as a list of strings where the
+     * first four letters of each string indicate the type of data with an
+     * abbreviation that will be understood by pilots ("RWY ", "ELEV", etc.).
+     * The rest of the string will then contain the actual data.
+     */
+    Q_PROPERTY(QList<QString> tabularDescription READ tabularDescription)
+
+    /*! \brief Two-line description of the waypoint name, for use in GUI
+     *
+     * This property holds a one-line or two-line description of the waypoint.
+     * Depending on available data, this is a string of the form
+     * "<strong>LFKA</strong><br><font size='2'>ALBERTVILLE</font>" or simply
+     * "KIRCHZARTEN"
+     */
+    Q_PROPERTY(QString twoLineTitle READ twoLineTitle CONSTANT)
+
+    /*! \brief Type of the waypoint
+     *
+     *  This property holds the type of the waypoint.  For a list of possible
+     *  values and explanations, see the GeoJSON file specification
+     *  [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
+     */
+    Q_PROPERTY(QString type READ type CONSTANT)
+
+
+    //
+    // GETTER METHODS
+    //
+
+    /*! \brief Getter method for property with same name
+     *
+     *  @returns Property category
+     */
+    [[nodiscard]] auto category() const -> QString
+    {
+        return m_properties.value(QStringLiteral("CAT")).toString();
+    }
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property coordinate
+     */
+    [[nodiscard]] auto coordinate() const -> QGeoCoordinate
+    {
+        return m_coordinate;
+    }
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property extendedName
+    */
+    [[nodiscard]] auto extendedName() const -> QString;
+
+    /*! \brief Getter method for property with same name
+     *
+     *  @returns Property ICAOCode
+     */
+    [[nodiscard]] auto ICAOCode() const -> QString
+    {
+        return m_properties.value(QStringLiteral("COD")).toString();
+    }
+
+    /*! \brief Getter method for property with the same name
+     *
+     * @returns Property icon
+     */
+    [[nodiscard]] auto icon() const -> QString;
+
+    /*! \brief Getter method for property with same name
+     *
+     *  @returns Property isValid
+     */
+    [[nodiscard]] auto isValid() const -> bool
+    {
+        return m_isValid;
+    }
+
+    /*! \brief Getter method for property with same name
+     *
+     *  @returns Property name
+     */
+    [[nodiscard]] auto name() const -> QString
+    {
+        return m_properties.value(QStringLiteral("NAM")).toString();
+    }
+
+    /*! \brief Getter method for property with same name
+     *
+     *  @returns Property shortName
+     */
+    [[nodiscard]] auto shortName() const -> QString
+    {
+        if (ICAOCode().isEmpty()) {
+            return name();
+        }
+        return ICAOCode();
+    }
+
+    /*! \brief Getter method for property with the same name
+     *
+     * @returns Property tabularDescription
+     */
+    [[nodiscard]] auto tabularDescription() const -> QList<QString>;
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property twoLineTitle
+     */
+    [[nodiscard]] auto twoLineTitle() const -> QString;
+
+    /*! \brief Getter method for property with same name
+     *
+     *  @returns Property type
+     */
+    [[nodiscard]] auto type() const -> QString
+    {
+        return m_properties.value(QStringLiteral("TYP")).toString();
+    }
 
 
     //
@@ -113,7 +303,7 @@ public:
      *
      *  @returns Copy of the waypoints with name changed
      */
-    Q_REQUIRED_RESULT Q_INVOKABLE GeoMaps::Waypoint relocated(const QGeoCoordinate& newCoordinate) const;
+    Q_INVOKABLE [[nodiscard]] GeoMaps::Waypoint relocated(const QGeoCoordinate& newCoordinate) const;
 
     /*! \brief Copy waypoint and change location
      *
@@ -121,7 +311,7 @@ public:
      *
      *  @returns Copy of the waypoints with name changed
      */
-    Q_REQUIRED_RESULT Q_INVOKABLE GeoMaps::Waypoint renamed(const QString &newName) const;
+    Q_INVOKABLE [[nodiscard]] GeoMaps::Waypoint renamed(const QString &newName) const;
 
     /*! \brief Serialization to GeoJSON object
      *
@@ -142,186 +332,6 @@ public:
      * @param stream XmlStream that the waypoint is written to, as a wpt element
      */
     void toGPX(QXmlStreamWriter& stream) const;
-
-
-    //
-    // PROPERTIES
-    //
-
-    /*! \brief Category of the waypoint
-     *
-     *  This property holds the category of  the waypoint.  For a list of
-     *  possible values and explanations, see the GeoJSON file specification
-     *  [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
-     */
-    Q_PROPERTY(QString category READ category CONSTANT)
-
-    /*! \brief Getter method for property with same name
-     *
-     *  @returns Property category
-     */
-    [[nodiscard]] auto category() const -> QString
-    {
-        return m_properties.value(QStringLiteral("CAT")).toString();
-    }
-
-    /*! \brief Coordinate of the waypoint
-     *
-     *  This property holds the category of the waypoint. The coordinate might
-     *  include the elevation.
-     */
-    Q_PROPERTY(QGeoCoordinate coordinate READ coordinate CONSTANT)
-
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property coordinate
-     */
-    [[nodiscard]] auto coordinate() const -> QGeoCoordinate
-    {
-        return m_coordinate;
-    }
-
-    /*! \brief Extended name of the waypoint
-     *
-     * This property holds an extended name string of the form "Karlsruhe
-     * (DVOR-DME)"
-     */
-    Q_PROPERTY(QString extendedName READ extendedName CONSTANT)
-
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property extendedName
-    */
-    [[nodiscard]] auto extendedName() const -> QString;
-
-    /*! \brief ICAO Code of the waypoint
-     *
-     *  This property holds the four-letter ICAO code of the waypoint, or an
-     *  empty string if no ICAO code exists.
-     */
-    Q_PROPERTY(QString ICAOCode READ ICAOCode CONSTANT)
-
-    /*! \brief Getter method for property with same name
-     *
-     *  @returns Property ICAOCode
-     */
-    [[nodiscard]] auto ICAOCode() const -> QString
-    {
-        return m_properties.value(QStringLiteral("COD")).toString();
-    }
-
-    /*! \brief Suggested icon for use in GUI
-     *
-     *  This property holds the URL of an icon, suitable for the representation
-     *  of the waypoint in the GUI.
-     */
-    Q_PROPERTY(QString icon READ icon CONSTANT)
-
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property icon
-     */
-    [[nodiscard]] auto icon() const -> QString;
-
-    /* \brief Validity
-     *
-     * This property is set to true if the waypoint has a valid coordinate and
-     * if the properties satisfy the specifications outlined
-     * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
-     */
-    Q_PROPERTY(bool isValid READ isValid CONSTANT)
-
-    /*! \brief Getter method for property with same name
-     *
-     *  @returns Property isValid
-     */
-    [[nodiscard]] auto isValid() const -> bool
-    {
-        return m_isValid;
-    }
-
-    /*! \brief Name of the waypoint
-     *
-     *  This property holds the name of the waypoint.
-     */
-    Q_PROPERTY(QString name READ name CONSTANT)
-
-    /*! \brief Getter method for property with same name
-     *
-     *  @returns Property name
-     */
-    [[nodiscard]] auto name() const -> QString
-    {
-        return m_properties.value(QStringLiteral("NAM")).toString();
-    }
-
-    /*! \brief Short name of the waypoint
-     *
-     *  This property holds the ICAO code if it exists, or else the name of the
-     *  waypoint.
-     */
-    Q_PROPERTY(QString shortName READ shortName CONSTANT)
-
-    /*! \brief Getter method for property with same name
-     *
-     *  @returns Property shortName
-     */
-    [[nodiscard]] auto shortName() const -> QString
-    {
-        if (ICAOCode().isEmpty()) {
-            return name();
-        }
-        return ICAOCode();
-    }
-
-    /* \brief Verbose description of waypoint properties
-     *
-     * This property holds a list of strings in meaningful order that describe
-     * the waypoint properties.  This includes airport frequency, runway
-     * information, etc. The data is returned as a list of strings where the
-     * first four letters of each string indicate the type of data with an
-     * abbreviation that will be understood by pilots ("RWY ", "ELEV", etc.).
-     * The rest of the string will then contain the actual data.
-     */
-    Q_PROPERTY(QList<QString> tabularDescription READ tabularDescription)
-
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property tabularDescription
-     */
-    [[nodiscard]] auto tabularDescription() const -> QList<QString>;
-
-    /*! \brief Two-line description of the waypoint name, for use in GUI
-     *
-     * This property holds a one-line or two-line description of the waypoint.
-     * Depending on available data, this is a string of the form
-     * "<strong>LFKA</strong><br><font size='2'>ALBERTVILLE</font>" or simply
-     * "KIRCHZARTEN"
-     */
-    Q_PROPERTY(QString twoLineTitle READ twoLineTitle CONSTANT)
-
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property twoLineTitle
-     */
-    [[nodiscard]] auto twoLineTitle() const -> QString;
-
-    /*! \brief Type of the waypoint
-     *
-     *  This property holds the type of the waypoint.  For a list of possible
-     *  values and explanations, see the GeoJSON file specification
-     *  [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
-     */
-    Q_PROPERTY(QString type READ type CONSTANT)
-
-    /*! \brief Getter method for property with same name
-     *
-     *  @returns Property type
-     */
-    [[nodiscard]] auto type() const -> QString
-    {
-        return m_properties.value(QStringLiteral("TYP")).toString();
-    }
 
 private:
     // Computes the property isValid; this is used by the constructors to set

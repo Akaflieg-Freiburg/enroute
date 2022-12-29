@@ -507,7 +507,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         }
     }
 
-    RemainingRoute {
+    RemainingRouteBar {
         id: remainingRoute
 
         anchors.top: parent.top

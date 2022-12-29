@@ -1,4 +1,4 @@
-/***************************************************************************
+/*************************************%**************************************
  *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
@@ -24,19 +24,27 @@ import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
 
+Rectangle {
+    id: baseRect
 
-Rectangle {   
-    id: rect
+    // Remaining route info shown in this item
+    property var rri: Navigator.remainingRouteInfo
+
+    height: grid.implicitHeight + SafeInsets.top
+    Behavior on height { NumberAnimation { duration: 100 } }
+
+    clip: true
+
+    visible: baseRect.rri.status !== RemainingRouteInfo.NoRoute
+
+    // True course is only visible if display is wide enough
+    property bool tcVisible: baseRect.width > 25*dummyControl.font.pixelSize
 
     color: "#AA000000"
-    height: grid.implicitHeight + SafeInsets.top
 
-    visible: grid.rri.status !== RemainingRouteInfo.NoRoute
-
-    property bool tcVisible: rect.width > 25*label.font.pixelSize
-
-    Label {
-        id: label
+    // Dummy control, used to clean the font size
+    Control {
+        id: dummyControl
         visible: false
     }
 
@@ -44,18 +52,17 @@ Rectangle {
         id: grid
 
         anchors.fill: parent
-        anchors.leftMargin: label.font.pixelSize + SafeInsets.left
-        anchors.topMargin: SafeInsets.top
-        anchors.rightMargin: label.font.pixelSize + SafeInsets.right
+        anchors.leftMargin: dummyControl.font.pixelSize + SafeInsets.left
+        anchors.topMargin: SafeInsets.top + 0.2*dummyControl.font.pixelSize
+        anchors.rightMargin: dummyControl.font.pixelSize + SafeInsets.right
         rowSpacing: 0
-        columns: rect.tcVisible ? 5 : 4
+        columns: baseRect.tcVisible ? 5 : 4
 
-        property var rri: Navigator.remainingRouteInfo
 
         Item { Layout.preferredWidth: 1 }
         Item {
             Layout.fillWidth: true
-            visible: rect.tcVisible
+            visible: baseRect.tcVisible
         }
         Item { Layout.fillWidth: true }
         Item { Layout.fillWidth: true }
@@ -64,127 +71,127 @@ Rectangle {
         Label {
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
-            visible: grid.rri.status === RemainingRouteInfo.OnRoute
-            font.pixelSize: label.font.pixelSize*0.9
+            visible: baseRect.rri.status === RemainingRouteInfo.OnRoute
+            font.pixelSize: dummyControl.font.pixelSize*0.9
         }
         Label {
             text: "TC"
             color: "white"
             Layout.alignment: Qt.AlignHCenter
-            visible: rect.tcVisible && (grid.rri.status === RemainingRouteInfo.OnRoute)
-            font.pixelSize: label.font.pixelSize*0.9
+            visible: baseRect.tcVisible && (baseRect.rri.status === RemainingRouteInfo.OnRoute)
+            font.pixelSize: dummyControl.font.pixelSize*0.9
         }
         Label {
             text: "DIST"
             color: "white"
             Layout.alignment: Qt.AlignHCenter
-            visible: grid.rri.status === RemainingRouteInfo.OnRoute
-            font.pixelSize: label.font.pixelSize*0.9
+            visible: baseRect.rri.status === RemainingRouteInfo.OnRoute
+            font.pixelSize: dummyControl.font.pixelSize*0.9
         }
         Label {
             text: "ETE"
             color: "white"
             Layout.alignment: Qt.AlignHCenter
-            visible: grid.rri.status === RemainingRouteInfo.OnRoute
-            font.pixelSize: label.font.pixelSize*0.9
+            visible: baseRect.rri.status === RemainingRouteInfo.OnRoute
+            font.pixelSize: dummyControl.font.pixelSize*0.9
         }
         Label {
             text: "ETA"
             color: "white"
             Layout.alignment: Qt.AlignHCenter
-            visible: grid.rri.status === RemainingRouteInfo.OnRoute
-            font.pixelSize: label.font.pixelSize*0.9
+            visible: baseRect.rri.status === RemainingRouteInfo.OnRoute
+            font.pixelSize: dummyControl.font.pixelSize*0.9
         }
 
         Label {
-            text: grid.rri.nextWP.shortName
+            text: baseRect.rri.nextWP.shortName
             elide: Text.ElideRight
             color: "white"
             Layout.fillWidth: true
             Layout.maximumWidth: implicitWidth
-            visible: grid.rri.status === RemainingRouteInfo.OnRoute
+            visible: baseRect.rri.status === RemainingRouteInfo.OnRoute
             font.weight: Font.Bold
-            font.pixelSize: label.font.pixelSize*1.3
+            font.pixelSize: dummyControl.font.pixelSize*1.3
         }
         Label {
             text: {
-                var tt = grid.rri.nextWP_TC
+                var tt = baseRect.rri.nextWP_TC
                 return tt.isFinite() ? Math.round(tt.toDEG()) + "°" : "-"
             }
             color: "white"
             Layout.alignment: Qt.AlignHCenter
             Layout.minimumWidth: implicitWidth
-            visible: rect.tcVisible && (grid.rri.status === RemainingRouteInfo.OnRoute)
+            visible: baseRect.tcVisible && (baseRect.rri.status === RemainingRouteInfo.OnRoute)
             font.weight: Font.Bold
-            font.pixelSize: label.font.pixelSize*1.3
+            font.pixelSize: dummyControl.font.pixelSize*1.3
         }
         Label {
-            text: Navigator.aircraft.horizontalDistanceToString(grid.rri.nextWP_DIST)
+            text: Navigator.aircraft.horizontalDistanceToString(baseRect.rri.nextWP_DIST)
             color: "white"
             Layout.alignment: Qt.AlignHCenter
             Layout.minimumWidth: implicitWidth
-            visible: grid.rri.status === RemainingRouteInfo.OnRoute
+            visible: baseRect.rri.status === RemainingRouteInfo.OnRoute
             font.weight: Font.Bold
-            font.pixelSize: label.font.pixelSize*1.3
+            font.pixelSize: dummyControl.font.pixelSize*1.3
         }
         Label {
-            text: "%1 h".arg(grid.rri.nextWP_ETE.toHoursAndMinutes())
+            text: "%1 h".arg(baseRect.rri.nextWP_ETE.toHoursAndMinutes())
             color: "white"
             Layout.alignment: Qt.AlignHCenter
             Layout.minimumWidth: implicitWidth
-            visible: grid.rri.status === RemainingRouteInfo.OnRoute
+            visible: baseRect.rri.status === RemainingRouteInfo.OnRoute
             font.weight: Font.Bold
-            font.pixelSize: label.font.pixelSize*1.3
+            font.pixelSize: dummyControl.font.pixelSize*1.3
         }
         Label {
-            text: grid.rri.nextWP_ETAAsUTCString
+            text: baseRect.rri.nextWP_ETAAsUTCString
             color: "white"
             Layout.alignment: Qt.AlignHCenter
             Layout.minimumWidth: implicitWidth
-            visible: grid.rri.status === RemainingRouteInfo.OnRoute
+            visible: baseRect.rri.status === RemainingRouteInfo.OnRoute
             font.weight: Font.Bold
-            font.pixelSize: label.font.pixelSize*1.3
+            font.pixelSize: dummyControl.font.pixelSize*1.3
         }
 
         Label {
-            text: grid.rri.finalWP.shortName
+            text: baseRect.rri.finalWP.shortName
             elide: Text.ElideRight
             color: "white"
             Layout.fillWidth: true
             Layout.maximumWidth: implicitWidth
-            visible: (grid.rri.status === RemainingRouteInfo.OnRoute) && grid.rri.finalWP.isValid
+            visible: (baseRect.rri.status === RemainingRouteInfo.OnRoute) && baseRect.rri.finalWP.isValid
             font.weight: Font.Bold
-            font.pixelSize: label.font.pixelSize*1.3
+            font.pixelSize: dummyControl.font.pixelSize*1.3
         }
         Item {
-            visible: rect.tcVisible && (grid.rri.status === RemainingRouteInfo.OnRoute)
+            visible: baseRect.tcVisible && (baseRect.rri.status === RemainingRouteInfo.OnRoute)
         }
         Label {
-            text: Navigator.aircraft.horizontalDistanceToString(grid.rri.finalWP_DIST)
+            text: Navigator.aircraft.horizontalDistanceToString(baseRect.rri.finalWP_DIST)
             color: "white"
             Layout.alignment: Qt.AlignHCenter
             Layout.minimumWidth: implicitWidth
-            visible: (grid.rri.status === RemainingRouteInfo.OnRoute) && grid.rri.finalWP.isValid
+            visible: (baseRect.rri.status === RemainingRouteInfo.OnRoute) && baseRect.rri.finalWP.isValid
             font.weight: Font.Bold
-            font.pixelSize: label.font.pixelSize*1.3
+            font.pixelSize: dummyControl.font.pixelSize*1.3
         }
         Label {
-            text: "%1 h".arg(grid.rri.finalWP_ETE.toHoursAndMinutes())
+            text: "%1 h".arg(baseRect.rri.finalWP_ETE.toHoursAndMinutes())
             color: "white"
             Layout.alignment: Qt.AlignHCenter
             Layout.minimumWidth: implicitWidth
-            visible: (grid.rri.status === RemainingRouteInfo.OnRoute) && grid.rri.finalWP.isValid
+            visible: (baseRect.rri.status === RemainingRouteInfo.OnRoute) && baseRect.rri.finalWP.isValid
             font.weight: Font.Bold
-            font.pixelSize: label.font.pixelSize*1.3
+            font.pixelSize: dummyControl.font.pixelSize*1.3
         }
         Label {
-            text: grid.rri.finalWP_ETAAsUTCString
+            text: baseRect.rri.finalWP_ETAAsUTCString
             color: "white"
             Layout.alignment: Qt.AlignHCenter
             Layout.minimumWidth: implicitWidth
-            visible: (grid.rri.status === RemainingRouteInfo.OnRoute) && grid.rri.finalWP.isValid
+            visible: (baseRect.rri.status === RemainingRouteInfo.OnRoute) && baseRect.rri.finalWP.isValid
             font.weight: Font.Bold
-            font.pixelSize: label.font.pixelSize*1.3
+            font.pixelSize: dummyControl.font.pixelSize*1.3
         }
 
         Label {
@@ -196,7 +203,7 @@ Rectangle {
             horizontalAlignment:  Text.AlignHCenter
 
             text: {
-                switch (grid.rri.status) {
+                switch (baseRect.rri.status) {
                     case RemainingRouteInfo.PositionUnknown:
                         return qsTr("Position unknown.");
                     case RemainingRouteInfo.OffRoute:
@@ -204,7 +211,7 @@ Rectangle {
                     case RemainingRouteInfo.NearDestination:
                         return qsTr("Near destination.");
                 }
-                return grid.rri.note
+                return baseRect.rri.note
             }
 
         }
@@ -212,7 +219,7 @@ Rectangle {
         Item {
             Layout.columnSpan: grid.columns
             Layout.fillWidth: true
-            Layout.preferredHeight: 0.2*label.font.pixelSize
+            Layout.preferredHeight: 0.2*dummyControl.font.pixelSize
         }
 
     }

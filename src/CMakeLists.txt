@@ -343,7 +343,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/AutoSizingMenu.qml
     qml/items/DegreeInput.qml
     qml/items/ElevationInput.qml
-    qml/items/RemainingRoute.qml
+    qml/items/RemainingRouteBar.qml
     qml/items/WordWrappingCheckDelegate.qml
     qml/items/WordWrappingItemDelegate.qml
     qml/items/WordWrappingSwitchDelegate.qml

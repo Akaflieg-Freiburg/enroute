@@ -34,8 +34,8 @@ Page {
     title: qsTr("Aircraft")
 
     // Static objects, used to call static functions
-    property var staticSpeed: Navigator.aircraft.maxValidSpeed
-    property var staticVolumeFlow: Navigator.aircraft.maxValidFuelConsumption
+    property speed staticSpeed
+    property volumeFlow staticVolumeFlow
 
     header: ToolBar {
 
@@ -325,7 +325,7 @@ Page {
                 Layout.alignment: Qt.AlignVCenter
                 enabled: cruiseSpeed.text !== ""
                 onClicked: {
-                    Navigator.aircraft.cruiseSpeed = speed.fromKN(-1)
+                    Navigator.aircraft.cruiseSpeed = aircraftPage.staticSpeed.fromKN(-1)
                     cruiseSpeed.clear()
                 }
             }
@@ -413,7 +413,7 @@ Page {
                 Layout.alignment: Qt.AlignVCenter
                 enabled: descentSpeed.text !== ""
                 onClicked: {
-                    Navigator.aircraft.descentSpeed = speed.fromKN(-1)
+                    Navigator.aircraft.descentSpeed = aircraftPage.staticSpeed.fromKN(-1)
                     descentSpeed.clear()
                 }
             }
@@ -500,7 +500,7 @@ Page {
                 Layout.alignment: Qt.AlignVCenter
                 enabled: descentSpeed.text !== ""
                 onClicked: {
-                    Navigator.aircraft.descentSpeed = speed.fromKN(-1)
+                    Navigator.aircraft.descentSpeed = aircraftPage.staticSpeed.fromKN(-1)
                     descentSpeed.clear()
                 }
             }

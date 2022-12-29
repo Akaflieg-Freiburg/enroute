@@ -56,12 +56,6 @@
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficFactor_WithPosition.h"
 #include "ui/ScaleQuickItem.h"
-#include "units/Angle.h"
-#include "units/Distance.h"
-#include "units/Speed.h"
-#include "units/Time.h"
-#include "units/Volume.h"
-#include "units/VolumeFlow.h"
 #include "weather/WeatherDataProvider.h"
 #include <chrono>
 
@@ -73,12 +67,6 @@ auto main(int argc, char *argv[]) -> int
     qputenv("QSG_RENDER_LOOP", "basic");
 
     // Register types
-    qRegisterMetaType<Units::Angle>();
-    qRegisterMetaType<Units::Distance>();
-    qRegisterMetaType<Units::Speed>();
-    qRegisterMetaType<Units::Time>();
-    qRegisterMetaType<Units::Volume>();
-    qRegisterMetaType<Units::VolumeFlow>();
     qRegisterMetaType<GeoMaps::Airspace>();
     qRegisterMetaType<GeoMaps::Waypoint>();
     qRegisterMetaType<Positioning::PositionInfo>();
@@ -202,12 +190,9 @@ auto main(int argc, char *argv[]) -> int
      */
 
     auto* engine = new QQmlApplicationEngine();
-    engine->rootContext()->setContextProperty(QStringLiteral("angle"), QVariant::fromValue(Units::Angle()) );
-    engine->rootContext()->setContextProperty(QStringLiteral("distance"), QVariant::fromValue(Units::Distance()) );
     engine->rootContext()->setContextProperty(QStringLiteral("manual_location"), MANUAL_LOCATION );
     engine->rootContext()->setContextProperty(QStringLiteral("global"), new GlobalObject(engine) );
     engine->rootContext()->setContextProperty(QStringLiteral("leg"), QVariant::fromValue(Navigation::Leg()) );
-    engine->rootContext()->setContextProperty(QStringLiteral("speed"), QVariant::fromValue(Units::Speed()) );
     engine->load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
 
     if (parser.isSet(screenshotOption))

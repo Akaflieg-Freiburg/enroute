@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QObject>
+#include <QQmlEngine>
 #include <QtMath>
 
 
@@ -33,6 +34,7 @@ namespace Units {
      */
     class VolumeFlow {
         Q_GADGET
+        QML_VALUE_TYPE(volumeFlow)
 
     public:
         /*! \brief Constructs a volume flow

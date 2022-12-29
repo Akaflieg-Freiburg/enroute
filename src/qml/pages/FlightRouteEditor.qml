@@ -33,6 +33,8 @@ Page {
     id: flightRoutePage
     title: qsTr("Route and Wind")
 
+    property speed staticSpeed
+
     Component {
         id: waypointComponent
 
@@ -510,8 +512,9 @@ Page {
                         top: 360
                     }
                     inputMethodHints: Qt.ImhDigitsOnly
+                    property angle myAngle; // Dummy. I do not know how to create an angle otherwise
                     onEditingFinished: {
-                        Navigator.wind.directionFrom = angle.fromDEG(text)
+                        Navigator.wind.directionFrom = myAngle.fromDEG(text)
                         windSpeed.focus = true
                     }
                     color: (acceptableInput ? Material.foreground : "red")
@@ -576,13 +579,13 @@ Page {
                     onEditingFinished: {
                         switch(Navigator.aircraft.horizontalDistanceUnit) {
                         case Aircraft.NauticalMile:
-                            Navigator.wind.speed = speed.fromKN(text)
+                            Navigator.wind.speed = flightRoutePage.staticSpeed.fromKN(text)
                             break;
                         case Aircraft.Kilometer:
-                            Navigator.wind.speed = speed.fromKMH(text)
+                            Navigator.wind.speed = flightRoutePage.staticSpeed.fromKMH(text)
                             break;
                         case Aircraft.StatuteMile :
-                            Navigator.wind.speed = speed.fromMPH(text)
+                            Navigator.wind.speed = flightRoutePage.staticSpeed.fromMPH(text)
                             break;
                         }
                         focus = false
@@ -624,7 +627,7 @@ Page {
                     Layout.alignment: Qt.AlignVCenter
                     enabled: windSpeed.text !== ""
                     onClicked: {
-                        Navigator.wind.speed = speed.fromKN(-1)
+                        Navigator.wind.speed = flightRoutePage.staticSpeed.fromKN(-1)
                         windSpeed.clear()
                     }
                 }

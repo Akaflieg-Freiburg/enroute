@@ -22,6 +22,7 @@
 
 #include <QDataStream>
 #include <QObject>
+#include <QQmlEngine>
 #include <QtMath>
 
 
@@ -34,6 +35,7 @@ namespace Units {
      */
     class Speed {
         Q_GADGET
+        QML_VALUE_TYPE(speed)
 
     public:        
         /*! \brief Constructs a speed

@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QObject>
+#include <QQmlEngine>
 #include <QtMath>
 
 /*! \brief Conversion between units used in aviation
@@ -39,6 +40,7 @@ namespace Units {
      */
     class Angle {
         Q_GADGET
+        QML_VALUE_TYPE(angle)
 
     public:
         /*! \brief Constructs an angle

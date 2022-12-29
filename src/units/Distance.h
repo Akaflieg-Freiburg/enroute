@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QObject>
+#include <QQmlEngine>
 #include <QtMath>
 
 
@@ -33,6 +34,7 @@ namespace Units {
      */
     class Distance {
         Q_GADGET
+        QML_VALUE_TYPE(distance)
 
     public:
         /*! \brief Units of measurement for distances */

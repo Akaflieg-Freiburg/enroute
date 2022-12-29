@@ -24,6 +24,7 @@
 #include "units/Speed.h"
 
 #include <QObject>
+#include <QQmlEngine>
 #include <QtMath>
 
 
@@ -36,6 +37,7 @@ namespace Units {
      */
     class Time {
         Q_GADGET
+        QML_VALUE_TYPE(time)
 
     public:
         /*! \brief Constructs a time

@@ -264,13 +264,6 @@ if( ANDROID )
     list(APPEND SOURCES ${CMAKE_CURRENT_BINARY_DIR}/qml.qrc)
 
     qt_add_executable(${PROJECT_NAME} ${SOURCES} ${ANDROID_EXTRA_SOURCES})
-    target_include_directories(${PROJECT_NAME}
-      PUBLIC
-      ${CMAKE_SOURCE_DIR}/3rdParty/sunset/src
-      ${CMAKE_SOURCE_DIR}/3rdParty/GSL/include
-      navigation
-      platform
-    )
     target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Concurrent Qt6::Core Qt::CorePrivate Qt6::Positioning Qt6::Quick Qt6::Sql Qt6::Svg Qt6::WebView qhttpengine sunset)
     set_target_properties(${PROJECT_NAME} PROPERTIES
         QT_ANDROID_EXTRA_LIBS "${ANDROID_EXTRA_LIBS}"
@@ -315,13 +308,6 @@ if (NOT ANDROID)
         kdsingleapplication
         qhttpengine
         sunset)
-    target_include_directories(${PROJECT_NAME}
-        PUBLIC
-        ${CMAKE_SOURCE_DIR}/3rdParty/sunset/src
-        ${CMAKE_SOURCE_DIR}/3rdParty/GSL/include
-        navigation
-        platform
-    )
     target_precompile_headers(${PROJECT_NAME}
         PRIVATE
         <QObject>
@@ -332,6 +318,15 @@ if (NOT ANDROID)
     install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
     install(DIRECTORY ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/docs/manual DESTINATION ${CMAKE_INSTALL_DOCDIR})
 endif()
+
+target_include_directories(${PROJECT_NAME}
+    PUBLIC
+    ${CMAKE_SOURCE_DIR}/3rdParty/sunset/src
+    ${CMAKE_SOURCE_DIR}/3rdParty/GSL/include
+    navigation
+    platform
+    units
+)
 
 qt_add_qml_module(${PROJECT_NAME}
     URI akaflieg_freiburg.enroute

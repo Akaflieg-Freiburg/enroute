@@ -156,49 +156,13 @@ namespace Units {
             return Units::Speed::fromMPS(_speedInMPS - rhs._speedInMPS);
         }
 
-        /*! \brief Equality check
-         *
-         *  @param rhs Right hand side of the comparison
-         *
-         *  @returns Result of the comparison
-         */
-        Q_INVOKABLE bool operator==(Units::Speed rhs) const
-        {
-            return _speedInMPS == rhs._speedInMPS;
-        }
-
-        /*! \brief Equality check
-         *
-         *  @param rhs Right hand side of the comparison
-         *
-         *  @returns Result of the comparison
-         */
-        Q_INVOKABLE bool operator!=(Units::Speed rhs) const
-        {
-            return _speedInMPS != rhs._speedInMPS;
-        }
-
         /*! \brief Comparison
          *
          *  @param rhs Right hand side of the comparison
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE bool operator<(Units::Speed rhs) const
-        {
-            return _speedInMPS < rhs._speedInMPS;
-        }
-
-        /*! \brief Comparison
-         *
-         *  @param rhs Right hand side of the comparison
-         *
-         *  @returns Result of the comparison
-         */
-        Q_INVOKABLE bool operator>(Units::Speed rhs) const
-        {
-            return _speedInMPS > rhs._speedInMPS;
-        }
+        Q_INVOKABLE [[nodiscard]] std::partial_ordering operator<=>(const Units::Speed& rhs) const = default;
 
         /*! \brief Convert to feet per minute
          *

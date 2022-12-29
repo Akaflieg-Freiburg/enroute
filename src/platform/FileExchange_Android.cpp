@@ -64,7 +64,6 @@ Platform::FileExchange::FileExchange(QObject *parent)
 
 void Platform::FileExchange::deferredInitialization()
 {
-#warning
     QJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "startWiFiMonitor");
 }
 

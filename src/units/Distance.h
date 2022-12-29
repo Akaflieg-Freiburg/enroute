@@ -171,49 +171,13 @@ namespace Units {
             return fromM(m_distanceInM - rhs.m_distanceInM);
         }
 
-        /*! \brief Comparison: less than
+        /*! \brief Comparison
          *
          *  @param rhs Right hand side of the comparison
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE bool operator<(Units::Distance rhs) const
-        {
-            return m_distanceInM < rhs.m_distanceInM;
-        }
-
-        /*! \brief Comparison: larger equal
-         *
-         *  @param rhs Right hand side of the comparison
-         *
-         *  @returns Result of the comparison
-         */
-        Q_INVOKABLE bool operator>(Units::Distance rhs) const
-        {
-            return m_distanceInM > rhs.m_distanceInM;
-        }
-
-        /*! \brief Comparison: not equal
-         *
-         *  @param rhs Right hand side of the comparison
-         *
-         *  @returns Result of the comparison
-         */
-        Q_INVOKABLE bool operator!=(Units::Distance rhs) const
-        {
-            return m_distanceInM != rhs.m_distanceInM;
-        }
-
-        /*! \brief Comparison: equal
-         *
-         *  @param rhs Right hand side of the comparison
-         *
-         *  @returns Result of the comparison
-         */
-        Q_INVOKABLE bool operator==(Units::Distance rhs) const
-        {
-            return m_distanceInM == rhs.m_distanceInM;
-        }
+        Q_INVOKABLE [[nodiscard]] std::partial_ordering operator<=>(const Units::Distance& rhs) const = default;
 
         /*! \brief Convert to feet
          *

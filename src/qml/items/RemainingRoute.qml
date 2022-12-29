@@ -26,10 +26,14 @@ import akaflieg_freiburg.enroute
 
 
 Rectangle {   
+    id: rect
+
     color: "#AA000000"
     height: grid.implicitHeight + SafeInsets.top
 
     visible: grid.rri.status !== RemainingRouteInfo.NoRoute
+
+    property bool tcVisible: rect.width > 25*label.font.pixelSize
 
     Label {
         id: label
@@ -44,11 +48,15 @@ Rectangle {
         anchors.topMargin: SafeInsets.top
         anchors.rightMargin: label.font.pixelSize + SafeInsets.right
         rowSpacing: 0
-        columns: 4
+        columns: rect.tcVisible ? 5 : 4
 
         property var rri: Navigator.remainingRouteInfo
 
         Item { Layout.preferredWidth: 1 }
+        Item {
+            Layout.fillWidth: true
+            visible: rect.tcVisible
+        }
         Item { Layout.fillWidth: true }
         Item { Layout.fillWidth: true }
         Item { Layout.fillWidth: true }
@@ -57,6 +65,13 @@ Rectangle {
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
             visible: grid.rri.status === RemainingRouteInfo.OnRoute
+            font.pixelSize: label.font.pixelSize*0.9
+        }
+        Label {
+            text: "TC"
+            color: "white"
+            Layout.alignment: Qt.AlignHCenter
+            visible: rect.tcVisible && (grid.rri.status === RemainingRouteInfo.OnRoute)
             font.pixelSize: label.font.pixelSize*0.9
         }
         Label {
@@ -92,6 +107,18 @@ Rectangle {
             font.pixelSize: label.font.pixelSize*1.3
         }
         Label {
+            text: {
+                var tt = grid.rri.nextWP_TC
+                return tt.isFinite() ? Math.round(tt.toDEG()) + "°" : "-"
+            }
+            color: "white"
+            Layout.alignment: Qt.AlignHCenter
+            Layout.minimumWidth: implicitWidth
+            visible: rect.tcVisible && (grid.rri.status === RemainingRouteInfo.OnRoute)
+            font.weight: Font.Bold
+            font.pixelSize: label.font.pixelSize*1.3
+        }
+        Label {
             text: Navigator.aircraft.horizontalDistanceToString(grid.rri.nextWP_DIST)
             color: "white"
             Layout.alignment: Qt.AlignHCenter
@@ -119,7 +146,6 @@ Rectangle {
             font.pixelSize: label.font.pixelSize*1.3
         }
 
-
         Label {
             text: grid.rri.finalWP.shortName
             elide: Text.ElideRight
@@ -129,6 +155,9 @@ Rectangle {
             visible: (grid.rri.status === RemainingRouteInfo.OnRoute) && grid.rri.finalWP.isValid
             font.weight: Font.Bold
             font.pixelSize: label.font.pixelSize*1.3
+        }
+        Item {
+            visible: rect.tcVisible && (grid.rri.status === RemainingRouteInfo.OnRoute)
         }
         Label {
             text: Navigator.aircraft.horizontalDistanceToString(grid.rri.finalWP_DIST)
@@ -159,7 +188,7 @@ Rectangle {
         }
 
         Label {
-            Layout.columnSpan: 4
+            Layout.columnSpan: grid.columns
             Layout.fillWidth: true
             visible: text !== ""
             color: "white"
@@ -181,11 +210,10 @@ Rectangle {
         }
 
         Item {
-            Layout.columnSpan: 4
+            Layout.columnSpan: grid.columns
             Layout.fillWidth: true
             Layout.preferredHeight: 0.2*label.font.pixelSize
         }
-
 
     }
 

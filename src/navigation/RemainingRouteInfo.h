@@ -21,6 +21,7 @@
 #pragma once
 
 #include "geomaps/Waypoint.h"
+#include "units/Angle.h"
 #include "units/Distance.h"
 #include "units/Time.h"
 
@@ -88,6 +89,9 @@ public:
     /*! \brief ETA for flight to next waypoint in the route, in UTC and as a string */
     Q_PROPERTY(QString nextWP_ETAAsUTCString READ nextWP_ETAAsUTCString CONSTANT)
 
+    /*! \brief TC for flight to next waypoint in the route */
+    Q_PROPERTY(Units::Angle nextWP_TC MEMBER nextWP_TC CONSTANT)
+
     /*! \brief Final waypoint in the route */
     Q_PROPERTY(GeoMaps::Waypoint finalWP MEMBER finalWP CONSTANT)
 
@@ -105,7 +109,7 @@ public:
 
     /*! \brief Note
      *
-     * This property contains an optional localozed warning, if ETE cannot be computed because
+     * This property contains an optional localized warning, if ETE cannot be computed because
      * wind or aircraft data are missing. If no warning, then this field remains empty.
      */
     Q_PROPERTY(QString note MEMBER note CONSTANT)
@@ -148,6 +152,7 @@ private:
     Units::Distance nextWP_DIST {};
     Units::Time nextWP_ETE {};
     QDateTime nextWP_ETA {};
+    Units::Angle nextWP_TC {};
 
     GeoMaps::Waypoint finalWP {};
     Units::Distance finalWP_DIST {};

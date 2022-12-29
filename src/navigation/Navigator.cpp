@@ -302,6 +302,9 @@ void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::Position
     {
         auto bearing = legToNextWP.TC()-info.trueTrack();
         auto bearingDEG = bearing.toDEG();
+
+
+
         if ((bearingDEG < 30) || (bearingDEG > 360-30))
         {
             ETE = dist/(bearing.cos()*info.groundSpeed());
@@ -315,6 +318,7 @@ void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::Position
     {
         rri.nextWP_ETA = QDateTime::currentDateTimeUtc().addSecs( qRound64(rri.nextWP_ETE.toS()) );
     }
+    rri.nextWP_TC = legToNextWP.TC();
 
     if (currentLeg < legs.size()-1)
     {

@@ -323,6 +323,7 @@ target_include_directories(${PROJECT_NAME}
     ${CMAKE_SOURCE_DIR}/3rdParty/GSL/include
     navigation
     platform
+    ui
     units
 )
 

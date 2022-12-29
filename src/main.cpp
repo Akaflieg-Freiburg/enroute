@@ -55,7 +55,6 @@
 #include "traffic/PasswordDB.h"
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficFactor_WithPosition.h"
-#include "ui/ScaleQuickItem.h"
 #include "weather/WeatherDataProvider.h"
 #include <chrono>
 
@@ -92,7 +91,6 @@ auto main(int argc, char *argv[]) -> int
     qmlRegisterUncreatableType<Platform::Notifier_Abstract>("enroute", 1, 0, "Notifier", QStringLiteral("Notifier objects cannot be created in QML"));
     qmlRegisterUncreatableType<Positioning::PositionProvider>("enroute", 1, 0, "PositionProvider", QStringLiteral("PositionProvider objects cannot be created in QML"));
     qmlRegisterUncreatableType<Traffic::TrafficFactor_WithPosition>("enroute", 1, 0, "TrafficFactor_WithPosition", QStringLiteral("TrafficFactor_WithPosition objects cannot be created in QML"));
-    qmlRegisterType<Ui::ScaleQuickItem>("enroute", 1, 0, "Scale");
     qmlRegisterUncreatableType<Weather::WeatherDataProvider>("enroute", 1, 0, "WeatherProvider", QStringLiteral("Weather::WeatherProvider objects cannot be created in QML"));
     qmlRegisterType<Weather::Station>("enroute", 1, 0, "WeatherStation");
 

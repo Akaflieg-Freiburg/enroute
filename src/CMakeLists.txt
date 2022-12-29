@@ -125,7 +125,6 @@ set(SOURCES
     traffic/TrafficFactor_DistanceOnly.h
     traffic/TrafficFactor_WithPosition.h
     traffic/Warning.h
-    ui/ScaleQuickItem.h
     units/Angle.h
     units/Distance.h
     units/Speed.h
@@ -195,7 +194,6 @@ set(SOURCES
     traffic/TrafficFactor_DistanceOnly.cpp
     traffic/TrafficFactor_WithPosition.cpp
     traffic/Warning.cpp
-    ui/ScaleQuickItem.cpp
     units/Angle.cpp
     units/Distance.cpp
     units/Speed.cpp
@@ -342,6 +340,9 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/WordWrappingCheckDelegate.qml
     qml/items/WordWrappingItemDelegate.qml
     qml/items/WordWrappingSwitchDelegate.qml
+    SOURCES
+    ui/ScaleQuickItem.h
+    ui/ScaleQuickItem.cpp
 )
 
 

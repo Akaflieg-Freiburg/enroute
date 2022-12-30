@@ -121,14 +121,14 @@ public:
      * This property is used in the app to determine if the message has been
      * shown or not.
      */
-    Q_PROPERTY(uint lastWhatsNewHash READ lastWhatsNewHash WRITE setLastWhatsNewHash NOTIFY lastWhatsNewHashChanged)
+    Q_PROPERTY(size_t lastWhatsNewHash READ lastWhatsNewHash WRITE setLastWhatsNewHash NOTIFY lastWhatsNewHashChanged)
 
     /*! \brief Hash of the last "what's new in maps" message that was shown to the user
      *
      * This property is used in the app to determine if the message has been
      * shown or not.
      */
-    Q_PROPERTY(uint lastWhatsNewInMapsHash READ lastWhatsNewInMapsHash WRITE setLastWhatsNewInMapsHash NOTIFY lastWhatsNewInMapsHashChanged)
+    Q_PROPERTY(size_t lastWhatsNewInMapsHash READ lastWhatsNewInMapsHash WRITE setLastWhatsNewInMapsHash NOTIFY lastWhatsNewInMapsHashChanged)
 
     /*! \brief Map bearing policy */
     Q_PROPERTY(MapBearingPolicy mapBearingPolicy READ mapBearingPolicy WRITE setMapBearingPolicy NOTIFY mapBearingPolicyChanged)
@@ -193,13 +193,13 @@ public:
      *
      * @returns Property lastWhatsNewHash
      */
-    [[nodiscard]] auto lastWhatsNewHash() const -> uint { return settings.value(QStringLiteral("lastWhatsNewHash"), 0).toUInt(); }
+    [[nodiscard]] auto lastWhatsNewHash() const -> size_t { return settings.value(QStringLiteral("lastWhatsNewHash"), 0).toUInt(); }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property lastWhatsNewInMapsHash
      */
-    [[nodiscard]] auto lastWhatsNewInMapsHash() const -> uint { return settings.value(QStringLiteral("lastWhatsNewInMapsHash"), 0).toUInt(); }
+    [[nodiscard]] auto lastWhatsNewInMapsHash() const -> size_t { return settings.value(QStringLiteral("lastWhatsNewInMapsHash"), 0).toUInt(); }
 
     /*! \brief Getter function for property of the same name
      *
@@ -274,13 +274,13 @@ public:
      *
      * @param lwnh Property lastWhatsNewHash
      */
-    void setLastWhatsNewHash(uint lwnh);
+    void setLastWhatsNewHash(size_t lwnh);
 
     /*! \brief Getter function for property of the same name
      *
      * @param lwnh Property lastWhatsNewInMapsHash
      */
-    void setLastWhatsNewInMapsHash(uint lwnh);
+    void setLastWhatsNewInMapsHash(size_t lwnh);
 
     /*! \brief Setter function for property of the same name
      *

@@ -105,7 +105,7 @@ namespace Navigation
          *
          * This property returns a list of all legs in the route.
          */
-        Q_PROPERTY(QVector<Navigation::Leg> legs READ legs NOTIFY waypointsChanged)
+        Q_PROPERTY(QList<Navigation::Leg> legs READ legs NOTIFY waypointsChanged)
 
         /*! \brief Number of waypoints in the route */
         Q_PROPERTY(int size READ size NOTIFY waypointsChanged)
@@ -153,7 +153,7 @@ namespace Navigation
          *
          * @returns Property legs
          */
-        [[nodiscard]] auto legs() const -> QVector<Navigation::Leg> { return m_legs; }
+        [[nodiscard]] auto legs() const -> QList<Navigation::Leg> { return m_legs; }
 
         /*! \brief Getter function for the property with the same name
          *

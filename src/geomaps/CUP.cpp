@@ -195,11 +195,11 @@ GeoMaps::Waypoint GeoMaps::CUP::readWaypoint(const QString &line)
     {
         auto eleString = fields[5];
         bool ok = false;
-        if (eleString.endsWith(QLatin1String("m")))
+        if (eleString.endsWith(u"m"))
         {
             ele = eleString.chopped(1).toDouble(&ok);
         }
-        if (eleString.endsWith(QLatin1String("ft")))
+        if (eleString.endsWith(u"ft"))
         {
             ele = eleString.chopped(1).toDouble(&ok) * 0.3048;
         }
@@ -252,7 +252,7 @@ auto GeoMaps::CUP::read(const QString &fileName) -> QVector<GeoMaps::Waypoint>
     stream.readLineInto(&line);
     while (stream.readLineInto(&line))
     {
-        if (line.contains(QLatin1String("-----Related Tasks-----")))
+        if (line.contains(u"-----Related Tasks-----"))
         {
             break;
         }

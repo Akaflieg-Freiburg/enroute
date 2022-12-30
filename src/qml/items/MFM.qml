@@ -328,6 +328,7 @@ Item {
                 rotation: flightMap.animatedTrack-flightMap.bearing
 
                 FlightVector {
+                    pixelPerTenKM: flightMap.pixelPer10km
                     groundSpeedInMetersPerSecond: global.positionProvider().positionInfo.groundSpeed().toMPS()
                     visible: (Navigator.flightStatus === Navigator.Flight) && (global.positionProvider().positionInfo.trueTrack().isFinite())
                 }

@@ -43,7 +43,7 @@ class Waypoint
     QML_VALUE_TYPE(waypoint)
 
     /*! \brief qHash */
-    friend auto qHash(const GeoMaps::Waypoint& wp) -> uint;
+    friend auto qHash(const GeoMaps::Waypoint& wp) -> size_t;
 
 public:
     /*! \brief Constructs an invalid way point
@@ -280,7 +280,7 @@ public:
      */
     void setName(const QString &newName)
     {
-        m_properties.insert("NAM", newName);
+        m_properties.insert(QStringLiteral("NAM"), newName);
     }
 
 
@@ -361,7 +361,7 @@ protected:
  *
  * @returns Hash value
  */
-auto qHash(const GeoMaps::Waypoint& wp) -> uint;
+auto qHash(const GeoMaps::Waypoint& wp) -> size_t;
 
 } // namespace GeoMaps
 

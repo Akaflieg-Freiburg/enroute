@@ -59,7 +59,7 @@ public:
      *
      *  This property holds a list of direct children of the instance.  The list is sorted by section and object name, and never contains a zero pointer.
      */
-    Q_PROPERTY(QVector<DataManagement::Downloadable_Abstract*> downloadables READ downloadables NOTIFY downloadablesChanged)
+    Q_PROPERTY(QList<DataManagement::Downloadable_Abstract*> downloadables READ downloadables NOTIFY downloadablesChanged)
 
 
 

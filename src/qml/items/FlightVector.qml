@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,32 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-//import QtGraphicalEffects 1.15
-import QtLocation 5.15
-import QtPositioning 5.15
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Layouts 1.15
-
-import enroute 1.0
-
-import QtQml 2.15
-
-import "."
-import ".."
-
+import QtQml
+import QtQuick
 
 Rectangle {
     id: flightVector
 
-    property real groundSpeedInMetersPerSecond: 0.0
+    property real pixelPerTenKM
+    required property real groundSpeedInMetersPerSecond
+
     Behavior on groundSpeedInMetersPerSecond {NumberAnimation {duration: 400}}
 
     x: -width/2.0
     y: -height
     width: 5
-    height: flightMap.pixelPer10km*(5*60*flightVector.groundSpeedInMetersPerSecond)/10000.0
+    height: pixelPerTenKM*(5*60*groundSpeedInMetersPerSecond)/10000.0
 
     color: "black"
 

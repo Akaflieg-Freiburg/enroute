@@ -158,7 +158,7 @@ public:
     Q_PROPERTY(QString whatsNew READ whatsNew NOTIFY whatsNewChanged)
 
     /*! \brief Hash of the current "what's new" message */
-    Q_PROPERTY(uint whatsNewHash READ whatsNewHash NOTIFY whatsNewChanged)
+    Q_PROPERTY(size_t whatsNewHash READ whatsNewHash NOTIFY whatsNewChanged)
 
 
     //
@@ -241,7 +241,7 @@ public:
      *
      *  @returns Property lastWhatsNewHash
      */
-    [[nodiscard]] auto whatsNewHash() const -> uint { return qHash(m_whatsNew, 0); }
+    [[nodiscard]] auto whatsNewHash() const -> size_t { return qHash(m_whatsNew, 0); }
 
 
     //

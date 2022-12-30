@@ -157,22 +157,22 @@ void Settings::setIgnoreSSLProblems(bool ignore)
 }
 
 
-void Settings::setLastWhatsNewHash(uint lwnh)
+void Settings::setLastWhatsNewHash(size_t lwnh)
 {
     if (lwnh == lastWhatsNewHash()) {
         return;
     }
-    settings.setValue(QStringLiteral("lastWhatsNewHash"), lwnh);
+    settings.setValue(QStringLiteral("lastWhatsNewHash"), QVariant::fromValue(lwnh));
     emit lastWhatsNewHashChanged();
 }
 
 
-void Settings::setLastWhatsNewInMapsHash(uint lwnh)
+void Settings::setLastWhatsNewInMapsHash(size_t lwnh)
 {
     if (lwnh == lastWhatsNewInMapsHash()) {
         return;
     }
-    settings.setValue(QStringLiteral("lastWhatsNewInMapsHash"), lwnh);
+    settings.setValue(QStringLiteral("lastWhatsNewInMapsHash"), QVariant::fromValue(lwnh));
     emit lastWhatsNewInMapsHashChanged();
 }
 

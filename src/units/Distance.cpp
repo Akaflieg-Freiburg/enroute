@@ -64,7 +64,7 @@ auto Units::Distance::toString(Units::Distance::DistanceUnit units, bool roundBi
 
     QString signString;
     if (forceSign && roundedDist > 0.0) {
-        signString += QLatin1String("+");
+        signString += u"+"_qs;
     }
     return signString + QString::number(roundedDist) + " " + unit;
 }

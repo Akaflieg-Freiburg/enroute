@@ -567,8 +567,9 @@ CenteringDialog {
 
         onAccepted: {
             global.platformAdaptor().vibrateBrief()
-            var newWP = waypoint.renamed(newName)
-            newWP = newWP.relocated( QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter) )
+            var newWP = waypoint.copy()
+            newWP.name = newName
+            newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
             global.waypointLibrary().replace(waypoint, newWP)
             toast.doToast(qsTr("Modified entry %1 in library.").arg(newWP.extendedName))
         }
@@ -581,8 +582,9 @@ CenteringDialog {
 
         onAccepted: {
             global.platformAdaptor().vibrateBrief()
-            var newWP = waypoint.renamed(newName)
-            newWP = newWP.relocated( QtPositioning.coordinate(newLatitude, newLongitude) )
+            var newWP = waypoint.copy()
+            newWP.name = newName
+            newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
             global.waypointLibrary().add(newWP)
             toast.doToast(qsTr("Added %1 to waypoint library.").arg(newWP.extendedName))
         }

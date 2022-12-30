@@ -336,7 +336,7 @@ void Navigation::FlightRoute::relocateWaypoint(int idx, double latitude, double 
     }
 
 
-    m_waypoints[idx] = m_waypoints[idx].relocated(newCoordinate);
+    m_waypoints[idx].setCoordinate(newCoordinate);
     updateLegs();
     emit waypointsChanged();
 }
@@ -353,7 +353,7 @@ void Navigation::FlightRoute::renameWaypoint(int idx, const QString& newName)
     }
 
 
-    m_waypoints[idx] = m_waypoints[idx].renamed(newName);
+    m_waypoints[idx].setName(newName);
     updateLegs();
     emit waypointsChanged();
 }

@@ -42,12 +42,6 @@ class Waypoint
     Q_GADGET
     QML_VALUE_TYPE(waypoint)
 
-    /*! \brief Comparison */
-    friend auto operator==(const GeoMaps::Waypoint&, const GeoMaps::Waypoint&) -> bool;
-
-    /*! \brief Comparison */
-    friend auto operator!=(const GeoMaps::Waypoint&, const GeoMaps::Waypoint&) -> bool;
-
     /*! \brief qHash */
     friend auto qHash(const GeoMaps::Waypoint& wp) -> uint;
 
@@ -102,14 +96,14 @@ public:
      *  This property holds the category of the waypoint. The coordinate might
      *  include the elevation.
      */
-    Q_PROPERTY(QGeoCoordinate coordinate READ coordinate CONSTANT)
+    Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE setCoordinate)
 
     /*! \brief Extended name of the waypoint
      *
      * This property holds an extended name string of the form "Karlsruhe
      * (DVOR-DME)"
      */
-    Q_PROPERTY(QString extendedName READ extendedName CONSTANT)
+    Q_PROPERTY(QString extendedName READ extendedName)
 
     /*! \brief ICAO Code of the waypoint
      *
@@ -131,13 +125,13 @@ public:
      * if the properties satisfy the specifications outlined
      * [here](https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation).
      */
-    Q_PROPERTY(bool isValid READ isValid CONSTANT)
+    Q_PROPERTY(bool isValid READ isValid)
 
     /*! \brief Name of the waypoint
      *
      *  This property holds the name of the waypoint.
      */
-    Q_PROPERTY(QString name READ name CONSTANT)
+    Q_PROPERTY(QString name READ name WRITE setName)
 
     /*! \brief Short name of the waypoint
      *
@@ -164,7 +158,7 @@ public:
      * "<strong>LFKA</strong><br><font size='2'>ALBERTVILLE</font>" or simply
      * "KIRCHZARTEN"
      */
-    Q_PROPERTY(QString twoLineTitle READ twoLineTitle CONSTANT)
+    Q_PROPERTY(QString twoLineTitle READ twoLineTitle)
 
     /*! \brief Type of the waypoint
      *
@@ -222,10 +216,7 @@ public:
      *
      *  @returns Property isValid
      */
-    [[nodiscard]] auto isValid() const -> bool
-    {
-        return m_isValid;
-    }
+    [[nodiscard]] auto isValid() const -> bool;
 
     /*! \brief Getter method for property with same name
      *
@@ -271,8 +262,58 @@ public:
 
 
     //
+    // SETTER METHODS
+    //
+
+    /*! \brief Set coordinate
+     *
+     *  @param newCoordinate New coordinate of the waypoint
+     */
+    void setCoordinate(const QGeoCoordinate& newCoordinate)
+    {
+        m_coordinate = newCoordinate;
+    }
+
+    /*! \brief Set name
+     *
+     *  @param newName New name of the waypoint
+     */
+    void setName(const QString &newName)
+    {
+        m_properties.insert("NAM", newName);
+    }
+
+
+    //
     // METHODS
     //
+
+    /*! \brief Comparison
+     *
+     *  @param other Waypoint to compare with
+     *
+     *  @returns Result of comparison
+     */
+    Q_INVOKABLE [[nodiscard]] bool operator==(const GeoMaps::Waypoint& other) const = default;
+
+    /*! \brief Comparison
+     *
+     *  @param other Waypoint to compare with
+     *
+     *  @returns Result of comparison
+     */
+    Q_INVOKABLE [[nodiscard]] bool operator!=(const GeoMaps::Waypoint&) const = default;
+
+    /*! \brief Deep copy
+     *
+     *  This method exists for the benefit of QML, where deep copies are hard to produce.
+     *
+     * @returns Copy of the present waypoint.
+     */
+    Q_INVOKABLE [[nodiscard]] GeoMaps::Waypoint copy() const
+    {
+        return *this;
+    }
 
     /*! \brief Equality check
      *
@@ -283,6 +324,7 @@ public:
      *
      * @returns True if the coordinates and all properties agree.
      */
+#warning still needed?
     Q_INVOKABLE [[nodiscard]] bool equals(const GeoMaps::Waypoint &other) const
     {
         return *this == other;
@@ -296,22 +338,6 @@ public:
      *  them is less than 2km
      */
     Q_INVOKABLE [[nodiscard]] bool isNear(const GeoMaps::Waypoint& other) const;
-
-    /*! \brief Copy waypoint and change location
-     *
-     *  @param newCoordinate New coordinate of the waypoint
-     *
-     *  @returns Copy of the waypoints with name changed
-     */
-    Q_INVOKABLE [[nodiscard]] GeoMaps::Waypoint relocated(const QGeoCoordinate& newCoordinate) const;
-
-    /*! \brief Copy waypoint and change location
-     *
-     *  @param newName New name of the waypoint
-     *
-     *  @returns Copy of the waypoints with name changed
-     */
-    Q_INVOKABLE [[nodiscard]] GeoMaps::Waypoint renamed(const QString &newName) const;
 
     /*! \brief Serialization to GeoJSON object
      *
@@ -333,22 +359,16 @@ public:
      */
     void toGPX(QXmlStreamWriter& stream) const;
 
-private:
-    // Computes the property isValid; this is used by the constructors to set
-    // the cached value
-    [[nodiscard]] auto computeIsValid() const -> bool;
-
 protected:
-    bool m_isValid {false};
     QGeoCoordinate m_coordinate;
     QMap<QString, QVariant> m_properties;
 };
 
 /*! \brief Comparison */
-auto operator==(const GeoMaps::Waypoint&, const GeoMaps::Waypoint&) -> bool;
+//auto operator==(const GeoMaps::Waypoint&, const GeoMaps::Waypoint&) -> bool = default;
 
 /*! \brief Comparison */
-auto operator!=(const GeoMaps::Waypoint&, const GeoMaps::Waypoint&) -> bool;
+//auto operator!=(const GeoMaps::Waypoint&, const GeoMaps::Waypoint&) -> bool;
 
 /*! \brief Hash function for airspaces
  *

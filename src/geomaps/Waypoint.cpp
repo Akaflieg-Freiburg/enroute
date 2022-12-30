@@ -20,7 +20,6 @@
 
 
 #include <QJsonArray>
-#include <QUrl>
 
 #include "GlobalObject.h"
 #include "Waypoint.h"
@@ -34,9 +33,6 @@ GeoMaps::Waypoint::Waypoint()
     m_properties.insert(QStringLiteral("CAT"), QStringLiteral("WP"));
     m_properties.insert(QStringLiteral("NAM"), QStringLiteral("Waypoint"));
     m_properties.insert(QStringLiteral("TYP"), QStringLiteral("WP"));
-
-    // Set cached property
-    m_isValid = computeIsValid();
 }
 
 
@@ -49,9 +45,6 @@ GeoMaps::Waypoint::Waypoint(const QGeoCoordinate& coordinate)
     if (coordinate.type() == QGeoCoordinate::Coordinate3D) {
         m_properties.insert(QStringLiteral("ELE"), coordinate.altitude() );
     }
-
-    // Set cached property
-    m_isValid = computeIsValid();
 }
 
 
@@ -89,17 +82,14 @@ GeoMaps::Waypoint::Waypoint(const QJsonObject &geoJSONObject)
     if (m_properties.contains(QStringLiteral("ELE"))) {
         m_coordinate.setAltitude(properties[QStringLiteral("ELE")].toDouble());
     }
-
-    // Set cached property
-    m_isValid = computeIsValid();
 }
 
 
 //
-// METHODS
+// GETTER METHODS
 //
 
-auto GeoMaps::Waypoint::computeIsValid() const -> bool
+auto GeoMaps::Waypoint::isValid() const -> bool
 {
     if (!m_coordinate.isValid()) {
         return false;
@@ -214,6 +204,10 @@ auto GeoMaps::Waypoint::computeIsValid() const -> bool
 }
 
 
+//
+// METHODS
+//
+
 auto GeoMaps::Waypoint::isNear(const Waypoint& other) const -> bool
 {
     if (!m_coordinate.isValid()) {
@@ -224,22 +218,6 @@ auto GeoMaps::Waypoint::isNear(const Waypoint& other) const -> bool
     }
 
     return m_coordinate.distanceTo(other.m_coordinate) < 2000;
-}
-
-
-auto GeoMaps::Waypoint::relocated(const QGeoCoordinate& newCoordinate) const -> GeoMaps::Waypoint
-{
-    Waypoint copy(*this);
-    copy.m_coordinate = newCoordinate;
-    return copy;
-}
-
-
-auto GeoMaps::Waypoint::renamed(const QString &newName) const -> GeoMaps::Waypoint
-{
-    Waypoint copy(*this);
-    copy.m_properties.insert("NAM", newName);
-    return copy;
 }
 
 
@@ -379,19 +357,6 @@ auto GeoMaps::Waypoint::twoLineTitle() const -> QString
 }
 
 
-auto GeoMaps::operator==(const GeoMaps::Waypoint& A, const GeoMaps::Waypoint& B) -> bool
-{
-    return ((A.m_coordinate == B.m_coordinate) &&
-            (A.m_properties == B.m_properties));
-}
-
-
-auto GeoMaps::operator!=(const GeoMaps::Waypoint& A, const GeoMaps::Waypoint& B) -> bool
-{
-    return ((A.m_coordinate != B.m_coordinate) ||
-            (A.m_properties != B.m_properties));
-}
-
 auto GeoMaps::qHash(const GeoMaps::Waypoint& wp) -> uint
 {
     auto result = qHash(wp.m_coordinate);
@@ -399,7 +364,7 @@ auto GeoMaps::qHash(const GeoMaps::Waypoint& wp) -> uint
     QMapIterator<QString, QVariant> i(wp.m_properties);
     while (i.hasNext()) {
         i.next();
-        result += qHash(i.key());
+        result += qHash(i.key())+1;
         result += qHash(i.value().toString());
     }
     return result;

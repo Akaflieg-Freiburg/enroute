@@ -39,7 +39,7 @@ CenteringDialog {
     id: waypointEditorDialog
 
     // Property waypoint, and code to handle waypoint changes
-    property var waypoint: global.geoMapProvider().createWaypoint()
+    property waypoint waypoint: global.geoMapProvider().createWaypoint()
 
     readonly property string newName: wpNameField.text
     readonly property double newLatitude: latInput.value
@@ -51,11 +51,12 @@ CenteringDialog {
 
     standardButtons: Dialog.Cancel|Dialog.Ok
 
-    onWaypointChanged: {
+    onAboutToShow: {
         // This is necessary, because the initial binding "latInput.value: waypoint.coordinate.latitude"
         // breaks as soon as the user edits the coordinates manually.
         latInput.value = waypoint.coordinate.latitude
         longInput.value = waypoint.coordinate.longitude
+        wpNameField.text = waypoint.extendedName
     }
 
     ScrollView {

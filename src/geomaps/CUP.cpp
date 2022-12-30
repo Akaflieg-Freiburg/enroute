@@ -209,7 +209,9 @@ GeoMaps::Waypoint GeoMaps::CUP::readWaypoint(const QString &line)
         }
     }
 
-    return GeoMaps::Waypoint(QGeoCoordinate(lat, lon, ele)).renamed(name);
+    GeoMaps::Waypoint result(QGeoCoordinate(lat, lon, ele));
+    result.setName(name);
+    return result;
 }
 
 

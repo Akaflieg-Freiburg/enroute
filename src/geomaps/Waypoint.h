@@ -315,21 +315,6 @@ public:
         return *this;
     }
 
-    /*! \brief Equality check
-     *
-     * This method overloads operator==. It exists for the benefit of QML, where
-     * comparison is difficult.
-     *
-     * @param other Right hand side of the equality check
-     *
-     * @returns True if the coordinates and all properties agree.
-     */
-#warning still needed?
-    Q_INVOKABLE [[nodiscard]] bool equals(const GeoMaps::Waypoint &other) const
-    {
-        return *this == other;
-    }
-
     /*! \brief Check if other waypoint is geographically near *this
      *
      *  @param other Other waypoint

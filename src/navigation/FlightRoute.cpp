@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -167,7 +167,7 @@ auto Navigation::FlightRoute::summary() const -> QString
 // METHODS
 //
 
-void Navigation::FlightRoute::append(const GeoMaps::Waypoint &waypoint)
+void Navigation::FlightRoute::append(const GeoMaps::Waypoint& waypoint)
 {
     m_waypoints.append(waypoint);
 
@@ -182,7 +182,8 @@ void Navigation::FlightRoute::append(const QGeoCoordinate& position)
 
 auto Navigation::FlightRoute::canAppend(const GeoMaps::Waypoint &other) const -> bool
 {
-    if (m_waypoints.isEmpty() ) {
+    if (m_waypoints.isEmpty())
+    {
         return true;
     }
 
@@ -215,11 +216,14 @@ void Navigation::FlightRoute::clear()
 
 auto Navigation::FlightRoute::contains(const GeoMaps::Waypoint& waypoint) const -> bool
 {
-    foreach(auto _waypoint, m_waypoints) {
-        if (!_waypoint.isValid()) {
+    foreach(auto _waypoint, m_waypoints)
+    {
+        if (!_waypoint.isValid())
+        {
             continue;
         }
-        if (_waypoint.isNear(waypoint)) {
+        if (_waypoint.isNear(waypoint))
+        {
             return true;
         }
     }
@@ -267,12 +271,15 @@ void Navigation::FlightRoute::insert(const GeoMaps::Waypoint& wp)
 auto Navigation::FlightRoute::lastIndexOf(const GeoMaps::Waypoint& waypoint) const -> int
 {
 
-    for(int i=m_waypoints.size()-1; i>=0; i--) {
+    for(int i=m_waypoints.size()-1; i>=0; i--)
+    {
         auto _waypoint = m_waypoints.at(i);
-        if (!_waypoint.isValid()) {
+        if (!_waypoint.isValid())
+        {
             continue;
         }
-        if (_waypoint.isNear(waypoint)) {
+        if (_waypoint.isNear(waypoint))
+        {
             return i;
         }
     }
@@ -283,7 +290,8 @@ auto Navigation::FlightRoute::lastIndexOf(const GeoMaps::Waypoint& waypoint) con
 void Navigation::FlightRoute::moveDown(int idx)
 {
     // Paranoid safety checks
-    if ((idx < 0) || (idx > m_waypoints.size()-2)) {
+    if ((idx < 0) || (idx > m_waypoints.size()-2))
+    {
         return;
     }
 
@@ -296,7 +304,8 @@ void Navigation::FlightRoute::moveDown(int idx)
 void Navigation::FlightRoute::moveUp(int idx)
 {
     // Paranoid safety checks
-    if ((idx < 1) || (idx >= m_waypoints.size())) {
+    if ((idx < 1) || (idx >= m_waypoints.size()))
+    {
         return;
     }
 
@@ -309,7 +318,8 @@ void Navigation::FlightRoute::moveUp(int idx)
 void Navigation::FlightRoute::removeWaypoint(int idx)
 {
     // Paranoid safety checks
-    if ((idx < 0) || (idx >= m_waypoints.size())) {
+    if ((idx < 0) || (idx >= m_waypoints.size()))
+    {
         return;
     }
 
@@ -318,59 +328,19 @@ void Navigation::FlightRoute::removeWaypoint(int idx)
     emit waypointsChanged();
 }
 
-void Navigation::FlightRoute::relocateWaypoint(int idx, double latitude, double longitude)
-{
-    // Paranoid safety checks
-    if ((idx < 0) || (idx >= m_waypoints.size())) {
-        return;
-    }
-
-
-    // If the new coordinate is invalid of closer than 100m to the old coordinate, then do nothing.
-    QGeoCoordinate newCoordinate(latitude, longitude);
-    if (!newCoordinate.isValid()) {
-        return;
-    }
-    if (m_waypoints[idx].coordinate().isValid() && (m_waypoints[idx].coordinate().distanceTo(newCoordinate) < 10.0)) {
-        return;
-    }
-
-
-    m_waypoints[idx].setCoordinate(newCoordinate);
-    updateLegs();
-    emit waypointsChanged();
-}
-
-void Navigation::FlightRoute::renameWaypoint(int idx, const QString& newName)
+void Navigation::FlightRoute::replaceWaypoint(int idx, const GeoMaps::Waypoint& newWaypoint)
 {
     // Paranoid safety checks
     if ((idx < 0) || (idx >= m_waypoints.size())) {
         return;
     }
     // If name did not
-    if (m_waypoints[idx].name() == newName) {
+    if (m_waypoints[idx] == newWaypoint) {
         return;
     }
 
 
-    m_waypoints[idx].setName(newName);
-    updateLegs();
-    emit waypointsChanged();
-}
-
-void Navigation::FlightRoute::renoteWaypoint(int idx, const QString& newNotes)
-{
-    // Paranoid safety checks
-    if ((idx < 0) || (idx >= m_waypoints.size())) {
-        return;
-    }
-    // If name did not
-    if (m_waypoints[idx].notes() == newNotes) {
-        return;
-    }
-
-
-    m_waypoints[idx].setNotes(newNotes);
+    m_waypoints[idx] = newWaypoint;
     updateLegs();
     emit waypointsChanged();
 }
@@ -487,7 +457,8 @@ void Navigation::FlightRoute::updateLegs()
 {
     m_legs.clear();
 
-    for(int i=0; i<m_waypoints.size()-1; i++) {
+    for(int i=0; i<m_waypoints.size()-1; i++)
+    {
         m_legs.append(Leg(m_waypoints.at(i), m_waypoints.at(i+1)));
     }
 }

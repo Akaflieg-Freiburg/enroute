@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -190,7 +190,7 @@ namespace Navigation
          *
          * @param position Coordinates of the waypoint.
          */
-        Q_INVOKABLE void append(const QGeoCoordinate &position);
+        Q_INVOKABLE void append(const QGeoCoordinate& position);
 
         /*! \brief Checks if waypoint can be added as the new end of this
          *  route
@@ -268,21 +268,6 @@ namespace Navigation
          */
         Q_INVOKABLE void moveUp(int idx);
 
-        /*! \brief Rename waypoint(s)
-         *
-         *  Relocates the waypoint with the given index. If the index is
-         *  invalid, if the coordinates are invalid or if the new coordinates
-         *  are closer than 10m to the old coordinate, then this method does
-         *  nothing. The signal "waypoint changed" is emitted as appropriate.
-         *
-         *  @param idx Index of waypoint
-         *
-         *  @param latitude New latitude for waypoint
-         *
-         *  @param longitude New longitude for waypoint
-         */
-        Q_INVOKABLE void relocateWaypoint(int idx, double latitude, double longitude);
-
         /*! \brief Remove waypoint from the current route
          *
          * If the waypoint is contained in the route, the method returns
@@ -292,29 +277,17 @@ namespace Navigation
          */
         Q_INVOKABLE void removeWaypoint(int idx);
 
-        /*! \brief Rename waypoint(s)
+        /*! \brief Replaces a waypoint
          *
-         *  Renames the waypoint with the given index. If the index is invalid
-         *  if the new name equals the old name, then this method does nothing.
+         *  Replaces the waypoint with the given index. If the index is invalid
+         *  if the new waypoint equals the old one, then this method does nothing.
          *  The signal "waypoint changed" is emitted as appropriate.
          *
          *  @param idx Index of waypoint
          *
-         *  @param newName New name for waypoint
+         *  @param newWaypoint New waypoint
          */
-        Q_INVOKABLE void renameWaypoint(int idx, const QString& newName);
-
-        /*! \brief Renotes waypoint(s)
-         *
-         *  Changes the notes of the waypoint with the given index. If the index is invalid
-         *  if the new notes equal the old ntes, then this method does nothing.
-         *  The signal "waypoint changed" is emitted as appropriate.
-         *
-         *  @param idx Index of waypoint
-         *
-         *  @param newNotes New notes for waypoint
-         */
-        Q_INVOKABLE void renoteWaypoint(int idx, const QString& newNote);
+        Q_INVOKABLE void replaceWaypoint(int idx, const GeoMaps::Waypoint& newWaypoint);
 
         /*! \brief Reverse the route */
         Q_INVOKABLE void reverse();
@@ -330,7 +303,7 @@ namespace Navigation
          * @returns Empty string in case of success, human-readable, translated
          * error message otherwise.
          */
-        Q_INVOKABLE [[nodiscard]] QString save(const QString &fileName = QString()) const;
+        Q_INVOKABLE [[nodiscard]] QString save(const QString& fileName = QString()) const;
 
         /*! \brief Suggests a name for saving this route
          *

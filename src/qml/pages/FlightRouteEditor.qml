@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+import QtPositioning
 import QtQml
 import QtQuick
 import QtQuick.Controls
@@ -776,9 +777,13 @@ Page {
         property int index: -1 // Index of waypoint in flight route
 
         onAccepted: {
-            Navigator.flightRoute.renameWaypoint(index, newName)
-            Navigator.flightRoute.renoteWaypoint(index, newNotes)
-            Navigator.flightRoute.relocateWaypoint(index, newLatitude, newLongitude)
+            global.platformAdaptor().vibrateBrief()
+
+            var newWP = waypoint.copy()
+            newWP.name = newName
+            newWP.notes = newNotes
+            newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
+            Navigator.flightRoute.replaceWaypoint(index, newWP)
             close()
         }
     }

@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "GlobalObject.h"
-#include "Settings.h"
+#include "GlobalSettings.h"
 #include "navigation/Aircraft.h"
 #include "navigation/Clock.h"
 #include "navigation/Navigator.h"

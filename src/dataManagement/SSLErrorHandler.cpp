@@ -21,7 +21,7 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 
-#include "Settings.h"
+#include "GlobalSettings.h"
 #include "dataManagement/SSLErrorHandler.h"
 
 
@@ -42,7 +42,7 @@ void DataManagement::SSLErrorHandler::deferredInitialization()
 void DataManagement::SSLErrorHandler::onSSLError(QNetworkReply *reply, const QList<QSslError> &errors)
 {
 
-    if (GlobalObject::settings()->ignoreSSLProblems()) {
+    if (GlobalObject::globalSettings()->ignoreSSLProblems()) {
         if (reply != nullptr) {
             reply->ignoreSslErrors();
         }

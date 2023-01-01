@@ -22,7 +22,7 @@
 #include <QStandardPaths>
 
 #include "GlobalObject.h"
-#include "Settings.h"
+#include "GlobalSettings.h"
 #include "geomaps/GeoMapProvider.h"
 #include "navigation/Navigator.h"
 #include "positioning/PositionProvider.h"
@@ -70,16 +70,6 @@ void Navigation::Navigator::deferredInitialization()
 //
 // Getter Methods
 //
-
-auto Navigation::Navigator::clock() -> Navigation::Clock*
-{
-    if (m_clock.isNull()) {
-        m_clock = new Navigation::Clock(this);
-        QQmlEngine::setObjectOwnership(m_clock, QQmlEngine::CppOwnership);
-    }
-    return m_clock;
-}
-
 
 auto Navigation::Navigator::flightRoute() -> FlightRoute*
 {
@@ -151,7 +141,7 @@ void Navigation::Navigator::updateAltitudeLimit(const Positioning::PositionInfo&
         return;
     }
 
-    auto altLimit = GlobalObject::settings()->airspaceAltitudeLimit();
+    auto altLimit = GlobalObject::globalSettings()->airspaceAltitudeLimit();
     auto trueAltitude = info.trueAltitudeAMSL();
     if (altLimit.isFinite() &&
             trueAltitude.isFinite() &&
@@ -159,7 +149,7 @@ void Navigation::Navigator::updateAltitudeLimit(const Positioning::PositionInfo&
 
         // Round trueAltitude+1000ft up to nearest 500ft and set that as a new limit
         auto newAltLimit = Units::Distance::fromFT(500.0*qCeil(trueAltitude.toFeet()/500.0+2.0));
-        GlobalObject::settings()->setAirspaceAltitudeLimit(newAltLimit);
+        GlobalObject::globalSettings()->setAirspaceAltitudeLimit(newAltLimit);
         emit airspaceAltitudeLimitAdjusted();
     }
 }

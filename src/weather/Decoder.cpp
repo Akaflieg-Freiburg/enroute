@@ -29,7 +29,7 @@
 #include <gsl/gsl>
 
 #include "GlobalObject.h"
-#include "Settings.h"
+#include "GlobalSettings.h"
 #include "navigation/Clock.h"
 #include "navigation/Navigator.h"
 #include "weather/Decoder.h"

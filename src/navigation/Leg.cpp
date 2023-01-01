@@ -21,7 +21,7 @@
 #include "Leg.h"
 
 #include "GlobalObject.h"
-#include "Settings.h"
+#include "GlobalSettings.h"
 #include "navigation/Navigator.h"
 #include <utility>
 

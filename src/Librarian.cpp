@@ -292,7 +292,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 }
 
 
-auto Librarian::getStringHashFromRessource(const QString &name) -> uint
+auto Librarian::getStringHashFromRessource(const QString &name) -> size_t
 {
     return qHash(getStringFromRessource(name), 0);
 }

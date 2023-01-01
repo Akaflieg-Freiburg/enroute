@@ -70,7 +70,7 @@ Item {
         gesture.onPinchStarted: {flightMap.followGPS = false}
         gesture.onRotationStarted: {
             flightMap.followGPS = false
-            global.settings().mapBearingPolicy = GlobalSettings.UserDefinedBearingUp
+            GlobalSettings.mapBearingPolicy = GlobalSettings.UserDefinedBearingUp
         }
 
 
@@ -84,8 +84,8 @@ Item {
         // If "followGPS" is true, then update the map bearing whenever a new GPS position comes in
         Binding on bearing {
             restoreMode: Binding.RestoreBinding
-            when: global.settings().mapBearingPolicy !== GlobalSettings.UserDefinedBearingUp
-            value: global.settings().mapBearingPolicy === GlobalSettings.TTUp ? global.positionProvider().lastValidTT.toDEG() : 0
+            when: GlobalSettings.mapBearingPolicy !== GlobalSettings.UserDefinedBearingUp
+            value: GlobalSettings.mapBearingPolicy === GlobalSettings.TTUp ? global.positionProvider().lastValidTT.toDEG() : 0
         }
 
         // We expect GPS updates every second. So, we choose an animation of duration 1000ms here, to obtain a flowing movement
@@ -526,7 +526,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         bottomPadding: 0
         Material.elevation: 2
         opacity: 0.8
-        visible: global.settings().airspaceAltitudeLimit.isFinite() && !global.dataManager().baseMapsRaster.hasFile
+        visible: GlobalSettings.airspaceAltitudeLimit.isFinite() && !global.dataManager().baseMapsRaster.hasFile
 
         Label {
 
@@ -534,7 +534,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
                 // Mention
                 Navigator.aircraft.verticalDistanceUnit
 
-                var airspaceAltitudeLimit = global.settings().airspaceAltitudeLimit
+                var airspaceAltitudeLimit = GlobalSettings.airspaceAltitudeLimit
                 var airspaceAltitudeLimitString = Navigator.aircraft.verticalDistanceToString(airspaceAltitudeLimit)
                 return " "+qsTr("Airspaces up to %1").arg(airspaceAltitudeLimitString)+" "
             }
@@ -576,18 +576,18 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
             Layout.alignment: Qt.AlignHCenter
             id: northArrow
 
-            opacity: global.settings().nightMode ? 0.3 : 1.0
+            opacity: GlobalSettings.nightMode ? 0.3 : 1.0
             rotation: -flightMap.bearing
 
             source: "/icons/NorthArrow.svg"
         }
 
         onClicked: {
-            if (global.settings().mapBearingPolicy === GlobalSettings.NUp) {
-                global.settings().mapBearingPolicy = GlobalSettings.TTUp
+            if (GlobalSettings.mapBearingPolicy === GlobalSettings.NUp) {
+                GlobalSettings.mapBearingPolicy = GlobalSettings.TTUp
                 toast.doToast(qsTr("Map Mode: Track Up"))
             } else {
-                global.settings().mapBearingPolicy = GlobalSettings.NUp
+                GlobalSettings.mapBearingPolicy = GlobalSettings.NUp
                 toast.doToast(qsTr("Map Mode: North Up"))
             }
         }

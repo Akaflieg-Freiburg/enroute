@@ -23,6 +23,9 @@
 #include <QDateTime>
 #include <QGeoCoordinate>
 #include <QObject>
+#include <QQmlEngine>
+
+#include "GlobalObject.h"
 
 
 namespace Navigation {
@@ -33,8 +36,10 @@ namespace Navigation {
  * Global.  No other instance of this class should be used.
  */
 
-class Clock : public QObject {
+class Clock : public GlobalObject {
     Q_OBJECT
+    QML_ELEMENT
+    QML_SINGLETON
 
 public:
     /*! \brief Default constructor
@@ -45,6 +50,15 @@ public:
 
     // Standard destructor
     ~Clock() override = default;
+
+    // No default constructor, important for QML singleton
+    explicit Clock() = delete;
+
+    // factory function for QML singleton
+    static Navigation::Clock *create(QQmlEngine *, QJSEngine *)
+    {
+        return GlobalObject::clock();
+    }
 
     /*! \brief Current date
      *

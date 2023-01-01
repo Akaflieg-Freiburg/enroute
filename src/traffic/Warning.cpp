@@ -21,7 +21,7 @@
 #include <QCoreApplication>
 
 #include "GlobalObject.h"
-#include "Settings.h"
+#include "GlobalSettings.h"
 #include "navigation/Navigator.h"
 #include "traffic/Warning.h"
 

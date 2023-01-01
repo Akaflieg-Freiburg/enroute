@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 
-#include <Settings.h>
+#include <GlobalSettings.h>
 
 #include "traffic/TrafficFactor_DistanceOnly.h"
 

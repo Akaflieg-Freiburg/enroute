@@ -95,7 +95,7 @@ auto Navigation::FlightRoute::midFieldWaypoints() const -> QList<GeoMaps::Waypoi
     }
 
     foreach(auto wpt, m_waypoints) {
-        if (wpt.category() == QLatin1String("WP")) {
+        if (wpt.category() == u"WP") {
             result << wpt;
         }
     }
@@ -388,16 +388,13 @@ auto Navigation::FlightRoute::suggestedFilename() const -> QString
         return tr("Flight Route");
     }
 
-    // NEU (1): ICAO-Code UND Namen nennen, soweit Code vorhanden:
-    QStringList resultList;
-
     //
     // Get name for start point (e.g. "EDTL (LAHR)")
     //
     QString start = m_waypoints.constFirst().ICAOCode(); // ICAO code of start point
     QString name = m_waypoints.constFirst().name(); // Name of start point
-    name.replace(QLatin1String("("), QLatin1String(""));
-    name.replace(QLatin1String(")"), QLatin1String(""));
+    name.replace(u'(', u""_qs);
+    name.replace(u')', u""_qs);
     if (name.length() > 11) {  // Shorten name
         name = name.left(10)+"_";
     }
@@ -414,8 +411,8 @@ auto Navigation::FlightRoute::suggestedFilename() const -> QString
     //
     QString end = m_waypoints.constLast().ICAOCode(); // ICAO code of end point
     name = m_waypoints.constLast().name(); // Name of end point
-    name.replace(QLatin1String("("), QLatin1String(""));
-    name.replace(QLatin1String(")"), QLatin1String(""));
+    name.replace(u"("_qs, u""_qs);
+    name.replace(u")"_qs, u""_qs);
     if (name.length() > 11) {  // Shorten name
         name = name.left(10)+"_";
     }
@@ -428,8 +425,8 @@ auto Navigation::FlightRoute::suggestedFilename() const -> QString
     }
 
     // Remove some problematic characters
-    start.replace(QLatin1String("/"), QLatin1String("-"));
-    end.replace(QLatin1String("/"), QLatin1String("-"));
+    start.replace(u"/"_qs, u"-"_qs);
+    end.replace(u"/"_qs, u"-"_qs);
 
     // Compile final result
 

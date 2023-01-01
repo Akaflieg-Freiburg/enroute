@@ -50,7 +50,7 @@ ApplicationWindow {
         property alias height: view.height
     }
 
-    Material.theme: global.settings().nightMode ? Material.Dark : Material.Light
+    Material.theme: GlobalSettings.nightMode ? Material.Dark : Material.Light
     Material.primary: Material.theme === Material.Dark ? Qt.darker("teal") : "teal"
     Material.accent: Material.theme === Material.Dark ? Qt.lighter("teal") : "teal"
 
@@ -572,7 +572,7 @@ ApplicationWindow {
                 return;
             }
 
-            if (global.settings().acceptedTerms === 0) {
+            if (GlobalSettings.acceptedTerms === 0) {
                 dialogLoader.active = false
                 dialogLoader.source = "dialogs/FirstRunDialog.qml"
                 dialogLoader.active = true
@@ -592,12 +592,12 @@ ApplicationWindow {
                 return
             }
 
-            if ((global.settings().lastWhatsNewHash !== global.librarian().getStringHashFromRessource(":text/whatsnew.html")) && (Navigator.flightStatus !== Navigator.Flight)) {
+            if ((GlobalSettings.lastWhatsNewHash !== global.librarian().getStringHashFromRessource(":text/whatsnew.html")) && (Navigator.flightStatus !== Navigator.Flight)) {
                 whatsNewDialog.open()
                 return
             }
 
-            if ((global.settings().lastWhatsNewInMapsHash !== global.dataManager().whatsNewHash) &&
+            if ((GlobalSettings.lastWhatsNewInMapsHash !== global.dataManager().whatsNewHash) &&
                     (global.dataManager().whatsNew !== "") &&
                     (Navigator.flightStatus !== Navigator.Flight)) {
                 whatsNewInMapsDialog.open()
@@ -746,7 +746,7 @@ ApplicationWindow {
         
         title: qsTr("What's new…?")
         text: global.librarian().getStringFromRessource(":text/whatsnew.html")
-        onOpened: global.settings().lastWhatsNewHash = global.librarian().getStringHashFromRessource(":text/whatsnew.html")
+        onOpened: GlobalSettings.lastWhatsNewHash = global.librarian().getStringHashFromRessource(":text/whatsnew.html")
     }
 
     LongTextDialog {
@@ -755,7 +755,7 @@ ApplicationWindow {
 
         title: qsTr("What's new…?")
         text: global.dataManager().whatsNew
-        onOpened: global.settings().lastWhatsNewInMapsHash = global.dataManager().whatsNewHash
+        onOpened: GlobalSettings.lastWhatsNewInMapsHash = global.dataManager().whatsNewHash
     }
 
     Shortcut {
@@ -788,7 +788,7 @@ ApplicationWindow {
         target: Navigator
 
         function onAirspaceAltitudeLimitAdjusted() {
-            var airspaceAltitudeLimit = global.settings().airspaceAltitudeLimit
+            var airspaceAltitudeLimit = GlobalSettings.airspaceAltitudeLimit
             if (airspaceAltitudeLimit.isFinite()) {
                 var airspaceAltitudeLimitString = Navigator.aircraft.verticalDistanceToString(airspaceAltitudeLimit)
                 toast.doToast(qsTr("Now showing airspaces up to %1.").arg(airspaceAltitudeLimitString))
@@ -843,7 +843,7 @@ ApplicationWindow {
 
         onAccepted: {
             close()
-            global.settings().ignoreSSLProblems = true
+            GlobalSettings.ignoreSSLProblems = true
             sslErrorConfirmation.open()
         }
 

@@ -20,8 +20,10 @@
 
 #pragma once
 
+#include <QQmlEngine>
 #include <QSettings>
 
+#include "GlobalObject.h"
 #include "units/Distance.h"
 
 
@@ -37,9 +39,11 @@
  * The methods in this class are reentrant, but not thread safe.
  */
 
-class Settings : public QObject
+class GlobalSettings : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
+    QML_SINGLETON
 
 public:
     /*! \brief Possible map bearing policies */
@@ -60,7 +64,16 @@ public:
      *
      * @param parent The standard QObject parent pointer
      */
-    explicit Settings(QObject *parent = nullptr);
+    explicit GlobalSettings(QObject *parent = nullptr);
+
+    // No default constructor, important for QML singleton
+    explicit GlobalSettings() = delete;
+
+    // factory function for QML singleton
+    static GlobalSettings* create(QQmlEngine *, QJSEngine *)
+    {
+        return GlobalObject::globalSettings();
+    }
 
 
     //
@@ -193,13 +206,19 @@ public:
      *
      * @returns Property lastWhatsNewHash
      */
-    [[nodiscard]] auto lastWhatsNewHash() const -> size_t { return settings.value(QStringLiteral("lastWhatsNewHash"), 0).toUInt(); }
+    [[nodiscard]] auto lastWhatsNewHash() const -> size_t
+    {
+        return settings.value(QStringLiteral("lastWhatsNewHash"), 0).value<size_t>();
+    }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property lastWhatsNewInMapsHash
      */
-    [[nodiscard]] auto lastWhatsNewInMapsHash() const -> size_t { return settings.value(QStringLiteral("lastWhatsNewInMapsHash"), 0).toUInt(); }
+    [[nodiscard]] auto lastWhatsNewInMapsHash() const -> size_t
+    {
+        return settings.value(QStringLiteral("lastWhatsNewInMapsHash"), 0).value<size_t>();
+    }
 
     /*! \brief Getter function for property of the same name
      *
@@ -355,7 +374,7 @@ signals:
     void showAltitudeAGLChanged();
 
 private:
-    Q_DISABLE_COPY_MOVE(Settings)
+    Q_DISABLE_COPY_MOVE(GlobalSettings)
 
     QSettings settings;
 };

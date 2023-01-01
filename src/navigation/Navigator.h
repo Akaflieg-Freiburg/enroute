@@ -24,7 +24,6 @@
 
 #include "FlightRoute.h"
 #include "GlobalObject.h"
-#include "navigation/Clock.h"
 #include "navigation/FlightRoute.h"
 #include "navigation/RemainingRouteInfo.h"
 #include "positioning/PositionInfo.h"
@@ -92,13 +91,6 @@ public:
      */
     Q_PROPERTY(Navigation::Aircraft aircraft READ aircraft WRITE setAircraft NOTIFY aircraftChanged)
 
-    /*! \brief Global clock
-     *
-     *  The clock returned here is owned by this class and must not be deleted.
-     *  QML ownership has been set to QQmlEngine::CppOwnership.
-     */
-    Q_PROPERTY(Navigation::Clock* clock READ clock CONSTANT)
-
     /*! \brief Current flight route
      *
      *  This flight route returned here is owned by this class and must not be deleted.
@@ -129,12 +121,6 @@ public:
      *  @returns Property aircraft
      */
     [[nodiscard]] auto aircraft() const -> Navigation::Aircraft { return m_aircraft; }
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property clock
-     */
-    auto clock() -> Navigation::Clock*;
 
     /*! \brief Getter function for the property with the same name
      *
@@ -226,7 +212,6 @@ private:
     FlightStatus m_flightStatus {Unknown};
 
     Aircraft m_aircraft {};
-    QPointer<Clock> m_clock {nullptr};
     QPointer<FlightRoute> m_flightRoute {nullptr};
     Weather::Wind m_wind {};
 

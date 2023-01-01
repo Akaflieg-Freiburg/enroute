@@ -92,6 +92,7 @@ set(SOURCES
     geomaps/Waypoint.h
     geomaps/WaypointLibrary.h
     GlobalObject.h
+    GlobalSettings.h
     Librarian.h
     navigation/Aircraft.h
     navigation/Clock.h
@@ -111,7 +112,6 @@ set(SOURCES
     positioning/PositionInfoSource_Abstract.h
     positioning/PositionInfoSource_Satellite.h
     positioning/PositionProvider.h
-    Settings.h
     traffic/FlarmnetDB.h
     traffic/PasswordDB.h
     traffic/TrafficDataSource_Abstract.h
@@ -159,6 +159,7 @@ set(SOURCES
     geomaps/Waypoint.cpp
     geomaps/WaypointLibrary.cpp
     GlobalObject.cpp
+    GlobalSettings.cpp
     Librarian.cpp
     main.cpp
     navigation/Aircraft.cpp
@@ -177,7 +178,6 @@ set(SOURCES
     positioning/PositionInfoSource_Abstract.cpp
     positioning/PositionInfoSource_Satellite.cpp
     positioning/PositionProvider.cpp
-    Settings.cpp
     traffic/FlarmnetDB.cpp
     traffic/PasswordDB.cpp
     traffic/TrafficDataSource_Abstract.cpp
@@ -339,6 +339,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/DegreeInput.qml
     qml/items/ElevationInput.qml
     qml/items/FlightVector.qml
+    qml/items/NavBar.qml
     qml/items/RemainingRouteBar.qml
     qml/items/WordWrappingCheckDelegate.qml
     qml/items/WordWrappingItemDelegate.qml

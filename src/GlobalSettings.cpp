@@ -18,14 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "Settings.h"
+#include "GlobalSettings.h"
 
 
 //
 // Constructor and destructor
 //
 
-Settings::Settings(QObject *parent)
+GlobalSettings::GlobalSettings(QObject *parent)
     : QObject(parent)
 {
     // Save some values
@@ -48,7 +48,7 @@ Settings::Settings(QObject *parent)
 // Getter Methods
 //
 
-auto Settings::airspaceAltitudeLimit() const -> Units::Distance
+auto GlobalSettings::airspaceAltitudeLimit() const -> Units::Distance
 {
     auto aspAlttLimit = Units::Distance::fromFT( settings.value(QStringLiteral("Map/airspaceAltitudeLimit_ft"), qQNaN()).toDouble() );
     if (aspAlttLimit < airspaceAltitudeLimit_min) {
@@ -61,14 +61,14 @@ auto Settings::airspaceAltitudeLimit() const -> Units::Distance
 }
 
 
-auto Settings::lastValidAirspaceAltitudeLimit() const -> Units::Distance
+auto GlobalSettings::lastValidAirspaceAltitudeLimit() const -> Units::Distance
 {
     auto result = Units::Distance::fromFT(settings.value(QStringLiteral("Map/lastValidAirspaceAltitudeLimit_ft"), 99999).toInt() );
     return qBound(airspaceAltitudeLimit_min, result, airspaceAltitudeLimit_max);
 }
 
 
-auto Settings::mapBearingPolicy() const -> Settings::MapBearingPolicy
+auto GlobalSettings::mapBearingPolicy() const -> GlobalSettings::MapBearingPolicy
 {
     auto intVal = settings.value(QStringLiteral("Map/bearingPolicy"), 0).toInt();
     if (intVal == 0) {
@@ -85,7 +85,7 @@ auto Settings::mapBearingPolicy() const -> Settings::MapBearingPolicy
 // Setter Methods
 //
 
-void Settings::setAcceptedTerms(int terms)
+void GlobalSettings::setAcceptedTerms(int terms)
 {
     if (terms == acceptedTerms()) {
         return;
@@ -95,7 +95,7 @@ void Settings::setAcceptedTerms(int terms)
 }
 
 
-void Settings::setAcceptedWeatherTerms(bool terms)
+void GlobalSettings::setAcceptedWeatherTerms(bool terms)
 {
     if (terms == acceptedWeatherTerms()) {
         return;
@@ -105,7 +105,7 @@ void Settings::setAcceptedWeatherTerms(bool terms)
 }
 
 
-void Settings::setAirspaceAltitudeLimit(Units::Distance newAirspaceAltitudeLimit)
+void GlobalSettings::setAirspaceAltitudeLimit(Units::Distance newAirspaceAltitudeLimit)
 {
     if (newAirspaceAltitudeLimit < airspaceAltitudeLimit_min) {
         newAirspaceAltitudeLimit = airspaceAltitudeLimit_min;
@@ -127,7 +127,7 @@ void Settings::setAirspaceAltitudeLimit(Units::Distance newAirspaceAltitudeLimit
 }
 
 
-void Settings::setHideGlidingSectors(bool hide)
+void GlobalSettings::setHideGlidingSectors(bool hide)
 {
     if (hide == hideGlidingSectors()) {
         return;
@@ -137,7 +137,7 @@ void Settings::setHideGlidingSectors(bool hide)
 }
 
 
-void Settings::setHillshading(bool show)
+void GlobalSettings::setHillshading(bool show)
 {
     if (show == hillshading()) {
         return;
@@ -147,7 +147,7 @@ void Settings::setHillshading(bool show)
 }
 
 
-void Settings::setIgnoreSSLProblems(bool ignore)
+void GlobalSettings::setIgnoreSSLProblems(bool ignore)
 {
     if (ignore == ignoreSSLProblems()) {
         return;
@@ -157,17 +157,18 @@ void Settings::setIgnoreSSLProblems(bool ignore)
 }
 
 
-void Settings::setLastWhatsNewHash(size_t lwnh)
+void GlobalSettings::setLastWhatsNewHash(size_t lwnh)
 {
     if (lwnh == lastWhatsNewHash()) {
         return;
     }
     settings.setValue(QStringLiteral("lastWhatsNewHash"), QVariant::fromValue(lwnh));
+    qWarning() << "Set" << lwnh;
     emit lastWhatsNewHashChanged();
 }
 
 
-void Settings::setLastWhatsNewInMapsHash(size_t lwnh)
+void GlobalSettings::setLastWhatsNewInMapsHash(size_t lwnh)
 {
     if (lwnh == lastWhatsNewInMapsHash()) {
         return;
@@ -177,7 +178,7 @@ void Settings::setLastWhatsNewInMapsHash(size_t lwnh)
 }
 
 
-void Settings::setMapBearingPolicy(MapBearingPolicy policy)
+void GlobalSettings::setMapBearingPolicy(MapBearingPolicy policy)
 {
     if (policy == mapBearingPolicy()) {
         return;
@@ -198,7 +199,7 @@ void Settings::setMapBearingPolicy(MapBearingPolicy policy)
 }
 
 
-void Settings::setNightMode(bool newNightMode)
+void GlobalSettings::setNightMode(bool newNightMode)
 {
     if (newNightMode == nightMode()) {
         return;
@@ -209,7 +210,7 @@ void Settings::setNightMode(bool newNightMode)
 }
 
 
-void Settings::setPositioningByTrafficDataReceiver(bool newPositioningByTrafficDataReceiver)
+void GlobalSettings::setPositioningByTrafficDataReceiver(bool newPositioningByTrafficDataReceiver)
 {
     if (newPositioningByTrafficDataReceiver == positioningByTrafficDataReceiver()) {
         return;
@@ -220,7 +221,7 @@ void Settings::setPositioningByTrafficDataReceiver(bool newPositioningByTrafficD
 }
 
 
-void Settings::setShowAltitudeAGL(bool newShowAltitudeAGL)
+void GlobalSettings::setShowAltitudeAGL(bool newShowAltitudeAGL)
 {
     if (newShowAltitudeAGL == showAltitudeAGL())
     {

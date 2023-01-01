@@ -39,7 +39,7 @@ LongTextDialog {
         }
 
         onAccepted: {
-            global.settings().acceptedTerms = 1
+            GlobalSettings.acceptedTerms = 1
         }
         onRejected: Qt.quit()
     }

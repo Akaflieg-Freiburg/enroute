@@ -36,7 +36,7 @@ namespace GeoMaps
     class Waypoint;
 } // namespace GeoMaps
 
-class Settings;
+class GlobalSettings;
 
 namespace Navigation
 {

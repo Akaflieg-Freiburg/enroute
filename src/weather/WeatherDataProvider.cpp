@@ -33,7 +33,7 @@
 #include "sunset.h"
 
 #include "GlobalObject.h"
-#include "Settings.h"
+#include "GlobalSettings.h"
 #include "geomaps/GeoMapProvider.h"
 #include "navigation/Clock.h"
 #include "navigation/FlightRoute.h"
@@ -454,7 +454,7 @@ auto Weather::WeatherDataProvider::QNHInfo() const -> QString
 void Weather::WeatherDataProvider::update(bool isBackgroundUpdate) {
 
     // Refuse to do anything if we are not allowed to connect to the Aviation Weather Center
-    if (!GlobalObject::settings()->acceptedWeatherTerms()) {
+    if (!GlobalObject::globalSettings()->acceptedWeatherTerms()) {
         return;
     }
 

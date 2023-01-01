@@ -52,9 +52,9 @@ void GeoMaps::GeoMapProvider::deferredInitialization()
     connect(GlobalObject::dataManager()->baseMaps(), &DataManagement::Downloadable_Abstract::fileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
     connect(GlobalObject::dataManager()->baseMaps(), &DataManagement::Downloadable_Abstract::filesChanged, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
     connect(GlobalObject::dataManager()->terrainMaps(), &DataManagement::Downloadable_Abstract::fileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
-    connect(GlobalObject::settings(), &Settings::airspaceAltitudeLimitChanged, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
-    connect(GlobalObject::settings(), &Settings::hideGlidingSectorsChanged, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
-    connect(GlobalObject::settings(), &Settings::hillshadingChanged, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
+    connect(GlobalObject::globalSettings(), &GlobalSettings::airspaceAltitudeLimitChanged, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
+    connect(GlobalObject::globalSettings(), &GlobalSettings::hideGlidingSectorsChanged, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
+    connect(GlobalObject::globalSettings(), &GlobalSettings::hillshadingChanged, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
 
     _aviationDataCacheTimer.setSingleShot(true);
     _aviationDataCacheTimer.setInterval(3s);
@@ -403,7 +403,7 @@ void GeoMaps::GeoMapProvider::onAviationMapsChanged()
         JSONFileNames += geoMapPtr->fileName();
     }
 
-    _aviationDataCacheFuture = QtConcurrent::run(&GeoMaps::GeoMapProvider::fillAviationDataCache, this, JSONFileNames, GlobalObject::settings()->airspaceAltitudeLimit(), GlobalObject::settings()->hideGlidingSectors());
+    _aviationDataCacheFuture = QtConcurrent::run(&GeoMaps::GeoMapProvider::fillAviationDataCache, this, JSONFileNames, GlobalObject::globalSettings()->airspaceAltitudeLimit(), GlobalObject::globalSettings()->hideGlidingSectors());
 }
 
 void GeoMaps::GeoMapProvider::onMBTILESChanged()
@@ -493,7 +493,7 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
     file.open(QIODevice::ReadOnly);
     QByteArray data = file.readAll();
     data.replace("%URL%", (_tileServer.serverUrl()+"/"+_currentBaseMapPath).toLatin1());
-    if (GlobalObject::settings()->hillshading())
+    if (GlobalObject::globalSettings()->hillshading())
     {
         data.replace("%URLT%", (_tileServer.serverUrl()+"/"+_currentTerrainMapPath).toLatin1());
     }

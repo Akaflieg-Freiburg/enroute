@@ -25,7 +25,7 @@
 class DemoRunner;
 class Librarian;
 class QNetworkAccessManager;
-class Settings;
+class GlobalSettings;
 
 namespace DataManagement
 {
@@ -41,6 +41,7 @@ class WaypointLibrary;
 
 namespace Navigation
 {
+class Clock;
 class Navigator;
 } // namespace Navigation
 
@@ -126,6 +127,12 @@ public:
      */
     Q_INVOKABLE static bool canConstruct();
 
+    /*! \brief Pointer to appplication-wide static Navigation::Clock instance
+     *
+     * @returns Pointer to appplication-wide static instance.
+     */
+    Q_INVOKABLE static Navigation::Clock *clock();
+
     /*! \brief Pointer to appplication-wide static GeoMaps::DataManager instance
      *
      * @returns Pointer to appplication-wide static instance.
@@ -156,6 +163,12 @@ public:
      * @returns Pointer to appplication-wide static instance.
      */
     Q_INVOKABLE static GeoMaps::GeoMapProvider *geoMapProvider();
+
+    /*! \brief Pointer to appplication-wide static Settings instance
+     *
+     * @returns Pointer to appplication-wide static instance.
+     */
+    Q_INVOKABLE static GlobalSettings *globalSettings();
 
     /*! \brief Pointer to appplication-wide static librarian instance
      *
@@ -198,12 +211,6 @@ public:
      * @returns Pointer to appplication-wide static instance.
      */
     Q_INVOKABLE static QNetworkAccessManager *networkAccessManager();
-
-    /*! \brief Pointer to appplication-wide static Settings instance
-     *
-     * @returns Pointer to appplication-wide static instance.
-     */
-    Q_INVOKABLE static Settings *settings();
 
     /*! \brief Pointer to appplication-wide static QNetworkAccessManager instance
      *

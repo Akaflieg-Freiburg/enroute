@@ -25,11 +25,12 @@
 #include "DemoRunner.h"
 #include "GlobalObject.h"
 #include "Librarian.h"
-#include "Settings.h"
+#include "GlobalSettings.h"
 #include "dataManagement/DataManager.h"
 #include "dataManagement/SSLErrorHandler.h"
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/WaypointLibrary.h"
+#include "navigation/Clock.h"
 #include "navigation/Navigator.h"
 #include "platform/FileExchange.h"
 #include "platform/Notifier.h"
@@ -42,6 +43,7 @@
 
 bool isConstructingOrDeconstructing {false};
 
+QPointer<Navigation::Clock> g_clock {};
 QPointer<DataManagement::DataManager> g_dataManager {};
 QPointer<DataManagement::SSLErrorHandler> g_sslErrorHandler {};
 QPointer<DemoRunner> g_demoRunner {};
@@ -55,7 +57,7 @@ QPointer<QNetworkAccessManager> g_networkAccessManager {};
 QPointer<Platform::Notifier> g_notifier {};
 QPointer<Traffic::PasswordDB> g_passwordDB {};
 QPointer<Positioning::PositionProvider> g_positionProvider {};
-QPointer<Settings> g_settings {};
+QPointer<GlobalSettings> g_globalSettings {};
 QPointer<Traffic::TrafficDataProvider> g_trafficDataProvider {};
 QPointer<GeoMaps::WaypointLibrary> g_waypointLibrary {};
 QPointer<Weather::WeatherDataProvider> g_weatherDataProvider {};
@@ -102,7 +104,7 @@ void GlobalObject::clear()
     delete g_notifier;
     delete g_passwordDB;
     delete g_positionProvider;
-    delete g_settings;
+    delete g_globalSettings;
     delete g_trafficDataProvider;
     delete g_waypointLibrary;
     delete g_weatherDataProvider;
@@ -139,6 +141,12 @@ auto GlobalObject::flarmnetDB() -> Traffic::FlarmnetDB*
 auto GlobalObject::geoMapProvider() -> GeoMaps::GeoMapProvider*
 {
     return allocateInternal<GeoMaps::GeoMapProvider>(g_geoMapProvider);
+}
+
+
+auto GlobalObject::clock() -> Navigation::Clock*
+{
+    return allocateInternal<Navigation::Clock>(g_clock);
 }
 
 
@@ -196,9 +204,9 @@ auto GlobalObject::positionProvider() -> Positioning::PositionProvider*
 }
 
 
-auto GlobalObject::settings() -> Settings*
+auto GlobalObject::globalSettings() -> GlobalSettings*
 {
-    return allocateInternal<Settings>(g_settings);
+    return allocateInternal<GlobalSettings>(g_globalSettings);
 }
 
 

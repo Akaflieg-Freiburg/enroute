@@ -118,14 +118,14 @@ Page {
                 id: hideUpperAsp
                 text: {
                     var secondLineString = ""
-                    var altitudeLimit = global.settings().airspaceAltitudeLimit
+                    var altitudeLimit = GlobalSettings.airspaceAltitudeLimit
                     if (!altitudeLimit.isFinite()) {
                         secondLineString = qsTr("Currently showing all airspaces")
                     } else {
                         // Mention
                         Navigator.aircraft.verticalDistanceUnit
 
-                        var airspaceAltitudeLimit = global.settings().airspaceAltitudeLimit
+                        var airspaceAltitudeLimit = GlobalSettings.airspaceAltitudeLimit
                         var airspaceAltitudeLimitString = Navigator.aircraft.verticalDistanceToString(airspaceAltitudeLimit)
                         secondLineString = qsTr("Currently showing airspaces up to %1").arg(airspaceAltitudeLimitString)
                     }
@@ -168,11 +168,11 @@ Page {
                 icon.source: "/icons/material/ic_map.svg"
                 Layout.fillWidth: true
                 Component.onCompleted: {
-                    glidingSectors.checked = !global.settings().hideGlidingSectors
+                    glidingSectors.checked = !GlobalSettings.hideGlidingSectors
                 }
                 onToggled: {
                     global.platformAdaptor().vibrateBrief()
-                    global.settings().hideGlidingSectors = !glidingSectors.checked
+                    GlobalSettings.hideGlidingSectors = !glidingSectors.checked
                 }
             }
             ToolButton {
@@ -191,11 +191,11 @@ Page {
                 icon.source: "/icons/material/ic_map.svg"
                 Layout.fillWidth: true
                 Component.onCompleted: {
-                    hillshading.checked = global.settings().hillshading
+                    hillshading.checked = GlobalSettings.hillshading
                 }
                 onToggled: {
                     global.platformAdaptor().vibrateBrief()
-                    global.settings().hillshading = hillshading.checked
+                    GlobalSettings.hillshading = hillshading.checked
                 }
             }
             ToolButton {
@@ -222,7 +222,7 @@ Page {
                 id: showAltAGL
                 text: {
                     const line1 = qsTr("Altimeter Mode")
-                    const line2 = global.settings().showAltitudeAGL ? qsTr("Currently showing altitude AGL") : qsTr("Currently showing altitude AMSL")
+                    const line2 = GlobalSettings.showAltitudeAGL ? qsTr("Currently showing altitude AGL") : qsTr("Currently showing altitude AMSL")
                     return line1 + `<br><font color="#606060" size="2">` + line2 + `</font>`
                 }
 
@@ -253,7 +253,7 @@ Page {
                 id: trafficDataReceiverPositioning
                 text: {
                     var secondLineString = ""
-                    if (global.settings().positioningByTrafficDataReceiver) {
+                    if (GlobalSettings.positioningByTrafficDataReceiver) {
                         secondLineString = qsTr("Currently using traffic data receiver")
                     } else {
                         secondLineString = qsTr("Currently using built-in satnav receiver")
@@ -288,11 +288,11 @@ Page {
                 icon.source: "/icons/material/ic_brightness_3.svg"
                 Layout.fillWidth: true
                 Component.onCompleted: {
-                    nightMode.checked = global.settings().nightMode
+                    nightMode.checked = GlobalSettings.nightMode
                 }
                 onToggled: {
                     global.platformAdaptor().vibrateBrief()
-                    global.settings().nightMode = nightMode.checked
+                    GlobalSettings.nightMode = nightMode.checked
                 }
             }
             ToolButton {
@@ -310,18 +310,18 @@ Page {
                 text: qsTr("Ignore Network Security Errors")
                 icon.source: "/icons/material/ic_lock.svg"
                 Layout.fillWidth: true
-                visible: global.settings().ignoreSSLProblems
+                visible: GlobalSettings.ignoreSSLProblems
                 Component.onCompleted: {
-                    ignoreSSL.checked = global.settings().ignoreSSLProblems
+                    ignoreSSL.checked = GlobalSettings.ignoreSSLProblems
                 }
                 onToggled: {
                     global.platformAdaptor().vibrateBrief()
-                    global.settings().ignoreSSLProblems = ignoreSSL.checked
+                    GlobalSettings.ignoreSSLProblems = ignoreSSL.checked
                 }
             }
             ToolButton {
                 icon.source: "/icons/material/ic_info_outline.svg"
-                visible: global.settings().ignoreSSLProblems
+                visible: GlobalSettings.ignoreSSLProblems
                 onClicked: {
                     global.platformAdaptor().vibrateBrief()
                     helpDialog.title = qsTr("Ignore Network Security Errors")
@@ -482,13 +482,13 @@ Page {
                 from: {
                     var positionInfo = global.positionProvider().positionInfo
                     if (!positionInfo.isValid())
-                        return global.settings().airspaceAltitudeLimit_min.toFeet()
+                        return GlobalSettings.airspaceAltitudeLimit_min.toFeet()
                     var trueAlt = positionInfo.trueAltitudeAMSL()
                     if (!trueAlt.isFinite())
-                        return global.settings().airspaceAltitudeLimit_min.toFeet()
-                    return Math.min(global.settings().airspaceAltitudeLimit_max.toFeet(), 500.0*Math.ceil(trueAlt.toFeet()/500.0+2))
+                        return GlobalSettings.airspaceAltitudeLimit_min.toFeet()
+                    return Math.min(GlobalSettings.airspaceAltitudeLimit_max.toFeet(), 500.0*Math.ceil(trueAlt.toFeet()/500.0+2))
                 }
-                to: global.settings().airspaceAltitudeLimit_max.toFeet()
+                to: GlobalSettings.airspaceAltitudeLimit_max.toFeet()
 
                 stepSize: 500
             }
@@ -520,15 +520,15 @@ Page {
 
         onAccepted: {
             if (altLimitCheck.checked) {
-                global.settings().airspaceAltitudeLimit = distance.fromFT(slider.value)
+                GlobalSettings.airspaceAltitudeLimit = distance.fromFT(slider.value)
             } else {
-                global.settings().airspaceAltitudeLimit = distance.fromFT(99999)
+                GlobalSettings.airspaceAltitudeLimit = distance.fromFT(99999)
             }
         }
 
         onAboutToShow: {
-            altLimitCheck.checked = (global.settings().airspaceAltitudeLimit.toM() < global.settings().airspaceAltitudeLimit_max.toM())
-            slider.value = global.settings().lastValidAirspaceAltitudeLimit.toFeet()
+            altLimitCheck.checked = (GlobalSettings.airspaceAltitudeLimit.toM() < GlobalSettings.airspaceAltitudeLimit_max.toM())
+            slider.value = GlobalSettings.lastValidAirspaceAltitudeLimit.toFeet()
         }
 
     }
@@ -553,7 +553,7 @@ Page {
                 id: a
                 text: qsTr("Built-in satnav receiver")
                 Layout.fillWidth: true
-                checked: !global.settings().positioningByTrafficDataReceiver
+                checked: !GlobalSettings.positioningByTrafficDataReceiver
                 onCheckedChanged: b.checked = !checked
             }
 
@@ -566,11 +566,11 @@ Page {
         }
 
         onAboutToShow: {
-            a.checked = !global.settings().positioningByTrafficDataReceiver
+            a.checked = !GlobalSettings.positioningByTrafficDataReceiver
             b.checked = !a.checked
         }
 
-        onAccepted: global.settings().positioningByTrafficDataReceiver = b.checked
+        onAccepted: GlobalSettings.positioningByTrafficDataReceiver = b.checked
 
     }
 
@@ -595,7 +595,7 @@ Page {
                 id: a1
                 text: qsTr("Height above ground level (AGL)")
                 Layout.fillWidth: true
-                checked: global.settings().showAltitudeAGL
+                checked: GlobalSettings.showAltitudeAGL
                 onCheckedChanged: b1.checked = !checked
             }
 
@@ -608,11 +608,11 @@ Page {
         }
 
         onAboutToShow: {
-            a1.checked = global.settings().showAltitudeAGL
+            a1.checked = GlobalSettings.showAltitudeAGL
             b1.checked = !a1.checked
         }
 
-        onAccepted: global.settings().showAltitudeAGL = a1.checked
+        onAccepted: GlobalSettings.showAltitudeAGL = a1.checked
 
     }
 

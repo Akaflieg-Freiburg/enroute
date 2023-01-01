@@ -29,7 +29,7 @@
 
 #include "Airspace.h"
 #include "Librarian.h"
-#include "Settings.h"
+#include "GlobalSettings.h"
 #include "TileServer.h"
 #include "Waypoint.h"
 #include "dataManagement/DataManager.h"
@@ -81,10 +81,10 @@ namespace GeoMaps
     //
 
     /*! \brief List of base map MBTILES */
-    Q_PROPERTY(QVector<QPointer<GeoMaps::MBTILES>> baseMapRasterTiles READ baseMapRasterTiles NOTIFY baseMapTilesChanged)
+    Q_PROPERTY(QList<QPointer<GeoMaps::MBTILES>> baseMapRasterTiles READ baseMapRasterTiles NOTIFY baseMapTilesChanged)
 
     /*! \brief List of base map MBTILES */
-    Q_PROPERTY(QVector<QPointer<GeoMaps::MBTILES>> baseMapVectorTiles READ baseMapVectorTiles NOTIFY baseMapTilesChanged)
+    Q_PROPERTY(QList<QPointer<GeoMaps::MBTILES>> baseMapVectorTiles READ baseMapVectorTiles NOTIFY baseMapTilesChanged)
 
     /*! \brief Copyright notice for the map
      *
@@ -112,7 +112,7 @@ namespace GeoMaps
     Q_PROPERTY(QString styleFileURL READ styleFileURL NOTIFY styleFileURLChanged)
 
     /*! \brief List of terrain map MBTILES */
-    Q_PROPERTY(QVector<QPointer<GeoMaps::MBTILES>> terrainMapTiles READ terrainMapTiles NOTIFY terrainMapTilesChanged)
+    Q_PROPERTY(QList<QPointer<GeoMaps::MBTILES>> terrainMapTiles READ terrainMapTiles NOTIFY terrainMapTilesChanged)
 
 
     //
@@ -123,7 +123,7 @@ namespace GeoMaps
      *
      * @returns Property baseMapRasterTiles
      */
-    QVector<QPointer<GeoMaps::MBTILES>> baseMapRasterTiles() const
+    QList<QPointer<GeoMaps::MBTILES>> baseMapRasterTiles() const
     {
         return m_baseMapRasterTiles;
     }
@@ -132,11 +132,10 @@ namespace GeoMaps
      *
      * @returns Property baseMapVectorTiles
      */
-    QVector<QPointer<GeoMaps::MBTILES>> baseMapVectorTiles() const
+    QList<QPointer<GeoMaps::MBTILES>> baseMapVectorTiles() const
     {
         return m_baseMapVectorTiles;
     }
-
 
     /*! \brief Getter function for the property with the same name
      *
@@ -160,7 +159,7 @@ namespace GeoMaps
      *
      * @returns Property terrainMapTiles
      */
-    QVector<QPointer<GeoMaps::MBTILES>> terrainMapTiles() const
+    QList<QPointer<GeoMaps::MBTILES>> terrainMapTiles() const
     {
         return m_terrainMapTiles;
     }
@@ -314,17 +313,17 @@ namespace GeoMaps
     //
     // MBTILES
     //
-    QVector<QPointer<GeoMaps::MBTILES>> m_baseMapVectorTiles;
-    QVector<QPointer<GeoMaps::MBTILES>> m_baseMapRasterTiles;
-    QVector<QPointer<GeoMaps::MBTILES>> m_terrainMapTiles;
+    QList<QPointer<GeoMaps::MBTILES>> m_baseMapVectorTiles;
+    QList<QPointer<GeoMaps::MBTILES>> m_baseMapRasterTiles;
+    QList<QPointer<GeoMaps::MBTILES>> m_terrainMapTiles;
 
     // The data in this group is accessed by several threads. The following
     // classes (whose names ends in an underscore) are therefore protected by
     // this mutex.
     QMutex _aviationDataMutex;
     QByteArray _combinedGeoJSON_;  // Cache: GeoJSON
-    QVector<Waypoint> _waypoints_; // Cache: Waypoints
-    QVector<Airspace> _airspaces_; // Cache: Airspaces
+    QList<Waypoint> _waypoints_; // Cache: Waypoints
+    QList<Airspace> _airspaces_; // Cache: Airspaces
 
     // TerrainImageCache
     QCache<qint64,QImage> terrainTileCache {6}; // Hold 6 tiles, roughly 1.2MB

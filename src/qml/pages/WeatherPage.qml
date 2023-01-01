@@ -92,7 +92,7 @@ Page {
 
                 MenuItem {
                     text: qsTr("Update METAR/TAF data")
-                    enabled: (!global.weatherDataProvider().downloading) && (global.settings().acceptedWeatherTerms)
+                    enabled: (!global.weatherDataProvider().downloading) && (GlobalSettings.acceptedWeatherTerms)
                     onTriggered: {
                         global.platformAdaptor().vibrateBrief()
                         if (!global.weatherDataProvider().downloading)
@@ -102,10 +102,10 @@ Page {
 
                 MenuItem {
                     text: qsTr("Disallow internet connection")
-                    enabled: global.settings().acceptedWeatherTerms
+                    enabled: GlobalSettings.acceptedWeatherTerms
                     onTriggered: {
                         global.platformAdaptor().vibrateBrief()
-                        global.settings().acceptedWeatherTerms = false
+                        GlobalSettings.acceptedWeatherTerms = false
                     }
                 } // MenuItem
 
@@ -165,7 +165,7 @@ Page {
         id: stationList
 
         anchors.fill: parent
-        visible: global.settings().acceptedWeatherTerms
+        visible: GlobalSettings.acceptedWeatherTerms
 
         clip: true
 
@@ -262,7 +262,7 @@ Page {
     ScrollView { // Privacy Warning
         anchors.fill: parent
         clip: true
-        visible: !global.settings().acceptedWeatherTerms
+        visible: !GlobalSettings.acceptedWeatherTerms
 
         Item {
             width: parent.width
@@ -289,7 +289,7 @@ Page {
 
                 onClicked: {
                     global.platformAdaptor().vibrateBrief()
-                    global.settings().acceptedWeatherTerms = true
+                    GlobalSettings.acceptedWeatherTerms = true
                     global.weatherDataProvider().update()
                 }
             }

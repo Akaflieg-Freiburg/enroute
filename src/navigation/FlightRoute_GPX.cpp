@@ -51,7 +51,7 @@ auto Navigation::FlightRoute::toGpx() const -> QByteArray
                                                                                                                                                                                                                             " maxlon='" + QString::number(bbox.topRight().longitude(), 'f', 8) + "'/>\n";
     }
 
-    gpx += QLatin1String("  </metadata>\n");
+    gpx += u"  </metadata>\n"_qs;
 
     // 2 spaces additional indent
     //
@@ -69,7 +69,7 @@ auto Navigation::FlightRoute::toGpx() const -> QByteArray
 
     // close gpx
     //
-    gpx += QLatin1String("  </rte>\n");
+    gpx += u"  </rte>\n"_qs;
 
     // the next few lines export the route as gpx track.
     // We leave this disabled right now. If we discover later
@@ -95,14 +95,14 @@ auto Navigation::FlightRoute::toGpx() const -> QByteArray
            "  </trk>\n";
 #endif
 
-    gpx += QLatin1String("</gpx>\n");
+    gpx += u"</gpx>\n"_qs;
 
     return gpx.toUtf8();
 }
 
 auto Navigation::FlightRoute::gpxElements(const QString& indent, const QString& tag) const -> QString
 {
-    QString gpx = QLatin1String("");
+    QString gpx = u""_qs;
 
     // waypoints
     //
@@ -168,7 +168,7 @@ auto Navigation::FlightRoute::load(const QString& fileName) -> QString
         auto pos = wp.coordinate();
         auto distPos = pos.atDistanceAndAzimuth(1000.0, 0.0, 0.0);
         auto nearest = GlobalObject::geoMapProvider()->closestWaypoint(pos, distPos);
-        if (nearest.type() == QLatin1String("WP"))
+        if (nearest.type() == u"WP")
         {
             m_waypoints << wp;
         }

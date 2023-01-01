@@ -32,16 +32,22 @@ Rectangle {
 
     height: trueAltitude.implicitHeight + SafeInsets.bottom
     
+    // Dummy control. Used to glean the font size.
+    Control {
+        id: dummy
+        visible: false
+    }
 
     function numVisibleItems() {
-        var w = trueAltitude.m_implicitWidth + groundSpeed.m_implicitWidth + trueTrack.m_implicitWidth + utc.m_implicitWidth + 4*view.font.pixelSize
+        var w = trueAltitude.m_implicitWidth + groundSpeed.m_implicitWidth + trueTrack.m_implicitWidth + utc.m_implicitWidth + 4*dummy.font.pixelSize
         if (w > grid.width)
             return 3
-        w = w + flightLevel.m_implicitWidth + view.font.pixelSize
+        w = w + flightLevel.m_implicitWidth + dummy.font.pixelSize
         if (w > grid.width)
             return 4
         return 5
     }
+
 
     RowLayout {
         anchors.fill: parent
@@ -66,7 +72,7 @@ Rectangle {
                     // Mention
                     Navigator.aircraft.verticalDistanceUnit
 
-                    if (global.settings().showAltitudeAGL) {
+                    if (GlobalSettings.showAltitudeAGL) {
                         const talt = global.positionProvider().positionInfo.trueAltitudeAGL();
                         return Navigator.aircraft.verticalDistanceToString(talt)
                     }
@@ -75,7 +81,7 @@ Rectangle {
                     return Navigator.aircraft.verticalDistanceToString(talt)
                 }
                 font.weight: Font.Bold
-                font.pixelSize: view.font.pixelSize*1.3
+                font.pixelSize: dummy.font.pixelSize*1.3
                 color: "white"
             }
             Label {
@@ -84,8 +90,8 @@ Rectangle {
                 Layout.alignment: Qt.AlignHCenter
 
                 color: "white"
-                text: global.settings().showAltitudeAGL ? "T.ALT AGL" : "T.ALT AMSL"
-                font.pixelSize: view.font.pixelSize*0.9
+                text: GlobalSettings.showAltitudeAGL ? "T.ALT AGL" : "T.ALT AMSL"
+                font.pixelSize: dummy.font.pixelSize*0.9
             }
         }
 
@@ -105,7 +111,7 @@ Rectangle {
 
                 text: global.positionProvider().pressureAltitude.isFinite() ? "FL" + ("000" + Math.round(global.positionProvider().pressureAltitude.toFeet()/100.0)).slice(-3) : "-"
                 font.weight: Font.Bold
-                font.pixelSize: view.font.pixelSize*1.3
+                font.pixelSize: dummy.font.pixelSize*1.3
                 color: "white"
             }
             Label {
@@ -115,7 +121,7 @@ Rectangle {
 
                 color: "white"
                 text: "FL"
-                font.pixelSize: view.font.pixelSize*0.9
+                font.pixelSize: dummy.font.pixelSize*0.9
 
             }
         }
@@ -135,7 +141,7 @@ Rectangle {
 
                 text: Navigator.aircraft.horizontalSpeedToString( global.positionProvider().positionInfo.groundSpeed() )
                 font.weight: Font.Bold
-                font.pixelSize: view.font.pixelSize*1.3
+                font.pixelSize: dummy.font.pixelSize*1.3
                 color: "white"
             }
             Label {
@@ -144,7 +150,7 @@ Rectangle {
 
                 text: "GS"
                 color: "white"
-                font.pixelSize: view.font.pixelSize*0.9
+                font.pixelSize: dummy.font.pixelSize*0.9
             }
         }
 
@@ -167,7 +173,7 @@ Rectangle {
                 }
 
                 font.weight: Font.Bold
-                font.pixelSize: view.font.pixelSize*1.3
+                font.pixelSize: dummy.font.pixelSize*1.3
                 color: "white"
             }
             Label {
@@ -177,7 +183,7 @@ Rectangle {
 
                 text: "TT"
                 color: "white"
-                font.pixelSize: view.font.pixelSize*0.9
+                font.pixelSize: dummy.font.pixelSize*0.9
             }
         }
 
@@ -194,9 +200,9 @@ Rectangle {
                 id: utc_1
                 Layout.alignment: Qt.AlignHCenter
 
-                text: Navigator.clock.timeAsUTCString
+                text: Clock.timeAsUTCString
                 font.weight: Font.Bold
-                font.pixelSize: view.font.pixelSize*1.3
+                font.pixelSize: dummy.font.pixelSize*1.3
                 color: "white"
             } // Label
             Label {
@@ -205,7 +211,7 @@ Rectangle {
 
                 text: "UTC"
                 color: "white"
-                font.pixelSize: view.font.pixelSize*0.9
+                font.pixelSize: dummy.font.pixelSize*0.9
             }
         }
 

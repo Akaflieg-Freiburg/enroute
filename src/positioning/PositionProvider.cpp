@@ -22,7 +22,7 @@
 #include <QSettings>
 
 #include "GlobalObject.h"
-#include "Settings.h"
+#include "GlobalSettings.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/TrafficDataProvider.h"
 #include "units/Units.h"
@@ -84,7 +84,7 @@ void Positioning::PositionProvider::onPositionUpdated()
     QString source;
 
 
-    if (GlobalObject::settings()->positioningByTrafficDataReceiver()) {
+    if (GlobalObject::globalSettings()->positioningByTrafficDataReceiver()) {
 
         // Priority #1: Traffic data provider
         auto* trafficDataProvider = GlobalObject::trafficDataProvider();
@@ -233,7 +233,7 @@ void Positioning::PositionProvider::updateStatusString()
         if (pressureAltitude().isFinite()) {
             result += QStringLiteral("<li>%1</li>").arg(tr("Receiving pressure altitude."));
         }
-        result += QLatin1String("</ul>");
+        result += u"</ul>"_qs;
         setStatusString(result);
         return;
     }
@@ -241,6 +241,6 @@ void Positioning::PositionProvider::updateStatusString()
     QString result = QStringLiteral("<p>%1</p><ul style='margin-left:-25px;'>").arg(tr("Not receiving position information"));
     result += QStringLiteral("<li>%1: %2</li>").arg( satelliteSource.sourceName(), satelliteSource.statusString());
     result += QStringLiteral("<li>%1: %2</li>").arg( tr("Traffic receiver"), tr("Not receiving position information"));
-    result += QLatin1String("</ul>");
+    result += u"</ul>"_qs;
     setStatusString(result);
 }

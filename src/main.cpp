@@ -41,13 +41,11 @@
 #include "DemoRunner.h"
 #include "GlobalObject.h"
 #include "Librarian.h"
-#include "Settings.h"
 #include "dataManagement/DataManager.h"
 #include "dataManagement/SSLErrorHandler.h"
 #include "geomaps/Airspace.h"
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/WaypointLibrary.h"
-#include "navigation/Clock.h"
 #include "platform/FileExchange_Abstract.h"
 #include "platform/Notifier_Abstract.h"
 #include "platform/PlatformAdaptor.h"
@@ -74,7 +72,6 @@ auto main(int argc, char *argv[]) -> int
     qRegisterMetaType<Platform::FileExchange_Abstract::FileFunction>("Platform::FileExchange_Abstract::FileFunction");
     qRegisterMetaType<Platform::Notifier_Abstract::NotificationTypes>("Platform::Notifier::Notifications");
     qmlRegisterUncreatableType<DemoRunner>("enroute", 1, 0, "DemoRunner", QStringLiteral("DemoRunner objects cannot be created in QML"));
-    qmlRegisterType<Navigation::Clock>("enroute", 1, 0, "Clock");
     qmlRegisterUncreatableType<DataManagement::SSLErrorHandler>("enroute", 1, 0, "SSLErrorHandler", QStringLiteral("SSLErrorHandler objects cannot be created in QML"));
     qmlRegisterUncreatableType<DataManagement::Downloadable_Abstract>("enroute", 1, 0, "Downloadable_Abstract", QStringLiteral("Downloadable_Abstract objects cannot be created in QML"));
     qmlRegisterUncreatableType<DataManagement::Downloadable_SingleFile>("enroute", 1, 0, "Downloadable_SingleFile", QStringLiteral("Downloadable_SingleFile objects cannot be created in QML"));
@@ -82,7 +79,6 @@ auto main(int argc, char *argv[]) -> int
     qmlRegisterUncreatableType<GeoMaps::GeoMapProvider>("enroute", 1, 0, "GeoMapProvider", QStringLiteral("GeoMapProvider objects cannot be created in QML"));
     qmlRegisterUncreatableType<GeoMaps::WaypointLibrary>("enroute", 1, 0, "WaypointLibrary", QStringLiteral("WaypointLibrary objects cannot be created in QML"));
     qmlRegisterUncreatableType<DataManagement::DataManager>("enroute", 1, 0, "DataManager", QStringLiteral("DataManager objects cannot be created in QML"));
-    qmlRegisterType<Settings>("enroute", 1, 0, "GlobalSettings");
     qmlRegisterUncreatableType<Platform::FileExchange_Abstract>("enroute", 1, 0, "FileExchange_Abstract", QStringLiteral("FileExchange_Abstract objects cannot be created in QML"));
     qmlRegisterUncreatableType<Platform::PlatformAdaptor_Abstract>("enroute", 1, 0, "PlatformAdaptor_Abstract", QStringLiteral("PlatformAdaptor_Abstract objects cannot be created in QML"));
     qmlRegisterUncreatableType<Traffic::PasswordDB>("enroute", 1, 0, "PasswordDB", QStringLiteral("PasswordDB objects cannot be created in QML"));

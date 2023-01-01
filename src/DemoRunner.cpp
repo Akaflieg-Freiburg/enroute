@@ -22,7 +22,7 @@
 #include <QApplication>
 
 #include "GlobalObject.h"
-#include "Settings.h"
+#include "GlobalSettings.h"
 #include "geomaps/GeoMapProvider.h"
 #include "navigation/Navigator.h"
 #include "traffic/TrafficDataProvider.h"
@@ -86,7 +86,7 @@ void DemoRunner::run()
     Q_ASSERT(waypointDescription != nullptr);
 
     // Set up traffic simulator
-    GlobalObject::settings()->setPositioningByTrafficDataReceiver(true);
+    GlobalObject::globalSettings()->setPositioningByTrafficDataReceiver(true);
     auto* trafficSimulator = new Traffic::TrafficDataSource_Simulate();
     GlobalObject::trafficDataProvider()->addDataSource( trafficSimulator );
     trafficSimulator->connectToTrafficReceiver();
@@ -114,8 +114,8 @@ void DemoRunner::run()
     GlobalObject::navigator()->flightRoute()->clear();
 
     // Settings
-    GlobalObject::settings()->setAirspaceAltitudeLimit({});
-    GlobalObject::settings()->setHideGlidingSectors(true);
+    GlobalObject::globalSettings()->setAirspaceAltitudeLimit({});
+    GlobalObject::globalSettings()->setHideGlidingSectors(true);
 
     //
     // GENERATE SCREENSHOTS FOR GOOGLE PLAY
@@ -165,7 +165,7 @@ void DemoRunner::run()
                     GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("EDTY")) );
 
                     flightMap->setProperty("zoomLevel", 11);
-                    GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
+                    GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::TTUp);
                     delay(4s);
                     applicationWindow->grabWindow().save(QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     GlobalObject::navigator()->flightRoute()->clear();
@@ -179,7 +179,7 @@ void DemoRunner::run()
                     trafficSimulator->setTT( Units::Angle::fromDEG(158) );
                     trafficSimulator->setGS( Units::Speed::fromKN(91) );
                     flightMap->setProperty("zoomLevel", 12);
-                    GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
+                    GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::TTUp);
                     delay(4s);
                     applicationWindow->grabWindow().save(QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                 }
@@ -195,7 +195,7 @@ void DemoRunner::run()
                     trafficSimulator->setGS( Units::Speed::fromKN(92) );
                     flightMap->setProperty("zoomLevel", 13);
                     flightMap->setProperty("followGPS", true);
-                    GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
+                    GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::TTUp);
                     QGeoCoordinate trafficPosition(48.0103, 7.8052, 540);
                     QGeoPositionInfo trafficInfo;
                     trafficInfo.setCoordinate(trafficPosition);
@@ -322,7 +322,7 @@ void DemoRunner::run()
         GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("EDTY")) );
 
         flightMap->setProperty("zoomLevel", 11);
-        GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
+        GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::TTUp);
         delay(4s);
         applicationWindow->grabWindow().save(QStringLiteral("02-02-04-EnRoute.png"));
         GlobalObject::navigator()->flightRoute()->clear();
@@ -377,7 +377,7 @@ void DemoRunner::run()
         trafficSimulator->setGS( Units::Speed::fromKN(5) );
         flightMap->setProperty("zoomLevel", 13);
         flightMap->setProperty("followGPS", true);
-        GlobalObject::settings()->setMapBearingPolicy(Settings::NUp);
+        GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::NUp);
         delay(4s);
         applicationWindow->grabWindow().save(QStringLiteral("01-03-01-ground.png"));
     }
@@ -390,7 +390,7 @@ void DemoRunner::run()
         trafficSimulator->setTT( Units::Angle::fromDEG(170) );
         trafficSimulator->setGS( Units::Speed::fromKN(90) );
         flightMap->setProperty("zoomLevel", 11);
-        GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
+        GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::TTUp);
         delay(4s);
         applicationWindow->grabWindow().save(QStringLiteral("01-03-02-flight.png"));
     }
@@ -402,7 +402,7 @@ void DemoRunner::run()
         Q_ASSERT(waypoint.isValid());
         waypointDescription->setProperty("waypoint", QVariant::fromValue(waypoint));
         QMetaObject::invokeMethod(waypointDescription, "open", Qt::QueuedConnection);
-        GlobalObject::settings()->setMapBearingPolicy(Settings::NUp);
+        GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::NUp);
         delay(4s);
         applicationWindow->grabWindow().save(QStringLiteral("01-03-03-EDFEinfo.png"));
         QMetaObject::invokeMethod(waypointDescription, "close", Qt::QueuedConnection);
@@ -418,7 +418,7 @@ void DemoRunner::run()
         trafficSimulator->setGS( Units::Speed::fromKN(92) );
         flightMap->setProperty("zoomLevel", 13);
         flightMap->setProperty("followGPS", true);
-        GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
+        GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::TTUp);
         QGeoCoordinate trafficPosition(48.0103, 7.7952, 540);
         QGeoPositionInfo trafficInfo;
         trafficInfo.setCoordinate(trafficPosition);

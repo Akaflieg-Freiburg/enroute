@@ -141,7 +141,7 @@ public:
      *
      * @returns Hash of file content
      */
-    Q_INVOKABLE static uint getStringHashFromRessource(const QString &name);
+    Q_INVOKABLE static size_t getStringHashFromRessource(const QString &name);
 
     /*! \brief Removes an entry from a library
      *

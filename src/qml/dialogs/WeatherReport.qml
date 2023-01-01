@@ -61,8 +61,8 @@ CenteringDialog {
         }
 
         Label { // Second header line with distance and QUJ
-            text: (weatherStation !== null) ? Navigator.aircraft.describeWay(global.positionProvider().positionInfo.coordinate(), weatherStation.coordinate) : ""
-            visible: global.positionProvider().receivingPositionInfo
+            text: (weatherStation !== null) ? Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), weatherStation.coordinate) : ""
+            visible: PositionProvider.receivingPositionInfo
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignRight
             wrapMode: Text.WordWrap

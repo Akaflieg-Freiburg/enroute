@@ -61,9 +61,9 @@ void Navigation::Navigator::deferredInitialization()
     connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateAltitudeLimit);
     connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateFlightStatus);
     connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateRemainingRouteInfo);
-    connect(this, &Navigation::Navigator::aircraftChanged, this, [this](){ updateRemainingRouteInfo(GlobalObject::positionProvider()->positionInfo()); });
-    connect(this, &Navigation::Navigator::windChanged, this, [this](){ updateRemainingRouteInfo(GlobalObject::positionProvider()->positionInfo()); });
-    connect(flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, [this](){ updateRemainingRouteInfo(GlobalObject::positionProvider()->positionInfo()); });
+    connect(this, &Navigation::Navigator::aircraftChanged, this, [this](){ updateRemainingRouteInfo(); });
+    connect(this, &Navigation::Navigator::windChanged, this, [this](){ updateRemainingRouteInfo(); });
+    connect(flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, [this](){ updateRemainingRouteInfo(); });
 }
 
 
@@ -135,8 +135,9 @@ void Navigation::Navigator::setWind(Weather::Wind newWind)
 // Slots
 //
 
-void Navigation::Navigator::updateAltitudeLimit(const Positioning::PositionInfo& info)
+void Navigation::Navigator::updateAltitudeLimit()
 {  
+    auto info = GlobalObject::positionProvider()->positionInfo();
     if (!info.isValid()) {
         return;
     }
@@ -155,8 +156,9 @@ void Navigation::Navigator::updateAltitudeLimit(const Positioning::PositionInfo&
 }
 
 
-void Navigation::Navigator::updateFlightStatus(const Positioning::PositionInfo& info)
+void Navigation::Navigator::updateFlightStatus()
 {
+    auto info = GlobalObject::positionProvider()->positionInfo();
     if (!info.isValid()) {
         setFlightStatus(Unknown);
         return;
@@ -196,8 +198,10 @@ void Navigation::Navigator::setRemainingRouteInfo(const Navigation::RemainingRou
 }
 
 
-void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::PositionInfo& info)
+void Navigation::Navigator::updateRemainingRouteInfo()
 {
+    auto info = GlobalObject::positionProvider()->positionInfo();
+
     // If there are no waypoints, then there is no remaining route info
     auto geoPath = flightRoute()->geoPath();
     if (geoPath.isEmpty())

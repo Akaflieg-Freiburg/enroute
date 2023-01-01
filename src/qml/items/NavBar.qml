@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -23,7 +23,6 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
-import enroute 1.0
 
 Rectangle {
     id: grid
@@ -73,11 +72,11 @@ Rectangle {
                     Navigator.aircraft.verticalDistanceUnit
 
                     if (GlobalSettings.showAltitudeAGL) {
-                        const talt = global.positionProvider().positionInfo.trueAltitudeAGL();
+                        const talt = PositionProvider.positionInfo.trueAltitudeAGL();
                         return Navigator.aircraft.verticalDistanceToString(talt)
                     }
 
-                    const talt = global.positionProvider().positionInfo.trueAltitudeAMSL();
+                    const talt = PositionProvider.positionInfo.trueAltitudeAMSL();
                     return Navigator.aircraft.verticalDistanceToString(talt)
                 }
                 font.weight: Font.Bold
@@ -109,7 +108,7 @@ Rectangle {
 
                 Layout.alignment: Qt.AlignHCenter
 
-                text: global.positionProvider().pressureAltitude.isFinite() ? "FL" + ("000" + Math.round(global.positionProvider().pressureAltitude.toFeet()/100.0)).slice(-3) : "-"
+                text: PositionProvider.pressureAltitude.isFinite() ? "FL" + ("000" + Math.round(PositionProvider.pressureAltitude.toFeet()/100.0)).slice(-3) : "-"
                 font.weight: Font.Bold
                 font.pixelSize: dummy.font.pixelSize*1.3
                 color: "white"
@@ -139,7 +138,7 @@ Rectangle {
 
                 Layout.alignment: Qt.AlignHCenter
 
-                text: Navigator.aircraft.horizontalSpeedToString( global.positionProvider().positionInfo.groundSpeed() )
+                text: Navigator.aircraft.horizontalSpeedToString( PositionProvider.positionInfo.groundSpeed() )
                 font.weight: Font.Bold
                 font.pixelSize: dummy.font.pixelSize*1.3
                 color: "white"
@@ -168,7 +167,7 @@ Rectangle {
                 Layout.alignment: Qt.AlignHCenter
 
                 text: {
-                    var tt = global.positionProvider().positionInfo.trueTrack();
+                    var tt = PositionProvider.positionInfo.trueTrack();
                     return tt.isFinite() ? Math.round(tt.toDEG()) + "°" : "-"
                 }
 

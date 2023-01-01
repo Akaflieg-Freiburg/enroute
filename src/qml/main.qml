@@ -312,7 +312,7 @@ ApplicationWindow {
                         ItemDelegate { // Sat Status
                             text: qsTr("Positioning")
                                   +`<br><font color="#606060" size="2">`
-                                  + (global.positionProvider().receivingPositionInfo ? qsTr("Receiving position information.") : qsTr("Not receiving position information."))
+                                  + (PositionProvider.receivingPositionInfo ? qsTr("Receiving position information.") : qsTr("Not receiving position information."))
                                   + `</font>`
                             icon.source: "/icons/material/ic_satellite.svg"
                             Layout.fillWidth: true
@@ -325,7 +325,7 @@ ApplicationWindow {
                             }
                             background: Rectangle {
                                 anchors.fill: parent
-                                color: global.positionProvider().receivingPositionInfo ? "green" : "red"
+                                color: PositionProvider.receivingPositionInfo ? "green" : "red"
                                 opacity: 0.2
                             }
                         }

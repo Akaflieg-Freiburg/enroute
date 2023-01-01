@@ -74,7 +74,7 @@ public:
     ~Navigator() override = default;
 
     // factory function for QML singleton
-    static Navigation::Navigator *create(QQmlEngine *, QJSEngine *)
+    static Navigation::Navigator* create(QQmlEngine*, QJSEngine*)
     {
         return GlobalObject::navigator();
     }
@@ -189,16 +189,16 @@ signals:
 
 private slots:
     // Check if altitude limit for flight maps needs to be lifted. Connected to positioning source.
-    void updateAltitudeLimit(const Positioning::PositionInfo& info);
+    void updateAltitudeLimit();
 
     // Update flight status. Connected to positioning source.
-    void updateFlightStatus(const Positioning::PositionInfo& info);
+    void updateFlightStatus();
 
     // Setter method. Only use this method to write to m_remainingRouteInfo
     void setRemainingRouteInfo(const Navigation::RemainingRouteInfo& rrInfo);
 
     // Re-computes the Remaining Route Info. The argument must be the current position info of the own aircraft.
-    void updateRemainingRouteInfo(const Positioning::PositionInfo& info);
+    void updateRemainingRouteInfo();
 
 private:
     Q_DISABLE_COPY_MOVE(Navigator)

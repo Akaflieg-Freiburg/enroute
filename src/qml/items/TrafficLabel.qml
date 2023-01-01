@@ -23,6 +23,7 @@ import QtPositioning 5.15
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
+import akaflieg_freiburg.enroute
 
 MapQuickItem {
     id: trafficLabel
@@ -32,7 +33,7 @@ MapQuickItem {
     property real distFromCenter: 0.5*Math.sqrt(lbl.width*lbl.width + lbl.height*lbl.height) + 18
     property real t: trafficInfo.positionInfo.trueTrack().isFinite() ? 2*Math.PI*(trafficInfo.positionInfo.trueTrack().toDEG()-flightMap.bearing)/360.0 : 0
 
-    coordinate: trafficInfo.positionInfo.coordinate().isValid ? trafficInfo.positionInfo.coordinate() : global.positionProvider().lastValidCoordinate
+    coordinate: trafficInfo.positionInfo.coordinate().isValid ? trafficInfo.positionInfo.coordinate() : PositionProvider.lastValidCoordinate
     Behavior on coordinate {
         CoordinateAnimation { duration: 1000 }
         enabled: trafficInfo.animate

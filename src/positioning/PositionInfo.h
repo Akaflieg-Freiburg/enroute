@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QGeoPositionInfo>
+#include <QQmlEngine>
 #include <chrono>
 
 #include "units/Angle.h"
@@ -43,6 +44,7 @@ namespace Positioning {
 class PositionInfo
 {
     Q_GADGET
+    QML_VALUE_TYPE(positionInfo)
 
 public:
     /*! \brief Default Constructor */

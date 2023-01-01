@@ -337,7 +337,7 @@ CenteringDialog {
         }
 
         Label { // Second header line with distance and QUJ
-            text: Navigator.aircraft.describeWay(global.positionProvider().positionInfo.coordinate(), waypoint.coordinate)
+            text: Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), waypoint.coordinate)
             visible: (text !== "")
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignRight
@@ -383,7 +383,7 @@ CenteringDialog {
 
                 Action {
                     text: qsTr("Direct")
-                    enabled: global.positionProvider().receivingPositionInfo && (dialogLoader.text !== "noRouteButton")
+                    enabled: PositionProvider.receivingPositionInfo && (dialogLoader.text !== "noRouteButton")
 
                     onTriggered: {
                         global.platformAdaptor().vibrateBrief()
@@ -391,7 +391,7 @@ CenteringDialog {
                             overwriteDialog.open()
                         else {
                             Navigator.flightRoute.clear()
-                            Navigator.flightRoute.append(global.positionProvider().lastValidCoordinate)
+                            Navigator.flightRoute.append(PositionProvider.lastValidCoordinate)
                             Navigator.flightRoute.append(waypoint)
                             toast.doToast(qsTr("New flight route: direct to %1.").arg(waypoint.extendedName))
                         }

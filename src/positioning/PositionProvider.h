@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,6 +20,9 @@
 
 #pragma once
 
+#include <QQmlEngine>
+
+#include "GlobalObject.h"
 #include "positioning/PositionInfoSource_Abstract.h"
 #include "positioning/PositionInfoSource_Satellite.h"
 
@@ -42,13 +45,29 @@ namespace Positioning {
 class PositionProvider : public PositionInfoSource_Abstract
 {
     Q_OBJECT
+    QML_ELEMENT
+    QML_SINGLETON
+
+    // Repeat properties from PositionInfoSource_Abstract so qmllint knows about them
+    Q_PROPERTY(Positioning::PositionInfo positionInfo READ positionInfo NOTIFY positionInfoChanged)
+    Q_PROPERTY(Units::Distance pressureAltitude READ pressureAltitude NOTIFY pressureAltitudeChanged)
+
 
 public:
     /*! \brief Standard constructor
      *
      * @param parent The standard QObject parent pointer
      */
-    explicit PositionProvider(QObject *parent = nullptr);
+    explicit PositionProvider(QObject* parent = nullptr);
+
+    // No default constructor, important for QML singleton
+    explicit PositionProvider() = delete;
+
+    // factory function for QML singleton
+    static Positioning::PositionProvider* create(QQmlEngine*, QJSEngine*)
+    {
+        return GlobalObject::positionProvider();
+    }
 
     /*! \brief Last valid coordinate reading
      *

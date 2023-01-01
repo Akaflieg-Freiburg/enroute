@@ -57,7 +57,7 @@ Item {
         copyrightsVisible: false // We have our own copyrights notice
 
         property bool followGPS: true
-        property real animatedTrack: global.positionProvider().lastValidTT.isFinite() ? global.positionProvider().lastValidTT.toDEG() : 0
+        property real animatedTrack: PositionProvider.lastValidTT.isFinite() ? PositionProvider.lastValidTT.toDEG() : 0
         Behavior on animatedTrack { RotationAnimation {duration: 400; direction: RotationAnimation.Shortest } }
 
 
@@ -85,7 +85,7 @@ Item {
         Binding on bearing {
             restoreMode: Binding.RestoreBinding
             when: GlobalSettings.mapBearingPolicy !== GlobalSettings.UserDefinedBearingUp
-            value: GlobalSettings.mapBearingPolicy === GlobalSettings.TTUp ? global.positionProvider().lastValidTT.toDEG() : 0
+            value: GlobalSettings.mapBearingPolicy === GlobalSettings.TTUp ? PositionProvider.lastValidTT.toDEG() : 0
         }
 
         // We expect GPS updates every second. So, we choose an animation of duration 1000ms here, to obtain a flowing movement
@@ -97,7 +97,7 @@ Item {
         //
 
         // Initially, set the center to the last saved value
-        center: global.positionProvider().lastValidCoordinate
+        center: PositionProvider.lastValidCoordinate
 
         // If "followGPS" is true, then update the map center whenever a new GPS position comes in
         // or the zoom level changes
@@ -109,9 +109,9 @@ Item {
             value: {
                 // If not in flight, then aircraft stays in center of display
                 if (Navigator.flightStatus !== Navigator.Flight)
-                    return global.positionProvider().lastValidCoordinate
-                if (!global.positionProvider().lastValidTT.isFinite())
-                    return global.positionProvider().lastValidCoordinate
+                    return PositionProvider.lastValidCoordinate
+                if (!PositionProvider.lastValidTT.isFinite())
+                    return PositionProvider.lastValidCoordinate
 
                 // Otherwise, we position the aircraft someplace on a circle around the
                 // center, so that the map shows a larger portion of the airspace ahead
@@ -128,7 +128,7 @@ Item {
                                         )
                 const radiusInM = 10000.0*radiusInPixel/flightMap.pixelPer10km
 
-                return global.positionProvider().lastValidCoordinate.atDistanceAndAzimuth(radiusInM, global.positionProvider().lastValidTT.toDEG())
+                return PositionProvider.lastValidCoordinate.atDistanceAndAzimuth(radiusInM, PositionProvider.lastValidTT.toDEG())
             }
         }
 
@@ -165,7 +165,7 @@ Item {
 
         // ADDITINAL MAP ITEMS
         MapCircle { // Circle for nondirectional traffic warning
-            center: global.positionProvider().lastValidCoordinate
+            center: PositionProvider.lastValidCoordinate
 
             radius: Math.max(500, global.trafficDataProvider().trafficObjectWithoutPosition.hDist.toM())
             Behavior on radius {
@@ -187,7 +187,7 @@ Item {
 
             property real distFromCenter: 0.5*Math.sqrt(lbl.width*lbl.width + lbl.height*lbl.height) + 28
 
-            coordinate: global.positionProvider().lastValidCoordinate
+            coordinate: PositionProvider.lastValidCoordinate
             Behavior on coordinate {
                 CoordinateAnimation { duration: 1000 }
                 enabled: global.trafficDataProvider().trafficObjectWithoutPosition.animate
@@ -247,13 +247,13 @@ Item {
 
             anchorPoint.x: fiveMinuteBarBaseRect.width/2
             anchorPoint.y: fiveMinuteBarBaseRect.height
-            coordinate: global.positionProvider().lastValidCoordinate
+            coordinate: PositionProvider.lastValidCoordinate
             visible: {
-                if (!global.positionProvider().positionInfo.trueTrack().isFinite())
+                if (!PositionProvider.positionInfo.trueTrack().isFinite())
                     return false
-                if (!global.positionProvider().positionInfo.groundSpeed().isFinite())
+                if (!PositionProvider.positionInfo.groundSpeed().isFinite())
                     return false
-                if (global.positionProvider().positionInfo.groundSpeed().toMPS() < 2.0)
+                if (PositionProvider.positionInfo.groundSpeed().toMPS() < 2.0)
                     return false
                 return true
             }
@@ -271,9 +271,9 @@ Item {
                     id: fiveMinuteBarBaseRect
 
                     property real animatedGroundSpeedInMetersPerSecond: {
-                        if (!global.positionProvider().positionInfo.groundSpeed().isFinite())
+                        if (!PositionProvider.positionInfo.groundSpeed().isFinite())
                             return 0.0
-                        return global.positionProvider().positionInfo.groundSpeed().toMPS()
+                        return PositionProvider.positionInfo.groundSpeed().toMPS()
                     }
                     Behavior on animatedGroundSpeedInMetersPerSecond {NumberAnimation {duration: 400}}
 
@@ -313,7 +313,7 @@ Item {
         MapQuickItem {
             id: ownPosition
 
-            coordinate: global.positionProvider().lastValidCoordinate
+            coordinate: PositionProvider.lastValidCoordinate
 
             Connections {
                 // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem
@@ -329,8 +329,8 @@ Item {
 
                 FlightVector {
                     pixelPerTenKM: flightMap.pixelPer10km
-                    groundSpeedInMetersPerSecond: global.positionProvider().positionInfo.groundSpeed().toMPS()
-                    visible: (Navigator.flightStatus === Navigator.Flight) && (global.positionProvider().positionInfo.trueTrack().isFinite())
+                    groundSpeedInMetersPerSecond: PositionProvider.positionInfo.groundSpeed().toMPS()
+                    visible: (Navigator.flightStatus === Navigator.Flight) && (PositionProvider.positionInfo.trueTrack().isFinite())
                 }
 
                 Image {
@@ -340,7 +340,7 @@ Item {
                     y: -height/2.0
 
                     source: {
-                        var pInfo = global.positionProvider().positionInfo
+                        var pInfo = PositionProvider.positionInfo
 
                         if (!pInfo.isValid()) {
                             return "/icons/self-noPosition.svg"
@@ -368,11 +368,11 @@ Item {
 
         MapPolyline {
             id: toNextWP
-            visible: global.positionProvider().lastValidCoordinate.isValid &&
+            visible: PositionProvider.lastValidCoordinate.isValid &&
                      (Navigator.remainingRouteInfo.status === RemainingRouteInfo.OnRoute)
             line.width: 2
             line.color: 'darkred'
-            path: visible ? [global.positionProvider().lastValidCoordinate, Navigator.remainingRouteInfo.nextWP.coordinate] : []
+            path: visible ? [PositionProvider.lastValidCoordinate, Navigator.remainingRouteInfo.nextWP.coordinate] : []
         }
 
         MapItemView { // Traffic opponents

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2021-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -45,7 +45,7 @@ void Positioning::PositionInfoSource_Abstract::setPositionInfo(const Positioning
     }
 
     m_positionInfo = info;
-    emit positionInfoChanged(m_positionInfo);
+    emit positionInfoChanged();
 
     auto newReceiving = m_positionInfo.isValid();
     if (_receivingPositionInfo == newReceiving) {
@@ -89,7 +89,7 @@ void Positioning::PositionInfoSource_Abstract::setPressureAltitude(Units::Distan
     }
 
     m_pressureAltitude = newPressureAltitude;
-    emit pressureAltitudeChanged(m_pressureAltitude);
+    emit pressureAltitudeChanged();
 }
 
 

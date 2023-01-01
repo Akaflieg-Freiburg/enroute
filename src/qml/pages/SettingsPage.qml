@@ -480,7 +480,7 @@ Page {
                 Layout.fillWidth: true
                 enabled: (from < to) && (altLimitCheck.checked)
                 from: {
-                    var positionInfo = global.positionProvider().positionInfo
+                    var positionInfo = PositionProvider.positionInfo
                     if (!positionInfo.isValid())
                         return GlobalSettings.airspaceAltitudeLimit_min.toFeet()
                     var trueAlt = positionInfo.trueAltitudeAMSL()

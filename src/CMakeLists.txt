@@ -324,6 +324,7 @@ target_include_directories(${PROJECT_NAME}
     geomaps
     navigation
     platform
+    positioning
     ui
     units
 )

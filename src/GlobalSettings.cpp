@@ -163,7 +163,6 @@ void GlobalSettings::setLastWhatsNewHash(size_t lwnh)
         return;
     }
     settings.setValue(QStringLiteral("lastWhatsNewHash"), QVariant::fromValue(lwnh));
-    qWarning() << "Set" << lwnh;
     emit lastWhatsNewHashChanged();
 }
 

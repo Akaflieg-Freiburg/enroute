@@ -777,6 +777,7 @@ Page {
 
         onAccepted: {
             Navigator.flightRoute.renameWaypoint(index, newName)
+            Navigator.flightRoute.renoteWaypoint(index, newNotes)
             Navigator.flightRoute.relocateWaypoint(index, newLatitude, newLongitude)
             close()
         }

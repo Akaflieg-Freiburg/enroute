@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -133,6 +133,12 @@ public:
      */
     Q_PROPERTY(QString name READ name WRITE setName)
 
+    /*! \brief Notes attached to the waypoint
+     *
+     *  This property holds notes attached to the waypoint.
+     */
+    Q_PROPERTY(QString notes READ notes WRITE setNotes)
+
     /*! \brief Short name of the waypoint
      *
      *  This property holds the ICAO code if it exists, or else the name of the
@@ -229,6 +235,15 @@ public:
 
     /*! \brief Getter method for property with same name
      *
+     *  @returns Property notes
+     */
+    [[nodiscard]] auto notes() const -> QString
+    {
+        return m_properties.value(QStringLiteral("NOT")).toString();
+    }
+
+    /*! \brief Getter method for property with same name
+     *
      *  @returns Property shortName
      */
     [[nodiscard]] auto shortName() const -> QString
@@ -281,6 +296,15 @@ public:
     void setName(const QString &newName)
     {
         m_properties.insert(QStringLiteral("NAM"), newName);
+    }
+
+    /*! \brief Set notes
+     *
+     *  @param newNotes New notes attached to the waypoint
+     */
+    void setNotes(const QString &newNotes)
+    {
+        m_properties.insert(QStringLiteral("NOT"), newNotes);
     }
 
 

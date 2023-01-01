@@ -421,6 +421,7 @@ Page {
         onAccepted: {
             let newWP = waypoint.copy()
             newWP.name = newName
+            newWP.notes = newNotes
             newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
             global.waypointLibrary().replace(waypoint, newWP)
             page.reloadWaypointList()

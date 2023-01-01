@@ -569,6 +569,7 @@ CenteringDialog {
             global.platformAdaptor().vibrateBrief()
             var newWP = waypoint.copy()
             newWP.name = newName
+            newWP.notes = newNotes
             newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
             global.waypointLibrary().replace(waypoint, newWP)
             toast.doToast(qsTr("Modified entry %1 in library.").arg(newWP.extendedName))
@@ -584,6 +585,7 @@ CenteringDialog {
             global.platformAdaptor().vibrateBrief()
             var newWP = waypoint.copy()
             newWP.name = newName
+            newWP.notes = newNotes
             newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
             global.waypointLibrary().add(newWP)
             toast.doToast(qsTr("Added %1 to waypoint library.").arg(newWP.extendedName))

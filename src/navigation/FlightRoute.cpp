@@ -358,6 +358,23 @@ void Navigation::FlightRoute::renameWaypoint(int idx, const QString& newName)
     emit waypointsChanged();
 }
 
+void Navigation::FlightRoute::renoteWaypoint(int idx, const QString& newNotes)
+{
+    // Paranoid safety checks
+    if ((idx < 0) || (idx >= m_waypoints.size())) {
+        return;
+    }
+    // If name did not
+    if (m_waypoints[idx].notes() == newNotes) {
+        return;
+    }
+
+
+    m_waypoints[idx].setNotes(newNotes);
+    updateLegs();
+    emit waypointsChanged();
+}
+
 void Navigation::FlightRoute::reverse()
 {
     std::reverse(m_waypoints.begin(), m_waypoints.end());

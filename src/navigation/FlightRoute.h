@@ -294,7 +294,7 @@ namespace Navigation
 
         /*! \brief Rename waypoint(s)
          *
-         *  Relocates the waypoint with the given index. If the index is invalid
+         *  Renames the waypoint with the given index. If the index is invalid
          *  if the new name equals the old name, then this method does nothing.
          *  The signal "waypoint changed" is emitted as appropriate.
          *
@@ -302,7 +302,19 @@ namespace Navigation
          *
          *  @param newName New name for waypoint
          */
-        Q_INVOKABLE void renameWaypoint(int idx, const QString &newName);
+        Q_INVOKABLE void renameWaypoint(int idx, const QString& newName);
+
+        /*! \brief Renotes waypoint(s)
+         *
+         *  Changes the notes of the waypoint with the given index. If the index is invalid
+         *  if the new notes equal the old ntes, then this method does nothing.
+         *  The signal "waypoint changed" is emitted as appropriate.
+         *
+         *  @param idx Index of waypoint
+         *
+         *  @param newNotes New notes for waypoint
+         */
+        Q_INVOKABLE void renoteWaypoint(int idx, const QString& newNote);
 
         /*! \brief Reverse the route */
         Q_INVOKABLE void reverse();

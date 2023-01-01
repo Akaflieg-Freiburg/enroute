@@ -42,6 +42,7 @@ CenteringDialog {
     property waypoint waypoint: global.geoMapProvider().createWaypoint()
 
     readonly property string newName: wpNameField.text
+    readonly property string newNotes: wpNotesField.text
     readonly property double newLatitude: latInput.value
     readonly property double newLongitude: longInput.value
     readonly property double newAltitudeMeter: eleField.valueMeter
@@ -57,6 +58,7 @@ CenteringDialog {
         latInput.value = waypoint.coordinate.latitude
         longInput.value = waypoint.coordinate.longitude
         wpNameField.text = waypoint.extendedName
+        wpNotesField.text = waypoint.notes
     }
 
     ScrollView {
@@ -90,6 +92,23 @@ CenteringDialog {
                 Layout.minimumWidth: view.font.pixelSize*5
 
                 text: waypoint.extendedName
+                focus: true
+
+                placeholderText: qsTr("undefined")
+            }
+
+            Label {
+                Layout.alignment: Qt.AlignBaseline
+                text: qsTr("Notes")
+            }
+
+            TextArea {
+                id: wpNotesField
+
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignBaseline
+                Layout.minimumWidth: view.font.pixelSize*5
+
                 focus: true
 
                 placeholderText: qsTr("undefined")

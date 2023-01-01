@@ -337,6 +337,10 @@ auto GeoMaps::Waypoint::tabularDescription() const -> QList<QString>
         result.append(QStringLiteral("ELEV%1 AMSL").arg(eleString));
     }
 
+    if (m_properties.contains(QStringLiteral("NOT"))) {
+        result.append("NOTE" + m_properties.value(QStringLiteral("NOT")).toString());
+    }
+
     return result;
 }
 
@@ -361,7 +365,7 @@ auto GeoMaps::Waypoint::twoLineTitle() const -> QString
 
 auto GeoMaps::qHash(const GeoMaps::Waypoint& wp) -> size_t
 {
-    size_t result = qHash(wp.m_coordinate);
+    auto result = qHash(wp.m_coordinate);
 
     QMapIterator<QString, QVariant> i(wp.m_properties);
     while (i.hasNext()) {

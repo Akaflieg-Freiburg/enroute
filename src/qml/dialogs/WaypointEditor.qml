@@ -112,6 +112,7 @@ CenteringDialog {
                 focus: true
 
                 placeholderText: qsTr("undefined")
+                wrapMode: TextEdit.WordWrap
             }
 
             Label {

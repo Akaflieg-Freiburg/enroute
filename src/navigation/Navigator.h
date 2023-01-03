@@ -26,7 +26,6 @@
 #include "GlobalObject.h"
 #include "navigation/FlightRoute.h"
 #include "navigation/RemainingRouteInfo.h"
-#include "positioning/PositionInfo.h"
 
 
 namespace Navigation {

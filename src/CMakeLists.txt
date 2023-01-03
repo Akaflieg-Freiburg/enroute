@@ -325,6 +325,7 @@ target_include_directories(${PROJECT_NAME}
     navigation
     platform
     positioning
+    traffic
     ui
     units
 )

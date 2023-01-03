@@ -21,7 +21,9 @@
 #pragma once
 
 #include <QHash>
-#include <QObject>
+#include <QQmlEngine>
+
+#include "GlobalObject.h"
 
 namespace Traffic {
 
@@ -34,6 +36,8 @@ namespace Traffic {
  */
 class PasswordDB : public QObject {
     Q_OBJECT
+    QML_ELEMENT
+    QML_SINGLETON
 
 public:
     /*! \brief Default constructor
@@ -44,7 +48,16 @@ public:
      */
     PasswordDB(QObject* parent=nullptr);
 
+    // No default constructor, important for QML singleton
+    explicit PasswordDB() = delete;
+
     ~PasswordDB() override = default;
+
+    // factory function for QML singleton
+    static Traffic::PasswordDB* create(QQmlEngine*, QJSEngine*)
+    {
+        return GlobalObject::passwordDB();
+    }
 
 
     //

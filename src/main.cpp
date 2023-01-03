@@ -198,21 +198,27 @@ auto main(int argc, char *argv[]) -> int
     /*
      * Set up ApplicationEngine for QML
      */
-    QQmlApplicationEngine engine;
-    engine.rootContext()->setContextProperty(QStringLiteral("angle"), QVariant::fromValue(Units::Angle()) );
-    engine.rootContext()->setContextProperty(QStringLiteral("distance"), QVariant::fromValue(Units::Distance()) );
-    engine.rootContext()->setContextProperty(QStringLiteral("manual_location"), MANUAL_LOCATION );
-    engine.rootContext()->setContextProperty(QStringLiteral("global"), new GlobalObject(&engine) );
-    engine.rootContext()->setContextProperty(QStringLiteral("leg"), QVariant::fromValue(Navigation::Leg()) );
-    engine.rootContext()->setContextProperty(QStringLiteral("speed"), QVariant::fromValue(Units::Speed()) );
-    engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
+    auto* engine = new QQmlApplicationEngine();
+    engine->rootContext()->setContextProperty(QStringLiteral("angle"), QVariant::fromValue(Units::Angle()) );
+    engine->rootContext()->setContextProperty(QStringLiteral("distance"), QVariant::fromValue(Units::Distance()) );
+    engine->rootContext()->setContextProperty(QStringLiteral("manual_location"), MANUAL_LOCATION );
+    engine->rootContext()->setContextProperty(QStringLiteral("global"), new GlobalObject(engine) );
+    engine->rootContext()->setContextProperty(QStringLiteral("leg"), QVariant::fromValue(Navigation::Leg()) );
+    engine->rootContext()->setContextProperty(QStringLiteral("speed"), QVariant::fromValue(Units::Speed()) );
+    engine->load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
 
     if (parser.isSet(screenshotOption))
     {
-        GlobalObject::demoRunner()->setEngine(&engine);
+        GlobalObject::demoRunner()->setEngine(engine);
         QTimer::singleShot(1s, GlobalObject::demoRunner(), &DemoRunner::run);
     }
 
     // Load GUI and enter event loop
-    return QGuiApplication::exec();
+    auto result = QGuiApplication::exec();
+
+    // Ensure that the engine does not hold objects that will interfere when we close down.
+    delete engine;
+    GlobalObject::clear();
+
+    return result;
 }

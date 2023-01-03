@@ -109,6 +109,12 @@ public:
    */
   ~GlobalObject() override = default;
 
+    /*! \brief Deletes all globally defined objects
+     *
+     * This method will delete all globally defined objects in the correct order.
+     */
+    static void clear();
+
   /*! \brief Indicates if the static methods are ready to be used
    *
    *  This is relevant for C++ code that is called from Android, often at

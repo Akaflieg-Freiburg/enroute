@@ -84,6 +84,35 @@ GlobalObject::GlobalObject(QObject *parent) : QObject(parent)
 }
 
 
+void GlobalObject::clear()
+{
+    isConstructing = true;
+
+    delete g_notifier;
+    delete g_geoMapProvider;
+    delete g_flarmnetDB;
+    delete g_dataManager;
+
+    delete g_sslErrorHandler;
+    delete g_demoRunner;
+    delete g_fileExchange;
+    delete g_librarian;
+    delete g_platformAdaptor;
+    delete g_navigator;
+    delete g_notifier;
+    delete g_passwordDB;
+    delete g_positionProvider;
+    delete g_settings;
+    delete g_trafficDataProvider;
+    delete g_waypointLibrary;
+    delete g_weatherDataProvider;
+
+    delete g_networkAccessManager;
+
+    isConstructing = false;
+}
+
+
 auto GlobalObject::canConstruct() -> bool
 {
     if (isConstructing) {

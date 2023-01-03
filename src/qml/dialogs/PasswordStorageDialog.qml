@@ -54,6 +54,6 @@ CenteringDialog {
 
     }
 
-    onAccepted: global.passwordDB().setPassword(dialogArgs, dialogLoader.text)
+    onAccepted: PasswordDB.setPassword(dialogArgs, dialogLoader.text)
 
 } // Dialog

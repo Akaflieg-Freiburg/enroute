@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,15 +24,10 @@ import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
-import "../dialogs"
-import "../items"
 
 Page {
     id: settingsPage
     title: qsTr("Settings")
-
-    // Used internally
-    property distance staticDistance
 
 
     header: ToolBar {
@@ -338,11 +333,11 @@ Page {
                 icon.source: "/icons/material/ic_lock.svg"
                 text: qsTr("Clear Password Storage")
                 onClicked: clearPasswordDialog.open()
-                visible: !global.passwordDB().empty
+                visible: !PasswordDB.empty
             }
             ToolButton {
                 icon.source: "/icons/material/ic_info_outline.svg"
-                visible: !global.passwordDB().empty
+                visible: !PasswordDB.empty
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
                     helpDialog.title = qsTr("Clear Password Storage")
@@ -449,7 +444,7 @@ Page {
         }
 
         onAccepted: {
-            global.passwordDB().clear()
+            PasswordDB.clear()
             toast.doToast(qsTr("Password storage cleared"))
         }
 
@@ -461,6 +456,9 @@ Page {
         modal: true
         title: qsTr("Airspace Altitude Limit")
         standardButtons: (slider.from < slider.to) ? Dialog.Ok|Dialog.Cancel : Dialog.Cancel
+
+        // Used internally
+        property distance staticDistance
 
         ColumnLayout {
             width: heightLimitDialog.availableWidth

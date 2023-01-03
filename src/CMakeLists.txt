@@ -345,6 +345,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/WordWrappingCheckDelegate.qml
     qml/items/WordWrappingItemDelegate.qml
     qml/items/WordWrappingSwitchDelegate.qml
+    qml/pages/SettingsPage.qml
     SOURCES
     ui/ScaleQuickItem.h
     ui/ScaleQuickItem.cpp

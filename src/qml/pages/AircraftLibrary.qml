@@ -68,7 +68,7 @@ Page {
                 icon.source: "/icons/material/ic_airplanemode_active.svg"
 
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     finalFileName = modelData
                     if (Navigator.flightRoute.size > 0)
                         overwriteDialog.open()
@@ -77,7 +77,7 @@ Page {
                 }
 
                 swipe.onCompleted: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     finalFileName = modelData
                     removeDialog.open()
                 }
@@ -90,7 +90,7 @@ Page {
                 icon.source: "/icons/material/ic_more_horiz.svg"
 
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     cptMenu.popup()
                 }
 
@@ -101,7 +101,7 @@ Page {
                         id: renameAction
                         text: qsTr("Rename…")
                         onTriggered: {
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             finalFileName = modelData
                             renameName.text = modelData
                             renameDialog.open()
@@ -113,7 +113,7 @@ Page {
                         id: removeAction
                         text: qsTr("Remove…")
                         onTriggered: {
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             finalFileName = modelData
                             removeDialog.open()
                         }
@@ -227,11 +227,11 @@ Page {
         }
 
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             page.openFromLibrary()
         }
         onRejected: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             close()
         }
     }
@@ -252,13 +252,13 @@ Page {
         }
 
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             global.librarian().remove(Librarian.Aircraft, page.finalFileName)
             page.reloadFlightRouteList()
             toast.doToast(qsTr("Aircraft removed from device"))
         }
         onRejected: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             page.reloadFlightRouteList() // Re-display aircraft that have been swiped out
             close()
         }
@@ -309,7 +309,7 @@ Page {
         }
 
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             if ((renameName.text !== "") && !global.librarian().exists(Librarian.Aircraft, renameName.text)) {
                 global.librarian().rename(Librarian.Aircraft, finalFileName, renameName.text)
                 page.reloadFlightRouteList()
@@ -318,7 +318,7 @@ Page {
             }
         }
         onRejected: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             close()
         }
     }

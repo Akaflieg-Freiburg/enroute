@@ -53,7 +53,7 @@ Page {
             icon.source: "/icons/material/ic_arrow_back.svg"
 
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 stackView.pop()
             }
         }
@@ -81,7 +81,7 @@ Page {
 
             icon.source: "/icons/material/ic_more_vert.svg"
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 headerMenuX.popup()
             }
 
@@ -95,7 +95,7 @@ Page {
                     height: enabled ? undefined : 0
 
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         highlighted = false
                         global.fileExchange().importContent()
                     }
@@ -109,7 +109,7 @@ Page {
                         text: qsTr("… to GeoJSON file")
                         onTriggered: {
                             headerMenuX.close()
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
                             var errorString = global.fileExchange().shareContent(global.waypointLibrary().toGeoJSON(), "application/geo+json", qsTr("Waypoint Library"))
@@ -133,7 +133,7 @@ Page {
                         text: qsTr("… to GPX file")
                         onTriggered: {
                             headerMenuX.close()
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
                             var errorString = global.fileExchange().shareContent(global.waypointLibrary().toGpx(), "application/gpx+xml", qsTr("Waypoint Library"))
@@ -162,7 +162,7 @@ Page {
                         text: qsTr("… in GeoJSON format")
 
                         onTriggered: {
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
 
@@ -179,7 +179,7 @@ Page {
                         text: qsTr("… in GPX format")
 
                         onTriggered: {
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
 
@@ -201,7 +201,7 @@ Page {
                     enabled: global.waypointLibrary().waypoints.length > 0
 
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         highlighted = false
                         clearDialog.open()
                     }
@@ -242,13 +242,13 @@ Page {
                 icon.source: modelData.icon
 
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     waypointDescription.waypoint = modelData
                     waypointDescription.open()
                 }
 
                 swipe.onCompleted: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     removeDialog.waypoint = modelData
                     removeDialog.open()
                 }
@@ -260,7 +260,7 @@ Page {
 
                 icon.source: "/icons/material/ic_mode_edit.svg"
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     wpEditor.waypoint = modelData
                     wpEditor.open()
                 }
@@ -272,7 +272,7 @@ Page {
                 icon.source: "/icons/material/ic_more_horiz.svg"
 
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     cptMenu.popup()
                 }
 
@@ -283,7 +283,7 @@ Page {
                         id: removeAction
                         text: qsTr("Remove…")
                         onTriggered: {
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             removeDialog.waypoint = modelData
                             removeDialog.open()
                         }
@@ -379,13 +379,13 @@ Page {
         }
 
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             global.waypointLibrary().remove(removeDialog.waypoint)
             page.reloadWaypointList()
             toast.doToast(qsTr("Waypoint removed from device"))
         }
         onRejected: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             page.reloadWaypointList() // Re-display aircraft that have been swiped out
             close()
         }
@@ -408,7 +408,7 @@ Page {
         }
 
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             global.waypointLibrary().clear()
             page.reloadWaypointList()
             toast.doToast(qsTr("Waypoint library cleared"))

@@ -95,7 +95,7 @@ Page {
                     enabled: !model.modelData.hasFile
                     onClicked: {
                         if (!model.modelData.downloading && (!model.modelData.hasFile || model.modelData.updatable)) {
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             startFileDownload()
                         }
                     }
@@ -106,7 +106,7 @@ Page {
                     icon.source: "/icons/material/ic_file_download.svg"
                     visible: !model.modelData.hasFile && !model.modelData.downloading
                     onClicked: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         startFileDownload()
                     }
                 }
@@ -116,7 +116,7 @@ Page {
                     icon.source: "/icons/material/ic_refresh.svg"
                     visible: (model.modelData.updateSize !== 0) && !model.modelData.downloading
                     onClicked: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         model.modelData.update()
                     }
                 }
@@ -126,7 +126,7 @@ Page {
                     icon.source: "/icons/material/ic_cancel.svg"
                     visible: model.modelData.downloading
                     onClicked: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         model.modelData.stopDownload()
                     }
                 }
@@ -137,7 +137,7 @@ Page {
 
                     visible: model.modelData.hasFile & !model.modelData.downloading
                     onClicked: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         removeMenu.popup()
                     }
 
@@ -150,7 +150,7 @@ Page {
                             text: qsTr("Info")
 
                             onTriggered: {
-                                global.platformAdaptor().vibrateBrief()
+                                PlatformAdaptor.vibrateBrief()
                                 infoDialog.title = model.modelData.objectName
                                 infoDialog.text = model.modelData.description
                                 infoDialog.open()
@@ -162,7 +162,7 @@ Page {
                             text: qsTr("Uninstall")
 
                             onTriggered: {
-                                global.platformAdaptor().vibrateBrief()
+                                PlatformAdaptor.vibrateBrief()
                                 model.modelData.deleteFiles()
                             }
                         }
@@ -203,7 +203,7 @@ Page {
             icon.source: "/icons/material/ic_arrow_back.svg"
 
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 stackView.pop()
             }
         }
@@ -234,7 +234,7 @@ Page {
             icon.color: "white"
 
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 headerMenuX.popup()
             }
 
@@ -249,7 +249,7 @@ Page {
                 text: qsTr("Update list of maps and data")
 
                 onTriggered: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     highlighted = false
                     global.dataManager().updateRemoteDataItemList()
                 }
@@ -262,7 +262,7 @@ Page {
                 enabled: (global.dataManager().items.updateSize !== 0)
 
                 onTriggered: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     highlighted = false
                     global.dataManager().items.updateAll()
                 }
@@ -326,7 +326,7 @@ Page {
                 }
                 onFlickEnded: {
                     if ( atYBeginning && refreshFlick ) {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         global.dataManager().updateRemoteDataItemList()
                     }
                 }
@@ -350,7 +350,7 @@ Page {
                 }
                 onFlickEnded: {
                     if ( atYBeginning && refreshFlick ) {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         global.dataManager().updateRemoteDataItemList()
                     }
                 }
@@ -478,7 +478,7 @@ Page {
             icon.source: "/icons/material/ic_file_download.svg"
 
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 global.dataManager().updateRemoteDataItemList()
             }
         }
@@ -492,7 +492,7 @@ Page {
             icon.source: "/icons/material/ic_file_download.svg"
 
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 global.dataManager().mapsAndData.update()
             }
         }

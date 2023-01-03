@@ -52,7 +52,7 @@ Page {
             icon.source: "/icons/material/ic_arrow_back.svg"
 
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 stackView.pop()
             }
         }
@@ -81,7 +81,7 @@ Page {
             icon.color: "white"
 
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 headerMenuX.popup()
             }
 
@@ -91,7 +91,7 @@ Page {
                 MenuItem {
                     text: qsTr("Info…")
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         infoDialog.open()
                     }
 
@@ -104,7 +104,7 @@ Page {
                     height: Qt.platform.os !== "android" ? undefined : 0
 
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         highlighted = false
                         global.fileExchange().importContent()
                     }
@@ -147,7 +147,7 @@ Page {
                 icon.source: "/icons/material/ic_directions.svg"
 
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     finalFileName = modelData
                     if (Navigator.flightRoute.size > 0)
                         overwriteDialog.open()
@@ -156,7 +156,7 @@ Page {
                 }
 
                 swipe.onCompleted: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     finalFileName = modelData
                     removeDialog.open()
                 }
@@ -169,7 +169,7 @@ Page {
                 icon.source: "/icons/material/ic_more_horiz.svg"
 
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     cptMenu.popup()
                 }
 
@@ -183,7 +183,7 @@ Page {
                             text: qsTr("… to GeoJSON file")
                             onTriggered: {
                                 cptMenu.close()
-                                global.platformAdaptor().vibrateBrief()
+                                PlatformAdaptor.vibrateBrief()
                                 highlighted = false
                                 parent.highlighted = false
 
@@ -208,7 +208,7 @@ Page {
                             text: qsTr("… to GPX file")
                             onTriggered: {
                                 cptMenu.close()
-                                global.platformAdaptor().vibrateBrief()
+                                PlatformAdaptor.vibrateBrief()
                                 highlighted = false
                                 parent.highlighted = false
 
@@ -237,7 +237,7 @@ Page {
                             text: qsTr("… in GeoJSON format")
 
                             onTriggered: {
-                                global.platformAdaptor().vibrateBrief()
+                                PlatformAdaptor.vibrateBrief()
                                 highlighted = false
                                 parent.highlighted = false
 
@@ -254,7 +254,7 @@ Page {
                             text: qsTr("… in GPX format")
 
                             onTriggered: {
-                                global.platformAdaptor().vibrateBrief()
+                                PlatformAdaptor.vibrateBrief()
                                 highlighted = false
                                 parent.highlighted = false
 
@@ -275,7 +275,7 @@ Page {
                         id: renameAction
                         text: qsTr("Rename…")
                         onTriggered: {
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             finalFileName = modelData
                             renameName.text = modelData
                             renameDialog.open()
@@ -287,7 +287,7 @@ Page {
                         id: removeAction
                         text: qsTr("Remove…")
                         onTriggered: {
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             finalFileName = modelData
                             removeDialog.open()
                         }
@@ -403,11 +403,11 @@ Page {
         }
 
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             page.openFromLibrary()
         }
         onRejected: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             close()
         }
     }
@@ -428,13 +428,13 @@ Page {
         }
 
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             global.librarian().remove(Librarian.Routes, page.finalFileName)
             page.reloadFlightRouteList()
             toast.doToast(qsTr("Flight route removed from device"))
         }
         onRejected: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             page.reloadFlightRouteList()
             close()
         }
@@ -483,7 +483,7 @@ Page {
         }
 
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             if ((renameName.text !== "") && !global.librarian().exists(Librarian.Routes, renameName.text)) {
                 global.librarian().rename(Librarian.Routes, finalFileName, renameName.text)
                 page.reloadFlightRouteList()
@@ -492,7 +492,7 @@ Page {
             }
         }
         onRejected: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             close()
         }
     }

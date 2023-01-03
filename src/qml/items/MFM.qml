@@ -457,7 +457,7 @@ Item {
             onPressAndHold: mouse => onDoubleClicked(mouse)
 
             onDoubleClicked: function (mouse) {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 var wp = global.geoMapProvider().closestWaypoint(flightMap.toCoordinate(Qt.point(mouse.x,mouse.y)),
                                                                  flightMap.toCoordinate(Qt.point(mouse.x+25,mouse.y)))
                 if (!wp.isValid)
@@ -554,7 +554,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         width: 66
 
         onClicked: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             drawer.open()
         }
     }
@@ -609,7 +609,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         width:  66
 
         onClicked: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             flightMap.followGPS = true
             toast.doToast(qsTr("Map Mode: Autopan"))
         }
@@ -633,8 +633,8 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         width:  66
 
         onClicked: {
-            global.platformAdaptor().vibrateBrief()
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             stackView.pop()
             stackView.push("../pages/TrafficReceiver.qml")
         }
@@ -658,7 +658,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
 
         onClicked: {
             centerBindingAnimation.omitAnimationforZoom()
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             flightMap.zoomLevel += 1
         }
     }
@@ -681,7 +681,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
 
         onClicked: {
             centerBindingAnimation.omitAnimationforZoom()
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             flightMap.zoomLevel -= 1
         }
     }

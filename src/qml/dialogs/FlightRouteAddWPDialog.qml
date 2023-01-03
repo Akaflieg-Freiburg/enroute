@@ -44,7 +44,7 @@ CenteringDialog {
             width: wpList.width
 
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 Navigator.flightRoute.append(model.modelData)
                 close()
             }
@@ -75,7 +75,7 @@ CenteringDialog {
 
             onAccepted: {
                 if (wpList.model.length > 0) {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     Navigator.flightRoute.append(wpList.model[0])
                     close()
                 }

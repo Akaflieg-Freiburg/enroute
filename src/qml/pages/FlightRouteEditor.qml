@@ -51,7 +51,7 @@ Page {
                 text: waypoint.twoLineTitle
 
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     waypointDescription.waypoint = waypoint
                     waypointDescription.open()
                 }
@@ -63,7 +63,7 @@ Page {
                 visible: waypoint.icon.indexOf("WP") !== -1
                 icon.source: "/icons/material/ic_mode_edit.svg"
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     wpEditor.waypoint = waypoint
                     wpEditor.index = waypointLayout.index
                     wpEditor.open()
@@ -75,7 +75,7 @@ Page {
 
                 icon.source: "/icons/material/ic_more_horiz.svg"
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     wpMenu.popup()
                 }
 
@@ -87,7 +87,7 @@ Page {
 
                         enabled: index > 0
                         onTriggered: {
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             Navigator.flightRoute.moveUp(index)
                         }
                     }
@@ -97,7 +97,7 @@ Page {
 
                         enabled: index < Navigator.flightRoute.size-1
                         onTriggered: {
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             Navigator.flightRoute.moveDown(index)
                         }
                     }
@@ -106,7 +106,7 @@ Page {
                         text: qsTr("Remove")
 
                         onTriggered: {
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             Navigator.flightRoute.removeWaypoint(index)
                         }
                     }
@@ -127,7 +127,7 @@ Page {
                         }
 
                         onTriggered: {
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             global.waypointLibrary().add(waypoint)
                             toast.doToast(qsTr("Added %1 to waypoint library.").arg(waypoint.extendedName))
                         }
@@ -185,7 +185,7 @@ Page {
             icon.source: "/icons/material/ic_arrow_back.svg"
 
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 stackView.pop()
             }
         }
@@ -214,7 +214,7 @@ Page {
             visible: (sv.currentIndex === 0)
             icon.source: "/icons/material/ic_more_vert.svg"
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 headerMenuX.popup()
             }
 
@@ -229,7 +229,7 @@ Page {
                 MenuItem {
                     text: qsTr("View Library…")
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         highlighted = false
                         stackView.push("FlightRouteLibrary.qml")
                     }
@@ -239,7 +239,7 @@ Page {
                     text: qsTr("Save to library…")
                     enabled: (Navigator.flightRoute.size > 0) && (sv.currentIndex === 0)
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         highlighted = false
                         dialogLoader.active = false
                         dialogLoader.source = "dialogs/FlightRouteSaveDialog.qml"
@@ -255,7 +255,7 @@ Page {
                     height: Qt.platform.os !== "android" ? undefined : 0
 
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         highlighted = false
 
                         global.fileExchange().importContent()
@@ -270,7 +270,7 @@ Page {
                         text: qsTr("… to GeoJSON file")
                         onTriggered: {
                             headerMenuX.close()
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
                             var errorString = global.fileExchange().shareContent(Navigator.flightRoute.toGeoJSON(), "application/geo+json", Navigator.flightRoute.suggestedFilename())
@@ -294,7 +294,7 @@ Page {
                         text: qsTr("… to GPX file")
                         onTriggered: {
                             headerMenuX.close()
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
                             var errorString = global.fileExchange().shareContent(Navigator.flightRoute.toGpx(), "application/gpx+xml", Navigator.flightRoute.suggestedFilename())
@@ -323,7 +323,7 @@ Page {
                         text: qsTr("… in GeoJSON format")
 
                         onTriggered: {
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
 
@@ -340,7 +340,7 @@ Page {
                         text: qsTr("… in GPX format")
 
                         onTriggered: {
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
 
@@ -362,7 +362,7 @@ Page {
                     enabled: (Navigator.flightRoute.size > 0) && (sv.currentIndex === 0)
 
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         highlighted = false
                         clearDialog.open()
                     }
@@ -374,7 +374,7 @@ Page {
                     enabled: (Navigator.flightRoute.size > 0) && (sv.currentIndex === 0)
 
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         highlighted = false
                         Navigator.flightRoute.reverse()
                         toast.doToast(qsTr("Flight route reversed"))
@@ -681,7 +681,7 @@ Page {
                 icon.source: "/icons/material/ic_add_circle.svg"
 
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     flightRouteAddWPDialog.open()
                 }
             }
@@ -717,12 +717,12 @@ Page {
         }
 
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             Navigator.flightRoute.clear()
             toast.doToast(qsTr("Flight route cleared"))
         }
         onRejected: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             close()
         }
     }
@@ -777,7 +777,7 @@ Page {
         property int index: -1 // Index of waypoint in flight route
 
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
 
             var newWP = waypoint.copy()
             newWP.name = newName

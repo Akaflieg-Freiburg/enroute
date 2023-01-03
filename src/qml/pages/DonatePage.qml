@@ -96,7 +96,7 @@ with the bank account data.
                 icon.source: "/icons/material/ic_send.svg"
 
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     Qt.openUrlExternally(qsTr("mailto:?subject=Enroute Flight Navigation, Donation&body=%1").arg(lbl1.bankAccountData))
                 }
             }

@@ -84,7 +84,7 @@ CenteringDialog {
             leftPadding: 0.2*view.font.pixelSize
             rightPadding: 0.2*view.font.pixelSize
             onLinkActivated: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 weatherReport.open()
             }
 
@@ -374,7 +374,7 @@ CenteringDialog {
             text: qsTr("Route")
 
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 addMenu.open()
             }
 
@@ -386,7 +386,7 @@ CenteringDialog {
                     enabled: PositionProvider.receivingPositionInfo && (dialogLoader.text !== "noRouteButton")
 
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         if (Navigator.flightRoute.size > 0)
                             overwriteDialog.open()
                         else {
@@ -417,7 +417,7 @@ CenteringDialog {
                     }
 
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         Navigator.flightRoute.append(waypoint)
                         close()
                         toast.doToast(qsTr("Added %1 to route.").arg(waypoint.extendedName))
@@ -435,7 +435,7 @@ CenteringDialog {
                     }
 
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         Navigator.flightRoute.insert(waypoint)
                         close()
                         toast.doToast(qsTr("Inserted %1 into route.").arg(waypoint.extendedName))
@@ -453,7 +453,7 @@ CenteringDialog {
                         return Navigator.flightRoute.contains(waypoint)
                     }
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         close()
                         var index = Navigator.flightRoute.lastIndexOf(waypoint)
                         if (index < 0)
@@ -471,7 +471,7 @@ CenteringDialog {
             enabled: waypoint.category === "WP"
 
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 libraryMenu.open()
             }
 
@@ -483,7 +483,7 @@ CenteringDialog {
                     enabled: !global.waypointLibrary().hasNearbyEntry(waypoint)
 
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         wpAdd.waypoint = waypoint
                         wpAdd.open()
                         close()
@@ -495,7 +495,7 @@ CenteringDialog {
                     enabled: global.waypointLibrary().contains(waypoint)
 
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         removeDialog.waypoint = waypoint
                         removeDialog.open()
                         close()
@@ -513,7 +513,7 @@ CenteringDialog {
                     enabled: global.waypointLibrary().contains(waypoint)
 
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         wpEdit.waypoint = waypoint
                         wpEdit.open()
                         close()
@@ -544,14 +544,14 @@ CenteringDialog {
         modal: true
 
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             Navigator.flightRoute.clear()
             Navigator.flightRoute.append(waypoint)
             close()
             toast.doToast(qsTr("New flight route: direct to %1.").arg(waypoint.extendedName))
         }
         onRejected: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             close()
             waypointDescriptionDialog.open()
         }
@@ -566,7 +566,7 @@ CenteringDialog {
         id: wpEdit
 
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             var newWP = waypoint.copy()
             newWP.name = newName
             newWP.notes = newNotes
@@ -582,7 +582,7 @@ CenteringDialog {
         title: qsTr("Add Waypoint to Library")
 
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             var newWP = waypoint.copy()
             newWP.name = newName
             newWP.notes = newNotes
@@ -611,12 +611,12 @@ CenteringDialog {
         modal: true
 
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             global.waypointLibrary().remove(removeDialog.waypoint)
             toast.doToast(qsTr("Waypoint removed from device"))
         }
         onRejected: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             close()
         }
 

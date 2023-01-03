@@ -102,7 +102,7 @@ Page {
                     }
 
                     onClicked: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         waypointDescription.waypoint = model.modelData
                         waypointDescription.open()
                     }

@@ -54,7 +54,7 @@ Page {
                 icon.source: "/icons/material/ic_arrow_back.svg"
 
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     stackView.pop()
                 }
             }
@@ -82,7 +82,7 @@ Page {
 
                 icon.source: "/icons/material/ic_more_vert.svg"
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     headerMenuX.popup()
                 }
 
@@ -93,7 +93,7 @@ Page {
                     MenuItem {
                         text: qsTr("View Library…")
                         onTriggered: {
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             highlighted = false
                             stackView.push("AircraftLibrary.qml")
                         }
@@ -102,7 +102,7 @@ Page {
                     MenuItem {
                         text: qsTr("Save to library…")
                         onTriggered: {
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             highlighted = false
                             dialogLoader.active = false
                             dialogLoader.source = "dialogs/AircraftSaveDialog.qml"

@@ -46,7 +46,7 @@ CenteringDialog {
             anchors.right: parent.right
 
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 finalFileName = modelData
                 dlg.close()
                 overwriteDialog.open()
@@ -105,12 +105,12 @@ CenteringDialog {
     }
 
     onRejected: {
-        global.platformAdaptor().vibrateBrief()
+        PlatformAdaptor.vibrateBrief()
         close()
     }
 
     onAccepted: {
-        global.platformAdaptor().vibrateBrief()
+        PlatformAdaptor.vibrateBrief()
         if (fileName.text === "")
             return
         finalFileName = fileName.text
@@ -182,12 +182,12 @@ CenteringDialog {
         }
 
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             dlg.saveToLibrary()
         }
 
         onRejected: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             close()
             dlg.open()
         }

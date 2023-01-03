@@ -31,6 +31,9 @@ Page {
     id: settingsPage
     title: qsTr("Settings")
 
+    // Used internally
+    property distance staticDistance
+
 
     header: ToolBar {
 
@@ -49,7 +52,7 @@ Page {
             icon.source: "/icons/material/ic_arrow_back.svg"
 
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 stackView.pop()
             }
         }
@@ -77,7 +80,7 @@ Page {
 
             icon.source: "/icons/material/ic_info_outline.svg"
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 openManual("03-reference/settings.html")
             }
         }
@@ -86,7 +89,7 @@ Page {
 
     ScrollView {
         anchors.fill: parent
-        anchors.topMargin: view.font.pixelSize
+        anchors.topMargin: settingsPage.font.pixelSize
         anchors.bottomMargin: SafeInsets.bottom
         anchors.leftMargin: SafeInsets.left
         anchors.rightMargin: SafeInsets.right
@@ -105,11 +108,11 @@ Page {
             }
 
             Label {
-                Layout.leftMargin: view.font.pixelSize
+                Layout.leftMargin: settingsPage.font.pixelSize
                 Layout.fillWidth: true
                 Layout.columnSpan: 2
                 text: qsTr("Moving Map")
-                font.pixelSize: view.font.pixelSize*1.2
+                font.pixelSize: settingsPage.font.pixelSize*1.2
                 font.bold: true
                 color: Material.accent
             }
@@ -138,14 +141,14 @@ Page {
                 icon.source: "/icons/material/ic_map.svg"
                 Layout.fillWidth: true
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     heightLimitDialog.open()
                 }
             }
             ToolButton {
                 icon.source: "/icons/material/ic_info_outline.svg"
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     helpDialog.title = qsTr("Airspace Altitude Limit")
                     helpDialog.text = "<p>"+qsTr("If you never fly higher than 5.000ft, you will probably not be interested in airspaces that begin above FL100. Enroute Flight Navigation allows you to set an altitude limit to improve the readability of the moving map. Once set, the app will show only airspaces below that limit. Tap on the entry “Airspace Altitude Limit” to set or unset the altitude limit.")+"</p>"
                             +"<p>"+qsTr("Once you set an altitude limit, the moving map will display a little warning (“Airspaces up to 9,500 ft”) to remind you that the moving map does not show all airspaces. The app will automatically increase the limit when your aircraft approaches the altitude limit from below.")+"</p>"
@@ -154,7 +157,7 @@ Page {
             }
 
             Label {
-                Layout.leftMargin: view.font.pixelSize
+                Layout.leftMargin: settingsPage.font.pixelSize
                 Layout.fillWidth: true
                 Layout.columnSpan: 2
                 text: qsTr("Map Features")
@@ -171,14 +174,14 @@ Page {
                     glidingSectors.checked = !GlobalSettings.hideGlidingSectors
                 }
                 onToggled: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     GlobalSettings.hideGlidingSectors = !glidingSectors.checked
                 }
             }
             ToolButton {
                 icon.source: "/icons/material/ic_info_outline.svg"
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     helpDialog.title = qsTr("Gliding Sectors")
                     helpDialog.text = "<p>"+qsTr("In regions with high glider traffic, local regulations often allow gliders to fly in airspaces that are otherwise difficult to access, such as control zones. The moving map displays these “Gliding Sectors” in bright yellow. If you are not flying a glider, the gliding sectors are probably not relevant. Hiding the gliding sectors might improve the readability of the moving map.")+"</p>"
                     helpDialog.open()
@@ -194,14 +197,14 @@ Page {
                     hillshading.checked = GlobalSettings.hillshading
                 }
                 onToggled: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     GlobalSettings.hillshading = hillshading.checked
                 }
             }
             ToolButton {
                 icon.source: "/icons/material/ic_info_outline.svg"
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     helpDialog.title = qsTr("Hillshading")
                     helpDialog.text = "<p>"+qsTr("We have received a report from one user, who complained about issues with the hillshading graphics on very old devices, potentially because of buggy system libraries. If you experience problems, use this switch to disable the hillshading feature.")+"</p>"
                     helpDialog.open()
@@ -209,11 +212,11 @@ Page {
             }
 
             Label {
-                Layout.leftMargin: view.font.pixelSize
+                Layout.leftMargin: settingsPage.font.pixelSize
                 Layout.fillWidth: true
                 Layout.columnSpan: 2
                 text: qsTr("Navigation Bar")
-                font.pixelSize: view.font.pixelSize*1.2
+                font.pixelSize: settingsPage.font.pixelSize*1.2
                 font.bold: true
                 color: Material.accent
             }
@@ -233,7 +236,7 @@ Page {
             ToolButton {
                 icon.source: "/icons/material/ic_info_outline.svg"
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     helpDialog.title = qsTr("Altimeter Mode")
                     helpDialog.text = "<p>"+qsTr("Use this settings item to chose if the altimeter shows height above ground level (AGL) or height above main sea level (AMSL).")+"</p>"
                     helpDialog.open()
@@ -241,10 +244,10 @@ Page {
             }
 
             Label {
-                Layout.leftMargin: view.font.pixelSize
+                Layout.leftMargin: settingsPage.font.pixelSize
                 Layout.columnSpan: 2
                 text: qsTr("System")
-                font.pixelSize: view.font.pixelSize*1.2
+                font.pixelSize: settingsPage.font.pixelSize*1.2
                 font.bold: true
                 color: Material.accent
             }
@@ -266,14 +269,14 @@ Page {
                 icon.source: "/icons/material/ic_satellite.svg"
                 Layout.fillWidth: true
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     primaryPositionDataSourceDialog.open()
                 }
             }
             ToolButton {
                 icon.source: "/icons/material/ic_info_outline.svg"
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     helpDialog.title = qsTr("Primary Position Data Source")
                     helpDialog.text = "<p>" + qsTr("Enroute Flight Navigation can either use the built-in satnav receiver of your device or a connected traffic receiver as a primary position data source. This setting is essential if your device has reception problems or if you use Enroute Flight Navigation together with a flight simulator.") + "</p>"
                             + "<p>" + qsTr("You will most likely prefer the built-in satnav receiver for actual flight. The built-in receiver provides one position update per second on a typical Android system, while traffic receivers do not always provide timely position updates.") + "</p>"
@@ -291,14 +294,14 @@ Page {
                     nightMode.checked = GlobalSettings.nightMode
                 }
                 onToggled: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     GlobalSettings.nightMode = nightMode.checked
                 }
             }
             ToolButton {
                 icon.source: "/icons/material/ic_info_outline.svg"
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     helpDialog.title = qsTr("Night Mode")
                     helpDialog.text = "<p>" + qsTr("The “Night Mode” of Enroute Flight Navigation is similar to the “Dark Mode” found in many other apps. We designed the night mode for pilots performing VFR flights by night, whose eyes have adapted to the darkness. Compared with other apps, you will find that the display is quite dark indeed.") + "</p>"
                     helpDialog.open()
@@ -315,7 +318,7 @@ Page {
                     ignoreSSL.checked = GlobalSettings.ignoreSSLProblems
                 }
                 onToggled: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     GlobalSettings.ignoreSSLProblems = ignoreSSL.checked
                 }
             }
@@ -323,7 +326,7 @@ Page {
                 icon.source: "/icons/material/ic_info_outline.svg"
                 visible: GlobalSettings.ignoreSSLProblems
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     helpDialog.title = qsTr("Ignore Network Security Errors")
                     helpDialog.text = "<p>" + qsTr("This entry is visible if you have asked the app to download data via insecure internet connections after a secure connection attempt failed. Uncheck this item to revert to the standard policy, which enforces secure connections.") + "</p>"
                     helpDialog.open()
@@ -341,7 +344,7 @@ Page {
                 icon.source: "/icons/material/ic_info_outline.svg"
                 visible: !global.passwordDB().empty
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     helpDialog.title = qsTr("Clear Password Storage")
                     helpDialog.text = "<p>" + qsTr("This entry is visible if you have connected to a traffic data receiver that requires a password in addition to the Wi-Fi password and if you have asked the app to remember the password. Tap on this entry to clear the password storage.") + "</p>"
                     helpDialog.open()
@@ -349,10 +352,10 @@ Page {
             }
 
             Label {
-                Layout.leftMargin: view.font.pixelSize
+                Layout.leftMargin: settingsPage.font.pixelSize
                 Layout.columnSpan: 2
                 text: qsTr("Help")
-                font.pixelSize: view.font.pixelSize*1.2
+                font.pixelSize: settingsPage.font.pixelSize*1.2
                 font.bold: true
                 color: Material.accent
             }
@@ -407,13 +410,13 @@ Page {
         } // DialogButtonBox
 
         onRejected: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             showAltAGL.checked = false
             close()
         }
 
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             close()
             stackView.pop()
             stackView.push("../pages/DataManager.qml")
@@ -520,9 +523,9 @@ Page {
 
         onAccepted: {
             if (altLimitCheck.checked) {
-                GlobalSettings.airspaceAltitudeLimit = distance.fromFT(slider.value)
+                GlobalSettings.airspaceAltitudeLimit = staticDistance.fromFT(slider.value)
             } else {
-                GlobalSettings.airspaceAltitudeLimit = distance.fromFT(99999)
+                GlobalSettings.airspaceAltitudeLimit = staticDistance.fromFT(99999)
             }
         }
 

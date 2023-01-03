@@ -50,7 +50,7 @@ Page {
             icon.source: "/icons/material/ic_clear.svg"
 
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 stackView.pop()
             }
         }

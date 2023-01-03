@@ -102,7 +102,7 @@ Item {
                 text: qsTr("Route")
 
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     importManager.fileFunction = FileExchange_Abstract.FlightRoute
                     chooseFRorWPDialog.close()
                     if (Navigator.flightRoute.size > 0)
@@ -116,7 +116,7 @@ Item {
                     text: qsTr("Library")
 
                     onClicked: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         importManager.fileFunction = FileExchange_Abstract.WaypointLibrary
                         chooseFRorWPDialog.close()
                         importWPLibraryDialog.open()
@@ -178,7 +178,7 @@ Item {
         }
 
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
 
             var errorString = global.dataManager().import(importManager.filePath, mapNameRaster.text)
             if (errorString !== "") {
@@ -240,7 +240,7 @@ Item {
         }
 
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
 
             var errorString = global.dataManager().import(importManager.filePath, mapNameVector.text)
             if (errorString !== "") {
@@ -274,7 +274,7 @@ Item {
         }
 
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
 
             var errorString = global.waypointLibrary().import(importManager.filePath, skip.checked)
             if (errorString !== "") {
@@ -309,7 +309,7 @@ Item {
         }
 
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
 
             var errorString = ""
 

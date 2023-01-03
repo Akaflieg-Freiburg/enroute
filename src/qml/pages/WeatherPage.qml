@@ -52,7 +52,7 @@ Page {
             icon.source: "/icons/material/ic_arrow_back.svg"
 
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 stackView.pop()
             }
         }
@@ -83,7 +83,7 @@ Page {
             icon.color: "white"
 
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 headerMenuX.popup()
             }
 
@@ -94,7 +94,7 @@ Page {
                     text: qsTr("Update METAR/TAF data")
                     enabled: (!global.weatherDataProvider().downloading) && (GlobalSettings.acceptedWeatherTerms)
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         if (!global.weatherDataProvider().downloading)
                             global.weatherDataProvider().update(false)
                     }
@@ -104,7 +104,7 @@ Page {
                     text: qsTr("Disallow internet connection")
                     enabled: GlobalSettings.acceptedWeatherTerms
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         GlobalSettings.acceptedWeatherTerms = false
                     }
                 } // MenuItem
@@ -152,7 +152,7 @@ Page {
                 width: parent.width
 
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     weatherReport.weatherStation = model.modelData
                     weatherReport.open()
                 }
@@ -202,7 +202,7 @@ Page {
 
         onFlickEnded: {
             if ( atYBeginning && refreshFlick ) {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 global.weatherDataProvider().update(false)
             }
         }
@@ -288,7 +288,7 @@ Page {
                 Layout.alignment: Qt.AlignHCenter
 
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     GlobalSettings.acceptedWeatherTerms = true
                     global.weatherDataProvider().update()
                 }

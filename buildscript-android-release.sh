@@ -43,30 +43,14 @@ cd build-android-release
 # Configure
 #
 
-cmake .. \
-      -G Ninja\
-      -DANDROID_ABI:STRING=armeabi-v7a \
-      -DANDROID_BUILD_ABI_arm64-v8a:BOOL=ON \
-      -DANDROID_BUILD_ABI_armeabi-v7a:BOOL=ON \
-      -DANDROID_BUILD_ABI_x86:BOOL=ON \
-      -DANDROID_BUILD_ABI_x86_64:BOOL=ON \
-      -DANDROID_NATIVE_API_LEVEL:STRING=21 \
-      -DANDROID_NDK:PATH=$ANDROID_NDK_ROOT \
-      -DANDROID_SDK:PATH=$ANDROID_SDK_ROOT \
-      -DANDROID_STL:STRING=c++_shared \
-      -DCMAKE_BUILD_TYPE:STRING=RelWithDebInfo \
-      -DCMAKE_CXX_COMPILER:STRING=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ \
-      -DCMAKE_CXX_FLAGS="-Werror -Wall -Wextra" \
-      -DCMAKE_C_COMPILER:STRING=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin/clang \
-      -DCMAKE_FIND_ROOT_PATH:STRING=$Qt5_DIR_ANDROID \
-      -DCMAKE_PREFIX_PATH:STRING=$Qt5_DIR_ANDROID \
-      -DCMAKE_TOOLCHAIN_FILE:PATH=$ANDROID_NDK_ROOT/build/cmake/android.toolchain.cmake \
-      -DCMAKE_UNITY_BUILD:BOOL=ON
+export ANDROID_NDK_ROOT=$ANDROID_SDK_ROOT/ndk/23.1.7779620
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-17.0.5.0.8-1.fc37.x86_64
 
-# This is bizarrely necessary, or else 'android_deployment_settings.json'
-# will lack our custom AndroidManifest and the SSL libraries
-cmake ..
-
+$Qt6_DIR_ANDROID\_x86_64/bin/qt-cmake .. \
+      -DQT_ANDROID_BUILD_ALL_ABIS:BOOL=On \
+      -G Ninja \
+      -DCMAKE_BUILD_TYPE:STRING=Debug \
+      -DOPENSSL_ROOT_DIR:PATH=$OPENSSL_ROOT_DIR
 
 #
 # Build the executable
@@ -74,22 +58,8 @@ cmake ..
 
 ninja
 
-echo "Build APK"
-ninja apk
-
 echo "Build AAB"
 ninja aab
-
-
-#
-# Collect debug information
-#
-
-rm -f native-debug-symbols.zip
-cd android-build/libs
-find arm64-v8a/*.so|parallel $ANDROID_NDK_ROOT/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64/bin/aarch64-linux-android-objcopy --strip-debug {} {.}.so.sym
-zip ../../native-debug-symbols.zip arm64-v8a/*.so.sym
-cd ../..
 
 
 #
@@ -101,18 +71,18 @@ then
     echo "Not signing APK because \$ANDROID_KEYSTORE_FILE or \$ANDROID_KEYSTORE_PASS not set"
 else
     echo "Signing APK"
-    $ANDROID_SDK_ROOT/build-tools/28.0.3/apksigner sign \
+    $ANDROID_SDK_ROOT/build-tools/33.0.1/apksigner sign \
 						   --ks $ANDROID_KEYSTORE_FILE \
 						   --ks-pass pass:$ANDROID_KEYSTORE_PASS \
-						   --in android-build/enroute.apk \
+						   --in src/android-build/build/outputs/apk/debug/android-build-debug.apk \
 						   --out enroute-release-signed.apk
     echo "Signed APK file is available at $PWD/enroute-release-signed.apk"
     echo
     echo "Signing AAB"
     jarsigner -keystore $ANDROID_KEYSTORE_FILE \
 	      -storepass $ANDROID_KEYSTORE_PASS \
-	      android-build/build/outputs/bundle/release/android-build-release.aab "Stefan Kebekus"
-    cp android-build/build/outputs/bundle/release/android-build-release.aab enroute-release-signed.aab
+	      src/android-build/build/outputs/bundle/release/android-build-release.aab "Stefan Kebekus"
+    cp src/android-build/build/outputs/bundle/release/android-build-release.aab enroute-release-signed.aab
     
     echo "Signed AAB file is available at $PWD/enroute-release-signed.aab"
     nautilus $PWD &

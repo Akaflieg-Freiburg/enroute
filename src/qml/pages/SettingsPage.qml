@@ -25,6 +25,12 @@ import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
 
+// The following two lines are necessary to run the app on Android.
+// Without these lines, the app will not find "LongTextDialog" and
+// "WordWrappingItemDelegate".
+import "../dialogs"
+import "../items"
+
 Page {
     id: settingsPage
     title: qsTr("Settings")

@@ -19,17 +19,17 @@
  ***************************************************************************/
 
 //import QtGraphicalEffects 1.15
-import QtLocation 5.15
-import QtPositioning 5.15
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Layouts 1.15
+import QtLocation
+import QtPositioning
+import QtQml
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
 import enroute 1.0
 
-import QtQml 2.15
 
 import "."
 import ".."
@@ -454,7 +454,22 @@ Item {
                 wheel.accepted = false
             }
 
-            onPressAndHold: mouse => onDoubleClicked(mouse)
+            // Previously, the method read as follows:
+            //
+            // onPressAndHold: mouse => onDoubleClicked(mouse)
+            //
+            // That seemed to work with Qt Desktop 6.4.1, but cause major problems
+            // on Qt Android 6.4.1: essentially, after one PressAndHold, no futher double
+            // clicks are recognized. Duplicating the method solved the problem.
+            onPressAndHold: function (mouse) {
+                PlatformAdaptor.vibrateBrief()
+                var wp = global.geoMapProvider().closestWaypoint(flightMap.toCoordinate(Qt.point(mouse.x,mouse.y)),
+                                                                 flightMap.toCoordinate(Qt.point(mouse.x+25,mouse.y)))
+                if (!wp.isValid)
+                    return
+                waypointDescription.waypoint = wp
+                waypointDescription.open()
+            }
 
             onDoubleClicked: function (mouse) {
                 PlatformAdaptor.vibrateBrief()

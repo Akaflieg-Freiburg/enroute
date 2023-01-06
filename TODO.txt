@@ -1,2 +1,1 @@
-Nearby Waypoints: Crash on Android when opening many waypoints. Hard to
-reproduce.
+Permissions: Explanation should be given when app refuses to start!

@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-//import QtGraphicalEffects 1.15
+import Qt5Compat.GraphicalEffects
 import QtLocation
 import QtPositioning
 import QtQml
@@ -48,6 +48,7 @@ Item {
         }
 
     }
+
     FlightMap {
         id: flightMap
         objectName: "flightMap"
@@ -415,6 +416,7 @@ Item {
                         anchors.left: image.right
                         anchors.leftMargin: 5
                         text: model.modelData.extendedName
+                        color: "black" // Always black, independent of dark/light mode
                         visible: (flightMap.zoomLevel > 11.0) && (model.modelData.extendedName !== "Waypoint")
                         leftInset: -4
                         rightInset: -4
@@ -444,37 +446,29 @@ Item {
             delegate: waypointComponent
         }
 
-        // Mouse Area, in order to receive mouse clicks
-        MouseArea {
-            anchors.fill: parent
-            propagateComposedEvents: true
-
-            onWheel: function (wheel) {
-                flightMap.followGPS = false
-                wheel.accepted = false
-            }
-
-            // Previously, the method read as follows:
-            //
-            // onPressAndHold: mouse => onDoubleClicked(mouse)
-            //
-            // That seemed to work with Qt Desktop 6.4.1, but cause major problems
-            // on Qt Android 6.4.1: essentially, after one PressAndHold, no futher double
-            // clicks are recognized. Duplicating the method solved the problem.
-            onPressAndHold: function (mouse) {
+        TapHandler {
+            // We used to use a MouseArea instead of a tap handler, but that
+            // triggered a host of bugs in Qt 6.4.2…
+            onDoubleTapped: {
                 PlatformAdaptor.vibrateBrief()
-                var wp = global.geoMapProvider().closestWaypoint(flightMap.toCoordinate(Qt.point(mouse.x,mouse.y)),
-                                                                 flightMap.toCoordinate(Qt.point(mouse.x+25,mouse.y)))
+                var pos = point.position
+                var posTr = Qt.point(pos.x+25,pos.y)
+
+                var wp = global.geoMapProvider().closestWaypoint(flightMap.toCoordinate(pos),
+                                                                 flightMap.toCoordinate(posTr))
                 if (!wp.isValid)
                     return
                 waypointDescription.waypoint = wp
                 waypointDescription.open()
             }
 
-            onDoubleClicked: function (mouse) {
+            onLongPressed: {
                 PlatformAdaptor.vibrateBrief()
-                var wp = global.geoMapProvider().closestWaypoint(flightMap.toCoordinate(Qt.point(mouse.x,mouse.y)),
-                                                                 flightMap.toCoordinate(Qt.point(mouse.x+25,mouse.y)))
+                var pos = point.position
+                var posTr = Qt.point(pos.x+25,pos.y)
+
+                var wp = global.geoMapProvider().closestWaypoint(flightMap.toCoordinate(pos),
+                                                                 flightMap.toCoordinate(posTr))
                 if (!wp.isValid)
                     return
                 waypointDescription.waypoint = wp
@@ -490,7 +484,6 @@ Item {
         }
     }
 
-    /* WARNING
     BrightnessContrast { // Graphical effects: increase contrast, reduce brightness in dark mode
         anchors.fill: flightMap
         source: flightMap
@@ -498,7 +491,6 @@ Item {
         contrast: Material.theme == Material.Dark ? 0.6 : 0.2
         visible: !global.dataManager().baseMapsRaster.hasFile
     }
-    */
 
     Rectangle {
         id: noMapWarningRect

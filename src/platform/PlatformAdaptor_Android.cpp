@@ -81,10 +81,11 @@ void Platform::PlatformAdaptor::disableScreenSaver()
 auto Platform::PlatformAdaptor::hasRequiredPermissions() -> bool
 {
     // Check is required permissions have been granted
-    foreach(auto permission, permissions) {
+    foreach(auto permission, requiredPermissions) {
         auto resultFuture = QtAndroidPrivate::checkPermission(permission);
         resultFuture.waitForFinished();
         if (resultFuture.result() == QtAndroidPrivate::PermissionResult::Denied) {
+            qWarning() << "Required permission missing" << permission;
             return false;
         }
     }
@@ -114,6 +115,8 @@ void Platform::PlatformAdaptor::onGUISetupCompleted()
 
 void Platform::PlatformAdaptor::requestPermissionsSync()
 {
+    QStringList permissions;
+    permissions << requiredPermissions << optionalPermissions;
     foreach(auto permission, permissions) {
         auto resultFuture = QtAndroidPrivate::requestPermission(permission);
         resultFuture.waitForFinished();

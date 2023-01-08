@@ -1,1 +1,7 @@
-Permissions: Explanation should be given when app refuses to start!
+* Permissions: Explanation should be given when app refuses to start!
+
+* Buildsystem: compilation for flathub
+
+* Buildsystem/GIT: removal of the enroute3 folder
+
+* Privacy notes at startup

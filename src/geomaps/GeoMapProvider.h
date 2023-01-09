@@ -114,6 +114,13 @@ namespace GeoMaps
     /*! \brief List of terrain map MBTILES */
     Q_PROPERTY(QList<QPointer<GeoMaps::MBTILES>> terrainMapTiles READ terrainMapTiles NOTIFY terrainMapTilesChanged)
 
+    /*! \brief Waypoints
+     *
+     * A list of all waypoints known to this GeoMapProvider (that is,
+     * the union of all waypoints in any of the installed maps)
+     */
+    Q_PROPERTY(QList<GeoMaps::Waypoint> waypoints READ waypoints NOTIFY waypointsChanged)
+
 
     //
     // Getter Methods
@@ -123,7 +130,7 @@ namespace GeoMaps
      *
      * @returns Property baseMapRasterTiles
      */
-    QList<QPointer<GeoMaps::MBTILES>> baseMapRasterTiles() const
+    [[nodiscard]] QList<QPointer<GeoMaps::MBTILES>> baseMapRasterTiles() const
     {
         return m_baseMapRasterTiles;
     }
@@ -132,7 +139,7 @@ namespace GeoMaps
      *
      * @returns Property baseMapVectorTiles
      */
-    QList<QPointer<GeoMaps::MBTILES>> baseMapVectorTiles() const
+    [[nodiscard]] QList<QPointer<GeoMaps::MBTILES>> baseMapVectorTiles() const
     {
         return m_baseMapVectorTiles;
     }
@@ -141,28 +148,35 @@ namespace GeoMaps
      *
      * @returns Property copyrightNotice
      */
-    static auto copyrightNotice() -> QString;
+    [[nodiscard]] static auto copyrightNotice() -> QString;
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property geoJSON
      */
-    auto geoJSON() -> QByteArray;
+    [[nodiscard]] auto geoJSON() -> QByteArray;
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property styleFileURL
      */
-    auto styleFileURL() const -> QString;
+    [[nodiscard]] auto styleFileURL() const -> QString;
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property terrainMapTiles
      */
-    QList<QPointer<GeoMaps::MBTILES>> terrainMapTiles() const
+    [[nodiscard]] auto terrainMapTiles() const -> QList<QPointer<GeoMaps::MBTILES>>
     {
         return m_terrainMapTiles;
     }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property waypoints
+     */
+    [[nodiscard]] auto waypoints() -> QList<Waypoint>;
+
 
     //
     // Methods
@@ -211,7 +225,7 @@ namespace GeoMaps
      *  @return Elevation of the terrain at coordinate over MSP, or
      *  NaN if the terrain elevation is unknown
      */
-    [[nodiscard]] Q_INVOKABLE Units::Distance terrainElevationAMSL(const QGeoCoordinate& coordinate);
+    Q_INVOKABLE [[nodiscard]] Units::Distance terrainElevationAMSL(const QGeoCoordinate& coordinate);
 
     /*! \brief Create empty GeoJSON document
      *
@@ -252,12 +266,6 @@ namespace GeoMaps
      */
     Q_INVOKABLE QList<GeoMaps::Waypoint> nearbyWaypoints(const QGeoCoordinate &position, const QString &type);
 
-    /*! \brief Waypoints
-     *
-     * @returns a list of all waypoints known to this GeoMapProvider (that is,
-     * the union of all waypoints in any of the installed maps)
-     */
-    auto waypoints() -> QVector<Waypoint>;
 
   signals:
     /*! \brief Notification signal for the property with the same name */
@@ -271,6 +279,9 @@ namespace GeoMaps
 
     /*! \brief Notification signal for the property with the same name */
     void terrainMapTilesChanged();
+
+    /*! \brief Notification signal for the property with the same name */
+    void waypointsChanged();
 
   private:
     Q_DISABLE_COPY_MOVE(GeoMapProvider)

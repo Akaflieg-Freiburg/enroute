@@ -19,9 +19,6 @@
  ***************************************************************************/
 
 #include "geomaps/GeoMapProvider.h"
-#include "navigation/Aircraft.h"
-#include "navigation/Navigator.h"
-#include "units/Units.h"
 #include "weather/Station.h"
 
 #include <utility>
@@ -42,7 +39,7 @@ Weather::Station::Station(QString id, GeoMaps::GeoMapProvider *geoMapProvider, Q
     _twoLineTitle = m_ICAOCode;
 
     // Wire up with GeoMapProvider, in order to learn about future changes in waypoints
-    connect(_geoMapProvider, &GeoMaps::GeoMapProvider::geoJSONChanged, this, &Weather::Station::readDataFromWaypoint);
+    connect(_geoMapProvider, &GeoMaps::GeoMapProvider::waypointsChanged, this, &Weather::Station::readDataFromWaypoint);
     readDataFromWaypoint();
 }
 

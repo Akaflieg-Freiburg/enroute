@@ -27,7 +27,6 @@
 class QNetworkAccessManager;
 class QNetworkReply;
 
-#include "positioning/PositionProvider.h"
 #include "weather/Station.h"
 
 class Clock;

@@ -601,13 +601,17 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(QStringList JSONFileNames, U
         newGeoJSON = geoDoc.toJson();
     }
     auto _geoJSONChanged = (newGeoJSON != _combinedGeoJSON_);
+    auto _waypointsChanged = (newWaypoints != _waypoints_);
 
     // Sort waypoints by name
     std::sort(newWaypoints.begin(), newWaypoints.end(), [](const Waypoint &a, const Waypoint &b) {return a.name() < b.name(); });
 
     _aviationDataMutex.lock();
     _airspaces_ = newAirspaces;
-    _waypoints_ = newWaypoints;
+    if (_waypointsChanged)
+    {
+        _waypoints_ = newWaypoints;
+    }
     if (_geoJSONChanged)
     {
         _combinedGeoJSON_ = newGeoJSON;
@@ -617,8 +621,14 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(QStringList JSONFileNames, U
         geoJSONCacheFile.close();
     }
     _aviationDataMutex.unlock();
+
+    if (_waypointsChanged)
+    {
+        emit waypointsChanged();
+    }
     if (_geoJSONChanged)
     {
         emit geoJSONChanged();
     }
+
 }

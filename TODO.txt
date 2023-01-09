@@ -2,6 +2,17 @@
 
 * Buildsystem: compilation for flathub
 
-* Buildsystem/GIT: removal of the enroute3 folder
+* Buildsystem/GIT: removal of the enroute3 branch
 
 * Privacy notes at startup
+
+* METAR/TAF rewrite
+
+* Use CMake for translations
+
+* Exit app on double 'back'
+
+---
+
+* NOTAM
+

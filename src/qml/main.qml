@@ -75,7 +75,7 @@ ApplicationWindow {
                     rightPadding: 16
                     topPadding: 16+SafeInsets.top
 
-                    text: "Enroute Flight Navigation " + Qt.application.version
+                    text: "Enroute Flight Navigation"
                     color: "white"
                     font.pixelSize: 20
                     font.weight: Font.Medium
@@ -99,7 +99,7 @@ ApplicationWindow {
                     rightPadding: 16
                     height: 20
 
-                    text: "Akaflieg Freiburg"
+                    text: "Akaflieg Freiburg" + " • v" + Qt.application.version
                     font.pixelSize: 16
                     color: "white"
 

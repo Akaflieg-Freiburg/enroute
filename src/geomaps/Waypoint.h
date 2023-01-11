@@ -326,7 +326,7 @@ public:
      *
      *  @returns Result of comparison
      */
-    Q_INVOKABLE [[nodiscard]] bool operator!=(const GeoMaps::Waypoint&) const = default;
+    Q_INVOKABLE [[nodiscard]] bool operator!=(const GeoMaps::Waypoint& other) const = default;
 
     /*! \brief Deep copy
      *

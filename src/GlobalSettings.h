@@ -279,7 +279,7 @@ public:
 
     /*! \brief Setter function for property of the same name
      *
-     * @param hide Property hillshading
+     * @param show Property hillshading
      */
     void setHillshading(bool show);
 

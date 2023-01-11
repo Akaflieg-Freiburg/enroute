@@ -2,8 +2,6 @@
 
 * Buildsystem: compilation for flathub
 
-* Buildsystem/GIT: removal of the enroute3 branch
-
 * Privacy notes at startup
 
 * METAR/TAF rewrite

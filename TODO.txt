@@ -1,16 +1,25 @@
-* Permissions: Explanation should be given when app refuses to start!
+
+--- Build System ---
 
 * Buildsystem: compilation for flathub
+
+* Use CMake for translations
+
+* Update documentation
+
+* Generate spritesheet in proper way
+
+* Generate SNAP packages
+
+
+--- New Features ---
+
+* Permissions: Explanation should be given when app refuses to start!
 
 * Privacy notes at startup
 
 * METAR/TAF rewrite
 
-* Use CMake for translations
-
 * Exit app on double 'back'
 
----
-
 * NOTAM
-

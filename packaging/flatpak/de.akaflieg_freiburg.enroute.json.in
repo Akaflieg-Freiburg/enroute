@@ -39,7 +39,7 @@
                 {
                     "type": "git",
                     "url": "https://github.com/qt/qtsvg.git",
-                    "tag": "v6.4.1"
+                    "tag": "v${Qt6_VERSION}"
                 }
             ],
             "buildsystem": "cmake-ninja",
@@ -54,7 +54,7 @@
                 {
                     "type": "git",
                     "url": "https://github.com/qt/qttools.git",
-                    "tag": "v6.4.1"
+                    "tag": "v${Qt6_VERSION}"
                 }
             ],
             "buildsystem": "cmake-ninja",
@@ -86,7 +86,7 @@
                 {
                     "type": "git",
                     "url": "https://github.com/qt/qtshadertools.git",
-                    "tag": "v6.4.1"
+                    "tag": "v${Qt6_VERSION}"
                 }
             ],
             "buildsystem": "cmake-ninja",
@@ -101,25 +101,7 @@
                 {
                     "type": "git",
                     "url": "https://github.com/qt/qtdeclarative.git",
-                    "tag": "v6.4.1"
-                }
-            ],
-            "buildsystem": "cmake-ninja",
-            "config-opts": [
-                "-DCMAKE_FIND_ROOT_PATH:PATH=/app",
-                "-DCMAKE_BUILD_TYPE:STRING=Release",
-                "-DQT_BUILD_EXAMPLES_BY_DEFAULT=OFF",
-                "-DQT_BUILD_TESTS_BY_DEFAULT=OFF",
-                "-DFEATURE_qml_debug=OFF"
-           ]
-        },
-        {
-            "name": "qtdeclarative",
-            "sources": [
-                {
-                    "type": "git",
-                    "url": "https://github.com/qt/qtdeclarative.git",
-                    "tag": "v6.4.1"
+                    "tag": "v${Qt6_VERSION}"
                 }
             ],
             "buildsystem": "cmake-ninja",
@@ -137,7 +119,51 @@
                 {
                     "type": "git",
                     "url": "https://github.com/qt/qt5compat.git",
-                    "tag": "v6.4.1"
+                    "tag": "v${Qt6_VERSION}"
+                }
+            ],
+            "buildsystem": "cmake-ninja"
+        },
+        {
+            "name": "qtpositioning",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/qt/qtpositioning.git",
+                    "tag": "v${Qt6_VERSION}"
+                }
+            ],
+            "buildsystem": "cmake-ninja"
+        },
+        {
+            "name": "qtlocation",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/Akaflieg-Freiburg/qtlocation.git",
+                    "commit": "67ddc41"
+                }
+            ],
+            "buildsystem": "cmake-ninja"
+        },
+        {
+            "name": "qttranslations",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/qt/qttranslations.git",
+                    "tag": "v${Qt6_VERSION}"
+                }
+            ],
+            "buildsystem": "cmake-ninja"
+        },
+        {
+            "name": "qtimageformats",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/qt/qtimageformats.git",
+                    "tag": "v${Qt6_VERSION}"
                 }
             ],
             "buildsystem": "cmake-ninja"

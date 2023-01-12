@@ -1,5 +1,4 @@
-
---- Build System ---
+# Build System
 
 * Buildsystem: compilation for flathub
 
@@ -11,8 +10,16 @@
 
 * Generate SNAP packages
 
+* Make GitHub actions work again
 
---- New Features ---
+
+# Bug Fixing
+
+* Berechnung Vertikalgeschwindigkeit scheint zumindest bei Verwendung mit
+  Flugsimulator erratisch.
+
+
+# New Features
 
 * Permissions: Explanation should be given when app refuses to start!
 

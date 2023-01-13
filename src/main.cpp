@@ -110,9 +110,27 @@ auto main(int argc, char *argv[]) -> int
     QGuiApplication::setDesktopFileName(QStringLiteral("de.akaflieg_freiburg.enroute"));
 #endif
 
-    // Install translator
+    // Install translators
     auto* enrouteTranslator = new QTranslator(&app);
-    if (enrouteTranslator->load(QStringLiteral(":enroute_%1.qm").arg(QLocale::system().name().left(2))))
+    if (enrouteTranslator->load(QStringLiteral(":i18n/enroute_%1.qm").arg(QLocale::system().name().left(2))))
+    {
+        QCoreApplication::installTranslator(enrouteTranslator);
+    }
+    else
+    {
+        delete enrouteTranslator;
+    }
+    enrouteTranslator = new QTranslator(&app);
+    if (enrouteTranslator->load(QStringLiteral(":i18n/qtbase_%1.qm").arg(QLocale::system().name().left(2))))
+    {
+        QCoreApplication::installTranslator(enrouteTranslator);
+    }
+    else
+    {
+        delete enrouteTranslator;
+    }
+    enrouteTranslator = new QTranslator(&app);
+    if (enrouteTranslator->load(QStringLiteral(":i18n/qtdeclarative_%1.qm").arg(QLocale::system().name().left(2))))
     {
         QCoreApplication::installTranslator(enrouteTranslator);
     }

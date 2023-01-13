@@ -4,14 +4,6 @@
         <file alias="qtquickcontrols2.conf">${CMAKE_CURRENT_SOURCE_DIR}/qtquickcontrols2.conf</file>
     </qresource>
 
-    <!-- Translations -->
-    <qresource>
-        <file>enroute_de.qm</file>
-        <file>enroute_fr.qm</file>
-        <file>enroute_it.qm</file>
-        <file>enroute_pl.qm</file>
-    </qresource>
-
     <!-- Text -->
     <qresource>
         <file alias="license_overview.html">${CMAKE_SOURCE_DIR}/generatedSources/licenses_overview.html</file>

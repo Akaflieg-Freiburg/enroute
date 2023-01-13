@@ -1,42 +1,3 @@
-#
-# Translations
-#
-
-# The Qt library translations are a mess. We try to find the files at various
-# places in the file system, generate our own *.qm files with lrelease and then
-# use the lconvert tool to concatenate the *.qm file with the Qt library
-# translations. Resulting files are then called enroute_XX.qm where XX is the
-# language code. The variable LANGS contains all language codes that will be
-# considered.
-
-find_path(Qt6_TRANSLATION_DIR qtbase_de.qm
-    HINTS ${Qt6Core_DIR}/../../../translations
-    HINTS /usr/share/qt5/translations
-    HINTS /usr/share/qt/translations
-    HINTS /usr/translations
-    REQUIRED
-    )
-set(Qt6_LCONVERT_EXECUTABLE Qt6::lconvert)
-set(Qt6_LRELEASE_EXECUTABLE Qt6::lrelease)
-
-#set(LANGS de fr it pl)
-#foreach(_lang ${LANGS})
-#    set(QT_QM_FILES ${Qt6_TRANSLATION_DIR}/qtbase_${_lang}.qm)
-#    if (EXISTS ${Qt6_TRANSLATION_DIR}/qtdeclarative_${_lang}.qm)
-#        list(APPEND QT_QM_FILES ${Qt6_TRANSLATION_DIR}/qtdeclarative_${_lang}.qm)
-#    endif()
-#    if (EXISTS ${Qt6_TRANSLATION_DIR}/qtlocation_${_lang}.qm)
-#        list(APPEND QT_QM_FILES ${Qt6_TRANSLATION_DIR}/qtlocation_${_lang}.qm)
-#    endif()
-#    add_custom_command(
-#        OUTPUT enroute_${_lang}.qm
-#        DEPENDS ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_${_lang}.ts
-#        COMMAND ${Qt6_LRELEASE_EXECUTABLE} ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_${_lang}.ts -qm enrouteOnly_${_lang}.qm
-#        COMMAND ${Qt6_LCONVERT_EXECUTABLE} enrouteOnly_${_lang}.qm ${QT_QM_FILES} -o enroute_${_lang}.qm
-#        COMMENT "Generating translations for language ${_lang}"
-#        )
-#endforeach()
-
 
 #
 # Configure files
@@ -56,12 +17,6 @@ set(SOURCES
     # Ressources
     ${CMAKE_CURRENT_BINARY_DIR}/flightMap.qrc
     ${CMAKE_CURRENT_BINARY_DIR}/icons.qrc
-
-    # Translations
-    enroute_de.qm
-    enroute_fr.qm
-    enroute_it.qm
-    enroute_pl.qm
 
     # Other files
     AndroidManifest.xml.in
@@ -224,7 +179,6 @@ qt_add_big_resources(SOURCES
 
 if( ANDROID )
     list(APPEND SOURCES
-        ${QTQUICKCOMPILEDRESOURCES}
         platform/FileExchange_Android.h
         platform/FileExchange_Android.cpp
         platform/Notifier_Android.h
@@ -393,6 +347,22 @@ qt_add_translations(${PROJECT_NAME}
     ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_fr.ts
     ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_it.ts
     ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_pl.ts
+)
+
+qt_add_resources(${PROJECT_NAME} translations
+    BASE
+    ${Qt6_TRANSLATION_DIR}
+    PREFIX
+    i18n
+    FILES
+    ${Qt6_TRANSLATION_DIR}/qtbase_de.qm
+    ${Qt6_TRANSLATION_DIR}/qtbase_fr.qm
+    ${Qt6_TRANSLATION_DIR}/qtbase_it.qm
+    ${Qt6_TRANSLATION_DIR}/qtbase_pl.qm
+    ${Qt6_TRANSLATION_DIR}/qtdeclarative_de.qm
+    ${Qt6_TRANSLATION_DIR}/qtdeclarative_fr.qm
+    #${Qt6_TRANSLATION_DIR}/qtdeclarative_it.qm
+    ${Qt6_TRANSLATION_DIR}/qtdeclarative_pl.qm
 )
 
 # Enforce C++17 and no extensions

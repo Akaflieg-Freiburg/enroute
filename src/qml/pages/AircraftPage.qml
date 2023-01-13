@@ -193,7 +193,17 @@ Page {
                 KeyNavigation.tab: verticalUOM
 
 
-                Component.onCompleted: currentIndex = Navigator.aircraft.horizontalDistanceUnit
+                Component.onCompleted: {
+                    if (Navigator.aircraft.horizontalDistanceUnit === Aircraft.Kilometer) {
+                        currentIndex = 1
+                        return
+                    }
+                    if (Navigator.aircraft.horizontalDistanceUnit === Aircraft.StatuteMile) {
+                        currentIndex = 2
+                        return
+                    }
+                    currentIndex = 0
+                }
                 onActivated: Navigator.aircraft.horizontalDistanceUnit = currentIndex
 
                 model: [ qsTr("Nautical Miles"), qsTr("Kilometers"), qsTr("Statute Miles") ]
@@ -209,7 +219,13 @@ Page {
                 Layout.alignment: Qt.AlignBaseline
                 KeyNavigation.tab: volumeUOM
 
-                Component.onCompleted: currentIndex = Navigator.aircraft.verticalDistanceUnit
+                Component.onCompleted: {
+                    if (Navigator.aircraft.verticalDistanceUnit === Aircraft.Meters) {
+                        currentIndex = 1
+                        return
+                    }
+                    currentIndex = 0
+                }
                 onActivated: Navigator.aircraft.verticalDistanceUnit = currentIndex
 
                 model: [ qsTr("Feet"), qsTr("Meters") ]
@@ -225,7 +241,13 @@ Page {
                 Layout.alignment: Qt.AlignBaseline
                 KeyNavigation.tab: cruiseSpeed
 
-                Component.onCompleted: currentIndex = Navigator.aircraft.fuelConsumptionUnit
+                Component.onCompleted: {
+                    if (Navigator.aircraft.fuelConsumptionUnit === Aircraft.GallonPerHour) {
+                        currentIndex = 1
+                        return
+                    }
+                    currentIndex = 0
+                }
                 onActivated: Navigator.aircraft.fuelConsumptionUnit = currentIndex
 
                 model: [ qsTr("Liters"), qsTr("U.S. Gallons") ]

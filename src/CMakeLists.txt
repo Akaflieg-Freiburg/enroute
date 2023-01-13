@@ -19,23 +19,23 @@ find_path(Qt6_TRANSLATION_DIR qtbase_de.qm
 set(Qt6_LCONVERT_EXECUTABLE Qt6::lconvert)
 set(Qt6_LRELEASE_EXECUTABLE Qt6::lrelease)
 
-set(LANGS de fr it pl)
-foreach(_lang ${LANGS})
-    set(QT_QM_FILES ${Qt6_TRANSLATION_DIR}/qtbase_${_lang}.qm)
-    if (EXISTS ${Qt6_TRANSLATION_DIR}/qtdeclarative_${_lang}.qm)
-        list(APPEND QT_QM_FILES ${Qt6_TRANSLATION_DIR}/qtdeclarative_${_lang}.qm)
-    endif()
-    if (EXISTS ${Qt6_TRANSLATION_DIR}/qtlocation_${_lang}.qm)
-        list(APPEND QT_QM_FILES ${Qt6_TRANSLATION_DIR}/qtlocation_${_lang}.qm)
-    endif()
-    add_custom_command(
-        OUTPUT enroute_${_lang}.qm
-        DEPENDS ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_${_lang}.ts
-        COMMAND ${Qt6_LRELEASE_EXECUTABLE} ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_${_lang}.ts -qm enrouteOnly_${_lang}.qm
-        COMMAND ${Qt6_LCONVERT_EXECUTABLE} enrouteOnly_${_lang}.qm ${QT_QM_FILES} -o enroute_${_lang}.qm
-        COMMENT "Generating translations for language ${_lang}"
-        )
-endforeach()
+#set(LANGS de fr it pl)
+#foreach(_lang ${LANGS})
+#    set(QT_QM_FILES ${Qt6_TRANSLATION_DIR}/qtbase_${_lang}.qm)
+#    if (EXISTS ${Qt6_TRANSLATION_DIR}/qtdeclarative_${_lang}.qm)
+#        list(APPEND QT_QM_FILES ${Qt6_TRANSLATION_DIR}/qtdeclarative_${_lang}.qm)
+#    endif()
+#    if (EXISTS ${Qt6_TRANSLATION_DIR}/qtlocation_${_lang}.qm)
+#        list(APPEND QT_QM_FILES ${Qt6_TRANSLATION_DIR}/qtlocation_${_lang}.qm)
+#    endif()
+#    add_custom_command(
+#        OUTPUT enroute_${_lang}.qm
+#        DEPENDS ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_${_lang}.ts
+#        COMMAND ${Qt6_LRELEASE_EXECUTABLE} ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_${_lang}.ts -qm enrouteOnly_${_lang}.qm
+#        COMMAND ${Qt6_LCONVERT_EXECUTABLE} enrouteOnly_${_lang}.qm ${QT_QM_FILES} -o enroute_${_lang}.qm
+#        COMMENT "Generating translations for language ${_lang}"
+#        )
+#endforeach()
 
 
 #
@@ -45,7 +45,6 @@ endforeach()
 configure_file(flightMap.qrc.in flightMap.qrc)
 configure_file(${CMAKE_SOURCE_DIR}/generatedSources/flightMap/flightMap-fonts.qrc.in flightMapFonts.qrc)
 configure_file(icons.qrc.in icons.qrc)
-configure_file(qml.qrc.in qml.qrc)
 configure_file(ressources.qrc.in ressources.qrc)
 
 
@@ -68,7 +67,6 @@ set(SOURCES
     AndroidManifest.xml.in
     flightMap.qrc.in
     icons.qrc.in
-    qml.qrc.in
     README.md
     ressources.qrc.in
 
@@ -259,7 +257,6 @@ if( ANDROID )
 
     # Compile definitions
     add_compile_definitions(MANUAL_LOCATION="/android_asset/manual")
-    list(APPEND SOURCES ${CMAKE_CURRENT_BINARY_DIR}/qml.qrc)
 
     qt_add_executable(${PROJECT_NAME} ${SOURCES} ${ANDROID_EXTRA_SOURCES})
     target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Concurrent Qt6::Core Qt::CorePrivate Qt6::Positioning Qt6::Quick Qt6::Sql Qt6::Svg Qt6::WebView qhttpengine sunset)
@@ -285,8 +282,7 @@ if (NOT ANDROID)
         platform/PlatformAdaptor_Linux.cpp
         platform/SafeInsets_Desktop.h
         platform/SafeInsets_Desktop.cpp
-        ${CMAKE_CURRENT_BINARY_DIR}/qml.qrc
-        )
+    )
 
     # Compile definitions
     add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
@@ -336,6 +332,7 @@ qt_add_qml_module(${PROJECT_NAME}
     VERSION 1.0
     NO_RESOURCE_TARGET_PATH
     QML_FILES
+    qml/main.qml
     qml/dialogs/CenteringDialog.qml
     qml/dialogs/LongTextDialog.qml
     qml/items/AutoSizingMenu.qml
@@ -348,11 +345,55 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/WordWrappingItemDelegate.qml
     qml/items/WordWrappingSwitchDelegate.qml
     qml/pages/SettingsPage.qml
+    qml/dialogs/AircraftSaveDialog.qml
+    qml/dialogs/ErrorDialog.qml
+    qml/dialogs/FirstRunDialog.qml
+    qml/dialogs/FlightRouteAddWPDialog.qml
+    qml/dialogs/FlightRouteSaveDialog.qml
+    qml/dialogs/LongTextDialogMD.qml
+    qml/dialogs/MissingPermissionsDialog.qml
+    qml/dialogs/PasswordDialog.qml
+    qml/dialogs/PasswordStorageDialog.qml
+    qml/dialogs/TooManyDownloadsDialog.qml
+    qml/dialogs/WaypointDescription.qml
+    qml/dialogs/WaypointEditor.qml
+    qml/dialogs/WeatherReport.qml
+    qml/items/FlightMap.qml
+    qml/items/Icon.qml
+    qml/items/ImportManager.qml
+    qml/items/MFM.qml
+    qml/items/StandardHeader.qml
+    qml/items/SwipeToDeleteDelegate.qml
+    qml/items/Traffic.qml
+    qml/items/TrafficLabel.qml
+    qml/pages/Aircraft.qml
+    qml/pages/AircraftLibrary.qml
+    qml/pages/BugReportPage.qml
+    qml/pages/DonatePage.qml
+    qml/pages/FlightRouteEditor.qml
+    qml/pages/FlightRouteLibrary.qml
+    qml/pages/InfoPage.qml
+    qml/pages/Manual.qml
+    qml/pages/DataManager.qml
+    qml/pages/MapPage.qml
+    qml/pages/Nearby.qml
+    qml/pages/ParticipatePage.qml
+    qml/pages/Positioning.qml
+    qml/pages/TrafficReceiver.qml
+    qml/pages/WaypointLibrary.qml
+    qml/pages/WeatherPage.qml
     SOURCES
     ui/ScaleQuickItem.h
     ui/ScaleQuickItem.cpp
 )
 
+qt_add_translations(${PROJECT_NAME}
+    TS_FILES
+    ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_de.ts
+    ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_fr.ts
+    ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_it.ts
+    ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_pl.ts
+)
 
 # Enforce C++17 and no extensions
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)

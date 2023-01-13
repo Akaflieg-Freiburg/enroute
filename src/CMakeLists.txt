@@ -366,7 +366,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/SwipeToDeleteDelegate.qml
     qml/items/Traffic.qml
     qml/items/TrafficLabel.qml
-    qml/pages/Aircraft.qml
+    qml/pages/AircraftPage.qml
     qml/pages/AircraftLibrary.qml
     qml/pages/BugReportPage.qml
     qml/pages/DonatePage.qml

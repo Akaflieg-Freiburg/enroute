@@ -527,8 +527,8 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         id: airspaceAltLabel
 
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: remainingRoute.bottom
-        anchors.topMargin: 0.4*view.font.pixelSize
+        anchors.verticalCenter: menuButton.verticalCenter
+
         topPadding: 0
         bottomPadding: 0
         Material.elevation: 2
@@ -552,13 +552,15 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         id: menuButton
         icon.source: "/icons/material/ic_menu.svg"
 
+        height: 4*font.pixelSize
+        width: 4*font.pixelSize
+
         anchors.left: parent.left
         anchors.leftMargin: 0.5*view.font.pixelSize + SafeInsets.left
         anchors.top: remainingRoute.bottom
         anchors.topMargin: 0.5*view.font.pixelSize
 
-        height: 66
-        width: 66
+        Material.background: GlobalSettings.nightMode ? undefined : "white"
 
         onClicked: {
             PlatformAdaptor.vibrateBrief()
@@ -570,14 +572,12 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         id: northButton
 
         anchors.horizontalCenter: zoomIn.horizontalCenter
-        anchors.top: remainingRoute.bottom
-        anchors.topMargin: 0.5*view.font.pixelSize
+        anchors.verticalCenter: menuButton.verticalCenter
 
-        height: 66
-        width:  66
-
-        icon.source: "/icons/NorthArrow.svg"
-
+        horizontalPadding: 0
+        verticalPadding: 0
+        height: 3.3*font.pixelSize
+        width: 3.3*font.pixelSize
 
         contentItem: Image {
             Layout.alignment: Qt.AlignHCenter
@@ -612,8 +612,9 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         anchors.bottom: trafficDataReceiverButton.top
         anchors.bottomMargin: trafficDataReceiverButton.visible ? 0.5*view.font.pixelSize : 1.5*view.font.pixelSize
 
-        height: 66
-        width:  66
+        height: 4*font.pixelSize
+        width: 4*font.pixelSize
+        Material.background: GlobalSettings.nightMode ? undefined : "white"
 
         onClicked: {
             PlatformAdaptor.vibrateBrief()
@@ -636,8 +637,8 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         anchors.bottom: navBar.top
         anchors.bottomMargin: visible ? 1.5*view.font.pixelSize : 0
 
-        height: visible ? 66 : 0
-        width:  66
+        height: visible ? 4*font.pixelSize : 0
+        width: 4*font.pixelSize
 
         onClicked: {
             PlatformAdaptor.vibrateBrief()
@@ -660,8 +661,9 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         anchors.bottom: zoomOut.top
         anchors.bottomMargin: 0.5*view.font.pixelSize
 
-        height: 66
-        width:  66
+        height: 4*font.pixelSize
+        width: 4*font.pixelSize
+        Material.background: GlobalSettings.nightMode ? undefined : "white"
 
         onClicked: {
             centerBindingAnimation.omitAnimationforZoom()
@@ -683,8 +685,9 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         anchors.bottom: navBar.top
         anchors.bottomMargin: 1.5*view.font.pixelSize
 
-        height: 66
-        width:  66
+        height: 4*font.pixelSize
+        width: 4*font.pixelSize
+        Material.background: GlobalSettings.nightMode ? undefined : "white"
 
         onClicked: {
             centerBindingAnimation.omitAnimationforZoom()

@@ -165,6 +165,14 @@ Page {
                 }
             }
 
+            Label { text: qsTr("Error (True Track)") }
+            Label {
+                text: {
+                    const tt = PositionProvider.positionInfo.trueTrackErrorEstimate();
+                    return tt.isFinite() ? "±" + Math.round(tt.toDEG()) + "°" : "-"
+                }
+            }
+
             Label { text: qsTr("Vertical Speed") }
             Label { text: Navigator.aircraft.verticalSpeedToString( PositionProvider.positionInfo.verticalSpeed() ) }
 

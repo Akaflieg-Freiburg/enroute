@@ -1,7 +1,5 @@
 # Build System
 
-* Buildsystem: compilation for flathub
-
 * Use CMake for translations
 
 * Update documentation

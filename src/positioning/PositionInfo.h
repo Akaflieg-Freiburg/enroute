@@ -138,6 +138,12 @@ public:
      */
     Q_INVOKABLE [[nodiscard]] Units::Angle trueTrack() const;
 
+    /*! \brief True track error estimate
+     *
+     *  @returns True track error estimate or NaN if unknown.
+     */
+    Q_INVOKABLE [[nodiscard]] Units::Angle trueTrackErrorEstimate() const;
+
     /*! \brief Magnetic variation
      *
      *  @returns Magnetic variation or NaN if unknown.

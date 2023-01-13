@@ -138,7 +138,7 @@ Page {
             Button {
                 Layout.alignment: Qt.AlignHCenter
                 icon.source: "/icons/material/ic_tap_and_play.svg"
-                text: qsTr("Connect to Traffic Receiver")
+                text: qsTr("Connect")
                 enabled: !timer.running
                 visible: !global.trafficDataProvider().receivingHeartbeat
                 onClicked: {

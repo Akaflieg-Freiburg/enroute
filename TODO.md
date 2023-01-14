@@ -1,7 +1,5 @@
 # Build System
 
-* Use CMake for translations
-
 * Update documentation
 
 * Generate spritesheet in proper way

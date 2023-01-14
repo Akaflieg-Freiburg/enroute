@@ -349,6 +349,10 @@ qt_add_translations(${PROJECT_NAME}
     ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_pl.ts
 )
 
+find_path(Qt6_TRANSLATION_DIR qtbase_de.qm
+    HINTS ${Qt6Core_DIR}/../../../translations
+    REQUIRED
+)
 qt_add_resources(${PROJECT_NAME} translations
     BASE
     ${Qt6_TRANSLATION_DIR}

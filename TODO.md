@@ -11,8 +11,7 @@
 
 # Bug Fixing
 
-* Berechnung Vertikalgeschwindigkeit scheint zumindest bei Verwendung mit
-  Flugsimulator erratisch.
+---
 
 
 # New Features

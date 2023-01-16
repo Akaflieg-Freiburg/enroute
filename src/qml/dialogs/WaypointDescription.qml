@@ -297,8 +297,8 @@ CenteringDialog {
             Rectangle {
                 Layout.alignment: Qt.AlignHCenter
                 color: Material.foreground
-                height: 1
-                width: view.font.pixelSize*5
+                Layout.preferredHeight: 1
+                Layout.preferredWidth: view.font.pixelSize*5
             }
             Label {
                 Layout.alignment: Qt.AlignHCenter|Qt.AlignTop

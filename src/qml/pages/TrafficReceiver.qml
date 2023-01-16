@@ -152,7 +152,7 @@ Page {
             }
 
             Item {
-                height: view.font.pixelSize*0.5
+                Layout.preferredHeight: view.font.pixelSize*0.5
                 Layout.columnSpan: 2
             }
 

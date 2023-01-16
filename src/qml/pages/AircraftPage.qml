@@ -142,7 +142,7 @@ Page {
 
             Rectangle {
                 Layout.columnSpan: 4
-                height: view.font.pixelSize
+                Layout.preferredHeight: view.font.pixelSize
             }
             Label {
                 text: qsTr("Name")

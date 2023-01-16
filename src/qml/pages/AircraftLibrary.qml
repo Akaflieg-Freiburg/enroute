@@ -276,7 +276,7 @@ Page {
             width: renameDialog.availableWidth
 
             Label {
-                width: overwriteDialog.availableWidth
+                Layout.preferredWidth: overwriteDialog.availableWidth
 
                 text: qsTr("Enter new name for the aircraft <strong>%1</strong>.").arg(finalFileName)
                 color: Material.primary

@@ -82,7 +82,7 @@ If you prefer to work on
 your desktop computer, you can also send yourself an e-mail
 with the bank account data.
 ").arg(bankAccountData)
-                width: sv.width
+                Layout.preferredWidth: sv.width
                 wrapMode: Text.Wrap
                 topPadding: font.pixelSize*1
                 leftPadding: font.pixelSize*0.5

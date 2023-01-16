@@ -105,7 +105,7 @@ Page {
 
             Item { // Spacer
                 Layout.columnSpan: 2
-                height: 3
+                Layout.preferredHeight: 3
             }
 
             Label {
@@ -379,7 +379,7 @@ Page {
 
             Item { // Spacer
                 Layout.columnSpan: 2
-                height: 3
+                Layout.preferredHeight: 3
             }
 
         }

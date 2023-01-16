@@ -97,7 +97,7 @@ ApplicationWindow {
 
                     leftPadding: 16+SafeInsets.left
                     rightPadding: 16
-                    height: 20
+                    Layout.preferredHeight: 20
 
                     text: "Akaflieg Freiburg" + " • v" + Qt.application.version
                     font.pixelSize: 16

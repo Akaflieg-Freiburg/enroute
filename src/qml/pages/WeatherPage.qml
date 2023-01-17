@@ -92,11 +92,11 @@ Page {
 
                 MenuItem {
                     text: qsTr("Update METAR/TAF data")
-                    enabled: (!global.weatherDataProvider().downloading) && (GlobalSettings.acceptedWeatherTerms)
+                    enabled: (!WeatherDataProvider.downloading) && (GlobalSettings.acceptedWeatherTerms)
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
-                        if (!global.weatherDataProvider().downloading)
-                            global.weatherDataProvider().update(false)
+                        if (!WeatherDataProvider.downloading)
+                            WeatherDataProvider.update(false)
                     }
                 } // MenuItem
 
@@ -169,7 +169,7 @@ Page {
 
         clip: true
 
-        model: global.weatherDataProvider().weatherStations
+        model: WeatherDataProvider.weatherStations
         delegate: stationDelegate
         ScrollIndicator.vertical: ScrollIndicator {}
 
@@ -203,7 +203,7 @@ Page {
         onFlickEnded: {
             if ( atYBeginning && refreshFlick ) {
                 PlatformAdaptor.vibrateBrief()
-                global.weatherDataProvider().update(false)
+                WeatherDataProvider.update(false)
             }
         }
 
@@ -216,7 +216,7 @@ Page {
         anchors.fill: parent
 
         color: "white"
-        visible: global.weatherDataProvider().downloading && !global.weatherDataProvider().backgroundUpdate
+        visible: WeatherDataProvider.downloading && !WeatherDataProvider.backgroundUpdate
 
         Text {
             id: downloadIndicatorLabel
@@ -242,9 +242,9 @@ Page {
         // Without this, the downaloadIndication would not be visible on very quick downloads, leaving the user
         // without any feedback if the download did actually take place.
         Connections {
-            target: global.weatherDataProvider()
+            target: WeatherDataProvider
             function onDownloadingChanged () {
-                if (global.weatherDataProvider().downloading && !global.weatherDataProvider().backgroundUpdate) {
+                if (WeatherDataProvider.downloading && !WeatherDataProvider.backgroundUpdate) {
                     downloadIndicator.visible = true
                     downloadIndicator.opacity = 1.0
                 } else
@@ -290,7 +290,7 @@ Page {
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
                     GlobalSettings.acceptedWeatherTerms = true
-                    global.weatherDataProvider().update()
+                    WeatherDataProvider.update()
                 }
             }
 
@@ -319,7 +319,7 @@ Page {
                 id: qnhLabel
                 visible: qnhLabel.text !== ""
                 Layout.fillWidth: true
-                text: global.weatherDataProvider().QNHInfo
+                text: WeatherDataProvider.QNHInfo
             }
 
             Icon {
@@ -330,7 +330,7 @@ Page {
                 id: sunLabel
                 visible: sunLabel.text !== ""
                 Layout.fillWidth: true
-                text: global.weatherDataProvider().sunInfo
+                text: WeatherDataProvider.sunInfo
             }
 
         }
@@ -341,16 +341,16 @@ Page {
     // is empty. This is not a background update, we want user interaction.
     Component.onCompleted: {
         if (stationList.count === 0)
-            global.weatherDataProvider().update(false)
+            WeatherDataProvider.update(false)
         else
-            global.weatherDataProvider().update(true)
+            WeatherDataProvider.update(true)
     }
 
     // Show error when weather cannot be updated -- but not if we are running a background upate
     Connections {
-        target: global.weatherDataProvider()
+        target: WeatherDataProvider
         function onError (message) {
-            if (global.weatherDataProvider().backgroundUpdate)
+            if (WeatherDataProvider.backgroundUpdate)
                 return
             dialogLoader.active = false
             dialogLoader.title = qsTr("Update Error")

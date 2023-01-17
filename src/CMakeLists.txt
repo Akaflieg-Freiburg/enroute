@@ -279,6 +279,7 @@ target_include_directories(${PROJECT_NAME}
     traffic
     ui
     units
+    weather
 )
 
 qt_add_qml_module(${PROJECT_NAME}

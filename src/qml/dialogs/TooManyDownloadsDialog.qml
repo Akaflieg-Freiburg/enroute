@@ -27,7 +27,7 @@ LongTextDialog {
     id: dlg
 
     closePolicy: Popup.NoAutoClose
-    text: global.librarian().getStringFromRessource(":text/tooManyDownloads.html")
+    text: Librarian.getStringFromRessource(":text/tooManyDownloads.html")
     property var dialogArgs
 
     footer: DialogButtonBox {

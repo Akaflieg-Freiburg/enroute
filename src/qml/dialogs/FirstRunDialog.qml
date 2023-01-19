@@ -26,7 +26,7 @@ import akaflieg_freiburg.enroute
 LongTextDialog {
 
     closePolicy: Popup.NoAutoClose
-    text:  global.librarian().getStringFromRessource(":text/firstStart.html")
+    text:  Librarian.getStringFromRessource(":text/firstStart.html")
 
     footer: DialogButtonBox {
         ToolButton {

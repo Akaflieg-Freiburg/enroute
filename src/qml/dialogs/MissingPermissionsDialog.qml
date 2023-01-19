@@ -25,7 +25,7 @@ import akaflieg_freiburg.enroute
 
 LongTextDialog {
     closePolicy: Popup.NoAutoClose
-    text:  global.librarian().getStringFromRessource(":text/missingPermissions.html")
+    text:  Librarian.getStringFromRessource(":text/missingPermissions.html")
 
     footer: DialogButtonBox {
         ToolButton {

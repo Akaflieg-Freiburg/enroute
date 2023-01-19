@@ -19,9 +19,11 @@
  ***************************************************************************/
 
 #include "Librarian.h"
+#include "navigation/FlightRoute.h"
 
 #include <QNetworkAccessManager>
 #include <QStandardPaths>
+#include <QSysInfo>
 #include <QtGlobal>
 
 Librarian::Librarian(QObject *parent) : QObject(parent)
@@ -402,4 +404,28 @@ auto Librarian::simplifySpecialChars(const QString &string) -> QString
 
     QString normalizedString = string.normalized(QString::NormalizationForm_KD);
     return normalizedString.remove(specialChars);
+}
+
+#include <QLibraryInfo>
+
+auto Librarian::systemInfo() -> QString
+{
+
+    QString result;
+
+    result += "<table>";
+    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Enroute Version", QStringLiteral(PROJECT_VERSION));
+    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("GIT ", QStringLiteral(GIT_COMMIT));
+    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Qt", QLibraryInfo::version().toString());
+    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Build ABI", QSysInfo::buildAbi());
+    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Build CPU", QSysInfo::buildCpuArchitecture());
+    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Current CPU", QSysInfo::currentCpuArchitecture());
+    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Kernel Type", QSysInfo::kernelType());
+    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Kernel Version", QSysInfo::kernelVersion());
+    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Device Name", QSysInfo::prettyProductName());
+    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Device Type", QSysInfo::productType());
+    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Device Version", QSysInfo::productVersion());
+    result += "</table><br>";
+
+    return result;
 }

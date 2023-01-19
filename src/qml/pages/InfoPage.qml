@@ -45,6 +45,7 @@ Page {
         TabButton { text: "Enroute" }
         TabButton { text: qsTr("Authors") }
         TabButton { text: qsTr("License") }
+        TabButton { text: qsTr("System") }
         Material.elevation: 3
     }
 
@@ -68,7 +69,7 @@ Page {
 
             Label {
                 id: lbl1
-                text: "<style>a:link { color: " + Material.accent + "; }</style>"+global.librarian().getStringFromRessource(":text/info_enroute.html")
+                text: "<style>a:link { color: " + Material.accent + "; }</style>"+Librarian.getStringFromRessource(":text/info_enroute.html")
                 textFormat: Text.RichText
                 linkColor: Material.accent
                 width: sv.availableWidth
@@ -87,7 +88,7 @@ Page {
 
             Label {
                 id: lbl2
-                text: "<style>a:link { color: " + Material.accent + "; }</style>"+global.librarian().getStringFromRessource(":text/authors.html")
+                text: "<style>a:link { color: " + Material.accent + "; }</style>"+Librarian.getStringFromRessource(":text/authors.html")
                 textFormat: Text.RichText // Link OK
                 width: sv.availableWidth
                 wrapMode: Text.Wrap
@@ -104,7 +105,7 @@ Page {
 
             Label {
                 id: lbl3
-                text: "<style>a:link { color: " + Material.accent + "; }</style>"+global.librarian().getStringFromRessource(":text/info_license.html")
+                text: "<style>a:link { color: " + Material.accent + "; }</style>"+Librarian.getStringFromRessource(":text/info_license.html")
                 textFormat: Text.RichText
                 linkColor: Material.accent
                 width: sv.availableWidth
@@ -115,6 +116,52 @@ Page {
                 onLinkActivated: Qt.openUrlExternally(link)
             }
         }
+
+        ColumnLayout {
+
+            ScrollView {
+                Layout.fillHeight: true
+                Layout.preferredWidth: sv.availableWidth
+                contentWidth: availableWidth // Disable horizontal scrolling
+                clip: true
+
+                Label {
+                    text: "<style>a:link { color: " + Material.accent + "; }</style>" + Librarian.systemInfo()
+                    textFormat: Text.RichText
+                    linkColor: Material.accent
+                    width: sv.availableWidth
+                    wrapMode: Text.Wrap
+                    topPadding: font.pixelSize*1
+                    leftPadding: font.pixelSize*0.5
+                    rightPadding: font.pixelSize*0.5
+                    onLinkActivated: Qt.openUrlExternally(link)
+                }
+            }
+
+            Button {
+                Layout.alignment: Qt.AlignHCenter
+                text: qsTr("Share Info")
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    var errorString = global.fileExchange().shareContent(Librarian.systemInfo(), "application/text", "EnrouteSystemInformation.txt")
+                    if (errorString === "abort") {
+                        toast.doToast(qsTr("Aborted"))
+                        return
+                    }
+                    if (errorString !== "") {
+                        shareErrorDialogLabel.text = errorString
+                        shareErrorDialog.open()
+                        return
+                    }
+                    if (Qt.platform.os === "android")
+                        toast.doToast(qsTr("System Info Shared"))
+                    else
+                        toast.doToast(qsTr("System Info Exported"))
+
+                }
+            }
+        }
+
 
     } // StackView
 } // Page

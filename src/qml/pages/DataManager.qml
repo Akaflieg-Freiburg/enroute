@@ -375,7 +375,7 @@ Page {
         wrapMode: Text.Wrap
 
         text: qsTr("<h3>Update required!</h3>")
-              + global.librarian().getStringFromRessource("appUpdateRequired")
+              + Librarian.getStringFromRessource("appUpdateRequired")
     }
 
     Label {

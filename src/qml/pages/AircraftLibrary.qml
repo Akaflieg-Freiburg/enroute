@@ -139,7 +139,7 @@ Page {
 
         clip: true
 
-        model: global.librarian().entries(Librarian.Aircraft, textInput.displayText)
+        model: Librarian.entries(Librarian.Aircraft, textInput.displayText)
         delegate: entryDelegate
         ScrollIndicator.vertical: ScrollIndicator {}
     }
@@ -167,7 +167,7 @@ Page {
 
     function openFromLibrary() {
         var acft = Navigator.aircraft.clone() // Get a copy of the current aircraft that we can modify and write back
-        var errorString = acft.loadFromJSON(global.librarian().fullPath(Librarian.Aircraft, finalFileName))
+        var errorString = acft.loadFromJSON(Librarian.fullPath(Librarian.Aircraft, finalFileName))
         if (errorString !== "") {
             lbl.text = errorString
             fileError.open()
@@ -253,7 +253,7 @@ Page {
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
-            global.librarian().remove(Librarian.Aircraft, page.finalFileName)
+            Librarian.remove(Librarian.Aircraft, page.finalFileName)
             page.reloadFlightRouteList()
             toast.doToast(qsTr("Aircraft removed from device"))
         }
@@ -303,15 +303,15 @@ Page {
                 id: renameButton
 
                 DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
-                enabled: (renameName.text !== "") && !(global.librarian().exists(Librarian.Aircraft, renameName.text))
+                enabled: (renameName.text !== "") && !(Librarian.exists(Librarian.Aircraft, renameName.text))
                 text: qsTr("Rename")
             }
         }
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
-            if ((renameName.text !== "") && !global.librarian().exists(Librarian.Aircraft, renameName.text)) {
-                global.librarian().rename(Librarian.Aircraft, finalFileName, renameName.text)
+            if ((renameName.text !== "") && !Librarian.exists(Librarian.Aircraft, renameName.text)) {
+                Librarian.rename(Librarian.Aircraft, finalFileName, renameName.text)
                 page.reloadFlightRouteList()
                 close()
                 toast.doToast(qsTr("Aircraft renamed"))

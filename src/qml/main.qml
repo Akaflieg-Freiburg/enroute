@@ -584,7 +584,7 @@ ApplicationWindow {
                 dialogLoader.setSource("dialogs/LongTextDialog.qml",
                                        {
                                            title: qsTr("Update required!"),
-                                           text: global.librarian().getStringFromRessource("appUpdateRequired"),
+                                           text: Librarian.getStringFromRessource("appUpdateRequired"),
                                            standardButtons: Dialog.Ok
                                        }
                                        )
@@ -592,7 +592,7 @@ ApplicationWindow {
                 return
             }
 
-            if ((GlobalSettings.lastWhatsNewHash !== global.librarian().getStringHashFromRessource(":text/whatsnew.html")) && (Navigator.flightStatus !== Navigator.Flight)) {
+            if ((GlobalSettings.lastWhatsNewHash !== Librarian.getStringHashFromRessource(":text/whatsnew.html")) && (Navigator.flightStatus !== Navigator.Flight)) {
                 whatsNewDialog.open()
                 return
             }
@@ -745,8 +745,8 @@ ApplicationWindow {
         standardButtons: Dialog.Ok
         
         title: qsTr("What's new…?")
-        text: global.librarian().getStringFromRessource(":text/whatsnew.html")
-        onOpened: GlobalSettings.lastWhatsNewHash = global.librarian().getStringHashFromRessource(":text/whatsnew.html")
+        text: Librarian.getStringFromRessource(":text/whatsnew.html")
+        onOpened: GlobalSettings.lastWhatsNewHash = Librarian.getStringHashFromRessource(":text/whatsnew.html")
     }
 
     LongTextDialog {

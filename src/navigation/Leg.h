@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QGeoPath>
+#include <QQmlEngine>
 
 #include "geomaps/Waypoint.h"
 #include "navigation/Aircraft.h"
@@ -35,6 +36,7 @@ namespace Navigation {
 
 class Leg {
     Q_GADGET
+    QML_VALUE_TYPE(leg)
 
 public:
 

@@ -202,12 +202,14 @@ Rectangle {
             wrapMode: Text.Wrap
             horizontalAlignment:  Text.AlignHCenter
 
+            property leg staticLeg
+
             text: {
                 switch (baseRect.rri.status) {
                     case RemainingRouteInfo.PositionUnknown:
                         return qsTr("Position unknown.");
                     case RemainingRouteInfo.OffRoute:
-                        return qsTr("More than %1 off route.").arg(Navigator.aircraft.horizontalDistanceToString(leg.nearThreshold));
+                        return qsTr("More than %1 off route.").arg(Navigator.aircraft.horizontalDistanceToString(staticLeg.nearThreshold));
                     case RemainingRouteInfo.NearDestination:
                         return qsTr("Near destination.");
                 }

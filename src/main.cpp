@@ -82,32 +82,23 @@ auto main(int argc, char *argv[]) -> int
     qmlRegisterUncreatableType<Traffic::TrafficFactor_WithPosition>("enroute", 1, 0, "TrafficFactor_WithPosition", QStringLiteral("TrafficFactor_WithPosition objects cannot be created in QML"));
     qmlRegisterType<Weather::Station>("enroute", 1, 0, "WeatherStation");
 
-    // Initialize web view on platforms where we use it
-#if defined(Q_OS_ANDROID)
-    QtWebView::initialize();
-#endif
 
     // Required by the maplibre plugin to QtLocation
     QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGL);
     // Set up application
 
-//QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
-//QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGLRhi);
 #if defined(Q_OS_ANDROID)
+    QtWebView::initialize();
     QGuiApplication app(argc, argv);
 #else
-    QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
-    QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGLRhi);
     QApplication app(argc, argv);
+    QGuiApplication::setDesktopFileName(QStringLiteral("de.akaflieg_freiburg.enroute"));
 #endif
     QCoreApplication::setOrganizationName(QStringLiteral("Akaflieg Freiburg"));
     QCoreApplication::setOrganizationDomain(QStringLiteral("akaflieg_freiburg.de"));
     QCoreApplication::setApplicationName(QStringLiteral("enroute flight navigation"));
     QCoreApplication::setApplicationVersion(QStringLiteral(PROJECT_VERSION));
     QGuiApplication::setWindowIcon(QIcon(u":/icons/appIcon.png"_qs));
-#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
-    QGuiApplication::setDesktopFileName(QStringLiteral("de.akaflieg_freiburg.enroute"));
-#endif
 
     // Install translators
     auto* enrouteTranslator = new QTranslator(&app);
@@ -186,7 +177,10 @@ auto main(int argc, char *argv[]) -> int
         GlobalObject::fileExchange()->processFileOpenRequest(positionalArguments[0]);
     }
 #if !defined(Q_OS_ANDROID)
-    QObject::connect(&kdsingleapp, SIGNAL(messageReceived(QByteArray)), GlobalObject::fileExchange(), SLOT(processFileOpenRequest(QByteArray)));
+    QObject::connect(&kdsingleapp,
+                     &KDSingleApplication::messageReceived,
+                     GlobalObject::fileExchange(),
+                     qOverload<const QByteArray&>(&Platform::FileExchange_Abstract::processFileOpenRequest));
 #endif
 
     /*
@@ -196,8 +190,7 @@ auto main(int argc, char *argv[]) -> int
     auto* engine = new QQmlApplicationEngine();
     engine->rootContext()->setContextProperty(QStringLiteral("manual_location"), MANUAL_LOCATION );
     engine->rootContext()->setContextProperty(QStringLiteral("global"), new GlobalObject(engine) );
-    engine->rootContext()->setContextProperty(QStringLiteral("leg"), QVariant::fromValue(Navigation::Leg()) );
-    engine->load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
+    engine->load(u"qrc:/qml/main.qml"_qs);
 
     if (parser.isSet(screenshotOption))
     {

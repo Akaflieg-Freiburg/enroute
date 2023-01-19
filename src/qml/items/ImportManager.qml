@@ -31,7 +31,7 @@ Item {
     id: importManager
 
     property string filePath: ""
-    property int fileFunction: FileExchange_Abstract.UnknownFunction
+    property int fileFunction: FileExchange.UnknownFunction
 
     Connections {
         target: global.fileExchange()

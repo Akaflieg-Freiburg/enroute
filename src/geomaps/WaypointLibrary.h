@@ -58,7 +58,7 @@ namespace GeoMaps
          *
          *  This property holds the list of waypoints, in alphabetical order
          */
-        Q_PROPERTY(QVector<GeoMaps::Waypoint> waypoints READ waypoints NOTIFY waypointsChanged)
+        Q_PROPERTY(QList<GeoMaps::Waypoint> waypoints READ waypoints NOTIFY waypointsChanged)
 
         //
         // Getter Methods
@@ -68,7 +68,7 @@ namespace GeoMaps
          *
          * @returns Property waypoints
          */
-        [[nodiscard]] QVector<GeoMaps::Waypoint> waypoints() const
+        [[nodiscard]] QList<GeoMaps::Waypoint> waypoints() const
         {
             return m_waypoints;
         }

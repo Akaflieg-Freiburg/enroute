@@ -143,7 +143,7 @@ Page {
                 text: qsTr("Share Info")
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    var errorString = global.fileExchange().shareContent(Librarian.systemInfo(), "application/text", "EnrouteSystemInformation.txt")
+                    var errorString = FileExchange.shareContent(Librarian.systemInfo(), "application/text", "EnrouteSystemInformation.txt")
                     if (errorString === "abort") {
                         toast.doToast(qsTr("Aborted"))
                         return

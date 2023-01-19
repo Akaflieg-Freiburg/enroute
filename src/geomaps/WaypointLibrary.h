@@ -217,7 +217,7 @@ namespace GeoMaps
         QString stdFileName{QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/waypoint library.geojson"};
 
         // Acutual list of waypoints.
-        QVector<GeoMaps::Waypoint> m_waypoints;
+        QList<GeoMaps::Waypoint> m_waypoints;
     };
 
 } // namespace GeoMaps

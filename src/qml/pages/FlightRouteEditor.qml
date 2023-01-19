@@ -145,7 +145,7 @@ Page {
         ColumnLayout {
             id: grid
 
-            property var leg: ({});
+            property leg leg: ({});
 
             Layout.fillWidth: true
 

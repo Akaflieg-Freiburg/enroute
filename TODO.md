@@ -11,7 +11,7 @@
 
 # Bug Fixing
 
----
+* Fix problems with PDF version of the manual
 
 
 # New Features

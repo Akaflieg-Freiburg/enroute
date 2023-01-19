@@ -91,7 +91,7 @@ CenteringDialog {
             Layout.preferredHeight: contentHeight
 
             clip: true
-            model: global.librarian().entries(Librarian.Routes)
+            model: Librarian.entries(Librarian.Routes)
             ScrollIndicator.vertical: ScrollIndicator {}
 
             delegate: fileDelegate
@@ -114,7 +114,7 @@ CenteringDialog {
         if (fileName.text === "")
             return
         finalFileName = fileName.text
-        if (global.librarian().exists(Librarian.Routes, finalFileName))
+        if (Librarian.exists(Librarian.Routes, finalFileName))
             overwriteDialog.open()
         else
             saveToLibrary()
@@ -126,7 +126,7 @@ CenteringDialog {
     property string finalFileName;
 
     function saveToLibrary() {
-        var errorString = Navigator.flightRoute.save(global.librarian().fullPath(Librarian.Routes, finalFileName))
+        var errorString = Navigator.flightRoute.save(Librarian.fullPath(Librarian.Routes, finalFileName))
         if (errorString !== "") {
             lbl.text = errorString
             fileError.open()

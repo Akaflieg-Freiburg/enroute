@@ -91,7 +91,7 @@ CenteringDialog {
             Layout.preferredHeight: contentHeight
 
             clip: true
-            model: global.librarian().entries(Librarian.Aircraft)
+            model: Librarian.entries(Librarian.Aircraft)
             ScrollIndicator.vertical: ScrollIndicator {}
 
             delegate: fileDelegate
@@ -114,7 +114,7 @@ CenteringDialog {
         if (fileName.text === "")
             return
         finalFileName = fileName.text
-        if (global.librarian().exists(Librarian.Aircraft, finalFileName))
+        if (Librarian.exists(Librarian.Aircraft, finalFileName))
             overwriteDialog.open()
         else
             saveToLibrary()
@@ -126,7 +126,7 @@ CenteringDialog {
     property string finalFileName;
 
     function saveToLibrary() {
-        var errorString = Navigator.aircraft.save(global.librarian().fullPath(Librarian.Aircraft, finalFileName))
+        var errorString = Navigator.aircraft.save(Librarian.fullPath(Librarian.Aircraft, finalFileName))
         if (errorString !== "") {
             lbl.text = errorString
             fileError.open()

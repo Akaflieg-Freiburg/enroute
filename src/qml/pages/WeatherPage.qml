@@ -271,7 +271,7 @@ Page {
             Label {
                 id: t1
                 width: parent.width
-                text: global.librarian().getStringFromRessource(":text/weatherPermissions.html")
+                text: Librarian.getStringFromRessource(":text/weatherPermissions.html")
                 leftPadding: view.font.pixelSize
                 rightPadding: view.font.pixelSize
                 topPadding: 2*view.font.pixelSize

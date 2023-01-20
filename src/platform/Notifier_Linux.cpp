@@ -126,12 +126,12 @@ void Platform::Notifier::hideNotification(Platform::Notifier_Abstract::Notificat
 void Platform::Notifier::onActionInvoked(uint /*unused*/, const QString &key)
 {
 
-    if (key == QLatin1String("GeoMap_Dismiss")) {
+    if (key == u"GeoMap_Dismiss"_qs) {
         // The method onNotificationClosed will later be called. The following line ensures
         // that the signal notificationClicked() is then no longer emitted.
         notificationIDs.remove(GeoMapUpdatePending);
     }
-    if (key == QLatin1String("GeoMap_Update")) {
+    if (key == u"GeoMap_Update"_qs) {
         emit action(GeoMapUpdatePending_UpdateRequested);
 
         // The method onNotificationClosed will later be called. The following line ensures

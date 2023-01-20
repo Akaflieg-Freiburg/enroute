@@ -78,7 +78,7 @@ Page {
                 topPadding: font.pixelSize*1
                 leftPadding: font.pixelSize*0.5
                 rightPadding: font.pixelSize*0.5
-                onLinkActivated: Qt.openUrlExternally(link)
+                onLinkActivated: (link) => Qt.openUrlExternally(link)
             }
         }
         
@@ -95,7 +95,7 @@ Page {
                 topPadding: font.pixelSize*1
                 leftPadding: font.pixelSize*0.5
                 rightPadding: font.pixelSize*0.5
-                onLinkActivated: Qt.openUrlExternally(link)
+                onLinkActivated: (link) => Qt.openUrlExternally(link)
             }
         }
 
@@ -113,7 +113,7 @@ Page {
                 topPadding: font.pixelSize*1
                 leftPadding: font.pixelSize*0.5
                 rightPadding: font.pixelSize*0.5
-                onLinkActivated: Qt.openUrlExternally(link)
+                onLinkActivated: (link) => Qt.openUrlExternally(link)
             }
         }
 
@@ -134,7 +134,7 @@ Page {
                     topPadding: font.pixelSize*1
                     leftPadding: font.pixelSize*0.5
                     rightPadding: font.pixelSize*0.5
-                    onLinkActivated: Qt.openUrlExternally(link)
+                    onLinkActivated: (link) => Qt.openUrlExternally(link)
                 }
             }
 
@@ -161,7 +161,6 @@ Page {
                 }
             }
         }
-
 
     } // StackView
 } // Page

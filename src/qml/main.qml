@@ -626,11 +626,12 @@ ApplicationWindow {
 
             function onRequestClosePages() {
                 stackView.pop()
+                whatsNewDialog.close()
             }
 
             function onRequestOpenAircraftPage() {
                 stackView.pop()
-                stackView.push("pages/Aircraft.qml")
+                stackView.push("pages/AircraftPage.qml")
             }
 
             function onRequestOpenNearbyPage() {

@@ -139,8 +139,10 @@ auto main(int argc, char *argv[]) -> int
     parser.setApplicationDescription(QCoreApplication::translate("main", "Enroute Flight Navigation is a free nagivation app for VFR pilots,\ndeveloped as a project of Akaflieg Freiburg."));
     parser.addHelpOption();
     parser.addVersionOption();
-    QCommandLineOption screenshotOption(QStringLiteral("s"), QCoreApplication::translate("main", "Run simulator and generate screenshots for manual"));
-    parser.addOption(screenshotOption);
+    QCommandLineOption googlePlayScreenshotOption(QStringLiteral("sg"), QCoreApplication::translate("main", "Run simulator and generate screenshots for GooglePlay"));
+    parser.addOption(googlePlayScreenshotOption);
+    QCommandLineOption manualScreenshotOption(QStringLiteral("sm"), QCoreApplication::translate("main", "Run simulator and generate screenshots for the manual"));
+    parser.addOption(manualScreenshotOption);
     parser.addPositionalArgument(QStringLiteral("[fileName]"), QCoreApplication::translate("main", "File to import."));
     parser.process(app);
     auto positionalArguments = parser.positionalArguments();
@@ -189,10 +191,15 @@ auto main(int argc, char *argv[]) -> int
     engine->rootContext()->setContextProperty(QStringLiteral("global"), new GlobalObject(engine) );
     engine->load(u"qrc:/qml/main.qml"_qs);
 
-    if (parser.isSet(screenshotOption))
+    if (parser.isSet(googlePlayScreenshotOption))
     {
         GlobalObject::demoRunner()->setEngine(engine);
-        QTimer::singleShot(1s, GlobalObject::demoRunner(), &DemoRunner::run);
+        QTimer::singleShot(1s, GlobalObject::demoRunner(), &DemoRunner::generateGooglePlayScreenshots);
+    }
+    if (parser.isSet(manualScreenshotOption))
+    {
+        GlobalObject::demoRunner()->setEngine(engine);
+        QTimer::singleShot(1s, GlobalObject::demoRunner(), &DemoRunner::generateManualScreenshots);
     }
 
     // Load GUI and enter event loop

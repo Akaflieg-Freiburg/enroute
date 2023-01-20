@@ -76,7 +76,7 @@ auto findQQuickItem(const QString &objectName, QQmlApplicationEngine* engine) ->
 }
 
 
-void DemoRunner::run()
+void DemoRunner::generateGooglePlayScreenshots()
 {
 #if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
     Q_ASSERT(m_engine != nullptr);
@@ -131,32 +131,29 @@ void DemoRunner::run()
 
         foreach(auto device, devices)
         {
-            foreach(auto language, languages)
+            auto language = QLocale::system().name();
             {
-                if (device == QLatin1String("phone"))
+                if (device == u"phone"_qs)
                 {
                     applicationWindow->setProperty("width", 1080/2.5);
                     applicationWindow->setProperty("height", 1920/2.5);
                 }
-                if (device == QLatin1String("sevenInch")) {
+                if (device == u"sevenInch"_qs) {
                     applicationWindow->setProperty("width", 1920/2);
                     applicationWindow->setProperty("height", 1200/2);
                 }
-                if (device == QLatin1String("tenInch")) {
+                if (device == u"tenInch"_qs) {
                     applicationWindow->setProperty("width", 1920/2);
                     applicationWindow->setProperty("height", 1200/2);
                 }
 
 
-                qWarning() << "Generating screenshots for Google Play" << language;
+                qWarning() << "Generating screenshots for Google Play" << device;
                 int count = 1;
 
                 // Generate directory
                 QDir dir;
                 dir.mkpath(QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots").arg(language, device));
-
-                // Set language
-                setLanguage(language);
 
                 // Enroute near EDSB
                 {
@@ -274,14 +271,64 @@ void DemoRunner::run()
         }
     } // Google Play
 
+    // Done. Terminate the program.
+    QApplication::exit();
+#endif
+}
+
+
+void DemoRunner::generateManualScreenshots()
+{
+#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
+    Q_ASSERT(m_engine != nullptr);
+
+    emit requestClosePages();
+
+    // Obtain pointers to QML items
+    auto* applicationWindow = qobject_cast<QQuickWindow*>(findQQuickItem(QStringLiteral("applicationWindow"), m_engine));
+    Q_ASSERT(applicationWindow != nullptr);
+    auto* flightMap = findQQuickItem(QStringLiteral("flightMap"), m_engine);
+    Q_ASSERT(flightMap != nullptr);
+    auto* waypointDescription = findQQuickItem(QStringLiteral("waypointDescription"), m_engine);
+    Q_ASSERT(waypointDescription != nullptr);
+
+    // Set up traffic simulator
+    GlobalObject::globalSettings()->setPositioningByTrafficDataReceiver(true);
+    auto* trafficSimulator = new Traffic::TrafficDataSource_Simulate();
+    GlobalObject::trafficDataProvider()->addDataSource( trafficSimulator );
+    trafficSimulator->connectToTrafficReceiver();
+    delay(5s);
+
+    // Set up aircraft
+    Navigation::Aircraft acft;
+    acft.setName(QStringLiteral("D-EULL"));
+    acft.setHorizontalDistanceUnit(Navigation::Aircraft::NauticalMile);
+    acft.setVerticalDistanceUnit(Navigation::Aircraft::Feet);
+    acft.setFuelConsumptionUnit(Navigation::Aircraft::LiterPerHour);
+    acft.setCruiseSpeed(Units::Speed::fromKN(90));
+    acft.setDescentSpeed(Units::Speed::fromKN(120));
+    acft.setMinimumSpeed(Units::Speed::fromKN(65));
+    acft.setFuelConsumption(Units::VolumeFlow::fromLPH(18));
+    GlobalObject::navigator()->setAircraft(acft);
+
+    // Set up wind
+    Weather::Wind wind;
+    wind.setDirectionFrom( Units::Angle::fromDEG(210) );
+    wind.setSpeed( Units::Speed::fromKN(10) );
+    GlobalObject::navigator()->setWind(wind);
+
+    // Set up route
+    GlobalObject::navigator()->flightRoute()->clear();
+
+    // Settings
+    GlobalObject::globalSettings()->setAirspaceAltitudeLimit({});
+    GlobalObject::globalSettings()->setHideGlidingSectors(true);
+
 
     //
     // GENERATE SCREENSHOTS FOR MANUAL
     //
     qWarning() << "Generating screenshots for manual";
-
-    // Set language
-    setLanguage(QStringLiteral("en"));
 
     // Resize window
     applicationWindow->setProperty("width", 400);
@@ -461,38 +508,5 @@ void DemoRunner::run()
 
     // Done. Terminate the program.
     QApplication::exit();
-}
-
-
-void DemoRunner::setLanguage(const QString& language)
-{
-    Q_ASSERT(m_engine != nullptr);
-
-    // Delete existing translators
-    foreach(auto translator, qApp->findChildren<QTranslator*>())
-    {
-        if (QCoreApplication::removeTranslator(translator))
-        {
-            delete translator;
-        }
-    }
-
-    auto* enrouteTranslator = new QTranslator(qApp);
-    if ( enrouteTranslator->load(QStringLiteral(":i18n/enroute_%1.qm").arg(language.left(2))) )
-    {
-        QCoreApplication::installTranslator(enrouteTranslator);
-    }
-    enrouteTranslator = new QTranslator(qApp);
-    if (enrouteTranslator->load(QStringLiteral(":i18n/qtbase_%1.qm").arg(language.left(2))))
-    {
-        QCoreApplication::installTranslator(enrouteTranslator);
-    }
-    enrouteTranslator = new QTranslator(qApp);
-    if (enrouteTranslator->load(QStringLiteral(":i18n/qtdeclarative_%1.qm").arg(language.left(2))))
-    {
-        QCoreApplication::installTranslator(enrouteTranslator);
-    }
-
-    m_engine->retranslate();
 #endif
 }

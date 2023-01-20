@@ -58,7 +58,10 @@ public:
 
 public slots:
     // Begin to remote-control the app
-    void run();
+    void generateGooglePlayScreenshots();
+
+    // Begin to remote-control the app
+    void generateManualScreenshots();
 
 signals:
     /*! \brief Emitted to indicate that the GUI should open the "Add Waypoint" dialog */
@@ -81,9 +84,6 @@ signals:
 
 private:
     Q_DISABLE_COPY_MOVE(DemoRunner)
-
-    // Install translators for a new language
-    void setLanguage(const QString& language);
 
     QPointer<QQmlApplicationEngine> m_engine;
 };

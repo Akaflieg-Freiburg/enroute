@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019--2023 by Stefan Kebekus                            *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -44,7 +44,8 @@
 using namespace std::chrono_literals;
 
 
-DemoRunner::DemoRunner(QObject *parent) : QObject(parent) {
+DemoRunner::DemoRunner(QObject *parent) : QObject(parent)
+{
 
 }
 
@@ -59,12 +60,15 @@ void delay(std::chrono::milliseconds ms)
 
 auto findQQuickItem(const QString &objectName, QQmlApplicationEngine* engine) -> QObject*
 {
-    foreach (auto rootItem, engine->rootObjects()) {
-        if (rootItem->objectName() == objectName) {
+    foreach (auto rootItem, engine->rootObjects())
+    {
+        if (rootItem->objectName() == objectName)
+        {
             return rootItem;
         }
         auto *objectPtr = rootItem->findChild<QObject*>(objectName);
-        if (objectPtr != nullptr) {
+        if (objectPtr != nullptr)
+        {
             return objectPtr;
         }
     }
@@ -125,9 +129,12 @@ void DemoRunner::run()
         QStringList languages = {"de-DE", "en-US", "fr-FR", "it-IT", "pl-PL"};
         QStringList devices = {"phone", "sevenInch", "tenInch"};
 
-        foreach(auto device, devices) {
-            foreach(auto language, languages) {
-                if (device == QLatin1String("phone")) {
+        foreach(auto device, devices)
+        {
+            foreach(auto language, languages)
+            {
+                if (device == QLatin1String("phone"))
+                {
                     applicationWindow->setProperty("width", 1080/2.5);
                     applicationWindow->setProperty("height", 1920/2.5);
                 }
@@ -462,16 +469,30 @@ void DemoRunner::setLanguage(const QString &language){
     Q_ASSERT(m_engine != nullptr);
 
     // Delete existing translators
-    foreach(auto translator, qApp->findChildren<QTranslator*>()) {
-        if (QCoreApplication::removeTranslator(translator)) {
+    foreach(auto translator, qApp->findChildren<QTranslator*>())
+    {
+        if (QCoreApplication::removeTranslator(translator))
+        {
             delete translator;
         }
     }
 
     auto* enrouteTranslator = new QTranslator(qApp);
-    if ( enrouteTranslator->load(QStringLiteral(":enroute_%1.qm").arg(language.left(2))) ) {
+    if ( enrouteTranslator->load(QStringLiteral(":enroute_%1.qm").arg(language.left(2))) )
+    {
         QCoreApplication::installTranslator(enrouteTranslator);
     }
+    enrouteTranslator = new QTranslator(qApp);
+    if (enrouteTranslator->load(QStringLiteral(":i18n/qtbase_%1.qm").arg(QLocale::system().name().left(2))))
+    {
+        QCoreApplication::installTranslator(enrouteTranslator);
+    }
+    enrouteTranslator = new QTranslator(qApp);
+    if (enrouteTranslator->load(QStringLiteral(":i18n/qtdeclarative_%1.qm").arg(QLocale::system().name().left(2))))
+    {
+        QCoreApplication::installTranslator(enrouteTranslator);
+    }
+
     m_engine->retranslate();
 #endif
 }

@@ -81,6 +81,8 @@ void DemoRunner::generateGooglePlayScreenshots()
 #if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
     Q_ASSERT(m_engine != nullptr);
 
+    emit requestClosePages();
+
     // Obtain pointers to QML items
     auto* applicationWindow = qobject_cast<QQuickWindow*>(findQQuickItem(QStringLiteral("applicationWindow"), m_engine));
     Q_ASSERT(applicationWindow != nullptr);

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,12 +20,12 @@
 
 #pragma once
 
+#include <QQmlEngine>
+
 #include "FlightRoute.h"
 #include "GlobalObject.h"
-#include "navigation/Clock.h"
 #include "navigation/FlightRoute.h"
 #include "navigation/RemainingRouteInfo.h"
-#include "positioning/PositionInfo.h"
 
 
 namespace Navigation {
@@ -40,9 +40,10 @@ namespace Navigation {
 class Navigator : public GlobalObject
 {
     Q_OBJECT
+    QML_ELEMENT
+    QML_SINGLETON
 
 public:
-
     /*! \brief FlightStatus */
     enum FlightStatus
       {
@@ -60,13 +61,22 @@ public:
      *
      * @param parent The standard QObject parent pointer
      */
-    explicit Navigator(QObject *parent = nullptr);
+    explicit Navigator(QObject* parent = nullptr);
+
+    // deferred initialization
+    void deferredInitialization() override;
+
+    // No default constructor, important for QML singleton
+    explicit Navigator() = delete;
 
     /*! \brief Standard destructor */
     ~Navigator() override = default;
 
-    // deferred initialization
-    void deferredInitialization() override;
+    // factory function for QML singleton
+    static Navigation::Navigator* create(QQmlEngine*, QJSEngine*)
+    {
+        return GlobalObject::navigator();
+    }
 
 
     //
@@ -79,13 +89,6 @@ public:
      *  QML ownership has been set to QQmlEngine::CppOwnership.
      */
     Q_PROPERTY(Navigation::Aircraft aircraft READ aircraft WRITE setAircraft NOTIFY aircraftChanged)
-
-    /*! \brief Global clock
-     *
-     *  The clock returned here is owned by this class and must not be deleted.
-     *  QML ownership has been set to QQmlEngine::CppOwnership.
-     */
-    Q_PROPERTY(Navigation::Clock* clock READ clock CONSTANT)
 
     /*! \brief Current flight route
      *
@@ -117,12 +120,6 @@ public:
      *  @returns Property aircraft
      */
     [[nodiscard]] auto aircraft() const -> Navigation::Aircraft { return m_aircraft; }
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property clock
-     */
-    auto clock() -> Navigation::Clock*;
 
     /*! \brief Getter function for the property with the same name
      *
@@ -191,16 +188,16 @@ signals:
 
 private slots:
     // Check if altitude limit for flight maps needs to be lifted. Connected to positioning source.
-    void updateAltitudeLimit(const Positioning::PositionInfo& info);
+    void updateAltitudeLimit();
 
     // Update flight status. Connected to positioning source.
-    void updateFlightStatus(const Positioning::PositionInfo& info);
+    void updateFlightStatus();
 
     // Setter method. Only use this method to write to m_remainingRouteInfo
     void setRemainingRouteInfo(const Navigation::RemainingRouteInfo& rrInfo);
 
     // Re-computes the Remaining Route Info. The argument must be the current position info of the own aircraft.
-    void updateRemainingRouteInfo(const Positioning::PositionInfo& info);
+    void updateRemainingRouteInfo();
 
 private:
     Q_DISABLE_COPY_MOVE(Navigator)
@@ -214,7 +211,6 @@ private:
     FlightStatus m_flightStatus {Unknown};
 
     Aircraft m_aircraft {};
-    QPointer<Clock> m_clock {nullptr};
     QPointer<FlightRoute> m_flightRoute {nullptr};
     Weather::Wind m_wind {};
 

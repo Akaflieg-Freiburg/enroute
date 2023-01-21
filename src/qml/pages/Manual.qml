@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,11 +18,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Layouts 1.15
-import QtWebView 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Layouts
+import QtWebView
+
+import akaflieg_freiburg.enroute
 
 Page {
     id: pg
@@ -33,7 +35,11 @@ Page {
 
         Material.background: "white"
         Material.foreground: "teal"
-        height: 60
+
+        height: 60 + SafeInsets.top
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
+        topPadding: SafeInsets.top
 
         ToolButton {
             id: closeButton
@@ -44,7 +50,7 @@ Page {
             icon.source: "/icons/material/ic_clear.svg"
 
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 stackView.pop()
             }
         }
@@ -98,9 +104,11 @@ Page {
         id: webView
 
         anchors.fill: parent
+        anchors.bottomMargin: SafeInsets.bottom
 
         url: "file://" + manual_location + "/"  + pg.fileName
     }
+
 
     Keys.onReleased: {
         if (event.key === Qt.Key_Back) {

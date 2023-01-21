@@ -18,21 +18,23 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 
+import akaflieg_freiburg.enroute
 import enroute 1.0
+import "../dialogs"
 import "../pages"
 
 Item {
     id: importManager
 
     property string filePath: ""
-    property int fileFunction: FileExchange_Abstract.UnknownFunction
+    property int fileFunction: FileExchange.UnknownFunction
 
     Connections {
-        target: global.fileExchange()
+        target: FileExchange
 
         function onOpenFileRequest(fileName, fileFunction) {
             view.raise()
@@ -43,25 +45,25 @@ Item {
             if (fileName === "")
                 return
 
-            if (fileFunction === FileExchange_Abstract.WaypointLibrary) {
+            if (fileFunction === FileExchange.WaypointLibrary) {
                 importWPLibraryDialog.open()
                 return
             }
-            if (fileFunction === FileExchange_Abstract.FlightRouteOrWaypointLibrary) {
+            if (fileFunction === FileExchange.FlightRouteOrWaypointLibrary) {
                 chooseFRorWPDialog.open()
                 return
             }
 
-            if (fileFunction === FileExchange_Abstract.VectorMap) {
+            if (fileFunction === FileExchange.VectorMap) {
                 importVectorMapDialog.open()
                 return
             }
-            if (fileFunction === FileExchange_Abstract.RasterMap) {
+            if (fileFunction === FileExchange.RasterMap) {
                 importRasterMapDialog.open()
                 return
             }
-            if (fileFunction === FileExchange_Abstract.FlightRoute) {
-                if (global.navigator().flightRoute.size > 0)
+            if (fileFunction === FileExchange.FlightRoute) {
+                if (Navigator.flightRoute.size > 0)
                     importFlightRouteDialog.open()
                 else
                     importFlightRouteDialog.onAccepted()
@@ -72,22 +74,14 @@ Item {
             errorDialog.open()
             return
         }
-    } // Connections
+    }
 
-    Dialog {
+    CenteringDialog {
         id: chooseFRorWPDialog
 
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(view.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: Math.min(view.height-view.font.pixelSize, implicitHeight)
-
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 5.15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
-
         title: qsTr("Import Waypoint Data")
+        standardButtons: Dialog.Abort
+        modal: true
 
         ColumnLayout {
             anchors.fill: parent
@@ -108,10 +102,10 @@ Item {
                 text: qsTr("Route")
 
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
-                    importManager.fileFunction = FileExchange_Abstract.FlightRoute
+                    PlatformAdaptor.vibrateBrief()
+                    importManager.fileFunction = FileExchange.FlightRoute
                     chooseFRorWPDialog.close()
-                    if (global.navigator().flightRoute.size > 0)
+                    if (Navigator.flightRoute.size > 0)
                         importFlightRouteDialog.open()
                     else
                         importFlightRouteDialog.onAccepted()
@@ -122,8 +116,8 @@ Item {
                     text: qsTr("Library")
 
                     onClicked: {
-                        global.platformAdaptor().vibrateBrief()
-                        importManager.fileFunction = FileExchange_Abstract.WaypointLibrary
+                        PlatformAdaptor.vibrateBrief()
+                        importManager.fileFunction = FileExchange.WaypointLibrary
                         chooseFRorWPDialog.close()
                         importWPLibraryDialog.open()
                     }
@@ -132,25 +126,14 @@ Item {
             onRejected: close()
         }
 
-
-        standardButtons: Dialog.Abort
-        modal: true
     }
 
-    Dialog {
+    CenteringDialog {
         id: importRasterMapDialog
 
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(view.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: Math.min(view.height-view.font.pixelSize, implicitHeight)
-
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 5.15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
-
         title: qsTr("Import Raster Map")
+        standardButtons: Dialog.Ok | Dialog.Cancel
+        modal: true
 
         ColumnLayout {
             anchors.fill: parent
@@ -189,16 +172,13 @@ Item {
             }
         }
 
-        standardButtons: Dialog.Ok | Dialog.Cancel
-        modal: true
-
         onAboutToShow: {
             mapNameRaster.text = ""
             importRasterMapDialog.standardButton(DialogButtonBox.Ok).enabled = false
         }
 
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
 
             var errorString = global.dataManager().import(importManager.filePath, mapNameRaster.text)
             if (errorString !== "") {
@@ -208,23 +188,14 @@ Item {
             }
             toast.doToast( qsTr("Raster map imported") )
         }
-
     }
 
-    Dialog {
+    CenteringDialog {
         id: importVectorMapDialog
 
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(view.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: Math.min(view.height-view.font.pixelSize, implicitHeight)
-
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 5.15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
-
         title: qsTr("Import Vector Map")
+        standardButtons: Dialog.Ok | Dialog.Cancel
+        modal: true
 
         ColumnLayout {
             anchors.fill: parent
@@ -263,16 +234,13 @@ Item {
             }
         }
 
-        standardButtons: Dialog.Ok | Dialog.Cancel
-        modal: true
-
         onAboutToShow: {
             mapNameVector.text = ""
             importRasterMapDialog.standardButton(DialogButtonBox.Ok).enabled = false
         }
 
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
 
             var errorString = global.dataManager().import(importManager.filePath, mapNameVector.text)
             if (errorString !== "") {
@@ -285,20 +253,13 @@ Item {
 
     }
 
-    Dialog {
+    CenteringDialog {
         id: importWPLibraryDialog
 
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(view.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: Math.min(view.height-view.font.pixelSize, implicitHeight)
-
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 5.15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
-
         title: qsTr("Import Waypoint Library")
+
+        standardButtons: Dialog.Ok | Dialog.Cancel
+        modal: true
 
         ColumnLayout {
             anchors.fill: parent
@@ -312,11 +273,8 @@ Item {
 
         }
 
-        standardButtons: Dialog.Ok | Dialog.Cancel
-        modal: true
-
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
 
             var errorString = global.waypointLibrary().import(importManager.filePath, skip.checked)
             if (errorString !== "") {
@@ -331,23 +289,14 @@ Item {
             }
             toast.doToast( qsTr("Waypoints imported") )
         }
-
     }
 
-    Dialog {
+    CenteringDialog {
         id: importFlightRouteDialog
 
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(view.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: Math.min(view.height-view.font.pixelSize, implicitHeight)
-
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 5.15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
-
         title: qsTr("Import Flight Route?")
+        standardButtons: Dialog.No | Dialog.Yes
+        modal: true
 
         Label {
             id: lbl
@@ -359,16 +308,13 @@ Item {
             textFormat: Text.StyledText
         }
 
-        standardButtons: Dialog.No | Dialog.Yes
-        modal: true
-
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
 
             var errorString = ""
 
-            if (importManager.fileFunction === FileExchange_Abstract.FlightRoute)
-                errorString = global.navigator().flightRoute.load(importManager.filePath)
+            if (importManager.fileFunction === FileExchange.FlightRoute)
+                errorString = Navigator.flightRoute.load(importManager.filePath)
 
             if (errorString !== "") {
                 errLbl.text = errorString
@@ -381,21 +327,10 @@ Item {
             }
             toast.doToast( qsTr("Flight route imported") )
         }
-
     }
 
-    Dialog {
+    CenteringDialog {
         id: errorDialog
-
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(view.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: Math.min(view.height-view.font.pixelSize, implicitHeight)
-
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
 
         standardButtons: Dialog.Cancel
         modal: true
@@ -410,7 +345,6 @@ Item {
             wrapMode: Text.Wrap
             textFormat: Text.StyledText
         }
-
     }
 
 }

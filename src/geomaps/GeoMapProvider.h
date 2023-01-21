@@ -22,12 +22,14 @@
 
 #include <QCache>
 #include <QFuture>
+#include <QImage>
+#include <QTimer>
 #include <QTemporaryFile>
 #include <QTimer>
 
 #include "Airspace.h"
 #include "Librarian.h"
-#include "Settings.h"
+#include "GlobalSettings.h"
 #include "TileServer.h"
 #include "Waypoint.h"
 #include "dataManagement/DataManager.h"
@@ -79,10 +81,10 @@ namespace GeoMaps
     //
 
     /*! \brief List of base map MBTILES */
-    Q_PROPERTY(QVector<QPointer<GeoMaps::MBTILES>> baseMapRasterTiles READ baseMapRasterTiles NOTIFY baseMapTilesChanged)
+    Q_PROPERTY(QList<QPointer<GeoMaps::MBTILES>> baseMapRasterTiles READ baseMapRasterTiles NOTIFY baseMapTilesChanged)
 
     /*! \brief List of base map MBTILES */
-    Q_PROPERTY(QVector<QPointer<GeoMaps::MBTILES>> baseMapVectorTiles READ baseMapVectorTiles NOTIFY baseMapTilesChanged)
+    Q_PROPERTY(QList<QPointer<GeoMaps::MBTILES>> baseMapVectorTiles READ baseMapVectorTiles NOTIFY baseMapTilesChanged)
 
     /*! \brief Copyright notice for the map
      *
@@ -110,7 +112,14 @@ namespace GeoMaps
     Q_PROPERTY(QString styleFileURL READ styleFileURL NOTIFY styleFileURLChanged)
 
     /*! \brief List of terrain map MBTILES */
-    Q_PROPERTY(QVector<QPointer<GeoMaps::MBTILES>> terrainMapTiles READ terrainMapTiles NOTIFY terrainMapTilesChanged)
+    Q_PROPERTY(QList<QPointer<GeoMaps::MBTILES>> terrainMapTiles READ terrainMapTiles NOTIFY terrainMapTilesChanged)
+
+    /*! \brief Waypoints
+     *
+     * A list of all waypoints known to this GeoMapProvider (that is,
+     * the union of all waypoints in any of the installed maps)
+     */
+    Q_PROPERTY(QList<GeoMaps::Waypoint> waypoints READ waypoints NOTIFY waypointsChanged)
 
 
     //
@@ -121,7 +130,7 @@ namespace GeoMaps
      *
      * @returns Property baseMapRasterTiles
      */
-    QVector<QPointer<GeoMaps::MBTILES>> baseMapRasterTiles() const
+    [[nodiscard]] QList<QPointer<GeoMaps::MBTILES>> baseMapRasterTiles() const
     {
         return m_baseMapRasterTiles;
     }
@@ -130,38 +139,44 @@ namespace GeoMaps
      *
      * @returns Property baseMapVectorTiles
      */
-    QVector<QPointer<GeoMaps::MBTILES>> baseMapVectorTiles() const
+    [[nodiscard]] QList<QPointer<GeoMaps::MBTILES>> baseMapVectorTiles() const
     {
         return m_baseMapVectorTiles;
     }
-
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property copyrightNotice
      */
-    static auto copyrightNotice() -> QString;
+    [[nodiscard]] static auto copyrightNotice() -> QString;
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property geoJSON
      */
-    auto geoJSON() -> QByteArray;
+    [[nodiscard]] auto geoJSON() -> QByteArray;
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property styleFileURL
      */
-    auto styleFileURL() const -> QString;
+    [[nodiscard]] auto styleFileURL() const -> QString;
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property terrainMapTiles
      */
-    QVector<QPointer<GeoMaps::MBTILES>> terrainMapTiles() const
+    [[nodiscard]] auto terrainMapTiles() const -> QList<QPointer<GeoMaps::MBTILES>>
     {
         return m_terrainMapTiles;
     }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property waypoints
+     */
+    [[nodiscard]] auto waypoints() -> QList<Waypoint>;
+
 
     //
     // Methods
@@ -210,7 +225,7 @@ namespace GeoMaps
      *  @return Elevation of the terrain at coordinate over MSP, or
      *  NaN if the terrain elevation is unknown
      */
-    [[nodiscard]] Q_INVOKABLE Units::Distance terrainElevationAMSL(const QGeoCoordinate& coordinate);
+    Q_INVOKABLE [[nodiscard]] Units::Distance terrainElevationAMSL(const QGeoCoordinate& coordinate);
 
     /*! \brief Create empty GeoJSON document
      *
@@ -249,14 +264,8 @@ namespace GeoMaps
      * 20 items.  For better cooperation with QML the list does not contain
      * elements of type Waypoint*, but elements of type QObject*
      */
-    Q_INVOKABLE QVariantList nearbyWaypoints(const QGeoCoordinate &position, const QString &type);
+    Q_INVOKABLE QList<GeoMaps::Waypoint> nearbyWaypoints(const QGeoCoordinate &position, const QString &type);
 
-    /*! \brief Waypoints
-     *
-     * @returns a list of all waypoints known to this GeoMapProvider (that is,
-     * the union of all waypoints in any of the installed maps)
-     */
-    auto waypoints() -> QVector<Waypoint>;
 
   signals:
     /*! \brief Notification signal for the property with the same name */
@@ -270,6 +279,9 @@ namespace GeoMaps
 
     /*! \brief Notification signal for the property with the same name */
     void terrainMapTilesChanged();
+
+    /*! \brief Notification signal for the property with the same name */
+    void waypointsChanged();
 
   private:
     Q_DISABLE_COPY_MOVE(GeoMapProvider)
@@ -312,17 +324,17 @@ namespace GeoMaps
     //
     // MBTILES
     //
-    QVector<QPointer<GeoMaps::MBTILES>> m_baseMapVectorTiles;
-    QVector<QPointer<GeoMaps::MBTILES>> m_baseMapRasterTiles;
-    QVector<QPointer<GeoMaps::MBTILES>> m_terrainMapTiles;
+    QList<QPointer<GeoMaps::MBTILES>> m_baseMapVectorTiles;
+    QList<QPointer<GeoMaps::MBTILES>> m_baseMapRasterTiles;
+    QList<QPointer<GeoMaps::MBTILES>> m_terrainMapTiles;
 
     // The data in this group is accessed by several threads. The following
     // classes (whose names ends in an underscore) are therefore protected by
     // this mutex.
     QMutex _aviationDataMutex;
     QByteArray _combinedGeoJSON_;  // Cache: GeoJSON
-    QVector<Waypoint> _waypoints_; // Cache: Waypoints
-    QVector<Airspace> _airspaces_; // Cache: Airspaces
+    QList<Waypoint> _waypoints_; // Cache: Waypoints
+    QList<Airspace> _airspaces_; // Cache: Airspaces
 
     // TerrainImageCache
     QCache<qint64,QImage> terrainTileCache {6}; // Hold 6 tiles, roughly 1.2MB

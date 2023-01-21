@@ -25,13 +25,13 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Parcelable;
-import android.support.v4.app.ShareCompat;
-import android.support.v4.content.FileProvider;
+import androidx.core.app.ShareCompat;
+import androidx.core.content.FileProvider;
 import android.util.Log;
 import android.content.ComponentName;
 import android.content.SharedPreferences;
 
-import org.qtproject.qt5.android.QtNative;
+import org.qtproject.qt.android.QtNative;
 
 import java.io.File;
 import java.lang.String;

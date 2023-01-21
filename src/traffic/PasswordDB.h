@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2021--2023 by Stefan Kebekus                            *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,7 +21,9 @@
 #pragma once
 
 #include <QHash>
-#include <QObject>
+#include <QQmlEngine>
+
+#include "GlobalObject.h"
 
 namespace Traffic {
 
@@ -34,6 +36,8 @@ namespace Traffic {
  */
 class PasswordDB : public QObject {
     Q_OBJECT
+    QML_ELEMENT
+    QML_SINGLETON
 
 public:
     /*! \brief Default constructor
@@ -42,9 +46,18 @@ public:
      *
      *  @param parent The standard QObject parent pointer
      */
-    PasswordDB(QObject* parent);
+    PasswordDB(QObject* parent=nullptr);
+
+    // No default constructor, important for QML singleton
+    explicit PasswordDB() = delete;
 
     ~PasswordDB() override = default;
+
+    // factory function for QML singleton
+    static Traffic::PasswordDB* create(QQmlEngine*, QJSEngine*)
+    {
+        return GlobalObject::passwordDB();
+    }
 
 
     //

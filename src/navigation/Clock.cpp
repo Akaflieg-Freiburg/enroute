@@ -29,7 +29,7 @@
 using namespace std::chrono_literals;
 
 
-Navigation::Clock::Clock(QObject *parent) : QObject(parent)
+Navigation::Clock::Clock(QObject *parent) : GlobalObject(parent)
 {
     // We need to update the time regularly. I do not use a simple timer here that emits "timeChanged" once per minute, because I
     // want the signal to be emitted right after the full minute. So, I use a timer that once a minute set a single-shot time

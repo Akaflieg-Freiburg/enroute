@@ -22,7 +22,7 @@
 #include <QStandardPaths>
 
 #include "GlobalObject.h"
-#include "Settings.h"
+#include "GlobalSettings.h"
 #include "geomaps/GeoMapProvider.h"
 #include "navigation/Navigator.h"
 #include "positioning/PositionProvider.h"
@@ -61,25 +61,15 @@ void Navigation::Navigator::deferredInitialization()
     connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateAltitudeLimit);
     connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateFlightStatus);
     connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateRemainingRouteInfo);
-    connect(this, &Navigation::Navigator::aircraftChanged, this, [this](){ updateRemainingRouteInfo(GlobalObject::positionProvider()->positionInfo()); });
-    connect(this, &Navigation::Navigator::windChanged, this, [this](){ updateRemainingRouteInfo(GlobalObject::positionProvider()->positionInfo()); });
-    connect(flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, [this](){ updateRemainingRouteInfo(GlobalObject::positionProvider()->positionInfo()); });
+    connect(this, &Navigation::Navigator::aircraftChanged, this, [this](){ updateRemainingRouteInfo(); });
+    connect(this, &Navigation::Navigator::windChanged, this, [this](){ updateRemainingRouteInfo(); });
+    connect(flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, [this](){ updateRemainingRouteInfo(); });
 }
 
 
 //
 // Getter Methods
 //
-
-auto Navigation::Navigator::clock() -> Navigation::Clock*
-{
-    if (m_clock.isNull()) {
-        m_clock = new Navigation::Clock(this);
-        QQmlEngine::setObjectOwnership(m_clock, QQmlEngine::CppOwnership);
-    }
-    return m_clock;
-}
-
 
 auto Navigation::Navigator::flightRoute() -> FlightRoute*
 {
@@ -145,13 +135,14 @@ void Navigation::Navigator::setWind(Weather::Wind newWind)
 // Slots
 //
 
-void Navigation::Navigator::updateAltitudeLimit(const Positioning::PositionInfo& info)
+void Navigation::Navigator::updateAltitudeLimit()
 {  
+    auto info = GlobalObject::positionProvider()->positionInfo();
     if (!info.isValid()) {
         return;
     }
 
-    auto altLimit = GlobalObject::settings()->airspaceAltitudeLimit();
+    auto altLimit = GlobalObject::globalSettings()->airspaceAltitudeLimit();
     auto trueAltitude = info.trueAltitudeAMSL();
     if (altLimit.isFinite() &&
             trueAltitude.isFinite() &&
@@ -159,14 +150,15 @@ void Navigation::Navigator::updateAltitudeLimit(const Positioning::PositionInfo&
 
         // Round trueAltitude+1000ft up to nearest 500ft and set that as a new limit
         auto newAltLimit = Units::Distance::fromFT(500.0*qCeil(trueAltitude.toFeet()/500.0+2.0));
-        GlobalObject::settings()->setAirspaceAltitudeLimit(newAltLimit);
+        GlobalObject::globalSettings()->setAirspaceAltitudeLimit(newAltLimit);
         emit airspaceAltitudeLimitAdjusted();
     }
 }
 
 
-void Navigation::Navigator::updateFlightStatus(const Positioning::PositionInfo& info)
+void Navigation::Navigator::updateFlightStatus()
 {
+    auto info = GlobalObject::positionProvider()->positionInfo();
     if (!info.isValid()) {
         setFlightStatus(Unknown);
         return;
@@ -206,8 +198,10 @@ void Navigation::Navigator::setRemainingRouteInfo(const Navigation::RemainingRou
 }
 
 
-void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::PositionInfo& info)
+void Navigation::Navigator::updateRemainingRouteInfo()
 {
+    auto info = GlobalObject::positionProvider()->positionInfo();
+
     // If there are no waypoints, then there is no remaining route info
     auto geoPath = flightRoute()->geoPath();
     if (geoPath.isEmpty())
@@ -228,7 +222,7 @@ void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::Position
     }
 
     // If we are closer than 3 nm from endpoint, then we do not give a remaining route info
-    auto finalCoordinate = geoPath[geoPath.size()-1].value<QGeoCoordinate>();
+    auto finalCoordinate = geoPath[geoPath.size()-1];
     if (Units::Distance::fromM(finalCoordinate.distanceTo(info.coordinate())) < Leg::nearThreshold)
     {
         RemainingRouteInfo rrInfo;
@@ -247,7 +241,7 @@ void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::Position
     if (flightRoute()->size() == 1)
     {
         auto start = Positioning::PositionProvider::lastValidCoordinate();
-        auto end = flightRoute()->waypoints()[0].value<GeoMaps::Waypoint>();
+        auto end = flightRoute()->waypoints()[0];
         legs += Leg(start, end);
     }
 
@@ -302,6 +296,9 @@ void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::Position
     {
         auto bearing = legToNextWP.TC()-info.trueTrack();
         auto bearingDEG = bearing.toDEG();
+
+
+
         if ((bearingDEG < 30) || (bearingDEG > 360-30))
         {
             ETE = dist/(bearing.cos()*info.groundSpeed());
@@ -315,6 +312,7 @@ void Navigation::Navigator::updateRemainingRouteInfo(const Positioning::Position
     {
         rri.nextWP_ETA = QDateTime::currentDateTimeUtc().addSecs( qRound64(rri.nextWP_ETE.toS()) );
     }
+    rri.nextWP_TC = legToNextWP.TC();
 
     if (currentLeg < legs.size()-1)
     {

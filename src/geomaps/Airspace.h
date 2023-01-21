@@ -172,7 +172,7 @@ auto operator==(const GeoMaps::Airspace&, const GeoMaps::Airspace&) -> bool;
  *
  * @returns Hash value
  */
-auto qHash(const GeoMaps::Airspace& as) -> uint;
+auto qHash(const GeoMaps::Airspace& as) -> size_t;
 
 } // namespace GeoMaps
 

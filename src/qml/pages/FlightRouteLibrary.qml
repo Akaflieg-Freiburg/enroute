@@ -18,11 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Layouts
 
+import akaflieg_freiburg.enroute
 import enroute 1.0
 
 import "../dialogs"
@@ -37,7 +38,10 @@ Page {
     header: ToolBar {
 
         Material.foreground: "white"
-        height: 60
+        height: 60 + SafeInsets.top
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
+        topPadding: SafeInsets.top
 
         ToolButton {
             id: backButton
@@ -48,7 +52,7 @@ Page {
             icon.source: "/icons/material/ic_arrow_back.svg"
 
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 stackView.pop()
             }
         }
@@ -77,7 +81,7 @@ Page {
             icon.color: "white"
 
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 headerMenuX.popup()
             }
 
@@ -87,7 +91,7 @@ Page {
                 MenuItem {
                     text: qsTr("Info…")
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         infoDialog.open()
                     }
 
@@ -100,9 +104,9 @@ Page {
                     height: Qt.platform.os !== "android" ? undefined : 0
 
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         highlighted = false
-                        global.fileExchange().importContent()
+                        FileExchange.importContent()
                     }
                 }
 
@@ -119,6 +123,8 @@ Page {
         anchors.rightMargin: view.font.pixelSize*2.0
         anchors.left: parent.left
         anchors.leftMargin: view.font.pixelSize*2.0
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
 
         placeholderText: qsTr("Filter Flight Route Names")
         font.pixelSize: view.font.pixelSize*1.5
@@ -141,16 +147,16 @@ Page {
                 icon.source: "/icons/material/ic_directions.svg"
 
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     finalFileName = modelData
-                    if (global.navigator().flightRoute.size > 0)
+                    if (Navigator.flightRoute.size > 0)
                         overwriteDialog.open()
                     else
                         openFromLibrary()
                 }
 
                 swipe.onCompleted: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     finalFileName = modelData
                     removeDialog.open()
                 }
@@ -163,7 +169,7 @@ Page {
                 icon.source: "/icons/material/ic_more_horiz.svg"
 
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     cptMenu.popup()
                 }
 
@@ -177,11 +183,11 @@ Page {
                             text: qsTr("… to GeoJSON file")
                             onTriggered: {
                                 cptMenu.close()
-                                global.platformAdaptor().vibrateBrief()
+                                PlatformAdaptor.vibrateBrief()
                                 highlighted = false
                                 parent.highlighted = false
 
-                                var errorString = global.fileExchange().shareContent(global.librarian().get(Librarian.Routes, modelData).toGeoJSON(), "application/geo+json", global.librarian().get(Librarian.Routes, modelData).suggestedFilename())
+                                var errorString = FileExchange.shareContent(Librarian.get(Librarian.Routes, modelData).toGeoJSON(), "application/geo+json", Librarian.get(Librarian.Routes, modelData).suggestedFilename())
                                 if (errorString === "abort") {
                                     toast.doToast(qsTr("Aborted"))
                                     return
@@ -202,11 +208,11 @@ Page {
                             text: qsTr("… to GPX file")
                             onTriggered: {
                                 cptMenu.close()
-                                global.platformAdaptor().vibrateBrief()
+                                PlatformAdaptor.vibrateBrief()
                                 highlighted = false
                                 parent.highlighted = false
 
-                                var errorString = global.fileExchange().shareContent(global.librarian().get(Librarian.Routes, modelData).toGpx(), "application/gpx+xml", global.librarian().get(Librarian.Routes, modelData).suggestedFilename())
+                                var errorString = FileExchange.shareContent(Librarian.get(Librarian.Routes, modelData).toGpx(), "application/gpx+xml", Librarian.get(Librarian.Routes, modelData).suggestedFilename())
                                 if (errorString === "abort") {
                                     toast.doToast(qsTr("Aborted"))
                                     return
@@ -231,11 +237,11 @@ Page {
                             text: qsTr("… in GeoJSON format")
 
                             onTriggered: {
-                                global.platformAdaptor().vibrateBrief()
+                                PlatformAdaptor.vibrateBrief()
                                 highlighted = false
                                 parent.highlighted = false
 
-                                var errorString = global.fileExchange().viewContent(global.librarian().get(Librarian.Routes, modelData).toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson")
+                                var errorString = FileExchange.viewContent(Librarian.get(Librarian.Routes, modelData).toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson")
                                 if (errorString !== "") {
                                     shareErrorDialogLabel.text = errorString
                                     shareErrorDialog.open()
@@ -248,11 +254,11 @@ Page {
                             text: qsTr("… in GPX format")
 
                             onTriggered: {
-                                global.platformAdaptor().vibrateBrief()
+                                PlatformAdaptor.vibrateBrief()
                                 highlighted = false
                                 parent.highlighted = false
 
-                                var errorString = global.fileExchange().viewContent(global.librarian().get(Librarian.Routes, modelData).toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx")
+                                var errorString = FileExchange.viewContent(Librarian.get(Librarian.Routes, modelData).toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx")
                                 if (errorString !== "") {
                                     shareErrorDialogLabel.text = errorString
                                     shareErrorDialog.open()
@@ -269,7 +275,7 @@ Page {
                         id: renameAction
                         text: qsTr("Rename…")
                         onTriggered: {
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             finalFileName = modelData
                             renameName.text = modelData
                             renameDialog.open()
@@ -281,7 +287,7 @@ Page {
                         id: removeAction
                         text: qsTr("Remove…")
                         onTriggered: {
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             finalFileName = modelData
                             removeDialog.open()
                         }
@@ -300,10 +306,13 @@ Page {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
+        leftMargin: SafeInsets.left
+        rightMargin: SafeInsets.right
+        bottomMargin: SafeInsets.bottom
 
         clip: true
 
-        model: global.librarian().entries(Librarian.Routes, textInput.displayText)
+        model: Librarian.entries(Librarian.Routes, textInput.displayText)
         delegate: flightRouteDelegate
         ScrollIndicator.vertical: ScrollIndicator {}
     }
@@ -330,7 +339,7 @@ Page {
     property string finalFileName;
 
     function openFromLibrary() {
-        var errorString = global.navigator().flightRoute.load(global.librarian().fullPath(Librarian.Routes, finalFileName))
+        var errorString = Navigator.flightRoute.load(Librarian.fullPath(Librarian.Routes, finalFileName))
         if (errorString !== "") {
             lbl.text = errorString
             fileError.open()
@@ -346,54 +355,28 @@ Page {
         textInput.text = cache
     }
 
-    Dialog {
+    CenteringDialog {
         id: fileError
-
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: Math.min(parent.height-view.font.pixelSize, implicitHeight)
-
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (view.width-width)/2.0
-        y: (view.height-height)/2.0
 
         modal: true
         title: qsTr("An Error Occurred…")
         standardButtons: Dialog.Ok
 
         ScrollView{
-            id: sv
             anchors.fill: parent
-
-            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-
-            // The visibility behavior of the vertical scroll bar is a little complex.
-            // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
-            ScrollBar.vertical.policy: (height < lbl.implicitHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
-            ScrollBar.vertical.interactive: false
+            contentWidth: availableWidth // Disable horizontal scrolling
 
             clip: true
 
-            // The Label that we really want to show is wrapped into an Item. This allows
-            // to set implicitHeight, and thus compute the implicitHeight of the Dialog
-            // without binding loops
-            Item {
-                implicitHeight: lbl.implicitHeight
+            Label {
+                id: lbl
                 width: fileError.availableWidth
-
-                Label {
-                    id: lbl
-                    width: fileError.availableWidth
-                    textFormat: Text.StyledText
-                    linkColor: Material.accent
-                    wrapMode: Text.Wrap
-                    onLinkActivated: Qt.openUrlExternally(link)
-                } // Label
-            } // Item
-        } // ScrollView
-
+                textFormat: Text.StyledText
+                linkColor: Material.accent
+                wrapMode: Text.Wrap
+                onLinkActivated: Qt.openUrlExternally(link)
+            }
+        }
     }
 
     LongTextDialog {
@@ -401,24 +384,15 @@ Page {
         standardButtons: Dialog.Ok
 
         title: qsTr("Flight Route Library")
-        text: global.librarian().getStringFromRessource(":text/flightRouteLibraryInfo.html").arg(global.librarian().directory(Librarian.Routes))
+        text: Librarian.getStringFromRessource(":text/flightRouteLibraryInfo.html").arg(Librarian.directory(Librarian.Routes))
     }
 
-    Dialog {
+    CenteringDialog {
         id: overwriteDialog
 
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
-
         title: qsTr("Overwrite Current Flight Route?")
-
-        // Width is chosen so that the dialog does not cover the parent in full, height is automatic
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: Math.min(parent.height-view.font.pixelSize, implicitHeight)
+        standardButtons: Dialog.No | Dialog.Yes
+        modal: true
 
         Label {
             width: overwriteDialog.availableWidth
@@ -428,91 +402,59 @@ Page {
             textFormat: Text.StyledText
         }
 
-        standardButtons: Dialog.No | Dialog.Yes
-        modal: true
-
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             page.openFromLibrary()
         }
         onRejected: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             close()
         }
-
     }
 
-    Dialog {
+    CenteringDialog {
         id: removeDialog
 
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
-
         title: qsTr("Remove from Device?")
-
-        // Width is chosen so that the dialog does not cover the parent in full, height is automatic
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: Math.min(parent.height-view.font.pixelSize, implicitHeight)
+        standardButtons: Dialog.No | Dialog.Yes
+        modal: true
 
         Label {
-            width: overwriteDialog.availableWidth
+            width: removeDialog.availableWidth
 
             text: qsTr("Once the flight route <strong>%1</strong> is removed, it cannot be restored.").arg(page.finalFileName)
             wrapMode: Text.Wrap
             textFormat: Text.StyledText
         }
 
-        standardButtons: Dialog.No | Dialog.Yes
-        modal: true
-
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
-            global.librarian().remove(Librarian.Routes, page.finalFileName)
+            PlatformAdaptor.vibrateBrief()
+            Librarian.remove(Librarian.Routes, page.finalFileName)
             page.reloadFlightRouteList()
             toast.doToast(qsTr("Flight route removed from device"))
         }
         onRejected: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             page.reloadFlightRouteList()
             close()
         }
-
     }
 
-    Dialog {
+    CenteringDialog {
         id: renameDialog
 
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
-
         title: qsTr("Rename Flight Route")
-
         standardButtons: Dialog.Cancel
         modal: true
-        focus: true
-
-        // Width is chosen so that the dialog does not cover the parent in full, height is automatic
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: Math.min(parent.height-view.font.pixelSize, implicitHeight)
-
 
         ColumnLayout {
             width: renameDialog.availableWidth
 
             Label {
-                width: overwriteDialog.availableWidth
+                Layout.fillWidth: true
 
                 text: qsTr("Enter new name for the route <strong>%1</strong>.").arg(finalFileName)
                 color: Material.primary
-                Layout.fillWidth: true
                 wrapMode: Text.Wrap
                 textFormat: Text.StyledText
             }
@@ -528,45 +470,39 @@ Page {
                 onAccepted: renameDialog.onAccepted()
             }
 
-        } // ColumnLayout
+        }
 
         footer: DialogButtonBox {
             ToolButton {
                 id: renameButton
 
                 DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
-                enabled: (renameName.text !== "") && !(global.librarian().exists(Librarian.Routes, renameName.text))
+                enabled: (renameName.text !== "") && !(Librarian.exists(Librarian.Routes, renameName.text))
                 text: qsTr("Rename")
             }
         }
 
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
-            if ((renameName.text !== "") && !global.librarian().exists(Librarian.Routes, renameName.text)) {
-                global.librarian().rename(Librarian.Routes, finalFileName, renameName.text)
+            PlatformAdaptor.vibrateBrief()
+            if ((renameName.text !== "") && !Librarian.exists(Librarian.Routes, renameName.text)) {
+                Librarian.rename(Librarian.Routes, finalFileName, renameName.text)
                 page.reloadFlightRouteList()
                 close()
                 toast.doToast(qsTr("Flight route renamed"))
             }
         }
         onRejected: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             close()
         }
-
     }
 
-    Dialog {
+    CenteringDialog {
         id: shareErrorDialog
 
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
-
         title: qsTr("Error Exporting Data…")
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
+        standardButtons: Dialog.Ok
+        modal: true
 
         Label {
             id: shareErrorDialogLabel
@@ -575,10 +511,6 @@ Page {
             wrapMode: Text.Wrap
             textFormat: Text.StyledText
         }
-
-        standardButtons: Dialog.Ok
-        modal: true
-
     }
 
 } // Page

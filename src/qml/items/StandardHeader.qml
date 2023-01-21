@@ -18,14 +18,19 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+
+import akaflieg_freiburg.enroute
 
 ToolBar {
 
     Material.foreground: "white"
-    height: 60
+    height: 60 + SafeInsets.top
+    leftPadding: SafeInsets.left
+    rightPadding: SafeInsets.right
+    topPadding: SafeInsets.top
 
     ToolButton {
         id: backButton
@@ -36,7 +41,7 @@ ToolBar {
         icon.source: "/icons/material/ic_arrow_back.svg"
 
         onClicked: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             stackView.pop()
         }
     }

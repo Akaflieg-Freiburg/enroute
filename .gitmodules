@@ -16,7 +16,7 @@
 	url = ../enrouteText
 [submodule "3rdParty/KDSingleApplication"]
 	path = 3rdParty/KDSingleApplication
-	url = https://github.com/KDAB/KDSingleApplication.git
+	url = git@github.com:Akaflieg-Freiburg/KDSingleApplication.git
 [submodule "3rdParty/sunset"]
 	path = 3rdParty/sunset
 	url = https://github.com/buelowp/sunset.git

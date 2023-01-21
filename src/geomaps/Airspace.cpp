@@ -87,7 +87,7 @@ auto GeoMaps::Airspace::estimatedLowerBoundMSL() const -> Units::Distance
 
     QString AL = m_lowerBound.simplified();
 
-    if (AL.startsWith(QLatin1String("FL"), Qt::CaseInsensitive)) {
+    if (AL.startsWith(u"FL"_qs, Qt::CaseInsensitive)) {
         result = AL.remove(0, 2).toDouble(&ok);
         if (ok) {
             return Units::Distance::fromFT(100*result);
@@ -95,15 +95,15 @@ auto GeoMaps::Airspace::estimatedLowerBoundMSL() const -> Units::Distance
         return Units::Distance::fromFT(0.0);
     }
 
-    if (AL.endsWith(QLatin1String("msl"))) {
+    if (AL.endsWith(u"msl"_qs)) {
         AL.chop(3);
         AL = AL.simplified();
     }
-    if (AL.endsWith(QLatin1String("agl"))) {
+    if (AL.endsWith(u"agl"_qs)) {
         AL.chop(3);
         AL = AL.simplified();
     }
-    if (AL.endsWith(QLatin1String("ft"))) {
+    if (AL.endsWith(u"ft"_qs)) {
         AL.chop(2);
         AL = AL.simplified();
     }
@@ -123,7 +123,7 @@ auto GeoMaps::Airspace::makeMetric(const QString& standard) -> QString
         return standard;
     }
 
-    if (list[0] == QLatin1String("FL")) {
+    if (list[0] == u"FL") {
         if (list.size() < 2) {
             return standard;
         }
@@ -156,13 +156,12 @@ auto GeoMaps::operator==(const GeoMaps::Airspace& A, const GeoMaps::Airspace& B)
 }
 
 
-auto GeoMaps::qHash(const GeoMaps::Airspace& A) -> uint
+auto GeoMaps::qHash(const GeoMaps::Airspace& A) -> size_t
 {
-    uint result = 0;
-    result += qHash(A.name());
+    auto result = qHash(A.name());
     result += qHash(A.CAT());
     result += qHash(A.upperBound());
     result += qHash(A.lowerBound());
-    result += qHash(A.polygon().path());
+    result += qHash(A.polygon());
     return result;
 }

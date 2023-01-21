@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QQmlEngine>
 #include <QtQuick/QQuickPaintedItem>
 
 namespace Ui {
@@ -37,6 +38,7 @@ namespace Ui {
 class ScaleQuickItem : public QQuickPaintedItem
 {
   Q_OBJECT
+  QML_NAMED_ELEMENT(Scale)
 
 public:
   /*! \brief Standard constructor

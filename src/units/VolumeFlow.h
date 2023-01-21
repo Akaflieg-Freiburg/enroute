@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QObject>
+#include <QQmlEngine>
 #include <QtMath>
 
 
@@ -33,6 +34,7 @@ namespace Units {
      */
     class VolumeFlow {
         Q_GADGET
+        QML_VALUE_TYPE(volumeFlow)
 
     public:
         /*! \brief Constructs a volume flow
@@ -70,49 +72,13 @@ namespace Units {
             return std::isfinite(m_volumeFlowInLPH);
         }
 
-        /*! \brief Comparison: less than
+        /*! \brief Comparison
          *
          *  @param rhs Right hand side of the comparison
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE bool operator<(Units::VolumeFlow rhs) const
-        {
-            return m_volumeFlowInLPH < rhs.m_volumeFlowInLPH;
-        }
-
-        /*! \brief Comparison: larger equal
-         *
-         *  @param rhs Right hand side of the comparison
-         *
-         *  @returns Result of the comparison
-         */
-        Q_INVOKABLE bool operator>(Units::VolumeFlow rhs) const
-        {
-            return m_volumeFlowInLPH > rhs.m_volumeFlowInLPH;
-        }
-
-        /*! \brief Comparison: not equal
-         *
-         *  @param rhs Right hand side of the comparison
-         *
-         *  @returns Result of the comparison
-         */
-        Q_INVOKABLE bool operator!=(Units::VolumeFlow rhs) const
-        {
-            return m_volumeFlowInLPH != rhs.m_volumeFlowInLPH;
-        }
-
-        /*! \brief Comparison: equal
-         *
-         *  @param rhs Right hand side of the comparison
-         *
-         *  @returns Result of the comparison
-         */
-        Q_INVOKABLE bool operator==(Units::VolumeFlow rhs) const
-        {
-            return m_volumeFlowInLPH == rhs.m_volumeFlowInLPH;
-        }
+        Q_INVOKABLE [[nodiscard]] std::partial_ordering operator<=>(const Units::VolumeFlow& rhs) const = default;
 
         /*! \brief Convert to liters per hour
          *

@@ -33,8 +33,8 @@ auto Units::Time::toHoursAndMinutes() const -> QString {
 
     QString result;
     if (isNegative()) {
-        result += QLatin1String("-");
+        result += u"-"_qs;
     }
-    result += QStringLiteral("%1:%2").arg(hours, 1, 10, QLatin1Char('0')).arg(minutes, 2, 10, QLatin1Char('0'));
+    result += QStringLiteral("%1:%2").arg(hours, 1, 10, QChar(u'0')).arg(minutes, 2, 10, QChar(u'0'));
     return result;
 }

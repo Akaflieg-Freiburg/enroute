@@ -43,30 +43,19 @@ cd build-android-debug
 # Configure
 #
 
-cmake .. \
-      -G Ninja\
-      -DANDROID_ABI:STRING=armeabi-v7a \
-      -DANDROID_BUILD_ABI_arm64-v8a:BOOL=OFF \
-      -DANDROID_BUILD_ABI_armeabi-v7a:BOOL=ON \
-      -DANDROID_BUILD_ABI_x86:BOOL=OFF \
-      -DANDROID_BUILD_ABI_x86_64:BOOL=ON \
-      -DANDROID_NATIVE_API_LEVEL:STRING=21 \
-      -DANDROID_NDK:PATH=$ANDROID_NDK_ROOT \
-      -DANDROID_SDK:PATH=$ANDROID_SDK_ROOT \
-      -DANDROID_STL:STRING=c++_shared \
+
+export ANDROID_NDK_ROOT=$ANDROID_SDK_ROOT/ndk/23.1.7779620
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-17.0.5.0.8-1.fc37.x86_64
+
+# ~/Software/buildsystems/Qt/6.4.0/android_armv7/bin/qt-cmake .. -GNinja
+$Qt6_DIR_ANDROID\_x86_64/bin/qt-cmake .. \
+      -DQT_ANDROID_ABIS="arm64-v8a" \
+      -G Ninja \
       -DCMAKE_BUILD_TYPE:STRING=Debug \
-      -DCMAKE_CXX_COMPILER:STRING=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ \
-      -DCMAKE_CXX_FLAGS="-Wall -Wextra" \
-      -DCMAKE_C_COMPILER:STRING=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin/clang \
-      -DCMAKE_FIND_ROOT_PATH:STRING=$Qt5_DIR_ANDROID \
-      -DCMAKE_PREFIX_PATH:STRING=$Qt5_DIR_ANDROID \
-      -DCMAKE_TOOLCHAIN_FILE:PATH=$ANDROID_NDK_ROOT/build/cmake/android.toolchain.cmake \
-      -DCMAKE_UNITY_BUILD:BOOL=ON
+      -DOPENSSL_ROOT_DIR:PATH=$OPENSSL_ROOT_DIR
 
-
-# This is bizarrely necessary, or else 'android_deployment_settings.json'
-# will lack our custom AndroidManifest and the SSL libraries
-cmake ..
+# Work around a bug in CMake Script…
+#sed -i s/zipalign/31/ src/android-addhoursandminutes-deployment-settings.json
 
 
 #
@@ -74,6 +63,3 @@ cmake ..
 #
 
 ninja
-
-echo "Build APK"
-ninja apk

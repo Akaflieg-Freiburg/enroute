@@ -25,7 +25,7 @@
 
 #include "Downloadable_SingleFile.h"
 #include "GlobalObject.h"
-#include "Settings.h"
+#include "GlobalSettings.h"
 #include "geomaps/MBTILES.h"
 
 
@@ -451,7 +451,7 @@ void DataManagement::Downloadable_SingleFile::downloadFileErrorReceiver(QNetwork
 
     // Do not do anything about SSL errors; this has already been handled by the SSLErrorHandler
     if ((code == QNetworkReply::SslHandshakeFailedError) &&
-        !GlobalObject::settings()->ignoreSSLProblems())
+        !GlobalObject::globalSettings()->ignoreSSLProblems())
     {
         return;
     }

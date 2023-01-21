@@ -18,11 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Layouts
 
+import akaflieg_freiburg.enroute
 import "../items"
 
 Page {
@@ -36,12 +37,15 @@ Page {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
 
         currentIndex: sv.currentIndex
 
         TabButton { text: "Enroute" }
         TabButton { text: qsTr("Authors") }
         TabButton { text: qsTr("License") }
+        TabButton { text: qsTr("System") }
         Material.elevation: 3
     }
 
@@ -52,80 +56,108 @@ Page {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
+        anchors.bottomMargin: SafeInsets.bottom
+        anchors.leftMargin: SafeInsets.left
+        anchors.rightMargin: SafeInsets.right
 
+        clip: true
         currentIndex: bar.currentIndex
         
         ScrollView {
+            contentWidth: availableWidth // Disable horizontal scrolling
             clip: true
 
-            // The label that we really want to show is wrapped into an Item. This allows
-            // to set implicitHeight, and thus compute the implicitHeight of the Dialog
-            // without binding loops
-            Item {
-                implicitHeight: lbl1.implicitHeight
-                width: pg.width
+            Label {
+                id: lbl1
+                text: "<style>a:link { color: " + Material.accent + "; }</style>"+Librarian.getStringFromRessource(":text/info_enroute.html")
+                textFormat: Text.RichText
+                linkColor: Material.accent
+                width: sv.availableWidth
 
-                Label {
-                    id: lbl1
-                    text: "<style>a:link { color: " + Material.accent + "; }</style>"+global.librarian().getStringFromRessource(":text/info_enroute.html")
-                    textFormat: Text.RichText
-                    linkColor: Material.accent
-                    width: pg.width
-
-                    wrapMode: Text.Wrap
-                    topPadding: view.font.pixelSize*1
-                    leftPadding: view.font.pixelSize*0.5
-                    rightPadding: view.font.pixelSize*0.5
-                    onLinkActivated: Qt.openUrlExternally(link)
-                }
+                wrapMode: Text.Wrap
+                topPadding: font.pixelSize*1
+                leftPadding: font.pixelSize*0.5
+                rightPadding: font.pixelSize*0.5
+                onLinkActivated: (link) => Qt.openUrlExternally(link)
             }
         }
         
         ScrollView {
+            contentWidth: availableWidth // Disable horizontal scrolling
             clip: true
 
-            // The label that we really want to show is wrapped into an Item. This allows
-            // to set implicitHeight, and thus compute the implicitHeight of the Dialog
-            // without binding loops
-            Item {
-                implicitHeight: lbl2.implicitHeight
-                width: pg.width
-
-                Label {
-                    id: lbl2
-                    text: "<style>a:link { color: " + Material.accent + "; }</style>"+global.librarian().getStringFromRessource(":text/authors.html")
-                    textFormat: Text.RichText // Link OK
-                    width: pg.width
-                    wrapMode: Text.Wrap
-                    topPadding: view.font.pixelSize*1
-                    leftPadding: view.font.pixelSize*0.5
-                    rightPadding: view.font.pixelSize*0.5
-                    onLinkActivated: Qt.openUrlExternally(link)
-                }
+            Label {
+                id: lbl2
+                text: "<style>a:link { color: " + Material.accent + "; }</style>"+Librarian.getStringFromRessource(":text/authors.html")
+                textFormat: Text.RichText // Link OK
+                width: sv.availableWidth
+                wrapMode: Text.Wrap
+                topPadding: font.pixelSize*1
+                leftPadding: font.pixelSize*0.5
+                rightPadding: font.pixelSize*0.5
+                onLinkActivated: (link) => Qt.openUrlExternally(link)
             }
         }
 
         ScrollView {
+            contentWidth: availableWidth // Disable horizontal scrolling
             clip: true
 
-            // The label that we really want to show is wrapped into an Item. This allows
-            // to set implicitHeight, and thus compute the implicitHeight of the Dialog
-            // without binding loops
-            Item {
-                implicitHeight: lbl3.implicitHeight
-                width: pg.width
+            Label {
+                id: lbl3
+                text: "<style>a:link { color: " + Material.accent + "; }</style>"+Librarian.getStringFromRessource(":text/info_license.html")
+                textFormat: Text.RichText
+                linkColor: Material.accent
+                width: sv.availableWidth
+                wrapMode: Text.Wrap
+                topPadding: font.pixelSize*1
+                leftPadding: font.pixelSize*0.5
+                rightPadding: font.pixelSize*0.5
+                onLinkActivated: (link) => Qt.openUrlExternally(link)
+            }
+        }
+
+        ColumnLayout {
+
+            ScrollView {
+                Layout.fillHeight: true
+                Layout.preferredWidth: sv.availableWidth
+                contentWidth: availableWidth // Disable horizontal scrolling
+                clip: true
 
                 Label {
-                    id: lbl3
-                    text: "<style>a:link { color: " + Material.accent + "; }</style>"+global.librarian().getStringFromRessource(":text/info_license.html")
+                    text: "<style>a:link { color: " + Material.accent + "; }</style>" + Librarian.systemInfo()
                     textFormat: Text.RichText
                     linkColor: Material.accent
-                    width: pg.width
+                    width: sv.availableWidth
                     wrapMode: Text.Wrap
-                    topPadding: view.font.pixelSize*1
-                    leftPadding: view.font.pixelSize*0.5
-                    rightPadding: view.font.pixelSize*0.5
-                    onLinkActivated: Qt.openUrlExternally(link)
+                    topPadding: font.pixelSize*1
+                    leftPadding: font.pixelSize*0.5
+                    rightPadding: font.pixelSize*0.5
+                    onLinkActivated: (link) => Qt.openUrlExternally(link)
+                }
+            }
+
+            Button {
+                Layout.alignment: Qt.AlignHCenter
+                text: qsTr("Share Info")
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    var errorString = FileExchange.shareContent(Librarian.systemInfo(), "application/text", "EnrouteSystemInformation.txt")
+                    if (errorString === "abort") {
+                        toast.doToast(qsTr("Aborted"))
+                        return
+                    }
+                    if (errorString !== "") {
+                        shareErrorDialogLabel.text = errorString
+                        shareErrorDialog.open()
+                        return
+                    }
+                    if (Qt.platform.os === "android")
+                        toast.doToast(qsTr("System Info Shared"))
+                    else
+                        toast.doToast(qsTr("System Info Exported"))
+
                 }
             }
         }

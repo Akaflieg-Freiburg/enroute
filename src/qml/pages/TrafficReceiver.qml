@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,12 +18,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQml 2.15
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Layouts 1.15
+import QtQml
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Layouts
 
+import akaflieg_freiburg.enroute
 import enroute 1.0
 import "../dialogs"
 import "../items"
@@ -37,26 +38,20 @@ Page {
     header: StandardHeader {}
 
     ScrollView {
-        id: view
+        id: sView
 
         anchors.fill: parent
+        contentWidth: availableWidth // Disable horizontal scrolling
+
         clip: true
 
-        anchors.topMargin: view.font.pixelSize
-        anchors.bottomMargin: view.font.pixelSize
-        anchors.leftMargin: view.font.pixelSize
-        anchors.rightMargin: view.font.pixelSize
-
-        contentWidth: width
-
-        // The visibility behavior of the vertical scroll bar is a little complex.
-        // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
-        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-        ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
+        bottomPadding: view.font.pixelSize + SafeInsets.bottom
+        leftPadding: view.font.pixelSize + SafeInsets.left
+        rightPadding: view.font.pixelSize + SafeInsets.right
+        topPadding: view.font.pixelSize
 
         ColumnLayout {
-            width: view.width
-            implicitWidth: view.width
+            width: sView.availableWidth
 
             Label {
                 Layout.fillWidth: true
@@ -143,7 +138,7 @@ Page {
             Button {
                 Layout.alignment: Qt.AlignHCenter
                 icon.source: "/icons/material/ic_tap_and_play.svg"
-                text: qsTr("Connect to Traffic Receiver")
+                text: qsTr("Connect")
                 enabled: !timer.running
                 visible: !global.trafficDataProvider().receivingHeartbeat
                 onClicked: {
@@ -157,7 +152,7 @@ Page {
             }
 
             Item {
-                height: view.font.pixelSize*0.5
+                Layout.preferredHeight: view.font.pixelSize*0.5
                 Layout.columnSpan: 2
             }
 

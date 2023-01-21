@@ -18,20 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtPositioning 5.15
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Layouts 1.15
-import QtQuick.Shapes 1.15
+import QtPositioning
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Layouts
+import QtQuick.Shapes
 
+import akaflieg_freiburg.enroute
 import enroute 1.0
 
 import "../items"
 
 /* This is a dialog with detailed information about a waypoint. To use this dialog, all you have to do is to set a Waypoint in the property "waypoint" and call open(). */
 
-Dialog {
+CenteringDialog {
     id: waypointDescriptionDialog
 
     property var waypoint: global.geoMapProvider().createWaypoint()
@@ -59,17 +60,6 @@ Dialog {
             airspaceDelegate.createObject(co, {airspace: asl[i]});
     }
 
-
-    // Size is chosen so that the dialog does not cover the parent in full
-    width: Math.min(Overlay.overlay.width-view.font.pixelSize, 40*view.font.pixelSize)
-    height: Math.min(view.height-view.font.pixelSize, implicitHeight)
-
-    // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-    // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-    parent: Overlay.overlay
-    x: (parent.width-width)/2.0
-    y: (parent.height-height)/2.0
-
     modal: true
     standardButtons: Dialog.Close
     focus: true
@@ -94,7 +84,7 @@ Dialog {
             leftPadding: 0.2*view.font.pixelSize
             rightPadding: 0.2*view.font.pixelSize
             onLinkActivated: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 weatherReport.open()
             }
 
@@ -295,7 +285,7 @@ Dialog {
             Label {
                 Layout.alignment: Qt.AlignHCenter|Qt.AlignBottom
                 text: {
-                    switch(global.navigator().aircraft.verticalDistanceUnit) {
+                    switch(Navigator.aircraft.verticalDistanceUnit) {
                     case Aircraft.Feet:
                         return gridLYO.airspace.upperBound
                     case Aircraft.Meters:
@@ -307,13 +297,13 @@ Dialog {
             Rectangle {
                 Layout.alignment: Qt.AlignHCenter
                 color: Material.foreground
-                height: 1
-                width: view.font.pixelSize*5
+                Layout.preferredHeight: 1
+                Layout.preferredWidth: view.font.pixelSize*5
             }
             Label {
                 Layout.alignment: Qt.AlignHCenter|Qt.AlignTop
                 text: {
-                    switch(global.navigator().aircraft.verticalDistanceUnit) {
+                    switch(Navigator.aircraft.verticalDistanceUnit) {
                     case Aircraft.Feet:
                         return gridLYO.airspace.lowerBound
                     case Aircraft.Meters:
@@ -347,7 +337,7 @@ Dialog {
         }
 
         Label { // Second header line with distance and QUJ
-            text: global.navigator().aircraft.describeWay(global.positionProvider().positionInfo.coordinate(), waypoint.coordinate)
+            text: Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), waypoint.coordinate)
             visible: (text !== "")
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignRight
@@ -361,12 +351,7 @@ Dialog {
             Layout.fillHeight: true
 
             contentHeight: co.height
-            contentWidth: waypointDescriptionDialog.availableWidth
-
-            // The visibility behavior of the vertical scroll bar is a little complex.
-            // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
-            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-            ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
+            contentWidth: availableWidth // Disable horizontal scrolling
 
             clip: true
 
@@ -389,25 +374,25 @@ Dialog {
             text: qsTr("Route")
 
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 addMenu.open()
             }
 
-            Menu {
+            AutoSizingMenu {
                 id: addMenu
 
                 Action {
                     text: qsTr("Direct")
-                    enabled: global.positionProvider().receivingPositionInfo && (dialogLoader.text !== "noRouteButton")
+                    enabled: PositionProvider.receivingPositionInfo && (dialogLoader.text !== "noRouteButton")
 
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
-                        if (global.navigator().flightRoute.size > 0)
+                        PlatformAdaptor.vibrateBrief()
+                        if (Navigator.flightRoute.size > 0)
                             overwriteDialog.open()
                         else {
-                            global.navigator().flightRoute.clear()
-                            global.navigator().flightRoute.append(global.positionProvider().lastValidCoordinate)
-                            global.navigator().flightRoute.append(waypoint)
+                            Navigator.flightRoute.clear()
+                            Navigator.flightRoute.append(PositionProvider.lastValidCoordinate)
+                            Navigator.flightRoute.append(waypoint)
                             toast.doToast(qsTr("New flight route: direct to %1.").arg(waypoint.extendedName))
                         }
                         close()
@@ -426,14 +411,14 @@ Dialog {
                     enabled: {
                         // Mention Object to ensure that property gets updated
                         // when flight route changes
-                        global.navigator().flightRoute.size
+                        Navigator.flightRoute.size
 
-                        return global.navigator().flightRoute.canAppend(waypoint)
+                        return Navigator.flightRoute.canAppend(waypoint)
                     }
 
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
-                        global.navigator().flightRoute.append(waypoint)
+                        PlatformAdaptor.vibrateBrief()
+                        Navigator.flightRoute.append(waypoint)
                         close()
                         toast.doToast(qsTr("Added %1 to route.").arg(waypoint.extendedName))
                     }
@@ -444,14 +429,14 @@ Dialog {
                     enabled: {
                         // Mention Object to ensure that property gets updated
                         // when flight route changes
-                        global.navigator().flightRoute.size
+                        Navigator.flightRoute.size
 
-                        return global.navigator().flightRoute.canInsert(waypoint)
+                        return Navigator.flightRoute.canInsert(waypoint)
                     }
 
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
-                        global.navigator().flightRoute.insert(waypoint)
+                        PlatformAdaptor.vibrateBrief()
+                        Navigator.flightRoute.insert(waypoint)
                         close()
                         toast.doToast(qsTr("Inserted %1 into route.").arg(waypoint.extendedName))
                     }
@@ -463,17 +448,17 @@ Dialog {
                     enabled:  {
                         // Mention to ensure that property gets updated
                         // when flight route changes
-                        global.navigator().flightRoute.size
+                        Navigator.flightRoute.size
 
-                        return global.navigator().flightRoute.contains(waypoint)
+                        return Navigator.flightRoute.contains(waypoint)
                     }
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         close()
-                        var index = global.navigator().flightRoute.lastIndexOf(waypoint)
+                        var index = Navigator.flightRoute.lastIndexOf(waypoint)
                         if (index < 0)
                             return
-                        global.navigator().flightRoute.removeWaypoint(index)
+                        Navigator.flightRoute.removeWaypoint(index)
                         toast.doToast(qsTr("Removed %1 from route.").arg(waypoint.extendedName))
                     }
                 }
@@ -486,11 +471,11 @@ Dialog {
             enabled: waypoint.category === "WP"
 
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 libraryMenu.open()
             }
 
-            Menu {
+            AutoSizingMenu {
                 id: libraryMenu
 
                 Action {
@@ -498,7 +483,7 @@ Dialog {
                     enabled: !global.waypointLibrary().hasNearbyEntry(waypoint)
 
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         wpAdd.waypoint = waypoint
                         wpAdd.open()
                         close()
@@ -510,7 +495,7 @@ Dialog {
                     enabled: global.waypointLibrary().contains(waypoint)
 
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         removeDialog.waypoint = waypoint
                         removeDialog.open()
                         close()
@@ -528,7 +513,7 @@ Dialog {
                     enabled: global.waypointLibrary().contains(waypoint)
 
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         wpEdit.waypoint = waypoint
                         wpEdit.open()
                         close()
@@ -542,17 +527,10 @@ Dialog {
         onRejected: close()
     }
 
-    Dialog {
+    CenteringDialog { // WARNING   qrc:/akaflieg_freiburg/enroute/qml/dialogs/CenteringDialog.qml:31: TypeError: Cannot read property 'width' of null
         id: overwriteDialog
-        anchors.centerIn: parent
-        parent: Overlay.overlay
 
         title: qsTr("Overwrite Current Flight Route?")
-
-        // Width is chosen so that the dialog does not cover the parent in full, height is automatic
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(view.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: Math.min(view.height-view.font.pixelSize, implicitHeight)
 
         Label {
             width: overwriteDialog.availableWidth
@@ -566,14 +544,14 @@ Dialog {
         modal: true
 
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
-            global.navigator().flightRoute.clear()
-            global.navigator().flightRoute.append(waypoint)
+            PlatformAdaptor.vibrateBrief()
+            Navigator.flightRoute.clear()
+            Navigator.flightRoute.append(waypoint)
             close()
             toast.doToast(qsTr("New flight route: direct to %1.").arg(waypoint.extendedName))
         }
         onRejected: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             close()
             waypointDescriptionDialog.open()
         }
@@ -588,9 +566,11 @@ Dialog {
         id: wpEdit
 
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
-            var newWP = waypoint.renamed(newName)
-            newWP = newWP.relocated( QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter) )
+            PlatformAdaptor.vibrateBrief()
+            var newWP = waypoint.copy()
+            newWP.name = newName
+            newWP.notes = newNotes
+            newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
             global.waypointLibrary().replace(waypoint, newWP)
             toast.doToast(qsTr("Modified entry %1 in library.").arg(newWP.extendedName))
         }
@@ -602,31 +582,22 @@ Dialog {
         title: qsTr("Add Waypoint to Library")
 
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
-            var newWP = waypoint.renamed(newName)
-            newWP = newWP.relocated( QtPositioning.coordinate(newLatitude, newLongitude) )
+            PlatformAdaptor.vibrateBrief()
+            var newWP = waypoint.copy()
+            newWP.name = newName
+            newWP.notes = newNotes
+            newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
             global.waypointLibrary().add(newWP)
             toast.doToast(qsTr("Added %1 to waypoint library.").arg(newWP.extendedName))
         }
     }
 
-    Dialog {
+    CenteringDialog {
         id: removeDialog
 
         property var waypoint: global.geoMapProvider().createWaypoint()
 
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: parent == null ? 0 : (parent.width-width)/2.0
-        y: parent == null ? 0 : (parent.height-height)/2.0
-
         title: qsTr("Remove from Device?")
-
-        // Width is chosen so that the dialog does not cover the parent in full, height is automatic
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: parent == null ? 100 : Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: parent == null ? 100 : Math.min(parent.height-view.font.pixelSize, implicitHeight)
 
         Label {
             width: removeDialog.availableWidth
@@ -640,12 +611,12 @@ Dialog {
         modal: true
 
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             global.waypointLibrary().remove(removeDialog.waypoint)
             toast.doToast(qsTr("Waypoint removed from device"))
         }
         onRejected: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             close()
         }
 

@@ -18,11 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Layouts
 
+import akaflieg_freiburg.enroute
 import enroute 1.0
 import "../dialogs"
 import "../items"
@@ -39,6 +40,8 @@ Page {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
 
         currentIndex: sv.currentIndex
 
@@ -55,7 +58,11 @@ Page {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
+        anchors.bottomMargin: SafeInsets.bottom
+        anchors.leftMargin: SafeInsets.left
+        anchors.rightMargin: SafeInsets.right
 
+        clip: true
         currentIndex: bar.currentIndex
 
         Component {
@@ -81,11 +88,11 @@ Page {
 
                     text: {
                         // Mention horizontal distance
-                        global.navigator().aircraft.horizontalDistanceUnit
+                        Navigator.aircraft.horizontalDistanceUnit
 
                         var result = model.modelData.twoLineTitle
 
-                        var wayTo  = global.navigator().aircraft.describeWay(global.positionProvider().positionInfo.coordinate(), model.modelData.coordinate)
+                        var wayTo  = Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), model.modelData.coordinate)
                         if (wayTo !== "")
                             result = result + "<br>" + wayTo
 
@@ -95,7 +102,7 @@ Page {
                     }
 
                     onClicked: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         waypointDescription.waypoint = model.modelData
                         waypointDescription.open()
                     }
@@ -111,7 +118,7 @@ Page {
             delegate: waypointDelegate
             ScrollIndicator.vertical: ScrollIndicator {}
 
-            Component.onCompleted: adList.model = global.geoMapProvider().nearbyWaypoints(global.positionProvider().lastValidCoordinate, "AD")
+            Component.onCompleted: adList.model = global.geoMapProvider().nearbyWaypoints(PositionProvider.lastValidCoordinate, "AD")
 
             Label {
                 anchors.fill: parent
@@ -133,7 +140,7 @@ Page {
             delegate: waypointDelegate
             ScrollIndicator.vertical: ScrollIndicator {}
 
-            Component.onCompleted: naList.model = global.geoMapProvider().nearbyWaypoints(global.positionProvider().lastValidCoordinate, "NAV")
+            Component.onCompleted: naList.model = global.geoMapProvider().nearbyWaypoints(PositionProvider.lastValidCoordinate, "NAV")
 
             Label {
                 anchors.fill: parent
@@ -155,7 +162,7 @@ Page {
             delegate: waypointDelegate
             ScrollIndicator.vertical: ScrollIndicator {}
 
-            Component.onCompleted: rpList.model = global.geoMapProvider().nearbyWaypoints(global.positionProvider().lastValidCoordinate, "WP")
+            Component.onCompleted: rpList.model = global.geoMapProvider().nearbyWaypoints(PositionProvider.lastValidCoordinate, "WP")
             
             Label {
                 anchors.fill: parent

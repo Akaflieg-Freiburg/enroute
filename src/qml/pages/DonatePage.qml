@@ -18,11 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Layouts
 
+import akaflieg_freiburg.enroute
 import "../items"
 
 Page {
@@ -34,19 +35,14 @@ Page {
     ScrollView {
         id: sv
 
-        clip: true
         anchors.fill: parent
+        contentWidth: availableWidth // Disable horizontal scrolling
 
-        topPadding: view.font.pixelSize
-        leftPadding: view.font.pixelSize
-        rightPadding: view.font.pixelSize
+        clip: true
 
-        // The visibility behavior of the vertical scroll bar is a little complex.
-        // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
-        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-        ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
-        ScrollBar.vertical.interactive: false
-
+        bottomPadding: SafeInsets.bottom
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
         ColumnLayout {
             id: cL
 
@@ -86,11 +82,11 @@ If you prefer to work on
 your desktop computer, you can also send yourself an e-mail
 with the bank account data.
 ").arg(bankAccountData)
-                width: pg.width
+                Layout.preferredWidth: sv.width
                 wrapMode: Text.Wrap
-                topPadding: view.font.pixelSize*1
-                leftPadding: view.font.pixelSize*0.5
-                rightPadding: view.font.pixelSize*0.5
+                topPadding: font.pixelSize*1
+                leftPadding: font.pixelSize*0.5
+                rightPadding: font.pixelSize*0.5
                 onLinkActivated: Qt.openUrlExternally(link)
             }
 
@@ -100,7 +96,7 @@ with the bank account data.
                 icon.source: "/icons/material/ic_send.svg"
 
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     Qt.openUrlExternally(qsTr("mailto:?subject=Enroute Flight Navigation, Donation&body=%1").arg(lbl1.bankAccountData))
                 }
             }

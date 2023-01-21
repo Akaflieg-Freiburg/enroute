@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QObject>
+#include <QQmlEngine>
 #include <QtMath>
 
 
@@ -33,6 +34,7 @@ namespace Units {
      */
     class Volume {
         Q_GADGET
+        QML_VALUE_TYPE(volume)
 
     public:
         /*! \brief Constructs a volume
@@ -82,49 +84,13 @@ namespace Units {
             return *this;
         }
 
-        /*! \brief Comparison: less than
+        /*! \brief Comparison
          *
          *  @param rhs Right hand side of the comparison
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE bool operator<(Units::Volume rhs) const
-        {
-            return m_volumeInL < rhs.m_volumeInL;
-        }
-
-        /*! \brief Comparison: larger equal
-         *
-         *  @param rhs Right hand side of the comparison
-         *
-         *  @returns Result of the comparison
-         */
-        Q_INVOKABLE bool operator>(Units::Volume rhs) const
-        {
-            return m_volumeInL > rhs.m_volumeInL;
-        }
-
-        /*! \brief Comparison: not equal
-         *
-         *  @param rhs Right hand side of the comparison
-         *
-         *  @returns Result of the comparison
-         */
-        Q_INVOKABLE bool operator!=(Units::Volume rhs) const
-        {
-            return m_volumeInL != rhs.m_volumeInL;
-        }
-
-        /*! \brief Comparison: equal
-         *
-         *  @param rhs Right hand side of the comparison
-         *
-         *  @returns Result of the comparison
-         */
-        Q_INVOKABLE bool operator==(Units::Volume rhs) const
-        {
-            return m_volumeInL == rhs.m_volumeInL;
-        }
+        Q_INVOKABLE [[nodiscard]] std::partial_ordering operator<=>(const Units::Volume& rhs) const = default;
 
         /*! \brief Convert to liters
          *

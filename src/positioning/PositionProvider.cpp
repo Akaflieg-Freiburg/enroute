@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,11 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QApplication>
+#include <QCoreApplication>
 #include <QSettings>
 
 #include "GlobalObject.h"
-#include "Settings.h"
+#include "GlobalSettings.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/TrafficDataProvider.h"
 #include "units/Units.h"
@@ -57,7 +57,7 @@ Positioning::PositionProvider::PositionProvider(QObject *parent) : PositionInfoS
     saveTimer->setInterval(1min + 57s);
     saveTimer->setSingleShot(false);
     connect(saveTimer, &QTimer::timeout, this, &Positioning::PositionProvider::savePositionAndTrack);
-    connect(qApp, &QApplication::aboutToQuit, this, &Positioning::PositionProvider::savePositionAndTrack);
+    connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, this, &Positioning::PositionProvider::savePositionAndTrack);
     saveTimer->start();
 
     // Update properties
@@ -80,37 +80,43 @@ void Positioning::PositionProvider::onPositionUpdated()
     // This method is called if one of our providers has a new position info.
     // We go through the list of providers in order of preference, to find the first one
     // that has a valid position info available for us.
-    PositionInfo info;
+    PositionInfo newInfo;
     QString source;
 
 
-    if (GlobalObject::settings()->positioningByTrafficDataReceiver()) {
+    if (GlobalObject::globalSettings()->positioningByTrafficDataReceiver())
+    {
 
         // Priority #1: Traffic data provider
         auto* trafficDataProvider = GlobalObject::trafficDataProvider();
-        if (trafficDataProvider != nullptr) {
-            info = trafficDataProvider->positionInfo();
+        if (trafficDataProvider != nullptr)
+        {
+            newInfo = trafficDataProvider->positionInfo();
             source = trafficDataProvider->sourceName();
         }
 
         // Priority #2: Built-in sat receiver
-        if (!info.isValid()) {
-            info = satelliteSource.positionInfo();
+        if (!newInfo.isValid())
+        {
+            newInfo = satelliteSource.positionInfo();
             source = satelliteSource.sourceName();
         }
 
-    } else {
+    }
+    else
+    {
 
         // Priority #1: Built-in sat receiver
-        info = satelliteSource.positionInfo();
+        newInfo = satelliteSource.positionInfo();
         source = satelliteSource.sourceName();
 
-
         // Priority #2: Traffic data provider
-        if (!info.isValid()) {
+        if (!newInfo.isValid())
+        {
             auto* trafficDataProvider = GlobalObject::trafficDataProvider();
-            if (trafficDataProvider != nullptr) {
-                info = trafficDataProvider->positionInfo();
+            if (trafficDataProvider != nullptr)
+            {
+                newInfo = trafficDataProvider->positionInfo();
                 source = trafficDataProvider->sourceName();
             }
 
@@ -118,25 +124,38 @@ void Positioning::PositionProvider::onPositionUpdated()
 
     }
 
+    auto oldInfo = positionInfo();
+    auto oldTimeStamp = oldInfo.timestamp();
+    auto newTimeStamp = newInfo.timestamp();
+    if (newTimeStamp == oldTimeStamp)
+    {
+        return;
+    }
+
     // If no vertical speed has been provided by the system, we compute our own.
-    if (!info.verticalSpeed().isFinite() && info.trueAltitudeAMSL().isFinite() && positionInfo().trueAltitudeAMSL().isFinite()) {
-        auto deltaV = (info.trueAltitudeAMSL() - positionInfo().trueAltitudeAMSL());
-        auto deltaT = Units::Time::fromMS( static_cast<double>(positionInfo().timestamp().msecsTo(info.timestamp())) );
+    if (!newInfo.verticalSpeed().isFinite()
+            && newInfo.trueAltitudeAMSL().isFinite()
+            && oldInfo.trueAltitudeAMSL().isFinite())
+    {
+        auto deltaV = (newInfo.trueAltitudeAMSL() - oldInfo.trueAltitudeAMSL());
+        auto deltaT = Units::Time::fromMS( static_cast<double>(oldTimeStamp.msecsTo(newTimeStamp)) );
         auto vSpeed = deltaV/deltaT;
-        if (vSpeed.isFinite()) {
-            if (positionInfo().verticalSpeed().isFinite()) {
+        if (vSpeed.isFinite())
+        {
+            if (oldInfo.verticalSpeed().isFinite())
+            {
                 vSpeed = 0.8*vSpeed + 0.2*positionInfo().verticalSpeed();
             }
-            QGeoPositionInfo tmp = info;
+            QGeoPositionInfo tmp = newInfo;
             tmp.setAttribute(QGeoPositionInfo::VerticalSpeed, vSpeed.toMPS());
-            info = PositionInfo(tmp);
+            newInfo = PositionInfo(tmp);
         }
     }
 
     // Set new info
-    setPositionInfo(info);
-    setLastValidCoordinate(info.coordinate());
-    setLastValidTT(info.trueTrack());
+    setPositionInfo(newInfo);
+    setLastValidCoordinate(newInfo.coordinate());
+    setLastValidTT(newInfo.trueTrack());
     setSourceName(source);
     updateStatusString();
 }
@@ -233,7 +252,7 @@ void Positioning::PositionProvider::updateStatusString()
         if (pressureAltitude().isFinite()) {
             result += QStringLiteral("<li>%1</li>").arg(tr("Receiving pressure altitude."));
         }
-        result += QLatin1String("</ul>");
+        result += u"</ul>"_qs;
         setStatusString(result);
         return;
     }
@@ -241,6 +260,6 @@ void Positioning::PositionProvider::updateStatusString()
     QString result = QStringLiteral("<p>%1</p><ul style='margin-left:-25px;'>").arg(tr("Not receiving position information"));
     result += QStringLiteral("<li>%1: %2</li>").arg( satelliteSource.sourceName(), satelliteSource.statusString());
     result += QStringLiteral("<li>%1: %2</li>").arg( tr("Traffic receiver"), tr("Not receiving position information"));
-    result += QLatin1String("</ul>");
+    result += u"</ul>"_qs;
     setStatusString(result);
 }

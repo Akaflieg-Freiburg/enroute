@@ -15,10 +15,12 @@
 #pragma once
 
 #include <QDir>
+#include <QQmlEngine>
 #include <QRegularExpression>
 #include <QSettings>
 
-#include "navigation/FlightRoute.h"
+#include "GlobalObject.h"
+
 
 /*! \brief Manage libraries and text assets
  *
@@ -28,6 +30,8 @@
 
 class Librarian : public QObject {
     Q_OBJECT
+    QML_ELEMENT
+    QML_SINGLETON
 
 public:
     /*! \brief Default constructor
@@ -36,8 +40,18 @@ public:
      */
     explicit Librarian(QObject *parent = nullptr);
 
+    // No default constructor, important for QML singleton
+    explicit Librarian() = delete;
+
     // Standard destructor
     ~Librarian() override = default;
+
+
+    // factory function for QML singleton
+    static Librarian* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
+    {
+        return GlobalObject::librarian();
+    }
 
     /*! \brief Type of library */
     enum Library {
@@ -141,7 +155,7 @@ public:
      *
      * @returns Hash of file content
      */
-    Q_INVOKABLE static uint getStringHashFromRessource(const QString &name);
+    Q_INVOKABLE static size_t getStringHashFromRessource(const QString &name);
 
     /*! \brief Removes an entry from a library
      *
@@ -188,6 +202,12 @@ public:
      * @return Simplified string
      */
     auto simplifySpecialChars(const QString &string) -> QString;
+
+    /*! \brief Information about the system, in HTML format
+     *
+     * @returns Info string
+     */
+    Q_INVOKABLE static QString systemInfo();
 
 private:
     Q_DISABLE_COPY_MOVE(Librarian)

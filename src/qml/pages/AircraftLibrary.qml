@@ -18,11 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Layouts
 
+import akaflieg_freiburg.enroute
 import enroute 1.0
 
 import "../dialogs"
@@ -43,6 +44,8 @@ Page {
         anchors.rightMargin: view.font.pixelSize*2.0
         anchors.left: parent.left
         anchors.leftMargin: view.font.pixelSize*2.0
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
 
         placeholderText: qsTr("Filter Aircraft Names")
         font.pixelSize: view.font.pixelSize*1.5
@@ -65,16 +68,16 @@ Page {
                 icon.source: "/icons/material/ic_airplanemode_active.svg"
 
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     finalFileName = modelData
-                    if (global.navigator().flightRoute.size > 0)
+                    if (Navigator.flightRoute.size > 0)
                         overwriteDialog.open()
                     else
                         openFromLibrary()
                 }
 
                 swipe.onCompleted: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     finalFileName = modelData
                     removeDialog.open()
                 }
@@ -87,7 +90,7 @@ Page {
                 icon.source: "/icons/material/ic_more_horiz.svg"
 
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     cptMenu.popup()
                 }
 
@@ -98,7 +101,7 @@ Page {
                         id: renameAction
                         text: qsTr("Rename…")
                         onTriggered: {
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             finalFileName = modelData
                             renameName.text = modelData
                             renameDialog.open()
@@ -110,7 +113,7 @@ Page {
                         id: removeAction
                         text: qsTr("Remove…")
                         onTriggered: {
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             finalFileName = modelData
                             removeDialog.open()
                         }
@@ -130,9 +133,13 @@ Page {
         anchors.left: parent.left
         anchors.right: parent.right
 
+        leftMargin: SafeInsets.left
+        rightMargin: SafeInsets.right
+        bottomMargin: SafeInsets.bottom
+
         clip: true
 
-        model: global.librarian().entries(Librarian.Aircraft, textInput.displayText)
+        model: Librarian.entries(Librarian.Aircraft, textInput.displayText)
         delegate: entryDelegate
         ScrollIndicator.vertical: ScrollIndicator {}
     }
@@ -159,14 +166,14 @@ Page {
     property string finalFileName;
 
     function openFromLibrary() {
-        var acft = global.navigator().aircraft.clone() // Get a copy of the current aircraft that we can modify and write back
-        var errorString = acft.loadFromJSON(global.librarian().fullPath(Librarian.Aircraft, finalFileName))
+        var acft = Navigator.aircraft.clone() // Get a copy of the current aircraft that we can modify and write back
+        var errorString = acft.loadFromJSON(Librarian.fullPath(Librarian.Aircraft, finalFileName))
         if (errorString !== "") {
             lbl.text = errorString
             fileError.open()
             return
         }
-        global.navigator().aircraft = acft
+        Navigator.aircraft = acft
         toast.doToast( qsTr("Loading aircraft <strong>%1</strong>").arg(finalFileName) )
         stackView.pop()
     }
@@ -177,18 +184,8 @@ Page {
         textInput.text = cache
     }
 
-    Dialog {
+    CenteringDialog {
         id: fileError
-
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: Math.min(parent.height-view.font.pixelSize, implicitHeight)
-
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (view.width-width)/2.0
-        y: (view.height-height)/2.0
 
         modal: true
         title: qsTr("An Error Occurred…")
@@ -196,52 +193,30 @@ Page {
 
         ScrollView{
             id: sv
+
             anchors.fill: parent
-
-            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-
-            // The visibility behavior of the vertical scroll bar is a little complex.
-            // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
-            ScrollBar.vertical.policy: (height < lbl.implicitHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
-            ScrollBar.vertical.interactive: false
+            contentWidth: availableWidth // Disable horizontal scrolling
 
             clip: true
 
-            // The Label that we really want to show is wrapped into an Item. This allows
-            // to set implicitHeight, and thus compute the implicitHeight of the Dialog
-            // without binding loops
-            Item {
-                implicitHeight: lbl.implicitHeight
+            Label {
+                id: lbl
                 width: fileError.availableWidth
-
-                Label {
-                    id: lbl
-                    width: fileError.availableWidth
-                    textFormat: Text.StyledText
-                    linkColor: Material.accent
-                    wrapMode: Text.Wrap
-                    onLinkActivated: Qt.openUrlExternally(link)
-                } // Label
-            } // Item
-        } // ScrollView
+                textFormat: Text.StyledText
+                linkColor: Material.accent
+                wrapMode: Text.Wrap
+                onLinkActivated: Qt.openUrlExternally(link)
+            }
+        }
 
     }
 
-    Dialog {
+    CenteringDialog {
         id: overwriteDialog
 
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
-
         title: qsTr("Overwrite Current Aircraft?")
-
-        // Width is chosen so that the dialog does not cover the parent in full, height is automatic
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: Math.min(parent.height-view.font.pixelSize, implicitHeight)
+        standardButtons: Dialog.No | Dialog.Yes
+        modal: true
 
         Label {
             width: overwriteDialog.availableWidth
@@ -251,86 +226,57 @@ Page {
             textFormat: Text.StyledText
         }
 
-        standardButtons: Dialog.No | Dialog.Yes
-        modal: true
-
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             page.openFromLibrary()
         }
         onRejected: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             close()
         }
     }
 
-    Dialog {
+    CenteringDialog {
         id: removeDialog
 
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
-
         title: qsTr("Remove from Device?")
-
-        // Width is chosen so that the dialog does not cover the parent in full, height is automatic
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: Math.min(parent.height-view.font.pixelSize, implicitHeight)
+        standardButtons: Dialog.No | Dialog.Yes
+        modal: true
 
         Label {
-            width: overwriteDialog.availableWidth
+            width: removeDialog.availableWidth
 
             text: qsTr("Once the aircraft <strong>%1</strong> is removed, it cannot be restored.").arg(page.finalFileName)
             wrapMode: Text.Wrap
             textFormat: Text.StyledText
         }
 
-        standardButtons: Dialog.No | Dialog.Yes
-        modal: true
-
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
-            global.librarian().remove(Librarian.Aircraft, page.finalFileName)
+            PlatformAdaptor.vibrateBrief()
+            Librarian.remove(Librarian.Aircraft, page.finalFileName)
             page.reloadFlightRouteList()
             toast.doToast(qsTr("Aircraft removed from device"))
         }
         onRejected: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             page.reloadFlightRouteList() // Re-display aircraft that have been swiped out
             close()
         }
 
     }
 
-    Dialog {
+    CenteringDialog {
         id: renameDialog
 
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
-
         title: qsTr("Rename Aircraft")
-
         standardButtons: Dialog.Cancel
         modal: true
-        focus: true
-
-        // Width is chosen so that the dialog does not cover the parent in full, height is automatic
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: Math.min(parent.height-view.font.pixelSize, implicitHeight)
-
 
         ColumnLayout {
             width: renameDialog.availableWidth
 
             Label {
-                width: overwriteDialog.availableWidth
+                Layout.preferredWidth: overwriteDialog.availableWidth
 
                 text: qsTr("Enter new name for the aircraft <strong>%1</strong>.").arg(finalFileName)
                 color: Material.primary
@@ -350,32 +296,31 @@ Page {
                 onAccepted: renameDialog.onAccepted()
             }
 
-        } // ColumnLayout
+        }
 
         footer: DialogButtonBox {
             ToolButton {
                 id: renameButton
 
                 DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
-                enabled: (renameName.text !== "") && !(global.librarian().exists(Librarian.Aircraft, renameName.text))
+                enabled: (renameName.text !== "") && !(Librarian.exists(Librarian.Aircraft, renameName.text))
                 text: qsTr("Rename")
             }
         }
 
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
-            if ((renameName.text !== "") && !global.librarian().exists(Librarian.Aircraft, renameName.text)) {
-                global.librarian().rename(Librarian.Aircraft, finalFileName, renameName.text)
+            PlatformAdaptor.vibrateBrief()
+            if ((renameName.text !== "") && !Librarian.exists(Librarian.Aircraft, renameName.text)) {
+                Librarian.rename(Librarian.Aircraft, finalFileName, renameName.text)
                 page.reloadFlightRouteList()
                 close()
                 toast.doToast(qsTr("Aircraft renamed"))
             }
         }
         onRejected: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             close()
         }
-
     }
 
 } // Page

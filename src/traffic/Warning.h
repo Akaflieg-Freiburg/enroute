@@ -43,10 +43,7 @@ class Warning {
     friend TrafficDataSource_Abstract;
 
 public:
-    /*! \brief Default constructor
-     *
-     * @param parent The standard QObject parent pointer
-     */
+    /*! \brief Default constructor */
     explicit Warning() = default;
 
     //

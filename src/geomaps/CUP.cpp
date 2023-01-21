@@ -146,12 +146,12 @@ GeoMaps::Waypoint GeoMaps::CUP::readWaypoint(const QString &line)
             return {};
         }
         bool ok = false;
-        lat = latString.leftRef(2).toDouble(&ok);
+        lat = latString.left(2).toDouble(&ok);
         if (!ok)
         {
             return {};
         }
-        lat = lat + latString.midRef(2, 6).toDouble(&ok) / 60.0;
+        lat = lat + latString.mid(2, 6).toDouble(&ok) / 60.0;
         if (!ok)
         {
             return {};
@@ -175,12 +175,12 @@ GeoMaps::Waypoint GeoMaps::CUP::readWaypoint(const QString &line)
             return {};
         }
         bool ok = false;
-        lon = longString.leftRef(3).toDouble(&ok);
+        lon = longString.left(3).toDouble(&ok);
         if (!ok)
         {
             return {};
         }
-        lon = lon + longString.midRef(3, 6).toDouble(&ok) / 60.0;
+        lon = lon + longString.mid(3, 6).toDouble(&ok) / 60.0;
         if (!ok)
         {
             return {};
@@ -195,11 +195,11 @@ GeoMaps::Waypoint GeoMaps::CUP::readWaypoint(const QString &line)
     {
         auto eleString = fields[5];
         bool ok = false;
-        if (eleString.endsWith(QLatin1String("m")))
+        if (eleString.endsWith(u"m"))
         {
             ele = eleString.chopped(1).toDouble(&ok);
         }
-        if (eleString.endsWith(QLatin1String("ft")))
+        if (eleString.endsWith(u"ft"))
         {
             ele = eleString.chopped(1).toDouble(&ok) * 0.3048;
         }
@@ -209,7 +209,9 @@ GeoMaps::Waypoint GeoMaps::CUP::readWaypoint(const QString &line)
         }
     }
 
-    return GeoMaps::Waypoint(QGeoCoordinate(lat, lon, ele)).renamed(name);
+    GeoMaps::Waypoint result(QGeoCoordinate(lat, lon, ele));
+    result.setName(name);
+    return result;
 }
 
 
@@ -250,7 +252,7 @@ auto GeoMaps::CUP::read(const QString &fileName) -> QVector<GeoMaps::Waypoint>
     stream.readLineInto(&line);
     while (stream.readLineInto(&line))
     {
-        if (line.contains(QLatin1String("-----Related Tasks-----")))
+        if (line.contains(u"-----Related Tasks-----"))
         {
             break;
         }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,11 +18,16 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Layouts
 
+import akaflieg_freiburg.enroute
+
+// The following two lines are necessary to run the app on Android.
+// Without these lines, the app will not find "LongTextDialog" and
+// "WordWrappingItemDelegate".
 import "../dialogs"
 import "../items"
 
@@ -34,7 +39,10 @@ Page {
     header: ToolBar {
 
         Material.foreground: "white"
-        height: 60
+        height: 60 + SafeInsets.top
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
+        topPadding: SafeInsets.top
 
         ToolButton {
             id: backButton
@@ -45,7 +53,7 @@ Page {
             icon.source: "/icons/material/ic_arrow_back.svg"
 
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 stackView.pop()
             }
         }
@@ -73,7 +81,7 @@ Page {
 
             icon.source: "/icons/material/ic_info_outline.svg"
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 openManual("03-reference/settings.html")
             }
         }
@@ -81,26 +89,31 @@ Page {
     }
 
     ScrollView {
-        id: view
         anchors.fill: parent
-        contentWidth: availableWidth
+        anchors.topMargin: settingsPage.font.pixelSize
+        anchors.bottomMargin: SafeInsets.bottom
+        anchors.leftMargin: SafeInsets.left
+        anchors.rightMargin: SafeInsets.right
+
+        contentWidth: availableWidth // Disable horizontal scrolling
+
+        clip: true
 
         GridLayout {
-            width: settingsPage.width
-            implicitWidth: settingsPage.width
             columns: 2
+            width: settingsPage.width - SafeInsets.left - SafeInsets.right
 
             Item { // Spacer
                 Layout.columnSpan: 2
-                height: 3
+                Layout.preferredHeight: 3
             }
 
             Label {
-                Layout.leftMargin: view.font.pixelSize
+                Layout.leftMargin: settingsPage.font.pixelSize
                 Layout.fillWidth: true
                 Layout.columnSpan: 2
                 text: qsTr("Moving Map")
-                font.pixelSize: view.font.pixelSize*1.2
+                font.pixelSize: settingsPage.font.pixelSize*1.2
                 font.bold: true
                 color: Material.accent
             }
@@ -109,15 +122,15 @@ Page {
                 id: hideUpperAsp
                 text: {
                     var secondLineString = ""
-                    var altitudeLimit = global.settings().airspaceAltitudeLimit
+                    var altitudeLimit = GlobalSettings.airspaceAltitudeLimit
                     if (!altitudeLimit.isFinite()) {
                         secondLineString = qsTr("Currently showing all airspaces")
                     } else {
                         // Mention
-                        global.navigator().aircraft.verticalDistanceUnit
+                        Navigator.aircraft.verticalDistanceUnit
 
-                        var airspaceAltitudeLimit = global.settings().airspaceAltitudeLimit
-                        var airspaceAltitudeLimitString = global.navigator().aircraft.verticalDistanceToString(airspaceAltitudeLimit)
+                        var airspaceAltitudeLimit = GlobalSettings.airspaceAltitudeLimit
+                        var airspaceAltitudeLimitString = Navigator.aircraft.verticalDistanceToString(airspaceAltitudeLimit)
                         secondLineString = qsTr("Currently showing airspaces up to %1").arg(airspaceAltitudeLimitString)
                     }
                     return qsTr("Airspace Altitude Limit") +
@@ -129,14 +142,14 @@ Page {
                 icon.source: "/icons/material/ic_map.svg"
                 Layout.fillWidth: true
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     heightLimitDialog.open()
                 }
             }
             ToolButton {
                 icon.source: "/icons/material/ic_info_outline.svg"
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     helpDialog.title = qsTr("Airspace Altitude Limit")
                     helpDialog.text = "<p>"+qsTr("If you never fly higher than 5.000ft, you will probably not be interested in airspaces that begin above FL100. Enroute Flight Navigation allows you to set an altitude limit to improve the readability of the moving map. Once set, the app will show only airspaces below that limit. Tap on the entry “Airspace Altitude Limit” to set or unset the altitude limit.")+"</p>"
                             +"<p>"+qsTr("Once you set an altitude limit, the moving map will display a little warning (“Airspaces up to 9,500 ft”) to remind you that the moving map does not show all airspaces. The app will automatically increase the limit when your aircraft approaches the altitude limit from below.")+"</p>"
@@ -145,7 +158,7 @@ Page {
             }
 
             Label {
-                Layout.leftMargin: view.font.pixelSize
+                Layout.leftMargin: settingsPage.font.pixelSize
                 Layout.fillWidth: true
                 Layout.columnSpan: 2
                 text: qsTr("Map Features")
@@ -159,17 +172,17 @@ Page {
                 icon.source: "/icons/material/ic_map.svg"
                 Layout.fillWidth: true
                 Component.onCompleted: {
-                    glidingSectors.checked = !global.settings().hideGlidingSectors
+                    glidingSectors.checked = !GlobalSettings.hideGlidingSectors
                 }
                 onToggled: {
-                    global.platformAdaptor().vibrateBrief()
-                    global.settings().hideGlidingSectors = !glidingSectors.checked
+                    PlatformAdaptor.vibrateBrief()
+                    GlobalSettings.hideGlidingSectors = !glidingSectors.checked
                 }
             }
             ToolButton {
                 icon.source: "/icons/material/ic_info_outline.svg"
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     helpDialog.title = qsTr("Gliding Sectors")
                     helpDialog.text = "<p>"+qsTr("In regions with high glider traffic, local regulations often allow gliders to fly in airspaces that are otherwise difficult to access, such as control zones. The moving map displays these “Gliding Sectors” in bright yellow. If you are not flying a glider, the gliding sectors are probably not relevant. Hiding the gliding sectors might improve the readability of the moving map.")+"</p>"
                     helpDialog.open()
@@ -182,17 +195,17 @@ Page {
                 icon.source: "/icons/material/ic_map.svg"
                 Layout.fillWidth: true
                 Component.onCompleted: {
-                    hillshading.checked = global.settings().hillshading
+                    hillshading.checked = GlobalSettings.hillshading
                 }
                 onToggled: {
-                    global.platformAdaptor().vibrateBrief()
-                    global.settings().hillshading = hillshading.checked
+                    PlatformAdaptor.vibrateBrief()
+                    GlobalSettings.hillshading = hillshading.checked
                 }
             }
             ToolButton {
                 icon.source: "/icons/material/ic_info_outline.svg"
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     helpDialog.title = qsTr("Hillshading")
                     helpDialog.text = "<p>"+qsTr("We have received a report from one user, who complained about issues with the hillshading graphics on very old devices, potentially because of buggy system libraries. If you experience problems, use this switch to disable the hillshading feature.")+"</p>"
                     helpDialog.open()
@@ -200,11 +213,11 @@ Page {
             }
 
             Label {
-                Layout.leftMargin: view.font.pixelSize
+                Layout.leftMargin: settingsPage.font.pixelSize
                 Layout.fillWidth: true
                 Layout.columnSpan: 2
                 text: qsTr("Navigation Bar")
-                font.pixelSize: view.font.pixelSize*1.2
+                font.pixelSize: settingsPage.font.pixelSize*1.2
                 font.bold: true
                 color: Material.accent
             }
@@ -213,7 +226,7 @@ Page {
                 id: showAltAGL
                 text: {
                     const line1 = qsTr("Altimeter Mode")
-                    const line2 = global.settings().showAltitudeAGL ? qsTr("Currently showing altitude AGL") : qsTr("Currently showing altitude AMSL")
+                    const line2 = GlobalSettings.showAltitudeAGL ? qsTr("Currently showing altitude AGL") : qsTr("Currently showing altitude AMSL")
                     return line1 + `<br><font color="#606060" size="2">` + line2 + `</font>`
                 }
 
@@ -224,7 +237,7 @@ Page {
             ToolButton {
                 icon.source: "/icons/material/ic_info_outline.svg"
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     helpDialog.title = qsTr("Altimeter Mode")
                     helpDialog.text = "<p>"+qsTr("Use this settings item to chose if the altimeter shows height above ground level (AGL) or height above main sea level (AMSL).")+"</p>"
                     helpDialog.open()
@@ -232,10 +245,10 @@ Page {
             }
 
             Label {
-                Layout.leftMargin: view.font.pixelSize
+                Layout.leftMargin: settingsPage.font.pixelSize
                 Layout.columnSpan: 2
                 text: qsTr("System")
-                font.pixelSize: view.font.pixelSize*1.2
+                font.pixelSize: settingsPage.font.pixelSize*1.2
                 font.bold: true
                 color: Material.accent
             }
@@ -244,7 +257,7 @@ Page {
                 id: trafficDataReceiverPositioning
                 text: {
                     var secondLineString = ""
-                    if (global.settings().positioningByTrafficDataReceiver) {
+                    if (GlobalSettings.positioningByTrafficDataReceiver) {
                         secondLineString = qsTr("Currently using traffic data receiver")
                     } else {
                         secondLineString = qsTr("Currently using built-in satnav receiver")
@@ -257,14 +270,14 @@ Page {
                 icon.source: "/icons/material/ic_satellite.svg"
                 Layout.fillWidth: true
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     primaryPositionDataSourceDialog.open()
                 }
             }
             ToolButton {
                 icon.source: "/icons/material/ic_info_outline.svg"
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     helpDialog.title = qsTr("Primary Position Data Source")
                     helpDialog.text = "<p>" + qsTr("Enroute Flight Navigation can either use the built-in satnav receiver of your device or a connected traffic receiver as a primary position data source. This setting is essential if your device has reception problems or if you use Enroute Flight Navigation together with a flight simulator.") + "</p>"
                             + "<p>" + qsTr("You will most likely prefer the built-in satnav receiver for actual flight. The built-in receiver provides one position update per second on a typical Android system, while traffic receivers do not always provide timely position updates.") + "</p>"
@@ -279,17 +292,17 @@ Page {
                 icon.source: "/icons/material/ic_brightness_3.svg"
                 Layout.fillWidth: true
                 Component.onCompleted: {
-                    nightMode.checked = global.settings().nightMode
+                    nightMode.checked = GlobalSettings.nightMode
                 }
                 onToggled: {
-                    global.platformAdaptor().vibrateBrief()
-                    global.settings().nightMode = nightMode.checked
+                    PlatformAdaptor.vibrateBrief()
+                    GlobalSettings.nightMode = nightMode.checked
                 }
             }
             ToolButton {
                 icon.source: "/icons/material/ic_info_outline.svg"
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     helpDialog.title = qsTr("Night Mode")
                     helpDialog.text = "<p>" + qsTr("The “Night Mode” of Enroute Flight Navigation is similar to the “Dark Mode” found in many other apps. We designed the night mode for pilots performing VFR flights by night, whose eyes have adapted to the darkness. Compared with other apps, you will find that the display is quite dark indeed.") + "</p>"
                     helpDialog.open()
@@ -301,20 +314,20 @@ Page {
                 text: qsTr("Ignore Network Security Errors")
                 icon.source: "/icons/material/ic_lock.svg"
                 Layout.fillWidth: true
-                visible: global.settings().ignoreSSLProblems
+                visible: GlobalSettings.ignoreSSLProblems
                 Component.onCompleted: {
-                    ignoreSSL.checked = global.settings().ignoreSSLProblems
+                    ignoreSSL.checked = GlobalSettings.ignoreSSLProblems
                 }
                 onToggled: {
-                    global.platformAdaptor().vibrateBrief()
-                    global.settings().ignoreSSLProblems = ignoreSSL.checked
+                    PlatformAdaptor.vibrateBrief()
+                    GlobalSettings.ignoreSSLProblems = ignoreSSL.checked
                 }
             }
             ToolButton {
                 icon.source: "/icons/material/ic_info_outline.svg"
-                visible: global.settings().ignoreSSLProblems
+                visible: GlobalSettings.ignoreSSLProblems
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     helpDialog.title = qsTr("Ignore Network Security Errors")
                     helpDialog.text = "<p>" + qsTr("This entry is visible if you have asked the app to download data via insecure internet connections after a secure connection attempt failed. Uncheck this item to revert to the standard policy, which enforces secure connections.") + "</p>"
                     helpDialog.open()
@@ -326,13 +339,13 @@ Page {
                 icon.source: "/icons/material/ic_lock.svg"
                 text: qsTr("Clear Password Storage")
                 onClicked: clearPasswordDialog.open()
-                visible: !global.passwordDB().empty
+                visible: !PasswordDB.empty
             }
             ToolButton {
                 icon.source: "/icons/material/ic_info_outline.svg"
-                visible: !global.passwordDB().empty
+                visible: !PasswordDB.empty
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     helpDialog.title = qsTr("Clear Password Storage")
                     helpDialog.text = "<p>" + qsTr("This entry is visible if you have connected to a traffic data receiver that requires a password in addition to the Wi-Fi password and if you have asked the app to remember the password. Tap on this entry to clear the password storage.") + "</p>"
                     helpDialog.open()
@@ -340,10 +353,10 @@ Page {
             }
 
             Label {
-                Layout.leftMargin: view.font.pixelSize
+                Layout.leftMargin: settingsPage.font.pixelSize
                 Layout.columnSpan: 2
                 text: qsTr("Help")
-                font.pixelSize: view.font.pixelSize*1.2
+                font.pixelSize: settingsPage.font.pixelSize*1.2
                 font.bold: true
                 color: Material.accent
             }
@@ -366,7 +379,7 @@ Page {
 
             Item { // Spacer
                 Layout.columnSpan: 2
-                height: 3
+                Layout.preferredHeight: 3
             }
 
         }
@@ -374,18 +387,6 @@ Page {
 
     LongTextDialog {
         id: helpDialog
-
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
-
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
-
-        topMargin: view.font.pixelSize/2.0
-        bottomMargin: view.font.pixelSize/2.0
 
         modal: true
 
@@ -410,40 +411,27 @@ Page {
         } // DialogButtonBox
 
         onRejected: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             showAltAGL.checked = false
             close()
         }
 
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             close()
             stackView.pop()
             stackView.push("../pages/DataManager.qml")
         }
     }
 
-    Dialog {
+    CenteringDialog {
         id: clearPasswordDialog
 
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
-
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
-
-        topMargin: view.font.pixelSize/2.0
-        bottomMargin: view.font.pixelSize/2.0
-
+        title: qsTr("Clear Password Storage?")
         modal: true
 
-        title: qsTr("Clear Password Storage?")
-
         Label {
-            width: heightLimitDialog.availableWidth
+            width: clearPasswordDialog.availableWidth
 
             text: qsTr("Once the storage is cleared, the passwords can no longer be retrieved.")
             wrapMode: Text.Wrap
@@ -459,36 +447,24 @@ Page {
                 DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
             }
 
-        } // DialogButtonBox
-
+        }
 
         onAccepted: {
-            global.passwordDB().clear()
+            PasswordDB.clear()
             toast.doToast(qsTr("Password storage cleared"))
         }
 
     }
 
-    Dialog {
+    CenteringDialog {
         id: heightLimitDialog
 
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
-
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
-
-        topMargin: view.font.pixelSize/2.0
-        bottomMargin: view.font.pixelSize/2.0
-
         modal: true
-
         title: qsTr("Airspace Altitude Limit")
         standardButtons: (slider.from < slider.to) ? Dialog.Ok|Dialog.Cancel : Dialog.Cancel
 
+        // Used internally
+        property distance staticDistance
 
         ColumnLayout {
             width: heightLimitDialog.availableWidth
@@ -511,15 +487,15 @@ Page {
                 Layout.fillWidth: true
                 enabled: (from < to) && (altLimitCheck.checked)
                 from: {
-                    var positionInfo = global.positionProvider().positionInfo
+                    var positionInfo = PositionProvider.positionInfo
                     if (!positionInfo.isValid())
-                        return global.settings().airspaceAltitudeLimit_min.toFeet()
+                        return GlobalSettings.airspaceAltitudeLimit_min.toFeet()
                     var trueAlt = positionInfo.trueAltitudeAMSL()
                     if (!trueAlt.isFinite())
-                        return global.settings().airspaceAltitudeLimit_min.toFeet()
-                    return Math.min(global.settings().airspaceAltitudeLimit_max.toFeet(), 500.0*Math.ceil(trueAlt.toFeet()/500.0+2))
+                        return GlobalSettings.airspaceAltitudeLimit_min.toFeet()
+                    return Math.min(GlobalSettings.airspaceAltitudeLimit_max.toFeet(), 500.0*Math.ceil(trueAlt.toFeet()/500.0+2))
                 }
-                to: global.settings().airspaceAltitudeLimit_max.toFeet()
+                to: GlobalSettings.airspaceAltitudeLimit_max.toFeet()
 
                 stepSize: 500
             }
@@ -551,39 +527,25 @@ Page {
 
         onAccepted: {
             if (altLimitCheck.checked) {
-                global.settings().airspaceAltitudeLimit = distance.fromFT(slider.value)
+                GlobalSettings.airspaceAltitudeLimit = staticDistance.fromFT(slider.value)
             } else {
-                global.settings().airspaceAltitudeLimit = distance.fromFT(99999)
+                GlobalSettings.airspaceAltitudeLimit = staticDistance.fromFT(99999)
             }
         }
 
         onAboutToShow: {
-            altLimitCheck.checked = (global.settings().airspaceAltitudeLimit.toM() < global.settings().airspaceAltitudeLimit_max.toM())
-            slider.value = global.settings().lastValidAirspaceAltitudeLimit.toFeet()
+            altLimitCheck.checked = (GlobalSettings.airspaceAltitudeLimit.toM() < GlobalSettings.airspaceAltitudeLimit_max.toM())
+            slider.value = GlobalSettings.lastValidAirspaceAltitudeLimit.toFeet()
         }
 
     }
 
-    Dialog {
+    CenteringDialog {
         id: primaryPositionDataSourceDialog
 
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
-
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
-
-        topMargin: view.font.pixelSize/2.0
-        bottomMargin: view.font.pixelSize/2.0
-
         modal: true
-
         title: qsTr("Position Data Source")
         standardButtons: Dialog.Ok|Dialog.Cancel
-
 
         ColumnLayout {
             width: primaryPositionDataSourceDialog.availableWidth
@@ -598,7 +560,7 @@ Page {
                 id: a
                 text: qsTr("Built-in satnav receiver")
                 Layout.fillWidth: true
-                checked: !global.settings().positioningByTrafficDataReceiver
+                checked: !GlobalSettings.positioningByTrafficDataReceiver
                 onCheckedChanged: b.checked = !checked
             }
 
@@ -611,34 +573,21 @@ Page {
         }
 
         onAboutToShow: {
-            a.checked = !global.settings().positioningByTrafficDataReceiver
+            a.checked = !GlobalSettings.positioningByTrafficDataReceiver
             b.checked = !a.checked
         }
 
-        onAccepted: global.settings().positioningByTrafficDataReceiver = b.checked
+        onAccepted: GlobalSettings.positioningByTrafficDataReceiver = b.checked
 
     }
 
-    Dialog {
+    CenteringDialog {
         id: altimeterDialog
-
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
-
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
-
-        topMargin: view.font.pixelSize/2.0
-        bottomMargin: view.font.pixelSize/2.0
 
         modal: true
 
         title: qsTr("Altimeter Mode")
         standardButtons: Dialog.Ok|Dialog.Cancel
-
 
         ColumnLayout {
             width: altimeterDialog.availableWidth
@@ -653,7 +602,7 @@ Page {
                 id: a1
                 text: qsTr("Height above ground level (AGL)")
                 Layout.fillWidth: true
-                checked: global.settings().showAltitudeAGL
+                checked: GlobalSettings.showAltitudeAGL
                 onCheckedChanged: b1.checked = !checked
             }
 
@@ -666,11 +615,11 @@ Page {
         }
 
         onAboutToShow: {
-            a1.checked = global.settings().showAltitudeAGL
+            a1.checked = GlobalSettings.showAltitudeAGL
             b1.checked = !a1.checked
         }
 
-        onAccepted: global.settings().showAltitudeAGL = a1.checked
+        onAccepted: GlobalSettings.showAltitudeAGL = a1.checked
 
     }
 

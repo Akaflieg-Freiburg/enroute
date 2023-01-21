@@ -31,7 +31,7 @@ auto interpretNMEALatLong(const QString& A, const QString& B) -> qreal
 {
     bool ok1 = false;
     bool ok2 = false;
-    qreal result = A.leftRef(2).toDouble(&ok1) + A.midRef(2).toDouble(&ok2)/60.0;
+    qreal result = A.left(2).toDouble(&ok1) + A.mid(2).toDouble(&ok2)/60.0;
     if (!ok1 || !ok2) {
         return qQNaN();
     }
@@ -150,7 +150,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
         // Get coordinate
         bool ok1 = false;
         bool ok2 = false;
-        auto lat = arguments[2].leftRef(2).toDouble(&ok1) + arguments[2].midRef(2).toDouble(&ok2)/60.0;
+        auto lat = arguments[2].left(2).toDouble(&ok1) + arguments[2].mid(2).toDouble(&ok2)/60.0;
         if (!ok1 || !ok2) {
             return;
         }
@@ -158,7 +158,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
             lat *= -1.0;
         }
 
-        auto lon = arguments[4].leftRef(3).toDouble(&ok1) + arguments[4].midRef(3).toDouble(&ok2)/60.0;
+        auto lon = arguments[4].left(3).toDouble(&ok1) + arguments[4].mid(3).toDouble(&ok2)/60.0;
         if (!ok1 || !ok2) {
             return;
         }

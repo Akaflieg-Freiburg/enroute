@@ -18,16 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QtGlobal>
-#if defined(Q_OS_ANDROID)
-
-#include <QAndroidJniEnvironment>
+#include <QCoreApplication>
 #include <QDateTime>
 #include <QDir>
 #include <QHash>
+#include <QJniEnvironment>
+#include <QJniObject>
 #include <QMimeDatabase>
 #include <QStandardPaths>
-#include <QtAndroid>
 
 #include "platform/FileExchange_Android.h"
 #include "platform/Notifier_Android.h"
@@ -48,9 +46,9 @@ Platform::FileExchange::FileExchange(QObject *parent)
 
     // Start receiving file requests
     receiveOpenFileRequestsStarted = true;
-    QAndroidJniObject activity = QtAndroid::androidActivity();
+    QJniObject activity = QNativeInterface::QAndroidApplication::context();
     if (activity.isValid()) {
-        QAndroidJniObject jniTempDir = QAndroidJniObject::fromString(fileExchangeDirectoryName);
+        QJniObject jniTempDir = QJniObject::fromString(fileExchangeDirectoryName);
         if (!jniTempDir.isValid()) {
             return;
         }
@@ -66,7 +64,7 @@ Platform::FileExchange::FileExchange(QObject *parent)
 
 void Platform::FileExchange::deferredInitialization()
 {
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "startWiFiMonitor");
+    QJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "startWiFiMonitor");
 }
 
 
@@ -155,19 +153,15 @@ auto Platform::FileExchange::contentToTempFile(const QByteArray& content, const 
 
 auto Platform::FileExchange::outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType) -> bool
 {
-    if (filePath == nullptr) {
-        return false;
-    }
-
-    QAndroidJniObject jsPath = QAndroidJniObject::fromString(filePath);
-    QAndroidJniObject jsMimeType = QAndroidJniObject::fromString(mimeType);
-    auto ok = QAndroidJniObject::callStaticMethod<jboolean>(
-                "de/akaflieg_freiburg/enroute/IntentLauncher",
-                methodName.toStdString().c_str(),
-                "(Ljava/lang/String;Ljava/lang/String;)Z",
-                jsPath.object<jstring>(),
-                jsMimeType.object<jstring>());
-    return ok != 0U;
+     QJniObject jsPath = QJniObject::fromString(filePath);
+     QJniObject jsMimeType = QJniObject::fromString(mimeType);
+     auto ok = QJniObject::callStaticMethod<jboolean>(
+                 "de/akaflieg_freiburg/enroute/IntentLauncher",
+                 methodName.toStdString().c_str(),
+                 "(Ljava/lang/String;Ljava/lang/String;)Z",
+                 jsPath.object<jstring>(),
+                 jsMimeType.object<jstring>());
+     return ok != 0U;
 }
 
 
@@ -186,5 +180,3 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setFileR
 
 
 }
-
-#endif // defined(Q_OS_ANDROID)

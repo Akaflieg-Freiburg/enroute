@@ -31,29 +31,21 @@
 # Clean
 #
 
-rm  -rf build-linux-debug
+rm  -rf build-linux-qt6-debug
 
 #
 # Build the executable
 #
 
-mkdir build-linux-debug
-cd build-linux-debug
+mkdir build-linux-qt6-debug
+cd build-linux-qt6-debug
 
 export ASAN_OPTIONS=detect_leaks=0
 export CC=/usr/bin/clang
 export CXX=/usr/bin/clang++
-export Qt5_DIR_LINUX=/home/kebekus/Software/buildsystems/qt5-linux-debug
 
-cmake \
-    -G Ninja\
-    -DCMAKE_BUILD_TYPE=Debug \
-    -DCMAKE_FIND_ROOT_PATH:STRING=$Qt5_DIR_LINUX \
-    -DCMAKE_UNITY_BUILD:BOOL=ON \
-    -DCMAKE_CXX_FLAGS="-fsanitize=address -fno-omit-frame-pointer" \
-    -DCMAKE_C_FLAGS="-fsanitize=address -fno-omit-frame-pointer" \
-    -DCMAKE_EXE_LINKER_FLAGS="-fsanitize=address -fno-omit-frame-pointer" \
-    -DCMAKE_MODULE_LINKER_FLAGS="-fsanitize=address -fno-omit-frame-pointer" \
+$Qt6_DIR_LINUX/bin/qt-cmake \
+    -G Ninja \
     ..
 
 ninja

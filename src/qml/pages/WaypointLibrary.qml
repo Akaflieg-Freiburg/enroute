@@ -18,12 +18,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtPositioning 5.15
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Layouts 1.15
+import QtPositioning
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Layouts
 
+import akaflieg_freiburg.enroute
 import enroute 1.0
 
 import "../dialogs"
@@ -38,7 +39,10 @@ Page {
     header: ToolBar {
 
         Material.foreground: "white"
-        height: 60
+        height: 60 + SafeInsets.top
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
+        topPadding: SafeInsets.top
 
         ToolButton {
             id: backButton
@@ -49,7 +53,7 @@ Page {
             icon.source: "/icons/material/ic_arrow_back.svg"
 
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 stackView.pop()
             }
         }
@@ -77,7 +81,7 @@ Page {
 
             icon.source: "/icons/material/ic_more_vert.svg"
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 headerMenuX.popup()
             }
 
@@ -91,9 +95,9 @@ Page {
                     height: enabled ? undefined : 0
 
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         highlighted = false
-                        global.fileExchange().importContent()
+                        FileExchange.importContent()
                     }
                 }
 
@@ -105,10 +109,10 @@ Page {
                         text: qsTr("… to GeoJSON file")
                         onTriggered: {
                             headerMenuX.close()
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            var errorString = global.fileExchange().shareContent(global.waypointLibrary().toGeoJSON(), "application/geo+json", qsTr("Waypoint Library"))
+                            var errorString = FileExchange.shareContent(global.waypointLibrary().toGeoJSON(), "application/geo+json", qsTr("Waypoint Library"))
                             if (errorString === "abort") {
                                 toast.doToast(qsTr("Aborted"))
                                 return
@@ -129,10 +133,10 @@ Page {
                         text: qsTr("… to GPX file")
                         onTriggered: {
                             headerMenuX.close()
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            var errorString = global.fileExchange().shareContent(global.waypointLibrary().toGpx(), "application/gpx+xml", qsTr("Waypoint Library"))
+                            var errorString = FileExchange.shareContent(global.waypointLibrary().toGpx(), "application/gpx+xml", qsTr("Waypoint Library"))
                             if (errorString === "abort") {
                                 toast.doToast(qsTr("Aborted"))
                                 return
@@ -158,11 +162,11 @@ Page {
                         text: qsTr("… in GeoJSON format")
 
                         onTriggered: {
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
 
-                            var errorString = global.fileExchange().viewContent(global.waypointLibrary().toGeoJSON(), "application/geo+json", "WaypointLibrary-%1.geojson")
+                            var errorString = FileExchange.viewContent(global.waypointLibrary().toGeoJSON(), "application/geo+json", "WaypointLibrary-%1.geojson")
                             if (errorString !== "") {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
@@ -175,11 +179,11 @@ Page {
                         text: qsTr("… in GPX format")
 
                         onTriggered: {
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
 
-                            var errorString = global.fileExchange().viewContent(global.waypointLibrary().toGpx(), "application/gpx+xml", "WaypointLibrary-%1.gpx")
+                            var errorString = FileExchange.viewContent(global.waypointLibrary().toGpx(), "application/gpx+xml", "WaypointLibrary-%1.gpx")
                             if (errorString !== "") {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
@@ -197,7 +201,7 @@ Page {
                     enabled: global.waypointLibrary().waypoints.length > 0
 
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         highlighted = false
                         clearDialog.open()
                     }
@@ -215,6 +219,9 @@ Page {
         anchors.rightMargin: view.font.pixelSize*2.0
         anchors.left: parent.left
         anchors.leftMargin: view.font.pixelSize*2.0
+
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
 
         placeholderText: qsTr("Filter Waypoint Names")
         font.pixelSize: view.font.pixelSize*1.5
@@ -235,13 +242,13 @@ Page {
                 icon.source: modelData.icon
 
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     waypointDescription.waypoint = modelData
                     waypointDescription.open()
                 }
 
                 swipe.onCompleted: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     removeDialog.waypoint = modelData
                     removeDialog.open()
                 }
@@ -253,7 +260,7 @@ Page {
 
                 icon.source: "/icons/material/ic_mode_edit.svg"
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     wpEditor.waypoint = modelData
                     wpEditor.open()
                 }
@@ -265,7 +272,7 @@ Page {
                 icon.source: "/icons/material/ic_more_horiz.svg"
 
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     cptMenu.popup()
                 }
 
@@ -276,14 +283,14 @@ Page {
                         id: removeAction
                         text: qsTr("Remove…")
                         onTriggered: {
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             removeDialog.waypoint = modelData
                             removeDialog.open()
                         }
                     } // removeAction
                 } // AutoSizingMenu
 
-            } // ToolButton
+            }
 
         }
 
@@ -295,6 +302,10 @@ Page {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
+
+        leftMargin: SafeInsets.left
+        rightMargin: SafeInsets.right
+        bottomMargin: SafeInsets.bottom
 
         clip: true
 
@@ -335,13 +346,12 @@ Page {
         textInput.text = cache
     }
 
-    Dialog {
+    CenteringDialog {
         id: shareErrorDialog
-        anchors.centerIn: parent
-        parent: Overlay.overlay
 
         title: qsTr("Error Exporting Data…")
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
+        standardButtons: Dialog.Ok
+        modal: true
 
         Label {
             id: shareErrorDialogLabel
@@ -349,29 +359,16 @@ Page {
             wrapMode: Text.Wrap
             textFormat: Text.StyledText
         }
-
-        standardButtons: Dialog.Ok
-        modal: true
-
     }
 
-    Dialog {
+    CenteringDialog {
         id: removeDialog
 
         property var waypoint: global.geoMapProvider().createWaypoint()
 
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
-
         title: qsTr("Remove from Device?")
-
-        // Width is chosen so that the dialog does not cover the parent in full, height is automatic
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: Math.min(parent.height-view.font.pixelSize, implicitHeight)
+        standardButtons: Dialog.No | Dialog.Yes
+        modal: true
 
         Label {
             width: removeDialog.availableWidth
@@ -381,52 +378,37 @@ Page {
             textFormat: Text.StyledText
         }
 
-        standardButtons: Dialog.No | Dialog.Yes
-        modal: true
-
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             global.waypointLibrary().remove(removeDialog.waypoint)
             page.reloadWaypointList()
             toast.doToast(qsTr("Waypoint removed from device"))
         }
         onRejected: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             page.reloadWaypointList() // Re-display aircraft that have been swiped out
             close()
         }
 
     }
 
-    Dialog {
+    CenteringDialog {
         id: clearDialog
 
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
-
         title: qsTr("Clear Waypoint Library?")
-
-        // Width is chosen so that the dialog does not cover the parent in full, height is automatic
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: Math.min(parent.height-view.font.pixelSize, implicitHeight)
+        standardButtons: Dialog.No | Dialog.Yes
+        modal: true
 
         Label {
-            width: removeDialog.availableWidth
+            width: clearDialog.availableWidth
 
             text: qsTr("Once cleared, the library cannot be restored.")
             wrapMode: Text.Wrap
             textFormat: Text.StyledText
         }
 
-        standardButtons: Dialog.No | Dialog.Yes
-        modal: true
-
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             global.waypointLibrary().clear()
             page.reloadWaypointList()
             toast.doToast(qsTr("Waypoint library cleared"))
@@ -437,8 +419,10 @@ Page {
         id: wpEditor
 
         onAccepted: {
-            var newWP = waypoint.renamed(newName)
-            newWP = newWP.relocated( QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter) )
+            let newWP = waypoint.copy()
+            newWP.name = newName
+            newWP.notes = newNotes
+            newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
             global.waypointLibrary().replace(waypoint, newWP)
             page.reloadWaypointList()
             toast.doToast(qsTr("Waypoint modified"))

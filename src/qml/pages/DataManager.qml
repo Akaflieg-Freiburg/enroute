@@ -18,11 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Layouts
 
+import akaflieg_freiburg.enroute
 import enroute 1.0
 import "../dialogs"
 import "../items"
@@ -60,7 +61,7 @@ Page {
                 if (nFilesTotal > 15) {
                     dialogLoader.active = false;
                     dialogLoader.dialogArgs = {onAcceptedCallback: model.modelData.startDownload};
-                    dialogLoader.source = "../dialogs/TooManyDownloadsDialog.qml";
+                    dialogLoader.source = "dialogs/TooManyDownloadsDialog.qml";
                     dialogLoader.active = true;
                 } else {
                     model.modelData.startDownload();
@@ -94,7 +95,7 @@ Page {
                     enabled: !model.modelData.hasFile
                     onClicked: {
                         if (!model.modelData.downloading && (!model.modelData.hasFile || model.modelData.updatable)) {
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             startFileDownload()
                         }
                     }
@@ -105,7 +106,7 @@ Page {
                     icon.source: "/icons/material/ic_file_download.svg"
                     visible: !model.modelData.hasFile && !model.modelData.downloading
                     onClicked: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         startFileDownload()
                     }
                 }
@@ -115,7 +116,7 @@ Page {
                     icon.source: "/icons/material/ic_refresh.svg"
                     visible: (model.modelData.updateSize !== 0) && !model.modelData.downloading
                     onClicked: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         model.modelData.update()
                     }
                 }
@@ -125,7 +126,7 @@ Page {
                     icon.source: "/icons/material/ic_cancel.svg"
                     visible: model.modelData.downloading
                     onClicked: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         model.modelData.stopDownload()
                     }
                 }
@@ -136,7 +137,7 @@ Page {
 
                     visible: model.modelData.hasFile & !model.modelData.downloading
                     onClicked: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         removeMenu.popup()
                     }
 
@@ -149,7 +150,7 @@ Page {
                             text: qsTr("Info")
 
                             onTriggered: {
-                                global.platformAdaptor().vibrateBrief()
+                                PlatformAdaptor.vibrateBrief()
                                 infoDialog.title = model.modelData.objectName
                                 infoDialog.text = model.modelData.description
                                 infoDialog.open()
@@ -161,7 +162,7 @@ Page {
                             text: qsTr("Uninstall")
 
                             onTriggered: {
-                                global.platformAdaptor().vibrateBrief()
+                                PlatformAdaptor.vibrateBrief()
                                 model.modelData.deleteFiles()
                             }
                         }
@@ -176,7 +177,7 @@ Page {
                     dialogLoader.active = false
                     dialogLoader.title = qsTr("Download Error")
                     dialogLoader.text = qsTr("<p>Failed to download <strong>%1</strong>.</p><p>Reason: %2.</p>").arg(objectName).arg(message)
-                    dialogLoader.source = "../dialogs/ErrorDialog.qml"
+                    dialogLoader.source = "dialogs/ErrorDialog.qml"
                     dialogLoader.active = true
                 }
             }
@@ -188,7 +189,10 @@ Page {
     header: ToolBar {
 
         Material.foreground: "white"
-        height: 60
+        height: 60 + SafeInsets.top
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
+        topPadding: SafeInsets.top
 
         ToolButton {
             id: backButton
@@ -199,7 +203,7 @@ Page {
             icon.source: "/icons/material/ic_arrow_back.svg"
 
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 stackView.pop()
             }
         }
@@ -230,7 +234,7 @@ Page {
             icon.color: "white"
 
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 headerMenuX.popup()
             }
 
@@ -245,7 +249,7 @@ Page {
                 text: qsTr("Update list of maps and data")
 
                 onTriggered: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     highlighted = false
                     global.dataManager().updateRemoteDataItemList()
                 }
@@ -258,7 +262,7 @@ Page {
                 enabled: (global.dataManager().items.updateSize !== 0)
 
                 onTriggered: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     highlighted = false
                     global.dataManager().items.updateAll()
                 }
@@ -275,6 +279,8 @@ Page {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
 
         currentIndex: sv.currentIndex
         TabButton {
@@ -286,20 +292,21 @@ Page {
         Material.elevation: 3
     }
 
-    ColumnLayout {
-        anchors.top: bar.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
 
-        anchors.topMargin: view.font.pixelSize*0.2
-
-        SwipeView{
+    SwipeView{
             id: sv
 
             currentIndex: bar.currentIndex
-            Layout.fillWidth: true
-            Layout.fillHeight: true
+            anchors.top: bar.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+
+            anchors.bottomMargin: footer.visible ? 0 : SafeInsets.bottom
+            anchors.leftMargin: SafeInsets.left
+            anchors.rightMargin: SafeInsets.right
+
+            clip: true
 
             ListView {
                 Layout.fillHeight: true
@@ -319,7 +326,7 @@ Page {
                 }
                 onFlickEnded: {
                     if ( atYBeginning && refreshFlick ) {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         global.dataManager().updateRemoteDataItemList()
                     }
                 }
@@ -343,14 +350,13 @@ Page {
                 }
                 onFlickEnded: {
                     if ( atYBeginning && refreshFlick ) {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         global.dataManager().updateRemoteDataItemList()
                     }
                 }
             }
         }
 
-    }
 
     Label {
         id: appUpdateRequiredWarning
@@ -369,7 +375,7 @@ Page {
         wrapMode: Text.Wrap
 
         text: qsTr("<h3>Update required!</h3>")
-              + global.librarian().getStringFromRessource("appUpdateRequired")
+              + Librarian.getStringFromRessource("appUpdateRequired")
     }
 
     Label {
@@ -391,7 +397,6 @@ Page {
 
         text: qsTr("<h3>Sorry!</h3><p>The list of available maps has not yet been downloaded from the server. You can restart the download manually using button below.</p>")
     }
-
 
     Rectangle {
         id: downloadIndicator
@@ -462,6 +467,7 @@ Page {
         Material.elevation: 3
         visible: (!global.dataManager().mapList.downloading && !global.dataManager().mapList.hasFile) || ((!global.dataManager().items.downloading) && (global.dataManager().mapsAndData.updateSize > 0))
         contentHeight: Math.max(downloadMapListActionButton.height, downloadUpdatesActionButton.height)
+        bottomPadding: SafeInsets.bottom
 
         ToolButton {
             id: downloadMapListActionButton
@@ -472,7 +478,7 @@ Page {
             icon.source: "/icons/material/ic_file_download.svg"
 
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 global.dataManager().updateRemoteDataItemList()
             }
         }
@@ -486,7 +492,7 @@ Page {
             icon.source: "/icons/material/ic_file_download.svg"
 
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 global.dataManager().mapsAndData.update()
             }
         }
@@ -499,7 +505,7 @@ Page {
             dialogLoader.active = false
             dialogLoader.title = qsTr("Download Error")
             dialogLoader.text = qsTr("<p>Failed to download the list of aviation maps.</p><p>Reason: %1.</p>").arg(message)
-            dialogLoader.source = "../dialogs/ErrorDialog.qml"
+            dialogLoader.source = "dialogs/ErrorDialog.qml"
             dialogLoader.active = true
         }
     }
@@ -512,3 +518,4 @@ Page {
     }
 
 } // Page
+

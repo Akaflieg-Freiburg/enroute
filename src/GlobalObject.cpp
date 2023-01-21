@@ -25,11 +25,12 @@
 #include "DemoRunner.h"
 #include "GlobalObject.h"
 #include "Librarian.h"
-#include "Settings.h"
+#include "GlobalSettings.h"
 #include "dataManagement/DataManager.h"
 #include "dataManagement/SSLErrorHandler.h"
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/WaypointLibrary.h"
+#include "navigation/Clock.h"
 #include "navigation/Navigator.h"
 #include "platform/FileExchange.h"
 #include "platform/Notifier.h"
@@ -40,8 +41,9 @@
 #include "traffic/TrafficDataProvider.h"
 #include "weather/WeatherDataProvider.h"
 
-bool isConstructing {false};
+bool isConstructingOrDeconstructing {false};
 
+QPointer<Navigation::Clock> g_clock {};
 QPointer<DataManagement::DataManager> g_dataManager {};
 QPointer<DataManagement::SSLErrorHandler> g_sslErrorHandler {};
 QPointer<DemoRunner> g_demoRunner {};
@@ -55,7 +57,7 @@ QPointer<QNetworkAccessManager> g_networkAccessManager {};
 QPointer<Platform::Notifier> g_notifier {};
 QPointer<Traffic::PasswordDB> g_passwordDB {};
 QPointer<Positioning::PositionProvider> g_positionProvider {};
-QPointer<Settings> g_settings {};
+QPointer<GlobalSettings> g_globalSettings {};
 QPointer<Traffic::TrafficDataProvider> g_trafficDataProvider {};
 QPointer<GeoMaps::WaypointLibrary> g_waypointLibrary {};
 QPointer<Weather::WeatherDataProvider> g_weatherDataProvider {};
@@ -64,11 +66,11 @@ QPointer<Weather::WeatherDataProvider> g_weatherDataProvider {};
 template<typename T> auto GlobalObject::allocateInternal(QPointer<T>& pointer) -> T*
 {
     Q_ASSERT( QCoreApplication::instance() != nullptr );
-    Q_ASSERT( !isConstructing );
+    Q_ASSERT( !isConstructingOrDeconstructing );
     if (pointer.isNull()) {
-        isConstructing = true;
+        isConstructingOrDeconstructing = true;
         pointer = new T( QCoreApplication::instance() );
-        isConstructing = false;
+        isConstructingOrDeconstructing = false;
         QQmlEngine::setObjectOwnership(pointer, QQmlEngine::CppOwnership);
         auto* gobj = qobject_cast<GlobalObject*>(pointer);
         if (gobj != nullptr) {
@@ -84,9 +86,38 @@ GlobalObject::GlobalObject(QObject *parent) : QObject(parent)
 }
 
 
+void GlobalObject::clear()
+{
+    isConstructingOrDeconstructing = true;
+
+    delete g_notifier;
+    delete g_geoMapProvider;
+    delete g_flarmnetDB;
+    delete g_dataManager;
+
+    delete g_sslErrorHandler;
+    delete g_demoRunner;
+    delete g_fileExchange;
+    delete g_librarian;
+    delete g_platformAdaptor;
+    delete g_navigator;
+    delete g_notifier;
+    delete g_passwordDB;
+    delete g_positionProvider;
+    delete g_globalSettings;
+    delete g_trafficDataProvider;
+    delete g_waypointLibrary;
+    delete g_weatherDataProvider;
+
+    delete g_networkAccessManager;
+
+    isConstructingOrDeconstructing = false;
+}
+
+
 auto GlobalObject::canConstruct() -> bool
 {
-    if (isConstructing) {
+    if (isConstructingOrDeconstructing) {
         return false;
     }
     if (QCoreApplication::instance() == nullptr ) {
@@ -110,6 +141,12 @@ auto GlobalObject::flarmnetDB() -> Traffic::FlarmnetDB*
 auto GlobalObject::geoMapProvider() -> GeoMaps::GeoMapProvider*
 {
     return allocateInternal<GeoMaps::GeoMapProvider>(g_geoMapProvider);
+}
+
+
+auto GlobalObject::clock() -> Navigation::Clock*
+{
+    return allocateInternal<Navigation::Clock>(g_clock);
 }
 
 
@@ -167,9 +204,9 @@ auto GlobalObject::positionProvider() -> Positioning::PositionProvider*
 }
 
 
-auto GlobalObject::settings() -> Settings*
+auto GlobalObject::globalSettings() -> GlobalSettings*
 {
-    return allocateInternal<Settings>(g_settings);
+    return allocateInternal<GlobalSettings>(g_globalSettings);
 }
 
 

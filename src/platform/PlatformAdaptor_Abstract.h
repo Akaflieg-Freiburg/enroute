@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include <QQmlEngine>
+
 #include "GlobalObject.h"
 
 namespace Platform {
@@ -47,20 +49,30 @@ namespace Platform {
 class PlatformAdaptor_Abstract : public GlobalObject
 {
     Q_OBJECT
+    QML_NAMED_ELEMENT(PlatformAdaptor)
+    QML_SINGLETON
 
 public:
     /*! \brief Standard constructor
      *
      * @param parent Standard QObject parent pointer
     */
-    explicit PlatformAdaptor_Abstract(QObject *parent = nullptr);
+    explicit PlatformAdaptor_Abstract(QObject* parent = nullptr);
+
+    // No default constructor, important for QML singleton
+    explicit PlatformAdaptor_Abstract() = delete;
 
     ~PlatformAdaptor_Abstract() override = default;
+
+    // factory function for QML singleton
+    static Platform::PlatformAdaptor_Abstract* create(QQmlEngine*, QJSEngine*)
+    {
+        return GlobalObject::platformAdaptor();
+    }
 
 
     //
     // Methods
-    //
 
     /*! \brief SSID of current Wi-Fi network
      *
@@ -143,6 +155,7 @@ signals:
 
 private:
     Q_DISABLE_COPY_MOVE(PlatformAdaptor_Abstract)
+
 };
 
 } // namespace Platform

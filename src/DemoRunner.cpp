@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019--2023 by Stefan Kebekus                            *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,7 +18,19 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
 #include <QApplication>
+
+#include "GlobalObject.h"
+#include "GlobalSettings.h"
+#include "geomaps/GeoMapProvider.h"
+#include "navigation/Navigator.h"
+#include "traffic/TrafficDataProvider.h"
+#include "traffic/TrafficDataSource_Simulate.h"
+#include "traffic/TrafficFactor_WithPosition.h"
+#include "weather/WeatherDataProvider.h"
+#endif
+
 #include <QDebug>
 #include <QEventLoop>
 #include <QQuickItem>
@@ -28,19 +40,12 @@
 #include <chrono>
 
 #include "DemoRunner.h"
-#include "GlobalObject.h"
-#include "Settings.h"
-#include "geomaps/GeoMapProvider.h"
-#include "navigation/Navigator.h"
-#include "traffic/TrafficDataProvider.h"
-#include "traffic/TrafficDataSource_Simulate.h"
-#include "traffic/TrafficFactor_WithPosition.h"
-#include "weather/WeatherDataProvider.h"
 
 using namespace std::chrono_literals;
 
 
-DemoRunner::DemoRunner(QObject *parent) : QObject(parent) {
+DemoRunner::DemoRunner(QObject *parent) : QObject(parent)
+{
 
 }
 
@@ -55,12 +60,15 @@ void delay(std::chrono::milliseconds ms)
 
 auto findQQuickItem(const QString &objectName, QQmlApplicationEngine* engine) -> QObject*
 {
-    foreach (auto rootItem, engine->rootObjects()) {
-        if (rootItem->objectName() == objectName) {
+    foreach (auto rootItem, engine->rootObjects())
+    {
+        if (rootItem->objectName() == objectName)
+        {
             return rootItem;
         }
         auto *objectPtr = rootItem->findChild<QObject*>(objectName);
-        if (objectPtr != nullptr) {
+        if (objectPtr != nullptr)
+        {
             return objectPtr;
         }
     }
@@ -68,8 +76,9 @@ auto findQQuickItem(const QString &objectName, QQmlApplicationEngine* engine) ->
 }
 
 
-void DemoRunner::run()
+void DemoRunner::generateGooglePlayScreenshots()
 {
+#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
     Q_ASSERT(m_engine != nullptr);
 
     // Obtain pointers to QML items
@@ -81,7 +90,7 @@ void DemoRunner::run()
     Q_ASSERT(waypointDescription != nullptr);
 
     // Set up traffic simulator
-    GlobalObject::settings()->setPositioningByTrafficDataReceiver(true);
+    GlobalObject::globalSettings()->setPositioningByTrafficDataReceiver(true);
     auto* trafficSimulator = new Traffic::TrafficDataSource_Simulate();
     GlobalObject::trafficDataProvider()->addDataSource( trafficSimulator );
     trafficSimulator->connectToTrafficReceiver();
@@ -109,8 +118,8 @@ void DemoRunner::run()
     GlobalObject::navigator()->flightRoute()->clear();
 
     // Settings
-    GlobalObject::settings()->setAirspaceAltitudeLimit({});
-    GlobalObject::settings()->setHideGlidingSectors(true);
+    GlobalObject::globalSettings()->setAirspaceAltitudeLimit({});
+    GlobalObject::globalSettings()->setHideGlidingSectors(true);
 
     //
     // GENERATE SCREENSHOTS FOR GOOGLE PLAY
@@ -120,31 +129,31 @@ void DemoRunner::run()
         QStringList languages = {"de-DE", "en-US", "fr-FR", "it-IT", "pl-PL"};
         QStringList devices = {"phone", "sevenInch", "tenInch"};
 
-        foreach(auto device, devices) {
-            foreach(auto language, languages) {
-                if (device == QLatin1String("phone")) {
+        foreach(auto device, devices)
+        {
+            auto language = QLocale::system().name();
+            {
+                if (device == u"phone"_qs)
+                {
                     applicationWindow->setProperty("width", 1080/2.5);
                     applicationWindow->setProperty("height", 1920/2.5);
                 }
-                if (device == QLatin1String("sevenInch")) {
+                if (device == u"sevenInch"_qs) {
                     applicationWindow->setProperty("width", 1920/2);
                     applicationWindow->setProperty("height", 1200/2);
                 }
-                if (device == QLatin1String("tenInch")) {
+                if (device == u"tenInch"_qs) {
                     applicationWindow->setProperty("width", 1920/2);
                     applicationWindow->setProperty("height", 1200/2);
                 }
 
 
-                qWarning() << "Generating screenshots for Google Play" << language;
+                qWarning() << "Generating screenshots for Google Play" << device;
                 int count = 1;
 
                 // Generate directory
                 QDir dir;
                 dir.mkpath(QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots").arg(language, device));
-
-                // Set language
-                setLanguage(language);
 
                 // Enroute near EDSB
                 {
@@ -160,7 +169,7 @@ void DemoRunner::run()
                     GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("EDTY")) );
 
                     flightMap->setProperty("zoomLevel", 11);
-                    GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
+                    GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::TTUp);
                     delay(4s);
                     applicationWindow->grabWindow().save(QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     GlobalObject::navigator()->flightRoute()->clear();
@@ -174,7 +183,7 @@ void DemoRunner::run()
                     trafficSimulator->setTT( Units::Angle::fromDEG(158) );
                     trafficSimulator->setGS( Units::Speed::fromKN(91) );
                     flightMap->setProperty("zoomLevel", 12);
-                    GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
+                    GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::TTUp);
                     delay(4s);
                     applicationWindow->grabWindow().save(QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                 }
@@ -190,7 +199,7 @@ void DemoRunner::run()
                     trafficSimulator->setGS( Units::Speed::fromKN(92) );
                     flightMap->setProperty("zoomLevel", 13);
                     flightMap->setProperty("followGPS", true);
-                    GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
+                    GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::TTUp);
                     QGeoCoordinate trafficPosition(48.0103, 7.8052, 540);
                     QGeoPositionInfo trafficInfo;
                     trafficInfo.setCoordinate(trafficPosition);
@@ -262,14 +271,64 @@ void DemoRunner::run()
         }
     } // Google Play
 
+    // Done. Terminate the program.
+    QApplication::exit();
+#endif
+}
+
+
+void DemoRunner::generateManualScreenshots()
+{
+#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
+    Q_ASSERT(m_engine != nullptr);
+
+    emit requestClosePages();
+
+    // Obtain pointers to QML items
+    auto* applicationWindow = qobject_cast<QQuickWindow*>(findQQuickItem(QStringLiteral("applicationWindow"), m_engine));
+    Q_ASSERT(applicationWindow != nullptr);
+    auto* flightMap = findQQuickItem(QStringLiteral("flightMap"), m_engine);
+    Q_ASSERT(flightMap != nullptr);
+    auto* waypointDescription = findQQuickItem(QStringLiteral("waypointDescription"), m_engine);
+    Q_ASSERT(waypointDescription != nullptr);
+
+    // Set up traffic simulator
+    GlobalObject::globalSettings()->setPositioningByTrafficDataReceiver(true);
+    auto* trafficSimulator = new Traffic::TrafficDataSource_Simulate();
+    GlobalObject::trafficDataProvider()->addDataSource( trafficSimulator );
+    trafficSimulator->connectToTrafficReceiver();
+    delay(5s);
+
+    // Set up aircraft
+    Navigation::Aircraft acft;
+    acft.setName(QStringLiteral("D-EULL"));
+    acft.setHorizontalDistanceUnit(Navigation::Aircraft::NauticalMile);
+    acft.setVerticalDistanceUnit(Navigation::Aircraft::Feet);
+    acft.setFuelConsumptionUnit(Navigation::Aircraft::LiterPerHour);
+    acft.setCruiseSpeed(Units::Speed::fromKN(90));
+    acft.setDescentSpeed(Units::Speed::fromKN(120));
+    acft.setMinimumSpeed(Units::Speed::fromKN(65));
+    acft.setFuelConsumption(Units::VolumeFlow::fromLPH(18));
+    GlobalObject::navigator()->setAircraft(acft);
+
+    // Set up wind
+    Weather::Wind wind;
+    wind.setDirectionFrom( Units::Angle::fromDEG(210) );
+    wind.setSpeed( Units::Speed::fromKN(10) );
+    GlobalObject::navigator()->setWind(wind);
+
+    // Set up route
+    GlobalObject::navigator()->flightRoute()->clear();
+
+    // Settings
+    GlobalObject::globalSettings()->setAirspaceAltitudeLimit({});
+    GlobalObject::globalSettings()->setHideGlidingSectors(true);
+
 
     //
     // GENERATE SCREENSHOTS FOR MANUAL
     //
     qWarning() << "Generating screenshots for manual";
-
-    // Set language
-    setLanguage(QStringLiteral("en"));
 
     // Resize window
     applicationWindow->setProperty("width", 400);
@@ -317,7 +376,7 @@ void DemoRunner::run()
         GlobalObject::navigator()->flightRoute()->append( GlobalObject::geoMapProvider()->findByID(QStringLiteral("EDTY")) );
 
         flightMap->setProperty("zoomLevel", 11);
-        GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
+        GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::TTUp);
         delay(4s);
         applicationWindow->grabWindow().save(QStringLiteral("02-02-04-EnRoute.png"));
         GlobalObject::navigator()->flightRoute()->clear();
@@ -372,7 +431,7 @@ void DemoRunner::run()
         trafficSimulator->setGS( Units::Speed::fromKN(5) );
         flightMap->setProperty("zoomLevel", 13);
         flightMap->setProperty("followGPS", true);
-        GlobalObject::settings()->setMapBearingPolicy(Settings::NUp);
+        GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::NUp);
         delay(4s);
         applicationWindow->grabWindow().save(QStringLiteral("01-03-01-ground.png"));
     }
@@ -385,7 +444,7 @@ void DemoRunner::run()
         trafficSimulator->setTT( Units::Angle::fromDEG(170) );
         trafficSimulator->setGS( Units::Speed::fromKN(90) );
         flightMap->setProperty("zoomLevel", 11);
-        GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
+        GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::TTUp);
         delay(4s);
         applicationWindow->grabWindow().save(QStringLiteral("01-03-02-flight.png"));
     }
@@ -397,7 +456,7 @@ void DemoRunner::run()
         Q_ASSERT(waypoint.isValid());
         waypointDescription->setProperty("waypoint", QVariant::fromValue(waypoint));
         QMetaObject::invokeMethod(waypointDescription, "open", Qt::QueuedConnection);
-        GlobalObject::settings()->setMapBearingPolicy(Settings::NUp);
+        GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::NUp);
         delay(4s);
         applicationWindow->grabWindow().save(QStringLiteral("01-03-03-EDFEinfo.png"));
         QMetaObject::invokeMethod(waypointDescription, "close", Qt::QueuedConnection);
@@ -413,7 +472,7 @@ void DemoRunner::run()
         trafficSimulator->setGS( Units::Speed::fromKN(92) );
         flightMap->setProperty("zoomLevel", 13);
         flightMap->setProperty("followGPS", true);
-        GlobalObject::settings()->setMapBearingPolicy(Settings::TTUp);
+        GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::TTUp);
         QGeoCoordinate trafficPosition(48.0103, 7.7952, 540);
         QGeoPositionInfo trafficInfo;
         trafficInfo.setCoordinate(trafficPosition);
@@ -449,24 +508,5 @@ void DemoRunner::run()
 
     // Done. Terminate the program.
     QApplication::exit();
-}
-
-
-void DemoRunner::setLanguage(const QString &language){
-
-    Q_ASSERT(m_engine != nullptr);
-
-    // Delete existing translators
-    foreach(auto translator, qApp->findChildren<QTranslator*>()) {
-        if (QCoreApplication::removeTranslator(translator)) {
-            delete translator;
-        }
-    }
-
-    auto* enrouteTranslator = new QTranslator(qApp);
-    if ( enrouteTranslator->load(QStringLiteral(":enroute_%1.qm").arg(language.left(2))) ) {
-        QCoreApplication::installTranslator(enrouteTranslator);
-    }
-    m_engine->retranslate();
-
+#endif
 }

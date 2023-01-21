@@ -18,22 +18,23 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QCoreApplication>
 #include <QSettings>
+#include <chrono>
 
 #include "GlobalObject.h"
 #include "UpdateNotifier.h"
+#include "dataManagement/DataManager.h"
 #include "navigation/Navigator.h"
 #include "platform/Notifier_Abstract.h"
-#include <chrono>
 
 using namespace std::chrono_literals;
 
 
 
-DataManagement::UpdateNotifier::UpdateNotifier(DataManager* parent) :
+DataManagement::UpdateNotifier::UpdateNotifier(QObject* parent) :
     QObject(parent)
 {
-
     connect(GlobalObject::dataManager()->mapsAndData(), &DataManagement::Downloadable_Abstract::updateSizeChanged, this, &DataManagement::UpdateNotifier::updateNotification);
     connect(&notificationTimer, &QTimer::timeout, this, &DataManagement::UpdateNotifier::updateNotification);
 
@@ -46,7 +47,6 @@ DataManagement::UpdateNotifier::UpdateNotifier(DataManager* parent) :
 
 void DataManagement::UpdateNotifier::updateNotification()
 {
-
     // If there is no update, then we end here.
     if (GlobalObject::dataManager()->mapsAndData()->updateSize() == 0) {
         GlobalObject::notifier()->hideNotification(Platform::Notifier_Abstract::GeoMapUpdatePending);

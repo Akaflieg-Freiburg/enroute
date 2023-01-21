@@ -20,7 +20,6 @@
 
 
 #include <QJsonArray>
-#include <QUrl>
 
 #include "GlobalObject.h"
 #include "Waypoint.h"
@@ -34,9 +33,6 @@ GeoMaps::Waypoint::Waypoint()
     m_properties.insert(QStringLiteral("CAT"), QStringLiteral("WP"));
     m_properties.insert(QStringLiteral("NAM"), QStringLiteral("Waypoint"));
     m_properties.insert(QStringLiteral("TYP"), QStringLiteral("WP"));
-
-    // Set cached property
-    m_isValid = computeIsValid();
 }
 
 
@@ -49,9 +45,6 @@ GeoMaps::Waypoint::Waypoint(const QGeoCoordinate& coordinate)
     if (coordinate.type() == QGeoCoordinate::Coordinate3D) {
         m_properties.insert(QStringLiteral("ELE"), coordinate.altitude() );
     }
-
-    // Set cached property
-    m_isValid = computeIsValid();
 }
 
 
@@ -89,17 +82,14 @@ GeoMaps::Waypoint::Waypoint(const QJsonObject &geoJSONObject)
     if (m_properties.contains(QStringLiteral("ELE"))) {
         m_coordinate.setAltitude(properties[QStringLiteral("ELE")].toDouble());
     }
-
-    // Set cached property
-    m_isValid = computeIsValid();
 }
 
 
 //
-// METHODS
+// GETTER METHODS
 //
 
-auto GeoMaps::Waypoint::computeIsValid() const -> bool
+auto GeoMaps::Waypoint::isValid() const -> bool
 {
     if (!m_coordinate.isValid()) {
         return false;
@@ -110,16 +100,16 @@ auto GeoMaps::Waypoint::computeIsValid() const -> bool
     auto TYP = m_properties.value(QStringLiteral("TYP")).toString();
 
     // Handle airfields
-    if (TYP == QLatin1String("AD")) {
+    if (TYP == u"AD") {
         // Property CAT
         if (!m_properties.contains(QStringLiteral("CAT"))) {
             return false;
         }
         auto CAT = m_properties.value(QStringLiteral("CAT")).toString();
-        if ((CAT != QLatin1String("AD")) && (CAT != QLatin1String("AD-GRASS")) && (CAT != QLatin1String("AD-PAVED")) &&
-                (CAT != QLatin1String("AD-INOP")) && (CAT != QLatin1String("AD-GLD")) && (CAT != QLatin1String("AD-MIL")) &&
-                (CAT != QLatin1String("AD-MIL-GRASS")) && (CAT != QLatin1String("AD-MIL-PAVED")) && (CAT != QLatin1String("AD-UL")) &&
-                (CAT != QLatin1String("AD-WATER"))) {
+        if ((CAT != u"AD") && (CAT != u"AD-GRASS") && (CAT != u"AD-PAVED") &&
+                (CAT != u"AD-INOP") && (CAT != u"AD-GLD") && (CAT != u"AD-MIL") &&
+                (CAT != u"AD-MIL-GRASS") && (CAT != u"AD-MIL-PAVED") && (CAT != u"AD-UL") &&
+                (CAT != u"AD-WATER")) {
             return false;
         }
 
@@ -141,15 +131,15 @@ auto GeoMaps::Waypoint::computeIsValid() const -> bool
     }
 
     // Handle NavAids
-    if (TYP == QLatin1String("NAV")) {
+    if (TYP == u"NAV") {
         // Property CAT
         if (!m_properties.contains(QStringLiteral("CAT"))) {
             return false;
         }
         auto CAT = m_properties.value(QStringLiteral("CAT")).toString();
-        if ((CAT != QLatin1String("NDB")) && (CAT != QLatin1String("VOR")) && (CAT != QLatin1String("VOR-DME")) &&
-                (CAT != QLatin1String("VORTAC")) && (CAT != QLatin1String("DVOR")) && (CAT != QLatin1String("DVOR-DME")) &&
-                (CAT != QLatin1String("DVORTAC"))) {
+        if ((CAT != u"NDB") && (CAT != u"VOR") && (CAT != u"VOR-DME") &&
+                (CAT != u"VORTAC") && (CAT != u"DVOR") && (CAT != u"DVOR-DME") &&
+                (CAT != u"DVORTAC")) {
             return false;
         }
 
@@ -177,18 +167,18 @@ auto GeoMaps::Waypoint::computeIsValid() const -> bool
     }
 
     // Handle waypoints
-    if (TYP == QLatin1String("WP")) {
+    if (TYP == u"WP") {
         // Property CAT
         if (!m_properties.contains(QStringLiteral("CAT"))) {
             return false;
         }
         auto CAT = m_properties.value(QStringLiteral("CAT")).toString();
-        if ((CAT != QLatin1String("MRP")) && (CAT != QLatin1String("RP")) && (CAT != QLatin1String("WP"))) {
+        if ((CAT != u"MRP") && (CAT != u"RP") && (CAT != u"WP")) {
             return false;
         }
 
         // Property COD
-        if ((CAT == QLatin1String("MRP")) || (CAT == QLatin1String("RP"))) {
+        if ((CAT == u"MRP") || (CAT == u"RP")) {
             if (!m_properties.contains(QStringLiteral("COD"))) {
                 return false;
             }
@@ -200,7 +190,7 @@ auto GeoMaps::Waypoint::computeIsValid() const -> bool
         }
 
         // Property SCO
-        if ((CAT == QLatin1String("MRP")) || (CAT == QLatin1String("RP"))) {
+        if ((CAT == u"MRP") || (CAT == u"RP")) {
             if (!m_properties.contains(QStringLiteral("SCO"))) {
                 return false;
             }
@@ -214,6 +204,10 @@ auto GeoMaps::Waypoint::computeIsValid() const -> bool
 }
 
 
+//
+// METHODS
+//
+
 auto GeoMaps::Waypoint::isNear(const Waypoint& other) const -> bool
 {
     if (!m_coordinate.isValid()) {
@@ -224,22 +218,6 @@ auto GeoMaps::Waypoint::isNear(const Waypoint& other) const -> bool
     }
 
     return m_coordinate.distanceTo(other.m_coordinate) < 2000;
-}
-
-
-auto GeoMaps::Waypoint::relocated(const QGeoCoordinate& newCoordinate) const -> GeoMaps::Waypoint
-{
-    Waypoint copy(*this);
-    copy.m_coordinate = newCoordinate;
-    return copy;
-}
-
-
-auto GeoMaps::Waypoint::renamed(const QString &newName) const -> GeoMaps::Waypoint
-{
-    Waypoint copy(*this);
-    copy.m_properties.replace(QStringLiteral("NAM"), newName);
-    return copy;
 }
 
 
@@ -289,7 +267,7 @@ void GeoMaps::Waypoint::toGPX(QXmlStreamWriter& stream) const
 
 auto GeoMaps::Waypoint::extendedName() const -> QString
 {
-    if (m_properties.value(QStringLiteral("TYP")).toString() == QLatin1String("NAV")) {
+    if (m_properties.value(QStringLiteral("TYP")).toString() == u"NAV") {
         return QStringLiteral("%1 (%2)").arg(m_properties.value(QStringLiteral("NAM")).toString(), m_properties.value(QStringLiteral("CAT")).toString());
     }
 
@@ -304,7 +282,7 @@ auto GeoMaps::Waypoint::icon() const -> QString
     // We prefer SVG icons. There are, however, a few icons that cannot be
     // rendered by Qt's tinySVG renderer. We have generated PNGs for those
     // and treat them separately here.
-    if ((CAT == QLatin1String("AD-GLD")) || (CAT == QLatin1String("AD-GRASS")) || (CAT == QLatin1String("AD-MIL-GRASS")) || (CAT == QLatin1String("AD-UL"))) {
+    if ((CAT == u"AD-GLD") || (CAT == u"AD-GRASS") || (CAT == u"AD-MIL-GRASS") || (CAT == u"AD-UL")) {
         return QStringLiteral("/icons/waypoints/%1.png").arg(CAT);
     }
 
@@ -316,33 +294,35 @@ auto GeoMaps::Waypoint::tabularDescription() const -> QList<QString>
 {
     QList<QString> result;
 
-    if (m_properties.value(QStringLiteral("TYP")).toString() == QLatin1String("NAV")) {
+    if (m_properties.value(QStringLiteral("TYP")).toString() == u"NAV")
+    {
         result.append("ID  " + m_properties.value(QStringLiteral("COD")).toString() + " " + m_properties.value(QStringLiteral("MOR")).toString());
         result.append("NAV " + m_properties.value(QStringLiteral("NAV")).toString());
     }
 
-    if (m_properties.value(QStringLiteral("TYP")).toString() == QLatin1String("AD")) {
+    if (m_properties.value(QStringLiteral("TYP")).toString() == u"AD")
+    {
         if (m_properties.contains(QStringLiteral("COD"))) {
             result.append("ID  " + m_properties.value(QStringLiteral("COD")).toString());
         }
         if (m_properties.contains(QStringLiteral("INF"))) {
-            result.append("INF " + m_properties.value(QStringLiteral("INF")).toString().replace(QLatin1String("\n"), QLatin1String("<br>")));
+            result.append("INF " + m_properties.value(QStringLiteral("INF")).toString().replace(u"\n"_qs, u"<br>"_qs));
         }
         if (m_properties.contains(QStringLiteral("COM"))) {
-            result.append("COM " + m_properties.value(QStringLiteral("COM")).toString().replace(QLatin1String("\n"), QLatin1String("<br>")));
+            result.append("COM " + m_properties.value(QStringLiteral("COM")).toString().replace(u"\n"_qs, u"<br>"_qs));
         }
         if (m_properties.contains(QStringLiteral("NAV"))) {
-            result.append("NAV " + m_properties.value(QStringLiteral("NAV")).toString().replace(QLatin1String("\n"), QLatin1String("<br>")));
+            result.append("NAV " + m_properties.value(QStringLiteral("NAV")).toString().replace(u"\n"_qs, u"<br>"_qs));
         }
         if (m_properties.contains(QStringLiteral("OTH"))) {
-            result.append("OTH " + m_properties.value(QStringLiteral("OTH")).toString().replace(QLatin1String("\n"), QLatin1String("<br>")));
+            result.append("OTH " + m_properties.value(QStringLiteral("OTH")).toString().replace(u"\n"_qs, u"<br>"_qs));
         }
         if (m_properties.contains(QStringLiteral("RWY"))) {
-            result.append("RWY " + m_properties.value(QStringLiteral("RWY")).toString().replace(QLatin1String("\n"), QLatin1String("<br>")));
+            result.append("RWY " + m_properties.value(QStringLiteral("RWY")).toString().replace(u"\n"_qs, u"<br>"_qs));
         }
     }
 
-    if (m_properties.value(QStringLiteral("TYP")).toString() == QLatin1String("WP")) {
+    if (m_properties.value(QStringLiteral("TYP")).toString() == u"WP") {
         if (m_properties.contains(QStringLiteral("ICA"))) {
             result.append("ID  " + m_properties.value(QStringLiteral("COD")).toString());
         }
@@ -355,6 +335,10 @@ auto GeoMaps::Waypoint::tabularDescription() const -> QList<QString>
         auto ele = Units::Distance::fromM( m_properties.value(QStringLiteral("ELE")).toDouble() );
         auto eleString = GlobalObject::navigator()->aircraft().verticalDistanceToString(ele);
         result.append(QStringLiteral("ELEV%1 AMSL").arg(eleString));
+    }
+
+    if (m_properties.contains(QStringLiteral("NOT"))) {
+        result.append("NOTE" + m_properties.value(QStringLiteral("NOT")).toString());
     }
 
     return result;
@@ -379,20 +363,15 @@ auto GeoMaps::Waypoint::twoLineTitle() const -> QString
 }
 
 
-auto GeoMaps::operator==(const GeoMaps::Waypoint& A, const GeoMaps::Waypoint& B) -> bool
+auto GeoMaps::qHash(const GeoMaps::Waypoint& wp) -> size_t
 {
-    return ((A.m_coordinate == B.m_coordinate) &&
-            (A.m_properties == B.m_properties));
-}
+    auto result = qHash(wp.m_coordinate);
 
-
-auto GeoMaps::operator!=(const GeoMaps::Waypoint& A, const GeoMaps::Waypoint& B) -> bool
-{
-    return ((A.m_coordinate != B.m_coordinate) ||
-            (A.m_properties != B.m_properties));
-}
-
-auto GeoMaps::qHash(const GeoMaps::Waypoint& wp) -> uint
-{
-    return qHash(wp.coordinate());
+    QMapIterator<QString, QVariant> i(wp.m_properties);
+    while (i.hasNext()) {
+        i.next();
+        result += qHash(i.key())+1;
+        result += qHash(i.value().toString());
+    }
+    return result;
 }

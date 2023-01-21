@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,22 +18,28 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Controls
+
+import akaflieg_freiburg.enroute
 
 Menu {
+    id: menu
+    bottomMargin: SafeInsets.bottom
+    leftMargin: SafeInsets.left
+    rightMargin: SafeInsets.right
+    topMargin: SafeInsets.top
 
     width: {
         var result = 0;
-        var padding = 0;
+
         for (var i = 0; i < count; ++i) {
             var item = itemAt(i);
-            if (item.contentItem !== undefined) {
+            if (item.implicitWidth !== undefined) {
                 result = Math.max(item.implicitWidth, result);
-                padding = Math.max(item.padding, padding);
             }
         }
-        return result + padding * 2;
+        return result;
     }
 
 }

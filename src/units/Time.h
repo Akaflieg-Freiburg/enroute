@@ -24,6 +24,7 @@
 #include "units/Speed.h"
 
 #include <QObject>
+#include <QQmlEngine>
 #include <QtMath>
 
 
@@ -36,6 +37,7 @@ namespace Units {
      */
     class Time {
         Q_GADGET
+        QML_VALUE_TYPE(time)
 
     public:
         /*! \brief Constructs a time
@@ -92,27 +94,14 @@ namespace Units {
             return *this;
         }
 
-        /*! \brief Comparison: equal
+        /*! \brief Comparison
          *
          *  @param rhs Right hand side of the comparison
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE bool operator==(Units::Time rhs) const
-        {
-            return m_timeInS == rhs.m_timeInS;
-        }
+        Q_INVOKABLE [[nodiscard]] std::partial_ordering operator<=>(const Units::Time& rhs) const = default;
 
-        /*! \brief Comparison: not equal
-         *
-         *  @param rhs Right hand side of the comparison
-         *
-         *  @returns Result of the comparison
-         */
-        Q_INVOKABLE bool operator!=(Units::Time rhs) const
-        {
-            return m_timeInS != rhs.m_timeInS;
-        }
         /*! \brief Convert time to seconds
          *
          * @return time in seconds

@@ -20,7 +20,10 @@
 
 #include <QImage>
 #include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QLockFile>
+#include <QQmlEngine>
 #include <QRandomGenerator>
 #include <QtConcurrent/QtConcurrentRun>
 
@@ -49,9 +52,9 @@ void GeoMaps::GeoMapProvider::deferredInitialization()
     connect(GlobalObject::dataManager()->baseMaps(), &DataManagement::Downloadable_Abstract::fileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
     connect(GlobalObject::dataManager()->baseMaps(), &DataManagement::Downloadable_Abstract::filesChanged, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
     connect(GlobalObject::dataManager()->terrainMaps(), &DataManagement::Downloadable_Abstract::fileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
-    connect(GlobalObject::settings(), &Settings::airspaceAltitudeLimitChanged, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
-    connect(GlobalObject::settings(), &Settings::hideGlidingSectorsChanged, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
-    connect(GlobalObject::settings(), &Settings::hillshadingChanged, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
+    connect(GlobalObject::globalSettings(), &GlobalSettings::airspaceAltitudeLimitChanged, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
+    connect(GlobalObject::globalSettings(), &GlobalSettings::hideGlidingSectorsChanged, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
+    connect(GlobalObject::globalSettings(), &GlobalSettings::hillshadingChanged, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
 
     _aviationDataCacheTimer.setSingleShot(true);
     _aviationDataCacheTimer.setInterval(3s);
@@ -176,8 +179,7 @@ auto GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGe
         }
     }
 
-    for(auto& variant : GlobalObject::navigator()->flightRoute()->midFieldWaypoints() ) {
-        auto wp = variant.value<GeoMaps::Waypoint>();
+    for(auto& wp : GlobalObject::navigator()->flightRoute()->midFieldWaypoints() ) {
         if (!wp.isValid()) {
             continue;
         }
@@ -342,7 +344,7 @@ auto GeoMaps::GeoMapProvider::findByID(const QString &id) -> Waypoint
     return {};
 }
 
-auto GeoMaps::GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, const QString& type) -> QVariantList
+auto GeoMaps::GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, const QString& type) -> QList<GeoMaps::Waypoint>
 {
     auto wps = waypoints();
 
@@ -359,17 +361,7 @@ auto GeoMaps::GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, co
 
     std::sort(tWps.begin(), tWps.end(), [position](const Waypoint &a, const Waypoint &b) {return position.distanceTo(a.coordinate()) < position.distanceTo(b.coordinate()); });
 
-    QVariantList result;
-    int sz = 0;
-    foreach(auto ad, tWps) {
-        result.append( QVariant::fromValue(ad) );
-        sz++;
-        if (sz == 20) {
-            break;
-        }
-    }
-
-    return result;
+    return tWps.mid(0,20);
 }
 
 auto GeoMaps::GeoMapProvider::waypoints() -> QVector<Waypoint>
@@ -411,7 +403,7 @@ void GeoMaps::GeoMapProvider::onAviationMapsChanged()
         JSONFileNames += geoMapPtr->fileName();
     }
 
-    _aviationDataCacheFuture = QtConcurrent::run(this, &GeoMaps::GeoMapProvider::fillAviationDataCache, JSONFileNames, GlobalObject::settings()->airspaceAltitudeLimit(), GlobalObject::settings()->hideGlidingSectors());
+    _aviationDataCacheFuture = QtConcurrent::run(&GeoMaps::GeoMapProvider::fillAviationDataCache, this, JSONFileNames, GlobalObject::globalSettings()->airspaceAltitudeLimit(), GlobalObject::globalSettings()->hideGlidingSectors());
 }
 
 void GeoMaps::GeoMapProvider::onMBTILESChanged()
@@ -501,7 +493,7 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
     file.open(QIODevice::ReadOnly);
     QByteArray data = file.readAll();
     data.replace("%URL%", (_tileServer.serverUrl()+"/"+_currentBaseMapPath).toLatin1());
-    if (GlobalObject::settings()->hillshading())
+    if (GlobalObject::globalSettings()->hillshading())
     {
         data.replace("%URLT%", (_tileServer.serverUrl()+"/"+_currentTerrainMapPath).toLatin1());
     }
@@ -609,13 +601,17 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(QStringList JSONFileNames, U
         newGeoJSON = geoDoc.toJson();
     }
     auto _geoJSONChanged = (newGeoJSON != _combinedGeoJSON_);
+    auto _waypointsChanged = (newWaypoints != _waypoints_);
 
     // Sort waypoints by name
     std::sort(newWaypoints.begin(), newWaypoints.end(), [](const Waypoint &a, const Waypoint &b) {return a.name() < b.name(); });
 
     _aviationDataMutex.lock();
     _airspaces_ = newAirspaces;
-    _waypoints_ = newWaypoints;
+    if (_waypointsChanged)
+    {
+        _waypoints_ = newWaypoints;
+    }
     if (_geoJSONChanged)
     {
         _combinedGeoJSON_ = newGeoJSON;
@@ -625,8 +621,14 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(QStringList JSONFileNames, U
         geoJSONCacheFile.close();
     }
     _aviationDataMutex.unlock();
+
+    if (_waypointsChanged)
+    {
+        emit waypointsChanged();
+    }
     if (_geoJSONChanged)
     {
         emit geoJSONChanged();
     }
+
 }

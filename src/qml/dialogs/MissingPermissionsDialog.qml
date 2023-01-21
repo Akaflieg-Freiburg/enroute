@@ -18,14 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Controls
+
+import akaflieg_freiburg.enroute
 
 LongTextDialog {
-    id: frRld
-
     closePolicy: Popup.NoAutoClose
-    text:  global.librarian().getStringFromRessource(":text/missingPermissions.html")
+    text:  Librarian.getStringFromRessource(":text/missingPermissions.html")
 
     footer: DialogButtonBox {
         ToolButton {
@@ -34,5 +34,5 @@ LongTextDialog {
         }
 
         onRejected: Qt.quit()
-    } // DialogButtonBox
+    }
 }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2021-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -145,10 +145,10 @@ public:
 
 signals:
     /*! \brief Notifier signal */
-    void positionInfoChanged(const Positioning::PositionInfo &info);
+    void positionInfoChanged();
 
     /*! \brief Notifier signal */
-    void pressureAltitudeChanged(Units::Distance pAlt);
+    void pressureAltitudeChanged();
 
     /*! \brief Notifier signal */
     void receivingPositionInfoChanged(bool);

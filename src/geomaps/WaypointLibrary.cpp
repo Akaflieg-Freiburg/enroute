@@ -194,7 +194,7 @@ bool GeoMaps::WaypointLibrary::remove(const GeoMaps::Waypoint &waypoint)
     return false;
 }
 
-bool GeoMaps::WaypointLibrary::replace(const GeoMaps::Waypoint &oldWaypoint, const GeoMaps::Waypoint &newWaypoint)
+bool GeoMaps::WaypointLibrary::replace(const GeoMaps::Waypoint& oldWaypoint, const GeoMaps::Waypoint& newWaypoint)
 {
     if (!newWaypoint.isValid())
     {

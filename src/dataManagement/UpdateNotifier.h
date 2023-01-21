@@ -22,8 +22,6 @@
 
 #include <QTimer>
 
-#include "dataManagement/DataManager.h"
-
 
 namespace DataManagement {
 
@@ -42,7 +40,7 @@ public:
      *
      *  @param parent Pointer to the parent object, which must be a DataManager.
      */
-    explicit UpdateNotifier(DataManager* parent);
+    explicit UpdateNotifier(QObject* parent=nullptr);
 
 private:
     // Notify if map updates pending, else close the notification

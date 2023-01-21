@@ -18,12 +18,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import Qt.labs.settings 1.1
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import Qt.labs.settings
+import QtQuick.Layouts
 
+import akaflieg_freiburg.enroute
 import enroute 1.0
 
 import "dialogs"
@@ -33,6 +34,9 @@ import "pages"
 ApplicationWindow {
     id: view
     objectName: "applicationWindow"
+
+    // On Android, fullscreen mode is set in JAVA code
+    flags: ((Qt.platform.os === "android") || (Qt.platform.os === "ios")) ? Qt.MaximizeUsingFullscreenGeometryHint | Qt.Window : Qt.Window
 
     visible: true
     title: "Enroute Flight Navigation"
@@ -46,7 +50,7 @@ ApplicationWindow {
         property alias height: view.height
     }
 
-    Material.theme: global.settings().nightMode ? Material.Dark : Material.Light
+    Material.theme: GlobalSettings.nightMode ? Material.Dark : Material.Light
     Material.primary: Material.theme === Material.Dark ? Qt.darker("teal") : "teal"
     Material.accent: Material.theme === Material.Dark ? Qt.lighter("teal") : "teal"
 
@@ -54,6 +58,7 @@ ApplicationWindow {
         id: drawer
 
         height: view.height
+        width: col.implicitWidth
 
         ScrollView {
             anchors.fill: parent
@@ -63,18 +68,14 @@ ApplicationWindow {
 
                 spacing: 0
 
-                Rectangle {
-                    height: 16
+                Label { // Title
                     Layout.fillWidth: true
-                    color: Material.primary
-                }
 
-                Label {
-                    Layout.fillWidth: true
-                    leftPadding: 16
+                    leftPadding: 16+SafeInsets.left
                     rightPadding: 16
+                    topPadding: 16+SafeInsets.top
 
-                    text: "Enroute Flight Navigation " + Qt.application.version
+                    text: "Enroute Flight Navigation"
                     color: "white"
                     font.pixelSize: 20
                     font.weight: Font.Medium
@@ -85,19 +86,20 @@ ApplicationWindow {
                 }
 
                 Rectangle {
-                    height: 4
-
                     Layout.fillWidth: true
+                    Layout.preferredHeight: 4
+
                     color: Material.primary
                 }
 
-                Label {
+                Label { // Subtitle
                     Layout.fillWidth: true
-                    leftPadding: 16
-                    rightPadding: 16
-                    height: 20
 
-                    text: "Akaflieg Freiburg"
+                    leftPadding: 16+SafeInsets.left
+                    rightPadding: 16
+                    Layout.preferredHeight: 20
+
+                    text: "Akaflieg Freiburg" + " • v" + Qt.application.version
                     font.pixelSize: 16
                     color: "white"
 
@@ -107,34 +109,40 @@ ApplicationWindow {
                 }
 
                 Rectangle {
-                    height: 18
-
+                    Layout.preferredHeight: 18
                     Layout.fillWidth: true
+
                     color: Material.primary
                 }
 
-                ItemDelegate {
+                ItemDelegate { // Aircraft
+                    Layout.fillWidth: true
+
+                    leftPadding: 16+SafeInsets.left
+
                     id: menuItemAircraft
                     text: qsTr("Aircraft")
                     icon.source: "/icons/material/ic_airplanemode_active.svg"
-                    Layout.fillWidth: true
 
                     onClicked: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         stackView.pop()
-                        stackView.push("pages/Aircraft.qml")
+                        stackView.push("pages/AircraftPage.qml")
                         drawer.close()
                     }
                 }
 
                 ItemDelegate {
+                    Layout.fillWidth: true
+
+                    leftPadding: 16+SafeInsets.left
+
                     id: menuItemRoute
                     text: qsTr("Route and Wind")
                     icon.source: "/icons/material/ic_directions.svg"
-                    Layout.fillWidth: true
 
                     onClicked: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         stackView.pop()
                         stackView.push("pages/FlightRouteEditor.qml")
                         drawer.close()
@@ -142,14 +150,17 @@ ApplicationWindow {
                 }
 
                 ItemDelegate {
+                    Layout.fillWidth: true
+
+                    leftPadding: 16+SafeInsets.left
+
                     id: menuItemNearby
 
                     text: qsTr("Nearby Waypoints")
                     icon.source: "/icons/material/ic_my_location.svg"
-                    Layout.fillWidth: true
 
                     onClicked: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         stackView.pop()
                         stackView.push("pages/Nearby.qml")
                         drawer.close()
@@ -157,14 +168,17 @@ ApplicationWindow {
                 }
 
                 ItemDelegate {
+                    Layout.fillWidth: true
+
+                    leftPadding: 16+SafeInsets.left
+
                     id: weatherItem
 
                     text: qsTr("Weather")
                     icon.source: "/icons/material/ic_cloud_queue.svg"
-                    Layout.fillWidth: true
 
                     onClicked: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         stackView.pop()
                         stackView.push("pages/WeatherPage.qml")
                         drawer.close()
@@ -172,18 +186,22 @@ ApplicationWindow {
                 }
 
                 Rectangle {
-                    height: 1
+                    Layout.preferredHeight: 1
                     Layout.fillWidth: true
+
                     color: Material.primary
                 }
 
-                ItemDelegate { // Library
-                    text: qsTr("Library")
-                    icon.source: "/icons/material/ic_library_books.svg"
+                ItemDelegate {
                     Layout.fillWidth: true
 
+                    leftPadding: 16+SafeInsets.left
+
+                    text: qsTr("Library")
+                    icon.source: "/icons/material/ic_library_books.svg"
+
                     onClicked: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         libraryMenu.popup()
                     }
 
@@ -196,7 +214,7 @@ ApplicationWindow {
                             Layout.fillWidth: true
 
                             onClicked: {
-                                global.platformAdaptor().vibrateBrief()
+                                PlatformAdaptor.vibrateBrief()
                                 stackView.push("pages/AircraftLibrary.qml")
                                 libraryMenu.close()
                                 drawer.close()
@@ -209,7 +227,7 @@ ApplicationWindow {
                             Layout.fillWidth: true
 
                             onClicked: {
-                                global.platformAdaptor().vibrateBrief()
+                                PlatformAdaptor.vibrateBrief()
                                 stackView.push("pages/FlightRouteLibrary.qml")
                                 libraryMenu.close()
                                 drawer.close()
@@ -219,13 +237,13 @@ ApplicationWindow {
                         ItemDelegate {
                             text: qsTr("Maps and Data")
                                   + ((global.dataManager().mapsAndData.updateSize > 0) ? `<br><font color="#606060" size="2">` +qsTr("Updates available") + "</font>" : "")
-                                  + ( (global.navigator().flightStatus === Navigator.Flight) ? `<br><font color="#606060" size="2">` +qsTr("Item not available in flight") + "</font>" : "")
+                                  + ( (Navigator.flightStatus === Navigator.Flight) ? `<br><font color="#606060" size="2">` +qsTr("Item not available in flight") + "</font>" : "")
                             icon.source: "/icons/material/ic_map.svg"
                             Layout.fillWidth: true
 
-                            enabled: global.navigator().flightStatus !== Navigator.Flight
+                            enabled: Navigator.flightStatus !== Navigator.Flight
                             onClicked: {
-                                global.platformAdaptor().vibrateBrief()
+                                PlatformAdaptor.vibrateBrief()
                                 stackView.push("pages/DataManager.qml")
                                 libraryMenu.close()
                                 drawer.close()
@@ -238,7 +256,7 @@ ApplicationWindow {
                             Layout.fillWidth: true
 
                             onClicked: {
-                                global.platformAdaptor().vibrateBrief()
+                                PlatformAdaptor.vibrateBrief()
                                 stackView.push("pages/WaypointLibrary.qml")
                                 libraryMenu.close()
                                 drawer.close()
@@ -251,14 +269,17 @@ ApplicationWindow {
                 }
 
                 ItemDelegate {
+                    Layout.fillWidth: true
+
+                    leftPadding: 16+SafeInsets.left
+
                     id: menuItemSettings
 
                     text: qsTr("Settings")
                     icon.source: "/icons/material/ic_settings.svg"
-                    Layout.fillWidth: true
 
                     onClicked: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         stackView.pop()
                         stackView.push("pages/SettingsPage.qml")
                         drawer.close()
@@ -266,18 +287,22 @@ ApplicationWindow {
                 }
 
                 Rectangle {
-                    height: 1
+                    Layout.preferredHeight: 1
                     Layout.fillWidth: true
+
                     color: Material.primary
                 }
 
-                ItemDelegate { // Info
-                    text: qsTr("Information")
-                    icon.source: "/icons/material/ic_info_outline.svg"
+                ItemDelegate {
                     Layout.fillWidth: true
 
+                    leftPadding: 16+SafeInsets.left
+
+                    text: qsTr("Information")
+                    icon.source: "/icons/material/ic_info_outline.svg"
+
                     onClicked: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         aboutMenu.popup()
                     }
 
@@ -287,12 +312,12 @@ ApplicationWindow {
                         ItemDelegate { // Sat Status
                             text: qsTr("Positioning")
                                   +`<br><font color="#606060" size="2">`
-                                  + (global.positionProvider().receivingPositionInfo ? qsTr("Receiving position information.") : qsTr("Not receiving position information."))
+                                  + (PositionProvider.receivingPositionInfo ? qsTr("Receiving position information.") : qsTr("Not receiving position information."))
                                   + `</font>`
                             icon.source: "/icons/material/ic_satellite.svg"
                             Layout.fillWidth: true
                             onClicked: {
-                                global.platformAdaptor().vibrateBrief()
+                                PlatformAdaptor.vibrateBrief()
                                 stackView.pop()
                                 stackView.push("pages/Positioning.qml")
                                 aboutMenu.close()
@@ -300,7 +325,7 @@ ApplicationWindow {
                             }
                             background: Rectangle {
                                 anchors.fill: parent
-                                color: global.positionProvider().receivingPositionInfo ? "green" : "red"
+                                color: PositionProvider.receivingPositionInfo ? "green" : "red"
                                 opacity: 0.2
                             }
                         }
@@ -314,7 +339,7 @@ ApplicationWindow {
                                   + `</font>`
                             icon.source: "/icons/material/ic_airplanemode_active.svg"
                             onClicked: {
-                                global.platformAdaptor().vibrateBrief()
+                                PlatformAdaptor.vibrateBrief()
                                 stackView.pop()
                                 stackView.push("pages/TrafficReceiver.qml")
                                 aboutMenu.close()
@@ -338,7 +363,7 @@ ApplicationWindow {
                             icon.source: "/icons/material/ic_info_outline.svg"
 
                             onClicked: {
-                                global.platformAdaptor().vibrateBrief()
+                                PlatformAdaptor.vibrateBrief()
                                 stackView.pop()
                                 stackView.push("pages/InfoPage.qml")
                                 aboutMenu.close()
@@ -351,7 +376,7 @@ ApplicationWindow {
                             icon.source: "/icons/nav_participate.svg"
 
                             onClicked: {
-                                global.platformAdaptor().vibrateBrief()
+                                PlatformAdaptor.vibrateBrief()
                                 stackView.pop()
                                 stackView.push("pages/ParticipatePage.qml")
                                 aboutMenu.close()
@@ -364,7 +389,7 @@ ApplicationWindow {
                             icon.source: "/icons/material/ic_attach_money.svg"
 
                             onClicked: {
-                                global.platformAdaptor().vibrateBrief()
+                                PlatformAdaptor.vibrateBrief()
                                 stackView.pop()
                                 stackView.push("pages/DonatePage.qml")
                                 aboutMenu.close()
@@ -375,13 +400,16 @@ ApplicationWindow {
 
                 }
 
-                ItemDelegate { // Manual
-                    text: qsTr("Manual")
-                    icon.source: "/icons/material/ic_book.svg"
+                ItemDelegate {
                     Layout.fillWidth: true
 
+                    leftPadding: 16+SafeInsets.left
+
+                    text: qsTr("Manual")
+                    icon.source: "/icons/material/ic_book.svg"
+
                     onClicked: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         manualMenu.popup()
                     }
 
@@ -393,11 +421,11 @@ ApplicationWindow {
                             text: qsTr("Read manual")
                             icon.source: "/icons/material/ic_book.svg"
                             Layout.fillWidth: true
-                            visible: Qt.platform.os == "android"
+                            visible: Qt.platform.os === "android"
                             height: visible ? undefined : 0
 
                             onClicked: {
-                                global.platformAdaptor().vibrateBrief()
+                                PlatformAdaptor.vibrateBrief()
                                 stackView.pop()
                                 stackView.push("pages/Manual.qml", {"fileName": "index.html"})
                                 aboutMenu.close()
@@ -411,7 +439,7 @@ ApplicationWindow {
                         }
 
                         Rectangle {
-                            visible: Qt.platform.os == "android"
+                            visible: Qt.platform.os === "android"
                             height: visible ? 1 : 0
                             Layout.fillWidth: true
                             color: Material.primary
@@ -423,7 +451,7 @@ ApplicationWindow {
                             Layout.fillWidth: true
 
                             onClicked: {
-                                global.platformAdaptor().vibrateBrief()
+                                PlatformAdaptor.vibrateBrief()
                                 Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteText/manual")
                                 manualMenu.close()
                                 aboutMenu.close()
@@ -438,7 +466,7 @@ ApplicationWindow {
                             Layout.fillWidth: true
 
                             onClicked: {
-                                global.platformAdaptor().vibrateBrief()
+                                PlatformAdaptor.vibrateBrief()
                                 Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteText/manual.epub")
                                 manualMenu.close()
                                 aboutMenu.close()
@@ -452,7 +480,7 @@ ApplicationWindow {
                             Layout.fillWidth: true
 
                             onClicked: {
-                                global.platformAdaptor().vibrateBrief()
+                                PlatformAdaptor.vibrateBrief()
                                 Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteText/manual.pdf")
 
                                 manualMenu.close()
@@ -466,12 +494,15 @@ ApplicationWindow {
                 }
 
                 ItemDelegate { // Bug report
-                    text: qsTr("Bug report")
-                    icon.source: "/icons/material/ic_bug_report.svg"
                     Layout.fillWidth: true
 
+                    leftPadding: 16+SafeInsets.left
+
+                    text: qsTr("Bug report")
+                    icon.source: "/icons/material/ic_bug_report.svg"
+
                     onClicked: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         stackView.pop()
                         stackView.push("pages/BugReportPage.qml")
                         aboutMenu.close()
@@ -480,25 +511,33 @@ ApplicationWindow {
                 }
 
                 Rectangle {
-                    height: 1
+                    Layout.preferredHeight: 1
                     Layout.fillWidth: true
+
                     color: Material.primary
-                    visible: global.navigator().flightStatus !== Navigator.Flight
+                    visible: Navigator.flightStatus !== Navigator.Flight
                 }
 
                 ItemDelegate { // Exit
-                    text: qsTr("Exit")
-                    icon.source: "/icons/material/ic_exit_to_app.svg"
                     Layout.fillWidth: true
 
+                    leftPadding: 16+SafeInsets.left
+
+                    text: qsTr("Exit")
+                    icon.source: "/icons/material/ic_exit_to_app.svg"
+
                     onClicked: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         drawer.close()
-                        if (global.navigator().flightStatus === Navigator.Flight)
+                        if (Navigator.flightStatus === Navigator.Flight)
                             exitDialog.open()
                         else
                             Qt.quit()
                     }
+                }
+
+                Item {
+                    Layout.preferredHeight: SafeInsets.bottom
                 }
 
                 Item {
@@ -510,6 +549,7 @@ ApplicationWindow {
 
     }
 
+
     StackView {
         id: stackView
 
@@ -520,19 +560,19 @@ ApplicationWindow {
         focus: true
 
         Component.onCompleted: {
-            global.platformAdaptor().onGUISetupCompleted()
+            PlatformAdaptor.onGUISetupCompleted()
 
             // Things to do on startup. If the user has not yet accepted terms and conditions, show that.
             // Otherwise, if the user has not used this version of the app before, show the "what's new" dialog.
             // Otherwise, if the maps need updating, show the "update map" dialog.
-            if (!global.platformAdaptor().hasRequiredPermissions()) {
+            if (!PlatformAdaptor.hasRequiredPermissions()) {
                 dialogLoader.active = false
                 dialogLoader.source = "dialogs/MissingPermissionsDialog.qml"
                 dialogLoader.active = true
                 return;
             }
 
-            if (global.settings().acceptedTerms === 0) {
+            if (GlobalSettings.acceptedTerms === 0) {
                 dialogLoader.active = false
                 dialogLoader.source = "dialogs/FirstRunDialog.qml"
                 dialogLoader.active = true
@@ -544,7 +584,7 @@ ApplicationWindow {
                 dialogLoader.setSource("dialogs/LongTextDialog.qml",
                                        {
                                            title: qsTr("Update required!"),
-                                           text: global.librarian().getStringFromRessource("appUpdateRequired"),
+                                           text: Librarian.getStringFromRessource("appUpdateRequired"),
                                            standardButtons: Dialog.Ok
                                        }
                                        )
@@ -552,26 +592,26 @@ ApplicationWindow {
                 return
             }
 
-            if ((global.settings().lastWhatsNewHash !== global.librarian().getStringHashFromRessource(":text/whatsnew.html")) && (global.navigator().flightStatus !== Navigator.Flight)) {
+            if ((GlobalSettings.lastWhatsNewHash !== Librarian.getStringHashFromRessource(":text/whatsnew.html")) && (Navigator.flightStatus !== Navigator.Flight)) {
                 whatsNewDialog.open()
                 return
             }
 
-            if ((global.settings().lastWhatsNewInMapsHash !== global.dataManager().whatsNewHash) &&
+            if ((GlobalSettings.lastWhatsNewInMapsHash !== global.dataManager().whatsNewHash) &&
                     (global.dataManager().whatsNew !== "") &&
-                    (global.navigator().flightStatus !== Navigator.Flight)) {
+                    (Navigator.flightStatus !== Navigator.Flight)) {
                 whatsNewInMapsDialog.open()
                 return
             }
 
         }
 
-        Keys.onReleased: {
+        Keys.onReleased: function (event) {
             if (event.key === Qt.Key_Back) {
                 if (stackView.depth > 1)
                     stackView.pop()
                 else {
-                    if (global.navigator().flightStatus === Navigator.Flight)
+                    if (Navigator.flightStatus === Navigator.Flight)
                         exitDialog.open()
                     else
                         Qt.quit()
@@ -586,11 +626,12 @@ ApplicationWindow {
 
             function onRequestClosePages() {
                 stackView.pop()
+                whatsNewDialog.close()
             }
 
             function onRequestOpenAircraftPage() {
                 stackView.pop()
-                stackView.push("pages/Aircraft.qml")
+                stackView.push("pages/AircraftPage.qml")
             }
 
             function onRequestOpenNearbyPage() {
@@ -614,7 +655,7 @@ ApplicationWindow {
     DropArea {
         anchors.fill: stackView
         onDropped: {
-            global.platformAdaptor().processFileOpenRequest(drop.text)
+            PlatformAdaptor.processFileOpenRequest(drop.text)
         }
     }
 
@@ -705,8 +746,8 @@ ApplicationWindow {
         standardButtons: Dialog.Ok
         
         title: qsTr("What's new…?")
-        text: global.librarian().getStringFromRessource(":text/whatsnew.html")
-        onOpened: global.settings().lastWhatsNewHash = global.librarian().getStringHashFromRessource(":text/whatsnew.html")
+        text: Librarian.getStringFromRessource(":text/whatsnew.html")
+        onOpened: GlobalSettings.lastWhatsNewHash = Librarian.getStringHashFromRessource(":text/whatsnew.html")
     }
 
     LongTextDialog {
@@ -715,7 +756,7 @@ ApplicationWindow {
 
         title: qsTr("What's new…?")
         text: global.dataManager().whatsNew
-        onOpened: global.settings().lastWhatsNewInMapsHash = global.dataManager().whatsNewHash
+        onOpened: GlobalSettings.lastWhatsNewInMapsHash = global.dataManager().whatsNewHash
     }
 
     Shortcut {
@@ -724,7 +765,7 @@ ApplicationWindow {
     }
 
     Shortcut {
-        sequence: StandardKey.Close
+        sequences: [StandardKey.Close]
         onActivated: Qt.quit()
     }
 
@@ -745,12 +786,12 @@ ApplicationWindow {
     }
 
     Connections { // Navigator
-        target: global.navigator()
+        target: Navigator
 
         function onAirspaceAltitudeLimitAdjusted() {
-            var airspaceAltitudeLimit = global.settings().airspaceAltitudeLimit
+            var airspaceAltitudeLimit = GlobalSettings.airspaceAltitudeLimit
             if (airspaceAltitudeLimit.isFinite()) {
-                var airspaceAltitudeLimitString = global.navigator().aircraft.verticalDistanceToString(airspaceAltitudeLimit)
+                var airspaceAltitudeLimitString = Navigator.aircraft.verticalDistanceToString(airspaceAltitudeLimit)
                 toast.doToast(qsTr("Now showing airspaces up to %1.").arg(airspaceAltitudeLimitString))
             } else {
                 toast.doToast(qsTr("Now showing all airspaces."))
@@ -803,7 +844,7 @@ ApplicationWindow {
 
         onAccepted: {
             close()
-            global.settings().ignoreSSLProblems = true
+            GlobalSettings.ignoreSSLProblems = true
             sslErrorConfirmation.open()
         }
 

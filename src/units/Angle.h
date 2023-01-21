@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QObject>
+#include <QQmlEngine>
 #include <QtMath>
 
 /*! \brief Conversion between units used in aviation
@@ -39,6 +40,7 @@ namespace Units {
      */
     class Angle {
         Q_GADGET
+        QML_VALUE_TYPE(angle)
 
     public:
         /*! \brief Constructs an angle
@@ -117,10 +119,7 @@ namespace Units {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE bool operator==(Units::Angle rhs) const
-        {
-            return m_angleInRAD == rhs.m_angleInRAD;
-        }
+        Q_INVOKABLE [[nodiscard]] bool operator==(const Units::Angle& rhs) const = default;
 
         /*! \brief Comparison: not equal
          *
@@ -128,10 +127,7 @@ namespace Units {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE bool operator!=(Units::Angle rhs) const
-        {
-            return m_angleInRAD != rhs.m_angleInRAD;
-        }
+        Q_INVOKABLE [[nodiscard]] bool operator!=(const Units::Angle& rhs) const = default;
 
         /*! \brief Cosine of an angle, as a dimension-less number
          *

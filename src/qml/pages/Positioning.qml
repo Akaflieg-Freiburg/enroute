@@ -18,12 +18,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQml 2.15
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Layouts 1.15
+import QtQml
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Layouts
 
+import akaflieg_freiburg.enroute
 import enroute 1.0
 import "../dialogs"
 import "../items"
@@ -35,26 +36,24 @@ Page {
     header: StandardHeader {}
 
     ScrollView {
-        id: view
-        clip: true
-        anchors.fill: parent
-        anchors.topMargin: view.font.pixelSize
-        anchors.bottomMargin: view.font.pixelSize
-        anchors.leftMargin: view.font.pixelSize
-        anchors.rightMargin: view.font.pixelSize
+        id: sView
 
-        // The visibility behavior of the vertical scroll bar is a little complex.
-        // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
-        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-        ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
+        anchors.fill: parent
+        contentWidth: availableWidth // Disable horizontal scrolling
+
+        clip: true
+
+        bottomPadding: view.font.pixelSize + SafeInsets.bottom
+        leftPadding: view.font.pixelSize + SafeInsets.left
+        rightPadding: view.font.pixelSize + SafeInsets.right
+        topPadding: view.font.pixelSize
 
         GridLayout {
             id: gl
             columnSpacing: 30
             columns: 2
 
-            width: view.width
-            implicitWidth: view.width
+            width: sView.availableWidth
 
             Label {
                 Layout.columnSpan: 2
@@ -71,7 +70,7 @@ Page {
                 Layout.rightMargin: 4
                 Layout.columnSpan: 2
 
-                text: global.positionProvider().statusString
+                text: PositionProvider.statusString
 
                 wrapMode: Text.WordWrap
                 textFormat: Text.RichText
@@ -86,14 +85,14 @@ Page {
 
                 background: Rectangle {
                     border.color: "black"
-                    color: global.positionProvider().positionInfo.isValid() ? "green" : "red"
+                    color: PositionProvider.positionInfo.isValid() ? "green" : "red"
                     opacity: 0.2
                     radius: 4
                 }
             }
 
             Item {
-                height: view.font.pixelSize*0.5
+                Layout.preferredHeight: view.font.pixelSize*0.5
                 Layout.columnSpan: 2
             }
 
@@ -110,9 +109,9 @@ Page {
             Label {
                 Layout.fillWidth: true
                 text: {
-                    if (!global.positionProvider().positionInfo.isValid())
+                    if (!PositionProvider.positionInfo.isValid())
                         return "-"
-                    const lat = global.positionProvider().positionInfo.coordinate().toString().split(",")[0]
+                    const lat = PositionProvider.positionInfo.coordinate().toString().split(",")[0]
                     if (lat === "")
                         return "-"
                     return lat
@@ -122,58 +121,66 @@ Page {
             Label { text: qsTr("Longitude") }
             Label {
                 text: {
-                    if (!global.positionProvider().positionInfo.isValid())
+                    if (!PositionProvider.positionInfo.isValid())
                         return "-"
-                    const lon = global.positionProvider().positionInfo.coordinate().toString().split(",")[1].trim()
+                    const lon = PositionProvider.positionInfo.coordinate().toString().split(",")[1].trim()
                     if (lon === "")
                         return "-"
                     return lon
                 }
             }
 
-            Label { text: qsTr("True Altitude")+" (AMSL)" }
-            Label { text: global.navigator().aircraft.verticalDistanceToString( global.positionProvider().positionInfo.trueAltitudeAMSL() ) }
+            Label { text: qsTr("True Altitude (AMSL)") }
+            Label { text: Navigator.aircraft.verticalDistanceToString( PositionProvider.positionInfo.trueAltitudeAMSL() ) }
 
-            Label { text: qsTr("True Altitude")+" (AGL)" }
-            Label { text: global.navigator().aircraft.verticalDistanceToString( global.positionProvider().positionInfo.trueAltitudeAGL() ) }
+            Label { text: qsTr("True Altitude (AGL)") }
+            Label { text: Navigator.aircraft.verticalDistanceToString( PositionProvider.positionInfo.trueAltitudeAGL() ) }
 
             Label { text: qsTr("Error (horizontal)") }
             Label {
                 text: {
-                    const posError = global.positionProvider().positionInfo.positionErrorEstimate();
+                    const posError = PositionProvider.positionInfo.positionErrorEstimate();
                     return posError.isFinite() ? "±" + Math.round(posError.toM()) + " m" : "-"
                 }
             }
 
             Label { text: qsTr("Error (vertical)") }
-            Label { text: global.navigator().aircraft.verticalDistanceToString( global.positionProvider().positionInfo.trueAltitudeErrorEstimate() ) }
+            Label { text: Navigator.aircraft.verticalDistanceToString( PositionProvider.positionInfo.trueAltitudeErrorEstimate() ) }
 
             Label { text: qsTr("Magnetic Variation") }
             Label { text: {
-                    const magVar = global.positionProvider().positionInfo.variation();
+                    const magVar = PositionProvider.positionInfo.variation();
                     return magVar.isFinite() ? Math.round(magVar.toDEG()) + "°" : "-"
                 }
             }
 
             Label { text: qsTr("Ground Speed") }
-            Label { text: global.navigator().aircraft.horizontalSpeedToString( global.positionProvider().positionInfo.groundSpeed() ) }
+            Label { text: Navigator.aircraft.horizontalSpeedToString( PositionProvider.positionInfo.groundSpeed() ) }
 
             Label { text: qsTr("True Track") }
             Label {
                 text: {
-                    const tt = global.positionProvider().positionInfo.trueTrack();
+                    const tt = PositionProvider.positionInfo.trueTrack();
                     return tt.isFinite() ? Math.round(tt.toDEG()) + "°" : "-"
                 }
             }
 
+            Label { text: qsTr("Error (True Track)") }
+            Label {
+                text: {
+                    const tt = PositionProvider.positionInfo.trueTrackErrorEstimate();
+                    return tt.isFinite() ? "±" + Math.round(tt.toDEG()) + "°" : "-"
+                }
+            }
+
             Label { text: qsTr("Vertical Speed") }
-            Label { text: global.navigator().aircraft.verticalSpeedToString( global.positionProvider().positionInfo.verticalSpeed() ) }
+            Label { text: Navigator.aircraft.verticalSpeedToString( PositionProvider.positionInfo.verticalSpeed() ) }
 
             Label { text: qsTr("Pressure Altitude") }
-            Label { text: global.navigator().aircraft.verticalDistanceToString( global.positionProvider().pressureAltitude ) }
+            Label { text: Navigator.aircraft.verticalDistanceToString( PositionProvider.pressureAltitude ) }
 
             Label { text: qsTr("Timestamp") }
-            Label { text: global.positionProvider().positionInfo.isValid() ? global.positionProvider().positionInfo.timestampString() : "-" }
+            Label { text: PositionProvider.positionInfo.isValid() ? PositionProvider.positionInfo.timestampString() : "-" }
 
         } // GridLayout
 

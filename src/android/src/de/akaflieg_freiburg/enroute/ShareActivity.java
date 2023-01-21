@@ -26,8 +26,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 
-import org.qtproject.qt5.android.QtNative;
-import org.qtproject.qt5.android.bindings.QtActivity;
+import org.qtproject.qt.android.QtNative;
+import org.qtproject.qt.android.bindings.QtActivity;
 
 import java.io.File;
 import java.io.FileInputStream;

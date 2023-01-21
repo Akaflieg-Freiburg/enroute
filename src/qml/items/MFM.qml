@@ -18,17 +18,18 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtGraphicalEffects 1.15
-import QtLocation 5.15
-import QtPositioning 5.15
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Layouts 1.15
+import Qt5Compat.GraphicalEffects
+import QtLocation
+import QtPositioning
+import QtQml
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Layouts
 
+import akaflieg_freiburg.enroute
 import enroute 1.0
 
-import QtQml 2.15
 
 import "."
 import ".."
@@ -39,10 +40,10 @@ Item {
 
     Plugin {
         id: mapPlugin
-        name: "mapboxgl"
+        name: "maplibregl"
 
         PluginParameter {
-            name: "mapboxgl.mapping.additional_style_urls"
+            name: "maplibregl.mapping.additional_style_urls"
             value: global.geoMapProvider().styleFileURL
         }
 
@@ -57,7 +58,7 @@ Item {
         copyrightsVisible: false // We have our own copyrights notice
 
         property bool followGPS: true
-        property real animatedTrack: global.positionProvider().lastValidTT.isFinite() ? global.positionProvider().lastValidTT.toDEG() : 0
+        property real animatedTrack: PositionProvider.lastValidTT.isFinite() ? PositionProvider.lastValidTT.toDEG() : 0
         Behavior on animatedTrack { RotationAnimation {duration: 400; direction: RotationAnimation.Shortest } }
 
 
@@ -70,7 +71,7 @@ Item {
         gesture.onPinchStarted: {flightMap.followGPS = false}
         gesture.onRotationStarted: {
             flightMap.followGPS = false
-            global.settings().mapBearingPolicy = GlobalSettings.UserDefinedBearingUp
+            GlobalSettings.mapBearingPolicy = GlobalSettings.UserDefinedBearingUp
         }
 
 
@@ -84,8 +85,8 @@ Item {
         // If "followGPS" is true, then update the map bearing whenever a new GPS position comes in
         Binding on bearing {
             restoreMode: Binding.RestoreBinding
-            when: global.settings().mapBearingPolicy !== GlobalSettings.UserDefinedBearingUp
-            value: global.settings().mapBearingPolicy === GlobalSettings.TTUp ? global.positionProvider().lastValidTT.toDEG() : 0
+            when: GlobalSettings.mapBearingPolicy !== GlobalSettings.UserDefinedBearingUp
+            value: GlobalSettings.mapBearingPolicy === GlobalSettings.TTUp ? PositionProvider.lastValidTT.toDEG() : 0
         }
 
         // We expect GPS updates every second. So, we choose an animation of duration 1000ms here, to obtain a flowing movement
@@ -97,7 +98,7 @@ Item {
         //
 
         // Initially, set the center to the last saved value
-        center: global.positionProvider().lastValidCoordinate
+        center: PositionProvider.lastValidCoordinate
 
         // If "followGPS" is true, then update the map center whenever a new GPS position comes in
         // or the zoom level changes
@@ -108,10 +109,10 @@ Item {
             when: flightMap.followGPS === true
             value: {
                 // If not in flight, then aircraft stays in center of display
-                if (global.navigator().flightStatus !== Navigator.Flight)
-                    return global.positionProvider().lastValidCoordinate
-                if (!global.positionProvider().lastValidTT.isFinite())
-                    return global.positionProvider().lastValidCoordinate
+                if (Navigator.flightStatus !== Navigator.Flight)
+                    return PositionProvider.lastValidCoordinate
+                if (!PositionProvider.lastValidTT.isFinite())
+                    return PositionProvider.lastValidCoordinate
 
                 // Otherwise, we position the aircraft someplace on a circle around the
                 // center, so that the map shows a larger portion of the airspace ahead
@@ -128,7 +129,7 @@ Item {
                                         )
                 const radiusInM = 10000.0*radiusInPixel/flightMap.pixelPer10km
 
-                return global.positionProvider().lastValidCoordinate.atDistanceAndAzimuth(radiusInM, global.positionProvider().lastValidTT.toDEG())
+                return PositionProvider.lastValidCoordinate.atDistanceAndAzimuth(radiusInM, PositionProvider.lastValidTT.toDEG())
             }
         }
 
@@ -165,7 +166,7 @@ Item {
 
         // ADDITINAL MAP ITEMS
         MapCircle { // Circle for nondirectional traffic warning
-            center: global.positionProvider().lastValidCoordinate
+            center: PositionProvider.lastValidCoordinate
 
             radius: Math.max(500, global.trafficDataProvider().trafficObjectWithoutPosition.hDist.toM())
             Behavior on radius {
@@ -187,7 +188,7 @@ Item {
 
             property real distFromCenter: 0.5*Math.sqrt(lbl.width*lbl.width + lbl.height*lbl.height) + 28
 
-            coordinate: global.positionProvider().lastValidCoordinate
+            coordinate: PositionProvider.lastValidCoordinate
             Behavior on coordinate {
                 CoordinateAnimation { duration: 1000 }
                 enabled: global.trafficDataProvider().trafficObjectWithoutPosition.animate
@@ -247,13 +248,13 @@ Item {
 
             anchorPoint.x: fiveMinuteBarBaseRect.width/2
             anchorPoint.y: fiveMinuteBarBaseRect.height
-            coordinate: global.positionProvider().lastValidCoordinate
+            coordinate: PositionProvider.lastValidCoordinate
             visible: {
-                if (!global.positionProvider().positionInfo.trueTrack().isFinite())
+                if (!PositionProvider.positionInfo.trueTrack().isFinite())
                     return false
-                if (!global.positionProvider().positionInfo.groundSpeed().isFinite())
+                if (!PositionProvider.positionInfo.groundSpeed().isFinite())
                     return false
-                if (global.positionProvider().positionInfo.groundSpeed().toMPS() < 2.0)
+                if (PositionProvider.positionInfo.groundSpeed().toMPS() < 2.0)
                     return false
                 return true
             }
@@ -271,9 +272,9 @@ Item {
                     id: fiveMinuteBarBaseRect
 
                     property real animatedGroundSpeedInMetersPerSecond: {
-                        if (!global.positionProvider().positionInfo.groundSpeed().isFinite())
+                        if (!PositionProvider.positionInfo.groundSpeed().isFinite())
                             return 0.0
-                        return global.positionProvider().positionInfo.groundSpeed().toMPS()
+                        return PositionProvider.positionInfo.groundSpeed().toMPS()
                     }
                     Behavior on animatedGroundSpeedInMetersPerSecond {NumberAnimation {duration: 400}}
 
@@ -313,7 +314,7 @@ Item {
         MapQuickItem {
             id: ownPosition
 
-            coordinate: global.positionProvider().lastValidCoordinate
+            coordinate: PositionProvider.lastValidCoordinate
 
             Connections {
                 // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem
@@ -328,8 +329,9 @@ Item {
                 rotation: flightMap.animatedTrack-flightMap.bearing
 
                 FlightVector {
-                    groundSpeedInMetersPerSecond: global.positionProvider().positionInfo.groundSpeed().toMPS()
-                    visible: (global.navigator().flightStatus === Navigator.Flight) && (global.positionProvider().positionInfo.trueTrack().isFinite())
+                    pixelPerTenKM: flightMap.pixelPer10km
+                    groundSpeedInMetersPerSecond: PositionProvider.positionInfo.groundSpeed().toMPS()
+                    visible: (Navigator.flightStatus === Navigator.Flight) && (PositionProvider.positionInfo.trueTrack().isFinite())
                 }
 
                 Image {
@@ -339,7 +341,7 @@ Item {
                     y: -height/2.0
 
                     source: {
-                        var pInfo = global.positionProvider().positionInfo
+                        var pInfo = PositionProvider.positionInfo
 
                         if (!pInfo.isValid()) {
                             return "/icons/self-noPosition.svg"
@@ -362,16 +364,16 @@ Item {
 
             line.width: 4
             line.color: "#ff00ff"
-            path: global.navigator().flightRoute.geoPath
+            path: Navigator.flightRoute.geoPath
         }
 
         MapPolyline {
             id: toNextWP
-            visible: global.positionProvider().lastValidCoordinate.isValid &&
-                     (global.navigator().remainingRouteInfo.status === RemainingRouteInfo.OnRoute)
+            visible: PositionProvider.lastValidCoordinate.isValid &&
+                     (Navigator.remainingRouteInfo.status === RemainingRouteInfo.OnRoute)
             line.width: 2
             line.color: 'darkred'
-            path: visible ? [global.positionProvider().lastValidCoordinate, global.navigator().remainingRouteInfo.nextWP.coordinate] : undefined
+            path: visible ? [PositionProvider.lastValidCoordinate, Navigator.remainingRouteInfo.nextWP.coordinate] : []
         }
 
         MapItemView { // Traffic opponents
@@ -414,6 +416,7 @@ Item {
                         anchors.left: image.right
                         anchors.leftMargin: 5
                         text: model.modelData.extendedName
+                        color: "black" // Always black, independent of dark/light mode
                         visible: (flightMap.zoomLevel > 11.0) && (model.modelData.extendedName !== "Waypoint")
                         leftInset: -4
                         rightInset: -4
@@ -433,7 +436,7 @@ Item {
 
         MapItemView {
             id: midFieldWaypoints
-            model: global.navigator().flightRoute.midFieldWaypoints
+            model: Navigator.flightRoute.midFieldWaypoints
             delegate: waypointComponent
         }
 
@@ -443,22 +446,29 @@ Item {
             delegate: waypointComponent
         }
 
-        // Mouse Area, in order to receive mouse clicks
-        MouseArea {
-            anchors.fill: parent
-            propagateComposedEvents: true
+        TapHandler {
+            // We used to use a MouseArea instead of a tap handler, but that
+            // triggered a host of bugs in Qt 6.4.2…
+            onDoubleTapped: {
+                PlatformAdaptor.vibrateBrief()
+                var pos = point.position
+                var posTr = Qt.point(pos.x+25,pos.y)
 
-            onWheel: {
-                flightMap.followGPS = false
-                wheel.accepted = false
+                var wp = global.geoMapProvider().closestWaypoint(flightMap.toCoordinate(pos),
+                                                                 flightMap.toCoordinate(posTr))
+                if (!wp.isValid)
+                    return
+                waypointDescription.waypoint = wp
+                waypointDescription.open()
             }
 
-            onPressAndHold: onDoubleClicked(mouse)
+            onLongPressed: {
+                PlatformAdaptor.vibrateBrief()
+                var pos = point.position
+                var posTr = Qt.point(pos.x+25,pos.y)
 
-            onDoubleClicked: {
-                global.platformAdaptor().vibrateBrief()
-                var wp = global.geoMapProvider().closestWaypoint(flightMap.toCoordinate(Qt.point(mouse.x,mouse.y)),
-                                                                 flightMap.toCoordinate(Qt.point(mouse.x+25,mouse.y)))
+                var wp = global.geoMapProvider().closestWaypoint(flightMap.toCoordinate(pos),
+                                                                 flightMap.toCoordinate(posTr))
                 if (!wp.isValid)
                     return
                 waypointDescription.waypoint = wp
@@ -505,7 +515,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         }
     }
 
-    RemainingRoute {
+    RemainingRouteBar {
         id: remainingRoute
 
         anchors.top: parent.top
@@ -517,22 +527,22 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         id: airspaceAltLabel
 
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: remainingRoute.bottom
-        anchors.topMargin: 0.4*view.font.pixelSize
+        anchors.verticalCenter: menuButton.verticalCenter
+
         topPadding: 0
         bottomPadding: 0
         Material.elevation: 2
         opacity: 0.8
-        visible: global.settings().airspaceAltitudeLimit.isFinite() && !global.dataManager().baseMapsRaster.hasFile
+        visible: GlobalSettings.airspaceAltitudeLimit.isFinite() && !global.dataManager().baseMapsRaster.hasFile
 
         Label {
 
             text: {
                 // Mention
-                global.navigator().aircraft.verticalDistanceUnit
+                Navigator.aircraft.verticalDistanceUnit
 
-                var airspaceAltitudeLimit = global.settings().airspaceAltitudeLimit
-                var airspaceAltitudeLimitString = global.navigator().aircraft.verticalDistanceToString(airspaceAltitudeLimit)
+                var airspaceAltitudeLimit = GlobalSettings.airspaceAltitudeLimit
+                var airspaceAltitudeLimitString = Navigator.aircraft.verticalDistanceToString(airspaceAltitudeLimit)
                 return " "+qsTr("Airspaces up to %1").arg(airspaceAltitudeLimitString)+" "
             }
         }
@@ -542,16 +552,18 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         id: menuButton
         icon.source: "/icons/material/ic_menu.svg"
 
+        height: 4*font.pixelSize
+        width: 4*font.pixelSize
+
         anchors.left: parent.left
-        anchors.leftMargin: 0.5*view.font.pixelSize
+        anchors.leftMargin: 0.5*view.font.pixelSize + SafeInsets.left
         anchors.top: remainingRoute.bottom
         anchors.topMargin: 0.5*view.font.pixelSize
 
-        height: 66
-        width: 66
+        Material.background: GlobalSettings.nightMode ? undefined : "white"
 
         onClicked: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             drawer.open()
         }
     }
@@ -560,31 +572,29 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         id: northButton
 
         anchors.horizontalCenter: zoomIn.horizontalCenter
-        anchors.top: remainingRoute.bottom
-        anchors.topMargin: 0.5*view.font.pixelSize
+        anchors.verticalCenter: menuButton.verticalCenter
 
-        height: 66
-        width:  66
-
-        icon.source: "/icons/NorthArrow.svg"
-
+        horizontalPadding: 0
+        verticalPadding: 0
+        height: 3.3*font.pixelSize
+        width: 3.3*font.pixelSize
 
         contentItem: Image {
             Layout.alignment: Qt.AlignHCenter
             id: northArrow
 
-            opacity: global.settings().nightMode ? 0.3 : 1.0
+            opacity: GlobalSettings.nightMode ? 0.3 : 1.0
             rotation: -flightMap.bearing
 
             source: "/icons/NorthArrow.svg"
         }
 
         onClicked: {
-            if (global.settings().mapBearingPolicy === GlobalSettings.NUp) {
-                global.settings().mapBearingPolicy = GlobalSettings.TTUp
+            if (GlobalSettings.mapBearingPolicy === GlobalSettings.NUp) {
+                GlobalSettings.mapBearingPolicy = GlobalSettings.TTUp
                 toast.doToast(qsTr("Map Mode: Track Up"))
             } else {
-                global.settings().mapBearingPolicy = GlobalSettings.NUp
+                GlobalSettings.mapBearingPolicy = GlobalSettings.NUp
                 toast.doToast(qsTr("Map Mode: North Up"))
             }
         }
@@ -598,15 +608,16 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         enabled: !flightMap.followGPS
 
         anchors.left: parent.left
-        anchors.leftMargin: 0.5*view.font.pixelSize
+        anchors.leftMargin: 0.5*view.font.pixelSize + SafeInsets.left
         anchors.bottom: trafficDataReceiverButton.top
         anchors.bottomMargin: trafficDataReceiverButton.visible ? 0.5*view.font.pixelSize : 1.5*view.font.pixelSize
 
-        height: 66
-        width:  66
+        height: 4*font.pixelSize
+        width: 4*font.pixelSize
+        Material.background: GlobalSettings.nightMode ? undefined : "white"
 
         onClicked: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             flightMap.followGPS = true
             toast.doToast(qsTr("Map Mode: Autopan"))
         }
@@ -622,16 +633,16 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         visible: !global.trafficDataProvider().receivingHeartbeat
 
         anchors.left: parent.left
-        anchors.leftMargin: 0.5*view.font.pixelSize
+        anchors.leftMargin: 0.5*view.font.pixelSize + SafeInsets.left
         anchors.bottom: navBar.top
         anchors.bottomMargin: visible ? 1.5*view.font.pixelSize : 0
 
-        height: visible ? 66 : 0
-        width:  66
+        height: visible ? 4*font.pixelSize : 0
+        width: 4*font.pixelSize
 
         onClicked: {
-            global.platformAdaptor().vibrateBrief()
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             stackView.pop()
             stackView.push("../pages/TrafficReceiver.qml")
         }
@@ -646,16 +657,17 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         autoRepeat: true
 
         anchors.right: parent.right
-        anchors.rightMargin: 0.5*view.font.pixelSize
+        anchors.rightMargin: 0.5*view.font.pixelSize + SafeInsets.right
         anchors.bottom: zoomOut.top
         anchors.bottomMargin: 0.5*view.font.pixelSize
 
-        height: 66
-        width:  66
+        height: 4*font.pixelSize
+        width: 4*font.pixelSize
+        Material.background: GlobalSettings.nightMode ? undefined : "white"
 
         onClicked: {
             centerBindingAnimation.omitAnimationforZoom()
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             flightMap.zoomLevel += 1
         }
     }
@@ -669,16 +681,17 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         autoRepeat: true
 
         anchors.right: parent.right
-        anchors.rightMargin: 0.5*view.font.pixelSize
+        anchors.rightMargin: 0.5*view.font.pixelSize + SafeInsets.right
         anchors.bottom: navBar.top
         anchors.bottomMargin: 1.5*view.font.pixelSize
 
-        height: 66
-        width:  66
+        height: 4*font.pixelSize
+        width: 4*font.pixelSize
+        Material.background: GlobalSettings.nightMode ? undefined : "white"
 
         onClicked: {
             centerBindingAnimation.omitAnimationforZoom()
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             flightMap.zoomLevel -= 1
         }
     }

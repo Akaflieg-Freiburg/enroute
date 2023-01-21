@@ -19,9 +19,11 @@
  ***************************************************************************/
 
 #include "Librarian.h"
+#include "navigation/FlightRoute.h"
 
 #include <QNetworkAccessManager>
 #include <QStandardPaths>
+#include <QSysInfo>
 #include <QtGlobal>
 
 Librarian::Librarian(QObject *parent) : QObject(parent)
@@ -46,13 +48,14 @@ Librarian::Librarian(QObject *parent) : QObject(parent)
 
 auto Librarian::getStringFromRessource(const QString &name) -> QString
 {
-    if (name == QLatin1String("appUpdateRequired"))
+    if (name == u"appUpdateRequired"_qs)
     {
         return tr("<p>This version of <strong>Enroute Flight Navigation</strong> is outdated and will no longer receive map updates. "
                   "<strong>Please update this app at your earliest convencience.</strong></p>");
     }
 
-    if (name == QLatin1String(":text/authors.html")) {
+    if (name == u":text/authors.html"_qs)
+    {
         return tr(R"html(<h3>Authors</h3>
 
 <br>
@@ -83,7 +86,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 )html") + (R"html(
 <ul style="margin-left:-25px;">
 )html") + tr(R"html(
-<li><strong>French:</strong> Adrien Crovato. Adrien is a private pilot and aerospace engineer.</li>
+<li><strong>French:</strong> Adrien Crovato and Luca Riva. Both are private pilots and aerospace engineers. Luca is also doing aerobatics.</li>
 )html") + tr(R"html(
 <li><strong>German:</strong> Markus Sachs. Markus flies trikes and is an enthusiastic 'Co' on everyting else that flies.</li>
 )html") + tr(R"html(
@@ -111,7 +114,8 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 <p></p>)html");
     }
 
-    if (name == QLatin1String(":text/aviationMapMissing.html")) {
+    if (name == u":text/aviationMapMissing.html"_qs)
+    {
         return tr(R"html(
 <p>We receive our aviation data from <a href="http://openaip.net">openAIP</a>. This is a not-for-profit organisation where volunteers compile aviation data for many countries. If openAIP covers your country, we might be able to generate maps for it. First, however, we need to be reasonably sure that the openAIP data is accurate and complete. Please have a look at the <a href="http://maps.openaip.net">openAIP maps</a> and compare the display with an official aviation map of your country. Are the airfields there? Are runway lengths/orientations and frequencies correct? Are NavAids correctly displayed, with correct codes and frequencies? And what about airspaces?</p>
 
@@ -120,7 +124,8 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 <p>Please understand that we program this free app in our spare time, as a service to the community. Sadly, I should point out that sending us impolite demands is not likely to give the result that you desire.</p>)html");
     }
 
-    if (name == QLatin1String(":text/firstStart.html")) {
+    if (name == u":text/firstStart.html"_qs)
+    {
         return tr(R"html(<h3>Welcome to Enroute Flight Navigation - A project of Akaflieg Freiburg</h3>
 
 <p>Thank you for using this flight navigation app!  Before we get started, we need to point out that <strong>this app and the aviation data come with no guarantees</strong>.</p>
@@ -136,7 +141,8 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 <p>&#8212; Stefan Kebekus.</p>)html");
     }
 
-    if (name == QLatin1String(":text/flightRouteLibraryInfo.html")) {
+    if (name == u":text/flightRouteLibraryInfo.html"_qs)
+    {
         return tr(R"html(<p>The flight routes are stored in standard <a href="https://geojson.org">GeoJSON format</a> in the following directory.<p>
 
 <p style="text-align:left;"><strong><a href="file:%1">%1</a></strong></p>
@@ -144,9 +150,11 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 <p>The flight routes can be accessed by other programs, such as backup software or file synchronization apps.  This can be useful to share a flight route library with other devices.</p>)html");
     }
 
-    if (name == QLatin1String(":text/info_enroute.html")) {
+    if (name == u":text/info_enroute.html"_qs)
+    {
         QString version(QStringLiteral(PROJECT_VERSION));
-        if (!QStringLiteral(GIT_COMMIT).isEmpty()) {
+        if (!QStringLiteral(GIT_COMMIT).isEmpty())
+        {
             version += QStringLiteral(" • GIT #")+QStringLiteral(GIT_COMMIT);
         }
         return tr(R"html(<h3>Enroute Flight Navigation</h3>
@@ -176,7 +184,8 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 <p>Aeronautical data is kindly provided by the <a href="https://www.openaip.net">openAIP</a> and <a href="https://www.openflightmaps.org">open flightmaps</a> projects. Base maps are kindly provided by <a href="https://openmaptiles.org">OpenMapTiles</a>. Please refer to the documentation for more details.</p>)html").arg(version);
     }
 
-    if (name == QLatin1String(":text/info_license.html")) {
+    if (name == u":text/info_license.html"_qs)
+    {
         QFile file(QStringLiteral(":license_overview.html"));
         file.open(QIODevice::ReadOnly);
         auto content = QString::fromUtf8(file.readAll());
@@ -243,7 +252,8 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 )html").arg(content);
     }
 
-    if (name == QLatin1String(":text/missingPermissions.html")) {
+    if (name == u":text/missingPermissions.html"_qs)
+    {
         return tr(R"html(<h3>Missing Permissions</h3>
 
 <p>The app <strong>Enroute Flight Navigation</strong> will not start because some essential permissions have not been granted.  Please re-start the app and grant the required permissions.  If you have chosen to deny some permissions permanently, you may need to go to the Android Settings app to grant the permissions there.</p>
@@ -255,7 +265,8 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 <p>&#8212; Stefan Kebekus.</p>)html");
     }
 
-    if (name == QLatin1String(":text/tooManyDownloads.html")) {
+    if (name == u":text/tooManyDownloads.html"_qs)
+    {
         return tr(R"html(<h3>Too many maps</h3>
 
 <p>Thank you for using Enroute Flight Navigation, we appreciate your engagement very much.</p>
@@ -269,7 +280,8 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 <p>We are trying our best to avoid a hard limit on the number of maps in the future. Please help us with that.</p>)html");
     }
 
-    if (name == QLatin1String(":text/weatherPermissions.html")) {
+    if (name == u":text/weatherPermissions.html"_qs)
+    {
         return tr(R"html(<h3>Privacy Warning</h3>
       
 <p>Like most other programs, this app uses weather data provided by the <a href='https://www.aviationweather.gov'/>Aviation Weather Center</a>, a website of the United States government.</p>
@@ -279,9 +291,10 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 <p><strong>We have no control over data collected by the Aviation Weather Center. We do not guarantee correctness of the weather information in any way!</strong></p>)html");
     }
 
-    if (name == QLatin1String(":text/whatsnew.html")) {
-        return tr("<p>To better support older devices, the hillshading feature is now optional. The page 'Settings' has been redesigned for clarity and simplicity.</p>") +
-                tr("<p>We could need help with French translations. If you would like to help, if speak French and know how to use the GIT version control system, please let us know.</p>");
+    if (name == u":text/whatsnew.html"_qs)
+    {
+        return tr("<p>We have updated the technology base underlying this app. Please report any issues!</p>");
+        // + tr("<p>We could need help with French translations. If you would like to help, if speak French and know how to use the GIT version control system, please let us know.</p>");
     }
 
     QFile file(name);
@@ -292,7 +305,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 }
 
 
-auto Librarian::getStringHashFromRessource(const QString &name) -> uint
+auto Librarian::getStringHashFromRessource(const QString &name) -> size_t
 {
     return qHash(getStringFromRessource(name), 0);
 }
@@ -402,4 +415,35 @@ auto Librarian::simplifySpecialChars(const QString &string) -> QString
 
     QString normalizedString = string.normalized(QString::NormalizationForm_KD);
     return normalizedString.remove(specialChars);
+}
+
+#include <QLibraryInfo>
+
+auto Librarian::systemInfo() -> QString
+{
+
+    QString result;
+
+    result += u"<h3>App</h3>"_qs;
+    result += u"<table>"_qs;
+    result += u"<tr></tr>"_qs;
+    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Enroute Version", QStringLiteral(PROJECT_VERSION));
+    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("GIT ", QStringLiteral(GIT_COMMIT));
+    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Qt", QLibraryInfo::version().toString());
+    result += u"</table><br>"_qs;
+
+    result += u"<h3>System</h3>"_qs;
+    result += u"<table>"_qs;
+    result += u"<tr></tr>"_qs;
+    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Build ABI", QSysInfo::buildAbi());
+    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Build CPU", QSysInfo::buildCpuArchitecture());
+    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Current CPU", QSysInfo::currentCpuArchitecture());
+    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Kernel Type", QSysInfo::kernelType());
+    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Kernel Version", QSysInfo::kernelVersion());
+    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Device Name", QSysInfo::prettyProductName());
+    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Device Type", QSysInfo::productType());
+    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Device Version", QSysInfo::productVersion());
+    result += u"</table><br>"_qs;
+
+    return result;
 }

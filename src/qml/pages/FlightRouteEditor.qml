@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,12 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQml 2.15
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Layouts 1.15
+import QtPositioning
+import QtQml
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Layouts
 
+import akaflieg_freiburg.enroute
 import enroute 1.0
 import "../dialogs"
 import "../items"
@@ -31,6 +33,8 @@ import "../items"
 Page {
     id: flightRoutePage
     title: qsTr("Route and Wind")
+
+    property speed staticSpeed
 
     Component {
         id: waypointComponent
@@ -47,7 +51,7 @@ Page {
                 text: waypoint.twoLineTitle
 
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     waypointDescription.waypoint = waypoint
                     waypointDescription.open()
                 }
@@ -59,7 +63,7 @@ Page {
                 visible: waypoint.icon.indexOf("WP") !== -1
                 icon.source: "/icons/material/ic_mode_edit.svg"
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     wpEditor.waypoint = waypoint
                     wpEditor.index = waypointLayout.index
                     wpEditor.open()
@@ -71,7 +75,7 @@ Page {
 
                 icon.source: "/icons/material/ic_more_horiz.svg"
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     wpMenu.popup()
                 }
 
@@ -83,18 +87,18 @@ Page {
 
                         enabled: index > 0
                         onTriggered: {
-                            global.platformAdaptor().vibrateBrief()
-                            global.navigator().flightRoute.moveUp(index)
+                            PlatformAdaptor.vibrateBrief()
+                            Navigator.flightRoute.moveUp(index)
                         }
                     }
 
                     Action {
                         text: qsTr("Move Down")
 
-                        enabled: index < global.navigator().flightRoute.size-1
+                        enabled: index < Navigator.flightRoute.size-1
                         onTriggered: {
-                            global.platformAdaptor().vibrateBrief()
-                            global.navigator().flightRoute.moveDown(index)
+                            PlatformAdaptor.vibrateBrief()
+                            Navigator.flightRoute.moveDown(index)
                         }
                     }
 
@@ -102,8 +106,8 @@ Page {
                         text: qsTr("Remove")
 
                         onTriggered: {
-                            global.platformAdaptor().vibrateBrief()
-                            global.navigator().flightRoute.removeWaypoint(index)
+                            PlatformAdaptor.vibrateBrief()
+                            Navigator.flightRoute.removeWaypoint(index)
                         }
                     }
 
@@ -123,7 +127,7 @@ Page {
                         }
 
                         onTriggered: {
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             global.waypointLibrary().add(waypoint)
                             toast.doToast(qsTr("Added %1 to waypoint library.").arg(waypoint.extendedName))
                         }
@@ -141,7 +145,7 @@ Page {
         ColumnLayout {
             id: grid
 
-            property var leg: ({});
+            property leg leg: ({});
 
             Layout.fillWidth: true
 
@@ -151,12 +155,12 @@ Page {
                 enabled: false
                 text: {
                     // Mention units
-                    global.navigator().aircraft.horizontalDistanceUnit
-                    global.navigator().aircraft.fuelConsumptionUnit
+                    Navigator.aircraft.horizontalDistanceUnit
+                    Navigator.aircraft.fuelConsumptionUnit
 
                     if (leg === null)
                         return ""
-                    return leg.description(global.navigator().wind, global.navigator().aircraft)
+                    return leg.description(Navigator.wind, Navigator.aircraft)
                 }
             }
 
@@ -167,7 +171,10 @@ Page {
     header: ToolBar {
 
         Material.foreground: "white"
-        height: 60
+        height: 60 + SafeInsets.top
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
+        topPadding: SafeInsets.top
 
         ToolButton {
             id: backButton
@@ -178,7 +185,7 @@ Page {
             icon.source: "/icons/material/ic_arrow_back.svg"
 
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 stackView.pop()
             }
         }
@@ -207,18 +214,22 @@ Page {
             visible: (sv.currentIndex === 0)
             icon.source: "/icons/material/ic_more_vert.svg"
             onClicked: {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 headerMenuX.popup()
             }
+
+            Menu {}
 
             AutoSizingMenu {
                 id: headerMenuX
                 cascade: true
 
+                topMargin: SafeInsets.top
+
                 MenuItem {
                     text: qsTr("View Library…")
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         highlighted = false
                         stackView.push("FlightRouteLibrary.qml")
                     }
@@ -226,12 +237,12 @@ Page {
 
                 MenuItem {
                     text: qsTr("Save to library…")
-                    enabled: (global.navigator().flightRoute.size > 0) && (sv.currentIndex === 0)
+                    enabled: (Navigator.flightRoute.size > 0) && (sv.currentIndex === 0)
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         highlighted = false
                         dialogLoader.active = false
-                        dialogLoader.source = "../dialogs/FlightRouteSaveDialog.qml"
+                        dialogLoader.source = "dialogs/FlightRouteSaveDialog.qml"
                         dialogLoader.active = true
                     }
                 }
@@ -244,25 +255,25 @@ Page {
                     height: Qt.platform.os !== "android" ? undefined : 0
 
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         highlighted = false
 
-                        global.fileExchange().importContent()
+                        FileExchange.importContent()
                     }
                 }
 
                 AutoSizingMenu {
                     title: Qt.platform.os === "android" ? qsTr("Share…") : qsTr("Export…")
-                    enabled: (global.navigator().flightRoute.size > 0) && (sv.currentIndex === 0)
+                    enabled: (Navigator.flightRoute.size > 0) && (sv.currentIndex === 0)
 
                     MenuItem {
                         text: qsTr("… to GeoJSON file")
                         onTriggered: {
                             headerMenuX.close()
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            var errorString = global.fileExchange().shareContent(global.navigator().flightRoute.toGeoJSON(), "application/geo+json", global.navigator().flightRoute.suggestedFilename())
+                            var errorString = FileExchange.shareContent(Navigator.flightRoute.toGeoJSON(), "application/geo+json", Navigator.flightRoute.suggestedFilename())
                             if (errorString === "abort") {
                                 toast.doToast(qsTr("Aborted"))
                                 return
@@ -283,10 +294,10 @@ Page {
                         text: qsTr("… to GPX file")
                         onTriggered: {
                             headerMenuX.close()
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            var errorString = global.fileExchange().shareContent(global.navigator().flightRoute.toGpx(), "application/gpx+xml", global.navigator().flightRoute.suggestedFilename())
+                            var errorString = FileExchange.shareContent(Navigator.flightRoute.toGpx(), "application/gpx+xml", Navigator.flightRoute.suggestedFilename())
                             if (errorString === "abort") {
                                 toast.doToast(qsTr("Aborted"))
                                 return
@@ -306,17 +317,17 @@ Page {
 
                 AutoSizingMenu {
                     title: qsTr("Open in Other App…")
-                    enabled: (global.navigator().flightRoute.size > 0) && (sv.currentIndex === 0)
+                    enabled: (Navigator.flightRoute.size > 0) && (sv.currentIndex === 0)
 
                     MenuItem {
                         text: qsTr("… in GeoJSON format")
 
                         onTriggered: {
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
 
-                            var errorString = global.fileExchange().viewContent(global.navigator().flightRoute.toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson")
+                            var errorString = FileExchange.viewContent(Navigator.flightRoute.toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson")
                             if (errorString !== "") {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
@@ -329,11 +340,11 @@ Page {
                         text: qsTr("… in GPX format")
 
                         onTriggered: {
-                            global.platformAdaptor().vibrateBrief()
+                            PlatformAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
 
-                            var errorString = global.fileExchange().viewContent(global.navigator().flightRoute.toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx")
+                            var errorString = FileExchange.viewContent(Navigator.flightRoute.toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx")
                             if (errorString !== "") {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
@@ -348,10 +359,10 @@ Page {
 
                 MenuItem {
                     text: qsTr("Clear")
-                    enabled: (global.navigator().flightRoute.size > 0) && (sv.currentIndex === 0)
+                    enabled: (Navigator.flightRoute.size > 0) && (sv.currentIndex === 0)
 
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         highlighted = false
                         clearDialog.open()
                     }
@@ -360,19 +371,18 @@ Page {
 
                 MenuItem {
                     text: qsTr("Reverse")
-                    enabled: (global.navigator().flightRoute.size > 0) && (sv.currentIndex === 0)
+                    enabled: (Navigator.flightRoute.size > 0) && (sv.currentIndex === 0)
 
                     onTriggered: {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         highlighted = false
-                        global.navigator().flightRoute.reverse()
+                        Navigator.flightRoute.reverse()
                         toast.doToast(qsTr("Flight route reversed"))
                     }
                 }
 
             }
         }
-
     }
 
 
@@ -381,6 +391,8 @@ Page {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
 
         currentIndex: sv.currentIndex
         TabButton { text: qsTr("Route") }
@@ -396,7 +408,10 @@ Page {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
+        anchors.leftMargin: SafeInsets.left
+        anchors.rightMargin: SafeInsets.right
 
+        clip: true
         currentIndex: bar.currentIndex
 
         Item {
@@ -405,7 +420,7 @@ Page {
             Label {
                 anchors.fill: parent
 
-                visible: global.navigator().flightRoute.size === 0
+                visible: Navigator.flightRoute.size === 0
 
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment : Text.AlignVCenter
@@ -421,13 +436,7 @@ Page {
             ScrollView {
                 anchors.fill: parent
 
-                contentHeight: co.height
-                contentWidth: parent.width
-
-                // The visibility behavior of the vertical scroll bar is a little complex.
-                // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
-                ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-                ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
+                contentWidth: availableWidth
 
                 clip: true
 
@@ -436,7 +445,7 @@ Page {
                     width: parent.width
 
                     Connections {
-                        target: global.navigator().flightRoute
+                        target: Navigator.flightRoute
                         function onWaypointsChanged() {
                             co.createItems()
                         }
@@ -448,12 +457,12 @@ Page {
                         // Delete old text items
                         co.children = {}
 
-                        if (global.navigator().flightRoute.size > 0) {
+                        if (Navigator.flightRoute.size > 0) {
                             // Create first waypointComponent
-                            waypointComponent.createObject(co, {waypoint: global.navigator().flightRoute.waypoints[0], index: 0});
+                            waypointComponent.createObject(co, {waypoint: Navigator.flightRoute.waypoints[0], index: 0});
 
                             // Create leg description items
-                            var legs = global.navigator().flightRoute.legs
+                            var legs = Navigator.flightRoute.legs
                             var j
                             for (j=0; j<legs.length; j++) {
                                 legComponent.createObject(co, {leg: legs[j]});
@@ -504,17 +513,18 @@ Page {
                         top: 360
                     }
                     inputMethodHints: Qt.ImhDigitsOnly
+                    property angle myAngle; // Dummy. I do not know how to create an angle otherwise
                     onEditingFinished: {
-                        global.navigator().wind.directionFrom = angle.fromDEG(text)
+                        Navigator.wind.directionFrom = myAngle.fromDEG(text)
                         windSpeed.focus = true
                     }
                     color: (acceptableInput ? Material.foreground : "red")
                     KeyNavigation.tab: windSpeed
                     text: {
-                        if (!global.navigator().wind.directionFrom.isFinite()) {
+                        if (!Navigator.wind.directionFrom.isFinite()) {
                             return ""
                         }
-                        return Math.round( global.navigator().wind.directionFrom.toDEG() )
+                        return Math.round( Navigator.wind.directionFrom.toDEG() )
                     }
                     placeholderText: qsTr("undefined")
                 }
@@ -527,7 +537,7 @@ Page {
                     Layout.alignment: Qt.AlignVCenter
                     enabled: windDirection.text !== ""
                     onClicked: {
-                        global.navigator().wind.directionFrom = angle.nan()
+                        Navigator.wind.directionFrom = angle.nan()
                         windDirection.clear()
                     }
                 }
@@ -543,24 +553,24 @@ Page {
                     Layout.minimumWidth: view.font.pixelSize*5
                     validator: DoubleValidator {
                         bottom: {
-                            switch(global.navigator().aircraft.horizontalDistanceUnit) {
+                            switch(Navigator.aircraft.horizontalDistanceUnit) {
                             case Aircraft.NauticalMile:
-                                return global.navigator().wind.minWindSpeed.toKN()
+                                return Navigator.wind.minWindSpeed.toKN()
                             case Aircraft.Kilometer:
-                                return global.navigator().wind.minWindSpeed.toKMH()
+                                return Navigator.wind.minWindSpeed.toKMH()
                             case Aircraft.StatuteMile :
-                                return global.navigator().wind.minWindSpeed.toMPH()
+                                return Navigator.wind.minWindSpeed.toMPH()
                             }
                             return NaN
                         }
                         top: {
-                            switch(global.navigator().aircraft.horizontalDistanceUnit) {
+                            switch(Navigator.aircraft.horizontalDistanceUnit) {
                             case Aircraft.NauticalMile:
-                                return global.navigator().wind.maxWindSpeed.toKN()
+                                return Navigator.wind.maxWindSpeed.toKN()
                             case Aircraft.Kilometer:
-                                return global.navigator().wind.maxWindSpeed.toKMH()
+                                return Navigator.wind.maxWindSpeed.toKMH()
                             case Aircraft.StatuteMile :
-                                return global.navigator().wind.maxWindSpeed.toMPH()
+                                return Navigator.wind.maxWindSpeed.toMPH()
                             }
                             return NaN
                         }
@@ -568,31 +578,31 @@ Page {
                     }
                     inputMethodHints: Qt.ImhDigitsOnly
                     onEditingFinished: {
-                        switch(global.navigator().aircraft.horizontalDistanceUnit) {
+                        switch(Navigator.aircraft.horizontalDistanceUnit) {
                         case Aircraft.NauticalMile:
-                            global.navigator().wind.speed = speed.fromKN(text)
+                            Navigator.wind.speed = flightRoutePage.staticSpeed.fromKN(text)
                             break;
                         case Aircraft.Kilometer:
-                            global.navigator().wind.speed = speed.fromKMH(text)
+                            Navigator.wind.speed = flightRoutePage.staticSpeed.fromKMH(text)
                             break;
                         case Aircraft.StatuteMile :
-                            global.navigator().wind.speed = speed.fromMPH(text)
+                            Navigator.wind.speed = flightRoutePage.staticSpeed.fromMPH(text)
                             break;
                         }
                         focus = false
                     }
                     color: (acceptableInput ? Material.foreground : "red")
                     text: {
-                        if (!global.navigator().wind.speed.isFinite()) {
+                        if (!Navigator.wind.speed.isFinite()) {
                             return ""
                         }
-                        switch(global.navigator().aircraft.horizontalDistanceUnit) {
+                        switch(Navigator.aircraft.horizontalDistanceUnit) {
                         case Aircraft.NauticalMile:
-                            return Math.round( global.navigator().wind.speed.toKN() )
+                            return Math.round( Navigator.wind.speed.toKN() )
                         case Aircraft.Kilometer:
-                            return Math.round( global.navigator().wind.speed.toKMH() )
+                            return Math.round( Navigator.wind.speed.toKMH() )
                         case Aircraft.StatuteMile :
-                            return Math.round( global.navigator().wind.speed.toMPH() )
+                            return Math.round( Navigator.wind.speed.toMPH() )
                         }
                         return NaN
                     }
@@ -600,7 +610,7 @@ Page {
                 }
                 Label {
                     text: {
-                        switch(global.navigator().aircraft.horizontalDistanceUnit) {
+                        switch(Navigator.aircraft.horizontalDistanceUnit) {
                         case Aircraft.NauticalMile:
                             return "kn"
                         case Aircraft.Kilometer:
@@ -618,7 +628,7 @@ Page {
                     Layout.alignment: Qt.AlignVCenter
                     enabled: windSpeed.text !== ""
                     onClicked: {
-                        global.navigator().wind.speed = speed.fromKN(-1)
+                        Navigator.wind.speed = flightRoutePage.staticSpeed.fromKN(-1)
                         windSpeed.clear()
                     }
                 }
@@ -632,11 +642,12 @@ Page {
 
     footer: Pane {
         width: parent.width
+        height: implicitHeight
         Material.elevation: 3
+        bottomPadding: SafeInsets.bottom
 
         ColumnLayout {
             width: parent.width
-
 
             Label {
                 Layout.fillWidth: true
@@ -645,14 +656,14 @@ Page {
                 horizontalAlignment: Text.AlignHCenter
                 wrapMode: Text.WordWrap
                 textFormat: Text.StyledText
-                visible: (global.navigator().flightRoute.size === 1)&&(sv.currentIndex === 0)
+                visible: (Navigator.flightRoute.size === 1)&&(sv.currentIndex === 0)
             }
 
             Label {
                 id: summary
 
                 Layout.fillWidth: true
-                text: global.navigator().flightRoute.summary
+                text: Navigator.flightRoute.summary
                 horizontalAlignment: Text.AlignHCenter
                 wrapMode: Text.WordWrap
                 textFormat: Text.StyledText
@@ -670,7 +681,7 @@ Page {
                 icon.source: "/icons/material/ic_add_circle.svg"
 
                 onClicked: {
-                    global.platformAdaptor().vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
                     flightRouteAddWPDialog.open()
                 }
             }
@@ -690,23 +701,12 @@ Page {
 
     }
 
-    Dialog {
+    CenteringDialog {
         id: clearDialog
-
-        // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-        // in Qt 5.15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-        parent: Overlay.overlay
-        x: (parent.width-width)/2.0
-        y: (parent.height-height)/2.0
 
         title: qsTr("Clear Route?")
         standardButtons: Dialog.No | Dialog.Yes
         modal: true
-
-        // Width is chosen so that the dialog does not cover the parent in full, height is automatic
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: Math.min(parent.height-view.font.pixelSize, implicitHeight)
 
         Label {
             width: clearDialog.availableWidth
@@ -717,12 +717,12 @@ Page {
         }
 
         onAccepted: {
-            global.platformAdaptor().vibrateBrief()
-            global.navigator().flightRoute.clear()
+            PlatformAdaptor.vibrateBrief()
+            Navigator.flightRoute.clear()
             toast.doToast(qsTr("Flight route cleared"))
         }
         onRejected: {
-            global.platformAdaptor().vibrateBrief()
+            PlatformAdaptor.vibrateBrief()
             close()
         }
     }
@@ -743,13 +743,12 @@ Page {
 
     }
 
-    Dialog {
+    CenteringDialog {
         id: shareErrorDialog
-        anchors.centerIn: parent
-        parent: Overlay.overlay
 
         title: qsTr("Error Exporting Data…")
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
+        standardButtons: Dialog.Ok
+        modal: true
 
         Label {
             id: shareErrorDialogLabel
@@ -757,17 +756,13 @@ Page {
             wrapMode: Text.Wrap
             textFormat: Text.StyledText
         }
-
-        standardButtons: Dialog.Ok
-        modal: true
-
     }
 
     Shortcut {
         sequence: "Ctrl+a"
         onActivated: {
             dialogLoader.active = false
-            dialogLoader.source = "../dialogs/FlightRouteAddWPDialog.qml"
+            dialogLoader.source = "dialogs/FlightRouteAddWPDialog.qml"
             dialogLoader.active = true
         }
     }
@@ -782,8 +777,13 @@ Page {
         property int index: -1 // Index of waypoint in flight route
 
         onAccepted: {
-            global.navigator().flightRoute.renameWaypoint(index, newName)
-            global.navigator().flightRoute.relocateWaypoint(index, newLatitude, newLongitude)
+            PlatformAdaptor.vibrateBrief()
+
+            var newWP = waypoint.copy()
+            newWP.name = newName
+            newWP.notes = newNotes
+            newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
+            Navigator.flightRoute.replaceWaypoint(index, newWP)
             close()
         }
     }

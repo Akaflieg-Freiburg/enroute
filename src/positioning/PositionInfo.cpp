@@ -133,20 +133,39 @@ auto Positioning::PositionInfo::trueAltitudeErrorEstimate() const -> Units::Dist
 
 auto Positioning::PositionInfo::trueTrack() const -> Units::Angle
 {
-    if (!m_positionInfo.isValid()) {
+    if (!m_positionInfo.isValid())
+    {
         return {};
     }
-    if (!groundSpeed().isFinite()) {
+    if (!groundSpeed().isFinite())
+    {
         return {};
     }
-    if (groundSpeed().toKN() < 4) {
+    if (groundSpeed().toKN() < 4)
+    {
         return {};
     }
-    if (!m_positionInfo.hasAttribute(QGeoPositionInfo::Direction)) {
+    if (!m_positionInfo.hasAttribute(QGeoPositionInfo::Direction))
+    {
         return {};
     }
 
     return Units::Angle::fromDEG(m_positionInfo.attribute(QGeoPositionInfo::Direction));
+}
+
+
+auto Positioning::PositionInfo::trueTrackErrorEstimate() const -> Units::Angle
+{
+    if (!trueTrack().isFinite())
+    {
+        return {};
+    }
+    if (!m_positionInfo.hasAttribute(QGeoPositionInfo::DirectionAccuracy))
+    {
+        return {};
+    }
+
+    return Units::Angle::fromDEG(m_positionInfo.attribute(QGeoPositionInfo::DirectionAccuracy));
 }
 
 

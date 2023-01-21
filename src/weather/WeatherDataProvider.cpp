@@ -33,7 +33,7 @@
 #include "sunset.h"
 
 #include "GlobalObject.h"
-#include "Settings.h"
+#include "GlobalSettings.h"
 #include "geomaps/GeoMapProvider.h"
 #include "navigation/Clock.h"
 #include "navigation/FlightRoute.h"
@@ -170,13 +170,13 @@ void Weather::WeatherDataProvider::downloadFinished() {
             xml.readNext();
 
             // Read METAR
-            if (xml.isStartElement() && (xml.name() == "METAR")) {
+            if (xml.isStartElement() && (xml.name() == QStringLiteral("METAR"))) {
                 auto *metar = new Weather::METAR(xml, this);
                 findOrConstructWeatherStation(metar->ICAOCode())->setMETAR(metar);
             }
 
             // Read TAF
-            if (xml.isStartElement() && (xml.name() == "TAF")) {
+            if (xml.isStartElement() && (xml.name() == QStringLiteral("TAF"))) {
                 auto *taf = new Weather::TAF(xml, this);
                 findOrConstructWeatherStation(taf->ICAOCode())->setTAF(taf);
             }
@@ -454,7 +454,7 @@ auto Weather::WeatherDataProvider::QNHInfo() const -> QString
 void Weather::WeatherDataProvider::update(bool isBackgroundUpdate) {
 
     // Refuse to do anything if we are not allowed to connect to the Aviation Weather Center
-    if (!GlobalObject::settings()->acceptedWeatherTerms()) {
+    if (!GlobalObject::globalSettings()->acceptedWeatherTerms()) {
         return;
     }
 
@@ -479,7 +479,7 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate) {
 
     // Generate queries
     const QGeoCoordinate& position = Positioning::PositionProvider::lastValidCoordinate();
-    const QVariantList& steerpts = GlobalObject::navigator()->flightRoute()->geoPath();
+    auto steerpts = GlobalObject::navigator()->flightRoute()->geoPath();
     QList<QString> queries;
     if (position.isValid()) {
         queries.push_back(QStringLiteral("dataSource=metars&radialDistance=85;%1,%2").arg(position.longitude()).arg(position.latitude()));
@@ -487,8 +487,7 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate) {
     }
     if (!steerpts.empty()) {
         QString qpos;
-        foreach(auto var, steerpts) {
-            auto posit = var.value<QGeoCoordinate>();
+        foreach(auto posit, steerpts) {
             qpos += ";" + QString::number(posit.longitude()) + "," + QString::number(posit.latitude());
         }
         queries.push_back(QStringLiteral("dataSource=metars&flightPath=85%1").arg(qpos));

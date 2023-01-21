@@ -111,7 +111,7 @@ GeoMaps::Waypoint readWP(QXmlStreamReader& xml) {
 
     if (!name.isEmpty())
     {
-        wpt = wpt.renamed(name);
+        wpt.setName(name);
     }
 
     return wpt;

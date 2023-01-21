@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -36,7 +36,7 @@ namespace GeoMaps
     class Waypoint;
 } // namespace GeoMaps
 
-class Settings;
+class GlobalSettings;
 
 namespace Navigation
 {
@@ -90,24 +90,22 @@ namespace Navigation
         /*! \brief List of coordinates for the waypoints
          *
          * This property holds a list of coordinates of the waypoints, suitable
-         * for drawing the flight path on a QML map. For better interaction with
-         * QML, the data is returned in the form of a QVariantList rather than
-         * QList<QGeoCoordinate>.
+         * for drawing the flight path on a QML map.
          */
-        Q_PROPERTY(QVariantList geoPath READ geoPath NOTIFY waypointsChanged)
+        Q_PROPERTY(QList<QGeoCoordinate> geoPath READ geoPath NOTIFY waypointsChanged)
 
         /*! \brief List of waypoints in the flight route that are not airfields
          *
          * This property lists all the waypoints in the route that are not
          * airfields, navaids, reporting points, etc.
          */
-        Q_PROPERTY(QVariantList midFieldWaypoints READ midFieldWaypoints NOTIFY waypointsChanged)
+        Q_PROPERTY(QList<GeoMaps::Waypoint> midFieldWaypoints READ midFieldWaypoints NOTIFY waypointsChanged)
 
         /*! \brief List of legs
          *
          * This property returns a list of all legs in the route.
          */
-        Q_PROPERTY(QVector<Navigation::Leg> legs READ legs NOTIFY waypointsChanged)
+        Q_PROPERTY(QList<Navigation::Leg> legs READ legs NOTIFY waypointsChanged)
 
         /*! \brief Number of waypoints in the route */
         Q_PROPERTY(int size READ size NOTIFY waypointsChanged)
@@ -127,7 +125,7 @@ namespace Navigation
          * This property lists all the waypoints in the route that are not
          * airfields, navaids, reporting points, etc.
          */
-        Q_PROPERTY(QVariantList waypoints READ waypoints NOTIFY waypointsChanged)
+        Q_PROPERTY(QList<GeoMaps::Waypoint> waypoints READ waypoints NOTIFY waypointsChanged)
 
         //
         // Getter Methods
@@ -143,19 +141,19 @@ namespace Navigation
          *
          *  @returns Property geoPath
          */
-        [[nodiscard]] auto geoPath() const -> QVariantList;
+        [[nodiscard]] auto geoPath() const -> QList<QGeoCoordinate>;
 
         /*! \brief Getter function for the property with the same name
          *
          * @returns Property midFieldWaypoints
          */
-        [[nodiscard]] auto midFieldWaypoints() const -> QVariantList;
+        [[nodiscard]] auto midFieldWaypoints() const -> QList<GeoMaps::Waypoint>;
 
         /*! \brief Getter function for the property with the same name
          *
          * @returns Property legs
          */
-        [[nodiscard]] auto legs() const -> QVector<Navigation::Leg> { return m_legs; }
+        [[nodiscard]] auto legs() const -> QList<Navigation::Leg> { return m_legs; }
 
         /*! \brief Getter function for the property with the same name
          *
@@ -173,7 +171,8 @@ namespace Navigation
          *
          * @returns Property waypoints
          */
-        [[nodiscard]] auto waypoints() const -> QVariantList;
+        [[nodiscard]] auto waypoints() const -> QList<GeoMaps::Waypoint> {return m_waypoints;}
+
 
         //
         // METHODS
@@ -191,7 +190,7 @@ namespace Navigation
          *
          * @param position Coordinates of the waypoint.
          */
-        Q_INVOKABLE void append(const QGeoCoordinate &position);
+        Q_INVOKABLE void append(const QGeoCoordinate& position);
 
         /*! \brief Checks if waypoint can be added as the new end of this
          *  route
@@ -269,21 +268,6 @@ namespace Navigation
          */
         Q_INVOKABLE void moveUp(int idx);
 
-        /*! \brief Rename waypoint(s)
-         *
-         *  Relocates the waypoint with the given index. If the index is
-         *  invalid, if the coordinates are invalid or if the new coordinates
-         *  are closer than 10m to the old coordinate, then this method does
-         *  nothing. The signal "waypoint changed" is emitted as appropriate.
-         *
-         *  @param idx Index of waypoint
-         *
-         *  @param latitude New latitude for waypoint
-         *
-         *  @param longitude New longitude for waypoint
-         */
-        Q_INVOKABLE void relocateWaypoint(int idx, double latitude, double longitude);
-
         /*! \brief Remove waypoint from the current route
          *
          * If the waypoint is contained in the route, the method returns
@@ -293,17 +277,17 @@ namespace Navigation
          */
         Q_INVOKABLE void removeWaypoint(int idx);
 
-        /*! \brief Rename waypoint(s)
+        /*! \brief Replaces a waypoint
          *
-         *  Relocates the waypoint with the given index. If the index is invalid
-         *  if the new name equals the old name, then this method does nothing.
+         *  Replaces the waypoint with the given index. If the index is invalid
+         *  if the new waypoint equals the old one, then this method does nothing.
          *  The signal "waypoint changed" is emitted as appropriate.
          *
          *  @param idx Index of waypoint
          *
-         *  @param newName New name for waypoint
+         *  @param newWaypoint New waypoint
          */
-        Q_INVOKABLE void renameWaypoint(int idx, const QString &newName);
+        Q_INVOKABLE void replaceWaypoint(int idx, const GeoMaps::Waypoint& newWaypoint);
 
         /*! \brief Reverse the route */
         Q_INVOKABLE void reverse();
@@ -319,7 +303,7 @@ namespace Navigation
          * @returns Empty string in case of success, human-readable, translated
          * error message otherwise.
          */
-        Q_INVOKABLE [[nodiscard]] QString save(const QString &fileName = QString()) const;
+        Q_INVOKABLE [[nodiscard]] QString save(const QString& fileName = QString()) const;
 
         /*! \brief Suggests a name for saving this route
          *

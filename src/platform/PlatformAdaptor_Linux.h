@@ -37,7 +37,7 @@ public:
      *
      * @param parent Standard QObject parent pointer
      */
-    explicit PlatformAdaptor(QObject *parent = nullptr);
+    explicit PlatformAdaptor(QObject* parent = nullptr);
 
     ~PlatformAdaptor() override = default;
 

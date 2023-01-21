@@ -18,9 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QAndroidJniEnvironment>
+#include <QGuiApplication>
 #include <QHash>
-#include <QtAndroid>
+#include <QJniEnvironment>
+#include <QJniObject>
+#include <QScreen>
+#include <QtCore/private/qandroidextras_p.h>
 
 #include "platform/PlatformAdaptor_Android.h"
 
@@ -33,7 +36,7 @@ Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
 
 void Platform::PlatformAdaptor::deferredInitialization()
 {
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "startWiFiMonitor");
+    QJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "startWiFiMonitor");
 }
 
 
@@ -43,7 +46,7 @@ void Platform::PlatformAdaptor::deferredInitialization()
 
 auto Platform::PlatformAdaptor::currentSSID() -> QString
 {
-    QAndroidJniObject stringObject = QAndroidJniObject::callStaticObjectMethod("de/akaflieg_freiburg/enroute/MobileAdaptor",
+    QJniObject stringObject = QJniObject::callStaticObjectMethod("de/akaflieg_freiburg/enroute/MobileAdaptor",
                                                                                "getSSID", "()Ljava/lang/String;");
     return stringObject.toString();
 }
@@ -51,30 +54,24 @@ auto Platform::PlatformAdaptor::currentSSID() -> QString
 
 void Platform::PlatformAdaptor::disableScreenSaver()
 {
-    // Disable the screen saver so that the screen does not switch off automatically
     bool on=true;
     // Implementation follows a suggestion found in https://stackoverflow.com/questions/27758499/how-to-keep-the-screen-on-in-qt-for-android
-    QtAndroid::runOnAndroidThread([on]{
-        QAndroidJniObject activity = QtAndroid::androidActivity();
+    QNativeInterface::QAndroidApplication::runOnAndroidMainThread([on]{
+        QJniObject activity = QNativeInterface::QAndroidApplication::context();
         if (activity.isValid()) {
-            QAndroidJniObject window =
-                    activity.callObjectMethod("getWindow", "()Landroid/view/Window;");
+            QJniObject window = activity.callObjectMethod("getWindow", "()Landroid/view/Window;");
 
-            if (window.isValid())
-            {
+            if (window.isValid()) {
                 const int FLAG_KEEP_SCREEN_ON = 128;
-                if (on)
-                {
+                if (on) {
                     window.callMethod<void>("addFlags", "(I)V", FLAG_KEEP_SCREEN_ON);
-                }
-                else
-                {
+                } else {
                     window.callMethod<void>("clearFlags", "(I)V", FLAG_KEEP_SCREEN_ON);
                 }
             }
         }
-        QAndroidJniEnvironment env;
-        if (env->ExceptionCheck() != 0U) {
+        QJniEnvironment env;
+        if (env->ExceptionCheck() != 0u) {
             env->ExceptionClear();
         }
     });
@@ -84,10 +81,11 @@ void Platform::PlatformAdaptor::disableScreenSaver()
 auto Platform::PlatformAdaptor::hasRequiredPermissions() -> bool
 {
     // Check is required permissions have been granted
-    foreach(auto permission, permissions)
-    {
-        if (QtAndroid::checkPermission(permission) == QtAndroid::PermissionResult::Denied)
-        {
+    foreach(auto permission, requiredPermissions) {
+        auto resultFuture = QtAndroidPrivate::checkPermission(permission);
+        resultFuture.waitForFinished();
+        if (resultFuture.result() == QtAndroidPrivate::PermissionResult::Denied) {
+            qWarning() << "Required permission missing" << permission;
             return false;
         }
     }
@@ -97,7 +95,7 @@ auto Platform::PlatformAdaptor::hasRequiredPermissions() -> bool
 
 void Platform::PlatformAdaptor::lockWifi(bool lock)
 {
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "lockWiFi", "(Z)V", static_cast<int>(lock));
+    QJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "lockWiFi", "(Z)V", lock);
 }
 
 
@@ -111,20 +109,25 @@ void Platform::PlatformAdaptor::onGUISetupCompleted()
     splashScreenHidden = true;
 
     // Hide Splash Screen
-    QtAndroid::hideSplashScreen(200);
+    QNativeInterface::QAndroidApplication::hideSplashScreen(200);
 }
 
 
 void Platform::PlatformAdaptor::requestPermissionsSync()
 {
-    QtAndroid::requestPermissionsSync(permissions);
+    QStringList permissions;
+    permissions << requiredPermissions << optionalPermissions;
+    foreach(auto permission, permissions) {
+        auto resultFuture = QtAndroidPrivate::requestPermission(permission);
+        resultFuture.waitForFinished();
+    }
 }
 
 
 
 void Platform::PlatformAdaptor::vibrateBrief()
 {
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "vibrateBrief");
+    QJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "vibrateBrief");
 }
 
 

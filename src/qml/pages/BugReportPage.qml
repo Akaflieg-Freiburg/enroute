@@ -18,11 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import QtQuick.Controls.Material 2.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import QtQuick.Controls.Material
 
+import akaflieg_freiburg.enroute
 import "../items"
 
 Page {
@@ -35,6 +36,10 @@ Page {
         id: stack
 
         anchors.fill: parent
+        anchors.bottomMargin: footer.visible ? 0 : SafeInsets.bottom
+        anchors.leftMargin: SafeInsets.left
+        anchors.rightMargin: SafeInsets.right
+
         initialItem: mainPage
     }
 
@@ -42,6 +47,7 @@ Page {
         width: parent.width
         Material.elevation: 3
         visible: stack.depth > 1
+        bottomPadding: SafeInsets.bottom
 
         ToolButton {
             Material.foreground: Material.accent
@@ -49,7 +55,7 @@ Page {
             text: qsTr("Go back in bug report")
             icon.source: "/icons/material/ic_arrow_back.svg"
             onClicked:  {
-                global.platformAdaptor().vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
                 stack.pop()
             }
         }
@@ -62,25 +68,26 @@ Page {
         ScrollView {
             id: sv
 
+            width: stack.width
+            height: stack.height
+            contentWidth: availableWidth // Disable horizontal scrolling
+
             clip: true
 
-            topPadding: view.font.pixelSize*1
-            leftPadding: view.font.pixelSize*0.5
-            rightPadding: view.font.pixelSize*0.5
-
-            contentHeight: cL.height
-            contentWidth: pg.width-leftPadding-rightPadding
-
-            // The visibility behavior of the vertical scroll bar is a little complex.
-            // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
-            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-            ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
-            ScrollBar.vertical.interactive: false
+            bottomPadding: view.font.pixelSize + SafeInsets.bottom
+            leftPadding: view.font.pixelSize + SafeInsets.left
+            rightPadding: view.font.pixelSize + SafeInsets.right
+            topPadding: view.font.pixelSize
 
             ColumnLayout {
-                id: cL
+                width: sv.availableWidth
 
-                width: pg.width-sv.leftPadding-sv.rightPadding
+                anchors.bottomMargin: view.font.pixelSize*1
+                anchors.topMargin: view.font.pixelSize*1
+                anchors.leftMargin: view.font.pixelSize*0.5
+                anchors.rightMargin: view.font.pixelSize*0.5
+
+                id: cL
 
                 Label {
                     Layout.fillWidth: true
@@ -97,7 +104,6 @@ your suggestions for improvement.</p>
                     linkColor: Material.accent
                     wrapMode: Text.Wrap
                 }
-
                 Label {
                     Layout.fillWidth: true
                     text: qsTr("
@@ -115,7 +121,7 @@ application.</p>
                     text: qsTr("Main application")
                     icon.source: "/icons/material/ic_bug_report.svg"
                     onClicked:  {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         stack.push(mainAppPage)
                     }
                 }
@@ -137,7 +143,7 @@ application.</p>
                     text: qsTr("Flight Information Regions")
                     icon.source: "/icons/material/ic_bug_report.svg"
                     onClicked:  {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         stack.push(checkIfOFMcountry)
                     }
                 }
@@ -146,7 +152,7 @@ application.</p>
                     text: qsTr("Nature Reserve Areas")
                     icon.source: "/icons/material/ic_bug_report.svg"
                     onClicked:  {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         stack.push(checkIfOFMcountry)
                     }
                 }
@@ -155,7 +161,7 @@ application.</p>
                     text: qsTr("All Other Airspaces")
                     icon.source: "/icons/material/ic_bug_report.svg"
                     onClicked:  {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         stack.push(openAIPAirspace)
                     }
                 }
@@ -178,7 +184,7 @@ below.</p>
                     text: qsTr("Airfields")
                     icon.source: "/icons/material/ic_bug_report.svg"
                     onClicked:  {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         stack.push(openAIPNNonAirspace)
                     }
                 }
@@ -187,7 +193,7 @@ below.</p>
                     text: qsTr("NavAids")
                     icon.source: "/icons/material/ic_bug_report.svg"
                     onClicked:  {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         stack.push(openAIPNNonAirspace)
                     }
                 }
@@ -196,7 +202,7 @@ below.</p>
                     text: qsTr("Procedures/Traffic circuits")
                     icon.source: "/icons/material/ic_bug_report.svg"
                     onClicked:  {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         stack.push(checkIfOFMcountry)
                     }
                 }
@@ -205,7 +211,7 @@ below.</p>
                     text: qsTr("Reporting points")
                     icon.source: "/icons/material/ic_bug_report.svg"
                     onClicked:  {
-                        global.platformAdaptor().vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         stack.push(checkIfOFMcountry)
                     }
                 }
@@ -227,37 +233,34 @@ below.</p>
     Component {
         id: mainAppPage
 
-        ColumnLayout {
-            ScrollView {
-                id: sv
+        ScrollView {
+            id: sv
 
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+            width: stack.width
+            height: stack.height
+            contentWidth: availableWidth // Disable horizontal scrolling
 
-                clip: true
+            clip: true
 
-                topPadding: view.font.pixelSize*1
-                leftPadding: view.font.pixelSize*0.5
-                rightPadding: view.font.pixelSize*0.5
+            bottomPadding: view.font.pixelSize + SafeInsets.bottom
+            leftPadding: view.font.pixelSize + SafeInsets.left
+            rightPadding: view.font.pixelSize + SafeInsets.right
+            topPadding: view.font.pixelSize
 
-                contentHeight: cL.height
-                contentWidth: pg.width-leftPadding-rightPadding
+            ColumnLayout {
+                id: cL
 
-                // The visibility behavior of the vertical scroll bar is a little complex.
-                // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
-                ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-                ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
-                ScrollBar.vertical.interactive: false
+                width: sv.availableWidth
 
-                ColumnLayout {
-                    id: cL
+                anchors.bottomMargin: view.font.pixelSize*1
+                anchors.topMargin: view.font.pixelSize*1
+                anchors.leftMargin: view.font.pixelSize*0.5
+                anchors.rightMargin: view.font.pixelSize*0.5
 
-                    width: pg.width-sv.leftPadding-sv.rightPadding
+                Label {
+                    Layout.fillWidth: true
 
-                    Label {
-                        Layout.fillWidth: true
-
-                        text: qsTr("
+                    text: qsTr("
 <h3>Report a bug or make a suggestion for improvement</h3>
 
 <h4>Issue in the main application</h4>
@@ -277,32 +280,32 @@ not, please open a new issue. If you prefer to work on
 your desktop computer, you can also send yourself a link to
 GitHub by e-mail.</p>
 ")
-                        textFormat: Text.StyledText
-                        linkColor: Material.accent
-                        wrapMode: Text.Wrap
-                        onLinkActivated: Qt.openUrlExternally(link)
+                    textFormat: Text.StyledText
+                    linkColor: Material.accent
+                    wrapMode: Text.Wrap
+                    onLinkActivated: Qt.openUrlExternally(link)
+                }
+                Button {
+                    Layout.fillWidth: true
+                    text: qsTr("Open GitHub Issue Page")
+                    icon.source: "/icons/material/ic_bug_report.svg"
+                    onClicked: {
+                        PlatformAdaptor.vibrateBrief()
+                        Qt.openUrlExternally("https://github.com/Akaflieg-Freiburg/enroute/issues")
                     }
-                    Button {
-                        Layout.fillWidth: true
-                        text: qsTr("Open GitHub Issue Page")
-                        icon.source: "/icons/material/ic_bug_report.svg"
-                        onClicked: {
-                            global.platformAdaptor().vibrateBrief()
-                            Qt.openUrlExternally("https://github.com/Akaflieg-Freiburg/enroute/issues")
-                        }
+                }
+                Button {
+                    Layout.fillWidth: true
+                    text: qsTr("Send link by e-mail")
+                    icon.source: "/icons/material/ic_bug_report.svg"
+                    onClicked: {
+                        PlatformAdaptor.vibrateBrief()
+                        Qt.openUrlExternally(qsTr("mailto:?subject=Enroute Flight Navigation, Issue Report &body=Link to GitHub: https://github.com/Akaflieg-Freiburg/enroute/issues"))
                     }
-                    Button {
-                        Layout.fillWidth: true
-                        text: qsTr("Send link by e-mail")
-                        icon.source: "/icons/material/ic_bug_report.svg"
-                        onClicked: {
-                            global.platformAdaptor().vibrateBrief()
-                            Qt.openUrlExternally(qsTr("mailto:?subject=Enroute Flight Navigation, Issue Report &body=Link to GitHub: https://github.com/Akaflieg-Freiburg/enroute/issues"))
-                        }
-                    }
-                    Label {
-                        Layout.fillWidth: true
-                        text: qsTr("
+                }
+                Label {
+                    Layout.fillWidth: true
+                    text: qsTr("
 <p>If you have difficulties with GitHub, you can contact
 <a href='mailto:ms@squawk-vfr.de?subject=Enroute Flight
 Navigation, Issue Report'>Markus Sachs</a> by e-mail.
@@ -319,14 +322,12 @@ comes first!</p>
 
 <h3>Thank you for your help!</h3>
 ")
-                        textFormat: Text.StyledText
-                        linkColor: Material.accent
-                        wrapMode: Text.Wrap
-                        onLinkActivated: Qt.openUrlExternally(link)
-                    }
+                    textFormat: Text.StyledText
+                    linkColor: Material.accent
+                    wrapMode: Text.Wrap
+                    onLinkActivated: Qt.openUrlExternally(link)
                 }
-
-            } // ScrollView
+            }
 
         }
 
@@ -335,37 +336,34 @@ comes first!</p>
     Component {
         id: openAIPNNonAirspace
 
-        ColumnLayout {
-            ScrollView {
-                id: sv
+        ScrollView {
+            id: sv
 
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+            width: stack.width
+            height: stack.height
+            contentWidth: availableWidth // Disable horizontal scrolling
 
-                clip: true
+            clip: true
 
-                topPadding: view.font.pixelSize*1
-                leftPadding: view.font.pixelSize*0.5
-                rightPadding: view.font.pixelSize*0.5
+            bottomPadding: view.font.pixelSize + SafeInsets.bottom
+            leftPadding: view.font.pixelSize + SafeInsets.left
+            rightPadding: view.font.pixelSize + SafeInsets.right
+            topPadding: view.font.pixelSize
 
-                contentHeight: cL.height
-                contentWidth: pg.width-leftPadding-rightPadding
+            ColumnLayout {
+                id: cL
 
-                // The visibility behavior of the vertical scroll bar is a little complex.
-                // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
-                ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-                ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
-                ScrollBar.vertical.interactive: false
+                width: sv.availableWidth
 
-                ColumnLayout {
-                    id: cL
+                anchors.bottomMargin: view.font.pixelSize*1
+                anchors.topMargin: view.font.pixelSize*1
+                anchors.leftMargin: view.font.pixelSize*0.5
+                anchors.rightMargin: view.font.pixelSize*0.5
 
-                    width: pg.width-sv.leftPadding-sv.rightPadding
+                Label {
+                    Layout.fillWidth: true
 
-                    Label {
-                        Layout.fillWidth: true
-
-                        text: qsTr("
+                    text: qsTr("
 <h3>Report a bug or make a suggestion for improvement</h3>
 
 <h4>Aviation Data</h4>
@@ -381,33 +379,33 @@ suggestion is approved, the correction will appear in
 <strong>Enroute Flight Navigation</strong> within a
 week.</p>
 ")
-                        textFormat: Text.StyledText
-                        linkColor: Material.accent
-                        wrapMode: Text.Wrap
-                        onLinkActivated: Qt.openUrlExternally(link)
+                    textFormat: Text.StyledText
+                    linkColor: Material.accent
+                    wrapMode: Text.Wrap
+                    onLinkActivated: Qt.openUrlExternally(link)
+                }
+                Button {
+                    Layout.fillWidth: true
+                    text: qsTr("Open openAIP web site")
+                    icon.source: "/icons/material/ic_bug_report.svg"
+                    onClicked: {
+                        PlatformAdaptor.vibrateBrief()
+                        Qt.openUrlExternally("https://openaip.net")
                     }
-                    Button {
-                        Layout.fillWidth: true
-                        text: qsTr("Open openAIP web site")
-                        icon.source: "/icons/material/ic_bug_report.svg"
-                        onClicked: {
-                            global.platformAdaptor().vibrateBrief()
-                            Qt.openUrlExternally("https://openaip.net")
-                        }
+                }
+                Button {
+                    Layout.fillWidth: true
+                    text: qsTr("Send link by e-mail")
+                    icon.source: "/icons/material/ic_bug_report.svg"
+                    onClicked: {
+                        PlatformAdaptor.vibrateBrief()
+                        Qt.openUrlExternally(qsTr("mailto:?subject=Enroute Flight Navigation, Issue Report &body=Link to openAIP: https//openaip.net"))
                     }
-                    Button {
-                        Layout.fillWidth: true
-                        text: qsTr("Send link by e-mail")
-                        icon.source: "/icons/material/ic_bug_report.svg"
-                        onClicked: {
-                            global.platformAdaptor().vibrateBrief()
-                            Qt.openUrlExternally(qsTr("mailto:?subject=Enroute Flight Navigation, Issue Report &body=Link to openAIP: https//openaip.net"))
-                        }
 
-                    }
-                    Label {
-                        Layout.fillWidth: true
-                        text: qsTr("
+                }
+                Label {
+                    Layout.fillWidth: true
+                    text: qsTr("
 <p>If you have difficulties with the openAIP web site, you
 can contact
 <a href='mailto:peter.kemme@openflightmaps.org?subject=Enroute
@@ -417,14 +415,12 @@ time. Peter speaks English and German.</p>
 
 <h3>Thank you for your help!</h3>
 ")
-                        textFormat: Text.StyledText
-                        linkColor: Material.accent
-                        wrapMode: Text.Wrap
-                        onLinkActivated: Qt.openUrlExternally(link)
-                    }
+                    textFormat: Text.StyledText
+                    linkColor: Material.accent
+                    wrapMode: Text.Wrap
+                    onLinkActivated: Qt.openUrlExternally(link)
                 }
-
-            } // ScrollView
+            }
 
         }
 
@@ -433,37 +429,34 @@ time. Peter speaks English and German.</p>
     Component {
         id: openAIPAirspace
 
-        ColumnLayout {
-            ScrollView {
-                id: sv
+        ScrollView {
+            id: sv
 
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+            width: stack.width
+            height: stack.height
+            contentWidth: availableWidth // Disable horizontal scrolling
 
-                clip: true
+            clip: true
 
-                topPadding: view.font.pixelSize*1
-                leftPadding: view.font.pixelSize*0.5
-                rightPadding: view.font.pixelSize*0.5
+            bottomPadding: view.font.pixelSize + SafeInsets.bottom
+            leftPadding: view.font.pixelSize + SafeInsets.left
+            rightPadding: view.font.pixelSize + SafeInsets.right
+            topPadding: view.font.pixelSize
 
-                contentHeight: cL.height
-                contentWidth: pg.width-leftPadding-rightPadding
+            ColumnLayout {
+                id: cL
 
-                // The visibility behavior of the vertical scroll bar is a little complex.
-                // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
-                ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-                ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
-                ScrollBar.vertical.interactive: false
+                width: sv.availableWidth
 
-                ColumnLayout {
-                    id: cL
+                anchors.bottomMargin: view.font.pixelSize*1
+                anchors.topMargin: view.font.pixelSize*1
+                anchors.leftMargin: view.font.pixelSize*0.5
+                anchors.rightMargin: view.font.pixelSize*0.5
 
-                    width: pg.width-sv.leftPadding-sv.rightPadding
+                Label {
+                    Layout.fillWidth: true
 
-                    Label {
-                        Layout.fillWidth: true
-
-                        text: qsTr("
+                    text: qsTr("
 <h3>Report a bug or make a suggestion for improvement</h3>
 
 <h4>Airspace Data</h4>
@@ -484,54 +477,49 @@ discuss your issue in the forum there.</p>
 
 <h3>Thank you for your help!</h3>
 ")
-                        textFormat: Text.StyledText
-                        linkColor: Material.accent
-                        wrapMode: Text.Wrap
-                        onLinkActivated: Qt.openUrlExternally(link)
-                    }
-
+                    textFormat: Text.StyledText
+                    linkColor: Material.accent
+                    wrapMode: Text.Wrap
+                    onLinkActivated: Qt.openUrlExternally(link)
                 }
 
-            } // ScrollView
+            }
 
-        }
+        } // ScrollView
 
     }
 
     Component {
         id: checkIfOFMcountry
 
-        ColumnLayout {
-            ScrollView {
-                id: sv
+        ScrollView {
+            id: sv
 
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+            width: stack.width
+            height: stack.height
+            contentWidth: availableWidth // Disable horizontal scrolling
 
-                clip: true
+            clip: true
 
-                topPadding: view.font.pixelSize*1
-                leftPadding: view.font.pixelSize*0.5
-                rightPadding: view.font.pixelSize*0.5
+            bottomPadding: view.font.pixelSize + SafeInsets.bottom
+            leftPadding: view.font.pixelSize + SafeInsets.left
+            rightPadding: view.font.pixelSize + SafeInsets.right
+            topPadding: view.font.pixelSize
 
-                contentHeight: cL.height
-                contentWidth: pg.width-leftPadding-rightPadding
+            ColumnLayout {
+                id: cL
 
-                // The visibility behavior of the vertical scroll bar is a little complex.
-                // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
-                ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-                ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
-                ScrollBar.vertical.interactive: false
+                width: sv.availableWidth
 
-                ColumnLayout {
-                    id: cL
+                anchors.bottomMargin: view.font.pixelSize*1
+                anchors.topMargin: view.font.pixelSize*1
+                anchors.leftMargin: view.font.pixelSize*0.5
+                anchors.rightMargin: view.font.pixelSize*0.5
 
-                    width: pg.width-sv.leftPadding-sv.rightPadding
+                Label {
+                    Layout.fillWidth: true
 
-                    Label {
-                        Layout.fillWidth: true
-
-                        text: qsTr("
+                    text: qsTr("
 <h3>Report a bug or make a suggestion for improvement</h3>
 
 <h4>Aviation Data</h4>
@@ -562,39 +550,37 @@ following countries?</p>
 <li>Sweden</li>
 <li>Switzerland</li>
 </ul>")
-                        textFormat: Text.StyledText
-                        linkColor: Material.accent
-                        wrapMode: Text.Wrap
-                        onLinkActivated: Qt.openUrlExternally(link)
-                    }
-                    Button {
-                        Layout.fillWidth: true
-                        text: qsTr("Yes")
-                        icon.source: "/icons/material/ic_bug_report.svg"
-                        onClicked:  {
-                            global.platformAdaptor().vibrateBrief()
-                            stack.push(ofm)
-                        }
-                    }
-                    Button {
-                        Layout.fillWidth: true
-                        text: qsTr("No")
-                        icon.source: "/icons/material/ic_bug_report.svg"
-                        onClicked: {
-                            global.platformAdaptor().vibrateBrief()
-                            stack.push(nixofm)
-                        }
-                    }
-                    Label {
-                        Layout.fillWidth: true
-                        text: qsTr("<h3>Thank you for your help!</h3>")
-                        textFormat: Text.StyledText
-                        linkColor: Material.accent
-                        wrapMode: Text.Wrap
+                    textFormat: Text.StyledText
+                    linkColor: Material.accent
+                    wrapMode: Text.Wrap
+                    onLinkActivated: Qt.openUrlExternally(link)
+                }
+                Button {
+                    Layout.fillWidth: true
+                    text: qsTr("Yes")
+                    icon.source: "/icons/material/ic_bug_report.svg"
+                    onClicked:  {
+                        PlatformAdaptor.vibrateBrief()
+                        stack.push(ofm)
                     }
                 }
-            } // ScrollView
-
+                Button {
+                    Layout.fillWidth: true
+                    text: qsTr("No")
+                    icon.source: "/icons/material/ic_bug_report.svg"
+                    onClicked: {
+                        PlatformAdaptor.vibrateBrief()
+                        stack.push(nixofm)
+                    }
+                }
+                Label {
+                    Layout.fillWidth: true
+                    text: qsTr("<h3>Thank you for your help!</h3>")
+                    textFormat: Text.StyledText
+                    linkColor: Material.accent
+                    wrapMode: Text.Wrap
+                }
+            }
         }
 
     }
@@ -602,37 +588,34 @@ following countries?</p>
     Component {
         id: ofm
 
-        ColumnLayout {
-            ScrollView {
-                id: sv
+        ScrollView {
+            id: sv
 
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+            width: stack.width
+            height: stack.height
+            contentWidth: availableWidth // Disable horizontal scrolling
 
-                clip: true
+            clip: true
 
-                topPadding: view.font.pixelSize*1
-                leftPadding: view.font.pixelSize*0.5
-                rightPadding: view.font.pixelSize*0.5
+            bottomPadding: view.font.pixelSize + SafeInsets.bottom
+            leftPadding: view.font.pixelSize + SafeInsets.left
+            rightPadding: view.font.pixelSize + SafeInsets.right
+            topPadding: view.font.pixelSize
 
-                contentHeight: cL.height
-                contentWidth: pg.width-leftPadding-rightPadding
+            ColumnLayout {
+                id: cL
 
-                // The visibility behavior of the vertical scroll bar is a little complex.
-                // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
-                ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-                ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
-                ScrollBar.vertical.interactive: false
+                width: sv.availableWidth
 
-                ColumnLayout {
-                    id: cL
+                anchors.bottomMargin: view.font.pixelSize*1
+                anchors.topMargin: view.font.pixelSize*1
+                anchors.leftMargin: view.font.pixelSize*0.5
+                anchors.rightMargin: view.font.pixelSize*0.5
 
-                    width: pg.width-sv.leftPadding-sv.rightPadding
+                Label {
+                    Layout.fillWidth: true
 
-                    Label {
-                        Layout.fillWidth: true
-
-                        text: qsTr("
+                    text: qsTr("
 <h3>Report a bug or make a suggestion for improvement</h3>
 
 <h4>Airspace Data</h4>
@@ -646,41 +629,39 @@ by the open flightmaps association in Austria.</p>
 report your issue. If you prefer to work on your desktop
 computer, you can also send yourself a link by e-mail.</p>
 ")
-                        textFormat: Text.StyledText
-                        linkColor: Material.accent
-                        wrapMode: Text.Wrap
-                        onLinkActivated: Qt.openUrlExternally(link)
+                    textFormat: Text.StyledText
+                    linkColor: Material.accent
+                    wrapMode: Text.Wrap
+                    onLinkActivated: Qt.openUrlExternally(link)
+                }
+                Button {
+                    Layout.fillWidth: true
+                    text: qsTr("Open error report form")
+                    icon.source: "/icons/material/ic_bug_report.svg"
+                    onClicked: {
+                        PlatformAdaptor.vibrateBrief()
+                        Qt.openUrlExternally("https://docs.google.com/a/openflightmaps.org/forms/d/e/1FAIpQLSeBiqRbqioUaAp6H-FUtYMFduLGQmzOm1G3Dxyh2XALl5r3Nw/viewform")
                     }
-                    Button {
-                        Layout.fillWidth: true
-                        text: qsTr("Open error report form")
-                        icon.source: "/icons/material/ic_bug_report.svg"
-                        onClicked: {
-                            global.platformAdaptor().vibrateBrief()
-                            Qt.openUrlExternally("https://docs.google.com/a/openflightmaps.org/forms/d/e/1FAIpQLSeBiqRbqioUaAp6H-FUtYMFduLGQmzOm1G3Dxyh2XALl5r3Nw/viewform")
-                        }
+                }
+                Button {
+                    Layout.fillWidth: true
+                    text: qsTr("Send link by e-mail")
+                    icon.source: "/icons/material/ic_bug_report.svg"
+                    onClicked: {
+                        PlatformAdaptor.vibrateBrief()
+                        Qt.openUrlExternally(qsTr("mailto:?subject=Enroute Flight Navigation, Issue Report &body=Link to open flightmaps error report form: https://docs.google.com/a/openflightmaps.org/forms/d/e/1FAIpQLSeBiqRbqioUaAp6H-FUtYMFduLGQmzOm1G3Dxyh2XALl5r3Nw/viewform"))
                     }
-                    Button {
-                        Layout.fillWidth: true
-                        text: qsTr("Send link by e-mail")
-                        icon.source: "/icons/material/ic_bug_report.svg"
-                        onClicked: {
-                            global.platformAdaptor().vibrateBrief()
-                            Qt.openUrlExternally(qsTr("mailto:?subject=Enroute Flight Navigation, Issue Report &body=Link to open flightmaps error report form: https://docs.google.com/a/openflightmaps.org/forms/d/e/1FAIpQLSeBiqRbqioUaAp6H-FUtYMFduLGQmzOm1G3Dxyh2XALl5r3Nw/viewform"))
-                        }
-                    }
-                    Label {
-                        Layout.fillWidth: true
-                        text: qsTr("<h3>Thank you for your help!</h3>")
-                        textFormat: Text.StyledText
-                        linkColor: Material.accent
-                        wrapMode: Text.Wrap
-                        onLinkActivated: Qt.openUrlExternally(link)
-                    }
-
+                }
+                Label {
+                    Layout.fillWidth: true
+                    text: qsTr("<h3>Thank you for your help!</h3>")
+                    textFormat: Text.StyledText
+                    linkColor: Material.accent
+                    wrapMode: Text.Wrap
+                    onLinkActivated: Qt.openUrlExternally(link)
                 }
 
-            } // ScrollView
+            }
 
         }
 
@@ -689,37 +670,34 @@ computer, you can also send yourself a link by e-mail.</p>
     Component {
         id: nixofm
 
-        ColumnLayout {
-            ScrollView {
-                id: sv
+        ScrollView {
+            id: sv
 
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+            width: stack.width
+            height: stack.height
+            contentWidth: availableWidth // Disable horizontal scrolling
 
-                clip: true
+            clip: true
 
-                topPadding: view.font.pixelSize*1
-                leftPadding: view.font.pixelSize*0.5
-                rightPadding: view.font.pixelSize*0.5
+            bottomPadding: view.font.pixelSize + SafeInsets.bottom
+            leftPadding: view.font.pixelSize + SafeInsets.left
+            rightPadding: view.font.pixelSize + SafeInsets.right
+            topPadding: view.font.pixelSize
 
-                contentHeight: cL.height
-                contentWidth: pg.width-leftPadding-rightPadding
+            ColumnLayout {
+                id: cL
 
-                // The visibility behavior of the vertical scroll bar is a little complex.
-                // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
-                ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-                ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
-                ScrollBar.vertical.interactive: false
+                width: sv.availableWidth
 
-                ColumnLayout {
-                    id: cL
+                anchors.bottomMargin: view.font.pixelSize*1
+                anchors.topMargin: view.font.pixelSize*1
+                anchors.leftMargin: view.font.pixelSize*0.5
+                anchors.rightMargin: view.font.pixelSize*0.5
 
-                    width: pg.width-sv.leftPadding-sv.rightPadding
+                Label {
+                    Layout.fillWidth: true
 
-                    Label {
-                        Layout.fillWidth: true
-
-                        text: qsTr("
+                    text: qsTr("
 <h3>Report a bug or make a suggestion for improvement</h3>
 
 <h4>Aviation Data</h4>
@@ -733,12 +711,10 @@ type of information that we could use in our app.</p>
 <p>There is nothing that we can do. We regret that we have
 no better news.</p>
 ")
-                        textFormat: Text.StyledText
-                        linkColor: Material.accent
-                        wrapMode: Text.Wrap
-                    }
-
-                } // ScrollView
+                    textFormat: Text.StyledText
+                    linkColor: Material.accent
+                    wrapMode: Text.Wrap
+                }
 
             }
         }

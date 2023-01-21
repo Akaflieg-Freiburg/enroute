@@ -18,9 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QAndroidJniEnvironment>
+#include <QJniEnvironment>
 #include <QCoreApplication>
-#include <QtAndroidExtras/QAndroidJniObject>
+#include <QJniObject>
 
 #include "GlobalObject.h"
 #include "platform/Notifier_Android.h"
@@ -42,7 +42,7 @@ Platform::Notifier::~Notifier()
 void Platform::Notifier::hideNotification(Platform::Notifier_Abstract::NotificationTypes notificationType)
 {
     jint jni_ID                   = notificationType;
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/Notifier", "hideNotification", "(I)V", jni_ID);
+    QJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/Notifier", "hideNotification", "(I)V", jni_ID);
 }
 
 
@@ -72,16 +72,17 @@ void Platform::Notifier::onNotificationClicked(Platform::Notifier_Abstract::Noti
 
 void Platform::Notifier::showNotification(Platform::Notifier_Abstract::NotificationTypes notificationType, const QString& text, const QString& longText)
 {
+
     jint jni_ID                    = notificationType;
-    QAndroidJniObject jni_title    = QAndroidJniObject::fromString(title(notificationType));
-    QAndroidJniObject jni_text     = QAndroidJniObject::fromString(text);
-    QAndroidJniObject jni_longText = QAndroidJniObject::fromString(longText);
-    QAndroidJniObject jni_actionText;
+    QJniObject jni_title    = QJniObject::fromString(title(notificationType));
+    QJniObject jni_text     = QJniObject::fromString(text);
+    QJniObject jni_longText = QJniObject::fromString(longText);
+    QJniObject jni_actionText;
     if (notificationType == GeoMapUpdatePending) {
-        jni_actionText = QAndroidJniObject::fromString(tr("Update"));
+        jni_actionText = QJniObject::fromString(tr("Update"));
     }
 
-    QAndroidJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/Notifier",
+    QJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/Notifier",
                                               "showNotification",
                                               "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V",
                                               jni_ID,

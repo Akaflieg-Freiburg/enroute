@@ -18,12 +18,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Layouts 1.15
-import QtQuick.Shapes 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Layouts
+import QtQuick.Shapes
 
+import akaflieg_freiburg.enroute
 import enroute 1.0
 
 import "../items"
@@ -34,52 +35,49 @@ import "../items"
  * and newLongitude.
  */
 
-Dialog {
+CenteringDialog {
     id: waypointEditorDialog
 
     // Property waypoint, and code to handle waypoint changes
-    property var waypoint: global.geoMapProvider().createWaypoint()
+    property waypoint waypoint: global.geoMapProvider().createWaypoint()
 
     readonly property string newName: wpNameField.text
+    readonly property string newNotes: wpNotesField.text
     readonly property double newLatitude: latInput.value
     readonly property double newLongitude: longInput.value
     readonly property double newAltitudeMeter: eleField.valueMeter
-
-    // Size is chosen so that the dialog does not cover the parent in full
-    width: Math.min(view.width-view.font.pixelSize, 40*view.font.pixelSize)
-    height: Math.min(view.height-view.font.pixelSize, implicitHeight)
-
-    // Center in Overlay.overlay. This is a funny workaround against a bug, I believe,
-    // in Qt 15.1 where setting the parent (as recommended in the Qt documentation) does not seem to work right if the Dialog is opend more than once.
-    parent: Overlay.overlay
-    x: parent == null ? 0 : (parent.width-width)/2.0
-    y: parent == null ? 0 : (parent.height-height)/2.0
 
     modal: true
     title: qsTr("Edit Waypoint")
 
     standardButtons: Dialog.Cancel|Dialog.Ok
-    focus: true
 
-    onWaypointChanged: {
+    onAboutToShow: {
         // This is necessary, because the initial binding "latInput.value: waypoint.coordinate.latitude"
         // breaks as soon as the user edits the coordinates manually.
         latInput.value = waypoint.coordinate.latitude
         longInput.value = waypoint.coordinate.longitude
+        wpNameField.text = waypoint.extendedName
+        wpNotesField.text = waypoint.notes
     }
 
     ScrollView {
-        id: sv
         anchors.fill: parent
-
         contentWidth: availableWidth // Disable horizontal scrolling
 
         clip: true
 
-        GridLayout {
-            width: sv.availableWidth-0.5*view.font.pixelSize
+        // If virtual keyboard come up, make sure that the focused element is visible
+        onHeightChanged: {
+            if (activeFocusControl != null) {
+                contentItem.contentY = activeFocusControl.y
+            }
+        }
 
+        GridLayout {
+            width: availableWidth
             columns: 2
+
 
             Label {
                 Layout.alignment: Qt.AlignBaseline
@@ -97,6 +95,24 @@ Dialog {
                 focus: true
 
                 placeholderText: qsTr("undefined")
+            }
+
+            Label {
+                Layout.alignment: Qt.AlignBaseline
+                text: qsTr("Notes")
+            }
+
+            TextArea {
+                id: wpNotesField
+
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignBaseline
+                Layout.minimumWidth: view.font.pixelSize*5
+
+                focus: true
+
+                placeholderText: qsTr("undefined")
+                wrapMode: TextEdit.WordWrap
             }
 
             Label {
@@ -130,6 +146,7 @@ Dialog {
                 id: longInput
 
                 Layout.fillWidth: true
+
                 currentIndex: formatChoice.currentIndex
                 value: waypoint.coordinate.longitude
                 minValue: -180.0
@@ -147,6 +164,7 @@ Dialog {
                 id: formatChoice
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
+                Layout.rightMargin: 3
 
                 model: [ qsTr("Degrees"), qsTr("Degrees and Minutes"), qsTr("Degrees, Minutes and Seconds") ]
             }
@@ -178,9 +196,12 @@ Dialog {
                 id: eleFormatChoice
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
+                Layout.rightMargin: 3
 
                 model: [ qsTr("Feet"), qsTr("Meter") ]
             }
+
+
         }
     }
 

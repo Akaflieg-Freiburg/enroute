@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -22,17 +22,18 @@
 
 #include <QMap>
 #include <QPointer>
+#include <QQmlEngine>
 #include <QTimer>
 
 class QNetworkAccessManager;
 class QNetworkReply;
 
-#include "positioning/PositionProvider.h"
+#include "GlobalObject.h"
 #include "weather/Station.h"
 
 class Clock;
 class FlightRoute;
-class Settings;
+class GlobalSettings;
 
 namespace Weather {
 
@@ -62,6 +63,8 @@ namespace Weather {
  */
 class WeatherDataProvider : public QObject {
     Q_OBJECT
+    QML_ELEMENT
+    QML_SINGLETON
 
 public:
     class WeatherStation;
@@ -71,6 +74,16 @@ public:
      * @param parent The standard QObject parent pointer
      */
     explicit WeatherDataProvider(QObject *parent = nullptr);
+
+    // No default constructor, important for QML singleton
+    explicit WeatherDataProvider() = delete;
+
+    // factory function for QML singleton
+    static Weather::WeatherDataProvider* create(QQmlEngine*, QJSEngine*)
+    {
+        return GlobalObject::weatherDataProvider();
+    }
+
 
     //
     // Properties

@@ -86,7 +86,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 )html") + (R"html(
 <ul style="margin-left:-25px;">
 )html") + tr(R"html(
-<li><strong>French:</strong> Adrien Crovato. Adrien is a private pilot and aerospace engineer.</li>
+<li><strong>French:</strong> Adrien Crovato and Luca Riva. Both are private pilots and aerospace engineers. Luca is also doing aerobatics.</li>
 )html") + tr(R"html(
 <li><strong>German:</strong> Markus Sachs. Markus flies trikes and is an enthusiastic 'Co' on everyting else that flies.</li>
 )html") + tr(R"html(

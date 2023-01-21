@@ -22,7 +22,6 @@
 #include <QFile>
 #include <QGuiApplication>
 #include <QIcon>
-//#include <QLibraryInfo>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQmlProperty>

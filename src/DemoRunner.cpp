@@ -128,12 +128,10 @@ void DemoRunner::generateGooglePlayScreenshots()
     //
 
     {
-        QStringList languages = {"de-DE", "en-US", "fr-FR", "it-IT", "pl-PL"};
         QStringList devices = {"phone", "sevenInch", "tenInch"};
-
         foreach(auto device, devices)
         {
-            auto language = QLocale::system().name();
+            auto language = QLocale::system().name().replace("_","-");
             {
                 if (device == u"phone"_qs)
                 {

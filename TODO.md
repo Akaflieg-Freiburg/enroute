@@ -9,12 +9,14 @@
 
 # Bug Fixing
 
-* Fix problems with PDF version of the manual
-
 * Fix problems with screenshots for google play
 
 
 # New Features
+
+* Indicator that maps are being loaded
+
+* Spanish translations
 
 * Improve debug info for Android systems
 

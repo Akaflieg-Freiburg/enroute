@@ -18,8 +18,6 @@
 
 * Spanish translations
 
-* Improve debug info for Android systems
-
 * Permissions: Explanation should be given when app refuses to start!
 
 * Privacy notes at startup

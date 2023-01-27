@@ -22,6 +22,7 @@
 #include <QHash>
 #include <QJniEnvironment>
 #include <QJniObject>
+#include <QProcess>
 #include <QScreen>
 #include <QtCore/private/qandroidextras_p.h>
 
@@ -121,6 +122,15 @@ void Platform::PlatformAdaptor::requestPermissionsSync()
         auto resultFuture = QtAndroidPrivate::requestPermission(permission);
         resultFuture.waitForFinished();
     }
+}
+
+
+QString Platform::PlatformAdaptor::sysLog()
+{
+    QProcess proc;
+    proc.startCommand(u"logcat -t 300"_qs);
+    proc.waitForFinished();
+    return proc.readAllStandardOutput();
 }
 
 

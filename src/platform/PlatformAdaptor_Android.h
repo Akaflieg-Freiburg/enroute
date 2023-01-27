@@ -70,6 +70,12 @@ public:
      */
     Q_INVOKABLE void lockWifi(bool lock) override;
 
+    /*! \brief Implements virtual method from PlatformAdaptor_Abstract
+     *
+     * @return System log
+     */
+    Q_INVOKABLE virtual QString sysLog() override;
+
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
     Q_INVOKABLE void vibrateBrief() override;
 

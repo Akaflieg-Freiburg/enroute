@@ -20,11 +20,14 @@
 
 #include "Librarian.h"
 #include "navigation/FlightRoute.h"
+#include "platform/PlatformAdaptor.h"
 
+#include <QLibraryInfo>
 #include <QNetworkAccessManager>
 #include <QStandardPaths>
 #include <QSysInfo>
 #include <QtGlobal>
+
 
 Librarian::Librarian(QObject *parent) : QObject(parent)
 {
@@ -417,7 +420,6 @@ auto Librarian::simplifySpecialChars(const QString &string) -> QString
     return normalizedString.remove(specialChars);
 }
 
-#include <QLibraryInfo>
 
 auto Librarian::systemInfo() -> QString
 {
@@ -444,6 +446,13 @@ auto Librarian::systemInfo() -> QString
     result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Device Type", QSysInfo::productType());
     result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Device Version", QSysInfo::productVersion());
     result += u"</table><br>"_qs;
+
+    auto sysLog = GlobalObject::platformAdaptor()->sysLog();
+    if (!sysLog.isEmpty())
+    {
+        result += u"<h3>System Log</h3>"_qs;
+        result += u"<pre>"_qs + sysLog + u"</pre>"_qs;
+    }
 
     return result;
 }

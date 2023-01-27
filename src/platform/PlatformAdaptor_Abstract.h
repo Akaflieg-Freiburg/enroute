@@ -126,6 +126,18 @@ public:
      */
     virtual void requestPermissionsSync() = 0;
 
+    /*! \brief System Log
+     *
+     * Returns the system log for the last 5 Minutes, or an empty string if this
+     * is not available.
+     *
+     * @return System log
+     */
+    Q_INVOKABLE virtual QString sysLog()
+    {
+        return {};
+    }
+
     /*! \brief Make the device briefly vibrate
      *
      * On platforms that support this, make the device briefly vibrate if haptic

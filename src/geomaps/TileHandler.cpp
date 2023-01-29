@@ -71,7 +71,7 @@ GeoMaps::TileHandler::TileHandler(const QVector<QPointer<GeoMaps::MBTILES>>& mbt
 void GeoMaps::TileHandler::process(QHttpEngine::Socket *socket, const QString &path)
 {
     // Serve tileJSON file, if requested
-    if (path.isEmpty() || path.endsWith(QLatin1String("json"), Qt::CaseInsensitive))
+    if (path.isEmpty() || path.endsWith(u"json"_qs, Qt::CaseInsensitive))
     {
         socket->setHeader("Content-Type", "application/json");
         QByteArray json = tileJSON();
@@ -106,7 +106,7 @@ void GeoMaps::TileHandler::process(QHttpEngine::Socket *socket, const QString &p
 
             // Set the headers and write the content
             socket->setHeader("Content-Type", "application/octet-stream");
-            if (_format == QLatin1String("pbf"))
+            if (_format == u"pbf"_qs)
             {
                 socket->setHeader("Content-Encoding", "gzip");
             }

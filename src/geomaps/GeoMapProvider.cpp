@@ -101,7 +101,7 @@ auto GeoMaps::GeoMapProvider::copyrightNotice() -> QString
         result += "<p>"+tr("The terrain maps are derived from the "
                            "<a href='https://registry.opendata.aws/terrain-tiles/'>Terrain "
                            "Tiles Open Dataset on Amazon AWS</a>.") + "</p>" +
-                "<ul>"
+                "<ul style='margin-left:-25px;'>"
                 "<li><p>ArcticDEM terrain data DEM(s) were created from DigitalGlobe, Inc., imagery and funded under National Science Foundation awards 1043681, 1559691, and 1542736</p>"
                 "<li><p>Australia terrain data © Commonwealth of Australia (Geoscience Australia) 2017</p>"
                 "<li><p>Austria terrain data © offene Daten Österreichs – Digitales Geländemodell (DGM) Österreich</p>"
@@ -598,7 +598,7 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(QStringList JSONFileNames, U
         // and that are gliding sectors
         if (hideGlidingSectors) {
             Airspace airspaceTest(object);
-            if (airspaceTest.CAT() == QLatin1String("GLD")) {
+            if (airspaceTest.CAT() == u"GLD"_qs) {
                 continue;
             }
         }

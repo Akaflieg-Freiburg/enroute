@@ -126,17 +126,11 @@ public:
      */
     virtual void requestPermissionsSync() = 0;
 
-    /*! \brief System Log
+    /*! \brief Information about the system, in HTML format
      *
-     * Returns the system log for the last 5 Minutes, or an empty string if this
-     * is not available.
-     *
-     * @return System log
+     * @returns Info string
      */
-    Q_INVOKABLE virtual QString sysLog()
-    {
-        return {};
-    }
+    Q_INVOKABLE virtual QString systemInfo();
 
     /*! \brief Make the device briefly vibrate
      *

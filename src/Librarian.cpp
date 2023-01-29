@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,9 +20,7 @@
 
 #include "Librarian.h"
 #include "navigation/FlightRoute.h"
-#include "platform/PlatformAdaptor.h"
 
-#include <QLibraryInfo>
 #include <QNetworkAccessManager>
 #include <QStandardPaths>
 #include <QSysInfo>
@@ -203,44 +201,8 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
   General Public License V3</a> or, at your choice, any later
   version of this license.
 </p>
-)html") + tr(R"html(
-<h4>Geographic maps</h4>
-
-<p>
-  As a flight navigation program, <strong>Enroute Flight
-  Navigation</strong> heavily relies on geographic map
-  data. The geographic maps are not included in the
-  program, but are downloaded by the user from the map
-  management page. The maps are compiled from the following
-  sources.
-</p>
-
-<ul style="margin-left:-25px;">
-  <li>
-    The base maps are modified data from <a
-    href="https://github.com/openmaptiles/openmaptiles">OpenMapTiles</a>,
-    published under a
-    <a href="https://github.com/openmaptiles/openmaptiles/blob/master/LICENSE.md">CC-BY
-    4.0 design license</a>.
-  </li>
-
-  <li>
-    The aviation maps contain data from <a
-    href="http://www.openaip.net">openAIP</a>, licensed
-    under a <a
-    href="https://creativecommons.org/licenses/by-nc-sa/3.0">CC
-    BY-NC-SA license</a>.
-  </li>
-
-  <li>
-    The aviation maps contain data from <a
-    href="https://www.openflightmaps.org">open
-    flightmaps</a>, licensed under the <a
-    href="https://www.openflightmaps.org/live/downloads/20150306-LCN.pdf">OFMA
-    General Users License</a>.
-  </li>
-</ul>
-)html") + tr(R"html(
+)html")
+                + tr(R"html(
 <h4>Software and data included in the program</h4>
 
 <p>
@@ -322,13 +284,16 @@ auto Librarian::exists(Librarian::Library library, const QString &baseName) -> b
 
 auto Librarian::get(Librarian::Library library, const QString &baseName) -> QObject *
 {
-    if (library == Routes) {
+    if (library == Routes)
+    {
         auto *route = new Navigation::FlightRoute();
-        if (route == nullptr) {
+        if (route == nullptr)
+        {
             return nullptr;
         }
         auto error = route->load(fullPath(Routes, baseName));
-        if (error.isEmpty()) {
+        if (error.isEmpty())
+        {
             return route;
         }
         delete route;
@@ -341,7 +306,8 @@ auto Librarian::get(Librarian::Library library, const QString &baseName) -> QObj
 
 auto Librarian::fullPath(Librarian::Library library, const QString &baseName) -> QString
 {
-    switch (library) {
+    switch (library)
+    {
     case Aircraft:
         return directory(library)+"/"+baseName+".json";
     case Routes:
@@ -366,7 +332,8 @@ void Librarian::rename(Librarian::Library library, const QString &oldName, const
 auto Librarian::directory(Library library) -> QString
 {
     QString path;
-    switch (library) {
+    switch (library)
+    {
     case Aircraft:
         path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/aircraft";
         break;
@@ -389,7 +356,9 @@ auto Librarian::entries(Library library, const QString &filter) -> QStringList
 
     QStringList fileBaseNames;
     foreach(auto fileName, fileNames)
+    {
         fileBaseNames << fileName.section('.', 0, -2);
+    }
 
     return permissiveFilter(fileBaseNames, filter);
 }
@@ -401,9 +370,12 @@ auto Librarian::permissiveFilter(const QStringList &inputStrings, const QString 
 
     QStringList result;
     foreach(auto inputString, inputStrings)
-        if (simplifySpecialChars(inputString).contains(simplifiedFilter, Qt::CaseInsensitive)) {
+    {
+        if (simplifySpecialChars(inputString).contains(simplifiedFilter, Qt::CaseInsensitive))
+        {
             result << inputString;
         }
+    }
 
     return result;
 }
@@ -412,47 +384,11 @@ auto Librarian::permissiveFilter(const QStringList &inputStrings, const QString 
 auto Librarian::simplifySpecialChars(const QString &string) -> QString
 {
     QString cacheString = simplifySpecialChars_cache[string];
-    if (!cacheString.isEmpty()) {
+    if (!cacheString.isEmpty())
+    {
         return cacheString;
     }
 
     QString normalizedString = string.normalized(QString::NormalizationForm_KD);
     return normalizedString.remove(specialChars);
-}
-
-
-auto Librarian::systemInfo() -> QString
-{
-
-    QString result;
-
-    result += u"<h3>App</h3>"_qs;
-    result += u"<table>"_qs;
-    result += u"<tr></tr>"_qs;
-    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Enroute Version", QStringLiteral(PROJECT_VERSION));
-    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("GIT ", QStringLiteral(GIT_COMMIT));
-    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Qt", QLibraryInfo::version().toString());
-    result += u"</table><br>"_qs;
-
-    result += u"<h3>System</h3>"_qs;
-    result += u"<table>"_qs;
-    result += u"<tr></tr>"_qs;
-    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Build ABI", QSysInfo::buildAbi());
-    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Build CPU", QSysInfo::buildCpuArchitecture());
-    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Current CPU", QSysInfo::currentCpuArchitecture());
-    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Kernel Type", QSysInfo::kernelType());
-    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Kernel Version", QSysInfo::kernelVersion());
-    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Device Name", QSysInfo::prettyProductName());
-    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Device Type", QSysInfo::productType());
-    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Device Version", QSysInfo::productVersion());
-    result += u"</table><br>"_qs;
-
-    auto sysLog = GlobalObject::platformAdaptor()->sysLog();
-    if (!sysLog.isEmpty())
-    {
-        result += u"<h3>System Log</h3>"_qs;
-        result += u"<pre>"_qs + sysLog + u"</pre>"_qs;
-    }
-
-    return result;
 }

@@ -203,12 +203,6 @@ public:
      */
     auto simplifySpecialChars(const QString &string) -> QString;
 
-    /*! \brief Information about the system, in HTML format
-     *
-     * @returns Info string
-     */
-    Q_INVOKABLE static QString systemInfo();
-
 private:
     Q_DISABLE_COPY_MOVE(Librarian)
 

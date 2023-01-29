@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,10 +18,41 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QLibraryInfo>
+
 #include "platform/PlatformAdaptor_Abstract.h"
 
 
 Platform::PlatformAdaptor_Abstract::PlatformAdaptor_Abstract(QObject *parent)
     : GlobalObject(parent)
 {
+}
+
+
+QString Platform::PlatformAdaptor_Abstract::systemInfo()
+{
+    QString result;
+
+    result += u"<h3>App</h3>\n"_qs;
+    result += u"<table>\n"_qs;
+    result += u"<tr></tr>\n"_qs;
+    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("Enroute Version", QStringLiteral(PROJECT_VERSION));
+    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("GIT ", QStringLiteral(GIT_COMMIT));
+    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("Qt", QLibraryInfo::version().toString());
+    result += u"</table><br>\n"_qs;
+
+    result += u"<h3>System</h3>\n"_qs;
+    result += u"<table>\n"_qs;
+    result += u"<tr></tr>\n"_qs;
+    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("Build ABI", QSysInfo::buildAbi());
+    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("Build CPU", QSysInfo::buildCpuArchitecture());
+    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("Current CPU", QSysInfo::currentCpuArchitecture());
+    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("Kernel Type", QSysInfo::kernelType());
+    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("Kernel Version", QSysInfo::kernelVersion());
+    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("System Name", QSysInfo::prettyProductName());
+    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("System Type", QSysInfo::productType());
+    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("System Version", QSysInfo::productVersion());
+    result += u"</table><br>\n"_qs;
+
+    return result;
 }

@@ -6,6 +6,8 @@
 
 * Make GitHub actions work again
 
+* Remove qhttpd
+
 
 # Bug Fixing
 

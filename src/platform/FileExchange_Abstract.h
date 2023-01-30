@@ -20,8 +20,8 @@
 
 #pragma once
 
-#include <QQmlEngine>
 #include "GlobalObject.h"
+#include <QQmlEngine>
 
 namespace Platform {
 
@@ -68,7 +68,7 @@ public:
     ~FileExchange_Abstract() override = default;
 
     // factory function for QML singleton
-    static Platform::FileExchange_Abstract* create(QQmlEngine*, QJSEngine*)
+    static Platform::FileExchange_Abstract* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
     {
         return GlobalObject::fileExchange();
     }

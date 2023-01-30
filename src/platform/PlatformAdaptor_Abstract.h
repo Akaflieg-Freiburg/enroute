@@ -65,7 +65,7 @@ public:
     ~PlatformAdaptor_Abstract() override = default;
 
     // factory function for QML singleton
-    static Platform::PlatformAdaptor_Abstract* create(QQmlEngine*, QJSEngine*)
+    static Platform::PlatformAdaptor_Abstract* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
     {
         return GlobalObject::platformAdaptor();
     }

@@ -75,7 +75,7 @@ auto operator>>(const QDBusArgument &argument, FreeDesktopImageStructure& fdImag
 }
 
 
-Platform::Notifier::Notifier(QObject *parent)
+Platform::Notifier::Notifier(QObject* parent)
     : Platform::Notifier::Notifier_Abstract(parent)
 {
     connect(&notificationInterface, SIGNAL(ActionInvoked(uint,QString)), this, SLOT(onActionInvoked(uint,QString)));
@@ -89,7 +89,7 @@ Platform::Notifier::Notifier(QObject *parent)
     FreeDesktopImageStructure specImage;
     specImage.width = image.width();
     specImage.height = image.height();
-    specImage.rowStride = image.bytesPerLine();
+    specImage.rowStride = static_cast<int>(image.bytesPerLine());
     specImage.hasAlpha = true;
     specImage.bitsPerSample = 8;
     specImage.channels = 4;
@@ -100,8 +100,10 @@ Platform::Notifier::Notifier(QObject *parent)
 
 Platform::Notifier::~Notifier()
 {
-    foreach(auto notificationID, notificationIDs) {
-        if (notificationID == 0) {
+    foreach(auto notificationID, notificationIDs)
+    {
+        if (notificationID == 0)
+        {
             continue;
         }
         notificationInterface.call(QStringLiteral("CloseNotification"), notificationID);
@@ -113,7 +115,8 @@ void Platform::Notifier::hideNotification(Platform::Notifier_Abstract::Notificat
 {
 
     auto notificationID = notificationIDs.value(notificationType, 0);
-    if (notificationID == 0) {
+    if (notificationID == 0)
+    {
         return;
     }
 
@@ -126,12 +129,14 @@ void Platform::Notifier::hideNotification(Platform::Notifier_Abstract::Notificat
 void Platform::Notifier::onActionInvoked(uint /*unused*/, const QString &key)
 {
 
-    if (key == u"GeoMap_Dismiss"_qs) {
+    if (key == u"GeoMap_Dismiss"_qs)
+    {
         // The method onNotificationClosed will later be called. The following line ensures
         // that the signal notificationClicked() is then no longer emitted.
         notificationIDs.remove(GeoMapUpdatePending);
     }
-    if (key == u"GeoMap_Update"_qs) {
+    if (key == u"GeoMap_Update"_qs)
+    {
         emit action(GeoMapUpdatePending_UpdateRequested);
 
         // The method onNotificationClosed will later be called. The following line ensures
@@ -145,7 +150,8 @@ void Platform::Notifier::onActionInvoked(uint /*unused*/, const QString &key)
 void Platform::Notifier::onNotificationClosed(uint id, uint reason)
 {
     // reason == 2 means: notification is closed because user clicked on it
-    if (reason != 2) {
+    if (reason != 2)
+    {
         return;
     }
 
@@ -153,8 +159,10 @@ void Platform::Notifier::onNotificationClosed(uint id, uint reason)
     NotificationTypes type;
     bool haveType = false;
     QMap<NotificationTypes, uint>::const_iterator i = notificationIDs.constBegin();
-    while (i != notificationIDs.constEnd()) {
-        if (i.value() == id) {
+    while (i != notificationIDs.constEnd())
+    {
+        if (i.value() == id)
+        {
             // We do not emit here because that will change the QMap while
             // we iterate over it -> crash
             haveType = true;
@@ -162,8 +170,10 @@ void Platform::Notifier::onNotificationClosed(uint id, uint reason)
         }
         i++;
     }
-    if (haveType) {
-        switch (type) {
+    if (haveType)
+    {
+        switch (type)
+        {
         case DownloadInfo:
             emit action(DownloadInfo_Clicked);
             break;
@@ -190,7 +200,8 @@ void Platform::Notifier::showNotification(NotificationTypes notificationType, co
     hideNotification(notificationType);
 
     QStringList actions;
-    if (notificationType == GeoMapUpdatePending) {
+    if (notificationType == GeoMapUpdatePending)
+    {
         actions << QStringLiteral("GeoMap_Update") << tr("Update");
         actions << QStringLiteral("GeoMap_Dismiss") << tr("Dismiss");
     }

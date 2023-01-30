@@ -28,7 +28,6 @@
 #include <QStandardPaths>
 
 #include "platform/FileExchange_Android.h"
-#include "platform/Notifier_Android.h"
 
 
 Platform::FileExchange::FileExchange(QObject *parent)
@@ -47,23 +46,27 @@ Platform::FileExchange::FileExchange(QObject *parent)
     // Start receiving file requests
     receiveOpenFileRequestsStarted = true;
     QJniObject activity = QNativeInterface::QAndroidApplication::context();
-    if (activity.isValid()) {
+    if (activity.isValid())
+    {
         QJniObject jniTempDir = QJniObject::fromString(fileExchangeDirectoryName);
-        if (!jniTempDir.isValid()) {
+        if (!jniTempDir.isValid())
+        {
             return;
         }
         activity.callMethod<void>("checkPendingIntents", "(Ljava/lang/String;)V", jniTempDir.object<jstring>());
     }
-    if (!pendingReceiveOpenFileRequest.isEmpty()) {
-        processFileOpenRequest(pendingReceiveOpenFileRequest);
-    }
-    pendingReceiveOpenFileRequest = QString();
 
 }
 
 
 void Platform::FileExchange::deferredInitialization()
 {
+    if (!pendingReceiveOpenFileRequest.isEmpty())
+    {
+        processFileOpenRequest(pendingReceiveOpenFileRequest);
+    }
+    pendingReceiveOpenFileRequest = QString();
+
     QJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "startWiFiMonitor");
 }
 
@@ -102,7 +105,8 @@ auto Platform::FileExchange::shareContent(const QByteArray& content, const QStri
 
     auto tmpPath = contentToTempFile(content, fileNameTemplate+"-%1."+mime.preferredSuffix());
     bool success = outgoingIntent(QStringLiteral("sendFile"), tmpPath, mimeType);
-    if (success) {
+    if (success)
+    {
         return {};
     }
     return tr("No suitable file sharing app could be found.");
@@ -117,7 +121,8 @@ auto Platform::FileExchange::viewContent(const QByteArray& content, const QStrin
 
     QString tmpPath = contentToTempFile(content, fileNameTemplate);
     bool success = outgoingIntent(QStringLiteral("viewFile"), tmpPath, mimeType);
-    if (success) {
+    if (success)
+    {
         return {};
     }
     return tr("No suitable app for viewing this data could be found.");
@@ -140,7 +145,8 @@ auto Platform::FileExchange::contentToTempFile(const QByteArray& content, const 
     auto filePath = fileExchangeDirectoryName + fname;
 
     QFile file(filePath);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))
+    {
         return {};
     }
 

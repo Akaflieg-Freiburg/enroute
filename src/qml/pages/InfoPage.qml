@@ -24,13 +24,65 @@ import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
+import "../dialogs"
 import "../items"
 
 Page {
     id: pg
-    title: qsTr("About Enroute Flight Navigation")
+    title: qsTr("About EFN")
 
-    header: StandardHeader {}
+    header: ToolBar {
+
+        Material.foreground: "white"
+        height: 60 + SafeInsets.top
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
+        topPadding: SafeInsets.top
+
+        ToolButton {
+            id: backButton
+
+            anchors.left: parent.left
+            anchors.verticalCenter: parent.verticalCenter
+
+            icon.source: "/icons/material/ic_arrow_back.svg"
+
+            onClicked: {
+                PlatformAdaptor.vibrateBrief()
+                stackView.pop()
+            }
+        }
+
+        Label {
+            id: lbl
+
+            anchors.verticalCenter: parent.verticalCenter
+
+            anchors.left: parent.left
+            anchors.leftMargin: 72
+            anchors.right: headerMenuToolButton.left
+
+            text: stackView.currentItem.title
+            elide: Label.ElideRight
+            font.pixelSize: 20
+            verticalAlignment: Qt.AlignVCenter
+        }
+
+        ToolButton {
+            id: headerMenuToolButton
+
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+
+            icon.source: "/icons/material/ic_info_outline.svg"
+            onClicked: {
+                PlatformAdaptor.vibrateBrief()
+                helpDialog.open()
+            }
+        }
+
+    }
+
 
     TabBar {
         id: bar
@@ -171,5 +223,15 @@ Page {
             Rectangle { Layout.preferredHeight: sv.font.pixelSize/2 }
         }
 
-    } // StackView
-} // Page
+    }
+
+    LongTextDialog {
+        id: helpDialog
+
+        title: qsTr("About EFN")
+        text: "<p>"+qsTr("This page presents four tabs with information about the app, its authors, the software license, and the current system.")+"</p>"
+              +"<p>"+qsTr("System information can be helpful to the developers when you report a bug. The button 'Share Info' at the bottom of the 'System' tab can be used to forward this information to the developers.")+"</p>"
+
+        standardButtons: Dialog.Ok
+    }
+}

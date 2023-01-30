@@ -89,7 +89,7 @@ Platform::Notifier::Notifier(QObject *parent)
     FreeDesktopImageStructure specImage;
     specImage.width = image.width();
     specImage.height = image.height();
-    specImage.rowStride = image.bytesPerLine();
+    specImage.rowStride = static_cast<int>(image.bytesPerLine());
     specImage.hasAlpha = true;
     specImage.bitsPerSample = 8;
     specImage.channels = 4;

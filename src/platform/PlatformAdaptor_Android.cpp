@@ -59,14 +59,19 @@ void Platform::PlatformAdaptor::disableScreenSaver()
     // Implementation follows a suggestion found in https://stackoverflow.com/questions/27758499/how-to-keep-the-screen-on-in-qt-for-android
     QNativeInterface::QAndroidApplication::runOnAndroidMainThread([on]{
         QJniObject activity = QNativeInterface::QAndroidApplication::context();
-        if (activity.isValid()) {
+        if (activity.isValid())
+        {
             QJniObject window = activity.callObjectMethod("getWindow", "()Landroid/view/Window;");
 
-            if (window.isValid()) {
+            if (window.isValid())
+            {
                 const int FLAG_KEEP_SCREEN_ON = 128;
-                if (on) {
+                if (on)
+                {
                     window.callMethod<void>("addFlags", "(I)V", FLAG_KEEP_SCREEN_ON);
-                } else {
+                }
+                else
+                {
                     window.callMethod<void>("clearFlags", "(I)V", FLAG_KEEP_SCREEN_ON);
                 }
             }
@@ -82,10 +87,12 @@ void Platform::PlatformAdaptor::disableScreenSaver()
 auto Platform::PlatformAdaptor::hasRequiredPermissions() -> bool
 {
     // Check is required permissions have been granted
-    foreach(auto permission, requiredPermissions) {
+    foreach(auto permission, requiredPermissions)
+    {
         auto resultFuture = QtAndroidPrivate::checkPermission(permission);
         resultFuture.waitForFinished();
-        if (resultFuture.result() == QtAndroidPrivate::PermissionResult::Denied) {
+        if (resultFuture.result() == QtAndroidPrivate::PermissionResult::Denied)
+        {
             qWarning() << "Required permission missing" << permission;
             return false;
         }
@@ -118,7 +125,8 @@ void Platform::PlatformAdaptor::requestPermissionsSync()
 {
     QStringList permissions;
     permissions << requiredPermissions << optionalPermissions;
-    foreach(auto permission, permissions) {
+    foreach(auto permission, permissions)
+    {
         auto resultFuture = QtAndroidPrivate::requestPermission(permission);
         resultFuture.waitForFinished();
     }

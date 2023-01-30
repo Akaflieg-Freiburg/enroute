@@ -24,6 +24,9 @@
 #include <QTimer>
 
 #include "platform/SafeInsets_Android.h"
+#include <chrono>
+
+using namespace std::chrono_literals;
 
 
 Platform::SafeInsets::SafeInsets(QObject* parent)
@@ -37,7 +40,7 @@ Platform::SafeInsets::SafeInsets(QObject* parent)
     // a delay caused by the virtual keyboard animation. To be on the safe side,
     // we re-check the safe insets again after one second.
     auto* timer = new QTimer(this);
-    timer->setInterval(1000);
+    timer->setInterval(1s);
     timer->setSingleShot(true);
     connect(QGuiApplication::primaryScreen(), &QScreen::orientationChanged, timer, qOverload<>(&QTimer::start));
     connect(QGuiApplication::inputMethod(), &QInputMethod::keyboardRectangleChanged, timer, qOverload<>(&QTimer::start));

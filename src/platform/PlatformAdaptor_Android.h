@@ -20,9 +20,9 @@
 
 #pragma once
 
+#include <QObject>
 #include <QTimer>
 #include <QtGlobal>
-#include <QObject>
 
 #include "platform/PlatformAdaptor_Abstract.h"
 

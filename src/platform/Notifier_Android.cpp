@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QJniEnvironment>
 #include <QCoreApplication>
+#include <QJniEnvironment>
 #include <QJniObject>
 
 #include "GlobalObject.h"

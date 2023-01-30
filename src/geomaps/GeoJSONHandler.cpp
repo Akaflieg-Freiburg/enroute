@@ -33,7 +33,7 @@ GeoMaps::GeoJSONHandler::GeoJSONHandler(QObject* parent)
 void GeoMaps::GeoJSONHandler::process(QHttpEngine::Socket *socket, const QString &path)
 {
     // Serve GeoJSONJSON file, if requested
-    if (path.isEmpty() || path.endsWith(QLatin1String("json"), Qt::CaseInsensitive))
+    if (path.isEmpty() || path.endsWith(u"json"_qs, Qt::CaseInsensitive))
     {
         socket->setHeader("Content-Type", "application/json");
         QByteArray json = GlobalObject::geoMapProvider()->geoJSON();

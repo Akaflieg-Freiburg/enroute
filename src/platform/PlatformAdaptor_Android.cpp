@@ -22,6 +22,7 @@
 #include <QHash>
 #include <QJniEnvironment>
 #include <QJniObject>
+#include <QProcess>
 #include <QScreen>
 #include <QtCore/private/qandroidextras_p.h>
 
@@ -123,6 +124,19 @@ void Platform::PlatformAdaptor::requestPermissionsSync()
     }
 }
 
+
+QString Platform::PlatformAdaptor::systemInfo()
+{
+    auto result = Platform::PlatformAdaptor_Abstract::systemInfo();
+
+    QProcess proc;
+    proc.startCommand(u"logcat -t 300"_qs);
+    proc.waitForFinished();
+    result += u"<h3>System Log</h3>\n"_qs;
+    result += u"<pre>\n"_qs + proc.readAllStandardOutput() + u"\n</pre>\n"_qs;
+
+    return result;
+}
 
 
 void Platform::PlatformAdaptor::vibrateBrief()

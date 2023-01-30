@@ -78,28 +78,42 @@ auto GeoMaps::GeoMapProvider::copyrightNotice() -> QString
     QString result;
     if (GlobalObject::dataManager()->aviationMaps()->hasFile())
     {
-        result += "<h4>"+tr("Aviation maps")+"</h4>";
-        result += QStringLiteral("<a href='https://openAIP.net'>© openAIP</a><br><a href='https://openflightmaps.org'>© open flightmaps</a>");
+        result += "<h4>"+tr("Aviation Maps")+"</h4>\n";
+        result += "<p>"+tr("The aeronautical maps are compiled from databases provided by the "
+                           "<a href='http://openaip.net'>openAIP</a> and "
+                           "<a href='https://www.openflightmaps.org/'>open flightmaps</a> "
+                           "projects.")+"</p>\n";
+        result += QStringLiteral("<a href='https://openAIP.net'>© openAIP</a><br>"
+                                 "<a href='https://openflightmaps.org'>© open flightmaps</a>");
     }
 
-    foreach(auto baseMapX, GlobalObject::dataManager()->baseMaps()->downloadables())
+    if (GlobalObject::dataManager()->baseMaps()->hasFile())
     {
-        auto* baseMap = qobject_cast<DataManagement::Downloadable_SingleFile*>(baseMapX);
-        if (baseMap == nullptr)
-        {
-            continue;
-        }
-        if (!baseMap->hasFile())
-        {
-            continue;
-        }
+        result += "<h4>"+tr("Base Maps")+"</h4>\n";
+        result += "<p>"+tr("The base maps are generated from "
+                           "<a href='https://www.openstreetmap.org'>Open Streetmap</a> data.")+"</p>\n";
+        result += QStringLiteral("<a href='https://www.openstreetmap.org/about'>© OpenStreetMap contributors</a>");
+    }
 
-
-        GeoMaps::MBTILES mbtiles(baseMap->fileName());
-
-        auto name = baseMap->fileName().split(QStringLiteral("aviation_maps/")).last();
-        result += ("<h4>"+tr("Basemap")+ " %1</h4>").arg(name);
-        result += mbtiles.attribution();
+    if (GlobalObject::dataManager()->terrainMaps()->hasFile())
+    {
+        result += "<h4>"+tr("Terrain Maps")+"</h4>\n";
+        result += "<p>"+tr("The terrain maps are derived from the "
+                           "<a href='https://registry.opendata.aws/terrain-tiles/'>Terrain "
+                           "Tiles Open Dataset on Amazon AWS</a>.") + "</p>" +
+                "<ul style='margin-left:-25px;'>"
+                "<li><p>ArcticDEM terrain data DEM(s) were created from DigitalGlobe, Inc., imagery and funded under National Science Foundation awards 1043681, 1559691, and 1542736</p>"
+                "<li><p>Australia terrain data © Commonwealth of Australia (Geoscience Australia) 2017</p>"
+                "<li><p>Austria terrain data © offene Daten Österreichs – Digitales Geländemodell (DGM) Österreich</p>"
+                "<li><p>Canada terrain data contains information licensed under the Open Government Licence – Canada</p>"
+                "<li><p>Europe terrain data produced using Copernicus data and information funded by the European Union - EU-DEM layers</p>"
+                "<li><p>Global ETOPO1 terrain data U.S. National Oceanic and Atmospheric Administration</p>"
+                "<li><p>Mexico terrain data source: INEGI, Continental relief, 2016</p>"
+                "<li><p>New Zealand terrain data Copyright 2011 Crown copyright (c) Land Information New Zealand and the New Zealand Government (All rights reserved)</p>"
+                "<li><p>Norway terrain data © Kartverket</p>"
+                "<li><p>United Kingdom terrain data © Environment Agency copyright and/or database right 2015. All rights reserved</p>"
+                "<li><p>United States 3DEP (formerly NED) and global GMTED2010 and SRTM terrain data courtesy of the U.S. Geological Survey.</p>"
+                "</ul>";
     }
 
     return result;
@@ -584,7 +598,7 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(QStringList JSONFileNames, U
         // and that are gliding sectors
         if (hideGlidingSectors) {
             Airspace airspaceTest(object);
-            if (airspaceTest.CAT() == QLatin1String("GLD")) {
+            if (airspaceTest.CAT() == u"GLD"_qs) {
                 continue;
             }
         }

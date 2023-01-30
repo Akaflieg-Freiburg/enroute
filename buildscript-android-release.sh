@@ -43,14 +43,11 @@ cd build-android-release
 # Configure
 #
 
-export ANDROID_NDK_ROOT=$ANDROID_SDK_ROOT/ndk/23.1.7779620
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-17.0.5.0.8-1.fc37.x86_64
-
 $Qt6_DIR_ANDROID\_x86_64/bin/qt-cmake .. \
+      -DCMAKE_BUILD_TYPE:STRING=Release \
       -DQT_ANDROID_BUILD_ALL_ABIS:BOOL=On \
-      -G Ninja \
-      -DCMAKE_BUILD_TYPE:STRING=Debug \
-      -DOPENSSL_ROOT_DIR:PATH=$OPENSSL_ROOT_DIR
+      -DQT_HOST_PATH=$Qt6_DIR_LINUX \
+      -G Ninja
 
 #
 # Build the executable
@@ -71,17 +68,19 @@ then
     echo "Not signing APK because \$ANDROID_KEYSTORE_FILE or \$ANDROID_KEYSTORE_PASS not set"
 else
     echo "Signing APK"
-    $ANDROID_SDK_ROOT/build-tools/33.0.1/apksigner sign \
-						   --ks $ANDROID_KEYSTORE_FILE \
-						   --ks-pass pass:$ANDROID_KEYSTORE_PASS \
-						   --in src/android-build/build/outputs/apk/debug/android-build-debug.apk \
-						   --out enroute-release-signed.apk
+    $ANDROID_SDK_ROOT/build-tools/33.0.1/apksigner \
+	sign \
+        --ks $ANDROID_KEYSTORE_FILE \
+	--ks-pass pass:$ANDROID_KEYSTORE_PASS \
+	--in src/android-build/build/outputs/apk/debug/android-build-debug.apk \
+	--out enroute-release-signed.apk
     echo "Signed APK file is available at $PWD/enroute-release-signed.apk"
     echo
     echo "Signing AAB"
-    jarsigner -keystore $ANDROID_KEYSTORE_FILE \
-	      -storepass $ANDROID_KEYSTORE_PASS \
-	      src/android-build/build/outputs/bundle/release/android-build-release.aab "Stefan Kebekus"
+    jarsigner \
+	-keystore $ANDROID_KEYSTORE_FILE \
+        -storepass $ANDROID_KEYSTORE_PASS \
+	src/android-build/build/outputs/bundle/release/android-build-release.aab "Stefan Kebekus"
     cp src/android-build/build/outputs/bundle/release/android-build-release.aab enroute-release-signed.aab
     
     echo "Signed AAB file is available at $PWD/enroute-release-signed.aab"

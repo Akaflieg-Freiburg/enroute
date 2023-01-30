@@ -44,14 +44,11 @@ cd build-android-debug
 #
 
 
-export ANDROID_NDK_ROOT=$ANDROID_SDK_ROOT/ndk/23.1.7779620
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-17.0.5.0.8-1.fc37.x86_64
-
 $Qt6_DIR_ANDROID\_x86_64/bin/qt-cmake .. \
-      -DQT_ANDROID_ABIS="arm64-v8a" \
-      -G Ninja \
       -DCMAKE_BUILD_TYPE:STRING=Debug \
-      -DOPENSSL_ROOT_DIR:PATH=$OPENSSL_ROOT_DIR
+      -DQT_ANDROID_ABIS="arm64-v8a" \
+      -DQT_HOST_PATH=$Qt6_DIR_LINUX \
+      -G Ninja
 
 #
 # Build the executable

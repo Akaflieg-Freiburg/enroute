@@ -73,11 +73,11 @@ auto GeoMaps::MBTILES::format() -> GeoMaps::MBTILES::Format
         if (query.first())
         {
             auto format = query.value(1).toString();
-            if (format == QLatin1String("pbf"))
+            if (format == u"pbf"_qs)
             {
                 return Vector;
             }
-            if ((format == QLatin1String("jpg")) || (format == QLatin1String("png")) || (format == QLatin1String("webp")))
+            if ((format == u"jpg"_qs) || (format == u"png"_qs) || (format == u"webp"_qs))
             {
                 return Raster;
             }

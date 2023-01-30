@@ -67,7 +67,7 @@ GeoMaps::Waypoint readWP(QXmlStreamReader& xml) {
 
         if (xml.isStartElement())
         {
-            if (xmlTag == QLatin1String("ele"))
+            if (xmlTag == u"ele"_qs)
             {
                 QString alt_s = xml.readElementText(QXmlStreamReader::SkipChildElements);
                 double alt = alt_s.toFloat(&ok);
@@ -77,15 +77,15 @@ GeoMaps::Waypoint readWP(QXmlStreamReader& xml) {
                 }
                 pos.setAltitude(alt);
             }
-            else if (xmlTag == QLatin1String("name"))
+            else if (xmlTag == u"name"_qs)
             {
                 name = xml.readElementText(QXmlStreamReader::SkipChildElements);
             }
-            else if (xmlTag == QLatin1String("desc"))
+            else if (xmlTag == u"desc"_qs)
             {
                 desc = xml.readElementText(QXmlStreamReader::SkipChildElements);
             }
-            else if (xmlTag == QLatin1String("cmt"))
+            else if (xmlTag == u"cmt"_qs)
             {
                 cmt = xml.readElementText(QXmlStreamReader::SkipChildElements);
             }
@@ -157,7 +157,7 @@ auto GeoMaps::GPX::read(const QString& fileName) -> QVector<GeoMaps::Waypoint>
 
         if (xml.isStartElement())
         {
-            if (name == QLatin1String("rtept"))
+            if (name == u"rtept"_qs)
             {
                 auto wpt = readWP(xml);
                 if (!wpt.isValid())
@@ -166,7 +166,7 @@ auto GeoMaps::GPX::read(const QString& fileName) -> QVector<GeoMaps::Waypoint>
                 }
                 rtept << wpt;
             }
-            else if (name == QLatin1String("trkpt"))
+            else if (name == u"trkpt"_qs)
             {
                 auto wpt = readWP(xml);
                 if (!wpt.isValid())
@@ -175,7 +175,7 @@ auto GeoMaps::GPX::read(const QString& fileName) -> QVector<GeoMaps::Waypoint>
                 }
                 trkpt << wpt;
             }
-            else if (name == QLatin1String("wpt"))
+            else if (name == u"wpt"_qs)
             {
                 auto wp = readWP(xml);
                 if (!wp.isValid())

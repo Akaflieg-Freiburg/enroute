@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -69,6 +69,12 @@ public:
      *  @param lock see PlatformAdaptor_Abstract
      */
     Q_INVOKABLE void lockWifi(bool lock) override;
+
+    /*! \brief Information about the system, in HTML format
+     *
+     * @returns Info string
+     */
+    Q_INVOKABLE virtual QString systemInfo() override;
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
     Q_INVOKABLE void vibrateBrief() override;

@@ -126,6 +126,12 @@ public:
      */
     virtual void requestPermissionsSync() = 0;
 
+    /*! \brief Information about the system, in HTML format
+     *
+     * @returns Info string
+     */
+    Q_INVOKABLE virtual QString systemInfo();
+
     /*! \brief Make the device briefly vibrate
      *
      * On platforms that support this, make the device briefly vibrate if haptic

@@ -14,6 +14,8 @@
 
 # New Features
 
+* Remove qhttp
+
 * Indicator that maps are being loaded
 
 * Spanish translations

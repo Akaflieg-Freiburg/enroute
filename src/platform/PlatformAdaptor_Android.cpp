@@ -48,7 +48,7 @@ void Platform::PlatformAdaptor::deferredInitialization()
 auto Platform::PlatformAdaptor::currentSSID() -> QString
 {
     QJniObject stringObject = QJniObject::callStaticObjectMethod("de/akaflieg_freiburg/enroute/MobileAdaptor",
-                                                                               "getSSID", "()Ljava/lang/String;");
+                                                                 "getSSID", "()Ljava/lang/String;");
     return stringObject.toString();
 }
 
@@ -72,7 +72,7 @@ void Platform::PlatformAdaptor::disableScreenSaver()
             }
         }
         QJniEnvironment env;
-        if (env->ExceptionCheck() != 0u) {
+        if (env->ExceptionCheck() != 0U) {
             env->ExceptionClear();
         }
     });
@@ -129,6 +129,13 @@ QString Platform::PlatformAdaptor::systemInfo()
 {
     auto result = Platform::PlatformAdaptor_Abstract::systemInfo();
 
+    // Device Name
+    QJniObject stringObject = QJniObject::callStaticObjectMethod<jstring>("de/akaflieg_freiburg/enroute/MobileAdaptor",
+                                                                          "deviceName");
+    result += u"<h3>Device</h3>\n"_qs;
+    result += stringObject.toString();
+
+    // System Log
     QProcess proc;
     proc.startCommand(u"logcat -t 300"_qs);
     proc.waitForFinished();

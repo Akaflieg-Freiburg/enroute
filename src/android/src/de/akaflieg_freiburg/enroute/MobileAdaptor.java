@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -134,7 +134,13 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 	// Static Methods
 	//
 
-        // Returns the bottom inset required to avoid system bars and display cutouts
+    // Returns the device name
+    public static String deviceName() 
+    {
+		return android.os.Build.MANUFACTURER + " " + android.os.Build.PRODUCT + " (" + android.os.Build.MODEL + ")";
+	}
+
+	// Returns the bottom inset required to avoid system bars and display cutouts
     public static double safeInsetBottom() 
     {
         if (Build.VERSION.SDK_INT >= 30)
@@ -145,7 +151,7 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 	
         return m_instance.getWindow().getDecorView().getRootWindowInsets().getSystemWindowInsetBottom();
     }
-    
+
     // Returns the left inset required to avoid system bars and display cutouts
     public static double safeInsetLeft() 
     {

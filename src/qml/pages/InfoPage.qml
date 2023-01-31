@@ -210,9 +210,8 @@ Page {
                         pg.toast.doToast(qsTr("Aborted"))
                         return
                     }
-                    errorString = "XX"
                     if (errorString !== "") {
-                        shareErrorDialogLabel.text = errorString
+                        shareErrorDialog.text = errorString
                         shareErrorDialog.open()
                         return
                     }
@@ -229,6 +228,13 @@ Page {
 
     }
 
+    LongTextDialog {
+        id: shareErrorDialog
+
+        title: qsTr("Error Exporting Data…")
+
+        standardButtons: Dialog.Ok
+    }
     LongTextDialog {
         id: helpDialog
 

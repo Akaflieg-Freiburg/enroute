@@ -3,6 +3,8 @@ name: Compile on Linux
 on:
   release:
     types: [published]
+  push:
+    branches: [main]
 
 jobs:
   build:
@@ -16,7 +18,7 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
-        version: '5.15.2'
+        version: '6.4.2'
     - name: Install Additional Software
       run: |
         sudo apt install doxygen  extra-cmake-modules graphviz libkf5notifications-dev

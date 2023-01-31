@@ -95,16 +95,6 @@ void GlobalSettings::setAcceptedTerms(int terms)
 }
 
 
-void GlobalSettings::setAcceptedWeatherTerms(bool terms)
-{
-    if (terms == acceptedWeatherTerms()) {
-        return;
-    }
-    settings.setValue(QStringLiteral("acceptedWeatherTerms"), terms);
-    emit acceptedWeatherTermsChanged();
-}
-
-
 void GlobalSettings::setAirspaceAltitudeLimit(Units::Distance newAirspaceAltitudeLimit)
 {
     if (newAirspaceAltitudeLimit < airspaceAltitudeLimit_min) {
@@ -176,6 +166,15 @@ void GlobalSettings::setLastWhatsNewInMapsHash(size_t lwnh)
     emit lastWhatsNewInMapsHashChanged();
 }
 
+
+void GlobalSettings::setPrivacyHash(size_t newHash)
+{
+    if (newHash == privacyHash()) {
+        return;
+    }
+    settings.setValue(QStringLiteral("privacyHash"), QVariant::fromValue(newHash));
+    emit privacyHashChanged();
+}
 
 void GlobalSettings::setMapBearingPolicy(MapBearingPolicy policy)
 {

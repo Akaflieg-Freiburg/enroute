@@ -92,20 +92,11 @@ Page {
 
                 MenuItem {
                     text: qsTr("Update METAR/TAF data")
-                    enabled: (!WeatherDataProvider.downloading) && (GlobalSettings.acceptedWeatherTerms)
+                    enabled: !WeatherDataProvider.downloading
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         if (!WeatherDataProvider.downloading)
                             WeatherDataProvider.update(false)
-                    }
-                } // MenuItem
-
-                MenuItem {
-                    text: qsTr("Disallow internet connection")
-                    enabled: GlobalSettings.acceptedWeatherTerms
-                    onTriggered: {
-                        PlatformAdaptor.vibrateBrief()
-                        GlobalSettings.acceptedWeatherTerms = false
                     }
                 } // MenuItem
 
@@ -165,7 +156,6 @@ Page {
         id: stationList
 
         anchors.fill: parent
-        visible: GlobalSettings.acceptedWeatherTerms
 
         clip: true
 
@@ -256,44 +246,6 @@ Page {
             NumberAnimation { target: downloadIndicator; property: "opacity"; to:1.0; duration: 400 }
             NumberAnimation { target: downloadIndicator; property: "opacity"; to:0.0; duration: 400 }
             NumberAnimation { target: downloadIndicator; property: "visible"; to:1.0; duration: 20}
-        }
-    }
-
-    ScrollView { // Privacy Warning
-        anchors.fill: parent
-        clip: true
-        visible: !GlobalSettings.acceptedWeatherTerms
-
-        Item {
-            width: parent.width
-            implicitHeight: t1.height+t2.height
-
-            Label {
-                id: t1
-                width: parent.width
-                text: Librarian.getStringFromRessource(":text/weatherPermissions.html")
-                leftPadding: view.font.pixelSize
-                rightPadding: view.font.pixelSize
-                topPadding: 2*view.font.pixelSize
-                wrapMode: Text.Wrap
-                onLinkActivated: Qt.openUrlExternally(link)
-            }
-
-            Button {
-                id: t2
-                anchors.top: t1.bottom
-                anchors.horizontalCenter: t1.horizontalCenter
-
-                text: qsTr("Allow internet connection")
-                Layout.alignment: Qt.AlignHCenter
-
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    GlobalSettings.acceptedWeatherTerms = true
-                    WeatherDataProvider.update()
-                }
-            }
-
         }
     }
 

@@ -89,14 +89,6 @@ public:
      */
     Q_PROPERTY(int acceptedTerms READ acceptedTerms WRITE setAcceptedTerms NOTIFY acceptedTermsChanged)
 
-    /*! \brief Find out if Weather Terms have been accepted
-     *
-     * This property says if the user has agreed to share its location and route
-     * with aviationweather.gov (US government website providing weather data).
-     * If nothing has been accepted yet, false is returned.
-     */
-    Q_PROPERTY(bool acceptedWeatherTerms READ acceptedWeatherTerms WRITE setAcceptedWeatherTerms NOTIFY acceptedWeatherTermsChanged)
-
     /*! \brief Airspace altitude limit for map display
      *
      * This property holds an altitude. The moving map will ony display airspaces whose lower
@@ -149,6 +141,13 @@ public:
     /*! \brief Night mode */
     Q_PROPERTY(bool nightMode READ nightMode WRITE setNightMode NOTIFY nightModeChanged)
 
+    /*! \brief Hash of the last "privacy" message that was accepted by the user
+     *
+     * This property is used in the app to determine if the message has been
+     * shown or not.
+     */
+    Q_PROPERTY(size_t privacyHash READ privacyHash WRITE setPrivacyHash NOTIFY privacyHashChanged)
+
     /*! \brief Show Altitude AGL */
     Q_PROPERTY(bool showAltitudeAGL READ showAltitudeAGL WRITE setShowAltitudeAGL NOTIFY showAltitudeAGLChanged)
 
@@ -165,12 +164,6 @@ public:
      * @returns Property acceptedTerms
      */
     [[nodiscard]] auto acceptedTerms() const -> int { return settings.value(QStringLiteral("acceptedTerms"), 0).toInt(); }
-
-    /*! \brief Getter function for property of the same name
-     *
-     * @returns Property acceptedWeatherTerms
-     */
-    [[nodiscard]] auto acceptedWeatherTerms() const -> bool { return settings.value(QStringLiteral("acceptedWeatherTerms"), false).toBool(); }
 
     /*! \brief Getter function for property of the same name
      *
@@ -240,6 +233,12 @@ public:
 
     /*! \brief Getter function for property of the same name
      *
+     * @returns Property privacyHash
+     */
+    [[nodiscard]] auto privacyHash() const -> size_t  { return settings.value(QStringLiteral("privacyHash"), 0).value<size_t>(); }
+
+    /*! \brief Getter function for property of the same name
+     *
      * @returns Property positioningByTrafficDataReceiver
      */
     [[nodiscard]] auto showAltitudeAGL() const -> bool { return settings.value(QStringLiteral("showAltitudeAGL"), false).toBool(); }
@@ -254,12 +253,6 @@ public:
      * @param terms Property acceptedTerms
      */
     void setAcceptedTerms(int terms);
-
-    /*! \brief Setter function for property of the same name
-     *
-     * @param terms Property acceptedWeatherTerms
-     */
-    void setAcceptedWeatherTerms(bool terms);
 
     /*! \brief Setter function for property of the same name
      *
@@ -319,6 +312,12 @@ public:
      */
     void setPositioningByTrafficDataReceiver(bool newPositioningByTrafficDataReceiver);
 
+    /*! \brief Getter function for property of the same name
+     *
+     * @param hash Property privacyHash
+     */
+    void setPrivacyHash(size_t newHash);
+
     /*! \brief Setter function for property of the same name
      *
      * @param newShowAltitudeAGL Property showAltitudeAGL
@@ -336,9 +335,6 @@ public:
 signals:
     /*! \brief Notifier signal */
     void acceptedTermsChanged();
-
-    /*! \brief Notifier signal */
-    void acceptedWeatherTermsChanged();
 
     /*! \brief Notifier signal */
     void airspaceAltitudeLimitChanged();
@@ -369,6 +365,9 @@ signals:
 
     /*! \brief Notifier signal */
     void positioningByTrafficDataReceiverChanged();
+
+    /*! \brief Notifier signal */
+    void privacyHashChanged();
 
     /*! \brief Notifier signal */
     void showAltitudeAGLChanged();

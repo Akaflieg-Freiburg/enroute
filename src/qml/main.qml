@@ -572,12 +572,8 @@ ApplicationWindow {
                 return;
             }
 
-// WARNING            if (GlobalSettings.acceptedTerms === 0) {
-                dialogLoader.active = false
-                dialogLoader.source = "dialogs/FirstRunDialog.qml"
-                dialogLoader.active = true
-                return
-//            }
+            if (firstRunDialog.conditionalOpen())
+                return;
 
             if (global.dataManager().appUpdateRequired) {
                 dialogLoader.active = false
@@ -757,6 +753,10 @@ ApplicationWindow {
         title: qsTr("What's new…?")
         text: global.dataManager().whatsNew
         onOpened: GlobalSettings.lastWhatsNewInMapsHash = global.dataManager().whatsNewHash
+    }
+
+    FirstRunDialog {
+        id: firstRunDialog
     }
 
     Shortcut {

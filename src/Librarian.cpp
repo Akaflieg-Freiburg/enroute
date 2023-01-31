@@ -230,6 +230,15 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 <p>&#8212; Stefan Kebekus.</p>)html");
     }
 
+    if (name == u":text/privacy.html"_qs)
+    {
+        return "<h3>" + tr("Privacy Policies") + "</h3>"
+                + "<p>" + tr("This app does not send any data to us or other parties. We do not collect data and we do not track our users. However, this app accesses internet sites that may not be under our control and may keep access logs.") + "</p>"
+                + "<ul style='margin-left:-25px;'>"
+                + "<li>" + tr("The app connects to servers at the University of Freiburg to check for updates and to download maps and data.") + "</li>"
+                + "<li>" + tr("The app downloads METAR and TAF data for your locaction and your intended route from the Aviation Weather Center, a website of the United States government.") + "</li>";
+    }
+
     if (name == u":text/tooManyDownloads.html"_qs)
     {
         return tr(R"html(<h3>Too many maps</h3>
@@ -243,17 +252,6 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 <p>On the other, the app will perform much better if it doesn't have to process many megabytes of map data.</p>
 
 <p>We are trying our best to avoid a hard limit on the number of maps in the future. Please help us with that.</p>)html");
-    }
-
-    if (name == u":text/weatherPermissions.html"_qs)
-    {
-        return tr(R"html(<h3>Privacy Warning</h3>
-      
-<p>Like most other programs, this app uses weather data provided by the <a href='https://www.aviationweather.gov'/>Aviation Weather Center</a>, a website of the United States government.</p>
-
-<p>In order to request up-to-date weather information, the app needs to <strong>send your location and your current route to the Aviation Weather Center</strong> at regular intervals. If you agree to this, you can enable the weather feature by clicking on the button below. You can disable the feature at any time using the three-dot menu at the top of this screen.</p>
-
-<p><strong>We have no control over data collected by the Aviation Weather Center. We do not guarantee correctness of the weather information in any way!</strong></p>)html");
     }
 
     if (name == u":text/whatsnew.html"_qs)

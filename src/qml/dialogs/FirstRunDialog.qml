@@ -26,8 +26,6 @@ import akaflieg_freiburg.enroute
 CenteringDialog {
     id: dialogMain
 
-    height: Overlay.overlay.height-SafeInsets.top-SafeInsets.bottom-2*font.pixelSize
-
     Component {
         id: firstStart
 
@@ -62,7 +60,7 @@ CenteringDialog {
             clip: true
 
             Label {
-                text: "Privacy matters"
+                text: Librarian.getStringFromRessource(":text/privacy.html")
                 width: dialogMain.availableWidth
                 textFormat: Text.RichText
                 linkColor: Material.accent
@@ -71,28 +69,37 @@ CenteringDialog {
             }
 
             function accept() {
-                console.log("Accept Privacy Conditions")
+                GlobalSettings.privacyHash = Librarian.getStringHashFromRessource(":text/firstStart.html")
             }
         }
     }
 
     closePolicy: Popup.NoAutoClose
+    modal: true
 
     StackView {
         id: stack
 
+        implicitHeight: empty ? 0 : currentItem.implicitHeight
         anchors.fill: parent
     }
 
-    Component.onCompleted: {
-        stack.push(privacy)
-        stack.push(firstStart)
+    function conditionalOpen() {
+        if (GlobalSettings.privacyHash !== Librarian.getStringHashFromRessource(":text/firstStart.html"))
+            stack.push(privacy)
+        if (GlobalSettings.acceptedTerms === 0)
+            stack.push(firstStart)
+        if (!stack.empty)
+            open()
+        return !stack.empty
     }
 
     footer: DialogButtonBox {
         ToolButton {
             text: qsTr("Accept")
+
             onClicked: {
+                PlatformAdaptor.vibrateBrief()
                 stack.currentItem.accept()
                 if (stack.depth > 1)
                     stack.pop()
@@ -101,9 +108,12 @@ CenteringDialog {
             }
         }
         ToolButton {
-            text: qsTr("Quit")
-            DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
+            text: qsTr("Quit App")
+
+            onClicked: {
+                PlatformAdaptor.vibrateBrief()
+                Qt.quit()
+            }
         }
-        onRejected: Qt.quit()
     }
 }

@@ -572,12 +572,12 @@ ApplicationWindow {
                 return;
             }
 
-            if (GlobalSettings.acceptedTerms === 0) {
+// WARNING            if (GlobalSettings.acceptedTerms === 0) {
                 dialogLoader.active = false
                 dialogLoader.source = "dialogs/FirstRunDialog.qml"
                 dialogLoader.active = true
                 return
-            }
+//            }
 
             if (global.dataManager().appUpdateRequired) {
                 dialogLoader.active = false

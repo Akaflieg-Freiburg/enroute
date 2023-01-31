@@ -23,23 +23,86 @@ import QtQuick.Controls
 
 import akaflieg_freiburg.enroute
 
-LongTextDialog {
+CenteringDialog {
+    id: dialogMain
+
+    height: Overlay.overlay.height-SafeInsets.top-SafeInsets.bottom-2*font.pixelSize
+
+    Component {
+        id: firstStart
+
+        ScrollView{
+            contentWidth: availableWidth // Disable horizontal scrolling
+
+            clip: true
+
+            Label {
+                text: Librarian.getStringFromRessource(":text/firstStart.html")
+                width: dialogMain.availableWidth
+                textFormat: Text.RichText
+                linkColor: Material.accent
+                wrapMode: Text.Wrap
+                onLinkActivated: (link) => Qt.openUrlExternally(link)
+            }
+
+            function accept() {
+                console.log("Accept Terms and Conditions")
+                GlobalSettings.acceptedTerms = 1
+            }
+        }
+
+    }
+
+    Component {
+        id: privacy
+
+        ScrollView{
+            contentWidth: availableWidth // Disable horizontal scrolling
+
+            clip: true
+
+            Label {
+                text: "Privacy matters"
+                width: dialogMain.availableWidth
+                textFormat: Text.RichText
+                linkColor: Material.accent
+                wrapMode: Text.Wrap
+                onLinkActivated: (link) => Qt.openUrlExternally(link)
+            }
+
+            function accept() {
+                console.log("Accept Privacy Conditions")
+            }
+        }
+    }
 
     closePolicy: Popup.NoAutoClose
-    text:  Librarian.getStringFromRessource(":text/firstStart.html")
+
+    StackView {
+        id: stack
+
+        anchors.fill: parent
+    }
+
+    Component.onCompleted: {
+        stack.push(privacy)
+        stack.push(firstStart)
+    }
 
     footer: DialogButtonBox {
         ToolButton {
             text: qsTr("Accept")
-            DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+            onClicked: {
+                stack.currentItem.accept()
+                if (stack.depth > 1)
+                    stack.pop()
+                else
+                    dialogMain.close()
+            }
         }
         ToolButton {
-            text: qsTr("Reject")
+            text: qsTr("Quit")
             DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
-        }
-
-        onAccepted: {
-            GlobalSettings.acceptedTerms = 1
         }
         onRejected: Qt.quit()
     }

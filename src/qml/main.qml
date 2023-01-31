@@ -365,7 +365,7 @@ ApplicationWindow {
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
                                 stackView.pop()
-                                stackView.push("pages/InfoPage.qml")
+                                stackView.push("pages/InfoPage.qml", {"stackView": stackView, "toast": toast})
                                 aboutMenu.close()
                                 drawer.close()
                             }

@@ -31,6 +31,9 @@ Page {
     id: pg
     title: qsTr("About EFN")
 
+    required property var stackView
+    required property var toast
+
     header: ToolBar {
 
         Material.foreground: "white"
@@ -49,7 +52,7 @@ Page {
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                stackView.pop()
+                pg.stackView.pop()
             }
         }
 
@@ -62,7 +65,7 @@ Page {
             anchors.leftMargin: 72
             anchors.right: headerMenuToolButton.left
 
-            text: stackView.currentItem.title
+            text: pg.title
             elide: Label.ElideRight
             font.pixelSize: 20
             verticalAlignment: Qt.AlignVCenter
@@ -204,18 +207,19 @@ Page {
                     PlatformAdaptor.vibrateBrief()
                     var errorString = FileExchange.shareContent(sysInfoLabel.text, "application/text", "EnrouteSystemInformation.txt")
                     if (errorString === "abort") {
-                        toast.doToast(qsTr("Aborted"))
+                        pg.toast.doToast(qsTr("Aborted"))
                         return
                     }
+                    errorString = "XX"
                     if (errorString !== "") {
                         shareErrorDialogLabel.text = errorString
                         shareErrorDialog.open()
                         return
                     }
                     if (Qt.platform.os === "android")
-                        toast.doToast(qsTr("System Info Shared"))
+                        pg.toast.doToast(qsTr("System Info Shared"))
                     else
-                        toast.doToast(qsTr("System Info Exported"))
+                        pg.toast.doToast(qsTr("System Info Exported"))
 
                 }
             }

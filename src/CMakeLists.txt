@@ -79,6 +79,7 @@ set(SOURCES
     traffic/TrafficFactor_WithPosition.h
     traffic/Warning.h
     units/Angle.h
+    units/ByteSize.h
     units/Distance.h
     units/Speed.h
     units/Time.h

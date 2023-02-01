@@ -20,6 +20,7 @@
 
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Controls.Material
 
 import akaflieg_freiburg.enroute
 
@@ -30,13 +31,16 @@ CenteringDialog {
         id: firstStart
 
         ScrollView{
+            id: sv
+            required property var dialogMain
+
             contentWidth: availableWidth // Disable horizontal scrolling
 
             clip: true
 
             Label {
                 text: Librarian.getStringFromRessource(":text/firstStart.html")
-                width: dialogMain.availableWidth
+                width: sv.dialogMain.width
                 textFormat: Text.RichText
                 linkColor: Material.accent
                 wrapMode: Text.Wrap
@@ -44,7 +48,6 @@ CenteringDialog {
             }
 
             function accept() {
-                console.log("Accept Terms and Conditions")
                 GlobalSettings.acceptedTerms = 1
             }
         }
@@ -55,13 +58,16 @@ CenteringDialog {
         id: privacy
 
         ScrollView{
+            id: sv
+            required property var dialogMain
+
             contentWidth: availableWidth // Disable horizontal scrolling
 
             clip: true
 
             Label {
                 text: Librarian.getStringFromRessource(":text/privacy.html")
-                width: dialogMain.availableWidth
+                width: sv.dialogMain.availableWidth
                 textFormat: Text.RichText
                 linkColor: Material.accent
                 wrapMode: Text.Wrap
@@ -81,14 +87,19 @@ CenteringDialog {
         id: stack
 
         implicitHeight: empty ? 0 : currentItem.implicitHeight
+        Behavior on implicitHeight {
+            NumberAnimation { duration: 200 }
+            enabled: dialogMain.opened
+        }
+
         anchors.fill: parent
     }
 
     function conditionalOpen() {
         if (GlobalSettings.privacyHash !== Librarian.getStringHashFromRessource(":text/firstStart.html"))
-            stack.push(privacy)
+            stack.push(privacy, {"dialogMain": dialogMain})
         if (GlobalSettings.acceptedTerms === 0)
-            stack.push(firstStart)
+            stack.push(firstStart, {"dialogMain": dialogMain})
         if (!stack.empty)
             open()
         return !stack.empty

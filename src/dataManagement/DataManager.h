@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -26,6 +26,7 @@
 #include "dataManagement/Downloadable_MultiFile.h"
 #include "dataManagement/Downloadable_SingleFile.h"
 #include "dataManagement/UpdateNotifier.h"
+#include "units/ByteSize.h"
 
 
 namespace DataManagement {
@@ -158,7 +159,7 @@ public:
     Q_PROPERTY(QString whatsNew READ whatsNew NOTIFY whatsNewChanged)
 
     /*! \brief Hash of the current "what's new" message */
-    Q_PROPERTY(size_t whatsNewHash READ whatsNewHash NOTIFY whatsNewChanged)
+    Q_PROPERTY(Units::ByteSize whatsNewHash READ whatsNewHash NOTIFY whatsNewChanged)
 
 
     //
@@ -241,7 +242,7 @@ public:
      *
      *  @returns Property lastWhatsNewHash
      */
-    [[nodiscard]] auto whatsNewHash() const -> size_t { return qHash(m_whatsNew, 0); }
+    [[nodiscard]] auto whatsNewHash() const -> Units::ByteSize { return qHash(m_whatsNew, 0); }
 
 
     //

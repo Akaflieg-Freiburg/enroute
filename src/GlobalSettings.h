@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,6 +24,7 @@
 #include <QSettings>
 
 #include "GlobalObject.h"
+#include "units/ByteSize.h"
 #include "units/Distance.h"
 
 
@@ -126,14 +127,14 @@ public:
      * This property is used in the app to determine if the message has been
      * shown or not.
      */
-    Q_PROPERTY(size_t lastWhatsNewHash READ lastWhatsNewHash WRITE setLastWhatsNewHash NOTIFY lastWhatsNewHashChanged)
+    Q_PROPERTY(Units::ByteSize lastWhatsNewHash READ lastWhatsNewHash WRITE setLastWhatsNewHash NOTIFY lastWhatsNewHashChanged)
 
     /*! \brief Hash of the last "what's new in maps" message that was shown to the user
      *
      * This property is used in the app to determine if the message has been
      * shown or not.
      */
-    Q_PROPERTY(size_t lastWhatsNewInMapsHash READ lastWhatsNewInMapsHash WRITE setLastWhatsNewInMapsHash NOTIFY lastWhatsNewInMapsHashChanged)
+    Q_PROPERTY(Units::ByteSize lastWhatsNewInMapsHash READ lastWhatsNewInMapsHash WRITE setLastWhatsNewInMapsHash NOTIFY lastWhatsNewInMapsHashChanged)
 
     /*! \brief Map bearing policy */
     Q_PROPERTY(MapBearingPolicy mapBearingPolicy READ mapBearingPolicy WRITE setMapBearingPolicy NOTIFY mapBearingPolicyChanged)
@@ -146,7 +147,7 @@ public:
      * This property is used in the app to determine if the message has been
      * shown or not.
      */
-    Q_PROPERTY(size_t privacyHash READ privacyHash WRITE setPrivacyHash NOTIFY privacyHashChanged)
+    Q_PROPERTY(Units::ByteSize privacyHash READ privacyHash WRITE setPrivacyHash NOTIFY privacyHashChanged)
 
     /*! \brief Show Altitude AGL */
     Q_PROPERTY(bool showAltitudeAGL READ showAltitudeAGL WRITE setShowAltitudeAGL NOTIFY showAltitudeAGLChanged)
@@ -199,7 +200,7 @@ public:
      *
      * @returns Property lastWhatsNewHash
      */
-    [[nodiscard]] auto lastWhatsNewHash() const -> size_t
+    [[nodiscard]] auto lastWhatsNewHash() const -> Units::ByteSize
     {
         return settings.value(QStringLiteral("lastWhatsNewHash"), 0).value<size_t>();
     }
@@ -208,7 +209,7 @@ public:
      *
      * @returns Property lastWhatsNewInMapsHash
      */
-    [[nodiscard]] auto lastWhatsNewInMapsHash() const -> size_t
+    [[nodiscard]] auto lastWhatsNewInMapsHash() const -> Units::ByteSize
     {
         return settings.value(QStringLiteral("lastWhatsNewInMapsHash"), 0).value<size_t>();
     }
@@ -235,7 +236,7 @@ public:
      *
      * @returns Property privacyHash
      */
-    [[nodiscard]] auto privacyHash() const -> size_t  { return settings.value(QStringLiteral("privacyHash"), 0).value<size_t>(); }
+    [[nodiscard]] auto privacyHash() const -> Units::ByteSize  { return settings.value(QStringLiteral("privacyHash"), 0).value<size_t>(); }
 
     /*! \brief Getter function for property of the same name
      *
@@ -286,13 +287,13 @@ public:
      *
      * @param lwnh Property lastWhatsNewHash
      */
-    void setLastWhatsNewHash(size_t lwnh);
+    void setLastWhatsNewHash(Units::ByteSize lwnh);
 
     /*! \brief Getter function for property of the same name
      *
      * @param lwnh Property lastWhatsNewInMapsHash
      */
-    void setLastWhatsNewInMapsHash(size_t lwnh);
+    void setLastWhatsNewInMapsHash(Units::ByteSize lwnh);
 
     /*! \brief Setter function for property of the same name
      *
@@ -314,9 +315,9 @@ public:
 
     /*! \brief Getter function for property of the same name
      *
-     * @param hash Property privacyHash
+     * @param newHash Property privacyHash
      */
-    void setPrivacyHash(size_t newHash);
+    void setPrivacyHash(Units::ByteSize newHash);
 
     /*! \brief Setter function for property of the same name
      *

@@ -139,7 +139,8 @@ void GlobalSettings::setHillshading(bool show)
 
 void GlobalSettings::setIgnoreSSLProblems(bool ignore)
 {
-    if (ignore == ignoreSSLProblems()) {
+    if (ignore == ignoreSSLProblems())
+    {
         return;
     }
     settings.setValue(QStringLiteral("ignoreSSLProblems"), ignore);
@@ -147,38 +148,42 @@ void GlobalSettings::setIgnoreSSLProblems(bool ignore)
 }
 
 
-void GlobalSettings::setLastWhatsNewHash(size_t lwnh)
+void GlobalSettings::setLastWhatsNewHash(Units::ByteSize lwnh)
 {
-    if (lwnh == lastWhatsNewHash()) {
+    if (lwnh == lastWhatsNewHash())
+    {
         return;
     }
-    settings.setValue(QStringLiteral("lastWhatsNewHash"), QVariant::fromValue(lwnh));
+    settings.setValue(QStringLiteral("lastWhatsNewHash"), QVariant::fromValue((size_t)lwnh));
     emit lastWhatsNewHashChanged();
 }
 
 
-void GlobalSettings::setLastWhatsNewInMapsHash(size_t lwnh)
+void GlobalSettings::setLastWhatsNewInMapsHash(Units::ByteSize lwnh)
 {
-    if (lwnh == lastWhatsNewInMapsHash()) {
+    if (lwnh == lastWhatsNewInMapsHash())
+    {
         return;
     }
-    settings.setValue(QStringLiteral("lastWhatsNewInMapsHash"), QVariant::fromValue(lwnh));
+    settings.setValue(QStringLiteral("lastWhatsNewInMapsHash"), QVariant::fromValue((size_t)lwnh));
     emit lastWhatsNewInMapsHashChanged();
 }
 
 
-void GlobalSettings::setPrivacyHash(size_t newHash)
+void GlobalSettings::setPrivacyHash(Units::ByteSize newHash)
 {
-    if (newHash == privacyHash()) {
+    if (newHash == privacyHash())
+    {
         return;
     }
-    settings.setValue(QStringLiteral("privacyHash"), QVariant::fromValue(newHash));
+    settings.setValue(QStringLiteral("privacyHash"), QVariant::fromValue((size_t)newHash));
     emit privacyHashChanged();
 }
 
 void GlobalSettings::setMapBearingPolicy(MapBearingPolicy policy)
 {
-    if (policy == mapBearingPolicy()) {
+    if (policy == mapBearingPolicy())
+    {
         return;
     }
 
@@ -199,7 +204,8 @@ void GlobalSettings::setMapBearingPolicy(MapBearingPolicy policy)
 
 void GlobalSettings::setNightMode(bool newNightMode)
 {
-    if (newNightMode == nightMode()) {
+    if (newNightMode == nightMode())
+    {
         return;
     }
 
@@ -210,7 +216,8 @@ void GlobalSettings::setNightMode(bool newNightMode)
 
 void GlobalSettings::setPositioningByTrafficDataReceiver(bool newPositioningByTrafficDataReceiver)
 {
-    if (newPositioningByTrafficDataReceiver == positioningByTrafficDataReceiver()) {
+    if (newPositioningByTrafficDataReceiver == positioningByTrafficDataReceiver())
+    {
         return;
     }
 

@@ -236,7 +236,8 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
                 + "<p>" + tr("This app does not send any data to us or other parties. We do not collect data and we do not track our users. However, this app accesses internet sites that may not be under our control and may keep access logs.") + "</p>"
                 + "<ul style='margin-left:-25px;'>"
                 + "<li>" + tr("The app connects to servers at the University of Freiburg to check for updates and to download maps and data.") + "</li>"
-                + "<li>" + tr("The app downloads METAR and TAF data for your locaction and your intended route from the Aviation Weather Center, a website of the United States government.") + "</li>";
+                + "<li>" + tr("The app downloads METAR and TAF data for your locaction and your intended route from the Aviation Weather Center, a website of the United States government.") + "</li>"
+                + "</ul>";
     }
 
     if (name == u":text/tooManyDownloads.html"_qs)
@@ -268,7 +269,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 }
 
 
-auto Librarian::getStringHashFromRessource(const QString &name) -> size_t
+auto Librarian::getStringHashFromRessource(const QString &name) -> Units::ByteSize
 {
     return qHash(getStringFromRessource(name), 0);
 }

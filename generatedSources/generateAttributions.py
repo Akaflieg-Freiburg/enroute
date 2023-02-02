@@ -23,6 +23,7 @@ qtbaseDir = os.environ.get('Qt6_DIR_BASE')
 # Include data from all the Qt modules that we use
 data += qtattributionsscanner(qtbaseDir+"/Src/qtbase")
 data += qtattributionsscanner(qtbaseDir+"/Src/qtdeclarative")
+data += qtattributionsscanner(qtbaseDir+"/Src/qthttpserver")
 data += qtattributionsscanner(qtbaseDir+"/Src/qtimageformats")
 data += qtattributionsscanner("/home/kebekus/Software/projects/qtlocation")
 data += qtattributionsscanner(qtbaseDir+"/Src/qtpositioning")

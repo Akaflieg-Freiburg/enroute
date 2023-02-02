@@ -66,47 +66,69 @@ GeoMaps::TileHandler::TileHandler(const QVector<QPointer<GeoMaps::MBTILES>>& mbt
 }
 
 
-bool GeoMaps::TileHandler::process(const QHttpServerRequest& request, QTcpSocket* socket, const QString &path)
+bool GeoMaps::TileHandler::process(QHttpServerResponder* responder, const QStringList &pathElements)
 {
-    qWarning() << "process" << path;
+    qWarning() << "process" << pathElements;
 
     // Serve tileJSON file, if requested
-    if (path.isEmpty() || path.endsWith(u"json"_qs, Qt::CaseInsensitive))
+    if (pathElements.isEmpty() || pathElements[0].endsWith(u"json"_qs, Qt::CaseInsensitive))
     {
-#warning
-        /*
-        socket->setHeader("Content-Type", "application/json");
-        QByteArray json = tileJSON();
-        socket->setHeader("Content-Length", QByteArray::number(json.length()));
-        socket->write(json);
-        socket->close();
-        */
+        responder->write(tileJSON(), "application/json");
+        return true;
+    }
+
+    if (pathElements.size() != 3)
+    {
         return false;
     }
 
     // Serve tile, if requested
-    QRegularExpressionMatch match = tileQueryPattern.match(path);
+    auto z = pathElements[0].toInt();
+    auto x = pathElements[1].toInt();
+    auto y = pathElements[2].section('.', 0, 0).toInt();
+
+    // Retrieve tile data from the database
+
+    foreach(auto mbtilesPtr, m_mbtiles)
+    {
+        if (mbtilesPtr.isNull())
+        {
+            continue;
+        }
+
+        // Get data
+        QByteArray tileData = mbtilesPtr->tile(z,x,y);
+        if (tileData.isEmpty())
+        {
+            continue;
+        }
+
+        if (_format == u"pbf"_qs)
+        {
+            responder->write(tileData, {{"Content-Type", "application/octet-stream"}, {"Content-Encoding", "gzip"}});
+        }
+        else
+        {
+            responder->write(tileData, "application/octet-stream");
+        }
+        return true;
+    }
+#ifdef fof        // Set the headers and write the content
+#warning
+        socket->setHeader("Content-Type", "application/octet-stream");
+        if (_format == u"pbf"_qs)
+        {
+            socket->setHeader("Content-Encoding", "gzip");
+        }
+        socket->setHeader("Content-Length", QByteArray::number(tileData.length()));
+        socket->write(tileData);
+        socket->close();
+        */
+        return false;
+
+    QRegularExpressionMatch match = tileQueryPattern.match(pathElements);
     if (match.hasMatch())
     {
-        // Retrieve tile data from the database
-        auto z = path.section('/', 1, 1).toInt();
-        auto x = path.section('/', 2, 2).toInt();
-        auto y = path.section('/', 3, 3).section('.', 0, 0).toInt();
-
-        foreach(auto mbtilesPtr, m_mbtiles)
-        {
-            if (mbtilesPtr.isNull())
-            {
-                continue;
-            }
-
-            // Get data
-            QByteArray tileData = mbtilesPtr->tile(z,x,y);
-            if (tileData.isEmpty())
-            {
-                continue;
-            }
-
             // Set the headers and write the content
 #warning
             /*
@@ -129,6 +151,7 @@ bool GeoMaps::TileHandler::process(const QHttpServerRequest& request, QTcpSocket
     socket->writeError(QHttpEngine::Socket::NotFound);
     socket->close();
     */
+#endif
     return false;
 }
 

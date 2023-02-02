@@ -6,8 +6,6 @@
 
 * Make GitHub actions work again
 
-* Remove qhttpd
-
 
 # Bug Fixing
 
@@ -16,15 +14,11 @@
 
 # New Features
 
-* Remove qhttp
-
 * Indicator that maps are being loaded
 
 * Spanish translations
 
 * Permissions: Explanation should be given when app refuses to start!
-
-* Privacy notes at startup
 
 * METAR/TAF rewrite
 

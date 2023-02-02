@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QHttpServerRequest>
+#include <QHttpServerResponder>
 #include <QVector>
 
 
@@ -177,7 +178,7 @@ public:
   */
   [[nodiscard]] auto version() const -> QString {return _version;}
   
-  bool process(const QHttpServerRequest& request, QTcpSocket* socket, const QString& path);
+  bool process(QHttpServerResponder* responder, const QStringList& pathElements);
   
 private:
   Q_DISABLE_COPY_MOVE(TileHandler)

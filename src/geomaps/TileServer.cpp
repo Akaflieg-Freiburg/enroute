@@ -21,7 +21,6 @@
 #include <QHttpServerRequest>
 #include <QHttpServerResponder>
 
-#include <QRegExp>
 #include <QUrl>
 #include <utility>
 
@@ -125,18 +124,25 @@ bool GeoMaps::TileServer::handleRequest(const QHttpServerRequest& request, QTcpS
         return true;
     }
 
-    qWarning() << "PATH" << path;
-    if (tileHandlers.contains(path))
+    auto pathElements = path.split('/', Qt::SkipEmptyParts);
+    if (pathElements.isEmpty())
     {
-        auto tileHandler = tileHandlers[path];
+        return false;
+    }
+    qWarning() << "PATH" << pathElements[0];
+    if (tileHandlers.contains(pathElements[0]))
+    {
+        auto tileHandler = tileHandlers[pathElements[0]];
+        qWarning() << "A";
         if (tileHandler.isNull())
         {
             return false;
         }
-        return tileHandler->process(request, socket, path);
+        auto responder = makeResponder(request, socket);
+        pathElements.remove(0);
+        return tileHandler->process(&responder, pathElements);
 #warning
     }
-
     qDebug() << "handleRequest" << request;
     return false;
 }

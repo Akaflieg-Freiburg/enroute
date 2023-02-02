@@ -212,7 +212,18 @@ if( ANDROID )
     add_compile_definitions(MANUAL_LOCATION="/android_asset/manual")
 
     qt_add_executable(${PROJECT_NAME} ${SOURCES} ${ANDROID_EXTRA_SOURCES})
-    target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Concurrent Qt6::Core Qt::CorePrivate Qt6::Positioning Qt6::Quick Qt6::Sql Qt6::Svg Qt6::WebView qhttpengine sunset)
+    target_link_libraries(${PROJECT_NAME}
+        PRIVATE
+        Qt6::Concurrent
+        Qt6::Core
+        Qt6::Core5Compat
+        Qt6::HttpServer
+        Qt6::Positioning
+        Qt6::Quick
+        Qt6::Sql
+        Qt6::Svg
+        Qt6::WebView
+        sunset)
     set_target_properties(${PROJECT_NAME} PROPERTIES
         QT_ANDROID_EXTRA_LIBS "${ANDROID_EXTRA_LIBS}"
         QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android"

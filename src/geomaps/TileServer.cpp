@@ -25,8 +25,7 @@
 #include <QUrl>
 #include <utility>
 
-//#include "GeoJSONHandler.h"
-//#include "TileHandler.h"
+#include "TileHandler.h"
 #include "TileServer.h"
 #include "GlobalObject.h"
 #include "geomaps/GeoMapProvider.h"
@@ -77,17 +76,6 @@ void GeoMaps::TileServer::removeMbtilesFileSet(const QString& path)
 
 void GeoMaps::TileServer::setUpTileHandlers()
 {
-/*
-    // Create new file system handler and delete old one
-    auto* newFileSystemHandler = new QHttpEngine::FilesystemHandler(QStringLiteral(":"), this);
-    newFileSystemHandler->addRedirect(QRegExp(QString::fromLatin1("^$")), QStringLiteral("/index.html"));
-    setHandler(newFileSystemHandler);
-    delete currentFileSystemHandler;
-    currentFileSystemHandler = newFileSystemHandler;
-
-    // Now add a subhandlers for each GeoJSON
-    auto* geoJSONHandlet = new GeoJSONHandler(newFileSystemHandler);
-    newFileSystemHandler->addSubHandler(QRegExp(QString::fromLatin1("^aviation")), geoJSONHandlet);
 
     // Now add subhandlers for each tile
     QMapIterator<QString, QVector<QPointer<GeoMaps::MBTILES>>> iterator(mbtileFileNameSets);
@@ -106,10 +94,10 @@ void GeoMaps::TileServer::setUpTileHandlers()
             URL = _baseUrl.toString()+"/"+iterator.key();
         }
 
-        auto* handler = new TileHandler(iterator.value(), URL, newFileSystemHandler);
-        newFileSystemHandler->addSubHandler(QRegExp("^"+iterator.key()), handler);
+        auto* handler = new TileHandler(iterator.value(), URL, this);
+        tileHandlers[iterator.key()] = handler;
     }
-*/
+
 }
 
 
@@ -133,6 +121,16 @@ bool GeoMaps::TileServer::handleRequest(const QHttpServerRequest& request, QTcpS
         auto responder = makeResponder(request, socket);
         responder.write(file, "application/octet-stream");
         return true;
+    }
+
+    if (tileHandlers.contains(path))
+    {
+        auto tileHandler = tileHandlers[path];
+        if (tileHandler.isNull())
+        {
+            return false;
+        }
+#warning
     }
 
     qDebug() << "handleRequest" << request;

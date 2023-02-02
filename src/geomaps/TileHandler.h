@@ -180,7 +180,7 @@ protected:
    * @brief Reimplementation of
    * [Handler::process()](QHttpEngine::Handler::process)
    */
-  void process(QHttpEngine::Socket* socket, const QString& path) override;
+  void process(const QString& path);
   
 private:
   Q_DISABLE_COPY_MOVE(TileHandler)

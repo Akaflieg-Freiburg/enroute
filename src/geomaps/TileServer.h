@@ -21,6 +21,7 @@
 #pragma once
 
 #include "geomaps/MBTILES.h"
+#include "geomaps/TileHandler.h"
 
 #include <QAbstractHttpServer>
 #include <QPointer>
@@ -125,8 +126,11 @@ private:
   // QPointer<QHttpEngine::FilesystemHandler> currentFileSystemHandler;
   
   QMap<QString,QVector<QPointer<GeoMaps::MBTILES>>> mbtileFileNameSets;
-  
+  QMap<QString,QPointer<GeoMaps::TileHandler>> tileHandlers;
+
   QUrl _baseUrl;
+
+
 };
 
 } // namespace GeoMaps

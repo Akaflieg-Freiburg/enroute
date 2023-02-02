@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,9 +21,8 @@
 #pragma once
 
 #include "geomaps/MBTILES.h"
-#include <qhttpengine/filesystemhandler.h>
-#include <qhttpengine/server.h>
 
+#include <QAbstractHttpServer>
 #include <QPointer>
 #include <QUrl>
 
@@ -51,7 +50,7 @@ namespace GeoMaps {
   Europe.
 */
 
-class TileServer : public QHttpEngine::Server
+class TileServer : public QAbstractHttpServer
 {
   Q_OBJECT
   
@@ -86,7 +85,7 @@ public:
 
     @returns URL under which this server is presently reachable
   */
-  [[nodiscard]] auto serverUrl() const -> QString;
+  [[nodiscard]] auto serverUrl() -> QString;
 			   
 public slots:
   /*! \brief Add a new set of tile files
@@ -116,12 +115,14 @@ public slots:
    */
   void removeMbtilesFileSet(const QString& path);
   
+  bool handleRequest(const QHttpServerRequest& request, QTcpSocket* socket) override;
+  void missingHandler(const QHttpServerRequest& request, QTcpSocket* socket) override;
 private:
   Q_DISABLE_COPY_MOVE(TileServer)
 
   void setUpTileHandlers();
   
-  QPointer<QHttpEngine::FilesystemHandler> currentFileSystemHandler;
+  // QPointer<QHttpEngine::FilesystemHandler> currentFileSystemHandler;
   
   QMap<QString,QVector<QPointer<GeoMaps::MBTILES>>> mbtileFileNameSets;
   

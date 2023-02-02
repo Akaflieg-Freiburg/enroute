@@ -36,11 +36,11 @@ set(SOURCES
     geomaps/Airspace.h
     geomaps/CUP.h
     geomaps/GeoJSON.h
-    geomaps/GeoJSONHandler.h
+#    geomaps/GeoJSONHandler.h
     geomaps/GeoMapProvider.h
     geomaps/GPX.h
     geomaps/MBTILES.h
-    geomaps/TileHandler.h
+#    geomaps/TileHandler.h
     geomaps/TileServer.h
     geomaps/Waypoint.h
     geomaps/WaypointLibrary.h
@@ -104,11 +104,11 @@ set(SOURCES
     geomaps/Airspace.cpp
     geomaps/CUP.cpp
     geomaps/GeoJSON.cpp
-    geomaps/GeoJSONHandler.cpp
+#    geomaps/GeoJSONHandler.cpp
     geomaps/GeoMapProvider.cpp
     geomaps/GPX.cpp
     geomaps/MBTILES.cpp
-    geomaps/TileHandler.cpp
+#    geomaps/TileHandler.cpp
     geomaps/TileServer.cpp
     geomaps/Waypoint.cpp
     geomaps/WaypointLibrary.cpp
@@ -250,13 +250,13 @@ if (NOT ANDROID)
         Qt6::Core
         Qt6::Core5Compat
         Qt6::DBus
+        Qt6::HttpServer
         Qt6::Positioning
         Qt6::Quick
         Qt6::Sql
         Qt6::Svg
         Qt6::Widgets
         kdsingleapplication
-        qhttpengine
         sunset)
     target_precompile_headers(${PROJECT_NAME}
         PRIVATE

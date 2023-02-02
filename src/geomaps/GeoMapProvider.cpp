@@ -43,7 +43,6 @@ GeoMaps::GeoMapProvider::GeoMapProvider(QObject *parent)
     _combinedGeoJSON_ = geoJSONCacheFile.readAll();
     geoJSONCacheFile.close();
 
-    _tileServer.listen(QHostAddress(QStringLiteral("127.0.0.1")));
 }
 
 void GeoMaps::GeoMapProvider::deferredInitialization()

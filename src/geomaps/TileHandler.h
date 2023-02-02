@@ -22,7 +22,6 @@
 
 #include <QVector>
 
-#include <qhttpengine/handler.h>
 
 #include <dataManagement/Downloadable_SingleFile.h>
 #include <geomaps/MBTILES.h>
@@ -41,7 +40,7 @@ namespace GeoMaps {
   URL whose names is set in the baseURLName argument of the constructor.
 */
 
-class TileHandler : public QHttpEngine::Handler
+class TileHandler : public QObject
 {
   Q_OBJECT
   

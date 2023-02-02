@@ -24,8 +24,6 @@
 #include <QJsonObject>
 #include <QRegularExpression>
 
-#include <qhttpengine/socket.h>
-
 #include "TileHandler.h"
 
 QRegularExpression tileQueryPattern(QStringLiteral("[0-9]{1,2}/[0-9]{1,4}/[0-9]{1,4}"));

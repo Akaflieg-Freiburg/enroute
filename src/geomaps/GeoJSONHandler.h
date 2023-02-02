@@ -21,9 +21,6 @@
 #pragma once
 
 
-#include <qhttpengine/handler.h>
-
-
 namespace GeoMaps {
 
 

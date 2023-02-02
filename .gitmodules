@@ -5,9 +5,6 @@
 [submodule "3rdParty/android_openssl"]
 	path = 3rdParty/android_openssl
 	url = https://github.com/KDAB/android_openssl.git
-[submodule "3rdParty/qhttpengine"]
-	path = 3rdParty/qhttpengine
-	url = ../qhttpengine.git
 [submodule "3rdParty/osm-liberty"]
 	path = 3rdParty/osm-liberty
 	url = https://github.com/maputnik/osm-liberty.git

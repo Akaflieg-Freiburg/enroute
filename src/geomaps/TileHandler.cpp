@@ -66,8 +66,10 @@ GeoMaps::TileHandler::TileHandler(const QVector<QPointer<GeoMaps::MBTILES>>& mbt
 }
 
 
-void GeoMaps::TileHandler::process(const QString &path)
+bool GeoMaps::TileHandler::process(const QHttpServerRequest& request, QTcpSocket* socket, const QString &path)
 {
+    qWarning() << "process" << path;
+
     // Serve tileJSON file, if requested
     if (path.isEmpty() || path.endsWith(u"json"_qs, Qt::CaseInsensitive))
     {
@@ -79,7 +81,7 @@ void GeoMaps::TileHandler::process(const QString &path)
         socket->write(json);
         socket->close();
         */
-        return;
+        return false;
     }
 
     // Serve tile, if requested
@@ -117,7 +119,7 @@ void GeoMaps::TileHandler::process(const QString &path)
             socket->write(tileData);
             socket->close();
             */
-            return;
+            return false;
         }
     }
 
@@ -127,6 +129,7 @@ void GeoMaps::TileHandler::process(const QString &path)
     socket->writeError(QHttpEngine::Socket::NotFound);
     socket->close();
     */
+    return false;
 }
 
 

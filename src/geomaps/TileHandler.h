@@ -20,7 +20,9 @@
 
 #pragma once
 
+#include <QHttpServerRequest>
 #include <QVector>
+
 
 
 #include <dataManagement/Downloadable_SingleFile.h>
@@ -175,12 +177,7 @@ public:
   */
   [[nodiscard]] auto version() const -> QString {return _version;}
   
-protected:
-  /*
-   * @brief Reimplementation of
-   * [Handler::process()](QHttpEngine::Handler::process)
-   */
-  void process(const QString& path);
+  bool process(const QHttpServerRequest& request, QTcpSocket* socket, const QString& path);
   
 private:
   Q_DISABLE_COPY_MOVE(TileHandler)

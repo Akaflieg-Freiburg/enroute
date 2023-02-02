@@ -94,6 +94,8 @@ void GeoMaps::TileServer::setUpTileHandlers()
             URL = _baseUrl.toString()+"/"+iterator.key();
         }
 
+#warning will never get deleted
+        qWarning() << "ADD to tileHandlers" << iterator.key();
         auto* handler = new TileHandler(iterator.value(), URL, this);
         tileHandlers[iterator.key()] = handler;
     }
@@ -123,6 +125,7 @@ bool GeoMaps::TileServer::handleRequest(const QHttpServerRequest& request, QTcpS
         return true;
     }
 
+    qWarning() << "PATH" << path;
     if (tileHandlers.contains(path))
     {
         auto tileHandler = tileHandlers[path];
@@ -130,6 +133,7 @@ bool GeoMaps::TileServer::handleRequest(const QHttpServerRequest& request, QTcpS
         {
             return false;
         }
+        return tileHandler->process(request, socket, path);
 #warning
     }
 

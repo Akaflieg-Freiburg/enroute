@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,20 +18,28 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QFile>
+#include <QHttpServerResponder>
 #include <QJsonArray>
-#include <QJsonDocument>
 #include <QJsonObject>
-#include <QRegularExpression>
 
 #include "TileHandler.h"
 
-QRegularExpression tileQueryPattern(QStringLiteral("[0-9]{1,2}/[0-9]{1,4}/[0-9]{1,4}"));
 
-GeoMaps::TileHandler::TileHandler(const QVector<QPointer<GeoMaps::MBTILES>>& mbtileFiles, const QString& baseURL, QObject *parent)
-    : QObject(parent)
+GeoMaps::TileHandler::TileHandler(const QVector<QPointer<GeoMaps::MBTILES>>& mbtileFiles, const QString& baseURL)
 {
     m_mbtiles = mbtileFiles;
+
+    QString _name;
+    QString _encoding;
+    QString _tiles;
+    QString _description;
+
+    QString _version;
+
+    QString _attribution;
+
+    int _maxzoom {-1};
+    int _minzoom {-1};
 
     // Go through mbtile files and find real values
     _maxzoom = 10;
@@ -45,7 +53,7 @@ GeoMaps::TileHandler::TileHandler(const QVector<QPointer<GeoMaps::MBTILES>>& mbt
 
         _name = mbtPtr->metaData().value(QStringLiteral("name"));
         _encoding = mbtPtr->metaData().value(QStringLiteral("encoding"));
-        _format = mbtPtr->metaData().value(QStringLiteral("format"));
+        m_format = mbtPtr->metaData().value(QStringLiteral("format"));
         _description = mbtPtr->metaData().value(QStringLiteral("description"));
         _version = mbtPtr->metaData().value(QStringLiteral("version"));
         _attribution = mbtPtr->metaData().value(QStringLiteral("attribution"));
@@ -62,62 +70,8 @@ GeoMaps::TileHandler::TileHandler(const QVector<QPointer<GeoMaps::MBTILES>>& mbt
         }
     }
 
-    _tiles = baseURL+"/{z}/{x}/{y}."+_format;
-}
+    _tiles = baseURL+"/{z}/{x}/{y}."+m_format;
 
-
-bool GeoMaps::TileHandler::process(QHttpServerResponder* responder, const QStringList &pathElements)
-{
-    // Serve tileJSON file, if requested
-    if (pathElements.isEmpty() || pathElements[0].endsWith(u"json"_qs, Qt::CaseInsensitive))
-    {
-        responder->write(tileJSON(), "application/json");
-        return true;
-    }
-
-    if (pathElements.size() != 3)
-    {
-        return false;
-    }
-
-    // Serve tile, if requested
-    auto z = pathElements[0].toInt();
-    auto x = pathElements[1].toInt();
-    auto y = pathElements[2].section('.', 0, 0).toInt();
-
-    // Retrieve tile data from the database
-
-    foreach(auto mbtilesPtr, m_mbtiles)
-    {
-        if (mbtilesPtr.isNull())
-        {
-            continue;
-        }
-
-        // Get data
-        QByteArray tileData = mbtilesPtr->tile(z,x,y);
-        if (tileData.isEmpty())
-        {
-            continue;
-        }
-
-        if (_format == u"pbf"_qs)
-        {
-            responder->write(tileData, {{"Content-Type", "application/octet-stream"}, {"Content-Encoding", "gzip"}});
-        }
-        else
-        {
-            responder->write(tileData, "application/octet-stream");
-        }
-        return true;
-    }
-
-    return false;
-}
-
-
-auto GeoMaps::TileHandler::tileJSON() const -> QByteArray
-{
     QJsonObject result;
     result.insert(QStringLiteral("tilejson"), "2.2.0");
 
@@ -138,9 +92,9 @@ auto GeoMaps::TileHandler::tileJSON() const -> QByteArray
     {
         result.insert(QStringLiteral("encoding"), _encoding);
     }
-    if (!_format.isEmpty())
+    if (!m_format.isEmpty())
     {
-        result.insert(QStringLiteral("format"), _format);
+        result.insert(QStringLiteral("format"), m_format);
     }
     if (!_version.isEmpty())
     {
@@ -159,7 +113,60 @@ auto GeoMaps::TileHandler::tileJSON() const -> QByteArray
         result.insert(QStringLiteral("minzoom"), _minzoom);
     }
 
-    QJsonDocument tileJSONDocument;
-    tileJSONDocument.setObject(result);
-    return tileJSONDocument.toJson();
+    m_tileJSON.setObject(result);
+}
+
+
+GeoMaps::TileHandler::~TileHandler()
+{
+    qWarning() << "Destruct";
+}
+
+
+bool GeoMaps::TileHandler::process(QHttpServerResponder* responder, const QStringList &pathElements)
+{
+    // Serve tileJSON file, if requested
+    if (pathElements.isEmpty() || pathElements[0].endsWith(u"json"_qs, Qt::CaseInsensitive))
+    {
+        responder->write(m_tileJSON);
+        return true;
+    }
+
+    if (pathElements.size() != 3)
+    {
+        return false;
+    }
+
+    // Serve tile, if requested
+    auto z = pathElements[0].toInt();
+    auto x = pathElements[1].toInt();
+    auto y = pathElements[2].section('.', 0, 0).toInt();
+
+    // Retrieve tile data from the database
+    foreach(auto mbtilesPtr, m_mbtiles)
+    {
+        if (mbtilesPtr.isNull())
+        {
+            continue;
+        }
+
+        // Get data
+        QByteArray tileData = mbtilesPtr->tile(z,x,y);
+        if (tileData.isEmpty())
+        {
+            continue;
+        }
+
+        if (m_format == u"pbf"_qs)
+        {
+            responder->write(tileData, {{"Content-Type", "application/octet-stream"}, {"Content-Encoding", "gzip"}});
+        }
+        else
+        {
+            responder->write(tileData, "application/octet-stream");
+        }
+        return true;
+    }
+
+    return false;
 }

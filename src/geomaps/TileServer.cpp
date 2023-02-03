@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QHttpServerRequest>
+#include <QHttpServerResponder>
 
 #include "TileServer.h"
 #include "geomaps/GeoMapProvider.h"
@@ -33,14 +35,14 @@ GeoMaps::TileServer::TileServer(QObject* parent)
 void GeoMaps::TileServer::addMbtilesFileSet(const QString& baseName, const QVector<QPointer<GeoMaps::MBTILES>>& baseMapsWithFiles)
 {
     QString URL = serverUrl()+"/"+baseName;
-    auto* handler = new TileHandler(baseMapsWithFiles, URL, this);
-    m_tileHandlers[baseName] = handler;
+    auto* handler = new TileHandler(baseMapsWithFiles, URL);
+    m_tileHandlers[baseName] = QSharedPointer<GeoMaps::TileHandler>(handler);
 }
 
 
 void GeoMaps::TileServer::removeMbtilesFileSet(const QString& baseName)
 {
-    delete m_tileHandlers.take(baseName);
+    m_tileHandlers.take(baseName);
 }
 
 
@@ -74,7 +76,7 @@ bool GeoMaps::TileServer::handleRequest(const QHttpServerRequest& request, QTcpS
     //
     // GeoJSON with aviation data
     //
-    if (path.endsWith(QLatin1String("aviationData.geojson")))
+    if (path.endsWith(u"aviationData.geojson"_qs))
     {
         responder.write(GlobalObject::geoMapProvider()->geoJSON(), "application/json");
         return true;
@@ -96,7 +98,7 @@ bool GeoMaps::TileServer::handleRequest(const QHttpServerRequest& request, QTcpS
     if (m_tileHandlers.contains(pathElements[0]))
     {
         auto tileHandler = m_tileHandlers[pathElements[0]];
-        if (tileHandler.isNull())
+        if (tileHandler == nullptr)
         {
             return false;
         }

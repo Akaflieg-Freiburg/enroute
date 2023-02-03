@@ -24,8 +24,7 @@
 #include "geomaps/TileHandler.h"
 
 #include <QAbstractHttpServer>
-#include <QPointer>
-#include <QUrl>
+#include <QSharedPointer>
 
 
 namespace GeoMaps {
@@ -92,7 +91,9 @@ public slots:
    *  serverUrl()+"/baseName" (typically, this is a URL of the form
    *  'http://localhost:8080/basename').
    *
-   *  @param baseMapsWithFiles The name of one or more mbtile files on the disk,
+   *  @param baseName The path under which the tiles will be available.
+   *
+   *  @param MBTilesFiles The name of one or more mbtile files on the disk,
    *  which are expected to conform to the MBTiles Specification 1.3
    *  (https://github.com/mapbox/mbtiles-spec/blob/master/1.3/spec.md). These
    *  files must exist until the file set is removed or the sever is destructed,
@@ -102,14 +103,12 @@ public slots:
    *  from one of the files (a random one, in fact). If a tile is contained in
    *  more than one of the files, the data is expected to be identical in each
    *  of the files.
-   *
-   *  @param baseName The path under which the tiles will be available.
    */
   void addMbtilesFileSet(const QString& baseName, const QVector<QPointer<GeoMaps::MBTILES>>& MBTilesFiles);
 
   /*! \brief Removes a set of tile files
    *
-   *  @param path Path of tiles to remove
+   *  @param baseName Path of tiles to remove
    */
   void removeMbtilesFileSet(const QString& baseName);
   
@@ -123,7 +122,7 @@ private:
   void missingHandler(const QHttpServerRequest& request, QTcpSocket* socket) override;
 
   // List of tile handlers
-  QMap<QString, QPointer<GeoMaps::TileHandler>> m_tileHandlers;
+  QMap<QString, QSharedPointer<GeoMaps::TileHandler>> m_tileHandlers;
 };
 
 } // namespace GeoMaps

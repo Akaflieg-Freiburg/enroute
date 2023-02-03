@@ -488,12 +488,12 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
         // Serve new tile set under new name
         if (!m_baseMapRasterTiles.isEmpty())
         {
-            _tileServer.addMbtilesFileSet(m_baseMapRasterTiles, _currentBaseMapPath);
+            _tileServer.addMbtilesFileSet(_currentBaseMapPath, m_baseMapRasterTiles);
             file.setFileName(QStringLiteral(":/flightMap/mapstyle-raster.json"));
         }
         else
         {
-            _tileServer.addMbtilesFileSet(m_baseMapVectorTiles, _currentBaseMapPath);
+            _tileServer.addMbtilesFileSet(_currentBaseMapPath, m_baseMapVectorTiles);
             file.setFileName(QStringLiteral(":/flightMap/osm-liberty.json"));
         }
     }
@@ -501,7 +501,7 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
     {
         file.setFileName(QStringLiteral(":/flightMap/empty.json"));
     }
-    _tileServer.addMbtilesFileSet(m_terrainMapTiles, _currentTerrainMapPath);
+    _tileServer.addMbtilesFileSet(_currentTerrainMapPath, m_terrainMapTiles);
 
     file.open(QIODevice::ReadOnly);
     QByteArray data = file.readAll();

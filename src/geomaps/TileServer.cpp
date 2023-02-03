@@ -18,132 +18,95 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QHttpServerRequest>
-#include <QHttpServerResponder>
 
-#include <QUrl>
-#include <utility>
-
-#include "TileHandler.h"
 #include "TileServer.h"
-#include "GlobalObject.h"
 #include "geomaps/GeoMapProvider.h"
 
 
-GeoMaps::TileServer::TileServer(QUrl baseUrl, QObject *parent)
-    : QAbstractHttpServer(parent), _baseUrl(std::move(baseUrl))
+GeoMaps::TileServer::TileServer(QObject* parent)
+    : QAbstractHttpServer(parent)
 {
-    listen(QHostAddress("127.0.0.1"));
+    listen(QHostAddress(QStringLiteral("127.0.0.1")));
+}
 
-    setUpTileHandlers();
+
+void GeoMaps::TileServer::addMbtilesFileSet(const QString& baseName, const QVector<QPointer<GeoMaps::MBTILES>>& baseMapsWithFiles)
+{
+    QString URL = serverUrl()+"/"+baseName;
+    auto* handler = new TileHandler(baseMapsWithFiles, URL, this);
+    m_tileHandlers[baseName] = handler;
+}
+
+
+void GeoMaps::TileServer::removeMbtilesFileSet(const QString& baseName)
+{
+    delete m_tileHandlers.take(baseName);
 }
 
 
 auto GeoMaps::TileServer::serverUrl() -> QString
 {
-    qDebug() << serverPorts();
     auto ports = serverPorts();
     if (ports.isEmpty())
     {
         return {};
     }
-
     return QStringLiteral("http://127.0.0.1:%1").arg(QString::number(ports[0]));
-/*
-    if (isListening())
-    {
-        return QStringLiteral("http://%1:%2").arg(serverAddress().toString(),QString::number(serverPort()));
-    }
-*/
-    return {};
 }
 
 
-void GeoMaps::TileServer::addMbtilesFileSet(const QVector<QPointer<GeoMaps::MBTILES>>& baseMapsWithFiles, const QString& baseName)
-{
-    mbtileFileNameSets[baseName] = baseMapsWithFiles;
-    setUpTileHandlers();
-}
-
-
-void GeoMaps::TileServer::removeMbtilesFileSet(const QString& path)
-{
-    mbtileFileNameSets.remove(path);
-    setUpTileHandlers();
-}
-
-
-void GeoMaps::TileServer::setUpTileHandlers()
-{
-
-    // Now add subhandlers for each tile
-    QMapIterator<QString, QVector<QPointer<GeoMaps::MBTILES>>> iterator(mbtileFileNameSets);
-    while (iterator.hasNext())
-    {
-        iterator.next();
-
-        // Find base name of the file
-        QString URL;
-        if (_baseUrl.isEmpty())
-        {
-            URL = serverUrl()+"/"+iterator.key();
-        }
-        else
-        {
-            URL = _baseUrl.toString()+"/"+iterator.key();
-        }
-
-#warning will never get deleted
-        qWarning() << "ADD to tileHandlers" << iterator.key();
-        auto* handler = new TileHandler(iterator.value(), URL, this);
-        tileHandlers[iterator.key()] = handler;
-    }
-
-}
-
+// Private Methods
 
 bool GeoMaps::TileServer::handleRequest(const QHttpServerRequest& request, QTcpSocket* socket)
 {
     auto path = request.url().path();
-
-    // GeoJSON
-    if (path.endsWith("aviationData.geojson"))
-    {
-        auto responder = makeResponder(request, socket);
-        responder.write(GlobalObject::geoMapProvider()->geoJSON(), "application/json");
-        return true;
-    }
-
-    // File in resource
-    if (QFile::exists(":"+path))
-    {
-        auto* file = new QFile(":"+path);
-
-        auto responder = makeResponder(request, socket);
-        responder.write(file, "application/octet-stream");
-        return true;
-    }
-
     auto pathElements = path.split('/', Qt::SkipEmptyParts);
+    auto responder = makeResponder(request, socket);
+
+    //
+    // Paranoid safety check
+    //
     if (pathElements.isEmpty())
     {
         return false;
     }
-    qWarning() << "PATH" << pathElements[0];
-    if (tileHandlers.contains(pathElements[0]))
+
+    //
+    // GeoJSON with aviation data
+    //
+    if (path.endsWith(QLatin1String("aviationData.geojson")))
     {
-        auto tileHandler = tileHandlers[pathElements[0]];
-        qWarning() << "A";
+        responder.write(GlobalObject::geoMapProvider()->geoJSON(), "application/json");
+        return true;
+    }
+
+    //
+    // File from resource system
+    //
+    if (QFile::exists(":"+path))
+    {
+        auto* file = new QFile(":"+path);
+        responder.write(file, "application/octet-stream");
+        return true;
+    }
+
+    //
+    // Tile data
+    //
+    if (m_tileHandlers.contains(pathElements[0]))
+    {
+        auto tileHandler = m_tileHandlers[pathElements[0]];
         if (tileHandler.isNull())
         {
             return false;
         }
-        auto responder = makeResponder(request, socket);
         pathElements.remove(0);
         return tileHandler->process(&responder, pathElements);
-#warning
     }
-    qDebug() << "handleRequest" << request;
+
+    //
+    // Request not parsed
+    //
     return false;
 }
 

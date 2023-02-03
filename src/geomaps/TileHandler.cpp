@@ -68,8 +68,6 @@ GeoMaps::TileHandler::TileHandler(const QVector<QPointer<GeoMaps::MBTILES>>& mbt
 
 bool GeoMaps::TileHandler::process(QHttpServerResponder* responder, const QStringList &pathElements)
 {
-    qWarning() << "process" << pathElements;
-
     // Serve tileJSON file, if requested
     if (pathElements.isEmpty() || pathElements[0].endsWith(u"json"_qs, Qt::CaseInsensitive))
     {
@@ -113,45 +111,7 @@ bool GeoMaps::TileHandler::process(QHttpServerResponder* responder, const QStrin
         }
         return true;
     }
-#ifdef fof        // Set the headers and write the content
-#warning
-        socket->setHeader("Content-Type", "application/octet-stream");
-        if (_format == u"pbf"_qs)
-        {
-            socket->setHeader("Content-Encoding", "gzip");
-        }
-        socket->setHeader("Content-Length", QByteArray::number(tileData.length()));
-        socket->write(tileData);
-        socket->close();
-        */
-        return false;
 
-    QRegularExpressionMatch match = tileQueryPattern.match(pathElements);
-    if (match.hasMatch())
-    {
-            // Set the headers and write the content
-#warning
-            /*
-            socket->setHeader("Content-Type", "application/octet-stream");
-            if (_format == u"pbf"_qs)
-            {
-                socket->setHeader("Content-Encoding", "gzip");
-            }
-            socket->setHeader("Content-Length", QByteArray::number(tileData.length()));
-            socket->write(tileData);
-            socket->close();
-            */
-            return false;
-        }
-    }
-
-    // Unknown request, responding with 'not found'
-#warning
-    /*
-    socket->writeError(QHttpEngine::Socket::NotFound);
-    socket->close();
-    */
-#endif
     return false;
 }
 

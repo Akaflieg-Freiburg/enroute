@@ -75,7 +75,7 @@ CenteringDialog {
             }
 
             function accept() {
-                GlobalSettings.privacyHash = Librarian.getStringHashFromRessource(":text/firstStart.html")
+                GlobalSettings.privacyHash = Librarian.getStringHashFromRessource(":text/privacy.html")
             }
         }
     }
@@ -96,7 +96,7 @@ CenteringDialog {
     }
 
     function conditionalOpen() {
-        if (GlobalSettings.privacyHash !== Librarian.getStringHashFromRessource(":text/firstStart.html"))
+        if (GlobalSettings.privacyHash !== Librarian.getStringHashFromRessource(":text/privacy.html"))
             stack.push(privacy, {"dialogMain": dialogMain})
         if (GlobalSettings.acceptedTerms === 0)
             stack.push(firstStart, {"dialogMain": dialogMain})

@@ -59,7 +59,7 @@ public:
     explicit TileHandler(const QVector<QPointer<GeoMaps::MBTILES>>& mbtileFiles, const QString& baseURLName);
 
     // Standard descructor
-    ~TileHandler();
+    ~TileHandler() = default;
 
     /*! \brief Process request
     *

@@ -117,12 +117,6 @@ GeoMaps::TileHandler::TileHandler(const QVector<QPointer<GeoMaps::MBTILES>>& mbt
 }
 
 
-GeoMaps::TileHandler::~TileHandler()
-{
-    qWarning() << "Destruct";
-}
-
-
 bool GeoMaps::TileHandler::process(QHttpServerResponder* responder, const QStringList &pathElements)
 {
     // Serve tileJSON file, if requested

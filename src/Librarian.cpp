@@ -233,11 +233,24 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     if (name == u":text/privacy.html"_qs)
     {
         return "<h3>" + tr("Privacy Policies") + "</h3>"
-                + "<p>" + tr("This app does not send any data to us or other parties. We do not collect data and we do not track our users. However, this app accesses internet sites that may not be under our control and may keep access logs.") + "</p>"
+                + "<p>" + tr("This app does not send any data to us or other parties. We do "
+                             "not collect data and we do not track our users. However, this "
+                             "app accesses internet sites that may not be under our control "
+                             "and may keep access logs.") + "</p>"
                 + "<ul style='margin-left:-25px;'>"
-                + "<li>" + tr("The app connects to servers at the University of Freiburg to check for updates and to download maps and data.") + "</li>"
-                + "<li>" + tr("The app downloads METAR and TAF data for your locaction and your intended route from the Aviation Weather Center, a website of the United States government.") + "</li>"
-                + "</ul>";
+                + "<li>" + tr("The app connects to servers at the University of Freiburg to "
+                              "check for updates and to download maps and data.") + "</li>"
+                + "<li>" + tr("The app downloads METAR and TAF data for your locaction and "
+                              "your intended route from the Aviation Weather Center, a website "
+                              "of the United States government.") + "</li>"
+                + "</ul>"
+                + "<h3>" + tr("Privacy-relevant permissions requested by this app") + "</h3>"
+                + "<p>" + tr("Enroute Flight Navigation needs to access your precise location. "
+                             "The app uses this data to show your position on the moving "
+                             "map and to provide relevant aeronautical information for your location.") + "</p>"
+                + "<p>" + tr("Please grant permission to access the precise location when prompted.") + "</p>"
+                + "<h3>" + tr("Responsible") + "</h3>"
+                + "Stefan Kebekus<br>Wintererstraße 77<br>79104 Freiburg im Breisgau<br>Germany<br>";
     }
 
     if (name == u":text/tooManyDownloads.html"_qs)

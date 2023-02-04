@@ -262,10 +262,7 @@ ApplicationWindow {
                                 drawer.close()
                             }
                         }
-
-
                     }
-
                 }
 
                 ItemDelegate {
@@ -366,6 +363,19 @@ ApplicationWindow {
                                 PlatformAdaptor.vibrateBrief()
                                 stackView.pop()
                                 stackView.push("pages/InfoPage.qml", {"stackView": stackView, "toast": toast})
+                                aboutMenu.close()
+                                drawer.close()
+                            }
+                        }
+
+                        ItemDelegate { // Privacy Policy
+                            text: qsTr("Privacy Policy")
+                            icon.source: "/icons/material/ic_vpn_key.svg"
+
+                            onClicked: {
+                                PlatformAdaptor.vibrateBrief()
+                                stackView.pop()
+                                stackView.push("pages/PrivacyPage.qml")
                                 aboutMenu.close()
                                 drawer.close()
                             }

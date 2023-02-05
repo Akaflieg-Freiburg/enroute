@@ -32,6 +32,7 @@ CenteringDialog {
 
         ScrollView{
             id: sv
+
             required property var dialogMain
 
             contentWidth: availableWidth // Disable horizontal scrolling
@@ -40,7 +41,7 @@ CenteringDialog {
 
             Label {
                 text: Librarian.getStringFromRessource(":text/firstStart.html")
-                width: sv.dialogMain.width
+                width: sv.dialogMain.availableWidth
                 textFormat: Text.RichText
                 linkColor: Material.accent
                 wrapMode: Text.Wrap
@@ -59,6 +60,7 @@ CenteringDialog {
 
         ScrollView{
             id: sv
+
             required property var dialogMain
 
             contentWidth: availableWidth // Disable horizontal scrolling
@@ -66,7 +68,9 @@ CenteringDialog {
             clip: true
 
             Label {
-                text: Librarian.getStringFromRessource(":text/privacy.html")
+                text: "<h3>" + qsTr("Privacy") + "</h3>"
+                      + "<p>" + qsTr("Please take a minute to review our privacy policies.") + "</p>"
+                      + Librarian.getStringFromRessource(":text/privacy.html")
                 width: sv.dialogMain.availableWidth
                 textFormat: Text.RichText
                 linkColor: Material.accent

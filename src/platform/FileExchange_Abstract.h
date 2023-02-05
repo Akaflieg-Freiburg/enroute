@@ -158,3 +158,6 @@ private:
 };
 
 } // namespace Platform
+
+// Declare meta types
+Q_DECLARE_METATYPE(Platform::FileExchange_Abstract)

@@ -21,6 +21,7 @@
 #include <QHttpServerResponder>
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QPointer>
 
 #include "TileHandler.h"
 

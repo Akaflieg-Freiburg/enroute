@@ -660,8 +660,8 @@ ApplicationWindow {
 
     DropArea {
         anchors.fill: stackView
-        onDropped: {
-            PlatformAdaptor.processFileOpenRequest(drop.text)
+        onDropped: (drop) => {
+            FileExchange.processFileOpenRequest(drop.text)
         }
     }
 

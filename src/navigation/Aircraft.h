@@ -397,7 +397,7 @@ namespace AircraftQML {
 Q_NAMESPACE
 QML_FOREIGN_NAMESPACE(Navigation::Aircraft)
 QML_NAMED_ELEMENT(Aircraft)
-} // Namespace Aircraft
+} // Namespace AircraftQML
 
 // Declare meta types
 Q_DECLARE_METATYPE(Navigation::Aircraft)

@@ -33,6 +33,10 @@ Item {
     property string filePath: ""
     property int fileFunction: FileExchange.UnknownFunction
 
+    Component.onCompleted: {
+        FileExchange.onGUISetupCompleted()
+    }
+
     Connections {
         target: FileExchange
 

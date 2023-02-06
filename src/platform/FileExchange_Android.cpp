@@ -184,7 +184,12 @@ extern "C" {
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setFileReceived(JNIEnv* env, jobject /*unused*/, jstring jfname)
 {
     const char* fname = env->GetStringUTFChars(jfname, nullptr);
-    GlobalObject::fileExchange()->processFileOpenRequest(QString::fromUtf8(fname));
+
+    // A little complicated because GlobalObject::fileExchange() lives in a different thread
+    QMetaObject::invokeMethod( GlobalObject::fileExchange(),
+                               "processFileOpenRequest",
+                               Qt::QueuedConnection,
+                               Q_ARG( QString, QString::fromUtf8(fname)) );
     env->ReleaseStringUTFChars(jfname, fname);
 }
 

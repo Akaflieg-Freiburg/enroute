@@ -190,7 +190,7 @@ void DataManagement::DataManager::onItemFileChanged()
         // Ok, we found an unsupported map without local file. Let's get rid of
         // that.
         m_items.remove(geoMapPtr);
-        geoMapPtr->deleteLater();
+        delete geoMapPtr;
         QTimer::singleShot(100ms, this, &DataManagement::DataManager::updateDataItemListAndWhatsNew);
     }
 }

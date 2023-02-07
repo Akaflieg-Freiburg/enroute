@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2022 by Stefan Kebekus                                  *
+ *   Copyright (C) 2022-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include <QQmlEngine>
+
 #include "dataManagement/Downloadable_Abstract.h"
 
 namespace DataManagement {
@@ -32,6 +34,7 @@ namespace DataManagement {
 
 class Downloadable_MultiFile : public Downloadable_Abstract {
     Q_OBJECT
+    QML_ELEMENT
 
 public:
     /*! \brief Update Policy */
@@ -61,6 +64,8 @@ public:
      */
     Q_PROPERTY(QList<DataManagement::Downloadable_Abstract*> downloadables READ downloadables NOTIFY downloadablesChanged)
 
+    // Repeated from Downloadable_Abstract, to avoid QML warning
+    Q_PROPERTY(bool hasFile READ hasFile NOTIFY hasFileChanged)
 
 
     //

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2022 by Stefan Kebekus                                  *
+ *   Copyright (C) 2022-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -103,7 +103,7 @@ Page {
 
                 AutoSizingMenu {
                     title: Qt.platform.os === "android" ? qsTr("Share…") : qsTr("Export…")
-                    enabled: global.waypointLibrary().waypoints.length > 0
+                    enabled: WaypointLibrary.waypoints.length > 0
 
                     MenuItem {
                         text: qsTr("… to GeoJSON file")
@@ -112,7 +112,7 @@ Page {
                             PlatformAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            var errorString = FileExchange.shareContent(global.waypointLibrary().toGeoJSON(), "application/geo+json", qsTr("Waypoint Library"))
+                            var errorString = FileExchange.shareContent(WaypointLibrary.toGeoJSON(), "application/geo+json", qsTr("Waypoint Library"))
                             if (errorString === "abort") {
                                 toast.doToast(qsTr("Aborted"))
                                 return
@@ -136,7 +136,7 @@ Page {
                             PlatformAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            var errorString = FileExchange.shareContent(global.waypointLibrary().toGpx(), "application/gpx+xml", qsTr("Waypoint Library"))
+                            var errorString = FileExchange.shareContent(WaypointLibrary.toGpx(), "application/gpx+xml", qsTr("Waypoint Library"))
                             if (errorString === "abort") {
                                 toast.doToast(qsTr("Aborted"))
                                 return
@@ -156,7 +156,7 @@ Page {
 
                 AutoSizingMenu {
                     title: qsTr("Open in Other App…")
-                    enabled: global.waypointLibrary().waypoints.length > 0
+                    enabled: WaypointLibrary.waypoints.length > 0
 
                     MenuItem {
                         text: qsTr("… in GeoJSON format")
@@ -166,7 +166,7 @@ Page {
                             highlighted = false
                             parent.highlighted = false
 
-                            var errorString = FileExchange.viewContent(global.waypointLibrary().toGeoJSON(), "application/geo+json", "WaypointLibrary-%1.geojson")
+                            var errorString = FileExchange.viewContent(WaypointLibrary.toGeoJSON(), "application/geo+json", "WaypointLibrary-%1.geojson")
                             if (errorString !== "") {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
@@ -183,7 +183,7 @@ Page {
                             highlighted = false
                             parent.highlighted = false
 
-                            var errorString = FileExchange.viewContent(global.waypointLibrary().toGpx(), "application/gpx+xml", "WaypointLibrary-%1.gpx")
+                            var errorString = FileExchange.viewContent(WaypointLibrary.toGpx(), "application/gpx+xml", "WaypointLibrary-%1.gpx")
                             if (errorString !== "") {
                                 shareErrorDialogLabel.text = errorString
                                 shareErrorDialog.open()
@@ -198,7 +198,7 @@ Page {
 
                 MenuItem {
                     text: qsTr("Clear")
-                    enabled: global.waypointLibrary().waypoints.length > 0
+                    enabled: WaypointLibrary.waypoints.length > 0
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
@@ -311,9 +311,9 @@ Page {
 
         model: {
             // Mention waypoints to ensure that the list gets updated
-            global.waypointLibrary().waypoints
+            WaypointLibrary.waypoints
 
-            return global.waypointLibrary().filteredWaypoints(textInput.text)
+            return WaypointLibrary.filteredWaypoints(textInput.text)
         }
         delegate: waypointDelegate
         ScrollIndicator.vertical: ScrollIndicator {}
@@ -380,7 +380,7 @@ Page {
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
-            global.waypointLibrary().remove(removeDialog.waypoint)
+            WaypointLibrary.remove(removeDialog.waypoint)
             page.reloadWaypointList()
             toast.doToast(qsTr("Waypoint removed from device"))
         }
@@ -409,7 +409,7 @@ Page {
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
-            global.waypointLibrary().clear()
+            WaypointLibrary.clear()
             page.reloadWaypointList()
             toast.doToast(qsTr("Waypoint library cleared"))
         }
@@ -423,7 +423,7 @@ Page {
             newWP.name = newName
             newWP.notes = newNotes
             newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
-            global.waypointLibrary().replace(waypoint, newWP)
+            WaypointLibrary.replace(waypoint, newWP)
             page.reloadWaypointList()
             toast.doToast(qsTr("Waypoint modified"))
         }

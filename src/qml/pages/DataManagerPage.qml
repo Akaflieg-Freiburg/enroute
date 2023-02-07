@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -57,7 +57,7 @@ Page {
             function startFileDownload() {
                 // if the user downloads too many, show them a dialog telling them that
                 // the bandwidth is sponsored and they shouldn't over-consume.
-                var nFilesTotal = global.dataManager().items.files.length
+                var nFilesTotal = DataManager.items.files.length
                 if (nFilesTotal > 15) {
                     dialogLoader.active = false;
                     dialogLoader.dialogArgs = {onAcceptedCallback: model.modelData.startDownload};
@@ -251,7 +251,7 @@ Page {
                 onTriggered: {
                     PlatformAdaptor.vibrateBrief()
                     highlighted = false
-                    global.dataManager().updateRemoteDataItemList()
+                    DataManager.updateRemoteDataItemList()
                 }
             }
 
@@ -259,12 +259,12 @@ Page {
                 id: downloadUpdatesMenu
 
                 text: qsTr("Download all updates…")
-                enabled: (global.dataManager().items.updateSize !== 0)
+                enabled: (DataManager.items.updateSize !== 0)
 
                 onTriggered: {
                     PlatformAdaptor.vibrateBrief()
                     highlighted = false
-                    global.dataManager().items.updateAll()
+                    DataManager.items.updateAll()
                 }
             }
 
@@ -312,7 +312,7 @@ Page {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 clip: true
-                model: global.dataManager().mapSets.downloadables
+                model: DataManager.mapSets.downloadables
                 delegate: mapItem
                 ScrollIndicator.vertical: ScrollIndicator {}
 
@@ -327,7 +327,7 @@ Page {
                 onFlickEnded: {
                     if ( atYBeginning && refreshFlick ) {
                         PlatformAdaptor.vibrateBrief()
-                        global.dataManager().updateRemoteDataItemList()
+                        DataManager.updateRemoteDataItemList()
                     }
                 }
             }
@@ -336,7 +336,7 @@ Page {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 clip: true
-                model: global.dataManager().databases.downloadables
+                model: DataManager.databases.downloadables
                 delegate: mapItem
                 ScrollIndicator.vertical: ScrollIndicator {}
 
@@ -351,7 +351,7 @@ Page {
                 onFlickEnded: {
                     if ( atYBeginning && refreshFlick ) {
                         PlatformAdaptor.vibrateBrief()
-                        global.dataManager().updateRemoteDataItemList()
+                        DataManager.updateRemoteDataItemList()
                     }
                 }
             }
@@ -367,7 +367,7 @@ Page {
         rightPadding: view.font.pixelSize*2
 
         background: Rectangle {color: "white"}
-        visible: global.dataManager().appUpdateRequired
+        visible: DataManager.appUpdateRequired
 
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment : Text.AlignVCenter
@@ -388,7 +388,7 @@ Page {
         anchors.topMargin: view.font.pixelSize
 
         background: Rectangle {color: "white"}
-        visible: !global.dataManager().mapList.downloading && !global.dataManager().mapList.hasFile
+        visible: !DataManager.mapList.downloading && !DataManager.mapList.hasFile
 
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment : Text.AlignVCenter
@@ -404,7 +404,7 @@ Page {
         anchors.fill: parent
 
         color: "white"
-        visible: global.dataManager().mapList.downloading
+        visible: DataManager.mapList.downloading
 
         ColumnLayout {
             anchors.fill: parent
@@ -443,9 +443,9 @@ Page {
         // Without this, the downaloadIndication would not be visible on very quick downloads, leaving the user
         // without any feedback if the download did actually take place.
         Connections {
-            target: global.dataManager()
+            target: DataManager
             function ondownloadingRemoteItemListChanged () {
-                if (global.dataManager().downloadingRemoteItemList) {
+                if (DataManager.downloadingRemoteItemList) {
                     downloadIndicator.visible = true
                     downloadIndicator.opacity = 1.0
                 } else
@@ -465,42 +465,42 @@ Page {
         width: parent.width
 
         Material.elevation: 3
-        visible: (!global.dataManager().mapList.downloading && !global.dataManager().mapList.hasFile) || ((!global.dataManager().items.downloading) && (global.dataManager().mapsAndData.updateSize > 0))
+        visible: (!DataManager.mapList.downloading && !DataManager.mapList.hasFile) || ((!DataManager.items.downloading) && (DataManager.mapsAndData.updateSize > 0))
         contentHeight: Math.max(downloadMapListActionButton.height, downloadUpdatesActionButton.height)
         bottomPadding: SafeInsets.bottom
 
         ToolButton {
             id: downloadMapListActionButton
             anchors.centerIn: parent
-            visible: !global.dataManager().mapList.downloading && !global.dataManager().mapList.hasFile
+            visible: !DataManager.mapList.downloading && !DataManager.mapList.hasFile
 
             text: qsTr("Download list of maps…")
             icon.source: "/icons/material/ic_file_download.svg"
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                global.dataManager().updateRemoteDataItemList()
+                DataManager.updateRemoteDataItemList()
             }
         }
 
         ToolButton {
             id: downloadUpdatesActionButton
             anchors.centerIn: parent
-            visible: (!global.dataManager().items.downloading) && (global.dataManager().mapsAndData.updateSize > 0)
+            visible: (!DataManager.items.downloading) && (DataManager.mapsAndData.updateSize > 0)
 
             text: qsTr("Update")
             icon.source: "/icons/material/ic_file_download.svg"
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                global.dataManager().mapsAndData.update()
+                DataManager.mapsAndData.update()
             }
         }
     }
 
     // Show error when list of maps cannot be downloaded
     Connections {
-        target: global.dataManager()
+        target: DataManager
         function onError (message) {
             dialogLoader.active = false
             dialogLoader.title = qsTr("Download Error")

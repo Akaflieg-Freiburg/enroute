@@ -282,6 +282,7 @@ target_include_directories(${PROJECT_NAME}
     PUBLIC
     ${CMAKE_SOURCE_DIR}/3rdParty/sunset/src
     ${CMAKE_SOURCE_DIR}/3rdParty/GSL/include
+    dataManagement
     geomaps
     navigation
     platform
@@ -339,14 +340,14 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/pages/FlightRouteLibrary.qml
     qml/pages/InfoPage.qml
     qml/pages/Manual.qml
-    qml/pages/DataManager.qml
+    qml/pages/DataManagerPage.qml
     qml/pages/MapPage.qml
     qml/pages/Nearby.qml
     qml/pages/ParticipatePage.qml
     qml/pages/Positioning.qml
     qml/pages/PrivacyPage.qml
     qml/pages/TrafficReceiver.qml
-    qml/pages/WaypointLibrary.qml
+    qml/pages/WaypointLibraryPage.qml
     qml/pages/WeatherPage.qml
     SOURCES
     ui/ScaleQuickItem.h

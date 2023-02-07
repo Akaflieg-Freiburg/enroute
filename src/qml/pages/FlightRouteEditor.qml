@@ -121,14 +121,14 @@ Page {
                         text: qsTr("Add to waypoint library")
                         enabled: {
                             // Mention waypoints, in order to update
-                            global.waypointLibrary().waypoints
+                            WaypointLibrary.waypoints
 
-                            return (waypoint.category === "WP") && !global.waypointLibrary().hasNearbyEntry(waypoint)
+                            return (waypoint.category === "WP") && !WaypointLibrary.hasNearbyEntry(waypoint)
                         }
 
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
-                            global.waypointLibrary().add(waypoint)
+                            WaypointLibrary.add(waypoint)
                             toast.doToast(qsTr("Added %1 to waypoint library.").arg(waypoint.extendedName))
                         }
                     }

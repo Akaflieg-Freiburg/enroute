@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QQmlEngine>
 #include <QStandardPaths>
 
 #include "GlobalObject.h"
@@ -70,6 +71,8 @@ namespace DataManagement {
 class DataManager : public GlobalObject
 {
     Q_OBJECT
+    QML_ELEMENT
+    QML_SINGLETON
 
 public:
     /*! \brief Standard constructor
@@ -81,6 +84,16 @@ public:
      *  @param parent The standard QObject parent pointer.
      */
     explicit DataManager(QObject* parent=nullptr);
+
+    // No default constructor, important for QML singleton
+    explicit DataManager() = delete;
+
+    // factory function for QML singleton
+    static DataManagement::DataManager* create(QQmlEngine*, QJSEngine*)
+    {
+        return GlobalObject::dataManager();
+    }
+
 
     // deferred initialization
     void deferredInitialization() override;

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -660,8 +660,8 @@ ApplicationWindow {
 
     DropArea {
         anchors.fill: stackView
-        onDropped: {
-            PlatformAdaptor.processFileOpenRequest(drop.text)
+        onDropped: (drop) => {
+            FileExchange.processFileOpenRequest(drop.text)
         }
     }
 

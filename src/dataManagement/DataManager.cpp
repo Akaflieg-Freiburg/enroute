@@ -56,10 +56,10 @@ DataManagement::DataManager::DataManager(QObject* parent) : GlobalObject(parent)
 
 void DataManagement::DataManager::deferredInitialization()
 {
-    // If the last update is more than six days ago, automatically initiate an
+    // If the last update is more than one day ago, automatically initiate an
     // update, so that maps stay at least roughly current.
     auto lastUpdate = QSettings().value(QStringLiteral("DataManager/MapListTimeStamp"), QDateTime()).toDateTime();
-    if (!lastUpdate.isValid() || (qAbs(lastUpdate.daysTo(QDateTime::currentDateTime()) > 6)))
+    if (!lastUpdate.isValid() || (qAbs(lastUpdate.daysTo(QDateTime::currentDateTime()) > 0)))
     {
         updateRemoteDataItemList();
     }
@@ -190,7 +190,7 @@ void DataManagement::DataManager::onItemFileChanged()
         // Ok, we found an unsupported map without local file. Let's get rid of
         // that.
         m_items.remove(geoMapPtr);
-        geoMapPtr->deleteLater();
+        delete geoMapPtr;
         QTimer::singleShot(100ms, this, &DataManagement::DataManager::updateDataItemListAndWhatsNew);
     }
 }

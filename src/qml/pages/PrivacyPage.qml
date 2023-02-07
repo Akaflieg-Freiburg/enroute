@@ -23,6 +23,7 @@ import QtQuick.Controls
 import QtQuick.Controls.Material
 
 import akaflieg_freiburg.enroute
+import "../items"
 
 Page {
     title: qsTr("Privacy Policy")

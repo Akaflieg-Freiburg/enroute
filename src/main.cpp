@@ -62,10 +62,11 @@ auto main(int argc, char *argv[]) -> int
 
     // Register types
     qRegisterMetaType<GeoMaps::Airspace>();
-    qRegisterMetaType<Traffic::Warning>();
     qRegisterMetaType<Platform::Notifier_Abstract::NotificationActions>();
-
     qRegisterMetaType<Platform::Notifier_Abstract::NotificationTypes>("Platform::Notifier::Notifications");
+    qRegisterMetaType<Platform::FileExchange_Abstract::FileFunction>();
+    qRegisterMetaType<Traffic::Warning>();
+
     qmlRegisterUncreatableType<DemoRunner>("enroute", 1, 0, "DemoRunner", QStringLiteral("DemoRunner objects cannot be created in QML"));
     qmlRegisterUncreatableType<DataManagement::SSLErrorHandler>("enroute", 1, 0, "SSLErrorHandler", QStringLiteral("SSLErrorHandler objects cannot be created in QML"));
     qmlRegisterUncreatableType<DataManagement::Downloadable_Abstract>("enroute", 1, 0, "Downloadable_Abstract", QStringLiteral("Downloadable_Abstract objects cannot be created in QML"));

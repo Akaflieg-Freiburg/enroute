@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -42,8 +42,28 @@ Platform::FileExchange::FileExchange(QObject *parent)
     exchangeDir.removeRecursively();
     exchangeDir.mkpath(fileExchangeDirectoryName);
 
+}
 
-    // Start receiving file requests
+
+void Platform::FileExchange::deferredInitialization()
+{
+    QJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "startWiFiMonitor");
+}
+
+
+//
+// Methods
+//
+
+void Platform::FileExchange::importContent()
+{
+}
+
+
+void Platform::FileExchange::onGUISetupCompleted()
+{
+    // Start receiving file requests. This needs to be in deferredInitialization because
+    // it has side effects and calls constructors of other GlobalObjects.
     receiveOpenFileRequestsStarted = true;
     QJniObject activity = QNativeInterface::QAndroidApplication::context();
     if (activity.isValid())
@@ -56,27 +76,11 @@ Platform::FileExchange::FileExchange(QObject *parent)
         activity.callMethod<void>("checkPendingIntents", "(Ljava/lang/String;)V", jniTempDir.object<jstring>());
     }
 
-}
-
-
-void Platform::FileExchange::deferredInitialization()
-{
     if (!pendingReceiveOpenFileRequest.isEmpty())
     {
         processFileOpenRequest(pendingReceiveOpenFileRequest);
     }
     pendingReceiveOpenFileRequest = QString();
-
-    QJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "startWiFiMonitor");
-}
-
-
-//
-// Methods
-//
-
-void Platform::FileExchange::importContent()
-{
 }
 
 
@@ -180,7 +184,12 @@ extern "C" {
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setFileReceived(JNIEnv* env, jobject /*unused*/, jstring jfname)
 {
     const char* fname = env->GetStringUTFChars(jfname, nullptr);
-    GlobalObject::fileExchange()->processFileOpenRequest(QString::fromUtf8(fname));
+
+    // A little complicated because GlobalObject::fileExchange() lives in a different thread
+    QMetaObject::invokeMethod( GlobalObject::fileExchange(),
+                               "processFileOpenRequest",
+                               Qt::QueuedConnection,
+                               Q_ARG( QString, QString::fromUtf8(fname)) );
     env->ReleaseStringUTFChars(jfname, fname);
 }
 

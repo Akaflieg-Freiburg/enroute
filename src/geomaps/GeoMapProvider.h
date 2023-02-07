@@ -23,13 +23,12 @@
 #include <QCache>
 #include <QFuture>
 #include <QImage>
-#include <QTimer>
 #include <QTemporaryFile>
 #include <QTimer>
 
 #include "Airspace.h"
-#include "Librarian.h"
 #include "GlobalSettings.h"
+#include "Librarian.h"
 #include "TileServer.h"
 #include "Waypoint.h"
 #include "dataManagement/DataManager.h"

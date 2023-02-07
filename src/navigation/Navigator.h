@@ -73,7 +73,7 @@ public:
     ~Navigator() override = default;
 
     // factory function for QML singleton
-    static Navigation::Navigator* create(QQmlEngine*, QJSEngine*)
+    static Navigation::Navigator* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
     {
         return GlobalObject::navigator();
     }

@@ -89,7 +89,7 @@ public:
     explicit DataManager() = delete;
 
     // factory function for QML singleton
-    static DataManagement::DataManager* create(QQmlEngine*, QJSEngine*)
+    static DataManagement::DataManager* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
     {
         return GlobalObject::dataManager();
     }

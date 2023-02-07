@@ -132,7 +132,7 @@ auto Navigation::Leg::isFollowing(const Positioning::PositionInfo& positionInfo)
 
     delta = TT -  Units::Angle::fromDEG(positionInfo.coordinate().azimuthTo(m_start.coordinate()));
     deltaDeg = delta.toDEG();
-    return !((deltaDeg < 120.0) || (deltaDeg > 240.0));
+    return (deltaDeg >= 120.0) && (deltaDeg <= 240.0);
 }
 
 

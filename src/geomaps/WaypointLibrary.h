@@ -57,7 +57,7 @@ namespace GeoMaps
         explicit WaypointLibrary() = delete;
 
         // factory function for QML singleton
-        static GeoMaps::WaypointLibrary* create(QQmlEngine*, QJSEngine*)
+        static GeoMaps::WaypointLibrary* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
         {
             return GlobalObject::waypointLibrary();
         }

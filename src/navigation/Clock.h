@@ -55,7 +55,7 @@ public:
     explicit Clock() = delete;
 
     // factory function for QML singleton
-    static Navigation::Clock *create(QQmlEngine *, QJSEngine *)
+    static Navigation::Clock *create(QQmlEngine * /*unused*/, QJSEngine * /*unused*/)
     {
         return GlobalObject::clock();
     }

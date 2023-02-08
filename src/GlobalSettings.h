@@ -71,7 +71,7 @@ public:
     explicit GlobalSettings() = delete;
 
     // factory function for QML singleton
-    static GlobalSettings* create(QQmlEngine *, QJSEngine *)
+    static GlobalSettings* create(QQmlEngine * /*unused*/, QJSEngine * /*unused*/)
     {
         return GlobalObject::globalSettings();
     }

@@ -24,8 +24,8 @@
 
 #include "DemoRunner.h"
 #include "GlobalObject.h"
-#include "Librarian.h"
 #include "GlobalSettings.h"
+#include "Librarian.h"
 #include "dataManagement/DataManager.h"
 #include "dataManagement/SSLErrorHandler.h"
 #include "geomaps/GeoMapProvider.h"

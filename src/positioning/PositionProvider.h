@@ -64,7 +64,7 @@ public:
     explicit PositionProvider() = delete;
 
     // factory function for QML singleton
-    static Positioning::PositionProvider* create(QQmlEngine*, QJSEngine*)
+    static Positioning::PositionProvider* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
     {
         return GlobalObject::positionProvider();
     }

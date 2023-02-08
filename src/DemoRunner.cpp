@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019--2023 by Stefan Kebekus                            *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -131,18 +131,20 @@ void DemoRunner::generateGooglePlayScreenshots()
         QStringList devices = {"phone", "sevenInch", "tenInch"};
         foreach(auto device, devices)
         {
-            auto language = QLocale::system().name().replace("_","-");
+            auto language = QLocale::system().name().replace(u"_"_qs,u"-"_qs);
             {
                 if (device == u"phone"_qs)
                 {
                     applicationWindow->setProperty("width", 1080/2.5);
                     applicationWindow->setProperty("height", 1920/2.5);
                 }
-                if (device == u"sevenInch"_qs) {
+                if (device == u"sevenInch"_qs)
+                {
                     applicationWindow->setProperty("width", 1920/2);
                     applicationWindow->setProperty("height", 1200/2);
                 }
-                if (device == u"tenInch"_qs) {
+                if (device == u"tenInch"_qs)
+                {
                     applicationWindow->setProperty("width", 1920/2);
                     applicationWindow->setProperty("height", 1200/2);
                 }

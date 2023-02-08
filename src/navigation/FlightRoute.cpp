@@ -56,16 +56,21 @@ auto Navigation::FlightRoute::boundingRectangle() const -> QGeoRectangle
 {
     QGeoRectangle bbox;
 
-    for(const auto &_waypoint : m_waypoints) {
-        if (!_waypoint.isValid()) {
+    for(const auto &_waypoint : m_waypoints)
+    {
+        if (!_waypoint.isValid())
+        {
             continue;
         }
 
         QGeoCoordinate position = _waypoint.coordinate();
-        if (!bbox.isValid()) {
+        if (!bbox.isValid())
+        {
             bbox.setTopLeft(position);
             bbox.setBottomRight(position);
-        } else {
+        }
+        else
+        {
             bbox.extendRectangle(position);
         }
     }
@@ -76,8 +81,10 @@ auto Navigation::FlightRoute::boundingRectangle() const -> QGeoRectangle
 auto Navigation::FlightRoute::geoPath() const -> QList<QGeoCoordinate>
 {
     QList<QGeoCoordinate> result;
-    for(const auto& _waypoint : m_waypoints) {
-        if (!_waypoint.isValid()) {
+    for(const auto& _waypoint : m_waypoints)
+    {
+        if (!_waypoint.isValid())
+        {
             return {};
         }
         result.append(_waypoint.coordinate());
@@ -90,12 +97,15 @@ auto Navigation::FlightRoute::midFieldWaypoints() const -> QList<GeoMaps::Waypoi
 {
     QList<GeoMaps::Waypoint> result;
 
-    if (m_waypoints.isEmpty()) {
+    if (m_waypoints.isEmpty())
+    {
         return result;
     }
 
-    foreach(auto wpt, m_waypoints) {
-        if (wpt.category() == u"WP") {
+    foreach(auto wpt, m_waypoints)
+    {
+        if (wpt.category() == u"WP")
+        {
             result << wpt;
         }
     }
@@ -106,7 +116,8 @@ auto Navigation::FlightRoute::midFieldWaypoints() const -> QList<GeoMaps::Waypoi
 auto Navigation::FlightRoute::summary() const -> QString
 {
 
-    if (m_legs.empty()) {
+    if (m_legs.empty())
+    {
         return {};
     }
 
@@ -118,9 +129,11 @@ auto Navigation::FlightRoute::summary() const -> QString
     auto time = Units::Time::fromS(0.0);
     auto fuel = Units::Volume::fromL(0.0);
 
-    for(const auto& _leg : m_legs) {
+    for(const auto& _leg : m_legs)
+    {
         dist += _leg.distance();
-        if (dist.toM() > 100) {
+        if (dist.toM() > 100)
+        {
             time += _leg.ETE(wind, aircraft);
             fuel += _leg.Fuel(wind, aircraft);
         }
@@ -131,29 +144,36 @@ auto Navigation::FlightRoute::summary() const -> QString
 
     result += tr("Total: %1").arg( aircraft.horizontalDistanceToString(dist) );
 
-    if (time.isFinite()) {
+    if (time.isFinite())
+    {
         result += QStringLiteral(" • ETE %1 h").arg(time.toHoursAndMinutes());
     }
-    if (fuel.isFinite()) {
+    if (fuel.isFinite())
+    {
         result += QStringLiteral(" • %1").arg(aircraft.volumeToString(fuel));
     }
 
 
     QStringList complaints;
-    if ( !aircraft.cruiseSpeed().isFinite() ) {
+    if ( !aircraft.cruiseSpeed().isFinite() )
+    {
         complaints += tr("Cruise speed not specified.");
     }
-    if (!aircraft.fuelConsumption().isFinite()) {
+    if (!aircraft.fuelConsumption().isFinite())
+    {
         complaints += tr("Fuel consumption not specified.");
     }
-    if (!wind.speed().isFinite()) {
+    if (!wind.speed().isFinite())
+    {
         complaints += tr("Wind speed not specified.");
     }
-    if (!wind.directionFrom().isFinite()) {
+    if (!wind.directionFrom().isFinite())
+    {
         complaints += tr("Wind direction not specified.");
     }
 
-    if (!complaints.isEmpty()) {
+    if (!complaints.isEmpty())
+    {
         result += tr("<p><font color='red'>Computation incomplete. %1</font></p>").arg(complaints.join(QStringLiteral(" ")));
     }
 
@@ -268,10 +288,10 @@ void Navigation::FlightRoute::insert(const GeoMaps::Waypoint& wp)
     emit waypointsChanged();
 }
 
-auto Navigation::FlightRoute::lastIndexOf(const GeoMaps::Waypoint& waypoint) const -> int
+auto Navigation::FlightRoute::lastIndexOf(const GeoMaps::Waypoint& waypoint) const -> qsizetype
 {
 
-    for(int i=m_waypoints.size()-1; i>=0; i--)
+    for(auto i=m_waypoints.size()-1; i>=0; i--)
     {
         auto _waypoint = m_waypoints.at(i);
         if (!_waypoint.isValid())
@@ -331,11 +351,13 @@ void Navigation::FlightRoute::removeWaypoint(int idx)
 void Navigation::FlightRoute::replaceWaypoint(int idx, const GeoMaps::Waypoint& newWaypoint)
 {
     // Paranoid safety checks
-    if ((idx < 0) || (idx >= m_waypoints.size())) {
+    if ((idx < 0) || (idx >= m_waypoints.size()))
+    {
         return;
     }
     // If name did not
-    if (m_waypoints[idx] == newWaypoint) {
+    if (m_waypoints[idx] == newWaypoint)
+    {
         return;
     }
 
@@ -356,11 +378,13 @@ auto Navigation::FlightRoute::save(const QString& fileName) const -> QString
 {
     QFile file(fileName);
     auto success = file.open(QIODevice::WriteOnly);
-    if (!success) {
+    if (!success)
+    {
         return tr("Unable to open the file '%1' for writing.").arg(fileName);
     }
     auto numBytesWritten = file.write(toGeoJSON());
-    if (numBytesWritten == -1) {
+    if (numBytesWritten == -1)
+    {
         file.close();
         QFile::remove(fileName);
         return tr("Unable to write to file '%1'.").arg(fileName);
@@ -371,7 +395,8 @@ auto Navigation::FlightRoute::save(const QString& fileName) const -> QString
 
 auto Navigation::FlightRoute::suggestedFilename() const -> QString
 {
-    if (m_waypoints.size() < 2) {
+    if (m_waypoints.size() < 2)
+    {
         return tr("Flight Route");
     }
 
@@ -382,13 +407,18 @@ auto Navigation::FlightRoute::suggestedFilename() const -> QString
     QString name = m_waypoints.constFirst().name(); // Name of start point
     name.replace(u'(', u""_qs);
     name.replace(u')', u""_qs);
-    if (name.length() > 11) {  // Shorten name
+    if (name.length() > 11)
+    {  // Shorten name
         name = name.left(10)+"_";
     }
-    if (!name.isEmpty()) {
-        if (start.isEmpty()) {
+    if (!name.isEmpty())
+    {
+        if (start.isEmpty())
+        {
             start = name;
-        } else {
+        }
+        else
+        {
             start += " (" + name + ")";
         }
     }
@@ -400,13 +430,18 @@ auto Navigation::FlightRoute::suggestedFilename() const -> QString
     name = m_waypoints.constLast().name(); // Name of end point
     name.replace(u"("_qs, u""_qs);
     name.replace(u")"_qs, u""_qs);
-    if (name.length() > 11) {  // Shorten name
+    if (name.length() > 11)
+    {  // Shorten name
         name = name.left(10)+"_";
     }
-    if (!name.isEmpty()) {
-        if (end.isEmpty()) {
+    if (!name.isEmpty())
+    {
+        if (end.isEmpty())
+        {
             end = name;
-        } else {
+        }
+        else
+        {
             end += " (" + name + ")";
         }
     }
@@ -417,15 +452,18 @@ auto Navigation::FlightRoute::suggestedFilename() const -> QString
 
     // Compile final result
 
-    if (start.isEmpty() && end.isEmpty()) {
+    if (start.isEmpty() && end.isEmpty())
+    {
         return tr("Flight Route");
     }
 
-    if (start.isEmpty()) {
+    if (start.isEmpty())
+    {
         return end;
     }
 
-    if (end.isEmpty()) {
+    if (end.isEmpty())
+    {
         return start;
     }
 
@@ -436,7 +474,8 @@ auto Navigation::FlightRoute::suggestedFilename() const -> QString
 auto Navigation::FlightRoute::toGeoJSON() const -> QByteArray
 {
     QJsonArray waypointArray;
-    foreach(const auto& waypoint, m_waypoints) {
+    foreach(const auto& waypoint, m_waypoints)
+    {
         if (waypoint.isValid())
         {
             waypointArray.append(waypoint.toJSON());

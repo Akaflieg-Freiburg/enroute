@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2021-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -26,7 +26,8 @@
 // Member functions
 
 Traffic::TrafficDataSource_Udp::TrafficDataSource_Udp(quint16 port, QObject *parent) :
-    Traffic::TrafficDataSource_AbstractSocket(parent), m_port(port) {
+    Traffic::TrafficDataSource_AbstractSocket(parent), m_port(port)
+{
 
     // Initialize timers
     m_trueAltitudeTimer.setInterval(5s);
@@ -51,12 +52,14 @@ Traffic::TrafficDataSource_Udp::~TrafficDataSource_Udp()
 void Traffic::TrafficDataSource_Udp::connectToTrafficReceiver()
 {
     // Do not do anything if the traffic receiver is connected and is receiving.
-    if (receivingHeartbeat()) {
+    if (receivingHeartbeat())
+    {
         return;
     }
 
     // Paranoid safety checks
-    if (!m_socket.isNull()) {
+    if (!m_socket.isNull())
+    {
         delete m_socket;
     }
 
@@ -77,7 +80,8 @@ void Traffic::TrafficDataSource_Udp::disconnectFromTrafficReceiver()
 {
 
     // Disconnect socket.
-    if (!m_socket.isNull()) {
+    if (!m_socket.isNull())
+    {
         m_socket->abort();
     }
     delete m_socket;
@@ -91,18 +95,22 @@ void Traffic::TrafficDataSource_Udp::disconnectFromTrafficReceiver()
 void Traffic::TrafficDataSource_Udp::onReadyRead()
 {
     // Paranoid safety checks
-    if (m_socket.isNull()) {
+    if (m_socket.isNull())
+    {
         return;
     }
 
     // Read datagrams
-    while (m_socket->hasPendingDatagrams()) {
+    while (m_socket->hasPendingDatagrams())
+    {
         QByteArray data = m_socket->receiveDatagram().data();
 
         // Return immediately if the datagram has already been received.
         auto currentDatagramHash = qHash(data);
-        foreach(auto hash, receivedDatagramHashes) {
-            if (hash == currentDatagramHash) {
+        foreach(auto hash, receivedDatagramHashes)
+        {
+            if (hash == currentDatagramHash)
+            {
                 return;
             }
         }
@@ -110,12 +118,17 @@ void Traffic::TrafficDataSource_Udp::onReadyRead()
         nextHashIndex = (nextHashIndex+1) % receivedDatagramHashes.size();
 
         // Process datagrams, depending on content type
-        if (data.startsWith("XGPS") || data.startsWith("XTRA")) {
+        if (data.startsWith("XGPS") || data.startsWith("XTRA"))
+        {
             processXGPSString(data);
-        } else {
+        }
+        else
+        {
             // Split data into raw messages
-            foreach(auto rawMessage, data.split(0x7e)) {
-                if (!rawMessage.isEmpty()) {
+            foreach(auto rawMessage, data.split(0x7e))
+            {
+                if (!rawMessage.isEmpty())
+                {
                     processGDLMessage(rawMessage);
                 }
             }

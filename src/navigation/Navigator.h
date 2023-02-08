@@ -73,7 +73,7 @@ public:
     ~Navigator() override = default;
 
     // factory function for QML singleton
-    static Navigation::Navigator* create(QQmlEngine*, QJSEngine*)
+    static Navigation::Navigator* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
     {
         return GlobalObject::navigator();
     }
@@ -95,7 +95,7 @@ public:
      *  This flight route returned here is owned by this class and must not be deleted.
      *  QML ownership has been set to QQmlEngine::CppOwnership.
      */
-    Q_PROPERTY(FlightRoute* flightRoute READ flightRoute CONSTANT)
+    Q_PROPERTY(Navigation::FlightRoute* flightRoute READ flightRoute CONSTANT)
 
     /*! \brief Estimate whether the device is flying or on the ground
      *
@@ -125,7 +125,7 @@ public:
      *
      *  @returns Property flightRoute
      */
-    auto flightRoute() -> FlightRoute*;
+    auto flightRoute() -> Navigation::FlightRoute*;
 
     /*! \brief Getter function for the property with the same name
      *

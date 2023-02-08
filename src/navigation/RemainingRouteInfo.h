@@ -173,7 +173,7 @@ namespace RemainingRouteInfoQML
     Q_NAMESPACE
     QML_FOREIGN_NAMESPACE(Navigation::RemainingRouteInfo)
     QML_NAMED_ELEMENT(RemainingRouteInfo)
-}
+} // namespace RemainingRouteInfoQML
 
 // Declare meta types
 Q_DECLARE_METATYPE(Navigation::RemainingRouteInfo)

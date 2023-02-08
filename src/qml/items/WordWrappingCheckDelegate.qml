@@ -27,6 +27,7 @@ CheckDelegate {
     id: itemDelegate
 
     contentItem: Label { // Text
+        rightPadding: itemDelegate.indicator.width + itemDelegate.spacing
         text: itemDelegate.text
         font: itemDelegate.font
         wrapMode: Text.Wrap

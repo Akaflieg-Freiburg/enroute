@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -442,7 +442,7 @@ Item {
 
         MapItemView {
             id: waypointLibrary
-            model: global.waypointLibrary().waypoints
+            model: WaypointLibrary.waypoints
             delegate: waypointComponent
         }
 
@@ -489,7 +489,7 @@ Item {
         source: flightMap
         brightness: Material.theme == Material.Dark ? -0.9 : -0.2
         contrast: Material.theme == Material.Dark ? 0.6 : 0.2
-        visible: !global.dataManager().baseMapsRaster.hasFile
+        visible: !DataManager.baseMapsRaster.hasFile
     }
 
     Rectangle {
@@ -500,7 +500,7 @@ Item {
         width: parent.width*0.6
         height: noMapWarning.height+20
         border.color: "black"
-        visible: !global.dataManager().aviationMaps.hasFile
+        visible: !DataManager.aviationMaps.hasFile
         Label {
             id: noMapWarning
             anchors.centerIn: parent
@@ -533,7 +533,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         bottomPadding: 0
         Material.elevation: 2
         opacity: 0.8
-        visible: GlobalSettings.airspaceAltitudeLimit.isFinite() && !global.dataManager().baseMapsRaster.hasFile
+        visible: GlobalSettings.airspaceAltitudeLimit.isFinite() && !DataManager.baseMapsRaster.hasFile
 
         Label {
 

@@ -236,7 +236,7 @@ ApplicationWindow {
 
                         ItemDelegate {
                             text: qsTr("Maps and Data")
-                                  + ((global.dataManager().mapsAndData.updateSize > 0) ? `<br><font color="#606060" size="2">` +qsTr("Updates available") + "</font>" : "")
+                                  + ((DataManager.mapsAndData.updateSize > 0) ? `<br><font color="#606060" size="2">` +qsTr("Updates available") + "</font>" : "")
                                   + ( (Navigator.flightStatus === Navigator.Flight) ? `<br><font color="#606060" size="2">` +qsTr("Item not available in flight") + "</font>" : "")
                             icon.source: "/icons/material/ic_map.svg"
                             Layout.fillWidth: true
@@ -244,7 +244,7 @@ ApplicationWindow {
                             enabled: Navigator.flightStatus !== Navigator.Flight
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
-                                stackView.push("pages/DataManager.qml")
+                                stackView.push("pages/DataManagerPage.qml")
                                 libraryMenu.close()
                                 drawer.close()
                             }
@@ -257,7 +257,7 @@ ApplicationWindow {
 
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
-                                stackView.push("pages/WaypointLibrary.qml")
+                                stackView.push("pages/WaypointLibraryPage.qml")
                                 libraryMenu.close()
                                 drawer.close()
                             }
@@ -585,7 +585,7 @@ ApplicationWindow {
             if (firstRunDialog.conditionalOpen())
                 return;
 
-            if (global.dataManager().appUpdateRequired) {
+            if (DataManager.appUpdateRequired) {
                 dialogLoader.active = false
                 dialogLoader.setSource("dialogs/LongTextDialog.qml",
                                        {
@@ -603,8 +603,8 @@ ApplicationWindow {
                 return
             }
 
-            if ((GlobalSettings.lastWhatsNewInMapsHash !== global.dataManager().whatsNewHash) &&
-                    (global.dataManager().whatsNew !== "") &&
+            if ((GlobalSettings.lastWhatsNewInMapsHash !== DataManager.whatsNewHash) &&
+                    (DataManager.whatsNew !== "") &&
                     (Navigator.flightStatus !== Navigator.Flight)) {
                 whatsNewInMapsDialog.open()
                 return
@@ -734,6 +734,11 @@ ApplicationWindow {
 
     ImportManager {
         id: importMgr
+
+        // Repeater properties
+        stackView: stackView
+        toast: toast
+        view: view
     }
 
     LongTextDialog {
@@ -761,8 +766,8 @@ ApplicationWindow {
         standardButtons: Dialog.Ok
 
         title: qsTr("What's new…?")
-        text: global.dataManager().whatsNew
-        onOpened: GlobalSettings.lastWhatsNewInMapsHash = global.dataManager().whatsNewHash
+        text: DataManager.whatsNew
+        onOpened: GlobalSettings.lastWhatsNewInMapsHash = DataManager.whatsNewHash
     }
 
     FirstRunDialog {
@@ -784,7 +789,7 @@ ApplicationWindow {
     //
 
     Connections { // items
-        target: global.dataManager().items
+        target: DataManager.items
 
         function onDownloadingChanged(downloading) {
             if (downloading) {
@@ -815,7 +820,7 @@ ApplicationWindow {
 
         function onAction(act) {
             if ((act === Notifier.DownloadInfo_Clicked) && (stackView.currentItem.objectName !== "DataManagerPage")) {
-                stackView.push("pages/DataManager.qml")
+                stackView.push("pages/DataManagerPage.qml")
             }
             if ((act === Notifier.TrafficReceiverSelfTestError_Clicked) && (stackView.currentItem.objectName !== "TrafficReceiverPage")) {
                 stackView.push("pages/TrafficReceiver.qml")
@@ -824,10 +829,10 @@ ApplicationWindow {
                 stackView.push("pages/TrafficReceiver.qml")
             }
             if ((act === Notifier.GeoMapUpdatePending_Clicked) && (stackView.currentItem.objectName !== "DataManagerPage")) {
-                stackView.push("pages/DataManager.qml")
+                stackView.push("pages/DataManagerPage.qml")
             }
             if (act === Notifier.GeoMapUpdatePending_UpdateRequested) {
-                global.dataManager().mapsAndData.update()
+                DataManager.mapsAndData.update()
                 toast.doToast(qsTr("Starting map update"))
             }
         }

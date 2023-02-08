@@ -246,8 +246,8 @@ void Navigation::Navigator::updateRemainingRouteInfo()
     }
 
     // Check legs that we are following, and take the last one
-    int currentLeg = -1;
-    for(int i=legs.size()-1; i>=0; i--)
+    qsizetype currentLeg = -1;
+    for(auto i=legs.size()-1; i>=0; i--)
     {
         if (legs[i].isFollowing(info))
         {
@@ -259,7 +259,7 @@ void Navigation::Navigator::updateRemainingRouteInfo()
     // If no current leg found, check legs that we are near to, and take the last one.
     if (currentLeg < 0)
     {
-        for(int i=legs.size()-1; i>=0; i--)
+        for(auto i=legs.size()-1; i>=0; i--)
         {
             if (legs[i].isNear(info))
             {
@@ -316,7 +316,7 @@ void Navigation::Navigator::updateRemainingRouteInfo()
 
     if (currentLeg < legs.size()-1)
     {
-        for(int i=currentLeg+1; i<legs.size(); i++)
+        for(auto i=currentLeg+1; i<legs.size(); i++)
         {
             dist += legs[i].distance();
             ETE += legs[i].ETE(m_wind, m_aircraft);

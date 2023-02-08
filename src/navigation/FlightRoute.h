@@ -25,6 +25,7 @@
 #include <QJsonDocument>
 #include <QLocale>
 #include <QPointer>
+#include <QQmlEngine>
 #include <QXmlStreamReader>
 
 #include "geomaps/Waypoint.h"
@@ -57,6 +58,7 @@ namespace Navigation
     class FlightRoute : public QObject
     {
         Q_OBJECT
+        QML_ELEMENT
 
     public:
         //

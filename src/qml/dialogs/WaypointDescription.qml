@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -480,7 +480,7 @@ CenteringDialog {
 
                 Action {
                     text: qsTr("Add…")
-                    enabled: !global.waypointLibrary().hasNearbyEntry(waypoint)
+                    enabled: !WaypointLibrary.hasNearbyEntry(waypoint)
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
@@ -492,7 +492,7 @@ CenteringDialog {
 
                 Action {
                     text: qsTr("Remove…")
-                    enabled: global.waypointLibrary().contains(waypoint)
+                    enabled: WaypointLibrary.contains(waypoint)
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
@@ -510,7 +510,7 @@ CenteringDialog {
 
                 Action {
                     text: qsTr("Edit…")
-                    enabled: global.waypointLibrary().contains(waypoint)
+                    enabled: WaypointLibrary.contains(waypoint)
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
@@ -571,7 +571,7 @@ CenteringDialog {
             newWP.name = newName
             newWP.notes = newNotes
             newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
-            global.waypointLibrary().replace(waypoint, newWP)
+            WaypointLibrary.replace(waypoint, newWP)
             toast.doToast(qsTr("Modified entry %1 in library.").arg(newWP.extendedName))
         }
     }
@@ -587,7 +587,7 @@ CenteringDialog {
             newWP.name = newName
             newWP.notes = newNotes
             newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
-            global.waypointLibrary().add(newWP)
+            WaypointLibrary.add(newWP)
             toast.doToast(qsTr("Added %1 to waypoint library.").arg(newWP.extendedName))
         }
     }
@@ -612,7 +612,7 @@ CenteringDialog {
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
-            global.waypointLibrary().remove(removeDialog.waypoint)
+            WaypointLibrary.remove(removeDialog.waypoint)
             toast.doToast(qsTr("Waypoint removed from device"))
         }
         onRejected: {

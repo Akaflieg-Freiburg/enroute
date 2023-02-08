@@ -420,7 +420,7 @@ Page {
             PlatformAdaptor.vibrateBrief()
             close()
             stackView.pop()
-            stackView.push("../pages/DataManager.qml")
+            stackView.push("../pages/DataManagerPage.qml")
         }
     }
 

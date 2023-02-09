@@ -52,6 +52,9 @@ set(SOURCES
     navigation/Leg.h
     navigation/Navigator.h
     navigation/RemainingRouteInfo.h
+    notam/Notam.h
+    notam/NotamList.h
+    notam/NotamProvider.h
     platform/FileExchange.h
     platform/FileExchange_Abstract.h
     platform/Notifier.h
@@ -121,6 +124,9 @@ set(SOURCES
     navigation/Leg.cpp
     navigation/Navigator.cpp
     navigation/RemainingRouteInfo.cpp
+    notam/Notam.cpp
+    notam/NotamList.cpp
+    notam/NotamProvider.cpp
     platform/FileExchange_Abstract.cpp
     platform/Notifier_Abstract.cpp
     platform/PlatformAdaptor_Abstract.cpp
@@ -285,6 +291,7 @@ target_include_directories(${PROJECT_NAME}
     dataManagement
     geomaps
     navigation
+    notam
     platform
     positioning
     traffic

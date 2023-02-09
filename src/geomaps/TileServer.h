@@ -116,10 +116,10 @@ private:
   Q_DISABLE_COPY_MOVE(TileServer)
 
   // Implemented pure virtual method from QAbstractHttpServer
-  bool handleRequest(const QHttpServerRequest& request, QTcpSocket* socket) override;
+  bool handleRequest(const QHttpServerRequest& request, QHttpServerResponder& responder) override;
 
   // Implemented pure virtual method from QAbstractHttpServer
-  void missingHandler(const QHttpServerRequest& request, QTcpSocket* socket) override;
+  void missingHandler(const QHttpServerRequest& request, QHttpServerResponder&& responder) override;
 
   // List of tile handlers
   QMap<QString, QSharedPointer<GeoMaps::TileHandler>> m_tileHandlers;

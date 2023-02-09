@@ -59,11 +59,10 @@ auto GeoMaps::TileServer::serverUrl() -> QString
 
 // Private Methods
 
-bool GeoMaps::TileServer::handleRequest(const QHttpServerRequest& request, QTcpSocket* socket)
+bool GeoMaps::TileServer::handleRequest(const QHttpServerRequest& request, QHttpServerResponder& responder)
 {
     auto path = request.url().path();
     auto pathElements = path.split('/', Qt::SkipEmptyParts);
-    auto responder = makeResponder(request, socket);
 
     //
     // Paranoid safety check
@@ -113,8 +112,7 @@ bool GeoMaps::TileServer::handleRequest(const QHttpServerRequest& request, QTcpS
 }
 
 
-void GeoMaps::TileServer::missingHandler(const QHttpServerRequest& request, QTcpSocket* socket)
+void GeoMaps::TileServer::missingHandler(const QHttpServerRequest& request, QHttpServerResponder&& responder)
 {
-    auto responder = makeResponder(request, socket);
     responder.write(QHttpServerResponder::StatusCode::NotFound);
 }

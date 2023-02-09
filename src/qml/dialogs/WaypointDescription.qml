@@ -49,6 +49,9 @@ CenteringDialog {
         // Create METAR info box
         metarInfo.createObject(co);
 
+        // Create NOTAM info box
+        notamInfo.createObject(co);
+
         // Create waypoint description items
         var pro = waypoint.tabularDescription
         for (var j in pro)
@@ -75,6 +78,40 @@ CenteringDialog {
                 if (weatherStation.hasMETAR)
                     return weatherStation.metar.summary + " • <a href='xx'>" + qsTr("full report") + "</a>"
                 return "<a href='xx'>" + qsTr("read TAF") + "</a>"
+            }
+            Layout.fillWidth: true
+            wrapMode: Text.WordWrap
+
+            bottomPadding: 0.2*view.font.pixelSize
+            topPadding: 0.2*view.font.pixelSize
+            leftPadding: 0.2*view.font.pixelSize
+            rightPadding: 0.2*view.font.pixelSize
+            onLinkActivated: {
+                PlatformAdaptor.vibrateBrief()
+                weatherReport.open()
+            }
+
+            // Background color according to METAR/FAA flight category
+            background: Rectangle {
+                border.color: "black"
+                color: ((weatherStation !== null) && weatherStation.hasMETAR) ? weatherStation.metar.flightCategoryColor : "transparent"
+                opacity: 0.2
+            }
+
+        }
+
+    }
+
+    Component {
+        id: notamInfo
+
+        Label { // NOTAM info
+
+            property notamList notamList
+
+            text: {
+                console.warn(notamList.notams.length)
+                return "<a href='xx'>" + qsTr("%1 NOTAMs available").arg(notamList.notams.length) + "</a>"
             }
             Layout.fillWidth: true
             wrapMode: Text.WordWrap

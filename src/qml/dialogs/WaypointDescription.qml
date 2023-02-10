@@ -28,6 +28,7 @@ import QtQuick.Shapes
 import akaflieg_freiburg.enroute
 import enroute 1.0
 
+import "../dialogs"
 import "../items"
 
 /* This is a dialog with detailed information about a waypoint. To use this dialog, all you have to do is to set a Waypoint in the property "waypoint" and call open(). */
@@ -107,12 +108,15 @@ CenteringDialog {
 
         Label { // NOTAM info
 
+            Loader {
+                // WARNING This does not really belong here.
+                id: dlgLoader
+            }
+
             property notamList notamList
 
-            text: {
-                console.warn(notamList.notams.length)
-                return "<a href='xx'>" + qsTr("%1 NOTAMs available").arg(notamList.notams.length) + "</a>"
-            }
+            visible: (notamList.notams.length > 0) || !notamList.complete
+            text: "<a href='xx'>" + notamList.summary + "</a>"
             Layout.fillWidth: true
             wrapMode: Text.WordWrap
 
@@ -122,13 +126,15 @@ CenteringDialog {
             rightPadding: 0.2*view.font.pixelSize
             onLinkActivated: {
                 PlatformAdaptor.vibrateBrief()
-                weatherReport.open()
+                dlgLoader.setSource("../dialogs/NotamListDialog.qml",
+                                    {"notamList": notamList, "waypoint": waypointDescriptionDialog.waypoint})
+                dlgLoader.item.open()
             }
 
             // Background color according to METAR/FAA flight category
             background: Rectangle {
                 border.color: "black"
-                color: ((weatherStation !== null) && weatherStation.hasMETAR) ? weatherStation.metar.flightCategoryColor : "transparent"
+                color: "yellow"
                 opacity: 0.2
             }
 

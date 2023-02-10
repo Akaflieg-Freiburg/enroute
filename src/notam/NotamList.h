@@ -41,10 +41,14 @@ public:
 
     Q_PROPERTY(bool complete MEMBER m_complete)
     Q_PROPERTY(QList<NOTAM::Notam> notams MEMBER m_notams)
+    Q_PROPERTY(QString summary READ summary)
+    Q_PROPERTY(QString text READ text)
+
+    static QString summary() ;
+    static QString text() ;
 
     bool m_complete {false};
     QList<NOTAM::Notam> m_notams;
-
 };
 
 } // namespace NOTAM

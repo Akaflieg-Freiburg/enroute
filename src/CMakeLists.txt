@@ -325,6 +325,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/dialogs/FlightRouteSaveDialog.qml
     qml/dialogs/LongTextDialogMD.qml
     qml/dialogs/MissingPermissionsDialog.qml
+    qml/dialogs/NotamListDialog.qml
     qml/dialogs/PasswordDialog.qml
     qml/dialogs/PasswordStorageDialog.qml
     qml/dialogs/TooManyDownloadsDialog.qml

@@ -11,6 +11,10 @@
 
 * Fix problems with screenshots for google play
 
+* Property loops when changing font size
+
+* Aircraft page: "Clear field" buttons make nonsense 
+
 
 # New Features
 

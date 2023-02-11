@@ -146,6 +146,7 @@ Page {
                     heightLimitDialog.open()
                 }
             }
+
             ToolButton {
                 icon.source: "/icons/material/ic_info_outline.svg"
                 onClicked: {
@@ -162,6 +163,7 @@ Page {
                 Layout.fillWidth: true
                 Layout.columnSpan: 2
                 text: qsTr("Map Features")
+                font.pixelSize: settingsPage.font.pixelSize*1.2
                 font.bold: true
                 color: Material.accent
             }
@@ -247,6 +249,61 @@ Page {
             Label {
                 Layout.leftMargin: settingsPage.font.pixelSize
                 Layout.columnSpan: 2
+                text: qsTr("User Interface")
+                font.pixelSize: settingsPage.font.pixelSize*1.2
+                font.bold: true
+                color: Material.accent
+            }
+
+            WordWrappingSwitchDelegate {
+                id: largeFonts
+                text: qsTr("Large Fonts")
+                icon.source: "/icons/material/ic_format_size.svg"
+                Layout.fillWidth: true
+                Component.onCompleted: {
+                    largeFonts.checked = GlobalSettings.largeFonts
+                }
+                onToggled: {
+                    PlatformAdaptor.vibrateBrief()
+                    GlobalSettings.largeFonts = largeFonts.checked
+                }
+            }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("Large Fonts")
+                    helpDialog.text = "<p>" + qsTr("Use this option to enlarge fonts for improved readability.") + "</p>"
+                    helpDialog.open()
+                }
+            }
+
+            WordWrappingSwitchDelegate {
+                id: nightMode
+                text: qsTr("Night Mode")
+                icon.source: "/icons/material/ic_brightness_3.svg"
+                Layout.fillWidth: true
+                Component.onCompleted: {
+                    nightMode.checked = GlobalSettings.nightMode
+                }
+                onToggled: {
+                    PlatformAdaptor.vibrateBrief()
+                    GlobalSettings.nightMode = nightMode.checked
+                }
+            }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("Night Mode")
+                    helpDialog.text = "<p>" + qsTr("The “Night Mode” of Enroute Flight Navigation is similar to the “Dark Mode” found in many other apps. We designed the night mode for pilots performing VFR flights by night, whose eyes have adapted to the darkness. Compared with other apps, you will find that the display is quite dark indeed.") + "</p>"
+                    helpDialog.open()
+                }
+            }
+
+            Label {
+                Layout.leftMargin: settingsPage.font.pixelSize
+                Layout.columnSpan: 2
                 text: qsTr("System")
                 font.pixelSize: settingsPage.font.pixelSize*1.2
                 font.bold: true
@@ -282,29 +339,6 @@ Page {
                     helpDialog.text = "<p>" + qsTr("Enroute Flight Navigation can either use the built-in satnav receiver of your device or a connected traffic receiver as a primary position data source. This setting is essential if your device has reception problems or if you use Enroute Flight Navigation together with a flight simulator.") + "</p>"
                             + "<p>" + qsTr("You will most likely prefer the built-in satnav receiver for actual flight. The built-in receiver provides one position update per second on a typical Android system, while traffic receivers do not always provide timely position updates.") + "</p>"
                             + "<p>" + qsTr("If you use Enroute Flight Navigation together with a flight simulator, you must choose the traffic receiver as a primary position data source. Flight simulators broadcast position information of simulated aircraft via Wi-Fi, using the same protocol that a traffic data receiver would use in a real plane. As long as the built-in satnav receiver is selected, all position information provided by your flight simulator is ignored.") + "</p>"
-                    helpDialog.open()
-                }
-            }
-
-            WordWrappingSwitchDelegate {
-                id: nightMode
-                text: qsTr("Night Mode")
-                icon.source: "/icons/material/ic_brightness_3.svg"
-                Layout.fillWidth: true
-                Component.onCompleted: {
-                    nightMode.checked = GlobalSettings.nightMode
-                }
-                onToggled: {
-                    PlatformAdaptor.vibrateBrief()
-                    GlobalSettings.nightMode = nightMode.checked
-                }
-            }
-            ToolButton {
-                icon.source: "/icons/material/ic_info_outline.svg"
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    helpDialog.title = qsTr("Night Mode")
-                    helpDialog.text = "<p>" + qsTr("The “Night Mode” of Enroute Flight Navigation is similar to the “Dark Mode” found in many other apps. We designed the night mode for pilots performing VFR flights by night, whose eyes have adapted to the darkness. Compared with other apps, you will find that the display is quite dark indeed.") + "</p>"
                     helpDialog.open()
                 }
             }

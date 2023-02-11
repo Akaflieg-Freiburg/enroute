@@ -111,4 +111,5 @@ CenteringDialog {
             ScrollIndicator.vertical: ScrollIndicator {}
         }
     }
+
 }

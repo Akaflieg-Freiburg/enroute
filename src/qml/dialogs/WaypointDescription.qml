@@ -113,9 +113,13 @@ CenteringDialog {
                 id: dlgLoader
             }
 
-            property notamList notamList
+            property notamList notamList: {
+                // Mention lastUpdate, so we update whenever there is new data
+                NotamProvider.lastUpdate
+                return NotamProvider.notams(waypoint.ICAOCode)
+            }
 
-            visible: (notamList.notams.length > 0) || !notamList.complete
+            visible: (notamList.summary != "")
             text: "<a href='xx'>" + notamList.summary + "</a>"
             Layout.fillWidth: true
             wrapMode: Text.WordWrap

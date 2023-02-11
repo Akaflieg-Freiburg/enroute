@@ -18,32 +18,47 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. *
  ***************************************************************************/
 
+#include <QFile>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+
+
 #include "notam/NotamList.h"
+
+
+NOTAM::NotamList::NotamList()
+{
+
+}
 
 
 QString NOTAM::NotamList::summary() 
 {
-return {u"One notam • Data possibly incomplete"_qs};
+    QStringList results;
+
+    if (m_notams.size() == 1)
+    {
+        results += ("One notam");
+    }
+    if (m_notams.size() > 1)
+    {
+        results += QString("%1 notams").arg(m_notams.size());
+    }
+
+    if (!m_retrieved.isValid() || (m_retrieved.addDays(1) <  QDateTime::currentDateTime()))
+    {
+        results += QString("Notam list possibly outdated");
+    }
+
+    return results.join(" • ");
 }
 
 QString NOTAM::NotamList::text() 
 {
-   return QStringLiteral(R"html(<pre>
-EDDS AIRCRAFT STANDS LIMITED	P0648/23
-From 24 Jan 2023 12:28 until 25 Mar 2023 23:59
-EDDS MIL: MIL RAMP GROUNDING POINTS UNRELIABLE.
-
-EDDS AERONAUTICAL INFORMATION SERVICE (AIS) HOURS OF SERVICE CHANGED	P0604/23
-From 01 Feb 2023 05:00 until 25 Mar 2023 21:00
-STUTTGART ARMY AFLD (SAAF) BASE OPERATION HOURS CHANGED TO
-0500-2100 MON-FRI, CLSD ON WEEKENDS EXCEPT PPR APPROVAL.
-AFTER HOURS CALL 0173-1652634.
-
-EDGG EDDS VOR/DME	A3607/22
-From 08 Jul 2022 08:55 until PERM
-STUTTGART DVOR/DME STG 116.85MHZ/CH115Y
-RADIAL 166 NOT USABLE.
-DVOR-PART: BEYOND 38NM AND BLW 7000FT AMSL
-DME-PART: BEYOND 43NM AND BLW 5400FT AMSL.
-</pre>)html");
+    QString result;
+    foreach (auto notam, m_notams) {
+        result += notam.m_text + "\n\n";
+    }
+    return "<pre>"+result+"</pre>";
 }

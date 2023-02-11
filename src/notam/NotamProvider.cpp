@@ -18,6 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QFile>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+
 #include "notam/NotamProvider.h"
 
 
@@ -33,7 +38,29 @@ void NOTAM::NotamProvider::deferredInitialization()
 }
 
 
-NOTAM::NotamList NOTAM::NotamProvider::notams()
+NOTAM::NotamList NOTAM::NotamProvider::notams(const QString& icaoLocation)
 {
-    return {};
+    NotamList notamList;
+
+    QFile jsonFile("/home/kebekus/Austausch/notams-response.json");
+    jsonFile.open(QIODeviceBase::ReadOnly);
+
+    auto doc = QJsonDocument::fromJson(jsonFile.readAll());
+    auto items = doc["items"].toArray();
+
+    foreach(auto item, items)
+    {
+        Notam notam;
+        notam.read(item.toObject());
+
+        if (notam.m_icaoLocation != icaoLocation)
+        {
+            continue;
+        }
+        notamList.m_notams.append(notam);
+    }
+
+    notamList.m_retrieved = QDateTime::currentDateTimeUtc();
+
+    return notamList;
 }

@@ -54,11 +54,21 @@ public:
         return GlobalObject::notamProvider();
     }
 
+    Q_PROPERTY(QDateTime lastUpdate READ lastUpdate NOTIFY lastUpdateChanged)
 
-    Q_INVOKABLE [[nodiscard]] static NOTAM::NotamList notams();
+    [[nodiscard]] QDateTime lastUpdate() const { return m_lastUpdate; }
+
+
+
+    Q_INVOKABLE [[nodiscard]] static NOTAM::NotamList notams(const QString& icaoLocation);
+
+signals:
+    void lastUpdateChanged();
 
 private:
     Q_DISABLE_COPY_MOVE(NotamProvider)
+
+    QDateTime m_lastUpdate;
 
 };
 

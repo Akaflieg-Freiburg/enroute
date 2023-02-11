@@ -34,6 +34,20 @@ CenteringDialog {
     modal: true
     standardButtons: Dialog.Close
 
+    Component {
+        id: notamDelegate
+
+        Label {
+            width: notamlistview.width
+
+            bottomPadding: 10
+
+            wrapMode: Text.WordWrap
+            text: model.modelData.richText
+            textFormat: Text.RichText
+        }
+    }
+
     ColumnLayout {
         anchors.fill: parent
 
@@ -82,24 +96,19 @@ CenteringDialog {
 
         }
 
-        ScrollView { // ScrollView with METAR & TAF information
-            id: sv
+        ListView {
+            id: notamlistview
 
             Layout.fillHeight: true
             Layout.fillWidth: true
-
-            contentWidth: availableWidth // Disable horizontal scrolling
+            Layout.preferredHeight: contentHeight
 
             clip: true
 
-            Label {
-                text: notamListDialog.notamList.text
-                width: sv.availableWidth
-                wrapMode: Text.WordWrap
-                textFormat: Text.RichText // OK
-            }
+            delegate: notamDelegate
+
+            model: notamListDialog.notamList.notams
+            ScrollIndicator.vertical: ScrollIndicator {}
         }
-
     }
-
 }

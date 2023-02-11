@@ -33,21 +33,23 @@ class Notam {
     QML_VALUE_TYPE(notam)
 
 public:
-    //
-    // Properties
-    //
+    void read(const QJsonObject& jsonObject);
+    QString richText() const;
 
-    Q_PROPERTY(QDateTime start MEMBER m_start)
-    Q_PROPERTY(QDateTime expiration MEMBER m_expiration)
+    Q_PROPERTY(QDateTime effectiveStart MEMBER m_effectiveStart)
+    Q_PROPERTY(QDateTime effectiveEnd MEMBER m_effectiveEnd)
     Q_PROPERTY(QString text MEMBER m_text)
-    Q_PROPERTY(QGeoCoordinate location MEMBER m_location)
+    Q_PROPERTY(QString richText READ richText)
+    Q_PROPERTY(QString icaoLocation MEMBER m_icaoLocation)
+    Q_PROPERTY(QGeoCoordinate coordinates MEMBER m_coordinates)
 
     Q_INVOKABLE [[nodiscard]] bool operator==(const NOTAM::Notam& rhs) const = default;
 
-    QDateTime m_start {{2023, 2, 28}, {11, 0}};
-    QDateTime m_expiration {{2023, 3, 28}, {11, 0}};
-    QString m_text {u"All runways closed"_qs};
-    QGeoCoordinate m_location {48.022778, 7.832500};
+    QDateTime m_effectiveStart;
+    QDateTime m_effectiveEnd;
+    QString m_text;
+    QString m_icaoLocation;
+    QGeoCoordinate m_coordinates;
 };
 
 } // namespace NOTAM

@@ -18,3 +18,33 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QJsonObject>
+
+#include "notam/Notam.h"
+
+void NOTAM::Notam::read(const QJsonObject& jsonObject)
+{
+    auto notam = jsonObject["properties"]["coreNOTAMData"]["notam"].toObject();
+
+    m_effectiveStart = QDateTime::fromString(notam["effectiveStart"].toString(), Qt::ISODate);
+    m_effectiveEnd = QDateTime::fromString(notam["effectiveEnd"].toString(), Qt::ISODate);
+    m_icaoLocation = notam["location"].toString();
+    m_text = notam["text"].toString();
+}
+
+
+QString NOTAM::Notam::richText() const
+{
+    QStringList result;
+
+    if (m_effectiveEnd.isValid())
+    {
+        result += QString("<strong>Effective from %1 to %2</strong>").arg(m_effectiveStart.toString("dd.MM.yy hh:00"), m_effectiveEnd.toString("dd.MM.yy hh:00"));
+    }
+    else
+    {
+        result += QString("<strong>Effective permanently from %1</strong>").arg(m_effectiveStart.toString("dd.MM.yy hh:00"));
+    }
+    result += m_text;
+    return result.join(" • ");
+}

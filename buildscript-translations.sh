@@ -4,7 +4,7 @@ set -e
 
 cd 3rdParty/enrouteText
 git pull origin master
-lupdate-qt5 ../../src -ts assets/enroute_es.ts
+#lupdate-qt5 ../../src -ts assets/enroute_es.ts
 
 cd ../../build-linux-qt6-debug
 ninja update_translations

@@ -37,7 +37,15 @@ CenteringDialog {
 
         clip: true
 
+        // Delays evaluation and prevents binding loops
+        Binding on implicitHeight {
+            value: lbl.implicitHeight
+            delayed: true    // Prevent intermediary values from being assigned
+        }
+
         Label {
+            id: lbl
+
             text: dialogMain.text
             width: dialogMain.availableWidth
             textFormat: Text.MarkdownText

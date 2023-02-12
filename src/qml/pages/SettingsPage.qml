@@ -448,18 +448,13 @@ Page {
         }
     }
 
-    CenteringDialog {
+    LongTextDialog {
         id: clearPasswordDialog
 
         title: qsTr("Clear Password Storage?")
         modal: true
 
-        Label {
-            width: clearPasswordDialog.availableWidth
-
-            text: qsTr("Once the storage is cleared, the passwords can no longer be retrieved.")
-            wrapMode: Text.Wrap
-        }
+        text: qsTr("Once the storage is cleared, the passwords can no longer be retrieved.")
 
         footer: DialogButtonBox {
             ToolButton {

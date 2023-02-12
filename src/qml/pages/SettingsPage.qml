@@ -158,16 +158,6 @@ Page {
                 }
             }
 
-            Label {
-                Layout.leftMargin: settingsPage.font.pixelSize
-                Layout.fillWidth: true
-                Layout.columnSpan: 2
-                text: qsTr("Map Features")
-                font.pixelSize: settingsPage.font.pixelSize*1.2
-                font.bold: true
-                color: Material.accent
-            }
-
             WordWrappingSwitchDelegate {
                 id: glidingSectors
                 text: qsTr("Gliding Sectors")

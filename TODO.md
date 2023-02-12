@@ -11,9 +11,9 @@
 
 * Fix problems with screenshots for google play
 
-* Property loops when changing font size
+* Route page: Menu
 
-* Aircraft page: "Clear field" buttons make nonsense 
+* Route page/Wind tab: delete buttons don't work
 
 
 # New Features

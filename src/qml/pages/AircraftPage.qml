@@ -519,10 +519,10 @@ Page {
             ToolButton {
                 icon.source: "/icons/material/ic_clear.svg"
                 Layout.alignment: Qt.AlignVCenter
-                enabled: descentSpeed.text !== ""
+                enabled: minimumSpeed.text !== ""
                 onClicked: {
-                    Navigator.aircraft.descentSpeed = aircraftPage.staticSpeed.fromKN(-1)
-                    descentSpeed.clear()
+                    Navigator.aircraft.minimumSpeed = aircraftPage.staticSpeed.fromKN(-1)
+                    minimumSpeed.clear()
                 }
             }
 
@@ -607,7 +607,7 @@ Page {
                 Layout.alignment: Qt.AlignVCenter
                 enabled: fuelConsumption.text !== ""
                 onClicked: {
-                    aircraft.fuelConsumptionInLPH = -1
+                    Navigator.aircraft.fuelConsumption = aircraftPage.staticVolumeFlow.fromLPH(-1)
                     fuelConsumption.clear()
                 }
             }

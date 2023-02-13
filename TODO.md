@@ -11,6 +11,10 @@
 
 * Fix problems with screenshots for google play
 
+* Route page: Menu
+
+* Route page/Wind tab: delete buttons don't work
+
 
 # New Features
 

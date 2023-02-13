@@ -95,6 +95,8 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 )html") + tr(R"html(
 <li><strong>Polish:</strong> Sławek Mikuła.</li>
 )html") + (R"html(
+<li><strong>Spanish:</strong> Luca Riva.</li>
+)html") + (R"html(
 </ul>
 )html") + tr(R"html(
 <h3>Alumni</h3>
@@ -271,7 +273,8 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     if (name == u":text/whatsnew.html"_qs)
     {
         return tr("<p>We have updated the technology base underlying this app. Please report any issues!</p>")
-                + "<p>" + tr("Our aviation maps will now receive daily updates, provided that new data is available.") + "</p>";
+                + "<p>" + tr("Our aviation maps will now receive daily updates, provided that new data is available.") + "</p>"
+                + "<p>" + tr("Luca Riva has kindly translated this app to Spanish.") + "</p>";
         // + tr("<p>We could need help with French translations. If you would like to help, if speak French and know how to use the GIT version control system, please let us know.</p>");
     }
 

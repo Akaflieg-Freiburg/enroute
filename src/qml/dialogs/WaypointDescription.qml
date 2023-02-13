@@ -574,18 +574,11 @@ CenteringDialog {
         onRejected: close()
     }
 
-    CenteringDialog { // WARNING   qrc:/akaflieg_freiburg/enroute/qml/dialogs/CenteringDialog.qml:31: TypeError: Cannot read property 'width' of null
+    LongTextDialog {
         id: overwriteDialog
 
         title: qsTr("Overwrite Current Flight Route?")
-
-        Label {
-            width: overwriteDialog.availableWidth
-
-            text: qsTr("Once overwritten, the current flight route cannot be restored.")
-            wrapMode: Text.Wrap
-            textFormat: Text.StyledText
-        }
+        text: qsTr("Once overwritten, the current flight route cannot be restored.")
 
         standardButtons: Dialog.No | Dialog.Yes
         modal: true

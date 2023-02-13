@@ -122,6 +122,9 @@ public:
     /*! \brief Last finite value of airspaceAltitudeLimit */
     Q_PROPERTY(Units::Distance lastValidAirspaceAltitudeLimit READ lastValidAirspaceAltitudeLimit NOTIFY lastValidAirspaceAltitudeLimitChanged)
 
+    /*! \brief Enlarge fonts */
+    Q_PROPERTY(bool largeFonts READ largeFonts WRITE setLargeFonts NOTIFY largeFontsChanged)
+
     /*! \brief Hash of the last "what's new" message that was shown to the user
      *
      * This property is used in the app to determine if the message has been
@@ -192,7 +195,13 @@ public:
 
     /*! \brief Getter function for property with the same name
      *
-     * @returns Property hasTranslation
+     * @returns Property largeFonts
+     */
+    [[nodiscard]] auto largeFonts() const -> bool { return settings.value(QStringLiteral("largeFonts"), false).toBool(); }
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property lastValidAirspaceAltitudeLimit
      */
     [[nodiscard]] auto lastValidAirspaceAltitudeLimit() const -> Units::Distance;
 
@@ -285,6 +294,12 @@ public:
 
     /*! \brief Getter function for property of the same name
      *
+     * @param newLargeFonts Property largeFonts
+     */
+    void setLargeFonts(bool newLargeFonts);
+
+    /*! \brief Getter function for property of the same name
+     *
      * @param lwnh Property lastWhatsNewHash
      */
     void setLastWhatsNewHash(Units::ByteSize lwnh);
@@ -348,6 +363,9 @@ signals:
 
     /*! \brief Notifier signal */
     void ignoreSSLProblemsChanged();
+
+    /*! \brief Notifier signal */
+    void largeFontsChanged();
 
     /*! \brief Notifier signal */
     void lastValidAirspaceAltitudeLimitChanged();

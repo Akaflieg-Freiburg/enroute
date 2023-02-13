@@ -34,6 +34,7 @@ Page {
     id: flightRoutePage
     title: qsTr("Route and Wind")
 
+    property angle staticAngle
     property speed staticSpeed
 
     Component {
@@ -537,7 +538,7 @@ Page {
                     Layout.alignment: Qt.AlignVCenter
                     enabled: windDirection.text !== ""
                     onClicked: {
-                        Navigator.wind.directionFrom = angle.nan()
+                        Navigator.wind.directionFrom = flightRoutePage.staticAngle.nan()
                         windDirection.clear()
                     }
                 }
@@ -692,7 +693,7 @@ Page {
         id: flightRouteAddWPDialog
 
         Connections {
-            target: global.demoRunner()
+            target: DemoRunner
 
             function onRequestOpenFlightRouteAddWPDialog() {
                 flightRouteAddWPDialog.open()
@@ -736,7 +737,6 @@ Page {
         property var waypoint
 
         onLoaded: {
-            item.anchors.centerIn = dialogLoader
             item.modal = true
             item.open()
         }
@@ -761,9 +761,9 @@ Page {
     Shortcut {
         sequence: "Ctrl+a"
         onActivated: {
-            dialogLoader.active = false
-            dialogLoader.source = "dialogs/FlightRouteAddWPDialog.qml"
-            dialogLoader.active = true
+            dlgLoader.active = false
+            dlgLoader.source = "../dialogs/FlightRouteAddWPDialog.qml"
+            dlgLoader.active = true
         }
     }
 

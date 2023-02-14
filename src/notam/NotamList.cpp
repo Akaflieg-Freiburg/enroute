@@ -37,22 +37,19 @@ QString NOTAM::NotamList::summary()
 {
     QStringList results;
 
-    if (m_notams.size() == 1)
-    {
-        results += ("One notam");
-    }
     if (m_notams.size() > 1)
     {
-        results += QString("%1 notams").arg(m_notams.size());
+        results += u"NOTAMs available."_qs;
     }
 
     if (!m_retrieved.isValid() || (m_retrieved.addDays(1) <  QDateTime::currentDateTime()))
     {
-        results += QString("Notam list possibly outdated");
+        results += u"Data potentially outdated."_qs;
     }
 
-    return results.join(" • ");
+    return results.join(u" • "_qs);
 }
+
 
 QString NOTAM::NotamList::text() 
 {

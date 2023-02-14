@@ -24,12 +24,15 @@
 
 void NOTAM::Notam::read(const QJsonObject& jsonObject)
 {
-    auto notam = jsonObject["properties"]["coreNOTAMData"]["notam"].toObject();
+    auto notam = jsonObject[u"properties"_qs][u"coreNOTAMData"_qs][u"notam"_qs].toObject();
 
-    m_effectiveStart = QDateTime::fromString(notam["effectiveStart"].toString(), Qt::ISODate);
-    m_effectiveEnd = QDateTime::fromString(notam["effectiveEnd"].toString(), Qt::ISODate);
-    m_icaoLocation = notam["location"].toString();
-    m_text = notam["text"].toString();
+    m_effectiveStartString = notam[u"effectiveStart"_qs].toString();
+    m_effectiveStart = QDateTime::fromString(m_effectiveStartString, Qt::ISODate);
+    m_effectiveEndString = notam[u"effectiveEnd"_qs].toString();
+    m_effectiveEnd = QDateTime::fromString(m_effectiveEndString, Qt::ISODate);
+    m_icaoLocation = notam[u"location"_qs].toString();
+    m_text = notam[u"text"_qs].toString();
+    m_traffic = notam[u"traffic"_qs].toString();
 }
 
 
@@ -39,12 +42,13 @@ QString NOTAM::Notam::richText() const
 
     if (m_effectiveEnd.isValid())
     {
-        result += QString("<strong>Effective from %1 to %2</strong>").arg(m_effectiveStart.toString("dd.MM.yy hh:00"), m_effectiveEnd.toString("dd.MM.yy hh:00"));
+        result += u"<strong>Effective from %1 to %2</strong>"_qs.arg(m_effectiveStart.toString(u"dd.MM.yy hh:00"_qs), m_effectiveEnd.toString(u"dd.MM.yy hh:00"_qs));
     }
     else
     {
-        result += QString("<strong>Effective permanently from %1</strong>").arg(m_effectiveStart.toString("dd.MM.yy hh:00"));
+        result += u"<strong>Effective from %1</strong>"_qs.arg(m_effectiveStart.toString(u"dd.MM.yy hh:00"_qs));
+        result += u"<strong>%1</strong>"_qs.arg(m_effectiveEndString);
     }
     result += m_text;
-    return result.join(" • ");
+    return result.join(u" • "_qs);
 }

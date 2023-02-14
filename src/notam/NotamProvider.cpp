@@ -42,11 +42,11 @@ NOTAM::NotamList NOTAM::NotamProvider::notams(const QString& icaoLocation)
 {
     NotamList notamList;
 
-    QFile jsonFile("/home/kebekus/Austausch/notams-response.json");
+    QFile jsonFile(u"/home/kebekus/Austausch/notams-response.json"_qs);
     jsonFile.open(QIODeviceBase::ReadOnly);
 
     auto doc = QJsonDocument::fromJson(jsonFile.readAll());
-    auto items = doc["items"].toArray();
+    auto items = doc[u"items"_qs].toArray();
 
     foreach(auto item, items)
     {
@@ -54,6 +54,10 @@ NOTAM::NotamList NOTAM::NotamProvider::notams(const QString& icaoLocation)
         notam.read(item.toObject());
 
         if (notam.m_icaoLocation != icaoLocation)
+        {
+            continue;
+        }
+        if (notam.m_traffic == "I")
         {
             continue;
         }

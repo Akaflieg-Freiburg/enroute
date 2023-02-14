@@ -45,11 +45,14 @@ public:
 
     Q_INVOKABLE [[nodiscard]] bool operator==(const NOTAM::Notam& rhs) const = default;
 
+    QString m_effectiveStartString;
+    QString m_effectiveEndString;
     QDateTime m_effectiveStart;
     QDateTime m_effectiveEnd;
     QString m_text;
     QString m_icaoLocation;
     QGeoCoordinate m_coordinates;
+    QString m_traffic;
 };
 
 } // namespace NOTAM

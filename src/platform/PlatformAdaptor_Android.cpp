@@ -45,6 +45,26 @@ void Platform::PlatformAdaptor::deferredInitialization()
 // Methods
 //
 
+auto Platform::PlatformAdaptor::checkPermissions() -> QString
+{
+    QStringList missingPermissions;
+
+    // Check is required permissions have been granted
+    foreach(auto permission, requiredPermissions)
+    {
+        auto resultFuture = QtAndroidPrivate::checkPermission(permission);
+        resultFuture.waitForFinished();
+        if (resultFuture.result() == QtAndroidPrivate::PermissionResult::Denied)
+        {
+            missingPermissions += permission;
+            qWarning() << "Required permission missing" << permission;
+        }
+    }
+
+    return missingPermissions.join(" · ");
+}
+
+
 auto Platform::PlatformAdaptor::currentSSID() -> QString
 {
     QJniObject stringObject = QJniObject::callStaticObjectMethod("de/akaflieg_freiburg/enroute/MobileAdaptor",
@@ -81,23 +101,6 @@ void Platform::PlatformAdaptor::disableScreenSaver()
             env->ExceptionClear();
         }
     });
-}
-
-
-auto Platform::PlatformAdaptor::hasRequiredPermissions() -> bool
-{
-    // Check is required permissions have been granted
-    foreach(auto permission, requiredPermissions)
-    {
-        auto resultFuture = QtAndroidPrivate::checkPermission(permission);
-        resultFuture.waitForFinished();
-        if (resultFuture.result() == QtAndroidPrivate::PermissionResult::Denied)
-        {
-            qWarning() << "Required permission missing" << permission;
-            return false;
-        }
-    }
-    return true;
 }
 
 

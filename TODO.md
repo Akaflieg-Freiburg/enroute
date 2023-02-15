@@ -11,16 +11,10 @@
 
 * Fix problems with screenshots for google play
 
-* Route page: Menu
-
-* Route page/Wind tab: delete buttons don't work
-
 
 # New Features
 
 * Indicator that maps are being loaded
-
-* Spanish translations
 
 * Permissions: Explanation should be given when app refuses to start!
 

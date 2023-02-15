@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2021-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,6 +21,9 @@
 #pragma once
 
 #include <QQmlApplicationEngine>
+#include <QQmlEngine>
+
+#include "GlobalObject.h"
 
 
 /*! \brief Remote controls the app and takes screenshot images
@@ -32,6 +35,8 @@
 
 class DemoRunner : public QObject {
     Q_OBJECT
+    QML_ELEMENT
+    QML_SINGLETON
 
 public:
     /*! \brief Creates a new DemoRunner
@@ -42,8 +47,17 @@ public:
      */
     explicit DemoRunner(QObject *parent = nullptr);
 
+    // No default constructor, important for QML singleton
+    explicit DemoRunner() = delete;
+
     // Standard destructor
     ~DemoRunner() override = default;
+
+    // factory function for QML singleton
+    static DemoRunner* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
+    {
+        return GlobalObject::demoRunner();
+    }
 
     /*! \brief Set pointer to QQmlApplicationEngine
      *

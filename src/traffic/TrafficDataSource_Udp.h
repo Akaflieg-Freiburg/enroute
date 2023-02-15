@@ -94,7 +94,7 @@ private:
     // array. This is used to sort out doubly sent datagrams. The nextHashIndex
     // points to the next vector entry that will be re-written.
     QVector<uint> receivedDatagramHashes {512, 0};
-    int nextHashIndex {0};
+    qsizetype nextHashIndex {0};
 
     // GPS altitude of owncraft
     Units::Distance m_trueAltitude;

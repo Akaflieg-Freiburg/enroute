@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include <QQmlEngine>
+
 #include "units/Angle.h"
 #include "units/Speed.h"
 
@@ -29,6 +31,7 @@ namespace Weather {
 
 class Wind {
     Q_GADGET
+    QML_VALUE_TYPE(wind)
 
 public:
 

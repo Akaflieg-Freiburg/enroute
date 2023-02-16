@@ -33,6 +33,8 @@ namespace Positioning {
  *  This class is a thin wrapper around QGeoPositionInfoSource. It constructs a
  *  default QGeoPositionInfoSource and forwards the data provided by that source
  *  via the PositionInfoSource_Abstract interface that it implements.
+ *
+ *  Data is only provided after startUpdates() has been called.
  */
 
 class PositionInfoSource_Satellite : public PositionInfoSource_Abstract
@@ -45,6 +47,13 @@ public:
      * @param parent The standard QObject parent pointer
      */
     explicit PositionInfoSource_Satellite(QObject *parent = nullptr);
+
+    /*! \brief startUpdates
+     *
+     *  Requests permissions if necessary and starts to provide data
+     *  if permissions were granted.
+     */
+    void startUpdates();
 
 private slots:
     void onPositionUpdated(const QGeoPositionInfo &info);

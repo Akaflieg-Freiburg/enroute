@@ -117,6 +117,7 @@ CenteringDialog {
 
             function accept() {
                 PlatformAdaptor.requestPermissionsSync()
+                PositionProvider.startUpdates()
             }
         }
     }
@@ -138,7 +139,9 @@ CenteringDialog {
 
     function conditionalOpen() {
         var missingPermissionsText = PlatformAdaptor.checkPermissions()
-        if (missingPermissionsText !== "")
+        if (missingPermissionsText === "")
+            PositionProvider.startUpdates()
+        else
             stack.push(permissions, {"dialogMain": dialogMain, "text": missingPermissionsText})
         if (GlobalSettings.privacyHash !== Librarian.getStringHashFromRessource(":text/privacy.html"))
             stack.push(privacy, {"dialogMain": dialogMain})

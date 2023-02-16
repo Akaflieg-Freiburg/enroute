@@ -161,11 +161,7 @@ void Platform::PlatformAdaptor::onGUISetupCompleted()
 
 void Platform::PlatformAdaptor::requestPermissionsSync()
 {
-    auto permission = QtAndroidPrivate::requestPermission(u"android.permission.ACCESS_COARSE_LOCATION"_qs);
-    permission.waitForFinished();
-    permission = QtAndroidPrivate::requestPermission(u"android.permission.ACCESS_FINE_LOCATION"_qs);
-    permission.waitForFinished();
-    permission = QtAndroidPrivate::requestPermission(u"android.permission.POST_NOTIFICATIONS"_qs);
+    auto permission = QtAndroidPrivate::requestPermission(u"android.permission.POST_NOTIFICATIONS"_qs);
     permission.waitForFinished();
 }
 

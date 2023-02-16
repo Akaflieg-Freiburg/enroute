@@ -348,7 +348,7 @@ Page {
                 Layout.fillWidth: true
                 clip: true
                 model: DataManager.mapSets.downloadables
-                delegate: mapItem
+                delegate: MapSet {}
                 ScrollIndicator.vertical: ScrollIndicator {}
 
                 section.property: "modelData.section"
@@ -372,7 +372,7 @@ Page {
                 Layout.fillWidth: true
                 clip: true
                 model: DataManager.databases.downloadables
-                delegate: mapItem
+                delegate: MapSet {}
                 ScrollIndicator.vertical: ScrollIndicator {}
 
                 section.property: "modelData.section"

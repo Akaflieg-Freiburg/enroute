@@ -53,10 +53,14 @@ public:
     explicit Downloadable_MultiFile(DataManagement::Downloadable_MultiFile::UpdatePolicy updatePolicy, QObject *parent = nullptr);
 
 
-
     //
     // PROPERTIES
     //
+
+    // Repeated from Downloadable_Abstract to keep QML happy
+    Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
+    Q_PROPERTY(QStringList files READ files NOTIFY filesChanged)
+    Q_PROPERTY(Units::ByteSize updateSize READ updateSize NOTIFY updateSizeChanged)
 
     /*! \brief List of Downloadables in this group
      *
@@ -82,7 +86,7 @@ public:
      *
      *   @returns Property downloadables
      */
-    [[nodiscard]] auto downloadables() -> QVector<DataManagement::Downloadable_Abstract*>;
+    [[nodiscard]] auto downloadables() -> QList<DataManagement::Downloadable_Abstract*>;
 
     /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
      *
@@ -118,7 +122,7 @@ public:
      *
      * @returns Property updateSize
      */
-    [[nodiscard]] auto updateSize() -> qint64 override { return m_updateSize; }
+    [[nodiscard]] auto updateSize() -> Units::ByteSize override { return m_updateSize; }
 
 
     //

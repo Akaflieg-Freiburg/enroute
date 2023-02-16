@@ -220,7 +220,7 @@ auto DataManagement::Downloadable_SingleFile::infoText() -> QString
 }
 
 
-auto DataManagement::Downloadable_SingleFile::updateSize() -> qint64
+auto DataManagement::Downloadable_SingleFile::updateSize() -> Units::ByteSize
 {
     if (downloading())
     {

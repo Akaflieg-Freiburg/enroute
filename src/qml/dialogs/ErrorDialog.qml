@@ -42,7 +42,7 @@ CenteringDialog {
             id: lbl
             text: dialogLoader.text
             width: dlg.availableWidth
-            textFormat: Text.StyledText
+            textFormat: Text.RichText
             linkColor: Material.accent
             wrapMode: Text.Wrap
             onLinkActivated: Qt.openUrlExternally(link)

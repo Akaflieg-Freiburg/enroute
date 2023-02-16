@@ -246,7 +246,7 @@ ApplicationWindow {
                             enabled: Navigator.flightStatus !== Navigator.Flight
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
-                                stackView.push("pages/DataManagerPage.qml")
+                                stackView.push("pages/DataManagerPage.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
                                 libraryMenu.close()
                                 drawer.close()
                             }
@@ -812,7 +812,7 @@ ApplicationWindow {
 
         function onAction(act) {
             if ((act === Notifier.DownloadInfo_Clicked) && (stackView.currentItem.objectName !== "DataManagerPage")) {
-                stackView.push("pages/DataManagerPage.qml")
+                stackView.push("pages/DataManagerPage.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
             }
             if ((act === Notifier.TrafficReceiverSelfTestError_Clicked) && (stackView.currentItem.objectName !== "TrafficReceiverPage")) {
                 stackView.push("pages/TrafficReceiver.qml")
@@ -821,7 +821,7 @@ ApplicationWindow {
                 stackView.push("pages/TrafficReceiver.qml")
             }
             if ((act === Notifier.GeoMapUpdatePending_Clicked) && (stackView.currentItem.objectName !== "DataManagerPage")) {
-                stackView.push("pages/DataManagerPage.qml")
+                stackView.push("pages/DataManagerPage.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
             }
             if (act === Notifier.GeoMapUpdatePending_UpdateRequested) {
                 DataManager.mapsAndData.update()

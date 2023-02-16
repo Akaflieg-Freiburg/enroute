@@ -25,6 +25,7 @@
 #include <QFileInfo>
 #include <QNetworkReply>
 #include <QPointer>
+#include <QQmlEngine>
 #include <QSaveFile>
 
 #include "Downloadable_Abstract.h"
@@ -50,6 +51,7 @@ namespace DataManagement
 class Downloadable_SingleFile : public Downloadable_Abstract
 {
     Q_OBJECT
+    QML_ELEMENT
 
 public:
     /*! \brief Standard constructor
@@ -89,6 +91,10 @@ public:
     //
     // Properties
     //
+
+    // Repeated from Downloadable_Abstract to keep QML happy
+    Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
+    Q_PROPERTY(bool hasFile READ hasFile NOTIFY hasFileChanged)
 
     /*! \brief Download progress
      *
@@ -196,7 +202,7 @@ public:
      *
      * @returns Property updateSize
      */
-    [[nodiscard]] auto updateSize() -> qint64 override;
+    [[nodiscard]] auto updateSize() -> Units::ByteSize override;
 
     /*! \brief Getter function for the property with the same name
      *

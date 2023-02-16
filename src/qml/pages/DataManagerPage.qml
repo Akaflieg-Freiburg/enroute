@@ -32,17 +32,28 @@ Page {
     id: pg
     objectName: "DataManagerPage"
 
+    required property var dialogLoader
+    required property var stackView
+
     title: qsTr("Map and Data Library")
 
     Component {
         id: sectionHeading
 
-        Label {
-            x: view.font.pixelSize
-            text: section
-            font.pixelSize: view.font.pixelSize*1.2
-            font.bold: true
-            color: Material.accent
+        Control {
+            required property string section
+
+            height: lbl.height
+
+            Label {
+                id: lbl
+
+                x: font.pixelSize
+                text: parent.section
+                font.pixelSize: parent.font.pixelSize*1.2
+                font.bold: true
+                color: Material.accent
+            }
         }
     }
 
@@ -51,8 +62,11 @@ Page {
 
         Item {
             id: element
-            width: pg.width
+
+            width: parent ? parent.width : undefined
             height: gridLayout.height
+
+            required property var model
 
             function startFileDownload() {
                 // if the user downloads too many, show them a dialog telling them that
@@ -61,7 +75,7 @@ Page {
                 if (nFilesTotal > 15) {
                     dialogLoader.active = false;
                     dialogLoader.dialogArgs = {onAcceptedCallback: model.modelData.startDownload};
-                    dialogLoader.source = "dialogs/TooManyDownloadsDialog.qml";
+                    dialogLoader.source = "../dialogs/TooManyDownloadsDialog.qml";
                     dialogLoader.active = true;
                 } else {
                     model.modelData.startDownload();
@@ -81,22 +95,23 @@ Page {
                 columns: 6
 
                 WordWrappingItemDelegate {
-                    text: model.modelData.objectName + `<br><font color="#606060" size="2">${model.modelData.infoText}</font>`
+                    text: element.model.modelData.objectName + `<br><font color="#606060" size="2">${element.model.modelData.infoText}</font>`
                     icon.source: {
-                        if (model.modelData.updatable)
+                        if (element.model.modelData.updatable)
                             return "/icons/material/ic_new_releases.svg";
-                        if (model.modelData.contentType === Downloadable_Abstract.TerrainMap)
+                        if (element.model.modelData.contentType === Downloadable_Abstract.TerrainMap)
                             return "/icons/material/ic_terrain.svg";
-                        if (model.modelData.contentType === Downloadable_Abstract.Data)
+                        if (element.model.modelData.contentType === Downloadable_Abstract.Data)
                             return "/icons/material/ic_library_books.svg"
                         return "/icons/material/ic_map.svg";
                     }
                     Layout.fillWidth: true
-                    enabled: !model.modelData.hasFile
+                    enabled: !element.model.modelData.hasFile
                     onClicked: {
-                        if (!model.modelData.downloading && (!model.modelData.hasFile || model.modelData.updatable)) {
+                        if (!element.model.modelData.downloading
+                                && (!element.model.modelData.hasFile || element.model.modelData.updatable)) {
                             PlatformAdaptor.vibrateBrief()
-                            startFileDownload()
+                            element.startFileDownload()
                         }
                     }
                 }
@@ -104,30 +119,30 @@ Page {
                 ToolButton {
                     id: downloadButton
                     icon.source: "/icons/material/ic_file_download.svg"
-                    visible: !model.modelData.hasFile && !model.modelData.downloading
+                    visible: !element.model.modelData.hasFile && !element.model.modelData.downloading
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
-                        startFileDownload()
+                        element.startFileDownload()
                     }
                 }
 
                 ToolButton {
                     id: updateButton
                     icon.source: "/icons/material/ic_refresh.svg"
-                    visible: (model.modelData.updateSize !== 0) && !model.modelData.downloading
+                    visible: (!element.model.modelData.updateSize.isNull()) && !element.model.modelData.downloading
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
-                        model.modelData.update()
+                        element.model.modelData.update()
                     }
                 }
 
                 ToolButton {
                     id: cancelButton
                     icon.source: "/icons/material/ic_cancel.svg"
-                    visible: model.modelData.downloading
+                    visible: element.model.modelData.downloading
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
-                        model.modelData.stopDownload()
+                        element.model.modelData.stopDownload()
                     }
                 }
 
@@ -135,7 +150,7 @@ Page {
                     id: removeButton
                     icon.source: "/icons/material/ic_more_horiz.svg"
 
-                    visible: model.modelData.hasFile & !model.modelData.downloading
+                    visible: element.model.modelData.hasFile & !element.model.modelData.downloading
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
                         removeMenu.popup()
@@ -151,9 +166,11 @@ Page {
 
                             onTriggered: {
                                 PlatformAdaptor.vibrateBrief()
-                                infoDialog.title = model.modelData.objectName
-                                infoDialog.text = model.modelData.description
-                                infoDialog.open()
+                                dialogLoader.active = false
+                                dialogLoader.title = element.model.modelData.objectName
+                                dialogLoader.text = element.model.modelData.description
+                                dialogLoader.source = "../dialogs/ErrorDialog.qml"
+                                dialogLoader.active = true
                             }
                         }
                         Action {
@@ -163,7 +180,7 @@ Page {
 
                             onTriggered: {
                                 PlatformAdaptor.vibrateBrief()
-                                model.modelData.deleteFiles()
+                                element.model.modelData.deleteFiles()
                             }
                         }
                     }
@@ -172,15 +189,33 @@ Page {
             }
 
             Connections {
-                target: model.modelData
+                target: element.model.modelData
                 function onError(objectName, message) {
                     dialogLoader.active = false
                     dialogLoader.title = qsTr("Download Error")
                     dialogLoader.text = qsTr("<p>Failed to download <strong>%1</strong>.</p><p>Reason: %2.</p>").arg(objectName).arg(message)
-                    dialogLoader.source = "dialogs/ErrorDialog.qml"
+                    dialogLoader.source = "../dialogs/ErrorDialog.qml"
                     dialogLoader.active = true
                 }
             }
+
+            Loader {
+                id: dialogLoader
+
+                property string title
+                property string text
+                property var dialogArgs: undefined
+
+                onLoaded: {
+                    item.modal = true
+                    if (dialogArgs && item.hasOwnProperty('dialogArgs')) {
+                        item.dialogArgs = dialogArgs
+                    }
+                    item.open()
+                }
+
+            }
+
 
         }
 
@@ -204,7 +239,7 @@ Page {
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                stackView.pop()
+                pg.stackView.pop()
             }
         }
 
@@ -217,7 +252,7 @@ Page {
             anchors.leftMargin: 72
             anchors.right: headerMenuToolButton.left
 
-            text: stackView.currentItem.title
+            text: pg.stackView.currentItem.title
             elide: Label.ElideRight
             font.pixelSize: 20
             verticalAlignment: Qt.AlignVCenter
@@ -259,12 +294,12 @@ Page {
                 id: downloadUpdatesMenu
 
                 text: qsTr("Download all updates…")
-                enabled: (DataManager.items.updateSize !== 0)
+                enabled: (!DataManager.items.updateSize.isNull())
 
                 onTriggered: {
                     PlatformAdaptor.vibrateBrief()
                     highlighted = false
-                    DataManager.items.updateAll()
+                    DataManager.items.update()
                 }
             }
 
@@ -302,7 +337,7 @@ Page {
             anchors.right: parent.right
             anchors.bottom: parent.bottom
 
-            anchors.bottomMargin: footer.visible ? 0 : SafeInsets.bottom
+            anchors.bottomMargin: pg.footer.visible ? 0 : SafeInsets.bottom
             anchors.leftMargin: SafeInsets.left
             anchors.rightMargin: SafeInsets.right
 
@@ -363,8 +398,8 @@ Page {
 
         anchors.fill: parent
 
-        leftPadding: view.font.pixelSize*2
-        rightPadding: view.font.pixelSize*2
+        leftPadding: font.pixelSize*2
+        rightPadding: font.pixelSize*2
 
         background: Rectangle {color: "white"}
         visible: DataManager.appUpdateRequired
@@ -382,10 +417,10 @@ Page {
         id: noMapListWarning
 
         anchors.fill: parent
-        anchors.bottomMargin: view.font.pixelSize
-        anchors.leftMargin: view.font.pixelSize
-        anchors.rightMargin: view.font.pixelSize
-        anchors.topMargin: view.font.pixelSize
+        anchors.bottomMargin: font.pixelSize
+        anchors.leftMargin: font.pixelSize
+        anchors.rightMargin: font.pixelSize
+        anchors.topMargin: font.pixelSize
 
         background: Rectangle {color: "white"}
         visible: !DataManager.mapList.downloading && !DataManager.mapList.hasFile
@@ -423,8 +458,8 @@ Page {
                 textFormat: Text.RichText
                 wrapMode: Text.Wrap
 
-                leftPadding: view.font.pixelSize*2
-                rightPadding: view.font.pixelSize*2
+                leftPadding: font.pixelSize*2
+                rightPadding: font.pixelSize*2
 
                 text: qsTr("<h3>Download in progress…</h3><p>Please stand by while we download the list of available maps from the server…</p>")
             }
@@ -445,7 +480,7 @@ Page {
         Connections {
             target: DataManager
             function ondownloadingRemoteItemListChanged () {
-                if (DataManager.downloadingRemoteItemList) {
+                if (DataManager.mapList.downloading) {
                     downloadIndicator.visible = true
                     downloadIndicator.opacity = 1.0
                 } else
@@ -502,19 +537,12 @@ Page {
     Connections {
         target: DataManager
         function onError (message) {
-            dialogLoader.active = false
-            dialogLoader.title = qsTr("Download Error")
-            dialogLoader.text = qsTr("<p>Failed to download the list of aviation maps.</p><p>Reason: %1.</p>").arg(message)
-            dialogLoader.source = "dialogs/ErrorDialog.qml"
-            dialogLoader.active = true
+            pg.dialogLoader.active = false
+            pg.dialogLoader.title = qsTr("Download Error")
+            pg.dialogLoader.text = qsTr("<p>Failed to download the list of aviation maps.</p><p>Reason: %1.</p>").arg(message)
+            pg.dialogLoader.source = "../dialogs/ErrorDialog.qml"
+            pg.dialogLoader.active = true
         }
-    }
-
-    LongTextDialog {
-        id: infoDialog
-
-        text: ""
-        standardButtons: Dialog.Ok
     }
 
 } // Page

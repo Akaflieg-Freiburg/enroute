@@ -47,21 +47,51 @@ void Platform::PlatformAdaptor::deferredInitialization()
 
 auto Platform::PlatformAdaptor::checkPermissions() -> QString
 {
-    QStringList missingPermissions;
+    QStringList results;
 
-    // Check is required permissions have been granted
-    foreach(auto permission, requiredPermissions)
+    auto coarseLocationFuture = QtAndroidPrivate::checkPermission(u"android.permission.ACCESS_COARSE_LOCATION"_qs);
+    coarseLocationFuture.waitForFinished();
+    auto fineLocationFuture = QtAndroidPrivate::checkPermission(u"android.permission.ACCESS_FINE_LOCATION"_qs);
+    fineLocationFuture.waitForFinished();
+    auto notificationFuture = QtAndroidPrivate::checkPermission(u"android.permission.POST_NOTIFICATIONS"_qs);
+    notificationFuture.waitForFinished();
+
+    if ((coarseLocationFuture.result() != QtAndroidPrivate::PermissionResult::Authorized)
+            || (fineLocationFuture.result() != QtAndroidPrivate::PermissionResult::Authorized))
     {
-        auto resultFuture = QtAndroidPrivate::checkPermission(permission);
-        resultFuture.waitForFinished();
-        if (resultFuture.result() == QtAndroidPrivate::PermissionResult::Denied)
+        QString result;
+        result = "<strong>ACCESS_COARSE_LOCATION</strong> and <strong>ACCESS_FINE_LOCATION</strong>: "
+                + tr("Enroute Flight Navigation needs to access your precise location. "
+                     "The app uses this data to show your position on the moving "
+                     "map and to provide relevant aeronautical information.");
+        if ((coarseLocationFuture.result() == QtAndroidPrivate::PermissionResult::Denied)
+                || (fineLocationFuture.result() == QtAndroidPrivate::PermissionResult::Denied))
         {
-            missingPermissions += permission;
-            qWarning() << "Required permission missing" << permission;
+            result += " "
+                    + tr("This permission is currently <strong>denied</strong>. "
+                         "If the permission has been denied repeatedly, the system may "
+                         "block the request in the next step. In that case, you may need "
+                         "to use the system settings to grant the permission manually. "
+                         "Some users find the system settings difficult to navigate and "
+                         "prefer to re-install the app.");
         }
+        results << result;
     }
 
-    return missingPermissions.join(" · ");
+    if (notificationFuture.result() == QtAndroidPrivate::PermissionResult::Undetermined)
+    {
+        results << "<strong>POST_NOTIFICATIONS</strong>: "
+                   + tr("The app uses notifications, for instance to inform the user about "
+                        "available map updates.");
+    }
+
+    QString final;
+    foreach(auto result, results)
+    {
+        final += "<p>" + result + "</p>";
+    }
+
+    return final;
 }
 
 
@@ -126,13 +156,12 @@ void Platform::PlatformAdaptor::onGUISetupCompleted()
 
 void Platform::PlatformAdaptor::requestPermissionsSync()
 {
-    QStringList permissions;
-    permissions << requiredPermissions << optionalPermissions;
-    foreach(auto permission, permissions)
-    {
-        auto resultFuture = QtAndroidPrivate::requestPermission(permission);
-        resultFuture.waitForFinished();
-    }
+    auto permission = QtAndroidPrivate::requestPermission(u"android.permission.ACCESS_COARSE_LOCATION"_qs);
+    permission.waitForFinished();
+    permission = QtAndroidPrivate::requestPermission(u"android.permission.ACCESS_FINE_LOCATION"_qs);
+    permission.waitForFinished();
+    permission = QtAndroidPrivate::requestPermission(u"android.permission.POST_NOTIFICATIONS"_qs);
+    permission.waitForFinished();
 }
 
 

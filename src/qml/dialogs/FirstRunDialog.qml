@@ -84,6 +84,36 @@ CenteringDialog {
         }
     }
 
+    Component {
+        id: permissions
+
+        ScrollView{
+            id: sv
+
+            required property var dialogMain
+            required property string text
+
+            contentWidth: availableWidth // Disable horizontal scrolling
+
+            clip: true
+
+            Label {
+                text: "<h3>" + qsTr("Permissions") + "</h3>"
+                      + "<p>" + qsTr("Please take a minute to review our privacy policies.") + "</p>"
+                      + sv.text
+                width: sv.dialogMain.availableWidth
+                textFormat: Text.RichText
+                linkColor: Material.accent
+                wrapMode: Text.Wrap
+                onLinkActivated: (link) => Qt.openUrlExternally(link)
+            }
+
+            function accept() {
+                PlatformAdaptor.requestPermissionsSync()
+            }
+        }
+    }
+
     closePolicy: Popup.NoAutoClose
     modal: true
 
@@ -100,6 +130,9 @@ CenteringDialog {
     }
 
     function conditionalOpen() {
+        var missingPermissionsText = PlatformAdaptor.checkPermissions()
+        if (missingPermissionsText !== "")
+            stack.push(permissions, {"dialogMain": dialogMain, "text": missingPermissionsText})
         if (GlobalSettings.privacyHash !== Librarian.getStringHashFromRessource(":text/privacy.html"))
             stack.push(privacy, {"dialogMain": dialogMain})
         if (GlobalSettings.acceptedTerms === 0)

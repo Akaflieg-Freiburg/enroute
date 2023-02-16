@@ -84,25 +84,26 @@ void DataManagement::DataManager::cleanDataDirectory()
     while (fileIterator.hasNext())
     {
         fileIterator.next();
-        if (fileIterator.filePath().endsWith(QLatin1String(".geojson.geojson")) || fileIterator.filePath().endsWith(QLatin1String(".mbtiles.mbtiles")))
+        if (fileIterator.filePath().endsWith(u".geojson.geojson"_qs)
+                || fileIterator.filePath().endsWith(u".mbtiles.mbtiles"_qs))
         {
             misnamedFiles += fileIterator.filePath();
         }
-        if (!fileIterator.filePath().endsWith(QLatin1String(".terrain")) &&
-                !fileIterator.filePath().endsWith(QLatin1String(".geojson")) &&
-                !fileIterator.filePath().endsWith(QLatin1String(".mbtiles")) &&
-                !fileIterator.filePath().endsWith(QLatin1String(".raster")) &&
-                !fileIterator.filePath().endsWith(QLatin1String(".txt")))
+        if (!fileIterator.filePath().endsWith(u".terrain"_qs) &&
+                !fileIterator.filePath().endsWith(u".geojson"_qs) &&
+                !fileIterator.filePath().endsWith(u".mbtiles"_qs) &&
+                !fileIterator.filePath().endsWith(u".raster"_qs) &&
+                !fileIterator.filePath().endsWith(u".txt"_qs))
         {
             unexpectedFiles += fileIterator.filePath();
         }
 
         // Delete aviation map files that are no longer supported, though they existed in earlier versions of this app
-        if (fileIterator.filePath().endsWith(QLatin1String("Ireland and Northern Ireland.terrain")) ||
-                fileIterator.filePath().endsWith(QLatin1String("Slowenia.geojson")) ||
-                fileIterator.filePath().endsWith(QLatin1String("United Kingdom.geojson")) ||
-                fileIterator.filePath().endsWith(QLatin1String("Canada.geojson")) ||
-                fileIterator.filePath().endsWith(QLatin1String("United States.geojson")))
+        if (fileIterator.filePath().endsWith(u"Ireland and Northern Ireland.terrain"_qs) ||
+                fileIterator.filePath().endsWith(u"Slowenia.geojson"_qs) ||
+                fileIterator.filePath().endsWith(u"United Kingdom.geojson"_qs) ||
+                fileIterator.filePath().endsWith(u"Canada.geojson"_qs) ||
+                fileIterator.filePath().endsWith(u"United States.geojson"_qs))
         {
             unexpectedFiles += fileIterator.filePath();
         }
@@ -142,10 +143,10 @@ auto DataManagement::DataManager::import(const QString& fileName, const QString&
     switch(mbtiles.format())
     {
     case GeoMaps::MBTILES::Raster:
-        newFileName += QLatin1String(".raster");
+        newFileName += u".raster"_qs;
         break;
     case GeoMaps::MBTILES::Vector:
-        newFileName += QLatin1String(".mbtiles");
+        newFileName += u".mbtiles"_qs;
         break;
     case GeoMaps::MBTILES::Unknown:
         return tr("Unable to recognize map file format.");
@@ -216,10 +217,10 @@ auto DataManagement::DataManager::createOrRecycleItem(const QUrl &url, const QSt
     // Construct a new downloadable object and add to appropriate groups
     auto* downloadable = new DataManagement::Downloadable_SingleFile(url, localFileName, this);
     downloadable->setObjectName(localFileName.section(QStringLiteral("/"), -1, -1).section(QStringLiteral("."), 0, -2));
-    if (localFileName.endsWith(QLatin1String("geojson")) ||
-            localFileName.endsWith(QLatin1String("mbtiles")) ||
-            localFileName.endsWith(QLatin1String("raster")) ||
-            localFileName.endsWith(QLatin1String("terrain")))
+    if (localFileName.endsWith(u"geojson"_qs) ||
+            localFileName.endsWith(u"mbtiles"_qs) ||
+            localFileName.endsWith(u"raster"_qs) ||
+            localFileName.endsWith(u"terrain"_qs))
     {
         if (url.isValid())
         {
@@ -255,25 +256,25 @@ auto DataManagement::DataManager::createOrRecycleItem(const QUrl &url, const QSt
     }
 
     m_items.add(downloadable);
-    if (localFileName.endsWith(QLatin1String("terrain")))
+    if (localFileName.endsWith(u"terrain"_qs))
     {
         m_terrainMaps.add(downloadable);
     }
-    if (localFileName.endsWith(QLatin1String("geojson")))
+    if (localFileName.endsWith(u"geojson"_qs))
     {
         m_aviationMaps.add(downloadable);
     }
-    if (localFileName.endsWith(QLatin1String("raster")))
+    if (localFileName.endsWith(u"raster"_qs))
     {
         m_baseMapsRaster.add(downloadable);
         m_baseMaps.add(downloadable);
     }
-    if (localFileName.endsWith(QLatin1String("mbtiles")))
+    if (localFileName.endsWith(u"mbtiles"_qs))
     {
         m_baseMapsVector.add(downloadable);
         m_baseMaps.add(downloadable);
     }
-    if (localFileName.endsWith(QLatin1String("txt")))
+    if (localFileName.endsWith(u"txt"_qs))
     {
         m_databases.add(downloadable);
     }

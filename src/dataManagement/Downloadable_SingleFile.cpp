@@ -58,19 +58,19 @@ DataManagement::Downloadable_SingleFile::Downloadable_SingleFile(QUrl url, const
             tmpName = m_fileName;
         }
 
-        if (tmpName.endsWith(QLatin1String("geojson")))
+        if (tmpName.endsWith(u"geojson"_qs))
         {
             m_contentType = AviationMap;
         }
-        else if (tmpName.endsWith(QLatin1String("mbtiles")))
+        else if (tmpName.endsWith(u"mbtiles"_qs))
         {
             m_contentType = BaseMapVector;
         }
-        else if (tmpName.endsWith(QLatin1String("raster")))
+        else if (tmpName.endsWith(u"raster"_qs))
         {
             m_contentType = BaseMapRaster;
         }
-        else if (tmpName.endsWith(QLatin1String("terrain")))
+        else if (tmpName.endsWith(u"terrain"_qs))
         {
             m_contentType = TerrainMap;
         }

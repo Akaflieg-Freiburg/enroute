@@ -630,7 +630,7 @@ ApplicationWindow {
         }
 
         Connections {
-            target: global.demoRunner()
+            target: DemoRunner
 
             function onRequestClosePages() {
                 stackView.pop()
@@ -649,7 +649,7 @@ ApplicationWindow {
 
             function onRequestOpenRoutePage() {
                 stackView.pop()
-                stackView.push("pages/FlightRouteEditor.qml")
+                stackView.push("pages/FlightRouteEditor.qml", {"toast": toast})
             }
 
             function onRequestOpenWeatherPage() {

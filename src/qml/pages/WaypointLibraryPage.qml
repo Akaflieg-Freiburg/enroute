@@ -92,6 +92,7 @@ Page {
                 MenuItem {
                     text: qsTr("Import…")
                     enabled: Qt.platform.os !== "android"
+                    visible: Qt.platform.os !== "android"
                     height: enabled ? undefined : 0
 
                     onTriggered: {

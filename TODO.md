@@ -16,8 +16,6 @@
 
 * Indicator that maps are being loaded
 
-* Spanish translations
-
 * Permissions: Explanation should be given when app refuses to start!
 
 * METAR/TAF rewrite

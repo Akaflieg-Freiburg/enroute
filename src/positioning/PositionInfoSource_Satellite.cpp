@@ -38,12 +38,17 @@ Positioning::PositionInfoSource_Satellite::PositionInfoSource_Satellite(QObject 
 
         connect(source.data(), &QGeoPositionInfoSource::errorOccurred, this, &PositionInfoSource_Satellite::updateStatusString);
         connect(source, &QGeoPositionInfoSource::positionUpdated, this, &PositionInfoSource_Satellite::onPositionUpdated);
-        source->startUpdates();
     } else {
         setSourceName( tr("None") );
     }
 
     updateStatusString();
+}
+
+
+void Positioning::PositionInfoSource_Satellite::startUpdates()
+{
+    source->startUpdates();
 }
 
 

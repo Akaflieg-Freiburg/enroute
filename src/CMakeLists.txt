@@ -317,7 +317,6 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/dialogs/FlightRouteAddWPDialog.qml
     qml/dialogs/FlightRouteSaveDialog.qml
     qml/dialogs/LongTextDialogMD.qml
-    qml/dialogs/MissingPermissionsDialog.qml
     qml/dialogs/PasswordDialog.qml
     qml/dialogs/PasswordStorageDialog.qml
     qml/dialogs/TooManyDownloadsDialog.qml
@@ -357,6 +356,7 @@ qt_add_qml_module(${PROJECT_NAME}
 qt_add_translations(${PROJECT_NAME}
     TS_FILES
     ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_de.ts
+    ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_es.ts
     ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_fr.ts
     ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_it.ts
     ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_pl.ts
@@ -373,10 +373,12 @@ qt_add_resources(${PROJECT_NAME} translations
     i18n
     FILES
     ${Qt6_TRANSLATION_DIR}/qtbase_de.qm
+    ${Qt6_TRANSLATION_DIR}/qtbase_es.qm
     ${Qt6_TRANSLATION_DIR}/qtbase_fr.qm
     ${Qt6_TRANSLATION_DIR}/qtbase_it.qm
     ${Qt6_TRANSLATION_DIR}/qtbase_pl.qm
     ${Qt6_TRANSLATION_DIR}/qtdeclarative_de.qm
+    ${Qt6_TRANSLATION_DIR}/qtdeclarative_es.qm
     ${Qt6_TRANSLATION_DIR}/qtdeclarative_fr.qm
     #${Qt6_TRANSLATION_DIR}/qtdeclarative_it.qm
     ${Qt6_TRANSLATION_DIR}/qtdeclarative_pl.qm

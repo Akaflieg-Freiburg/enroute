@@ -95,6 +95,8 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 )html") + tr(R"html(
 <li><strong>Polish:</strong> Sławek Mikuła.</li>
 )html") + (R"html(
+<li><strong>Spanish:</strong> Luca Riva.</li>
+)html") + (R"html(
 </ul>
 )html") + tr(R"html(
 <h3>Alumni</h3>
@@ -123,23 +125,6 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 <p>If you are convinced that the data is good enough to be added, you can request to add the country. Please go to <a href="https://github.com/Akaflieg-Freiburg/enrouteServer/issues">this web site</a> and open an 'issue' with your request. Please tell us who you are, where you fly and how you convinced yourself that the data is good. If you find that the data is not good enough, you are welcome to join the openAIP project and help to improve the data.</p>
 
 <p>Please understand that we program this free app in our spare time, as a service to the community. Sadly, I should point out that sending us impolite demands is not likely to give the result that you desire.</p>)html");
-    }
-
-    if (name == u":text/firstStart.html"_qs)
-    {
-        return tr(R"html(<h3>Welcome to Enroute Flight Navigation - A project of Akaflieg Freiburg</h3>
-
-<p>Thank you for using this flight navigation app!  Before we get started, we need to point out that <strong>this app and the aviation data come with no guarantees</strong>.</p>
-
-<p>The app is not certified to satisfy aviation standards. It may contain errors and may not work as expected.</p>
-
-<p>The aviation data does not come from official sources. It might be incomplete, outdated or otherwise incorrect.</p>
-
-<p><strong>This app is no substitute for proper flight preparation or good pilotage.</strong> We hope you enjoy the app and that you do find it useful.</p>
-
-<p>Fly safely and enjoy many happy landings!</p>
-
-<p>&#8212; Stefan Kebekus.</p>)html");
     }
 
     if (name == u":text/flightRouteLibraryInfo.html"_qs)
@@ -217,19 +202,6 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 )html").arg(content);
     }
 
-    if (name == u":text/missingPermissions.html"_qs)
-    {
-        return tr(R"html(<h3>Missing Permissions</h3>
-
-<p>The app <strong>Enroute Flight Navigation</strong> will not start because some essential permissions have not been granted.  Please re-start the app and grant the required permissions.  If you have chosen to deny some permissions permanently, you may need to go to the Android Settings app to grant the permissions there.</p>
-
-<p>Our <a href="https://akaflieg-freiburg.github.io/enroute/privacy#privileges-of-the-android-app" title="privacy policies">privacy policies</a> explain why the permissions are needed and what they are used for.</p>
-
-<p>Fly safely and enjoy many happy landings!</p>
-
-<p>&#8212; Stefan Kebekus.</p>)html");
-    }
-
     if (name == u":text/privacy.html"_qs)
     {
         return "<h3>" + tr("Privacy Policies") + "</h3>"
@@ -238,17 +210,15 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
                              "app accesses internet sites that may not be under our control "
                              "and may keep access logs.") + "</p>"
                 + "<ul style='margin-left:-25px;'>"
-                + "<li>" + tr("The app connects to servers at the University of Freiburg to "
+                + "<li>" + tr("The app connects to "
+                              "<a href='https://cplx.vm.uni-freiburg.de/storage/'>servers at "
+                              "the University of Freiburg</a> to "
                               "check for updates and to download maps and data.") + "</li>"
                 + "<li>" + tr("The app downloads METAR and TAF data for your locaction and "
-                              "your intended route from the Aviation Weather Center, a website "
-                              "of the United States government.") + "</li>"
+                              "your intended route from the "
+                              "<a href='https://www.aviationweather.gov/'>Aviation Weather "
+                              "Center</a>, a website of the United States government.") + "</li>"
                 + "</ul>"
-                + "<h3>" + tr("Privacy-relevant permissions requested by this app") + "</h3>"
-                + "<p>" + tr("Enroute Flight Navigation needs to access your precise location. "
-                             "The app uses this data to show your position on the moving "
-                             "map and to provide relevant aeronautical information for your location.") + "</p>"
-                + "<p>" + tr("Please grant permission to access the precise location when prompted.") + "</p>"
                 + "<h3>" + tr("Responsible") + "</h3>"
                 + "Stefan Kebekus<br>Wintererstraße 77<br>79104 Freiburg im Breisgau<br>Germany<br>";
     }
@@ -271,7 +241,8 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     if (name == u":text/whatsnew.html"_qs)
     {
         return tr("<p>We have updated the technology base underlying this app. Please report any issues!</p>")
-                + "<p>" + tr("Our aviation maps will now receive daily updates, provided that new data is available.") + "</p>";
+                + "<p>" + tr("Our aviation maps will now receive daily updates, provided that new data is available.") + "</p>"
+                + "<p>" + tr("Luca Riva has kindly translated this app to Spanish.") + "</p>";
         // + tr("<p>We could need help with French translations. If you would like to help, if speak French and know how to use the GIT version control system, please let us know.</p>");
     }
 

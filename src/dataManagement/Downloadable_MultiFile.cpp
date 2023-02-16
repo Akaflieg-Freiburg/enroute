@@ -78,7 +78,7 @@ auto DataManagement::Downloadable_MultiFile::infoText() -> QString
     {
         if (!result.isEmpty())
         {
-            result += QLatin1String("<br>");
+            result += u"<br>"_qs;
         }
         switch(map->contentType())
         {

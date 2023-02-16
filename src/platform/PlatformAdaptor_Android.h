@@ -53,16 +53,16 @@ public:
      *
      *  @returns see PlatformAdaptor_Abstract
      */
-    Q_INVOKABLE QString currentSSID() override;
-
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
-    void disableScreenSaver() override;
+    Q_INVOKABLE QString checkPermissions() override;
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract
      *
      *  @returns see PlatformAdaptor_Abstract
      */
-    Q_INVOKABLE bool hasRequiredPermissions() override;
+    Q_INVOKABLE QString currentSSID() override;
+
+    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
+    void disableScreenSaver() override;
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract
      *
@@ -94,19 +94,6 @@ protected:
 
 private:
     Q_DISABLE_COPY_MOVE(PlatformAdaptor)
-
-    QStringList requiredPermissions
-    {
-        "android.permission.ACCESS_COARSE_LOCATION",
-        "android.permission.ACCESS_FINE_LOCATION",
-        "android.permission.ACCESS_NETWORK_STATE",
-        "android.permission.ACCESS_WIFI_STATE",
-        "android.permission.WAKE_LOCK"
-    };
-    QStringList optionalPermissions
-    {
-        "android.permission.POST_NOTIFICATIONS"
-    };
 
     bool splashScreenHidden {false};
 };

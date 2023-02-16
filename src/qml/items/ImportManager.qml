@@ -297,22 +297,14 @@ Item {
         }
     }
 
-    CenteringDialog {
+    LongTextDialog {
         id: importFlightRouteDialog
 
         title: qsTr("Import Flight Route?")
         standardButtons: Dialog.No | Dialog.Yes
         modal: true
 
-        Label {
-            id: lbl
-
-            width: importFlightRouteDialog.availableWidth
-
-            text: qsTr("This will overwrite the current route. Once overwritten, the current flight route cannot be restored.")
-            wrapMode: Text.Wrap
-            textFormat: Text.StyledText
-        }
+        text: qsTr("This will overwrite the current route. Once overwritten, the current flight route cannot be restored.")
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()

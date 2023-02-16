@@ -148,6 +148,17 @@ void GlobalSettings::setIgnoreSSLProblems(bool ignore)
 }
 
 
+void GlobalSettings::setLargeFonts(bool newLargeFonts)
+{
+    if (newLargeFonts == largeFonts())
+    {
+        return;
+    }
+    settings.setValue(QStringLiteral("largeFonts"), newLargeFonts);
+    emit largeFontsChanged();
+}
+
+
 void GlobalSettings::setLastWhatsNewHash(Units::ByteSize lwnh)
 {
     if (lwnh == lastWhatsNewHash())
@@ -157,6 +168,7 @@ void GlobalSettings::setLastWhatsNewHash(Units::ByteSize lwnh)
     settings.setValue(QStringLiteral("lastWhatsNewHash"), QVariant::fromValue((size_t)lwnh));
     emit lastWhatsNewHashChanged();
 }
+
 
 
 void GlobalSettings::setLastWhatsNewInMapsHash(Units::ByteSize lwnh)

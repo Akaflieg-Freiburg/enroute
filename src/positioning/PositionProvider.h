@@ -39,6 +39,9 @@ namespace Positioning {
  *  the method globalInstance().  No other instance of this class should be
  *  used.
  *
+ *  Data from the standard operating system data source (typically: satnav or
+ *  wifi) is only provided after startUpdates() has been called.
+ *
  *  The methods in this class are reentrant, but not thread safe.
  */
 
@@ -97,6 +100,14 @@ public:
      *  @returns Property lastValidTrack
      */
     static auto lastValidTT() -> Units::Angle;
+
+    /*! \brief startUpdates
+     *
+     *  Requests permissions if necessary and starts to provide data
+     *  from the standard operating system data source (typically SatNav or
+     *  WiFi) if permissions were granted.
+     */
+    Q_INVOKABLE void startUpdates() { satelliteSource.startUpdates(); }
 
 signals:
     /*! \brief Notifier signal */

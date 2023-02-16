@@ -36,7 +36,7 @@ void Traffic::TrafficDataSource_Abstract::processXGPSString(const QByteArray& da
     if (data.startsWith("XGPS")) {
 
         QString str = QString::fromLatin1(data);
-        QStringList list = str.split(QLatin1Char(','));
+        QStringList list = str.split(u',');
         if (list.size() != 6) {
             return;
         }
@@ -81,7 +81,7 @@ void Traffic::TrafficDataSource_Abstract::processXGPSString(const QByteArray& da
     if (data.startsWith("XTRA")) {
 
         QString str = QString::fromLatin1(data);
-        QStringList list = str.split(QLatin1Char(','));
+        QStringList list = str.split(u',');
         if (list.size() != 10) {
             return;
         }

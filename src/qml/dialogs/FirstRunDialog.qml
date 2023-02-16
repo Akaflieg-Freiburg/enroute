@@ -40,7 +40,14 @@ CenteringDialog {
             clip: true
 
             Label {
-                text: Librarian.getStringFromRessource(":text/firstStart.html")
+                text: "<h3>"+qsTr("Welcome to Enroute Flight Navigation - A project of Akaflieg Freiburg")+"</h3>"
+                      + "<p>" + qsTr("Thank you for using this flight navigation app!  Before we get started, we need to point out that <strong>this app and the aviation data come with no guarantees</strong>.")+"</p>"
+                      + "<p>" + qsTr("The app is not certified to satisfy aviation standards. It may contain errors and may not work as expected.") + "</p>"
+                      + "<p>" + qsTr("The aviation data does not come from official sources. It might be incomplete, outdated or otherwise incorrect.") + "</p>"
+                      + "<p>" + qsTr("<strong>This app is no substitute for proper flight preparation or good pilotage.</strong> We hope you enjoy the app and that you do find it useful.") + "</p>"
+                      + "<p>" + qsTr("Fly safely and enjoy many happy landings!") + "</p>"
+                      + "<p>&#8212; Stefan Kebekus.</p>";
+
                 width: sv.dialogMain.availableWidth
                 textFormat: Text.RichText
                 linkColor: Material.accent
@@ -98,8 +105,8 @@ CenteringDialog {
             clip: true
 
             Label {
-                text: "<h3>" + qsTr("Permissions") + "</h3>"
-                      + "<p>" + qsTr("Please take a minute to review our privacy policies.") + "</p>"
+                text: "<h3>" + qsTr("Privacy-relevant permissions requested by this app") + "</h3>"
+                      + "<p>" + qsTr("Please grant the following permissiona when prompted.") + "</p>"
                       + sv.text
                 width: sv.dialogMain.availableWidth
                 textFormat: Text.RichText

@@ -64,31 +64,36 @@ auto Platform::PlatformAdaptor::checkPermissions() -> QString
                 + tr("Enroute Flight Navigation needs to access your precise location. "
                      "The app uses this data to show your position on the moving "
                      "map and to provide relevant aeronautical information.");
-        if ((coarseLocationFuture.result() == QtAndroidPrivate::PermissionResult::Denied)
-                || (fineLocationFuture.result() == QtAndroidPrivate::PermissionResult::Denied))
-        {
-            result += " "
-                    + tr("This permission is currently <strong>denied</strong>. "
-                         "If the permission has been denied repeatedly, the system may "
-                         "block the request in the next step. In that case, you may need "
-                         "to use the system settings to grant the permission manually. "
-                         "Some users find the system settings difficult to navigate and "
-                         "prefer to re-install the app.");
-        }
         results << result;
     }
 
-    if (notificationFuture.result() == QtAndroidPrivate::PermissionResult::Undetermined)
+    if (notificationFuture.result() != QtAndroidPrivate::PermissionResult::Authorized)
     {
         results << "<strong>POST_NOTIFICATIONS</strong>: "
                    + tr("The app uses notifications, for instance to inform the user about "
-                        "available map updates.");
+                        "critial updates of aviation data.");
     }
 
     QString final;
     foreach(auto result, results)
     {
-        final += "<p>" + result + "</p>";
+        final += "<li>" + result + "</li>";
+    }
+    if (!final.isEmpty())
+    {
+        final = "<ul style='margin-left:-25px;'>"+final+"</ul>";
+
+        if ((coarseLocationFuture.result() == QtAndroidPrivate::PermissionResult::Denied)
+                || (fineLocationFuture.result() == QtAndroidPrivate::PermissionResult::Denied)
+                || (notificationFuture.result() == QtAndroidPrivate::PermissionResult::Denied))
+        {
+            final += "<p>"
+                    + tr("Some permissions have previously been denied. "
+                         "The system might not show the permission dialog again. "
+                         "In that case, use the system settings to grant the necessary permissions. "
+                         "Some users find the settings hard to navigate and prefer to re-install the app.")
+                    + "</p>";
+        }
     }
 
     return final;

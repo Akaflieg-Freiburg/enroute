@@ -58,7 +58,7 @@ void Traffic::FlarmnetDB::findFlarmnetDBDownloadable()
             {
                 continue;
             }
-            if (downloadable->objectName().contains(QLatin1String("Flarm"))) {
+            if (downloadable->objectName().contains(u"Flarm"_qs)) {
                 newFlarmnetDBDownloadable = downloadable;
                 break;
             }
@@ -97,7 +97,7 @@ void Traffic::FlarmnetDB::findFlarmnetDBDownloadable()
 
 auto Traffic::FlarmnetDB::getRegistration(const QString& key) -> QString
 {
-    if (key.contains(QLatin1String("!"))) {
+    if (key.contains(u"!"_qs)) {
         auto result = key.section('!', -1, -1);
         return result;
     }

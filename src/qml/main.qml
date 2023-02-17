@@ -246,7 +246,7 @@ ApplicationWindow {
                             enabled: Navigator.flightStatus !== Navigator.Flight
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
-                                stackView.push("pages/DataManagerPage.qml")
+                                stackView.push("pages/DataManagerPage.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
                                 libraryMenu.close()
                                 drawer.close()
                             }
@@ -574,16 +574,6 @@ ApplicationWindow {
         Component.onCompleted: {
             PlatformAdaptor.onGUISetupCompleted()
 
-            // Things to do on startup. If the user has not yet accepted terms and conditions, show that.
-            // Otherwise, if the user has not used this version of the app before, show the "what's new" dialog.
-            // Otherwise, if the maps need updating, show the "update map" dialog.
-            if (!PlatformAdaptor.hasRequiredPermissions()) {
-                dialogLoader.active = false
-                dialogLoader.source = "dialogs/MissingPermissionsDialog.qml"
-                dialogLoader.active = true
-                return;
-            }
-
             if (firstRunDialog.conditionalOpen())
                 return;
 
@@ -822,7 +812,7 @@ ApplicationWindow {
 
         function onAction(act) {
             if ((act === Notifier.DownloadInfo_Clicked) && (stackView.currentItem.objectName !== "DataManagerPage")) {
-                stackView.push("pages/DataManagerPage.qml")
+                stackView.push("pages/DataManagerPage.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
             }
             if ((act === Notifier.TrafficReceiverSelfTestError_Clicked) && (stackView.currentItem.objectName !== "TrafficReceiverPage")) {
                 stackView.push("pages/TrafficReceiver.qml")
@@ -831,7 +821,7 @@ ApplicationWindow {
                 stackView.push("pages/TrafficReceiver.qml")
             }
             if ((act === Notifier.GeoMapUpdatePending_Clicked) && (stackView.currentItem.objectName !== "DataManagerPage")) {
-                stackView.push("pages/DataManagerPage.qml")
+                stackView.push("pages/DataManagerPage.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
             }
             if (act === Notifier.GeoMapUpdatePending_UpdateRequested) {
                 DataManager.mapsAndData.update()

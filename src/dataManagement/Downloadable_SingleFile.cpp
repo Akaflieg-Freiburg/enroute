@@ -29,12 +29,14 @@
 #include "geomaps/MBTILES.h"
 
 
-DataManagement::Downloadable_SingleFile::Downloadable_SingleFile(QUrl url, const QString &fileName, QObject *parent)
+DataManagement::Downloadable_SingleFile::Downloadable_SingleFile(QUrl url, const QString& fileName, const QGeoRectangle& bBox, QObject* parent)
     : Downloadable_Abstract(parent), m_url(std::move(url))
 {
 
     // Paranoid safety checks
     Q_ASSERT(!fileName.isEmpty());
+
+    m_boundingBox = bBox;
 
     QFileInfo info(fileName);
     m_fileName = info.absoluteFilePath();
@@ -58,19 +60,19 @@ DataManagement::Downloadable_SingleFile::Downloadable_SingleFile(QUrl url, const
             tmpName = m_fileName;
         }
 
-        if (tmpName.endsWith(QLatin1String("geojson")))
+        if (tmpName.endsWith(u"geojson"_qs))
         {
             m_contentType = AviationMap;
         }
-        else if (tmpName.endsWith(QLatin1String("mbtiles")))
+        else if (tmpName.endsWith(u"mbtiles"_qs))
         {
             m_contentType = BaseMapVector;
         }
-        else if (tmpName.endsWith(QLatin1String("raster")))
+        else if (tmpName.endsWith(u"raster"_qs))
         {
             m_contentType = BaseMapRaster;
         }
-        else if (tmpName.endsWith(QLatin1String("terrain")))
+        else if (tmpName.endsWith(u"terrain"_qs))
         {
             m_contentType = TerrainMap;
         }
@@ -220,7 +222,7 @@ auto DataManagement::Downloadable_SingleFile::infoText() -> QString
 }
 
 
-auto DataManagement::Downloadable_SingleFile::updateSize() -> qint64
+auto DataManagement::Downloadable_SingleFile::updateSize() -> Units::ByteSize
 {
     if (downloading())
     {

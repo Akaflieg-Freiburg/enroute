@@ -48,6 +48,9 @@ namespace Units {
          */
         ByteSize(size_t val) : value(val) {}
 
+        /*! \brief Check if zero */
+        Q_INVOKABLE bool isNull() { return value==0; }
+
         /*! \brief Conversion from Units::ByteSize to size_t
          *
          * @returns Value

@@ -127,23 +127,6 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 <p>Please understand that we program this free app in our spare time, as a service to the community. Sadly, I should point out that sending us impolite demands is not likely to give the result that you desire.</p>)html");
     }
 
-    if (name == u":text/firstStart.html"_qs)
-    {
-        return tr(R"html(<h3>Welcome to Enroute Flight Navigation - A project of Akaflieg Freiburg</h3>
-
-<p>Thank you for using this flight navigation app!  Before we get started, we need to point out that <strong>this app and the aviation data come with no guarantees</strong>.</p>
-
-<p>The app is not certified to satisfy aviation standards. It may contain errors and may not work as expected.</p>
-
-<p>The aviation data does not come from official sources. It might be incomplete, outdated or otherwise incorrect.</p>
-
-<p><strong>This app is no substitute for proper flight preparation or good pilotage.</strong> We hope you enjoy the app and that you do find it useful.</p>
-
-<p>Fly safely and enjoy many happy landings!</p>
-
-<p>&#8212; Stefan Kebekus.</p>)html");
-    }
-
     if (name == u":text/flightRouteLibraryInfo.html"_qs)
     {
         return tr(R"html(<p>The flight routes are stored in standard <a href="https://geojson.org">GeoJSON format</a> in the following directory.<p>
@@ -219,19 +202,6 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 )html").arg(content);
     }
 
-    if (name == u":text/missingPermissions.html"_qs)
-    {
-        return tr(R"html(<h3>Missing Permissions</h3>
-
-<p>The app <strong>Enroute Flight Navigation</strong> will not start because some essential permissions have not been granted.  Please re-start the app and grant the required permissions.  If you have chosen to deny some permissions permanently, you may need to go to the Android Settings app to grant the permissions there.</p>
-
-<p>Our <a href="https://akaflieg-freiburg.github.io/enroute/privacy#privileges-of-the-android-app" title="privacy policies">privacy policies</a> explain why the permissions are needed and what they are used for.</p>
-
-<p>Fly safely and enjoy many happy landings!</p>
-
-<p>&#8212; Stefan Kebekus.</p>)html");
-    }
-
     if (name == u":text/privacy.html"_qs)
     {
         return "<h3>" + tr("Privacy Policies") + "</h3>"
@@ -240,17 +210,15 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
                              "app accesses internet sites that may not be under our control "
                              "and may keep access logs.") + "</p>"
                 + "<ul style='margin-left:-25px;'>"
-                + "<li>" + tr("The app connects to servers at the University of Freiburg to "
+                + "<li>" + tr("The app connects to "
+                              "<a href='https://cplx.vm.uni-freiburg.de/storage/'>servers at "
+                              "the University of Freiburg</a> to "
                               "check for updates and to download maps and data.") + "</li>"
                 + "<li>" + tr("The app downloads METAR and TAF data for your locaction and "
-                              "your intended route from the Aviation Weather Center, a website "
-                              "of the United States government.") + "</li>"
+                              "your intended route from the "
+                              "<a href='https://www.aviationweather.gov/'>Aviation Weather "
+                              "Center</a>, a website of the United States government.") + "</li>"
                 + "</ul>"
-                + "<h3>" + tr("Privacy-relevant permissions requested by this app") + "</h3>"
-                + "<p>" + tr("Enroute Flight Navigation needs to access your precise location. "
-                             "The app uses this data to show your position on the moving "
-                             "map and to provide relevant aeronautical information for your location.") + "</p>"
-                + "<p>" + tr("Please grant permission to access the precise location when prompted.") + "</p>"
                 + "<h3>" + tr("Responsible") + "</h3>"
                 + "Stefan Kebekus<br>Wintererstraße 77<br>79104 Freiburg im Breisgau<br>Germany<br>";
     }

@@ -539,15 +539,15 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
         QStringList results;
         // auto RX = arguments[0];
         auto TX = arguments[1];
-        if (TX == QLatin1String("0")) {
+        if (TX == u"0"_qs) {
             results += tr("No FLARM transmission");
         }
         auto GPS = arguments[2];
-        if (GPS == QLatin1String("0")) {
+        if (GPS == u"0"_qs) {
             results += tr("No GPS reception");
         }
         auto Power = arguments[3];
-        if (Power == QLatin1String("0")) {
+        if (Power == u"0"_qs) {
             results += tr("Under- or Overvoltage");
         }
         setTrafficReceiverRuntimeError(results.join(QStringLiteral(" • ")));

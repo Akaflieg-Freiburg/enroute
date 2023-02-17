@@ -453,7 +453,7 @@ void Traffic::TrafficDataProvider::updateStatusString()
         {
             result += QStringLiteral("<li>%1</li>").arg(tr("Receiving barometric altitude info."));
         }
-        result += QLatin1String("</ul>");
+        result += u"</ul>"_qs;
         setStatusString(result);
         return;
     }
@@ -466,15 +466,15 @@ void Traffic::TrafficDataProvider::updateStatusString()
             continue;
         }
 
-        result += QLatin1String("<li>");
+        result += u"<li>"_qs;
         result += source->sourceName() + ": " + source->connectivityStatus();
         if (!source->errorString().isEmpty())
         {
             result += " " + source->errorString();
         }
-        result += QLatin1String("</li>");
+        result += u"</li>"_qs;
     }
-    result += QLatin1String("</ul>");
+    result += u"</ul>"_qs;
 
     setStatusString(result);
 }

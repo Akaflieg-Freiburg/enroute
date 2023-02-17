@@ -312,6 +312,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/DegreeInput.qml
     qml/items/ElevationInput.qml
     qml/items/FlightVector.qml
+    qml/items/MapSet.qml
     qml/items/NavBar.qml
     qml/items/RemainingRouteBar.qml
     qml/items/WordWrappingCheckDelegate.qml
@@ -324,7 +325,6 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/dialogs/FlightRouteAddWPDialog.qml
     qml/dialogs/FlightRouteSaveDialog.qml
     qml/dialogs/LongTextDialogMD.qml
-    qml/dialogs/MissingPermissionsDialog.qml
     qml/dialogs/NotamListDialog.qml
     qml/dialogs/PasswordDialog.qml
     qml/dialogs/PasswordStorageDialog.qml

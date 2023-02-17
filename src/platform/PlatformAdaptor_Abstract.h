@@ -74,6 +74,18 @@ public:
     //
     // Methods
 
+    /*! \brief Checks if all required permissions have been granted
+     *
+     * Depending on the platform, the app needs to ask for permissions to
+     * operate properly. This method can be used to check if all permissions
+     * have been granted. It returns an empty string if all permissions are there,
+     * and a human-readable, translated explanation of missing permissions
+     * otherwise.
+     *
+     * @returns Empty string or explanation
+    */
+    Q_INVOKABLE virtual QString checkPermissions() = 0;
+
     /*! \brief SSID of current Wi-Fi network
      *
      * @returns The SSID of the current Wi-Fi networks, an empty string if the
@@ -90,16 +102,6 @@ public:
      * while the pilot is following a non-standard traffic pattern).
      */
     virtual void disableScreenSaver() = 0;
-
-    /*! \brief Checks if all required permissions have been granted
-     *
-     * Depending on the platform, the app needs to ask for permissions to
-     * operate properly. This method can be used to check if all permissions
-     * have been granted.
-     *
-     * @returns 'True' if all required permissions have been granted.
-    */
-    Q_INVOKABLE virtual bool hasRequiredPermissions() = 0;
 
     /*! \brief Lock connection to Wi-Fi network
      *

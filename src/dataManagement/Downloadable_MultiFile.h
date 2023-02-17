@@ -147,6 +147,14 @@ public:
     /*! \brief Implementation of pure virtual method from Downloadable_Abstract */
     Q_INVOKABLE void deleteFiles() override;
 
+    /*! \brief Downloadables for a given location
+     *
+     *   @param location QGeoCoordinate with a location
+     *
+     *   @returns Property list of downloadables whose bounding box contains the given location
+     */
+    Q_INVOKABLE [[nodiscard]] QList<DataManagement::Downloadable_Abstract*> downloadables4Location(const QGeoCoordinate& location);
+
     /*! \brief Remove a Downloadable_SingleFile from this Downloadable_MultiFile
      *
      *  @param map Map to be removed

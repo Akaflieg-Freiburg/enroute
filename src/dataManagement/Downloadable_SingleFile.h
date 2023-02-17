@@ -77,7 +77,7 @@ public:
      *
      * Use the method startFileDownload() to initiate the download process.
      */
-    explicit Downloadable_SingleFile(QUrl url, const QString &localFileName, QObject *parent = nullptr);
+    explicit Downloadable_SingleFile(QUrl url, const QString& localFileName, const QGeoRectangle& bBox = {}, QObject* parent = nullptr);
 
     /*! \brief Standard destructor
      *

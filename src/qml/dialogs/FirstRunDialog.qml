@@ -21,8 +21,10 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Material
+import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
+import "../items"
 
 CenteringDialog {
     id: dialogMain
@@ -122,6 +124,93 @@ CenteringDialog {
         }
     }
 
+    Component {
+        id: maps
+
+        ColumnLayout {
+
+            width: availableWidth
+            implicitHeight: 600
+
+            Label {
+                Layout.fillWidth: true
+                Layout.preferredHeight: implicitHeight
+                text: {
+                    var result = "<h3>"
+                            + qsTr("Download Maps")
+                            + "</h3>"
+                            + "<p>"
+                            + qsTr("<strong>Enroute Flight Navigation</strong> needs geographic maps to work.")
+                            + " "
+                    if (PositionProvider.positionInfo.isValid()) {
+                        if (lv.model.length === 0)
+                            result += qsTr("Regretfully, we do not offer maps for your present location (%1).").arg(PositionProvider.lastValidCoordinate)
+                        if (lv.model.length === 1)
+                            result += qsTr("Based on your location, we reckon that that the following map might be relevant for you. Click on the map to start the download, then click on 'Accept' to close this dialog.")
+                        if (lv.model.length > 1)
+                            result += qsTr("Based on your location, we reckon that that the following maps might be relevant for you. Click on any map to start the download, then click on 'Accept' to close this dialog.")
+                    } else {
+                        result += qsTr("We're waiting for SatNav position infoformation to suggest maps that might be relevant for you. Please stand by.")
+                    }
+                    result += "</p>"
+
+                    return result
+                }
+                width: availableWidth
+                textFormat: Text.RichText
+                linkColor: Material.accent
+                wrapMode: Text.Wrap
+            }
+
+            Rectangle {
+                Layout.preferredHeight: 1
+                Layout.fillWidth: true
+                color: "black"
+                visible: lv.model ? lv.model.length !== 0 : false
+            }
+
+            ListView {
+                id: lv
+
+                Layout.preferredHeight: contentHeight
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+
+                visible: PositionProvider.receivingPositionInfo
+
+                clip: true
+                model: DataManager.mapSets.downloadables4Location(PositionProvider.lastValidCoordinate)
+                delegate: MapSet {}
+                ScrollIndicator.vertical: ScrollIndicator {}
+            }
+
+            Rectangle {
+                Layout.preferredHeight: 1
+                Layout.fillWidth: true
+                color: "black"
+                visible: lv.model ? lv.model.length !== 0 : false
+            }
+
+            Label {
+                Layout.fillWidth: true
+                Layout.preferredHeight: implicitHeight
+                text:  "<p>"
+                       + qsTr("For the full list of maps, close this dialog, open the main menu and go to 'Library/Maps and Data'. It is also possible to import raster maps into this app. Check the manual for details.")
+                       + "</p>"
+                width: availableWidth
+                textFormat: Text.RichText
+                linkColor: Material.accent
+                wrapMode: Text.Wrap
+            }
+
+            function accept() {
+            }
+        }
+
+
+    }
+
+
     closePolicy: Popup.NoAutoClose
     modal: true
 
@@ -138,6 +227,8 @@ CenteringDialog {
     }
 
     function conditionalOpen() {
+        stack.push(maps)
+
         var missingPermissionsText = PlatformAdaptor.checkPermissions()
         if (missingPermissionsText === "")
             PositionProvider.startUpdates()

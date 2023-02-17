@@ -120,6 +120,7 @@ void DataManagement::Downloadable_MultiFile::add(DataManagement::Downloadable_Ab
 
     setObjectName(map->objectName());
     setSection(map->section());
+    m_boundingBox = map->boundingBox();
 
     if (m_downloadables.contains(map))
     {
@@ -220,6 +221,39 @@ auto DataManagement::Downloadable_MultiFile::downloadables() -> QVector<DataMana
         if (a->section() != b->section()) {
             return (a->section() < b->section());
         }
+        if (a->objectName() != b->objectName())
+        {
+            return a->objectName() < b->objectName();
+        }
+        return (a->contentType() < b->contentType());
+    }
+    );
+
+    return result;
+}
+
+
+auto DataManagement::Downloadable_MultiFile::downloadables4Location(const QGeoCoordinate& location) -> QVector<DataManagement::Downloadable_Abstract*>
+{
+    if (!location.isValid())
+    {
+        return {};
+    }
+
+    QVector<DataManagement::Downloadable_Abstract*> result;
+    m_downloadables.removeAll(nullptr);
+    foreach(auto downloadable, m_downloadables)
+    {
+        auto bbox = downloadable->boundingBox();
+        if (bbox.isValid() && bbox.contains(location))
+        {
+            result += downloadable;
+        }
+    }
+
+    // Sort Downloadables according to section name and object name
+    std::sort(result.begin(), result.end(), [](Downloadable_Abstract* a, Downloadable_Abstract* b)
+    {
         if (a->objectName() != b->objectName())
         {
             return a->objectName() < b->objectName();

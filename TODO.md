@@ -11,12 +11,12 @@
 
 * Fix problems with screenshots for google play
 
+* Zoom value is not saved
+
 
 # New Features
 
 * Indicator that maps are being loaded
-
-* Permissions: Explanation should be given when app refuses to start!
 
 * METAR/TAF rewrite
 

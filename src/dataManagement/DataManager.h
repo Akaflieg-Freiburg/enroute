@@ -335,7 +335,7 @@ private:
     // created and added to _items. Depending on localFileName, it will also be
     // added to _aviationMap, _baseMaps, or _databases. A pointer to that item is
     // then returned.
-    DataManagement::Downloadable_SingleFile* createOrRecycleItem(const QUrl& url, const QString& localFileName);
+    DataManagement::Downloadable_SingleFile* createOrRecycleItem(const QUrl& url, const QString& localFileName, const QGeoRectangle& bBox);
 
     bool m_appUpdateRequired {false};
 

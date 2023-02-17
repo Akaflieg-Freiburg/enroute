@@ -101,7 +101,7 @@ void Traffic::TrafficDataSource_Tcp::onReadyRead()
     while( m_textStream.readLineInto(&sentence) ) {
 
         // Check if the TCP connection asks for a password
-        if (sentence.startsWith(QLatin1String("PASS?"))) {
+        if (sentence.startsWith(u"PASS?"_qs)) {
             passwordRequest_Status = waitingForPassword;
             passwordRequest_SSID = GlobalObject::platformAdaptor()->currentSSID();
             auto* passwordDB = GlobalObject::passwordDB();

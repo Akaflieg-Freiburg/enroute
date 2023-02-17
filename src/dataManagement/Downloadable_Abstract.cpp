@@ -41,7 +41,7 @@ DataManagement::Downloadable_Abstract::Downloadable_Abstract(QObject *parent)
 
 auto DataManagement::Downloadable_Abstract::updateSizeString() -> QString
 {
-    qsizetype size = qMax((qint64)0,updateSize());
+    qsizetype size = qMax(Units::ByteSize(0),updateSize());
 
     return QLocale::system().formattedDataSize(size, 1, QLocale::DataSizeSIFormat);
 }

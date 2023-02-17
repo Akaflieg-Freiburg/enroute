@@ -196,7 +196,7 @@ void DataManagement::DataManager::onItemFileChanged()
     }
 }
 
-auto DataManagement::DataManager::createOrRecycleItem(const QUrl &url, const QString &localFileName) -> DataManagement::Downloadable_SingleFile *
+auto DataManagement::DataManager::createOrRecycleItem(const QUrl& url, const QString& localFileName, const QGeoRectangle& bBox) -> DataManagement::Downloadable_SingleFile*
 {
     // If a data item with the given local file name and the given URL already exists,
     // update that remoteFileDate and remoteFileSize of that element, annd delete its
@@ -215,7 +215,7 @@ auto DataManagement::DataManager::createOrRecycleItem(const QUrl &url, const QSt
     }
 
     // Construct a new downloadable object and add to appropriate groups
-    auto* downloadable = new DataManagement::Downloadable_SingleFile(url, localFileName, this);
+    auto* downloadable = new DataManagement::Downloadable_SingleFile(url, localFileName, bBox, this);
     downloadable->setObjectName(localFileName.section(QStringLiteral("/"), -1, -1).section(QStringLiteral("."), 0, -2));
     if (localFileName.endsWith(u"geojson"_qs) ||
             localFileName.endsWith(u"mbtiles"_qs) ||
@@ -369,7 +369,21 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
             auto fileModificationDateTime = QDateTime::fromString(obj.value(QStringLiteral("time")).toString(), QStringLiteral("yyyyMMdd"));
             qint64 fileSize = qRound64(obj.value(QStringLiteral("size")).toDouble());
 
-            auto* downloadable = createOrRecycleItem(mapUrl, localFileName);
+
+            QGeoRectangle bbox;
+            if (obj.contains(u"bbox"_qs))
+            {
+                auto bboxData = obj.value(u"bbox"_qs).toArray();
+                auto left = bboxData.at(0).toDouble();
+                auto bottom = bboxData.at(1).toDouble();
+
+                auto right = bboxData.at(2).toDouble();
+                auto top = bboxData.at(3).toDouble();
+                bbox.setTopLeft( {top, left} );
+                bbox.setBottomRight( {bottom, right} );
+            }
+
+            auto* downloadable = createOrRecycleItem(mapUrl, localFileName, bbox);
             oldMaps.removeAll(downloadable);
             downloadable->setRemoteFileDate(fileModificationDateTime);
             downloadable->setRemoteFileSize(fileSize);
@@ -381,7 +395,7 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
     // Next, we create or recycle items for all files that that we have found in the directory.
     foreach (auto localFileName, files)
     {
-        auto *downloadable = createOrRecycleItem(QUrl(), localFileName);
+        auto *downloadable = createOrRecycleItem(QUrl(), localFileName, {});
         oldMaps.removeAll(downloadable);
         downloadable->setObjectName(localFileName.section(QStringLiteral("/"), -1, -1));
     }

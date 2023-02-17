@@ -67,7 +67,8 @@ auto Platform::PlatformAdaptor::checkPermissions() -> QString
         results << result;
     }
 
-    if (notificationFuture.result() != QtAndroidPrivate::PermissionResult::Authorized)
+    // Notifications are optional. Show text only if the user has not yet decided.
+    if (notificationFuture.result() == QtAndroidPrivate::PermissionResult::Undetermined)
     {
         results << "<strong>POST_NOTIFICATIONS</strong>: "
                    + tr("The app uses notifications, for instance to inform the user about "
@@ -84,8 +85,7 @@ auto Platform::PlatformAdaptor::checkPermissions() -> QString
         final = "<ul style='margin-left:-25px;'>"+final+"</ul>";
 
         if ((coarseLocationFuture.result() == QtAndroidPrivate::PermissionResult::Denied)
-                || (fineLocationFuture.result() == QtAndroidPrivate::PermissionResult::Denied)
-                || (notificationFuture.result() == QtAndroidPrivate::PermissionResult::Denied))
+                || (fineLocationFuture.result() == QtAndroidPrivate::PermissionResult::Denied))
         {
             final += "<p>"
                     + tr("Some permissions have previously been denied. "

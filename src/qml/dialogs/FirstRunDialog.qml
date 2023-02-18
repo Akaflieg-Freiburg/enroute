@@ -244,7 +244,7 @@ CenteringDialog {
     }
 
     function conditionalOpen() {
-//        if (!DataManager.aviationMaps.hasFile)
+        if (!DataManager.aviationMaps.hasFile)
             stack.push(maps, {"dialogMain": dialogMain})
 
         var missingPermissionsText = PlatformAdaptor.checkPermissions()

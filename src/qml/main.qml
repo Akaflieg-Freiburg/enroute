@@ -238,7 +238,7 @@ ApplicationWindow {
 
                         ItemDelegate {
                             text: qsTr("Maps and Data")
-                                  + ((DataManager.mapsAndData.updateSize > 0) ? `<br><font color="#606060" size="2">` +qsTr("Updates available") + "</font>" : "")
+                                  + ( DataManager.mapsAndData.updateSize.isNull() ? "" : `<br><font color="#606060" size="2">` + qsTr("Updates available") + "</font>")
                                   + ( (Navigator.flightStatus === Navigator.Flight) ? `<br><font color="#606060" size="2">` +qsTr("Item not available in flight") + "</font>" : "")
                             icon.source: "/icons/material/ic_map.svg"
                             Layout.fillWidth: true

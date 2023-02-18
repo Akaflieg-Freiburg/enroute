@@ -11,8 +11,6 @@
 
 * Fix problems with screenshots for google play
 
-* Zoom value is not saved
-
 
 # New Features
 

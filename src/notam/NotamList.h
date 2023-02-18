@@ -22,13 +22,14 @@
 
 #include <QDateTime>
 #include <QGeoCoordinate>
+#include <QGeoCircle>
 #include <QQmlEngine>
 
+#include "geomaps/Waypoint.h"
 #include "notam/Notam.h"
 
 namespace NOTAM {
 
-/*! \brief This extremely simple class holds a the data item of a NOTAM */
 
 class NotamList {
     Q_GADGET
@@ -36,19 +37,29 @@ class NotamList {
 
 public:
     NotamList();
+    NotamList(const QByteArray& jsonData, const QGeoCircle& region);
+
 
     Q_PROPERTY(QList<NOTAM::Notam> notams MEMBER m_notams)
     Q_PROPERTY(QString summary READ summary)
     Q_PROPERTY(QString text READ text)
 
+    bool covers(const GeoMaps::Waypoint& waypoint);
+    NotamList restrict(const GeoMaps::Waypoint& waypoint);
+
+
     QString summary();
     QString text();
 
-    QDateTime m_retrieved;
     QList<NOTAM::Notam> m_notams;
+    QGeoCircle m_region;
+    QDateTime m_retrieved;
 };
 
 } // namespace NOTAM
+
+QDataStream& operator<<(QDataStream& stream, const NOTAM::NotamList &notam);
+QDataStream& operator>>(QDataStream& stream, NOTAM::NotamList& notam);
 
 // Declare meta types
 Q_DECLARE_METATYPE(NOTAM::NotamList)

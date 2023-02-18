@@ -116,7 +116,7 @@ CenteringDialog {
             property notamList notamList: {
                 // Mention lastUpdate, so we update whenever there is new data
                 NotamProvider.lastUpdate
-                return NotamProvider.notams(waypoint.ICAOCode)
+                return NotamProvider.notams(waypoint)
             }
 
             visible: (notamList.summary != "")

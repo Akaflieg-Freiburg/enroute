@@ -21,8 +21,11 @@
 #pragma once
 
 #include <QDateTime>
+#include <QGeoCircle>
 #include <QGeoCoordinate>
 #include <QQmlEngine>
+
+#include "units/Distance.h"
 
 namespace NOTAM {
 
@@ -33,7 +36,10 @@ class Notam {
     QML_VALUE_TYPE(notam)
 
 public:
-    void read(const QJsonObject& jsonObject);
+    Notam() = default;
+
+    explicit Notam(const QJsonObject& jsonObject);
+
     QString richText() const;
 
     Q_PROPERTY(QDateTime effectiveStart MEMBER m_effectiveStart)
@@ -45,17 +51,22 @@ public:
 
     Q_INVOKABLE [[nodiscard]] bool operator==(const NOTAM::Notam& rhs) const = default;
 
-    QString m_effectiveStartString;
-    QString m_effectiveEndString;
-    QDateTime m_effectiveStart;
-    QDateTime m_effectiveEnd;
-    QString m_text;
-    QString m_icaoLocation;
-    QGeoCoordinate m_coordinates;
-    QString m_traffic;
+    QGeoCoordinate  m_coordinates;
+    QDateTime       m_effectiveEnd;
+    QString         m_effectiveEndString;
+    QDateTime       m_effectiveStart;
+    QString         m_effectiveStartString;
+    QString         m_icaoLocation;
+    Units::Distance m_radius;
+    QGeoCircle      m_region;
+    QString         m_text;
+    QString         m_traffic;
 };
 
 } // namespace NOTAM
+
+QDataStream& operator<<(QDataStream& stream, const NOTAM::Notam &notam);
+QDataStream& operator>>(QDataStream& stream, NOTAM::Notam& notam);
 
 // Declare meta types
 Q_DECLARE_METATYPE(NOTAM::Notam)

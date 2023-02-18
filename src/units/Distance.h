@@ -254,5 +254,11 @@ namespace Units {
 } // namespace Units
 
 
+/*! \brief Serialization */
+QDataStream& operator<<(QDataStream& stream, const Units::Distance& distance);
+
+/*! \brief Deserialization */
+QDataStream& operator>>(QDataStream& stream, Units::Distance& distance);
+
 // Declare meta types
 Q_DECLARE_METATYPE(Units::Distance)

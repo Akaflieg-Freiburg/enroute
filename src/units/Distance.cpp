@@ -68,3 +68,20 @@ auto Units::Distance::toString(Units::Distance::DistanceUnit units, bool roundBi
     }
     return signString + QString::number(roundedDist) + " " + unit;
 }
+
+
+QDataStream& operator<<(QDataStream& stream, const Units::Distance& distance)
+{
+    stream << distance.toM();
+    return stream;
+}
+
+
+QDataStream& operator>>(QDataStream& stream, Units::Distance& distance)
+{
+    double tmp;
+    stream >> tmp;
+    distance.fromM(tmp);
+    return stream;
+}
+

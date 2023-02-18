@@ -22,6 +22,7 @@
 
 #include <QDateTime>
 #include <QGeoCoordinate>
+#include <QNetworkReply>
 #include <QQmlEngine>
 
 #include "GlobalObject.h"
@@ -58,15 +59,25 @@ public:
 
     [[nodiscard]] QDateTime lastUpdate() const { return m_lastUpdate; }
 
-
-
-    Q_INVOKABLE [[nodiscard]] static NOTAM::NotamList notams(const QString& icaoLocation);
+    Q_INVOKABLE [[nodiscard]] NOTAM::NotamList notams(const GeoMaps::Waypoint& waypoint);
 
 signals:
     void lastUpdateChanged();
 
+    void notamsUpdated();
+
+private slots:
+    // Called when a download is finished
+    void downloadFinished();
+
 private:
     Q_DISABLE_COPY_MOVE(NotamProvider)
+
+    void addJson(const QByteArray& data, QGeoCircle circle);
+
+    // List of pending network requests
+    QList<QPointer<QNetworkReply>> m_networkReplies;
+    QList<NotamList> m_notamLists;
 
     QDateTime m_lastUpdate;
 

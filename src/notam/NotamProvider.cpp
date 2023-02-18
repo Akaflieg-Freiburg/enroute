@@ -22,13 +22,21 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QStandardPaths>
 
+#include "geomaps/Waypoint.h"
 #include "notam/NotamProvider.h"
 
 
 NOTAM::NotamProvider::NotamProvider(QObject* parent) : GlobalObject(parent)
 {
-
+    auto stdFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/notam.dat";
+    auto inputFile = QFile(stdFileName);
+    if (inputFile.open(QIODevice::ReadOnly))
+    {
+        QDataStream inputStream(&inputFile);
+        inputStream >> m_notamLists;
+    }
 }
 
 
@@ -38,33 +46,98 @@ void NOTAM::NotamProvider::deferredInitialization()
 }
 
 
-NOTAM::NotamList NOTAM::NotamProvider::notams(const QString& icaoLocation)
+NOTAM::NotamList NOTAM::NotamProvider::notams(const GeoMaps::Waypoint& waypoint)
 {
-    NotamList notamList;
+    NotamList result;
 
-    QFile jsonFile(u"/home/kebekus/Austausch/notams-response.json"_qs);
-    jsonFile.open(QIODeviceBase::ReadOnly);
-
-    auto doc = QJsonDocument::fromJson(jsonFile.readAll());
-    auto items = doc[u"items"_qs].toArray();
-
-    foreach(auto item, items)
+    // Check if notams for the location are present in our database
+    foreach (auto notamList, m_notamLists)
     {
-        Notam notam;
-        notam.read(item.toObject());
-
-        if (notam.m_icaoLocation != icaoLocation)
+        if (notamList.covers(waypoint))
         {
-            continue;
+            return notamList.restrict(waypoint);
         }
-        if (notam.m_traffic == "I")
-        {
-            continue;
-        }
-        notamList.m_notams.append(notam);
     }
 
-    notamList.m_retrieved = QDateTime::currentDateTimeUtc();
+    // Check if internet requests notams for the location are pending.
+    // In that case, return an empty list.
+    foreach(auto networkReply, m_networkReplies)
+    {
+        // Paranoid safety checks
+        if (networkReply.isNull())
+        {
+            continue;
+        }
+        auto area = networkReply->property("area").value<QGeoCircle>();
+        if (!area.isValid())
+        {
+            continue;
+        }
+        if (area.contains(waypoint.coordinate()))
+        {
+            return {};
+        }
+    }
 
-    return notamList;
+    qWarning() << "Request NOTAMs for " << waypoint.ICAOCode();
+
+    auto urlString = u"https://external-api.faa.gov/notamapi/v1/notams?"
+                     "locationLongitude=%1&locationLatitude=%2&locationRadius=%3"_qs
+            .arg(waypoint.coordinate().longitude())
+            .arg(waypoint.coordinate().latitude())
+            .arg(10.0);
+    QNetworkRequest request( urlString );
+    request.setRawHeader("client_id", "bcd5e948c6654d3284ebeba68012a9eb");
+    request.setRawHeader("client_secret", "1FCE4b44ED8f4C328C1b6341D5b1a55c");
+
+    auto* reply = GlobalObject::networkAccessManager()->get(request);
+    reply->setProperty("area", QVariant::fromValue(QGeoCircle(waypoint.coordinate(), 10000)) );
+
+    m_networkReplies.append(reply);
+    connect(reply, &QNetworkReply::finished, this, &NOTAM::NotamProvider::downloadFinished);
+    connect(reply, &QNetworkReply::errorOccurred, this, &NOTAM::NotamProvider::downloadFinished);
+
+    return {};
+}
+
+
+void NOTAM::NotamProvider::downloadFinished()
+{
+    qWarning() << "downloadFinished()";
+
+    m_networkReplies.removeAll(nullptr);
+
+    // Read all replies and store the data in respective maps
+    foreach(auto networkReply, m_networkReplies)
+    {
+        // Paranoid safety checks
+        if (networkReply.isNull())
+        {
+            continue;
+        }
+        if (networkReply->isRunning())
+        {
+            continue;
+        }
+        if (networkReply->error() != QNetworkReply::NoError)
+        {
+            networkReply->deleteLater();
+            continue;
+        }
+
+        auto region = networkReply->property("area").value<QGeoCircle>();
+        NotamList notamList(networkReply->readAll(), region);
+        m_notamLists.prepend(notamList);
+        m_lastUpdate = QDateTime::currentDateTimeUtc();
+        emit lastUpdateChanged();
+    }
+
+    auto stdFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/notam.dat";
+    auto outputFile = QFile(stdFileName);
+    if (outputFile.open(QIODevice::WriteOnly))
+    {
+        QDataStream outputStream(&outputFile);
+        outputStream << m_notamLists;
+    }
+
 }

@@ -16,8 +16,6 @@
 
 * Indicator that maps are being loaded
 
-* Permissions: Explanation should be given when app refuses to start!
-
 * METAR/TAF rewrite
 
 * Exit app on double 'back'

@@ -127,12 +127,22 @@ CenteringDialog {
     Component {
         id: maps
 
-        ColumnLayout {
+        ScrollView {
+            id: sv
 
-            Label {
-                Layout.fillWidth: true
-                Layout.preferredHeight: implicitHeight
-                text: {
+            required property var dialogMain
+
+            contentWidth: availableWidth // Disable horizontal scrolling
+
+            clip: true
+
+            ColumnLayout {
+                width: sv.dialogMain.availableWidth
+
+                Label {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: implicitHeight
+                    text: {
                     var result = "<h3>"
                             + qsTr("Download Maps")
                             + "</h3>"
@@ -164,56 +174,57 @@ CenteringDialog {
 
                     return result
                 }
-                textFormat: Text.RichText
-                linkColor: Material.accent
-                wrapMode: Text.Wrap
-            }
+                    textFormat: Text.RichText
+                    linkColor: Material.accent
+                    wrapMode: Text.Wrap
+                }
 
-            Rectangle {
-                Layout.preferredHeight: 1
-                Layout.fillWidth: true
-                color: "black"
-                visible: lv.model ? lv.model.length !== 0 : false
-            }
+                Rectangle {
+                    Layout.preferredHeight: 1
+                    Layout.fillWidth: true
+                    color: "black"
+                    visible: lv.model ? lv.model.length !== 0 : false
+                }
 
-            ListView {
-                id: lv
+                ListView {
+                    id: lv
 
-                Layout.preferredHeight: contentHeight
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+                    Layout.preferredHeight: contentHeight
+                    Layout.fillWidth: true
 
-                visible: PositionProvider.receivingPositionInfo
+                    flickableDirection: Flickable.HorizontalFlick
 
-                clip: true
-                model: DataManager.mapSets.downloadables4Location(PositionProvider.lastValidCoordinate)
-                delegate: MapSet {}
-                ScrollIndicator.vertical: ScrollIndicator {}
-            }
+                    visible: PositionProvider.receivingPositionInfo
 
-            Rectangle {
-                Layout.preferredHeight: 1
-                Layout.fillWidth: true
-                color: "black"
-                visible: lv.model ? lv.model.length !== 0 : false
-            }
+                    clip: true
+                    model: DataManager.mapSets.downloadables4Location(PositionProvider.lastValidCoordinate)
+                    delegate: MapSet {}
+                }
 
-            Label {
-                Layout.fillWidth: true
-                Layout.preferredHeight: implicitHeight
-                text:  "<p>"
-                       + qsTr("For the full list of maps, close this dialog, open the main menu and go to 'Library/Maps and Data'. It is also possible to import raster maps into this app. Check the manual for details.")
-                       + "</p>"
-                textFormat: Text.RichText
-                linkColor: Material.accent
-                wrapMode: Text.Wrap
+                Rectangle {
+                    Layout.preferredHeight: 1
+                    Layout.fillWidth: true
+                    color: "black"
+                    visible: lv.model ? lv.model.length !== 0 : false
+                }
+
+                Label {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: implicitHeight
+                    text:  "<p>"
+                           + qsTr("For the full list of maps, close this dialog, open the main menu and go to 'Library/Maps and Data'. It is also possible to import raster maps into this app. Check the manual for details.")
+                           + "</p>"
+                    textFormat: Text.RichText
+                    linkColor: Material.accent
+                    wrapMode: Text.Wrap
+                }
+
             }
 
             function accept() {
             }
+
         }
-
-
     }
 
 
@@ -233,7 +244,8 @@ CenteringDialog {
     }
 
     function conditionalOpen() {
-        stack.push(maps)
+//        if (!DataManager.aviationMaps.hasFile)
+            stack.push(maps, {"dialogMain": dialogMain})
 
         var missingPermissionsText = PlatformAdaptor.checkPermissions()
         if (missingPermissionsText === "")

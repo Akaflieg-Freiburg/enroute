@@ -73,6 +73,7 @@ public:
 
     //
     // Methods
+    //
 
     /*! \brief Checks if all required permissions have been granted
      *

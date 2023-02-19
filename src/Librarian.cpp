@@ -204,22 +204,38 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 
     if (name == u":text/privacy.html"_qs)
     {
-        return "<h3>" + tr("Privacy Policies") + "</h3>"
-                + "<p>" + tr("This app does not send any data to us or other parties. We do "
-                             "not collect data and we do not track our users. However, this "
-                             "app accesses internet sites that may not be under our control "
-                             "and may keep access logs.") + "</p>"
+        return "<h3>"
+                + tr("Privacy Policies")
+                + "</h3>"
+                + "<p>"
+                + tr("This app does not send any data to us or other parties. We do "
+                     "not collect data and we do not track our users. However, this "
+                     "app accesses internet sites that may not be under our control "
+                     "and may keep access logs.")
+                + "</p>"
                 + "<ul style='margin-left:-25px;'>"
-                + "<li>" + tr("The app connects to "
-                              "<a href='https://cplx.vm.uni-freiburg.de/storage/'>servers at "
-                              "the University of Freiburg</a> to "
-                              "check for updates and to download maps and data.") + "</li>"
-                + "<li>" + tr("The app downloads METAR and TAF data for your locaction and "
-                              "your intended route from the "
-                              "<a href='https://www.aviationweather.gov/'>Aviation Weather "
-                              "Center</a>, a website of the United States government.") + "</li>"
+                + "<li>"
+                + tr("The app connects to "
+                     "<a href='https://cplx.vm.uni-freiburg.de/storage/'>servers at "
+                     "the University of Freiburg</a> to "
+                     "check for updates and to download maps and data.")
+                + "</li>"
+                + "<li>"
+                + tr("The app downloads METAR and TAF data for your locaction and "
+                     "your intended route from the "
+                     "<a href='https://www.aviationweather.gov/'>Aviation Weather "
+                     "Center</a>, a website of the United States government.")
+                + "</li>"
+                + "<li>"
+                + tr("The app downloads NOTAM for your locaction and "
+                     "your intended route from servers of the "
+                     "<a href='https://api.faa.gov/s/'>Federal Aviation "
+                     "Administration</a> of the United States government.")
+                + "</li>"
                 + "</ul>"
-                + "<h3>" + tr("Responsible") + "</h3>"
+                + "<h3>"
+                + tr("Responsible")
+                + "</h3>"
                 + "Stefan Kebekus<br>Wintererstraße 77<br>79104 Freiburg im Breisgau<br>Germany<br>";
     }
 

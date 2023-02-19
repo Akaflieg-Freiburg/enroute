@@ -20,12 +20,50 @@
 
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QtGlobal>
 
 #include "notam/Notam.h"
 
 
 
-auto interpretNOTAMCoordinates(const QString& c) -> QGeoCoordinate
+NOTAM::Notam::Notam(const QJsonObject& jsonObject)
+{
+    auto notamObject = jsonObject[u"properties"_qs][u"coreNOTAMData"_qs][u"notam"_qs].toObject();
+
+    m_coordinates = interpretNOTAMCoordinates(notamObject[u"coordinates"_qs].toString());
+    m_effectiveEndString = notamObject[u"effectiveEnd"_qs].toString();
+    m_effectiveStartString = notamObject[u"effectiveStart"_qs].toString();
+    m_icaoLocation = notamObject[u"location"_qs].toString();
+    m_number = notamObject[u"number"_qs].toString();
+    m_text = notamObject[u"text"_qs].toString();
+    m_traffic = notamObject[u"traffic"_qs].toString();
+    m_radius = Units::Distance::fromNM( notamObject[u"radius"_qs].toDouble() );
+
+    m_effectiveEnd = QDateTime::fromString(m_effectiveEndString, Qt::ISODate);
+    m_effectiveStart = QDateTime::fromString(m_effectiveStartString, Qt::ISODate);
+    m_region = QGeoCircle(m_coordinates, qMax( Units::Distance::fromNM(2).toM(), m_radius.toM() ));
+}
+
+
+QString NOTAM::Notam::richText() const
+{
+    QStringList result;
+
+    if (m_effectiveEnd.isValid())
+    {
+        result += u"<strong>Effective from %1 to %2</strong>"_qs.arg(m_effectiveStart.toString(u"dd.MM.yy hh:00"_qs), m_effectiveEnd.toString(u"dd.MM.yy hh:00"_qs));
+    }
+    else
+    {
+        result += u"<strong>Effective from %1</strong>"_qs.arg(m_effectiveStart.toString(u"dd.MM.yy hh:00"_qs));
+        result += u"<strong>%1</strong>"_qs.arg(m_effectiveEndString);
+    }
+    result += m_text;
+    return result.join(u" • "_qs);
+}
+
+
+auto NOTAM::Notam::interpretNOTAMCoordinates(const QString& c) -> QGeoCoordinate
 {
     if (c.length() != 11)
     {
@@ -70,44 +108,6 @@ auto interpretNOTAMCoordinates(const QString& c) -> QGeoCoordinate
 }
 
 
-NOTAM::Notam::Notam(const QJsonObject& jsonObject)
-{
-    auto notamObject = jsonObject[u"properties"_qs][u"coreNOTAMData"_qs][u"notam"_qs].toObject();
-
-    m_effectiveStartString = notamObject[u"effectiveStart"_qs].toString();
-    m_effectiveStart = QDateTime::fromString(m_effectiveStartString, Qt::ISODate);
-    m_effectiveEndString = notamObject[u"effectiveEnd"_qs].toString();
-    m_effectiveEnd = QDateTime::fromString(m_effectiveEndString, Qt::ISODate);
-
-
-    m_coordinates = interpretNOTAMCoordinates(notamObject[u"coordinates"_qs].toString());
-    m_icaoLocation = notamObject[u"location"_qs].toString();
-    m_text = notamObject[u"text"_qs].toString();
-    m_traffic = notamObject[u"traffic"_qs].toString();
-    m_radius = Units::Distance::fromNM( notamObject[u"radius"_qs].toDouble() );
-    m_region = QGeoCircle(m_coordinates, m_radius.toM());
-}
-
-
-
-QString NOTAM::Notam::richText() const
-{
-    QStringList result;
-
-    if (m_effectiveEnd.isValid())
-    {
-        result += u"<strong>Effective from %1 to %2</strong>"_qs.arg(m_effectiveStart.toString(u"dd.MM.yy hh:00"_qs), m_effectiveEnd.toString(u"dd.MM.yy hh:00"_qs));
-    }
-    else
-    {
-        result += u"<strong>Effective from %1</strong>"_qs.arg(m_effectiveStart.toString(u"dd.MM.yy hh:00"_qs));
-        result += u"<strong>%1</strong>"_qs.arg(m_effectiveEndString);
-    }
-    result += m_text;
-    return result.join(u" • "_qs);
-}
-
-
 QDataStream& operator<<(QDataStream& stream, const NOTAM::Notam& notam)
 {
     stream << notam.m_coordinates;
@@ -116,6 +116,7 @@ QDataStream& operator<<(QDataStream& stream, const NOTAM::Notam& notam)
     stream << notam.m_effectiveStart;
     stream << notam.m_effectiveStartString;
     stream << notam.m_icaoLocation;
+    stream << notam.m_number;
     stream << notam.m_radius;
     stream << notam.m_region;
     stream << notam.m_text;
@@ -133,6 +134,7 @@ QDataStream& operator>>(QDataStream& stream, NOTAM::Notam& notam)
     stream >> notam.m_effectiveStart;
     stream >> notam.m_effectiveStartString;
     stream >> notam.m_icaoLocation;
+    stream >> notam.m_number;
     stream >> notam.m_radius;
     stream >> notam.m_region;
     stream >> notam.m_text;

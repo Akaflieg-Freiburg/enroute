@@ -57,6 +57,10 @@ public:
 
     Q_PROPERTY(QDateTime lastUpdate READ lastUpdate NOTIFY lastUpdateChanged)
 
+    Q_PROPERTY(QList<GeoMaps::Waypoint> waypoints READ waypoints NOTIFY waypointsChanged)
+
+    QList<GeoMaps::Waypoint> waypoints() const;
+
     [[nodiscard]] QDateTime lastUpdate() const { return m_lastUpdate; }
 
     Q_INVOKABLE [[nodiscard]] NOTAM::NotamList notams(const GeoMaps::Waypoint& waypoint);
@@ -64,7 +68,7 @@ public:
 signals:
     void lastUpdateChanged();
 
-    void notamsUpdated();
+    void waypointsChanged();
 
 private slots:
     // Called when a download is finished
@@ -80,6 +84,9 @@ private:
     QList<NotamList> m_notamLists;
 
     QDateTime m_lastUpdate;
+
+    static constexpr Units::Distance requestRadius = Units::Distance::fromNM(20.0);
+
 
 };
 

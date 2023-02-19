@@ -20,9 +20,6 @@
 
 #pragma once
 
-#include <QDateTime>
-#include <QGeoCoordinate>
-#include <QGeoCircle>
 #include <QQmlEngine>
 
 #include "geomaps/Waypoint.h"
@@ -31,35 +28,104 @@
 namespace NOTAM {
 
 
+/*! \brief A lists of NOTAMs
+ *
+ *  This class holds a holds the result of a NOTAM request for a specific region.
+ *  The class stores the time of the request in the member m_retrieved, and
+ *  the region in the member m_region.
+*/
+
 class NotamList {
     Q_GADGET
     QML_VALUE_TYPE(notamList)
 
 public:
-    NotamList();
+    /*! \brief Constructs an empty NotamList
+     *
+     *  This constructor sets an invalid region and an invalid QDateTime for the member
+     *  m_retrieved.
+     */
+    NotamList() = default;
+
+    /*! \brief Constructs a NotamList from FAA GeoJSON data
+     *
+     *  This constructor sets  the member m_retrieved to QDateTime::currentDateTimeUtc().
+     *
+     *  @param jsonData JSON data, as provided by the FAA
+     *
+     *  @param region Geographic region covered by this notam list
+     */
     NotamList(const QByteArray& jsonData, const QGeoCircle& region);
 
 
+
+    //
+    // Properties
+    //
+
+    /*! \brief List of Notams */
     Q_PROPERTY(QList<NOTAM::Notam> notams MEMBER m_notams)
+
+    /*! \brief One-line summary */
     Q_PROPERTY(QString summary READ summary)
-    Q_PROPERTY(QString text READ text)
 
+
+
+    //
+    // Getter Methods
+    //
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property summary
+     */
+    QString summary() const;
+
+
+
+    //
+    // Getter Methods
+    //
+
+    /*! \brief Check if a given waypoint is covered by this list
+     *
+     *  @param waypoint Waypoint
+     *
+     *  @returns True is the waypoint is contained in the region, fals otherwise
+     */
     bool covers(const GeoMaps::Waypoint& waypoint);
-    NotamList restrict(const GeoMaps::Waypoint& waypoint);
+
+    /*! \brief Sub-list of notams relevant to a given waypoint
+     *
+     *  @param waypoint Waypoint
+     *
+     *  @returns NotamList with all notams relevant for the given waypoint
+     */
+    NotamList restrict(const GeoMaps::Waypoint& waypoint) const;
 
 
-    QString summary();
-    QString text();
 
+    //
+    // Members
+    //
+
+    /*! \brief List of Notams */
     QList<NOTAM::Notam> m_notams;
+
+    /*! \brief Region */
     QGeoCircle m_region;
+
+    /*! \brief Time of request */
     QDateTime m_retrieved;
 };
 
 } // namespace NOTAM
 
-QDataStream& operator<<(QDataStream& stream, const NOTAM::NotamList &notam);
-QDataStream& operator>>(QDataStream& stream, NOTAM::NotamList& notam);
+/*! \brief Serialization */
+QDataStream& operator<<(QDataStream& stream, const NOTAM::NotamList& notamList);
+
+/*! \brief Deserialization */
+QDataStream& operator>>(QDataStream& stream, NOTAM::NotamList& notamList);
 
 // Declare meta types
 Q_DECLARE_METATYPE(NOTAM::NotamList)

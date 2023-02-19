@@ -28,12 +28,6 @@
 
 
 
-NOTAM::NotamList::NotamList()
-{
-
-}
-
-
 NOTAM::NotamList::NotamList(const QByteArray& jsonData, const QGeoCircle& region)
 {
     auto doc = QJsonDocument::fromJson(jsonData);
@@ -57,11 +51,11 @@ NOTAM::NotamList::NotamList(const QByteArray& jsonData, const QGeoCircle& region
 }
 
 
-QString NOTAM::NotamList::summary() 
+QString NOTAM::NotamList::summary() const
 {
     QStringList results;
 
-    if (m_notams.size() > 1)
+    if (m_notams.size() > 0)
     {
         results += u"NOTAMs available."_qs;
     }
@@ -75,25 +69,17 @@ QString NOTAM::NotamList::summary()
 }
 
 
-QString NOTAM::NotamList::text() 
-{
-    QString result;
-    foreach (auto notam, m_notams) {
-        result += notam.m_text + "\n\n";
-    }
-    return "<pre>"+result+"</pre>";
-}
-
 bool NOTAM::NotamList::covers(const GeoMaps::Waypoint& waypoint)
 {
-    if (!m_region.isValid())
+    if (!m_region.isValid() || !waypoint.coordinate().isValid())
     {
-        return {};
+        return false;
     }
-    return (m_region.center().distanceTo(waypoint.coordinate()) < m_region.radius()-5000);
+    return m_region.contains(waypoint.coordinate());
 }
 
-NOTAM::NotamList NOTAM::NotamList::restrict(const GeoMaps::Waypoint& waypoint)
+
+NOTAM::NotamList NOTAM::NotamList::restrict(const GeoMaps::Waypoint& waypoint) const
 {
     /*
     if (!covers(waypoint))
@@ -108,12 +94,10 @@ NOTAM::NotamList NOTAM::NotamList::restrict(const GeoMaps::Waypoint& waypoint)
     result.m_region = QGeoCircle(waypoint.coordinate(), 5000);
     foreach(auto notam, m_notams)
     {
-        result.m_notams.append(notam);
-/*        if (result.m_region.contains(notam.m_coordinates))
+        if (notam.m_region.contains(waypoint.coordinate()))
         {
             result.m_notams.append(notam);
         }
-        */
     }
 
     return result;

@@ -30,13 +30,14 @@
 
 NOTAM::NotamProvider::NotamProvider(QObject* parent) : GlobalObject(parent)
 {
-    auto stdFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/notam.dat";
+/*    auto stdFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/notam.dat";
     auto inputFile = QFile(stdFileName);
     if (inputFile.open(QIODevice::ReadOnly))
     {
         QDataStream inputStream(&inputFile);
         inputStream >> m_notamLists;
     }
+    */
 }
 
 
@@ -85,13 +86,13 @@ NOTAM::NotamList NOTAM::NotamProvider::notams(const GeoMaps::Waypoint& waypoint)
                      "locationLongitude=%1&locationLatitude=%2&locationRadius=%3"_qs
             .arg(waypoint.coordinate().longitude())
             .arg(waypoint.coordinate().latitude())
-            .arg(10.0);
+            .arg(1.2*requestRadius.toNM());
     QNetworkRequest request( urlString );
     request.setRawHeader("client_id", "bcd5e948c6654d3284ebeba68012a9eb");
     request.setRawHeader("client_secret", "1FCE4b44ED8f4C328C1b6341D5b1a55c");
 
     auto* reply = GlobalObject::networkAccessManager()->get(request);
-    reply->setProperty("area", QVariant::fromValue(QGeoCircle(waypoint.coordinate(), 10000)) );
+    reply->setProperty("area", QVariant::fromValue(QGeoCircle(waypoint.coordinate(), requestRadius.toM())) );
 
     m_networkReplies.append(reply);
     connect(reply, &QNetworkReply::finished, this, &NOTAM::NotamProvider::downloadFinished);
@@ -127,9 +128,16 @@ void NOTAM::NotamProvider::downloadFinished()
 
         auto region = networkReply->property("area").value<QGeoCircle>();
         NotamList notamList(networkReply->readAll(), region);
+
+        foreach(auto notam, notamList.m_notams)
+        {
+            qWarning() << region.center().distanceTo(notam.m_coordinates) << notam.m_text;
+        }
+
         m_notamLists.prepend(notamList);
         m_lastUpdate = QDateTime::currentDateTimeUtc();
         emit lastUpdateChanged();
+        emit waypointsChanged();
     }
 
     auto stdFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/notam.dat";
@@ -140,4 +148,18 @@ void NOTAM::NotamProvider::downloadFinished()
         outputStream << m_notamLists;
     }
 
+}
+
+
+QList<GeoMaps::Waypoint> NOTAM::NotamProvider::waypoints() const
+{
+    QList<GeoMaps::Waypoint> result;
+    foreach (auto notamList, m_notamLists)
+    {
+        foreach (auto notam, notamList.m_notams)
+        {
+            result.append(GeoMaps::Waypoint(notam.m_coordinates));
+        }
+    }
+    return result;
 }

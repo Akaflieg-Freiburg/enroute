@@ -24,6 +24,7 @@ import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
+import "../items"
 
 CenteringDialog {
     id: notamListDialog

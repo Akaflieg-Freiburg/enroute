@@ -47,7 +47,7 @@ public:
     explicit NotamProvider() = delete;
 
     /*! \brief Standard destructor */
-    ~NotamProvider() override = default;
+    ~NotamProvider() override;
 
     // factory function for QML singleton
     static NOTAM::NotamProvider* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
@@ -84,14 +84,18 @@ private:
     Q_DISABLE_COPY_MOVE(NotamProvider)
 
     void startRequest(const GeoMaps::Waypoint& waypoint);
+    Units::Distance range(const QGeoCoordinate& waypoint);
 
     // List of pending network requests
-    QList<QPointer<QNetworkReply>> m_networkReplies;
+    QList<QSharedPointer<QNetworkReply>> m_networkReplies;
     QList<NotamList> m_notamLists;
+
+
 
     QDateTime m_lastUpdate;
 
     static constexpr Units::Distance requestRadius = Units::Distance::fromNM(20.0);
+    static constexpr Units::Distance marginRadius = Units::Distance::fromNM(5.0);
     QString stdFileName;
 };
 

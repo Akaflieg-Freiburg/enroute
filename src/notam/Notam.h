@@ -34,6 +34,8 @@ class Notam {
     Q_GADGET
     QML_VALUE_TYPE(notam)
 
+    friend QDataStream& operator<<(QDataStream& stream, const NOTAM::Notam &notam);
+    friend QDataStream& operator>>(QDataStream& stream, NOTAM::Notam& notam);
 
 public:
     /*! \brief Constructs an invalid Notam */
@@ -49,9 +51,25 @@ public:
     // Properties
     //
 
-    /*! \brief Rich text description of the Notam */
-    Q_PROPERTY(QString richText READ richText)
+    /*! \brief Coordinates of the Notam */
+    Q_PROPERTY(QGeoCoordinate coordinate READ coordinate CONSTANT)
 
+    /*! \brief Effective end of the Notam, if date is given
+     *
+     *  If the effectiveEnd field of the Notam specified a precise date/time,
+     *  then this time is found here. If not, the property contains an invalid
+     *  QDateTime.
+     */
+    Q_PROPERTY(QDateTime effectiveEnd READ effectiveEnd CONSTANT)
+
+    /*! \brief Rich text description of the Notam */
+    Q_PROPERTY(QGeoCircle region READ region CONSTANT)
+
+    /*! \brief Rich text description of the Notam */
+    Q_PROPERTY(QString richText READ richText CONSTANT)
+
+    /*! \brief Traffic entry of the Notam */
+    Q_PROPERTY(QString traffic READ traffic CONSTANT)
 
 
     //
@@ -60,9 +78,33 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
+     *  @returns Property coordinate
+     */
+    QGeoCoordinate coordinate() const { return m_coordinates; }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property effectiveEnd
+     */
+    QDateTime effectiveEnd() const { return m_effectiveEnd; }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property region
+     */
+    QGeoCircle region() const { return m_region; }
+
+    /*! \brief Getter function for the property with the same name
+     *
      *  @returns Property richText
      */
     QString richText() const;
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property traffic
+     */
+    QString traffic() const { return m_traffic; }
 
 
 
@@ -96,31 +138,36 @@ public:
     Q_INVOKABLE [[nodiscard]] bool operator==(const NOTAM::Notam& rhs) const = default;
 
 
-    //
-    // Members
-    //
-
+private:
     /* Notam members, as described by the FAA */
     QGeoCoordinate  m_coordinates;
-    QDateTime       m_effectiveEnd;
     QString         m_effectiveEndString;
-    QDateTime       m_effectiveStart;
     QString         m_effectiveStartString;
     QString         m_icaoLocation;
     QString         m_number;
     Units::Distance m_radius;
-    QGeoCircle      m_region;
     QString         m_text;
     QString         m_traffic;
+
+    /* Derivative data, obtained from the FAA notam members above */
+    QDateTime       m_effectiveEnd;
+    QDateTime       m_effectiveStart;
+    QGeoCircle      m_region;
 };
 
-} // namespace NOTAM
-
-/*! \brief Serialization */
+/*! \brief Serialization
+ *
+ *  There is no checks for errors of any kind.
+ */
 QDataStream& operator<<(QDataStream& stream, const NOTAM::Notam &notam);
 
-/*! \brief Deserialization */
+/*! \brief Deserialization
+ *
+ *  There is no checks for errors of any kind.
+ */
 QDataStream& operator>>(QDataStream& stream, NOTAM::Notam& notam);
+
+} // namespace NOTAM
 
 // Declare meta types
 Q_DECLARE_METATYPE(NOTAM::Notam)

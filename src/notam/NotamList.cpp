@@ -38,7 +38,7 @@ NOTAM::NotamList::NotamList(const QByteArray& jsonData, const QGeoCircle& region
         Notam notam(item.toObject());
 
         // Ignore IFR notams
-        if (notam.m_traffic == u"I"_qs)
+        if (notam.traffic() == u"I"_qs)
         {
             continue;
         }
@@ -94,7 +94,7 @@ NOTAM::NotamList NOTAM::NotamList::restrict(const GeoMaps::Waypoint& waypoint) c
     result.m_region = QGeoCircle(waypoint.coordinate(), 5000);
     foreach(auto notam, m_notams)
     {
-        if (notam.m_region.contains(waypoint.coordinate()))
+        if (notam.region().contains(waypoint.coordinate()))
         {
             result.m_notams.append(notam);
         }
@@ -109,7 +109,7 @@ bool NOTAM::NotamList::removeExpiredEntries()
     bool haveChange = false;
     for(auto i=0; i<m_notams.size(); i++)
     {
-        auto effectiveEnd = m_notams[i].m_effectiveEnd;
+        auto effectiveEnd = m_notams[i].effectiveEnd();
         if (!effectiveEnd.isValid())
         {
             continue;

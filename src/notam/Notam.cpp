@@ -51,11 +51,11 @@ QString NOTAM::Notam::richText() const
 
     if (m_effectiveEnd.isValid())
     {
-        result += u"<strong>Effective from %1 to %2</strong>"_qs.arg(m_effectiveStart.toString(u"dd.MM.yy hh:00"_qs), m_effectiveEnd.toString(u"dd.MM.yy hh:00"_qs));
+        result += u"<strong>Effective %1 to %2</strong>"_qs.arg(m_effectiveStart.toString(u"dd.MM.yy hh:00"_qs), m_effectiveEnd.toString(u"dd.MM.yy hh:00"_qs));
     }
     else
     {
-        result += u"<strong>Effective from %1</strong>"_qs.arg(m_effectiveStart.toString(u"dd.MM.yy hh:00"_qs));
+        result += u"<strong>Effective %1</strong>"_qs.arg(m_effectiveStart.toString(u"dd.MM.yy hh:00"_qs));
         result += u"<strong>%1</strong>"_qs.arg(m_effectiveEndString);
     }
     result += m_text;
@@ -63,7 +63,7 @@ QString NOTAM::Notam::richText() const
 }
 
 
-auto NOTAM::Notam::interpretNOTAMCoordinates(const QString& c) -> QGeoCoordinate
+QGeoCoordinate NOTAM::Notam::interpretNOTAMCoordinates(const QString& c)
 {
     if (c.length() != 11)
     {
@@ -108,7 +108,7 @@ auto NOTAM::Notam::interpretNOTAMCoordinates(const QString& c) -> QGeoCoordinate
 }
 
 
-QDataStream& operator<<(QDataStream& stream, const NOTAM::Notam& notam)
+QDataStream& NOTAM::operator<<(QDataStream& stream, const NOTAM::Notam& notam)
 {
     stream << notam.m_coordinates;
     stream << notam.m_effectiveEnd;
@@ -126,7 +126,7 @@ QDataStream& operator<<(QDataStream& stream, const NOTAM::Notam& notam)
 }
 
 
-QDataStream& operator>>(QDataStream& stream, NOTAM::Notam& notam)
+QDataStream& NOTAM::operator>>(QDataStream& stream, NOTAM::Notam& notam)
 {
     stream >> notam.m_coordinates;
     stream >> notam.m_effectiveEnd;

@@ -20,8 +20,6 @@
 
 #pragma once
 
-#include <QDateTime>
-#include <QGeoCoordinate>
 #include <QNetworkReply>
 #include <QQmlEngine>
 

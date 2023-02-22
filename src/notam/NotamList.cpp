@@ -18,14 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QFile>
 #include <QJsonArray>
 #include <QJsonDocument>
-#include <QJsonObject>
-
+#include <QtGlobal>
 
 #include "notam/NotamList.h"
-
 
 
 NOTAM::NotamList::NotamList(const QByteArray& jsonData, const QGeoCircle& region)
@@ -37,8 +34,26 @@ NOTAM::NotamList::NotamList(const QByteArray& jsonData, const QGeoCircle& region
     {
         Notam notam(item.toObject());
 
+        // Ignore invalid notams
+        if (!notam.isValid())
+        {
+            continue;
+        }
+
+        // Ignore outdated notams
+        if (notam.isOutdated())
+        {
+            continue;
+        }
+
         // Ignore IFR notams
         if (notam.traffic() == u"I"_qs)
+        {
+            continue;
+        }
+
+        // Ignore duplicated entries
+        if (m_notams.contains(notam))
         {
             continue;
         }
@@ -51,85 +66,100 @@ NOTAM::NotamList::NotamList(const QByteArray& jsonData, const QGeoCircle& region
 }
 
 
+
+//
+// Getter Methods
+//
+
 QString NOTAM::NotamList::summary() const
 {
     QStringList results;
 
     if (m_notams.size() > 0)
     {
-        results += u"NOTAMs available."_qs;
+        results += QObject::tr("NOTAMs available.");
     }
 
-    if (!m_retrieved.isValid() || (m_retrieved.addDays(1) <  QDateTime::currentDateTime()))
+    if (!m_retrieved.isValid() || (m_retrieved.addDays(1) <  QDateTime::currentDateTimeUtc()))
     {
-        results += u"Data potentially outdated."_qs;
+        results += QObject::tr("Notam data potentially incomplete. Update in progress.");
     }
 
     return results.join(u" • "_qs);
 }
 
 
-bool NOTAM::NotamList::covers(const GeoMaps::Waypoint& waypoint)
+
+//
+// Methods
+//
+
+NOTAM::NotamList NOTAM::NotamList::cleaned() const
 {
-    if (!m_region.isValid() || !waypoint.coordinate().isValid())
-    {
-        return false;
-    }
-    return m_region.contains(waypoint.coordinate());
-}
-
-
-NOTAM::NotamList NOTAM::NotamList::restrict(const GeoMaps::Waypoint& waypoint) const
-{
-    /*
-    if (!covers(waypoint))
-    {
-        return {};
-    }
-    */
-
     NotamList result;
-
+    result.m_region = m_region;
     result.m_retrieved = m_retrieved;
-    result.m_region = QGeoCircle(waypoint.coordinate(), 5000);
+
     foreach(auto notam, m_notams)
     {
-        if (notam.region().contains(waypoint.coordinate()))
+        if (!notam.isValid())
         {
-            result.m_notams.append(notam);
+            continue;
         }
+        if (notam.isOutdated())
+        {
+            continue;
+        }
+        if (result.m_notams.contains(notam))
+        {
+            continue;
+        }
+        result.m_notams.append(notam);
     }
 
     return result;
 }
 
 
-bool NOTAM::NotamList::removeExpiredEntries()
+NOTAM::NotamList NOTAM::NotamList::restricted(const GeoMaps::Waypoint& waypoint) const
 {
-    bool haveChange = false;
-    for(auto i=0; i<m_notams.size(); i++)
+    NotamList result;
+    result.m_retrieved = m_retrieved;
+    auto radius = qMax(0.0, m_region.radius() - m_region.center().distanceTo(waypoint.coordinate()));
+
+    result.m_region = QGeoCircle(waypoint.coordinate(), radius);
+
+    foreach(auto notam, m_notams)
     {
-        auto effectiveEnd = m_notams[i].effectiveEnd();
-        if (!effectiveEnd.isValid())
+        if (!notam.isValid())
         {
             continue;
         }
-        if (effectiveEnd < QDateTime::currentDateTimeUtc())
+        if (notam.isOutdated())
         {
-            m_notams.removeAt(i);
-            haveChange = true;
-            i--;
+            continue;
         }
+        if (result.m_notams.contains(notam))
+        {
+            continue;
+        }
+        if (!notam.region().contains(waypoint.coordinate()))
+        {
+            continue;
+        }
+        result.m_notams.append(notam);
     }
-    if (haveChange)
-    {
-        m_notams.squeeze();
-    }
-    return haveChange;
+
+    return result;
 }
 
 
-QDataStream& operator<<(QDataStream& stream, const NOTAM::NotamList& notamList)
+
+//
+// Non-Member Methods
+//
+
+QDataStream& NOTAM::operator<<(QDataStream& stream, const NOTAM::NotamList& notamList)
 {
     stream << notamList.m_notams;
     stream << notamList.m_region;
@@ -139,7 +169,7 @@ QDataStream& operator<<(QDataStream& stream, const NOTAM::NotamList& notamList)
 }
 
 
-QDataStream& operator>>(QDataStream& stream, NOTAM::NotamList& notamList)
+QDataStream& NOTAM::operator>>(QDataStream& stream, NOTAM::NotamList& notamList)
 {
     stream >> notamList.m_notams;
     stream >> notamList.m_region;

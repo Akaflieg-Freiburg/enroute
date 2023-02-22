@@ -39,11 +39,14 @@ class NotamList {
     Q_GADGET
     QML_VALUE_TYPE(notamList)
 
+    friend QDataStream& operator<<(QDataStream& stream, const NOTAM::NotamList& notamList);
+    friend QDataStream& operator>>(QDataStream& stream, NOTAM::NotamList& notamList);
+
 public:
     /*! \brief Constructs an empty NotamList
      *
-     *  This constructor sets an invalid region and an invalid QDateTime for the member
-     *  m_retrieved.
+     *  Constructs an empty NotamList with an invalid region and an invalid QDateTime for the property
+     *  retrieved.
      */
     NotamList() = default;
 
@@ -64,7 +67,13 @@ public:
     //
 
     /*! \brief List of Notams */
-    Q_PROPERTY(QList<NOTAM::Notam> notams MEMBER m_notams)
+    Q_PROPERTY(QList<NOTAM::Notam> notams READ notams)
+
+    /*! \brief Region covered by this list */
+    Q_PROPERTY(QGeoCircle region READ region)
+
+    /*! \brief Date of retrieval */
+    Q_PROPERTY(QDateTime retrieved READ retrieved)
 
     /*! \brief One-line summary */
     Q_PROPERTY(QString summary READ summary)
@@ -77,31 +86,27 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
+     *  @returns Property notams
+     */
+    Q_REQUIRED_RESULT QList<NOTAM::Notam> notams() const { return m_notams; }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property region
+     */
+    Q_REQUIRED_RESULT QGeoCircle region() const { return m_region; }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property retrieved
+     */
+    Q_REQUIRED_RESULT QDateTime retrieved() const { return m_retrieved; }
+
+    /*! \brief Getter function for the property with the same name
+     *
      *  @returns Property summary
      */
-    QString summary() const;
-
-
-
-    //
-    // Getter Methods
-    //
-
-    /*! \brief Check if a given waypoint is covered by this list
-     *
-     *  @param waypoint Waypoint
-     *
-     *  @returns True is the waypoint is contained in the region, fals otherwise
-     */
-    bool covers(const GeoMaps::Waypoint& waypoint);
-
-    /*! \brief Sub-list of notams relevant to a given waypoint
-     *
-     *  @param waypoint Waypoint
-     *
-     *  @returns NotamList with all notams relevant for the given waypoint
-     */
-    NotamList restrict(const GeoMaps::Waypoint& waypoint) const;
+    Q_REQUIRED_RESULT QString summary() const;
 
 
 
@@ -109,34 +114,40 @@ public:
     // Methods
     //
 
-    /*! \brief Removes expired Notams from this list
+    /*! \brief Sublist with expired and duplicated entries removed
      *
-     *  @returns True if entries have indeed been removed
+     *  @returns Sublist with expired and duplicated entries removed.
      */
-    bool removeExpiredEntries();
+    Q_REQUIRED_RESULT NOTAM::NotamList cleaned() const;
+
+    /*! \brief Sublist of notams relevant to a given waypoint.
+     *
+     *  @param waypoint Waypoint
+     *
+     *  @returns NotamList with all notams relevant for the given waypoint, without expired and duplicated.
+     */
+    Q_REQUIRED_RESULT NOTAM::NotamList restricted(const GeoMaps::Waypoint& waypoint) const;
 
 
-    //
-    // Members
-    //
-
-    /*! \brief List of Notams */
+private:
+    /* List of Notams */
     QList<NOTAM::Notam> m_notams;
 
-    /*! \brief Region */
+    /* Region */
     QGeoCircle m_region;
 
-    /*! \brief Time of request */
+    /* Time of request */
     QDateTime m_retrieved;
 };
-
-} // namespace NOTAM
 
 /*! \brief Serialization */
 QDataStream& operator<<(QDataStream& stream, const NOTAM::NotamList& notamList);
 
 /*! \brief Deserialization */
 QDataStream& operator>>(QDataStream& stream, NOTAM::NotamList& notamList);
+
+} // namespace NOTAM
+
 
 // Declare meta types
 Q_DECLARE_METATYPE(NOTAM::NotamList)

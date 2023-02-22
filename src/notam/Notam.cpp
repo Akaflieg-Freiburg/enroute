@@ -18,9 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QJsonArray>
 #include <QJsonObject>
-#include <QtGlobal>
 
 #include "notam/Notam.h"
 
@@ -45,6 +43,28 @@ NOTAM::Notam::Notam(const QJsonObject& jsonObject)
 }
 
 
+//
+// Getter Methods
+//
+
+bool NOTAM::Notam::isValid() const
+{
+    if (!m_coordinates.isValid())
+    {
+        return false;
+    }
+    if (m_icaoLocation.size() != 4)
+    {
+        return false;
+    }
+    if (m_text.isEmpty())
+    {
+        return false;
+    }
+    return true;
+}
+
+
 QString NOTAM::Notam::richText() const
 {
     QStringList result;
@@ -63,7 +83,18 @@ QString NOTAM::Notam::richText() const
 }
 
 
-QGeoCoordinate NOTAM::Notam::interpretNOTAMCoordinates(const QString& c)
+
+//
+// Methods
+//
+
+
+
+//
+// Non-Member Methods
+//
+
+QGeoCoordinate NOTAM::interpretNOTAMCoordinates(const QString& c)
 {
     if (c.length() != 11)
     {

@@ -62,6 +62,9 @@ public:
      */
     Q_PROPERTY(QDateTime effectiveEnd READ effectiveEnd CONSTANT)
 
+    /*! \brief Validity of this Notam */
+    Q_PROPERTY(bool isValid READ isValid CONSTANT)
+
     /*! \brief Rich text description of the Notam */
     Q_PROPERTY(QGeoCircle region READ region CONSTANT)
 
@@ -80,31 +83,37 @@ public:
      *
      *  @returns Property coordinate
      */
-    QGeoCoordinate coordinate() const { return m_coordinates; }
+    Q_REQUIRED_RESULT QGeoCoordinate coordinate() const { return m_coordinates; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property effectiveEnd
      */
-    QDateTime effectiveEnd() const { return m_effectiveEnd; }
+    Q_REQUIRED_RESULT QDateTime effectiveEnd() const { return m_effectiveEnd; }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property isValid
+     */
+    Q_REQUIRED_RESULT bool isValid() const;
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property region
      */
-    QGeoCircle region() const { return m_region; }
+    Q_REQUIRED_RESULT QGeoCircle region() const { return m_region; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property richText
      */
-    QString richText() const;
+    Q_REQUIRED_RESULT QString richText() const;
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property traffic
      */
-    QString traffic() const { return m_traffic; }
+    Q_REQUIRED_RESULT QString traffic() const { return m_traffic; }
 
 
 
@@ -112,31 +121,14 @@ public:
     // Methods
     //
 
-    /*! \brief Read coordinate in NOTAM format
-     *
-     *  This method converts a string with a coordinate description into
-     *  a QGeoCoordinate. The string must be exactly 11 characters long and
-     *  adhere to the following format:
-     *
-     *  AABBCDDDEEF
-     *
-     *  AA:  Degrees of latitude
-     *  BB:  Minutes of latitude
-     *  C:   'N' or 'S'
-     *  DDD: Degrees of longitude
-     *  EE:  Minutes of longitude
-     *  F:   'E' or 'W'
-     *
-     *  @param string String of the form
-     *
-     *  @returns Interpreted QGeoCoordinate, or an invalid coordinate on error
-     *
-     */
-    QGeoCoordinate static interpretNOTAMCoordinates(const QString& string);
-
     /*! \brief Comparison */
-    Q_INVOKABLE [[nodiscard]] bool operator==(const NOTAM::Notam& rhs) const = default;
+    Q_REQUIRED_RESULT Q_INVOKABLE [[nodiscard]] bool operator==(const NOTAM::Notam& rhs) const = default;
 
+    /*! \brief Check if effectiveEnd is valid and earlier than currentTime */
+    Q_REQUIRED_RESULT bool isOutdated() const
+    {
+        return m_effectiveEnd.isValid() && (m_effectiveEnd < QDateTime::currentDateTimeUtc());
+    }
 
 private:
     /* Notam members, as described by the FAA */
@@ -154,6 +146,29 @@ private:
     QDateTime       m_effectiveStart;
     QGeoCircle      m_region;
 };
+
+
+/*! \brief Read coordinate in NOTAM format
+ *
+ *  This method converts a string with a coordinate description into
+ *  a QGeoCoordinate. The string must be exactly 11 characters long and
+ *  adhere to the following format:
+ *
+ *  AABBCDDDEEF
+ *
+ *  AA:  Degrees of latitude
+ *  BB:  Minutes of latitude
+ *  C:   'N' or 'S'
+ *  DDD: Degrees of longitude
+ *  EE:  Minutes of longitude
+ *  F:   'E' or 'W'
+ *
+ *  @param string String of the form
+ *
+ *  @returns Interpreted QGeoCoordinate, or an invalid coordinate on error
+ *
+ */
+QGeoCoordinate interpretNOTAMCoordinates(const QString& string);
 
 /*! \brief Serialization
  *

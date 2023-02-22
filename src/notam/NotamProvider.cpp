@@ -66,10 +66,9 @@ NOTAM::NotamList NOTAM::NotamProvider::notams(const GeoMaps::Waypoint& waypoint)
     // Check if notams for the location are present in our database
     foreach (auto notamList, m_notamLists)
     {
-        result = notamList.restrict(waypoint);
-        if (!result.m_notams.isEmpty())
+        if (notamList.region().contains(waypoint.coordinate()))
         {
-            return result;
+            return notamList.restricted(waypoint);
         }
     }
 
@@ -142,7 +141,7 @@ QList<GeoMaps::Waypoint> NOTAM::NotamProvider::waypoints() const
     QList<GeoMaps::Waypoint> result;
     foreach (auto notamList, m_notamLists)
     {
-        foreach (auto notam, notamList.m_notams)
+        foreach (auto notam, notamList.notams())
         {
             result.append(GeoMaps::Waypoint(notam.coordinate()));
         }
@@ -185,26 +184,23 @@ void NOTAM::NotamProvider::clearOldEntries()
 
 
     QSet<QGeoCircle> seenCircles;
-    bool haveChange = false;
     for(auto i=0; i<m_notamLists.size(); i++)
     {
-        if (m_notamLists[i].m_retrieved.secsTo(QDateTime::currentDateTimeUtc()) > 60*60*24)
+        if (m_notamLists[i].retrieved().secsTo(QDateTime::currentDateTimeUtc()) > 60*60*24)
         {
             qWarning() << "Delete NotamList, all from here";
             m_notamLists.remove(i, m_notamLists.size()-i);
-            haveChange = true;
             continue;
         }
-        if (seenCircles.contains(m_notamLists[i].m_region))
+        if (seenCircles.contains(m_notamLists[i].region()))
         {
-            qWarning() << "Delete NotamList, circle known" << m_notamLists[i].m_region.center();
+            qWarning() << "Delete NotamList, circle known" << m_notamLists[i].region().center();
             m_notamLists.remove(i);
-            haveChange = true;
             i--;
         }
-        seenCircles += m_notamLists[i].m_region;
+        seenCircles += m_notamLists[i].region();
 
-        m_notamLists[i].removeExpiredEntries();
+        m_notamLists[i] = m_notamLists[i].cleaned();
     }
 
     if (m_notamLists.isEmpty()) {
@@ -247,12 +243,12 @@ Units::Distance NOTAM::NotamProvider::range(const QGeoCoordinate& position)
     // within half its radius, then stop.
     foreach (auto notamList, m_notamLists)
     {
-        if (notamList.m_retrieved.secsTo(QDateTime::currentDateTimeUtc()) > 60*60*12)
+        if (notamList.retrieved().secsTo(QDateTime::currentDateTimeUtc()) > 60*60*12)
         {
             continue;
         }
 
-        auto region = notamList.m_region;
+        auto region = notamList.region();
         auto rangeInM = region.radius() - region.center().distanceTo(position);
         result = qMax(result, Units::Distance::fromM(rangeInM));
     }

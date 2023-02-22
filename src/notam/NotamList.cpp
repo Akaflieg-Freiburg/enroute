@@ -104,6 +104,30 @@ NOTAM::NotamList NOTAM::NotamList::restrict(const GeoMaps::Waypoint& waypoint) c
 }
 
 
+bool NOTAM::NotamList::removeExpiredEntries()
+{
+    bool haveChange = false;
+    for(auto i=0; i<m_notams.size(); i++)
+    {
+        auto effectiveEnd = m_notams[i].m_effectiveEnd;
+        if (!effectiveEnd.isValid())
+        {
+            continue;
+        }
+        if (effectiveEnd < QDateTime::currentDateTimeUtc())
+        {
+            m_notams.removeAt(i);
+            haveChange = true;
+            i--;
+        }
+    }
+    if (haveChange)
+    {
+        m_notams.squeeze();
+    }
+    return haveChange;
+}
+
 
 QDataStream& operator<<(QDataStream& stream, const NOTAM::NotamList& notamList)
 {

@@ -41,7 +41,7 @@ NOTAM::Notam::Notam(const QJsonObject& jsonObject)
 
     m_effectiveEnd = QDateTime::fromString(m_effectiveEndString, Qt::ISODate);
     m_effectiveStart = QDateTime::fromString(m_effectiveStartString, Qt::ISODate);
-    m_region = QGeoCircle(m_coordinates, qMax( Units::Distance::fromNM(2).toM(), m_radius.toM() ));
+    m_region = QGeoCircle(m_coordinates, qMax( Units::Distance::fromNM(1).toM(), m_radius.toM() ));
 }
 
 

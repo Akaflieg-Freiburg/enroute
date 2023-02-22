@@ -65,6 +65,10 @@ public:
 
     Q_INVOKABLE [[nodiscard]] NOTAM::NotamList notams(const GeoMaps::Waypoint& waypoint);
 
+    void load();
+    void save() const;
+    void clearOldEntries();
+
 signals:
     void lastUpdateChanged();
 
@@ -74,10 +78,12 @@ private slots:
     // Called when a download is finished
     void downloadFinished();
 
+    void autoUpdate();
+
 private:
     Q_DISABLE_COPY_MOVE(NotamProvider)
 
-    void addJson(const QByteArray& data, QGeoCircle circle);
+    void startRequest(const GeoMaps::Waypoint& waypoint);
 
     // List of pending network requests
     QList<QPointer<QNetworkReply>> m_networkReplies;
@@ -86,8 +92,7 @@ private:
     QDateTime m_lastUpdate;
 
     static constexpr Units::Distance requestRadius = Units::Distance::fromNM(20.0);
-
-
+    QString stdFileName;
 };
 
 } // namespace NOTAM

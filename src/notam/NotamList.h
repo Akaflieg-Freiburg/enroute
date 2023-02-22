@@ -28,7 +28,7 @@
 namespace NOTAM {
 
 
-/*! \brief A lists of NOTAMs
+/*! \brief A list of NOTAMs
  *
  *  This class holds a holds the result of a NOTAM request for a specific region.
  *  The class stores the time of the request in the member m_retrieved, and
@@ -103,6 +103,17 @@ public:
      */
     NotamList restrict(const GeoMaps::Waypoint& waypoint) const;
 
+
+
+    //
+    // Methods
+    //
+
+    /*! \brief Removes expired Notams from this list
+     *
+     *  @returns True if entries have indeed been removed
+     */
+    bool removeExpiredEntries();
 
 
     //

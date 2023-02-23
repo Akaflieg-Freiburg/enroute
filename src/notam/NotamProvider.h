@@ -53,30 +53,79 @@ public:
         return GlobalObject::notamProvider();
     }
 
+
+
+    //
+    // Properties
+    //
+
+    /*! \brief Time of last database update */
     Q_PROPERTY(QDateTime lastUpdate READ lastUpdate NOTIFY lastUpdateChanged)
 
+    /*! \brief Waypoints with Notam items, for presentation in a map */
     Q_PROPERTY(QList<GeoMaps::Waypoint> waypoints READ waypoints NOTIFY waypointsChanged)
 
-    QList<GeoMaps::Waypoint> waypoints() const;
 
-    [[nodiscard]] QDateTime lastUpdate() const { return m_lastUpdate; }
 
-    Q_INVOKABLE [[nodiscard]] NOTAM::NotamList notams(const GeoMaps::Waypoint& waypoint);
+    //
+    // Getter Methods
+    //
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property lastUpdate
+     */
+    Q_REQUIRED_RESULT QDateTime lastUpdate() const { return m_lastUpdate; }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property lastUpdate
+     */
+    Q_REQUIRED_RESULT QList<GeoMaps::Waypoint> waypoints() const;
+
+
+
+    //
+    // Methods
+    //
+
+    /*! \brief Notams for a given waypoint
+     *
+     *  The returned list is empty and has a valid property "retrieved" if the NotamProvider
+     *  is sure that there are no relevant notams for the given waypoint.
+     *
+     *  The returned list is empty and has an invalid property "retrieved" if the NotamProvider
+     *  has no data.
+     *
+     *  Calling this method might trigger an update of the Notam database. Consumers can watch
+     *  the property lastUpdate to learn about database updates.
+     *
+     *  @param waypoint Waypoint for which the notam list is compiled
+     *
+     *  @returns List of Notams relevant for the waypoint
+     */
+    Q_INVOKABLE Q_REQUIRED_RESULT NOTAM::NotamList notams(const GeoMaps::Waypoint& waypoint);
+
+
+signals:
+    /*! \brief Notifier signal */
+    void lastUpdateChanged();
+
+    /*! \brief Notifier signal */
+    void waypointsChanged();
+
+private slots:
+    // This slot is connected to signals QNetworkReply::finished and QNetworkReply::errorOccurred
+    // of the QNetworkReply contained in the list in m_networkReply. This method reads the incoming
+    // data and adds it to the database
+    void downloadFinished();
+
+    void autoUpdate();
+
 
     void load();
     void save() const;
     void clearOldEntries();
-
-signals:
-    void lastUpdateChanged();
-
-    void waypointsChanged();
-
-private slots:
-    // Called when a download is finished
-    void downloadFinished();
-
-    void autoUpdate();
 
 private:
     Q_DISABLE_COPY_MOVE(NotamProvider)

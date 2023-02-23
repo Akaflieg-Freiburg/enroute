@@ -18,15 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <chrono>
 #include <QFile>
-#include <QJsonArray>
-#include <QJsonDocument>
-#include <QJsonObject>
 #include <QStandardPaths>
 #include <QTimer>
+#include <chrono>
 
-#include "geomaps/Waypoint.h"
 #include "navigation/Navigator.h"
 #include "notam/NotamProvider.h"
 #include "positioning/PositionProvider.h"

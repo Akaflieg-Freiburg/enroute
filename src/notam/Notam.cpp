@@ -94,43 +94,43 @@ QString NOTAM::Notam::richText() const
 // Non-Member Methods
 //
 
-QGeoCoordinate NOTAM::interpretNOTAMCoordinates(const QString& c)
+QGeoCoordinate NOTAM::interpretNOTAMCoordinates(const QString& string)
 {
-    if (c.length() != 11)
+    if (string.length() != 11)
     {
         return {};
     }
 
     bool ok;
-    auto latD = c.left(2).toDouble(&ok);
+    auto latD = string.left(2).toDouble(&ok);
     if (!ok)
     {
         return {};
     }
-    auto latM = c.mid(2, 2).toDouble(&ok);
+    auto latM = string.mid(2, 2).toDouble(&ok);
     if (!ok)
     {
         return {};
     }
 
     double lat = latD+latM/60.0;
-    if (c[4] == 'S')
+    if (string[4] == 'S')
     {
         lat *= -1.0;
     }
 
-    auto lonD = c.mid(5, 3).toDouble(&ok);
+    auto lonD = string.mid(5, 3).toDouble(&ok);
     if (!ok)
     {
         return {};
     }
-    auto lonM = c.mid(8, 2).toDouble(&ok);
+    auto lonM = string.mid(8, 2).toDouble(&ok);
     if (!ok)
     {
         return {};
     }
     double lon = lonD+lonM/60.0;
-    if (c[10] == 'W')
+    if (string[10] == 'W')
     {
         lon *= -1.0;
     }

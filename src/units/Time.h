@@ -39,7 +39,19 @@ namespace Units {
         Q_GADGET
         QML_VALUE_TYPE(time)
 
-    public:
+    public:        
+        /*! \brief Constructs a time
+         *
+         * @param timeInH  time in hours
+         *
+         * @returns time
+         */
+        static auto fromH(double timeInH) -> Time {
+            Time result;
+            result.m_timeInS = timeInH*Seconds_per_Hour;
+            return result;
+        }
+
         /*! \brief Constructs a time
          *
          * @param timeInMS  time in milliseconds
@@ -48,7 +60,7 @@ namespace Units {
          */
         static auto fromMS(double timeInMS) -> Time {
             Time result;
-            result.m_timeInS = timeInMS/1000.0;
+            result.m_timeInS = qRound(timeInMS/1000.0);
             return result;
         }
 

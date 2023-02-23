@@ -30,24 +30,47 @@
 using namespace std::chrono_literals;
 
 
-NOTAM::NotamProvider::NotamProvider(QObject* parent) :
-    GlobalObject(parent),
-    stdFileName(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+u"/notam.dat"_qs)
 
+//
+// Constructor/Destructor
+//
+
+NOTAM::NotamProvider::NotamProvider(QObject* parent) :
+    GlobalObject(parent)
 {
+    // Set stdFileName for saving and loading NOTAM data
+    m_stdFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+u"/notam.dat"_qs;
+
+    // Load NOTAM data from file in stdFileName, clean data and save.
+    auto inputFile = QFile(m_stdFileName);
+    if (inputFile.open(QIODevice::ReadOnly))
+    {
+        QDataStream inputStream(&inputFile);
+        QString magicString;
+        inputStream >> magicString;
+        if (magicString == QStringLiteral(GIT_COMMIT))
+        {
+            inputStream >> m_notamLists;
+        }
+    }
+    clearOldEntries();
+    save();
 }
+
 
 void NOTAM::NotamProvider::deferredInitialization()
 {
-    load();
-
+    // Wire up autoUpdate. Check NOTAM database every 10 seconds after start, every 11 minutes, and whenever the flight route changes.
+    auto* timer = new QTimer(this);
+    timer->start(10min);
+    connect(timer, &QTimer::timeout, this, &NOTAM::NotamProvider::autoUpdate);
+    connect(navigator()->flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, &NOTAM::NotamProvider::autoUpdate);
     QTimer::singleShot(10s, this, &NOTAM::NotamProvider::autoUpdate);
 
-    auto timer = new QTimer(this);
-    connect(timer, &QTimer::timeout, this, &NOTAM::NotamProvider::autoUpdate);
-    timer->setInterval(10min);
-    timer->start();
+    // Save the NOTAM data every time that the database changes
+    connect(this, &NOTAM::NotamProvider::waypointsChanged, this, &NOTAM::NotamProvider::save, Qt::QueuedConnection);
 }
+
 
 NOTAM::NotamProvider::~NotamProvider()
 {
@@ -55,15 +78,86 @@ NOTAM::NotamProvider::~NotamProvider()
     m_networkReplies.clear();
 }
 
+
+
+//
+// Getter Methods
+//
+
+QList<GeoMaps::Waypoint> NOTAM::NotamProvider::waypoints() const
+{
+    QList<GeoMaps::Waypoint> result;
+    QSet<QGeoCoordinate> coordinatesSeen;
+    QSet<QGeoCircle> regionsCovered;
+
+    foreach(auto notamList, m_notamLists)
+    {
+        foreach(auto notam, notamList.notams())
+        {
+            auto coordinate = notam.coordinate();
+
+            // If we already have a waypoint for that coordinate, then don't add another one.
+            if (coordinatesSeen.contains(coordinate))
+            {
+                continue;
+            }
+
+            // If the coordinate has already been handled by an earlier (=newer) notamList,
+            // then don't add it here.
+            bool hasBeenCovered = false;
+            foreach(auto region, regionsCovered)
+            {
+                if (region.contains(coordinate))
+                {
+                    hasBeenCovered = true;
+                    break;
+                }
+            }
+            if (hasBeenCovered)
+            {
+                continue;
+            }
+
+            coordinatesSeen += coordinate;
+            result.append(coordinate);
+        }
+
+        regionsCovered += notamList.region();
+    }
+    return result;
+}
+
+
+
+//
+// Methods
+//
+
 NOTAM::NotamList NOTAM::NotamProvider::notams(const GeoMaps::Waypoint& waypoint)
 {
-    NotamList result;
+    // Paranoid safety checks
+    if (!waypoint.coordinate().isValid())
+    {
+        return {};
+    }
 
-    // Check if notams for the location are present in our database
+    // Check if notams for the location are present in our database.
+    // Go through the database, oldest to newest.
     foreach (auto notamList, m_notamLists)
     {
+        // Disregard outdated notamLists
+        if (notamList.isOutdated())
+        {
+            continue;
+        }
+
         if (notamList.region().contains(waypoint.coordinate()))
         {
+            // If motamList needs an update, then ask for an update
+            if (notamList.needsUpdate())
+            {
+                startRequest(waypoint);
+            }
             return notamList.restricted(waypoint);
         }
     }
@@ -88,10 +182,14 @@ NOTAM::NotamList NOTAM::NotamProvider::notams(const GeoMaps::Waypoint& waypoint)
         }
     }
 
+    // We have no data for the waypoint and no pending internet requests. So,
+    // start a new internet request and return an empty list.
     startRequest(waypoint);
     return {};
 }
 
+
+// --------------------------
 
 void NOTAM::NotamProvider::downloadFinished()
 {
@@ -132,41 +230,13 @@ void NOTAM::NotamProvider::downloadFinished()
 }
 
 
-QList<GeoMaps::Waypoint> NOTAM::NotamProvider::waypoints() const
-{
-    QList<GeoMaps::Waypoint> result;
-    foreach (auto notamList, m_notamLists)
-    {
-        foreach (auto notam, notamList.notams())
-        {
-            result.append(GeoMaps::Waypoint(notam.coordinate()));
-        }
-    }
-    return result;
-}
-
-
-void NOTAM::NotamProvider::load()
-{
-    auto inputFile = QFile(stdFileName);
-    if (inputFile.open(QIODevice::ReadOnly))
-    {
-        QDataStream inputStream(&inputFile);
-        inputStream >> m_notamLists;
-    }
-    clearOldEntries();
-    save();
-
-    emit lastUpdateChanged();
-    emit waypointsChanged();
-}
-
 void NOTAM::NotamProvider::save() const
 {
-    auto outputFile = QFile(stdFileName);
+    auto outputFile = QFile(m_stdFileName);
     if (outputFile.open(QIODevice::WriteOnly))
     {
         QDataStream outputStream(&outputFile);
+        outputStream << QStringLiteral(GIT_COMMIT);
         outputStream << m_notamLists;
     }
 }

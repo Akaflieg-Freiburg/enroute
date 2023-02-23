@@ -79,7 +79,7 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
-     *  @returns Property lastUpdate
+     *  @returns Property waypoints
      */
     Q_REQUIRED_RESULT QList<GeoMaps::Waypoint> waypoints() const;
 
@@ -91,14 +91,16 @@ public:
 
     /*! \brief Notams for a given waypoint
      *
-     *  The returned list is empty and has a valid property "retrieved" if the NotamProvider
-     *  is sure that there are no relevant notams for the given waypoint.
+     *  The returned list is empty and has a valid property "retrieved" if the
+     *  NotamProvider is sure that there are no relevant notams for the given
+     *  waypoint.
      *
-     *  The returned list is empty and has an invalid property "retrieved" if the NotamProvider
-     *  has no data.
+     *  The returned list is empty and has an invalid property "retrieved" if
+     *  the NotamProvider has no data.
      *
-     *  Calling this method might trigger an update of the Notam database. Consumers can watch
-     *  the property lastUpdate to learn about database updates.
+     *  Calling this method might trigger an update of the Notam database.
+     *  Consumers can watch the property lastUpdate to learn about database
+     *  updates.
      *
      *  @param waypoint Waypoint for which the notam list is compiled
      *
@@ -115,16 +117,18 @@ signals:
     void waypointsChanged();
 
 private slots:
-    // This slot is connected to signals QNetworkReply::finished and QNetworkReply::errorOccurred
-    // of the QNetworkReply contained in the list in m_networkReply. This method reads the incoming
-    // data and adds it to the database
+    // This slot is connected to signals QNetworkReply::finished and
+    // QNetworkReply::errorOccurred of the QNetworkReply contained in the list
+    // in m_networkReply. This method reads the incoming data and adds it to the
+    // database
     void downloadFinished();
 
     void autoUpdate();
 
-
-    void load();
+    // Save NOTAM data to file whose name is found in m_stdFileName. There are
+    // no error checks of any kind.
     void save() const;
+
     void clearOldEntries();
 
 private:
@@ -143,7 +147,9 @@ private:
 
     static constexpr Units::Distance requestRadius = Units::Distance::fromNM(20.0);
     static constexpr Units::Distance marginRadius = Units::Distance::fromNM(5.0);
-    QString stdFileName;
+
+    // Filename for loading/saving NOTAM data
+    QString m_stdFileName;
 };
 
 } // namespace NOTAM

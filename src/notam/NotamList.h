@@ -24,15 +24,16 @@
 
 #include "geomaps/Waypoint.h"
 #include "notam/Notam.h"
+#include "units/Time.h"
 
 namespace NOTAM {
 
 
 /*! \brief A list of NOTAMs
  *
- *  This class holds a holds the result of a NOTAM request for a specific region.
- *  The class stores the time of the request in the member m_retrieved, and
- *  the region in the member m_region.
+ *  This class holds a holds the result of a NOTAM request for a specific
+ *  region. The class stores the time of the request in the member m_retrieved,
+ *  and the region in the member m_region.
 */
 
 class NotamList {
@@ -45,14 +46,15 @@ class NotamList {
 public:
     /*! \brief Constructs an empty NotamList
      *
-     *  Constructs an empty NotamList with an invalid region and an invalid QDateTime for the property
-     *  retrieved.
+     *  Constructs an empty NotamList with an invalid region and an invalid
+     *  QDateTime for the property retrieved.
      */
     NotamList() = default;
 
     /*! \brief Constructs a NotamList from FAA GeoJSON data
      *
-     *  This constructor sets  the member m_retrieved to QDateTime::currentDateTimeUtc().
+     *  This constructor sets  the member m_retrieved to
+     *  QDateTime::currentDateTimeUtc().
      *
      *  @param jsonData JSON data, as provided by the FAA
      *
@@ -114,17 +116,40 @@ public:
     // Methods
     //
 
+    /*! \brief Time span between retrieved and now
+     *
+     *  @returns Time span between retrieved and now. If retrieved() is invalid, and invalid time is returned.
+     */
+    Q_REQUIRED_RESULT Units::Time age() const;
+
     /*! \brief Sublist with expired and duplicated entries removed
      *
      *  @returns Sublist with expired and duplicated entries removed.
      */
     Q_REQUIRED_RESULT NOTAM::NotamList cleaned() const;
 
+    /*! \brief Check if outdated
+     *
+     *  A NotamList is outdated if its age is invalid or greater than 24h
+     *
+     *  @returns True if outdated
+     */
+    Q_REQUIRED_RESULT bool isOutdated() const { auto _age = age(); return !_age.isFinite() || (_age > Units::Time::fromH(24)); }
+
+    /*! \brief Check if list needs update
+     *
+     *  A NotamList needs an update if its age is invalid or greater than 12h
+     *
+     *  @returns True if outdated
+     */
+    Q_REQUIRED_RESULT bool needsUpdate() const { auto _age = age(); return !_age.isFinite() || (_age > Units::Time::fromH(12)); }
+
     /*! \brief Sublist of notams relevant to a given waypoint.
      *
      *  @param waypoint Waypoint
      *
-     *  @returns NotamList with all notams relevant for the given waypoint, without expired and duplicated.
+     *  @returns NotamList with all notams relevant for the given waypoint,
+     *  without expired and duplicated.
      */
     Q_REQUIRED_RESULT NOTAM::NotamList restricted(const GeoMaps::Waypoint& waypoint) const;
 
@@ -140,10 +165,16 @@ private:
     QDateTime m_retrieved;
 };
 
-/*! \brief Serialization */
+/*! \brief Serialization
+ *
+ *  There is no checks for errors of any kind.
+ */
 QDataStream& operator<<(QDataStream& stream, const NOTAM::NotamList& notamList);
 
-/*! \brief Deserialization */
+/*! \brief Deserialization
+ *
+ *  There is no checks for errors of any kind.
+ */
 QDataStream& operator>>(QDataStream& stream, NOTAM::NotamList& notamList);
 
 } // namespace NOTAM

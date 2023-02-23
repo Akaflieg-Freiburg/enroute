@@ -94,6 +94,17 @@ QString NOTAM::NotamList::summary() const
 // Methods
 //
 
+Units::Time NOTAM::NotamList::age() const
+{
+    if (!m_retrieved.isValid())
+    {
+        return {};
+    }
+
+    return Units::Time::fromS(m_retrieved.secsTo(QDateTime::currentDateTimeUtc()));
+}
+
+
 NOTAM::NotamList NOTAM::NotamList::cleaned() const
 {
     NotamList result;

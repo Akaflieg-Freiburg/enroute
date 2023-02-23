@@ -150,18 +150,18 @@ private:
 
 /*! \brief Read coordinate in NOTAM format
  *
- *  This method converts a string with a coordinate description into
- *  a QGeoCoordinate. The string must be exactly 11 characters long and
- *  adhere to the following format:
+ *  This method converts a string with a coordinate description into a
+ *  QGeoCoordinate. The string must be exactly 11 characters long and adhere to
+ *  the following format:
  *
  *  AABBCDDDEEF
  *
- *  AA:  Degrees of latitude
- *  BB:  Minutes of latitude
- *  C:   'N' or 'S'
- *  DDD: Degrees of longitude
- *  EE:  Minutes of longitude
- *  F:   'E' or 'W'
+ *  - AA:  Degrees of latitude
+ *  - BB:  Minutes of latitude
+ *  - C:   'N' or 'S'
+ *  - DDD: Degrees of longitude
+ *  - EE:  Minutes of longitude
+ *  - F:   'E' or 'W'
  *
  *  @param string String of the form
  *

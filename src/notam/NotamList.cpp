@@ -75,7 +75,7 @@ QString NOTAM::NotamList::summary() const
 {
     QStringList results;
 
-    if (m_notams.size() > 0)
+    if (!m_notams.empty())
     {
         results += QObject::tr("NOTAMs available.");
     }
@@ -101,7 +101,7 @@ Units::Time NOTAM::NotamList::age() const
         return {};
     }
 
-    return Units::Time::fromS(m_retrieved.secsTo(QDateTime::currentDateTimeUtc()));
+    return Units::Time::fromS( double(m_retrieved.secsTo(QDateTime::currentDateTimeUtc()) ));
 }
 
 

@@ -60,10 +60,10 @@ public:
     //
 
     /*! \brief Time of last database update */
-    Q_PROPERTY(QDateTime lastUpdate READ lastUpdate NOTIFY lastUpdateChanged)
+    Q_PROPERTY(QDateTime lastUpdate READ lastUpdate NOTIFY dataChanged)
 
     /*! \brief Waypoints with Notam items, for presentation in a map */
-    Q_PROPERTY(QList<GeoMaps::Waypoint> waypoints READ waypoints NOTIFY waypointsChanged)
+    Q_PROPERTY(QList<GeoMaps::Waypoint> waypoints READ waypoints NOTIFY dataChanged)
 
 
 
@@ -111,12 +111,13 @@ public:
 
 signals:
     /*! \brief Notifier signal */
-    void lastUpdateChanged();
+    void dataChanged();
 
-    /*! \brief Notifier signal */
-    void waypointsChanged();
+private slots:   
+    // Removes outdated and irrelevant data from the database. This slot is called
+    // once per hour.
+    void clean();
 
-private slots:
     // This slot is connected to signals QNetworkReply::finished and
     // QNetworkReply::errorOccurred of the QNetworkReply contained in the list
     // in m_networkReply. This method reads the incoming data and adds it to the
@@ -135,30 +136,33 @@ private slots:
 private:
     Q_DISABLE_COPY_MOVE(NotamProvider)
 
-
-    void clean();
-
     // Compute the radius of the circle around the waypoint that is covered by
     // existing or requested notam data. Returns Units::Distance::fromM(-1) if
     // the waypoint is not covered by data.
-    Units::Distance range(const QGeoCoordinate& waypoint);
+    Units::Distance range(const QGeoCoordinate& position);
 
-
-    void startRequest(const GeoMaps::Waypoint& waypoint);
+    // Request Notam data from the FAA, for a circle of radius requestRadius
+    // around the coordinate.
+    void startRequest(const QGeoCoordinate& coordinate);
 
     // List of pending network requests
     QList<QSharedPointer<QNetworkReply>> m_networkReplies;
+
+    // List of NotamLists, sorted so that newest lists come first
     QList<NotamList> m_notamLists;
 
-
-
+    // Time of last update to data
     QDateTime m_lastUpdate;
-
-    static constexpr Units::Distance requestRadius = Units::Distance::fromNM(20.0);
-    static constexpr Units::Distance marginRadius = Units::Distance::fromNM(5.0);
 
     // Filename for loading/saving NOTAM data
     QString m_stdFileName;
+
+    // The method updateDate() ensures that data is requested for marginRadius around
+    // own position and current flight route.
+    static constexpr Units::Distance marginRadius = Units::Distance::fromNM(5.0);
+
+    // Requests for Notam data are requestRadius around given position
+    static constexpr Units::Distance requestRadius = Units::Distance::fromNM(20.0);
 };
 
 } // namespace NOTAM

@@ -75,14 +75,18 @@ QString NOTAM::NotamList::summary() const
 {
     QStringList results;
 
-    if (!m_notams.empty())
+    if (m_notams.empty())
     {
-        results += QObject::tr("NOTAMs available.");
+        results += QObject::tr("No NOTAMs", "NOTAM::NotamList");
+    }
+    else
+    {
+        results += QObject::tr("NOTAMs available", "NOTAM::NotamList");
     }
 
-    if (!m_retrieved.isValid() || (m_retrieved.addDays(1) <  QDateTime::currentDateTimeUtc()))
+    if (!isValid() || isOutdated())
     {
-        results += QObject::tr("Notam data potentially incomplete. Update in progress.");
+        results += QObject::tr("Data potentially outdated. Update requested.", "NOTAM::NotamList");
     }
 
     return results.join(u" • "_qs);

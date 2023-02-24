@@ -78,8 +78,8 @@ CenteringDialog {
 
         Label { // Incomplete Data warning
 
-            visible: !notamListDialog.notamList.complete
-            text: qsTr("Data possibly incomplete")
+            visible: !notamListDialog.notamList.isValid
+            text: qsTr("Data potentially outdated. Update requested.")
             Layout.fillWidth: true
             wrapMode: Text.WordWrap
 

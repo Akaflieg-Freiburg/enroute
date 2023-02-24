@@ -68,6 +68,12 @@ public:
     // Properties
     //
 
+    /*! \brief Emptyness */
+    Q_PROPERTY(bool isEmpty READ isEmpty)
+
+    /*! \brief Validity */
+    Q_PROPERTY(bool isValid READ isValid)
+
     /*! \brief List of Notams */
     Q_PROPERTY(QList<NOTAM::Notam> notams READ notams)
 
@@ -85,6 +91,18 @@ public:
     //
     // Getter Methods
     //
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property isValid
+     */
+    Q_REQUIRED_RESULT bool isEmpty() const { return m_notams.isEmpty(); }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property isValid
+     */
+    Q_REQUIRED_RESULT bool isValid() const { return m_retrieved.isValid() && m_region.isValid(); }
 
     /*! \brief Getter function for the property with the same name
      *

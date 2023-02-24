@@ -119,8 +119,15 @@ CenteringDialog {
                 return NotamProvider.notams(waypoint)
             }
 
-            visible: (notamList.summary != "")
-            text: "<a href='xx'>" + notamList.summary + "</a>"
+            visible: text != ""
+            text: {
+                if (notamList.isValid && notamList.isEmpty)
+                    return ""
+                if (notamList.isEmpty)
+                    return notamList.summary
+                return notamList.summary + " • <a href='xx'>" + qsTr("full report") + "</a>"
+            }
+
             Layout.fillWidth: true
             wrapMode: Text.WordWrap
 

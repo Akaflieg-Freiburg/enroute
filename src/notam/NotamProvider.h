@@ -123,19 +123,28 @@ private slots:
     // database
     void downloadFinished();
 
-    void autoUpdate();
-
     // Save NOTAM data to file whose name is found in m_stdFileName. There are
     // no error checks of any kind.
     void save() const;
 
-    void clearOldEntries();
+    // Checks if NOTAM data is available for an area of marginRadius around the
+    // current position and around the current flight route. If not, requests
+    // the data.
+    void updateData();
 
 private:
     Q_DISABLE_COPY_MOVE(NotamProvider)
 
-    void startRequest(const GeoMaps::Waypoint& waypoint);
+
+    void clean();
+
+    // Compute the radius of the circle around the waypoint that is covered by
+    // existing or requested notam data. Returns Units::Distance::fromM(-1) if
+    // the waypoint is not covered by data.
     Units::Distance range(const QGeoCoordinate& waypoint);
+
+
+    void startRequest(const GeoMaps::Waypoint& waypoint);
 
     // List of pending network requests
     QList<QSharedPointer<QNetworkReply>> m_networkReplies;

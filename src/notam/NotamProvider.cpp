@@ -53,7 +53,7 @@ NOTAM::NotamProvider::NotamProvider(QObject* parent) :
             inputStream >> m_notamLists;
         }
     }
-    clearOldEntries();
+    clean();
     save();
 }
 
@@ -63,9 +63,9 @@ void NOTAM::NotamProvider::deferredInitialization()
     // Wire up autoUpdate. Check NOTAM database every 10 seconds after start, every 11 minutes, and whenever the flight route changes.
     auto* timer = new QTimer(this);
     timer->start(10min);
-    connect(timer, &QTimer::timeout, this, &NOTAM::NotamProvider::autoUpdate);
-    connect(navigator()->flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, &NOTAM::NotamProvider::autoUpdate);
-    QTimer::singleShot(10s, this, &NOTAM::NotamProvider::autoUpdate);
+    connect(timer, &QTimer::timeout, this, &NOTAM::NotamProvider::updateData);
+    connect(navigator()->flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, &NOTAM::NotamProvider::updateData);
+    QTimer::singleShot(10s, this, &NOTAM::NotamProvider::updateData);
 
     // Save the NOTAM data every time that the database changes
     connect(this, &NOTAM::NotamProvider::waypointsChanged, this, &NOTAM::NotamProvider::save, Qt::QueuedConnection);
@@ -189,16 +189,17 @@ NOTAM::NotamList NOTAM::NotamProvider::notams(const GeoMaps::Waypoint& waypoint)
 }
 
 
-// --------------------------
+
+//
+// Private Slots
+//
 
 void NOTAM::NotamProvider::downloadFinished()
 {
-    qWarning() << "downloadFinished()";
 
+    bool newDataAdded = false;
     m_networkReplies.removeAll(nullptr);
-
-    // Read all replies and store the data in respective maps
-    auto networkReplies = m_networkReplies;
+    auto networkReplies = m_networkReplies; // Make copy to avoid iteration while container changes
     foreach(auto networkReply, networkReplies)
     {
         // Paranoid safety checks
@@ -218,15 +219,17 @@ void NOTAM::NotamProvider::downloadFinished()
 
         auto region = networkReply->property("area").value<QGeoCircle>();
         NotamList notamList(networkReply->readAll(), region);
-
         m_notamLists.prepend(notamList);
+        newDataAdded = true;
+    }
+
+    if (newDataAdded)
+    {
+        clean();
         m_lastUpdate = QDateTime::currentDateTimeUtc();
         emit lastUpdateChanged();
         emit waypointsChanged();
     }
-
-    clearOldEntries();
-    save();
 }
 
 
@@ -241,7 +244,67 @@ void NOTAM::NotamProvider::save() const
     }
 }
 
-void NOTAM::NotamProvider::clearOldEntries()
+
+void NOTAM::NotamProvider::updateData()
+{
+    // Check if Notam data is available for a circle of marginRadius around
+    // the current position.
+    auto position = positionProvider()->lastValidCoordinate();
+    if (position.isValid())
+    {
+        auto _range = range(position);
+        if (_range < marginRadius)
+        {
+            startRequest(position);
+        }
+    }
+
+    auto* route = navigator()->flightRoute();
+    if (route != nullptr)
+    {
+        foreach(auto leg, route->legs())
+        {
+            QGeoCoordinate startPoint = leg.startPoint().coordinate();
+            QGeoCoordinate endPoint = leg.endPoint().coordinate();
+            if (!startPoint.isValid() || !endPoint.isValid())
+            {
+                continue;
+            }
+
+            while(true)
+            {
+                // Check if the range at the startPoint at least marginRadius+1NM
+                // If not, request data for startPoint and start over
+                auto rangeAtStartPoint = range(startPoint);
+                if (rangeAtStartPoint < marginRadius+Units::Distance::fromNM(1))
+                {
+                    startRequest(startPoint);
+                    continue;
+                }
+
+                // Check if every point between startPoint and endPoint has a range
+                // of at least marginRadius. If so, there is nothing to do for this
+                // and we continue with the next leg.
+                auto distanceToEndPoint = Units::Distance::fromM(startPoint.distanceTo(endPoint));
+                if (rangeAtStartPoint > distanceToEndPoint+marginRadius)
+                {
+                    break;
+                }
+
+                // Move the startPoint closer to the endPoint, so all points between
+                // the new and the old startPoint have a range of at least
+                // marginRadius. Then start over.
+                auto azimuth = startPoint.azimuthTo(endPoint);
+                startPoint = startPoint.atDistanceAndAzimuth((rangeAtStartPoint-marginRadius).toM(), azimuth);
+            }
+        }
+    }
+
+}
+
+// --------------------------
+
+void NOTAM::NotamProvider::clean()
 {
     if (m_notamLists.isEmpty())
     {
@@ -301,15 +364,21 @@ void NOTAM::NotamProvider::startRequest(const GeoMaps::Waypoint& waypoint)
 }
 
 
+
 Units::Distance NOTAM::NotamProvider::range(const QGeoCoordinate& position)
 {
-    auto result = Units::Distance::fromM(0.0);
+    auto result = Units::Distance::fromM(-1.0);
+
+    if (!position.isValid())
+    {
+        return result;
+    }
 
     // If we have a NOTAM list that contains the position
     // within half its radius, then stop.
     foreach (auto notamList, m_notamLists)
     {
-        if (notamList.retrieved().secsTo(QDateTime::currentDateTimeUtc()) > 60*60*12)
+        if (notamList.isOutdated())
         {
             continue;
         }
@@ -337,52 +406,3 @@ Units::Distance NOTAM::NotamProvider::range(const QGeoCoordinate& position)
 
     return result;
 }
-
-void NOTAM::NotamProvider::autoUpdate()
-{
-    auto position = positionProvider()->lastValidCoordinate();
-
-    auto _range = range(position);
-    if (_range.isFinite() && (_range < marginRadius))
-    {
-        qWarning() << "autoUpdate request for current position";
-        startRequest(position);
-    }
-
-    auto* route = navigator()->flightRoute();
-    if (route == nullptr)
-    {
-        return;
-    }
-    foreach(auto leg, route->legs())
-    {
-        QGeoCoordinate startPoint = leg.startPoint().coordinate();
-        QGeoCoordinate endPoint = leg.endPoint().coordinate();
-
-        int i=0;
-        while(i<100)
-        {
-            i++;
-
-            auto rangeStart = range(startPoint);
-            if (rangeStart < marginRadius+Units::Distance::fromNM(1))
-            {
-                qWarning() << "autoUpdate request for leg" << startPoint;
-                startRequest(startPoint);
-                continue;
-            }
-
-            auto dist = Units::Distance::fromM(startPoint.distanceTo(endPoint));
-            if (rangeStart > dist+marginRadius)
-            {
-                break;
-            }
-
-            auto azimuth = startPoint.azimuthTo(endPoint);
-            qWarning() << dist.toM() << azimuth;
-            startPoint = startPoint.atDistanceAndAzimuth((rangeStart-marginRadius).toM(), azimuth);
-        }
-    }
-
-}
-

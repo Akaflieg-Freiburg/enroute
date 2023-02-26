@@ -78,6 +78,15 @@ void NOTAM::NotamProvider::deferredInitialization()
 
 NOTAM::NotamProvider::~NotamProvider()
 {
+    foreach(auto networkReply, m_networkReplies)
+    {
+        if (networkReply.isNull())
+        {
+            continue;
+        }
+        networkReply->abort();
+    }
+
     m_notamLists.clear();
     m_networkReplies.clear();
 }
@@ -99,6 +108,10 @@ QList<GeoMaps::Waypoint> NOTAM::NotamProvider::waypoints() const
         foreach(auto notam, notamList.notams())
         {
             auto coordinate = notam.coordinate();
+            if (!coordinate.isValid())
+            {
+                continue;
+            }
 
             // If we already have a waypoint for that coordinate, then don't add another one.
             if (coordinatesSeen.contains(coordinate))

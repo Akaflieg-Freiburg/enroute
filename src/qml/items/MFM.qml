@@ -434,6 +434,36 @@ Item {
 
         }
 
+        Component {
+            id: notamComponent
+
+            MapQuickItem {
+                id: midFieldWP
+
+                anchorPoint.x: image.width/2
+                anchorPoint.y: image.height/2
+                coordinate: model.modelData.coordinate
+
+                Connections {
+                    // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem
+                    // is not updated when the height of the map changes. It does get updated when the
+                    // width of the map changes. We use the undocumented method polishAndUpdate() here.
+                    target: flightMap
+                    function onHeightChanged() { midFieldWP.polishAndUpdate() }
+                }
+
+                sourceItem: Image {
+                        id: image
+
+                        source:  "/icons/waypoints/ic_warning.svg"
+                        opacity: 0.5
+                        sourceSize.width: 20
+                        sourceSize.height: 20
+                    }
+            }
+
+        }
+
         MapItemView {
             id: midFieldWaypoints
             model: Navigator.flightRoute.midFieldWaypoints
@@ -449,7 +479,7 @@ Item {
         MapItemView {
             id: notams
             model: NotamProvider.waypoints
-            delegate: waypointComponent
+            delegate: notamComponent
         }
         TapHandler {
             // We used to use a MouseArea instead of a tap handler, but that

@@ -247,8 +247,7 @@ namespace GeoMaps
      * @param id ICAO code of the waypoint, such as "EDDF" for Frankfurt
      *
      * @returns a nullpointer if no waypoint has been found, or else a pointer
-     * to the waypoint. For better cooperation with QML is not a pointer of type
-     * Waypoint, but ratherof type QObject. The object is owned by this class
+     * to the waypoint. The object is owned by this class
      * and must not be deleted.
      */
     auto findByID(const QString &id) -> Waypoint;

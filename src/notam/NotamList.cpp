@@ -165,6 +165,20 @@ NOTAM::NotamList NOTAM::NotamList::restricted(const GeoMaps::Waypoint& waypoint)
         result.m_notams.append(notam);
     }
 
+    std::sort(result.m_notams.begin(), result.m_notams.end(),
+              [](const Notam& a, const Notam& b)
+    {
+        auto cur = QDateTime::currentDateTime();
+        auto a_effectiveStart = qMax(a.effectiveStart(), cur);
+        auto b_effectiveStart = qMax(b.effectiveStart(), cur);
+
+        if (a_effectiveStart != b_effectiveStart)
+        {
+            return a_effectiveStart < b_effectiveStart;
+        }
+        return a.effectiveEnd() < b.effectiveEnd();
+    });
+
     return result;
 }
 

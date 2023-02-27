@@ -62,6 +62,14 @@ public:
      */
     Q_PROPERTY(QDateTime effectiveEnd READ effectiveEnd CONSTANT)
 
+    /*! \brief Effective start of the Notam, if date is given
+     *
+     *  If the effectiveStart field of the Notam specified a precise date/time,
+     *  then this time is found here. If not, the property contains an invalid
+     *  QDateTime.
+     */
+    Q_PROPERTY(QDateTime effectiveStart READ effectiveStart CONSTANT)
+
     /*! \brief Validity of this Notam */
     Q_PROPERTY(bool isValid READ isValid CONSTANT)
 
@@ -90,6 +98,12 @@ public:
      *  @returns Property effectiveEnd
      */
     Q_REQUIRED_RESULT QDateTime effectiveEnd() const { return m_effectiveEnd; }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property effectiveStart
+     */
+    Q_REQUIRED_RESULT QDateTime effectiveStart() const { return m_effectiveStart; }
 
     /*! \brief Getter function for the property with the same name
      *

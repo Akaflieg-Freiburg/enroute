@@ -69,17 +69,36 @@ QString NOTAM::Notam::richText() const
 {
     QStringList result;
 
+    auto effectiveStartString = m_effectiveStartString;
+    if (m_effectiveStart.isValid())
+    {
+        if (m_effectiveStart < QDateTime::currentDateTime())
+        {
+            effectiveStartString = {};
+        }
+        else
+        {
+            effectiveStartString = m_effectiveStart.toString(u"ddMMMyy hh:00"_qs);
+        }
+    }
+    auto effectiveEndString = m_effectiveEndString;
     if (m_effectiveEnd.isValid())
     {
-        result += u"<strong>Effective %1 to %2</strong>"_qs.arg(m_effectiveStart.toString(u"dd.MM.yy hh:00"_qs), m_effectiveEnd.toString(u"dd.MM.yy hh:00"_qs));
+        effectiveEndString = m_effectiveEnd.toString(u"ddMMMyy hh:00"_qs);
+    }
+
+    if (m_effectiveEnd.isValid())
+    {
+        result += u"<strong>Effective %1 to %2</strong>"_qs.arg(effectiveStartString, effectiveEndString);
     }
     else
     {
-        result += u"<strong>Effective %1</strong>"_qs.arg(m_effectiveStart.toString(u"dd.MM.yy hh:00"_qs));
-        result += u"<strong>%1</strong>"_qs.arg(m_effectiveEndString);
+        result += u"<strong>Effective %1</strong>"_qs.arg(effectiveStartString);
+        result += u"<strong>%1</strong>"_qs.arg(effectiveEndString);
     }
+
     result += m_text;
-    return result.join(u" • "_qs);
+    return result.join(u" • "_qs).replace(u"  "_qs, u" "_qs);
 }
 
 

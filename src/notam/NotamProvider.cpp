@@ -107,11 +107,20 @@ QList<GeoMaps::Waypoint> NOTAM::NotamProvider::waypoints() const
     {
         foreach(auto notam, notamList.notams())
         {
+            if (!notam.isValid() || notam.isOutdated())
+            {
+                continue;
+            }
             auto coordinate = notam.coordinate();
             if (!coordinate.isValid())
             {
                 continue;
             }
+            if (!notamList.region().contains(coordinate))
+            {
+                continue;
+            }
+
 
             // If we already have a waypoint for that coordinate, then don't add another one.
             if (coordinatesSeen.contains(coordinate))
@@ -141,6 +150,7 @@ QList<GeoMaps::Waypoint> NOTAM::NotamProvider::waypoints() const
 
         regionsCovered += notamList.region();
     }
+
     return result;
 }
 
@@ -175,6 +185,7 @@ NOTAM::NotamList NOTAM::NotamProvider::notams(const GeoMaps::Waypoint& waypoint)
             {
                 startRequest(waypoint.coordinate());
             }
+
             return notamList.restricted(waypoint);
         }
     }

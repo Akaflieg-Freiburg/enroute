@@ -481,6 +481,7 @@ Item {
             model: NotamProvider.waypoints
             delegate: notamComponent
         }
+
         TapHandler {
             // We used to use a MouseArea instead of a tap handler, but that
             // triggered a host of bugs in Qt 6.4.2…

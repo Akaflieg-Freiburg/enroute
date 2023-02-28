@@ -73,11 +73,11 @@ public:
     /*! \brief Validity of this Notam */
     Q_PROPERTY(bool isValid READ isValid CONSTANT)
 
-    /*! \brief Rich text description of the Notam */
-    Q_PROPERTY(QGeoCircle region READ region CONSTANT)
+    /*! \brief Number of this Notam */
+    Q_PROPERTY(QString number READ number CONSTANT)
 
     /*! \brief Rich text description of the Notam */
-    Q_PROPERTY(QString richText READ richText CONSTANT)
+    Q_PROPERTY(QGeoCircle region READ region CONSTANT)
 
     /*! \brief Traffic entry of the Notam */
     Q_PROPERTY(QString traffic READ traffic CONSTANT)
@@ -113,15 +113,15 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
-     *  @returns Property region
+     *  @returns Property number
      */
-    Q_REQUIRED_RESULT QGeoCircle region() const { return m_region; }
+    Q_REQUIRED_RESULT QString number() const { return m_number; }
 
     /*! \brief Getter function for the property with the same name
      *
-     *  @returns Property richText
+     *  @returns Property region
      */
-    Q_REQUIRED_RESULT QString richText() const;
+    Q_REQUIRED_RESULT QGeoCircle region() const { return m_region; }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -143,6 +143,16 @@ public:
     {
         return m_effectiveEnd.isValid() && (m_effectiveEnd < QDateTime::currentDateTimeUtc());
     }
+
+    /*! \brief Rich text description of the Notam
+     *
+     *  The description and changes with time (e.g. when passing the effective start
+     *  date of the Notam.
+     *
+     *  @return HTML string
+     */
+    Q_REQUIRED_RESULT Q_INVOKABLE QString richText() const;
+
 
 private:
     /* Notam members, as described by the FAA */

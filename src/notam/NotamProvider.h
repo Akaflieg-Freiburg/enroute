@@ -108,6 +108,21 @@ public:
      */
     Q_INVOKABLE Q_REQUIRED_RESULT NOTAM::NotamList notams(const GeoMaps::Waypoint& waypoint);
 
+    /*! \brief Check is a notam number is registred as read
+     *
+     *  @param number Notam number
+     *
+     *  @returns True is notam is known as read
+     */
+    Q_INVOKABLE Q_REQUIRED_RESULT bool isRead(const QString& number) { return m_readNotamNumbers.contains(number); }
+
+    /*! \brief Register notam number as read or unread
+     *
+     *  @param number Notam number
+     *
+     *  @param read True if notam is to be registred as read
+     */
+    Q_INVOKABLE void setRead(const QString& number, bool read);
 
 signals:
     /*! \brief Notifier signal */
@@ -144,6 +159,9 @@ private:
     // Request Notam data from the FAA, for a circle of radius requestRadius
     // around the coordinate.
     void startRequest(const QGeoCoordinate& coordinate);
+
+    // List with number of read notams
+    QList<QString> m_readNotamNumbers;
 
     // List of pending network requests
     QList<QSharedPointer<QNetworkReply>> m_networkReplies;

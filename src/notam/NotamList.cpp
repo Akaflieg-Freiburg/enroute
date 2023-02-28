@@ -23,6 +23,7 @@
 #include <QtGlobal>
 
 #include "notam/NotamList.h"
+#include "notam/NotamProvider.h"
 
 
 NOTAM::NotamList::NotamList(const QByteArray& jsonData, const QGeoCircle& region)
@@ -86,7 +87,7 @@ QString NOTAM::NotamList::summary() const
 
     if (!isValid() || isOutdated())
     {
-        results += QObject::tr("Data potentially outdated. Update requested.", "NOTAM::NotamList");
+        results += QObject::tr("Update requested.", "NOTAM::NotamList");
     }
 
     return results.join(u" • "_qs);
@@ -136,6 +137,7 @@ NOTAM::NotamList NOTAM::NotamList::cleaned() const
 }
 
 
+
 NOTAM::NotamList NOTAM::NotamList::restricted(const GeoMaps::Waypoint& waypoint) const
 {
     NotamList result;
@@ -168,6 +170,13 @@ NOTAM::NotamList NOTAM::NotamList::restricted(const GeoMaps::Waypoint& waypoint)
     std::sort(result.m_notams.begin(), result.m_notams.end(),
               [](const Notam& a, const Notam& b)
     {
+        auto aRead = GlobalObject::notamProvider()->isRead(a.number());
+        auto bRead = GlobalObject::notamProvider()->isRead(b.number());
+        if (aRead != bRead)
+        {
+            return !aRead;
+        }
+
         auto cur = QDateTime::currentDateTime();
         auto a_effectiveStart = qMax(a.effectiveStart(), cur);
         auto b_effectiveStart = qMax(b.effectiveStart(), cur);

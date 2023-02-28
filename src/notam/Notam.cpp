@@ -65,6 +65,12 @@ bool NOTAM::Notam::isValid() const
 }
 
 
+
+//
+// Methods
+//
+
+
 QString NOTAM::Notam::richText() const
 {
     QStringList result;
@@ -100,12 +106,6 @@ QString NOTAM::Notam::richText() const
     result += m_text;
     return result.join(u" • "_qs).replace(u"  "_qs, u" "_qs);
 }
-
-
-
-//
-// Methods
-//
 
 
 

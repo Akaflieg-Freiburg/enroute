@@ -69,6 +69,7 @@ void NOTAM::NotamProvider::deferredInitialization()
         inputStream >> magicString;
         if (magicString == QStringLiteral(GIT_COMMIT))
         {
+            inputStream >> m_readNotamNumbers;
             inputStream >> m_notamLists;
         }
     }
@@ -217,6 +218,24 @@ NOTAM::NotamList NOTAM::NotamProvider::notams(const GeoMaps::Waypoint& waypoint)
 }
 
 
+void NOTAM::NotamProvider::setRead(const QString& number, bool read)
+{
+    if (read)
+    {
+        m_readNotamNumbers.prepend(number);
+        if (m_readNotamNumbers.size() > 50)
+        {
+            m_readNotamNumbers.remove(50);
+        }
+    }
+    else
+    {
+        m_readNotamNumbers.removeAll(number);
+    }
+    save();
+}
+
+
 
 //
 // Private Slots
@@ -311,6 +330,7 @@ void NOTAM::NotamProvider::save() const
     {
         QDataStream outputStream(&outputFile);
         outputStream << QStringLiteral(GIT_COMMIT);
+        outputStream << m_readNotamNumbers;
         outputStream << m_notamLists;
     }
 }

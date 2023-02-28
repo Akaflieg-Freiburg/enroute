@@ -38,15 +38,61 @@ CenteringDialog {
     Component {
         id: notamDelegate
 
-        Label {
-            width: notamlistview.width
+        ItemDelegate {
+            id: delItem
+            width: parent ? parent.width : undefined
 
-            bottomPadding: 10
+            required property var model
+            property bool read: NotamProvider.isRead(delItem.model.modelData.number)
 
-            wrapMode: Text.WordWrap
-            text: model.modelData.richText
-            textFormat: Text.RichText
+            contentItem: Label {
+                id: lbl
+                wrapMode: Text.WordWrap
+                text: delItem.model.modelData.richText()
+                textFormat: Text.RichText
+                opacity: delItem.read ? 0.5 : 1.0
+                Behavior on opacity {
+                    NumberAnimation { duration: 200 }
+                }
+            }
+
+            Label {
+                id: myToast
+                anchors.centerIn: parent
+
+                text: qsTr("Marked as Read")
+
+                color: "white"
+                bottomInset: -5
+                topInset: -5
+                leftInset: -5
+                rightInset: -5
+
+                horizontalAlignment: Text.AlignHCenter
+                background: Rectangle {
+                    color: Material.primary
+                    radius: 5
+                }
+                opacity: 0
+                SequentialAnimation {
+                    id: seqA
+
+                    NumberAnimation { target: myToast; property: "opacity"; to: 1; duration: 400 }
+                    PauseAnimation { duration: 1000 }
+                    NumberAnimation { target: myToast; property: "opacity"; to: 0; duration: 400 }
+                }
+
+            }
+
+
+            onClicked: {
+                read = !read
+                NotamProvider.setRead(delItem.model.modelData.number, read)
+                if (read)
+                    seqA.start()
+            }
         }
+
     }
 
     ColumnLayout {

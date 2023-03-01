@@ -290,8 +290,7 @@ void NOTAM::NotamProvider::downloadFinished()
 
     bool newDataAdded = false;
     m_networkReplies.removeAll(nullptr);
-    auto networkReplies = m_networkReplies; // Make copy to avoid iteration while container changes
-    foreach(auto networkReply, networkReplies)
+    foreach(auto networkReply, m_networkReplies)
     {
         // Paranoid safety checks
         if (networkReply.isNull())
@@ -302,14 +301,20 @@ void NOTAM::NotamProvider::downloadFinished()
         {
             continue;
         }
-        m_networkReplies.removeAll(networkReply);
+        if (!networkReply->isFinished())
+        {
+            continue;
+        }
         if (networkReply->error() != QNetworkReply::NoError)
         {
+            networkReply->deleteLater();
             continue;
         }
 
         auto region = networkReply->property("area").value<QGeoCircle>();
-        NotamList notamList(networkReply->readAll(), region);
+        auto data = networkReply->readAll();
+        networkReply->deleteLater();
+        NotamList notamList(data, region);
         m_notamLists.prepend(notamList);
         newDataAdded = true;
     }
@@ -456,7 +461,8 @@ void NOTAM::NotamProvider::startRequest(const QGeoCoordinate& coordinate)
     auto urlString = u"https://external-api.faa.gov/notamapi/v1/notams?"
                      "locationLongitude=%1&"
                      "locationLatitude=%2&"
-                     "locationRadius=%3"_qs
+                     "locationRadius=%3&"
+                     "pageSize=1000"_qs
             .arg(coordinate.longitude())
             .arg(coordinate.latitude())
             .arg(1.2*requestRadius.toNM());
@@ -464,10 +470,10 @@ void NOTAM::NotamProvider::startRequest(const QGeoCoordinate& coordinate)
     request.setRawHeader("client_id", "bcd5e948c6654d3284ebeba68012a9eb");
     request.setRawHeader("client_secret", "1FCE4b44ED8f4C328C1b6341D5b1a55c");
 
-    QSharedPointer<QNetworkReply> reply(GlobalObject::networkAccessManager()->get(request));
+    auto* reply = GlobalObject::networkAccessManager()->get(request);
     reply->setProperty("area", QVariant::fromValue(QGeoCircle(coordinate, requestRadius.toM())) );
 
     m_networkReplies.append(reply);
-    connect(reply.data(), &QNetworkReply::finished, this, &NOTAM::NotamProvider::downloadFinished);
-    connect(reply.data(), &QNetworkReply::errorOccurred, this, &NOTAM::NotamProvider::downloadFinished);
+    connect(reply, &QNetworkReply::finished, this, &NOTAM::NotamProvider::downloadFinished);
+    connect(reply, &QNetworkReply::errorOccurred, this, &NOTAM::NotamProvider::downloadFinished);
 }

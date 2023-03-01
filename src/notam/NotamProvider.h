@@ -164,7 +164,7 @@ private:
     QList<QString> m_readNotamNumbers;
 
     // List of pending network requests
-    QList<QSharedPointer<QNetworkReply>> m_networkReplies;
+    QList<QPointer<QNetworkReply>> m_networkReplies;
 
     // List of NotamLists, sorted so that newest lists come first
     QList<NotamList> m_notamLists;

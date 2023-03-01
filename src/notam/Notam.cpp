@@ -24,6 +24,10 @@
 
 
 
+//
+// Constructor/Destructor
+//
+
 NOTAM::Notam::Notam(const QJsonObject& jsonObject)
 {
     auto notamObject = jsonObject[u"properties"_qs][u"coreNOTAMData"_qs][u"notam"_qs].toObject();
@@ -31,7 +35,7 @@ NOTAM::Notam::Notam(const QJsonObject& jsonObject)
     m_coordinates = interpretNOTAMCoordinates(notamObject[u"coordinates"_qs].toString());
     m_effectiveEndString = notamObject[u"effectiveEnd"_qs].toString();
     m_effectiveStartString = notamObject[u"effectiveStart"_qs].toString();
-    m_icaoLocation = notamObject[u"location"_qs].toString();
+    m_icaoLocation = notamObject[u"icaoLocation"_qs].toString();
     m_number = notamObject[u"number"_qs].toString();
     m_text = notamObject[u"text"_qs].toString();
     m_traffic = notamObject[u"traffic"_qs].toString();
@@ -41,6 +45,7 @@ NOTAM::Notam::Notam(const QJsonObject& jsonObject)
     m_effectiveStart = QDateTime::fromString(m_effectiveStartString, Qt::ISODate);
     m_region = QGeoCircle(m_coordinates, qMax( Units::Distance::fromNM(1).toM(), m_radius.toM() ));
 }
+
 
 
 //
@@ -53,7 +58,7 @@ bool NOTAM::Notam::isValid() const
     {
         return false;
     }
-    if (m_icaoLocation.size() != 4)
+    if ((m_icaoLocation.size() != 3) && (m_icaoLocation.size() != 4))
     {
         return false;
     }
@@ -69,7 +74,6 @@ bool NOTAM::Notam::isValid() const
 //
 // Methods
 //
-
 
 QString NOTAM::Notam::richText() const
 {

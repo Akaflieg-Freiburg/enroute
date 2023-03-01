@@ -2,10 +2,7 @@
 
 * Optional: Expand contractions
 
-* Mark NOTAMs as read
-
 * Improve notam symbol for map readability
-
 
 
 # Build System

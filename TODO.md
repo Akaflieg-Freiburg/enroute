@@ -1,7 +1,5 @@
 # NOTAM
 
-* Improve notam symbol for map readability
-
 * Handle cancellations notams
 
 

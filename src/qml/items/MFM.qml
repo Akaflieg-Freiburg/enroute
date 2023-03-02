@@ -456,7 +456,7 @@ Item {
                         id: image
 
                         source:  "/icons/waypoints/ic_warning.svg"
-                        opacity: 0.5
+                        opacity: 0.75
                         sourceSize.width: 20
                         sourceSize.height: 20
                     }

@@ -20,7 +20,45 @@
 
 #include <QJsonObject>
 
+#include "GlobalObject.h"
+#include "GlobalSettings.h"
 #include "notam/Notam.h"
+
+
+// Static objects
+
+QList<std::pair<QRegularExpression, QString>> contractions
+{
+    {QRegularExpression(u"\\bAD\\b"_qs), u"AERODROME"_qs},
+    {QRegularExpression(u"\\bAPRX\\b"_qs), u"APPROXIMATELY"_qs},
+    {QRegularExpression(u"\\bAVBL\\b"_qs), u"AVAILABLE"_qs},
+    {QRegularExpression(u"\\bBLW\\b"_qs), u"BELOW"_qs},
+    {QRegularExpression(u"\\bCLSD\\b"_qs), u"CLOSED"_qs},
+    {QRegularExpression(u"\\bCNL\\b"_qs), u"CANCEL"_qs},
+    {QRegularExpression(u"\\bE\\b"_qs), u"EAST"_qs},
+    {QRegularExpression(u"\\bELEV\\b"_qs), u"ELEVATION"_qs},
+    {QRegularExpression(u"\\bEXP\\b"_qs), u"EXPECT"_qs},
+    {QRegularExpression(u"\\bLGT\\b"_qs), u"LIGHT"_qs},
+    {QRegularExpression(u"\\bMAINT\\b"_qs), u"MAINTENANCE"_qs},
+    {QRegularExpression(u"\\bN\\b"_qs), u"NORTH"_qs},
+    {QRegularExpression(u"\\bNE\\b"_qs), u"NORTHEAST"_qs},
+    {QRegularExpression(u"\\bNW\\b"_qs), u"NORTHWEST"_qs},
+    {QRegularExpression(u"\\bOBST\\b"_qs), u"OBSTACLE"_qs},
+    {QRegularExpression(u"\\bPOSS\\b"_qs), u"POSSIBLE"_qs},
+    {QRegularExpression(u"\\bPSN\\b"_qs), u"POSITION"_qs},
+    {QRegularExpression(u"\\bRVR\\b"_qs), u"RUNWAY VISUAL RANGE"_qs},
+    {QRegularExpression(u"\\bRWY\\b"_qs), u"RUNWAY"_qs},
+    {QRegularExpression(u"\\bS\\b"_qs), u"SOUTH"_qs},
+    {QRegularExpression(u"\\bSE\\b"_qs), u"SOUTHEAST"_qs},
+    {QRegularExpression(u"\\bSW\\b"_qs), u"SOUTHWEST"_qs},
+    {QRegularExpression(u"\\bTFC\\b"_qs), u"TRAFFIC"_qs},
+    {QRegularExpression(u"\\bTHR\\b"_qs), u"THRESHOLD"_qs},
+    {QRegularExpression(u"\\bTWY\\b"_qs), u"TAXIWAY"_qs},
+    {QRegularExpression(u"\\bU/S\\b"_qs), u"UNSERVICEABLE"_qs},
+    {QRegularExpression(u"\\bW\\b"_qs), u"WEST"_qs},
+    {QRegularExpression(u"\\bWDI\\b"_qs), u"WIND DIRECTION INDICATOR"_qs},
+    {QRegularExpression(u"\\bWI\\b"_qs), u"WITHIN"_qs},
+};
 
 
 
@@ -107,7 +145,20 @@ QString NOTAM::Notam::richText() const
         result += u"<strong>%1</strong>"_qs.arg(effectiveEndString);
     }
 
-    result += m_text;
+    if (GlobalObject::globalSettings()->expandNotamAbbreviations())
+    {
+        QString tmp = m_text;
+        foreach(auto contraction, contractions)
+        {
+            tmp.replace(contraction.first, contraction.second);
+        }
+
+        result += tmp;
+    }
+    else
+    {
+        result += m_text;
+    }
     return result.join(u" • "_qs).replace(u"  "_qs, u" "_qs);
 }
 

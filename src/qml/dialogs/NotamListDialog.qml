@@ -48,7 +48,12 @@ CenteringDialog {
             contentItem: Label {
                 id: lbl
                 wrapMode: Text.WordWrap
-                text: delItem.model.modelData.richText()
+                text: {
+                    GlobalSettings.expandNotamAbbreviations
+                    Clock.date
+
+                    delItem.model.modelData.richText()
+                }
                 textFormat: Text.RichText
                 opacity: delItem.read ? 0.5 : 1.0
                 Behavior on opacity {
@@ -156,6 +161,18 @@ CenteringDialog {
 
             model: notamListDialog.notamList.notams
             ScrollIndicator.vertical: ScrollIndicator {}
+        }
+
+        CheckDelegate {
+            Layout.fillWidth: true
+
+            text: qsTr("Expand Abbreviations")
+
+            checked: GlobalSettings.expandNotamAbbreviations
+
+            onCheckedChanged: {
+                GlobalSettings.expandNotamAbbreviations = checked
+            }
         }
     }
 

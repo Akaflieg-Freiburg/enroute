@@ -110,6 +110,9 @@ public:
      */
     Q_PROPERTY(Units::Distance airspaceAltitudeLimit_max MEMBER airspaceAltitudeLimit_max CONSTANT)
 
+    /*! \brief Should we expand notam abbreviations */
+    Q_PROPERTY(bool expandNotamAbbreviations READ expandNotamAbbreviations WRITE setExpandNotamAbbreviations NOTIFY expandNotamAbbreviationsChanged)
+
     /*! \brief Hide gliding sectors */
     Q_PROPERTY(bool hideGlidingSectors READ hideGlidingSectors WRITE setHideGlidingSectors NOTIFY hideGlidingSectorsChanged)
 
@@ -174,6 +177,12 @@ public:
      * @returns Property airspaceAltitudeLimit
      */
     [[nodiscard]] auto airspaceAltitudeLimit() const -> Units::Distance;
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property expandNotamAbbreviations
+     */
+    [[nodiscard]] bool expandNotamAbbreviations() const { return settings.value(QStringLiteral("expandNotamAbbreviations"), false).toBool(); }
 
     /*! \brief Getter function for property of the same name
      *
@@ -276,6 +285,12 @@ public:
 
     /*! \brief Setter function for property of the same name
      *
+     * @param newExpandNotamAbbreviations Property expandNotamAbbreviations
+     */
+    void setExpandNotamAbbreviations(bool newExpandNotamAbbreviations);
+
+    /*! \brief Setter function for property of the same name
+     *
      * @param hide Property hideGlidingSectors
      */
     void setHideGlidingSectors(bool hide);
@@ -354,6 +369,9 @@ signals:
 
     /*! \brief Notifier signal */
     void airspaceAltitudeLimitChanged();
+
+    /*! \brief Notifier signal */
+    void expandNotamAbbreviationsChanged();
 
     /*! \brief Notifier signal */
     void hideGlidingSectorsChanged();

@@ -1,8 +1,8 @@
 # NOTAM
 
-* Optional: Expand contractions
-
 * Improve notam symbol for map readability
+
+* Handle cancellations notams
 
 
 # Build System

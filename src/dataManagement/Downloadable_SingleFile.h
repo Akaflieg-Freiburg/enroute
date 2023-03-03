@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -65,6 +65,9 @@ public:
      * stored. If the file already exists, the constructor assumes that the file
      * contains a previously downloaded version of the item, and that the
      * modification time of the file is the download time.
+     *
+     * @param bBox Bounding box, if a meaningful notion of bounding box exists
+     * for this Downloadable.
      *
      * @param parent The standard QObject parent pointer.
      *

@@ -117,9 +117,21 @@ void GlobalSettings::setAirspaceAltitudeLimit(Units::Distance newAirspaceAltitud
 }
 
 
+void GlobalSettings::setExpandNotamAbbreviations(bool newExpandNotamAbbreviations)
+{
+    if (newExpandNotamAbbreviations == expandNotamAbbreviations())
+    {
+        return;
+    }
+    settings.setValue(QStringLiteral("expandNotamAbbreviations"), newExpandNotamAbbreviations);
+    emit expandNotamAbbreviationsChanged();
+}
+
+
 void GlobalSettings::setHideGlidingSectors(bool hide)
 {
-    if (hide == hideGlidingSectors()) {
+    if (hide == hideGlidingSectors())
+    {
         return;
     }
     settings.setValue(QStringLiteral("Map/hideGlidingSectors"), hide);
@@ -129,7 +141,8 @@ void GlobalSettings::setHideGlidingSectors(bool hide)
 
 void GlobalSettings::setHillshading(bool show)
 {
-    if (show == hillshading()) {
+    if (show == hillshading())
+    {
         return;
     }
     settings.setValue(QStringLiteral("Map/hillshading"), show);

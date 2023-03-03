@@ -500,7 +500,7 @@ Page {
         width: parent.width
 
         Material.elevation: 3
-        visible: (!DataManager.mapList.downloading && !DataManager.mapList.hasFile) || ((!DataManager.items.downloading) && (DataManager.mapsAndData.updateSize > 0))
+        visible: (!DataManager.mapList.downloading && !DataManager.mapList.hasFile) || ((!DataManager.items.downloading) && !DataManager.mapsAndData.updateSize.isNull())
         contentHeight: Math.max(downloadMapListActionButton.height, downloadUpdatesActionButton.height)
         bottomPadding: SafeInsets.bottom
 
@@ -521,7 +521,7 @@ Page {
         ToolButton {
             id: downloadUpdatesActionButton
             anchors.centerIn: parent
-            visible: (!DataManager.items.downloading) && (DataManager.mapsAndData.updateSize > 0)
+            visible: !DataManager.items.downloading && !DataManager.mapsAndData.updateSize.isNull()
 
             text: qsTr("Update")
             icon.source: "/icons/material/ic_file_download.svg"

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2022 by Stefan Kebekus                                  *
+ *   Copyright (C) 2022-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -425,13 +425,13 @@ void DataManagement::Downloadable_MultiFile::evaluateUpdateSize()
         {
             if (map->hasFile())
             {
-                newUpdateSize += map->updateSize();
+                newUpdateSize += qint64(map->updateSize());
             }
             else
             {
                 if (m_updatePolicy == MultiUpdate)
                 {
-                    newUpdateSize += map->remoteFileSize();
+                    newUpdateSize += qint64(map->remoteFileSize());
                 }
             }
         }

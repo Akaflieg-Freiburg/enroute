@@ -135,10 +135,18 @@ public:
     // Methods
     //
 
-    /*! \brief Comparison */
+    /*! \brief Comparison
+     *
+     *  @param rhs Right hand side of the comparison
+     *
+     *  @returns True on equality.
+     */
     Q_REQUIRED_RESULT Q_INVOKABLE [[nodiscard]] bool operator==(const NOTAM::Notam& rhs) const = default;
 
-    /*! \brief Check if effectiveEnd is valid and earlier than currentTime */
+    /*! \brief Check if effectiveEnd is valid and earlier than currentTime
+     *
+     *  @return True if effectiveEnd is valid and earlier than currentTime
+     */
     Q_REQUIRED_RESULT bool isOutdated() const
     {
         return m_effectiveEnd.isValid() && (m_effectiveEnd < QDateTime::currentDateTimeUtc());

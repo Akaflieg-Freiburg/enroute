@@ -23,6 +23,7 @@
 #include <QTimer>
 #include <chrono>
 
+#include "GlobalSettings.h"
 #include "navigation/Navigator.h"
 #include "notam/NotamProvider.h"
 #include "positioning/PositionProvider.h"
@@ -45,6 +46,9 @@ NOTAM::NotamProvider::NotamProvider(QObject* parent) :
 
 void NOTAM::NotamProvider::deferredInitialization()
 {
+    // Start from scratch if FAA keys change
+    connect(globalSettings(), &GlobalSettings::FAADataChanged, this, &NOTAM::NotamProvider::clearAllAndUpdate);
+
     // Wire up updateData. Check NOTAM database every 10 seconds after start, every 11 minutes, and whenever the flight route changes.
     auto* timer = new QTimer(this);
     timer->start(10min);
@@ -285,6 +289,24 @@ void NOTAM::NotamProvider::clean()
 }
 
 
+void NOTAM::NotamProvider::clearAllAndUpdate()
+{
+    foreach(auto networkReply, m_networkReplies)
+    {
+        if (networkReply.isNull())
+        {
+            continue;
+        }
+        networkReply->abort();
+    }
+
+    m_notamLists.clear();
+    m_networkReplies.clear();
+
+    updateData();
+}
+
+
 void NOTAM::NotamProvider::downloadFinished()
 {
 
@@ -457,6 +479,12 @@ void NOTAM::NotamProvider::startRequest(const QGeoCoordinate& coordinate)
     {
         return;
     }
+    auto ID = globalSettings()->FAA_ID();
+    auto KEY = globalSettings()->FAA_KEY();
+    if (ID.isEmpty() || KEY.isEmpty())
+    {
+        return;
+    }
 
     auto urlString = u"https://external-api.faa.gov/notamapi/v1/notams?"
                      "locationLongitude=%1&"
@@ -467,8 +495,8 @@ void NOTAM::NotamProvider::startRequest(const QGeoCoordinate& coordinate)
             .arg(coordinate.latitude())
             .arg(1.2*requestRadius.toNM());
     QNetworkRequest request( urlString );
-    request.setRawHeader("client_id", "bcd5e948c6654d3284ebeba68012a9eb");
-    request.setRawHeader("client_secret", "1FCE4b44ED8f4C328C1b6341D5b1a55c");
+    request.setRawHeader("client_id", ID.toLatin1());
+    request.setRawHeader("client_secret", KEY.toLatin1());
 
     auto* reply = GlobalObject::networkAccessManager()->get(request);
     reply->setProperty("area", QVariant::fromValue(QGeoCircle(coordinate, requestRadius.toM())) );

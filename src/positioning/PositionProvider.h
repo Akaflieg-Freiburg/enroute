@@ -54,6 +54,7 @@ class PositionProvider : public PositionInfoSource_Abstract
     // Repeat properties from PositionInfoSource_Abstract so qmllint knows about them
     Q_PROPERTY(Positioning::PositionInfo positionInfo READ positionInfo NOTIFY positionInfoChanged)
     Q_PROPERTY(Units::Distance pressureAltitude READ pressureAltitude NOTIFY pressureAltitudeChanged)
+    Q_PROPERTY(bool receivingPositionInfo READ receivingPositionInfo NOTIFY receivingPositionInfoChanged)
 
 
 public:

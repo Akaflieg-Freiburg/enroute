@@ -28,6 +28,7 @@ import QtQuick.Shapes
 import akaflieg_freiburg.enroute
 import enroute 1.0
 
+import "../dialogs"
 import "../items"
 
 /* This is a dialog with detailed information about a waypoint. To use this dialog, all you have to do is to set a Waypoint in the property "waypoint" and call open(). */
@@ -48,6 +49,9 @@ CenteringDialog {
 
         // Create METAR info box
         metarInfo.createObject(co);
+
+        // Create NOTAM info box
+        notamInfo.createObject(co);
 
         // Create waypoint description items
         var pro = waypoint.tabularDescription
@@ -92,6 +96,56 @@ CenteringDialog {
             background: Rectangle {
                 border.color: "black"
                 color: ((weatherStation !== null) && weatherStation.hasMETAR) ? weatherStation.metar.flightCategoryColor : "transparent"
+                opacity: 0.2
+            }
+
+        }
+
+    }
+
+    Component {
+        id: notamInfo
+
+        Label { // NOTAM info
+
+            Loader {
+                // WARNING This does not really belong here.
+                id: dlgLoader
+            }
+
+            property notamList notamList: {
+                // Mention lastUpdate, so we update whenever there is new data
+                NotamProvider.lastUpdate
+                return NotamProvider.notams(waypoint)
+            }
+
+            visible: text != ""
+            text: {
+                if (notamList.isValid && notamList.isEmpty)
+                    return ""
+                if (notamList.isEmpty)
+                    return notamList.summary
+                return notamList.summary + " • <a href='xx'>" + qsTr("full report") + "</a>"
+            }
+
+            Layout.fillWidth: true
+            wrapMode: Text.WordWrap
+
+            bottomPadding: 0.2*view.font.pixelSize
+            topPadding: 0.2*view.font.pixelSize
+            leftPadding: 0.2*view.font.pixelSize
+            rightPadding: 0.2*view.font.pixelSize
+            onLinkActivated: {
+                PlatformAdaptor.vibrateBrief()
+                dlgLoader.setSource("../dialogs/NotamListDialog.qml",
+                                    {"notamList": notamList, "waypoint": waypointDescriptionDialog.waypoint})
+                dlgLoader.item.open()
+            }
+
+            // Background color according to METAR/FAA flight category
+            background: Rectangle {
+                border.color: "black"
+                color: "yellow"
                 opacity: 0.2
             }
 

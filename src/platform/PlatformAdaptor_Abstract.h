@@ -73,6 +73,7 @@ public:
 
     //
     // Methods
+    //
 
     /*! \brief Checks if all required permissions have been granted
      *
@@ -101,7 +102,7 @@ public:
      * meant to ensure that the display remains on while the app is in use (e.g.
      * while the pilot is following a non-standard traffic pattern).
      */
-    virtual void disableScreenSaver() = 0;
+    Q_INVOKABLE virtual void disableScreenSaver() = 0;
 
     /*! \brief Lock connection to Wi-Fi network
      *
@@ -115,7 +116,7 @@ public:
      * @param lock If true, then lock the network. If false, then release the
      * lock.
      */
-    virtual void lockWifi(bool lock) = 0;
+    Q_INVOKABLE virtual void lockWifi(bool lock) = 0;
 
     /*! \brief Request permissions
      *
@@ -126,7 +127,7 @@ public:
      * synchroneously and shall return only once all permissions have been
      * granted (or not). 
      */
-    virtual void requestPermissionsSync() = 0;
+    Q_INVOKABLE virtual void requestPermissionsSync() = 0;
 
     /*! \brief Information about the system, in HTML format
      *

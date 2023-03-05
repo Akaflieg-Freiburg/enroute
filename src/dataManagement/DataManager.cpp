@@ -25,6 +25,7 @@
 #include <QLockFile>
 #include <QSettings>
 
+#include "GlobalSettings.h"
 #include "dataManagement/DataManager.h"
 #include "geomaps/MBTILES.h"
 #include <chrono>
@@ -48,14 +49,13 @@ DataManagement::DataManager::DataManager(QObject* parent) : GlobalObject(parent)
 
     m_mapsAndData.add(&m_mapSets);
     m_mapsAndData.add(&m_databases);
-
-    // If there is a downloaded maps.json file, we read it.
-    updateDataItemListAndWhatsNew();
-
 }
 
 void DataManagement::DataManager::deferredInitialization()
-{
+{    
+    // If there is a downloaded maps.json file, we read it.
+    updateDataItemListAndWhatsNew();
+
     // If the last update is more than one day ago, automatically initiate an
     // update, so that maps stay at least roughly current.
     auto lastUpdate = QSettings().value(QStringLiteral("DataManager/MapListTimeStamp"), QDateTime()).toDateTime();
@@ -356,6 +356,13 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
         {
             m_appUpdateRequired = false;
             emit appUpdateRequiredChanged();
+        }
+
+        auto FAA_ID = top.value(QStringLiteral("FAA_ID")).toString();
+        auto FAA_KEY = top.value(QStringLiteral("FAA_KEY")).toString();
+        if (!FAA_ID.isEmpty() && !FAA_KEY.isEmpty())
+        {
+            globalSettings()->setFAAData(FAA_ID, FAA_KEY);
         }
 
         auto baseURL = top.value(QStringLiteral("url")).toString();

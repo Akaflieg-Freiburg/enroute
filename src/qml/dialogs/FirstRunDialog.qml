@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -127,87 +127,104 @@ CenteringDialog {
     Component {
         id: maps
 
-        ColumnLayout {
+        ScrollView {
+            id: sv
 
-            width: availableWidth
-            implicitHeight: 600
+            required property var dialogMain
 
-            Label {
-                Layout.fillWidth: true
-                Layout.preferredHeight: implicitHeight
-                text: {
+            contentWidth: availableWidth // Disable horizontal scrolling
+
+            clip: true
+
+            ColumnLayout {
+                width: sv.dialogMain.availableWidth
+
+                Label {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: implicitHeight
+                    text: {
                     var result = "<h3>"
                             + qsTr("Download Maps")
                             + "</h3>"
                             + "<p>"
                             + qsTr("<strong>Enroute Flight Navigation</strong> needs geographic maps to work.")
                             + " "
-                    if (PositionProvider.positionInfo.isValid()) {
-                        if (lv.model.length === 0)
-                            result += qsTr("Regretfully, we do not offer maps for your present location (%1).").arg(PositionProvider.lastValidCoordinate)
-                        if (lv.model.length === 1)
-                            result += qsTr("Based on your location, we reckon that that the following map might be relevant for you. Click on the map to start the download, then click on 'Accept' to close this dialog.")
-                        if (lv.model.length > 1)
-                            result += qsTr("Based on your location, we reckon that that the following maps might be relevant for you. Click on any map to start the download, then click on 'Accept' to close this dialog.")
-                    } else {
-                        result += qsTr("We're waiting for SatNav position infoformation to suggest maps that might be relevant for you. Please stand by.")
+                    if (DataManager.mapList.hasFile)
+                    {
+                        if (PositionProvider.positionInfo.isValid())
+                        {
+                            if (lv.model.length === 0)
+                                result += qsTr("Regretfully, we do not offer maps for your present location (%1).").arg(PositionProvider.lastValidCoordinate)
+                            if (lv.model.length === 1)
+                                result += qsTr("Based on your location, we reckon that that the following map might be relevant for you. Click on the map to start the download, then click on 'Accept' to close this dialog.")
+                            if (lv.model.length > 1)
+                                result += qsTr("Based on your location, we reckon that that the following maps might be relevant for you. Click on any map to start the download, then click on 'Accept' to close this dialog.")
+                        }
+                        else
+                        {
+                            result += qsTr("We're waiting for SatNav position infoformation to suggest maps that might be relevant for you. Please stand by.")
+                        }
                     }
+                    else
+                    {
+                        result += qsTr("We're downloading the list of available maps. Please stand by.")
+                    }
+
                     result += "</p>"
 
                     return result
                 }
-                width: availableWidth
-                textFormat: Text.RichText
-                linkColor: Material.accent
-                wrapMode: Text.Wrap
-            }
+                    textFormat: Text.RichText
+                    linkColor: Material.accent
+                    wrapMode: Text.Wrap
+                }
 
-            Rectangle {
-                Layout.preferredHeight: 1
-                Layout.fillWidth: true
-                color: "black"
-                visible: lv.model ? lv.model.length !== 0 : false
-            }
+                Rectangle {
+                    Layout.preferredHeight: 1
+                    Layout.fillWidth: true
+                    color: "black"
+                    visible: lv.model ? lv.model.length !== 0 : false
+                }
 
-            ListView {
-                id: lv
+                ListView {
+                    id: lv
 
-                Layout.preferredHeight: contentHeight
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+                    Layout.preferredHeight: contentHeight
+                    Layout.fillWidth: true
 
-                visible: PositionProvider.receivingPositionInfo
+                    flickableDirection: Flickable.HorizontalFlick
 
-                clip: true
-                model: DataManager.mapSets.downloadables4Location(PositionProvider.lastValidCoordinate)
-                delegate: MapSet {}
-                ScrollIndicator.vertical: ScrollIndicator {}
-            }
+                    visible: PositionProvider.receivingPositionInfo
 
-            Rectangle {
-                Layout.preferredHeight: 1
-                Layout.fillWidth: true
-                color: "black"
-                visible: lv.model ? lv.model.length !== 0 : false
-            }
+                    clip: true
+                    model: DataManager.mapSets.downloadables4Location(PositionProvider.lastValidCoordinate)
+                    delegate: MapSet {}
+                }
 
-            Label {
-                Layout.fillWidth: true
-                Layout.preferredHeight: implicitHeight
-                text:  "<p>"
-                       + qsTr("For the full list of maps, close this dialog, open the main menu and go to 'Library/Maps and Data'. It is also possible to import raster maps into this app. Check the manual for details.")
-                       + "</p>"
-                width: availableWidth
-                textFormat: Text.RichText
-                linkColor: Material.accent
-                wrapMode: Text.Wrap
+                Rectangle {
+                    Layout.preferredHeight: 1
+                    Layout.fillWidth: true
+                    color: "black"
+                    visible: lv.model ? lv.model.length !== 0 : false
+                }
+
+                Label {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: implicitHeight
+                    text:  "<p>"
+                           + qsTr("For the full list of maps, close this dialog, open the main menu and go to 'Library/Maps and Data'. It is also possible to import raster maps into this app. Check the manual for details.")
+                           + "</p>"
+                    textFormat: Text.RichText
+                    linkColor: Material.accent
+                    wrapMode: Text.Wrap
+                }
+
             }
 
             function accept() {
             }
+
         }
-
-
     }
 
 
@@ -227,7 +244,8 @@ CenteringDialog {
     }
 
     function conditionalOpen() {
-        stack.push(maps)
+        if (!DataManager.aviationMaps.hasFile)
+            stack.push(maps, {"dialogMain": dialogMain})
 
         var missingPermissionsText = PlatformAdaptor.checkPermissions()
         if (missingPermissionsText === "")

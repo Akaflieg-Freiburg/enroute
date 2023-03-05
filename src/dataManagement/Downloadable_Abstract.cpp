@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2022 by Stefan Kebekus                                  *
+ *   Copyright (C) 2022-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -41,9 +41,9 @@ DataManagement::Downloadable_Abstract::Downloadable_Abstract(QObject *parent)
 
 auto DataManagement::Downloadable_Abstract::updateSizeString() -> QString
 {
-    qsizetype size = qMax(Units::ByteSize(0),updateSize());
+    auto size = qMax(Units::ByteSize(0),updateSize());
 
-    return QLocale::system().formattedDataSize(size, 1, QLocale::DataSizeSIFormat);
+    return QLocale::system().formattedDataSize( qint64(size), 1, QLocale::DataSizeSIFormat);
 }
 
 

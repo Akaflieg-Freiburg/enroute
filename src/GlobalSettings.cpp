@@ -117,9 +117,33 @@ void GlobalSettings::setAirspaceAltitudeLimit(Units::Distance newAirspaceAltitud
 }
 
 
+void GlobalSettings::setExpandNotamAbbreviations(bool newExpandNotamAbbreviations)
+{
+    if (newExpandNotamAbbreviations == expandNotamAbbreviations())
+    {
+        return;
+    }
+    settings.setValue(QStringLiteral("expandNotamAbbreviations"), newExpandNotamAbbreviations);
+    emit expandNotamAbbreviationsChanged();
+}
+
+
+void GlobalSettings::setFAAData(const QString& newID, const QString& newKey)
+{
+    if ((newID == FAA_ID()) && (newKey == FAA_KEY()))
+    {
+        return;
+    }
+    settings.setValue(QStringLiteral("FAA_ID"), newID);
+    settings.setValue(QStringLiteral("FAA_KEY"), newKey);
+    emit FAADataChanged();
+}
+
+
 void GlobalSettings::setHideGlidingSectors(bool hide)
 {
-    if (hide == hideGlidingSectors()) {
+    if (hide == hideGlidingSectors())
+    {
         return;
     }
     settings.setValue(QStringLiteral("Map/hideGlidingSectors"), hide);
@@ -129,7 +153,8 @@ void GlobalSettings::setHideGlidingSectors(bool hide)
 
 void GlobalSettings::setHillshading(bool show)
 {
-    if (show == hillshading()) {
+    if (show == hillshading())
+    {
         return;
     }
     settings.setValue(QStringLiteral("Map/hillshading"), show);

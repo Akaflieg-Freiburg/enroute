@@ -83,8 +83,16 @@ DataManagement::Downloadable_SingleFile::Downloadable_SingleFile(QUrl url, const
 DataManagement::Downloadable_SingleFile::~Downloadable_SingleFile()
 {
     // Free all ressources
-    delete m_networkReplyDownloadFile;
-    delete m_networkReplyDownloadHeader;
+    if (!m_networkReplyDownloadFile.isNull())
+    {
+        m_networkReplyDownloadFile->abort();
+        delete m_networkReplyDownloadFile;
+    }
+    if (!m_networkReplyDownloadHeader.isNull())
+    {
+        m_networkReplyDownloadHeader->abort();
+        delete m_networkReplyDownloadHeader;
+    }
     delete m_saveFile;
 }
 

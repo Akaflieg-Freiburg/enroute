@@ -373,12 +373,6 @@ protected:
     QMap<QString, QVariant> m_properties;
 };
 
-/*! \brief Comparison */
-//auto operator==(const GeoMaps::Waypoint&, const GeoMaps::Waypoint&) -> bool = default;
-
-/*! \brief Comparison */
-//auto operator!=(const GeoMaps::Waypoint&, const GeoMaps::Waypoint&) -> bool;
-
 /*! \brief Hash function for airspaces
  *
  * @param wp Waypoint

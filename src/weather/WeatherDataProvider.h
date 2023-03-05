@@ -77,6 +77,9 @@ public:
     // No default constructor, important for QML singleton
     explicit WeatherDataProvider() = delete;
 
+    /*! \brief Standard destructor */
+    ~WeatherDataProvider() override;
+
     // factory function for QML singleton
     static Weather::WeatherDataProvider* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
     {

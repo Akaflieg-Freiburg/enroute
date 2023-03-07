@@ -16,6 +16,8 @@
 
 # Bug Fixing
 
+* Make things work again with Qt6.5
+
 * Fix problems with screenshots for google play
 
 

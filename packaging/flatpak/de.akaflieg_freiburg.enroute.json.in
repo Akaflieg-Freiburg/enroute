@@ -10,7 +10,6 @@
     	"--filesystem=host",
     	"--share=ipc",
         "--share=network",
-        "--socket=fallback-x11",
         "--socket=wayland",
         "--system-talk-name=org.freedesktop.GeoClue2",
         "--system-talk-name=org.freedesktop.NetworkManager",

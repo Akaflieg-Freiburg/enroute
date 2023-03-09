@@ -11,6 +11,7 @@
     	"--share=ipc",
         "--share=network",
         "--socket=wayland",
+        "--socket=x11",
         "--system-talk-name=org.freedesktop.GeoClue2",
         "--system-talk-name=org.freedesktop.NetworkManager",
         "--talk-name=org.freedesktop.Notifications"

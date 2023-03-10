@@ -7,16 +7,12 @@
 
 * Generate spritesheet in proper way
 
-* Generate flatpak packages
-
 * Generate SNAP packages
 
 * Make GitHub actions work again
 
 
 # Bug Fixing
-
-* Make things work again with Qt6.5
 
 * Fix problems with screenshots for google play
 
@@ -28,3 +24,7 @@
 * METAR/TAF rewrite
 
 * Exit app on double 'back'
+
+* https://www.qt.io/blog/qt-for-android-storage-updates
+
+* https://www.qt.io/blog/deploying-to-linux-with-cmake

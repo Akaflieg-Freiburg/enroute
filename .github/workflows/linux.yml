@@ -20,7 +20,7 @@ jobs:
     - name: Checkout qtlocation
       uses: actions/checkout@v3
       with:
-        path: qtlocationstatic
+        path: qtlocation
         repository: Akaflieg-Freiburg/qtlocationstatic
         submodules: true
     - name: Install Qt

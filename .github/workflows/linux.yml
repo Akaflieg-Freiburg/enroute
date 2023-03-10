@@ -32,6 +32,8 @@ jobs:
         sudo apt install doxygen extra-cmake-modules graphviz libkf5notifications-dev ninja
     - name: Compile Qt5Compat
       run: |
+        export CC=/usr/bin/clang
+        export CXX=/usr/bin/clang++
         cmake -E make_directory build-qt5compat
         cd build-qt5compat
         qt-configure-module ../qt5compat

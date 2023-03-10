@@ -21,7 +21,7 @@ jobs:
       uses: jurplel/install-qt-action@v3
       with:
         version: '6.4.2'
-        modules: 'qthttpserver qt5compat'
+        modules: 'qt5compat qthttpserver qtwebsockets'
     - name: Install Additional Software
       run: |
         sudo apt install extra-cmake-modules ninja-build

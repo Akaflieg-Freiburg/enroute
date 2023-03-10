@@ -29,7 +29,7 @@ jobs:
         version: '6.4.2'
     - name: Install Additional Software
       run: |
-        sudo apt install doxygen extra-cmake-modules graphviz libkf5notifications-dev ninja
+        sudo apt install extra-cmake-modules ninja-build
     - name: Compile Qt5Compat
       run: |
         export CC=/usr/bin/clang

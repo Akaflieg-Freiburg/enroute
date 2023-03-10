@@ -12,8 +12,16 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout Enroute
+      uses: actions/checkout@v3
       with:
+	path: enroute
+        submodules: true
+    - name: Checkout Qt5Compat
+      uses: actions/checkout@v3
+      with:
+	path: qt5compat
+	repository: qt/qt5compat
         submodules: true
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
@@ -22,6 +30,13 @@ jobs:
     - name: Install Additional Software
       run: |
         sudo apt install doxygen  extra-cmake-modules graphviz libkf5notifications-dev
+    - name: Compile Qt5Compat
+      run: |
+        cmake -E make_directory build-qt5compat
+	cd build-qt5compat
+	qt-configure-module ../qt5compat
+	make
+	make install
     - name: Configure
       run: |
         export CC=/usr/bin/clang

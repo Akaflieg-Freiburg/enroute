@@ -27,6 +27,9 @@
 
 // Static objects
 
+// In cancel notams the text starts as "A0029/23 NOTAMC A0027/23"
+QRegularExpression cancelNotamStart(u"^[A-Z]\\d{4}/\\d{2} NOTAMC [A-Z]\\d{4}/\\d{2}"_qs);
+
 QList<std::pair<QRegularExpression, QString>> contractions
 {
     {QRegularExpression(u"\\bU/S\\b"_qs), u"UNSERVICEABLE"_qs}, // MUST COME BEFORE SOUTH
@@ -120,6 +123,16 @@ NOTAM::Notam::Notam(const QJsonObject& jsonObject)
 //
 // Getter Methods
 //
+
+QString NOTAM::Notam::cancels() const
+{
+    if (!m_text.contains(cancelNotamStart))
+    {
+        return {};
+    }
+    return m_text.mid(16,8);
+}
+
 
 bool NOTAM::Notam::isValid() const
 {

@@ -1,8 +1,3 @@
-# NOTAM
-
-* Handle cancellations notams
-
-
 # Build System
 
 * Generate spritesheet in proper way

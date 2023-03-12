@@ -41,6 +41,9 @@ namespace Units {
     public:
         ByteSize() = default;
         ByteSize(const ByteSize&) = default;
+        ByteSize(ByteSize&&) = default;
+        ByteSize& operator=(const ByteSize&) = default;
+        ByteSize& operator=(ByteSize&&) = default;
 
         /*! \brief Conversion from size_t to Units::ByteSize
          *

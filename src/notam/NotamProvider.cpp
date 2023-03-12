@@ -272,13 +272,14 @@ void NOTAM::NotamProvider::clean()
 
         regionsSeen += notamList.region();
 
-        auto cleanedList = notamList.cleaned();
-        if (cleanedList.notams().size() != notamList.cleaned().notams().size())
+        auto cleanedList = notamList.cleaned(m_cancelledNotamNumbers);
+        if (cleanedList.notams().size() != notamList.notams().size())
         {
             haveChange = true;
         }
         newNotamLists.append(cleanedList);
     }
+    m_cancelledNotamNumbers.clear();
 
     if (haveChange)
     {
@@ -336,7 +337,7 @@ void NOTAM::NotamProvider::downloadFinished()
         auto region = networkReply->property("area").value<QGeoCircle>();
         auto data = networkReply->readAll();
         networkReply->deleteLater();
-        NotamList notamList(data, region);
+        NotamList notamList(data, region, &m_cancelledNotamNumbers);
         m_notamLists.prepend(notamList);
         newDataAdded = true;
     }

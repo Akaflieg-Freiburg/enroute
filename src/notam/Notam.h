@@ -51,6 +51,14 @@ public:
     // Properties
     //
 
+    /*! \brief Cancels other Notam
+     *
+     *  If this is a cancel notam, then this property holds the number
+     *  of the notam that is to be cancelled. Otherwise, this property
+     *  holds an empty string.
+     */
+    Q_PROPERTY(QString cancels READ cancels CONSTANT)
+
     /*! \brief Coordinates of the Notam */
     Q_PROPERTY(QGeoCoordinate coordinate READ coordinate CONSTANT)
 
@@ -86,6 +94,12 @@ public:
     //
     // Getter Methods
     //
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property cancels
+     */
+    Q_REQUIRED_RESULT QString cancels() const;
 
     /*! \brief Getter function for the property with the same name
      *

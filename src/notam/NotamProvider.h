@@ -163,8 +163,11 @@ private:
     // around the coordinate.
     void startRequest(const QGeoCoordinate& coordinate);
 
-    // List with number of read notams
+    // List with numbers of notams that have been marked as read
     QList<QString> m_readNotamNumbers;
+
+    // Set with numbers of notams that have been cancelled
+    QSet<QString> m_cancelledNotamNumbers;
 
     // List of pending network requests
     QList<QPointer<QNetworkReply>> m_networkReplies;

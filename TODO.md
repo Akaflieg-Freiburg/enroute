@@ -1,13 +1,6 @@
-# NOTAM
-
-* Handle cancellations notams
-
-
 # Build System
 
 * Generate spritesheet in proper way
-
-* Generate flatpak packages
 
 * Generate SNAP packages
 
@@ -26,3 +19,7 @@
 * METAR/TAF rewrite
 
 * Exit app on double 'back'
+
+* https://www.qt.io/blog/qt-for-android-storage-updates
+
+* https://www.qt.io/blog/deploying-to-linux-with-cmake

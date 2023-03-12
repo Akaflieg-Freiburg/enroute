@@ -125,9 +125,6 @@ public:
      */
     Q_PROPERTY(QString FAA_KEY READ FAA_KEY NOTIFY FAADataChanged)
 
-    /*! \brief Should we expand notam abbreviations */
-    Q_PROPERTY(bool expandNotamAbbreviations READ expandNotamAbbreviations WRITE setExpandNotamAbbreviations NOTIFY expandNotamAbbreviationsChanged)
-
     /*! \brief Hide gliding sectors */
     Q_PROPERTY(bool hideGlidingSectors READ hideGlidingSectors WRITE setHideGlidingSectors NOTIFY hideGlidingSectorsChanged)
 

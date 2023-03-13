@@ -37,8 +37,8 @@ ApplicationWindow {
 
     // On Android, fullscreen mode is set in JAVA code
     flags: ((Qt.platform.os === "android") || (Qt.platform.os === "ios")) ? Qt.MaximizeUsingFullscreenGeometryHint | Qt.Window : Qt.Window
-    font.pixelSize: GlobalSettings.largeFonts ? 16 : 14
-    font.letterSpacing: GlobalSettings.largeFonts ? 0.5 : 0.25
+    font.pixelSize: GlobalSettings.fontSize
+    font.letterSpacing: GlobalSettings.fontSize > 15 ? 0.5 : 0.25
 
     visible: true
     title: "Enroute Flight Navigation"

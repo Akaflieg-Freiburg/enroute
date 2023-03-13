@@ -1,0 +1,48 @@
+name: Compile on MacOS
+
+on:
+  release:
+    types: [published]
+  push:
+    branches: [main, working]
+
+jobs:
+  build:
+
+    runs-on: macos-12
+    
+    steps:
+    - name: Checkout Enroute
+      uses: actions/checkout@v3
+      with:
+        path: enroute
+        submodules: true
+    - name: Checkout qtlocation
+      uses: actions/checkout@v3
+      with:
+        path: qtlocation
+        repository: Akaflieg-Freiburg/qtlocationstatic
+        submodules: true
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v3
+      with:
+        version: '6.4.2'
+        modules: 'qt5compat qthttpserver qtpositioning qtshadertools qtwebsockets'	
+    - name: Install Additional Software
+      run: |
+        sudo apt install extra-cmake-modules ninja-build spirv-tools
+    - name: Compile QtLocation
+      run: |
+        cmake -E make_directory build-qtlocation
+        cd build-qtlocation
+        qt-configure-module ../qtlocation
+        ninja
+        ninja install
+    - name: Compile Enroute Flight Navigation
+      run: |
+        export CC=/usr/bin/clang
+        export CXX=/usr/bin/clang++
+        cmake -E make_directory build-enroute
+        cd build-enroute
+        cmake ../enroute -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS='-Werror -Wall -Wextra'
+        make

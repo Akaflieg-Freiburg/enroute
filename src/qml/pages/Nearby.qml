@@ -123,7 +123,7 @@ Page {
             Label {
                 anchors.fill: parent
                 anchors.topMargin: font.pixelSize*2
-                visible: parent.count == 0
+                visible: parent.count === 0
 
                 horizontalAlignment: Text.AlignHCenter
                 textFormat: Text.StyledText
@@ -145,7 +145,7 @@ Page {
             Label {
                 anchors.fill: parent
                 anchors.topMargin: font.pixelSize*2
-                visible: parent.count == 0
+                visible: parent.count === 0
 
                 horizontalAlignment: Text.AlignHCenter
                 textFormat: Text.StyledText
@@ -167,7 +167,7 @@ Page {
             Label {
                 anchors.fill: parent
                 anchors.topMargin: font.pixelSize*2
-                visible: parent.count == 0
+                visible: parent.count === 0
 
                 horizontalAlignment: Text.AlignHCenter
                 textFormat: Text.StyledText

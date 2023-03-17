@@ -46,16 +46,9 @@ Page {
             property var waypoint: ({})
             property int index: -1
 
-            WordWrappingItemDelegate {
-                icon.source: waypoint.icon
+            WaypointDelegate {
                 Layout.fillWidth: true
-                text: waypoint.twoLineTitle
-
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    waypointDescription.waypoint = waypoint
-                    waypointDescription.open()
-                }
+                waypoint: waypointLayout.waypoint
             }
 
             ToolButton {
@@ -766,10 +759,6 @@ Page {
             dlgLoader.source = "../dialogs/FlightRouteAddWPDialog.qml"
             dlgLoader.active = true
         }
-    }
-
-    WaypointDescription {
-        id: waypointDescription
     }
 
     WaypointEditor {

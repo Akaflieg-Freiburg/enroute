@@ -4,12 +4,12 @@
 
 * Generate SNAP packages
 
-* Make GitHub actions work again
-
 
 # Bug Fixing
 
 * Fix problems with screenshots for google play
+
+* check if traffic has a five-minute-bar
 
 
 # New Features

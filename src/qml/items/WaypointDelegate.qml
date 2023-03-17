@@ -19,49 +19,60 @@
  ***************************************************************************/
 
 import QtQuick
-import QtQuick.Controls
 
 import akaflieg_freiburg.enroute
 
 
 
 Item {
+    id: wpDelegate
+
+    // Expect a waypoint as a model
+    required property var model
+
     width: parent ? parent.width : 0
     height: idel.height
 
     // Background color according to METAR/FAA flight category
     Rectangle {
         anchors.fill: parent
-        color: model.modelData.hasMETAR ? model.modelData.weatherStation.metar.flightCategoryColor : "transparent"
+        color: wpDelegate.model.modelData.hasMETAR ? wpDelegate.model.modelData.weatherStation.metar.flightCategoryColor : "transparent"
         opacity: 0.2
     }
 
     WordWrappingItemDelegate {
         id: idel
 
-        width: sv.width
+        width: parent.width
 
-        icon.source: model.modelData.icon
+        icon.source: wpDelegate.model.modelData.icon
 
         text: {
             // Mention horizontal distance
             Navigator.aircraft.horizontalDistanceUnit
 
-            var result = model.modelData.twoLineTitle
+            var result = wpDelegate.model.modelData.twoLineTitle
 
             var wayTo  = Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), model.modelData.coordinate)
             if (wayTo !== "")
                 result = result + "<br>" + wayTo
 
-            if (model.modelData.hasMETAR)
+            if (wpDelegate.model.modelData.hasMETAR)
                 result = result + "<br>" + model.modelData.weatherStation.metar.summary
             return result
         }
 
         onClicked: {
             PlatformAdaptor.vibrateBrief()
-            waypointDescription.waypoint = model.modelData
-            waypointDescription.open()
+            wpDescriptionLoader.active = false
+            wpDescriptionLoader.setSource("../dialogs/WaypointDescription.qml", { waypoint: wpDelegate.model.modelData })
+            wpDescriptionLoader.active = true
         }
+    }
+
+    Loader {
+        id: wpDescriptionLoader
+
+        onLoaded: item.open()
     }
 }

@@ -118,12 +118,12 @@ Page {
             delegate: waypointDelegate
             ScrollIndicator.vertical: ScrollIndicator {}
 
-            Component.onCompleted: adList.model = global.geoMapProvider().nearbyWaypoints(PositionProvider.lastValidCoordinate, "AD")
+            Component.onCompleted: adList.model = GeoMapProvider.nearbyWaypoints(PositionProvider.lastValidCoordinate, "AD")
 
             Label {
                 anchors.fill: parent
-                anchors.topMargin: view.font.pixelSize*2
-                visible: parent.count == 0
+                anchors.topMargin: font.pixelSize*2
+                visible: parent.count === 0
 
                 horizontalAlignment: Text.AlignHCenter
                 textFormat: Text.StyledText
@@ -140,12 +140,12 @@ Page {
             delegate: waypointDelegate
             ScrollIndicator.vertical: ScrollIndicator {}
 
-            Component.onCompleted: naList.model = global.geoMapProvider().nearbyWaypoints(PositionProvider.lastValidCoordinate, "NAV")
+            Component.onCompleted: naList.model = GeoMapProvider.nearbyWaypoints(PositionProvider.lastValidCoordinate, "NAV")
 
             Label {
                 anchors.fill: parent
-                anchors.topMargin: view.font.pixelSize*2
-                visible: parent.count == 0
+                anchors.topMargin: font.pixelSize*2
+                visible: parent.count === 0
 
                 horizontalAlignment: Text.AlignHCenter
                 textFormat: Text.StyledText
@@ -166,8 +166,8 @@ Page {
             
             Label {
                 anchors.fill: parent
-                anchors.topMargin: view.font.pixelSize*2
-                visible: parent.count == 0
+                anchors.topMargin: font.pixelSize*2
+                visible: parent.count === 0
 
                 horizontalAlignment: Text.AlignHCenter
                 textFormat: Text.StyledText
@@ -177,6 +177,46 @@ Page {
         }
 
     } // SwipeView
+
+    // Manual update button in footer
+    footer: Pane {
+        width: parent.width
+        bottomPadding: SafeInsets.bottom+16
+        leftPadding: SafeInsets.left+16
+        rightPadding: SafeInsets.right+16
+
+        Material.elevation: 3
+        visible: (sunLabel.text !== "") || (qnhLabel.text !== "")
+
+        GridLayout {
+            anchors.fill: parent
+            columns: 2
+
+            Icon {
+                visible: qnhLabel.text !== ""
+                source: "/icons/material/ic_speed.svg"
+            }
+            Label {
+                id: qnhLabel
+                visible: qnhLabel.text !== ""
+                Layout.fillWidth: true
+                text: WeatherDataProvider.QNHInfo
+            }
+
+            Icon {
+                visible: sunLabel.text !== ""
+                source: "/icons/material/ic_wb_sunny.svg"
+            }
+            Label {
+                id: sunLabel
+                visible: sunLabel.text !== ""
+                Layout.fillWidth: true
+                text: WeatherDataProvider.sunInfo
+            }
+
+        }
+
+    }
 
     WaypointDescription {
         id: waypointDescription

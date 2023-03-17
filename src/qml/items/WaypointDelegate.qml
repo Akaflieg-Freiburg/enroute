@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2023 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -23,24 +23,45 @@ import QtQuick.Controls
 
 import akaflieg_freiburg.enroute
 
-Dialog {
-    id: ctrDlg
 
-    leftMargin: SafeInsets.left + font.pixelSize
-    rightMargin: SafeInsets.right + font.pixelSize
-    topMargin: SafeInsets.top + font.pixelSize
-    bottomMargin: SafeInsets.bottom + font.pixelSize
 
-    // We center the dialog manually, taking care of safe insets
-    x: SafeInsets.left + (parent.width-SafeInsets.left-SafeInsets.right-width)/2.0
-    y: SafeInsets.top + (parent.height-SafeInsets.top-SafeInsets.bottom-height)/2.0
+Item {
+    width: parent ? parent.width : 0
+    height: idel.height
 
-    // Delays evaluation and prevents binding loops
-    Binding on implicitWidth {
-        value: 40*ctrDlg.font.pixelSize
-        delayed: true    // Prevent intermediary values from being assigned
+    // Background color according to METAR/FAA flight category
+    Rectangle {
+        anchors.fill: parent
+        color: model.modelData.hasMETAR ? model.modelData.weatherStation.metar.flightCategoryColor : "transparent"
+        opacity: 0.2
     }
 
-    parent: Overlay.overlay
-    
-} // Dialog
+    WordWrappingItemDelegate {
+        id: idel
+
+        width: sv.width
+
+        icon.source: model.modelData.icon
+
+        text: {
+            // Mention horizontal distance
+            Navigator.aircraft.horizontalDistanceUnit
+
+            var result = model.modelData.twoLineTitle
+
+            var wayTo  = Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), model.modelData.coordinate)
+            if (wayTo !== "")
+                result = result + "<br>" + wayTo
+
+            if (model.modelData.hasMETAR)
+                result = result + "<br>" + model.modelData.weatherStation.metar.summary
+            return result
+        }
+
+        onClicked: {
+            PlatformAdaptor.vibrateBrief()
+            waypointDescription.waypoint = model.modelData
+            waypointDescription.open()
+        }
+    }
+}

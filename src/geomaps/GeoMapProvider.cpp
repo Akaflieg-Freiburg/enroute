@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -27,6 +27,9 @@
 #include <QRandomGenerator>
 #include <QtConcurrent/QtConcurrentRun>
 
+#include "GlobalSettings.h"
+#include "Librarian.h"
+#include "dataManagement/DataManager.h"
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/MBTILES.h"
 #include "geomaps/WaypointLibrary.h"

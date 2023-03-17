@@ -9,7 +9,7 @@
 
 * Fix problems with screenshots for google play
 
-* check if traffic has a five-minute-bar
+* Traffic has no five-minute-bar
 
 
 # New Features

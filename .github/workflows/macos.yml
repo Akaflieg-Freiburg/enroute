@@ -17,6 +17,12 @@ jobs:
       with:
         path: enroute
         submodules: true
+    - name: Set up macOS
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+    - name: Install Ninja
+      run: brew install ninja
     - name: Checkout qtlocation
       uses: actions/checkout@v3
       with:
@@ -27,19 +33,17 @@ jobs:
       uses: jurplel/install-qt-action@v3
       with:
         version: '6.4.2'
-        modules: 'qt5compat qthttpserver qtpositioning qtshadertools qtwebsockets'	
+        modules: 'qt5compat qthttpserver qtpositioning qtshadertools qtwebsockets'
     - name: Compile QtLocation
       run: |
         cmake -E make_directory build-qtlocation
         cd build-qtlocation
         qt-configure-module ../qtlocation
-        ninja
-        ninja install
+        cmake --build .
+        cmake --install .
     - name: Compile Enroute Flight Navigation
       run: |
-        export CC=/usr/bin/clang
-        export CXX=/usr/bin/clang++
         cmake -E make_directory build-enroute
         cd build-enroute
-        cmake ../enroute -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS='-Werror -Wall -Wextra'
-        make
+        cmake ../enroute
+        cmake --build .

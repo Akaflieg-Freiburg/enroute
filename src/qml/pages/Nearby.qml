@@ -18,13 +18,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+import QtPositioning
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
-import enroute 1.0
 import "../dialogs"
 import "../items"
 
@@ -68,45 +68,9 @@ Page {
         Component {
             id: waypointDelegate
 
-            Item {
-                width: sv.width
-                height: idel.height
-
-                // Background color according to METAR/FAA flight category
-                Rectangle {
-                    anchors.fill: parent
-                    color: model.modelData.hasMETAR ? model.modelData.weatherStation.metar.flightCategoryColor : "transparent"
-                    opacity: 0.2
-                }
-
-                WordWrappingItemDelegate {
-                    id: idel
-
-                    width: sv.width
-
-                    icon.source: model.modelData.icon
-
-                    text: {
-                        // Mention horizontal distance
-                        Navigator.aircraft.horizontalDistanceUnit
-
-                        var result = model.modelData.twoLineTitle
-
-                        var wayTo  = Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), model.modelData.coordinate)
-                        if (wayTo !== "")
-                            result = result + "<br>" + wayTo
-
-                        if (model.modelData.hasMETAR)
-                            result = result + "<br>" + model.modelData.weatherStation.metar.summary
-                        return result
-                    }
-
-                    onClicked: {
-                        PlatformAdaptor.vibrateBrief()
-                        waypointDescription.waypoint = model.modelData
-                        waypointDescription.open()
-                    }
-                }
+            WaypointDelegate {
+                required property var model
+                waypoint: model.modelData
             }
         }
 
@@ -218,7 +182,4 @@ Page {
 
     }
 
-    WaypointDescription {
-        id: waypointDescription
-    }
 } // Page

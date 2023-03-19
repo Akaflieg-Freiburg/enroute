@@ -308,17 +308,6 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/main.qml
     qml/dialogs/CenteringDialog.qml
     qml/dialogs/LongTextDialog.qml
-    qml/items/AutoSizingMenu.qml
-    qml/items/DegreeInput.qml
-    qml/items/ElevationInput.qml
-    qml/items/FlightVector.qml
-    qml/items/MapSet.qml
-    qml/items/NavBar.qml
-    qml/items/RemainingRouteBar.qml
-    qml/items/WordWrappingCheckDelegate.qml
-    qml/items/WordWrappingItemDelegate.qml
-    qml/items/WordWrappingSwitchDelegate.qml
-    qml/pages/SettingsPage.qml
     qml/dialogs/AircraftSaveDialog.qml
     qml/dialogs/ErrorDialog.qml
     qml/dialogs/FirstRunDialog.qml
@@ -332,14 +321,26 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/dialogs/WaypointDescription.qml
     qml/dialogs/WaypointEditor.qml
     qml/dialogs/WeatherReport.qml
+    qml/items/AutoSizingMenu.qml
+    qml/items/DegreeInput.qml
+    qml/items/ElevationInput.qml
     qml/items/FlightMap.qml
+    qml/items/FlightVector.qml
     qml/items/Icon.qml
     qml/items/ImportManager.qml
+    qml/items/MapSet.qml
     qml/items/MFM.qml
+    qml/items/NavBar.qml
+    qml/items/RemainingRouteBar.qml
     qml/items/StandardHeader.qml
     qml/items/SwipeToDeleteDelegate.qml
     qml/items/Traffic.qml
     qml/items/TrafficLabel.qml
+    qml/items/WaypointDelegate.qml
+    qml/items/WordWrappingCheckDelegate.qml
+    qml/items/WordWrappingItemDelegate.qml
+    qml/items/WordWrappingSwitchDelegate.qml
+    qml/pages/SettingsPage.qml
     qml/pages/AircraftPage.qml
     qml/pages/AircraftLibrary.qml
     qml/pages/BugReportPage.qml

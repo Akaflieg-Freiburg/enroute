@@ -19,49 +19,73 @@
  ***************************************************************************/
 
 import QtQuick
-import QtQuick.Controls
 
 import akaflieg_freiburg.enroute
 
 
 
 Item {
+    id: waypointDelegate
+
+    required property waypoint waypoint
+
+    property var weatherStation: WeatherDataProvider.findWeatherStation(waypoint.ICAOCode)
+    Connections {
+        target: WeatherDataProvider
+
+        function onWeatherStationsChanged() {
+            waypointDelegate.weatherStation = WeatherDataProvider.findWeatherStation(waypointDelegate.waypoint.ICAOCode)
+        }
+    }
+
     width: parent ? parent.width : 0
-    height: idel.height
+    height: idel.implicitHeight
 
     // Background color according to METAR/FAA flight category
     Rectangle {
         anchors.fill: parent
-        color: model.modelData.hasMETAR ? model.modelData.weatherStation.metar.flightCategoryColor : "transparent"
+        color: {
+            if (waypointDelegate.weatherStation === null)
+                return "transparent"
+            if (waypointDelegate.weatherStation.hasMETAR)
+                return waypointDelegate.weatherStation.metar.flightCategoryColor
+            return "transparent"
+        }
         opacity: 0.2
     }
 
     WordWrappingItemDelegate {
         id: idel
 
-        width: sv.width
+        width: parent.width
 
-        icon.source: model.modelData.icon
+        icon.source: waypointDelegate.waypoint.icon
 
         text: {
             // Mention horizontal distance
             Navigator.aircraft.horizontalDistanceUnit
 
-            var result = model.modelData.twoLineTitle
+            var result = waypointDelegate.waypoint.twoLineTitle
 
-            var wayTo  = Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), model.modelData.coordinate)
+            var wayTo  = Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), waypoint.coordinate)
             if (wayTo !== "")
                 result = result + "<br>" + wayTo
 
-            if (model.modelData.hasMETAR)
-                result = result + "<br>" + model.modelData.weatherStation.metar.summary
+            if ((waypointDelegate.weatherStation !== null) && waypointDelegate.weatherStation.hasMETAR)
+                result = result + "<br>" + waypointDelegate.weatherStation.metar.summary
             return result
         }
 
         onClicked: {
             PlatformAdaptor.vibrateBrief()
-            waypointDescription.waypoint = model.modelData
-            waypointDescription.open()
+            wpDescriptionLoader.active = false
+            wpDescriptionLoader.setSource("../dialogs/WaypointDescription.qml", { waypoint: waypointDelegate.waypoint })
+            wpDescriptionLoader.active = true
         }
+    }
+
+    Loader {
+        id: wpDescriptionLoader
+        onLoaded: item.open()
     }
 }

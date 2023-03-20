@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -67,7 +67,7 @@ Page {
                 Layout.leftMargin: 4
                 Layout.rightMargin: 4
 
-                text: global.trafficDataProvider().statusString
+                text: TrafficDataProvider.statusString
 
                 wrapMode: Text.WordWrap
                 textFormat: Text.RichText
@@ -83,7 +83,7 @@ Page {
                 // Background color according to METAR/FAA flight category
                 background: Rectangle {
                     border.color: "black"
-                    color: (global.trafficDataProvider().receivingHeartbeat) ? "green" : "red"
+                    color: (TrafficDataProvider.receivingHeartbeat) ? "green" : "red"
                     opacity: 0.2
                     radius: 4
                 }
@@ -91,7 +91,7 @@ Page {
 
             Label {
                 Layout.fillWidth: true
-                visible: global.trafficDataProvider().receivingHeartbeat
+                visible: TrafficDataProvider.receivingHeartbeat
 
                 text: qsTr("Traffic Data Receiver Status")
                 font.pixelSize: view.font.pixelSize*1.2
@@ -104,7 +104,7 @@ Page {
                 Layout.leftMargin: 4
                 Layout.rightMargin: 4
 
-                visible: global.trafficDataProvider().receivingHeartbeat
+                visible: TrafficDataProvider.receivingHeartbeat
 
                 bottomPadding: 0.6*view.font.pixelSize
                 topPadding: 0.6*view.font.pixelSize
@@ -115,11 +115,11 @@ Page {
                 rightInset: -4
 
                 property string myText: {
-                    if (global.trafficDataProvider().trafficReceiverRuntimeError === "")
-                        return global.trafficDataProvider().trafficReceiverSelfTestError
-                    if (global.trafficDataProvider().trafficReceiverSelfTestError === "")
-                        return global.trafficDataProvider().trafficReceiverRuntimeError
-                    return global.trafficDataProvider().trafficReceiverRuntimeError + "<br>" + global.trafficDataProvider().trafficReceiverSelfTestError
+                    if (TrafficDataProvider.trafficReceiverRuntimeError === "")
+                        return TrafficDataProvider.trafficReceiverSelfTestError
+                    if (TrafficDataProvider.trafficReceiverSelfTestError === "")
+                        return TrafficDataProvider.trafficReceiverRuntimeError
+                    return TrafficDataProvider.trafficReceiverRuntimeError + "<br>" + TrafficDataProvider.trafficReceiverSelfTestError
                 }
 
                 text: (myText === "") ? qsTr("No problem reported") : myText
@@ -140,9 +140,9 @@ Page {
                 icon.source: "/icons/material/ic_tap_and_play.svg"
                 text: qsTr("Connect")
                 enabled: !timer.running
-                visible: !global.trafficDataProvider().receivingHeartbeat
+                visible: !TrafficDataProvider.receivingHeartbeat
                 onClicked: {
-                    global.trafficDataProvider().connectToTrafficReceiver()
+                    TrafficDataProvider.connectToTrafficReceiver()
                     timer.running = true;
                 }
                 Timer {
@@ -158,7 +158,7 @@ Page {
 
             Label {
                 Layout.fillWidth: true
-                visible: !global.trafficDataProvider().receivingHeartbeat
+                visible: !TrafficDataProvider.receivingHeartbeat
 
                 text: qsTr("Help")
                 font.pixelSize: view.font.pixelSize*1.2
@@ -168,7 +168,7 @@ Page {
 
             WordWrappingItemDelegate {
                 Layout.fillWidth: true
-                visible: !global.trafficDataProvider().receivingHeartbeat
+                visible: !TrafficDataProvider.receivingHeartbeat
                 icon.source: "/icons/material/ic_info_outline.svg"
                 text: qsTr("How to connect your traffic receiver…")
                 onClicked: openManual("02-steps/traffic.html")
@@ -176,7 +176,7 @@ Page {
 
             WordWrappingItemDelegate {
                 Layout.fillWidth: true
-                visible: !global.trafficDataProvider().receivingHeartbeat
+                visible: !TrafficDataProvider.receivingHeartbeat
                 icon.source: "/icons/material/ic_info_outline.svg"
                 text: qsTr("How to connect your flight simulator…")
                 onClicked: openManual("02-steps/simulator.html")

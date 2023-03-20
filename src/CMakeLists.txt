@@ -182,7 +182,7 @@ qt_add_big_resources(SOURCES
 # Generate android executable
 #
 
-if( ANDROID )
+if(ANDROID)
     list(APPEND SOURCES
         platform/FileExchange_Android.h
         platform/FileExchange_Android.cpp
@@ -239,10 +239,10 @@ endif()
 
 
 #
-# Generate unix executable
+# Generate Linux executable
 #
 
-if (NOT ANDROID)
+if (UNIX AND NOT APPLE)
     list(APPEND SOURCES
         platform/FileExchange_Linux.h
         platform/FileExchange_Linux.cpp
@@ -283,6 +283,45 @@ if (NOT ANDROID)
 # Install
 install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/docs/manual DESTINATION ${CMAKE_INSTALL_DOCDIR})
+endif()
+
+
+#
+# Generate MacOS executable
+#
+
+if (APPLE)
+    list(APPEND SOURCES
+        platform/FileExchange_Linux.h
+        platform/FileExchange_Linux.cpp
+        platform/Notifier_Linux.h
+        platform/Notifier_Linux.cpp
+        platform/PlatformAdaptor_Linux.h
+        platform/PlatformAdaptor_Linux.cpp
+        platform/SafeInsets_Desktop.h
+        platform/SafeInsets_Desktop.cpp
+    )
+
+    # Compile definitions
+    add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
+
+    # Add executable and libraries
+    qt_add_executable(${PROJECT_NAME} ${SOURCES})
+    target_link_libraries(${PROJECT_NAME}
+        PRIVATE
+        Qt6::Concurrent
+        Qt6::Core
+        Qt6::Core5Compat
+        Qt6::DBus
+        Qt6::HttpServer
+        Qt6::Positioning
+        Qt6::Quick
+        Qt6::Sql
+        Qt6::Svg
+        Qt6::Widgets
+        kdsingleapplication
+        sunset
+    )
 endif()
 
 target_include_directories(${PROJECT_NAME}

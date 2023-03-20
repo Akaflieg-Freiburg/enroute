@@ -272,7 +272,8 @@ if (NOT ANDROID)
         Qt6::Svg
         Qt6::Widgets
         kdsingleapplication
-        sunset)
+        sunset
+    )
     target_precompile_headers(${PROJECT_NAME}
         PRIVATE
         <QObject>
@@ -394,8 +395,8 @@ qt_add_resources(${PROJECT_NAME} translations
     ${Qt6_TRANSLATION_DIR}/qtdeclarative_pl.qm
 )
 
-# Enforce C++17 and no extensions
-target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
+# Enforce new C++ standard and no extensions
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_EXTENSIONS OFF)
 
 

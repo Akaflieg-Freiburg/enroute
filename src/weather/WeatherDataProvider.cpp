@@ -218,7 +218,14 @@ void Weather::WeatherDataProvider::downloadFinished()
     }
 
     // Clear replies container
-    qDeleteAll(_networkReplies);
+    foreach(auto networkReply, _networkReplies)
+    {
+        // Paranoid safety checks
+        if (!networkReply.isNull())
+        {
+            networkReply->deleteLater();
+        }
+    }
     _networkReplies.clear();
 
     // Update flag and signals

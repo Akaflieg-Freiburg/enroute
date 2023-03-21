@@ -18,13 +18,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+import QtPositioning
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
-import enroute 1.0
 import "../dialogs"
 import "../items"
 
@@ -68,45 +68,9 @@ Page {
         Component {
             id: waypointDelegate
 
-            Item {
-                width: sv.width
-                height: idel.height
-
-                // Background color according to METAR/FAA flight category
-                Rectangle {
-                    anchors.fill: parent
-                    color: model.modelData.hasMETAR ? model.modelData.weatherStation.metar.flightCategoryColor : "transparent"
-                    opacity: 0.2
-                }
-
-                WordWrappingItemDelegate {
-                    id: idel
-
-                    width: sv.width
-
-                    icon.source: model.modelData.icon
-
-                    text: {
-                        // Mention horizontal distance
-                        Navigator.aircraft.horizontalDistanceUnit
-
-                        var result = model.modelData.twoLineTitle
-
-                        var wayTo  = Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), model.modelData.coordinate)
-                        if (wayTo !== "")
-                            result = result + "<br>" + wayTo
-
-                        if (model.modelData.hasMETAR)
-                            result = result + "<br>" + model.modelData.weatherStation.metar.summary
-                        return result
-                    }
-
-                    onClicked: {
-                        PlatformAdaptor.vibrateBrief()
-                        waypointDescription.waypoint = model.modelData
-                        waypointDescription.open()
-                    }
-                }
+            WaypointDelegate {
+                required property var model
+                waypoint: model.modelData
             }
         }
 
@@ -118,12 +82,12 @@ Page {
             delegate: waypointDelegate
             ScrollIndicator.vertical: ScrollIndicator {}
 
-            Component.onCompleted: adList.model = global.geoMapProvider().nearbyWaypoints(PositionProvider.lastValidCoordinate, "AD")
+            Component.onCompleted: adList.model = GeoMapProvider.nearbyWaypoints(PositionProvider.lastValidCoordinate, "AD")
 
             Label {
                 anchors.fill: parent
-                anchors.topMargin: view.font.pixelSize*2
-                visible: parent.count == 0
+                anchors.topMargin: font.pixelSize*2
+                visible: parent.count === 0
 
                 horizontalAlignment: Text.AlignHCenter
                 textFormat: Text.StyledText
@@ -140,12 +104,12 @@ Page {
             delegate: waypointDelegate
             ScrollIndicator.vertical: ScrollIndicator {}
 
-            Component.onCompleted: naList.model = global.geoMapProvider().nearbyWaypoints(PositionProvider.lastValidCoordinate, "NAV")
+            Component.onCompleted: naList.model = GeoMapProvider.nearbyWaypoints(PositionProvider.lastValidCoordinate, "NAV")
 
             Label {
                 anchors.fill: parent
-                anchors.topMargin: view.font.pixelSize*2
-                visible: parent.count == 0
+                anchors.topMargin: font.pixelSize*2
+                visible: parent.count === 0
 
                 horizontalAlignment: Text.AlignHCenter
                 textFormat: Text.StyledText
@@ -166,8 +130,8 @@ Page {
             
             Label {
                 anchors.fill: parent
-                anchors.topMargin: view.font.pixelSize*2
-                visible: parent.count == 0
+                anchors.topMargin: font.pixelSize*2
+                visible: parent.count === 0
 
                 horizontalAlignment: Text.AlignHCenter
                 textFormat: Text.StyledText
@@ -178,7 +142,44 @@ Page {
 
     } // SwipeView
 
-    WaypointDescription {
-        id: waypointDescription
+    // Manual update button in footer
+    footer: Pane {
+        width: parent.width
+        bottomPadding: SafeInsets.bottom+16
+        leftPadding: SafeInsets.left+16
+        rightPadding: SafeInsets.right+16
+
+        Material.elevation: 3
+        visible: (sunLabel.text !== "") || (qnhLabel.text !== "")
+
+        GridLayout {
+            anchors.fill: parent
+            columns: 2
+
+            Icon {
+                visible: qnhLabel.text !== ""
+                source: "/icons/material/ic_speed.svg"
+            }
+            Label {
+                id: qnhLabel
+                visible: qnhLabel.text !== ""
+                Layout.fillWidth: true
+                text: WeatherDataProvider.QNHInfo
+            }
+
+            Icon {
+                visible: sunLabel.text !== ""
+                source: "/icons/material/ic_wb_sunny.svg"
+            }
+            Label {
+                id: sunLabel
+                visible: sunLabel.text !== ""
+                Layout.fillWidth: true
+                text: WeatherDataProvider.sunInfo
+            }
+
+        }
+
     }
+
 } // Page

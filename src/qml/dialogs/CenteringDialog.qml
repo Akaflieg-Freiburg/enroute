@@ -18,11 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+import QtQuick
 import QtQuick.Controls
 
 import akaflieg_freiburg.enroute
 
 Dialog {
+    id: ctrDlg
+
     leftMargin: SafeInsets.left + font.pixelSize
     rightMargin: SafeInsets.right + font.pixelSize
     topMargin: SafeInsets.top + font.pixelSize
@@ -32,7 +35,11 @@ Dialog {
     x: SafeInsets.left + (parent.width-SafeInsets.left-SafeInsets.right-width)/2.0
     y: SafeInsets.top + (parent.height-SafeInsets.top-SafeInsets.bottom-height)/2.0
 
-    implicitWidth: 40*font.pixelSize
+    // Delays evaluation and prevents binding loops
+    Binding on implicitWidth {
+        value: 40*ctrDlg.font.pixelSize
+        delayed: true    // Prevent intermediary values from being assigned
+    }
 
     parent: Overlay.overlay
     

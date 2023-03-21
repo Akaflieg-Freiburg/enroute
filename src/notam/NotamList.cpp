@@ -26,7 +26,7 @@
 #include "notam/NotamProvider.h"
 
 
-NOTAM::NotamList::NotamList(const QByteArray& jsonData, const QGeoCircle& region)
+NOTAM::NotamList::NotamList(const QByteArray& jsonData, const QGeoCircle& region, QSet<QString>* cancelledNotamNumbers)
 {
     auto doc = QJsonDocument::fromJson(jsonData);
     auto items = doc[u"items"_qs].toArray();
@@ -38,6 +38,14 @@ NOTAM::NotamList::NotamList(const QByteArray& jsonData, const QGeoCircle& region
         // Ignore invalid notams
         if (!notam.isValid())
         {
+            continue;
+        }
+        if (notam.cancels() != u""_qs)
+        {
+            if (cancelledNotamNumbers != nullptr)
+            {
+                cancelledNotamNumbers->insert(notam.cancels());
+            }
             continue;
         }
 
@@ -110,7 +118,7 @@ Units::Time NOTAM::NotamList::age() const
 }
 
 
-NOTAM::NotamList NOTAM::NotamList::cleaned() const
+NOTAM::NotamList NOTAM::NotamList::cleaned(const QSet<QString>& cancelledNotamNumbers) const
 {
     NotamList result;
     result.m_region = m_region;
@@ -126,6 +134,10 @@ NOTAM::NotamList NOTAM::NotamList::cleaned() const
         {
             continue;
         }
+        if (cancelledNotamNumbers.contains(notam.number()))
+        {
+            continue;
+        }
         if (result.m_notams.contains(notam))
         {
             continue;
@@ -135,7 +147,6 @@ NOTAM::NotamList NOTAM::NotamList::cleaned() const
 
     return result;
 }
-
 
 
 NOTAM::NotamList NOTAM::NotamList::restricted(const GeoMaps::Waypoint& waypoint) const

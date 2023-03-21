@@ -40,7 +40,8 @@ Item {
 
     Plugin {
         id: mapPlugin
-        name: "maplibregl"
+        //name: "maplibregl"
+        name: "osm"
 
         PluginParameter {
             name: "maplibregl.mapping.additional_style_urls"
@@ -65,6 +66,8 @@ Item {
         // GESTURES
 
         // Enable gestures. Make sure that whenever a gesture starts, the property "followGPS" is set to "false"
+        /*
+          WARNING
         gesture.enabled: true
         gesture.acceptedGestures: MapGestureArea.PanGesture|MapGestureArea.PinchGesture
         gesture.onPanStarted: {flightMap.followGPS = false}
@@ -73,7 +76,7 @@ Item {
             flightMap.followGPS = false
             GlobalSettings.mapBearingPolicy = GlobalSettings.UserDefinedBearingUp
         }
-
+*/
 
         //
         // PROPERTY "bearing"

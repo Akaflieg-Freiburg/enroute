@@ -27,17 +27,23 @@
 
 // Static objects
 
+// In cancel notams the text starts as "A0029/23 NOTAMC A0027/23"
+QRegularExpression cancelNotamStart(u"^[A-Z]\\d{4}/\\d{2} NOTAMC [A-Z]\\d{4}/\\d{2}"_qs);
+
 QList<std::pair<QRegularExpression, QString>> contractions
 {
     {QRegularExpression(u"\\bU/S\\b"_qs), u"UNSERVICEABLE"_qs}, // MUST COME BEFORE SOUTH
 
     {QRegularExpression(u"\\bACFT\\b"_qs), u"AIRCRAFT"_qs},
     {QRegularExpression(u"\\bAD\\b"_qs), u"AERODROME"_qs},
+    {QRegularExpression(u"\\bAFIS\\b"_qs), u"AERODROME FLIGHT INFORMATION SERVICE"_qs},
     {QRegularExpression(u"\\bAFT\\b"_qs), u"AFTER"_qs},
     {QRegularExpression(u"\\bAMDT\\b"_qs), u"AMENDMENT"_qs},
     {QRegularExpression(u"\\bAPCH\\b"_qs), u"APPROACH"_qs},
     {QRegularExpression(u"\\bAPRX\\b"_qs), u"APPROXIMATELY"_qs},
+    {QRegularExpression(u"\\bARP\\b"_qs), u"AERODROME REFERENCE POINT"_qs},
     {QRegularExpression(u"\\bARR\\b"_qs), u"ARRIVAL"_qs},
+    {QRegularExpression(u"\\bASPH\\b"_qs), u"ASPHALT"_qs},
     {QRegularExpression(u"\\bAVBL\\b"_qs), u"AVAILABLE"_qs},
     {QRegularExpression(u"\\bBCST\\b"_qs), u"BROADCAST"_qs},
     {QRegularExpression(u"\\bBLW\\b"_qs), u"BELOW"_qs},
@@ -50,10 +56,14 @@ QList<std::pair<QRegularExpression, QString>> contractions
     {QRegularExpression(u"\\bDRG\\b"_qs), u"DURING"_qs},
     {QRegularExpression(u"\\bE\\b"_qs), u"EAST"_qs},
     {QRegularExpression(u"\\bELEV\\b"_qs), u"ELEVATION"_qs},
+    {QRegularExpression(u"\\bEQPT\\b"_qs), u"EQUIPMENT"_qs},
+    {QRegularExpression(u"\\bEXC\\b"_qs), u"EXCEPTED"_qs},
     {QRegularExpression(u"\\bEXP\\b"_qs), u"EXPECT"_qs},
+    {QRegularExpression(u"\\bFATO\\b"_qs), u"FINAL APPROACH AND TAKEOFF AREA"_qs},
     {QRegularExpression(u"\\bFST\\b"_qs), u"FIRST"_qs},
     {QRegularExpression(u"\\bFLT\\b"_qs), u"FLIGHT"_qs},
     {QRegularExpression(u"\\bFLW\\b"_qs), u"FOLLOW"_qs},
+    {QRegularExpression(u"\\bGLD\\b"_qs), u"GLIDER"_qs},
     {QRegularExpression(u"\\bHEL\\b"_qs), u"HELICOPTER"_qs},
     {QRegularExpression(u"\\bLGT\\b"_qs), u"LIGHT"_qs},
     {QRegularExpression(u"\\bLGTD\\b"_qs), u"LIGHTED"_qs},
@@ -62,6 +72,7 @@ QList<std::pair<QRegularExpression, QString>> contractions
     {QRegularExpression(u"\\bN\\b"_qs), u"NORTH"_qs},
     {QRegularExpression(u"\\bNE\\b"_qs), u"NORTHEAST"_qs},
     {QRegularExpression(u"\\bNW\\b"_qs), u"NORTHWEST"_qs},
+    {QRegularExpression(u"\\bO/R\\b"_qs), u"AVAILABLE ON REQUEST"_qs},
     {QRegularExpression(u"\\bOBST\\b"_qs), u"OBSTACLE"_qs},
     {QRegularExpression(u"\\bPOSS\\b"_qs), u"POSSIBLE"_qs},
     {QRegularExpression(u"\\bPSN\\b"_qs), u"POSITION"_qs},
@@ -112,6 +123,16 @@ NOTAM::Notam::Notam(const QJsonObject& jsonObject)
 //
 // Getter Methods
 //
+
+QString NOTAM::Notam::cancels() const
+{
+    if (!m_text.contains(cancelNotamStart))
+    {
+        return {};
+    }
+    return m_text.mid(16,8);
+}
+
 
 bool NOTAM::Notam::isValid() const
 {

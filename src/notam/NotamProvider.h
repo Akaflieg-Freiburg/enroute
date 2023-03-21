@@ -133,6 +133,9 @@ private slots:
     // once per hour.
     void clean();
 
+    // Clear all data and upateData(). This is called when API keys change.
+    void clearAllAndUpdate();
+
     // This slot is connected to signals QNetworkReply::finished and
     // QNetworkReply::errorOccurred of the QNetworkReply contained in the list
     // in m_networkReply. This method reads the incoming data and adds it to the
@@ -160,8 +163,11 @@ private:
     // around the coordinate.
     void startRequest(const QGeoCoordinate& coordinate);
 
-    // List with number of read notams
+    // List with numbers of notams that have been marked as read
     QList<QString> m_readNotamNumbers;
+
+    // Set with numbers of notams that have been cancelled
+    QSet<QString> m_cancelledNotamNumbers;
 
     // List of pending network requests
     QList<QPointer<QNetworkReply>> m_networkReplies;

@@ -1,22 +1,15 @@
-# NOTAM
-
-* Handle cancellations notams
-
-
 # Build System
 
 * Generate spritesheet in proper way
 
-* Generate flatpak packages
-
 * Generate SNAP packages
-
-* Make GitHub actions work again
 
 
 # Bug Fixing
 
 * Fix problems with screenshots for google play
+
+* Traffic has no five-minute-bar
 
 
 # New Features
@@ -26,3 +19,7 @@
 * METAR/TAF rewrite
 
 * Exit app on double 'back'
+
+* https://www.qt.io/blog/qt-for-android-storage-updates
+
+* https://www.qt.io/blog/deploying-to-linux-with-cmake

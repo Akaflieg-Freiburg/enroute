@@ -54,13 +54,17 @@ public:
     /*! \brief Constructs a NotamList from FAA GeoJSON data
      *
      *  This constructor sets  the member m_retrieved to
-     *  QDateTime::currentDateTimeUtc().
+     *  QDateTime::currentDateTimeUtc(). Invalid Notams and Cancel Notams
+     *  will not be added to the list.
      *
      *  @param jsonData JSON data, as provided by the FAA
      *
      *  @param region Geographic region covered by this notam list
+     *
+     *  @param cancelledNotamNumbers Pointer to a set where numbers of cancelled
+     *  Notams are added. The nullptr is allowed.
      */
-    NotamList(const QByteArray& jsonData, const QGeoCircle& region);
+    NotamList(const QByteArray& jsonData, const QGeoCircle& region, QSet<QString>* cancelledNotamNumbers=nullptr);
 
 
 
@@ -142,9 +146,12 @@ public:
 
     /*! \brief Sublist with expired and duplicated entries removed
      *
+     *  @param cancelledNotamNumbers Set with numbers of notams that are
+     *  known as cancelled
+     *
      *  @returns Sublist with expired and duplicated entries removed.
      */
-    Q_REQUIRED_RESULT NOTAM::NotamList cleaned() const;
+    Q_REQUIRED_RESULT NOTAM::NotamList cleaned(const QSet<QString>& cancelledNotamNumbers) const;
 
     /*! \brief Check if outdated
      *

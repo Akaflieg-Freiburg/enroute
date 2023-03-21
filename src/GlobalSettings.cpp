@@ -61,6 +61,13 @@ auto GlobalSettings::airspaceAltitudeLimit() const -> Units::Distance
 }
 
 
+auto GlobalSettings::fontSize() const -> int
+{
+    auto fontSize = settings.value(QStringLiteral("fontSize"), 14).toInt();
+    return qBound(14, fontSize, 20);
+}
+
+
 auto GlobalSettings::lastValidAirspaceAltitudeLimit() const -> Units::Distance
 {
     auto result = Units::Distance::fromFT(settings.value(QStringLiteral("Map/lastValidAirspaceAltitudeLimit_ft"), 99999).toInt() );
@@ -128,6 +135,32 @@ void GlobalSettings::setExpandNotamAbbreviations(bool newExpandNotamAbbreviation
 }
 
 
+void GlobalSettings::setFAAData(const QString& newID, const QString& newKey)
+{
+    if ((newID == FAA_ID()) && (newKey == FAA_KEY()))
+    {
+        return;
+    }
+    settings.setValue(QStringLiteral("FAA_ID"), newID);
+    settings.setValue(QStringLiteral("FAA_KEY"), newKey);
+    emit FAADataChanged();
+}
+
+
+void GlobalSettings::setFontSize(int newFontSize)
+{
+    newFontSize = qBound(14, newFontSize, 20);
+
+
+    if (newFontSize == fontSize())
+    {
+        return;
+    }
+    settings.setValue(QStringLiteral("fontSize"), newFontSize);
+    emit fontSizeChanged();
+}
+
+
 void GlobalSettings::setHideGlidingSectors(bool hide)
 {
     if (hide == hideGlidingSectors())
@@ -161,17 +194,6 @@ void GlobalSettings::setIgnoreSSLProblems(bool ignore)
 }
 
 
-void GlobalSettings::setLargeFonts(bool newLargeFonts)
-{
-    if (newLargeFonts == largeFonts())
-    {
-        return;
-    }
-    settings.setValue(QStringLiteral("largeFonts"), newLargeFonts);
-    emit largeFontsChanged();
-}
-
-
 void GlobalSettings::setLastWhatsNewHash(Units::ByteSize lwnh)
 {
     if (lwnh == lastWhatsNewHash())
@@ -181,7 +203,6 @@ void GlobalSettings::setLastWhatsNewHash(Units::ByteSize lwnh)
     settings.setValue(QStringLiteral("lastWhatsNewHash"), QVariant::fromValue((size_t)lwnh));
     emit lastWhatsNewHashChanged();
 }
-
 
 
 void GlobalSettings::setLastWhatsNewInMapsHash(Units::ByteSize lwnh)
@@ -204,6 +225,7 @@ void GlobalSettings::setPrivacyHash(Units::ByteSize newHash)
     settings.setValue(QStringLiteral("privacyHash"), QVariant::fromValue((size_t)newHash));
     emit privacyHashChanged();
 }
+
 
 void GlobalSettings::setMapBearingPolicy(MapBearingPolicy policy)
 {

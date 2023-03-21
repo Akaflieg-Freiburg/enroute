@@ -49,6 +49,7 @@ MapQuickItem {
 
         FlightVector {
             width: 3
+            pixelPerTenKM: flightMap.pixelPer10km
             groundSpeedInMetersPerSecond: trafficInfo.positionInfo.groundSpeed().toMPS()
             visible: (groundSpeedInMetersPerSecond > 5) && (trafficInfo.positionInfo.trueTrack().isFinite())
             opacity: 0.8

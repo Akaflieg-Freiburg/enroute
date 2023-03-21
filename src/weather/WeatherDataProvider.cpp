@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -87,6 +87,20 @@ void Weather::WeatherDataProvider::deferredInitialization()
     else
     {
         _updateTimer.setInterval( gsl::narrow_cast<int>(remainingTime) );
+    }
+}
+
+
+Weather::WeatherDataProvider::~WeatherDataProvider()
+{
+    foreach (auto networkReply, _networkReplies)
+    {
+        if (networkReply.isNull())
+        {
+            continue;
+        }
+        networkReply->abort();
+        delete networkReply;
     }
 }
 

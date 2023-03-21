@@ -32,6 +32,7 @@
 #endif
 
 #include <QDebug>
+#include <QDir>
 #include <QEventLoop>
 #include <QQuickItem>
 #include <QQuickWindow>

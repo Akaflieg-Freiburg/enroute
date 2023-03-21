@@ -245,25 +245,22 @@ Page {
                 color: Material.accent
             }
 
-            WordWrappingSwitchDelegate {
+            WordWrappingItemDelegate {
                 id: largeFonts
-                text: qsTr("Large Fonts")
+                text: qsTr("Font Size")
                 icon.source: "/icons/material/ic_format_size.svg"
                 Layout.fillWidth: true
-                Component.onCompleted: {
-                    largeFonts.checked = GlobalSettings.largeFonts
-                }
-                onToggled: {
+                onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    GlobalSettings.largeFonts = largeFonts.checked
+                    fontSizeDialog.open()
                 }
             }
             ToolButton {
                 icon.source: "/icons/material/ic_info_outline.svg"
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    helpDialog.title = qsTr("Large Fonts")
-                    helpDialog.text = "<p>" + qsTr("Use this option to enlarge fonts for improved readability.") + "</p>"
+                    helpDialog.title = qsTr("Font Size")
+                    helpDialog.text = "<p>" + qsTr("Use this option to adjust the font size for optimal readability.") + "</p>"
                     helpDialog.open()
                 }
             }
@@ -448,6 +445,49 @@ Page {
         }
     }
 
+
+    CenteringDialog {
+        id: altimeterDialog
+
+        modal: true
+
+        title: qsTr("Altimeter Mode")
+        standardButtons: Dialog.Ok|Dialog.Cancel
+
+        ColumnLayout {
+            width: altimeterDialog.availableWidth
+
+            Label {
+                text: qsTr("This setting applies to the altimeter in the Navigation Bar, at the bottom of the moving map screen.")
+                Layout.fillWidth: true
+                wrapMode: Text.Wrap
+            }
+
+            WordWrappingCheckDelegate {
+                id: a1
+                text: qsTr("Height above ground level (AGL)")
+                Layout.fillWidth: true
+                checked: GlobalSettings.showAltitudeAGL
+                onCheckedChanged: b1.checked = !checked
+            }
+
+            WordWrappingCheckDelegate {
+                id: b1
+                text: qsTr("Height above main sea level (AMSL)")
+                Layout.fillWidth: true
+                onCheckedChanged: a1.checked = !checked
+            }
+        }
+
+        onAboutToShow: {
+            a1.checked = GlobalSettings.showAltitudeAGL
+            b1.checked = !a1.checked
+        }
+
+        onAccepted: GlobalSettings.showAltitudeAGL = a1.checked
+
+    }
+
     LongTextDialog {
         id: clearPasswordDialog
 
@@ -473,6 +513,43 @@ Page {
             toast.doToast(qsTr("Password storage cleared"))
         }
 
+    }
+
+    CenteringDialog {
+        id: fontSizeDialog
+
+        modal: true
+
+        title: qsTr("Font Size")
+        standardButtons: Dialog.Ok
+
+        GridLayout {
+            width: fontSizeDialog.availableWidth
+            columns: 2
+
+            Slider {
+                id: fontSlider
+                Layout.columnSpan: 2
+                Layout.fillWidth: true
+                from: 14
+                to: 20
+                stepSize: 1
+                snapMode: Slider.SnapAlways
+                value: GlobalSettings.fontSize
+                onValueChanged: GlobalSettings.fontSize = fontSlider.value
+            }
+            Label {
+                Layout.fillWidth: true
+                horizontalAlignment: Text.AlignLeft
+                text: qsTr("Normal")
+            }
+            Label {
+                Layout.fillWidth: true
+                horizontalAlignment: Text.AlignRight
+                text: qsTr("Huge")
+            }
+
+        }
     }
 
     CenteringDialog {
@@ -597,48 +674,6 @@ Page {
         }
 
         onAccepted: GlobalSettings.positioningByTrafficDataReceiver = b.checked
-
-    }
-
-    CenteringDialog {
-        id: altimeterDialog
-
-        modal: true
-
-        title: qsTr("Altimeter Mode")
-        standardButtons: Dialog.Ok|Dialog.Cancel
-
-        ColumnLayout {
-            width: altimeterDialog.availableWidth
-
-            Label {
-                text: qsTr("This setting applies to the altimeter in the Navigation Bar, at the bottom of the moving map screen.")
-                Layout.fillWidth: true
-                wrapMode: Text.Wrap
-            }
-
-            WordWrappingCheckDelegate {
-                id: a1
-                text: qsTr("Height above ground level (AGL)")
-                Layout.fillWidth: true
-                checked: GlobalSettings.showAltitudeAGL
-                onCheckedChanged: b1.checked = !checked
-            }
-
-            WordWrappingCheckDelegate {
-                id: b1
-                text: qsTr("Height above main sea level (AMSL)")
-                Layout.fillWidth: true
-                onCheckedChanged: a1.checked = !checked
-            }
-        }
-
-        onAboutToShow: {
-            a1.checked = GlobalSettings.showAltitudeAGL
-            b1.checked = !a1.checked
-        }
-
-        onAccepted: GlobalSettings.showAltitudeAGL = a1.checked
 
     }
 

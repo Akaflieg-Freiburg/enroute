@@ -275,7 +275,7 @@ CenteringDialog {
             }
         }
         ToolButton {
-            text: qsTr("Quit App")
+            text: qsTr("Reject")
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()

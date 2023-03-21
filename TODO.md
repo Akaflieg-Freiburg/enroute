@@ -12,12 +12,6 @@
 
 * Fix problems with MacOS build
 
-* Delete weather page
-
-* Move weather delegates to nearby page
-
-* Remove QML ErrorDialog class
-
 * Remove crazy large GIT LTS files from GitHub.
 
 
@@ -25,7 +19,7 @@
 
 * Fix problems with screenshots for google play
 
-* Fix crash in WeatherDataProvider, when replacing "https" by "httpsx"
+* Weather: Indicator for "Downloading Stations" does not work
 
 
 # New Features

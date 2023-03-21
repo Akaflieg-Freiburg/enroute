@@ -242,7 +242,7 @@ endif()
 # Generate Linux executable
 #
 
-if (UNIX AND NOT APPLE)
+if (UNIX AND NOT ANDROID AND NOT APPLE)
     list(APPEND SOURCES
         platform/FileExchange_Linux.h
         platform/FileExchange_Linux.cpp
@@ -292,12 +292,12 @@ endif()
 
 if (APPLE)
     list(APPEND SOURCES
-        platform/FileExchange_Linux.h
-        platform/FileExchange_Linux.cpp
-        platform/Notifier_Linux.h
-        platform/Notifier_Linux.cpp
-        platform/PlatformAdaptor_Linux.h
-        platform/PlatformAdaptor_Linux.cpp
+        platform/FileExchange_MacOS.h
+        platform/FileExchange_MacOS.cpp
+        platform/Notifier_MacOS.h
+        platform/Notifier_MacOS.cpp
+        platform/PlatformAdaptor_MacOS.h
+        platform/PlatformAdaptor_MacOS.cpp
         platform/SafeInsets_Desktop.h
         platform/SafeInsets_Desktop.cpp
     )
@@ -397,7 +397,6 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/pages/PrivacyPage.qml
     qml/pages/TrafficReceiver.qml
     qml/pages/WaypointLibraryPage.qml
-    qml/pages/WeatherPage.qml
     SOURCES
     ui/ScaleQuickItem.h
     ui/ScaleQuickItem.cpp
@@ -433,10 +432,6 @@ qt_add_resources(${PROJECT_NAME} translations
     #${Qt6_TRANSLATION_DIR}/qtdeclarative_it.qm
     ${Qt6_TRANSLATION_DIR}/qtdeclarative_pl.qm
 )
-
-# Enforce new C++ standard and no extensions
-target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
-set_target_properties(${PROJECT_NAME} PROPERTIES CXX_EXTENSIONS OFF)
 
 
 #

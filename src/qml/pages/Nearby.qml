@@ -33,7 +33,76 @@ Page {
     title: qsTr("Nearby Waypoints")
     focus: true
 
-    header: StandardHeader {}
+    header: ToolBar {
+
+        Material.foreground: "white"
+        height: 60 + SafeInsets.top
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
+        topPadding: SafeInsets.top
+
+        ToolButton {
+            id: backButton
+
+            anchors.left: parent.left
+            anchors.verticalCenter: parent.verticalCenter
+
+            icon.source: "/icons/material/ic_arrow_back.svg"
+
+            onClicked: {
+                PlatformAdaptor.vibrateBrief()
+                stackView.pop()
+            }
+        }
+
+        Label {
+            id: lbl
+
+            anchors.verticalCenter: parent.verticalCenter
+
+            anchors.left: parent.left
+            anchors.leftMargin: 72
+            anchors.right: headerMenuToolButton.left
+
+            text: stackView.currentItem.title
+            elide: Label.ElideRight
+            font.pixelSize: 20
+            verticalAlignment: Qt.AlignVCenter
+        }
+
+        ToolButton {
+            id: headerMenuToolButton
+
+            anchors.verticalCenter: parent.verticalCenter
+
+            anchors.right: parent.right
+
+            icon.source: "/icons/material/ic_more_vert.svg"
+            icon.color: "white"
+
+            onClicked: {
+                PlatformAdaptor.vibrateBrief()
+                headerMenuX.popup()
+            }
+
+            AutoSizingMenu{
+                id: headerMenuX
+
+                MenuItem {
+                    text: qsTr("Update METAR/TAF data")
+                    enabled: !WeatherDataProvider.downloading
+                    onTriggered: {
+                        PlatformAdaptor.vibrateBrief()
+                        if (!WeatherDataProvider.downloading)
+                            WeatherDataProvider.update(false)
+                    }
+                } // MenuItem
+
+            }
+
+        }
+
+    }
 
 
     TabBar {
@@ -48,7 +117,7 @@ Page {
 
         TabButton { text: "AD" }
         TabButton { text: "NAV" }
-        TabButton { text: "MET" }
+        TabButton { text: "METAR" }
         TabButton { text: "REP" }
         Material.elevation: 3
     }
@@ -60,7 +129,6 @@ Page {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: SafeInsets.bottom
         anchors.leftMargin: SafeInsets.left
         anchors.rightMargin: SafeInsets.right
 
@@ -114,8 +182,10 @@ Page {
 
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
-                        weatherReport.weatherStation = model.modelData
-                        weatherReport.open()
+                        dlgLoader.active = false
+                        dlgLoader.setSource("../dialogs/WeatherReport.qml",
+                                            {weatherStation: model.modelData})
+                        dlgLoader.active = true
                     }
                 }
             }
@@ -165,7 +235,6 @@ Page {
             }
         }
 
-        // List of weather stations
         ListView {
             id: stationList
 
@@ -181,15 +250,14 @@ Page {
                 visible: stationList.count == 0
 
                 Text {
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.top: parent.top
+                    anchors.fill: parent
 
-                    leftPadding: view.font.pixelSize
-                    rightPadding: view.font.pixelSize
-                    topPadding: 2*view.font.pixelSize
+                    leftPadding: font.pixelSize
+                    rightPadding: font.pixelSize
+                    topPadding: 2*font.pixelSize
 
                     horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
                     textFormat: Text.StyledText
                     wrapMode: Text.Wrap
                     text: qsTr("<h3>Sorry!</h3><p>No METAR/TAF data available. You can restart the download manually using the item 'Update METAR/TAF' from the three-dot menu at the top right corner of the screen.</p>")
@@ -210,7 +278,7 @@ Page {
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: parent.top
-                    anchors.topMargin: view.font.pixelSize*2
+                    anchors.topMargin: font.pixelSize*2
 
                     horizontalAlignment: Text.AlignHCenter
                     textFormat: Text.StyledText
@@ -255,7 +323,6 @@ Page {
             onFlickEnded: {
                 if ( atYBeginning && refreshFlick ) {
                     PlatformAdaptor.vibrateBrief()
-                    console.warn("XX")
                     WeatherDataProvider.update(false)
                 }
             }
@@ -275,11 +342,14 @@ Page {
                 function onError (message) {
                     if (WeatherDataProvider.backgroundUpdate)
                         return
-                    dialogLoader.active = false
-                    dialogLoader.title = qsTr("Update Error")
-                    dialogLoader.text = qsTr("<p>Failed to update the list of stations.</p><p>Reason: %1.</p>").arg(message)
-                    dialogLoader.source = "dialogs/ErrorDialog.qml"
-                    dialogLoader.active = true
+                    dlgLoader.active = false
+                    dlgLoader.setSource("../dialogs/LongTextDialog.qml",
+                                        {
+                                            standardButtons: Dialog.Ok,
+                                            text: qsTr("<p>Failed to update the list of weather stations.</p><p>Reason: %1.</p>").arg(message),
+                                            title: qsTr("Update Error")
+                                        })
+                    dlgLoader.active = true
                 }
             }
 
@@ -306,10 +376,8 @@ Page {
                 text: qsTr("<h3>Sorry!</h3><p>No reporting point data available.</p>")
             }
         }
+    }
 
-    } // SwipeView
-
-    // Manual update button in footer
     footer: Pane {
         width: parent.width
         bottomPadding: SafeInsets.bottom+16
@@ -349,8 +417,8 @@ Page {
 
     }
 
-    WeatherReport {
-        id: weatherReport
-        objectName: "weatherReport"
+    Loader {
+        id: dlgLoader
+        onLoaded: item.open()
     }
 } // Page

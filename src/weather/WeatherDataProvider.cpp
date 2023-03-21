@@ -589,7 +589,6 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate)
 
 auto Weather::WeatherDataProvider::weatherStations() const -> QList<Weather::Station*>
 {
-
     // Produce a list of reports, without nullpointers
     QList<Weather::Station *> sortedReports;
     foreach(auto stations, _weatherStationsByICAOCode)

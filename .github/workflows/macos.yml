@@ -43,6 +43,8 @@ jobs:
         cmake --install .
     - name: Compile Enroute Flight Navigation
       run: |
+        export CC=/usr/bin/clang
+        export CXX=/usr/bin/clang++
         cmake -E make_directory build-enroute
         cd build-enroute
         cmake ../enroute

@@ -37,6 +37,7 @@ namespace Traffic {
 
 class TrafficFactor_WithPosition : public TrafficFactor_Abstract {
     Q_OBJECT
+    QML_ELEMENT
 
 public:
     /*! \brief Default constructor

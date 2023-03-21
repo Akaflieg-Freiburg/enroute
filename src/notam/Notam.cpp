@@ -166,7 +166,7 @@ QString NOTAM::Notam::richText() const
     {
         if (m_effectiveStart < QDateTime::currentDateTime())
         {
-            effectiveStartString = {};
+            effectiveStartString.clear();
         }
         else
         {

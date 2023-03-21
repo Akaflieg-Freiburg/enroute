@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2021-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,14 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtLocation 5.15
-import QtPositioning 5.15
-import QtQuick 2.15
+import QtLocation
+import QtPositioning
+import QtQuick
+
+import akaflieg_freiburg.enroute
 
 
 MapQuickItem {
     id: traffic1MapItem
 
+    property Map map: ({})
     property var trafficInfo: ({})
 
     coordinate: trafficInfo.positionInfo.coordinate()
@@ -40,16 +43,16 @@ MapQuickItem {
         // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem
         // is not updated when the height of the map changes. It does get updated when the
         // width of the map changes. We use the undocumented method polishAndUpdate() here.
-        target: flightMap
+        target: map
         function onHeightChanged() { traffic1MapItem.polishAndUpdate() }
     }
 
     sourceItem: Item {
-        rotation: trafficInfo.positionInfo.trueTrack().isFinite() ? trafficInfo.positionInfo.trueTrack().toDEG()-flightMap.bearing : 0
+        rotation: trafficInfo.positionInfo.trueTrack().isFinite() ? trafficInfo.positionInfo.trueTrack().toDEG()-map.bearing : 0
 
         FlightVector {
             width: 3
-            pixelPerTenKM: flightMap.pixelPer10km
+            pixelPerTenKM: map.pixelPer10km
             groundSpeedInMetersPerSecond: trafficInfo.positionInfo.groundSpeed().toMPS()
             visible: (groundSpeedInMetersPerSecond > 5) && (trafficInfo.positionInfo.trueTrack().isFinite())
             opacity: 0.8

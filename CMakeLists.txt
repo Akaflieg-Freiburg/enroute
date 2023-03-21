@@ -3,6 +3,9 @@
 #
 
 cmake_minimum_required(VERSION 3.16)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 include(ExternalProject)
 option(BUILD_DOC "Build developer documentation" OFF)
 
@@ -11,7 +14,7 @@ option(BUILD_DOC "Build developer documentation" OFF)
 # Project data
 #
 
-project(enroute VERSION 2.26.03)
+project(enroute VERSION 2.26.04)
 set(APP_ID de.akaflieg_freiburg.enroute)
 math(EXPR PROJECT_VERSION_CODE 10000*${PROJECT_VERSION_MAJOR}+100*${PROJECT_VERSION_MINOR}+${PROJECT_VERSION_PATCH})
 add_compile_definitions(PROJECT_VERSION="${PROJECT_VERSION}")
@@ -23,9 +26,6 @@ add_compile_definitions(PROJECT_VERSION="${PROJECT_VERSION}")
 
 include(GNUInstallDirs)
 
-
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 #
 # Qt Setup

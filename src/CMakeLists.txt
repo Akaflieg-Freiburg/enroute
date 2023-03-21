@@ -182,7 +182,7 @@ qt_add_big_resources(SOURCES
 # Generate android executable
 #
 
-if( ANDROID )
+if(ANDROID)
     list(APPEND SOURCES
         platform/FileExchange_Android.h
         platform/FileExchange_Android.cpp
@@ -239,10 +239,10 @@ endif()
 
 
 #
-# Generate unix executable
+# Generate Linux executable
 #
 
-if (NOT ANDROID)
+if (UNIX AND NOT ANDROID AND NOT APPLE)
     list(APPEND SOURCES
         platform/FileExchange_Linux.h
         platform/FileExchange_Linux.cpp
@@ -272,7 +272,8 @@ if (NOT ANDROID)
         Qt6::Svg
         Qt6::Widgets
         kdsingleapplication
-        sunset)
+        sunset
+    )
     target_precompile_headers(${PROJECT_NAME}
         PRIVATE
         <QObject>
@@ -282,6 +283,45 @@ if (NOT ANDROID)
 # Install
 install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/docs/manual DESTINATION ${CMAKE_INSTALL_DOCDIR})
+endif()
+
+
+#
+# Generate MacOS executable
+#
+
+if (APPLE)
+    list(APPEND SOURCES
+        platform/FileExchange_MacOS.h
+        platform/FileExchange_MacOS.cpp
+        platform/Notifier_MacOS.h
+        platform/Notifier_MacOS.cpp
+        platform/PlatformAdaptor_MacOS.h
+        platform/PlatformAdaptor_MacOS.cpp
+        platform/SafeInsets_Desktop.h
+        platform/SafeInsets_Desktop.cpp
+    )
+
+    # Compile definitions
+    add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
+
+    # Add executable and libraries
+    qt_add_executable(${PROJECT_NAME} ${SOURCES})
+    target_link_libraries(${PROJECT_NAME}
+        PRIVATE
+        Qt6::Concurrent
+        Qt6::Core
+        Qt6::Core5Compat
+        Qt6::DBus
+        Qt6::HttpServer
+        Qt6::Positioning
+        Qt6::Quick
+        Qt6::Sql
+        Qt6::Svg
+        Qt6::Widgets
+        kdsingleapplication
+        sunset
+    )
 endif()
 
 target_include_directories(${PROJECT_NAME}
@@ -357,7 +397,6 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/pages/PrivacyPage.qml
     qml/pages/TrafficReceiver.qml
     qml/pages/WaypointLibraryPage.qml
-    qml/pages/WeatherPage.qml
     SOURCES
     ui/ScaleQuickItem.h
     ui/ScaleQuickItem.cpp
@@ -393,10 +432,6 @@ qt_add_resources(${PROJECT_NAME} translations
     #${Qt6_TRANSLATION_DIR}/qtdeclarative_it.qm
     ${Qt6_TRANSLATION_DIR}/qtdeclarative_pl.qm
 )
-
-# Enforce C++17 and no extensions
-target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
-set_target_properties(${PROJECT_NAME} PROPERTIES CXX_EXTENSIONS OFF)
 
 
 #

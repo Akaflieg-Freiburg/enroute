@@ -218,7 +218,14 @@ void Weather::WeatherDataProvider::downloadFinished()
     }
 
     // Clear replies container
-    qDeleteAll(_networkReplies);
+    foreach(auto networkReply, _networkReplies)
+    {
+        // Paranoid safety checks
+        if (!networkReply.isNull())
+        {
+            networkReply->deleteLater();
+        }
+    }
     _networkReplies.clear();
 
     // Update flag and signals
@@ -582,7 +589,6 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate)
 
 auto Weather::WeatherDataProvider::weatherStations() const -> QList<Weather::Station*>
 {
-
     // Produce a list of reports, without nullpointers
     QList<Weather::Station *> sortedReports;
     foreach(auto stations, _weatherStationsByICAOCode)

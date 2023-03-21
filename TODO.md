@@ -4,12 +4,22 @@
 
 * Generate SNAP packages
 
+* Update manual, onboarding
+
+* Use Qt6.5 permissions
+
+* Update to Qt6.4.3
+
+* Fix problems with MacOS build
+
+* Remove crazy large GIT LTS files from GitHub.
+
 
 # Bug Fixing
 
 * Fix problems with screenshots for google play
 
-* Traffic has no five-minute-bar
+* Weather: Indicator for "Downloading Stations" does not work
 
 
 # New Features

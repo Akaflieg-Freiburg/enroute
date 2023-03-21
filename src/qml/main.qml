@@ -169,24 +169,6 @@ ApplicationWindow {
                     }
                 }
 
-                ItemDelegate {
-                    Layout.fillWidth: true
-
-                    leftPadding: 16+SafeInsets.left
-
-                    id: weatherItem
-
-                    text: qsTr("Weather")
-                    icon.source: "/icons/material/ic_cloud_queue.svg"
-
-                    onClicked: {
-                        PlatformAdaptor.vibrateBrief()
-                        stackView.pop()
-                        stackView.push("pages/WeatherPage.qml")
-                        drawer.close()
-                    }
-                }
-
                 Rectangle {
                     Layout.preferredHeight: 1
                     Layout.fillWidth: true
@@ -334,7 +316,7 @@ ApplicationWindow {
 
                             text: qsTr("Traffic Receiver")
                                   + `<br><font color="#606060" size="2">`
-                                  + ((global.trafficDataProvider().receivingHeartbeat) ? qsTr("Receiving heartbeat.") : qsTr("Not receiving heartbeat."))
+                                  + ((TrafficDataProvider.receivingHeartbeat) ? qsTr("Receiving heartbeat.") : qsTr("Not receiving heartbeat."))
                                   + `</font>`
                             icon.source: "/icons/material/ic_airplanemode_active.svg"
                             onClicked: {
@@ -346,7 +328,7 @@ ApplicationWindow {
                             }
                             background: Rectangle {
                                 anchors.fill: parent
-                                color: (global.trafficDataProvider().receivingHeartbeat) ? "green" : "red"
+                                color: (TrafficDataProvider.receivingHeartbeat) ? "green" : "red"
                                 opacity: 0.2
                             }
                         }
@@ -694,9 +676,9 @@ ApplicationWindow {
         }
 
         Connections { // Traffic receiver
-            target: global.trafficDataProvider()
+            target: TrafficDataProvider
             function onReceivingHeartbeatChanged() {
-                if (global.trafficDataProvider().receivingHeartbeat)
+                if (TrafficDataProvider.receivingHeartbeat)
                     toast.doToast(qsTr("Connected to traffic receiver."))
                 else
                     toast.doToast(qsTr("Lost connection to traffic receiver."))
@@ -867,7 +849,7 @@ Go to the 'Settings' page if you wish to restore the original, safe, behavior of
     }
 
     Connections { // TrafficDataProvider
-        target: global.trafficDataProvider()
+        target: TrafficDataProvider
 
         function onPasswordRequest(ssid) {
             dialogLoader.active = false

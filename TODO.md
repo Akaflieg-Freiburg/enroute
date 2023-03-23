@@ -4,12 +4,16 @@
 
 * Generate SNAP packages
 
-* Make GitHub actions work again
+* Make GitHub actions work for MacOS
 
 
 # Bug Fixing
 
 * Fix problems with screenshots for google play
+
+* Android Split-View mode
+
+* Minor typo in onboarding/permissions ("PermissionA")
 
 
 # New Features

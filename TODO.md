@@ -14,12 +14,16 @@
 
 * Remove crazy large GIT LTS files from GitHub.
 
+* Make GitHub actions work for MacOS
+
 
 # Bug Fixing
 
 * Fix problems with screenshots for google play
 
 * Weather: Indicator for "Downloading Stations" does not work
+
+* Android Split-View mode
 
 
 # New Features

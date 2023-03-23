@@ -108,7 +108,7 @@ CenteringDialog {
 
             Label {
                 text: "<h3>" + qsTr("Privacy-relevant permissions requested by this app") + "</h3>"
-                      + "<p>" + qsTr("Please grant the following permissiona when prompted.") + "</p>"
+                      + "<p>" + qsTr("Please grant the following permissions when prompted.") + "</p>"
                       + sv.text
                 width: sv.dialogMain.availableWidth
                 textFormat: Text.RichText

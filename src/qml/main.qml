@@ -42,7 +42,7 @@ ApplicationWindow {
 
     visible: true
     title: "Enroute Flight Navigation"
-    width: 800
+    width: SafeInsets.wWidth
     height: 800
 
     Settings {
@@ -59,7 +59,7 @@ ApplicationWindow {
     Drawer {
         id: drawer
 
-        height: view.height
+        height: (Qt.platform.os === "android") ? SafeInsets.wHeight : parent.height
         width: col.implicitWidth
 
         ScrollView {
@@ -561,13 +561,16 @@ ApplicationWindow {
 
     }
 
-
     StackView {
         id: stackView
 
         initialItem: "pages/MapPage.qml"
 
-        anchors.fill: parent
+        // Need to explain
+        x: 0
+        y: 0
+        height: (Qt.platform.os === "android") ? SafeInsets.wHeight : parent.height
+        width: (Qt.platform.os === "android") ? SafeInsets.wWidth : parent.width
 
         focus: true
 

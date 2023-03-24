@@ -44,6 +44,14 @@ public:
 
     ~SafeInsets_Abstract() override = default;
 
+#warning
+    Q_PROPERTY(double wWidth READ wWidth NOTIFY wWidthChanged)
+    double wWidth() const {return m_wWidth;}
+    double m_wWidth;
+    Q_PROPERTY(double wHeight READ wHeight NOTIFY wHeightChanged)
+    double wHeight() const {return m_wHeight;}
+    double m_wHeight;
+
 
     //
     // Properties
@@ -93,6 +101,10 @@ public:
 
 
 signals:
+#warning
+    void wHeightChanged();
+    void wWidthChanged();
+
     /*! \brief Notifier signal */
     void bottomChanged();
 

@@ -27,6 +27,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
 import android.net.wifi.WifiInfo;
@@ -41,6 +42,7 @@ import android.provider.Settings.System;
 import android.util.Log;
 import android.view.*;
 import androidx.core.view.WindowCompat;
+
 
 public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 	public static native void onNotificationClicked(int notifyID, int actionID);
@@ -140,9 +142,35 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 		return android.os.Build.MANUFACTURER + " " + android.os.Build.PRODUCT + " (" + android.os.Build.MODEL + ")";
 	}
 
-	// Returns the bottom inset required to avoid system bars and display cutouts
+    // Returns the bottom inset required to avoid system bars and display cutouts
+    public static double windowHeight()
+    {
+	return m_instance.getWindow().getDecorView().getRootView().getHeight();
+    }
+    public static double windowWidth()
+    {
+	return m_instance.getWindow().getDecorView().getRootView().getWidth();
+    }
+    
+    // Returns the bottom inset required to avoid system bars and display cutouts
     public static double safeInsetBottom() 
     {
+		/*
+	if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N)
+	    {
+		Log.w("TTT", String.valueOf(m_instance.getWindow().getDecorView().getRootView().getWidth()) );
+		Configuration config = m_instance.getResources().getConfiguration();
+		Log.d("TTT", "AAA");
+		if (config != null && config.isInMultiWindowMode())
+		    {
+			// In split-view mode
+			width = m_instance.getWindow().getDecorView().getRootView().getWidth();
+			height = m_instance.getWindow().getDecorView().getRootView().getHeight();
+			Log.d("TTT", m_instance.getWindow().getDecorView().getRootView().getWidth());
+		    }
+	    }
+		*/
+	
         if (Build.VERSION.SDK_INT >= 30)
 	    {
 		return m_instance.getWindow().getDecorView().getRootWindowInsets()

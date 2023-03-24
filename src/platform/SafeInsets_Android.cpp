@@ -49,8 +49,14 @@ Platform::SafeInsets::SafeInsets(QObject* parent)
     connect(timer, &QTimer::timeout, this, &SafeInsets::updateSafeInsets);
 
     updateSafeInsets();
-}
 
+#warning Testing code here
+    timer = new QTimer(this);
+    timer->setInterval(1s);
+    timer->setSingleShot(false);
+    connect(timer, &QTimer::timeout, this, &SafeInsets::updateSafeInsets);
+    timer->start();
+}
 
 void Platform::SafeInsets::updateSafeInsets()
 {
@@ -62,6 +68,24 @@ void Platform::SafeInsets::updateSafeInsets()
     auto devicePixelRatio = QGuiApplication::primaryScreen()->devicePixelRatio();
     if ( qIsFinite(devicePixelRatio) && (devicePixelRatio > 0.0))
     {
+        auto newWWidth = static_cast<double>(QJniObject::callStaticMethod<jdouble>("de/akaflieg_freiburg/enroute/MobileAdaptor", "windowWidth"))/devicePixelRatio;
+        if (newWWidth != m_wWidth)
+        {
+            m_wWidth = newWWidth;
+            qWarning() << "updateSafeInsets() - width" << m_wWidth;
+            emit wWidthChanged();
+        }
+
+        auto newWHeight = static_cast<double>(QJniObject::callStaticMethod<jdouble>("de/akaflieg_freiburg/enroute/MobileAdaptor", "windowHeight"))/devicePixelRatio;
+        if (newWHeight != m_wHeight)
+        {
+            m_wHeight = newWHeight;
+            qWarning() << "updateSafeInsets() - height" << m_wHeight;
+            emit wHeightChanged();
+        }
+
+
+
         double inset = 0.0;
 
         inset = static_cast<double>(QJniObject::callStaticMethod<jdouble>("de/akaflieg_freiburg/enroute/MobileAdaptor", "safeInsetBottom"));

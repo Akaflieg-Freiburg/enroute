@@ -40,7 +40,8 @@ class SafeInsets : public Platform::SafeInsets_Abstract
     Q_PROPERTY(double left READ left NOTIFY leftChanged)
     Q_PROPERTY(double right READ right NOTIFY rightChanged)
     Q_PROPERTY(double top READ top NOTIFY topChanged)
-
+    Q_PROPERTY(double wHeight READ wHeight NOTIFY wHeightChanged)
+    Q_PROPERTY(double wWidth READ wWidth NOTIFY wWidthChanged)
 
 public:
     /*! \brief Standard constructor

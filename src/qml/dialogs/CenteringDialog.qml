@@ -32,14 +32,16 @@ Dialog {
     bottomMargin: SafeInsets.bottom + font.pixelSize
 
     // We center the dialog manually, taking care of safe insets
-    x: SafeInsets.left + (parent.width-SafeInsets.left-SafeInsets.right-width)/2.0
-    y: SafeInsets.top + (parent.height-SafeInsets.top-SafeInsets.bottom-height)/2.0
+    x: SafeInsets.left + (SafeInsets.wWidth-SafeInsets.left-SafeInsets.right-width)/2.0
+    y: SafeInsets.top + (SafeInsets.wHeight-SafeInsets.top-SafeInsets.bottom-height)/2.0
 
     // Delays evaluation and prevents binding loops
     Binding on implicitWidth {
         value: 40*ctrDlg.font.pixelSize
         delayed: true    // Prevent intermediary values from being assigned
     }
+    implicitWidth: 40*font.pixelSize
+    height: Math.min(SafeInsets.wHeight-topMargin-bottomMargin, implicitHeight)
 
     parent: Overlay.overlay
     

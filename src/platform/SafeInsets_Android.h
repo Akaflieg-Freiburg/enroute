@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -48,13 +48,11 @@ public:
      *
      * @param parent Standard QObject parent pointer
      */
-    explicit SafeInsets(QObject *parent = nullptr);
+    explicit SafeInsets(QObject* parent = nullptr);
 
     ~SafeInsets() override = default;
 
-
-private slots:
-    /*! \brief Implements virtual method from SafeInsets_Abstract */
+    /*! \brief Checks and updated properties */
     void updateSafeInsets();
 
 private:

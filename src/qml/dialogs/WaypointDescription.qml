@@ -646,7 +646,15 @@ CenteringDialog {
 
         title: qsTr("Remove from Device?")
 
+        // Delays evaluation and prevents binding loops
+        Binding on implicitHeight {
+            value: lbl.implicitHeight
+            delayed: true    // Prevent intermediary values from being assigned
+        }
+
         Label {
+            id: lbl
+
             width: removeDialog.availableWidth
 
             text: qsTr("Once the waypoint <strong>%1</strong> is removed, it cannot be restored.").arg(removeDialog.waypoint.name)

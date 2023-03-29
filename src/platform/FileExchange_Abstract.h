@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,8 +20,8 @@
 
 #pragma once
 
-#include <QQmlEngine>
 #include "GlobalObject.h"
+#include <QQmlEngine>
 
 namespace Platform {
 
@@ -68,7 +68,7 @@ public:
     ~FileExchange_Abstract() override = default;
 
     // factory function for QML singleton
-    static Platform::FileExchange_Abstract* create(QQmlEngine*, QJSEngine*)
+    static Platform::FileExchange_Abstract* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
     {
         return GlobalObject::fileExchange();
     }
@@ -77,6 +77,7 @@ public:
     //
     // Methods
     //
+
 
     /*! \brief Import content from file
      *
@@ -123,6 +124,14 @@ public:
     Q_INVOKABLE virtual QString viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) = 0;
 
 public slots:
+    /*! \brief GUI setup completed
+     *
+     *  This method is must called as soon as the GUI setup is completed.
+     *  On Android, this method will start looking for file import requests
+     *  from the OS. On Desktop system, this method does nothing.
+     */
+    virtual void onGUISetupCompleted() = 0;
+
     /*! \brief Determine file function and emit openFileRequest()
      *
      * This helper function is called by platform-dependent code whenever the
@@ -158,3 +167,6 @@ private:
 };
 
 } // namespace Platform
+
+// Declare meta types
+Q_DECLARE_METATYPE(Platform::FileExchange_Abstract)

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -27,6 +27,9 @@
 #include <QRandomGenerator>
 #include <QtConcurrent/QtConcurrentRun>
 
+#include "GlobalSettings.h"
+#include "Librarian.h"
+#include "dataManagement/DataManager.h"
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/MBTILES.h"
 #include "geomaps/WaypointLibrary.h"
@@ -43,7 +46,6 @@ GeoMaps::GeoMapProvider::GeoMapProvider(QObject *parent)
     _combinedGeoJSON_ = geoJSONCacheFile.readAll();
     geoJSONCacheFile.close();
 
-    _tileServer.listen(QHostAddress(QStringLiteral("127.0.0.1")));
 }
 
 void GeoMaps::GeoMapProvider::deferredInitialization()
@@ -78,28 +80,42 @@ auto GeoMaps::GeoMapProvider::copyrightNotice() -> QString
     QString result;
     if (GlobalObject::dataManager()->aviationMaps()->hasFile())
     {
-        result += "<h4>"+tr("Aviation maps")+"</h4>";
-        result += QStringLiteral("<a href='https://openAIP.net'>© openAIP</a><br><a href='https://openflightmaps.org'>© open flightmaps</a>");
+        result += "<h4>"+tr("Aviation Maps")+"</h4>\n";
+        result += "<p>"+tr("The aeronautical maps are compiled from databases provided by the "
+                           "<a href='http://openaip.net'>openAIP</a> and "
+                           "<a href='https://www.openflightmaps.org/'>open flightmaps</a> "
+                           "projects.")+"</p>\n";
+        result += QStringLiteral("<a href='https://openAIP.net'>© openAIP</a><br>"
+                                 "<a href='https://openflightmaps.org'>© open flightmaps</a>");
     }
 
-    foreach(auto baseMapX, GlobalObject::dataManager()->baseMaps()->downloadables())
+    if (GlobalObject::dataManager()->baseMaps()->hasFile())
     {
-        auto* baseMap = qobject_cast<DataManagement::Downloadable_SingleFile*>(baseMapX);
-        if (baseMap == nullptr)
-        {
-            continue;
-        }
-        if (!baseMap->hasFile())
-        {
-            continue;
-        }
+        result += "<h4>"+tr("Base Maps")+"</h4>\n";
+        result += "<p>"+tr("The base maps are generated from "
+                           "<a href='https://www.openstreetmap.org'>Open Streetmap</a> data.")+"</p>\n";
+        result += QStringLiteral("<a href='https://www.openstreetmap.org/about'>© OpenStreetMap contributors</a>");
+    }
 
-
-        GeoMaps::MBTILES mbtiles(baseMap->fileName());
-
-        auto name = baseMap->fileName().split(QStringLiteral("aviation_maps/")).last();
-        result += ("<h4>"+tr("Basemap")+ " %1</h4>").arg(name);
-        result += mbtiles.attribution();
+    if (GlobalObject::dataManager()->terrainMaps()->hasFile())
+    {
+        result += "<h4>"+tr("Terrain Maps")+"</h4>\n";
+        result += "<p>"+tr("The terrain maps are derived from the "
+                           "<a href='https://registry.opendata.aws/terrain-tiles/'>Terrain "
+                           "Tiles Open Dataset on Amazon AWS</a>.") + "</p>" +
+                "<ul style='margin-left:-25px;'>"
+                "<li><p>ArcticDEM terrain data DEM(s) were created from DigitalGlobe, Inc., imagery and funded under National Science Foundation awards 1043681, 1559691, and 1542736</p>"
+                "<li><p>Australia terrain data © Commonwealth of Australia (Geoscience Australia) 2017</p>"
+                "<li><p>Austria terrain data © offene Daten Österreichs – Digitales Geländemodell (DGM) Österreich</p>"
+                "<li><p>Canada terrain data contains information licensed under the Open Government Licence – Canada</p>"
+                "<li><p>Europe terrain data produced using Copernicus data and information funded by the European Union - EU-DEM layers</p>"
+                "<li><p>Global ETOPO1 terrain data U.S. National Oceanic and Atmospheric Administration</p>"
+                "<li><p>Mexico terrain data source: INEGI, Continental relief, 2016</p>"
+                "<li><p>New Zealand terrain data Copyright 2011 Crown copyright (c) Land Information New Zealand and the New Zealand Government (All rights reserved)</p>"
+                "<li><p>Norway terrain data © Kartverket</p>"
+                "<li><p>United Kingdom terrain data © Environment Agency copyright and/or database right 2015. All rights reserved</p>"
+                "<li><p>United States 3DEP (formerly NED) and global GMTED2010 and SRTM terrain data courtesy of the U.S. Geological Survey.</p>"
+                "</ul>";
     }
 
     return result;
@@ -475,12 +491,12 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
         // Serve new tile set under new name
         if (!m_baseMapRasterTiles.isEmpty())
         {
-            _tileServer.addMbtilesFileSet(m_baseMapRasterTiles, _currentBaseMapPath);
+            _tileServer.addMbtilesFileSet(_currentBaseMapPath, m_baseMapRasterTiles);
             file.setFileName(QStringLiteral(":/flightMap/mapstyle-raster.json"));
         }
         else
         {
-            _tileServer.addMbtilesFileSet(m_baseMapVectorTiles, _currentBaseMapPath);
+            _tileServer.addMbtilesFileSet(_currentBaseMapPath, m_baseMapVectorTiles);
             file.setFileName(QStringLiteral(":/flightMap/osm-liberty.json"));
         }
     }
@@ -488,7 +504,7 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
     {
         file.setFileName(QStringLiteral(":/flightMap/empty.json"));
     }
-    _tileServer.addMbtilesFileSet(m_terrainMapTiles, _currentTerrainMapPath);
+    _tileServer.addMbtilesFileSet(_currentTerrainMapPath, m_terrainMapTiles);
 
     file.open(QIODevice::ReadOnly);
     QByteArray data = file.readAll();
@@ -584,7 +600,7 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(QStringList JSONFileNames, U
         // and that are gliding sectors
         if (hideGlidingSectors) {
             Airspace airspaceTest(object);
-            if (airspaceTest.CAT() == QLatin1String("GLD")) {
+            if (airspaceTest.CAT() == u"GLD"_qs) {
                 continue;
             }
         }

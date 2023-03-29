@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,9 +20,9 @@
 
 #pragma once
 
+#include <QObject>
 #include <QTimer>
 #include <QtGlobal>
-#include <QObject>
 
 #include "platform/PlatformAdaptor_Abstract.h"
 
@@ -53,6 +53,12 @@ public:
      *
      *  @returns see PlatformAdaptor_Abstract
      */
+    Q_INVOKABLE QString checkPermissions() override;
+
+    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract
+     *
+     *  @returns see PlatformAdaptor_Abstract
+     */
     Q_INVOKABLE QString currentSSID() override;
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
@@ -60,15 +66,15 @@ public:
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract
      *
-     *  @returns see PlatformAdaptor_Abstract
-     */
-    Q_INVOKABLE bool hasRequiredPermissions() override;
-
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract
-     *
      *  @param lock see PlatformAdaptor_Abstract
      */
     Q_INVOKABLE void lockWifi(bool lock) override;
+
+    /*! \brief Information about the system, in HTML format
+     *
+     * @returns Info string
+     */
+    Q_INVOKABLE virtual QString systemInfo() override;
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
     Q_INVOKABLE void vibrateBrief() override;
@@ -88,19 +94,6 @@ protected:
 
 private:
     Q_DISABLE_COPY_MOVE(PlatformAdaptor)
-
-    QStringList requiredPermissions
-    {
-        "android.permission.ACCESS_COARSE_LOCATION",
-        "android.permission.ACCESS_FINE_LOCATION",
-        "android.permission.ACCESS_NETWORK_STATE",
-        "android.permission.ACCESS_WIFI_STATE",
-        "android.permission.WAKE_LOCK"
-    };
-    QStringList optionalPermissions
-    {
-        "android.permission.POST_NOTIFICATIONS"
-    };
 
     bool splashScreenHidden {false};
 };

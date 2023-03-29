@@ -22,8 +22,8 @@
 #include <cmath>
 
 #include "GlobalObject.h"
-#include "ScaleQuickItem.h"
 #include "GlobalSettings.h"
+#include "ScaleQuickItem.h"
 #include "navigation/Aircraft.h"
 #include "navigation/Navigator.h"
 

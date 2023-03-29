@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,22 +18,29 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QFile>
+#include <QHttpServerResponder>
 #include <QJsonArray>
-#include <QJsonDocument>
 #include <QJsonObject>
-#include <QRegularExpression>
-
-#include <qhttpengine/socket.h>
+#include <QPointer>
 
 #include "TileHandler.h"
 
-QRegularExpression tileQueryPattern(QStringLiteral("[0-9]{1,2}/[0-9]{1,4}/[0-9]{1,4}"));
 
-GeoMaps::TileHandler::TileHandler(const QVector<QPointer<GeoMaps::MBTILES>>& mbtileFiles, const QString& baseURL, QObject *parent)
-    : Handler(parent)
+GeoMaps::TileHandler::TileHandler(const QVector<QPointer<GeoMaps::MBTILES>>& mbtileFiles, const QString& baseURL)
 {
     m_mbtiles = mbtileFiles;
+
+    QString _name;
+    QString _encoding;
+    QString _tiles;
+    QString _description;
+
+    QString _version;
+
+    QString _attribution;
+
+    int _maxzoom {-1};
+    int _minzoom {-1};
 
     // Go through mbtile files and find real values
     _maxzoom = 10;
@@ -47,7 +54,7 @@ GeoMaps::TileHandler::TileHandler(const QVector<QPointer<GeoMaps::MBTILES>>& mbt
 
         _name = mbtPtr->metaData().value(QStringLiteral("name"));
         _encoding = mbtPtr->metaData().value(QStringLiteral("encoding"));
-        _format = mbtPtr->metaData().value(QStringLiteral("format"));
+        m_format = mbtPtr->metaData().value(QStringLiteral("format"));
         _description = mbtPtr->metaData().value(QStringLiteral("description"));
         _version = mbtPtr->metaData().value(QStringLiteral("version"));
         _attribution = mbtPtr->metaData().value(QStringLiteral("attribution"));
@@ -64,67 +71,8 @@ GeoMaps::TileHandler::TileHandler(const QVector<QPointer<GeoMaps::MBTILES>>& mbt
         }
     }
 
-    _tiles = baseURL+"/{z}/{x}/{y}."+_format;
-}
+    _tiles = baseURL+"/{z}/{x}/{y}."+m_format;
 
-
-void GeoMaps::TileHandler::process(QHttpEngine::Socket *socket, const QString &path)
-{
-    // Serve tileJSON file, if requested
-    if (path.isEmpty() || path.endsWith(QLatin1String("json"), Qt::CaseInsensitive))
-    {
-        socket->setHeader("Content-Type", "application/json");
-        QByteArray json = tileJSON();
-        socket->setHeader("Content-Length", QByteArray::number(json.length()));
-        socket->write(json);
-        socket->close();
-        return;
-    }
-
-    // Serve tile, if requested
-    QRegularExpressionMatch match = tileQueryPattern.match(path);
-    if (match.hasMatch())
-    {
-        // Retrieve tile data from the database
-        auto z = path.section('/', 1, 1).toInt();
-        auto x = path.section('/', 2, 2).toInt();
-        auto y = path.section('/', 3, 3).section('.', 0, 0).toInt();
-
-        foreach(auto mbtilesPtr, m_mbtiles)
-        {
-            if (mbtilesPtr.isNull())
-            {
-                continue;
-            }
-
-            // Get data
-            QByteArray tileData = mbtilesPtr->tile(z,x,y);
-            if (tileData.isEmpty())
-            {
-                continue;
-            }
-
-            // Set the headers and write the content
-            socket->setHeader("Content-Type", "application/octet-stream");
-            if (_format == QLatin1String("pbf"))
-            {
-                socket->setHeader("Content-Encoding", "gzip");
-            }
-            socket->setHeader("Content-Length", QByteArray::number(tileData.length()));
-            socket->write(tileData);
-            socket->close();
-            return;
-        }
-    }
-
-    // Unknown request, responding with 'not found'
-    socket->writeError(QHttpEngine::Socket::NotFound);
-    socket->close();
-}
-
-
-auto GeoMaps::TileHandler::tileJSON() const -> QByteArray
-{
     QJsonObject result;
     result.insert(QStringLiteral("tilejson"), "2.2.0");
 
@@ -145,9 +93,9 @@ auto GeoMaps::TileHandler::tileJSON() const -> QByteArray
     {
         result.insert(QStringLiteral("encoding"), _encoding);
     }
-    if (!_format.isEmpty())
+    if (!m_format.isEmpty())
     {
-        result.insert(QStringLiteral("format"), _format);
+        result.insert(QStringLiteral("format"), m_format);
     }
     if (!_version.isEmpty())
     {
@@ -166,7 +114,54 @@ auto GeoMaps::TileHandler::tileJSON() const -> QByteArray
         result.insert(QStringLiteral("minzoom"), _minzoom);
     }
 
-    QJsonDocument tileJSONDocument;
-    tileJSONDocument.setObject(result);
-    return tileJSONDocument.toJson();
+    m_tileJSON.setObject(result);
+}
+
+
+bool GeoMaps::TileHandler::process(QHttpServerResponder* responder, const QStringList &pathElements)
+{
+    // Serve tileJSON file, if requested
+    if (pathElements.isEmpty() || pathElements[0].endsWith(u"json"_qs, Qt::CaseInsensitive))
+    {
+        responder->write(m_tileJSON);
+        return true;
+    }
+
+    if (pathElements.size() != 3)
+    {
+        return false;
+    }
+
+    // Serve tile, if requested
+    auto z = pathElements[0].toInt();
+    auto x = pathElements[1].toInt();
+    auto y = pathElements[2].section('.', 0, 0).toInt();
+
+    // Retrieve tile data from the database
+    foreach(auto mbtilesPtr, m_mbtiles)
+    {
+        if (mbtilesPtr.isNull())
+        {
+            continue;
+        }
+
+        // Get data
+        QByteArray tileData = mbtilesPtr->tile(z,x,y);
+        if (tileData.isEmpty())
+        {
+            continue;
+        }
+
+        if (m_format == u"pbf"_qs)
+        {
+            responder->write(tileData, {{"Content-Type", "application/octet-stream"}, {"Content-Encoding", "gzip"}});
+        }
+        else
+        {
+            responder->write(tileData, "application/octet-stream");
+        }
+        return true;
+    }
+
+    return false;
 }

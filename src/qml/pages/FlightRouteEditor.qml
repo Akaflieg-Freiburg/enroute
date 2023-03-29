@@ -34,6 +34,7 @@ Page {
     id: flightRoutePage
     title: qsTr("Route and Wind")
 
+    property angle staticAngle
     property speed staticSpeed
 
     Component {
@@ -45,16 +46,9 @@ Page {
             property var waypoint: ({})
             property int index: -1
 
-            WordWrappingItemDelegate {
-                icon.source: waypoint.icon
+            WaypointDelegate {
                 Layout.fillWidth: true
-                text: waypoint.twoLineTitle
-
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    waypointDescription.waypoint = waypoint
-                    waypointDescription.open()
-                }
+                waypoint: waypointLayout.waypoint
             }
 
             ToolButton {
@@ -121,14 +115,14 @@ Page {
                         text: qsTr("Add to waypoint library")
                         enabled: {
                             // Mention waypoints, in order to update
-                            global.waypointLibrary().waypoints
+                            WaypointLibrary.waypoints
 
-                            return (waypoint.category === "WP") && !global.waypointLibrary().hasNearbyEntry(waypoint)
+                            return (waypoint.category === "WP") && !WaypointLibrary.hasNearbyEntry(waypoint)
                         }
 
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
-                            global.waypointLibrary().add(waypoint)
+                            WaypointLibrary.add(waypoint)
                             toast.doToast(qsTr("Added %1 to waypoint library.").arg(waypoint.extendedName))
                         }
                     }
@@ -252,6 +246,7 @@ Page {
                 MenuItem {
                     text: qsTr("Import…")
                     enabled: Qt.platform.os !== "android"
+                    visible: Qt.platform.os !== "android"
                     height: Qt.platform.os !== "android" ? undefined : 0
 
                     onTriggered: {
@@ -537,7 +532,7 @@ Page {
                     Layout.alignment: Qt.AlignVCenter
                     enabled: windDirection.text !== ""
                     onClicked: {
-                        Navigator.wind.directionFrom = angle.nan()
+                        Navigator.wind.directionFrom = flightRoutePage.staticAngle.nan()
                         windDirection.clear()
                     }
                 }
@@ -692,7 +687,7 @@ Page {
         id: flightRouteAddWPDialog
 
         Connections {
-            target: global.demoRunner()
+            target: DemoRunner
 
             function onRequestOpenFlightRouteAddWPDialog() {
                 flightRouteAddWPDialog.open()
@@ -736,7 +731,6 @@ Page {
         property var waypoint
 
         onLoaded: {
-            item.anchors.centerIn = dialogLoader
             item.modal = true
             item.open()
         }
@@ -761,14 +755,10 @@ Page {
     Shortcut {
         sequence: "Ctrl+a"
         onActivated: {
-            dialogLoader.active = false
-            dialogLoader.source = "dialogs/FlightRouteAddWPDialog.qml"
-            dialogLoader.active = true
+            dlgLoader.active = false
+            dlgLoader.source = "../dialogs/FlightRouteAddWPDialog.qml"
+            dlgLoader.active = true
         }
-    }
-
-    WaypointDescription {
-        id: waypointDescription
     }
 
     WaypointEditor {

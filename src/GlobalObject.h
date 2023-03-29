@@ -45,6 +45,11 @@ class Clock;
 class Navigator;
 } // namespace Navigation
 
+namespace NOTAM
+{
+class NotamProvider;
+} // namespace NOTAM
+
 namespace Traffic
 {
 class FlarmnetDB;
@@ -131,50 +136,50 @@ public:
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static Navigation::Clock *clock();
+    Q_INVOKABLE static Navigation::Clock* clock();
 
     /*! \brief Pointer to appplication-wide static GeoMaps::DataManager instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static DataManagement::DataManager *dataManager();
+    Q_INVOKABLE static DataManagement::DataManager* dataManager();
 
     /*! \brief Pointer to appplication-wide static DemoRunner instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static DemoRunner *demoRunner();
+    Q_INVOKABLE static DemoRunner* demoRunner();
 
     /*! \brief Pointer to appplication-wide static FlarmnetDB instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static Traffic::FlarmnetDB *flarmnetDB();
+    Q_INVOKABLE static Traffic::FlarmnetDB* flarmnetDB();
 
     /*! \brief Pointer to appplication-wide static FileExchange instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static Platform::FileExchange_Abstract *fileExchange();
+    Q_INVOKABLE static Platform::FileExchange_Abstract* fileExchange();
 
     /*! \brief Pointer to appplication-wide static GeoMaps::GeoMapProvider
      * instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static GeoMaps::GeoMapProvider *geoMapProvider();
+    Q_INVOKABLE static GeoMaps::GeoMapProvider* geoMapProvider();
 
     /*! \brief Pointer to appplication-wide static Settings instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static GlobalSettings *globalSettings();
+    Q_INVOKABLE static GlobalSettings* globalSettings();
 
     /*! \brief Pointer to appplication-wide static librarian instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static Librarian *librarian();
+    Q_INVOKABLE static Librarian* librarian();
 
     /*! \brief Pointer to appplication-wide static PlatformAdaptor instance
      *
@@ -186,55 +191,61 @@ public:
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static Navigation::Navigator *navigator();
+    Q_INVOKABLE static Navigation::Navigator* navigator();
 
     /*! \brief Pointer to appplication-wide static PasswordDB instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static Traffic::PasswordDB *passwordDB();
+    Q_INVOKABLE static Traffic::PasswordDB* passwordDB();
 
     /*! \brief Pointer to appplication-wide static PositionProvider instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static Positioning::PositionProvider *positionProvider();
+    Q_INVOKABLE static Positioning::PositionProvider* positionProvider();
 
     /*! \brief Pointer to appplication-wide static notification manager instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static Platform::Notifier_Abstract *notifier();
+    Q_INVOKABLE static NOTAM::NotamProvider* notamProvider();
+
+    /*! \brief Pointer to appplication-wide static notification manager instance
+     *
+     * @returns Pointer to appplication-wide static instance.
+     */
+    Q_INVOKABLE static Platform::Notifier_Abstract* notifier();
 
     /*! \brief Pointer to appplication-wide static QNetworkAccessManager instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static QNetworkAccessManager *networkAccessManager();
+    Q_INVOKABLE static QNetworkAccessManager* networkAccessManager();
 
     /*! \brief Pointer to appplication-wide static QNetworkAccessManager instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static DataManagement::SSLErrorHandler *sslErrorHandler();
+    Q_INVOKABLE static DataManagement::SSLErrorHandler* sslErrorHandler();
 
     /*! \brief Pointer to appplication-wide static TrafficDataProvider instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static Traffic::TrafficDataProvider *trafficDataProvider();
+    Q_INVOKABLE static Traffic::TrafficDataProvider* trafficDataProvider();
 
     /*! \brief Pointer to appplication-wide static WaypointLibrary instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static GeoMaps::WaypointLibrary *waypointLibrary();
+    Q_INVOKABLE static GeoMaps::WaypointLibrary* waypointLibrary();
 
     /*! \brief Pointer to appplication-wide static WeatherDataProvider instance
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static Weather::WeatherDataProvider *weatherDataProvider();
+    Q_INVOKABLE static Weather::WeatherDataProvider* weatherDataProvider();
 
 protected:
     /*! \brief Non-constructor initialization

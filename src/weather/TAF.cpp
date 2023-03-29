@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020--2023 by Stefan Kebekus                            *
+ *   Copyright (C) 2020-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -38,49 +38,58 @@ Weather::TAF::TAF(QXmlStreamReader &xml, QObject *parent)
     : Weather::Decoder(parent)
 {
 
-    while (true) {
+    while (true)
+    {
         xml.readNextStartElement();
         QString name = xml.name().toString();
 
         // Read Station_ID
-        if (xml.isStartElement() && name == u"station_id"_qs) {
+        if (xml.isStartElement() && name == u"station_id"_qs)
+        {
             m_ICAOCode = xml.readElementText();
             continue;
         }
 
         // Read location
-        if (xml.isStartElement() && name == u"latitude"_qs) {
+        if (xml.isStartElement() && name == u"latitude"_qs)
+        {
             _location.setLatitude(xml.readElementText().toDouble());
             continue;
         }
-        if (xml.isStartElement() && name == u"longitude"_qs) {
+        if (xml.isStartElement() && name == u"longitude"_qs)
+        {
             _location.setLongitude(xml.readElementText().toDouble());
             continue;
         }
-        if (xml.isStartElement() && name == u"elevation_m"_qs) {
+        if (xml.isStartElement() && name == u"elevation_m"_qs)
+        {
             _location.setAltitude(xml.readElementText().toDouble());
             continue;
         }
 
         // Read raw text
-        if (xml.isStartElement() && name == u"raw_text"_qs) {
+        if (xml.isStartElement() && name == u"raw_text"_qs)
+        {
             _raw_text = xml.readElementText();
             continue;
         }
 
         // Read issue time
-        if (xml.isStartElement() && name == u"issue_time"_qs) {
+        if (xml.isStartElement() && name == u"issue_time"_qs)
+        {
             _issueTime = QDateTime::fromString(xml.readElementText(), Qt::ISODate);
             continue;
         }
 
         // Read expiration date
-        if (xml.isStartElement() && name == u"valid_time_to"_qs) {
+        if (xml.isStartElement() && name == u"valid_time_to"_qs)
+        {
             _expirationTime = QDateTime::fromString(xml.readElementText(), Qt::ISODate);
             continue;
         }
 
-        if (xml.isEndElement() && name == u"TAF"_qs) {
+        if (xml.isEndElement() && name == u"TAF"_qs)
+        {
             break;
         }
 
@@ -108,7 +117,8 @@ Weather::TAF::TAF(QDataStream &inputStream, QObject *parent)
 
 auto Weather::TAF::isExpired() const -> bool
 {
-    if (!_expirationTime.isValid()) {
+    if (!_expirationTime.isValid())
+    {
         return true;
     }
     return QDateTime::currentDateTime() > _expirationTime;
@@ -117,19 +127,24 @@ auto Weather::TAF::isExpired() const -> bool
 
 auto Weather::TAF::isValid() const -> bool
 {
-    if (!_location.isValid()) {
+    if (!_location.isValid())
+    {
         return false;
     }
-    if (!_expirationTime.isValid()) {
+    if (!_expirationTime.isValid())
+    {
         return false;
     }
-    if (!_issueTime.isValid()) {
+    if (!_issueTime.isValid())
+    {
         return false;
     }
-    if (m_ICAOCode.isEmpty()) {
+    if (m_ICAOCode.isEmpty())
+    {
         return false;
     }
-    if (hasParseError()) {
+    if (hasParseError())
+    {
         return false;
     }
 
@@ -139,7 +154,8 @@ auto Weather::TAF::isValid() const -> bool
 
 auto Weather::TAF::relativeIssueTime() const -> QString
 {
-    if (!_issueTime.isValid()) {
+    if (!_issueTime.isValid())
+    {
         return {};
     }
 
@@ -150,7 +166,7 @@ auto Weather::TAF::relativeIssueTime() const -> QString
 void Weather::TAF::setupSignals() const
 {
     // Emit notifier signals whenever the time changes
-    connect(GlobalObject::navigator()->clock(), &Navigation::Clock::timeChanged, this, &Weather::TAF::relativeIssueTimeChanged);
+    connect(Navigation::Navigator::clock(), &Navigation::Clock::timeChanged, this, &Weather::TAF::relativeIssueTimeChanged);
 }
 
 

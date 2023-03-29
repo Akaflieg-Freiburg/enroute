@@ -151,7 +151,7 @@ signals:
     void pressureAltitudeChanged();
 
     /*! \brief Notifier signal */
-    void receivingPositionInfoChanged(bool);
+    void receivingPositionInfoChanged();
 
     /*! \brief Notifier signal */
     void sourceNameChanged(const QString &name);

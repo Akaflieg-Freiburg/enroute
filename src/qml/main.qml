@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -37,10 +37,12 @@ ApplicationWindow {
 
     // On Android, fullscreen mode is set in JAVA code
     flags: ((Qt.platform.os === "android") || (Qt.platform.os === "ios")) ? Qt.MaximizeUsingFullscreenGeometryHint | Qt.Window : Qt.Window
+    font.pixelSize: GlobalSettings.fontSize
+    font.letterSpacing: GlobalSettings.fontSize > 15 ? 0.5 : 0.25
 
     visible: true
     title: "Enroute Flight Navigation"
-    width: 800
+    width: SafeInsets.wWidth
     height: 800
 
     Settings {
@@ -57,7 +59,7 @@ ApplicationWindow {
     Drawer {
         id: drawer
 
-        height: view.height
+        height: (Qt.platform.os === "android") ? SafeInsets.wHeight : parent.height
         width: col.implicitWidth
 
         ScrollView {
@@ -127,7 +129,7 @@ ApplicationWindow {
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
                         stackView.pop()
-                        stackView.push("pages/AircraftPage.qml")
+                        stackView.push("pages/AircraftPage.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
                         drawer.close()
                     }
                 }
@@ -163,24 +165,6 @@ ApplicationWindow {
                         PlatformAdaptor.vibrateBrief()
                         stackView.pop()
                         stackView.push("pages/Nearby.qml")
-                        drawer.close()
-                    }
-                }
-
-                ItemDelegate {
-                    Layout.fillWidth: true
-
-                    leftPadding: 16+SafeInsets.left
-
-                    id: weatherItem
-
-                    text: qsTr("Weather")
-                    icon.source: "/icons/material/ic_cloud_queue.svg"
-
-                    onClicked: {
-                        PlatformAdaptor.vibrateBrief()
-                        stackView.pop()
-                        stackView.push("pages/WeatherPage.qml")
                         drawer.close()
                     }
                 }
@@ -236,7 +220,7 @@ ApplicationWindow {
 
                         ItemDelegate {
                             text: qsTr("Maps and Data")
-                                  + ((global.dataManager().mapsAndData.updateSize > 0) ? `<br><font color="#606060" size="2">` +qsTr("Updates available") + "</font>" : "")
+                                  + ( DataManager.mapsAndData.updateSize.isNull() ? "" : `<br><font color="#606060" size="2">` + qsTr("Updates available") + "</font>")
                                   + ( (Navigator.flightStatus === Navigator.Flight) ? `<br><font color="#606060" size="2">` +qsTr("Item not available in flight") + "</font>" : "")
                             icon.source: "/icons/material/ic_map.svg"
                             Layout.fillWidth: true
@@ -244,7 +228,7 @@ ApplicationWindow {
                             enabled: Navigator.flightStatus !== Navigator.Flight
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
-                                stackView.push("pages/DataManager.qml")
+                                stackView.push("pages/DataManagerPage.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
                                 libraryMenu.close()
                                 drawer.close()
                             }
@@ -257,15 +241,12 @@ ApplicationWindow {
 
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
-                                stackView.push("pages/WaypointLibrary.qml")
+                                stackView.push("pages/WaypointLibraryPage.qml")
                                 libraryMenu.close()
                                 drawer.close()
                             }
                         }
-
-
                     }
-
                 }
 
                 ItemDelegate {
@@ -335,7 +316,7 @@ ApplicationWindow {
 
                             text: qsTr("Traffic Receiver")
                                   + `<br><font color="#606060" size="2">`
-                                  + ((global.trafficDataProvider().receivingHeartbeat) ? qsTr("Receiving heartbeat.") : qsTr("Not receiving heartbeat."))
+                                  + ((TrafficDataProvider.receivingHeartbeat) ? qsTr("Receiving heartbeat.") : qsTr("Not receiving heartbeat."))
                                   + `</font>`
                             icon.source: "/icons/material/ic_airplanemode_active.svg"
                             onClicked: {
@@ -347,7 +328,7 @@ ApplicationWindow {
                             }
                             background: Rectangle {
                                 anchors.fill: parent
-                                color: (global.trafficDataProvider().receivingHeartbeat) ? "green" : "red"
+                                color: (TrafficDataProvider.receivingHeartbeat) ? "green" : "red"
                                 opacity: 0.2
                             }
                         }
@@ -365,7 +346,20 @@ ApplicationWindow {
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
                                 stackView.pop()
-                                stackView.push("pages/InfoPage.qml")
+                                stackView.push("pages/InfoPage.qml", {"stackView": stackView, "toast": toast})
+                                aboutMenu.close()
+                                drawer.close()
+                            }
+                        }
+
+                        ItemDelegate { // Privacy Policy
+                            text: qsTr("Privacy Policy")
+                            icon.source: "/icons/material/ic_vpn_key.svg"
+
+                            onClicked: {
+                                PlatformAdaptor.vibrateBrief()
+                                stackView.pop()
+                                stackView.push("pages/PrivacyPage.qml")
                                 aboutMenu.close()
                                 drawer.close()
                             }
@@ -549,37 +543,26 @@ ApplicationWindow {
 
     }
 
-
     StackView {
         id: stackView
 
         initialItem: "pages/MapPage.qml"
 
-        anchors.fill: parent
+        // Need to explain
+        x: 0
+        y: 0
+        height: (Qt.platform.os === "android") ? SafeInsets.wHeight : parent.height
+        width: (Qt.platform.os === "android") ? SafeInsets.wWidth : parent.width
 
         focus: true
 
         Component.onCompleted: {
             PlatformAdaptor.onGUISetupCompleted()
 
-            // Things to do on startup. If the user has not yet accepted terms and conditions, show that.
-            // Otherwise, if the user has not used this version of the app before, show the "what's new" dialog.
-            // Otherwise, if the maps need updating, show the "update map" dialog.
-            if (!PlatformAdaptor.hasRequiredPermissions()) {
-                dialogLoader.active = false
-                dialogLoader.source = "dialogs/MissingPermissionsDialog.qml"
-                dialogLoader.active = true
+            if (firstRunDialog.conditionalOpen())
                 return;
-            }
 
-            if (GlobalSettings.acceptedTerms === 0) {
-                dialogLoader.active = false
-                dialogLoader.source = "dialogs/FirstRunDialog.qml"
-                dialogLoader.active = true
-                return
-            }
-
-            if (global.dataManager().appUpdateRequired) {
+            if (DataManager.appUpdateRequired) {
                 dialogLoader.active = false
                 dialogLoader.setSource("dialogs/LongTextDialog.qml",
                                        {
@@ -597,8 +580,8 @@ ApplicationWindow {
                 return
             }
 
-            if ((GlobalSettings.lastWhatsNewInMapsHash !== global.dataManager().whatsNewHash) &&
-                    (global.dataManager().whatsNew !== "") &&
+            if ((GlobalSettings.lastWhatsNewInMapsHash !== DataManager.whatsNewHash) &&
+                    (DataManager.whatsNew !== "") &&
                     (Navigator.flightStatus !== Navigator.Flight)) {
                 whatsNewInMapsDialog.open()
                 return
@@ -622,7 +605,7 @@ ApplicationWindow {
         }
 
         Connections {
-            target: global.demoRunner()
+            target: DemoRunner
 
             function onRequestClosePages() {
                 stackView.pop()
@@ -641,7 +624,7 @@ ApplicationWindow {
 
             function onRequestOpenRoutePage() {
                 stackView.pop()
-                stackView.push("pages/FlightRouteEditor.qml")
+                stackView.push("pages/FlightRouteEditor.qml", {"toast": toast})
             }
 
             function onRequestOpenWeatherPage() {
@@ -654,8 +637,8 @@ ApplicationWindow {
 
     DropArea {
         anchors.fill: stackView
-        onDropped: {
-            PlatformAdaptor.processFileOpenRequest(drop.text)
+        onDropped: (drop) => {
+            FileExchange.processFileOpenRequest(drop.text)
         }
     }
 
@@ -696,9 +679,9 @@ ApplicationWindow {
         }
 
         Connections { // Traffic receiver
-            target: global.trafficDataProvider()
+            target: TrafficDataProvider
             function onReceivingHeartbeatChanged() {
-                if (global.trafficDataProvider().receivingHeartbeat)
+                if (TrafficDataProvider.receivingHeartbeat)
                     toast.doToast(qsTr("Connected to traffic receiver."))
                 else
                     toast.doToast(qsTr("Lost connection to traffic receiver."))
@@ -728,6 +711,11 @@ ApplicationWindow {
 
     ImportManager {
         id: importMgr
+
+        // Repeater properties
+        stackView: stackView
+        toast: toast
+        view: view
     }
 
     LongTextDialog {
@@ -755,8 +743,12 @@ ApplicationWindow {
         standardButtons: Dialog.Ok
 
         title: qsTr("What's new…?")
-        text: global.dataManager().whatsNew
-        onOpened: GlobalSettings.lastWhatsNewInMapsHash = global.dataManager().whatsNewHash
+        text: DataManager.whatsNew
+        onOpened: GlobalSettings.lastWhatsNewInMapsHash = DataManager.whatsNewHash
+    }
+
+    FirstRunDialog {
+        id: firstRunDialog
     }
 
     Shortcut {
@@ -774,7 +766,7 @@ ApplicationWindow {
     //
 
     Connections { // items
-        target: global.dataManager().items
+        target: DataManager.items
 
         function onDownloadingChanged(downloading) {
             if (downloading) {
@@ -805,7 +797,7 @@ ApplicationWindow {
 
         function onAction(act) {
             if ((act === Notifier.DownloadInfo_Clicked) && (stackView.currentItem.objectName !== "DataManagerPage")) {
-                stackView.push("pages/DataManager.qml")
+                stackView.push("pages/DataManagerPage.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
             }
             if ((act === Notifier.TrafficReceiverSelfTestError_Clicked) && (stackView.currentItem.objectName !== "TrafficReceiverPage")) {
                 stackView.push("pages/TrafficReceiver.qml")
@@ -814,10 +806,10 @@ ApplicationWindow {
                 stackView.push("pages/TrafficReceiver.qml")
             }
             if ((act === Notifier.GeoMapUpdatePending_Clicked) && (stackView.currentItem.objectName !== "DataManagerPage")) {
-                stackView.push("pages/DataManager.qml")
+                stackView.push("pages/DataManagerPage.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
             }
             if (act === Notifier.GeoMapUpdatePending_UpdateRequested) {
-                global.dataManager().mapsAndData.update()
+                DataManager.mapsAndData.update()
                 toast.doToast(qsTr("Starting map update"))
             }
         }
@@ -860,7 +852,7 @@ Go to the 'Settings' page if you wish to restore the original, safe, behavior of
     }
 
     Connections { // TrafficDataProvider
-        target: global.trafficDataProvider()
+        target: TrafficDataProvider
 
         function onPasswordRequest(ssid) {
             dialogLoader.active = false

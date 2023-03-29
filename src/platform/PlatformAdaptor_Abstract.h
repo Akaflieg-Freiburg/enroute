@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -65,7 +65,7 @@ public:
     ~PlatformAdaptor_Abstract() override = default;
 
     // factory function for QML singleton
-    static Platform::PlatformAdaptor_Abstract* create(QQmlEngine*, QJSEngine*)
+    static Platform::PlatformAdaptor_Abstract* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
     {
         return GlobalObject::platformAdaptor();
     }
@@ -73,6 +73,19 @@ public:
 
     //
     // Methods
+    //
+
+    /*! \brief Checks if all required permissions have been granted
+     *
+     * Depending on the platform, the app needs to ask for permissions to
+     * operate properly. This method can be used to check if all permissions
+     * have been granted. It returns an empty string if all permissions are there,
+     * and a human-readable, translated explanation of missing permissions
+     * otherwise.
+     *
+     * @returns Empty string or explanation
+    */
+    Q_INVOKABLE virtual QString checkPermissions() = 0;
 
     /*! \brief SSID of current Wi-Fi network
      *
@@ -89,17 +102,7 @@ public:
      * meant to ensure that the display remains on while the app is in use (e.g.
      * while the pilot is following a non-standard traffic pattern).
      */
-    virtual void disableScreenSaver() = 0;
-
-    /*! \brief Checks if all required permissions have been granted
-     *
-     * Depending on the platform, the app needs to ask for permissions to
-     * operate properly. This method can be used to check if all permissions
-     * have been granted.
-     *
-     * @returns 'True' if all required permissions have been granted.
-    */
-    Q_INVOKABLE virtual bool hasRequiredPermissions() = 0;
+    Q_INVOKABLE virtual void disableScreenSaver() = 0;
 
     /*! \brief Lock connection to Wi-Fi network
      *
@@ -113,7 +116,7 @@ public:
      * @param lock If true, then lock the network. If false, then release the
      * lock.
      */
-    virtual void lockWifi(bool lock) = 0;
+    Q_INVOKABLE virtual void lockWifi(bool lock) = 0;
 
     /*! \brief Request permissions
      *
@@ -124,7 +127,13 @@ public:
      * synchroneously and shall return only once all permissions have been
      * granted (or not). 
      */
-    virtual void requestPermissionsSync() = 0;
+    Q_INVOKABLE virtual void requestPermissionsSync() = 0;
+
+    /*! \brief Information about the system, in HTML format
+     *
+     * @returns Info string
+     */
+    Q_INVOKABLE virtual QString systemInfo();
 
     /*! \brief Make the device briefly vibrate
      *

@@ -20,7 +20,11 @@
 
 #pragma once
 
+#include <QGeoRectangle>
+#include <QQmlEngine>
 #include <QTimer>
+
+#include "units/ByteSize.h"
 
 
 namespace DataManagement {
@@ -37,6 +41,7 @@ namespace DataManagement {
 
 class Downloadable_Abstract : public QObject {
     Q_OBJECT
+    QML_ELEMENT
 
 public:
     /*! \brief Type of content managed by this instance */
@@ -54,13 +59,16 @@ public:
      *
      * @param parent The standard QObject parent pointer.
      */
-    explicit Downloadable_Abstract(QObject *parent = nullptr);
+    explicit Downloadable_Abstract(QObject* parent = nullptr);
 
 
 
     //
     // PROPERTIES
     //
+
+    /*! \brief Most probable content of file(s) managed by this object */
+    Q_PROPERTY(QGeoRectangle boundingBox READ boundingBox CONSTANT)
 
     /*! \brief Most probable content of file(s) managed by this object */
     Q_PROPERTY(DataManagement::Downloadable_Abstract::ContentType contentType READ contentType CONSTANT)
@@ -118,7 +126,7 @@ public:
      *  the size of the update. If no updates are available, this property holds
      *  0.
      */
-    Q_PROPERTY(qint64 updateSize READ updateSize NOTIFY updateSizeChanged)
+    Q_PROPERTY(Units::ByteSize updateSize READ updateSize NOTIFY updateSizeChanged)
 
     /*! \brief Update size as a localized string */
     Q_PROPERTY(QString updateSizeString READ updateSizeString NOTIFY updateSizeChanged)
@@ -127,6 +135,12 @@ public:
     //
     // Getter Methods
     //
+
+    /*! \brief Getter method for the property with the same name
+     *
+     *  @returns Property boundingBox
+     */
+    [[nodiscard]] auto boundingBox() const -> QGeoRectangle {return m_boundingBox;}
 
     /*! \brief Getter method for the property with the same name
      *
@@ -180,7 +194,7 @@ public:
      *
      * @returns Property updateSize
      */
-    [[nodiscard]] virtual auto updateSize() -> qint64 = 0;
+    [[nodiscard]] virtual auto updateSize() -> Units::ByteSize = 0;
 
     /*! \brief Getter function for the property with the same name
      *
@@ -275,6 +289,9 @@ signals:
     void updateSizeChanged();
 
 protected:
+    // Property contentType
+    QGeoRectangle m_boundingBox;
+
     // Property contentType
     ContentType m_contentType {Data};
 

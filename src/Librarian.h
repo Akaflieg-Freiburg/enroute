@@ -1,15 +1,21 @@
 /***************************************************************************
- *   Copyright (C) 2020 by Stefan Kebekus * stefan.kebekus@gmail.com * * This
- *   program is free software; you can redistribute it and/or modify * it under
- *   the terms of the GNU General Public License as published by * the Free
- *   Software Foundation; either version 3 of the License, or * (at your option)
- *   any later version.  * * This program is distributed in the hope that it
- *   will be useful, * but WITHOUT ANY WARRANTY; without even the implied
- *   warranty of * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   * GNU General Public License for more details.  * * You should have
- *   received a copy of the GNU General Public License * along with this
- *   program; if not, write to the * Free Software Foundation, Inc., * 59 Temple
- *   Place - Suite 330, Boston, MA 02111-1307, USA.  *
+ *   Copyright (C) 2020-2023 by Stefan Kebekus                             *
+ *   stefan.kebekus@gmail.com                                              *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 3 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
 #pragma once
@@ -20,6 +26,7 @@
 #include <QSettings>
 
 #include "GlobalObject.h"
+#include "units/ByteSize.h"
 
 
 /*! \brief Manage libraries and text assets
@@ -125,7 +132,7 @@ public:
      *
      * @returns Pointer to the object, or a nullptr in case of error.
      */
-    Q_INVOKABLE [[nodiscard]] static QObject* get(Librarian::Library library, const QString &baseName) ;
+    Q_INVOKABLE [[nodiscard]] static QObject* get(Librarian::Library library, const QString& baseName) ;
 
     /*! \brief Exposes string stored in QRessource to QML
      *
@@ -143,7 +150,7 @@ public:
      *
      * @returns File content as a QString
      */
-    Q_INVOKABLE static QString getStringFromRessource(const QString &name);
+    Q_INVOKABLE static QString getStringFromRessource(const QString& name);
 
     /*! \brief Exposes the hash of string stored in QRessource to QML
      *
@@ -155,7 +162,7 @@ public:
      *
      * @returns Hash of file content
      */
-    Q_INVOKABLE static size_t getStringHashFromRessource(const QString &name);
+    Q_INVOKABLE static Units::ByteSize getStringHashFromRessource(const QString& name);
 
     /*! \brief Removes an entry from a library
      *
@@ -202,12 +209,6 @@ public:
      * @return Simplified string
      */
     auto simplifySpecialChars(const QString &string) -> QString;
-
-    /*! \brief Information about the system, in HTML format
-     *
-     * @returns Info string
-     */
-    Q_INVOKABLE static QString systemInfo();
 
 private:
     Q_DISABLE_COPY_MOVE(Librarian)

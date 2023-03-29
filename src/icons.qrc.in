@@ -25,6 +25,7 @@
         <file alias="icons/material/ic_directions.svg">${material-design-icons_SOURCE_DIR}/maps/svg/production/ic_directions_24px.svg</file>
         <file alias="icons/material/ic_exit_to_app.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_exit_to_app_24px.svg</file>
         <file alias="icons/material/ic_file_download.svg">${material-design-icons_SOURCE_DIR}/file/svg/production/ic_file_download_24px.svg</file>
+        <file alias="icons/material/ic_format_size.svg">${material-design-icons_SOURCE_DIR}/editor/svg/production/ic_format_size_24px.svg</file>
 	<file alias="icons/material/ic_help_outline.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_help_outline_24px.svg</file>
 	<file alias="icons/material/ic_info_outline.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_info_outline_24px.svg</file>
 	<file alias="icons/material/ic_keyboard_arrow_down.svg">${material-design-icons_SOURCE_DIR}/hardware/svg/production/ic_keyboard_arrow_down_24px.svg</file>
@@ -52,6 +53,7 @@
 	<file alias="icons/material/ic_swap_vert.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_swap_vert_24px.svg</file>
 	<file alias="icons/material/ic_tap_and_play.svg">${material-design-icons_SOURCE_DIR}/notification/svg/production/ic_tap_and_play_24px.svg</file>
         <file alias="icons/material/ic_terrain.svg">${material-design-icons_SOURCE_DIR}/maps/svg/production/ic_terrain_24px.svg</file>
+	<file alias="icons/material/ic_vpn_key.svg">${material-design-icons_SOURCE_DIR}/communication/svg/production/ic_vpn_key_24px.svg</file>
 	<file alias="icons/material/ic_wb_sunny.svg">${material-design-icons_SOURCE_DIR}/image/svg/production/ic_wb_sunny_24px.svg</file>
 
 	<!-- GUI icons: General -->
@@ -92,10 +94,10 @@
 	<file alias="icons/waypoints/DVOR.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/VOR.svg</file>
 	<file alias="icons/waypoints/DVOR-DME.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/VORDME.svg</file>
 	<file alias="icons/waypoints/DVORTAC.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/VORTAC.svg</file>
-
 	<file alias="icons/waypoints/AD-GLD.png">${CMAKE_SOURCE_DIR}/generatedSources/src/icons/waypoints/AD-GLD.png</file>
 	<file alias="icons/waypoints/AD-GRASS.png">${CMAKE_SOURCE_DIR}/generatedSources/src/icons/waypoints/AD-GRASS.png</file>
 	<file alias="icons/waypoints/AD-MIL-GRASS.png">${CMAKE_SOURCE_DIR}/generatedSources/src/icons/waypoints/AD-MIL-GRASS.png</file>
 	<file alias="icons/waypoints/AD-UL.png">${CMAKE_SOURCE_DIR}/generatedSources/src/icons/waypoints/AD-UL.png</file>
+	<file alias="icons/waypoints/ic_warning.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/ic_warning_18px.svg</file>
     </qresource>
 </RCC>

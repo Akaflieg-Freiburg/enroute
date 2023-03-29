@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -28,7 +28,6 @@
 #include <QStandardPaths>
 
 #include "platform/FileExchange_Android.h"
-#include "platform/Notifier_Android.h"
 
 
 Platform::FileExchange::FileExchange(QObject *parent)
@@ -42,22 +41,6 @@ Platform::FileExchange::FileExchange(QObject *parent)
     QDir exchangeDir(fileExchangeDirectoryName);
     exchangeDir.removeRecursively();
     exchangeDir.mkpath(fileExchangeDirectoryName);
-
-
-    // Start receiving file requests
-    receiveOpenFileRequestsStarted = true;
-    QJniObject activity = QNativeInterface::QAndroidApplication::context();
-    if (activity.isValid()) {
-        QJniObject jniTempDir = QJniObject::fromString(fileExchangeDirectoryName);
-        if (!jniTempDir.isValid()) {
-            return;
-        }
-        activity.callMethod<void>("checkPendingIntents", "(Ljava/lang/String;)V", jniTempDir.object<jstring>());
-    }
-    if (!pendingReceiveOpenFileRequest.isEmpty()) {
-        processFileOpenRequest(pendingReceiveOpenFileRequest);
-    }
-    pendingReceiveOpenFileRequest = QString();
 
 }
 
@@ -74,6 +57,30 @@ void Platform::FileExchange::deferredInitialization()
 
 void Platform::FileExchange::importContent()
 {
+}
+
+
+void Platform::FileExchange::onGUISetupCompleted()
+{
+    // Start receiving file requests. This needs to be in deferredInitialization because
+    // it has side effects and calls constructors of other GlobalObjects.
+    receiveOpenFileRequestsStarted = true;
+    QJniObject activity = QNativeInterface::QAndroidApplication::context();
+    if (activity.isValid())
+    {
+        QJniObject jniTempDir = QJniObject::fromString(fileExchangeDirectoryName);
+        if (!jniTempDir.isValid())
+        {
+            return;
+        }
+        activity.callMethod<void>("checkPendingIntents", "(Ljava/lang/String;)V", jniTempDir.object<jstring>());
+    }
+
+    if (!pendingReceiveOpenFileRequest.isEmpty())
+    {
+        processFileOpenRequest(pendingReceiveOpenFileRequest);
+    }
+    pendingReceiveOpenFileRequest = QString();
 }
 
 
@@ -102,7 +109,8 @@ auto Platform::FileExchange::shareContent(const QByteArray& content, const QStri
 
     auto tmpPath = contentToTempFile(content, fileNameTemplate+"-%1."+mime.preferredSuffix());
     bool success = outgoingIntent(QStringLiteral("sendFile"), tmpPath, mimeType);
-    if (success) {
+    if (success)
+    {
         return {};
     }
     return tr("No suitable file sharing app could be found.");
@@ -117,7 +125,8 @@ auto Platform::FileExchange::viewContent(const QByteArray& content, const QStrin
 
     QString tmpPath = contentToTempFile(content, fileNameTemplate);
     bool success = outgoingIntent(QStringLiteral("viewFile"), tmpPath, mimeType);
-    if (success) {
+    if (success)
+    {
         return {};
     }
     return tr("No suitable app for viewing this data could be found.");
@@ -140,7 +149,8 @@ auto Platform::FileExchange::contentToTempFile(const QByteArray& content, const 
     auto filePath = fileExchangeDirectoryName + fname;
 
     QFile file(filePath);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))
+    {
         return {};
     }
 
@@ -174,7 +184,12 @@ extern "C" {
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setFileReceived(JNIEnv* env, jobject /*unused*/, jstring jfname)
 {
     const char* fname = env->GetStringUTFChars(jfname, nullptr);
-    GlobalObject::fileExchange()->processFileOpenRequest(QString::fromUtf8(fname));
+
+    // A little complicated because GlobalObject::fileExchange() lives in a different thread
+    QMetaObject::invokeMethod( GlobalObject::fileExchange(),
+                               "processFileOpenRequest",
+                               Qt::QueuedConnection,
+                               Q_ARG( QString, QString::fromUtf8(fname)) );
     env->ReleaseStringUTFChars(jfname, fname);
 }
 

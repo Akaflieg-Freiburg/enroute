@@ -18,16 +18,18 @@ def get_name(employee):
 # Acquire data
 data = []
 
+qtbaseDir = os.environ.get('Qt6_DIR_BASE')
+
 # Include data from all the Qt modules that we use
-data += qtattributionsscanner("../qt5/qtandroidextras")
-data += qtattributionsscanner("../qt5/qtbase")
-data += qtattributionsscanner("../qt5/qtdeclarative")
-data += qtattributionsscanner("../qt5/qtlocation")
-data += qtattributionsscanner("../qt5/qtquickcontrols2")
-data += qtattributionsscanner("../qt5/qtsvg")
-data += qtattributionsscanner("../qt5/qttranslations")
-data += qtattributionsscanner("../qt5/qtwebview")
-data += qtattributionsscanner("../qt5/qtx11extras")
+data += qtattributionsscanner(qtbaseDir+"/Src/qtbase")
+data += qtattributionsscanner(qtbaseDir+"/Src/qtdeclarative")
+data += qtattributionsscanner(qtbaseDir+"/Src/qthttpserver")
+data += qtattributionsscanner(qtbaseDir+"/Src/qtimageformats")
+data += qtattributionsscanner("/home/kebekus/Software/projects/qtlocation")
+data += qtattributionsscanner(qtbaseDir+"/Src/qtpositioning")
+data += qtattributionsscanner(qtbaseDir+"/Src/qtsvg")
+data += qtattributionsscanner(qtbaseDir+"/Src/qttranslations")
+data += qtattributionsscanner(qtbaseDir+"/Src/qtwebview")
 
 # Include data from modules in 3rdParty
 for root,directors,files in os.walk("3rdParty"):

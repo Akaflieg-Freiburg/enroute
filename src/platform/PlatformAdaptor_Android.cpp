@@ -22,6 +22,7 @@
 #include <QHash>
 #include <QJniEnvironment>
 #include <QJniObject>
+#include <QProcess>
 #include <QScreen>
 #include <QtCore/private/qandroidextras_p.h>
 
@@ -44,10 +45,65 @@ void Platform::PlatformAdaptor::deferredInitialization()
 // Methods
 //
 
+auto Platform::PlatformAdaptor::checkPermissions() -> QString
+{
+    QStringList results;
+
+    auto coarseLocationFuture = QtAndroidPrivate::checkPermission(u"android.permission.ACCESS_COARSE_LOCATION"_qs);
+    coarseLocationFuture.waitForFinished();
+    auto fineLocationFuture = QtAndroidPrivate::checkPermission(u"android.permission.ACCESS_FINE_LOCATION"_qs);
+    fineLocationFuture.waitForFinished();
+    auto notificationFuture = QtAndroidPrivate::checkPermission(u"android.permission.POST_NOTIFICATIONS"_qs);
+    notificationFuture.waitForFinished();
+
+    if ((coarseLocationFuture.result() != QtAndroidPrivate::PermissionResult::Authorized)
+            || (fineLocationFuture.result() != QtAndroidPrivate::PermissionResult::Authorized))
+    {
+        QString result;
+        result = "<strong>ACCESS_COARSE_LOCATION</strong> and <strong>ACCESS_FINE_LOCATION</strong>: "
+                + tr("Enroute Flight Navigation needs to access your precise location. "
+                     "The app uses this data to show your position on the moving "
+                     "map and to provide relevant aeronautical information.");
+        results << result;
+    }
+
+    // Notifications are optional. Show text only if the user has not yet decided.
+    if (notificationFuture.result() == QtAndroidPrivate::PermissionResult::Undetermined)
+    {
+        results << "<strong>POST_NOTIFICATIONS</strong>: "
+                   + tr("The app uses notifications, for instance to inform the user about "
+                        "critial updates of aviation data.");
+    }
+
+    QString final;
+    foreach(auto result, results)
+    {
+        final += "<li>" + result + "</li>";
+    }
+    if (!final.isEmpty())
+    {
+        final = "<ul style='margin-left:-25px;'>"+final+"</ul>";
+
+        if ((coarseLocationFuture.result() == QtAndroidPrivate::PermissionResult::Denied)
+                || (fineLocationFuture.result() == QtAndroidPrivate::PermissionResult::Denied))
+        {
+            final += "<p>"
+                    + tr("Some permissions have previously been denied. "
+                         "The system might not show the permission dialog again. "
+                         "In that case, use the system settings to grant the necessary permissions. "
+                         "Some users find the settings hard to navigate and prefer to re-install the app.")
+                    + "</p>";
+        }
+    }
+
+    return final;
+}
+
+
 auto Platform::PlatformAdaptor::currentSSID() -> QString
 {
     QJniObject stringObject = QJniObject::callStaticObjectMethod("de/akaflieg_freiburg/enroute/MobileAdaptor",
-                                                                               "getSSID", "()Ljava/lang/String;");
+                                                                 "getSSID", "()Ljava/lang/String;");
     return stringObject.toString();
 }
 
@@ -58,38 +114,28 @@ void Platform::PlatformAdaptor::disableScreenSaver()
     // Implementation follows a suggestion found in https://stackoverflow.com/questions/27758499/how-to-keep-the-screen-on-in-qt-for-android
     QNativeInterface::QAndroidApplication::runOnAndroidMainThread([on]{
         QJniObject activity = QNativeInterface::QAndroidApplication::context();
-        if (activity.isValid()) {
+        if (activity.isValid())
+        {
             QJniObject window = activity.callObjectMethod("getWindow", "()Landroid/view/Window;");
 
-            if (window.isValid()) {
+            if (window.isValid())
+            {
                 const int FLAG_KEEP_SCREEN_ON = 128;
-                if (on) {
+                if (on)
+                {
                     window.callMethod<void>("addFlags", "(I)V", FLAG_KEEP_SCREEN_ON);
-                } else {
+                }
+                else
+                {
                     window.callMethod<void>("clearFlags", "(I)V", FLAG_KEEP_SCREEN_ON);
                 }
             }
         }
         QJniEnvironment env;
-        if (env->ExceptionCheck() != 0u) {
+        if (env->ExceptionCheck() != 0U) {
             env->ExceptionClear();
         }
     });
-}
-
-
-auto Platform::PlatformAdaptor::hasRequiredPermissions() -> bool
-{
-    // Check is required permissions have been granted
-    foreach(auto permission, requiredPermissions) {
-        auto resultFuture = QtAndroidPrivate::checkPermission(permission);
-        resultFuture.waitForFinished();
-        if (resultFuture.result() == QtAndroidPrivate::PermissionResult::Denied) {
-            qWarning() << "Required permission missing" << permission;
-            return false;
-        }
-    }
-    return true;
 }
 
 
@@ -115,14 +161,30 @@ void Platform::PlatformAdaptor::onGUISetupCompleted()
 
 void Platform::PlatformAdaptor::requestPermissionsSync()
 {
-    QStringList permissions;
-    permissions << requiredPermissions << optionalPermissions;
-    foreach(auto permission, permissions) {
-        auto resultFuture = QtAndroidPrivate::requestPermission(permission);
-        resultFuture.waitForFinished();
-    }
+    auto permission = QtAndroidPrivate::requestPermission(u"android.permission.POST_NOTIFICATIONS"_qs);
+    permission.waitForFinished();
 }
 
+
+QString Platform::PlatformAdaptor::systemInfo()
+{
+    auto result = Platform::PlatformAdaptor_Abstract::systemInfo();
+
+    // Device Name
+    QJniObject stringObject = QJniObject::callStaticObjectMethod<jstring>("de/akaflieg_freiburg/enroute/MobileAdaptor",
+                                                                          "deviceName");
+    result += u"<h3>Device</h3>\n"_qs;
+    result += stringObject.toString();
+
+    // System Log
+    QProcess proc;
+    proc.startCommand(u"logcat -t 300"_qs);
+    proc.waitForFinished();
+    result += u"<h3>System Log</h3>\n"_qs;
+    result += u"<pre>\n"_qs + proc.readAllStandardOutput() + u"\n</pre>\n"_qs;
+
+    return result;
+}
 
 
 void Platform::PlatformAdaptor::vibrateBrief()

@@ -25,6 +25,7 @@
 #include <QLockFile>
 #include <QSettings>
 
+#include "GlobalSettings.h"
 #include "dataManagement/DataManager.h"
 #include "geomaps/MBTILES.h"
 #include <chrono>
@@ -48,18 +49,17 @@ DataManagement::DataManager::DataManager(QObject* parent) : GlobalObject(parent)
 
     m_mapsAndData.add(&m_mapSets);
     m_mapsAndData.add(&m_databases);
-
-    // If there is a downloaded maps.json file, we read it.
-    updateDataItemListAndWhatsNew();
-
 }
 
 void DataManagement::DataManager::deferredInitialization()
-{
-    // If the last update is more than six days ago, automatically initiate an
+{    
+    // If there is a downloaded maps.json file, we read it.
+    updateDataItemListAndWhatsNew();
+
+    // If the last update is more than one day ago, automatically initiate an
     // update, so that maps stay at least roughly current.
     auto lastUpdate = QSettings().value(QStringLiteral("DataManager/MapListTimeStamp"), QDateTime()).toDateTime();
-    if (!lastUpdate.isValid() || (qAbs(lastUpdate.daysTo(QDateTime::currentDateTime()) > 6)))
+    if (!lastUpdate.isValid() || (qAbs(lastUpdate.daysTo(QDateTime::currentDateTime()) > 0)))
     {
         updateRemoteDataItemList();
     }
@@ -84,25 +84,26 @@ void DataManagement::DataManager::cleanDataDirectory()
     while (fileIterator.hasNext())
     {
         fileIterator.next();
-        if (fileIterator.filePath().endsWith(QLatin1String(".geojson.geojson")) || fileIterator.filePath().endsWith(QLatin1String(".mbtiles.mbtiles")))
+        if (fileIterator.filePath().endsWith(u".geojson.geojson"_qs)
+                || fileIterator.filePath().endsWith(u".mbtiles.mbtiles"_qs))
         {
             misnamedFiles += fileIterator.filePath();
         }
-        if (!fileIterator.filePath().endsWith(QLatin1String(".terrain")) &&
-                !fileIterator.filePath().endsWith(QLatin1String(".geojson")) &&
-                !fileIterator.filePath().endsWith(QLatin1String(".mbtiles")) &&
-                !fileIterator.filePath().endsWith(QLatin1String(".raster")) &&
-                !fileIterator.filePath().endsWith(QLatin1String(".txt")))
+        if (!fileIterator.filePath().endsWith(u".terrain"_qs) &&
+                !fileIterator.filePath().endsWith(u".geojson"_qs) &&
+                !fileIterator.filePath().endsWith(u".mbtiles"_qs) &&
+                !fileIterator.filePath().endsWith(u".raster"_qs) &&
+                !fileIterator.filePath().endsWith(u".txt"_qs))
         {
             unexpectedFiles += fileIterator.filePath();
         }
 
         // Delete aviation map files that are no longer supported, though they existed in earlier versions of this app
-        if (fileIterator.filePath().endsWith(QLatin1String("Ireland and Northern Ireland.terrain")) ||
-                fileIterator.filePath().endsWith(QLatin1String("Slowenia.geojson")) ||
-                fileIterator.filePath().endsWith(QLatin1String("United Kingdom.geojson")) ||
-                fileIterator.filePath().endsWith(QLatin1String("Canada.geojson")) ||
-                fileIterator.filePath().endsWith(QLatin1String("United States.geojson")))
+        if (fileIterator.filePath().endsWith(u"Ireland and Northern Ireland.terrain"_qs) ||
+                fileIterator.filePath().endsWith(u"Slowenia.geojson"_qs) ||
+                fileIterator.filePath().endsWith(u"United Kingdom.geojson"_qs) ||
+                fileIterator.filePath().endsWith(u"Canada.geojson"_qs) ||
+                fileIterator.filePath().endsWith(u"United States.geojson"_qs))
         {
             unexpectedFiles += fileIterator.filePath();
         }
@@ -142,10 +143,10 @@ auto DataManagement::DataManager::import(const QString& fileName, const QString&
     switch(mbtiles.format())
     {
     case GeoMaps::MBTILES::Raster:
-        newFileName += QLatin1String(".raster");
+        newFileName += u".raster"_qs;
         break;
     case GeoMaps::MBTILES::Vector:
-        newFileName += QLatin1String(".mbtiles");
+        newFileName += u".mbtiles"_qs;
         break;
     case GeoMaps::MBTILES::Unknown:
         return tr("Unable to recognize map file format.");
@@ -190,12 +191,12 @@ void DataManagement::DataManager::onItemFileChanged()
         // Ok, we found an unsupported map without local file. Let's get rid of
         // that.
         m_items.remove(geoMapPtr);
-        geoMapPtr->deleteLater();
+        delete geoMapPtr;
         QTimer::singleShot(100ms, this, &DataManagement::DataManager::updateDataItemListAndWhatsNew);
     }
 }
 
-auto DataManagement::DataManager::createOrRecycleItem(const QUrl &url, const QString &localFileName) -> DataManagement::Downloadable_SingleFile *
+auto DataManagement::DataManager::createOrRecycleItem(const QUrl& url, const QString& localFileName, const QGeoRectangle& bBox) -> DataManagement::Downloadable_SingleFile*
 {
     // If a data item with the given local file name and the given URL already exists,
     // update that remoteFileDate and remoteFileSize of that element, annd delete its
@@ -214,12 +215,12 @@ auto DataManagement::DataManager::createOrRecycleItem(const QUrl &url, const QSt
     }
 
     // Construct a new downloadable object and add to appropriate groups
-    auto* downloadable = new DataManagement::Downloadable_SingleFile(url, localFileName, this);
+    auto* downloadable = new DataManagement::Downloadable_SingleFile(url, localFileName, bBox, this);
     downloadable->setObjectName(localFileName.section(QStringLiteral("/"), -1, -1).section(QStringLiteral("."), 0, -2));
-    if (localFileName.endsWith(QLatin1String("geojson")) ||
-            localFileName.endsWith(QLatin1String("mbtiles")) ||
-            localFileName.endsWith(QLatin1String("raster")) ||
-            localFileName.endsWith(QLatin1String("terrain")))
+    if (localFileName.endsWith(u"geojson"_qs) ||
+            localFileName.endsWith(u"mbtiles"_qs) ||
+            localFileName.endsWith(u"raster"_qs) ||
+            localFileName.endsWith(u"terrain"_qs))
     {
         if (url.isValid())
         {
@@ -255,25 +256,25 @@ auto DataManagement::DataManager::createOrRecycleItem(const QUrl &url, const QSt
     }
 
     m_items.add(downloadable);
-    if (localFileName.endsWith(QLatin1String("terrain")))
+    if (localFileName.endsWith(u"terrain"_qs))
     {
         m_terrainMaps.add(downloadable);
     }
-    if (localFileName.endsWith(QLatin1String("geojson")))
+    if (localFileName.endsWith(u"geojson"_qs))
     {
         m_aviationMaps.add(downloadable);
     }
-    if (localFileName.endsWith(QLatin1String("raster")))
+    if (localFileName.endsWith(u"raster"_qs))
     {
         m_baseMapsRaster.add(downloadable);
         m_baseMaps.add(downloadable);
     }
-    if (localFileName.endsWith(QLatin1String("mbtiles")))
+    if (localFileName.endsWith(u"mbtiles"_qs))
     {
         m_baseMapsVector.add(downloadable);
         m_baseMaps.add(downloadable);
     }
-    if (localFileName.endsWith(QLatin1String("txt")))
+    if (localFileName.endsWith(u"txt"_qs))
     {
         m_databases.add(downloadable);
     }
@@ -357,6 +358,13 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
             emit appUpdateRequiredChanged();
         }
 
+        auto FAA_ID = top.value(QStringLiteral("FAA_ID")).toString();
+        auto FAA_KEY = top.value(QStringLiteral("FAA_KEY")).toString();
+        if (!FAA_ID.isEmpty() && !FAA_KEY.isEmpty())
+        {
+            globalSettings()->setFAAData(FAA_ID, FAA_KEY);
+        }
+
         auto baseURL = top.value(QStringLiteral("url")).toString();
         foreach (auto map, top.value(QStringLiteral("maps")).toArray())
         {
@@ -368,7 +376,21 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
             auto fileModificationDateTime = QDateTime::fromString(obj.value(QStringLiteral("time")).toString(), QStringLiteral("yyyyMMdd"));
             qint64 fileSize = qRound64(obj.value(QStringLiteral("size")).toDouble());
 
-            auto* downloadable = createOrRecycleItem(mapUrl, localFileName);
+
+            QGeoRectangle bbox;
+            if (obj.contains(u"bbox"_qs))
+            {
+                auto bboxData = obj.value(u"bbox"_qs).toArray();
+                auto left = bboxData.at(0).toDouble();
+                auto bottom = bboxData.at(1).toDouble();
+
+                auto right = bboxData.at(2).toDouble();
+                auto top = bboxData.at(3).toDouble();
+                bbox.setTopLeft( {top, left} );
+                bbox.setBottomRight( {bottom, right} );
+            }
+
+            auto* downloadable = createOrRecycleItem(mapUrl, localFileName, bbox);
             oldMaps.removeAll(downloadable);
             downloadable->setRemoteFileDate(fileModificationDateTime);
             downloadable->setRemoteFileSize(fileSize);
@@ -380,7 +402,7 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
     // Next, we create or recycle items for all files that that we have found in the directory.
     foreach (auto localFileName, files)
     {
-        auto *downloadable = createOrRecycleItem(QUrl(), localFileName);
+        auto *downloadable = createOrRecycleItem(QUrl(), localFileName, {});
         oldMaps.removeAll(downloadable);
         downloadable->setObjectName(localFileName.section(QStringLiteral("/"), -1, -1));
     }

@@ -146,6 +146,7 @@ Page {
                     heightLimitDialog.open()
                 }
             }
+
             ToolButton {
                 icon.source: "/icons/material/ic_info_outline.svg"
                 onClicked: {
@@ -155,15 +156,6 @@ Page {
                             +"<p>"+qsTr("Once you set an altitude limit, the moving map will display a little warning (“Airspaces up to 9,500 ft”) to remind you that the moving map does not show all airspaces. The app will automatically increase the limit when your aircraft approaches the altitude limit from below.")+"</p>"
                     helpDialog.open()
                 }
-            }
-
-            Label {
-                Layout.leftMargin: settingsPage.font.pixelSize
-                Layout.fillWidth: true
-                Layout.columnSpan: 2
-                text: qsTr("Map Features")
-                font.bold: true
-                color: Material.accent
             }
 
             WordWrappingSwitchDelegate {
@@ -247,6 +239,58 @@ Page {
             Label {
                 Layout.leftMargin: settingsPage.font.pixelSize
                 Layout.columnSpan: 2
+                text: qsTr("User Interface")
+                font.pixelSize: settingsPage.font.pixelSize*1.2
+                font.bold: true
+                color: Material.accent
+            }
+
+            WordWrappingItemDelegate {
+                id: largeFonts
+                text: qsTr("Font Size")
+                icon.source: "/icons/material/ic_format_size.svg"
+                Layout.fillWidth: true
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    fontSizeDialog.open()
+                }
+            }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("Font Size")
+                    helpDialog.text = "<p>" + qsTr("Use this option to adjust the font size for optimal readability.") + "</p>"
+                    helpDialog.open()
+                }
+            }
+
+            WordWrappingSwitchDelegate {
+                id: nightMode
+                text: qsTr("Night Mode")
+                icon.source: "/icons/material/ic_brightness_3.svg"
+                Layout.fillWidth: true
+                Component.onCompleted: {
+                    nightMode.checked = GlobalSettings.nightMode
+                }
+                onToggled: {
+                    PlatformAdaptor.vibrateBrief()
+                    GlobalSettings.nightMode = nightMode.checked
+                }
+            }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("Night Mode")
+                    helpDialog.text = "<p>" + qsTr("The “Night Mode” of Enroute Flight Navigation is similar to the “Dark Mode” found in many other apps. We designed the night mode for pilots performing VFR flights by night, whose eyes have adapted to the darkness. Compared with other apps, you will find that the display is quite dark indeed.") + "</p>"
+                    helpDialog.open()
+                }
+            }
+
+            Label {
+                Layout.leftMargin: settingsPage.font.pixelSize
+                Layout.columnSpan: 2
                 text: qsTr("System")
                 font.pixelSize: settingsPage.font.pixelSize*1.2
                 font.bold: true
@@ -282,29 +326,6 @@ Page {
                     helpDialog.text = "<p>" + qsTr("Enroute Flight Navigation can either use the built-in satnav receiver of your device or a connected traffic receiver as a primary position data source. This setting is essential if your device has reception problems or if you use Enroute Flight Navigation together with a flight simulator.") + "</p>"
                             + "<p>" + qsTr("You will most likely prefer the built-in satnav receiver for actual flight. The built-in receiver provides one position update per second on a typical Android system, while traffic receivers do not always provide timely position updates.") + "</p>"
                             + "<p>" + qsTr("If you use Enroute Flight Navigation together with a flight simulator, you must choose the traffic receiver as a primary position data source. Flight simulators broadcast position information of simulated aircraft via Wi-Fi, using the same protocol that a traffic data receiver would use in a real plane. As long as the built-in satnav receiver is selected, all position information provided by your flight simulator is ignored.") + "</p>"
-                    helpDialog.open()
-                }
-            }
-
-            WordWrappingSwitchDelegate {
-                id: nightMode
-                text: qsTr("Night Mode")
-                icon.source: "/icons/material/ic_brightness_3.svg"
-                Layout.fillWidth: true
-                Component.onCompleted: {
-                    nightMode.checked = GlobalSettings.nightMode
-                }
-                onToggled: {
-                    PlatformAdaptor.vibrateBrief()
-                    GlobalSettings.nightMode = nightMode.checked
-                }
-            }
-            ToolButton {
-                icon.source: "/icons/material/ic_info_outline.svg"
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    helpDialog.title = qsTr("Night Mode")
-                    helpDialog.text = "<p>" + qsTr("The “Night Mode” of Enroute Flight Navigation is similar to the “Dark Mode” found in many other apps. We designed the night mode for pilots performing VFR flights by night, whose eyes have adapted to the darkness. Compared with other apps, you will find that the display is quite dark indeed.") + "</p>"
                     helpDialog.open()
                 }
             }
@@ -420,22 +441,60 @@ Page {
             PlatformAdaptor.vibrateBrief()
             close()
             stackView.pop()
-            stackView.push("../pages/DataManager.qml")
+            stackView.push("../pages/DataManagerPage.qml")
         }
     }
 
+
     CenteringDialog {
+        id: altimeterDialog
+
+        modal: true
+
+        title: qsTr("Altimeter Mode")
+        standardButtons: Dialog.Ok|Dialog.Cancel
+
+        ColumnLayout {
+            width: altimeterDialog.availableWidth
+
+            Label {
+                text: qsTr("This setting applies to the altimeter in the Navigation Bar, at the bottom of the moving map screen.")
+                Layout.fillWidth: true
+                wrapMode: Text.Wrap
+            }
+
+            WordWrappingCheckDelegate {
+                id: a1
+                text: qsTr("Height above ground level (AGL)")
+                Layout.fillWidth: true
+                checked: GlobalSettings.showAltitudeAGL
+                onCheckedChanged: b1.checked = !checked
+            }
+
+            WordWrappingCheckDelegate {
+                id: b1
+                text: qsTr("Height above main sea level (AMSL)")
+                Layout.fillWidth: true
+                onCheckedChanged: a1.checked = !checked
+            }
+        }
+
+        onAboutToShow: {
+            a1.checked = GlobalSettings.showAltitudeAGL
+            b1.checked = !a1.checked
+        }
+
+        onAccepted: GlobalSettings.showAltitudeAGL = a1.checked
+
+    }
+
+    LongTextDialog {
         id: clearPasswordDialog
 
         title: qsTr("Clear Password Storage?")
         modal: true
 
-        Label {
-            width: clearPasswordDialog.availableWidth
-
-            text: qsTr("Once the storage is cleared, the passwords can no longer be retrieved.")
-            wrapMode: Text.Wrap
-        }
+        text: qsTr("Once the storage is cleared, the passwords can no longer be retrieved.")
 
         footer: DialogButtonBox {
             ToolButton {
@@ -454,6 +513,43 @@ Page {
             toast.doToast(qsTr("Password storage cleared"))
         }
 
+    }
+
+    CenteringDialog {
+        id: fontSizeDialog
+
+        modal: true
+
+        title: qsTr("Font Size")
+        standardButtons: Dialog.Ok
+
+        GridLayout {
+            width: fontSizeDialog.availableWidth
+            columns: 2
+
+            Slider {
+                id: fontSlider
+                Layout.columnSpan: 2
+                Layout.fillWidth: true
+                from: 14
+                to: 20
+                stepSize: 1
+                snapMode: Slider.SnapAlways
+                value: GlobalSettings.fontSize
+                onValueChanged: GlobalSettings.fontSize = fontSlider.value
+            }
+            Label {
+                Layout.fillWidth: true
+                horizontalAlignment: Text.AlignLeft
+                text: qsTr("Normal")
+            }
+            Label {
+                Layout.fillWidth: true
+                horizontalAlignment: Text.AlignRight
+                text: qsTr("Huge")
+            }
+
+        }
     }
 
     CenteringDialog {
@@ -578,48 +674,6 @@ Page {
         }
 
         onAccepted: GlobalSettings.positioningByTrafficDataReceiver = b.checked
-
-    }
-
-    CenteringDialog {
-        id: altimeterDialog
-
-        modal: true
-
-        title: qsTr("Altimeter Mode")
-        standardButtons: Dialog.Ok|Dialog.Cancel
-
-        ColumnLayout {
-            width: altimeterDialog.availableWidth
-
-            Label {
-                text: qsTr("This setting applies to the altimeter in the Navigation Bar, at the bottom of the moving map screen.")
-                Layout.fillWidth: true
-                wrapMode: Text.Wrap
-            }
-
-            WordWrappingCheckDelegate {
-                id: a1
-                text: qsTr("Height above ground level (AGL)")
-                Layout.fillWidth: true
-                checked: GlobalSettings.showAltitudeAGL
-                onCheckedChanged: b1.checked = !checked
-            }
-
-            WordWrappingCheckDelegate {
-                id: b1
-                text: qsTr("Height above main sea level (AMSL)")
-                Layout.fillWidth: true
-                onCheckedChanged: a1.checked = !checked
-            }
-        }
-
-        onAboutToShow: {
-            a1.checked = GlobalSettings.showAltitudeAGL
-            b1.checked = !a1.checked
-        }
-
-        onAccepted: GlobalSettings.showAltitudeAGL = a1.checked
 
     }
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,6 +24,7 @@
 #include <QSettings>
 
 #include "GlobalObject.h"
+#include "units/ByteSize.h"
 #include "units/Distance.h"
 
 
@@ -70,7 +71,7 @@ public:
     explicit GlobalSettings() = delete;
 
     // factory function for QML singleton
-    static GlobalSettings* create(QQmlEngine *, QJSEngine *)
+    static GlobalSettings* create(QQmlEngine * /*unused*/, QJSEngine * /*unused*/)
     {
         return GlobalObject::globalSettings();
     }
@@ -88,14 +89,6 @@ public:
      * returned.
      */
     Q_PROPERTY(int acceptedTerms READ acceptedTerms WRITE setAcceptedTerms NOTIFY acceptedTermsChanged)
-
-    /*! \brief Find out if Weather Terms have been accepted
-     *
-     * This property says if the user has agreed to share its location and route
-     * with aviationweather.gov (US government website providing weather data).
-     * If nothing has been accepted yet, false is returned.
-     */
-    Q_PROPERTY(bool acceptedWeatherTerms READ acceptedWeatherTerms WRITE setAcceptedWeatherTerms NOTIFY acceptedWeatherTermsChanged)
 
     /*! \brief Airspace altitude limit for map display
      *
@@ -117,6 +110,27 @@ public:
      */
     Q_PROPERTY(Units::Distance airspaceAltitudeLimit_max MEMBER airspaceAltitudeLimit_max CONSTANT)
 
+    /*! \brief Should we expand notam abbreviations */
+    Q_PROPERTY(bool expandNotamAbbreviations READ expandNotamAbbreviations WRITE setExpandNotamAbbreviations NOTIFY expandNotamAbbreviationsChanged)
+
+    /*! \brief ID of our app for the FAA API
+     *
+     *  Set data using the method setFAAData().
+     */
+    Q_PROPERTY(QString FAA_ID READ FAA_ID NOTIFY FAADataChanged)
+
+    /*! \brief KEY of our app for the FAA API
+     *
+     *  Set data using the method setFAAData().
+     */
+    Q_PROPERTY(QString FAA_KEY READ FAA_KEY NOTIFY FAADataChanged)
+
+    /*! \brief Font size
+     *
+     *  This is a value between 14 (normal font size) and 20 (giant fonts)
+     */
+    Q_PROPERTY(int fontSize READ fontSize WRITE setFontSize NOTIFY fontSizeChanged)
+
     /*! \brief Hide gliding sectors */
     Q_PROPERTY(bool hideGlidingSectors READ hideGlidingSectors WRITE setHideGlidingSectors NOTIFY hideGlidingSectorsChanged)
 
@@ -134,20 +148,27 @@ public:
      * This property is used in the app to determine if the message has been
      * shown or not.
      */
-    Q_PROPERTY(size_t lastWhatsNewHash READ lastWhatsNewHash WRITE setLastWhatsNewHash NOTIFY lastWhatsNewHashChanged)
+    Q_PROPERTY(Units::ByteSize lastWhatsNewHash READ lastWhatsNewHash WRITE setLastWhatsNewHash NOTIFY lastWhatsNewHashChanged)
 
     /*! \brief Hash of the last "what's new in maps" message that was shown to the user
      *
      * This property is used in the app to determine if the message has been
      * shown or not.
      */
-    Q_PROPERTY(size_t lastWhatsNewInMapsHash READ lastWhatsNewInMapsHash WRITE setLastWhatsNewInMapsHash NOTIFY lastWhatsNewInMapsHashChanged)
+    Q_PROPERTY(Units::ByteSize lastWhatsNewInMapsHash READ lastWhatsNewInMapsHash WRITE setLastWhatsNewInMapsHash NOTIFY lastWhatsNewInMapsHashChanged)
 
     /*! \brief Map bearing policy */
     Q_PROPERTY(MapBearingPolicy mapBearingPolicy READ mapBearingPolicy WRITE setMapBearingPolicy NOTIFY mapBearingPolicyChanged)
 
     /*! \brief Night mode */
     Q_PROPERTY(bool nightMode READ nightMode WRITE setNightMode NOTIFY nightModeChanged)
+
+    /*! \brief Hash of the last "privacy" message that was accepted by the user
+     *
+     * This property is used in the app to determine if the message has been
+     * shown or not.
+     */
+    Q_PROPERTY(Units::ByteSize privacyHash READ privacyHash WRITE setPrivacyHash NOTIFY privacyHashChanged)
 
     /*! \brief Show Altitude AGL */
     Q_PROPERTY(bool showAltitudeAGL READ showAltitudeAGL WRITE setShowAltitudeAGL NOTIFY showAltitudeAGLChanged)
@@ -168,15 +189,33 @@ public:
 
     /*! \brief Getter function for property of the same name
      *
-     * @returns Property acceptedWeatherTerms
-     */
-    [[nodiscard]] auto acceptedWeatherTerms() const -> bool { return settings.value(QStringLiteral("acceptedWeatherTerms"), false).toBool(); }
-
-    /*! \brief Getter function for property of the same name
-     *
      * @returns Property airspaceAltitudeLimit
      */
     [[nodiscard]] auto airspaceAltitudeLimit() const -> Units::Distance;
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property expandNotamAbbreviations
+     */
+    [[nodiscard]] bool expandNotamAbbreviations() const { return settings.value(QStringLiteral("expandNotamAbbreviations"), false).toBool(); }
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property FAA_ID
+     */
+    [[nodiscard]] QString FAA_ID() const { return settings.value(QStringLiteral("FAA_ID"), "").toString(); }
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property FAA_KEY
+     */
+    [[nodiscard]] QString FAA_KEY() const { return settings.value(QStringLiteral("FAA_KEY"), "").toString(); }
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property largeFonts
+     */
+    [[nodiscard]] auto fontSize() const -> int;
 
     /*! \brief Getter function for property of the same name
      *
@@ -198,7 +237,7 @@ public:
 
     /*! \brief Getter function for property with the same name
      *
-     * @returns Property hasTranslation
+     * @returns Property lastValidAirspaceAltitudeLimit
      */
     [[nodiscard]] auto lastValidAirspaceAltitudeLimit() const -> Units::Distance;
 
@@ -206,7 +245,7 @@ public:
      *
      * @returns Property lastWhatsNewHash
      */
-    [[nodiscard]] auto lastWhatsNewHash() const -> size_t
+    [[nodiscard]] auto lastWhatsNewHash() const -> Units::ByteSize
     {
         return settings.value(QStringLiteral("lastWhatsNewHash"), 0).value<size_t>();
     }
@@ -215,7 +254,7 @@ public:
      *
      * @returns Property lastWhatsNewInMapsHash
      */
-    [[nodiscard]] auto lastWhatsNewInMapsHash() const -> size_t
+    [[nodiscard]] auto lastWhatsNewInMapsHash() const -> Units::ByteSize
     {
         return settings.value(QStringLiteral("lastWhatsNewInMapsHash"), 0).value<size_t>();
     }
@@ -240,6 +279,12 @@ public:
 
     /*! \brief Getter function for property of the same name
      *
+     * @returns Property privacyHash
+     */
+    [[nodiscard]] auto privacyHash() const -> Units::ByteSize  { return settings.value(QStringLiteral("privacyHash"), 0).value<size_t>(); }
+
+    /*! \brief Getter function for property of the same name
+     *
      * @returns Property positioningByTrafficDataReceiver
      */
     [[nodiscard]] auto showAltitudeAGL() const -> bool { return settings.value(QStringLiteral("showAltitudeAGL"), false).toBool(); }
@@ -257,12 +302,6 @@ public:
 
     /*! \brief Setter function for property of the same name
      *
-     * @param terms Property acceptedWeatherTerms
-     */
-    void setAcceptedWeatherTerms(bool terms);
-
-    /*! \brief Setter function for property of the same name
-     *
      *  If newAirspaceAltitudeLimit is less than airspaceHeightLimit_min, then
      *  airspaceHeightLimit_min will be set. If newAirspaceAltitudeLimit is higher than
      *  airspaceHeightLimit_max, then airspaceHeightLimit_max will be set.
@@ -273,9 +312,29 @@ public:
 
     /*! \brief Setter function for property of the same name
      *
+     * @param newExpandNotamAbbreviations Property expandNotamAbbreviations
+     */
+    void setExpandNotamAbbreviations(bool newExpandNotamAbbreviations);
+
+    /*! \brief Setter function for property of the same name
+     *
+     * @param newID Property FAA_ID
+     *
+     * @param newKey Property FAA_KEY
+     */
+    void setFAAData(const QString& newID, const QString& newKey);
+
+    /*! \brief Setter function for property of the same name
+     *
      * @param hide Property hideGlidingSectors
      */
     void setHideGlidingSectors(bool hide);
+
+    /*! \brief Setter function for property of the same name
+     *
+     * @param newFontSize Property fontSize
+     */
+    void setFontSize(int newFontSize);
 
     /*! \brief Setter function for property of the same name
      *
@@ -291,15 +350,21 @@ public:
 
     /*! \brief Getter function for property of the same name
      *
+     * @param newLargeFonts Property largeFonts
+     */
+    void setLargeFonts(bool newLargeFonts);
+
+    /*! \brief Getter function for property of the same name
+     *
      * @param lwnh Property lastWhatsNewHash
      */
-    void setLastWhatsNewHash(size_t lwnh);
+    void setLastWhatsNewHash(Units::ByteSize lwnh);
 
     /*! \brief Getter function for property of the same name
      *
      * @param lwnh Property lastWhatsNewInMapsHash
      */
-    void setLastWhatsNewInMapsHash(size_t lwnh);
+    void setLastWhatsNewInMapsHash(Units::ByteSize lwnh);
 
     /*! \brief Setter function for property of the same name
      *
@@ -318,6 +383,12 @@ public:
      * @param newPositioningByTrafficDataReceiver Property positioningByTrafficDataReceiver
      */
     void setPositioningByTrafficDataReceiver(bool newPositioningByTrafficDataReceiver);
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @param newHash Property privacyHash
+     */
+    void setPrivacyHash(Units::ByteSize newHash);
 
     /*! \brief Setter function for property of the same name
      *
@@ -338,10 +409,16 @@ signals:
     void acceptedTermsChanged();
 
     /*! \brief Notifier signal */
-    void acceptedWeatherTermsChanged();
+    void airspaceAltitudeLimitChanged();
 
     /*! \brief Notifier signal */
-    void airspaceAltitudeLimitChanged();
+    void expandNotamAbbreviationsChanged();
+
+    /*! \brief Notifier signal */
+    void FAADataChanged();
+
+    /*! \brief Notifier signal */
+    void fontSizeChanged();
 
     /*! \brief Notifier signal */
     void hideGlidingSectorsChanged();
@@ -369,6 +446,9 @@ signals:
 
     /*! \brief Notifier signal */
     void positioningByTrafficDataReceiverChanged();
+
+    /*! \brief Notifier signal */
+    void privacyHashChanged();
 
     /*! \brief Notifier signal */
     void showAltitudeAGLChanged();

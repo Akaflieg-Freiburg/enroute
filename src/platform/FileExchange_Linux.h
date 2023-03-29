@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -37,7 +37,7 @@ public:
     /*! \brief Standard constructor
      *
      * @param parent Standard QObject parent pointer
-    */
+     */
     explicit FileExchange(QObject *parent = nullptr);
 
     ~FileExchange() override = default;
@@ -73,6 +73,11 @@ public:
      *  @returns see documentation for FileExchange_Abstract
      */
     Q_INVOKABLE QString viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) override;
+
+
+public slots:
+    /*! \brief Implements pure virtual method from FileExchange_Abstract */
+    virtual void onGUISetupCompleted() override {};
 
 private:
     Q_DISABLE_COPY_MOVE(FileExchange)

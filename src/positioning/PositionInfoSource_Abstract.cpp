@@ -53,7 +53,7 @@ void Positioning::PositionInfoSource_Abstract::setPositionInfo(const Positioning
     }
 
     _receivingPositionInfo = newReceiving;
-    emit receivingPositionInfoChanged(_receivingPositionInfo);
+    emit receivingPositionInfoChanged();
 }
 
 

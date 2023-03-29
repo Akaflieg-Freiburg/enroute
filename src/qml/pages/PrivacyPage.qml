@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2023 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,42 +18,46 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#pragma once
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
 
+import akaflieg_freiburg.enroute
+import "../items"
 
-#include <qhttpengine/handler.h>
+Page {
+    title: qsTr("Privacy Policy")
 
+    header: StandardHeader {}
 
-namespace GeoMaps {
+    ScrollView {
+        id: sView
 
+        anchors.fill: parent
+        contentWidth: availableWidth // Disable horizontal scrolling
 
-/*! \brief Implementation of QHttpEngine::Handler that serves GeoJSON from GeoMapProvider
- *
- *  This class serves the GeoJSON provided by GeoMapProvider at the URL path "aviationData.geojson".
- */
+        clip: true
 
-class GeoJSONHandler : public QHttpEngine::Handler
-{
-  Q_OBJECT
-  
-public:
-  /*! \brief Create a new  GeoJSON handler
-   *
-   *  This constructor sets up a new GeoJSON handler.
-   *
-   *  @param parent The standard QObject parent
-   */
-  explicit GeoJSONHandler(QObject* parent = nullptr);
-  
-protected:
-  /*
-   * @brief Reimplementation of
-   * [Handler::process()](QHttpEngine::Handler::process)
-   */
-  void process(QHttpEngine::Socket* socket, const QString& path) override;
-  
-private:
-  Q_DISABLE_COPY_MOVE(GeoJSONHandler)
-};
+        bottomPadding: SafeInsets.bottom
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
+            
+        Label {
+            id: lbl1
 
-} // namespace GeoMaps
+            topPadding: font.pixelSize*1
+            leftPadding: font.pixelSize*0.5
+            rightPadding: font.pixelSize*0.5
+
+            width: sView.availableWidth
+
+            text: Librarian.getStringFromRessource(":text/privacy.html")
+            textFormat: Text.RichText
+            linkColor: Material.accent
+            wrapMode: Text.Wrap
+
+            onLinkActivated: (link) => Qt.openUrlExternally(link)
+        }
+    }
+
+} // Page

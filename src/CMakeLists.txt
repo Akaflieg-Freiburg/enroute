@@ -36,7 +36,6 @@ set(SOURCES
     geomaps/Airspace.h
     geomaps/CUP.h
     geomaps/GeoJSON.h
-    geomaps/GeoJSONHandler.h
     geomaps/GeoMapProvider.h
     geomaps/GPX.h
     geomaps/MBTILES.h
@@ -53,6 +52,9 @@ set(SOURCES
     navigation/Leg.h
     navigation/Navigator.h
     navigation/RemainingRouteInfo.h
+    notam/Notam.h
+    notam/NotamList.h
+    notam/NotamProvider.h
     platform/FileExchange.h
     platform/FileExchange_Abstract.h
     platform/Notifier.h
@@ -79,6 +81,7 @@ set(SOURCES
     traffic/TrafficFactor_WithPosition.h
     traffic/Warning.h
     units/Angle.h
+    units/ByteSize.h
     units/Distance.h
     units/Speed.h
     units/Time.h
@@ -103,7 +106,6 @@ set(SOURCES
     geomaps/Airspace.cpp
     geomaps/CUP.cpp
     geomaps/GeoJSON.cpp
-    geomaps/GeoJSONHandler.cpp
     geomaps/GeoMapProvider.cpp
     geomaps/GPX.cpp
     geomaps/MBTILES.cpp
@@ -122,6 +124,9 @@ set(SOURCES
     navigation/Leg.cpp
     navigation/Navigator.cpp
     navigation/RemainingRouteInfo.cpp
+    notam/Notam.cpp
+    notam/NotamList.cpp
+    notam/NotamProvider.cpp
     platform/FileExchange_Abstract.cpp
     platform/Notifier_Abstract.cpp
     platform/PlatformAdaptor_Abstract.cpp
@@ -177,7 +182,7 @@ qt_add_big_resources(SOURCES
 # Generate android executable
 #
 
-if( ANDROID )
+if(ANDROID)
     list(APPEND SOURCES
         platform/FileExchange_Android.h
         platform/FileExchange_Android.cpp
@@ -213,7 +218,18 @@ if( ANDROID )
     add_compile_definitions(MANUAL_LOCATION="/android_asset/manual")
 
     qt_add_executable(${PROJECT_NAME} ${SOURCES} ${ANDROID_EXTRA_SOURCES})
-    target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Concurrent Qt6::Core Qt::CorePrivate Qt6::Positioning Qt6::Quick Qt6::Sql Qt6::Svg Qt6::WebView qhttpengine sunset)
+    target_link_libraries(${PROJECT_NAME}
+        PRIVATE
+        Qt6::Concurrent
+        Qt6::Core
+        Qt6::Core5Compat
+        Qt6::HttpServer
+        Qt6::Positioning
+        Qt6::Quick
+        Qt6::Sql
+        Qt6::Svg
+        Qt6::WebView
+        sunset)
     set_target_properties(${PROJECT_NAME} PROPERTIES
         QT_ANDROID_EXTRA_LIBS "${ANDROID_EXTRA_LIBS}"
         QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android"
@@ -223,10 +239,10 @@ endif()
 
 
 #
-# Generate unix executable
+# Generate Linux executable
 #
 
-if (NOT ANDROID)
+if (UNIX AND NOT ANDROID AND NOT APPLE)
     list(APPEND SOURCES
         platform/FileExchange_Linux.h
         platform/FileExchange_Linux.cpp
@@ -249,14 +265,15 @@ if (NOT ANDROID)
         Qt6::Core
         Qt6::Core5Compat
         Qt6::DBus
+        Qt6::HttpServer
         Qt6::Positioning
         Qt6::Quick
         Qt6::Sql
         Qt6::Svg
         Qt6::Widgets
         kdsingleapplication
-        qhttpengine
-        sunset)
+        sunset
+    )
     target_precompile_headers(${PROJECT_NAME}
         PRIVATE
         <QObject>
@@ -268,12 +285,53 @@ install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/docs/manual DESTINATION ${CMAKE_INSTALL_DOCDIR})
 endif()
 
+
+#
+# Generate MacOS executable
+#
+
+if (APPLE)
+    list(APPEND SOURCES
+        platform/FileExchange_MacOS.h
+        platform/FileExchange_MacOS.cpp
+        platform/Notifier_MacOS.h
+        platform/Notifier_MacOS.cpp
+        platform/PlatformAdaptor_MacOS.h
+        platform/PlatformAdaptor_MacOS.cpp
+        platform/SafeInsets_Desktop.h
+        platform/SafeInsets_Desktop.cpp
+    )
+
+    # Compile definitions
+    add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
+
+    # Add executable and libraries
+    qt_add_executable(${PROJECT_NAME} ${SOURCES})
+    target_link_libraries(${PROJECT_NAME}
+        PRIVATE
+        Qt6::Concurrent
+        Qt6::Core
+        Qt6::Core5Compat
+        Qt6::DBus
+        Qt6::HttpServer
+        Qt6::Positioning
+        Qt6::Quick
+        Qt6::Sql
+        Qt6::Svg
+        Qt6::Widgets
+        kdsingleapplication
+        sunset
+    )
+endif()
+
 target_include_directories(${PROJECT_NAME}
     PUBLIC
     ${CMAKE_SOURCE_DIR}/3rdParty/sunset/src
     ${CMAKE_SOURCE_DIR}/3rdParty/GSL/include
+    dataManagement
     geomaps
     navigation
+    notam
     platform
     positioning
     traffic
@@ -290,37 +348,39 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/main.qml
     qml/dialogs/CenteringDialog.qml
     qml/dialogs/LongTextDialog.qml
-    qml/items/AutoSizingMenu.qml
-    qml/items/DegreeInput.qml
-    qml/items/ElevationInput.qml
-    qml/items/FlightVector.qml
-    qml/items/NavBar.qml
-    qml/items/RemainingRouteBar.qml
-    qml/items/WordWrappingCheckDelegate.qml
-    qml/items/WordWrappingItemDelegate.qml
-    qml/items/WordWrappingSwitchDelegate.qml
-    qml/pages/SettingsPage.qml
     qml/dialogs/AircraftSaveDialog.qml
     qml/dialogs/ErrorDialog.qml
     qml/dialogs/FirstRunDialog.qml
     qml/dialogs/FlightRouteAddWPDialog.qml
     qml/dialogs/FlightRouteSaveDialog.qml
     qml/dialogs/LongTextDialogMD.qml
-    qml/dialogs/MissingPermissionsDialog.qml
+    qml/dialogs/NotamListDialog.qml
     qml/dialogs/PasswordDialog.qml
     qml/dialogs/PasswordStorageDialog.qml
     qml/dialogs/TooManyDownloadsDialog.qml
     qml/dialogs/WaypointDescription.qml
     qml/dialogs/WaypointEditor.qml
     qml/dialogs/WeatherReport.qml
+    qml/items/AutoSizingMenu.qml
+    qml/items/DegreeInput.qml
+    qml/items/ElevationInput.qml
     qml/items/FlightMap.qml
+    qml/items/FlightVector.qml
     qml/items/Icon.qml
     qml/items/ImportManager.qml
+    qml/items/MapSet.qml
     qml/items/MFM.qml
+    qml/items/NavBar.qml
+    qml/items/RemainingRouteBar.qml
     qml/items/StandardHeader.qml
     qml/items/SwipeToDeleteDelegate.qml
     qml/items/Traffic.qml
     qml/items/TrafficLabel.qml
+    qml/items/WaypointDelegate.qml
+    qml/items/WordWrappingCheckDelegate.qml
+    qml/items/WordWrappingItemDelegate.qml
+    qml/items/WordWrappingSwitchDelegate.qml
+    qml/pages/SettingsPage.qml
     qml/pages/AircraftPage.qml
     qml/pages/AircraftLibrary.qml
     qml/pages/BugReportPage.qml
@@ -329,14 +389,14 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/pages/FlightRouteLibrary.qml
     qml/pages/InfoPage.qml
     qml/pages/Manual.qml
-    qml/pages/DataManager.qml
+    qml/pages/DataManagerPage.qml
     qml/pages/MapPage.qml
     qml/pages/Nearby.qml
     qml/pages/ParticipatePage.qml
     qml/pages/Positioning.qml
+    qml/pages/PrivacyPage.qml
     qml/pages/TrafficReceiver.qml
-    qml/pages/WaypointLibrary.qml
-    qml/pages/WeatherPage.qml
+    qml/pages/WaypointLibraryPage.qml
     SOURCES
     ui/ScaleQuickItem.h
     ui/ScaleQuickItem.cpp
@@ -345,6 +405,7 @@ qt_add_qml_module(${PROJECT_NAME}
 qt_add_translations(${PROJECT_NAME}
     TS_FILES
     ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_de.ts
+    ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_es.ts
     ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_fr.ts
     ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_it.ts
     ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_pl.ts
@@ -361,18 +422,16 @@ qt_add_resources(${PROJECT_NAME} translations
     i18n
     FILES
     ${Qt6_TRANSLATION_DIR}/qtbase_de.qm
+    ${Qt6_TRANSLATION_DIR}/qtbase_es.qm
     ${Qt6_TRANSLATION_DIR}/qtbase_fr.qm
     ${Qt6_TRANSLATION_DIR}/qtbase_it.qm
     ${Qt6_TRANSLATION_DIR}/qtbase_pl.qm
     ${Qt6_TRANSLATION_DIR}/qtdeclarative_de.qm
+    ${Qt6_TRANSLATION_DIR}/qtdeclarative_es.qm
     ${Qt6_TRANSLATION_DIR}/qtdeclarative_fr.qm
     #${Qt6_TRANSLATION_DIR}/qtdeclarative_it.qm
     ${Qt6_TRANSLATION_DIR}/qtdeclarative_pl.qm
 )
-
-# Enforce C++17 and no extensions
-target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
-set_target_properties(${PROJECT_NAME} PROPERTIES CXX_EXTENSIONS OFF)
 
 
 #

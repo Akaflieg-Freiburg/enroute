@@ -25,6 +25,7 @@
 #include <QJsonDocument>
 #include <QLocale>
 #include <QPointer>
+#include <QQmlEngine>
 #include <QXmlStreamReader>
 
 #include "geomaps/Waypoint.h"
@@ -57,6 +58,7 @@ namespace Navigation
     class FlightRoute : public QObject
     {
         Q_OBJECT
+        QML_ELEMENT
 
     public:
         //
@@ -108,7 +110,7 @@ namespace Navigation
         Q_PROPERTY(QList<Navigation::Leg> legs READ legs NOTIFY waypointsChanged)
 
         /*! \brief Number of waypoints in the route */
-        Q_PROPERTY(int size READ size NOTIFY waypointsChanged)
+        Q_PROPERTY(qsizetype size READ size NOTIFY waypointsChanged)
 
         /*! \brief Human-readable summary of the flight route
          *
@@ -159,7 +161,7 @@ namespace Navigation
          *
          * @returns Property size
          */
-        [[nodiscard]] auto size() const -> int { return m_waypoints.size(); }
+        [[nodiscard]] auto size() const -> qsizetype { return m_waypoints.size(); }
 
         /*! \brief Getter function for the property with the same name
          *
@@ -241,7 +243,7 @@ namespace Navigation
          *  @returns Index position of the last waypoint in the route close to
          *  the given waypoint. Returns -1 if no waypoint is close.
          */
-        Q_INVOKABLE [[nodiscard]] int lastIndexOf(const GeoMaps::Waypoint& waypoint) const;
+        Q_INVOKABLE [[nodiscard]] qsizetype lastIndexOf(const GeoMaps::Waypoint& waypoint) const;
 
         /*! \brief Loads the route from a GeoJSON or GPX document
          *

@@ -1,0 +1,51 @@
+name: Compile on MacOS
+
+on:
+  release:
+    types: [published]
+  push:
+    branches: [main, working]
+
+jobs:
+  build:
+
+    runs-on: macos-12
+    
+    steps:
+    - name: Checkout Enroute
+      uses: actions/checkout@v3
+      with:
+        path: enroute
+        submodules: true
+    - name: Set up macOS
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+    - name: Install Ninja
+      run: brew install ninja
+    - name: Checkout qtlocation
+      uses: actions/checkout@v3
+      with:
+        path: qtlocation
+        repository: Akaflieg-Freiburg/qtlocationstatic
+        submodules: true
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v3
+      with:
+        version: '6.4.2'
+        modules: 'qt5compat qthttpserver qtpositioning qtshadertools qtwebsockets'
+    - name: Compile QtLocation
+      run: |
+        cmake -E make_directory build-qtlocation
+        cd build-qtlocation
+        qt-configure-module ../qtlocation
+        cmake --build .
+        cmake --install .
+    - name: Compile Enroute Flight Navigation
+      run: |
+        export CC=/usr/bin/clang
+        export CXX=/usr/bin/clang++
+        cmake -E make_directory build-enroute
+        cd build-enroute
+        cmake ../enroute
+        cmake --build .

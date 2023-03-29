@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -28,6 +28,7 @@ import QtQuick.Shapes
 import akaflieg_freiburg.enroute
 import enroute 1.0
 
+import "../dialogs"
 import "../items"
 
 /* This is a dialog with detailed information about a waypoint. To use this dialog, all you have to do is to set a Waypoint in the property "waypoint" and call open(). */
@@ -48,6 +49,9 @@ CenteringDialog {
 
         // Create METAR info box
         metarInfo.createObject(co);
+
+        // Create NOTAM info box
+        notamInfo.createObject(co);
 
         // Create waypoint description items
         var pro = waypoint.tabularDescription
@@ -92,6 +96,56 @@ CenteringDialog {
             background: Rectangle {
                 border.color: "black"
                 color: ((weatherStation !== null) && weatherStation.hasMETAR) ? weatherStation.metar.flightCategoryColor : "transparent"
+                opacity: 0.2
+            }
+
+        }
+
+    }
+
+    Component {
+        id: notamInfo
+
+        Label { // NOTAM info
+
+            Loader {
+                // WARNING This does not really belong here.
+                id: dlgLoader
+            }
+
+            property notamList notamList: {
+                // Mention lastUpdate, so we update whenever there is new data
+                NotamProvider.lastUpdate
+                return NotamProvider.notams(waypoint)
+            }
+
+            visible: text != ""
+            text: {
+                if (notamList.isValid && notamList.isEmpty)
+                    return ""
+                if (notamList.isEmpty)
+                    return notamList.summary
+                return notamList.summary + " • <a href='xx'>" + qsTr("full report") + "</a>"
+            }
+
+            Layout.fillWidth: true
+            wrapMode: Text.WordWrap
+
+            bottomPadding: 0.2*view.font.pixelSize
+            topPadding: 0.2*view.font.pixelSize
+            leftPadding: 0.2*view.font.pixelSize
+            rightPadding: 0.2*view.font.pixelSize
+            onLinkActivated: {
+                PlatformAdaptor.vibrateBrief()
+                dlgLoader.setSource("../dialogs/NotamListDialog.qml",
+                                    {"notamList": notamList, "waypoint": waypointDescriptionDialog.waypoint})
+                dlgLoader.item.open()
+            }
+
+            // Background color according to METAR/FAA flight category
+            background: Rectangle {
+                border.color: "black"
+                color: "yellow"
                 opacity: 0.2
             }
 
@@ -480,7 +534,7 @@ CenteringDialog {
 
                 Action {
                     text: qsTr("Add…")
-                    enabled: !global.waypointLibrary().hasNearbyEntry(waypoint)
+                    enabled: !WaypointLibrary.hasNearbyEntry(waypoint)
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
@@ -492,7 +546,7 @@ CenteringDialog {
 
                 Action {
                     text: qsTr("Remove…")
-                    enabled: global.waypointLibrary().contains(waypoint)
+                    enabled: WaypointLibrary.contains(waypoint)
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
@@ -510,7 +564,7 @@ CenteringDialog {
 
                 Action {
                     text: qsTr("Edit…")
-                    enabled: global.waypointLibrary().contains(waypoint)
+                    enabled: WaypointLibrary.contains(waypoint)
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
@@ -527,18 +581,11 @@ CenteringDialog {
         onRejected: close()
     }
 
-    CenteringDialog { // WARNING   qrc:/akaflieg_freiburg/enroute/qml/dialogs/CenteringDialog.qml:31: TypeError: Cannot read property 'width' of null
+    LongTextDialog {
         id: overwriteDialog
 
         title: qsTr("Overwrite Current Flight Route?")
-
-        Label {
-            width: overwriteDialog.availableWidth
-
-            text: qsTr("Once overwritten, the current flight route cannot be restored.")
-            wrapMode: Text.Wrap
-            textFormat: Text.StyledText
-        }
+        text: qsTr("Once overwritten, the current flight route cannot be restored.")
 
         standardButtons: Dialog.No | Dialog.Yes
         modal: true
@@ -571,7 +618,7 @@ CenteringDialog {
             newWP.name = newName
             newWP.notes = newNotes
             newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
-            global.waypointLibrary().replace(waypoint, newWP)
+            WaypointLibrary.replace(waypoint, newWP)
             toast.doToast(qsTr("Modified entry %1 in library.").arg(newWP.extendedName))
         }
     }
@@ -587,7 +634,7 @@ CenteringDialog {
             newWP.name = newName
             newWP.notes = newNotes
             newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
-            global.waypointLibrary().add(newWP)
+            WaypointLibrary.add(newWP)
             toast.doToast(qsTr("Added %1 to waypoint library.").arg(newWP.extendedName))
         }
     }
@@ -599,7 +646,15 @@ CenteringDialog {
 
         title: qsTr("Remove from Device?")
 
+        // Delays evaluation and prevents binding loops
+        Binding on implicitHeight {
+            value: lbl.implicitHeight
+            delayed: true    // Prevent intermediary values from being assigned
+        }
+
         Label {
+            id: lbl
+
             width: removeDialog.availableWidth
 
             text: qsTr("Once the waypoint <strong>%1</strong> is removed, it cannot be restored.").arg(removeDialog.waypoint.name)
@@ -612,7 +667,7 @@ CenteringDialog {
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
-            global.waypointLibrary().remove(removeDialog.waypoint)
+            WaypointLibrary.remove(removeDialog.waypoint)
             toast.doToast(qsTr("Waypoint removed from device"))
         }
         onRejected: {

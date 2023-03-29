@@ -32,6 +32,12 @@ Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
 // Methods
 //
 
+auto Platform::PlatformAdaptor::checkPermissions() -> QString
+{
+    return {};
+}
+
+
 auto Platform::PlatformAdaptor::currentSSID() -> QString
 {
     // get primary connection devices
@@ -48,12 +54,6 @@ auto Platform::PlatformAdaptor::currentSSID() -> QString
 
 void Platform::PlatformAdaptor::disableScreenSaver()
 {
-}
-
-
-auto Platform::PlatformAdaptor::hasRequiredPermissions() -> bool
-{
-    return true;
 }
 
 

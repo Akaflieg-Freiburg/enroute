@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -23,22 +23,21 @@
 #include <QCache>
 #include <QFuture>
 #include <QImage>
-#include <QTimer>
+#include <QQmlEngine>
+#include <QStandardPaths>
 #include <QTemporaryFile>
 #include <QTimer>
 
 #include "Airspace.h"
-#include "Librarian.h"
-#include "GlobalSettings.h"
+#include "GlobalObject.h"
 #include "TileServer.h"
 #include "Waypoint.h"
-#include "dataManagement/DataManager.h"
 #include "geomaps/MBTILES.h"
 
 namespace GeoMaps
 {
 
-  /*! \brief Provides geographic information
+/*! \brief Provides geographic information
    *
    * This class works closely with dataManagement/DataManager.  It takes the
    * data provided by the DataManager, and serves it for use in MapBoxGL powered
@@ -57,11 +56,13 @@ namespace GeoMaps
    *
    */
 
-  class GeoMapProvider : public GlobalObject
-  {
+class GeoMapProvider : public GlobalObject
+{
     Q_OBJECT
+    QML_ELEMENT
+    QML_SINGLETON
 
-  public:
+public:
     /*! \brief Creates a new GeoMap provider
      *
      * This constructor creates a new GeoMapProvider instance.
@@ -70,11 +71,21 @@ namespace GeoMaps
      */
     explicit GeoMapProvider(QObject *parent = nullptr);
 
+    // No default constructor, important for QML singleton
+    explicit GeoMapProvider() = delete;
+
     // deferred initialization
     void deferredInitialization() override;
 
+    // factory function for QML singleton
+    static GeoMaps::GeoMapProvider* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
+    {
+        return GlobalObject::geoMapProvider();
+    }
+
     /*! \brief Destructor */
     ~GeoMapProvider() override = default;
+
 
     //
     // Properties
@@ -215,7 +226,7 @@ namespace GeoMaps
      */
     Q_INVOKABLE static GeoMaps::Waypoint createWaypoint()
     {
-      return {};
+        return {};
     }
 
     /*! \brief Elevation of terrain at a given coordinate, above sea level
@@ -248,8 +259,7 @@ namespace GeoMaps
      * @param id ICAO code of the waypoint, such as "EDDF" for Frankfurt
      *
      * @returns a nullpointer if no waypoint has been found, or else a pointer
-     * to the waypoint. For better cooperation with QML is not a pointer of type
-     * Waypoint, but ratherof type QObject. The object is owned by this class
+     * to the waypoint. The object is owned by this class
      * and must not be deleted.
      */
     auto findByID(const QString &id) -> Waypoint;
@@ -267,7 +277,7 @@ namespace GeoMaps
     Q_INVOKABLE QList<GeoMaps::Waypoint> nearbyWaypoints(const QGeoCoordinate &position, const QString &type);
 
 
-  signals:
+signals:
     /*! \brief Notification signal for the property with the same name */
     void baseMapTilesChanged();
 
@@ -283,7 +293,7 @@ namespace GeoMaps
     /*! \brief Notification signal for the property with the same name */
     void waypointsChanged();
 
-  private:
+private:
     Q_DISABLE_COPY_MOVE(GeoMapProvider)
 
     // This slot is called every time the the set of aviation maps qchanges. It
@@ -341,6 +351,6 @@ namespace GeoMaps
 
     // GeoJSON file
     QString geoJSONCache {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/aviationData.json"};
-  };
+};
 
 } // namespace GeoMaps

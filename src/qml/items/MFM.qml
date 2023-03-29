@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -168,19 +168,19 @@ Item {
         MapCircle { // Circle for nondirectional traffic warning
             center: PositionProvider.lastValidCoordinate
 
-            radius: Math.max(500, global.trafficDataProvider().trafficObjectWithoutPosition.hDist.toM())
+            radius: Math.max(500, TrafficDataProvider.trafficObjectWithoutPosition.hDist.toM())
             Behavior on radius {
                 NumberAnimation { duration: 1000 }
-                enabled: global.trafficDataProvider().trafficObjectWithoutPosition.animate
+                enabled: TrafficDataProvider.trafficObjectWithoutPosition.animate
             }
 
-            color: global.trafficDataProvider().trafficObjectWithoutPosition.color
+            color: TrafficDataProvider.trafficObjectWithoutPosition.color
             Behavior on color {
                 ColorAnimation { duration: 400 }
-                enabled: global.trafficDataProvider().trafficObjectWithoutPosition.animate
+                enabled: TrafficDataProvider.trafficObjectWithoutPosition.animate
             }
             opacity: 0.3
-            visible: global.trafficDataProvider().trafficObjectWithoutPosition.valid
+            visible: TrafficDataProvider.trafficObjectWithoutPosition.valid
         }
 
         MapQuickItem {
@@ -191,10 +191,10 @@ Item {
             coordinate: PositionProvider.lastValidCoordinate
             Behavior on coordinate {
                 CoordinateAnimation { duration: 1000 }
-                enabled: global.trafficDataProvider().trafficObjectWithoutPosition.animate
+                enabled: TrafficDataProvider.trafficObjectWithoutPosition.animate
             }
 
-            visible: global.trafficDataProvider().trafficObjectWithoutPosition.valid
+            visible: TrafficDataProvider.trafficObjectWithoutPosition.valid
 
             Connections {
                 // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem
@@ -210,7 +210,7 @@ Item {
                 x: -width/2
                 y: mapCircleLabel.distFromCenter - height/2
 
-                text: global.trafficDataProvider().trafficObjectWithoutPosition.description
+                text: TrafficDataProvider.trafficObjectWithoutPosition.description
                 textFormat: Text.RichText
 
                 font.pixelSize: 0.8*view.font.pixelSize
@@ -223,11 +223,11 @@ Item {
                 background: Rectangle {
                     border.color: "black"
                     border.width: 1
-                    color: Qt.lighter(global.trafficDataProvider().trafficObjectWithoutPosition.color, 1.9)
+                    color: Qt.lighter(TrafficDataProvider.trafficObjectWithoutPosition.color, 1.9)
 
                     Behavior on color {
                         ColorAnimation { duration: 400 }
-                        enabled: global.trafficDataProvider().trafficObjectWithoutPosition.animate
+                        enabled: TrafficDataProvider.trafficObjectWithoutPosition.animate
                     }
                     radius: 4
                 }
@@ -235,78 +235,10 @@ Item {
         }
 
         MapItemView { // Labels for traffic opponents
-            model: global.trafficDataProvider().trafficObjects4QML
+            model: TrafficDataProvider.trafficObjects
             delegate: Component {
                 TrafficLabel {
-                    trafficInfo: model.modelData
-                }
-            }
-        }
-
-        MapQuickItem {
-            id: fiveMinuteBar
-
-            anchorPoint.x: fiveMinuteBarBaseRect.width/2
-            anchorPoint.y: fiveMinuteBarBaseRect.height
-            coordinate: PositionProvider.lastValidCoordinate
-            visible: {
-                if (!PositionProvider.positionInfo.trueTrack().isFinite())
-                    return false
-                if (!PositionProvider.positionInfo.groundSpeed().isFinite())
-                    return false
-                if (PositionProvider.positionInfo.groundSpeed().toMPS() < 2.0)
-                    return false
-                return true
-            }
-
-            Connections {
-                // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem
-                // is not updated when the height of the map changes. It does get updated when the
-                // width of the map changes. We use the undocumented method polishAndUpdate() here.
-                target: flightMap
-                function onHeightChanged() { fiveMinuteBar.polishAndUpdate() }
-            }
-
-            sourceItem: Item{
-                Rectangle {
-                    id: fiveMinuteBarBaseRect
-
-                    property real animatedGroundSpeedInMetersPerSecond: {
-                        if (!PositionProvider.positionInfo.groundSpeed().isFinite())
-                            return 0.0
-                        return PositionProvider.positionInfo.groundSpeed().toMPS()
-                    }
-                    Behavior on animatedGroundSpeedInMetersPerSecond {NumberAnimation {duration: 400}}
-
-                    rotation: flightMap.animatedTrack-flightMap.bearing
-                    transformOrigin: Item.Bottom
-
-                    width: 5
-
-                    height: flightMap.pixelPer10km*(5*60*animatedGroundSpeedInMetersPerSecond)/10000.0
-
-                    color: "black"
-
-                    Rectangle {
-                        id: whiteStripe1to2min
-                        x: 1
-                        y: parent.height/5
-
-                        width: 3
-                        height: parent.height/5
-                        color: "white"
-                    }
-
-                    Rectangle {
-                        id: whiteStripe3to4min
-
-                        x: 1
-                        y: 3*parent.height/5
-
-                        width: 3
-                        height: parent.height/5
-                        color: "white"
-                    }
+                    trafficInfo: modelData
                 }
             }
         }
@@ -331,7 +263,15 @@ Item {
                 FlightVector {
                     pixelPerTenKM: flightMap.pixelPer10km
                     groundSpeedInMetersPerSecond: PositionProvider.positionInfo.groundSpeed().toMPS()
-                    visible: (Navigator.flightStatus === Navigator.Flight) && (PositionProvider.positionInfo.trueTrack().isFinite())
+                    visible: {
+                        if (!PositionProvider.positionInfo.trueTrack().isFinite())
+                            return false
+                        if (!PositionProvider.positionInfo.groundSpeed().isFinite())
+                            return false
+                        if (PositionProvider.positionInfo.groundSpeed().toMPS() < 2.0)
+                            return false
+                        return true
+                    }
                 }
 
                 Image {
@@ -377,10 +317,11 @@ Item {
         }
 
         MapItemView { // Traffic opponents
-            model: global.trafficDataProvider().trafficObjects4QML
+            model: TrafficDataProvider.trafficObjects
             delegate: Component {
                 Traffic {
-                    trafficInfo: model.modelData
+                    map: flightMap
+                    trafficInfo: modelData
                 }
             }
         }
@@ -434,6 +375,36 @@ Item {
 
         }
 
+        Component {
+            id: notamComponent
+
+            MapQuickItem {
+                id: midFieldWP
+
+                anchorPoint.x: image.width/2
+                anchorPoint.y: image.height/2
+                coordinate: model.modelData.coordinate
+
+                Connections {
+                    // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem
+                    // is not updated when the height of the map changes. It does get updated when the
+                    // width of the map changes. We use the undocumented method polishAndUpdate() here.
+                    target: flightMap
+                    function onHeightChanged() { midFieldWP.polishAndUpdate() }
+                }
+
+                sourceItem: Image {
+                        id: image
+
+                        source:  "/icons/waypoints/ic_warning.svg"
+                        opacity: 0.75
+                        sourceSize.width: 20
+                        sourceSize.height: 20
+                    }
+            }
+
+        }
+
         MapItemView {
             id: midFieldWaypoints
             model: Navigator.flightRoute.midFieldWaypoints
@@ -442,8 +413,14 @@ Item {
 
         MapItemView {
             id: waypointLibrary
-            model: global.waypointLibrary().waypoints
+            model: WaypointLibrary.waypoints
             delegate: waypointComponent
+        }
+
+        MapItemView {
+            id: notams
+            model: NotamProvider.waypoints
+            delegate: notamComponent
         }
 
         TapHandler {
@@ -489,7 +466,7 @@ Item {
         source: flightMap
         brightness: Material.theme == Material.Dark ? -0.9 : -0.2
         contrast: Material.theme == Material.Dark ? 0.6 : 0.2
-        visible: !global.dataManager().baseMapsRaster.hasFile
+        visible: !DataManager.baseMapsRaster.hasFile
     }
 
     Rectangle {
@@ -500,7 +477,7 @@ Item {
         width: parent.width*0.6
         height: noMapWarning.height+20
         border.color: "black"
-        visible: !global.dataManager().aviationMaps.hasFile
+        visible: !DataManager.aviationMaps.hasFile
         Label {
             id: noMapWarning
             anchors.centerIn: parent
@@ -533,7 +510,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         bottomPadding: 0
         Material.elevation: 2
         opacity: 0.8
-        visible: GlobalSettings.airspaceAltitudeLimit.isFinite() && !global.dataManager().baseMapsRaster.hasFile
+        visible: GlobalSettings.airspaceAltitudeLimit.isFinite() && !DataManager.baseMapsRaster.hasFile
 
         Label {
 
@@ -626,11 +603,11 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
     RoundButton {
         id: trafficDataReceiverButton
 
-        Material.background: global.trafficDataProvider().receivingHeartbeat ? Material.Green : Material.Red
+        Material.background: TrafficDataProvider.receivingHeartbeat ? Material.Green : Material.Red
 
         opacity: Material.theme === Material.Dark ? 0.3 : 0.8
         icon.source: "/icons/material/ic_airplanemode_active.svg"
-        visible: !global.trafficDataProvider().receivingHeartbeat
+        visible: !TrafficDataProvider.receivingHeartbeat
 
         anchors.left: parent.left
         anchors.leftMargin: 0.5*view.font.pixelSize + SafeInsets.left

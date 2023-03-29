@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2021-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -22,9 +22,10 @@
 
 #include <QNetworkDatagram>
 #include <QPointer>
-#include <QQmlListProperty>
+#include <QQmlEngine>
 #include <QUdpSocket>
 
+#include "GlobalObject.h"
 #include "positioning/PositionInfoSource_Abstract.h"
 #include "traffic/TrafficFactor_DistanceOnly.h"
 #include "traffic/TrafficFactor_WithPosition.h"
@@ -54,6 +55,8 @@ namespace Traffic {
  */
 class TrafficDataProvider : public Positioning::PositionInfoSource_Abstract {
     Q_OBJECT
+    QML_ELEMENT
+    QML_SINGLETON
 
 public:
     /*! \brief Default constructor
@@ -62,6 +65,14 @@ public:
      */
     explicit TrafficDataProvider(QObject *parent = nullptr);
 
+    // No default constructor, important for QML singleton
+    explicit TrafficDataProvider() = delete;
+
+    // factory function for QML singleton
+    static Traffic::TrafficDataProvider* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
+    {
+        return GlobalObject::trafficDataProvider();
+    }
     //
     // Methods
     //
@@ -109,15 +120,15 @@ public:
      *  be ignored. The list is not sorted in any way. The items themselves are
      *  owned by this class.
      */
-    Q_PROPERTY(QQmlListProperty<Traffic::TrafficFactor_WithPosition> trafficObjects4QML READ trafficObjects4QML CONSTANT)
+    Q_PROPERTY(QList<Traffic::TrafficFactor_WithPosition*> trafficObjects READ trafficObjects CONSTANT)
 
     /*! \brief Getter method for property with the same name
      *
-     *  @returns Property trafficObjects4QML
+     *  @returns Property trafficObjects
      */
-    auto trafficObjects4QML() -> QQmlListProperty<Traffic::TrafficFactor_WithPosition>
+    auto trafficObjects() -> QList<Traffic::TrafficFactor_WithPosition*>
     {
-        return {this, &m_trafficObjects};
+        return m_trafficObjects;
     }
 
     /*! \brief Most relevant traffic object whose position is not known

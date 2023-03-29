@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -25,6 +25,7 @@
 #include <QStandardPaths>
 #include <QSysInfo>
 #include <QtGlobal>
+
 
 Librarian::Librarian(QObject *parent) : QObject(parent)
 {
@@ -94,6 +95,8 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 )html") + tr(R"html(
 <li><strong>Polish:</strong> Sławek Mikuła.</li>
 )html") + (R"html(
+<li><strong>Spanish:</strong> Luca Riva.</li>
+)html") + (R"html(
 </ul>
 )html") + tr(R"html(
 <h3>Alumni</h3>
@@ -122,23 +125,6 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 <p>If you are convinced that the data is good enough to be added, you can request to add the country. Please go to <a href="https://github.com/Akaflieg-Freiburg/enrouteServer/issues">this web site</a> and open an 'issue' with your request. Please tell us who you are, where you fly and how you convinced yourself that the data is good. If you find that the data is not good enough, you are welcome to join the openAIP project and help to improve the data.</p>
 
 <p>Please understand that we program this free app in our spare time, as a service to the community. Sadly, I should point out that sending us impolite demands is not likely to give the result that you desire.</p>)html");
-    }
-
-    if (name == u":text/firstStart.html"_qs)
-    {
-        return tr(R"html(<h3>Welcome to Enroute Flight Navigation - A project of Akaflieg Freiburg</h3>
-
-<p>Thank you for using this flight navigation app!  Before we get started, we need to point out that <strong>this app and the aviation data come with no guarantees</strong>.</p>
-
-<p>The app is not certified to satisfy aviation standards. It may contain errors and may not work as expected.</p>
-
-<p>The aviation data does not come from official sources. It might be incomplete, outdated or otherwise incorrect.</p>
-
-<p><strong>This app is no substitute for proper flight preparation or good pilotage.</strong> We hope you enjoy the app and that you do find it useful.</p>
-
-<p>Fly safely and enjoy many happy landings!</p>
-
-<p>&#8212; Stefan Kebekus.</p>)html");
     }
 
     if (name == u":text/flightRouteLibraryInfo.html"_qs)
@@ -200,44 +186,8 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
   General Public License V3</a> or, at your choice, any later
   version of this license.
 </p>
-)html") + tr(R"html(
-<h4>Geographic maps</h4>
-
-<p>
-  As a flight navigation program, <strong>Enroute Flight
-  Navigation</strong> heavily relies on geographic map
-  data. The geographic maps are not included in the
-  program, but are downloaded by the user from the map
-  management page. The maps are compiled from the following
-  sources.
-</p>
-
-<ul style="margin-left:-25px;">
-  <li>
-    The base maps are modified data from <a
-    href="https://github.com/openmaptiles/openmaptiles">OpenMapTiles</a>,
-    published under a
-    <a href="https://github.com/openmaptiles/openmaptiles/blob/master/LICENSE.md">CC-BY
-    4.0 design license</a>.
-  </li>
-
-  <li>
-    The aviation maps contain data from <a
-    href="http://www.openaip.net">openAIP</a>, licensed
-    under a <a
-    href="https://creativecommons.org/licenses/by-nc-sa/3.0">CC
-    BY-NC-SA license</a>.
-  </li>
-
-  <li>
-    The aviation maps contain data from <a
-    href="https://www.openflightmaps.org">open
-    flightmaps</a>, licensed under the <a
-    href="https://www.openflightmaps.org/live/downloads/20150306-LCN.pdf">OFMA
-    General Users License</a>.
-  </li>
-</ul>
-)html") + tr(R"html(
+)html")
+                + tr(R"html(
 <h4>Software and data included in the program</h4>
 
 <p>
@@ -252,17 +202,41 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 )html").arg(content);
     }
 
-    if (name == u":text/missingPermissions.html"_qs)
+    if (name == u":text/privacy.html"_qs)
     {
-        return tr(R"html(<h3>Missing Permissions</h3>
-
-<p>The app <strong>Enroute Flight Navigation</strong> will not start because some essential permissions have not been granted.  Please re-start the app and grant the required permissions.  If you have chosen to deny some permissions permanently, you may need to go to the Android Settings app to grant the permissions there.</p>
-
-<p>Our <a href="https://akaflieg-freiburg.github.io/enroute/privacy#privileges-of-the-android-app" title="privacy policies">privacy policies</a> explain why the permissions are needed and what they are used for.</p>
-
-<p>Fly safely and enjoy many happy landings!</p>
-
-<p>&#8212; Stefan Kebekus.</p>)html");
+        return "<h3>"
+                + tr("Privacy Policies")
+                + "</h3>"
+                + "<p>"
+                + tr("This app does not send any data to us or other parties. We do "
+                     "not collect data and we do not track our users. However, this "
+                     "app accesses internet sites that may not be under our control "
+                     "and may keep access logs.")
+                + "</p>"
+                + "<ul style='margin-left:-25px;'>"
+                + "<li>"
+                + tr("The app connects to "
+                     "<a href='https://cplx.vm.uni-freiburg.de/storage/'>servers at "
+                     "the University of Freiburg</a> to "
+                     "check for updates and to download maps and data.")
+                + "</li>"
+                + "<li>"
+                + tr("The app downloads METAR and TAF data for your locaction and "
+                     "your intended route from the "
+                     "<a href='https://www.aviationweather.gov/'>Aviation Weather "
+                     "Center</a>, a website of the United States government.")
+                + "</li>"
+                + "<li>"
+                + tr("The app downloads NOTAM for your locaction and "
+                     "your intended route from servers of the "
+                     "<a href='https://api.faa.gov/s/'>Federal Aviation "
+                     "Administration</a> of the United States government.")
+                + "</li>"
+                + "</ul>"
+                + "<h3>"
+                + tr("Responsible")
+                + "</h3>"
+                + "Stefan Kebekus<br>Wintererstraße 77<br>79104 Freiburg im Breisgau<br>Germany<br>";
     }
 
     if (name == u":text/tooManyDownloads.html"_qs)
@@ -280,20 +254,12 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 <p>We are trying our best to avoid a hard limit on the number of maps in the future. Please help us with that.</p>)html");
     }
 
-    if (name == u":text/weatherPermissions.html"_qs)
-    {
-        return tr(R"html(<h3>Privacy Warning</h3>
-      
-<p>Like most other programs, this app uses weather data provided by the <a href='https://www.aviationweather.gov'/>Aviation Weather Center</a>, a website of the United States government.</p>
-
-<p>In order to request up-to-date weather information, the app needs to <strong>send your location and your current route to the Aviation Weather Center</strong> at regular intervals. If you agree to this, you can enable the weather feature by clicking on the button below. You can disable the feature at any time using the three-dot menu at the top of this screen.</p>
-
-<p><strong>We have no control over data collected by the Aviation Weather Center. We do not guarantee correctness of the weather information in any way!</strong></p>)html");
-    }
-
     if (name == u":text/whatsnew.html"_qs)
     {
-        return tr("<p>We have updated the technology base underlying this app. Please report any issues!</p>");
+        return tr("<p>We have updated the technology base underlying this app. Please report any issues!</p>")
+                + "<p>" + tr("Our aviation maps will now receive daily updates, provided that new data is available.") + "</p>"
+                + "<p>" + tr("The app will now show NOTAMs relevant to your flight.") + "</p>"
+                + "<p>" + tr("Luca Riva has kindly translated this app to Spanish.") + "</p>";
         // + tr("<p>We could need help with French translations. If you would like to help, if speak French and know how to use the GIT version control system, please let us know.</p>");
     }
 
@@ -305,9 +271,9 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 }
 
 
-auto Librarian::getStringHashFromRessource(const QString &name) -> size_t
+auto Librarian::getStringHashFromRessource(const QString &name) -> Units::ByteSize
 {
-    return qHash(getStringFromRessource(name), 0);
+    return qHash(getStringFromRessource(name), (size_t)0);
 }
 
 
@@ -319,13 +285,16 @@ auto Librarian::exists(Librarian::Library library, const QString &baseName) -> b
 
 auto Librarian::get(Librarian::Library library, const QString &baseName) -> QObject *
 {
-    if (library == Routes) {
+    if (library == Routes)
+    {
         auto *route = new Navigation::FlightRoute();
-        if (route == nullptr) {
+        if (route == nullptr)
+        {
             return nullptr;
         }
         auto error = route->load(fullPath(Routes, baseName));
-        if (error.isEmpty()) {
+        if (error.isEmpty())
+        {
             return route;
         }
         delete route;
@@ -338,7 +307,8 @@ auto Librarian::get(Librarian::Library library, const QString &baseName) -> QObj
 
 auto Librarian::fullPath(Librarian::Library library, const QString &baseName) -> QString
 {
-    switch (library) {
+    switch (library)
+    {
     case Aircraft:
         return directory(library)+"/"+baseName+".json";
     case Routes:
@@ -363,7 +333,8 @@ void Librarian::rename(Librarian::Library library, const QString &oldName, const
 auto Librarian::directory(Library library) -> QString
 {
     QString path;
-    switch (library) {
+    switch (library)
+    {
     case Aircraft:
         path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/aircraft";
         break;
@@ -386,7 +357,9 @@ auto Librarian::entries(Library library, const QString &filter) -> QStringList
 
     QStringList fileBaseNames;
     foreach(auto fileName, fileNames)
+    {
         fileBaseNames << fileName.section('.', 0, -2);
+    }
 
     return permissiveFilter(fileBaseNames, filter);
 }
@@ -398,9 +371,12 @@ auto Librarian::permissiveFilter(const QStringList &inputStrings, const QString 
 
     QStringList result;
     foreach(auto inputString, inputStrings)
-        if (simplifySpecialChars(inputString).contains(simplifiedFilter, Qt::CaseInsensitive)) {
+    {
+        if (simplifySpecialChars(inputString).contains(simplifiedFilter, Qt::CaseInsensitive))
+        {
             result << inputString;
         }
+    }
 
     return result;
 }
@@ -409,41 +385,11 @@ auto Librarian::permissiveFilter(const QStringList &inputStrings, const QString 
 auto Librarian::simplifySpecialChars(const QString &string) -> QString
 {
     QString cacheString = simplifySpecialChars_cache[string];
-    if (!cacheString.isEmpty()) {
+    if (!cacheString.isEmpty())
+    {
         return cacheString;
     }
 
     QString normalizedString = string.normalized(QString::NormalizationForm_KD);
     return normalizedString.remove(specialChars);
-}
-
-#include <QLibraryInfo>
-
-auto Librarian::systemInfo() -> QString
-{
-
-    QString result;
-
-    result += u"<h3>App</h3>"_qs;
-    result += u"<table>"_qs;
-    result += u"<tr></tr>"_qs;
-    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Enroute Version", QStringLiteral(PROJECT_VERSION));
-    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("GIT ", QStringLiteral(GIT_COMMIT));
-    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Qt", QLibraryInfo::version().toString());
-    result += u"</table><br>"_qs;
-
-    result += u"<h3>System</h3>"_qs;
-    result += u"<table>"_qs;
-    result += u"<tr></tr>"_qs;
-    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Build ABI", QSysInfo::buildAbi());
-    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Build CPU", QSysInfo::buildCpuArchitecture());
-    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Current CPU", QSysInfo::currentCpuArchitecture());
-    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Kernel Type", QSysInfo::kernelType());
-    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Kernel Version", QSysInfo::kernelVersion());
-    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Device Name", QSysInfo::prettyProductName());
-    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Device Type", QSysInfo::productType());
-    result += u"<tr><td>%1<td><td>%2<td></tr>"_qs.arg("Device Version", QSysInfo::productVersion());
-    result += u"</table><br>"_qs;
-
-    return result;
 }

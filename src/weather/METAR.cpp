@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020--2023 by Stefan Kebekus                            *
+ *   Copyright (C) 2020-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -222,8 +222,8 @@ auto Weather::METAR::relativeObservationTime() const -> QString
 void Weather::METAR::setupSignals() const
 {
     // Emit notifier signals whenever the time changes
-    connect(GlobalObject::navigator()->clock(), &Navigation::Clock::timeChanged, this, &Weather::METAR::summaryChanged);
-    connect(GlobalObject::navigator()->clock(), &Navigation::Clock::timeChanged, this, &Weather::METAR::relativeObservationTimeChanged);
+    connect(Navigation::Navigator::clock(), &Navigation::Clock::timeChanged, this, &Weather::METAR::summaryChanged);
+    connect(Navigation::Navigator::clock(), &Navigation::Clock::timeChanged, this, &Weather::METAR::relativeObservationTimeChanged);
 
     connect(GlobalObject::navigator(), &Navigation::Navigator::aircraftChanged, this, &Weather::METAR::summaryChanged);
 }

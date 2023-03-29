@@ -54,7 +54,7 @@ public:
     ~PasswordDB() override = default;
 
     // factory function for QML singleton
-    static Traffic::PasswordDB* create(QQmlEngine*, QJSEngine*)
+    static Traffic::PasswordDB* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
     {
         return GlobalObject::passwordDB();
     }

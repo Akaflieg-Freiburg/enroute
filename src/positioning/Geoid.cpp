@@ -39,7 +39,7 @@ void Positioning::Geoid::readEGM()
 {
     QFile file(QStringLiteral(":/WW15MGH.DAC"));
 
-    qint64 egm96_size_2 = egm96_size * 2;
+    qint64 egm96_size_2 = (qint64)egm96_size * (qint64)2;
 
     if (!file.open(QIODevice::ReadOnly) || file.size() != (egm96_size_2))
     {

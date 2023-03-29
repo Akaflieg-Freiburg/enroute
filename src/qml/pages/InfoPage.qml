@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,13 +24,68 @@ import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
+import "../dialogs"
 import "../items"
 
 Page {
     id: pg
-    title: qsTr("About Enroute Flight Navigation")
+    title: qsTr("About EFN")
 
-    header: StandardHeader {}
+    required property var stackView
+    required property var toast
+
+    header: ToolBar {
+
+        Material.foreground: "white"
+        height: 60 + SafeInsets.top
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
+        topPadding: SafeInsets.top
+
+        ToolButton {
+            id: backButton
+
+            anchors.left: parent.left
+            anchors.verticalCenter: parent.verticalCenter
+
+            icon.source: "/icons/material/ic_arrow_back.svg"
+
+            onClicked: {
+                PlatformAdaptor.vibrateBrief()
+                pg.stackView.pop()
+            }
+        }
+
+        Label {
+            id: lbl
+
+            anchors.verticalCenter: parent.verticalCenter
+
+            anchors.left: parent.left
+            anchors.leftMargin: 72
+            anchors.right: headerMenuToolButton.left
+
+            text: pg.title
+            elide: Label.ElideRight
+            font.pixelSize: 20
+            verticalAlignment: Qt.AlignVCenter
+        }
+
+        ToolButton {
+            id: headerMenuToolButton
+
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+
+            icon.source: "/icons/material/ic_info_outline.svg"
+            onClicked: {
+                PlatformAdaptor.vibrateBrief()
+                helpDialog.open()
+            }
+        }
+
+    }
+
 
     TabBar {
         id: bar
@@ -126,7 +181,12 @@ Page {
                 clip: true
 
                 Label {
-                    text: "<style>a:link { color: " + Material.accent + "; }</style>" + Librarian.systemInfo()
+                    id: sysInfoLabel
+                    text: {
+                        // Mention time, so this property get updated every minute
+                        Clock.time
+                        return PlatformAdaptor.systemInfo()
+                    }
                     textFormat: Text.RichText
                     linkColor: Material.accent
                     width: sv.availableWidth
@@ -138,29 +198,50 @@ Page {
                 }
             }
 
+            Rectangle { Layout.preferredHeight: sv.font.pixelSize/2 }
+
             Button {
                 Layout.alignment: Qt.AlignHCenter
                 text: qsTr("Share Info")
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    var errorString = FileExchange.shareContent(Librarian.systemInfo(), "application/text", "EnrouteSystemInformation.txt")
+                    var errorString = FileExchange.shareContent(sysInfoLabel.text, "application/text", "EnrouteSystemInformation.txt")
                     if (errorString === "abort") {
-                        toast.doToast(qsTr("Aborted"))
+                        pg.toast.doToast(qsTr("Aborted"))
                         return
                     }
                     if (errorString !== "") {
-                        shareErrorDialogLabel.text = errorString
+                        shareErrorDialog.text = errorString
                         shareErrorDialog.open()
                         return
                     }
                     if (Qt.platform.os === "android")
-                        toast.doToast(qsTr("System Info Shared"))
+                        pg.toast.doToast(qsTr("System Info Shared"))
                     else
-                        toast.doToast(qsTr("System Info Exported"))
+                        pg.toast.doToast(qsTr("System Info Exported"))
 
                 }
             }
+
+            Rectangle { Layout.preferredHeight: sv.font.pixelSize/2 }
         }
 
-    } // StackView
-} // Page
+    }
+
+    LongTextDialog {
+        id: shareErrorDialog
+
+        title: qsTr("Error Exporting Data…")
+
+        standardButtons: Dialog.Ok
+    }
+    LongTextDialog {
+        id: helpDialog
+
+        title: qsTr("About EFN")
+        text: "<p>"+qsTr("This page presents four tabs with information about the app, its authors, the software license, and the current system.")+"</p>"
+              +"<p>"+qsTr("System information can be helpful to the developers when you report a bug. The button 'Share Info' at the bottom of the 'System' tab can be used to forward this information to the developers.")+"</p>"
+
+        standardButtons: Dialog.Ok
+    }
+}

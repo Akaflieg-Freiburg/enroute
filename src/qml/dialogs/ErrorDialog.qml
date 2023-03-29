@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,9 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
 
 import akaflieg_freiburg.enroute
 
@@ -30,23 +30,29 @@ CenteringDialog {
     modal: true
     title: dialogLoader.title
     standardButtons: Dialog.Ok
+
     
     ScrollView{
-        id: sv
         anchors.fill: parent
         contentWidth: availableWidth // Disable horizontal scrolling
+
+        // Delays evaluation and prevents binding loops
+        Binding on implicitHeight {
+            value: lbl.implicitHeight
+            delayed: true    // Prevent intermediary values from being assigned
+        }
 
         clip: true
 
         Label {
             id: lbl
-            text: dialogLoader.text
+            text: "<style>a:link { color: " + Material.accent + "; }</style>"+dialogLoader.text
             width: dlg.availableWidth
-            textFormat: Text.StyledText
+            textFormat: Text.RichText
             linkColor: Material.accent
             wrapMode: Text.Wrap
-            onLinkActivated: Qt.openUrlExternally(link)
-        } // Label
-    } // ScrollView
+            onLinkActivated: (link) => Qt.openUrlExternally(link)
+        }
+    }
 
-} // Dialog
+}

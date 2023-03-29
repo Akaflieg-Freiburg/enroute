@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -23,7 +23,6 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
-import enroute 1.0
 import "../dialogs"
 import "../pages"
 
@@ -33,12 +32,20 @@ Item {
     property string filePath: ""
     property int fileFunction: FileExchange.UnknownFunction
 
+    required property var stackView
+    required property var toast
+    required property var view
+
+    Component.onCompleted: {
+        FileExchange.onGUISetupCompleted()
+    }
+
     Connections {
         target: FileExchange
 
         function onOpenFileRequest(fileName, fileFunction) {
-            view.raise()
-            view.requestActivate()
+            importManager.view.raise()
+            importManager.view.requestActivate()
 
             importManager.filePath = fileName
             importManager.fileFunction = fileFunction
@@ -122,10 +129,9 @@ Item {
                         importWPLibraryDialog.open()
                     }
                 }
-
-            onRejected: close()
         }
 
+        onRejected: close()
     }
 
     CenteringDialog {
@@ -164,8 +170,8 @@ Item {
 
             Label {
                 Layout.fillWidth: true
-                visible: global.dataManager().baseMapsVector.hasFile
-                text: qsTr("To avoid conflicts between raster and vector maps, all vector maps will be uninstalled.")
+                visible: DataManager.baseMapsVector.hasFile
+                text: qsTr("To avoid conflicts, vector maps will be not be shown while raster maps are installed.")
 
                 wrapMode: Text.Wrap
                 textFormat: Text.StyledText
@@ -180,13 +186,13 @@ Item {
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
 
-            var errorString = global.dataManager().import(importManager.filePath, mapNameRaster.text)
+            var errorString = DataManager.import(importManager.filePath, mapNameRaster.text)
             if (errorString !== "") {
                 errLbl.text = errorString
                 errorDialog.open()
                 return
             }
-            toast.doToast( qsTr("Raster map imported") )
+            importManager.toast.doToast( qsTr("Raster map imported") )
         }
     }
 
@@ -226,7 +232,7 @@ Item {
 
             Label {
                 Layout.fillWidth: true
-                visible: global.dataManager().baseMapsRaster.hasFile
+                visible: DataManager.baseMapsRaster.hasFile
                 text: qsTr("To avoid conflicts between raster and vector maps, all raster maps will be uninstalled.")
 
                 wrapMode: Text.Wrap
@@ -242,13 +248,13 @@ Item {
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
 
-            var errorString = global.dataManager().import(importManager.filePath, mapNameVector.text)
+            var errorString = DataManager.import(importManager.filePath, mapNameVector.text)
             if (errorString !== "") {
                 errLbl.text = errorString
                 errorDialog.open()
                 return
             }
-            toast.doToast( qsTr("Vector map imported") )
+            importManager.toast.doToast( qsTr("Vector map imported") )
         }
 
     }
@@ -276,37 +282,29 @@ Item {
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
 
-            var errorString = global.waypointLibrary().import(importManager.filePath, skip.checked)
+            var errorString = WaypointLibrary.import(importManager.filePath, skip.checked)
             if (errorString !== "") {
                 errLbl.text = errorString
                 errorDialog.open()
                 return
             }
 
-            if (!(stackView.currentItem instanceof WaypointLibrary)) {
-                stackView.pop()
-                stackView.push("../pages/WaypointLibrary.qml")
+            if (!(importManager.stackView.currentItem instanceof WaypointLibraryPage)) {
+                importManager.stackView.pop()
+                importManager.stackView.push("../pages/WaypointLibraryPage.qml")
             }
             toast.doToast( qsTr("Waypoints imported") )
         }
     }
 
-    CenteringDialog {
+    LongTextDialog {
         id: importFlightRouteDialog
 
         title: qsTr("Import Flight Route?")
         standardButtons: Dialog.No | Dialog.Yes
         modal: true
 
-        Label {
-            id: lbl
-
-            width: importFlightRouteDialog.availableWidth
-
-            text: qsTr("This will overwrite the current route. Once overwritten, the current flight route cannot be restored.")
-            wrapMode: Text.Wrap
-            textFormat: Text.StyledText
-        }
+        text: qsTr("This will overwrite the current route. Once overwritten, the current flight route cannot be restored.")
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
@@ -321,9 +319,9 @@ Item {
                 errorDialog.open()
                 return
             }
-            if (!(stackView.currentItem instanceof FlightRouteEditor)) {
-                stackView.pop()
-                stackView.push("../pages/FlightRouteEditor.qml")
+            if (!(importManager.stackView.currentItem instanceof FlightRouteEditor)) {
+                importManager.stackView.pop()
+                importManager.stackView.push("../pages/FlightRouteEditor.qml")
             }
             toast.doToast( qsTr("Flight route imported") )
         }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -74,6 +74,9 @@ public:
 
 
 public slots:
+    /*! \brief Implements pure virtual method from FileExchange_Abstract */
+    virtual void onGUISetupCompleted() override;
+
     /*! \brief Implements pure virtual method from FileExchange_Abstract */
     void processFileOpenRequest(const QString& path) override;
 

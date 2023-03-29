@@ -61,6 +61,13 @@ auto GlobalSettings::airspaceAltitudeLimit() const -> Units::Distance
 }
 
 
+auto GlobalSettings::fontSize() const -> int
+{
+    auto fontSize = settings.value(QStringLiteral("fontSize"), 14).toInt();
+    return qBound(14, fontSize, 20);
+}
+
+
 auto GlobalSettings::lastValidAirspaceAltitudeLimit() const -> Units::Distance
 {
     auto result = Units::Distance::fromFT(settings.value(QStringLiteral("Map/lastValidAirspaceAltitudeLimit_ft"), 99999).toInt() );
@@ -95,16 +102,6 @@ void GlobalSettings::setAcceptedTerms(int terms)
 }
 
 
-void GlobalSettings::setAcceptedWeatherTerms(bool terms)
-{
-    if (terms == acceptedWeatherTerms()) {
-        return;
-    }
-    settings.setValue(QStringLiteral("acceptedWeatherTerms"), terms);
-    emit acceptedWeatherTermsChanged();
-}
-
-
 void GlobalSettings::setAirspaceAltitudeLimit(Units::Distance newAirspaceAltitudeLimit)
 {
     if (newAirspaceAltitudeLimit < airspaceAltitudeLimit_min) {
@@ -127,9 +124,47 @@ void GlobalSettings::setAirspaceAltitudeLimit(Units::Distance newAirspaceAltitud
 }
 
 
+void GlobalSettings::setExpandNotamAbbreviations(bool newExpandNotamAbbreviations)
+{
+    if (newExpandNotamAbbreviations == expandNotamAbbreviations())
+    {
+        return;
+    }
+    settings.setValue(QStringLiteral("expandNotamAbbreviations"), newExpandNotamAbbreviations);
+    emit expandNotamAbbreviationsChanged();
+}
+
+
+void GlobalSettings::setFAAData(const QString& newID, const QString& newKey)
+{
+    if ((newID == FAA_ID()) && (newKey == FAA_KEY()))
+    {
+        return;
+    }
+    settings.setValue(QStringLiteral("FAA_ID"), newID);
+    settings.setValue(QStringLiteral("FAA_KEY"), newKey);
+    emit FAADataChanged();
+}
+
+
+void GlobalSettings::setFontSize(int newFontSize)
+{
+    newFontSize = qBound(14, newFontSize, 20);
+
+
+    if (newFontSize == fontSize())
+    {
+        return;
+    }
+    settings.setValue(QStringLiteral("fontSize"), newFontSize);
+    emit fontSizeChanged();
+}
+
+
 void GlobalSettings::setHideGlidingSectors(bool hide)
 {
-    if (hide == hideGlidingSectors()) {
+    if (hide == hideGlidingSectors())
+    {
         return;
     }
     settings.setValue(QStringLiteral("Map/hideGlidingSectors"), hide);
@@ -139,7 +174,8 @@ void GlobalSettings::setHideGlidingSectors(bool hide)
 
 void GlobalSettings::setHillshading(bool show)
 {
-    if (show == hillshading()) {
+    if (show == hillshading())
+    {
         return;
     }
     settings.setValue(QStringLiteral("Map/hillshading"), show);
@@ -149,7 +185,8 @@ void GlobalSettings::setHillshading(bool show)
 
 void GlobalSettings::setIgnoreSSLProblems(bool ignore)
 {
-    if (ignore == ignoreSSLProblems()) {
+    if (ignore == ignoreSSLProblems())
+    {
         return;
     }
     settings.setValue(QStringLiteral("ignoreSSLProblems"), ignore);
@@ -157,29 +194,43 @@ void GlobalSettings::setIgnoreSSLProblems(bool ignore)
 }
 
 
-void GlobalSettings::setLastWhatsNewHash(size_t lwnh)
+void GlobalSettings::setLastWhatsNewHash(Units::ByteSize lwnh)
 {
-    if (lwnh == lastWhatsNewHash()) {
+    if (lwnh == lastWhatsNewHash())
+    {
         return;
     }
-    settings.setValue(QStringLiteral("lastWhatsNewHash"), QVariant::fromValue(lwnh));
+    settings.setValue(QStringLiteral("lastWhatsNewHash"), QVariant::fromValue((size_t)lwnh));
     emit lastWhatsNewHashChanged();
 }
 
 
-void GlobalSettings::setLastWhatsNewInMapsHash(size_t lwnh)
+void GlobalSettings::setLastWhatsNewInMapsHash(Units::ByteSize lwnh)
 {
-    if (lwnh == lastWhatsNewInMapsHash()) {
+    if (lwnh == lastWhatsNewInMapsHash())
+    {
         return;
     }
-    settings.setValue(QStringLiteral("lastWhatsNewInMapsHash"), QVariant::fromValue(lwnh));
+    settings.setValue(QStringLiteral("lastWhatsNewInMapsHash"), QVariant::fromValue((size_t)lwnh));
     emit lastWhatsNewInMapsHashChanged();
+}
+
+
+void GlobalSettings::setPrivacyHash(Units::ByteSize newHash)
+{
+    if (newHash == privacyHash())
+    {
+        return;
+    }
+    settings.setValue(QStringLiteral("privacyHash"), QVariant::fromValue((size_t)newHash));
+    emit privacyHashChanged();
 }
 
 
 void GlobalSettings::setMapBearingPolicy(MapBearingPolicy policy)
 {
-    if (policy == mapBearingPolicy()) {
+    if (policy == mapBearingPolicy())
+    {
         return;
     }
 
@@ -200,7 +251,8 @@ void GlobalSettings::setMapBearingPolicy(MapBearingPolicy policy)
 
 void GlobalSettings::setNightMode(bool newNightMode)
 {
-    if (newNightMode == nightMode()) {
+    if (newNightMode == nightMode())
+    {
         return;
     }
 
@@ -211,7 +263,8 @@ void GlobalSettings::setNightMode(bool newNightMode)
 
 void GlobalSettings::setPositioningByTrafficDataReceiver(bool newPositioningByTrafficDataReceiver)
 {
-    if (newPositioningByTrafficDataReceiver == positioningByTrafficDataReceiver()) {
+    if (newPositioningByTrafficDataReceiver == positioningByTrafficDataReceiver())
+    {
         return;
     }
 

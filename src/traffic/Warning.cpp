@@ -35,27 +35,27 @@ Traffic::Warning::Warning(
 {  
 
     // Alarm level
-    if (AlarmLevel == QLatin1String("0")) {
+    if (AlarmLevel == u"0"_qs) {
         m_alarmLevel = 0;
     }
-    if (AlarmLevel == QLatin1String("1")) {
+    if (AlarmLevel == u"1"_qs) {
         m_alarmLevel = 1;
     }
-    if (AlarmLevel == QLatin1String("2")) {
+    if (AlarmLevel == u"2"_qs) {
         m_alarmLevel = 2;
     }
-    if (AlarmLevel == QLatin1String("3")) {
+    if (AlarmLevel == u"3"_qs) {
         m_alarmLevel = 3;
     }
 
     // Alarm Type
-    if (AlarmType == QLatin1String("2")) {
+    if (AlarmType == u"2"_qs) {
         m_alarmType = 2;
     }
-    if (AlarmType == QLatin1String("3")) {
+    if (AlarmType == u"3"_qs) {
         m_alarmType = 3;
     }
-    if (AlarmType == QLatin1String("4")) {
+    if (AlarmType == u"4"_qs) {
         m_alarmType = 4;
     }
 

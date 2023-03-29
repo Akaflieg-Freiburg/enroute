@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2021-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -94,7 +94,7 @@ private:
     // array. This is used to sort out doubly sent datagrams. The nextHashIndex
     // points to the next vector entry that will be re-written.
     QVector<uint> receivedDatagramHashes {512, 0};
-    int nextHashIndex {0};
+    qsizetype nextHashIndex {0};
 
     // GPS altitude of owncraft
     Units::Distance m_trueAltitude;

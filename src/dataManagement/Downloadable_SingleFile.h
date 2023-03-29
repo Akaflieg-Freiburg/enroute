@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -25,6 +25,7 @@
 #include <QFileInfo>
 #include <QNetworkReply>
 #include <QPointer>
+#include <QQmlEngine>
 #include <QSaveFile>
 
 #include "Downloadable_Abstract.h"
@@ -50,6 +51,7 @@ namespace DataManagement
 class Downloadable_SingleFile : public Downloadable_Abstract
 {
     Q_OBJECT
+    QML_ELEMENT
 
 public:
     /*! \brief Standard constructor
@@ -64,6 +66,9 @@ public:
      * contains a previously downloaded version of the item, and that the
      * modification time of the file is the download time.
      *
+     * @param bBox Bounding box, if a meaningful notion of bounding box exists
+     * for this Downloadable.
+     *
      * @param parent The standard QObject parent pointer.
      *
      * After construction, size and modification time of the file on the server
@@ -75,7 +80,7 @@ public:
      *
      * Use the method startFileDownload() to initiate the download process.
      */
-    explicit Downloadable_SingleFile(QUrl url, const QString &localFileName, QObject *parent = nullptr);
+    explicit Downloadable_SingleFile(QUrl url, const QString& localFileName, const QGeoRectangle& bBox = {}, QObject* parent = nullptr);
 
     /*! \brief Standard destructor
      *
@@ -89,6 +94,10 @@ public:
     //
     // Properties
     //
+
+    // Repeated from Downloadable_Abstract to keep QML happy
+    Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
+    Q_PROPERTY(bool hasFile READ hasFile NOTIFY hasFileChanged)
 
     /*! \brief Download progress
      *
@@ -196,7 +205,7 @@ public:
      *
      * @returns Property updateSize
      */
-    [[nodiscard]] auto updateSize() -> qint64 override;
+    [[nodiscard]] auto updateSize() -> Units::ByteSize override;
 
     /*! \brief Getter function for the property with the same name
      *

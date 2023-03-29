@@ -93,6 +93,7 @@ CenteringDialog {
 
             model: global.geoMapProvider().filteredWaypoints(textInput.displayText)
             delegate: waypointDelegate
+            ScrollIndicator.vertical: ScrollIndicator {}
 
             Label {
                 anchors.fill: wpList

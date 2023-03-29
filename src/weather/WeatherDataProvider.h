@@ -31,7 +31,6 @@ class QNetworkReply;
 #include "GlobalObject.h"
 #include "weather/Station.h"
 
-class Clock;
 class FlightRoute;
 class GlobalSettings;
 
@@ -78,8 +77,11 @@ public:
     // No default constructor, important for QML singleton
     explicit WeatherDataProvider() = delete;
 
+    /*! \brief Standard destructor */
+    ~WeatherDataProvider() override;
+
     // factory function for QML singleton
-    static Weather::WeatherDataProvider* create(QQmlEngine*, QJSEngine*)
+    static Weather::WeatherDataProvider* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
     {
         return GlobalObject::weatherDataProvider();
     }

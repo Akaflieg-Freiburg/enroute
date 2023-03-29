@@ -39,6 +39,9 @@ namespace Positioning {
  *  the method globalInstance().  No other instance of this class should be
  *  used.
  *
+ *  Data from the standard operating system data source (typically: satnav or
+ *  wifi) is only provided after startUpdates() has been called.
+ *
  *  The methods in this class are reentrant, but not thread safe.
  */
 
@@ -51,6 +54,7 @@ class PositionProvider : public PositionInfoSource_Abstract
     // Repeat properties from PositionInfoSource_Abstract so qmllint knows about them
     Q_PROPERTY(Positioning::PositionInfo positionInfo READ positionInfo NOTIFY positionInfoChanged)
     Q_PROPERTY(Units::Distance pressureAltitude READ pressureAltitude NOTIFY pressureAltitudeChanged)
+    Q_PROPERTY(bool receivingPositionInfo READ receivingPositionInfo NOTIFY receivingPositionInfoChanged)
 
 
 public:
@@ -64,7 +68,7 @@ public:
     explicit PositionProvider() = delete;
 
     // factory function for QML singleton
-    static Positioning::PositionProvider* create(QQmlEngine*, QJSEngine*)
+    static Positioning::PositionProvider* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
     {
         return GlobalObject::positionProvider();
     }
@@ -97,6 +101,14 @@ public:
      *  @returns Property lastValidTrack
      */
     static auto lastValidTT() -> Units::Angle;
+
+    /*! \brief startUpdates
+     *
+     *  Requests permissions if necessary and starts to provide data
+     *  from the standard operating system data source (typically SatNav or
+     *  WiFi) if permissions were granted.
+     */
+    Q_INVOKABLE void startUpdates() { satelliteSource.startUpdates(); }
 
 signals:
     /*! \brief Notifier signal */

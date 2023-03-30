@@ -40,7 +40,7 @@ jobs:
         modules: 'qt5compat qthttpserver qtpositioning qtshadertools qtwebsockets'	
     - name: Install Additional Software
       run: |
-        sudo apt install doxygen graphviz librsvg2-bin
+        sudo apt install extra-cmake-modules ninja-build spirv-tools
         echo "y" | ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager "platforms;android-31" "platform-tools" "build-tools;31.0.0"
         echo "y" | ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager --uninstall "platforms;android-33-ext5" "platforms;android-33-ext4"
         echo "y" | ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager "ndk;23.1.7779620"

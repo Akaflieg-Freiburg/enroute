@@ -66,17 +66,42 @@ Item {
         // GESTURES
 
         // Enable gestures. Make sure that whenever a gesture starts, the property "followGPS" is set to "false"
-        /*
-          WARNING
-        gesture.enabled: true
-        gesture.acceptedGestures: MapGestureArea.PanGesture|MapGestureArea.PinchGesture
-        gesture.onPanStarted: {flightMap.followGPS = false}
-        gesture.onPinchStarted: {flightMap.followGPS = false}
-        gesture.onRotationStarted: {
-            flightMap.followGPS = false
-            GlobalSettings.mapBearingPolicy = GlobalSettings.UserDefinedBearingUp
+
+        property geoCoordinate startCentroid
+        PinchHandler {
+            id: pinch
+            target: null
+            onActiveChanged: if (active) {
+                                 flightMap.startCentroid = flightMap.toCoordinate(pinch.centroid.position, false)
+                             }
+            onScaleChanged: (delta) => {
+                                flightMap.zoomLevel += Math.log2(delta)
+                                flightMap.alignCoordinateToPoint(flightMap.startCentroid, pinch.centroid.position)
+                                flightMap.followGPS = false
+                            }
+            grabPermissions: PointerHandler.TakeOverForbidden
         }
-*/
+        WheelHandler {
+            id: wheel
+            rotationScale: 1/120
+            property: "zoomLevel"
+        }
+        DragHandler {
+            id: drag
+            target: null
+            onTranslationChanged: (delta) => flightMap.pan(-delta.x, -delta.y)
+        }
+        Shortcut {
+            enabled: flightMap.zoomLevel < flightMap.maximumZoomLevel
+            sequence: StandardKey.ZoomIn
+            onActivated: flightMap.zoomLevel = Math.round(flightMap.zoomLevel + 1)
+        }
+        Shortcut {
+            enabled: flightMap.zoomLevel > flightMap.minimumZoomLevel
+            sequence: StandardKey.ZoomOut
+            onActivated: flightMap.zoomLevel = Math.round(flightMap.zoomLevel - 1)
+        }
+
 
         //
         // PROPERTY "bearing"

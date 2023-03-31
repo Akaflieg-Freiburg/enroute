@@ -2,11 +2,11 @@ name: Compile on Android
 
 on:
   create:
-    branches: [ main, working ]
+    branches: [ main ]
   push:
-    branches: [ main, working ]
+    branches: [ main ]
   pull_request:
-    branches: [ main, working ]
+    branches: [ main ]
 
 jobs:
   build:

@@ -28,6 +28,7 @@ jobs:
       uses: jurplel/install-qt-action@v3
       with:
         version: '6.4.*'
+        modules: 'qtshadertools'	
     - name: Set QT_HOST_PATH
       run: |
         echo QT_HOST_PATH=$Qt6_DIR >> $GITHUB_ENV
@@ -37,7 +38,7 @@ jobs:
         target: 'android'
         version: '6.4.*'
         arch: 'android_arm64_v8a'
-        modules: 'qt5compat qthttpserver qtpositioning qtshadertools qtwebsockets'	
+        modules: 'qt5compat qthttpserver qtpositioning qtwebsockets'	
     - name: Install Additional Software
       run: |
         sudo apt install extra-cmake-modules ninja-build spirv-tools

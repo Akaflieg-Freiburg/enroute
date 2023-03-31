@@ -53,6 +53,7 @@ jobs:
         $Qt6_DIR/bin/qt-configure-module ../qtlocation
         cmake -DMBGL_QT_WITH_INTERNAL_ICU:BOOL=On .
         cmake --build .
+        cmake --install .
     - name: Compile Enroute
       run: |
         cmake -E make_directory build-enroute

@@ -56,6 +56,6 @@ jobs:
     - name: Compile Enroute
       run: |
         cmake -E make_directory build-enroute
-        mkdir -p build-enroute
+        cd build-enroute
         $Qt6_DIR/bin/qt-cmake -DCMAKE_BUILD_TYPE:STRING=Debug ../enroute
         cmake --build .

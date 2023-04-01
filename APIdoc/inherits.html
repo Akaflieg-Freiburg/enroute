@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.22.2</span>
+   &#160;<span id="projectnumber">2.26.06</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -106,33 +106,35 @@ $(function() {
 </td></tr>
 <tr><td><img src="inherit_graph_11.png" border="0" usemap="#aGlobalObject" alt=""/>
 <map name="aGlobalObject" id="aGlobalObject">
-<area shape="rect" href="classGlobalObject.html" title="Base class for global singleton objects." alt="" coords="5,199,112,225"/>
+<area shape="rect" href="classGlobalObject.html" title="Base class for global singleton objects." alt="" coords="5,249,112,276"/>
 <area shape="rect" href="classDataManagement_1_1DataManager.html" title="Manages the list of geographic maps." alt="" coords="160,5,395,32"/>
 <area shape="rect" href="classDataManagement_1_1SSLErrorHandler.html" title="Handles SSL error." alt="" coords="177,57,378,98"/>
 <area shape="rect" href="classGeoMaps_1_1GeoMapProvider.html" title="Provides geographic information." alt="" coords="178,123,377,149"/>
 <area shape="rect" href="classGeoMaps_1_1WaypointLibrary.html" title="Library of user&#45;defined waypoints." alt="" coords="179,173,376,200"/>
-<area shape="rect" href="classNavigation_1_1Navigator.html" title="Main hub for navigation data." alt="" coords="195,224,360,251"/>
-<area shape="rect" href="classPlatform_1_1FileExchange__Abstract.html" title="Interface to platform&#45;specific file exchange functionality." alt="" coords="191,275,363,317"/>
-<area shape="rect" href="classPlatform_1_1Notifier__Abstract.html" title="This class shows platform&#45;native notifications to the user." alt="" coords="210,341,345,382"/>
-<area shape="rect" href="classPlatform_1_1PlatformAdaptor__Abstract.html" title="Interface to platform&#45;specific functionality." alt="" coords="181,406,374,447"/>
-<area shape="rect" href="classPlatform_1_1FileExchange.html" title="Implementation of FileExchange for Android devices." alt="" coords="453,283,625,309"/>
-<area shape="rect" href="classPlatform_1_1Notifier.html" title="Template implementation of Notifier." alt="" coords="472,348,607,375"/>
-<area shape="rect" href="classPlatform_1_1PlatformAdaptor.html" title="Implementation of PlatformAdaptor for Android devices." alt="" coords="443,413,636,440"/>
+<area shape="rect" href="classNOTAM_1_1NotamProvider.html" title="This extremely simple class holds a the data item of a NOTAM." alt="" coords="189,224,365,251"/>
+<area shape="rect" href="classNavigation_1_1Clock.html" title="This extremely simple class give accss to time and offers a few time&#45;related functions." alt="" coords="209,275,346,301"/>
+<area shape="rect" href="classNavigation_1_1Navigator.html" title="Main hub for navigation data." alt="" coords="195,325,360,352"/>
+<area shape="rect" href="classPlatform_1_1FileExchange__Abstract.html" title="Interface to platform&#45;specific file exchange functionality." alt="" coords="191,377,363,418"/>
+<area shape="rect" href="classPlatform_1_1Notifier__Abstract.html" title="This class shows platform&#45;native notifications to the user." alt="" coords="210,442,345,483"/>
+<area shape="rect" href="classPlatform_1_1PlatformAdaptor__Abstract.html" title="Interface to platform&#45;specific functionality." alt="" coords="181,507,374,549"/>
+<area shape="rect" href="classPlatform_1_1FileExchange.html" title="Implementation of FileExchange for Android devices." alt="" coords="453,384,625,411"/>
+<area shape="rect" href="classPlatform_1_1Notifier.html" title="Template implementation of Notifier." alt="" coords="472,449,607,476"/>
+<area shape="rect" href="classPlatform_1_1PlatformAdaptor.html" title="Implementation of PlatformAdaptor for Android devices." alt="" coords="443,515,636,541"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_12.png" border="0" usemap="#aLibrarian" alt=""/>
+<tr><td><img src="inherit_graph_12.png" border="0" usemap="#aGlobalSettings" alt=""/>
+<map name="aGlobalSettings" id="aGlobalSettings">
+<area shape="rect" href="classGlobalSettings.html" title="Global Settings Manager." alt="" coords="5,5,123,32"/>
+</map>
+</td></tr>
+<tr><td><img src="inherit_graph_13.png" border="0" usemap="#aLibrarian" alt=""/>
 <map name="aLibrarian" id="aLibrarian">
 <area shape="rect" href="classLibrarian.html" title="Manage libraries and text assets." alt="" coords="5,5,84,32"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_13.png" border="0" usemap="#aNavigation_1_1Aircraft" alt=""/>
+<tr><td><img src="inherit_graph_14.png" border="0" usemap="#aNavigation_1_1Aircraft" alt=""/>
 <map name="aNavigation_1_1Aircraft" id="aNavigation_1_1Aircraft">
 <area shape="rect" href="classNavigation_1_1Aircraft.html" title="This extremely simple class holds a few numbers that describe an aircraft." alt="" coords="5,5,153,32"/>
-</map>
-</td></tr>
-<tr><td><img src="inherit_graph_14.png" border="0" usemap="#aNavigation_1_1Clock" alt=""/>
-<map name="aNavigation_1_1Clock" id="aNavigation_1_1Clock">
-<area shape="rect" href="classNavigation_1_1Clock.html" title="This extremely simple class give accss to time and offers a few time&#45;related functions." alt="" coords="5,5,143,32"/>
 </map>
 </td></tr>
 <tr><td><img src="inherit_graph_15.png" border="0" usemap="#aNavigation_1_1FlightRoute" alt=""/>
@@ -150,17 +152,33 @@ $(function() {
 <area shape="rect" href="classNavigation_1_1RemainingRouteInfo.html" title="Info about remaining route." alt="" coords="5,5,240,32"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_18.png" border="0" usemap="#aPositioning_1_1Geoid" alt=""/>
+<tr><td><img src="inherit_graph_18.png" border="0" usemap="#aNOTAM_1_1Notam" alt=""/>
+<map name="aNOTAM_1_1Notam" id="aNOTAM_1_1Notam">
+<area shape="rect" href="classNOTAM_1_1Notam.html" title="This extremely simple class holds a the data item of a NOTAM." alt="" coords="5,5,128,32"/>
+</map>
+</td></tr>
+<tr><td><img src="inherit_graph_19.png" border="0" usemap="#aNOTAM_1_1NotamList" alt=""/>
+<map name="aNOTAM_1_1NotamList" id="aNOTAM_1_1NotamList">
+<area shape="rect" href="classNOTAM_1_1NotamList.html" title="A list of NOTAMs." alt="" coords="5,5,151,32"/>
+</map>
+</td></tr>
+<tr><td><img src="inherit_graph_20.png" border="0" usemap="#aPlatform_1_1SafeInsets__Abstract" alt=""/>
+<map name="aPlatform_1_1SafeInsets__Abstract" id="aPlatform_1_1SafeInsets__Abstract">
+<area shape="rect" href="classPlatform_1_1SafeInsets__Abstract.html" title="Safe window insets for QML." alt="" coords="5,5,160,47"/>
+<area shape="rect" href="classPlatform_1_1SafeInsets.html" title="Implementation of SafeInsets for Android devices." alt="" coords="208,13,363,39"/>
+</map>
+</td></tr>
+<tr><td><img src="inherit_graph_21.png" border="0" usemap="#aPositioning_1_1Geoid" alt=""/>
 <map name="aPositioning_1_1Geoid" id="aPositioning_1_1Geoid">
 <area shape="rect" href="classPositioning_1_1Geoid.html" title="Provide geoidal separation according to https://en.wikipedia.org/wiki/Geoid." alt="" coords="5,5,145,32"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_19.png" border="0" usemap="#aPositioning_1_1PositionInfo" alt=""/>
+<tr><td><img src="inherit_graph_22.png" border="0" usemap="#aPositioning_1_1PositionInfo" alt=""/>
 <map name="aPositioning_1_1PositionInfo" id="aPositioning_1_1PositionInfo">
 <area shape="rect" href="classPositioning_1_1PositionInfo.html" title="Geographic position." alt="" coords="5,5,184,32"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_20.png" border="0" usemap="#aPositioning_1_1PositionInfoSource__Abstract" alt=""/>
+<tr><td><img src="inherit_graph_23.png" border="0" usemap="#aPositioning_1_1PositionInfoSource__Abstract" alt=""/>
 <map name="aPositioning_1_1PositionInfoSource__Abstract" id="aPositioning_1_1PositionInfoSource__Abstract">
 <area shape="rect" href="classPositioning_1_1PositionInfoSource__Abstract.html" title="Abstract base class for all classes that provide geographic position information." alt="" coords="5,64,184,105"/>
 <area shape="rect" href="classPositioning_1_1PositionInfoSource__Satellite.html" title="Satellite Navigator." alt="" coords="247,5,425,47"/>
@@ -168,27 +186,22 @@ $(function() {
 <area shape="rect" href="classTraffic_1_1TrafficDataProvider.html" title="Traffic receiver." alt="" coords="239,122,433,149"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_21.png" border="0" usemap="#aSettings" alt=""/>
-<map name="aSettings" id="aSettings">
-<area shape="rect" href="classSettings.html" title="Global Settings Manager." alt="" coords="5,5,80,32"/>
-</map>
-</td></tr>
-<tr><td><img src="inherit_graph_22.png" border="0" usemap="#aShare" alt=""/>
+<tr><td><img src="inherit_graph_24.png" border="0" usemap="#aShare" alt=""/>
 <map name="aShare" id="aShare">
 <area shape="rect" href="classShare.html" title="The Share class provides synchronous and asynchronous communication between the android native share ..." alt="" coords="5,5,64,32"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_23.png" border="0" usemap="#aTraffic_1_1FlarmnetDB" alt=""/>
+<tr><td><img src="inherit_graph_25.png" border="0" usemap="#aTraffic_1_1FlarmnetDB" alt=""/>
 <map name="aTraffic_1_1FlarmnetDB" id="aTraffic_1_1FlarmnetDB">
 <area shape="rect" href="classTraffic_1_1FlarmnetDB.html" title="Flarmnet database." alt="" coords="5,5,152,32"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_24.png" border="0" usemap="#aTraffic_1_1PasswordDB" alt=""/>
+<tr><td><img src="inherit_graph_26.png" border="0" usemap="#aTraffic_1_1PasswordDB" alt=""/>
 <map name="aTraffic_1_1PasswordDB" id="aTraffic_1_1PasswordDB">
 <area shape="rect" href="classTraffic_1_1PasswordDB.html" title="Password database." alt="" coords="5,5,155,32"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_25.png" border="0" usemap="#aTraffic_1_1TrafficDataSource__Abstract" alt=""/>
+<tr><td><img src="inherit_graph_27.png" border="0" usemap="#aTraffic_1_1TrafficDataSource__Abstract" alt=""/>
 <map name="aTraffic_1_1TrafficDataSource__Abstract" id="aTraffic_1_1TrafficDataSource__Abstract">
 <area shape="rect" href="classTraffic_1_1TrafficDataSource__Abstract.html" title="Base class for all traffic receiver data sources." alt="" coords="5,82,188,123"/>
 <area shape="rect" href="classTraffic_1_1TrafficDataSource__AbstractSocket.html" title="Base class for all traffic receiver data sources that receive data via network sockets." alt="" coords="251,23,434,65"/>
@@ -198,71 +211,76 @@ $(function() {
 <area shape="rect" href="classTraffic_1_1TrafficDataSource__Udp.html" title="Traffic receiver: UDP connection to GDL90 source." alt="" coords="497,56,713,83"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_26.png" border="0" usemap="#aTraffic_1_1TrafficFactor__Abstract" alt=""/>
+<tr><td><img src="inherit_graph_28.png" border="0" usemap="#aTraffic_1_1TrafficFactor__Abstract" alt=""/>
 <map name="aTraffic_1_1TrafficFactor__Abstract" id="aTraffic_1_1TrafficFactor__Abstract">
 <area shape="rect" href="classTraffic_1_1TrafficFactor__Abstract.html" title="Abstract base class for traffic factors." alt="" coords="5,39,152,80"/>
 <area shape="rect" href="classTraffic_1_1TrafficFactor__DistanceOnly.html" title="Traffic factor where only distance is known." alt="" coords="200,5,347,47"/>
 <area shape="rect" href="classTraffic_1_1TrafficFactor__WithPosition.html" title="Traffic factor whose precise position is known." alt="" coords="200,71,347,112"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_27.png" border="0" usemap="#aTraffic_1_1Warning" alt=""/>
+<tr><td><img src="inherit_graph_29.png" border="0" usemap="#aTraffic_1_1Warning" alt=""/>
 <map name="aTraffic_1_1Warning" id="aTraffic_1_1Warning">
 <area shape="rect" href="classTraffic_1_1Warning.html" title="Traffic warning." alt="" coords="5,5,128,32"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_28.png" border="0" usemap="#aUi_1_1ScaleQuickItem" alt=""/>
+<tr><td><img src="inherit_graph_30.png" border="0" usemap="#aUi_1_1ScaleQuickItem" alt=""/>
 <map name="aUi_1_1ScaleQuickItem" id="aUi_1_1ScaleQuickItem">
 <area shape="rect" href="classUi_1_1ScaleQuickItem.html" title="QML Class implementing a scale for a Map." alt="" coords="5,5,152,32"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_29.png" border="0" usemap="#aUnits_1_1Angle" alt=""/>
+<tr><td><img src="inherit_graph_31.png" border="0" usemap="#aUnits_1_1Angle" alt=""/>
 <map name="aUnits_1_1Angle" id="aUnits_1_1Angle">
 <area shape="rect" href="classUnits_1_1Angle.html" title="Convenience class for angle computations." alt="" coords="5,5,107,32"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_30.png" border="0" usemap="#aUnits_1_1Distance" alt=""/>
+<tr><td><img src="inherit_graph_32.png" border="0" usemap="#aUnits_1_1ByteSize" alt=""/>
+<map name="aUnits_1_1ByteSize" id="aUnits_1_1ByteSize">
+<area shape="rect" href="classUnits_1_1ByteSize.html" title="Convenience class for size_t." alt="" coords="5,5,127,32"/>
+</map>
+</td></tr>
+<tr><td><img src="inherit_graph_33.png" border="0" usemap="#aUnits_1_1Distance" alt=""/>
 <map name="aUnits_1_1Distance" id="aUnits_1_1Distance">
 <area shape="rect" href="classUnits_1_1Distance.html" title="Convenience class for distance computations." alt="" coords="5,5,127,32"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_31.png" border="0" usemap="#aUnits_1_1Speed" alt=""/>
+<tr><td><img src="inherit_graph_34.png" border="0" usemap="#aUnits_1_1Speed" alt=""/>
 <map name="aUnits_1_1Speed" id="aUnits_1_1Speed">
 <area shape="rect" href="classUnits_1_1Speed.html" title="Convenience class for speed computations." alt="" coords="5,5,109,32"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_32.png" border="0" usemap="#aUnits_1_1Time" alt=""/>
+<tr><td><img src="inherit_graph_35.png" border="0" usemap="#aUnits_1_1Time" alt=""/>
 <map name="aUnits_1_1Time" id="aUnits_1_1Time">
 <area shape="rect" href="classUnits_1_1Time.html" title="Convenience class for time computations." alt="" coords="5,5,103,32"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_33.png" border="0" usemap="#aUnits_1_1Volume" alt=""/>
+<tr><td><img src="inherit_graph_36.png" border="0" usemap="#aUnits_1_1Volume" alt=""/>
 <map name="aUnits_1_1Volume" id="aUnits_1_1Volume">
 <area shape="rect" href="classUnits_1_1Volume.html" title="Convenience class for volume computations." alt="" coords="5,5,119,32"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_34.png" border="0" usemap="#aUnits_1_1VolumeFlow" alt=""/>
+<tr><td><img src="inherit_graph_37.png" border="0" usemap="#aUnits_1_1VolumeFlow" alt=""/>
 <map name="aUnits_1_1VolumeFlow" id="aUnits_1_1VolumeFlow">
 <area shape="rect" href="classUnits_1_1VolumeFlow.html" title="Convenience class for volume flow computations." alt="" coords="5,5,149,32"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_35.png" border="0" usemap="#aWeather_1_1Decoder" alt=""/>
+<tr><td><img src="inherit_graph_38.png" border="0" usemap="#aWeather_1_1Decoder" alt=""/>
 <map name="aWeather_1_1Decoder" id="aWeather_1_1Decoder">
 <area shape="rect" href="classWeather_1_1Decoder.html" title="METAR/TAF decoder." alt="" coords="5,31,144,57"/>
 <area shape="rect" href="classWeather_1_1METAR.html" title="METAR report." alt="" coords="192,5,321,32"/>
 <area shape="rect" href="classWeather_1_1TAF.html" title="TAF report." alt="" coords="203,56,311,83"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_36.png" border="0" usemap="#aWeather_1_1Station" alt=""/>
+<tr><td><img src="inherit_graph_39.png" border="0" usemap="#aWeather_1_1Station" alt=""/>
 <map name="aWeather_1_1Station" id="aWeather_1_1Station">
 <area shape="rect" href="classWeather_1_1Station.html" title="This class represents a weather station that issues METAR or TAF report." alt="" coords="5,5,136,32"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_37.png" border="0" usemap="#aWeather_1_1WeatherDataProvider" alt=""/>
+<tr><td><img src="inherit_graph_40.png" border="0" usemap="#aWeather_1_1WeatherDataProvider" alt=""/>
 <map name="aWeather_1_1WeatherDataProvider" id="aWeather_1_1WeatherDataProvider">
 <area shape="rect" href="classWeather_1_1WeatherDataProvider.html" title="WeatherDataProvider, weather service manager." alt="" coords="5,5,228,32"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_38.png" border="0" usemap="#aWeather_1_1Wind" alt=""/>
+<tr><td><img src="inherit_graph_41.png" border="0" usemap="#aWeather_1_1Wind" alt=""/>
 <map name="aWeather_1_1Wind" id="aWeather_1_1Wind">
 <area shape="rect" href="classWeather_1_1Wind.html" title="This extremely simple class holds the wind speed and direction." alt="" coords="5,5,123,32"/>
 </map>

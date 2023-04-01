@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.22.2</span>
+   &#160;<span id="projectnumber">2.26.06</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -49,6 +49,9 @@ $(function() {
 <li>databases
 : <a class="el" href="classDataManagement_1_1DataManager.html#a486d4c18e5b677e1e7fc88d093d35d48">DataManagement::DataManager</a>
 </li>
+<li>dataChanged()
+: <a class="el" href="classNOTAM_1_1NotamProvider.html#ad670bd26e0119a071c22fa757af43872">NOTAM::NotamProvider</a>
+</li>
 <li>DataManager()
 : <a class="el" href="classDataManagement_1_1DataManager.html#aa2ed55a60c00c77d00b88c7fc00f1c2a">DataManagement::DataManager</a>
 </li>
@@ -72,7 +75,8 @@ $(function() {
 , <a class="el" href="classGeoMaps_1_1GeoMapProvider.html#ad2b0640861db6e1383da6a0461e9936c">GeoMaps::GeoMapProvider</a>
 , <a class="el" href="classGlobalObject.html#ad89d4b5b146c91f65f282572629c2f5f">GlobalObject</a>
 , <a class="el" href="classNavigation_1_1Navigator.html#a9f95457f009e0c581a3703b69f04b63d">Navigation::Navigator</a>
-, <a class="el" href="classPlatform_1_1FileExchange.html#a83d1fff8813619e716d518cc42956d9a">Platform::FileExchange</a>
+, <a class="el" href="classNOTAM_1_1NotamProvider.html#a47f4d06a4317122c50578e32722c9c82">NOTAM::NotamProvider</a>
+, <a class="el" href="classPlatform_1_1FileExchange.html#aa02f3bc70cc1e4e1f2de22ee63ad919a">Platform::FileExchange</a>
 , <a class="el" href="classPlatform_1_1Notifier.html#a9a8f58e60985ebb41cb21ed1095605ee">Platform::Notifier</a>
 , <a class="el" href="classPlatform_1_1PlatformAdaptor.html#a0a762312201deb36e9ff3c458e7ff696">Platform::PlatformAdaptor</a>
 </li>
@@ -87,8 +91,8 @@ $(function() {
 <li>demoRunner()
 : <a class="el" href="classGlobalObject.html#a97d0f9fb61c58e12bcc27e882264395c">GlobalObject</a>
 </li>
-<li>descentSpeed()
-: <a class="el" href="classNavigation_1_1Aircraft.html#a2364924d1a446149e14353fd45e13c65">Navigation::Aircraft</a>
+<li>descentSpeed
+: <a class="el" href="classNavigation_1_1Aircraft.html#a5530fa293fe353acb11f9457aefc4a38">Navigation::Aircraft</a>
 </li>
 <li>describePointInTime()
 : <a class="el" href="classNavigation_1_1Clock.html#adabc7f075dab2fd1841637b205b69bfa">Navigation::Clock</a>
@@ -103,7 +107,6 @@ $(function() {
 : <a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a8893b5a2c3e58772f099bb1c5db7d25c">DataManagement::Downloadable_Abstract</a>
 , <a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html#a64e2cfe006acd151c46f53063c8880cd">DataManagement::Downloadable_MultiFile</a>
 , <a class="el" href="classDataManagement_1_1Downloadable__SingleFile.html#ad3fe3dad01adc6a69f4c9a37ba698287">DataManagement::Downloadable_SingleFile</a>
-, <a class="el" href="classGeoMaps_1_1TileHandler.html#a4ae73693618e3a61f06c67cc49aeb863">GeoMaps::TileHandler</a>
 , <a class="el" href="classNavigation_1_1Leg.html#a673cb55ed190928c58d4e7edbb3d533f">Navigation::Leg</a>
 , <a class="el" href="classTraffic_1_1TrafficFactor__Abstract.html#a2b793f3437edcdd8417e6a543002bd8e">Traffic::TrafficFactor_Abstract</a>
 , <a class="el" href="classTraffic_1_1Warning.html#a361b0d42ecb83b002bd5091198ac219d">Traffic::Warning</a>
@@ -120,7 +123,7 @@ $(function() {
 </li>
 <li>disableScreenSaver()
 : <a class="el" href="classPlatform_1_1PlatformAdaptor.html#aa576dfcc599121d187d40999654a67a3">Platform::PlatformAdaptor</a>
-, <a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html#a124d35ca8d4fe46f5c7d3450abbeb92f">Platform::PlatformAdaptor_Abstract</a>
+, <a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html#a6279b44724a3e75cba57a3424ca55ab2">Platform::PlatformAdaptor_Abstract</a>
 </li>
 <li>disconnectFromTrafficReceiver()
 : <a class="el" href="classTraffic_1_1TrafficDataProvider.html#ac9544cf2977ec2df572e9c31ce11dd36">Traffic::TrafficDataProvider</a>
@@ -143,16 +146,19 @@ $(function() {
 : <a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html#a4b1e20b99741cce6d855757af8233677">DataManagement::Downloadable_MultiFile</a>
 </li>
 <li>Downloadable_SingleFile()
-: <a class="el" href="classDataManagement_1_1Downloadable__SingleFile.html#af0b1fd70f8b4f90302d9a30659cc1a40">DataManagement::Downloadable_SingleFile</a>
+: <a class="el" href="classDataManagement_1_1Downloadable__SingleFile.html#a83d9d1f0ad108ddf13c229d7f27e3cb8">DataManagement::Downloadable_SingleFile</a>
 </li>
 <li>downloadables
-: <a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html#a1839ad2d354c41728376da6b76bfce41">DataManagement::Downloadable_MultiFile</a>
+: <a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html#a67b8ca94c149bf7069f30ba9cd34ff95">DataManagement::Downloadable_MultiFile</a>
+</li>
+<li>downloadables4Location()
+: <a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html#a522ffae48f9bb649e47432595583fc89">DataManagement::Downloadable_MultiFile</a>
 </li>
 <li>downloadablesChanged()
 : <a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html#ac0878b9dff69e734bb7c05c3ab55b65d">DataManagement::Downloadable_MultiFile</a>
 </li>
-<li>downloading()
-: <a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a2a42bc0a6d5161d5199c030d400cbf95">DataManagement::Downloadable_Abstract</a>
+<li>downloading
+: <a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#af0458b68042e58bcf831af6b90faf3a3">DataManagement::Downloadable_Abstract</a>
 , <a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html#a1431902efee190ce2ca2f07033c82d00">DataManagement::Downloadable_MultiFile</a>
 , <a class="el" href="classDataManagement_1_1Downloadable__SingleFile.html#a6eb2b556f6384aaf262c9ff889ed863a">DataManagement::Downloadable_SingleFile</a>
 , <a class="el" href="classWeather_1_1WeatherDataProvider.html#a6ec5dc5d952f6e91c2cac03d52005be6">Weather::WeatherDataProvider</a>

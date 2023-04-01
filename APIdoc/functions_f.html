@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.22.2</span>
+   &#160;<span id="projectnumber">2.26.06</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -43,6 +43,15 @@ $(function() {
 <div class="textblock">Here is a list of all documented class members with links to the class documentation for each member:</div>
 
 <h3><a id="index_f"></a>- f -</h3><ul>
+<li>FAA_ID()
+: <a class="el" href="classGlobalSettings.html#ac99dd126680b1468e26fe5b0ce4c4e67">GlobalSettings</a>
+</li>
+<li>FAA_KEY()
+: <a class="el" href="classGlobalSettings.html#a814364dea4d99388f3cd488a3f31ede7">GlobalSettings</a>
+</li>
+<li>FAADataChanged()
+: <a class="el" href="classGlobalSettings.html#af1c007f23aaf0eeb005f6e9e5de983c9">GlobalSettings</a>
+</li>
 <li>factorWithoutPosition()
 : <a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#ae5543aa5fa931f0dda6f376492c10ff4">Traffic::TrafficDataSource_Abstract</a>
 </li>
@@ -74,8 +83,8 @@ $(function() {
 <li>FileFunction
 : <a class="el" href="classPlatform_1_1FileExchange__Abstract.html#ada6b341cdc3eca82eddf018b04af547b">Platform::FileExchange_Abstract</a>
 </li>
-<li>fileName
-: <a class="el" href="classDataManagement_1_1Downloadable__SingleFile.html#a89315c6cc9e560d2836436e7e1b05872">DataManagement::Downloadable_SingleFile</a>
+<li>fileName()
+: <a class="el" href="classDataManagement_1_1Downloadable__SingleFile.html#a0548a6a7624cf38df98a2a670be87626">DataManagement::Downloadable_SingleFile</a>
 , <a class="el" href="classGeoMaps_1_1MBTILES.html#abccb63c7cfb8e857f634ee25ce96b6a3">GeoMaps::MBTILES</a>
 </li>
 <li>fileReceived()
@@ -118,10 +127,13 @@ $(function() {
 : <a class="el" href="classGlobalObject.html#adbce86b691abd0b44c6853bdbe3fd680">GlobalObject</a>
 </li>
 <li>FlarmnetDB()
-: <a class="el" href="classTraffic_1_1FlarmnetDB.html#aaa221fc063f289573bd391073ae9791d">Traffic::FlarmnetDB</a>
+: <a class="el" href="classTraffic_1_1FlarmnetDB.html#a3d82a2ccdd25e281ff2518691b41f2d3">Traffic::FlarmnetDB</a>
 </li>
 <li>Flight
 : <a class="el" href="classNavigation_1_1Navigator.html#a577fd3b296e1f2bb63cf834d2991dd01a351bf8e5ae6162e24a27d32121d90faa">Navigation::Navigator</a>
+</li>
+<li>flightCategory
+: <a class="el" href="classWeather_1_1METAR.html#ae95f45f5587dd3adeac389a1dcd60d03">Weather::METAR</a>
 </li>
 <li>FlightCategory
 : <a class="el" href="classWeather_1_1METAR.html#ae624d6b0294ce1371f1d6ae80ba26c4d">Weather::METAR</a>
@@ -136,7 +148,7 @@ $(function() {
 : <a class="el" href="classNavigation_1_1FlightRoute.html#a88b36228c5cb2e5d34160c41e285b44b">Navigation::FlightRoute</a>
 </li>
 <li>flightRoute
-: <a class="el" href="classNavigation_1_1Navigator.html#a73c748bdef365598b7d29dd1c7d9f83f">Navigation::Navigator</a>
+: <a class="el" href="classNavigation_1_1Navigator.html#ad24e156eba1d422b9f9d2d004f1186d5">Navigation::Navigator</a>
 </li>
 <li>flightStatus
 : <a class="el" href="classNavigation_1_1Navigator.html#a1c6674deec9e2810d3cc3288c18553f8">Navigation::Navigator</a>
@@ -147,12 +159,17 @@ $(function() {
 <li>flightStatusChanged()
 : <a class="el" href="classNavigation_1_1Navigator.html#a6be084caff4db0bcf5d59a9df9d20010">Navigation::Navigator</a>
 </li>
-<li>Format
-: <a class="el" href="classGeoMaps_1_1MBTILES.html#a1d7f9168ac1c72721d58c4b6fab5e480">GeoMaps::MBTILES</a>
+<li>fontSize
+: <a class="el" href="classGlobalSettings.html#ac664808ad43e087a2f193a1f22b78a73">GlobalSettings</a>
+</li>
+<li>fontSizeChanged()
+: <a class="el" href="classGlobalSettings.html#a5f3c8fec944787ba5256e165b2329126">GlobalSettings</a>
 </li>
 <li>format()
 : <a class="el" href="classGeoMaps_1_1MBTILES.html#a601b560e383fb0c8cc47382887929290">GeoMaps::MBTILES</a>
-, <a class="el" href="classGeoMaps_1_1TileHandler.html#a633a585c79301881189f7a8c04a77ef4">GeoMaps::TileHandler</a>
+</li>
+<li>Format
+: <a class="el" href="classGeoMaps_1_1MBTILES.html#a1d7f9168ac1c72721d58c4b6fab5e480">GeoMaps::MBTILES</a>
 </li>
 <li>FPM_per_MPS
 : <a class="el" href="classUnits_1_1Speed.html#a524e38bbfbf5478137b903d87ac7f07c">Units::Speed</a>
@@ -171,6 +188,9 @@ $(function() {
 </li>
 <li>fromGPH()
 : <a class="el" href="classUnits_1_1VolumeFlow.html#af30e633b7370c12a5913a652d822c039">Units::VolumeFlow</a>
+</li>
+<li>fromH()
+: <a class="el" href="classUnits_1_1Time.html#a2e982bf1b403e4140ab43c56c833614b">Units::Time</a>
 </li>
 <li>fromKM()
 : <a class="el" href="classUnits_1_1Distance.html#a4deb709a747127e93f8e645e0b76dc6f">Units::Distance</a>
@@ -217,11 +237,11 @@ $(function() {
 <li>fuelConsumption
 : <a class="el" href="classNavigation_1_1Aircraft.html#af5c8b631c91695e2809824b9423443d8">Navigation::Aircraft</a>
 </li>
-<li>FuelConsumptionUnit
-: <a class="el" href="classNavigation_1_1Aircraft.html#a9d123f8f7f3a6cab81f042841bcbad30">Navigation::Aircraft</a>
-</li>
 <li>fuelConsumptionUnit
 : <a class="el" href="classNavigation_1_1Aircraft.html#ab706db21dd99928d0e60e4da27757ad4">Navigation::Aircraft</a>
+</li>
+<li>FuelConsumptionUnit
+: <a class="el" href="classNavigation_1_1Aircraft.html#a9d123f8f7f3a6cab81f042841bcbad30">Navigation::Aircraft</a>
 </li>
 <li>fullPath()
 : <a class="el" href="classLibrarian.html#a56c7b61f8f22eeb8bd665a46a804e302">Librarian</a>

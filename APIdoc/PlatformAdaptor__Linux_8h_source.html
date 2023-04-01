@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.22.2</span>
+   &#160;<span id="projectnumber">2.26.06</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -81,7 +81,7 @@ $(function() {
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    Q_OBJECT</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="classPlatform_1_1PlatformAdaptor.html#a2e767fa1e4b2a4e9c2227f3639ff62c0">   40</a></span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a2e767fa1e4b2a4e9c2227f3639ff62c0">PlatformAdaptor</a>(QObject *parent = <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="classPlatform_1_1PlatformAdaptor.html#a2e767fa1e4b2a4e9c2227f3639ff62c0">   40</a></span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a2e767fa1e4b2a4e9c2227f3639ff62c0">PlatformAdaptor</a>(QObject* parent = <span class="keyword">nullptr</span>);</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    ~<a class="code" href="classPlatform_1_1PlatformAdaptor.html">PlatformAdaptor</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
@@ -90,11 +90,11 @@ $(function() {
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="comment">// Methods</span></div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="comment">//</span></div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="classPlatform_1_1PlatformAdaptor.html#a7ead29f0e028faddb7603f2136c985d4">   53</a></span>&#160;    Q_INVOKABLE QString <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a7ead29f0e028faddb7603f2136c985d4">currentSSID</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="classPlatform_1_1PlatformAdaptor.html#a90b981be9ec5b59144cfde308a0b6c12">   53</a></span>&#160;    Q_INVOKABLE QString <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a90b981be9ec5b59144cfde308a0b6c12">checkPermissions</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="classPlatform_1_1PlatformAdaptor.html#aa576dfcc599121d187d40999654a67a3">   56</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1PlatformAdaptor.html#aa576dfcc599121d187d40999654a67a3">disableScreenSaver</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="classPlatform_1_1PlatformAdaptor.html#a858768853603609b58072bd7e0ca424d">   62</a></span>&#160;    Q_INVOKABLE <span class="keywordtype">bool</span> <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a858768853603609b58072bd7e0ca424d">hasRequiredPermissions</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="classPlatform_1_1PlatformAdaptor.html#a7ead29f0e028faddb7603f2136c985d4">   59</a></span>&#160;    Q_INVOKABLE QString <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a7ead29f0e028faddb7603f2136c985d4">currentSSID</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="classPlatform_1_1PlatformAdaptor.html#aa576dfcc599121d187d40999654a67a3">   62</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1PlatformAdaptor.html#aa576dfcc599121d187d40999654a67a3">disableScreenSaver</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
 <div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="classPlatform_1_1PlatformAdaptor.html#a82fb311ae84bff2477c0e57d4bfbf1ba">   68</a></span>&#160;    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a82fb311ae84bff2477c0e57d4bfbf1ba">lockWifi</a>(<span class="keywordtype">bool</span> lock) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
@@ -131,7 +131,7 @@ $(function() {
 <div class="ttc" id="aclassPlatform_1_1PlatformAdaptor_html_a6200b6c2868bfedcab5fbf9d97bde483"><div class="ttname"><a href="classPlatform_1_1PlatformAdaptor.html#a6200b6c2868bfedcab5fbf9d97bde483">Platform::PlatformAdaptor::vibrateBrief</a></div><div class="ttdeci">Q_INVOKABLE void vibrateBrief() override</div><div class="ttdoc">Implements pure virtual method from PlatformAdaptor_Abstract.</div></div>
 <div class="ttc" id="aclassPlatform_1_1PlatformAdaptor_html_a7ead29f0e028faddb7603f2136c985d4"><div class="ttname"><a href="classPlatform_1_1PlatformAdaptor.html#a7ead29f0e028faddb7603f2136c985d4">Platform::PlatformAdaptor::currentSSID</a></div><div class="ttdeci">Q_INVOKABLE QString currentSSID() override</div><div class="ttdoc">Implements pure virtual method from PlatformAdaptor_Abstract.</div></div>
 <div class="ttc" id="aclassPlatform_1_1PlatformAdaptor_html_a82fb311ae84bff2477c0e57d4bfbf1ba"><div class="ttname"><a href="classPlatform_1_1PlatformAdaptor.html#a82fb311ae84bff2477c0e57d4bfbf1ba">Platform::PlatformAdaptor::lockWifi</a></div><div class="ttdeci">Q_INVOKABLE void lockWifi(bool lock) override</div><div class="ttdoc">Implements pure virtual method from PlatformAdaptor_Abstract.</div></div>
-<div class="ttc" id="aclassPlatform_1_1PlatformAdaptor_html_a858768853603609b58072bd7e0ca424d"><div class="ttname"><a href="classPlatform_1_1PlatformAdaptor.html#a858768853603609b58072bd7e0ca424d">Platform::PlatformAdaptor::hasRequiredPermissions</a></div><div class="ttdeci">Q_INVOKABLE bool hasRequiredPermissions() override</div><div class="ttdoc">Implements pure virtual method from PlatformAdaptor_Abstract.</div></div>
+<div class="ttc" id="aclassPlatform_1_1PlatformAdaptor_html_a90b981be9ec5b59144cfde308a0b6c12"><div class="ttname"><a href="classPlatform_1_1PlatformAdaptor.html#a90b981be9ec5b59144cfde308a0b6c12">Platform::PlatformAdaptor::checkPermissions</a></div><div class="ttdeci">Q_INVOKABLE QString checkPermissions() override</div><div class="ttdoc">Implements pure virtual method from PlatformAdaptor_Abstract.</div></div>
 <div class="ttc" id="aclassPlatform_1_1PlatformAdaptor_html_aa576dfcc599121d187d40999654a67a3"><div class="ttname"><a href="classPlatform_1_1PlatformAdaptor.html#aa576dfcc599121d187d40999654a67a3">Platform::PlatformAdaptor::disableScreenSaver</a></div><div class="ttdeci">void disableScreenSaver() override</div><div class="ttdoc">Implements pure virtual method from PlatformAdaptor_Abstract.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

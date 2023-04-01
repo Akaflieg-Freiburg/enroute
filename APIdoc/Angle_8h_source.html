@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.22.2</span>
+   &#160;<span id="projectnumber">2.26.06</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -71,122 +71,118 @@ $(function() {
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;QObject&gt;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;QtMath&gt;</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="namespaceUnits.html">   33</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceUnits.html">Units</a> {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html">   40</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classUnits_1_1Angle.html">Angle</a> {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        Q_GADGET</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#ab603cd689a472d17933623807c62ba56">   50</a></span>&#160;        Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classUnits_1_1Angle.html">Units::Angle</a> <a class="code" href="classUnits_1_1Angle.html#ab603cd689a472d17933623807c62ba56">fromRAD</a>(<span class="keywordtype">double</span> angleInRAD)</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        {</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            <a class="code" href="classUnits_1_1Angle.html">Angle</a> result;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            result.m_angleInRAD = angleInRAD;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        }</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#aca8075bc42502769474dfd34a125e181">   63</a></span>&#160;        Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classUnits_1_1Angle.html">Units::Angle</a> <a class="code" href="classUnits_1_1Angle.html#aca8075bc42502769474dfd34a125e181">fromDEG</a>(<span class="keywordtype">double</span> angleInDEG)</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        {</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            <a class="code" href="classUnits_1_1Angle.html">Angle</a> result;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            result.m_angleInRAD = qDegreesToRadians(angleInDEG);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        }</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#a186a4f2cfdbdece64274918ad0e80740">   74</a></span>&#160;        Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classUnits_1_1Angle.html">Units::Angle</a> <a class="code" href="classUnits_1_1Angle.html#a186a4f2cfdbdece64274918ad0e80740">nan</a>()</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        {</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <span class="keywordflow">return</span> {};</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        }</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#a6f7eb8420f1e2ea38641a79fcd68cb69">   83</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">bool</span> <a class="code" href="classUnits_1_1Angle.html#a6f7eb8420f1e2ea38641a79fcd68cb69">isFinite</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="keyword">        </span>{</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            <span class="keywordflow">return</span> std::isfinite(m_angleInRAD);</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        }</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#ade706056578acfda14d1424d52a02e5f">   94</a></span>&#160;        Q_INVOKABLE <a class="code" href="classUnits_1_1Angle.html">Units::Angle</a> <a class="code" href="classUnits_1_1Angle.html#ade706056578acfda14d1424d52a02e5f">operator+</a>(<a class="code" href="classUnits_1_1Angle.html">Units::Angle</a> rhs)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="keyword">        </span>{</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            <a class="code" href="classUnits_1_1Angle.html">Angle</a> result;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            result.m_angleInRAD = m_angleInRAD + rhs.m_angleInRAD;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        }</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00107"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#aea302cc0d5b71ccf95ae3d679c95a34a">  107</a></span>&#160;        Q_INVOKABLE <a class="code" href="classUnits_1_1Angle.html">Units::Angle</a> <a class="code" href="classUnits_1_1Angle.html#aea302cc0d5b71ccf95ae3d679c95a34a">operator-</a>(<a class="code" href="classUnits_1_1Angle.html">Units::Angle</a> rhs)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="keyword">        </span>{</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            <a class="code" href="classUnits_1_1Angle.html">Angle</a> result;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            result.m_angleInRAD = m_angleInRAD - rhs.m_angleInRAD;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        }</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
-<div class="line"><a name="l00120"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#ad57b606b93b9a786c122a5a16df9c2e8">  120</a></span>&#160;        Q_INVOKABLE <span class="keywordtype">bool</span> <a class="code" href="classUnits_1_1Angle.html#ad57b606b93b9a786c122a5a16df9c2e8">operator==</a>(<a class="code" href="classUnits_1_1Angle.html">Units::Angle</a> rhs)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="keyword">        </span>{</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            <span class="keywordflow">return</span> m_angleInRAD == rhs.m_angleInRAD;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        }</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
-<div class="line"><a name="l00131"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#adaf2226223123c944d50ba81b30ac7a1">  131</a></span>&#160;        Q_INVOKABLE <span class="keywordtype">bool</span> <a class="code" href="classUnits_1_1Angle.html#adaf2226223123c944d50ba81b30ac7a1">operator!=</a>(<a class="code" href="classUnits_1_1Angle.html">Units::Angle</a> rhs)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="keyword">        </span>{</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;            <span class="keywordflow">return</span> m_angleInRAD != rhs.m_angleInRAD;</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        }</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160; </div>
-<div class="line"><a name="l00140"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#a746839effb8fcf3de0300a7b2ef6d5c7">  140</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Angle.html#a746839effb8fcf3de0300a7b2ef6d5c7">cos</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;<span class="keyword">        </span>{</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;            <span class="keywordflow">return</span> std::cos(m_angleInRAD);</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        }</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160; </div>
-<div class="line"><a name="l00149"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#a7457628d8560f4556d2a17a72bb6d64d">  149</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Angle.html#a7457628d8560f4556d2a17a72bb6d64d">sin</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="keyword">        </span>{</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;            <span class="keywordflow">return</span> std::sin(m_angleInRAD);</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        }</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160; </div>
-<div class="line"><a name="l00160"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#a233073f38b5187d3e880ca55730eebe4">  160</a></span>&#160;        Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classUnits_1_1Angle.html">Units::Angle</a> <a class="code" href="classUnits_1_1Angle.html#a233073f38b5187d3e880ca55730eebe4">asin</a>(<span class="keywordtype">double</span> arg) {</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;            <a class="code" href="classUnits_1_1Angle.html">Angle</a> result;</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;            result.m_angleInRAD = std::asin(arg);</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;            <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        }</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
-<div class="line"><a name="l00170"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#ae7290d5a9ce0f0f417bcd1b36a49bd08">  170</a></span>&#160;        Q_INVOKABLE [[nodiscard]] QString <a class="code" href="classUnits_1_1Angle.html#ae7290d5a9ce0f0f417bcd1b36a49bd08">toClock</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
-<div class="line"><a name="l00176"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#ae00ac88ea6de4084b445459b399ca7d0">  176</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Angle.html#ae00ac88ea6de4084b445459b399ca7d0">toDEG</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="keyword">        </span>{</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;            <span class="keywordflow">if</span> (!qIsFinite(m_angleInRAD)) {</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;                <span class="keywordflow">return</span> qQNaN();</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;            }</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160; </div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;            <span class="keyword">auto</span> d = std::fmod(qRadiansToDegrees(m_angleInRAD), 360.0);</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            <span class="keywordflow">if</span> (d &gt; 0) {</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;                <span class="keywordflow">return</span> d;</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;}</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;            <span class="keywordflow">return</span> d+360.0;</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        }</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160; </div>
-<div class="line"><a name="l00193"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#adb314015a90f78ea1d8a1ef92f9f1fba">  193</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Angle.html#adb314015a90f78ea1d8a1ef92f9f1fba">toRAD</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="keyword">        </span>{</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;            <span class="keywordflow">return</span> m_angleInRAD;</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        }</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160; </div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        <span class="comment">// Angle in Radians</span></div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        <span class="keywordtype">double</span> m_angleInRAD{qQNaN()};</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    };</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;} <span class="comment">// namespace Units</span></div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160; </div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;<span class="comment">// Declare meta types</span></div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;Q_DECLARE_METATYPE(<a class="code" href="classUnits_1_1Angle.html">Units::Angle</a>)</div>
-<div class="ttc" id="aclassUnits_1_1Angle_html"><div class="ttname"><a href="classUnits_1_1Angle.html">Units::Angle</a></div><div class="ttdoc">Convenience class for angle computations.</div><div class="ttdef"><b>Definition:</b> <a href="Angle_8h_source.html#l00040">Angle.h:40</a></div></div>
-<div class="ttc" id="aclassUnits_1_1Angle_html_a186a4f2cfdbdece64274918ad0e80740"><div class="ttname"><a href="classUnits_1_1Angle.html#a186a4f2cfdbdece64274918ad0e80740">Units::Angle::nan</a></div><div class="ttdeci">static Q_INVOKABLE Units::Angle nan()</div><div class="ttdoc">Constructs an invalid angle.</div><div class="ttdef"><b>Definition:</b> <a href="Angle_8h_source.html#l00074">Angle.h:74</a></div></div>
-<div class="ttc" id="aclassUnits_1_1Angle_html_a233073f38b5187d3e880ca55730eebe4"><div class="ttname"><a href="classUnits_1_1Angle.html#a233073f38b5187d3e880ca55730eebe4">Units::Angle::asin</a></div><div class="ttdeci">static Q_INVOKABLE Units::Angle asin(double arg)</div><div class="ttdoc">Arcsine of a dimension-less number as an angle.</div><div class="ttdef"><b>Definition:</b> <a href="Angle_8h_source.html#l00160">Angle.h:160</a></div></div>
-<div class="ttc" id="aclassUnits_1_1Angle_html_a6f7eb8420f1e2ea38641a79fcd68cb69"><div class="ttname"><a href="classUnits_1_1Angle.html#a6f7eb8420f1e2ea38641a79fcd68cb69">Units::Angle::isFinite</a></div><div class="ttdeci">Q_INVOKABLE bool isFinite() const</div><div class="ttdoc">Checks if the angle is valid.</div><div class="ttdef"><b>Definition:</b> <a href="Angle_8h_source.html#l00083">Angle.h:83</a></div></div>
-<div class="ttc" id="aclassUnits_1_1Angle_html_a7457628d8560f4556d2a17a72bb6d64d"><div class="ttname"><a href="classUnits_1_1Angle.html#a7457628d8560f4556d2a17a72bb6d64d">Units::Angle::sin</a></div><div class="ttdeci">Q_INVOKABLE double sin() const</div><div class="ttdoc">Sine of an angle, as a dimension-less number.</div><div class="ttdef"><b>Definition:</b> <a href="Angle_8h_source.html#l00149">Angle.h:149</a></div></div>
-<div class="ttc" id="aclassUnits_1_1Angle_html_a746839effb8fcf3de0300a7b2ef6d5c7"><div class="ttname"><a href="classUnits_1_1Angle.html#a746839effb8fcf3de0300a7b2ef6d5c7">Units::Angle::cos</a></div><div class="ttdeci">Q_INVOKABLE double cos() const</div><div class="ttdoc">Cosine of an angle, as a dimension-less number.</div><div class="ttdef"><b>Definition:</b> <a href="Angle_8h_source.html#l00140">Angle.h:140</a></div></div>
-<div class="ttc" id="aclassUnits_1_1Angle_html_ab603cd689a472d17933623807c62ba56"><div class="ttname"><a href="classUnits_1_1Angle.html#ab603cd689a472d17933623807c62ba56">Units::Angle::fromRAD</a></div><div class="ttdeci">static Q_INVOKABLE Units::Angle fromRAD(double angleInRAD)</div><div class="ttdoc">Constructs an angle.</div><div class="ttdef"><b>Definition:</b> <a href="Angle_8h_source.html#l00050">Angle.h:50</a></div></div>
-<div class="ttc" id="aclassUnits_1_1Angle_html_aca8075bc42502769474dfd34a125e181"><div class="ttname"><a href="classUnits_1_1Angle.html#aca8075bc42502769474dfd34a125e181">Units::Angle::fromDEG</a></div><div class="ttdeci">static Q_INVOKABLE Units::Angle fromDEG(double angleInDEG)</div><div class="ttdoc">Constructs an angle.</div><div class="ttdef"><b>Definition:</b> <a href="Angle_8h_source.html#l00063">Angle.h:63</a></div></div>
-<div class="ttc" id="aclassUnits_1_1Angle_html_ad57b606b93b9a786c122a5a16df9c2e8"><div class="ttname"><a href="classUnits_1_1Angle.html#ad57b606b93b9a786c122a5a16df9c2e8">Units::Angle::operator==</a></div><div class="ttdeci">Q_INVOKABLE bool operator==(Units::Angle rhs) const</div><div class="ttdoc">Comparison: equal.</div><div class="ttdef"><b>Definition:</b> <a href="Angle_8h_source.html#l00120">Angle.h:120</a></div></div>
-<div class="ttc" id="aclassUnits_1_1Angle_html_adaf2226223123c944d50ba81b30ac7a1"><div class="ttname"><a href="classUnits_1_1Angle.html#adaf2226223123c944d50ba81b30ac7a1">Units::Angle::operator!=</a></div><div class="ttdeci">Q_INVOKABLE bool operator!=(Units::Angle rhs) const</div><div class="ttdoc">Comparison: not equal.</div><div class="ttdef"><b>Definition:</b> <a href="Angle_8h_source.html#l00131">Angle.h:131</a></div></div>
-<div class="ttc" id="aclassUnits_1_1Angle_html_adb314015a90f78ea1d8a1ef92f9f1fba"><div class="ttname"><a href="classUnits_1_1Angle.html#adb314015a90f78ea1d8a1ef92f9f1fba">Units::Angle::toRAD</a></div><div class="ttdeci">Q_INVOKABLE double toRAD() const</div><div class="ttdoc">Convert angle to radian.</div><div class="ttdef"><b>Definition:</b> <a href="Angle_8h_source.html#l00193">Angle.h:193</a></div></div>
-<div class="ttc" id="aclassUnits_1_1Angle_html_ade706056578acfda14d1424d52a02e5f"><div class="ttname"><a href="classUnits_1_1Angle.html#ade706056578acfda14d1424d52a02e5f">Units::Angle::operator+</a></div><div class="ttdeci">Q_INVOKABLE Units::Angle operator+(Units::Angle rhs) const</div><div class="ttdoc">Sum of two angles.</div><div class="ttdef"><b>Definition:</b> <a href="Angle_8h_source.html#l00094">Angle.h:94</a></div></div>
-<div class="ttc" id="aclassUnits_1_1Angle_html_ae00ac88ea6de4084b445459b399ca7d0"><div class="ttname"><a href="classUnits_1_1Angle.html#ae00ac88ea6de4084b445459b399ca7d0">Units::Angle::toDEG</a></div><div class="ttdeci">Q_INVOKABLE double toDEG() const</div><div class="ttdoc">Convert angle to degrees.</div><div class="ttdef"><b>Definition:</b> <a href="Angle_8h_source.html#l00176">Angle.h:176</a></div></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;QQmlEngine&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;QtMath&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="namespaceUnits.html">   34</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceUnits.html">Units</a> {</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html">   41</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classUnits_1_1Angle.html">Angle</a> {</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        Q_GADGET</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        QML_VALUE_TYPE(angle)</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#ab603cd689a472d17933623807c62ba56">   52</a></span>&#160;        Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classUnits_1_1Angle.html">Units::Angle</a> <a class="code" href="classUnits_1_1Angle.html#ab603cd689a472d17933623807c62ba56">fromRAD</a>(<span class="keywordtype">double</span> angleInRAD)</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        {</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <a class="code" href="classUnits_1_1Angle.html">Angle</a> result;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            result.m_angleInRAD = angleInRAD;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        }</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#aca8075bc42502769474dfd34a125e181">   65</a></span>&#160;        Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classUnits_1_1Angle.html">Units::Angle</a> <a class="code" href="classUnits_1_1Angle.html#aca8075bc42502769474dfd34a125e181">fromDEG</a>(<span class="keywordtype">double</span> angleInDEG)</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        {</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            <a class="code" href="classUnits_1_1Angle.html">Angle</a> result;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            result.m_angleInRAD = qDegreesToRadians(angleInDEG);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        }</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#a186a4f2cfdbdece64274918ad0e80740">   76</a></span>&#160;        Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classUnits_1_1Angle.html">Units::Angle</a> <a class="code" href="classUnits_1_1Angle.html#a186a4f2cfdbdece64274918ad0e80740">nan</a>()</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        {</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <span class="keywordflow">return</span> {};</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        }</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#a6f7eb8420f1e2ea38641a79fcd68cb69">   85</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">bool</span> <a class="code" href="classUnits_1_1Angle.html#a6f7eb8420f1e2ea38641a79fcd68cb69">isFinite</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="keyword">        </span>{</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            <span class="keywordflow">return</span> std::isfinite(m_angleInRAD);</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        }</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
+<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#ade706056578acfda14d1424d52a02e5f">   96</a></span>&#160;        Q_INVOKABLE <a class="code" href="classUnits_1_1Angle.html">Units::Angle</a> <a class="code" href="classUnits_1_1Angle.html#ade706056578acfda14d1424d52a02e5f">operator+</a>(<a class="code" href="classUnits_1_1Angle.html">Units::Angle</a> rhs)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="keyword">        </span>{</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            <a class="code" href="classUnits_1_1Angle.html">Angle</a> result;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            result.m_angleInRAD = m_angleInRAD + rhs.m_angleInRAD;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        }</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
+<div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#aea302cc0d5b71ccf95ae3d679c95a34a">  109</a></span>&#160;        Q_INVOKABLE <a class="code" href="classUnits_1_1Angle.html">Units::Angle</a> <a class="code" href="classUnits_1_1Angle.html#aea302cc0d5b71ccf95ae3d679c95a34a">operator-</a>(<a class="code" href="classUnits_1_1Angle.html">Units::Angle</a> rhs)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="keyword">        </span>{</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            <a class="code" href="classUnits_1_1Angle.html">Angle</a> result;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            result.m_angleInRAD = m_angleInRAD - rhs.m_angleInRAD;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        }</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
+<div class="line"><a name="l00122"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#a0038f0a2b6284f0de6368d27340e7a1b">  122</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">bool</span> <a class="code" href="classUnits_1_1Angle.html#a0038f0a2b6284f0de6368d27340e7a1b">operator==</a>(<span class="keyword">const</span> <a class="code" href="classUnits_1_1Angle.html">Units::Angle</a>&amp; rhs) <span class="keyword">const</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
+<div class="line"><a name="l00130"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#a5af4461c6344a2fac7a5623a2bdb633d">  130</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">bool</span> <a class="code" href="classUnits_1_1Angle.html#a5af4461c6344a2fac7a5623a2bdb633d">operator!=</a>(<span class="keyword">const</span> <a class="code" href="classUnits_1_1Angle.html">Units::Angle</a>&amp; rhs) <span class="keyword">const</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; </div>
+<div class="line"><a name="l00136"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#a746839effb8fcf3de0300a7b2ef6d5c7">  136</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Angle.html#a746839effb8fcf3de0300a7b2ef6d5c7">cos</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="keyword">        </span>{</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;            <span class="keywordflow">return</span> std::cos(m_angleInRAD);</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        }</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160; </div>
+<div class="line"><a name="l00145"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#a7457628d8560f4556d2a17a72bb6d64d">  145</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Angle.html#a7457628d8560f4556d2a17a72bb6d64d">sin</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="keyword">        </span>{</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;            <span class="keywordflow">return</span> std::sin(m_angleInRAD);</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        }</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160; </div>
+<div class="line"><a name="l00156"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#a233073f38b5187d3e880ca55730eebe4">  156</a></span>&#160;        Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classUnits_1_1Angle.html">Units::Angle</a> <a class="code" href="classUnits_1_1Angle.html#a233073f38b5187d3e880ca55730eebe4">asin</a>(<span class="keywordtype">double</span> arg) {</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;            <a class="code" href="classUnits_1_1Angle.html">Angle</a> result;</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;            result.m_angleInRAD = std::asin(arg);</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;            <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        }</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
+<div class="line"><a name="l00166"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#ae7290d5a9ce0f0f417bcd1b36a49bd08">  166</a></span>&#160;        Q_INVOKABLE [[nodiscard]] QString <a class="code" href="classUnits_1_1Angle.html#ae7290d5a9ce0f0f417bcd1b36a49bd08">toClock</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160; </div>
+<div class="line"><a name="l00172"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#ae00ac88ea6de4084b445459b399ca7d0">  172</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Angle.html#ae00ac88ea6de4084b445459b399ca7d0">toDEG</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="keyword">        </span>{</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;            <span class="keywordflow">if</span> (!qIsFinite(m_angleInRAD)) {</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;                <span class="keywordflow">return</span> qQNaN();</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;            }</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; </div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;            <span class="keyword">auto</span> d = std::fmod(qRadiansToDegrees(m_angleInRAD), 360.0);</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;            <span class="keywordflow">if</span> (d &gt; 0) {</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;                <span class="keywordflow">return</span> d;</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;}</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;            <span class="keywordflow">return</span> d+360.0;</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        }</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160; </div>
+<div class="line"><a name="l00189"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#adb314015a90f78ea1d8a1ef92f9f1fba">  189</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Angle.html#adb314015a90f78ea1d8a1ef92f9f1fba">toRAD</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="keyword">        </span>{</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;            <span class="keywordflow">return</span> m_angleInRAD;</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        }</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160; </div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        <span class="comment">// Angle in Radians</span></div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        <span class="keywordtype">double</span> m_angleInRAD{qQNaN()};</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    };</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;} <span class="comment">// namespace Units</span></div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160; </div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="comment">// Declare meta types</span></div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;Q_DECLARE_METATYPE(<a class="code" href="classUnits_1_1Angle.html">Units::Angle</a>)</div>
+<div class="ttc" id="aclassUnits_1_1Angle_html"><div class="ttname"><a href="classUnits_1_1Angle.html">Units::Angle</a></div><div class="ttdoc">Convenience class for angle computations.</div><div class="ttdef"><b>Definition:</b> <a href="Angle_8h_source.html#l00041">Angle.h:41</a></div></div>
+<div class="ttc" id="aclassUnits_1_1Angle_html_a0038f0a2b6284f0de6368d27340e7a1b"><div class="ttname"><a href="classUnits_1_1Angle.html#a0038f0a2b6284f0de6368d27340e7a1b">Units::Angle::operator==</a></div><div class="ttdeci">Q_INVOKABLE bool operator==(const Units::Angle &amp;rhs) const =default</div><div class="ttdoc">Comparison: equal.</div></div>
+<div class="ttc" id="aclassUnits_1_1Angle_html_a186a4f2cfdbdece64274918ad0e80740"><div class="ttname"><a href="classUnits_1_1Angle.html#a186a4f2cfdbdece64274918ad0e80740">Units::Angle::nan</a></div><div class="ttdeci">static Q_INVOKABLE Units::Angle nan()</div><div class="ttdoc">Constructs an invalid angle.</div><div class="ttdef"><b>Definition:</b> <a href="Angle_8h_source.html#l00076">Angle.h:76</a></div></div>
+<div class="ttc" id="aclassUnits_1_1Angle_html_a233073f38b5187d3e880ca55730eebe4"><div class="ttname"><a href="classUnits_1_1Angle.html#a233073f38b5187d3e880ca55730eebe4">Units::Angle::asin</a></div><div class="ttdeci">static Q_INVOKABLE Units::Angle asin(double arg)</div><div class="ttdoc">Arcsine of a dimension-less number as an angle.</div><div class="ttdef"><b>Definition:</b> <a href="Angle_8h_source.html#l00156">Angle.h:156</a></div></div>
+<div class="ttc" id="aclassUnits_1_1Angle_html_a5af4461c6344a2fac7a5623a2bdb633d"><div class="ttname"><a href="classUnits_1_1Angle.html#a5af4461c6344a2fac7a5623a2bdb633d">Units::Angle::operator!=</a></div><div class="ttdeci">Q_INVOKABLE bool operator!=(const Units::Angle &amp;rhs) const =default</div><div class="ttdoc">Comparison: not equal.</div></div>
+<div class="ttc" id="aclassUnits_1_1Angle_html_a6f7eb8420f1e2ea38641a79fcd68cb69"><div class="ttname"><a href="classUnits_1_1Angle.html#a6f7eb8420f1e2ea38641a79fcd68cb69">Units::Angle::isFinite</a></div><div class="ttdeci">Q_INVOKABLE bool isFinite() const</div><div class="ttdoc">Checks if the angle is valid.</div><div class="ttdef"><b>Definition:</b> <a href="Angle_8h_source.html#l00085">Angle.h:85</a></div></div>
+<div class="ttc" id="aclassUnits_1_1Angle_html_a7457628d8560f4556d2a17a72bb6d64d"><div class="ttname"><a href="classUnits_1_1Angle.html#a7457628d8560f4556d2a17a72bb6d64d">Units::Angle::sin</a></div><div class="ttdeci">Q_INVOKABLE double sin() const</div><div class="ttdoc">Sine of an angle, as a dimension-less number.</div><div class="ttdef"><b>Definition:</b> <a href="Angle_8h_source.html#l00145">Angle.h:145</a></div></div>
+<div class="ttc" id="aclassUnits_1_1Angle_html_a746839effb8fcf3de0300a7b2ef6d5c7"><div class="ttname"><a href="classUnits_1_1Angle.html#a746839effb8fcf3de0300a7b2ef6d5c7">Units::Angle::cos</a></div><div class="ttdeci">Q_INVOKABLE double cos() const</div><div class="ttdoc">Cosine of an angle, as a dimension-less number.</div><div class="ttdef"><b>Definition:</b> <a href="Angle_8h_source.html#l00136">Angle.h:136</a></div></div>
+<div class="ttc" id="aclassUnits_1_1Angle_html_ab603cd689a472d17933623807c62ba56"><div class="ttname"><a href="classUnits_1_1Angle.html#ab603cd689a472d17933623807c62ba56">Units::Angle::fromRAD</a></div><div class="ttdeci">static Q_INVOKABLE Units::Angle fromRAD(double angleInRAD)</div><div class="ttdoc">Constructs an angle.</div><div class="ttdef"><b>Definition:</b> <a href="Angle_8h_source.html#l00052">Angle.h:52</a></div></div>
+<div class="ttc" id="aclassUnits_1_1Angle_html_aca8075bc42502769474dfd34a125e181"><div class="ttname"><a href="classUnits_1_1Angle.html#aca8075bc42502769474dfd34a125e181">Units::Angle::fromDEG</a></div><div class="ttdeci">static Q_INVOKABLE Units::Angle fromDEG(double angleInDEG)</div><div class="ttdoc">Constructs an angle.</div><div class="ttdef"><b>Definition:</b> <a href="Angle_8h_source.html#l00065">Angle.h:65</a></div></div>
+<div class="ttc" id="aclassUnits_1_1Angle_html_adb314015a90f78ea1d8a1ef92f9f1fba"><div class="ttname"><a href="classUnits_1_1Angle.html#adb314015a90f78ea1d8a1ef92f9f1fba">Units::Angle::toRAD</a></div><div class="ttdeci">Q_INVOKABLE double toRAD() const</div><div class="ttdoc">Convert angle to radian.</div><div class="ttdef"><b>Definition:</b> <a href="Angle_8h_source.html#l00189">Angle.h:189</a></div></div>
+<div class="ttc" id="aclassUnits_1_1Angle_html_ade706056578acfda14d1424d52a02e5f"><div class="ttname"><a href="classUnits_1_1Angle.html#ade706056578acfda14d1424d52a02e5f">Units::Angle::operator+</a></div><div class="ttdeci">Q_INVOKABLE Units::Angle operator+(Units::Angle rhs) const</div><div class="ttdoc">Sum of two angles.</div><div class="ttdef"><b>Definition:</b> <a href="Angle_8h_source.html#l00096">Angle.h:96</a></div></div>
+<div class="ttc" id="aclassUnits_1_1Angle_html_ae00ac88ea6de4084b445459b399ca7d0"><div class="ttname"><a href="classUnits_1_1Angle.html#ae00ac88ea6de4084b445459b399ca7d0">Units::Angle::toDEG</a></div><div class="ttdeci">Q_INVOKABLE double toDEG() const</div><div class="ttdoc">Convert angle to degrees.</div><div class="ttdef"><b>Definition:</b> <a href="Angle_8h_source.html#l00172">Angle.h:172</a></div></div>
 <div class="ttc" id="aclassUnits_1_1Angle_html_ae7290d5a9ce0f0f417bcd1b36a49bd08"><div class="ttname"><a href="classUnits_1_1Angle.html#ae7290d5a9ce0f0f417bcd1b36a49bd08">Units::Angle::toClock</a></div><div class="ttdeci">Q_INVOKABLE QString toClock() const</div><div class="ttdoc">Convert angle to clock position.</div></div>
-<div class="ttc" id="aclassUnits_1_1Angle_html_aea302cc0d5b71ccf95ae3d679c95a34a"><div class="ttname"><a href="classUnits_1_1Angle.html#aea302cc0d5b71ccf95ae3d679c95a34a">Units::Angle::operator-</a></div><div class="ttdeci">Q_INVOKABLE Units::Angle operator-(Units::Angle rhs) const</div><div class="ttdoc">Difference of two angles.</div><div class="ttdef"><b>Definition:</b> <a href="Angle_8h_source.html#l00107">Angle.h:107</a></div></div>
-<div class="ttc" id="anamespaceUnits_html"><div class="ttname"><a href="namespaceUnits.html">Units</a></div><div class="ttdoc">Conversion between units used in aviation.</div><div class="ttdef"><b>Definition:</b> <a href="Angle_8h_source.html#l00033">Angle.h:33</a></div></div>
+<div class="ttc" id="aclassUnits_1_1Angle_html_aea302cc0d5b71ccf95ae3d679c95a34a"><div class="ttname"><a href="classUnits_1_1Angle.html#aea302cc0d5b71ccf95ae3d679c95a34a">Units::Angle::operator-</a></div><div class="ttdeci">Q_INVOKABLE Units::Angle operator-(Units::Angle rhs) const</div><div class="ttdoc">Difference of two angles.</div><div class="ttdef"><b>Definition:</b> <a href="Angle_8h_source.html#l00109">Angle.h:109</a></div></div>
+<div class="ttc" id="anamespaceUnits_html"><div class="ttname"><a href="namespaceUnits.html">Units</a></div><div class="ttdoc">Conversion between units used in aviation.</div><div class="ttdef"><b>Definition:</b> <a href="Angle_8h_source.html#l00034">Angle.h:34</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

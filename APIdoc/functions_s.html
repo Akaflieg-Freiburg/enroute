@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.22.2</span>
+   &#160;<span id="projectnumber">2.26.06</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -43,6 +43,12 @@ $(function() {
 <div class="textblock">Here is a list of all documented class members with links to the class documentation for each member:</div>
 
 <h3><a id="index_s"></a>- s -</h3><ul>
+<li>SafeInsets()
+: <a class="el" href="classPlatform_1_1SafeInsets.html#abab5ccd9ada6bc177c788e4f9ae543c2">Platform::SafeInsets</a>
+</li>
+<li>SafeInsets_Abstract()
+: <a class="el" href="classPlatform_1_1SafeInsets__Abstract.html#a9510a5b6068b8754579820adfd578474">Platform::SafeInsets_Abstract</a>
+</li>
 <li>save()
 : <a class="el" href="classGeoMaps_1_1WaypointLibrary.html#ad3aa867c447354b223779ca8a0a6ec02">GeoMaps::WaypointLibrary</a>
 , <a class="el" href="classNavigation_1_1Aircraft.html#a5e8131ca8cdc9f9074f4c4a9cbd20e4d">Navigation::Aircraft</a>
@@ -67,19 +73,16 @@ $(function() {
 : <a class="el" href="classPositioning_1_1Geoid.html#ae57440d7fdf2510f025d9fb76d8e14e6">Positioning::Geoid</a>
 </li>
 <li>serverUrl()
-: <a class="el" href="classGeoMaps_1_1TileServer.html#a35243c84f91528477644d69181699389">GeoMaps::TileServer</a>
+: <a class="el" href="classGeoMaps_1_1TileServer.html#aa8c68f6593380c168b067a666451fae7">GeoMaps::TileServer</a>
 </li>
 <li>setAcceptedTerms()
-: <a class="el" href="classSettings.html#a16829a6ad926fd1b81c1ec7221dbb4dc">Settings</a>
-</li>
-<li>setAcceptedWeatherTerms()
-: <a class="el" href="classSettings.html#a5d4228b4851b4d78c800c107908f6bf2">Settings</a>
+: <a class="el" href="classGlobalSettings.html#ad3ede4004dbb9a054f28600645e3cde7">GlobalSettings</a>
 </li>
 <li>setAircraft()
 : <a class="el" href="classNavigation_1_1Navigator.html#a764920162d94ae111614ac29d8ab72fa">Navigation::Navigator</a>
 </li>
 <li>setAirspaceAltitudeLimit()
-: <a class="el" href="classSettings.html#ae94edf763b61bcf6539592dc2492c8ca">Settings</a>
+: <a class="el" href="classGlobalSettings.html#a93201fb8bf38a73b61a8be74d7cc963f">GlobalSettings</a>
 </li>
 <li>setAlarmLevel()
 : <a class="el" href="classTraffic_1_1TrafficFactor__Abstract.html#a78f94e4a9999bca507cf2b4b9ad3209b">Traffic::TrafficFactor_Abstract</a>
@@ -97,7 +100,8 @@ $(function() {
 : <a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#ac88a41ad7a4268a53f6d416effbdffb7">Traffic::TrafficDataSource_Abstract</a>
 </li>
 <li>setCoordinate()
-: <a class="el" href="classTraffic_1_1TrafficDataSource__Simulate.html#a7db621e3f202d40f17b479a3a2bbb91e">Traffic::TrafficDataSource_Simulate</a>
+: <a class="el" href="classGeoMaps_1_1Waypoint.html#aed15231057ecf21ff9f3b842ba3b051e">GeoMaps::Waypoint</a>
+, <a class="el" href="classTraffic_1_1TrafficDataSource__Simulate.html#a7db621e3f202d40f17b479a3a2bbb91e">Traffic::TrafficDataSource_Simulate</a>
 , <a class="el" href="classTraffic_1_1TrafficFactor__DistanceOnly.html#aed748d651683b113df785ade1a9928ab">Traffic::TrafficFactor_DistanceOnly</a>
 </li>
 <li>setCruiseSpeed()
@@ -115,8 +119,17 @@ $(function() {
 <li>setErrorString()
 : <a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a571c20201fb3a902e8a5df99efab1377">Traffic::TrafficDataSource_Abstract</a>
 </li>
+<li>setExpandNotamAbbreviations()
+: <a class="el" href="classGlobalSettings.html#a7e76b8c10e7cc0703d4d251b859bbbdc">GlobalSettings</a>
+</li>
+<li>setFAAData()
+: <a class="el" href="classGlobalSettings.html#a42ca50af4b09b856942c8d3c74c63306">GlobalSettings</a>
+</li>
 <li>setFileReceived()
 : <a class="el" href="classShare.html#ab6cda95d4b4ec646c08a46530c90496a">Share</a>
+</li>
+<li>setFontSize()
+: <a class="el" href="classGlobalSettings.html#a18e5d39ad72b1db37ca49f0b7fcce463">GlobalSettings</a>
 </li>
 <li>setFuelConsumption()
 : <a class="el" href="classNavigation_1_1Aircraft.html#a8daf01175fe106c5a1c7e5823f38680f">Navigation::Aircraft</a>
@@ -131,10 +144,10 @@ $(function() {
 : <a class="el" href="classTraffic_1_1TrafficFactor__Abstract.html#a702277c846cde90cc241bcb475da56d6">Traffic::TrafficFactor_Abstract</a>
 </li>
 <li>setHideGlidingSectors()
-: <a class="el" href="classSettings.html#a4ae1334bf84e9759048d1816a6b28c0c">Settings</a>
+: <a class="el" href="classGlobalSettings.html#ac4e472a7538f54a6c1821ff36330d54b">GlobalSettings</a>
 </li>
 <li>setHillshading()
-: <a class="el" href="classSettings.html#a76a5f265a3b57f838aa09060fa20b0f4">Settings</a>
+: <a class="el" href="classGlobalSettings.html#a52bbca6c488a973a1a8459f006fbda75">GlobalSettings</a>
 </li>
 <li>setHorizontalDistanceUnit()
 : <a class="el" href="classNavigation_1_1Aircraft.html#a515f165eb56521d4176cc75831c29673">Navigation::Aircraft</a>
@@ -143,25 +156,32 @@ $(function() {
 : <a class="el" href="classTraffic_1_1TrafficFactor__Abstract.html#af84919314330123936dd247761868369">Traffic::TrafficFactor_Abstract</a>
 </li>
 <li>setIgnoreSSLProblems()
-: <a class="el" href="classSettings.html#a6d64bb761b07bd34599f77b00a465422">Settings</a>
+: <a class="el" href="classGlobalSettings.html#abfc3bc1d877d806c8bb370ce96a9f4b6">GlobalSettings</a>
+</li>
+<li>setLargeFonts()
+: <a class="el" href="classGlobalSettings.html#a3759e78c1603e816a25e7e2cfb684714">GlobalSettings</a>
 </li>
 <li>setLastWhatsNewHash()
-: <a class="el" href="classSettings.html#a4b99c1d3c7f6db0dbf8598e43eff7dea">Settings</a>
+: <a class="el" href="classGlobalSettings.html#a12bb03eef45eb428a13aa59e4c2978df">GlobalSettings</a>
 </li>
 <li>setLastWhatsNewInMapsHash()
-: <a class="el" href="classSettings.html#a3d6de7843655f31c42aa731fe556a601">Settings</a>
+: <a class="el" href="classGlobalSettings.html#a74ec9b4994af9578c0f09b8d6a1b6b76">GlobalSettings</a>
 </li>
 <li>setMapBearingPolicy()
-: <a class="el" href="classSettings.html#a1e52c8c527f586da76bc228fe42e49c5">Settings</a>
+: <a class="el" href="classGlobalSettings.html#ad70d5e6abc9476383333366cc2f5bf63">GlobalSettings</a>
 </li>
 <li>setMinimumSpeed()
 : <a class="el" href="classNavigation_1_1Aircraft.html#a7a6eadbaa35de2ad0fe2e1a9dc84d5d8">Navigation::Aircraft</a>
 </li>
 <li>setName()
-: <a class="el" href="classNavigation_1_1Aircraft.html#a5912675f1c7f7b8814dcccec02620283">Navigation::Aircraft</a>
+: <a class="el" href="classGeoMaps_1_1Waypoint.html#a61d23d9c24fe7d0dbcab0582ca0f640f">GeoMaps::Waypoint</a>
+, <a class="el" href="classNavigation_1_1Aircraft.html#a5912675f1c7f7b8814dcccec02620283">Navigation::Aircraft</a>
 </li>
 <li>setNightMode()
-: <a class="el" href="classSettings.html#a343a49b86224260b0485de96993a7be3">Settings</a>
+: <a class="el" href="classGlobalSettings.html#a6b7dd86382b442ea6188f58ddd93e9a2">GlobalSettings</a>
+</li>
+<li>setNotes()
+: <a class="el" href="classGeoMaps_1_1Waypoint.html#a07c7adec7d7a0ade5ee70324c4aa19a9">GeoMaps::Waypoint</a>
 </li>
 <li>setPassword()
 : <a class="el" href="classTraffic_1_1PasswordDB.html#ab7694b07bb1831bee91e4a2d63f01cb4">Traffic::PasswordDB</a>
@@ -176,7 +196,13 @@ $(function() {
 : <a class="el" href="classTraffic_1_1TrafficFactor__WithPosition.html#a7bb3021ae77a4ea07b24844a0ded12d5">Traffic::TrafficFactor_WithPosition</a>
 </li>
 <li>setPositioningByTrafficDataReceiver()
-: <a class="el" href="classSettings.html#a618c68f348c511e1cdf27ad2004e14e5">Settings</a>
+: <a class="el" href="classGlobalSettings.html#a5355d890eb03e9e8bc60ff0c6795a5ee">GlobalSettings</a>
+</li>
+<li>setPrivacyHash()
+: <a class="el" href="classGlobalSettings.html#aa557d428a80c371ebead6417bdfffdd1">GlobalSettings</a>
+</li>
+<li>setRead()
+: <a class="el" href="classNOTAM_1_1NotamProvider.html#adbd8026f690b01e55aef950b675f4c76">NOTAM::NotamProvider</a>
 </li>
 <li>setReceivingHeartbeat()
 : <a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a53d634de1067eddc68df8a43f0898fc5">Traffic::TrafficDataSource_Abstract</a>
@@ -191,16 +217,10 @@ $(function() {
 : <a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#aea2628d41d9b7bf68506e94f797a627e">DataManagement::Downloadable_Abstract</a>
 </li>
 <li>setShowAltitudeAGL()
-: <a class="el" href="classSettings.html#a9788379239ba819ef64d9ed2d45df014">Settings</a>
+: <a class="el" href="classGlobalSettings.html#a03697ca1f0be6436b2b5e601391df585">GlobalSettings</a>
 </li>
 <li>setSpeed()
 : <a class="el" href="classWeather_1_1Wind.html#af4334f78aad064f8f9f565ed78cf30ee">Weather::Wind</a>
-</li>
-<li>settings()
-: <a class="el" href="classGlobalObject.html#aa330068b3f7a9836a5613b20da4d6c32">GlobalObject</a>
-</li>
-<li>Settings()
-: <a class="el" href="classSettings.html#a3abd21a33038a6a9392f9d79eece8a89">Settings</a>
 </li>
 <li>setTrafficFactor_DistanceOnly()
 : <a class="el" href="classTraffic_1_1TrafficDataSource__Simulate.html#a21366bf564877241137209457587903d">Traffic::TrafficDataSource_Simulate</a>
@@ -240,10 +260,10 @@ $(function() {
 : <a class="el" href="classGeoMaps_1_1Waypoint.html#ac435c32e1d3ab56082ba570f99f86592">GeoMaps::Waypoint</a>
 </li>
 <li>showAltitudeAGL
-: <a class="el" href="classSettings.html#abe0f554650e994fbdffc236526d47523">Settings</a>
+: <a class="el" href="classGlobalSettings.html#aecf1e6c2f2172d583d1a3e718d684b99">GlobalSettings</a>
 </li>
 <li>showAltitudeAGLChanged()
-: <a class="el" href="classSettings.html#af1edc4f29ecac460d2596ed5a627dbd9">Settings</a>
+: <a class="el" href="classGlobalSettings.html#a6c6f980111af524bb3c9c9997615a4b9">GlobalSettings</a>
 </li>
 <li>showNotification()
 : <a class="el" href="classPlatform_1_1Notifier__Abstract.html#aecb84123d85199cc99d0dbf66435d408">Platform::Notifier_Abstract</a>
@@ -258,7 +278,7 @@ $(function() {
 : <a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html#aa10fbcc5d85d811c4e43faf90eefe2d1a6219e1b27b4ad850343b76a919213207">DataManagement::Downloadable_MultiFile</a>
 </li>
 <li>size
-: <a class="el" href="classNavigation_1_1FlightRoute.html#aab6c0e1e31b57e51a637b7e8a9bf5c6c">Navigation::FlightRoute</a>
+: <a class="el" href="classNavigation_1_1FlightRoute.html#a030d06efd3b1ca2a1fd9fcd2f3e99e67">Navigation::FlightRoute</a>
 </li>
 <li>Skydiver
 : <a class="el" href="classTraffic_1_1TrafficFactor__Abstract.html#a2d4037a51a4c128d19cb65816379cb00adf30eb648ed462e0dde5fbaf38f287b2">Traffic::TrafficFactor_Abstract</a>
@@ -300,17 +320,21 @@ $(function() {
 <li>startPoint
 : <a class="el" href="classNavigation_1_1Leg.html#a454765d0b32ed32b23c90e7b147c01ea">Navigation::Leg</a>
 </li>
+<li>startUpdates()
+: <a class="el" href="classPositioning_1_1PositionInfoSource__Satellite.html#a541cab495565e32892b73f5fe846b445">Positioning::PositionInfoSource_Satellite</a>
+, <a class="el" href="classPositioning_1_1PositionProvider.html#ad3edcc87d04847b13ee547fd0fb16db4">Positioning::PositionProvider</a>
+</li>
 <li>StaticObstacle
 : <a class="el" href="classTraffic_1_1TrafficFactor__Abstract.html#a2d4037a51a4c128d19cb65816379cb00a0e3a2546f2947b26272cb7342325e86e">Traffic::TrafficFactor_Abstract</a>
 </li>
 <li>Station()
 : <a class="el" href="classWeather_1_1Station.html#a63ccdb9be16c434b7389b3eb105a7f3c">Weather::Station</a>
 </li>
-<li>status
-: <a class="el" href="classNavigation_1_1RemainingRouteInfo.html#a199870f75cfbdbd68ec6d3d242c11128">Navigation::RemainingRouteInfo</a>
-</li>
 <li>Status
 : <a class="el" href="classNavigation_1_1RemainingRouteInfo.html#a329de1ea6561c80389ec046b75b31934">Navigation::RemainingRouteInfo</a>
+</li>
+<li>status
+: <a class="el" href="classNavigation_1_1RemainingRouteInfo.html#a199870f75cfbdbd68ec6d3d242c11128">Navigation::RemainingRouteInfo</a>
 </li>
 <li>statusString
 : <a class="el" href="classPositioning_1_1PositionInfoSource__Abstract.html#a3ae4cb194907fe0a3f66e79d4ea0ebc9">Positioning::PositionInfoSource_Abstract</a>
@@ -326,8 +350,8 @@ $(function() {
 , <a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html#af4dedaf787385053fcdc66caba4e1a69">DataManagement::Downloadable_MultiFile</a>
 , <a class="el" href="classDataManagement_1_1Downloadable__SingleFile.html#a1c6cbbf4b5f6c9b7e5e83ba15a79bc10">DataManagement::Downloadable_SingleFile</a>
 </li>
-<li>styleFileURL
-: <a class="el" href="classGeoMaps_1_1GeoMapProvider.html#ae548d8d722c7cc995ec40302849894b8">GeoMaps::GeoMapProvider</a>
+<li>styleFileURL()
+: <a class="el" href="classGeoMaps_1_1GeoMapProvider.html#ae6fb56c788c009a28dccf4d07edb8c9b">GeoMaps::GeoMapProvider</a>
 </li>
 <li>styleFileURLChanged()
 : <a class="el" href="classGeoMaps_1_1GeoMapProvider.html#a5b84ce07f9f38a7960ae435c218a9a31">GeoMaps::GeoMapProvider</a>
@@ -337,6 +361,7 @@ $(function() {
 </li>
 <li>summary
 : <a class="el" href="classNavigation_1_1FlightRoute.html#a60fae946d0a40b374efdf3e19fe0b936">Navigation::FlightRoute</a>
+, <a class="el" href="classNOTAM_1_1NotamList.html#a5b989239de13249bb34572888e043b7b">NOTAM::NotamList</a>
 , <a class="el" href="classWeather_1_1METAR.html#a64ee6087e0dc1a9142e39f056206490a">Weather::METAR</a>
 </li>
 <li>summaryChanged()
@@ -348,6 +373,10 @@ $(function() {
 </li>
 <li>sunInfoChanged()
 : <a class="el" href="classWeather_1_1WeatherDataProvider.html#a8c707fa8e25ec16286dc6928a7503129">Weather::WeatherDataProvider</a>
+</li>
+<li>systemInfo()
+: <a class="el" href="classPlatform_1_1PlatformAdaptor.html#a1755866e8897b20589c3495a5d775ed0">Platform::PlatformAdaptor</a>
+, <a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html#ab6739c7b19f57e2a21079af9906ca56c">Platform::PlatformAdaptor_Abstract</a>
 </li>
 </ul>
 </div><!-- contents -->

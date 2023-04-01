@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.22.2</span>
+   &#160;<span id="projectnumber">2.26.06</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -66,7 +66,7 @@ $(function() {
 : <a class="el" href="classDataManagement_1_1DataManager.html#a33bc1f5437f77cda129fddc0374bff8d">DataManagement::DataManager</a>
 </li>
 <li>terrainMapTiles
-: <a class="el" href="classGeoMaps_1_1GeoMapProvider.html#aa009931575b74163a15310b76bb90d8f">GeoMaps::GeoMapProvider</a>
+: <a class="el" href="classGeoMaps_1_1GeoMapProvider.html#a182eda21e53813a06a064e7bb5a17bfc">GeoMaps::GeoMapProvider</a>
 </li>
 <li>terrainMapTilesChanged()
 : <a class="el" href="classGeoMaps_1_1GeoMapProvider.html#a131c37192a4d80ac6a54a837cb43a869">GeoMaps::GeoMapProvider</a>
@@ -78,16 +78,10 @@ $(function() {
 : <a class="el" href="classGeoMaps_1_1MBTILES.html#a99b2b3ea2cfa7056413c137b057fc56f">GeoMaps::MBTILES</a>
 </li>
 <li>TileHandler()
-: <a class="el" href="classGeoMaps_1_1TileHandler.html#a6ade58b5e87777a59f5a7d86290c67aa">GeoMaps::TileHandler</a>
-</li>
-<li>tileJSON
-: <a class="el" href="classGeoMaps_1_1TileHandler.html#a54c6bea1aa49fe3b4b213476cad50f5a">GeoMaps::TileHandler</a>
-</li>
-<li>tiles
-: <a class="el" href="classGeoMaps_1_1TileHandler.html#ab081bd60f780d3f2a3bf3fc6ac4e5c81">GeoMaps::TileHandler</a>
+: <a class="el" href="classGeoMaps_1_1TileHandler.html#a6fac28b79ad53edf1a2ec2d17f121eeb">GeoMaps::TileHandler</a>
 </li>
 <li>TileServer()
-: <a class="el" href="classGeoMaps_1_1TileServer.html#a345b81e1577da5b4c2b3ddd32cf5ee19">GeoMaps::TileServer</a>
+: <a class="el" href="classGeoMaps_1_1TileServer.html#a3d555e9c8b5dae1bdbd66be76e4c8942">GeoMaps::TileServer</a>
 </li>
 <li>time
 : <a class="el" href="classNavigation_1_1Clock.html#a63f02193c74b4f1bdb75fb94e193798c">Navigation::Clock</a>
@@ -174,6 +168,12 @@ $(function() {
 <li>toNM()
 : <a class="el" href="classUnits_1_1Distance.html#aef19c9ef5a02805933421983b8970c7e">Units::Distance</a>
 </li>
+<li>top()
+: <a class="el" href="classPlatform_1_1SafeInsets__Abstract.html#a7b61a9703530dfdc1ebef67ee1fe90f1">Platform::SafeInsets_Abstract</a>
+</li>
+<li>topChanged()
+: <a class="el" href="classPlatform_1_1SafeInsets__Abstract.html#a0c46de1c6cc684239d64f9dfc3e33b7e">Platform::SafeInsets_Abstract</a>
+</li>
 <li>toRAD()
 : <a class="el" href="classUnits_1_1Angle.html#adb314015a90f78ea1d8a1ef92f9f1fba">Units::Angle</a>
 </li>
@@ -185,6 +185,9 @@ $(function() {
 </li>
 <li>TowPlane
 : <a class="el" href="classTraffic_1_1TrafficFactor__Abstract.html#a2d4037a51a4c128d19cb65816379cb00ab248c778c8a6cc87f99f378199dcfe16">Traffic::TrafficFactor_Abstract</a>
+</li>
+<li>traffic
+: <a class="el" href="classNOTAM_1_1Notam.html#a6a9318885c40aeb7c8ffcaa830d554a8">NOTAM::Notam</a>
 </li>
 <li>trafficDataProvider()
 : <a class="el" href="classGlobalObject.html#a06c131e4d5f9851ea5d8002e3c30990f">GlobalObject</a>
@@ -219,8 +222,8 @@ $(function() {
 <li>TrafficFactor_WithPosition()
 : <a class="el" href="classTraffic_1_1TrafficFactor__WithPosition.html#aa3fc91c8daddefeae49250815df99120">Traffic::TrafficFactor_WithPosition</a>
 </li>
-<li>trafficObjects4QML
-: <a class="el" href="classTraffic_1_1TrafficDataProvider.html#a125bdf64b9e13a2e16551a8c4feeab81">Traffic::TrafficDataProvider</a>
+<li>trafficObjects
+: <a class="el" href="classTraffic_1_1TrafficDataProvider.html#ae135a22bd1ebbb71f9272c7c5e592f79">Traffic::TrafficDataProvider</a>
 </li>
 <li>trafficObjectWithoutPosition
 : <a class="el" href="classTraffic_1_1TrafficDataProvider.html#a10ff8b152a7b0a9ed9aca9282832ed79">Traffic::TrafficDataProvider</a>
@@ -231,9 +234,9 @@ $(function() {
 <li>trafficReceiverObVersion()
 : <a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#af0e969dddeb1d98288428ccca235f663">Traffic::TrafficDataSource_Abstract</a>
 </li>
-<li>trafficReceiverRuntimeError()
-: <a class="el" href="classTraffic_1_1TrafficDataProvider.html#a50b6867d9bbd31d11f025788ac801fb8">Traffic::TrafficDataProvider</a>
-, <a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#ac07026dfafb504295f0392c256d2a401">Traffic::TrafficDataSource_Abstract</a>
+<li>trafficReceiverRuntimeError
+: <a class="el" href="classTraffic_1_1TrafficDataProvider.html#a06bd14094a0c1113df4a0413f67f9d4a">Traffic::TrafficDataProvider</a>
+, <a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a90d1b6ff4762390477c05e0404e32060">Traffic::TrafficDataSource_Abstract</a>
 </li>
 <li>trafficReceiverRuntimeErrorChanged()
 : <a class="el" href="classTraffic_1_1TrafficDataProvider.html#a002b445fa932a28e14c9f744e9546b39">Traffic::TrafficDataProvider</a>
@@ -262,8 +265,11 @@ $(function() {
 <li>trueTrack()
 : <a class="el" href="classPositioning_1_1PositionInfo.html#a1263a7639f7fc1b37cf8a84f230cde29">Positioning::PositionInfo</a>
 </li>
+<li>trueTrackErrorEstimate()
+: <a class="el" href="classPositioning_1_1PositionInfo.html#a892a6ffed2b2dc26563d6e4bebc5c66e">Positioning::PositionInfo</a>
+</li>
 <li>TTUp
-: <a class="el" href="classSettings.html#a5acf8e905e6a27dd05e698b75720d12ba65bd5644276a179303542fe48ad085de">Settings</a>
+: <a class="el" href="classGlobalSettings.html#aaaed393c9035889a9cac125cf37e23d1a51919af6c9bb07dd41804e9550eb9be1">GlobalSettings</a>
 </li>
 <li>twoLineTitle
 : <a class="el" href="classGeoMaps_1_1Waypoint.html#a5b7f412339a14eb3ebd734cf08990f40">GeoMaps::Waypoint</a>

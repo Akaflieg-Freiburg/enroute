@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.22.2</span>
+   &#160;<span id="projectnumber">2.26.06</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -49,7 +49,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/***************************************************************************</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *   Copyright (C) 2019-2022 by Stefan Kebekus                             *</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *   Copyright (C) 2019-2023 by Stefan Kebekus                             *</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *   stefan.kebekus@gmail.com                                              *</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *                                                                         *</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *   This program is free software; you can redistribute it and/or modify  *</span></div>
@@ -97,14 +97,19 @@ $(function() {
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
 <div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="classPlatform_1_1FileExchange.html#a5aeee15bb5f5a532090a4c05492be8d6">   75</a></span>&#160;    Q_INVOKABLE QString <a class="code" href="classPlatform_1_1FileExchange.html#a5aeee15bb5f5a532090a4c05492be8d6">viewContent</a>(<span class="keyword">const</span> QByteArray&amp; content, <span class="keyword">const</span> QString&amp; mimeType, <span class="keyword">const</span> QString&amp; fileNameTemplate) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classPlatform_1_1FileExchange.html">FileExchange</a>)</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;};</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;} <span class="comment">// namespace Platform</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keyword">public</span> slots:</div>
+<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="classPlatform_1_1FileExchange.html#a4a185bfa5f68c1e82efa859c249e53ee">   80</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1FileExchange.html#a4a185bfa5f68c1e82efa859c249e53ee">onGUISetupCompleted</a>()<span class="keyword"> override </span>{};</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classPlatform_1_1FileExchange.html">FileExchange</a>)</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;};</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;} <span class="comment">// namespace Platform</span></div>
 <div class="ttc" id="aclassPlatform_1_1FileExchange_html"><div class="ttname"><a href="classPlatform_1_1FileExchange.html">Platform::FileExchange</a></div><div class="ttdoc">Implementation of FileExchange for Android devices.</div><div class="ttdef"><b>Definition:</b> <a href="FileExchange__Android_8h_source.html#l00030">FileExchange_Android.h:31</a></div></div>
 <div class="ttc" id="aclassPlatform_1_1FileExchange_html_a089992bad16319b80a6fe0c703d6a2a1"><div class="ttname"><a href="classPlatform_1_1FileExchange.html#a089992bad16319b80a6fe0c703d6a2a1">Platform::FileExchange::importContent</a></div><div class="ttdeci">Q_INVOKABLE void importContent() override</div><div class="ttdoc">Implements pure virtual method from FileExchange_Abstract.</div></div>
 <div class="ttc" id="aclassPlatform_1_1FileExchange_html_a49a4be50c83268120c82226ee673e5a1"><div class="ttname"><a href="classPlatform_1_1FileExchange.html#a49a4be50c83268120c82226ee673e5a1">Platform::FileExchange::shareContent</a></div><div class="ttdeci">Q_INVOKABLE QString shareContent(const QByteArray &amp;content, const QString &amp;mimeType, const QString &amp;fileNameTemplate) override</div><div class="ttdoc">Implements pure virtual method from FileExchange_Abstract.</div></div>
+<div class="ttc" id="aclassPlatform_1_1FileExchange_html_a4a185bfa5f68c1e82efa859c249e53ee"><div class="ttname"><a href="classPlatform_1_1FileExchange.html#a4a185bfa5f68c1e82efa859c249e53ee">Platform::FileExchange::onGUISetupCompleted</a></div><div class="ttdeci">virtual void onGUISetupCompleted() override</div><div class="ttdoc">Implements pure virtual method from FileExchange_Abstract.</div><div class="ttdef"><b>Definition:</b> <a href="FileExchange__Linux_8h_source.html#l00080">FileExchange_Linux.h:80</a></div></div>
 <div class="ttc" id="aclassPlatform_1_1FileExchange_html_a5aeee15bb5f5a532090a4c05492be8d6"><div class="ttname"><a href="classPlatform_1_1FileExchange.html#a5aeee15bb5f5a532090a4c05492be8d6">Platform::FileExchange::viewContent</a></div><div class="ttdeci">Q_INVOKABLE QString viewContent(const QByteArray &amp;content, const QString &amp;mimeType, const QString &amp;fileNameTemplate) override</div><div class="ttdoc">Implements pure virtual method from FileExchange_Abstract.</div></div>
 <div class="ttc" id="aclassPlatform_1_1FileExchange_html_a97263069c5f3ee0ebd4bf802cb368414"><div class="ttname"><a href="classPlatform_1_1FileExchange.html#a97263069c5f3ee0ebd4bf802cb368414">Platform::FileExchange::FileExchange</a></div><div class="ttdeci">FileExchange(QObject *parent=nullptr)</div><div class="ttdoc">Standard constructor.</div></div>
 </div><!-- fragment --></div><!-- contents -->

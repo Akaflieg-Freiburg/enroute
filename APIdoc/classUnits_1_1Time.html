@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.22.2</span>
+   &#160;<span id="projectnumber">2.26.06</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -69,12 +69,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9850fd504b1a695a963a9e4ad9b609d4"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE <a class="el" href="classUnits_1_1Time.html">Units::Time</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUnits_1_1Time.html#a9850fd504b1a695a963a9e4ad9b609d4">operator+=</a> (<a class="el" href="classUnits_1_1Time.html">Units::Time</a> other)</td></tr>
 <tr class="memdesc:a9850fd504b1a695a963a9e4ad9b609d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add time to this time.  <a href="classUnits_1_1Time.html#a9850fd504b1a695a963a9e4ad9b609d4">More...</a><br /></td></tr>
 <tr class="separator:a9850fd504b1a695a963a9e4ad9b609d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad05fc0fe8d92d3f08cd811ecf6c2d772"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUnits_1_1Time.html#ad05fc0fe8d92d3f08cd811ecf6c2d772">operator==</a> (<a class="el" href="classUnits_1_1Time.html">Units::Time</a> rhs) const</td></tr>
-<tr class="memdesc:ad05fc0fe8d92d3f08cd811ecf6c2d772"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison: equal.  <a href="classUnits_1_1Time.html#ad05fc0fe8d92d3f08cd811ecf6c2d772">More...</a><br /></td></tr>
-<tr class="separator:ad05fc0fe8d92d3f08cd811ecf6c2d772"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a97f9429842b2a90b4e7fed92f6fe68fb"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUnits_1_1Time.html#a97f9429842b2a90b4e7fed92f6fe68fb">operator!=</a> (<a class="el" href="classUnits_1_1Time.html">Units::Time</a> rhs) const</td></tr>
-<tr class="memdesc:a97f9429842b2a90b4e7fed92f6fe68fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison: not equal.  <a href="classUnits_1_1Time.html#a97f9429842b2a90b4e7fed92f6fe68fb">More...</a><br /></td></tr>
-<tr class="separator:a97f9429842b2a90b4e7fed92f6fe68fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae536b61124d74423d390ca3eb4720cb1"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE std::partial_ordering&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUnits_1_1Time.html#ae536b61124d74423d390ca3eb4720cb1">operator&lt;=&gt;</a> (const <a class="el" href="classUnits_1_1Time.html">Units::Time</a> &amp;rhs) const =default</td></tr>
+<tr class="memdesc:ae536b61124d74423d390ca3eb4720cb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison.  <a href="classUnits_1_1Time.html#ae536b61124d74423d390ca3eb4720cb1">More...</a><br /></td></tr>
+<tr class="separator:ae536b61124d74423d390ca3eb4720cb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7e9a305bfa1e414cc6fcffcfc05e71b"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUnits_1_1Time.html#ab7e9a305bfa1e414cc6fcffcfc05e71b">toS</a> () const</td></tr>
 <tr class="memdesc:ab7e9a305bfa1e414cc6fcffcfc05e71b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert time to seconds.  <a href="classUnits_1_1Time.html#ab7e9a305bfa1e414cc6fcffcfc05e71b">More...</a><br /></td></tr>
 <tr class="separator:ab7e9a305bfa1e414cc6fcffcfc05e71b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -90,6 +87,9 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a2e982bf1b403e4140ab43c56c833614b"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUnits_1_1Time.html#a2e982bf1b403e4140ab43c56c833614b">fromH</a> (double timeInH) -&gt; <a class="el" href="classUnits_1_1Time.html">Time</a></td></tr>
+<tr class="memdesc:a2e982bf1b403e4140ab43c56c833614b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a time.  <a href="classUnits_1_1Time.html#a2e982bf1b403e4140ab43c56c833614b">More...</a><br /></td></tr>
+<tr class="separator:a2e982bf1b403e4140ab43c56c833614b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c68b9b4e40285297e83db2c6315b707"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUnits_1_1Time.html#a2c68b9b4e40285297e83db2c6315b707">fromMS</a> (double timeInMS) -&gt; <a class="el" href="classUnits_1_1Time.html">Time</a></td></tr>
 <tr class="memdesc:a2c68b9b4e40285297e83db2c6315b707"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a time.  <a href="classUnits_1_1Time.html#a2c68b9b4e40285297e83db2c6315b707">More...</a><br /></td></tr>
 <tr class="separator:a2c68b9b4e40285297e83db2c6315b707"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -101,8 +101,45 @@ Static Public Member Functions</h2></td></tr>
 <div class="textblock"><p>Convenience class for time computations. </p>
 <p>This extremely simple class allows computation with times, without the need to worry about units. </p>
 
-<p class="definition">Definition at line <a class="el" href="Time_8h_source.html#l00037">37</a> of file <a class="el" href="Time_8h_source.html">Time.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Time_8h_source.html#l00038">38</a> of file <a class="el" href="Time_8h_source.html">Time.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a2e982bf1b403e4140ab43c56c833614b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e982bf1b403e4140ab43c56c833614b">&#9670;&nbsp;</a></span>fromH()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static auto Units::Time::fromH </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>timeInH</em></td><td>)</td>
+          <td> -&gt; <a class="el" href="classUnits_1_1Time.html">Time</a> </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructs a time. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">timeInH</td><td>time in hours</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>time </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Time_8h_source.html#l00049">49</a> of file <a class="el" href="Time_8h_source.html">Time.h</a>.</p>
+
+</div>
+</div>
 <a id="a2c68b9b4e40285297e83db2c6315b707"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2c68b9b4e40285297e83db2c6315b707">&#9670;&nbsp;</a></span>fromMS()</h2>
 
@@ -136,7 +173,7 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>time </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Time_8h_source.html#l00047">47</a> of file <a class="el" href="Time_8h_source.html">Time.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Time_8h_source.html#l00061">61</a> of file <a class="el" href="Time_8h_source.html">Time.h</a>.</p>
 
 </div>
 </div>
@@ -173,7 +210,7 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>time </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Time_8h_source.html#l00059">59</a> of file <a class="el" href="Time_8h_source.html">Time.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Time_8h_source.html#l00073">73</a> of file <a class="el" href="Time_8h_source.html">Time.h</a>.</p>
 
 </div>
 </div>
@@ -203,7 +240,7 @@ Static Public Member Functions</h2></td></tr>
 <p>Checks if the time is valid. </p>
 <dl class="section return"><dt>Returns</dt><dd>True is the time is a finite number </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Time_8h_source.html#l00069">69</a> of file <a class="el" href="Time_8h_source.html">Time.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Time_8h_source.html#l00083">83</a> of file <a class="el" href="Time_8h_source.html">Time.h</a>.</p>
 
 </div>
 </div>
@@ -233,44 +270,7 @@ Static Public Member Functions</h2></td></tr>
 <p>Checks if the time is negative. </p>
 <dl class="section return"><dt>Returns</dt><dd>True is the time is negative </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Time_8h_source.html#l00078">78</a> of file <a class="el" href="Time_8h_source.html">Time.h</a>.</p>
-
-</div>
-</div>
-<a id="a97f9429842b2a90b4e7fed92f6fe68fb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a97f9429842b2a90b4e7fed92f6fe68fb">&#9670;&nbsp;</a></span>operator!=()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Q_INVOKABLE bool Units::Time::operator!= </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classUnits_1_1Time.html">Units::Time</a>&#160;</td>
-          <td class="paramname"><em>rhs</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Comparison: not equal. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">rhs</td><td>Right hand side of the comparison</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Result of the comparison </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="Time_8h_source.html#l00112">112</a> of file <a class="el" href="Time_8h_source.html">Time.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Time_8h_source.html#l00092">92</a> of file <a class="el" href="Time_8h_source.html">Time.h</a>.</p>
 
 </div>
 </div>
@@ -307,12 +307,12 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>reference to this time </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Time_8h_source.html#l00089">89</a> of file <a class="el" href="Time_8h_source.html">Time.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Time_8h_source.html#l00103">103</a> of file <a class="el" href="Time_8h_source.html">Time.h</a>.</p>
 
 </div>
 </div>
-<a id="ad05fc0fe8d92d3f08cd811ecf6c2d772"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad05fc0fe8d92d3f08cd811ecf6c2d772">&#9670;&nbsp;</a></span>operator==()</h2>
+<a id="ae536b61124d74423d390ca3eb4720cb1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae536b61124d74423d390ca3eb4720cb1">&#9670;&nbsp;</a></span>operator&lt;=&gt;()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -321,21 +321,21 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Q_INVOKABLE bool Units::Time::operator== </td>
+          <td class="memname">Q_INVOKABLE std::partial_ordering Units::Time::operator&lt;=&gt; </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classUnits_1_1Time.html">Units::Time</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="classUnits_1_1Time.html">Units::Time</a> &amp;&#160;</td>
           <td class="paramname"><em>rhs</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Comparison: equal. </p>
+<p>Comparison. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">rhs</td><td>Right hand side of the comparison</td></tr>
@@ -343,8 +343,6 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Result of the comparison </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="Time_8h_source.html#l00101">101</a> of file <a class="el" href="Time_8h_source.html">Time.h</a>.</p>
 
 </div>
 </div>
@@ -374,7 +372,7 @@ Static Public Member Functions</h2></td></tr>
 <p>Convert time to hours. </p>
 <dl class="section return"><dt>Returns</dt><dd>time in hours </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Time_8h_source.html#l00138">138</a> of file <a class="el" href="Time_8h_source.html">Time.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Time_8h_source.html#l00139">139</a> of file <a class="el" href="Time_8h_source.html">Time.h</a>.</p>
 
 </div>
 </div>
@@ -424,7 +422,7 @@ Static Public Member Functions</h2></td></tr>
 <p>Convert time to minutes. </p>
 <dl class="section return"><dt>Returns</dt><dd>time in minutes </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Time_8h_source.html#l00129">129</a> of file <a class="el" href="Time_8h_source.html">Time.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Time_8h_source.html#l00130">130</a> of file <a class="el" href="Time_8h_source.html">Time.h</a>.</p>
 
 </div>
 </div>
@@ -454,7 +452,7 @@ Static Public Member Functions</h2></td></tr>
 <p>Convert time to seconds. </p>
 <dl class="section return"><dt>Returns</dt><dd>time in seconds </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Time_8h_source.html#l00120">120</a> of file <a class="el" href="Time_8h_source.html">Time.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Time_8h_source.html#l00121">121</a> of file <a class="el" href="Time_8h_source.html">Time.h</a>.</p>
 
 </div>
 </div>

@@ -1,0 +1,4 @@
+<map id="NOTAM::NotamProvider" name="NOTAM::NotamProvider">
+<area shape="rect" id="node1" title="This extremely simple class holds a the data item of a NOTAM." alt="" coords="5,80,181,107"/>
+<area shape="rect" id="node2" href="$classGlobalObject.html" title="Base class for global singleton objects." alt="" coords="40,5,147,32"/>
+</map>

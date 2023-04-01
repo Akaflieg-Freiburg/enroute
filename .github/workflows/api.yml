@@ -15,7 +15,6 @@ jobs:
     - name: Checkout Enroute
       uses: actions/checkout@v3
       with:
-        path: enroute
         submodules: true
     - name: Checkout qtlocation
       uses: actions/checkout@v3
@@ -43,7 +42,7 @@ jobs:
       run: |
         cmake -E make_directory build-enroute
         cd build-enroute
-        cmake ../enroute -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS='-Werror -Wall -Wextra'
+        cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS='-Werror -Wall -Wextra'
         make enroute_doc
         mv src/APIdoc/html ../APIdoc
     - name: Publish Documentation

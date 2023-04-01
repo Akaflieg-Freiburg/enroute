@@ -50,7 +50,6 @@ jobs:
       if: github.event_name == 'push'
       uses: JamesIves/github-pages-deploy-action@v4
       with:
-        BRANCH: gh-pages
-        ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        FOLDER: APIdoc
-        TARGET_FOLDER: APIdoc
+        branch: gh-pages
+        folder: APIdoc
+        target-folder: APIdoc

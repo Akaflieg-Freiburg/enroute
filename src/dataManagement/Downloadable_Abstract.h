@@ -42,6 +42,7 @@ namespace DataManagement {
 class Downloadable_Abstract : public QObject {
     Q_OBJECT
     QML_ELEMENT
+    QML_UNCREATABLE("")
 
 public:
     /*! \brief Type of content managed by this instance */

@@ -52,6 +52,7 @@ class Downloadable_SingleFile : public Downloadable_Abstract
 {
     Q_OBJECT
     QML_ELEMENT
+    QML_UNCREATABLE("")
 
 public:
     /*! \brief Standard constructor

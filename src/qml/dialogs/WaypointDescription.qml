@@ -36,8 +36,8 @@ import "../items"
 CenteringDialog {
     id: waypointDescriptionDialog
 
-    property var waypoint: global.geoMapProvider().createWaypoint()
-    property var weatherStation: global.weatherDataProvider().findWeatherStation( waypoint.ICAOCode )
+    property var waypoint: GeoMapProvider.createWaypoint()
+    property var weatherStation: WeatherDataProvider.findWeatherStation( waypoint.ICAOCode )
 
     onWaypointChanged : {
         // Delete old text items
@@ -59,7 +59,7 @@ CenteringDialog {
             waypointPropertyDelegate.createObject(co, {text: pro[j]});
 
         // Create airspace description items
-        var asl = global.geoMapProvider().airspaces(waypoint.coordinate)
+        var asl = GeoMapProvider.airspaces(waypoint.coordinate)
         for (var i in asl)
             airspaceDelegate.createObject(co, {airspace: asl[i]});
     }
@@ -639,31 +639,15 @@ CenteringDialog {
         }
     }
 
-    CenteringDialog {
+    LongTextDialog {
         id: removeDialog
 
-        property var waypoint: global.geoMapProvider().createWaypoint()
+        property var waypoint: GeoMapProvider.createWaypoint()
 
         title: qsTr("Remove from Device?")
-
-        // Delays evaluation and prevents binding loops
-        Binding on implicitHeight {
-            value: lbl.implicitHeight
-            delayed: true    // Prevent intermediary values from being assigned
-        }
-
-        Label {
-            id: lbl
-
-            width: removeDialog.availableWidth
-
-            text: qsTr("Once the waypoint <strong>%1</strong> is removed, it cannot be restored.").arg(removeDialog.waypoint.name)
-            wrapMode: Text.Wrap
-            textFormat: Text.StyledText
-        }
+        text: qsTr("Once the waypoint <strong>%1</strong> is removed, it cannot be restored.").arg(removeDialog.waypoint.name)
 
         standardButtons: Dialog.No | Dialog.Yes
-        modal: true
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()

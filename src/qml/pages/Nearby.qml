@@ -126,7 +126,7 @@ Page {
             delegate: waypointDelegate
             ScrollIndicator.vertical: ScrollIndicator {}
 
-            Component.onCompleted: rpList.model = global.geoMapProvider().nearbyWaypoints(PositionProvider.lastValidCoordinate, "WP")
+            Component.onCompleted: rpList.model = GeoMapProvider.nearbyWaypoints(PositionProvider.lastValidCoordinate, "WP")
             
             Label {
                 anchors.fill: parent

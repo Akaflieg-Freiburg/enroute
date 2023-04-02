@@ -365,7 +365,7 @@ Page {
     CenteringDialog {
         id: removeDialog
 
-        property var waypoint: global.geoMapProvider().createWaypoint()
+        property var waypoint: GeoMapProvider.createWaypoint()
 
         title: qsTr("Remove from Device?")
         standardButtons: Dialog.No | Dialog.Yes

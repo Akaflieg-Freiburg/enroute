@@ -44,7 +44,7 @@ Item {
 
         PluginParameter {
             name: "maplibregl.mapping.additional_style_urls"
-            value: global.geoMapProvider().styleFileURL
+            value: GeoMapProvider.styleFileURL
         }
 
     }
@@ -431,8 +431,8 @@ Item {
                 var pos = point.position
                 var posTr = Qt.point(pos.x+25,pos.y)
 
-                var wp = global.geoMapProvider().closestWaypoint(flightMap.toCoordinate(pos),
-                                                                 flightMap.toCoordinate(posTr))
+                var wp = GeoMapProvider.closestWaypoint(flightMap.toCoordinate(pos),
+                                                        flightMap.toCoordinate(posTr))
                 if (!wp.isValid)
                     return
                 waypointDescription.waypoint = wp
@@ -444,8 +444,8 @@ Item {
                 var pos = point.position
                 var posTr = Qt.point(pos.x+25,pos.y)
 
-                var wp = global.geoMapProvider().closestWaypoint(flightMap.toCoordinate(pos),
-                                                                 flightMap.toCoordinate(posTr))
+                var wp = GeoMapProvider.closestWaypoint(flightMap.toCoordinate(pos),
+                                                        flightMap.toCoordinate(posTr))
                 if (!wp.isValid)
                     return
                 waypointDescription.waypoint = wp
@@ -724,7 +724,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
             LongTextDialog {
                 id: copyrightDialog
                 title: qsTr("Map Data Copyright Information")
-                text: global.geoMapProvider().copyrightNotice
+                text: GeoMapProvider.copyrightNotice
                 standardButtons: Dialog.Cancel
             }
         }

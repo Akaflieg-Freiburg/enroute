@@ -74,13 +74,12 @@ Page {
             }
         }
 
-        ListView {
+        DecoratedListView {
             id: adList
 
             clip: true
 
             delegate: waypointDelegate
-            ScrollIndicator.vertical: ScrollIndicator {}
 
             Component.onCompleted: adList.model = GeoMapProvider.nearbyWaypoints(PositionProvider.lastValidCoordinate, "AD")
 
@@ -96,13 +95,12 @@ Page {
             }
         }
 
-        ListView {
+        DecoratedListView {
             id: naList
 
             clip: true
 
             delegate: waypointDelegate
-            ScrollIndicator.vertical: ScrollIndicator {}
 
             Component.onCompleted: naList.model = GeoMapProvider.nearbyWaypoints(PositionProvider.lastValidCoordinate, "NAV")
 
@@ -118,13 +116,12 @@ Page {
             }
         }
 
-        ListView {
+        DecoratedListView {
             id: rpList
 
             clip: true
 
             delegate: waypointDelegate
-            ScrollIndicator.vertical: ScrollIndicator {}
 
             Component.onCompleted: rpList.model = GeoMapProvider.nearbyWaypoints(PositionProvider.lastValidCoordinate, "WP")
             

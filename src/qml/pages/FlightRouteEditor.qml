@@ -152,7 +152,7 @@ Page {
                     Navigator.aircraft.horizontalDistanceUnit
                     Navigator.aircraft.fuelConsumptionUnit
 
-                    if (leg === null)
+                    if (leg == null)
                         return ""
                     return leg.description(Navigator.wind, Navigator.aircraft)
                 }

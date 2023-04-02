@@ -362,6 +362,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/dialogs/WaypointEditor.qml
     qml/dialogs/WeatherReport.qml
     qml/items/AutoSizingMenu.qml
+    qml/items/DecoratedListView.qml
     qml/items/DegreeInput.qml
     qml/items/ElevationInput.qml
     qml/items/FlightMap.qml

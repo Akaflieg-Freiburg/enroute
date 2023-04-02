@@ -788,9 +788,9 @@ ApplicationWindow {
 
         function onDownloadingChanged(downloading) {
             if (downloading) {
-                global.notifier().showNotification(Notifier.DownloadInfo, "", "");
+                Notifier.showNotification(Notifier.DownloadInfo, "", "");
             } else {
-                global.notifier().hideNotification(Notifier.DownloadInfo);
+                Notifier.hideNotification(Notifier.DownloadInfo);
             }
         }
     }
@@ -811,7 +811,7 @@ ApplicationWindow {
     }
 
     Connections { // Notifier
-        target: global.notifier()
+        target: Notifier
 
         function onAction(act) {
             if ((act === Notifier.DownloadInfo_Clicked) && (stackView.currentItem.objectName !== "DataManagerPage")) {
@@ -835,8 +835,7 @@ ApplicationWindow {
     }
 
     Connections { // SSLErrorHandler
-        target: global.sslErrorHandler()
-
+        target: SSLErrorHandler
 
         function onSslError(message) {
             sslErrorDialog.text = message
@@ -889,17 +888,17 @@ Go to the 'Settings' page if you wish to restore the original, safe, behavior of
 
         function onTrafficReceiverRuntimeErrorChanged(message) {
             if (message === "") {
-                global.notifier().hideNotification(Notifier.TrafficReceiverRuntimeError);
+                Notifier.hideNotification(Notifier.TrafficReceiverRuntimeError);
             } else {
-                global.notifier().showNotification(Notifier.TrafficReceiverRuntimeError, message, message);
+                Notifier.showNotification(Notifier.TrafficReceiverRuntimeError, message, message);
             }
         }
 
         function onTrafficReceiverSelfTestErrorChanged(message) {
             if (message === "") {
-                global.notifier().hideNotification(Notifier.TrafficReceiverSelfTestError);
+                Notifier.hideNotification(Notifier.TrafficReceiverSelfTestError);
             } else {
-                global.notifier().showNotification(Notifier.TrafficReceiverSelfTestError, message, message);
+                Notifier.showNotification(Notifier.TrafficReceiverSelfTestError, message, message);
             }
         }
     }

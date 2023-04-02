@@ -43,10 +43,10 @@ Page {
 
         clip: true
 
-        bottomPadding: view.font.pixelSize + SafeInsets.bottom
-        leftPadding: view.font.pixelSize + SafeInsets.left
-        rightPadding: view.font.pixelSize + SafeInsets.right
-        topPadding: view.font.pixelSize
+        bottomPadding: font.pixelSize + SafeInsets.bottom
+        leftPadding: font.pixelSize + SafeInsets.left
+        rightPadding: font.pixelSize + SafeInsets.right
+        topPadding: font.pixelSize
 
         GridLayout {
             id: gl
@@ -59,7 +59,7 @@ Page {
                 Layout.columnSpan: 2
 
                 text: qsTr("Status")
-                font.pixelSize: view.font.pixelSize*1.2
+                font.pixelSize: sView.font.pixelSize*1.2
                 font.bold: true
                 color: Material.accent
             }
@@ -75,10 +75,10 @@ Page {
                 wrapMode: Text.WordWrap
                 textFormat: Text.RichText
 
-                bottomPadding: 0.6*view.font.pixelSize
-                topPadding: 0.6*view.font.pixelSize
-                leftPadding: 0.2*view.font.pixelSize
-                rightPadding: 0.2*view.font.pixelSize
+                bottomPadding: 0.6*font.pixelSize
+                topPadding: 0.6*font.pixelSize
+                leftPadding: 0.2*font.pixelSize
+                rightPadding: 0.2*font.pixelSize
 
                 leftInset: -4
                 rightInset: -4
@@ -92,7 +92,7 @@ Page {
             }
 
             Item {
-                Layout.preferredHeight: view.font.pixelSize*0.5
+                Layout.preferredHeight: sView.font.pixelSize*0.5
                 Layout.columnSpan: 2
             }
 
@@ -100,7 +100,7 @@ Page {
                 Layout.columnSpan: 2
 
                 text: qsTr("Position Data")
-                font.pixelSize: view.font.pixelSize*1.2
+                font.pixelSize: sView.font.pixelSize*1.2
                 font.bold: true
                 color: Material.accent
             }

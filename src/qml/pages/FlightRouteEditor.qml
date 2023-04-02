@@ -422,8 +422,8 @@ Page {
                 textFormat: Text.RichText
                 wrapMode: Text.Wrap
 
-                leftPadding: view.font.pixelSize*2
-                rightPadding: view.font.pixelSize*2
+                leftPadding: font.pixelSize*2
+                rightPadding: font.pixelSize*2
 
                 text: qsTr("<h3>Empty Route</h3><p>Use the button <strong>Add Waypoint</strong> below or double click on any point in the moving map.</p>")
             }
@@ -479,9 +479,9 @@ Page {
 
             GridLayout {
                 anchors.left: parent.left
-                anchors.leftMargin: view.font.pixelSize
+                anchors.leftMargin: font.pixelSize
                 anchors.right: parent.right
-                anchors.rightMargin: view.font.pixelSize
+                anchors.rightMargin: font.pixelSize
 
                 columns: 4
 
@@ -489,7 +489,7 @@ Page {
                 Label {
                     text: qsTr("Wind")
                     Layout.columnSpan: 4
-                    font.pixelSize: view.font.pixelSize*1.2
+                    font.pixelSize: windTab.font.pixelSize*1.2
                     font.bold: true
                     color: Material.accent
                 }
@@ -502,7 +502,7 @@ Page {
                     id: windDirection
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignBaseline
-                    Layout.minimumWidth: view.font.pixelSize*5
+                    Layout.minimumWidth: font.pixelSize*5
                     validator: IntValidator {
                         bottom: 0
                         top: 360
@@ -545,7 +545,7 @@ Page {
                     id: windSpeed
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignBaseline
-                    Layout.minimumWidth: view.font.pixelSize*5
+                    Layout.minimumWidth: font.pixelSize*5
                     validator: DoubleValidator {
                         bottom: {
                             switch(Navigator.aircraft.horizontalDistanceUnit) {

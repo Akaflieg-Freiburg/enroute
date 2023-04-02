@@ -89,7 +89,7 @@ CenteringDialog {
 
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
-                Layout.minimumWidth: view.font.pixelSize*5
+                Layout.minimumWidth: font.pixelSize*5
 
                 text: waypoint.extendedName
                 focus: true
@@ -107,7 +107,7 @@ CenteringDialog {
 
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
-                Layout.minimumWidth: view.font.pixelSize*5
+                Layout.minimumWidth: font.pixelSize*5
 
                 focus: true
 

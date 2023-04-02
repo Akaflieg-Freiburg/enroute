@@ -74,18 +74,18 @@ Page {
 
             clip: true
 
-            bottomPadding: view.font.pixelSize + SafeInsets.bottom
-            leftPadding: view.font.pixelSize + SafeInsets.left
-            rightPadding: view.font.pixelSize + SafeInsets.right
-            topPadding: view.font.pixelSize
+            bottomPadding: font.pixelSize + SafeInsets.bottom
+            leftPadding: font.pixelSize + SafeInsets.left
+            rightPadding: font.pixelSize + SafeInsets.right
+            topPadding: font.pixelSize
 
             ColumnLayout {
                 width: sv.availableWidth
 
-                anchors.bottomMargin: view.font.pixelSize*1
-                anchors.topMargin: view.font.pixelSize*1
-                anchors.leftMargin: view.font.pixelSize*0.5
-                anchors.rightMargin: view.font.pixelSize*0.5
+                anchors.bottomMargin: font.pixelSize*1
+                anchors.topMargin: font.pixelSize*1
+                anchors.leftMargin: font.pixelSize*0.5
+                anchors.rightMargin: font.pixelSize*0.5
 
                 id: cL
 
@@ -242,20 +242,20 @@ below.</p>
 
             clip: true
 
-            bottomPadding: view.font.pixelSize + SafeInsets.bottom
-            leftPadding: view.font.pixelSize + SafeInsets.left
-            rightPadding: view.font.pixelSize + SafeInsets.right
-            topPadding: view.font.pixelSize
+            bottomPadding: font.pixelSize + SafeInsets.bottom
+            leftPadding: font.pixelSize + SafeInsets.left
+            rightPadding: font.pixelSize + SafeInsets.right
+            topPadding: font.pixelSize
 
             ColumnLayout {
                 id: cL
 
                 width: sv.availableWidth
 
-                anchors.bottomMargin: view.font.pixelSize*1
-                anchors.topMargin: view.font.pixelSize*1
-                anchors.leftMargin: view.font.pixelSize*0.5
-                anchors.rightMargin: view.font.pixelSize*0.5
+                anchors.bottomMargin: font.pixelSize*1
+                anchors.topMargin: font.pixelSize*1
+                anchors.leftMargin: font.pixelSize*0.5
+                anchors.rightMargin: font.pixelSize*0.5
 
                 Label {
                     Layout.fillWidth: true
@@ -345,20 +345,20 @@ comes first!</p>
 
             clip: true
 
-            bottomPadding: view.font.pixelSize + SafeInsets.bottom
-            leftPadding: view.font.pixelSize + SafeInsets.left
-            rightPadding: view.font.pixelSize + SafeInsets.right
-            topPadding: view.font.pixelSize
+            bottomPadding: font.pixelSize + SafeInsets.bottom
+            leftPadding: font.pixelSize + SafeInsets.left
+            rightPadding: font.pixelSize + SafeInsets.right
+            topPadding: font.pixelSize
 
             ColumnLayout {
                 id: cL
 
                 width: sv.availableWidth
 
-                anchors.bottomMargin: view.font.pixelSize*1
-                anchors.topMargin: view.font.pixelSize*1
-                anchors.leftMargin: view.font.pixelSize*0.5
-                anchors.rightMargin: view.font.pixelSize*0.5
+                anchors.bottomMargin: font.pixelSize*1
+                anchors.topMargin: font.pixelSize*1
+                anchors.leftMargin: font.pixelSize*0.5
+                anchors.rightMargin: font.pixelSize*0.5
 
                 Label {
                     Layout.fillWidth: true
@@ -438,20 +438,20 @@ time. Peter speaks English and German.</p>
 
             clip: true
 
-            bottomPadding: view.font.pixelSize + SafeInsets.bottom
-            leftPadding: view.font.pixelSize + SafeInsets.left
-            rightPadding: view.font.pixelSize + SafeInsets.right
-            topPadding: view.font.pixelSize
+            bottomPadding: font.pixelSize + SafeInsets.bottom
+            leftPadding: font.pixelSize + SafeInsets.left
+            rightPadding: font.pixelSize + SafeInsets.right
+            topPadding: font.pixelSize
 
             ColumnLayout {
                 id: cL
 
                 width: sv.availableWidth
 
-                anchors.bottomMargin: view.font.pixelSize*1
-                anchors.topMargin: view.font.pixelSize*1
-                anchors.leftMargin: view.font.pixelSize*0.5
-                anchors.rightMargin: view.font.pixelSize*0.5
+                anchors.bottomMargin: font.pixelSize*1
+                anchors.topMargin: font.pixelSize*1
+                anchors.leftMargin: font.pixelSize*0.5
+                anchors.rightMargin: font.pixelSize*0.5
 
                 Label {
                     Layout.fillWidth: true
@@ -501,20 +501,20 @@ discuss your issue in the forum there.</p>
 
             clip: true
 
-            bottomPadding: view.font.pixelSize + SafeInsets.bottom
-            leftPadding: view.font.pixelSize + SafeInsets.left
-            rightPadding: view.font.pixelSize + SafeInsets.right
-            topPadding: view.font.pixelSize
+            bottomPadding: font.pixelSize + SafeInsets.bottom
+            leftPadding: font.pixelSize + SafeInsets.left
+            rightPadding: font.pixelSize + SafeInsets.right
+            topPadding: font.pixelSize
 
             ColumnLayout {
                 id: cL
 
                 width: sv.availableWidth
 
-                anchors.bottomMargin: view.font.pixelSize*1
-                anchors.topMargin: view.font.pixelSize*1
-                anchors.leftMargin: view.font.pixelSize*0.5
-                anchors.rightMargin: view.font.pixelSize*0.5
+                anchors.bottomMargin: font.pixelSize*1
+                anchors.topMargin: font.pixelSize*1
+                anchors.leftMargin: font.pixelSize*0.5
+                anchors.rightMargin: font.pixelSize*0.5
 
                 Label {
                     Layout.fillWidth: true
@@ -597,20 +597,20 @@ following countries?</p>
 
             clip: true
 
-            bottomPadding: view.font.pixelSize + SafeInsets.bottom
-            leftPadding: view.font.pixelSize + SafeInsets.left
-            rightPadding: view.font.pixelSize + SafeInsets.right
-            topPadding: view.font.pixelSize
+            bottomPadding: font.pixelSize + SafeInsets.bottom
+            leftPadding: font.pixelSize + SafeInsets.left
+            rightPadding: font.pixelSize + SafeInsets.right
+            topPadding: font.pixelSize
 
             ColumnLayout {
                 id: cL
 
                 width: sv.availableWidth
 
-                anchors.bottomMargin: view.font.pixelSize*1
-                anchors.topMargin: view.font.pixelSize*1
-                anchors.leftMargin: view.font.pixelSize*0.5
-                anchors.rightMargin: view.font.pixelSize*0.5
+                anchors.bottomMargin: font.pixelSize*1
+                anchors.topMargin: font.pixelSize*1
+                anchors.leftMargin: font.pixelSize*0.5
+                anchors.rightMargin: font.pixelSize*0.5
 
                 Label {
                     Layout.fillWidth: true
@@ -679,20 +679,20 @@ computer, you can also send yourself a link by e-mail.</p>
 
             clip: true
 
-            bottomPadding: view.font.pixelSize + SafeInsets.bottom
-            leftPadding: view.font.pixelSize + SafeInsets.left
-            rightPadding: view.font.pixelSize + SafeInsets.right
-            topPadding: view.font.pixelSize
+            bottomPadding: font.pixelSize + SafeInsets.bottom
+            leftPadding: font.pixelSize + SafeInsets.left
+            rightPadding: font.pixelSize + SafeInsets.right
+            topPadding: font.pixelSize
 
             ColumnLayout {
                 id: cL
 
                 width: sv.availableWidth
 
-                anchors.bottomMargin: view.font.pixelSize*1
-                anchors.topMargin: view.font.pixelSize*1
-                anchors.leftMargin: view.font.pixelSize*0.5
-                anchors.rightMargin: view.font.pixelSize*0.5
+                anchors.bottomMargin: font.pixelSize*1
+                anchors.topMargin: font.pixelSize*1
+                anchors.leftMargin: font.pixelSize*0.5
+                anchors.rightMargin: font.pixelSize*0.5
 
                 Label {
                     Layout.fillWidth: true

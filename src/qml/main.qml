@@ -340,7 +340,7 @@ ApplicationWindow {
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
                                 stackView.pop()
-                                stackView.push("pages/TrafficReceiver.qml")
+                                stackView.push("pages/TrafficReceiver.qml", {"appWindow": view})
                                 aboutMenu.close()
                                 drawer.close()
                             }

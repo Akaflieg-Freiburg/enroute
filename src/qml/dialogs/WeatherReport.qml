@@ -18,7 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-//import QtGraphicalEffects 1.15
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Material
@@ -53,7 +52,7 @@ CenteringDialog {
             Label {
                 text: (weatherStation !== null) ? weatherStation.extendedName : ""
                 font.bold: true
-                font.pixelSize: 1.2*view.font.pixelSize
+                font.pixelSize: 1.2*weatherReportDialog.font.pixelSize
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignVCenter
                 wrapMode: Text.WordWrap
@@ -87,7 +86,7 @@ CenteringDialog {
                     visible: (weatherStation !== null) && weatherStation.hasMETAR
                     text: (weatherStation !== null) && weatherStation.hasMETAR ? (weatherStation.metar.messageType + " " + weatherStation.metar.relativeObservationTime) : ""
                     font.bold: true
-                    font.pixelSize: 1.2*view.font.pixelSize
+                    font.pixelSize: 1.2*weatherReportDialog.font.pixelSize
                 }
 
                 Label { // raw METAR text
@@ -98,10 +97,10 @@ CenteringDialog {
                     Layout.rightMargin: 4
                     wrapMode: Text.WordWrap
 
-                    bottomPadding: 0.2*view.font.pixelSize
-                    topPadding: 0.2*view.font.pixelSize
-                    leftPadding: 0.2*view.font.pixelSize
-                    rightPadding: 0.2*view.font.pixelSize
+                    bottomPadding: 0.2*font.pixelSize
+                    topPadding: 0.2*font.pixelSize
+                    leftPadding: 0.2*font.pixelSize
+                    rightPadding: 0.2*font.pixelSize
 
                     leftInset: -4
                     rightInset: -4
@@ -127,7 +126,7 @@ CenteringDialog {
                     visible: (weatherStation !== null) && weatherStation.hasTAF
                     text: "TAF"
                     font.bold: true
-                    font.pixelSize: 1.2*view.font.pixelSize
+                    font.pixelSize: 1.2*weatherReportDialog.font.pixelSize
                 }
 
                 Label { // raw TAF text
@@ -138,10 +137,10 @@ CenteringDialog {
                     Layout.rightMargin: 4
                     wrapMode: Text.WordWrap
 
-                    bottomPadding: 0.2*view.font.pixelSize
-                    topPadding: 0.2*view.font.pixelSize
-                    leftPadding: 0.2*view.font.pixelSize
-                    rightPadding: 0.2*view.font.pixelSize
+                    bottomPadding: 0.2*font.pixelSize
+                    topPadding: 0.2*font.pixelSize
+                    leftPadding: 0.2*font.pixelSize
+                    rightPadding: 0.2*font.pixelSize
 
                     leftInset: -4
                     rightInset: -4

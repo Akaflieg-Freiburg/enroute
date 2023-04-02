@@ -120,14 +120,14 @@ Page {
         id: textInput
 
         anchors.right: parent.right
-        anchors.rightMargin: view.font.pixelSize*2.0
+        anchors.rightMargin: font.pixelSize*2.0
         anchors.left: parent.left
-        anchors.leftMargin: view.font.pixelSize*2.0
+        anchors.leftMargin: font.pixelSize*2.0
         leftPadding: SafeInsets.left
         rightPadding: SafeInsets.right
 
         placeholderText: qsTr("Filter Flight Route Names")
-        font.pixelSize: view.font.pixelSize*1.5
+        font.pixelSize: page.font.pixelSize*1.5
     }
 
     Component {
@@ -319,13 +319,13 @@ Page {
 
     Label {
         anchors.fill: wpList
-        anchors.topMargin: view.font.pixelSize*2
+        anchors.topMargin: font.pixelSize*2
 
         visible: (wpList.count === 0)
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
-        leftPadding: view.font.pixelSize*2
-        rightPadding: view.font.pixelSize*2
+        leftPadding: font.pixelSize*2
+        rightPadding: font.pixelSize*2
 
         textFormat: Text.StyledText
         wrapMode: Text.Wrap
@@ -387,20 +387,13 @@ Page {
         text: Librarian.getStringFromRessource(":text/flightRouteLibraryInfo.html").arg(Librarian.directory(Librarian.Routes))
     }
 
-    CenteringDialog {
+    LongTextDialog {
         id: overwriteDialog
 
         title: qsTr("Overwrite Current Flight Route?")
         standardButtons: Dialog.No | Dialog.Yes
-        modal: true
 
-        Label {
-            width: overwriteDialog.availableWidth
-
-            text: qsTr("Loading the route <strong>%1</strong> will overwrite the current route. Once overwritten, the current flight route cannot be restored.").arg(finalFileName)
-            wrapMode: Text.Wrap
-            textFormat: Text.StyledText
-        }
+        text: qsTr("Loading the route <strong>%1</strong> will overwrite the current route. Once overwritten, the current flight route cannot be restored.").arg(finalFileName)
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()

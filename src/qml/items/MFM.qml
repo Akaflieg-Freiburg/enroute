@@ -204,6 +204,8 @@ Item {
                 function onHeightChanged() { mapCircleLabel.polishAndUpdate() }
             }
 
+            Control { id: fontGlean }
+
             sourceItem: Label {
                 id: lbl
 
@@ -213,7 +215,7 @@ Item {
                 text: TrafficDataProvider.trafficObjectWithoutPosition.description
                 textFormat: Text.RichText
 
-                font.pixelSize: 0.8*view.font.pixelSize
+                font.pixelSize: 0.8*fontGlean.font.pixelSize
 
                 leftInset: -4
                 rightInset: -4
@@ -533,9 +535,9 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         width: 4*font.pixelSize
 
         anchors.left: parent.left
-        anchors.leftMargin: 0.5*view.font.pixelSize + SafeInsets.left
+        anchors.leftMargin: 0.5*font.pixelSize + SafeInsets.left
         anchors.top: remainingRoute.bottom
-        anchors.topMargin: 0.5*view.font.pixelSize
+        anchors.topMargin: 0.5*font.pixelSize
 
         Material.background: GlobalSettings.nightMode ? undefined : "white"
 
@@ -585,9 +587,9 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         enabled: !flightMap.followGPS
 
         anchors.left: parent.left
-        anchors.leftMargin: 0.5*view.font.pixelSize + SafeInsets.left
+        anchors.leftMargin: 0.5*font.pixelSize + SafeInsets.left
         anchors.bottom: trafficDataReceiverButton.top
-        anchors.bottomMargin: trafficDataReceiverButton.visible ? 0.5*view.font.pixelSize : 1.5*view.font.pixelSize
+        anchors.bottomMargin: trafficDataReceiverButton.visible ? 0.5*font.pixelSize : 1.5*font.pixelSize
 
         height: 4*font.pixelSize
         width: 4*font.pixelSize
@@ -610,9 +612,9 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         visible: !TrafficDataProvider.receivingHeartbeat
 
         anchors.left: parent.left
-        anchors.leftMargin: 0.5*view.font.pixelSize + SafeInsets.left
+        anchors.leftMargin: 0.5*font.pixelSize + SafeInsets.left
         anchors.bottom: navBar.top
-        anchors.bottomMargin: visible ? 1.5*view.font.pixelSize : 0
+        anchors.bottomMargin: visible ? 1.5*font.pixelSize : 0
 
         height: visible ? 4*font.pixelSize : 0
         width: 4*font.pixelSize
@@ -634,9 +636,9 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         autoRepeat: true
 
         anchors.right: parent.right
-        anchors.rightMargin: 0.5*view.font.pixelSize + SafeInsets.right
+        anchors.rightMargin: 0.5*font.pixelSize + SafeInsets.right
         anchors.bottom: zoomOut.top
-        anchors.bottomMargin: 0.5*view.font.pixelSize
+        anchors.bottomMargin: 0.5*font.pixelSize
 
         height: 4*font.pixelSize
         width: 4*font.pixelSize
@@ -658,9 +660,9 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         autoRepeat: true
 
         anchors.right: parent.right
-        anchors.rightMargin: 0.5*view.font.pixelSize + SafeInsets.right
+        anchors.rightMargin: 0.5*font.pixelSize + SafeInsets.right
         anchors.bottom: navBar.top
-        anchors.bottomMargin: 1.5*view.font.pixelSize
+        anchors.bottomMargin: 1.5*font.pixelSize
 
         height: 4*font.pixelSize
         width: 4*font.pixelSize
@@ -677,9 +679,9 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         id: leftScale
 
         anchors.top: northButton.bottom
-        anchors.topMargin: 0.5*view.font.pixelSize
+        anchors.topMargin: 0.5*font.pixelSize
         anchors.bottom: followGPSButton.top
-        anchors.bottomMargin: 0.5*view.font.pixelSize
+        anchors.bottomMargin: 0.5*font.pixelSize
         anchors.horizontalCenter: followGPSButton.horizontalCenter
 
         opacity: Material.theme === Material.Dark ? 0.3 : 1.0
@@ -694,9 +696,9 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         id: scale
 
         anchors.left: followGPSButton.right
-        anchors.leftMargin: 0.5*view.font.pixelSize
+        anchors.leftMargin: 0.5*font.pixelSize
         anchors.right: zoomIn.left
-        anchors.rightMargin: 0.5*view.font.pixelSize
+        anchors.rightMargin: 0.5*font.pixelSize
         anchors.verticalCenter: zoomOut.verticalCenter
 
         opacity: Material.theme === Material.Dark ? 0.3 : 1.0
@@ -710,7 +712,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
     Pane {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: navBar.top
-        anchors.bottomMargin: 0.4*view.font.pixelSize
+        anchors.bottomMargin: 0.4*font.pixelSize
         topPadding: 0
         bottomPadding: 0
         Material.elevation: 2

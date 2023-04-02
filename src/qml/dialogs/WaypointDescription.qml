@@ -83,10 +83,10 @@ CenteringDialog {
             Layout.fillWidth: true
             wrapMode: Text.WordWrap
 
-            bottomPadding: 0.2*view.font.pixelSize
-            topPadding: 0.2*view.font.pixelSize
-            leftPadding: 0.2*view.font.pixelSize
-            rightPadding: 0.2*view.font.pixelSize
+            bottomPadding: 0.2*font.pixelSize
+            topPadding: 0.2*font.pixelSize
+            leftPadding: 0.2*font.pixelSize
+            rightPadding: 0.2*font.pixelSize
             onLinkActivated: {
                 PlatformAdaptor.vibrateBrief()
                 weatherReport.open()
@@ -131,10 +131,10 @@ CenteringDialog {
             Layout.fillWidth: true
             wrapMode: Text.WordWrap
 
-            bottomPadding: 0.2*view.font.pixelSize
-            topPadding: 0.2*view.font.pixelSize
-            leftPadding: 0.2*view.font.pixelSize
-            rightPadding: 0.2*view.font.pixelSize
+            bottomPadding: 0.2*font.pixelSize
+            topPadding: 0.2*font.pixelSize
+            leftPadding: 0.2*font.pixelSize
+            rightPadding: 0.2*font.pixelSize
             onLinkActivated: {
                 PlatformAdaptor.vibrateBrief()
                 dlgLoader.setSource("../dialogs/NotamListDialog.qml",
@@ -165,7 +165,7 @@ CenteringDialog {
 
             Label {
                 text: rowLYO.text.substring(0,4)
-                Layout.preferredWidth: view.font.pixelSize*3
+                Layout.preferredWidth: font.pixelSize*3
                 Layout.alignment: Qt.AlignTop
                 font.bold: true
 
@@ -197,8 +197,8 @@ CenteringDialog {
             Item {
                 id: box
 
-                Layout.preferredWidth: view.font.pixelSize*3
-                Layout.preferredHeight: view.font.pixelSize*2.5
+                Layout.preferredWidth: font.pixelSize*3
+                Layout.preferredHeight: font.pixelSize*2.5
                 Layout.rowSpan: 3
                 Layout.alignment: Qt.AlignLeft
 
@@ -352,7 +352,7 @@ CenteringDialog {
                 Layout.alignment: Qt.AlignHCenter
                 color: Material.foreground
                 Layout.preferredHeight: 1
-                Layout.preferredWidth: view.font.pixelSize*5
+                Layout.preferredWidth: font.pixelSize*5
             }
             Label {
                 Layout.alignment: Qt.AlignHCenter|Qt.AlignTop
@@ -383,7 +383,7 @@ CenteringDialog {
             Label {
                 text: waypoint.extendedName
                 font.bold: true
-                font.pixelSize: 1.2*view.font.pixelSize
+                font.pixelSize: 1.2*waypointDescriptionDialog.font.pixelSize
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignVCenter
                 wrapMode: Text.WordWrap

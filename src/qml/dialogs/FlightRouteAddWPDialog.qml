@@ -70,7 +70,7 @@ CenteringDialog {
             Layout.fillWidth: true
 
             placeholderText: qsTr("Filter Waypoint Names")
-            font.pixelSize: view.font.pixelSize*1.5
+            font.pixelSize: dlg.font.pixelSize*1.5
             focus: true
 
             onAccepted: {
@@ -97,7 +97,7 @@ CenteringDialog {
 
             Label {
                 anchors.fill: wpList
-                anchors.topMargin: view.font.pixelSize*2
+                anchors.topMargin: font.pixelSize*2
 
                 visible: (wpList.count === 0)
                 horizontalAlignment: Text.AlignHCenter

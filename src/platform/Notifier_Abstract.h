@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include <QQmlEngine>
+
 #include "GlobalObject.h"
 
 namespace Platform {
@@ -35,6 +37,8 @@ namespace Platform {
 class Notifier_Abstract : public GlobalObject
 {
     Q_OBJECT
+    QML_NAMED_ELEMENT(Notifier)
+    QML_SINGLETON
 
 public:
     /*! \brief Standard constructor
@@ -43,7 +47,16 @@ public:
     */
     explicit Notifier_Abstract(QObject* parent = nullptr);
 
+    // No default constructor, important for QML singleton
+    explicit Notifier_Abstract() = delete;
+
     ~Notifier_Abstract() override = default;
+
+    // factory function for QML singleton
+    static Platform::Notifier_Abstract* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
+    {
+        return GlobalObject::notifier();
+    }
 
     /*! \brief Notification types
      *

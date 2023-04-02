@@ -4,7 +4,7 @@ on:
   release:
     types: [published]
   push:
-    branches: [main, working]
+    branches: [main]
 
 jobs:
   build:
@@ -32,7 +32,7 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
-        version: '6.4.2'
+        version: '6.4.*'
         modules: 'qt5compat qthttpserver qtpositioning qtshadertools qtwebsockets'
     - name: Compile QtLocation
       run: |
@@ -43,8 +43,8 @@ jobs:
         cmake --install .
     - name: Compile Enroute Flight Navigation
       run: |
-        export CC=/usr/bin/clang
-        export CXX=/usr/bin/clang++
+        export CC=/usr/bin/gcc
+        export CXX=/usr/bin/g++
         cmake -E make_directory build-enroute
         cd build-enroute
         cmake ../enroute

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -128,72 +128,26 @@ CenteringDialog {
     function saveToLibrary() {
         var errorString = Navigator.flightRoute.save(Librarian.fullPath(Librarian.Routes, finalFileName))
         if (errorString !== "") {
-            lbl.text = errorString
+            fileError.text = errorString
             fileError.open()
         } else
             toast.doToast(qsTr("Flight route %1 saved").arg(finalFileName))
     }
 
-    CenteringDialog {
+    LongTextDialog {
         id: fileError
 
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: Math.min(parent.height-view.font.pixelSize, implicitHeight)
-
-        anchors.centerIn: parent
-        parent: Overlay.overlay
-
-        modal: true
         title: qsTr("An Error Occurred…")
         standardButtons: Dialog.Ok
+    }
 
-        ScrollView{
-            id: sv
-            anchors.fill: parent
-
-            contentHeight: lbl.height
-            contentWidth: fileError.availableWidth
-
-            // The visibility behavior of the vertical scroll bar is a little complex.
-            // The following code guarantees that the scroll bar is shown initially. If it is not used, it is faded out after half a second or so.
-            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-            ScrollBar.vertical.policy: (height < contentHeight) ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
-
-            clip: true
-
-            Label {
-                id: lbl
-                width: dlg.availableWidth
-                textFormat: Text.StyledText
-                wrapMode: Text.Wrap
-                onLinkActivated: Qt.openUrlExternally(link)
-            } // Label
-        } // ScrollView
-
-    }  // Dialog: fileError
-
-    CenteringDialog {
+    LongTextDialog {
         id: overwriteDialog
-        anchors.centerIn: parent
-        parent: Overlay.overlay
-
-        // Width is chosen so that the dialog does not cover the parent in full, height is automatic
-        // Size is chosen so that the dialog does not cover the parent in full
-        width: Math.min(parent.width-view.font.pixelSize, 40*view.font.pixelSize)
-        height: Math.min(parent.height-view.font.pixelSize, implicitHeight)
 
         title: qsTr("Overwrite Flight Route?")
         standardButtons: Dialog.No | Dialog.Yes
-        modal: true
 
-        Label {
-            width: overwriteDialog.availableWidth
-
-            text: qsTr("The route <strong>%1</strong> already exists in the library. Do you wish to overwrite it?").arg(finalFileName)
-            wrapMode: Text.Wrap
-            textFormat: Text.StyledText
-        }
+        text: qsTr("The route <strong>%1</strong> already exists in the library. Do you wish to overwrite it?").arg(finalFileName)
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
@@ -206,6 +160,6 @@ CenteringDialog {
             dlg.open()
         }
 
-    } // Dialog: overwriteDialog
+    }
 
 } // Dialog

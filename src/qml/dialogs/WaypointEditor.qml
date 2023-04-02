@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -39,7 +39,7 @@ CenteringDialog {
     id: waypointEditorDialog
 
     // Property waypoint, and code to handle waypoint changes
-    property waypoint waypoint: global.geoMapProvider().createWaypoint()
+    property waypoint waypoint: GeoMapProvider.createWaypoint()
 
     readonly property string newName: wpNameField.text
     readonly property string newNotes: wpNotesField.text
@@ -89,7 +89,7 @@ CenteringDialog {
 
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
-                Layout.minimumWidth: view.font.pixelSize*5
+                Layout.minimumWidth: font.pixelSize*5
 
                 text: waypoint.extendedName
                 focus: true
@@ -107,7 +107,7 @@ CenteringDialog {
 
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
-                Layout.minimumWidth: view.font.pixelSize*5
+                Layout.minimumWidth: font.pixelSize*5
 
                 focus: true
 

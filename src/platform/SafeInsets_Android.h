@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -40,20 +40,19 @@ class SafeInsets : public Platform::SafeInsets_Abstract
     Q_PROPERTY(double left READ left NOTIFY leftChanged)
     Q_PROPERTY(double right READ right NOTIFY rightChanged)
     Q_PROPERTY(double top READ top NOTIFY topChanged)
-
+    Q_PROPERTY(double wHeight READ wHeight NOTIFY wHeightChanged)
+    Q_PROPERTY(double wWidth READ wWidth NOTIFY wWidthChanged)
 
 public:
     /*! \brief Standard constructor
      *
      * @param parent Standard QObject parent pointer
      */
-    explicit SafeInsets(QObject *parent = nullptr);
+    explicit SafeInsets(QObject* parent = nullptr);
 
     ~SafeInsets() override = default;
 
-
-private slots:
-    /*! \brief Implements virtual method from SafeInsets_Abstract */
+    /*! \brief Checks and updated properties */
     void updateSafeInsets();
 
 private:

@@ -217,15 +217,15 @@ Page {
         id: textInput
 
         anchors.right: parent.right
-        anchors.rightMargin: view.font.pixelSize*2.0
+        anchors.rightMargin: font.pixelSize*2.0
         anchors.left: parent.left
-        anchors.leftMargin: view.font.pixelSize*2.0
+        anchors.leftMargin: font.pixelSize*2.0
 
         leftPadding: SafeInsets.left
         rightPadding: SafeInsets.right
 
         placeholderText: qsTr("Filter Waypoint Names")
-        font.pixelSize: view.font.pixelSize*1.5
+        font.pixelSize: page.font.pixelSize*1.5
     }
 
     Component {
@@ -233,7 +233,7 @@ Page {
 
         RowLayout {
             width: wpList.width
-            height: iDel.heigt
+            height: iDel.height
 
             SwipeToDeleteDelegate {
                 id: iDel
@@ -322,13 +322,13 @@ Page {
 
     Label {
         anchors.fill: wpList
-        anchors.topMargin: view.font.pixelSize*2
+        anchors.topMargin: font.pixelSize*2
 
         visible: (wpList.count === 0)
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
-        leftPadding: view.font.pixelSize*2
-        rightPadding: view.font.pixelSize*2
+        leftPadding: font.pixelSize*2
+        rightPadding: font.pixelSize*2
 
         textFormat: Text.RichText
         wrapMode: Text.Wrap
@@ -365,7 +365,7 @@ Page {
     CenteringDialog {
         id: removeDialog
 
-        property var waypoint: global.geoMapProvider().createWaypoint()
+        property var waypoint: GeoMapProvider.createWaypoint()
 
         title: qsTr("Remove from Device?")
         standardButtons: Dialog.No | Dialog.Yes

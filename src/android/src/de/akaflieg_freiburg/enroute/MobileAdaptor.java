@@ -27,6 +27,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
 import android.net.wifi.WifiInfo;
@@ -46,6 +47,8 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 	public static native void onNotificationClicked(int notifyID, int actionID);
 
 	public static native void onWifiConnected();
+
+	public static native void onWindowSizeChanged();
 
 	private static MobileAdaptor m_instance;
 
@@ -80,22 +83,38 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 		intentFilter.addAction("de.akaflieg_freiburg.enroute.onNotificationClick");
 		m_instance.registerReceiver(m_notifyClickReceiver, intentFilter);
 
+		// Be informed when the window size changes, and call the C++ method
+		// onWindowSizeChanged() whenever it changes. The window size changes
+		// when the user starts/end the split view mode, or when the user drags
+		// the slider in order to adjust the relative size of the two windows
+		// shown.
+		View rootView = getWindow().getDecorView().getRootView();
+		rootView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+			@Override
+			public void onLayoutChange(View view, int left, int top, int right, int bottom,
+					int oldLeft, int oldTop, int oldRight, int oldBottom) {
+				onWindowSizeChanged();
+			}
+		});
+
 		//
 		// Set fullscreen
 		//
-		
+
 		// Draw underneath system windows
 		WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
 		// Draw into cutouts areas. Cutouts are only supported from Version P onwards
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-		    getWindow().getAttributes().layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+			getWindow()
+					.getAttributes().layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
 		}
-	       
+
 		// Make status bar and navigation bar translucent
 		Window window = getWindow();
 		window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-		window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION); // Does not seem to work for unknown reasons
+		window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION); // Does not seem to work for unknown
+																					// reasons
 	}
 
 	@Override
@@ -134,60 +153,67 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 	// Static Methods
 	//
 
-    // Returns the device name
-    public static String deviceName() 
-    {
+	// Returns the device name
+	public static String deviceName() {
 		return android.os.Build.MANUFACTURER + " " + android.os.Build.PRODUCT + " (" + android.os.Build.MODEL + ")";
 	}
 
-	// Returns the bottom inset required to avoid system bars and display cutouts
-    public static double safeInsetBottom() 
-    {
-        if (Build.VERSION.SDK_INT >= 30)
-	    {
-		return m_instance.getWindow().getDecorView().getRootWindowInsets()
-		    .getInsets(WindowInsets.Type.systemBars()|WindowInsets.Type.ime()|WindowInsets.Type.displayCutout()).bottom;
-	    }
-	
-        return m_instance.getWindow().getDecorView().getRootWindowInsets().getSystemWindowInsetBottom();
+    // Returns the height of the screen, taking the Android split view
+    // into account
+    public static double windowHeight() {
+	return m_instance.getWindow().getDecorView().getRootView().getHeight();
     }
 
-    // Returns the left inset required to avoid system bars and display cutouts
-    public static double safeInsetLeft() 
-    {
-        if (Build.VERSION.SDK_INT >= 30)
-	    {
-		return m_instance.getWindow().getDecorView().getRootWindowInsets()
-		    .getInsets(WindowInsets.Type.systemBars()|WindowInsets.Type.ime()|WindowInsets.Type.displayCutout()).left;
-	    }
-	
-        return m_instance.getWindow().getDecorView().getRootWindowInsets().getSystemWindowInsetLeft();
+    // Returns the width of the screen, taking the Android split view
+    // into account
+    public static double windowWidth() {
+	return m_instance.getWindow().getDecorView().getRootView().getWidth();
     }
-    
-    // Returns the right inset required to avoid system bars and display cutouts
-    public static double safeInsetRight() 
-    {
-        if (Build.VERSION.SDK_INT >= 30)
-	    {
-		return m_instance.getWindow().getDecorView().getRootWindowInsets()
-		    .getInsets(WindowInsets.Type.systemBars()|WindowInsets.Type.ime()|WindowInsets.Type.displayCutout()).right;
-	    }
-	
-        return m_instance.getWindow().getDecorView().getRootWindowInsets().getSystemWindowInsetRight();
-    }
-    
-    // Returns the top inset required to avoid system bars and display cutouts
-    public static double safeInsetTop() 
-    {
-        if (Build.VERSION.SDK_INT >= 30)
-	    {
-		return m_instance.getWindow().getDecorView().getRootWindowInsets()
-		    .getInsets(WindowInsets.Type.systemBars()|WindowInsets.Type.ime()|WindowInsets.Type.displayCutout()).top;
-	    }
-	
-        return m_instance.getWindow().getDecorView().getRootWindowInsets().getSystemWindowInsetTop();
-    }    
-    
+
+	// Returns the bottom inset required to avoid system bars and display cutouts
+	public static double safeInsetBottom() {
+		if (Build.VERSION.SDK_INT >= 30) {
+			return m_instance.getWindow().getDecorView().getRootWindowInsets()
+					.getInsets(WindowInsets.Type.systemBars() | WindowInsets.Type.ime()
+							| WindowInsets.Type.displayCutout()).bottom;
+		}
+
+		return m_instance.getWindow().getDecorView().getRootWindowInsets().getSystemWindowInsetBottom();
+	}
+
+	// Returns the left inset required to avoid system bars and display cutouts
+	public static double safeInsetLeft() {
+		if (Build.VERSION.SDK_INT >= 30) {
+			return m_instance.getWindow().getDecorView().getRootWindowInsets()
+					.getInsets(WindowInsets.Type.systemBars() | WindowInsets.Type.ime()
+							| WindowInsets.Type.displayCutout()).left;
+		}
+
+		return m_instance.getWindow().getDecorView().getRootWindowInsets().getSystemWindowInsetLeft();
+	}
+
+	// Returns the right inset required to avoid system bars and display cutouts
+	public static double safeInsetRight() {
+		if (Build.VERSION.SDK_INT >= 30) {
+			return m_instance.getWindow().getDecorView().getRootWindowInsets()
+					.getInsets(WindowInsets.Type.systemBars() | WindowInsets.Type.ime()
+							| WindowInsets.Type.displayCutout()).right;
+		}
+
+		return m_instance.getWindow().getDecorView().getRootWindowInsets().getSystemWindowInsetRight();
+	}
+
+	// Returns the top inset required to avoid system bars and display cutouts
+	public static double safeInsetTop() {
+		if (Build.VERSION.SDK_INT >= 30) {
+			return m_instance.getWindow().getDecorView().getRootWindowInsets()
+					.getInsets(WindowInsets.Type.systemBars() | WindowInsets.Type.ime()
+							| WindowInsets.Type.displayCutout()).top;
+		}
+
+		return m_instance.getWindow().getDecorView().getRootWindowInsets().getSystemWindowInsetTop();
+	}
+
 	/*
 	 * Get the SSID of the current WIFI network, if any. Returns a string like
 	 * "<unknown SSID>" otherwise
@@ -203,8 +229,7 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 	}
 
 	/*
-	 * Get the SSID of the current WIFI network, if any. Returns a string like
-	 * "<unknown SSID>" otherwise
+	 * Get the manufacturer of the current device.
 	 */
 	public static String manufacturer() {
 

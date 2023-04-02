@@ -25,11 +25,9 @@ import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
-import enroute 1.0
 
 import "dialogs"
 import "items"
-import "pages"
 
 ApplicationWindow {
     id: view
@@ -42,8 +40,8 @@ ApplicationWindow {
 
     visible: true
     title: "Enroute Flight Navigation"
-    width: 800
-    height: 800
+    width: SafeInsets.wWidth
+    height: SafeInsets.wHeight
 
     Settings {
         property alias x: view.x
@@ -59,7 +57,7 @@ ApplicationWindow {
     Drawer {
         id: drawer
 
-        height: view.height
+        height: (Qt.platform.os === "android") ? SafeInsets.wHeight : parent.height
         width: col.implicitWidth
 
         ScrollView {
@@ -165,6 +163,24 @@ ApplicationWindow {
                         PlatformAdaptor.vibrateBrief()
                         stackView.pop()
                         stackView.push("pages/Nearby.qml")
+                        drawer.close()
+                    }
+                }
+
+                ItemDelegate {
+                    Layout.fillWidth: true
+
+                    leftPadding: 16+SafeInsets.left
+
+                    id: weatherItem
+
+                    text: qsTr("Weather")
+                    icon.source: "/icons/material/ic_cloud_queue.svg"
+
+                    onClicked: {
+                        PlatformAdaptor.vibrateBrief()
+                        stackView.pop()
+                        stackView.push("pages/Weather.qml")
                         drawer.close()
                     }
                 }
@@ -322,7 +338,7 @@ ApplicationWindow {
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
                                 stackView.pop()
-                                stackView.push("pages/TrafficReceiver.qml")
+                                stackView.push("pages/TrafficReceiver.qml", {"appWindow": view})
                                 aboutMenu.close()
                                 drawer.close()
                             }
@@ -543,13 +559,16 @@ ApplicationWindow {
 
     }
 
-
     StackView {
         id: stackView
 
         initialItem: "pages/MapPage.qml"
 
-        anchors.fill: parent
+        // Need to explain
+        x: 0
+        y: 0
+        height: (Qt.platform.os === "android") ? SafeInsets.wHeight : parent.height
+        width: (Qt.platform.os === "android") ? SafeInsets.wWidth : parent.width
 
         focus: true
 
@@ -767,9 +786,9 @@ ApplicationWindow {
 
         function onDownloadingChanged(downloading) {
             if (downloading) {
-                global.notifier().showNotification(Notifier.DownloadInfo, "", "");
+                Notifier.showNotification(Notifier.DownloadInfo, "", "");
             } else {
-                global.notifier().hideNotification(Notifier.DownloadInfo);
+                Notifier.hideNotification(Notifier.DownloadInfo);
             }
         }
     }
@@ -790,7 +809,7 @@ ApplicationWindow {
     }
 
     Connections { // Notifier
-        target: global.notifier()
+        target: Notifier
 
         function onAction(act) {
             if ((act === Notifier.DownloadInfo_Clicked) && (stackView.currentItem.objectName !== "DataManagerPage")) {
@@ -814,8 +833,7 @@ ApplicationWindow {
     }
 
     Connections { // SSLErrorHandler
-        target: global.sslErrorHandler()
-
+        target: SSLErrorHandler
 
         function onSslError(message) {
             sslErrorDialog.text = message
@@ -842,9 +860,9 @@ ApplicationWindow {
             standardButtons: Dialog.Ok
 
             title: qsTr("Network security settings")
-            text: qsTr("You have chosen to ignore network security errors in the future. \
-**This poses a security risk.** \
-Go to the 'Settings' page if you wish to restore the original, safe, behavior of this app.")
+            text: qsTr(`You have chosen to ignore network security errors in the future.
+**This poses a security risk.**
+Go to the 'Settings' page if you wish to restore the original, safe, behavior of this app.`)
         }
     }
 
@@ -868,17 +886,17 @@ Go to the 'Settings' page if you wish to restore the original, safe, behavior of
 
         function onTrafficReceiverRuntimeErrorChanged(message) {
             if (message === "") {
-                global.notifier().hideNotification(Notifier.TrafficReceiverRuntimeError);
+                Notifier.hideNotification(Notifier.TrafficReceiverRuntimeError);
             } else {
-                global.notifier().showNotification(Notifier.TrafficReceiverRuntimeError, message, message);
+                Notifier.showNotification(Notifier.TrafficReceiverRuntimeError, message, message);
             }
         }
 
         function onTrafficReceiverSelfTestErrorChanged(message) {
             if (message === "") {
-                global.notifier().hideNotification(Notifier.TrafficReceiverSelfTestError);
+                Notifier.hideNotification(Notifier.TrafficReceiverSelfTestError);
             } else {
-                global.notifier().showNotification(Notifier.TrafficReceiverSelfTestError, message, message);
+                Notifier.showNotification(Notifier.TrafficReceiverSelfTestError, message, message);
             }
         }
     }

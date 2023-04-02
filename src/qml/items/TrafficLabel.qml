@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2021-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,10 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtLocation 5.15
-import QtPositioning 5.15
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtLocation
+import QtPositioning
+import QtQuick
+import QtQuick.Controls
 
 import akaflieg_freiburg.enroute
 
@@ -49,6 +49,8 @@ MapQuickItem {
         function onHeightChanged() { trafficLabel.polishAndUpdate() }
     }
 
+    Control { id: fontGlean }
+
     sourceItem: Label {
         id: lbl
 
@@ -58,7 +60,7 @@ MapQuickItem {
         text: trafficInfo.description
         textFormat: Text.RichText
 
-        font.pixelSize: 0.8*view.font.pixelSize
+        font.pixelSize: 0.8*fontGlean.font.pixelSize
 
         leftInset: -4
         rightInset: -4

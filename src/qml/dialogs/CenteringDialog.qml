@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,23 +24,15 @@ import QtQuick.Controls
 import akaflieg_freiburg.enroute
 
 Dialog {
-    id: ctrDlg
+    parent: Overlay.overlay
 
-    leftMargin: SafeInsets.left + font.pixelSize
-    rightMargin: SafeInsets.right + font.pixelSize
-    topMargin: SafeInsets.top + font.pixelSize
-    bottomMargin: SafeInsets.bottom + font.pixelSize
+    property real avHeight: ((Qt.platform.os === "android") ? SafeInsets.wHeight : parent.height)-2*font.pixelSize-SafeInsets.top-SafeInsets.bottom
+    property real avWidth: ((Qt.platform.os === "android") ? SafeInsets.wWidth : parent.width)-2*font.pixelSize-SafeInsets.left-SafeInsets.right
 
     // We center the dialog manually, taking care of safe insets
-    x: SafeInsets.left + (parent.width-SafeInsets.left-SafeInsets.right-width)/2.0
-    y: SafeInsets.top + (parent.height-SafeInsets.top-SafeInsets.bottom-height)/2.0
+    x: SafeInsets.left + font.pixelSize + (avWidth-width)/2.0
+    y: SafeInsets.top + font.pixelSize + (avHeight-height)/2.0
 
-    // Delays evaluation and prevents binding loops
-    Binding on implicitWidth {
-        value: 40*ctrDlg.font.pixelSize
-        delayed: true    // Prevent intermediary values from being assigned
-    }
-
-    parent: Overlay.overlay
-    
-} // Dialog
+    height: Math.min(avHeight, implicitHeight)
+    width: Math.min(avWidth, 40*font.pixelSize)
+}

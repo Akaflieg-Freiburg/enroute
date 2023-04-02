@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <qglobal.h>
+
 #if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
 #include <QApplication>
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -22,6 +22,7 @@
 #include <QHash>
 #include <QJniEnvironment>
 #include <QJniObject>
+#include <QPermissions>
 #include <QProcess>
 #include <QScreen>
 #include <QtCore/private/qandroidextras_p.h>
@@ -49,25 +50,26 @@ auto Platform::PlatformAdaptor::checkPermissions() -> QString
 {
     QStringList results;
 
-    auto coarseLocationFuture = QtAndroidPrivate::checkPermission(u"android.permission.ACCESS_COARSE_LOCATION"_qs);
-    coarseLocationFuture.waitForFinished();
-    auto fineLocationFuture = QtAndroidPrivate::checkPermission(u"android.permission.ACCESS_FINE_LOCATION"_qs);
-    fineLocationFuture.waitForFinished();
-    auto notificationFuture = QtAndroidPrivate::checkPermission(u"android.permission.POST_NOTIFICATIONS"_qs);
-    notificationFuture.waitForFinished();
-
-    if ((coarseLocationFuture.result() != QtAndroidPrivate::PermissionResult::Authorized)
-            || (fineLocationFuture.result() != QtAndroidPrivate::PermissionResult::Authorized))
+    QLocationPermission locationPermission;
+    locationPermission.setAccuracy(QLocationPermission::Approximate);
+    locationPermission.setAvailability(QLocationPermission::WhenInUse);
+    auto coarseLocation = qApp->checkPermission(locationPermission);
+    locationPermission.setAccuracy(QLocationPermission::Precise);
+    auto fineLocation = qApp->checkPermission(locationPermission);
+    if ((coarseLocation != Qt::PermissionStatus::Granted)
+        || (fineLocation != Qt::PermissionStatus::Granted))
     {
         QString result;
         result = "<strong>ACCESS_COARSE_LOCATION</strong> and <strong>ACCESS_FINE_LOCATION</strong>: "
-                + tr("Enroute Flight Navigation needs to access your precise location. "
-                     "The app uses this data to show your position on the moving "
-                     "map and to provide relevant aeronautical information.");
+                 + tr("Enroute Flight Navigation needs to access your precise location. "
+                      "The app uses this data to show your position on the moving "
+                      "map and to provide relevant aeronautical information.");
         results << result;
     }
 
     // Notifications are optional. Show text only if the user has not yet decided.
+    auto notificationFuture = QtAndroidPrivate::checkPermission(u"android.permission.POST_NOTIFICATIONS"_qs);
+    notificationFuture.waitForFinished();
     if (notificationFuture.result() == QtAndroidPrivate::PermissionResult::Undetermined)
     {
         results << "<strong>POST_NOTIFICATIONS</strong>: "
@@ -84,8 +86,8 @@ auto Platform::PlatformAdaptor::checkPermissions() -> QString
     {
         final = "<ul style='margin-left:-25px;'>"+final+"</ul>";
 
-        if ((coarseLocationFuture.result() == QtAndroidPrivate::PermissionResult::Denied)
-                || (fineLocationFuture.result() == QtAndroidPrivate::PermissionResult::Denied))
+        if ((coarseLocation == Qt::PermissionStatus::Denied)
+                || (fineLocation == Qt::PermissionStatus::Denied))
         {
             final += "<p>"
                     + tr("Some permissions have previously been denied. "

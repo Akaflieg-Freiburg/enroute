@@ -448,11 +448,12 @@ add_dependencies(fulldoc enroute_doc)
 # Install
 #
 
-# Install the executable into "${CMAKE_INSTALL_PREFIX}/bin".
-install(TARGETS ${PROJECT_NAME}
-    BUNDLE  DESTINATION .
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-)
+if (NOT ANDROID AND NOT APPLE)
+    # Install the executable into "${CMAKE_INSTALL_PREFIX}/bin".
+    install(TARGETS ${PROJECT_NAME}
+        BUNDLE  DESTINATION .
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    )
 
 # Generate the deployment script for the target MyApp.
 qt_generate_deploy_qml_app_script(
@@ -463,3 +464,4 @@ qt_generate_deploy_qml_app_script(
 
 # Call the deployment script on "cmake --install".
 install(SCRIPT ${deploy_script})
+endif()

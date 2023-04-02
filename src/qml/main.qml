@@ -169,6 +169,24 @@ ApplicationWindow {
                     }
                 }
 
+                ItemDelegate {
+                    Layout.fillWidth: true
+
+                    leftPadding: 16+SafeInsets.left
+
+                    id: weatherItem
+
+                    text: qsTr("Weather")
+                    icon.source: "/icons/material/ic_cloud_queue.svg"
+
+                    onClicked: {
+                        PlatformAdaptor.vibrateBrief()
+                        stackView.pop()
+                        stackView.push("pages/Weather.qml")
+                        drawer.close()
+                    }
+                }
+
                 Rectangle {
                     Layout.preferredHeight: 1
                     Layout.fillWidth: true

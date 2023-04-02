@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -33,76 +33,7 @@ Page {
     title: qsTr("Nearby Waypoints")
     focus: true
 
-    header: ToolBar {
-
-        Material.foreground: "white"
-        height: 60 + SafeInsets.top
-        leftPadding: SafeInsets.left
-        rightPadding: SafeInsets.right
-        topPadding: SafeInsets.top
-
-        ToolButton {
-            id: backButton
-
-            anchors.left: parent.left
-            anchors.verticalCenter: parent.verticalCenter
-
-            icon.source: "/icons/material/ic_arrow_back.svg"
-
-            onClicked: {
-                PlatformAdaptor.vibrateBrief()
-                stackView.pop()
-            }
-        }
-
-        Label {
-            id: lbl
-
-            anchors.verticalCenter: parent.verticalCenter
-
-            anchors.left: parent.left
-            anchors.leftMargin: 72
-            anchors.right: headerMenuToolButton.left
-
-            text: stackView.currentItem.title
-            elide: Label.ElideRight
-            font.pixelSize: 20
-            verticalAlignment: Qt.AlignVCenter
-        }
-
-        ToolButton {
-            id: headerMenuToolButton
-
-            anchors.verticalCenter: parent.verticalCenter
-
-            anchors.right: parent.right
-
-            icon.source: "/icons/material/ic_more_vert.svg"
-            icon.color: "white"
-
-            onClicked: {
-                PlatformAdaptor.vibrateBrief()
-                headerMenuX.popup()
-            }
-
-            AutoSizingMenu{
-                id: headerMenuX
-
-                MenuItem {
-                    text: qsTr("Update METAR/TAF data")
-                    enabled: !WeatherDataProvider.downloading
-                    onTriggered: {
-                        PlatformAdaptor.vibrateBrief()
-                        if (!WeatherDataProvider.downloading)
-                            WeatherDataProvider.update(false)
-                    }
-                } // MenuItem
-
-            }
-
-        }
-
-    }
+    header: StandardHeader {}
 
 
     TabBar {
@@ -117,7 +48,6 @@ Page {
 
         TabButton { text: "AD" }
         TabButton { text: "NAV" }
-        TabButton { text: "METAR" }
         TabButton { text: "REP" }
         Material.elevation: 3
     }
@@ -141,53 +71,6 @@ Page {
             WaypointDelegate {
                 required property var model
                 waypoint: model.modelData
-            }
-        }
-
-        Component {
-            id: stationDelegate
-
-            Item {
-                width: stationList.width
-                height: idel.height
-
-                // Background color according to METAR/FAA flight category
-                Rectangle {
-                    anchors.fill: parent
-                    color: model.modelData.hasMETAR ? model.modelData.metar.flightCategoryColor : "transparent"
-                    opacity: 0.2
-                }
-
-                WordWrappingItemDelegate {
-                    leftPadding: SafeInsets.left+16
-                    rightPadding: SafeInsets.right+16
-
-                    id: idel
-                    text: {
-                        var result = model.modelData.twoLineTitle
-
-                        var wayTo  = Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), model.modelData.coordinate)
-                        if (wayTo !== "")
-                            result = result + "<br>" + wayTo
-
-                        if (model.modelData.hasMETAR)
-                            result = result + "<br>" + model.modelData.metar.summary
-
-                        return result
-                    }
-                    icon.source: model.modelData.icon
-                    icon.color: "transparent"
-
-                    width: parent.width
-
-                    onClicked: {
-                        PlatformAdaptor.vibrateBrief()
-                        dlgLoader.active = false
-                        dlgLoader.setSource("../dialogs/WeatherReport.qml",
-                                            {weatherStation: model.modelData})
-                        dlgLoader.active = true
-                    }
-                }
             }
         }
 
@@ -233,126 +116,6 @@ Page {
                 wrapMode: Text.Wrap
                 text: qsTr("<h3>Sorry!</h3><p>No navaid data available.</p>")
             }
-        }
-
-        ListView {
-            id: stationList
-
-            clip: true
-
-            model: WeatherDataProvider.weatherStations
-            delegate: stationDelegate
-            ScrollIndicator.vertical: ScrollIndicator {}
-
-            Rectangle {  // No data label
-                anchors.fill: parent
-                color: "white"
-                visible: stationList.count == 0
-
-                Text {
-                    anchors.fill: parent
-
-                    leftPadding: font.pixelSize
-                    rightPadding: font.pixelSize
-                    topPadding: 2*font.pixelSize
-
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                    textFormat: Text.StyledText
-                    wrapMode: Text.Wrap
-                    text: qsTr("<h3>Sorry!</h3><p>No METAR/TAF data available. You can restart the download manually using the item 'Update METAR/TAF' from the three-dot menu at the top right corner of the screen.</p>")
-                }
-            }
-
-            Rectangle {  // Download in progress label
-                id: downloadIndicator
-
-                anchors.fill: parent
-
-                color: "white"
-                visible: WeatherDataProvider.downloading && !WeatherDataProvider.backgroundUpdate
-
-                Text {
-                    id: downloadIndicatorLabel
-
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.top: parent.top
-                    anchors.topMargin: font.pixelSize*2
-
-                    horizontalAlignment: Text.AlignHCenter
-                    textFormat: Text.StyledText
-                    wrapMode: Text.Wrap
-                    text: qsTr("<h3>Download in progress…</h3><p>Please stand by while we download METAR/TAF data from the Aviation Weather Center…</p>")
-                } // downloadIndicatorLabel
-
-                BusyIndicator {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.top: downloadIndicatorLabel.bottom
-                    anchors.topMargin: 10
-                }
-
-                // The Connections and the SequentialAnimation here provide a fade-out animation for the downloadindicator.
-                // Without this, the downaloadIndication would not be visible on very quick downloads, leaving the user
-                // without any feedback if the download did actually take place.
-                Connections {
-                    target: WeatherDataProvider
-                    function onDownloadingChanged () {
-                        if (WeatherDataProvider.downloading && !WeatherDataProvider.backgroundUpdate) {
-                            downloadIndicator.visible = true
-                            downloadIndicator.opacity = 1.0
-                        } else
-                            fadeOut.start()
-                    }
-                }
-                SequentialAnimation{
-                    id: fadeOut
-                    NumberAnimation { target: downloadIndicator; property: "opacity"; to:1.0; duration: 400 }
-                    NumberAnimation { target: downloadIndicator; property: "opacity"; to:0.0; duration: 400 }
-                    NumberAnimation { target: downloadIndicator; property: "visible"; to:1.0; duration: 20}
-                }
-            }
-
-
-            // Refresh METAR/TAF data on overscroll
-            property int refreshFlick: 0
-            onFlickStarted: {
-                refreshFlick = atYBeginning
-            }
-
-            onFlickEnded: {
-                if ( atYBeginning && refreshFlick ) {
-                    PlatformAdaptor.vibrateBrief()
-                    WeatherDataProvider.update(false)
-                }
-            }
-
-            // Try and update METAR/TAF as soon as someone opens this page if the current list of stations
-            // is empty. This is not a background update, we want user interaction.
-            Component.onCompleted: {
-                if (stationList.count === 0)
-                    WeatherDataProvider.update(false)
-                else
-                    WeatherDataProvider.update(true)
-            }
-
-            // Show error when weather cannot be updated -- but not if we are running a background upate
-            Connections {
-                target: WeatherDataProvider
-                function onError (message) {
-                    if (WeatherDataProvider.backgroundUpdate)
-                        return
-                    dlgLoader.active = false
-                    dlgLoader.setSource("../dialogs/LongTextDialog.qml",
-                                        {
-                                            standardButtons: Dialog.Ok,
-                                            text: qsTr("<p>Failed to update the list of weather stations.</p><p>Reason: %1.</p>").arg(message),
-                                            title: qsTr("Update Error")
-                                        })
-                    dlgLoader.active = true
-                }
-            }
-
         }
 
         ListView {
@@ -417,8 +180,4 @@ Page {
 
     }
 
-    Loader {
-        id: dlgLoader
-        onLoaded: item.open()
-    }
 } // Page

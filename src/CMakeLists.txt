@@ -442,3 +442,24 @@ qt_add_resources(${PROJECT_NAME} translations
 configure_file(Doxyfile.in Doxyfile)
 add_custom_target(enroute_doc COMMAND doxygen)
 add_dependencies(fulldoc enroute_doc)
+
+
+#
+# Install
+#
+
+# Install the executable into "${CMAKE_INSTALL_PREFIX}/bin".
+install(TARGETS ${PROJECT_NAME}
+    BUNDLE  DESTINATION .
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+
+# Generate the deployment script for the target MyApp.
+qt_generate_deploy_qml_app_script(
+    TARGET ${PROJECT_NAME}
+    OUTPUT_SCRIPT deploy_script
+    NO_UNSUPPORTED_PLATFORM_ERROR
+)
+
+# Call the deployment script on "cmake --install".
+install(SCRIPT ${deploy_script})

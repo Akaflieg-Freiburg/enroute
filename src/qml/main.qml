@@ -25,11 +25,9 @@ import Qt.labs.settings
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
-import enroute 1.0
 
 import "dialogs"
 import "items"
-import "pages"
 
 ApplicationWindow {
     id: view
@@ -43,7 +41,7 @@ ApplicationWindow {
     visible: true
     title: "Enroute Flight Navigation"
     width: SafeInsets.wWidth
-    height: 800
+    height: SafeInsets.wHeight
 
     Settings {
         property alias x: view.x
@@ -862,9 +860,9 @@ ApplicationWindow {
             standardButtons: Dialog.Ok
 
             title: qsTr("Network security settings")
-            text: qsTr("You have chosen to ignore network security errors in the future. \
-**This poses a security risk.** \
-Go to the 'Settings' page if you wish to restore the original, safe, behavior of this app.")
+            text: qsTr(`You have chosen to ignore network security errors in the future.
+**This poses a security risk.**
+Go to the 'Settings' page if you wish to restore the original, safe, behavior of this app.`)
         }
     }
 

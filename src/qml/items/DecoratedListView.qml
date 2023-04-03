@@ -20,39 +20,73 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
-import QtQuick.Layouts
 
-// This is a version of ListView that
-// indicates if more elemenent can be seen through scrolling
+
+// This is a version of ListView that indicates if more elemenent can be seen through scrolling
 
 ListView {
     id: listView
 
-    Rectangle {
+    Control { id: fontGlean }
+
+    Rectangle { // Label "more" at top of listview
+        opacity: parent.atYBeginning ? 0.0 : 1.0
+        Behavior on opacity { NumberAnimation { duration: 200 } }
+
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        height: 20 // listView.font.pixelSize
 
-        visible: !parent.atYBeginning
+        height: 2*topLabel.implicitHeight
 
         gradient: Gradient {
             GradientStop { position: 0.0; color: "#ffffffff" }
+            GradientStop { position: 0.3; color: "#ffffffff" }
             GradientStop { position: 1.0; color: "#00ffffff" }
+        }
+
+        Label {
+            id: topLabel
+
+            anchors.fill: parent
+
+            font.pixelSize: 0.8*fontGlean.font.pixelSize
+            text: "▲ " + qsTr("more") + " ▲"
+
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignTop
         }
     }
 
-    Rectangle {
-        color: "blue"
+    Rectangle { // Label "more" at bottom of listview
+        opacity: parent.atYEnd ? 0.0 : 1.0
+        Behavior on opacity { NumberAnimation { duration: 200 } }
+
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        height: 10 // listView.font.pixelSize
 
-        visible: !parent.atYEnd
+        height: 2*bottomLabel.implicitHeight
+
+        gradient: Gradient {
+            GradientStop { position: 0.0; color: "#00ffffff" }
+            GradientStop { position: 0.7; color: "#ffffffff" }
+            GradientStop { position: 1.0; color: "#ffffffff" }
+        }
+
+        Label {
+            id: bottomLabel
+
+            anchors.fill: parent
+
+            font.pixelSize: 0.8*fontGlean.font.pixelSize
+            color: "#202020"
+            text: "▼ " + qsTr("more") + " ▼"
+
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignBottom
+        }
     }
 
     ScrollIndicator.vertical: ScrollIndicator {}
-
 }

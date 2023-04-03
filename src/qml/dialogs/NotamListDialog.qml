@@ -148,7 +148,7 @@ CenteringDialog {
 
         }
 
-        ListView {
+        DecoratedListView {
             id: notamlistview
 
             Layout.fillHeight: true

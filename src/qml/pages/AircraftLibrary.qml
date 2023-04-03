@@ -126,7 +126,7 @@ Page {
 
     }
 
-    ListView {
+    DecoratedListView {
         id: wpList
         anchors.top: textInput.bottom
         anchors.bottom: parent.bottom

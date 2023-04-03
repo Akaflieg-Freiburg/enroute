@@ -83,7 +83,7 @@ CenteringDialog {
             }
         }
 
-        ListView {
+        DecoratedListView {
             id: lView
 
             Layout.fillWidth: true

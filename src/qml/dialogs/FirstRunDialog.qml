@@ -186,7 +186,7 @@ CenteringDialog {
                     visible: lv.model ? lv.model.length !== 0 : false
                 }
 
-                ListView {
+                DecoratedListView {
                     id: lv
 
                     Layout.preferredHeight: contentHeight

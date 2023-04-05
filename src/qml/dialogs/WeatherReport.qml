@@ -67,7 +67,7 @@ CenteringDialog {
             wrapMode: Text.WordWrap
         }
 
-        ScrollView { // ScrollView with METAR & TAF information
+        DecoratedScrollView { // DecoratedScrollView with METAR & TAF information
             id: sv
 
             Layout.fillHeight: true

@@ -191,7 +191,7 @@ Page {
         title: qsTr("An Error Occurred…")
         standardButtons: Dialog.Ok
 
-        ScrollView{
+        DecoratedScrollView{
             id: sv
 
             anchors.fill: parent

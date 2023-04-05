@@ -118,7 +118,7 @@ Page {
         clip: true
         currentIndex: bar.currentIndex
         
-        ScrollView {
+        DecoratedScrollView {
             contentWidth: availableWidth // Disable horizontal scrolling
             clip: true
 
@@ -137,7 +137,7 @@ Page {
             }
         }
         
-        ScrollView {
+        DecoratedScrollView {
             contentWidth: availableWidth // Disable horizontal scrolling
             clip: true
 
@@ -154,7 +154,7 @@ Page {
             }
         }
 
-        ScrollView {
+        DecoratedScrollView {
             contentWidth: availableWidth // Disable horizontal scrolling
             clip: true
 
@@ -174,7 +174,7 @@ Page {
 
         ColumnLayout {
 
-            ScrollView {
+            DecoratedScrollView {
                 Layout.fillHeight: true
                 Layout.preferredWidth: sv.availableWidth
                 contentWidth: availableWidth // Disable horizontal scrolling

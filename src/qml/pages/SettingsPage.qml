@@ -88,7 +88,7 @@ Page {
 
     }
 
-    ScrollView {
+    DecoratedScrollView {
         anchors.fill: parent
         anchors.topMargin: settingsPage.font.pixelSize
         anchors.bottomMargin: SafeInsets.bottom

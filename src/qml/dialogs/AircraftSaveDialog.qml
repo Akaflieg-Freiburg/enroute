@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -141,7 +141,7 @@ CenteringDialog {
         title: qsTr("An Error Occurred…")
         standardButtons: Dialog.Ok
 
-        ScrollView{
+        DecoratedScrollView{
             id: sv
             anchors.fill: parent
 
@@ -162,7 +162,7 @@ CenteringDialog {
                 wrapMode: Text.Wrap
                 onLinkActivated: Qt.openUrlExternally(link)
             } // Label
-        } // ScrollView
+        } // DecoratedScrollView
 
     }  // Dialog: fileError
 

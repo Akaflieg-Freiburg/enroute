@@ -32,7 +32,7 @@ CenteringDialog {
 
     modal: true
     
-    ScrollView{
+    DecoratedScrollView{
         anchors.fill: parent
         contentWidth: availableWidth // Disable horizontal scrolling
 

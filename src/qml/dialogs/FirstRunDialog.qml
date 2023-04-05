@@ -32,7 +32,7 @@ CenteringDialog {
     Component {
         id: firstStart
 
-        ScrollView{
+        DecoratedScrollView{
             id: sv
 
             required property var dialogMain
@@ -67,7 +67,7 @@ CenteringDialog {
     Component {
         id: privacy
 
-        ScrollView{
+        DecoratedScrollView{
             id: sv
 
             required property var dialogMain
@@ -96,7 +96,7 @@ CenteringDialog {
     Component {
         id: permissions
 
-        ScrollView{
+        DecoratedScrollView{
             id: sv
 
             required property var dialogMain
@@ -127,7 +127,7 @@ CenteringDialog {
     Component {
         id: maps
 
-        ScrollView {
+        DecoratedScrollView {
             id: sv
 
             required property var dialogMain

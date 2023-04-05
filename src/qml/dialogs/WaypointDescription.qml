@@ -398,7 +398,7 @@ CenteringDialog {
             wrapMode: Text.WordWrap
         }
 
-        ScrollView {
+        DecoratedScrollView {
             id: sv
 
             Layout.fillWidth: true
@@ -414,7 +414,7 @@ CenteringDialog {
                 width: parent.width
             } // ColumnLayout
 
-        } // ScrollView
+        } // DecoratedScrollView
 
         Keys.onBackPressed: {
             event.accepted = true;

@@ -22,6 +22,7 @@ import QtQuick
 import QtQuick.Controls
 
 import akaflieg_freiburg.enroute
+import "../items"
 
 CenteringDialog {
     id: dialogMain

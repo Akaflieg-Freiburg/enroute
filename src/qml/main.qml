@@ -60,7 +60,7 @@ ApplicationWindow {
         height: (Qt.platform.os === "android") ? SafeInsets.wHeight : parent.height
         width: col.implicitWidth
 
-        ScrollView {
+        DecoratedScrollView {
             anchors.fill: parent
 
             ColumnLayout {

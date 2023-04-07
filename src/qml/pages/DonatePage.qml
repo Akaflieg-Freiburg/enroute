@@ -32,7 +32,7 @@ Page {
 
     header: StandardHeader {}
 
-    ScrollView {
+    DecoratedScrollView {
         id: sv
 
         anchors.fill: parent

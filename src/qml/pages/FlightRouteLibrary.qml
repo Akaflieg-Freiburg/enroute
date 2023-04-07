@@ -300,7 +300,7 @@ Page {
 
     }
 
-    ListView {
+    DecoratedListView {
         id: wpList
         anchors.top: textInput.bottom
         anchors.bottom: parent.bottom
@@ -362,7 +362,7 @@ Page {
         title: qsTr("An Error Occurred…")
         standardButtons: Dialog.Ok
 
-        ScrollView{
+        DecoratedScrollView{
             anchors.fill: parent
             contentWidth: availableWidth // Disable horizontal scrolling
 

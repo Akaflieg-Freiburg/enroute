@@ -151,7 +151,7 @@ Page {
             }
         }
 
-    ListView {
+    DecoratedListView {
             id: stationList
 
             anchors.fill: parent

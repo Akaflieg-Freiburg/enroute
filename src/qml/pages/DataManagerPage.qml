@@ -343,7 +343,7 @@ Page {
 
             clip: true
 
-            ListView {
+            DecoratedListView {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 clip: true
@@ -367,7 +367,7 @@ Page {
                 }
             }
 
-            ListView {
+            DecoratedListView {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 clip: true

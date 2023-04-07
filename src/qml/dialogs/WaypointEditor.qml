@@ -61,7 +61,7 @@ CenteringDialog {
         wpNotesField.text = waypoint.notes
     }
 
-    ScrollView {
+    DecoratedScrollView {
         anchors.fill: parent
         contentWidth: availableWidth // Disable horizontal scrolling
 

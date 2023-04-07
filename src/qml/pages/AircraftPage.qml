@@ -117,7 +117,7 @@ Page {
     }
 
 
-    ScrollView {
+    DecoratedScrollView {
         id: acftTab
         anchors.fill: parent
         anchors.leftMargin: SafeInsets.left

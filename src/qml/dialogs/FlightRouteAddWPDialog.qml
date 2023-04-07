@@ -82,7 +82,7 @@ CenteringDialog {
             }
         }
 
-        ListView {
+        DecoratedListView {
             id: wpList
 
             Layout.fillHeight: true

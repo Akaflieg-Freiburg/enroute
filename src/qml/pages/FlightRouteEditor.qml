@@ -152,7 +152,7 @@ Page {
                     Navigator.aircraft.horizontalDistanceUnit
                     Navigator.aircraft.fuelConsumptionUnit
 
-                    if (leg === null)
+                    if (leg == null)
                         return ""
                     return leg.description(Navigator.wind, Navigator.aircraft)
                 }
@@ -428,7 +428,7 @@ Page {
                 text: qsTr("<h3>Empty Route</h3><p>Use the button <strong>Add Waypoint</strong> below or double click on any point in the moving map.</p>")
             }
 
-            ScrollView {
+            DecoratedScrollView {
                 anchors.fill: parent
 
                 contentWidth: availableWidth
@@ -471,7 +471,7 @@ Page {
 
         }
 
-        ScrollView {
+        DecoratedScrollView {
             id: windTab
 
             contentWidth: width

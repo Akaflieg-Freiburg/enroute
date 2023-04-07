@@ -60,7 +60,7 @@ ApplicationWindow {
         height: (Qt.platform.os === "android") ? SafeInsets.wHeight : parent.height
         width: col.implicitWidth
 
-        ScrollView {
+        DecoratedScrollView {
             anchors.fill: parent
 
             ColumnLayout {
@@ -596,7 +596,7 @@ ApplicationWindow {
                 return
             }
 
-            if ((GlobalSettings.lastWhatsNewInMapsHash !== DataManager.whatsNewHash) &&
+            if ((GlobalSettings.lastWhatsNewInMapsHash != DataManager.whatsNewHash) &&
                     (DataManager.whatsNew !== "") &&
                     (Navigator.flightStatus !== Navigator.Flight)) {
                 whatsNewInMapsDialog.open()

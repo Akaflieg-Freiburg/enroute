@@ -23,6 +23,7 @@ import QtQuick.Controls
 import QtQuick.Controls.Material
 
 import akaflieg_freiburg.enroute
+import "../items"
 
 CenteringDialog {
     id: dialogMain
@@ -32,7 +33,7 @@ CenteringDialog {
 
     modal: true
     
-    ScrollView{
+    DecoratedScrollView{
         anchors.fill: parent
         contentWidth: availableWidth // Disable horizontal scrolling
 

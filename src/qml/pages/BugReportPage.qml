@@ -65,7 +65,7 @@ Page {
     Component {
         id: mainPage
 
-        ScrollView {
+        DecoratedScrollView {
             id: sv
 
             width: stack.width
@@ -226,14 +226,14 @@ below.</p>
                 }
             }
 
-        } // ScrollView
+        } // DecoratedScrollView
 
     }
 
     Component {
         id: mainAppPage
 
-        ScrollView {
+        DecoratedScrollView {
             id: sv
 
             width: stack.width
@@ -336,7 +336,7 @@ comes first!</p>
     Component {
         id: openAIPNNonAirspace
 
-        ScrollView {
+        DecoratedScrollView {
             id: sv
 
             width: stack.width
@@ -429,7 +429,7 @@ time. Peter speaks English and German.</p>
     Component {
         id: openAIPAirspace
 
-        ScrollView {
+        DecoratedScrollView {
             id: sv
 
             width: stack.width
@@ -485,14 +485,14 @@ discuss your issue in the forum there.</p>
 
             }
 
-        } // ScrollView
+        } // DecoratedScrollView
 
     }
 
     Component {
         id: checkIfOFMcountry
 
-        ScrollView {
+        DecoratedScrollView {
             id: sv
 
             width: stack.width
@@ -588,7 +588,7 @@ following countries?</p>
     Component {
         id: ofm
 
-        ScrollView {
+        DecoratedScrollView {
             id: sv
 
             width: stack.width
@@ -670,7 +670,7 @@ computer, you can also send yourself a link by e-mail.</p>
     Component {
         id: nixofm
 
-        ScrollView {
+        DecoratedScrollView {
             id: sv
 
             width: stack.width

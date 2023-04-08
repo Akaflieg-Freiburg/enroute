@@ -67,29 +67,42 @@ Item {
 
         // Enable gestures. Make sure that whenever a gesture starts, the property "followGPS" is set to "false"
 
-        property geoCoordinate startCentroid
         PinchHandler {
             id: pinch
             target: null
+
+            property geoCoordinate startCentroid
+
             onActiveChanged: if (active) {
-                                 flightMap.startCentroid = flightMap.toCoordinate(pinch.centroid.position, false)
+                                 flightMap.followGPS = false
+                                 startCentroid = flightMap.toCoordinate(pinch.centroid.position, false)
                              }
             onScaleChanged: (delta) => {
+                                console.log(delta)
                                 flightMap.zoomLevel += Math.log2(delta)
-                                flightMap.alignCoordinateToPoint(flightMap.startCentroid, pinch.centroid.position)
-                                flightMap.followGPS = false
+                                flightMap.alignCoordinateToPoint(startCentroid, pinch.centroid.position)
                             }
+
             grabPermissions: PointerHandler.TakeOverForbidden
+
         }
+
         WheelHandler {
             id: wheel
             rotationScale: 1/120
             property: "zoomLevel"
         }
+
         DragHandler {
             id: drag
             target: null
             onTranslationChanged: (delta) => flightMap.pan(-delta.x, -delta.y)
+            onActiveChanged: {
+                if (active)
+                {
+                  flightMap.followGPS = false
+                }
+            }
         }
         Shortcut {
             enabled: flightMap.zoomLevel < flightMap.maximumZoomLevel
@@ -651,7 +664,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
             PlatformAdaptor.vibrateBrief()
             PlatformAdaptor.vibrateBrief()
             stackView.pop()
-            stackView.push("../pages/TrafficReceiver.qml")
+            stackView.push("../pages/TrafficReceiver.qml", {"appWindow": view})
         }
     }
 

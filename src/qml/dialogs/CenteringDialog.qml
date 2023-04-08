@@ -20,6 +20,7 @@
 
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Controls.Material
 
 import akaflieg_freiburg.enroute
 
@@ -35,4 +36,6 @@ Dialog {
 
     height: Math.min(avHeight, implicitHeight)
     width: Math.min(avWidth, 40*font.pixelSize)
+
+    Material.roundedScale: Material.NotRounded
 }

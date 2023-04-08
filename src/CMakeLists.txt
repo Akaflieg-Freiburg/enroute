@@ -205,11 +205,17 @@ if(ANDROID)
     configure_file(${CMAKE_SOURCE_DIR}/3rdParty/material-design-icons/file/drawable-hdpi/ic_file_download_black_24dp.png ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable/ic_file_download.png COPYONLY)
     configure_file(${CMAKE_SOURCE_DIR}/3rdParty/material-design-icons/alert/drawable-hdpi/ic_error_black_24dp.png ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable/ic_error.png COPYONLY)
     configure_file(${CMAKE_SOURCE_DIR}/3rdParty/material-design-icons/alert/drawable-hdpi/ic_warning_black_24dp.png ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable/ic_warning.png COPYONLY)
+    configure_file(android/src/de/akaflieg_freiburg/enroute/IntentLauncher.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
+    configure_file(android/src/de/akaflieg_freiburg/enroute/Notifier.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
+    configure_file(android/src/de/akaflieg_freiburg/enroute/ShareActivity.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
+    configure_file(android/src/de/akaflieg_freiburg/enroute/ShareUtils.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
+    configure_file(android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
 
     # Copy manual into Android assets directory
     file(COPY ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/docs/manual DESTINATION android/assets)
     file(COPY ${CMAKE_SOURCE_DIR}/generatedSources/src/android DESTINATION .)
     file(COPY ${CMAKE_SOURCE_DIR}/src/android DESTINATION .)
+
 
     # The android target require a few additional variables
     set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android" CACHE INTERNAL "")

@@ -157,7 +157,6 @@ Item {
 
                 Layout.fillWidth: true
                 focus: true
-                placeholderText: qsTr("Map Name")
 
                 onDisplayTextChanged: importRasterMapDialog.standardButton(DialogButtonBox.Ok).enabled = (displayText !== "")
 
@@ -219,7 +218,6 @@ Item {
 
                 Layout.fillWidth: true
                 focus: true
-                placeholderText: qsTr("Map Name")
 
                 onDisplayTextChanged: importRasterMapDialog.standardButton(DialogButtonBox.Ok).enabled = (displayText !== "")
 

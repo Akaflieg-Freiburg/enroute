@@ -48,7 +48,6 @@ CenteringDialog {
             id: pwField
             Layout.fillWidth: true
             onAccepted: dlg.accept()
-            placeholderText: qsTr("Password")
             echoMode: viewBox.checked ? TextInput.Normal : TextInput.Password
         }
 

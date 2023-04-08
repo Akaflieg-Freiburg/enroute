@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -46,8 +46,9 @@ Page {
         anchors.leftMargin: font.pixelSize*2.0
         leftPadding: SafeInsets.left
         rightPadding: SafeInsets.right
+        topPadding: page.font.pixelSize
 
-        placeholderText: qsTr("Filter Aircraft Names")
+        placeholderText: qsTr("Aircraft Name")
         font.pixelSize: page.font.pixelSize*1.5
     }
 
@@ -211,20 +212,13 @@ Page {
 
     }
 
-    CenteringDialog {
+    LongTextDialog {
         id: overwriteDialog
 
         title: qsTr("Overwrite Current Aircraft?")
         standardButtons: Dialog.No | Dialog.Yes
-        modal: true
 
-        Label {
-            width: overwriteDialog.availableWidth
-
-            text: qsTr("Loading the aircraft <strong>%1</strong> will overwrite the current aircraft. Once overwritten, the current aircraft cannot be restored.").arg(finalFileName)
-            wrapMode: Text.Wrap
-            textFormat: Text.StyledText
-        }
+        text: qsTr("Loading the aircraft <strong>%1</strong> will overwrite the current aircraft. Once overwritten, the current aircraft cannot be restored.").arg(finalFileName)
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
@@ -236,20 +230,13 @@ Page {
         }
     }
 
-    CenteringDialog {
+    LongTextDialog {
         id: removeDialog
 
         title: qsTr("Remove from Device?")
         standardButtons: Dialog.No | Dialog.Yes
-        modal: true
 
-        Label {
-            width: removeDialog.availableWidth
-
-            text: qsTr("Once the aircraft <strong>%1</strong> is removed, it cannot be restored.").arg(page.finalFileName)
-            wrapMode: Text.Wrap
-            textFormat: Text.StyledText
-        }
+        text: qsTr("Once the aircraft <strong>%1</strong> is removed, it cannot be restored.").arg(page.finalFileName)
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()

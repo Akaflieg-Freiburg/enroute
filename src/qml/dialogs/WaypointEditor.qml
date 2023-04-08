@@ -93,8 +93,6 @@ CenteringDialog {
 
                 text: waypoint.extendedName
                 focus: true
-
-                placeholderText: qsTr("undefined")
             }
 
             Label {
@@ -111,7 +109,6 @@ CenteringDialog {
 
                 focus: true
 
-                placeholderText: qsTr("undefined")
                 wrapMode: TextEdit.WordWrap
             }
 

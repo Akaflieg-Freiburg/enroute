@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -77,7 +77,6 @@ StackLayout {
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
-            placeholderText: qsTr("undefined")
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: DoubleValidator {
                 bottom: stackLayout.minValue
@@ -115,7 +114,6 @@ StackLayout {
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
-            placeholderText: qsTr("undefined")
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: IntValidator {
                 bottom: stackLayout.minValue
@@ -135,7 +133,6 @@ StackLayout {
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
-            placeholderText: qsTr("undefined")
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: DoubleValidator {
                 bottom: 0.0
@@ -176,7 +173,6 @@ StackLayout {
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
-            placeholderText: qsTr("undefined")
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: IntValidator {
                 bottom: stackLayout.minValue
@@ -195,7 +191,6 @@ StackLayout {
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
-            placeholderText: qsTr("undefined")
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: IntValidator {
                 bottom: 0
@@ -214,7 +209,6 @@ StackLayout {
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
-            placeholderText: qsTr("undefined")
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: DoubleValidator {
                 bottom: 0.0

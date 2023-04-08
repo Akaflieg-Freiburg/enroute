@@ -521,7 +521,6 @@ Page {
                         }
                         return Math.round( Navigator.wind.directionFrom.toDEG() )
                     }
-                    placeholderText: qsTr("undefined")
                 }
                 Label {
                     text: "°"
@@ -601,7 +600,6 @@ Page {
                         }
                         return NaN
                     }
-                    placeholderText: qsTr("undefined")
                 }
                 Label {
                     text: {
@@ -639,7 +637,7 @@ Page {
         width: parent.width
         height: implicitHeight
         Material.elevation: 3
-        bottomPadding: SafeInsets.bottom
+        bottomPadding: SafeInsets.bottom+font.pixelSize
 
         ColumnLayout {
             width: parent.width

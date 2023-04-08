@@ -169,7 +169,7 @@ Page {
 
                             var errorString = FileExchange.viewContent(WaypointLibrary.toGeoJSON(), "application/geo+json", "WaypointLibrary-%1.geojson")
                             if (errorString !== "") {
-                                shareErrorDialogLabel.text = errorString
+                                shareErrorDialog.text = errorString
                                 shareErrorDialog.open()
                             } else
                                 toast.doToast(qsTr("Waypoint library opened in other app"))
@@ -186,7 +186,7 @@ Page {
 
                             var errorString = FileExchange.viewContent(WaypointLibrary.toGpx(), "application/gpx+xml", "WaypointLibrary-%1.gpx")
                             if (errorString !== "") {
-                                shareErrorDialogLabel.text = errorString
+                                shareErrorDialog.text = errorString
                                 shareErrorDialog.open()
                             } else
                                 toast.doToast(qsTr("Waypoint library opened in other app"))
@@ -223,8 +223,9 @@ Page {
 
         leftPadding: SafeInsets.left
         rightPadding: SafeInsets.right
+        topPadding: page.font.pixelSize
 
-        placeholderText: qsTr("Filter Waypoint Names")
+        placeholderText: qsTr("Waypoint Names")
         font.pixelSize: page.font.pixelSize*1.5
     }
 
@@ -347,19 +348,11 @@ Page {
         textInput.text = cache
     }
 
-    CenteringDialog {
+    LongTextDialog {
         id: shareErrorDialog
 
         title: qsTr("Error Exporting Data…")
         standardButtons: Dialog.Ok
-        modal: true
-
-        Label {
-            id: shareErrorDialogLabel
-            width: shareErrorDialog.availableWidth
-            wrapMode: Text.Wrap
-            textFormat: Text.StyledText
-        }
     }
 
     CenteringDialog {
@@ -393,20 +386,13 @@ Page {
 
     }
 
-    CenteringDialog {
+    LongTextDialog {
         id: clearDialog
 
         title: qsTr("Clear Waypoint Library?")
         standardButtons: Dialog.No | Dialog.Yes
-        modal: true
 
-        Label {
-            width: clearDialog.availableWidth
-
-            text: qsTr("Once cleared, the library cannot be restored.")
-            wrapMode: Text.Wrap
-            textFormat: Text.StyledText
-        }
+        text: qsTr("Once cleared, the library cannot be restored.")
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()

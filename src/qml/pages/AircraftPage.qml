@@ -174,7 +174,6 @@ Page {
                     horizontalUOM.focus = true
                 }
                 text: Navigator.aircraft.name
-                placeholderText: qsTr("undefined")
             }
 
             Label {
@@ -330,7 +329,6 @@ Page {
                     }
 
                 }
-                placeholderText: qsTr("undefined")
             }
             Label {
                 Layout.alignment: Qt.AlignBaseline
@@ -418,7 +416,6 @@ Page {
                         return Math.round(Navigator.aircraft.descentSpeed.toMPH()).toString()
                     }
                 }
-                placeholderText: qsTr("undefined")
             }
             Label {
                 Layout.alignment: Qt.AlignBaseline
@@ -505,7 +502,6 @@ Page {
                         return Math.round(Navigator.aircraft.minimumSpeed.toMPH()).toString()
                     }
                 }
-                placeholderText: qsTr("undefined")
             }
             Label {
                 Layout.alignment: Qt.AlignBaseline
@@ -593,7 +589,6 @@ Page {
                         return Navigator.aircraft.fuelConsumption.toGPH().toLocaleString(Qt.locale(), 'f', 1)
                     }
                 }
-                placeholderText: qsTr("undefined")
             }
             Label {
                 Layout.alignment: Qt.AlignBaseline

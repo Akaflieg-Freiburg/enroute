@@ -22,6 +22,8 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Controls
 
+import akaflieg_freiburg.enroute
+
 
 // This is a version of ListView that indicates if more elemenent can be seen through scrolling.
 // The method "Component.onCompleted" adds two children to the ScrollView. This way,
@@ -34,7 +36,7 @@ ScrollView {
         id: topItem
 
         Rectangle { // Label "more" at top of listview
-            opacity: (scrollView.contentItem.contentY == 0) ? 0.0 : 1.0
+            opacity: (scrollView.contentItem.contentY === 0) ? 0.0 : 1.0
             Behavior on opacity { NumberAnimation { duration: 200 } }
 
             anchors.top: parent.top
@@ -44,9 +46,9 @@ ScrollView {
             height: 2*topLabel.implicitHeight
 
             gradient: Gradient {
-                GradientStop { position: 0.0; color: "#ffffffff" }
-                GradientStop { position: 0.3; color: "#ffffffff" }
-                GradientStop { position: 1.0; color: "#00ffffff" }
+                GradientStop { position: 0.0; color: GlobalSettings.nightMode ? "#ff000000" : "#ffffffff" }
+                GradientStop { position: 0.3; color: GlobalSettings.nightMode ? "#ff000000" : "#ffffffff" }
+                GradientStop { position: 1.0; color: GlobalSettings.nightMode ? "#00000000" : "#00ffffff" }
             }
 
             Control { id: topFontGlean }
@@ -58,6 +60,7 @@ ScrollView {
 
                 font.pixelSize: 0.8*topFontGlean.font.pixelSize
                 text: "▲ " + qsTr("more") + " ▲"
+                color: GlobalSettings.nightMode ? "white" : "black"
 
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignTop
@@ -79,9 +82,9 @@ ScrollView {
             height: 2*bottomLabel.implicitHeight
 
             gradient: Gradient {
-                GradientStop { position: 0.0; color: "#00ffffff" }
-                GradientStop { position: 0.7; color: "#ffffffff" }
-                GradientStop { position: 1.0; color: "#ffffffff" }
+                GradientStop { position: 0.0; color: GlobalSettings.nightMode ? "#00000000" : "#00ffffff" }
+                GradientStop { position: 0.7; color: GlobalSettings.nightMode ? "#ff000000" : "#ffffffff" }
+                GradientStop { position: 1.0; color: GlobalSettings.nightMode ? "#ff000000" : "#ffffffff" }
             }
 
             Control { id: bottomFontGlean }
@@ -92,8 +95,8 @@ ScrollView {
                 anchors.fill: parent
 
                 font.pixelSize: 0.8*bottomFontGlean.font.pixelSize
-                color: "#202020"
                 text: "▼ " + qsTr("more") + " ▼"
+                color: GlobalSettings.nightMode ? "white" : "black"
 
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignBottom

@@ -69,7 +69,7 @@ CenteringDialog {
 
             Layout.fillWidth: true
 
-            placeholderText: qsTr("Filter Waypoint Names")
+            placeholderText: qsTr("Waypoint Name")
             font.pixelSize: dlg.font.pixelSize*1.5
             focus: true
 

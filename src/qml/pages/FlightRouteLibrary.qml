@@ -125,8 +125,9 @@ Page {
         anchors.leftMargin: font.pixelSize*2.0
         leftPadding: SafeInsets.left
         rightPadding: SafeInsets.right
+        topPadding: page.font.pixelSize
 
-        placeholderText: qsTr("Filter Flight Route Names")
+        placeholderText: qsTr("Flight Route Name")
         font.pixelSize: page.font.pixelSize*1.5
     }
 
@@ -193,7 +194,7 @@ Page {
                                     return
                                 }
                                 if (errorString !== "") {
-                                    shareErrorDialogLabel.text = errorString
+                                    shareErrorDialog.text = errorString
                                     shareErrorDialog.open()
                                     return
                                 }
@@ -218,7 +219,7 @@ Page {
                                     return
                                 }
                                 if (errorString !== "") {
-                                    shareErrorDialogLabel.text = errorString
+                                    shareErrorDialog.text = errorString
                                     shareErrorDialog.open()
                                     return
                                 }
@@ -243,7 +244,7 @@ Page {
 
                                 var errorString = FileExchange.viewContent(Librarian.get(Librarian.Routes, modelData).toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson")
                                 if (errorString !== "") {
-                                    shareErrorDialogLabel.text = errorString
+                                    shareErrorDialog.text = errorString
                                     shareErrorDialog.open()
                                 } else
                                     toast.doToast(qsTr("Flight route opened in other app"))
@@ -260,7 +261,7 @@ Page {
 
                                 var errorString = FileExchange.viewContent(Librarian.get(Librarian.Routes, modelData).toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx")
                                 if (errorString !== "") {
-                                    shareErrorDialogLabel.text = errorString
+                                    shareErrorDialog.text = errorString
                                     shareErrorDialog.open()
                                 } else
                                     toast.doToast(qsTr("Flight route opened in other app"))
@@ -341,7 +342,7 @@ Page {
     function openFromLibrary() {
         var errorString = Navigator.flightRoute.load(Librarian.fullPath(Librarian.Routes, finalFileName))
         if (errorString !== "") {
-            lbl.text = errorString
+            fileError.text = errorString
             fileError.open()
             return
         }
@@ -358,25 +359,8 @@ Page {
     CenteringDialog {
         id: fileError
 
-        modal: true
         title: qsTr("An Error Occurred…")
         standardButtons: Dialog.Ok
-
-        DecoratedScrollView{
-            anchors.fill: parent
-            contentWidth: availableWidth // Disable horizontal scrolling
-
-            clip: true
-
-            Label {
-                id: lbl
-                width: fileError.availableWidth
-                textFormat: Text.StyledText
-                linkColor: Material.accent
-                wrapMode: Text.Wrap
-                onLinkActivated: Qt.openUrlExternally(link)
-            }
-        }
     }
 
     LongTextDialog {
@@ -405,20 +389,13 @@ Page {
         }
     }
 
-    CenteringDialog {
+    LongTextDialog {
         id: removeDialog
 
         title: qsTr("Remove from Device?")
         standardButtons: Dialog.No | Dialog.Yes
-        modal: true
 
-        Label {
-            width: removeDialog.availableWidth
-
-            text: qsTr("Once the flight route <strong>%1</strong> is removed, it cannot be restored.").arg(page.finalFileName)
-            wrapMode: Text.Wrap
-            textFormat: Text.StyledText
-        }
+        text: qsTr("Once the flight route <strong>%1</strong> is removed, it cannot be restored.").arg(page.finalFileName)
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
@@ -447,7 +424,6 @@ Page {
                 Layout.fillWidth: true
 
                 text: qsTr("Enter new name for the route <strong>%1</strong>.").arg(finalFileName)
-                color: Material.primary
                 wrapMode: Text.Wrap
                 textFormat: Text.StyledText
             }
@@ -457,8 +433,6 @@ Page {
 
                 Layout.fillWidth: true
                 focus: true
-
-                placeholderText: qsTr("New Flight Route Name")
 
                 onAccepted: renameDialog.onAccepted()
             }
@@ -490,20 +464,11 @@ Page {
         }
     }
 
-    CenteringDialog {
+    LongTextDialog {
         id: shareErrorDialog
 
         title: qsTr("Error Exporting Data…")
         standardButtons: Dialog.Ok
-        modal: true
-
-        Label {
-            id: shareErrorDialogLabel
-            width: shareErrorDialog.availableWidth
-            onLinkActivated: Qt.openUrlExternally(link)
-            wrapMode: Text.Wrap
-            textFormat: Text.StyledText
-        }
     }
 
 } // Page

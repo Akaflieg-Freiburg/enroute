@@ -199,6 +199,11 @@ if(ANDROID)
         android/src/de/akaflieg_freiburg/enroute/ShareUtils.java
         )
 
+    # Copy manual and other files into the Android directories
+    file(COPY ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/docs/manual DESTINATION android/assets)
+    file(COPY ${CMAKE_SOURCE_DIR}/generatedSources/src/android DESTINATION .)
+    file(COPY ${CMAKE_SOURCE_DIR}/src/android DESTINATION .)
+
     # Configure files
     configure_file(AndroidManifest.xml.in android/AndroidManifest.xml)
     configure_file(${CMAKE_SOURCE_DIR}/3rdParty/material-design-icons/action/drawable-hdpi/ic_info_black_24dp.png ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable/ic_info.png COPYONLY)
@@ -210,11 +215,6 @@ if(ANDROID)
     configure_file(android/src/de/akaflieg_freiburg/enroute/ShareActivity.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
     configure_file(android/src/de/akaflieg_freiburg/enroute/ShareUtils.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
     configure_file(android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
-
-    # Copy manual into Android assets directory
-    file(COPY ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/docs/manual DESTINATION android/assets)
-    file(COPY ${CMAKE_SOURCE_DIR}/generatedSources/src/android DESTINATION .)
-    file(COPY ${CMAKE_SOURCE_DIR}/src/android DESTINATION .)
 
 
     # The android target require a few additional variables

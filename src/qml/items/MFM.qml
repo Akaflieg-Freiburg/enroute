@@ -72,19 +72,25 @@ Item {
             target: null
 
             property geoCoordinate startCentroid
+            property real startZoomLevel
 
             onActiveChanged: if (active) {
                                  flightMap.followGPS = false
                                  startCentroid = flightMap.toCoordinate(pinch.centroid.position, false)
+                                 startZoomLevel = flightMap.zoomLevel
                              }
             onScaleChanged: (delta) => {
-                                console.log(delta)
-                                flightMap.zoomLevel += Math.log2(delta)
+                                var newZoom = startZoomLevel+Math.log2(activeScale)
+                                if (newZoom < flightMap.minimumZoomLevel) {
+                                    newZoom = flightMap.minimumZoomLevel
+                                }
+                                if (newZoom > flightMap.maximumZoomLevel) {
+                                    newZoom = flightMap.maximumZoomLevel
+                                }
+                                flightMap.zoomLevel = newZoom
+
                                 flightMap.alignCoordinateToPoint(startCentroid, pinch.centroid.position)
                             }
-
-            grabPermissions: PointerHandler.TakeOverForbidden
-
         }
 
         WheelHandler {

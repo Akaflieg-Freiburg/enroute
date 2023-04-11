@@ -21,6 +21,8 @@
 import QtQuick
 import QtQuick.Controls
 
+import akaflieg_freiburg.enroute
+
 
 // This is a version of ListView that indicates if more elemenent can be seen through scrolling
 
@@ -40,9 +42,9 @@ ListView {
         height: 2*topLabel.implicitHeight
 
         gradient: Gradient {
-            GradientStop { position: 0.0; color: "#ffffffff" }
-            GradientStop { position: 0.3; color: "#ffffffff" }
-            GradientStop { position: 1.0; color: "#00ffffff" }
+            GradientStop { position: 0.0; color: GlobalSettings.nightMode ? "#ff000000" : "#ffffffff" }
+            GradientStop { position: 0.3; color: GlobalSettings.nightMode ? "#ff000000" : "#ffffffff" }
+            GradientStop { position: 1.0; color: GlobalSettings.nightMode ? "#00000000" : "#00ffffff" }
         }
 
         Label {
@@ -52,6 +54,7 @@ ListView {
 
             font.pixelSize: 0.8*fontGlean.font.pixelSize
             text: "▲ " + qsTr("more") + " ▲"
+            color: GlobalSettings.nightMode ? "white" : "black"
 
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignTop
@@ -69,9 +72,9 @@ ListView {
         height: 2*bottomLabel.implicitHeight
 
         gradient: Gradient {
-            GradientStop { position: 0.0; color: "#00ffffff" }
-            GradientStop { position: 0.7; color: "#ffffffff" }
-            GradientStop { position: 1.0; color: "#ffffffff" }
+            GradientStop { position: 0.0; color: GlobalSettings.nightMode ? "#00000000" : "#00ffffff" }
+            GradientStop { position: 0.7; color: GlobalSettings.nightMode ? "#ff000000" : "#ffffffff" }
+            GradientStop { position: 1.0; color: GlobalSettings.nightMode ? "#ff000000" : "#ffffffff" }
         }
 
         Label {
@@ -80,8 +83,8 @@ ListView {
             anchors.fill: parent
 
             font.pixelSize: 0.8*fontGlean.font.pixelSize
-            color: "#202020"
             text: "▼ " + qsTr("more") + " ▼"
+            color: GlobalSettings.nightMode ? "white" : "black"
 
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignBottom

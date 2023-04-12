@@ -79,6 +79,7 @@ Item {
                                  startCentroid = flightMap.toCoordinate(pinch.centroid.position, false)
                                  startZoomLevel = flightMap.zoomLevel
                              }
+
             onScaleChanged: (delta) => {
                                 var newZoom = startZoomLevel+Math.log2(activeScale)
                                 if (newZoom < flightMap.minimumZoomLevel) {
@@ -95,6 +96,7 @@ Item {
 
         WheelHandler {
             id: wheel
+
             rotationScale: 1/120
             property: "zoomLevel"
         }
@@ -102,7 +104,11 @@ Item {
         DragHandler {
             id: drag
             target: null
+
+            enabled: !waypointDescription.visible
+
             onTranslationChanged: (delta) => flightMap.pan(-delta.x, -delta.y)
+
             onActiveChanged: {
                 if (active)
                 {
@@ -110,11 +116,13 @@ Item {
                 }
             }
         }
+
         Shortcut {
             enabled: flightMap.zoomLevel < flightMap.maximumZoomLevel
             sequence: StandardKey.ZoomIn
             onActivated: flightMap.zoomLevel = Math.round(flightMap.zoomLevel + 1)
         }
+
         Shortcut {
             enabled: flightMap.zoomLevel > flightMap.minimumZoomLevel
             sequence: StandardKey.ZoomOut

@@ -107,15 +107,12 @@ Page {
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
                             highlighted = false
-                            aircraftPage.dialogLoader.active = false
-                            aircraftPage.dialogLoader.source = "dialogs/AircraftSaveDialog.qml"
-                            aircraftPage.dialogLoader.active = true
+                            aircraftSaveDialog.open()
                         }
                     }
                 }
-            }
+        }
     }
-
 
     DecoratedScrollView {
         id: acftTab
@@ -615,4 +612,7 @@ Page {
 
     }
 
+    AircraftSaveDialog {
+        id: aircraftSaveDialog
+    }
 } // Page

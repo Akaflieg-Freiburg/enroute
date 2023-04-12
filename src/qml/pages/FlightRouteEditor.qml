@@ -235,9 +235,7 @@ Page {
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
-                        dialogLoader.active = false
-                        dialogLoader.source = "dialogs/FlightRouteSaveDialog.qml"
-                        dialogLoader.active = true
+                        flightRouteSaveDialog.open()
                     }
                 }
 
@@ -774,6 +772,10 @@ Page {
             Navigator.flightRoute.replaceWaypoint(index, newWP)
             close()
         }
+    }
+
+    FlightRouteSaveDialog {
+        id: flightRouteSaveDialog
     }
 
 } // Page

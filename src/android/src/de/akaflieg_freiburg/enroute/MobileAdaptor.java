@@ -97,24 +97,13 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 			}
 		});
 
-		//
 		// Set fullscreen
-		//
-
-		// Draw underneath system windows
-		WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
-
-		// Draw into cutouts areas. Cutouts are only supported from Version P onwards
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-			getWindow()
-					.getAttributes().layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
-		}
-
-		// Make status bar and navigation bar translucent
-		Window window = getWindow();
-		window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-		window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION); // Does not seem to work for unknown
-																					// reasons
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) 
+		    {
+			getWindow().getAttributes().layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+		    }
+		
 	}
 
 	@Override

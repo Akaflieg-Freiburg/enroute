@@ -692,26 +692,20 @@ Page {
 
     }
 
-    CenteringDialog {
+    LongTextDialog {
         id: clearDialog
 
         title: qsTr("Clear Route?")
         standardButtons: Dialog.No | Dialog.Yes
-        modal: true
 
-        Label {
-            width: clearDialog.availableWidth
-
-            text: qsTr("Once erased, the current flight route cannot be restored.")
-            wrapMode: Text.Wrap
-            textFormat: Text.StyledText
-        }
+        text: qsTr("Once erased, the current flight route cannot be restored.")
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
             Navigator.flightRoute.clear()
             toast.doToast(qsTr("Flight route cleared"))
         }
+
         onRejected: {
             PlatformAdaptor.vibrateBrief()
             close()

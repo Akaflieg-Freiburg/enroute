@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "units/Time.h"
+#include "units/TimeSpan.h"
 
 
 auto Units::Time::toHoursAndMinutes() const -> QString {

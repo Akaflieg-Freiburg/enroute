@@ -21,7 +21,7 @@
 #pragma once
 
 #include "units/Distance.h"
-#include "units/Time.h"
+#include "units/TimeSpan.h"
 #include "units/Volume.h"
 #include "units/VolumeFlow.h"
 

@@ -32,12 +32,12 @@ Platform::Notifier::Notifier(QObject *parent)
 }
 
 
-void Platform::Notifier::deferredInitialization()
+/*void Platform::Notifier::deferredInitialization()
 {
     // This method is called immediately after the instance has been constructed.
     // It can be used to implement initialization that calls virtual methods.
 #warning Not implemented
-}
+}*/
 
 
 void Platform::Notifier::hideNotification(Platform::Notifier_Abstract::NotificationTypes notificationType)

@@ -24,7 +24,7 @@
 
 #include "geomaps/Waypoint.h"
 #include "notam/Notam.h"
-#include "units/Time.h"
+#include "units/TimeSpan.h"
 
 namespace NOTAM {
 

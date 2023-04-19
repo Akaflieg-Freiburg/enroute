@@ -84,7 +84,7 @@ set(SOURCES
     units/ByteSize.h
     units/Distance.h
     units/Speed.h
-    units/Time.h
+    units/TimeSpan.h
     units/Units.h
     units/Volume.h
     units/VolumeFlow.h

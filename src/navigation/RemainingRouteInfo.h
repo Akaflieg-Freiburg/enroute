@@ -23,7 +23,7 @@
 #include "geomaps/Waypoint.h"
 #include "units/Angle.h"
 #include "units/Distance.h"
-#include "units/Time.h"
+#include "units/TimeSpan.h"
 
 #include <QQmlEngine>
 

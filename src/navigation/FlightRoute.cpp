@@ -126,7 +126,7 @@ auto Navigation::FlightRoute::summary() const -> QString
     const auto aircraft = GlobalObject::navigator()->aircraft();
     const auto wind = GlobalObject::navigator()->wind();
     auto dist = Units::Distance::fromM(0.0);
-    auto time = Units::Time::fromS(0.0);
+    auto time = Units::Timespan::fromS(0.0);
     auto fuel = Units::Volume::fromL(0.0);
 
     for(const auto& _leg : m_legs)

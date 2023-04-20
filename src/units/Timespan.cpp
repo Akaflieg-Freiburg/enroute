@@ -21,7 +21,7 @@
 #include "units/Timespan.h"
 
 
-auto Units::Time::toHoursAndMinutes() const -> QString {
+auto Units::Timespan::toHoursAndMinutes() const -> QString {
     // Paranoid safety checks
     if (!isFinite()) {
         return QStringLiteral("-:--");

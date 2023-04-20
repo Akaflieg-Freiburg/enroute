@@ -81,7 +81,7 @@ public:
     Q_PROPERTY(Units::Distance nextWP_DIST MEMBER nextWP_DIST CONSTANT)
 
     /*! \brief ETE for flight to next waypoint in the route */
-    Q_PROPERTY(Units::Time nextWP_ETE MEMBER nextWP_ETE CONSTANT)
+    Q_PROPERTY(Units::Timespan nextWP_ETE MEMBER nextWP_ETE CONSTANT)
 
     /*! \brief ETA for flight to next waypoint in the route */
     Q_PROPERTY(QDateTime nextWP_ETA MEMBER nextWP_ETA CONSTANT)
@@ -99,7 +99,7 @@ public:
     Q_PROPERTY(Units::Distance finalWP_DIST MEMBER finalWP_DIST CONSTANT)
 
     /*! \brief ETE for flight to final waypoint in the route */
-    Q_PROPERTY(Units::Time finalWP_ETE MEMBER finalWP_ETE CONSTANT)
+    Q_PROPERTY(Units::Timespan finalWP_ETE MEMBER finalWP_ETE CONSTANT)
 
     /*! \brief ETA for flight to final waypoint in the route */
     Q_PROPERTY(QDateTime finalWP_ETA MEMBER finalWP_ETA CONSTANT)
@@ -150,13 +150,13 @@ private:
 
     GeoMaps::Waypoint nextWP {};
     Units::Distance nextWP_DIST {};
-    Units::Time nextWP_ETE {};
+    Units::Timespan nextWP_ETE {};
     QDateTime nextWP_ETA {};
     Units::Angle nextWP_TC {};
 
     GeoMaps::Waypoint finalWP {};
     Units::Distance finalWP_DIST {};
-    Units::Time finalWP_ETE {};
+    Units::Timespan finalWP_ETE {};
     QDateTime finalWP_ETA {};
 };
 

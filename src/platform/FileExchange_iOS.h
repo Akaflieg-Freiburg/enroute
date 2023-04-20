@@ -71,10 +71,13 @@ public:
      */
     Q_INVOKABLE QString viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) override;
 
+public slots:
+    /*! \brief Implements pure virtual method from FileExchange_Abstract */
+    virtual void onGUISetupCompleted() override {};
 
 protected:
     /*! \brief Implements virtual method from GlobalObject */
-    virtual void deferredInitialization() override;
+    virtual void deferredInitialization() override {};
 
 private:
     Q_DISABLE_COPY_MOVE(FileExchange)

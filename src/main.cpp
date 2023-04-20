@@ -30,7 +30,7 @@
 #include <QSettings>
 #include <QTranslator>
 
-#if defined(Q_OS_ANDROID)
+#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 #include <QtWebView/QtWebView>
 #else
 #include <QApplication>
@@ -82,7 +82,7 @@ auto main(int argc, char *argv[]) -> int
     QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGL);
     // Set up application
 
-#if defined(Q_OS_ANDROID)
+#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
     QtWebView::initialize();
     QGuiApplication app(argc, argv);
 #else
@@ -149,7 +149,7 @@ auto main(int argc, char *argv[]) -> int
         parser.showHelp();
     }
 
-#if !defined(Q_OS_ANDROID)
+#if !defined(Q_OS_ANDROID) && !defined(Q_OS_IOS)
     // Single application on desktops
     KDSingleApplication kdsingleapp;
     if (!kdsingleapp.isPrimaryInstance())
@@ -172,7 +172,7 @@ auto main(int argc, char *argv[]) -> int
     {
         GlobalObject::fileExchange()->processFileOpenRequest(positionalArguments[0]);
     }
-#if !defined(Q_OS_ANDROID)
+#if !defined(Q_OS_ANDROID) && !defined(Q_OS_IOS)
     QObject::connect(&kdsingleapp,
                      &KDSingleApplication::messageReceived,
                      GlobalObject::fileExchange(),

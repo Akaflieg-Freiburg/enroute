@@ -296,7 +296,7 @@ endif()
 # Generate MacOS executable
 #
 
-if (APPLE)
+if (APPLE AND NOT IOS)
     list(APPEND SOURCES
         platform/FileExchange_MacOS.h
         platform/FileExchange_MacOS.cpp
@@ -328,6 +328,51 @@ if (APPLE)
         kdsingleapplication
         sunset
     )
+endif()
+
+#
+# Generate iOS executable
+#
+
+if (IOS)
+    list(APPEND SOURCES
+        platform/FileExchange_iOS.h
+        platform/FileExchange_iOS.cpp
+        platform/Notifier_iOS.h
+        platform/Notifier_iOS.cpp
+        platform/PlatformAdaptor_iOS.h
+        platform/PlatformAdaptor_iOS.cpp
+        platform/SafeInsets_Desktop.h
+        platform/SafeInsets_Desktop.cpp
+    )
+
+    # Compile definitions
+    add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
+
+    # Add executable and libraries
+    qt_add_executable(${PROJECT_NAME} ${SOURCES})
+    target_link_libraries(${PROJECT_NAME}
+        PRIVATE
+        Qt6::Concurrent
+        Qt6::Core
+        Qt6::Core5Compat
+        Qt6::HttpServer
+        Qt6::Positioning
+        Qt6::Quick
+        Qt6::Sql
+        Qt6::Svg
+        Qt6::WebView
+        kdsingleapplication
+        sunset
+    )
+    set_target_properties(${PROJECT_NAME} PROPERTIES MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/ios/Info.plist")
+    #Assets catalog containing the App icon
+    set(asset_catalog_path "ios/Assets.xcassets")
+    target_sources(${PROJECT_NAME}  PRIVATE "${asset_catalog_path}")
+    set_source_files_properties(${asset_catalog_path} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+
+    #Launchscreen
+    set_target_properties(${PROJECT_NAME} PROPERTIES  QT_IOS_LAUNCH_SCREEN "${CMAKE_CURRENT_SOURCE_DIR}/ios/LaunchScreen.storyboard")
 endif()
 
 target_include_directories(${PROJECT_NAME}

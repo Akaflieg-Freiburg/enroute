@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,6 +21,7 @@
 #pragma once
 
 #include "units/Distance.h"
+#include "units/Speed.h"
 #include "units/Timespan.h"
 #include "units/Volume.h"
 #include "units/VolumeFlow.h"

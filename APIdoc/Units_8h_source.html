@@ -49,7 +49,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/***************************************************************************</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *   Copyright (C) 2019-2021 by Stefan Kebekus                             *</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *   Copyright (C) 2019-2023 by Stefan Kebekus                             *</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *   stefan.kebekus@gmail.com                                              *</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *                                                                         *</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *   This program is free software; you can redistribute it and/or modify  *</span></div>
@@ -71,48 +71,49 @@ $(function() {
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &quot;units/Distance.h&quot;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &quot;units/Time.h&quot;</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;units/Volume.h&quot;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;units/VolumeFlow.h&quot;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">// Operations</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &quot;units/Speed.h&quot;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;units/Timespan.h&quot;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;units/Volume.h&quot;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &quot;units/VolumeFlow.h&quot;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">// Operations</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">inline</span> <span class="keyword">auto</span> operator/(<a class="code" href="classUnits_1_1Distance.html">Units::Distance</a> dist, <a class="code" href="classUnits_1_1Time.html">Units::Time</a> time) -&gt; <a class="code" href="classUnits_1_1Speed.html">Units::Speed</a></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;{</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordflow">if</span> ((!dist.isFinite()) || (!time.isFinite()) || (qFuzzyIsNull(time.toS()))) {</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="keywordflow">return</span> {};</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;}</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classUnits_1_1Speed.html#a367e2d3080cbda9c74a73767316fea94">Units::Speed::fromMPS</a>(dist.toM()/time.toS());</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;}</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">inline</span> <span class="keyword">auto</span> operator/(<a class="code" href="classUnits_1_1Distance.html">Units::Distance</a> dist, <a class="code" href="classUnits_1_1Timespan.html">Units::Timespan</a> time) -&gt; <a class="code" href="classUnits_1_1Speed.html">Units::Speed</a></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;{</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordflow">if</span> ((!dist.isFinite()) || (!time.isFinite()) || (qFuzzyIsNull(time.toS()))) {</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="keywordflow">return</span> {};</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;}</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classUnits_1_1Speed.html#a367e2d3080cbda9c74a73767316fea94">Units::Speed::fromMPS</a>(dist.toM()/time.toS());</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;}</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">inline</span> <span class="keyword">auto</span> operator/(<a class="code" href="classUnits_1_1Distance.html">Units::Distance</a> dist, <a class="code" href="classUnits_1_1Speed.html">Units::Speed</a> speed) -&gt; <a class="code" href="classUnits_1_1Time.html">Units::Time</a></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;{</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordflow">if</span> ((!dist.isFinite()) || (!speed.isFinite()) || (qFuzzyIsNull(speed.toMPS()))) {</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keywordflow">return</span> {};</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;}</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classUnits_1_1Time.html#a33540e26318ea0ce01780a58f46d5632">Units::Time::fromS</a>(dist.toM() / speed.toMPS());</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;}</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">inline</span> <span class="keyword">auto</span> operator/(<a class="code" href="classUnits_1_1Distance.html">Units::Distance</a> dist, <a class="code" href="classUnits_1_1Speed.html">Units::Speed</a> speed) -&gt; <a class="code" href="classUnits_1_1Timespan.html">Units::Timespan</a></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;{</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordflow">if</span> ((!dist.isFinite()) || (!speed.isFinite()) || (qFuzzyIsNull(speed.toMPS()))) {</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keywordflow">return</span> {};</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;}</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classUnits_1_1Timespan.html#afdeefa6531dcb0740e26691c6f315b38">Units::Timespan::fromS</a>(dist.toM() / speed.toMPS());</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;}</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keyword">inline</span> <span class="keyword">auto</span> operator*(<a class="code" href="classUnits_1_1VolumeFlow.html">Units::VolumeFlow</a> volumeFlow, <a class="code" href="classUnits_1_1Time.html">Units::Time</a> time) -&gt; <a class="code" href="classUnits_1_1Volume.html">Units::Volume</a></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;{</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordflow">if</span> (!volumeFlow.isFinite() || !time.isFinite()) {</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keywordflow">return</span> {};</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;}</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classUnits_1_1Volume.html#ad589e76f748228814a3e89688726427c">Units::Volume::fromL</a>( volumeFlow.toLPH()*time.toH() );</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;}</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keyword">inline</span> <span class="keyword">auto</span> operator*(<a class="code" href="classUnits_1_1VolumeFlow.html">Units::VolumeFlow</a> volumeFlow, <a class="code" href="classUnits_1_1Timespan.html">Units::Timespan</a> time) -&gt; <a class="code" href="classUnits_1_1Volume.html">Units::Volume</a></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;{</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordflow">if</span> (!volumeFlow.isFinite() || !time.isFinite()) {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keywordflow">return</span> {};</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;}</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classUnits_1_1Volume.html#ad589e76f748228814a3e89688726427c">Units::Volume::fromL</a>( volumeFlow.toLPH()*time.toH() );</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;}</div>
 <div class="ttc" id="aclassUnits_1_1Distance_html"><div class="ttname"><a href="classUnits_1_1Distance.html">Units::Distance</a></div><div class="ttdoc">Convenience class for distance computations.</div><div class="ttdef"><b>Definition:</b> <a href="Distance_8h_source.html#l00035">Distance.h:35</a></div></div>
 <div class="ttc" id="aclassUnits_1_1Speed_html"><div class="ttname"><a href="classUnits_1_1Speed.html">Units::Speed</a></div><div class="ttdoc">Convenience class for speed computations.</div><div class="ttdef"><b>Definition:</b> <a href="Speed_8h_source.html#l00036">Speed.h:36</a></div></div>
 <div class="ttc" id="aclassUnits_1_1Speed_html_a367e2d3080cbda9c74a73767316fea94"><div class="ttname"><a href="classUnits_1_1Speed.html#a367e2d3080cbda9c74a73767316fea94">Units::Speed::fromMPS</a></div><div class="ttdeci">static constexpr Q_INVOKABLE Units::Speed fromMPS(double speedInMPS)</div><div class="ttdoc">Constructs a speed.</div><div class="ttdef"><b>Definition:</b> <a href="Speed_8h_source.html#l00060">Speed.h:60</a></div></div>
-<div class="ttc" id="aclassUnits_1_1Time_html"><div class="ttname"><a href="classUnits_1_1Time.html">Units::Time</a></div><div class="ttdoc">Convenience class for time computations.</div><div class="ttdef"><b>Definition:</b> <a href="Time_8h_source.html#l00038">Time.h:38</a></div></div>
-<div class="ttc" id="aclassUnits_1_1Time_html_a33540e26318ea0ce01780a58f46d5632"><div class="ttname"><a href="classUnits_1_1Time.html#a33540e26318ea0ce01780a58f46d5632">Units::Time::fromS</a></div><div class="ttdeci">static auto fromS(double timeInS) -&gt; Time</div><div class="ttdoc">Constructs a time.</div><div class="ttdef"><b>Definition:</b> <a href="Time_8h_source.html#l00073">Time.h:73</a></div></div>
+<div class="ttc" id="aclassUnits_1_1Timespan_html"><div class="ttname"><a href="classUnits_1_1Timespan.html">Units::Timespan</a></div><div class="ttdoc">Convenience class for time computations.</div><div class="ttdef"><b>Definition:</b> <a href="Timespan_8h_source.html#l00035">Timespan.h:35</a></div></div>
+<div class="ttc" id="aclassUnits_1_1Timespan_html_afdeefa6531dcb0740e26691c6f315b38"><div class="ttname"><a href="classUnits_1_1Timespan.html#afdeefa6531dcb0740e26691c6f315b38">Units::Timespan::fromS</a></div><div class="ttdeci">static auto fromS(double timeInS) -&gt; Timespan</div><div class="ttdoc">Constructs a time.</div><div class="ttdef"><b>Definition:</b> <a href="Timespan_8h_source.html#l00070">Timespan.h:70</a></div></div>
 <div class="ttc" id="aclassUnits_1_1VolumeFlow_html"><div class="ttname"><a href="classUnits_1_1VolumeFlow.html">Units::VolumeFlow</a></div><div class="ttdoc">Convenience class for volume flow computations.</div><div class="ttdef"><b>Definition:</b> <a href="VolumeFlow_8h_source.html#l00035">VolumeFlow.h:35</a></div></div>
 <div class="ttc" id="aclassUnits_1_1Volume_html"><div class="ttname"><a href="classUnits_1_1Volume.html">Units::Volume</a></div><div class="ttdoc">Convenience class for volume computations.</div><div class="ttdef"><b>Definition:</b> <a href="Volume_8h_source.html#l00035">Volume.h:35</a></div></div>
 <div class="ttc" id="aclassUnits_1_1Volume_html_ad589e76f748228814a3e89688726427c"><div class="ttname"><a href="classUnits_1_1Volume.html#ad589e76f748228814a3e89688726427c">Units::Volume::fromL</a></div><div class="ttdeci">static constexpr auto fromL(double volumeInL) -&gt; Volume</div><div class="ttdoc">Constructs a volume.</div><div class="ttdef"><b>Definition:</b> <a href="Volume_8h_source.html#l00046">Volume.h:46</a></div></div>

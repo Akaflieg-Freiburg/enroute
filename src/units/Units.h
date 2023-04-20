@@ -21,7 +21,7 @@
 #pragma once
 
 #include "units/Distance.h"
-#include "units/TimeSpan.h"
+#include "units/Timespan.h"
 #include "units/Volume.h"
 #include "units/VolumeFlow.h"
 
@@ -38,7 +38,7 @@
  *
  *  @return Speed
  */
-inline auto operator/(Units::Distance dist, Units::Time time) -> Units::Speed
+inline auto operator/(Units::Distance dist, Units::Timespan time) -> Units::Speed
 {
     if ((!dist.isFinite()) || (!time.isFinite()) || (qFuzzyIsNull(time.toS()))) {
         return {};
@@ -56,13 +56,13 @@ inline auto operator/(Units::Distance dist, Units::Time time) -> Units::Speed
  *
  * @returns Time
  */
-inline auto operator/(Units::Distance dist, Units::Speed speed) -> Units::Time
+inline auto operator/(Units::Distance dist, Units::Speed speed) -> Units::Timespan
 {
     if ((!dist.isFinite()) || (!speed.isFinite()) || (qFuzzyIsNull(speed.toMPS()))) {
         return {};
 }
 
-    return Units::Time::fromS(dist.toM() / speed.toMPS());
+    return Units::Timespan::fromS(dist.toM() / speed.toMPS());
 }
 
 
@@ -74,7 +74,7 @@ inline auto operator/(Units::Distance dist, Units::Speed speed) -> Units::Time
  *
  * @returns Volume
  */
-inline auto operator*(Units::VolumeFlow volumeFlow, Units::Time time) -> Units::Volume
+inline auto operator*(Units::VolumeFlow volumeFlow, Units::Timespan time) -> Units::Volume
 {
     if (!volumeFlow.isFinite() || !time.isFinite()) {
         return {};

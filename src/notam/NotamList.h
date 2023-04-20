@@ -24,7 +24,7 @@
 
 #include "geomaps/Waypoint.h"
 #include "notam/Notam.h"
-#include "units/TimeSpan.h"
+#include "units/Timespan.h"
 
 namespace NOTAM {
 
@@ -142,7 +142,7 @@ public:
      *
      *  @returns Time span between retrieved and now. If retrieved() is invalid, and invalid time is returned.
      */
-    Q_REQUIRED_RESULT Units::Time age() const;
+    Q_REQUIRED_RESULT Units::Timespan age() const;
 
     /*! \brief Sublist with expired and duplicated entries removed
      *
@@ -159,7 +159,7 @@ public:
      *
      *  @returns True if outdated
      */
-    Q_REQUIRED_RESULT bool isOutdated() const { auto _age = age(); return !_age.isFinite() || (_age > Units::Time::fromH(24)); }
+    Q_REQUIRED_RESULT bool isOutdated() const { auto _age = age(); return !_age.isFinite() || (_age > Units::Timespan::fromH(24)); }
 
     /*! \brief Check if list needs update
      *
@@ -167,7 +167,7 @@ public:
      *
      *  @returns True if outdated
      */
-    Q_REQUIRED_RESULT bool needsUpdate() const { auto _age = age(); return !_age.isFinite() || (_age > Units::Time::fromH(12)); }
+    Q_REQUIRED_RESULT bool needsUpdate() const { auto _age = age(); return !_age.isFinite() || (_age > Units::Timespan::fromH(12)); }
 
     /*! \brief Sublist of notams relevant to a given waypoint.
      *

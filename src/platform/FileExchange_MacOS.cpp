@@ -31,12 +31,12 @@ Platform::FileExchange::FileExchange(QObject *parent)
 }
 
 
-void Platform::FileExchange::deferredInitialization()
+/*void Platform::FileExchange::deferredInitialization()
 {
     // This method is called immediately after the instance has been constructed.
     // It can be used to implement initialization that calls virtual methods.
 #warning Not implemented
-}
+}*/
 
 
 

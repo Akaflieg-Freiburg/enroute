@@ -48,7 +48,7 @@ public slots:
 
 protected:
     /*! \brief Implements virtual method from GlobalObject */
-    void deferredInitialization() override;
+    void deferredInitialization() override {};
 
 
 private:

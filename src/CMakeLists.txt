@@ -84,7 +84,7 @@ set(SOURCES
     units/ByteSize.h
     units/Distance.h
     units/Speed.h
-    units/Time.h
+    units/Timespan.h
     units/Units.h
     units/Volume.h
     units/VolumeFlow.h
@@ -155,7 +155,7 @@ set(SOURCES
     units/Angle.cpp
     units/Distance.cpp
     units/Speed.cpp
-    units/Time.cpp
+    units/Timespan.cpp
     units/Volume.cpp
     units/VolumeFlow.cpp
     weather/Decoder.cpp

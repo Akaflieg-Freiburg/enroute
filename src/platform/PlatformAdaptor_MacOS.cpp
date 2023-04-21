@@ -32,12 +32,12 @@ Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
 }
 
 
-void Platform::PlatformAdaptor::deferredInitialization()
+/*void Platform::PlatformAdaptor::deferredInitialization()
 {
     // This method is called immediately after the instance has been constructed.
     // It can be used to implement initialization that calls virtual methods.
 #warning Not implemented
-}
+}*/
 
 
 
@@ -62,13 +62,6 @@ void Platform::PlatformAdaptor::disableScreenSaver()
 #warning Not implemented
 }
 
-
-auto Platform::PlatformAdaptor::hasRequiredPermissions() -> bool
-{
-    // This method must check if the app has all required permissions to run successfully.
-#warning Not implemented
-    return true;
-}
 
 
 void Platform::PlatformAdaptor::lockWifi(bool lock)

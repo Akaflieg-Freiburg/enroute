@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,10 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "units/Time.h"
+#include "units/Timespan.h"
 
 
-auto Units::Time::toHoursAndMinutes() const -> QString {
+auto Units::Timespan::toHoursAndMinutes() const -> QString {
     // Paranoid safety checks
     if (!isFinite()) {
         return QStringLiteral("-:--");

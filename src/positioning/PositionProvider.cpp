@@ -138,7 +138,7 @@ void Positioning::PositionProvider::onPositionUpdated()
             && oldInfo.trueAltitudeAMSL().isFinite())
     {
         auto deltaV = (newInfo.trueAltitudeAMSL() - oldInfo.trueAltitudeAMSL());
-        auto deltaT = Units::Time::fromMS( static_cast<double>(oldTimeStamp.msecsTo(newTimeStamp)) );
+        auto deltaT = Units::Timespan::fromMS( static_cast<double>(oldTimeStamp.msecsTo(newTimeStamp)) );
         auto vSpeed = deltaV/deltaT;
         if (vSpeed.isFinite())
         {

@@ -236,11 +236,15 @@ if(ANDROID)
         Qt6::Svg
         Qt6::WebView
         sunset)
+
     set_target_properties(${PROJECT_NAME} PROPERTIES
-        QT_ANDROID_EXTRA_LIBS "${ANDROID_EXTRA_LIBS}"
         QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android"
         QT_ANDROID_TARGET_SDK_VERSION 33
     )
+
+    # Include SSL Libraries
+    set(ANDROID_TARGET_ARCH ${CMAKE_ANDROID_ARCH_ABI})
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/android_openssl dummyBinaryDir)
 endif()
 
 

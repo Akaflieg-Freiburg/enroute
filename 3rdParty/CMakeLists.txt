@@ -7,15 +7,6 @@ set(material-design-icons_SOURCE_DIR
     CACHE INTERNAL "" FORCE)
 
 #
-# openSSL
-#
-
-if(ANDROID)
-    set(ANDROID_TARGET_ARCH ${CMAKE_ANDROID_ARCH_ABI})
-    add_subdirectory(android_openssl)
-endif()
-
-#
 # MapBox fonts
 #
 

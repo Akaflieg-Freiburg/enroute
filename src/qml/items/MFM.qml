@@ -623,7 +623,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
             PlatformAdaptor.vibrateBrief()
             PlatformAdaptor.vibrateBrief()
             stackView.pop()
-            stackView.push("../pages/TrafficReceiver.qml")
+            stackView.push("../pages/TrafficReceiver.qml", {"appWindow": view})
         }
     }
 

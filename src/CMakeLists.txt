@@ -346,8 +346,8 @@ if (IOS)
         platform/Notifier_iOS.cpp
         platform/PlatformAdaptor_iOS.h
         platform/PlatformAdaptor_iOS.cpp
-        platform/SafeInsets_Desktop.h
-        platform/SafeInsets_Desktop.cpp
+        platform/SafeInsets_iOS.h
+        platform/SafeInsets_iOS.cpp
     )
 
     # Compile definitions

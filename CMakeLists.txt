@@ -46,12 +46,16 @@ set(CMAKE_AUTOUIC ON)
 find_package(Doxygen)
 find_package(Git REQUIRED)
 find_package(Qt6 COMPONENTS Concurrent Core Core5Compat Gui HttpServer LinguistTools Location Positioning Quick QuickWidgets Sql Svg Widgets REQUIRED)
-if( ANDROID )
+if( ANDROID OR IOS)
     find_package(Qt6 COMPONENTS WebView REQUIRED)
 else()
     find_package(Qt6 COMPONENTS DBus Widgets REQUIRED)
 endif()
 
+if(IOS)
+    set(PRODUCT_BUNDLE_IDENTIFIER de.akafliegfreiburg.enroute)
+    set(CMAKE_XCODE_ATTRIBUTE_ASSETCATALOG_COMPILER_APPICON_NAME AppIcon)
+endif()
 
 #
 # Create target collecting all documentation

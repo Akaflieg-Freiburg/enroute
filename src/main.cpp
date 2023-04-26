@@ -149,6 +149,7 @@ auto main(int argc, char *argv[]) -> int
     }
 
 #if !defined(Q_OS_ANDROID) and !defined(Q_OS_IOS)
+
     // Single application on desktops
     KDSingleApplication kdsingleapp;
     if (!kdsingleapp.isPrimaryInstance())
@@ -171,6 +172,7 @@ auto main(int argc, char *argv[]) -> int
     {
         GlobalObject::fileExchange()->processFileOpenRequest(positionalArguments[0]);
     }
+
 #if !defined(Q_OS_ANDROID) and !defined(Q_OS_IOS)
     QObject::connect(&kdsingleapp,
                      &KDSingleApplication::messageReceived,

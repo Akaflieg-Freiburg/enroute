@@ -48,16 +48,18 @@ public:
      *
      *  @returns see PlatformAdaptor_Abstract
      */
-    Q_INVOKABLE QString currentSSID() override;
+    Q_INVOKABLE QString checkPermissions() override {return {};};
 
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
-    void disableScreenSaver() override;
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract
      *
      *  @returns see PlatformAdaptor_Abstract
      */
-    Q_INVOKABLE bool hasRequiredPermissions() override;
+    Q_INVOKABLE QString currentSSID() override;
+
+    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
+    void disableScreenSaver() override;
+
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract
      *
@@ -79,7 +81,7 @@ public slots:
   
 protected:
     /*! \brief Implements virtual method from GlobalObject */
-    void Platform::PlatformAdaptor::deferredInitialization()
+    //void Platform::PlatformAdaptor::deferredInitialization()
 
 private:
     Q_DISABLE_COPY_MOVE(PlatformAdaptor)

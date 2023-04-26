@@ -355,6 +355,7 @@ if (IOS)
 
     # Add executable and libraries
     qt_add_executable(${PROJECT_NAME} ${SOURCES})
+    set(CMAKE_MACOSX_RPATH OFF)
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
         Qt6::Concurrent
@@ -366,9 +367,12 @@ if (IOS)
         Qt6::Sql
         Qt6::Svg
         Qt6::WebView
-        sunset
     )
-    set_target_properties(${PROJECT_NAME} PROPERTIES MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/ios/Info.plist")
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        MACOSX_BUNDLE true
+        MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/ios/Info.plist"
+    )
+
     #Assets catalog containing the App icon
     set(asset_catalog_path "ios/Assets.xcassets")
     target_sources(${PROJECT_NAME}  PRIVATE "${asset_catalog_path}")

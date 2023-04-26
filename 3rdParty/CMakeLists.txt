@@ -24,5 +24,5 @@ add_subdirectory(KDSingleApplication
 #
 # Sunset/sunrise computation
 #
-
-add_subdirectory(sunset ${CMAKE_CURRENT_BINARY_DIR}/sunset)
+#set(SUNSET_BUILD_SHARED OFF)
+#add_subdirectory(sunset ${CMAKE_CURRENT_BINARY_DIR}/sunset)

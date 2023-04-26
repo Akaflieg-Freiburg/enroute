@@ -44,5 +44,5 @@ jobs:
     - name: Compile Enroute Flight Navigation
       run: |
         cmake -E make_directory build-enroute
-        cmake -S . -B build-enroute
+        cmake -S enroute -B build-enroute
         cmake --build build-enroute

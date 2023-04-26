@@ -26,6 +26,7 @@ set(SOURCES
     ressources.qrc.in
 
     # Header files
+    ../3rdParty/sunset/src/sunset.h
     dataManagement/DataManager.h
     dataManagement/Downloadable_Abstract.h
     dataManagement/Downloadable_MultiFile.h
@@ -96,6 +97,7 @@ set(SOURCES
     weather/Wind.h
 
     # C++ files
+    ../3rdParty/sunset/src/sunset.cpp
     dataManagement/DataManager.cpp
     dataManagement/Downloadable_Abstract.cpp
     dataManagement/Downloadable_MultiFile.cpp
@@ -282,7 +284,6 @@ if (UNIX AND NOT ANDROID AND NOT APPLE)
         Qt6::Svg
         Qt6::Widgets
         kdsingleapplication
-        sunset
     )
     target_precompile_headers(${PROJECT_NAME}
         PRIVATE
@@ -330,7 +331,6 @@ if (APPLE AND NOT IOS)
         Qt6::Svg
         Qt6::Widgets
         kdsingleapplication
-        sunset
     )
 endif()
 

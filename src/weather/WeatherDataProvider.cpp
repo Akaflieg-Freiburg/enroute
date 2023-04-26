@@ -30,8 +30,7 @@
 #include <QXmlStreamReader>
 #include <QtGlobal>
 
-#warning
-//#include "sunset.h"
+#include "sunset.h"
 
 #include "GlobalObject.h"
 #include "geomaps/GeoMapProvider.h"
@@ -402,7 +401,7 @@ void Weather::WeatherDataProvider::save()
 
 auto Weather::WeatherDataProvider::sunInfo() -> QString
 {
-    /*// Paranoid safety checks
+    // Paranoid safety checks
     auto *positionProvider = GlobalObject::positionProvider();
     if (positionProvider == nullptr)
     {
@@ -471,10 +470,7 @@ auto Weather::WeatherDataProvider::sunInfo() -> QString
         }
         return tr("SR %1, %2").arg(Navigation::Clock::describePointInTime(sunriseTomorrow), Navigation::Clock::describeTimeDifference(sunriseTomorrow));
     }
-    return {};*/
-
-#warning
-    return "XX";
+    return {};
 }
 
 

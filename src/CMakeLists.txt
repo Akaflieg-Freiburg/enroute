@@ -236,8 +236,7 @@ if(ANDROID)
         Qt6::Quick
         Qt6::Sql
         Qt6::Svg
-        Qt6::WebView
-        sunset)
+        Qt6::WebView)
 
     set_target_properties(${PROJECT_NAME} PROPERTIES
         QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android"

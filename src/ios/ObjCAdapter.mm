@@ -76,7 +76,7 @@ void ObjCAdapter::requestNotificationPermission() {
   [center requestAuthorizationWithOptions:(UNAuthorizationOptionAlert + UNAuthorizationOptionSound)
                         completionHandler:^(BOOL granted, NSError * _Nullable error) {
                             if (granted) {
-                              ObjCAdapter::sendNotification("Test", "This is a test body");
+                              //ObjCAdapter::sendNotification("Test", "This is a test body");
                             }
                         }];
 

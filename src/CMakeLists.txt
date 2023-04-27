@@ -371,6 +371,7 @@ if (IOS)
     )
     target_link_libraries(${PROJECT_NAME} PRIVATE
         "-framework UserNotifications"
+        #"-framework NotificationCenter"
     )
     set_target_properties(${PROJECT_NAME} PROPERTIES
         MACOSX_BUNDLE true

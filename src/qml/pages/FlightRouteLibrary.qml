@@ -171,7 +171,7 @@ Page {
 
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    cptMenu.popup()
+                    cptMenu.open()
                 }
 
                 AutoSizingMenu {

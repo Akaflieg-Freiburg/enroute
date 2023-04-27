@@ -369,6 +369,9 @@ if (IOS)
         Qt6::Svg
         Qt6::WebView
     )
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+        "-framework UserNotifications"
+    )
     set_target_properties(${PROJECT_NAME} PROPERTIES
         MACOSX_BUNDLE true
         MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/ios/Info.plist"

@@ -48,7 +48,7 @@ public:
      *
      *  @returns see PlatformAdaptor_Abstract
      */
-    Q_INVOKABLE QString checkPermissions() override {return {};};
+    Q_INVOKABLE QString checkPermissions() override;
 
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract

@@ -4,13 +4,9 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import <UIKit/UIKit.h>
 
+#import <UserNotifications/UserNotifications.h>
+#import <CoreLocation/CoreLocation.h>
 
-QString ObjCAdapter::objectiveC_Call()
-{
-	NSDate *today = [NSDate date];
-	NSString *description = [today descriptionWithLocale: [NSLocale currentLocale]];
-	return QString::fromNSString(description);
-}
 
 void ObjCAdapter::vibrateBrief() {
     AudioServicesPlaySystemSound(1519);
@@ -44,4 +40,63 @@ double ObjCAdapter::safeAreaRightInset() {
 
 void ObjCAdapter::disableScreenSaver() {
   [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
+}
+
+bool ObjCAdapter::hasLocationPermission() {
+  return [CLLocationManager locationServicesEnabled];
+}
+
+bool ObjCAdapter::hasNotificationPermission() {
+  __block bool enabled = false;
+  __block bool hasResult = false;
+  UNUserNotificationCenter* current = [UNUserNotificationCenter currentNotificationCenter];
+  [current getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings *settings) {
+    switch(settings.authorizationStatus) {
+      case UNAuthorizationStatusDenied:
+      case UNAuthorizationStatusNotDetermined:
+        enabled = NO;
+        break;
+      default:
+        enabled = YES;
+        break;
+    }
+    hasResult = true;
+  }];
+
+  //TODO: This is VERY UGLY
+  while (!hasResult) {
+    [NSThread sleepForTimeInterval:0.1f];
+  }
+  return enabled;
+}
+
+void ObjCAdapter::requestNotificationPermission() {
+  NSLog(@"Asking for permission");
+  UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
+  [center requestAuthorizationWithOptions:(UNAuthorizationOptionAlert + UNAuthorizationOptionSound)
+                        completionHandler:^(BOOL granted, NSError * _Nullable error) {
+                            if (granted) {
+                              ObjCAdapter::sendNotification("Test", "This is a test body");
+                            }
+                        }];
+
+}
+
+void ObjCAdapter::sendNotification(QString title, QString message){
+  UNMutableNotificationContent* content = [[UNMutableNotificationContent alloc] init];
+  content.title = [NSString localizedUserNotificationStringForKey:title.toNSString() arguments:nil];
+  content.body = [NSString localizedUserNotificationStringForKey:message.toNSString() arguments:nil];
+  content.sound = [UNNotificationSound defaultSound];
+
+  // Deliver the notification in five seconds.
+  UNTimeIntervalNotificationTrigger* trigger = [UNTimeIntervalNotificationTrigger
+              triggerWithTimeInterval:5 repeats:NO];
+  UNNotificationRequest* request = [UNNotificationRequest requestWithIdentifier:[[NSUUID UUID] UUIDString]
+              content:content trigger:trigger];
+
+  // Schedule the notification.
+  UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
+  [center addNotificationRequest:request withCompletionHandler:^(NSError *__nullable error) {
+    NSLog(@"Error: %@", error.localizedDescription);
+  }];
 }

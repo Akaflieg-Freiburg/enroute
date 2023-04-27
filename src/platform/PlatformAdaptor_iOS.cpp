@@ -83,13 +83,27 @@ void Platform::PlatformAdaptor::onGUISetupCompleted()
 #warning Not implemented
 }
 
+QString Platform::PlatformAdaptor::checkPermissions()
+{
+    // This method is called once the GUI has been set up. The Android-specific implementes uses this method to hide the
+    // splash screen.
+    QString string = "";
+    if (!ObjCAdapter::hasLocationPermission()) {
+        string += "Location";
+    }
+    if (!ObjCAdapter::hasNotificationPermission()) {
+        string += "Notification";
+    }
+    return string;
+}
+
 
 void Platform::PlatformAdaptor::requestPermissionsSync()
 {
     // Most mobile platforms require that the app asks for permission to do tasks such as showing a notification
     // or accessing location information. This method must request the necessary permissions. It will be called before the GUI is set up and is meant to run synchroneously.
     // Once the method returns, the app will check if all permissions are there, or else refuse to run.
-#warning Not implemented
+    ObjCAdapter::requestNotificationPermission();
 }
 
 

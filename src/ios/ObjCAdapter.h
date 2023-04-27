@@ -6,7 +6,6 @@
 
 class ObjCAdapter {
     public:
-        static QString objectiveC_Call(); //We define a static method to call the function directly using the class_name
         static void vibrateBrief();
         static void vibrateError();
         static double safeAreaTopInset();
@@ -14,4 +13,8 @@ class ObjCAdapter {
         static double safeAreaBottomInset();
         static double safeAreaRightInset();
         static void disableScreenSaver();
+        static void requestNotificationPermission();
+        static bool hasLocationPermission();
+        static void sendNotification(QString, QString);
+        static bool hasNotificationPermission();
 };

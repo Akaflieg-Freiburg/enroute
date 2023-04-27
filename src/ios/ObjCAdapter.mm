@@ -41,3 +41,7 @@ double ObjCAdapter::safeAreaRightInset() {
     UIWindow *window = UIApplication.sharedApplication.windows.firstObject;
     return window.safeAreaInsets.right;
 }
+
+void ObjCAdapter::disableScreenSaver() {
+  [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
+}

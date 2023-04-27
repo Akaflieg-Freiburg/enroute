@@ -439,6 +439,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/TrafficLabel.qml
     qml/items/WaypointDelegate.qml
     qml/items/WordWrappingCheckDelegate.qml
+    qml/items/WordWrappingRadioDelegate.qml
     qml/items/WordWrappingItemDelegate.qml
     qml/items/WordWrappingSwitchDelegate.qml
     qml/pages/SettingsPage.qml

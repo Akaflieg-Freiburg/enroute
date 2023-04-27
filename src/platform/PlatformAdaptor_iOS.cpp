@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "platform/PlatformAdaptor_iOS.h"
+#include "ios/ObjCAdapter.h"
 
 // This is a template file without actual implementation.
 
@@ -49,6 +50,7 @@ auto Platform::PlatformAdaptor::currentSSID() -> QString
 {
     // This method must return the SSID of the current Wi-Fi connection, or an empty string
     // if there is no Wi-Fi or if the SSID cannot be determined
+
 #warning Not implemented
     return {};
 }
@@ -59,7 +61,7 @@ void Platform::PlatformAdaptor::disableScreenSaver()
     // If supported by the platform, this method shall disable the screensaver.
     // Experience has shown that the screensaver will typically switch the display off when the pilot it trying to follow
     // a complicated traffic pattern or control zone procedure.
-#warning Not implemented
+    ObjCAdapter::disableScreenSaver();
 }
 
 
@@ -95,5 +97,5 @@ void Platform::PlatformAdaptor::vibrateBrief()
 {
     // If supported by the platform, give short haptic feedback. Experience has shown that this is helpful
     // in aircraft situations where the pilot often has only one free hand and cannot concentrate on the device screen.
-#warning Not implemented
+    ObjCAdapter::vibrateBrief();
 }

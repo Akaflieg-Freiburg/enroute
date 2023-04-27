@@ -82,7 +82,7 @@ Page {
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                headerMenuX.popup()
+                headerMenuX.open()
             }
 
             AutoSizingMenu{

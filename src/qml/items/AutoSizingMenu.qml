@@ -26,7 +26,7 @@ import akaflieg_freiburg.enroute
 Menu {
     id: menu
     bottomMargin: SafeInsets.bottom
-    leftMargin: SafeInsets.left
+    leftMargin: Math.max(SafeInsets.left, 75)
     rightMargin: SafeInsets.right
     topMargin: SafeInsets.top
 

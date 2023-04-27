@@ -13,4 +13,5 @@ class ObjCAdapter {
         static double safeAreaLeftInset();
         static double safeAreaBottomInset();
         static double safeAreaRightInset();
+        static void disableScreenSaver();
 };

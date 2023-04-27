@@ -70,7 +70,7 @@ Page {
                 icon.source: "/icons/material/ic_more_horiz.svg"
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    wpMenu.popup()
+                    wpMenu.open()
                 }
 
                 Menu {

@@ -202,7 +202,7 @@ ApplicationWindow {
 
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
-                        libraryMenu.popup()
+                        libraryMenu.open()
                     }
 
                     AutoSizingMenu {
@@ -517,32 +517,6 @@ ApplicationWindow {
                         stackView.push("pages/BugReportPage.qml")
                         aboutMenu.close()
                         drawer.close()
-                    }
-                }
-
-                Rectangle {
-                    Layout.preferredHeight: 1
-                    Layout.fillWidth: true
-
-                    color: Material.primary
-                    visible: Navigator.flightStatus !== Navigator.Flight
-                }
-
-                ItemDelegate { // Exit
-                    Layout.fillWidth: true
-
-                    leftPadding: 16+SafeInsets.left
-
-                    text: qsTr("Exit")
-                    icon.source: "/icons/material/ic_exit_to_app.svg"
-
-                    onClicked: {
-                        PlatformAdaptor.vibrateBrief()
-                        drawer.close()
-                        if (Navigator.flightStatus === Navigator.Flight)
-                            exitDialog.open()
-                        else
-                            Qt.quit()
                     }
                 }
 

@@ -142,6 +142,9 @@ Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 <tr class="memitem:a2e767fa1e4b2a4e9c2227f3639ff62c0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlatform_1_1PlatformAdaptor.html#a2e767fa1e4b2a4e9c2227f3639ff62c0">PlatformAdaptor</a> (QObject *parent=nullptr)</td></tr>
 <tr class="memdesc:a2e767fa1e4b2a4e9c2227f3639ff62c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard constructor.  <a href="classPlatform_1_1PlatformAdaptor.html#a2e767fa1e4b2a4e9c2227f3639ff62c0">More...</a><br /></td></tr>
 <tr class="separator:a2e767fa1e4b2a4e9c2227f3639ff62c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90b981be9ec5b59144cfde308a0b6c12"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlatform_1_1PlatformAdaptor.html#a90b981be9ec5b59144cfde308a0b6c12">checkPermissions</a> () override</td></tr>
+<tr class="memdesc:a90b981be9ec5b59144cfde308a0b6c12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements pure virtual method from <a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html" title="Interface to platform-specific functionality.">PlatformAdaptor_Abstract</a>.  <a href="classPlatform_1_1PlatformAdaptor.html#a90b981be9ec5b59144cfde308a0b6c12">More...</a><br /></td></tr>
+<tr class="separator:a90b981be9ec5b59144cfde308a0b6c12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ead29f0e028faddb7603f2136c985d4"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlatform_1_1PlatformAdaptor.html#a7ead29f0e028faddb7603f2136c985d4">currentSSID</a> () override</td></tr>
 <tr class="memdesc:a7ead29f0e028faddb7603f2136c985d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements pure virtual method from <a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html" title="Interface to platform-specific functionality.">PlatformAdaptor_Abstract</a>.  <a href="classPlatform_1_1PlatformAdaptor.html#a7ead29f0e028faddb7603f2136c985d4">More...</a><br /></td></tr>
 <tr class="separator:a7ead29f0e028faddb7603f2136c985d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -149,9 +152,6 @@ Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlatform_1_1PlatformAdaptor.html#aa576dfcc599121d187d40999654a67a3">disableScreenSaver</a> () override</td></tr>
 <tr class="memdesc:aa576dfcc599121d187d40999654a67a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements pure virtual method from <a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html" title="Interface to platform-specific functionality.">PlatformAdaptor_Abstract</a>. <br /></td></tr>
 <tr class="separator:aa576dfcc599121d187d40999654a67a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a858768853603609b58072bd7e0ca424d"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlatform_1_1PlatformAdaptor.html#a858768853603609b58072bd7e0ca424d">hasRequiredPermissions</a> () override</td></tr>
-<tr class="memdesc:a858768853603609b58072bd7e0ca424d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements pure virtual method from <a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html" title="Interface to platform-specific functionality.">PlatformAdaptor_Abstract</a>.  <a href="classPlatform_1_1PlatformAdaptor.html#a858768853603609b58072bd7e0ca424d">More...</a><br /></td></tr>
-<tr class="separator:a858768853603609b58072bd7e0ca424d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82fb311ae84bff2477c0e57d4bfbf1ba"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlatform_1_1PlatformAdaptor.html#a82fb311ae84bff2477c0e57d4bfbf1ba">lockWifi</a> (bool lock) override</td></tr>
 <tr class="memdesc:a82fb311ae84bff2477c0e57d4bfbf1ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements pure virtual method from <a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html" title="Interface to platform-specific functionality.">PlatformAdaptor_Abstract</a>.  <a href="classPlatform_1_1PlatformAdaptor.html#a82fb311ae84bff2477c0e57d4bfbf1ba">More...</a><br /></td></tr>
 <tr class="separator:a82fb311ae84bff2477c0e57d4bfbf1ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -562,7 +562,7 @@ Additional Inherited Members</h2></td></tr>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a90b981be9ec5b59144cfde308a0b6c12"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a90b981be9ec5b59144cfde308a0b6c12">&#9670;&nbsp;</a></span>checkPermissions() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a90b981be9ec5b59144cfde308a0b6c12">&#9670;&nbsp;</a></span>checkPermissions() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -592,7 +592,39 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <a id="a90b981be9ec5b59144cfde308a0b6c12"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a90b981be9ec5b59144cfde308a0b6c12">&#9670;&nbsp;</a></span>checkPermissions() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a90b981be9ec5b59144cfde308a0b6c12">&#9670;&nbsp;</a></span>checkPermissions() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE QString Platform::PlatformAdaptor::checkPermissions </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements pure virtual method from <a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html" title="Interface to platform-specific functionality.">PlatformAdaptor_Abstract</a>. </p>
+<dl class="section return"><dt>Returns</dt><dd>see <a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html" title="Interface to platform-specific functionality.">PlatformAdaptor_Abstract</a> </dd></dl>
+
+<p>Implements <a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html#a93be68331d8623990d3e3c88632729d3">Platform::PlatformAdaptor_Abstract</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="PlatformAdaptor__iOS_8h_source.html#l00051">51</a> of file <a class="el" href="PlatformAdaptor__iOS_8h_source.html">PlatformAdaptor_iOS.h</a>.</p>
+
+</div>
+</div>
+<a id="a90b981be9ec5b59144cfde308a0b6c12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90b981be9ec5b59144cfde308a0b6c12">&#9670;&nbsp;</a></span>checkPermissions() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -622,7 +654,7 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <a id="a90b981be9ec5b59144cfde308a0b6c12"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a90b981be9ec5b59144cfde308a0b6c12">&#9670;&nbsp;</a></span>checkPermissions() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a90b981be9ec5b59144cfde308a0b6c12">&#9670;&nbsp;</a></span>checkPermissions() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -834,7 +866,7 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <a id="a858768853603609b58072bd7e0ca424d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a858768853603609b58072bd7e0ca424d">&#9670;&nbsp;</a></span>hasRequiredPermissions() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a858768853603609b58072bd7e0ca424d">&#9670;&nbsp;</a></span>hasRequiredPermissions() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -862,35 +894,7 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <a id="a858768853603609b58072bd7e0ca424d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a858768853603609b58072bd7e0ca424d">&#9670;&nbsp;</a></span>hasRequiredPermissions() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Q_INVOKABLE bool Platform::PlatformAdaptor::hasRequiredPermissions </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Implements pure virtual method from <a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html" title="Interface to platform-specific functionality.">PlatformAdaptor_Abstract</a>. </p>
-<dl class="section return"><dt>Returns</dt><dd>see <a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html" title="Interface to platform-specific functionality.">PlatformAdaptor_Abstract</a> </dd></dl>
-
-</div>
-</div>
-<a id="a858768853603609b58072bd7e0ca424d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a858768853603609b58072bd7e0ca424d">&#9670;&nbsp;</a></span>hasRequiredPermissions() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a858768853603609b58072bd7e0ca424d">&#9670;&nbsp;</a></span>hasRequiredPermissions() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">

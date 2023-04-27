@@ -24,5 +24,7 @@ add_subdirectory(KDSingleApplication
 #
 # Sunset/sunrise computation
 #
-#set(SUNSET_BUILD_SHARED OFF)
-#add_subdirectory(sunset ${CMAKE_CURRENT_BINARY_DIR}/sunset)
+
+# For simplicity, we do not build the subset library, but include the source files
+# into the enroute target. This avoids problems on iOS and saves us the overhead of
+# finding and loading the library at runtime.

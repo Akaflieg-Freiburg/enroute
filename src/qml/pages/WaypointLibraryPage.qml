@@ -355,22 +355,15 @@ Page {
         standardButtons: Dialog.Ok
     }
 
-    CenteringDialog {
+    LongTextDialog {
         id: removeDialog
 
         property var waypoint: GeoMapProvider.createWaypoint()
 
         title: qsTr("Remove from Device?")
+        text: qsTr("Once the waypoint <strong>%1</strong> is removed, it cannot be restored.").arg(removeDialog.waypoint.name)
+
         standardButtons: Dialog.No | Dialog.Yes
-        modal: true
-
-        Label {
-            width: removeDialog.availableWidth
-
-            text: qsTr("Once the waypoint <strong>%1</strong> is removed, it cannot be restored.").arg(removeDialog.waypoint.name)
-            wrapMode: Text.Wrap
-            textFormat: Text.StyledText
-        }
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()

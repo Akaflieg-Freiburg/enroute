@@ -153,7 +153,7 @@ Page {
                     visible: element.model.modelData.hasFile & !element.model.modelData.downloading
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
-                        removeMenu.popup()
+                        removeMenu.open()
                     }
 
                     AutoSizingMenu {
@@ -270,7 +270,7 @@ Page {
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                headerMenuX.popup()
+                headerMenuX.open()
             }
 
         }

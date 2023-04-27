@@ -300,7 +300,7 @@ ApplicationWindow {
 
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
-                        aboutMenu.popup()
+                        aboutMenu.open()
                     }
 
                     AutoSizingMenu { // Info Menu
@@ -420,7 +420,7 @@ ApplicationWindow {
 
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
-                        manualMenu.popup()
+                        manualMenu.open()
                     }
 
 

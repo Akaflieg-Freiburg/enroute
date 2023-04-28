@@ -26,17 +26,15 @@ is outdated and unmaintained. We recommend not using it.
 
 <figure style="width: 130px" class="align-right">
   <a href='https://flathub.org/apps/details/de.akaflieg_freiburg.enroute'><img width='130px' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a>
-
-  <a href='https://snapcraft.io/enroute-flight-navigation'><img  width='130px' alt="Get it from the Snap Store" src="https://snapcraft.io/static/images/badges/en/snap-store-black.svg"/></a>
 </figure>
 
 
 ### Linux Desktop
 
 **Enroute Flight Navigation** is available for free download at
-[flathub.org](https://flathub.org/apps/details/de.akaflieg_freiburg.enroute) and
-[snapcraft.io](https://snapcraft.io/enroute-flight-navigation), but you might
-also find the app in the software management application on your computer.
+[flathub.org](https://flathub.org/apps/details/de.akaflieg_freiburg.enroute),
+but you might also find the app in the software management application on your
+computer.
 
 
 ### Source code

@@ -19,7 +19,7 @@ for it.  First, however, we need to be reasonably sure that the openAIP data is
 accurate and complete.  Please have a look at the [openAIP
 maps](http://maps.openaip.net) and compare the display with an official aviation
 map of your country.  Are the airfields there? Are runway lengths/orientations
-and frequencies correct?  Are NavAids correctly displayed, with correct codes
+and frequencies correct?  Are navaids correctly displayed, with correct codes
 and frequencies?  And what about airspaces?
 
 If you are convinced that the data is good enough to be added, you can request
@@ -33,7 +33,6 @@ data.
 
 ## What is the minimum Android version?
 
-At present **Enroute Flight Navigation** requires Android 5.0 or later, but we
-expect that we will soon require Android 6.0 or later.  We ask for your
-understanding that we cannot support older devices, as this would require
-manpower that we simply do not have.
+At present **Enroute Flight Navigation** requires Android 6.0 or later.  We ask
+for your understanding that we cannot support older devices, as this would
+require manpower that we simply do not have.

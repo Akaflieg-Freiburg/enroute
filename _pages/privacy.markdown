@@ -12,12 +12,12 @@ manual](https://akaflieg-freiburg.github.io/enrouteText/manual/04-appendix/priva
 for the privacy policies.
 
 
-# Privacy Policies for This Web Site
+# Privacy Policies for This Website
 
 The website **Enroute Flight Navigation** is a static site that does not track,
 collect, store any information, or set any cookies.  
 
-The website is, however, provided by [Github Inc.](https://github.com/), 88
+The website is, however, provided by [GitHub Inc.](https://github.com/), 88
 Colin P Kelly Jr St, San Francisco, CA 94107, USA.  GitHub may collect User
 Personal Information from visitors, including logs of visitor IP addresses, to
 comply with legal obligations, and to maintain the security and integrity of the
@@ -26,6 +26,7 @@ Statement](https://help.github.com/en/github/site-policy/github-privacy-statemen
 and [Global Privacy
 Practices](https://help.github.com/en/github/site-policy/global-privacy-practices)
 for details.
+
 
 ## About Links to Other Sites
 

@@ -12,7 +12,7 @@ our first priority. We are grateful for every report that we get. Please
 **report errors** through the [GitHub issue
 tracker](https://github.com/Akaflieg-Freiburg/enroute/issues) (this might
 require opening an account with GitHub).  If you find this difficult, then
-please <a href="mailto:stefan.kebekus@gmail.com">contacting the author</a>
+please <a href="mailto:stefan.kebekus@gmail.com">contact the author</a>
 directly.
 
 

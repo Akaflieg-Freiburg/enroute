@@ -7,15 +7,6 @@ set(material-design-icons_SOURCE_DIR
     CACHE INTERNAL "" FORCE)
 
 #
-# openSSL
-#
-
-if(ANDROID)
-    set(ANDROID_TARGET_ARCH ${CMAKE_ANDROID_ARCH_ABI})
-    add_subdirectory(android_openssl)
-endif()
-
-#
 # MapBox fonts
 #
 
@@ -34,4 +25,6 @@ add_subdirectory(KDSingleApplication
 # Sunset/sunrise computation
 #
 
-add_subdirectory(sunset ${CMAKE_CURRENT_BINARY_DIR}/sunset)
+# For simplicity, we do not build the subset library, but include the source files
+# into the enroute target. This avoids problems on iOS and saves us the overhead of
+# finding and loading the library at runtime.

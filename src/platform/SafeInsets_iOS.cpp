@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2022 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,37 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "platform/Notifier_iOS.h"
+#include "platform/SafeInsets_Desktop.h"
 
 
-// This is a template file without actual implementation.
-
-Platform::Notifier::Notifier(QObject *parent)
-    : Platform::Notifier::Notifier_Abstract(parent)
+Platform::SafeInsets::SafeInsets(QObject *parent)
+    : SafeInsets_Abstract(parent)
 {
-    // Standard constructor. Recall that the constructor must not call virtual functions.
-    // If you need virtual functions, use the methode deferredInitialization below.
-#warning Not implemented
-}
-
-
-void Platform::Notifier::deferredInitialization()
-{
-    // This method is called immediately after the instance has been constructed.
-    // It can be used to implement initialization that calls virtual methods.
-#warning Not implemented
-}
-
-
-void Platform::Notifier::hideNotification(Platform::Notifier_Abstract::NotificationTypes notificationType)
-{
-    // This method is supposed to hide the notification "notificationType".
-#warning Not implemented
-}
-
-
-void Platform::Notifier::showNotification(NotificationTypes notificationType, const QString& text, const QString& longText)
-{
-    // This method is supposed to show the notification "notificationType".
-#warning Not implemented
+    m_top = 100;
 }

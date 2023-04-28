@@ -26,6 +26,7 @@ set(SOURCES
     ressources.qrc.in
 
     # Header files
+    ../3rdParty/sunset/src/sunset.h
     dataManagement/DataManager.h
     dataManagement/Downloadable_Abstract.h
     dataManagement/Downloadable_MultiFile.h
@@ -96,6 +97,7 @@ set(SOURCES
     weather/Wind.h
 
     # C++ files
+    ../3rdParty/sunset/src/sunset.cpp
     dataManagement/DataManager.cpp
     dataManagement/Downloadable_Abstract.cpp
     dataManagement/Downloadable_MultiFile.cpp
@@ -234,13 +236,16 @@ if(ANDROID)
         Qt6::Quick
         Qt6::Sql
         Qt6::Svg
-        Qt6::WebView
-        sunset)
+        Qt6::WebView)
+
     set_target_properties(${PROJECT_NAME} PROPERTIES
-        QT_ANDROID_EXTRA_LIBS "${ANDROID_EXTRA_LIBS}"
         QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android"
         QT_ANDROID_TARGET_SDK_VERSION 33
     )
+
+    # Include SSL Libraries
+    set(ANDROID_TARGET_ARCH ${CMAKE_ANDROID_ARCH_ABI})
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/android_openssl dummyBinaryDir)
 endif()
 
 
@@ -278,7 +283,6 @@ if (UNIX AND NOT ANDROID AND NOT APPLE)
         Qt6::Svg
         Qt6::Widgets
         kdsingleapplication
-        sunset
     )
     target_precompile_headers(${PROJECT_NAME}
         PRIVATE
@@ -296,7 +300,7 @@ endif()
 # Generate MacOS executable
 #
 
-if (APPLE)
+if (APPLE AND NOT IOS)
     list(APPEND SOURCES
         platform/FileExchange_MacOS.h
         platform/FileExchange_MacOS.cpp
@@ -326,8 +330,55 @@ if (APPLE)
         Qt6::Svg
         Qt6::Widgets
         kdsingleapplication
-        sunset
     )
+endif()
+
+#
+# Generate iOS executable
+#
+
+if (IOS)
+    list(APPEND SOURCES
+        platform/FileExchange_iOS.h
+        platform/FileExchange_iOS.cpp
+        platform/Notifier_iOS.h
+        platform/Notifier_iOS.cpp
+        platform/PlatformAdaptor_iOS.h
+        platform/PlatformAdaptor_iOS.cpp
+        platform/SafeInsets_iOS.h
+        platform/SafeInsets_iOS.cpp
+    )
+
+    # Compile definitions
+    add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
+
+    # Add executable and libraries
+    qt_add_executable(${PROJECT_NAME} ${SOURCES})
+    set(CMAKE_MACOSX_RPATH OFF)
+    target_link_libraries(${PROJECT_NAME}
+        PRIVATE
+        Qt6::Concurrent
+        Qt6::Core
+        Qt6::Core5Compat
+        Qt6::HttpServer
+        Qt6::Positioning
+        Qt6::Quick
+        Qt6::Sql
+        Qt6::Svg
+        Qt6::WebView
+    )
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        MACOSX_BUNDLE true
+        MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/ios/Info.plist"
+    )
+
+    #Assets catalog containing the App icon
+    set(asset_catalog_path "ios/Assets.xcassets")
+    target_sources(${PROJECT_NAME}  PRIVATE "${asset_catalog_path}")
+    set_source_files_properties(${asset_catalog_path} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+
+    #Launchscreen
+    set_target_properties(${PROJECT_NAME} PROPERTIES  QT_IOS_LAUNCH_SCREEN "${CMAKE_CURRENT_SOURCE_DIR}/ios/LaunchScreen.storyboard")
 endif()
 
 target_include_directories(${PROJECT_NAME}

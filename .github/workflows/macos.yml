@@ -18,7 +18,7 @@ jobs:
         path: enroute
         submodules: true
     - name: Set up macOS
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: '3.8'
     - name: Install Ninja
@@ -43,9 +43,6 @@ jobs:
         cmake --install .
     - name: Compile Enroute Flight Navigation
       run: |
-        export CC=/usr/bin/gcc
-        export CXX=/usr/bin/g++
         cmake -E make_directory build-enroute
-        cd build-enroute
-        cmake ../enroute
-        cmake --build .
+        cmake -S enroute -B build-enroute
+        cmake --build build-enroute

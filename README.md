@@ -8,9 +8,9 @@
 
 * Please have a look at the [homepage](https://akaflieg-freiburg.github.io/enroute).
 
-* Download the app for Android on [Google Play](https://play.google.com/store/apps/details?id=de.akaflieg_freiburg.enroute) or [F-Droid](https://f-droid.org/packages/de.akaflieg_freiburg.enroute/).
+* Download the app for Android on [Google Play](https://play.google.com/store/apps/details?id=de.akaflieg_freiburg.enroute).
 
-* Download the app for Linux Desktop on [flathub.org](https://flathub.org/apps/details/de.akaflieg_freiburg.enroute) or [snapcraft.io](https://snapcraft.io/enroute-flight-navigation). It might also be listed in your software management app.
+* Download the app for Linux Desktop on [flathub.org](https://flathub.org/apps/details/de.akaflieg_freiburg.enroute). Depending on your distribution, it might also be listed in your software management app.
 
 * Read the [user manual](https://akaflieg-freiburg.github.io/enrouteText/manual).
 

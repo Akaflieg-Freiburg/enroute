@@ -166,20 +166,13 @@ CenteringDialog {
 
     }  // Dialog: fileError
 
-    CenteringDialog {
+    LongTextDialog {
         id: overwriteDialog
 
         title: qsTr("Overwrite Aircraft?")
+        text: qsTr("The aircraft <strong>%1</strong> already exists in the library. Do you wish to overwrite it?").arg(finalFileName)
+
         standardButtons: Dialog.No | Dialog.Yes
-        modal: true
-
-        Label {
-            width: overwriteDialog.availableWidth
-
-            text: qsTr("The aircraft <strong>%1</strong> already exists in the library. Do you wish to overwrite it?").arg(finalFileName)
-            wrapMode: Text.Wrap
-            textFormat: Text.StyledText
-        }
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()

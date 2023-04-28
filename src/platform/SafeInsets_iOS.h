@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,37 +18,41 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "platform/Notifier_iOS.h"
+#pragma once
 
+#include <QQmlEngine>
 
-// This is a template file without actual implementation.
+#include "SafeInsets_Abstract.h"
 
-Platform::Notifier::Notifier(QObject *parent)
-    : Platform::Notifier::Notifier_Abstract(parent)
+namespace Platform {
+
+/*! \brief Implementation of SafeInsets for Linux desktop devices, as a QML singleton */
+
+class SafeInsets : public SafeInsets_Abstract
 {
-    // Standard constructor. Recall that the constructor must not call virtual functions.
-    // If you need virtual functions, use the methode deferredInitialization below.
-#warning Not implemented
-}
+    Q_OBJECT
+    QML_ELEMENT
+    QML_SINGLETON
 
+    // Properties need to be repeated, or else the Qt CMake macros cannot find them.
+    Q_PROPERTY(double bottom READ bottom NOTIFY bottomChanged)
+    Q_PROPERTY(double left READ left NOTIFY leftChanged)
+    Q_PROPERTY(double right READ right NOTIFY rightChanged)
+    Q_PROPERTY(double top READ top NOTIFY topChanged)
+    Q_PROPERTY(double wHeight READ wHeight NOTIFY wHeightChanged)
+    Q_PROPERTY(double wWidth READ wWidth NOTIFY wWidthChanged)
 
-void Platform::Notifier::deferredInitialization()
-{
-    // This method is called immediately after the instance has been constructed.
-    // It can be used to implement initialization that calls virtual methods.
-#warning Not implemented
-}
+public:
+    /*! \brief Standard constructor
+     *
+     * @param parent Standard QObject parent pointer
+     */
+    explicit SafeInsets(QObject *parent = nullptr);
 
+    ~SafeInsets() override = default;
 
-void Platform::Notifier::hideNotification(Platform::Notifier_Abstract::NotificationTypes notificationType)
-{
-    // This method is supposed to hide the notification "notificationType".
-#warning Not implemented
-}
+private:
+    Q_DISABLE_COPY_MOVE(SafeInsets)
+};
 
-
-void Platform::Notifier::showNotification(NotificationTypes notificationType, const QString& text, const QString& longText)
-{
-    // This method is supposed to show the notification "notificationType".
-#warning Not implemented
-}
+} // namespace Platform

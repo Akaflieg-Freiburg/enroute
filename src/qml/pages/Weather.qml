@@ -21,7 +21,6 @@
 import QtPositioning
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -33,9 +32,8 @@ Page {
     title: qsTr("Weather")
     focus: true
 
-    header: ToolBar {
+    header: ColoredToolBar {
 
-        Material.foreground: "white"
         height: 60 + SafeInsets.top
         leftPadding: SafeInsets.left
         rightPadding: SafeInsets.right
@@ -275,13 +273,7 @@ Page {
 
         }
 
-    footer: Pane {
-        width: parent.width
-        bottomPadding: SafeInsets.bottom+16
-        leftPadding: SafeInsets.left+16
-        rightPadding: SafeInsets.right+16
-
-        Material.elevation: 3
+    footer: Footer {
         visible: (sunLabel.text !== "") || (qnhLabel.text !== "")
 
         GridLayout {
@@ -311,7 +303,6 @@ Page {
             }
 
         }
-
     }
 
     Loader {

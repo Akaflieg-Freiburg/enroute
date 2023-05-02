@@ -20,22 +20,18 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 import QtWebView
 
 import akaflieg_freiburg.enroute
+import "../items"
 
 Page {
     id: pg
     title: qsTr("Manual")
     property string fileName: ""
 
-    header: ToolBar {
-
-        Material.background: "white"
-        Material.foreground: "teal"
-
+    header: ColoredToolBar {
         height: 60 + SafeInsets.top
         leftPadding: SafeInsets.left
         rightPadding: SafeInsets.right

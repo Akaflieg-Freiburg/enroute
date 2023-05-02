@@ -20,7 +20,6 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -62,7 +61,6 @@ CenteringDialog {
             Layout.fillWidth: true
 
             text: qsTr("Enter a name or choose an existing name from the list below.")
-            color: Material.accent
             wrapMode: Text.Wrap
             textFormat: Text.StyledText
         }

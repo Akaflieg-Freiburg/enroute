@@ -21,13 +21,10 @@
 import QtPositioning
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 import QtQuick.Shapes
 
 import akaflieg_freiburg.enroute
-import enroute 1.0
-
 import "../dialogs"
 import "../items"
 
@@ -119,7 +116,7 @@ CenteringDialog {
                 return NotamProvider.notams(waypoint)
             }
 
-            visible: text != ""
+            visible: text !== ""
             text: {
                 if (notamList.isValid && notamList.isEmpty)
                     return ""
@@ -350,7 +347,7 @@ CenteringDialog {
             }
             Rectangle {
                 Layout.alignment: Qt.AlignHCenter
-                color: Material.foreground
+                color:  "black"
                 Layout.preferredHeight: 1
                 Layout.preferredWidth: font.pixelSize*5
             }
@@ -457,7 +454,7 @@ CenteringDialog {
                 Rectangle {
                     height: 1
                     Layout.fillWidth: true
-                    color: Material.primary
+                    color: "black"
                 }
 
                 Action {
@@ -559,7 +556,7 @@ CenteringDialog {
                 Rectangle {
                     height: 1
                     Layout.fillWidth: true
-                    color: Material.primary
+                    color: "black"
                 }
 
                 Action {

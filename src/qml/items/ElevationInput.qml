@@ -20,7 +20,6 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 
@@ -61,7 +60,7 @@ StackLayout {
                 bottom: -3000
                 top: 24000
             }
-            color: (acceptableInput ? Material.foreground : "red")
+            color: (acceptableInput ? "" : "red")
 
             onEditingFinished: {
                 if (ft_d.acceptableInput)
@@ -87,7 +86,7 @@ StackLayout {
                 bottom: -1000
                 top: 8000
             }
-            color: (acceptableInput ? Material.foreground : "red")
+            color: (acceptableInput ? "" : "red")
 
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {

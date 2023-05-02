@@ -418,15 +418,24 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/dialogs/WaypointDescription.qml
     qml/dialogs/WaypointEditor.qml
     qml/dialogs/WeatherReport.qml
+    qml/items/AppWindow.qml
+    qml/items/+Material/AppWindow.qml
     qml/items/AutoSizingMenu.qml
+    qml/items/ColoredToolBar.qml
+    qml/items/+Material/ColoredToolBar.qml
     qml/items/DecoratedListView.qml
     qml/items/DecoratedScrollView.qml
     qml/items/DegreeInput.qml
     qml/items/ElevationInput.qml
     qml/items/FlightMap.qml
     qml/items/FlightVector.qml
+    qml/items/Footer.qml
+    qml/items/+Material/Footer.qml
     qml/items/Icon.qml
+    qml/items/+Material/Icon.qml
     qml/items/ImportManager.qml
+    qml/items/MapButton.qml
+    qml/items/+Material/MapButton.qml
     qml/items/MapSet.qml
     qml/items/MFM.qml
     qml/items/NavBar.qml

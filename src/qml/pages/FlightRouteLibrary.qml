@@ -20,12 +20,9 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
-import enroute 1.0
-
 import "../dialogs"
 import "../items"
 
@@ -35,9 +32,8 @@ Page {
     focus: true
 
 
-    header: ToolBar {
+    header: ColoredToolBar {
 
-        Material.foreground: "white"
         height: 60 + SafeInsets.top
         leftPadding: SafeInsets.left
         rightPadding: SafeInsets.right
@@ -128,7 +124,6 @@ Page {
         topPadding: page.font.pixelSize
 
         placeholderText: qsTr("Flight Route Name")
-        font.pixelSize: page.font.pixelSize*1.5
     }
 
     Component {

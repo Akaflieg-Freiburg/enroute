@@ -20,7 +20,6 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 // This is a version of SwitchDelegate that does word wrapping in the text
@@ -32,7 +31,6 @@ SwitchDelegate {
         Button {
             background: Item { }
             icon.source: itemDelegate.icon.source
-            icon.color: Material.foreground
             onClicked: itemDelegate.clicked()
         }
 

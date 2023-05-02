@@ -20,14 +20,12 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
-import enroute 1.0
-
 import "../dialogs"
 import "../items"
+
 
 Page {
     id: page
@@ -49,7 +47,6 @@ Page {
         topPadding: page.font.pixelSize
 
         placeholderText: qsTr("Aircraft Name")
-        font.pixelSize: page.font.pixelSize*1.5
     }
 
     Component {
@@ -204,7 +201,6 @@ Page {
                 id: lbl
                 width: fileError.availableWidth
                 textFormat: Text.StyledText
-                linkColor: Material.accent
                 wrapMode: Text.Wrap
                 onLinkActivated: Qt.openUrlExternally(link)
             }
@@ -266,7 +262,6 @@ Page {
                 Layout.preferredWidth: overwriteDialog.availableWidth
 
                 text: qsTr("Enter new name for the aircraft <strong>%1</strong>.").arg(finalFileName)
-                color: Material.primary
                 Layout.fillWidth: true
                 wrapMode: Text.Wrap
                 textFormat: Text.StyledText

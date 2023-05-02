@@ -22,11 +22,9 @@ import QtPositioning
 import QtQml
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
-import enroute 1.0
 import "../dialogs"
 import "../items"
 
@@ -108,7 +106,7 @@ Page {
                     Rectangle {
                         height: 1
                         Layout.fillWidth: true
-                        color: Material.primary
+                        color: "black"
                     }
 
                     Action {
@@ -162,9 +160,8 @@ Page {
     }
 
 
-    header: ToolBar {
+    header: ColoredToolBar {
 
-        Material.foreground: "white"
         height: 60 + SafeInsets.top
         leftPadding: SafeInsets.left
         rightPadding: SafeInsets.right
@@ -392,8 +389,6 @@ Page {
         currentIndex: sv.currentIndex
         TabButton { text: qsTr("Route") }
         TabButton { text: qsTr("Wind") }
-
-        Material.elevation: 3
     }
 
     SwipeView{
@@ -491,7 +486,6 @@ Page {
                     Layout.columnSpan: 4
                     font.pixelSize: windTab.font.pixelSize*1.2
                     font.bold: true
-                    color: Material.accent
                 }
 
                 Label {
@@ -513,7 +507,7 @@ Page {
                         Navigator.wind.directionFrom = myAngle.fromDEG(text)
                         windSpeed.focus = true
                     }
-                    color: (acceptableInput ? Material.foreground : "red")
+                    color: (acceptableInput ? "" : "red")
                     KeyNavigation.tab: windSpeed
                     text: {
                         if (!Navigator.wind.directionFrom.isFinite()) {
@@ -585,7 +579,7 @@ Page {
                         }
                         focus = false
                     }
-                    color: (acceptableInput ? Material.foreground : "red")
+                    color: (acceptableInput ? "" : "red")
                     text: {
                         if (!Navigator.wind.speed.isFinite()) {
                             return ""
@@ -633,12 +627,7 @@ Page {
     }
 
 
-    footer: Pane {
-        width: parent.width
-        height: implicitHeight
-        Material.elevation: 3
-        bottomPadding: SafeInsets.bottom+font.pixelSize
-
+    footer: Footer {
         ColumnLayout {
             width: parent.width
 
@@ -665,8 +654,6 @@ Page {
 
             ToolButton {
                 id: addWPButton
-
-                Material.foreground: Material.accent
 
                 visible: (sv.currentIndex === 0)
                 Layout.alignment: Qt.AlignHCenter

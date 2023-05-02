@@ -20,7 +20,6 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -59,7 +58,6 @@ CenteringDialog {
             Layout.fillWidth: true
 
             text: qsTr("Choose a waypoint from the list below.")
-            color: Material.accent
             wrapMode: Text.Wrap
             textFormat: Text.StyledText
         }
@@ -70,7 +68,6 @@ CenteringDialog {
             Layout.fillWidth: true
 
             placeholderText: qsTr("Waypoint Name")
-            font.pixelSize: dlg.font.pixelSize*1.5
             focus: true
 
             onAccepted: {

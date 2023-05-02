@@ -511,7 +511,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         topPadding: 0
         bottomPadding: 0
 //        Material.elevation: 2
-        opacity: 0.8
+//        opacity: 0.8
         visible: GlobalSettings.airspaceAltitudeLimit.isFinite() && !DataManager.baseMapsRaster.hasFile
 
         Label {
@@ -566,7 +566,6 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
     MapButton {
         id: followGPSButton
 
-        opacity: enabled ? 0.9 : 0.3
         icon.source: "/icons/material/ic_my_location.svg"
 
         enabled: !flightMap.followGPS
@@ -588,7 +587,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
 
         icon.source: "/icons/material/ic_airplanemode_active.svg"
         icon.color: "red"
-        visible: !TrafficDataProvider.receivingHeartbeat
+        enabled: !TrafficDataProvider.receivingHeartbeat
 
         anchors.left: parent.left
         anchors.leftMargin: 0.5*font.pixelSize + SafeInsets.left
@@ -682,7 +681,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         topPadding: 0
         bottomPadding: 0
 //        Material.elevation: 2
-        opacity: 0.8
+//        opacity: 0.8
 
         Label {
             id: noCopyrightInfo

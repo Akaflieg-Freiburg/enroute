@@ -80,7 +80,7 @@ Page {
             icon.source: "/icons/material/ic_more_vert.svg"
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                headerMenuX.popup()
+                headerMenuX.open()
             }
 
             AutoSizingMenu {
@@ -272,7 +272,7 @@ Page {
 
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    cptMenu.popup()
+                    cptMenu.open()
                 }
 
                 AutoSizingMenu {

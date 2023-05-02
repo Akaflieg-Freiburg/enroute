@@ -80,10 +80,10 @@ Page {
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                headerMenuX.popup()
+                headerMenuX.open()
             }
 
-            AutoSizingMenu{
+            AutoSizingMenu {
                 id: headerMenuX
 
                 MenuItem {
@@ -124,7 +124,7 @@ Page {
                     text: {
                         var result = model.modelData.twoLineTitle
 
-                        var wayTo  = Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), model.modelData.coordinate)
+                        var wayTo = Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), model.modelData.coordinate)
                         if (wayTo !== "")
                             result = result + "<br>" + wayTo
 
@@ -223,7 +223,7 @@ Page {
                             fadeOut.start()
                     }
                 }
-                SequentialAnimation{
+                SequentialAnimation {
                     id: fadeOut
                     NumberAnimation { target: downloadIndicator; property: "opacity"; to:1.0; duration: 400 }
                     NumberAnimation { target: downloadIndicator; property: "opacity"; to:0.0; duration: 400 }

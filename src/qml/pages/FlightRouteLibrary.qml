@@ -78,7 +78,7 @@ Page {
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                headerMenuX.popup()
+                headerMenuX.open()
             }
 
             AutoSizingMenu{
@@ -166,7 +166,7 @@ Page {
 
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    cptMenu.popup()
+                    cptMenu.open()
                 }
 
                 AutoSizingMenu {

@@ -22,13 +22,14 @@
 
 #include <QQmlEngine>
 
-#include "SafeInsets_Abstract.h"
+#include "platform/SafeInsets_Abstract.h"
 
 namespace Platform {
 
-/*! \brief Implementation of SafeInsets for Linux desktop devices, as a QML singleton */
+/*! \brief Implementation of SafeInsets for iOS */
 
-class SafeInsets : public SafeInsets_Abstract
+
+class SafeInsets : public Platform::SafeInsets_Abstract
 {
     Q_OBJECT
     QML_ELEMENT
@@ -47,9 +48,12 @@ public:
      *
      * @param parent Standard QObject parent pointer
      */
-    explicit SafeInsets(QObject *parent = nullptr);
+    explicit SafeInsets(QObject* parent = nullptr);
 
     ~SafeInsets() override = default;
+
+    /*! \brief Checks and updated properties */
+    void updateSafeInsets();
 
 private:
     Q_DISABLE_COPY_MOVE(SafeInsets)

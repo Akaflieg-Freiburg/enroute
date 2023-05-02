@@ -347,6 +347,8 @@ if (IOS)
         platform/PlatformAdaptor_iOS.cpp
         platform/SafeInsets_iOS.h
         platform/SafeInsets_iOS.cpp
+        ios/ObjCAdapter.mm
+        ios/ObjCAdapter.h
     )
 
     # Compile definitions
@@ -366,6 +368,10 @@ if (IOS)
         Qt6::Sql
         Qt6::Svg
         Qt6::WebView
+    )
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+        "-framework UserNotifications"
+        #"-framework NotificationCenter"
     )
     set_target_properties(${PROJECT_NAME} PROPERTIES
         MACOSX_BUNDLE true
@@ -446,6 +452,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/TrafficLabel.qml
     qml/items/WaypointDelegate.qml
     qml/items/WordWrappingCheckDelegate.qml
+    qml/items/WordWrappingRadioDelegate.qml
     qml/items/WordWrappingItemDelegate.qml
     qml/items/WordWrappingSwitchDelegate.qml
     qml/pages/SettingsPage.qml

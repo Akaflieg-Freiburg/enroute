@@ -349,6 +349,8 @@ if (IOS)
         platform/SafeInsets_iOS.cpp
         ios/ObjCAdapter.mm
         ios/ObjCAdapter.h
+        ios/ObjectiveC.h
+        ios/ObjectiveC.m
     )
 
     # Compile definitions

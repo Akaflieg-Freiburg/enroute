@@ -41,7 +41,7 @@ ScrollView {
             anchors.left: parent.left
             anchors.right: parent.right
 
-            height: implicitHeight
+            background: Pane { opacity: 0.8 }
 
             opacity: (scrollView.contentItem.contentY === 0) ? 0.0 : 1.0
             Behavior on opacity { NumberAnimation { duration: 200 } }
@@ -62,7 +62,7 @@ ScrollView {
             anchors.left: parent.left
             anchors.right: parent.right
 
-            height: implicitHeight
+            background: Pane { opacity: 0.8 }
 
             opacity: (scrollView.contentItem.contentY >= scrollView.contentHeight-scrollView.height ) ? 0.0 : 1.0
             Behavior on opacity { NumberAnimation { duration: 200 } }
@@ -74,7 +74,6 @@ ScrollView {
             verticalAlignment: Text.AlignBottom
         }
     }
-
 
     Component.onCompleted: {
         topItem.createObject(scrollView)

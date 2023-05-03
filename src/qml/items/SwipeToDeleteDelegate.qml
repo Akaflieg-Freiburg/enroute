@@ -41,5 +41,4 @@ SwipeDelegate {
             source: "/icons/material/ic_delete.svg"
         }
     }
-
 }

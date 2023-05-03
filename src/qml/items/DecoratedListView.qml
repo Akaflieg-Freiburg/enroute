@@ -31,64 +31,38 @@ ListView {
 
     Control { id: fontGlean }
 
-    Rectangle { // Label "more" at top of listview
-        opacity: parent.atYBeginning ? 0.0 : 1.0
+    Label {
+        anchors.left: listView.left
+        anchors.right: listView.right
+        anchors.top: listView.top
+
+        background: Pane { opacity: 0.8 }
+
+        opacity: listView.atYBeginning ? 0.0 : 1.0
         Behavior on opacity { NumberAnimation { duration: 200 } }
 
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.right: parent.right
+        font.pixelSize: 0.8*fontGlean.font.pixelSize
+        text: "▲ " + qsTr("more") + " ▲"
 
-        height: 2*topLabel.implicitHeight
-
-        gradient: Gradient {
-            GradientStop { position: 0.0; color: GlobalSettings.nightMode ? "#ff000000" : "#ffffffff" }
-            GradientStop { position: 0.3; color: GlobalSettings.nightMode ? "#ff000000" : "#ffffffff" }
-            GradientStop { position: 1.0; color: GlobalSettings.nightMode ? "#00000000" : "#00ffffff" }
-        }
-
-        Label {
-            id: topLabel
-
-            anchors.fill: parent
-
-            font.pixelSize: 0.8*fontGlean.font.pixelSize
-            text: "▲ " + qsTr("more") + " ▲"
-            color: GlobalSettings.nightMode ? "white" : "black"
-
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignTop
-        }
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignTop
     }
 
-    Rectangle { // Label "more" at bottom of listview
+    Label {
+        anchors.bottom: listView.bottom
+        anchors.left: listView.left
+        anchors.right: listView.right
+
+        background: Pane { opacity: 0.8 }
+
         opacity: parent.atYEnd ? 0.0 : 1.0
         Behavior on opacity { NumberAnimation { duration: 200 } }
 
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
+        font.pixelSize: 0.8*fontGlean.font.pixelSize
+        text: "▼ " + qsTr("more") + " ▼"
 
-        height: 2*bottomLabel.implicitHeight
-
-        gradient: Gradient {
-            GradientStop { position: 0.0; color: GlobalSettings.nightMode ? "#00000000" : "#00ffffff" }
-            GradientStop { position: 0.7; color: GlobalSettings.nightMode ? "#ff000000" : "#ffffffff" }
-            GradientStop { position: 1.0; color: GlobalSettings.nightMode ? "#ff000000" : "#ffffffff" }
-        }
-
-        Label {
-            id: bottomLabel
-
-            anchors.fill: parent
-
-            font.pixelSize: 0.8*fontGlean.font.pixelSize
-            text: "▼ " + qsTr("more") + " ▼"
-            color: GlobalSettings.nightMode ? "white" : "black"
-
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignBottom
-        }
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignBottom
     }
 
     ScrollIndicator.vertical: ScrollIndicator {}

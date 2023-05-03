@@ -20,6 +20,7 @@
 
 import QtQuick.Controls
 import akaflieg_freiburg.enroute
+import QtQml
 
 
 TextField {

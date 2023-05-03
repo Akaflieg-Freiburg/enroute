@@ -20,7 +20,6 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 
@@ -83,7 +82,7 @@ StackLayout {
                 top: stackLayout.maxValue
                 notation: DoubleValidator.StandardNotation
             }
-            color: (acceptableInput ? Material.foreground : "red")
+            color: (acceptableInput ? "" : "red")
 
             onEditingFinished: {
                 d.setValue()
@@ -119,7 +118,7 @@ StackLayout {
                 bottom: stackLayout.minValue
                 top: stackLayout.maxValue
             }
-            color: (acceptableInput ? Material.foreground : "red")
+            color: (acceptableInput ? "" : "red")
 
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {
@@ -139,7 +138,7 @@ StackLayout {
                 top: 59.9999999999999
                 notation: DoubleValidator.StandardNotation
             }
-            color: (acceptableInput ? Material.foreground : "red")
+            color: (acceptableInput ? "" : "red")
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {
                 dm.setValue()
@@ -178,7 +177,7 @@ StackLayout {
                 bottom: stackLayout.minValue
                 top: stackLayout.maxValue
             }
-            color: (acceptableInput ? Material.foreground : "red")
+            color: (acceptableInput ? "" : "red")
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {
                 dms.setValue()
@@ -196,7 +195,7 @@ StackLayout {
                 bottom: 0
                 top: 59
             }
-            color: (acceptableInput ? Material.foreground : "red")
+            color: (acceptableInput ? "" : "red")
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {
                 dms.setValue()
@@ -215,7 +214,7 @@ StackLayout {
                 top: 59.9999999999999
                 notation: DoubleValidator.StandardNotation
             }
-            color: (acceptableInput ? Material.foreground : "red")
+            color: (acceptableInput ? "" : "red")
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {
                 dms.setValue()

@@ -21,11 +21,9 @@
 import QtQml
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
-import enroute 1.0
 import "../dialogs"
 import "../items"
 
@@ -61,7 +59,6 @@ Page {
                 text: qsTr("Status")
                 font.pixelSize: sView.font.pixelSize*1.2
                 font.bold: true
-                color: Material.accent
             }
 
             Label { // Status
@@ -102,7 +99,6 @@ Page {
                 text: qsTr("Position Data")
                 font.pixelSize: sView.font.pixelSize*1.2
                 font.bold: true
-                color: Material.accent
             }
 
             Label { text: qsTr("Latitude") }

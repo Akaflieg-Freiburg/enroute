@@ -21,7 +21,6 @@
 import QtPositioning
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -36,9 +35,8 @@ Page {
     focus: true
 
 
-    header: ToolBar {
+    header: ColoredToolBar {
 
-        Material.foreground: "white"
         height: 60 + SafeInsets.top
         leftPadding: SafeInsets.left
         rightPadding: SafeInsets.right
@@ -82,7 +80,7 @@ Page {
             icon.source: "/icons/material/ic_more_vert.svg"
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                headerMenuX.popup()
+                headerMenuX.open()
             }
 
             AutoSizingMenu {
@@ -226,7 +224,6 @@ Page {
         topPadding: page.font.pixelSize
 
         placeholderText: qsTr("Waypoint Names")
-        font.pixelSize: page.font.pixelSize*1.5
     }
 
     Component {
@@ -275,7 +272,7 @@ Page {
 
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    cptMenu.popup()
+                    cptMenu.open()
                 }
 
                 AutoSizingMenu {

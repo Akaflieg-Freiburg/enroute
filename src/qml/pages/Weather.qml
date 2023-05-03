@@ -21,7 +21,6 @@
 import QtPositioning
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -33,9 +32,8 @@ Page {
     title: qsTr("Weather")
     focus: true
 
-    header: ToolBar {
+    header: ColoredToolBar {
 
-        Material.foreground: "white"
         height: 60 + SafeInsets.top
         leftPadding: SafeInsets.left
         rightPadding: SafeInsets.right
@@ -78,14 +76,13 @@ Page {
             anchors.right: parent.right
 
             icon.source: "/icons/material/ic_more_vert.svg"
-            icon.color: "white"
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                headerMenuX.popup()
+                headerMenuX.open()
             }
 
-            AutoSizingMenu{
+            AutoSizingMenu {
                 id: headerMenuX
 
                 MenuItem {
@@ -126,7 +123,7 @@ Page {
                     text: {
                         var result = model.modelData.twoLineTitle
 
-                        var wayTo  = Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), model.modelData.coordinate)
+                        var wayTo = Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), model.modelData.coordinate)
                         if (wayTo !== "")
                             result = result + "<br>" + wayTo
 
@@ -225,7 +222,7 @@ Page {
                             fadeOut.start()
                     }
                 }
-                SequentialAnimation{
+                SequentialAnimation {
                     id: fadeOut
                     NumberAnimation { target: downloadIndicator; property: "opacity"; to:1.0; duration: 400 }
                     NumberAnimation { target: downloadIndicator; property: "opacity"; to:0.0; duration: 400 }
@@ -275,13 +272,7 @@ Page {
 
         }
 
-    footer: Pane {
-        width: parent.width
-        bottomPadding: SafeInsets.bottom+16
-        leftPadding: SafeInsets.left+16
-        rightPadding: SafeInsets.right+16
-
-        Material.elevation: 3
+    footer: Footer {
         visible: (sunLabel.text !== "") || (qnhLabel.text !== "")
 
         GridLayout {
@@ -311,7 +302,6 @@ Page {
             }
 
         }
-
     }
 
     Loader {

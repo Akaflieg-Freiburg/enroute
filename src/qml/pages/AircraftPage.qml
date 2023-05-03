@@ -21,7 +21,6 @@
 import QtQml
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -40,9 +39,8 @@ Page {
     property speed staticSpeed
     property volumeFlow staticVolumeFlow
 
-    header: ToolBar {
+    header: ColoredToolBar {
 
-        Material.foreground: "white"
         height: 60 + SafeInsets.top
         leftPadding: SafeInsets.left
         rightPadding: SafeInsets.right
@@ -86,7 +84,7 @@ Page {
                 icon.source: "/icons/material/ic_more_vert.svg"
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    headerMenuX.popup()
+                    headerMenuX.open()
                 }
 
                 AutoSizingMenu {
@@ -140,7 +138,6 @@ Page {
 
             columns: 4
 
-
             Rectangle {
                 Layout.columnSpan: 4
                 Layout.preferredHeight: acftTab.font.pixelSize
@@ -150,7 +147,7 @@ Page {
                 Layout.columnSpan: 4
                 font.pixelSize: acftTab.font.pixelSize*1.2
                 font.bold: true
-                color: Material.accent
+//                color: Material.accent
             }
 
 
@@ -173,12 +170,13 @@ Page {
                 text: Navigator.aircraft.name
             }
 
+            Label { Layout.fillHeight: true }
             Label {
                 text: qsTr("Units")
                 Layout.columnSpan: 4
                 font.pixelSize: acftTab.font.pixelSize*1.2
                 font.bold: true
-                color: Material.accent
+//                color: Material.accent
             }
 
             Label {
@@ -260,7 +258,7 @@ Page {
                 Layout.columnSpan: 4
                 font.pixelSize: acftTab.font.pixelSize*1.2
                 font.bold: true
-                color: Material.accent
+//                color: Material.accent
             }
 
             Label {
@@ -311,7 +309,7 @@ Page {
                         return
                     }
                 }
-                color: (acceptableInput ? Material.foreground : "red")
+                color: (acceptableInput ? "" : "red")
                 text: {
                     if (!Navigator.aircraft.cruiseSpeed.isFinite()) {
                         return ""
@@ -399,7 +397,7 @@ Page {
                         return
                     }
                 }
-                color: (acceptableInput ? Material.foreground : "red")
+                color: (acceptableInput ? "" : "red")
                 text: {
                     if (!Navigator.aircraft.descentSpeed.isFinite()) {
                         return ""
@@ -485,7 +483,7 @@ Page {
                         return
                     }
                 }
-                color: (acceptableInput ? Material.foreground : "red")
+                color: (acceptableInput ? "" : "red")
                 text: {
                     if (!Navigator.aircraft.minimumSpeed.isFinite()) {
                         return ""
@@ -530,7 +528,6 @@ Page {
                 Layout.columnSpan: 4
                 font.pixelSize: acftTab.font.pixelSize*1.2
                 font.bold: true
-                color: Material.accent
             }
 
             Label {
@@ -543,6 +540,7 @@ Page {
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: font.pixelSize*5
                 KeyNavigation.tab: name
+                rightPadding: 30
 
                 validator: DoubleValidator {
                     bottom: {
@@ -574,7 +572,7 @@ Page {
                         return
                     }
                 }
-                color: (acceptableInput ? Material.foreground : "red")
+                color: (acceptableInput ? "" : "red")
                 text: {
                     if (!Navigator.aircraft.fuelConsumption.isFinite()) {
                         return ""
@@ -606,6 +604,11 @@ Page {
                     Navigator.aircraft.fuelConsumption = aircraftPage.staticVolumeFlow.fromLPH(-1)
                     fuelConsumption.clear()
                 }
+            }
+
+            Rectangle {
+                Layout.columnSpan: 4
+                Layout.preferredHeight: acftTab.font.pixelSize
             }
 
         }

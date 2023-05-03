@@ -21,11 +21,9 @@
 import QtQml
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
-import enroute 1.0
 import "../dialogs"
 import "../items"
 
@@ -61,7 +59,6 @@ Page {
                 text: qsTr("Connection Status")
                 font.pixelSize: sView.font.pixelSize*1.2
                 font.bold: true
-                color: Material.accent
             }
 
             Label { // Status
@@ -98,7 +95,6 @@ Page {
                 text: qsTr("Traffic Data Receiver Status")
                 font.pixelSize: sView.font.pixelSize*1.2
                 font.bold: true
-                color: Material.accent
             }
 
             Label {
@@ -167,7 +163,6 @@ Page {
                 text: qsTr("Help")
                 font.pixelSize: sView.font.pixelSize*1.2
                 font.bold: true
-                color: Material.accent
             }
 
             WordWrappingItemDelegate {

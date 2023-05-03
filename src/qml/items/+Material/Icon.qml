@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,40 +18,33 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+import Qt5Compat.GraphicalEffects
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Controls.Material
 
-import akaflieg_freiburg.enroute
-import "../items"
+Item {
 
-CenteringDialog {
-    id: dlg
+    implicitHeight: 24
+    implicitWidth: 24
 
-    modal: true
-    title: dialogLoader.title
-    standardButtons: Dialog.Ok
+    /*! \brief Name of a graphics file */
+    property string source
 
-    
-    DecoratedScrollView{
+
+    Image {
+        id: wpLblImg
         anchors.fill: parent
-        contentWidth: availableWidth // Disable horizontal scrolling
+        fillMode: Image.PreserveAspectFit
+        visible: false
+        source: parent.source
+    }
 
-        // Delays evaluation and prevents binding loops
-        Binding on implicitHeight {
-            value: lbl.implicitHeight
-            delayed: true    // Prevent intermediary values from being assigned
-        }
-
-        clip: true
-
-        Label {
-            id: lbl
-            text: dialogLoader.text
-            width: dlg.availableWidth
-            textFormat: Text.RichText
-            wrapMode: Text.Wrap
-            onLinkActivated: (link) => Qt.openUrlExternally(link)
-        }
+    ColorOverlay {
+        id: colorOverlay
+        anchors.fill: parent
+        source: wpLblImg
+        color: Material.foreground
     }
 
 }

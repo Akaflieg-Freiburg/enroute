@@ -20,7 +20,6 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -147,7 +146,6 @@ CenteringDialog {
 
                     background: Rectangle {
                         border.color: "black"
-                        color: Material.foreground
                         opacity: 0.2
                         radius: 4
                     }

@@ -21,15 +21,14 @@
 import QtCore
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
-
 import "dialogs"
 import "items"
 
-ApplicationWindow {
+
+AppWindow {
     id: view
     objectName: "applicationWindow"
 
@@ -50,16 +49,18 @@ ApplicationWindow {
         property alias height: view.height
     }
 
+    /*
     Material.theme: GlobalSettings.nightMode ? Material.Dark : Material.Light
     Material.primary: Material.theme === Material.Dark ? Qt.darker("teal") : "teal"
     Material.accent: Material.theme === Material.Dark ? Qt.lighter("teal") : "teal"
+*/
 
     Drawer {
         id: drawer
 
         height: (Qt.platform.os === "android") ? SafeInsets.wHeight : parent.height
         width: col.implicitWidth
-        Material.roundedScale: Material.NotRounded
+//        Material.roundedScale: Material.NotRounded
 
         DecoratedScrollView {
             anchors.fill: parent
@@ -82,7 +83,7 @@ ApplicationWindow {
                     font.weight: Font.Medium
 
                     background: Rectangle {
-                        color: Material.primary
+                        color: "teal"
                     }
                 }
 
@@ -90,7 +91,7 @@ ApplicationWindow {
                     Layout.fillWidth: true
                     Layout.preferredHeight: 4
 
-                    color: Material.primary
+                    color: "teal"
                 }
 
                 Label { // Subtitle
@@ -105,7 +106,7 @@ ApplicationWindow {
                     color: "white"
 
                     background: Rectangle {
-                        color: Material.primary
+                        color: "teal"
                     }
                 }
 
@@ -113,7 +114,7 @@ ApplicationWindow {
                     Layout.preferredHeight: 18
                     Layout.fillWidth: true
 
-                    color: Material.primary
+                    color: "teal"
                 }
 
                 ItemDelegate { // Aircraft
@@ -190,7 +191,7 @@ ApplicationWindow {
                     Layout.preferredHeight: 1
                     Layout.fillWidth: true
 
-                    color: Material.primary
+                    color: "teal"
                 }
 
                 ItemDelegate {
@@ -203,7 +204,7 @@ ApplicationWindow {
 
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
-                        libraryMenu.popup()
+                        libraryMenu.open()
                     }
 
                     AutoSizingMenu {
@@ -288,7 +289,7 @@ ApplicationWindow {
                     Layout.preferredHeight: 1
                     Layout.fillWidth: true
 
-                    color: Material.primary
+                    color: "black"
                 }
 
                 ItemDelegate {
@@ -301,7 +302,7 @@ ApplicationWindow {
 
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
-                        aboutMenu.popup()
+                        aboutMenu.open()
                     }
 
                     AutoSizingMenu { // Info Menu
@@ -353,7 +354,7 @@ ApplicationWindow {
                         Rectangle {
                             height: 1
                             Layout.fillWidth: true
-                            color: Material.primary
+                            color: "black"
                         }
 
                         ItemDelegate { // About
@@ -421,7 +422,7 @@ ApplicationWindow {
 
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
-                        manualMenu.popup()
+                        manualMenu.open()
                     }
 
 
@@ -453,7 +454,7 @@ ApplicationWindow {
                             visible: Qt.platform.os === "android"
                             height: visible ? 1 : 0
                             Layout.fillWidth: true
-                            color: Material.primary
+                            color: "black"
                         }
 
                         ItemDelegate {
@@ -525,7 +526,7 @@ ApplicationWindow {
                     Layout.preferredHeight: 1
                     Layout.fillWidth: true
 
-                    color: Material.primary
+                    color: "black"
                     visible: Navigator.flightStatus !== Navigator.Flight
                 }
 
@@ -677,7 +678,7 @@ ApplicationWindow {
 
         horizontalAlignment: Text.AlignHCenter
         background: Rectangle {
-            color: Material.primary
+            color: "teal"
             radius: 5
         }
 
@@ -934,3 +935,4 @@ Go to the 'Settings' page if you wish to restore the original, safe, behavior of
             Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteText/manual/"+pageUrl)
     }
 }
+

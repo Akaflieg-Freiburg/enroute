@@ -437,6 +437,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/ImportManager.qml
     qml/items/MapSet.qml
     qml/items/MFM.qml
+    qml/items/MyTextField.qml
     qml/items/NavBar.qml
     qml/items/RemainingRouteBar.qml
     qml/items/StandardHeader.qml

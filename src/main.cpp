@@ -184,6 +184,10 @@ auto main(int argc, char *argv[]) -> int
      * Set up ApplicationEngine for QML
      */
 
+#if defined(Q_OS_ANDROID) or defined(Q_OS_IOS)
+    QQuickStyle::setStyle("Material");
+#endif
+
     auto* engine = new QQmlApplicationEngine();
     engine->rootContext()->setContextProperty(QStringLiteral("manual_location"), MANUAL_LOCATION );
     engine->rootContext()->setContextProperty(QStringLiteral("global"), new GlobalObject(engine) );

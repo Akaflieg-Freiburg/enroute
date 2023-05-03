@@ -36,72 +36,42 @@ ScrollView {
     Component {
         id: topItem
 
-        Rectangle { // Label "more" at top of listview
-            opacity: (scrollView.contentItem.contentY === 0) ? 0.0 : 1.0
-            Behavior on opacity { NumberAnimation { duration: 200 } }
-
+        Label {
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.right: parent.right
 
-            height: 2*topLabel.implicitHeight
+            height: implicitHeight
 
-            gradient: Gradient {
-                GradientStop { position: 0.0; color: GlobalSettings.nightMode ? "#ff000000" : "#ffffffff" }
-                GradientStop { position: 0.3; color: GlobalSettings.nightMode ? "#ff000000" : "#ffffffff" }
-                GradientStop { position: 1.0; color: GlobalSettings.nightMode ? "#00000000" : "#00ffffff" }
-            }
+            opacity: (scrollView.contentItem.contentY === 0) ? 0.0 : 1.0
+            Behavior on opacity { NumberAnimation { duration: 200 } }
 
-            Control { id: topFontGlean }
+            font.pixelSize: 0.8*scrollView.font.pixelSize
+            text: "▲ " + qsTr("more") + " ▲"
 
-            Label {
-                id: topLabel
-
-                anchors.fill: parent
-
-                font.pixelSize: 0.8*topFontGlean.font.pixelSize
-                text: "▲ " + qsTr("more") + " ▲"
-                color: GlobalSettings.nightMode ? "white" : "black"
-
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignTop
-            }
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignTop
         }
     }
 
     Component {
         id: bottomItem
 
-        Rectangle { // Label "more" at bottom of listview
-            opacity: (scrollView.contentItem.contentY >= scrollView.contentHeight-scrollView.height ) ? 0.0 : 1.0
-            Behavior on opacity { NumberAnimation { duration: 200 } }
-
+        Label {
             anchors.bottom: parent.bottom
             anchors.left: parent.left
             anchors.right: parent.right
 
-            height: 2*bottomLabel.implicitHeight
+            height: implicitHeight
 
-            gradient: Gradient {
-                GradientStop { position: 0.0; color: GlobalSettings.nightMode ? "#00000000" : "#00ffffff" }
-                GradientStop { position: 0.7; color: GlobalSettings.nightMode ? "#ff000000" : "#ffffffff" }
-                GradientStop { position: 1.0; color: GlobalSettings.nightMode ? "#ff000000" : "#ffffffff" }
-            }
+            opacity: (scrollView.contentItem.contentY >= scrollView.contentHeight-scrollView.height ) ? 0.0 : 1.0
+            Behavior on opacity { NumberAnimation { duration: 200 } }
 
-            Control { id: bottomFontGlean }
+            font.pixelSize: 0.8*scrollView.font.pixelSize
+            text: "▼ " + qsTr("more") + " ▼"
 
-            Label {
-                id: bottomLabel
-
-                anchors.fill: parent
-
-                font.pixelSize: 0.8*bottomFontGlean.font.pixelSize
-                text: "▼ " + qsTr("more") + " ▼"
-                color: GlobalSettings.nightMode ? "white" : "black"
-
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignBottom
-            }
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignBottom
         }
     }
 

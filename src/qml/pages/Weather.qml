@@ -76,7 +76,6 @@ Page {
             anchors.right: parent.right
 
             icon.source: "/icons/material/ic_more_vert.svg"
-            icon.color: "white"
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()

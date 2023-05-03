@@ -140,7 +140,6 @@ Page {
 
             columns: 4
 
-
             Rectangle {
                 Layout.columnSpan: 4
                 Layout.preferredHeight: acftTab.font.pixelSize
@@ -531,7 +530,6 @@ Page {
                 Layout.columnSpan: 4
                 font.pixelSize: acftTab.font.pixelSize*1.2
                 font.bold: true
-//                color: Material.accent
             }
 
             Label {
@@ -544,6 +542,7 @@ Page {
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: font.pixelSize*5
                 KeyNavigation.tab: name
+                rightPadding: 30
 
                 validator: DoubleValidator {
                     bottom: {
@@ -607,6 +606,11 @@ Page {
                     Navigator.aircraft.fuelConsumption = aircraftPage.staticVolumeFlow.fromLPH(-1)
                     fuelConsumption.clear()
                 }
+            }
+
+            Rectangle {
+                Layout.columnSpan: 4
+                Layout.preferredHeight: acftTab.font.pixelSize
             }
 
         }

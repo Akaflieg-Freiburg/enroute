@@ -6,6 +6,7 @@
 
 #import <UserNotifications/UserNotifications.h>
 #import <CoreLocation/CoreLocation.h>
+#import "ObjectiveC.h"
 
 
 void ObjCAdapter::vibrateBrief() {
@@ -30,8 +31,12 @@ double ObjCAdapter::safeAreaLeftInset() {
     return window.safeAreaInsets.left;
 }
 double ObjCAdapter::safeAreaBottomInset() {
+    ObjectiveC* instance = [ObjectiveC sharedInstance];
+
     UIWindow *window = UIApplication.sharedApplication.windows.firstObject;
-    return window.safeAreaInsets.bottom;
+    auto result = window.safeAreaInsets.bottom;
+    float keyboardHeight = [instance keyboardHeight];
+    return result + keyboardHeight;
 }
 double ObjCAdapter::safeAreaRightInset() {
     UIWindow *window = UIApplication.sharedApplication.windows.firstObject;
@@ -47,31 +52,10 @@ bool ObjCAdapter::hasLocationPermission() {
 }
 
 bool ObjCAdapter::hasNotificationPermission() {
-  __block bool enabled = false;
-  __block bool hasResult = false;
-  UNUserNotificationCenter* current = [UNUserNotificationCenter currentNotificationCenter];
-  [current getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings *settings) {
-    switch(settings.authorizationStatus) {
-      case UNAuthorizationStatusDenied:
-      case UNAuthorizationStatusNotDetermined:
-        enabled = NO;
-        break;
-      default:
-        enabled = YES;
-        break;
-    }
-    hasResult = true;
-  }];
-
-  //TODO: This is VERY UGLY
-  while (!hasResult) {
-    [NSThread sleepForTimeInterval:0.1f];
-  }
-  return enabled;
+  return [[ObjectiveC sharedInstance] hasNotificationPermission];
 }
 
 void ObjCAdapter::requestNotificationPermission() {
-  NSLog(@"Asking for permission");
   UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
   [center requestAuthorizationWithOptions:(UNAuthorizationOptionAlert + UNAuthorizationOptionSound)
                         completionHandler:^(BOOL granted, NSError * _Nullable error) {

@@ -130,7 +130,7 @@ Page {
         // If virtual keyboard come up, make sure that the focused element is visible
         onHeightChanged: {
             if (activeFocusControl != null) {
-                contentItem.contentY = activeFocusControl.y
+                contentItem.contentY = activeFocusControl.y - font.pixelSize
             }
         }
 
@@ -163,6 +163,7 @@ Page {
             }
             TextField {
                 id: name
+                Component.onCompleted: PlatformAdaptor.setupImEventFilter(name)
                 Layout.columnSpan: 3
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
@@ -272,6 +273,7 @@ Page {
             }
             TextField {
                 id: cruiseSpeed
+                Component.onCompleted: PlatformAdaptor.setupImEventFilter(cruiseSpeed)
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: font.pixelSize*5
@@ -359,6 +361,7 @@ Page {
             }
             TextField {
                 id: descentSpeed
+                Component.onCompleted: PlatformAdaptor.setupImEventFilter(descentSpeed)
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: font.pixelSize*5
@@ -446,6 +449,7 @@ Page {
             }
             TextField {
                 id: minimumSpeed
+                Component.onCompleted: PlatformAdaptor.setupImEventFilter(minimumSpeed)
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: font.pixelSize*5
@@ -546,6 +550,8 @@ Page {
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: font.pixelSize*5
                 KeyNavigation.tab: name
+
+                Component.onCompleted: PlatformAdaptor.setupImEventFilter(fuelConsumption)
 
                 validator: DoubleValidator {
                     bottom: {

@@ -234,6 +234,7 @@ if(ANDROID)
         Qt6::HttpServer
         Qt6::Positioning
         Qt6::Quick
+        Qt6::QuickControls2
         Qt6::Sql
         Qt6::Svg
         Qt6::WebView)
@@ -279,6 +280,7 @@ if (UNIX AND NOT ANDROID AND NOT APPLE)
         Qt6::HttpServer
         Qt6::Positioning
         Qt6::Quick
+        Qt6::QuickControls2
         Qt6::Sql
         Qt6::Svg
         Qt6::Widgets
@@ -326,6 +328,7 @@ if (APPLE AND NOT IOS)
         Qt6::HttpServer
         Qt6::Positioning
         Qt6::Quick
+        Qt6::QuickControls2
         Qt6::Sql
         Qt6::Svg
         Qt6::Widgets
@@ -367,6 +370,7 @@ if (IOS)
         Qt6::HttpServer
         Qt6::Positioning
         Qt6::Quick
+        Qt6::QuickControls2
         Qt6::Sql
         Qt6::Svg
         Qt6::WebView

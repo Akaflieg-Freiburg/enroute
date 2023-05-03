@@ -161,9 +161,8 @@ Page {
                 text: qsTr("Name")
                 Layout.alignment: Qt.AlignBaseline
             }
-            TextField {
+            MyTextField {
                 id: name
-                Component.onCompleted: PlatformAdaptor.setupImEventFilter(name)
                 Layout.columnSpan: 3
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
@@ -271,9 +270,8 @@ Page {
                 text: qsTr("Cruise")
                 Layout.alignment: Qt.AlignBaseline
             }
-            TextField {
+            MyTextField {
                 id: cruiseSpeed
-                Component.onCompleted: PlatformAdaptor.setupImEventFilter(cruiseSpeed)
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: font.pixelSize*5
@@ -359,9 +357,8 @@ Page {
                 text: qsTr("Descent")
                 Layout.alignment: Qt.AlignBaseline
             }
-            TextField {
+            MyTextField {
                 id: descentSpeed
-                Component.onCompleted: PlatformAdaptor.setupImEventFilter(descentSpeed)
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: font.pixelSize*5
@@ -447,9 +444,8 @@ Page {
                 text: qsTr("Minimum")
                 Layout.alignment: Qt.AlignBaseline
             }
-            TextField {
+            MyTextField {
                 id: minimumSpeed
-                Component.onCompleted: PlatformAdaptor.setupImEventFilter(minimumSpeed)
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: font.pixelSize*5
@@ -544,14 +540,12 @@ Page {
                 text: qsTr("Cruise")
                 Layout.alignment: Qt.AlignBaseline
             }
-            TextField {
+            MyTextField {
                 id: fuelConsumption
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: font.pixelSize*5
                 KeyNavigation.tab: name
-
-                Component.onCompleted: PlatformAdaptor.setupImEventFilter(fuelConsumption)
 
                 validator: DoubleValidator {
                     bottom: {

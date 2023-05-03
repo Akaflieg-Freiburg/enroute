@@ -211,23 +211,44 @@ Page {
         }
     }
 
-    TextField {
-        id: textInput
+    RowLayout {
+        id: filterRow
 
-        anchors.right: parent.right
-        anchors.rightMargin: font.pixelSize*2.0
         anchors.left: parent.left
-        anchors.leftMargin: font.pixelSize*2.0
+        anchors.leftMargin: SafeInsets.left
+        anchors.right: parent.right
+        anchors.rightMargin: SafeInsets.right
+        anchors.top: parent.top
+        anchors.topMargin: page.font.pixelSize
 
-        leftPadding: SafeInsets.left
-        rightPadding: SafeInsets.right
-        topPadding: page.font.pixelSize
+        Label {
+            Layout.alignment: Qt.AlignBaseline
 
-        placeholderText: qsTr("Waypoint Names")
+            text: qsTr("Filter")
+        }
+
+        TextField {
+            id: textInput
+
+            Layout.alignment: Qt.AlignBaseline
+            Layout.fillWidth: true
+        }
     }
 
-    Component {
-        id: waypointDelegate
+    Pane {
+
+        anchors.top: filterRow.bottom
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+
+        bottomPadding: SafeInsets.bottom
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
+        topPadding: font.pixelSize
+
+        Component {
+            id: waypointDelegate
 
         RowLayout {
             width: wpList.width
@@ -297,6 +318,7 @@ Page {
 
     DecoratedListView {
         id: wpList
+
         anchors.top: textInput.bottom
         anchors.bottom: parent.bottom
         anchors.left: parent.left

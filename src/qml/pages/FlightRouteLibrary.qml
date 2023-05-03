@@ -112,224 +112,241 @@ Page {
 
     }
 
-    TextField {
-        id: textInput
+    RowLayout {
+        id: filterRow
 
-        anchors.right: parent.right
-        anchors.rightMargin: font.pixelSize*2.0
         anchors.left: parent.left
-        anchors.leftMargin: font.pixelSize*2.0
-        leftPadding: SafeInsets.left
-        rightPadding: SafeInsets.right
-        topPadding: page.font.pixelSize
+        anchors.leftMargin: SafeInsets.left
+        anchors.right: parent.right
+        anchors.rightMargin: SafeInsets.right
+        anchors.top: parent.top
+        anchors.topMargin: page.font.pixelSize
 
-        placeholderText: qsTr("Flight Route Name")
-    }
+        Label {
+            Layout.alignment: Qt.AlignBaseline
 
-    Component {
-        id: flightRouteDelegate
-
-        RowLayout {
-            anchors.left: parent.left
-            anchors.right: parent.right
-            Layout.fillWidth: true
-            height: iDel.heigt
-
-            SwipeToDeleteDelegate {
-                id: iDel
-                Layout.fillWidth: true
-
-                text: modelData
-                icon.source: "/icons/material/ic_directions.svg"
-
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    finalFileName = modelData
-                    if (Navigator.flightRoute.size > 0)
-                        overwriteDialog.open()
-                    else
-                        openFromLibrary()
-                }
-
-                swipe.onCompleted: {
-                    PlatformAdaptor.vibrateBrief()
-                    finalFileName = modelData
-                    removeDialog.open()
-                }
-
-            }
-
-            ToolButton {
-                id: cptMenuButton
-
-                icon.source: "/icons/material/ic_more_horiz.svg"
-
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    cptMenu.open()
-                }
-
-                AutoSizingMenu {
-                    id: cptMenu
-
-                    AutoSizingMenu {
-                        title: Qt.platform.os === "android" ? qsTr("Share…") : qsTr("Export…")
-
-                        MenuItem {
-                            text: qsTr("… to GeoJSON file")
-                            onTriggered: {
-                                cptMenu.close()
-                                PlatformAdaptor.vibrateBrief()
-                                highlighted = false
-                                parent.highlighted = false
-
-                                var errorString = FileExchange.shareContent(Librarian.get(Librarian.Routes, modelData).toGeoJSON(), "application/geo+json", Librarian.get(Librarian.Routes, modelData).suggestedFilename())
-                                if (errorString === "abort") {
-                                    toast.doToast(qsTr("Aborted"))
-                                    return
-                                }
-                                if (errorString !== "") {
-                                    shareErrorDialog.text = errorString
-                                    shareErrorDialog.open()
-                                    return
-                                }
-                                if (Qt.platform.os === "android")
-                                    toast.doToast(qsTr("Flight route shared"))
-                                else
-                                    toast.doToast(qsTr("Flight route exported"))
-                            }
-                        }
-
-                        MenuItem {
-                            text: qsTr("… to GPX file")
-                            onTriggered: {
-                                cptMenu.close()
-                                PlatformAdaptor.vibrateBrief()
-                                highlighted = false
-                                parent.highlighted = false
-
-                                var errorString = FileExchange.shareContent(Librarian.get(Librarian.Routes, modelData).toGpx(), "application/gpx+xml", Librarian.get(Librarian.Routes, modelData).suggestedFilename())
-                                if (errorString === "abort") {
-                                    toast.doToast(qsTr("Aborted"))
-                                    return
-                                }
-                                if (errorString !== "") {
-                                    shareErrorDialog.text = errorString
-                                    shareErrorDialog.open()
-                                    return
-                                }
-                                if (Qt.platform.os === "android")
-                                    toast.doToast(qsTr("Flight route shared"))
-                                else
-                                    toast.doToast(qsTr("Flight route exported"))
-                            }
-                        }
-                    }
-
-                    AutoSizingMenu {
-                        title: qsTr("Open in Other App…")
-
-                        MenuItem {
-                            text: qsTr("… in GeoJSON format")
-
-                            onTriggered: {
-                                PlatformAdaptor.vibrateBrief()
-                                highlighted = false
-                                parent.highlighted = false
-
-                                var errorString = FileExchange.viewContent(Librarian.get(Librarian.Routes, modelData).toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson")
-                                if (errorString !== "") {
-                                    shareErrorDialog.text = errorString
-                                    shareErrorDialog.open()
-                                } else
-                                    toast.doToast(qsTr("Flight route opened in other app"))
-                            }
-                        }
-
-                        MenuItem {
-                            text: qsTr("… in GPX format")
-
-                            onTriggered: {
-                                PlatformAdaptor.vibrateBrief()
-                                highlighted = false
-                                parent.highlighted = false
-
-                                var errorString = FileExchange.viewContent(Librarian.get(Librarian.Routes, modelData).toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx")
-                                if (errorString !== "") {
-                                    shareErrorDialog.text = errorString
-                                    shareErrorDialog.open()
-                                } else
-                                    toast.doToast(qsTr("Flight route opened in other app"))
-                            }
-                        }
-
-                    }
-
-                    MenuSeparator { }
-
-                    Action {
-                        id: renameAction
-                        text: qsTr("Rename…")
-                        onTriggered: {
-                            PlatformAdaptor.vibrateBrief()
-                            finalFileName = modelData
-                            renameName.text = modelData
-                            renameDialog.open()
-                        }
-
-                    } // renameAction
-
-                    Action {
-                        id: removeAction
-                        text: qsTr("Remove…")
-                        onTriggered: {
-                            PlatformAdaptor.vibrateBrief()
-                            finalFileName = modelData
-                            removeDialog.open()
-                        }
-                    } // removeAction
-                } // AutoSizingMenu
-
-            } // ToolButton
-
+            text: qsTr("Filter")
         }
 
+        TextField {
+            id: textInput
+
+            Layout.alignment: Qt.AlignBaseline
+            Layout.fillWidth: true
+        }
     }
 
-    DecoratedListView {
-        id: wpList
-        anchors.top: textInput.bottom
+    Pane {
+
+        anchors.top: filterRow.bottom
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        leftMargin: SafeInsets.left
-        rightMargin: SafeInsets.right
-        bottomMargin: SafeInsets.bottom
 
-        clip: true
+        bottomPadding: SafeInsets.bottom
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
+        topPadding: font.pixelSize
 
-        model: Librarian.entries(Librarian.Routes, textInput.displayText)
-        delegate: flightRouteDelegate
-        ScrollIndicator.vertical: ScrollIndicator {}
+        Component {
+            id: flightRouteDelegate
+
+            RowLayout {
+                anchors.left: parent.left
+                anchors.right: parent.right
+                Layout.fillWidth: true
+                height: iDel.heigt
+
+                SwipeToDeleteDelegate {
+                    id: iDel
+                    Layout.fillWidth: true
+
+                    text: modelData
+                    icon.source: "/icons/material/ic_directions.svg"
+
+                    onClicked: {
+                        PlatformAdaptor.vibrateBrief()
+                        finalFileName = modelData
+                        if (Navigator.flightRoute.size > 0)
+                            overwriteDialog.open()
+                        else
+                            openFromLibrary()
+                    }
+
+                    swipe.onCompleted: {
+                        PlatformAdaptor.vibrateBrief()
+                        finalFileName = modelData
+                        removeDialog.open()
+                    }
+
+                }
+
+                ToolButton {
+                    id: cptMenuButton
+
+                    icon.source: "/icons/material/ic_more_horiz.svg"
+
+                    onClicked: {
+                        PlatformAdaptor.vibrateBrief()
+                        cptMenu.open()
+                    }
+
+                    AutoSizingMenu {
+                        id: cptMenu
+
+                        AutoSizingMenu {
+                            title: Qt.platform.os === "android" ? qsTr("Share…") : qsTr("Export…")
+
+                            MenuItem {
+                                text: qsTr("… to GeoJSON file")
+                                onTriggered: {
+                                    cptMenu.close()
+                                    PlatformAdaptor.vibrateBrief()
+                                    highlighted = false
+                                    parent.highlighted = false
+
+                                    var errorString = FileExchange.shareContent(Librarian.get(Librarian.Routes, modelData).toGeoJSON(), "application/geo+json", Librarian.get(Librarian.Routes, modelData).suggestedFilename())
+                                    if (errorString === "abort") {
+                                        toast.doToast(qsTr("Aborted"))
+                                        return
+                                    }
+                                    if (errorString !== "") {
+                                        shareErrorDialog.text = errorString
+                                        shareErrorDialog.open()
+                                        return
+                                    }
+                                    if (Qt.platform.os === "android")
+                                        toast.doToast(qsTr("Flight route shared"))
+                                    else
+                                        toast.doToast(qsTr("Flight route exported"))
+                                }
+                            }
+
+                            MenuItem {
+                                text: qsTr("… to GPX file")
+                                onTriggered: {
+                                    cptMenu.close()
+                                    PlatformAdaptor.vibrateBrief()
+                                    highlighted = false
+                                    parent.highlighted = false
+
+                                    var errorString = FileExchange.shareContent(Librarian.get(Librarian.Routes, modelData).toGpx(), "application/gpx+xml", Librarian.get(Librarian.Routes, modelData).suggestedFilename())
+                                    if (errorString === "abort") {
+                                        toast.doToast(qsTr("Aborted"))
+                                        return
+                                    }
+                                    if (errorString !== "") {
+                                        shareErrorDialog.text = errorString
+                                        shareErrorDialog.open()
+                                        return
+                                    }
+                                    if (Qt.platform.os === "android")
+                                        toast.doToast(qsTr("Flight route shared"))
+                                    else
+                                        toast.doToast(qsTr("Flight route exported"))
+                                }
+                            }
+                        }
+
+                        AutoSizingMenu {
+                            title: qsTr("Open in Other App…")
+
+                            MenuItem {
+                                text: qsTr("… in GeoJSON format")
+
+                                onTriggered: {
+                                    PlatformAdaptor.vibrateBrief()
+                                    highlighted = false
+                                    parent.highlighted = false
+
+                                    var errorString = FileExchange.viewContent(Librarian.get(Librarian.Routes, modelData).toGeoJSON(), "application/geo+json", "FlightRoute-%1.geojson")
+                                    if (errorString !== "") {
+                                        shareErrorDialog.text = errorString
+                                        shareErrorDialog.open()
+                                    } else
+                                        toast.doToast(qsTr("Flight route opened in other app"))
+                                }
+                            }
+
+                            MenuItem {
+                                text: qsTr("… in GPX format")
+
+                                onTriggered: {
+                                    PlatformAdaptor.vibrateBrief()
+                                    highlighted = false
+                                    parent.highlighted = false
+
+                                    var errorString = FileExchange.viewContent(Librarian.get(Librarian.Routes, modelData).toGpx(), "application/gpx+xml", "FlightRoute-%1.gpx")
+                                    if (errorString !== "") {
+                                        shareErrorDialog.text = errorString
+                                        shareErrorDialog.open()
+                                    } else
+                                        toast.doToast(qsTr("Flight route opened in other app"))
+                                }
+                            }
+
+                        }
+
+                        MenuSeparator { }
+
+                        Action {
+                            id: renameAction
+                            text: qsTr("Rename…")
+                            onTriggered: {
+                                PlatformAdaptor.vibrateBrief()
+                                finalFileName = modelData
+                                renameName.text = modelData
+                                renameDialog.open()
+                            }
+
+                        } // renameAction
+
+                        Action {
+                            id: removeAction
+                            text: qsTr("Remove…")
+                            onTriggered: {
+                                PlatformAdaptor.vibrateBrief()
+                                finalFileName = modelData
+                                removeDialog.open()
+                            }
+                        } // removeAction
+                    } // AutoSizingMenu
+
+                } // ToolButton
+
+            }
+
+        }
+
+        DecoratedListView {
+            id: wpList
+
+            anchors.fill: parent
+
+            clip: true
+
+            model: Librarian.entries(Librarian.Routes, textInput.displayText)
+            delegate: flightRouteDelegate
+            ScrollIndicator.vertical: ScrollIndicator {}
+        }
+
+        Label {
+            anchors.fill: parent
+            anchors.topMargin: font.pixelSize*2
+
+            visible: (wpList.count === 0)
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            leftPadding: font.pixelSize*2
+            rightPadding: font.pixelSize*2
+
+            textFormat: Text.StyledText
+            wrapMode: Text.Wrap
+            text: (textInput.text === "")
+                  ? qsTr("<h3>Sorry!</h3><p>No flight routes available. To add a route here, chose 'Flight Route' from the main menu, edit a route and save it to the library.</p>")
+                  : qsTr("<h3>Sorry!</h3><p>No flight routes match your filter criteria.</p>")
+        }
     }
-
-    Label {
-        anchors.fill: wpList
-        anchors.topMargin: font.pixelSize*2
-
-        visible: (wpList.count === 0)
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-        leftPadding: font.pixelSize*2
-        rightPadding: font.pixelSize*2
-
-        textFormat: Text.StyledText
-        wrapMode: Text.Wrap
-        text: (textInput.text === "")
-              ? qsTr("<h3>Sorry!</h3><p>No flight routes available. To add a route here, chose 'Flight Route' from the main menu, edit a route and save it to the library.</p>")
-              : qsTr("<h3>Sorry!</h3><p>No flight routes match your filter criteria.</p>")
-    }
-
 
     // This is the name of the file that openFromLibrary will open
     property string finalFileName;

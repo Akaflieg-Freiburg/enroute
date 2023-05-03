@@ -119,7 +119,10 @@ Page {
         anchors.fill: parent
         anchors.leftMargin: SafeInsets.left
         anchors.rightMargin: SafeInsets.right
-        anchors.bottomMargin: SafeInsets.bottom
+        anchors.bottomMargin: {
+            console.log(SafeInsets.bottom)
+            SafeInsets.bottom
+        }
 
         contentWidth: width
         clip: true

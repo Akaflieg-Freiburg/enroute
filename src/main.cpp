@@ -26,6 +26,7 @@
 #include <QQmlContext>
 #include <QQmlProperty>
 #include <QQuickItem>
+#include <QQuickStyle>
 #include <QQuickWindow>
 #include <QSettings>
 #include <QTranslator>

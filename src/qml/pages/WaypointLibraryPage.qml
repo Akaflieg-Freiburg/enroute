@@ -250,51 +250,51 @@ Page {
         Component {
             id: waypointDelegate
 
-        RowLayout {
-            width: wpList.width
-            height: iDel.height
+            RowLayout {
+                width: wpList.width
+                height: iDel.height
 
-            SwipeToDeleteDelegate {
-                id: iDel
-                Layout.fillWidth: true
+                SwipeToDeleteDelegate {
+                    id: iDel
+                    Layout.fillWidth: true
 
-                text: modelData.name
-                icon.source: modelData.icon
+                    text: modelData.name
+                    icon.source: modelData.icon
 
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
+                    onClicked: {
+                        PlatformAdaptor.vibrateBrief()
                     waypointDescription.waypoint = modelData
-                    waypointDescription.open()
+                        waypointDescription.open()
+                    }
+
+                    swipe.onCompleted: {
+                        PlatformAdaptor.vibrateBrief()
+                        removeDialog.waypoint = modelData
+                        removeDialog.open()
+                    }
+
                 }
 
-                swipe.onCompleted: {
+                ToolButton {
+                    id: editButton
+
+                    icon.source: "/icons/material/ic_mode_edit.svg"
+                    onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    removeDialog.waypoint = modelData
-                    removeDialog.open()
-                }
-
+                        wpEditor.waypoint = modelData
+                        wpEditor.open()
+                    }
             }
 
-            ToolButton {
-                id: editButton
+                ToolButton {
+                    id: cptMenuButton
 
-                icon.source: "/icons/material/ic_mode_edit.svg"
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    wpEditor.waypoint = modelData
-                    wpEditor.open()
-                }
-            }
+                    icon.source: "/icons/material/ic_more_horiz.svg"
 
-            ToolButton {
-                id: cptMenuButton
-
-                icon.source: "/icons/material/ic_more_horiz.svg"
-
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    cptMenu.open()
-                }
+                    onClicked: {
+                        PlatformAdaptor.vibrateBrief()
+                        cptMenu.open()
+                    }
 
                 AutoSizingMenu {
                     id: cptMenu
@@ -310,19 +310,16 @@ Page {
                     } // removeAction
                 } // AutoSizingMenu
 
+                }
+
             }
 
         }
 
-    }
-
-    DecoratedListView {
+        DecoratedListView {
         id: wpList
 
-        anchors.top: textInput.bottom
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
+        anchors.fill: parent
 
         leftMargin: SafeInsets.left
         rightMargin: SafeInsets.right
@@ -339,10 +336,10 @@ Page {
         delegate: waypointDelegate
         ScrollIndicator.vertical: ScrollIndicator {}
     }
+    }
 
     Label {
-        anchors.fill: wpList
-        anchors.topMargin: font.pixelSize*2
+        anchors.fill: parent
 
         visible: (wpList.count === 0)
         horizontalAlignment: Text.AlignHCenter

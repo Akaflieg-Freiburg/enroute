@@ -138,15 +138,15 @@ Page {
             anchors.right: parent.right
             anchors.rightMargin: acftTab.font.pixelSize
 
-            columns: 4
+            columns: 3
 
             Rectangle {
-                Layout.columnSpan: 4
+                Layout.columnSpan: 3
                 Layout.preferredHeight: acftTab.font.pixelSize
             }
             Label {
                 text: qsTr("Name")
-                Layout.columnSpan: 4
+                Layout.columnSpan: 3
                 font.pixelSize: acftTab.font.pixelSize*1.2
                 font.bold: true
             }
@@ -158,7 +158,7 @@ Page {
             }
             MyTextField {
                 id: name
-                Layout.columnSpan: 3
+                Layout.columnSpan: 2
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: font.pixelSize*5
@@ -174,7 +174,7 @@ Page {
             Label { Layout.fillHeight: true }
             Label {
                 text: qsTr("Units")
-                Layout.columnSpan: 4
+                Layout.columnSpan: 3
                 font.pixelSize: acftTab.font.pixelSize*1.2
                 font.bold: true
             }
@@ -185,7 +185,7 @@ Page {
             }
             ComboBox {
                 id: horizontalUOM
-                Layout.columnSpan: 3
+                Layout.columnSpan: 2
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 KeyNavigation.tab: verticalUOM
@@ -212,7 +212,7 @@ Page {
             }
             ComboBox {
                 id: verticalUOM
-                Layout.columnSpan: 3
+                Layout.columnSpan: 2
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 KeyNavigation.tab: volumeUOM
@@ -234,7 +234,7 @@ Page {
             }
             ComboBox {
                 id: volumeUOM
-                Layout.columnSpan: 3
+                Layout.columnSpan: 2
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 KeyNavigation.tab: cruiseSpeed
@@ -255,7 +255,7 @@ Page {
             Label { Layout.fillHeight: true }
             Label {
                 text: qsTr("True Airspeed")
-                Layout.columnSpan: 4
+                Layout.columnSpan: 3
                 font.pixelSize: acftTab.font.pixelSize*1.2
                 font.bold: true
             }
@@ -337,15 +337,6 @@ Page {
                     }
                 }
             }
-            ToolButton {
-                icon.source: "/icons/material/ic_clear.svg"
-                Layout.alignment: Qt.AlignVCenter
-                enabled: cruiseSpeed.text !== ""
-                onClicked: {
-                    Navigator.aircraft.cruiseSpeed = aircraftPage.staticSpeed.fromKN(-1)
-                    cruiseSpeed.clear()
-                }
-            }
 
             Label {
                 text: qsTr("Descent")
@@ -422,15 +413,6 @@ Page {
                     case Aircraft.StatuteMile :
                         return "mph";
                     }
-                }
-            }
-            ToolButton {
-                icon.source: "/icons/material/ic_clear.svg"
-                Layout.alignment: Qt.AlignVCenter
-                enabled: descentSpeed.text !== ""
-                onClicked: {
-                    Navigator.aircraft.descentSpeed = aircraftPage.staticSpeed.fromKN(-1)
-                    descentSpeed.clear()
                 }
             }
 
@@ -510,21 +492,11 @@ Page {
                     }
                 }
             }
-            ToolButton {
-                icon.source: "/icons/material/ic_clear.svg"
-                Layout.alignment: Qt.AlignVCenter
-                enabled: minimumSpeed.text !== ""
-                onClicked: {
-                    Navigator.aircraft.minimumSpeed = aircraftPage.staticSpeed.fromKN(-1)
-                    minimumSpeed.clear()
-                }
-            }
-
 
             Label { Layout.fillHeight: true }
             Label {
                 text: qsTr("Fuel Consumption")
-                Layout.columnSpan: 4
+                Layout.columnSpan: 3
                 font.pixelSize: acftTab.font.pixelSize*1.2
                 font.bold: true
             }
@@ -595,18 +567,9 @@ Page {
                     }
                 }
             }
-            ToolButton {
-                icon.source: "/icons/material/ic_clear.svg"
-                Layout.alignment: Qt.AlignVCenter
-                enabled: fuelConsumption.text !== ""
-                onClicked: {
-                    Navigator.aircraft.fuelConsumption = aircraftPage.staticVolumeFlow.fromLPH(-1)
-                    fuelConsumption.clear()
-                }
-            }
 
             Rectangle {
-                Layout.columnSpan: 4
+                Layout.columnSpan: 3
                 Layout.preferredHeight: acftTab.font.pixelSize
             }
 

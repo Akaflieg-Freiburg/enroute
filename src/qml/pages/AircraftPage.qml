@@ -130,7 +130,7 @@ Page {
         // If virtual keyboard come up, make sure that the focused element is visible
         onHeightChanged: {
             if (activeFocusControl != null) {
-                contentItem.contentY = activeFocusControl.y
+                contentItem.contentY = activeFocusControl.y - font.pixelSize
             }
         }
 
@@ -160,7 +160,7 @@ Page {
                 text: qsTr("Name")
                 Layout.alignment: Qt.AlignBaseline
             }
-            TextField {
+            MyTextField {
                 id: name
                 Layout.columnSpan: 3
                 Layout.fillWidth: true
@@ -270,7 +270,7 @@ Page {
                 text: qsTr("Cruise")
                 Layout.alignment: Qt.AlignBaseline
             }
-            TextField {
+            MyTextField {
                 id: cruiseSpeed
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
@@ -357,7 +357,7 @@ Page {
                 text: qsTr("Descent")
                 Layout.alignment: Qt.AlignBaseline
             }
-            TextField {
+            MyTextField {
                 id: descentSpeed
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
@@ -444,7 +444,7 @@ Page {
                 text: qsTr("Minimum")
                 Layout.alignment: Qt.AlignBaseline
             }
-            TextField {
+            MyTextField {
                 id: minimumSpeed
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
@@ -539,7 +539,7 @@ Page {
                 text: qsTr("Cruise")
                 Layout.alignment: Qt.AlignBaseline
             }
-            TextField {
+            MyTextField {
                 id: fuelConsumption
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline

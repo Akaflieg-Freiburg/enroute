@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -62,10 +62,6 @@ public:
     //
     // Methods
     //
-    Q_INVOKABLE void setupImEventFilter(QQuickItem *item) {
-        static thread_local ImFixer imf;
-        item->installEventFilter(&imf);
-    }
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract
      *
@@ -83,7 +79,6 @@ public:
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
     void disableScreenSaver() override;
 
-
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract
      *
      *  @param lock see PlatformAdaptor_Abstract
@@ -92,6 +87,16 @@ public:
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
     void requestPermissionsSync() override;
+
+    /*! \brief Implements virtual method from PlatformAdaptor_Abstract,
+     *  workaround for QTBUG-80790
+     *
+     *  @param item QQuickItem where the event filter is to be intalled.
+     */
+    Q_INVOKABLE void setupImEventFilter(QQuickItem *item) {
+        static thread_local ImFixer imf;
+        item->installEventFilter(&imf);
+    }
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
     Q_INVOKABLE void vibrateBrief() override;

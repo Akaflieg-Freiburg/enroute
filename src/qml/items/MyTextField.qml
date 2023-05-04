@@ -18,13 +18,26 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick.Controls
-import akaflieg_freiburg.enroute
 import QtQml
+import QtQuick.Controls
+
+import akaflieg_freiburg.enroute
+
+// This is a variant of TextField. The main differences to the standard
+// implementation are the following.
+//
+// - Instances of this class call PlatformAdaptor.setupImEventFilter() on
+//   completion. On iOS this avoids problematic behavior where the virtual
+//   keyboard pushes up the whole qml page. Details for this problem are
+//   described here
+//
+//   https://stackoverflow.com/questions/34716462/ios-sometimes-keyboard-pushes-up-the-whole-qml-page
+//
+//   https://bugreports.qt.io/browse/QTBUG-80790
 
 
 TextField {
-    id: myThis
+    id: textField
 
-    Component.onCompleted: PlatformAdaptor.setupImEventFilter(myThis)
+    Component.onCompleted: PlatformAdaptor.setupInputMethodEventFilter(textField)
 }

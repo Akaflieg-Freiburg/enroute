@@ -110,6 +110,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a09e2eb3575c3ae3d60b3df64d6f49482"><td class="memItemLeft" align="right" valign="top">virtual Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html#a09e2eb3575c3ae3d60b3df64d6f49482">requestPermissionsSync</a> ()=0</td></tr>
 <tr class="memdesc:a09e2eb3575c3ae3d60b3df64d6f49482"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request permissions.  <a href="classPlatform_1_1PlatformAdaptor__Abstract.html#a09e2eb3575c3ae3d60b3df64d6f49482">More...</a><br /></td></tr>
 <tr class="separator:a09e2eb3575c3ae3d60b3df64d6f49482"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81fcd1a14c37093d15157b15daa50a96"><td class="memItemLeft" align="right" valign="top">virtual Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html#a81fcd1a14c37093d15157b15daa50a96">setupInputMethodEventFilter</a> (QQuickItem *item)</td></tr>
+<tr class="memdesc:a81fcd1a14c37093d15157b15daa50a96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Workaround for QTBUG-80790.  <a href="classPlatform_1_1PlatformAdaptor__Abstract.html#a81fcd1a14c37093d15157b15daa50a96">More...</a><br /></td></tr>
+<tr class="separator:a81fcd1a14c37093d15157b15daa50a96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6739c7b19f57e2a21079af9906ca56c"><td class="memItemLeft" align="right" valign="top">virtual Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html#ab6739c7b19f57e2a21079af9906ca56c">systemInfo</a> ()</td></tr>
 <tr class="memdesc:ab6739c7b19f57e2a21079af9906ca56c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Information about the system, in HTML format.  <a href="classPlatform_1_1PlatformAdaptor__Abstract.html#ab6739c7b19f57e2a21079af9906ca56c">More...</a><br /></td></tr>
 <tr class="separator:ab6739c7b19f57e2a21079af9906ca56c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -204,7 +207,7 @@ Additional Inherited Members</h2></td></tr>
 <li>If supported by the platform, child classes need to react to requests by the platform to open a file (e.g. a GeoJSON file containing a flight route). Once a request is received, the method processFileRequest() should be called. </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="PlatformAdaptor__Abstract_8h_source.html#l00049">49</a> of file <a class="el" href="PlatformAdaptor__Abstract_8h_source.html">PlatformAdaptor_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PlatformAdaptor__Abstract_8h_source.html#l00050">50</a> of file <a class="el" href="PlatformAdaptor__Abstract_8h_source.html">PlatformAdaptor_Abstract.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aac61d7122ddaae8c2fefd030826a655c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aac61d7122ddaae8c2fefd030826a655c">&#9670;&nbsp;</a></span>PlatformAdaptor_Abstract()</h2>
@@ -426,6 +429,45 @@ Additional Inherited Members</h2></td></tr>
 <p>On some platforms, the app needs to ask for permissions to perform certain functions (e.g. receive location, query Wi-Fi status, …). This method is called before the GUI is set up and must request ALL permissions that the app will ever use. The method is meant to run synchroneously and shall return only once all permissions have been granted (or not). </p>
 
 <p>Implemented in <a class="el" href="classPlatform_1_1PlatformAdaptor.html#a60ff8e7d19d09f8821cc5e5b135c8b86">Platform::PlatformAdaptor</a>, <a class="el" href="classPlatform_1_1PlatformAdaptor.html#a60ff8e7d19d09f8821cc5e5b135c8b86">Platform::PlatformAdaptor</a>, <a class="el" href="classPlatform_1_1PlatformAdaptor.html#a60ff8e7d19d09f8821cc5e5b135c8b86">Platform::PlatformAdaptor</a>, <a class="el" href="classPlatform_1_1PlatformAdaptor.html#a60ff8e7d19d09f8821cc5e5b135c8b86">Platform::PlatformAdaptor</a>, and <a class="el" href="classPlatform_1_1PlatformAdaptor.html#a60ff8e7d19d09f8821cc5e5b135c8b86">Platform::PlatformAdaptor</a>.</p>
+
+</div>
+</div>
+<a id="a81fcd1a14c37093d15157b15daa50a96"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81fcd1a14c37093d15157b15daa50a96">&#9670;&nbsp;</a></span>setupInputMethodEventFilter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual Q_INVOKABLE void Platform::PlatformAdaptor_Abstract::setupInputMethodEventFilter </td>
+          <td>(</td>
+          <td class="paramtype">QQuickItem *&#160;</td>
+          <td class="paramname"><em>item</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Workaround for QTBUG-80790. </p>
+<p>This method is empty except on iOS, where it installs a special event filter for a QQuickItem. The event filter avoids problematic behavior where the virtual keyboard pushes up the whole qml page. Details for this problem and the present workaround are described here.</p>
+<p><a href="https://stackoverflow.com/questions/34716462/ios-sometimes-keyboard-pushes-up-the-whole-qml-page">https://stackoverflow.com/questions/34716462/ios-sometimes-keyboard-pushes-up-the-whole-qml-page</a></p>
+<p><a href="https://bugreports.qt.io/browse/QTBUG-80790">https://bugreports.qt.io/browse/QTBUG-80790</a></p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">item</td><td>QQuickItem where the event filter is to be intalled. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="PlatformAdaptor__Abstract_8h_source.html#l00146">146</a> of file <a class="el" href="PlatformAdaptor__Abstract_8h_source.html">PlatformAdaptor_Abstract.h</a>.</p>
 
 </div>
 </div>

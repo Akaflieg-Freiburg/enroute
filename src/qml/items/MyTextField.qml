@@ -39,5 +39,21 @@ import akaflieg_freiburg.enroute
 TextField {
     id: textField
 
+    rightPadding: toolButton.width
+
     Component.onCompleted: PlatformAdaptor.setupInputMethodEventFilter(textField)
+
+    ToolButton {
+        id: toolButton
+
+        anchors.right: parent.right
+        anchors.verticalCenter: parent.verticalCenter
+
+        icon.source: "/icons/material/ic_clear.svg"
+        enabled: textField.text !== ""
+        onClicked: {
+            textField.clear()
+            textField.onEditingFinished()
+        }
+    }
 }

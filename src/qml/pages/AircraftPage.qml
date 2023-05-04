@@ -119,10 +119,7 @@ Page {
         anchors.fill: parent
         anchors.leftMargin: SafeInsets.left
         anchors.rightMargin: SafeInsets.right
-        anchors.bottomMargin: {
-            console.log(SafeInsets.bottom)
-            SafeInsets.bottom
-        }
+        anchors.bottomMargin: SafeInsets.bottom
 
         contentWidth: width
         clip: true
@@ -152,7 +149,6 @@ Page {
                 Layout.columnSpan: 4
                 font.pixelSize: acftTab.font.pixelSize*1.2
                 font.bold: true
-//                color: Material.accent
             }
 
 
@@ -181,7 +177,6 @@ Page {
                 Layout.columnSpan: 4
                 font.pixelSize: acftTab.font.pixelSize*1.2
                 font.bold: true
-//                color: Material.accent
             }
 
             Label {
@@ -263,7 +258,6 @@ Page {
                 Layout.columnSpan: 4
                 font.pixelSize: acftTab.font.pixelSize*1.2
                 font.bold: true
-//                color: Material.accent
             }
 
             Label {

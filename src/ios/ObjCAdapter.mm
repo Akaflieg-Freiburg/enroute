@@ -32,11 +32,14 @@ double ObjCAdapter::safeAreaLeftInset() {
 }
 double ObjCAdapter::safeAreaBottomInset() {
     ObjectiveC* instance = [ObjectiveC sharedInstance];
-
-    UIWindow *window = UIApplication.sharedApplication.windows.firstObject;
-    auto result = window.safeAreaInsets.bottom;
     float keyboardHeight = [instance keyboardHeight];
-    return result + keyboardHeight;
+    if (keyboardHeight > 0) {
+      return keyboardHeight;
+    } else {
+      UIWindow *window = UIApplication.sharedApplication.windows.firstObject;
+      auto bottom = window.safeAreaInsets.bottom;
+      return bottom;
+    }
 }
 double ObjCAdapter::safeAreaRightInset() {
     UIWindow *window = UIApplication.sharedApplication.windows.firstObject;

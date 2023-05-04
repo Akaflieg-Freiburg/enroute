@@ -303,12 +303,13 @@ Item {
 
         MapPolyline {
             id: flightPath
-
             line.width: 4
             line.color: "#ff00ff"
             path: {
-                console.log(Navigator.flightRoute.geoPath)
-                Navigator.flightRoute.geoPath
+                var array = []
+                //Looks weird, but is necessary. geoPath is an 'object' not an array
+                Navigator.flightRoute.geoPath.forEach(element => array.push(element))
+                return array
             }
         }
 

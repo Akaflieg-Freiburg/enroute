@@ -306,7 +306,10 @@ Item {
 
             line.width: 4
             line.color: "#ff00ff"
-            path: Navigator.flightRoute.geoPath
+            path: {
+                console.log(Navigator.flightRoute.geoPath)
+                Navigator.flightRoute.geoPath
+            }
         }
 
         MapPolyline {

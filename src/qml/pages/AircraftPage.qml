@@ -261,6 +261,7 @@ Page {
             }
 
             Label {
+                id: colorGlean
                 text: qsTr("Cruise")
                 Layout.alignment: Qt.AlignBaseline
             }
@@ -308,7 +309,7 @@ Page {
                         return
                     }
                 }
-                color: (acceptableInput ? "" : "red")
+                color: (acceptableInput ? colorGlean.color : "red")
                 text: {
                     if (!Navigator.aircraft.cruiseSpeed.isFinite()) {
                         return ""
@@ -387,7 +388,7 @@ Page {
                         return
                     }
                 }
-                color: (acceptableInput ? "" : "red")
+                color: (acceptableInput ? colorGlean.color : "red")
                 text: {
                     if (!Navigator.aircraft.descentSpeed.isFinite()) {
                         return ""
@@ -464,7 +465,7 @@ Page {
                         return
                     }
                 }
-                color: (acceptableInput ? "" : "red")
+                color: (acceptableInput ? colorGlean.color : "red")
                 text: {
                     if (!Navigator.aircraft.minimumSpeed.isFinite()) {
                         return ""
@@ -543,7 +544,7 @@ Page {
                         return
                     }
                 }
-                color: (acceptableInput ? "" : "red")
+                color: (acceptableInput ? colorGlean.color : "red")
                 text: {
                     if (!Navigator.aircraft.fuelConsumption.isFinite()) {
                         return ""

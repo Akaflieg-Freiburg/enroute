@@ -60,7 +60,7 @@ StackLayout {
                 bottom: -3000
                 top: 24000
             }
-            color: (acceptableInput ? "" : "red")
+            color: (acceptableInput ? colorGlean.color : "red")
 
             onEditingFinished: {
                 if (ft_d.acceptableInput)
@@ -69,7 +69,10 @@ StackLayout {
                     valueMeter = NaN
             }
         }
-        Label { text: "ft" }
+        Label {
+            id: colorGlean
+            text: "ft"
+        }
     }
 
     RowLayout { // meter
@@ -86,7 +89,7 @@ StackLayout {
                 bottom: -1000
                 top: 8000
             }
-            color: (acceptableInput ? "" : "red")
+            color: (acceptableInput ? colorGlean.color : "red")
 
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {

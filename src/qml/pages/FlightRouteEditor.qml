@@ -492,6 +492,8 @@ Page {
                 }
 
                 Label {
+                    id: colorGlean
+
                     Layout.alignment: Qt.AlignBaseline
                     text: qsTr("Direction from")
                 }
@@ -510,7 +512,7 @@ Page {
                         Navigator.wind.directionFrom = myAngle.fromDEG(text)
                         windSpeed.focus = true
                     }
-                    color: (acceptableInput ? "" : "red")
+                    color: (acceptableInput ? colorGlean.color : "red")
                     KeyNavigation.tab: windSpeed
                     text: {
                         if (!Navigator.wind.directionFrom.isFinite()) {
@@ -573,7 +575,7 @@ Page {
                         }
                         focus = false
                     }
-                    color: (acceptableInput ? "" : "red")
+                    color: (acceptableInput ? colorGlean.color : "red")
                     text: {
                         if (!Navigator.wind.speed.isFinite()) {
                             return ""

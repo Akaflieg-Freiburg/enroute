@@ -82,13 +82,17 @@ StackLayout {
                 top: stackLayout.maxValue
                 notation: DoubleValidator.StandardNotation
             }
-            color: (acceptableInput ? "" : "red")
+            color: (acceptableInput ? colorGlean.color : "red")
 
             onEditingFinished: {
                 d.setValue()
             }
         }
-        Label { text: "°" }
+        Label {
+            id: colorGlean
+
+            text: "°"
+        }
     }
 
     RowLayout { // Degree and Minute
@@ -118,7 +122,7 @@ StackLayout {
                 bottom: stackLayout.minValue
                 top: stackLayout.maxValue
             }
-            color: (acceptableInput ? "" : "red")
+            color: (acceptableInput ? colorGlean.color : "red")
 
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {
@@ -138,7 +142,7 @@ StackLayout {
                 top: 59.9999999999999
                 notation: DoubleValidator.StandardNotation
             }
-            color: (acceptableInput ? "" : "red")
+            color: (acceptableInput ? colorGlean.color : "red")
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {
                 dm.setValue()
@@ -177,7 +181,7 @@ StackLayout {
                 bottom: stackLayout.minValue
                 top: stackLayout.maxValue
             }
-            color: (acceptableInput ? "" : "red")
+            color: (acceptableInput ? colorGlean.color : "red")
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {
                 dms.setValue()
@@ -195,7 +199,7 @@ StackLayout {
                 bottom: 0
                 top: 59
             }
-            color: (acceptableInput ? "" : "red")
+            color: (acceptableInput ? colorGlean.color : "red")
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {
                 dms.setValue()
@@ -214,7 +218,7 @@ StackLayout {
                 top: 59.9999999999999
                 notation: DoubleValidator.StandardNotation
             }
-            color: (acceptableInput ? "" : "red")
+            color: (acceptableInput ? colorGlean.color : "red")
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {
                 dms.setValue()

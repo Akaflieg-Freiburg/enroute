@@ -50,7 +50,7 @@ StackLayout {
         Layout.fillWidth: true
         Layout.alignment: Qt.AlignBaseline
 
-        TextField {
+        MyTextField {
             id: ft_d
 
             Layout.fillWidth: true
@@ -77,7 +77,7 @@ StackLayout {
         Layout.fillWidth: true
         Layout.alignment: Qt.AlignBaseline
 
-        TextField {
+        MyTextField {
             id: m_d
 
             Layout.fillWidth: true

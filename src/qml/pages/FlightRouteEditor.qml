@@ -478,12 +478,15 @@ Page {
                 anchors.right: parent.right
                 anchors.rightMargin: font.pixelSize
 
-                columns: 4
+                columns: 3
 
-                Label { Layout.fillHeight: true }
+                Label {
+                    Layout.fillHeight: true
+                    Layout.columnSpan: 3
+                }
                 Label {
                     text: qsTr("Wind")
-                    Layout.columnSpan: 4
+                    Layout.columnSpan: 3
                     font.pixelSize: windTab.font.pixelSize*1.2
                     font.bold: true
                 }
@@ -492,7 +495,7 @@ Page {
                     Layout.alignment: Qt.AlignBaseline
                     text: qsTr("Direction from")
                 }
-                TextField {
+                MyTextField {
                     id: windDirection
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignBaseline
@@ -520,21 +523,12 @@ Page {
                     text: "°"
                     Layout.alignment: Qt.AlignBaseline
                 }
-                ToolButton {
-                    icon.source: "/icons/material/ic_clear.svg"
-                    Layout.alignment: Qt.AlignVCenter
-                    enabled: windDirection.text !== ""
-                    onClicked: {
-                        Navigator.wind.directionFrom = flightRoutePage.staticAngle.nan()
-                        windDirection.clear()
-                    }
-                }
 
                 Label {
                     text: qsTr("Speed")
                     Layout.alignment: Qt.AlignBaseline
                 }
-                TextField {
+                MyTextField {
                     id: windSpeed
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignBaseline
@@ -609,15 +603,6 @@ Page {
 
                     }
                     Layout.alignment: Qt.AlignBaseline
-                }
-                ToolButton {
-                    icon.source: "/icons/material/ic_clear.svg"
-                    Layout.alignment: Qt.AlignVCenter
-                    enabled: windSpeed.text !== ""
-                    onClicked: {
-                        Navigator.wind.speed = flightRoutePage.staticSpeed.fromKN(-1)
-                        windSpeed.clear()
-                    }
                 }
 
             }

@@ -65,7 +65,7 @@ CenteringDialog {
             textFormat: Text.StyledText
         }
 
-        TextField {
+        MyTextField {
             id: fileName
 
             Layout.fillWidth: true

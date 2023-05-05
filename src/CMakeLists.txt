@@ -449,7 +449,6 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/MapButton.qml
     qml/items/+Material/MapButton.qml
     qml/items/MapSet.qml
-    qml/items/MiniButton.qml
     qml/items/MFM.qml
     qml/items/MyTextField.qml
     qml/items/NavBar.qml

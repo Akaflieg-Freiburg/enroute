@@ -24,7 +24,6 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
-import enroute 1.0
 
 import "../dialogs"
 import "../items"
@@ -227,7 +226,7 @@ Page {
             text: qsTr("Filter")
         }
 
-        TextField {
+        MyTextField {
             id: textInput
 
             Layout.alignment: Qt.AlignBaseline

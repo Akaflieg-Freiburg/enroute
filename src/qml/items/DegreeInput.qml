@@ -71,7 +71,7 @@ StackLayout {
             value = dVal
         }
 
-        TextField {
+        MyTextField {
             id: d_d
 
             Layout.fillWidth: true
@@ -108,7 +108,7 @@ StackLayout {
                 value = dVal - mVal/60.0
         }
 
-        TextField {
+        MyTextField {
             id: dm_d
 
             Layout.fillWidth: true
@@ -127,7 +127,7 @@ StackLayout {
         }
         Label { text: "°" }
 
-        TextField {
+        MyTextField {
             id: dm_m
 
             Layout.fillWidth: true
@@ -167,7 +167,7 @@ StackLayout {
                 value = dVal - mVal/60.0 - sVal/3600.0
         }
 
-        TextField {
+        MyTextField {
             id: dms_d
 
             Layout.fillWidth: true
@@ -185,7 +185,7 @@ StackLayout {
         }
         Label { text: "°" }
 
-        TextField {
+        MyTextField {
             id: dms_m
 
             Layout.fillWidth: true
@@ -203,7 +203,7 @@ StackLayout {
         }
         Label { text: "'" }
 
-        TextField {
+        MyTextField {
             id: dms_s
 
             Layout.fillWidth: true

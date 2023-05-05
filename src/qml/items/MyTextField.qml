@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 import QtQml
+import QtQuick
 import QtQuick.Controls
 
 import akaflieg_freiburg.enroute
@@ -43,13 +44,18 @@ TextField {
 
     Component.onCompleted: PlatformAdaptor.setupInputMethodEventFilter(textField)
 
-    MiniButton {
+    RoundButton {
         id: toolButton
 
         anchors.right: parent.right
-        anchors.verticalCenter: parent.verticalCenter
+        anchors.top: parent.top
+
+        background: Item {}
 
         icon.source: "/icons/material/ic_clear.svg"
+        icon.width: font.pixelSize
+        icon.height: font.pixelSize
+
         enabled: textField.text !== ""
         onClicked: {
             textField.clear()

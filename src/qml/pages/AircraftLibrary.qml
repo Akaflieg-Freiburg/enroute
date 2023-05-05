@@ -51,7 +51,7 @@ Page {
             text: qsTr("Filter")
         }
 
-        TextField {
+        MyTextField {
             id: textInput
 
             Layout.alignment: Qt.AlignBaseline
@@ -280,7 +280,7 @@ Page {
                 textFormat: Text.StyledText
             }
 
-            TextField {
+            MyTextField {
                 id: renameName
 
                 Layout.fillWidth: true

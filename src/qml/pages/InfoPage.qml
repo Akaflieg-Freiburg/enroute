@@ -33,7 +33,7 @@ Page {
     required property var stackView
     required property var toast
 
-    header: ColoredToolBar {
+    header: ToolBar {
 
         height: 60 + SafeInsets.top
         leftPadding: SafeInsets.left

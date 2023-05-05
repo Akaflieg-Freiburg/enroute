@@ -49,12 +49,6 @@ AppWindow {
         property alias height: view.height
     }
 
-    /*
-    Material.theme: GlobalSettings.nightMode ? Material.Dark : Material.Light
-    Material.primary: Material.theme === Material.Dark ? Qt.darker("teal") : "teal"
-    Material.accent: Material.theme === Material.Dark ? Qt.lighter("teal") : "teal"
-*/
-
     Drawer {
         id: drawer
 
@@ -82,7 +76,7 @@ AppWindow {
                     font.weight: Font.Medium
 
                     background: Rectangle {
-                        color: "teal"
+                        color: "#009688"
                     }
                 }
 
@@ -90,7 +84,7 @@ AppWindow {
                     Layout.fillWidth: true
                     Layout.preferredHeight: 4
 
-                    color: "teal"
+                    color: "#009688"
                 }
 
                 Label { // Subtitle
@@ -105,7 +99,7 @@ AppWindow {
                     color: "white"
 
                     background: Rectangle {
-                        color: "teal"
+                        color: "#009688"
                     }
                 }
 
@@ -113,7 +107,7 @@ AppWindow {
                     Layout.preferredHeight: 18
                     Layout.fillWidth: true
 
-                    color: "teal"
+                    color: "#009688"
                 }
 
                 ItemDelegate { // Aircraft
@@ -190,7 +184,7 @@ AppWindow {
                     Layout.preferredHeight: 1
                     Layout.fillWidth: true
 
-                    color: "teal"
+                    color: "#009688"
                 }
 
                 ItemDelegate {
@@ -677,7 +671,7 @@ AppWindow {
 
         horizontalAlignment: Text.AlignHCenter
         background: Rectangle {
-            color: "teal"
+            color: "#009688"
             radius: 5
         }
 

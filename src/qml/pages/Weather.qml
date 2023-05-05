@@ -32,7 +32,7 @@ Page {
     title: qsTr("Weather")
     focus: true
 
-    header: ColoredToolBar {
+    header: ToolBar {
 
         height: 60 + SafeInsets.top
         leftPadding: SafeInsets.left

@@ -31,7 +31,7 @@ Page {
     title: qsTr("Manual")
     property string fileName: ""
 
-    header: ColoredToolBar {
+    header: ToolBar {
         height: 60 + SafeInsets.top
         leftPadding: SafeInsets.left
         rightPadding: SafeInsets.right

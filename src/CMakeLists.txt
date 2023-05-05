@@ -433,8 +433,6 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/AppWindow.qml
     qml/items/+Material/AppWindow.qml
     qml/items/AutoSizingMenu.qml
-    qml/items/ColoredToolBar.qml
-    qml/items/+Material/ColoredToolBar.qml
     qml/items/DecoratedListView.qml
     qml/items/DecoratedScrollView.qml
     qml/items/DegreeInput.qml

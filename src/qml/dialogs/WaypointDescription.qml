@@ -21,13 +21,10 @@
 import QtPositioning
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 import QtQuick.Shapes
 
 import akaflieg_freiburg.enroute
-import enroute 1.0
-
 import "../dialogs"
 import "../items"
 
@@ -36,8 +33,8 @@ import "../items"
 CenteringDialog {
     id: waypointDescriptionDialog
 
-    property var waypoint: global.geoMapProvider().createWaypoint()
-    property var weatherStation: global.weatherDataProvider().findWeatherStation( waypoint.ICAOCode )
+    property var waypoint: GeoMapProvider.createWaypoint()
+    property var weatherStation: WeatherDataProvider.findWeatherStation( waypoint.ICAOCode )
 
     onWaypointChanged : {
         // Delete old text items
@@ -59,7 +56,7 @@ CenteringDialog {
             waypointPropertyDelegate.createObject(co, {text: pro[j]});
 
         // Create airspace description items
-        var asl = global.geoMapProvider().airspaces(waypoint.coordinate)
+        var asl = GeoMapProvider.airspaces(waypoint.coordinate)
         for (var i in asl)
             airspaceDelegate.createObject(co, {airspace: asl[i]});
     }
@@ -83,10 +80,10 @@ CenteringDialog {
             Layout.fillWidth: true
             wrapMode: Text.WordWrap
 
-            bottomPadding: 0.2*view.font.pixelSize
-            topPadding: 0.2*view.font.pixelSize
-            leftPadding: 0.2*view.font.pixelSize
-            rightPadding: 0.2*view.font.pixelSize
+            bottomPadding: 0.2*font.pixelSize
+            topPadding: 0.2*font.pixelSize
+            leftPadding: 0.2*font.pixelSize
+            rightPadding: 0.2*font.pixelSize
             onLinkActivated: {
                 PlatformAdaptor.vibrateBrief()
                 weatherReport.open()
@@ -119,7 +116,7 @@ CenteringDialog {
                 return NotamProvider.notams(waypoint)
             }
 
-            visible: text != ""
+            visible: text !== ""
             text: {
                 if (notamList.isValid && notamList.isEmpty)
                     return ""
@@ -131,10 +128,10 @@ CenteringDialog {
             Layout.fillWidth: true
             wrapMode: Text.WordWrap
 
-            bottomPadding: 0.2*view.font.pixelSize
-            topPadding: 0.2*view.font.pixelSize
-            leftPadding: 0.2*view.font.pixelSize
-            rightPadding: 0.2*view.font.pixelSize
+            bottomPadding: 0.2*font.pixelSize
+            topPadding: 0.2*font.pixelSize
+            leftPadding: 0.2*font.pixelSize
+            rightPadding: 0.2*font.pixelSize
             onLinkActivated: {
                 PlatformAdaptor.vibrateBrief()
                 dlgLoader.setSource("../dialogs/NotamListDialog.qml",
@@ -165,7 +162,7 @@ CenteringDialog {
 
             Label {
                 text: rowLYO.text.substring(0,4)
-                Layout.preferredWidth: view.font.pixelSize*3
+                Layout.preferredWidth: font.pixelSize*3
                 Layout.alignment: Qt.AlignTop
                 font.bold: true
 
@@ -197,8 +194,8 @@ CenteringDialog {
             Item {
                 id: box
 
-                Layout.preferredWidth: view.font.pixelSize*3
-                Layout.preferredHeight: view.font.pixelSize*2.5
+                Layout.preferredWidth: font.pixelSize*3
+                Layout.preferredHeight: font.pixelSize*2.5
                 Layout.rowSpan: 3
                 Layout.alignment: Qt.AlignLeft
 
@@ -337,6 +334,7 @@ CenteringDialog {
             }
 
             Label {
+                id: colorGlean
                 Layout.alignment: Qt.AlignHCenter|Qt.AlignBottom
                 text: {
                     switch(Navigator.aircraft.verticalDistanceUnit) {
@@ -350,9 +348,9 @@ CenteringDialog {
             }
             Rectangle {
                 Layout.alignment: Qt.AlignHCenter
-                color: Material.foreground
+                color:  colorGlean.color
                 Layout.preferredHeight: 1
-                Layout.preferredWidth: view.font.pixelSize*5
+                Layout.preferredWidth: font.pixelSize*5
             }
             Label {
                 Layout.alignment: Qt.AlignHCenter|Qt.AlignTop
@@ -383,7 +381,7 @@ CenteringDialog {
             Label {
                 text: waypoint.extendedName
                 font.bold: true
-                font.pixelSize: 1.2*view.font.pixelSize
+                font.pixelSize: 1.2*waypointDescriptionDialog.font.pixelSize
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignVCenter
                 wrapMode: Text.WordWrap
@@ -398,7 +396,7 @@ CenteringDialog {
             wrapMode: Text.WordWrap
         }
 
-        ScrollView {
+        DecoratedScrollView {
             id: sv
 
             Layout.fillWidth: true
@@ -414,7 +412,7 @@ CenteringDialog {
                 width: parent.width
             } // ColumnLayout
 
-        } // ScrollView
+        } // DecoratedScrollView
 
         Keys.onBackPressed: {
             event.accepted = true;
@@ -457,7 +455,7 @@ CenteringDialog {
                 Rectangle {
                     height: 1
                     Layout.fillWidth: true
-                    color: Material.primary
+                    color: "black"
                 }
 
                 Action {
@@ -559,7 +557,7 @@ CenteringDialog {
                 Rectangle {
                     height: 1
                     Layout.fillWidth: true
-                    color: Material.primary
+                    color: "black"
                 }
 
                 Action {
@@ -639,31 +637,15 @@ CenteringDialog {
         }
     }
 
-    CenteringDialog {
+    LongTextDialog {
         id: removeDialog
 
-        property var waypoint: global.geoMapProvider().createWaypoint()
+        property var waypoint: GeoMapProvider.createWaypoint()
 
         title: qsTr("Remove from Device?")
-
-        // Delays evaluation and prevents binding loops
-        Binding on implicitHeight {
-            value: lbl.implicitHeight
-            delayed: true    // Prevent intermediary values from being assigned
-        }
-
-        Label {
-            id: lbl
-
-            width: removeDialog.availableWidth
-
-            text: qsTr("Once the waypoint <strong>%1</strong> is removed, it cannot be restored.").arg(removeDialog.waypoint.name)
-            wrapMode: Text.Wrap
-            textFormat: Text.StyledText
-        }
+        text: qsTr("Once the waypoint <strong>%1</strong> is removed, it cannot be restored.").arg(removeDialog.waypoint.name)
 
         standardButtons: Dialog.No | Dialog.Yes
-        modal: true
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()

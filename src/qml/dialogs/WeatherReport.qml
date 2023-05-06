@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,10 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-//import QtGraphicalEffects 1.15
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -48,12 +46,12 @@ CenteringDialog {
             id: headX
             Layout.fillWidth: true
 
-            Icon { source: (weatherStation !== null) ? weatherStation.icon : "/icons/waypoints/WP.svg" }
+            Icon { source: weatherStation ? weatherStation.icon : "/icons/waypoints/WP.svg" }
 
             Label {
-                text: (weatherStation !== null) ? weatherStation.extendedName : ""
+                text: weatherStation ? weatherStation.extendedName : ""
                 font.bold: true
-                font.pixelSize: 1.2*view.font.pixelSize
+                font.pixelSize: 1.2*weatherReportDialog.font.pixelSize
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignVCenter
                 wrapMode: Text.WordWrap
@@ -61,14 +59,14 @@ CenteringDialog {
         }
 
         Label { // Second header line with distance and QUJ
-            text: (weatherStation !== null) ? Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), weatherStation.coordinate) : ""
+            text: (weatherStation != null) ? Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), weatherStation.coordinate) : ""
             visible: PositionProvider.receivingPositionInfo
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignRight
             wrapMode: Text.WordWrap
         }
 
-        ScrollView { // ScrollView with METAR & TAF information
+        DecoratedScrollView { // DecoratedScrollView with METAR & TAF information
             id: sv
 
             Layout.fillHeight: true
@@ -84,24 +82,24 @@ CenteringDialog {
                 width: parent.width
 
                 Label { // title: "METAR"
-                    visible: (weatherStation !== null) && weatherStation.hasMETAR
-                    text: (weatherStation !== null) && weatherStation.hasMETAR ? (weatherStation.metar.messageType + " " + weatherStation.metar.relativeObservationTime) : ""
+                    visible: (weatherStation != null) && weatherStation.hasMETAR
+                    text: (weatherStation != null) && weatherStation.hasMETAR ? (weatherStation.metar.messageType + " " + weatherStation.metar.relativeObservationTime) : ""
                     font.bold: true
-                    font.pixelSize: 1.2*view.font.pixelSize
+                    font.pixelSize: 1.2*weatherReportDialog.font.pixelSize
                 }
 
                 Label { // raw METAR text
-                    visible: (weatherStation !== null) && weatherStation.hasMETAR
-                    text: (weatherStation !== null) && weatherStation.hasMETAR ? weatherStation.metar.rawText : ""
+                    visible: (weatherStation != null) && weatherStation.hasMETAR
+                    text: (weatherStation != null) && weatherStation.hasMETAR ? weatherStation.metar.rawText : ""
                     Layout.fillWidth: true
                     Layout.leftMargin: 4
                     Layout.rightMargin: 4
                     wrapMode: Text.WordWrap
 
-                    bottomPadding: 0.2*view.font.pixelSize
-                    topPadding: 0.2*view.font.pixelSize
-                    leftPadding: 0.2*view.font.pixelSize
-                    rightPadding: 0.2*view.font.pixelSize
+                    bottomPadding: 0.2*font.pixelSize
+                    topPadding: 0.2*font.pixelSize
+                    leftPadding: 0.2*font.pixelSize
+                    rightPadding: 0.2*font.pixelSize
 
                     leftInset: -4
                     rightInset: -4
@@ -109,54 +107,53 @@ CenteringDialog {
                     // Background color according to METAR/FAA flight category
                     background: Rectangle {
                         border.color: "black"
-                        color: (weatherStation !== null) && weatherStation.hasMETAR ? weatherStation.metar.flightCategoryColor : "transparent"
+                        color: (weatherStation != null) && weatherStation.hasMETAR ? weatherStation.metar.flightCategoryColor : "transparent"
                         opacity: 0.2
                         radius: 4
                     }
                 }
 
                 Label { // decoded METAR text
-                    visible: (weatherStation !== null) && weatherStation.hasMETAR
-                    text: (weatherStation !== null) && weatherStation.hasMETAR ? weatherStation.metar.decodedText : ""
+                    visible: (weatherStation != null) && weatherStation.hasMETAR
+                    text: (weatherStation != null) && weatherStation.hasMETAR ? weatherStation.metar.decodedText : ""
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
                     textFormat: Text.RichText // OK
                 }
 
                 Label { // title: "TAF"
-                    visible: (weatherStation !== null) && weatherStation.hasTAF
+                    visible: (weatherStation != null) && weatherStation.hasTAF
                     text: "TAF"
                     font.bold: true
-                    font.pixelSize: 1.2*view.font.pixelSize
+                    font.pixelSize: 1.2*weatherReportDialog.font.pixelSize
                 }
 
                 Label { // raw TAF text
-                    visible: (weatherStation !== null) && weatherStation.hasTAF
-                    text: (weatherStation !== null) && weatherStation.hasTAF ? weatherStation.taf.rawText : ""
+                    visible: (weatherStation != null) && weatherStation.hasTAF
+                    text: (weatherStation != null) && weatherStation.hasTAF ? weatherStation.taf.rawText : ""
                     Layout.fillWidth: true
                     Layout.leftMargin: 4
                     Layout.rightMargin: 4
                     wrapMode: Text.WordWrap
 
-                    bottomPadding: 0.2*view.font.pixelSize
-                    topPadding: 0.2*view.font.pixelSize
-                    leftPadding: 0.2*view.font.pixelSize
-                    rightPadding: 0.2*view.font.pixelSize
+                    bottomPadding: 0.2*font.pixelSize
+                    topPadding: 0.2*font.pixelSize
+                    leftPadding: 0.2*font.pixelSize
+                    rightPadding: 0.2*font.pixelSize
 
                     leftInset: -4
                     rightInset: -4
 
                     background: Rectangle {
                         border.color: "black"
-                        color: Material.foreground
                         opacity: 0.2
                         radius: 4
                     }
                 }
 
                 Label { // decoded TAF text
-                    visible: (weatherStation !== null) && weatherStation.hasTAF
-                    text: (weatherStation !== null) && weatherStation.hasTAF ? weatherStation.taf.decodedText : ""
+                    visible: (weatherStation != null) && weatherStation.hasTAF
+                    text: (weatherStation != null) && weatherStation.hasTAF ? weatherStation.taf.decodedText : ""
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
                     textFormat: Text.RichText // OK

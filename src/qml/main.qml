@@ -20,18 +20,15 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import Qt.labs.settings
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
-import enroute 1.0
-
 import "dialogs"
 import "items"
-import "pages"
 
-ApplicationWindow {
+
+AppWindow {
     id: view
     objectName: "applicationWindow"
 
@@ -43,7 +40,7 @@ ApplicationWindow {
     visible: true
     title: "Enroute Flight Navigation"
     width: SafeInsets.wWidth
-    height: 800
+    height: SafeInsets.wHeight
 
     Settings {
         property alias x: view.x
@@ -52,17 +49,13 @@ ApplicationWindow {
         property alias height: view.height
     }
 
-    Material.theme: GlobalSettings.nightMode ? Material.Dark : Material.Light
-    Material.primary: Material.theme === Material.Dark ? Qt.darker("teal") : "teal"
-    Material.accent: Material.theme === Material.Dark ? Qt.lighter("teal") : "teal"
-
     Drawer {
         id: drawer
 
         height: (Qt.platform.os === "android") ? SafeInsets.wHeight : parent.height
         width: col.implicitWidth
 
-        ScrollView {
+        DecoratedScrollView {
             anchors.fill: parent
 
             ColumnLayout {
@@ -83,7 +76,7 @@ ApplicationWindow {
                     font.weight: Font.Medium
 
                     background: Rectangle {
-                        color: Material.primary
+                        color: "#009688"
                     }
                 }
 
@@ -91,7 +84,7 @@ ApplicationWindow {
                     Layout.fillWidth: true
                     Layout.preferredHeight: 4
 
-                    color: Material.primary
+                    color: "#009688"
                 }
 
                 Label { // Subtitle
@@ -106,7 +99,7 @@ ApplicationWindow {
                     color: "white"
 
                     background: Rectangle {
-                        color: Material.primary
+                        color: "#009688"
                     }
                 }
 
@@ -114,7 +107,7 @@ ApplicationWindow {
                     Layout.preferredHeight: 18
                     Layout.fillWidth: true
 
-                    color: Material.primary
+                    color: "#009688"
                 }
 
                 ItemDelegate { // Aircraft
@@ -169,11 +162,29 @@ ApplicationWindow {
                     }
                 }
 
+                ItemDelegate {
+                    Layout.fillWidth: true
+
+                    leftPadding: 16+SafeInsets.left
+
+                    id: weatherItem
+
+                    text: qsTr("Weather")
+                    icon.source: "/icons/material/ic_cloud_queue.svg"
+
+                    onClicked: {
+                        PlatformAdaptor.vibrateBrief()
+                        stackView.pop()
+                        stackView.push("pages/Weather.qml")
+                        drawer.close()
+                    }
+                }
+
                 Rectangle {
                     Layout.preferredHeight: 1
                     Layout.fillWidth: true
 
-                    color: Material.primary
+                    color: "#009688"
                 }
 
                 ItemDelegate {
@@ -186,7 +197,7 @@ ApplicationWindow {
 
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
-                        libraryMenu.popup()
+                        libraryMenu.open()
                     }
 
                     AutoSizingMenu {
@@ -271,7 +282,7 @@ ApplicationWindow {
                     Layout.preferredHeight: 1
                     Layout.fillWidth: true
 
-                    color: Material.primary
+                    color: "black"
                 }
 
                 ItemDelegate {
@@ -284,7 +295,7 @@ ApplicationWindow {
 
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
-                        aboutMenu.popup()
+                        aboutMenu.open()
                     }
 
                     AutoSizingMenu { // Info Menu
@@ -322,7 +333,7 @@ ApplicationWindow {
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
                                 stackView.pop()
-                                stackView.push("pages/TrafficReceiver.qml")
+                                stackView.push("pages/TrafficReceiver.qml", {"appWindow": view})
                                 aboutMenu.close()
                                 drawer.close()
                             }
@@ -336,7 +347,7 @@ ApplicationWindow {
                         Rectangle {
                             height: 1
                             Layout.fillWidth: true
-                            color: Material.primary
+                            color: "black"
                         }
 
                         ItemDelegate { // About
@@ -404,7 +415,7 @@ ApplicationWindow {
 
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
-                        manualMenu.popup()
+                        manualMenu.open()
                     }
 
 
@@ -436,7 +447,7 @@ ApplicationWindow {
                             visible: Qt.platform.os === "android"
                             height: visible ? 1 : 0
                             Layout.fillWidth: true
-                            color: Material.primary
+                            color: "black"
                         }
 
                         ItemDelegate {
@@ -508,7 +519,7 @@ ApplicationWindow {
                     Layout.preferredHeight: 1
                     Layout.fillWidth: true
 
-                    color: Material.primary
+                    color: "black"
                     visible: Navigator.flightStatus !== Navigator.Flight
                 }
 
@@ -580,7 +591,7 @@ ApplicationWindow {
                 return
             }
 
-            if ((GlobalSettings.lastWhatsNewInMapsHash !== DataManager.whatsNewHash) &&
+            if ((GlobalSettings.lastWhatsNewInMapsHash != DataManager.whatsNewHash) &&
                     (DataManager.whatsNew !== "") &&
                     (Navigator.flightStatus !== Navigator.Flight)) {
                 whatsNewInMapsDialog.open()
@@ -660,7 +671,7 @@ ApplicationWindow {
 
         horizontalAlignment: Text.AlignHCenter
         background: Rectangle {
-            color: Material.primary
+            color: "#009688"
             radius: 5
         }
 
@@ -770,9 +781,9 @@ ApplicationWindow {
 
         function onDownloadingChanged(downloading) {
             if (downloading) {
-                global.notifier().showNotification(Notifier.DownloadInfo, "", "");
+                Notifier.showNotification(Notifier.DownloadInfo, "", "");
             } else {
-                global.notifier().hideNotification(Notifier.DownloadInfo);
+                Notifier.hideNotification(Notifier.DownloadInfo);
             }
         }
     }
@@ -793,7 +804,7 @@ ApplicationWindow {
     }
 
     Connections { // Notifier
-        target: global.notifier()
+        target: Notifier
 
         function onAction(act) {
             if ((act === Notifier.DownloadInfo_Clicked) && (stackView.currentItem.objectName !== "DataManagerPage")) {
@@ -817,8 +828,7 @@ ApplicationWindow {
     }
 
     Connections { // SSLErrorHandler
-        target: global.sslErrorHandler()
-
+        target: SSLErrorHandler
 
         function onSslError(message) {
             sslErrorDialog.text = message
@@ -845,9 +855,9 @@ ApplicationWindow {
             standardButtons: Dialog.Ok
 
             title: qsTr("Network security settings")
-            text: qsTr("You have chosen to ignore network security errors in the future. \
-**This poses a security risk.** \
-Go to the 'Settings' page if you wish to restore the original, safe, behavior of this app.")
+            text: qsTr(`You have chosen to ignore network security errors in the future.
+**This poses a security risk.**
+Go to the 'Settings' page if you wish to restore the original, safe, behavior of this app.`)
         }
     }
 
@@ -871,17 +881,17 @@ Go to the 'Settings' page if you wish to restore the original, safe, behavior of
 
         function onTrafficReceiverRuntimeErrorChanged(message) {
             if (message === "") {
-                global.notifier().hideNotification(Notifier.TrafficReceiverRuntimeError);
+                Notifier.hideNotification(Notifier.TrafficReceiverRuntimeError);
             } else {
-                global.notifier().showNotification(Notifier.TrafficReceiverRuntimeError, message, message);
+                Notifier.showNotification(Notifier.TrafficReceiverRuntimeError, message, message);
             }
         }
 
         function onTrafficReceiverSelfTestErrorChanged(message) {
             if (message === "") {
-                global.notifier().hideNotification(Notifier.TrafficReceiverSelfTestError);
+                Notifier.hideNotification(Notifier.TrafficReceiverSelfTestError);
             } else {
-                global.notifier().showNotification(Notifier.TrafficReceiverSelfTestError, message, message);
+                Notifier.showNotification(Notifier.TrafficReceiverSelfTestError, message, message);
             }
         }
     }
@@ -918,3 +928,4 @@ Go to the 'Settings' page if you wish to restore the original, safe, behavior of
             Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteText/manual/"+pageUrl)
     }
 }
+

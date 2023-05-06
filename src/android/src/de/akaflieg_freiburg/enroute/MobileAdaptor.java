@@ -158,14 +158,17 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 		return android.os.Build.MANUFACTURER + " " + android.os.Build.PRODUCT + " (" + android.os.Build.MODEL + ")";
 	}
 
-	// Returns the bottom inset required to avoid system bars and display cutouts
-	public static double windowHeight() {
-		return m_instance.getWindow().getDecorView().getRootView().getHeight();
-	}
+    // Returns the height of the screen, taking the Android split view
+    // into account
+    public static double windowHeight() {
+	return m_instance.getWindow().getDecorView().getRootView().getHeight();
+    }
 
-	public static double windowWidth() {
-		return m_instance.getWindow().getDecorView().getRootView().getWidth();
-	}
+    // Returns the width of the screen, taking the Android split view
+    // into account
+    public static double windowWidth() {
+	return m_instance.getWindow().getDecorView().getRootView().getWidth();
+    }
 
 	// Returns the bottom inset required to avoid system bars and display cutouts
 	public static double safeInsetBottom() {

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,11 +21,9 @@
 import QtQml
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
-import enroute 1.0
 import "../dialogs"
 import "../items"
 
@@ -35,7 +33,7 @@ Page {
 
     header: StandardHeader {}
 
-    ScrollView {
+    DecoratedScrollView {
         id: sView
 
         anchors.fill: parent
@@ -43,10 +41,10 @@ Page {
 
         clip: true
 
-        bottomPadding: view.font.pixelSize + SafeInsets.bottom
-        leftPadding: view.font.pixelSize + SafeInsets.left
-        rightPadding: view.font.pixelSize + SafeInsets.right
-        topPadding: view.font.pixelSize
+        bottomPadding: font.pixelSize + SafeInsets.bottom
+        leftPadding: font.pixelSize + SafeInsets.left
+        rightPadding: font.pixelSize + SafeInsets.right
+        topPadding: font.pixelSize
 
         GridLayout {
             id: gl
@@ -59,9 +57,8 @@ Page {
                 Layout.columnSpan: 2
 
                 text: qsTr("Status")
-                font.pixelSize: view.font.pixelSize*1.2
+                font.pixelSize: sView.font.pixelSize*1.2
                 font.bold: true
-                color: Material.accent
             }
 
             Label { // Status
@@ -75,10 +72,10 @@ Page {
                 wrapMode: Text.WordWrap
                 textFormat: Text.RichText
 
-                bottomPadding: 0.6*view.font.pixelSize
-                topPadding: 0.6*view.font.pixelSize
-                leftPadding: 0.2*view.font.pixelSize
-                rightPadding: 0.2*view.font.pixelSize
+                bottomPadding: 0.6*font.pixelSize
+                topPadding: 0.6*font.pixelSize
+                leftPadding: 0.2*font.pixelSize
+                rightPadding: 0.2*font.pixelSize
 
                 leftInset: -4
                 rightInset: -4
@@ -92,7 +89,7 @@ Page {
             }
 
             Item {
-                Layout.preferredHeight: view.font.pixelSize*0.5
+                Layout.preferredHeight: sView.font.pixelSize*0.5
                 Layout.columnSpan: 2
             }
 
@@ -100,9 +97,8 @@ Page {
                 Layout.columnSpan: 2
 
                 text: qsTr("Position Data")
-                font.pixelSize: view.font.pixelSize*1.2
+                font.pixelSize: sView.font.pixelSize*1.2
                 font.bold: true
-                color: Material.accent
             }
 
             Label { text: qsTr("Latitude") }

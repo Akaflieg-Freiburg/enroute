@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,7 +20,6 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -59,18 +58,15 @@ CenteringDialog {
             Layout.fillWidth: true
 
             text: qsTr("Choose a waypoint from the list below.")
-            color: Material.accent
             wrapMode: Text.Wrap
             textFormat: Text.StyledText
         }
 
-        TextField {
+        MyTextField {
             id: textInput
 
             Layout.fillWidth: true
 
-            placeholderText: qsTr("Filter Waypoint Names")
-            font.pixelSize: view.font.pixelSize*1.5
             focus: true
 
             onAccepted: {
@@ -82,7 +78,7 @@ CenteringDialog {
             }
         }
 
-        ListView {
+        DecoratedListView {
             id: wpList
 
             Layout.fillHeight: true
@@ -91,13 +87,13 @@ CenteringDialog {
 
             clip: true
 
-            model: global.geoMapProvider().filteredWaypoints(textInput.displayText)
+            model: GeoMapProvider.filteredWaypoints(textInput.displayText)
             delegate: waypointDelegate
             ScrollIndicator.vertical: ScrollIndicator {}
 
             Label {
                 anchors.fill: wpList
-                anchors.topMargin: view.font.pixelSize*2
+                anchors.topMargin: font.pixelSize*2
 
                 visible: (wpList.count === 0)
                 horizontalAlignment: Text.AlignHCenter

@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QNetworkReply>
+#include <QQmlEngine>
 #include <QSslError>
 
 #include "GlobalObject.h"
@@ -28,25 +29,37 @@
 namespace DataManagement
 {
 
-  /*! \brief Handles SSL error
+/*! \brief Handles SSL error
    *
    *  This class watches for SSL errors that are reported by the global
    *  QNetworkAccessManager instance.  Depending on the settings, errors are
    *  either ignored or reported via the SSLError() signal.
    */
 
-  class SSLErrorHandler : public GlobalObject
-  {
+class SSLErrorHandler : public GlobalObject
+{
     Q_OBJECT
+    QML_ELEMENT
+    QML_SINGLETON
 
-  public:
+public:
     /*! \brief Standard constructor
      *
      *  @param parent The standard QObject parent pointer.
      */
     explicit SSLErrorHandler(QObject *parent = nullptr);
 
-  signals:
+    // No default constructor, important for QML singleton
+    explicit SSLErrorHandler() = delete;
+
+    // factory function for QML singleton
+    static DataManagement::SSLErrorHandler* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
+    {
+        return GlobalObject::sslErrorHandler();
+    }
+
+
+signals:
     /*! \brief Notification signal for the property with the same name */
     void sslError(QString description);
 

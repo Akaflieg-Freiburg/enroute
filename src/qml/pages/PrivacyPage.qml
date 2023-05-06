@@ -20,7 +20,6 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 
 import akaflieg_freiburg.enroute
 import "../items"
@@ -30,7 +29,7 @@ Page {
 
     header: StandardHeader {}
 
-    ScrollView {
+    DecoratedScrollView {
         id: sView
 
         anchors.fill: parent
@@ -53,7 +52,6 @@ Page {
 
             text: Librarian.getStringFromRessource(":text/privacy.html")
             textFormat: Text.RichText
-            linkColor: Material.accent
             wrapMode: Text.Wrap
 
             onLinkActivated: (link) => Qt.openUrlExternally(link)

@@ -24,7 +24,7 @@ import QtPositioning
 import QtQml
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
+//import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -44,7 +44,7 @@ Item {
 
         PluginParameter {
             name: "maplibregl.mapping.additional_style_urls"
-            value: global.geoMapProvider().styleFileURL
+            value: GeoMapProvider.styleFileURL
         }
 
     }
@@ -204,6 +204,8 @@ Item {
                 function onHeightChanged() { mapCircleLabel.polishAndUpdate() }
             }
 
+            Control { id: fontGlean }
+
             sourceItem: Label {
                 id: lbl
 
@@ -213,7 +215,7 @@ Item {
                 text: TrafficDataProvider.trafficObjectWithoutPosition.description
                 textFormat: Text.RichText
 
-                font.pixelSize: 0.8*view.font.pixelSize
+                font.pixelSize: 0.8*fontGlean.font.pixelSize
 
                 leftInset: -4
                 rightInset: -4
@@ -301,10 +303,14 @@ Item {
 
         MapPolyline {
             id: flightPath
-
             line.width: 4
             line.color: "#ff00ff"
-            path: Navigator.flightRoute.geoPath
+            path: {
+                var array = []
+                //Looks weird, but is necessary. geoPath is an 'object' not an array
+                Navigator.flightRoute.geoPath.forEach(element => array.push(element))
+                return array
+            }
         }
 
         MapPolyline {
@@ -431,8 +437,8 @@ Item {
                 var pos = point.position
                 var posTr = Qt.point(pos.x+25,pos.y)
 
-                var wp = global.geoMapProvider().closestWaypoint(flightMap.toCoordinate(pos),
-                                                                 flightMap.toCoordinate(posTr))
+                var wp = GeoMapProvider.closestWaypoint(flightMap.toCoordinate(pos),
+                                                        flightMap.toCoordinate(posTr))
                 if (!wp.isValid)
                     return
                 waypointDescription.waypoint = wp
@@ -444,8 +450,8 @@ Item {
                 var pos = point.position
                 var posTr = Qt.point(pos.x+25,pos.y)
 
-                var wp = global.geoMapProvider().closestWaypoint(flightMap.toCoordinate(pos),
-                                                                 flightMap.toCoordinate(posTr))
+                var wp = GeoMapProvider.closestWaypoint(flightMap.toCoordinate(pos),
+                                                        flightMap.toCoordinate(posTr))
                 if (!wp.isValid)
                     return
                 waypointDescription.waypoint = wp
@@ -464,8 +470,8 @@ Item {
     BrightnessContrast { // Graphical effects: increase contrast, reduce brightness in dark mode
         anchors.fill: flightMap
         source: flightMap
-        brightness: Material.theme == Material.Dark ? -0.9 : -0.2
-        contrast: Material.theme == Material.Dark ? 0.6 : 0.2
+        brightness: GlobalSettings.nightMode ? -0.9 : -0.2
+        contrast: GlobalSettings.nightMode ? 0.6 : 0.2
         visible: !DataManager.baseMapsRaster.hasFile
     }
 
@@ -508,8 +514,8 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
 
         topPadding: 0
         bottomPadding: 0
-        Material.elevation: 2
-        opacity: 0.8
+//        Material.elevation: 2
+//        opacity: 0.8
         visible: GlobalSettings.airspaceAltitudeLimit.isFinite() && !DataManager.baseMapsRaster.hasFile
 
         Label {
@@ -525,19 +531,14 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         }
     }
 
-    RoundButton {
+    MapButton {
         id: menuButton
         icon.source: "/icons/material/ic_menu.svg"
 
-        height: 4*font.pixelSize
-        width: 4*font.pixelSize
-
         anchors.left: parent.left
-        anchors.leftMargin: 0.5*view.font.pixelSize + SafeInsets.left
+        anchors.leftMargin: 0.5*font.pixelSize + SafeInsets.left
         anchors.top: remainingRoute.bottom
-        anchors.topMargin: 0.5*view.font.pixelSize
-
-        Material.background: GlobalSettings.nightMode ? undefined : "white"
+        anchors.topMargin: 0.5*font.pixelSize
 
         onClicked: {
             PlatformAdaptor.vibrateBrief()
@@ -545,26 +546,15 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         }
     }
 
-    RoundButton {
+    MapButton {
         id: northButton
 
         anchors.horizontalCenter: zoomIn.horizontalCenter
         anchors.verticalCenter: menuButton.verticalCenter
 
-        horizontalPadding: 0
-        verticalPadding: 0
-        height: 3.3*font.pixelSize
-        width: 3.3*font.pixelSize
+        rotation: -flightMap.bearing
 
-        contentItem: Image {
-            Layout.alignment: Qt.AlignHCenter
-            id: northArrow
-
-            opacity: GlobalSettings.nightMode ? 0.3 : 1.0
-            rotation: -flightMap.bearing
-
-            source: "/icons/NorthArrow.svg"
-        }
+        icon.source: "/icons/NorthArrow.svg"
 
         onClicked: {
             if (GlobalSettings.mapBearingPolicy === GlobalSettings.NUp) {
@@ -577,21 +567,17 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         }
     }
 
-    RoundButton {
+    MapButton {
         id: followGPSButton
 
-        opacity: 0.9
         icon.source: "/icons/material/ic_my_location.svg"
+
         enabled: !flightMap.followGPS
 
         anchors.left: parent.left
-        anchors.leftMargin: 0.5*view.font.pixelSize + SafeInsets.left
+        anchors.leftMargin: 0.5*font.pixelSize + SafeInsets.left
         anchors.bottom: trafficDataReceiverButton.top
-        anchors.bottomMargin: trafficDataReceiverButton.visible ? 0.5*view.font.pixelSize : 1.5*view.font.pixelSize
-
-        height: 4*font.pixelSize
-        width: 4*font.pixelSize
-        Material.background: GlobalSettings.nightMode ? undefined : "white"
+        anchors.bottomMargin: trafficDataReceiverButton.visible ? 0.5*font.pixelSize : 1.5*font.pixelSize
 
         onClicked: {
             PlatformAdaptor.vibrateBrief()
@@ -600,47 +586,37 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         }
     }
 
-    RoundButton {
+    MapButton {
         id: trafficDataReceiverButton
 
-        Material.background: TrafficDataProvider.receivingHeartbeat ? Material.Green : Material.Red
-
-        opacity: Material.theme === Material.Dark ? 0.3 : 0.8
         icon.source: "/icons/material/ic_airplanemode_active.svg"
-        visible: !TrafficDataProvider.receivingHeartbeat
+        icon.color: "red"
+        enabled: !TrafficDataProvider.receivingHeartbeat
 
         anchors.left: parent.left
-        anchors.leftMargin: 0.5*view.font.pixelSize + SafeInsets.left
+        anchors.leftMargin: 0.5*font.pixelSize + SafeInsets.left
         anchors.bottom: navBar.top
-        anchors.bottomMargin: visible ? 1.5*view.font.pixelSize : 0
-
-        height: visible ? 4*font.pixelSize : 0
-        width: 4*font.pixelSize
+        anchors.bottomMargin: visible ? 1.5*font.pixelSize : 0
 
         onClicked: {
             PlatformAdaptor.vibrateBrief()
             PlatformAdaptor.vibrateBrief()
             stackView.pop()
-            stackView.push("../pages/TrafficReceiver.qml")
+            stackView.push("../pages/TrafficReceiver.qml", {"appWindow": view})
         }
     }
 
-    RoundButton {
+    MapButton {
         id: zoomIn
 
-        opacity: 0.9
         icon.source: "/icons/material/ic_add.svg"
         enabled: flightMap.zoomLevel < flightMap.maximumZoomLevel
         autoRepeat: true
 
         anchors.right: parent.right
-        anchors.rightMargin: 0.5*view.font.pixelSize + SafeInsets.right
+        anchors.rightMargin: 0.5*font.pixelSize + SafeInsets.right
         anchors.bottom: zoomOut.top
-        anchors.bottomMargin: 0.5*view.font.pixelSize
-
-        height: 4*font.pixelSize
-        width: 4*font.pixelSize
-        Material.background: GlobalSettings.nightMode ? undefined : "white"
+        anchors.bottomMargin: 0.5*font.pixelSize
 
         onClicked: {
             centerBindingAnimation.omitAnimationforZoom()
@@ -649,22 +625,17 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         }
     }
 
-    RoundButton {
+    MapButton {
         id: zoomOut
 
-        opacity: 0.9
         icon.source: "/icons/material/ic_remove.svg"
         enabled: flightMap.zoomLevel > flightMap.minimumZoomLevel
         autoRepeat: true
 
         anchors.right: parent.right
-        anchors.rightMargin: 0.5*view.font.pixelSize + SafeInsets.right
+        anchors.rightMargin: 0.5*font.pixelSize + SafeInsets.right
         anchors.bottom: navBar.top
-        anchors.bottomMargin: 1.5*view.font.pixelSize
-
-        height: 4*font.pixelSize
-        width: 4*font.pixelSize
-        Material.background: GlobalSettings.nightMode ? undefined : "white"
+        anchors.bottomMargin: 1.5*font.pixelSize
 
         onClicked: {
             centerBindingAnimation.omitAnimationforZoom()
@@ -677,12 +648,12 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         id: leftScale
 
         anchors.top: northButton.bottom
-        anchors.topMargin: 0.5*view.font.pixelSize
+        anchors.topMargin: 0.5*font.pixelSize
         anchors.bottom: followGPSButton.top
-        anchors.bottomMargin: 0.5*view.font.pixelSize
+        anchors.bottomMargin: 0.5*font.pixelSize
         anchors.horizontalCenter: followGPSButton.horizontalCenter
 
-        opacity: Material.theme === Material.Dark ? 0.3 : 1.0
+        opacity: GlobalSettings.nightMode ? 0.3 : 1.0
         visible: !scale.visible
 
         pixelPer10km: flightMap.pixelPer10km
@@ -694,12 +665,12 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         id: scale
 
         anchors.left: followGPSButton.right
-        anchors.leftMargin: 0.5*view.font.pixelSize
+        anchors.leftMargin: 0.5*font.pixelSize
         anchors.right: zoomIn.left
-        anchors.rightMargin: 0.5*view.font.pixelSize
+        anchors.rightMargin: 0.5*font.pixelSize
         anchors.verticalCenter: zoomOut.verticalCenter
 
-        opacity: Material.theme === Material.Dark ? 0.3 : 1.0
+        opacity: GlobalSettings.nightMode ? 0.3 : 1.0
         visible: parent.height > parent.width
 
         pixelPer10km: flightMap.pixelPer10km
@@ -710,11 +681,11 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
     Pane {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: navBar.top
-        anchors.bottomMargin: 0.4*view.font.pixelSize
+        anchors.bottomMargin: 0.4*font.pixelSize
         topPadding: 0
         bottomPadding: 0
-        Material.elevation: 2
-        opacity: 0.8
+//        Material.elevation: 2
+//        opacity: 0.8
 
         Label {
             id: noCopyrightInfo
@@ -724,7 +695,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
             LongTextDialog {
                 id: copyrightDialog
                 title: qsTr("Map Data Copyright Information")
-                text: global.geoMapProvider().copyrightNotice
+                text: GeoMapProvider.copyrightNotice
                 standardButtons: Dialog.Cancel
             }
         }

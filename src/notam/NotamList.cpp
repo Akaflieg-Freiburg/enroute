@@ -107,14 +107,14 @@ QString NOTAM::NotamList::summary() const
 // Methods
 //
 
-Units::Time NOTAM::NotamList::age() const
+Units::Timespan NOTAM::NotamList::age() const
 {
     if (!m_retrieved.isValid())
     {
         return {};
     }
-
-    return Units::Time::fromS( double(m_retrieved.secsTo(QDateTime::currentDateTimeUtc()) ));
+    
+    return Units::Timespan::fromS( double(m_retrieved.secsTo(QDateTime::currentDateTimeUtc()) ));
 }
 
 

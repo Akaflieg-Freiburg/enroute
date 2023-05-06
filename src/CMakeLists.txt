@@ -26,6 +26,7 @@ set(SOURCES
     ressources.qrc.in
 
     # Header files
+    ../3rdParty/sunset/src/sunset.h
     dataManagement/DataManager.h
     dataManagement/Downloadable_Abstract.h
     dataManagement/Downloadable_MultiFile.h
@@ -84,7 +85,7 @@ set(SOURCES
     units/ByteSize.h
     units/Distance.h
     units/Speed.h
-    units/Time.h
+    units/Timespan.h
     units/Units.h
     units/Volume.h
     units/VolumeFlow.h
@@ -96,6 +97,7 @@ set(SOURCES
     weather/Wind.h
 
     # C++ files
+    ../3rdParty/sunset/src/sunset.cpp
     dataManagement/DataManager.cpp
     dataManagement/Downloadable_Abstract.cpp
     dataManagement/Downloadable_MultiFile.cpp
@@ -155,7 +157,7 @@ set(SOURCES
     units/Angle.cpp
     units/Distance.cpp
     units/Speed.cpp
-    units/Time.cpp
+    units/Timespan.cpp
     units/Volume.cpp
     units/VolumeFlow.cpp
     weather/Decoder.cpp
@@ -199,17 +201,23 @@ if(ANDROID)
         android/src/de/akaflieg_freiburg/enroute/ShareUtils.java
         )
 
+    # Copy manual and other files into the Android directories
+    file(COPY ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/docs/manual DESTINATION android/assets)
+    file(COPY ${CMAKE_SOURCE_DIR}/generatedSources/src/android DESTINATION .)
+    file(COPY ${CMAKE_SOURCE_DIR}/src/android DESTINATION .)
+
     # Configure files
     configure_file(AndroidManifest.xml.in android/AndroidManifest.xml)
     configure_file(${CMAKE_SOURCE_DIR}/3rdParty/material-design-icons/action/drawable-hdpi/ic_info_black_24dp.png ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable/ic_info.png COPYONLY)
     configure_file(${CMAKE_SOURCE_DIR}/3rdParty/material-design-icons/file/drawable-hdpi/ic_file_download_black_24dp.png ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable/ic_file_download.png COPYONLY)
     configure_file(${CMAKE_SOURCE_DIR}/3rdParty/material-design-icons/alert/drawable-hdpi/ic_error_black_24dp.png ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable/ic_error.png COPYONLY)
     configure_file(${CMAKE_SOURCE_DIR}/3rdParty/material-design-icons/alert/drawable-hdpi/ic_warning_black_24dp.png ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable/ic_warning.png COPYONLY)
+    configure_file(android/src/de/akaflieg_freiburg/enroute/IntentLauncher.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
+    configure_file(android/src/de/akaflieg_freiburg/enroute/Notifier.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
+    configure_file(android/src/de/akaflieg_freiburg/enroute/ShareActivity.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
+    configure_file(android/src/de/akaflieg_freiburg/enroute/ShareUtils.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
+    configure_file(android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
 
-    # Copy manual into Android assets directory
-    file(COPY ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/docs/manual DESTINATION android/assets)
-    file(COPY ${CMAKE_SOURCE_DIR}/generatedSources/src/android DESTINATION .)
-    file(COPY ${CMAKE_SOURCE_DIR}/src/android DESTINATION .)
 
     # The android target require a few additional variables
     set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android" CACHE INTERNAL "")
@@ -226,15 +234,19 @@ if(ANDROID)
         Qt6::HttpServer
         Qt6::Positioning
         Qt6::Quick
+        Qt6::QuickControls2
         Qt6::Sql
         Qt6::Svg
-        Qt6::WebView
-        sunset)
+        Qt6::WebView)
+
     set_target_properties(${PROJECT_NAME} PROPERTIES
-        QT_ANDROID_EXTRA_LIBS "${ANDROID_EXTRA_LIBS}"
         QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android"
         QT_ANDROID_TARGET_SDK_VERSION 33
     )
+
+    # Include SSL Libraries
+    set(ANDROID_TARGET_ARCH ${CMAKE_ANDROID_ARCH_ABI})
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/android_openssl dummyBinaryDir)
 endif()
 
 
@@ -268,11 +280,11 @@ if (UNIX AND NOT ANDROID AND NOT APPLE)
         Qt6::HttpServer
         Qt6::Positioning
         Qt6::Quick
+        Qt6::QuickControls2
         Qt6::Sql
         Qt6::Svg
         Qt6::Widgets
         kdsingleapplication
-        sunset
     )
     target_precompile_headers(${PROJECT_NAME}
         PRIVATE
@@ -290,7 +302,7 @@ endif()
 # Generate MacOS executable
 #
 
-if (APPLE)
+if (APPLE AND NOT IOS)
     list(APPEND SOURCES
         platform/FileExchange_MacOS.h
         platform/FileExchange_MacOS.cpp
@@ -316,12 +328,69 @@ if (APPLE)
         Qt6::HttpServer
         Qt6::Positioning
         Qt6::Quick
+        Qt6::QuickControls2
         Qt6::Sql
         Qt6::Svg
         Qt6::Widgets
         kdsingleapplication
-        sunset
     )
+endif()
+
+#
+# Generate iOS executable
+#
+
+if (IOS)
+    list(APPEND SOURCES
+        platform/FileExchange_iOS.h
+        platform/FileExchange_iOS.cpp
+        platform/Notifier_iOS.h
+        platform/Notifier_iOS.cpp
+        platform/PlatformAdaptor_iOS.h
+        platform/PlatformAdaptor_iOS.cpp
+        platform/SafeInsets_iOS.h
+        platform/SafeInsets_iOS.cpp
+        ios/ObjCAdapter.mm
+        ios/ObjCAdapter.h
+        ios/ObjectiveC.h
+        ios/ObjectiveC.m
+    )
+
+    # Compile definitions
+    add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
+
+    # Add executable and libraries
+    qt_add_executable(${PROJECT_NAME} ${SOURCES})
+    set(CMAKE_MACOSX_RPATH OFF)
+    target_link_libraries(${PROJECT_NAME}
+        PRIVATE
+        Qt6::Concurrent
+        Qt6::Core
+        Qt6::Core5Compat
+        Qt6::HttpServer
+        Qt6::Positioning
+        Qt6::Quick
+        Qt6::QuickControls2
+        Qt6::Sql
+        Qt6::Svg
+        Qt6::WebView
+    )
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+        "-framework UserNotifications"
+        #"-framework NotificationCenter"
+    )
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        MACOSX_BUNDLE true
+        MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/ios/Info.plist"
+    )
+
+    #Assets catalog containing the App icon
+    set(asset_catalog_path "ios/Assets.xcassets")
+    target_sources(${PROJECT_NAME}  PRIVATE "${asset_catalog_path}")
+    set_source_files_properties(${asset_catalog_path} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+
+    #Launchscreen
+    set_target_properties(${PROJECT_NAME} PROPERTIES  QT_IOS_LAUNCH_SCREEN "${CMAKE_CURRENT_SOURCE_DIR}/ios/LaunchScreen.storyboard")
 endif()
 
 target_include_directories(${PROJECT_NAME}
@@ -361,15 +430,25 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/dialogs/WaypointDescription.qml
     qml/dialogs/WaypointEditor.qml
     qml/dialogs/WeatherReport.qml
+    qml/items/AppWindow.qml
+    qml/items/+Material/AppWindow.qml
     qml/items/AutoSizingMenu.qml
+    qml/items/DecoratedListView.qml
+    qml/items/DecoratedScrollView.qml
     qml/items/DegreeInput.qml
     qml/items/ElevationInput.qml
     qml/items/FlightMap.qml
     qml/items/FlightVector.qml
+    qml/items/Footer.qml
+    qml/items/+Material/Footer.qml
     qml/items/Icon.qml
+    qml/items/+Material/Icon.qml
     qml/items/ImportManager.qml
+    qml/items/MapButton.qml
+    qml/items/+Material/MapButton.qml
     qml/items/MapSet.qml
     qml/items/MFM.qml
+    qml/items/MyTextField.qml
     qml/items/NavBar.qml
     qml/items/RemainingRouteBar.qml
     qml/items/StandardHeader.qml
@@ -378,6 +457,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/TrafficLabel.qml
     qml/items/WaypointDelegate.qml
     qml/items/WordWrappingCheckDelegate.qml
+    qml/items/WordWrappingRadioDelegate.qml
     qml/items/WordWrappingItemDelegate.qml
     qml/items/WordWrappingSwitchDelegate.qml
     qml/pages/SettingsPage.qml
@@ -397,6 +477,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/pages/PrivacyPage.qml
     qml/pages/TrafficReceiver.qml
     qml/pages/WaypointLibraryPage.qml
+    qml/pages/Weather.qml
     SOURCES
     ui/ScaleQuickItem.h
     ui/ScaleQuickItem.cpp

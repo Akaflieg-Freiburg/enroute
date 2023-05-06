@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,13 +20,10 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 import QtQuick.Shapes
 
 import akaflieg_freiburg.enroute
-import enroute 1.0
-
 import "../items"
 
 /* Waypoint dialog
@@ -39,7 +36,7 @@ CenteringDialog {
     id: waypointEditorDialog
 
     // Property waypoint, and code to handle waypoint changes
-    property waypoint waypoint: global.geoMapProvider().createWaypoint()
+    property waypoint waypoint: GeoMapProvider.createWaypoint()
 
     readonly property string newName: wpNameField.text
     readonly property string newNotes: wpNotesField.text
@@ -61,7 +58,7 @@ CenteringDialog {
         wpNotesField.text = waypoint.notes
     }
 
-    ScrollView {
+    DecoratedScrollView {
         anchors.fill: parent
         contentWidth: availableWidth // Disable horizontal scrolling
 
@@ -84,17 +81,15 @@ CenteringDialog {
                 text: qsTr("Name")
             }
 
-            TextField {
+            MyTextField {
                 id: wpNameField
 
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
-                Layout.minimumWidth: view.font.pixelSize*5
+                Layout.minimumWidth: font.pixelSize*5
 
                 text: waypoint.extendedName
                 focus: true
-
-                placeholderText: qsTr("undefined")
             }
 
             Label {
@@ -107,12 +102,13 @@ CenteringDialog {
 
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
-                Layout.minimumWidth: view.font.pixelSize*5
+                Layout.minimumWidth: font.pixelSize*5
 
                 focus: true
 
-                placeholderText: qsTr("undefined")
                 wrapMode: TextEdit.WordWrap
+
+                Component.onCompleted: PlatformAdaptor.setupInputMethodEventFilter(wpNotesField)
             }
 
             Label {

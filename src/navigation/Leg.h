@@ -142,7 +142,7 @@ public:
      *
      *  @returns ETE for leg
      */
-    Q_INVOKABLE [[nodiscard]] Units::Time ETE(Weather::Wind wind, const Navigation::Aircraft& aircraft) const
+    Q_INVOKABLE [[nodiscard]] Units::Timespan ETE(Weather::Wind wind, const Navigation::Aircraft& aircraft) const
     {
         return distance()/GS(wind, aircraft);
     }

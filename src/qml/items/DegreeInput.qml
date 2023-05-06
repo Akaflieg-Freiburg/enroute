@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,7 +20,6 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 
@@ -72,25 +71,28 @@ StackLayout {
             value = dVal
         }
 
-        TextField {
+        MyTextField {
             id: d_d
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
-            placeholderText: qsTr("undefined")
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: DoubleValidator {
                 bottom: stackLayout.minValue
                 top: stackLayout.maxValue
                 notation: DoubleValidator.StandardNotation
             }
-            color: (acceptableInput ? Material.foreground : "red")
+            color: (acceptableInput ? colorGlean.color : "red")
 
             onEditingFinished: {
                 d.setValue()
             }
         }
-        Label { text: "°" }
+        Label {
+            id: colorGlean
+
+            text: "°"
+        }
     }
 
     RowLayout { // Degree and Minute
@@ -110,18 +112,17 @@ StackLayout {
                 value = dVal - mVal/60.0
         }
 
-        TextField {
+        MyTextField {
             id: dm_d
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
-            placeholderText: qsTr("undefined")
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: IntValidator {
                 bottom: stackLayout.minValue
                 top: stackLayout.maxValue
             }
-            color: (acceptableInput ? Material.foreground : "red")
+            color: (acceptableInput ? colorGlean.color : "red")
 
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {
@@ -130,19 +131,18 @@ StackLayout {
         }
         Label { text: "°" }
 
-        TextField {
+        MyTextField {
             id: dm_m
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
-            placeholderText: qsTr("undefined")
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: DoubleValidator {
                 bottom: 0.0
                 top: 59.9999999999999
                 notation: DoubleValidator.StandardNotation
             }
-            color: (acceptableInput ? Material.foreground : "red")
+            color: (acceptableInput ? colorGlean.color : "red")
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {
                 dm.setValue()
@@ -171,18 +171,17 @@ StackLayout {
                 value = dVal - mVal/60.0 - sVal/3600.0
         }
 
-        TextField {
+        MyTextField {
             id: dms_d
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
-            placeholderText: qsTr("undefined")
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: IntValidator {
                 bottom: stackLayout.minValue
                 top: stackLayout.maxValue
             }
-            color: (acceptableInput ? Material.foreground : "red")
+            color: (acceptableInput ? colorGlean.color : "red")
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {
                 dms.setValue()
@@ -190,18 +189,17 @@ StackLayout {
         }
         Label { text: "°" }
 
-        TextField {
+        MyTextField {
             id: dms_m
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
-            placeholderText: qsTr("undefined")
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: IntValidator {
                 bottom: 0
                 top: 59
             }
-            color: (acceptableInput ? Material.foreground : "red")
+            color: (acceptableInput ? colorGlean.color : "red")
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {
                 dms.setValue()
@@ -209,19 +207,18 @@ StackLayout {
         }
         Label { text: "'" }
 
-        TextField {
+        MyTextField {
             id: dms_s
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
-            placeholderText: qsTr("undefined")
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: DoubleValidator {
                 bottom: 0.0
                 top: 59.9999999999999
                 notation: DoubleValidator.StandardNotation
             }
-            color: (acceptableInput ? Material.foreground : "red")
+            color: (acceptableInput ? colorGlean.color : "red")
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {
                 dms.setValue()

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,7 +20,6 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 
@@ -51,18 +50,17 @@ StackLayout {
         Layout.fillWidth: true
         Layout.alignment: Qt.AlignBaseline
 
-        TextField {
+        MyTextField {
             id: ft_d
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
-            placeholderText: qsTr("undefined")
             inputMethodHints: Qt.ImhDigitsOnly
             validator: IntValidator {
                 bottom: -3000
                 top: 24000
             }
-            color: (acceptableInput ? Material.foreground : "red")
+            color: (acceptableInput ? colorGlean.color : "red")
 
             onEditingFinished: {
                 if (ft_d.acceptableInput)
@@ -71,7 +69,10 @@ StackLayout {
                     valueMeter = NaN
             }
         }
-        Label { text: "ft" }
+        Label {
+            id: colorGlean
+            text: "ft"
+        }
     }
 
     RowLayout { // meter
@@ -79,17 +80,16 @@ StackLayout {
         Layout.fillWidth: true
         Layout.alignment: Qt.AlignBaseline
 
-        TextField {
+        MyTextField {
             id: m_d
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
-            placeholderText: qsTr("undefined")
             validator: IntValidator {
                 bottom: -1000
                 top: 8000
             }
-            color: (acceptableInput ? Material.foreground : "red")
+            color: (acceptableInput ? colorGlean.color : "red")
 
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {

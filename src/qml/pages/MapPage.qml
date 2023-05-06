@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,12 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-//import QtLocation 5.15
-import QtPositioning 5.15
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-
-import enroute 1.0
+import QtPositioning
+import QtQuick
+import QtQuick.Controls
 
 import "../items"
 
@@ -43,6 +40,8 @@ Page {
     }
 
     Connections {
+        // For unclear reasons, the line "target: GeoMapProvider" freezes the application
+        // target: GeoMapProvider
         target: global.geoMapProvider()
 
         function onStyleFileURLChanged() {

@@ -21,11 +21,9 @@
 import QtPositioning
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
-import enroute 1.0
 
 import "../dialogs"
 import "../items"
@@ -38,7 +36,6 @@ Page {
 
     header: ToolBar {
 
-        Material.foreground: "white"
         height: 60 + SafeInsets.top
         leftPadding: SafeInsets.left
         rightPadding: SafeInsets.right
@@ -82,7 +79,7 @@ Page {
             icon.source: "/icons/material/ic_more_vert.svg"
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                headerMenuX.popup()
+                headerMenuX.open()
             }
 
             AutoSizingMenu {
@@ -169,7 +166,7 @@ Page {
 
                             var errorString = FileExchange.viewContent(WaypointLibrary.toGeoJSON(), "application/geo+json", "WaypointLibrary-%1.geojson")
                             if (errorString !== "") {
-                                shareErrorDialogLabel.text = errorString
+                                shareErrorDialog.text = errorString
                                 shareErrorDialog.open()
                             } else
                                 toast.doToast(qsTr("Waypoint library opened in other app"))
@@ -186,7 +183,7 @@ Page {
 
                             var errorString = FileExchange.viewContent(WaypointLibrary.toGpx(), "application/gpx+xml", "WaypointLibrary-%1.gpx")
                             if (errorString !== "") {
-                                shareErrorDialogLabel.text = errorString
+                                shareErrorDialog.text = errorString
                                 shareErrorDialog.open()
                             } else
                                 toast.doToast(qsTr("Waypoint library opened in other app"))
@@ -213,69 +210,90 @@ Page {
         }
     }
 
-    TextField {
-        id: textInput
+    RowLayout {
+        id: filterRow
 
-        anchors.right: parent.right
-        anchors.rightMargin: view.font.pixelSize*2.0
         anchors.left: parent.left
-        anchors.leftMargin: view.font.pixelSize*2.0
+        anchors.leftMargin: SafeInsets.left
+        anchors.right: parent.right
+        anchors.rightMargin: SafeInsets.right
+        anchors.top: parent.top
+        anchors.topMargin: page.font.pixelSize
 
-        leftPadding: SafeInsets.left
-        rightPadding: SafeInsets.right
+        Label {
+            Layout.alignment: Qt.AlignBaseline
 
-        placeholderText: qsTr("Filter Waypoint Names")
-        font.pixelSize: view.font.pixelSize*1.5
+            text: qsTr("Filter")
+        }
+
+        MyTextField {
+            id: textInput
+
+            Layout.alignment: Qt.AlignBaseline
+            Layout.fillWidth: true
+        }
     }
 
-    Component {
-        id: waypointDelegate
+    Pane {
 
-        RowLayout {
-            width: wpList.width
-            height: iDel.heigt
+        anchors.top: filterRow.bottom
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
 
-            SwipeToDeleteDelegate {
-                id: iDel
-                Layout.fillWidth: true
+        bottomPadding: SafeInsets.bottom
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
+        topPadding: font.pixelSize
 
-                text: modelData.name
-                icon.source: modelData.icon
+        Component {
+            id: waypointDelegate
 
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
+            RowLayout {
+                width: wpList.width
+                height: iDel.height
+
+                SwipeToDeleteDelegate {
+                    id: iDel
+                    Layout.fillWidth: true
+
+                    text: modelData.name
+                    icon.source: modelData.icon
+
+                    onClicked: {
+                        PlatformAdaptor.vibrateBrief()
                     waypointDescription.waypoint = modelData
-                    waypointDescription.open()
+                        waypointDescription.open()
+                    }
+
+                    swipe.onCompleted: {
+                        PlatformAdaptor.vibrateBrief()
+                        removeDialog.waypoint = modelData
+                        removeDialog.open()
+                    }
+
                 }
 
-                swipe.onCompleted: {
+                ToolButton {
+                    id: editButton
+
+                    icon.source: "/icons/material/ic_mode_edit.svg"
+                    onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    removeDialog.waypoint = modelData
-                    removeDialog.open()
-                }
-
+                        wpEditor.waypoint = modelData
+                        wpEditor.open()
+                    }
             }
 
-            ToolButton {
-                id: editButton
+                ToolButton {
+                    id: cptMenuButton
 
-                icon.source: "/icons/material/ic_mode_edit.svg"
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    wpEditor.waypoint = modelData
-                    wpEditor.open()
-                }
-            }
+                    icon.source: "/icons/material/ic_more_horiz.svg"
 
-            ToolButton {
-                id: cptMenuButton
-
-                icon.source: "/icons/material/ic_more_horiz.svg"
-
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    cptMenu.popup()
-                }
+                    onClicked: {
+                        PlatformAdaptor.vibrateBrief()
+                        cptMenu.open()
+                    }
 
                 AutoSizingMenu {
                     id: cptMenu
@@ -291,18 +309,16 @@ Page {
                     } // removeAction
                 } // AutoSizingMenu
 
+                }
+
             }
 
         }
 
-    }
-
-    ListView {
+        DecoratedListView {
         id: wpList
-        anchors.top: textInput.bottom
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
+
+        anchors.fill: parent
 
         leftMargin: SafeInsets.left
         rightMargin: SafeInsets.right
@@ -319,16 +335,16 @@ Page {
         delegate: waypointDelegate
         ScrollIndicator.vertical: ScrollIndicator {}
     }
+    }
 
     Label {
-        anchors.fill: wpList
-        anchors.topMargin: view.font.pixelSize*2
+        anchors.fill: parent
 
         visible: (wpList.count === 0)
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
-        leftPadding: view.font.pixelSize*2
-        rightPadding: view.font.pixelSize*2
+        leftPadding: font.pixelSize*2
+        rightPadding: font.pixelSize*2
 
         textFormat: Text.RichText
         wrapMode: Text.Wrap
@@ -347,37 +363,22 @@ Page {
         textInput.text = cache
     }
 
-    CenteringDialog {
+    LongTextDialog {
         id: shareErrorDialog
 
         title: qsTr("Error Exporting Data…")
         standardButtons: Dialog.Ok
-        modal: true
-
-        Label {
-            id: shareErrorDialogLabel
-            width: shareErrorDialog.availableWidth
-            wrapMode: Text.Wrap
-            textFormat: Text.StyledText
-        }
     }
 
-    CenteringDialog {
+    LongTextDialog {
         id: removeDialog
 
-        property var waypoint: global.geoMapProvider().createWaypoint()
+        property var waypoint: GeoMapProvider.createWaypoint()
 
         title: qsTr("Remove from Device?")
+        text: qsTr("Once the waypoint <strong>%1</strong> is removed, it cannot be restored.").arg(removeDialog.waypoint.name)
+
         standardButtons: Dialog.No | Dialog.Yes
-        modal: true
-
-        Label {
-            width: removeDialog.availableWidth
-
-            text: qsTr("Once the waypoint <strong>%1</strong> is removed, it cannot be restored.").arg(removeDialog.waypoint.name)
-            wrapMode: Text.Wrap
-            textFormat: Text.StyledText
-        }
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
@@ -393,20 +394,13 @@ Page {
 
     }
 
-    CenteringDialog {
+    LongTextDialog {
         id: clearDialog
 
         title: qsTr("Clear Waypoint Library?")
         standardButtons: Dialog.No | Dialog.Yes
-        modal: true
 
-        Label {
-            width: clearDialog.availableWidth
-
-            text: qsTr("Once cleared, the library cannot be restored.")
-            wrapMode: Text.Wrap
-            textFormat: Text.StyledText
-        }
+        text: qsTr("Once cleared, the library cannot be restored.")
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()

@@ -1,10 +1,12 @@
 name: Compile on Android
 
 on:
+  create:
+    branches: [ main ]
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -12,49 +14,49 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
-        submodules: true    
-    - name: Install Qt
-      uses: jurplel/install-qt-action@v2
+        path: enroute
+        submodules: true
+    - name: Checkout qtlocation
+      uses: actions/checkout@v3
+      with:
+        path: qtlocation
+        repository: Akaflieg-Freiburg/qtlocationstatic
+        submodules: true
+    - name: Install Qt for Desktop
+      uses: jurplel/install-qt-action@v3
+      with:
+        version: '6.4.*'
+        modules: 'qtshadertools'	
+    - name: Set QT_HOST_PATH
+      run: |
+        echo QT_HOST_PATH=$Qt6_DIR >> $GITHUB_ENV
+    - name: Install Qt for Android
+      uses: jurplel/install-qt-action@v3
       with:
         target: 'android'
-        version: '5.15.2'
+        version: '6.4.*'
+        arch: 'android_arm64_v8a'
+        modules: 'qt5compat qthttpserver qtpositioning qtshadertools qtwebsockets qtwebview'	
     - name: Install Additional Software
       run: |
-        sudo apt install doxygen graphviz librsvg2-bin
-    - name: Configure
+        sudo apt install extra-cmake-modules ninja-build spirv-tools
+        echo "y" | ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager "platforms;android-31" "platform-tools" "build-tools;31.0.0"
+        echo "y" | ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager --uninstall "platforms;android-33-ext5" "platforms;android-33-ext4"
+        echo "y" | ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager "ndk;23.1.7779620"
+        echo ANDROID_NDK_ROOT=$ANDROID_SDK_ROOT/ndk/23.1.7779620 >> $GITHUB_ENV
+    - name: Compile QtLocation
       run: |
-        ANDROID_ROOT=/usr/local/lib/android
-        ANDROID_SDK_ROOT=${ANDROID_ROOT}/sdk
-        SDKMANAGER=${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager
-        echo "y" | $SDKMANAGER "ndk;21.4.7075529"
-        mkdir -p build
-        cd build
-        cmake .. \
-          -DANDROID_ABI:STRING=armeabi-v7a \
-          -DANDROID_BUILD_ABI_arm64-v8a:BOOL=OFF \
-          -DANDROID_BUILD_ABI_armeabi-v7a:BOOL=ON \
-          -DANDROID_BUILD_ABI_x86:BOOL=OFF \
-          -DANDROID_BUILD_ABI_x86_64:BOOL=OFF \
-          -DANDROID_NATIVE_API_LEVEL:STRING=21 \
-          -DANDROID_NDK:PATH=$ANDROID_SDK_ROOT/ndk/21.4.7075529 \
-          -DANDROID_SDK:PATH=$ANDROID_SDK_ROOT \
-          -DANDROID_STL:STRING=c++_shared \
-          -DCMAKE_BUILD_TYPE:STRING=Debug \
-          -DCMAKE_CXX_COMPILER:STRING=$ANDROID_SDK_ROOT/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ \
-          -DCMAKE_C_COMPILER:STRING=$ANDROID_SDK_ROOT/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/bin/clang \
-          -DCMAKE_FIND_ROOT_PATH:STRING=$Qt5_DIR \
-          -DCMAKE_PREFIX_PATH:STRING=$Qt5_DIR \
-          -DCMAKE_TOOLCHAIN_FILE:PATH=$ANDROID_SDK_ROOT/ndk/21.4.7075529/build/cmake/android.toolchain.cmake \
-          -DQT_QMAKE_EXECUTABLE:STRING=$Qt5_DIR/bin/qmake
-        cmake ..
-    - name: Compile
+        cmake -E make_directory build-qtlocation
+        cd build-qtlocation
+        $Qt6_DIR/bin/qt-configure-module ../qtlocation
+        cmake -DMBGL_QT_WITH_INTERNAL_ICU:BOOL=On .
+        cmake --build .
+        cmake --install .
+    - name: Compile Enroute
       run: |
-        cd build
-        make
-        make apk
-    - uses: actions/upload-artifact@v2
-      with:
-        name: enroute-debug.apk
-        path: build/android-build/build/outputs/apk/debug/android-build-debug.apk
+        cmake -E make_directory build-enroute
+        cd build-enroute
+        $Qt6_DIR/bin/qt-cmake -DCMAKE_BUILD_TYPE:STRING=Debug ../enroute
+        cmake --build .

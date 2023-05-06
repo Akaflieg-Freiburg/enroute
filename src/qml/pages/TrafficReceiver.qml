@@ -21,11 +21,9 @@
 import QtQml
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
-import enroute 1.0
 import "../dialogs"
 import "../items"
 
@@ -35,9 +33,11 @@ Page {
 
     title: qsTr("Traffic Data Receiver")
 
+    required property var appWindow
+
     header: StandardHeader {}
 
-    ScrollView {
+    DecoratedScrollView {
         id: sView
 
         anchors.fill: parent
@@ -45,10 +45,10 @@ Page {
 
         clip: true
 
-        bottomPadding: view.font.pixelSize + SafeInsets.bottom
-        leftPadding: view.font.pixelSize + SafeInsets.left
-        rightPadding: view.font.pixelSize + SafeInsets.right
-        topPadding: view.font.pixelSize
+        bottomPadding: font.pixelSize + SafeInsets.bottom
+        leftPadding: font.pixelSize + SafeInsets.left
+        rightPadding: font.pixelSize + SafeInsets.right
+        topPadding: font.pixelSize
 
         ColumnLayout {
             width: sView.availableWidth
@@ -57,9 +57,8 @@ Page {
                 Layout.fillWidth: true
 
                 text: qsTr("Connection Status")
-                font.pixelSize: view.font.pixelSize*1.2
+                font.pixelSize: sView.font.pixelSize*1.2
                 font.bold: true
-                color: Material.accent
             }
 
             Label { // Status
@@ -72,10 +71,10 @@ Page {
                 wrapMode: Text.WordWrap
                 textFormat: Text.RichText
 
-                bottomPadding: 0.6*view.font.pixelSize
-                topPadding: 0.6*view.font.pixelSize
-                leftPadding: 0.2*view.font.pixelSize
-                rightPadding: 0.2*view.font.pixelSize
+                bottomPadding: 0.6*font.pixelSize
+                topPadding: 0.6*font.pixelSize
+                leftPadding: 0.2*font.pixelSize
+                rightPadding: 0.2*font.pixelSize
 
                 leftInset: -4
                 rightInset: -4
@@ -94,22 +93,23 @@ Page {
                 visible: TrafficDataProvider.receivingHeartbeat
 
                 text: qsTr("Traffic Data Receiver Status")
-                font.pixelSize: view.font.pixelSize*1.2
+                font.pixelSize: sView.font.pixelSize*1.2
                 font.bold: true
-                color: Material.accent
             }
 
             Label {
+                id: problemStatus
+
                 Layout.fillWidth: true
                 Layout.leftMargin: 4
                 Layout.rightMargin: 4
 
                 visible: TrafficDataProvider.receivingHeartbeat
 
-                bottomPadding: 0.6*view.font.pixelSize
-                topPadding: 0.6*view.font.pixelSize
-                leftPadding: 0.2*view.font.pixelSize
-                rightPadding: 0.2*view.font.pixelSize
+                bottomPadding: 0.6*font.pixelSize
+                topPadding: 0.6*font.pixelSize
+                leftPadding: 0.2*font.pixelSize
+                rightPadding: 0.2*font.pixelSize
 
                 leftInset: -4
                 rightInset: -4
@@ -127,7 +127,7 @@ Page {
 
                 background: Rectangle {
                     border.color: "black"
-                    color: (parent.myText === "") ? "green" : "red"
+                    color: (problemStatus.myText === "") ? "green" : "red"
                     opacity: 0.2
                     radius: 4
                 }
@@ -152,7 +152,7 @@ Page {
             }
 
             Item {
-                Layout.preferredHeight: view.font.pixelSize*0.5
+                Layout.preferredHeight: sView.font.pixelSize*0.5
                 Layout.columnSpan: 2
             }
 
@@ -161,9 +161,8 @@ Page {
                 visible: !TrafficDataProvider.receivingHeartbeat
 
                 text: qsTr("Help")
-                font.pixelSize: view.font.pixelSize*1.2
+                font.pixelSize: sView.font.pixelSize*1.2
                 font.bold: true
-                color: Material.accent
             }
 
             WordWrappingItemDelegate {
@@ -171,7 +170,7 @@ Page {
                 visible: !TrafficDataProvider.receivingHeartbeat
                 icon.source: "/icons/material/ic_info_outline.svg"
                 text: qsTr("How to connect your traffic receiver…")
-                onClicked: openManual("02-steps/traffic.html")
+                onClicked: trafficReceiverPage.appWindow.openManual("02-steps/traffic.html")
             }
 
             WordWrappingItemDelegate {
@@ -179,7 +178,7 @@ Page {
                 visible: !TrafficDataProvider.receivingHeartbeat
                 icon.source: "/icons/material/ic_info_outline.svg"
                 text: qsTr("How to connect your flight simulator…")
-                onClicked: openManual("02-steps/simulator.html")
+                onClicked: trafficReceiverPage.appWindow.openManual("02-steps/simulator.html")
             }
 
         }

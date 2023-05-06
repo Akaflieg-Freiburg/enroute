@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,9 +20,6 @@
 
 #pragma once
 
-#include "units/Distance.h"
-#include "units/Speed.h"
-
 #include <QObject>
 #include <QQmlEngine>
 #include <QtMath>
@@ -35,7 +32,7 @@ namespace Units {
      * This extremely simple class allows computation with times, without the need
      * to worry about units.
      */
-    class Time {
+class Timespan {
         Q_GADGET
         QML_VALUE_TYPE(time)
 
@@ -46,8 +43,8 @@ namespace Units {
          *
          * @returns time
          */
-        static auto fromH(double timeInH) -> Time {
-            Time result;
+        static auto fromH(double timeInH) -> Timespan {
+            Timespan result;
             result.m_timeInS = timeInH*Seconds_per_Hour;
             return result;
         }
@@ -58,8 +55,8 @@ namespace Units {
          *
          * @returns time
          */
-        static auto fromMS(double timeInMS) -> Time {
-            Time result;
+        static auto fromMS(double timeInMS) -> Timespan {
+            Timespan result;
             result.m_timeInS = qRound(timeInMS/1000.0);
             return result;
         }
@@ -70,8 +67,8 @@ namespace Units {
          *
          * @returns time
          */
-        static auto fromS(double timeInS) -> Time {
-            Time result;
+        static auto fromS(double timeInS) -> Timespan {
+            Timespan result;
             result.m_timeInS = timeInS;
             return result;
         }
@@ -100,7 +97,7 @@ namespace Units {
          *
          * @returns reference to this time
          */
-        Q_INVOKABLE Units::Time& operator+=(Units::Time other)
+        Q_INVOKABLE Units::Timespan& operator+=(Units::Timespan other)
         {
             m_timeInS += other.m_timeInS;
             return *this;
@@ -112,7 +109,7 @@ namespace Units {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE [[nodiscard]] std::partial_ordering operator<=>(const Units::Time& rhs) const = default;
+        Q_INVOKABLE [[nodiscard]] std::partial_ordering operator<=>(const Units::Timespan& rhs) const = default;
 
         /*! \brief Convert time to seconds
          *
@@ -158,4 +155,4 @@ namespace Units {
 
 
 // Declare meta types
-Q_DECLARE_METATYPE(Units::Time)
+Q_DECLARE_METATYPE(Units::Timespan)

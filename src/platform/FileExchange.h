@@ -29,3 +29,12 @@
 #if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
 #include "FileExchange_Linux.h"
 #endif
+
+#if defined(Q_OS_MACOS)
+#include "FileExchange_MacOS.h"
+#endif
+
+
+#if defined(Q_OS_IOS)
+#include "FileExchange_iOS.h"
+#endif

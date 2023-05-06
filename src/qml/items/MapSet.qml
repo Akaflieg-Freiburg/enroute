@@ -20,12 +20,10 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
 import "../dialogs"
-
 
 
 Item {
@@ -121,7 +119,7 @@ Item {
             visible: element.model.modelData.hasFile & !element.model.modelData.downloading
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                removeMenu.popup()
+                removeMenu.open()
             }
 
             AutoSizingMenu {

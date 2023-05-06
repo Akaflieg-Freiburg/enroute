@@ -20,9 +20,9 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 
 import akaflieg_freiburg.enroute
+import "../items"
 
 CenteringDialog {
     id: dlg
@@ -32,7 +32,7 @@ CenteringDialog {
     standardButtons: Dialog.Ok
 
     
-    ScrollView{
+    DecoratedScrollView{
         anchors.fill: parent
         contentWidth: availableWidth // Disable horizontal scrolling
 
@@ -46,10 +46,9 @@ CenteringDialog {
 
         Label {
             id: lbl
-            text: "<style>a:link { color: " + Material.accent + "; }</style>"+dialogLoader.text
+            text: dialogLoader.text
             width: dlg.availableWidth
             textFormat: Text.RichText
-            linkColor: Material.accent
             wrapMode: Text.Wrap
             onLinkActivated: (link) => Qt.openUrlExternally(link)
         }

@@ -152,12 +152,11 @@ Item {
                 textFormat: Text.StyledText
             }
 
-            TextField {
+            MyTextField {
                 id: mapNameRaster
 
                 Layout.fillWidth: true
                 focus: true
-                placeholderText: qsTr("Map Name")
 
                 onDisplayTextChanged: importRasterMapDialog.standardButton(DialogButtonBox.Ok).enabled = (displayText !== "")
 
@@ -214,12 +213,11 @@ Item {
                 textFormat: Text.StyledText
             }
 
-            TextField {
+            MyTextField {
                 id: mapNameVector
 
                 Layout.fillWidth: true
                 focus: true
-                placeholderText: qsTr("Map Name")
 
                 onDisplayTextChanged: importRasterMapDialog.standardButton(DialogButtonBox.Ok).enabled = (displayText !== "")
 

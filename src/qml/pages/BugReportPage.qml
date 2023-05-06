@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,7 +21,6 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import QtQuick.Controls.Material
 
 import akaflieg_freiburg.enroute
 import "../items"
@@ -43,15 +42,10 @@ Page {
         initialItem: mainPage
     }
 
-    footer: Pane {
-        width: parent.width
-        Material.elevation: 3
+    footer: Footer {
         visible: stack.depth > 1
-        bottomPadding: SafeInsets.bottom
 
         ToolButton {
-            Material.foreground: Material.accent
-
             text: qsTr("Go back in bug report")
             icon.source: "/icons/material/ic_arrow_back.svg"
             onClicked:  {
@@ -65,7 +59,7 @@ Page {
     Component {
         id: mainPage
 
-        ScrollView {
+        DecoratedScrollView {
             id: sv
 
             width: stack.width
@@ -74,18 +68,18 @@ Page {
 
             clip: true
 
-            bottomPadding: view.font.pixelSize + SafeInsets.bottom
-            leftPadding: view.font.pixelSize + SafeInsets.left
-            rightPadding: view.font.pixelSize + SafeInsets.right
-            topPadding: view.font.pixelSize
+            bottomPadding: font.pixelSize + SafeInsets.bottom
+            leftPadding: font.pixelSize + SafeInsets.left
+            rightPadding: font.pixelSize + SafeInsets.right
+            topPadding: font.pixelSize
 
             ColumnLayout {
                 width: sv.availableWidth
 
-                anchors.bottomMargin: view.font.pixelSize*1
-                anchors.topMargin: view.font.pixelSize*1
-                anchors.leftMargin: view.font.pixelSize*0.5
-                anchors.rightMargin: view.font.pixelSize*0.5
+                anchors.bottomMargin: font.pixelSize*1
+                anchors.topMargin: font.pixelSize*1
+                anchors.leftMargin: font.pixelSize*0.5
+                anchors.rightMargin: font.pixelSize*0.5
 
                 id: cL
 
@@ -101,7 +95,6 @@ every report that we get, and we would also like to hear
 your suggestions for improvement.</p>
 ")
                     textFormat: Text.StyledText
-                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                 }
                 Label {
@@ -113,7 +106,6 @@ your suggestions for improvement.</p>
 application.</p>
 ")
                     textFormat: Text.StyledText
-                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                 }
                 Button {
@@ -135,7 +127,6 @@ application.</p>
 …), then please use the buttons below.</p>
 ")
                     textFormat: Text.StyledText
-                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                 }
                 Button {
@@ -176,7 +167,6 @@ patterns, missing navaids,…), then please use the buttons
 below.</p>
 ")
                     textFormat: Text.StyledText
-                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                 }
                 Button {
@@ -221,19 +211,18 @@ below.</p>
 <h4>Thank you for your help!</h4>
 ")
                     textFormat: Text.StyledText
-                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                 }
             }
 
-        } // ScrollView
+        } // DecoratedScrollView
 
     }
 
     Component {
         id: mainAppPage
 
-        ScrollView {
+        DecoratedScrollView {
             id: sv
 
             width: stack.width
@@ -242,20 +231,20 @@ below.</p>
 
             clip: true
 
-            bottomPadding: view.font.pixelSize + SafeInsets.bottom
-            leftPadding: view.font.pixelSize + SafeInsets.left
-            rightPadding: view.font.pixelSize + SafeInsets.right
-            topPadding: view.font.pixelSize
+            bottomPadding: font.pixelSize + SafeInsets.bottom
+            leftPadding: font.pixelSize + SafeInsets.left
+            rightPadding: font.pixelSize + SafeInsets.right
+            topPadding: font.pixelSize
 
             ColumnLayout {
                 id: cL
 
                 width: sv.availableWidth
 
-                anchors.bottomMargin: view.font.pixelSize*1
-                anchors.topMargin: view.font.pixelSize*1
-                anchors.leftMargin: view.font.pixelSize*0.5
-                anchors.rightMargin: view.font.pixelSize*0.5
+                anchors.bottomMargin: font.pixelSize*1
+                anchors.topMargin: font.pixelSize*1
+                anchors.leftMargin: font.pixelSize*0.5
+                anchors.rightMargin: font.pixelSize*0.5
 
                 Label {
                     Layout.fillWidth: true
@@ -281,7 +270,6 @@ your desktop computer, you can also send yourself a link to
 GitHub by e-mail.</p>
 ")
                     textFormat: Text.StyledText
-                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
@@ -323,7 +311,6 @@ comes first!</p>
 <h3>Thank you for your help!</h3>
 ")
                     textFormat: Text.StyledText
-                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
@@ -336,7 +323,7 @@ comes first!</p>
     Component {
         id: openAIPNNonAirspace
 
-        ScrollView {
+        DecoratedScrollView {
             id: sv
 
             width: stack.width
@@ -345,20 +332,20 @@ comes first!</p>
 
             clip: true
 
-            bottomPadding: view.font.pixelSize + SafeInsets.bottom
-            leftPadding: view.font.pixelSize + SafeInsets.left
-            rightPadding: view.font.pixelSize + SafeInsets.right
-            topPadding: view.font.pixelSize
+            bottomPadding: font.pixelSize + SafeInsets.bottom
+            leftPadding: font.pixelSize + SafeInsets.left
+            rightPadding: font.pixelSize + SafeInsets.right
+            topPadding: font.pixelSize
 
             ColumnLayout {
                 id: cL
 
                 width: sv.availableWidth
 
-                anchors.bottomMargin: view.font.pixelSize*1
-                anchors.topMargin: view.font.pixelSize*1
-                anchors.leftMargin: view.font.pixelSize*0.5
-                anchors.rightMargin: view.font.pixelSize*0.5
+                anchors.bottomMargin: font.pixelSize*1
+                anchors.topMargin: font.pixelSize*1
+                anchors.leftMargin: font.pixelSize*0.5
+                anchors.rightMargin: font.pixelSize*0.5
 
                 Label {
                     Layout.fillWidth: true
@@ -380,7 +367,6 @@ suggestion is approved, the correction will appear in
 week.</p>
 ")
                     textFormat: Text.StyledText
-                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
@@ -416,7 +402,6 @@ time. Peter speaks English and German.</p>
 <h3>Thank you for your help!</h3>
 ")
                     textFormat: Text.StyledText
-                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
@@ -429,7 +414,7 @@ time. Peter speaks English and German.</p>
     Component {
         id: openAIPAirspace
 
-        ScrollView {
+        DecoratedScrollView {
             id: sv
 
             width: stack.width
@@ -438,20 +423,20 @@ time. Peter speaks English and German.</p>
 
             clip: true
 
-            bottomPadding: view.font.pixelSize + SafeInsets.bottom
-            leftPadding: view.font.pixelSize + SafeInsets.left
-            rightPadding: view.font.pixelSize + SafeInsets.right
-            topPadding: view.font.pixelSize
+            bottomPadding: font.pixelSize + SafeInsets.bottom
+            leftPadding: font.pixelSize + SafeInsets.left
+            rightPadding: font.pixelSize + SafeInsets.right
+            topPadding: font.pixelSize
 
             ColumnLayout {
                 id: cL
 
                 width: sv.availableWidth
 
-                anchors.bottomMargin: view.font.pixelSize*1
-                anchors.topMargin: view.font.pixelSize*1
-                anchors.leftMargin: view.font.pixelSize*0.5
-                anchors.rightMargin: view.font.pixelSize*0.5
+                anchors.bottomMargin: font.pixelSize*1
+                anchors.topMargin: font.pixelSize*1
+                anchors.leftMargin: font.pixelSize*0.5
+                anchors.rightMargin: font.pixelSize*0.5
 
                 Label {
                     Layout.fillWidth: true
@@ -478,21 +463,20 @@ discuss your issue in the forum there.</p>
 <h3>Thank you for your help!</h3>
 ")
                     textFormat: Text.StyledText
-                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
 
             }
 
-        } // ScrollView
+        } // DecoratedScrollView
 
     }
 
     Component {
         id: checkIfOFMcountry
 
-        ScrollView {
+        DecoratedScrollView {
             id: sv
 
             width: stack.width
@@ -501,20 +485,20 @@ discuss your issue in the forum there.</p>
 
             clip: true
 
-            bottomPadding: view.font.pixelSize + SafeInsets.bottom
-            leftPadding: view.font.pixelSize + SafeInsets.left
-            rightPadding: view.font.pixelSize + SafeInsets.right
-            topPadding: view.font.pixelSize
+            bottomPadding: font.pixelSize + SafeInsets.bottom
+            leftPadding: font.pixelSize + SafeInsets.left
+            rightPadding: font.pixelSize + SafeInsets.right
+            topPadding: font.pixelSize
 
             ColumnLayout {
                 id: cL
 
                 width: sv.availableWidth
 
-                anchors.bottomMargin: view.font.pixelSize*1
-                anchors.topMargin: view.font.pixelSize*1
-                anchors.leftMargin: view.font.pixelSize*0.5
-                anchors.rightMargin: view.font.pixelSize*0.5
+                anchors.bottomMargin: font.pixelSize*1
+                anchors.topMargin: font.pixelSize*1
+                anchors.leftMargin: font.pixelSize*0.5
+                anchors.rightMargin: font.pixelSize*0.5
 
                 Label {
                     Layout.fillWidth: true
@@ -551,7 +535,6 @@ following countries?</p>
 <li>Switzerland</li>
 </ul>")
                     textFormat: Text.StyledText
-                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
@@ -577,7 +560,6 @@ following countries?</p>
                     Layout.fillWidth: true
                     text: qsTr("<h3>Thank you for your help!</h3>")
                     textFormat: Text.StyledText
-                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                 }
             }
@@ -588,7 +570,7 @@ following countries?</p>
     Component {
         id: ofm
 
-        ScrollView {
+        DecoratedScrollView {
             id: sv
 
             width: stack.width
@@ -597,20 +579,20 @@ following countries?</p>
 
             clip: true
 
-            bottomPadding: view.font.pixelSize + SafeInsets.bottom
-            leftPadding: view.font.pixelSize + SafeInsets.left
-            rightPadding: view.font.pixelSize + SafeInsets.right
-            topPadding: view.font.pixelSize
+            bottomPadding: font.pixelSize + SafeInsets.bottom
+            leftPadding: font.pixelSize + SafeInsets.left
+            rightPadding: font.pixelSize + SafeInsets.right
+            topPadding: font.pixelSize
 
             ColumnLayout {
                 id: cL
 
                 width: sv.availableWidth
 
-                anchors.bottomMargin: view.font.pixelSize*1
-                anchors.topMargin: view.font.pixelSize*1
-                anchors.leftMargin: view.font.pixelSize*0.5
-                anchors.rightMargin: view.font.pixelSize*0.5
+                anchors.bottomMargin: font.pixelSize*1
+                anchors.topMargin: font.pixelSize*1
+                anchors.leftMargin: font.pixelSize*0.5
+                anchors.rightMargin: font.pixelSize*0.5
 
                 Label {
                     Layout.fillWidth: true
@@ -630,7 +612,6 @@ report your issue. If you prefer to work on your desktop
 computer, you can also send yourself a link by e-mail.</p>
 ")
                     textFormat: Text.StyledText
-                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
@@ -656,7 +637,6 @@ computer, you can also send yourself a link by e-mail.</p>
                     Layout.fillWidth: true
                     text: qsTr("<h3>Thank you for your help!</h3>")
                     textFormat: Text.StyledText
-                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
@@ -670,7 +650,7 @@ computer, you can also send yourself a link by e-mail.</p>
     Component {
         id: nixofm
 
-        ScrollView {
+        DecoratedScrollView {
             id: sv
 
             width: stack.width
@@ -679,20 +659,20 @@ computer, you can also send yourself a link by e-mail.</p>
 
             clip: true
 
-            bottomPadding: view.font.pixelSize + SafeInsets.bottom
-            leftPadding: view.font.pixelSize + SafeInsets.left
-            rightPadding: view.font.pixelSize + SafeInsets.right
-            topPadding: view.font.pixelSize
+            bottomPadding: font.pixelSize + SafeInsets.bottom
+            leftPadding: font.pixelSize + SafeInsets.left
+            rightPadding: font.pixelSize + SafeInsets.right
+            topPadding: font.pixelSize
 
             ColumnLayout {
                 id: cL
 
                 width: sv.availableWidth
 
-                anchors.bottomMargin: view.font.pixelSize*1
-                anchors.topMargin: view.font.pixelSize*1
-                anchors.leftMargin: view.font.pixelSize*0.5
-                anchors.rightMargin: view.font.pixelSize*0.5
+                anchors.bottomMargin: font.pixelSize*1
+                anchors.topMargin: font.pixelSize*1
+                anchors.leftMargin: font.pixelSize*0.5
+                anchors.rightMargin: font.pixelSize*0.5
 
                 Label {
                     Layout.fillWidth: true
@@ -712,7 +692,6 @@ type of information that we could use in our app.</p>
 no better news.</p>
 ")
                     textFormat: Text.StyledText
-                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                 }
 

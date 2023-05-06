@@ -20,7 +20,6 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -75,7 +74,7 @@ CenteringDialog {
 
                 horizontalAlignment: Text.AlignHCenter
                 background: Rectangle {
-                    color: Material.primary
+                    color: "teal"
                     radius: 5
                 }
                 opacity: 0
@@ -148,7 +147,7 @@ CenteringDialog {
 
         }
 
-        ListView {
+        DecoratedListView {
             id: notamlistview
 
             Layout.fillHeight: true

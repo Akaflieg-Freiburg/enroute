@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,11 +20,10 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
-import enroute 1.0
+import "../items"
 
 CenteringDialog {
     id: dlg
@@ -62,7 +61,6 @@ CenteringDialog {
             Layout.fillWidth: true
 
             text: qsTr("Enter a name or choose an existing name from the list below.")
-            color: Material.accent
             wrapMode: Text.Wrap
             textFormat: Text.StyledText
         }
@@ -83,7 +81,7 @@ CenteringDialog {
             }
         }
 
-        ListView {
+        DecoratedListView {
             id: lView
 
             Layout.fillWidth: true
@@ -141,7 +139,7 @@ CenteringDialog {
         title: qsTr("An Error Occurred…")
         standardButtons: Dialog.Ok
 
-        ScrollView{
+        DecoratedScrollView{
             id: sv
             anchors.fill: parent
 
@@ -162,24 +160,17 @@ CenteringDialog {
                 wrapMode: Text.Wrap
                 onLinkActivated: Qt.openUrlExternally(link)
             } // Label
-        } // ScrollView
+        } // DecoratedScrollView
 
     }  // Dialog: fileError
 
-    CenteringDialog {
+    LongTextDialog {
         id: overwriteDialog
 
         title: qsTr("Overwrite Aircraft?")
+        text: qsTr("The aircraft <strong>%1</strong> already exists in the library. Do you wish to overwrite it?").arg(finalFileName)
+
         standardButtons: Dialog.No | Dialog.Yes
-        modal: true
-
-        Label {
-            width: overwriteDialog.availableWidth
-
-            text: qsTr("The aircraft <strong>%1</strong> already exists in the library. Do you wish to overwrite it?").arg(finalFileName)
-            wrapMode: Text.Wrap
-            textFormat: Text.StyledText
-        }
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()

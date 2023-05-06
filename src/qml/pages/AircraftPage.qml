@@ -21,7 +21,6 @@
 import QtQml
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -42,7 +41,6 @@ Page {
 
     header: ToolBar {
 
-        Material.foreground: "white"
         height: 60 + SafeInsets.top
         leftPadding: SafeInsets.left
         rightPadding: SafeInsets.right
@@ -86,7 +84,7 @@ Page {
                 icon.source: "/icons/material/ic_more_vert.svg"
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    headerMenuX.popup()
+                    headerMenuX.open()
                 }
 
                 AutoSizingMenu {
@@ -116,8 +114,7 @@ Page {
             }
     }
 
-
-    ScrollView {
+    DecoratedScrollView {
         id: acftTab
         anchors.fill: parent
         anchors.leftMargin: SafeInsets.left
@@ -130,7 +127,7 @@ Page {
         // If virtual keyboard come up, make sure that the focused element is visible
         onHeightChanged: {
             if (activeFocusControl != null) {
-                contentItem.contentY = activeFocusControl.y
+                contentItem.contentY = activeFocusControl.y - font.pixelSize
             }
         }
 
@@ -141,19 +138,17 @@ Page {
             anchors.right: parent.right
             anchors.rightMargin: acftTab.font.pixelSize
 
-            columns: 4
-
+            columns: 3
 
             Rectangle {
-                Layout.columnSpan: 4
+                Layout.columnSpan: 3
                 Layout.preferredHeight: acftTab.font.pixelSize
             }
             Label {
                 text: qsTr("Name")
-                Layout.columnSpan: 4
+                Layout.columnSpan: 3
                 font.pixelSize: acftTab.font.pixelSize*1.2
                 font.bold: true
-                color: Material.accent
             }
 
 
@@ -161,9 +156,9 @@ Page {
                 text: qsTr("Name")
                 Layout.alignment: Qt.AlignBaseline
             }
-            TextField {
+            MyTextField {
                 id: name
-                Layout.columnSpan: 3
+                Layout.columnSpan: 2
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: font.pixelSize*5
@@ -174,15 +169,14 @@ Page {
                     horizontalUOM.focus = true
                 }
                 text: Navigator.aircraft.name
-                placeholderText: qsTr("undefined")
             }
 
+            Label { Layout.fillHeight: true }
             Label {
                 text: qsTr("Units")
-                Layout.columnSpan: 4
+                Layout.columnSpan: 3
                 font.pixelSize: acftTab.font.pixelSize*1.2
                 font.bold: true
-                color: Material.accent
             }
 
             Label {
@@ -191,7 +185,7 @@ Page {
             }
             ComboBox {
                 id: horizontalUOM
-                Layout.columnSpan: 3
+                Layout.columnSpan: 2
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 KeyNavigation.tab: verticalUOM
@@ -218,7 +212,7 @@ Page {
             }
             ComboBox {
                 id: verticalUOM
-                Layout.columnSpan: 3
+                Layout.columnSpan: 2
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 KeyNavigation.tab: volumeUOM
@@ -240,7 +234,7 @@ Page {
             }
             ComboBox {
                 id: volumeUOM
-                Layout.columnSpan: 3
+                Layout.columnSpan: 2
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 KeyNavigation.tab: cruiseSpeed
@@ -261,17 +255,17 @@ Page {
             Label { Layout.fillHeight: true }
             Label {
                 text: qsTr("True Airspeed")
-                Layout.columnSpan: 4
+                Layout.columnSpan: 3
                 font.pixelSize: acftTab.font.pixelSize*1.2
                 font.bold: true
-                color: Material.accent
             }
 
             Label {
+                id: colorGlean
                 text: qsTr("Cruise")
                 Layout.alignment: Qt.AlignBaseline
             }
-            TextField {
+            MyTextField {
                 id: cruiseSpeed
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
@@ -315,7 +309,7 @@ Page {
                         return
                     }
                 }
-                color: (acceptableInput ? Material.foreground : "red")
+                color: (acceptableInput ? colorGlean.color : "red")
                 text: {
                     if (!Navigator.aircraft.cruiseSpeed.isFinite()) {
                         return ""
@@ -330,7 +324,6 @@ Page {
                     }
 
                 }
-                placeholderText: qsTr("undefined")
             }
             Label {
                 Layout.alignment: Qt.AlignBaseline
@@ -345,21 +338,12 @@ Page {
                     }
                 }
             }
-            ToolButton {
-                icon.source: "/icons/material/ic_clear.svg"
-                Layout.alignment: Qt.AlignVCenter
-                enabled: cruiseSpeed.text !== ""
-                onClicked: {
-                    Navigator.aircraft.cruiseSpeed = aircraftPage.staticSpeed.fromKN(-1)
-                    cruiseSpeed.clear()
-                }
-            }
 
             Label {
                 text: qsTr("Descent")
                 Layout.alignment: Qt.AlignBaseline
             }
-            TextField {
+            MyTextField {
                 id: descentSpeed
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
@@ -404,7 +388,7 @@ Page {
                         return
                     }
                 }
-                color: (acceptableInput ? Material.foreground : "red")
+                color: (acceptableInput ? colorGlean.color : "red")
                 text: {
                     if (!Navigator.aircraft.descentSpeed.isFinite()) {
                         return ""
@@ -418,7 +402,6 @@ Page {
                         return Math.round(Navigator.aircraft.descentSpeed.toMPH()).toString()
                     }
                 }
-                placeholderText: qsTr("undefined")
             }
             Label {
                 Layout.alignment: Qt.AlignBaseline
@@ -433,21 +416,12 @@ Page {
                     }
                 }
             }
-            ToolButton {
-                icon.source: "/icons/material/ic_clear.svg"
-                Layout.alignment: Qt.AlignVCenter
-                enabled: descentSpeed.text !== ""
-                onClicked: {
-                    Navigator.aircraft.descentSpeed = aircraftPage.staticSpeed.fromKN(-1)
-                    descentSpeed.clear()
-                }
-            }
 
             Label {
                 text: qsTr("Minimum")
                 Layout.alignment: Qt.AlignBaseline
             }
-            TextField {
+            MyTextField {
                 id: minimumSpeed
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
@@ -491,7 +465,7 @@ Page {
                         return
                     }
                 }
-                color: (acceptableInput ? Material.foreground : "red")
+                color: (acceptableInput ? colorGlean.color : "red")
                 text: {
                     if (!Navigator.aircraft.minimumSpeed.isFinite()) {
                         return ""
@@ -505,7 +479,6 @@ Page {
                         return Math.round(Navigator.aircraft.minimumSpeed.toMPH()).toString()
                     }
                 }
-                placeholderText: qsTr("undefined")
             }
             Label {
                 Layout.alignment: Qt.AlignBaseline
@@ -520,36 +493,26 @@ Page {
                     }
                 }
             }
-            ToolButton {
-                icon.source: "/icons/material/ic_clear.svg"
-                Layout.alignment: Qt.AlignVCenter
-                enabled: minimumSpeed.text !== ""
-                onClicked: {
-                    Navigator.aircraft.minimumSpeed = aircraftPage.staticSpeed.fromKN(-1)
-                    minimumSpeed.clear()
-                }
-            }
-
 
             Label { Layout.fillHeight: true }
             Label {
                 text: qsTr("Fuel Consumption")
-                Layout.columnSpan: 4
+                Layout.columnSpan: 3
                 font.pixelSize: acftTab.font.pixelSize*1.2
                 font.bold: true
-                color: Material.accent
             }
 
             Label {
                 text: qsTr("Cruise")
                 Layout.alignment: Qt.AlignBaseline
             }
-            TextField {
+            MyTextField {
                 id: fuelConsumption
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: font.pixelSize*5
                 KeyNavigation.tab: name
+                rightPadding: 30
 
                 validator: DoubleValidator {
                     bottom: {
@@ -581,7 +544,7 @@ Page {
                         return
                     }
                 }
-                color: (acceptableInput ? Material.foreground : "red")
+                color: (acceptableInput ? colorGlean.color : "red")
                 text: {
                     if (!Navigator.aircraft.fuelConsumption.isFinite()) {
                         return ""
@@ -593,7 +556,6 @@ Page {
                         return Navigator.aircraft.fuelConsumption.toGPH().toLocaleString(Qt.locale(), 'f', 1)
                     }
                 }
-                placeholderText: qsTr("undefined")
             }
             Label {
                 Layout.alignment: Qt.AlignBaseline
@@ -606,14 +568,10 @@ Page {
                     }
                 }
             }
-            ToolButton {
-                icon.source: "/icons/material/ic_clear.svg"
-                Layout.alignment: Qt.AlignVCenter
-                enabled: fuelConsumption.text !== ""
-                onClicked: {
-                    Navigator.aircraft.fuelConsumption = aircraftPage.staticVolumeFlow.fromLPH(-1)
-                    fuelConsumption.clear()
-                }
+
+            Rectangle {
+                Layout.columnSpan: 3
+                Layout.preferredHeight: acftTab.font.pixelSize
             }
 
         }

@@ -13,7 +13,11 @@ qt6
 
 # secrets
 generatedSources/pc-api-8548806115718303828-770-6966308588f6.json
+CMakeLists_ios.txt
 
 # IDE
 .vscode
 CMakeLists.txt.user
+
+# Mac
+.DS_Store

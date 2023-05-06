@@ -20,7 +20,6 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -36,7 +35,6 @@ Page {
 
     header: ToolBar {
 
-        Material.foreground: "white"
         height: 60 + SafeInsets.top
         leftPadding: SafeInsets.left
         rightPadding: SafeInsets.right
@@ -101,7 +99,6 @@ Page {
         TabButton { text: qsTr("Authors") }
         TabButton { text: qsTr("License") }
         TabButton { text: qsTr("System") }
-        Material.elevation: 3
     }
 
     SwipeView {
@@ -118,15 +115,14 @@ Page {
         clip: true
         currentIndex: bar.currentIndex
         
-        ScrollView {
+        DecoratedScrollView {
             contentWidth: availableWidth // Disable horizontal scrolling
             clip: true
 
             Label {
                 id: lbl1
-                text: "<style>a:link { color: " + Material.accent + "; }</style>"+Librarian.getStringFromRessource(":text/info_enroute.html")
+                text: Librarian.getStringFromRessource(":text/info_enroute.html")
                 textFormat: Text.RichText
-                linkColor: Material.accent
                 width: sv.availableWidth
 
                 wrapMode: Text.Wrap
@@ -137,13 +133,13 @@ Page {
             }
         }
         
-        ScrollView {
+        DecoratedScrollView {
             contentWidth: availableWidth // Disable horizontal scrolling
             clip: true
 
             Label {
                 id: lbl2
-                text: "<style>a:link { color: " + Material.accent + "; }</style>"+Librarian.getStringFromRessource(":text/authors.html")
+                text: Librarian.getStringFromRessource(":text/authors.html")
                 textFormat: Text.RichText // Link OK
                 width: sv.availableWidth
                 wrapMode: Text.Wrap
@@ -154,15 +150,14 @@ Page {
             }
         }
 
-        ScrollView {
+        DecoratedScrollView {
             contentWidth: availableWidth // Disable horizontal scrolling
             clip: true
 
             Label {
                 id: lbl3
-                text: "<style>a:link { color: " + Material.accent + "; }</style>"+Librarian.getStringFromRessource(":text/info_license.html")
+                text: Librarian.getStringFromRessource(":text/info_license.html")
                 textFormat: Text.RichText
-                linkColor: Material.accent
                 width: sv.availableWidth
                 wrapMode: Text.Wrap
                 topPadding: font.pixelSize*1
@@ -174,7 +169,7 @@ Page {
 
         ColumnLayout {
 
-            ScrollView {
+            DecoratedScrollView {
                 Layout.fillHeight: true
                 Layout.preferredWidth: sv.availableWidth
                 contentWidth: availableWidth // Disable horizontal scrolling
@@ -188,7 +183,6 @@ Page {
                         return PlatformAdaptor.systemInfo()
                     }
                     textFormat: Text.RichText
-                    linkColor: Material.accent
                     width: sv.availableWidth
                     wrapMode: Text.Wrap
                     topPadding: font.pixelSize*1

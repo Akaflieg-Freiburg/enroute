@@ -22,11 +22,9 @@ import QtPositioning
 import QtQml
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
-import enroute 1.0
 import "../dialogs"
 import "../items"
 
@@ -70,7 +68,7 @@ Page {
                 icon.source: "/icons/material/ic_more_horiz.svg"
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    wpMenu.popup()
+                    wpMenu.open()
                 }
 
                 Menu {
@@ -108,7 +106,7 @@ Page {
                     Rectangle {
                         height: 1
                         Layout.fillWidth: true
-                        color: Material.primary
+                        color: "black"
                     }
 
                     Action {
@@ -152,7 +150,7 @@ Page {
                     Navigator.aircraft.horizontalDistanceUnit
                     Navigator.aircraft.fuelConsumptionUnit
 
-                    if (leg === null)
+                    if (leg == null)
                         return ""
                     return leg.description(Navigator.wind, Navigator.aircraft)
                 }
@@ -164,7 +162,6 @@ Page {
 
     header: ToolBar {
 
-        Material.foreground: "white"
         height: 60 + SafeInsets.top
         leftPadding: SafeInsets.left
         rightPadding: SafeInsets.right
@@ -209,7 +206,7 @@ Page {
             icon.source: "/icons/material/ic_more_vert.svg"
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                headerMenuX.popup()
+                headerMenuX.open()
             }
 
             Menu {}
@@ -392,8 +389,6 @@ Page {
         currentIndex: sv.currentIndex
         TabButton { text: qsTr("Route") }
         TabButton { text: qsTr("Wind") }
-
-        Material.elevation: 3
     }
 
     SwipeView{
@@ -422,13 +417,13 @@ Page {
                 textFormat: Text.RichText
                 wrapMode: Text.Wrap
 
-                leftPadding: view.font.pixelSize*2
-                rightPadding: view.font.pixelSize*2
+                leftPadding: font.pixelSize*2
+                rightPadding: font.pixelSize*2
 
                 text: qsTr("<h3>Empty Route</h3><p>Use the button <strong>Add Waypoint</strong> below or double click on any point in the moving map.</p>")
             }
 
-            ScrollView {
+            DecoratedScrollView {
                 anchors.fill: parent
 
                 contentWidth: availableWidth
@@ -471,7 +466,7 @@ Page {
 
         }
 
-        ScrollView {
+        DecoratedScrollView {
             id: windTab
 
             contentWidth: width
@@ -479,30 +474,34 @@ Page {
 
             GridLayout {
                 anchors.left: parent.left
-                anchors.leftMargin: view.font.pixelSize
+                anchors.leftMargin: font.pixelSize
                 anchors.right: parent.right
-                anchors.rightMargin: view.font.pixelSize
+                anchors.rightMargin: font.pixelSize
 
-                columns: 4
+                columns: 3
 
-                Label { Layout.fillHeight: true }
+                Label {
+                    Layout.fillHeight: true
+                    Layout.columnSpan: 3
+                }
                 Label {
                     text: qsTr("Wind")
-                    Layout.columnSpan: 4
-                    font.pixelSize: view.font.pixelSize*1.2
+                    Layout.columnSpan: 3
+                    font.pixelSize: windTab.font.pixelSize*1.2
                     font.bold: true
-                    color: Material.accent
                 }
 
                 Label {
+                    id: colorGlean
+
                     Layout.alignment: Qt.AlignBaseline
                     text: qsTr("Direction from")
                 }
-                TextField {
+                MyTextField {
                     id: windDirection
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignBaseline
-                    Layout.minimumWidth: view.font.pixelSize*5
+                    Layout.minimumWidth: font.pixelSize*5
                     validator: IntValidator {
                         bottom: 0
                         top: 360
@@ -513,7 +512,7 @@ Page {
                         Navigator.wind.directionFrom = myAngle.fromDEG(text)
                         windSpeed.focus = true
                     }
-                    color: (acceptableInput ? Material.foreground : "red")
+                    color: (acceptableInput ? colorGlean.color : "red")
                     KeyNavigation.tab: windSpeed
                     text: {
                         if (!Navigator.wind.directionFrom.isFinite()) {
@@ -521,31 +520,21 @@ Page {
                         }
                         return Math.round( Navigator.wind.directionFrom.toDEG() )
                     }
-                    placeholderText: qsTr("undefined")
                 }
                 Label {
                     text: "°"
                     Layout.alignment: Qt.AlignBaseline
-                }
-                ToolButton {
-                    icon.source: "/icons/material/ic_clear.svg"
-                    Layout.alignment: Qt.AlignVCenter
-                    enabled: windDirection.text !== ""
-                    onClicked: {
-                        Navigator.wind.directionFrom = flightRoutePage.staticAngle.nan()
-                        windDirection.clear()
-                    }
                 }
 
                 Label {
                     text: qsTr("Speed")
                     Layout.alignment: Qt.AlignBaseline
                 }
-                TextField {
+                MyTextField {
                     id: windSpeed
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignBaseline
-                    Layout.minimumWidth: view.font.pixelSize*5
+                    Layout.minimumWidth: font.pixelSize*5
                     validator: DoubleValidator {
                         bottom: {
                             switch(Navigator.aircraft.horizontalDistanceUnit) {
@@ -586,7 +575,7 @@ Page {
                         }
                         focus = false
                     }
-                    color: (acceptableInput ? Material.foreground : "red")
+                    color: (acceptableInput ? colorGlean.color : "red")
                     text: {
                         if (!Navigator.wind.speed.isFinite()) {
                             return ""
@@ -601,7 +590,6 @@ Page {
                         }
                         return NaN
                     }
-                    placeholderText: qsTr("undefined")
                 }
                 Label {
                     text: {
@@ -618,15 +606,6 @@ Page {
                     }
                     Layout.alignment: Qt.AlignBaseline
                 }
-                ToolButton {
-                    icon.source: "/icons/material/ic_clear.svg"
-                    Layout.alignment: Qt.AlignVCenter
-                    enabled: windSpeed.text !== ""
-                    onClicked: {
-                        Navigator.wind.speed = flightRoutePage.staticSpeed.fromKN(-1)
-                        windSpeed.clear()
-                    }
-                }
 
             }
 
@@ -635,12 +614,7 @@ Page {
     }
 
 
-    footer: Pane {
-        width: parent.width
-        height: implicitHeight
-        Material.elevation: 3
-        bottomPadding: SafeInsets.bottom
-
+    footer: Footer {
         ColumnLayout {
             width: parent.width
 
@@ -668,8 +642,6 @@ Page {
             ToolButton {
                 id: addWPButton
 
-                Material.foreground: Material.accent
-
                 visible: (sv.currentIndex === 0)
                 Layout.alignment: Qt.AlignHCenter
                 text: qsTr("Add Waypoint")
@@ -696,26 +668,20 @@ Page {
 
     }
 
-    CenteringDialog {
+    LongTextDialog {
         id: clearDialog
 
         title: qsTr("Clear Route?")
         standardButtons: Dialog.No | Dialog.Yes
-        modal: true
 
-        Label {
-            width: clearDialog.availableWidth
-
-            text: qsTr("Once erased, the current flight route cannot be restored.")
-            wrapMode: Text.Wrap
-            textFormat: Text.StyledText
-        }
+        text: qsTr("Once erased, the current flight route cannot be restored.")
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
             Navigator.flightRoute.clear()
             toast.doToast(qsTr("Flight route cleared"))
         }
+
         onRejected: {
             PlatformAdaptor.vibrateBrief()
             close()

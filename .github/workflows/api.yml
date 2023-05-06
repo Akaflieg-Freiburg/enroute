@@ -2,9 +2,9 @@ name: API Documentation
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main, working ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -12,33 +12,43 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout Enroute
+      uses: actions/checkout@v3
       with:
         submodules: true
-    - name: Install Qt
-      uses: jurplel/install-qt-action@v2
+    - name: Checkout qtlocation
+      uses: actions/checkout@v3
       with:
-        version: '5.15.0'
+        path: qtlocation
+        repository: Akaflieg-Freiburg/qtlocationstatic
+        submodules: true
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v3
+      with:
+        version: '6.4.*'
+        modules: 'qt5compat qthttpserver qtpositioning qtshadertools qtwebsockets'	
     - name: Install Additional Software
       run: |
-        sudo apt install doxygen extra-cmake-modules graphviz libkf5notifications-dev
-    - name: Configure
+        sudo apt install doxygen extra-cmake-modules graphviz ninja-build spirv-tools
+    - name: Compile QtLocation
       run: |
-        export CC=/usr/bin/clang
-        export CXX=/usr/bin/clang++
-        cmake -E make_directory build
-        cd build
+        cmake -E make_directory build-qtlocation
+        cd build-qtlocation
+        qt-configure-module ../qtlocation
+        cmake -DMBGL_QT_WITH_INTERNAL_ICU:BOOL=On .
+        ninja
+        ninja install
+    - name: Compile Enroute Flight Navigation
+      run: |
+        cmake -E make_directory build-enroute
+        cd build-enroute
         cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS='-Werror -Wall -Wextra'
-    - name: Generate Documentation
-      run: |
-        cd build
         make enroute_doc
         mv src/APIdoc/html ../APIdoc
     - name: Publish Documentation
       if: github.event_name == 'push'
-      uses: JamesIves/github-pages-deploy-action@releases/v3
+      uses: JamesIves/github-pages-deploy-action@v4
       with:
-        BRANCH: gh-pages
-        ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        FOLDER: APIdoc
-        TARGET_FOLDER: APIdoc
+        branch: gh-pages
+        folder: APIdoc
+        target-folder: APIdoc

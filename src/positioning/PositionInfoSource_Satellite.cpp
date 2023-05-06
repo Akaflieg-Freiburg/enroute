@@ -83,7 +83,12 @@ void Positioning::PositionInfoSource_Satellite::updateStatusString()
 void Positioning::PositionInfoSource_Satellite::onPositionUpdated(const QGeoPositionInfo &info)
 {
     auto correctedInfo = info;
-    if (info.coordinate().type() == QGeoCoordinate::Coordinate3D) {
+    auto useCorrection = true;
+
+#if defined(Q_OS_IOS)
+    useCorrection = false;
+#endif
+    if (useCorrection && info.coordinate().type() == QGeoCoordinate::Coordinate3D) {
         auto geoidCorrection = Geoid::separation(info.coordinate());
         if (geoidCorrection.isFinite()) {
             correctedInfo.setCoordinate( correctedInfo.coordinate().atDistanceAndAzimuth(0.0, 0.0, -geoidCorrection.toM()) );

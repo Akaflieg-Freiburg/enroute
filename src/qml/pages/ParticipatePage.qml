@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,7 +20,6 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -32,7 +31,7 @@ Page {
 
     header: StandardHeader {}
 
-    ScrollView {
+    DecoratedScrollView {
         id: sView
 
         anchors.fill: parent
@@ -47,7 +46,6 @@ Page {
         Label {
                 id: lbl1
                 textFormat: Text.StyledText
-                linkColor: Material.accent
                 text: qsTr("
 <h3>Participate in the development</h3>
 
@@ -81,9 +79,9 @@ please get in touch with us by opening a GitHub issue.</p>
 ")
                 width: sView.availableWidth
                 wrapMode: Text.Wrap
-                topPadding: view.font.pixelSize*1
-                leftPadding: view.font.pixelSize*0.5
-                rightPadding: view.font.pixelSize*0.5
+                topPadding: font.pixelSize*1
+                leftPadding: font.pixelSize*0.5
+                rightPadding: font.pixelSize*0.5
                 onLinkActivated: Qt.openUrlExternally(link)
             }
     }

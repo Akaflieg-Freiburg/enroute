@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2023 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,23 +18,16 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "units/Time.h"
+import QtQuick.Controls.Material
+import akaflieg_freiburg.enroute
 
 
-auto Units::Time::toHoursAndMinutes() const -> QString {
-    // Paranoid safety checks
-    if (!isFinite()) {
-        return QStringLiteral("-:--");
-    }
+Pane {
+    width: parent.width
+    topPadding: font.pixelSize
+    bottomPadding: SafeInsets.bottom+font.pixelSize
+    leftPadding: SafeInsets.left+font.pixelSize
+    rightPadding: SafeInsets.right+font.pixelSize
 
-    auto minutes = qRound(qAbs(toM()));
-    auto hours = minutes / 60;
-    minutes = minutes % 60;
-
-    QString result;
-    if (isNegative()) {
-        result += u"-"_qs;
-    }
-    result += QStringLiteral("%1:%2").arg(hours, 1, 10, QChar(u'0')).arg(minutes, 2, 10, QChar(u'0'));
-    return result;
+    Material.elevation: 3
 }

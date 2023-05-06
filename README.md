@@ -1,6 +1,6 @@
 # Enroute Flight Navigation
 
-![API Documentation](https://github.com/Akaflieg-Freiburg/enroute/workflows/API%20Documentation/badge.svg) ![Compile on Android](https://github.com/Akaflieg-Freiburg/enroute/workflows/Compile%20on%20Android/badge.svg) ![Compile on Linux](https://github.com/Akaflieg-Freiburg/enroute/workflows/Compile%20on%20Linux/badge.svg)
+![API Documentation](https://github.com/Akaflieg-Freiburg/enroute/workflows/API%20Documentation/badge.svg) ![Compile on Android](https://github.com/Akaflieg-Freiburg/enroute/workflows/Compile%20on%20Android/badge.svg) ![Compile on Linux](https://github.com/Akaflieg-Freiburg/enroute/workflows/Compile%20on%20Linux/badge.svg) [![Compile on MacOS](https://github.com/Akaflieg-Freiburg/enroute/actions/workflows/macos.yml/badge.svg)](https://github.com/Akaflieg-Freiburg/enroute/actions/workflows/macos.yml)
 
 <img align="right" src="https://akaflieg-freiburg.github.io/enroute/assets/images/map-small.webp" width="250">**Enroute Flight Navigation** is a mobile flight navigation app for Android and other devices. The app is free, open source, 100% non-commercial and does not collect user data. 
 
@@ -8,9 +8,9 @@
 
 * Please have a look at the [homepage](https://akaflieg-freiburg.github.io/enroute).
 
-* Download the app for Android on [Google Play](https://play.google.com/store/apps/details?id=de.akaflieg_freiburg.enroute) or [F-Droid](https://f-droid.org/packages/de.akaflieg_freiburg.enroute/).
+* Download the app for Android on [Google Play](https://play.google.com/store/apps/details?id=de.akaflieg_freiburg.enroute).
 
-* Download the app for Linux Desktop on [flathub.org](https://flathub.org/apps/details/de.akaflieg_freiburg.enroute) or [snapcraft.io](https://snapcraft.io/enroute-flight-navigation). It might also be listed in your software management app.
+* Download the app for Linux Desktop on [flathub.org](https://flathub.org/apps/details/de.akaflieg_freiburg.enroute). Depending on your distribution, it might also be listed in your software management app.
 
 * Read the [user manual](https://akaflieg-freiburg.github.io/enrouteText/manual).
 

@@ -32,7 +32,7 @@ CenteringDialog {
     Component {
         id: firstStart
 
-        ScrollView{
+        DecoratedScrollView{
             id: sv
 
             required property var dialogMain
@@ -52,7 +52,6 @@ CenteringDialog {
 
                 width: sv.dialogMain.availableWidth
                 textFormat: Text.RichText
-                linkColor: Material.accent
                 wrapMode: Text.Wrap
                 onLinkActivated: (link) => Qt.openUrlExternally(link)
             }
@@ -67,7 +66,7 @@ CenteringDialog {
     Component {
         id: privacy
 
-        ScrollView{
+        DecoratedScrollView{
             id: sv
 
             required property var dialogMain
@@ -82,7 +81,6 @@ CenteringDialog {
                       + Librarian.getStringFromRessource(":text/privacy.html")
                 width: sv.dialogMain.availableWidth
                 textFormat: Text.RichText
-                linkColor: Material.accent
                 wrapMode: Text.Wrap
                 onLinkActivated: (link) => Qt.openUrlExternally(link)
             }
@@ -96,7 +94,7 @@ CenteringDialog {
     Component {
         id: permissions
 
-        ScrollView{
+        DecoratedScrollView{
             id: sv
 
             required property var dialogMain
@@ -112,7 +110,6 @@ CenteringDialog {
                       + sv.text
                 width: sv.dialogMain.availableWidth
                 textFormat: Text.RichText
-                linkColor: Material.accent
                 wrapMode: Text.Wrap
                 onLinkActivated: (link) => Qt.openUrlExternally(link)
             }
@@ -127,7 +124,7 @@ CenteringDialog {
     Component {
         id: maps
 
-        ScrollView {
+        DecoratedScrollView {
             id: sv
 
             required property var dialogMain
@@ -144,38 +141,37 @@ CenteringDialog {
                     Layout.preferredHeight: implicitHeight
                     text: {
                     var result = "<h3>"
-                            + qsTr("Download Maps")
-                            + "</h3>"
-                            + "<p>"
-                            + qsTr("<strong>Enroute Flight Navigation</strong> needs geographic maps to work.")
-                            + " "
-                    if (DataManager.mapList.hasFile)
-                    {
-                        if (PositionProvider.positionInfo.isValid())
+                    + qsTr("Download Maps")
+                    + "</h3>"
+                    + "<p>"
+                    + qsTr("<strong>Enroute Flight Navigation</strong> needs geographic maps to work.")
+                    + " "
+                        if (DataManager.mapList.hasFile)
                         {
-                            if (lv.model.length === 0)
-                                result += qsTr("Regretfully, we do not offer maps for your present location (%1).").arg(PositionProvider.lastValidCoordinate)
-                            if (lv.model.length === 1)
+                            if (PositionProvider.positionInfo.isValid())
+                            {
+                                if (lv.model.length === 0)
+                                    result += qsTr("Regretfully, we do not offer maps for your present location (%1).").arg(PositionProvider.lastValidCoordinate)
+                                if (lv.model.length === 1)
                                 result += qsTr("Based on your location, we reckon that that the following map might be relevant for you. Click on the map to start the download, then click on 'Accept' to close this dialog.")
-                            if (lv.model.length > 1)
-                                result += qsTr("Based on your location, we reckon that that the following maps might be relevant for you. Click on any map to start the download, then click on 'Accept' to close this dialog.")
+                                if (lv.model.length > 1)
+                                    result += qsTr("Based on your location, we reckon that that the following maps might be relevant for you. Click on any map to start the download, then click on 'Accept' to close this dialog.")
+                            }
+                            else
+                            {
+                                result += qsTr("We're waiting for SatNav position infoformation to suggest maps that might be relevant for you. Please stand by.")
+                            }
                         }
                         else
                         {
-                            result += qsTr("We're waiting for SatNav position infoformation to suggest maps that might be relevant for you. Please stand by.")
+                            result += qsTr("We're downloading the list of available maps. Please stand by.")
                         }
-                    }
-                    else
-                    {
-                        result += qsTr("We're downloading the list of available maps. Please stand by.")
-                    }
 
-                    result += "</p>"
+                        result += "</p>"
 
-                    return result
-                }
+                        return result
+                    }
                     textFormat: Text.RichText
-                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                 }
 
@@ -186,7 +182,7 @@ CenteringDialog {
                     visible: lv.model ? lv.model.length !== 0 : false
                 }
 
-                ListView {
+                DecoratedListView {
                     id: lv
 
                     Layout.preferredHeight: contentHeight
@@ -215,7 +211,6 @@ CenteringDialog {
                            + qsTr("For the full list of maps, close this dialog, open the main menu and go to 'Library/Maps and Data'. It is also possible to import raster maps into this app. Check the manual for details.")
                            + "</p>"
                     textFormat: Text.RichText
-                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                 }
 

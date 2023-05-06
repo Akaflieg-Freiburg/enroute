@@ -44,11 +44,10 @@ CenteringDialog {
             wrapMode: Text.Wrap
         }
 
-        TextField {
+        MyTextField {
             id: pwField
             Layout.fillWidth: true
             onAccepted: dlg.accept()
-            placeholderText: qsTr("Password")
             echoMode: viewBox.checked ? TextInput.Normal : TextInput.Password
         }
 

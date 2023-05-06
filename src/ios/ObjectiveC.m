@@ -5,6 +5,7 @@
 //  Created by Simon Schneider on 02.05.23.
 //
 
+#include "CoreLocation/CoreLocation.h"
 #include "UIKit/UIKit.h"
 #import <Foundation/Foundation.h>
 #import "ObjectiveC.h"
@@ -48,6 +49,20 @@
 
     dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
     dispatch_release(semaphore);
+    return enabled;
+}
+
+- (bool) hasLocationPermission {
+    bool enabled = NO;
+    switch([CLLocationManager authorizationStatus]) {
+      case kCLAuthorizationStatusAuthorizedWhenInUse:
+      case kCLAuthorizationStatusAuthorizedAlways:
+        enabled = YES;
+        break;
+      default:
+        enabled = NO;
+        break;
+    }
     return enabled;
 }
 

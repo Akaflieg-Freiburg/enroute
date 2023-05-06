@@ -52,6 +52,12 @@ void ObjCAdapter::disableScreenSaver() {
 
 bool ObjCAdapter::hasLocationPermission() {
   return [CLLocationManager locationServicesEnabled];
+
+  if ([CLLocationManager locationServicesEnabled]) {
+    return [[ObjectiveC sharedInstance] hasLocationPermission];
+  }
+
+  return false;
 }
 
 bool ObjCAdapter::hasNotificationPermission() {

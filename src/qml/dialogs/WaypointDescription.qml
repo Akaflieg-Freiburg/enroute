@@ -334,6 +334,7 @@ CenteringDialog {
             }
 
             Label {
+                id: colorGlean
                 Layout.alignment: Qt.AlignHCenter|Qt.AlignBottom
                 text: {
                     switch(Navigator.aircraft.verticalDistanceUnit) {
@@ -347,7 +348,7 @@ CenteringDialog {
             }
             Rectangle {
                 Layout.alignment: Qt.AlignHCenter
-                color:  "black"
+                color:  colorGlean.color
                 Layout.preferredHeight: 1
                 Layout.preferredWidth: font.pixelSize*5
             }

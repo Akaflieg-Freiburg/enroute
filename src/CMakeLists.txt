@@ -234,6 +234,7 @@ if(ANDROID)
         Qt6::HttpServer
         Qt6::Positioning
         Qt6::Quick
+        Qt6::QuickControls2
         Qt6::Sql
         Qt6::Svg
         Qt6::WebView)
@@ -279,6 +280,7 @@ if (UNIX AND NOT ANDROID AND NOT APPLE)
         Qt6::HttpServer
         Qt6::Positioning
         Qt6::Quick
+        Qt6::QuickControls2
         Qt6::Sql
         Qt6::Svg
         Qt6::Widgets
@@ -326,6 +328,7 @@ if (APPLE AND NOT IOS)
         Qt6::HttpServer
         Qt6::Positioning
         Qt6::Quick
+        Qt6::QuickControls2
         Qt6::Sql
         Qt6::Svg
         Qt6::Widgets
@@ -367,6 +370,7 @@ if (IOS)
         Qt6::HttpServer
         Qt6::Positioning
         Qt6::Quick
+        Qt6::QuickControls2
         Qt6::Sql
         Qt6::Svg
         Qt6::WebView
@@ -429,8 +433,6 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/AppWindow.qml
     qml/items/+Material/AppWindow.qml
     qml/items/AutoSizingMenu.qml
-    qml/items/ColoredToolBar.qml
-    qml/items/+Material/ColoredToolBar.qml
     qml/items/DecoratedListView.qml
     qml/items/DecoratedScrollView.qml
     qml/items/DegreeInput.qml
@@ -446,6 +448,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/+Material/MapButton.qml
     qml/items/MapSet.qml
     qml/items/MFM.qml
+    qml/items/MyTextField.qml
     qml/items/NavBar.qml
     qml/items/RemainingRouteBar.qml
     qml/items/StandardHeader.qml

@@ -36,7 +36,10 @@ ListView {
         anchors.right: listView.right
         anchors.top: listView.top
 
-        background: Pane { opacity: 0.8 }
+        background: Rectangle {
+            color: GlobalSettings.nightMode ? "black" : "white"
+            opacity: 0.8
+        }
 
         opacity: listView.atYBeginning ? 0.0 : 1.0
         Behavior on opacity { NumberAnimation { duration: 200 } }
@@ -53,7 +56,10 @@ ListView {
         anchors.left: listView.left
         anchors.right: listView.right
 
-        background: Pane { opacity: 0.8 }
+        background: Rectangle {
+            color: GlobalSettings.nightMode ? "black" : "white"
+            opacity: 0.8
+        }
 
         opacity: parent.atYEnd ? 0.0 : 1.0
         Behavior on opacity { NumberAnimation { duration: 200 } }

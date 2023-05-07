@@ -10,6 +10,7 @@
 @property float keyboardHeight;
 
 - (bool) hasNotificationPermission;
+- (bool) hasLocationPermission;
 
 +(ObjectiveC *)sharedInstance;
 

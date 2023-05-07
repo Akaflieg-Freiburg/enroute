@@ -81,7 +81,7 @@ CenteringDialog {
                 text: qsTr("Name")
             }
 
-            TextField {
+            MyTextField {
                 id: wpNameField
 
                 Layout.fillWidth: true
@@ -107,6 +107,8 @@ CenteringDialog {
                 focus: true
 
                 wrapMode: TextEdit.WordWrap
+
+                Component.onCompleted: PlatformAdaptor.setupInputMethodEventFilter(wpNotesField)
             }
 
             Label {

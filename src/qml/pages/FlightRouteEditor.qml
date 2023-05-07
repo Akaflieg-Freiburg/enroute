@@ -160,7 +160,7 @@ Page {
     }
 
 
-    header: ColoredToolBar {
+    header: ToolBar {
 
         height: 60 + SafeInsets.top
         leftPadding: SafeInsets.left
@@ -232,7 +232,9 @@ Page {
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
-                        flightRouteSaveDialog.open()
+                        dlgLoader.active = false
+                        dlgLoader.source = "../dialogs/FlightRouteSaveDialog.qml"
+                        dlgLoader.active = true
                     }
                 }
 
@@ -476,21 +478,26 @@ Page {
                 anchors.right: parent.right
                 anchors.rightMargin: font.pixelSize
 
-                columns: 4
+                columns: 3
 
-                Label { Layout.fillHeight: true }
+                Label {
+                    Layout.fillHeight: true
+                    Layout.columnSpan: 3
+                }
                 Label {
                     text: qsTr("Wind")
-                    Layout.columnSpan: 4
+                    Layout.columnSpan: 3
                     font.pixelSize: windTab.font.pixelSize*1.2
                     font.bold: true
                 }
 
                 Label {
+                    id: colorGlean
+
                     Layout.alignment: Qt.AlignBaseline
                     text: qsTr("Direction from")
                 }
-                TextField {
+                MyTextField {
                     id: windDirection
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignBaseline
@@ -505,7 +512,7 @@ Page {
                         Navigator.wind.directionFrom = myAngle.fromDEG(text)
                         windSpeed.focus = true
                     }
-                    color: (acceptableInput ? "" : "red")
+                    color: (acceptableInput ? colorGlean.color : "red")
                     KeyNavigation.tab: windSpeed
                     text: {
                         if (!Navigator.wind.directionFrom.isFinite()) {
@@ -518,21 +525,12 @@ Page {
                     text: "°"
                     Layout.alignment: Qt.AlignBaseline
                 }
-                ToolButton {
-                    icon.source: "/icons/material/ic_clear.svg"
-                    Layout.alignment: Qt.AlignVCenter
-                    enabled: windDirection.text !== ""
-                    onClicked: {
-                        Navigator.wind.directionFrom = flightRoutePage.staticAngle.nan()
-                        windDirection.clear()
-                    }
-                }
 
                 Label {
                     text: qsTr("Speed")
                     Layout.alignment: Qt.AlignBaseline
                 }
-                TextField {
+                MyTextField {
                     id: windSpeed
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignBaseline
@@ -577,7 +575,7 @@ Page {
                         }
                         focus = false
                     }
-                    color: (acceptableInput ? "" : "red")
+                    color: (acceptableInput ? colorGlean.color : "red")
                     text: {
                         if (!Navigator.wind.speed.isFinite()) {
                             return ""
@@ -607,15 +605,6 @@ Page {
 
                     }
                     Layout.alignment: Qt.AlignBaseline
-                }
-                ToolButton {
-                    icon.source: "/icons/material/ic_clear.svg"
-                    Layout.alignment: Qt.AlignVCenter
-                    enabled: windSpeed.text !== ""
-                    onClicked: {
-                        Navigator.wind.speed = flightRoutePage.staticSpeed.fromKN(-1)
-                        windSpeed.clear()
-                    }
                 }
 
             }
@@ -703,15 +692,10 @@ Page {
         id: dlgLoader
         anchors.fill: parent
 
-        property string title
-        property string text
-        property var waypoint
-
         onLoaded: {
             item.modal = true
             item.open()
         }
-
     }
 
     CenteringDialog {
@@ -754,9 +738,4 @@ Page {
             close()
         }
     }
-
-    FlightRouteSaveDialog {
-        id: flightRouteSaveDialog
-    }
-
 } // Page

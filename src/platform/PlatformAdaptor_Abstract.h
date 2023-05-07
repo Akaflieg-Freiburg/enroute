@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QQmlEngine>
+#include <QQuickItem>
 
 #include "GlobalObject.h"
 
@@ -79,9 +80,9 @@ public:
      *
      * Depending on the platform, the app needs to ask for permissions to
      * operate properly. This method can be used to check if all permissions
-     * have been granted. It returns an empty string if all permissions are there,
-     * and a human-readable, translated explanation of missing permissions
-     * otherwise.
+     * have been granted. It returns an empty string if all permissions are
+     * there, and a human-readable, translated explanation of missing
+     * permissions otherwise.
      *
      * @returns Empty string or explanation
     */
@@ -129,6 +130,24 @@ public:
      */
     Q_INVOKABLE virtual void requestPermissionsSync() = 0;
 
+    /*! \brief Workaround for QTBUG-80790
+     *
+     *  This method is empty except on iOS, where it installs a special event
+     *  filter for a QQuickItem. The event filter avoids problematic behavior
+     *  where the virtual keyboard pushes up the whole qml page. Details for
+     *  this problem and the present workaround are described here.
+     *
+     *  https://stackoverflow.com/questions/34716462/ios-sometimes-keyboard-pushes-up-the-whole-qml-page
+     *
+     *  https://bugreports.qt.io/browse/QTBUG-80790
+     *
+     *  @param item QQuickItem where the event filter is to be intalled.
+     */
+    Q_INVOKABLE virtual void setupInputMethodEventFilter(QQuickItem* item)
+    {
+        Q_UNUSED(item)
+    }
+
     /*! \brief Information about the system, in HTML format
      *
      * @returns Info string
@@ -137,8 +156,8 @@ public:
 
     /*! \brief Make the device briefly vibrate
      *
-     * On platforms that support this, make the device briefly vibrate if haptic
-     * feedback is enabled in the system settings.
+     *  On platforms that support this, make the device briefly vibrate if
+     *  haptic feedback is enabled in the system settings.
      */
     Q_INVOKABLE virtual void vibrateBrief() = 0;
 

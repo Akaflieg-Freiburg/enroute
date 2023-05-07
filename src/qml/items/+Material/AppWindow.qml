@@ -26,7 +26,6 @@ import akaflieg_freiburg.enroute
 ApplicationWindow {
 
     Material.theme: GlobalSettings.nightMode ? Material.Dark : Material.Light
-    Material.primary: Material.theme === Material.Dark ? Qt.darker("teal") : "teal"
-    Material.accent: Material.theme === Material.Dark ? Qt.lighter("teal") : "teal"
+    Material.primary: Material.Teal
 
 }

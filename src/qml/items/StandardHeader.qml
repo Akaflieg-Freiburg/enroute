@@ -23,7 +23,7 @@ import QtQuick.Controls
 
 import akaflieg_freiburg.enroute
 
-ColoredToolBar {
+ToolBar {
 
     height: 60 + SafeInsets.top
     leftPadding: SafeInsets.left

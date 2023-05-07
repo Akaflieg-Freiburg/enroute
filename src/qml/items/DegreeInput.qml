@@ -71,7 +71,7 @@ StackLayout {
             value = dVal
         }
 
-        TextField {
+        MyTextField {
             id: d_d
 
             Layout.fillWidth: true
@@ -82,13 +82,17 @@ StackLayout {
                 top: stackLayout.maxValue
                 notation: DoubleValidator.StandardNotation
             }
-            color: (acceptableInput ? "" : "red")
+            color: (acceptableInput ? colorGlean.color : "red")
 
             onEditingFinished: {
                 d.setValue()
             }
         }
-        Label { text: "°" }
+        Label {
+            id: colorGlean
+
+            text: "°"
+        }
     }
 
     RowLayout { // Degree and Minute
@@ -108,7 +112,7 @@ StackLayout {
                 value = dVal - mVal/60.0
         }
 
-        TextField {
+        MyTextField {
             id: dm_d
 
             Layout.fillWidth: true
@@ -118,7 +122,7 @@ StackLayout {
                 bottom: stackLayout.minValue
                 top: stackLayout.maxValue
             }
-            color: (acceptableInput ? "" : "red")
+            color: (acceptableInput ? colorGlean.color : "red")
 
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {
@@ -127,7 +131,7 @@ StackLayout {
         }
         Label { text: "°" }
 
-        TextField {
+        MyTextField {
             id: dm_m
 
             Layout.fillWidth: true
@@ -138,7 +142,7 @@ StackLayout {
                 top: 59.9999999999999
                 notation: DoubleValidator.StandardNotation
             }
-            color: (acceptableInput ? "" : "red")
+            color: (acceptableInput ? colorGlean.color : "red")
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {
                 dm.setValue()
@@ -167,7 +171,7 @@ StackLayout {
                 value = dVal - mVal/60.0 - sVal/3600.0
         }
 
-        TextField {
+        MyTextField {
             id: dms_d
 
             Layout.fillWidth: true
@@ -177,7 +181,7 @@ StackLayout {
                 bottom: stackLayout.minValue
                 top: stackLayout.maxValue
             }
-            color: (acceptableInput ? "" : "red")
+            color: (acceptableInput ? colorGlean.color : "red")
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {
                 dms.setValue()
@@ -185,7 +189,7 @@ StackLayout {
         }
         Label { text: "°" }
 
-        TextField {
+        MyTextField {
             id: dms_m
 
             Layout.fillWidth: true
@@ -195,7 +199,7 @@ StackLayout {
                 bottom: 0
                 top: 59
             }
-            color: (acceptableInput ? "" : "red")
+            color: (acceptableInput ? colorGlean.color : "red")
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {
                 dms.setValue()
@@ -203,7 +207,7 @@ StackLayout {
         }
         Label { text: "'" }
 
-        TextField {
+        MyTextField {
             id: dms_s
 
             Layout.fillWidth: true
@@ -214,7 +218,7 @@ StackLayout {
                 top: 59.9999999999999
                 notation: DoubleValidator.StandardNotation
             }
-            color: (acceptableInput ? "" : "red")
+            color: (acceptableInput ? colorGlean.color : "red")
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {
                 dms.setValue()

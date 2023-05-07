@@ -62,12 +62,11 @@ CenteringDialog {
             textFormat: Text.StyledText
         }
 
-        TextField {
+        MyTextField {
             id: textInput
 
             Layout.fillWidth: true
 
-            placeholderText: qsTr("Waypoint Name")
             focus: true
 
             onAccepted: {

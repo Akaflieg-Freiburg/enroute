@@ -65,12 +65,11 @@ CenteringDialog {
             textFormat: Text.StyledText
         }
 
-        TextField {
+        MyTextField {
             id: fileName
 
             Layout.fillWidth: true
             focus: true
-            placeholderText: qsTr("Aircraft Name")
 
             onDisplayTextChanged: dlg.standardButton(DialogButtonBox.Save).enabled = (displayText !== "")
 

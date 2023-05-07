@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -33,13 +33,12 @@ Page {
 
     // Required Properties
     required property var stackView
-    required property var dialogLoader
 
     // Static objects, used to call static functions
     property speed staticSpeed
     property volumeFlow staticVolumeFlow
 
-    header: ColoredToolBar {
+    header: ToolBar {
 
         height: 60 + SafeInsets.top
         leftPadding: SafeInsets.left
@@ -105,7 +104,9 @@ Page {
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
                             highlighted = false
-                            aircraftSaveDialog.open()
+                            dlgLoader.active = false
+                            dlgLoader.source = "../dialogs/AircraftSaveDialog.qml"
+                            dlgLoader.active = true
                         }
                     }
                 }
@@ -125,7 +126,7 @@ Page {
         // If virtual keyboard come up, make sure that the focused element is visible
         onHeightChanged: {
             if (activeFocusControl != null) {
-                contentItem.contentY = activeFocusControl.y
+                contentItem.contentY = activeFocusControl.y - font.pixelSize
             }
         }
 
@@ -136,18 +137,17 @@ Page {
             anchors.right: parent.right
             anchors.rightMargin: acftTab.font.pixelSize
 
-            columns: 4
+            columns: 3
 
             Rectangle {
-                Layout.columnSpan: 4
+                Layout.columnSpan: 3
                 Layout.preferredHeight: acftTab.font.pixelSize
             }
             Label {
                 text: qsTr("Name")
-                Layout.columnSpan: 4
+                Layout.columnSpan: 3
                 font.pixelSize: acftTab.font.pixelSize*1.2
                 font.bold: true
-//                color: Material.accent
             }
 
 
@@ -155,9 +155,9 @@ Page {
                 text: qsTr("Name")
                 Layout.alignment: Qt.AlignBaseline
             }
-            TextField {
+            MyTextField {
                 id: name
-                Layout.columnSpan: 3
+                Layout.columnSpan: 2
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 Layout.minimumWidth: font.pixelSize*5
@@ -173,10 +173,9 @@ Page {
             Label { Layout.fillHeight: true }
             Label {
                 text: qsTr("Units")
-                Layout.columnSpan: 4
+                Layout.columnSpan: 3
                 font.pixelSize: acftTab.font.pixelSize*1.2
                 font.bold: true
-//                color: Material.accent
             }
 
             Label {
@@ -185,7 +184,7 @@ Page {
             }
             ComboBox {
                 id: horizontalUOM
-                Layout.columnSpan: 3
+                Layout.columnSpan: 2
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 KeyNavigation.tab: verticalUOM
@@ -212,7 +211,7 @@ Page {
             }
             ComboBox {
                 id: verticalUOM
-                Layout.columnSpan: 3
+                Layout.columnSpan: 2
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 KeyNavigation.tab: volumeUOM
@@ -234,7 +233,7 @@ Page {
             }
             ComboBox {
                 id: volumeUOM
-                Layout.columnSpan: 3
+                Layout.columnSpan: 2
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 KeyNavigation.tab: cruiseSpeed
@@ -255,17 +254,17 @@ Page {
             Label { Layout.fillHeight: true }
             Label {
                 text: qsTr("True Airspeed")
-                Layout.columnSpan: 4
+                Layout.columnSpan: 3
                 font.pixelSize: acftTab.font.pixelSize*1.2
                 font.bold: true
-//                color: Material.accent
             }
 
             Label {
+                id: colorGlean
                 text: qsTr("Cruise")
                 Layout.alignment: Qt.AlignBaseline
             }
-            TextField {
+            MyTextField {
                 id: cruiseSpeed
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
@@ -309,7 +308,7 @@ Page {
                         return
                     }
                 }
-                color: (acceptableInput ? "" : "red")
+                color: (acceptableInput ? colorGlean.color : "red")
                 text: {
                     if (!Navigator.aircraft.cruiseSpeed.isFinite()) {
                         return ""
@@ -338,21 +337,12 @@ Page {
                     }
                 }
             }
-            ToolButton {
-                icon.source: "/icons/material/ic_clear.svg"
-                Layout.alignment: Qt.AlignVCenter
-                enabled: cruiseSpeed.text !== ""
-                onClicked: {
-                    Navigator.aircraft.cruiseSpeed = aircraftPage.staticSpeed.fromKN(-1)
-                    cruiseSpeed.clear()
-                }
-            }
 
             Label {
                 text: qsTr("Descent")
                 Layout.alignment: Qt.AlignBaseline
             }
-            TextField {
+            MyTextField {
                 id: descentSpeed
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
@@ -397,7 +387,7 @@ Page {
                         return
                     }
                 }
-                color: (acceptableInput ? "" : "red")
+                color: (acceptableInput ? colorGlean.color : "red")
                 text: {
                     if (!Navigator.aircraft.descentSpeed.isFinite()) {
                         return ""
@@ -425,21 +415,12 @@ Page {
                     }
                 }
             }
-            ToolButton {
-                icon.source: "/icons/material/ic_clear.svg"
-                Layout.alignment: Qt.AlignVCenter
-                enabled: descentSpeed.text !== ""
-                onClicked: {
-                    Navigator.aircraft.descentSpeed = aircraftPage.staticSpeed.fromKN(-1)
-                    descentSpeed.clear()
-                }
-            }
 
             Label {
                 text: qsTr("Minimum")
                 Layout.alignment: Qt.AlignBaseline
             }
-            TextField {
+            MyTextField {
                 id: minimumSpeed
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
@@ -483,7 +464,7 @@ Page {
                         return
                     }
                 }
-                color: (acceptableInput ? "" : "red")
+                color: (acceptableInput ? colorGlean.color : "red")
                 text: {
                     if (!Navigator.aircraft.minimumSpeed.isFinite()) {
                         return ""
@@ -511,21 +492,11 @@ Page {
                     }
                 }
             }
-            ToolButton {
-                icon.source: "/icons/material/ic_clear.svg"
-                Layout.alignment: Qt.AlignVCenter
-                enabled: minimumSpeed.text !== ""
-                onClicked: {
-                    Navigator.aircraft.minimumSpeed = aircraftPage.staticSpeed.fromKN(-1)
-                    minimumSpeed.clear()
-                }
-            }
-
 
             Label { Layout.fillHeight: true }
             Label {
                 text: qsTr("Fuel Consumption")
-                Layout.columnSpan: 4
+                Layout.columnSpan: 3
                 font.pixelSize: acftTab.font.pixelSize*1.2
                 font.bold: true
             }
@@ -534,7 +505,7 @@ Page {
                 text: qsTr("Cruise")
                 Layout.alignment: Qt.AlignBaseline
             }
-            TextField {
+            MyTextField {
                 id: fuelConsumption
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
@@ -572,7 +543,7 @@ Page {
                         return
                     }
                 }
-                color: (acceptableInput ? "" : "red")
+                color: (acceptableInput ? colorGlean.color : "red")
                 text: {
                     if (!Navigator.aircraft.fuelConsumption.isFinite()) {
                         return ""
@@ -596,18 +567,9 @@ Page {
                     }
                 }
             }
-            ToolButton {
-                icon.source: "/icons/material/ic_clear.svg"
-                Layout.alignment: Qt.AlignVCenter
-                enabled: fuelConsumption.text !== ""
-                onClicked: {
-                    Navigator.aircraft.fuelConsumption = aircraftPage.staticVolumeFlow.fromLPH(-1)
-                    fuelConsumption.clear()
-                }
-            }
 
             Rectangle {
-                Layout.columnSpan: 4
+                Layout.columnSpan: 3
                 Layout.preferredHeight: acftTab.font.pixelSize
             }
 
@@ -615,7 +577,13 @@ Page {
 
     }
 
-    AircraftSaveDialog {
-        id: aircraftSaveDialog
+    Loader {
+        id: dlgLoader
+        anchors.fill: parent
+
+        onLoaded: {
+            item.modal = true
+            item.open()
+        }
     }
 } // Page

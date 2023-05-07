@@ -39,9 +39,9 @@ Page {
         id: filterRow
 
         anchors.left: parent.left
-        anchors.leftMargin: SafeInsets.left
+        anchors.leftMargin: SafeInsets.left+font.pixelSize
         anchors.right: parent.right
-        anchors.rightMargin: SafeInsets.right
+        anchors.rightMargin: SafeInsets.right+font.pixelSize
         anchors.top: parent.top
         anchors.topMargin: page.font.pixelSize
 
@@ -51,7 +51,7 @@ Page {
             text: qsTr("Filter")
         }
 
-        TextField {
+        MyTextField {
             id: textInput
 
             Layout.alignment: Qt.AlignBaseline
@@ -280,7 +280,7 @@ Page {
                 textFormat: Text.StyledText
             }
 
-            TextField {
+            MyTextField {
                 id: renameName
 
                 Layout.fillWidth: true

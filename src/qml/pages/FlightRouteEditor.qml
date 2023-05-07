@@ -232,9 +232,9 @@ Page {
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
-                        dialogLoader.active = false
-                        dialogLoader.source = "dialogs/FlightRouteSaveDialog.qml"
-                        dialogLoader.active = true
+                        dlgLoader.active = false
+                        dlgLoader.source = "../dialogs/FlightRouteSaveDialog.qml"
+                        dlgLoader.active = true
                     }
                 }
 
@@ -692,15 +692,10 @@ Page {
         id: dlgLoader
         anchors.fill: parent
 
-        property string title
-        property string text
-        property var waypoint
-
         onLoaded: {
             item.modal = true
             item.open()
         }
-
     }
 
     CenteringDialog {

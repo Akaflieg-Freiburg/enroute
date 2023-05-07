@@ -122,7 +122,7 @@ AppWindow {
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
                         stackView.pop()
-                        stackView.push("pages/AircraftPage.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
+                        stackView.push("pages/AircraftPage.qml", {"stackView": stackView})
                         drawer.close()
                     }
                 }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -33,7 +33,6 @@ Page {
 
     // Required Properties
     required property var stackView
-    required property var dialogLoader
 
     // Static objects, used to call static functions
     property speed staticSpeed
@@ -105,9 +104,9 @@ Page {
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
                             highlighted = false
-                            aircraftPage.dialogLoader.active = false
-                            aircraftPage.dialogLoader.source = "dialogs/AircraftSaveDialog.qml"
-                            aircraftPage.dialogLoader.active = true
+                            dlgLoader.active = false
+                            dlgLoader.source = "../dialogs/AircraftSaveDialog.qml"
+                            dlgLoader.active = true
                         }
                     }
                 }
@@ -576,6 +575,16 @@ Page {
 
         }
 
+    }
+
+    Loader {
+        id: dlgLoader
+        anchors.fill: parent
+
+        onLoaded: {
+            item.modal = true
+            item.open()
+        }
     }
 
 } // Page

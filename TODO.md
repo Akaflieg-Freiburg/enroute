@@ -35,6 +35,8 @@
 - [x] GUI: Aircraft library: clear text button does not work
 - [x] GUI: Save Aircraft dialog: dialog does not repond to virtual keyboard
 - [ ] Color mismatch: "teal" vs Material.Teal
+- [ ] Settings page: Switch "Night Mode" on/off, get color mismatch in title bar
+- [ ] Set proper title bar for "Waypoint", "Notam" and "Weather" dialogs, will be important with Material3
 
 
 ## New Features

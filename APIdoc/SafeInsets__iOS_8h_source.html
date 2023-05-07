@@ -72,37 +72,34 @@ $(function() {
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;QQmlEngine&gt;</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;platform/SafeInsets_Abstract.h&quot;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;SafeInsets_Abstract.h&quot;</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span>Platform {</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">class </span>SafeInsets : <span class="keyword">public</span> <a class="code" href="classPlatform_1_1SafeInsets__Abstract.html">Platform::SafeInsets_Abstract</a></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;{</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    Q_OBJECT</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    QML_ELEMENT</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    QML_SINGLETON</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="comment">// Properties need to be repeated, or else the Qt CMake macros cannot find them.</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    Q_PROPERTY(<span class="keywordtype">double</span> bottom READ bottom NOTIFY <a class="code" href="classPlatform_1_1SafeInsets__Abstract.html#a74619a3e9435736ba9b6526e3af8c165">bottomChanged</a>)</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    Q_PROPERTY(<span class="keywordtype">double</span> left READ left NOTIFY <a class="code" href="classPlatform_1_1SafeInsets__Abstract.html#acdb9cd1fda377db14fc7503b2ae7a20f">leftChanged</a>)</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    Q_PROPERTY(<span class="keywordtype">double</span> right READ right NOTIFY <a class="code" href="classPlatform_1_1SafeInsets__Abstract.html#a2144a98cf126a0b3ae37b2a5d093b40d">rightChanged</a>)</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    Q_PROPERTY(<span class="keywordtype">double</span> top READ top NOTIFY <a class="code" href="classPlatform_1_1SafeInsets__Abstract.html#a0c46de1c6cc684239d64f9dfc3e33b7e">topChanged</a>)</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    Q_PROPERTY(<span class="keywordtype">double</span> wHeight READ wHeight NOTIFY <a class="code" href="classPlatform_1_1SafeInsets__Abstract.html#a4c9b02d3213d74f925bd553c36a95773">wHeightChanged</a>)</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    Q_PROPERTY(<span class="keywordtype">double</span> wWidth READ wWidth NOTIFY <a class="code" href="classPlatform_1_1SafeInsets__Abstract.html#ad801f3688074bfa232d46940047859e7">wWidthChanged</a>)</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="classPlatform_1_1SafeInsets.html#abab5ccd9ada6bc177c788e4f9ae543c2">   51</a></span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classPlatform_1_1SafeInsets.html#abab5ccd9ada6bc177c788e4f9ae543c2">SafeInsets</a>(QObject* parent = <span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    ~<a class="code" href="classPlatform_1_1SafeInsets.html">SafeInsets</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="classPlatform_1_1SafeInsets.html#a8eaf2a8d4631bd0dcb1f9454d628934c">   56</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1SafeInsets.html#a8eaf2a8d4631bd0dcb1f9454d628934c">updateSafeInsets</a>();</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">class </span>SafeInsets : <span class="keyword">public</span> SafeInsets_Abstract</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    Q_OBJECT</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    QML_ELEMENT</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    QML_SINGLETON</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="comment">// Properties need to be repeated, or else the Qt CMake macros cannot find them.</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    Q_PROPERTY(<span class="keywordtype">double</span> bottom READ bottom NOTIFY <a class="code" href="classPlatform_1_1SafeInsets__Abstract.html#a74619a3e9435736ba9b6526e3af8c165">bottomChanged</a>)</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    Q_PROPERTY(<span class="keywordtype">double</span> left READ left NOTIFY <a class="code" href="classPlatform_1_1SafeInsets__Abstract.html#acdb9cd1fda377db14fc7503b2ae7a20f">leftChanged</a>)</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    Q_PROPERTY(<span class="keywordtype">double</span> right READ right NOTIFY <a class="code" href="classPlatform_1_1SafeInsets__Abstract.html#a2144a98cf126a0b3ae37b2a5d093b40d">rightChanged</a>)</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    Q_PROPERTY(<span class="keywordtype">double</span> top READ top NOTIFY <a class="code" href="classPlatform_1_1SafeInsets__Abstract.html#a0c46de1c6cc684239d64f9dfc3e33b7e">topChanged</a>)</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    Q_PROPERTY(<span class="keywordtype">double</span> wHeight READ wHeight NOTIFY <a class="code" href="classPlatform_1_1SafeInsets__Abstract.html#a4c9b02d3213d74f925bd553c36a95773">wHeightChanged</a>)</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    Q_PROPERTY(<span class="keywordtype">double</span> wWidth READ wWidth NOTIFY <a class="code" href="classPlatform_1_1SafeInsets__Abstract.html#ad801f3688074bfa232d46940047859e7">wWidthChanged</a>)</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="classPlatform_1_1SafeInsets.html#abab5ccd9ada6bc177c788e4f9ae543c2">   50</a></span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classPlatform_1_1SafeInsets.html#abab5ccd9ada6bc177c788e4f9ae543c2">SafeInsets</a>(QObject *parent = <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    ~<a class="code" href="classPlatform_1_1SafeInsets.html">SafeInsets</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classPlatform_1_1SafeInsets.html">SafeInsets</a>)</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;};</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classPlatform_1_1SafeInsets.html">SafeInsets</a>)</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;};</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;} <span class="comment">// namespace Platform</span></div>
-<div class="ttc" id="aclassPlatform_1_1SafeInsets__Abstract_html"><div class="ttname"><a href="classPlatform_1_1SafeInsets__Abstract.html">Platform::SafeInsets_Abstract</a></div><div class="ttdoc">Safe window insets for QML.</div><div class="ttdef"><b>Definition:</b> <a href="SafeInsets__Abstract_8h_source.html#l00034">SafeInsets_Abstract.h:35</a></div></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;} <span class="comment">// namespace Platform</span></div>
 <div class="ttc" id="aclassPlatform_1_1SafeInsets__Abstract_html_a0c46de1c6cc684239d64f9dfc3e33b7e"><div class="ttname"><a href="classPlatform_1_1SafeInsets__Abstract.html#a0c46de1c6cc684239d64f9dfc3e33b7e">Platform::SafeInsets_Abstract::topChanged</a></div><div class="ttdeci">void topChanged()</div><div class="ttdoc">Notifier signal.</div></div>
 <div class="ttc" id="aclassPlatform_1_1SafeInsets__Abstract_html_a2144a98cf126a0b3ae37b2a5d093b40d"><div class="ttname"><a href="classPlatform_1_1SafeInsets__Abstract.html#a2144a98cf126a0b3ae37b2a5d093b40d">Platform::SafeInsets_Abstract::rightChanged</a></div><div class="ttdeci">void rightChanged()</div><div class="ttdoc">Notifier signal.</div></div>
 <div class="ttc" id="aclassPlatform_1_1SafeInsets__Abstract_html_a4c9b02d3213d74f925bd553c36a95773"><div class="ttname"><a href="classPlatform_1_1SafeInsets__Abstract.html#a4c9b02d3213d74f925bd553c36a95773">Platform::SafeInsets_Abstract::wHeightChanged</a></div><div class="ttdeci">void wHeightChanged()</div><div class="ttdoc">Notifier signal.</div></div>
@@ -110,7 +107,6 @@ $(function() {
 <div class="ttc" id="aclassPlatform_1_1SafeInsets__Abstract_html_acdb9cd1fda377db14fc7503b2ae7a20f"><div class="ttname"><a href="classPlatform_1_1SafeInsets__Abstract.html#acdb9cd1fda377db14fc7503b2ae7a20f">Platform::SafeInsets_Abstract::leftChanged</a></div><div class="ttdeci">void leftChanged()</div><div class="ttdoc">Notifier signal.</div></div>
 <div class="ttc" id="aclassPlatform_1_1SafeInsets__Abstract_html_ad801f3688074bfa232d46940047859e7"><div class="ttname"><a href="classPlatform_1_1SafeInsets__Abstract.html#ad801f3688074bfa232d46940047859e7">Platform::SafeInsets_Abstract::wWidthChanged</a></div><div class="ttdeci">void wWidthChanged()</div><div class="ttdoc">Notifier signal.</div></div>
 <div class="ttc" id="aclassPlatform_1_1SafeInsets_html"><div class="ttname"><a href="classPlatform_1_1SafeInsets.html">Platform::SafeInsets</a></div><div class="ttdoc">Implementation of SafeInsets for Android devices.</div><div class="ttdef"><b>Definition:</b> <a href="SafeInsets__Android_8h_source.html#l00032">SafeInsets_Android.h:33</a></div></div>
-<div class="ttc" id="aclassPlatform_1_1SafeInsets_html_a8eaf2a8d4631bd0dcb1f9454d628934c"><div class="ttname"><a href="classPlatform_1_1SafeInsets.html#a8eaf2a8d4631bd0dcb1f9454d628934c">Platform::SafeInsets::updateSafeInsets</a></div><div class="ttdeci">void updateSafeInsets()</div><div class="ttdoc">Checks and updated properties.</div></div>
 <div class="ttc" id="aclassPlatform_1_1SafeInsets_html_abab5ccd9ada6bc177c788e4f9ae543c2"><div class="ttname"><a href="classPlatform_1_1SafeInsets.html#abab5ccd9ada6bc177c788e4f9ae543c2">Platform::SafeInsets::SafeInsets</a></div><div class="ttdeci">SafeInsets(QObject *parent=nullptr)</div><div class="ttdoc">Standard constructor.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

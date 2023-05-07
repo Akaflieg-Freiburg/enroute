@@ -49,7 +49,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/***************************************************************************</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *   Copyright (C) 2019-2023 by Stefan Kebekus                             *</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *   Copyright (C) 2019-2022 by Stefan Kebekus                             *</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *   stefan.kebekus@gmail.com                                              *</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *                                                                         *</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *   This program is free software; you can redistribute it and/or modify  *</span></div>
@@ -71,82 +71,58 @@ $(function() {
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &quot;PlatformAdaptor_Abstract.h&quot;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &quot;qcoreevent.h&quot;</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;qevent.h&quot;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;qquickitem.h&quot;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">namespace </span>Platform {</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">class </span>ImFixer : <span class="keyword">public</span> QObject {</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    Q_OBJECT</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordtype">bool</span> eventFilter(QObject *obj, QEvent *event)<span class="keyword"> override </span>{</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        <span class="keywordflow">if</span> (event-&gt;type() == QEvent::InputMethodQuery) {</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            QInputMethodQueryEvent *imEvt = <span class="keyword">static_cast&lt;</span>QInputMethodQueryEvent *<span class="keyword">&gt;</span>(event);</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            <span class="keywordflow">if</span> (imEvt-&gt;queries() == Qt::InputMethodQuery::ImCursorRectangle) {</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                imEvt-&gt;setValue(Qt::InputMethodQuery::ImCursorRectangle, QRectF());</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            }</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        }</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <span class="keywordflow">return</span> QObject::eventFilter(obj, event);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    }</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;};</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">class </span>PlatformAdaptor : <span class="keyword">public</span> PlatformAdaptor_Abstract</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;{</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    Q_OBJECT</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classPlatform_1_1PlatformAdaptor.html#a2e767fa1e4b2a4e9c2227f3639ff62c0">   57</a></span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a2e767fa1e4b2a4e9c2227f3639ff62c0">PlatformAdaptor</a>(QObject *parent = <span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    ~<a class="code" href="classPlatform_1_1PlatformAdaptor.html">PlatformAdaptor</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="comment">// Methods</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="classPlatform_1_1PlatformAdaptor.html#a90b981be9ec5b59144cfde308a0b6c12">   70</a></span>&#160;    Q_INVOKABLE QString <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a90b981be9ec5b59144cfde308a0b6c12">checkPermissions</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">namespace </span>Platform {</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">class </span>PlatformAdaptor : <span class="keyword">public</span> PlatformAdaptor_Abstract</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;{</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    Q_OBJECT</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="classPlatform_1_1PlatformAdaptor.html#a2e767fa1e4b2a4e9c2227f3639ff62c0">   38</a></span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a2e767fa1e4b2a4e9c2227f3639ff62c0">PlatformAdaptor</a>(QObject *parent = <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    ~<a class="code" href="classPlatform_1_1PlatformAdaptor.html">PlatformAdaptor</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="comment">// Methods</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="classPlatform_1_1PlatformAdaptor.html#a90b981be9ec5b59144cfde308a0b6c12">   51</a></span>&#160;    Q_INVOKABLE QString <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a90b981be9ec5b59144cfde308a0b6c12">checkPermissions</a>()<span class="keyword"> override </span>{<span class="keywordflow">return</span> {};};</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="classPlatform_1_1PlatformAdaptor.html#a7ead29f0e028faddb7603f2136c985d4">   58</a></span>&#160;    Q_INVOKABLE QString <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a7ead29f0e028faddb7603f2136c985d4">currentSSID</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
+<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="classPlatform_1_1PlatformAdaptor.html#aa576dfcc599121d187d40999654a67a3">   61</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1PlatformAdaptor.html#aa576dfcc599121d187d40999654a67a3">disableScreenSaver</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="classPlatform_1_1PlatformAdaptor.html#a82fb311ae84bff2477c0e57d4bfbf1ba">   68</a></span>&#160;    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a82fb311ae84bff2477c0e57d4bfbf1ba">lockWifi</a>(<span class="keywordtype">bool</span> lock) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="classPlatform_1_1PlatformAdaptor.html#a60ff8e7d19d09f8821cc5e5b135c8b86">   71</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a60ff8e7d19d09f8821cc5e5b135c8b86">requestPermissionsSync</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="classPlatform_1_1PlatformAdaptor.html#a7ead29f0e028faddb7603f2136c985d4">   77</a></span>&#160;    Q_INVOKABLE QString <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a7ead29f0e028faddb7603f2136c985d4">currentSSID</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="classPlatform_1_1PlatformAdaptor.html#aa576dfcc599121d187d40999654a67a3">   80</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1PlatformAdaptor.html#aa576dfcc599121d187d40999654a67a3">disableScreenSaver</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="classPlatform_1_1PlatformAdaptor.html#a82fb311ae84bff2477c0e57d4bfbf1ba">   86</a></span>&#160;    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a82fb311ae84bff2477c0e57d4bfbf1ba">lockWifi</a>(<span class="keywordtype">bool</span> lock) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="classPlatform_1_1PlatformAdaptor.html#a60ff8e7d19d09f8821cc5e5b135c8b86">   89</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a60ff8e7d19d09f8821cc5e5b135c8b86">requestPermissionsSync</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
-<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="classPlatform_1_1PlatformAdaptor.html#a284563bf2bb517c91bdd818f47ea2dcd">   96</a></span>&#160;    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a284563bf2bb517c91bdd818f47ea2dcd">setupImEventFilter</a>(QQuickItem *item) {</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="keyword">static</span> thread_local ImFixer imf;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        item-&gt;installEventFilter(&amp;imf);</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    }</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00102"></a><span class="lineno"><a class="line" href="classPlatform_1_1PlatformAdaptor.html#a6200b6c2868bfedcab5fbf9d97bde483">  102</a></span>&#160;    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a6200b6c2868bfedcab5fbf9d97bde483">vibrateBrief</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="keyword">public</span> slots:</div>
-<div class="line"><a name="l00107"></a><span class="lineno"><a class="line" href="classPlatform_1_1PlatformAdaptor.html#a3081d3037085e161e2755c89eebb5853">  107</a></span>&#160;    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a3081d3037085e161e2755c89eebb5853">onGUISetupCompleted</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  </div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="comment">//void Platform::PlatformAdaptor::deferredInitialization()</span></div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classPlatform_1_1PlatformAdaptor.html">PlatformAdaptor</a>)</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;};</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;} <span class="comment">// namespace Platform</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="classPlatform_1_1PlatformAdaptor.html#a6200b6c2868bfedcab5fbf9d97bde483">   74</a></span>&#160;    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a6200b6c2868bfedcab5fbf9d97bde483">vibrateBrief</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keyword">public</span> slots:</div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="classPlatform_1_1PlatformAdaptor.html#a3081d3037085e161e2755c89eebb5853">   79</a></span>&#160;    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1PlatformAdaptor.html#a3081d3037085e161e2755c89eebb5853">onGUISetupCompleted</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="comment">//void Platform::PlatformAdaptor::deferredInitialization()</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classPlatform_1_1PlatformAdaptor.html">PlatformAdaptor</a>)</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;};</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;} <span class="comment">// namespace Platform</span></div>
 <div class="ttc" id="aclassPlatform_1_1PlatformAdaptor_html"><div class="ttname"><a href="classPlatform_1_1PlatformAdaptor.html">Platform::PlatformAdaptor</a></div><div class="ttdoc">Implementation of PlatformAdaptor for Android devices.</div><div class="ttdef"><b>Definition:</b> <a href="PlatformAdaptor__Android_8h_source.html#l00034">PlatformAdaptor_Android.h:35</a></div></div>
-<div class="ttc" id="aclassPlatform_1_1PlatformAdaptor_html_a284563bf2bb517c91bdd818f47ea2dcd"><div class="ttname"><a href="classPlatform_1_1PlatformAdaptor.html#a284563bf2bb517c91bdd818f47ea2dcd">Platform::PlatformAdaptor::setupImEventFilter</a></div><div class="ttdeci">Q_INVOKABLE void setupImEventFilter(QQuickItem *item)</div><div class="ttdoc">Implements virtual method from PlatformAdaptor_Abstract, workaround for QTBUG-80790.</div><div class="ttdef"><b>Definition:</b> <a href="PlatformAdaptor__iOS_8h_source.html#l00096">PlatformAdaptor_iOS.h:96</a></div></div>
 <div class="ttc" id="aclassPlatform_1_1PlatformAdaptor_html_a2e767fa1e4b2a4e9c2227f3639ff62c0"><div class="ttname"><a href="classPlatform_1_1PlatformAdaptor.html#a2e767fa1e4b2a4e9c2227f3639ff62c0">Platform::PlatformAdaptor::PlatformAdaptor</a></div><div class="ttdeci">PlatformAdaptor(QObject *parent=nullptr)</div><div class="ttdoc">Standard constructor.</div></div>
 <div class="ttc" id="aclassPlatform_1_1PlatformAdaptor_html_a3081d3037085e161e2755c89eebb5853"><div class="ttname"><a href="classPlatform_1_1PlatformAdaptor.html#a3081d3037085e161e2755c89eebb5853">Platform::PlatformAdaptor::onGUISetupCompleted</a></div><div class="ttdeci">Q_INVOKABLE void onGUISetupCompleted() override</div><div class="ttdoc">Implements pure virtual method from PlatformAdaptor_Abstract.</div></div>
 <div class="ttc" id="aclassPlatform_1_1PlatformAdaptor_html_a60ff8e7d19d09f8821cc5e5b135c8b86"><div class="ttname"><a href="classPlatform_1_1PlatformAdaptor.html#a60ff8e7d19d09f8821cc5e5b135c8b86">Platform::PlatformAdaptor::requestPermissionsSync</a></div><div class="ttdeci">void requestPermissionsSync() override</div><div class="ttdoc">Implements pure virtual method from PlatformAdaptor_Abstract.</div></div>
 <div class="ttc" id="aclassPlatform_1_1PlatformAdaptor_html_a6200b6c2868bfedcab5fbf9d97bde483"><div class="ttname"><a href="classPlatform_1_1PlatformAdaptor.html#a6200b6c2868bfedcab5fbf9d97bde483">Platform::PlatformAdaptor::vibrateBrief</a></div><div class="ttdeci">Q_INVOKABLE void vibrateBrief() override</div><div class="ttdoc">Implements pure virtual method from PlatformAdaptor_Abstract.</div></div>
 <div class="ttc" id="aclassPlatform_1_1PlatformAdaptor_html_a7ead29f0e028faddb7603f2136c985d4"><div class="ttname"><a href="classPlatform_1_1PlatformAdaptor.html#a7ead29f0e028faddb7603f2136c985d4">Platform::PlatformAdaptor::currentSSID</a></div><div class="ttdeci">Q_INVOKABLE QString currentSSID() override</div><div class="ttdoc">Implements pure virtual method from PlatformAdaptor_Abstract.</div></div>
 <div class="ttc" id="aclassPlatform_1_1PlatformAdaptor_html_a82fb311ae84bff2477c0e57d4bfbf1ba"><div class="ttname"><a href="classPlatform_1_1PlatformAdaptor.html#a82fb311ae84bff2477c0e57d4bfbf1ba">Platform::PlatformAdaptor::lockWifi</a></div><div class="ttdeci">Q_INVOKABLE void lockWifi(bool lock) override</div><div class="ttdoc">Implements pure virtual method from PlatformAdaptor_Abstract.</div></div>
-<div class="ttc" id="aclassPlatform_1_1PlatformAdaptor_html_a90b981be9ec5b59144cfde308a0b6c12"><div class="ttname"><a href="classPlatform_1_1PlatformAdaptor.html#a90b981be9ec5b59144cfde308a0b6c12">Platform::PlatformAdaptor::checkPermissions</a></div><div class="ttdeci">Q_INVOKABLE QString checkPermissions() override</div><div class="ttdoc">Implements pure virtual method from PlatformAdaptor_Abstract.</div></div>
+<div class="ttc" id="aclassPlatform_1_1PlatformAdaptor_html_a90b981be9ec5b59144cfde308a0b6c12"><div class="ttname"><a href="classPlatform_1_1PlatformAdaptor.html#a90b981be9ec5b59144cfde308a0b6c12">Platform::PlatformAdaptor::checkPermissions</a></div><div class="ttdeci">Q_INVOKABLE QString checkPermissions() override</div><div class="ttdoc">Implements pure virtual method from PlatformAdaptor_Abstract.</div><div class="ttdef"><b>Definition:</b> <a href="PlatformAdaptor__iOS_8h_source.html#l00051">PlatformAdaptor_iOS.h:51</a></div></div>
 <div class="ttc" id="aclassPlatform_1_1PlatformAdaptor_html_aa576dfcc599121d187d40999654a67a3"><div class="ttname"><a href="classPlatform_1_1PlatformAdaptor.html#aa576dfcc599121d187d40999654a67a3">Platform::PlatformAdaptor::disableScreenSaver</a></div><div class="ttdeci">void disableScreenSaver() override</div><div class="ttdoc">Implements pure virtual method from PlatformAdaptor_Abstract.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

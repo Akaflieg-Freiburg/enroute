@@ -32,7 +32,7 @@
 - [ ] Fix problems with auto-generated screenshots for google play
 - [ ] Weather: Indicator for "Downloading Stations" does not work
 - [ ] GUI: Aircraft library: layout goes to edge of screen
-- [ ] GUI: Aircraft library: clear text button does not work
+- [x] GUI: Aircraft library: clear text button does not work
 - [ ] GUI: Save Aircraft dialog: dialog does not repond to virtual keyboard
 
 

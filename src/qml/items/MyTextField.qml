@@ -56,7 +56,7 @@ TextField {
         icon.width: font.pixelSize
         icon.height: font.pixelSize
 
-        enabled: textField.text !== ""
+        enabled: textField.displayText !== ""
         onClicked: {
             textField.clear()
             textField.onEditingFinished()

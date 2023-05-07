@@ -2,13 +2,13 @@
 
 ## Known issues:
 
-- [ ] Keyboard überdeckt UI (überall)
+- [X] Keyboard überdeckt UI (überall)
 - [ ] Manche map tiles sind manchmal leer
 - [ ] Beim Laden von Flugzeug aus Lib wird name nicht übernommen
 - [ ] Crash beim Start wenn App lange inaktiv war (Zugriff auf Speicher)
-- [ ] Map zeigt manche Linien nicht an
+- [X] Map zeigt manche Linien nicht an
 - [ ] Safe area funktioniert manchmal manchmal nicht (glaube wenn App im Hintergrund war)
-- [ ] Höhe AMSL stimmt nicht
+- [X] Höhe AMSL stimmt nicht
 - [ ] Xcode warnt vor Memory leaks (verschiedene Stellen)
 
 
@@ -20,42 +20,26 @@
 - [ ] Automatische Verbindung mit Verkehrsdatenempfänger
 
 
-# Build System
+# General
 
-* Generate spritesheet in proper way
-
-* Generate SNAP packages
-
-* Update manual, onboarding
-
-* Use Qt6.5 permissions
-
-* Update to Qt6.4.3
-
-* Fix problems with MacOS build
-
-* Remove crazy large GIT LTS files from GitHub.
-
-* Make GitHub actions work for MacOS
+- [ ] Generate spritesheet in proper way
+- [ ] Update manual: onboarding, NOTAMs
+- [ ] Remove crazy large GIT LTS files from GitHub.
 
 
-# Bug Fixing
+## Bug Fixing
 
-* Fix problems with screenshots for google play
+- [ ] Fix problems with auto-generated screenshots for google play
+- [ ] Weather: Indicator for "Downloading Stations" does not work
+- [ ] GUI: Aircraft library: layout goes to edge of screen
+- [ ] GUI: Aircraft library: clear text button does not work
+- [ ] GUI: Save Aircraft dialog: dialog does not repond to virtual keyboard
 
-* Weather: Indicator for "Downloading Stations" does not work
 
-* Android Split-View mode
+## New Features
 
-
-# New Features
-
-* Indicator that maps are being loaded
-
-* METAR/TAF rewrite
-
-* Exit app on double 'back'
-
-* https://www.qt.io/blog/qt-for-android-storage-updates
-
-* https://www.qt.io/blog/deploying-to-linux-with-cmake
+- [ ] Indicator that maps are being loaded
+- [ ] METAR/TAF rewrite
+- [ ] Exit app on double 'back'
+- [ ] https://www.qt.io/blog/qt-for-android-storage-updates
+- [ ] https://www.qt.io/blog/deploying-to-linux-with-cmake

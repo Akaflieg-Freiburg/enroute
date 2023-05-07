@@ -1,3 +1,25 @@
+# iOS
+
+## Known issues:
+
+- [ ] Keyboard überdeckt UI (überall)
+- [ ] Manche map tiles sind manchmal leer
+- [ ] Beim Laden von Flugzeug aus Lib wird name nicht übernommen
+- [ ] Crash beim Start wenn App lange inaktiv war (Zugriff auf Speicher)
+- [ ] Map zeigt manche Linien nicht an
+- [ ] Safe area funktioniert manchmal manchmal nicht (glaube wenn App im Hintergrund war)
+- [ ] Höhe AMSL stimmt nicht
+- [ ] Xcode warnt vor Memory leaks (verschiedene Stellen)
+
+
+## Not yet implemented
+
+- [ ] Notifications (noch nicht fertig)
+- [ ] Import und Export
+- [ ] Kennwörter (SSID) -> sieht schwierig aus unter iOS. Viele Changes in den letzen iOS-Versionen, von Apple nicht gern gesehen
+- [ ] Automatische Verbindung mit Verkehrsdatenempfänger
+
+
 # Build System
 
 * Generate spritesheet in proper way

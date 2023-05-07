@@ -34,6 +34,7 @@
 - [ ] GUI: Aircraft library: layout goes to edge of screen
 - [x] GUI: Aircraft library: clear text button does not work
 - [ ] GUI: Save Aircraft dialog: dialog does not repond to virtual keyboard
+- [ ] Color mismatch: "teal" vs Material.Teal
 
 
 ## New Features

@@ -286,8 +286,6 @@ Page {
                 Layout.fillWidth: true
                 focus: true
 
-                placeholderText: qsTr("New Aircraft Name")
-
                 onAccepted: renameDialog.onAccepted()
             }
 

@@ -33,6 +33,7 @@ CenteringDialog {
 
     modal: true
     standardButtons: Dialog.Close
+    title: waypoint.extendedName
 
     Component {
         id: notamDelegate
@@ -102,22 +103,6 @@ CenteringDialog {
     ColumnLayout {
         anchors.fill: parent
 
-        RowLayout { // Header with icon and name
-            id: headX
-            Layout.fillWidth: true
-
-            Icon { source: notamListDialog.waypoint.icon }
-
-            Label {
-                text: qsTr("Notam for %1").arg(notamListDialog.waypoint.extendedName)
-                font.bold: true
-                font.pixelSize: 1.2*notamListDialog.font.pixelSize
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignVCenter
-                wrapMode: Text.WordWrap
-            }
-        }
-
         Label { // Second header line with distance and QUJ
             text: Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), waypoint.coordinate)
             visible: PositionProvider.receivingPositionInfo
@@ -157,6 +142,12 @@ CenteringDialog {
             clip: true
 
             delegate: notamDelegate
+
+            header: Label {
+                text: "NOTAM"
+                font.bold: true
+                font.pixelSize: 1.2*notamListDialog.font.pixelSize
+            }
 
             model: notamListDialog.notamList.notams
             ScrollIndicator.vertical: ScrollIndicator {}

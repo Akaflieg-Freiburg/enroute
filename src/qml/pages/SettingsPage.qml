@@ -31,7 +31,7 @@ Page {
     title: qsTr("Settings")
 
 
-    header: ToolBar {
+    header: PageHeader {
 
         height: 60 + SafeInsets.top
         leftPadding: SafeInsets.left

@@ -38,7 +38,7 @@ Page {
     property speed staticSpeed
     property volumeFlow staticVolumeFlow
 
-    header: ToolBar {
+    header: PageHeader {
 
         height: 60 + SafeInsets.top
         leftPadding: SafeInsets.left

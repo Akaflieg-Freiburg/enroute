@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2023 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,45 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtQuick
 import QtQuick.Controls
 
-import akaflieg_freiburg.enroute
+ToolBar {
 
-PageHeader {
-
-    height: 60 + SafeInsets.top
-    leftPadding: SafeInsets.left
-    rightPadding: SafeInsets.right
-    topPadding: SafeInsets.top
-
-    ToolButton {
-        id: backButton
-
-        anchors.left: parent.left
-        anchors.verticalCenter: parent.verticalCenter
-
-        icon.source: "/icons/material/ic_arrow_back.svg"
-
-        onClicked: {
-            PlatformAdaptor.vibrateBrief()
-            stackView.pop()
-        }
-    }
-
-    Label {
-        id: lbl
-
-        anchors.verticalCenter: parent.verticalCenter
-
-        anchors.left: parent.left
-        anchors.leftMargin: 72
-        anchors.right: parent.right
-
-        text: stackView.currentItem.title
-        elide: Label.ElideRight
-        font.pixelSize: 20
-        verticalAlignment: Qt.AlignVCenter
-    }
-
-} // ToolBar
+}

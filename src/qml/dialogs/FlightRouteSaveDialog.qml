@@ -70,7 +70,6 @@ CenteringDialog {
 
             Layout.fillWidth: true
             focus: true
-            placeholderText: qsTr("Flight Route Name")
 
             onDisplayTextChanged: dlg.standardButton(DialogButtonBox.Save).enabled = (displayText !== "")
 
@@ -118,7 +117,7 @@ CenteringDialog {
             saveToLibrary()
     }
 
-    Component.onCompleted: dlg.standardButton(DialogButtonBox.Save).enabled = (text !== "")
+    Component.onCompleted: dlg.standardButton(DialogButtonBox.Save).enabled = (fileName.text !== "")
 
     // This is the name of the file that openFromLibrary will open
     property string finalFileName;

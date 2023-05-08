@@ -39,6 +39,13 @@
 - [ ] Set proper title bar for "Waypoint", "Notam" and "Weather" dialogs, will be important with Material3
 - [ ] Route & Wind: Click 'clear' icon in Wind direction gives 360°, but should give invalid
 
+
+## Minor GUI improvements
+
+- [ ] Settings page: oberer freigehaltener Rand sollte im Scrollview sein, schaut besser aus
+- [ ] Decorated Scrollview/Decorated Listview: 'overscrolling' sollte nicht möglich sein, verwirrt Nutzer vielleicht
+
+
 ## New Features
 
 - [ ] Indicator that maps are being loaded

@@ -76,7 +76,7 @@ AppWindow {
                     font.weight: Font.Medium
 
                     background: Rectangle {
-                        color: "#009688"
+                        color: "teal"
                     }
                 }
 
@@ -84,7 +84,7 @@ AppWindow {
                     Layout.fillWidth: true
                     Layout.preferredHeight: 4
 
-                    color: "#009688"
+                    color: "teal"
                 }
 
                 Label { // Subtitle
@@ -99,7 +99,7 @@ AppWindow {
                     color: "white"
 
                     background: Rectangle {
-                        color: "#009688"
+                        color: "teal"
                     }
                 }
 
@@ -107,7 +107,7 @@ AppWindow {
                     Layout.preferredHeight: 18
                     Layout.fillWidth: true
 
-                    color: "#009688"
+                    color: "teal"
                 }
 
                 ItemDelegate { // Aircraft
@@ -184,7 +184,7 @@ AppWindow {
                     Layout.preferredHeight: 1
                     Layout.fillWidth: true
 
-                    color: "#009688"
+                    color: "teal"
                 }
 
                 ItemDelegate {
@@ -671,7 +671,7 @@ AppWindow {
 
         horizontalAlignment: Text.AlignHCenter
         background: Rectangle {
-            color: "#009688"
+            color: "teal"
             radius: 5
         }
 

@@ -86,7 +86,7 @@ QString NOTAM::NotamList::summary() const
 
     if (m_notams.empty())
     {
-        results += QObject::tr("No NOTAMs", "NOTAM::NotamList");
+        results += QObject::tr("No NOTAMs known", "NOTAM::NotamList");
     }
     else
     {

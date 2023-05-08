@@ -37,7 +37,7 @@
 - [ ] Color mismatch: "teal" vs Material.Teal
 - [ ] Settings page: Switch "Night Mode" on/off, get color mismatch in title bar
 - [ ] Set proper title bar for "Waypoint", "Notam" and "Weather" dialogs, will be important with Material3
-
+- [ ] Route & Wind: Click 'clear' icon in Wind direction gives 360°, but should give invalid
 
 ## New Features
 

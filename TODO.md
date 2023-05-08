@@ -36,7 +36,7 @@
 - [x] GUI: Save Aircraft dialog: dialog does not repond to virtual keyboard
 - [x] Color mismatch: "teal" vs Material.Teal
 - [x] Settings page: Switch "Night Mode" on/off, get color mismatch in title bar
-- [ ] Set proper title bar for "Waypoint", "Notam" and "Weather" dialogs, will be important with Material3
+- [x] Set proper title bar for "Waypoint", "Notam" and "Weather" dialogs, will be important with Material3
 - [ ] Route & Wind: Click 'clear' icon in Wind direction gives 360°, but should give invalid
 
 
@@ -54,3 +54,4 @@
 - [ ] Exit app on double 'back'
 - [ ] https://www.qt.io/blog/qt-for-android-storage-updates
 - [ ] https://www.qt.io/blog/deploying-to-linux-with-cmake
+

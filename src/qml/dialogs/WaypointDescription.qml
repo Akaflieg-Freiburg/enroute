@@ -65,6 +65,8 @@ CenteringDialog {
     standardButtons: Dialog.Close
     focus: true
 
+    title: waypoint.extendedName
+
     Component {
         id: metarInfo
 
@@ -369,24 +371,6 @@ CenteringDialog {
 
     ColumnLayout {
         anchors.fill: parent
-
-        RowLayout { // Header with icon and name
-            id: headX
-            Layout.fillWidth: true
-
-            Icon {
-                source: waypoint.icon
-            }
-
-            Label {
-                text: waypoint.extendedName
-                font.bold: true
-                font.pixelSize: 1.2*waypointDescriptionDialog.font.pixelSize
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignVCenter
-                wrapMode: Text.WordWrap
-            }
-        }
 
         Label { // Second header line with distance and QUJ
             text: Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), waypoint.coordinate)

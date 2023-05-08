@@ -44,6 +44,7 @@
 
 - [ ] Settings page: oberer freigehaltener Rand sollte im Scrollview sein, schaut besser aus
 - [ ] Decorated Scrollview/Decorated Listview: 'overscrolling' sollte nicht möglich sein, verwirrt Nutzer vielleicht
+- [ ] Lebensdauer GPS Fix für Desktop-Geräte auf sehr großen Wert erhöhen
 
 
 ## New Features

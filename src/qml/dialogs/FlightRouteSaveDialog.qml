@@ -70,7 +70,6 @@ CenteringDialog {
 
             Layout.fillWidth: true
             focus: true
-            placeholderText: qsTr("Flight Route Name")
 
             onDisplayTextChanged: dlg.standardButton(DialogButtonBox.Save).enabled = (displayText !== "")
 

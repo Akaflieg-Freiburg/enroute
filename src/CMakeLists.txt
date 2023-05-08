@@ -450,6 +450,8 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/MFM.qml
     qml/items/MyTextField.qml
     qml/items/NavBar.qml
+    qml/items/PageHeader.qml
+    qml/items/+Material/PageHeader.qml
     qml/items/RemainingRouteBar.qml
     qml/items/StandardHeader.qml
     qml/items/SwipeToDeleteDelegate.qml

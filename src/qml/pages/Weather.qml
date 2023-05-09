@@ -164,7 +164,7 @@ Page {
             Rectangle {  // No data label
                 anchors.fill: parent
                 color: "white"
-                visible: stationList.count == 0
+                visible: stationList.count === 0
 
                 Text {
                     anchors.fill: parent
@@ -189,24 +189,28 @@ Page {
                 color: "white"
                 visible: WeatherDataProvider.downloading && !WeatherDataProvider.backgroundUpdate
 
-                Text {
-                    id: downloadIndicatorLabel
+                ColumnLayout {
+                    anchors.fill: parent
 
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.top: parent.top
-                    anchors.topMargin: font.pixelSize*2
+                    Item { Layout.fillHeight: true }
 
-                    horizontalAlignment: Text.AlignHCenter
-                    textFormat: Text.StyledText
-                    wrapMode: Text.Wrap
-                    text: qsTr("<h3>Download in progress…</h3><p>Please stand by while we download METAR/TAF data from the Aviation Weather Center…</p>")
-                } // downloadIndicatorLabel
+                    Text {
+                        Layout.fillWidth: true
 
-                BusyIndicator {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.top: downloadIndicatorLabel.bottom
-                    anchors.topMargin: 10
+                        leftPadding: font.pixelSize
+                        rightPadding: font.pixelSize
+
+                        horizontalAlignment: Text.AlignHCenter
+                        textFormat: Text.StyledText
+                        wrapMode: Text.Wrap
+                        text: qsTr("<h3>Download in progress…</h3><p>Please stand by while we download METAR/TAF data from the Aviation Weather Center…</p>")
+                    }
+
+                    BusyIndicator {
+                        Layout.fillWidth: true
+                    }
+
+                    Item { Layout.fillHeight: true }
                 }
 
                 // The Connections and the SequentialAnimation here provide a fade-out animation for the downloadindicator.

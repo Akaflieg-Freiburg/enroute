@@ -185,7 +185,7 @@ auto main(int argc, char *argv[]) -> int
      * Set up ApplicationEngine for QML
      */
 
-#if defined(Q_OS_ANDROID) or defined(Q_OS_IOS)
+#if defined(Q_OS_ANDROID) or defined(Q_OS_IOS)or defined(Q_OS_LINUX)
     QQuickStyle::setStyle("Material");
 #endif
 

@@ -84,7 +84,6 @@ Page {
 
     DecoratedScrollView {
         anchors.fill: parent
-        anchors.topMargin: settingsPage.font.pixelSize
         anchors.bottomMargin: SafeInsets.bottom
         anchors.leftMargin: SafeInsets.left
         anchors.rightMargin: SafeInsets.right
@@ -99,7 +98,7 @@ Page {
 
             Item { // Spacer
                 Layout.columnSpan: 2
-                Layout.preferredHeight: 3
+                Layout.preferredHeight: 0.5*settingsPage.font.pixelSize
             }
 
             Label {

@@ -140,18 +140,22 @@ $(function() {
 <div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        <span class="keywordflow">return</span> m_positionInfo;</div>
 <div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    }</div>
 <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; </div>
-<div class="line"><a name="l00181"></a><span class="lineno"><a class="line" href="classPositioning_1_1PositionInfo.html#a39cdf5ebe3689e532be2e2ffeb40dbb2">  181</a></span>&#160;    <span class="keyword">static</span> constexpr <span class="keyword">auto</span> lifetime = 20s;</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160; </div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160; </div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    QGeoPositionInfo m_positionInfo {};</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <a class="code" href="classUnits_1_1Distance.html">Units::Distance</a> m_terrainAMSL {};</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <a class="code" href="classUnits_1_1Distance.html">Units::Distance</a> m_trueAltitudeAGL {};</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;};</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160; </div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;} <span class="comment">// namespace Positioning</span></div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160; </div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;Q_DECLARE_METATYPE(<a class="code" href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a>)</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;<span class="preprocessor">#if defined(Q_OS_ANDROID) or defined(Q_OS_IOS)</span></div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <span class="keyword">static</span> constexpr <span class="keyword">auto</span> lifetime = 20s;</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00184"></a><span class="lineno"><a class="line" href="classPositioning_1_1PositionInfo.html#a39cdf5ebe3689e532be2e2ffeb40dbb2">  184</a></span>&#160;    <span class="keyword">static</span> constexpr <span class="keyword">auto</span> lifetime = 20min;</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160; </div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160; </div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    QGeoPositionInfo m_positionInfo {};</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <a class="code" href="classUnits_1_1Distance.html">Units::Distance</a> m_terrainAMSL {};</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    <a class="code" href="classUnits_1_1Distance.html">Units::Distance</a> m_trueAltitudeAGL {};</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;};</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160; </div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;} <span class="comment">// namespace Positioning</span></div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160; </div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;Q_DECLARE_METATYPE(<a class="code" href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a>)</div>
 <div class="ttc" id="aclassPositioning_1_1PositionInfo_html"><div class="ttname"><a href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a></div><div class="ttdoc">Geographic position.</div><div class="ttdef"><b>Definition:</b> <a href="PositionInfo_8h_source.html#l00044">PositionInfo.h:45</a></div></div>
 <div class="ttc" id="aclassPositioning_1_1PositionInfo_html_a08a36f2c3b6a99c964887e1dc926e200"><div class="ttname"><a href="classPositioning_1_1PositionInfo.html#a08a36f2c3b6a99c964887e1dc926e200">Positioning::PositionInfo::positionErrorEstimate</a></div><div class="ttdeci">Q_INVOKABLE Units::Distance positionErrorEstimate() const</div><div class="ttdoc">Position error estimate.</div></div>
 <div class="ttc" id="aclassPositioning_1_1PositionInfo_html_a1263a7639f7fc1b37cf8a84f230cde29"><div class="ttname"><a href="classPositioning_1_1PositionInfo.html#a1263a7639f7fc1b37cf8a84f230cde29">Positioning::PositionInfo::trueTrack</a></div><div class="ttdeci">Q_INVOKABLE Units::Angle trueTrack() const</div><div class="ttdoc">True track.</div></div>

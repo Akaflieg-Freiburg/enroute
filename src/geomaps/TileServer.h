@@ -114,6 +114,8 @@ public slots:
    */
   void removeMbtilesFileSet(const QString& baseName);
   
+  void restart();
+
 private:
   Q_DISABLE_COPY_MOVE(TileServer)
 
@@ -125,6 +127,8 @@ private:
 
   // List of tile handlers
   QMap<QString, QSharedPointer<GeoMaps::TileHandler>> m_tileHandlers;
+  quint16 port;
+
 };
 
 } // namespace GeoMaps

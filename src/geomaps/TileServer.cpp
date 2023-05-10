@@ -20,6 +20,7 @@
 
 #include <QHttpServerRequest>
 #include <QHttpServerResponder>
+#include <QTcpServer>
 
 #include "TileServer.h"
 #include "geomaps/GeoMapProvider.h"
@@ -29,8 +30,20 @@ GeoMaps::TileServer::TileServer(QObject* parent)
     : QAbstractHttpServer(parent)
 {
     listen(QHostAddress(QStringLiteral("127.0.0.1")));
+
+    auto ports = serverPorts();
+    port = ports[0];
 }
 
+void GeoMaps::TileServer::restart()
+{
+    foreach (auto _server, servers())
+    {
+        delete _server;
+    }
+    listen(QHostAddress(QStringLiteral("127.0.0.1")), port);
+
+}
 
 void GeoMaps::TileServer::addMbtilesFileSet(const QString& baseName, const QVector<QPointer<GeoMaps::MBTILES>>& MBTilesFiles)
 {
@@ -56,7 +69,6 @@ auto GeoMaps::TileServer::serverUrl() -> QString
     return QStringLiteral("http://127.0.0.1:%1").arg(QString::number(ports[0]));
 }
 
-#include <QTcpServer>
 
 QString GeoMaps::TileServer::status()
 {

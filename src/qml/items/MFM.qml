@@ -598,6 +598,7 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
 
         onClicked: {
             PlatformAdaptor.vibrateBrief()
+            flightMap.clearData()
             toast.doToast(GeoMapProvider.status())
         }
     }

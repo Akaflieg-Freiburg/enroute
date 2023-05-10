@@ -56,6 +56,18 @@ auto GeoMaps::TileServer::serverUrl() -> QString
     return QStringLiteral("http://127.0.0.1:%1").arg(QString::number(ports[0]));
 }
 
+#include <QTcpServer>
+
+QString GeoMaps::TileServer::status()
+{
+    QStringList msgs;
+    foreach (auto _server, servers())
+    {
+        msgs << QString("port %1").arg(_server->serverPort());
+    }
+    return msgs.join(", ");
+}
+
 
 // Private Methods
 

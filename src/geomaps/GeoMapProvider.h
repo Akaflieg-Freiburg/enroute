@@ -86,6 +86,7 @@ public:
     /*! \brief Destructor */
     ~GeoMapProvider() override = default;
 
+    Q_INVOKABLE QString status() {return _tileServer.status(); }
 
     //
     // Properties

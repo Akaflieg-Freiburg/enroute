@@ -66,6 +66,7 @@ QString GeoMaps::TileServer::status()
         msgs << QString("port %1").arg(_server->serverPort());
         msgs << QString("errorString %1").arg(_server->errorString());
         msgs << QString("error %1").arg(_server->serverError());
+        msgs << QString("isListening %1").arg(_server->isListening());
     }
     return msgs.join(", ");
 }

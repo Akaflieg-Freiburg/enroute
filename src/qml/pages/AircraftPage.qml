@@ -178,6 +178,95 @@ Page {
                 font.bold: true
             }
 
+            WordWrappingItemDelegate {
+                id: ios_horizontalUOM
+                Layout.columnSpan: 3
+                Layout.fillWidth: true
+
+                text: {
+                    var unitString = qsTr("Nautical Miles")
+                    if (Navigator.aircraft.horizontalDistanceUnit === Aircraft.Kilometer) {
+                        unitString = qsTr("Kilometers")
+                    }
+                    if (Navigator.aircraft.horizontalDistanceUnit === Aircraft.StatuteMile) {
+                        unitString = qsTr("Statute Miles")
+                    }
+                    return qsTr("Horizontal Distances") +
+                            '<br><font color="#606060" size="2">' +
+                            qsTr("Currently using: %1").arg(unitString) +
+                            '</font>'
+
+                }
+                icon.source: "/icons/material/ic_arrow_forward.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    horizontalUOMDialog.open()
+                }
+                CenteringDialog {
+                    id: horizontalUOMDialog
+
+                    title: qsTr("Horizontal Distances")
+                    standardButtons: Dialog.Ok|Dialog.Cancel
+
+                    DecoratedScrollView{
+                        anchors.fill: parent
+                        contentWidth: availableWidth // Disable horizontal scrolling
+
+
+                        // Delays evaluation and prevents binding loops
+                        Binding on implicitHeight {
+                            value: cl.implicitHeight
+                            delayed: true    // Prevent intermediary values from being assigned
+                        }
+
+                        clip: true
+
+                        ColumnLayout {
+                            id: cl
+                            width: horizontalUOMDialog.availableWidth
+
+                            Label{
+                                Layout.fillWidth: true
+                                text: qsTr("Choose the preferred units of measurement for this aircraft. The units also apply to horizontal speed indications.")
+                                wrapMode: Text.Wrap
+                            }
+                            WordWrappingRadioDelegate {
+                                id: a
+                                Layout.fillWidth: true
+                                text: qsTr("Nautical Miles")
+                            }
+                            WordWrappingRadioDelegate {
+                                id: b
+                                Layout.fillWidth: true
+                                text: qsTr("Kilometers")
+                            }
+                            WordWrappingRadioDelegate {
+                                id: c
+                                Layout.fillWidth: true
+                                text: qsTr("Statute Miles")
+                            }
+                        }
+                    }
+
+                    onAboutToShow: {
+                        a.checked = Navigator.aircraft.horizontalDistanceUnit === Aircraft.NauticalMile
+                        b.checked = Navigator.aircraft.horizontalDistanceUnit === Aircraft.Kilometer
+                        c.checked = Navigator.aircraft.horizontalDistanceUnit === Aircraft.StatuteMile
+                    }
+
+                    onAccepted: {
+                        if (a.checked)
+                            Navigator.aircraft.horizontalDistanceUnit = Aircraft.NauticalMile
+                        if (b.checked)
+                            Navigator.aircraft.horizontalDistanceUnit = Aircraft.Kilometer
+                        if (c.checked)
+                            Navigator.aircraft.horizontalDistanceUnit = Aircraft.StatuteMile
+                    }
+
+                }
+            }
+
+
             Label {
                 text: qsTr("Horizontal")
                 Layout.alignment: Qt.AlignBaseline

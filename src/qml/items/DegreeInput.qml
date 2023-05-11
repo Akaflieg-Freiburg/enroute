@@ -123,6 +123,7 @@ StackLayout {
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
+            hasClearButton: false
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: IntValidator {
                 bottom: stackLayout.minValue
@@ -142,6 +143,7 @@ StackLayout {
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
+            hasClearButton: false
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: DoubleValidator {
                 bottom: 0.0
@@ -182,6 +184,7 @@ StackLayout {
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
+            hasClearButton: false
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: IntValidator {
                 bottom: stackLayout.minValue
@@ -200,6 +203,7 @@ StackLayout {
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
+            hasClearButton: false
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: IntValidator {
                 bottom: 0
@@ -218,6 +222,7 @@ StackLayout {
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
+            hasClearButton: false
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: DoubleValidator {
                 bottom: 0.0

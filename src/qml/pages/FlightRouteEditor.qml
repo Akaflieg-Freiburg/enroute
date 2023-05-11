@@ -508,8 +508,8 @@ Page {
                     }
                     inputMethodHints: Qt.ImhDigitsOnly
                     property angle myAngle; // Dummy. I do not know how to create an angle otherwise
-                    onEditingFinished: {
-                        Navigator.wind.directionFrom = myAngle.fromDEG(text)
+                    onEditingFinished: {                        
+                        Navigator.wind.directionFrom = text === "" ? myAngle.fromDEG(NaN) : myAngle.fromDEG(text)
                         windSpeed.focus = true
                     }
                     color: (acceptableInput ? colorGlean.color : "red")

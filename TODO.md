@@ -4,12 +4,14 @@
 
 - [X] Keyboard überdeckt UI (überall)
 - [ ] Manche map tiles sind manchmal leer
-- [ ] Beim Laden von Flugzeug aus Lib wird name nicht übernommen
+- [X] Beim Laden von Flugzeug aus Lib wird name nicht übernommen
 - [ ] Crash beim Start wenn App lange inaktiv war (Zugriff auf Speicher)
 - [X] Map zeigt manche Linien nicht an
 - [ ] Safe area funktioniert manchmal manchmal nicht (glaube wenn App im Hintergrund war)
 - [X] Höhe AMSL stimmt nicht
 - [ ] Xcode warnt vor Memory leaks (verschiedene Stellen)
+- [ ] TextField: clear button does not work
+- [ ] ComboBoxes do not work when activated while the virtual keyboard is visible
 
 
 ## Not yet implemented
@@ -30,21 +32,6 @@
 ## Bug Fixing
 
 - [ ] Fix problems with auto-generated screenshots for google play
-- [ ] Weather: Indicator for "Downloading Stations" does not work
-- [x] GUI: Aircraft library: layout goes to edge of screen
-- [x] GUI: Aircraft library: clear text button does not work
-- [x] GUI: Save Aircraft dialog: dialog does not repond to virtual keyboard
-- [x] Color mismatch: "teal" vs Material.Teal
-- [x] Settings page: Switch "Night Mode" on/off, get color mismatch in title bar
-- [x] Set proper title bar for "Waypoint", "Notam" and "Weather" dialogs, will be important with Material3
-- [ ] Route & Wind: Click 'clear' icon in Wind direction gives 360°, but should give invalid
-
-
-## Minor GUI improvements
-
-- [ ] Settings page: oberer freigehaltener Rand sollte im Scrollview sein, schaut besser aus
-- [ ] Decorated Scrollview/Decorated Listview: 'overscrolling' sollte nicht möglich sein, verwirrt Nutzer vielleicht
-- [ ] Lebensdauer GPS Fix für Desktop-Geräte auf sehr großen Wert erhöhen
 
 
 ## New Features

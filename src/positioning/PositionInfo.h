@@ -178,7 +178,11 @@ public:
      * Geographic position information is considered valid only for
      * this amount of time after it has been received.
      */
+#if defined(Q_OS_ANDROID) or defined(Q_OS_IOS)
     static constexpr auto lifetime = 20s;
+#else
+    static constexpr auto lifetime = 20min;
+#endif
 
 
 private:

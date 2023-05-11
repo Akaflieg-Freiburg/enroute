@@ -40,7 +40,11 @@ import akaflieg_freiburg.enroute
 TextField {
     id: textField
 
-    property bool hasClearButton: Qt.platform.os !== "ios"
+    property bool hasClearButton: {
+        if (Qt.platform.os === "ios")
+            return false
+        return width > 5*font.pixelSize
+    }
     rightPadding: hasClearButton ? toolButton.width : undefined
 
     // Fix problem on iOS

@@ -111,49 +111,15 @@ CenteringDialog {
                 Component.onCompleted: PlatformAdaptor.setupInputMethodEventFilter(wpNotesField)
             }
 
+
             Label {
                 Layout.alignment: Qt.AlignBaseline
                 Layout.columnSpan: 2
             }
 
-            Label {
-                Layout.alignment: Qt.AlignBaseline
-                text: qsTr("Latitude")
-            }
-
-            DegreeInput {
-                id: latInput
-
-                Layout.fillWidth: true
-                currentIndex: formatChoice.currentIndex
-                value: waypoint.coordinate.latitude
-                minValue: -90.0
-                maxValue: 90.0
-
-                onAcceptableInputChanged: enableOk()
-            }
-
-            Label {
-                Layout.alignment: Qt.AlignBaseline
-                text: qsTr("Longitude")
-            }
-
-            DegreeInput {
-                id: longInput
-
-                Layout.fillWidth: true
-
-                currentIndex: formatChoice.currentIndex
-                value: waypoint.coordinate.longitude
-                minValue: -180.0
-                maxValue: 180.0
-
-                onAcceptableInputChanged: enableOk()
-            }
-
 
             WordWrappingItemDelegate {
-                id: ios_verticalUOM
+                id: ios_degreeFormat
                 Layout.columnSpan: 2
                 Layout.fillWidth: true
                 visible: (Qt.platform.os === "ios")
@@ -232,6 +198,43 @@ CenteringDialog {
                 }
             }
 
+
+            Label {
+                Layout.alignment: Qt.AlignBaseline
+                text: qsTr("Latitude")
+            }
+
+            DegreeInput {
+                id: latInput
+
+                Layout.fillWidth: true
+                currentIndex: formatChoice.currentIndex
+                value: waypoint.coordinate.latitude
+                minValue: -90.0
+                maxValue: 90.0
+
+                onAcceptableInputChanged: enableOk()
+            }
+
+            Label {
+                Layout.alignment: Qt.AlignBaseline
+                text: qsTr("Longitude")
+            }
+
+            DegreeInput {
+                id: longInput
+
+                Layout.fillWidth: true
+
+                currentIndex: formatChoice.currentIndex
+                value: waypoint.coordinate.longitude
+                minValue: -180.0
+                maxValue: 180.0
+
+                onAcceptableInputChanged: enableOk()
+            }
+
+
             Label {
                 Layout.alignment: Qt.AlignBaseline
                 visible: (Qt.platform.os !== "ios")
@@ -254,18 +257,6 @@ CenteringDialog {
                 Layout.columnSpan: 2
             }
 
-            Label {
-                Layout.alignment: Qt.AlignBaseline
-                text: qsTr("Elevation")
-            }
-
-            ElevationInput {
-                id: eleField
-
-                Layout.fillWidth: true
-                currentIndex: eleFormatChoice.currentIndex
-                valueMeter: waypoint.coordinate.altitude
-            }
 
             WordWrappingItemDelegate {
                 id: ios_coordinateFormat
@@ -337,6 +328,20 @@ CenteringDialog {
                     }
 
                 }
+            }
+
+
+            Label {
+                Layout.alignment: Qt.AlignBaseline
+                text: qsTr("Elevation")
+            }
+
+            ElevationInput {
+                id: eleField
+
+                Layout.fillWidth: true
+                currentIndex: eleFormatChoice.currentIndex
+                valueMeter: waypoint.coordinate.altitude
             }
 
             Label {

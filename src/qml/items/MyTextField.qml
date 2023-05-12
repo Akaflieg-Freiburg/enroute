@@ -54,7 +54,7 @@ TextField {
         id: toolButton
 
         anchors.right: parent.right
-        anchors.top: parent.top
+        anchors.verticalCenter: parent.verticalCenter
 
         enabled: textField.hasClearButton && (textField.displayText !== "")
         visible: textField.hasClearButton

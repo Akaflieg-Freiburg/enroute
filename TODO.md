@@ -10,8 +10,8 @@
 - [ ] Safe area funktioniert manchmal manchmal nicht (glaube wenn App im Hintergrund war)
 - [X] Höhe AMSL stimmt nicht
 - [ ] Xcode warnt vor Memory leaks (verschiedene Stellen)
-- [?] TextField: clear button does not work
-- [ ] ComboBoxes do not work when activated while the virtual keyboard is visible
+- [?] TextField: clear button does not work / Kebekus: removed clear buttons iOS; needs to be checked
+- [?] ComboBoxes do not work when activated while the virtual keyboard is visible / Kebekus: removed ComboBoxes for iOS; needs to be checked
 
 
 ## Not yet implemented

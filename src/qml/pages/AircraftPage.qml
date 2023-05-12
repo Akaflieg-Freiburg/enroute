@@ -420,7 +420,6 @@ Page {
                 }
             }
 
-
             Label {
                 text: qsTr("Horizontal")
                 Layout.alignment: Qt.AlignBaseline

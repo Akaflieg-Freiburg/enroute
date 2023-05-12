@@ -10,15 +10,15 @@
 - [ ] Safe area funktioniert manchmal manchmal nicht (glaube wenn App im Hintergrund war)
 - [X] Höhe AMSL stimmt nicht
 - [ ] Xcode warnt vor Memory leaks (verschiedene Stellen)
-- [ ] TextField: clear button does not work
-- [ ] ComboBoxes do not work when activated while the virtual keyboard is visible
+- [?] TextField: clear button does not work / Kebekus: removed clear buttons iOS; needs to be checked
+- [?] ComboBoxes do not work when activated while the virtual keyboard is visible / Kebekus: removed ComboBoxes for iOS; needs to be checked
 
 
 ## Not yet implemented
 
-- [ ] Notifications (noch nicht fertig)
+- [ ] Notifications (-> need to implement ourselves, Kebekus will look at that)
 - [ ] Import und Export
-- [ ] Kennwörter (SSID) -> sieht schwierig aus unter iOS. Viele Changes in den letzen iOS-Versionen, von Apple nicht gern gesehen
+- [X] Kennwörter (SSID) -> sieht schwierig aus unter iOS. Viele Changes in den letzen iOS-Versionen, von Apple nicht gern gesehen. Will not implement.
 - [ ] Automatische Verbindung mit Verkehrsdatenempfänger
 
 
@@ -32,6 +32,7 @@
 ## Bug Fixing
 
 - [ ] Fix problems with auto-generated screenshots for google play
+- [X] Degree input item looks quite ugly, hard to read when "Deg/Min/Sec" is chosen
 
 
 ## New Features

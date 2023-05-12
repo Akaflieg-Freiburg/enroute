@@ -151,8 +151,91 @@ CenteringDialog {
                 onAcceptableInputChanged: enableOk()
             }
 
+
+            WordWrappingItemDelegate {
+                id: ios_verticalUOM
+                Layout.columnSpan: 2
+                Layout.fillWidth: true
+                visible: (Qt.platform.os === "ios")
+
+                text: {
+                    var unitString = qsTr("Degrees")
+                    if (formatChoice.currentIndex === 1)
+                        unitString = qsTr("Degrees and Minutes")
+                    if (formatChoice.currentIndex === 2)
+                        unitString = qsTr("Degrees, Minutes and Seconds")
+
+                    return qsTr("Coordinate Format") +
+                            '<br><font color="#606060" size="2">' +
+                            qsTr("Currently using: %1").arg(unitString) +
+                            '</font>'
+                }
+                icon.source: "/icons/material/ic_my_location.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    degreeFormatDialog.open()
+                }
+                CenteringDialog {
+                    id: degreeFormatDialog
+
+                    title: qsTr("Coordinate Format")
+                    standardButtons: Dialog.Ok|Dialog.Cancel
+
+                    DecoratedScrollView{
+                        anchors.fill: parent
+                        contentWidth: availableWidth // Disable horizontal scrolling
+
+                        // Delays evaluation and prevents binding loops
+                        Binding on implicitHeight {
+                            value: cl.implicitHeight
+                            delayed: true    // Prevent intermediary values from being assigned
+                        }
+
+                        clip: true
+
+                        ColumnLayout {
+                            id: cl
+                            width: degreeFormatDialog.availableWidth
+
+                            WordWrappingRadioDelegate {
+                                id: a
+                                Layout.fillWidth: true
+                                text: qsTr("Degrees")
+                            }
+                            WordWrappingRadioDelegate {
+                                id: b
+                                Layout.fillWidth: true
+                                text: qsTr("Degrees and Minutes")
+                            }
+                            WordWrappingRadioDelegate {
+                                id: c
+                                Layout.fillWidth: true
+                                text: qsTr("Degrees, Minutes and Seconds")
+                            }
+                        }
+                    }
+
+                    onAboutToShow: {
+                        a.checked = formatChoice.currentIndex === 0
+                        b.checked = formatChoice.currentIndex === 1
+                        c.checked = formatChoice.currentIndex === 2
+                    }
+
+                    onAccepted: {
+                        if (a.checked)
+                            formatChoice.currentIndex = 0
+                        if (b.checked)
+                            formatChoice.currentIndex = 1
+                        if (c.checked)
+                            formatChoice.currentIndex = 2
+                    }
+                }
+            }
+
             Label {
                 Layout.alignment: Qt.AlignBaseline
+                visible: (Qt.platform.os !== "ios")
+
                 text: qsTr("Format")
             }
 
@@ -161,6 +244,7 @@ CenteringDialog {
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 Layout.rightMargin: 3
+                visible: (Qt.platform.os !== "ios")
 
                 model: [ qsTr("Degrees"), qsTr("Degrees and Minutes"), qsTr("Degrees, Minutes and Seconds") ]
             }
@@ -183,8 +267,82 @@ CenteringDialog {
                 valueMeter: waypoint.coordinate.altitude
             }
 
+            WordWrappingItemDelegate {
+                id: ios_coordinateFormat
+                Layout.columnSpan: 2
+                Layout.fillWidth: true
+                visible: (Qt.platform.os === "ios")
+
+                text: {
+                    var unitString = qsTr("Feet")
+                    if (eleFormatChoice.currentIndex === 1) {
+                        unitString = qsTr("Meter")
+                    }
+                    return qsTr("Elevation Unit") +
+                            '<br><font color="#606060" size="2">' +
+                            qsTr("Currently using: %1").arg(unitString) +
+                            '</font>'
+                }
+                icon.source: "/icons/material/ic_arrow_upward.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    verticalUOMDialog.open()
+                }
+                CenteringDialog {
+                    id: verticalUOMDialog
+
+                    title: qsTr("Elevation Unit")
+                    standardButtons: Dialog.Ok|Dialog.Cancel
+
+                    DecoratedScrollView{
+                        anchors.fill: parent
+                        contentWidth: availableWidth // Disable horizontal scrolling
+
+
+                        // Delays evaluation and prevents binding loops
+                        Binding on implicitHeight {
+                            value: cl1.implicitHeight
+                            delayed: true    // Prevent intermediary values from being assigned
+                        }
+
+                        clip: true
+
+                        ColumnLayout {
+                            id: cl1
+                            width: verticalUOMDialog.availableWidth
+
+                            WordWrappingRadioDelegate {
+                                id: a1
+                                Layout.fillWidth: true
+                                text: qsTr("Feet")
+                            }
+                            WordWrappingRadioDelegate {
+                                id: b1
+                                Layout.fillWidth: true
+                                text: qsTr("Meter")
+                            }
+                        }
+                    }
+
+                    onAboutToShow: {
+                        a1.checked = eleFormatChoice.currentIndex === 0
+                        b1.checked = eleFormatChoice.currentIndex === 1
+                    }
+
+                    onAccepted: {
+                        if (a1.checked)
+                            eleFormatChoice.currentIndex = 0
+                        if (b1.checked)
+                            eleFormatChoice.currentIndex = 1
+                    }
+
+                }
+            }
+
             Label {
                 Layout.alignment: Qt.AlignBaseline
+                visible: (Qt.platform.os !== "ios")
+
                 text: qsTr("Unit")
             }
 
@@ -193,6 +351,7 @@ CenteringDialog {
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignBaseline
                 Layout.rightMargin: 3
+                visible: (Qt.platform.os !== "ios")
 
                 model: [ qsTr("Feet"), qsTr("Meter") ]
             }

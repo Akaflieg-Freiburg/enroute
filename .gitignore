@@ -2,14 +2,9 @@
 
 # build dirs
 build/
-build6/
-build6-android-debug/
 build-android-release/
 build-android-debug/
 build-linux-debug/
-build-qt5-android-release/
-buildscript-linux-debug6.sh
-qt6
 
 # secrets
 generatedSources/pc-api-8548806115718303828-770-6966308588f6.json

@@ -86,12 +86,16 @@ void ObjCAdapter::sendNotification(QString title, QString message){
               triggerWithTimeInterval:5 repeats:NO];
   UNNotificationRequest* request = [UNNotificationRequest requestWithIdentifier:[[NSUUID UUID] UUIDString]
               content:content trigger:trigger];
+  [content release];
 
   // Schedule the notification.
   UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
   [center addNotificationRequest:request withCompletionHandler:^(NSError *__nullable error) {
-    NSLog(@"Error: %@", error.localizedDescription);
+    //TODO: Handle error
+    //NSLog(@"Error: %@", error.localizedDescription);
   }];
+
+  [request dealloc];
 }
 
 
@@ -101,26 +105,27 @@ void ObjCAdapter::sendNotification(QString title, QString message){
 
 auto ObjCAdapter::shareContent(const QByteArray& contentByteArray, const QString& mimeType, const QString& fileNameTemplate, const QString& fileExtension) -> QString
 {
-    NSMutableArray *sharingItems = [NSMutableArray new];
 
     auto content = contentByteArray.toNSData();
 
     NSURL *tmpDirURL = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
     NSURL *fileURL = [[tmpDirURL URLByAppendingPathComponent:fileNameTemplate.toNSString()] URLByAppendingPathExtension:fileExtension.toNSString()];
 
-    [content writeToURL: fileURL atomically: YES];
+    if (fileURL && [content writeToURL: fileURL atomically: YES]) {
+      UIViewController *qtUIViewController = [[UIApplication sharedApplication].keyWindow rootViewController];
+      UIActivityViewController *activityController = [[UIActivityViewController alloc]
+        initWithActivityItems: @[fileURL]
+        applicationActivities: nil];
 
-
-    [sharingItems addObject: fileURL];
-    // get the main window rootViewController
-    UIViewController *qtUIViewController = [[UIApplication sharedApplication].keyWindow rootViewController];
-    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems: sharingItems applicationActivities:nil];
-
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
-    {
-        activityController.popoverPresentationController.sourceView = qtUIViewController.view;
-        activityController.popoverPresentationController.sourceRect = CGRectMake(0,0,0,0);
+      if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+          CGSize screenSize = [UIScreen mainScreen].bounds.size;
+          activityController.popoverPresentationController.sourceView = qtUIViewController.view;
+          activityController.popoverPresentationController.sourceRect = CGRectMake(screenSize.width - 30, 30,0,0);
+      }
+      [qtUIViewController presentViewController:activityController animated:YES completion:nil];
+      [activityController release];
+      return {};
     }
-    [qtUIViewController presentViewController:activityController animated:YES completion:nil];
-    return {};
+
+    return "Failed to write file";
 }

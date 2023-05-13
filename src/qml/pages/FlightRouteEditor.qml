@@ -32,6 +32,8 @@ Page {
     id: flightRoutePage
     title: qsTr("Route and Wind")
 
+    property bool isIos: Qt.platform.os == "ios"
+    property bool isAndroidOrIos: Qt.platform.os == "android" || isIos
     property angle staticAngle
     property speed staticSpeed
 
@@ -242,9 +244,9 @@ Page {
 
                 MenuItem {
                     text: qsTr("Import…")
-                    enabled: Qt.platform.os !== "android"
-                    visible: Qt.platform.os !== "android"
-                    height: Qt.platform.os !== "android" ? undefined : 0
+                    enabled: !isAndroidOrIos
+                    visible: !isAndroidOrIos
+                    height: !isAndroidOrIos ? undefined : 0
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
@@ -255,7 +257,7 @@ Page {
                 }
 
                 AutoSizingMenu {
-                    title: Qt.platform.os === "android" ? qsTr("Share…") : qsTr("Export…")
+                    title: isAndroidOrIos ? qsTr("Share…") : qsTr("Export…")
                     enabled: (Navigator.flightRoute.size > 0) && (sv.currentIndex === 0)
 
                     MenuItem {

@@ -94,8 +94,6 @@ void ObjCAdapter::sendNotification(QString title, QString message){
     //TODO: Handle error
     //NSLog(@"Error: %@", error.localizedDescription);
   }];
-
-  [request dealloc];
 }
 
 

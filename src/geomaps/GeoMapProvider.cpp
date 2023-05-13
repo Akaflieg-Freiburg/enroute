@@ -46,6 +46,9 @@ GeoMaps::GeoMapProvider::GeoMapProvider(QObject *parent)
     _combinedGeoJSON_ = geoJSONCacheFile.readAll();
     geoJSONCacheFile.close();
 
+#warning
+    connect(&_tileServer, &GeoMaps::TileServer::serverUrlChanged, this, [this]() { emit styleFileURLChanged();});
+
 }
 
 void GeoMaps::GeoMapProvider::deferredInitialization()

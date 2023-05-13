@@ -73,6 +73,8 @@ public:
   // Standard destructor
   ~TileServer() override = default;
   
+  Q_PROPERTY(QString serverUrl READ serverUrl NOTIFY serverUrlChanged)
+
   /*! \brief URL under which this server is presently reachable
    *
    *  The method returns the Url where the server is listening to incoming
@@ -83,8 +85,6 @@ public:
    *  @returns URL under which this server is presently reachable
    */
   [[nodiscard]] auto serverUrl() -> QString;
-
-  QString status();
 
 public slots:
   /*! \brief Add a new set of tile files
@@ -113,8 +113,14 @@ public slots:
    *  @param baseName Path of tiles to remove
    */
   void removeMbtilesFileSet(const QString& baseName);
-  
+
+#warning
   void restart();
+
+  signals:
+#warning
+  void serverUrlChanged();
+
 
 private:
   Q_DISABLE_COPY_MOVE(TileServer)

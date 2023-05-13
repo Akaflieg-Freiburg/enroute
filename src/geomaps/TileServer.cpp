@@ -37,12 +37,32 @@ GeoMaps::TileServer::TileServer(QObject* parent)
 
 void GeoMaps::TileServer::restart()
 {
+#warning
+    qWarning() << "GeoMaps::TileServer::restart()";
+    bool serverPortChanged = false;
     foreach (auto _server, servers())
     {
-        delete _server;
-    }
-    listen(QHostAddress(QStringLiteral("127.0.0.1")), port);
+        if (_server == nullptr)
+        {
+            continue;
+        }
+        auto port = _server->serverPort();
+        _server->close();
+        auto success = _server->listen(QHostAddress(QStringLiteral("127.0.0.1")), port);
+        if (!success)
+        {
+            _server->listen(QHostAddress(QStringLiteral("127.0.0.1")));
+            serverPortChanged = true;
+        }
 
+#warning DEBUG!
+        serverPortChanged = true;
+    }
+
+    if (serverPortChanged)
+    {
+        emit serverUrlChanged();
+    }
 }
 
 void GeoMaps::TileServer::addMbtilesFileSet(const QString& baseName, const QVector<QPointer<GeoMaps::MBTILES>>& MBTilesFiles)
@@ -67,20 +87,6 @@ auto GeoMaps::TileServer::serverUrl() -> QString
         return {};
     }
     return QStringLiteral("http://127.0.0.1:%1").arg(QString::number(ports[0]));
-}
-
-
-QString GeoMaps::TileServer::status()
-{
-    QStringList msgs;
-    foreach (auto _server, servers())
-    {
-        msgs << QString("port %1").arg(_server->serverPort());
-        msgs << QString("errorString %1").arg(_server->errorString());
-        msgs << QString("error %1").arg(_server->serverError());
-        msgs << QString("isListening %1").arg(_server->isListening());
-    }
-    return msgs.join(", ");
 }
 
 

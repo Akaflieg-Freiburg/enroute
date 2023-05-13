@@ -93,3 +93,31 @@ void ObjCAdapter::sendNotification(QString title, QString message){
     NSLog(@"Error: %@", error.localizedDescription);
   }];
 }
+
+
+
+
+
+
+auto ObjCAdapter::shareContent(const QByteArray& contentByteArray, const QString& mimeType, const QString& fileNameTemplate, const QString& fileExtension) -> QString
+{
+    NSMutableArray *sharingItems = [NSMutableArray new];
+
+    auto content = contentByteArray.toNSData();
+
+    NSURL *tmpDirURL = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+    NSURL *fileURL = [[tmpDirURL URLByAppendingPathComponent:fileNameTemplate.toNSString()] URLByAppendingPathExtension:fileExtension.toNSString()];
+
+    [content writeToURL: fileURL atomically: YES];
+
+
+    [sharingItems addObject: fileURL];
+    // get the main window rootViewController
+    UIViewController *qtUIViewController = [[UIApplication sharedApplication].keyWindow rootViewController];
+    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems: sharingItems applicationActivities:nil];
+    if ( [activityController respondsToSelector:@selector(popoverPresentationController)] ) { //TODO: Needed?????
+        activityController.popoverPresentationController.sourceView = qtUIViewController.view;
+    }
+    [qtUIViewController presentViewController:activityController animated:YES completion:nil];
+    return {};
+}

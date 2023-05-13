@@ -20,6 +20,11 @@
 
 #include "platform/FileExchange_iOS.h"
 
+#include "ios/ObjCAdapter.h"
+#include "qfileinfo.h"
+#include "qmimedatabase.h"
+
+#include <QDesktopServices>
 
 
 Platform::FileExchange::FileExchange(QObject *parent)
@@ -27,7 +32,8 @@ Platform::FileExchange::FileExchange(QObject *parent)
 {
     // Standard constructor. Recall that the constructor must not call virtual functions.
     // If you need virtual functions, use the methode deferredInitialization below.
-#warning Not implemented
+
+    QDesktopServices::setUrlHandler("file", this, "handleFileUrlReceived");
 }
 
 
@@ -55,7 +61,12 @@ void Platform::FileExchange::importContent()
 auto Platform::FileExchange::shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
 {
     // Share file content
-#warning not implemented
+
+    QMimeDatabase db;
+    QMimeType mime = db.mimeTypeForName(mimeType);
+    QString fileExtension = mime.preferredSuffix();
+
+    ObjCAdapter::shareContent(content, mimeType, fileNameTemplate, fileExtension);
     return {};
 }
 
@@ -65,4 +76,20 @@ auto Platform::FileExchange::viewContent(const QByteArray& content, const QStrin
     // View file content
 #warning not implemented
     return {};
+}
+
+void Platform::FileExchange::handleFileUrlReceived(const QUrl &url)
+{
+    QString myUrl = url.toString();
+
+    //Remove the "file://" Prefix
+    myUrl.remove(0, 7);
+    // … remove "file://" from Url
+    // … then check if File exists
+    QFileInfo fileInfo = QFileInfo(myUrl);
+    if(fileInfo.exists()) {
+        Platform::FileExchange_Abstract::processFileOpenRequest(myUrl);
+    } else {
+        //TODO: Error Handling
+    }
 }

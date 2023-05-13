@@ -133,8 +133,9 @@ private:
 
   // List of tile handlers
   QMap<QString, QSharedPointer<GeoMaps::TileHandler>> m_tileHandlers;
-  quint16 port;
 
+#warning
+  bool suspended = false;
 };
 
 } // namespace GeoMaps

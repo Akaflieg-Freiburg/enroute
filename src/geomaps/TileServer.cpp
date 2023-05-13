@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QGuiApplication>
 #include <QHttpServerRequest>
 #include <QHttpServerResponder>
 #include <QTcpServer>
@@ -30,9 +31,22 @@ GeoMaps::TileServer::TileServer(QObject* parent)
     : QAbstractHttpServer(parent)
 {
     listen(QHostAddress(QStringLiteral("127.0.0.1")));
-
-    auto ports = serverPorts();
-    port = ports[0];
+    connect(qGuiApp,
+            &QGuiApplication::applicationStateChanged,
+            this,
+            [this](Qt::ApplicationState state){
+                qWarning() << "Application state changed" << state;
+                if (state & Qt::ApplicationSuspended)
+                {
+                    suspended = true;
+                    return;
+                }
+                if (suspended && (state & Qt::ApplicationActive))
+                {
+                    restart();
+                }
+                suspended = false;
+            } );
 }
 
 void GeoMaps::TileServer::restart()

@@ -115,8 +115,11 @@ auto ObjCAdapter::shareContent(const QByteArray& contentByteArray, const QString
     // get the main window rootViewController
     UIViewController *qtUIViewController = [[UIApplication sharedApplication].keyWindow rootViewController];
     UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems: sharingItems applicationActivities:nil];
-    if ( [activityController respondsToSelector:@selector(popoverPresentationController)] ) { //TODO: Needed?????
+
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
+    {
         activityController.popoverPresentationController.sourceView = qtUIViewController.view;
+        activityController.popoverPresentationController.sourceRect = CGRectMake(0,0,0,0);
     }
     [qtUIViewController presentViewController:activityController animated:YES completion:nil];
     return {};

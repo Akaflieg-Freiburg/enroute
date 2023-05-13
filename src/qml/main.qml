@@ -520,12 +520,12 @@ AppWindow {
                     Layout.fillWidth: true
 
                     color: "black"
-                    visible: Navigator.flightStatus !== Navigator.Flight
+                    visible: Qt.platform.os !== "ios" && Navigator.flightStatus !== Navigator.Flight
                 }
 
                 ItemDelegate { // Exit
                     Layout.fillWidth: true
-
+                    visible: Qt.platform.os !== "ios"
                     leftPadding: 16+SafeInsets.left
 
                     text: qsTr("Exit")
@@ -538,6 +538,15 @@ AppWindow {
                             exitDialog.open()
                         else
                             Qt.quit()
+                    }
+                }
+
+                ItemDelegate { // Show Notification
+                    Layout.fillWidth: true
+                    leftPadding: 16+SafeInsets.left
+                    text: "Notification"
+                    onClicked: {
+                        Notifier.showNotification(Notifier.TrafficReceiverSelfTestError, "Test", "This is a Test");
                     }
                 }
 

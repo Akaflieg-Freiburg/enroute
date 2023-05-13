@@ -40,8 +40,14 @@ import akaflieg_freiburg.enroute
 TextField {
     id: textField
 
-    rightPadding: toolButton.width
+    property bool hasClearButton: {
+        if (Qt.platform.os === "ios")
+            return false
+        return width > 5*font.pixelSize
+    }
+    rightPadding: hasClearButton ? toolButton.width : undefined
 
+    // Fix problem on iOS
     Component.onCompleted: PlatformAdaptor.setupInputMethodEventFilter(textField)
 
     RoundButton {
@@ -50,13 +56,15 @@ TextField {
         anchors.right: parent.right
         anchors.top: parent.top
 
+        enabled: textField.hasClearButton && (textField.displayText !== "")
+        visible: textField.hasClearButton
+
         background: Item {}
 
         icon.source: "/icons/material/ic_clear.svg"
         icon.width: font.pixelSize
         icon.height: font.pixelSize
 
-        enabled: textField.displayText !== ""
         onClicked: {
             textField.clear()
             textField.onEditingFinished()

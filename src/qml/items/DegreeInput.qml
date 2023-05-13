@@ -43,14 +43,20 @@ StackLayout {
         var minutes = 60.0*(Math.abs(value) - Math.floor(Math.abs(value)))
         var seconds = 60.0*(minutes - Math.floor(minutes))
 
-        d_d.text = value.toLocaleString(Qt.locale(), 'f', 7)
+        d_d.text = value.toLocaleString(Qt.locale(), 'f', 5)
+        d_d.cursorPosition = 0
 
         dm_d.text = Math.trunc(value)
-        dm_m.text = minutes.toLocaleString(Qt.locale(), 'f', 5)
+        dm_d.cursorPosition = 0
+        dm_m.text = minutes.toLocaleString(Qt.locale(), 'f', 3)
+        dm_m.cursorPosition = 0
 
         dms_d.text = Math.trunc(value)
+        dms_d.cursorPosition = 0
         dms_m.text = Math.floor(minutes)
-        dms_s.text = seconds.toLocaleString(Qt.locale(), 'f', 3)
+        dms_m.cursorPosition = 0
+        dms_s.text = seconds.toLocaleString(Qt.locale(), 'f', 1)
+        dms_s.cursorPosition = 0
     }
 
     Component.onCompleted: setTexts()
@@ -117,6 +123,7 @@ StackLayout {
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
+            hasClearButton: false
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: IntValidator {
                 bottom: stackLayout.minValue
@@ -136,6 +143,7 @@ StackLayout {
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
+            hasClearButton: false
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: DoubleValidator {
                 bottom: 0.0
@@ -148,7 +156,7 @@ StackLayout {
                 dm.setValue()
             }
         }
-        Label { text: "'" }
+        Label { text: "min" }
 
     }
 
@@ -176,6 +184,7 @@ StackLayout {
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
+            hasClearButton: false
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: IntValidator {
                 bottom: stackLayout.minValue
@@ -194,6 +203,7 @@ StackLayout {
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
+            hasClearButton: false
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: IntValidator {
                 bottom: 0
@@ -205,13 +215,14 @@ StackLayout {
                 dms.setValue()
             }
         }
-        Label { text: "'" }
+        Label { text: "min" }
 
         MyTextField {
             id: dms_s
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
+            hasClearButton: false
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: DoubleValidator {
                 bottom: 0.0
@@ -224,6 +235,6 @@ StackLayout {
                 dms.setValue()
             }
         }
-        Label { text: "''" }
+        Label { text: "sec" }
     }
 }

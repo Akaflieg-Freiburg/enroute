@@ -514,8 +514,6 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
 
         topPadding: 0
         bottomPadding: 0
-//        Material.elevation: 2
-//        opacity: 0.8
         visible: GlobalSettings.airspaceAltitudeLimit.isFinite() && !DataManager.baseMapsRaster.hasFile
 
         Label {
@@ -684,8 +682,6 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         anchors.bottomMargin: 0.4*font.pixelSize
         topPadding: 0
         bottomPadding: 0
-//        Material.elevation: 2
-//        opacity: 0.8
 
         Label {
             id: noCopyrightInfo

@@ -56,6 +56,7 @@ set(SOURCES
     notam/Notam.h
     notam/NotamList.h
     notam/NotamProvider.h
+    notification/NotificationManager.h
     platform/FileExchange.h
     platform/FileExchange_Abstract.h
     platform/Notifier.h
@@ -129,6 +130,7 @@ set(SOURCES
     notam/Notam.cpp
     notam/NotamList.cpp
     notam/NotamProvider.cpp
+    notification/NotificationManager.cpp
     platform/FileExchange_Abstract.cpp
     platform/Notifier_Abstract.cpp
     platform/PlatformAdaptor_Abstract.cpp
@@ -401,6 +403,7 @@ target_include_directories(${PROJECT_NAME}
     geomaps
     navigation
     notam
+    notification
     platform
     positioning
     traffic

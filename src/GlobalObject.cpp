@@ -33,6 +33,7 @@
 #include "navigation/Clock.h"
 #include "navigation/Navigator.h"
 #include "notam/NotamProvider.h"
+#include "notification/NotificationManager.h"
 #include "platform/FileExchange.h"
 #include "platform/Notifier.h"
 #include "platform/PlatformAdaptor.h"
@@ -57,6 +58,7 @@ QPointer<Navigation::Navigator> g_navigator {};
 QPointer<NOTAM::NotamProvider> g_notamProvider {};
 QPointer<QNetworkAccessManager> g_networkAccessManager {};
 QPointer<Platform::Notifier> g_notifier {};
+QPointer<Notification::NotificationManager> g_notificationManager {};
 QPointer<Traffic::PasswordDB> g_passwordDB {};
 QPointer<Positioning::PositionProvider> g_positionProvider {};
 QPointer<GlobalSettings> g_globalSettings {};
@@ -94,6 +96,7 @@ void GlobalObject::clear()
 
     delete g_notamProvider;
     delete g_notifier;
+    delete g_notificationManager;
     delete g_geoMapProvider;
     delete g_flarmnetDB;
     delete g_dataManager;
@@ -192,6 +195,12 @@ auto GlobalObject::networkAccessManager() -> QNetworkAccessManager*
 auto GlobalObject::notamProvider() -> NOTAM::NotamProvider*
 {
     return allocateInternal<NOTAM::NotamProvider>(g_notamProvider);
+}
+
+
+auto GlobalObject::notificationManager() -> Notification::NotificationManager*
+{
+    return allocateInternal<Notification::NotificationManager>(g_notificationManager);
 }
 
 

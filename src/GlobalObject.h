@@ -50,6 +50,11 @@ namespace NOTAM
 class NotamProvider;
 } // namespace NOTAM
 
+namespace Notification
+{
+class NotificationManager;
+} // namespace Notification
+
 namespace Traffic
 {
 class FlarmnetDB;
@@ -210,6 +215,12 @@ public:
      * @returns Pointer to appplication-wide static instance.
      */
     Q_INVOKABLE static NOTAM::NotamProvider* notamProvider();
+
+    /*! \brief Pointer to appplication-wide static notification manager instance
+     *
+     * @returns Pointer to appplication-wide static instance.
+     */
+    Q_INVOKABLE static Notification::NotificationManager* notificationManager();
 
     /*! \brief Pointer to appplication-wide static notification manager instance
      *

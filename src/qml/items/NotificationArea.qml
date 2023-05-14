@@ -18,11 +18,42 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import Qt5Compat.GraphicalEffects
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Layouts
 
 
-Item {
+Rectangle {
+    border.color: "black"
+    color: "white"
 
+    implicitHeight: notifyCol.implicitHeight
+
+    ColumnLayout {
+        id: notifyCol
+
+        width: parent.width
+
+        Label {
+            Layout.fillWidth: true
+            text: "This is the notification title"
+        }
+        Label {
+            Layout.fillWidth: true
+            text: "Notification text body. Beautification will come later."
+        }
+
+        RowLayout {
+            Layout.fillWidth: true
+
+            ToolButton {
+                Layout.fillWidth: true
+                text: "Button 1"
+            }
+            ToolButton {
+                Layout.fillWidth: true
+                text: "Button 2"
+            }
+        }
+    }
 }

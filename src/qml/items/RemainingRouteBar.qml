@@ -54,42 +54,8 @@ Rectangle {
         anchors.topMargin: SafeInsets.top + 0.2*dummyControl.font.pixelSize
         anchors.rightMargin: dummyControl.font.pixelSize + SafeInsets.right
 
-
-        Rectangle {
+        NotificationArea {
             Layout.fillWidth: true
-            Layout.preferredHeight: notifyCol.implicitHeight
-
-            border.color: "black"
-            color: "white"
-            radius: dummyControl.font.pixelSize
-
-            ColumnLayout {
-                id: notifyCol
-
-                width: parent.width
-
-                Label {
-                    Layout.fillWidth: true
-                    text: "This is the notification title"
-                }
-                Label {
-                    Layout.fillWidth: true
-                    text: "Notification text body. Beautification will come later."
-                }
-
-                RowLayout {
-                    Layout.fillWidth: true
-
-                    ToolButton {
-                        Layout.fillWidth: true
-                        text: "Button 1"
-                    }
-                    ToolButton {
-                        Layout.fillWidth: true
-                        text: "Button 2"
-                    }
-                }
-            }
         }
 
 

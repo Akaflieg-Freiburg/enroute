@@ -34,7 +34,8 @@ GeoMaps::TileServer::TileServer(QObject* parent)
     connect(qGuiApp,
             &QGuiApplication::applicationStateChanged,
             this,
-            [this](Qt::ApplicationState state){
+            [this](Qt::ApplicationState state)
+            {
                 qWarning() << "Application state changed" << state;
                 if (state & Qt::ApplicationSuspended)
                 {
@@ -46,7 +47,7 @@ GeoMaps::TileServer::TileServer(QObject* parent)
                     restart();
                 }
                 suspended = false;
-            } );
+            });
 }
 
 void GeoMaps::TileServer::restart()

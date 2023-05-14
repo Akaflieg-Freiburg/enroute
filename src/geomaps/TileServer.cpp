@@ -31,6 +31,8 @@ GeoMaps::TileServer::TileServer(QObject* parent)
     : QAbstractHttpServer(parent)
 {
     listen(QHostAddress(QStringLiteral("127.0.0.1")));
+
+#if defined(Q_OS_IOS)
     connect(qGuiApp,
             &QGuiApplication::applicationStateChanged,
             this,
@@ -41,44 +43,15 @@ GeoMaps::TileServer::TileServer(QObject* parent)
                     suspended = true;
                     return;
                 }
-                qWarning() << suspended;
                 if (suspended && (state == Qt::ApplicationActive))
                 {
                     suspended = false;
                     restart();
                 }
             });
+#endif
 }
 
-void GeoMaps::TileServer::restart()
-{
-#warning
-    qWarning() << "GeoMaps::TileServer::restart()";
-    bool serverPortChanged = false;
-    foreach (auto _server, servers())
-    {
-        if (_server == nullptr)
-        {
-            continue;
-        }
-        auto port = _server->serverPort();
-        _server->close();
-        auto success = _server->listen(QHostAddress(QStringLiteral("127.0.0.1")), port);
-        if (!success)
-        {
-            _server->listen(QHostAddress(QStringLiteral("127.0.0.1")));
-            serverPortChanged = true;
-        }
-
-#warning DEBUG!
-        serverPortChanged = true;
-    }
-
-    if (serverPortChanged)
-    {
-        emit serverUrlChanged();
-    }
-}
 
 void GeoMaps::TileServer::addMbtilesFileSet(const QString& baseName, const QVector<QPointer<GeoMaps::MBTILES>>& MBTilesFiles)
 {
@@ -94,7 +67,7 @@ void GeoMaps::TileServer::removeMbtilesFileSet(const QString& baseName)
 }
 
 
-auto GeoMaps::TileServer::serverUrl() -> QString
+QString GeoMaps::TileServer::serverUrl()
 {
     auto ports = serverPorts();
     if (ports.isEmpty())
@@ -165,4 +138,30 @@ void GeoMaps::TileServer::missingHandler(const QHttpServerRequest& request, QTcp
 {
     auto responder = makeResponder(request, socket);
     responder.write(QHttpServerResponder::StatusCode::NotFound);
+}
+
+
+void GeoMaps::TileServer::restart()
+{
+    bool serverPortChanged = false;
+    foreach (auto _server, servers())
+    {
+        if (_server == nullptr)
+        {
+            continue;
+        }
+        auto port = _server->serverPort();
+        _server->close();
+        auto success = _server->listen(QHostAddress(QStringLiteral("127.0.0.1")), port);
+        if (!success)
+        {
+            _server->listen(QHostAddress(QStringLiteral("127.0.0.1")));
+            serverPortChanged = true;
+        }
+    }
+
+    if (serverPortChanged)
+    {
+        emit serverUrlChanged();
+    }
 }

@@ -587,23 +587,6 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
     }
 
     MapButton {
-        id: status
-
-        icon.source: "/icons/material/ic_bug_report.svg"
-
-
-        anchors.left: parent.left
-        anchors.bottom: followGPSButton.top
-        anchors.bottomMargin: trafficDataReceiverButton.visible ? 0.5*font.pixelSize : 1.5*font.pixelSize
-
-        onClicked: {
-            PlatformAdaptor.vibrateBrief()
-            flightMap.clearData()
-            GeoMapProvider.restartServer()
-        }
-    }
-
-    MapButton {
         id: trafficDataReceiverButton
 
         icon.source: "/icons/material/ic_airplanemode_active.svg"

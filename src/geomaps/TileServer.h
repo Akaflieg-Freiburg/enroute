@@ -57,85 +57,113 @@ namespace GeoMaps {
 
 class TileServer : public QAbstractHttpServer
 {
-  Q_OBJECT
-  
-public:
-  /*! \brief Create a new tile server
-   *
-   *  The tile server will find a free port and listen to 127.0.0.1:port.  The
-   *  method serverUrl() returns the precise Url where the server will be
-   *  available.
-   *
-   *  @param parent The standard QObject parent
-   */
-  explicit TileServer(QObject* parent = nullptr);
-  
-  // Standard destructor
-  ~TileServer() override = default;
-  
-  Q_PROPERTY(QString serverUrl READ serverUrl NOTIFY serverUrlChanged)
+    Q_OBJECT
 
-  /*! \brief URL under which this server is presently reachable
-   *
-   *  The method returns the Url where the server is listening to incoming
-   *  connections. This is typically string of the form "http://127.0.0.1:3470".
-   *  If the server is not listening to incoming connections, an empty string is
-   *  returned.
-   *
-   *  @returns URL under which this server is presently reachable
-   */
-  [[nodiscard]] auto serverUrl() -> QString;
+public:
+    /*! \brief Create a new tile server
+     *
+     *  The tile server will find a free port and listen to 127.0.0.1:port.  The
+     *  method serverUrl() returns the precise Url where the server will be
+     *  available.
+     *
+     *  @param parent The standard QObject parent
+     */
+    explicit TileServer(QObject* parent = nullptr);
+
+    // Standard destructor
+    ~TileServer() override = default;
+
+
+
+    //
+    // Properties
+    //
+
+    /*! \brief URL under which this server is presently reachable
+     *
+     *  The property holds returns the Url where the server is listening to incoming
+     *  connections. This is typically string of the form "http://127.0.0.1:3470".
+     *  If the server is not listening to incoming connections, the string is empty.
+     */
+    Q_PROPERTY(QString serverUrl READ serverUrl NOTIFY serverUrlChanged)
+
+
+
+    //
+    // Getter Methods
+    //
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property serverUrl
+     */
+    [[nodiscard]] QString serverUrl();
+
 
 public slots:
-  /*! \brief Add a new set of tile files
-   *
-   *  This method adds a new set of tile files, that will be available under
-   *  serverUrl()+"/baseName" (typically, this is a URL of the form
-   *  'http://localhost:8080/basename').
-   *
-   *  @param baseName The path under which the tiles will be available.
-   *
-   *  @param MBTilesFiles The name of one or more mbtile files on the disk,
-   *  which are expected to conform to the MBTiles Specification 1.3
-   *  (https://github.com/mapbox/mbtiles-spec/blob/master/1.3/spec.md). These
-   *  files must exist until the file set is removed or the sever is destructed,
-   *  or else replies to tile requests will yield undefined results. The tile
-   *  files are expected to agree in their metadata, and the metadata
-   *  (attribution, description, format, name, minzoom, maxzoom) is read only
-   *  from one of the files (a random one, in fact). If a tile is contained in
-   *  more than one of the files, the data is expected to be identical in each
-   *  of the files.
-   */
-  void addMbtilesFileSet(const QString& baseName, const QVector<QPointer<GeoMaps::MBTILES>>& MBTilesFiles);
+    /*! \brief Add a new set of tile files
+     *
+     *  This method adds a new set of tile files, that will be available under
+     *  serverUrl()+"/baseName" (typically, this is a URL of the form
+     *  'http://localhost:8080/basename').
+     *
+     *  @param baseName The path under which the tiles will be available.
+     *
+     *  @param MBTilesFiles The name of one or more mbtile files on the disk,
+     *  which are expected to conform to the MBTiles Specification 1.3
+     *  (https://github.com/mapbox/mbtiles-spec/blob/master/1.3/spec.md). These
+     *  files must exist until the file set is removed or the sever is destructed,
+     *  or else replies to tile requests will yield undefined results. The tile
+     *  files are expected to agree in their metadata, and the metadata
+     *  (attribution, description, format, name, minzoom, maxzoom) is read only
+     *  from one of the files (a random one, in fact). If a tile is contained in
+     *  more than one of the files, the data is expected to be identical in each
+     *  of the files.
+     */
+    void addMbtilesFileSet(const QString& baseName, const QVector<QPointer<GeoMaps::MBTILES>>& MBTilesFiles);
 
-  /*! \brief Removes a set of tile files
-   *
-   *  @param baseName Path of tiles to remove
-   */
-  void removeMbtilesFileSet(const QString& baseName);
+    /*! \brief Removes a set of tile files
+     *
+     *  @param baseName Path of tiles to remove
+     */
+    void removeMbtilesFileSet(const QString& baseName);
 
-#warning
-  void restart();
 
-  signals:
-#warning
-  void serverUrlChanged();
+signals:
+    /*! \brief Notification signal for the property with the same name */
+    void serverUrlChanged();
 
 
 private:
-  Q_DISABLE_COPY_MOVE(TileServer)
+    Q_DISABLE_COPY_MOVE(TileServer)
 
-  // Implemented pure virtual method from QAbstractHttpServer
-  bool handleRequest(const QHttpServerRequest& request, QTcpSocket* socket) override;
+    // Implemented pure virtual method from QAbstractHttpServer
+    bool handleRequest(const QHttpServerRequest& request, QTcpSocket* socket) override;
 
-  // Implemented pure virtual method from QAbstractHttpServer
-  void missingHandler(const QHttpServerRequest& request, QTcpSocket* socket) override;
+    // Implemented pure virtual method from QAbstractHttpServer
+    void missingHandler(const QHttpServerRequest& request, QTcpSocket* socket) override;
 
-  // List of tile handlers
-  QMap<QString, QSharedPointer<GeoMaps::TileHandler>> m_tileHandlers;
+    /*! \brief Restarts the server
+     *
+     *  This method restarts the server, by closing all TCP connections and then trying
+     *  to re-open connections at the same ports. If the ports are no longer available,
+     *  new ports are chosen and the property serverUrl changes.
+     *
+     *  This method is called on iOS once the application returns from sleep. That is necessary
+     *  because iOS silently closes all TCP connection when the app is in sleeping mode.
+     */
+    void restart();
 
-#warning
-  bool suspended = false;
+    // List of tile handlers
+    QMap<QString, QSharedPointer<GeoMaps::TileHandler>> m_tileHandlers;
+
+    // Internal variable. Indicates if the app has been suspended.
+    // This is used on changes of QGuiApplication::applicationState,
+    // to check if the application is currently awaking from sleep,
+    // so that the server needs to be restarted (if on iOS).
+#if defined(Q_OS_IOS)
+    bool suspended = false;
+#endif
 };
 
 } // namespace GeoMaps

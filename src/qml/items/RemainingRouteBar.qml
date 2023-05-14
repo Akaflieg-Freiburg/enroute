@@ -30,7 +30,7 @@ Rectangle {
     // Remaining route info shown in this item
     property var rri: Navigator.remainingRouteInfo
 
-    height: grid.implicitHeight + SafeInsets.top
+    height: col.implicitHeight + SafeInsets.top
     Behavior on height { NumberAnimation { duration: 100 } }
 
     clip: true
@@ -46,13 +46,58 @@ Rectangle {
         visible: false
     }
 
-    GridLayout {
-        id: grid
+    ColumnLayout {
+        id: col
 
         anchors.fill: parent
         anchors.leftMargin: dummyControl.font.pixelSize + SafeInsets.left
         anchors.topMargin: SafeInsets.top + 0.2*dummyControl.font.pixelSize
         anchors.rightMargin: dummyControl.font.pixelSize + SafeInsets.right
+
+
+        Rectangle {
+            Layout.fillWidth: true
+            Layout.preferredHeight: notifyCol.implicitHeight
+
+            border.color: "black"
+            color: "white"
+            radius: dummyControl.font.pixelSize
+
+            ColumnLayout {
+                id: notifyCol
+
+                width: parent.width
+
+                Label {
+                    Layout.fillWidth: true
+                    text: "This is the notification title"
+                }
+                Label {
+                    Layout.fillWidth: true
+                    text: "Notification text body. Beautification will come later."
+                }
+
+                RowLayout {
+                    Layout.fillWidth: true
+
+                    ToolButton {
+                        Layout.fillWidth: true
+                        text: "Button 1"
+                    }
+                    ToolButton {
+                        Layout.fillWidth: true
+                        text: "Button 2"
+                    }
+                }
+            }
+        }
+
+
+        GridLayout {
+        id: grid
+
+        Layout.fillWidth: true
+
         rowSpacing: 0
         columns: baseRect.tcVisible ? 5 : 4
 
@@ -221,6 +266,8 @@ Rectangle {
             Layout.fillWidth: true
             Layout.preferredHeight: 0.2*dummyControl.font.pixelSize
         }
+
+    }
 
     }
 

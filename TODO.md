@@ -3,7 +3,7 @@
 ## Known issues:
 
 - [X] Keyboard überdeckt UI (überall)
-- [ ] Manche map tiles sind manchmal leer
+- [X] Manche map tiles sind manchmal leer
 - [X] Beim Laden von Flugzeug aus Lib wird name nicht übernommen
 - [ ] Crash beim Start wenn App lange inaktiv war (Zugriff auf Speicher)
 - [X] Map zeigt manche Linien nicht an
@@ -32,7 +32,6 @@
 ## Bug Fixing
 
 - [ ] Fix problems with auto-generated screenshots for google play
-- [X] Degree input item looks quite ugly, hard to read when "Deg/Min/Sec" is chosen
 
 
 ## New Features

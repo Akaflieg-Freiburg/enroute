@@ -234,6 +234,7 @@ if(ANDROID)
         Qt6::HttpServer
         Qt6::Positioning
         Qt6::Quick
+        Qt6::QuickControls2
         Qt6::Sql
         Qt6::Svg
         Qt6::WebView)
@@ -279,6 +280,7 @@ if (UNIX AND NOT ANDROID AND NOT APPLE)
         Qt6::HttpServer
         Qt6::Positioning
         Qt6::Quick
+        Qt6::QuickControls2
         Qt6::Sql
         Qt6::Svg
         Qt6::Widgets
@@ -326,6 +328,7 @@ if (APPLE AND NOT IOS)
         Qt6::HttpServer
         Qt6::Positioning
         Qt6::Quick
+        Qt6::QuickControls2
         Qt6::Sql
         Qt6::Svg
         Qt6::Widgets
@@ -347,6 +350,10 @@ if (IOS)
         platform/PlatformAdaptor_iOS.cpp
         platform/SafeInsets_iOS.h
         platform/SafeInsets_iOS.cpp
+        ios/ObjCAdapter.mm
+        ios/ObjCAdapter.h
+        ios/ObjectiveC.h
+        ios/ObjectiveC.m
     )
 
     # Compile definitions
@@ -363,9 +370,14 @@ if (IOS)
         Qt6::HttpServer
         Qt6::Positioning
         Qt6::Quick
+        Qt6::QuickControls2
         Qt6::Sql
         Qt6::Svg
         Qt6::WebView
+    )
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+        "-framework UserNotifications"
+        #"-framework NotificationCenter"
     )
     set_target_properties(${PROJECT_NAME} PROPERTIES
         MACOSX_BUNDLE true
@@ -418,6 +430,8 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/dialogs/WaypointDescription.qml
     qml/dialogs/WaypointEditor.qml
     qml/dialogs/WeatherReport.qml
+    qml/items/AppWindow.qml
+    qml/items/+Material/AppWindow.qml
     qml/items/AutoSizingMenu.qml
     qml/items/DecoratedListView.qml
     qml/items/DecoratedScrollView.qml
@@ -425,11 +439,19 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/ElevationInput.qml
     qml/items/FlightMap.qml
     qml/items/FlightVector.qml
+    qml/items/Footer.qml
+    qml/items/+Material/Footer.qml
     qml/items/Icon.qml
+    qml/items/+Material/Icon.qml
     qml/items/ImportManager.qml
+    qml/items/MapButton.qml
+    qml/items/+Material/MapButton.qml
     qml/items/MapSet.qml
     qml/items/MFM.qml
+    qml/items/MyTextField.qml
     qml/items/NavBar.qml
+    qml/items/PageHeader.qml
+    qml/items/+Material/PageHeader.qml
     qml/items/RemainingRouteBar.qml
     qml/items/StandardHeader.qml
     qml/items/SwipeToDeleteDelegate.qml
@@ -437,6 +459,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/TrafficLabel.qml
     qml/items/WaypointDelegate.qml
     qml/items/WordWrappingCheckDelegate.qml
+    qml/items/WordWrappingRadioDelegate.qml
     qml/items/WordWrappingItemDelegate.qml
     qml/items/WordWrappingSwitchDelegate.qml
     qml/pages/SettingsPage.qml

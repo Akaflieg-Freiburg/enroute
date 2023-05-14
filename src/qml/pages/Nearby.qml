@@ -21,7 +21,6 @@
 import QtPositioning
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -49,7 +48,7 @@ Page {
         TabButton { text: "AD" }
         TabButton { text: "NAV" }
         TabButton { text: "REP" }
-        Material.elevation: 3
+//        Material.elevation: 3
     }
 
     SwipeView {
@@ -138,13 +137,7 @@ Page {
         }
     }
 
-    footer: Pane {
-        width: parent.width
-        bottomPadding: SafeInsets.bottom+16
-        leftPadding: SafeInsets.left+16
-        rightPadding: SafeInsets.right+16
-
-        Material.elevation: 3
+    footer: Footer {
         visible: (sunLabel.text !== "") || (qnhLabel.text !== "")
 
         GridLayout {

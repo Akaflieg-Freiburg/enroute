@@ -35,14 +35,12 @@ Rectangle {
 
     clip: true
 
-    visible: baseRect.rri.status !== RemainingRouteInfo.NoRoute
-
     // True course is only visible if display is wide enough
     property bool tcVisible: baseRect.width > 25*dummyControl.font.pixelSize
 
     color: "#AA000000"
 
-    // Dummy control, used to clean the font size
+    // Dummy control, used to glean the font size
     Control {
         id: dummyControl
         visible: false

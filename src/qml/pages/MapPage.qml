@@ -22,8 +22,6 @@ import QtPositioning
 import QtQuick
 import QtQuick.Controls
 
-import enroute 1.0
-
 import "../items"
 
 Page {

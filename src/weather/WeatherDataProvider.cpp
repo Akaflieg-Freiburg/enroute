@@ -581,7 +581,10 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate)
         connect(reply, &QNetworkReply::errorOccurred, this, &Weather::WeatherDataProvider::downloadFinished);
     }
 
-    // Emit "downloading" and handle the case if none of the requests have started (e.g. because
+    // Emit "downloading"
+    emit downloadingChanged();
+
+    // Handle the case if none of the requests have started (e.g. because
     // no internet is available at all)
     downloadFinished();
 }

@@ -20,7 +20,6 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 
@@ -51,7 +50,7 @@ StackLayout {
         Layout.fillWidth: true
         Layout.alignment: Qt.AlignBaseline
 
-        TextField {
+        MyTextField {
             id: ft_d
 
             Layout.fillWidth: true
@@ -61,7 +60,7 @@ StackLayout {
                 bottom: -3000
                 top: 24000
             }
-            color: (acceptableInput ? Material.foreground : "red")
+            color: (acceptableInput ? colorGlean.color : "red")
 
             onEditingFinished: {
                 if (ft_d.acceptableInput)
@@ -70,7 +69,10 @@ StackLayout {
                     valueMeter = NaN
             }
         }
-        Label { text: "ft" }
+        Label {
+            id: colorGlean
+            text: "ft"
+        }
     }
 
     RowLayout { // meter
@@ -78,7 +80,7 @@ StackLayout {
         Layout.fillWidth: true
         Layout.alignment: Qt.AlignBaseline
 
-        TextField {
+        MyTextField {
             id: m_d
 
             Layout.fillWidth: true
@@ -87,7 +89,7 @@ StackLayout {
                 bottom: -1000
                 top: 8000
             }
-            color: (acceptableInput ? Material.foreground : "red")
+            color: (acceptableInput ? colorGlean.color : "red")
 
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {

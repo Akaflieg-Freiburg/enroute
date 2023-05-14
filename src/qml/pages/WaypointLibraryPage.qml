@@ -21,11 +21,9 @@
 import QtPositioning
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
-import enroute 1.0
 
 import "../dialogs"
 import "../items"
@@ -36,9 +34,8 @@ Page {
     focus: true
 
 
-    header: ToolBar {
+    header: PageHeader {
 
-        Material.foreground: "white"
         height: 60 + SafeInsets.top
         leftPadding: SafeInsets.left
         rightPadding: SafeInsets.right
@@ -82,7 +79,7 @@ Page {
             icon.source: "/icons/material/ic_more_vert.svg"
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                headerMenuX.popup()
+                headerMenuX.open()
             }
 
             AutoSizingMenu {
@@ -213,70 +210,90 @@ Page {
         }
     }
 
-    TextField {
-        id: textInput
+    RowLayout {
+        id: filterRow
 
-        anchors.right: parent.right
-        anchors.rightMargin: font.pixelSize*2.0
         anchors.left: parent.left
-        anchors.leftMargin: font.pixelSize*2.0
+        anchors.leftMargin: SafeInsets.left+font.pixelSize
+        anchors.right: parent.right
+        anchors.rightMargin: SafeInsets.right+font.pixelSize
+        anchors.top: parent.top
+        anchors.topMargin: page.font.pixelSize
 
-        leftPadding: SafeInsets.left
-        rightPadding: SafeInsets.right
-        topPadding: page.font.pixelSize
+        Label {
+            Layout.alignment: Qt.AlignBaseline
 
-        placeholderText: qsTr("Waypoint Names")
-        font.pixelSize: page.font.pixelSize*1.5
+            text: qsTr("Filter")
+        }
+
+        MyTextField {
+            id: textInput
+
+            Layout.alignment: Qt.AlignBaseline
+            Layout.fillWidth: true
+        }
     }
 
-    Component {
-        id: waypointDelegate
+    Pane {
 
-        RowLayout {
-            width: wpList.width
-            height: iDel.height
+        anchors.top: filterRow.bottom
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
 
-            SwipeToDeleteDelegate {
-                id: iDel
-                Layout.fillWidth: true
+        bottomPadding: SafeInsets.bottom
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
+        topPadding: font.pixelSize
 
-                text: modelData.name
-                icon.source: modelData.icon
+        Component {
+            id: waypointDelegate
 
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
+            RowLayout {
+                width: wpList.width
+                height: iDel.height
+
+                SwipeToDeleteDelegate {
+                    id: iDel
+                    Layout.fillWidth: true
+
+                    text: modelData.name
+                    icon.source: modelData.icon
+
+                    onClicked: {
+                        PlatformAdaptor.vibrateBrief()
                     waypointDescription.waypoint = modelData
-                    waypointDescription.open()
+                        waypointDescription.open()
+                    }
+
+                    swipe.onCompleted: {
+                        PlatformAdaptor.vibrateBrief()
+                        removeDialog.waypoint = modelData
+                        removeDialog.open()
+                    }
+
                 }
 
-                swipe.onCompleted: {
+                ToolButton {
+                    id: editButton
+
+                    icon.source: "/icons/material/ic_mode_edit.svg"
+                    onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    removeDialog.waypoint = modelData
-                    removeDialog.open()
-                }
-
+                        wpEditor.waypoint = modelData
+                        wpEditor.open()
+                    }
             }
 
-            ToolButton {
-                id: editButton
+                ToolButton {
+                    id: cptMenuButton
 
-                icon.source: "/icons/material/ic_mode_edit.svg"
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    wpEditor.waypoint = modelData
-                    wpEditor.open()
-                }
-            }
+                    icon.source: "/icons/material/ic_more_horiz.svg"
 
-            ToolButton {
-                id: cptMenuButton
-
-                icon.source: "/icons/material/ic_more_horiz.svg"
-
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    cptMenu.popup()
-                }
+                    onClicked: {
+                        PlatformAdaptor.vibrateBrief()
+                        cptMenu.open()
+                    }
 
                 AutoSizingMenu {
                     id: cptMenu
@@ -292,18 +309,16 @@ Page {
                     } // removeAction
                 } // AutoSizingMenu
 
+                }
+
             }
 
         }
 
-    }
-
-    DecoratedListView {
+        DecoratedListView {
         id: wpList
-        anchors.top: textInput.bottom
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
+
+        anchors.fill: parent
 
         leftMargin: SafeInsets.left
         rightMargin: SafeInsets.right
@@ -320,10 +335,10 @@ Page {
         delegate: waypointDelegate
         ScrollIndicator.vertical: ScrollIndicator {}
     }
+    }
 
     Label {
-        anchors.fill: wpList
-        anchors.topMargin: font.pixelSize*2
+        anchors.fill: parent
 
         visible: (wpList.count === 0)
         horizontalAlignment: Text.AlignHCenter

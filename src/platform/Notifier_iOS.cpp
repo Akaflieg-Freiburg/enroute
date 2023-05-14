@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "platform/Notifier_iOS.h"
+#include "ios/ObjCAdapter.h"
 
 
 // This is a template file without actual implementation.
@@ -50,5 +51,5 @@ void Platform::Notifier::hideNotification(Platform::Notifier_Abstract::Notificat
 void Platform::Notifier::showNotification(NotificationTypes notificationType, const QString& text, const QString& longText)
 {
     // This method is supposed to show the notification "notificationType".
-#warning Not implemented
+    ObjCAdapter::sendNotification(text, longText);
 }

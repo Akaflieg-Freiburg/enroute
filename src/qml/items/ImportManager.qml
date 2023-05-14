@@ -152,7 +152,7 @@ Item {
                 textFormat: Text.StyledText
             }
 
-            TextField {
+            MyTextField {
                 id: mapNameRaster
 
                 Layout.fillWidth: true
@@ -213,7 +213,7 @@ Item {
                 textFormat: Text.StyledText
             }
 
-            TextField {
+            MyTextField {
                 id: mapNameVector
 
                 Layout.fillWidth: true

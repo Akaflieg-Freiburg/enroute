@@ -22,11 +22,9 @@ import QtPositioning
 import QtQml
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
-import enroute 1.0
 import "../dialogs"
 import "../items"
 
@@ -70,7 +68,7 @@ Page {
                 icon.source: "/icons/material/ic_more_horiz.svg"
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    wpMenu.popup()
+                    wpMenu.open()
                 }
 
                 Menu {
@@ -108,7 +106,7 @@ Page {
                     Rectangle {
                         height: 1
                         Layout.fillWidth: true
-                        color: Material.primary
+                        color: "black"
                     }
 
                     Action {
@@ -162,9 +160,8 @@ Page {
     }
 
 
-    header: ToolBar {
+    header: PageHeader {
 
-        Material.foreground: "white"
         height: 60 + SafeInsets.top
         leftPadding: SafeInsets.left
         rightPadding: SafeInsets.right
@@ -209,7 +206,7 @@ Page {
             icon.source: "/icons/material/ic_more_vert.svg"
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                headerMenuX.popup()
+                headerMenuX.open()
             }
 
             Menu {}
@@ -235,9 +232,9 @@ Page {
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
-                        dialogLoader.active = false
-                        dialogLoader.source = "dialogs/FlightRouteSaveDialog.qml"
-                        dialogLoader.active = true
+                        dlgLoader.active = false
+                        dlgLoader.source = "../dialogs/FlightRouteSaveDialog.qml"
+                        dlgLoader.active = true
                     }
                 }
 
@@ -392,8 +389,6 @@ Page {
         currentIndex: sv.currentIndex
         TabButton { text: qsTr("Route") }
         TabButton { text: qsTr("Wind") }
-
-        Material.elevation: 3
     }
 
     SwipeView{
@@ -483,22 +478,26 @@ Page {
                 anchors.right: parent.right
                 anchors.rightMargin: font.pixelSize
 
-                columns: 4
+                columns: 3
 
-                Label { Layout.fillHeight: true }
+                Label {
+                    Layout.fillHeight: true
+                    Layout.columnSpan: 3
+                }
                 Label {
                     text: qsTr("Wind")
-                    Layout.columnSpan: 4
+                    Layout.columnSpan: 3
                     font.pixelSize: windTab.font.pixelSize*1.2
                     font.bold: true
-                    color: Material.accent
                 }
 
                 Label {
+                    id: colorGlean
+
                     Layout.alignment: Qt.AlignBaseline
                     text: qsTr("Direction from")
                 }
-                TextField {
+                MyTextField {
                     id: windDirection
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignBaseline
@@ -509,11 +508,11 @@ Page {
                     }
                     inputMethodHints: Qt.ImhDigitsOnly
                     property angle myAngle; // Dummy. I do not know how to create an angle otherwise
-                    onEditingFinished: {
-                        Navigator.wind.directionFrom = myAngle.fromDEG(text)
+                    onEditingFinished: {                        
+                        Navigator.wind.directionFrom = text === "" ? myAngle.fromDEG(NaN) : myAngle.fromDEG(text)
                         windSpeed.focus = true
                     }
-                    color: (acceptableInput ? Material.foreground : "red")
+                    color: (acceptableInput ? colorGlean.color : "red")
                     KeyNavigation.tab: windSpeed
                     text: {
                         if (!Navigator.wind.directionFrom.isFinite()) {
@@ -526,21 +525,12 @@ Page {
                     text: "°"
                     Layout.alignment: Qt.AlignBaseline
                 }
-                ToolButton {
-                    icon.source: "/icons/material/ic_clear.svg"
-                    Layout.alignment: Qt.AlignVCenter
-                    enabled: windDirection.text !== ""
-                    onClicked: {
-                        Navigator.wind.directionFrom = flightRoutePage.staticAngle.nan()
-                        windDirection.clear()
-                    }
-                }
 
                 Label {
                     text: qsTr("Speed")
                     Layout.alignment: Qt.AlignBaseline
                 }
-                TextField {
+                MyTextField {
                     id: windSpeed
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignBaseline
@@ -585,7 +575,7 @@ Page {
                         }
                         focus = false
                     }
-                    color: (acceptableInput ? Material.foreground : "red")
+                    color: (acceptableInput ? colorGlean.color : "red")
                     text: {
                         if (!Navigator.wind.speed.isFinite()) {
                             return ""
@@ -616,15 +606,6 @@ Page {
                     }
                     Layout.alignment: Qt.AlignBaseline
                 }
-                ToolButton {
-                    icon.source: "/icons/material/ic_clear.svg"
-                    Layout.alignment: Qt.AlignVCenter
-                    enabled: windSpeed.text !== ""
-                    onClicked: {
-                        Navigator.wind.speed = flightRoutePage.staticSpeed.fromKN(-1)
-                        windSpeed.clear()
-                    }
-                }
 
             }
 
@@ -633,12 +614,7 @@ Page {
     }
 
 
-    footer: Pane {
-        width: parent.width
-        height: implicitHeight
-        Material.elevation: 3
-        bottomPadding: SafeInsets.bottom+font.pixelSize
-
+    footer: Footer {
         ColumnLayout {
             width: parent.width
 
@@ -665,8 +641,6 @@ Page {
 
             ToolButton {
                 id: addWPButton
-
-                Material.foreground: Material.accent
 
                 visible: (sv.currentIndex === 0)
                 Layout.alignment: Qt.AlignHCenter
@@ -718,15 +692,10 @@ Page {
         id: dlgLoader
         anchors.fill: parent
 
-        property string title
-        property string text
-        property var waypoint
-
         onLoaded: {
             item.modal = true
             item.open()
         }
-
     }
 
     CenteringDialog {

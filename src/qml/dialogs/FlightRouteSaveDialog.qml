@@ -20,7 +20,6 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -62,17 +61,15 @@ CenteringDialog {
             Layout.fillWidth: true
 
             text: qsTr("Enter a name or choose an existing name from the list below.")
-            color: Material.accent
             wrapMode: Text.Wrap
             textFormat: Text.StyledText
         }
 
-        TextField {
+        MyTextField {
             id: fileName
 
             Layout.fillWidth: true
             focus: true
-            placeholderText: qsTr("Flight Route Name")
 
             onDisplayTextChanged: dlg.standardButton(DialogButtonBox.Save).enabled = (displayText !== "")
 
@@ -120,7 +117,7 @@ CenteringDialog {
             saveToLibrary()
     }
 
-    Component.onCompleted: dlg.standardButton(DialogButtonBox.Save).enabled = (text !== "")
+    Component.onCompleted: dlg.standardButton(DialogButtonBox.Save).enabled = (fileName.text !== "")
 
     // This is the name of the file that openFromLibrary will open
     property string finalFileName;

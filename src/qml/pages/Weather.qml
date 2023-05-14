@@ -21,7 +21,6 @@
 import QtPositioning
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -33,9 +32,8 @@ Page {
     title: qsTr("Weather")
     focus: true
 
-    header: ToolBar {
+    header: PageHeader {
 
-        Material.foreground: "white"
         height: 60 + SafeInsets.top
         leftPadding: SafeInsets.left
         rightPadding: SafeInsets.right
@@ -78,14 +76,13 @@ Page {
             anchors.right: parent.right
 
             icon.source: "/icons/material/ic_more_vert.svg"
-            icon.color: "white"
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                headerMenuX.popup()
+                headerMenuX.open()
             }
 
-            AutoSizingMenu{
+            AutoSizingMenu {
                 id: headerMenuX
 
                 MenuItem {
@@ -126,7 +123,7 @@ Page {
                     text: {
                         var result = model.modelData.twoLineTitle
 
-                        var wayTo  = Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), model.modelData.coordinate)
+                        var wayTo = Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), model.modelData.coordinate)
                         if (wayTo !== "")
                             result = result + "<br>" + wayTo
 
@@ -167,7 +164,7 @@ Page {
             Rectangle {  // No data label
                 anchors.fill: parent
                 color: "white"
-                visible: stationList.count == 0
+                visible: stationList.count === 0
 
                 Text {
                     anchors.fill: parent
@@ -192,24 +189,28 @@ Page {
                 color: "white"
                 visible: WeatherDataProvider.downloading && !WeatherDataProvider.backgroundUpdate
 
-                Text {
-                    id: downloadIndicatorLabel
+                ColumnLayout {
+                    anchors.fill: parent
 
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.top: parent.top
-                    anchors.topMargin: font.pixelSize*2
+                    Item { Layout.fillHeight: true }
 
-                    horizontalAlignment: Text.AlignHCenter
-                    textFormat: Text.StyledText
-                    wrapMode: Text.Wrap
-                    text: qsTr("<h3>Download in progress…</h3><p>Please stand by while we download METAR/TAF data from the Aviation Weather Center…</p>")
-                } // downloadIndicatorLabel
+                    Text {
+                        Layout.fillWidth: true
 
-                BusyIndicator {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.top: downloadIndicatorLabel.bottom
-                    anchors.topMargin: 10
+                        leftPadding: font.pixelSize
+                        rightPadding: font.pixelSize
+
+                        horizontalAlignment: Text.AlignHCenter
+                        textFormat: Text.StyledText
+                        wrapMode: Text.Wrap
+                        text: qsTr("<h3>Download in progress…</h3><p>Please stand by while we download METAR/TAF data from the Aviation Weather Center…</p>")
+                    }
+
+                    BusyIndicator {
+                        Layout.fillWidth: true
+                    }
+
+                    Item { Layout.fillHeight: true }
                 }
 
                 // The Connections and the SequentialAnimation here provide a fade-out animation for the downloadindicator.
@@ -225,7 +226,7 @@ Page {
                             fadeOut.start()
                     }
                 }
-                SequentialAnimation{
+                SequentialAnimation {
                     id: fadeOut
                     NumberAnimation { target: downloadIndicator; property: "opacity"; to:1.0; duration: 400 }
                     NumberAnimation { target: downloadIndicator; property: "opacity"; to:0.0; duration: 400 }
@@ -275,13 +276,7 @@ Page {
 
         }
 
-    footer: Pane {
-        width: parent.width
-        bottomPadding: SafeInsets.bottom+16
-        leftPadding: SafeInsets.left+16
-        rightPadding: SafeInsets.right+16
-
-        Material.elevation: 3
+    footer: Footer {
         visible: (sunLabel.text !== "") || (qnhLabel.text !== "")
 
         GridLayout {
@@ -311,7 +306,6 @@ Page {
             }
 
         }
-
     }
 
     Loader {

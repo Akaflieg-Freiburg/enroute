@@ -20,7 +20,6 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 
 import akaflieg_freiburg.enroute
 import "../items"
@@ -47,10 +46,9 @@ CenteringDialog {
 
         Label {
             id: lbl
-            text: "<style>a:link { color: " + Material.accent + "; }</style>"+dialogMain.text
+            text: dialogMain.text
             width: dialogMain.availableWidth
             textFormat: Text.RichText
-            linkColor: Material.accent
             wrapMode: Text.Wrap
             onLinkActivated: (link) => Qt.openUrlExternally(link)
         }

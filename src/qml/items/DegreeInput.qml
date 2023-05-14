@@ -20,7 +20,6 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 
@@ -44,14 +43,20 @@ StackLayout {
         var minutes = 60.0*(Math.abs(value) - Math.floor(Math.abs(value)))
         var seconds = 60.0*(minutes - Math.floor(minutes))
 
-        d_d.text = value.toLocaleString(Qt.locale(), 'f', 7)
+        d_d.text = value.toLocaleString(Qt.locale(), 'f', 5)
+        d_d.cursorPosition = 0
 
         dm_d.text = Math.trunc(value)
-        dm_m.text = minutes.toLocaleString(Qt.locale(), 'f', 5)
+        dm_d.cursorPosition = 0
+        dm_m.text = minutes.toLocaleString(Qt.locale(), 'f', 3)
+        dm_m.cursorPosition = 0
 
         dms_d.text = Math.trunc(value)
+        dms_d.cursorPosition = 0
         dms_m.text = Math.floor(minutes)
-        dms_s.text = seconds.toLocaleString(Qt.locale(), 'f', 3)
+        dms_m.cursorPosition = 0
+        dms_s.text = seconds.toLocaleString(Qt.locale(), 'f', 1)
+        dms_s.cursorPosition = 0
     }
 
     Component.onCompleted: setTexts()
@@ -72,7 +77,7 @@ StackLayout {
             value = dVal
         }
 
-        TextField {
+        MyTextField {
             id: d_d
 
             Layout.fillWidth: true
@@ -83,13 +88,17 @@ StackLayout {
                 top: stackLayout.maxValue
                 notation: DoubleValidator.StandardNotation
             }
-            color: (acceptableInput ? Material.foreground : "red")
+            color: (acceptableInput ? colorGlean.color : "red")
 
             onEditingFinished: {
                 d.setValue()
             }
         }
-        Label { text: "°" }
+        Label {
+            id: colorGlean
+
+            text: "°"
+        }
     }
 
     RowLayout { // Degree and Minute
@@ -109,17 +118,18 @@ StackLayout {
                 value = dVal - mVal/60.0
         }
 
-        TextField {
+        MyTextField {
             id: dm_d
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
+            hasClearButton: false
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: IntValidator {
                 bottom: stackLayout.minValue
                 top: stackLayout.maxValue
             }
-            color: (acceptableInput ? Material.foreground : "red")
+            color: (acceptableInput ? colorGlean.color : "red")
 
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {
@@ -128,24 +138,25 @@ StackLayout {
         }
         Label { text: "°" }
 
-        TextField {
+        MyTextField {
             id: dm_m
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
+            hasClearButton: false
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: DoubleValidator {
                 bottom: 0.0
                 top: 59.9999999999999
                 notation: DoubleValidator.StandardNotation
             }
-            color: (acceptableInput ? Material.foreground : "red")
+            color: (acceptableInput ? colorGlean.color : "red")
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {
                 dm.setValue()
             }
         }
-        Label { text: "'" }
+        Label { text: "min" }
 
     }
 
@@ -168,17 +179,18 @@ StackLayout {
                 value = dVal - mVal/60.0 - sVal/3600.0
         }
 
-        TextField {
+        MyTextField {
             id: dms_d
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
+            hasClearButton: false
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: IntValidator {
                 bottom: stackLayout.minValue
                 top: stackLayout.maxValue
             }
-            color: (acceptableInput ? Material.foreground : "red")
+            color: (acceptableInput ? colorGlean.color : "red")
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {
                 dms.setValue()
@@ -186,41 +198,43 @@ StackLayout {
         }
         Label { text: "°" }
 
-        TextField {
+        MyTextField {
             id: dms_m
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
+            hasClearButton: false
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: IntValidator {
                 bottom: 0
                 top: 59
             }
-            color: (acceptableInput ? Material.foreground : "red")
+            color: (acceptableInput ? colorGlean.color : "red")
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {
                 dms.setValue()
             }
         }
-        Label { text: "'" }
+        Label { text: "min" }
 
-        TextField {
+        MyTextField {
             id: dms_s
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBaseline
+            hasClearButton: false
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             validator: DoubleValidator {
                 bottom: 0.0
                 top: 59.9999999999999
                 notation: DoubleValidator.StandardNotation
             }
-            color: (acceptableInput ? Material.foreground : "red")
+            color: (acceptableInput ? colorGlean.color : "red")
             readonly property double numValue: Number.fromLocaleString(Qt.locale(), text)
             onEditingFinished: {
                 dms.setValue()
             }
         }
-        Label { text: "''" }
+        Label { text: "sec" }
     }
 }

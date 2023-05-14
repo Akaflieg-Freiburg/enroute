@@ -5,22 +5,10 @@
     height="50mm"
     viewBox="0 0 50 50">
 
-  <circle
-      id="circle"
-      cx="25"
-      cy="25"
-      style="fill:#ffffff;stroke:none"
-      r="25" />
   <path
       id="triangle"
       d="M25 3 L15 15 L35 15 Z"
       style="fill:#1000b0;stroke:none"/>
-  <circle
-      id="circle"
-      cx="25"
-      cy="25"
-      style="fill:none;stroke:#000000"
-      r="22" />
   <path
       id="N"
       d="M17 42 L17 20 L33 40 L33 18"

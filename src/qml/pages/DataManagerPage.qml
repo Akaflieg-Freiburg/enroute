@@ -20,11 +20,9 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
-import enroute 1.0
 import "../dialogs"
 import "../items"
 
@@ -52,7 +50,6 @@ Page {
                 text: parent.section
                 font.pixelSize: parent.font.pixelSize*1.2
                 font.bold: true
-                color: Material.accent
             }
         }
     }
@@ -153,7 +150,7 @@ Page {
                     visible: element.model.modelData.hasFile & !element.model.modelData.downloading
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
-                        removeMenu.popup()
+                        removeMenu.open()
                     }
 
                     AutoSizingMenu {
@@ -221,9 +218,8 @@ Page {
 
     }
 
-    header: ToolBar {
+    header: PageHeader {
 
-        Material.foreground: "white"
         height: 60 + SafeInsets.top
         leftPadding: SafeInsets.left
         rightPadding: SafeInsets.right
@@ -270,7 +266,7 @@ Page {
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                headerMenuX.popup()
+                headerMenuX.open()
             }
 
         }
@@ -324,7 +320,6 @@ Page {
         TabButton {
             text: qsTr("Data")
         }
-        Material.elevation: 3
     }
 
 
@@ -496,10 +491,9 @@ Page {
     }
 
 
-    footer: Pane {
+    footer: Footer {
         width: parent.width
 
-        Material.elevation: 3
         visible: (!DataManager.mapList.downloading && !DataManager.mapList.hasFile) || ((!DataManager.items.downloading) && !DataManager.mapsAndData.updateSize.isNull())
         contentHeight: Math.max(downloadMapListActionButton.height, downloadUpdatesActionButton.height)
         bottomPadding: SafeInsets.bottom

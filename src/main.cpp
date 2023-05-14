@@ -26,6 +26,7 @@
 #include <QQmlContext>
 #include <QQmlProperty>
 #include <QQuickItem>
+#include <QQuickStyle>
 #include <QQuickWindow>
 #include <QSettings>
 #include <QTranslator>
@@ -183,6 +184,10 @@ auto main(int argc, char *argv[]) -> int
     /*
      * Set up ApplicationEngine for QML
      */
+
+#if defined(Q_OS_ANDROID) or defined(Q_OS_IOS)or defined(Q_OS_LINUX)
+    QQuickStyle::setStyle(u"Material"_qs);
+#endif
 
     auto* engine = new QQmlApplicationEngine();
     engine->rootContext()->setContextProperty(QStringLiteral("manual_location"), MANUAL_LOCATION );

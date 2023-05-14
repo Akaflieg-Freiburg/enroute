@@ -21,13 +21,10 @@
 import QtPositioning
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 import QtQuick.Shapes
 
 import akaflieg_freiburg.enroute
-import enroute 1.0
-
 import "../dialogs"
 import "../items"
 
@@ -67,6 +64,8 @@ CenteringDialog {
     modal: true
     standardButtons: Dialog.Close
     focus: true
+
+    title: waypoint.extendedName
 
     Component {
         id: metarInfo
@@ -119,7 +118,7 @@ CenteringDialog {
                 return NotamProvider.notams(waypoint)
             }
 
-            visible: text != ""
+            visible: text !== ""
             text: {
                 if (notamList.isValid && notamList.isEmpty)
                     return ""
@@ -337,6 +336,7 @@ CenteringDialog {
             }
 
             Label {
+                id: colorGlean
                 Layout.alignment: Qt.AlignHCenter|Qt.AlignBottom
                 text: {
                     switch(Navigator.aircraft.verticalDistanceUnit) {
@@ -350,7 +350,7 @@ CenteringDialog {
             }
             Rectangle {
                 Layout.alignment: Qt.AlignHCenter
-                color: Material.foreground
+                color:  colorGlean.color
                 Layout.preferredHeight: 1
                 Layout.preferredWidth: font.pixelSize*5
             }
@@ -371,24 +371,6 @@ CenteringDialog {
 
     ColumnLayout {
         anchors.fill: parent
-
-        RowLayout { // Header with icon and name
-            id: headX
-            Layout.fillWidth: true
-
-            Icon {
-                source: waypoint.icon
-            }
-
-            Label {
-                text: waypoint.extendedName
-                font.bold: true
-                font.pixelSize: 1.2*waypointDescriptionDialog.font.pixelSize
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignVCenter
-                wrapMode: Text.WordWrap
-            }
-        }
 
         Label { // Second header line with distance and QUJ
             text: Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), waypoint.coordinate)
@@ -457,7 +439,7 @@ CenteringDialog {
                 Rectangle {
                     height: 1
                     Layout.fillWidth: true
-                    color: Material.primary
+                    color: "black"
                 }
 
                 Action {
@@ -559,7 +541,7 @@ CenteringDialog {
                 Rectangle {
                     height: 1
                     Layout.fillWidth: true
-                    color: Material.primary
+                    color: "black"
                 }
 
                 Action {

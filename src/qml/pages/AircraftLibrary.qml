@@ -20,14 +20,12 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
-import enroute 1.0
-
 import "../dialogs"
 import "../items"
+
 
 Page {
     id: page
@@ -37,38 +35,59 @@ Page {
 
     header: StandardHeader {}
 
-    TextField {
-        id: textInput
+    RowLayout {
+        id: filterRow
 
-        anchors.right: parent.right
-        anchors.rightMargin: font.pixelSize*2.0
         anchors.left: parent.left
-        anchors.leftMargin: font.pixelSize*2.0
-        leftPadding: SafeInsets.left
-        rightPadding: SafeInsets.right
-        topPadding: page.font.pixelSize
+        anchors.leftMargin: SafeInsets.left+font.pixelSize
+        anchors.right: parent.right
+        anchors.rightMargin: SafeInsets.right+font.pixelSize
+        anchors.top: parent.top
+        anchors.topMargin: page.font.pixelSize
 
-        placeholderText: qsTr("Aircraft Name")
-        font.pixelSize: page.font.pixelSize*1.5
+        Label {
+            Layout.alignment: Qt.AlignBaseline
+
+            text: qsTr("Filter")
+        }
+
+        MyTextField {
+            id: textInput
+
+            Layout.alignment: Qt.AlignBaseline
+            Layout.fillWidth: true
+        }
     }
 
-    Component {
-        id: entryDelegate
+    Pane {
 
-        RowLayout {
-            anchors.left: parent.left
-            anchors.right: parent.right
-            Layout.fillWidth: true
-            height: iDel.height
+        anchors.top: filterRow.bottom
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
 
-            SwipeToDeleteDelegate {
-                id: iDel
+        bottomPadding: SafeInsets.bottom
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
+        topPadding: font.pixelSize
+
+        Component {
+            id: entryDelegate
+
+            RowLayout {
+                anchors.left: parent.left
+                anchors.right: parent.right
                 Layout.fillWidth: true
+                height: iDel.height
 
-                text: modelData
-                icon.source: "/icons/material/ic_airplanemode_active.svg"
+                SwipeToDeleteDelegate {
+                    id: iDel
+                    Layout.fillWidth: true
 
-                onClicked: {
+                    text: modelData
+                    icon.source: "/icons/material/ic_airplanemode_active.svg"
+
+                    onClicked: {
                     PlatformAdaptor.vibrateBrief()
                     finalFileName = modelData
                     if (Navigator.flightRoute.size > 0)
@@ -77,22 +96,21 @@ Page {
                         openFromLibrary()
                 }
 
-                swipe.onCompleted: {
+                    swipe.onCompleted: {
                     PlatformAdaptor.vibrateBrief()
                     finalFileName = modelData
                     removeDialog.open()
                 }
+                }
 
-            }
-
-            ToolButton {
+                ToolButton {
                 id: cptMenuButton
 
                 icon.source: "/icons/material/ic_more_horiz.svg"
 
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    cptMenu.popup()
+                    cptMenu.open()
                 }
 
                 AutoSizingMenu {
@@ -121,47 +139,39 @@ Page {
                     } // removeAction
                 } // AutoSizingMenu
 
-            } // ToolButton
+            }
+            }
+        }
 
+        DecoratedListView {
+            id: wpList
+
+            anchors.fill: parent
+
+            clip: true
+
+            model: Librarian.entries(Librarian.Aircraft, textInput.displayText)
+            delegate: entryDelegate
+            ScrollIndicator.vertical: ScrollIndicator {}
+        }
+
+        Label {
+            anchors.fill: parent
+
+            visible: (wpList.count === 0)
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            leftPadding: font.pixelSize*2
+            rightPadding: font.pixelSize*2
+
+            textFormat: Text.StyledText
+            wrapMode: Text.Wrap
+            text: (textInput.text === "")
+                  ? qsTr("<h3>Sorry!</h3><p>No aircraft available. To add a route here, chose 'Aircraft' from the main menu, and save the current aircraft to the library.</p>")
+                  : qsTr("<h3>Sorry!</h3><p>No aircraft match your filter criteria.</p>")
         }
 
     }
-
-    DecoratedListView {
-        id: wpList
-        anchors.top: textInput.bottom
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-
-        leftMargin: SafeInsets.left
-        rightMargin: SafeInsets.right
-        bottomMargin: SafeInsets.bottom
-
-        clip: true
-
-        model: Librarian.entries(Librarian.Aircraft, textInput.displayText)
-        delegate: entryDelegate
-        ScrollIndicator.vertical: ScrollIndicator {}
-    }
-
-    Label {
-        anchors.fill: wpList
-        anchors.topMargin: font.pixelSize*2
-
-        visible: (wpList.count === 0)
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-        leftPadding: font.pixelSize*2
-        rightPadding: font.pixelSize*2
-
-        textFormat: Text.StyledText
-        wrapMode: Text.Wrap
-        text: (textInput.text === "")
-              ? qsTr("<h3>Sorry!</h3><p>No aircraft available. To add a route here, chose 'Aircraft' from the main menu, and save the current aircraft to the library.</p>")
-              : qsTr("<h3>Sorry!</h3><p>No aircraft match your filter criteria.</p>")
-    }
-
 
     // This is the name of the file that openFromLibrary will open
     property string finalFileName;
@@ -204,7 +214,6 @@ Page {
                 id: lbl
                 width: fileError.availableWidth
                 textFormat: Text.StyledText
-                linkColor: Material.accent
                 wrapMode: Text.Wrap
                 onLinkActivated: Qt.openUrlExternally(link)
             }
@@ -266,19 +275,16 @@ Page {
                 Layout.preferredWidth: overwriteDialog.availableWidth
 
                 text: qsTr("Enter new name for the aircraft <strong>%1</strong>.").arg(finalFileName)
-                color: Material.primary
                 Layout.fillWidth: true
                 wrapMode: Text.Wrap
                 textFormat: Text.StyledText
             }
 
-            TextField {
+            MyTextField {
                 id: renameName
 
                 Layout.fillWidth: true
                 focus: true
-
-                placeholderText: qsTr("New Aircraft Name")
 
                 onAccepted: renameDialog.onAccepted()
             }

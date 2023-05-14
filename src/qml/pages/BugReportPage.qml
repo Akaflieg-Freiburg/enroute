@@ -21,7 +21,6 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import QtQuick.Controls.Material
 
 import akaflieg_freiburg.enroute
 import "../items"
@@ -43,15 +42,10 @@ Page {
         initialItem: mainPage
     }
 
-    footer: Pane {
-        width: parent.width
-        Material.elevation: 3
+    footer: Footer {
         visible: stack.depth > 1
-        bottomPadding: SafeInsets.bottom
 
         ToolButton {
-            Material.foreground: Material.accent
-
             text: qsTr("Go back in bug report")
             icon.source: "/icons/material/ic_arrow_back.svg"
             onClicked:  {
@@ -101,7 +95,6 @@ every report that we get, and we would also like to hear
 your suggestions for improvement.</p>
 ")
                     textFormat: Text.StyledText
-                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                 }
                 Label {
@@ -113,7 +106,6 @@ your suggestions for improvement.</p>
 application.</p>
 ")
                     textFormat: Text.StyledText
-                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                 }
                 Button {
@@ -135,7 +127,6 @@ application.</p>
 …), then please use the buttons below.</p>
 ")
                     textFormat: Text.StyledText
-                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                 }
                 Button {
@@ -176,7 +167,6 @@ patterns, missing navaids,…), then please use the buttons
 below.</p>
 ")
                     textFormat: Text.StyledText
-                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                 }
                 Button {
@@ -221,7 +211,6 @@ below.</p>
 <h4>Thank you for your help!</h4>
 ")
                     textFormat: Text.StyledText
-                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                 }
             }
@@ -281,7 +270,6 @@ your desktop computer, you can also send yourself a link to
 GitHub by e-mail.</p>
 ")
                     textFormat: Text.StyledText
-                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
@@ -323,7 +311,6 @@ comes first!</p>
 <h3>Thank you for your help!</h3>
 ")
                     textFormat: Text.StyledText
-                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
@@ -380,7 +367,6 @@ suggestion is approved, the correction will appear in
 week.</p>
 ")
                     textFormat: Text.StyledText
-                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
@@ -416,7 +402,6 @@ time. Peter speaks English and German.</p>
 <h3>Thank you for your help!</h3>
 ")
                     textFormat: Text.StyledText
-                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
@@ -478,7 +463,6 @@ discuss your issue in the forum there.</p>
 <h3>Thank you for your help!</h3>
 ")
                     textFormat: Text.StyledText
-                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
@@ -551,7 +535,6 @@ following countries?</p>
 <li>Switzerland</li>
 </ul>")
                     textFormat: Text.StyledText
-                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
@@ -577,7 +560,6 @@ following countries?</p>
                     Layout.fillWidth: true
                     text: qsTr("<h3>Thank you for your help!</h3>")
                     textFormat: Text.StyledText
-                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                 }
             }
@@ -630,7 +612,6 @@ report your issue. If you prefer to work on your desktop
 computer, you can also send yourself a link by e-mail.</p>
 ")
                     textFormat: Text.StyledText
-                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
@@ -656,7 +637,6 @@ computer, you can also send yourself a link by e-mail.</p>
                     Layout.fillWidth: true
                     text: qsTr("<h3>Thank you for your help!</h3>")
                     textFormat: Text.StyledText
-                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
@@ -712,7 +692,6 @@ type of information that we could use in our app.</p>
 no better news.</p>
 ")
                     textFormat: Text.StyledText
-                    linkColor: Material.accent
                     wrapMode: Text.Wrap
                 }
 

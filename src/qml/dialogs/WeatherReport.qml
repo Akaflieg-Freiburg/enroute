@@ -20,13 +20,11 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
-import enroute 1.0
-
 import "../items"
+import enroute 1.0
 
 /* This is a dialog with detailed information about a weather station. To use this dialog, all you have to do is to set a WeatherStation in the property "weatherStation" and call open(). */
 
@@ -39,25 +37,10 @@ CenteringDialog {
 
     modal: true
     standardButtons: Dialog.Close
+    title: weatherStation ? weatherStation.extendedName : ""
 
     ColumnLayout {
         anchors.fill: parent
-
-        RowLayout { // Header with icon and name
-            id: headX
-            Layout.fillWidth: true
-
-            Icon { source: weatherStation ? weatherStation.icon : "/icons/waypoints/WP.svg" }
-
-            Label {
-                text: weatherStation ? weatherStation.extendedName : ""
-                font.bold: true
-                font.pixelSize: 1.2*weatherReportDialog.font.pixelSize
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignVCenter
-                wrapMode: Text.WordWrap
-            }
-        }
 
         Label { // Second header line with distance and QUJ
             text: (weatherStation != null) ? Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), weatherStation.coordinate) : ""
@@ -147,7 +130,6 @@ CenteringDialog {
 
                     background: Rectangle {
                         border.color: "black"
-                        color: Material.foreground
                         opacity: 0.2
                         radius: 4
                     }

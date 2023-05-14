@@ -20,7 +20,6 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -47,7 +46,6 @@ Page {
         Label {
                 id: lbl1
                 textFormat: Text.StyledText
-                linkColor: Material.accent
                 text: qsTr("
 <h3>Participate in the development</h3>
 

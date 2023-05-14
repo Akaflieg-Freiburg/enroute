@@ -20,7 +20,6 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -62,7 +61,6 @@ Message: Enroute Flight Navigation
                 Layout.fillWidth: true
 
                 textFormat: Text.MarkdownText
-                linkColor: Material.accent
                 text: qsTr("
 **Enroute Flight Navigation** is a
 non-commercial project of Akaflieg Freiburg and the

@@ -20,14 +20,9 @@
 
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
-
-// The following two lines are necessary to run the app on Android.
-// Without these lines, the app will not find "LongTextDialog" and
-// "WordWrappingItemDelegate".
 import "../dialogs"
 import "../items"
 
@@ -36,9 +31,8 @@ Page {
     title: qsTr("Settings")
 
 
-    header: ToolBar {
+    header: PageHeader {
 
-        Material.foreground: "white"
         height: 60 + SafeInsets.top
         leftPadding: SafeInsets.left
         rightPadding: SafeInsets.right
@@ -90,7 +84,6 @@ Page {
 
     DecoratedScrollView {
         anchors.fill: parent
-        anchors.topMargin: settingsPage.font.pixelSize
         anchors.bottomMargin: SafeInsets.bottom
         anchors.leftMargin: SafeInsets.left
         anchors.rightMargin: SafeInsets.right
@@ -105,7 +98,7 @@ Page {
 
             Item { // Spacer
                 Layout.columnSpan: 2
-                Layout.preferredHeight: 3
+                Layout.preferredHeight: 0.5*settingsPage.font.pixelSize
             }
 
             Label {
@@ -115,7 +108,6 @@ Page {
                 text: qsTr("Moving Map")
                 font.pixelSize: settingsPage.font.pixelSize*1.2
                 font.bold: true
-                color: Material.accent
             }
 
             WordWrappingItemDelegate {
@@ -211,7 +203,6 @@ Page {
                 text: qsTr("Navigation Bar")
                 font.pixelSize: settingsPage.font.pixelSize*1.2
                 font.bold: true
-                color: Material.accent
             }
 
             WordWrappingItemDelegate {
@@ -242,7 +233,6 @@ Page {
                 text: qsTr("User Interface")
                 font.pixelSize: settingsPage.font.pixelSize*1.2
                 font.bold: true
-                color: Material.accent
             }
 
             WordWrappingItemDelegate {
@@ -294,7 +284,6 @@ Page {
                 text: qsTr("System")
                 font.pixelSize: settingsPage.font.pixelSize*1.2
                 font.bold: true
-                color: Material.accent
             }
 
             WordWrappingItemDelegate {
@@ -379,7 +368,6 @@ Page {
                 text: qsTr("Help")
                 font.pixelSize: settingsPage.font.pixelSize*1.2
                 font.bold: true
-                color: Material.accent
             }
 
             WordWrappingItemDelegate {
@@ -463,7 +451,7 @@ Page {
                 wrapMode: Text.Wrap
             }
 
-            WordWrappingCheckDelegate {
+            WordWrappingRadioDelegate {
                 id: a1
                 text: qsTr("Height above ground level (AGL)")
                 Layout.fillWidth: true
@@ -471,7 +459,7 @@ Page {
                 onCheckedChanged: b1.checked = !checked
             }
 
-            WordWrappingCheckDelegate {
+            WordWrappingRadioDelegate {
                 id: b1
                 text: qsTr("Height above main sea level (AMSL)")
                 Layout.fillWidth: true
@@ -652,7 +640,7 @@ Page {
                 wrapMode: Text.Wrap
             }
 
-            WordWrappingCheckDelegate {
+            WordWrappingRadioDelegate {
                 id: a
                 text: qsTr("Built-in satnav receiver")
                 Layout.fillWidth: true
@@ -660,7 +648,7 @@ Page {
                 onCheckedChanged: b.checked = !checked
             }
 
-            WordWrappingCheckDelegate {
+            WordWrappingRadioDelegate {
                 id: b
                 text: qsTr("Traffic data reveiver (when available)")
                 Layout.fillWidth: true

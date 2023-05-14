@@ -36,17 +36,17 @@ GeoMaps::TileServer::TileServer(QObject* parent)
             this,
             [this](Qt::ApplicationState state)
             {
-                qWarning() << "Application state changed" << state;
-                if (state & Qt::ApplicationSuspended)
+                if (state == Qt::ApplicationSuspended)
                 {
                     suspended = true;
                     return;
                 }
-                if (suspended && (state & Qt::ApplicationActive))
+                qWarning() << suspended;
+                if (suspended && (state == Qt::ApplicationActive))
                 {
+                    suspended = false;
                     restart();
                 }
-                suspended = false;
             });
 }
 

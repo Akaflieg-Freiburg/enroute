@@ -46,6 +46,8 @@ GeoMaps::GeoMapProvider::GeoMapProvider(QObject *parent)
     _combinedGeoJSON_ = geoJSONCacheFile.readAll();
     geoJSONCacheFile.close();
 
+    // Pass signal through when the tile server changes its URL
+    connect(&_tileServer, &GeoMaps::TileServer::serverUrlChanged, this, [this]() {emit styleFileURLChanged();});
 }
 
 void GeoMaps::GeoMapProvider::deferredInitialization()

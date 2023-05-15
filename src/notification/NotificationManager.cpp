@@ -41,26 +41,46 @@ void Notification::NotificationManager::deferredInitialization()
 
 QString Notification::NotificationManager::currentNotificationTitle()
 {
+#warning
     return u"Test Notification"_qs;
 }
 
 
 QString Notification::NotificationManager::currentNotificationText()
 {
+#warning
     return u"Schön ist das jetzt nicht, aber da kümmere ich mich später drum. - Stefan."_qs;
 }
 
 QString Notification::NotificationManager::currentNotificationButton1Text()
 {
+#warning
     return u"Button1"_qs;
 }
 
 QString Notification::NotificationManager::currentNotificationButton2Text()
 {
+#warning
     return u"Button2"_qs;
 }
 
 bool Notification::NotificationManager::currentNotificationVisible()
 {
+#warning
     return true;
+}
+
+void Notification::NotificationManager::hideNotification(Notification::NotificationManager::NotificationTypes notificationType)
+{
+#warning
+}
+
+void Notification::NotificationManager::hideAll()
+{
+#warning
+}
+
+void Notification::NotificationManager::showNotification(Notification::NotificationManager::NotificationTypes notificationType, const QString& text, const QString& longText)
+{
+#warning
 }

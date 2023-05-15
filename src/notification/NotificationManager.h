@@ -36,6 +36,35 @@ class NotificationManager : public GlobalObject
     QML_SINGLETON
 
 public:
+    /*! \brief Notification types
+     *
+     *  This enum lists a number of predefined notification types
+     *  only these notifications can be shown.
+     */
+    enum NotificationTypes
+    {
+        DownloadInfo = 0,                 /*< Info that  download is in progress */
+        TrafficReceiverSelfTestError = 1, /*< Traffic receiver reports problem on self-test */
+        TrafficReceiverRuntimeError = 2,  /*< Traffic receiver reports problem while running */
+        GeoMapUpdatePending = 3           /*< Updates of geographic maps are available */
+    };
+    Q_ENUM(NotificationTypes)
+
+    /*! \brief Notification actions
+     *
+     *  This enum lists a number of actions that the user can undertake when a notification is shown.
+     */
+    enum NotificationActions
+    {
+        DownloadInfo_Clicked,                 /*< User clicks on body of download notification */
+        TrafficReceiverSelfTestError_Clicked, /*< User clicks on body of traffic receiver self-test problem report */
+        TrafficReceiverRuntimeError_Clicked,  /*< User clicks on body of traffic receiver runtime problem report */
+        GeoMapUpdatePending_Clicked,          /*< User clicks on body of update message */
+        GeoMapUpdatePending_UpdateRequested   /*< User requests geo map update */
+    };
+    Q_ENUM(NotificationActions)
+
+
     //
     // Constructors and destructors
     //
@@ -81,12 +110,19 @@ public:
     Q_PROPERTY(bool currentNotificationVisible READ currentNotificationVisible NOTIFY currentNotificationVisibleChanged)
     bool currentNotificationVisible();
 
+    void hideNotification(Notification::NotificationManager::NotificationTypes notificationType);
+    void hideAll();
+    void showNotification(Notification::NotificationManager::NotificationTypes notificationType, const QString& text, const QString& longText);
+
 signals:
     void currentNotificationTitleChanged();
     void currentNotificationTextChanged();
     void currentNotificationButton1TextChanged();
     void currentNotificationButton2TextChanged();
     void currentNotificationVisibleChanged();
+
+    void action(Notification::NotificationManager::NotificationActions action);
+
 };
 
-} // namespace Notificaion
+} // namespace Notification

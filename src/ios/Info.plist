@@ -66,8 +66,6 @@
 
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>Navigation App needs Location</string>
-    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>The reason why the app needs location services</string>
 
     <key>UTImportedTypeDeclarations</key>
     <array>

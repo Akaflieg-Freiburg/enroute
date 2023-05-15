@@ -39,48 +39,52 @@ void Notification::NotificationManager::deferredInitialization()
 }
 
 
-QString Notification::NotificationManager::currentNotificationTitle()
-{
-#warning
-    return u"Test Notification"_qs;
-}
-
-
-QString Notification::NotificationManager::currentNotificationText()
-{
-#warning
-    return u"Schön ist das jetzt nicht, aber da kümmere ich mich später drum. - Stefan."_qs;
-}
-
-QString Notification::NotificationManager::currentNotificationButton1Text()
-{
-#warning
-    return u"Button1"_qs;
-}
-
-QString Notification::NotificationManager::currentNotificationButton2Text()
-{
-#warning
-    return u"Button2"_qs;
-}
-
-bool Notification::NotificationManager::currentNotificationVisible()
-{
-#warning
-    return true;
-}
-
 void Notification::NotificationManager::hideNotification(Notification::NotificationManager::NotificationTypes notificationType)
 {
-#warning
+    _visible = false;
+    emit currentNotificationVisibleChanged();
 }
 
 void Notification::NotificationManager::hideAll()
 {
-#warning
+    _visible = false;
+    emit currentNotificationVisibleChanged();
 }
 
 void Notification::NotificationManager::showNotification(Notification::NotificationManager::NotificationTypes notificationType, const QString& text, const QString& longText)
 {
-#warning
+    _title = {};
+    _text = text;
+    _button1Text = {};
+    _button2Text = {};
+    _visible = false;
+
+    if (notificationType == DownloadInfo)
+    {
+        _title = tr("Downloading map and data…");
+                    _button1Text = tr("Dismiss");
+        _button2Text = tr("Update");
+                    _visible = true;
+    }
+    if (notificationType == TrafficReceiverRuntimeError)
+    {
+                    _title = tr("Traffic data receiver problem");
+                    _visible = true;
+    }
+    if (notificationType == TrafficReceiverSelfTestError)
+    {
+                    _title = tr("Traffic data receiver self test error");
+                    _visible = true;
+    }
+    if (notificationType == GeoMapUpdatePending)
+    {
+                    _title = tr("Map and data updates available");
+                    _visible = true;
+    }
+
+    emit currentNotificationTitleChanged();
+    emit currentNotificationTextChanged();
+    emit currentNotificationButton1TextChanged();
+    emit currentNotificationButton2TextChanged();
+    emit currentNotificationVisibleChanged();
 }

@@ -782,8 +782,10 @@ AppWindow {
         function onDownloadingChanged(downloading) {
             if (downloading) {
                 Notifier.showNotification(Notifier.DownloadInfo, "", "");
+                NotificationManager.showNotification(Notifier.DownloadInfo, "", "");
             } else {
                 Notifier.hideNotification(Notifier.DownloadInfo);
+                NotificationManager.hideNotification(Notifier.DownloadInfo);
             }
         }
     }
@@ -882,16 +884,20 @@ Go to the 'Settings' page if you wish to restore the original, safe, behavior of
         function onTrafficReceiverRuntimeErrorChanged(message) {
             if (message === "") {
                 Notifier.hideNotification(Notifier.TrafficReceiverRuntimeError);
+                NotificationManager.hideNotification(Notifier.TrafficReceiverRuntimeError);
             } else {
                 Notifier.showNotification(Notifier.TrafficReceiverRuntimeError, message, message);
+                NotificationManager.showNotification(Notifier.TrafficReceiverRuntimeError, message, message);
             }
         }
 
         function onTrafficReceiverSelfTestErrorChanged(message) {
             if (message === "") {
                 Notifier.hideNotification(Notifier.TrafficReceiverSelfTestError);
+                NotificationManager.hideNotification(Notifier.TrafficReceiverSelfTestError);
             } else {
                 Notifier.showNotification(Notifier.TrafficReceiverSelfTestError, message, message);
+                NotificationManager.showNotification(Notifier.TrafficReceiverSelfTestError, message, message);
             }
         }
     }

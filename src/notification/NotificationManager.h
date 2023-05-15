@@ -43,6 +43,7 @@ public:
      */
     enum NotificationTypes
     {
+        NoNotification = -1,              /*< No notification */
         DownloadInfo = 0,                 /*< Info that  download is in progress */
         TrafficReceiverSelfTestError = 1, /*< Traffic receiver reports problem on self-test */
         TrafficReceiverRuntimeError = 2,  /*< Traffic receiver reports problem while running */
@@ -96,23 +97,23 @@ public:
     //
 
     Q_PROPERTY(QString currentNotificationTitle READ currentNotificationTitle NOTIFY currentNotificationTitleChanged)
-    QString currentNotificationTitle();
+    QString currentNotificationTitle() { return _title; }
 
     Q_PROPERTY(QString currentNotificationText READ currentNotificationText NOTIFY currentNotificationTextChanged)
-    QString currentNotificationText();
+    QString currentNotificationText() { return _text; }
 
     Q_PROPERTY(QString currentNotificationButton1Text READ currentNotificationButton1Text NOTIFY currentNotificationButton1TextChanged)
-    QString currentNotificationButton1Text();
+    QString currentNotificationButton1Text() { return _button1Text; }
 
     Q_PROPERTY(QString currentNotificationButton2Text READ currentNotificationButton2Text NOTIFY currentNotificationButton2TextChanged)
-    QString currentNotificationButton2Text();
+    QString currentNotificationButton2Text() { return _button2Text; }
 
     Q_PROPERTY(bool currentNotificationVisible READ currentNotificationVisible NOTIFY currentNotificationVisibleChanged)
-    bool currentNotificationVisible();
+    bool currentNotificationVisible() { return _visible; }
 
-    void hideNotification(Notification::NotificationManager::NotificationTypes notificationType);
-    void hideAll();
-    void showNotification(Notification::NotificationManager::NotificationTypes notificationType, const QString& text, const QString& longText);
+    Q_INVOKABLE void hideNotification(Notification::NotificationManager::NotificationTypes notificationType);
+    Q_INVOKABLE void hideAll();
+    Q_INVOKABLE void showNotification(Notification::NotificationManager::NotificationTypes notificationType, const QString& text, const QString& longText);
 
 signals:
     void currentNotificationTitleChanged();
@@ -123,6 +124,13 @@ signals:
 
     void action(Notification::NotificationManager::NotificationActions action);
 
+private:
+    QString _title;
+    QString _text;
+    QString _button1Text;
+    QString _button2Text;
+    bool _visible {false};
+    NotificationTypes _type {NoNotification};
 };
 
 } // namespace Notification

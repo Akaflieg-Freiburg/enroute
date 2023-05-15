@@ -22,6 +22,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
+import akaflieg_freiburg.enroute
+
 
 Rectangle {
     border.color: "black"
@@ -36,11 +38,13 @@ Rectangle {
 
         Label {
             Layout.fillWidth: true
-            text: "This is the notification title"
+            text: NotificationManager.currentNotificationTitle
+            wrapMode: Text.Wrap
         }
         Label {
             Layout.fillWidth: true
-            text: "Notification text body. Beautification will come later."
+            text: NotificationManager.currentNotificationText
+            wrapMode: Text.Wrap
         }
 
         RowLayout {
@@ -48,11 +52,11 @@ Rectangle {
 
             ToolButton {
                 Layout.fillWidth: true
-                text: "Button 1"
+                text: NotificationManager.currentNotificationButton1Text
             }
             ToolButton {
                 Layout.fillWidth: true
-                text: "Button 2"
+                text: NotificationManager.currentNotificationButton2Text
             }
         }
     }

@@ -37,3 +37,30 @@ Notification::NotificationManager::NotificationManager(QObject *parent) : Global
 void Notification::NotificationManager::deferredInitialization()
 {
 }
+
+
+QString Notification::NotificationManager::currentNotificationTitle()
+{
+    return u"Test Notification"_qs;
+}
+
+
+QString Notification::NotificationManager::currentNotificationText()
+{
+    return u"Schön ist das jetzt nicht, aber da kümmere ich mich später drum. - Stefan."_qs;
+}
+
+QString Notification::NotificationManager::currentNotificationButton1Text()
+{
+    return u"Button1"_qs;
+}
+
+QString Notification::NotificationManager::currentNotificationButton2Text()
+{
+    return u"Button2"_qs;
+}
+
+bool Notification::NotificationManager::currentNotificationVisible()
+{
+    return true;
+}

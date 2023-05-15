@@ -61,6 +61,32 @@ public:
         return GlobalObject::notificationManager();
     }
 
+
+    //
+    // PROPERTIES
+    //
+
+    Q_PROPERTY(QString currentNotificationTitle READ currentNotificationTitle NOTIFY currentNotificationTitleChanged)
+    QString currentNotificationTitle();
+
+    Q_PROPERTY(QString currentNotificationText READ currentNotificationText NOTIFY currentNotificationTextChanged)
+    QString currentNotificationText();
+
+    Q_PROPERTY(QString currentNotificationButton1Text READ currentNotificationButton1Text NOTIFY currentNotificationButton1TextChanged)
+    QString currentNotificationButton1Text();
+
+    Q_PROPERTY(QString currentNotificationButton2Text READ currentNotificationButton2Text NOTIFY currentNotificationButton2TextChanged)
+    QString currentNotificationButton2Text();
+
+    Q_PROPERTY(bool currentNotificationVisible READ currentNotificationVisible NOTIFY currentNotificationVisibleChanged)
+    bool currentNotificationVisible();
+
+signals:
+    void currentNotificationTitleChanged();
+    void currentNotificationTextChanged();
+    void currentNotificationButton1TextChanged();
+    void currentNotificationButton2TextChanged();
+    void currentNotificationVisibleChanged();
 };
 
-} // namespace Navigation
+} // namespace Notificaion

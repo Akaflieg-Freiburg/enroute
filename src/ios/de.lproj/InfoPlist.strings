@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.strings
+  enroute
+
+  Created by Simon Schneider on 15.05.23.
+  
+*/
+"NSLocationWhenInUseUsageDescription" = "Navigation über GPS benötigt die Standortfreigabe";
+"CFBundleDisplayName" = "Enroute German";

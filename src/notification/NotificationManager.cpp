@@ -31,12 +31,11 @@
 
 Notifications::NotificationManager::NotificationManager(QObject *parent) : GlobalObject(parent)
 {
-    testNotification = new Notifications::Notification(this);
+    auto* testNotification = new Notifications::Notification(this);
     testNotification->setTitle(u"This is the title"_qs);
     testNotification->setText(u"This is a dummy text. Beautification lies in the eye of the beholder. I will come back to that later."_qs);
     testNotification->setButton1Text(u"Dismiss"_qs);
     testNotification->setButton2Text(u"Cancel"_qs);
-    testNotification->setDismissed(false);
     add(testNotification);
 }
 
@@ -56,29 +55,31 @@ void Notifications::NotificationManager::add(Notifications::Notification* notifi
     {
         return;
     }
+
+    // Re-parent the notification
     notification->setParent(this);
     QQmlEngine::setObjectOwnership(notification, QQmlEngine::CppOwnership);
-    m_notifications.append(QSharedPointer<Notifications::Notification>(notification));
 
-    connect(notification, &Notifications::Notification::dismissedChanged, this, &Notifications::NotificationManager::update);
+    // Wire up
+    connect(notification, &Notifications::Notification::destroyed, this, &Notifications::NotificationManager::update);
+    connect(notification, &Notifications::Notification::importanceChanged, this, &Notifications::NotificationManager::update);
+
+    // Append and update
+    m_notifications.append(notification);
+    update();
 }
 
 void Notifications::NotificationManager::update()
 {
-    auto *currentNotificationCache = currentNotification();
+    m_notifications.removeAll(nullptr);
+    std::sort(m_notifications.begin(), m_notifications.end(), [](const Notification* a, const Notification* b)
+              { return a->importance() > b->importance(); });
 
-    QVector<QSharedPointer<Notifications::Notification>> updatedNotifications;
-    foreach(auto notification, m_notifications)
-    {
-        if (notification->dismissed() == false)
-        {
-            updatedNotifications.append(notification);
-        }
-    }
-    m_notifications = updatedNotifications;
-    if (currentNotification() == currentNotificationCache)
+    if (currentNotificationCache == currentNotification())
     {
         return;
     }
+    qWarning() << "Update" << m_notifications;
+    currentNotificationCache = currentNotification();
     emit currentNotificationChanged();
 }

@@ -85,24 +85,14 @@ void Notifications::Notification::setButton2Text(const QString& newButton2Text)
     emit button2TextChanged();
 }
 
-void Notifications::Notification::setDismissed(bool newDismissed)
-{
-    if (newDismissed == m_dismissed)
-    {
-        return;
-    }
-    m_dismissed = newDismissed;
-    emit dismissedChanged();
-}
-
 void Notifications::Notification::button1Clicked()
 {
     qWarning() << "Button 1 clicked";
-    setDismissed(true);
+    deleteLater();
 }
 
 void Notifications::Notification::button2Clicked()
 {
     qWarning() << "Button 2 clicked";
-    setDismissed(true);
+    deleteLater();
 }

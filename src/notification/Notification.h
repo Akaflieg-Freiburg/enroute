@@ -73,13 +73,9 @@ public:
     QString button2Text() const { return m_button2Text; }
     void setButton2Text(const QString& newButton2Text);
 
-    Q_PROPERTY(bool dismissed READ dismissed WRITE setDismissed NOTIFY dismissedChanged)
-    bool dismissed() const { return m_dismissed; }
-    void setDismissed(bool newDismissed);
-
 public slots:
-    void button1Clicked();
-    void button2Clicked();
+    virtual void button1Clicked();
+    virtual void button2Clicked();
 
 signals:
     void importanceChanged();
@@ -87,7 +83,6 @@ signals:
     void textChanged();
     void button1TextChanged();
     void button2TextChanged();
-    void dismissedChanged();
 
 private:
     QString m_title;
@@ -95,7 +90,6 @@ private:
     QString m_button1Text;
     QString m_button2Text;
     quint8 m_importance {0};
-    bool m_dismissed {false};
 };
 
 } // namespace Notifications

@@ -72,7 +72,7 @@ public:
         {
             return nullptr;
         }
-        return m_notifications[0].data();
+        return m_notifications[0];
     }
 
     void add(Notifications::Notification* notification);
@@ -83,9 +83,8 @@ private slots:
     void update();
 
 private:
-    QVector<QSharedPointer<Notifications::Notification>> m_notifications;
-
-    Notifications::Notification* testNotification;
+    QVector<QPointer<Notifications::Notification>> m_notifications;
+    Notifications::Notification* currentNotificationCache {nullptr};
 };
 
 } // namespace Notifications

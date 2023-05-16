@@ -87,6 +87,7 @@ public:
     ~GeoMapProvider() override = default;
 
 
+
     //
     // Properties
     //
@@ -131,6 +132,7 @@ public:
      * the union of all waypoints in any of the installed maps)
      */
     Q_PROPERTY(QList<GeoMaps::Waypoint> waypoints READ waypoints NOTIFY waypointsChanged)
+
 
 
     //

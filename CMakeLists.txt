@@ -1,13 +1,15 @@
 #
 # Set up cmake
 #
-
+set(CMAKE_OSX_DEPLOYMENT_TARGET "14.0")
 cmake_minimum_required(VERSION 3.16)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include(ExternalProject)
 option(BUILD_DOC "Build developer documentation" OFF)
+
+
 
 
 #
@@ -21,7 +23,7 @@ math(EXPR PROJECT_VERSION_CODE 10000*${PROJECT_VERSION_MAJOR}+100*${PROJECT_VERS
 add_compile_definitions(PROJECT_VERSION="${PROJECT_VERSION}")
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
+message("CMAKE_OSX_DEPLOYMENT_TARGET: ${CMAKE_OSX_DEPLOYMENT_TARGET}")
 
 #
 # Installation

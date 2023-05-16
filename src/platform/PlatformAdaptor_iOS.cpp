@@ -91,11 +91,18 @@ QString Platform::PlatformAdaptor::checkPermissions()
     // implementes uses this method to hide the splash screen.
     QString string = "";
     if (!ObjCAdapter::hasLocationPermission()) {
-        string += "Location";
+        QString result;
+        //TODO: Translation not working
+        result = tr("Enroute Flight Navigation needs to access your precise location. "
+                      "The app uses this data to show your position on the moving "
+                      "map and to provide relevant aeronautical information.");
+        string += result;
     }
-    if (!ObjCAdapter::hasNotificationPermission()) {
+    //TODO: Notifications are disabled
+    /*if (!ObjCAdapter::hasNotificationPermission()) {
         string += "Notification";
     }
+    */
     return string;
 }
 
@@ -108,7 +115,9 @@ void Platform::PlatformAdaptor::requestPermissionsSync()
     // before the GUI is set up and is meant to run synchroneously. Once the
     // method returns, the app will check if all permissions are there, or else
     // refuse to run.
-    ObjCAdapter::requestNotificationPermission();
+
+#warning Notification not implemented
+    //ObjCAdapter::requestNotificationPermission();
 }
 
 

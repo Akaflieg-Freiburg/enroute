@@ -51,5 +51,9 @@ void Platform::Notifier::hideNotification(Platform::Notifier_Abstract::Notificat
 void Platform::Notifier::showNotification(NotificationTypes notificationType, const QString& text, const QString& longText)
 {
     // This method is supposed to show the notification "notificationType".
-    ObjCAdapter::sendNotification(text, longText);
+
+    //TODO: Notification currently disabled
+    //ObjCAdapter::sendNotification(text, longText);
+#warning Notifications disabled
+    
 }

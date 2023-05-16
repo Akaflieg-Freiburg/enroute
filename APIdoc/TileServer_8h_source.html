@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.26.7</span>
+   &#160;<span id="projectnumber">2.26.8</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -81,73 +81,40 @@ $(function() {
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
 <div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1TileServer.html">   58</a></span>&#160;<span class="keyword">class </span><a class="code" href="classGeoMaps_1_1TileServer.html">TileServer</a> : <span class="keyword">public</span> QAbstractHttpServer</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;{</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    Q_OBJECT</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  Q_OBJECT</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  </div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1TileServer.html#a3d555e9c8b5dae1bdbd66be76e4c8942">   71</a></span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classGeoMaps_1_1TileServer.html#a3d555e9c8b5dae1bdbd66be76e4c8942">TileServer</a>(QObject* parent = <span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="comment">// Standard destructor</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1TileServer.html#a874565006efe32728090fe0ff8ac2b47">   74</a></span>&#160;    ~<a class="code" href="classGeoMaps_1_1TileServer.html">TileServer</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="comment">// Properties</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    Q_PROPERTY(QString <a class="code" href="classGeoMaps_1_1TileServer.html#a874565006efe32728090fe0ff8ac2b47">serverUrl</a> READ <a class="code" href="classGeoMaps_1_1TileServer.html#a874565006efe32728090fe0ff8ac2b47">serverUrl</a> NOTIFY <a class="code" href="classGeoMaps_1_1TileServer.html#a4823efcd59f3ab3b4227b678455f26ea">serverUrlChanged</a>)</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="comment">// Getter Methods</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    </div>
-<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1TileServer.html#af68911936effdef411efcae70109b24c">  100</a></span>&#160;    [[nodiscard]] QString <a class="code" href="classGeoMaps_1_1TileServer.html#af68911936effdef411efcae70109b24c">serverUrl</a>();</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="keyword">public</span> slots:</div>
-<div class="line"><a name="l00123"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1TileServer.html#a7a54f355fcd49c9e0f51e7602341b48c">  123</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classGeoMaps_1_1TileServer.html#a7a54f355fcd49c9e0f51e7602341b48c">addMbtilesFileSet</a>(<span class="keyword">const</span> QString&amp; baseName, <span class="keyword">const</span> QVector&lt;QPointer&lt;GeoMaps::MBTILES&gt;&gt;&amp; MBTilesFiles);</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
-<div class="line"><a name="l00129"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1TileServer.html#a49ce8f3de7fa3d96e8d7b3f54590f39b">  129</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classGeoMaps_1_1TileServer.html#a49ce8f3de7fa3d96e8d7b3f54590f39b">removeMbtilesFileSet</a>(<span class="keyword">const</span> QString&amp; baseName);</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; </div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;signals:</div>
-<div class="line"><a name="l00134"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1TileServer.html#a4823efcd59f3ab3b4227b678455f26ea">  134</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classGeoMaps_1_1TileServer.html#a4823efcd59f3ab3b4227b678455f26ea">serverUrlChanged</a>();</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160; </div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160; </div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classGeoMaps_1_1TileServer.html">TileServer</a>)</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160; </div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <span class="comment">// Implemented pure virtual method from QAbstractHttpServer</span></div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="keywordtype">bool</span> handleRequest(<span class="keyword">const</span> QHttpServerRequest&amp; request, QTcpSocket* socket) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160; </div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    <span class="comment">// Implemented pure virtual method from QAbstractHttpServer</span></div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    <span class="keywordtype">void</span> missingHandler(<span class="keyword">const</span> QHttpServerRequest&amp; request, QTcpSocket* socket) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160; </div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="keywordtype">void</span> restart();</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160; </div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <span class="comment">// List of tile handlers</span></div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    QMap&lt;QString, QSharedPointer&lt;GeoMaps::TileHandler&gt;&gt; m_tileHandlers;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160; </div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    <span class="comment">// Internal variable. Indicates if the app has been suspended.</span></div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    <span class="comment">// This is used on changes of QGuiApplication::applicationState,</span></div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    <span class="comment">// to check if the application is currently awaking from sleep,</span></div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <span class="comment">// so that the server needs to be restarted (if on iOS).</span></div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="preprocessor">#if defined(Q_OS_IOS)</span></div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <span class="keywordtype">bool</span> suspended = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;};</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160; </div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;} <span class="comment">// namespace GeoMaps</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1TileServer.html#a3d555e9c8b5dae1bdbd66be76e4c8942">   71</a></span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classGeoMaps_1_1TileServer.html#a3d555e9c8b5dae1bdbd66be76e4c8942">TileServer</a>(QObject* parent = <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="comment">// Standard destructor</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  ~<a class="code" href="classGeoMaps_1_1TileServer.html">TileServer</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  </div>
+<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1TileServer.html#aa8c68f6593380c168b067a666451fae7">   85</a></span>&#160;  [[nodiscard]] <span class="keyword">auto</span> <a class="code" href="classGeoMaps_1_1TileServer.html#aa8c68f6593380c168b067a666451fae7">serverUrl</a>() -&gt; QString;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                        </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="keyword">public</span> slots:</div>
+<div class="line"><a name="l00107"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1TileServer.html#a7a54f355fcd49c9e0f51e7602341b48c">  107</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classGeoMaps_1_1TileServer.html#a7a54f355fcd49c9e0f51e7602341b48c">addMbtilesFileSet</a>(<span class="keyword">const</span> QString&amp; baseName, <span class="keyword">const</span> QVector&lt;QPointer&lt;GeoMaps::MBTILES&gt;&gt;&amp; MBTilesFiles);</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
+<div class="line"><a name="l00113"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1TileServer.html#a49ce8f3de7fa3d96e8d7b3f54590f39b">  113</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classGeoMaps_1_1TileServer.html#a49ce8f3de7fa3d96e8d7b3f54590f39b">removeMbtilesFileSet</a>(<span class="keyword">const</span> QString&amp; baseName);</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  </div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  Q_DISABLE_COPY_MOVE(<a class="code" href="classGeoMaps_1_1TileServer.html">TileServer</a>)</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  <span class="comment">// Implemented pure virtual method from QAbstractHttpServer</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  <span class="keywordtype">bool</span> handleRequest(<span class="keyword">const</span> QHttpServerRequest&amp; request, QTcpSocket* socket) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  <span class="comment">// Implemented pure virtual method from QAbstractHttpServer</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;  <span class="keywordtype">void</span> missingHandler(<span class="keyword">const</span> QHttpServerRequest&amp; request, QTcpSocket* socket) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  <span class="comment">// List of tile handlers</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  QMap&lt;QString, QSharedPointer&lt;GeoMaps::TileHandler&gt;&gt; m_tileHandlers;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;};</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;} <span class="comment">// namespace GeoMaps</span></div>
 <div class="ttc" id="aclassGeoMaps_1_1TileServer_html"><div class="ttname"><a href="classGeoMaps_1_1TileServer.html">GeoMaps::TileServer</a></div><div class="ttdoc">HTTP server for mapbox' MBTiles files.</div><div class="ttdef"><b>Definition:</b> <a href="TileServer_8h_source.html#l00058">TileServer.h:59</a></div></div>
 <div class="ttc" id="aclassGeoMaps_1_1TileServer_html_a3d555e9c8b5dae1bdbd66be76e4c8942"><div class="ttname"><a href="classGeoMaps_1_1TileServer.html#a3d555e9c8b5dae1bdbd66be76e4c8942">GeoMaps::TileServer::TileServer</a></div><div class="ttdeci">TileServer(QObject *parent=nullptr)</div><div class="ttdoc">Create a new tile server.</div></div>
-<div class="ttc" id="aclassGeoMaps_1_1TileServer_html_a4823efcd59f3ab3b4227b678455f26ea"><div class="ttname"><a href="classGeoMaps_1_1TileServer.html#a4823efcd59f3ab3b4227b678455f26ea">GeoMaps::TileServer::serverUrlChanged</a></div><div class="ttdeci">void serverUrlChanged()</div><div class="ttdoc">Notification signal for the property with the same name.</div></div>
 <div class="ttc" id="aclassGeoMaps_1_1TileServer_html_a49ce8f3de7fa3d96e8d7b3f54590f39b"><div class="ttname"><a href="classGeoMaps_1_1TileServer.html#a49ce8f3de7fa3d96e8d7b3f54590f39b">GeoMaps::TileServer::removeMbtilesFileSet</a></div><div class="ttdeci">void removeMbtilesFileSet(const QString &amp;baseName)</div><div class="ttdoc">Removes a set of tile files.</div></div>
 <div class="ttc" id="aclassGeoMaps_1_1TileServer_html_a7a54f355fcd49c9e0f51e7602341b48c"><div class="ttname"><a href="classGeoMaps_1_1TileServer.html#a7a54f355fcd49c9e0f51e7602341b48c">GeoMaps::TileServer::addMbtilesFileSet</a></div><div class="ttdeci">void addMbtilesFileSet(const QString &amp;baseName, const QVector&lt; QPointer&lt; GeoMaps::MBTILES &gt;&gt; &amp;MBTilesFiles)</div><div class="ttdoc">Add a new set of tile files.</div></div>
-<div class="ttc" id="aclassGeoMaps_1_1TileServer_html_a874565006efe32728090fe0ff8ac2b47"><div class="ttname"><a href="classGeoMaps_1_1TileServer.html#a874565006efe32728090fe0ff8ac2b47">GeoMaps::TileServer::serverUrl</a></div><div class="ttdeci">QString serverUrl</div><div class="ttdoc">URL under which this server is presently reachable.</div><div class="ttdef"><b>Definition:</b> <a href="TileServer_8h_source.html#l00074">TileServer.h:88</a></div></div>
-<div class="ttc" id="aclassGeoMaps_1_1TileServer_html_af68911936effdef411efcae70109b24c"><div class="ttname"><a href="classGeoMaps_1_1TileServer.html#af68911936effdef411efcae70109b24c">GeoMaps::TileServer::serverUrl</a></div><div class="ttdeci">QString serverUrl()</div><div class="ttdoc">Getter function for the property with the same name.</div></div>
+<div class="ttc" id="aclassGeoMaps_1_1TileServer_html_aa8c68f6593380c168b067a666451fae7"><div class="ttname"><a href="classGeoMaps_1_1TileServer.html#aa8c68f6593380c168b067a666451fae7">GeoMaps::TileServer::serverUrl</a></div><div class="ttdeci">auto serverUrl() -&gt; QString</div><div class="ttdoc">URL under which this server is presently reachable.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

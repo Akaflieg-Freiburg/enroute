@@ -541,15 +541,6 @@ AppWindow {
                     }
                 }
 
-                ItemDelegate { // Show Notification
-                    Layout.fillWidth: true
-                    leftPadding: 16+SafeInsets.left
-                    text: "Notification"
-                    onClicked: {
-                        Notifier.showNotification(Notifier.TrafficReceiverSelfTestError, "Test", "This is a Test");
-                    }
-                }
-
                 Item {
                     Layout.preferredHeight: SafeInsets.bottom
                 }

@@ -15,12 +15,10 @@ if (UNIX AND NOT ANDROID)
         )
 
     add_subdirectory(flatpak)
-    add_subdirectory(snap)
 
     add_custom_target(publish
         DEPENDS distributeQtSource
         DEPENDS flatpak-publish
-        DEPENDS snap-publish
         )
 endif (UNIX AND NOT ANDROID)
 

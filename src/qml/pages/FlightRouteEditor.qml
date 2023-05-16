@@ -33,7 +33,8 @@ Page {
     title: qsTr("Route and Wind")
 
     property bool isIos: Qt.platform.os == "ios"
-    property bool isAndroidOrIos: Qt.platform.os == "android" || isIos
+    property bool isAndroid: Qt.platform.os == "android"
+    property bool isAndroidOrIos: isAndroid || isIos
     property angle staticAngle
     property speed staticSpeed
 
@@ -277,9 +278,9 @@ Page {
                                 shareErrorDialog.open()
                                 return
                             }
-                            if (Qt.platform.os === "android")
+                            if (isAndroid)
                                 toast.doToast(qsTr("Flight route shared"))
-                            else
+                            else (!isIos)
                                 toast.doToast(qsTr("Flight route exported"))
                         }
                     }
@@ -301,7 +302,7 @@ Page {
                                 shareErrorDialog.open()
                                 return
                             }
-                            if (Qt.platform.os === "android")
+                            if (isAndroid)
                                 toast.doToast(qsTr("Flight route shared"))
                             else
                                 toast.doToast(qsTr("Flight route exported"))

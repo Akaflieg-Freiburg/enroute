@@ -38,12 +38,12 @@ Rectangle {
 
         Label {
             Layout.fillWidth: true
-            text: NotificationManager.currentNotificationTitle
+            text: NotificationManager.currentNotification ? NotificationManager.currentNotification.title : ""
             wrapMode: Text.Wrap
         }
         Label {
             Layout.fillWidth: true
-            text: NotificationManager.currentNotificationText
+            text: NotificationManager.currentNotification ? NotificationManager.currentNotification.text : ""
             wrapMode: Text.Wrap
         }
 
@@ -52,11 +52,19 @@ Rectangle {
 
             ToolButton {
                 Layout.fillWidth: true
-                text: NotificationManager.currentNotificationButton1Text
+                text: NotificationManager.currentNotification ? NotificationManager.currentNotification.button1Text : ""
+                onClicked: {
+                    if (NotificationManager.currentNotification)
+                        NotificationManager.currentNotification.button1Clicked()
+                }
             }
             ToolButton {
                 Layout.fillWidth: true
-                text: NotificationManager.currentNotificationButton2Text
+                text: NotificationManager.currentNotification ? NotificationManager.currentNotification.button2Text : ""
+                onClicked:  {
+                    if (NotificationManager.currentNotification)
+                        NotificationManager.currentNotification.button2Clicked()
+                }
             }
         }
     }

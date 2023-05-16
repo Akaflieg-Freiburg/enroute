@@ -58,7 +58,7 @@ QPointer<Navigation::Navigator> g_navigator {};
 QPointer<NOTAM::NotamProvider> g_notamProvider {};
 QPointer<QNetworkAccessManager> g_networkAccessManager {};
 QPointer<Platform::Notifier> g_notifier {};
-QPointer<Notification::NotificationManager> g_notificationManager {};
+QPointer<Notifications::NotificationManager> g_notificationManager {};
 QPointer<Traffic::PasswordDB> g_passwordDB {};
 QPointer<Positioning::PositionProvider> g_positionProvider {};
 QPointer<GlobalSettings> g_globalSettings {};
@@ -198,9 +198,9 @@ auto GlobalObject::notamProvider() -> NOTAM::NotamProvider*
 }
 
 
-auto GlobalObject::notificationManager() -> Notification::NotificationManager*
+auto GlobalObject::notificationManager() -> Notifications::NotificationManager*
 {
-    return allocateInternal<Notification::NotificationManager>(g_notificationManager);
+    return allocateInternal<Notifications::NotificationManager>(g_notificationManager);
 }
 
 

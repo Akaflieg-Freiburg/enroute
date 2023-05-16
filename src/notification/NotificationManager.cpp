@@ -29,62 +29,56 @@
 // Constructors and destructors
 //
 
-Notification::NotificationManager::NotificationManager(QObject *parent) : GlobalObject(parent)
+Notifications::NotificationManager::NotificationManager(QObject *parent) : GlobalObject(parent)
+{
+    testNotification = new Notifications::Notification(this);
+    testNotification->setTitle(u"This is the title"_qs);
+    testNotification->setText(u"This is a dummy text. Beautification lies in the eye of the beholder. I will come back to that later."_qs);
+    testNotification->setButton1Text(u"Dismiss"_qs);
+    testNotification->setButton2Text(u"Cancel"_qs);
+    testNotification->setDismissed(false);
+    add(testNotification);
+}
+
+
+void Notifications::NotificationManager::deferredInitialization()
 {
 }
 
 
-void Notification::NotificationManager::deferredInitialization()
+void Notifications::NotificationManager::add(Notifications::Notification* notification)
 {
+    if (notification == nullptr)
+    {
+        return;
+    }
+    if (m_notifications.contains(notification))
+    {
+        return;
+    }
+    notification->setParent(this);
+    QQmlEngine::setObjectOwnership(notification, QQmlEngine::CppOwnership);
+    m_notifications.append(QSharedPointer<Notifications::Notification>(notification));
+
+    connect(notification, &Notifications::Notification::dismissedChanged, this, &Notifications::NotificationManager::update);
 }
 
-
-void Notification::NotificationManager::hideNotification(Notification::NotificationManager::NotificationTypes notificationType)
+void Notifications::NotificationManager::update()
 {
-    _visible = false;
-    emit currentNotificationVisibleChanged();
-}
+    auto *currentNotificationCache = currentNotification();
 
-void Notification::NotificationManager::hideAll()
-{
-    _visible = false;
-    emit currentNotificationVisibleChanged();
-}
-
-void Notification::NotificationManager::showNotification(Notification::NotificationManager::NotificationTypes notificationType, const QString& text, const QString& longText)
-{
-    _title = {};
-    _text = text;
-    _button1Text = {};
-    _button2Text = {};
-    _visible = false;
-
-    if (notificationType == DownloadInfo)
+    QVector<QSharedPointer<Notifications::Notification>> updatedNotifications;
+    foreach(auto notification, m_notifications)
     {
-        _title = tr("Downloading map and data…");
-                    _button1Text = tr("Dismiss");
-        _button2Text = tr("Update");
-                    _visible = true;
+        if (notification->dismissed() == false)
+        {
+            updatedNotifications.append(notification);
+        }
     }
-    if (notificationType == TrafficReceiverRuntimeError)
+    m_notifications = updatedNotifications;
+    if (currentNotification() == currentNotificationCache)
     {
-                    _title = tr("Traffic data receiver problem");
-                    _visible = true;
+        return;
     }
-    if (notificationType == TrafficReceiverSelfTestError)
-    {
-                    _title = tr("Traffic data receiver self test error");
-                    _visible = true;
-    }
-    if (notificationType == GeoMapUpdatePending)
-    {
-                    _title = tr("Map and data updates available");
-                    _visible = true;
-    }
-
-    emit currentNotificationTitleChanged();
-    emit currentNotificationTextChanged();
-    emit currentNotificationButton1TextChanged();
-    emit currentNotificationButton2TextChanged();
-    emit currentNotificationVisibleChanged();
+    emit currentNotificationChanged();
 }

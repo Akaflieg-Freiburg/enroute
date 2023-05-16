@@ -22,18 +22,14 @@
 
 #include <QQmlEngine>
 
-#include "GlobalObject.h"
-#include "Notification.h"
-
 
 namespace Notifications {
 
 
-class NotificationManager : public GlobalObject
+class Notification : public QObject
 {
     Q_OBJECT
     QML_ELEMENT
-    QML_SINGLETON
 
 public:
     //
@@ -44,48 +40,62 @@ public:
      *
      * @param parent The standard QObject parent pointer
      */
-    explicit NotificationManager(QObject* parent = nullptr);
+    explicit Notification(QObject* parent = nullptr);
 
-    // deferred initialization
-    void deferredInitialization() override;
-
-    // No default constructor, important for QML singleton
-    explicit NotificationManager() = delete;
+    // No default constructor, always want a parent
+    explicit Notification() = delete;
 
     /*! \brief Standard destructor */
-    ~NotificationManager() override = default;
-
-    // factory function for QML singleton
-    static Notifications::NotificationManager* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
-    {
-        return GlobalObject::notificationManager();
-    }
+    ~Notification() = default;
 
 
     //
     // PROPERTIES
     //
 
-    Q_PROPERTY(Notifications::Notification* currentNotification READ currentNotification NOTIFY currentNotificationChanged)
-    Notifications::Notification* currentNotification() const {
-        if (m_notifications.isEmpty())
-        {
-            return nullptr;
-        }
-        return m_notifications[0].data();
-    }
+    Q_PROPERTY(quint8 importance READ importance WRITE setImportance NOTIFY importanceChanged)
+    quint8 importance() const { return m_importance; }
+    void setImportance(quint8 newImportance);
 
-    void add(Notifications::Notification* notification);
+    Q_PROPERTY(QString title READ title  WRITE setTitle NOTIFY titleChanged)
+    QString title() const { return m_title; }
+    void setTitle(const QString& newTitle);
+
+    Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
+    QString text() const { return m_text; }
+    void setText(const QString& newText);
+
+    Q_PROPERTY(QString button1Text READ button1Text WRITE setButton1Text NOTIFY button1TextChanged)
+    QString button1Text() const { return m_button1Text; }
+    void setButton1Text(const QString& newButton1Text);
+
+    Q_PROPERTY(QString button2Text READ button2Text WRITE setButton2Text NOTIFY button2TextChanged)
+    QString button2Text() const { return m_button2Text; }
+    void setButton2Text(const QString& newButton2Text);
+
+    Q_PROPERTY(bool dismissed READ dismissed WRITE setDismissed NOTIFY dismissedChanged)
+    bool dismissed() const { return m_dismissed; }
+    void setDismissed(bool newDismissed);
+
+public slots:
+    void button1Clicked();
+    void button2Clicked();
+
 signals:
-    void currentNotificationChanged();
-
-private slots:
-    void update();
+    void importanceChanged();
+    void titleChanged();
+    void textChanged();
+    void button1TextChanged();
+    void button2TextChanged();
+    void dismissedChanged();
 
 private:
-    QVector<QSharedPointer<Notifications::Notification>> m_notifications;
-
-    Notifications::Notification* testNotification;
+    QString m_title;
+    QString m_text;
+    QString m_button1Text;
+    QString m_button2Text;
+    quint8 m_importance {0};
+    bool m_dismissed {false};
 };
 
 } // namespace Notifications

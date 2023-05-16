@@ -56,6 +56,7 @@ set(SOURCES
     notam/Notam.h
     notam/NotamList.h
     notam/NotamProvider.h
+    notification/Notification.h
     notification/NotificationManager.h
     platform/FileExchange.h
     platform/FileExchange_Abstract.h
@@ -130,6 +131,7 @@ set(SOURCES
     notam/Notam.cpp
     notam/NotamList.cpp
     notam/NotamProvider.cpp
+    notification/Notification.cpp
     notification/NotificationManager.cpp
     platform/FileExchange_Abstract.cpp
     platform/Notifier_Abstract.cpp

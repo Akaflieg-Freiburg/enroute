@@ -127,3 +127,10 @@ auto ObjCAdapter::shareContent(const QByteArray& contentByteArray, const QString
 
     return "Failed to write file";
 }
+
+
+QString ObjCAdapter::preferredLanguage() {
+  //TODO: Use preferredLocalizationsFromArray: later
+  NSString *language = [[[NSBundle mainBundle] preferredLocalizations] objectAtIndex: 0];
+  return QString::fromNSString(language);
+}

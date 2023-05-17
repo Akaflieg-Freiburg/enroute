@@ -44,7 +44,10 @@ public:
 
 private:
     // Notify if map updates pending, else close the notification
-    void updateNotification();
+    void updateNotificationDataAvailable();
+
+#warning
+    void updateNotificationDataDownloading();
 
     // When notifications are temporarily not possible, then use this timer
     // to notify again.

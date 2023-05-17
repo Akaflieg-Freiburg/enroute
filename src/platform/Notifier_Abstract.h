@@ -65,7 +65,6 @@ public:
      */
     enum NotificationTypes
     {
-        DownloadInfo = 0,                 /*< Info that  download is in progress */
         TrafficReceiverSelfTestError = 1, /*< Traffic receiver reports problem on self-test */
         TrafficReceiverRuntimeError = 2   /*< Traffic receiver reports problem while running */
     };
@@ -77,11 +76,8 @@ public:
      */
     enum NotificationActions
     {
-        DownloadInfo_Clicked,                 /*< User clicks on body of download notification */
         TrafficReceiverSelfTestError_Clicked, /*< User clicks on body of traffic receiver self-test problem report */
-        TrafficReceiverRuntimeError_Clicked,  /*< User clicks on body of traffic receiver runtime problem report */
-        GeoMapUpdatePending_Clicked,          /*< User clicks on body of update message */
-        GeoMapUpdatePending_UpdateRequested   /*< User requests geo map update */
+        TrafficReceiverRuntimeError_Clicked  /*< User clicks on body of traffic receiver runtime problem report */
     };
     Q_ENUM(NotificationActions)
 

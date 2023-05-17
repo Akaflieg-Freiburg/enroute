@@ -27,7 +27,8 @@
 #include "dataManagement/DataManager.h"
 #include "navigation/Navigator.h"
 #include "notification/NotificationManager.h"
-#include "notification/Notification_DataUpdate.h"
+#include "notification/Notification_DataUpdateAvailable.h"
+#include "notification/Notification_DataUpdateOngoing.h"
 
 using namespace std::chrono_literals;
 
@@ -36,17 +37,35 @@ using namespace std::chrono_literals;
 DataManagement::UpdateNotifier::UpdateNotifier(QObject* parent) :
     QObject(parent)
 {
-    connect(GlobalObject::dataManager()->mapsAndData(), &DataManagement::Downloadable_Abstract::updateSizeChanged, this, &DataManagement::UpdateNotifier::updateNotification);
-    connect(&notificationTimer, &QTimer::timeout, this, &DataManagement::UpdateNotifier::updateNotification);
+    connect(GlobalObject::dataManager()->mapsAndData(), &DataManagement::Downloadable_Abstract::updateSizeChanged, this, &DataManagement::UpdateNotifier::updateNotificationDataAvailable);
+    connect(GlobalObject::dataManager()->mapsAndData(), &DataManagement::Downloadable_Abstract::downloadingChanged, this, &DataManagement::UpdateNotifier::updateNotificationDataDownloading);
+    connect(&notificationTimer, &QTimer::timeout, this, &DataManagement::UpdateNotifier::updateNotificationDataAvailable);
 
     notificationTimer.setInterval(11min);
     notificationTimer.setSingleShot(true);
 
-    updateNotification();
+    updateNotificationDataAvailable();
+    updateNotificationDataDownloading();
 }
 
+#warning
+void DataManagement::UpdateNotifier::updateNotificationDataDownloading()
+{
+    auto* mapsAndData = GlobalObject::dataManager()->mapsAndData();
+    if (mapsAndData == nullptr)
+    {
+        return;
+    }
+    if (mapsAndData->downloading())
+    {
+        // Notify!
+        auto* notification = new Notifications::Notification_DataUpdateOngoing(this);
+        GlobalObject::notificationManager()->add(notification);
+    }
 
-void DataManagement::UpdateNotifier::updateNotification()
+}
+
+void DataManagement::UpdateNotifier::updateNotificationDataAvailable()
 {
     // If there is no update, then we end here.
     if (GlobalObject::dataManager()->mapsAndData()->updateSize() == 0) {

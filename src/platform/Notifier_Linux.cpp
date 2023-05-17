@@ -160,9 +160,6 @@ void Platform::Notifier::onNotificationClosed(uint id, uint reason)
     {
         switch (type)
         {
-        case DownloadInfo:
-            emit action(DownloadInfo_Clicked);
-            break;
         case TrafficReceiverSelfTestError:
             emit action(TrafficReceiverSelfTestError_Clicked);
             break;

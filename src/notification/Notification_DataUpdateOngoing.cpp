@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,43 +18,40 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QGuiApplication>
+#include "dataManagement/DataManager.h"
+#include "notification/Notification_DataUpdateOngoing.h"
 
-#include "platform/Notifier_Abstract.h"
 
+//
+// Constructors and destructors
+//
 
-Platform::Notifier_Abstract::Notifier_Abstract(QObject *parent)
-    : GlobalObject(parent)
+Notifications::Notification_DataUpdateOngoing::Notification_DataUpdateOngoing(QObject *parent) : Notification(parent)
 {
+    setTitle(tr("Downloading map and data…"));
+    setButton1Text(tr("Dismiss"));
+    setImportance(0);
+    update();
 
-    connect(qGuiApp, &QGuiApplication::applicationStateChanged, this,
-            [this](Qt::ApplicationState state)
-    {
-        if (state == Qt::ApplicationSuspended)
-        {
-            hideAll();
-        }
-    });
+    auto* mapsAndData = GlobalObject::dataManager()->mapsAndData();
+    connect(mapsAndData, &DataManagement::Downloadable_MultiFile::downloadingChanged, this, &Notifications::Notification_DataUpdateOngoing::update);
 }
 
-
-void Platform::Notifier_Abstract::hideAll()
+void Notifications::Notification_DataUpdateOngoing::button1Clicked()
 {
-    hideNotification(TrafficReceiverSelfTestError);
-    hideNotification(TrafficReceiverRuntimeError);
+    deleteLater();
 }
 
-
-auto Platform::Notifier_Abstract::title(Platform::Notifier_Abstract::NotificationTypes notification) -> QString
+void Notifications::Notification_DataUpdateOngoing::update()
 {
-    switch (notification)
+    auto* mapsAndData = GlobalObject::dataManager()->mapsAndData();
+    if (mapsAndData == nullptr)
     {
-    case TrafficReceiverRuntimeError:
-        return tr("Traffic data receiver problem");
-    case TrafficReceiverSelfTestError:
-        return tr("Traffic data receiver self test error");
+        return;
     }
-
-    return {};
+    if (!mapsAndData->downloading())
+    {
+        deleteLater();
+        return;
+    }
 }
-

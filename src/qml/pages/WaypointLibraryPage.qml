@@ -154,7 +154,7 @@ Page {
 
                 AutoSizingMenu {
                     title: qsTr("Open in Other App…")
-                    enabled: WaypointLibrary.waypoints.length > 0
+                    enabled: (Qt.platform.os !== "ios") && (WaypointLibrary.waypoints.length > 0)
 
                     MenuItem {
                         text: qsTr("… in GeoJSON format")

@@ -250,6 +250,7 @@ Page {
 
                         AutoSizingMenu {
                             title: qsTr("Open in Other App…")
+                            enabled: Qt.platform.os !== "ios"
 
                             MenuItem {
                                 text: qsTr("… in GeoJSON format")

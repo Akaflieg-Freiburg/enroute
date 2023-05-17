@@ -18,8 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "platform/PlatformAdaptor_iOS.h"
+#include <QTimer>
+
 #include "ios/ObjCAdapter.h"
+#include "platform/PlatformAdaptor_iOS.h"
+#include "traffic/TrafficDataProvider.h"
 
 // This is a template file without actual implementation.
 
@@ -80,8 +83,13 @@ void Platform::PlatformAdaptor::lockWifi(bool lock)
 
 void Platform::PlatformAdaptor::onGUISetupCompleted()
 {
-    // This method is called once the GUI has been set up. The Android-specific
-    // implementes uses this method to hide the splash screen.
+  // This method is called once the GUI has been set up. The Android-specific
+  // implementes uses this method to hide the splash screen.
+      auto* timer = new QTimer(this);
+      timer->setInterval(1000*60);
+      timer->setSingleShot(false);
+      connect(timer, &QTimer::timeout, GlobalObject::trafficDataProvider(), &Traffic::TrafficDataProvider::connectToTrafficReceiver);
+      timer->start();
 #warning Not implemented
 }
 

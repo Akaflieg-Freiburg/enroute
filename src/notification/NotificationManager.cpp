@@ -31,12 +31,6 @@
 
 Notifications::NotificationManager::NotificationManager(QObject *parent) : GlobalObject(parent)
 {
-    auto* testNotification = new Notifications::Notification(this);
-    testNotification->setTitle(u"This is the title"_qs);
-    testNotification->setText(u"This is a dummy text. Beautification lies in the eye of the beholder. I will come back to that later."_qs);
-    testNotification->setButton1Text(u"Dismiss"_qs);
-    testNotification->setButton2Text(u"Cancel"_qs);
-    add(testNotification);
 }
 
 

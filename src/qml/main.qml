@@ -808,6 +808,7 @@ AppWindow {
     Connections { // Notifier
         target: Notifier
 
+        // warning
         function onAction(act) {
             if ((act === Notifier.DownloadInfo_Clicked) && (stackView.currentItem.objectName !== "DataManagerPage")) {
                 stackView.push("pages/DataManagerPage.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
@@ -820,10 +821,6 @@ AppWindow {
             }
             if ((act === Notifier.GeoMapUpdatePending_Clicked) && (stackView.currentItem.objectName !== "DataManagerPage")) {
                 stackView.push("pages/DataManagerPage.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
-            }
-            if (act === Notifier.GeoMapUpdatePending_UpdateRequested) {
-                DataManager.mapsAndData.update()
-                toast.doToast(qsTr("Starting map update"))
             }
         }
 

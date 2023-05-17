@@ -129,20 +129,6 @@ void Platform::Notifier::hideNotification(Platform::Notifier_Abstract::Notificat
 void Platform::Notifier::onActionInvoked(uint /*unused*/, const QString &key)
 {
 
-    if (key == u"GeoMap_Dismiss"_qs)
-    {
-        // The method onNotificationClosed will later be called. The following line ensures
-        // that the signal notificationClicked() is then no longer emitted.
-        notificationIDs.remove(GeoMapUpdatePending);
-    }
-    if (key == u"GeoMap_Update"_qs)
-    {
-        emit action(GeoMapUpdatePending_UpdateRequested);
-
-        // The method onNotificationClosed will later be called. The following line ensures
-        // that the signal notificationClicked() is then no longer emitted.
-        notificationIDs.remove(GeoMapUpdatePending);
-    }
 
 }
 
@@ -183,9 +169,6 @@ void Platform::Notifier::onNotificationClosed(uint id, uint reason)
         case TrafficReceiverRuntimeError:
             emit action(TrafficReceiverRuntimeError_Clicked);
             break;
-        case GeoMapUpdatePending:
-            emit action(GeoMapUpdatePending_Clicked);
-            break;
         }
     }
 }
@@ -200,11 +183,6 @@ void Platform::Notifier::showNotification(NotificationTypes notificationType, co
     hideNotification(notificationType);
 
     QStringList actions;
-    if (notificationType == GeoMapUpdatePending)
-    {
-        actions << QStringLiteral("GeoMap_Update") << tr("Update");
-        actions << QStringLiteral("GeoMap_Dismiss") << tr("Dismiss");
-    }
     QMap<QString,QVariant> hints;
     hints[QStringLiteral("image-data")] = iconVariant;
     QDBusReply<uint> reply = notificationInterface.call(QStringLiteral("Notify"),

@@ -26,7 +26,8 @@
 #include "UpdateNotifier.h"
 #include "dataManagement/DataManager.h"
 #include "navigation/Navigator.h"
-#include "platform/Notifier_Abstract.h"
+#include "notification/NotificationManager.h"
+#include "notification/Notification_DataUpdate.h"
 
 using namespace std::chrono_literals;
 
@@ -49,20 +50,20 @@ void DataManagement::UpdateNotifier::updateNotification()
 {
     // If there is no update, then we end here.
     if (GlobalObject::dataManager()->mapsAndData()->updateSize() == 0) {
-        GlobalObject::notifier()->hideNotification(Platform::Notifier_Abstract::GeoMapUpdatePending);
         return;
     }
 
     // Do not notify when in flight, but ask again in 11min
     if (GlobalObject::navigator()->flightStatus() == Navigation::Navigator::Flight) {
-        GlobalObject::notifier()->hideNotification(Platform::Notifier_Abstract::GeoMapUpdatePending);
         notificationTimer.start();
         return;
     }
 
+#warning
     // Check if last notification is less than four hours ago. In that case, do not notify again,
     // and ask again in 11min.
     QSettings settings;
+    /*
     auto lastGeoMapUpdateNotification = settings.value(QStringLiteral("lastGeoMapUpdateNotification")).toDateTime();
     if (lastGeoMapUpdateNotification.isValid()) {
         auto secsSinceLastNotification = lastGeoMapUpdateNotification.secsTo(QDateTime::currentDateTimeUtc());
@@ -71,10 +72,10 @@ void DataManagement::UpdateNotifier::updateNotification()
             return;
         }
     }
+*/
 
     // Notify!
-    auto text = tr("The estimated download size is %1.").arg(GlobalObject::dataManager()->mapsAndData()->updateSizeString());
-    GlobalObject::notifier()->showNotification(Platform::Notifier_Abstract::GeoMapUpdatePending, text, text);
+    auto* notification = new Notifications::Notification_DataUpdateAvailable(this);
+    GlobalObject::notificationManager()->add(notification);
     settings.setValue(QStringLiteral("lastGeoMapUpdateNotification"), QDateTime::currentDateTimeUtc());
-
 }

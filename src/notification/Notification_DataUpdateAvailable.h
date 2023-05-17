@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,46 +18,40 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QGuiApplication>
+#pragma once
 
-#include "platform/Notifier_Abstract.h"
+#include "notification/Notification.h"
+
+namespace Notifications {
 
 
-Platform::Notifier_Abstract::Notifier_Abstract(QObject *parent)
-    : GlobalObject(parent)
+class Notification_DataUpdateAvailable : public Notification
 {
+    Q_OBJECT
 
-    connect(qGuiApp, &QGuiApplication::applicationStateChanged, this,
-            [this](Qt::ApplicationState state)
-    {
-        if (state == Qt::ApplicationSuspended)
-        {
-            hideAll();
-        }
-    });
-}
+public:
+    //
+    // Constructors and destructors
+    //
 
+    /*! \brief Standard constructor
+     *
+     * @param parent The standard QObject parent pointer
+     */
+    explicit Notification_DataUpdateAvailable(QObject* parent = nullptr);
 
-void Platform::Notifier_Abstract::hideAll()
-{
-    hideNotification(DownloadInfo);
-    hideNotification(TrafficReceiverSelfTestError);
-    hideNotification(TrafficReceiverRuntimeError);
-}
+    // No default constructor, always want a parent
+    explicit Notification_DataUpdateAvailable() = delete;
 
+    /*! \brief Standard destructor */
+    ~Notification_DataUpdateAvailable() = default;
 
-auto Platform::Notifier_Abstract::title(Platform::Notifier_Abstract::NotificationTypes notification) -> QString
-{
-    switch (notification)
-    {
-    case DownloadInfo:
-        return tr("Downloading map and data…");
-    case TrafficReceiverRuntimeError:
-        return tr("Traffic data receiver problem");
-    case TrafficReceiverSelfTestError:
-        return tr("Traffic data receiver self test error");
-    }
+public slots:
+    virtual void button1Clicked() override;
+    virtual void button2Clicked() override;
 
-    return {};
-}
+private slots:
+    void update();
+};
 
+} // namespace Notifications

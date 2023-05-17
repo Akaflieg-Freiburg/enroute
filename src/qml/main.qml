@@ -520,12 +520,12 @@ AppWindow {
                     Layout.fillWidth: true
 
                     color: "black"
-                    visible: Navigator.flightStatus !== Navigator.Flight
+                    visible: Qt.platform.os !== "ios" && Navigator.flightStatus !== Navigator.Flight
                 }
 
                 ItemDelegate { // Exit
                     Layout.fillWidth: true
-
+                    visible: Qt.platform.os !== "ios"
                     leftPadding: 16+SafeInsets.left
 
                     text: qsTr("Exit")

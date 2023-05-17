@@ -31,6 +31,9 @@ Page {
     title: qsTr("Flight Route Library")
     focus: true
 
+    property bool isIos: Qt.platform.os == "ios"
+    property bool isAndroid: Qt.platform.os === "android"
+    property bool isAndroidOrIos: isAndroid || isIos
 
     header: PageHeader {
 
@@ -95,9 +98,9 @@ Page {
 
                 MenuItem {
                     text: qsTr("Import…")
-                    enabled: Qt.platform.os !== "android"
-                    visible: Qt.platform.os !== "android"
-                    height: Qt.platform.os !== "android" ? undefined : 0
+                    enabled: !isAndroidOrIos
+                    visible: !isAndroidOrIos
+                    height: isAndroidOrIos ? 0 : undefined
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
@@ -195,7 +198,7 @@ Page {
                         id: cptMenu
 
                         AutoSizingMenu {
-                            title: Qt.platform.os === "android" ? qsTr("Share…") : qsTr("Export…")
+                            title: isAndroidOrIos ? qsTr("Share…") : qsTr("Export…")
 
                             MenuItem {
                                 text: qsTr("… to GeoJSON file")
@@ -215,9 +218,9 @@ Page {
                                         shareErrorDialog.open()
                                         return
                                     }
-                                    if (Qt.platform.os === "android")
+                                    if (isAndroid)
                                         toast.doToast(qsTr("Flight route shared"))
-                                    else
+                                    else if(!isIos)
                                         toast.doToast(qsTr("Flight route exported"))
                                 }
                             }
@@ -240,9 +243,9 @@ Page {
                                         shareErrorDialog.open()
                                         return
                                     }
-                                    if (Qt.platform.os === "android")
+                                    if (isAndroid)
                                         toast.doToast(qsTr("Flight route shared"))
-                                    else
+                                    else if (!isIos)
                                         toast.doToast(qsTr("Flight route exported"))
                                 }
                             }

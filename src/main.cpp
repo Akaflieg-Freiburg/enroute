@@ -38,6 +38,10 @@
 #include <kdsingleapplication.h>
 #endif
 
+#if defined(Q_OS_IOS)
+#include "ios/ObjCAdapter.h"
+#endif
+
 #include "DemoRunner.h"
 #include "GlobalObject.h"
 #include "dataManagement/DataManager.h"
@@ -52,6 +56,7 @@
 #include "traffic/TrafficFactor_WithPosition.h"
 #include "weather/Station.h"
 #include <chrono>
+
 
 using namespace std::chrono_literals;
 
@@ -96,8 +101,13 @@ auto main(int argc, char *argv[]) -> int
     QGuiApplication::setWindowIcon(QIcon(u":/icons/appIcon.png"_qs));
 
     // Install translators
+#if defined(Q_OS_IOS)
+    QString preferredLanguage = ObjCAdapter::preferredLanguage();
+#else
+    QString preferredLanguage = QLocale::system().name().left(2);
+#endif
     auto* enrouteTranslator = new QTranslator(&app);
-    if (enrouteTranslator->load(QStringLiteral(":i18n/enroute_%1.qm").arg(QLocale::system().name().left(2))))
+    if (enrouteTranslator->load(QStringLiteral(":i18n/enroute_%1.qm").arg(preferredLanguage)))
     {
         QCoreApplication::installTranslator(enrouteTranslator);
     }

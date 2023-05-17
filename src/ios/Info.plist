@@ -2,71 +2,136 @@
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
 
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
 
-        <key>UIUserInterfaceStyle</key>
-        <string>Light</string>
+    <key>UIUserInterfaceStyle</key>
+    <string>Light</string>
 
-	<key>CFBundleName</key>
-	<string></string>
+    <key>CFBundleName</key>
+    <string></string>
 
-	<key>CFBundleDisplayName</key>
-        <string>${DISPLAY_NAME}</string>
+    <key>CFBundleDisplayName</key>
+    <string>${DISPLAY_NAME}</string>
 
-	<key>CFBundleIdentifier</key>
-        <string>${PRODUCT_BUNDLE_IDENTIFIER}</string>
+    <key>CFBundleIdentifier</key>
+    <string>${PRODUCT_BUNDLE_IDENTIFIER}</string>
 
-	<key>CFBundleExecutable</key>
-	<string>$(EXECUTABLE_NAME)</string>
+    <key>CFBundleExecutable</key>
+    <string>$(EXECUTABLE_NAME)</string>
 
-	<key>CFBundleVersion</key>
-	<string>0.0.1</string>
+    <key>CFBundleVersion</key>
+    <string>0.0.1</string>
 
-	<key>CFBundleShortVersionString</key>
-        <string>${PROJECT_VERSION}</string>
+    <key>CFBundleShortVersionString</key>
+    <string>${PROJECT_VERSION}</string>
 
-	<key>NSHumanReadableCopyright</key>
-	<string></string>
+    <key>NSHumanReadableCopyright</key>
+    <string></string>
 
-	<key>CFBundleDevelopmentRegion</key>
-	<string>English</string>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>English</string>
 
-	<key>LSRequiresIPhoneOS</key>
-	<true/>
+    <key>LSRequiresIPhoneOS</key>
+    <true/>
 
-        <key>CFBundleIconName</key>
-        <string>AppIcon</string>
+    <key>CFBundleIconName</key>
+    <string>AppIcon</string>
 
-        <key>UILaunchStoryboardName</key>
-        <string>LaunchScreen</string>
+    <key>UILaunchStoryboardName</key>
+    <string>LaunchScreen</string>
 
-        <key>CFBundleAllowMixedLocalizations</key>
-        <true/>
+    <key>CFBundleAllowMixedLocalizations</key>
+    <true/>
 
-        <key>ITSAppUsesNonExemptEncryption</key>
-        <false/>
+    <key>ITSAppUsesNonExemptEncryption</key>
+    <false/>
 
-        <key>UIStatusBarStyle</key>
-        <string>UIStatusBarStyleLightContent</string>
+    <key>UIStatusBarStyle</key>
+    <string>UIStatusBarStyleLightContent</string>
 
-        <key>UIViewControllerBasedStatusBarAppearance</key>
-        <false/>
+    <key>UIViewControllerBasedStatusBarAppearance</key>
+    <false/>
 
-	<key>UISupportedInterfaceOrientations</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
+    <key>UISupportedInterfaceOrientations</key>
+    <array>
+            <string>UIInterfaceOrientationPortrait</string>
+            <string>UIInterfaceOrientationPortraitUpsideDown</string>
+            <string>UIInterfaceOrientationLandscapeLeft</string>
+            <string>UIInterfaceOrientationLandscapeRight</string>
+    </array>
 
-        <key>NSLocationWhenInUseUsageDescription</key>
-        <string>Navigation App needs Location</string>
-        <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-        <string>The reason why the app needs location services</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Navigation App needs Location</string>
+
+    <key>UTImportedTypeDeclarations</key>
+    <array>
+        <dict>
+            <key>UTTypeIdentifier</key>
+            <string>com.topografix.gpx</string>
+            <key>UTTypeReferenceURL</key>
+            <string>http://www.topografix.com/GPX/1/1</string>
+            <key>UTTypeDescription</key>
+            <string>GPS Exchange Format (GPX)</string>
+            <key>UTTypeConformsTo</key>
+            <array>
+                <string>public.xml</string>
+            </array>
+            <key>UTTypeTagSpecification</key>
+            <dict>
+                <key>public.filename-extension</key>
+                <array>
+                    <string>gpx</string>
+                </array>
+                <key>public.mime-type</key>
+                <string>application/gpx+xml</string>
+            </dict>
+        </dict>
+    </array>
+    <key>CFBundleDocumentTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleTypeIconFile</key>
+            <string>JOSM.icns</string>
+            <key>CFBundleTypeName</key>
+            <string>GPX Files</string>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>LSHandlerRank</key>
+            <string>Alternate</string>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                    <string>gpx</string>
+                    <string>GPX</string>
+            </array>
+            <key>LSItemContentTypes</key>
+            <array>
+                <string>com.topografix.gpx</string>
+                <string>com.apple.dt.document.gpx</string>
+            </array>
+            <key>NSExportableTypes</key>
+            <array>
+                <string>org.openstreetmap.josm.osm</string>
+            </array>
+        </dict>
+        <dict>
+            <key>CFBundleTypeName</key>
+            <string>GeoJSON</string>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                    <string>geojson</string>
+            </array>
+            <key>LSHandlerRank</key>
+            <string>Alternate</string>
+            <key>LSItemContentTypes</key>
+            <array>
+                <string>public.json</string>
+                <string>com.apple.dt.document.geojson</string>
+            </array>
+        </dict>
+     </array>
 </dict>
 </plist>

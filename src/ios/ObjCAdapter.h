@@ -17,4 +17,6 @@ class ObjCAdapter {
         static bool hasLocationPermission();
         static void sendNotification(QString, QString);
         static bool hasNotificationPermission();
+        static QString shareContent(const QByteArray&, const QString&, const QString&, const QString&);
+        static QString preferredLanguage();
 };

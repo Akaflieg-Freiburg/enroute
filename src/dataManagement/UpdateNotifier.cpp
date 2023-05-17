@@ -78,11 +78,9 @@ void DataManagement::UpdateNotifier::updateNotificationDataAvailable()
         return;
     }
 
-#warning
     // Check if last notification is less than four hours ago. In that case, do not notify again,
     // and ask again in 11min.
     QSettings settings;
-    /*
     auto lastGeoMapUpdateNotification = settings.value(QStringLiteral("lastGeoMapUpdateNotification")).toDateTime();
     if (lastGeoMapUpdateNotification.isValid()) {
         auto secsSinceLastNotification = lastGeoMapUpdateNotification.secsTo(QDateTime::currentDateTimeUtc());
@@ -91,7 +89,6 @@ void DataManagement::UpdateNotifier::updateNotificationDataAvailable()
             return;
         }
     }
-*/
 
     // Notify!
     auto* notification = new Notifications::Notification_DataUpdateAvailable(this);

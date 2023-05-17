@@ -28,39 +28,45 @@ import akaflieg_freiburg.enroute
 Rectangle {
     border.color: "black"
     color: "white"
+    radius: 0.5*font.pixelSize
 
-    implicitHeight: notifyCol.implicitHeight
+    implicitHeight: notifyCol.implicitHeight+font.pixelSize
+    visible: NotificationManager.currentNotification
 
     ColumnLayout {
         id: notifyCol
 
-        width: parent.width
+        x: 0.5*font.pixelSize
+        y: 0.5*font.pixelSize
+        width: parent.width-font.pixelSize
 
         Label {
             Layout.fillWidth: true
             text: NotificationManager.currentNotification ? NotificationManager.currentNotification.title : ""
+            font.bold: true
             wrapMode: Text.Wrap
         }
         Label {
             Layout.fillWidth: true
+            visible: text !== ""
             text: NotificationManager.currentNotification ? NotificationManager.currentNotification.text : ""
             wrapMode: Text.Wrap
         }
 
         RowLayout {
-            Layout.fillWidth: true
 
             ToolButton {
-                Layout.fillWidth: true
                 text: NotificationManager.currentNotification ? NotificationManager.currentNotification.button1Text : ""
+                Layout.preferredHeight: 1.2*font.pixelSize
                 onClicked: {
                     if (NotificationManager.currentNotification)
                         NotificationManager.currentNotification.button1Clicked()
                 }
             }
             ToolButton {
-                Layout.fillWidth: true
                 text: NotificationManager.currentNotification ? NotificationManager.currentNotification.button2Text : ""
+                Layout.preferredHeight: 1.2*font.pixelSize
+
                 onClicked:  {
                     if (NotificationManager.currentNotification)
                         NotificationManager.currentNotification.button2Clicked()

@@ -87,6 +87,10 @@ void Traffic::TrafficDataSource_Abstract::resetReceivingHeartbeat()
 }
 
 
+
+#include <notification/Notification.h>
+#include <notification/NotificationManager.h>
+
 void Traffic::TrafficDataSource_Abstract::setTrafficReceiverRuntimeError(const QString &newErrorString)
 {
     if (m_trafficReceiverRuntimeError == newErrorString) {
@@ -95,6 +99,11 @@ void Traffic::TrafficDataSource_Abstract::setTrafficReceiverRuntimeError(const Q
 
     m_trafficReceiverRuntimeError = newErrorString;
     emit trafficReceiverRuntimeErrorChanged(newErrorString);
+
+    auto* notification = new Notifications::Notification(this);
+    notification->setText(m_trafficReceiverRuntimeError);
+    notification->setButton2Text({})
+    GlobalOb
 }
 
 

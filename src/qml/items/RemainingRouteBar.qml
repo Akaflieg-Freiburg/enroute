@@ -56,6 +56,8 @@ Rectangle {
 
         NotificationArea {
             Layout.fillWidth: true
+            Layout.maximumWidth: 40*dummyControl.font.pixelSize
+            Layout.alignment: Qt.AlignHCenter
         }
 
 

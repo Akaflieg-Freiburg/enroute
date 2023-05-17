@@ -50,21 +50,11 @@ void Platform::Notifier::onNotificationClicked(Platform::Notifier_Abstract::Noti
 {
     hideNotification(notificationType);
     switch (notificationType) {
-    case DownloadInfo:
-        emit action(DownloadInfo_Clicked);
-        break;
     case TrafficReceiverSelfTestError:
         emit action(TrafficReceiverSelfTestError_Clicked);
         break;
     case TrafficReceiverRuntimeError:
         emit action(TrafficReceiverRuntimeError_Clicked);
-        break;
-    case GeoMapUpdatePending:
-        if (actionID == 0) {
-            emit action(GeoMapUpdatePending_Clicked);
-        } else {
-            emit action(GeoMapUpdatePending_UpdateRequested);
-        }
         break;
     }
 }
@@ -78,9 +68,6 @@ void Platform::Notifier::showNotification(Platform::Notifier_Abstract::Notificat
     QJniObject jni_text     = QJniObject::fromString(text);
     QJniObject jni_longText = QJniObject::fromString(longText);
     QJniObject jni_actionText;
-    if (notificationType == GeoMapUpdatePending) {
-        jni_actionText = QJniObject::fromString(tr("Update"));
-    }
 
     QJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/Notifier",
                                               "showNotification",

@@ -48,7 +48,7 @@ TextField {
     rightPadding: hasClearButton ? toolButton.width : undefined
 
     // Fix problem on iOS
-    Component.onCompleted: PlatformAdaptor.setupInputMethodEventFilter(textField)
+    Component.onCompleted: PlatformAdaptor.setupImEventFilter(textField)
 
     RoundButton {
         id: toolButton

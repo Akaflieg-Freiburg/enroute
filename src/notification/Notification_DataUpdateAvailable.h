@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2023 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,37 +18,48 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "platform/Notifier_Linux.h"
+#pragma once
+
+#include "notification/Notification.h"
+
+namespace Notifications {
+
+/*! \brief Notification for available map & data updates
+ *
+ *  This implementation of Notifications::Notification sets proper button texts,
+ *  reacts to button clicks and deletes itself in flight and whenever a map and
+ *  data update starts.
+ */
 
 
-// This is a template file without actual implementation.
-
-Platform::Notifier::Notifier(QObject *parent)
-    : Platform::Notifier::Notifier_Abstract(parent)
+class Notification_DataUpdateAvailable : public Notification
 {
-    // Standard constructor. Recall that the constructor must not call virtual functions.
-    // If you need virtual functions, use the methode deferredInitialization below.
-#warning Not implemented
-}
+    Q_OBJECT
 
+public:
+    //
+    // Constructors and destructors
+    //
 
-void Platform::Notifier::deferredInitialization()
-{
-    // This method is called immediately after the instance has been constructed.
-    // It can be used to implement initialization that calls virtual methods.
-#warning Not implemented
-}
+    /*! \brief Standard constructor
+     *
+     *  @param parent The standard QObject parent pointer
+     */
+    explicit Notification_DataUpdateAvailable(QObject* parent = nullptr);
 
+    // No default constructor, always want a parent
+    explicit Notification_DataUpdateAvailable() = delete;
 
-void Platform::Notifier::hideNotification(Platform::Notifier_Abstract::NotificationTypes notificationType)
-{
-    // This method is supposed to hide the notification "notificationType".
-#warning Not implemented
-}
+    /*! \brief Standard destructor */
+    ~Notification_DataUpdateAvailable() = default;
 
+public slots:
+    /*! \brief Reimplemented from Notifications::Notification */
+    virtual void onButton1Clicked() override;
 
-void Platform::Notifier::showNotification(NotificationTypes notificationType, const QString& text, const QString& longText)
-{
-    // This method is supposed to show the notification "notificationType".
-#warning Not implemented
-}
+private slots:
+    // Check if this notification is still useful and delete it if not.
+    void update();
+};
+
+} // namespace Notifications

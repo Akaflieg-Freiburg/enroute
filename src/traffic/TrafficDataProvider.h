@@ -237,10 +237,10 @@ signals:
     void receivingHeartbeatChanged(bool);
 
     /*! \brief Notifier signal */
-    void trafficReceiverRuntimeErrorChanged(QString message);
+    void trafficReceiverRuntimeErrorChanged();
 
     /*! \brief Notifier signal */
-    void trafficReceiverSelfTestErrorChanged(QString message);
+    void trafficReceiverSelfTestErrorChanged();
 
     /*! \brief Notifier signal */
     void warningChanged(const Traffic::Warning&);
@@ -292,10 +292,10 @@ private slots:
     void onTrafficFactorWithoutPosition(const Traffic::TrafficFactor_DistanceOnly& factor);
 
     // Called if one of the sources reports or clears an error string
-    void onTrafficReceiverSelfTestError(const QString& msg);
+    void onTrafficReceiverSelfTestError();
 
     // Called if one of the sources reports or clears an error string
-    void onTrafficReceiverRuntimeError(const QString& msg);
+    void onTrafficReceiverRuntimeError();
 
     // Resetter method
     void resetWarning();

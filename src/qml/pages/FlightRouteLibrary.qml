@@ -88,15 +88,6 @@ Page {
                 id: headerMenuX
 
                 MenuItem {
-                    text: qsTr("Info…")
-                    onTriggered: {
-                        PlatformAdaptor.vibrateBrief()
-                        infoDialog.open()
-                    }
-
-                } // ToolButton
-
-                MenuItem {
                     text: qsTr("Import…")
                     enabled: !isAndroidOrIos
                     visible: !isAndroidOrIos
@@ -377,14 +368,6 @@ Page {
 
         title: qsTr("An Error Occurred…")
         standardButtons: Dialog.Ok
-    }
-
-    LongTextDialog {
-        id: infoDialog
-        standardButtons: Dialog.Ok
-
-        title: qsTr("Flight Route Library")
-        text: Librarian.getStringFromRessource(":text/flightRouteLibraryInfo.html").arg(Librarian.directory(Librarian.Routes))
     }
 
     LongTextDialog {

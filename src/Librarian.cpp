@@ -127,15 +127,6 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 <p>Please understand that we program this free app in our spare time, as a service to the community. Sadly, I should point out that sending us impolite demands is not likely to give the result that you desire.</p>)html");
     }
 
-    if (name == u":text/flightRouteLibraryInfo.html"_qs)
-    {
-        return tr(R"html(<p>The flight routes are stored in standard <a href="https://geojson.org">GeoJSON format</a> in the following directory.<p>
-
-<p style="text-align:left;"><strong><a href="file:%1">%1</a></strong></p>
-
-<p>The flight routes can be accessed by other programs, such as backup software or file synchronization apps.  This can be useful to share a flight route library with other devices.</p>)html");
-    }
-
     if (name == u":text/info_enroute.html"_qs)
     {
         QString version(QStringLiteral(PROJECT_VERSION));

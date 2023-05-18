@@ -333,10 +333,8 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::Tr
 }
 
 
-void Traffic::TrafficDataProvider::onTrafficReceiverRuntimeError(const QString& msg)
+void Traffic::TrafficDataProvider::onTrafficReceiverRuntimeError()
 {
-    Q_UNUSED(msg);
-
     QString result;
     foreach(auto dataSource, m_dataSources)
     {
@@ -356,14 +354,12 @@ void Traffic::TrafficDataProvider::onTrafficReceiverRuntimeError(const QString& 
         return;
     }
     m_trafficReceiverRuntimeError = result;
-    emit trafficReceiverRuntimeErrorChanged(result);
+    emit trafficReceiverRuntimeErrorChanged();
 }
 
 
-void Traffic::TrafficDataProvider::onTrafficReceiverSelfTestError(const QString& msg)
+void Traffic::TrafficDataProvider::onTrafficReceiverSelfTestError()
 {
-    Q_UNUSED(msg);
-
     QString result;
     foreach(auto dataSource, m_dataSources)
     {
@@ -383,7 +379,7 @@ void Traffic::TrafficDataProvider::onTrafficReceiverSelfTestError(const QString&
         return;
     }
     m_trafficReceiverSelfTestError = result;
-    emit trafficReceiverSelfTestErrorChanged(result);
+    emit trafficReceiverSelfTestErrorChanged();
 }
 
 

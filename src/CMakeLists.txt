@@ -32,7 +32,6 @@ set(SOURCES
     dataManagement/Downloadable_MultiFile.h
     dataManagement/Downloadable_SingleFile.h
     dataManagement/SSLErrorHandler.h
-    dataManagement/UpdateNotifier.h
     DemoRunner.h
     geomaps/Airspace.h
     geomaps/CUP.h
@@ -56,10 +55,11 @@ set(SOURCES
     notam/Notam.h
     notam/NotamList.h
     notam/NotamProvider.h
+    notification/Notification.h
+    notification/Notification_DataUpdateAvailable.h
+    notification/NotificationManager.h
     platform/FileExchange.h
     platform/FileExchange_Abstract.h
-    platform/Notifier.h
-    platform/Notifier_Abstract.h
     platform/PlatformAdaptor.h
     platform/PlatformAdaptor_Abstract.h
     platform/SafeInsets_Abstract.h
@@ -103,7 +103,6 @@ set(SOURCES
     dataManagement/Downloadable_MultiFile.cpp
     dataManagement/Downloadable_SingleFile.cpp
     dataManagement/SSLErrorHandler.cpp
-    dataManagement/UpdateNotifier.cpp
     DemoRunner.cpp
     geomaps/Airspace.cpp
     geomaps/CUP.cpp
@@ -129,8 +128,10 @@ set(SOURCES
     notam/Notam.cpp
     notam/NotamList.cpp
     notam/NotamProvider.cpp
+    notification/Notification.cpp
+    notification/Notification_DataUpdateAvailable.cpp
+    notification/NotificationManager.cpp
     platform/FileExchange_Abstract.cpp
-    platform/Notifier_Abstract.cpp
     platform/PlatformAdaptor_Abstract.cpp
     platform/SafeInsets_Abstract.cpp
     positioning/Geoid.cpp
@@ -188,8 +189,6 @@ if(ANDROID)
     list(APPEND SOURCES
         platform/FileExchange_Android.h
         platform/FileExchange_Android.cpp
-        platform/Notifier_Android.h
-        platform/Notifier_Android.cpp
         platform/PlatformAdaptor_Android.h
         platform/PlatformAdaptor_Android.cpp
         platform/SafeInsets_Android.h
@@ -258,8 +257,6 @@ if (UNIX AND NOT ANDROID AND NOT APPLE)
     list(APPEND SOURCES
         platform/FileExchange_Linux.h
         platform/FileExchange_Linux.cpp
-        platform/Notifier_Linux.h
-        platform/Notifier_Linux.cpp
         platform/PlatformAdaptor_Linux.h
         platform/PlatformAdaptor_Linux.cpp
         platform/SafeInsets_Desktop.h
@@ -306,8 +303,6 @@ if (APPLE AND NOT IOS)
     list(APPEND SOURCES
         platform/FileExchange_MacOS.h
         platform/FileExchange_MacOS.cpp
-        platform/Notifier_MacOS.h
-        platform/Notifier_MacOS.cpp
         platform/PlatformAdaptor_MacOS.h
         platform/PlatformAdaptor_MacOS.cpp
         platform/SafeInsets_Desktop.h
@@ -344,8 +339,6 @@ if (IOS)
     list(APPEND SOURCES
         platform/FileExchange_iOS.h
         platform/FileExchange_iOS.cpp
-        platform/Notifier_iOS.h
-        platform/Notifier_iOS.cpp
         platform/PlatformAdaptor_iOS.h
         platform/PlatformAdaptor_iOS.cpp
         platform/SafeInsets_iOS.h
@@ -408,6 +401,7 @@ target_include_directories(${PROJECT_NAME}
     geomaps
     navigation
     notam
+    notification
     platform
     positioning
     traffic
@@ -457,6 +451,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/MFM.qml
     qml/items/MyTextField.qml
     qml/items/NavBar.qml
+    qml/items/NotificationArea.qml
     qml/items/PageHeader.qml
     qml/items/+Material/PageHeader.qml
     qml/items/RemainingRouteBar.qml

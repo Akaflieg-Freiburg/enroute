@@ -782,8 +782,10 @@ AppWindow {
         function onDownloadingChanged(downloading) {
             if (downloading) {
                 Notifier.showNotification(Notifier.DownloadInfo, "", "");
+                NotificationManager.showNotification(Notifier.DownloadInfo, "", "");
             } else {
                 Notifier.hideNotification(Notifier.DownloadInfo);
+                NotificationManager.hideNotification(Notifier.DownloadInfo);
             }
         }
     }
@@ -798,30 +800,6 @@ AppWindow {
                 toast.doToast(qsTr("Now showing airspaces up to %1.").arg(airspaceAltitudeLimitString))
             } else {
                 toast.doToast(qsTr("Now showing all airspaces."))
-            }
-        }
-
-    }
-
-    Connections { // Notifier
-        target: Notifier
-
-        function onAction(act) {
-            if ((act === Notifier.DownloadInfo_Clicked) && (stackView.currentItem.objectName !== "DataManagerPage")) {
-                stackView.push("pages/DataManagerPage.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
-            }
-            if ((act === Notifier.TrafficReceiverSelfTestError_Clicked) && (stackView.currentItem.objectName !== "TrafficReceiverPage")) {
-                stackView.push("pages/TrafficReceiver.qml")
-            }
-            if ((act === Notifier.TrafficReceiverRuntimeError_Clicked) && (stackView.currentItem.objectName !== "TrafficReceiverPage")) {
-                stackView.push("pages/TrafficReceiver.qml")
-            }
-            if ((act === Notifier.GeoMapUpdatePending_Clicked) && (stackView.currentItem.objectName !== "DataManagerPage")) {
-                stackView.push("pages/DataManagerPage.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
-            }
-            if (act === Notifier.GeoMapUpdatePending_UpdateRequested) {
-                DataManager.mapsAndData.update()
-                toast.doToast(qsTr("Starting map update"))
             }
         }
 
@@ -877,22 +855,6 @@ Go to the 'Settings' page if you wish to restore the original, safe, behavior of
             dialogLoader.text = password
             dialogLoader.source = "dialogs/PasswordStorageDialog.qml"
             dialogLoader.active = true
-        }
-
-        function onTrafficReceiverRuntimeErrorChanged(message) {
-            if (message === "") {
-                Notifier.hideNotification(Notifier.TrafficReceiverRuntimeError);
-            } else {
-                Notifier.showNotification(Notifier.TrafficReceiverRuntimeError, message, message);
-            }
-        }
-
-        function onTrafficReceiverSelfTestErrorChanged(message) {
-            if (message === "") {
-                Notifier.hideNotification(Notifier.TrafficReceiverSelfTestError);
-            } else {
-                Notifier.showNotification(Notifier.TrafficReceiverSelfTestError, message, message);
-            }
         }
     }
 

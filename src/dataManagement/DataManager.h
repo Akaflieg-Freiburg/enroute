@@ -26,7 +26,6 @@
 #include "GlobalObject.h"
 #include "dataManagement/Downloadable_MultiFile.h"
 #include "dataManagement/Downloadable_SingleFile.h"
-#include "dataManagement/UpdateNotifier.h"
 #include "units/ByteSize.h"
 
 
@@ -99,7 +98,7 @@ public:
     void deferredInitialization() override;
 
     // destructor
-    ~DataManager();
+    ~DataManager() = default;
 
     //
     // PROPERTIES
@@ -362,9 +361,6 @@ private:
 
     // List of geographic map sets
     DataManagement::Downloadable_MultiFile m_mapSets  {DataManagement::Downloadable_MultiFile::SingleUpdate};
-
-    // Pointer to update notifier
-    QPointer<DataManagement::UpdateNotifier> _updateNotifier {};
 };
 
 } // namespace DataManagement

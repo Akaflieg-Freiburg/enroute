@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.26.7</span>
+   &#160;<span id="projectnumber">2.26.8</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -67,11 +67,10 @@ Inheritance diagram for GlobalObject:</div>
 <area shape="rect" href="classNOTAM_1_1NotamProvider.html" title="This extremely simple class holds a the data item of a NOTAM." alt="" coords="189,224,365,251"/>
 <area shape="rect" href="classNavigation_1_1Clock.html" title="This extremely simple class give accss to time and offers a few time&#45;related functions." alt="" coords="209,275,346,301"/>
 <area shape="rect" href="classNavigation_1_1Navigator.html" title="Main hub for navigation data." alt="" coords="195,325,360,352"/>
-<area shape="rect" href="classPlatform_1_1FileExchange__Abstract.html" title="Interface to platform&#45;specific file exchange functionality." alt="" coords="191,377,363,418"/>
-<area shape="rect" href="classPlatform_1_1Notifier__Abstract.html" title="This class shows platform&#45;native notifications to the user." alt="" coords="210,442,345,483"/>
+<area shape="rect" href="classNotifications_1_1NotificationManager.html" title="This class manages notifications and presents them to the GUI." alt="" coords="184,377,371,418"/>
+<area shape="rect" href="classPlatform_1_1FileExchange__Abstract.html" title="Interface to platform&#45;specific file exchange functionality." alt="" coords="191,442,363,483"/>
 <area shape="rect" href="classPlatform_1_1PlatformAdaptor__Abstract.html" title="Interface to platform&#45;specific functionality." alt="" coords="181,507,374,549"/>
-<area shape="rect" href="classPlatform_1_1FileExchange.html" title="Implementation of FileExchange for Android devices." alt="" coords="453,384,625,411"/>
-<area shape="rect" href="classPlatform_1_1Notifier.html" title="Template implementation of Notifier." alt="" coords="472,449,607,476"/>
+<area shape="rect" href="classPlatform_1_1FileExchange.html" title="Implementation of FileExchange for Android devices." alt="" coords="453,449,625,476"/>
 <area shape="rect" href="classPlatform_1_1PlatformAdaptor.html" title="Implementation of PlatformAdaptor for Android devices." alt="" coords="443,515,636,541"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
@@ -132,9 +131,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a8972bb578c7bdaf003a0f8f5d7e424a2"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE <a class="el" href="classNOTAM_1_1NotamProvider.html">NOTAM::NotamProvider</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalObject.html#a8972bb578c7bdaf003a0f8f5d7e424a2">notamProvider</a> ()</td></tr>
 <tr class="memdesc:a8972bb578c7bdaf003a0f8f5d7e424a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static notification manager instance.  <a href="classGlobalObject.html#a8972bb578c7bdaf003a0f8f5d7e424a2">More...</a><br /></td></tr>
 <tr class="separator:a8972bb578c7bdaf003a0f8f5d7e424a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad51bc8787d5e1c8821e3e4665cfc8ab6"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE <a class="el" href="classPlatform_1_1Notifier__Abstract.html">Platform::Notifier_Abstract</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalObject.html#ad51bc8787d5e1c8821e3e4665cfc8ab6">notifier</a> ()</td></tr>
-<tr class="memdesc:ad51bc8787d5e1c8821e3e4665cfc8ab6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static notification manager instance.  <a href="classGlobalObject.html#ad51bc8787d5e1c8821e3e4665cfc8ab6">More...</a><br /></td></tr>
-<tr class="separator:ad51bc8787d5e1c8821e3e4665cfc8ab6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad13691c58c71ce9b8be146bf8743f08e"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE <a class="el" href="classNotifications_1_1NotificationManager.html">Notifications::NotificationManager</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalObject.html#ad13691c58c71ce9b8be146bf8743f08e">notificationManager</a> ()</td></tr>
+<tr class="memdesc:ad13691c58c71ce9b8be146bf8743f08e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static notification manager instance.  <a href="classGlobalObject.html#ad13691c58c71ce9b8be146bf8743f08e">More...</a><br /></td></tr>
+<tr class="separator:ad13691c58c71ce9b8be146bf8743f08e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34f0b76423c7990eb597ff7eaac5847f"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE QNetworkAccessManager *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalObject.html#a34f0b76423c7990eb597ff7eaac5847f">networkAccessManager</a> ()</td></tr>
 <tr class="memdesc:a34f0b76423c7990eb597ff7eaac5847f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static QNetworkAccessManager instance.  <a href="classGlobalObject.html#a34f0b76423c7990eb597ff7eaac5847f">More...</a><br /></td></tr>
 <tr class="separator:a34f0b76423c7990eb597ff7eaac5847f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -165,7 +164,7 @@ Protected Member Functions</h2></td></tr>
 <p>Objects that inherit from this class MUST NOT call any of the static methods from their constructors. Instead, the method <a class="el" href="classGlobalObject.html#ad89d4b5b146c91f65f282572629c2f5f" title="Non-constructor initialization.">deferredInitialization()</a> can be used, which is called immediately after the constructor returns.</p>
 <p>The methods in this class are reentrant, but not thread safe. </p>
 
-<p class="definition">Definition at line <a class="el" href="GlobalObject_8h_source.html#l00100">100</a> of file <a class="el" href="GlobalObject_8h_source.html">GlobalObject.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalObject_8h_source.html#l00105">105</a> of file <a class="el" href="GlobalObject_8h_source.html">GlobalObject.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ac8dfa53c492975de42fa7972e77abbc1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac8dfa53c492975de42fa7972e77abbc1">&#9670;&nbsp;</a></span>GlobalObject()</h2>
@@ -369,9 +368,9 @@ Protected Member Functions</h2></td></tr>
 <p>Non-constructor initialization. </p>
 <p>This method is called by the static methods that create global instances immediately after the constructor returns. This class can be re-implemented to perform initialization steps that refer to other singleton objects. </p>
 
-<p>Reimplemented in <a class="el" href="classPlatform_1_1PlatformAdaptor.html#a0a762312201deb36e9ff3c458e7ff696">Platform::PlatformAdaptor</a>, <a class="el" href="classPlatform_1_1Notifier.html#a9a8f58e60985ebb41cb21ed1095605ee">Platform::Notifier</a>, <a class="el" href="classPlatform_1_1Notifier.html#a9a8f58e60985ebb41cb21ed1095605ee">Platform::Notifier</a>, <a class="el" href="classPlatform_1_1Notifier.html#a9a8f58e60985ebb41cb21ed1095605ee">Platform::Notifier</a>, <a class="el" href="classPlatform_1_1Notifier.html#a9a8f58e60985ebb41cb21ed1095605ee">Platform::Notifier</a>, <a class="el" href="classPlatform_1_1FileExchange.html#aa02f3bc70cc1e4e1f2de22ee63ad919a">Platform::FileExchange</a>, <a class="el" href="classPlatform_1_1FileExchange.html#aa02f3bc70cc1e4e1f2de22ee63ad919a">Platform::FileExchange</a>, <a class="el" href="classPlatform_1_1FileExchange.html#aa02f3bc70cc1e4e1f2de22ee63ad919a">Platform::FileExchange</a>, <a class="el" href="classPlatform_1_1FileExchange.html#aa02f3bc70cc1e4e1f2de22ee63ad919a">Platform::FileExchange</a>, <a class="el" href="classPlatform_1_1FileExchange.html#a83d1fff8813619e716d518cc42956d9a">Platform::FileExchange</a>, <a class="el" href="classNOTAM_1_1NotamProvider.html#a47f4d06a4317122c50578e32722c9c82">NOTAM::NotamProvider</a>, <a class="el" href="classNavigation_1_1Navigator.html#a9f95457f009e0c581a3703b69f04b63d">Navigation::Navigator</a>, <a class="el" href="classGeoMaps_1_1GeoMapProvider.html#ad2b0640861db6e1383da6a0461e9936c">GeoMaps::GeoMapProvider</a>, and <a class="el" href="classDataManagement_1_1DataManager.html#a32d353064fd94a0af5173e4951a241e7">DataManagement::DataManager</a>.</p>
+<p>Reimplemented in <a class="el" href="classPlatform_1_1PlatformAdaptor.html#a0a762312201deb36e9ff3c458e7ff696">Platform::PlatformAdaptor</a>, <a class="el" href="classPlatform_1_1FileExchange.html#aa02f3bc70cc1e4e1f2de22ee63ad919a">Platform::FileExchange</a>, <a class="el" href="classPlatform_1_1FileExchange.html#aa02f3bc70cc1e4e1f2de22ee63ad919a">Platform::FileExchange</a>, <a class="el" href="classPlatform_1_1FileExchange.html#aa02f3bc70cc1e4e1f2de22ee63ad919a">Platform::FileExchange</a>, <a class="el" href="classPlatform_1_1FileExchange.html#aa02f3bc70cc1e4e1f2de22ee63ad919a">Platform::FileExchange</a>, <a class="el" href="classPlatform_1_1FileExchange.html#a83d1fff8813619e716d518cc42956d9a">Platform::FileExchange</a>, <a class="el" href="classNotifications_1_1NotificationManager.html#a491ee0154d491a2a6ec072f4bee87f72">Notifications::NotificationManager</a>, <a class="el" href="classNOTAM_1_1NotamProvider.html#a47f4d06a4317122c50578e32722c9c82">NOTAM::NotamProvider</a>, <a class="el" href="classNavigation_1_1Navigator.html#a9f95457f009e0c581a3703b69f04b63d">Navigation::Navigator</a>, <a class="el" href="classGeoMaps_1_1GeoMapProvider.html#ad2b0640861db6e1383da6a0461e9936c">GeoMaps::GeoMapProvider</a>, and <a class="el" href="classDataManagement_1_1DataManager.html#a32d353064fd94a0af5173e4951a241e7">DataManagement::DataManager</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="GlobalObject_8h_source.html#l00258">258</a> of file <a class="el" href="GlobalObject_8h_source.html">GlobalObject.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalObject_8h_source.html#l00263">263</a> of file <a class="el" href="GlobalObject_8h_source.html">GlobalObject.h</a>.</p>
 
 </div>
 </div>
@@ -627,8 +626,8 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ad51bc8787d5e1c8821e3e4665cfc8ab6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad51bc8787d5e1c8821e3e4665cfc8ab6">&#9670;&nbsp;</a></span>notifier()</h2>
+<a id="ad13691c58c71ce9b8be146bf8743f08e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad13691c58c71ce9b8be146bf8743f08e">&#9670;&nbsp;</a></span>notificationManager()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -637,7 +636,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static Q_INVOKABLE <a class="el" href="classPlatform_1_1Notifier__Abstract.html">Platform::Notifier_Abstract</a>* GlobalObject::notifier </td>
+          <td class="memname">static Q_INVOKABLE <a class="el" href="classNotifications_1_1NotificationManager.html">Notifications::NotificationManager</a>* GlobalObject::notificationManager </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>

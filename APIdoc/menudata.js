@@ -101,7 +101,8 @@ var menudata={children:[
 {text:"s",url:"functions_eval.html#index_s"},
 {text:"t",url:"functions_eval.html#index_t"},
 {text:"u",url:"functions_eval.html#index_u"},
-{text:"v",url:"functions_eval.html#index_v"}]},
+{text:"v",url:"functions_eval.html#index_v"},
+{text:"w",url:"functions_eval.html#index_w"}]},
 {text:"Properties",url:"functions_prop.html",children:[
 {text:"a",url:"functions_prop.html#index_a"},
 {text:"b",url:"functions_prop_b.html#index_b"},

@@ -1,4 +1,0 @@
-<map id="Platform::Notifier_Abstract" name="Platform::Notifier_Abstract">
-<area shape="rect" id="node1" title="This class shows platform&#45;native notifications to the user." alt="" coords="5,80,140,121"/>
-<area shape="rect" id="node2" href="$classGlobalObject.html" title="Base class for global singleton objects." alt="" coords="19,5,126,32"/>
-</map>

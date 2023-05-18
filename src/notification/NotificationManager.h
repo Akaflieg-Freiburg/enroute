@@ -102,17 +102,23 @@ private slots:
     // the list changes.
     void updateNotificationList();
 
-#warning
+    // Called whenever the traffic receiver reports a runtime error,
+    // or clears the error status.
     void onTrafficReceiverRuntimeError();
 
-#warning
+    // Called whenever the traffic receiver reports a self test error,
+    // or clears the error status.
     void onTrafficReceiverSelfTestError();
 
+    // Called whenever map and data updates become (un)available
     void onMapAndDataUpdateSizeChanged();
 
+    // Called whenever map and data are being downloaded.
     void onMapAndDataDownloadingChanged();
 
 private:
+    // Adds a notification to m_notifications and rearranges the list.
+    // Removes nullptrs and sorts list by importance.
     void addNotification(Notifications::Notification* notification);
 
     // List of Notifications, sorted so that the most important notification comes first.

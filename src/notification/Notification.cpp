@@ -18,9 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <chrono>
 #include <QTimer>
 
 #include "notification/Notification.h"
+
+using namespace std::chrono_literals;
 
 
 //
@@ -30,7 +33,7 @@
 Notifications::Notification::Notification(QObject* parent) : QObject(parent)
 {
     // Auto-delete this notification in five minutes.
-    QTimer::singleShot(5*60*1000, this, &QObject::deleteLater);
+    QTimer::singleShot(5min, this, &QObject::deleteLater);
 }
 
 

@@ -48,15 +48,16 @@ public:
         Info = 0,               /*!< \brief Generic information, "Map updates available" */
         Info_Navigation = 1,    /*!< \brief Information pertaining to navigation, "Top of descent reached" */
         Warning = 2,            /*!< \brief Generic warning, "Traffic data receiver inop" */
-        Warning_Navigation = 3, /*!< \brief Serious warning, "Prohibited Airspace 1 minutes ahead"
+        Warning_Navigation = 3, /*!< \brief Serious warning, "Prohibited Airspace 1 minutes ahead" */
         Alert = 4               /*!< \brief Alert. Immediate action is required to avoid accident or serious rule infringion */
     };
-    Q_ENUM(Importance)
+    Q_ENUM(Importance);
 
     //
     // Constructors and destructors
     //
 
+public:
     /*! \brief Standard constructor
      *
      *  The constructor sets a time that calls deleteLater() after five minutes.
@@ -191,7 +192,7 @@ public:
 
     /*! \brief Setter function for property of the same name
      *
-     *  @param newButton1Text Property button1Text
+     *  @param newButton2Text Property button1Text
      */
     void setButton2Text(const QString& newButton2Text);
 
@@ -278,7 +279,7 @@ private:
     Notifications::Notification::Importance m_importance {Info};
     Units::Timespan m_reactionTime;
     QString m_spokenText;
-    QString m_title {"Placeholder title"};
+    QString m_title {u"Placeholder title"_qs};
     QString m_text;
 };
 

@@ -27,7 +27,6 @@
 #include "navigation/Navigator.h"
 #include "notification/NotificationManager.h"
 #include "notification/Notification_DataUpdateAvailable.h"
-#include "traffic/TrafficDataSource_Abstract.h"
 #include "traffic/TrafficDataProvider.h"
 
 
@@ -38,7 +37,6 @@
 Notifications::NotificationManager::NotificationManager(QObject *parent) : GlobalObject(parent)
 {
 }
-
 
 void Notifications::NotificationManager::deferredInitialization()
 {
@@ -63,13 +61,22 @@ void Notifications::NotificationManager::deferredInitialization()
 }
 
 
-[[nodiscard]] Notifications::Notification* Notifications::NotificationManager::currentNotification() const {
+//
+// Getter Methods
+//
+
+Notifications::Notification* Notifications::NotificationManager::currentNotification() const {
     if (m_notifications.isEmpty())
     {
         return nullptr;
     }
     return m_notifications[0];
 }
+
+
+//
+// Private Methods
+//
 
 void Notifications::NotificationManager::addNotification(Notifications::Notification* notification)
 {
@@ -95,19 +102,53 @@ void Notifications::NotificationManager::addNotification(Notifications::Notifica
     updateNotificationList();
 }
 
-void Notifications::NotificationManager::updateNotificationList()
+void Notifications::NotificationManager::onMapAndDataDownloadingChanged()
 {
-    m_notifications.removeAll(nullptr);
-    std::sort(m_notifications.begin(), m_notifications.end(), [](const Notification* a, const Notification* b)
-              { return a->importance() > b->importance(); });
-
-    if (currentNotificationCache == currentNotification())
+    auto* mapsAndData = GlobalObject::dataManager()->mapsAndData();
+    if (mapsAndData == nullptr)
     {
         return;
     }
-    qWarning() << "Update" << m_notifications;
-    currentNotificationCache = currentNotification();
-    emit currentNotificationChanged();
+    if (mapsAndData->downloading())
+    {
+        // Notify!
+        auto* notification = new Notifications::Notification(this);
+        notification->setTitle(tr("Downloading map and data…"));
+                               connect(GlobalObject::dataManager()->mapsAndData(), &DataManagement::Downloadable_MultiFile::downloadingChanged, notification, &QObject::deleteLater);
+        addNotification(notification);
+    }
+
+}
+
+void Notifications::NotificationManager::onMapAndDataUpdateSizeChanged()
+{
+    // If there is no update, then we end here.
+    if (GlobalObject::dataManager()->mapsAndData()->updateSize() == 0) {
+        return;
+    }
+
+    // Do not notify when in flight, but ask again in 11min
+    if (GlobalObject::navigator()->flightStatus() == Navigation::Navigator::Flight) {
+        mapsAndDataNotificationTimer.start();
+        return;
+    }
+
+    // Check if last notification is less than four hours ago. In that case, do not notify again,
+    // and ask again in 11min.
+    QSettings settings;
+    auto lastGeoMapUpdateNotification = settings.value(QStringLiteral("lastGeoMapUpdateNotification")).toDateTime();
+    if (lastGeoMapUpdateNotification.isValid()) {
+        auto secsSinceLastNotification = lastGeoMapUpdateNotification.secsTo(QDateTime::currentDateTimeUtc());
+        if (secsSinceLastNotification < static_cast<qint64>(4*60*60)) {
+            mapsAndDataNotificationTimer.start();
+            return;
+        }
+    }
+
+    // Notify!
+    auto* notification = new Notifications::Notification_DataUpdateAvailable(this);
+    addNotification(notification);
+    settings.setValue(QStringLiteral("lastGeoMapUpdateNotification"), QDateTime::currentDateTimeUtc());
 }
 
 void Notifications::NotificationManager::onTrafficReceiverRuntimeError()
@@ -146,51 +187,16 @@ void Notifications::NotificationManager::onTrafficReceiverSelfTestError()
     addNotification(notification);
 }
 
-void Notifications::NotificationManager::onMapAndDataUpdateSizeChanged()
+void Notifications::NotificationManager::updateNotificationList()
 {
-    // If there is no update, then we end here.
-    if (GlobalObject::dataManager()->mapsAndData()->updateSize() == 0) {
-        return;
-    }
+    m_notifications.removeAll(nullptr);
+    std::sort(m_notifications.begin(), m_notifications.end(),
+              [](const Notification* a, const Notification* b) { if (a->importance() == b->importance()) return a->reactionTime() < b->reactionTime(); return a->importance() > b->importance(); });
 
-    // Do not notify when in flight, but ask again in 11min
-    if (GlobalObject::navigator()->flightStatus() == Navigation::Navigator::Flight) {
-        mapsAndDataNotificationTimer.start();
-        return;
-    }
-
-    // Check if last notification is less than four hours ago. In that case, do not notify again,
-    // and ask again in 11min.
-    QSettings settings;
-    auto lastGeoMapUpdateNotification = settings.value(QStringLiteral("lastGeoMapUpdateNotification")).toDateTime();
-    if (lastGeoMapUpdateNotification.isValid()) {
-        auto secsSinceLastNotification = lastGeoMapUpdateNotification.secsTo(QDateTime::currentDateTimeUtc());
-        if (secsSinceLastNotification < static_cast<qint64>(4*60*60)) {
-            mapsAndDataNotificationTimer.start();
-            return;
-        }
-    }
-
-    // Notify!
-    auto* notification = new Notifications::Notification_DataUpdateAvailable(this);
-    addNotification(notification);
-    settings.setValue(QStringLiteral("lastGeoMapUpdateNotification"), QDateTime::currentDateTimeUtc());
-}
-
-void Notifications::NotificationManager::onMapAndDataDownloadingChanged()
-{
-    auto* mapsAndData = GlobalObject::dataManager()->mapsAndData();
-    if (mapsAndData == nullptr)
+    if (currentNotificationCache == currentNotification())
     {
         return;
     }
-    if (mapsAndData->downloading())
-    {
-        // Notify!
-        auto* notification = new Notifications::Notification(this);
-        notification->setTitle(tr("Downloading map and data…"));
-                               connect(GlobalObject::dataManager()->mapsAndData(), &DataManagement::Downloadable_MultiFile::downloadingChanged, notification, &QObject::deleteLater);
-        addNotification(notification);
-    }
-
+    currentNotificationCache = currentNotification();
+    emit currentNotificationChanged();
 }

@@ -25,7 +25,7 @@
 // Constructors and destructors
 //
 
-Notifications::Notification::Notification(QObject *parent) : QObject(parent)
+Notifications::Notification::Notification(QObject* parent) : QObject(parent)
 {
 }
 

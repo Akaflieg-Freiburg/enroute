@@ -100,10 +100,18 @@ void Traffic::TrafficDataSource_Abstract::setTrafficReceiverRuntimeError(const Q
     m_trafficReceiverRuntimeError = newErrorString;
     emit trafficReceiverRuntimeErrorChanged(newErrorString);
 
+    if (m_trafficReceiverRuntimeError.isEmpty())
+    {
+        return;
+    }
     auto* notification = new Notifications::Notification(this);
+    notification->setTitle(tr("Traffic data receiver problem"));
     notification->setText(m_trafficReceiverRuntimeError);
-    notification->setButton2Text({})
-    GlobalOb
+    notification->setButton1Text(tr("Dismiss"));
+    notification->setButton2Text({});
+    notification->setImportance(0);
+    connect(this, &TrafficDataSource_Abstract::trafficReceiverRuntimeErrorChanged, notification, &QObject::deleteLater);
+    GlobalObject::notificationManager()->add(notification);
 }
 
 
@@ -115,4 +123,17 @@ void Traffic::TrafficDataSource_Abstract::setTrafficReceiverSelfTestError(const 
 
     m_trafficReceiverSelfTestError = newErrorString;
     emit trafficReceiverSelfTestErrorChanged(newErrorString);
+
+    if (m_trafficReceiverSelfTestError.isEmpty())
+    {
+        return;
+    }
+    auto* notification = new Notifications::Notification(this);
+    notification->setTitle(tr("Traffic data receiver self test error"));
+    notification->setText(m_trafficReceiverSelfTestError);
+    notification->setButton1Text(tr("Dismiss"));
+    notification->setButton2Text({});
+    notification->setImportance(0);
+    connect(this, &TrafficDataSource_Abstract::trafficReceiverSelfTestErrorChanged, notification, &QObject::deleteLater);
+    GlobalObject::notificationManager()->add(notification);
 }

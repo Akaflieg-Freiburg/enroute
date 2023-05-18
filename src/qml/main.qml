@@ -805,27 +805,6 @@ AppWindow {
 
     }
 
-    Connections { // Notifier
-        target: Notifier
-
-        // warning
-        function onAction(act) {
-            if ((act === Notifier.DownloadInfo_Clicked) && (stackView.currentItem.objectName !== "DataManagerPage")) {
-                stackView.push("pages/DataManagerPage.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
-            }
-            if ((act === Notifier.TrafficReceiverSelfTestError_Clicked) && (stackView.currentItem.objectName !== "TrafficReceiverPage")) {
-                stackView.push("pages/TrafficReceiver.qml", {"appWindow": view})
-            }
-            if ((act === Notifier.TrafficReceiverRuntimeError_Clicked) && (stackView.currentItem.objectName !== "TrafficReceiverPage")) {
-                stackView.push("pages/TrafficReceiver.qml", {"appWindow": view})
-            }
-            if ((act === Notifier.GeoMapUpdatePending_Clicked) && (stackView.currentItem.objectName !== "DataManagerPage")) {
-                stackView.push("pages/DataManagerPage.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
-            }
-        }
-
-    }
-
     Connections { // SSLErrorHandler
         target: SSLErrorHandler
 
@@ -876,26 +855,6 @@ Go to the 'Settings' page if you wish to restore the original, safe, behavior of
             dialogLoader.text = password
             dialogLoader.source = "dialogs/PasswordStorageDialog.qml"
             dialogLoader.active = true
-        }
-
-        function onTrafficReceiverRuntimeErrorChanged(message) {
-            if (message === "") {
-                Notifier.hideNotification(Notifier.TrafficReceiverRuntimeError);
-                NotificationManager.hideNotification(Notifier.TrafficReceiverRuntimeError);
-            } else {
-                Notifier.showNotification(Notifier.TrafficReceiverRuntimeError, message, message);
-                NotificationManager.showNotification(Notifier.TrafficReceiverRuntimeError, message, message);
-            }
-        }
-
-        function onTrafficReceiverSelfTestErrorChanged(message) {
-            if (message === "") {
-                Notifier.hideNotification(Notifier.TrafficReceiverSelfTestError);
-                NotificationManager.hideNotification(Notifier.TrafficReceiverSelfTestError);
-            } else {
-                Notifier.showNotification(Notifier.TrafficReceiverSelfTestError, message, message);
-                NotificationManager.showNotification(Notifier.TrafficReceiverSelfTestError, message, message);
-            }
         }
     }
 

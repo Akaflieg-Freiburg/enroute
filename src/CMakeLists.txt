@@ -62,8 +62,6 @@ set(SOURCES
     notification/NotificationManager.h
     platform/FileExchange.h
     platform/FileExchange_Abstract.h
-    platform/Notifier.h
-    platform/Notifier_Abstract.h
     platform/PlatformAdaptor.h
     platform/PlatformAdaptor_Abstract.h
     platform/SafeInsets_Abstract.h
@@ -138,7 +136,6 @@ set(SOURCES
     notification/Notification_DataUpdateOngoing.cpp
     notification/NotificationManager.cpp
     platform/FileExchange_Abstract.cpp
-    platform/Notifier_Abstract.cpp
     platform/PlatformAdaptor_Abstract.cpp
     platform/SafeInsets_Abstract.cpp
     positioning/Geoid.cpp
@@ -196,8 +193,6 @@ if(ANDROID)
     list(APPEND SOURCES
         platform/FileExchange_Android.h
         platform/FileExchange_Android.cpp
-        platform/Notifier_Android.h
-        platform/Notifier_Android.cpp
         platform/PlatformAdaptor_Android.h
         platform/PlatformAdaptor_Android.cpp
         platform/SafeInsets_Android.h
@@ -266,8 +261,6 @@ if (UNIX AND NOT ANDROID AND NOT APPLE)
     list(APPEND SOURCES
         platform/FileExchange_Linux.h
         platform/FileExchange_Linux.cpp
-        platform/Notifier_Linux.h
-        platform/Notifier_Linux.cpp
         platform/PlatformAdaptor_Linux.h
         platform/PlatformAdaptor_Linux.cpp
         platform/SafeInsets_Desktop.h
@@ -314,8 +307,6 @@ if (APPLE AND NOT IOS)
     list(APPEND SOURCES
         platform/FileExchange_MacOS.h
         platform/FileExchange_MacOS.cpp
-        platform/Notifier_MacOS.h
-        platform/Notifier_MacOS.cpp
         platform/PlatformAdaptor_MacOS.h
         platform/PlatformAdaptor_MacOS.cpp
         platform/SafeInsets_Desktop.h
@@ -352,8 +343,6 @@ if (IOS)
     list(APPEND SOURCES
         platform/FileExchange_iOS.h
         platform/FileExchange_iOS.cpp
-        platform/Notifier_iOS.h
-        platform/Notifier_iOS.cpp
         platform/PlatformAdaptor_iOS.h
         platform/PlatformAdaptor_iOS.cpp
         platform/SafeInsets_iOS.h

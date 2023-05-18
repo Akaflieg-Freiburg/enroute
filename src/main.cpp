@@ -46,7 +46,6 @@
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/WaypointLibrary.h"
 #include "platform/FileExchange_Abstract.h"
-#include "platform/Notifier_Abstract.h"
 #include "platform/PlatformAdaptor_Abstract.h"
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficFactor_WithPosition.h"
@@ -62,8 +61,6 @@ auto main(int argc, char *argv[]) -> int
 
     // Register types
     qRegisterMetaType<GeoMaps::Airspace>();
-    qRegisterMetaType<Platform::Notifier_Abstract::NotificationActions>();
-    qRegisterMetaType<Platform::Notifier_Abstract::NotificationTypes>("Platform::Notifier::Notifications");
     qRegisterMetaType<Platform::FileExchange_Abstract::FileFunction>();
     qRegisterMetaType<Traffic::Warning>();
 
@@ -73,7 +70,6 @@ auto main(int argc, char *argv[]) -> int
     qmlRegisterUncreatableType<GeoMaps::WaypointLibrary>("enroute", 1, 0, "WaypointLibrary", QStringLiteral("WaypointLibrary objects cannot be created in QML"));
     qmlRegisterUncreatableType<DataManagement::DataManager>("enroute", 1, 0, "DataManager", QStringLiteral("DataManager objects cannot be created in QML"));
     qmlRegisterUncreatableType<Traffic::TrafficDataProvider>("enroute", 1, 0, "TrafficDataProvider", QStringLiteral("TrafficDataProvider objects cannot be created in QML"));
-    qmlRegisterUncreatableType<Platform::Notifier_Abstract>("enroute", 1, 0, "Notifier", QStringLiteral("Notifier objects cannot be created in QML"));
     qmlRegisterUncreatableType<Traffic::TrafficFactor_WithPosition>("enroute", 1, 0, "TrafficFactor_WithPosition", QStringLiteral("TrafficFactor_WithPosition objects cannot be created in QML"));
     qmlRegisterType<Weather::Station>("enroute", 1, 0, "WeatherStation");
 

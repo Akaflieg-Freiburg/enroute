@@ -222,12 +222,6 @@ public:
      */
     Q_INVOKABLE static Notifications::NotificationManager* notificationManager();
 
-    /*! \brief Pointer to appplication-wide static notification manager instance
-     *
-     * @returns Pointer to appplication-wide static instance.
-     */
-    Q_INVOKABLE static Platform::Notifier_Abstract* notifier();
-
     /*! \brief Pointer to appplication-wide static QNetworkAccessManager instance
      *
      * @returns Pointer to appplication-wide static instance.

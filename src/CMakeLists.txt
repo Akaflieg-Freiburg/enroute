@@ -381,10 +381,17 @@ if (IOS)
         MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/ios/Info.plist"
     )
 
-    #Assets catalog containing the App icon
-    set(asset_catalog_path "ios/Assets.xcassets")
-    target_sources(${PROJECT_NAME}  PRIVATE "${asset_catalog_path}")
-    set_source_files_properties(${asset_catalog_path} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+    #Resources
+    set(bundle_resources
+        "ios/Assets.xcassets"
+        "ios/de.lproj"
+        "ios/en.lproj"
+    )
+    target_sources(${PROJECT_NAME} PRIVATE ${bundle_resources})
+    set_source_files_properties(${bundle_resources} PROPERTIES
+        MACOSX_PACKAGE_LOCATION "Resources"
+    )
+    source_group("Resources" FILES ${bundle_resources})
 
     #Launchscreen
     set_target_properties(${PROJECT_NAME} PROPERTIES  QT_IOS_LAUNCH_SCREEN "${CMAKE_CURRENT_SOURCE_DIR}/ios/LaunchScreen.storyboard")

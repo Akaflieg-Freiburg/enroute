@@ -32,7 +32,7 @@ CenteringDialog {
     Component {
         id: firstStart
 
-        DecoratedScrollView{
+        DecoratedScrollView {
             id: sv
 
             required property var dialogMain
@@ -66,7 +66,7 @@ CenteringDialog {
     Component {
         id: privacy
 
-        DecoratedScrollView{
+        DecoratedScrollView {
             id: sv
 
             required property var dialogMain
@@ -94,7 +94,7 @@ CenteringDialog {
     Component {
         id: permissions
 
-        DecoratedScrollView{
+        DecoratedScrollView {
             id: sv
 
             required property var dialogMain
@@ -267,14 +267,6 @@ CenteringDialog {
                     stack.pop()
                 else
                     dialogMain.close()
-            }
-        }
-        ToolButton {
-            text: qsTr("Reject")
-
-            onClicked: {
-                PlatformAdaptor.vibrateBrief()
-                Qt.quit()
             }
         }
     }

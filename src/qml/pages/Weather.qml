@@ -72,33 +72,16 @@ Page {
             id: headerMenuToolButton
 
             anchors.verticalCenter: parent.verticalCenter
-
             anchors.right: parent.right
 
-            icon.source: "/icons/material/ic_more_vert.svg"
+            icon.source: "/icons/material/ic_refresh.svg"
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                headerMenuX.open()
+                if (!WeatherDataProvider.downloading)
+                    WeatherDataProvider.update(false)
             }
-
-            AutoSizingMenu {
-                id: headerMenuX
-
-                MenuItem {
-                    text: qsTr("Update METAR/TAF data")
-                    enabled: !WeatherDataProvider.downloading
-                    onTriggered: {
-                        PlatformAdaptor.vibrateBrief()
-                        if (!WeatherDataProvider.downloading)
-                            WeatherDataProvider.update(false)
-                    }
-                } // MenuItem
-
-            }
-
         }
-
     }
 
     Component {

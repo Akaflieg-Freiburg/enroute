@@ -67,6 +67,9 @@
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>Navigation App needs Location</string>
 
+    <key>LSSupportsOpeningDocumentsInPlace</key>
+    <true />
+
     <key>UTImportedTypeDeclarations</key>
     <array>
         <dict>

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2023 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -27,43 +27,28 @@
 
 Notifications::Notification::Notification(QObject* parent) : QObject(parent)
 {
+#warning autodestruct after 5mins
 }
+
+
+
+//
+// Getter Methods
+//
+
+QString Notifications::Notification::spokenText() const
+{
+    if (m_spokenText.isEmpty()) {
+        return m_title;
+    }
+    return m_spokenText;
+}
+
 
 
 //
 // Setter Methods
 //
-
-void Notifications::Notification::setImportance(quint8 newImportance)
-{
-    if (newImportance == m_importance)
-    {
-        return;
-    }
-    m_importance = newImportance;
-    emit importanceChanged();
-
-}
-
-void Notifications::Notification::setTitle(const QString& newTitle)
-{
-    if (newTitle == m_title)
-    {
-        return;
-    }
-    m_title = newTitle;
-    emit titleChanged();
-}
-
-void Notifications::Notification::setText(const QString& newText)
-{
-    if (newText == m_text)
-    {
-        return;
-    }
-    m_text = newText;
-    emit textChanged();
-}
 
 void Notifications::Notification::setButton1Text(const QString& newButton1Text)
 {
@@ -85,14 +70,69 @@ void Notifications::Notification::setButton2Text(const QString& newButton2Text)
     emit button2TextChanged();
 }
 
-void Notifications::Notification::button1Clicked()
+void Notifications::Notification::setImportance(Notifications::Notification::Importance newImportance)
 {
-    qWarning() << "Button 1 clicked";
+    if (newImportance == m_importance)
+    {
+        return;
+    }
+    m_importance = newImportance;
+    emit importanceChanged();
+
+}
+
+void Notifications::Notification::setReactionTime(Units::Timespan newReactionTime)
+{
+    if (newReactionTime == m_reactionTime)
+    {
+        return;
+    }
+    m_reactionTime = newReactionTime;
+    emit reactionTimeChanged();
+}
+
+void Notifications::Notification::setSpokenText(const QString& newSpokenText)
+{
+    if (newSpokenText == m_spokenText)
+    {
+        return;
+    }
+    m_spokenText = newSpokenText;
+    emit spokenTextChanged();
+}
+
+void Notifications::Notification::setText(const QString& newText)
+{
+    if (newText == m_text)
+    {
+        return;
+    }
+    m_text = newText;
+    emit textChanged();
+}
+
+void Notifications::Notification::setTitle(const QString& newTitle)
+{
+    if (newTitle == m_title)
+    {
+        return;
+    }
+    m_title = newTitle;
+    emit titleChanged();
+}
+
+
+
+//
+// Methods
+//
+
+void Notifications::Notification::onButton1Clicked()
+{
     deleteLater();
 }
 
-void Notifications::Notification::button2Clicked()
+void Notifications::Notification::onButton2Clicked()
 {
-    qWarning() << "Button 2 clicked";
     deleteLater();
 }

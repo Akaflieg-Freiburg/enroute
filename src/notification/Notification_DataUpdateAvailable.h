@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2023 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,6 +24,13 @@
 
 namespace Notifications {
 
+/*! \brief Notification for available map & data updates
+ *
+ *  This implementation of Notifications::Notification sets proper button texts,
+ *  reacts to button clicks and deletes itself in flight and whenever a map and
+ *  data update starts.
+ */
+
 
 class Notification_DataUpdateAvailable : public Notification
 {
@@ -36,7 +43,7 @@ public:
 
     /*! \brief Standard constructor
      *
-     * @param parent The standard QObject parent pointer
+     *  @param parent The standard QObject parent pointer
      */
     explicit Notification_DataUpdateAvailable(QObject* parent = nullptr);
 
@@ -47,10 +54,11 @@ public:
     ~Notification_DataUpdateAvailable() = default;
 
 public slots:
-    virtual void button1Clicked() override;
-    virtual void button2Clicked() override;
+    /*! \brief Reimplemented from Notifications::Notification */
+    virtual void onButton1Clicked() override;
 
 private slots:
+    // Check if this notification is still useful and delete it if not.
     void update();
 };
 

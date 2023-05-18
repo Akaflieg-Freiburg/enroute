@@ -58,7 +58,6 @@ set(SOURCES
     notam/NotamProvider.h
     notification/Notification.h
     notification/Notification_DataUpdateAvailable.h
-    notification/Notification_DataUpdateOngoing.h
     notification/NotificationManager.h
     platform/FileExchange.h
     platform/FileExchange_Abstract.h
@@ -133,7 +132,6 @@ set(SOURCES
     notam/NotamProvider.cpp
     notification/Notification.cpp
     notification/Notification_DataUpdateAvailable.cpp
-    notification/Notification_DataUpdateOngoing.cpp
     notification/NotificationManager.cpp
     platform/FileExchange_Abstract.cpp
     platform/PlatformAdaptor_Abstract.cpp

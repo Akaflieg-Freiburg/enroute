@@ -28,10 +28,8 @@
 #include "navigation/Navigator.h"
 #include "notification/NotificationManager.h"
 #include "notification/Notification_DataUpdateAvailable.h"
-#include "notification/Notification_DataUpdateOngoing.h"
 
 using namespace std::chrono_literals;
-
 
 
 DataManagement::UpdateNotifier::UpdateNotifier(QObject* parent) :
@@ -48,7 +46,6 @@ DataManagement::UpdateNotifier::UpdateNotifier(QObject* parent) :
     updateNotificationDataDownloading();
 }
 
-#warning
 void DataManagement::UpdateNotifier::updateNotificationDataDownloading()
 {
     auto* mapsAndData = GlobalObject::dataManager()->mapsAndData();
@@ -59,8 +56,11 @@ void DataManagement::UpdateNotifier::updateNotificationDataDownloading()
     if (mapsAndData->downloading())
     {
         // Notify!
-        auto* notification = new Notifications::Notification_DataUpdateOngoing(this);
-        GlobalObject::notificationManager()->add(notification);
+        auto* notification = new Notifications::Notification(this);
+        notification->setTitle(tr("Downloading map and data…"));
+                               notification->setButton1Text(tr("Dismiss"));
+        connect(GlobalObject::dataManager()->mapsAndData(), &DataManagement::Downloadable_MultiFile::downloadingChanged, notification, &QObject::deleteLater);
+                               GlobalObject::notificationManager()->add(notification);
     }
 
 }

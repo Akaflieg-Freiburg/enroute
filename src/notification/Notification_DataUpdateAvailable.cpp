@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2023 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -23,6 +23,7 @@
 #include "notification/Notification_DataUpdateAvailable.h"
 
 
+
 //
 // Constructors and destructors
 //
@@ -32,7 +33,7 @@ Notifications::Notification_DataUpdateAvailable::Notification_DataUpdateAvailabl
     setTitle(tr("Map and data updates available"));
     setButton1Text(tr("Update"));
     setButton2Text(tr("Dismiss"));
-    setImportance(0);
+    setImportance(Info);
     update();
 
     auto* mapsAndData = GlobalObject::dataManager()->mapsAndData();
@@ -41,14 +42,15 @@ Notifications::Notification_DataUpdateAvailable::Notification_DataUpdateAvailabl
     connect(GlobalObject::navigator(), &Navigation::Navigator::flightStatusChanged, this, &Notifications::Notification_DataUpdateAvailable::update);
 }
 
-void Notifications::Notification_DataUpdateAvailable::button1Clicked()
+
+
+//
+// Methods
+//
+
+void Notifications::Notification_DataUpdateAvailable::onButton1Clicked()
 {
     GlobalObject::dataManager()->mapsAndData()->update();
-    deleteLater();
-}
-
-void Notifications::Notification_DataUpdateAvailable::button2Clicked()
-{
     deleteLater();
 }
 
@@ -74,5 +76,5 @@ void Notifications::Notification_DataUpdateAvailable::update()
         return;
     }
 
-    setText(tr("The estimated download size is %1.").arg(GlobalObject::dataManager()->mapsAndData()->updateSizeString()));
+    setText(tr("Estimated download size: %1").arg(GlobalObject::dataManager()->mapsAndData()->updateSizeString()));
 }

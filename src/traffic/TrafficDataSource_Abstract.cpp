@@ -100,6 +100,7 @@ void Traffic::TrafficDataSource_Abstract::setTrafficReceiverRuntimeError(const Q
     m_trafficReceiverRuntimeError = newErrorString;
     emit trafficReceiverRuntimeErrorChanged(newErrorString);
 
+#warning Does this belong here?
     if (m_trafficReceiverRuntimeError.isEmpty())
     {
         return;
@@ -109,7 +110,7 @@ void Traffic::TrafficDataSource_Abstract::setTrafficReceiverRuntimeError(const Q
     notification->setText(m_trafficReceiverRuntimeError);
     notification->setButton1Text(tr("Dismiss"));
     notification->setButton2Text({});
-    notification->setImportance(0);
+    notification->setImportance(Notifications::Notification::Warning);
     connect(this, &TrafficDataSource_Abstract::trafficReceiverRuntimeErrorChanged, notification, &QObject::deleteLater);
     GlobalObject::notificationManager()->add(notification);
 }
@@ -124,6 +125,7 @@ void Traffic::TrafficDataSource_Abstract::setTrafficReceiverSelfTestError(const 
     m_trafficReceiverSelfTestError = newErrorString;
     emit trafficReceiverSelfTestErrorChanged(newErrorString);
 
+#warning Does this belong here?
     if (m_trafficReceiverSelfTestError.isEmpty())
     {
         return;
@@ -133,7 +135,7 @@ void Traffic::TrafficDataSource_Abstract::setTrafficReceiverSelfTestError(const 
     notification->setText(m_trafficReceiverSelfTestError);
     notification->setButton1Text(tr("Dismiss"));
     notification->setButton2Text({});
-    notification->setImportance(0);
+    notification->setImportance(Notifications::Notification::Warning);
     connect(this, &TrafficDataSource_Abstract::trafficReceiverSelfTestErrorChanged, notification, &QObject::deleteLater);
     GlobalObject::notificationManager()->add(notification);
 }

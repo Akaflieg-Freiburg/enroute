@@ -60,7 +60,7 @@ Rectangle {
                 Layout.preferredHeight: 1.2*font.pixelSize
                 onClicked: {
                     if (NotificationManager.currentNotification)
-                        NotificationManager.currentNotification.button1Clicked()
+                        NotificationManager.currentNotification.onButton1Clicked()
                 }
             }
             ToolButton {
@@ -69,7 +69,7 @@ Rectangle {
 
                 onClicked:  {
                     if (NotificationManager.currentNotification)
-                        NotificationManager.currentNotification.button2Clicked()
+                        NotificationManager.currentNotification.onButton2Clicked()
                 }
             }
         }

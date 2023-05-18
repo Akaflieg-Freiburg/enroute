@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QTimer>
+
 #include "notification/Notification.h"
 
 
@@ -27,7 +29,8 @@
 
 Notifications::Notification::Notification(QObject* parent) : QObject(parent)
 {
-#warning autodestruct after 5mins
+    // Auto-delete this notification in five minutes.
+    QTimer::singleShot(5*60*1000, this, &QObject::deleteLater);
 }
 
 

@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QQmlEngine>
+#include <QTimer>
 
 #include "GlobalObject.h"
 #include "Notification.h"
@@ -28,6 +29,11 @@
 
 namespace Notifications {
 
+/*! \brief This class manages notifications and presents them to the GUI
+ *
+ *  This class manages notifications. It watches the global objects in the app, creates notifications, sorts them according
+ *  to importance, and presents the most important notification to the GUI.
+ */
 
 class NotificationManager : public GlobalObject
 {
@@ -66,24 +72,57 @@ public:
     // PROPERTIES
     //
 
+    /*! \brief Most important notification
+     *
+     *  This property holds the most important notification, or nullptr if there is no notification. The notifications
+     *  are owned by this NotificationManager and have ownership set to QQmlEngine::CppOwnership.
+     *
+     *  @note The notification objects returned here can be deleted anytime, so it is wise to store the result in a QPointer that tracks deletion.
+     */
     Q_PROPERTY(Notifications::Notification* currentNotification READ currentNotification NOTIFY currentNotificationChanged)
-    Notifications::Notification* currentNotification() const {
-        if (m_notifications.isEmpty())
-        {
-            return nullptr;
-        }
-        return m_notifications[0];
-    }
 
-    void add(Notifications::Notification* notification);
+
+    //
+    // Getter Methods
+    //
+
+    /*! \brief Getter function for property of the same name
+     *
+     *  @returns Property currentNotification
+     */
+    [[nodiscard]] Notifications::Notification* currentNotification() const;
+
 signals:
+    /*! \brief Notification signal */
     void currentNotificationChanged();
 
 private slots:
-    void update();
+    // This method clears all nullptrs from m_notifications, sorts the elements
+    // by importance and emits currentNotificationChanged() whenever the first element
+    // the list changes.
+    void updateNotificationList();
+
+#warning
+    void onTrafficReceiverRuntimeError();
+
+#warning
+    void onTrafficReceiverSelfTestError();
+
+    void onMapAndDataUpdateSizeChanged();
+
+    void onMapAndDataDownloadingChanged();
 
 private:
+    void addNotification(Notifications::Notification* notification);
+
+    // List of Notifications, sorted so that the most important notification comes first.
     QVector<QPointer<Notifications::Notification>> m_notifications;
+
+    // When notifications for maps and data are temporarily not possible, then use this timer
+    // to notify again.
+    QTimer mapsAndDataNotificationTimer;
+
+    // Internal to updateNotificationList
     Notifications::Notification* currentNotificationCache {nullptr};
 };
 

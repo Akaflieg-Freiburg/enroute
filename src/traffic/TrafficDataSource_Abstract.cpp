@@ -86,11 +86,6 @@ void Traffic::TrafficDataSource_Abstract::resetReceivingHeartbeat()
     setReceivingHeartbeat(false);
 }
 
-
-
-#include <notification/Notification.h>
-#include <notification/NotificationManager.h>
-
 void Traffic::TrafficDataSource_Abstract::setTrafficReceiverRuntimeError(const QString &newErrorString)
 {
     if (m_trafficReceiverRuntimeError == newErrorString) {
@@ -98,21 +93,7 @@ void Traffic::TrafficDataSource_Abstract::setTrafficReceiverRuntimeError(const Q
     }
 
     m_trafficReceiverRuntimeError = newErrorString;
-    emit trafficReceiverRuntimeErrorChanged(newErrorString);
-
-#warning Does this belong here?
-    if (m_trafficReceiverRuntimeError.isEmpty())
-    {
-        return;
-    }
-    auto* notification = new Notifications::Notification(this);
-    notification->setTitle(tr("Traffic data receiver problem"));
-    notification->setText(m_trafficReceiverRuntimeError);
-    notification->setButton1Text(tr("Dismiss"));
-    notification->setButton2Text({});
-    notification->setImportance(Notifications::Notification::Warning);
-    connect(this, &TrafficDataSource_Abstract::trafficReceiverRuntimeErrorChanged, notification, &QObject::deleteLater);
-    GlobalObject::notificationManager()->add(notification);
+    emit trafficReceiverRuntimeErrorChanged();
 }
 
 
@@ -123,19 +104,5 @@ void Traffic::TrafficDataSource_Abstract::setTrafficReceiverSelfTestError(const 
     }
 
     m_trafficReceiverSelfTestError = newErrorString;
-    emit trafficReceiverSelfTestErrorChanged(newErrorString);
-
-#warning Does this belong here?
-    if (m_trafficReceiverSelfTestError.isEmpty())
-    {
-        return;
-    }
-    auto* notification = new Notifications::Notification(this);
-    notification->setTitle(tr("Traffic data receiver self test error"));
-    notification->setText(m_trafficReceiverSelfTestError);
-    notification->setButton1Text(tr("Dismiss"));
-    notification->setButton2Text({});
-    notification->setImportance(Notifications::Notification::Warning);
-    connect(this, &TrafficDataSource_Abstract::trafficReceiverSelfTestErrorChanged, notification, &QObject::deleteLater);
-    GlobalObject::notificationManager()->add(notification);
+    emit trafficReceiverSelfTestErrorChanged();
 }

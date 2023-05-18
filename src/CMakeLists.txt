@@ -32,7 +32,6 @@ set(SOURCES
     dataManagement/Downloadable_MultiFile.h
     dataManagement/Downloadable_SingleFile.h
     dataManagement/SSLErrorHandler.h
-    dataManagement/UpdateNotifier.h
     DemoRunner.h
     geomaps/Airspace.h
     geomaps/CUP.h
@@ -104,7 +103,6 @@ set(SOURCES
     dataManagement/Downloadable_MultiFile.cpp
     dataManagement/Downloadable_SingleFile.cpp
     dataManagement/SSLErrorHandler.cpp
-    dataManagement/UpdateNotifier.cpp
     DemoRunner.cpp
     geomaps/Airspace.cpp
     geomaps/CUP.cpp

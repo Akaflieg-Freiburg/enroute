@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2023 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -19,10 +19,16 @@
  ***************************************************************************/
 
 #include <QQmlEngine>
+#include <QSettings>
 #include <QStandardPaths>
 
 #include "GlobalObject.h"
+#include "dataManagement/DataManager.h"
+#include "navigation/Navigator.h"
 #include "notification/NotificationManager.h"
+#include "notification/Notification_DataUpdateAvailable.h"
+#include "traffic/TrafficDataSource_Abstract.h"
+#include "traffic/TrafficDataProvider.h"
 
 
 //
@@ -36,10 +42,36 @@ Notifications::NotificationManager::NotificationManager(QObject *parent) : Globa
 
 void Notifications::NotificationManager::deferredInitialization()
 {
+    connect(GlobalObject::trafficDataProvider(), &Traffic::TrafficDataProvider::trafficReceiverRuntimeErrorChanged,
+            this, &Notifications::NotificationManager::onTrafficReceiverRuntimeError);
+    connect(GlobalObject::trafficDataProvider(), &Traffic::TrafficDataProvider::trafficReceiverSelfTestErrorChanged,
+            this, &Notifications::NotificationManager::onTrafficReceiverSelfTestError);
+
+    // Maps and Data
+    connect(GlobalObject::dataManager()->mapsAndData(), &DataManagement::Downloadable_Abstract::updateSizeChanged,
+            this, &Notifications::NotificationManager::onMapAndDataUpdateSizeChanged);
+    connect(GlobalObject::dataManager()->mapsAndData(), &DataManagement::Downloadable_Abstract::downloadingChanged,
+            this, &Notifications::NotificationManager::onMapAndDataDownloadingChanged);
+    connect(&mapsAndDataNotificationTimer, &QTimer::timeout,
+            this, &Notifications::NotificationManager::onMapAndDataUpdateSizeChanged);
+
+    mapsAndDataNotificationTimer.setInterval(11min);
+    mapsAndDataNotificationTimer.setSingleShot(true);
+
+    onMapAndDataUpdateSizeChanged();
+    onMapAndDataUpdateSizeChanged();
 }
 
 
-void Notifications::NotificationManager::add(Notifications::Notification* notification)
+[[nodiscard]] Notifications::Notification* Notifications::NotificationManager::currentNotification() const {
+    if (m_notifications.isEmpty())
+    {
+        return nullptr;
+    }
+    return m_notifications[0];
+}
+
+void Notifications::NotificationManager::addNotification(Notifications::Notification* notification)
 {
     if (notification == nullptr)
     {
@@ -55,15 +87,15 @@ void Notifications::NotificationManager::add(Notifications::Notification* notifi
     QQmlEngine::setObjectOwnership(notification, QQmlEngine::CppOwnership);
 
     // Wire up
-    connect(notification, &Notifications::Notification::destroyed, this, &Notifications::NotificationManager::update);
-    connect(notification, &Notifications::Notification::importanceChanged, this, &Notifications::NotificationManager::update);
+    connect(notification, &Notifications::Notification::destroyed, this, &Notifications::NotificationManager::updateNotificationList);
+    connect(notification, &Notifications::Notification::importanceChanged, this, &Notifications::NotificationManager::updateNotificationList);
 
     // Append and update
     m_notifications.append(notification);
-    update();
+    updateNotificationList();
 }
 
-void Notifications::NotificationManager::update()
+void Notifications::NotificationManager::updateNotificationList()
 {
     m_notifications.removeAll(nullptr);
     std::sort(m_notifications.begin(), m_notifications.end(), [](const Notification* a, const Notification* b)
@@ -76,4 +108,89 @@ void Notifications::NotificationManager::update()
     qWarning() << "Update" << m_notifications;
     currentNotificationCache = currentNotification();
     emit currentNotificationChanged();
+}
+
+void Notifications::NotificationManager::onTrafficReceiverRuntimeError()
+{
+    auto error = GlobalObject::trafficDataProvider()->trafficReceiverRuntimeError();
+    if (error.isEmpty())
+    {
+        return;
+    }
+    auto* notification = new Notifications::Notification(this);
+    notification->setTitle(tr("Traffic data receiver problem"));
+    notification->setText(error);
+    notification->setImportance(Notifications::Notification::Warning);
+    connect(GlobalObject::trafficDataProvider(),
+            &Traffic::TrafficDataProvider::trafficReceiverRuntimeErrorChanged,
+            notification,
+            &Notifications::Notification::deleteLater);
+    addNotification(notification);
+}
+
+void Notifications::NotificationManager::onTrafficReceiverSelfTestError()
+{
+    auto error = GlobalObject::trafficDataProvider()->trafficReceiverSelfTestError();
+    if (error.isEmpty())
+    {
+        return;
+    }
+    auto* notification = new Notifications::Notification(this);
+    notification->setTitle(tr("Traffic data receiver self test error"));
+    notification->setText(error);
+    notification->setImportance(Notifications::Notification::Warning);
+    connect(GlobalObject::trafficDataProvider(),
+            &Traffic::TrafficDataProvider::trafficReceiverSelfTestErrorChanged,
+            notification,
+            &QObject::deleteLater);
+    addNotification(notification);
+}
+
+void Notifications::NotificationManager::onMapAndDataUpdateSizeChanged()
+{
+    // If there is no update, then we end here.
+    if (GlobalObject::dataManager()->mapsAndData()->updateSize() == 0) {
+        return;
+    }
+
+    // Do not notify when in flight, but ask again in 11min
+    if (GlobalObject::navigator()->flightStatus() == Navigation::Navigator::Flight) {
+        mapsAndDataNotificationTimer.start();
+        return;
+    }
+
+    // Check if last notification is less than four hours ago. In that case, do not notify again,
+    // and ask again in 11min.
+    QSettings settings;
+    auto lastGeoMapUpdateNotification = settings.value(QStringLiteral("lastGeoMapUpdateNotification")).toDateTime();
+    if (lastGeoMapUpdateNotification.isValid()) {
+        auto secsSinceLastNotification = lastGeoMapUpdateNotification.secsTo(QDateTime::currentDateTimeUtc());
+        if (secsSinceLastNotification < static_cast<qint64>(4*60*60)) {
+            mapsAndDataNotificationTimer.start();
+            return;
+        }
+    }
+
+    // Notify!
+    auto* notification = new Notifications::Notification_DataUpdateAvailable(this);
+    addNotification(notification);
+    settings.setValue(QStringLiteral("lastGeoMapUpdateNotification"), QDateTime::currentDateTimeUtc());
+}
+
+void Notifications::NotificationManager::onMapAndDataDownloadingChanged()
+{
+    auto* mapsAndData = GlobalObject::dataManager()->mapsAndData();
+    if (mapsAndData == nullptr)
+    {
+        return;
+    }
+    if (mapsAndData->downloading())
+    {
+        // Notify!
+        auto* notification = new Notifications::Notification(this);
+        notification->setTitle(tr("Downloading map and data…"));
+                               connect(GlobalObject::dataManager()->mapsAndData(), &DataManagement::Downloadable_MultiFile::downloadingChanged, notification, &QObject::deleteLater);
+        addNotification(notification);
+    }
+
 }

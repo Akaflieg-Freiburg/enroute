@@ -33,6 +33,9 @@ namespace Notifications {
  *  button1Text to "Dismiss", button2Text to "Empty" and reacts to clicks with a
  *  deleteLater(). More elaborate notifications can inherit from this class and
  *  re-implement some of the virtual methods.
+ *
+ *  @note Instance of this class may safely call deleteLater() at any time to
+ *  indicate that the notification is no longer relevant.
  */
 
 class Notification : public QObject
@@ -56,7 +59,10 @@ public:
 
     /*! \brief Standard constructor
      *
-     * @param parent The standard QObject parent pointer
+     *  The constructor sets a time that calls deleteLater() after five minutes.
+     *  This way, notifications are never shown permanently.
+     *
+     *  @param parent The standard QObject parent pointer
      */
     explicit Notification(QObject* parent = nullptr);
 

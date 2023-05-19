@@ -218,7 +218,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
                      "Center</a>, a website of the United States government.")
                 + "</li>"
                 + "<li>"
-                + tr("The app downloads NOTAM for your locaction and "
+                + tr("The app downloads NOTAM for your location and "
                      "your intended route from servers of the "
                      "<a href='https://api.faa.gov/s/'>Federal Aviation "
                      "Administration</a> of the United States government.")

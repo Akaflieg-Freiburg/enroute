@@ -27,6 +27,7 @@
 - [ ] Generate spritesheet in proper way
 - [ ] Update manual: onboarding, NOTAMs
 - [ ] Remove crazy large GIT LTS files from GitHub.
+- [ ] Sync privacy statement in enrouteText with C++ source.
 
 
 ## Bug Fixing

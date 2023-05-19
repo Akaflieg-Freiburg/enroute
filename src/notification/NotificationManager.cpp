@@ -75,6 +75,21 @@ Notifications::Notification* Notifications::NotificationManager::currentNotifica
 
 
 //
+// Methods
+//
+
+
+void Notifications::NotificationManager::showTestNotification()
+{
+    auto* notification = new Notifications::Notification(this);
+    notification->setTitle("Test Nofication");
+    notification->setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+    connect(GlobalObject::dataManager()->mapsAndData(), &DataManagement::Downloadable_MultiFile::downloadingChanged, notification, &QObject::deleteLater);
+    addNotification(notification);
+}
+
+
+//
 // Private Methods
 //
 
@@ -117,7 +132,6 @@ void Notifications::NotificationManager::onMapAndDataDownloadingChanged()
                                connect(GlobalObject::dataManager()->mapsAndData(), &DataManagement::Downloadable_MultiFile::downloadingChanged, notification, &QObject::deleteLater);
         addNotification(notification);
     }
-
 }
 
 void Notifications::NotificationManager::onMapAndDataUpdateSizeChanged()

@@ -92,6 +92,14 @@ public:
      */
     [[nodiscard]] Notifications::Notification* currentNotification() const;
 
+
+    //
+    // Methods
+    //
+
+    /*! \brief Issue test notification */
+    Q_INVOKABLE void showTestNotification();
+
 signals:
     /*! \brief Notification signal */
     void currentNotificationChanged();

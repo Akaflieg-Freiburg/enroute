@@ -20,7 +20,7 @@
 
 #pragma once
 
-#include <QObject>
+#include <QQmlEngine>
 
 #include "units/Timespan.h"
 
@@ -41,6 +41,7 @@ namespace Notifications {
 class Notification : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
 
 public:
     /*! \brief Importance classification */
@@ -52,6 +53,19 @@ public:
         Alert = 4               /*!< \brief Alert. Immediate action is required to avoid accident or serious rule infringion */
     };
     Q_ENUM(Importance);
+
+    /*! \brief Text body action
+     *
+     *  Describes the action that the GUI should take then the text body of
+     *  this notification is clicked.
+     */
+    enum TextBodyAction {
+        None,                   /*!< \brief No action */
+        OpenMapsAndDataPage,    /*!< \brief Open the page 'maps and data' */
+        OpenTrafficReceiverPage /*!< \brief Open the page 'traffic receiver' */
+    };
+    Q_ENUM(TextBodyAction);
+
 
     //
     // Constructors and destructors
@@ -124,6 +138,13 @@ public:
      */
     Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
 
+    /*! \brief Text body action
+     *
+     *  This property describes the action the that GUI should take when the
+     *  text body is clicked. This property is initialized to 'None'.
+     */
+    Q_PROPERTY(Notifications::Notification::TextBodyAction textBodyAction READ textBodyAction WRITE setTextBodyAction NOTIFY textBodyActionChanged)
+
     /*! \brief Title of the notification.
      *
      *  This property holds the title, which should never be empty. This
@@ -174,6 +195,12 @@ public:
 
     /*! \brief Getter function for property of the same name
      *
+     *  @returns Property textBodyAction
+     */
+    [[nodiscard]] Notifications::Notification::TextBodyAction textBodyAction() const { return m_textBodyAction; }
+
+    /*! \brief Getter function for property of the same name
+     *
      *  @returns Property title
      */
     [[nodiscard]] QString title() const { return m_title; }
@@ -216,15 +243,21 @@ public:
 
     /*! \brief Setter function for property of the same name
      *
-     *  @param newTitle Property title
-     */
-    void setTitle(const QString& newTitle);
-
-    /*! \brief Setter function for property of the same name
-     *
      *  @param newText Property text
      */
     void setText(const QString& newText);
+
+    /*! \brief Setter function for property of the same name
+     *
+     *  @param newText Property textBodyAction
+     */
+    void setTextBodyAction(Notifications::Notification::TextBodyAction newTextBodyAction);
+
+    /*! \brief Setter function for property of the same name
+     *
+     *  @param newTitle Property title
+     */
+    void setTitle(const QString& newTitle);
 
 
 
@@ -270,6 +303,9 @@ signals:
     void textChanged();
 
     /*! \brief Notification signal */
+    void textBodyActionChanged();
+
+    /*! \brief Notification signal */
     void titleChanged();
 
 private:
@@ -281,6 +317,7 @@ private:
     QString m_spokenText;
     QString m_title {u"Placeholder title"_qs};
     QString m_text;
+    Notifications::Notification::TextBodyAction m_textBodyAction {None};
 };
 
 } // namespace Notifications

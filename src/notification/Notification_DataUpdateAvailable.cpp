@@ -34,6 +34,7 @@ Notifications::Notification_DataUpdateAvailable::Notification_DataUpdateAvailabl
     setButton1Text(tr("Update"));
     setButton2Text(tr("Dismiss"));
     setImportance(Info);
+    setTextBodyAction(OpenMapsAndDataPage);
     update();
 
     auto* mapsAndData = GlobalObject::dataManager()->mapsAndData();

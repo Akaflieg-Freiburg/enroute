@@ -33,6 +33,26 @@ Rectangle {
     implicitHeight: notifyCol.implicitHeight+font.pixelSize
     visible: NotificationManager.currentNotification
 
+    MouseArea {
+        anchors.fill: parent
+
+        onClicked: {
+            if (!NotificationManager.currentNotification)
+                return
+
+            if (NotificationManager.currentNotification.textBodyAction === Notification.OpenMapsAndDataPage)
+            {
+                PlatformAdaptor.vibrateBrief()
+                stackView.push("../pages/DataManagerPage.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
+            }
+            if (NotificationManager.currentNotification.textBodyAction === Notification.OpenTrafficReceiverPage)
+            {
+                PlatformAdaptor.vibrateBrief()
+                stackView.push("../pages/TrafficReceiver.qml", {"appWindow": view})
+            }
+        }
+    }
+
     ColumnLayout {
         id: notifyCol
 

@@ -84,7 +84,6 @@ void Notifications::Notification::setImportance(Notifications::Notification::Imp
     }
     m_importance = newImportance;
     emit importanceChanged();
-
 }
 
 void Notifications::Notification::setReactionTime(Units::Timespan newReactionTime)
@@ -115,6 +114,16 @@ void Notifications::Notification::setText(const QString& newText)
     }
     m_text = newText;
     emit textChanged();
+}
+
+void Notifications::Notification::setTextBodyAction(Notifications::Notification::TextBodyAction newTextBodyAction)
+{
+    if (newTextBodyAction == m_textBodyAction)
+    {
+        return;
+    }
+    m_textBodyAction = newTextBodyAction;
+    emit textBodyActionChanged();
 }
 
 void Notifications::Notification::setTitle(const QString& newTitle)

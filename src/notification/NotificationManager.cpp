@@ -176,6 +176,7 @@ void Notifications::NotificationManager::onTrafficReceiverRuntimeError()
     notification->setTitle(tr("Traffic data receiver problem"));
     notification->setText(error);
     notification->setImportance(Notifications::Notification::Warning);
+    notification->setTextBodyAction(Notifications::Notification::OpenTrafficReceiverPage);
     connect(GlobalObject::trafficDataProvider(),
             &Traffic::TrafficDataProvider::trafficReceiverRuntimeErrorChanged,
             notification,
@@ -194,6 +195,7 @@ void Notifications::NotificationManager::onTrafficReceiverSelfTestError()
     notification->setTitle(tr("Traffic data receiver self test error"));
     notification->setText(error);
     notification->setImportance(Notifications::Notification::Warning);
+    notification->setTextBodyAction(Notifications::Notification::OpenTrafficReceiverPage);
     connect(GlobalObject::trafficDataProvider(),
             &Traffic::TrafficDataProvider::trafficReceiverSelfTestErrorChanged,
             notification,

@@ -33,59 +33,72 @@ Rectangle {
     implicitHeight: notifyCol.implicitHeight+font.pixelSize
     visible: NotificationManager.currentNotification
 
-    MouseArea {
-        anchors.fill: parent
-
-        onClicked: {
-            if (!NotificationManager.currentNotification)
-                return
-
-            if (NotificationManager.currentNotification.textBodyAction === Notification.OpenMapsAndDataPage)
-            {
-                PlatformAdaptor.vibrateBrief()
-                stackView.push("../pages/DataManagerPage.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
-            }
-            if (NotificationManager.currentNotification.textBodyAction === Notification.OpenTrafficReceiverPage)
-            {
-                PlatformAdaptor.vibrateBrief()
-                stackView.push("../pages/TrafficReceiver.qml", {"appWindow": view})
-            }
-        }
-    }
-
     ColumnLayout {
         id: notifyCol
 
-        x: 0.5*font.pixelSize
-        y: 0.5*font.pixelSize
-        width: parent.width-font.pixelSize
+        width: parent.width
 
-        Label {
+        WordWrappingItemDelegate {
             Layout.fillWidth: true
-            text: NotificationManager.currentNotification ? NotificationManager.currentNotification.title : ""
-            font.bold: true
-            wrapMode: Text.Wrap
-        }
-        Label {
-            Layout.fillWidth: true
-            visible: text !== ""
-            text: NotificationManager.currentNotification ? NotificationManager.currentNotification.text : ""
-            wrapMode: Text.Wrap
+            text: {
+                if (!NotificationManager.currentNotification)
+                    return ""
+
+                return NotificationManager.currentNotification.title +
+                  `<br><font color="#606060" size="2">` +
+                  NotificationManager.currentNotification.text +
+                  `</font>`
+            }
+
+            icon.source: {
+                if (NotificationManager.currentNotification)
+                {
+                    if (NotificationManager.currentNotification.importance === Notification.Warning)
+                        return "/icons/material/ic_warning.svg"
+                    if (NotificationManager.currentNotification.importance === Notification.Warning_Navigation)
+                        return "/icons/material/ic_warning.svg"
+                    if (NotificationManager.currentNotification.importance === Notification.Alert)
+                        return "/icons/material/ic_warning.svg"
+                }
+                return "/icons/material/ic_info.svg"
+            }
+
+            onClicked: {
+                if (!NotificationManager.currentNotification)
+                    return
+
+                if (NotificationManager.currentNotification.textBodyAction === Notification.OpenMapsAndDataPage)
+                {
+                    PlatformAdaptor.vibrateBrief()
+                    stackView.push("../pages/DataManagerPage.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
+                }
+                if (NotificationManager.currentNotification.textBodyAction === Notification.OpenTrafficReceiverPage)
+                {
+                    PlatformAdaptor.vibrateBrief()
+                    stackView.push("../pages/TrafficReceiver.qml", {"appWindow": view})
+                }
+            }
         }
 
-        RowLayout {
+        DialogButtonBox {
+            Layout.leftMargin: 0.2*font.pixelSize
+            Layout.preferredHeight: 1.2*font.pixelSize
+            Layout.rightMargin: 0.2*font.pixelSize
+            clip: true
 
             ToolButton {
                 text: NotificationManager.currentNotification ? NotificationManager.currentNotification.button1Text : ""
-                Layout.preferredHeight: 1.2*font.pixelSize
+                visible: text !== ""
+
                 onClicked: {
                     if (NotificationManager.currentNotification)
                         NotificationManager.currentNotification.onButton1Clicked()
                 }
             }
+
             ToolButton {
                 text: NotificationManager.currentNotification ? NotificationManager.currentNotification.button2Text : ""
-                Layout.preferredHeight: 1.2*font.pixelSize
+                visible: text !== ""
 
                 onClicked:  {
                     if (NotificationManager.currentNotification)

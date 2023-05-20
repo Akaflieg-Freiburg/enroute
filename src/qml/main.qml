@@ -776,20 +776,6 @@ AppWindow {
     // Connections
     //
 
-    Connections { // items
-        target: DataManager.items
-
-        function onDownloadingChanged(downloading) {
-            if (downloading) {
-                Notifier.showNotification(Notifier.DownloadInfo, "", "");
-                NotificationManager.showNotification(Notifier.DownloadInfo, "", "");
-            } else {
-                Notifier.hideNotification(Notifier.DownloadInfo);
-                NotificationManager.hideNotification(Notifier.DownloadInfo);
-            }
-        }
-    }
-
     Connections { // Navigator
         target: Navigator
 

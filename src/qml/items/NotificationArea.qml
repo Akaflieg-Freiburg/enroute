@@ -26,12 +26,39 @@ import akaflieg_freiburg.enroute
 
 
 Rectangle {
+    id: mainRect
+
     border.color: "black"
     color: "white"
     radius: 0.5*font.pixelSize
 
     implicitHeight: notifyCol.implicitHeight+font.pixelSize
     visible: NotificationManager.currentNotification
+
+    Connections {
+        target: NotificationManager
+
+        function onCurrentNotificationChanged() { blink.start() }
+    }
+
+    SequentialAnimation {
+        id: blink
+
+        ColorAnimation {
+            target: mainRect
+            property: "color"
+            duration: 50
+            to: "red"
+        }
+        ColorAnimation {
+            target: mainRect
+            property: "color"
+            duration: 50
+            to: "white"
+        }
+
+    }
+
 
     ColumnLayout {
         id: notifyCol

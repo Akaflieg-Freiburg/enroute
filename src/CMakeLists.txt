@@ -236,7 +236,9 @@ if(ANDROID)
         Qt6::QuickControls2
         Qt6::Sql
         Qt6::Svg
-        Qt6::WebView)
+        Qt6::TextToSpeech
+        Qt6::WebView
+    )
 
     set_target_properties(${PROJECT_NAME} PROPERTIES
         QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android"
@@ -280,6 +282,7 @@ if (UNIX AND NOT ANDROID AND NOT APPLE)
         Qt6::QuickControls2
         Qt6::Sql
         Qt6::Svg
+        Qt6::TextToSpeech
         Qt6::Widgets
         kdsingleapplication
     )
@@ -326,6 +329,7 @@ if (APPLE AND NOT IOS)
         Qt6::QuickControls2
         Qt6::Sql
         Qt6::Svg
+        Qt6::TextToSpeech
         Qt6::Widgets
         kdsingleapplication
     )
@@ -366,6 +370,7 @@ if (IOS)
         Qt6::QuickControls2
         Qt6::Sql
         Qt6::Svg
+        Qt6::TextToSpeech
         Qt6::WebView
     )
     target_link_libraries(${PROJECT_NAME} PRIVATE

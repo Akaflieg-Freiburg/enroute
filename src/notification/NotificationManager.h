@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QQmlEngine>
+#include <QTextToSpeech>
 #include <QTimer>
 
 #include "GlobalObject.h"
@@ -59,7 +60,7 @@ public:
     explicit NotificationManager() = delete;
 
     /*! \brief Standard destructor */
-    ~NotificationManager() override = default;
+    ~NotificationManager();
 
     // factory function for QML singleton
     static Notifications::NotificationManager* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
@@ -130,7 +131,8 @@ private:
     void addNotification(Notifications::Notification* notification);
 
     // List of Notifications, sorted so that the most important notification comes first.
-    QVector<QPointer<Notifications::Notification>> m_notifications;
+    QVector<QPointer<Notifications::Notification>> m_visualNotifications;
+
 
     // When notifications for maps and data are temporarily not possible, then use this timer
     // to notify again.
@@ -138,6 +140,31 @@ private:
 
     // Internal to updateNotificationList
     Notifications::Notification* currentNotificationCache {nullptr};
+
+    //
+    // Members used for spoken text
+    //
+
+    // List of Notifications, sorted so that the most important notification comes first.
+    QVector<QPointer<Notifications::Notification>> m_spokenNotifications;
+
+    // Future for the thread that constructs the speaker. The future returns with a
+    // pointer to a QTextToSpeech object that has its thread affinity set to the
+    // QApplication main thread.
+    QFuture<QTextToSpeech*> m_speakerFuture;
+
+    // Pointer to the speaker. This will be the nullpointer while the thread the constructs
+    // the object is still ongoing.
+    QTextToSpeech* m_speaker {nullptr};
+
+    // This timer is used to stop for one second between two spoken texts.
+    // The slot start() is called when m_speaker is done speaking.
+    // The signal timeout() is connected to speakNext().
+    QTimer m_speechBreakTimer;
+
+    // This method cleans the list m_spokenNotifications. If a notification is in the list,
+    // it speaks the
+    void speakNext();
 };
 
 } // namespace Notifications

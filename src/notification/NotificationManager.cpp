@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QApplication>
+#include <QtConcurrent>
 #include <QQmlEngine>
 #include <QSettings>
 #include <QStandardPaths>
@@ -36,6 +38,16 @@
 
 Notifications::NotificationManager::NotificationManager(QObject *parent) : GlobalObject(parent)
 {
+    // The constructor of QTextToSpeech is extremely slow. Under Linux, it blocks the
+    // GUI for 10 seconds or more. For that reason we run the constructor in a separate thread.
+    m_speakerFuture = QtConcurrent::run([]() {
+        auto *sp = new QTextToSpeech();
+        sp->moveToThread(QApplication::instance()->thread());
+        return sp;
+    } );
+    m_speechBreakTimer.setInterval(1*1000);
+    m_speechBreakTimer.setSingleShot(true);
+    connect(&m_speechBreakTimer, &QTimer::timeout, this, &Notifications::NotificationManager::speakNext);
 }
 
 void Notifications::NotificationManager::deferredInitialization()
@@ -60,17 +72,24 @@ void Notifications::NotificationManager::deferredInitialization()
     onMapAndDataUpdateSizeChanged();
 }
 
+Notifications::NotificationManager::~NotificationManager()
+{
+    if (m_speakerFuture.isRunning()) {
+        delete m_speakerFuture.result();
+    }
+}
+
 
 //
 // Getter Methods
 //
 
 Notifications::Notification* Notifications::NotificationManager::currentNotification() const {
-    if (m_notifications.isEmpty())
+    if (m_visualNotifications.isEmpty())
     {
         return nullptr;
     }
-    return m_notifications[0];
+    return m_visualNotifications[0];
 }
 
 
@@ -81,8 +100,7 @@ Notifications::Notification* Notifications::NotificationManager::currentNotifica
 
 void Notifications::NotificationManager::showTestNotification()
 {
-    auto* notification = new Notifications::Notification(this);
-    notification->setTitle("Test Nofication");
+    auto* notification = new Notifications::Notification("Test Notification");
     notification->setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
     connect(GlobalObject::dataManager()->mapsAndData(), &DataManagement::Downloadable_MultiFile::downloadingChanged, notification, &QObject::deleteLater);
     addNotification(notification);
@@ -99,7 +117,7 @@ void Notifications::NotificationManager::addNotification(Notifications::Notifica
     {
         return;
     }
-    if (m_notifications.contains(notification))
+    if (m_visualNotifications.contains(notification))
     {
         return;
     }
@@ -110,11 +128,97 @@ void Notifications::NotificationManager::addNotification(Notifications::Notifica
 
     // Wire up
     connect(notification, &Notifications::Notification::destroyed, this, &Notifications::NotificationManager::updateNotificationList);
-    connect(notification, &Notifications::Notification::importanceChanged, this, &Notifications::NotificationManager::updateNotificationList);
 
     // Append and update
-    m_notifications.append(notification);
+    m_visualNotifications.append(notification);
     updateNotificationList();
+
+    // Append to spoken notification list
+    m_spokenNotifications.append(notification);
+    speakNext();
+}
+
+void Notifications::NotificationManager::speakNext()
+{
+    // Check that the speaker has been constructed successfully. If not, then
+    // take proper action.
+    if (m_speaker == nullptr)
+    {
+        // If the speaker is currently being constructed, check back in 2 seconds
+        if (m_speakerFuture.isRunning())
+        {
+            QTimer::singleShot(2*1000, this, &Notifications::NotificationManager::speakNext);
+            return;
+        }
+
+        // If the constructor has run and there is still no speaker, then something
+        // has gone horribly wrong. Quit without doing anything.
+        if (m_speakerFuture.resultCount() == 0)
+        {
+            return;
+        }
+
+        // Otherwise, obtain the speaker, make it a parent of *this and wire it up.
+        m_speaker = m_speakerFuture.takeResult();
+        if (m_speaker == nullptr)
+        {
+            return;
+        }
+        m_speaker->setParent(this);
+        connect(m_speaker, &QTextToSpeech::stateChanged, this, [this](QTextToSpeech::State state) { if (state == QTextToSpeech::Ready) m_speechBreakTimer.start();});
+    }
+
+    // At his point, we have a valid speaker object. Make sure that the speaker is ready
+    // to speak and that the break between two messages is not running.
+    if (m_speaker->state() != QTextToSpeech::Ready)
+    {
+        return;
+    }
+    if (m_speechBreakTimer.isActive())
+    {
+        return;
+    }
+
+    // At this point, we have a valid speaker object, and we are at the right moment to say something.
+
+    // Clean the m_spokenNotifications and sort it by importance, most important announcements first
+    m_spokenNotifications.removeAll(nullptr);
+    std::sort(m_spokenNotifications.begin(), m_spokenNotifications.end(),
+              [](const Notification* a, const Notification* b) { if (a->importance() == b->importance()) return a->reactionTime() < b->reactionTime(); return a->importance() > b->importance(); });
+
+    // If there is nothing to say, then quit
+    if (m_spokenNotifications.isEmpty())
+    {
+        return;
+    }
+
+    // Generate text to be spoken.
+    auto notification = m_spokenNotifications.takeFirst();
+    QStringList textBlocks;
+    switch (notification->importance()) {
+    case Notifications::Notification::Info:
+    case Notifications::Notification::Info_Navigation:
+        textBlocks << tr("Info.");
+        break;
+    case Notifications::Notification::Warning:
+    case Notifications::Notification::Warning_Navigation:
+        textBlocks << tr("Warning.");
+        break;
+    case Notifications::Notification::Alert:
+        textBlocks << tr("Alert!");
+        break;
+    }
+    if (notification->spokenText().isEmpty())
+    {
+        textBlocks << notification->title() + ".";
+    }
+    else
+    {
+        textBlocks << notification->spokenText();
+    }
+
+    // Speak!
+    m_speaker->say( textBlocks.join(" ") );
 }
 
 void Notifications::NotificationManager::onMapAndDataDownloadingChanged()
@@ -127,9 +231,8 @@ void Notifications::NotificationManager::onMapAndDataDownloadingChanged()
     if (mapsAndData->downloading())
     {
         // Notify!
-        auto* notification = new Notifications::Notification(this);
-        notification->setTitle(tr("Downloading map and data…"));
-                               connect(GlobalObject::dataManager()->mapsAndData(), &DataManagement::Downloadable_MultiFile::downloadingChanged, notification, &QObject::deleteLater);
+        auto* notification = new Notifications::Notification(tr("Downloading map and data…"));
+        connect(GlobalObject::dataManager()->mapsAndData(), &DataManagement::Downloadable_MultiFile::downloadingChanged, notification, &QObject::deleteLater);
         addNotification(notification);
     }
 }
@@ -172,10 +275,8 @@ void Notifications::NotificationManager::onTrafficReceiverRuntimeError()
     {
         return;
     }
-    auto* notification = new Notifications::Notification(this);
-    notification->setTitle(tr("Traffic data receiver problem"));
+    auto* notification = new Notifications::Notification(tr("Traffic data receiver problem"), Notifications::Notification::Warning);
     notification->setText(error);
-    notification->setImportance(Notifications::Notification::Warning);
     notification->setTextBodyAction(Notifications::Notification::OpenTrafficReceiverPage);
     connect(GlobalObject::trafficDataProvider(),
             &Traffic::TrafficDataProvider::trafficReceiverRuntimeErrorChanged,
@@ -191,10 +292,8 @@ void Notifications::NotificationManager::onTrafficReceiverSelfTestError()
     {
         return;
     }
-    auto* notification = new Notifications::Notification(this);
-    notification->setTitle(tr("Traffic data receiver self test error"));
+    auto* notification = new Notifications::Notification(tr("Traffic data receiver self test error"), Notifications::Notification::Warning);
     notification->setText(error);
-    notification->setImportance(Notifications::Notification::Warning);
     notification->setTextBodyAction(Notifications::Notification::OpenTrafficReceiverPage);
     connect(GlobalObject::trafficDataProvider(),
             &Traffic::TrafficDataProvider::trafficReceiverSelfTestErrorChanged,
@@ -205,8 +304,8 @@ void Notifications::NotificationManager::onTrafficReceiverSelfTestError()
 
 void Notifications::NotificationManager::updateNotificationList()
 {
-    m_notifications.removeAll(nullptr);
-    std::sort(m_notifications.begin(), m_notifications.end(),
+    m_visualNotifications.removeAll(nullptr);
+    std::sort(m_visualNotifications.begin(), m_visualNotifications.end(),
               [](const Notification* a, const Notification* b) { if (a->importance() == b->importance()) return a->reactionTime() < b->reactionTime(); return a->importance() > b->importance(); });
 
     if (currentNotificationCache == currentNotification())

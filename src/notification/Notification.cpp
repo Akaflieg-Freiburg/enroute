@@ -30,7 +30,9 @@ using namespace std::chrono_literals;
 // Constructors and destructors
 //
 
-Notifications::Notification::Notification(QObject* parent) : QObject(parent)
+Notifications::Notification::Notification(const QString& _title, Notifications::Notification::Importance _importance, QObject* parent)
+    : QObject(parent), m_importance(_importance), m_title(_title)
+
 {
     // Auto-delete this notification in five minutes.
     QTimer::singleShot(5min, this, &QObject::deleteLater);
@@ -76,16 +78,6 @@ void Notifications::Notification::setButton2Text(const QString& newButton2Text)
     emit button2TextChanged();
 }
 
-void Notifications::Notification::setImportance(Notifications::Notification::Importance newImportance)
-{
-    if (newImportance == m_importance)
-    {
-        return;
-    }
-    m_importance = newImportance;
-    emit importanceChanged();
-}
-
 void Notifications::Notification::setReactionTime(Units::Timespan newReactionTime)
 {
     if (newReactionTime == m_reactionTime)
@@ -124,16 +116,6 @@ void Notifications::Notification::setTextBodyAction(Notifications::Notification:
     }
     m_textBodyAction = newTextBodyAction;
     emit textBodyActionChanged();
-}
-
-void Notifications::Notification::setTitle(const QString& newTitle)
-{
-    if (newTitle == m_title)
-    {
-        return;
-    }
-    m_title = newTitle;
-    emit titleChanged();
 }
 
 

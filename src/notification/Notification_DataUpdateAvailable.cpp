@@ -28,12 +28,11 @@
 // Constructors and destructors
 //
 
-Notifications::Notification_DataUpdateAvailable::Notification_DataUpdateAvailable(QObject *parent) : Notification(parent)
+Notifications::Notification_DataUpdateAvailable::Notification_DataUpdateAvailable(QObject* parent)
+    : Notification(tr("Map and data updates available"))
 {
-    setTitle(tr("Map and data updates available"));
     setButton1Text(tr("Update"));
     setButton2Text(tr("Dismiss"));
-    setImportance(Info);
     setTextBodyAction(OpenMapsAndDataPage);
     update();
 

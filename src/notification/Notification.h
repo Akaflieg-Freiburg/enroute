@@ -79,7 +79,7 @@ public:
      *
      *  @param parent The standard QObject parent pointer
      */
-    explicit Notification(QObject* parent = nullptr);
+    explicit Notification(const QString& _title, Notifications::Notification::Importance _importance = Notifications::Notification::Info, QObject* parent = nullptr);
 
     // No default constructor, always want a parent
     explicit Notification() = delete;
@@ -113,7 +113,7 @@ public:
      *  The importance is used to choose the notification that is most relevant
      *  to the pilot. The importance is initialized with "Info".
      */
-    Q_PROPERTY(Notifications::Notification::Importance importance READ importance WRITE setImportance NOTIFY importanceChanged)
+    Q_PROPERTY(Notifications::Notification::Importance importance READ importance CONSTANT)
 
     /*! \brief Time left to avert negative consequences
      *
@@ -150,7 +150,7 @@ public:
      *  This property holds the title, which should never be empty. This
      *  property is initialized with an enbarrassing placeholder string.
      */
-    Q_PROPERTY(QString title READ title  WRITE setTitle NOTIFY titleChanged)
+    Q_PROPERTY(QString title READ title CONSTANT)
 
 
     //
@@ -225,12 +225,6 @@ public:
 
     /*! \brief Setter function for property of the same name
      *
-     *  @param newImportance Property importance
-     */
-    void setImportance(Notifications::Notification::Importance newImportance);
-
-    /*! \brief Setter function for property of the same name
-     *
      *  @param newReactionTime Property reactionTime
      */
     void setReactionTime(Units::Timespan newReactionTime);
@@ -252,13 +246,6 @@ public:
      *  @param newText Property textBodyAction
      */
     void setTextBodyAction(Notifications::Notification::TextBodyAction newTextBodyAction);
-
-    /*! \brief Setter function for property of the same name
-     *
-     *  @param newTitle Property title
-     */
-    void setTitle(const QString& newTitle);
-
 
 
     //
@@ -291,9 +278,6 @@ signals:
     void button2TextChanged();
 
     /*! \brief Notification signal */
-    void importanceChanged();
-
-    /*! \brief Notification signal */
     void reactionTimeChanged();
 
     /*! \brief Notification signal */
@@ -305,8 +289,6 @@ signals:
     /*! \brief Notification signal */
     void textBodyActionChanged();
 
-    /*! \brief Notification signal */
-    void titleChanged();
 
 private:
     // Property data

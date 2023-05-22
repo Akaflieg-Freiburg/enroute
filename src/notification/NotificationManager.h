@@ -107,6 +107,9 @@ public:
     /*! \brief Issue test notification */
     Q_INVOKABLE void addTestNotification();
 
+    /*! \brief Voice test */
+    Q_INVOKABLE void voiceTest();
+
 signals:
     /*! \brief Notification signal */
     void currentVisualNotificationChanged();

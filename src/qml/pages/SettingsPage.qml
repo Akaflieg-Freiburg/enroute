@@ -138,7 +138,6 @@ Page {
                     heightLimitDialog.open()
                 }
             }
-
             ToolButton {
                 icon.source: "/icons/material/ic_info_outline.svg"
                 onClicked: {
@@ -274,6 +273,28 @@ Page {
                     PlatformAdaptor.vibrateBrief()
                     helpDialog.title = qsTr("Night Mode")
                     helpDialog.text = "<p>" + qsTr("The “Night Mode” of Enroute Flight Navigation is similar to the “Dark Mode” found in many other apps. We designed the night mode for pilots performing VFR flights by night, whose eyes have adapted to the darkness. Compared with other apps, you will find that the display is quite dark indeed.") + "</p>"
+                    helpDialog.open()
+                }
+            }
+
+            WordWrappingItemDelegate {
+                id: voiceNotifications
+                text: qsTr("Voice Notifications")
+                icon.source: "/icons/material/ic_speaker_phone.svg"
+                Layout.fillWidth: true
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    voiceNotificationDialog.open()
+                }
+            }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("Voice Notifications")
+                    helpDialog.text = "<p>" + qsTr("Pilots should not be looking at their mobile devices for extended periods of time.") + " "
+                            + qsTr("<strong>Enroute Flight Navigation</strong> is therefore able to read notification texts in addition to showing them on the screen.") + "</p>"
+                            + "<p>" + qsTr("Since we expect that not everybody likes this feature, his button allows switching voice notification on and off.") + "</p>"
                     helpDialog.open()
                 }
             }
@@ -432,7 +453,6 @@ Page {
             stackView.push("../pages/DataManagerPage.qml")
         }
     }
-
 
     CenteringDialog {
         id: altimeterDialog
@@ -663,6 +683,75 @@ Page {
 
         onAccepted: GlobalSettings.positioningByTrafficDataReceiver = b.checked
 
+    }
+
+    CenteringDialog {
+        id: voiceNotificationDialog
+
+        modal: true
+        title: qsTr("Voice Notifications")
+        standardButtons: Dialog.Ok|Dialog.Cancel
+
+        DecoratedScrollView {
+            anchors.fill: parent
+            contentWidth: availableWidth // Disable horizontal scrolling
+
+            // Delays evaluation and prevents binding loops
+            Binding on implicitHeight {
+                value: col1.implicitHeight
+                delayed: true    // Prevent intermediary values from being assigned
+            }
+
+            clip: true
+
+            ColumnLayout {
+            id: col1
+            width: voiceNotificationDialog.availableWidth
+
+            Label {
+                text: qsTr("Select the voice notification that you would like to hear.")
+                Layout.fillWidth: true
+                wrapMode: Text.Wrap
+            }
+
+            Button {
+                Layout.alignment: Qt.AlignHCenter
+                text: qsTr("Voice Test")
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    NotificationManager.voiceTest()
+                }
+            }
+            SwitchDelegate {
+                Layout.fillWidth: true
+                text: qsTr("Information · Generic")
+            }
+            SwitchDelegate {
+                Layout.fillWidth: true
+                text: qsTr("Information · Navigation")
+            }
+            SwitchDelegate {
+                Layout.fillWidth: true
+                text: qsTr("Warning · Generic")
+            }
+            SwitchDelegate {
+                Layout.fillWidth: true
+                text: qsTr("Warning · Navigation")
+            }
+            SwitchDelegate {
+                Layout.fillWidth: true
+                text: qsTr("Alert")
+            }
+        }
+        }
+/*
+        onAboutToShow: {
+            a.checked = !GlobalSettings.positioningByTrafficDataReceiver
+            b.checked = !a.checked
+        }
+
+        onAccepted: GlobalSettings.positioningByTrafficDataReceiver = b.checked
+*/
     }
 
 } // Page

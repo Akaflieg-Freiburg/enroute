@@ -115,6 +115,17 @@ void Notifications::NotificationManager::addTestNotification()
     addNotification(notification);
 }
 
+void Notifications::NotificationManager::voiceTest()
+{
+    auto* notification = new Notifications::Notification(tr("Test notification"), Notifications::Notification::Warning, this);
+    notification->setText(u"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."_qs);
+    connect(GlobalObject::dataManager()->mapsAndData(), &DataManagement::Downloadable_MultiFile::downloadingChanged, notification, &QObject::deleteLater);
+    m_voiceNotifications.append(notification);
+    QQmlEngine::setObjectOwnership(notification, QQmlEngine::CppOwnership);
+    speakNext();
+}
+
+
 
 //
 // Private Methods

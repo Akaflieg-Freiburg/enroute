@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QApplication>
+#include <QCoreApplication>
 #include <QtConcurrent>
 #include <QQmlEngine>
 #include <QSettings>
@@ -38,13 +38,17 @@
 
 Notifications::NotificationManager::NotificationManager(QObject *parent) : GlobalObject(parent)
 {
-    // The constructor of QTextToSpeech is extremely slow. Under Linux, it blocks the
-    // GUI for 10 seconds or more. For that reason we run the constructor in a separate thread.
-    m_speakerFuture = QtConcurrent::run([]() {
-        auto *sp = new QTextToSpeech();
-        sp->moveToThread(QApplication::instance()->thread());
-        return sp;
-    } );
+#if defined(Q_OS_LINUX) and not defined(Q_OS_ANDROID)
+    // Under Linux, the constructor of QTextToSpeech is extremely slow. For that reason we run the constructor in a separate thread.
+    m_speakerFuture = QtConcurrent::run([this]() { setupSpeaker();} );
+#else
+    // On other operating systems, we construct the QTextToSpeech object
+    // directly.
+    //
+    // Note: under Android, QTextToSpeech MUST be created in the GUI thread
+    setupSpeaker();
+#endif
+
     m_speechBreakTimer.setInterval(1*1000);
     m_speechBreakTimer.setSingleShot(true);
     connect(&m_speechBreakTimer, &QTimer::timeout, this, &Notifications::NotificationManager::speakNext);
@@ -74,9 +78,8 @@ void Notifications::NotificationManager::deferredInitialization()
 
 Notifications::NotificationManager::~NotificationManager()
 {
-    if (m_speakerFuture.isRunning()) {
-        delete m_speakerFuture.result();
-    }
+    // Wait for the constructor of QTextToSpeech to finish.
+    m_speakerFuture.waitForFinished();
 }
 
 
@@ -100,7 +103,7 @@ Notifications::Notification* Notifications::NotificationManager::currentNotifica
 
 void Notifications::NotificationManager::showTestNotification()
 {
-    auto* notification = new Notifications::Notification("Test Notification");
+    auto* notification = new Notifications::Notification("This is a test notification");
     notification->setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
     connect(GlobalObject::dataManager()->mapsAndData(), &DataManagement::Downloadable_MultiFile::downloadingChanged, notification, &QObject::deleteLater);
     addNotification(notification);
@@ -141,39 +144,21 @@ void Notifications::NotificationManager::addNotification(Notifications::Notifica
 void Notifications::NotificationManager::speakNext()
 {
     // Check that the speaker has been constructed successfully. If not, then
-    // take proper action.
+    // check back in 2 seconds.
     if (m_speaker == nullptr)
     {
-        // If the speaker is currently being constructed, check back in 2 seconds
-        if (m_speakerFuture.isRunning())
-        {
-            QTimer::singleShot(2*1000, this, &Notifications::NotificationManager::speakNext);
-            return;
-        }
-
-        // If the constructor has run and there is still no speaker, then something
-        // has gone horribly wrong. Quit without doing anything.
-        if (m_speakerFuture.resultCount() == 0)
-        {
-            return;
-        }
-
-        // Otherwise, obtain the speaker, make it a parent of *this and wire it up.
-        m_speaker = m_speakerFuture.takeResult();
-        if (m_speaker == nullptr)
-        {
-            return;
-        }
-        m_speaker->setParent(this);
-        connect(m_speaker, &QTextToSpeech::stateChanged, this, [this](QTextToSpeech::State state) { if (state == QTextToSpeech::Ready) m_speechBreakTimer.start();});
+        QTimer::singleShot(2*1000, this, &Notifications::NotificationManager::speakNext);
+        return;
     }
 
     // At his point, we have a valid speaker object. Make sure that the speaker is ready
     // to speak and that the break between two messages is not running.
+    qWarning() << "E" << m_speaker->state();
     if (m_speaker->state() != QTextToSpeech::Ready)
     {
         return;
     }
+    qWarning() << "F";
     if (m_speechBreakTimer.isActive())
     {
         return;
@@ -218,6 +203,7 @@ void Notifications::NotificationManager::speakNext()
     }
 
     // Speak!
+    qWarning() << textBlocks;
     m_speaker->say( textBlocks.join(" ") );
 }
 
@@ -314,4 +300,22 @@ void Notifications::NotificationManager::updateNotificationList()
     }
     currentNotificationCache = currentNotification();
     emit currentNotificationChanged();
+}
+
+void Notifications::NotificationManager::setupSpeaker()
+{
+    auto *speaker = new QTextToSpeech();
+    speaker->moveToThread(thread());
+    speaker->setParent(this);
+    connect(speaker, &QTextToSpeech::stateChanged, this, &Notifications::NotificationManager::onSpeakerStateChanged);
+    m_speaker = speaker;
+}
+
+
+void Notifications::NotificationManager::onSpeakerStateChanged(QTextToSpeech::State state)
+{
+    if (state == QTextToSpeech::Ready)
+    {
+        m_speechBreakTimer.start();
+    }
 }

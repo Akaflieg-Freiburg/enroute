@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2023 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QFuture>
 #include <QQmlEngine>
 #include <QTextToSpeech>
 #include <QTimer>
@@ -148,23 +149,30 @@ private:
     // List of Notifications, sorted so that the most important notification comes first.
     QVector<QPointer<Notifications::Notification>> m_spokenNotifications;
 
-    // Future for the thread that constructs the speaker. The future returns with a
-    // pointer to a QTextToSpeech object that has its thread affinity set to the
-    // QApplication main thread.
-    QFuture<QTextToSpeech*> m_speakerFuture;
-
     // Pointer to the speaker. This will be the nullpointer while the thread the constructs
     // the object is still ongoing.
     QTextToSpeech* m_speaker {nullptr};
+
+    // Future for the worker that constructs QTextToSpeek under Linux in a different thread
+    QFuture<void> m_speakerFuture;
 
     // This timer is used to stop for one second between two spoken texts.
     // The slot start() is called when m_speaker is done speaking.
     // The signal timeout() is connected to speakNext().
     QTimer m_speechBreakTimer;
 
+    // If the speaker is finished, start m_speechBreakTimer, in order to call speakNext()
+    // after a one-second break.
+    void onSpeakerStateChanged(QTextToSpeech::State state);
+
+    // Setup speaker: construct the speaker, move it to the GUI thread, make it a
+    // child of this and wire it up.
+    void setupSpeaker();
+
     // This method cleans the list m_spokenNotifications. If a notification is in the list,
     // it speaks the
     void speakNext();
 };
+
 
 } // namespace Notifications

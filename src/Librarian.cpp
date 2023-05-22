@@ -57,28 +57,11 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 
     if (name == u":text/authors.html"_qs)
     {
-        return tr(R"html(<h3>Authors</h3>
-
-<br>
-
-<table>
-  <tr>
-    <td>
-      <p>The app <strong>Enroute Flight Navigation</strong> was written by Stefan Kebekus, flight enthusiast since 1986 and member of the Akaflieg Freiburg flight club. Stefan flies gliders and motor planes.</p>
-      <h4>Address</h4>
-      Stefan Kebekus<br>
-      Wintererstraße 77<br>
-      79104 Freiburg<br>
-      Germany<br>
-      <br>
-      <a href='mailto:stefan.kebekus@gmail.com'>e-mail</a>
-    </td>
-    <td>
-      <p align='center'>&nbsp;<img src='/icons/kebekus.jpg' alt='Stefan Kebekus' height='140'><br>Stefan Kebekus<br>Pic: Patrick Seeger</p>
-    </td>
-  </tr>
-</table>
-)html") + tr(R"html(
+      return "<h3>"+tr("Authors")+"</h3>"
+	+ "<p>"+tr("The app <strong>Enroute Flight Navigation</strong> was written by Stefan Kebekus, flight enthusiast since 1986 and member of the Akaflieg Freiburg flight club. Stefan flies gliders and motor planes.")+"</p>"
+	+ "<h4>"+tr("Address")+"</h4>"
+	+ "Stefan Kebekus<br>Wintererstraße 77<br>79104 Freiburg<br>Germany<br><br><a href='mailto:stefan.kebekus@gmail.com'>e-mail</a>"
+	+ tr(R"html(
 <h3>Manual</h3>
 
 <p>The manual has kindly been provided by Michael Horbaschk.</p>

@@ -77,6 +77,10 @@ public:
      *  The constructor sets a time that calls deleteLater() after five minutes.
      *  This way, notifications are never shown permanently.
      *
+     *  @param _title Notification title
+     *
+     *  @param _importance Notification importance
+     *
      *  @param parent The standard QObject parent pointer
      */
     explicit Notification(const QString& _title, Notifications::Notification::Importance _importance = Notifications::Notification::Info, QObject* parent = nullptr);
@@ -243,7 +247,7 @@ public:
 
     /*! \brief Setter function for property of the same name
      *
-     *  @param newText Property textBodyAction
+     *  @param newTextBodyAction Property textBodyAction
      */
     void setTextBodyAction(Notifications::Notification::TextBodyAction newTextBodyAction);
 

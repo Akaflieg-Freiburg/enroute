@@ -33,12 +33,12 @@ Rectangle {
     radius: 0.5*font.pixelSize
 
     implicitHeight: notifyCol.implicitHeight+font.pixelSize
-    visible: NotificationManager.currentNotification
+    visible: NotificationManager.currentVisualNotification
 
     Connections {
         target: NotificationManager
 
-        function onCurrentNotificationChanged() { blink.start() }
+        function oncurrentVisualNotificationChanged() { blink.start() }
     }
 
     SequentialAnimation {
@@ -68,38 +68,38 @@ Rectangle {
         WordWrappingItemDelegate {
             Layout.fillWidth: true
             text: {
-                if (!NotificationManager.currentNotification)
+                if (!NotificationManager.currentVisualNotification)
                     return ""
 
-                return NotificationManager.currentNotification.title +
+                return NotificationManager.currentVisualNotification.title +
                   `<br><font color="#606060" size="2">` +
-                  NotificationManager.currentNotification.text +
+                  NotificationManager.currentVisualNotification.text +
                   `</font>`
             }
 
             icon.source: {
-                if (NotificationManager.currentNotification)
+                if (NotificationManager.currentVisualNotification)
                 {
-                    if (NotificationManager.currentNotification.importance === Notification.Warning)
+                    if (NotificationManager.currentVisualNotification.importance === Notification.Warning)
                         return "/icons/material/ic_warning.svg"
-                    if (NotificationManager.currentNotification.importance === Notification.Warning_Navigation)
+                    if (NotificationManager.currentVisualNotification.importance === Notification.Warning_Navigation)
                         return "/icons/material/ic_warning.svg"
-                    if (NotificationManager.currentNotification.importance === Notification.Alert)
+                    if (NotificationManager.currentVisualNotification.importance === Notification.Alert)
                         return "/icons/material/ic_warning.svg"
                 }
                 return "/icons/material/ic_info.svg"
             }
 
             onClicked: {
-                if (!NotificationManager.currentNotification)
+                if (!NotificationManager.currentVisualNotification)
                     return
 
-                if (NotificationManager.currentNotification.textBodyAction === Notification.OpenMapsAndDataPage)
+                if (NotificationManager.currentVisualNotification.textBodyAction === Notification.OpenMapsAndDataPage)
                 {
                     PlatformAdaptor.vibrateBrief()
                     stackView.push("../pages/DataManagerPage.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
                 }
-                if (NotificationManager.currentNotification.textBodyAction === Notification.OpenTrafficReceiverPage)
+                if (NotificationManager.currentVisualNotification.textBodyAction === Notification.OpenTrafficReceiverPage)
                 {
                     PlatformAdaptor.vibrateBrief()
                     stackView.push("../pages/TrafficReceiver.qml", {"appWindow": view})
@@ -114,22 +114,22 @@ Rectangle {
             clip: true
 
             ToolButton {
-                text: NotificationManager.currentNotification ? NotificationManager.currentNotification.button1Text : ""
+                text: NotificationManager.currentVisualNotification ? NotificationManager.currentVisualNotification.button1Text : ""
                 visible: text !== ""
 
                 onClicked: {
-                    if (NotificationManager.currentNotification)
-                        NotificationManager.currentNotification.onButton1Clicked()
+                    if (NotificationManager.currentVisualNotification)
+                        NotificationManager.currentVisualNotification.onButton1Clicked()
                 }
             }
 
             ToolButton {
-                text: NotificationManager.currentNotification ? NotificationManager.currentNotification.button2Text : ""
+                text: NotificationManager.currentVisualNotification ? NotificationManager.currentVisualNotification.button2Text : ""
                 visible: text !== ""
 
                 onClicked:  {
-                    if (NotificationManager.currentNotification)
-                        NotificationManager.currentNotification.onButton2Clicked()
+                    if (NotificationManager.currentVisualNotification)
+                        NotificationManager.currentVisualNotification.onButton2Clicked()
                 }
             }
         }

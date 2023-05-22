@@ -33,8 +33,9 @@ namespace Notifications {
 
 /*! \brief This class manages notifications and presents them to the GUI
  *
- *  This class manages notifications. It watches the global objects in the app, creates notifications, sorts them according
- *  to importance, and presents the most important notification to the GUI.
+ *  This class manages notifications. It watches the global objects in the app,
+ *  creates notifications, sorts them according to importance, and presents the
+ *  most important notification to the GUI.
  */
 
 class NotificationManager : public GlobalObject
@@ -74,14 +75,17 @@ public:
     // PROPERTIES
     //
 
-    /*! \brief Most important notification
+    /*! \brief Most important notification to be shown in the GUI
      *
-     *  This property holds the most important notification, or nullptr if there is no notification. The notifications
-     *  are owned by this NotificationManager and have ownership set to QQmlEngine::CppOwnership.
+     *  This property holds the most important notification, or nullptr if there
+     *  is no notification. The notifications are owned by this
+     *  NotificationManager and have ownership set to QQmlEngine::CppOwnership.
      *
-     *  @note The notification objects returned here can be deleted anytime, so it is wise to store the result in a QPointer that tracks deletion.
+     *  @note The notification objects returned here can be deleted anytime, so
+     *  it is wise to store the result in a QPointer that tracks deletion.
      */
-    Q_PROPERTY(Notifications::Notification* currentNotification READ currentNotification NOTIFY currentNotificationChanged)
+    Q_PROPERTY(Notifications::Notification* currentVisualNotification READ currentVisualNotification NOTIFY currentVisualNotificationChanged)
+
 
 
     //
@@ -92,7 +96,8 @@ public:
      *
      *  @returns Property currentNotification
      */
-    [[nodiscard]] Notifications::Notification* currentNotification() const;
+    [[nodiscard]] Notifications::Notification* currentVisualNotification() const;
+
 
 
     //
@@ -100,78 +105,98 @@ public:
     //
 
     /*! \brief Issue test notification */
-    Q_INVOKABLE void showTestNotification();
+    Q_INVOKABLE void addTestNotification();
 
 signals:
     /*! \brief Notification signal */
-    void currentNotificationChanged();
+    void currentVisualNotificationChanged();
 
-private slots:
+private:
+    // Adds a notification to m_notifications and rearranges the list. Removes
+    // nullptrs and sorts list by importance.
+    void addNotification(Notifications::Notification* notification);
+
+
+
+    //
+    // Members used for visual notifications
+    //
+
     // This method clears all nullptrs from m_notifications, sorts the elements
-    // by importance and emits currentNotificationChanged() whenever the first element
-    // the list changes.
-    void updateNotificationList();
+    // by importance and emits currentNotificationChanged() whenever the first
+    // element the list changes.
+    void showNext();
 
-    // Called whenever the traffic receiver reports a runtime error,
-    // or clears the error status.
-    void onTrafficReceiverRuntimeError();
+    // List of Notifications, sorted so that the most important notification
+    // comes first.
+    QVector<QPointer<Notifications::Notification>> m_visualNotifications;
 
-    // Called whenever the traffic receiver reports a self test error,
-    // or clears the error status.
-    void onTrafficReceiverSelfTestError();
+    // Stores pointer to last current visual notification. This is used to
+    // determine when the signal currentVisualNotificationChanged should be
+    // emitted.
+    Notifications::Notification* currentVisualNotificationCache {nullptr};
 
-    // Called whenever map and data updates become (un)available
-    void onMapAndDataUpdateSizeChanged();
+
+
+    //
+    // Members used for voice notifications
+    //
+
+
+    // If the speaker is finished, start m_speechBreakTimer, in order to call
+    // speakNext() after a one-second break.
+    void onSpeakerStateChanged(QTextToSpeech::State state);
+
+    // Setup speaker: construct the speaker, move it to the GUI thread, make it
+    // a child of this and wire it up.
+    void setupSpeaker();
+
+    // This method cleans the list m_spokenNotifications and sorts it by
+    // importance. If a notification is in the list, it speaks the notication
+    // test.
+    void speakNext();
+
+    // List of Notifications, sorted so that the most important notification
+    // comes first.
+    QVector<QPointer<Notifications::Notification>> m_voiceNotifications;
+
+    // Pointer to the speaker. This will be the nullpointer while the thread the
+    // constructs the object is still ongoing.
+    QTextToSpeech* m_speaker {nullptr};
+
+    // Future for the worker that constructs QTextToSpeek under Linux in a
+    // different thread
+    QFuture<void> m_speakerFuture;
+
+    // This timer is used to stop for one second between two spoken texts. The
+    // slot start() is called when m_speaker is done speaking. The signal
+    // timeout() is connected to speakNext().
+    QTimer m_speechBreakTimer;
+
+
+
+    //
+    // Members used to watch other app components, and to generate notifications
+    // when necessary
+    //
 
     // Called whenever map and data are being downloaded.
     void onMapAndDataDownloadingChanged();
 
-private:
-    // Adds a notification to m_notifications and rearranges the list.
-    // Removes nullptrs and sorts list by importance.
-    void addNotification(Notifications::Notification* notification);
+    // Called whenever map and data updates become (un)available
+    void onMapAndDataUpdateSizeChanged();
 
-    // List of Notifications, sorted so that the most important notification comes first.
-    QVector<QPointer<Notifications::Notification>> m_visualNotifications;
+    // Called whenever the traffic receiver reports a runtime error, or clears
+    // the error status.
+    void onTrafficReceiverRuntimeError();
 
+    // Called whenever the traffic receiver reports a self test error, or clears
+    // the error status.
+    void onTrafficReceiverSelfTestError();
 
-    // When notifications for maps and data are temporarily not possible, then use this timer
-    // to notify again.
+    // When notifications for maps and data are temporarily not possible, then
+    // use this timer to notify again.
     QTimer mapsAndDataNotificationTimer;
-
-    // Internal to updateNotificationList
-    Notifications::Notification* currentNotificationCache {nullptr};
-
-    //
-    // Members used for spoken text
-    //
-
-    // List of Notifications, sorted so that the most important notification comes first.
-    QVector<QPointer<Notifications::Notification>> m_spokenNotifications;
-
-    // Pointer to the speaker. This will be the nullpointer while the thread the constructs
-    // the object is still ongoing.
-    QTextToSpeech* m_speaker {nullptr};
-
-    // Future for the worker that constructs QTextToSpeek under Linux in a different thread
-    QFuture<void> m_speakerFuture;
-
-    // This timer is used to stop for one second between two spoken texts.
-    // The slot start() is called when m_speaker is done speaking.
-    // The signal timeout() is connected to speakNext().
-    QTimer m_speechBreakTimer;
-
-    // If the speaker is finished, start m_speechBreakTimer, in order to call speakNext()
-    // after a one-second break.
-    void onSpeakerStateChanged(QTextToSpeech::State state);
-
-    // Setup speaker: construct the speaker, move it to the GUI thread, make it a
-    // child of this and wire it up.
-    void setupSpeaker();
-
-    // This method cleans the list m_spokenNotifications. If a notification is in the list,
-    // it speaks the
-    void speakNext();
 };
 
 

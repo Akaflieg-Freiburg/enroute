@@ -19,10 +19,10 @@
  ***************************************************************************/
 
 #include <QCoreApplication>
-#include <QtConcurrent>
 #include <QQmlEngine>
 #include <QSettings>
 #include <QStandardPaths>
+#include <QtConcurrent>
 
 #include "GlobalObject.h"
 #include "dataManagement/DataManager.h"
@@ -30,6 +30,9 @@
 #include "notification/NotificationManager.h"
 #include "notification/Notification_DataUpdateAvailable.h"
 #include "traffic/TrafficDataProvider.h"
+#include <chrono>
+
+using namespace std::chrono_literals;
 
 
 //
@@ -49,7 +52,7 @@ Notifications::NotificationManager::NotificationManager(QObject *parent) : Globa
     setupSpeaker();
 #endif
 
-    m_speechBreakTimer.setInterval(1*1000);
+    m_speechBreakTimer.setInterval(1s);
     m_speechBreakTimer.setSingleShot(true);
     connect(&m_speechBreakTimer, &QTimer::timeout, this, &Notifications::NotificationManager::speakNext);
 }
@@ -73,7 +76,7 @@ void Notifications::NotificationManager::deferredInitialization()
     mapsAndDataNotificationTimer.setSingleShot(true);
 
     onMapAndDataUpdateSizeChanged();
-    onMapAndDataUpdateSizeChanged();
+    onMapAndDataDownloadingChanged();
 }
 
 Notifications::NotificationManager::~NotificationManager()
@@ -83,16 +86,19 @@ Notifications::NotificationManager::~NotificationManager()
 }
 
 
+
 //
 // Getter Methods
 //
 
-Notifications::Notification* Notifications::NotificationManager::currentNotification() const {
-    if (m_visualNotifications.isEmpty())
+Notifications::Notification* Notifications::NotificationManager::currentVisualNotification() const
+{
+    Notifications::Notification* result = nullptr;
+    if (!m_visualNotifications.isEmpty())
     {
-        return nullptr;
+        result = m_visualNotifications[0];
     }
-    return m_visualNotifications[0];
+    return result;
 }
 
 
@@ -101,10 +107,10 @@ Notifications::Notification* Notifications::NotificationManager::currentNotifica
 //
 
 
-void Notifications::NotificationManager::showTestNotification()
+void Notifications::NotificationManager::addTestNotification()
 {
-    auto* notification = new Notifications::Notification("This is a test notification");
-    notification->setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+    auto* notification = new Notifications::Notification(tr("Test notification"), Notifications::Notification::Warning);
+    notification->setText(u"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."_qs);
     connect(GlobalObject::dataManager()->mapsAndData(), &DataManagement::Downloadable_MultiFile::downloadingChanged, notification, &QObject::deleteLater);
     addNotification(notification);
 }
@@ -120,25 +126,80 @@ void Notifications::NotificationManager::addNotification(Notifications::Notifica
     {
         return;
     }
-    if (m_visualNotifications.contains(notification))
-    {
-        return;
-    }
 
     // Re-parent the notification
     notification->setParent(this);
     QQmlEngine::setObjectOwnership(notification, QQmlEngine::CppOwnership);
 
-    // Wire up
-    connect(notification, &Notifications::Notification::destroyed, this, &Notifications::NotificationManager::updateNotificationList);
+    // Show notification if not already shown
+    if (!m_visualNotifications.contains(notification))
+    {
+        // Wire up
+        connect(notification, &Notifications::Notification::destroyed, this, &Notifications::NotificationManager::showNext);
 
-    // Append and update
-    m_visualNotifications.append(notification);
-    updateNotificationList();
+        // Append and update
+        m_visualNotifications.append(notification);
+        showNext();
+    }
 
-    // Append to spoken notification list
-    m_spokenNotifications.append(notification);
-    speakNext();
+    // Speak notification if not already spoken
+    if (!m_voiceNotifications.contains(notification))
+    {
+        // Append to spoken notification list
+        m_voiceNotifications.append(notification);
+        speakNext();
+    }
+}
+
+
+
+//
+// Members used for visual notifications
+//
+
+void Notifications::NotificationManager::showNext()
+{
+    m_visualNotifications.removeAll(nullptr);
+    std::sort(m_visualNotifications.begin(), m_visualNotifications.end(),
+              [](const Notification* a, const Notification* b) { if (a->importance() == b->importance()) {return a->reactionTime() < b->reactionTime();} return a->importance() > b->importance(); });
+
+    if (currentVisualNotificationCache == currentVisualNotification())
+    {
+        return;
+    }
+    currentVisualNotificationCache = currentVisualNotification();
+    emit currentVisualNotificationChanged();
+}
+
+
+
+//
+// Members used for voice notifications
+//
+
+void Notifications::NotificationManager::onSpeakerStateChanged(QTextToSpeech::State state)
+{
+    if (state == QTextToSpeech::Ready)
+    {
+        m_speechBreakTimer.start();
+    }
+    if (state == QTextToSpeech::Error)
+    {
+        if (m_speaker != nullptr)
+        {
+            qWarning() << "QTextToSpeech error" << m_speaker->errorReason() << m_speaker->errorString();
+        }
+        m_speechBreakTimer.start();
+    }
+}
+
+void Notifications::NotificationManager::setupSpeaker()
+{
+    auto *speaker = new QTextToSpeech();
+    speaker->moveToThread(thread());
+    speaker->setParent(this);
+    connect(speaker, &QTextToSpeech::stateChanged, this, &Notifications::NotificationManager::onSpeakerStateChanged);
+    m_speaker = speaker;
 }
 
 void Notifications::NotificationManager::speakNext()
@@ -147,18 +208,16 @@ void Notifications::NotificationManager::speakNext()
     // check back in 2 seconds.
     if (m_speaker == nullptr)
     {
-        QTimer::singleShot(2*1000, this, &Notifications::NotificationManager::speakNext);
+        QTimer::singleShot(2s, this, &Notifications::NotificationManager::speakNext);
         return;
     }
 
     // At his point, we have a valid speaker object. Make sure that the speaker is ready
     // to speak and that the break between two messages is not running.
-    qWarning() << "E" << m_speaker->state();
     if (m_speaker->state() != QTextToSpeech::Ready)
     {
         return;
     }
-    qWarning() << "F";
     if (m_speechBreakTimer.isActive())
     {
         return;
@@ -167,18 +226,18 @@ void Notifications::NotificationManager::speakNext()
     // At this point, we have a valid speaker object, and we are at the right moment to say something.
 
     // Clean the m_spokenNotifications and sort it by importance, most important announcements first
-    m_spokenNotifications.removeAll(nullptr);
-    std::sort(m_spokenNotifications.begin(), m_spokenNotifications.end(),
-              [](const Notification* a, const Notification* b) { if (a->importance() == b->importance()) return a->reactionTime() < b->reactionTime(); return a->importance() > b->importance(); });
+    m_voiceNotifications.removeAll(nullptr);
+    std::sort(m_voiceNotifications.begin(), m_voiceNotifications.end(),
+              [](const Notification* a, const Notification* b) { if (a->importance() == b->importance()) {return a->reactionTime() < b->reactionTime();} return a->importance() > b->importance(); });
 
     // If there is nothing to say, then quit
-    if (m_spokenNotifications.isEmpty())
+    if (m_voiceNotifications.isEmpty())
     {
         return;
     }
 
     // Generate text to be spoken.
-    auto notification = m_spokenNotifications.takeFirst();
+    auto notification = m_voiceNotifications.takeFirst();
     QStringList textBlocks;
     switch (notification->importance()) {
     case Notifications::Notification::Info:
@@ -203,9 +262,15 @@ void Notifications::NotificationManager::speakNext()
     }
 
     // Speak!
-    qWarning() << textBlocks;
-    m_speaker->say( textBlocks.join(" ") );
+    m_speaker->say( textBlocks.join(u" "_qs) );
 }
+
+
+
+//
+// Members used to watch other app components, and to generate notifications
+// when necessary
+//
 
 void Notifications::NotificationManager::onMapAndDataDownloadingChanged()
 {
@@ -286,36 +351,4 @@ void Notifications::NotificationManager::onTrafficReceiverSelfTestError()
             notification,
             &QObject::deleteLater);
     addNotification(notification);
-}
-
-void Notifications::NotificationManager::updateNotificationList()
-{
-    m_visualNotifications.removeAll(nullptr);
-    std::sort(m_visualNotifications.begin(), m_visualNotifications.end(),
-              [](const Notification* a, const Notification* b) { if (a->importance() == b->importance()) return a->reactionTime() < b->reactionTime(); return a->importance() > b->importance(); });
-
-    if (currentNotificationCache == currentNotification())
-    {
-        return;
-    }
-    currentNotificationCache = currentNotification();
-    emit currentNotificationChanged();
-}
-
-void Notifications::NotificationManager::setupSpeaker()
-{
-    auto *speaker = new QTextToSpeech();
-    speaker->moveToThread(thread());
-    speaker->setParent(this);
-    connect(speaker, &QTextToSpeech::stateChanged, this, &Notifications::NotificationManager::onSpeakerStateChanged);
-    m_speaker = speaker;
-}
-
-
-void Notifications::NotificationManager::onSpeakerStateChanged(QTextToSpeech::State state)
-{
-    if (state == QTextToSpeech::Ready)
-    {
-        m_speechBreakTimer.start();
-    }
 }

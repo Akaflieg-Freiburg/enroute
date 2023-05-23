@@ -705,53 +705,76 @@ Page {
             clip: true
 
             ColumnLayout {
-            id: col1
-            width: voiceNotificationDialog.availableWidth
+                id: col1
+                width: voiceNotificationDialog.availableWidth
 
-            Label {
-                text: qsTr("Select the voice notification that you would like to hear.")
-                Layout.fillWidth: true
-                wrapMode: Text.Wrap
-            }
+                Label {
+                    text: qsTr("Choose the category of voice notification that you would like to hear.")
+                    Layout.fillWidth: true
+                    wrapMode: Text.Wrap
+                }
 
-            Button {
-                Layout.alignment: Qt.AlignHCenter
-                text: qsTr("Voice Test")
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    NotificationManager.voiceTest()
+                Button {
+                    Layout.alignment: Qt.AlignHCenter
+                    text: qsTr("Voice Test")
+                    onClicked: {
+                        PlatformAdaptor.vibrateBrief()
+                        NotificationManager.voiceTest()
+                    }
+                }
+                SwitchDelegate {
+                    id: sd1
+                    Layout.fillWidth: true
+                    text: qsTr("Information:  Generic")
+                }
+                SwitchDelegate {
+                    id: sd2
+                    Layout.fillWidth: true
+                    text: qsTr("Information:  Navigation")
+                }
+                SwitchDelegate {
+                    id: sd3
+                    Layout.fillWidth: true
+                    text: qsTr("Warning: Generic")
+                }
+                SwitchDelegate {
+                    id: sd4
+                    Layout.fillWidth: true
+                    text: qsTr("Warning: Navigation")
+                }
+                SwitchDelegate {
+                    id: sd5
+                    Layout.fillWidth: true
+                    text: qsTr("Alert")
                 }
             }
-            SwitchDelegate {
-                Layout.fillWidth: true
-                text: qsTr("Information · Generic")
-            }
-            SwitchDelegate {
-                Layout.fillWidth: true
-                text: qsTr("Information · Navigation")
-            }
-            SwitchDelegate {
-                Layout.fillWidth: true
-                text: qsTr("Warning · Generic")
-            }
-            SwitchDelegate {
-                Layout.fillWidth: true
-                text: qsTr("Warning · Navigation")
-            }
-            SwitchDelegate {
-                Layout.fillWidth: true
-                text: qsTr("Alert")
-            }
-        }
-        }
-/*
-        onAboutToShow: {
-            a.checked = !GlobalSettings.positioningByTrafficDataReceiver
-            b.checked = !a.checked
         }
 
-        onAccepted: GlobalSettings.positioningByTrafficDataReceiver = b.checked
-*/
+        onAboutToShow: {
+            var vn = GlobalSettings.voiceNotifications
+            sd1.checked = vn & Notification.Info
+            sd2.checked = vn & Notification.Info_Navigation
+            sd3.checked = vn & Notification.Warning
+            sd4.checked = vn & Notification.Warning_Navigation
+            sd5.checked = vn & Notification.Alert
+        }
+
+        onAccepted: {
+            var vn = 0
+            if (sd1.checked)
+                vn |= Notification.Info
+            if (sd2.checked)
+                vn |= Notification.Info_Navigation
+            if (sd3.checked)
+                vn |= Notification.Warning
+            if (sd4.checked)
+                vn |= Notification.Warning_Navigation
+            if (sd5.checked)
+                vn |= Notification.Alert
+            GlobalSettings.voiceNotifications = vn
+        }
+
+
     }
 
 } // Page

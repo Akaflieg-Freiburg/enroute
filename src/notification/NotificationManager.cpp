@@ -25,10 +25,12 @@
 #include <QtConcurrent>
 
 #include "GlobalObject.h"
+#include "GlobalSettings.h"
 #include "dataManagement/DataManager.h"
 #include "navigation/Navigator.h"
 #include "notification/NotificationManager.h"
 #include "notification/Notification_DataUpdateAvailable.h"
+#include "platform/PlatformAdaptor.h"
 #include "traffic/TrafficDataProvider.h"
 #include <chrono>
 
@@ -117,8 +119,7 @@ void Notifications::NotificationManager::addTestNotification()
 
 void Notifications::NotificationManager::voiceTest()
 {
-    auto* notification = new Notifications::Notification(tr("Test notification"), Notifications::Notification::Warning, this);
-    notification->setText(u"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."_qs);
+    auto* notification = new Notifications::Notification(tr("This is a test of the speech engine."), Notifications::Notification::Info, this);
     connect(GlobalObject::dataManager()->mapsAndData(), &DataManagement::Downloadable_MultiFile::downloadingChanged, notification, &QObject::deleteLater);
     m_voiceNotifications.append(notification);
     QQmlEngine::setObjectOwnership(notification, QQmlEngine::CppOwnership);
@@ -153,12 +154,16 @@ void Notifications::NotificationManager::addNotification(Notifications::Notifica
         showNext();
     }
 
-    // Speak notification if not already spoken
+    // Speak notification if not already spoken, and if chosen in the settings
     if (!m_voiceNotifications.contains(notification))
     {
-        // Append to spoken notification list
-        m_voiceNotifications.append(notification);
-        speakNext();
+        auto vn = GlobalObject::globalSettings()->voiceNotifications();
+        if ((vn & notification->importance()) != 0)
+        {
+            // Append to spoken notification list
+            m_voiceNotifications.append(notification);
+            speakNext();
+        }
     }
 }
 
@@ -179,6 +184,7 @@ void Notifications::NotificationManager::showNext()
         return;
     }
     currentVisualNotificationCache = currentVisualNotification();
+    GlobalObject::platformAdaptor()->vibrateLong();
     emit currentVisualNotificationChanged();
 }
 

@@ -638,7 +638,6 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         onClicked: {
             centerBindingAnimation.omitAnimationforZoom()
             PlatformAdaptor.vibrateBrief()
-            NotificationManager.addTestNotification()
             flightMap.zoomLevel -= 1
         }
     }

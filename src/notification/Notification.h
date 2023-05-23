@@ -46,11 +46,11 @@ class Notification : public QObject
 public:
     /*! \brief Importance classification */
     enum Importance {
-        Info = 0,               /*!< \brief Generic information, "Map updates available" */
-        Info_Navigation = 1,    /*!< \brief Information pertaining to navigation, "Top of descent reached" */
-        Warning = 2,            /*!< \brief Generic warning, "Traffic data receiver inop" */
-        Warning_Navigation = 3, /*!< \brief Serious warning, "Prohibited Airspace 1 minutes ahead" */
-        Alert = 4               /*!< \brief Alert. Immediate action is required to avoid accident or serious rule infringion */
+        Info = 1<<1,               /*!< \brief Generic information, "Map updates available" */
+        Info_Navigation = 1<<2,    /*!< \brief Information pertaining to navigation, "Top of descent reached" */
+        Warning = 1<<3,            /*!< \brief Generic warning, "Traffic data receiver inop" */
+        Warning_Navigation = 1<<4, /*!< \brief Serious warning, "Prohibited Airspace 1 minutes ahead" */
+        Alert = 1<<5               /*!< \brief Alert. Immediate action is required to avoid accident or serious rule infringion */
     };
     Q_ENUM(Importance);
 

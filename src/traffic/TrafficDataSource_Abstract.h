@@ -226,10 +226,10 @@ signals:
     void receivingHeartbeatChanged(bool);
 
     /*! \brief Notifier signal */
-    void trafficReceiverRuntimeErrorChanged(const QString& message);
+    void trafficReceiverRuntimeErrorChanged();
 
     /*! \brief Notifier signal */
-    void trafficReceiverSelfTestErrorChanged(const QString& message);
+    void trafficReceiverSelfTestErrorChanged();
 
     /*! \brief Traffic receiver hardware version
      *

@@ -93,7 +93,7 @@ public:
      *
      *  @param item QQuickItem where the event filter is to be intalled.
      */
-    Q_INVOKABLE void setupImEventFilter(QQuickItem *item) {
+    Q_INVOKABLE virtual void setupInputMethodEventFilter(QQuickItem *item) override {
         static thread_local ImFixer imf;
         item->installEventFilter(&imf);
     }

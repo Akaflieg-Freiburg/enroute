@@ -57,28 +57,11 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 
     if (name == u":text/authors.html"_qs)
     {
-        return tr(R"html(<h3>Authors</h3>
-
-<br>
-
-<table>
-  <tr>
-    <td>
-      <p>The app <strong>Enroute Flight Navigation</strong> was written by Stefan Kebekus, flight enthusiast since 1986 and member of the Akaflieg Freiburg flight club. Stefan flies gliders and motor planes.</p>
-      <h4>Address</h4>
-      Stefan Kebekus<br>
-      Wintererstraße 77<br>
-      79104 Freiburg<br>
-      Germany<br>
-      <br>
-      <a href='mailto:stefan.kebekus@gmail.com'>e-mail</a>
-    </td>
-    <td>
-      <p align='center'>&nbsp;<img src='/icons/kebekus.jpg' alt='Stefan Kebekus' height='140'><br>Stefan Kebekus<br>Pic: Patrick Seeger</p>
-    </td>
-  </tr>
-</table>
-)html") + tr(R"html(
+      return "<h3>"+tr("Authors")+"</h3>"
+	+ "<p>"+tr("The app <strong>Enroute Flight Navigation</strong> was written by Stefan Kebekus, flight enthusiast since 1986 and member of the Akaflieg Freiburg flight club. Stefan flies gliders and motor planes.")+"</p>"
+	+ "<h4>"+tr("Address")+"</h4>"
+	+ "Stefan Kebekus<br>Wintererstraße 77<br>79104 Freiburg<br>Germany<br><br><a href='mailto:stefan.kebekus@gmail.com'>e-mail</a>"
+	+ tr(R"html(
 <h3>Manual</h3>
 
 <p>The manual has kindly been provided by Michael Horbaschk.</p>
@@ -125,15 +108,6 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 <p>If you are convinced that the data is good enough to be added, you can request to add the country. Please go to <a href="https://github.com/Akaflieg-Freiburg/enrouteServer/issues">this web site</a> and open an 'issue' with your request. Please tell us who you are, where you fly and how you convinced yourself that the data is good. If you find that the data is not good enough, you are welcome to join the openAIP project and help to improve the data.</p>
 
 <p>Please understand that we program this free app in our spare time, as a service to the community. Sadly, I should point out that sending us impolite demands is not likely to give the result that you desire.</p>)html");
-    }
-
-    if (name == u":text/flightRouteLibraryInfo.html"_qs)
-    {
-        return tr(R"html(<p>The flight routes are stored in standard <a href="https://geojson.org">GeoJSON format</a> in the following directory.<p>
-
-<p style="text-align:left;"><strong><a href="file:%1">%1</a></strong></p>
-
-<p>The flight routes can be accessed by other programs, such as backup software or file synchronization apps.  This can be useful to share a flight route library with other devices.</p>)html");
     }
 
     if (name == u":text/info_enroute.html"_qs)
@@ -227,7 +201,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
                      "Center</a>, a website of the United States government.")
                 + "</li>"
                 + "<li>"
-                + tr("The app downloads NOTAM for your locaction and "
+                + tr("The app downloads NOTAM for your location and "
                      "your intended route from servers of the "
                      "<a href='https://api.faa.gov/s/'>Federal Aviation "
                      "Administration</a> of the United States government.")
@@ -256,11 +230,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 
     if (name == u":text/whatsnew.html"_qs)
     {
-        return tr("<p>We have updated the technology base underlying this app. Please report any issues!</p>")
-                + "<p>" + tr("Our aviation maps will now receive daily updates, provided that new data is available.") + "</p>"
-                + "<p>" + tr("The app will now show NOTAMs relevant to your flight.") + "</p>"
-                + "<p>" + tr("Luca Riva has kindly translated this app to Spanish.") + "</p>";
-        // + tr("<p>We could need help with French translations. If you would like to help, if speak French and know how to use the GIT version control system, please let us know.</p>");
+      return "<p>" + tr("This app is now able to speak! Use the 'Settings' page to enable or disable voice notifications by category.") + "</p>";
     }
 
     QFile file(name);

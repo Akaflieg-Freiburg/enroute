@@ -161,6 +161,13 @@ public:
      */
     Q_INVOKABLE virtual void vibrateBrief() = 0;
 
+    /*! \brief Make the device vibrate for a longer period
+     *
+     *  On platforms that support this, make the device vibrate for a longer time,
+     *  if haptic feedback is enabled in the system settings. This is used to
+     *  when showing notifications.
+     */
+    Q_INVOKABLE virtual void vibrateLong() = 0;
 
 public slots:
     /*! \brief Signal handler: GUI setup completed

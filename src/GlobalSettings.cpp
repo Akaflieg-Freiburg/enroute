@@ -282,3 +282,14 @@ void GlobalSettings::setShowAltitudeAGL(bool newShowAltitudeAGL)
     settings.setValue(QStringLiteral("showAltitudeAGL"), newShowAltitudeAGL);
     emit showAltitudeAGLChanged();
 }
+
+
+void GlobalSettings::setVoiceNotifications(uint newVoiceNotifications)
+{
+    if (newVoiceNotifications == voiceNotifications())
+    {
+        return;
+    }
+    settings.setValue(QStringLiteral("voiceNotifications"), newVoiceNotifications);
+    emit voiceNotificationsChanged();
+}

@@ -63,16 +63,8 @@ void DataManagement::DataManager::deferredInitialization()
     {
         updateRemoteDataItemList();
     }
-
-    // Set up and start the updateNotifier
-    _updateNotifier = new DataManagement::UpdateNotifier(this);
 }
 
-
-DataManagement::DataManager::~DataManager()
-{
-    delete _updateNotifier;
-}
 
 
 void DataManagement::DataManager::cleanDataDirectory()

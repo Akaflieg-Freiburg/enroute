@@ -71,6 +71,8 @@ public:
      */
     Q_INVOKABLE QString viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) override;
 
+    Q_INVOKABLE void handleFileUrlReceived(const QUrl&);
+
 public slots:
     /*! \brief Implements pure virtual method from FileExchange_Abstract */
     virtual void onGUISetupCompleted() override {};
@@ -80,7 +82,7 @@ protected:
     virtual void deferredInitialization() override {};
 
 private:
-    Q_DISABLE_COPY_MOVE(FileExchange)
+    Q_DISABLE_COPY_MOVE(FileExchange);
 };
 
 } // namespace Platform

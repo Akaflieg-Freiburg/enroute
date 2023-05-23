@@ -38,6 +38,10 @@
 #include <kdsingleapplication.h>
 #endif
 
+#if defined(Q_OS_IOS)
+#include "ios/ObjCAdapter.h"
+#endif
+
 #include "DemoRunner.h"
 #include "GlobalObject.h"
 #include "dataManagement/DataManager.h"
@@ -46,12 +50,12 @@
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/WaypointLibrary.h"
 #include "platform/FileExchange_Abstract.h"
-#include "platform/Notifier_Abstract.h"
 #include "platform/PlatformAdaptor_Abstract.h"
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficFactor_WithPosition.h"
 #include "weather/Station.h"
 #include <chrono>
+
 
 using namespace std::chrono_literals;
 
@@ -62,8 +66,6 @@ auto main(int argc, char *argv[]) -> int
 
     // Register types
     qRegisterMetaType<GeoMaps::Airspace>();
-    qRegisterMetaType<Platform::Notifier_Abstract::NotificationActions>();
-    qRegisterMetaType<Platform::Notifier_Abstract::NotificationTypes>("Platform::Notifier::Notifications");
     qRegisterMetaType<Platform::FileExchange_Abstract::FileFunction>();
     qRegisterMetaType<Traffic::Warning>();
 
@@ -73,7 +75,6 @@ auto main(int argc, char *argv[]) -> int
     qmlRegisterUncreatableType<GeoMaps::WaypointLibrary>("enroute", 1, 0, "WaypointLibrary", QStringLiteral("WaypointLibrary objects cannot be created in QML"));
     qmlRegisterUncreatableType<DataManagement::DataManager>("enroute", 1, 0, "DataManager", QStringLiteral("DataManager objects cannot be created in QML"));
     qmlRegisterUncreatableType<Traffic::TrafficDataProvider>("enroute", 1, 0, "TrafficDataProvider", QStringLiteral("TrafficDataProvider objects cannot be created in QML"));
-    qmlRegisterUncreatableType<Platform::Notifier_Abstract>("enroute", 1, 0, "Notifier", QStringLiteral("Notifier objects cannot be created in QML"));
     qmlRegisterUncreatableType<Traffic::TrafficFactor_WithPosition>("enroute", 1, 0, "TrafficFactor_WithPosition", QStringLiteral("TrafficFactor_WithPosition objects cannot be created in QML"));
     qmlRegisterType<Weather::Station>("enroute", 1, 0, "WeatherStation");
 
@@ -96,8 +97,13 @@ auto main(int argc, char *argv[]) -> int
     QGuiApplication::setWindowIcon(QIcon(u":/icons/appIcon.png"_qs));
 
     // Install translators
+#if defined(Q_OS_IOS)
+    QString preferredLanguage = ObjCAdapter::preferredLanguage();
+#else
+    QString preferredLanguage = QLocale::system().name().left(2);
+#endif
     auto* enrouteTranslator = new QTranslator(&app);
-    if (enrouteTranslator->load(QStringLiteral(":i18n/enroute_%1.qm").arg(QLocale::system().name().left(2))))
+    if (enrouteTranslator->load(QStringLiteral(":i18n/enroute_%1.qm").arg(preferredLanguage)))
     {
         QCoreApplication::installTranslator(enrouteTranslator);
     }
@@ -185,7 +191,7 @@ auto main(int argc, char *argv[]) -> int
      * Set up ApplicationEngine for QML
      */
 
-#if defined(Q_OS_ANDROID) or defined(Q_OS_IOS)or defined(Q_OS_LINUX)
+#if defined(Q_OS_ANDROID) or defined(Q_OS_IOS) or defined(Q_OS_LINUX)
     QQuickStyle::setStyle(u"Material"_qs);
 #endif
 

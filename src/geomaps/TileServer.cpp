@@ -18,8 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QGuiApplication>
 #include <QHttpServerRequest>
 #include <QHttpServerResponder>
+#include <QTcpServer>
 
 #include "TileServer.h"
 #include "geomaps/GeoMapProvider.h"
@@ -29,6 +31,25 @@ GeoMaps::TileServer::TileServer(QObject* parent)
     : QAbstractHttpServer(parent)
 {
     listen(QHostAddress(QStringLiteral("127.0.0.1")));
+
+#if defined(Q_OS_IOS)
+    connect(qGuiApp,
+            &QGuiApplication::applicationStateChanged,
+            this,
+            [this](Qt::ApplicationState state)
+            {
+                if (state == Qt::ApplicationSuspended)
+                {
+                    suspended = true;
+                    return;
+                }
+                if (suspended && (state == Qt::ApplicationActive))
+                {
+                    suspended = false;
+                    restart();
+                }
+            });
+#endif
 }
 
 
@@ -46,7 +67,7 @@ void GeoMaps::TileServer::removeMbtilesFileSet(const QString& baseName)
 }
 
 
-auto GeoMaps::TileServer::serverUrl() -> QString
+QString GeoMaps::TileServer::serverUrl()
 {
     auto ports = serverPorts();
     if (ports.isEmpty())
@@ -115,4 +136,30 @@ bool GeoMaps::TileServer::handleRequest(const QHttpServerRequest& request, QHttp
 void GeoMaps::TileServer::missingHandler(const QHttpServerRequest& request, QHttpServerResponder&& responder)
 {
     responder.write(QHttpServerResponder::StatusCode::NotFound);
+}
+
+
+void GeoMaps::TileServer::restart()
+{
+    bool serverPortChanged = false;
+    foreach (auto _server, servers())
+    {
+        if (_server == nullptr)
+        {
+            continue;
+        }
+        auto port = _server->serverPort();
+        _server->close();
+        auto success = _server->listen(QHostAddress(QStringLiteral("127.0.0.1")), port);
+        if (!success)
+        {
+            _server->listen(QHostAddress(QStringLiteral("127.0.0.1")));
+            serverPortChanged = true;
+        }
+    }
+
+    if (serverPortChanged)
+    {
+        emit serverUrlChanged();
+    }
 }

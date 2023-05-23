@@ -167,7 +167,7 @@ Page {
             textFormat: Text.StyledText
             wrapMode: Text.Wrap
             text: (textInput.text === "")
-                  ? qsTr("<h3>Sorry!</h3><p>No aircraft available. To add a route here, chose 'Aircraft' from the main menu, and save the current aircraft to the library.</p>")
+                  ? qsTr("<h3>Sorry!</h3><p>No aircraft available. To add a route here, chose 'Aircraft' from the main menu, and save the current aircraft to the library.</p>") //TODO: Fix text (route)
                   : qsTr("<h3>Sorry!</h3><p>No aircraft match your filter criteria.</p>")
         }
 

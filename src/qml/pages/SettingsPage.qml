@@ -709,7 +709,7 @@ Page {
                 width: voiceNotificationDialog.availableWidth
 
                 Label {
-                    text: qsTr("Choose the category of voice notification that you would like to hear.")
+                    text: qsTr("Choose the category of voice notifications that you would like to hear.")
                     Layout.fillWidth: true
                     wrapMode: Text.Wrap
                 }
@@ -725,22 +725,22 @@ Page {
                 SwitchDelegate {
                     id: sd1
                     Layout.fillWidth: true
-                    text: qsTr("Information:  Generic")
+                    text: qsTr("Information • Generic")
                 }
                 SwitchDelegate {
                     id: sd2
                     Layout.fillWidth: true
-                    text: qsTr("Information:  Navigation")
+                    text: qsTr("Information • Navigation")
                 }
                 SwitchDelegate {
                     id: sd3
                     Layout.fillWidth: true
-                    text: qsTr("Warning: Generic")
+                    text: qsTr("Warning • Generic")
                 }
                 SwitchDelegate {
                     id: sd4
                     Layout.fillWidth: true
-                    text: qsTr("Warning: Navigation")
+                    text: qsTr("Warning • Navigation")
                 }
                 SwitchDelegate {
                     id: sd5

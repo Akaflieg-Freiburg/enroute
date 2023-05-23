@@ -24,6 +24,7 @@
 #include <QQuickItem>
 
 #include "GlobalObject.h"
+#include "qlocale.h"
 
 namespace Platform {
 
@@ -168,6 +169,9 @@ public:
      *  when showing notifications.
      */
     Q_INVOKABLE virtual void vibrateLong() = 0;
+
+
+    Q_INVOKABLE QString language();
 
 public slots:
     /*! \brief Signal handler: GUI setup completed

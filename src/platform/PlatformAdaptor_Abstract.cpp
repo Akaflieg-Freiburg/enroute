@@ -56,3 +56,9 @@ QString Platform::PlatformAdaptor_Abstract::systemInfo()
 
     return result;
 }
+
+
+QString Platform::PlatformAdaptor_Abstract::language()
+{
+    return QLocale::system().name().left(2);
+}

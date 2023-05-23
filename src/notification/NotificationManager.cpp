@@ -215,6 +215,7 @@ void Notifications::NotificationManager::setupSpeaker()
     auto *speaker = new QTextToSpeech();
     speaker->moveToThread(thread());
     speaker->setParent(this);
+    speaker->setLocale(QLocale(GlobalObject::platformAdaptor()->language()));
     connect(speaker, &QTextToSpeech::stateChanged, this, &Notifications::NotificationManager::onSpeakerStateChanged);
     m_speaker = speaker;
 }

@@ -101,6 +101,9 @@ public:
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
     Q_INVOKABLE void vibrateBrief() override;
 
+    Q_INVOKABLE virtual void vibrateLong() override;
+
+    Q_INVOKABLE QString language() override;
 
 public slots:
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */

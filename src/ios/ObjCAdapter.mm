@@ -21,6 +21,11 @@ void ObjCAdapter::vibrateError() {
     AudioServicesPlayAlertSound(1107);
 }
 
+void ObjCAdapter::vibrateLong() {
+  //TODO: Test whether SystemSoundId is correct
+  AudioServicesPlayAlertSound(1520);
+}
+
 
 //MARK: Safe Area
 //TODO: Reduce redundant code

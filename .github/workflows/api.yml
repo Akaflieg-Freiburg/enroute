@@ -26,7 +26,7 @@ jobs:
       uses: jurplel/install-qt-action@v3
       with:
         version: '6.4.*'
-        modules: 'qt5compat qthttpserver qtpositioning qtshadertools qttexttospeech qtwebsockets'	
+        modules: 'qt5compat qthttpserver qtpositioning qtshadertools qtspeech qtwebsockets'	
     - name: Install Additional Software
       run: |
         sudo apt install doxygen extra-cmake-modules graphviz ninja-build spirv-tools

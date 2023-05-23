@@ -79,10 +79,10 @@ Collaboration diagram for Notifications::NotificationManager:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="signals"></a>
 Signals</h2></td></tr>
-<tr class="memitem:ab3d7791ce39d3dd5977c5b9a34ffdeae"><td class="memItemLeft" align="right" valign="top"><a id="ab3d7791ce39d3dd5977c5b9a34ffdeae"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNotifications_1_1NotificationManager.html#ab3d7791ce39d3dd5977c5b9a34ffdeae">currentNotificationChanged</a> ()</td></tr>
-<tr class="memdesc:ab3d7791ce39d3dd5977c5b9a34ffdeae"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classNotifications_1_1Notification.html" title="Base class for all notifications.">Notification</a> signal. <br /></td></tr>
-<tr class="separator:ab3d7791ce39d3dd5977c5b9a34ffdeae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91a3a98371b518f85b818d5ae8db1d24"><td class="memItemLeft" align="right" valign="top"><a id="a91a3a98371b518f85b818d5ae8db1d24"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNotifications_1_1NotificationManager.html#a91a3a98371b518f85b818d5ae8db1d24">currentVisualNotificationChanged</a> ()</td></tr>
+<tr class="memdesc:a91a3a98371b518f85b818d5ae8db1d24"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classNotifications_1_1Notification.html" title="Base class for all notifications.">Notification</a> signal. <br /></td></tr>
+<tr class="separator:a91a3a98371b518f85b818d5ae8db1d24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -92,17 +92,21 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a491ee0154d491a2a6ec072f4bee87f72"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNotifications_1_1NotificationManager.html#a491ee0154d491a2a6ec072f4bee87f72">deferredInitialization</a> () override</td></tr>
 <tr class="memdesc:a491ee0154d491a2a6ec072f4bee87f72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non-constructor initialization.  <a href="classNotifications_1_1NotificationManager.html#a491ee0154d491a2a6ec072f4bee87f72">More...</a><br /></td></tr>
 <tr class="separator:a491ee0154d491a2a6ec072f4bee87f72"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adcac19022e92b1901335f6b355a1b9c1"><td class="memItemLeft" align="right" valign="top"><a id="adcac19022e92b1901335f6b355a1b9c1"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNotifications_1_1NotificationManager.html#adcac19022e92b1901335f6b355a1b9c1">~NotificationManager</a> () override=default</td></tr>
-<tr class="memdesc:adcac19022e92b1901335f6b355a1b9c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard destructor. <br /></td></tr>
-<tr class="separator:adcac19022e92b1901335f6b355a1b9c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06d72f1881183765fec6469b9a55b5f6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classNotifications_1_1Notification.html">Notifications::Notification</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNotifications_1_1NotificationManager.html#a06d72f1881183765fec6469b9a55b5f6">currentNotification</a> () const</td></tr>
-<tr class="memdesc:a06d72f1881183765fec6469b9a55b5f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <a href="classNotifications_1_1NotificationManager.html#a06d72f1881183765fec6469b9a55b5f6">More...</a><br /></td></tr>
-<tr class="separator:a06d72f1881183765fec6469b9a55b5f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7a6f8d77aacb83d2852a6ce5d31454d"><td class="memItemLeft" align="right" valign="top"><a id="aa7a6f8d77aacb83d2852a6ce5d31454d"></a>
-Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNotifications_1_1NotificationManager.html#aa7a6f8d77aacb83d2852a6ce5d31454d">showTestNotification</a> ()</td></tr>
-<tr class="memdesc:aa7a6f8d77aacb83d2852a6ce5d31454d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Issue test notification. <br /></td></tr>
-<tr class="separator:aa7a6f8d77aacb83d2852a6ce5d31454d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0387934d5b13a661392efe65df947387"><td class="memItemLeft" align="right" valign="top"><a id="a0387934d5b13a661392efe65df947387"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNotifications_1_1NotificationManager.html#a0387934d5b13a661392efe65df947387">~NotificationManager</a> ()</td></tr>
+<tr class="memdesc:a0387934d5b13a661392efe65df947387"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard destructor. <br /></td></tr>
+<tr class="separator:a0387934d5b13a661392efe65df947387"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afafa8179320e7b3545e39714648b74cc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classNotifications_1_1Notification.html">Notifications::Notification</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNotifications_1_1NotificationManager.html#afafa8179320e7b3545e39714648b74cc">currentVisualNotification</a> () const</td></tr>
+<tr class="memdesc:afafa8179320e7b3545e39714648b74cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <a href="classNotifications_1_1NotificationManager.html#afafa8179320e7b3545e39714648b74cc">More...</a><br /></td></tr>
+<tr class="separator:afafa8179320e7b3545e39714648b74cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a587f0e14e79517f27319a8bd144819a0"><td class="memItemLeft" align="right" valign="top"><a id="a587f0e14e79517f27319a8bd144819a0"></a>
+Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNotifications_1_1NotificationManager.html#a587f0e14e79517f27319a8bd144819a0">addTestNotification</a> ()</td></tr>
+<tr class="memdesc:a587f0e14e79517f27319a8bd144819a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Issue test notification. <br /></td></tr>
+<tr class="separator:a587f0e14e79517f27319a8bd144819a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24121156686387c7b48be8af9b82b890"><td class="memItemLeft" align="right" valign="top"><a id="a24121156686387c7b48be8af9b82b890"></a>
+Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNotifications_1_1NotificationManager.html#a24121156686387c7b48be8af9b82b890">voiceTest</a> ()</td></tr>
+<tr class="memdesc:a24121156686387c7b48be8af9b82b890"><td class="mdescLeft">&#160;</td><td class="mdescRight">Voice test. <br /></td></tr>
+<tr class="separator:a24121156686387c7b48be8af9b82b890"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classGlobalObject"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classGlobalObject')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classGlobalObject.html">GlobalObject</a></td></tr>
 <tr class="memitem:ac8dfa53c492975de42fa7972e77abbc1 inherit pub_methods_classGlobalObject"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalObject.html#ac8dfa53c492975de42fa7972e77abbc1">GlobalObject</a> (QObject *parent=nullptr)</td></tr>
 <tr class="memdesc:ac8dfa53c492975de42fa7972e77abbc1 inherit pub_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard constructor.  <a href="classGlobalObject.html#ac8dfa53c492975de42fa7972e77abbc1">More...</a><br /></td></tr>
@@ -113,9 +117,9 @@ Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:a4d6a2eb3677b68c9a3c157a252fc2b04"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classNotifications_1_1Notification.html">Notifications::Notification</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNotifications_1_1NotificationManager.html#a4d6a2eb3677b68c9a3c157a252fc2b04">currentNotification</a></td></tr>
-<tr class="memdesc:a4d6a2eb3677b68c9a3c157a252fc2b04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Most important notification.  <a href="classNotifications_1_1NotificationManager.html#a4d6a2eb3677b68c9a3c157a252fc2b04">More...</a><br /></td></tr>
-<tr class="separator:a4d6a2eb3677b68c9a3c157a252fc2b04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a624d22314c362bb5e719a4af44727d34"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classNotifications_1_1Notification.html">Notifications::Notification</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNotifications_1_1NotificationManager.html#a624d22314c362bb5e719a4af44727d34">currentVisualNotification</a></td></tr>
+<tr class="memdesc:a624d22314c362bb5e719a4af44727d34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Most important notification to be shown in the GUI.  <a href="classNotifications_1_1NotificationManager.html#a624d22314c362bb5e719a4af44727d34">More...</a><br /></td></tr>
+<tr class="separator:a624d22314c362bb5e719a4af44727d34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -188,7 +192,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><p>This class manages notifications and presents them to the GUI. </p>
 <p>This class manages notifications. It watches the global objects in the app, creates notifications, sorts them according to importance, and presents the most important notification to the GUI. </p>
 
-<p class="definition">Definition at line <a class="el" href="NotificationManager_8h_source.html#l00038">38</a> of file <a class="el" href="NotificationManager_8h_source.html">NotificationManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="NotificationManager_8h_source.html#l00041">41</a> of file <a class="el" href="NotificationManager_8h_source.html">NotificationManager.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a92adf6077bdceb9b1e2b4bf6cc8d74cf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a92adf6077bdceb9b1e2b4bf6cc8d74cf">&#9670;&nbsp;</a></span>NotificationManager()</h2>
@@ -225,14 +229,14 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a06d72f1881183765fec6469b9a55b5f6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a06d72f1881183765fec6469b9a55b5f6">&#9670;&nbsp;</a></span>currentNotification()</h2>
+<a id="afafa8179320e7b3545e39714648b74cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afafa8179320e7b3545e39714648b74cc">&#9670;&nbsp;</a></span>currentVisualNotification()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classNotifications_1_1Notification.html">Notifications::Notification</a>* Notifications::NotificationManager::currentNotification </td>
+          <td class="memname"><a class="el" href="classNotifications_1_1Notification.html">Notifications::Notification</a>* Notifications::NotificationManager::currentVisualNotification </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -276,8 +280,8 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
-<a id="a4d6a2eb3677b68c9a3c157a252fc2b04"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4d6a2eb3677b68c9a3c157a252fc2b04">&#9670;&nbsp;</a></span>currentNotification</h2>
+<a id="a624d22314c362bb5e719a4af44727d34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a624d22314c362bb5e719a4af44727d34">&#9670;&nbsp;</a></span>currentVisualNotification</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -286,7 +290,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classNotifications_1_1Notification.html">Notifications::Notification</a>* Notifications::NotificationManager::currentNotification</td>
+          <td class="memname"><a class="el" href="classNotifications_1_1Notification.html">Notifications::Notification</a>* Notifications::NotificationManager::currentVisualNotification</td>
         </tr>
       </table>
   </td>
@@ -296,11 +300,11 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Most important notification. </p>
+<p>Most important notification to be shown in the GUI. </p>
 <p>This property holds the most important notification, or nullptr if there is no notification. The notifications are owned by this <a class="el" href="classNotifications_1_1NotificationManager.html" title="This class manages notifications and presents them to the GUI.">NotificationManager</a> and have ownership set to QQmlEngine::CppOwnership.</p>
 <dl class="section note"><dt>Note</dt><dd>The notification objects returned here can be deleted anytime, so it is wise to store the result in a QPointer that tracks deletion. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="NotificationManager_8h_source.html#l00065">65</a> of file <a class="el" href="NotificationManager_8h_source.html">NotificationManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="NotificationManager_8h_source.html#l00068">68</a> of file <a class="el" href="NotificationManager_8h_source.html">NotificationManager.h</a>.</p>
 
 </div>
 </div>

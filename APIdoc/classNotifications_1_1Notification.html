@@ -72,12 +72,12 @@ Inheritance diagram for Notifications::Notification:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:a2280308b403e6773a6a02cdaff4d8b8a"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNotifications_1_1Notification.html#a2280308b403e6773a6a02cdaff4d8b8a">Importance</a> { <br />
-&#160;&#160;<a class="el" href="classNotifications_1_1Notification.html#a2280308b403e6773a6a02cdaff4d8b8aa1686dc32321b0b8936eb410132af4a37">Info</a> = 0
-, <a class="el" href="classNotifications_1_1Notification.html#a2280308b403e6773a6a02cdaff4d8b8aa1ef5c61adac56ac97370bb09a3eb4a4f">Info_Navigation</a> = 1
-, <a class="el" href="classNotifications_1_1Notification.html#a2280308b403e6773a6a02cdaff4d8b8aaaa8b056c943f5c4cb155d0e8e9b13977">Warning</a> = 2
-, <a class="el" href="classNotifications_1_1Notification.html#a2280308b403e6773a6a02cdaff4d8b8aa115d79a056f5d7269d7d39e37cd764bf">Warning_Navigation</a> = 3
+&#160;&#160;<a class="el" href="classNotifications_1_1Notification.html#a2280308b403e6773a6a02cdaff4d8b8aa1686dc32321b0b8936eb410132af4a37">Info</a> = 1&lt;&lt;1
+, <a class="el" href="classNotifications_1_1Notification.html#a2280308b403e6773a6a02cdaff4d8b8aa1ef5c61adac56ac97370bb09a3eb4a4f">Info_Navigation</a> = 1&lt;&lt;2
+, <a class="el" href="classNotifications_1_1Notification.html#a2280308b403e6773a6a02cdaff4d8b8aaaa8b056c943f5c4cb155d0e8e9b13977">Warning</a> = 1&lt;&lt;3
+, <a class="el" href="classNotifications_1_1Notification.html#a2280308b403e6773a6a02cdaff4d8b8aa115d79a056f5d7269d7d39e37cd764bf">Warning_Navigation</a> = 1&lt;&lt;4
 , <br />
-&#160;&#160;<a class="el" href="classNotifications_1_1Notification.html#a2280308b403e6773a6a02cdaff4d8b8aa222835b82f842b7f5f97daa9a10bb31b">Alert</a> = 4
+&#160;&#160;<a class="el" href="classNotifications_1_1Notification.html#a2280308b403e6773a6a02cdaff4d8b8aa222835b82f842b7f5f97daa9a10bb31b">Alert</a> = 1&lt;&lt;5
 <br />
  }</td></tr>
 <tr class="memdesc:a2280308b403e6773a6a02cdaff4d8b8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Importance classification.  <a href="classNotifications_1_1Notification.html#a2280308b403e6773a6a02cdaff4d8b8a">More...</a><br /></td></tr>
@@ -99,10 +99,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNotifications_1_1Notification.html#a080cc9ea1bb437f7b4ee2a12d449ecd9">button2TextChanged</a> ()</td></tr>
 <tr class="memdesc:a080cc9ea1bb437f7b4ee2a12d449ecd9"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classNotifications_1_1Notification.html" title="Base class for all notifications.">Notification</a> signal. <br /></td></tr>
 <tr class="separator:a080cc9ea1bb437f7b4ee2a12d449ecd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0217d9c88f18a68b13d91416be00fdf5"><td class="memItemLeft" align="right" valign="top"><a id="a0217d9c88f18a68b13d91416be00fdf5"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNotifications_1_1Notification.html#a0217d9c88f18a68b13d91416be00fdf5">importanceChanged</a> ()</td></tr>
-<tr class="memdesc:a0217d9c88f18a68b13d91416be00fdf5"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classNotifications_1_1Notification.html" title="Base class for all notifications.">Notification</a> signal. <br /></td></tr>
-<tr class="separator:a0217d9c88f18a68b13d91416be00fdf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82b2ed8d502facfc0d476b300a9d39af"><td class="memItemLeft" align="right" valign="top"><a id="a82b2ed8d502facfc0d476b300a9d39af"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNotifications_1_1Notification.html#a82b2ed8d502facfc0d476b300a9d39af">reactionTimeChanged</a> ()</td></tr>
 <tr class="memdesc:a82b2ed8d502facfc0d476b300a9d39af"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classNotifications_1_1Notification.html" title="Base class for all notifications.">Notification</a> signal. <br /></td></tr>
@@ -119,16 +115,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNotifications_1_1Notification.html#ac6f5de7d04080a73de6e85f8ea6770c1">textBodyActionChanged</a> ()</td></tr>
 <tr class="memdesc:ac6f5de7d04080a73de6e85f8ea6770c1"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classNotifications_1_1Notification.html" title="Base class for all notifications.">Notification</a> signal. <br /></td></tr>
 <tr class="separator:ac6f5de7d04080a73de6e85f8ea6770c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0ee6496fed4adf68152dc483efdd737"><td class="memItemLeft" align="right" valign="top"><a id="aa0ee6496fed4adf68152dc483efdd737"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNotifications_1_1Notification.html#aa0ee6496fed4adf68152dc483efdd737">titleChanged</a> ()</td></tr>
-<tr class="memdesc:aa0ee6496fed4adf68152dc483efdd737"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classNotifications_1_1Notification.html" title="Base class for all notifications.">Notification</a> signal. <br /></td></tr>
-<tr class="separator:aa0ee6496fed4adf68152dc483efdd737"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a20691bc20b08f85cbf59bea304a2863c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNotifications_1_1Notification.html#a20691bc20b08f85cbf59bea304a2863c">Notification</a> (QObject *parent=nullptr)</td></tr>
-<tr class="memdesc:a20691bc20b08f85cbf59bea304a2863c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard constructor.  <a href="classNotifications_1_1Notification.html#a20691bc20b08f85cbf59bea304a2863c">More...</a><br /></td></tr>
-<tr class="separator:a20691bc20b08f85cbf59bea304a2863c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f257b9ce20c81b8b8f795e2336fef6f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNotifications_1_1Notification.html#a1f257b9ce20c81b8b8f795e2336fef6f">Notification</a> (const QString &amp;_title, <a class="el" href="classNotifications_1_1Notification.html#a2280308b403e6773a6a02cdaff4d8b8a">Notifications::Notification::Importance</a> _importance=<a class="el" href="classNotifications_1_1Notification.html#a2280308b403e6773a6a02cdaff4d8b8aa1686dc32321b0b8936eb410132af4a37">Notifications::Notification::Info</a>, QObject *parent=nullptr)</td></tr>
+<tr class="memdesc:a1f257b9ce20c81b8b8f795e2336fef6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard constructor.  <a href="classNotifications_1_1Notification.html#a1f257b9ce20c81b8b8f795e2336fef6f">More...</a><br /></td></tr>
+<tr class="separator:a1f257b9ce20c81b8b8f795e2336fef6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad30413e71002df9121e2ca5456483c3b"><td class="memItemLeft" align="right" valign="top"><a id="ad30413e71002df9121e2ca5456483c3b"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNotifications_1_1Notification.html#ad30413e71002df9121e2ca5456483c3b">~Notification</a> ()=default</td></tr>
 <tr class="memdesc:ad30413e71002df9121e2ca5456483c3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard destructor. <br /></td></tr>
@@ -163,9 +155,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a149adf4fc2947d01bb4a68fc657ea5e4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNotifications_1_1Notification.html#a149adf4fc2947d01bb4a68fc657ea5e4">setButton2Text</a> (const QString &amp;newButton2Text)</td></tr>
 <tr class="memdesc:a149adf4fc2947d01bb4a68fc657ea5e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for property of the same name.  <a href="classNotifications_1_1Notification.html#a149adf4fc2947d01bb4a68fc657ea5e4">More...</a><br /></td></tr>
 <tr class="separator:a149adf4fc2947d01bb4a68fc657ea5e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abaaf94c046391a532cae3a6817bbc87f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNotifications_1_1Notification.html#abaaf94c046391a532cae3a6817bbc87f">setImportance</a> (<a class="el" href="classNotifications_1_1Notification.html#a2280308b403e6773a6a02cdaff4d8b8a">Notifications::Notification::Importance</a> newImportance)</td></tr>
-<tr class="memdesc:abaaf94c046391a532cae3a6817bbc87f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for property of the same name.  <a href="classNotifications_1_1Notification.html#abaaf94c046391a532cae3a6817bbc87f">More...</a><br /></td></tr>
-<tr class="separator:abaaf94c046391a532cae3a6817bbc87f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a190496fc699406dc0bebc6fddcc1c1de"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNotifications_1_1Notification.html#a190496fc699406dc0bebc6fddcc1c1de">setReactionTime</a> (<a class="el" href="classUnits_1_1Timespan.html">Units::Timespan</a> newReactionTime)</td></tr>
 <tr class="memdesc:a190496fc699406dc0bebc6fddcc1c1de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for property of the same name.  <a href="classNotifications_1_1Notification.html#a190496fc699406dc0bebc6fddcc1c1de">More...</a><br /></td></tr>
 <tr class="separator:a190496fc699406dc0bebc6fddcc1c1de"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -178,9 +167,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afb1f9fdd3411b874e17ea5a8d6380a27"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNotifications_1_1Notification.html#afb1f9fdd3411b874e17ea5a8d6380a27">setTextBodyAction</a> (<a class="el" href="classNotifications_1_1Notification.html#ab86a06b9ca133ef5385df8c2a8d3fe64">Notifications::Notification::TextBodyAction</a> newTextBodyAction)</td></tr>
 <tr class="memdesc:afb1f9fdd3411b874e17ea5a8d6380a27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for property of the same name.  <a href="classNotifications_1_1Notification.html#afb1f9fdd3411b874e17ea5a8d6380a27">More...</a><br /></td></tr>
 <tr class="separator:afb1f9fdd3411b874e17ea5a8d6380a27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afac8d76be1ace86d90733713f6a13660"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNotifications_1_1Notification.html#afac8d76be1ace86d90733713f6a13660">setTitle</a> (const QString &amp;newTitle)</td></tr>
-<tr class="memdesc:afac8d76be1ace86d90733713f6a13660"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter function for property of the same name.  <a href="classNotifications_1_1Notification.html#afac8d76be1ace86d90733713f6a13660">More...</a><br /></td></tr>
-<tr class="separator:afac8d76be1ace86d90733713f6a13660"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa67cc226652ce33a5135661fbfc42ad3"><td class="memItemLeft" align="right" valign="top">virtual Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNotifications_1_1Notification.html#aa67cc226652ce33a5135661fbfc42ad3">onButton1Clicked</a> ()</td></tr>
 <tr class="memdesc:aa67cc226652ce33a5135661fbfc42ad3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mouse click handler.  <a href="classNotifications_1_1Notification.html#aa67cc226652ce33a5135661fbfc42ad3">More...</a><br /></td></tr>
 <tr class="separator:aa67cc226652ce33a5135661fbfc42ad3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -280,8 +266,8 @@ Properties</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a20691bc20b08f85cbf59bea304a2863c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a20691bc20b08f85cbf59bea304a2863c">&#9670;&nbsp;</a></span>Notification()</h2>
+<a id="a1f257b9ce20c81b8b8f795e2336fef6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f257b9ce20c81b8b8f795e2336fef6f">&#9670;&nbsp;</a></span>Notification()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -292,9 +278,25 @@ Properties</h2></td></tr>
         <tr>
           <td class="memname">Notifications::Notification::Notification </td>
           <td>(</td>
-          <td class="paramtype">QObject *&#160;</td>
-          <td class="paramname"><em>parent</em> = <code>nullptr</code></td><td>)</td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>_title</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="classNotifications_1_1Notification.html#a2280308b403e6773a6a02cdaff4d8b8a">Notifications::Notification::Importance</a>&#160;</td>
+          <td class="paramname"><em>_importance</em> = <code><a class="el" href="classNotifications_1_1Notification.html#a2280308b403e6773a6a02cdaff4d8b8aa1686dc32321b0b8936eb410132af4a37">Notifications::Notification::Info</a></code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">QObject *&#160;</td>
+          <td class="paramname"><em>parent</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -308,6 +310,8 @@ Properties</h2></td></tr>
 <p>The constructor sets a time that calls deleteLater() after five minutes. This way, notifications are never shown permanently.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">_title</td><td><a class="el" href="classNotifications_1_1Notification.html" title="Base class for all notifications.">Notification</a> title</td></tr>
+    <tr><td class="paramname">_importance</td><td><a class="el" href="classNotifications_1_1Notification.html" title="Base class for all notifications.">Notification</a> importance</td></tr>
     <tr><td class="paramname">parent</td><td>The standard QObject parent pointer </td></tr>
   </table>
   </dd>
@@ -342,7 +346,7 @@ Properties</h2></td></tr>
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property button1Text </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Notification_8h_source.html#l00164">164</a> of file <a class="el" href="Notification_8h_source.html">Notification.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Notification_8h_source.html#l00168">168</a> of file <a class="el" href="Notification_8h_source.html">Notification.h</a>.</p>
 
 </div>
 </div>
@@ -372,7 +376,7 @@ Properties</h2></td></tr>
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property button1Text </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Notification_8h_source.html#l00170">170</a> of file <a class="el" href="Notification_8h_source.html">Notification.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Notification_8h_source.html#l00174">174</a> of file <a class="el" href="Notification_8h_source.html">Notification.h</a>.</p>
 
 </div>
 </div>
@@ -402,7 +406,7 @@ Properties</h2></td></tr>
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property importance </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Notification_8h_source.html#l00176">176</a> of file <a class="el" href="Notification_8h_source.html">Notification.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Notification_8h_source.html#l00180">180</a> of file <a class="el" href="Notification_8h_source.html">Notification.h</a>.</p>
 
 </div>
 </div>
@@ -488,7 +492,7 @@ Properties</h2></td></tr>
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property reactionTime </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Notification_8h_source.html#l00182">182</a> of file <a class="el" href="Notification_8h_source.html">Notification.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Notification_8h_source.html#l00186">186</a> of file <a class="el" href="Notification_8h_source.html">Notification.h</a>.</p>
 
 </div>
 </div>
@@ -538,32 +542,6 @@ Properties</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">newButton2Text</td><td>Property button1Text </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="abaaf94c046391a532cae3a6817bbc87f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abaaf94c046391a532cae3a6817bbc87f">&#9670;&nbsp;</a></span>setImportance()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Notifications::Notification::setImportance </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classNotifications_1_1Notification.html#a2280308b403e6773a6a02cdaff4d8b8a">Notifications::Notification::Importance</a>&#160;</td>
-          <td class="paramname"><em>newImportance</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Setter function for property of the same name. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">newImportance</td><td>Property importance </td></tr>
   </table>
   </dd>
 </dl>
@@ -667,33 +645,7 @@ Properties</h2></td></tr>
 <p>Setter function for property of the same name. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">newText</td><td>Property textBodyAction </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="afac8d76be1ace86d90733713f6a13660"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afac8d76be1ace86d90733713f6a13660">&#9670;&nbsp;</a></span>setTitle()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Notifications::Notification::setTitle </td>
-          <td>(</td>
-          <td class="paramtype">const QString &amp;&#160;</td>
-          <td class="paramname"><em>newTitle</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Setter function for property of the same name. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">newTitle</td><td>Property title </td></tr>
+    <tr><td class="paramname">newTextBodyAction</td><td>Property textBodyAction </td></tr>
   </table>
   </dd>
 </dl>
@@ -746,7 +698,7 @@ Properties</h2></td></tr>
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property text </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Notification_8h_source.html#l00194">194</a> of file <a class="el" href="Notification_8h_source.html">Notification.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Notification_8h_source.html#l00198">198</a> of file <a class="el" href="Notification_8h_source.html">Notification.h</a>.</p>
 
 </div>
 </div>
@@ -776,7 +728,7 @@ Properties</h2></td></tr>
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property textBodyAction </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Notification_8h_source.html#l00200">200</a> of file <a class="el" href="Notification_8h_source.html">Notification.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Notification_8h_source.html#l00204">204</a> of file <a class="el" href="Notification_8h_source.html">Notification.h</a>.</p>
 
 </div>
 </div>
@@ -806,7 +758,7 @@ Properties</h2></td></tr>
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property title </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Notification_8h_source.html#l00206">206</a> of file <a class="el" href="Notification_8h_source.html">Notification.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Notification_8h_source.html#l00210">210</a> of file <a class="el" href="Notification_8h_source.html">Notification.h</a>.</p>
 
 </div>
 </div>
@@ -834,7 +786,7 @@ Properties</h2></td></tr>
 <p>Text for first button. </p>
 <p>This is the text string for the first button in the notification GUI. If empty, the button is invisible. The importance is initialized with an empty string. </p>
 
-<p class="definition">Definition at line <a class="el" href="Notification_8h_source.html#l00088">88</a> of file <a class="el" href="Notification_8h_source.html">Notification.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Notification_8h_source.html#l00092">92</a> of file <a class="el" href="Notification_8h_source.html">Notification.h</a>.</p>
 
 </div>
 </div>
@@ -861,7 +813,7 @@ Properties</h2></td></tr>
 <p>Text for second button. </p>
 <p>This is the text string for the second button in the notification GUI. If empty, the button is invisible. The importance is initialized with an empty string. </p>
 
-<p class="definition">Definition at line <a class="el" href="Notification_8h_source.html#l00088">88</a> of file <a class="el" href="Notification_8h_source.html">Notification.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Notification_8h_source.html#l00092">92</a> of file <a class="el" href="Notification_8h_source.html">Notification.h</a>.</p>
 
 </div>
 </div>
@@ -880,7 +832,7 @@ Properties</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">read</span><span class="mlabel">write</span></span>  </td>
+<span class="mlabels"><span class="mlabel">read</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -888,7 +840,7 @@ Properties</h2></td></tr>
 <p>Importance of the notification. </p>
 <p>The importance is used to choose the notification that is most relevant to the pilot. The importance is initialized with "Info". </p>
 
-<p class="definition">Definition at line <a class="el" href="Notification_8h_source.html#l00088">88</a> of file <a class="el" href="Notification_8h_source.html">Notification.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Notification_8h_source.html#l00092">92</a> of file <a class="el" href="Notification_8h_source.html">Notification.h</a>.</p>
 
 </div>
 </div>
@@ -915,7 +867,7 @@ Properties</h2></td></tr>
 <p>Time left to avert negative consequences. </p>
 <p>This property holds the time that the pilot has in order to avert potential negative consequences. This data is used to choose the notification that is most relevant to the pilot. The importance is initialized with qNaN. </p>
 
-<p class="definition">Definition at line <a class="el" href="Notification_8h_source.html#l00088">88</a> of file <a class="el" href="Notification_8h_source.html">Notification.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Notification_8h_source.html#l00092">92</a> of file <a class="el" href="Notification_8h_source.html">Notification.h</a>.</p>
 
 </div>
 </div>
@@ -942,7 +894,7 @@ Properties</h2></td></tr>
 <p>Spoken text message for the notification. </p>
 <p>This property holds a text announcement which is spoken. When set to empty, a message is generated from the title and text properties. This property is initialized with an empty string </p>
 
-<p class="definition">Definition at line <a class="el" href="Notification_8h_source.html#l00088">88</a> of file <a class="el" href="Notification_8h_source.html">Notification.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Notification_8h_source.html#l00092">92</a> of file <a class="el" href="Notification_8h_source.html">Notification.h</a>.</p>
 
 </div>
 </div>
@@ -969,7 +921,7 @@ Properties</h2></td></tr>
 <p>Text body of the notification. </p>
 <p>This property holds the text body, which can be empty. </p>
 
-<p class="definition">Definition at line <a class="el" href="Notification_8h_source.html#l00088">88</a> of file <a class="el" href="Notification_8h_source.html">Notification.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Notification_8h_source.html#l00092">92</a> of file <a class="el" href="Notification_8h_source.html">Notification.h</a>.</p>
 
 </div>
 </div>
@@ -996,7 +948,7 @@ Properties</h2></td></tr>
 <p>Text body action. </p>
 <p>This property describes the action the that GUI should take when the text body is clicked. This property is initialized to 'None'. </p>
 
-<p class="definition">Definition at line <a class="el" href="Notification_8h_source.html#l00088">88</a> of file <a class="el" href="Notification_8h_source.html">Notification.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Notification_8h_source.html#l00092">92</a> of file <a class="el" href="Notification_8h_source.html">Notification.h</a>.</p>
 
 </div>
 </div>
@@ -1015,7 +967,7 @@ Properties</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">read</span><span class="mlabel">write</span></span>  </td>
+<span class="mlabels"><span class="mlabel">read</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1023,7 +975,7 @@ Properties</h2></td></tr>
 <p>Title of the notification. </p>
 <p>This property holds the title, which should never be empty. This property is initialized with an enbarrassing placeholder string. </p>
 
-<p class="definition">Definition at line <a class="el" href="Notification_8h_source.html#l00088">88</a> of file <a class="el" href="Notification_8h_source.html">Notification.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Notification_8h_source.html#l00092">92</a> of file <a class="el" href="Notification_8h_source.html">Notification.h</a>.</p>
 
 </div>
 </div>

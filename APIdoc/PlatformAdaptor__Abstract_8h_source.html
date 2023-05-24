@@ -74,7 +74,7 @@ $(function() {
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;QQuickItem&gt;</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;GlobalObject.h&quot;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &quot;qlocale.h&quot;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">namespace </span>Platform {</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
@@ -124,22 +124,21 @@ $(function() {
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160; </div>
 <div class="line"><a name="l00171"></a><span class="lineno"><a class="line" href="classPlatform_1_1PlatformAdaptor__Abstract.html#af5fe0876f0fe18d0470a52d87cbd68a7">  171</a></span>&#160;    Q_INVOKABLE <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1PlatformAdaptor__Abstract.html#af5fe0876f0fe18d0470a52d87cbd68a7">vibrateLong</a>() = 0;</div>
 <div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160; </div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160; </div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    Q_INVOKABLE QString language();</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; </div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="keyword">public</span> slots:</div>
-<div class="line"><a name="l00185"></a><span class="lineno"><a class="line" href="classPlatform_1_1PlatformAdaptor__Abstract.html#a0d8d926f41eb77cf9500759e042f70c0">  185</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1PlatformAdaptor__Abstract.html#a0d8d926f41eb77cf9500759e042f70c0">onGUISetupCompleted</a>() = 0;</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160; </div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160; </div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;signals:</div>
-<div class="line"><a name="l00193"></a><span class="lineno"><a class="line" href="classPlatform_1_1PlatformAdaptor__Abstract.html#a5ad6095ebd2bfbbe00c70f8a887d6a20">  193</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1PlatformAdaptor__Abstract.html#a5ad6095ebd2bfbbe00c70f8a887d6a20">wifiConnected</a>();</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160; </div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classPlatform_1_1PlatformAdaptor__Abstract.html">PlatformAdaptor_Abstract</a>)</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160; </div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;};</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160; </div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;} <span class="comment">// namespace Platform</span></div>
+<div class="line"><a name="l00178"></a><span class="lineno"><a class="line" href="classPlatform_1_1PlatformAdaptor__Abstract.html#a64b00fa135872b0e79769818191cd440">  178</a></span>&#160;    Q_INVOKABLE QString <a class="code" href="classPlatform_1_1PlatformAdaptor__Abstract.html#a64b00fa135872b0e79769818191cd440">language</a>();</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160; </div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="keyword">public</span> slots:</div>
+<div class="line"><a name="l00189"></a><span class="lineno"><a class="line" href="classPlatform_1_1PlatformAdaptor__Abstract.html#a0d8d926f41eb77cf9500759e042f70c0">  189</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1PlatformAdaptor__Abstract.html#a0d8d926f41eb77cf9500759e042f70c0">onGUISetupCompleted</a>() = 0;</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160; </div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160; </div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;signals:</div>
+<div class="line"><a name="l00197"></a><span class="lineno"><a class="line" href="classPlatform_1_1PlatformAdaptor__Abstract.html#a5ad6095ebd2bfbbe00c70f8a887d6a20">  197</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1PlatformAdaptor__Abstract.html#a5ad6095ebd2bfbbe00c70f8a887d6a20">wifiConnected</a>();</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160; </div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classPlatform_1_1PlatformAdaptor__Abstract.html">PlatformAdaptor_Abstract</a>)</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160; </div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;};</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160; </div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;} <span class="comment">// namespace Platform</span></div>
 <div class="ttc" id="aclassGlobalObject_html"><div class="ttname"><a href="classGlobalObject.html">GlobalObject</a></div><div class="ttdoc">Base class for global singleton objects.</div><div class="ttdef"><b>Definition:</b> <a href="GlobalObject_8h_source.html#l00105">GlobalObject.h:106</a></div></div>
 <div class="ttc" id="aclassGlobalObject_html_a2396ee67666cb9227eef145e842b031b"><div class="ttname"><a href="classGlobalObject.html#a2396ee67666cb9227eef145e842b031b">GlobalObject::platformAdaptor</a></div><div class="ttdeci">static Q_INVOKABLE Platform::PlatformAdaptor_Abstract * platformAdaptor()</div><div class="ttdoc">Pointer to appplication-wide static PlatformAdaptor instance.</div></div>
 <div class="ttc" id="aclassPlatform_1_1PlatformAdaptor__Abstract_html"><div class="ttname"><a href="classPlatform_1_1PlatformAdaptor__Abstract.html">Platform::PlatformAdaptor_Abstract</a></div><div class="ttdoc">Interface to platform-specific functionality.</div><div class="ttdef"><b>Definition:</b> <a href="PlatformAdaptor__Abstract_8h_source.html#l00051">PlatformAdaptor_Abstract.h:52</a></div></div>
@@ -149,6 +148,7 @@ $(function() {
 <div class="ttc" id="aclassPlatform_1_1PlatformAdaptor__Abstract_html_a50b1915330e5cf6d65a75e4e5335018f"><div class="ttname"><a href="classPlatform_1_1PlatformAdaptor__Abstract.html#a50b1915330e5cf6d65a75e4e5335018f">Platform::PlatformAdaptor_Abstract::lockWifi</a></div><div class="ttdeci">virtual Q_INVOKABLE void lockWifi(bool lock)=0</div><div class="ttdoc">Lock connection to Wi-Fi network.</div></div>
 <div class="ttc" id="aclassPlatform_1_1PlatformAdaptor__Abstract_html_a5ad6095ebd2bfbbe00c70f8a887d6a20"><div class="ttname"><a href="classPlatform_1_1PlatformAdaptor__Abstract.html#a5ad6095ebd2bfbbe00c70f8a887d6a20">Platform::PlatformAdaptor_Abstract::wifiConnected</a></div><div class="ttdeci">void wifiConnected()</div><div class="ttdoc">Emitted when a new WiFi connections becomes available.</div></div>
 <div class="ttc" id="aclassPlatform_1_1PlatformAdaptor__Abstract_html_a6279b44724a3e75cba57a3424ca55ab2"><div class="ttname"><a href="classPlatform_1_1PlatformAdaptor__Abstract.html#a6279b44724a3e75cba57a3424ca55ab2">Platform::PlatformAdaptor_Abstract::disableScreenSaver</a></div><div class="ttdeci">virtual Q_INVOKABLE void disableScreenSaver()=0</div><div class="ttdoc">Disable the screen saver.</div></div>
+<div class="ttc" id="aclassPlatform_1_1PlatformAdaptor__Abstract_html_a64b00fa135872b0e79769818191cd440"><div class="ttname"><a href="classPlatform_1_1PlatformAdaptor__Abstract.html#a64b00fa135872b0e79769818191cd440">Platform::PlatformAdaptor_Abstract::language</a></div><div class="ttdeci">Q_INVOKABLE QString language()</div><div class="ttdoc">Language code that is to be used in the GUI.</div></div>
 <div class="ttc" id="aclassPlatform_1_1PlatformAdaptor__Abstract_html_a81fcd1a14c37093d15157b15daa50a96"><div class="ttname"><a href="classPlatform_1_1PlatformAdaptor__Abstract.html#a81fcd1a14c37093d15157b15daa50a96">Platform::PlatformAdaptor_Abstract::setupInputMethodEventFilter</a></div><div class="ttdeci">virtual Q_INVOKABLE void setupInputMethodEventFilter(QQuickItem *item)</div><div class="ttdoc">Workaround for QTBUG-80790.</div><div class="ttdef"><b>Definition:</b> <a href="PlatformAdaptor__Abstract_8h_source.html#l00147">PlatformAdaptor_Abstract.h:147</a></div></div>
 <div class="ttc" id="aclassPlatform_1_1PlatformAdaptor__Abstract_html_a93be68331d8623990d3e3c88632729d3"><div class="ttname"><a href="classPlatform_1_1PlatformAdaptor__Abstract.html#a93be68331d8623990d3e3c88632729d3">Platform::PlatformAdaptor_Abstract::checkPermissions</a></div><div class="ttdeci">virtual Q_INVOKABLE QString checkPermissions()=0</div><div class="ttdoc">Checks if all required permissions have been granted.</div></div>
 <div class="ttc" id="aclassPlatform_1_1PlatformAdaptor__Abstract_html_aac61d7122ddaae8c2fefd030826a655c"><div class="ttname"><a href="classPlatform_1_1PlatformAdaptor__Abstract.html#aac61d7122ddaae8c2fefd030826a655c">Platform::PlatformAdaptor_Abstract::PlatformAdaptor_Abstract</a></div><div class="ttdeci">PlatformAdaptor_Abstract(QObject *parent=nullptr)</div><div class="ttdoc">Standard constructor.</div></div>

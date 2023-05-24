@@ -38,7 +38,7 @@ Rectangle {
     Connections {
         target: NotificationManager
 
-        function oncurrentVisualNotificationChanged() { blink.start() }
+        function onCurrentVisualNotificationChanged() { blink.start() }
     }
 
     SequentialAnimation {

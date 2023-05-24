@@ -24,7 +24,6 @@ import QtPositioning
 import QtQml
 import QtQuick
 import QtQuick.Controls
-//import QtQuick.Controls.Material
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -638,6 +637,8 @@ Choose <strong>Library/Maps and Data</strong> to open the map management page.</
         onClicked: {
             centerBindingAnimation.omitAnimationforZoom()
             PlatformAdaptor.vibrateBrief()
+            // Notification test
+            //            NotificationManager.addTestNotification()
             flightMap.zoomLevel -= 1
         }
     }

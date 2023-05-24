@@ -24,7 +24,7 @@
 #include <QQuickItem>
 
 #include "GlobalObject.h"
-#include "qlocale.h"
+
 
 namespace Platform {
 
@@ -170,7 +170,11 @@ public:
      */
     Q_INVOKABLE virtual void vibrateLong() = 0;
 
-
+    /*! \brief Language code that is to be used in the GUI
+     *
+     *  This method returns a two-letter language code (such as "en" or "de") that
+     *  describes the language that is to be used in the GUI.
+     */
     Q_INVOKABLE QString language();
 
 public slots:

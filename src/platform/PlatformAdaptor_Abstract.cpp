@@ -19,6 +19,8 @@
  ***************************************************************************/
 
 #include <QLibraryInfo>
+#include <QLocale>
+
 
 #include "platform/PlatformAdaptor_Abstract.h"
 

@@ -73,6 +73,9 @@
     <key>LSSupportsOpeningDocumentsInPlace</key>
     <true />
 
+    <key>LSApplicationCategoryType</key>
+    <string>public.app-category.navigation</string>
+
     <key>UTImportedTypeDeclarations</key>
     <array>
         <dict>

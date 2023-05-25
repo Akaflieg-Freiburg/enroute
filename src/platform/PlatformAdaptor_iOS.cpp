@@ -98,6 +98,10 @@ QString Platform::PlatformAdaptor::checkPermissions()
     // This method is called once the GUI has been set up. The Android-specific
     // implementes uses this method to hide the splash screen.
     QString string = "";
+
+
+    /*
+    //TODO: Do not show the Dialog on iOS Devices (at least currently)
     if (!ObjCAdapter::hasLocationPermission()) {
         QString result;
         //TODO: Translation not working
@@ -106,11 +110,8 @@ QString Platform::PlatformAdaptor::checkPermissions()
                       "map and to provide relevant aeronautical information.");
         string += result;
     }
-    //TODO: Notifications are disabled
-    /*if (!ObjCAdapter::hasNotificationPermission()) {
-        string += "Notification";
-    }
     */
+
     return string;
 }
 

@@ -65,7 +65,14 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 <h3>Manual</h3>
 
 <p>The manual has kindly been provided by Michael Horbaschk.</p>
-)html") + tr(R"html(
+)html")
+        
+    + tr(R"html(
+<h3>iOS Version</h3>
+
+<p>The app has been ported to iOS by Simon Schneider. Simon is currently student pilot (PPL) and member of the Akaflieg Freiburg flight club, just like Stefan.</p>
+)html")
+        + tr(R"html(
 <h3>Translations</h3>
 )html") + (R"html(
 <ul style="margin-left:-25px;">

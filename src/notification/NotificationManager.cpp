@@ -82,12 +82,6 @@ void Notifications::NotificationManager::deferredInitialization()
     onMapAndDataDownloadingChanged();
 }
 
-Notifications::NotificationManager::~NotificationManager()
-{
-    // Wait for the constructor of QTextToSpeech to finish.
-    m_speakerFuture.waitForFinished();
-}
-
 
 
 //

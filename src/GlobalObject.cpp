@@ -90,6 +90,11 @@ GlobalObject::GlobalObject(QObject *parent) : QObject(parent)
 
 void GlobalObject::clear()
 {
+    if (g_notificationManager != nullptr)
+    {
+        g_notificationManager->waitForSpeechEngine();
+    }
+
     isConstructingOrDeconstructing = true;
 
     delete g_notamProvider;

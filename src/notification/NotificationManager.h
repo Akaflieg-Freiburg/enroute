@@ -62,7 +62,7 @@ public:
     explicit NotificationManager() = delete;
 
     /*! \brief Standard destructor */
-    ~NotificationManager();
+    ~NotificationManager() = default;
 
     // factory function for QML singleton
     static Notifications::NotificationManager* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
@@ -109,6 +109,14 @@ public:
 
     /*! \brief Voice test */
     Q_INVOKABLE void voiceTest();
+
+    /*! \brief Wait until speech engine is fully constructed */
+    void waitForSpeechEngine()
+    {
+#if defined(Q_OS_LINUX) and not defined(Q_OS_ANDROID)
+        m_speakerFuture.waitForFinished();
+#endif
+    }
 
 signals:
     /*! \brief Notification signal */

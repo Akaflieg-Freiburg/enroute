@@ -115,6 +115,37 @@
            ]
         },
     	{
+            "name": "qtmultimedia",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/qt/qtmultimedia.git",
+                    "tag": "v${Qt6_VERSION}"
+                }
+            ],
+            "buildsystem": "cmake-ninja",
+            "config-opts": [
+                "-DCMAKE_FIND_ROOT_PATH:PATH=/app",
+                "-DCMAKE_BUILD_TYPE:STRING=Release"
+            ]
+        },
+    	{
+            "name": "flite",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/festvox/flite.git",
+                    "tag": "v2.2"
+                }
+            ],
+            "buildsystem": "simple",
+            "build-commands": [
+                "./configure --prefix=/app --with-pic",
+                "make",
+                "make install"
+            ]
+        },
+    	{
             "name": "qtspeech",
             "sources": [
                 {

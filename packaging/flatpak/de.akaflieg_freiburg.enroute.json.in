@@ -114,6 +114,21 @@
                 "-DFEATURE_qml_debug=OFF"
            ]
         },
+    	{
+            "name": "qtspeech",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/qt/qtspeech.git",
+                    "tag": "v${Qt6_VERSION}"
+                }
+            ],
+            "buildsystem": "cmake-ninja",
+            "config-opts": [
+                "-DCMAKE_FIND_ROOT_PATH:PATH=/app",
+                "-DCMAKE_BUILD_TYPE:STRING=Release"
+            ]
+        },
         {
             "name": "qt5compat",
             "sources": [

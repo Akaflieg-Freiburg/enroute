@@ -175,7 +175,7 @@ public:
      *  This method returns a two-letter language code (such as "en" or "de") that
      *  describes the language that is to be used in the GUI.
      */
-    Q_INVOKABLE QString language();
+    Q_INVOKABLE virtual QString language();
 
 public slots:
     /*! \brief Signal handler: GUI setup completed

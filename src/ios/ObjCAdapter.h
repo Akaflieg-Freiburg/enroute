@@ -8,6 +8,7 @@ class ObjCAdapter {
     public:
         static void vibrateBrief();
         static void vibrateError();
+        static void vibrateLong();
         static double safeAreaTopInset();
         static double safeAreaLeftInset();
         static double safeAreaBottomInset();

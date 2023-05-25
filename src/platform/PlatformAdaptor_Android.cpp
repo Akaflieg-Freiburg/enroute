@@ -195,6 +195,12 @@ void Platform::PlatformAdaptor::vibrateBrief()
 }
 
 
+void Platform::PlatformAdaptor::vibrateLong()
+{
+    QJniObject::callStaticMethod<void>("de/akaflieg_freiburg/enroute/MobileAdaptor", "vibrateLong");
+}
+
+
 
 //
 // C Methods

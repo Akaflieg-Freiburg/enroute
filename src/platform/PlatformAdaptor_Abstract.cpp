@@ -19,6 +19,8 @@
  ***************************************************************************/
 
 #include <QLibraryInfo>
+#include <QLocale>
+
 
 #include "platform/PlatformAdaptor_Abstract.h"
 
@@ -55,4 +57,10 @@ QString Platform::PlatformAdaptor_Abstract::systemInfo()
     result += u"</table><br>\n"_qs;
 
     return result;
+}
+
+
+QString Platform::PlatformAdaptor_Abstract::language()
+{
+    return QLocale::system().name().left(2);
 }

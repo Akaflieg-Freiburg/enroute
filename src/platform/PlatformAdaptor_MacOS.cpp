@@ -97,3 +97,8 @@ void Platform::PlatformAdaptor::vibrateBrief()
     // in aircraft situations where the pilot often has only one free hand and cannot concentrate on the device screen.
 #warning Not implemented
 }
+
+void Platform::PlatformAdaptor::vibrateLong()
+{
+#warning Not implemented
+}

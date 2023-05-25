@@ -136,3 +136,13 @@ void Platform::PlatformAdaptor::vibrateBrief()
     // has only one free hand and cannot concentrate on the device screen.
     ObjCAdapter::vibrateBrief();
 }
+
+void Platform::PlatformAdaptor::vibrateLong()
+{
+    ObjCAdapter::vibrateLong();
+}
+
+QString Platform::PlatformAdaptor::language()
+{
+    return ObjCAdapter::preferredLanguage();
+}

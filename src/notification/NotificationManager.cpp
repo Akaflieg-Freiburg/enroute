@@ -43,6 +43,10 @@ using namespace std::chrono_literals;
 
 Notifications::NotificationManager::NotificationManager(QObject *parent) : GlobalObject(parent)
 {
+}
+
+void Notifications::NotificationManager::deferredInitialization()
+{
 #if defined(Q_OS_LINUX) and not defined(Q_OS_ANDROID)
     // Under Linux, the constructor of QTextToSpeech is extremely slow. For that reason we run the constructor in a separate thread.
     m_speakerFuture = QtConcurrent::run([this]() { setupSpeaker();} );
@@ -57,10 +61,7 @@ Notifications::NotificationManager::NotificationManager(QObject *parent) : Globa
     m_speechBreakTimer.setInterval(1s);
     m_speechBreakTimer.setSingleShot(true);
     connect(&m_speechBreakTimer, &QTimer::timeout, this, &Notifications::NotificationManager::speakNext);
-}
 
-void Notifications::NotificationManager::deferredInitialization()
-{
     connect(GlobalObject::trafficDataProvider(), &Traffic::TrafficDataProvider::trafficReceiverRuntimeErrorChanged,
             this, &Notifications::NotificationManager::onTrafficReceiverRuntimeError);
     connect(GlobalObject::trafficDataProvider(), &Traffic::TrafficDataProvider::trafficReceiverSelfTestErrorChanged,
@@ -179,12 +180,16 @@ void Notifications::NotificationManager::showNext()
     std::sort(m_visualNotifications.begin(), m_visualNotifications.end(),
               [](const Notification* a, const Notification* b) { if (a->importance() == b->importance()) {return a->reactionTime() < b->reactionTime();} return a->importance() > b->importance(); });
 
-    if (currentVisualNotificationCache == currentVisualNotification())
+    auto* cur = currentVisualNotification();
+    if (currentVisualNotificationCache == cur)
     {
         return;
     }
-    currentVisualNotificationCache = currentVisualNotification();
-    GlobalObject::platformAdaptor()->vibrateLong();
+    currentVisualNotificationCache = cur;
+    if (cur != nullptr)
+    {
+        GlobalObject::platformAdaptor()->vibrateLong();
+    }
     emit currentVisualNotificationChanged();
 }
 
@@ -215,6 +220,7 @@ void Notifications::NotificationManager::setupSpeaker()
     auto *speaker = new QTextToSpeech();
     speaker->moveToThread(thread());
     speaker->setParent(this);
+    speaker->setLocale(QLocale(GlobalObject::platformAdaptor()->language()));
     connect(speaker, &QTextToSpeech::stateChanged, this, &Notifications::NotificationManager::onSpeakerStateChanged);
     m_speaker = speaker;
 }

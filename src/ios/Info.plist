@@ -71,7 +71,7 @@
     <string>Navigation App needs Location</string>
 
     <key>LSSupportsOpeningDocumentsInPlace</key>
-    <true />
+    <false />
 
     <key>LSApplicationCategoryType</key>
     <string>public.app-category.navigation</string>

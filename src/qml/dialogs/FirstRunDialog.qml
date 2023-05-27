@@ -59,6 +59,7 @@ CenteringDialog {
             function accept() {
                 GlobalSettings.acceptedTerms = 1
                 GlobalSettings.lastWhatsNewHash = Librarian.getStringHashFromRessource(":text/whatsnew.html")
+                GlobalSettings.lastWhatsNewInMapsHash = DataManager.whatsNewHash
             }
         }
 

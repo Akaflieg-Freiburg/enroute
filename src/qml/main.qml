@@ -844,6 +844,22 @@ Go to the 'Settings' page if you wish to restore the original, safe, behavior of
         }
     }
 
+    Connections { // PlatformAdaptor
+        target: PlatformAdaptor
+
+        function onError(message) {
+            dialogLoader.active = false
+            dialogLoader.setSource("dialogs/LongTextDialog.qml",
+                                   {
+                                       title: qsTr("Error!"),
+                                       text: message,
+                                       standardButtons: Dialog.Ok
+                                   }
+                                   )
+            dialogLoader.active = true
+        }
+    }
+
     // Enroute closed unexpectedly if...
     // * the "route" page is open
     // * the route menu is opened

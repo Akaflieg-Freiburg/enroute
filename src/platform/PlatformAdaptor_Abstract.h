@@ -196,6 +196,15 @@ signals:
      */
     void wifiConnected();
 
+    /*! \brief Emitted when an error occurs
+     *
+     *  This signal is emitted when an error occurs. The GUI will show the message
+     *  in an appropriate dialog.
+     *
+     *  @param message Human-readable, translated message
+     */
+    void error(const QString& message);
+
 private:
     Q_DISABLE_COPY_MOVE(PlatformAdaptor_Abstract)
 

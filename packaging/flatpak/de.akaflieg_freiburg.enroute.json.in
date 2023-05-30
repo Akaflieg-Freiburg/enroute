@@ -10,6 +10,7 @@
     	"--filesystem=host",
     	"--share=ipc",
         "--share=network",
+        "--share=pulseaudio",
         "--socket=wayland",
         "--socket=x11",
         "--system-talk-name=org.freedesktop.GeoClue2",

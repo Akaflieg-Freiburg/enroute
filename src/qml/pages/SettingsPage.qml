@@ -294,7 +294,7 @@ Page {
                     helpDialog.title = qsTr("Voice Notifications")
                     helpDialog.text = "<p>" + qsTr("Pilots should not be looking at their mobile devices for extended periods of time.") + " "
                             + qsTr("<strong>Enroute Flight Navigation</strong> is therefore able to read notification texts in addition to showing them on the screen.") + "</p>"
-                            + "<p>" + qsTr("Since we expect that not everybody likes this feature, his button allows switching voice notification on and off.") + "</p>"
+                            + "<p>" + qsTr("Since we expect that not everybody likes this feature, this button allows switching voice notification on and off.") + "</p>"
                     helpDialog.open()
                 }
             }

@@ -21,6 +21,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import QtTextToSpeech
 
 import akaflieg_freiburg.enroute
 import "../dialogs"
@@ -721,7 +722,33 @@ Page {
                         PlatformAdaptor.vibrateBrief()
                         NotificationManager.voiceTest()
                     }
+                    enabled: {
+                        if (!NotificationManager.speaker)
+                            return false
+                        if (NotificationManager.speaker.state !== TextToSpeech.Ready)
+                            return false
+                        return true
+                    }
                 }
+
+                Label {
+                    text: {
+                        if (!NotificationManager.speaker)
+                            return `<font color="#606060" size="2">` +
+                                    qsTr("Speech engine not yet initialized.") +
+                                    `</font>`
+                        if (NotificationManager.speaker.state === TextToSpeech.Error)
+                            return `<font color="#606060" size="2">` +
+                                    qsTr("Error") + ": " + NotificationManager.speaker.errorString() +
+                                    `</font>`
+                        return ""
+                    }
+                    Layout.fillWidth: true
+                    wrapMode: Text.Wrap
+                    visible: text !== ""
+                    horizontalAlignment: Text.AlignHCenter
+                }
+
                 SwitchDelegate {
                     id: sd1
                     Layout.fillWidth: true

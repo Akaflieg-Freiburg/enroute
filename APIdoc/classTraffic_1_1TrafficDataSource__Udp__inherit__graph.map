@@ -1,5 +1,0 @@
-<map id="Traffic::TrafficDataSource_Udp" name="Traffic::TrafficDataSource_Udp">
-<area shape="rect" id="node1" title="Traffic receiver: UDP connection to GDL90 source." alt="" coords="5,184,221,211"/>
-<area shape="rect" id="node2" href="$classTraffic_1_1TrafficDataSource__AbstractSocket.html" title="Base class for all traffic receiver data sources that receive data via network sockets." alt="" coords="22,95,205,136"/>
-<area shape="rect" id="node3" href="$classTraffic_1_1TrafficDataSource__Abstract.html" title="Base class for all traffic receiver data sources." alt="" coords="22,5,205,47"/>
-</map>

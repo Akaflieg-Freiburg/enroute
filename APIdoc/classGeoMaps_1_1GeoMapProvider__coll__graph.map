@@ -1,4 +1,0 @@
-<map id="GeoMaps::GeoMapProvider" name="GeoMaps::GeoMapProvider">
-<area shape="rect" id="node1" title="Provides geographic information." alt="" coords="5,80,204,107"/>
-<area shape="rect" id="node2" href="$classGlobalObject.html" title="Base class for global singleton objects." alt="" coords="51,5,158,32"/>
-</map>

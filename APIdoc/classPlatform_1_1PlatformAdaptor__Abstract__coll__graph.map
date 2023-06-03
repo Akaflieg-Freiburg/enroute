@@ -1,4 +1,0 @@
-<map id="Platform::PlatformAdaptor_Abstract" name="Platform::PlatformAdaptor_Abstract">
-<area shape="rect" id="node1" title="Interface to platform&#45;specific functionality." alt="" coords="5,80,199,121"/>
-<area shape="rect" id="node2" href="$classGlobalObject.html" title="Base class for global singleton objects." alt="" coords="49,5,155,32"/>
-</map>

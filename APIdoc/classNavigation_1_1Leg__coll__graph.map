@@ -1,4 +1,0 @@
-<map id="Navigation::Leg" name="Navigation::Leg">
-<area shape="rect" id="node1" title="Leg in a flight route." alt="" coords="5,95,129,121"/>
-<area shape="rect" id="node2" href="$classUnits_1_1Distance.html" title="Convenience class for distance computations." alt="" coords="7,5,128,32"/>
-</map>

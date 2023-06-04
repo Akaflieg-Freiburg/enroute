@@ -819,9 +819,9 @@ AppWindow {
             standardButtons: Dialog.Ok
 
             title: qsTr("Network security settings")
-            text: qsTr(`You have chosen to ignore network security errors in the future.
-**This poses a security risk.**
-Go to the 'Settings' page if you wish to restore the original, safe, behavior of this app.`)
+            text: qsTr("You have chosen to ignore network security errors in the future.") + " **" +
+                  qsTr("This poses a security risk.") + "** " +
+                  qsTr("Go to the 'Settings' page if you wish to restore the original, safe, behavior of this app.")
         }
     }
 

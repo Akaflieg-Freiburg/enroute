@@ -172,7 +172,7 @@ public:
 
     /*! \brief Language code that is to be used in the GUI
      *
-     *  This method returns a two-letter language code (such as "en" or "de") that
+     *  @returns A two-letter language code (such as "en" or "de") that
      *  describes the language that is to be used in the GUI.
      */
     Q_INVOKABLE virtual QString language();

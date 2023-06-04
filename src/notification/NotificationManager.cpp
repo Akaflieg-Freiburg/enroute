@@ -70,8 +70,6 @@ void Notifications::NotificationManager::deferredInitialization()
     // Maps and Data
     connect(GlobalObject::dataManager()->mapsAndData(), &DataManagement::Downloadable_Abstract::updateSizeChanged,
             this, &Notifications::NotificationManager::onMapAndDataUpdateSizeChanged);
-    connect(GlobalObject::dataManager()->mapsAndData(), &DataManagement::Downloadable_Abstract::downloadingChanged,
-            this, &Notifications::NotificationManager::onMapAndDataDownloadingChanged);
     connect(&mapsAndDataNotificationTimer, &QTimer::timeout,
             this, &Notifications::NotificationManager::onMapAndDataUpdateSizeChanged);
 
@@ -79,7 +77,6 @@ void Notifications::NotificationManager::deferredInitialization()
     mapsAndDataNotificationTimer.setSingleShot(true);
 
     onMapAndDataUpdateSizeChanged();
-    onMapAndDataDownloadingChanged();
 }
 
 
@@ -291,22 +288,6 @@ void Notifications::NotificationManager::speakNext()
 // Members used to watch other app components, and to generate notifications
 // when necessary
 //
-
-void Notifications::NotificationManager::onMapAndDataDownloadingChanged()
-{
-    auto* mapsAndData = GlobalObject::dataManager()->mapsAndData();
-    if (mapsAndData == nullptr)
-    {
-        return;
-    }
-    if (mapsAndData->downloading())
-    {
-        // Notify!
-        auto* notification = new Notifications::Notification(tr("Downloading map and data…"));
-        connect(GlobalObject::dataManager()->mapsAndData(), &DataManagement::Downloadable_MultiFile::downloadingChanged, notification, &QObject::deleteLater);
-        addNotification(notification);
-    }
-}
 
 void Notifications::NotificationManager::onMapAndDataUpdateSizeChanged()
 {

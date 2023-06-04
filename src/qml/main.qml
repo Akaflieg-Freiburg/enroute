@@ -860,6 +860,16 @@ Go to the 'Settings' page if you wish to restore the original, safe, behavior of
         }
     }
 
+    Connections { // Notifier
+        target: DataManager.mapsAndData
+
+        function onDownloadingChanged() {
+            if (DataManager.mapsAndData.downloading) {
+                toast.doToast(qsTr("Starting map update"))
+            }
+        }
+    }
+
     // Enroute closed unexpectedly if...
     // * the "route" page is open
     // * the route menu is opened

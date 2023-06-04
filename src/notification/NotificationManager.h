@@ -211,9 +211,6 @@ private:
     // when necessary
     //
 
-    // Called whenever map and data are being downloaded.
-    void onMapAndDataDownloadingChanged();
-
     // Called whenever map and data updates become (un)available
     void onMapAndDataUpdateSizeChanged();
 

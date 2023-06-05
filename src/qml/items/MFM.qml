@@ -489,11 +489,16 @@ Item {
             width: parent.width-20
             wrapMode: Text.WordWrap
 
-            text: qsTr("<p><strong>There is no aviation map installed.</strong></p>
-<p>In order to install a map, please open the menu using the menu button in the upper left corner of this screen.
-Choose <strong>Library/Maps and Data</strong> to open the map management page.</p>")
-            textFormat: Text.StyledText
-            color: "red"
+            text: {
+                var t = "<p><strong>" + qsTr("There is no aviation map installed.") + "</strong></p>"
+                if (DataManager.aviationMaps.downloading)
+                    return t + "<p>" + qsTr("Please wait for the download to complete.") + "</p>"
+                return t + "<p>" + qsTr("In order to install a map, please open the menu using the menu button in the upper left corner of this screen.") + " " +
+                        qsTr("Choose <a href='xx'>Library/Maps and Data</a> to open the map management page.") + "</p>"
+            }
+            textFormat: Text.RichText
+//            color: "red"
+            onLinkActivated: stackView.push("../pages/DataManagerPage.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
         }
     }
 

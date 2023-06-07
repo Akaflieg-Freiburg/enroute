@@ -497,7 +497,6 @@ Item {
                         qsTr("Choose <a href='xx'>Library/Maps and Data</a> to open the map management page.") + "</p>"
             }
             textFormat: Text.RichText
-//            color: "red"
             onLinkActivated: stackView.push("../pages/DataManagerPage.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
         }
     }

@@ -351,6 +351,8 @@ if (IOS)
         ios/ObjCAdapter.h
         ios/ObjectiveC.h
         ios/ObjectiveC.m
+        ios/SafeAreaService.h
+        ios/SafeAreaService.m
     )
 
     # Compile definitions

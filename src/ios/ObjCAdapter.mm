@@ -7,6 +7,7 @@
 #import <UserNotifications/UserNotifications.h>
 #import <CoreLocation/CoreLocation.h>
 #import "ObjectiveC.h"
+#import "SafeAreaService.h"
 
 
 //MARK: Vibration
@@ -28,29 +29,17 @@ void ObjCAdapter::vibrateLong() {
 
 
 //MARK: Safe Area
-//TODO: Reduce redundant code
 double ObjCAdapter::safeAreaTopInset() {
-    UIWindow *window = UIApplication.sharedApplication.windows.firstObject;
-    return window.safeAreaInsets.top;
+    return [[SafeAreaService sharedInstance] safeAreaTop];
 }
 double ObjCAdapter::safeAreaLeftInset() {
-    UIWindow *window = UIApplication.sharedApplication.windows.firstObject;
-    return window.safeAreaInsets.left;
+    return [[SafeAreaService sharedInstance] safeAreaLeft];
 }
 double ObjCAdapter::safeAreaBottomInset() {
-    ObjectiveC* instance = [ObjectiveC sharedInstance];
-    float keyboardHeight = [instance keyboardHeight];
-    if (keyboardHeight > 0) {
-        return keyboardHeight;
-    } else {
-        UIWindow *window = UIApplication.sharedApplication.windows.firstObject;
-        auto bottom = window.safeAreaInsets.bottom;
-        return bottom;
-    }
+    return [[SafeAreaService sharedInstance] safeAreaBottom];
 }
 double ObjCAdapter::safeAreaRightInset() {
-    UIWindow *window = UIApplication.sharedApplication.windows.firstObject;
-    return window.safeAreaInsets.right;
+    return [[SafeAreaService sharedInstance] safeAreaRight];
 }
 
 

@@ -12,7 +12,7 @@
 
 //MARK: Vibration
 void ObjCAdapter::vibrateBrief() {
-    AudioServicesPlaySystemSound(1519);
+    AudioServicesPlayAlertSound(1519);
 }
 
 void ObjCAdapter::vibrateError() {
@@ -23,8 +23,8 @@ void ObjCAdapter::vibrateError() {
 }
 
 void ObjCAdapter::vibrateLong() {
-  //TODO: Test whether SystemSoundId is correct
-  AudioServicesPlayAlertSound(1520);
+
+    AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
 }
 
 
@@ -45,14 +45,11 @@ double ObjCAdapter::safeAreaRightInset() {
 
 //MARK: Location
 bool ObjCAdapter::hasLocationPermission() {
-    
-    if ([CLLocationManager locationServicesEnabled]) {
-        return [[ObjectiveC sharedInstance] hasLocationPermission];
-    }
-    
-    return false;
+    return ![[ObjectiveC sharedInstance] hasLocationPermissionDenied];
 }
 
+
+//MARK: Notifications
 bool ObjCAdapter::hasNotificationPermission() {
     return [[ObjectiveC sharedInstance] hasNotificationPermission];
 }
@@ -68,8 +65,6 @@ void ObjCAdapter::requestNotificationPermission() {
     
 }
 
-
-//MARK: Notifications
 void ObjCAdapter::sendNotification(QString title, QString message){
     UNMutableNotificationContent* content = [[UNMutableNotificationContent alloc] init];
     content.title = [NSString localizedUserNotificationStringForKey:title.toNSString() arguments:nil];

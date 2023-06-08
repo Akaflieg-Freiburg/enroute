@@ -39,18 +39,22 @@
     return enabled;
 }
 
-- (bool) hasLocationPermission {
+- (bool) hasLocationPermissionDenied {
+    if (![CLLocationManager locationServicesEnabled]) {
+      return true;
+    }
     bool enabled = NO;
     CLLocationManager *locationManager = [CLLocationManager new];
     switch([locationManager authorizationStatus]) {
-        case kCLAuthorizationStatusAuthorizedWhenInUse:
-        case kCLAuthorizationStatusAuthorizedAlways:
+        case kCLAuthorizationStatusRestricted:
+        case kCLAuthorizationStatusDenied:
             enabled = YES;
             break;
         default:
             enabled = NO;
             break;
     }
+    [locationManager release];
     return enabled;
 }
 

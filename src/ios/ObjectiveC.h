@@ -8,7 +8,7 @@
 @interface ObjectiveC : NSObject
 
 - (bool) hasNotificationPermission;
-- (bool) hasLocationPermission;
+- (bool) hasLocationPermissionDenied;
 
 + (ObjectiveC *)sharedInstance;
 

@@ -32,7 +32,8 @@
 
 ## Bug Fixing
 
-- [ ] Fix problems with auto-generated screenshots for google play
+- [ ] Fix problems with upload of auto-generated screenshots for google play
+- [ ] Auto-generation of screenshots conflicts with onboarding dialog
 
 
 ## New Features

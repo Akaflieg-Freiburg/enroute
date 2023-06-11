@@ -820,9 +820,9 @@ AppWindow {
             standardButtons: Dialog.Ok
 
             title: qsTr("Network security settings")
-            text: qsTr(`You have chosen to ignore network security errors in the future.
-**This poses a security risk.**
-Go to the 'Settings' page if you wish to restore the original, safe, behavior of this app.`)
+            text: qsTr("You have chosen to ignore network security errors in the future.") + " **" +
+                  qsTr("This poses a security risk.") + "** " +
+                  qsTr("Go to the 'Settings' page if you wish to restore the original, safe, behavior of this app.")
         }
     }
 
@@ -842,6 +842,32 @@ Go to the 'Settings' page if you wish to restore the original, safe, behavior of
             dialogLoader.text = password
             dialogLoader.source = "dialogs/PasswordStorageDialog.qml"
             dialogLoader.active = true
+        }
+    }
+
+    Connections { // PlatformAdaptor
+        target: PlatformAdaptor
+
+        function onError(message) {
+            dialogLoader.active = false
+            dialogLoader.setSource("dialogs/LongTextDialog.qml",
+                                   {
+                                       title: qsTr("Error!"),
+                                       text: message,
+                                       standardButtons: Dialog.Ok
+                                   }
+                                   )
+            dialogLoader.active = true
+        }
+    }
+
+    Connections { // Notifier
+        target: DataManager.mapsAndData
+
+        function onDownloadingChanged() {
+            if (DataManager.mapsAndData.downloading) {
+                toast.doToast(qsTr("Starting map update"))
+            }
         }
     }
 

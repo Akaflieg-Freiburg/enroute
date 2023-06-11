@@ -71,6 +71,7 @@ Page {
 
         ToolButton {
             id: headerMenuToolButton
+            visible: !isAndroidOrIos
 
             anchors.verticalCenter: parent.verticalCenter
 
@@ -90,8 +91,8 @@ Page {
                 MenuItem {
                     text: qsTr("Import…")
                     enabled: !isAndroidOrIos
-                    visible: !isAndroidOrIos
                     height: isAndroidOrIos ? 0 : undefined
+                    visible: !isAndroidOrIos
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()

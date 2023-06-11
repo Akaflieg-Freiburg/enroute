@@ -16,7 +16,7 @@
 
 ## Not yet implemented
 
-- [ ] Notifications (-> need to implement ourselves, Kebekus will look at that)
+- [X] Notifications (-> need to implement ourselves, Kebekus will look at that)
 - [ ] Import und Export
 - [X] Kennwörter (SSID) -> sieht schwierig aus unter iOS. Viele Changes in den letzen iOS-Versionen, von Apple nicht gern gesehen. Will not implement.
 - [ ] Automatische Verbindung mit Verkehrsdatenempfänger
@@ -32,7 +32,8 @@
 
 ## Bug Fixing
 
-- [ ] Fix problems with auto-generated screenshots for google play
+- [ ] Fix problems with upload of auto-generated screenshots for google play
+- [ ] Auto-generation of screenshots conflicts with onboarding dialog
 
 
 ## New Features

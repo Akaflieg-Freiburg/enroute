@@ -210,6 +210,10 @@ auto main(int argc, char *argv[]) -> int
     // Load GUI and enter event loop
     auto result = QGuiApplication::exec();
 
+#if defined(Q_OS_IOS)
+    exit(result);
+#endif
+
     // Ensure that the engine does not hold objects that will interfere when we close down.
     delete engine;
     GlobalObject::clear();

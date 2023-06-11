@@ -70,8 +70,6 @@ void Notifications::NotificationManager::deferredInitialization()
     // Maps and Data
     connect(GlobalObject::dataManager()->mapsAndData(), &DataManagement::Downloadable_Abstract::updateSizeChanged,
             this, &Notifications::NotificationManager::onMapAndDataUpdateSizeChanged);
-    connect(GlobalObject::dataManager()->mapsAndData(), &DataManagement::Downloadable_Abstract::downloadingChanged,
-            this, &Notifications::NotificationManager::onMapAndDataDownloadingChanged);
     connect(&mapsAndDataNotificationTimer, &QTimer::timeout,
             this, &Notifications::NotificationManager::onMapAndDataUpdateSizeChanged);
 
@@ -79,13 +77,6 @@ void Notifications::NotificationManager::deferredInitialization()
     mapsAndDataNotificationTimer.setSingleShot(true);
 
     onMapAndDataUpdateSizeChanged();
-    onMapAndDataDownloadingChanged();
-}
-
-Notifications::NotificationManager::~NotificationManager()
-{
-    // Wait for the constructor of QTextToSpeech to finish.
-    m_speakerFuture.waitForFinished();
 }
 
 
@@ -220,9 +211,12 @@ void Notifications::NotificationManager::setupSpeaker()
     auto *speaker = new QTextToSpeech();
     speaker->moveToThread(thread());
     speaker->setParent(this);
+    QQmlEngine::setObjectOwnership(speaker, QQmlEngine::CppOwnership);
     speaker->setLocale(QLocale(GlobalObject::platformAdaptor()->language()));
     connect(speaker, &QTextToSpeech::stateChanged, this, &Notifications::NotificationManager::onSpeakerStateChanged);
     m_speaker = speaker;
+
+    emit speakerChanged();
 }
 
 void Notifications::NotificationManager::speakNext()
@@ -294,22 +288,6 @@ void Notifications::NotificationManager::speakNext()
 // Members used to watch other app components, and to generate notifications
 // when necessary
 //
-
-void Notifications::NotificationManager::onMapAndDataDownloadingChanged()
-{
-    auto* mapsAndData = GlobalObject::dataManager()->mapsAndData();
-    if (mapsAndData == nullptr)
-    {
-        return;
-    }
-    if (mapsAndData->downloading())
-    {
-        // Notify!
-        auto* notification = new Notifications::Notification(tr("Downloading map and data…"));
-        connect(GlobalObject::dataManager()->mapsAndData(), &DataManagement::Downloadable_MultiFile::downloadingChanged, notification, &QObject::deleteLater);
-        addNotification(notification);
-    }
-}
 
 void Notifications::NotificationManager::onMapAndDataUpdateSizeChanged()
 {

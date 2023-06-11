@@ -172,10 +172,10 @@ public:
 
     /*! \brief Language code that is to be used in the GUI
      *
-     *  This method returns a two-letter language code (such as "en" or "de") that
+     *  @returns A two-letter language code (such as "en" or "de") that
      *  describes the language that is to be used in the GUI.
      */
-    Q_INVOKABLE QString language();
+    Q_INVOKABLE virtual QString language();
 
 public slots:
     /*! \brief Signal handler: GUI setup completed
@@ -195,6 +195,15 @@ signals:
      *  This signal is emitted when a new WiFi connection becomes available.
      */
     void wifiConnected();
+
+    /*! \brief Emitted when an error occurs
+     *
+     *  This signal is emitted when an error occurs. The GUI will show the message
+     *  in an appropriate dialog.
+     *
+     *  @param message Human-readable, translated message
+     */
+    void error(const QString& message);
 
 private:
     Q_DISABLE_COPY_MOVE(PlatformAdaptor_Abstract)

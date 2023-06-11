@@ -21,6 +21,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import QtTextToSpeech
 
 import akaflieg_freiburg.enroute
 import "../dialogs"
@@ -294,7 +295,7 @@ Page {
                     helpDialog.title = qsTr("Voice Notifications")
                     helpDialog.text = "<p>" + qsTr("Pilots should not be looking at their mobile devices for extended periods of time.") + " "
                             + qsTr("<strong>Enroute Flight Navigation</strong> is therefore able to read notification texts in addition to showing them on the screen.") + "</p>"
-                            + "<p>" + qsTr("Since we expect that not everybody likes this feature, his button allows switching voice notification on and off.") + "</p>"
+                            + "<p>" + qsTr("Since we expect that not everybody likes this feature, this button allows switching voice notification on and off.") + "</p>"
                     helpDialog.open()
                 }
             }
@@ -721,7 +722,33 @@ Page {
                         PlatformAdaptor.vibrateBrief()
                         NotificationManager.voiceTest()
                     }
+                    enabled: {
+                        if (!NotificationManager.speaker)
+                            return false
+                        if (NotificationManager.speaker.state !== TextToSpeech.Ready)
+                            return false
+                        return true
+                    }
                 }
+
+                Label {
+                    text: {
+                        if (!NotificationManager.speaker)
+                            return `<font color="#606060" size="2">` +
+                                    qsTr("Speech engine not yet initialized.") +
+                                    `</font>`
+                        if (NotificationManager.speaker.state === TextToSpeech.Error)
+                            return `<font color="#606060" size="2">` +
+                                    qsTr("Error") + ": " + NotificationManager.speaker.errorString() +
+                                    `</font>`
+                        return ""
+                    }
+                    Layout.fillWidth: true
+                    wrapMode: Text.Wrap
+                    visible: text !== ""
+                    horizontalAlignment: Text.AlignHCenter
+                }
+
                 SwitchDelegate {
                     id: sd1
                     Layout.fillWidth: true

@@ -62,7 +62,7 @@ public:
     explicit NotificationManager() = delete;
 
     /*! \brief Standard destructor */
-    ~NotificationManager();
+    ~NotificationManager() = default;
 
     // factory function for QML singleton
     static Notifications::NotificationManager* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
@@ -86,6 +86,15 @@ public:
      */
     Q_PROPERTY(Notifications::Notification* currentVisualNotification READ currentVisualNotification NOTIFY currentVisualNotificationChanged)
 
+    /*! \brief Pointer to QTextToSpeech
+     *
+     *  This property holds a pointer to the text-to-speech engine. Until the engine
+     *  is initialized, the property holds a nullptr.
+     *
+     *  @note The objects returned here is owned by C++ and can be deleted anytime, so
+     *  it is wise to store the result in a QPointer that tracks deletion.
+     */
+    Q_PROPERTY(QTextToSpeech* speaker READ speaker NOTIFY speakerChanged)
 
 
     //
@@ -98,6 +107,14 @@ public:
      */
     [[nodiscard]] Notifications::Notification* currentVisualNotification() const;
 
+    /*! \brief Getter function for property of the same name
+     *
+     *  @returns Property speaker
+     */
+    [[nodiscard]] QTextToSpeech* speaker() const
+    {
+        return m_speaker;
+    }
 
 
     //
@@ -110,9 +127,20 @@ public:
     /*! \brief Voice test */
     Q_INVOKABLE void voiceTest();
 
+    /*! \brief Wait until speech engine is fully constructed */
+    void waitForSpeechEngine()
+    {
+#if defined(Q_OS_LINUX) and not defined(Q_OS_ANDROID)
+        m_speakerFuture.waitForFinished();
+#endif
+    }
+
 signals:
     /*! \brief Notification signal */
     void currentVisualNotificationChanged();
+
+    /*! \brief Notification signal */
+    void speakerChanged();
 
 private:
     // Adds a notification to m_notifications and rearranges the list. Removes
@@ -182,9 +210,6 @@ private:
     // Members used to watch other app components, and to generate notifications
     // when necessary
     //
-
-    // Called whenever map and data are being downloaded.
-    void onMapAndDataDownloadingChanged();
 
     // Called whenever map and data updates become (un)available
     void onMapAndDataUpdateSizeChanged();

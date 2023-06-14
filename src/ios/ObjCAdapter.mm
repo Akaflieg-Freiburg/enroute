@@ -7,11 +7,12 @@
 #import <UserNotifications/UserNotifications.h>
 #import <CoreLocation/CoreLocation.h>
 #import "ObjectiveC.h"
+#import "SafeAreaService.h"
 
 
 //MARK: Vibration
 void ObjCAdapter::vibrateBrief() {
-    AudioServicesPlaySystemSound(1519);
+    AudioServicesPlayAlertSound(1519);
 }
 
 void ObjCAdapter::vibrateError() {
@@ -22,48 +23,33 @@ void ObjCAdapter::vibrateError() {
 }
 
 void ObjCAdapter::vibrateLong() {
-  //TODO: Test whether SystemSoundId is correct
-  AudioServicesPlayAlertSound(1520);
+
+    AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
 }
 
 
 //MARK: Safe Area
-//TODO: Reduce redundant code
 double ObjCAdapter::safeAreaTopInset() {
-    UIWindow *window = UIApplication.sharedApplication.windows.firstObject;
-    return window.safeAreaInsets.top;
+    return [[SafeAreaService sharedInstance] safeAreaTop];
 }
 double ObjCAdapter::safeAreaLeftInset() {
-    UIWindow *window = UIApplication.sharedApplication.windows.firstObject;
-    return window.safeAreaInsets.left;
+    return [[SafeAreaService sharedInstance] safeAreaLeft];
 }
 double ObjCAdapter::safeAreaBottomInset() {
-    ObjectiveC* instance = [ObjectiveC sharedInstance];
-    float keyboardHeight = [instance keyboardHeight];
-    if (keyboardHeight > 0) {
-        return keyboardHeight;
-    } else {
-        UIWindow *window = UIApplication.sharedApplication.windows.firstObject;
-        auto bottom = window.safeAreaInsets.bottom;
-        return bottom;
-    }
+    return [[SafeAreaService sharedInstance] safeAreaBottom];
 }
 double ObjCAdapter::safeAreaRightInset() {
-    UIWindow *window = UIApplication.sharedApplication.windows.firstObject;
-    return window.safeAreaInsets.right;
+    return [[SafeAreaService sharedInstance] safeAreaRight];
 }
 
 
 //MARK: Location
 bool ObjCAdapter::hasLocationPermission() {
-    
-    if ([CLLocationManager locationServicesEnabled]) {
-        return [[ObjectiveC sharedInstance] hasLocationPermission];
-    }
-    
-    return false;
+    return ![[ObjectiveC sharedInstance] hasLocationPermissionDenied];
 }
 
+
+//MARK: Notifications
 bool ObjCAdapter::hasNotificationPermission() {
     return [[ObjectiveC sharedInstance] hasNotificationPermission];
 }
@@ -79,8 +65,6 @@ void ObjCAdapter::requestNotificationPermission() {
     
 }
 
-
-//MARK: Notifications
 void ObjCAdapter::sendNotification(QString title, QString message){
     UNMutableNotificationContent* content = [[UNMutableNotificationContent alloc] init];
     content.title = [NSString localizedUserNotificationStringForKey:title.toNSString() arguments:nil];

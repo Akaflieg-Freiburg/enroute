@@ -14,19 +14,6 @@
 
 @implementation ObjectiveC
 
--(void) initializeListeners {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChange:) name:UIKeyboardWillChangeFrameNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-}
-
-- (void)keyboardWillChange:(NSNotification *)notification {
-    CGRect keyboardRect = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    [self setKeyboardHeight: keyboardRect.size.height];
-}
-
-- (void)keyboardWillHide:(NSNotification *)notification {
-    [self setKeyboardHeight: 0];
-}
 
 - (bool) hasNotificationPermission {
     __block bool enabled = false;
@@ -52,18 +39,22 @@
     return enabled;
 }
 
-- (bool) hasLocationPermission {
+- (bool) hasLocationPermissionDenied {
+    if (![CLLocationManager locationServicesEnabled]) {
+      return true;
+    }
     bool enabled = NO;
     CLLocationManager *locationManager = [CLLocationManager new];
     switch([locationManager authorizationStatus]) {
-        case kCLAuthorizationStatusAuthorizedWhenInUse:
-        case kCLAuthorizationStatusAuthorizedAlways:
+        case kCLAuthorizationStatusRestricted:
+        case kCLAuthorizationStatusDenied:
             enabled = YES;
             break;
         default:
             enabled = NO;
             break;
     }
+    [locationManager release];
     return enabled;
 }
 
@@ -72,7 +63,6 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedInstance = [[ObjectiveC alloc] init];
-        [sharedInstance initializeListeners];
     });
     return sharedInstance;
 }

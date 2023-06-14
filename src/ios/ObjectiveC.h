@@ -7,11 +7,9 @@
 
 @interface ObjectiveC : NSObject
 
-@property float keyboardHeight;
-
 - (bool) hasNotificationPermission;
-- (bool) hasLocationPermission;
+- (bool) hasLocationPermissionDenied;
 
-+(ObjectiveC *)sharedInstance;
++ (ObjectiveC *)sharedInstance;
 
 @end

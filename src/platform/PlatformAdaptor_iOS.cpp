@@ -100,8 +100,6 @@ QString Platform::PlatformAdaptor::checkPermissions()
     QString string = "";
 
 
-    /*
-    //TODO: Do not show the Dialog on iOS Devices (at least currently)
     if (!ObjCAdapter::hasLocationPermission()) {
         QString result;
         //TODO: Translation not working
@@ -110,7 +108,6 @@ QString Platform::PlatformAdaptor::checkPermissions()
                       "map and to provide relevant aeronautical information.");
         string += result;
     }
-    */
 
     return string;
 }

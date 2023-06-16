@@ -141,6 +141,8 @@ auto main(int argc, char *argv[]) -> int
     parser.addVersionOption();
     QCommandLineOption googlePlayScreenshotOption(QStringLiteral("sg"), QCoreApplication::translate("main", "Run simulator and generate screenshots for GooglePlay"));
     parser.addOption(googlePlayScreenshotOption);
+    QCommandLineOption iosScreenshotOption(QStringLiteral("si"), QCoreApplication::translate("main", "Run simulator and generate screenshots for iOS"));
+    parser.addOption(iosScreenshotOption);
     QCommandLineOption manualScreenshotOption(QStringLiteral("sm"), QCoreApplication::translate("main", "Run simulator and generate screenshots for the manual"));
     parser.addOption(manualScreenshotOption);
     parser.addPositionalArgument(QStringLiteral("[fileName]"), QCoreApplication::translate("main", "File to import."));
@@ -200,6 +202,11 @@ auto main(int argc, char *argv[]) -> int
     {
         GlobalObject::demoRunner()->setEngine(engine);
         QTimer::singleShot(1s, GlobalObject::demoRunner(), &DemoRunner::generateGooglePlayScreenshots);
+    }
+    if (parser.isSet(iosScreenshotOption))
+    {
+        GlobalObject::demoRunner()->setEngine(engine);
+        QTimer::singleShot(3s, GlobalObject::demoRunner(), &DemoRunner::generateIosScreenshots);
     }
     if (parser.isSet(manualScreenshotOption))
     {

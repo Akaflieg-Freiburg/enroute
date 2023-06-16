@@ -645,7 +645,7 @@ AppWindow {
 
             function onRequestOpenWeatherPage() {
                 stackView.pop()
-                stackView.push("pages/WeatherPage.qml")
+                stackView.push("pages/Weather.qml")
             }
 
         }

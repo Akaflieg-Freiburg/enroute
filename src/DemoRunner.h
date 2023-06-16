@@ -22,6 +22,7 @@
 
 #include <QQmlApplicationEngine>
 #include <QQmlEngine>
+#include <QQuickWindow>
 
 #include "GlobalObject.h"
 
@@ -75,6 +76,9 @@ public slots:
     void generateGooglePlayScreenshots();
 
     // Begin to remote-control the app
+    void generateIosScreenshots();
+
+    // Begin to remote-control the app
     void generateManualScreenshots();
 
 signals:
@@ -100,4 +104,8 @@ private:
     Q_DISABLE_COPY_MOVE(DemoRunner)
 
     QPointer<QQmlApplicationEngine> m_engine;
+
+    void generateScreenshotsForDevices(QStringList);
+
+    void saveScreenshot(QQuickWindow*, QString);
 };

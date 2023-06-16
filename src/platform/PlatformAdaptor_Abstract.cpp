@@ -23,6 +23,7 @@
 
 
 #include "platform/PlatformAdaptor_Abstract.h"
+#include "qimage.h"
 
 
 Platform::PlatformAdaptor_Abstract::PlatformAdaptor_Abstract(QObject *parent)
@@ -63,4 +64,9 @@ QString Platform::PlatformAdaptor_Abstract::systemInfo()
 QString Platform::PlatformAdaptor_Abstract::language()
 {
     return QLocale::system().name().left(2);
+}
+
+
+void Platform::PlatformAdaptor_Abstract::saveScreenshot(QImage image, QString path) {
+    image.save(path);
 }

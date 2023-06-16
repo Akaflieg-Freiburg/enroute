@@ -22,6 +22,13 @@ program](https://support.google.com/googleplay/answer/7003180?hl=en).
 </figure>
 
 
+### Mobile App for Apple devices
+
+**Enroute Flight Navigation** has been ported to iOS devices and is available
+for public beta testing at [Apple
+TestFlight](https://testflight.apple.com/join/jqPSdGNX).
+
+
 ### Linux Desktop
 
 **Enroute Flight Navigation** is available for free download at

@@ -14,7 +14,8 @@ header:
   actions:
     - label: "Get it on Google Play"
       url: "https://play.google.com/store/apps/details?id=de.akaflieg_freiburg.enroute"
-      
+    - label: "Test it on Apple TestFlight"
+      url: "https://testflight.apple.com/join/jqPSdGNX"
 feature_row:
   - image_path: /assets/images/maps.jpg
     alt: "Free maps"

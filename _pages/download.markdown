@@ -17,16 +17,16 @@ to join our public beta-testing program.  Please have a look at Google's
 [Instructions for joining the beta-test
 program](https://support.google.com/googleplay/answer/7003180?hl=en).
 
-<figure style="width: 130px" class="align-right">
-  <a href='https://flathub.org/apps/details/de.akaflieg_freiburg.enroute'><img width='130px' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a>
-</figure>
-
 
 ### Mobile App for Apple devices
 
 **Enroute Flight Navigation** has been ported to iOS devices and is available
 for public beta testing at [Apple
 TestFlight](https://testflight.apple.com/join/jqPSdGNX).
+
+<figure style="width: 130px" class="align-right">
+  <a href='https://flathub.org/apps/details/de.akaflieg_freiburg.enroute'><img width='130px' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a>
+</figure>
 
 
 ### Linux Desktop

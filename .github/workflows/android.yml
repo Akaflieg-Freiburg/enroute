@@ -63,4 +63,4 @@ jobs:
     - uses: actions/upload-artifact@v3
       with:
         name: enroute-debug.apk
-        path: build-enroute/android-build/build/outputs/apk/debug/android-build-debug.apk
+        path: build-enroute/src/android-build//build/outputs/apk/debug/android-build-debug.apk

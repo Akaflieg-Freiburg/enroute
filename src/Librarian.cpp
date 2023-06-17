@@ -246,7 +246,12 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 
     if (name == u":text/whatsnew.html"_qs)
     {
-      return "<p>" + tr("This app is now able to speak! Use the 'Settings' page to enable or disable voice notifications by category.") + "</p>";
+        auto result = "<p>" + tr("This app is now able to speak! Use the 'Settings' page to enable or disable voice notifications by category.") + "</p>";
+#if not defined(Q_OS_IOS)
+        result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> for iOS is available for public beta testing on <a href='https://testflight.apple.com/join/jqPSdGNX'>Apple TestFlight</a>. "
+                             "The <a href='https://akaflieg-freiburg.github.io/enroute/'>homepage of this app</a> also contains a link to TestFlight.") + "</p>";
+#endif
+        return result;
     }
 
     QFile file(name);

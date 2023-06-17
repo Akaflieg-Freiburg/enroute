@@ -21,6 +21,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import QtTextToSpeech
 
 import akaflieg_freiburg.enroute
 import "../dialogs"
@@ -138,7 +139,6 @@ Page {
                     heightLimitDialog.open()
                 }
             }
-
             ToolButton {
                 icon.source: "/icons/material/ic_info_outline.svg"
                 onClicked: {
@@ -274,6 +274,28 @@ Page {
                     PlatformAdaptor.vibrateBrief()
                     helpDialog.title = qsTr("Night Mode")
                     helpDialog.text = "<p>" + qsTr("The “Night Mode” of Enroute Flight Navigation is similar to the “Dark Mode” found in many other apps. We designed the night mode for pilots performing VFR flights by night, whose eyes have adapted to the darkness. Compared with other apps, you will find that the display is quite dark indeed.") + "</p>"
+                    helpDialog.open()
+                }
+            }
+
+            WordWrappingItemDelegate {
+                id: voiceNotifications
+                text: qsTr("Voice Notifications")
+                icon.source: "/icons/material/ic_speaker_phone.svg"
+                Layout.fillWidth: true
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    voiceNotificationDialog.open()
+                }
+            }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("Voice Notifications")
+                    helpDialog.text = "<p>" + qsTr("Pilots should not be looking at their mobile devices for extended periods of time.") + " "
+                            + qsTr("<strong>Enroute Flight Navigation</strong> is therefore able to read notification texts in addition to showing them on the screen.") + "</p>"
+                            + "<p>" + qsTr("Since we expect that not everybody likes this feature, this button allows switching voice notification on and off.") + "</p>"
                     helpDialog.open()
                 }
             }
@@ -432,7 +454,6 @@ Page {
             stackView.push("../pages/DataManagerPage.qml")
         }
     }
-
 
     CenteringDialog {
         id: altimeterDialog
@@ -662,6 +683,124 @@ Page {
         }
 
         onAccepted: GlobalSettings.positioningByTrafficDataReceiver = b.checked
+
+    }
+
+    CenteringDialog {
+        id: voiceNotificationDialog
+
+        modal: true
+        title: qsTr("Voice Notifications")
+        standardButtons: Dialog.Ok|Dialog.Cancel
+
+        DecoratedScrollView {
+            anchors.fill: parent
+            contentWidth: availableWidth // Disable horizontal scrolling
+
+            // Delays evaluation and prevents binding loops
+            Binding on implicitHeight {
+                value: col1.implicitHeight
+                delayed: true    // Prevent intermediary values from being assigned
+            }
+
+            clip: true
+
+            ColumnLayout {
+                id: col1
+                width: voiceNotificationDialog.availableWidth
+
+                Label {
+                    text: qsTr("Choose the category of voice notifications that you would like to hear.")
+                    Layout.fillWidth: true
+                    wrapMode: Text.Wrap
+                }
+
+                Button {
+                    Layout.alignment: Qt.AlignHCenter
+                    text: qsTr("Voice Test")
+                    onClicked: {
+                        PlatformAdaptor.vibrateBrief()
+                        NotificationManager.voiceTest()
+                    }
+                    enabled: {
+                        if (!NotificationManager.speaker)
+                            return false
+                        if (NotificationManager.speaker.state !== TextToSpeech.Ready)
+                            return false
+                        return true
+                    }
+                }
+
+                Label {
+                    text: {
+                        if (!NotificationManager.speaker)
+                            return `<font color="#606060" size="2">` +
+                                    qsTr("Speech engine not yet initialized.") +
+                                    `</font>`
+                        if (NotificationManager.speaker.state === TextToSpeech.Error)
+                            return `<font color="#606060" size="2">` +
+                                    qsTr("Error") + ": " + NotificationManager.speaker.errorString() +
+                                    `</font>`
+                        return ""
+                    }
+                    Layout.fillWidth: true
+                    wrapMode: Text.Wrap
+                    visible: text !== ""
+                    horizontalAlignment: Text.AlignHCenter
+                }
+
+                SwitchDelegate {
+                    id: sd1
+                    Layout.fillWidth: true
+                    text: qsTr("Information • Generic")
+                }
+                SwitchDelegate {
+                    id: sd2
+                    Layout.fillWidth: true
+                    text: qsTr("Information • Navigation")
+                }
+                SwitchDelegate {
+                    id: sd3
+                    Layout.fillWidth: true
+                    text: qsTr("Warning • Generic")
+                }
+                SwitchDelegate {
+                    id: sd4
+                    Layout.fillWidth: true
+                    text: qsTr("Warning • Navigation")
+                }
+                SwitchDelegate {
+                    id: sd5
+                    Layout.fillWidth: true
+                    text: qsTr("Alert")
+                }
+            }
+        }
+
+        onAboutToShow: {
+            var vn = GlobalSettings.voiceNotifications
+            sd1.checked = vn & Notification.Info
+            sd2.checked = vn & Notification.Info_Navigation
+            sd3.checked = vn & Notification.Warning
+            sd4.checked = vn & Notification.Warning_Navigation
+            sd5.checked = vn & Notification.Alert
+        }
+
+        onAccepted: {
+            var vn = 0
+            if (sd1.checked)
+                vn |= Notification.Info
+            if (sd2.checked)
+                vn |= Notification.Info_Navigation
+            if (sd3.checked)
+                vn |= Notification.Warning
+            if (sd4.checked)
+                vn |= Notification.Warning_Navigation
+            if (sd5.checked)
+                vn |= Notification.Alert
+            GlobalSettings.voiceNotifications = vn
+        }
+
 
     }
 

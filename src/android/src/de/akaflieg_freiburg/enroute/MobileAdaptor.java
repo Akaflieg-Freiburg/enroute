@@ -283,7 +283,7 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 
 	}
 
-	/* If systems setting for haptic feedback is "on", then vibrate once briefly */
+	/* If the system setting for haptic feedback is "on", then vibrate once briefly */
 	public static void vibrateBrief() {
 
 		// Get system settings for haptic feedback
@@ -296,6 +296,23 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 				m_vibrator = (Vibrator) m_instance.getSystemService(Context.VIBRATOR_SERVICE);
 			}
 			m_vibrator.vibrate(20);
+		}
+
+	}
+
+	/* If the system setting for haptic feedback is "on", then vibrate once for a longer time */
+	public static void vibrateLong() {
+
+		// Get system settings for haptic feedback
+		int haptic = Settings.System.getInt(QtNative.activity().getContentResolver(),
+				Settings.System.HAPTIC_FEEDBACK_ENABLED, 1);
+
+		// If systems settings want vibrate, then do vibrate
+		if (haptic != 0) {
+			if (m_vibrator == null) {
+				m_vibrator = (Vibrator) m_instance.getSystemService(Context.VIBRATOR_SERVICE);
+			}
+			m_vibrator.vibrate(500);
 		}
 
 	}

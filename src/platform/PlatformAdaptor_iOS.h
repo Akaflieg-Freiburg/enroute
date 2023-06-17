@@ -93,7 +93,7 @@ public:
      *
      *  @param item QQuickItem where the event filter is to be intalled.
      */
-    Q_INVOKABLE void setupImEventFilter(QQuickItem *item) {
+    Q_INVOKABLE virtual void setupInputMethodEventFilter(QQuickItem *item) override {
         static thread_local ImFixer imf;
         item->installEventFilter(&imf);
     }
@@ -101,6 +101,9 @@ public:
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
     Q_INVOKABLE void vibrateBrief() override;
 
+    Q_INVOKABLE void vibrateLong() override;
+
+    Q_INVOKABLE QString language() override;
 
 public slots:
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */

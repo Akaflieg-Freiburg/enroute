@@ -32,7 +32,7 @@ CenteringDialog {
     Component {
         id: firstStart
 
-        DecoratedScrollView{
+        DecoratedScrollView {
             id: sv
 
             required property var dialogMain
@@ -58,6 +58,8 @@ CenteringDialog {
 
             function accept() {
                 GlobalSettings.acceptedTerms = 1
+                GlobalSettings.lastWhatsNewHash = Librarian.getStringHashFromRessource(":text/whatsnew.html")
+                GlobalSettings.lastWhatsNewInMapsHash = DataManager.whatsNewHash
             }
         }
 
@@ -66,7 +68,7 @@ CenteringDialog {
     Component {
         id: privacy
 
-        DecoratedScrollView{
+        DecoratedScrollView {
             id: sv
 
             required property var dialogMain
@@ -94,7 +96,7 @@ CenteringDialog {
     Component {
         id: permissions
 
-        DecoratedScrollView{
+        DecoratedScrollView {
             id: sv
 
             required property var dialogMain
@@ -153,9 +155,9 @@ CenteringDialog {
                                 if (lv.model.length === 0)
                                     result += qsTr("Regretfully, we do not offer maps for your present location (%1).").arg(PositionProvider.lastValidCoordinate)
                                 if (lv.model.length === 1)
-                                result += qsTr("Based on your location, we reckon that that the following map might be relevant for you. Click on the map to start the download, then click on 'Accept' to close this dialog.")
+                                result += qsTr("Based on your location, we reckon that that the following map might be relevant for you. Click on the map to start the download, then click on 'Done' to close this dialog.")
                                 if (lv.model.length > 1)
-                                    result += qsTr("Based on your location, we reckon that that the following maps might be relevant for you. Click on any map to start the download, then click on 'Accept' to close this dialog.")
+                                    result += qsTr("Based on your location, we reckon that that the following maps might be relevant for you. Click on any map to start the download, then click on 'Done' to close this dialog.")
                             }
                             else
                             {
@@ -240,7 +242,7 @@ CenteringDialog {
 
     function conditionalOpen() {
         if (!DataManager.aviationMaps.hasFile)
-            stack.push(maps, {"dialogMain": dialogMain})
+            stack.push(maps, {"dialogMain": dialogMain, "objectName": "maps"})
 
         var missingPermissionsText = PlatformAdaptor.checkPermissions()
         if (missingPermissionsText === "")
@@ -258,7 +260,13 @@ CenteringDialog {
 
     footer: DialogButtonBox {
         ToolButton {
-            text: qsTr("Accept")
+            text: {
+                if (!stack.currentItem)
+                    return ""
+                if (stack.currentItem.objectName === "maps")
+                    return qsTr("Done")
+                return qsTr("Accept")
+            }
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
@@ -267,14 +275,6 @@ CenteringDialog {
                     stack.pop()
                 else
                     dialogMain.close()
-            }
-        }
-        ToolButton {
-            text: qsTr("Reject")
-
-            onClicked: {
-                PlatformAdaptor.vibrateBrief()
-                Qt.quit()
             }
         }
     }

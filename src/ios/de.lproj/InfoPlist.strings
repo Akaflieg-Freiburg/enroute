@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.strings
+  enroute
+
+  Created by Simon Schneider on 15.05.23.
+  
+*/
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Für die Navigation ist eine Standortfreigabe erforderlich";
+"NSLocationWhenInUseUsageDescription" = "Für die Navigation ist eine Standortfreigabe erforderlich";

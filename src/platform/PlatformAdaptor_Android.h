@@ -79,6 +79,9 @@ public:
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
     Q_INVOKABLE void vibrateBrief() override;
 
+    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
+    Q_INVOKABLE void vibrateLong() override;
+
 
 public slots:
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */

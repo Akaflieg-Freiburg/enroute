@@ -778,7 +778,7 @@ Page {
                     }
                     notation: DoubleValidator.StandardNotation
                 }
-                inputMethodHints: Qt.ImhDigitsOnly
+                inputMethodHints: Qt.ImhFormattedNumbersOnly
                 onEditingFinished: {
                     switch(Navigator.aircraft.fuelConsumptionUnit) {
                     case Aircraft.LiterPerHour:

@@ -8,6 +8,7 @@ class ObjCAdapter {
     public:
         static void vibrateBrief();
         static void vibrateError();
+        static void vibrateLong();
         static double safeAreaTopInset();
         static double safeAreaLeftInset();
         static double safeAreaBottomInset();
@@ -17,4 +18,6 @@ class ObjCAdapter {
         static bool hasLocationPermission();
         static void sendNotification(QString, QString);
         static bool hasNotificationPermission();
+        static QString shareContent(const QByteArray&, const QString&, const QString&, const QString&);
+        static QString preferredLanguage();
 };

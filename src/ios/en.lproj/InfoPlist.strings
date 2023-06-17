@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.strings
+  enroute
+
+  Created by Simon Schneider on 15.05.23.
+  
+*/
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Navigation requires location sharing";
+"NSLocationWhenInUseUsageDescription" = "Navigation requires location sharing";

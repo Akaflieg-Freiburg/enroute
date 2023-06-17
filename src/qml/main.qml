@@ -394,11 +394,16 @@ AppWindow {
                             icon.source: "/icons/material/ic_attach_money.svg"
 
                             onClicked: {
-                                PlatformAdaptor.vibrateBrief()
-                                stackView.pop()
-                                stackView.push("pages/DonatePage.qml")
-                                aboutMenu.close()
-                                drawer.close()
+
+                                if (Qt.platform.os === "ios") {
+                                    Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteText/manual/02-steps/donate.html")
+                                } else {
+                                    PlatformAdaptor.vibrateBrief()
+                                    stackView.pop()
+                                    stackView.push("pages/DonatePage.qml")
+                                    aboutMenu.close()
+                                    drawer.close()
+                                }
                             }
                         }
                     }
@@ -520,12 +525,12 @@ AppWindow {
                     Layout.fillWidth: true
 
                     color: "black"
-                    visible: Navigator.flightStatus !== Navigator.Flight
+                    visible: Qt.platform.os !== "ios" && Navigator.flightStatus !== Navigator.Flight
                 }
 
                 ItemDelegate { // Exit
                     Layout.fillWidth: true
-
+                    visible: Qt.platform.os !== "ios"
                     leftPadding: 16+SafeInsets.left
 
                     text: qsTr("Exit")
@@ -776,18 +781,6 @@ AppWindow {
     // Connections
     //
 
-    Connections { // items
-        target: DataManager.items
-
-        function onDownloadingChanged(downloading) {
-            if (downloading) {
-                Notifier.showNotification(Notifier.DownloadInfo, "", "");
-            } else {
-                Notifier.hideNotification(Notifier.DownloadInfo);
-            }
-        }
-    }
-
     Connections { // Navigator
         target: Navigator
 
@@ -798,30 +791,6 @@ AppWindow {
                 toast.doToast(qsTr("Now showing airspaces up to %1.").arg(airspaceAltitudeLimitString))
             } else {
                 toast.doToast(qsTr("Now showing all airspaces."))
-            }
-        }
-
-    }
-
-    Connections { // Notifier
-        target: Notifier
-
-        function onAction(act) {
-            if ((act === Notifier.DownloadInfo_Clicked) && (stackView.currentItem.objectName !== "DataManagerPage")) {
-                stackView.push("pages/DataManagerPage.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
-            }
-            if ((act === Notifier.TrafficReceiverSelfTestError_Clicked) && (stackView.currentItem.objectName !== "TrafficReceiverPage")) {
-                stackView.push("pages/TrafficReceiver.qml", {"appWindow": view})
-            }
-            if ((act === Notifier.TrafficReceiverRuntimeError_Clicked) && (stackView.currentItem.objectName !== "TrafficReceiverPage")) {
-                stackView.push("pages/TrafficReceiver.qml", {"appWindow": view})
-            }
-            if ((act === Notifier.GeoMapUpdatePending_Clicked) && (stackView.currentItem.objectName !== "DataManagerPage")) {
-                stackView.push("pages/DataManagerPage.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
-            }
-            if (act === Notifier.GeoMapUpdatePending_UpdateRequested) {
-                DataManager.mapsAndData.update()
-                toast.doToast(qsTr("Starting map update"))
             }
         }
 
@@ -855,9 +824,9 @@ AppWindow {
             standardButtons: Dialog.Ok
 
             title: qsTr("Network security settings")
-            text: qsTr(`You have chosen to ignore network security errors in the future.
-**This poses a security risk.**
-Go to the 'Settings' page if you wish to restore the original, safe, behavior of this app.`)
+            text: qsTr("You have chosen to ignore network security errors in the future.") + " **" +
+                  qsTr("This poses a security risk.") + "** " +
+                  qsTr("Go to the 'Settings' page if you wish to restore the original, safe, behavior of this app.")
         }
     }
 
@@ -878,20 +847,30 @@ Go to the 'Settings' page if you wish to restore the original, safe, behavior of
             dialogLoader.source = "dialogs/PasswordStorageDialog.qml"
             dialogLoader.active = true
         }
+    }
 
-        function onTrafficReceiverRuntimeErrorChanged(message) {
-            if (message === "") {
-                Notifier.hideNotification(Notifier.TrafficReceiverRuntimeError);
-            } else {
-                Notifier.showNotification(Notifier.TrafficReceiverRuntimeError, message, message);
-            }
+    Connections { // PlatformAdaptor
+        target: PlatformAdaptor
+
+        function onError(message) {
+            dialogLoader.active = false
+            dialogLoader.setSource("dialogs/LongTextDialog.qml",
+                                   {
+                                       title: qsTr("Error!"),
+                                       text: message,
+                                       standardButtons: Dialog.Ok
+                                   }
+                                   )
+            dialogLoader.active = true
         }
+    }
 
-        function onTrafficReceiverSelfTestErrorChanged(message) {
-            if (message === "") {
-                Notifier.hideNotification(Notifier.TrafficReceiverSelfTestError);
-            } else {
-                Notifier.showNotification(Notifier.TrafficReceiverSelfTestError, message, message);
+    Connections { // Notifier
+        target: DataManager.mapsAndData
+
+        function onDownloadingChanged() {
+            if (DataManager.mapsAndData.downloading) {
+                toast.doToast(qsTr("Starting map update"))
             }
         }
     }

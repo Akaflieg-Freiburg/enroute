@@ -24,6 +24,7 @@
 #include <QSettings>
 
 #include "GlobalObject.h"
+#include "notification/Notification.h"
 #include "units/ByteSize.h"
 #include "units/Distance.h"
 
@@ -176,6 +177,13 @@ public:
     /*! \brief Use traffic data receiver for positioning */
     Q_PROPERTY(bool positioningByTrafficDataReceiver READ positioningByTrafficDataReceiver WRITE setPositioningByTrafficDataReceiver NOTIFY positioningByTrafficDataReceiverChanged)
 
+    /*! \brief Voice notifications that should be played
+     *
+     *  This property is an "or" of the entries of Notifications::Notification::Importance. It determines
+     *  which notifications should be spoken.
+     */
+    Q_PROPERTY(uint voiceNotifications READ voiceNotifications WRITE setVoiceNotifications NOTIFY voiceNotificationsChanged)
+
 
     //
     // Getter Methods
@@ -289,6 +297,19 @@ public:
      */
     [[nodiscard]] auto showAltitudeAGL() const -> bool { return settings.value(QStringLiteral("showAltitudeAGL"), false).toBool(); }
 
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property voiceNotifications
+     */
+    [[nodiscard]] auto voiceNotifications() const -> uint
+    {
+        return settings.value(QStringLiteral("voiceNotifications"),
+                              Notifications::Notification::Info_Navigation |
+                                  Notifications::Notification::Warning |
+                                  Notifications::Notification::Warning_Navigation |
+                                  Notifications::Notification::Alert).toUInt();
+    }
+
 
     //
     // Setter Methods
@@ -396,6 +417,12 @@ public:
      */
     void setShowAltitudeAGL(bool newShowAltitudeAGL);
 
+    /*! \brief Setter function for property of the same name
+     *
+     * @param newVoiceNotifications Property voiceNotifications
+     */
+    void setVoiceNotifications(uint newVoiceNotifications);
+
 
     //
     // Constants
@@ -452,6 +479,9 @@ signals:
 
     /*! \brief Notifier signal */
     void showAltitudeAGLChanged();
+
+    /*! \brief Notifier signal */
+    void voiceNotificationsChanged();
 
 private:
     Q_DISABLE_COPY_MOVE(GlobalSettings)

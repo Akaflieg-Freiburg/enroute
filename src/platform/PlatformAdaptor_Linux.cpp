@@ -78,6 +78,11 @@ void Platform::PlatformAdaptor::vibrateBrief()
 }
 
 
+void Platform::PlatformAdaptor::vibrateLong()
+{
+}
+
+
 //
 // Private slots
 //

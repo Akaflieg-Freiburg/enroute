@@ -504,7 +504,7 @@ CenteringDialog {
 
         ToolButton {
             text: qsTr("Library")
-            enabled: waypoint.category === "WP"
+            enabled: waypoint.category === "WP" //TODO: Warum kann ich keine nearby waypoints speichern?
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()

@@ -25,6 +25,7 @@
 
 #include "GlobalObject.h"
 
+
 namespace Platform {
 
 /*! \brief Interface to platform-specific functionality
@@ -161,6 +162,20 @@ public:
      */
     Q_INVOKABLE virtual void vibrateBrief() = 0;
 
+    /*! \brief Make the device vibrate for a longer period
+     *
+     *  On platforms that support this, make the device vibrate for a longer time,
+     *  if haptic feedback is enabled in the system settings. This is used to
+     *  when showing notifications.
+     */
+    Q_INVOKABLE virtual void vibrateLong() = 0;
+
+    /*! \brief Language code that is to be used in the GUI
+     *
+     *  @returns A two-letter language code (such as "en" or "de") that
+     *  describes the language that is to be used in the GUI.
+     */
+    Q_INVOKABLE virtual QString language();
 
 public slots:
     /*! \brief Signal handler: GUI setup completed
@@ -180,6 +195,15 @@ signals:
      *  This signal is emitted when a new WiFi connection becomes available.
      */
     void wifiConnected();
+
+    /*! \brief Emitted when an error occurs
+     *
+     *  This signal is emitted when an error occurs. The GUI will show the message
+     *  in an appropriate dialog.
+     *
+     *  @param message Human-readable, translated message
+     */
+    void error(const QString& message);
 
 private:
     Q_DISABLE_COPY_MOVE(PlatformAdaptor_Abstract)

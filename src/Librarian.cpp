@@ -57,32 +57,22 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 
     if (name == u":text/authors.html"_qs)
     {
-        return tr(R"html(<h3>Authors</h3>
-
-<br>
-
-<table>
-  <tr>
-    <td>
-      <p>The app <strong>Enroute Flight Navigation</strong> was written by Stefan Kebekus, flight enthusiast since 1986 and member of the Akaflieg Freiburg flight club. Stefan flies gliders and motor planes.</p>
-      <h4>Address</h4>
-      Stefan Kebekus<br>
-      Wintererstraße 77<br>
-      79104 Freiburg<br>
-      Germany<br>
-      <br>
-      <a href='mailto:stefan.kebekus@gmail.com'>e-mail</a>
-    </td>
-    <td>
-      <p align='center'>&nbsp;<img src='/icons/kebekus.jpg' alt='Stefan Kebekus' height='140'><br>Stefan Kebekus<br>Pic: Patrick Seeger</p>
-    </td>
-  </tr>
-</table>
-)html") + tr(R"html(
+      return "<h3>"+tr("Authors")+"</h3>"
+	+ "<p>"+tr("The app <strong>Enroute Flight Navigation</strong> was written by Stefan Kebekus, flight enthusiast since 1986 and member of the Akaflieg Freiburg flight club. Stefan flies gliders and motor planes.")+"</p>"
+	+ "<h4>"+tr("Address")+"</h4>"
+	+ "Stefan Kebekus<br>Wintererstraße 77<br>79104 Freiburg<br>Germany<br><br><a href='mailto:stefan.kebekus@gmail.com'>e-mail</a>"
+	+ tr(R"html(
 <h3>Manual</h3>
 
 <p>The manual has kindly been provided by Michael Horbaschk.</p>
-)html") + tr(R"html(
+)html")
+        
+    + tr(R"html(
+<h3>iOS Version</h3>
+
+<p>The app has been ported to iOS by Simon Schneider. Simon is currently student pilot (PPL) and member of the Akaflieg Freiburg flight club, just like Stefan.</p>
+)html")
+        + tr(R"html(
 <h3>Translations</h3>
 )html") + (R"html(
 <ul style="margin-left:-25px;">
@@ -125,15 +115,6 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 <p>If you are convinced that the data is good enough to be added, you can request to add the country. Please go to <a href="https://github.com/Akaflieg-Freiburg/enrouteServer/issues">this web site</a> and open an 'issue' with your request. Please tell us who you are, where you fly and how you convinced yourself that the data is good. If you find that the data is not good enough, you are welcome to join the openAIP project and help to improve the data.</p>
 
 <p>Please understand that we program this free app in our spare time, as a service to the community. Sadly, I should point out that sending us impolite demands is not likely to give the result that you desire.</p>)html");
-    }
-
-    if (name == u":text/flightRouteLibraryInfo.html"_qs)
-    {
-        return tr(R"html(<p>The flight routes are stored in standard <a href="https://geojson.org">GeoJSON format</a> in the following directory.<p>
-
-<p style="text-align:left;"><strong><a href="file:%1">%1</a></strong></p>
-
-<p>The flight routes can be accessed by other programs, such as backup software or file synchronization apps.  This can be useful to share a flight route library with other devices.</p>)html");
     }
 
     if (name == u":text/info_enroute.html"_qs)
@@ -203,40 +184,49 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     }
 
     if (name == u":text/privacy.html"_qs)
-    {
-        return "<h3>"
-                + tr("Privacy Policies")
-                + "</h3>"
-                + "<p>"
-                + tr("This app does not send any data to us or other parties. We do "
-                     "not collect data and we do not track our users. However, this "
-                     "app accesses internet sites that may not be under our control "
-                     "and may keep access logs.")
-                + "</p>"
-                + "<ul style='margin-left:-25px;'>"
-                + "<li>"
-                + tr("The app connects to "
-                     "<a href='https://cplx.vm.uni-freiburg.de/storage/'>servers at "
-                     "the University of Freiburg</a> to "
-                     "check for updates and to download maps and data.")
-                + "</li>"
-                + "<li>"
-                + tr("The app downloads METAR and TAF data for your locaction and "
-                     "your intended route from the "
-                     "<a href='https://www.aviationweather.gov/'>Aviation Weather "
-                     "Center</a>, a website of the United States government.")
-                + "</li>"
-                + "<li>"
-                + tr("The app downloads NOTAM for your locaction and "
-                     "your intended route from servers of the "
-                     "<a href='https://api.faa.gov/s/'>Federal Aviation "
-                     "Administration</a> of the United States government.")
-                + "</li>"
-                + "</ul>"
-                + "<h3>"
-                + tr("Responsible")
-                + "</h3>"
-                + "Stefan Kebekus<br>Wintererstraße 77<br>79104 Freiburg im Breisgau<br>Germany<br>";
+      {
+        return "<h3>" + tr("Privacy Policies") + "</h3>"
+               + "<p>" + tr("We do not process any personal data from you. Data that you enter into the app "
+                            "(including routes, waypoints, and aircraft specifics) is stored locally on your "
+                            "device. The data not transmitted to us and is not processed by us.") + "</p>"
+               + "<p>" + tr("However, to ensure the functionality, the app must transmit following data to "
+                            "servers on the internet.") + "</p>"
+               + "<ul style='margin-left:-25px;'>"
+               + "<li>" + tr("The app regularly checks for updates and allows downloading maps and data from "
+                             "a <a href='https://cplx.vm.uni-freiburg.de/storage'>server at the University of Freiburg</a> "
+                             "to your device. In order to "
+                             "provide this functionality, your device's IP address must be transmitted to "
+                             "the server. Knowledge of the IP address is necessary for the server to "
+                             "respond. However, the server does not store any personal data about you in its "
+                             "log files. In particular, it does not store the IP address of your device in "
+                             "its log files. We can assure this because the server is under our control.") + "</li>"
+               + "<li>" + tr("The app shows METARs and TAFs for airfields near your current location and "
+                             "near your currently planned route. It also shows METARs and TAFs for all waypoints "
+                             "that you open in the app. In order to provide this functionality, your "
+                             "current location, your currently planned route, waypoint coordinates, and your "
+                             "device's IP address must be transmitted to web services at the <a href='https://www.aviationweather.gov'>Aviation Weather Center</a>. "
+                             "Knowledge of the IP "
+                             "address is necessary for the web services to respond. The web services cannot "
+                             "read any other data from your device in the process. However, you must expect "
+                             "that your device's IP address will be stored together with the transmitted "
+                             "position data. The web services are operated by the US government and are "
+                             "beyond our control. Detailed information about these web services can be found "
+                             "at <a href='https://www.aviationweather.gov/dataserver'>https://www.aviationweather.gov/dataserver</a>.") + "</li>"
+               + "<li>" + tr("The app shows NOTAMs for places near your current location and near your "
+                             "currently planned route. It also shows NOTAMs for all waypoints that you open in "
+                             "the app. In order to provide this functionality, your current location, your "
+                             "currently planned route, waypoint coordinates, and your device's IP address "
+                             "must be transmitted to web services at the <a href='https://api.faa.gov'>Federal Aviation Administration</a>. "
+                             "Knowledge of the IP address is necessary for the web "
+                             "services to respond. The web services cannot read any other data from your "
+                             "device in the process. However, you must expect that the IP address of your "
+                             "device will be stored together with the transmitted position data. The web "
+                             "services are operated by the US government and are beyond our control. "
+                             "Detailed information about these web services can be found at "
+                             "<a href='https://api.faa.gov/s'>https://api.faa.gov/s</a>.") + "</li>"
+               + "</ul>"
+               + "<h3>" + tr("Responsible") + "</h3>"
+               + "<p>Stefan Kebekus, Wintererstraße 77, 79104 Freiburg im Breisgau, Germany</p>";
     }
 
     if (name == u":text/tooManyDownloads.html"_qs)
@@ -256,11 +246,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 
     if (name == u":text/whatsnew.html"_qs)
     {
-        return tr("<p>We have updated the technology base underlying this app. Please report any issues!</p>")
-                + "<p>" + tr("Our aviation maps will now receive daily updates, provided that new data is available.") + "</p>"
-                + "<p>" + tr("The app will now show NOTAMs relevant to your flight.") + "</p>"
-                + "<p>" + tr("Luca Riva has kindly translated this app to Spanish.") + "</p>";
-        // + tr("<p>We could need help with French translations. If you would like to help, if speak French and know how to use the GIT version control system, please let us know.</p>");
+      return "<p>" + tr("This app is now able to speak! Use the 'Settings' page to enable or disable voice notifications by category.") + "</p>";
     }
 
     QFile file(name);

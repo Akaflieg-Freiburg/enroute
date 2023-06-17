@@ -32,6 +32,9 @@ Page {
     id: flightRoutePage
     title: qsTr("Route and Wind")
 
+    property bool isIos: Qt.platform.os == "ios"
+    property bool isAndroid: Qt.platform.os == "android"
+    property bool isAndroidOrIos: isAndroid || isIos
     property angle staticAngle
     property speed staticSpeed
 
@@ -242,9 +245,9 @@ Page {
 
                 MenuItem {
                     text: qsTr("Import…")
-                    enabled: Qt.platform.os !== "android"
-                    visible: Qt.platform.os !== "android"
-                    height: Qt.platform.os !== "android" ? undefined : 0
+                    enabled: !isAndroidOrIos
+                    visible: !isAndroidOrIos
+                    height: !isAndroidOrIos ? undefined : 0
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
@@ -255,7 +258,7 @@ Page {
                 }
 
                 AutoSizingMenu {
-                    title: Qt.platform.os === "android" ? qsTr("Share…") : qsTr("Export…")
+                    title: isAndroidOrIos ? qsTr("Share…") : qsTr("Export…")
                     enabled: (Navigator.flightRoute.size > 0) && (sv.currentIndex === 0)
 
                     MenuItem {
@@ -275,9 +278,9 @@ Page {
                                 shareErrorDialog.open()
                                 return
                             }
-                            if (Qt.platform.os === "android")
+                            if (isAndroid)
                                 toast.doToast(qsTr("Flight route shared"))
-                            else
+                            else (!isIos)
                                 toast.doToast(qsTr("Flight route exported"))
                         }
                     }
@@ -299,7 +302,7 @@ Page {
                                 shareErrorDialog.open()
                                 return
                             }
-                            if (Qt.platform.os === "android")
+                            if (isAndroid)
                                 toast.doToast(qsTr("Flight route shared"))
                             else
                                 toast.doToast(qsTr("Flight route exported"))
@@ -309,7 +312,7 @@ Page {
 
                 AutoSizingMenu {
                     title: qsTr("Open in Other App…")
-                    enabled: (Navigator.flightRoute.size > 0) && (sv.currentIndex === 0)
+                    enabled: (Qt.platform.os !== "ios") && (Navigator.flightRoute.size > 0) && (sv.currentIndex === 0)
 
                     MenuItem {
                         text: qsTr("… in GeoJSON format")

@@ -18,8 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "platform/PlatformAdaptor_iOS.h"
+#include <QTimer>
+
 #include "ios/ObjCAdapter.h"
+#include "platform/PlatformAdaptor_iOS.h"
+#include "traffic/TrafficDataProvider.h"
 
 // This is a template file without actual implementation.
 
@@ -80,8 +83,13 @@ void Platform::PlatformAdaptor::lockWifi(bool lock)
 
 void Platform::PlatformAdaptor::onGUISetupCompleted()
 {
-    // This method is called once the GUI has been set up. The Android-specific
-    // implementes uses this method to hide the splash screen.
+  // This method is called once the GUI has been set up. The Android-specific
+  // implementes uses this method to hide the splash screen.
+      auto* timer = new QTimer(this);
+      timer->setInterval(1000*60);
+      timer->setSingleShot(false);
+      connect(timer, &QTimer::timeout, GlobalObject::trafficDataProvider(), &Traffic::TrafficDataProvider::connectToTrafficReceiver);
+      timer->start();
 #warning Not implemented
 }
 
@@ -90,12 +98,17 @@ QString Platform::PlatformAdaptor::checkPermissions()
     // This method is called once the GUI has been set up. The Android-specific
     // implementes uses this method to hide the splash screen.
     QString string = "";
+
+
     if (!ObjCAdapter::hasLocationPermission()) {
-        string += "Location";
+        QString result;
+        //TODO: Translation not working
+        result = tr("Enroute Flight Navigation needs to access your precise location. "
+                      "The app uses this data to show your position on the moving "
+                      "map and to provide relevant aeronautical information.");
+        string += result;
     }
-    if (!ObjCAdapter::hasNotificationPermission()) {
-        string += "Notification";
-    }
+
     return string;
 }
 
@@ -108,7 +121,9 @@ void Platform::PlatformAdaptor::requestPermissionsSync()
     // before the GUI is set up and is meant to run synchroneously. Once the
     // method returns, the app will check if all permissions are there, or else
     // refuse to run.
-    ObjCAdapter::requestNotificationPermission();
+
+#warning Notification not implemented
+    //ObjCAdapter::requestNotificationPermission();
 }
 
 
@@ -118,4 +133,14 @@ void Platform::PlatformAdaptor::vibrateBrief()
     // shown that this is helpful in aircraft situations where the pilot often
     // has only one free hand and cannot concentrate on the device screen.
     ObjCAdapter::vibrateBrief();
+}
+
+void Platform::PlatformAdaptor::vibrateLong()
+{
+    ObjCAdapter::vibrateLong();
+}
+
+QString Platform::PlatformAdaptor::language()
+{
+    return ObjCAdapter::preferredLanguage();
 }

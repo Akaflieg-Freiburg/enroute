@@ -22,6 +22,7 @@
 
 #include "ios/ObjCAdapter.h"
 #include "platform/PlatformAdaptor_iOS.h"
+#include "qimage.h"
 #include "traffic/TrafficDataProvider.h"
 
 // This is a template file without actual implementation.
@@ -143,4 +144,10 @@ void Platform::PlatformAdaptor::vibrateLong()
 QString Platform::PlatformAdaptor::language()
 {
     return ObjCAdapter::preferredLanguage();
+}
+
+void Platform::PlatformAdaptor::saveScreenshot(QImage image, QString path)
+{
+    image.save(path);
+    ObjCAdapter::saveToGallery(path);
 }

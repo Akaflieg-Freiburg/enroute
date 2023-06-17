@@ -38,7 +38,7 @@ jobs:
         target: 'android'
         version: '6.4.*'
         arch: 'android_arm64_v8a'
-        modules: 'qt5compat qthttpserver qtpositioning qtshadertools qtwebsockets qtwebview'	
+        modules: 'qt5compat qthttpserver qtpositioning qtshadertools qtspeech qtwebsockets qtwebview'	
     - name: Install Additional Software
       run: |
         sudo apt install extra-cmake-modules ninja-build spirv-tools
@@ -60,3 +60,7 @@ jobs:
         cd build-enroute
         $Qt6_DIR/bin/qt-cmake -DCMAKE_BUILD_TYPE:STRING=Debug ../enroute
         cmake --build .
+    - uses: actions/upload-artifact@v3
+      with:
+        name: enroute-debug.apk
+        path: build-enroute/src/android-build//build/outputs/apk/debug/android-build-debug.apk

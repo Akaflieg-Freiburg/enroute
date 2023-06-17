@@ -177,6 +177,10 @@ public:
      */
     Q_INVOKABLE virtual QString language();
 
+
+
+    Q_INVOKABLE virtual void saveScreenshot(QImage, QString);
+
 public slots:
     /*! \brief Signal handler: GUI setup completed
      *

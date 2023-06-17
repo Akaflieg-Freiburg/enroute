@@ -395,11 +395,16 @@ AppWindow {
                             icon.source: "/icons/material/ic_attach_money.svg"
 
                             onClicked: {
-                                PlatformAdaptor.vibrateBrief()
-                                stackView.pop()
-                                stackView.push("pages/DonatePage.qml")
-                                aboutMenu.close()
-                                drawer.close()
+
+                                if (Qt.platform.os === "ios") {
+                                    Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteText/manual/02-steps/donate.html")
+                                } else {
+                                    PlatformAdaptor.vibrateBrief()
+                                    stackView.pop()
+                                    stackView.push("pages/DonatePage.qml")
+                                    aboutMenu.close()
+                                    drawer.close()
+                                }
                             }
                         }
                     }
@@ -641,7 +646,7 @@ AppWindow {
 
             function onRequestOpenWeatherPage() {
                 stackView.pop()
-                stackView.push("pages/WeatherPage.qml")
+                stackView.push("pages/Weather.qml")
             }
 
         }

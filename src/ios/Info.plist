@@ -56,6 +56,11 @@
     <key>UIViewControllerBasedStatusBarAppearance</key>
     <false/>
 
+    <!-- Only necessary for screenshot generation
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>Just to generate screenshots</string>
+    -->
+
     <key>UISupportedInterfaceOrientations</key>
     <array>
             <string>UIInterfaceOrientationPortrait</string>

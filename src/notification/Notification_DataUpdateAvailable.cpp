@@ -29,7 +29,7 @@
 //
 
 Notifications::Notification_DataUpdateAvailable::Notification_DataUpdateAvailable(QObject* parent)
-    : Notification(tr("Map and data updates available"))
+    : Notification(tr("Map and data updates available"), Notifications::Notification::Info, parent)
 {
     setButton1Text(tr("Update"));
     setButton2Text(tr("Dismiss"));

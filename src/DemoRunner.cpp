@@ -18,21 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <qglobal.h>
-
-#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
-#include <QApplication>
-
-#include "GlobalObject.h"
-#include "GlobalSettings.h"
-#include "geomaps/GeoMapProvider.h"
-#include "navigation/Navigator.h"
-#include "traffic/TrafficDataProvider.h"
-#include "traffic/TrafficDataSource_Simulate.h"
-#include "traffic/TrafficFactor_WithPosition.h"
-#include "weather/WeatherDataProvider.h"
-#endif
-
 #include <QDebug>
 #include <QDir>
 #include <QEventLoop>
@@ -41,6 +26,26 @@
 #include <QTimer>
 #include <QTranslator>
 #include <chrono>
+
+
+#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
+#include <QGuiApplication>
+#include "GlobalObject.h"
+#include "GlobalSettings.h"
+#include "geomaps/GeoMapProvider.h"
+#include "navigation/Navigator.h"
+#include "traffic/TrafficDataProvider.h"
+#include "traffic/TrafficDataSource_Simulate.h"
+#include "traffic/TrafficFactor_WithPosition.h"
+#include "weather/WeatherDataProvider.h"
+#include "platform/PlatformAdaptor_Abstract.h"
+#include "ios/ObjCAdapter.h"
+#endif
+
+
+
+
+
 
 #include "DemoRunner.h"
 
@@ -79,9 +84,19 @@ auto findQQuickItem(const QString &objectName, QQmlApplicationEngine* engine) ->
 }
 
 
+void DemoRunner::generateIosScreenshots()
+{
+    generateScreenshotsForDevices({"ios_Device"});
+}
+
 void DemoRunner::generateGooglePlayScreenshots()
 {
-#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
+    generateScreenshotsForDevices({"phone", "sevenInch", "tenInch"});
+}
+
+void DemoRunner::generateScreenshotsForDevices(QStringList devices)
+{
+#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
     Q_ASSERT(m_engine != nullptr);
 
     emit requestClosePages();
@@ -131,7 +146,7 @@ void DemoRunner::generateGooglePlayScreenshots()
     //
 
     {
-        QStringList devices = {"phone", "sevenInch", "tenInch"};
+
         foreach(auto device, devices)
         {
             auto language = QLocale::system().name().replace(u"_"_qs,u"-"_qs);
@@ -176,7 +191,7 @@ void DemoRunner::generateGooglePlayScreenshots()
                     flightMap->setProperty("zoomLevel", 11);
                     GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::TTUp);
                     delay(4s);
-                    applicationWindow->grabWindow().save(QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+                    saveScreenshot(applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     GlobalObject::navigator()->flightRoute()->clear();
                 }
 
@@ -190,7 +205,7 @@ void DemoRunner::generateGooglePlayScreenshots()
                     flightMap->setProperty("zoomLevel", 12);
                     GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::TTUp);
                     delay(4s);
-                    applicationWindow->grabWindow().save(QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+                    saveScreenshot(applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                 }
 
                 // Approaching EDTF w/ traffic
@@ -231,7 +246,7 @@ void DemoRunner::generateGooglePlayScreenshots()
                     trafficSimulator->setTrafficFactor_DistanceOnly(trafficFactor2);
 
                     delay(4s);
-                    applicationWindow->grabWindow().save(QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+                    saveScreenshot(applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     trafficFactor1->setHDist( {} );
                     trafficSimulator->removeTraffic();
                     trafficSimulator->setTrafficFactor_DistanceOnly( nullptr );
@@ -245,22 +260,25 @@ void DemoRunner::generateGooglePlayScreenshots()
                     waypointDescription->setProperty("waypoint", QVariant::fromValue(waypoint));
                     QMetaObject::invokeMethod(waypointDescription, "open", Qt::QueuedConnection);
                     delay(4s);
-                    applicationWindow->grabWindow().save(QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+                    saveScreenshot(applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     QMetaObject::invokeMethod(waypointDescription, "close", Qt::QueuedConnection);
                 }
 
                 // Weather Dialog
                 {
+
                     qWarning() << "… LFSB Weather Dialog";
                     emit requestOpenWeatherPage();
                     auto *weatherReport = findQQuickItem(QStringLiteral("weatherReport"), m_engine);
                     Q_ASSERT(weatherReport != nullptr);
                     auto *station = GlobalObject::weatherDataProvider()->findWeatherStation(QStringLiteral("LFSB"));
                     Q_ASSERT(station != nullptr);
-                    weatherReport->setProperty("weatherStation", QVariant::fromValue(station));
-                    QMetaObject::invokeMethod(weatherReport, "open", Qt::QueuedConnection);
+
+                    //weatherReport->setProperty("weatherStation", QVariant::fromValue(station));
+                    //QMetaObject::invokeMethod(weatherReport, "open", Qt::QueuedConnection);
+
                     delay(4s);
-                    applicationWindow->grabWindow().save(QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+                    saveScreenshot(applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     emit requestClosePages();
                 }
 
@@ -269,22 +287,22 @@ void DemoRunner::generateGooglePlayScreenshots()
                     qWarning() << "… Nearby Waypoints Page";
                     emit requestOpenNearbyPage();
                     delay(4s);
-                    applicationWindow->grabWindow().save(QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+                    saveScreenshot(applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     emit requestClosePages();
                 }
             }
         }
-    } // Google Play
+    }
 
     // Done. Terminate the program.
-    QApplication::exit();
+    QGuiApplication::exit();
 #endif
 }
 
 
 void DemoRunner::generateManualScreenshots()
 {
-#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
+#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
     Q_ASSERT(m_engine != nullptr);
 
     emit requestClosePages();
@@ -512,6 +530,10 @@ void DemoRunner::generateManualScreenshots()
     }
 
     // Done. Terminate the program.
-    QApplication::exit();
+    QGuiApplication::exit();
 #endif
+}
+
+void DemoRunner::saveScreenshot(QQuickWindow* window, QString path) {
+    GlobalObject::platformAdaptor()->saveScreenshot(window->grabWindow(), path);
 }

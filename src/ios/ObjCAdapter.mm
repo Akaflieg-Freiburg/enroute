@@ -127,3 +127,9 @@ QString ObjCAdapter::preferredLanguage() {
 void ObjCAdapter::disableScreenSaver() {
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
 }
+
+void ObjCAdapter::saveToGallery(QString& path) {
+    UIImage* image = [UIImage imageNamed:path.toNSString()];
+    UIImageWriteToSavedPhotosAlbum(image, Nil, Nil, Nil);
+}
+

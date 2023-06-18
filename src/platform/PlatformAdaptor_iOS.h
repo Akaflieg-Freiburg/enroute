@@ -105,6 +105,8 @@ public:
 
     Q_INVOKABLE QString language() override;
 
+    Q_INVOKABLE void saveScreenshot(QImage, QString) override;
+
 public slots:
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
     Q_INVOKABLE void onGUISetupCompleted() override;

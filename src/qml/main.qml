@@ -625,12 +625,13 @@ AppWindow {
 
             function onRequestClosePages() {
                 stackView.pop()
+                firstRunDialog.close()
                 whatsNewDialog.close()
             }
 
             function onRequestOpenAircraftPage() {
                 stackView.pop()
-                stackView.push("pages/AircraftPage.qml")
+                stackView.push("pages/AircraftPage.qml", {"stackView": stackView})
             }
 
             function onRequestOpenNearbyPage() {
@@ -640,12 +641,12 @@ AppWindow {
 
             function onRequestOpenRoutePage() {
                 stackView.pop()
-                stackView.push("pages/FlightRouteEditor.qml", {"toast": toast})
+                stackView.push("pages/FlightRouteEditor.qml")
             }
 
             function onRequestOpenWeatherPage() {
                 stackView.pop()
-                stackView.push("pages/WeatherPage.qml")
+                stackView.push("pages/Weather.qml")
             }
 
         }

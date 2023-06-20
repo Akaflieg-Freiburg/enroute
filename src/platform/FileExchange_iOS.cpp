@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "platform/FileExchange_iOS.h"
+#include "platform/PlatformAdaptor_Abstract.h"
 
 #include "ios/ObjCAdapter.h"
 #include "qfileinfo.h"
@@ -90,6 +91,7 @@ void Platform::FileExchange::handleFileUrlReceived(const QUrl &url)
     if(fileInfo.exists()) {
         Platform::FileExchange_Abstract::processFileOpenRequest(myUrl);
     } else {
-        //TODO: Error Handling
+        //TODO: Missing translation
+        emit GlobalObject::platformAdaptor()->error(tr("Could not find file ") + myUrl);
     }
 }

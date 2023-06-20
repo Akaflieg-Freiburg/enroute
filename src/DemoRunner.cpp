@@ -27,6 +27,7 @@
 #include <QTranslator>
 #include <chrono>
 
+#include "platform/PlatformAdaptor_Abstract.h"
 
 #if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 #include <QGuiApplication>
@@ -38,7 +39,6 @@
 #include "traffic/TrafficDataSource_Simulate.h"
 #include "traffic/TrafficFactor_WithPosition.h"
 #include "weather/WeatherDataProvider.h"
-#include "platform/PlatformAdaptor_Abstract.h"
 #include "ios/ObjCAdapter.h"
 #endif
 
@@ -190,7 +190,7 @@ void DemoRunner::generateScreenshotsForDevices(QStringList devices)
 
                     flightMap->setProperty("zoomLevel", 11);
                     GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::TTUp);
-                    delay(4s);
+                    delay(8s);
                     saveScreenshot(applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     GlobalObject::navigator()->flightRoute()->clear();
                 }
@@ -204,7 +204,7 @@ void DemoRunner::generateScreenshotsForDevices(QStringList devices)
                     trafficSimulator->setGS( Units::Speed::fromKN(91) );
                     flightMap->setProperty("zoomLevel", 12);
                     GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::TTUp);
-                    delay(4s);
+                    delay(8s);
                     saveScreenshot(applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                 }
 
@@ -245,7 +245,7 @@ void DemoRunner::generateScreenshotsForDevices(QStringList devices)
                     trafficFactor2->setCoordinate(ownPosition);
                     trafficSimulator->setTrafficFactor_DistanceOnly(trafficFactor2);
 
-                    delay(4s);
+                    delay(8s);
                     saveScreenshot(applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     trafficFactor1->setHDist( {} );
                     trafficSimulator->removeTraffic();
@@ -259,7 +259,7 @@ void DemoRunner::generateScreenshotsForDevices(QStringList devices)
                     auto waypoint = GlobalObject::geoMapProvider()->findByID(QStringLiteral("EDDE"));
                     waypointDescription->setProperty("waypoint", QVariant::fromValue(waypoint));
                     QMetaObject::invokeMethod(waypointDescription, "open", Qt::QueuedConnection);
-                    delay(4s);
+                    delay(5s);
                     saveScreenshot(applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     QMetaObject::invokeMethod(waypointDescription, "close", Qt::QueuedConnection);
                 }
@@ -274,8 +274,8 @@ void DemoRunner::generateScreenshotsForDevices(QStringList devices)
                     auto *station = GlobalObject::weatherDataProvider()->findWeatherStation(QStringLiteral("LFSB"));
                     Q_ASSERT(station != nullptr);
 
-                    //weatherReport->setProperty("weatherStation", QVariant::fromValue(station));
-                    //QMetaObject::invokeMethod(weatherReport, "open", Qt::QueuedConnection);
+                    weatherReport->setProperty("weatherStation", QVariant::fromValue(station));
+                    QMetaObject::invokeMethod(weatherReport, "open", Qt::QueuedConnection);
 
                     delay(4s);
                     saveScreenshot(applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
@@ -295,6 +295,7 @@ void DemoRunner::generateScreenshotsForDevices(QStringList devices)
     }
 
     // Done. Terminate the program.
+    qWarning() << "… done. Exiting…";
     QGuiApplication::exit();
 #endif
 }

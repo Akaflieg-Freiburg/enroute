@@ -123,9 +123,8 @@ Page {
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
                         dlgLoader.active = false
-                        dlgLoader.setSource("../dialogs/WeatherReport.qml",
-                                            {weatherStation: model.modelData})
-                        dlgLoader.active = true
+                        weatherReport.weatherStation = model.modelData
+                        weatherReport.open()
                     }
                 }
             }
@@ -289,6 +288,11 @@ Page {
             }
 
         }
+    }
+
+    WeatherReport {
+        id: weatherReport
+        objectName: "weatherReport"
     }
 
     Loader {

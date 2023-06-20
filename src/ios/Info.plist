@@ -56,7 +56,8 @@
     <key>UIViewControllerBasedStatusBarAppearance</key>
     <false/>
 
-    <!-- Only necessary for screenshot generation
+    <!-- Only necessary for screenshot generation -->
+    <!--
     <key>NSPhotoLibraryAddUsageDescription</key>
     <string>Just to generate screenshots</string>
     -->
@@ -104,6 +105,23 @@
                 <string>application/gpx+xml</string>
             </dict>
         </dict>
+        <dict>
+            <key>UTTypeIdentifier</key>
+            <string>com.mapbox.mbtiles</string>
+            <key>UTTypeDescription</key>
+            <string>mbtiles</string>
+            <key>UTTypeConformsTo</key>
+            <array>
+                <string>public.data</string>
+            </array>
+            <key>UTTypeTagSpecification</key>
+            <dict>
+                <key>public.filename-extension</key>
+                <array>
+                    <string>mbtiles</string>
+                </array>
+            </dict>
+        </dict>
     </array>
     <key>CFBundleDocumentTypes</key>
     <array>
@@ -144,6 +162,27 @@
             <array>
                 <string>public.json</string>
                 <string>com.apple.dt.document.geojson</string>
+            </array>
+        </dict>
+        <dict>
+            <key>CFBundleTypeName</key>
+            <string>MBTILES</string>
+            <key>CFBundleTypeRole</key>
+            <string>Viewer</string>
+            <key>LSHandlerRank</key>
+            <string>Alternate</string>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                    <string>MBTILES</string>
+                    <string>mbtiles</string>
+            </array>
+            <key>LSItemContentTypes</key>
+            <array>
+                <string>com.mapbox.mbtiles</string>
+            </array>
+            <key>NSExportableTypes</key>
+            <array>
+                <string>com.mapbox.mbtiles</string>
             </array>
         </dict>
      </array>

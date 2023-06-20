@@ -65,6 +65,7 @@ void ObjCAdapter::requestNotificationPermission() {
     
 }
 
+//TODO: Notifications may be removed later
 void ObjCAdapter::sendNotification(QString title, QString message){
     UNMutableNotificationContent* content = [[UNMutableNotificationContent alloc] init];
     content.title = [NSString localizedUserNotificationStringForKey:title.toNSString() arguments:nil];

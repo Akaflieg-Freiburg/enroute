@@ -91,7 +91,6 @@ void Platform::PlatformAdaptor::onGUISetupCompleted()
       timer->setSingleShot(false);
       connect(timer, &QTimer::timeout, GlobalObject::trafficDataProvider(), &Traffic::TrafficDataProvider::connectToTrafficReceiver);
       timer->start();
-#warning Not implemented
 }
 
 QString Platform::PlatformAdaptor::checkPermissions()

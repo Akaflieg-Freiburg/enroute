@@ -16,6 +16,12 @@ several other people helped.
 The manual has kindly been provided by Michael Horbaschk.
 
 
+## iOS Version
+
+The app has been ported to iOS by Simon Schneider. Simon is currently student
+pilot (PPL) and member of the Akaflieg Freiburg flight club, just like Stefan.
+
+
 ## Translators
 
 * **French**: Adrien Crovato and Luca Riva. Both are private pilots and

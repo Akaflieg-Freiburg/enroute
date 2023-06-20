@@ -1,0 +1,1 @@
+{"rule":"MAC_OS","sentence":"^\\QEnroute Flight Navigation can be ported without much difficulty to Windows and MacOS desktop machines, and to Apple iOS devices such as iPhones and iPads.\\E$"}

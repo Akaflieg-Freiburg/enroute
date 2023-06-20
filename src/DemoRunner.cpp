@@ -27,6 +27,7 @@
 #include <QTranslator>
 #include <chrono>
 
+#include "platform/PlatformAdaptor_Abstract.h"
 
 #if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 #include <QGuiApplication>
@@ -38,7 +39,6 @@
 #include "traffic/TrafficDataSource_Simulate.h"
 #include "traffic/TrafficFactor_WithPosition.h"
 #include "weather/WeatherDataProvider.h"
-#include "platform/PlatformAdaptor_Abstract.h"
 #include "ios/ObjCAdapter.h"
 #endif
 

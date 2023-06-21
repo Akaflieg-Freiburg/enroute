@@ -51,7 +51,8 @@ public:
         FlightRoute, /*< File contains a flight route. */
         VectorMap, /*< File contains a vector map. */
         RasterMap, /*< File contains a raster map. */
-        WaypointLibrary /*< Waypoint library in CUP or GeoJSON format */
+        WaypointLibrary, /*< Waypoint library in CUP or GeoJSON format */
+        OpenAir /*< Airspace data in openAir format */
       };
     Q_ENUM(FileFunction)
 
@@ -60,7 +61,7 @@ public:
      *
      * @param parent Standard QObject parent pointer
     */
-    explicit FileExchange_Abstract(QObject *parent = nullptr);
+    explicit FileExchange_Abstract(QObject* parent = nullptr);
 
     // No default constructor, important for QML singleton
     explicit FileExchange_Abstract() = delete;

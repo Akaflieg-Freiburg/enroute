@@ -1,0 +1,571 @@
+
+#include <QFile>
+#include <QGeoCoordinate>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QTextStream>
+#include <stdexcept>
+
+#include "OpenAir.h"
+
+QString err_circle_without_x = QString::fromLatin1("Variable X is not set but Circle should be drawn");
+QString err_num_conv = QString::fromLatin1("Invalid number found: ");
+QString err_coord = QString::fromLatin1("Invalid coordinate found: ");
+QString err_direction = QString::fromLatin1("Invalid content for VariableD (direction): ");
+QString err_arc = QString::fromLatin1("Invalid definition for an arc: ");
+
+
+class AirSpace {
+public:
+    QString ac;
+    QString an;
+    QString al;
+    QString ah;
+    QChar     variableD;
+    QGeoCoordinate variableX;
+    QVector<QGeoCoordinate> polygon;
+
+    AirSpace()
+    {
+        ac = u""_qs;
+        an = u""_qs;
+        al = u""_qs;
+        ah = u""_qs;
+        variableD = '+';
+        polygon.clear();
+    }
+
+    void addPoint(const QString& qs)
+    {
+        QGeoCoordinate point = toCoord(qs);
+        polygon.prepend(point);
+    }
+
+    void addCircle(const QString& qs)
+    {
+        bool ok;
+        double radius = qs.toDouble(&ok) * 1852;
+        if (!ok)
+        {
+            throw err_num_conv.append(qs);
+        }
+        if (variableX.isValid())
+        {
+            for (int i=0; i <= 360; i += 10)
+            {
+                polygon.prepend(variableX.atDistanceAndAzimuth(radius, i));
+            }
+        }
+        else
+        {
+            throw err_circle_without_x;
+        }
+    }
+
+    void addArc(const QString& qs)
+    {
+        bool ok;
+        QStringList items = qs.split(u',', Qt::SkipEmptyParts);
+        double radius = items[0].toDouble(&ok) * 1852;
+        if (!ok)
+        {
+            throw err_num_conv.append(items[0]);
+        }
+        double angleStart = items[1].toDouble(&ok);
+        if (!ok)
+        {
+            throw err_num_conv.append(items[1]);
+        }
+        double angleEnd = items[2].toDouble(&ok);
+        if (!ok)
+        {
+            throw err_num_conv.append(items[2]);
+        }
+        if (variableX.isValid())
+        {
+            if (variableD == '-')
+            {
+                if (angleEnd > angleStart)
+                {
+                    addArcCounterClockwise(radius, angleStart, 0);
+                    addArcCounterClockwise(radius, 360, angleEnd);
+                }
+                else
+                {
+                    addArcCounterClockwise(radius, angleStart, angleEnd);
+                }
+            }
+            else
+            {
+                if (angleEnd < angleStart)
+                {
+                    addArcClockwise(radius,angleStart, 360);
+                    addArcClockwise(radius, 0, angleEnd);
+                }
+                else
+                {
+                    addArcClockwise(radius,angleStart, angleEnd);
+                }
+            }
+            polygon.prepend(variableX.atDistanceAndAzimuth(radius, angleEnd));
+        }
+        else
+        {
+            throw err_circle_without_x;
+        }
+    }
+
+    void addArcPoints(const QString& qs)
+    {
+        QStringList items = qs.split(u',', Qt::SkipEmptyParts);
+        QGeoCoordinate startPoint = toCoord(items[0]);
+        if (items[1].startsWith(u" "_qs))
+        {
+            items[1] = items[1].sliced(1);
+        }
+        QGeoCoordinate endPoint = toCoord(items[1]);
+        if (!variableX.isValid())
+        {
+            throw err_circle_without_x;
+        }
+        double radius = variableX.distanceTo(startPoint);
+        double angleStart = variableX.azimuthTo(startPoint);
+        double angleEnd = variableX.azimuthTo(endPoint);
+        if (variableD == '-')
+        {
+            if (angleEnd > angleStart)
+            {
+                addArcCounterClockwise(radius, angleStart, 0);
+                addArcCounterClockwise(radius, 360, angleEnd);
+            }
+            else
+            {
+                addArcCounterClockwise(radius, angleStart, angleEnd);
+            }
+        }
+        else
+        {
+            if (angleEnd < angleStart)
+            {
+                addArcClockwise(radius,angleStart, 360);
+                addArcClockwise(radius, 0, angleEnd);
+            }
+            else
+            {
+                addArcClockwise(radius,angleStart, angleEnd);
+            }
+        }
+        polygon.prepend(variableX.atDistanceAndAzimuth(radius, angleEnd));
+    }
+
+    void addArcClockwise(double radius, double start, double end)
+    {
+        do
+        {
+            polygon.prepend(variableX.atDistanceAndAzimuth(radius, start));
+            start += 10;
+        } while (start < end);
+    }
+
+    void addArcCounterClockwise(double radius, double start, double end)
+    {
+        do
+        {
+            polygon.prepend(variableX.atDistanceAndAzimuth(radius, start));
+            start -= 10;
+        } while (start > end);
+    }
+
+    /*
+     * Final check if all information regarding one AirSpace is read:
+     *  - close polygon if it is open
+     *  - delete doubled points from the polygon
+     *  - reverse polygon if it is clockwise
+     *  - check if necessary information is complete (e.g. lower limit and upper limit are defined)
+     */
+    void finalize(QStringList& errorList)
+    {
+        if  (polygon.size() > 1)
+        {
+            //close polygon if it is open
+            auto last = polygon.size() - 1;
+            if ((polygon.at(0).latitude() != polygon.at(last).latitude()) ||
+                (polygon.at(0).longitude() != polygon.at(last).longitude()))
+            {
+                polygon.prepend(polygon.at(last));
+            }
+            //delete doubled points
+            for (auto i=polygon.size() - 1; i > 0; i--) {
+                if ((polygon.at(i).latitude()  == polygon.at(i - 1).latitude() ) &&
+                    (polygon.at(i).longitude() == polygon.at(i - 1).longitude()) )
+                {
+                    polygon.removeAt(i);
+                }
+            }
+            //reverse polygon if it is clockwise
+            if (isClockwise())
+            {
+                reversePolygon();
+            }
+        }
+        if (al.size() < 1)
+        {
+            errorList.append("Lower Limit not set for AirSpace " + an);
+        }
+        if (ah.size() < 1)
+        {
+            errorList.append("Upper Limit not set for AirSpace " + an);
+        }
+        if ((ac.compare(u"A"_qs)   != 0) &&
+            (ac.compare(u"ATZ"_qs) != 0) &&
+            (ac.compare(u"B"_qs)   != 0) &&
+            (ac.compare(u"CTR"_qs) != 0) &&
+            (ac.compare(u"C"_qs)   != 0) &&
+            (ac.compare(u"D"_qs)   != 0) &&
+            (ac.compare(u"DNG"_qs) != 0) &&
+            (ac.compare(u"FIR"_qs) != 0) &&
+            (ac.compare(u"FIS"_qs) != 0) &&
+            (ac.compare(u"GLD"_qs) != 0) &&
+            (ac.compare(u"NRA"_qs) != 0) &&
+            (ac.compare(u"P"_qs)   != 0) &&
+            (ac.compare(u"PJE"_qs) != 0) &&
+            (ac.compare(u"R"_qs)   != 0) &&
+            (ac.compare(u"TMZ"_qs) != 0) &&
+            (ac.compare(u"SUA"_qs) != 0)   )
+        {
+            ac = u"SUA"_qs;
+        }
+    }
+
+    bool isSet() const
+    {
+        return (ac.length() > 0);
+    }
+
+    void setHeight(QString qs, bool higher)
+    {
+        qs.replace(u"FL"_qs, u"FL "_qs);
+        qs.replace(u"ft"_qs, u" ft"_qs);
+        qs.replace(u"SFC"_qs, u"GND"_qs);
+        qs.replace(u"agl"_qs, u"AGL"_qs);
+        QStringList items = qs.split(u' ', Qt::SkipEmptyParts);
+        if (items[0].compare(u"0"_qs) == 0)
+        {
+            items[0] = u"GND"_qs;
+        }
+        if ((items.size() > 1) && (items[1].compare(u"ft"_qs) == 0))
+        {
+            items.removeAt(1);
+        }
+        if ((items.size() > 1) && ((items[0].compare(u"FL"_qs) == 0) || (items[1].compare(u"AGL"_qs) == 0)))
+        {
+            items[0] = items[0] + " " + items[1];
+        }
+        if (higher)
+        {
+            ah = items[0];
+        }
+        else
+        {
+            al = items[0];
+        }
+    }
+
+    void setVar(const QString& qs)
+    {
+        if (qs.startsWith(u"X="_qs))
+        {
+            variableX = toCoord(qs.sliced(2));
+        }
+        else if (qs.startsWith(u"D="_qs))
+        {
+            variableD = qs.at(2);
+            if ((variableD != '-') && (variableD != '+'))
+            {
+                variableD = '+';
+                throw err_direction.append(qs.at(2));
+            }
+        }
+    }
+
+private:
+    static double getNumber(const QString& degree)
+    {
+        bool ok;
+        double ret;
+        auto i = degree.indexOf(u":"_qs);
+        if (i < 0)
+        {
+            ret = degree.toDouble(&ok);
+            if (!ok)
+            {
+                throw err_num_conv.append(degree);
+            }
+            return ret;
+        }
+        ret = degree.first(i).toDouble(&ok) + getNumber(degree.sliced(i + 1)) / 60;
+        if (!ok)
+        {
+            throw err_num_conv.append(degree.first(i));
+        }
+        return ret;
+    }
+
+    bool isClockwise() const
+    {
+        double area = 0;
+        qsizetype j;
+
+        for (auto i=0; i < polygon.size(); i++)
+        {
+            j = (i + 1) % polygon.size();
+            area += polygon.at(i).longitude() * polygon.at(j).latitude() - polygon.at(j).longitude() * polygon.at(i).latitude();
+        }
+        // If the area is positive, the polygon is defined clockwise, otherwise counterclockwise
+        return (area < 0);
+    }
+
+    void reversePolygon() {
+        auto j = polygon.size() - 1;
+        for (int i=0; i < j;i++, j--)
+        {
+            polygon.swapItemsAt(i, j);
+        }
+    }
+
+    static QGeoCoordinate toCoord(const QString& qs)
+    {
+        double latitude;
+        double longitude;
+        QStringList items = qs.split(u' ', Qt::SkipEmptyParts);
+        if (items[0].endsWith('N') || items[0].endsWith('S'))
+        {
+            items.insert(1, items[0].sliced(items[0].length() - 1));
+            items[0].chop(1);
+        }
+        latitude = getNumber(items[0]);
+        if (items[1].compare(u"S"_qs) == 0)
+        {
+            latitude *= -1;
+        } else if (items[1].compare(u"N"_qs) != 0)
+        {
+            throw err_coord.append(qs);
+        }
+        if (items[2].endsWith('W') || items[2].endsWith('E'))
+        {
+            items.insert(3, items[2].sliced(items[2].length() - 1));
+            items[2].chop(1);
+        }
+        longitude = getNumber(items[2]);
+        if (items[3].compare(u"W"_qs) == 0)
+        {
+            longitude *= -1;
+        } else if (items[3].compare(u"E"_qs) != 0)
+        {
+            throw err_coord.append(qs);
+        }
+        if ((latitude > 180) || (latitude < -180) || (longitude > 90) || (longitude < -90))
+        {
+            throw err_coord.append(qs);
+        }
+        return QGeoCoordinate(latitude, longitude);
+    }
+};
+
+
+
+class AirSpaceVector {
+private:
+    QVector<AirSpace> airSpaceVector;
+
+public:
+    void addAirSpace(const AirSpace& airSpace)
+    {
+        airSpaceVector.append(airSpace);
+    }
+
+    bool isSameName(const QString& qs)
+    {
+        return (!airSpaceVector.empty()) && (airSpaceVector.last().an.compare(qs) == 0);
+    }
+
+    QGeoCoordinate getLastX()
+    {
+        return airSpaceVector.last().variableX;
+    }
+
+    QJsonDocument getJson(const QString& fileName)
+    {
+        QJsonObject recObj;
+        QJsonObject featureObj;
+        QJsonObject propObj;
+        QJsonObject geomObj;
+        QJsonArray featureArray;
+        QJsonArray polygonArray;
+        QJsonArray coordArray;
+        QJsonArray coord;
+        QGeoCoordinate point;
+        int last;
+        recObj.insert(u"type"_qs, QJsonValue::fromVariant("FeatureCollection"));
+        recObj.insert(u"info"_qs, QJsonValue::fromVariant(fileName));
+
+        for (int i=0; i < airSpaceVector.size(); i++)
+        {
+            featureObj.insert(u"type"_qs, QJsonValue::fromVariant("Feature"));
+            propObj = QJsonObject();
+            propObj.insert(u"NAM"_qs, QJsonValue::fromVariant(airSpaceVector.at(i).an));
+            propObj.insert(u"ID"_qs, QJsonValue::fromVariant(airSpaceVector.at(i).an));
+            propObj.insert(u"CAT"_qs, QJsonValue::fromVariant(airSpaceVector.at(i).ac));
+            propObj.insert(u"TYP"_qs, QJsonValue::fromVariant("AS"));
+            if (!airSpaceVector.at(i).al.isEmpty())
+            {
+                propObj.insert(u"BOT"_qs, QJsonValue::fromVariant(airSpaceVector.at(i).al));
+            }
+            if (!airSpaceVector.at(i).ah.isEmpty())
+            {
+                propObj.insert(u"TOP"_qs, QJsonValue::fromVariant(airSpaceVector.at(i).ah));
+            }
+            featureObj.insert(u"properties"_qs, propObj);
+
+            while (coordArray.count() != 0)
+            {
+                coordArray.pop_back();
+            }
+            for (int j=0; j < airSpaceVector.at(i).polygon.size(); j++)
+            {
+                while (coord.count() != 0)
+                {
+                    coord.pop_back();
+                }
+                coord.append(airSpaceVector.at(i).polygon.at(j).longitude());
+                coord.append(airSpaceVector.at(i).polygon.at(j).latitude());
+                coordArray.append(coord);
+            }
+            while (polygonArray.count() != 0)
+            {
+                polygonArray.pop_back();
+            }
+            polygonArray.append(coordArray);
+            if  (airSpaceVector.at(i).polygon.size() > 1)
+            {
+                geomObj.insert(u"type"_qs, QJsonValue::fromVariant("Polygon"));
+                geomObj.insert(u"coordinates"_qs, polygonArray);
+                featureObj.insert(u"geometry"_qs, geomObj);
+            }
+
+
+            featureArray.append(featureObj);
+        }
+
+        recObj.insert(u"features"_qs, featureArray);
+        QJsonDocument json(recObj);
+        return json;
+    }
+};
+
+
+bool GeoMaps::openAir::isValid(const QString &fileName)
+{
+    QStringList errorList;
+    QStringList warning;
+    parse(fileName, errorList, warning);
+    return errorList.isEmpty();
+}
+
+
+QJsonDocument GeoMaps::openAir::parse(const QString& fileName, QStringList& errorList, QStringList& warning)
+{
+    QString line;
+    QStringList items;
+    QStringList airSpaceRecs {"AC", "AN", "AL", "AH", "V", "DP", "DC", "DA", "DB", "AT"};
+    AirSpace airSpace;
+    AirSpaceVector airSpaceVector;
+
+
+    QFile inputFile(fileName);
+    if (!inputFile.open(QIODeviceBase::ReadOnly))
+    {
+        errorList << u"Cannot open file"_qs << fileName;
+        return {};
+    }
+
+    QTextStream inputStream(&inputFile);
+
+    bool hadError = false;
+    int lineNo = 0;
+    while (inputStream.readLineInto(&line))
+    {
+        lineNo++;
+        try {
+            if (line.startsWith(u"*"_qs) || line.length() == 0)
+            {
+                continue;
+            }
+            items = line.split(u' ', Qt::SkipEmptyParts);
+            switch (airSpaceRecs.indexOf(items[0]))
+            {
+            case 0: //AC
+                //if airSpace is already filled, the excisting airSpace must be added to the list and a new airSpace must be initialized
+                if (airSpace.isSet())
+                {
+                    if (!hadError)
+                    {
+                        airSpace.finalize(errorList);
+                        airSpaceVector.addAirSpace(airSpace);
+                    }
+                    airSpace = AirSpace();
+                    hadError = false;
+                }
+                airSpace.ac = items[1];
+                break;
+            case 1: //AN
+                airSpace.an = line.sliced(3);
+                if (airSpaceVector.isSameName(airSpace.an))
+                {
+                    airSpace.variableX = airSpaceVector.getLastX();
+                }
+                break;
+            case 2: //AL
+                airSpace.setHeight(line.sliced(3), false);
+                break;
+            case 3: //AH
+                airSpace.setHeight(line.sliced(3), true);
+                break;
+            case 4: //V
+                airSpace.setVar(line.sliced(2));
+                break;
+            case 5: //DP
+                airSpace.addPoint(line.sliced(3));
+                break;
+            case 6: //DC
+                airSpace.addCircle(line.sliced(3));
+                break;
+            case 7: //DA
+                airSpace.addArc(line.sliced(3));
+                break;
+            case 8: //DB
+                airSpace.addArcPoints(line.sliced(3));
+                break;
+            case 9: //AT = position for label; must be ignored
+                break;
+            default:
+                warning.append("Unrecognized record type in line " +QString::number(lineNo) + ": " + line + "; Line ignored");
+                break;
+            }
+        }
+        catch (QString ex)
+        {
+            hadError = true;
+            warning.append("Error in line " +QString::number(lineNo) + ": " + ex + "; Airspace " + airSpace.an + " ignored");
+        }
+    }
+    if (airSpace.isSet())
+    {
+        airSpace.finalize(errorList);
+        airSpaceVector.addAirSpace(airSpace);
+    }
+
+
+    return airSpaceVector.getJson(fileName);
+}

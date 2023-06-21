@@ -60,7 +60,6 @@ Item {
                 chooseFRorWPDialog.open()
                 return
             }
-
             if (fileFunction === FileExchange.VectorMap) {
                 importVectorMapDialog.open()
                 return
@@ -76,6 +75,7 @@ Item {
                     importFlightRouteDialog.onAccepted()
                 return
             }
+            // WARNING!
 
             errLbl.text = qsTr("The file type of the file <strong>%1</strong> cannot be recognized.").arg(fileName)
             errorDialog.open()

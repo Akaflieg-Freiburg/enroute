@@ -24,6 +24,7 @@
 #include "geomaps/CUP.h"
 #include "geomaps/GeoJSON.h"
 #include "geomaps/MBTILES.h"
+#include "geomaps/OpenAir.h"
 #include "platform/FileExchange_Abstract.h"
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficDataSource_File.h"
@@ -119,6 +120,13 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     if (GeoMaps::CUP::isValid(myPath))
     {
         emit openFileRequest(myPath, WaypointLibrary);
+        return;
+    }
+
+    // OpenAir
+    if (GeoMaps::openAir::isValid(myPath))
+    {
+        emit openFileRequest(myPath, OpenAir);
         return;
     }
 

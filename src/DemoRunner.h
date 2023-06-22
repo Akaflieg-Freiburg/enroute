@@ -105,7 +105,7 @@ private:
 
     QPointer<QQmlApplicationEngine> m_engine;
 
-    void generateScreenshotsForDevices(QStringList);
+    void generateScreenshotsForDevices(QStringList, bool);
 
-    void saveScreenshot(QQuickWindow*, QString);
+    void saveScreenshot(bool, QQuickWindow*, QString);
 };

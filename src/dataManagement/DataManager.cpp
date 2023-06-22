@@ -28,9 +28,11 @@
 #include "GlobalSettings.h"
 #include "dataManagement/DataManager.h"
 #include "geomaps/MBTILES.h"
+#include "geomaps/OpenAir.h"
 #include <chrono>
 
 using namespace std::chrono_literals;
+
 
 DataManagement::DataManager::DataManager(QObject* parent) : GlobalObject(parent)
 {
@@ -51,6 +53,7 @@ DataManagement::DataManager::DataManager(QObject* parent) : GlobalObject(parent)
     m_mapsAndData.add(&m_databases);
 }
 
+
 void DataManagement::DataManager::deferredInitialization()
 {    
     // If there is a downloaded maps.json file, we read it.
@@ -64,7 +67,6 @@ void DataManagement::DataManager::deferredInitialization()
         updateRemoteDataItemList();
     }
 }
-
 
 
 void DataManagement::DataManager::cleanDataDirectory()
@@ -125,6 +127,7 @@ void DataManagement::DataManager::cleanDataDirectory()
     } while (didDelete);
 }
 
+
 auto DataManagement::DataManager::import(const QString& fileName, const QString& newName) -> QString
 {
 
@@ -161,6 +164,52 @@ auto DataManagement::DataManager::import(const QString& fileName, const QString&
     return {};
 }
 
+
+auto DataManagement::DataManager::importOpenAir(const QString& fileName, const QString& newName) -> QString
+{
+
+    auto path = m_dataDirectory+"/Unsupported";
+    auto newFileName = path + "/" + newName;
+
+    QStringList errors;
+    QStringList warnings;
+    auto json = GeoMaps::openAir::parse(fileName, errors, warnings);
+
+    if (!errors.isEmpty())
+    {
+        QString info;
+        info += u"<p>"_qs + tr("Errors") + u"</p>"_qs;
+        info += u"<ul style='margin-left:-25px;'>"_qs;
+        foreach(auto error, errors)
+        {
+            info += u"<li>"_qs + error + u"</li>"_qs;
+        }
+        info += u"</ul>"_qs;
+        return info;
+    }
+
+    if (!QDir().mkpath(path))
+    {
+        return tr("Unable to create directory '%1'.").arg(path);
+    }
+    newFileName = newFileName+u".geojson"_qs;
+    QFile::remove(newFileName);
+    QFile file(newFileName);
+    file.open(QIODeviceBase::WriteOnly);
+    file.write(json.toJson());
+    file.close();
+    if (file.error() != QFileDevice::NoError)
+    {
+        QFile::remove(newFileName);
+        updateDataItemListAndWhatsNew();
+        return tr("Error writing file '%1': %2.").arg(newFileName, file.errorString());
+    }
+    updateDataItemListAndWhatsNew();
+#warning Need to re-generate GeoJSON!!
+    return {};
+}
+
+
 void DataManagement::DataManager::onItemFileChanged()
 {
     auto items = m_items.downloadables();
@@ -187,6 +236,7 @@ void DataManagement::DataManager::onItemFileChanged()
         QTimer::singleShot(100ms, this, &DataManagement::DataManager::updateDataItemListAndWhatsNew);
     }
 }
+
 
 auto DataManagement::DataManager::createOrRecycleItem(const QUrl& url, const QString& localFileName, const QGeoRectangle& bBox) -> DataManagement::Downloadable_SingleFile*
 {
@@ -272,6 +322,7 @@ auto DataManagement::DataManager::createOrRecycleItem(const QUrl& url, const QSt
     }
     return downloadable;
 }
+
 
 void DataManagement::DataManager::updateDataItemListAndWhatsNew()
 {

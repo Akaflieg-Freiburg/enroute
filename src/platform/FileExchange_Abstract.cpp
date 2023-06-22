@@ -70,7 +70,7 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     // Flight Route in GPX format
     if ((mimeType.inherits(QStringLiteral("application/xml"))) || (mimeType.name() == u"application/x-gpx+xml"))
     {
-        emit openFileRequest(myPath, FlightRouteOrWaypointLibrary);
+        emit openFileRequest(myPath, {}, FlightRouteOrWaypointLibrary);
         return;
     }
 
@@ -78,17 +78,17 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     auto fileContent = GeoMaps::GeoJSON::inspect(myPath);
     if (fileContent == GeoMaps::GeoJSON::flightRoute)
     {
-        emit openFileRequest(myPath, FlightRoute);
+        emit openFileRequest(myPath, {}, FlightRoute);
         return;
     }
     if (fileContent == GeoMaps::GeoJSON::waypointLibrary)
     {
-        emit openFileRequest(myPath, WaypointLibrary);
+        emit openFileRequest(myPath, {}, WaypointLibrary);
         return;
     }
     if (fileContent == GeoMaps::GeoJSON::valid)
     {
-        emit openFileRequest(myPath, FlightRouteOrWaypointLibrary);
+        emit openFileRequest(myPath, {}, FlightRouteOrWaypointLibrary);
         return;
     }
 
@@ -105,30 +105,31 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     GeoMaps::MBTILES mbtiles(myPath);
     if (mbtiles.format() == GeoMaps::MBTILES::Vector)
     {
-        emit openFileRequest(myPath, VectorMap);
+        emit openFileRequest(myPath, {}, VectorMap);
         return;
     }
 
     // MBTiles containing a raster map
     if (mbtiles.format() == GeoMaps::MBTILES::Raster)
     {
-        emit openFileRequest(myPath, RasterMap);
+        emit openFileRequest(myPath, {}, RasterMap);
         return;
     }
 
     // CUP file
     if (GeoMaps::CUP::isValid(myPath))
     {
-        emit openFileRequest(myPath, WaypointLibrary);
+        emit openFileRequest(myPath, {}, WaypointLibrary);
         return;
     }
 
     // OpenAir
-    if (GeoMaps::openAir::isValid(myPath))
+    QString info;
+    if (GeoMaps::openAir::isValid(myPath, &info))
     {
-        emit openFileRequest(myPath, OpenAir);
+        emit openFileRequest(myPath, info, OpenAir);
         return;
     }
 
-    emit openFileRequest(myPath, UnknownFunction);
+    emit openFileRequest(myPath, {}, UnknownFunction);
 }

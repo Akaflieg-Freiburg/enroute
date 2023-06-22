@@ -159,9 +159,11 @@ signals:
      *
      * @param fileName Path of the file on the local file system
      *
+     * @param info Additional information about the file, as a translated, human-readable string in HTML format.
+     *
      * @param fileFunction Function and file type.
      */
-    void openFileRequest(QString fileName, Platform::FileExchange_Abstract::FileFunction fileFunction);
+    void openFileRequest(QString fileName, QString info, Platform::FileExchange_Abstract::FileFunction fileFunction);
 
 private:
     Q_DISABLE_COPY_MOVE(FileExchange_Abstract)

@@ -8,12 +8,22 @@ class openAir
 {
 public:
     /*! \brief Check if file contains valid OpenAIR data
-         *
-         *  @param fileName Name of a file
-         *
-         *  @returns True if the file is likely to contain valid OpenAIR data.
-         */
-    static bool isValid(const QString &fileName);
+     *
+     *  @param fileName Name of a file
+     *
+     *  @param info Pointer to a string where additional information will be stored.
+     *
+     *  @returns True if the file is likely to contain valid OpenAIR data.
+     */
+    static bool isValid(const QString &fileName, QString* info=nullptr);
+
+    /*! \brief Check if file contains valid OpenAIR data
+     *
+     *  @param fileName Name of a file
+     *
+     *  @returns Translated HTML string with warnings.
+     */
+    static QString warnings(const QString &fileName);
 
     /*! \brief Reads a file in openAIR format and returns a GeoJSON document
      *

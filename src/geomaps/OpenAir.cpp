@@ -465,11 +465,27 @@ public:
 };
 
 
-bool GeoMaps::openAir::isValid(const QString &fileName)
+bool GeoMaps::openAir::isValid(const QString &fileName, QString* info)
 {
     QStringList errorList;
-    QStringList warning;
-    parse(fileName, errorList, warning);
+    QStringList warnings;
+    parse(fileName, errorList, warnings);
+
+    if (info != nullptr)
+    {
+        *info = {};
+        if (!warnings.isEmpty())
+        {
+            *info += u"<p>"_qs + u"Warnings"_qs + u"</p>"_qs;
+            *info += u"<ul style='margin-left:-25px;'>"_qs;
+            foreach(auto warning, warnings)
+            {
+                *info += u"<li>"_qs + warning + u"</li>"_qs;
+            }
+            *info += u"</ul>"_qs;
+        }
+    }
+
     return errorList.isEmpty();
 }
 

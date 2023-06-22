@@ -43,7 +43,7 @@ Item {
     Connections {
         target: FileExchange
 
-        function onOpenFileRequest(fileName, fileFunction) {
+        function onOpenFileRequest(fileName, info, fileFunction) {
             importManager.view.raise()
             importManager.view.requestActivate()
 
@@ -75,7 +75,11 @@ Item {
                     importFlightRouteDialog.onAccepted()
                 return
             }
-            // WARNING!
+            if (fileFunction === FileExchange.OpenAir) {
+                openAirInfoLabel.text = info;
+                importOpenAirDialog.open()
+                return
+            }
 
             errLbl.text = qsTr("The file type of the file <strong>%1</strong> cannot be recognized.").arg(fileName)
             errorDialog.open()
@@ -132,6 +136,67 @@ Item {
         }
 
         onRejected: close()
+    }
+
+    CenteringDialog {
+        id: importOpenAirDialog
+
+        title: qsTr("Import Airspace Data")
+        standardButtons: Dialog.Ok | Dialog.Cancel
+        modal: true
+
+        ColumnLayout {
+            anchors.fill: parent
+
+            Label {
+                Layout.fillWidth: true
+
+                text: qsTr("Enter a name for this map.")
+                wrapMode: Text.Wrap
+                textFormat: Text.StyledText
+            }
+
+            MyTextField {
+                id: mapNameOpenAir
+
+                Layout.fillWidth: true
+                focus: true
+
+                onDisplayTextChanged: importOpenAirDialog.standardButton(DialogButtonBox.Ok).enabled = (displayText !== "")
+
+                onAccepted: {
+                    if (mapNameOpenAir.text === "")
+                        return
+                    importOpenAirDialog.accept()
+                }
+            }
+
+            Label {
+                id: openAirInfoLabel
+                Layout.fillWidth: true
+                visible: text !== ""
+
+                wrapMode: Text.Wrap
+                textFormat: Text.RichText
+            }
+        }
+
+        onAboutToShow: {
+            mapNameOpenAir.text = ""
+            importOpenAirDialog.standardButton(DialogButtonBox.Ok).enabled = false
+        }
+
+        onAccepted: {
+            PlatformAdaptor.vibrateBrief()
+
+            var errorString = DataManager.importOpenAir(importManager.filePath, mapNameOpenAir.text)
+            if (errorString !== "") {
+                errLbl.text = errorString
+                errorDialog.open()
+                return
+            }
+            importManager.toast.doToast( qsTr("Airspace data imported") )
+        }
     }
 
     CenteringDialog {

@@ -130,6 +130,12 @@ void DataManagement::Downloadable_MultiFile::add(DataManagement::Downloadable_Ab
     m_downloadables.append(map);
     emit downloadablesChanged();
 
+    if (map->hasFile())
+    {
+        emit fileContentChanged();
+        emit filesChanged();
+    }
+
     // Wire up: These properties will always change if they change in one of the members. We can therefore
     // directly connect the notifier signals of our new member to the notifier signals of this instance
     connect(map, &DataManagement::Downloadable_Abstract::descriptionChanged, this, &DataManagement::Downloadable_Abstract::descriptionChanged, Qt::QueuedConnection);

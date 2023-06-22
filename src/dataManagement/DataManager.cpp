@@ -270,7 +270,7 @@ auto DataManagement::DataManager::createOrRecycleItem(const QUrl& url, const QSt
         }
         else
         {
-            // The noope tag "<a name>" guarantees that this section will come first alphabetically
+            // The noops tag "<a name>" guarantees that this section will come first alphabetically
             downloadable->setSection("<a name>"+tr("Manually Imported"));
         }
 

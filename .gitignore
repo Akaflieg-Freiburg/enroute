@@ -16,3 +16,6 @@ CMakeLists.txt.user
 
 # Mac
 .DS_Store
+
+# fastlane
+generatedSources/.bundle

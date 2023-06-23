@@ -7,3 +7,7 @@
 */
 "NSLocationAlwaysAndWhenInUseUsageDescription" = "Navigation requires location sharing";
 "NSLocationWhenInUseUsageDescription" = "Navigation requires location sharing";
+
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Für die Navigation ist eine Standortfreigabe erforderlich";
+"NSLocationWhenInUseUsageDescription" = "Für die Navigation ist eine Standortfreigabe erforderlich";
+

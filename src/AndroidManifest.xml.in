@@ -7,7 +7,7 @@
     android:versionCode="${PROJECT_VERSION_CODE}0"
     android:installLocation="auto">
   <uses-sdk
-      android:minSdkVersion="23"
+      android:minSdkVersion="26"
       android:targetSdkVersion="33"/>
   
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>

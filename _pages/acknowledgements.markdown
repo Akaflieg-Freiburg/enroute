@@ -22,11 +22,6 @@ years of alpine gliding, Heinz has fulfilled a big dream and now flies
 helicopters.
 
 
-## Manual
-
-The manual has kindly been provided by Michael Horbaschk.
-
-
 ## iOS Version
 
 The app has been ported to iOS by Simon Schneider. Simon is currently student

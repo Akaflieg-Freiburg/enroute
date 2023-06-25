@@ -22,3 +22,5 @@ openAIP
 ebook
 epub
 flathub
+Blöchinger
+OpenAir

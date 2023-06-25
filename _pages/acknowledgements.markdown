@@ -11,6 +11,17 @@ the [Akaflieg Freiburg](https://akaflieg-freiburg.de) flight club. However,
 several other people helped.
 
 
+## Contributions
+
+**iOS Version** The app has been ported to iOS by Simon Schneider. Simon is
+currently student pilot (PPL) and member of the Akaflieg Freiburg flight club,
+just like Stefan.
+
+**Programming** Heinz Blöchinger has helped us with OpenAir support. After 15
+years of alpine gliding, Heinz has fulfilled a big dream and now flies
+helicopters.
+
+
 ## Manual
 
 The manual has kindly been provided by Michael Horbaschk.
@@ -39,6 +50,8 @@ pilot (PPL) and member of the Akaflieg Freiburg flight club, just like Stefan.
 
 
 ## Alumni
+
+* Michael Horbaschk (Manual)
 
 * Luca Bertoncello (Italian translation)
 

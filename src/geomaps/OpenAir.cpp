@@ -1,3 +1,22 @@
+/***************************************************************************
+ *   Copyright (C) 2023 by Heinz Blöchinger                                *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 3 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
 
 #include <QFile>
 #include <QGeoCoordinate>
@@ -374,7 +393,6 @@ private:
 };
 
 
-
 class AirSpaceVector {
 private:
     QVector<AirSpace> airSpaceVector;
@@ -476,7 +494,7 @@ bool GeoMaps::openAir::isValid(const QString &fileName, QString* info)
         *info = {};
         if (!warnings.isEmpty())
         {
-            *info += u"<p>"_qs + u"Warnings"_qs + u"</p>"_qs;
+            *info += u"<p>"_qs + tr("Warnings") + u"</p>"_qs;
             *info += u"<ul style='margin-left:-25px;'>"_qs;
             foreach(auto warning, warnings)
             {
@@ -490,7 +508,7 @@ bool GeoMaps::openAir::isValid(const QString &fileName, QString* info)
 }
 
 
-QJsonDocument GeoMaps::openAir::parse(const QString& fileName, QStringList& errorList, QStringList& warning)
+QJsonDocument GeoMaps::openAir::parse(const QString& fileName, QStringList& errorList, QStringList& warningList)
 {
     QString line;
     QStringList items;
@@ -502,7 +520,7 @@ QJsonDocument GeoMaps::openAir::parse(const QString& fileName, QStringList& erro
     QFile inputFile(fileName);
     if (!inputFile.open(QIODeviceBase::ReadOnly))
     {
-        errorList << u"Cannot open file"_qs << fileName;
+        errorList << tr("Cannot open file %1").arg(fileName);
         return {};
     }
 
@@ -566,14 +584,14 @@ QJsonDocument GeoMaps::openAir::parse(const QString& fileName, QStringList& erro
             case 9: //AT = position for label; must be ignored
                 break;
             default:
-                warning.append("Unrecognized record type in line " +QString::number(lineNo) + ": " + line + "; Line ignored");
+                warningList.append(tr("Unrecognized record type in line %1: %2; Line ignored.").arg(QString::number(lineNo), line));
                 break;
             }
         }
         catch (QString ex)
         {
             hadError = true;
-            warning.append("Error in line " +QString::number(lineNo) + ": " + ex + "; Airspace " + airSpace.an + " ignored");
+            warningList.append(tr("Error in line %1: %2; Airspace %3 ignored.").arg(QString::number(lineNo), ex, airSpace.an));
         }
     }
     if (airSpace.isSet())

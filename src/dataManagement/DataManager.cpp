@@ -205,7 +205,6 @@ auto DataManagement::DataManager::importOpenAir(const QString& fileName, const Q
         return tr("Error writing file '%1': %2.").arg(newFileName, file.errorString());
     }
     updateDataItemListAndWhatsNew();
-#warning Need to re-generate GeoJSON!!
     return {};
 }
 

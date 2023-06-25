@@ -57,22 +57,14 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 
     if (name == u":text/authors.html"_qs)
     {
-      return "<h3>"+tr("Authors")+"</h3>"
-	+ "<p>"+tr("The app <strong>Enroute Flight Navigation</strong> was written by Stefan Kebekus, flight enthusiast since 1986 and member of the Akaflieg Freiburg flight club. Stefan flies gliders and motor planes.")+"</p>"
-	+ "<h4>"+tr("Address")+"</h4>"
-	+ "Stefan Kebekus<br>Wintererstraße 77<br>79104 Freiburg<br>Germany<br><br><a href='mailto:stefan.kebekus@gmail.com'>e-mail</a>"
-	+ tr(R"html(
-<h3>Manual</h3>
-
-<p>The manual has kindly been provided by Michael Horbaschk.</p>
-)html")
-        
-    + tr(R"html(
-<h3>iOS Version</h3>
-
-<p>The app has been ported to iOS by Simon Schneider. Simon is currently student pilot (PPL) and member of the Akaflieg Freiburg flight club, just like Stefan.</p>
-)html")
-        + tr(R"html(
+        return "<h3>"+tr("Authors")+"</h3>"
+               + "<p>"+tr("The app <strong>Enroute Flight Navigation</strong> was written by Stefan Kebekus, flight enthusiast since 1986 and member of the Akaflieg Freiburg flight club. Stefan flies gliders and motor planes.")+"</p>"
+               + "<h4>"+tr("Address")+"</h4>"
+               + "Stefan Kebekus<br>Wintererstraße 77<br>79104 Freiburg<br>Germany<br><br><a href='mailto:stefan.kebekus@gmail.com'>e-mail</a>"
+               + "<h3>" + tr("Contributions") + "</h3>"
+               + "<p><strong>" + tr("iOS Version") + "</strong> " + tr("The app has been ported to iOS by Simon Schneider. Simon is currently student pilot (PPL) and member of the Akaflieg Freiburg flight club, just like Stefan.") + "</p>"
+               + "<p><strong>" + tr("Programming") + "</strong> " + tr("Heinz Blöchinger has helped us with OpenAir support. After 15 years of alpine gliding, Heinz has fulfilled a big dream and now flies helicopters.") + "</p>"
+               + tr(R"html(
 <h3>Translations</h3>
 )html") + (R"html(
 <ul style="margin-left:-25px;">
@@ -96,7 +88,9 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 <li>Luca Bertoncello (Italian translation)</li>
 )html") + tr(R"html(
 <li>Adrien Crovato (Integration of weather information)</li>
-)html") + tr(R"html(
+)html")
+               + "<li>Michael Horbaschk (" + tr("Manual") + ")</li>"
+               + tr(R"html(
 <li>Szymon Kocur (Polish translation)</li>
 )html") + tr(R"html(
 <li>Heiner Tholen (User interface)</li>

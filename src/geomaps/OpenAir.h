@@ -22,10 +22,8 @@
 namespace GeoMaps
 {
 
-class openAir : public QObject
+class openAir
 {
-    Q_OBJECT
-
 public:
     /*! \brief Check if file contains valid OpenAIR data
      *

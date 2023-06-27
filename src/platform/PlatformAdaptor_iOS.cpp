@@ -78,7 +78,8 @@ void Platform::PlatformAdaptor::lockWifi(bool lock)
     // a few minutes of idle time, in order to save battery. To ensure that the
     // app continuously receives traffic data, this function is calls whenever a
     // connection to a traffic data receiver has been established.
-#warning Not implemented
+
+    //This seems unnessary on iOS
 }
 
 
@@ -122,8 +123,7 @@ void Platform::PlatformAdaptor::requestPermissionsSync()
     // method returns, the app will check if all permissions are there, or else
     // refuse to run.
 
-#warning Notification not implemented
-    //ObjCAdapter::requestNotificationPermission();
+    //This seems unnessary on iOS
 }
 
 

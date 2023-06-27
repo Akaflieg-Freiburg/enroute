@@ -1,0 +1,9 @@
+/*
+  InfoPlist.strings
+  enroute
+
+  Created by Simon Schneider on 22.06.23.
+
+*/
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Udostępnianie lokalizacji jest wymagane do nawigacji";
+"NSLocationWhenInUseUsageDescription" = "Udostępnianie lokalizacji jest wymagane do nawigacji";

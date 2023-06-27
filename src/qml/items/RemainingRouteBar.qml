@@ -233,6 +233,8 @@ Rectangle {
             Layout.columnSpan: grid.columns
             Layout.fillWidth: true
             Layout.preferredHeight: 0.2*dummyControl.font.pixelSize
+
+            visible: baseRect.rri.status !== RemainingRouteInfo.NoRoute
         }
 
     }

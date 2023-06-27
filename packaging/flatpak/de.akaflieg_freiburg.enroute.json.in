@@ -141,7 +141,7 @@
             ],
             "buildsystem": "simple",
             "build-commands": [
-                "./configure --prefix=/app --with-pic",
+                "./configure --prefix=/app --with-langvox=ben --with-pic",
                 "make",
                 "make install"
             ]

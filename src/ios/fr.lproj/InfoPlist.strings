@@ -1,0 +1,9 @@
+/*
+  InfoPlist.strings
+  enroute
+
+  Created by Simon Schneider on 22.06.23.
+
+*/
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Une autorisation de site est nécessaire pour la navigation";
+"NSLocationWhenInUseUsageDescription" = "Une autorisation de site est nécessaire pour la navigation";

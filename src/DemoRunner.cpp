@@ -86,15 +86,15 @@ auto findQQuickItem(const QString &objectName, QQmlApplicationEngine* engine) ->
 
 void DemoRunner::generateIosScreenshots()
 {
-    generateScreenshotsForDevices({"ios_Device"});
+    generateScreenshotsForDevices({"ios_Device"}, true);
 }
 
 void DemoRunner::generateGooglePlayScreenshots()
 {
-    generateScreenshotsForDevices({"phone", "sevenInch", "tenInch"});
+    generateScreenshotsForDevices({"phone", "sevenInch", "tenInch"}, false);
 }
 
-void DemoRunner::generateScreenshotsForDevices(QStringList devices)
+void DemoRunner::generateScreenshotsForDevices(QStringList devices, bool manual)
 {
 #if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
     Q_ASSERT(m_engine != nullptr);
@@ -191,7 +191,7 @@ void DemoRunner::generateScreenshotsForDevices(QStringList devices)
                     flightMap->setProperty("zoomLevel", 11);
                     GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::TTUp);
                     delay(8s);
-                    saveScreenshot(applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+                    saveScreenshot(manual, applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     GlobalObject::navigator()->flightRoute()->clear();
                 }
 
@@ -204,8 +204,8 @@ void DemoRunner::generateScreenshotsForDevices(QStringList devices)
                     trafficSimulator->setGS( Units::Speed::fromKN(91) );
                     flightMap->setProperty("zoomLevel", 12);
                     GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::TTUp);
-                    delay(8s);
-                    saveScreenshot(applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+                    delay(10s);
+                    saveScreenshot(manual, applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                 }
 
                 // Approaching EDTF w/ traffic
@@ -246,7 +246,7 @@ void DemoRunner::generateScreenshotsForDevices(QStringList devices)
                     trafficSimulator->setTrafficFactor_DistanceOnly(trafficFactor2);
 
                     delay(8s);
-                    saveScreenshot(applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+                    saveScreenshot(manual, applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     trafficFactor1->setHDist( {} );
                     trafficSimulator->removeTraffic();
                     trafficSimulator->setTrafficFactor_DistanceOnly( nullptr );
@@ -260,7 +260,7 @@ void DemoRunner::generateScreenshotsForDevices(QStringList devices)
                     waypointDescription->setProperty("waypoint", QVariant::fromValue(waypoint));
                     QMetaObject::invokeMethod(waypointDescription, "open", Qt::QueuedConnection);
                     delay(5s);
-                    saveScreenshot(applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+                    saveScreenshot(manual, applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     QMetaObject::invokeMethod(waypointDescription, "close", Qt::QueuedConnection);
                 }
 
@@ -278,7 +278,7 @@ void DemoRunner::generateScreenshotsForDevices(QStringList devices)
                     QMetaObject::invokeMethod(weatherReport, "open", Qt::QueuedConnection);
 
                     delay(4s);
-                    saveScreenshot(applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+                    saveScreenshot(manual, applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     emit requestClosePages();
                 }
 
@@ -287,7 +287,7 @@ void DemoRunner::generateScreenshotsForDevices(QStringList devices)
                     qWarning() << "… Nearby Waypoints Page";
                     emit requestOpenNearbyPage();
                     delay(4s);
-                    saveScreenshot(applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
+                    saveScreenshot(manual, applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     emit requestClosePages();
                 }
             }
@@ -535,6 +535,12 @@ void DemoRunner::generateManualScreenshots()
 #endif
 }
 
-void DemoRunner::saveScreenshot(QQuickWindow* window, QString path) {
-    GlobalObject::platformAdaptor()->saveScreenshot(window->grabWindow(), path);
+void DemoRunner::saveScreenshot(bool manual, QQuickWindow* window, QString path) {
+    if (manual) {
+        qWarning() << "… Take screenshot now";
+        delay(3s);
+    } else {
+        GlobalObject::platformAdaptor()->saveScreenshot(window->grabWindow(), path);
+    }
+
 }

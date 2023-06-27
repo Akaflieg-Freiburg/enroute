@@ -1,0 +1,9 @@
+/*
+  InfoPlist.strings
+  enroute
+
+  Created by Simon Schneider on 22.06.23.
+
+*/
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "La condivisione della posizione è necessaria per la navigazione";
+"NSLocationWhenInUseUsageDescription" = "La condivisione della posizione è necessaria per la navigazione";

@@ -391,6 +391,10 @@ if (IOS)
         "ios/Assets.xcassets"
         "ios/de.lproj"
         "ios/en.lproj"
+        "ios/es.lproj"
+        "ios/fr.lproj"
+        "ios/it.lproj"
+        "ios/pl.lproj"
     )
     target_sources(${PROJECT_NAME} PRIVATE ${bundle_resources})
     set_source_files_properties(${bundle_resources} PROPERTIES

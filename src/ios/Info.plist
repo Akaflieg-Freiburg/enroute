@@ -136,8 +136,8 @@
             <string>Alternate</string>
             <key>CFBundleTypeExtensions</key>
             <array>
-                    <string>gpx</string>
-                    <string>GPX</string>
+                <string>gpx</string>
+                <string>GPX</string>
             </array>
             <key>LSItemContentTypes</key>
             <array>
@@ -191,8 +191,8 @@
             <string>Alternate</string>
             <key>CFBundleTypeExtensions</key>
             <array>
-                    <string>MBTILES</string>
-                    <string>mbtiles</string>
+                <string>MBTILES</string>
+                <string>mbtiles</string>
             </array>
             <key>LSItemContentTypes</key>
             <array>

@@ -396,7 +396,7 @@ Page {
                 Layout.fillWidth: true
                 Layout.columnSpan: 2
                 icon.source: "/icons/material/ic_info_outline.svg"
-                text: qsTr("How to connect your traffic receiver…")
+                text: qsTr("Connect to a traffic receiver…")
                 onClicked: openManual("02-steps/traffic.html")
             }
 
@@ -404,7 +404,15 @@ Page {
                 Layout.fillWidth: true
                 Layout.columnSpan: 2
                 icon.source: "/icons/material/ic_info_outline.svg"
-                text: qsTr("How to connect your flight simulator…")
+                text: qsTr("Connect to the SafeSky app…")
+                onClicked: openManual("02-steps/safesky.html")
+            }
+
+            WordWrappingItemDelegate {
+                Layout.fillWidth: true
+                Layout.columnSpan: 2
+                icon.source: "/icons/material/ic_info_outline.svg"
+                text: qsTr("Connect to a flight simulator…")
                 onClicked: openManual("02-steps/simulator.html")
             }
 

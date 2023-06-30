@@ -136,8 +136,8 @@
             <string>Alternate</string>
             <key>CFBundleTypeExtensions</key>
             <array>
-                    <string>gpx</string>
-                    <string>GPX</string>
+                <string>gpx</string>
+                <string>GPX</string>
             </array>
             <key>LSItemContentTypes</key>
             <array>
@@ -166,6 +166,24 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
+            <string>Text</string>
+            <key>CFBundleTypeRole</key>
+            <string>Viewer</string>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>txt</string>
+                <string>TXT</string>
+            </array>
+            <key>LSHandlerRank</key>
+            <string>Alternate</string>
+            <key>LSItemContentTypes</key>
+            <array>
+                <string>public.text</string>
+            </array>
+
+        </dict>
+        <dict>
+            <key>CFBundleTypeName</key>
             <string>MBTILES</string>
             <key>CFBundleTypeRole</key>
             <string>Viewer</string>
@@ -173,8 +191,8 @@
             <string>Alternate</string>
             <key>CFBundleTypeExtensions</key>
             <array>
-                    <string>MBTILES</string>
-                    <string>mbtiles</string>
+                <string>MBTILES</string>
+                <string>mbtiles</string>
             </array>
             <key>LSItemContentTypes</key>
             <array>

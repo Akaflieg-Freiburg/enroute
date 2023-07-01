@@ -246,6 +246,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
         result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> for iOS is available for public beta testing on <a href='https://testflight.apple.com/join/jqPSdGNX'>Apple TestFlight</a>. "
                              "The <a href='https://akaflieg-freiburg.github.io/enroute/'>homepage of this app</a> also contains a link to TestFlight.") + "</p>";
 #endif
+        result += "<p>" + tr("We need help with promotional graphics for the app stores and with explainer videos. If you are a graphic/video artist and would like to help, then please be in touch.") + "</p>";
         return result;
     }
 

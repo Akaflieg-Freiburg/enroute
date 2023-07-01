@@ -9,13 +9,12 @@ layout: splash
 header:
   overlay_image: /assets/images/teaser.jpg
   overlay_filter: rgba(0, 0, 0, 0.5)
-#  overlay_text: "xx"
   caption: "Photo by Shaun Darwood on Unsplash"
   actions:
     - label: "Get it on Google Play"
       url: "https://play.google.com/store/apps/details?id=de.akaflieg_freiburg.enroute"
-    - label: "Test it on Apple TestFlight"
-      url: "https://testflight.apple.com/join/jqPSdGNX"
+    - label: "Download on the App Store"
+      url: "https://apps.apple.com/de/app/enroute-flight-navigation/id6448892176"
 feature_row:
   - image_path: /assets/images/maps.jpg
     alt: "Free maps"

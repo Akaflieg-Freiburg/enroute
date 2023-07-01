@@ -8,21 +8,19 @@ permalink: /download/
   <a href='https://play.google.com/store/apps/details?id=de.akaflieg_freiburg.enroute&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a>
 </figure>
 
-### Mobile App for Android devices
+### Mobile App
 
-**Enroute Flight Navigation** is available for free download at Google Play.
+**Enroute Flight Navigation** is available for free download on [Google
+Play](https://play.google.com/store/apps/details?id=de.akaflieg_freiburg.enroute)
+and on the Apple [App
+Store](https://apps.apple.com/de/app/enroute-flight-navigation/id6448892176)..
 
 Users who wish to try the latest, experimental versions of the app are welcome
 to join our public beta-testing program.  Please have a look at Google's
-[Instructions for joining the beta-test
-program](https://support.google.com/googleplay/answer/7003180?hl=en).
-
-
-### Mobile App for Apple devices
-
-**Enroute Flight Navigation** has been ported to iOS devices and is available
-for public beta testing at [Apple
+[Google's beta-test
+program](https://support.google.com/googleplay/answer/7003180?hl=en) and [Apple
 TestFlight](https://testflight.apple.com/join/jqPSdGNX).
+
 
 <figure style="width: 130px" class="align-right">
   <a href='https://flathub.org/apps/details/de.akaflieg_freiburg.enroute'><img width='130px' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a>

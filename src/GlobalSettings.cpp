@@ -172,17 +172,6 @@ void GlobalSettings::setHideGlidingSectors(bool hide)
 }
 
 
-void GlobalSettings::setHillshading(bool show)
-{
-    if (show == hillshading())
-    {
-        return;
-    }
-    settings.setValue(QStringLiteral("Map/hillshading"), show);
-    emit hillshadingChanged();
-}
-
-
 void GlobalSettings::setIgnoreSSLProblems(bool ignore)
 {
     if (ignore == ignoreSSLProblems())

@@ -58,7 +58,6 @@ void GeoMaps::GeoMapProvider::deferredInitialization()
     connect(GlobalObject::dataManager()->terrainMaps(), &DataManagement::Downloadable_Abstract::fileContentChanged_delayed, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
     connect(GlobalObject::globalSettings(), &GlobalSettings::airspaceAltitudeLimitChanged, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
     connect(GlobalObject::globalSettings(), &GlobalSettings::hideGlidingSectorsChanged, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
-    connect(GlobalObject::globalSettings(), &GlobalSettings::hillshadingChanged, this, &GeoMaps::GeoMapProvider::onMBTILESChanged);
 
     _aviationDataCacheTimer.setSingleShot(true);
     _aviationDataCacheTimer.setInterval(3s);
@@ -511,14 +510,7 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
     file.open(QIODevice::ReadOnly);
     QByteArray data = file.readAll();
     data.replace("%URL%", (_tileServer.serverUrl()+"/"+_currentBaseMapPath).toLatin1());
-    if (GlobalObject::globalSettings()->hillshading())
-    {
-        data.replace("%URLT%", (_tileServer.serverUrl()+"/"+_currentTerrainMapPath).toLatin1());
-    }
-    else
-    {
-        data.replace("%URLT%", (_tileServer.serverUrl()).toLatin1());
-    }
+    data.replace("%URLT%", (_tileServer.serverUrl()+"/"+_currentTerrainMapPath).toLatin1());
     data.replace("%URL2%", _tileServer.serverUrl().toLatin1());
     _styleFile = new QTemporaryFile(this);
     _styleFile->open();

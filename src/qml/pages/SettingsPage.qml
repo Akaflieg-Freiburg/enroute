@@ -173,29 +173,6 @@ Page {
                 }
             }
 
-            WordWrappingSwitchDelegate {
-                id: hillshading
-                text: qsTr("Hillshading")
-                icon.source: "/icons/material/ic_map.svg"
-                Layout.fillWidth: true
-                Component.onCompleted: {
-                    hillshading.checked = GlobalSettings.hillshading
-                }
-                onToggled: {
-                    PlatformAdaptor.vibrateBrief()
-                    GlobalSettings.hillshading = hillshading.checked
-                }
-            }
-            ToolButton {
-                icon.source: "/icons/material/ic_info_outline.svg"
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    helpDialog.title = qsTr("Hillshading")
-                    helpDialog.text = "<p>"+qsTr("We have received a report from one user, who complained about issues with the hillshading graphics on very old devices, potentially because of buggy system libraries. If you experience problems, use this switch to disable the hillshading feature.")+"</p>"
-                    helpDialog.open()
-                }
-            }
-
             Label {
                 Layout.leftMargin: settingsPage.font.pixelSize
                 Layout.fillWidth: true

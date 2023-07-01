@@ -240,12 +240,12 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 
     if (name == u":text/whatsnew.html"_qs)
     {
-        auto result = "<p>" + tr("<strong>Enroute Flight Navigation</strong> is now able to import airspace data in OpenAir format. Check the manual for details.") + "</p>";
-        result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> integrates well with the <a href='https://safesky.app'>SafeSky anti-collision app</a> (a 'premium' subscription of SafeSky is required). Check the manual for details, or go to the 'Settings' page.") + "</p>";
+        QString result;
 #if not defined(Q_OS_IOS)
-        result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> for iOS is available for public beta testing on <a href='https://testflight.apple.com/join/jqPSdGNX'>Apple TestFlight</a>. "
-                             "The <a href='https://akaflieg-freiburg.github.io/enroute/'>homepage of this app</a> also contains a link to TestFlight.") + "</p>";
+        result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> for iOS is now available on the Apple <a href='https://apps.apple.com/de/app/enroute-flight-navigation/id6448892176'>App Store</a>.") + "</p>";
 #endif
+        result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> is now able to import airspace data in OpenAir format. Check the manual for details.") + "</p>";
+        result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> integrates well with the <a href='https://safesky.app'>SafeSky anti-collision app</a> (a 'premium' subscription of SafeSky is required). Check the manual for details, or go to the 'Settings' page.") + "</p>";
         result += "<p>" + tr("We need help with promotional graphics for the app stores and with explainer videos. If you are a graphic/video artist and would like to help, then please be in touch.") + "</p>";
         return result;
     }

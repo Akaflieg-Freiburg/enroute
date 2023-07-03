@@ -57,22 +57,14 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 
     if (name == u":text/authors.html"_qs)
     {
-      return "<h3>"+tr("Authors")+"</h3>"
-	+ "<p>"+tr("The app <strong>Enroute Flight Navigation</strong> was written by Stefan Kebekus, flight enthusiast since 1986 and member of the Akaflieg Freiburg flight club. Stefan flies gliders and motor planes.")+"</p>"
-	+ "<h4>"+tr("Address")+"</h4>"
-	+ "Stefan Kebekus<br>Wintererstraße 77<br>79104 Freiburg<br>Germany<br><br><a href='mailto:stefan.kebekus@gmail.com'>e-mail</a>"
-	+ tr(R"html(
-<h3>Manual</h3>
-
-<p>The manual has kindly been provided by Michael Horbaschk.</p>
-)html")
-        
-    + tr(R"html(
-<h3>iOS Version</h3>
-
-<p>The app has been ported to iOS by Simon Schneider. Simon is currently student pilot (PPL) and member of the Akaflieg Freiburg flight club, just like Stefan.</p>
-)html")
-        + tr(R"html(
+        return "<h3>"+tr("Authors")+"</h3>"
+               + "<p>"+tr("The app <strong>Enroute Flight Navigation</strong> was written by Stefan Kebekus, flight enthusiast since 1986 and member of the Akaflieg Freiburg flight club. Stefan flies gliders and motor planes.")+"</p>"
+               + "<h4>"+tr("Address")+"</h4>"
+               + "Stefan Kebekus<br>Wintererstraße 77<br>79104 Freiburg<br>Germany<br><br><a href='mailto:stefan.kebekus@gmail.com'>e-mail</a>"
+               + "<h3>" + tr("Contributions") + "</h3>"
+               + "<p><strong>" + tr("iOS Version") + "</strong> " + tr("The app has been ported to iOS by Simon Schneider. Simon is currently student pilot (PPL) and member of the Akaflieg Freiburg flight club, just like Stefan.") + "</p>"
+               + "<p><strong>" + tr("Programming") + "</strong> " + tr("Heinz Blöchinger has helped us with OpenAir support. After 15 years of alpine gliding, Heinz has fulfilled a big dream and now flies helicopters.") + "</p>"
+               + tr(R"html(
 <h3>Translations</h3>
 )html") + (R"html(
 <ul style="margin-left:-25px;">
@@ -96,7 +88,9 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 <li>Luca Bertoncello (Italian translation)</li>
 )html") + tr(R"html(
 <li>Adrien Crovato (Integration of weather information)</li>
-)html") + tr(R"html(
+)html")
+               + "<li>Michael Horbaschk (" + tr("Manual") + ")</li>"
+               + tr(R"html(
 <li>Szymon Kocur (Polish translation)</li>
 )html") + tr(R"html(
 <li>Heiner Tholen (User interface)</li>
@@ -246,11 +240,13 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 
     if (name == u":text/whatsnew.html"_qs)
     {
-        auto result = "<p>" + tr("This app is now able to speak! Use the 'Settings' page to enable or disable voice notifications by category.") + "</p>";
+        QString result;
 #if not defined(Q_OS_IOS)
-        result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> for iOS is available for public beta testing on <a href='https://testflight.apple.com/join/jqPSdGNX'>Apple TestFlight</a>. "
-                             "The <a href='https://akaflieg-freiburg.github.io/enroute/'>homepage of this app</a> also contains a link to TestFlight.") + "</p>";
+        result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> for iOS is now available on the Apple <a href='https://apps.apple.com/de/app/enroute-flight-navigation/id6448892176'>App Store</a>.") + "</p>";
 #endif
+        result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> is now able to import airspace data in OpenAir format. Check the manual for details.") + "</p>";
+        result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> integrates well with the <a href='https://safesky.app'>SafeSky anti-collision app</a> (a 'premium' subscription of SafeSky is required). Check the manual for details, or go to the 'Settings' page.") + "</p>";
+        result += "<p>" + tr("We need help with promotional graphics for the app stores and with explainer videos. If you are a graphic/video artist and would like to help, then please be in touch.") + "</p>";
         return result;
     }
 

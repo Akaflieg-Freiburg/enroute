@@ -280,6 +280,23 @@ public:
      */
     Q_INVOKABLE QString import(const QString& fileName, const QString& newName);
 
+    /*! \brief Import airspace data into the library of locally installed
+     * maps
+     *
+     * This method imports airspace data in OpenAir format into the
+     * library of locally installed maps.
+     *
+     * @param fileName File name of locally raster or vector map, in OpenAir
+     * format.
+     *
+     * @param newName Name under which the map is available in the library. If
+     * the name exists, the library entry will be replaced.
+     *
+     * @returns A human-readable HTML string on error, or an empty string on
+     * success
+     */
+    Q_INVOKABLE QString importOpenAir(const QString& fileName, const QString& newName);
+
 public slots:
     /*! \brief Triggers an update of the list of remotely available data items
      *

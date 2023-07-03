@@ -39,6 +39,7 @@ set(SOURCES
     geomaps/GeoMapProvider.h
     geomaps/GPX.h
     geomaps/MBTILES.h
+    geomaps/OpenAir.h
     geomaps/TileHandler.h
     geomaps/TileServer.h
     geomaps/Waypoint.h
@@ -110,6 +111,7 @@ set(SOURCES
     geomaps/GeoMapProvider.cpp
     geomaps/GPX.cpp
     geomaps/MBTILES.cpp
+    geomaps/OpenAir.cpp
     geomaps/TileHandler.cpp
     geomaps/TileServer.cpp
     geomaps/Waypoint.cpp

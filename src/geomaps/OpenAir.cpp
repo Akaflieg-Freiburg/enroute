@@ -420,7 +420,7 @@ public:
         QJsonArray coordArray;
         QJsonArray coord;
         QGeoCoordinate point;
-        int last;
+
         recObj.insert(u"type"_qs, QJsonValue::fromVariant("FeatureCollection"));
         recObj.insert(u"info"_qs, QJsonValue::fromVariant(fileName));
 

@@ -196,6 +196,8 @@ Page {
                 }
             }
 
+
+
             Loader {
                 id: dialogLoader
 
@@ -269,36 +271,36 @@ Page {
                 headerMenuX.open()
             }
 
-        }
 
-        AutoSizingMenu {
-            id: headerMenuX
+            AutoSizingMenu {
+                id: headerMenuX
 
-            MenuItem {
-                id: updateMenu
+                MenuItem {
+                    id: updateMenu
 
-                text: qsTr("Update list of maps and data")
+                    text: qsTr("Update list of maps and data")
 
-                onTriggered: {
-                    PlatformAdaptor.vibrateBrief()
-                    highlighted = false
-                    DataManager.updateRemoteDataItemList()
+                    onTriggered: {
+                        PlatformAdaptor.vibrateBrief()
+                        highlighted = false
+                        DataManager.updateRemoteDataItemList()
+                    }
                 }
-            }
 
-            MenuItem {
-                id: downloadUpdatesMenu
+                MenuItem {
+                    id: downloadUpdatesMenu
 
-                text: qsTr("Download all updates…")
-                enabled: (!DataManager.items.updateSize.isNull())
+                    text: qsTr("Download all updates…")
+                    enabled: (!DataManager.items.updateSize.isNull())
 
-                onTriggered: {
-                    PlatformAdaptor.vibrateBrief()
-                    highlighted = false
-                    DataManager.items.update()
+                    onTriggered: {
+                        PlatformAdaptor.vibrateBrief()
+                        highlighted = false
+                        DataManager.items.update()
+                    }
                 }
-            }
 
+            }
         }
 
     }
@@ -324,68 +326,68 @@ Page {
 
 
     SwipeView{
-            id: sv
+        id: sv
 
-            currentIndex: bar.currentIndex
-            anchors.top: bar.bottom
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
+        currentIndex: bar.currentIndex
+        anchors.top: bar.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
 
-            anchors.bottomMargin: pg.footer.visible ? 0 : SafeInsets.bottom
-            anchors.leftMargin: SafeInsets.left
-            anchors.rightMargin: SafeInsets.right
+        anchors.bottomMargin: pg.footer.visible ? 0 : SafeInsets.bottom
+        anchors.leftMargin: SafeInsets.left
+        anchors.rightMargin: SafeInsets.right
 
+        clip: true
+
+        DecoratedListView {
+            Layout.fillHeight: true
+            Layout.fillWidth: true
             clip: true
+            model: DataManager.mapSets.downloadables
+            delegate: MapSet {}
+            ScrollIndicator.vertical: ScrollIndicator {}
 
-            DecoratedListView {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                clip: true
-                model: DataManager.mapSets.downloadables
-                delegate: MapSet {}
-                ScrollIndicator.vertical: ScrollIndicator {}
+            section.property: "modelData.section"
+            section.delegate: sectionHeading
 
-                section.property: "modelData.section"
-                section.delegate: sectionHeading
-
-                // Refresh list of maps on overscroll
-                property int refreshFlick: 0
-                onFlickStarted: {
-                    refreshFlick = atYBeginning
-                }
-                onFlickEnded: {
-                    if ( atYBeginning && refreshFlick ) {
-                        PlatformAdaptor.vibrateBrief()
-                        DataManager.updateRemoteDataItemList()
-                    }
-                }
+            // Refresh list of maps on overscroll
+            property int refreshFlick: 0
+            onFlickStarted: {
+                refreshFlick = atYBeginning
             }
-
-            DecoratedListView {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                clip: true
-                model: DataManager.databases.downloadables
-                delegate: MapSet {}
-                ScrollIndicator.vertical: ScrollIndicator {}
-
-                section.property: "modelData.section"
-                section.delegate: sectionHeading
-
-                // Refresh list of maps on overscroll
-                property int refreshFlick: 0
-                onFlickStarted: {
-                    refreshFlick = atYBeginning
-                }
-                onFlickEnded: {
-                    if ( atYBeginning && refreshFlick ) {
-                        PlatformAdaptor.vibrateBrief()
-                        DataManager.updateRemoteDataItemList()
-                    }
+            onFlickEnded: {
+                if ( atYBeginning && refreshFlick ) {
+                    PlatformAdaptor.vibrateBrief()
+                    DataManager.updateRemoteDataItemList()
                 }
             }
         }
+
+        DecoratedListView {
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            clip: true
+            model: DataManager.databases.downloadables
+            delegate: MapSet {}
+            ScrollIndicator.vertical: ScrollIndicator {}
+
+            section.property: "modelData.section"
+            section.delegate: sectionHeading
+
+            // Refresh list of maps on overscroll
+            property int refreshFlick: 0
+            onFlickStarted: {
+                refreshFlick = atYBeginning
+            }
+            onFlickEnded: {
+                if ( atYBeginning && refreshFlick ) {
+                    PlatformAdaptor.vibrateBrief()
+                    DataManager.updateRemoteDataItemList()
+                }
+            }
+        }
+    }
 
 
     Label {
@@ -534,7 +536,7 @@ Page {
             pg.dialogLoader.active = false
             pg.dialogLoader.title = qsTr("Download Error")
             pg.dialogLoader.text = qsTr("<p>Failed to download the list of aviation maps.</p><p>Reason: %1.</p>").arg(message)
-            pg.dialogLoader.source = "../dialogs/ErrorDialog.qml"
+            pg.dialogLoader.source = "dialogs/ErrorDialog.qml"
             pg.dialogLoader.active = true
         }
     }

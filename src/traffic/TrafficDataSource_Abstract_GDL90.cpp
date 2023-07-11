@@ -314,8 +314,6 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
         auto vmInt = (vm0 << 8) + vm1;
         m_trueAltitudeFOM = Units::Distance::fromM(vmInt);
         m_trueAltitudeTimer.start();
-
-
     }
 
     // Traffic report

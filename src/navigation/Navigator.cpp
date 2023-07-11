@@ -53,6 +53,35 @@ Navigation::Navigator::Navigator(QObject *parent) : GlobalObject(parent)
         m_aircraft.setDescentSpeed(descentSpeed);
         m_aircraft.setFuelConsumption(fuelConsumption);
     }
+
+#if defined(Q_OS_ANDROID) or defined(Q_OS_IOS)
+    m_pressureSensor.setActive(true);
+    m_temperatureSensor.setActive(true);
+
+    auto* timer = new QTimer(this);
+    timer->setInterval(1000);
+    timer->setSingleShot(false);
+    timer->start();
+    qWarning() << "A";
+    connect(timer, &QTimer::timeout, this, [this]()
+            {
+        qWarning() << "AA";
+        auto* reading = m_pressureSensor.reading();
+        if (reading != nullptr)
+        {
+            qDebug() << "Pressure" << reading->pressure();
+        }
+
+
+        auto* treading = m_temperatureSensor.reading();
+        if (treading != nullptr)
+        {
+            qDebug() << "Temperature" << treading->temperature();
+        }
+
+    });
+#endif
+
 }
 
 

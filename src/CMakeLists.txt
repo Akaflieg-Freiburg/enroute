@@ -236,6 +236,7 @@ if(ANDROID)
         Qt6::Positioning
         Qt6::Quick
         Qt6::QuickControls2
+        Qt6::Sensors
         Qt6::Sql
         Qt6::Svg
         Qt6::TextToSpeech
@@ -372,6 +373,7 @@ if (IOS)
         Qt6::Positioning
         Qt6::Quick
         Qt6::QuickControls2
+        Qt6::Sensors
         Qt6::Sql
         Qt6::Svg
         Qt6::TextToSpeech

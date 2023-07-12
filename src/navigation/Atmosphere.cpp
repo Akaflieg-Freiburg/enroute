@@ -33,29 +33,11 @@ Navigation::Atmosphere::Atmosphere(QObject *parent) : GlobalObject(parent)
     m_temperatureSensor.setActive(true);
 
     auto* timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &Navigation::Atmosphere::updateSensorReadings);
     timer->setInterval(1000);
     timer->setSingleShot(false);
     timer->start();
-    qWarning() << "A";
-    connect(timer, &QTimer::timeout, this, [this]()
-            {
-        qWarning() << "AA";
-        auto* reading = m_pressureSensor.reading();
-        if (reading != nullptr)
-        {
-            qDebug() << "Pressure" << reading->pressure();
-        }
-
-
-        auto* treading = m_temperatureSensor.reading();
-        if (treading != nullptr)
-        {
-            qDebug() << "Temperature" << treading->temperature();
-        }
-
-    });
 #endif
-
 }
 
 
@@ -72,5 +54,32 @@ void Navigation::Atmosphere::deferredInitialization()
 
 void Navigation::Atmosphere::updateSensorReadings()
 {
-#warning not implemented
+#if defined(Q_OS_ANDROID) or defined(Q_OS_IOS)
+    double new_ambientPressure { qQNaN() };
+    double new_ambientTemperature { qQNaN() };
+
+    auto* pressureReading = m_pressureSensor.reading();
+    if (pressureReading != nullptr)
+    {
+        new_ambientPressure = pressureReading->pressure();
+    }
+    delete pressureReading;
+    if (new_ambientPressure != m_ambientPressure)
+    {
+        m_ambientPressure = new_ambientPressure;
+        emit ambientPressureChanged();
+    }
+
+    auto* temperatureReading = m_temperatureSensor.reading();
+    if (temperatureReading != nullptr)
+    {
+        new_ambientTemperature = temperatureReading->temperature();
+    }
+    delete temperatureReading;
+    if (new_ambientTemperature != m_ambientTemperature)
+    {
+        m_ambientTemperature = new_ambientTemperature;
+        emit ambientTemperatureChanged();
+    }
+#endif
 }

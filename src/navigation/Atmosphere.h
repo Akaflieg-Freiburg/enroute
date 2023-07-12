@@ -77,12 +77,17 @@ public:
     // PROPERTIES
     //
 
-    /*! \brief Cabin pressure
+    /*! \brief Ambient pressure
      *
      *  This property holds the ambient pressure recorded by the device sensor (if any).
      */
-    Q_PROPERTY(double cabinPressure READ cabinPressure NOTIFY cabinPressureChanged)
+    Q_PROPERTY(double ambientPressure READ ambientPressure NOTIFY ambientPressureChanged)
 
+    /*! \brief Ambient temperature
+     *
+     *  This property holds the ambient temperature recorded by the device sensor (if any).
+     */
+    Q_PROPERTY(double ambientTemperature READ ambientTemperature NOTIFY ambientTemperatureChanged)
 
 
     //
@@ -91,14 +96,23 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
-     *  @returns Property cabinPressure
+     *  @returns Property ambientPressure
      */
-    [[nodiscard]] double cabinPressure() const { return qQNaN(); }
+    [[nodiscard]] double ambientPressure() const { return m_ambientPressure; }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property ambientPressure
+     */
+    [[nodiscard]] double ambientTemperature() const { return m_ambientTemperature; }
 
 
 signals:
     /*! \brief Notifier signal */
-    void cabinPressureChanged();
+    void ambientPressureChanged();
+
+    /*! \brief Notifier signal */
+    void ambientTemperatureChanged();
 
 private slots:
     // Update sensor readings. For performance reasons, we poll sensors.
@@ -114,6 +128,9 @@ private:
     // Ambient pressure sensor
     QPressureSensor m_pressureSensor;
 #endif
+
+    double m_ambientPressure { qQNaN() };
+    double m_ambientTemperature { qQNaN() };
 };
 
 } // namespace Navigation

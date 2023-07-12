@@ -27,11 +27,6 @@
 #include "navigation/FlightRoute.h"
 #include "navigation/RemainingRouteInfo.h"
 
-#if defined(Q_OS_ANDROID) or defined(Q_OS_IOS)
-#include <QAmbientTemperatureSensor>
-#include <QPressureSensor>
-#endif
-
 
 namespace Navigation {
 
@@ -223,11 +218,6 @@ private:
 
     // RemainingRouteInfo only use the setter method to write to m_remainingRouteInfo
     RemainingRouteInfo m_remainingRouteInfo;
-
-#if defined(Q_OS_ANDROID) or defined(Q_OS_IOS)
-    QAmbientTemperatureSensor m_temperatureSensor;
-    QPressureSensor m_pressureSensor;
-#endif
 };
 
 } // namespace Navigation

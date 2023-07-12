@@ -30,6 +30,7 @@
 #include "dataManagement/SSLErrorHandler.h"
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/WaypointLibrary.h"
+#include "navigation/Atmosphere.h"
 #include "navigation/Clock.h"
 #include "navigation/Navigator.h"
 #include "notam/NotamProvider.h"
@@ -44,6 +45,7 @@
 
 bool isConstructingOrDeconstructing {false};
 
+QPointer<Navigation::Atmosphere> g_atmosphere {};
 QPointer<Navigation::Clock> g_clock {};
 QPointer<DataManagement::DataManager> g_dataManager {};
 QPointer<DataManagement::SSLErrorHandler> g_sslErrorHandler {};
@@ -88,6 +90,12 @@ GlobalObject::GlobalObject(QObject *parent) : QObject(parent)
 }
 
 
+auto GlobalObject::atmosphere() -> Navigation::Atmosphere*
+{
+    return allocateInternal<Navigation::Atmosphere>(g_atmosphere);
+}
+
+
 void GlobalObject::clear()
 {
     if (g_notificationManager != nullptr)
@@ -116,6 +124,7 @@ void GlobalObject::clear()
     delete g_trafficDataProvider;
     delete g_waypointLibrary;
     delete g_weatherDataProvider;
+    delete g_atmosphere;
 
     delete g_networkAccessManager;
 

@@ -41,6 +41,7 @@ class WaypointLibrary;
 
 namespace Navigation
 {
+class Atmosphere;
 class Clock;
 class Navigator;
 } // namespace Navigation
@@ -119,6 +120,12 @@ public:
      * managed by this class.
      */
     ~GlobalObject() override = default;
+
+    /*! \brief Pointer to appplication-wide static Navigation::Clock instance
+     *
+     * @returns Pointer to appplication-wide static instance.
+     */
+    Q_INVOKABLE static Navigation::Atmosphere* atmosphere();
 
     /*! \brief Deletes all globally defined objects
      *

@@ -48,6 +48,7 @@ set(SOURCES
     GlobalSettings.h
     Librarian.h
     navigation/Aircraft.h
+    navigation/Atmosphere.h
     navigation/Clock.h
     navigation/FlightRoute.h
     navigation/Leg.h
@@ -121,6 +122,7 @@ set(SOURCES
     Librarian.cpp
     main.cpp
     navigation/Aircraft.cpp
+    navigation/Atmosphere.cpp
     navigation/Clock.cpp
     navigation/FlightRoute.cpp
     navigation/FlightRoute_GPX.cpp

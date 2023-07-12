@@ -19,6 +19,8 @@
  ***************************************************************************/
 
 #include <QQmlEngine>
+#include <QTimer>
+
 #include "navigation/Atmosphere.h"
 
 
@@ -55,13 +57,13 @@ void Navigation::Atmosphere::deferredInitialization()
 void Navigation::Atmosphere::updateSensorReadings()
 {
 #if defined(Q_OS_ANDROID) or defined(Q_OS_IOS)
-    double new_ambientPressure { qQNaN() };
+    Units::Pressure new_ambientPressure;
     double new_ambientTemperature { qQNaN() };
 
     auto* pressureReading = m_pressureSensor.reading();
     if (pressureReading != nullptr)
     {
-        new_ambientPressure = pressureReading->pressure();
+        new_ambientPressure = Units::Pressure::fromPa(pressureReading->pressure());
     }
     delete pressureReading;
     if (new_ambientPressure != m_ambientPressure)

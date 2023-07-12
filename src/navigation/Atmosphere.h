@@ -22,6 +22,7 @@
 
 #include <QQmlEngine>
 
+#include "units/Pressure.h"
 #include "GlobalObject.h"
 
 
@@ -81,7 +82,7 @@ public:
      *
      *  This property holds the ambient pressure recorded by the device sensor (if any).
      */
-    Q_PROPERTY(double ambientPressure READ ambientPressure NOTIFY ambientPressureChanged)
+    Q_PROPERTY(Units::Pressure ambientPressure READ ambientPressure NOTIFY ambientPressureChanged)
 
     /*! \brief Ambient temperature
      *
@@ -98,7 +99,7 @@ public:
      *
      *  @returns Property ambientPressure
      */
-    [[nodiscard]] double ambientPressure() const { return m_ambientPressure; }
+    [[nodiscard]] Units::Pressure ambientPressure() const { return m_ambientPressure; }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -129,7 +130,7 @@ private:
     QPressureSensor m_pressureSensor;
 #endif
 
-    double m_ambientPressure { qQNaN() };
+    Units::Pressure m_ambientPressure;
     double m_ambientTemperature { qQNaN() };
 };
 

@@ -86,6 +86,7 @@ set(SOURCES
     units/Angle.h
     units/ByteSize.h
     units/Distance.h
+    units/Pressure.h
     units/Speed.h
     units/Timespan.h
     units/Units.h
@@ -161,6 +162,7 @@ set(SOURCES
     traffic/Warning.cpp
     units/Angle.cpp
     units/Distance.cpp
+    units/Pressure.cpp
     units/Speed.cpp
     units/Timespan.cpp
     units/Volume.cpp

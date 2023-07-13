@@ -172,11 +172,37 @@ Page {
             Label { text: qsTr("Vertical Speed") }
             Label { text: Navigator.aircraft.verticalSpeedToString( PositionProvider.positionInfo.verticalSpeed() ) }
 
-            Label { text: qsTr("Pressure Altitude") }
-            Label { text: Navigator.aircraft.verticalDistanceToString( PositionProvider.pressureAltitude ) }
-
             Label { text: qsTr("Timestamp") }
             Label { text: PositionProvider.positionInfo.isValid() ? PositionProvider.positionInfo.timestampString() : "-" }
+
+
+            Label {
+                Layout.columnSpan: 2
+
+                text: qsTr("Static Pressure Sensor")
+                font.pixelSize: sView.font.pixelSize*1.2
+                font.bold: true
+            }
+
+            Label { text: qsTr("Pressure Altitude (STD)") }
+            Label { text: Navigator.aircraft.verticalDistanceToString( PositionProvider.pressureAltitude ) }
+
+            Label {
+                Layout.columnSpan: 2
+
+                text: qsTr("Ambient Sensors")
+                font.pixelSize: sView.font.pixelSize*1.2
+                font.bold: true
+            }
+
+            Label { text: qsTr("Cabin Pressure") }
+            Label { text: Sensors.ambientPressure.isFinite() ? Math.round(Sensors.ambientPressure.toHPa()*10.0)/10.0 + " hPa (" + Math.round(Sensors.ambientPressure.toInHg()*100.0)/100.0 + " in Hg)"  : "-" }
+
+            Label { text: qsTr("Cabin Temperature") }
+            Label { text: Sensors.ambientTemperature.isFinite() ? Math.round(Sensors.ambientTemperature.toDegreeCelsius()) + " °C (" + Math.round(Sensors.ambientTemperature.toDegreeFarenheit()) + " °F)"  : "-" }
+
+            Label { text: qsTr("Cabin Altitude (STD)") }
+            Label { text: Navigator.aircraft.verticalDistanceToString( Sensors.pressureHeight ) }
 
         } // GridLayout
 

@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include "units/Distance.h"
 #include "units/Pressure.h"
 #include "units/Temperature.h"
 
@@ -44,6 +45,9 @@ public:
 
     /*! \brief Standard destructor */
     ~Atmosphere() = default;
+
+    static Units::Distance height(Units::Pressure pressure);
+    static Units::Pressure pressure(Units::Distance height);
 
 };
 

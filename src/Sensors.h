@@ -25,6 +25,7 @@
 #include "units/Pressure.h"
 #include "units/Temperature.h"
 #include "GlobalObject.h"
+#include "navigation/Atmosphere.h"
 
 
 #if defined(Q_OS_ANDROID) or defined(Q_OS_IOS)
@@ -82,6 +83,12 @@ public:
      */
     Q_PROPERTY(Units::Pressure ambientPressure READ ambientPressure NOTIFY ambientPressureChanged)
 
+    /*! \brief Ambient pressure
+     *
+     *  This property holds the ambient pressure recorded by the device sensor (if any).
+     */
+    Q_PROPERTY(Units::Distance pressureHeight READ pressureHeight NOTIFY ambientPressureChanged)
+
     /*! \brief Ambient temperature
      *
      *  This property holds the ambient temperature recorded by the device sensor (if any).
@@ -105,6 +112,7 @@ public:
      */
     [[nodiscard]] Units::Temperature ambientTemperature() const { return m_ambientTemperature; }
 
+    [[nodiscard]] Units::Distance pressureHeight() const { return Navigation::Atmosphere::height(m_ambientPressure); }
 
 signals:
     /*! \brief Notifier signal */

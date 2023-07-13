@@ -99,7 +99,7 @@ public:
          */
     Q_INVOKABLE [[nodiscard]] double toDegreeCelsius() const
     {
-        return m_temperatureInDegreeKelvin+273.15;
+        return m_temperatureInDegreeKelvin-273.15;
     }
 
     /*! \brief Convert to degree Farenheit

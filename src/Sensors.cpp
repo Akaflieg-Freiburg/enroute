@@ -65,7 +65,6 @@ void Sensors::updateSensorReadings()
     {
         new_ambientPressure = Units::Pressure::fromPa(pressureReading->pressure());
     }
-    delete pressureReading;
     if (new_ambientPressure != m_ambientPressure)
     {
         m_ambientPressure = new_ambientPressure;
@@ -77,7 +76,6 @@ void Sensors::updateSensorReadings()
     {
         new_ambientTemperature = Units::Temperature::fromDegreeCelsius(temperatureReading->temperature());
     }
-    delete temperatureReading;
     if (new_ambientTemperature != m_ambientTemperature)
     {
         m_ambientTemperature = new_ambientTemperature;

@@ -88,6 +88,7 @@ set(SOURCES
     units/Distance.h
     units/Pressure.h
     units/Speed.h
+    units/Temperature.h
     units/Timespan.h
     units/Units.h
     units/Volume.h
@@ -164,6 +165,7 @@ set(SOURCES
     units/Distance.cpp
     units/Pressure.cpp
     units/Speed.cpp
+    units/Temperature.cpp
     units/Timespan.cpp
     units/Volume.cpp
     units/VolumeFlow.cpp

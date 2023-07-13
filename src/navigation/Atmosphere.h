@@ -29,26 +29,30 @@ namespace Navigation {
 
 /*! \brief Atmospherical data
  *
- *  This provides computation for the ICAO standard atmosphere.
+ *  This class provides the standard computation routines for the ICAO atmosphere, for the height range of 0-11km
  *
  */
 
 class Atmosphere
 {
 public:
-    //
-    // Constructors and destructors
-    //
-
-    /*! \brief Standard constructor */
-    explicit Atmosphere();
-
-    /*! \brief Standard destructor */
-    ~Atmosphere() = default;
-
+    /*! \brief Computation of height as a function of pressure
+     *
+     *  @param pressure Air pressure
+     *
+     *  @returns Barometric height above the 1013.25 hPa level (which equals 0 Meter)
+     *
+     */
     static Units::Distance height(Units::Pressure pressure);
-    static Units::Pressure pressure(Units::Distance height);
 
+    /*! \brief Computation of pressure as a function of altitude
+     *
+     *  @param height Barometric height above the 1013.25 hPa level (which equals 0 Meter)
+     *
+     *  @returns Air pressure
+     *
+     */
+    static Units::Pressure pressure(Units::Distance height);
 };
 
 } // namespace Navigation

@@ -83,17 +83,18 @@ public:
      */
     Q_PROPERTY(Units::Pressure ambientPressure READ ambientPressure NOTIFY ambientPressureChanged)
 
-    /*! \brief Ambient pressure
-     *
-     *  This property holds the ambient pressure recorded by the device sensor (if any).
-     */
-    Q_PROPERTY(Units::Distance pressureHeight READ pressureHeight NOTIFY ambientPressureChanged)
-
     /*! \brief Ambient temperature
      *
      *  This property holds the ambient temperature recorded by the device sensor (if any).
      */
     Q_PROPERTY(Units::Temperature ambientTemperature READ ambientTemperature NOTIFY ambientTemperatureChanged)
+
+    /*! \brief Pressure altitude
+     *
+     *  This property holds the pressure altitude for the ambient pressure measured by the device sensor.
+     *  In most practical setups, this will be the cabin altitude
+     */
+    Q_PROPERTY(Units::Distance pressureAltitude READ pressureAltitude NOTIFY ambientPressureChanged)
 
 
     //
@@ -112,7 +113,11 @@ public:
      */
     [[nodiscard]] Units::Temperature ambientTemperature() const { return m_ambientTemperature; }
 
-    [[nodiscard]] Units::Distance pressureHeight() const { return Navigation::Atmosphere::height(m_ambientPressure); }
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property pressureAltitude
+     */
+    [[nodiscard]] Units::Distance pressureAltitude() const { return Navigation::Atmosphere::height(m_ambientPressure); }
 
 signals:
     /*! \brief Notifier signal */

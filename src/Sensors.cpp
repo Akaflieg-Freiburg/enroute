@@ -39,6 +39,9 @@ Sensors::Sensors(QObject *parent) : GlobalObject(parent)
     timer->setInterval(1000);
     timer->setSingleShot(false);
     timer->start();
+
+    updateSensorReadings();
+    connect(&m_pressureSensor, &QPressureSensor::availableSensorsChanged, this, &Sensors::updateStatusString);
 #endif
 }
 
@@ -82,4 +85,37 @@ void Sensors::updateSensorReadings()
         emit ambientTemperatureChanged();
     }
 #endif
+}
+
+
+void Sensors::updateStatusString()
+{
+    QString newStatus;
+
+    QStringList sensorNames;
+#if defined(Q_OS_ANDROID) or defined(Q_OS_IOS)
+    auto types = m_pressureSensor.sensorTypes();
+    if (types.contains("QPressureSensor"))
+    {
+        sensorNames += "<li>" + tr("Pressure sensor available") + "</li>";
+    }
+    if (types.contains("QAmbientTemperatureSensor"))
+    {
+        sensorNames += "<li>" + tr("Temperature sensor available") + "</li>";
+    }
+#endif
+    if (sensorNames.isEmpty())
+    {
+        newStatus = tr("No sensor available.");
+    }
+    else
+    {
+        newStatus = "<ul style='margin-left:-25px;'>" + sensorNames.join("") + "</ul>";
+    }
+
+    if (newStatus != m_statusString)
+    {
+        m_statusString = newStatus;
+        emit statusStringChanged();
+    }
 }

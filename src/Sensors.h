@@ -96,6 +96,9 @@ public:
      */
     Q_PROPERTY(Units::Distance pressureAltitude READ pressureAltitude NOTIFY ambientPressureChanged)
 
+    /*! \brief Status string */
+    Q_PROPERTY(QString statusString READ statusString NOTIFY statusStringChanged)
+
 
     //
     // Getter Methods
@@ -119,6 +122,12 @@ public:
      */
     [[nodiscard]] Units::Distance pressureAltitude() const { return Navigation::Atmosphere::height(m_ambientPressure); }
 
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property statusString
+     */
+    [[nodiscard]] QString statusString() const { return m_statusString; }
+
 signals:
     /*! \brief Notifier signal */
     void ambientPressureChanged();
@@ -126,9 +135,15 @@ signals:
     /*! \brief Notifier signal */
     void ambientTemperatureChanged();
 
+    /*! \brief Notifier signal */
+    void statusStringChanged();
+
 private slots:
     // Update sensor readings. For performance reasons, we poll sensors.
     void updateSensorReadings();
+
+    // Update the status string
+    void updateStatusString();
 
 private:
     Q_DISABLE_COPY_MOVE(Sensors)
@@ -143,4 +158,5 @@ private:
 
     Units::Pressure m_ambientPressure;
     Units::Temperature m_ambientTemperature;
+    QString m_statusString;
 };

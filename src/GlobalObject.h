@@ -23,9 +23,10 @@
 #include <QObject>
 
 class DemoRunner;
+class GlobalSettings;
 class Librarian;
 class QNetworkAccessManager;
-class GlobalSettings;
+class Sensors;
 
 namespace DataManagement
 {
@@ -41,7 +42,6 @@ class WaypointLibrary;
 
 namespace Navigation
 {
-class Atmosphere;
 class Clock;
 class Navigator;
 } // namespace Navigation
@@ -121,12 +121,6 @@ public:
      */
     ~GlobalObject() override = default;
 
-    /*! \brief Pointer to appplication-wide static Navigation::Clock instance
-     *
-     * @returns Pointer to appplication-wide static instance.
-     */
-    Q_INVOKABLE static Navigation::Atmosphere* atmosphere();
-
     /*! \brief Deletes all globally defined objects
      *
      * This method will delete all globally defined objects in the correct order.
@@ -198,6 +192,12 @@ public:
      * @returns Pointer to appplication-wide static instance.
      */
     Q_INVOKABLE static Platform::PlatformAdaptor_Abstract* platformAdaptor();
+
+    /*! \brief Pointer to appplication-wide static Navigation::Clock instance
+     *
+     * @returns Pointer to appplication-wide static instance.
+     */
+    Q_INVOKABLE static Sensors* sensors();
 
     /*! \brief Pointer to appplication-wide static Navigation::Navigator instance
      *

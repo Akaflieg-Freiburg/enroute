@@ -47,6 +47,7 @@ set(SOURCES
     GlobalObject.h
     GlobalSettings.h
     Librarian.h
+    Sensors.h
     navigation/Aircraft.h
     navigation/Atmosphere.h
     navigation/Clock.h
@@ -122,6 +123,7 @@ set(SOURCES
     GlobalObject.cpp
     GlobalSettings.cpp
     Librarian.cpp
+    Sensors.cpp
     main.cpp
     navigation/Aircraft.cpp
     navigation/Atmosphere.cpp

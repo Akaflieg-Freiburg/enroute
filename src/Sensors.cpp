@@ -18,14 +18,70 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "navigation/Atmosphere.h"
+#include <QQmlEngine>
+#include <QTimer>
+
+#include "Sensors.h"
 
 
 //
 // Constructors and destructors
 //
 
-Navigation::Atmosphere::Atmosphere()
+Sensors::Sensors(QObject *parent) : GlobalObject(parent)
+{
+#if defined(Q_OS_ANDROID) or defined(Q_OS_IOS)
+    m_pressureSensor.setActive(true);
+    m_temperatureSensor.setActive(true);
+
+    auto* timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &Sensors::updateSensorReadings);
+    timer->setInterval(1000);
+    timer->setSingleShot(false);
+    timer->start();
+#endif
+}
+
+
+void Sensors::deferredInitialization()
 {
 }
 
+
+
+//
+// Slots
+//
+
+
+void Sensors::updateSensorReadings()
+{
+#if defined(Q_OS_ANDROID) or defined(Q_OS_IOS)
+    Units::Pressure new_ambientPressure;
+    Units::Temperature new_ambientTemperature;
+
+    auto* pressureReading = m_pressureSensor.reading();
+    if (pressureReading != nullptr)
+    {
+        new_ambientPressure = Units::Pressure::fromPa(pressureReading->pressure());
+    }
+    delete pressureReading;
+    if (new_ambientPressure != m_ambientPressure)
+    {
+        m_ambientPressure = new_ambientPressure;
+        emit ambientPressureChanged();
+    }
+
+    auto* temperatureReading = m_temperatureSensor.reading();
+    if (temperatureReading != nullptr)
+    {
+        new_ambientTemperature = Units::Temperature::fromDegreeCelsius(temperatureReading->temperature());
+    }
+    delete temperatureReading;
+    if (new_ambientTemperature != m_ambientTemperature)
+    {
+        m_ambientTemperature = new_ambientTemperature;
+        emit ambientTemperatureChanged();
+    }
+#endif
+}

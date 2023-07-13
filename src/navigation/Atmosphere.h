@@ -20,118 +20,31 @@
 
 #pragma once
 
-#include <QQmlEngine>
-
 #include "units/Pressure.h"
-#include "GlobalObject.h"
-
-
-#if defined(Q_OS_ANDROID) or defined(Q_OS_IOS)
-#include <QAmbientTemperatureSensor>
-#include <QPressureSensor>
-#endif
+#include "units/Temperature.h"
 
 
 namespace Navigation {
 
 /*! \brief Atmospherical data
  *
- *  This class collects data from ambient pressure/temperature sensors and computes
- *  pressure/density heights.
+ *  This provides computation for the ICAO standard atmosphere.
  *
  */
 
-class Atmosphere : public GlobalObject
+class Atmosphere
 {
-    Q_OBJECT
-    QML_ELEMENT
-    QML_SINGLETON
-
 public:
     //
     // Constructors and destructors
     //
 
-    /*! \brief Standard constructor
-     *
-     * @param parent The standard QObject parent pointer
-     */
-    explicit Atmosphere(QObject* parent = nullptr);
-
-    // deferred initialization
-    void deferredInitialization() override;
-
-    // No default constructor, important for QML singleton
-    explicit Atmosphere() = delete;
+    /*! \brief Standard constructor */
+    explicit Atmosphere();
 
     /*! \brief Standard destructor */
-    ~Atmosphere() override = default;
+    ~Atmosphere() = default;
 
-    // factory function for QML singleton
-    static Navigation::Atmosphere* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
-    {
-        return GlobalObject::atmosphere();
-    }
-
-
-    //
-    // PROPERTIES
-    //
-
-    /*! \brief Ambient pressure
-     *
-     *  This property holds the ambient pressure recorded by the device sensor (if any).
-     */
-    Q_PROPERTY(Units::Pressure ambientPressure READ ambientPressure NOTIFY ambientPressureChanged)
-
-    /*! \brief Ambient temperature
-     *
-     *  This property holds the ambient temperature recorded by the device sensor (if any).
-     */
-    Q_PROPERTY(double ambientTemperature READ ambientTemperature NOTIFY ambientTemperatureChanged)
-
-
-    //
-    // Getter Methods
-    //
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property ambientPressure
-     */
-    [[nodiscard]] Units::Pressure ambientPressure() const { return m_ambientPressure; }
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property ambientPressure
-     */
-    [[nodiscard]] double ambientTemperature() const { return m_ambientTemperature; }
-
-
-signals:
-    /*! \brief Notifier signal */
-    void ambientPressureChanged();
-
-    /*! \brief Notifier signal */
-    void ambientTemperatureChanged();
-
-private slots:
-    // Update sensor readings. For performance reasons, we poll sensors.
-    void updateSensorReadings();
-
-private:
-    Q_DISABLE_COPY_MOVE(Atmosphere)
-
-#if defined(Q_OS_ANDROID) or defined(Q_OS_IOS)
-    // Ambient temperature sensor
-    QAmbientTemperatureSensor m_temperatureSensor;
-
-    // Ambient pressure sensor
-    QPressureSensor m_pressureSensor;
-#endif
-
-    Units::Pressure m_ambientPressure;
-    double m_ambientTemperature { qQNaN() };
 };
 
 } // namespace Navigation

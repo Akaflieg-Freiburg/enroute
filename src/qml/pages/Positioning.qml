@@ -29,7 +29,7 @@ import "../items"
 
 Page {
     id: trafficReceiverPage
-    title: qsTr("Positioning")
+    title: qsTr("SatNav Positioning")
 
     header: StandardHeader {}
 
@@ -52,14 +52,6 @@ Page {
             columns: 2
 
             width: sView.availableWidth
-
-            Label {
-                Layout.columnSpan: 2
-
-                text: qsTr("SatNav Positioning")
-                font.pixelSize: sView.font.pixelSize*1.2
-                font.bold: true
-            }
 
             Label { // Status
                 Layout.fillWidth: true
@@ -161,74 +153,6 @@ Page {
 
             Label { text: qsTr("Timestamp") }
             Label { text: PositionProvider.positionInfo.isValid() ? PositionProvider.positionInfo.timestampString() : "-" }
-
-            Item {
-                Layout.preferredHeight: sView.font.pixelSize*0.5
-                Layout.columnSpan: 2
-            }
-
-            Label {
-                Layout.columnSpan: 2
-
-                text: qsTr("Pressure Altitude")
-                font.pixelSize: sView.font.pixelSize*1.2
-                font.bold: true
-            }
-
-            Label { text: qsTr("Pressure Altitude (STD)") }
-            Label { text: Navigator.aircraft.verticalDistanceToString( PositionProvider.pressureAltitude ) }
-
-            Item {
-                Layout.preferredHeight: sView.font.pixelSize*0.5
-                Layout.columnSpan: 2
-            }
-
-            Label {
-                Layout.columnSpan: 2
-
-                text: qsTr("Device Sensors")
-                font.pixelSize: sView.font.pixelSize*1.2
-                font.bold: true
-            }
-
-
-            Label { // Status
-                Layout.fillWidth: true
-                Layout.leftMargin: 4
-                Layout.rightMargin: 4
-                Layout.columnSpan: 2
-
-                text: Sensors.statusString
-
-                wrapMode: Text.WordWrap
-                textFormat: Text.RichText
-
-                bottomPadding: 0.6*font.pixelSize
-                topPadding: 0.6*font.pixelSize
-                leftPadding: 0.2*font.pixelSize
-                rightPadding: 0.2*font.pixelSize
-
-                leftInset: -4
-                rightInset: -4
-
-                background: Rectangle {
-                    border.color: "black"
-                    color: Sensors.ambientPressure.isFinite() ? "green" : "red"
-                    opacity: 0.2
-                    radius: 4
-                }
-            }
-
-
-            Label { text: qsTr("Cabin Pressure") }
-            Label { text: Sensors.ambientPressure.isFinite() ? Math.round(Sensors.ambientPressure.toHPa()*10.0)/10.0 + " hPa (" + Math.round(Sensors.ambientPressure.toInHg()*100.0)/100.0 + " in Hg)"  : "-" }
-
-            Label { text: qsTr("Cabin Temperature") }
-            Label { text: Sensors.ambientTemperature.isFinite() ? Math.round(Sensors.ambientTemperature.toDegreeCelsius()) + " °C (" + Math.round(Sensors.ambientTemperature.toDegreeFarenheit()) + " °F)"  : "-" }
-
-            Label { text: qsTr("Cabin Altitude (STD)") }
-            Label { text: Navigator.aircraft.verticalDistanceToString( Sensors.pressureAltitude ) }
-
         } // GridLayout
 
     }

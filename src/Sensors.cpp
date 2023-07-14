@@ -40,9 +40,10 @@ Sensors::Sensors(QObject *parent) : GlobalObject(parent)
     timer->setSingleShot(false);
     timer->start();
 
-    updateSensorReadings();
     connect(&m_pressureSensor, &QPressureSensor::availableSensorsChanged, this, &Sensors::updateStatusString);
 #endif
+    updateSensorReadings();
+    updateStatusString();
 }
 
 
@@ -106,7 +107,7 @@ void Sensors::updateStatusString()
 #endif
     if (sensorNames.isEmpty())
     {
-        newStatus = tr("No sensor available.");
+        newStatus = tr("No sensor available");
     }
     else
     {

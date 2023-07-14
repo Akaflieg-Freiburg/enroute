@@ -501,6 +501,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/pages/Nearby.qml
     qml/pages/ParticipatePage.qml
     qml/pages/Positioning.qml
+    qml/pages/PressureAltitude.qml
     qml/pages/PrivacyPage.qml
     qml/pages/TrafficReceiver.qml
     qml/pages/WaypointLibraryPage.qml

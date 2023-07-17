@@ -67,7 +67,7 @@ Page {
                 Layout.rightMargin: 4
                 Layout.columnSpan: 2
 
-                text: PositionProvider.pressureAltitude.isFinite() ? qsTr("Receiving data from traffic receiver") : qsTr("Not connected to a traffic receiver that provides pressure altitude")
+                text: PositionProvider.pressureAltitude.isFinite() ? qsTr("Receiving data from traffic receiver") : qsTr("Not connected to a traffic receiver that provides static pressure values")
 
                 wrapMode: Text.WordWrap
                 textFormat: Text.RichText
@@ -88,8 +88,8 @@ Page {
                 }
             }
 
-            Label { text: qsTr("Pressure Altitude (STD)") }
-            Label { text: Navigator.aircraft.verticalDistanceToString( PositionProvider.pressureAltitude ) }
+            Label { text: qsTr("Pressure Altitude") }
+            Label { text: PositionProvider.pressureAltitude.isFinite() ? Navigator.aircraft.verticalDistanceToString( PositionProvider.pressureAltitude ) + " STD" : "-" }
 
 
             Label { text: qsTr("QNH") }

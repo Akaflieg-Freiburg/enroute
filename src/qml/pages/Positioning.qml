@@ -49,7 +49,7 @@ Page {
         GridLayout {
             id: gl
             columnSpacing: 30
-            columns: 2
+            columns: 3
 
             width: sView.availableWidth
 
@@ -57,7 +57,7 @@ Page {
                 Layout.fillWidth: true
                 Layout.leftMargin: 4
                 Layout.rightMargin: 4
-                Layout.columnSpan: 2
+                Layout.columnSpan: 3
 
                 text: PositionProvider.statusString
 
@@ -92,6 +92,7 @@ Page {
                     return lat
                 }
             }
+            Item {}
 
             Label { text: qsTr("Longitude") }
             Label {
@@ -104,12 +105,32 @@ Page {
                     return lon
                 }
             }
+            Item {}
 
-            Label { text: qsTr("True Altitude (AMSL)") }
-            Label { text: Navigator.aircraft.verticalDistanceToString( PositionProvider.positionInfo.trueAltitudeAMSL() ) }
+            Label { text: qsTr("True Altitude") }
+            Label { text: PositionProvider.positionInfo.trueAltitudeAMSL().isFinite() ? Navigator.aircraft.verticalDistanceToString( PositionProvider.positionInfo.trueAltitudeAMSL() ) + " AMSL" : "-" }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("True Altitude")
+                    helpDialog.text = "<p>"+qsTr("True altitude, also known as geometric altitude, is the vertical distance from the aircraft to the main sea level.")+"</p>"
+                            +"<p>"+qsTr("<strong>Warning:</strong> Vertical airspace limits are defined in terms of barometric altitude. Depending on weather, true altitude and barometric altitude may differ substantially. <strong>Never use true altitude to judge the vertical distance from your aircraft to an airspace boundary.</strong>")+"</p>"
+                    helpDialog.open()
+                }
+            }
 
-            Label { text: qsTr("True Altitude (AGL)") }
-            Label { text: Navigator.aircraft.verticalDistanceToString( PositionProvider.positionInfo.trueAltitudeAGL() ) }
+            Label { text: qsTr("Absolute Altitude") }
+            Label { text: PositionProvider.positionInfo.trueAltitudeAGL().isFinite() ? Navigator.aircraft.verticalDistanceToString( PositionProvider.positionInfo.trueAltitudeAGL() ) + " AGL" : "-" }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("Absolute Altitude")
+                    helpDialog.text = "<p>"+qsTr("Absolute altitude is the vertical distance from the aircraft to the terrain.")+"</p>"
+                    helpDialog.open()
+                }
+            }
 
             Label { text: qsTr("Error (horizontal)") }
             Label {
@@ -118,9 +139,11 @@ Page {
                     return posError.isFinite() ? "±" + Math.round(posError.toM()) + " m" : "-"
                 }
             }
+            Item {}
 
             Label { text: qsTr("Error (vertical)") }
             Label { text: Navigator.aircraft.verticalDistanceToString( PositionProvider.positionInfo.trueAltitudeErrorEstimate() ) }
+            Item {}
 
             Label { text: qsTr("Magnetic Variation") }
             Label { text: {
@@ -128,9 +151,11 @@ Page {
                     return magVar.isFinite() ? Math.round(magVar.toDEG()) + "°" : "-"
                 }
             }
+            Item {}
 
             Label { text: qsTr("Ground Speed") }
             Label { text: Navigator.aircraft.horizontalSpeedToString( PositionProvider.positionInfo.groundSpeed() ) }
+            Item {}
 
             Label { text: qsTr("True Track") }
             Label {
@@ -139,6 +164,7 @@ Page {
                     return tt.isFinite() ? Math.round(tt.toDEG()) + "°" : "-"
                 }
             }
+            Item {}
 
             Label { text: qsTr("Error (True Track)") }
             Label {
@@ -147,14 +173,25 @@ Page {
                     return tt.isFinite() ? "±" + Math.round(tt.toDEG()) + "°" : "-"
                 }
             }
+            Item {}
 
             Label { text: qsTr("Vertical Speed") }
             Label { text: Navigator.aircraft.verticalSpeedToString( PositionProvider.positionInfo.verticalSpeed() ) }
+            Item {}
 
             Label { text: qsTr("Timestamp") }
             Label { text: PositionProvider.positionInfo.isValid() ? PositionProvider.positionInfo.timestampString() : "-" }
+            Item {}
         } // GridLayout
 
     }
 
+
+    LongTextDialog {
+        id: helpDialog
+
+        modal: true
+
+        standardButtons: Dialog.Ok
+    }
 }

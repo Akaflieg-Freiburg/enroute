@@ -107,7 +107,7 @@ void Sensors::updateStatusString()
 #endif
     if (sensorNames.isEmpty())
     {
-        newStatus = tr("No sensor available");
+        newStatus = tr("No ambient pressure/temperature sensor available");
     }
     else
     {

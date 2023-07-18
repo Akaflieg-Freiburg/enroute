@@ -485,7 +485,7 @@ auto Weather::WeatherDataProvider::QNHInfo() const -> QString
 
     // Find QNH of nearest airfield
     Weather::Station *closestReportWithQNH = nullptr;
-    int QNH = 0;
+    Units::Pressure QNH;
     foreach(auto weatherStationPtr, _weatherStationsByICAOCode) {
         if (weatherStationPtr.isNull())
         {
@@ -496,7 +496,7 @@ auto Weather::WeatherDataProvider::QNHInfo() const -> QString
             continue;
         }
         QNH = weatherStationPtr->metar()->QNH();
-        if (QNH == 0)
+        if (!QNH.isFinite())
         {
             continue;
         }
@@ -517,7 +517,7 @@ auto Weather::WeatherDataProvider::QNHInfo() const -> QString
     }
     if (closestReportWithQNH != nullptr)
     {
-        return tr("QNH: %1 hPa in %2, %3").arg(closestReportWithQNH->metar()->QNH())
+        return tr("QNH: %1 hPa in %2, %3").arg(qRound(closestReportWithQNH->metar()->QNH().toHPa()))
                 .arg(closestReportWithQNH->ICAOCode(),
                      Navigation::Clock::describeTimeDifference(closestReportWithQNH->metar()->observationTime()));
     }

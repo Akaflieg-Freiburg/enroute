@@ -141,5 +141,27 @@ namespace Units {
 } // namespace Units
 
 
+/*! \brief Serialization of a pressure object into a QDataStream
+ *
+ * @param out QDataStream that the object is written to
+ *
+ * @param pressure Pressure object that is written to the QDataStrem
+ *
+ * @returns Reference to the QDataStream
+ */
+auto operator<<(QDataStream &out, Units::Pressure pressure) -> QDataStream &;
+
+
+/*! \brief Deserialization of a pressur object out of a QDataStream
+ *
+ * @param in QDataStream that the object is written from
+ *
+ * @param pressure Pressure object that is read from the QDataStrem
+ *
+ * @returns Reference to the QDataStream
+ */
+auto operator>>(QDataStream &in, Units::Pressure &pressure) -> QDataStream &;
+
+
 // Declare meta types
 Q_DECLARE_METATYPE(Units::Pressure)

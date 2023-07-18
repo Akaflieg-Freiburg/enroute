@@ -20,3 +20,18 @@
 
 #include "units/Pressure.h"
 
+
+auto operator<<(QDataStream &out, Units::Pressure pressure) -> QDataStream &
+{
+    out << pressure.toPa();
+    return out;
+}
+
+
+auto operator>>(QDataStream &in, Units::Pressure &pressure) -> QDataStream &
+{
+    double buffer = NAN;
+    in >> buffer;
+    pressure = Units::Pressure::fromPa(buffer);
+    return in;
+}

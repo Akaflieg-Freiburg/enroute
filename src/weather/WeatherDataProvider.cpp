@@ -517,7 +517,7 @@ auto Weather::WeatherDataProvider::QNHInfo() const -> QString
     }
     if (closestReportWithQNH != nullptr)
     {
-        return tr("QNH: %1 hPa in %2, %3").arg(qRound(closestReportWithQNH->metar()->QNH().toHPa()))
+        return tr("%1 hPa in %2, %3").arg(qRound(closestReportWithQNH->metar()->QNH().toHPa()))
                 .arg(closestReportWithQNH->ICAOCode(),
                      Navigation::Clock::describeTimeDifference(closestReportWithQNH->metar()->observationTime()));
     }

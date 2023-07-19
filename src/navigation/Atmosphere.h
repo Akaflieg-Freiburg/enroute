@@ -35,6 +35,9 @@ namespace Navigation {
 
 class Atmosphere
 {
+    Q_GADGET
+    QML_VALUE_TYPE(atmosphere)
+
 public:
     /*! \brief Computation of height as a function of pressure
      *

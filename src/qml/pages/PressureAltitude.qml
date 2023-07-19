@@ -139,7 +139,19 @@ Page {
             Item { }
 
             Label { text: qsTr("Altitude") }
-            Label { text: "??" }
+            Label {
+                property atmosphere atm
+                text: {
+
+                    var pAlt = PositionProvider.pressureAltitude
+                    var qnh  = WeatherDataProvider.QNH
+
+                    if (!pAlt.isFinite() || !qnh.isFinite())
+                        return "-"
+                    var qnhHeight = atm.height(qnh)
+                    return Navigator.aircraft.verticalDistanceToString(pAlt-qnhHeight)
+                }
+            }
             Item { }
 
             Label { text: qsTr("Density Altitude") }

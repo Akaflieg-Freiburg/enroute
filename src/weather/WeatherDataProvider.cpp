@@ -474,6 +474,55 @@ auto Weather::WeatherDataProvider::sunInfo() -> QString
 }
 
 
+auto Weather::WeatherDataProvider::QNH() const -> Units::Pressure
+{
+    // Paranoid safety checks
+    auto *positionProvider = GlobalObject::positionProvider();
+    if (positionProvider == nullptr)
+    {
+        return {};
+    }
+
+    // Find QNH of nearest airfield
+    Weather::Station *closestReportWithQNH = nullptr;
+    Units::Pressure QNH;
+    foreach(auto weatherStationPtr, _weatherStationsByICAOCode) {
+        if (weatherStationPtr.isNull())
+        {
+            continue;
+        }
+        if (weatherStationPtr->metar() == nullptr)
+        {
+            continue;
+        }
+        QNH = weatherStationPtr->metar()->QNH();
+        if (!QNH.isFinite())
+        {
+            continue;
+        }
+        if (!weatherStationPtr->coordinate().isValid())
+        {
+            continue;
+        }
+        if (closestReportWithQNH == nullptr) {
+            closestReportWithQNH = weatherStationPtr;
+            continue;
+        }
+
+        QGeoCoordinate here = Positioning::PositionProvider::lastValidCoordinate();
+        if (here.distanceTo(weatherStationPtr->coordinate()) < here.distanceTo(closestReportWithQNH->coordinate()))
+        {
+            closestReportWithQNH = weatherStationPtr;
+        }
+    }
+    if (closestReportWithQNH != nullptr)
+    {
+        return closestReportWithQNH->metar()->QNH();
+    }
+    return {};
+}
+
+
 auto Weather::WeatherDataProvider::QNHInfo() const -> QString
 {
     // Paranoid safety checks
@@ -518,8 +567,8 @@ auto Weather::WeatherDataProvider::QNHInfo() const -> QString
     if (closestReportWithQNH != nullptr)
     {
         return tr("%1 hPa in %2, %3").arg(qRound(closestReportWithQNH->metar()->QNH().toHPa()))
-                .arg(closestReportWithQNH->ICAOCode(),
-                     Navigation::Clock::describeTimeDifference(closestReportWithQNH->metar()->observationTime()));
+            .arg(closestReportWithQNH->ICAOCode(),
+                 Navigation::Clock::describeTimeDifference(closestReportWithQNH->metar()->observationTime()));
     }
     return {};
 }

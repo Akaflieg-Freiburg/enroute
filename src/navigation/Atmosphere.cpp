@@ -23,12 +23,23 @@
 // See https://de.wikipedia.org/wiki/Barometrische_H%C3%B6henformel
 // for a description of these constants and the formulas involved
 
-double Lb = 0.0065; // Temperature gradient: degree Kelvin / kilometer
+double Lb = 0.0065; // Temperature gradient: degree Kelvin / meter
 double Tb = 288.15; // Temperature at 0m height: degree Kelvin
 double g0 = 9.80665; // Gravity: meter/second²
 double Rstar = 8.3144598; // universal gas constant: J/(mol·K)
 double P0 = 101325; // Pressure at sea evel: Pascal
 double M = 0.0289644; // molar mass of Earth's air: kg/mol
+
+
+double Navigation::Atmosphere::density(Units::Pressure p, Units::Temperature t)
+{
+    if (!p.isFinite())
+        return qQNaN();
+    if (!t.isFinite())
+        return qQNaN();
+
+    return p.toPa()/(t.toDegreeKelvin()*287.05287);
+}
 
 
 Units::Distance Navigation::Atmosphere::height(Units::Pressure p)

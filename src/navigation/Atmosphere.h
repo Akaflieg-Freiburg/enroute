@@ -30,7 +30,6 @@ namespace Navigation {
 /*! \brief Atmospherical data
  *
  *  This class provides the standard computation routines for the ICAO atmosphere, for the height range of 0-11km
- *
  */
 
 class Atmosphere
@@ -39,23 +38,31 @@ class Atmosphere
     QML_VALUE_TYPE(atmosphere)
 
 public:
+    /*! \brief Computation of density as a function of pressure and temperature
+     *
+     *  @param p Pressure for which the density is computed
+     *
+     *  @param t Temperature for which the density is computed
+     *
+     *  @returns Air density in kg/m³
+     */
+    Q_INVOKABLE static double density(Units::Pressure p, Units::Temperature t);
+
     /*! \brief Computation of height as a function of pressure
      *
      *  @param pressure Air pressure
      *
      *  @returns Barometric height above the 1013.25 hPa level (which equals 0 Meter)
-     *
      */
-    static Units::Distance height(Units::Pressure pressure);
+    Q_INVOKABLE static Units::Distance height(Units::Pressure pressure);
 
     /*! \brief Computation of pressure as a function of altitude
      *
      *  @param height Barometric height above the 1013.25 hPa level (which equals 0 Meter)
      *
      *  @returns Air pressure
-     *
      */
-    static Units::Pressure pressure(Units::Distance height);
+    Q_INVOKABLE static Units::Pressure pressure(Units::Distance height);
 };
 
 } // namespace Navigation

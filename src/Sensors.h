@@ -77,6 +77,12 @@ public:
     // PROPERTIES
     //
 
+    /*! \brief Ambient air density
+     *
+     *  This property holds the ambient air density in kg/m³, computed from pressure and temperature.
+     */
+    Q_PROPERTY(double ambientDensity READ ambientDensity NOTIFY ambientDensityChanged)
+
     /*! \brief Ambient pressure
      *
      *  This property holds the ambient pressure recorded by the device sensor (if any).
@@ -106,6 +112,12 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
+     *  @returns Property ambientDensity
+     */
+    [[nodiscard]] double ambientDensity() const { return m_ambientDensity; }
+
+    /*! \brief Getter function for the property with the same name
+     *
      *  @returns Property ambientPressure
      */
     [[nodiscard]] Units::Pressure ambientPressure() const { return m_ambientPressure; }
@@ -129,6 +141,9 @@ public:
     [[nodiscard]] QString statusString() const { return m_statusString; }
 
 signals:
+    /*! \brief Notifier signal */
+    void ambientDensityChanged();
+
     /*! \brief Notifier signal */
     void ambientPressureChanged();
 
@@ -156,6 +171,7 @@ private:
     QPressureSensor m_pressureSensor;
 #endif
 
+    double m_ambientDensity { qQNaN() };
     Units::Pressure m_ambientPressure;
     Units::Temperature m_ambientTemperature;
     QString m_statusString;

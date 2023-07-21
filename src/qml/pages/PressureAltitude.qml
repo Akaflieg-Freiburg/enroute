@@ -28,7 +28,7 @@ import "../dialogs"
 import "../items"
 
 Page {
-    id: trafficReceiverPage
+    id: barometricPage
     title: qsTr("Barometric Data")
 
     header: StandardHeader {}
@@ -51,12 +51,12 @@ Page {
             columnSpacing: 30
             columns: 3
 
-            width: sView.availableWidth
+            width: barometricPage.availableWidth-2*font.pixelSize
 
             Label {
                 Layout.columnSpan: 2
                 text: qsTr("Status")
-                font.pixelSize: trafficReceiverPage.font.pixelSize*1.2
+                font.pixelSize: barometricPage.font.pixelSize*1.2
                 font.bold: true
             }
             ToolButton { enabled: false }
@@ -118,7 +118,7 @@ Page {
             Label {
                 Layout.columnSpan: 2
                 text: qsTr("Barometric Altitudes")
-                font.pixelSize: trafficReceiverPage.font.pixelSize*1.2
+                font.pixelSize: barometricPage.font.pixelSize*1.2
                 font.bold: true
             }
             ToolButton {
@@ -140,7 +140,6 @@ Page {
 
             Label { text: qsTr("Altitude") }
             Label {
-                property atmosphere atm
                 text: {
 
                     var pAlt = PositionProvider.pressureAltitude
@@ -159,19 +158,23 @@ Page {
             Item { }
 
             Label { text: qsTr("Cabin Altitude") }
-            Label { text: Sensors.pressureAltitude.isFinite() ? "FL" + Math.round(Sensors.pressureAltitude/100.0) : "-" }
+            Label { text: Sensors.pressureAltitude.isFinite() ? "FL" + Math.round(Sensors.pressureAltitude.toFeet()/100.0) : "-" }
             Item { }
 
             Label {
                 Layout.columnSpan: 2
                 text: qsTr("Other")
-                font.pixelSize: trafficReceiverPage.font.pixelSize*1.2
+                font.pixelSize: barometricPage.font.pixelSize*1.2
                 font.bold: true
             }
             ToolButton { enabled: false }
 
             Label { text: qsTr("QNH") }
-            Label { text: WeatherDataProvider.QNHInfo }
+            Label {
+                Layout.fillWidth: true
+                text: WeatherDataProvider.QNHInfo
+                wrapMode: Text.Wrap
+            }
             Item { }
 
             Label { text: qsTr("Cabin Pressure") }
@@ -183,7 +186,9 @@ Page {
             Item { }
 
             Label { text: qsTr("Air Density") }
-            Label { text: "??" }
+            Label {
+                text: isNaN(Sensors.ambientDensity) ? "-" : Math.round(1000.0*Sensors.ambientDensity*1000.0)/1000.0 + " kg/m³";
+            }
             Item { }
 
         } // GridLayout

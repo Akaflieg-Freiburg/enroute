@@ -51,7 +51,7 @@ Page {
             columnSpacing: 30
             columns: 3
 
-            width: barometricPage.availableWidth-2*font.pixelSize
+            width: sView.availableWidth-2*font.pixelSize
 
             Label {
                 Layout.columnSpan: 2
@@ -78,7 +78,7 @@ Page {
                 rightPadding: 0.2*font.pixelSize
 
                 leftInset: -4
-                rightInset: -4
+                rightInset: 0
 
                 background: Rectangle {
                     border.color: "black"
@@ -158,7 +158,7 @@ Page {
             Item { }
 
             Label { text: qsTr("Cabin Altitude") }
-            Label { text: Sensors.pressureAltitude.isFinite() ? "FL" + Math.round(Sensors.pressureAltitude.toFeet()/100.0) : "-" }
+            Label { text: Sensors.pressureAltitude.isFinite() ? "FL" + ("000" + Math.round(Sensors.pressureAltitude.toFeet()/100.0)).slice(-3) : "-" }
             Item { }
 
             Label {
@@ -172,7 +172,7 @@ Page {
             Label { text: qsTr("QNH") }
             Label {
                 Layout.fillWidth: true
-                text: WeatherDataProvider.QNHInfo
+                text: WeatherDataProvider.QNHInfo === "" ? "-" : WeatherDataProvider.QNHInfo
                 wrapMode: Text.Wrap
             }
             Item { }
@@ -187,7 +187,7 @@ Page {
 
             Label { text: qsTr("Air Density") }
             Label {
-                text: isNaN(Sensors.ambientDensity) ? "-" : Math.round(1000.0*Sensors.ambientDensity*1000.0)/1000.0 + " kg/m³";
+                text: Sensors.ambientDensity.isFinite() ? Math.round(1000.0*Sensors.ambientDensity.toKgPerCubeMeter()*1000.0)/1000.0 + " kg/m³" : "-";
             }
             Item { }
 

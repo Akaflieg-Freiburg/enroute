@@ -34,7 +34,7 @@ namespace Units {
      */
 class Temperature {
     Q_GADGET
-    QML_VALUE_TYPE(volume)
+    QML_VALUE_TYPE(temperature)
 
 public:
     /*! \brief Constructs a temperature

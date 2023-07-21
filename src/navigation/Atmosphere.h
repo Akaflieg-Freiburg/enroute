@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include "units/Density.h"
 #include "units/Distance.h"
 #include "units/Pressure.h"
 #include "units/Temperature.h"
@@ -38,7 +39,7 @@ class Atmosphere
     QML_VALUE_TYPE(atmosphere)
 
 public:
-    /*! \brief Computation of density as a function of pressure and temperature
+    /*! \brief Computation of density as a function of pressure and temperature, using the perfect gas law
      *
      *  @param p Pressure for which the density is computed
      *
@@ -46,7 +47,7 @@ public:
      *
      *  @returns Air density in kg/m³
      */
-    Q_INVOKABLE static double density(Units::Pressure p, Units::Temperature t);
+    Q_INVOKABLE static Units::Density density(Units::Pressure p, Units::Temperature t);
 
     /*! \brief Computation of height as a function of pressure
      *

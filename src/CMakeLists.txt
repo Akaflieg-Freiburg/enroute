@@ -86,6 +86,7 @@ set(SOURCES
     traffic/Warning.h
     units/Angle.h
     units/ByteSize.h
+    units/Density.h
     units/Distance.h
     units/Pressure.h
     units/Speed.h
@@ -164,6 +165,7 @@ set(SOURCES
     traffic/TrafficFactor_WithPosition.cpp
     traffic/Warning.cpp
     units/Angle.cpp
+    units/Density.cpp
     units/Distance.cpp
     units/Pressure.cpp
     units/Speed.cpp

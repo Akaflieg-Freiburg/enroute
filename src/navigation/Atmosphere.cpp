@@ -31,14 +31,12 @@ double P0 = 101325; // Pressure at sea evel: Pascal
 double M = 0.0289644; // molar mass of Earth's air: kg/mol
 
 
-double Navigation::Atmosphere::density(Units::Pressure p, Units::Temperature t)
+Units::Density Navigation::Atmosphere::density(Units::Pressure p, Units::Temperature t)
 {
-    if (!p.isFinite())
-        return qQNaN();
-    if (!t.isFinite())
-        return qQNaN();
+    if (!p.isFinite() || !t.isFinite())
+        return {};
 
-    return p.toPa()/(t.toDegreeKelvin()*287.05287);
+    return Units::Density::fromKgPerCubeMeter( p.toPa()/(t.toDegreeKelvin()*287.05287) );
 }
 
 

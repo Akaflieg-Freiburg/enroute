@@ -45,9 +45,25 @@ public:
      *
      *  @param t Temperature for which the density is computed
      *
-     *  @returns Air density in kg/m³
+     *  @returns Air density
      */
     Q_INVOKABLE static Units::Density density(Units::Pressure p, Units::Temperature t);
+
+    /*! \brief Computation of density as a function of height
+     *
+     *  @param h height
+     *
+     *  @returns Air density
+     */
+    Q_INVOKABLE static Units::Density density(Units::Distance h);
+
+    /*! \brief Computation of height as a function of pressure
+     *
+     *  @param densitz Air densitz
+     *
+     *  @returns Barometric height above the 1013.25 hPa level (which equals 0 Meter)
+     */
+    Q_INVOKABLE static Units::Distance height(Units::Density d);
 
     /*! \brief Computation of height as a function of pressure
      *

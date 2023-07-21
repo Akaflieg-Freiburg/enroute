@@ -40,6 +40,46 @@ Units::Density Navigation::Atmosphere::density(Units::Pressure p, Units::Tempera
 }
 
 
+Units::Density Navigation::Atmosphere::density(Units::Distance h)
+{
+    if (!h.isFinite())
+        return {};
+
+    auto p = pressure(h);
+    auto t = Units::Temperature::fromDegreeKelvin(Tb-h.toM()*Lb);
+
+    return density(p, t);
+}
+
+
+Units::Distance Navigation::Atmosphere::height(Units::Density d)
+{
+    auto lower = Units::Distance::fromKM(-1);
+    auto upper = Units::Distance::fromKM(5);
+
+    if ((d > density(lower)) || (d < density(upper)))
+    {
+        return {};
+    }
+
+
+    while (upper-lower > Units::Distance::fromFT(100))
+    {
+        auto middle = (lower+upper)*0.5;
+        qWarning() << middle.toM();
+        if (d > density(middle))
+        {
+            upper = middle;
+        }
+        else
+        {
+            lower = middle;
+        }
+    }
+    return (upper+lower)*0.5;
+}
+
+
 Units::Distance Navigation::Atmosphere::height(Units::Pressure p)
 {
     double exponent = 1.0/5.255; // (Rstar*Lb)/(g0*M);

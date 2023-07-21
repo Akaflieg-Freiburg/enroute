@@ -154,7 +154,7 @@ Page {
             Item { }
 
             Label { text: qsTr("Density Altitude") }
-            Label { text: "??" }
+            Label { text: Sensors.densityAltitude.isFinite() ? Navigator.aircraft.verticalDistanceToString(Sensors.densityAltitude) : "-" }
             Item { }
 
             Label { text: qsTr("Cabin Altitude") }

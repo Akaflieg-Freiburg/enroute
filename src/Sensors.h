@@ -95,6 +95,12 @@ public:
      */
     Q_PROPERTY(Units::Temperature ambientTemperature READ ambientTemperature NOTIFY ambientTemperatureChanged)
 
+    /*! \brief Density altitude
+     *
+     *  This property holds the density altitude, computed from ambientDensity and ambientTemperature.
+     */
+    Q_PROPERTY(Units::Distance densityAltitude READ densityAltitude NOTIFY ambientDensityChanged)
+
     /*! \brief Pressure altitude
      *
      *  This property holds the pressure altitude for the ambient pressure measured by the device sensor.
@@ -133,6 +139,12 @@ public:
      *  @returns Property pressureAltitude
      */
     [[nodiscard]] Units::Distance pressureAltitude() const { return Navigation::Atmosphere::height(m_ambientPressure); }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property densityAltitude
+     */
+    [[nodiscard]] Units::Distance densityAltitude() const { return Navigation::Atmosphere::height(Navigation::Atmosphere::density(m_ambientPressure, m_ambientTemperature)); }
 
     /*! \brief Getter function for the property with the same name
      *

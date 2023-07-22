@@ -78,7 +78,7 @@ Page {
                 rightPadding: 0.2*font.pixelSize
 
                 leftInset: -4
-                rightInset: 0
+                rightInset: -4
 
                 background: Rectangle {
                     border.color: "black"

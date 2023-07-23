@@ -76,6 +76,9 @@ CenteringDialog {
                     close()
                 }
             }
+
+            // On iOS17, the property displayText sees many bounced.
+            onDisplayTextChanged: debounceTimer.restart()
         }
 
         DecoratedListView {
@@ -87,7 +90,13 @@ CenteringDialog {
 
             clip: true
 
-            model: GeoMapProvider.filteredWaypoints(textInput.displayText)
+            // Debounce timer to update the property model only 200ms after the last change of textInput.displayText
+            Timer {
+                id: debounceTimer
+                interval: 200 // 200ms
+                onTriggered: wpList.model = GeoMapProvider.filteredWaypoints(textInput.displayText)
+            }
+
             delegate: waypointDelegate
             ScrollIndicator.vertical: ScrollIndicator {}
 

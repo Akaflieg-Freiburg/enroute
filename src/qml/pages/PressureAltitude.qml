@@ -51,9 +51,10 @@ Page {
             columnSpacing: 30
             columns: 3
 
-            width: sView.availableWidth-2*font.pixelSize
+            width: sView.availableWidth
 
             Label {
+                Layout.fillWidth: true
                 Layout.columnSpan: 2
                 text: qsTr("Status")
                 font.pixelSize: barometricPage.font.pixelSize*1.2
@@ -116,6 +117,7 @@ Page {
             }
 
             Label {
+                Layout.fillWidth: true
                 Layout.columnSpan: 2
                 text: qsTr("Barometric Altitudes")
                 font.pixelSize: barometricPage.font.pixelSize*1.2
@@ -134,12 +136,18 @@ Page {
                 }
             }
 
-            Label { text: qsTr("Pressure Altitude") }
-            Label { text: PositionProvider.pressureAltitude.isFinite() ? "FL" + Math.round(PositionProvider.pressureAltitude/100.0) : "-" }
+            Label {
+                text: qsTr("Pressure Altitude") }
+            Label {
+                Layout.fillWidth: true
+                text: PositionProvider.pressureAltitude.isFinite() ? "FL" + Math.round(PositionProvider.pressureAltitude/100.0) : "-"
+                wrapMode: Text.Wrap
+            }
             Item { }
 
             Label { text: qsTr("Altitude") }
             Label {
+                Layout.fillWidth: true
                 text: {
 
                     var pAlt = PositionProvider.pressureAltitude
@@ -150,15 +158,24 @@ Page {
                     var qnhHeight = atm.height(qnh)
                     return Navigator.aircraft.verticalDistanceToString(pAlt-qnhHeight)
                 }
+                wrapMode: Text.Wrap
             }
             Item { }
 
             Label { text: qsTr("Density Altitude") }
-            Label { text: Sensors.densityAltitude.isFinite() ? Navigator.aircraft.verticalDistanceToString(Sensors.densityAltitude) : "-" }
+            Label {
+                Layout.fillWidth: true
+                text: Sensors.densityAltitude.isFinite() ? Navigator.aircraft.verticalDistanceToString(Sensors.densityAltitude) : "-"
+                wrapMode: Text.Wrap
+            }
             Item { }
 
             Label { text: qsTr("Cabin Altitude") }
-            Label { text: Sensors.pressureAltitude.isFinite() ? "FL" + ("000" + Math.round(Sensors.pressureAltitude.toFeet()/100.0)).slice(-3) : "-" }
+            Label {
+                Layout.fillWidth: true
+                text: Sensors.pressureAltitude.isFinite() ? "FL" + ("000" + Math.round(Sensors.pressureAltitude.toFeet()/100.0)).slice(-3) : "-"
+                wrapMode: Text.Wrap
+            }
             Item { }
 
             Label {
@@ -169,12 +186,20 @@ Page {
             }
             ToolButton { enabled: false }
 
-            Label { text: qsTr("Ambient Pressure") }
-            Label { text: Sensors.ambientPressure.isFinite() ? Math.round(Sensors.ambientPressure.toHPa()*10.0)/10.0 + " hPa (" + Math.round(Sensors.ambientPressure.toInHg()*100.0)/100.0 + " in Hg)"  : "-" }
+            Label { text: qsTr("Pressure") }
+            Label {
+                Layout.fillWidth: true
+                text: Sensors.ambientPressure.isFinite() ? Math.round(Sensors.ambientPressure.toHPa()*10.0)/10.0 + " hPa"  : "-"
+                wrapMode: Text.Wrap
+            }
             Item { }
 
-            Label { text: qsTr("Ambient Temperature") }
-            Label { text: Sensors.ambientTemperature.isFinite() ? Math.round(Sensors.ambientTemperature.toDegreeCelsius()) + " °C (" + Math.round(Sensors.ambientTemperature.toDegreeFarenheit()) + " °F)"  : "-" }
+            Label { text: qsTr("Temperature") }
+            Label {
+                Layout.fillWidth: true
+                text: Sensors.ambientTemperature.isFinite() ? Math.round(Sensors.ambientTemperature.toDegreeCelsius()) + " °C" : "-"
+                wrapMode: Text.Wrap
+            }
             Item { }
 
             Label {

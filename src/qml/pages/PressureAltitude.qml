@@ -163,6 +163,22 @@ Page {
 
             Label {
                 Layout.columnSpan: 2
+                text: qsTr("Device Sensors")
+                font.pixelSize: barometricPage.font.pixelSize*1.2
+                font.bold: true
+            }
+            ToolButton { enabled: false }
+
+            Label { text: qsTr("Ambient Pressure") }
+            Label { text: Sensors.ambientPressure.isFinite() ? Math.round(Sensors.ambientPressure.toHPa()*10.0)/10.0 + " hPa (" + Math.round(Sensors.ambientPressure.toInHg()*100.0)/100.0 + " in Hg)"  : "-" }
+            Item { }
+
+            Label { text: qsTr("Ambient Temperature") }
+            Label { text: Sensors.ambientTemperature.isFinite() ? Math.round(Sensors.ambientTemperature.toDegreeCelsius()) + " °C (" + Math.round(Sensors.ambientTemperature.toDegreeFarenheit()) + " °F)"  : "-" }
+            Item { }
+
+            Label {
+                Layout.columnSpan: 2
                 text: qsTr("Other")
                 font.pixelSize: barometricPage.font.pixelSize*1.2
                 font.bold: true
@@ -174,20 +190,6 @@ Page {
                 Layout.fillWidth: true
                 text: WeatherDataProvider.QNHInfo === "" ? "-" : WeatherDataProvider.QNHInfo
                 wrapMode: Text.Wrap
-            }
-            Item { }
-
-            Label { text: qsTr("Cabin Pressure") }
-            Label { text: Sensors.ambientPressure.isFinite() ? Math.round(Sensors.ambientPressure.toHPa()*10.0)/10.0 + " hPa (" + Math.round(Sensors.ambientPressure.toInHg()*100.0)/100.0 + " in Hg)"  : "-" }
-            Item { }
-
-            Label { text: qsTr("Cabin Temperature") }
-            Label { text: Sensors.ambientTemperature.isFinite() ? Math.round(Sensors.ambientTemperature.toDegreeCelsius()) + " °C (" + Math.round(Sensors.ambientTemperature.toDegreeFarenheit()) + " °F)"  : "-" }
-            Item { }
-
-            Label { text: qsTr("Air Density") }
-            Label {
-                text: Sensors.ambientDensity.isFinite() ? Math.round(1000.0*Sensors.ambientDensity.toKgPerCubeMeter()*1000.0)/1000.0 + " kg/m³" : "-";
             }
             Item { }
 

@@ -57,7 +57,7 @@ Units::Distance Navigation::Atmosphere::height(Units::Density d)
     auto lower = Units::Distance::fromKM(-1);
     auto upper = Units::Distance::fromKM(5);
 
-    if ((d > density(lower)) || (d < density(upper)))
+    if (!d.isFinite() || (d > density(lower)) || (d < density(upper)))
     {
         return {};
     }
@@ -66,7 +66,6 @@ Units::Distance Navigation::Atmosphere::height(Units::Density d)
     while (upper-lower > Units::Distance::fromFT(100))
     {
         auto middle = (lower+upper)*0.5;
-        qWarning() << middle.toM();
         if (d > density(middle))
         {
             upper = middle;

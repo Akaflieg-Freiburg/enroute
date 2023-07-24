@@ -30,7 +30,7 @@
 #include "navigation/Navigator.h"
 #include "notification/NotificationManager.h"
 #include "notification/Notification_DataUpdateAvailable.h"
-#include "platform/PlatformAdaptor.h"
+#include "platform/PlatformAdaptor_Abstract.h"
 #include "traffic/TrafficDataProvider.h"
 #include <chrono>
 
@@ -43,6 +43,8 @@ using namespace std::chrono_literals;
 
 Notifications::NotificationManager::NotificationManager(QObject *parent) : GlobalObject(parent)
 {
+    // Test: uncomment next line to get a text notification
+    // QTimer::singleShot(3s, this, &Notifications::NotificationManager::addTestNotification);
 }
 
 void Notifications::NotificationManager::deferredInitialization()

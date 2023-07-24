@@ -41,9 +41,10 @@ CenteringDialog {
 
             clip: true
 
+            property string title: qsTr("Welcome!")
+
             Label {
-                text: "<h3>"+qsTr("Welcome to Enroute Flight Navigation - A project of Akaflieg Freiburg")+"</h3>"
-                      + "<p>" + qsTr("Thank you for using this flight navigation app!  Before we get started, we need to point out that <strong>this app and the aviation data come with no guarantees</strong>.")+"</p>"
+                text: "<p>" + qsTr("Thank you for using this flight navigation app!  Before we get started, we need to point out that <strong>this app and the aviation data come with no guarantees</strong>.")+"</p>"
                       + "<p>" + qsTr("The app is not certified to satisfy aviation standards. It may contain errors and may not work as expected.") + "</p>"
                       + "<p>" + qsTr("The aviation data does not come from official sources. It might be incomplete, outdated or otherwise incorrect.") + "</p>"
                       + "<p>" + qsTr("<strong>This app is no substitute for proper flight preparation or good pilotage.</strong> We hope you enjoy the app and that you do find it useful.") + "</p>"
@@ -77,9 +78,10 @@ CenteringDialog {
 
             clip: true
 
+            property string title: qsTr("Privacy")
+
             Label {
-                text: "<h3>" + qsTr("Privacy") + "</h3>"
-                      + "<p>" + qsTr("Please take a minute to review our privacy policies.") + "</p>"
+                text: "<p>" + qsTr("Please take a minute to review our privacy policies.") + "</p>"
                       + Librarian.getStringFromRessource(":text/privacy.html")
                 width: sv.dialogMain.availableWidth
                 textFormat: Text.RichText
@@ -106,9 +108,10 @@ CenteringDialog {
 
             clip: true
 
+            property string title: qsTr("Permissions")
+
             Label {
-                text: "<h3>" + qsTr("Privacy-relevant permissions requested by this app") + "</h3>"
-                      + "<p>" + qsTr("Please grant the following permissions when prompted.") + "</p>"
+                text: "<p>" + qsTr("Please grant the following permissions when prompted.") + "</p>"
                       + sv.text
                 width: sv.dialogMain.availableWidth
                 textFormat: Text.RichText
@@ -135,6 +138,8 @@ CenteringDialog {
 
             clip: true
 
+            property string title: qsTr("Download Maps")
+
             ColumnLayout {
                 width: sv.dialogMain.availableWidth
 
@@ -142,11 +147,7 @@ CenteringDialog {
                     Layout.fillWidth: true
                     Layout.preferredHeight: implicitHeight
                     text: {
-                    var result = "<h3>"
-                    + qsTr("Download Maps")
-                    + "</h3>"
-                    + "<p>"
-                    + qsTr("<strong>Enroute Flight Navigation</strong> needs geographic maps to work.")
+                    var result = "<p>" + qsTr("<strong>Enroute Flight Navigation</strong> needs geographic maps to work.")
                     + " "
                         if (DataManager.mapList.hasFile)
                         {
@@ -227,6 +228,8 @@ CenteringDialog {
 
     closePolicy: Popup.NoAutoClose
     modal: true
+
+    title: stack.currentItem ? stack.currentItem.title : ""
 
     StackView {
         id: stack

@@ -173,6 +173,17 @@ namespace Units {
             return fromM(m_distanceInM - rhs.m_distanceInM);
         }
 
+        /*! \brief Scaling
+         *
+         *  @param factor Factor of scaling
+         *
+         *  @returns Result of the scaling
+         */
+        Q_INVOKABLE Units::Distance operator*(double factor) const
+        {
+            return fromM(m_distanceInM*factor);
+        }
+
         /*! \brief Comparison
          *
          *  @param rhs Right hand side of the comparison

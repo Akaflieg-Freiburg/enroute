@@ -29,7 +29,7 @@ import "../items"
 
 Page {
     id: trafficReceiverPage
-    title: qsTr("Positioning")
+    title: qsTr("SatNav Positioning")
 
     header: StandardHeader {}
 
@@ -49,23 +49,23 @@ Page {
         GridLayout {
             id: gl
             columnSpacing: 30
-            columns: 2
+            columns: 3
 
             width: sView.availableWidth
 
             Label {
                 Layout.columnSpan: 2
-
                 text: qsTr("Status")
-                font.pixelSize: sView.font.pixelSize*1.2
+                font.pixelSize: trafficReceiverPage.font.pixelSize*1.2
                 font.bold: true
             }
+            ToolButton { enabled: false }
 
             Label { // Status
                 Layout.fillWidth: true
                 Layout.leftMargin: 4
                 Layout.rightMargin: 4
-                Layout.columnSpan: 2
+                Layout.columnSpan: 3
 
                 text: PositionProvider.statusString
 
@@ -88,18 +88,13 @@ Page {
                 }
             }
 
-            Item {
-                Layout.preferredHeight: sView.font.pixelSize*0.5
-                Layout.columnSpan: 2
-            }
-
             Label {
                 Layout.columnSpan: 2
-
-                text: qsTr("Position Data")
-                font.pixelSize: sView.font.pixelSize*1.2
+                text: qsTr("Position")
+                font.pixelSize: trafficReceiverPage.font.pixelSize*1.2
                 font.bold: true
             }
+            ToolButton { enabled: false }
 
             Label { text: qsTr("Latitude") }
             Label {
@@ -113,6 +108,7 @@ Page {
                     return lat
                 }
             }
+            Item {}
 
             Label { text: qsTr("Longitude") }
             Label {
@@ -125,12 +121,7 @@ Page {
                     return lon
                 }
             }
-
-            Label { text: qsTr("True Altitude (AMSL)") }
-            Label { text: Navigator.aircraft.verticalDistanceToString( PositionProvider.positionInfo.trueAltitudeAMSL() ) }
-
-            Label { text: qsTr("True Altitude (AGL)") }
-            Label { text: Navigator.aircraft.verticalDistanceToString( PositionProvider.positionInfo.trueAltitudeAGL() ) }
+            Item {}
 
             Label { text: qsTr("Error (horizontal)") }
             Label {
@@ -139,19 +130,11 @@ Page {
                     return posError.isFinite() ? "±" + Math.round(posError.toM()) + " m" : "-"
                 }
             }
-
-            Label { text: qsTr("Error (vertical)") }
-            Label { text: Navigator.aircraft.verticalDistanceToString( PositionProvider.positionInfo.trueAltitudeErrorEstimate() ) }
-
-            Label { text: qsTr("Magnetic Variation") }
-            Label { text: {
-                    const magVar = PositionProvider.positionInfo.variation();
-                    return magVar.isFinite() ? Math.round(magVar.toDEG()) + "°" : "-"
-                }
-            }
+            Item {}
 
             Label { text: qsTr("Ground Speed") }
             Label { text: Navigator.aircraft.horizontalSpeedToString( PositionProvider.positionInfo.groundSpeed() ) }
+            Item {}
 
             Label { text: qsTr("True Track") }
             Label {
@@ -160,6 +143,7 @@ Page {
                     return tt.isFinite() ? Math.round(tt.toDEG()) + "°" : "-"
                 }
             }
+            Item {}
 
             Label { text: qsTr("Error (True Track)") }
             Label {
@@ -168,18 +152,72 @@ Page {
                     return tt.isFinite() ? "±" + Math.round(tt.toDEG()) + "°" : "-"
                 }
             }
+            Item {}
+
+            Label {
+                Layout.columnSpan: 2
+                text: qsTr("Altitude")
+                font.pixelSize: trafficReceiverPage.font.pixelSize*1.2
+                font.bold: true
+            }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("Altitudes")
+                    helpDialog.text = "<p>"+qsTr("True altitude, also known as geometric altitude, is the vertical distance from the aircraft to the main sea level.")+"</p>"
+                            +"<p>"+qsTr("Absolute altitude is the vertical distance from the aircraft to the terrain.")+"</p>"
+                            +"<p>"+qsTr("<strong>Warning:</strong> Vertical airspace limits are defined in terms of barometric altitude. Depending on weather, true altitude and barometric altitude may differ substantially. <strong>Never use true altitude to judge the vertical distance from your aircraft to an airspace boundary.</strong>")+"</p>"
+                    helpDialog.open()
+                }
+            }
+
+            Label { text: qsTr("True Altitude") }
+            Label { text: PositionProvider.positionInfo.trueAltitudeAMSL().isFinite() ? Navigator.aircraft.verticalDistanceToString( PositionProvider.positionInfo.trueAltitudeAMSL() ) + " AMSL" : "-" }
+            Item { }
+
+            Label { text: qsTr("Absolute Altitude") }
+            Label { text: PositionProvider.positionInfo.trueAltitudeAGL().isFinite() ? Navigator.aircraft.verticalDistanceToString( PositionProvider.positionInfo.trueAltitudeAGL() ) + " AGL" : "-" }
+            Item { }
+
+            Label { text: qsTr("Error (vertical)") }
+            Label { text: Navigator.aircraft.verticalDistanceToString( PositionProvider.positionInfo.trueAltitudeErrorEstimate() ) }
+            Item {}
 
             Label { text: qsTr("Vertical Speed") }
             Label { text: Navigator.aircraft.verticalSpeedToString( PositionProvider.positionInfo.verticalSpeed() ) }
+            Item {}
 
-            Label { text: qsTr("Pressure Altitude") }
-            Label { text: Navigator.aircraft.verticalDistanceToString( PositionProvider.pressureAltitude ) }
+            Label {
+                Layout.columnSpan: 2
+                text: qsTr("Other")
+                font.pixelSize: trafficReceiverPage.font.pixelSize*1.2
+                font.bold: true
+            }
+            ToolButton { enabled: false }
+
+            Label { text: qsTr("Magnetic Variation") }
+            Label { text: {
+                    const magVar = PositionProvider.positionInfo.variation();
+                    return magVar.isFinite() ? Math.round(magVar.toDEG()) + "°" : "-"
+                }
+            }
+            Item {}
 
             Label { text: qsTr("Timestamp") }
             Label { text: PositionProvider.positionInfo.isValid() ? PositionProvider.positionInfo.timestampString() : "-" }
+            Item {}
+
 
         } // GridLayout
 
     }
 
+    LongTextDialog {
+        id: helpDialog
+
+        modal: true
+
+        standardButtons: Dialog.Ok
+    }
 }

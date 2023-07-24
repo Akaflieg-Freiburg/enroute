@@ -127,7 +127,6 @@ void Navigation::Navigator::setWind(Weather::Wind newWind)
     // Set new wind
     m_wind = newWind;
     emit windChanged();
-
 }
 
 
@@ -296,8 +295,6 @@ void Navigation::Navigator::updateRemainingRouteInfo()
     {
         auto bearing = legToNextWP.TC()-info.trueTrack();
         auto bearingDEG = bearing.toDEG();
-
-
 
         if ((bearingDEG < 30) || (bearingDEG > 360-30))
         {

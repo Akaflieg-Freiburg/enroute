@@ -47,7 +47,9 @@ set(SOURCES
     GlobalObject.h
     GlobalSettings.h
     Librarian.h
+    Sensors.h
     navigation/Aircraft.h
+    navigation/Atmosphere.h
     navigation/Clock.h
     navigation/FlightRoute.h
     navigation/Leg.h
@@ -84,8 +86,11 @@ set(SOURCES
     traffic/Warning.h
     units/Angle.h
     units/ByteSize.h
+    units/Density.h
     units/Distance.h
+    units/Pressure.h
     units/Speed.h
+    units/Temperature.h
     units/Timespan.h
     units/Units.h
     units/Volume.h
@@ -119,8 +124,10 @@ set(SOURCES
     GlobalObject.cpp
     GlobalSettings.cpp
     Librarian.cpp
+    Sensors.cpp
     main.cpp
     navigation/Aircraft.cpp
+    navigation/Atmosphere.cpp
     navigation/Clock.cpp
     navigation/FlightRoute.cpp
     navigation/FlightRoute_GPX.cpp
@@ -158,8 +165,11 @@ set(SOURCES
     traffic/TrafficFactor_WithPosition.cpp
     traffic/Warning.cpp
     units/Angle.cpp
+    units/Density.cpp
     units/Distance.cpp
+    units/Pressure.cpp
     units/Speed.cpp
+    units/Temperature.cpp
     units/Timespan.cpp
     units/Volume.cpp
     units/VolumeFlow.cpp
@@ -236,6 +246,7 @@ if(ANDROID)
         Qt6::Positioning
         Qt6::Quick
         Qt6::QuickControls2
+        Qt6::Sensors
         Qt6::Sql
         Qt6::Svg
         Qt6::TextToSpeech
@@ -372,6 +383,7 @@ if (IOS)
         Qt6::Positioning
         Qt6::Quick
         Qt6::QuickControls2
+        Qt6::Sensors
         Qt6::Sql
         Qt6::Svg
         Qt6::TextToSpeech
@@ -491,6 +503,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/pages/Nearby.qml
     qml/pages/ParticipatePage.qml
     qml/pages/Positioning.qml
+    qml/pages/PressureAltitude.qml
     qml/pages/PrivacyPage.qml
     qml/pages/TrafficReceiver.qml
     qml/pages/WaypointLibraryPage.qml

@@ -273,7 +273,12 @@ Page {
                 id: qnhLabel
                 visible: qnhLabel.text !== ""
                 Layout.fillWidth: true
-                text: WeatherDataProvider.QNHInfo
+                text: {
+                    var txt = WeatherDataProvider.QNHInfo
+                    if (txt !== "")
+                        txt = "QNH: " + txt
+                    return txt
+                }
             }
 
             Icon {

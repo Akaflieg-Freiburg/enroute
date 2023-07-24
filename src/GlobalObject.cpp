@@ -26,6 +26,7 @@
 #include "GlobalObject.h"
 #include "GlobalSettings.h"
 #include "Librarian.h"
+#include "Sensors.h"
 #include "dataManagement/DataManager.h"
 #include "dataManagement/SSLErrorHandler.h"
 #include "geomaps/GeoMapProvider.h"
@@ -44,6 +45,7 @@
 
 bool isConstructingOrDeconstructing {false};
 
+QPointer<Sensors> g_sensors {};
 QPointer<Navigation::Clock> g_clock {};
 QPointer<DataManagement::DataManager> g_dataManager {};
 QPointer<DataManagement::SSLErrorHandler> g_sslErrorHandler {};
@@ -88,6 +90,12 @@ GlobalObject::GlobalObject(QObject *parent) : QObject(parent)
 }
 
 
+auto GlobalObject::sensors() -> Sensors*
+{
+    return allocateInternal<Sensors>(g_sensors);
+}
+
+
 void GlobalObject::clear()
 {
     if (g_notificationManager != nullptr)
@@ -116,6 +124,7 @@ void GlobalObject::clear()
     delete g_trafficDataProvider;
     delete g_waypointLibrary;
     delete g_weatherDataProvider;
+    delete g_sensors;
 
     delete g_networkAccessManager;
 

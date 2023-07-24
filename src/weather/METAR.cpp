@@ -69,9 +69,10 @@ Weather::METAR::METAR(QXmlStreamReader &xml, QObject *parent)
         // QNH
         if (xml.isStartElement() && name == u"altim_in_hg"_qs) {
             auto content = xml.readElementText();
-            _qnh = qRound(content.toDouble() * 33.86);
-            if ((_qnh < 800) || (_qnh > 1200)) {
-                _qnh = 0;
+            m_qnh = Units::Pressure::fromInHg(content.toDouble());
+            if ((m_qnh.toHPa() < 800) || (m_qnh.toHPa() > 1200))
+            {
+                m_qnh = Units::Pressure::fromPa(qQNaN());
             }
             continue;
         }
@@ -87,16 +88,6 @@ Weather::METAR::METAR(QXmlStreamReader &xml, QObject *parent)
         if (xml.isStartElement() && name == u"wind_gust_kt"_qs) {
             auto content = xml.readElementText();
             _gust = Units::Speed::fromKN(content.toDouble());
-            continue;
-        }
-
-        // QNH
-        if (xml.isStartElement() && name == u"altim_in_hg"_qs) {
-            auto content = xml.readElementText();
-            _qnh = qRound(content.toDouble() * 33.86);
-            if ((_qnh < 800) || (_qnh > 1200)) {
-                _qnh = 0;
-            }
             continue;
         }
 
@@ -145,7 +136,7 @@ Weather::METAR::METAR(QDataStream &inputStream, QObject *parent)
     inputStream >> m_ICAOCode;
     inputStream >> _location;
     inputStream >> _observationTime;
-    inputStream >> _qnh;
+    inputStream >> m_qnh;
     inputStream >> _raw_text;
     inputStream >> _wind;
     inputStream >> _gust;
@@ -301,7 +292,7 @@ void Weather::METAR::write(QDataStream &out)
     out << m_ICAOCode;
     out << _location;
     out << _observationTime;
-    out << _qnh;
+    out << m_qnh;
     out << _raw_text;
     out << _wind;
     out << _gust;

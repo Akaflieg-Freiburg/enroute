@@ -23,9 +23,10 @@
 #include <QObject>
 
 class DemoRunner;
+class GlobalSettings;
 class Librarian;
 class QNetworkAccessManager;
-class GlobalSettings;
+class Sensors;
 
 namespace DataManagement
 {
@@ -191,6 +192,12 @@ public:
      * @returns Pointer to appplication-wide static instance.
      */
     Q_INVOKABLE static Platform::PlatformAdaptor_Abstract* platformAdaptor();
+
+    /*! \brief Pointer to appplication-wide static Navigation::Clock instance
+     *
+     * @returns Pointer to appplication-wide static instance.
+     */
+    Q_INVOKABLE static Sensors* sensors();
 
     /*! \brief Pointer to appplication-wide static Navigation::Navigator instance
      *

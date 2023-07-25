@@ -247,11 +247,9 @@ auto Positioning::PositionProvider::lastValidTT() -> Units::Angle
 void Positioning::PositionProvider::updateStatusString()
 {
     if (receivingPositionInfo()) {
-        QString result = QStringLiteral("<p>%1</p><ul style='margin-left:-25px;'>").arg(sourceName());
-        result += QStringLiteral("<li>%1</li>").arg(tr("Receiving position information."));
-        if (pressureAltitude().isFinite()) {
-            result += QStringLiteral("<li>%1</li>").arg(tr("Receiving pressure altitude."));
-        }
+        QString result = QStringLiteral("<ul style='margin-left:-25px;'>");
+        result += QStringLiteral("<li>%1: %2</li>").arg(tr("Source"), sourceName());
+        result += QStringLiteral("<li>%1</li>").arg(tr("Receiving position information"));
         result += u"</ul>"_qs;
         setStatusString(result);
         return;

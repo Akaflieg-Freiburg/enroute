@@ -25,6 +25,7 @@
 #include <QXmlStreamReader>
 
 #include "units/Speed.h"
+#include "units/Pressure.h"
 #include "weather/Decoder.h"
 
 
@@ -176,20 +177,20 @@ public:
         return _observationTime;
     }
 
-    /*! \brief QNH value in this METAR, in hPa
+    /*! \brief QNH value in this METAR
      *
-     * The QNH property is set to zero if no QNH is known. Otherwise, the values
+     * The QNH property is set to NaN if no QNH is known. Otherwise, the values
      * is guaranteed to lie in the interval [800 … 1200]
      */
-    Q_PROPERTY(quint16 QNH READ QNH CONSTANT)
+    Q_PROPERTY(Units::Pressure QNH READ QNH CONSTANT)
 
     /*! \brief Getter function for property with the same name
      *
      * @returns Property qnh
      */
-    [[nodiscard]] auto QNH() const -> quint16
+    [[nodiscard]] auto QNH() const -> Units::Pressure
     {
-        return _qnh;
+        return m_qnh;
     }
 
     /*! \brief Raw METAR text
@@ -278,7 +279,7 @@ private:
     QDateTime _observationTime;
 
     // QNH in hPa, as returned by the Aviation Weather Center
-    quint16 _qnh {0};
+    Units::Pressure m_qnh;
 
     // Raw METAR text, as returned by the Aviation Weather Center
     QString _raw_text;

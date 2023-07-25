@@ -28,9 +28,10 @@ import akaflieg_freiburg.enroute
 Rectangle {
     id: mainRect
 
-    border.color: "black"
-    color: "white"
+    border.color: GlobalSettings.nightMode ? "white" : "black"
+    color: GlobalSettings.nightMode ? "black" : "white"
     radius: 0.5*font.pixelSize
+    clip: true
 
     implicitHeight: notifyCol.implicitHeight+font.pixelSize
     visible: NotificationManager.currentVisualNotification
@@ -54,11 +55,10 @@ Rectangle {
             target: mainRect
             property: "color"
             duration: 50
-            to: "white"
+            to: GlobalSettings.nightMode ? "black" : "white"
         }
 
     }
-
 
     ColumnLayout {
         id: notifyCol
@@ -72,7 +72,7 @@ Rectangle {
                     return ""
 
                 return NotificationManager.currentVisualNotification.title +
-                  `<br><font color="#606060" size="2">` +
+                  (GlobalSettings.nightMode ? `<br><font color="#FFFFFF" size="2">` : `<br><font color="#606060" size="2">`) +
                   NotificationManager.currentVisualNotification.text +
                   `</font>`
             }
@@ -111,7 +111,11 @@ Rectangle {
             Layout.leftMargin: 0.2*font.pixelSize
             Layout.preferredHeight: 1.2*font.pixelSize
             Layout.rightMargin: 0.2*font.pixelSize
+            Layout.fillWidth: true
+
             clip: true
+
+            background: Item {}
 
             ToolButton {
                 text: NotificationManager.currentVisualNotification ? NotificationManager.currentVisualNotification.button1Text : ""

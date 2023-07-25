@@ -16,7 +16,7 @@ option(BUILD_DOC "Build developer documentation" OFF)
 # Project data
 #
 
-project(enroute VERSION 2.28.1)
+project(enroute VERSION 2.28.2)
 set(APP_ID de.akaflieg_freiburg.enroute)
 set(DISPLAY_NAME "Enroute")
 math(EXPR PROJECT_VERSION_CODE 10000*${PROJECT_VERSION_MAJOR}+100*${PROJECT_VERSION_MINOR}+${PROJECT_VERSION_PATCH})
@@ -50,7 +50,7 @@ find_package(Doxygen)
 find_package(Git REQUIRED)
 find_package(Qt6 COMPONENTS Concurrent Core Core5Compat Gui HttpServer LinguistTools Location Positioning Quick QuickControls2 QuickWidgets Sql Svg TextToSpeech Widgets REQUIRED)
 if( ANDROID OR IOS)
-    find_package(Qt6 COMPONENTS WebView REQUIRED)
+    find_package(Qt6 COMPONENTS Sensors WebView REQUIRED)
 else()
     find_package(Qt6 COMPONENTS DBus Widgets REQUIRED)
 endif()

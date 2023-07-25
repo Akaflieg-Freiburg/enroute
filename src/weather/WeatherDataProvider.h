@@ -135,6 +135,19 @@ public:
         return _weatherStationsByICAOCode.value(ICAOCode, nullptr);
     }
 
+    /*! \brief QNH
+     *
+     * This property holds the QNH of the next airfield, if known. If no QNH is known,
+     * this property holds QNaN.
+     */
+    Q_PROPERTY(Units::Pressure QNH READ QNH NOTIFY QNHInfoChanged)
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property QNH
+     */
+    [[nodiscard]] auto QNH() const -> Units::Pressure;
+
     /*! \brief QNHInfo
      *
      * This property holds a human-readable, translated, rich-text string with

@@ -302,8 +302,8 @@ AppWindow {
                     AutoSizingMenu { // Info Menu
                         id: aboutMenu
 
-                        ItemDelegate { // Sat Status
-                            text: qsTr("Positioning")
+                        ItemDelegate { // SatNav Status
+                            text: qsTr("SatNav Positioning")
                                   +`<br><font color="#606060" size="2">`
                                   + (PositionProvider.receivingPositionInfo ? qsTr("Receiving position information.") : qsTr("Not receiving position information."))
                                   + `</font>`
@@ -322,6 +322,28 @@ AppWindow {
                                 opacity: 0.2
                             }
                         }
+
+                        ItemDelegate { // PressureAltitude
+                            text: qsTr("Barometric Data")
+                                  +`<br><font color="#606060" size="2">`
+                                  + (PositionProvider.pressureAltitude.isFinite() ? qsTr("Receiving pressure altitude.") : qsTr("Not receiving pressure altitude."))
+                                  + `</font>`
+                            icon.source: "/icons/material/ic_speed.svg"
+                            Layout.fillWidth: true
+                            onClicked: {
+                                PlatformAdaptor.vibrateBrief()
+                                stackView.pop()
+                                stackView.push("pages/PressureAltitude.qml")
+                                aboutMenu.close()
+                                drawer.close()
+                            }
+                            background: Rectangle {
+                                anchors.fill: parent
+                                color: PositionProvider.pressureAltitude.isFinite() ? "green" : "red"
+                                opacity: 0.2
+                            }
+                        }
+
 
                         ItemDelegate { // FLARM Status
                             Layout.fillWidth: true

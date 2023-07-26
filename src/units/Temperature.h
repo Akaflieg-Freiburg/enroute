@@ -28,34 +28,34 @@
 namespace Units {
 
 /*! \brief Convenience class for temperature computations
-*
-     * This extremely simple class allows computation with temperatures, without the
-     * need to worry about units. On construction, the temperature is set to NaN.
-     */
+ *
+ * This extremely simple class allows computation with temperatures, without the
+ * need to worry about units. On construction, the temperature is set to NaN.
+ */
 class Temperature {
     Q_GADGET
     QML_VALUE_TYPE(temperature)
 
 public:
     /*! \brief Constructs a temperature
-         *
-         * @param temperatureInDegreeCelsius temperature in degree Celsius
-         *
-         * @returns temperature
-         */
-    static constexpr auto fromDegreeCelsius(double temperatureInDegreeCesius) -> Temperature
+     *
+     * @param temperatureInDegreeCelsius temperature in degree Celsius
+     *
+     * @returns temperature
+     */
+    static constexpr auto fromDegreeCelsius(double temperatureInDegreeCelsius) -> Temperature
     {
         Temperature result;
-        result.m_temperatureInDegreeKelvin = temperatureInDegreeCesius+273.15;
+        result.m_temperatureInDegreeKelvin = temperatureInDegreeCelsius+273.15;
         return result;
     }
 
     /*! \brief Constructs a temperature
-         *
-         * @param temperatureInDegreeFarenheit temperature in Farenheit
-         *
-         * @returns temperature
-         */
+     *
+     * @param temperatureInDegreeFarenheit temperature in Farenheit
+     *
+     * @returns temperature
+     */
     static constexpr auto fromDegreeFarenheit(double temperatureInDegreeFarenheit) -> Temperature
     {
         Temperature result;
@@ -64,11 +64,11 @@ public:
     }
 
     /*! \brief Constructs a temperature
-         *
-         * @param temperatureInDegreeKelvin temperature in degree Kevin
-         *
-         * @returns temperature
-         */
+     *
+     * @param temperatureInDegreeKelvin temperature in degree Kevin
+     *
+     * @returns temperature
+     */
     static constexpr auto fromDegreeKelvin(double temperatureInDegreeKelvin) -> Temperature
     {
         Temperature result;
@@ -77,45 +77,45 @@ public:
     }
 
     /*! \brief Checks if the temperature is valid
-         *
-         * @returns True is the volume is a finite number
-         */
-    Q_INVOKABLE [[nodiscard]] bool isFinite() const
+     *
+     * @returns True is the volume is a finite number
+     */
+    [[nodiscard]] Q_INVOKABLE bool isFinite() const
     {
         return std::isfinite(m_temperatureInDegreeKelvin);
     }
 
     /*! \brief Comparison
-         *
-         *  @param rhs Right hand side of the comparison
-         *
-         *  @returns Result of the comparison
-         */
-    Q_INVOKABLE [[nodiscard]] std::partial_ordering operator<=>(const Units::Temperature& rhs) const = default;
+     *
+     *  @param rhs Right hand side of the comparison
+     *
+     *  @returns Result of the comparison
+     */
+    [[nodiscard]] Q_INVOKABLE std::partial_ordering operator<=>(const Units::Temperature& rhs) const = default;
 
     /*! \brief Convert to degree Celsius
-         *
-         *  @returns temperature in degree Celsius
-         */
-    Q_INVOKABLE [[nodiscard]] double toDegreeCelsius() const
+     *
+     *  @returns temperature in degree Celsius
+     */
+    [[nodiscard]] Q_INVOKABLE double toDegreeCelsius() const
     {
         return m_temperatureInDegreeKelvin-273.15;
     }
 
     /*! \brief Convert to degree Farenheit
-         *
-         *  @returns temperature in degree Farenheit
-         */
-    Q_INVOKABLE [[nodiscard]] double toDegreeFarenheit() const
+     *
+     *  @returns temperature in degree Farenheit
+     */
+    [[nodiscard]] Q_INVOKABLE double toDegreeFarenheit() const
     {
         return (m_temperatureInDegreeKelvin - 273.15)*9.0/5.0 + 32.0;
     }
 
     /*! \brief Convert to degree Kelvin
-         *
-         *  @returns temperature in degree Kelvin
-         */
-    Q_INVOKABLE [[nodiscard]] double toDegreeKelvin() const
+     *
+     *  @returns temperature in degree Kelvin
+     */
+    [[nodiscard]] Q_INVOKABLE double toDegreeKelvin() const
     {
         return m_temperatureInDegreeKelvin;
     }

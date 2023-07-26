@@ -153,7 +153,7 @@ public:
      *
      *   @returns Property list of downloadables whose bounding box contains the given location
      */
-    Q_INVOKABLE [[nodiscard]] QList<DataManagement::Downloadable_Abstract*> downloadables4Location(const QGeoCoordinate& location);
+    [[nodiscard]] Q_INVOKABLE QList<DataManagement::Downloadable_Abstract*> downloadables4Location(const QGeoCoordinate& location);
 
     /*! \brief Remove a Downloadable_SingleFile from this Downloadable_MultiFile
      *

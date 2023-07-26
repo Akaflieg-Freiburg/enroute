@@ -106,7 +106,7 @@ public:
      *
      *  @returns List of Notams relevant for the waypoint
      */
-    Q_INVOKABLE Q_REQUIRED_RESULT NOTAM::NotamList notams(const GeoMaps::Waypoint& waypoint);
+    [[nodiscard]] Q_INVOKABLE NOTAM::NotamList notams(const GeoMaps::Waypoint& waypoint);
 
     /*! \brief Check is a notam number is registred as read
      *
@@ -114,7 +114,7 @@ public:
      *
      *  @returns True is notam is known as read
      */
-    Q_INVOKABLE Q_REQUIRED_RESULT bool isRead(const QString& number) { return m_readNotamNumbers.contains(number); }
+    [[nodiscard]] Q_INVOKABLE bool isRead(const QString& number) { return m_readNotamNumbers.contains(number); }
 
     /*! \brief Register notam number as read or unread
      *

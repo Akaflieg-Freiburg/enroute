@@ -77,7 +77,7 @@ class Timespan {
          *
          * @returns True is the time is a finite number
          */
-        Q_INVOKABLE [[nodiscard]] bool isFinite() const
+        [[nodiscard]] Q_INVOKABLE bool isFinite() const
         {
             return std::isfinite(m_timeInS);
         }
@@ -86,7 +86,7 @@ class Timespan {
          *
          * @returns True is the time is negative
          */
-        Q_INVOKABLE [[nodiscard]] bool isNegative() const
+        [[nodiscard]] Q_INVOKABLE bool isNegative() const
         {
             return m_timeInS < 0.0;
         }
@@ -109,13 +109,13 @@ class Timespan {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE [[nodiscard]] std::partial_ordering operator<=>(const Units::Timespan& rhs) const = default;
+        [[nodiscard]] Q_INVOKABLE std::partial_ordering operator<=>(const Units::Timespan& rhs) const = default;
 
         /*! \brief Convert time to seconds
          *
          * @return time in seconds
          */
-        Q_INVOKABLE [[nodiscard]] double toS() const
+        [[nodiscard]] Q_INVOKABLE double toS() const
         {
             return m_timeInS;
         }
@@ -124,7 +124,7 @@ class Timespan {
          *
          * @return time in minutes
          */
-        Q_INVOKABLE [[nodiscard]] double toM() const
+        [[nodiscard]] Q_INVOKABLE double toM() const
         {
             return m_timeInS / Seconds_per_Minute;
         }
@@ -133,7 +133,7 @@ class Timespan {
          *
          * @return time in hours
          */
-        Q_INVOKABLE [[nodiscard]] double toH() const
+        [[nodiscard]] Q_INVOKABLE double toH() const
         {
             return m_timeInS / Seconds_per_Hour;
         }
@@ -142,7 +142,7 @@ class Timespan {
          *
          * @returns time in hours and minutes, as a string of the form 7:12 or -0:05
          */
-        Q_INVOKABLE [[nodiscard]] QString toHoursAndMinutes() const;
+        [[nodiscard]] Q_INVOKABLE QString toHoursAndMinutes() const;
 
     private:
         static constexpr double Seconds_per_Minute = 60.0;

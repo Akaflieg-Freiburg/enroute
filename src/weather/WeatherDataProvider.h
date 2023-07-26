@@ -130,7 +130,7 @@ public:
      *
      * @returns Pointer to WeatherStation
      */
-    Q_INVOKABLE [[nodiscard]] Weather::Station* findWeatherStation(const QString &ICAOCode) const
+    [[nodiscard]] Q_INVOKABLE Weather::Station* findWeatherStation(const QString &ICAOCode) const
     {
         return _weatherStationsByICAOCode.value(ICAOCode, nullptr);
     }

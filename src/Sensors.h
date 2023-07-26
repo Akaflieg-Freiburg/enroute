@@ -22,11 +22,10 @@
 
 #include <QQmlEngine>
 
-#include "units/Pressure.h"
-#include "units/Temperature.h"
 #include "GlobalObject.h"
 #include "navigation/Atmosphere.h"
-
+#include "units/Pressure.h"
+#include "units/Temperature.h"
 
 #if defined(Q_OS_ANDROID) or defined(Q_OS_IOS)
 #include <QAmbientTemperatureSensor>

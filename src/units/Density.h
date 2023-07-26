@@ -55,7 +55,7 @@ public:
          *
          * @returns True is the volume is a finite number
          */
-    Q_INVOKABLE [[nodiscard]] bool isFinite() const
+    [[nodiscard]] Q_INVOKABLE bool isFinite() const
     {
         return std::isfinite(m_densityInKgPerCubeMeter);
     }
@@ -66,13 +66,13 @@ public:
          *
          *  @returns Result of the comparison
          */
-    Q_INVOKABLE [[nodiscard]] std::partial_ordering operator<=>(const Units::Density& rhs) const = default;
+    [[nodiscard]] Q_INVOKABLE std::partial_ordering operator<=>(const Units::Density& rhs) const = default;
 
     /*! \brief Convert to density to kg per m³degree Kelvin
          *
          *  @returns Density in kg per m³
          */
-    Q_INVOKABLE [[nodiscard]] double toKgPerCubeMeter() const
+    [[nodiscard]] Q_INVOKABLE double toKgPerCubeMeter() const
     {
         return m_densityInKgPerCubeMeter;
     }

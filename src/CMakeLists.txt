@@ -26,6 +26,11 @@ set(SOURCES
     ressources.qrc.in
 
     # Header files
+    ../3rdParty/KDSingleApplication/src/kdsingleapplication.cpp
+    ../3rdParty/KDSingleApplication/src/kdsingleapplication_localsocket.cpp
+    ../3rdParty/KDSingleApplication/src/kdsingleapplication.h
+    ../3rdParty/KDSingleApplication/src/kdsingleapplication_lib.h
+    ../3rdParty/KDSingleApplication/src/kdsingleapplication_localsocket_p.h
     ../3rdParty/sunset/src/sunset.h
     dataManagement/DataManager.h
     dataManagement/Downloadable_Abstract.h
@@ -297,7 +302,6 @@ if (UNIX AND NOT ANDROID AND NOT APPLE)
         Qt6::Svg
         Qt6::TextToSpeech
         Qt6::Widgets
-        kdsingleapplication
     )
     target_precompile_headers(${PROJECT_NAME}
         PRIVATE
@@ -344,7 +348,6 @@ if (APPLE AND NOT IOS)
         Qt6::Svg
         Qt6::TextToSpeech
         Qt6::Widgets
-        kdsingleapplication
     )
 endif()
 
@@ -420,6 +423,7 @@ endif()
 
 target_include_directories(${PROJECT_NAME}
     PUBLIC
+    ${CMAKE_SOURCE_DIR}/3rdParty/KDSingleApplication/src
     ${CMAKE_SOURCE_DIR}/3rdParty/sunset/src
     ${CMAKE_SOURCE_DIR}/3rdParty/GSL/include
     dataManagement

@@ -177,8 +177,15 @@ public:
      */
     Q_INVOKABLE virtual QString language();
 
-#warning
-    Q_INVOKABLE virtual void saveScreenshot(const QImage&, QString);
+    /*! \brief Save image as a raster graphic file in path
+     *
+     *  The image file type (PNG, JPG, …) is inferred from the file path
+     *
+     *  @param image Image to be saved.
+     *
+     *  @param path File path where the image will be stored
+     */
+    Q_INVOKABLE static void saveScreenshot(const QImage& image, const QString& path);
 
 public slots:
     /*! \brief Signal handler: GUI setup completed

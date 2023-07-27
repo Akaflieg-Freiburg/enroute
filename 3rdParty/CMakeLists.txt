@@ -18,8 +18,10 @@ set(mapBoxFont_SOURCE_DIR
 # KDSingleAppplication
 #
 
+set(KDSingleApplication_QT6 true)
+set(KDSingleApplication_EXAMPLES false)
 add_subdirectory(KDSingleApplication
-                 ${CMAKE_CURRENT_BINARY_DIR}/KDSingleApplication)
+    ${CMAKE_CURRENT_BINARY_DIR}/KDSingleApplication)
 
 #
 # Sunset/sunrise computation

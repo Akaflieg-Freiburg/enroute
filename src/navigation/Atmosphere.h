@@ -59,7 +59,7 @@ public:
 
     /*! \brief Computation of height as a function of pressure
      *
-     *  @param densitz Air densitz
+     *  @param d Air densitz
      *
      *  @returns Barometric height above the 1013.25 hPa level (which equals 0 Meter)
      */

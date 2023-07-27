@@ -76,7 +76,7 @@ public:
      *
      *  @returns Name of the directory, without trailing slash
      */
-    Q_INVOKABLE [[nodiscard]] static QString directory(Librarian::Library library) ;
+    [[nodiscard]] Q_INVOKABLE static QString directory(Librarian::Library library) ;
 
     /*! \brief Lists all entries in the library whose name contains the string 'filter'
      *
@@ -100,7 +100,7 @@ public:
      *
      *  @returns True if the file exists
      */
-    Q_INVOKABLE [[nodiscard]] static bool exists(Librarian::Library library, const QString &baseName) ;
+    [[nodiscard]] Q_INVOKABLE static bool exists(Librarian::Library library, const QString &baseName) ;
 
     /*! \brief Full path of a library entry
      *
@@ -111,7 +111,7 @@ public:
      *
      *  @returns Full path of the entry, with extension
      */
-    Q_INVOKABLE [[nodiscard]] static QString fullPath(Librarian::Library library, const QString &baseName) ;
+    [[nodiscard]] Q_INVOKABLE static QString fullPath(Librarian::Library library, const QString &baseName) ;
 
     /*! \brief Constructs an object from library entry
      *
@@ -132,7 +132,7 @@ public:
      *
      * @returns Pointer to the object, or a nullptr in case of error.
      */
-    Q_INVOKABLE [[nodiscard]] static QObject* get(Librarian::Library library, const QString& baseName) ;
+    [[nodiscard]] Q_INVOKABLE static QObject* get(Librarian::Library library, const QString& baseName) ;
 
     /*! \brief Exposes string stored in QRessource to QML
      *

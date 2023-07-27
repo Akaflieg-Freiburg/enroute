@@ -34,18 +34,13 @@
 #include "GlobalObject.h"
 #include "GlobalSettings.h"
 #include "geomaps/GeoMapProvider.h"
+#include "ios/ObjCAdapter.h"
 #include "navigation/Navigator.h"
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficDataSource_Simulate.h"
 #include "traffic/TrafficFactor_WithPosition.h"
 #include "weather/WeatherDataProvider.h"
-#include "ios/ObjCAdapter.h"
 #endif
-
-
-
-
-
 
 #include "DemoRunner.h"
 
@@ -535,11 +530,15 @@ void DemoRunner::generateManualScreenshots()
 #endif
 }
 
-void DemoRunner::saveScreenshot(bool manual, QQuickWindow* window, QString path) {
-    if (manual) {
+void DemoRunner::saveScreenshot(bool manual, QQuickWindow* window, const QString& path)
+{
+    if (manual)
+    {
         qWarning() << "… Take screenshot now";
         delay(3s);
-    } else {
+    }
+    else
+    {
         GlobalObject::platformAdaptor()->saveScreenshot(window->grabWindow(), path);
     }
 

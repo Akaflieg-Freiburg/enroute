@@ -67,6 +67,7 @@ QString Platform::PlatformAdaptor_Abstract::language()
 }
 
 
-void Platform::PlatformAdaptor_Abstract::saveScreenshot(QImage image, QString path) {
+void Platform::PlatformAdaptor_Abstract::saveScreenshot(const QImage& image, QString path)
+{
     image.save(path);
 }

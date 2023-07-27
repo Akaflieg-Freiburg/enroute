@@ -63,7 +63,7 @@ public:
      *
      *  @returns Coordinate
      */
-    Q_INVOKABLE [[nodiscard]] QGeoCoordinate coordinate() const
+    [[nodiscard]] Q_INVOKABLE QGeoCoordinate coordinate() const
     {
         return m_positionInfo.coordinate();
     }
@@ -72,20 +72,20 @@ public:
      *
      *  @returns Ground speed or NaN if unknown.
      */
-    Q_INVOKABLE [[nodiscard]] Units::Speed groundSpeed() const;
+    [[nodiscard]] Q_INVOKABLE Units::Speed groundSpeed() const;
 
     /*! \brief Validity
      *
      *  @returns True if the underlying QGeoPositionInfo is valid and if
      *  its age is less then PositionInfo::lifetime.
      */
-    Q_INVOKABLE [[nodiscard]] bool isValid() const;
+    [[nodiscard]] Q_INVOKABLE bool isValid() const;
 
     /*! \brief Position error estimate
      *
      *  @returns Position error estimate or NaN if unknown.
      */
-    Q_INVOKABLE [[nodiscard]] Units::Distance positionErrorEstimate() const;
+    [[nodiscard]] Q_INVOKABLE Units::Distance positionErrorEstimate() const;
 
     /*! \brief Elevation of terrain at a given coordinate, above sea level
      *
@@ -98,7 +98,7 @@ public:
      *
      *  @returns Timestamp of the position info.
      */
-    Q_INVOKABLE [[nodiscard]] QDateTime timestamp() const
+    [[nodiscard]] Q_INVOKABLE QDateTime timestamp() const
     {
         return m_positionInfo.timestamp().toUTC();
     }
@@ -107,7 +107,7 @@ public:
      *
      *  @returns Timestamp of the position info, as a string.
      */
-    Q_INVOKABLE [[nodiscard]] QString timestampString() const
+    [[nodiscard]] Q_INVOKABLE QString timestampString() const
     {
         return m_positionInfo.timestamp().toUTC().time().toString(QStringLiteral("HH:mm:ss"))+ " UTC";
     }
@@ -117,44 +117,44 @@ public:
      *  @returns True altitude with geoid correction taken into account or NaN
      *  if unknown.
      */
-    Q_INVOKABLE [[nodiscard]] Units::Distance trueAltitudeAGL();
+    [[nodiscard]] Q_INVOKABLE Units::Distance trueAltitudeAGL();
 
     /*! \brief True Altitude above main sea level
      *
      *  @returns True altitude with geoid correction taken into account or NaN
      *  if unknown.
      */
-    Q_INVOKABLE [[nodiscard]] Units::Distance trueAltitudeAMSL() const;
+    [[nodiscard]] Q_INVOKABLE Units::Distance trueAltitudeAMSL() const;
 
     /*! \brief True altitude error estimate
      *
      *  @returns True altitude error estimate or NaN if unknown.
      */
-    Q_INVOKABLE [[nodiscard]] Units::Distance trueAltitudeErrorEstimate() const;
+    [[nodiscard]] Q_INVOKABLE Units::Distance trueAltitudeErrorEstimate() const;
 
     /*! \brief True track
      *
      *  @returns True track or NaN if unknown.
      */
-    Q_INVOKABLE [[nodiscard]] Units::Angle trueTrack() const;
+    [[nodiscard]] Q_INVOKABLE Units::Angle trueTrack() const;
 
     /*! \brief True track error estimate
      *
      *  @returns True track error estimate or NaN if unknown.
      */
-    Q_INVOKABLE [[nodiscard]] Units::Angle trueTrackErrorEstimate() const;
+    [[nodiscard]] Q_INVOKABLE Units::Angle trueTrackErrorEstimate() const;
 
     /*! \brief Magnetic variation
      *
      *  @returns Magnetic variation or NaN if unknown.
      */
-    Q_INVOKABLE [[nodiscard]] Units::Angle variation() const;
+    [[nodiscard]] Q_INVOKABLE Units::Angle variation() const;
 
     /*! \brief Vertical speed
      *
      *  @returns Vertical speed or NaN if unknown.
      */
-    Q_INVOKABLE [[nodiscard]] Units::Speed verticalSpeed() const;
+    [[nodiscard]] Q_INVOKABLE Units::Speed verticalSpeed() const;
 
     /*! \brief Comparison: equal
      *

@@ -107,5 +107,5 @@ private:
 
     void generateScreenshotsForDevices(QStringList, bool);
 
-    void saveScreenshot(bool, QQuickWindow*, QString);
+    static void saveScreenshot(bool, QQuickWindow *, const QString&);
 };

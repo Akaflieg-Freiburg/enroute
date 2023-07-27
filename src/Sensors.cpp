@@ -119,7 +119,7 @@ void Sensors::updateStatusString()
     }
     else
     {
-        newStatus = "<ul style='margin-left:-25px;'>" + sensorNames.join("") + "</ul>";
+        newStatus = "<ul style='margin-left:-25px;'>" + sensorNames.join(u""_qs) + "</ul>";
     }
 
     if (newStatus != m_statusString)

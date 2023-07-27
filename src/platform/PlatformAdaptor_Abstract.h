@@ -177,9 +177,8 @@ public:
      */
     Q_INVOKABLE virtual QString language();
 
-
-
-    Q_INVOKABLE virtual void saveScreenshot(QImage, QString);
+#warning
+    Q_INVOKABLE virtual void saveScreenshot(const QImage&, QString);
 
 public slots:
     /*! \brief Signal handler: GUI setup completed

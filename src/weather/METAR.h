@@ -24,10 +24,9 @@
 #include <QGeoCoordinate>
 #include <QXmlStreamReader>
 
-#include "units/Speed.h"
 #include "units/Pressure.h"
+#include "units/Speed.h"
 #include "weather/Decoder.h"
-
 
 namespace Weather {
 
@@ -154,7 +153,7 @@ public:
      * @returns true if an expiration date/time is known and if the current time
      * is larger than the expiration
      */
-    Q_INVOKABLE [[nodiscard]] bool isExpired() const;
+    [[nodiscard]] Q_INVOKABLE bool isExpired() const;
 
     /*! \brief Indicates if the class represents a valid METAR report */
     Q_PROPERTY(bool isValid READ isValid CONSTANT)

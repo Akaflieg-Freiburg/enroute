@@ -238,7 +238,7 @@ public:
      *  @return Elevation of the terrain at coordinate over MSP, or
      *  NaN if the terrain elevation is unknown
      */
-    Q_INVOKABLE [[nodiscard]] Units::Distance terrainElevationAMSL(const QGeoCoordinate& coordinate);
+    [[nodiscard]] Q_INVOKABLE Units::Distance terrainElevationAMSL(const QGeoCoordinate& coordinate);
 
     /*! \brief Create empty GeoJSON document
      *

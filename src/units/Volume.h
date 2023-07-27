@@ -67,7 +67,7 @@ namespace Units {
          *
          * @returns True is the volume is a finite number
          */
-        Q_INVOKABLE [[nodiscard]] bool isFinite() const
+        [[nodiscard]] Q_INVOKABLE bool isFinite() const
         {
             return std::isfinite(m_volumeInL);
         }
@@ -90,13 +90,13 @@ namespace Units {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE [[nodiscard]] std::partial_ordering operator<=>(const Units::Volume& rhs) const = default;
+        [[nodiscard]] Q_INVOKABLE std::partial_ordering operator<=>(const Units::Volume& rhs) const = default;
 
         /*! \brief Convert to liters
          *
          * @returns volume in liters
          */
-        Q_INVOKABLE [[nodiscard]] double toL() const
+        [[nodiscard]] Q_INVOKABLE double toL() const
         {
             return m_volumeInL;
         }
@@ -105,7 +105,7 @@ namespace Units {
          *
          * @returns volume in gallons
          */
-        Q_INVOKABLE [[nodiscard]] double toGAL() const
+        [[nodiscard]] Q_INVOKABLE double toGAL() const
         {
             return m_volumeInL/LitersPerGallon;
         }

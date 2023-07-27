@@ -318,7 +318,7 @@ public:
      *
      *  @returns Result of comparison
      */
-    Q_INVOKABLE [[nodiscard]] bool operator==(const GeoMaps::Waypoint& other) const = default;
+    [[nodiscard]] Q_INVOKABLE bool operator==(const GeoMaps::Waypoint& other) const = default;
 
     /*! \brief Comparison
      *
@@ -326,7 +326,7 @@ public:
      *
      *  @returns Result of comparison
      */
-    Q_INVOKABLE [[nodiscard]] bool operator!=(const GeoMaps::Waypoint& other) const = default;
+    [[nodiscard]] Q_INVOKABLE bool operator!=(const GeoMaps::Waypoint& other) const = default;
 
     /*! \brief Deep copy
      *
@@ -334,7 +334,7 @@ public:
      *
      * @returns Copy of the present waypoint.
      */
-    Q_INVOKABLE [[nodiscard]] GeoMaps::Waypoint copy() const
+    [[nodiscard]] Q_INVOKABLE GeoMaps::Waypoint copy() const
     {
         return *this;
     }
@@ -346,7 +346,7 @@ public:
      *  @returns True if both waypoints are valid and if the distance between
      *  them is less than 2km
      */
-    Q_INVOKABLE [[nodiscard]] bool isNear(const GeoMaps::Waypoint& other) const;
+    [[nodiscard]] Q_INVOKABLE bool isNear(const GeoMaps::Waypoint& other) const;
 
     /*! \brief Serialization to GeoJSON object
      *

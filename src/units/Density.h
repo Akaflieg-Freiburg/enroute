@@ -38,11 +38,11 @@ class Density {
 
 public:
     /*! \brief Constructs a density
-         *
-         * @param densityInKgPerCubeMeter density in kg per m³
-         *
-         * @returns Density
-         */
+     *
+     * @param densityInKgPerCubeMeter density in kg per m³
+     *
+     * @returns Density
+     */
     static constexpr auto fromKgPerCubeMeter(double densityInKgPerCubeMeter) -> Density
     {
         Density result;
@@ -52,26 +52,26 @@ public:
 
 
     /*! \brief Checks if the Density is valid
-         *
-         * @returns True is the volume is a finite number
-         */
+     *
+     * @returns True is the volume is a finite number
+     */
     [[nodiscard]] Q_INVOKABLE bool isFinite() const
     {
         return std::isfinite(m_densityInKgPerCubeMeter);
     }
 
     /*! \brief Comparison
-         *
-         *  @param rhs Right hand side of the comparison
-         *
-         *  @returns Result of the comparison
-         */
+     *
+     *  @param rhs Right hand side of the comparison
+     *
+     *  @returns Result of the comparison
+     */
     [[nodiscard]] Q_INVOKABLE std::partial_ordering operator<=>(const Units::Density& rhs) const = default;
 
     /*! \brief Convert to density to kg per m³degree Kelvin
-         *
-         *  @returns Density in kg per m³
-         */
+     *
+     *  @returns Density in kg per m³
+     */
     [[nodiscard]] Q_INVOKABLE double toKgPerCubeMeter() const
     {
         return m_densityInKgPerCubeMeter;

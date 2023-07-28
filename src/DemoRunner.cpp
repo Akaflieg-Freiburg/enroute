@@ -21,6 +21,7 @@
 #include <QDebug>
 #include <QDir>
 #include <QEventLoop>
+#include <QGuiApplication>
 #include <QQuickItem>
 #include <QQuickWindow>
 #include <QTimer>
@@ -30,7 +31,6 @@
 #include "platform/PlatformAdaptor_Abstract.h"
 
 #if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
-#include <QGuiApplication>
 #include "GlobalObject.h"
 #include "GlobalSettings.h"
 #include "geomaps/GeoMapProvider.h"
@@ -539,7 +539,7 @@ void DemoRunner::saveScreenshot(bool manual, QQuickWindow* window, const QString
     }
     else
     {
-        GlobalObject::platformAdaptor()->saveScreenshot(window->grabWindow(), path);
+        Platform::PlatformAdaptor_Abstract::saveScreenshot(window->grabWindow(), path);
     }
 
 }

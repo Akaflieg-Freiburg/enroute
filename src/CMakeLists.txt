@@ -304,9 +304,8 @@ if (UNIX AND NOT ANDROID AND NOT APPLE)
         Qt6::Widgets
     )
     target_precompile_headers(${PROJECT_NAME}
-        PRIVATE
-        <QObject>
-        <QPointer>
+      PUBLIC
+      <QQmlEngine>
     )
 
 # Install

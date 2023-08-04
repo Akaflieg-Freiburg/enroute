@@ -30,38 +30,48 @@ add_custom_target(featureGraphic
 
 add_custom_target(flightMapSprites
   COMMAND mkdir -p ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD.png -h 30 -w 30
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD@2x.png -h 60 -w 60
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-GLD.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-GLD.png -h 20 -w 20
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-GLD.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-GLD@2x.png -h 40 -w 40
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-GRASS.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-GRASS.png -h 30 -w 30
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-GRASS.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-GRASS@2x.png -h 60 -w 60
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-INOP.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-INOP.png -h 30 -w 30
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-INOP.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-INOP@2x.png -h 60 -w 60
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-MIL.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-MIL.png -h 30 -w 30
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-MIL.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-MIL@2x.png -h 60 -w 60
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-MIL-GRASS.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-MIL-GRASS.png -h 30 -w 30
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-MIL-GRASS.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-MIL-GRASS@2x.png -h 60 -w 60
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-MIL-PAVED.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-MIL-PAVED.png -h 30 -w 30
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-MIL-PAVED.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-MIL-PAVED@2x.png -h 60 -w 60
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-PAVED.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-PAVED.png -h 30 -w 30
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-PAVED.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-PAVED@2x.png -h 60 -w 60
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-UL.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-UL.png -h 20 -w 20
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-UL.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-UL@2x.png -h 40 -w 40
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-WATER.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-WATER.png -h 30 -w 30
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-WATER.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/AD-WATER@2x.png -h 60 -w 60
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/MRP.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/MRP.png -h 25 -w 25
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/MRP.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/MRP@2x.png -h 50 -w 50
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/NDB.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/NDB.png -h 25 -w 25
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/NDB.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/NDB@2x.png -h 50 -w 50
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/RP.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/RP.png -h 25 -w 25
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/RP.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/RP@2x.png -h 50 -w 50
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VOR.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/VOR.png -w 22
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VOR.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/VOR@2x.png -w 44
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VORDME.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/VORDME.png -w 22
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VORDME.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/VORDME@2x.png -w 44
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VORTAC.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/VORTAC.png -w 26
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VORTAC.svg -o ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites/VORTAC@2x.png -w 52
+  COMMAND rm -f *.png
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD.svg -o AD.png -h 30 -w 30
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-GLD.svg -o AD-GLD.png -h 20 -w 20
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-GRASS.svg -o AD-GRASS.png -h 30 -w 30
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-INOP.svg -o AD-INOP.png -h 30 -w 30
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-MIL.svg -o AD-MIL.png -h 30 -w 30
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-MIL-GRASS.svg -o AD-MIL-GRASS.png -h 30 -w 30
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-MIL-PAVED.svg -o AD-MIL-PAVED.png -h 30 -w 30
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-PAVED.svg -o AD-PAVED.png -h 30 -w 30
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-UL.svg -o AD-UL.png -h 20 -w 20
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-WATER.svg -o AD-WATER.png -h 30 -w 30
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/MRP.svg -o MRP.png -h 25 -w 25
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/NDB.svg -o NDB.png -h 25 -w 25
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/RP.svg -o RP.png -h 25 -w 25
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VOR.svg -o VOR.png -w 22
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VORDME.svg -o VORDME.png -w 22
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VORTAC.svg -o VORTAC.png -w 26
+  COMMAND spriteGenerator *.png
+  COMMAND zopflipng -m -y sprite.png sprite.png
+  COMMAND mv sprite.json ${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprite.json
+  COMMAND mv sprite.png ${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprite.png
+  COMMAND rm -f *.png
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD.svg -o AD.png -h 60 -w 60
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-GLD.svg -o AD-GLD.png -h 40 -w 40
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-GRASS.svg -o AD-GRASS.png -h 60 -w 60
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-INOP.svg -o AD-INOP.png -h 60 -w 60
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-MIL.svg -o AD-MIL.png -h 60 -w 60
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-MIL-GRASS.svg -o AD-MIL-GRASS.png -h 60 -w 60
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-MIL-PAVED.svg -o AD-MIL-PAVED.png -h 60 -w 60
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-PAVED.svg -o AD-PAVED.png -h 60 -w 60
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-UL.svg -o AD-UL.png -h 40 -w 40
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-WATER.svg -o AD-WATER.png -h 60 -w 60
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/MRP.svg -o MRP.png -h 50 -w 50
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/NDB.svg -o NDB.png -h 50 -w 50
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/RP.svg -o RP.png -h 50 -w 50
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VOR.svg -o VOR.png -w 44
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VORDME.svg -o VORDME.png -w 44
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VORTAC.svg -o VORTAC.png -w 52
+  COMMAND spriteGenerator *.png
+  COMMAND zopflipng -m -y sprite.png sprite.png
+  COMMAND mv sprite.json ${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprite@2x.json
+  COMMAND mv sprite.png ${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprite@2x.png
   COMMENT "Generated sources: flight map sprites"
   )
 

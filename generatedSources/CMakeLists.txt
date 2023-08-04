@@ -68,7 +68,7 @@ add_custom_target(flightMapSprites
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VOR.svg -o VOR.png -w 44
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VORDME.svg -o VORDME.png -w 44
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VORTAC.svg -o VORTAC.png -w 52
-  COMMAND spriteGenerator *.png
+  COMMAND spriteGenerator --pixelRatio 2 *.png
   COMMAND zopflipng -m -y sprite.png sprite.png
   COMMAND mv sprite.json ${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprite@2x.json
   COMMAND mv sprite.png ${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprite@2x.png

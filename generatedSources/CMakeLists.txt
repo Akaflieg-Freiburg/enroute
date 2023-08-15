@@ -146,6 +146,59 @@ add_custom_target(screenshots4Manual
 
 
 #
+# Manual texts
+#
+
+add_custom_target(manualText
+    COMMAND echo "Privacy Policies" >${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/privacy.rst
+    COMMAND echo "================" >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/privacy.rst
+    COMMAND echo "" >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/privacy.rst
+    COMMAND echo "English" >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/privacy.rst
+    COMMAND echo "-------" >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/privacy.rst
+    COMMAND echo "" >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/privacy.rst
+    COMMAND QT_QPA_PLATFORM=xcb LC_ALL=EN ${CMAKE_BINARY_DIR}/src/enroute --string :text/privacy.html | pandoc --from=HTML --write=rst >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/privacy.rst
+    COMMAND echo "" >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/privacy.rst
+    #
+    COMMAND echo "Deutsche Übersetzung" >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/privacy.rst
+    COMMAND echo "--------------------" >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/privacy.rst
+    COMMAND echo "" >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/privacy.rst
+    COMMAND QT_QPA_PLATFORM=xcb LC_ALL=DE ${CMAKE_BINARY_DIR}/src/enroute --string :text/privacy.html | pandoc --from=HTML --write=rst >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/privacy.rst
+    COMMAND echo "" >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/privacy.rst
+    #
+    COMMAND echo "Traduction en français" >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/privacy.rst
+    COMMAND echo "----------------------" >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/privacy.rst
+    COMMAND echo "" >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/privacy.rst
+    COMMAND QT_QPA_PLATFORM=xcb LC_ALL=FR ${CMAKE_BINARY_DIR}/src/enroute --string :text/privacy.html | pandoc --from=HTML --write=rst >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/privacy.rst
+    COMMAND echo "" >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/privacy.rst
+    #
+    COMMAND echo "Traduzione italiana" >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/privacy.rst
+    COMMAND echo "-------------------" >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/privacy.rst
+    COMMAND echo "" >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/privacy.rst
+    COMMAND QT_QPA_PLATFORM=xcb LC_ALL=IT ${CMAKE_BINARY_DIR}/src/enroute --string :text/privacy.html | pandoc --from=HTML --write=rst >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/privacy.rst
+    COMMAND echo "" >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/privacy.rst
+    #
+    COMMAND echo "Polskie tłumaczenie" >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/privacy.rst
+    COMMAND echo "-------------------" >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/privacy.rst
+    COMMAND echo "" >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/privacy.rst
+    COMMAND QT_QPA_PLATFORM=xcb LC_ALL=PL ${CMAKE_BINARY_DIR}/src/enroute --string :text/privacy.html | pandoc --from=HTML --write=rst >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/privacy.rst
+    COMMAND echo "" >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/privacy.rst
+    #
+    COMMAND echo "Traducción al español" >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/privacy.rst
+    COMMAND echo "---------------------" >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/privacy.rst
+    COMMAND echo "" >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/privacy.rst
+    COMMAND QT_QPA_PLATFORM=xcb LC_ALL=ES ${CMAKE_BINARY_DIR}/src/enroute --string :text/privacy.html | pandoc --from=HTML --write=rst >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/privacy.rst
+    COMMAND echo "" >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/privacy.rst
+    #
+    COMMAND echo "Authors" >${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/authors.rst
+    COMMAND echo "=======" >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/authors.rst
+    COMMAND QT_QPA_PLATFORM=xcb LC_ALL=EN ${CMAKE_BINARY_DIR}/src/enroute --string :text/authors.html | pandoc --from=HTML --write=rst >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/authors.rst
+    #
+    COMMENT "Generate texts for manual"
+    DEPENDS ${PROJECT_NAME}
+  )
+
+
+#
 # Target 'generatedSources' that combines all of the above
 #
 
@@ -154,5 +207,6 @@ add_custom_target(generatedSources
   DEPENDS flightMapFonts
   DEPENDS flightMapSprites
   DEPENDS mainIcons
+  DEPENDS manualText
   DEPENDS waypointIcons
   )

@@ -22,12 +22,52 @@ import QtPositioning
 import QtQuick
 import QtQuick.Controls
 
+import akaflieg_freiburg.enroute
 import "../items"
 
 Page {
     id: page
 
     title: qsTr("Moving Map")
+
+    header: PageHeader {
+
+        height: 60 + SafeInsets.top
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
+        topPadding: SafeInsets.top
+        visible: GeoMapProvider.approachChart !== ""
+
+        ToolButton {
+            id: backButton
+
+            anchors.left: parent.left
+            anchors.verticalCenter: parent.verticalCenter
+
+            icon.source: "/icons/material/ic_arrow_back.svg"
+
+            onClicked: {
+                PlatformAdaptor.vibrateBrief()
+                GeoMapProvider.approachChart = ""
+            }
+        }
+
+        Label {
+            id: lbl
+
+            anchors.verticalCenter: parent.verticalCenter
+
+            anchors.left: parent.left
+            anchors.leftMargin: 72
+            anchors.right: parent.right
+
+            text: qsTr("Approach")
+            elide: Label.ElideRight
+            font.pixelSize: 20
+            verticalAlignment: Qt.AlignVCenter
+        }
+    }
+
 
     Loader {
         id: mapLoader

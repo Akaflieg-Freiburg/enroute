@@ -6,6 +6,16 @@
     "maputnik:thunderforest_access_token": ""
   },
   "sources": {
+  "approach": {
+      "type": "image",
+      "url": "file:///home/kebekus/Software/projects/enrouteText/manual/de.akaflieg_freiburg.enroute.png",
+      "coordinates": [
+          [7.5, 48.3],
+          [8, 48.3],
+          [8, 48],
+          [7.5, 48]
+      ]
+  },
     "openmaptiles": {
     "type": "vector",
     "url": "%URL%"
@@ -1838,6 +1848,11 @@
         "text-halo-width": 2,
         "text-halo-color": "white"
         }
+      },
+      {
+      "id": "apch",
+      "type": "raster",
+      "source": "approach"
       }
   ],
   "id": "osm-liberty"

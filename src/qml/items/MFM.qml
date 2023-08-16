@@ -541,6 +541,8 @@ Item {
         anchors.top: remainingRoute.bottom
         anchors.topMargin: 0.5*font.pixelSize
 
+        visible: GeoMapProvider.approachChart == ""
+
         onClicked: {
             PlatformAdaptor.vibrateBrief()
             drawer.open()

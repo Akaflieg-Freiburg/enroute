@@ -139,6 +139,22 @@ auto GeoMaps::GeoMapProvider::styleFileURL() const -> QString
 
 
 //
+// Setter Methods
+//
+
+void GeoMaps::GeoMapProvider::setApproachChart(const QString& apchChartName)
+{
+    if (m_approachChart == apchChartName)
+    {
+        return;
+    }
+
+    m_approachChart = apchChartName;
+    emit approachChartChanged();
+#warning not fully implemented
+}
+
+//
 // Methods
 //
 

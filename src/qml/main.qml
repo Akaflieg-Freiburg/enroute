@@ -149,6 +149,22 @@ AppWindow {
 
                     leftPadding: 16+SafeInsets.left
 
+                    id: menuItemApproach
+
+                    text: qsTr("Approach")
+                    icon.source: "/icons/material/ic_flight_land.svg"
+
+                    onClicked: {
+                        PlatformAdaptor.vibrateBrief()
+                        GeoMapProvider.approachChart = "x"
+                    }
+                }
+
+                ItemDelegate {
+                    Layout.fillWidth: true
+
+                    leftPadding: 16+SafeInsets.left
+
                     id: menuItemNearby
 
                     text: qsTr("Nearby Waypoints")

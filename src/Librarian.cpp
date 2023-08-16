@@ -179,7 +179,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
       {
         return "<p>" + tr("We do not process any personal data from you. Data that you enter into the app "
                           "(including routes, waypoints, and aircraft specifics) is stored locally on your "
-                          "device. The data not transmitted to us and is not processed by us.") + "</p>"
+                          "device. The data is not transmitted to us and is not processed by us.") + "</p>"
                + "<p>" + tr("However, to ensure the functionality, the app must transmit following data to "
                             "servers on the internet.") + "</p>"
                + "<ul style='margin-left:-25px;'>"

@@ -8,7 +8,7 @@
   "sources": {
   "approach": {
       "type": "image",
-      "url": "file:///home/kebekus/Software/projects/enrouteText/manual/de.akaflieg_freiburg.enroute.png",
+      "url": "%URL2%/icons/appIcon.png",
       "coordinates": [
           [7.5, 48.3],
           [8, 48.3],
@@ -1852,7 +1852,10 @@
       {
       "id": "apch",
       "type": "raster",
-      "source": "approach"
+      "source": "approach",
+      "layout": {
+        "visibility": "%VISIBILITY"
+        }
       }
   ],
   "id": "osm-liberty"

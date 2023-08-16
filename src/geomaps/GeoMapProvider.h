@@ -185,7 +185,7 @@ public:
      *
      * @returns Property styleFileURL
      */
-    [[nodiscard]] auto styleFileURL() const -> QString;
+    [[nodiscard]] auto styleFileURL() -> QString;
 
     /*! \brief Getter function for the property with the same name
      *
@@ -353,7 +353,7 @@ private:
     TileServer _tileServer;
 
     // Temporary file that holds the current style file
-    QPointer<QTemporaryFile> _styleFile;
+    QPointer<QTemporaryFile> m_styleFile;
 
     //
     // Aviation Data Cache

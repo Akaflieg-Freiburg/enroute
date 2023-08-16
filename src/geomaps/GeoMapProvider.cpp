@@ -128,13 +128,51 @@ auto GeoMaps::GeoMapProvider::geoJSON() -> QByteArray
     return _combinedGeoJSON_;
 }
 
-auto GeoMaps::GeoMapProvider::styleFileURL() const -> QString
+auto GeoMaps::GeoMapProvider::styleFileURL() -> QString
 {
-    if (_styleFile.isNull())
+    if (m_styleFile.isNull())
     {
-        return QStringLiteral(":/flightMap/empty.json");
+        QFile file;
+        if (GlobalObject::dataManager()->baseMaps()->hasFile())
+        {
+            // Serve new tile set under new name
+            if (!m_baseMapRasterTiles.isEmpty())
+            {
+                file.setFileName(QStringLiteral(":/flightMap/mapstyle-raster.json"));
+            }
+            else
+            {
+                file.setFileName(QStringLiteral(":/flightMap/osm-liberty.json"));
+            }
+        }
+        else
+        {
+            file.setFileName(QStringLiteral(":/flightMap/empty.json"));
+        }
+
+        file.open(QIODevice::ReadOnly);
+        QByteArray data = file.readAll();
+        data.replace("%URL%", (_tileServer.serverUrl()+"/"+_currentBaseMapPath).toLatin1());
+        data.replace("%URLT%", (_tileServer.serverUrl()+"/"+_currentTerrainMapPath).toLatin1());
+        data.replace("%URL2%", _tileServer.serverUrl().toLatin1());
+
+        if (m_approachChart.isEmpty())
+        {
+            data.replace("%VISIBILITY", "none");
+        }
+        else
+        {
+            data.replace("%VISIBILITY", "visible");
+        }
+
+        m_styleFile = new QTemporaryFile(this);
+        m_styleFile->open();
+        m_styleFile->write(data);
+        m_styleFile->close();
     }
-    return "file://"+_styleFile->fileName();
+
+    return "file://"+m_styleFile->fileName();
+
 }
 
 
@@ -151,7 +189,9 @@ void GeoMaps::GeoMapProvider::setApproachChart(const QString& apchChartName)
 
     m_approachChart = apchChartName;
     emit approachChartChanged();
-#warning not fully implemented
+
+    delete m_styleFile;
+    emit styleFileURLChanged();
 }
 
 //
@@ -495,44 +535,29 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
     }
     emit terrainMapTilesChanged();
 
-    // Delete old style file, stop serving tiles
-    delete _styleFile;
+    // Stop serving tiles
     _tileServer.removeMbtilesFileSet(_currentBaseMapPath);
     _tileServer.removeMbtilesFileSet(_currentTerrainMapPath);
     _currentBaseMapPath = QString::number(QRandomGenerator::global()->bounded(static_cast<quint32>(1000000000)));
     _currentTerrainMapPath = QString::number(QRandomGenerator::global()->bounded(static_cast<quint32>(1000000000)));
 
-    QFile file;
+    // Start serving tiles again
     if (GlobalObject::dataManager()->baseMaps()->hasFile())
     {
         // Serve new tile set under new name
         if (!m_baseMapRasterTiles.isEmpty())
         {
             _tileServer.addMbtilesFileSet(_currentBaseMapPath, m_baseMapRasterTiles);
-            file.setFileName(QStringLiteral(":/flightMap/mapstyle-raster.json"));
         }
         else
         {
             _tileServer.addMbtilesFileSet(_currentBaseMapPath, m_baseMapVectorTiles);
-            file.setFileName(QStringLiteral(":/flightMap/osm-liberty.json"));
         }
-    }
-    else
-    {
-        file.setFileName(QStringLiteral(":/flightMap/empty.json"));
     }
     _tileServer.addMbtilesFileSet(_currentTerrainMapPath, m_terrainMapTiles);
 
-    file.open(QIODevice::ReadOnly);
-    QByteArray data = file.readAll();
-    data.replace("%URL%", (_tileServer.serverUrl()+"/"+_currentBaseMapPath).toLatin1());
-    data.replace("%URLT%", (_tileServer.serverUrl()+"/"+_currentTerrainMapPath).toLatin1());
-    data.replace("%URL2%", _tileServer.serverUrl().toLatin1());
-    _styleFile = new QTemporaryFile(this);
-    _styleFile->open();
-    _styleFile->write(data);
-    _styleFile->close();
-
+    // Update style file
+    delete m_styleFile;
     emit styleFileURLChanged();
 }
 

@@ -44,6 +44,7 @@
 
 #include "DemoRunner.h"
 #include "GlobalObject.h"
+#include "Librarian.h"
 #include "dataManagement/DataManager.h"
 #include "dataManagement/SSLErrorHandler.h"
 #include "geomaps/Airspace.h"
@@ -139,22 +140,36 @@ auto main(int argc, char *argv[]) -> int
     parser.setApplicationDescription(QCoreApplication::translate("main", "Enroute Flight Navigation is a free nagivation app for VFR pilots,\ndeveloped as a project of Akaflieg Freiburg."));
     parser.addHelpOption();
     parser.addVersionOption();
-    QCommandLineOption googlePlayScreenshotOption(QStringLiteral("sg"), QCoreApplication::translate("main", "Run simulator and generate screenshots for GooglePlay"));
+    QCommandLineOption googlePlayScreenshotOption(QStringLiteral("sg"),
+                                                  QCoreApplication::translate("main", "Run simulator and generate screenshots for GooglePlay"));
     parser.addOption(googlePlayScreenshotOption);
-    QCommandLineOption iosScreenshotOption(QStringLiteral("si"), QCoreApplication::translate("main", "Run simulator and generate screenshots for iOS"));
+    QCommandLineOption iosScreenshotOption(QStringLiteral("si"),
+                                           QCoreApplication::translate("main", "Run simulator and generate screenshots for iOS"));
     parser.addOption(iosScreenshotOption);
-    QCommandLineOption manualScreenshotOption(QStringLiteral("sm"), QCoreApplication::translate("main", "Run simulator and generate screenshots for the manual"));
+    QCommandLineOption manualScreenshotOption(QStringLiteral("sm"),
+                                              QCoreApplication::translate("main", "Run simulator and generate screenshots for the manual"));
     parser.addOption(manualScreenshotOption);
+    QCommandLineOption extractStringOption("string",
+                                           QCoreApplication::translate("main", "look up string using Librarian::getStringFromRessource and print it to stdout"),
+                                           QCoreApplication::translate("main", "string name"));
+    parser.addOption(extractStringOption);
     parser.addPositionalArgument(QStringLiteral("[fileName]"), QCoreApplication::translate("main", "File to import."));
     parser.process(app);
+
     auto positionalArguments = parser.positionalArguments();
     if (positionalArguments.length() > 1)
     {
-        parser.showHelp();
+        parser.showHelp(-1);
+    }
+    QString stringName = parser.value(extractStringOption);
+    if (!stringName.isEmpty())
+    {
+        QTextStream out(stdout);
+        out << Librarian::getStringFromRessource(stringName);
+        return 0;
     }
 
 #if !defined(Q_OS_ANDROID) and !defined(Q_OS_IOS)
-
     // Single application on desktops
     KDSingleApplication kdsingleapp;
     if (!kdsingleapp.isPrimaryInstance())

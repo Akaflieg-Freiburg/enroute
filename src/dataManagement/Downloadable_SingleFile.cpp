@@ -68,6 +68,10 @@ DataManagement::Downloadable_SingleFile::Downloadable_SingleFile(QUrl url, const
         {
             m_contentType = BaseMapVector;
         }
+        else if (tmpName.endsWith(u"png"_qs))
+        {
+            m_contentType = ApproachChart;
+        }
         else if (tmpName.endsWith(u"raster"_qs))
         {
             m_contentType = BaseMapRaster;

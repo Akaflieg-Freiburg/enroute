@@ -194,6 +194,7 @@ void GeoMaps::GeoMapProvider::setApproachChart(const QString& apchChartName)
     emit styleFileURLChanged();
 }
 
+
 //
 // Methods
 //

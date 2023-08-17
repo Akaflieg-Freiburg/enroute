@@ -66,6 +66,15 @@ void DataManagement::DataManager::deferredInitialization()
     {
         updateRemoteDataItemList();
     }
+
+    // Setup approach charts
+    auto approachChartsDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/approach_charts";
+    QDirIterator fileIterator(approachChartsDir, QDir::Files);
+    while (fileIterator.hasNext())
+    {
+        fileIterator.next();
+        qWarning() << fileIterator.filePath();
+    }
 }
 
 

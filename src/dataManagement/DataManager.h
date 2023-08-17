@@ -104,6 +104,12 @@ public:
     // PROPERTIES
     //
 
+    /*! \brief Downloadable_MultiFile that holds all approach charts
+     *
+     *  Pointer to a Downloadable_MultiFile that holds all approach charts.
+     */
+    Q_PROPERTY(DataManagement::Downloadable_MultiFile* approachCharts READ approachCharts CONSTANT)
+
     /*! \brief Indiates that the app needs to be updated
      *
      *  This property indicates that this version of the app is too old
@@ -136,7 +142,7 @@ public:
      */
     Q_PROPERTY(DataManagement::Downloadable_MultiFile* baseMaps READ baseMaps CONSTANT)
 
-    /*! \brief Downloadable_MultiFile that holds all data items
+    /*! \brief Downloadable_MultiFile that holds all databases
      *
      *  Pointer to a Downloadable_MultiFile that holds all databases.
      */
@@ -177,6 +183,12 @@ public:
     //
     // Getter Methods
     //
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property approachCharts
+     */
+    [[nodiscard]] auto approachCharts() -> DataManagement::Downloadable_MultiFile* { return &m_approachCharts; }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -367,6 +379,7 @@ private:
     DataManagement::Downloadable_SingleFile m_mapList { QUrl(QStringLiteral("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv003/maps.json")), QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/maps.json" };
 
     // List of geographic maps
+    DataManagement::Downloadable_MultiFile m_approachCharts {DataManagement::Downloadable_MultiFile::SingleUpdate};
     DataManagement::Downloadable_MultiFile m_aviationMaps {DataManagement::Downloadable_MultiFile::SingleUpdate};
     DataManagement::Downloadable_MultiFile m_baseMaps {DataManagement::Downloadable_MultiFile::SingleUpdate};
     DataManagement::Downloadable_MultiFile m_baseMapsRaster {DataManagement::Downloadable_MultiFile::SingleUpdate};

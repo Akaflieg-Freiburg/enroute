@@ -73,7 +73,19 @@ void DataManagement::DataManager::deferredInitialization()
     while (fileIterator.hasNext())
     {
         fileIterator.next();
-        qWarning() << fileIterator.filePath();
+#warning Working here!
+        auto list = fileIterator.filePath().chopped(4).split('_');
+        qWarning() << list.size();
+        qWarning() << list;
+        list = list.last(4);
+
+        QGeoCoordinate topLeft(list[1].toDouble(), list[0].toDouble());
+        QGeoCoordinate bottomRight(list[3].toDouble(), list[2].toDouble());
+        QGeoRectangle bBox(topLeft, bottomRight);
+
+        auto* downloadable = new DataManagement::Downloadable_SingleFile({}, fileIterator.filePath(), bBox, this);
+        downloadable->setObjectName("Test1");
+        m_approachCharts.add(downloadable);
     }
 }
 

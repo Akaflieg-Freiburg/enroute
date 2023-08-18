@@ -68,24 +68,42 @@ void DataManagement::DataManager::deferredInitialization()
     }
 
     // Setup approach charts
+    QStringList filesToDelete;
     auto approachChartsDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/approach_charts";
     QDirIterator fileIterator(approachChartsDir, QDir::Files);
     while (fileIterator.hasNext())
     {
         fileIterator.next();
-#warning Working here!
+        if (!fileIterator.filePath().endsWith("png"))
+        {
+            filesToDelete += fileIterator.filePath();
+            continue;
+        }
+
         auto list = fileIterator.filePath().chopped(4).split('_');
-        qWarning() << list.size();
-        qWarning() << list;
+        if (list.size() < 4)
+        {
+            filesToDelete += fileIterator.filePath();
+            continue;
+        }
         list = list.last(4);
 
         QGeoCoordinate topLeft(list[1].toDouble(), list[0].toDouble());
         QGeoCoordinate bottomRight(list[3].toDouble(), list[2].toDouble());
         QGeoRectangle bBox(topLeft, bottomRight);
+        if (!bBox.isValid())
+        {
+            filesToDelete += fileIterator.filePath();
+            continue;
+        }
 
         auto* downloadable = new DataManagement::Downloadable_SingleFile({}, fileIterator.filePath(), bBox, this);
         downloadable->setObjectName("Test1");
         m_approachCharts.add(downloadable);
+    }
+    foreach (auto fileToDelete, filesToDelete)
+    {
+        QFile::remove(fileToDelete);
     }
 }
 

@@ -156,7 +156,9 @@ AppWindow {
 
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
-                        GeoMapProvider.approachChart = "x"
+                        stackView.pop()
+                        stackView.push("pages/Approach.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
+                        drawer.close()
                     }
                 }
 

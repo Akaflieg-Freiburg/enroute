@@ -492,7 +492,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/WordWrappingRadioDelegate.qml
     qml/items/WordWrappingItemDelegate.qml
     qml/items/WordWrappingSwitchDelegate.qml
-    qml/pages/SettingsPage.qml
+    qml/pages/Approach.qml
     qml/pages/AircraftPage.qml
     qml/pages/AircraftLibrary.qml
     qml/pages/BugReportPage.qml
@@ -508,6 +508,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/pages/Positioning.qml
     qml/pages/PressureAltitude.qml
     qml/pages/PrivacyPage.qml
+    qml/pages/SettingsPage.qml
     qml/pages/TrafficReceiver.qml
     qml/pages/WaypointLibraryPage.qml
     qml/pages/Weather.qml

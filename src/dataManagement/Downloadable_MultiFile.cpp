@@ -44,6 +44,9 @@ auto DataManagement::Downloadable_MultiFile::description() -> QString
     {
         switch(map->contentType())
         {
+        case Downloadable_Abstract::ApproachChart:
+            result += "<h3>"+tr("Approach Chart")+"</h3>";
+            break;
         case Downloadable_Abstract::AviationMap:
             result += "<h3>"+tr("Aviation Map")+"</h3>";
             break;

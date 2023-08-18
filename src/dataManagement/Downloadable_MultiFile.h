@@ -151,9 +151,17 @@ public:
      *
      *   @param location QGeoCoordinate with a location
      *
-     *   @returns Property list of downloadables whose bounding box contains the given location
+     *   @returns list of downloadables whose bounding box contains the given location
      */
     [[nodiscard]] Q_INVOKABLE QList<DataManagement::Downloadable_Abstract*> downloadables4Location(const QGeoCoordinate& location);
+
+    /*! \brief Downloadables, sorted by distance to a given location
+     *
+     *   @param location QGeoCoordinate with a location
+     *
+     *   @returns list of downloadables whose bounding box contains the given location
+     */
+    [[nodiscard]] Q_INVOKABLE QList<DataManagement::Downloadable_Abstract*> downloadablesByDistance(const QGeoCoordinate& location);
 
     /*! \brief Remove a Downloadable_SingleFile from this Downloadable_MultiFile
      *

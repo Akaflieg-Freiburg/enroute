@@ -60,7 +60,7 @@ Page {
         anchors.fill: parent
 
         clip: true
-        model: DataManager.approachCharts.downloadables
+        model: DataManager.approachCharts.downloadablesByDistance(PositionProvider.lastValidCoordinate)
         delegate: approachChartItem
         ScrollIndicator.vertical: ScrollIndicator {}
     }

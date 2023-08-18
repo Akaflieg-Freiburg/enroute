@@ -504,6 +504,8 @@ Item {
     RemainingRouteBar {
         id: remainingRoute
 
+        visible: GeoMapProvider.approachChart == ""
+
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
@@ -517,7 +519,7 @@ Item {
 
         topPadding: 0
         bottomPadding: 0
-        visible: GlobalSettings.airspaceAltitudeLimit.isFinite() && !DataManager.baseMapsRaster.hasFile
+        visible: (GeoMapProvider.approachChart == "") && GlobalSettings.airspaceAltitudeLimit.isFinite() && !DataManager.baseMapsRaster.hasFile
 
         Label {
 
@@ -659,7 +661,7 @@ Item {
         anchors.horizontalCenter: followGPSButton.horizontalCenter
 
         opacity: GlobalSettings.nightMode ? 0.3 : 1.0
-        visible: !scale.visible
+        visible: (GeoMapProvider.approachChart == "") && !scale.visible
 
         pixelPer10km: flightMap.pixelPer10km
         vertical: true
@@ -676,7 +678,7 @@ Item {
         anchors.verticalCenter: zoomOut.verticalCenter
 
         opacity: GlobalSettings.nightMode ? 0.3 : 1.0
-        visible: parent.height > parent.width
+        visible: (GeoMapProvider.approachChart == "") && (parent.height > parent.width)
 
         pixelPer10km: flightMap.pixelPer10km
         vertical: false
@@ -690,6 +692,7 @@ Item {
         topPadding: 0
         bottomPadding: 0
 
+        visible: (GeoMapProvider.approachChart == "")
         Label {
             id: noCopyrightInfo
             text: "<a href='xx'>"+qsTr("Map Data Copyright Info")+"</a>"

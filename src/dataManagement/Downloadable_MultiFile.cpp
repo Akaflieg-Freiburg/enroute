@@ -275,6 +275,31 @@ auto DataManagement::Downloadable_MultiFile::downloadables4Location(const QGeoCo
 }
 
 
+auto DataManagement::Downloadable_MultiFile::downloadablesByDistance(const QGeoCoordinate& location) -> QVector<DataManagement::Downloadable_Abstract*>
+{
+    if (!location.isValid())
+    {
+        return downloadables();
+    }
+
+    QVector<DataManagement::Downloadable_Abstract*> result;
+    m_downloadables.removeAll(nullptr);
+    foreach(auto downloadable, m_downloadables)
+    {
+        result += downloadable;
+    }
+
+    // Sort Downloadables according to section name and object name
+    std::sort(result.begin(), result.end(), [location](Downloadable_Abstract* a, Downloadable_Abstract* b)
+              {
+                return a->boundingBox().center().distanceTo(location) < b->boundingBox().center().distanceTo(location);
+              }
+              );
+
+    return result;
+}
+
+
 void DataManagement::Downloadable_MultiFile::startDownload()
 {
     m_downloadables.removeAll(nullptr);

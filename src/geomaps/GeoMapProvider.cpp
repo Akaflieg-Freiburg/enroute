@@ -156,7 +156,7 @@ auto GeoMaps::GeoMapProvider::styleFileURL() -> QString
         data.replace("%URLT%", (_tileServer.serverUrl()+"/"+_currentTerrainMapPath).toLatin1());
         data.replace("%URL2%", _tileServer.serverUrl().toLatin1());
 
-        if (m_approachChart.isEmpty())
+        if (m_approachChartFileName.isEmpty())
         {
             data.replace("%APCHIMAGE%", (_tileServer.serverUrl()+"/icons/appIcon.png").toLatin1());
             data.replace("%VISIBILITY", "none");
@@ -168,13 +168,15 @@ auto GeoMaps::GeoMapProvider::styleFileURL() -> QString
         }
         else
         {
-            auto bBox = DataManagement::DataManager::bBoxFromFileName(m_approachChart);
-            data.replace("%APCHIMAGE%", "file://"+m_approachChart.toLocal8Bit());
-            data.replace("%APCHLEFT%", QString::number(bBox.topLeft().longitude()).toLocal8Bit());
-            data.replace("%APCHRIGHT%", QString::number(bBox.topRight().longitude()).toLocal8Bit());
-            data.replace("%APCHTOP%", QString::number(bBox.topLeft().latitude()).toLocal8Bit());
-            data.replace("%APCHBOT%", QString::number(bBox.bottomLeft().latitude()).toLocal8Bit());
+            auto topLeft = m_approachChartBBox.topLeft();
+            auto bottomRight = m_approachChartBBox.bottomRight();
+
+            data.replace("%APCHIMAGE%", "file://"+m_approachChartFileName.toLocal8Bit());
             data.replace("%VISIBILITY", "visible");
+            data.replace("%APCHLEFT%", QString::number(topLeft.longitude()).toLocal8Bit());
+            data.replace("%APCHRIGHT%", QString::number(bottomRight.longitude()).toLocal8Bit());
+            data.replace("%APCHTOP%", QString::number(topLeft.latitude()).toLocal8Bit());
+            data.replace("%APCHBOT%", QString::number(bottomRight.latitude()).toLocal8Bit());
         }
 
         m_styleFile = new QTemporaryFile(this);
@@ -184,7 +186,6 @@ auto GeoMaps::GeoMapProvider::styleFileURL() -> QString
     }
 
     return "file://"+m_styleFile->fileName();
-
 }
 
 
@@ -194,16 +195,26 @@ auto GeoMaps::GeoMapProvider::styleFileURL() -> QString
 
 void GeoMaps::GeoMapProvider::setApproachChart(const QString& apchChartName)
 {
-    if (m_approachChart == apchChartName)
+    if (m_approachChartFileName == apchChartName)
     {
         return;
     }
 
-    m_approachChart = apchChartName;
-    emit approachChartChanged();
+    auto bBox = DataManagement::DataManager::bBoxFromFileName(apchChartName);
+    if (bBox.isValid())
+    {
+        m_approachChartFileName = apchChartName;
+        m_approachChartBBox = bBox;
+    }
+    else
+    {
+        m_approachChartFileName = {};
+        m_approachChartBBox = {};
+    }
 
     delete m_styleFile;
     emit styleFileURLChanged();
+    emit approachChartChanged();
 }
 
 

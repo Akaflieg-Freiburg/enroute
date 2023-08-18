@@ -78,7 +78,12 @@ void DataManagement::DataManager::deferredInitialization()
         auto idx = fileName.lastIndexOf(u"-geo_"_qs, -1);
         auto bBox = bBoxFromFileName(fileName);
 
-        if (!fileName.endsWith(u"png"_qs) ||
+        if ((!fileName.endsWith(u"jpeg"_qs)
+             && !fileName.endsWith(u"jpg"_qs)
+             && !fileName.endsWith(u"png"_qs)
+             && !fileName.endsWith(u"tif"_qs)
+             && !fileName.endsWith(u"tiff"_qs)
+             && !fileName.endsWith(u"webp"_qs)) ||
             (idx == -1) ||
             !bBox.isValid())
         {
@@ -239,6 +244,10 @@ auto DataManagement::DataManager::importOpenAir(const QString& fileName, const Q
 
 QGeoRectangle DataManagement::DataManager::bBoxFromFileName(const QString& fileName)
 {
+    if (fileName.size() < 5)
+    {
+        return {};
+    }
     auto list = fileName.chopped(4).split('_');
     if (list.size() < 4)
     {

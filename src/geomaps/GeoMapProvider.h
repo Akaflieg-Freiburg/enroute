@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QCache>
+#include <QGeoRectangle>
 #include <QFuture>
 #include <QImage>
 #include <QQmlEngine>
@@ -148,7 +149,7 @@ public:
      */
     [[nodiscard]] QString approachChart() const
     {
-        return m_approachChart;
+        return m_approachChartFileName;
     }
 
     /*! \brief Getter function for the property with the same name
@@ -371,7 +372,8 @@ private:
     //
     // Current approach chart
     //
-    QString m_approachChart;
+    QString m_approachChartFileName;
+    QGeoRectangle m_approachChartBBox;
 
     // The data in this group is accessed by several threads. The following
     // classes (whose names ends in an underscore) are therefore protected by

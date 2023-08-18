@@ -68,7 +68,27 @@ DataManagement::Downloadable_SingleFile::Downloadable_SingleFile(QUrl url, const
         {
             m_contentType = BaseMapVector;
         }
+        else if (tmpName.endsWith(u"jpeg"_qs))
+        {
+            m_contentType = ApproachChart;
+        }
+        else if (tmpName.endsWith(u"jpg"_qs))
+        {
+            m_contentType = ApproachChart;
+        }
         else if (tmpName.endsWith(u"png"_qs))
+        {
+            m_contentType = ApproachChart;
+        }
+        else if (tmpName.endsWith(u"tif"_qs))
+        {
+            m_contentType = ApproachChart;
+        }
+        else if (tmpName.endsWith(u"tiff"_qs))
+        {
+            m_contentType = ApproachChart;
+        }
+        else if (tmpName.endsWith(u"webp"_qs))
         {
             m_contentType = ApproachChart;
         }

@@ -52,7 +52,6 @@ Page {
                 stackView.pop()
             }
         }
-
     }
 
     header: StandardHeader {}

@@ -74,31 +74,20 @@ void DataManagement::DataManager::deferredInitialization()
     while (fileIterator.hasNext())
     {
         fileIterator.next();
-        if (!fileIterator.filePath().endsWith("png"))
-        {
-            filesToDelete += fileIterator.filePath();
-            continue;
-        }
+        auto fileName = fileIterator.fileName();
+        auto idx = fileName.lastIndexOf(u"-geo_"_qs, -1);
+        auto bBox = bBoxFromFileName(fileName);
 
-        auto list = fileIterator.filePath().chopped(4).split('_');
-        if (list.size() < 4)
-        {
-            filesToDelete += fileIterator.filePath();
-            continue;
-        }
-        list = list.last(4);
-
-        QGeoCoordinate topLeft(list[1].toDouble(), list[0].toDouble());
-        QGeoCoordinate bottomRight(list[3].toDouble(), list[2].toDouble());
-        QGeoRectangle bBox(topLeft, bottomRight);
-        if (!bBox.isValid())
+        if (!fileName.endsWith(u"png"_qs) ||
+            (idx == -1) ||
+            !bBox.isValid())
         {
             filesToDelete += fileIterator.filePath();
             continue;
         }
 
         auto* downloadable = new DataManagement::Downloadable_SingleFile({}, fileIterator.filePath(), bBox, this);
-        downloadable->setObjectName("Test1");
+        downloadable->setObjectName(fileName.left(idx));
         m_approachCharts.add(downloadable);
     }
     foreach (auto fileToDelete, filesToDelete)
@@ -245,6 +234,21 @@ auto DataManagement::DataManager::importOpenAir(const QString& fileName, const Q
     }
     updateDataItemListAndWhatsNew();
     return {};
+}
+
+
+QGeoRectangle DataManagement::DataManager::bBoxFromFileName(const QString& fileName)
+{
+    auto list = fileName.chopped(4).split('_');
+    if (list.size() < 4)
+    {
+        return {};
+    }
+    list = list.last(4);
+
+    QGeoCoordinate topLeft(list[1].toDouble(), list[0].toDouble());
+    QGeoCoordinate bottomRight(list[3].toDouble(), list[2].toDouble());
+    return QGeoRectangle(topLeft, bottomRight);
 }
 
 

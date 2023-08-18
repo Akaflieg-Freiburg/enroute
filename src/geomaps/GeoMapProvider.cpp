@@ -158,10 +158,22 @@ auto GeoMaps::GeoMapProvider::styleFileURL() -> QString
 
         if (m_approachChart.isEmpty())
         {
+            data.replace("%APCHIMAGE%", (_tileServer.serverUrl()+"/icons/appIcon.png").toLatin1());
             data.replace("%VISIBILITY", "none");
+            QGeoRectangle bBox({7,47}, {8,46});
+            data.replace("%APCHLEFT%", "1");
+            data.replace("%APCHRIGHT%", "2");
+            data.replace("%APCHTOP%", "89");
+            data.replace("%APCHBOT%", "88");
         }
         else
         {
+            auto bBox = DataManagement::DataManager::bBoxFromFileName(m_approachChart);
+            data.replace("%APCHIMAGE%", "file://"+m_approachChart.toLocal8Bit());
+            data.replace("%APCHLEFT%", QString::number(bBox.topLeft().longitude()).toLocal8Bit());
+            data.replace("%APCHRIGHT%", QString::number(bBox.topRight().longitude()).toLocal8Bit());
+            data.replace("%APCHTOP%", QString::number(bBox.topLeft().latitude()).toLocal8Bit());
+            data.replace("%APCHBOT%", QString::number(bBox.bottomLeft().latitude()).toLocal8Bit());
             data.replace("%VISIBILITY", "visible");
         }
 

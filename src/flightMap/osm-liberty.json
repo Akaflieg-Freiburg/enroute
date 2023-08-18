@@ -8,12 +8,12 @@
   "sources": {
   "approach": {
       "type": "image",
-      "url": "%URL2%/icons/appIcon.png",
+      "url": "%APCHIMAGE%",
       "coordinates": [
-          [7.5, 48.3],
-          [8, 48.3],
-          [8, 48],
-          [7.5, 48]
+          [%APCHLEFT%, %APCHTOP%],
+          [%APCHRIGHT%, %APCHTOP%],
+          [%APCHRIGHT%, %APCHBOT%],
+          [%APCHLEFT%, %APCHBOT%]
       ]
   },
     "openmaptiles": {

@@ -80,7 +80,7 @@ Page {
         textFormat: Text.RichText
         wrapMode: Text.Wrap
 
-        text: qsTr("<h3>Sorry!</h3><p>There are no approach charts installed. Read the manual to learn how to install them.</p>")
+        text: qsTr("<h3>Sorry!</h3><p>There are no approach charts installed. The manual explains how to install them.</p>")
     }
 
 } // Page

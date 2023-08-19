@@ -93,6 +93,7 @@ void DataManagement::DataManager::deferredInitialization()
 
         auto* downloadable = new DataManagement::Downloadable_SingleFile({}, fileIterator.filePath(), bBox, this);
         downloadable->setObjectName(fileName.left(idx));
+        connect(downloadable, &DataManagement::Downloadable_Abstract::hasFileChanged, downloadable, &QObject::deleteLater);
         m_approachCharts.add(downloadable);
     }
     foreach (auto fileToDelete, filesToDelete)

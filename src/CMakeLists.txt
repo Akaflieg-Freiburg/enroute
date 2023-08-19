@@ -47,6 +47,7 @@ set(SOURCES
     geomaps/OpenAir.h
     geomaps/TileHandler.h
     geomaps/TileServer.h
+    geomaps/VAC.h
     geomaps/Waypoint.h
     geomaps/WaypointLibrary.h
     GlobalObject.h
@@ -124,6 +125,7 @@ set(SOURCES
     geomaps/OpenAir.cpp
     geomaps/TileHandler.cpp
     geomaps/TileServer.cpp
+    geomaps/VAC.cpp
     geomaps/Waypoint.cpp
     geomaps/WaypointLibrary.cpp
     GlobalObject.cpp

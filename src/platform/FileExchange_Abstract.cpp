@@ -25,6 +25,7 @@
 #include "geomaps/GeoJSON.h"
 #include "geomaps/MBTILES.h"
 #include "geomaps/OpenAir.h"
+#include "geomaps/VAC.h"
 #include "platform/FileExchange_Abstract.h"
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficDataSource_File.h"
@@ -128,6 +129,13 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     if (GeoMaps::openAir::isValid(myPath, &info))
     {
         emit openFileRequest(myPath, info, OpenAir);
+        return;
+    }
+
+    // VAC
+    if (GeoMaps::VAC::isValid(myPath))
+    {
+        emit openFileRequest(myPath, {}, VAC);
         return;
     }
 

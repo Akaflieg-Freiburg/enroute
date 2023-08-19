@@ -52,7 +52,8 @@ public:
         VectorMap, /*< File contains a vector map. */
         RasterMap, /*< File contains a raster map. */
         WaypointLibrary, /*< Waypoint library in CUP or GeoJSON format */
-        OpenAir /*< Airspace data in openAir format */
+        OpenAir, /*< Airspace data in openAir format */
+        VAC /*< Visual Approach Chart */
       };
     Q_ENUM(FileFunction)
 

@@ -320,6 +320,9 @@ Page {
             text: qsTr("Maps")
         }
         TabButton {
+            text: "APCH"
+        }
+        TabButton {
             text: qsTr("Data")
         }
     }
@@ -345,6 +348,30 @@ Page {
             Layout.fillWidth: true
             clip: true
             model: DataManager.mapSets.downloadables
+            delegate: MapSet {}
+            ScrollIndicator.vertical: ScrollIndicator {}
+
+            section.property: "modelData.section"
+            section.delegate: sectionHeading
+
+            // Refresh list of maps on overscroll
+            property int refreshFlick: 0
+            onFlickStarted: {
+                refreshFlick = atYBeginning
+            }
+            onFlickEnded: {
+                if ( atYBeginning && refreshFlick ) {
+                    PlatformAdaptor.vibrateBrief()
+                    DataManager.updateRemoteDataItemList()
+                }
+            }
+        }
+
+        DecoratedListView {
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            clip: true
+            model: DataManager.approachCharts.downloadables
             delegate: MapSet {}
             ScrollIndicator.vertical: ScrollIndicator {}
 

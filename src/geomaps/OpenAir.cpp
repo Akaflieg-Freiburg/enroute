@@ -472,6 +472,11 @@ public:
             featureArray.append(featureObj);
         }
 
+        if (featureArray.isEmpty())
+        {
+            return {};
+        }
+
         recObj.insert(u"features"_qs, featureArray);
         QJsonDocument json(recObj);
         return json;
@@ -483,7 +488,7 @@ bool GeoMaps::openAir::isValid(const QString& fileName, QString* info)
 {
     QStringList errorList;
     QStringList warnings;
-    parse(fileName, errorList, warnings);
+    auto json = parse(fileName, errorList, warnings);
 
     if (info != nullptr)
     {
@@ -500,7 +505,9 @@ bool GeoMaps::openAir::isValid(const QString& fileName, QString* info)
         }
     }
 
-    return errorList.isEmpty();
+    qWarning() << json;
+
+    return (!json.isEmpty()) && errorList.isEmpty();
 }
 
 

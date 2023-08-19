@@ -309,6 +309,20 @@ public:
      */
     Q_INVOKABLE QString importOpenAir(const QString& fileName, const QString& newName);
 
+    /*! \brief Import VAC into the library of locally installed VACs
+     *
+     * This method imports the VAC into the library of locally installed VAC.
+     *
+     * @param fileName File name of the VAC.
+     *
+     * @param newName Name under which the VAC is available in the library. If
+     * the name exists, the library entry will be replaced.
+     *
+     * @returns A human-readable HTML string on error, or an empty string on
+     * success
+     */
+    Q_INVOKABLE QString importVAC(const QString& fileName, const QString& newName);
+
     /*! \brief Reconstruct the bounding box from a filename
      *
      *  @param fileName A file name of the form 'EDTF Freiburg i. Br. 1-geo_7.739665_48.076416_7.9063883_47.96452.png'

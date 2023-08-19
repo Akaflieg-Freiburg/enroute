@@ -133,9 +133,9 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     }
 
     // VAC
-    if (GeoMaps::VAC::isValid(myPath))
+    if (GeoMaps::VAC::isValid(myPath, &info))
     {
-        emit openFileRequest(myPath, {}, VAC);
+        emit openFileRequest(myPath, info, VAC);
         return;
     }
 

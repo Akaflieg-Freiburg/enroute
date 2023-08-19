@@ -243,6 +243,51 @@ auto DataManagement::DataManager::importOpenAir(const QString& fileName, const Q
 }
 
 
+auto DataManagement::DataManager::importVAC(const QString& fileName, const QString& newName) -> QString
+{
+#warning not implemented
+
+    auto path = m_dataDirectory+"/Unsupported";
+    auto newFileName = path + "/" + newName;
+
+    QStringList errors;
+    QStringList warnings;
+    auto json = GeoMaps::openAir::parse(fileName, errors, warnings);
+
+    if (!errors.isEmpty())
+    {
+        QString info;
+        info += u"<p>"_qs + tr("Errors") + u"</p>"_qs;
+        info += u"<ul style='margin-left:-25px;'>"_qs;
+        foreach(auto error, errors)
+        {
+            info += u"<li>"_qs + error + u"</li>"_qs;
+        }
+        info += u"</ul>"_qs;
+        return info;
+    }
+
+    if (!QDir().mkpath(path))
+    {
+        return tr("Unable to create directory '%1'.").arg(path);
+    }
+    newFileName = newFileName+u".geojson"_qs;
+    QFile::remove(newFileName);
+    QFile file(newFileName);
+    file.open(QIODeviceBase::WriteOnly);
+    file.write(json.toJson());
+    file.close();
+    if (file.error() != QFileDevice::NoError)
+    {
+        QFile::remove(newFileName);
+        updateDataItemListAndWhatsNew();
+        return tr("Error writing file '%1': %2.").arg(newFileName, file.errorString());
+    }
+    updateDataItemListAndWhatsNew();
+    return {};
+}
+
+
 QGeoRectangle DataManagement::DataManager::bBoxFromFileName(const QString& fileName)
 {
     if (fileName.size() < 5)

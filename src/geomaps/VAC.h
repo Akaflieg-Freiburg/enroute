@@ -39,7 +39,7 @@ namespace GeoMaps
          *
          *  @returns True if the file is likely to contain a valid VAC.
          */
-        static bool isValid(const QString& fileName);
+        static bool isValid(const QString& fileName, QString* info);
 
         /*! \brief Bounding box from VAC file
          *

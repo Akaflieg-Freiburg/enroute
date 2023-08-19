@@ -80,6 +80,11 @@ Item {
                 importOpenAirDialog.open()
                 return
             }
+            if (fileFunction === FileExchange.VAC) {
+//                openAirInfoLabel.text = info;
+                importVACDialog.open()
+                return
+            }
 
             errLbl.text = qsTr("The file type of the file <strong>%1</strong> cannot be recognized.").arg(fileName)
             errorDialog.open()
@@ -196,6 +201,67 @@ Item {
                 return
             }
             importManager.toast.doToast( qsTr("Airspace data imported") )
+        }
+    }
+
+    CenteringDialog {
+        id: importVACDialog
+
+        title: qsTr("Import Visual Approach Chart")
+        standardButtons: Dialog.Ok | Dialog.Cancel
+        modal: true
+
+        ColumnLayout {
+            anchors.fill: parent
+
+            Label {
+                Layout.fillWidth: true
+
+                text: qsTr("Enter a name for this chart.")
+                wrapMode: Text.Wrap
+                textFormat: Text.StyledText
+            }
+
+            MyTextField {
+                id: mapNameVAC
+
+                Layout.fillWidth: true
+                focus: true
+
+                onDisplayTextChanged: importVACDialog.standardButton(DialogButtonBox.Ok).enabled = (displayText !== "")
+
+                onAccepted: {
+                    if (mapNameVAC.text === "")
+                        return
+                    importVACDialog.accept()
+                }
+            }
+
+            Label {
+                id: vacInfoLabel
+                Layout.fillWidth: true
+                visible: text !== ""
+
+                wrapMode: Text.Wrap
+                textFormat: Text.RichText
+            }
+        }
+
+        onAboutToShow: {
+            mapNameVAC.text = ""
+            importVACDialog.standardButton(DialogButtonBox.Ok).enabled = false
+        }
+
+        onAccepted: {
+            PlatformAdaptor.vibrateBrief()
+
+            var errorString = DataManager.importVAC(importManager.filePath, mapNameOpenAir.text)
+            if (errorString !== "") {
+                errLbl.text = errorString
+                errorDialog.open()
+                return
+            }
+            importManager.toast.doToast( qsTr("Visual approach chart data imported") )
         }
     }
 

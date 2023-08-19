@@ -27,7 +27,7 @@
 // Methods
 //
 
-bool GeoMaps::VAC::isValid(const QString& fileName)
+bool GeoMaps::VAC::isValid(const QString& fileName, QString* info)
 {
     if (!readBBox(fileName).isValid())
     {

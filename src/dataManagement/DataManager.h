@@ -323,14 +323,6 @@ public:
      */
     Q_INVOKABLE QString importVAC(const QString& fileName, const QString& newName);
 
-    /*! \brief Reconstruct the bounding box from a filename
-     *
-     *  @param fileName A file name of the form 'EDTF Freiburg i. Br. 1-geo_7.739665_48.076416_7.9063883_47.96452.png'
-     *
-     *  @return The bounding box. If no bounding box could be inferred, an invalid box is returned
-     */
-    static QGeoRectangle bBoxFromFileName(const QString& fileName);
-
 public slots:
     /*! \brief Triggers an update of the list of remotely available data items
      *
@@ -391,6 +383,7 @@ private:
 
     // Full path name of data directory, without trailing slash
     QString m_dataDirectory {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/aviation_maps"};
+    QString m_VACDirectory {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/VAC"};
 
     // The current whats new string from _aviationMaps.
     QString m_whatsNew {};

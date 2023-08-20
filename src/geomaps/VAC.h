@@ -33,6 +33,7 @@ namespace GeoMaps
     {
 
     public:
+#warning doku!
         /*! \brief Check if file contains georeferenced image
          *
          *  @param fileName Name of a file

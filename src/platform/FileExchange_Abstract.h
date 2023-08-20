@@ -53,7 +53,8 @@ public:
         RasterMap, /*< File contains a raster map. */
         WaypointLibrary, /*< Waypoint library in CUP or GeoJSON format */
         OpenAir, /*< Airspace data in openAir format */
-        VAC /*< Visual Approach Chart */
+        VAC, /*< Visual Approach Chart */
+        Image /*< Image without georeferencing information */
       };
     Q_ENUM(FileFunction)
 

@@ -70,27 +70,27 @@ DataManagement::Downloadable_SingleFile::Downloadable_SingleFile(QUrl url, const
         }
         else if (tmpName.endsWith(u"jpeg"_qs))
         {
-            m_contentType = ApproachChart;
+            m_contentType = VAC;
         }
         else if (tmpName.endsWith(u"jpg"_qs))
         {
-            m_contentType = ApproachChart;
+            m_contentType = VAC;
         }
         else if (tmpName.endsWith(u"png"_qs))
         {
-            m_contentType = ApproachChart;
+            m_contentType = VAC;
         }
         else if (tmpName.endsWith(u"tif"_qs))
         {
-            m_contentType = ApproachChart;
+            m_contentType = VAC;
         }
         else if (tmpName.endsWith(u"tiff"_qs))
         {
-            m_contentType = ApproachChart;
+            m_contentType = VAC;
         }
         else if (tmpName.endsWith(u"webp"_qs))
         {
-            m_contentType = ApproachChart;
+            m_contentType = VAC;
         }
         else if (tmpName.endsWith(u"raster"_qs))
         {

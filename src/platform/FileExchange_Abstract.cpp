@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QImage>
 #include <QMimeDatabase>
 #include <QUrl>
 
@@ -124,18 +125,26 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
         return;
     }
 
-    // OpenAir
-    QString info;
-    if (GeoMaps::openAir::isValid(myPath, &info))
-    {
-        emit openFileRequest(myPath, info, OpenAir);
-        return;
-    }
-
     // VAC
+    QString info;
     if (GeoMaps::VAC::isValid(myPath, &info))
     {
         emit openFileRequest(myPath, info, VAC);
+        return;
+    }
+
+    // Image
+    QImage img(myPath);
+    if (!img.isNull())
+    {
+        emit openFileRequest(myPath, {}, Image);
+        return;
+    }
+
+    // OpenAir
+    if (GeoMaps::openAir::isValid(myPath, &info))
+    {
+        emit openFileRequest(myPath, info, OpenAir);
         return;
     }
 

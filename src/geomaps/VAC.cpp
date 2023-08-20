@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QFileInfo>
 #include <QImage>
 
 #include "geomaps/VAC.h"
@@ -33,6 +34,18 @@ bool GeoMaps::VAC::isValid(const QString& fileName, QString* info)
     {
         return false;
     }
+    if (info != nullptr)
+    {
+        QFileInfo fi(fileName);
+        auto fn = fi.fileName();
+        auto idx = fn.lastIndexOf("-geo_");
+        if (idx != -1)
+        {
+            fn = fn.left(idx);
+        }
+        *info = fn;
+    }
+
     QImage img(fileName);
     return !img.isNull();
 }

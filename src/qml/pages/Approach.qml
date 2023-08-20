@@ -32,7 +32,7 @@ Page {
     required property var dialogLoader
     required property var stackView
 
-    title: qsTr("Approach Charts")
+    title: qsTr("Visual Approach Charts")
 
     Component {
         id: approachChartItem
@@ -60,7 +60,12 @@ Page {
         anchors.fill: parent
 
         clip: true
-        model: DataManager.approachCharts.downloadablesByDistance(PositionProvider.lastValidCoordinate)
+        model: {
+            // Mention downloadable in order to get updates
+            DataManager.approachCharts.downloadables
+
+            return DataManager.approachCharts.downloadablesByDistance(PositionProvider.lastValidCoordinate)
+        }
         delegate: approachChartItem
         ScrollIndicator.vertical: ScrollIndicator {}
     }

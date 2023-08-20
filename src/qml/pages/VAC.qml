@@ -62,9 +62,9 @@ Page {
         clip: true
         model: {
             // Mention downloadable in order to get updates
-            DataManager.approachCharts.downloadables
+            DataManager.VAC.downloadables
 
-            return DataManager.approachCharts.downloadablesByDistance(PositionProvider.lastValidCoordinate)
+            return DataManager.VAC.downloadablesByDistance(PositionProvider.lastValidCoordinate)
         }
         delegate: approachChartItem
         ScrollIndicator.vertical: ScrollIndicator {}
@@ -78,7 +78,7 @@ Page {
         anchors.topMargin: font.pixelSize
 
         background: Rectangle {color: "white"}
-        visible: !DataManager.approachCharts.hasFile
+        visible: !DataManager.VAC.hasFile
 
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment : Text.AlignVCenter

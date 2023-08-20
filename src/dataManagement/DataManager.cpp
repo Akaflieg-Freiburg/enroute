@@ -95,7 +95,7 @@ void DataManagement::DataManager::deferredInitialization()
         auto* downloadable = new DataManagement::Downloadable_SingleFile({}, fileIterator.filePath(), bBox, this);
         downloadable->setObjectName(fileName.left(idx));
         connect(downloadable, &DataManagement::Downloadable_Abstract::hasFileChanged, downloadable, &QObject::deleteLater);
-        m_approachCharts.add(downloadable);
+        m_VAC.add(downloadable);
     }
     foreach (auto fileToDelete, filesToDelete)
     {
@@ -260,7 +260,7 @@ auto DataManagement::DataManager::importVAC(const QString& fileName, const QStri
         return tr("Import failed. Unable to read raster data from file %1.").arg(fileName);
     }
 
-    foreach (auto downloadable, m_approachCharts.downloadables()) {
+    foreach (auto downloadable, m_VAC.downloadables()) {
         if (downloadable == nullptr)
         {
             continue;
@@ -288,7 +288,7 @@ auto DataManagement::DataManager::importVAC(const QString& fileName, const QStri
     auto* downloadable = new DataManagement::Downloadable_SingleFile({}, newFileName, bbox, this);
     downloadable->setObjectName(newName);
     connect(downloadable, &DataManagement::Downloadable_Abstract::hasFileChanged, downloadable, &QObject::deleteLater);
-    m_approachCharts.add(downloadable);
+    m_VAC.add(downloadable);
 
     return {};
 }

@@ -320,7 +320,7 @@ Page {
             text: qsTr("Maps")
         }
         TabButton {
-            text: "APCH"
+            text: "VAC"
         }
         TabButton {
             text: qsTr("Data")
@@ -371,7 +371,7 @@ Page {
             Layout.fillHeight: true
             Layout.fillWidth: true
             clip: true
-            model: DataManager.approachCharts.downloadables
+            model: DataManager.VAC.downloadables
             delegate: MapSet {}
             ScrollIndicator.vertical: ScrollIndicator {}
 

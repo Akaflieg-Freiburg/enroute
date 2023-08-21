@@ -229,6 +229,7 @@ Page {
 
         standardButtons: Dialog.Ok
     }
+
     LongTextDialog {
         id: helpDialog
 

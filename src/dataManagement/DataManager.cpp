@@ -77,7 +77,7 @@ void DataManagement::DataManager::deferredInitialization()
         fileIterator.next();
         auto fileName = fileIterator.fileName();
         auto idx = fileName.lastIndexOf(u"-geo_"_qs, -1);
-        auto bBox = GeoMaps::VAC::readBBox(fileName);
+        auto bBox = GeoMaps::VAC(fileName).bBox();
 
         if ((!fileName.endsWith(u"jpeg"_qs)
              && !fileName.endsWith(u"jpg"_qs)
@@ -246,7 +246,8 @@ auto DataManagement::DataManager::importOpenAir(const QString& fileName, const Q
 
 auto DataManagement::DataManager::importVAC(const QString& fileName, const QString& newName) -> QString
 {
-    auto bbox = GeoMaps::VAC::readBBox(fileName);
+    GeoMaps::VAC vac(fileName);
+    auto bbox = vac.bBox();
     auto topLeft = bbox.topLeft();
     auto bottomRight = bbox.bottomRight();
     if (!bbox.isValid())

@@ -126,10 +126,10 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     }
 
     // VAC
-    QString info;
-    if (GeoMaps::VAC::isValid(myPath, &info))
+    GeoMaps::VAC vac(myPath);
+    if (vac.isValid())
     {
-        emit openFileRequest(myPath, info, VAC);
+        emit openFileRequest(myPath, vac.baseName(), VAC);
         return;
     }
 
@@ -142,6 +142,7 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     }
 
     // OpenAir
+    QString info;
     if (GeoMaps::openAir::isValid(myPath, &info))
     {
         emit openFileRequest(myPath, info, OpenAir);

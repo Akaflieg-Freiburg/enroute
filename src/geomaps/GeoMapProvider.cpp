@@ -201,7 +201,7 @@ void GeoMaps::GeoMapProvider::setApproachChart(const QString& apchChartName)
         return;
     }
 
-    auto bBox = GeoMaps::VAC::readBBox(apchChartName);
+    auto bBox = GeoMaps::VAC(apchChartName).bBox();
     if (bBox.isValid())
     {
         m_approachChartFileName = apchChartName;

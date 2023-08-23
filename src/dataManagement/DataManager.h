@@ -104,12 +104,6 @@ public:
     // PROPERTIES
     //
 
-    /*! \brief Downloadable_MultiFile that holds all approach charts
-     *
-     *  Pointer to a Downloadable_MultiFile that holds all approach charts.
-     */
-    Q_PROPERTY(DataManagement::Downloadable_MultiFile* approachCharts READ approachCharts CONSTANT)
-
     /*! \brief Indiates that the app needs to be updated
      *
      *  This property indicates that this version of the app is too old
@@ -173,6 +167,12 @@ public:
      */
     Q_PROPERTY(DataManagement::Downloadable_MultiFile* terrainMaps READ terrainMaps CONSTANT)
 
+    /*! \brief Downloadable_MultiFile that holds all approach charts
+     *
+     *  Pointer to a Downloadable_MultiFile that holds all approach charts.
+     */
+    Q_PROPERTY(DataManagement::Downloadable_MultiFile* VAC READ VAC CONSTANT)
+
     /*! \brief Current "what's new" message */
     Q_PROPERTY(QString whatsNew READ whatsNew NOTIFY whatsNewChanged)
 
@@ -183,12 +183,6 @@ public:
     //
     // Getter Methods
     //
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property approachCharts
-     */
-    [[nodiscard]] auto approachCharts() -> DataManagement::Downloadable_MultiFile* { return &m_approachCharts; }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -258,6 +252,12 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
+     *  @returns Property VAC
+     */
+    [[nodiscard]] auto VAC() -> DataManagement::Downloadable_MultiFile* { return &m_VAC; }
+
+    /*! \brief Getter function for the property with the same name
+     *
      *  @returns Property whatsNew
      */
     [[nodiscard]] auto whatsNew() const -> QString { return m_whatsNew; }
@@ -322,14 +322,6 @@ public:
      * success
      */
     Q_INVOKABLE QString importVAC(const QString& fileName, const QString& newName);
-
-    /*! \brief Reconstruct the bounding box from a filename
-     *
-     *  @param fileName A file name of the form 'EDTF Freiburg i. Br. 1-geo_7.739665_48.076416_7.9063883_47.96452.png'
-     *
-     *  @return The bounding box. If no bounding box could be inferred, an invalid box is returned
-     */
-    static QGeoRectangle bBoxFromFileName(const QString& fileName);
 
 public slots:
     /*! \brief Triggers an update of the list of remotely available data items
@@ -402,7 +394,7 @@ private:
     DataManagement::Downloadable_SingleFile m_mapList { QUrl(QStringLiteral("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv003/maps.json")), QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/maps.json" };
 
     // List of geographic maps
-    DataManagement::Downloadable_MultiFile m_approachCharts {DataManagement::Downloadable_MultiFile::SingleUpdate};
+    DataManagement::Downloadable_MultiFile m_VAC {DataManagement::Downloadable_MultiFile::SingleUpdate};
     DataManagement::Downloadable_MultiFile m_aviationMaps {DataManagement::Downloadable_MultiFile::SingleUpdate};
     DataManagement::Downloadable_MultiFile m_baseMaps {DataManagement::Downloadable_MultiFile::SingleUpdate};
     DataManagement::Downloadable_MultiFile m_baseMapsRaster {DataManagement::Downloadable_MultiFile::SingleUpdate};

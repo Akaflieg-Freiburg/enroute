@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <QDirIterator>
+#include <QImage>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -29,6 +30,7 @@
 #include "dataManagement/DataManager.h"
 #include "geomaps/MBTILES.h"
 #include "geomaps/OpenAir.h"
+#include "geomaps/VAC.h"
 #include <chrono>
 
 using namespace std::chrono_literals;
@@ -75,7 +77,7 @@ void DataManagement::DataManager::deferredInitialization()
         fileIterator.next();
         auto fileName = fileIterator.fileName();
         auto idx = fileName.lastIndexOf(u"-geo_"_qs, -1);
-        auto bBox = bBoxFromFileName(fileName);
+        auto bBox = GeoMaps::VAC(fileName).bBox();
 
         if ((!fileName.endsWith(u"jpeg"_qs)
              && !fileName.endsWith(u"jpg"_qs)
@@ -93,7 +95,7 @@ void DataManagement::DataManager::deferredInitialization()
         auto* downloadable = new DataManagement::Downloadable_SingleFile({}, fileIterator.filePath(), bBox, this);
         downloadable->setObjectName(fileName.left(idx));
         connect(downloadable, &DataManagement::Downloadable_Abstract::hasFileChanged, downloadable, &QObject::deleteLater);
-        m_approachCharts.add(downloadable);
+        m_VAC.add(downloadable);
     }
     foreach (auto fileToDelete, filesToDelete)
     {
@@ -244,65 +246,52 @@ auto DataManagement::DataManager::importOpenAir(const QString& fileName, const Q
 
 auto DataManagement::DataManager::importVAC(const QString& fileName, const QString& newName) -> QString
 {
-#warning not implemented
-
-    auto path = m_dataDirectory+"/Unsupported";
-    auto newFileName = path + "/" + newName;
-
-    QStringList errors;
-    QStringList warnings;
-    auto json = GeoMaps::openAir::parse(fileName, errors, warnings);
-
-    if (!errors.isEmpty())
+    GeoMaps::VAC vac(fileName);
+    auto bbox = vac.bBox();
+    auto topLeft = bbox.topLeft();
+    auto bottomRight = bbox.bottomRight();
+    if (!bbox.isValid())
     {
-        QString info;
-        info += u"<p>"_qs + tr("Errors") + u"</p>"_qs;
-        info += u"<ul style='margin-left:-25px;'>"_qs;
-        foreach(auto error, errors)
+        return tr("Import failed. Unable to obtain geo reference data from file %1.").arg(fileName);
+    }
+
+    QImage raster(fileName);
+    if (raster.isNull())
+    {
+        return tr("Import failed. Unable to read raster data from file %1.").arg(fileName);
+    }
+
+    foreach (auto downloadable, m_VAC.downloadables()) {
+        if (downloadable == nullptr)
         {
-            info += u"<li>"_qs + error + u"</li>"_qs;
+            continue;
         }
-        info += u"</ul>"_qs;
-        return info;
+        if (downloadable->objectName() == newName)
+        {
+            // This will also call deleteLater
+            downloadable->deleteFiles();
+        }
     }
 
-    if (!QDir().mkpath(path))
+    auto newFileName = m_vacDirectory+ u"/%1-geo_%2_%3_%4_%5.png"_qs
+                                              .arg(newName)
+                                              .arg(topLeft.longitude())
+                                              .arg(topLeft.latitude())
+                                              .arg(bottomRight.longitude())
+                                              .arg(bottomRight.latitude());
+    QFile f;
+    QDir dir;
+    dir.mkpath(m_vacDirectory);
+    if (!raster.save(newFileName))
     {
-        return tr("Unable to create directory '%1'.").arg(path);
+        return tr("Import failed. Unable to write raster data to file %1.").arg(newFileName);
     }
-    newFileName = newFileName+u".geojson"_qs;
-    QFile::remove(newFileName);
-    QFile file(newFileName);
-    file.open(QIODeviceBase::WriteOnly);
-    file.write(json.toJson());
-    file.close();
-    if (file.error() != QFileDevice::NoError)
-    {
-        QFile::remove(newFileName);
-        updateDataItemListAndWhatsNew();
-        return tr("Error writing file '%1': %2.").arg(newFileName, file.errorString());
-    }
-    updateDataItemListAndWhatsNew();
+    auto* downloadable = new DataManagement::Downloadable_SingleFile({}, newFileName, bbox, this);
+    downloadable->setObjectName(newName);
+    connect(downloadable, &DataManagement::Downloadable_Abstract::hasFileChanged, downloadable, &QObject::deleteLater);
+    m_VAC.add(downloadable);
+
     return {};
-}
-
-
-QGeoRectangle DataManagement::DataManager::bBoxFromFileName(const QString& fileName)
-{
-    if (fileName.size() < 5)
-    {
-        return {};
-    }
-    auto list = fileName.chopped(4).split('_');
-    if (list.size() < 4)
-    {
-        return {};
-    }
-    list = list.last(4);
-
-    QGeoCoordinate topLeft(list[1].toDouble(), list[0].toDouble());
-    QGeoCoordinate bottomRight(list[3].toDouble(), list[2].toDouble());
-    return QGeoRectangle(topLeft, bottomRight);
 }
 
 

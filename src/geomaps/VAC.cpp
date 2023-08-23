@@ -18,40 +18,48 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QFileInfo>
 #include <QImage>
 
 #include "geomaps/VAC.h"
+
+GeoMaps::VAC::VAC(const QString& fileName) : m_fileName(fileName)
+{
+    // Guess boundary box from file name
+    if (fileName.size() > 5)
+    {
+        auto list = fileName.chopped(4).split('_');
+        if (list.size() >= 4)
+        {
+            list = list.last(4);
+            m_bBox.setTopLeft(QGeoCoordinate(list[1].toDouble(), list[0].toDouble()));
+            m_bBox.setBottomRight(QGeoCoordinate(list[3].toDouble(), list[2].toDouble()));
+        }
+    }
+
+    // Guess base name from file name
+    QFileInfo fi(fileName);
+    m_baseName = fi.fileName();
+    auto idx = m_baseName.lastIndexOf(".");
+    if (idx != -1)
+    {
+        m_baseName = m_baseName.left(idx);
+    }
+    idx = m_baseName.lastIndexOf("-geo_");
+    if (idx != -1)
+    {
+        m_baseName = m_baseName.left(idx);
+    }
+
+}
+
 
 
 //
 // Methods
 //
 
-bool GeoMaps::VAC::isValid(const QString& fileName, QString* info)
+bool GeoMaps::VAC::isValid() const
 {
-    if (!readBBox(fileName).isValid())
-    {
-        return false;
-    }
-    QImage img(fileName);
-    return !img.isNull();
-}
-
-
-QGeoRectangle GeoMaps::VAC::readBBox(const QString& fileName)
-{
-    if (fileName.size() < 5)
-    {
-        return {};
-    }
-    auto list = fileName.chopped(4).split('_');
-    if (list.size() < 4)
-    {
-        return {};
-    }
-    list = list.last(4);
-
-    QGeoCoordinate topLeft(list[1].toDouble(), list[0].toDouble());
-    QGeoCoordinate bottomRight(list[3].toDouble(), list[2].toDouble());
-    return QGeoRectangle(topLeft, bottomRight);
+    return m_bBox.isValid() && !QImage(m_fileName).isNull();
 }

@@ -494,7 +494,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/WordWrappingRadioDelegate.qml
     qml/items/WordWrappingItemDelegate.qml
     qml/items/WordWrappingSwitchDelegate.qml
-    qml/pages/Approach.qml
+    qml/pages/VAC.qml
     qml/pages/AircraftPage.qml
     qml/pages/AircraftLibrary.qml
     qml/pages/BugReportPage.qml

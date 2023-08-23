@@ -32,6 +32,7 @@
 #include "dataManagement/DataManager.h"
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/MBTILES.h"
+#include "geomaps/VAC.h"
 #include "geomaps/WaypointLibrary.h"
 #include "navigation/Navigator.h"
 
@@ -200,7 +201,7 @@ void GeoMaps::GeoMapProvider::setApproachChart(const QString& apchChartName)
         return;
     }
 
-    auto bBox = DataManagement::DataManager::bBoxFromFileName(apchChartName);
+    auto bBox = GeoMaps::VAC(apchChartName).bBox();
     if (bBox.isValid())
     {
         m_approachChartFileName = apchChartName;

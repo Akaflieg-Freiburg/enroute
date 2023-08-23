@@ -505,8 +505,6 @@ bool GeoMaps::openAir::isValid(const QString& fileName, QString* info)
         }
     }
 
-    qWarning() << json;
-
     return (!json.isEmpty()) && errorList.isEmpty();
 }
 

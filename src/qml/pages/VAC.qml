@@ -32,7 +32,7 @@ Page {
     required property var dialogLoader
     required property var stackView
 
-    title: qsTr("Approach Charts")
+    title: qsTr("Visual Approach Charts")
 
     Component {
         id: approachChartItem
@@ -54,13 +54,67 @@ Page {
         }
     }
 
-    header: StandardHeader {}
+
+    header: PageHeader {
+
+        height: 60 + SafeInsets.top
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
+        topPadding: SafeInsets.top
+
+        ToolButton {
+            id: backButton
+
+            anchors.left: parent.left
+            anchors.verticalCenter: parent.verticalCenter
+
+            icon.source: "/icons/material/ic_arrow_back.svg"
+
+            onClicked: {
+                PlatformAdaptor.vibrateBrief()
+                pg.stackView.pop()
+            }
+        }
+
+        Label {
+            id: lbl
+
+            anchors.verticalCenter: parent.verticalCenter
+
+            anchors.left: parent.left
+            anchors.leftMargin: 72
+            anchors.right: headerMenuToolButton.left
+
+            text: pg.title
+            elide: Label.ElideRight
+            font.pixelSize: 20
+            verticalAlignment: Qt.AlignVCenter
+        }
+
+        ToolButton {
+            id: headerMenuToolButton
+
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+
+            icon.source: "/icons/material/ic_info_outline.svg"
+            onClicked: {
+                PlatformAdaptor.vibrateBrief()
+                helpDialog.open()
+            }
+        }
+    }
 
     DecoratedListView {
         anchors.fill: parent
 
         clip: true
-        model: DataManager.approachCharts.downloadablesByDistance(PositionProvider.lastValidCoordinate)
+        model: {
+            // Mention downloadable in order to get updates
+            DataManager.VAC.downloadables
+
+            return DataManager.VAC.downloadablesByDistance(PositionProvider.lastValidCoordinate)
+        }
         delegate: approachChartItem
         ScrollIndicator.vertical: ScrollIndicator {}
     }
@@ -73,14 +127,26 @@ Page {
         anchors.topMargin: font.pixelSize
 
         background: Rectangle {color: "white"}
-        visible: !DataManager.approachCharts.hasFile
+        visible: !DataManager.VAC.hasFile
 
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment : Text.AlignVCenter
         textFormat: Text.RichText
         wrapMode: Text.Wrap
 
-        text: qsTr("<h3>Sorry!</h3><p>There are no approach charts installed. The manual explains how to install them.</p>")
+        text: "<h3>"+ qsTr("Sorry!") + "</h3><p>" + qsTr("There are no approach charts installed. The <a href='x'>manual</a> explains how to install and use them.")+"</p>"
+        onLinkActivated: openManual("02-steps/simulator.html")
+
+    }
+
+    LongTextDialog {
+        id: helpDialog
+
+        title: qsTr("Visual Approach Charts")
+        text: "<p>"+qsTr("This page presents the visual approach charts that are installed in your system, sorted by distance to the current position. Click on an entry to open a moving map that includes the selected VAC.")+"</p>"
+              +"<p>"+qsTr("In order to manage your collection of visual approach charts, go back to the main map view, open the main menu and go to 'Library/Maps and Data'.")+"</p>"
+
+        standardButtons: Dialog.Ok
     }
 
 } // Page

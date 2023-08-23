@@ -75,14 +75,19 @@ Item {
                     importFlightRouteDialog.onAccepted()
                 return
             }
+            if (fileFunction === FileExchange.VAC) {
+                mapNameVAC.text = info;
+                importVACDialog.open()
+                return
+            }
+            if (fileFunction === FileExchange.Image) {
+                errLbl.text = qsTr("The file <strong>%1</strong> seems to contain an image without georeferencing information.").arg(fileName)
+                errorDialog.open()
+                return
+            }
             if (fileFunction === FileExchange.OpenAir) {
                 openAirInfoLabel.text = info;
                 importOpenAirDialog.open()
-                return
-            }
-            if (fileFunction === FileExchange.VAC) {
-//                openAirInfoLabel.text = info;
-                importVACDialog.open()
                 return
             }
 
@@ -217,9 +222,8 @@ Item {
             Label {
                 Layout.fillWidth: true
 
-                text: qsTr("Enter a name for this chart.")
+                text: qsTr("Enter a name for this chart. Existing approach charts with the same name will be overwritten.")
                 wrapMode: Text.Wrap
-                textFormat: Text.StyledText
             }
 
             MyTextField {
@@ -237,25 +241,16 @@ Item {
                 }
             }
 
-            Label {
-                id: vacInfoLabel
-                Layout.fillWidth: true
-                visible: text !== ""
-
-                wrapMode: Text.Wrap
-                textFormat: Text.RichText
-            }
         }
 
         onAboutToShow: {
-            mapNameVAC.text = ""
-            importVACDialog.standardButton(DialogButtonBox.Ok).enabled = false
+            importVACDialog.standardButton(DialogButtonBox.Ok).enabled = mapNameVAC.text !== ""
         }
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
 
-            var errorString = DataManager.importVAC(importManager.filePath, mapNameOpenAir.text)
+            var errorString = DataManager.importVAC(importManager.filePath, mapNameVAC.text)
             if (errorString !== "") {
                 errLbl.text = errorString
                 errorDialog.open()

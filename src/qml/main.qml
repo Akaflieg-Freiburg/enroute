@@ -151,13 +151,14 @@ AppWindow {
 
                     id: menuItemApproach
 
-                    text: qsTr("Approach")
+                    text: qsTr("Approach Charts")
                     icon.source: "/icons/material/ic_flight_land.svg"
+                    visible: DataManager.VAC.hasFile
 
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
                         stackView.pop()
-                        stackView.push("pages/Approach.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
+                        stackView.push("pages/VAC.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
                         drawer.close()
                     }
                 }

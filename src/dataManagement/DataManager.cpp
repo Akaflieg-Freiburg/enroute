@@ -69,8 +69,7 @@ void DataManagement::DataManager::deferredInitialization()
 
     // Setup approach charts
     QStringList filesToDelete;
-    auto approachChartsDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/approach_charts";
-    QDirIterator fileIterator(approachChartsDir, QDir::Files);
+    QDirIterator fileIterator(m_vacDirectory, QDir::Files);
     while (fileIterator.hasNext())
     {
         fileIterator.next();

@@ -391,6 +391,7 @@ private:
 
     // Full path name of data directory, without trailing slash
     QString m_dataDirectory {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/aviation_maps"};
+    QString m_vacDirectory {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/VAC"};
 
     // The current whats new string from _aviationMaps.
     QString m_whatsNew {};

@@ -29,6 +29,8 @@ class QNetworkAccessManager;
 class QNetworkReply;
 
 #include "GlobalObject.h"
+#include "navigation/Atmosphere.h"
+#include "units/Distance.h"
 #include "weather/Station.h"
 
 class FlightRoute;
@@ -147,6 +149,19 @@ public:
      * @returns Property QNH
      */
     [[nodiscard]] auto QNH() const -> Units::Pressure;
+
+    /*! \brief QNHPressureAltitude
+     *
+     *  This property holds the altitude in the standard atmosphere which corresponds
+     *  to the current QNH value
+     */
+    Q_PROPERTY(Units::Distance QNHPressureAltitude READ QNHPressureAltitude NOTIFY QNHInfoChanged)
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property QNHPressureAltitude
+     */
+    [[nodiscard]] auto QNHPressureAltitude() const -> Units::Distance { return Navigation::Atmosphere::height(QNH()); }
 
     /*! \brief QNHInfo
      *

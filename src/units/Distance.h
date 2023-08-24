@@ -173,6 +173,17 @@ namespace Units {
             return fromM(m_distanceInM - rhs.m_distanceInM);
         }
 
+        /*! \brief Subtraction
+         *
+         *  @param rhs Right hand side of the subtraction
+         *
+         *  @returns Result of the subtraction
+         */
+        Q_INVOKABLE Units::Distance subtract(Units::Distance rhs) const
+        {
+            return fromM(m_distanceInM - rhs.m_distanceInM);
+        }
+
         /*! \brief Scaling
          *
          *  @param factor Factor of scaling

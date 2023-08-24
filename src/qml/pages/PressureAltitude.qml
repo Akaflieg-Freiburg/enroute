@@ -140,7 +140,7 @@ Page {
                 text: qsTr("Pressure Altitude") }
             Label {
                 Layout.fillWidth: true
-                text: PositionProvider.pressureAltitude.isFinite() ? "FL" + Math.round(PositionProvider.pressureAltitude/100.0) : "-"
+                text: PositionProvider.pressureAltitude.isFinite() ? "FL" + ("000" + Math.round(PositionProvider.pressureAltitude.toFeet()/100.0)).slice(-3) : "-"
                 wrapMode: Text.Wrap
             }
             Item { }
@@ -149,14 +149,15 @@ Page {
             Label {
                 Layout.fillWidth: true
                 text: {
-
                     var pAlt = PositionProvider.pressureAltitude
-                    var qnh  = WeatherDataProvider.QNH
-
-                    if (!pAlt.isFinite() || !qnh.isFinite())
+                    if (!pAlt.isFinite())
                         return "-"
-                    var qnhHeight = atm.height(qnh)
-                    return Navigator.aircraft.verticalDistanceToString(pAlt-qnhHeight)
+                    var qnhpAlt = WeatherDataProvider.QNHPressureAltitude
+                    if (!qnhpAlt.isFinite())
+                        return "-"
+
+                    var a = pAlt.subtract(qnhpAlt)
+                    return Navigator.aircraft.verticalDistanceToString(a)
                 }
                 wrapMode: Text.Wrap
             }
@@ -210,7 +211,10 @@ Page {
             }
             ToolButton { enabled: false }
 
-            Label { text: qsTr("QNH") }
+            Label {
+                Layout.alignment: Qt.AlignTop
+                text: qsTr("QNH")
+            }
             Label {
                 Layout.fillWidth: true
                 text: WeatherDataProvider.QNHInfo === "" ? "-" : WeatherDataProvider.QNHInfo

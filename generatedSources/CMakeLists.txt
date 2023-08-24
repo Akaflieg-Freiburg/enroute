@@ -45,8 +45,20 @@ add_custom_target(flightMapSprites
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/NDB.svg -o NDB.png -h 25 -w 25
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/RP.svg -o RP.png -h 25 -w 25
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VOR.svg -o VOR.png -w 22
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VORDME.svg -o VORDME.png -w 22
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VOR.svg -o DVOR.png -w 22
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VORDME.svg -o VOR-DME.png -w 22
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VORDME.svg -o DVOR-DME.png -w 22
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VORTAC.svg -o VORTAC.png -w 26
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VORTAC.svg -o DVORTAC.png -w 26
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/3rdParty/osm-liberty/svgs/svgs_iconset/triangle_11.svg -o triangle_11.png -w 15
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/3rdParty/osm-liberty/svgs/svgs_not_in_iconset/default_1.svg -o default_1.png -h 18
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/3rdParty/osm-liberty/svgs/svgs_not_in_iconset/default_2.svg -o default_2.png -h 18
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/3rdParty/osm-liberty/svgs/svgs_not_in_iconset/default_3.svg -o default_3.png -h 18
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/3rdParty/osm-liberty/svgs/svgs_not_in_iconset/default_4.svg -o default_4.png -h 18
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/3rdParty/osm-liberty/svgs/svgs_not_in_iconset/default_5.svg -o default_5.png -h 18
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/3rdParty/osm-liberty/svgs/svgs_not_in_iconset/default_6.svg -o default_6.png -h 18
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/3rdParty/osm-liberty/svgs/svgs_not_in_iconset/dot_9.svg -o dot_9.png -w 9
+
   COMMAND spriteGenerator *.png
   COMMAND zopflipng -m -y sprite.png sprite.png
   COMMAND mv sprite.json ${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprite.json
@@ -66,8 +78,19 @@ add_custom_target(flightMapSprites
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/NDB.svg -o NDB.png -h 50 -w 50
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/RP.svg -o RP.png -h 50 -w 50
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VOR.svg -o VOR.png -w 44
-  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VORDME.svg -o VORDME.png -w 44
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VOR.svg -o DVOR.png -w 44
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VORDME.svg -o VOR-DME.png -w 44
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VORDME.svg -o DVOR-DME.png -w 44
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VORTAC.svg -o VORTAC.png -w 52
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VORTAC.svg -o DVORTAC.png -w 52
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/3rdParty/osm-liberty/svgs/svgs_iconset/triangle_11.svg -o triangle_11.png -w 30
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/3rdParty/osm-liberty/svgs/svgs_not_in_iconset/default_1.svg -o default_1.png -h 36
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/3rdParty/osm-liberty/svgs/svgs_not_in_iconset/default_2.svg -o default_2.png -h 36
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/3rdParty/osm-liberty/svgs/svgs_not_in_iconset/default_3.svg -o default_3.png -h 36
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/3rdParty/osm-liberty/svgs/svgs_not_in_iconset/default_4.svg -o default_4.png -h 36
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/3rdParty/osm-liberty/svgs/svgs_not_in_iconset/default_5.svg -o default_5.png -h 36
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/3rdParty/osm-liberty/svgs/svgs_not_in_iconset/default_6.svg -o default_6.png -h 36
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/3rdParty/osm-liberty/svgs/svgs_not_in_iconset/dot_9.svg -o dot_9.png -w 18
   COMMAND spriteGenerator --pixelRatio 2 *.png
   COMMAND zopflipng -m -y sprite.png sprite.png
   COMMAND mv sprite.json ${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprite@2x.json

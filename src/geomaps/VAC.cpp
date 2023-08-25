@@ -28,7 +28,13 @@ GeoMaps::VAC::VAC(const QString& fileName) : m_fileName(fileName)
     // Guess boundary box from file name
     if (fileName.size() > 5)
     {
-        auto list = fileName.chopped(4).split('_');
+        auto idx = fileName.lastIndexOf('.');
+        if (idx == -1)
+        {
+            idx = fileName.size();
+        }
+
+        auto list = fileName.left(idx).split('_');
         if (list.size() >= 4)
         {
             list = list.last(4);

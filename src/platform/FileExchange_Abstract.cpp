@@ -26,6 +26,7 @@
 #include "geomaps/GeoJSON.h"
 #include "geomaps/MBTILES.h"
 #include "geomaps/OpenAir.h"
+#include "geomaps/TripKit.h"
 #include "geomaps/VAC.h"
 #include "platform/FileExchange_Abstract.h"
 #include "traffic/TrafficDataProvider.h"
@@ -138,6 +139,14 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     if (!img.isNull())
     {
         emit openFileRequest(myPath, {}, Image);
+        return;
+    }
+
+    // TripKits
+    GeoMaps::TripKit tripKit(myPath);
+    if (tripKit.isValid())
+    {
+        emit openFileRequest(myPath, tripKit.name(), TripKit);
         return;
     }
 

@@ -244,6 +244,13 @@ auto DataManagement::DataManager::importOpenAir(const QString& fileName, const Q
 }
 
 
+auto DataManagement::DataManager::importTripKit(const QString& fileName) -> QString
+{
+#warning not implemented
+    return u"Not implemented"_qs;
+}
+
+
 auto DataManagement::DataManager::importVAC(const QString& fileName, const QString& newName) -> QString
 {
     GeoMaps::VAC vac(fileName);

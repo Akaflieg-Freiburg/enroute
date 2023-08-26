@@ -1,0 +1,30 @@
+
+#pragma once
+
+#include <QJsonArray>
+
+#include "geomaps/Zip.h"
+
+#warning implement
+namespace GeoMaps
+{
+class TripKit {
+public:
+    TripKit(const QString& fileName);
+
+    QString error() const { return m_error; }
+
+    QString name() const { return m_name; }
+
+    bool isValid() const { return m_error.isEmpty(); }
+
+    void extract();
+
+private:
+    GeoMaps::Zip m_zip;
+    QString m_error;
+    QString m_name;
+    QJsonArray m_charts;
+};
+
+} // namespace GeoMaps

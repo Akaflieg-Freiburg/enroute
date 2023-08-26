@@ -85,6 +85,10 @@ Item {
                 errorDialog.open()
                 return
             }
+            if (fileFunction === FileExchange.TripKit) {
+                importTripKitDialog.open()
+                return
+            }
             if (fileFunction === FileExchange.OpenAir) {
                 openAirInfoLabel.text = info;
                 importOpenAirDialog.open()
@@ -448,6 +452,28 @@ Item {
                 importManager.stackView.push("../pages/FlightRouteEditor.qml")
             }
             toast.doToast( qsTr("Flight route imported") )
+        }
+    }
+
+    LongTextDialog {
+        id: importTripKitDialog
+
+        title: qsTr("Import Trip Kit?")
+        standardButtons: Dialog.No | Dialog.Yes
+        modal: true
+
+        text: qsTr("This might overwrite some approach charts.")
+
+        onAccepted: {
+            PlatformAdaptor.vibrateBrief()
+
+            var errorString = DataManager.importTripKit(importManager.filePath)
+            if (errorString !== "") {
+                errLbl.text = errorString
+                errorDialog.open()
+                return
+            }
+            importManager.toast.doToast( qsTr("Trip kit imported") )
         }
     }
 

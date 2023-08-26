@@ -309,6 +309,17 @@ public:
      */
     Q_INVOKABLE QString importOpenAir(const QString& fileName, const QString& newName);
 
+    /*! \brief Import a trip kit into the library of locally installed VACs
+     *
+     * This method imports the trip kit into the library of locally installed VAC.
+     *
+     * @param fileName File name of the trip kit.
+     *
+     * @returns A human-readable HTML string on error, or an empty string on
+     * success
+     */
+    Q_INVOKABLE QString importTripKit(const QString& fileName);
+
     /*! \brief Import VAC into the library of locally installed VACs
      *
      * This method imports the VAC into the library of locally installed VAC.

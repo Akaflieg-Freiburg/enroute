@@ -48,9 +48,11 @@ set(SOURCES
     geomaps/OpenAir.h
     geomaps/TileHandler.h
     geomaps/TileServer.h
+    geomaps/TripKit.h
     geomaps/VAC.h
     geomaps/Waypoint.h
     geomaps/WaypointLibrary.h
+    geomaps/Zip.h
     GlobalObject.h
     GlobalSettings.h
     Librarian.h
@@ -127,9 +129,11 @@ set(SOURCES
     geomaps/OpenAir.cpp
     geomaps/TileHandler.cpp
     geomaps/TileServer.cpp
+    geomaps/TripKit.cpp
     geomaps/VAC.cpp
     geomaps/Waypoint.cpp
     geomaps/WaypointLibrary.cpp
+    geomaps/Zip.cpp
     GlobalObject.cpp
     GlobalSettings.cpp
     Librarian.cpp
@@ -306,6 +310,7 @@ if (UNIX AND NOT ANDROID AND NOT APPLE)
         Qt6::Svg
         Qt6::TextToSpeech
         Qt6::Widgets
+        libzip::zip
     )
     target_precompile_headers(${PROJECT_NAME}
       PUBLIC

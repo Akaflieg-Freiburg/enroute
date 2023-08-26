@@ -54,7 +54,8 @@ public:
         WaypointLibrary, /*< Waypoint library in CUP or GeoJSON format */
         OpenAir, /*< Airspace data in openAir format */
         VAC, /*< Visual Approach Chart */
-        Image /*< Image without georeferencing information */
+        Image, /*< Image without georeferencing information */
+        TripKit /*< Trip Kit */
       };
     Q_ENUM(FileFunction)
 

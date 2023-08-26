@@ -42,6 +42,7 @@ set(SOURCES
     geomaps/CUP.h
     geomaps/GeoJSON.h
     geomaps/GeoMapProvider.h
+    geomaps/GeoTIFF.h
     geomaps/GPX.h
     geomaps/MBTILES.h
     geomaps/OpenAir.h
@@ -120,6 +121,7 @@ set(SOURCES
     geomaps/CUP.cpp
     geomaps/GeoJSON.cpp
     geomaps/GeoMapProvider.cpp
+    geomaps/GeoTIFF.cpp
     geomaps/GPX.cpp
     geomaps/MBTILES.cpp
     geomaps/OpenAir.cpp

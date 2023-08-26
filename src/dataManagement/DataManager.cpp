@@ -247,18 +247,13 @@ auto DataManagement::DataManager::importOpenAir(const QString& fileName, const Q
 auto DataManagement::DataManager::importVAC(const QString& fileName, const QString& newName) -> QString
 {
     GeoMaps::VAC vac(fileName);
-    auto bbox = vac.bBox();
-    auto topLeft = bbox.topLeft();
-    auto bottomRight = bbox.bottomRight();
-    if (!bbox.isValid())
+    if (!vac.isValid())
     {
-        return tr("Import failed. Unable to obtain geo reference data from file %1.").arg(fileName);
+        return vac.error();
     }
-
-    QImage raster(fileName);
-    if (raster.isNull())
+    if (!newName.isEmpty())
     {
-        return tr("Import failed. Unable to read raster data from file %1.").arg(fileName);
+        vac.setBaseName(newName);
     }
 
     foreach (auto downloadable, m_VAC.downloadables()) {
@@ -266,27 +261,19 @@ auto DataManagement::DataManager::importVAC(const QString& fileName, const QStri
         {
             continue;
         }
-        if (downloadable->objectName() == newName)
+        if (downloadable->objectName() == vac.baseName())
         {
             // This will also call deleteLater
             downloadable->deleteFiles();
         }
     }
 
-    auto newFileName = m_vacDirectory+ u"/%1-geo_%2_%3_%4_%5.png"_qs
-                                              .arg(newName)
-                                              .arg(topLeft.longitude())
-                                              .arg(topLeft.latitude())
-                                              .arg(bottomRight.longitude())
-                                              .arg(bottomRight.latitude());
-    QFile f;
-    QDir dir;
-    dir.mkpath(m_vacDirectory);
-    if (!raster.save(newFileName))
+    auto newFileName = vac.save(m_vacDirectory);
+    if (newFileName.isEmpty())
     {
-        return tr("Import failed. Unable to write raster data to file %1.").arg(newFileName);
+        return tr("Import failed. Unable to write raster data to directory %1.").arg(m_vacDirectory);
     }
-    auto* downloadable = new DataManagement::Downloadable_SingleFile({}, newFileName, bbox, this);
+    auto* downloadable = new DataManagement::Downloadable_SingleFile({}, newFileName, vac.bBox(), this);
     downloadable->setObjectName(newName);
     connect(downloadable, &DataManagement::Downloadable_Abstract::hasFileChanged, downloadable, &QObject::deleteLater);
     m_VAC.add(downloadable);

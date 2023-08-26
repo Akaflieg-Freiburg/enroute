@@ -211,7 +211,7 @@ public:
 
     /*! \brief Setter function for the property with the same name
      *
-     * @returns Property approachChart
+     * @param apchChartName Name of approach chart
      */
     void setApproachChart(const QString& apchChartName = QString());
 

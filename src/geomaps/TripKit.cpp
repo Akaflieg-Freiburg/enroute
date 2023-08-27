@@ -63,14 +63,14 @@ GeoMaps::TripKit::TripKit(const QString& fileName)
 
 
 
-void GeoMaps::TripKit::extract()
+void GeoMaps::TripKit::extract(const QString& directoryPath)
 {
 
     foreach (auto chart, m_charts)
     {
-        auto name = chart.toObject()["name"].toString();
+        auto name = chart.toObject()[u"name"_qs].toString();
 
-        auto path = chart.toObject()["filePath"].toString();
+        auto path = chart.toObject()[u"filePath"_qs].toString();
         QString ending;
         auto idx = path.lastIndexOf('.');
         if (idx != -1)
@@ -78,20 +78,24 @@ void GeoMaps::TripKit::extract()
             ending = path.mid(idx+1, -1);
         }
 
-        auto top = chart.toObject()["geoCorners"].toObject()["upperLeft"].toObject()["latitude"].toDouble();
-        auto left = chart.toObject()["geoCorners"].toObject()["upperLeft"].toObject()["longitude"].toDouble();
-        auto bottom = chart.toObject()["geoCorners"].toObject()["lowerRight"].toObject()["latitude"].toDouble();
-        auto right = chart.toObject()["geoCorners"].toObject()["lowerRight"].toObject()["longitude"].toDouble();
+        auto top = chart.toObject()[u"geoCorners"_qs].toObject()[u"upperLeft"_qs].toObject()[u"latitude"_qs].toDouble();
+        auto left = chart.toObject()[u"geoCorners"_qs].toObject()[u"upperLeft"_qs].toObject()[u"longitude"_qs].toDouble();
+        auto bottom = chart.toObject()[u"geoCorners"_qs].toObject()[u"lowerRight"_qs].toObject()[u"latitude"_qs].toDouble();
+        auto right = chart.toObject()[u"geoCorners"_qs].toObject()[u"lowerRight"_qs].toObject()[u"longitude"_qs].toDouble();
 
-        auto newPath = u"%1-geo_%2_%3_%4_%5.%6"_qs
-                           .arg(name)
+        auto newPath = u"%1/%2-geo_%3_%4_%5_%6.%7"_qs
+                           .arg(directoryPath, name)
                            .arg(left)
                            .arg(top)
                            .arg(right)
                            .arg(bottom)
                            .arg(ending);
-        qWarning() << name << path;
-        auto imageData = m_zip.extract("charts/"+name+"-geo."+ending);
+
+        auto imageData = m_zip.extract(path);
+        if (imageData.isEmpty())
+        {
+            imageData = m_zip.extract("charts/"+name+"-geo."+ending);
+        }
         QFile outFile(newPath);
         outFile.open(QIODeviceBase::WriteOnly);
         outFile.write(imageData);

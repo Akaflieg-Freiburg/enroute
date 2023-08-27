@@ -18,7 +18,7 @@ public:
 
     bool isValid() const { return m_error.isEmpty(); }
 
-    void extract();
+    void extract(const QString& directoryPath);
 
 private:
     GeoMaps::Zip m_zip;

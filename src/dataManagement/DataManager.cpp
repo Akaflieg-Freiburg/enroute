@@ -25,11 +25,13 @@
 #include <QJsonObject>
 #include <QLockFile>
 #include <QSettings>
+#include <QTemporaryDir>
 
 #include "GlobalSettings.h"
 #include "dataManagement/DataManager.h"
 #include "geomaps/MBTILES.h"
 #include "geomaps/OpenAir.h"
+#include "geomaps/TripKit.h"
 #include "geomaps/VAC.h"
 #include <chrono>
 
@@ -246,19 +248,40 @@ auto DataManagement::DataManager::importOpenAir(const QString& fileName, const Q
 
 auto DataManagement::DataManager::importTripKit(const QString& fileName) -> QString
 {
+    qWarning() << "x1";
+    GeoMaps::TripKit tripKit(fileName);
+    QTemporaryDir tmpDir;
+    if (!tmpDir.isValid())
+    {
+        return {};
+    }
+    qWarning() << "x2";
+    tripKit.extract(tmpDir.path());
+
+    qWarning()<< "A";
+    QDirIterator fileIterator(tmpDir.path(), QDir::Files);
+    while (fileIterator.hasNext())
+    {
+        fileIterator.next();
+        qWarning() << importVAC(tmpDir.path()+"/"+fileIterator.fileName(), {});
+    }
 #warning not implemented
-    return u"Not implemented"_qs;
+    return {};
 }
 
 
-auto DataManagement::DataManager::importVAC(const QString& fileName, const QString& newName) -> QString
+auto DataManagement::DataManager::importVAC(const QString& fileName, QString newName) -> QString
 {
     GeoMaps::VAC vac(fileName);
     if (!vac.isValid())
     {
         return vac.error();
     }
-    if (!newName.isEmpty())
+    if (newName.isEmpty())
+    {
+        newName = vac.baseName();
+    }
+    else
     {
         vac.setBaseName(newName);
     }

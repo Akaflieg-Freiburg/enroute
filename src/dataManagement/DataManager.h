@@ -332,7 +332,7 @@ public:
      * @returns A human-readable HTML string on error, or an empty string on
      * success
      */
-    Q_INVOKABLE QString importVAC(const QString& fileName, const QString& newName);
+    Q_INVOKABLE QString importVAC(const QString& fileName, QString newName);
 
 public slots:
     /*! \brief Triggers an update of the list of remotely available data items

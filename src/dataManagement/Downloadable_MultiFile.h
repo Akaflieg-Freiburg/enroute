@@ -135,7 +135,7 @@ public:
      *  As a result, these properties are always set to match those of the last map added.
      *  This instance does not take ownership of the map.
      *
-     *  It is perfectly possible that a map is child of more than one Downloadable_MultiFile.
+     *  It is perfectly possible that a map is a child of more than one Downloadable_MultiFile.
      *
      *  @param map Map to be added
      */

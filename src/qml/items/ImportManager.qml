@@ -101,6 +101,19 @@ Item {
         }
     }
 
+    Connections {
+        target: DataManager
+
+        function onImportTripKitStatus(percent) {
+            if (percent < 1.0) {
+                pbar.value = percent
+                importTripKitWaitDialog.open()
+            } else
+                importTripKitWaitDialog.close()
+            return
+        }
+    }
+
     CenteringDialog {
         id: chooseFRorWPDialog
 
@@ -466,6 +479,7 @@ Item {
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
+            close()
 
             var errorString = DataManager.importTripKit(importManager.filePath)
             if (errorString !== "") {
@@ -495,4 +509,30 @@ Item {
         }
     }
 
+    CenteringDialog {
+        id: importTripKitWaitDialog
+        title: qsTr("Stand by")
+
+        modal: true
+        closePolicy: Popup.NoAutoClose
+
+        ColumnLayout {
+            anchors.fill: parent
+
+            Label {
+                Layout.fillWidth: true
+
+                text: qsTr("Extracting and converting files from the trip kit.")
+                wrapMode: Text.Wrap
+                textFormat: Text.StyledText
+            }
+
+            ProgressBar {
+                id: pbar
+                Layout.fillWidth: true
+                value: 0.0
+            }
+
+        }
+    }
 }

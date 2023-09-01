@@ -360,6 +360,8 @@ signals:
     /*! \brief Notifier signal */
     void whatsNewChanged();
 
+    void importTripKitStatus(double percent);
+
 private:
     Q_DISABLE_COPY_MOVE(DataManager)
 

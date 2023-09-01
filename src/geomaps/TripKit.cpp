@@ -1,4 +1,6 @@
 
+#include <QEventLoop>
+#include <QImage>
 #include <QCommandLineParser>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -57,16 +59,16 @@ GeoMaps::TripKit::TripKit(const QString& fileName)
             return;
         }
     }
-
-
 }
 
 
 
-void GeoMaps::TripKit::extract(const QString& directoryPath)
+void GeoMaps::TripKit::extract(const QString& directoryPath, int index)
 {
+    auto chart = m_charts.at(index);
 
-    foreach (auto chart, m_charts)
+
+//    foreach (auto chart, m_charts)
     {
         auto name = chart.toObject()[u"name"_qs].toString();
 
@@ -83,22 +85,31 @@ void GeoMaps::TripKit::extract(const QString& directoryPath)
         auto bottom = chart.toObject()[u"geoCorners"_qs].toObject()[u"lowerRight"_qs].toObject()[u"latitude"_qs].toDouble();
         auto right = chart.toObject()[u"geoCorners"_qs].toObject()[u"lowerRight"_qs].toObject()[u"longitude"_qs].toDouble();
 
-        auto newPath = u"%1/%2-geo_%3_%4_%5_%6.%7"_qs
+        auto newPath = u"%1/%2-geo_%3_%4_%5_%6.webp"_qs
                            .arg(directoryPath, name)
                            .arg(left)
                            .arg(top)
                            .arg(right)
-                           .arg(bottom)
-                           .arg(ending);
+                           .arg(bottom);
 
         auto imageData = m_zip.extract(path);
         if (imageData.isEmpty())
         {
             imageData = m_zip.extract("charts/"+name+"-geo."+ending);
         }
-        QFile outFile(newPath);
-        outFile.open(QIODeviceBase::WriteOnly);
-        outFile.write(imageData);
-        outFile.close();
+
+        if (ending == "webp")
+        {
+            QFile outFile(newPath);
+            outFile.open(QIODeviceBase::WriteOnly);
+            outFile.write(imageData);
+            outFile.close();
+        }
+        else
+        {
+            QImage img(imageData);
+            img.save(newPath);
+        }
+
     }
 }

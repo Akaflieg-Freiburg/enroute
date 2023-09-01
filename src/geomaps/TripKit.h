@@ -18,8 +18,9 @@ public:
 
     bool isValid() const { return m_error.isEmpty(); }
 
-    void extract(const QString& directoryPath);
+    void extract(const QString& directoryPath, int index);
 
+    int numCharts() const { return m_charts.size(); }
 private:
     GeoMaps::Zip m_zip;
     QString m_error;

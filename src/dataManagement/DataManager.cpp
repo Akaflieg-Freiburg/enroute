@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QCoreApplication>
 #include <QDirIterator>
 #include <QImage>
 #include <QJsonArray>
@@ -256,8 +257,13 @@ auto DataManagement::DataManager::importTripKit(const QString& fileName) -> QStr
         return {};
     }
     qWarning() << "x2";
-    tripKit.extract(tmpDir.path());
+    auto size = tripKit.numCharts();
+    for(auto idx=0; idx<size; idx++) {
+        emit importTripKitStatus((double)idx/(double)size);
+        QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
 
+        tripKit.extract(tmpDir.path(), idx);
+    }
     qWarning()<< "A";
     QDirIterator fileIterator(tmpDir.path(), QDir::Files);
     while (fileIterator.hasNext())
@@ -266,6 +272,7 @@ auto DataManagement::DataManager::importTripKit(const QString& fileName) -> QStr
         qWarning() << importVAC(tmpDir.path()+"/"+fileIterator.fileName(), {});
     }
 #warning not implemented
+    emit importTripKitStatus(1.0);
     return {};
 }
 

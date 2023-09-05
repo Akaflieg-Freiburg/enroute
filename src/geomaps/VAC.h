@@ -21,9 +21,11 @@
 #pragma once
 
 #include <QGeoRectangle>
+#include <QImage>
 
 namespace GeoMaps
 {
+
 /*! \brief Visual approach chart
  *
  *  This class reads a georeferenced image file, where georeferencing data is
@@ -35,7 +37,6 @@ namespace GeoMaps
  *    "EDTF-geo_7.739665_48.076416_7.9063883_47.96452.jpg"
  *
  */
-
 class VAC
 {
 

@@ -249,14 +249,12 @@ auto DataManagement::DataManager::importOpenAir(const QString& fileName, const Q
 
 auto DataManagement::DataManager::importTripKit(const QString& fileName) -> QString
 {
-    qWarning() << "x1";
     GeoMaps::TripKit tripKit(fileName);
     QTemporaryDir tmpDir;
     if (!tmpDir.isValid())
     {
         return {};
     }
-    qWarning() << "x2";
     auto size = tripKit.numCharts();
     for(auto idx=0; idx<size; idx++) {
         emit importTripKitStatus((double)idx/(double)size);
@@ -264,14 +262,12 @@ auto DataManagement::DataManager::importTripKit(const QString& fileName) -> QStr
 
         tripKit.extract(tmpDir.path(), idx);
     }
-    qWarning()<< "A";
     QDirIterator fileIterator(tmpDir.path(), QDir::Files);
     while (fileIterator.hasNext())
     {
         fileIterator.next();
         qWarning() << importVAC(tmpDir.path()+"/"+fileIterator.fileName(), {});
     }
-#warning not implemented
     emit importTripKitStatus(1.0);
     return {};
 }

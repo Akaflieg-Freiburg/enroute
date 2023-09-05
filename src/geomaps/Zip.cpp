@@ -66,7 +66,7 @@ QByteArray GeoMaps::Zip::extract(qsizetype index)
 
     auto fileSize = m_fileSizes[index];
     QByteArray data(fileSize, 0);
-    auto zf = zip_fopen_index((zip_t*)m_zip, index, 0);
+    auto *zf = zip_fopen_index((zip_t *) m_zip, index, 0);
     if (zf == nullptr)
     {
         return {};

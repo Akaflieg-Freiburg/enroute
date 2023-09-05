@@ -97,8 +97,7 @@ public:
     // deferred initialization
     void deferredInitialization() override;
 
-    // destructor
-    ~DataManager() = default;
+
 
     //
     // PROPERTIES
@@ -360,6 +359,10 @@ signals:
     /*! \brief Notifier signal */
     void whatsNewChanged();
 
+    /*! \brief Progress report when importing a trip kit
+     *
+     *  @param percent A number between 0.0 and 1.0.
+     */
     void importTripKitStatus(double percent);
 
 private:

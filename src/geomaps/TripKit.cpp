@@ -1,5 +1,6 @@
 
 #include <QEventLoop>
+#include <QGeoCoordinate>
 #include <QImage>
 #include <QCommandLineParser>
 #include <QJsonDocument>
@@ -22,7 +23,7 @@ GeoMaps::TripKit::TripKit(const QString& fileName)
     }
 
     {
-        auto json = m_zip.extract("toc.json");
+        auto json = m_zip.extract(u"toc.json"_qs);
         if (json.isNull())
         {
             m_error = QObject::tr("The zip archive %1 does not contain the required file 'toc.json'.").arg(fileName);
@@ -35,11 +36,11 @@ GeoMaps::TripKit::TripKit(const QString& fileName)
             return;
         }
         auto rootObject = jDoc.object();
-        m_name = rootObject["name"].toString();
+        m_name = rootObject[u"name"_qs].toString();
     }
 
     {
-        auto json = m_zip.extract("charts/charts_toc.json");
+        auto json = m_zip.extract(u"charts/charts_toc.json"_qs);
         if (json.isNull())
         {
             m_error = QObject::tr("The zip archive %1 does not contain the required file 'charts/charts_toc.json'.").arg(fileName);
@@ -52,7 +53,7 @@ GeoMaps::TripKit::TripKit(const QString& fileName)
             return;
         }
         auto rootObject = jDoc.object();
-        m_charts = rootObject["charts"].toArray();
+        m_charts = rootObject[u"charts"_qs].toArray();
         if (m_charts.isEmpty())
         {
             m_error = QObject::tr("The trip kit %1 does not contain any charts.").arg(fileName);
@@ -63,53 +64,88 @@ GeoMaps::TripKit::TripKit(const QString& fileName)
 
 
 
-void GeoMaps::TripKit::extract(const QString& directoryPath, int index)
+QString GeoMaps::TripKit::extract(const QString& directoryPath, qsizetype index)
 {
-    auto chart = m_charts.at(index);
-
-
-//    foreach (auto chart, m_charts)
+    if ((index < 0) || (index >= m_charts.size()))
     {
-        auto name = chart.toObject()[u"name"_qs].toString();
-
-        auto path = chart.toObject()[u"filePath"_qs].toString();
-        QString ending;
-        auto idx = path.lastIndexOf('.');
-        if (idx != -1)
-        {
-            ending = path.mid(idx+1, -1);
-        }
-
-        auto top = chart.toObject()[u"geoCorners"_qs].toObject()[u"upperLeft"_qs].toObject()[u"latitude"_qs].toDouble();
-        auto left = chart.toObject()[u"geoCorners"_qs].toObject()[u"upperLeft"_qs].toObject()[u"longitude"_qs].toDouble();
-        auto bottom = chart.toObject()[u"geoCorners"_qs].toObject()[u"lowerRight"_qs].toObject()[u"latitude"_qs].toDouble();
-        auto right = chart.toObject()[u"geoCorners"_qs].toObject()[u"lowerRight"_qs].toObject()[u"longitude"_qs].toDouble();
-
-        auto newPath = u"%1/%2-geo_%3_%4_%5_%6.webp"_qs
-                           .arg(directoryPath, name)
-                           .arg(left)
-                           .arg(top)
-                           .arg(right)
-                           .arg(bottom);
-
-        auto imageData = m_zip.extract(path);
-        if (imageData.isEmpty())
-        {
-            imageData = m_zip.extract("charts/"+name+"-geo."+ending);
-        }
-
-        if (ending == "webp")
-        {
-            QFile outFile(newPath);
-            outFile.open(QIODeviceBase::WriteOnly);
-            outFile.write(imageData);
-            outFile.close();
-        }
-        else
-        {
-            QImage img(imageData);
-            img.save(newPath);
-        }
-
+        return {};
     }
+    auto chart = m_charts.at(index);
+    auto name = chart.toObject()[u"name"_qs].toString();
+    if (name.isEmpty())
+    {
+        return {};
+    }
+    auto path = chart.toObject()[u"filePath"_qs].toString();
+    if (path.isEmpty())
+    {
+        return {};
+    }
+    QString ending;
+    auto idx = path.lastIndexOf('.');
+    if (idx == -1)
+    {
+        return {};
+    }
+    ending = path.mid(idx+1, -1);
+
+    auto top = chart.toObject()[u"geoCorners"_qs].toObject()[u"upperLeft"_qs].toObject()[u"latitude"_qs].toDouble();
+    auto left = chart.toObject()[u"geoCorners"_qs].toObject()[u"upperLeft"_qs].toObject()[u"longitude"_qs].toDouble();
+    auto bottom = chart.toObject()[u"geoCorners"_qs].toObject()[u"lowerRight"_qs].toObject()[u"latitude"_qs].toDouble();
+    auto right = chart.toObject()[u"geoCorners"_qs].toObject()[u"lowerRight"_qs].toObject()[u"longitude"_qs].toDouble();
+
+    QGeoCoordinate topLeft(top, left);
+    if (!topLeft.isValid())
+    {
+        return {};
+    }
+    QGeoCoordinate bottomRight(bottom, right);
+    if (!bottomRight.isValid())
+    {
+        return {};
+    }
+
+
+    auto newPath = u"%1/%2-geo_%3_%4_%5_%6.webp"_qs
+                       .arg(directoryPath, name)
+                       .arg(left)
+                       .arg(top)
+                       .arg(right)
+                       .arg(bottom);
+
+    auto imageData = m_zip.extract(path);
+    if (imageData.isEmpty())
+    {
+        imageData = m_zip.extract("charts/"+name+"-geo."+ending);
+    }
+    if (imageData.isEmpty())
+    {
+        return {};
+    }
+
+    if (ending == u"webp"_qs)
+    {
+        QFile outFile(newPath);
+        if (!outFile.open(QIODeviceBase::WriteOnly))
+        {
+            return {};
+        }
+        if (outFile.write(imageData) != imageData.size())
+        {
+            outFile.close();
+            outFile.remove();
+            return {};
+        }
+        outFile.close();
+    }
+    else
+    {
+        QImage img(imageData);
+        if (!img.save(newPath))
+        {
+            QFile::remove(newPath);
+            return {};
+        }
+    }
+    return newPath;
 }

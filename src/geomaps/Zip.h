@@ -48,13 +48,13 @@ public:
      *
      *  @returns True if the file named in the constructor appears to be a valid zip file.
      */
-    bool isValid() const { return (m_zip != nullptr); }
+    [[nodiscard]] bool isValid() const { return (m_zip != nullptr); }
 
     /*! \brief List of files in the zip archive
      *
      *  @returns List of file named.
      */
-    QStringList fileNames() const { return m_fileNames; }
+    [[nodiscard]] QStringList fileNames() const { return m_fileNames; }
 
     /*! \brief Content of file in the zip archive
      *
@@ -73,6 +73,8 @@ public:
     QByteArray extract(const QString& fileName);
 
 private:
+    Q_DISABLE_COPY_MOVE(Zip)
+
     void* m_zip {nullptr};
     QStringList m_fileNames;
     QList<qsizetype> m_fileSizes;

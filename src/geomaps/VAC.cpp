@@ -53,12 +53,12 @@ GeoMaps::VAC::VAC(const QString& fileName)
     // Guess base name from file name
     QFileInfo fi(fileName);
     m_baseName = fi.fileName();
-    auto idx = m_baseName.lastIndexOf(".");
+    auto idx = m_baseName.lastIndexOf(u"."_qs);
     if (idx != -1)
     {
         m_baseName = m_baseName.left(idx);
     }
-    idx = m_baseName.lastIndexOf("-geo_");
+    idx = m_baseName.lastIndexOf(u"-geo_"_qs);
     if (idx != -1)
     {
         m_baseName = m_baseName.left(idx);
@@ -100,7 +100,7 @@ QString GeoMaps::VAC::save(const QString& directory)
                            .arg(bottomRight.longitude())
                            .arg(bottomRight.latitude());
 
-    if (m_fileName.endsWith("webp") &&
+    if (m_fileName.endsWith(u"webp"_qs) &&
         QFile::exists(m_fileName) &&
         QFile::copy(m_fileName, newFileName))
     {

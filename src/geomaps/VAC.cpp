@@ -47,12 +47,12 @@ GeoMaps::VAC::VAC(const QString& fileName)
     }
     if (!m_bBox.isValid())
     {
-        m_bBox = GeoMaps::GeoTIFF::bBox(fileName);
+        m_bBox = GeoMaps::GeoTIFF::readCoordinates(fileName);
     }
 
     // Guess base name from file name
-    QFileInfo fi(fileName);
-    m_baseName = fi.fileName();
+    QFileInfo fileInfo(fileName);
+    m_baseName = fileInfo.fileName();
     auto idx = m_baseName.lastIndexOf(u"."_qs);
     if (idx != -1)
     {

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2023 by Stefan Kebekus                                  *
+ *   Copyright (C) 2022 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,26 +21,21 @@
 #pragma once
 
 #include <QGeoRectangle>
+#include <QString>
 
 namespace GeoMaps
 {
-/*! \brief GeoTIFF support class
- *
- *  This class reads the bounding box off a GeoTIFF file.
- */
-
-class GeoTIFF
-{
-
-public:
-    /*! \brief Get bounding box from a GeoTIFF file
-     *
-     *  @param fileName Name of the GeoTIFF file.
-     *
-     *  @returns The bounding box of the GeoTIFF file. In case of an error, an invalid
-     *  bounding box is returned.
-     */
-    static QGeoRectangle bBox(const QString& fileName);
-};
+    class GeoTIFF
+    {
+    public:
+        /*! \brief Reads coordinates from a georeferenced image file
+         *
+         *  @param path File path for a georeferenced image file
+         *
+         *  @return Coordinates of the image corners. If no valid georeferencing data was
+         *  found, an invalid QGeoRectangle is returned
+         */
+        static auto readCoordinates(const QString &path) -> QGeoRectangle;
+    };
 
 } // namespace GeoMaps

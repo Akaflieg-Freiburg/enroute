@@ -57,27 +57,25 @@ public:
      *  @returns A human-readable, translated warning or an empty string if no
      *  error.
      */
-    [[nodiscard]] QString error() const { return m_error; }
+    [[nodiscard]] auto error() const -> QString { return m_error; }
 
     /*! \brief Test for validity
      *
      *  @returns True if this trip kit appears to be valid
      */
-    [[nodiscard]] bool isValid() const { return m_error.isEmpty(); }
+    [[nodiscard]] auto isValid() const -> bool { return m_error.isEmpty(); }
 
     /*! \brief Name of the trip kit, as specified in the JSON file
      *
      *  @returns The name or an empty string in case of error.
      */
-    [[nodiscard]] QString name() const { return m_name; }
+    [[nodiscard]] auto name() const -> QString { return m_name; }
 
     /*! \brief Number of VACs in this trip kit
      *
      *  @returns The number of VACs in this trip kit
      */
-    [[nodiscard]] qsizetype numCharts() const { return m_charts.size(); }
-
-
+    [[nodiscard]] auto numCharts() const -> qsizetype { return m_charts.size(); }
 
     //
     // Methods
@@ -99,7 +97,7 @@ public:
      *  @returns Path of the newly created file, or an empty string in case of
      *  error.
      */
-    QString extract(const QString& directoryPath, qsizetype index);
+    auto extract(const QString &directoryPath, qsizetype index) -> QString;
 
 private:
     GeoMaps::Zip m_zip;

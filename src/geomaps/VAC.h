@@ -71,7 +71,7 @@ public:
      *
      *  @returns A QString with the base name
      */
-    [[nodiscard]] QString baseName() const { return m_baseName; }
+    [[nodiscard]] auto baseName() const -> QString { return m_baseName; }
 
     /*! \brief Bounding box
      *
@@ -80,7 +80,7 @@ public:
      *  @returns The bounding box. In case of error, an invalid QGeoRectangle is
      *  returned.
      */
-    [[nodiscard]] QGeoRectangle bBox() const { return m_bBox; }
+    [[nodiscard]] auto bBox() const -> QGeoRectangle { return m_bBox; }
 
     /*! \brief Error message
      *
@@ -90,7 +90,7 @@ public:
      *  @returns A human-readable, translated warning or an empty string if no
      *  error.
      */
-    [[nodiscard]] QString error() const { return m_error; }
+    [[nodiscard]] auto error() const -> QString { return m_error; }
 
     /*! \brief Test for validity
      *
@@ -99,7 +99,7 @@ public:
      *
      *  @returns True if this visual approach chart is valid
      */
-    [[nodiscard]] bool isValid() const;
+    [[nodiscard]] auto isValid() const -> bool;
 
     /*! \brief Warning
      *
@@ -109,9 +109,7 @@ public:
      *  @returns A human-readable, translated warning or an empty string if no
      *  warning.
      */
-    [[nodiscard]] QString warning() const { return m_warning; }
-
-
+    [[nodiscard]] auto warning() const -> QString { return m_warning; }
 
     //
     // Setter Methods
@@ -143,7 +141,7 @@ public:
      *  @returns Path of the newly created file, or an empty string in case of
      *  error.
      */
-    [[nodiscard]] QString save(const QString& directoryName);
+    [[nodiscard]] auto save(const QString &directoryName) -> QString;
 
 private:
     void generateErrorsAndWarnings();

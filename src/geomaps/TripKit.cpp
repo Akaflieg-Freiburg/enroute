@@ -62,9 +62,7 @@ GeoMaps::TripKit::TripKit(const QString& fileName)
     }
 }
 
-
-
-QString GeoMaps::TripKit::extract(const QString& directoryPath, qsizetype index)
+auto GeoMaps::TripKit::extract(const QString &directoryPath, qsizetype index) -> QString
 {
     if ((index < 0) || (index >= m_charts.size()))
     {
@@ -94,12 +92,12 @@ QString GeoMaps::TripKit::extract(const QString& directoryPath, qsizetype index)
     auto bottom = chart.toObject()[u"geoCorners"_qs].toObject()[u"lowerRight"_qs].toObject()[u"latitude"_qs].toDouble();
     auto right = chart.toObject()[u"geoCorners"_qs].toObject()[u"lowerRight"_qs].toObject()[u"longitude"_qs].toDouble();
 
-    QGeoCoordinate topLeft(top, left);
+    QGeoCoordinate const topLeft(top, left);
     if (!topLeft.isValid())
     {
         return {};
     }
-    QGeoCoordinate bottomRight(bottom, right);
+    QGeoCoordinate const bottomRight(bottom, right);
     if (!bottomRight.isValid())
     {
         return {};
@@ -140,7 +138,7 @@ QString GeoMaps::TripKit::extract(const QString& directoryPath, qsizetype index)
     }
     else
     {
-        QImage img(imageData);
+        QImage const img(imageData);
         if (!img.save(newPath))
         {
             QFile::remove(newPath);

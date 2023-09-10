@@ -51,7 +51,7 @@ GeoMaps::VAC::VAC(const QString& fileName)
     }
 
     // Guess base name from file name
-    QFileInfo fileInfo(fileName);
+    QFileInfo const fileInfo(fileName);
     m_baseName = fileInfo.fileName();
     auto idx = m_baseName.lastIndexOf(u"."_qs);
     if (idx != -1)
@@ -74,12 +74,12 @@ GeoMaps::VAC::VAC(const QString& fileName)
 // Methods
 //
 
-bool GeoMaps::VAC::isValid() const
+auto GeoMaps::VAC::isValid() const -> bool
 {
     return m_bBox.isValid() && !m_image.isNull();
 }
 
-QString GeoMaps::VAC::save(const QString& directory)
+auto GeoMaps::VAC::save(const QString &directory) -> QString
 {
     if (!isValid())
     {

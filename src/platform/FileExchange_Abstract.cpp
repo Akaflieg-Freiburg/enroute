@@ -55,7 +55,7 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     QString myPath;
     if (path.startsWith(u"file:"))
     {
-        QUrl url(path.trimmed());
+        QUrl const url(path.trimmed());
         myPath = url.toLocalFile();
     }
     else
@@ -63,8 +63,8 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
         myPath = path;
     }
 
-    QMimeDatabase db;
-    auto mimeType = db.mimeTypeForFile(myPath);
+    QMimeDatabase const dataBase;
+    auto mimeType = dataBase.mimeTypeForFile(myPath);
 
     /*
      * Check for various possible file formats/contents
@@ -127,7 +127,7 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     }
 
     // VAC
-    GeoMaps::VAC vac(myPath);
+    GeoMaps::VAC const vac(myPath);
     if (vac.isValid())
     {
         emit openFileRequest(myPath, vac.baseName(), VAC);
@@ -135,7 +135,7 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     }
 
     // Image
-    QImage img(myPath);
+    QImage const img(myPath);
     if (!img.isNull())
     {
         emit openFileRequest(myPath, {}, Image);
@@ -143,7 +143,7 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     }
 
     // TripKits
-    GeoMaps::TripKit tripKit(myPath);
+    GeoMaps::TripKit const tripKit(myPath);
     if (tripKit.isValid())
     {
         emit openFileRequest(myPath, tripKit.name(), TripKit);

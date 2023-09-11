@@ -128,7 +128,12 @@
       <intent-filter>
         <action android:name="android.intent.action.VIEW"/>
         <category android:name="android.intent.category.DEFAULT"/>
-        <data android:mimeType="image/*"/>
+        <data android:mimeType="image/tiff"/>
+      </intent-filter>
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <data android:mimeType="application/zip"/>
       </intent-filter>
       <!-- End of Intent Filters for Sending and Viewing Files -->
       

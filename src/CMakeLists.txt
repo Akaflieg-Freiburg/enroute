@@ -264,6 +264,7 @@ if(ANDROID)
         Qt6::Svg
         Qt6::TextToSpeech
         Qt6::WebView
+        libzip::zip
     )
 
     set_target_properties(${PROJECT_NAME} PROPERTIES

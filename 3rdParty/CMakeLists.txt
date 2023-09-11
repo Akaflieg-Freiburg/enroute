@@ -32,3 +32,13 @@ set(mapBoxFont_SOURCE_DIR
 # For simplicity, we do not build the subset library, but include the source files
 # into the enroute target. This avoids problems on iOS and saves us the overhead of
 # finding and loading the library at runtime.
+
+
+#
+# libzip
+#
+
+find_package(libzip)
+if(NOT libzip_FOUND)
+    add_subdirectory(libzip)
+endif()

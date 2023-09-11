@@ -38,7 +38,6 @@ set(mapBoxFont_SOURCE_DIR
 # libzip
 #
 
-find_package(libzip)
 if(NOT libzip_FOUND)
     add_subdirectory(libzip)
 endif()

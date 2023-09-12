@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QMap>
+#include <QObject>
 
 namespace GeoMaps
 {
@@ -61,11 +62,8 @@ namespace GeoMaps
      */
     MBTILES(const QString &fileName, QObject *parent = nullptr);
 
-    /*! \brief Standard destructor
-     *
-     * Constructs an object from an MBTILES file.
-     */
-    ~MBTILES() override;
+    /*! \brief Standard destructor */
+    ~MBTILES();
 
     /*! \brief Attribution of MBTILES file
      *

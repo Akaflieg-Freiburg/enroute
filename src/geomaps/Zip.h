@@ -70,7 +70,7 @@ public:
      *
      *  @returns Content of file, or a Null array in case of error
      */
-    auto extract(const QString &fileName) -> QByteArray;
+    auto extract(const QString& fileName) -> QByteArray;
 
 private:
     Q_DISABLE_COPY_MOVE(Zip)

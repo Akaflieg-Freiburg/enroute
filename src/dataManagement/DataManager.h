@@ -84,6 +84,8 @@ public:
      */
     explicit DataManager(QObject* parent=nullptr);
 
+    ~DataManager() override = default;
+
     // No default constructor, important for QML singleton
     explicit DataManager() = delete;
 

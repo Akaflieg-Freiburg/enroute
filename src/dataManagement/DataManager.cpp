@@ -250,7 +250,7 @@ auto DataManagement::DataManager::importOpenAir(const QString& fileName, const Q
 auto DataManagement::DataManager::importTripKit(const QString& fileName) -> QString
 {
     GeoMaps::TripKit tripKit(fileName);
-    QTemporaryDir tmpDir;
+    QTemporaryDir const tmpDir;
     if (!tmpDir.isValid())
     {
         return {};
@@ -520,10 +520,9 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
             auto mapFileName = obj.value(QStringLiteral("path")).toString();
             auto localFileName = m_dataDirectory + "/" + mapFileName;
             auto mapUrlName = baseURL + "/" + obj.value(QStringLiteral("path")).toString();
-            QUrl mapUrl(mapUrlName);
+            QUrl const mapUrl(mapUrlName);
             auto fileModificationDateTime = QDateTime::fromString(obj.value(QStringLiteral("time")).toString(), QStringLiteral("yyyyMMdd"));
-            qint64 fileSize = qRound64(obj.value(QStringLiteral("size")).toDouble());
-
+            qint64 const fileSize = qRound64(obj.value(QStringLiteral("size")).toDouble());
 
             QGeoRectangle bbox;
             if (obj.contains(u"bbox"_qs))

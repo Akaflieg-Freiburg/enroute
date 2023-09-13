@@ -28,7 +28,7 @@
 
 GeoMaps::Zip::Zip(const QString& fileName)
 {
-    int error;
+    int error = 0;
     m_zip = zip_open(fileName.toUtf8().data(), ZIP_RDONLY, &error);
     if (m_zip == nullptr)
     {
@@ -36,15 +36,15 @@ GeoMaps::Zip::Zip(const QString& fileName)
     }
 
     // Get number of files in this archive
-    auto numEntries = zip_get_num_entries((zip_t*)m_zip, 0);
+    auto numEntries = zip_get_num_entries(static_cast<zip_t*>(m_zip), 0);
     m_fileNames.reserve(numEntries);
     m_fileSizes.reserve(numEntries);
 
     // Read info for every file
     for(auto i=0; i<numEntries; i++)
     {
-        struct zip_stat zStat;
-        auto error = zip_stat_index((zip_t*)m_zip, i, 0, &zStat);
+        struct zip_stat zStat {};
+        auto error = zip_stat_index(static_cast<zip_t*>(m_zip), i, 0, &zStat);
         if (error != 0)
         {
             return;
@@ -62,14 +62,16 @@ GeoMaps::Zip::Zip(const QString& fileName)
     }
 }
 
+
 GeoMaps::Zip::~Zip()
 {
     if (m_zip != nullptr)
     {
-        zip_close((zip_t*)m_zip);
+        zip_close( static_cast<zip_t*>(m_zip));
         m_zip = nullptr;
     }
 }
+
 
 auto GeoMaps::Zip::extract(qsizetype index) -> QByteArray
 {
@@ -82,9 +84,9 @@ auto GeoMaps::Zip::extract(qsizetype index) -> QByteArray
         return {};
     }
 
-    auto fileSize = m_fileSizes[index];
+    auto fileSize = m_fileSizes.at(index);
     QByteArray data(fileSize, 0);
-    auto* zipFile = zip_fopen_index((zip_t *) m_zip, index, 0);
+    auto* zipFile = zip_fopen_index(static_cast<zip_t*>(m_zip), index, 0);
     if (zipFile == nullptr)
     {
         return {};
@@ -99,7 +101,8 @@ auto GeoMaps::Zip::extract(qsizetype index) -> QByteArray
     return data;
 }
 
-auto GeoMaps::Zip::extract(const QString &fileName) -> QByteArray
+
+auto GeoMaps::Zip::extract(const QString& fileName) -> QByteArray
 {
     auto idx = m_fileNames.indexOf(fileName);
     return extract(idx);

@@ -65,7 +65,7 @@ Item {
 
         // Enable gestures. Make sure that whenever a gesture starts, the property "followGPS" is set to "false"
         gesture.enabled: true
-        gesture.acceptedGestures: MapGestureArea.PanGesture|MapGestureArea.PinchGesture
+        gesture.acceptedGestures: MapGestureArea.RotationGesture|MapGestureArea.PanGesture|MapGestureArea.PinchGesture
         gesture.onPanStarted: {flightMap.followGPS = false}
         gesture.onPinchStarted: {flightMap.followGPS = false}
         gesture.onRotationStarted: {

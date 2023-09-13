@@ -6,6 +6,16 @@
     "maputnik:thunderforest_access_token": ""
   },
   "sources": {
+  "approach": {
+      "type": "image",
+      "url": "%APCHIMAGE%",
+      "coordinates": [
+          [%APCHLEFT%, %APCHTOP%],
+          [%APCHRIGHT%, %APCHTOP%],
+          [%APCHRIGHT%, %APCHBOT%],
+          [%APCHLEFT%, %APCHBOT%]
+      ]
+  },
     "openmaptiles": {
     "type": "vector",
     "url": "%URL%"
@@ -1837,6 +1847,14 @@
       "paint": {
         "text-halo-width": 2,
         "text-halo-color": "white"
+        }
+      },
+      {
+      "id": "apch",
+      "type": "raster",
+      "source": "approach",
+      "layout": {
+        "visibility": "%VISIBILITY"
         }
       }
   ],

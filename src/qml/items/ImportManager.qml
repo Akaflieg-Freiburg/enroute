@@ -75,6 +75,20 @@ Item {
                     importFlightRouteDialog.onAccepted()
                 return
             }
+            if (fileFunction === FileExchange.VAC) {
+                mapNameVAC.text = info;
+                importVACDialog.open()
+                return
+            }
+            if (fileFunction === FileExchange.Image) {
+                errLbl.text = qsTr("The file <strong>%1</strong> seems to contain an image without georeferencing information.").arg(fileName)
+                errorDialog.open()
+                return
+            }
+            if (fileFunction === FileExchange.TripKit) {
+                importTripKitDialog.open()
+                return
+            }
             if (fileFunction === FileExchange.OpenAir) {
                 openAirInfoLabel.text = info;
                 importOpenAirDialog.open()
@@ -83,6 +97,19 @@ Item {
 
             errLbl.text = qsTr("The file type of the file <strong>%1</strong> cannot be recognized.").arg(fileName)
             errorDialog.open()
+            return
+        }
+    }
+
+    Connections {
+        target: DataManager
+
+        function onImportTripKitStatus(percent) {
+            if (percent < 1.0) {
+                pbar.value = percent
+                importTripKitWaitDialog.open()
+            } else
+                importTripKitWaitDialog.close()
             return
         }
     }
@@ -196,6 +223,57 @@ Item {
                 return
             }
             importManager.toast.doToast( qsTr("Airspace data imported") )
+        }
+    }
+
+    CenteringDialog {
+        id: importVACDialog
+
+        title: qsTr("Import Visual Approach Chart")
+        standardButtons: Dialog.Ok | Dialog.Cancel
+        modal: true
+
+        ColumnLayout {
+            anchors.fill: parent
+
+            Label {
+                Layout.fillWidth: true
+
+                text: qsTr("Enter a name for this chart. Existing approach charts with the same name will be overwritten.")
+                wrapMode: Text.Wrap
+            }
+
+            MyTextField {
+                id: mapNameVAC
+
+                Layout.fillWidth: true
+                focus: true
+
+                onDisplayTextChanged: importVACDialog.standardButton(DialogButtonBox.Ok).enabled = (displayText !== "")
+
+                onAccepted: {
+                    if (mapNameVAC.text === "")
+                        return
+                    importVACDialog.accept()
+                }
+            }
+
+        }
+
+        onAboutToShow: {
+            importVACDialog.standardButton(DialogButtonBox.Ok).enabled = mapNameVAC.text !== ""
+        }
+
+        onAccepted: {
+            PlatformAdaptor.vibrateBrief()
+
+            var errorString = DataManager.importVAC(importManager.filePath, mapNameVAC.text)
+            if (errorString !== "") {
+                errLbl.text = errorString
+                errorDialog.open()
+                return
+            }
+            importManager.toast.doToast( qsTr("Visual approach chart data imported") )
         }
     }
 
@@ -390,6 +468,29 @@ Item {
         }
     }
 
+    LongTextDialog {
+        id: importTripKitDialog
+
+        title: qsTr("Import Trip Kit?")
+        standardButtons: Dialog.No | Dialog.Yes
+        modal: true
+
+        text: qsTr("This might overwrite some approach charts.")
+
+        onAccepted: {
+            PlatformAdaptor.vibrateBrief()
+            close()
+
+            var errorString = DataManager.importTripKit(importManager.filePath)
+            if (errorString !== "") {
+                errLbl.text = errorString
+                errorDialog.open()
+                return
+            }
+            importManager.toast.doToast( qsTr("Trip kit imported") )
+        }
+    }
+
     CenteringDialog {
         id: errorDialog
 
@@ -408,4 +509,30 @@ Item {
         }
     }
 
+    CenteringDialog {
+        id: importTripKitWaitDialog
+        title: qsTr("Stand by")
+
+        modal: true
+        closePolicy: Popup.NoAutoClose
+
+        ColumnLayout {
+            anchors.fill: parent
+
+            Label {
+                Layout.fillWidth: true
+
+                text: qsTr("Extracting and converting files from the trip kit.")
+                wrapMode: Text.Wrap
+                textFormat: Text.StyledText
+            }
+
+            ProgressBar {
+                id: pbar
+                Layout.fillWidth: true
+                value: 0.0
+            }
+
+        }
+    }
 }

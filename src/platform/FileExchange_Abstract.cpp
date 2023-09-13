@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QImage>
 #include <QMimeDatabase>
 #include <QUrl>
 
@@ -25,6 +26,8 @@
 #include "geomaps/GeoJSON.h"
 #include "geomaps/MBTILES.h"
 #include "geomaps/OpenAir.h"
+#include "geomaps/TripKit.h"
+#include "geomaps/VAC.h"
 #include "platform/FileExchange_Abstract.h"
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficDataSource_File.h"
@@ -52,7 +55,7 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     QString myPath;
     if (path.startsWith(u"file:"))
     {
-        QUrl url(path.trimmed());
+        QUrl const url(path.trimmed());
         myPath = url.toLocalFile();
     }
     else
@@ -60,8 +63,8 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
         myPath = path;
     }
 
-    QMimeDatabase db;
-    auto mimeType = db.mimeTypeForFile(myPath);
+    QMimeDatabase const dataBase;
+    auto mimeType = dataBase.mimeTypeForFile(myPath);
 
     /*
      * Check for various possible file formats/contents
@@ -120,6 +123,30 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     if (GeoMaps::CUP::isValid(myPath))
     {
         emit openFileRequest(myPath, {}, WaypointLibrary);
+        return;
+    }
+
+    // VAC
+    GeoMaps::VAC const vac(myPath);
+    if (vac.isValid())
+    {
+        emit openFileRequest(myPath, vac.baseName(), VAC);
+        return;
+    }
+
+    // Image
+    QImage const img(myPath);
+    if (!img.isNull())
+    {
+        emit openFileRequest(myPath, {}, Image);
+        return;
+    }
+
+    // TripKits
+    GeoMaps::TripKit const tripKit(myPath);
+    if (tripKit.isValid())
+    {
+        emit openFileRequest(myPath, tripKit.name(), TripKit);
         return;
     }
 

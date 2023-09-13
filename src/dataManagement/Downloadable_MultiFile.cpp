@@ -44,6 +44,9 @@ auto DataManagement::Downloadable_MultiFile::description() -> QString
     {
         switch(map->contentType())
         {
+        case Downloadable_Abstract::VAC:
+            result += "<h3>"+tr("Visual Approach Chart")+"</h3>";
+            break;
         case Downloadable_Abstract::AviationMap:
             result += "<h3>"+tr("Aviation Map")+"</h3>";
             break;
@@ -99,6 +102,9 @@ auto DataManagement::Downloadable_MultiFile::infoText() -> QString
             break;
         case Downloadable_Abstract::TerrainMap:
             result += QStringLiteral("%1: %2").arg(tr("Terrain Map"), map->infoText());
+            break;
+        case Downloadable_Abstract::VAC:
+            result += QStringLiteral("%1: %2").arg(tr("Visual Approach ChartTerrain Map"), map->infoText());
             break;
         }
     }
@@ -267,6 +273,31 @@ auto DataManagement::Downloadable_MultiFile::downloadables4Location(const QGeoCo
         return (a->contentType() < b->contentType());
     }
     );
+
+    return result;
+}
+
+
+auto DataManagement::Downloadable_MultiFile::downloadablesByDistance(const QGeoCoordinate& location) -> QVector<DataManagement::Downloadable_Abstract*>
+{
+    if (!location.isValid())
+    {
+        return downloadables();
+    }
+
+    QVector<DataManagement::Downloadable_Abstract*> result;
+    m_downloadables.removeAll(nullptr);
+    foreach(auto downloadable, m_downloadables)
+    {
+        result += downloadable;
+    }
+
+    // Sort Downloadables according to section name and object name
+    std::sort(result.begin(), result.end(), [location](Downloadable_Abstract* a, Downloadable_Abstract* b)
+              {
+                return a->boundingBox().center().distanceTo(location) < b->boundingBox().center().distanceTo(location);
+              }
+              );
 
     return result;
 }

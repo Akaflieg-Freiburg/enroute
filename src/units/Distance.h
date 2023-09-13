@@ -157,7 +157,7 @@ namespace Units {
          *
          *  @returns Result of the addition
          */
-        Q_INVOKABLE Units::Distance operator+(Units::Distance rhs) const
+        [[nodiscard]] Q_INVOKABLE Units::Distance operator+(Units::Distance rhs) const
         {
             return fromM(m_distanceInM + rhs.m_distanceInM);
         }
@@ -168,7 +168,7 @@ namespace Units {
          *
          *  @returns Result of the subtraction
          */
-        Q_INVOKABLE Units::Distance operator-(Units::Distance rhs) const
+        [[nodiscard]] Q_INVOKABLE Units::Distance operator-(Units::Distance rhs) const
         {
             return fromM(m_distanceInM - rhs.m_distanceInM);
         }
@@ -179,7 +179,7 @@ namespace Units {
          *
          *  @returns Result of the subtraction
          */
-        Q_INVOKABLE Units::Distance subtract(Units::Distance rhs) const
+        [[nodiscard]] Q_INVOKABLE Units::Distance subtract(Units::Distance rhs) const
         {
             return fromM(m_distanceInM - rhs.m_distanceInM);
         }
@@ -190,7 +190,7 @@ namespace Units {
          *
          *  @returns Result of the scaling
          */
-        Q_INVOKABLE Units::Distance operator*(double factor) const
+        [[nodiscard]] Q_INVOKABLE Units::Distance operator*(double factor) const
         {
             return fromM(m_distanceInM*factor);
         }

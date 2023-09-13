@@ -23,3 +23,6 @@
 [submodule "3rdParty/GSL"]
 	path = 3rdParty/GSL
 	url = https://github.com/microsoft/GSL.git
+[submodule "3rdParty/libzip"]
+	path = 3rdParty/libzip
+	url = https://github.com/nih-at/libzip.git

@@ -10,4 +10,6 @@
 
 * GUI: allow batch-deletion of VACs
 
+* GUI: Approach charts: respect lower inset
+
 * Manual: explain VACs

@@ -237,7 +237,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     if (name == u":text/whatsnew.html"_qs)
     {
         QString result;
-        result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> is now able to show visual approach charts within the moving map. Users in Germany can download official VACs from Deutsche Flugsicherung (DFS) using Michael Paus' very convenient 'AIP Browser DE'. Please check the manual for details.") + "</p>";
+        result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> is now able to show visual approach charts within the moving map. Users in Germany can download official VACs from Deutsche Flugsicherung (DFS) using Michael Paus' very convenient <a href='https://mpmediasoft.de/products/AIPBrowserDE/help/AIPBrowserDE.html'>AIP Browser DE</a>. Please check the manual for details.") + "</p>";
 #if not defined(Q_OS_IOS)
         result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> for iOS is now available on the Apple <a href='https://apps.apple.com/de/app/enroute-flight-navigation/id6448892176'>App Store</a>.") + "</p>";
 #endif

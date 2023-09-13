@@ -320,6 +320,9 @@ Page {
             text: qsTr("Maps")
         }
         TabButton {
+            text: "VAC"
+        }
+        TabButton {
             text: qsTr("Data")
         }
     }
@@ -361,6 +364,50 @@ Page {
                     PlatformAdaptor.vibrateBrief()
                     DataManager.updateRemoteDataItemList()
                 }
+            }
+        }
+
+        DecoratedListView {
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            clip: true
+            model: DataManager.VAC.downloadables
+            delegate: MapSet {}
+            ScrollIndicator.vertical: ScrollIndicator {}
+
+            section.property: "modelData.section"
+            section.delegate: sectionHeading
+
+            // Refresh list of maps on overscroll
+            property int refreshFlick: 0
+            onFlickStarted: {
+                refreshFlick = atYBeginning
+            }
+            onFlickEnded: {
+                if ( atYBeginning && refreshFlick ) {
+                    PlatformAdaptor.vibrateBrief()
+                    DataManager.updateRemoteDataItemList()
+                }
+            }
+
+            Label {
+                anchors.fill: parent
+                anchors.bottomMargin: font.pixelSize
+                anchors.leftMargin: font.pixelSize
+                anchors.rightMargin: font.pixelSize
+                anchors.topMargin: font.pixelSize
+
+                background: Rectangle {color: "white"}
+                visible: !DataManager.VAC.hasFile
+
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment : Text.AlignVCenter
+                textFormat: Text.RichText
+                wrapMode: Text.Wrap
+
+                text: "<p>" + qsTr("There are no approach charts installed. The <a href='x'>manual</a> explains how to install and use them.") + "</p>"
+                onLinkActivated: openManual("02-steps/simulator.html")
+
             }
         }
 

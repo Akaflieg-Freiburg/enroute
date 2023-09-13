@@ -47,6 +47,7 @@ class Downloadable_Abstract : public QObject {
 public:
     /*! \brief Type of content managed by this instance */
     enum ContentType {
+        VAC,            /*!< \brief Visual Approach Chart */
         AviationMap,    /*!< \brief Aviation Map */
         BaseMapVector,  /*!< \brief Base Map, in vector format */
         BaseMapRaster,  /*!< \brief Base Map, in raster format */
@@ -76,7 +77,7 @@ public:
 
     /*! \brief Describe installed file(s)
      *
-     * This property contains a localized description of the locally installed
+     * This property contains a description of the locally installed
      * file(s), localized and in HTML format. If no description is available,
      * then the property contains an empty string.
      */

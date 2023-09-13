@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QCache>
+#include <QGeoRectangle>
 #include <QFuture>
 #include <QImage>
 #include <QQmlEngine>
@@ -92,6 +93,9 @@ public:
     // Properties
     //
 
+    /*! \brief Current approach chart */
+    Q_PROPERTY(QString approachChart READ approachChart WRITE setApproachChart NOTIFY approachChartChanged)
+
     /*! \brief List of base map MBTILES */
     Q_PROPERTY(QList<QPointer<GeoMaps::MBTILES>> baseMapRasterTiles READ baseMapRasterTiles NOTIFY baseMapTilesChanged)
 
@@ -141,6 +145,15 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
+     * @returns Property approachChart
+     */
+    [[nodiscard]] QString approachChart() const
+    {
+        return m_approachChartFileName;
+    }
+
+    /*! \brief Getter function for the property with the same name
+     *
      * @returns Property baseMapRasterTiles
      */
     [[nodiscard]] QList<QPointer<GeoMaps::MBTILES>> baseMapRasterTiles() const
@@ -173,7 +186,7 @@ public:
      *
      * @returns Property styleFileURL
      */
-    [[nodiscard]] auto styleFileURL() const -> QString;
+    [[nodiscard]] auto styleFileURL() -> QString;
 
     /*! \brief Getter function for the property with the same name
      *
@@ -189,6 +202,19 @@ public:
      * @returns Property waypoints
      */
     [[nodiscard]] auto waypoints() -> QList<Waypoint>;
+
+
+
+    //
+    // Setter Methods
+    //
+
+    /*! \brief Setter function for the property with the same name
+     *
+     * @param apchChartName Name of approach chart
+     */
+    void setApproachChart(const QString& apchChartName = QString());
+
 
 
     //
@@ -281,6 +307,9 @@ public:
 
 signals:
     /*! \brief Notification signal for the property with the same name */
+    void approachChartChanged();
+
+    /*! \brief Notification signal for the property with the same name */
     void baseMapTilesChanged();
 
     /*! \brief Notification signal for the property with the same name */
@@ -325,7 +354,7 @@ private:
     TileServer _tileServer;
 
     // Temporary file that holds the current style file
-    QPointer<QTemporaryFile> _styleFile;
+    QPointer<QTemporaryFile> m_styleFile;
 
     //
     // Aviation Data Cache
@@ -339,6 +368,12 @@ private:
     QList<QPointer<GeoMaps::MBTILES>> m_baseMapVectorTiles;
     QList<QPointer<GeoMaps::MBTILES>> m_baseMapRasterTiles;
     QList<QPointer<GeoMaps::MBTILES>> m_terrainMapTiles;
+
+    //
+    // Current approach chart
+    //
+    QString m_approachChartFileName;
+    QGeoRectangle m_approachChartBBox;
 
     // The data in this group is accessed by several threads. The following
     // classes (whose names ends in an underscore) are therefore protected by

@@ -237,12 +237,10 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     if (name == u":text/whatsnew.html"_qs)
     {
         QString result;
+        result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> is now able to show visual approach charts within the moving map. Users in Germany can download official VACs from Deutsche Flugsicherung (DFS) using Michael Paus' very convenient <a href='https://mpmediasoft.de/products/AIPBrowserDE/help/AIPBrowserDE.html'>AIP Browser DE</a>. Please check the manual for details.") + "</p>";
 #if not defined(Q_OS_IOS)
         result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> for iOS is now available on the Apple <a href='https://apps.apple.com/de/app/enroute-flight-navigation/id6448892176'>App Store</a>.") + "</p>";
 #endif
-        result += "<p>" + tr("Akaflieg Freiburg is now able to accept donations via PayPal. If you appreciate the app and would like make a donation, <a href='https://www.paypal.com/donate/?hosted_button_id=FDQATDX6XZR3E'>click here</a> or open the main menu and go to Info/Donate") + "</p>";
-        result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> is now able to import airspace data in OpenAir format. Check the manual for details.") + "</p>";
-        result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> integrates well with the <a href='https://safesky.app'>SafeSky anti-collision app</a> (a 'premium' subscription of SafeSky is required). Check the manual for details, or go to the 'Settings' page.") + "</p>";
         result += "<p>" + tr("We need help with promotional graphics for the app stores and with explainer videos. If you are a graphic/video artist and would like to help, then please be in touch.") + "</p>";
         return result;
     }

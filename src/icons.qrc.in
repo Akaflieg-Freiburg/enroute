@@ -26,6 +26,7 @@
         <file alias="icons/material/ic_directions.svg">${material-design-icons_SOURCE_DIR}/maps/svg/production/ic_directions_24px.svg</file>
         <file alias="icons/material/ic_exit_to_app.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_exit_to_app_24px.svg</file>
         <file alias="icons/material/ic_file_download.svg">${material-design-icons_SOURCE_DIR}/file/svg/production/ic_file_download_24px.svg</file>
+	<file alias="icons/material/ic_flight_land.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_flight_land_24px.svg</file>
         <file alias="icons/material/ic_format_size.svg">${material-design-icons_SOURCE_DIR}/editor/svg/production/ic_format_size_24px.svg</file>
         <file alias="icons/material/ic_gas.svg">${material-design-icons_SOURCE_DIR}/maps/svg/production/ic_local_gas_station_24px.svg</file>
 	<file alias="icons/material/ic_help_outline.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_help_outline_24px.svg</file>

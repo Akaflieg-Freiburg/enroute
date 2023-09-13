@@ -84,6 +84,8 @@ public:
      */
     explicit DataManager(QObject* parent=nullptr);
 
+    ~DataManager() override = default;
+
     // No default constructor, important for QML singleton
     explicit DataManager() = delete;
 
@@ -97,8 +99,7 @@ public:
     // deferred initialization
     void deferredInitialization() override;
 
-    // destructor
-    ~DataManager() = default;
+
 
     //
     // PROPERTIES
@@ -136,7 +137,7 @@ public:
      */
     Q_PROPERTY(DataManagement::Downloadable_MultiFile* baseMaps READ baseMaps CONSTANT)
 
-    /*! \brief Downloadable_MultiFile that holds all data items
+    /*! \brief Downloadable_MultiFile that holds all databases
      *
      *  Pointer to a Downloadable_MultiFile that holds all databases.
      */
@@ -166,6 +167,12 @@ public:
      *  Pointer to a Downloadable_MultiFile that holds all terrain maps.
      */
     Q_PROPERTY(DataManagement::Downloadable_MultiFile* terrainMaps READ terrainMaps CONSTANT)
+
+    /*! \brief Downloadable_MultiFile that holds all approach charts
+     *
+     *  Pointer to a Downloadable_MultiFile that holds all approach charts.
+     */
+    Q_PROPERTY(DataManagement::Downloadable_MultiFile* VAC READ VAC CONSTANT)
 
     /*! \brief Current "what's new" message */
     Q_PROPERTY(QString whatsNew READ whatsNew NOTIFY whatsNewChanged)
@@ -246,6 +253,12 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
+     *  @returns Property VAC
+     */
+    [[nodiscard]] auto VAC() -> DataManagement::Downloadable_MultiFile* { return &m_VAC; }
+
+    /*! \brief Getter function for the property with the same name
+     *
      *  @returns Property whatsNew
      */
     [[nodiscard]] auto whatsNew() const -> QString { return m_whatsNew; }
@@ -297,6 +310,31 @@ public:
      */
     Q_INVOKABLE QString importOpenAir(const QString& fileName, const QString& newName);
 
+    /*! \brief Import a trip kit into the library of locally installed VACs
+     *
+     * This method imports the trip kit into the library of locally installed VAC.
+     *
+     * @param fileName File name of the trip kit.
+     *
+     * @returns A human-readable HTML string on error, or an empty string on
+     * success
+     */
+    Q_INVOKABLE QString importTripKit(const QString& fileName);
+
+    /*! \brief Import VAC into the library of locally installed VACs
+     *
+     * This method imports the VAC into the library of locally installed VAC.
+     *
+     * @param fileName File name of the VAC.
+     *
+     * @param newName Name under which the VAC is available in the library. If
+     * the name exists, the library entry will be replaced.
+     *
+     * @returns A human-readable HTML string on error, or an empty string on
+     * success
+     */
+    Q_INVOKABLE QString importVAC(const QString& fileName, QString newName);
+
 public slots:
     /*! \brief Triggers an update of the list of remotely available data items
      *
@@ -322,6 +360,12 @@ signals:
 
     /*! \brief Notifier signal */
     void whatsNewChanged();
+
+    /*! \brief Progress report when importing a trip kit
+     *
+     *  @param percent A number between 0.0 and 1.0.
+     */
+    void importTripKitStatus(double percent);
 
 private:
     Q_DISABLE_COPY_MOVE(DataManager)
@@ -357,6 +401,7 @@ private:
 
     // Full path name of data directory, without trailing slash
     QString m_dataDirectory {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/aviation_maps"};
+    QString m_vacDirectory {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/VAC"};
 
     // The current whats new string from _aviationMaps.
     QString m_whatsNew {};
@@ -367,6 +412,7 @@ private:
     DataManagement::Downloadable_SingleFile m_mapList { QUrl(QStringLiteral("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv003/maps.json")), QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/maps.json" };
 
     // List of geographic maps
+    DataManagement::Downloadable_MultiFile m_VAC {DataManagement::Downloadable_MultiFile::SingleUpdate};
     DataManagement::Downloadable_MultiFile m_aviationMaps {DataManagement::Downloadable_MultiFile::SingleUpdate};
     DataManagement::Downloadable_MultiFile m_baseMaps {DataManagement::Downloadable_MultiFile::SingleUpdate};
     DataManagement::Downloadable_MultiFile m_baseMapsRaster {DataManagement::Downloadable_MultiFile::SingleUpdate};

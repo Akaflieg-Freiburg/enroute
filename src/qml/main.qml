@@ -150,6 +150,25 @@ AppWindow {
 
                     leftPadding: 16+SafeInsets.left
 
+                    id: menuItemApproach
+
+                    text: qsTr("Approach Charts")
+                    icon.source: "/icons/material/ic_flight_land.svg"
+                    visible: DataManager.VAC.hasFile
+
+                    onClicked: {
+                        PlatformAdaptor.vibrateBrief()
+                        stackView.pop()
+                        stackView.push("pages/VAC.qml", {"dialogLoader": dialogLoader, "stackView": stackView})
+                        drawer.close()
+                    }
+                }
+
+                ItemDelegate {
+                    Layout.fillWidth: true
+
+                    leftPadding: 16+SafeInsets.left
+
                     id: menuItemNearby
 
                     text: qsTr("Nearby Waypoints")

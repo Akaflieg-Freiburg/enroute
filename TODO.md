@@ -2,7 +2,7 @@
 
 * Fix crash on TIFF files > 128MB.
 
-* Allow more general ZIP files
+* Allow more general ZIP files that contain images with bBoxes in the filename
 
 * Unify API of file type readers in geomaps/*
 
@@ -19,3 +19,5 @@
 * Clean up messy GeoTIFF code
 
 * Manual: explain VACs / update manual
+
+* Generate image for manual automatically

@@ -1,6 +1,10 @@
 * Fix copyright attributions for QtTiffTagViewer, libzip, qhttp…
 
+* Fix crash on TIFF files > 128MB.
+
 * Allow more general ZIP files
+
+* Unify API of file type readers in geomaps/*
 
 * GUI: mention name of trip kit, if available
 
@@ -12,4 +16,6 @@
 
 * GUI: Approach charts: respect lower inset
 
-* Manual: explain VACs
+* Clean up messy GeoTIFF code
+
+* Manual: explain VACs / update manual

@@ -66,6 +66,11 @@ public:
 
     /*! \brief Content of file in the zip archive
      *
+     *  If a file with the given name does not exist in the archive, then
+     *  the method tries to replace the path separator characters '/' in the
+     *  file name with windows-style separators '\' and checks if a file
+     *  with that name exists.
+     *
      *  @param fileName File name
      *
      *  @returns Content of file, or a Null array in case of error

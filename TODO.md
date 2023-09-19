@@ -4,20 +4,10 @@
 
 * Allow more general ZIP files that contain images with bBoxes in the filename
 
-* Unify API of file type readers in geomaps/*
-
 * GUI: mention name of trip kit, if available
 
 * GUI: warn on failed imports
 
-* GUI: allow import via file dialog
-
-* GUI: allow batch-deletion of VACs
-
-* GUI: Approach charts: respect lower inset
-
 * Clean up messy GeoTIFF code
-
-* Manual: explain VACs / update manual
 
 * Generate image for manual automatically

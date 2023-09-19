@@ -107,6 +107,7 @@ Page {
 
     DecoratedListView {
         anchors.fill: parent
+        anchors.bottomMargin: SafeInsets.bottom
 
         clip: true
         model: {

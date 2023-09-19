@@ -1,15 +1,13 @@
 * Fix copyright attributions for QtTiffTagViewer, libzip, qhttp…
 
-* Allow more general ZIP files
+* Fix crash on TIFF files > 128MB.
+
+* Allow more general ZIP files that contain images with bBoxes in the filename
 
 * GUI: mention name of trip kit, if available
 
 * GUI: warn on failed imports
 
-* GUI: allow import via file dialog
+* Clean up messy GeoTIFF code
 
-* GUI: allow batch-deletion of VACs
-
-* GUI: Approach charts: respect lower inset
-
-* Manual: explain VACs
+* Generate image for manual automatically

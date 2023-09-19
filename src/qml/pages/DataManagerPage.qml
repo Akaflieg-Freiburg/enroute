@@ -300,6 +300,20 @@ Page {
                     }
                 }
 
+                MenuSeparator { }
+
+                MenuItem {
+                    text: qsTr("Clear VAC library…")
+                    enabled: DataManager.VAC.downloadables.length > 0
+
+                    onTriggered: {
+                        PlatformAdaptor.vibrateBrief()
+                        highlighted = false
+                        clearVACDialog.open()
+                    }
+
+                }
+
             }
         }
 
@@ -406,7 +420,7 @@ Page {
                 wrapMode: Text.Wrap
 
                 text: "<p>" + qsTr("There are no approach charts installed. The <a href='x'>manual</a> explains how to install and use them.") + "</p>"
-                onLinkActivated: openManual("02-steps/simulator.html")
+                onLinkActivated: openManual("02-advanced/vac.html")
 
             }
         }
@@ -585,6 +599,21 @@ Page {
             pg.dialogLoader.text = qsTr("<p>Failed to download the list of aviation maps.</p><p>Reason: %1.</p>").arg(message)
             pg.dialogLoader.source = "dialogs/ErrorDialog.qml"
             pg.dialogLoader.active = true
+        }
+    }
+
+    LongTextDialog {
+        id: clearVACDialog
+
+        title: qsTr("Clear approach chart Library?")
+        standardButtons: Dialog.No | Dialog.Yes
+
+        text: qsTr("Once cleared, the approach charts cannot be restored.")
+
+        onAccepted: {
+            PlatformAdaptor.vibrateBrief()
+            DataManager.VAC.deleteFiles()
+            toast.doToast(qsTr("Approach chart library cleared"))
         }
     }
 

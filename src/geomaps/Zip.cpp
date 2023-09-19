@@ -105,5 +105,11 @@ auto GeoMaps::Zip::extract(qsizetype index) -> QByteArray
 auto GeoMaps::Zip::extract(const QString& fileName) -> QByteArray
 {
     auto idx = m_fileNames.indexOf(fileName);
+    if (idx == -1)
+    {
+        auto windowsStyleFileName = fileName;
+        windowsStyleFileName.replace('/', '\\');
+        idx = m_fileNames.indexOf(windowsStyleFileName);
+    }
     return extract(idx);
 }

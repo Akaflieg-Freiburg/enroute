@@ -356,6 +356,7 @@ void DemoRunner::generateManualScreenshots()
     // Clear flight route
     GlobalObject::navigator()->flightRoute()->clear();
 
+
     // Route page
     {
         qWarning() << "… Route Page";
@@ -523,6 +524,25 @@ void DemoRunner::generateManualScreenshots()
         trafficSimulator->removeTraffic();
         trafficSimulator->setTrafficFactor_DistanceOnly( nullptr );
         delay(40s);
+    }
+
+    // VAC with Colmar
+    {
+        qWarning() << "… approach chart for Colmar";
+        trafficSimulator->setCoordinate( {48.1, 7.425, Units::Distance::fromFT(7512).toM()} );
+        trafficSimulator->setBarometricHeight( Units::Distance::fromFT(7480) );
+        trafficSimulator->setTT( Units::Angle::fromDEG(270) );
+        trafficSimulator->setGS( Units::Speed::fromKN(89) );
+
+        QString VACFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +
+                              "/VAC/LFGA COLMAR HOUSSEN 2-geo_7.33169_48.1354_7.40045_48.0894.webp";
+        Q_ASSERT(QFile::exists(VACFileName));
+        GlobalObject::geoMapProvider()->setApproachChart(VACFileName);
+        GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::NUp);
+
+        delay(4s);
+        applicationWindow->grabWindow().save(QStringLiteral("03-03-VAC.png"));
+        GlobalObject::geoMapProvider()->setApproachChart();
     }
 
     // Done. Terminate the program.

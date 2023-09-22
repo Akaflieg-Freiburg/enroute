@@ -6,6 +6,4 @@
 
 * GUI: warn on failed imports
 
-* Clean up messy GeoTIFF code
-
-* Generate image for manual automatically
+* Clean up messy GeoTIFF code (handle case if file cannot open)

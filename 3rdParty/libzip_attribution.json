@@ -1,0 +1,10 @@
+{
+    "Id": "libzip",
+    "Name": "libzip",
+    "Description": "A C library for reading, creating, and modifying zip archives.",
+    "Homepage": "https://libzip.org",
+    "License": "3-clause BSD license",
+    "LicenseId": "BSD-3-Clause",
+    "LicenseFile": "libzip/LICENSE",
+    "Copyright": "Copyright (C) 1999-2022 Dieter Baron and Thomas Klausner"
+}

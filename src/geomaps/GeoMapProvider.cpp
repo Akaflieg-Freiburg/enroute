@@ -201,16 +201,17 @@ void GeoMaps::GeoMapProvider::setApproachChart(const QString& apchChartName)
         return;
     }
 
-    auto bBox = GeoMaps::VAC(apchChartName).bBox();
-    if (bBox.isValid())
+    m_approachChartFileName = {};
+    m_approachChartBBox = {};
+
+    if (!apchChartName.isEmpty())
     {
-        m_approachChartFileName = apchChartName;
-        m_approachChartBBox = bBox;
-    }
-    else
-    {
-        m_approachChartFileName = {};
-        m_approachChartBBox = {};
+        auto bBox = GeoMaps::VAC(apchChartName).bBox();
+        if (bBox.isValid())
+        {
+            m_approachChartFileName = apchChartName;
+            m_approachChartBBox = bBox;
+        }
     }
 
     delete m_styleFile;

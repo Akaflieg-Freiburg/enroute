@@ -1,5 +1,3 @@
-* Fix copyright attributions for QtTiffTagViewer, libzip, qhttp…
-
 * Allow more general ZIP files that contain images with bBoxes in the filename
 
 * GUI: mention name of trip kit, if available

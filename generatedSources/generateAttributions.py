@@ -6,7 +6,7 @@ import os
 
 
 def qtattributionsscanner(path):
-    process = Popen(["qtattributionsscanner-qt5", "--output-format", "json", path], stdout=PIPE)
+    process = Popen([qtbaseDir+"/gcc_64/libexec/qtattributionsscanner", "--output-format", "json", path], stdout=PIPE)
     (output, err) = process.communicate()
     process.wait()
     return json.loads(output)

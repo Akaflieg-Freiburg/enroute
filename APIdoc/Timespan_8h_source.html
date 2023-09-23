@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.28.2</span>
+   &#160;<span id="projectnumber">2.28.93</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -100,12 +100,12 @@ $(function() {
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            <span class="keywordflow">return</span> result;</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        }</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="classUnits_1_1Timespan.html#adc5c368ce4c8b47c6f59bb5ca4b9471a">   80</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">bool</span> <a class="code" href="classUnits_1_1Timespan.html#adc5c368ce4c8b47c6f59bb5ca4b9471a">isFinite</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="classUnits_1_1Timespan.html#adc5c368ce4c8b47c6f59bb5ca4b9471a">   80</a></span>&#160;        [[nodiscard]] Q_INVOKABLE <span class="keywordtype">bool</span> <a class="code" href="classUnits_1_1Timespan.html#adc5c368ce4c8b47c6f59bb5ca4b9471a">isFinite</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keyword">        </span>{</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            <span class="keywordflow">return</span> std::isfinite(m_timeInS);</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        }</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
-<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="classUnits_1_1Timespan.html#a9aee46665b686fbd9128e75860861120">   89</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">bool</span> <a class="code" href="classUnits_1_1Timespan.html#a9aee46665b686fbd9128e75860861120">isNegative</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="classUnits_1_1Timespan.html#a9aee46665b686fbd9128e75860861120">   89</a></span>&#160;        [[nodiscard]] Q_INVOKABLE <span class="keywordtype">bool</span> <a class="code" href="classUnits_1_1Timespan.html#a9aee46665b686fbd9128e75860861120">isNegative</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="keyword">        </span>{</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            <span class="keywordflow">return</span> m_timeInS &lt; 0.0;</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        }</div>
@@ -116,24 +116,24 @@ $(function() {
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        }</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
-<div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="classUnits_1_1Timespan.html#ad53cf1774092ba90cd7773e08e4dc3bd">  112</a></span>&#160;        Q_INVOKABLE [[nodiscard]] std::partial_ordering <a class="code" href="classUnits_1_1Timespan.html#ad53cf1774092ba90cd7773e08e4dc3bd">operator&lt;=&gt;</a>(<span class="keyword">const</span> <a class="code" href="classUnits_1_1Timespan.html">Units::Timespan</a>&amp; rhs) <span class="keyword">const</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="classUnits_1_1Timespan.html#ad53cf1774092ba90cd7773e08e4dc3bd">  112</a></span>&#160;        [[nodiscard]] Q_INVOKABLE std::partial_ordering <a class="code" href="classUnits_1_1Timespan.html#ad53cf1774092ba90cd7773e08e4dc3bd">operator&lt;=&gt;</a>(<span class="keyword">const</span> <a class="code" href="classUnits_1_1Timespan.html">Units::Timespan</a>&amp; rhs) <span class="keyword">const</span> = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
-<div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="classUnits_1_1Timespan.html#acfab9f3821cca88fdb899556f8574d23">  118</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Timespan.html#acfab9f3821cca88fdb899556f8574d23">toS</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="classUnits_1_1Timespan.html#acfab9f3821cca88fdb899556f8574d23">  118</a></span>&#160;        [[nodiscard]] Q_INVOKABLE <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Timespan.html#acfab9f3821cca88fdb899556f8574d23">toS</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="keyword">        </span>{</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;            <span class="keywordflow">return</span> m_timeInS;</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        }</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
-<div class="line"><a name="l00127"></a><span class="lineno"><a class="line" href="classUnits_1_1Timespan.html#ac956d9225b6e38aa044af696e1029d89">  127</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Timespan.html#ac956d9225b6e38aa044af696e1029d89">toM</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno"><a class="line" href="classUnits_1_1Timespan.html#ac956d9225b6e38aa044af696e1029d89">  127</a></span>&#160;        [[nodiscard]] Q_INVOKABLE <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Timespan.html#ac956d9225b6e38aa044af696e1029d89">toM</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="keyword">        </span>{</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;            <span class="keywordflow">return</span> m_timeInS / Seconds_per_Minute;</div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        }</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; </div>
-<div class="line"><a name="l00136"></a><span class="lineno"><a class="line" href="classUnits_1_1Timespan.html#af3615fcbd2220b0388cfd19a0413696d">  136</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Timespan.html#af3615fcbd2220b0388cfd19a0413696d">toH</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno"><a class="line" href="classUnits_1_1Timespan.html#af3615fcbd2220b0388cfd19a0413696d">  136</a></span>&#160;        [[nodiscard]] Q_INVOKABLE <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Timespan.html#af3615fcbd2220b0388cfd19a0413696d">toH</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="keyword">        </span>{</div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;            <span class="keywordflow">return</span> m_timeInS / Seconds_per_Hour;</div>
 <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        }</div>
 <div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160; </div>
-<div class="line"><a name="l00145"></a><span class="lineno"><a class="line" href="classUnits_1_1Timespan.html#a362a7ffa482a99457e74bfcd13039640">  145</a></span>&#160;        Q_INVOKABLE [[nodiscard]] QString <a class="code" href="classUnits_1_1Timespan.html#a362a7ffa482a99457e74bfcd13039640">toHoursAndMinutes</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00145"></a><span class="lineno"><a class="line" href="classUnits_1_1Timespan.html#a362a7ffa482a99457e74bfcd13039640">  145</a></span>&#160;        [[nodiscard]] Q_INVOKABLE QString <a class="code" href="classUnits_1_1Timespan.html#a362a7ffa482a99457e74bfcd13039640">toHoursAndMinutes</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160; </div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        <span class="keyword">static</span> constexpr <span class="keywordtype">double</span> Seconds_per_Minute = 60.0;</div>

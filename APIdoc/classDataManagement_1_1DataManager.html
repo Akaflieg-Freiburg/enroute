@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.28.2</span>
+   &#160;<span id="projectnumber">2.28.93</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -86,6 +86,9 @@ Signals</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataManagement_1_1DataManager.html#a97df0120eda2544197b32668eefab30f">whatsNewChanged</a> ()</td></tr>
 <tr class="memdesc:a97df0120eda2544197b32668eefab30f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
 <tr class="separator:a97df0120eda2544197b32668eefab30f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa59608f6fe556df84a65567e47e11096"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataManagement_1_1DataManager.html#aa59608f6fe556df84a65567e47e11096">importTripKitStatus</a> (double percent)</td></tr>
+<tr class="memdesc:aa59608f6fe556df84a65567e47e11096"><td class="mdescLeft">&#160;</td><td class="mdescRight">Progress report when importing a trip kit.  <a href="classDataManagement_1_1DataManager.html#aa59608f6fe556df84a65567e47e11096">More...</a><br /></td></tr>
+<tr class="separator:aa59608f6fe556df84a65567e47e11096"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -128,6 +131,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1e94e0983623e89d72f0398393d09c6b"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataManagement_1_1DataManager.html#a1e94e0983623e89d72f0398393d09c6b">terrainMaps</a> () -&gt; <a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html">DataManagement::Downloadable_MultiFile</a> *</td></tr>
 <tr class="memdesc:a1e94e0983623e89d72f0398393d09c6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classDataManagement_1_1DataManager.html#a1e94e0983623e89d72f0398393d09c6b">More...</a><br /></td></tr>
 <tr class="separator:a1e94e0983623e89d72f0398393d09c6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fc4ddf9b42c964ee683924a4a3fce2c"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataManagement_1_1DataManager.html#a6fc4ddf9b42c964ee683924a4a3fce2c">VAC</a> () -&gt; <a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html">DataManagement::Downloadable_MultiFile</a> *</td></tr>
+<tr class="memdesc:a6fc4ddf9b42c964ee683924a4a3fce2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classDataManagement_1_1DataManager.html#a6fc4ddf9b42c964ee683924a4a3fce2c">More...</a><br /></td></tr>
+<tr class="separator:a6fc4ddf9b42c964ee683924a4a3fce2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2cf07bc34e037ac477d16b202ed3da53"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataManagement_1_1DataManager.html#a2cf07bc34e037ac477d16b202ed3da53">whatsNew</a> () const -&gt; QString</td></tr>
 <tr class="memdesc:a2cf07bc34e037ac477d16b202ed3da53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <a href="classDataManagement_1_1DataManager.html#a2cf07bc34e037ac477d16b202ed3da53">More...</a><br /></td></tr>
 <tr class="separator:a2cf07bc34e037ac477d16b202ed3da53"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -140,6 +146,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7cc2acc87439514311189e3d7c13cc8c"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataManagement_1_1DataManager.html#a7cc2acc87439514311189e3d7c13cc8c">importOpenAir</a> (const QString &amp;fileName, const QString &amp;newName)</td></tr>
 <tr class="memdesc:a7cc2acc87439514311189e3d7c13cc8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Import airspace data into the library of locally installed maps.  <a href="classDataManagement_1_1DataManager.html#a7cc2acc87439514311189e3d7c13cc8c">More...</a><br /></td></tr>
 <tr class="separator:a7cc2acc87439514311189e3d7c13cc8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d284dc1fa0f647d9c63a35d0a2959c7"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataManagement_1_1DataManager.html#a8d284dc1fa0f647d9c63a35d0a2959c7">importTripKit</a> (const QString &amp;fileName)</td></tr>
+<tr class="memdesc:a8d284dc1fa0f647d9c63a35d0a2959c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Import a trip kit into the library of locally installed VACs.  <a href="classDataManagement_1_1DataManager.html#a8d284dc1fa0f647d9c63a35d0a2959c7">More...</a><br /></td></tr>
+<tr class="separator:a8d284dc1fa0f647d9c63a35d0a2959c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaeab7091dc773eaabe640e220114fdc5"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataManagement_1_1DataManager.html#aaeab7091dc773eaabe640e220114fdc5">importVAC</a> (const QString &amp;fileName, QString newName)</td></tr>
+<tr class="memdesc:aaeab7091dc773eaabe640e220114fdc5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Import VAC into the library of locally installed VACs.  <a href="classDataManagement_1_1DataManager.html#aaeab7091dc773eaabe640e220114fdc5">More...</a><br /></td></tr>
+<tr class="separator:aaeab7091dc773eaabe640e220114fdc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classGlobalObject"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classGlobalObject')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classGlobalObject.html">GlobalObject</a></td></tr>
 <tr class="memitem:ac8dfa53c492975de42fa7972e77abbc1 inherit pub_methods_classGlobalObject"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalObject.html#ac8dfa53c492975de42fa7972e77abbc1">GlobalObject</a> (QObject *parent=nullptr)</td></tr>
 <tr class="memdesc:ac8dfa53c492975de42fa7972e77abbc1 inherit pub_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard constructor.  <a href="classGlobalObject.html#ac8dfa53c492975de42fa7972e77abbc1">More...</a><br /></td></tr>
@@ -166,7 +178,7 @@ Properties</h2></td></tr>
 <tr class="memdesc:a314a280f78624d728ba7394f6ad29ef0"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html" title="Group of closely related downloadable items.">Downloadable_MultiFile</a> that holds all base maps.  <a href="classDataManagement_1_1DataManager.html#a314a280f78624d728ba7394f6ad29ef0">More...</a><br /></td></tr>
 <tr class="separator:a314a280f78624d728ba7394f6ad29ef0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a486d4c18e5b677e1e7fc88d093d35d48"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html">DataManagement::Downloadable_MultiFile</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataManagement_1_1DataManager.html#a486d4c18e5b677e1e7fc88d093d35d48">databases</a></td></tr>
-<tr class="memdesc:a486d4c18e5b677e1e7fc88d093d35d48"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html" title="Group of closely related downloadable items.">Downloadable_MultiFile</a> that holds all data items.  <a href="classDataManagement_1_1DataManager.html#a486d4c18e5b677e1e7fc88d093d35d48">More...</a><br /></td></tr>
+<tr class="memdesc:a486d4c18e5b677e1e7fc88d093d35d48"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html" title="Group of closely related downloadable items.">Downloadable_MultiFile</a> that holds all databases.  <a href="classDataManagement_1_1DataManager.html#a486d4c18e5b677e1e7fc88d093d35d48">More...</a><br /></td></tr>
 <tr class="separator:a486d4c18e5b677e1e7fc88d093d35d48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a837b921096dd79fb4477693a250ca986"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html">DataManagement::Downloadable_MultiFile</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataManagement_1_1DataManager.html#a837b921096dd79fb4477693a250ca986">items</a></td></tr>
 <tr class="memdesc:a837b921096dd79fb4477693a250ca986"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html" title="Group of closely related downloadable items.">Downloadable_MultiFile</a> that holds all data items.  <a href="classDataManagement_1_1DataManager.html#a837b921096dd79fb4477693a250ca986">More...</a><br /></td></tr>
@@ -185,6 +197,9 @@ Properties</h2></td></tr>
 <tr class="memitem:a33bc1f5437f77cda129fddc0374bff8d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html">DataManagement::Downloadable_MultiFile</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataManagement_1_1DataManager.html#a33bc1f5437f77cda129fddc0374bff8d">terrainMaps</a></td></tr>
 <tr class="memdesc:a33bc1f5437f77cda129fddc0374bff8d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html" title="Group of closely related downloadable items.">Downloadable_MultiFile</a> that holds all terrain maps.  <a href="classDataManagement_1_1DataManager.html#a33bc1f5437f77cda129fddc0374bff8d">More...</a><br /></td></tr>
 <tr class="separator:a33bc1f5437f77cda129fddc0374bff8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a587e5a63482acad0273f75c2cfcc2c25"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html">DataManagement::Downloadable_MultiFile</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataManagement_1_1DataManager.html#a587e5a63482acad0273f75c2cfcc2c25">VAC</a></td></tr>
+<tr class="memdesc:a587e5a63482acad0273f75c2cfcc2c25"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html" title="Group of closely related downloadable items.">Downloadable_MultiFile</a> that holds all approach charts.  <a href="classDataManagement_1_1DataManager.html#a587e5a63482acad0273f75c2cfcc2c25">More...</a><br /></td></tr>
+<tr class="separator:a587e5a63482acad0273f75c2cfcc2c25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af3f9f93e3016a6eecc34606ecd07a7ef"><td class="memItemLeft" align="right" valign="top"><a id="af3f9f93e3016a6eecc34606ecd07a7ef"></a>
 QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataManagement_1_1DataManager.html#af3f9f93e3016a6eecc34606ecd07a7ef">whatsNew</a></td></tr>
 <tr class="memdesc:af3f9f93e3016a6eecc34606ecd07a7ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current "what's new" message. <br /></td></tr>
@@ -230,6 +245,9 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a2396ee67666cb9227eef145e842b031b inherit pub_static_methods_classGlobalObject"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE <a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html">Platform::PlatformAdaptor_Abstract</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalObject.html#a2396ee67666cb9227eef145e842b031b">platformAdaptor</a> ()</td></tr>
 <tr class="memdesc:a2396ee67666cb9227eef145e842b031b inherit pub_static_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static PlatformAdaptor instance.  <a href="classGlobalObject.html#a2396ee67666cb9227eef145e842b031b">More...</a><br /></td></tr>
 <tr class="separator:a2396ee67666cb9227eef145e842b031b inherit pub_static_methods_classGlobalObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6ab8a16768e1abae0e960fbabcf236b inherit pub_static_methods_classGlobalObject"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE <a class="el" href="classSensors.html">Sensors</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalObject.html#ad6ab8a16768e1abae0e960fbabcf236b">sensors</a> ()</td></tr>
+<tr class="memdesc:ad6ab8a16768e1abae0e960fbabcf236b inherit pub_static_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static <a class="el" href="classNavigation_1_1Clock.html" title="This extremely simple class give accss to time and offers a few time-related functions.">Navigation::Clock</a> instance.  <a href="classGlobalObject.html#ad6ab8a16768e1abae0e960fbabcf236b">More...</a><br /></td></tr>
+<tr class="separator:ad6ab8a16768e1abae0e960fbabcf236b inherit pub_static_methods_classGlobalObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a41932b3c2ff3f31504ac4dc16f3b76 inherit pub_static_methods_classGlobalObject"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE <a class="el" href="classNavigation_1_1Navigator.html">Navigation::Navigator</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalObject.html#a6a41932b3c2ff3f31504ac4dc16f3b76">navigator</a> ()</td></tr>
 <tr class="memdesc:a6a41932b3c2ff3f31504ac4dc16f3b76 inherit pub_static_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static <a class="el" href="classNavigation_1_1Navigator.html" title="Main hub for navigation data.">Navigation::Navigator</a> instance.  <a href="classGlobalObject.html#a6a41932b3c2ff3f31504ac4dc16f3b76">More...</a><br /></td></tr>
 <tr class="separator:a6a41932b3c2ff3f31504ac4dc16f3b76 inherit pub_static_methods_classGlobalObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -345,7 +363,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property aviationMaps </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00185">185</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00192">192</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -401,7 +419,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property aviationMaps </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00191">191</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00198">198</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -431,7 +449,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property baseMaps </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00197">197</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00204">204</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -461,7 +479,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property baseMapsRaster </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00203">203</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00210">210</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -491,7 +509,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property baseMapsVector </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00209">209</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00216">216</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -521,7 +539,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property databases </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00215">215</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00222">222</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -668,6 +686,107 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="a8d284dc1fa0f647d9c63a35d0a2959c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d284dc1fa0f647d9c63a35d0a2959c7">&#9670;&nbsp;</a></span>importTripKit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE QString DataManagement::DataManager::importTripKit </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>fileName</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Import a trip kit into the library of locally installed VACs. </p>
+<p>This method imports the trip kit into the library of locally installed VAC.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fileName</td><td>File name of the trip kit.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A human-readable HTML string on error, or an empty string on success </dd></dl>
+
+</div>
+</div>
+<a id="aa59608f6fe556df84a65567e47e11096"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa59608f6fe556df84a65567e47e11096">&#9670;&nbsp;</a></span>importTripKitStatus</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DataManagement::DataManager::importTripKitStatus </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>percent</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">signal</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Progress report when importing a trip kit. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">percent</td><td>A number between 0.0 and 1.0. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aaeab7091dc773eaabe640e220114fdc5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaeab7091dc773eaabe640e220114fdc5">&#9670;&nbsp;</a></span>importVAC()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE QString DataManagement::DataManager::importVAC </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>fileName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">QString&#160;</td>
+          <td class="paramname"><em>newName</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Import VAC into the library of locally installed VACs. </p>
+<p>This method imports the VAC into the library of locally installed VAC.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fileName</td><td>File name of the VAC.</td></tr>
+    <tr><td class="paramname">newName</td><td>Name under which the VAC is available in the library. If the name exists, the library entry will be replaced.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A human-readable HTML string on error, or an empty string on success </dd></dl>
+
+</div>
+</div>
 <a id="a67a2fdb93d3135950a631c4787dcf706"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a67a2fdb93d3135950a631c4787dcf706">&#9670;&nbsp;</a></span>items()</h2>
 
@@ -694,7 +813,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property items </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00221">221</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00228">228</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -724,7 +843,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property mapsAndData </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00227">227</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00234">234</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -754,7 +873,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property mapsAndData </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00233">233</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00240">240</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -784,7 +903,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property mapSets </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00239">239</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00246">246</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -814,7 +933,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property terrainMaps </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00245">245</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00252">252</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -844,7 +963,37 @@ Additional Inherited Members</h2></td></tr>
 <p>Triggers an update of the list of remotely available data items. </p>
 <p>This will trigger a download the file maps.json from the remote server. </p>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00305">305</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00343">343</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+
+</div>
+</div>
+<a id="a6fc4ddf9b42c964ee683924a4a3fce2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fc4ddf9b42c964ee683924a4a3fce2c">&#9670;&nbsp;</a></span>VAC()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto DataManagement::DataManager::VAC </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> -&gt; <a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html">DataManagement::Downloadable_MultiFile</a>* </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter function for the property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property VAC </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00258">258</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -874,7 +1023,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property whatsNew </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00251">251</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00264">264</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -904,7 +1053,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property lastWhatsNewHash </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00257">257</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00270">270</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -932,7 +1081,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Indiates that the app needs to be updated. </p>
 <p>This property indicates that this version of the app is too old and cannot interpret maps and data that reside on the server. If this is the case, the GUI should yell at the user and block any attempt to download or update maps and data. </p>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00101">101</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00100">100</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -959,7 +1108,7 @@ Additional Inherited Members</h2></td></tr>
 <p><a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html" title="Group of closely related downloadable items.">Downloadable_MultiFile</a> that holds all aviation maps. </p>
 <p>Pointer to a <a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html" title="Group of closely related downloadable items.">Downloadable_MultiFile</a> that holds all aviation maps. </p>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00101">101</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00100">100</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -986,7 +1135,7 @@ Additional Inherited Members</h2></td></tr>
 <p><a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html" title="Group of closely related downloadable items.">Downloadable_MultiFile</a> that holds all base maps. </p>
 <p>Pointer to a <a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html" title="Group of closely related downloadable items.">Downloadable_MultiFile</a> that holds all base maps. </p>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00101">101</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00100">100</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -1013,7 +1162,7 @@ Additional Inherited Members</h2></td></tr>
 <p><a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html" title="Group of closely related downloadable items.">Downloadable_MultiFile</a> that holds all base maps in raster format. </p>
 <p>Pointer to a <a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html" title="Group of closely related downloadable items.">Downloadable_MultiFile</a> that holds all base maps in raster format. </p>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00101">101</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00100">100</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -1040,7 +1189,7 @@ Additional Inherited Members</h2></td></tr>
 <p><a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html" title="Group of closely related downloadable items.">Downloadable_MultiFile</a> that holds all base maps in vector format. </p>
 <p>Pointer to a <a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html" title="Group of closely related downloadable items.">Downloadable_MultiFile</a> that holds all base maps in vector format. </p>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00101">101</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00100">100</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -1064,10 +1213,10 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p><a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html" title="Group of closely related downloadable items.">Downloadable_MultiFile</a> that holds all data items. </p>
+<p><a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html" title="Group of closely related downloadable items.">Downloadable_MultiFile</a> that holds all databases. </p>
 <p>Pointer to a <a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html" title="Group of closely related downloadable items.">Downloadable_MultiFile</a> that holds all databases. </p>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00101">101</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00100">100</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -1094,7 +1243,7 @@ Additional Inherited Members</h2></td></tr>
 <p><a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html" title="Group of closely related downloadable items.">Downloadable_MultiFile</a> that holds all data items. </p>
 <p>Pointer to a <a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html" title="Group of closely related downloadable items.">Downloadable_MultiFile</a> that holds all data items. This includes aviation maps, base maps, and databases. </p>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00101">101</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00100">100</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -1121,7 +1270,7 @@ Additional Inherited Members</h2></td></tr>
 <p><a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html" title="Group of closely related downloadable items.">Downloadable_MultiFile</a> that holds all map sets. </p>
 <p>Pointer to a <a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html" title="Group of closely related downloadable items.">Downloadable_MultiFile</a> that holds all map sets. </p>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00101">101</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00100">100</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>
@@ -1148,7 +1297,34 @@ Additional Inherited Members</h2></td></tr>
 <p><a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html" title="Group of closely related downloadable items.">Downloadable_MultiFile</a> that holds all terrain maps. </p>
 <p>Pointer to a <a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html" title="Group of closely related downloadable items.">Downloadable_MultiFile</a> that holds all terrain maps. </p>
 
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00101">101</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00100">100</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+
+</div>
+</div>
+<a id="a587e5a63482acad0273f75c2cfcc2c25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a587e5a63482acad0273f75c2cfcc2c25">&#9670;&nbsp;</a></span>VAC</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html">DataManagement::Downloadable_MultiFile</a>* DataManagement::DataManager::VAC</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">read</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html" title="Group of closely related downloadable items.">Downloadable_MultiFile</a> that holds all approach charts. </p>
+<p>Pointer to a <a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html" title="Group of closely related downloadable items.">Downloadable_MultiFile</a> that holds all approach charts. </p>
+
+<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00100">100</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
 
 </div>
 </div>

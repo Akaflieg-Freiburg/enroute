@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.28.2</span>
+   &#160;<span id="projectnumber">2.28.93</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -50,12 +50,16 @@ $(function() {
 : <a class="el" href="classPlatform_1_1SafeInsets__Abstract.html#a9510a5b6068b8754579820adfd578474">Platform::SafeInsets_Abstract</a>
 </li>
 <li>save()
-: <a class="el" href="classGeoMaps_1_1WaypointLibrary.html#ad3aa867c447354b223779ca8a0a6ec02">GeoMaps::WaypointLibrary</a>
+: <a class="el" href="classGeoMaps_1_1VAC.html#ad5dd43b24df49f5e63d677b0bcceaeba">GeoMaps::VAC</a>
+, <a class="el" href="classGeoMaps_1_1WaypointLibrary.html#ad3aa867c447354b223779ca8a0a6ec02">GeoMaps::WaypointLibrary</a>
 , <a class="el" href="classNavigation_1_1Aircraft.html#a5e8131ca8cdc9f9074f4c4a9cbd20e4d">Navigation::Aircraft</a>
 , <a class="el" href="classNavigation_1_1FlightRoute.html#a6d4b14c2b073f577f13f8eb58476cdcc">Navigation::FlightRoute</a>
 </li>
 <li>saveContent()
 : <a class="el" href="classShare.html#a7a83cbb2add6d849f9c1dcba677b6a85">Share</a>
+</li>
+<li>saveScreenshot()
+: <a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html#a181bddd146dc11334b0ea2d65c3c5dd2">Platform::PlatformAdaptor_Abstract</a>
 </li>
 <li>ScaleQuickItem()
 : <a class="el" href="classUi_1_1ScaleQuickItem.html#ae27e700270b82661698d08e0a13e87e2">Ui::ScaleQuickItem</a>
@@ -68,6 +72,12 @@ $(function() {
 </li>
 <li>sendContent()
 : <a class="el" href="classShare.html#a57636c142e76dd674522c2b2ef8940ce">Share</a>
+</li>
+<li>sensors()
+: <a class="el" href="classGlobalObject.html#ad6ab8a16768e1abae0e960fbabcf236b">GlobalObject</a>
+</li>
+<li>Sensors()
+: <a class="el" href="classSensors.html#ad629186293e8b68dd553c9a7bcff7ee4">Sensors</a>
 </li>
 <li>separation()
 : <a class="el" href="classPositioning_1_1Geoid.html#ae57440d7fdf2510f025d9fb76d8e14e6">Positioning::Geoid</a>
@@ -93,8 +103,14 @@ $(function() {
 <li>setAnimate()
 : <a class="el" href="classTraffic_1_1TrafficFactor__Abstract.html#a90bb2375bee44f2a634520102b8aca56">Traffic::TrafficFactor_Abstract</a>
 </li>
+<li>setApproachChart()
+: <a class="el" href="classGeoMaps_1_1GeoMapProvider.html#a53a1c719f054ac8c37bdc23df87ff41a">GeoMaps::GeoMapProvider</a>
+</li>
 <li>setBarometricHeight()
 : <a class="el" href="classTraffic_1_1TrafficDataSource__Simulate.html#a89fd6c1aeb36c15035f6ae0f21b4a2a5">Traffic::TrafficDataSource_Simulate</a>
+</li>
+<li>setBaseName()
+: <a class="el" href="classGeoMaps_1_1VAC.html#a98300b701785ab49eb7293fe8f6ef265">GeoMaps::VAC</a>
 </li>
 <li>setButton1Text()
 : <a class="el" href="classNotifications_1_1Notification.html#a017c8400f24c1b43b3bcbcde6d81968e">Notifications::Notification</a>
@@ -357,9 +373,11 @@ $(function() {
 </li>
 <li>statusString()
 : <a class="el" href="classPositioning_1_1PositionInfoSource__Abstract.html#afb4291e1ac42b33ae816aefb36982ec8">Positioning::PositionInfoSource_Abstract</a>
+, <a class="el" href="classSensors.html#a1f15ac1a94879409f70cb7600daf25ef">Sensors</a>
 </li>
 <li>statusStringChanged()
 : <a class="el" href="classPositioning_1_1PositionInfoSource__Abstract.html#a67c3b0c193e0daea9e843401d0a4f059">Positioning::PositionInfoSource_Abstract</a>
+, <a class="el" href="classSensors.html#a85e57fbd4f614b86217ba8bdb1dac8d6">Sensors</a>
 </li>
 <li>stopDownload()
 : <a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a7cd390912d64b3f9547993467926a106">DataManagement::Downloadable_Abstract</a>
@@ -367,10 +385,13 @@ $(function() {
 , <a class="el" href="classDataManagement_1_1Downloadable__SingleFile.html#a1c6cbbf4b5f6c9b7e5e83ba15a79bc10">DataManagement::Downloadable_SingleFile</a>
 </li>
 <li>styleFileURL()
-: <a class="el" href="classGeoMaps_1_1GeoMapProvider.html#ae6fb56c788c009a28dccf4d07edb8c9b">GeoMaps::GeoMapProvider</a>
+: <a class="el" href="classGeoMaps_1_1GeoMapProvider.html#ab0bbd1fe2c635edaf23f1e74b45d0f20">GeoMaps::GeoMapProvider</a>
 </li>
 <li>styleFileURLChanged()
 : <a class="el" href="classGeoMaps_1_1GeoMapProvider.html#a5b84ce07f9f38a7960ae435c218a9a31">GeoMaps::GeoMapProvider</a>
+</li>
+<li>subtract()
+: <a class="el" href="classUnits_1_1Distance.html#a600f20f1e84593fb9ff1bed896dab59b">Units::Distance</a>
 </li>
 <li>suggestedFilename()
 : <a class="el" href="classNavigation_1_1FlightRoute.html#abdf8265d94681dfa09fd9aa471c4d67d">Navigation::FlightRoute</a>

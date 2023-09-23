@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.28.2</span>
+   &#160;<span id="projectnumber">2.28.93</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -82,6 +82,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abd318909805f6d6511628fbfd6775a94"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE <a class="el" href="classUnits_1_1Distance.html">Units::Distance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUnits_1_1Distance.html#abd318909805f6d6511628fbfd6775a94">operator-</a> (<a class="el" href="classUnits_1_1Distance.html">Units::Distance</a> rhs) const</td></tr>
 <tr class="memdesc:abd318909805f6d6511628fbfd6775a94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subtraction.  <a href="classUnits_1_1Distance.html#abd318909805f6d6511628fbfd6775a94">More...</a><br /></td></tr>
 <tr class="separator:abd318909805f6d6511628fbfd6775a94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a600f20f1e84593fb9ff1bed896dab59b"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE <a class="el" href="classUnits_1_1Distance.html">Units::Distance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUnits_1_1Distance.html#a600f20f1e84593fb9ff1bed896dab59b">subtract</a> (<a class="el" href="classUnits_1_1Distance.html">Units::Distance</a> rhs) const</td></tr>
+<tr class="memdesc:a600f20f1e84593fb9ff1bed896dab59b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subtraction.  <a href="classUnits_1_1Distance.html#a600f20f1e84593fb9ff1bed896dab59b">More...</a><br /></td></tr>
+<tr class="separator:a600f20f1e84593fb9ff1bed896dab59b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a757f22993c3c07defbb3b1992419139c"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE <a class="el" href="classUnits_1_1Distance.html">Units::Distance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUnits_1_1Distance.html#a757f22993c3c07defbb3b1992419139c">operator*</a> (double factor) const</td></tr>
+<tr class="memdesc:a757f22993c3c07defbb3b1992419139c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scaling.  <a href="classUnits_1_1Distance.html#a757f22993c3c07defbb3b1992419139c">More...</a><br /></td></tr>
+<tr class="separator:a757f22993c3c07defbb3b1992419139c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad87a7ecf519462660d4b72b0ac667a80"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE std::partial_ordering&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classUnits_1_1Distance.html#ad87a7ecf519462660d4b72b0ac667a80">operator&lt;=&gt;</a> (const <a class="el" href="classUnits_1_1Distance.html">Units::Distance</a> &amp;rhs) const =default</td></tr>
 <tr class="memdesc:ad87a7ecf519462660d4b72b0ac667a80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison.  <a href="classUnits_1_1Distance.html#ad87a7ecf519462660d4b72b0ac667a80">More...</a><br /></td></tr>
 <tr class="separator:ad87a7ecf519462660d4b72b0ac667a80"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -406,6 +412,43 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a757f22993c3c07defbb3b1992419139c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a757f22993c3c07defbb3b1992419139c">&#9670;&nbsp;</a></span>operator*()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE <a class="el" href="classUnits_1_1Distance.html">Units::Distance</a> Units::Distance::operator* </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>factor</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Scaling. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">factor</td><td>Factor of scaling</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Result of the scaling </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Distance_8h_source.html#l00193">193</a> of file <a class="el" href="Distance_8h_source.html">Distance.h</a>.</p>
+
+</div>
+</div>
 <a id="a6651eefe7b6260d4d430d3a1aca12bf2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6651eefe7b6260d4d430d3a1aca12bf2">&#9670;&nbsp;</a></span>operator+()</h2>
 
@@ -552,6 +595,43 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a600f20f1e84593fb9ff1bed896dab59b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a600f20f1e84593fb9ff1bed896dab59b">&#9670;&nbsp;</a></span>subtract()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE <a class="el" href="classUnits_1_1Distance.html">Units::Distance</a> Units::Distance::subtract </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classUnits_1_1Distance.html">Units::Distance</a>&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Subtraction. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rhs</td><td>Right hand side of the subtraction</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Result of the subtraction </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Distance_8h_source.html#l00182">182</a> of file <a class="el" href="Distance_8h_source.html">Distance.h</a>.</p>
+
+</div>
+</div>
 <a id="a4948fd352179521de69ea4e8f1d27f0b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4948fd352179521de69ea4e8f1d27f0b">&#9670;&nbsp;</a></span>toFeet()</h2>
 
@@ -578,7 +658,7 @@ Static Public Member Functions</h2></td></tr>
 <p>Convert to feet. </p>
 <dl class="section return"><dt>Returns</dt><dd>distance in feet </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Distance_8h_source.html#l00188">188</a> of file <a class="el" href="Distance_8h_source.html">Distance.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Distance_8h_source.html#l00210">210</a> of file <a class="el" href="Distance_8h_source.html">Distance.h</a>.</p>
 
 </div>
 </div>
@@ -608,7 +688,7 @@ Static Public Member Functions</h2></td></tr>
 <p>Convert to meters. </p>
 <dl class="section return"><dt>Returns</dt><dd>distance in meters </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Distance_8h_source.html#l00197">197</a> of file <a class="el" href="Distance_8h_source.html">Distance.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Distance_8h_source.html#l00219">219</a> of file <a class="el" href="Distance_8h_source.html">Distance.h</a>.</p>
 
 </div>
 </div>
@@ -638,7 +718,7 @@ Static Public Member Functions</h2></td></tr>
 <p>Convert to meters. </p>
 <dl class="section return"><dt>Returns</dt><dd>distance in meters </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Distance_8h_source.html#l00206">206</a> of file <a class="el" href="Distance_8h_source.html">Distance.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Distance_8h_source.html#l00228">228</a> of file <a class="el" href="Distance_8h_source.html">Distance.h</a>.</p>
 
 </div>
 </div>
@@ -668,7 +748,7 @@ Static Public Member Functions</h2></td></tr>
 <p>Convert to international miles. </p>
 <dl class="section return"><dt>Returns</dt><dd>distance in international miles </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Distance_8h_source.html#l00215">215</a> of file <a class="el" href="Distance_8h_source.html">Distance.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Distance_8h_source.html#l00237">237</a> of file <a class="el" href="Distance_8h_source.html">Distance.h</a>.</p>
 
 </div>
 </div>
@@ -698,7 +778,7 @@ Static Public Member Functions</h2></td></tr>
 <p>Convert to nautical miles. </p>
 <dl class="section return"><dt>Returns</dt><dd>distance in nautical miles </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Distance_8h_source.html#l00224">224</a> of file <a class="el" href="Distance_8h_source.html">Distance.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Distance_8h_source.html#l00246">246</a> of file <a class="el" href="Distance_8h_source.html">Distance.h</a>.</p>
 
 </div>
 </div>

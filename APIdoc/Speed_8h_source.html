@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.28.2</span>
+   &#160;<span id="projectnumber">2.28.93</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -119,12 +119,12 @@ $(function() {
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            <span class="keywordflow">return</span> result;</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        }</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
-<div class="line"><a name="l00111"></a><span class="lineno"><a class="line" href="classUnits_1_1Speed.html#a578c994dc4fa328bd22721c3c0743282">  111</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">bool</span> <a class="code" href="classUnits_1_1Speed.html#a578c994dc4fa328bd22721c3c0743282">isFinite</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno"><a class="line" href="classUnits_1_1Speed.html#a578c994dc4fa328bd22721c3c0743282">  111</a></span>&#160;        [[nodiscard]] Q_INVOKABLE <span class="keywordtype">bool</span> <a class="code" href="classUnits_1_1Speed.html#a578c994dc4fa328bd22721c3c0743282">isFinite</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="keyword">        </span>{</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            <span class="keywordflow">return</span> std::isfinite(_speedInMPS);</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        }</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
-<div class="line"><a name="l00120"></a><span class="lineno"><a class="line" href="classUnits_1_1Speed.html#ac77cf34386ce964250887d1877dbad26">  120</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">bool</span> <a class="code" href="classUnits_1_1Speed.html#ac77cf34386ce964250887d1877dbad26">isNegative</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno"><a class="line" href="classUnits_1_1Speed.html#ac77cf34386ce964250887d1877dbad26">  120</a></span>&#160;        [[nodiscard]] Q_INVOKABLE <span class="keywordtype">bool</span> <a class="code" href="classUnits_1_1Speed.html#ac77cf34386ce964250887d1877dbad26">isNegative</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="keyword">        </span>{</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            <span class="keywordflow">return</span> _speedInMPS &lt; 0.0;</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        }</div>
@@ -147,29 +147,29 @@ $(function() {
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="classUnits_1_1Speed.html#a367e2d3080cbda9c74a73767316fea94">Units::Speed::fromMPS</a>(_speedInMPS - rhs._speedInMPS);</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        }</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; </div>
-<div class="line"><a name="l00167"></a><span class="lineno"><a class="line" href="classUnits_1_1Speed.html#a6f07a8deb76a1c45fc670247d47c0793">  167</a></span>&#160;        Q_INVOKABLE [[nodiscard]] std::partial_ordering <a class="code" href="classUnits_1_1Speed.html#a6f07a8deb76a1c45fc670247d47c0793">operator&lt;=&gt;</a>(<span class="keyword">const</span> <a class="code" href="classUnits_1_1Speed.html">Units::Speed</a>&amp; rhs) <span class="keyword">const</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00167"></a><span class="lineno"><a class="line" href="classUnits_1_1Speed.html#a6f07a8deb76a1c45fc670247d47c0793">  167</a></span>&#160;        [[nodiscard]] Q_INVOKABLE std::partial_ordering <a class="code" href="classUnits_1_1Speed.html#a6f07a8deb76a1c45fc670247d47c0793">operator&lt;=&gt;</a>(<span class="keyword">const</span> <a class="code" href="classUnits_1_1Speed.html">Units::Speed</a>&amp; rhs) <span class="keyword">const</span> = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160; </div>
-<div class="line"><a name="l00173"></a><span class="lineno"><a class="line" href="classUnits_1_1Speed.html#a5f77535b4025b5d13c7551542424a18d">  173</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Speed.html#a5f77535b4025b5d13c7551542424a18d">toFPM</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00173"></a><span class="lineno"><a class="line" href="classUnits_1_1Speed.html#a5f77535b4025b5d13c7551542424a18d">  173</a></span>&#160;        [[nodiscard]] Q_INVOKABLE <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Speed.html#a5f77535b4025b5d13c7551542424a18d">toFPM</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="keyword">        </span>{</div>
 <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;            <span class="keywordflow">return</span> _speedInMPS * <a class="code" href="classUnits_1_1Speed.html#a524e38bbfbf5478137b903d87ac7f07c">FPM_per_MPS</a>;</div>
 <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        }</div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; </div>
-<div class="line"><a name="l00182"></a><span class="lineno"><a class="line" href="classUnits_1_1Speed.html#a9be54e40338f3b9cd5aa8285beeb3694">  182</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Speed.html#a9be54e40338f3b9cd5aa8285beeb3694">toMPS</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00182"></a><span class="lineno"><a class="line" href="classUnits_1_1Speed.html#a9be54e40338f3b9cd5aa8285beeb3694">  182</a></span>&#160;        [[nodiscard]] Q_INVOKABLE <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Speed.html#a9be54e40338f3b9cd5aa8285beeb3694">toMPS</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;<span class="keyword">        </span>{</div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;            <span class="keywordflow">return</span> _speedInMPS;</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        }</div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160; </div>
-<div class="line"><a name="l00191"></a><span class="lineno"><a class="line" href="classUnits_1_1Speed.html#af5f6d320d33cbec8ca3c709f0d6bc9c5">  191</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Speed.html#af5f6d320d33cbec8ca3c709f0d6bc9c5">toMPH</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00191"></a><span class="lineno"><a class="line" href="classUnits_1_1Speed.html#af5f6d320d33cbec8ca3c709f0d6bc9c5">  191</a></span>&#160;        [[nodiscard]] Q_INVOKABLE <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Speed.html#af5f6d320d33cbec8ca3c709f0d6bc9c5">toMPH</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="keyword">        </span>{</div>
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;            <span class="keywordflow">return</span> _speedInMPS/<a class="code" href="classUnits_1_1Speed.html#a1085282ac79f61f01e2b6f3408668d50">MPS_per_MPH</a>;</div>
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        }</div>
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160; </div>
-<div class="line"><a name="l00200"></a><span class="lineno"><a class="line" href="classUnits_1_1Speed.html#ab0d1928e424d6662994b2c9e075b0b40">  200</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Speed.html#ab0d1928e424d6662994b2c9e075b0b40">toKN</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00200"></a><span class="lineno"><a class="line" href="classUnits_1_1Speed.html#ab0d1928e424d6662994b2c9e075b0b40">  200</a></span>&#160;        [[nodiscard]] Q_INVOKABLE <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Speed.html#ab0d1928e424d6662994b2c9e075b0b40">toKN</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="keyword">        </span>{</div>
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;            <span class="keywordflow">return</span> _speedInMPS * <a class="code" href="classUnits_1_1Speed.html#a5118377ff84db7faec93b303d12fcb07">KN_per_MPS</a>;</div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        }</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160; </div>
-<div class="line"><a name="l00209"></a><span class="lineno"><a class="line" href="classUnits_1_1Speed.html#ad2490866a74c976ba68705a57bd9627e">  209</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Speed.html#ad2490866a74c976ba68705a57bd9627e">toKMH</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00209"></a><span class="lineno"><a class="line" href="classUnits_1_1Speed.html#ad2490866a74c976ba68705a57bd9627e">  209</a></span>&#160;        [[nodiscard]] Q_INVOKABLE <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Speed.html#ad2490866a74c976ba68705a57bd9627e">toKMH</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;<span class="keyword">        </span>{</div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;            <span class="keywordflow">return</span> _speedInMPS * <a class="code" href="classUnits_1_1Speed.html#a9620b111ba171a9b60a1e73f102a7673">KMH_per_MPS</a>;</div>
 <div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        }</div>

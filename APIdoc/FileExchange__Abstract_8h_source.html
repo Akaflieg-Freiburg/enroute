@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.28.2</span>
+   &#160;<span id="projectnumber">2.28.93</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -90,56 +90,59 @@ $(function() {
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        VectorMap, <span class="comment">/*&lt; File contains a vector map. */</span></div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        RasterMap, <span class="comment">/*&lt; File contains a raster map. */</span></div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        WaypointLibrary, <span class="comment">/*&lt; Waypoint library in CUP or GeoJSON format */</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        OpenAir <span class="comment">/*&lt; Airspace data in openAir format */</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;      };</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    Q_ENUM(<a class="code" href="classPlatform_1_1FileExchange__Abstract.html#ada6b341cdc3eca82eddf018b04af547b">FileFunction</a>)</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    </div>
-<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="classPlatform_1_1FileExchange__Abstract.html#ab1c9d0044f727d2d69c075ec4a590030">   64</a></span>&#160;    explicit <a class="code" href="classPlatform_1_1FileExchange__Abstract.html">FileExchange_Abstract</a>(QObject* parent = <span class="keywordtype">nullptr</span>);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="comment">// No default constructor, important for QML singleton</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    explicit <a class="code" href="classPlatform_1_1FileExchange__Abstract.html">FileExchange_Abstract</a>() = delete;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        OpenAir, <span class="comment">/*&lt; Airspace data in openAir format */</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        VAC, <span class="comment">/*&lt; Visual Approach Chart */</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        Image, <span class="comment">/*&lt; Image without georeferencing information */</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        TripKit <span class="comment">/*&lt; Trip Kit */</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;      };</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    Q_ENUM(<a class="code" href="classPlatform_1_1FileExchange__Abstract.html#ada6b341cdc3eca82eddf018b04af547b">FileFunction</a>)</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    </div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="classPlatform_1_1FileExchange__Abstract.html#ab1c9d0044f727d2d69c075ec4a590030">   67</a></span>&#160;    explicit <a class="code" href="classPlatform_1_1FileExchange__Abstract.html">FileExchange_Abstract</a>(QObject* parent = <span class="keywordtype">nullptr</span>);</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    ~<a class="code" href="classPlatform_1_1FileExchange__Abstract.html">FileExchange_Abstract</a>() override = default;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="comment">// factory function for QML singleton</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    static Platform::<a class="code" href="classPlatform_1_1FileExchange__Abstract.html">FileExchange_Abstract</a>* create(QQmlEngine* <span class="comment">/*unused*/</span>, QJSEngine* <span class="comment">/*unused*/</span>)</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    {</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classGlobalObject.html#af3d4b34a6e78dce0a481d36c6346b4ef">GlobalObject::fileExchange</a>();</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    }</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="comment">// Methods</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="classPlatform_1_1FileExchange__Abstract.html#acac26971d30dcda4d7be83f176da6b7a">   89</a></span>&#160;    Q_INVOKABLE <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1FileExchange__Abstract.html#acac26971d30dcda4d7be83f176da6b7a">importContent</a>() = 0;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
-<div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="classPlatform_1_1FileExchange__Abstract.html#a1d7bc29efba49cdf97038d5e4536b93b">  109</a></span>&#160;    Q_INVOKABLE <span class="keyword">virtual</span> QString <a class="code" href="classPlatform_1_1FileExchange__Abstract.html#a1d7bc29efba49cdf97038d5e4536b93b">shareContent</a>(<span class="keyword">const</span> QByteArray&amp; content, <span class="keyword">const</span> QString&amp; mimeType, <span class="keyword">const</span> QString&amp; fileNameTemplate) = 0;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
-<div class="line"><a name="l00125"></a><span class="lineno"><a class="line" href="classPlatform_1_1FileExchange__Abstract.html#a0fc5c782285934ae3041d8912e282f63">  125</a></span>&#160;    Q_INVOKABLE <span class="keyword">virtual</span> QString <a class="code" href="classPlatform_1_1FileExchange__Abstract.html#a0fc5c782285934ae3041d8912e282f63">viewContent</a>(<span class="keyword">const</span> QByteArray&amp; content, <span class="keyword">const</span> QString&amp; mimeType, <span class="keyword">const</span> QString&amp; fileNameTemplate) = 0;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="keyword">public</span> slots:</div>
-<div class="line"><a name="l00134"></a><span class="lineno"><a class="line" href="classPlatform_1_1FileExchange__Abstract.html#af6ec076a319bd8976bb1917968bf1a6a">  134</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1FileExchange__Abstract.html#af6ec076a319bd8976bb1917968bf1a6a">onGUISetupCompleted</a>() = 0;</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160; </div>
-<div class="line"><a name="l00144"></a><span class="lineno"><a class="line" href="classPlatform_1_1FileExchange__Abstract.html#a50d02cafa04ea8b25d00d78e39a80a57">  144</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1FileExchange__Abstract.html#a50d02cafa04ea8b25d00d78e39a80a57">processFileOpenRequest</a>(<span class="keyword">const</span> QString&amp; path);</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160; </div>
-<div class="line"><a name="l00152"></a><span class="lineno"><a class="line" href="classPlatform_1_1FileExchange__Abstract.html#aa84c47181a3261bd9fbea4fc3c7893fd">  152</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1FileExchange__Abstract.html#aa84c47181a3261bd9fbea4fc3c7893fd">processFileOpenRequest</a>(<span class="keyword">const</span> QByteArray&amp; path);</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160; </div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;signals:</div>
-<div class="line"><a name="l00166"></a><span class="lineno"><a class="line" href="classPlatform_1_1FileExchange__Abstract.html#af73cbaa9a94c84ca492ac8529bf8de8d">  166</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1FileExchange__Abstract.html#af73cbaa9a94c84ca492ac8529bf8de8d">openFileRequest</a>(QString fileName, QString info, <a class="code" href="classPlatform_1_1FileExchange__Abstract.html#ada6b341cdc3eca82eddf018b04af547b">Platform::FileExchange_Abstract::FileFunction</a> fileFunction);</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160; </div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classPlatform_1_1FileExchange__Abstract.html">FileExchange_Abstract</a>)</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;};</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;} <span class="comment">// namespace Platform</span></div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160; </div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="comment">// Declare meta types</span></div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;Q_DECLARE_METATYPE(<a class="code" href="classPlatform_1_1FileExchange__Abstract.html">Platform::FileExchange_Abstract</a>)</div>
-<div class="ttc" id="aclassGlobalObject_html"><div class="ttname"><a href="classGlobalObject.html">GlobalObject</a></div><div class="ttdoc">Base class for global singleton objects.</div><div class="ttdef"><b>Definition:</b> <a href="GlobalObject_8h_source.html#l00105">GlobalObject.h:106</a></div></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="comment">// No default constructor, important for QML singleton</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    explicit <a class="code" href="classPlatform_1_1FileExchange__Abstract.html">FileExchange_Abstract</a>() = delete;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    ~<a class="code" href="classPlatform_1_1FileExchange__Abstract.html">FileExchange_Abstract</a>() override = default;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="comment">// factory function for QML singleton</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    static Platform::<a class="code" href="classPlatform_1_1FileExchange__Abstract.html">FileExchange_Abstract</a>* create(QQmlEngine* <span class="comment">/*unused*/</span>, QJSEngine* <span class="comment">/*unused*/</span>)</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    {</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classGlobalObject.html#af3d4b34a6e78dce0a481d36c6346b4ef">GlobalObject::fileExchange</a>();</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    }</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="comment">// Methods</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="classPlatform_1_1FileExchange__Abstract.html#acac26971d30dcda4d7be83f176da6b7a">   92</a></span>&#160;    Q_INVOKABLE <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1FileExchange__Abstract.html#acac26971d30dcda4d7be83f176da6b7a">importContent</a>() = 0;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
+<div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="classPlatform_1_1FileExchange__Abstract.html#a1d7bc29efba49cdf97038d5e4536b93b">  112</a></span>&#160;    Q_INVOKABLE <span class="keyword">virtual</span> QString <a class="code" href="classPlatform_1_1FileExchange__Abstract.html#a1d7bc29efba49cdf97038d5e4536b93b">shareContent</a>(<span class="keyword">const</span> QByteArray&amp; content, <span class="keyword">const</span> QString&amp; mimeType, <span class="keyword">const</span> QString&amp; fileNameTemplate) = 0;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
+<div class="line"><a name="l00128"></a><span class="lineno"><a class="line" href="classPlatform_1_1FileExchange__Abstract.html#a0fc5c782285934ae3041d8912e282f63">  128</a></span>&#160;    Q_INVOKABLE <span class="keyword">virtual</span> QString <a class="code" href="classPlatform_1_1FileExchange__Abstract.html#a0fc5c782285934ae3041d8912e282f63">viewContent</a>(<span class="keyword">const</span> QByteArray&amp; content, <span class="keyword">const</span> QString&amp; mimeType, <span class="keyword">const</span> QString&amp; fileNameTemplate) = 0;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="keyword">public</span> slots:</div>
+<div class="line"><a name="l00137"></a><span class="lineno"><a class="line" href="classPlatform_1_1FileExchange__Abstract.html#af6ec076a319bd8976bb1917968bf1a6a">  137</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1FileExchange__Abstract.html#af6ec076a319bd8976bb1917968bf1a6a">onGUISetupCompleted</a>() = 0;</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160; </div>
+<div class="line"><a name="l00147"></a><span class="lineno"><a class="line" href="classPlatform_1_1FileExchange__Abstract.html#a50d02cafa04ea8b25d00d78e39a80a57">  147</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1FileExchange__Abstract.html#a50d02cafa04ea8b25d00d78e39a80a57">processFileOpenRequest</a>(<span class="keyword">const</span> QString&amp; path);</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160; </div>
+<div class="line"><a name="l00155"></a><span class="lineno"><a class="line" href="classPlatform_1_1FileExchange__Abstract.html#aa84c47181a3261bd9fbea4fc3c7893fd">  155</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1FileExchange__Abstract.html#aa84c47181a3261bd9fbea4fc3c7893fd">processFileOpenRequest</a>(<span class="keyword">const</span> QByteArray&amp; path);</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160; </div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;signals:</div>
+<div class="line"><a name="l00169"></a><span class="lineno"><a class="line" href="classPlatform_1_1FileExchange__Abstract.html#af73cbaa9a94c84ca492ac8529bf8de8d">  169</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classPlatform_1_1FileExchange__Abstract.html#af73cbaa9a94c84ca492ac8529bf8de8d">openFileRequest</a>(QString fileName, QString info, <a class="code" href="classPlatform_1_1FileExchange__Abstract.html#ada6b341cdc3eca82eddf018b04af547b">Platform::FileExchange_Abstract::FileFunction</a> fileFunction);</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160; </div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classPlatform_1_1FileExchange__Abstract.html">FileExchange_Abstract</a>)</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;};</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160; </div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;} <span class="comment">// namespace Platform</span></div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160; </div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="comment">// Declare meta types</span></div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;Q_DECLARE_METATYPE(<a class="code" href="classPlatform_1_1FileExchange__Abstract.html">Platform::FileExchange_Abstract</a>)</div>
+<div class="ttc" id="aclassGlobalObject_html"><div class="ttname"><a href="classGlobalObject.html">GlobalObject</a></div><div class="ttdoc">Base class for global singleton objects.</div><div class="ttdef"><b>Definition:</b> <a href="GlobalObject_8h_source.html#l00106">GlobalObject.h:107</a></div></div>
 <div class="ttc" id="aclassGlobalObject_html_af3d4b34a6e78dce0a481d36c6346b4ef"><div class="ttname"><a href="classGlobalObject.html#af3d4b34a6e78dce0a481d36c6346b4ef">GlobalObject::fileExchange</a></div><div class="ttdeci">static Q_INVOKABLE Platform::FileExchange_Abstract * fileExchange()</div><div class="ttdoc">Pointer to appplication-wide static FileExchange instance.</div></div>
 <div class="ttc" id="aclassPlatform_1_1FileExchange__Abstract_html"><div class="ttname"><a href="classPlatform_1_1FileExchange__Abstract.html">Platform::FileExchange_Abstract</a></div><div class="ttdoc">Interface to platform-specific file exchange functionality.</div><div class="ttdef"><b>Definition:</b> <a href="FileExchange__Abstract_8h_source.html#l00039">FileExchange_Abstract.h:40</a></div></div>
 <div class="ttc" id="aclassPlatform_1_1FileExchange__Abstract_html_a0fc5c782285934ae3041d8912e282f63"><div class="ttname"><a href="classPlatform_1_1FileExchange__Abstract.html#a0fc5c782285934ae3041d8912e282f63">Platform::FileExchange_Abstract::viewContent</a></div><div class="ttdeci">virtual Q_INVOKABLE QString viewContent(const QByteArray &amp;content, const QString &amp;mimeType, const QString &amp;fileNameTemplate)=0</div><div class="ttdoc">View content.</div></div>

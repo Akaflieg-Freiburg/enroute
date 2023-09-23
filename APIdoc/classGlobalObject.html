@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.28.2</span>
+   &#160;<span id="projectnumber">2.28.93</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -70,6 +70,7 @@ Inheritance diagram for GlobalObject:</div>
 <area href="classNotifications_1_1NotificationManager.html" title="This class manages notifications and presents them to the GUI." alt="Notifications::NotificationManager" shape="rect" coords="224,448,438,472"/>
 <area href="classPlatform_1_1FileExchange__Abstract.html" title="Interface to platform-specific file exchange functionality." alt="Platform::FileExchange_Abstract" shape="rect" coords="224,504,438,528"/>
 <area href="classPlatform_1_1PlatformAdaptor__Abstract.html" title="Interface to platform-specific functionality." alt="Platform::PlatformAdaptor_Abstract" shape="rect" coords="224,560,438,584"/>
+<area href="classSensors.html" title="Sensor data." alt="Sensors" shape="rect" coords="224,616,438,640"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -117,6 +118,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a2396ee67666cb9227eef145e842b031b"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE <a class="el" href="classPlatform_1_1PlatformAdaptor__Abstract.html">Platform::PlatformAdaptor_Abstract</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalObject.html#a2396ee67666cb9227eef145e842b031b">platformAdaptor</a> ()</td></tr>
 <tr class="memdesc:a2396ee67666cb9227eef145e842b031b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static PlatformAdaptor instance.  <a href="classGlobalObject.html#a2396ee67666cb9227eef145e842b031b">More...</a><br /></td></tr>
 <tr class="separator:a2396ee67666cb9227eef145e842b031b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6ab8a16768e1abae0e960fbabcf236b"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE <a class="el" href="classSensors.html">Sensors</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalObject.html#ad6ab8a16768e1abae0e960fbabcf236b">sensors</a> ()</td></tr>
+<tr class="memdesc:ad6ab8a16768e1abae0e960fbabcf236b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static <a class="el" href="classNavigation_1_1Clock.html" title="This extremely simple class give accss to time and offers a few time-related functions.">Navigation::Clock</a> instance.  <a href="classGlobalObject.html#ad6ab8a16768e1abae0e960fbabcf236b">More...</a><br /></td></tr>
+<tr class="separator:ad6ab8a16768e1abae0e960fbabcf236b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a41932b3c2ff3f31504ac4dc16f3b76"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE <a class="el" href="classNavigation_1_1Navigator.html">Navigation::Navigator</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalObject.html#a6a41932b3c2ff3f31504ac4dc16f3b76">navigator</a> ()</td></tr>
 <tr class="memdesc:a6a41932b3c2ff3f31504ac4dc16f3b76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static <a class="el" href="classNavigation_1_1Navigator.html" title="Main hub for navigation data.">Navigation::Navigator</a> instance.  <a href="classGlobalObject.html#a6a41932b3c2ff3f31504ac4dc16f3b76">More...</a><br /></td></tr>
 <tr class="separator:a6a41932b3c2ff3f31504ac4dc16f3b76"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -162,7 +166,7 @@ Protected Member Functions</h2></td></tr>
 <p>Objects that inherit from this class MUST NOT call any of the static methods from their constructors. Instead, the method <a class="el" href="classGlobalObject.html#ad89d4b5b146c91f65f282572629c2f5f" title="Non-constructor initialization.">deferredInitialization()</a> can be used, which is called immediately after the constructor returns.</p>
 <p>The methods in this class are reentrant, but not thread safe. </p>
 
-<p class="definition">Definition at line <a class="el" href="GlobalObject_8h_source.html#l00105">105</a> of file <a class="el" href="GlobalObject_8h_source.html">GlobalObject.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalObject_8h_source.html#l00106">106</a> of file <a class="el" href="GlobalObject_8h_source.html">GlobalObject.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ac8dfa53c492975de42fa7972e77abbc1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac8dfa53c492975de42fa7972e77abbc1">&#9670;&nbsp;</a></span>GlobalObject()</h2>
@@ -366,9 +370,9 @@ Protected Member Functions</h2></td></tr>
 <p>Non-constructor initialization. </p>
 <p>This method is called by the static methods that create global instances immediately after the constructor returns. This class can be re-implemented to perform initialization steps that refer to other singleton objects. </p>
 
-<p>Reimplemented in <a class="el" href="classPlatform_1_1PlatformAdaptor.html#a0a762312201deb36e9ff3c458e7ff696">Platform::PlatformAdaptor</a>, <a class="el" href="classPlatform_1_1FileExchange.html#aa02f3bc70cc1e4e1f2de22ee63ad919a">Platform::FileExchange</a>, <a class="el" href="classPlatform_1_1FileExchange.html#aa02f3bc70cc1e4e1f2de22ee63ad919a">Platform::FileExchange</a>, <a class="el" href="classPlatform_1_1FileExchange.html#aa02f3bc70cc1e4e1f2de22ee63ad919a">Platform::FileExchange</a>, <a class="el" href="classPlatform_1_1FileExchange.html#aa02f3bc70cc1e4e1f2de22ee63ad919a">Platform::FileExchange</a>, <a class="el" href="classPlatform_1_1FileExchange.html#a83d1fff8813619e716d518cc42956d9a">Platform::FileExchange</a>, <a class="el" href="classNotifications_1_1NotificationManager.html#a491ee0154d491a2a6ec072f4bee87f72">Notifications::NotificationManager</a>, <a class="el" href="classNOTAM_1_1NotamProvider.html#a47f4d06a4317122c50578e32722c9c82">NOTAM::NotamProvider</a>, <a class="el" href="classNavigation_1_1Navigator.html#a9f95457f009e0c581a3703b69f04b63d">Navigation::Navigator</a>, <a class="el" href="classGeoMaps_1_1GeoMapProvider.html#ad2b0640861db6e1383da6a0461e9936c">GeoMaps::GeoMapProvider</a>, and <a class="el" href="classDataManagement_1_1DataManager.html#a32d353064fd94a0af5173e4951a241e7">DataManagement::DataManager</a>.</p>
+<p>Reimplemented in <a class="el" href="classSensors.html#a07b172fffe0efe4f670e247eba8182c9">Sensors</a>, <a class="el" href="classPlatform_1_1PlatformAdaptor.html#a0a762312201deb36e9ff3c458e7ff696">Platform::PlatformAdaptor</a>, <a class="el" href="classPlatform_1_1FileExchange.html#aa02f3bc70cc1e4e1f2de22ee63ad919a">Platform::FileExchange</a>, <a class="el" href="classPlatform_1_1FileExchange.html#aa02f3bc70cc1e4e1f2de22ee63ad919a">Platform::FileExchange</a>, <a class="el" href="classPlatform_1_1FileExchange.html#aa02f3bc70cc1e4e1f2de22ee63ad919a">Platform::FileExchange</a>, <a class="el" href="classPlatform_1_1FileExchange.html#aa02f3bc70cc1e4e1f2de22ee63ad919a">Platform::FileExchange</a>, <a class="el" href="classPlatform_1_1FileExchange.html#a83d1fff8813619e716d518cc42956d9a">Platform::FileExchange</a>, <a class="el" href="classNotifications_1_1NotificationManager.html#a491ee0154d491a2a6ec072f4bee87f72">Notifications::NotificationManager</a>, <a class="el" href="classNOTAM_1_1NotamProvider.html#a47f4d06a4317122c50578e32722c9c82">NOTAM::NotamProvider</a>, <a class="el" href="classNavigation_1_1Navigator.html#a9f95457f009e0c581a3703b69f04b63d">Navigation::Navigator</a>, <a class="el" href="classGeoMaps_1_1GeoMapProvider.html#ad2b0640861db6e1383da6a0461e9936c">GeoMaps::GeoMapProvider</a>, and <a class="el" href="classDataManagement_1_1DataManager.html#a32d353064fd94a0af5173e4951a241e7">DataManagement::DataManager</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="GlobalObject_8h_source.html#l00263">263</a> of file <a class="el" href="GlobalObject_8h_source.html">GlobalObject.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalObject_8h_source.html#l00270">270</a> of file <a class="el" href="GlobalObject_8h_source.html">GlobalObject.h</a>.</p>
 
 </div>
 </div>
@@ -732,6 +736,34 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Pointer to appplication-wide static PositionProvider instance. </p>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to appplication-wide static instance. </dd></dl>
+
+</div>
+</div>
+<a id="ad6ab8a16768e1abae0e960fbabcf236b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6ab8a16768e1abae0e960fbabcf236b">&#9670;&nbsp;</a></span>sensors()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Q_INVOKABLE <a class="el" href="classSensors.html">Sensors</a>* GlobalObject::sensors </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pointer to appplication-wide static <a class="el" href="classNavigation_1_1Clock.html" title="This extremely simple class give accss to time and offers a few time-related functions.">Navigation::Clock</a> instance. </p>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to appplication-wide static instance. </dd></dl>
 
 </div>

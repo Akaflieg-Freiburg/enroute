@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.28.2</span>
+   &#160;<span id="projectnumber">2.28.93</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -78,12 +78,13 @@ Public Types</h2></td></tr>
 <tr class="separator:aa10fbcc5d85d811c4e43faf90eefe2d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_types_classDataManagement_1_1Downloadable__Abstract"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classDataManagement_1_1Downloadable__Abstract')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classDataManagement_1_1Downloadable__Abstract.html">DataManagement::Downloadable_Abstract</a></td></tr>
 <tr class="memitem:a43fcd87601d16172eb324b7680f169d1 inherit pub_types_classDataManagement_1_1Downloadable__Abstract"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a43fcd87601d16172eb324b7680f169d1">ContentType</a> { <br />
-&#160;&#160;<a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a43fcd87601d16172eb324b7680f169d1aa900287a6fc92e7ae9f86a8904460adf">AviationMap</a>
+&#160;&#160;<a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a43fcd87601d16172eb324b7680f169d1a2a7c86b1653b7fe4c9b694e84d37e6eb">VAC</a>
+, <a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a43fcd87601d16172eb324b7680f169d1aa900287a6fc92e7ae9f86a8904460adf">AviationMap</a>
 , <a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a43fcd87601d16172eb324b7680f169d1a7803d9cd4bc257ac3f0254d19b1eae96">BaseMapVector</a>
 , <a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a43fcd87601d16172eb324b7680f169d1acf2b4f329c517105b8fd0ac591838246">BaseMapRaster</a>
-, <a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a43fcd87601d16172eb324b7680f169d1a0f6600ad1c408ca017a1cf93f57e29f8">Data</a>
 , <br />
-&#160;&#160;<a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a43fcd87601d16172eb324b7680f169d1ad11f26c728f87fc132b9b9637319857e">MapSet</a>
+&#160;&#160;<a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a43fcd87601d16172eb324b7680f169d1a0f6600ad1c408ca017a1cf93f57e29f8">Data</a>
+, <a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a43fcd87601d16172eb324b7680f169d1ad11f26c728f87fc132b9b9637319857e">MapSet</a>
 , <a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a43fcd87601d16172eb324b7680f169d1a3df875072865cd877ca357dc74a80d5e">TerrainMap</a>
 <br />
  }</td></tr>
@@ -183,6 +184,9 @@ Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 <tr class="memitem:a522ffae48f9bb649e47432595583fc89"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QList&lt; <a class="el" href="classDataManagement_1_1Downloadable__Abstract.html">DataManagement::Downloadable_Abstract</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html#a522ffae48f9bb649e47432595583fc89">downloadables4Location</a> (const QGeoCoordinate &amp;location)</td></tr>
 <tr class="memdesc:a522ffae48f9bb649e47432595583fc89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Downloadables for a given location.  <a href="classDataManagement_1_1Downloadable__MultiFile.html#a522ffae48f9bb649e47432595583fc89">More...</a><br /></td></tr>
 <tr class="separator:a522ffae48f9bb649e47432595583fc89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae88c015db1d68a57fa45353e11425adb"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QList&lt; <a class="el" href="classDataManagement_1_1Downloadable__Abstract.html">DataManagement::Downloadable_Abstract</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html#ae88c015db1d68a57fa45353e11425adb">downloadablesByDistance</a> (const QGeoCoordinate &amp;location)</td></tr>
+<tr class="memdesc:ae88c015db1d68a57fa45353e11425adb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Downloadables, sorted by distance to a given location.  <a href="classDataManagement_1_1Downloadable__MultiFile.html#ae88c015db1d68a57fa45353e11425adb">More...</a><br /></td></tr>
+<tr class="separator:ae88c015db1d68a57fa45353e11425adb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6186e3b48dc6f40f92bdeb93946a4cb"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html#ad6186e3b48dc6f40f92bdeb93946a4cb">remove</a> (<a class="el" href="classDataManagement_1_1Downloadable__Abstract.html">DataManagement::Downloadable_Abstract</a> *map)</td></tr>
 <tr class="memdesc:ad6186e3b48dc6f40f92bdeb93946a4cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove a <a class="el" href="classDataManagement_1_1Downloadable__SingleFile.html" title="Downloadable object.">Downloadable_SingleFile</a> from this <a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html" title="Group of closely related downloadable items.">Downloadable_MultiFile</a>.  <a href="classDataManagement_1_1Downloadable__MultiFile.html#ad6186e3b48dc6f40f92bdeb93946a4cb">More...</a><br /></td></tr>
 <tr class="separator:ad6186e3b48dc6f40f92bdeb93946a4cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -363,7 +367,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 
 <p>Add a <a class="el" href="classDataManagement_1_1Downloadable__SingleFile.html" title="Downloadable object.">Downloadable_SingleFile</a> to this <a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html" title="Group of closely related downloadable items.">Downloadable_MultiFile</a>. </p>
 <p>This method copies the values of map-&gt;objectName and map-&gt;section into *this object. As a result, these properties are always set to match those of the last map added. This instance does not take ownership of the map.</p>
-<p>It is perfectly possible that a map is child of more than one <a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html" title="Group of closely related downloadable items.">Downloadable_MultiFile</a>.</p>
+<p>It is perfectly possible that a map is a child of more than one <a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html" title="Group of closely related downloadable items.">Downloadable_MultiFile</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">map</td><td>Map to be added </td></tr>
@@ -446,7 +450,34 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Property list of downloadables whose bounding box contains the given location </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>list of downloadables whose bounding box contains the given location </dd></dl>
+
+</div>
+</div>
+<a id="ae88c015db1d68a57fa45353e11425adb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae88c015db1d68a57fa45353e11425adb">&#9670;&nbsp;</a></span>downloadablesByDistance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE QList&lt;<a class="el" href="classDataManagement_1_1Downloadable__Abstract.html">DataManagement::Downloadable_Abstract</a>*&gt; DataManagement::Downloadable_MultiFile::downloadablesByDistance </td>
+          <td>(</td>
+          <td class="paramtype">const QGeoCoordinate &amp;&#160;</td>
+          <td class="paramname"><em>location</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Downloadables, sorted by distance to a given location. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">location</td><td>QGeoCoordinate with a location</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>list of downloadables whose bounding box contains the given location </dd></dl>
 
 </div>
 </div>

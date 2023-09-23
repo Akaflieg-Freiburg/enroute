@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.28.2</span>
+   &#160;<span id="projectnumber">2.28.93</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -96,7 +96,7 @@ $(function() {
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            <span class="keywordflow">return</span> result;</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        }</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="classUnits_1_1Volume.html#a283eaf584337f0dc6a46830ee9e4edb7">   70</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">bool</span> <a class="code" href="classUnits_1_1Volume.html#a283eaf584337f0dc6a46830ee9e4edb7">isFinite</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="classUnits_1_1Volume.html#a283eaf584337f0dc6a46830ee9e4edb7">   70</a></span>&#160;        [[nodiscard]] Q_INVOKABLE <span class="keywordtype">bool</span> <a class="code" href="classUnits_1_1Volume.html#a283eaf584337f0dc6a46830ee9e4edb7">isFinite</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="keyword">        </span>{</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            <span class="keywordflow">return</span> std::isfinite(m_volumeInL);</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        }</div>
@@ -107,14 +107,14 @@ $(function() {
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        }</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="classUnits_1_1Volume.html#a30490d09c54cfc118c6cb771d108aca6">   93</a></span>&#160;        Q_INVOKABLE [[nodiscard]] std::partial_ordering <a class="code" href="classUnits_1_1Volume.html#a30490d09c54cfc118c6cb771d108aca6">operator&lt;=&gt;</a>(<span class="keyword">const</span> <a class="code" href="classUnits_1_1Volume.html">Units::Volume</a>&amp; rhs) <span class="keyword">const</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="classUnits_1_1Volume.html#a30490d09c54cfc118c6cb771d108aca6">   93</a></span>&#160;        [[nodiscard]] Q_INVOKABLE std::partial_ordering <a class="code" href="classUnits_1_1Volume.html#a30490d09c54cfc118c6cb771d108aca6">operator&lt;=&gt;</a>(<span class="keyword">const</span> <a class="code" href="classUnits_1_1Volume.html">Units::Volume</a>&amp; rhs) <span class="keyword">const</span> = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
-<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="classUnits_1_1Volume.html#a7dca673d8fb6d9959b38f75c01ff041b">   99</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Volume.html#a7dca673d8fb6d9959b38f75c01ff041b">toL</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="classUnits_1_1Volume.html#a7dca673d8fb6d9959b38f75c01ff041b">   99</a></span>&#160;        [[nodiscard]] Q_INVOKABLE <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Volume.html#a7dca673d8fb6d9959b38f75c01ff041b">toL</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="keyword">        </span>{</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            <span class="keywordflow">return</span> m_volumeInL;</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        }</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
-<div class="line"><a name="l00108"></a><span class="lineno"><a class="line" href="classUnits_1_1Volume.html#a48cb45072bcf268555e26a158f991da6">  108</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Volume.html#a48cb45072bcf268555e26a158f991da6">toGAL</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno"><a class="line" href="classUnits_1_1Volume.html#a48cb45072bcf268555e26a158f991da6">  108</a></span>&#160;        [[nodiscard]] Q_INVOKABLE <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Volume.html#a48cb45072bcf268555e26a158f991da6">toGAL</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="keyword">        </span>{</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            <span class="keywordflow">return</span> m_volumeInL/LitersPerGallon;</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        }</div>

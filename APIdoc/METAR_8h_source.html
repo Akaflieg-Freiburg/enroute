@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.28.2</span>
+   &#160;<span id="projectnumber">2.28.93</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -74,9 +74,9 @@ $(function() {
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;QGeoCoordinate&gt;</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;QXmlStreamReader&gt;</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &quot;units/Speed.h&quot;</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &quot;weather/Decoder.h&quot;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &quot;units/Pressure.h&quot;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &quot;units/Speed.h&quot;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &quot;weather/Decoder.h&quot;</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">namespace </span>Weather {</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
@@ -136,7 +136,7 @@ $(function() {
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        <span class="keywordflow">return</span> m_ICAOCode;</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    }</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160; </div>
-<div class="line"><a name="l00156"></a><span class="lineno"><a class="line" href="classWeather_1_1METAR.html#a2141d9630a2a09d46d986761aefe46c8">  156</a></span>&#160;    Q_INVOKABLE [[nodiscard]] <span class="keywordtype">bool</span> <a class="code" href="classWeather_1_1METAR.html#a2141d9630a2a09d46d986761aefe46c8">isExpired</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00156"></a><span class="lineno"><a class="line" href="classWeather_1_1METAR.html#a2141d9630a2a09d46d986761aefe46c8">  156</a></span>&#160;    [[nodiscard]] Q_INVOKABLE <span class="keywordtype">bool</span> <a class="code" href="classWeather_1_1METAR.html#a2141d9630a2a09d46d986761aefe46c8">isExpired</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160; </div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    Q_PROPERTY(<span class="keywordtype">bool</span> <a class="code" href="classWeather_1_1METAR.html#a0a202203300afef144220573b289f1c0">isValid</a> READ <a class="code" href="classWeather_1_1METAR.html#a0a202203300afef144220573b289f1c0">isValid</a> CONSTANT)</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; </div>
@@ -150,12 +150,12 @@ $(function() {
 <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        <span class="keywordflow">return</span> _observationTime;</div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    }</div>
 <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160; </div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    Q_PROPERTY(quint16 <a class="code" href="classWeather_1_1METAR.html#aab5c56fcc0923845f41e1b183881fb58">QNH</a> READ <a class="code" href="classWeather_1_1METAR.html#aab5c56fcc0923845f41e1b183881fb58">QNH</a> CONSTANT)</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    Q_PROPERTY(<a class="code" href="classUnits_1_1Pressure.html">Units::Pressure</a> <a class="code" href="classWeather_1_1METAR.html#a3ad67caac3eda703dc1727004e0a43ad">QNH</a> READ <a class="code" href="classWeather_1_1METAR.html#a3ad67caac3eda703dc1727004e0a43ad">QNH</a> CONSTANT)</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160; </div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    </div>
-<div class="line"><a name="l00190"></a><span class="lineno"><a class="line" href="classWeather_1_1METAR.html#aa3e4b487bd1e718149ad901ca0d53e4b">  190</a></span>&#160;    [[nodiscard]] <span class="keyword">auto</span> <a class="code" href="classWeather_1_1METAR.html#aa3e4b487bd1e718149ad901ca0d53e4b">QNH</a>() const -&gt; quint16</div>
+<div class="line"><a name="l00190"></a><span class="lineno"><a class="line" href="classWeather_1_1METAR.html#a475333698abac45cb24f497c2eff6f25">  190</a></span>&#160;    [[nodiscard]] <span class="keyword">auto</span> <a class="code" href="classWeather_1_1METAR.html#a475333698abac45cb24f497c2eff6f25">QNH</a>() const -&gt; <a class="code" href="namespaceUnits.html">Units</a>::Pressure</div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    {</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        <span class="keywordflow">return</span> _qnh;</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        <span class="keywordflow">return</span> m_qnh;</div>
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    }</div>
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160; </div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    Q_PROPERTY(QString <a class="code" href="classWeather_1_1METAR.html#a0b97842a08959fedd6f65f688a4961f0">rawText</a> READ <a class="code" href="classWeather_1_1METAR.html#a0b97842a08959fedd6f65f688a4961f0">rawText</a> CONSTANT)</div>
@@ -217,7 +217,7 @@ $(function() {
 <div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    QDateTime _observationTime;</div>
 <div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160; </div>
 <div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    <span class="comment">// QNH in hPa, as returned by the Aviation Weather Center</span></div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    quint16 _qnh {0};</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    <a class="code" href="classUnits_1_1Pressure.html">Units::Pressure</a> m_qnh;</div>
 <div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160; </div>
 <div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    <span class="comment">// Raw METAR text, as returned by the Aviation Weather Center</span></div>
 <div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    QString _raw_text;</div>
@@ -226,6 +226,7 @@ $(function() {
 <div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    <a class="code" href="classUnits_1_1Speed.html">Units::Speed</a> _wind;</div>
 <div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;};</div>
 <div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;} <span class="comment">// namespace Weather</span></div>
+<div class="ttc" id="aclassUnits_1_1Pressure_html"><div class="ttname"><a href="classUnits_1_1Pressure.html">Units::Pressure</a></div><div class="ttdoc">Convenience class for pressure computations.</div><div class="ttdef"><b>Definition:</b> <a href="Pressure_8h_source.html#l00035">Pressure.h:35</a></div></div>
 <div class="ttc" id="aclassUnits_1_1Speed_html"><div class="ttname"><a href="classUnits_1_1Speed.html">Units::Speed</a></div><div class="ttdoc">Convenience class for speed computations.</div><div class="ttdef"><b>Definition:</b> <a href="Speed_8h_source.html#l00036">Speed.h:36</a></div></div>
 <div class="ttc" id="aclassWeather_1_1Decoder_html"><div class="ttname"><a href="classWeather_1_1Decoder.html">Weather::Decoder</a></div><div class="ttdoc">METAR/TAF decoder.</div><div class="ttdef"><b>Definition:</b> <a href="Decoder_8h_source.html#l00046">Decoder.h:46</a></div></div>
 <div class="ttc" id="aclassWeather_1_1METAR_html"><div class="ttname"><a href="classWeather_1_1METAR.html">Weather::METAR</a></div><div class="ttdoc">METAR report.</div><div class="ttdef"><b>Definition:</b> <a href="METAR_8h_source.html#l00042">METAR.h:42</a></div></div>
@@ -234,7 +235,9 @@ $(function() {
 <div class="ttc" id="aclassWeather_1_1METAR_html_a0b97842a08959fedd6f65f688a4961f0"><div class="ttname"><a href="classWeather_1_1METAR.html#a0b97842a08959fedd6f65f688a4961f0">Weather::METAR::rawText</a></div><div class="ttdeci">QString rawText</div><div class="ttdoc">Raw METAR text.</div><div class="ttdef"><b>Definition:</b> <a href="METAR_8h_source.html#l00190">METAR.h:200</a></div></div>
 <div class="ttc" id="aclassWeather_1_1METAR_html_a1d6a7b3047a187a13d0f598f204a5332"><div class="ttname"><a href="classWeather_1_1METAR.html#a1d6a7b3047a187a13d0f598f204a5332">Weather::METAR::observationTime</a></div><div class="ttdeci">QDateTime observationTime</div><div class="ttdoc">Observation time of this METAR.</div><div class="ttdef"><b>Definition:</b> <a href="METAR_8h_source.html#l00165">METAR.h:168</a></div></div>
 <div class="ttc" id="aclassWeather_1_1METAR_html_a2141d9630a2a09d46d986761aefe46c8"><div class="ttname"><a href="classWeather_1_1METAR.html#a2141d9630a2a09d46d986761aefe46c8">Weather::METAR::isExpired</a></div><div class="ttdeci">Q_INVOKABLE bool isExpired() const</div><div class="ttdoc">Convenience method to check if this METAR is already expired.</div></div>
+<div class="ttc" id="aclassWeather_1_1METAR_html_a3ad67caac3eda703dc1727004e0a43ad"><div class="ttname"><a href="classWeather_1_1METAR.html#a3ad67caac3eda703dc1727004e0a43ad">Weather::METAR::QNH</a></div><div class="ttdeci">Units::Pressure QNH</div><div class="ttdoc">QNH value in this METAR.</div><div class="ttdef"><b>Definition:</b> <a href="METAR_8h_source.html#l00174">METAR.h:184</a></div></div>
 <div class="ttc" id="aclassWeather_1_1METAR_html_a432089ba7301f3225aac4e702c8b601f"><div class="ttname"><a href="classWeather_1_1METAR.html#a432089ba7301f3225aac4e702c8b601f">Weather::METAR::isValid</a></div><div class="ttdeci">auto isValid() const -&gt; bool</div><div class="ttdoc">Getter function for property with the same name.</div></div>
+<div class="ttc" id="aclassWeather_1_1METAR_html_a475333698abac45cb24f497c2eff6f25"><div class="ttname"><a href="classWeather_1_1METAR.html#a475333698abac45cb24f497c2eff6f25">Weather::METAR::QNH</a></div><div class="ttdeci">auto QNH() const -&gt; Units::Pressure</div><div class="ttdoc">Getter function for property with the same name.</div><div class="ttdef"><b>Definition:</b> <a href="METAR_8h_source.html#l00190">METAR.h:190</a></div></div>
 <div class="ttc" id="aclassWeather_1_1METAR_html_a4ae28cee32d69ad6587b4126fc9e5da9"><div class="ttname"><a href="classWeather_1_1METAR.html#a4ae28cee32d69ad6587b4126fc9e5da9">Weather::METAR::relativeObservationTimeChanged</a></div><div class="ttdeci">void relativeObservationTimeChanged()</div><div class="ttdoc">Notifier signal.</div></div>
 <div class="ttc" id="aclassWeather_1_1METAR_html_a64afc20634688882da83c6d067480287"><div class="ttname"><a href="classWeather_1_1METAR.html#a64afc20634688882da83c6d067480287">Weather::METAR::METAR</a></div><div class="ttdeci">METAR(QObject *parent=nullptr)</div><div class="ttdoc">Default constructor.</div></div>
 <div class="ttc" id="aclassWeather_1_1METAR_html_a64ee6087e0dc1a9142e39f056206490a"><div class="ttname"><a href="classWeather_1_1METAR.html#a64ee6087e0dc1a9142e39f056206490a">Weather::METAR::summary</a></div><div class="ttdeci">QString summary</div><div class="ttdoc">One-line summary of the METAR.</div><div class="ttdef"><b>Definition:</b> <a href="METAR_8h_source.html#l00222">METAR.h:229</a></div></div>
@@ -243,9 +246,7 @@ $(function() {
 <div class="ttc" id="aclassWeather_1_1METAR_html_a808ad45af14aba825c05706e40b34c5d"><div class="ttname"><a href="classWeather_1_1METAR.html#a808ad45af14aba825c05706e40b34c5d">Weather::METAR::relativeObservationTime</a></div><div class="ttdeci">auto relativeObservationTime() const -&gt; QString</div><div class="ttdoc">Getter function for property with the same name.</div></div>
 <div class="ttc" id="aclassWeather_1_1METAR_html_a82c5f343374f9f52bb87e676e2dbaa10"><div class="ttname"><a href="classWeather_1_1METAR.html#a82c5f343374f9f52bb87e676e2dbaa10">Weather::METAR::ICAOCode</a></div><div class="ttdeci">QString ICAOCode</div><div class="ttdoc">ICAO code of the station reporting this METAR.</div><div class="ttdef"><b>Definition:</b> <a href="METAR_8h_source.html#l00130">METAR.h:140</a></div></div>
 <div class="ttc" id="aclassWeather_1_1METAR_html_a90a708583dd6e8dde038160d519f63f5"><div class="ttname"><a href="classWeather_1_1METAR.html#a90a708583dd6e8dde038160d519f63f5">Weather::METAR::expiration</a></div><div class="ttdeci">QDateTime expiration</div><div class="ttdoc">Expiration time and date.</div><div class="ttdef"><b>Definition:</b> <a href="METAR_8h_source.html#l00085">METAR.h:95</a></div></div>
-<div class="ttc" id="aclassWeather_1_1METAR_html_aa3e4b487bd1e718149ad901ca0d53e4b"><div class="ttname"><a href="classWeather_1_1METAR.html#aa3e4b487bd1e718149ad901ca0d53e4b">Weather::METAR::QNH</a></div><div class="ttdeci">auto QNH() const -&gt; quint16</div><div class="ttdoc">Getter function for property with the same name.</div><div class="ttdef"><b>Definition:</b> <a href="METAR_8h_source.html#l00190">METAR.h:190</a></div></div>
 <div class="ttc" id="aclassWeather_1_1METAR_html_aa63fb781601fa1908d8b724a41085b86"><div class="ttname"><a href="classWeather_1_1METAR.html#aa63fb781601fa1908d8b724a41085b86">Weather::METAR::summaryChanged</a></div><div class="ttdeci">void summaryChanged()</div><div class="ttdoc">Notifier signal.</div></div>
-<div class="ttc" id="aclassWeather_1_1METAR_html_aab5c56fcc0923845f41e1b183881fb58"><div class="ttname"><a href="classWeather_1_1METAR.html#aab5c56fcc0923845f41e1b183881fb58">Weather::METAR::QNH</a></div><div class="ttdeci">quint16 QNH</div><div class="ttdoc">QNH value in this METAR, in hPa.</div><div class="ttdef"><b>Definition:</b> <a href="METAR_8h_source.html#l00174">METAR.h:184</a></div></div>
 <div class="ttc" id="aclassWeather_1_1METAR_html_acd6278e6a3b9d64813e6920258c91910"><div class="ttname"><a href="classWeather_1_1METAR.html#acd6278e6a3b9d64813e6920258c91910">Weather::METAR::coordinate</a></div><div class="ttdeci">QGeoCoordinate coordinate</div><div class="ttdoc">Geographical coordinate of the station reporting this METAR.</div><div class="ttdef"><b>Definition:</b> <a href="METAR_8h_source.html#l00057">METAR.h:79</a></div></div>
 <div class="ttc" id="aclassWeather_1_1METAR_html_ace9ce9c086873899a5dde6ba7df9a8a8"><div class="ttname"><a href="classWeather_1_1METAR.html#ace9ce9c086873899a5dde6ba7df9a8a8">Weather::METAR::relativeObservationTime</a></div><div class="ttdeci">QString relativeObservationTime</div><div class="ttdoc">Observation time, relative to now.</div><div class="ttdef"><b>Definition:</b> <a href="METAR_8h_source.html#l00206">METAR.h:216</a></div></div>
 <div class="ttc" id="aclassWeather_1_1METAR_html_ad41f584c576436f2f636b60534444f9d"><div class="ttname"><a href="classWeather_1_1METAR.html#ad41f584c576436f2f636b60534444f9d">Weather::METAR::flightCategoryColor</a></div><div class="ttdeci">QString flightCategoryColor</div><div class="ttdoc">Suggested color describing the flight category for this METAR.</div><div class="ttdef"><b>Definition:</b> <a href="METAR_8h_source.html#l00101">METAR.h:115</a></div></div>
@@ -257,7 +258,8 @@ $(function() {
 <div class="ttc" id="aclassWeather_1_1METAR_html_ae624d6b0294ce1371f1d6ae80ba26c4dab924f410385780d4f5ac20145a6c1167"><div class="ttname"><a href="classWeather_1_1METAR.html#ae624d6b0294ce1371f1d6ae80ba26c4dab924f410385780d4f5ac20145a6c1167">Weather::METAR::LIFR</a></div><div class="ttdeci">@ LIFR</div><div class="ttdef"><b>Definition:</b> <a href="METAR_8h_source.html#l00069">METAR.h:69</a></div></div>
 <div class="ttc" id="aclassWeather_1_1METAR_html_ae624d6b0294ce1371f1d6ae80ba26c4daf533038e41f2e0f79f29ec13dc882e8b"><div class="ttname"><a href="classWeather_1_1METAR.html#ae624d6b0294ce1371f1d6ae80ba26c4daf533038e41f2e0f79f29ec13dc882e8b">Weather::METAR::VFR</a></div><div class="ttdeci">@ VFR</div><div class="ttdef"><b>Definition:</b> <a href="METAR_8h_source.html#l00066">METAR.h:66</a></div></div>
 <div class="ttc" id="aclassWeather_1_1METAR_html_ae95f45f5587dd3adeac389a1dcd60d03"><div class="ttname"><a href="classWeather_1_1METAR.html#ae95f45f5587dd3adeac389a1dcd60d03">Weather::METAR::flightCategory</a></div><div class="ttdeci">FlightCategory flightCategory</div><div class="ttdoc">Flight category for this METAR.</div><div class="ttdef"><b>Definition:</b> <a href="METAR_8h_source.html#l00121">METAR.h:124</a></div></div>
-<div class="ttc" id="aclassWeather_1_1WeatherDataProvider_html"><div class="ttname"><a href="classWeather_1_1WeatherDataProvider.html">Weather::WeatherDataProvider</a></div><div class="ttdoc">WeatherDataProvider, weather service manager.</div><div class="ttdef"><b>Definition:</b> <a href="WeatherDataProvider_8h_source.html#l00063">WeatherDataProvider.h:63</a></div></div>
+<div class="ttc" id="aclassWeather_1_1WeatherDataProvider_html"><div class="ttname"><a href="classWeather_1_1WeatherDataProvider.html">Weather::WeatherDataProvider</a></div><div class="ttdoc">WeatherDataProvider, weather service manager.</div><div class="ttdef"><b>Definition:</b> <a href="WeatherDataProvider_8h_source.html#l00065">WeatherDataProvider.h:65</a></div></div>
+<div class="ttc" id="anamespaceUnits_html"><div class="ttname"><a href="namespaceUnits.html">Units</a></div><div class="ttdoc">Conversion between units used in aviation.</div><div class="ttdef"><b>Definition:</b> <a href="Angle_8h_source.html#l00034">Angle.h:34</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

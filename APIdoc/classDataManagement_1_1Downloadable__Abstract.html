@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.28.2</span>
+   &#160;<span id="projectnumber">2.28.93</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -73,12 +73,13 @@ Inheritance diagram for DataManagement::Downloadable_Abstract:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:a43fcd87601d16172eb324b7680f169d1"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a43fcd87601d16172eb324b7680f169d1">ContentType</a> { <br />
-&#160;&#160;<a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a43fcd87601d16172eb324b7680f169d1aa900287a6fc92e7ae9f86a8904460adf">AviationMap</a>
+&#160;&#160;<a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a43fcd87601d16172eb324b7680f169d1a2a7c86b1653b7fe4c9b694e84d37e6eb">VAC</a>
+, <a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a43fcd87601d16172eb324b7680f169d1aa900287a6fc92e7ae9f86a8904460adf">AviationMap</a>
 , <a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a43fcd87601d16172eb324b7680f169d1a7803d9cd4bc257ac3f0254d19b1eae96">BaseMapVector</a>
 , <a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a43fcd87601d16172eb324b7680f169d1acf2b4f329c517105b8fd0ac591838246">BaseMapRaster</a>
-, <a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a43fcd87601d16172eb324b7680f169d1a0f6600ad1c408ca017a1cf93f57e29f8">Data</a>
 , <br />
-&#160;&#160;<a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a43fcd87601d16172eb324b7680f169d1ad11f26c728f87fc132b9b9637319857e">MapSet</a>
+&#160;&#160;<a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a43fcd87601d16172eb324b7680f169d1a0f6600ad1c408ca017a1cf93f57e29f8">Data</a>
+, <a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a43fcd87601d16172eb324b7680f169d1ad11f26c728f87fc132b9b9637319857e">MapSet</a>
 , <a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a43fcd87601d16172eb324b7680f169d1a3df875072865cd877ca357dc74a80d5e">TerrainMap</a>
 <br />
  }</td></tr>
@@ -255,7 +256,9 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 
 <p>Type of content managed by this instance. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a43fcd87601d16172eb324b7680f169d1aa900287a6fc92e7ae9f86a8904460adf"></a>AviationMap&#160;</td><td class="fielddoc"><p>Aviation Map. </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a43fcd87601d16172eb324b7680f169d1a2a7c86b1653b7fe4c9b694e84d37e6eb"></a>VAC&#160;</td><td class="fielddoc"><p>Visual Approach Chart. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a43fcd87601d16172eb324b7680f169d1aa900287a6fc92e7ae9f86a8904460adf"></a>AviationMap&#160;</td><td class="fielddoc"><p>Aviation Map. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a43fcd87601d16172eb324b7680f169d1a7803d9cd4bc257ac3f0254d19b1eae96"></a>BaseMapVector&#160;</td><td class="fielddoc"><p>Base Map, in vector format. </p>
 </td></tr>
@@ -335,7 +338,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Getter method for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property boundingBox </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Downloadable__Abstract_8h_source.html#l00143">143</a> of file <a class="el" href="Downloadable__Abstract_8h_source.html">Downloadable_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Downloadable__Abstract_8h_source.html#l00144">144</a> of file <a class="el" href="Downloadable__Abstract_8h_source.html">Downloadable_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -365,7 +368,7 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Getter method for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property contentType </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Downloadable__Abstract_8h_source.html#l00149">149</a> of file <a class="el" href="Downloadable__Abstract_8h_source.html">Downloadable_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Downloadable__Abstract_8h_source.html#l00150">150</a> of file <a class="el" href="Downloadable__Abstract_8h_source.html">Downloadable_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -650,7 +653,7 @@ is no longer available at the server", possibly translated. </td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property section </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Downloadable__Abstract_8h_source.html#l00191">191</a> of file <a class="el" href="Downloadable__Abstract_8h_source.html">Downloadable_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Downloadable__Abstract_8h_source.html#l00192">192</a> of file <a class="el" href="Downloadable__Abstract_8h_source.html">Downloadable_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -760,9 +763,9 @@ is no longer available at the server", possibly translated. </td></tr>
 </div><div class="memdoc">
 
 <p>Describe installed file(s) </p>
-<p>This property contains a localized description of the locally installed file(s), localized and in HTML format. If no description is available, then the property contains an empty string. </p>
+<p>This property contains a description of the locally installed file(s), localized and in HTML format. If no description is available, then the property contains an empty string. </p>
 
-<p class="definition">Definition at line <a class="el" href="Downloadable__Abstract_8h_source.html#l00062">62</a> of file <a class="el" href="Downloadable__Abstract_8h_source.html">Downloadable_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Downloadable__Abstract_8h_source.html#l00063">63</a> of file <a class="el" href="Downloadable__Abstract_8h_source.html">Downloadable_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -794,7 +797,7 @@ is no longer available at the server", possibly translated. </td></tr>
 </ul>
 <p>It might be translated to the local language. </p>
 
-<p class="definition">Definition at line <a class="el" href="Downloadable__Abstract_8h_source.html#l00062">62</a> of file <a class="el" href="Downloadable__Abstract_8h_source.html">Downloadable_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Downloadable__Abstract_8h_source.html#l00063">63</a> of file <a class="el" href="Downloadable__Abstract_8h_source.html">Downloadable_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -821,7 +824,7 @@ is no longer available at the server", possibly translated. </td></tr>
 <p>Size of the remote file. </p>
 <p>This property holds the size of the remote files. If the sizes are not known, the property holds the number -1. </p>
 
-<p class="definition">Definition at line <a class="el" href="Downloadable__Abstract_8h_source.html#l00062">62</a> of file <a class="el" href="Downloadable__Abstract_8h_source.html">Downloadable_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Downloadable__Abstract_8h_source.html#l00063">63</a> of file <a class="el" href="Downloadable__Abstract_8h_source.html">Downloadable_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -848,7 +851,7 @@ is no longer available at the server", possibly translated. </td></tr>
 <p>Headline name for the Downloadable. </p>
 <p>This property is a convenience storing one string along with the Downloadable. The enroute app uses this to store the continent name for a Dowloadable that represents a geographic map. The GUI then generate section headings in the list of downloadable aviation maps. </p>
 
-<p class="definition">Definition at line <a class="el" href="Downloadable__Abstract_8h_source.html#l00062">62</a> of file <a class="el" href="Downloadable__Abstract_8h_source.html">Downloadable_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Downloadable__Abstract_8h_source.html#l00063">63</a> of file <a class="el" href="Downloadable__Abstract_8h_source.html">Downloadable_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -875,7 +878,7 @@ is no longer available at the server", possibly translated. </td></tr>
 <p>Update size. </p>
 <p>If local files exist and update(s) are available, this property holds the size of the update. If no updates are available, this property holds 0. </p>
 
-<p class="definition">Definition at line <a class="el" href="Downloadable__Abstract_8h_source.html#l00062">62</a> of file <a class="el" href="Downloadable__Abstract_8h_source.html">Downloadable_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Downloadable__Abstract_8h_source.html#l00063">63</a> of file <a class="el" href="Downloadable__Abstract_8h_source.html">Downloadable_Abstract.h</a>.</p>
 
 </div>
 </div>

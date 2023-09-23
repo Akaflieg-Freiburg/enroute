@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.28.2</span>
+   &#160;<span id="projectnumber">2.28.93</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -73,131 +73,134 @@ $(function() {
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;QObject&gt;</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">class </span><a class="code" href="classDemoRunner.html">DemoRunner</a>;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">class </span><a class="code" href="classLibrarian.html">Librarian</a>;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">class </span>QNetworkAccessManager;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">class </span><a class="code" href="classGlobalSettings.html">GlobalSettings</a>;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">namespace </span>DataManagement</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;{</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">class </span>DataManager;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">class </span>SSLErrorHandler;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;} <span class="comment">// namespace DataManagement</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">namespace </span>GeoMaps</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;{</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">class </span>GeoMapProvider;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">class </span>WaypointLibrary;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;} <span class="comment">// namespace GeoMaps</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">namespace </span>Navigation</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;{</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">class </span>Clock;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">class </span>Navigator;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;} <span class="comment">// namespace Navigation</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">namespace </span>NOTAM</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;{</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword">class </span>NotamProvider;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;} <span class="comment">// namespace NOTAM</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">namespace </span>Notifications</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;{</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">class </span>NotificationManager;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;} <span class="comment">// namespace Notifications</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">namespace </span>Traffic</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;{</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">class </span>FlarmnetDB;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">class </span>PasswordDB;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">class </span>TrafficDataProvider;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;} <span class="comment">// namespace Traffic</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keyword">namespace </span>Platform</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;{</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword">class </span>FileExchange_Abstract;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keyword">class </span>Notifier_Abstract;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keyword">class </span>PlatformAdaptor_Abstract;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;} <span class="comment">// namespace Platform</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="namespacePositioning.html">   72</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacePositioning.html">Positioning</a></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;{</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="keyword">class </span><a class="code" href="classPositioning_1_1PositionProvider.html">PositionProvider</a>;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;} <span class="comment">// namespace Positioning</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keyword">namespace </span>Weather</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;{</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="keyword">class </span>WeatherDataProvider;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;} <span class="comment">// namespace Weather</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00105"></a><span class="lineno"><a class="line" href="classGlobalObject.html">  105</a></span>&#160;<span class="keyword">class </span><a class="code" href="classGlobalObject.html">GlobalObject</a> : <span class="keyword">public</span> QObject</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;{</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    Q_OBJECT</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00114"></a><span class="lineno"><a class="line" href="classGlobalObject.html#ac8dfa53c492975de42fa7972e77abbc1">  114</a></span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classGlobalObject.html#ac8dfa53c492975de42fa7972e77abbc1">GlobalObject</a>(QObject *parent = <span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
-<div class="line"><a name="l00121"></a><span class="lineno"><a class="line" href="classGlobalObject.html#a96c4d476061f33a53b8c7de446c639eb">  121</a></span>&#160;    <a class="code" href="classGlobalObject.html#a96c4d476061f33a53b8c7de446c639eb">~GlobalObject</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
-<div class="line"><a name="l00127"></a><span class="lineno"><a class="line" href="classGlobalObject.html#ae5d0c94af509c9744e1b344201928715">  127</a></span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classGlobalObject.html#ae5d0c94af509c9744e1b344201928715">clear</a>();</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
-<div class="line"><a name="l00138"></a><span class="lineno"><a class="line" href="classGlobalObject.html#a0501f0fd4dbb0252ff120fd07ea2f703">  138</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="classGlobalObject.html#a0501f0fd4dbb0252ff120fd07ea2f703">canConstruct</a>();</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160; </div>
-<div class="line"><a name="l00144"></a><span class="lineno"><a class="line" href="classGlobalObject.html#af0767b249546f9627b16ed8e21b5b210">  144</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classNavigation_1_1Clock.html">Navigation::Clock</a>* <a class="code" href="classGlobalObject.html#af0767b249546f9627b16ed8e21b5b210">clock</a>();</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160; </div>
-<div class="line"><a name="l00150"></a><span class="lineno"><a class="line" href="classGlobalObject.html#a62f4dcfa905d95ca7bd41c5dec0510de">  150</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classDataManagement_1_1DataManager.html">DataManagement::DataManager</a>* <a class="code" href="classGlobalObject.html#a62f4dcfa905d95ca7bd41c5dec0510de">dataManager</a>();</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160; </div>
-<div class="line"><a name="l00156"></a><span class="lineno"><a class="line" href="classGlobalObject.html#a97d0f9fb61c58e12bcc27e882264395c">  156</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classDemoRunner.html">DemoRunner</a>* <a class="code" href="classGlobalObject.html#a97d0f9fb61c58e12bcc27e882264395c">demoRunner</a>();</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160; </div>
-<div class="line"><a name="l00162"></a><span class="lineno"><a class="line" href="classGlobalObject.html#adbce86b691abd0b44c6853bdbe3fd680">  162</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classTraffic_1_1FlarmnetDB.html">Traffic::FlarmnetDB</a>* <a class="code" href="classGlobalObject.html#adbce86b691abd0b44c6853bdbe3fd680">flarmnetDB</a>();</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
-<div class="line"><a name="l00168"></a><span class="lineno"><a class="line" href="classGlobalObject.html#af3d4b34a6e78dce0a481d36c6346b4ef">  168</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classPlatform_1_1FileExchange__Abstract.html">Platform::FileExchange_Abstract</a>* <a class="code" href="classGlobalObject.html#af3d4b34a6e78dce0a481d36c6346b4ef">fileExchange</a>();</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160; </div>
-<div class="line"><a name="l00175"></a><span class="lineno"><a class="line" href="classGlobalObject.html#ab12da0d2ab30cc15a28dfa9e78ab578d">  175</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classGeoMaps_1_1GeoMapProvider.html">GeoMaps::GeoMapProvider</a>* <a class="code" href="classGlobalObject.html#ab12da0d2ab30cc15a28dfa9e78ab578d">geoMapProvider</a>();</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160; </div>
-<div class="line"><a name="l00181"></a><span class="lineno"><a class="line" href="classGlobalObject.html#af2fb7549465feb28fc55fd5d20a9041a">  181</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classGlobalSettings.html">GlobalSettings</a>* <a class="code" href="classGlobalObject.html#af2fb7549465feb28fc55fd5d20a9041a">globalSettings</a>();</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160; </div>
-<div class="line"><a name="l00187"></a><span class="lineno"><a class="line" href="classGlobalObject.html#a125125a1bb055656a679d39e393a7e8f">  187</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classLibrarian.html">Librarian</a>* <a class="code" href="classGlobalObject.html#a125125a1bb055656a679d39e393a7e8f">librarian</a>();</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160; </div>
-<div class="line"><a name="l00193"></a><span class="lineno"><a class="line" href="classGlobalObject.html#a2396ee67666cb9227eef145e842b031b">  193</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classPlatform_1_1PlatformAdaptor__Abstract.html">Platform::PlatformAdaptor_Abstract</a>* <a class="code" href="classGlobalObject.html#a2396ee67666cb9227eef145e842b031b">platformAdaptor</a>();</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160; </div>
-<div class="line"><a name="l00199"></a><span class="lineno"><a class="line" href="classGlobalObject.html#a6a41932b3c2ff3f31504ac4dc16f3b76">  199</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classNavigation_1_1Navigator.html">Navigation::Navigator</a>* <a class="code" href="classGlobalObject.html#a6a41932b3c2ff3f31504ac4dc16f3b76">navigator</a>();</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160; </div>
-<div class="line"><a name="l00205"></a><span class="lineno"><a class="line" href="classGlobalObject.html#a6d3c10626cb29b62ddc4ca7e91d32aea">  205</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classTraffic_1_1PasswordDB.html">Traffic::PasswordDB</a>* <a class="code" href="classGlobalObject.html#a6d3c10626cb29b62ddc4ca7e91d32aea">passwordDB</a>();</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160; </div>
-<div class="line"><a name="l00211"></a><span class="lineno"><a class="line" href="classGlobalObject.html#aa2e048b7255cdf10c51c39c99979ffa9">  211</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classPositioning_1_1PositionProvider.html">Positioning::PositionProvider</a>* <a class="code" href="classGlobalObject.html#aa2e048b7255cdf10c51c39c99979ffa9">positionProvider</a>();</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160; </div>
-<div class="line"><a name="l00217"></a><span class="lineno"><a class="line" href="classGlobalObject.html#a8972bb578c7bdaf003a0f8f5d7e424a2">  217</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classNOTAM_1_1NotamProvider.html">NOTAM::NotamProvider</a>* <a class="code" href="classGlobalObject.html#a8972bb578c7bdaf003a0f8f5d7e424a2">notamProvider</a>();</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160; </div>
-<div class="line"><a name="l00223"></a><span class="lineno"><a class="line" href="classGlobalObject.html#ad13691c58c71ce9b8be146bf8743f08e">  223</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classNotifications_1_1NotificationManager.html">Notifications::NotificationManager</a>* <a class="code" href="classGlobalObject.html#ad13691c58c71ce9b8be146bf8743f08e">notificationManager</a>();</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160; </div>
-<div class="line"><a name="l00229"></a><span class="lineno"><a class="line" href="classGlobalObject.html#a34f0b76423c7990eb597ff7eaac5847f">  229</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> QNetworkAccessManager* <a class="code" href="classGlobalObject.html#a34f0b76423c7990eb597ff7eaac5847f">networkAccessManager</a>();</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160; </div>
-<div class="line"><a name="l00235"></a><span class="lineno"><a class="line" href="classGlobalObject.html#a7976dc9d1ff7995eabb7f3930ec53ca7">  235</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classDataManagement_1_1SSLErrorHandler.html">DataManagement::SSLErrorHandler</a>* <a class="code" href="classGlobalObject.html#a7976dc9d1ff7995eabb7f3930ec53ca7">sslErrorHandler</a>();</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160; </div>
-<div class="line"><a name="l00241"></a><span class="lineno"><a class="line" href="classGlobalObject.html#a06c131e4d5f9851ea5d8002e3c30990f">  241</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classTraffic_1_1TrafficDataProvider.html">Traffic::TrafficDataProvider</a>* <a class="code" href="classGlobalObject.html#a06c131e4d5f9851ea5d8002e3c30990f">trafficDataProvider</a>();</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160; </div>
-<div class="line"><a name="l00247"></a><span class="lineno"><a class="line" href="classGlobalObject.html#a9d26ff8fb994fc5ee86c05b066228ed6">  247</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classGeoMaps_1_1WaypointLibrary.html">GeoMaps::WaypointLibrary</a>* <a class="code" href="classGlobalObject.html#a9d26ff8fb994fc5ee86c05b066228ed6">waypointLibrary</a>();</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160; </div>
-<div class="line"><a name="l00253"></a><span class="lineno"><a class="line" href="classGlobalObject.html#a1136ba32f7718808167124422be955cd">  253</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classWeather_1_1WeatherDataProvider.html">Weather::WeatherDataProvider</a>* <a class="code" href="classGlobalObject.html#a1136ba32f7718808167124422be955cd">weatherDataProvider</a>();</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160; </div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00263"></a><span class="lineno"><a class="line" href="classGlobalObject.html#ad89d4b5b146c91f65f282572629c2f5f">  263</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classGlobalObject.html#ad89d4b5b146c91f65f282572629c2f5f">deferredInitialization</a>()</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    {</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        ;</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    }</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160; </div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classGlobalObject.html">GlobalObject</a>)</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160; </div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    <span class="keyword">static</span> <span class="keyword">auto</span> allocateInternal(QPointer&lt;T&gt; &amp;pointer) -&gt; T *;</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;};</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">class </span><a class="code" href="classGlobalSettings.html">GlobalSettings</a>;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">class </span><a class="code" href="classLibrarian.html">Librarian</a>;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">class </span>QNetworkAccessManager;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">class </span><a class="code" href="classSensors.html">Sensors</a>;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">namespace </span>DataManagement</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">class </span>DataManager;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">class </span>SSLErrorHandler;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;} <span class="comment">// namespace DataManagement</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">namespace </span>GeoMaps</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">class </span>GeoMapProvider;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">class </span>WaypointLibrary;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;} <span class="comment">// namespace GeoMaps</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">namespace </span>Navigation</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;{</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">class </span>Clock;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">class </span>Navigator;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;} <span class="comment">// namespace Navigation</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">namespace </span>NOTAM</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;{</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">class </span>NotamProvider;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;} <span class="comment">// namespace NOTAM</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keyword">namespace </span>Notifications</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;{</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword">class </span>NotificationManager;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;} <span class="comment">// namespace Notifications</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">namespace </span>Traffic</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;{</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">class </span>FlarmnetDB;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">class </span>PasswordDB;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword">class </span>TrafficDataProvider;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;} <span class="comment">// namespace Traffic</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="keyword">namespace </span>Platform</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;{</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keyword">class </span>FileExchange_Abstract;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keyword">class </span>Notifier_Abstract;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keyword">class </span>PlatformAdaptor_Abstract;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;} <span class="comment">// namespace Platform</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="namespacePositioning.html">   73</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacePositioning.html">Positioning</a></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;{</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keyword">class </span><a class="code" href="classPositioning_1_1PositionProvider.html">PositionProvider</a>;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;} <span class="comment">// namespace Positioning</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keyword">namespace </span>Weather</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;{</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keyword">class </span>WeatherDataProvider;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;} <span class="comment">// namespace Weather</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
+<div class="line"><a name="l00106"></a><span class="lineno"><a class="line" href="classGlobalObject.html">  106</a></span>&#160;<span class="keyword">class </span><a class="code" href="classGlobalObject.html">GlobalObject</a> : <span class="keyword">public</span> QObject</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;{</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    Q_OBJECT</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00115"></a><span class="lineno"><a class="line" href="classGlobalObject.html#ac8dfa53c492975de42fa7972e77abbc1">  115</a></span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classGlobalObject.html#ac8dfa53c492975de42fa7972e77abbc1">GlobalObject</a>(QObject *parent = <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
+<div class="line"><a name="l00122"></a><span class="lineno"><a class="line" href="classGlobalObject.html#a96c4d476061f33a53b8c7de446c639eb">  122</a></span>&#160;    <a class="code" href="classGlobalObject.html#a96c4d476061f33a53b8c7de446c639eb">~GlobalObject</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
+<div class="line"><a name="l00128"></a><span class="lineno"><a class="line" href="classGlobalObject.html#ae5d0c94af509c9744e1b344201928715">  128</a></span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classGlobalObject.html#ae5d0c94af509c9744e1b344201928715">clear</a>();</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
+<div class="line"><a name="l00139"></a><span class="lineno"><a class="line" href="classGlobalObject.html#a0501f0fd4dbb0252ff120fd07ea2f703">  139</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="classGlobalObject.html#a0501f0fd4dbb0252ff120fd07ea2f703">canConstruct</a>();</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160; </div>
+<div class="line"><a name="l00145"></a><span class="lineno"><a class="line" href="classGlobalObject.html#af0767b249546f9627b16ed8e21b5b210">  145</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classNavigation_1_1Clock.html">Navigation::Clock</a>* <a class="code" href="classGlobalObject.html#af0767b249546f9627b16ed8e21b5b210">clock</a>();</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160; </div>
+<div class="line"><a name="l00151"></a><span class="lineno"><a class="line" href="classGlobalObject.html#a62f4dcfa905d95ca7bd41c5dec0510de">  151</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classDataManagement_1_1DataManager.html">DataManagement::DataManager</a>* <a class="code" href="classGlobalObject.html#a62f4dcfa905d95ca7bd41c5dec0510de">dataManager</a>();</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160; </div>
+<div class="line"><a name="l00157"></a><span class="lineno"><a class="line" href="classGlobalObject.html#a97d0f9fb61c58e12bcc27e882264395c">  157</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classDemoRunner.html">DemoRunner</a>* <a class="code" href="classGlobalObject.html#a97d0f9fb61c58e12bcc27e882264395c">demoRunner</a>();</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160; </div>
+<div class="line"><a name="l00163"></a><span class="lineno"><a class="line" href="classGlobalObject.html#adbce86b691abd0b44c6853bdbe3fd680">  163</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classTraffic_1_1FlarmnetDB.html">Traffic::FlarmnetDB</a>* <a class="code" href="classGlobalObject.html#adbce86b691abd0b44c6853bdbe3fd680">flarmnetDB</a>();</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160; </div>
+<div class="line"><a name="l00169"></a><span class="lineno"><a class="line" href="classGlobalObject.html#af3d4b34a6e78dce0a481d36c6346b4ef">  169</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classPlatform_1_1FileExchange__Abstract.html">Platform::FileExchange_Abstract</a>* <a class="code" href="classGlobalObject.html#af3d4b34a6e78dce0a481d36c6346b4ef">fileExchange</a>();</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160; </div>
+<div class="line"><a name="l00176"></a><span class="lineno"><a class="line" href="classGlobalObject.html#ab12da0d2ab30cc15a28dfa9e78ab578d">  176</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classGeoMaps_1_1GeoMapProvider.html">GeoMaps::GeoMapProvider</a>* <a class="code" href="classGlobalObject.html#ab12da0d2ab30cc15a28dfa9e78ab578d">geoMapProvider</a>();</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; </div>
+<div class="line"><a name="l00182"></a><span class="lineno"><a class="line" href="classGlobalObject.html#af2fb7549465feb28fc55fd5d20a9041a">  182</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classGlobalSettings.html">GlobalSettings</a>* <a class="code" href="classGlobalObject.html#af2fb7549465feb28fc55fd5d20a9041a">globalSettings</a>();</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160; </div>
+<div class="line"><a name="l00188"></a><span class="lineno"><a class="line" href="classGlobalObject.html#a125125a1bb055656a679d39e393a7e8f">  188</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classLibrarian.html">Librarian</a>* <a class="code" href="classGlobalObject.html#a125125a1bb055656a679d39e393a7e8f">librarian</a>();</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160; </div>
+<div class="line"><a name="l00194"></a><span class="lineno"><a class="line" href="classGlobalObject.html#a2396ee67666cb9227eef145e842b031b">  194</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classPlatform_1_1PlatformAdaptor__Abstract.html">Platform::PlatformAdaptor_Abstract</a>* <a class="code" href="classGlobalObject.html#a2396ee67666cb9227eef145e842b031b">platformAdaptor</a>();</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160; </div>
+<div class="line"><a name="l00200"></a><span class="lineno"><a class="line" href="classGlobalObject.html#ad6ab8a16768e1abae0e960fbabcf236b">  200</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classSensors.html">Sensors</a>* <a class="code" href="classGlobalObject.html#ad6ab8a16768e1abae0e960fbabcf236b">sensors</a>();</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160; </div>
+<div class="line"><a name="l00206"></a><span class="lineno"><a class="line" href="classGlobalObject.html#a6a41932b3c2ff3f31504ac4dc16f3b76">  206</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classNavigation_1_1Navigator.html">Navigation::Navigator</a>* <a class="code" href="classGlobalObject.html#a6a41932b3c2ff3f31504ac4dc16f3b76">navigator</a>();</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160; </div>
+<div class="line"><a name="l00212"></a><span class="lineno"><a class="line" href="classGlobalObject.html#a6d3c10626cb29b62ddc4ca7e91d32aea">  212</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classTraffic_1_1PasswordDB.html">Traffic::PasswordDB</a>* <a class="code" href="classGlobalObject.html#a6d3c10626cb29b62ddc4ca7e91d32aea">passwordDB</a>();</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160; </div>
+<div class="line"><a name="l00218"></a><span class="lineno"><a class="line" href="classGlobalObject.html#aa2e048b7255cdf10c51c39c99979ffa9">  218</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classPositioning_1_1PositionProvider.html">Positioning::PositionProvider</a>* <a class="code" href="classGlobalObject.html#aa2e048b7255cdf10c51c39c99979ffa9">positionProvider</a>();</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160; </div>
+<div class="line"><a name="l00224"></a><span class="lineno"><a class="line" href="classGlobalObject.html#a8972bb578c7bdaf003a0f8f5d7e424a2">  224</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classNOTAM_1_1NotamProvider.html">NOTAM::NotamProvider</a>* <a class="code" href="classGlobalObject.html#a8972bb578c7bdaf003a0f8f5d7e424a2">notamProvider</a>();</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160; </div>
+<div class="line"><a name="l00230"></a><span class="lineno"><a class="line" href="classGlobalObject.html#ad13691c58c71ce9b8be146bf8743f08e">  230</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classNotifications_1_1NotificationManager.html">Notifications::NotificationManager</a>* <a class="code" href="classGlobalObject.html#ad13691c58c71ce9b8be146bf8743f08e">notificationManager</a>();</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160; </div>
+<div class="line"><a name="l00236"></a><span class="lineno"><a class="line" href="classGlobalObject.html#a34f0b76423c7990eb597ff7eaac5847f">  236</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> QNetworkAccessManager* <a class="code" href="classGlobalObject.html#a34f0b76423c7990eb597ff7eaac5847f">networkAccessManager</a>();</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160; </div>
+<div class="line"><a name="l00242"></a><span class="lineno"><a class="line" href="classGlobalObject.html#a7976dc9d1ff7995eabb7f3930ec53ca7">  242</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classDataManagement_1_1SSLErrorHandler.html">DataManagement::SSLErrorHandler</a>* <a class="code" href="classGlobalObject.html#a7976dc9d1ff7995eabb7f3930ec53ca7">sslErrorHandler</a>();</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160; </div>
+<div class="line"><a name="l00248"></a><span class="lineno"><a class="line" href="classGlobalObject.html#a06c131e4d5f9851ea5d8002e3c30990f">  248</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classTraffic_1_1TrafficDataProvider.html">Traffic::TrafficDataProvider</a>* <a class="code" href="classGlobalObject.html#a06c131e4d5f9851ea5d8002e3c30990f">trafficDataProvider</a>();</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160; </div>
+<div class="line"><a name="l00254"></a><span class="lineno"><a class="line" href="classGlobalObject.html#a9d26ff8fb994fc5ee86c05b066228ed6">  254</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classGeoMaps_1_1WaypointLibrary.html">GeoMaps::WaypointLibrary</a>* <a class="code" href="classGlobalObject.html#a9d26ff8fb994fc5ee86c05b066228ed6">waypointLibrary</a>();</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160; </div>
+<div class="line"><a name="l00260"></a><span class="lineno"><a class="line" href="classGlobalObject.html#a1136ba32f7718808167124422be955cd">  260</a></span>&#160;    Q_INVOKABLE <span class="keyword">static</span> <a class="code" href="classWeather_1_1WeatherDataProvider.html">Weather::WeatherDataProvider</a>* <a class="code" href="classGlobalObject.html#a1136ba32f7718808167124422be955cd">weatherDataProvider</a>();</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160; </div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00270"></a><span class="lineno"><a class="line" href="classGlobalObject.html#ad89d4b5b146c91f65f282572629c2f5f">  270</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classGlobalObject.html#ad89d4b5b146c91f65f282572629c2f5f">deferredInitialization</a>()</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    {</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;        ;</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    }</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160; </div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classGlobalObject.html">GlobalObject</a>)</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160; </div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    <span class="keyword">static</span> <span class="keyword">auto</span> allocateInternal(QPointer&lt;T&gt; &amp;pointer) -&gt; T *;</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;};</div>
 <div class="ttc" id="aclassDataManagement_1_1DataManager_html"><div class="ttname"><a href="classDataManagement_1_1DataManager.html">DataManagement::DataManager</a></div><div class="ttdoc">Manages the list of geographic maps.</div><div class="ttdef"><b>Definition:</b> <a href="DataManager_8h_source.html#l00070">DataManager.h:71</a></div></div>
 <div class="ttc" id="aclassDataManagement_1_1SSLErrorHandler_html"><div class="ttname"><a href="classDataManagement_1_1SSLErrorHandler.html">DataManagement::SSLErrorHandler</a></div><div class="ttdoc">Handles SSL error.</div><div class="ttdef"><b>Definition:</b> <a href="SSLErrorHandler_8h_source.html#l00039">SSLErrorHandler.h:40</a></div></div>
 <div class="ttc" id="aclassDemoRunner_html"><div class="ttname"><a href="classDemoRunner.html">DemoRunner</a></div><div class="ttdoc">Remote controls the app and takes screenshot images.</div><div class="ttdef"><b>Definition:</b> <a href="DemoRunner_8h_source.html#l00037">DemoRunner.h:37</a></div></div>
-<div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html">GeoMaps::GeoMapProvider</a></div><div class="ttdoc">Provides geographic information.</div><div class="ttdef"><b>Definition:</b> <a href="GeoMapProvider_8h_source.html#l00059">GeoMapProvider.h:60</a></div></div>
+<div class="ttc" id="aclassGeoMaps_1_1GeoMapProvider_html"><div class="ttname"><a href="classGeoMaps_1_1GeoMapProvider.html">GeoMaps::GeoMapProvider</a></div><div class="ttdoc">Provides geographic information.</div><div class="ttdef"><b>Definition:</b> <a href="GeoMapProvider_8h_source.html#l00060">GeoMapProvider.h:61</a></div></div>
 <div class="ttc" id="aclassGeoMaps_1_1WaypointLibrary_html"><div class="ttname"><a href="classGeoMaps_1_1WaypointLibrary.html">GeoMaps::WaypointLibrary</a></div><div class="ttdoc">Library of user-defined waypoints.</div><div class="ttdef"><b>Definition:</b> <a href="WaypointLibrary_8h_source.html#l00039">WaypointLibrary.h:40</a></div></div>
-<div class="ttc" id="aclassGlobalObject_html"><div class="ttname"><a href="classGlobalObject.html">GlobalObject</a></div><div class="ttdoc">Base class for global singleton objects.</div><div class="ttdef"><b>Definition:</b> <a href="GlobalObject_8h_source.html#l00105">GlobalObject.h:106</a></div></div>
+<div class="ttc" id="aclassGlobalObject_html"><div class="ttname"><a href="classGlobalObject.html">GlobalObject</a></div><div class="ttdoc">Base class for global singleton objects.</div><div class="ttdef"><b>Definition:</b> <a href="GlobalObject_8h_source.html#l00106">GlobalObject.h:107</a></div></div>
 <div class="ttc" id="aclassGlobalObject_html_a0501f0fd4dbb0252ff120fd07ea2f703"><div class="ttname"><a href="classGlobalObject.html#a0501f0fd4dbb0252ff120fd07ea2f703">GlobalObject::canConstruct</a></div><div class="ttdeci">static Q_INVOKABLE bool canConstruct()</div><div class="ttdoc">Indicates if the static methods are ready to be used.</div></div>
 <div class="ttc" id="aclassGlobalObject_html_a06c131e4d5f9851ea5d8002e3c30990f"><div class="ttname"><a href="classGlobalObject.html#a06c131e4d5f9851ea5d8002e3c30990f">GlobalObject::trafficDataProvider</a></div><div class="ttdeci">static Q_INVOKABLE Traffic::TrafficDataProvider * trafficDataProvider()</div><div class="ttdoc">Pointer to appplication-wide static TrafficDataProvider instance.</div></div>
 <div class="ttc" id="aclassGlobalObject_html_a1136ba32f7718808167124422be955cd"><div class="ttname"><a href="classGlobalObject.html#a1136ba32f7718808167124422be955cd">GlobalObject::weatherDataProvider</a></div><div class="ttdeci">static Q_INVOKABLE Weather::WeatherDataProvider * weatherDataProvider()</div><div class="ttdoc">Pointer to appplication-wide static WeatherDataProvider instance.</div></div>
@@ -216,7 +219,8 @@ $(function() {
 <div class="ttc" id="aclassGlobalObject_html_ab12da0d2ab30cc15a28dfa9e78ab578d"><div class="ttname"><a href="classGlobalObject.html#ab12da0d2ab30cc15a28dfa9e78ab578d">GlobalObject::geoMapProvider</a></div><div class="ttdeci">static Q_INVOKABLE GeoMaps::GeoMapProvider * geoMapProvider()</div><div class="ttdoc">Pointer to appplication-wide static GeoMaps::GeoMapProvider instance.</div></div>
 <div class="ttc" id="aclassGlobalObject_html_ac8dfa53c492975de42fa7972e77abbc1"><div class="ttname"><a href="classGlobalObject.html#ac8dfa53c492975de42fa7972e77abbc1">GlobalObject::GlobalObject</a></div><div class="ttdeci">GlobalObject(QObject *parent=nullptr)</div><div class="ttdoc">Standard constructor.</div></div>
 <div class="ttc" id="aclassGlobalObject_html_ad13691c58c71ce9b8be146bf8743f08e"><div class="ttname"><a href="classGlobalObject.html#ad13691c58c71ce9b8be146bf8743f08e">GlobalObject::notificationManager</a></div><div class="ttdeci">static Q_INVOKABLE Notifications::NotificationManager * notificationManager()</div><div class="ttdoc">Pointer to appplication-wide static notification manager instance.</div></div>
-<div class="ttc" id="aclassGlobalObject_html_ad89d4b5b146c91f65f282572629c2f5f"><div class="ttname"><a href="classGlobalObject.html#ad89d4b5b146c91f65f282572629c2f5f">GlobalObject::deferredInitialization</a></div><div class="ttdeci">virtual void deferredInitialization()</div><div class="ttdoc">Non-constructor initialization.</div><div class="ttdef"><b>Definition:</b> <a href="GlobalObject_8h_source.html#l00263">GlobalObject.h:263</a></div></div>
+<div class="ttc" id="aclassGlobalObject_html_ad6ab8a16768e1abae0e960fbabcf236b"><div class="ttname"><a href="classGlobalObject.html#ad6ab8a16768e1abae0e960fbabcf236b">GlobalObject::sensors</a></div><div class="ttdeci">static Q_INVOKABLE Sensors * sensors()</div><div class="ttdoc">Pointer to appplication-wide static Navigation::Clock instance.</div></div>
+<div class="ttc" id="aclassGlobalObject_html_ad89d4b5b146c91f65f282572629c2f5f"><div class="ttname"><a href="classGlobalObject.html#ad89d4b5b146c91f65f282572629c2f5f">GlobalObject::deferredInitialization</a></div><div class="ttdeci">virtual void deferredInitialization()</div><div class="ttdoc">Non-constructor initialization.</div><div class="ttdef"><b>Definition:</b> <a href="GlobalObject_8h_source.html#l00270">GlobalObject.h:270</a></div></div>
 <div class="ttc" id="aclassGlobalObject_html_adbce86b691abd0b44c6853bdbe3fd680"><div class="ttname"><a href="classGlobalObject.html#adbce86b691abd0b44c6853bdbe3fd680">GlobalObject::flarmnetDB</a></div><div class="ttdeci">static Q_INVOKABLE Traffic::FlarmnetDB * flarmnetDB()</div><div class="ttdoc">Pointer to appplication-wide static FlarmnetDB instance.</div></div>
 <div class="ttc" id="aclassGlobalObject_html_ae5d0c94af509c9744e1b344201928715"><div class="ttname"><a href="classGlobalObject.html#ae5d0c94af509c9744e1b344201928715">GlobalObject::clear</a></div><div class="ttdeci">static void clear()</div><div class="ttdoc">Deletes all globally defined objects.</div></div>
 <div class="ttc" id="aclassGlobalObject_html_af0767b249546f9627b16ed8e21b5b210"><div class="ttname"><a href="classGlobalObject.html#af0767b249546f9627b16ed8e21b5b210">GlobalObject::clock</a></div><div class="ttdeci">static Q_INVOKABLE Navigation::Clock * clock()</div><div class="ttdoc">Pointer to appplication-wide static Navigation::Clock instance.</div></div>
@@ -231,11 +235,12 @@ $(function() {
 <div class="ttc" id="aclassPlatform_1_1FileExchange__Abstract_html"><div class="ttname"><a href="classPlatform_1_1FileExchange__Abstract.html">Platform::FileExchange_Abstract</a></div><div class="ttdoc">Interface to platform-specific file exchange functionality.</div><div class="ttdef"><b>Definition:</b> <a href="FileExchange__Abstract_8h_source.html#l00039">FileExchange_Abstract.h:40</a></div></div>
 <div class="ttc" id="aclassPlatform_1_1PlatformAdaptor__Abstract_html"><div class="ttname"><a href="classPlatform_1_1PlatformAdaptor__Abstract.html">Platform::PlatformAdaptor_Abstract</a></div><div class="ttdoc">Interface to platform-specific functionality.</div><div class="ttdef"><b>Definition:</b> <a href="PlatformAdaptor__Abstract_8h_source.html#l00051">PlatformAdaptor_Abstract.h:52</a></div></div>
 <div class="ttc" id="aclassPositioning_1_1PositionProvider_html"><div class="ttname"><a href="classPositioning_1_1PositionProvider.html">Positioning::PositionProvider</a></div><div class="ttdoc">Central Position Provider.</div><div class="ttdef"><b>Definition:</b> <a href="PositionProvider_8h_source.html#l00048">PositionProvider.h:49</a></div></div>
+<div class="ttc" id="aclassSensors_html"><div class="ttname"><a href="classSensors.html">Sensors</a></div><div class="ttdoc">Sensor data.</div><div class="ttdef"><b>Definition:</b> <a href="Sensors_8h_source.html#l00042">Sensors.h:43</a></div></div>
 <div class="ttc" id="aclassTraffic_1_1FlarmnetDB_html"><div class="ttname"><a href="classTraffic_1_1FlarmnetDB.html">Traffic::FlarmnetDB</a></div><div class="ttdoc">Flarmnet database.</div><div class="ttdef"><b>Definition:</b> <a href="FlarmnetDB_8h_source.html#l00037">FlarmnetDB.h:37</a></div></div>
 <div class="ttc" id="aclassTraffic_1_1PasswordDB_html"><div class="ttname"><a href="classTraffic_1_1PasswordDB.html">Traffic::PasswordDB</a></div><div class="ttdoc">Password database.</div><div class="ttdef"><b>Definition:</b> <a href="PasswordDB_8h_source.html#l00037">PasswordDB.h:37</a></div></div>
 <div class="ttc" id="aclassTraffic_1_1TrafficDataProvider_html"><div class="ttname"><a href="classTraffic_1_1TrafficDataProvider.html">Traffic::TrafficDataProvider</a></div><div class="ttdoc">Traffic receiver.</div><div class="ttdef"><b>Definition:</b> <a href="TrafficDataProvider_8h_source.html#l00056">TrafficDataProvider.h:56</a></div></div>
-<div class="ttc" id="aclassWeather_1_1WeatherDataProvider_html"><div class="ttname"><a href="classWeather_1_1WeatherDataProvider.html">Weather::WeatherDataProvider</a></div><div class="ttdoc">WeatherDataProvider, weather service manager.</div><div class="ttdef"><b>Definition:</b> <a href="WeatherDataProvider_8h_source.html#l00063">WeatherDataProvider.h:63</a></div></div>
-<div class="ttc" id="anamespacePositioning_html"><div class="ttname"><a href="namespacePositioning.html">Positioning</a></div><div class="ttdef"><b>Definition:</b> <a href="GlobalObject_8h_source.html#l00072">GlobalObject.h:73</a></div></div>
+<div class="ttc" id="aclassWeather_1_1WeatherDataProvider_html"><div class="ttname"><a href="classWeather_1_1WeatherDataProvider.html">Weather::WeatherDataProvider</a></div><div class="ttdoc">WeatherDataProvider, weather service manager.</div><div class="ttdef"><b>Definition:</b> <a href="WeatherDataProvider_8h_source.html#l00065">WeatherDataProvider.h:65</a></div></div>
+<div class="ttc" id="anamespacePositioning_html"><div class="ttname"><a href="namespacePositioning.html">Positioning</a></div><div class="ttdef"><b>Definition:</b> <a href="GlobalObject_8h_source.html#l00073">GlobalObject.h:74</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

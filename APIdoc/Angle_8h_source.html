@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.28.2</span>
+   &#160;<span id="projectnumber">2.28.93</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -100,7 +100,7 @@ $(function() {
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <span class="keywordflow">return</span> {};</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        }</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#a6f7eb8420f1e2ea38641a79fcd68cb69">   85</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">bool</span> <a class="code" href="classUnits_1_1Angle.html#a6f7eb8420f1e2ea38641a79fcd68cb69">isFinite</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#a6f7eb8420f1e2ea38641a79fcd68cb69">   85</a></span>&#160;        [[nodiscard]] Q_INVOKABLE <span class="keywordtype">bool</span> <a class="code" href="classUnits_1_1Angle.html#a6f7eb8420f1e2ea38641a79fcd68cb69">isFinite</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="keyword">        </span>{</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            <span class="keywordflow">return</span> std::isfinite(m_angleInRAD);</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        }</div>
@@ -119,16 +119,16 @@ $(function() {
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            <span class="keywordflow">return</span> result;</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        }</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
-<div class="line"><a name="l00122"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#a0038f0a2b6284f0de6368d27340e7a1b">  122</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">bool</span> <a class="code" href="classUnits_1_1Angle.html#a0038f0a2b6284f0de6368d27340e7a1b">operator==</a>(<span class="keyword">const</span> <a class="code" href="classUnits_1_1Angle.html">Units::Angle</a>&amp; rhs) <span class="keyword">const</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00122"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#a0038f0a2b6284f0de6368d27340e7a1b">  122</a></span>&#160;        [[nodiscard]] Q_INVOKABLE <span class="keywordtype">bool</span> <a class="code" href="classUnits_1_1Angle.html#a0038f0a2b6284f0de6368d27340e7a1b">operator==</a>(<span class="keyword">const</span> <a class="code" href="classUnits_1_1Angle.html">Units::Angle</a>&amp; rhs) <span class="keyword">const</span> = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
-<div class="line"><a name="l00130"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#a5af4461c6344a2fac7a5623a2bdb633d">  130</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">bool</span> <a class="code" href="classUnits_1_1Angle.html#a5af4461c6344a2fac7a5623a2bdb633d">operator!=</a>(<span class="keyword">const</span> <a class="code" href="classUnits_1_1Angle.html">Units::Angle</a>&amp; rhs) <span class="keyword">const</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00130"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#a5af4461c6344a2fac7a5623a2bdb633d">  130</a></span>&#160;        [[nodiscard]] Q_INVOKABLE <span class="keywordtype">bool</span> <a class="code" href="classUnits_1_1Angle.html#a5af4461c6344a2fac7a5623a2bdb633d">operator!=</a>(<span class="keyword">const</span> <a class="code" href="classUnits_1_1Angle.html">Units::Angle</a>&amp; rhs) <span class="keyword">const</span> = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; </div>
-<div class="line"><a name="l00136"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#a746839effb8fcf3de0300a7b2ef6d5c7">  136</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Angle.html#a746839effb8fcf3de0300a7b2ef6d5c7">cos</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#a746839effb8fcf3de0300a7b2ef6d5c7">  136</a></span>&#160;        [[nodiscard]] Q_INVOKABLE <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Angle.html#a746839effb8fcf3de0300a7b2ef6d5c7">cos</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="keyword">        </span>{</div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;            <span class="keywordflow">return</span> std::cos(m_angleInRAD);</div>
 <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        }</div>
 <div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160; </div>
-<div class="line"><a name="l00145"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#a7457628d8560f4556d2a17a72bb6d64d">  145</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Angle.html#a7457628d8560f4556d2a17a72bb6d64d">sin</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00145"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#a7457628d8560f4556d2a17a72bb6d64d">  145</a></span>&#160;        [[nodiscard]] Q_INVOKABLE <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Angle.html#a7457628d8560f4556d2a17a72bb6d64d">sin</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="keyword">        </span>{</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;            <span class="keywordflow">return</span> std::sin(m_angleInRAD);</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        }</div>
@@ -139,9 +139,9 @@ $(function() {
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;            <span class="keywordflow">return</span> result;</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        }</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
-<div class="line"><a name="l00166"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#ae7290d5a9ce0f0f417bcd1b36a49bd08">  166</a></span>&#160;        Q_INVOKABLE [[nodiscard]] QString <a class="code" href="classUnits_1_1Angle.html#ae7290d5a9ce0f0f417bcd1b36a49bd08">toClock</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00166"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#ae7290d5a9ce0f0f417bcd1b36a49bd08">  166</a></span>&#160;        [[nodiscard]] Q_INVOKABLE QString <a class="code" href="classUnits_1_1Angle.html#ae7290d5a9ce0f0f417bcd1b36a49bd08">toClock</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160; </div>
-<div class="line"><a name="l00172"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#ae00ac88ea6de4084b445459b399ca7d0">  172</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Angle.html#ae00ac88ea6de4084b445459b399ca7d0">toDEG</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00172"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#ae00ac88ea6de4084b445459b399ca7d0">  172</a></span>&#160;        [[nodiscard]] Q_INVOKABLE <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Angle.html#ae00ac88ea6de4084b445459b399ca7d0">toDEG</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="keyword">        </span>{</div>
 <div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;            <span class="keywordflow">if</span> (!qIsFinite(m_angleInRAD)) {</div>
 <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;                <span class="keywordflow">return</span> qQNaN();</div>
@@ -154,7 +154,7 @@ $(function() {
 <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;            <span class="keywordflow">return</span> d+360.0;</div>
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        }</div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160; </div>
-<div class="line"><a name="l00189"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#adb314015a90f78ea1d8a1ef92f9f1fba">  189</a></span>&#160;        Q_INVOKABLE [[nodiscard]] <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Angle.html#adb314015a90f78ea1d8a1ef92f9f1fba">toRAD</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00189"></a><span class="lineno"><a class="line" href="classUnits_1_1Angle.html#adb314015a90f78ea1d8a1ef92f9f1fba">  189</a></span>&#160;        [[nodiscard]] Q_INVOKABLE <span class="keywordtype">double</span> <a class="code" href="classUnits_1_1Angle.html#adb314015a90f78ea1d8a1ef92f9f1fba">toRAD</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="keyword">        </span>{</div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;            <span class="keywordflow">return</span> m_angleInRAD;</div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        }</div>

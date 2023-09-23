@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.28.2</span>
+   &#160;<span id="projectnumber">2.28.93</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -64,8 +64,8 @@ $(function() {
 <li>dateChanged()
 : <a class="el" href="classNavigation_1_1Clock.html#aa8e950e400abd584ae8790a54772de58">Navigation::Clock</a>
 </li>
-<li>decodedText
-: <a class="el" href="classWeather_1_1Decoder.html#a293cace0b214bef4878cac602c97fcdd">Weather::Decoder</a>
+<li>decodedText()
+: <a class="el" href="classWeather_1_1Decoder.html#ac3d026ddf5aebba0686b93f3a85648ae">Weather::Decoder</a>
 </li>
 <li>decodedTextChanged()
 : <a class="el" href="classWeather_1_1Decoder.html#a9bc19bf3a99bea3bd193427bfc816210">Weather::Decoder</a>
@@ -79,6 +79,7 @@ $(function() {
 , <a class="el" href="classNotifications_1_1NotificationManager.html#a491ee0154d491a2a6ec072f4bee87f72">Notifications::NotificationManager</a>
 , <a class="el" href="classPlatform_1_1FileExchange.html#aa02f3bc70cc1e4e1f2de22ee63ad919a">Platform::FileExchange</a>
 , <a class="el" href="classPlatform_1_1PlatformAdaptor.html#a0a762312201deb36e9ff3c458e7ff696">Platform::PlatformAdaptor</a>
+, <a class="el" href="classSensors.html#a07b172fffe0efe4f670e247eba8182c9">Sensors</a>
 </li>
 <li>deleteFiles()
 : <a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#afe1ec594fbb9c9cf417883a017cebe90">DataManagement::Downloadable_Abstract</a>
@@ -90,6 +91,12 @@ $(function() {
 </li>
 <li>demoRunner()
 : <a class="el" href="classGlobalObject.html#a97d0f9fb61c58e12bcc27e882264395c">GlobalObject</a>
+</li>
+<li>density()
+: <a class="el" href="classNavigation_1_1Atmosphere.html#a58eca1259b5fc1b207f826c654f31720">Navigation::Atmosphere</a>
+</li>
+<li>densityAltitude
+: <a class="el" href="classSensors.html#af4a9a396e5c87709ca3536332175393c">Sensors</a>
 </li>
 <li>descentSpeed
 : <a class="el" href="classNavigation_1_1Aircraft.html#a5530fa293fe353acb11f9457aefc4a38">Navigation::Aircraft</a>
@@ -108,15 +115,15 @@ $(function() {
 , <a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html#a64e2cfe006acd151c46f53063c8880cd">DataManagement::Downloadable_MultiFile</a>
 , <a class="el" href="classDataManagement_1_1Downloadable__SingleFile.html#ad3fe3dad01adc6a69f4c9a37ba698287">DataManagement::Downloadable_SingleFile</a>
 , <a class="el" href="classNavigation_1_1Leg.html#a673cb55ed190928c58d4e7edbb3d533f">Navigation::Leg</a>
-, <a class="el" href="classTraffic_1_1TrafficFactor__Abstract.html#a38e110cf165cc1f587e3ad9762a30959">Traffic::TrafficFactor_Abstract</a>
+, <a class="el" href="classTraffic_1_1TrafficFactor__Abstract.html#a2b793f3437edcdd8417e6a543002bd8e">Traffic::TrafficFactor_Abstract</a>
 , <a class="el" href="classTraffic_1_1Warning.html#a361b0d42ecb83b002bd5091198ac219d">Traffic::Warning</a>
 </li>
 <li>descriptionChanged()
 : <a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#abaa74f2769a40290272b63119bd7c904">DataManagement::Downloadable_Abstract</a>
 , <a class="el" href="classTraffic_1_1TrafficFactor__Abstract.html#abd8417c9e29f1f88e7f428f676f6118d">Traffic::TrafficFactor_Abstract</a>
 </li>
-<li>directionFrom()
-: <a class="el" href="classWeather_1_1Wind.html#aff56e78215ad6e86813275112d056436">Weather::Wind</a>
+<li>directionFrom
+: <a class="el" href="classWeather_1_1Wind.html#af9156d503d3385cc6469500f541a0468">Weather::Wind</a>
 </li>
 <li>directory()
 : <a class="el" href="classLibrarian.html#a3502ea43c67a61919781d03a542a9e0d">Librarian</a>
@@ -133,8 +140,8 @@ $(function() {
 , <a class="el" href="classTraffic_1_1TrafficDataSource__Tcp.html#a301e9c64c9279c362657db7f81bfc0f9">Traffic::TrafficDataSource_Tcp</a>
 , <a class="el" href="classTraffic_1_1TrafficDataSource__Udp.html#a5d242bfe4cb10fbee153c0248683c308">Traffic::TrafficDataSource_Udp</a>
 </li>
-<li>distance
-: <a class="el" href="classNavigation_1_1Leg.html#a9f202009b38a19b46205abe817dc50c0">Navigation::Leg</a>
+<li>distance()
+: <a class="el" href="classNavigation_1_1Leg.html#a590c4e48453ee70de8ee947553d29ea5">Navigation::Leg</a>
 </li>
 <li>DistanceUnit
 : <a class="el" href="classUnits_1_1Distance.html#a7c443eb4174c47f0ab4174f9ecef8a09">Units::Distance</a>
@@ -154,11 +161,14 @@ $(function() {
 <li>downloadables4Location()
 : <a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html#a522ffae48f9bb649e47432595583fc89">DataManagement::Downloadable_MultiFile</a>
 </li>
+<li>downloadablesByDistance()
+: <a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html#ae88c015db1d68a57fa45353e11425adb">DataManagement::Downloadable_MultiFile</a>
+</li>
 <li>downloadablesChanged()
 : <a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html#ac0878b9dff69e734bb7c05c3ab55b65d">DataManagement::Downloadable_MultiFile</a>
 </li>
-<li>downloading()
-: <a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#a2a42bc0a6d5161d5199c030d400cbf95">DataManagement::Downloadable_Abstract</a>
+<li>downloading
+: <a class="el" href="classDataManagement_1_1Downloadable__Abstract.html#af0458b68042e58bcf831af6b90faf3a3">DataManagement::Downloadable_Abstract</a>
 , <a class="el" href="classDataManagement_1_1Downloadable__MultiFile.html#a1431902efee190ce2ca2f07033c82d00">DataManagement::Downloadable_MultiFile</a>
 , <a class="el" href="classDataManagement_1_1Downloadable__SingleFile.html#a6eb2b556f6384aaf262c9ff889ed863a">DataManagement::Downloadable_SingleFile</a>
 , <a class="el" href="classWeather_1_1WeatherDataProvider.html#a6ec5dc5d952f6e91c2cac03d52005be6">Weather::WeatherDataProvider</a>

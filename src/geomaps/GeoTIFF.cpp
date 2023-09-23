@@ -143,7 +143,7 @@ private:
     void parserValues(const char *bytes, Tiff_ByteOrder byteOrder)
     {
         // To make things simple, save normal integer as qint32 or quint32 here.
-        for (auto i = 0; i < m_count; ++i)
+        for (quint64 i = 0; i < m_count; ++i)
         {
             switch (m_type)
             {

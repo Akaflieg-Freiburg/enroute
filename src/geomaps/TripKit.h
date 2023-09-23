@@ -22,7 +22,7 @@
 
 #include <QJsonArray>
 
-#include "geomaps/Zip.h"
+#include "geomaps/ZipFile.h"
 
 namespace GeoMaps
 {
@@ -100,7 +100,7 @@ public:
     auto extract(const QString &directoryPath, qsizetype index) -> QString;
 
 private:
-    GeoMaps::Zip m_zip;
+    GeoMaps::ZipFile m_zip;
     QString m_error;
     QString m_name;
     QJsonArray m_charts;

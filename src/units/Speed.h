@@ -108,7 +108,7 @@ namespace Units {
          *
          * @returns True is the speed is a finite number
          */
-        Q_INVOKABLE [[nodiscard]] bool isFinite() const
+        [[nodiscard]] Q_INVOKABLE bool isFinite() const
         {
             return std::isfinite(_speedInMPS);
         }
@@ -117,7 +117,7 @@ namespace Units {
          *
          * @returns True is the distance is negative
          */
-        Q_INVOKABLE [[nodiscard]] bool isNegative() const
+        [[nodiscard]] Q_INVOKABLE bool isNegative() const
         {
             return _speedInMPS < 0.0;
         }
@@ -164,13 +164,13 @@ namespace Units {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE [[nodiscard]] std::partial_ordering operator<=>(const Units::Speed& rhs) const = default;
+        [[nodiscard]] Q_INVOKABLE std::partial_ordering operator<=>(const Units::Speed& rhs) const = default;
 
         /*! \brief Convert to feet per minute
          *
          * @returns Speed in feet per minute
          */
-        Q_INVOKABLE [[nodiscard]] double toFPM() const
+        [[nodiscard]] Q_INVOKABLE double toFPM() const
         {
             return _speedInMPS * FPM_per_MPS;
         }
@@ -179,7 +179,7 @@ namespace Units {
          *
          * @returns speed in meters per second
          */
-        Q_INVOKABLE [[nodiscard]] double toMPS() const
+        [[nodiscard]] Q_INVOKABLE double toMPS() const
         {
             return _speedInMPS;
         }
@@ -188,7 +188,7 @@ namespace Units {
          *
          * @returns speed in status miles per hour
          */
-        Q_INVOKABLE [[nodiscard]] double toMPH() const
+        [[nodiscard]] Q_INVOKABLE double toMPH() const
         {
             return _speedInMPS/MPS_per_MPH;
         }
@@ -197,7 +197,7 @@ namespace Units {
          *
          * @returns speed in knots (=Nautical miles per hour)
          */
-        Q_INVOKABLE [[nodiscard]] double toKN() const
+        [[nodiscard]] Q_INVOKABLE double toKN() const
         {
             return _speedInMPS * KN_per_MPS;
         }
@@ -206,7 +206,7 @@ namespace Units {
          *
          * @returns speed in knots (=Nautical miles per hour)
          */
-        Q_INVOKABLE [[nodiscard]] double toKMH() const
+        [[nodiscard]] Q_INVOKABLE double toKMH() const
         {
             return _speedInMPS * KMH_per_MPS;
         }

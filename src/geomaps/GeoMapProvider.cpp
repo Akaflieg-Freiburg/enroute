@@ -32,6 +32,7 @@
 #include "dataManagement/DataManager.h"
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/MBTILES.h"
+#include "geomaps/VAC.h"
 #include "geomaps/WaypointLibrary.h"
 #include "navigation/Navigator.h"
 
@@ -128,13 +129,94 @@ auto GeoMaps::GeoMapProvider::geoJSON() -> QByteArray
     return _combinedGeoJSON_;
 }
 
-auto GeoMaps::GeoMapProvider::styleFileURL() const -> QString
+auto GeoMaps::GeoMapProvider::styleFileURL() -> QString
 {
-    if (_styleFile.isNull())
+    if (m_styleFile.isNull())
     {
-        return QStringLiteral(":/flightMap/empty.json");
+        QFile file;
+        if (GlobalObject::dataManager()->baseMaps()->hasFile())
+        {
+            // Serve new tile set under new name
+            if (!m_baseMapRasterTiles.isEmpty())
+            {
+                file.setFileName(QStringLiteral(":/flightMap/mapstyle-raster.json"));
+            }
+            else
+            {
+                file.setFileName(QStringLiteral(":/flightMap/osm-liberty.json"));
+            }
+        }
+        else
+        {
+            file.setFileName(QStringLiteral(":/flightMap/empty.json"));
+        }
+
+        file.open(QIODevice::ReadOnly);
+        QByteArray data = file.readAll();
+        data.replace("%URL%", (_tileServer.serverUrl()+"/"+_currentBaseMapPath).toLatin1());
+        data.replace("%URLT%", (_tileServer.serverUrl()+"/"+_currentTerrainMapPath).toLatin1());
+        data.replace("%URL2%", _tileServer.serverUrl().toLatin1());
+
+        if (m_approachChartFileName.isEmpty())
+        {
+            data.replace("%APCHIMAGE%", (_tileServer.serverUrl()+"/icons/appIcon.png").toLatin1());
+            data.replace("%VISIBILITY", "none");
+            QGeoRectangle bBox({7,47}, {8,46});
+            data.replace("%APCHLEFT%", "1");
+            data.replace("%APCHRIGHT%", "2");
+            data.replace("%APCHTOP%", "89");
+            data.replace("%APCHBOT%", "88");
+        }
+        else
+        {
+            auto topLeft = m_approachChartBBox.topLeft();
+            auto bottomRight = m_approachChartBBox.bottomRight();
+
+            data.replace("%APCHIMAGE%", "file://"+m_approachChartFileName.toLocal8Bit());
+            data.replace("%VISIBILITY", "visible");
+            data.replace("%APCHLEFT%", QString::number(topLeft.longitude()).toLocal8Bit());
+            data.replace("%APCHRIGHT%", QString::number(bottomRight.longitude()).toLocal8Bit());
+            data.replace("%APCHTOP%", QString::number(topLeft.latitude()).toLocal8Bit());
+            data.replace("%APCHBOT%", QString::number(bottomRight.latitude()).toLocal8Bit());
+        }
+
+        m_styleFile = new QTemporaryFile(this);
+        m_styleFile->open();
+        m_styleFile->write(data);
+        m_styleFile->close();
     }
-    return "file://"+_styleFile->fileName();
+
+    return "file://"+m_styleFile->fileName();
+}
+
+
+//
+// Setter Methods
+//
+
+void GeoMaps::GeoMapProvider::setApproachChart(const QString& apchChartName)
+{
+    if (m_approachChartFileName == apchChartName)
+    {
+        return;
+    }
+
+    m_approachChartFileName = {};
+    m_approachChartBBox = {};
+
+    if (!apchChartName.isEmpty())
+    {
+        auto bBox = GeoMaps::VAC(apchChartName).bBox();
+        if (bBox.isValid())
+        {
+            m_approachChartFileName = apchChartName;
+            m_approachChartBBox = bBox;
+        }
+    }
+
+    delete m_styleFile;
+    emit styleFileURLChanged();
+    emit approachChartChanged();
 }
 
 
@@ -479,44 +561,29 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
     }
     emit terrainMapTilesChanged();
 
-    // Delete old style file, stop serving tiles
-    delete _styleFile;
+    // Stop serving tiles
     _tileServer.removeMbtilesFileSet(_currentBaseMapPath);
     _tileServer.removeMbtilesFileSet(_currentTerrainMapPath);
     _currentBaseMapPath = QString::number(QRandomGenerator::global()->bounded(static_cast<quint32>(1000000000)));
     _currentTerrainMapPath = QString::number(QRandomGenerator::global()->bounded(static_cast<quint32>(1000000000)));
 
-    QFile file;
+    // Start serving tiles again
     if (GlobalObject::dataManager()->baseMaps()->hasFile())
     {
         // Serve new tile set under new name
         if (!m_baseMapRasterTiles.isEmpty())
         {
             _tileServer.addMbtilesFileSet(_currentBaseMapPath, m_baseMapRasterTiles);
-            file.setFileName(QStringLiteral(":/flightMap/mapstyle-raster.json"));
         }
         else
         {
             _tileServer.addMbtilesFileSet(_currentBaseMapPath, m_baseMapVectorTiles);
-            file.setFileName(QStringLiteral(":/flightMap/osm-liberty.json"));
         }
-    }
-    else
-    {
-        file.setFileName(QStringLiteral(":/flightMap/empty.json"));
     }
     _tileServer.addMbtilesFileSet(_currentTerrainMapPath, m_terrainMapTiles);
 
-    file.open(QIODevice::ReadOnly);
-    QByteArray data = file.readAll();
-    data.replace("%URL%", (_tileServer.serverUrl()+"/"+_currentBaseMapPath).toLatin1());
-    data.replace("%URLT%", (_tileServer.serverUrl()+"/"+_currentTerrainMapPath).toLatin1());
-    data.replace("%URL2%", _tileServer.serverUrl().toLatin1());
-    _styleFile = new QTemporaryFile(this);
-    _styleFile->open();
-    _styleFile->write(data);
-    _styleFile->close();
-
+    // Update style file
+    delete m_styleFile;
     emit styleFileURLChanged();
 }
 

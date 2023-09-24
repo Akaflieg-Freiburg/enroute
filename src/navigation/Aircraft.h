@@ -256,7 +256,7 @@ public:
      *
      *  @returns Copy of this object
      */
-    Q_INVOKABLE [[nodiscard]] Navigation::Aircraft clone() const { return {*this}; }
+    [[nodiscard]] Q_INVOKABLE Navigation::Aircraft clone() const { return {*this}; }
 
     /*! \brief Description of the way between two points
      *
@@ -266,7 +266,7 @@ public:
      *
      * @returns A string such as "DIST 65.2 nm • QUJ 276°" or "DIST 65.2 km • QUJ 276°".  If the way cannot be described (e.g. because one of the coordinates is invalid), then an empty string is returned.
      */
-    Q_INVOKABLE [[nodiscard]] QString describeWay(const QGeoCoordinate &from, const QGeoCoordinate &to) const;
+    [[nodiscard]] Q_INVOKABLE QString describeWay(const QGeoCoordinate &from, const QGeoCoordinate &to) const;
 
     /*! \brief Convert horizontal distance to string
      *
@@ -276,7 +276,7 @@ public:
      *
      *  @returns A string of the form "280 km", or "-" for an invalid distance
      */
-    Q_INVOKABLE [[nodiscard]] QString horizontalDistanceToString(Units::Distance distance) const;
+    [[nodiscard]] Q_INVOKABLE QString horizontalDistanceToString(Units::Distance distance) const;
 
     /*! \brief Convert horizontal speed to string
      *
@@ -286,7 +286,7 @@ public:
      *
      *  @returns A string of the form "98 kn", "154 km/h", or "-"
      */
-    Q_INVOKABLE [[nodiscard]] QString horizontalSpeedToString(Units::Speed speed) const;
+    [[nodiscard]] Q_INVOKABLE QString horizontalSpeedToString(Units::Speed speed) const;
 
     /*! \brief Reads aircraft data from a JSON document
      *
@@ -299,7 +299,7 @@ public:
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
      */
-    Q_INVOKABLE [[nodiscard]] QString loadFromJSON(const QString& fileName);
+    [[nodiscard]] Q_INVOKABLE QString loadFromJSON(const QString& fileName);
 
     /*! \brief Reads aircraft data from a JSON document
      *
@@ -312,7 +312,7 @@ public:
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
      */
-    Q_INVOKABLE [[nodiscard]] QString loadFromJSON(const QByteArray &JSON);
+    [[nodiscard]] Q_INVOKABLE QString loadFromJSON(const QByteArray &JSON);
 
     /*! \brief Equality check
      *
@@ -331,7 +331,7 @@ public:
      * @returns Empty string in case of success, human-readable, translated
      * error message otherwise.
      */
-    Q_INVOKABLE [[nodiscard]] QString save(const QString& fileName) const;
+    [[nodiscard]] Q_INVOKABLE QString save(const QString& fileName) const;
 
     /*! \brief Exports to route to JSON
      *
@@ -340,7 +340,7 @@ public:
      *
      * @returns QByteArray containing JSON code
      */
-    Q_INVOKABLE [[nodiscard]] QByteArray toJSON() const;
+    [[nodiscard]] Q_INVOKABLE QByteArray toJSON() const;
 
     /*! \brief Convert vertical distance to string
      *
@@ -352,7 +352,7 @@ public:
      *
      *  @returns A string of the form "1.280 m", "3.500 ft", or "-" for an invalid distance
      */
-    Q_INVOKABLE [[nodiscard]] QString verticalDistanceToString(Units::Distance distance, bool forceSign=false) const;
+    [[nodiscard]] Q_INVOKABLE QString verticalDistanceToString(Units::Distance distance, bool forceSign=false) const;
 
     /*! \brief Convert vertical speed to string
      *
@@ -362,7 +362,7 @@ public:
      *
      *  @returns A string of the form "500 ft/min", "2,5 m/s", or "-"
      */
-    Q_INVOKABLE [[nodiscard]] QString verticalSpeedToString(Units::Speed speed) const;
+    [[nodiscard]] Q_INVOKABLE QString verticalSpeedToString(Units::Speed speed) const;
 
     /*! \brief Convert volume to string
      *
@@ -372,7 +372,7 @@ public:
      *
      *  @returns A string of the form "5.2 l", or "-"
      */
-    Q_INVOKABLE [[nodiscard]] QString volumeToString(Units::Volume volume) const;
+    [[nodiscard]] Q_INVOKABLE QString volumeToString(Units::Volume volume) const;
 
 private:
     static constexpr Units::Speed minValidSpeed = Units::Speed::fromKN(10.0);

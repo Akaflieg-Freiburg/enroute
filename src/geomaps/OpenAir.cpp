@@ -28,8 +28,7 @@
 
 #include "OpenAir.h"
 
-
-
+#include <cmath>
 
 class AirSpace {
 public:
@@ -43,14 +42,14 @@ public:
 
     void addPoint(const QString& qs)
     {
-        QGeoCoordinate point = toCoord(qs);
+        QGeoCoordinate const point = toCoord(qs);
         polygon.prepend(point);
     }
 
     void addCircle(const QString& qs)
     {
-        bool ok;
-        double radius = qs.toDouble(&ok) * 1852;
+        bool ok = false;
+        double const radius = qs.toDouble(&ok) * 1852;
         if (!ok)
         {
             throw QObject::tr("Invalid number found: %1", "OpenAir").arg(qs);
@@ -70,19 +69,19 @@ public:
 
     void addArc(const QString& qs)
     {
-        bool ok;
+        bool ok = false;
         QStringList items = qs.split(u',', Qt::SkipEmptyParts);
-        double radius = items[0].toDouble(&ok) * 1852;
+        double const radius = items[0].toDouble(&ok) * 1852;
         if (!ok)
         {
             throw QObject::tr("Invalid number found: %1", "OpenAir").arg(items[0]);
         }
-        double angleStart = items[1].toDouble(&ok);
+        double const angleStart = items[1].toDouble(&ok);
         if (!ok)
         {
             throw QObject::tr("Invalid number found: %1", "OpenAir").arg(items[1]);
         }
-        double angleEnd = items[2].toDouble(&ok);
+        double const angleEnd = items[2].toDouble(&ok);
         if (!ok)
         {
             throw QObject::tr("Invalid number found: %1", "OpenAir").arg(items[2]);
@@ -124,19 +123,19 @@ public:
     void addArcPoints(const QString& qs)
     {
         QStringList items = qs.split(u',', Qt::SkipEmptyParts);
-        QGeoCoordinate startPoint = toCoord(items[0]);
+        QGeoCoordinate const startPoint = toCoord(items[0]);
         if (items[1].startsWith(u" "_qs))
         {
             items[1] = items[1].sliced(1);
         }
-        QGeoCoordinate endPoint = toCoord(items[1]);
+        QGeoCoordinate const endPoint = toCoord(items[1]);
         if (!variableX.isValid())
         {
             throw QObject::tr("Variable X is not set but Circle should be drawn", "OpenAir");
         }
-        double radius = variableX.distanceTo(startPoint);
-        double angleStart = variableX.azimuthTo(startPoint);
-        double angleEnd = variableX.azimuthTo(endPoint);
+        double const radius = variableX.distanceTo(startPoint);
+        double const angleStart = variableX.azimuthTo(startPoint);
+        double const angleEnd = variableX.azimuthTo(endPoint);
         if (variableD == '-')
         {
             if (angleEnd > angleStart)
@@ -253,7 +252,7 @@ public:
         }
     }
 
-    bool isSet() const
+    [[nodiscard]] bool isSet() const
     {
         return (ac.length() > 0);
     }
@@ -307,8 +306,8 @@ public:
 private:
     static double getNumber(const QString& degree)
     {
-        bool ok;
-        double ret;
+        bool ok = false;
+        double ret = NAN;
         auto i = degree.indexOf(u":"_qs);
         if (i < 0)
         {
@@ -327,10 +326,10 @@ private:
         return ret;
     }
 
-    bool isClockwise() const
+    [[nodiscard]] bool isClockwise() const
     {
         double area = 0;
-        qsizetype j;
+        qsizetype j = 0;
 
         for (auto i=0; i < polygon.size(); i++)
         {
@@ -351,8 +350,8 @@ private:
 
     static QGeoCoordinate toCoord(const QString& qs)
     {
-        double latitude;
-        double longitude;
+        double latitude = NAN;
+        double longitude = NAN;
         QStringList items = qs.split(u' ', Qt::SkipEmptyParts);
         if (items[0].endsWith('N') || items[0].endsWith('S'))
         {
@@ -384,7 +383,7 @@ private:
         {
             throw QObject::tr("Invalid coordinate found: %1", "OpenAir").arg(qs);
         }
-        return QGeoCoordinate(latitude, longitude);
+        return {latitude, longitude};
     }
 };
 
@@ -419,7 +418,7 @@ public:
         QJsonArray polygonArray;
         QJsonArray coordArray;
         QJsonArray coord;
-        QGeoCoordinate point;
+        QGeoCoordinate const point;
 
         recObj.insert(u"type"_qs, QJsonValue::fromVariant("FeatureCollection"));
         recObj.insert(u"info"_qs, QJsonValue::fromVariant(fileName));
@@ -472,6 +471,11 @@ public:
             featureArray.append(featureObj);
         }
 
+        if (featureArray.isEmpty())
+        {
+            return {};
+        }
+
         recObj.insert(u"features"_qs, featureArray);
         QJsonDocument json(recObj);
         return json;
@@ -483,7 +487,7 @@ bool GeoMaps::openAir::isValid(const QString& fileName, QString* info)
 {
     QStringList errorList;
     QStringList warnings;
-    parse(fileName, errorList, warnings);
+    auto json = parse(fileName, errorList, warnings);
 
     if (info != nullptr)
     {
@@ -500,15 +504,13 @@ bool GeoMaps::openAir::isValid(const QString& fileName, QString* info)
         }
     }
 
-    return errorList.isEmpty();
+    return (!json.isEmpty()) && errorList.isEmpty();
 }
 
 
 QJsonDocument GeoMaps::openAir::parse(const QString& fileName, QStringList& errorList, QStringList& warningList)
 {
     QString line;
-    QStringList items;
-    QStringList airSpaceRecs {"AC", "AN", "AL", "AH", "V", "DP", "DC", "DA", "DB", "AT"};
     AirSpace airSpace;
     AirSpaceVector airSpaceVector;
 
@@ -521,22 +523,22 @@ QJsonDocument GeoMaps::openAir::parse(const QString& fileName, QStringList& erro
     }
 
     QTextStream inputStream(&inputFile);
+    inputStream.setEncoding(QStringConverter::Latin1);
 
     bool hadError = false;
     int lineNo = 0;
     while (inputStream.readLineInto(&line))
     {
         lineNo++;
+
         try {
             if (line.startsWith(u"*"_qs) || line.length() == 0)
             {
                 continue;
             }
-            items = line.split(u' ', Qt::SkipEmptyParts);
-            switch (airSpaceRecs.indexOf(items[0]))
+            if (line.startsWith(u"AC "_qs))
             {
-            case 0: //AC
-                //if airSpace is already filled, the excisting airSpace must be added to the list and a new airSpace must be initialized
+                //if airSpace is already filled, the existing airSpace must be added to the list and a new airSpace must be initialized
                 if (airSpace.isSet())
                 {
                     if (!hadError)
@@ -547,44 +549,60 @@ QJsonDocument GeoMaps::openAir::parse(const QString& fileName, QStringList& erro
                     airSpace = AirSpace();
                     hadError = false;
                 }
-                airSpace.ac = items[1];
-                break;
-            case 1: //AN
+                airSpace.ac = line.sliced(3).trimmed();
+                continue;
+            }
+            if (line.startsWith(u"AN "_qs))
+            {
                 airSpace.an = line.sliced(3);
                 if (airSpaceVector.isSameName(airSpace.an))
                 {
                     airSpace.variableX = airSpaceVector.getLastX();
                 }
-                break;
-            case 2: //AL
-                airSpace.setHeight(line.sliced(3), false);
-                break;
-            case 3: //AH
-                airSpace.setHeight(line.sliced(3), true);
-                break;
-            case 4: //V
-                airSpace.setVar(line.sliced(2));
-                break;
-            case 5: //DP
-                airSpace.addPoint(line.sliced(3));
-                break;
-            case 6: //DC
-                airSpace.addCircle(line.sliced(3));
-                break;
-            case 7: //DA
-                airSpace.addArc(line.sliced(3));
-                break;
-            case 8: //DB
-                airSpace.addArcPoints(line.sliced(3));
-                break;
-            case 9: //AT = position for label; must be ignored
-                break;
-            default:
-                warningList.append(QObject::tr("Unrecognized record type in line %1: %2; Line ignored.", "OpenAir").arg(QString::number(lineNo), line));
-                break;
+                continue;
             }
+            if (line.startsWith(u"AL "_qs))
+            {
+                airSpace.setHeight(line.sliced(3), false);
+                continue;
+            }
+            if (line.startsWith(u"AH "_qs))
+            {
+                airSpace.setHeight(line.sliced(3), true);
+                continue;
+            }
+            if (line.startsWith(u"V "_qs))
+            {
+                airSpace.setVar(line.sliced(2));
+                continue;
+            }
+            if (line.startsWith(u"DP "_qs))
+            {
+                airSpace.addPoint(line.sliced(3));
+                continue;
+            }
+            if (line.startsWith(u"DC "_qs))
+            {
+                airSpace.addCircle(line.sliced(3));
+                continue;
+            }
+            if (line.startsWith(u"DA "_qs))
+            {
+                airSpace.addArc(line.sliced(3));
+                continue;
+            }
+            if (line.startsWith(u"DB "_qs))
+            {
+                airSpace.addArcPoints(line.sliced(3));
+                continue;
+            }
+            if (line.startsWith(u"AT "_qs))
+            {
+                continue;
+            }
+            warningList.append(QObject::tr("Unrecognized record type in line %1: %2; Line ignored.", "OpenAir").arg(QString::number(lineNo), line));
         }
-        catch (QString ex)
+        catch (QString& ex)
         {
             hadError = true;
             warningList.append(QObject::tr("Error in line %1: %2; Airspace %3 ignored.", "OpenAir").arg(QString::number(lineNo), ex, airSpace.an));
@@ -595,7 +613,6 @@ QJsonDocument GeoMaps::openAir::parse(const QString& fileName, QStringList& erro
         airSpace.finalize(errorList);
         airSpaceVector.addAirSpace(airSpace);
     }
-
 
     return airSpaceVector.getJson(fileName);
 }

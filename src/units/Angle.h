@@ -82,7 +82,7 @@ namespace Units {
          *
          * @returns True is the angle is a finite number
          */
-        Q_INVOKABLE [[nodiscard]] bool isFinite() const
+        [[nodiscard]] Q_INVOKABLE bool isFinite() const
         {
             return std::isfinite(m_angleInRAD);
         }
@@ -119,7 +119,7 @@ namespace Units {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE [[nodiscard]] bool operator==(const Units::Angle& rhs) const = default;
+        [[nodiscard]] Q_INVOKABLE bool operator==(const Units::Angle& rhs) const = default;
 
         /*! \brief Comparison: not equal
          *
@@ -127,13 +127,13 @@ namespace Units {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE [[nodiscard]] bool operator!=(const Units::Angle& rhs) const = default;
+        [[nodiscard]] Q_INVOKABLE bool operator!=(const Units::Angle& rhs) const = default;
 
         /*! \brief Cosine of an angle, as a dimension-less number
          *
          * @returns Cosine of the angle
          */
-        Q_INVOKABLE [[nodiscard]] double cos() const
+        [[nodiscard]] Q_INVOKABLE double cos() const
         {
             return std::cos(m_angleInRAD);
         }
@@ -142,7 +142,7 @@ namespace Units {
          *
          * @returns Sine of the angle
          */
-        Q_INVOKABLE [[nodiscard]] double sin() const
+        [[nodiscard]] Q_INVOKABLE double sin() const
         {
             return std::sin(m_angleInRAD);
         }
@@ -163,13 +163,13 @@ namespace Units {
          *
          * @returns Translated, human-readable string of of the form "12 o'clock", or "-" if the angle is not finite.
          */
-        Q_INVOKABLE [[nodiscard]] QString toClock() const;
+        [[nodiscard]] Q_INVOKABLE QString toClock() const;
 
         /*! \brief Convert angle to degrees
          *
          * @returns Angle, as a number in degrees. The result is NaN, or lies in the interval [0.0, 360.0]
          */
-        Q_INVOKABLE [[nodiscard]] double toDEG() const
+        [[nodiscard]] Q_INVOKABLE double toDEG() const
         {
             if (!qIsFinite(m_angleInRAD)) {
                 return qQNaN();
@@ -186,7 +186,7 @@ namespace Units {
          *
          * @returns Angle, as a number in radian
          */
-        Q_INVOKABLE [[nodiscard]] double toRAD() const
+        [[nodiscard]] Q_INVOKABLE double toRAD() const
         {
             return m_angleInRAD;
         }

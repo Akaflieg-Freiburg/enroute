@@ -34,7 +34,9 @@ double M = 0.0289644; // molar mass of Earth's air: kg/mol
 Units::Density Navigation::Atmosphere::density(Units::Pressure p, Units::Temperature t)
 {
     if (!p.isFinite() || !t.isFinite())
+    {
         return {};
+    }
 
     return Units::Density::fromKgPerCubeMeter( p.toPa()/(t.toDegreeKelvin()*287.05287) );
 }
@@ -43,7 +45,9 @@ Units::Density Navigation::Atmosphere::density(Units::Pressure p, Units::Tempera
 Units::Density Navigation::Atmosphere::density(Units::Distance h)
 {
     if (!h.isFinite())
+    {
         return {};
+    }
 
     auto p = pressure(h);
     auto t = Units::Temperature::fromDegreeKelvin(Tb-h.toM()*Lb);

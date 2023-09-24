@@ -136,7 +136,7 @@ public:
      *  As a result, these properties are always set to match those of the last map added.
      *  This instance does not take ownership of the map.
      *
-     *  It is perfectly possible that a map is child of more than one Downloadable_MultiFile.
+     *  It is perfectly possible that a map is a child of more than one Downloadable_MultiFile.
      *
      *  @param map Map to be added
      */
@@ -152,9 +152,17 @@ public:
      *
      *   @param location QGeoCoordinate with a location
      *
-     *   @returns Property list of downloadables whose bounding box contains the given location
+     *   @returns list of downloadables whose bounding box contains the given location
      */
-    Q_INVOKABLE [[nodiscard]] QList<DataManagement::Downloadable_Abstract*> downloadables4Location(const QGeoCoordinate& location);
+    [[nodiscard]] Q_INVOKABLE QList<DataManagement::Downloadable_Abstract*> downloadables4Location(const QGeoCoordinate& location);
+
+    /*! \brief Downloadables, sorted by distance to a given location
+     *
+     *   @param location QGeoCoordinate with a location
+     *
+     *   @returns list of downloadables whose bounding box contains the given location
+     */
+    [[nodiscard]] Q_INVOKABLE QList<DataManagement::Downloadable_Abstract*> downloadablesByDistance(const QGeoCoordinate& location);
 
     /*! \brief Remove a Downloadable_SingleFile from this Downloadable_MultiFile
      *

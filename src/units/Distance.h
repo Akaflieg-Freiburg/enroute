@@ -137,7 +137,7 @@ namespace Units {
          *
          * @returns True is the distance is a finite number
          */
-        Q_INVOKABLE [[nodiscard]] bool isFinite() const
+        [[nodiscard]] Q_INVOKABLE bool isFinite() const
         {
             return std::isfinite(m_distanceInM);
         }
@@ -146,7 +146,7 @@ namespace Units {
          *
          * @returns True is the distance is negative
          */
-        Q_INVOKABLE [[nodiscard]] bool isNegative() const
+        [[nodiscard]] Q_INVOKABLE bool isNegative() const
         {
             return m_distanceInM < 0.0;
         }
@@ -157,7 +157,7 @@ namespace Units {
          *
          *  @returns Result of the addition
          */
-        Q_INVOKABLE Units::Distance operator+(Units::Distance rhs) const
+        [[nodiscard]] Q_INVOKABLE Units::Distance operator+(Units::Distance rhs) const
         {
             return fromM(m_distanceInM + rhs.m_distanceInM);
         }
@@ -168,7 +168,18 @@ namespace Units {
          *
          *  @returns Result of the subtraction
          */
-        Q_INVOKABLE Units::Distance operator-(Units::Distance rhs) const
+        [[nodiscard]] Q_INVOKABLE Units::Distance operator-(Units::Distance rhs) const
+        {
+            return fromM(m_distanceInM - rhs.m_distanceInM);
+        }
+
+        /*! \brief Subtraction
+         *
+         *  @param rhs Right hand side of the subtraction
+         *
+         *  @returns Result of the subtraction
+         */
+        [[nodiscard]] Q_INVOKABLE Units::Distance subtract(Units::Distance rhs) const
         {
             return fromM(m_distanceInM - rhs.m_distanceInM);
         }
@@ -179,7 +190,7 @@ namespace Units {
          *
          *  @returns Result of the scaling
          */
-        Q_INVOKABLE Units::Distance operator*(double factor) const
+        [[nodiscard]] Q_INVOKABLE Units::Distance operator*(double factor) const
         {
             return fromM(m_distanceInM*factor);
         }
@@ -190,13 +201,13 @@ namespace Units {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE [[nodiscard]] std::partial_ordering operator<=>(const Units::Distance& rhs) const = default;
+        [[nodiscard]] Q_INVOKABLE std::partial_ordering operator<=>(const Units::Distance& rhs) const = default;
 
         /*! \brief Convert to feet
          *
          * @returns distance in feet
          */
-        Q_INVOKABLE [[nodiscard]] double toFeet() const
+        [[nodiscard]] Q_INVOKABLE double toFeet() const
         {
             return m_distanceInM / MetersPerFeet;
         }
@@ -205,7 +216,7 @@ namespace Units {
          *
          * @returns distance in meters
          */
-        Q_INVOKABLE [[nodiscard]] double toKM() const
+        [[nodiscard]] Q_INVOKABLE double toKM() const
         {
             return m_distanceInM / 1000.;
         }
@@ -214,7 +225,7 @@ namespace Units {
          *
          * @returns distance in meters
          */
-        Q_INVOKABLE [[nodiscard]] double toM() const
+        [[nodiscard]] Q_INVOKABLE double toM() const
         {
             return m_distanceInM;
         }
@@ -223,7 +234,7 @@ namespace Units {
          *
          * @returns distance in international miles
          */
-        Q_INVOKABLE [[nodiscard]] double toMIL() const
+        [[nodiscard]] Q_INVOKABLE double toMIL() const
         {
             return m_distanceInM / MetersPerMile;
         }
@@ -232,7 +243,7 @@ namespace Units {
          *
          * @returns distance in nautical miles
          */
-        Q_INVOKABLE [[nodiscard]] double toNM() const
+        [[nodiscard]] Q_INVOKABLE double toNM() const
         {
             return m_distanceInM / MetersPerNauticalMile;
         }
@@ -252,7 +263,7 @@ namespace Units {
          *  @returns A string that describes the distance, or an empty string if
          *  no reasonable distance is set.
          */
-        Q_INVOKABLE [[nodiscard]] QString toString(Units::Distance::DistanceUnit units, bool roundBigNumbers=false, bool forceSign=false) const;
+        [[nodiscard]] Q_INVOKABLE QString toString(Units::Distance::DistanceUnit units, bool roundBigNumbers=false, bool forceSign=false) const;
 
     private:
         static constexpr double MetersPerFeet = 0.3048;

@@ -26,6 +26,11 @@ set(SOURCES
     ressources.qrc.in
 
     # Header files
+    ../3rdParty/KDSingleApplication/src/kdsingleapplication.cpp
+    ../3rdParty/KDSingleApplication/src/kdsingleapplication_localsocket.cpp
+    ../3rdParty/KDSingleApplication/src/kdsingleapplication.h
+    ../3rdParty/KDSingleApplication/src/kdsingleapplication_lib.h
+    ../3rdParty/KDSingleApplication/src/kdsingleapplication_localsocket_p.h
     ../3rdParty/sunset/src/sunset.h
     dataManagement/DataManager.h
     dataManagement/Downloadable_Abstract.h
@@ -37,13 +42,17 @@ set(SOURCES
     geomaps/CUP.h
     geomaps/GeoJSON.h
     geomaps/GeoMapProvider.h
+    geomaps/GeoTIFF.h
     geomaps/GPX.h
     geomaps/MBTILES.h
     geomaps/OpenAir.h
     geomaps/TileHandler.h
     geomaps/TileServer.h
+    geomaps/TripKit.h
+    geomaps/VAC.h
     geomaps/Waypoint.h
     geomaps/WaypointLibrary.h
+    geomaps/Zip.h
     GlobalObject.h
     GlobalSettings.h
     Librarian.h
@@ -114,13 +123,17 @@ set(SOURCES
     geomaps/CUP.cpp
     geomaps/GeoJSON.cpp
     geomaps/GeoMapProvider.cpp
+    geomaps/GeoTIFF.cpp
     geomaps/GPX.cpp
     geomaps/MBTILES.cpp
     geomaps/OpenAir.cpp
     geomaps/TileHandler.cpp
     geomaps/TileServer.cpp
+    geomaps/TripKit.cpp
+    geomaps/VAC.cpp
     geomaps/Waypoint.cpp
     geomaps/WaypointLibrary.cpp
+    geomaps/Zip.cpp
     GlobalObject.cpp
     GlobalSettings.cpp
     Librarian.cpp
@@ -251,6 +264,7 @@ if(ANDROID)
         Qt6::Svg
         Qt6::TextToSpeech
         Qt6::WebView
+        libzip::zip
     )
 
     set_target_properties(${PROJECT_NAME} PROPERTIES
@@ -297,12 +311,11 @@ if (UNIX AND NOT ANDROID AND NOT APPLE)
         Qt6::Svg
         Qt6::TextToSpeech
         Qt6::Widgets
-        kdsingleapplication
+        libzip::zip
     )
     target_precompile_headers(${PROJECT_NAME}
-        PRIVATE
-        <QObject>
-        <QPointer>
+      PUBLIC
+      <QQmlEngine>
     )
 
 # Install
@@ -344,7 +357,6 @@ if (APPLE AND NOT IOS)
         Qt6::Svg
         Qt6::TextToSpeech
         Qt6::Widgets
-        kdsingleapplication
     )
 endif()
 
@@ -420,6 +432,7 @@ endif()
 
 target_include_directories(${PROJECT_NAME}
     PUBLIC
+    ${CMAKE_SOURCE_DIR}/3rdParty/KDSingleApplication/src
     ${CMAKE_SOURCE_DIR}/3rdParty/sunset/src
     ${CMAKE_SOURCE_DIR}/3rdParty/GSL/include
     dataManagement
@@ -489,7 +502,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/WordWrappingRadioDelegate.qml
     qml/items/WordWrappingItemDelegate.qml
     qml/items/WordWrappingSwitchDelegate.qml
-    qml/pages/SettingsPage.qml
+    qml/pages/VAC.qml
     qml/pages/AircraftPage.qml
     qml/pages/AircraftLibrary.qml
     qml/pages/BugReportPage.qml
@@ -505,6 +518,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/pages/Positioning.qml
     qml/pages/PressureAltitude.qml
     qml/pages/PrivacyPage.qml
+    qml/pages/SettingsPage.qml
     qml/pages/TrafficReceiver.qml
     qml/pages/WaypointLibraryPage.qml
     qml/pages/Weather.qml

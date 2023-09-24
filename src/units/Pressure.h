@@ -80,7 +80,7 @@ namespace Units {
          *
          * @returns True is the volume is a finite number
          */
-        Q_INVOKABLE [[nodiscard]] bool isFinite() const
+        [[nodiscard]] Q_INVOKABLE bool isFinite() const
         {
             return std::isfinite(m_pressureInPa);
         }
@@ -103,13 +103,13 @@ namespace Units {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE [[nodiscard]] std::partial_ordering operator<=>(const Units::Pressure& rhs) const = default;
+        [[nodiscard]] Q_INVOKABLE std::partial_ordering operator<=>(const Units::Pressure& rhs) const = default;
 
         /*! \brief Convert to Hectopascal
          *
          *  @returns pressure in Hectopascal
          */
-        Q_INVOKABLE [[nodiscard]] double toHPa() const
+        [[nodiscard]] Q_INVOKABLE double toHPa() const
         {
             return m_pressureInPa/100.0;
         }
@@ -118,7 +118,7 @@ namespace Units {
          *
          *  @returns pressure in inches of Mercury
          */
-        Q_INVOKABLE [[nodiscard]] double toInHg() const
+        [[nodiscard]] Q_INVOKABLE double toInHg() const
         {
             return m_pressureInPa/PascalPerInHg;
         }
@@ -127,7 +127,7 @@ namespace Units {
          *
          *  @returns pressure in Pascal
          */
-        Q_INVOKABLE [[nodiscard]] double toPa() const
+        [[nodiscard]] Q_INVOKABLE double toPa() const
         {
             return m_pressureInPa;
         }

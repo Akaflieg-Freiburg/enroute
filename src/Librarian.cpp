@@ -57,10 +57,8 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 
     if (name == u":text/authors.html"_qs)
     {
-        return "<h3>"+tr("Authors")+"</h3>"
-               + "<p>"+tr("The app <strong>Enroute Flight Navigation</strong> was written by Stefan Kebekus, flight enthusiast since 1986 and member of the Akaflieg Freiburg flight club. Stefan flies gliders and motor planes.")+"</p>"
-               + "<h4>"+tr("Address")+"</h4>"
-               + "Stefan Kebekus<br>Wintererstraße 77<br>79104 Freiburg<br>Germany<br><br><a href='mailto:stefan.kebekus@gmail.com'>e-mail</a>"
+        return "<p>"+tr("The app <strong>Enroute Flight Navigation</strong> was written by Stefan Kebekus, flight enthusiast since 1986 and member of the Akaflieg Freiburg flight club. Stefan flies gliders and motor planes.")+"</p>"
+               + "<p><strong>"+tr("Address")+"</strong>: Stefan Kebekus, Wintererstraße 77, 79104 Freiburg, Germany · <a href='mailto:stefan.kebekus@gmail.com'>stefan.kebekus@gmail.com</a></p>"
                + "<h3>" + tr("Contributions") + "</h3>"
                + "<p><strong>" + tr("iOS Version") + "</strong> " + tr("The app has been ported to iOS by Simon Schneider. Simon is currently student pilot (PPL) and member of the Akaflieg Freiburg flight club, just like Stefan.") + "</p>"
                + "<p><strong>" + tr("Programming") + "</strong> " + tr("Heinz Blöchinger has helped us with OpenAir support. After 15 years of alpine gliding, Heinz has fulfilled a big dream and now flies helicopters.") + "</p>"
@@ -179,10 +177,9 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 
     if (name == u":text/privacy.html"_qs)
       {
-        return "<h3>" + tr("Privacy Policies") + "</h3>"
-               + "<p>" + tr("We do not process any personal data from you. Data that you enter into the app "
-                            "(including routes, waypoints, and aircraft specifics) is stored locally on your "
-                            "device. The data not transmitted to us and is not processed by us.") + "</p>"
+        return "<p>" + tr("We do not process any personal data from you. Data that you enter into the app "
+                          "(including routes, waypoints, and aircraft specifics) is stored locally on your "
+                          "device. The data is not transmitted to us and is not processed by us.") + "</p>"
                + "<p>" + tr("However, to ensure the functionality, the app must transmit following data to "
                             "servers on the internet.") + "</p>"
                + "<ul style='margin-left:-25px;'>"
@@ -219,8 +216,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
                              "Detailed information about these web services can be found at "
                              "<a href='https://api.faa.gov/s'>https://api.faa.gov/s</a>.") + "</li>"
                + "</ul>"
-               + "<h3>" + tr("Responsible") + "</h3>"
-               + "<p>Stefan Kebekus, Wintererstraße 77, 79104 Freiburg im Breisgau, Germany</p>";
+               + "<p><strong>" + tr("Responsible") + ":</strong> " + "Stefan Kebekus, Wintererstraße 77, 79104 Freiburg im Breisgau, Germany"+"</p>";
     }
 
     if (name == u":text/tooManyDownloads.html"_qs)
@@ -241,12 +237,10 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     if (name == u":text/whatsnew.html"_qs)
     {
         QString result;
+        result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> is now able to show visual approach charts within the moving map. Users in Germany can download official VACs from Deutsche Flugsicherung (DFS) using Michael Paus' very convenient <a href='https://mpmediasoft.de/products/AIPBrowserDE/help/AIPBrowserDE.html'>AIP Browser DE</a>. Please check the manual for details.") + "</p>";
 #if not defined(Q_OS_IOS)
         result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> for iOS is now available on the Apple <a href='https://apps.apple.com/de/app/enroute-flight-navigation/id6448892176'>App Store</a>.") + "</p>";
 #endif
-        result += "<p>" + tr("Akaflieg Freiburg is now able to accept donations via PayPal. If you appreciate the app and would like make a donation, <a href='https://www.paypal.com/donate/?hosted_button_id=FDQATDX6XZR3E'>click here</a> or open the main menu and go to Info/Donate") + "</p>";
-        result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> is now able to import airspace data in OpenAir format. Check the manual for details.") + "</p>";
-        result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> integrates well with the <a href='https://safesky.app'>SafeSky anti-collision app</a> (a 'premium' subscription of SafeSky is required). Check the manual for details, or go to the 'Settings' page.") + "</p>";
         result += "<p>" + tr("We need help with promotional graphics for the app stores and with explainer videos. If you are a graphic/video artist and would like to help, then please be in touch.") + "</p>";
         return result;
     }

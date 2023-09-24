@@ -18,17 +18,22 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QCoreApplication>
 #include <QDirIterator>
+#include <QImage>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QLockFile>
 #include <QSettings>
+#include <QTemporaryDir>
 
 #include "GlobalSettings.h"
 #include "dataManagement/DataManager.h"
 #include "geomaps/MBTILES.h"
 #include "geomaps/OpenAir.h"
+#include "geomaps/TripKit.h"
+#include "geomaps/VAC.h"
 #include <chrono>
 
 using namespace std::chrono_literals;
@@ -65,6 +70,39 @@ void DataManagement::DataManager::deferredInitialization()
     if (!lastUpdate.isValid() || (qAbs(lastUpdate.daysTo(QDateTime::currentDateTime()) > 0)))
     {
         updateRemoteDataItemList();
+    }
+
+    // Setup approach charts
+    QStringList filesToDelete;
+    QDirIterator fileIterator(m_vacDirectory, QDir::Files);
+    while (fileIterator.hasNext())
+    {
+        fileIterator.next();
+        auto fileName = fileIterator.fileName();
+        auto idx = fileName.lastIndexOf(u"-geo_"_qs, -1);
+        auto bBox = GeoMaps::VAC(fileName).bBox();
+
+        if ((!fileName.endsWith(u"jpeg"_qs)
+             && !fileName.endsWith(u"jpg"_qs)
+             && !fileName.endsWith(u"png"_qs)
+             && !fileName.endsWith(u"tif"_qs)
+             && !fileName.endsWith(u"tiff"_qs)
+             && !fileName.endsWith(u"webp"_qs)) ||
+            (idx == -1) ||
+            !bBox.isValid())
+        {
+            filesToDelete += fileIterator.filePath();
+            continue;
+        }
+
+        auto* downloadable = new DataManagement::Downloadable_SingleFile({}, fileIterator.filePath(), bBox, this);
+        downloadable->setObjectName(fileName.left(idx));
+        connect(downloadable, &DataManagement::Downloadable_Abstract::hasFileChanged, downloadable, &QObject::deleteLater);
+        m_VAC.add(downloadable);
+    }
+    foreach (auto fileToDelete, filesToDelete)
+    {
+        QFile::remove(fileToDelete);
     }
 }
 
@@ -205,6 +243,74 @@ auto DataManagement::DataManager::importOpenAir(const QString& fileName, const Q
         return tr("Error writing file '%1': %2.").arg(newFileName, file.errorString());
     }
     updateDataItemListAndWhatsNew();
+    return {};
+}
+
+
+auto DataManagement::DataManager::importTripKit(const QString& fileName) -> QString
+{
+    GeoMaps::TripKit tripKit(fileName);
+    QTemporaryDir const tmpDir;
+    if (!tmpDir.isValid())
+    {
+        return {};
+    }
+    auto size = tripKit.numCharts();
+    for(auto idx=0; idx<size; idx++) {
+        emit importTripKitStatus((double)idx/(double)size);
+        QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+
+        tripKit.extract(tmpDir.path(), idx);
+    }
+    QDirIterator fileIterator(tmpDir.path(), QDir::Files);
+    while (fileIterator.hasNext())
+    {
+        fileIterator.next();
+        qWarning() << importVAC(tmpDir.path()+"/"+fileIterator.fileName(), {});
+    }
+    emit importTripKitStatus(1.0);
+    return {};
+}
+
+
+auto DataManagement::DataManager::importVAC(const QString& fileName, QString newName) -> QString
+{
+    GeoMaps::VAC vac(fileName);
+    if (!vac.isValid())
+    {
+        return vac.error();
+    }
+    if (newName.isEmpty())
+    {
+        newName = vac.baseName();
+    }
+    else
+    {
+        vac.setBaseName(newName);
+    }
+
+    foreach (auto downloadable, m_VAC.downloadables()) {
+        if (downloadable == nullptr)
+        {
+            continue;
+        }
+        if (downloadable->objectName() == vac.baseName())
+        {
+            // This will also call deleteLater
+            downloadable->deleteFiles();
+        }
+    }
+
+    auto newFileName = vac.save(m_vacDirectory);
+    if (newFileName.isEmpty())
+    {
+        return tr("Import failed. Unable to write raster data to directory %1.").arg(m_vacDirectory);
+    }
+    auto* downloadable = new DataManagement::Downloadable_SingleFile({}, newFileName, vac.bBox(), this);
+    downloadable->setObjectName(newName);
+    connect(downloadable, &DataManagement::Downloadable_Abstract::hasFileChanged, downloadable, &QObject::deleteLater);
+    m_VAC.add(downloadable);
+
     return {};
 }
 
@@ -414,10 +520,9 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
             auto mapFileName = obj.value(QStringLiteral("path")).toString();
             auto localFileName = m_dataDirectory + "/" + mapFileName;
             auto mapUrlName = baseURL + "/" + obj.value(QStringLiteral("path")).toString();
-            QUrl mapUrl(mapUrlName);
+            QUrl const mapUrl(mapUrlName);
             auto fileModificationDateTime = QDateTime::fromString(obj.value(QStringLiteral("time")).toString(), QStringLiteral("yyyyMMdd"));
-            qint64 fileSize = qRound64(obj.value(QStringLiteral("size")).toDouble());
-
+            qint64 const fileSize = qRound64(obj.value(QStringLiteral("size")).toDouble());
 
             QGeoRectangle bbox;
             if (obj.contains(u"bbox"_qs))

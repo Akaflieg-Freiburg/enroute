@@ -67,7 +67,7 @@ namespace Units {
          *
          * @returns True is the volume is a finite number
          */
-        Q_INVOKABLE [[nodiscard]] bool isFinite() const
+        [[nodiscard]] Q_INVOKABLE bool isFinite() const
         {
             return std::isfinite(m_volumeFlowInLPH);
         }
@@ -78,13 +78,13 @@ namespace Units {
          *
          *  @returns Result of the comparison
          */
-        Q_INVOKABLE [[nodiscard]] std::partial_ordering operator<=>(const Units::VolumeFlow& rhs) const = default;
+        [[nodiscard]] Q_INVOKABLE std::partial_ordering operator<=>(const Units::VolumeFlow& rhs) const = default;
 
         /*! \brief Convert to liters per hour
          *
          * @returns volume flow in liters per hour
          */
-        Q_INVOKABLE [[nodiscard]] double toLPH() const
+        [[nodiscard]] Q_INVOKABLE double toLPH() const
         {
             return m_volumeFlowInLPH;
         }
@@ -93,7 +93,7 @@ namespace Units {
          *
          * @returns volume flow in gallons per hour
          */
-        Q_INVOKABLE [[nodiscard]] double toGPH() const
+        [[nodiscard]] Q_INVOKABLE double toGPH() const
         {
             return m_volumeFlowInLPH/LitersPerGallon;
         }

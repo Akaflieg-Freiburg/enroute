@@ -1,5 +1,15 @@
 {
   "sources": {
+  "approach": {
+      "type": "image",
+      "url": "%APCHIMAGE%",
+      "coordinates": [
+          [%APCHLEFT%, %APCHTOP%],
+          [%APCHRIGHT%, %APCHTOP%],
+          [%APCHRIGHT%, %APCHBOT%],
+          [%APCHLEFT%, %APCHBOT%]
+      ]
+  },
     "raster-tiles": {
     "type": "raster",
     "tileSize": 256,
@@ -12,6 +22,14 @@
     "id": "simple-tiles",
     "type": "raster",
     "source": "raster-tiles"
+    },
+    {
+    "id": "apch",
+    "type": "raster",
+    "source": "approach",
+    "layout": {
+      "visibility": "%VISIBILITY"
+      }
     }
   ]
 }

@@ -21,6 +21,7 @@
 #include <QDebug>
 #include <QDir>
 #include <QEventLoop>
+#include <QGuiApplication>
 #include <QQuickItem>
 #include <QQuickWindow>
 #include <QTimer>
@@ -30,22 +31,16 @@
 #include "platform/PlatformAdaptor_Abstract.h"
 
 #if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
-#include <QGuiApplication>
 #include "GlobalObject.h"
 #include "GlobalSettings.h"
 #include "geomaps/GeoMapProvider.h"
+#include "ios/ObjCAdapter.h"
 #include "navigation/Navigator.h"
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficDataSource_Simulate.h"
 #include "traffic/TrafficFactor_WithPosition.h"
 #include "weather/WeatherDataProvider.h"
-#include "ios/ObjCAdapter.h"
 #endif
-
-
-
-
-
 
 #include "DemoRunner.h"
 
@@ -361,6 +356,7 @@ void DemoRunner::generateManualScreenshots()
     // Clear flight route
     GlobalObject::navigator()->flightRoute()->clear();
 
+
     // Route page
     {
         qWarning() << "… Route Page";
@@ -530,17 +526,40 @@ void DemoRunner::generateManualScreenshots()
         delay(40s);
     }
 
+    // VAC with Colmar
+    {
+        qWarning() << "… approach chart for Colmar";
+        trafficSimulator->setCoordinate( {48.1, 7.425, Units::Distance::fromFT(7512).toM()} );
+        trafficSimulator->setBarometricHeight( Units::Distance::fromFT(7480) );
+        trafficSimulator->setTT( Units::Angle::fromDEG(270) );
+        trafficSimulator->setGS( Units::Speed::fromKN(89) );
+
+        QString VACFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +
+                              "/VAC/LFGA COLMAR HOUSSEN 2-geo_7.33169_48.1354_7.40045_48.0894.webp";
+        Q_ASSERT(QFile::exists(VACFileName));
+        GlobalObject::geoMapProvider()->setApproachChart(VACFileName);
+        GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::NUp);
+
+        delay(4s);
+        applicationWindow->grabWindow().save(QStringLiteral("03-03-VAC.png"));
+        GlobalObject::geoMapProvider()->setApproachChart();
+    }
+
     // Done. Terminate the program.
     QGuiApplication::exit();
 #endif
 }
 
-void DemoRunner::saveScreenshot(bool manual, QQuickWindow* window, QString path) {
-    if (manual) {
+void DemoRunner::saveScreenshot(bool manual, QQuickWindow* window, const QString& path)
+{
+    if (manual)
+    {
         qWarning() << "… Take screenshot now";
         delay(3s);
-    } else {
-        GlobalObject::platformAdaptor()->saveScreenshot(window->grabWindow(), path);
+    }
+    else
+    {
+        Platform::PlatformAdaptor_Abstract::saveScreenshot(window->grabWindow(), path);
     }
 
 }

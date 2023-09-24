@@ -300,6 +300,20 @@ Page {
                     }
                 }
 
+                MenuSeparator { }
+
+                MenuItem {
+                    text: qsTr("Clear VAC library…")
+                    enabled: DataManager.VAC.downloadables.length > 0
+
+                    onTriggered: {
+                        PlatformAdaptor.vibrateBrief()
+                        highlighted = false
+                        clearVACDialog.open()
+                    }
+
+                }
+
             }
         }
 
@@ -318,6 +332,9 @@ Page {
         currentIndex: sv.currentIndex
         TabButton {
             text: qsTr("Maps")
+        }
+        TabButton {
+            text: "VAC"
         }
         TabButton {
             text: qsTr("Data")
@@ -361,6 +378,50 @@ Page {
                     PlatformAdaptor.vibrateBrief()
                     DataManager.updateRemoteDataItemList()
                 }
+            }
+        }
+
+        DecoratedListView {
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            clip: true
+            model: DataManager.VAC.downloadables
+            delegate: MapSet {}
+            ScrollIndicator.vertical: ScrollIndicator {}
+
+            section.property: "modelData.section"
+            section.delegate: sectionHeading
+
+            // Refresh list of maps on overscroll
+            property int refreshFlick: 0
+            onFlickStarted: {
+                refreshFlick = atYBeginning
+            }
+            onFlickEnded: {
+                if ( atYBeginning && refreshFlick ) {
+                    PlatformAdaptor.vibrateBrief()
+                    DataManager.updateRemoteDataItemList()
+                }
+            }
+
+            Label {
+                anchors.fill: parent
+                anchors.bottomMargin: font.pixelSize
+                anchors.leftMargin: font.pixelSize
+                anchors.rightMargin: font.pixelSize
+                anchors.topMargin: font.pixelSize
+
+                background: Rectangle {color: "white"}
+                visible: !DataManager.VAC.hasFile
+
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment : Text.AlignVCenter
+                textFormat: Text.RichText
+                wrapMode: Text.Wrap
+
+                text: "<p>" + qsTr("There are no approach charts installed. The <a href='x'>manual</a> explains how to install and use them.") + "</p>"
+                onLinkActivated: openManual("02-advanced/vac.html")
+
             }
         }
 
@@ -538,6 +599,21 @@ Page {
             pg.dialogLoader.text = qsTr("<p>Failed to download the list of aviation maps.</p><p>Reason: %1.</p>").arg(message)
             pg.dialogLoader.source = "dialogs/ErrorDialog.qml"
             pg.dialogLoader.active = true
+        }
+    }
+
+    LongTextDialog {
+        id: clearVACDialog
+
+        title: qsTr("Clear approach chart Library?")
+        standardButtons: Dialog.No | Dialog.Yes
+
+        text: qsTr("Once cleared, the approach charts cannot be restored.")
+
+        onAccepted: {
+            PlatformAdaptor.vibrateBrief()
+            DataManager.VAC.deleteFiles()
+            toast.doToast(qsTr("Approach chart library cleared"))
         }
     }
 

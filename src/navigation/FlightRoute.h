@@ -202,7 +202,7 @@ namespace Navigation
          *  @returns True if route is empty or if other waypoint is not near
          *  the current end of the route.
          */
-        Q_INVOKABLE [[nodiscard]] bool canAppend(const GeoMaps::Waypoint& other) const;
+        [[nodiscard]] Q_INVOKABLE bool canAppend(const GeoMaps::Waypoint& other) const;
 
         /*! \brief Checks if waypoint can reasonably be inserted into this route
          *
@@ -210,7 +210,7 @@ namespace Navigation
          *
          *  @returns True if it makes sense to insert the waypoint.
          */
-        Q_INVOKABLE [[nodiscard]] bool canInsert(const GeoMaps::Waypoint& other) const;
+        [[nodiscard]] Q_INVOKABLE bool canInsert(const GeoMaps::Waypoint& other) const;
 
         /*! \brief Deletes all waypoints in the current route */
         Q_INVOKABLE void clear();
@@ -222,7 +222,7 @@ namespace Navigation
          * @returns bool Returns true if waypoint geographically close to a
          * waypoint in the route
          */
-        Q_INVOKABLE [[nodiscard]] bool contains(const GeoMaps::Waypoint& waypoint) const;
+        [[nodiscard]] Q_INVOKABLE bool contains(const GeoMaps::Waypoint& waypoint) const;
 
         /*! \brief Inserts a waypoint into the route
          *
@@ -243,7 +243,7 @@ namespace Navigation
          *  @returns Index position of the last waypoint in the route close to
          *  the given waypoint. Returns -1 if no waypoint is close.
          */
-        Q_INVOKABLE [[nodiscard]] qsizetype lastIndexOf(const GeoMaps::Waypoint& waypoint) const;
+        [[nodiscard]] Q_INVOKABLE qsizetype lastIndexOf(const GeoMaps::Waypoint& waypoint) const;
 
         /*! \brief Loads the route from a GeoJSON or GPX document
          *
@@ -305,7 +305,7 @@ namespace Navigation
          * @returns Empty string in case of success, human-readable, translated
          * error message otherwise.
          */
-        Q_INVOKABLE [[nodiscard]] QString save(const QString& fileName = QString()) const;
+        [[nodiscard]] Q_INVOKABLE QString save(const QString& fileName = QString()) const;
 
         /*! \brief Suggests a name for saving this route
          *
@@ -315,7 +315,7 @@ namespace Navigation
          * @returns Suggested name for saving the file. If no useful suggestion
          * can be made, the returned string is a translation of "Flight Route"
          */
-        Q_INVOKABLE [[nodiscard]] QString suggestedFilename() const;
+        [[nodiscard]] Q_INVOKABLE QString suggestedFilename() const;
 
         /*! \brief Exports to route to GeoJSON
          *
@@ -325,7 +325,7 @@ namespace Navigation
          *
          * @returns QByteArray describing the flight route
          */
-        Q_INVOKABLE [[nodiscard]] QByteArray toGeoJSON() const;
+        [[nodiscard]] Q_INVOKABLE QByteArray toGeoJSON() const;
 
         /*! \brief Exports to route to GPX
          *
@@ -335,7 +335,7 @@ namespace Navigation
          *
          * @returns QByteArray containing GPX data describing the flight route
          */
-        Q_INVOKABLE [[nodiscard]] QByteArray toGpx() const;
+        [[nodiscard]] Q_INVOKABLE QByteArray toGpx() const;
 
     signals:
         /*! \brief Notification signal for the property with the same name */

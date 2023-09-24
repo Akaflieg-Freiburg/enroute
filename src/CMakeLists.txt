@@ -357,6 +357,7 @@ if (APPLE AND NOT IOS)
         Qt6::Svg
         Qt6::TextToSpeech
         Qt6::Widgets
+        libzip::zip
     )
 endif()
 

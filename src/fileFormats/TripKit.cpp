@@ -18,21 +18,16 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QEventLoop>
+#include <QFile>
 #include <QGeoCoordinate>
 #include <QImage>
-#include <QCommandLineParser>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QFile>
-#include <QString>
-#include <QDataStream>
-#include <zip.h>
 
-#include "geomaps/TripKit.h"
+#include "fileFormats/TripKit.h"
 
 
-GeoMaps::TripKit::TripKit(const QString& fileName)
+FileFormats::TripKit::TripKit(const QString& fileName)
     : m_zip(fileName)
 {
     if (!m_zip.isValid())
@@ -81,7 +76,7 @@ GeoMaps::TripKit::TripKit(const QString& fileName)
     }
 }
 
-auto GeoMaps::TripKit::extract(const QString &directoryPath, qsizetype index) -> QString
+QString FileFormats::TripKit::extract(const QString &directoryPath, qsizetype index)
 {
     if ((index < 0) || (index >= m_charts.size()))
     {

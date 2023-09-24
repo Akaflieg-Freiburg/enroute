@@ -29,10 +29,10 @@
 #include <QTemporaryDir>
 
 #include "GlobalSettings.h"
+#include "fileFormats/TripKit.h"
 #include "dataManagement/DataManager.h"
 #include "geomaps/MBTILES.h"
 #include "geomaps/OpenAir.h"
-#include "geomaps/TripKit.h"
 #include "geomaps/VAC.h"
 #include <chrono>
 
@@ -249,7 +249,7 @@ auto DataManagement::DataManager::importOpenAir(const QString& fileName, const Q
 
 auto DataManagement::DataManager::importTripKit(const QString& fileName) -> QString
 {
-    GeoMaps::TripKit tripKit(fileName);
+    FileFormats::TripKit tripKit(fileName);
     QTemporaryDir const tmpDir;
     if (!tmpDir.isValid())
     {

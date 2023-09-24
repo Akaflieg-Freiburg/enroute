@@ -22,9 +22,9 @@
 
 #include <QJsonArray>
 
-#include "geomaps/ZipFile.h"
+#include "fileFormats/ZipFile.h"
 
-namespace GeoMaps
+namespace FileFormats
 {
 
 /*! \brief Trip Kit
@@ -33,7 +33,8 @@ namespace GeoMaps
  *  that contain georeferences VACs and JSON files that describe the
  *  georeferencing.
  */
-class TripKit {
+class TripKit : public DataFileAbstract
+{
 public:
     /*! \brief Constructor
      *
@@ -45,37 +46,24 @@ public:
     TripKit(const QString& fileName);
 
 
+
     //
     // Getter Methods
     //
-
-    /*! \brief Error message
-     *
-     *  If the trip kit is invalid, this method contains a short
-     *  explanation.
-     *
-     *  @returns A human-readable, translated warning or an empty string if no
-     *  error.
-     */
-    [[nodiscard]] auto error() const -> QString { return m_error; }
-
-    /*! \brief Test for validity
-     *
-     *  @returns True if this trip kit appears to be valid
-     */
-    [[nodiscard]] auto isValid() const -> bool { return m_error.isEmpty(); }
 
     /*! \brief Name of the trip kit, as specified in the JSON file
      *
      *  @returns The name or an empty string in case of error.
      */
-    [[nodiscard]] auto name() const -> QString { return m_name; }
+    [[nodiscard]] QString name() const { return m_name; }
 
     /*! \brief Number of VACs in this trip kit
      *
      *  @returns The number of VACs in this trip kit
      */
-    [[nodiscard]] auto numCharts() const -> qsizetype { return m_charts.size(); }
+    [[nodiscard]] qsizetype numCharts() const { return m_charts.size(); }
+
+
 
     //
     // Methods
@@ -97,11 +85,21 @@ public:
      *  @returns Path of the newly created file, or an empty string in case of
      *  error.
      */
-    auto extract(const QString &directoryPath, qsizetype index) -> QString;
+    [[nodiscard]] QString extract(const QString& directoryPath, qsizetype index);
+
+
+    //
+    // Static methods
+    //
+
+    /*! \brief Mime type for files that can be opened by this class
+     *
+     *  @returns Name of mime type
+     */
+    [[nodiscard]] static QStringList mimeTypes() { return FileFormats::ZipFile::mimeTypes(); }
 
 private:
-    GeoMaps::ZipFile m_zip;
-    QString m_error;
+    FileFormats::ZipFile m_zip;
     QString m_name;
     QJsonArray m_charts;
 };

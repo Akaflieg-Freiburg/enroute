@@ -20,17 +20,18 @@
 
 #pragma once
 
-#include <QStringList>
+#include "fileFormats/DataFileAbstract.h"
 
 
-namespace GeoMaps
+namespace FileFormats
 {
+
 /*! \brief ZIP Archive
  *
  *  This class reads a ZIP file and allows extracting individual files.
  */
-
-class ZipFile {
+class ZipFile : public DataFileAbstract
+{
 public:
     /*! \brief Constructor
      *
@@ -44,25 +45,25 @@ public:
     /*! \brief Destructor */
     ~ZipFile();
 
-    /*! \brief Test for validity
-     *
-     *  @returns True if the file named in the constructor appears to be a valid zip file.
-     */
-    [[nodiscard]] auto isValid() const -> bool { return (m_zip != nullptr); }
+
+
+    //
+    // Getter Methods
+    //
 
     /*! \brief List of files in the zip archive
      *
-     *  @returns List of file named.
+     *  @returns List of files in the zip archive.
      */
-    [[nodiscard]] auto fileNames() const -> QStringList { return m_fileNames; }
+    [[nodiscard]] QStringList fileNames() const { return m_fileNames; }
 
     /*! \brief Content of file in the zip archive
      *
      *  @param index Index of the file in the list returned by fileNames
      *
-     *  @returns Content of file, or a Null array in case of error
+     *  @returns Content of file, or a Null array in case of error.
      */
-    auto extract(qsizetype index) -> QByteArray;
+    [[nodiscard]] QByteArray extract(qsizetype index);
 
     /*! \brief Content of file in the zip archive
      *
@@ -75,7 +76,18 @@ public:
      *
      *  @returns Content of file, or a Null array in case of error
      */
-    auto extract(const QString& fileName) -> QByteArray;
+    [[nodiscard]] QByteArray extract(const QString& fileName);
+
+
+    //
+    // Static methods
+    //
+
+    /*! \brief Mime type for files that can be opened by this class
+     *
+     *  @returns Name of mime type
+     */
+    [[nodiscard]] static QStringList mimeTypes() { return {u"application/zip"_qs}; }
 
 private:
     Q_DISABLE_COPY_MOVE(ZipFile)

@@ -27,23 +27,22 @@ namespace FileFormats
 
 /*! \brief Base class for file reading classes
  *
- *  This is the base class for all classes that read data files, such as CUP,
- *  GeoJSON, GeoTIFF, …
+ *  This is an abstract base class for all classes that read data files, such as
+ *  CUP, GeoJSON, GeoTIFF, …. Implementations should adhere to the following
+ *  conventions:
+ *
+ *  - The constructor takes a file name as an argument and reads the file, which
+ *    might be quite expensive.
+ *
+ *  - There is a static method 'mimeTypes' that describes the mime types of the
+ *    files that can be opened with this class.
  */
 
 class DataFileAbstract
 {
 
 public:
-    /*! \brief Constructor
-     *
-     *  The constructor reads the file, which is usually quite expensive. Use
-     *  the static method hasCorrectMimeType() for a quick check.
-     *
-     *  @param fileName Name of file that is to be read.
-     */
-    DataFileAbstract(const QString& fileName) = 0;
-
+    DataFileAbstract() = default;
 
 
     //
@@ -61,7 +60,7 @@ public:
      *
      *  @returns True if the data is valid.
      */
-    bool isValid() const { return !m_error.isEmpty(); }
+    [[nodiscard]] bool isValid() const { return !m_error.isEmpty(); }
 
     /*! \brief Error string
      *
@@ -70,7 +69,7 @@ public:
      *
      *  @returns Error string, or an empty string if the file is valid.
      */
-    QString error() const { return m_error; }
+    [[nodiscard]] QString error() const { return m_error; }
 
     /*! \brief Warnings
      *
@@ -79,24 +78,12 @@ public:
      *
      *  @returns List of warning, or an empty list if there were no warnings.
      */
-    QStringList warnings() const { return m_warnings; }
+    [[nodiscard]] QStringList warnings() const { return m_warnings; }
 
 
-
-    //
-    // Static methods
-    //
-
-    /*! \brief Quick check if the file has the correct mime type.
-     *
-     *  @param fileName Name of file that is to be read.
-     *
-     *  @returns True if the file could potentially be valid data file
-     */
-    static bool hasCorrectMimeType(const QString& fileName) = 0;
-
-protected:
+protected:    
     QString m_error;
+    QString m_fileName;
     QStringList m_warnings;
 
 private:

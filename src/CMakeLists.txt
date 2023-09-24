@@ -38,6 +38,8 @@ set(SOURCES
     dataManagement/Downloadable_SingleFile.h
     dataManagement/SSLErrorHandler.h
     fileFormats/DataFileAbstract.h
+    fileFormats/TripKit.h
+    fileFormats/ZipFile.h
     DemoRunner.h
     geomaps/Airspace.h
     geomaps/CUP.h
@@ -49,11 +51,9 @@ set(SOURCES
     geomaps/OpenAir.h
     geomaps/TileHandler.h
     geomaps/TileServer.h
-    geomaps/TripKit.h
     geomaps/VAC.h
     geomaps/Waypoint.h
     geomaps/WaypointLibrary.h
-    geomaps/ZipFile.h
     GlobalObject.h
     GlobalSettings.h
     Librarian.h
@@ -120,6 +120,8 @@ set(SOURCES
     dataManagement/Downloadable_SingleFile.cpp
     dataManagement/SSLErrorHandler.cpp
     DemoRunner.cpp
+    fileFormats/TripKit.cpp
+    fileFormats/ZipFile.cpp
     geomaps/Airspace.cpp
     geomaps/CUP.cpp
     geomaps/GeoJSON.cpp
@@ -130,11 +132,9 @@ set(SOURCES
     geomaps/OpenAir.cpp
     geomaps/TileHandler.cpp
     geomaps/TileServer.cpp
-    geomaps/TripKit.cpp
     geomaps/VAC.cpp
     geomaps/Waypoint.cpp
     geomaps/WaypointLibrary.cpp
-    geomaps/ZipFile.cpp
     GlobalObject.cpp
     GlobalSettings.cpp
     Librarian.cpp

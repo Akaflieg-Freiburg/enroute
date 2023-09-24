@@ -23,15 +23,16 @@
 #include <QDataStream>
 #include <zip.h>
 
-#include "geomaps/ZipFile.h"
+#include "fileFormats/ZipFile.h"
 
 
-GeoMaps::ZipFile::ZipFile(const QString& fileName)
+FileFormats::ZipFile::ZipFile(const QString& fileName)
 {
     int error = 0;
     m_zip = zip_open(fileName.toUtf8().data(), ZIP_RDONLY, &error);
     if (m_zip == nullptr)
     {
+        m_error = QObject::tr("Cannot open zip file %1 for reading.").arg(fileName);
         return;
     }
 
@@ -63,7 +64,7 @@ GeoMaps::ZipFile::ZipFile(const QString& fileName)
 }
 
 
-GeoMaps::ZipFile::~ZipFile()
+FileFormats::ZipFile::~ZipFile()
 {
     if (m_zip != nullptr)
     {
@@ -73,7 +74,7 @@ GeoMaps::ZipFile::~ZipFile()
 }
 
 
-auto GeoMaps::ZipFile::extract(qsizetype index) -> QByteArray
+QByteArray FileFormats::ZipFile::extract(qsizetype index)
 {
     if (m_zip == nullptr)
     {
@@ -102,7 +103,7 @@ auto GeoMaps::ZipFile::extract(qsizetype index) -> QByteArray
 }
 
 
-auto GeoMaps::ZipFile::extract(const QString& fileName) -> QByteArray
+QByteArray FileFormats::ZipFile::extract(const QString& fileName)
 {
     auto idx = m_fileNames.indexOf(fileName);
     if (idx == -1)

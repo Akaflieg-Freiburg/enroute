@@ -37,6 +37,7 @@ set(SOURCES
     dataManagement/Downloadable_MultiFile.h
     dataManagement/Downloadable_SingleFile.h
     dataManagement/SSLErrorHandler.h
+    fileFormats/DataFileAbstract.h
     DemoRunner.h
     geomaps/Airspace.h
     geomaps/CUP.h

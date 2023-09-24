@@ -30,7 +30,7 @@ namespace GeoMaps
  *  This class reads a ZIP file and allows extracting individual files.
  */
 
-class Zip {
+class ZipFile {
 public:
     /*! \brief Constructor
      *
@@ -39,10 +39,10 @@ public:
      *
      *  \param fileName File name of a zip file.
      */
-    Zip(const QString& fileName);
+    ZipFile(const QString& fileName);
 
     /*! \brief Destructor */
-    ~Zip();
+    ~ZipFile();
 
     /*! \brief Test for validity
      *
@@ -78,7 +78,7 @@ public:
     auto extract(const QString& fileName) -> QByteArray;
 
 private:
-    Q_DISABLE_COPY_MOVE(Zip)
+    Q_DISABLE_COPY_MOVE(ZipFile)
 
     void* m_zip {nullptr};
     QStringList m_fileNames;

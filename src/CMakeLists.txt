@@ -52,7 +52,7 @@ set(SOURCES
     geomaps/VAC.h
     geomaps/Waypoint.h
     geomaps/WaypointLibrary.h
-    geomaps/Zip.h
+    geomaps/ZipFile.h
     GlobalObject.h
     GlobalSettings.h
     Librarian.h
@@ -133,7 +133,7 @@ set(SOURCES
     geomaps/VAC.cpp
     geomaps/Waypoint.cpp
     geomaps/WaypointLibrary.cpp
-    geomaps/Zip.cpp
+    geomaps/ZipFile.cpp
     GlobalObject.cpp
     GlobalSettings.cpp
     Librarian.cpp
@@ -357,6 +357,7 @@ if (APPLE AND NOT IOS)
         Qt6::Svg
         Qt6::TextToSpeech
         Qt6::Widgets
+        libzip::zip
     )
 endif()
 

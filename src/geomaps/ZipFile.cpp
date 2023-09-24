@@ -23,10 +23,10 @@
 #include <QDataStream>
 #include <zip.h>
 
-#include "geomaps/Zip.h"
+#include "geomaps/ZipFile.h"
 
 
-GeoMaps::Zip::Zip(const QString& fileName)
+GeoMaps::ZipFile::ZipFile(const QString& fileName)
 {
     int error = 0;
     m_zip = zip_open(fileName.toUtf8().data(), ZIP_RDONLY, &error);
@@ -63,7 +63,7 @@ GeoMaps::Zip::Zip(const QString& fileName)
 }
 
 
-GeoMaps::Zip::~Zip()
+GeoMaps::ZipFile::~ZipFile()
 {
     if (m_zip != nullptr)
     {
@@ -73,7 +73,7 @@ GeoMaps::Zip::~Zip()
 }
 
 
-auto GeoMaps::Zip::extract(qsizetype index) -> QByteArray
+auto GeoMaps::ZipFile::extract(qsizetype index) -> QByteArray
 {
     if (m_zip == nullptr)
     {
@@ -102,7 +102,7 @@ auto GeoMaps::Zip::extract(qsizetype index) -> QByteArray
 }
 
 
-auto GeoMaps::Zip::extract(const QString& fileName) -> QByteArray
+auto GeoMaps::ZipFile::extract(const QString& fileName) -> QByteArray
 {
     auto idx = m_fileNames.indexOf(fileName);
     if (idx == -1)

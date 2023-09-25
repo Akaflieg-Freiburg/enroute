@@ -32,7 +32,7 @@ FileFormats::ZipFile::ZipFile(const QString& fileName)
     m_zip = zip_open(fileName.toUtf8().data(), ZIP_RDONLY, &error);
     if (m_zip == nullptr)
     {
-        m_error = QObject::tr("Cannot open zip file %1 for reading.").arg(fileName);
+        setError(QObject::tr("Cannot open zip file %1 for reading.", "FileFormats::ZipFile").arg(fileName));
         return;
     }
 

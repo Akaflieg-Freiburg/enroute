@@ -43,6 +43,7 @@ class DataFileAbstract
 
 public:
     DataFileAbstract() = default;
+    ~DataFileAbstract() = default;
 
 
     //
@@ -81,14 +82,15 @@ public:
     [[nodiscard]] QStringList warnings() const { return m_warnings; }
 
 
-protected:    
-    QString m_error;
-    QString m_fileName;
-    QStringList m_warnings;
+protected:
+    void addWarning(const QString& warning) { m_warnings += warning; }
+    void setError(const QString& newError) { m_error = newError; }
 
 private:
     Q_DISABLE_COPY_MOVE(DataFileAbstract)
 
+    QString m_error;
+    QStringList m_warnings;
 };
 
 } // namespace FileFormats

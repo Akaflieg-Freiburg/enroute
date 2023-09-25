@@ -32,7 +32,7 @@ FileFormats::TripKit::TripKit(const QString& fileName)
 {
     if (!m_zip.isValid())
     {
-        m_error = QObject::tr("File %1 is not a valid zip file.").arg(fileName);
+        setError(m_zip.error());
         return;
     }
 
@@ -40,13 +40,13 @@ FileFormats::TripKit::TripKit(const QString& fileName)
         auto json = m_zip.extract(u"toc.json"_qs);
         if (json.isNull())
         {
-            m_error = QObject::tr("The zip archive %1 does not contain the required file 'toc.json'.").arg(fileName);
+            setError(QObject::tr("The zip archive %1 does not contain the required file 'toc.json'.", "FileFormats::TripKit").arg(fileName));
             return;
         }
         auto jDoc = QJsonDocument::fromJson(json);
         if (jDoc.isNull())
         {
-            m_error = QObject::tr("The file 'toc.json' from the zip archive %1 cannot be interpreted.").arg(fileName);
+            setError(QObject::tr("The file 'toc.json' from the zip archive %1 cannot be interpreted.", "FileFormats::TripKit").arg(fileName));
             return;
         }
         auto rootObject = jDoc.object();
@@ -57,20 +57,20 @@ FileFormats::TripKit::TripKit(const QString& fileName)
         auto json = m_zip.extract(u"charts/charts_toc.json"_qs);
         if (json.isNull())
         {
-            m_error = QObject::tr("The zip archive %1 does not contain the required file 'charts/charts_toc.json'.").arg(fileName);
+            setError(QObject::tr("The zip archive %1 does not contain the required file 'charts/charts_toc.json'.", "FileFormats::TripKit").arg(fileName));
             return;
         }
         auto jDoc = QJsonDocument::fromJson(json);
         if (jDoc.isNull())
         {
-            m_error = QObject::tr("The file 'charts/charts_toc.json' from the zip archive %1 cannot be interpreted.").arg(fileName);
+            setError(QObject::tr("The file 'charts/charts_toc.json' from the zip archive %1 cannot be interpreted.", "FileFormats::TripKit").arg(fileName));
             return;
         }
         auto rootObject = jDoc.object();
         m_charts = rootObject[u"charts"_qs].toArray();
         if (m_charts.isEmpty())
         {
-            m_error = QObject::tr("The trip kit %1 does not contain any charts.").arg(fileName);
+            setError(QObject::tr("The trip kit %1 does not contain any charts.", "FileFormats::TripKit").arg(fileName));
             return;
         }
     }

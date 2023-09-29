@@ -61,7 +61,7 @@ public:
      *
      *  @returns True if the data is valid.
      */
-    [[nodiscard]] bool isValid() const { return !m_error.isEmpty(); }
+    [[nodiscard]] bool isValid() const { return m_error.isEmpty(); }
 
     /*! \brief Error string
      *

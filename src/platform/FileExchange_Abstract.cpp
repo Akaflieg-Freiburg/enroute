@@ -143,6 +143,7 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     }
 
     // TripKits
+#warning Check MimeType
     FileFormats::TripKit const tripKit(myPath);
     if (tripKit.isValid())
     {

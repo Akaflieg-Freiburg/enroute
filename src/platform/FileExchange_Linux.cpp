@@ -51,8 +51,8 @@ void Platform::FileExchange::importContent()
 
 auto Platform::FileExchange::shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
 {
-    QMimeDatabase db;
-    QMimeType mime = db.mimeTypeForName(mimeType);
+    QMimeDatabase mimeDataBase;
+    QMimeType mime = mimeDataBase.mimeTypeForName(mimeType);
 
     auto fileNameX = QFileDialog::getSaveFileName(nullptr, tr("Export flight route"), QDir::homePath()+"/"+fileNameTemplate+"."+mime.preferredSuffix(), tr("%1 (*.%2);;All files (*)").arg(mime.comment(), mime.preferredSuffix()));
     if (fileNameX.isEmpty())

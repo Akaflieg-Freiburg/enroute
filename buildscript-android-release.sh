@@ -44,7 +44,7 @@ cd build-android-release
 #
 
 export ANDROID_NDK_ROOT=$ANDROID_SDK_ROOT/ndk/23.1.7779620
-export JAVA_HOME=/usr/lib/jvm/java-20-openjdk
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
 
 $Qt6_DIR_ANDROID\_x86_64/bin/qt-cmake .. \
       -DCMAKE_BUILD_TYPE:STRING=Release \

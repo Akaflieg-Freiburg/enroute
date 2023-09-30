@@ -256,37 +256,30 @@ auto DataManagement::DataManager::importTripKit(const QString& fileName) -> QStr
         return {};
     }
     auto size = tripKit.numCharts();
-    int export_successful = 0;
-    int export_error      = 0;
+    int successfulImports = 0;
     for(auto idx=0; idx<size; idx++)
     {
         emit importTripKitStatus((double)idx/(double)size);
         QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
 
-        if (tripKit.extract(tmpDir.path(), idx))
+        auto path = tripKit.extract(tmpDir.path(), idx);
+        if (!path.isEmpty())
         {
-            export_successful++;
+            if (importVAC(path, {}).isEmpty())
+            {
+                successfulImports++;
+            }
         }
-        else
-        {
-            export_error++;
-        }
-    }
-    QDirIterator fileIterator(tmpDir.path(), QDir::Files);
-    while (fileIterator.hasNext())
-    {
-        fileIterator.next();
-        qWarning() << importVAC(tmpDir.path()+"/"+fileIterator.fileName(), {});
     }
     emit importTripKitStatus(1.0);
 
-    if (export_error > 0)
+    if (successfulImports == 0)
     {
-        if (export_successful > 0)
-        {
-            return tr("Error reading TripKip: Only %1 out of %2 charts were successfully imported.").arg(export_successful).arg(size);
-        }
         return tr("Error reading TripKip: No charts imported.");
+    }
+    if (successfulImports < size)
+    {
+        return tr("Error reading TripKip: Only %1 out of %2 charts were successfully imported.").arg(successfulImports).arg(size);
     }
 
     return {};

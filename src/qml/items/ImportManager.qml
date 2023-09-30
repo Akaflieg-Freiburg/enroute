@@ -522,7 +522,7 @@ Item {
             Label {
                 Layout.fillWidth: true
 
-                text: qsTr("Extracting and converting files from the trip kit.")
+                text: qsTr("Extracting and converting files from the trip kit. Please do not interrupt or close the app.")
                 wrapMode: Text.Wrap
                 textFormat: Text.StyledText
             }

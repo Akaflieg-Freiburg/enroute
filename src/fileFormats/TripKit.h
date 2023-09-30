@@ -82,9 +82,9 @@ public:
      *
      *  @param index Index of the VAC that is to be extracted
      *
-     *  @returns True if successful, false on error.
+     *  @returns Path of the extracted VAC, or an empty string in case of error.
      */
-    [[nodiscard]] bool extract(const QString& directoryPath, qsizetype index);
+    [[nodiscard]] QString extract(const QString& directoryPath, qsizetype index);
 
 
     //

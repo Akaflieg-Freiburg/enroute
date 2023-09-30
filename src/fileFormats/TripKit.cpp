@@ -76,28 +76,28 @@ FileFormats::TripKit::TripKit(const QString& fileName)
     }
 }
 
-bool FileFormats::TripKit::extract(const QString &directoryPath, qsizetype index)
+QString FileFormats::TripKit::extract(const QString &directoryPath, qsizetype index)
 {
     if ((index < 0) || (index >= m_charts.size()))
     {
-        return false;
+        return {};
     }
     auto chart = m_charts.at(index);
     auto name = chart.toObject()[u"name"_qs].toString();
     if (name.isEmpty())
     {
-        return false;
+        return {};
     }
     auto path = chart.toObject()[u"filePath"_qs].toString();
     if (path.isEmpty())
     {
-        return false;
+        return {};
     }
     QString ending;
     auto idx = path.lastIndexOf('.');
     if (idx == -1)
     {
-        return false;
+        return {};
     }
     ending = path.mid(idx+1, -1);
 
@@ -109,12 +109,12 @@ bool FileFormats::TripKit::extract(const QString &directoryPath, qsizetype index
     QGeoCoordinate const topLeft(top, left);
     if (!topLeft.isValid())
     {
-        return false;
+        return {};
     }
     QGeoCoordinate const bottomRight(bottom, right);
     if (!bottomRight.isValid())
     {
-        return false;
+        return {};
     }
 
 
@@ -132,7 +132,7 @@ bool FileFormats::TripKit::extract(const QString &directoryPath, qsizetype index
     }
     if (imageData.isEmpty())
     {
-        return false;
+        return {};
     }
 
     if (ending == u"webp"_qs)
@@ -140,13 +140,13 @@ bool FileFormats::TripKit::extract(const QString &directoryPath, qsizetype index
         QFile outFile(newPath);
         if (!outFile.open(QIODeviceBase::WriteOnly))
         {
-            return false;
+            return {};
         }
         if (outFile.write(imageData) != imageData.size())
         {
             outFile.close();
             outFile.remove();
-            return false;
+            return {};
         }
         outFile.close();
     }
@@ -156,8 +156,8 @@ bool FileFormats::TripKit::extract(const QString &directoryPath, qsizetype index
         if (!img.save(newPath))
         {
             QFile::remove(newPath);
-            return false;
+            return {};
         }
     }
-    return true;
+    return newPath;
 }

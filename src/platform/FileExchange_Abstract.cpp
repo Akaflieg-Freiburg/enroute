@@ -143,13 +143,17 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     }
 
     // TripKits
-#warning Check MimeType
-    FileFormats::TripKit const tripKit(myPath);
-    if (tripKit.isValid())
+    if (FileFormats::TripKit::mimeTypes().contains(mimeType.name()))
     {
-        emit openFileRequest(myPath, tripKit.name(), TripKit);
-        return;
+        FileFormats::TripKit const tripKit(myPath);
+        if (tripKit.isValid())
+        {
+            emit openFileRequest(myPath, tripKit.name(), TripKit);
+            return;
+        }
     }
+
+#warning ZIP files!
 
     // OpenAir
     QString info;

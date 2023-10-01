@@ -153,7 +153,16 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
         }
     }
 
-#warning ZIP files!
+    // ZipFiles
+    if (FileFormats::ZipFile::mimeTypes().contains(mimeType.name()))
+    {
+        FileFormats::ZipFile const zipFile(myPath);
+        if (zipFile.isValid())
+        {
+            emit openFileRequest(myPath, {}, ZipFile);
+            return;
+        }
+    }
 
     // OpenAir
     QString info;

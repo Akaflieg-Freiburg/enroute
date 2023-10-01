@@ -94,6 +94,11 @@ Item {
                 importOpenAirDialog.open()
                 return
             }
+            if (fileFunction === FileExchange.ZipFile) {
+                errLbl.text = qsTr("The file <strong>%1</strong> seems to contain an zip file without the data required in a tripkit.").arg(fileName)
+                errorDialog.open()
+                return
+            }
 
             errLbl.text = qsTr("The file type of the file <strong>%1</strong> cannot be recognized.").arg(fileName)
             errorDialog.open()

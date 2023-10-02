@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QGeoCoordinate>
 #include <QJsonArray>
 
 #include "fileFormats/ZipFile.h"
@@ -98,6 +99,17 @@ public:
     [[nodiscard]] static QStringList mimeTypes() { return FileFormats::ZipFile::mimeTypes(); }
 
 private:
+    struct chartEntry
+    {
+        QString name; // Name of the chart e.g. "EDTF"
+        QString path; // Path of the chart within the ZIP file
+        QGeoCoordinate topLeft;
+        QGeoCoordinate topRight;
+        QGeoCoordinate bottomLeft;
+        QGeoCoordinate bottomRight;
+    };
+    QList<TripKit::chartEntry> m_entries;
+
     FileFormats::ZipFile m_zip;
     QString m_name;
     QJsonArray m_charts;

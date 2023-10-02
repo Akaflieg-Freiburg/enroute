@@ -73,62 +73,52 @@ FileFormats::TripKit::TripKit(const QString& fileName)
             setError(QObject::tr("The trip kit %1 does not contain any charts.", "FileFormats::TripKit").arg(fileName));
             return;
         }
+
+        foreach (auto chart, m_charts)
+        {
+            chartEntry entry;
+            entry.name = chart.toObject()[u"name"_qs].toString();
+            entry.path = chart.toObject()[u"filePath"_qs].toString();
+
+            entry.topLeft.setLatitude(chart.toObject()[u"geoCorners"_qs].toObject()[u"upperLeft"_qs].toObject()[u"latitude"_qs].toDouble());
+            entry.topLeft.setLongitude(chart.toObject()[u"geoCorners"_qs].toObject()[u"upperLeft"_qs].toObject()[u"longitude"_qs].toDouble());
+            entry.topRight.setLatitude(chart.toObject()[u"geoCorners"_qs].toObject()[u"upperRight"_qs].toObject()[u"latitude"_qs].toDouble());
+            entry.topRight.setLongitude(chart.toObject()[u"geoCorners"_qs].toObject()[u"upperRight"_qs].toObject()[u"longitude"_qs].toDouble());
+            entry.bottomLeft.setLatitude(chart.toObject()[u"geoCorners"_qs].toObject()[u"lowerLeft"_qs].toObject()[u"latitude"_qs].toDouble());
+            entry.bottomLeft.setLongitude(chart.toObject()[u"geoCorners"_qs].toObject()[u"lowerLeft"_qs].toObject()[u"longitude"_qs].toDouble());
+            entry.bottomRight.setLatitude(chart.toObject()[u"geoCorners"_qs].toObject()[u"lowerRight"_qs].toObject()[u"latitude"_qs].toDouble());
+            entry.bottomRight.setLongitude(chart.toObject()[u"geoCorners"_qs].toObject()[u"lowerRight"_qs].toObject()[u"longitude"_qs].toDouble());
+            m_entries += entry;
+        }
     }
 }
 
 QString FileFormats::TripKit::extract(const QString &directoryPath, qsizetype index)
 {
-    if ((index < 0) || (index >= m_charts.size()))
+    if ((index < 0) || (index >= m_entries.size()))
     {
         return {};
     }
-    auto chart = m_charts.at(index);
-    auto name = chart.toObject()[u"name"_qs].toString();
-    if (name.isEmpty())
-    {
-        return {};
-    }
-    auto path = chart.toObject()[u"filePath"_qs].toString();
-    if (path.isEmpty())
-    {
-        return {};
-    }
+    auto entry = m_entries.at(index);
+
+    auto newPath = u"%1/%2-geo_%3_%4_%5_%6.webp"_qs
+                       .arg(directoryPath, entry.name)
+                       .arg(entry.topLeft.longitude())
+                       .arg(entry.topLeft.latitude())
+                       .arg(entry.bottomRight.longitude())
+                       .arg(entry.bottomRight.latitude());
     QString ending;
-    auto idx = path.lastIndexOf('.');
+    auto idx = entry.path.lastIndexOf('.');
     if (idx == -1)
     {
         return {};
     }
-    ending = path.mid(idx+1, -1);
+    ending = entry.path.mid(idx+1, -1);
 
-    auto top = chart.toObject()[u"geoCorners"_qs].toObject()[u"upperLeft"_qs].toObject()[u"latitude"_qs].toDouble();
-    auto left = chart.toObject()[u"geoCorners"_qs].toObject()[u"upperLeft"_qs].toObject()[u"longitude"_qs].toDouble();
-    auto bottom = chart.toObject()[u"geoCorners"_qs].toObject()[u"lowerRight"_qs].toObject()[u"latitude"_qs].toDouble();
-    auto right = chart.toObject()[u"geoCorners"_qs].toObject()[u"lowerRight"_qs].toObject()[u"longitude"_qs].toDouble();
-
-    QGeoCoordinate const topLeft(top, left);
-    if (!topLeft.isValid())
-    {
-        return {};
-    }
-    QGeoCoordinate const bottomRight(bottom, right);
-    if (!bottomRight.isValid())
-    {
-        return {};
-    }
-
-
-    auto newPath = u"%1/%2-geo_%3_%4_%5_%6.webp"_qs
-                       .arg(directoryPath, name)
-                       .arg(left)
-                       .arg(top)
-                       .arg(right)
-                       .arg(bottom);
-
-    auto imageData = m_zip.extract(path);
+    auto imageData = m_zip.extract(entry.path);
     if (imageData.isEmpty())
     {
-        imageData = m_zip.extract("charts/"+name+"-geo."+ending);
+        imageData = m_zip.extract("charts/"+entry.name+"-geo."+ending);
     }
     if (imageData.isEmpty())
     {

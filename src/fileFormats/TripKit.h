@@ -99,9 +99,13 @@ public:
     [[nodiscard]] static QStringList mimeTypes() { return FileFormats::ZipFile::mimeTypes(); }
 
 private:
+    // Fills the list m_entries, returns an error message or an empty string.
+    QString readTripKitData();
+
     struct chartEntry
     {
         QString name; // Name of the chart e.g. "EDTF"
+        QString ending; // file path ending e.g. "webp" or "tiff". Will be in lower case, might be empty
         QString path; // Path of the chart within the ZIP file
         QGeoCoordinate topLeft;
         QGeoCoordinate topRight;

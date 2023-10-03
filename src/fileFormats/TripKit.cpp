@@ -36,8 +36,15 @@ FileFormats::TripKit::TripKit(const QString& fileName)
         return;
     }
 
-    auto errorMsg1 = readTripKitData();
-    setError(errorMsg1);
+    auto deferredErrorMsg = readTripKitData();
+    if (m_entries.isEmpty())
+    {
+        readVACs();
+    }
+    if (m_entries.isEmpty())
+    {
+        setError(deferredErrorMsg);
+    }
 }
 
 QString FileFormats::TripKit::extract(const QString &directoryPath, qsizetype index)
@@ -161,4 +168,13 @@ QString FileFormats::TripKit::readTripKitData()
         }
     }
     return {};
+}
+
+void FileFormats::TripKit::readVACs()
+{
+    foreach (auto path, m_zip.fileNames())
+    {
+        qWarning() << path;
+    }
+#warning implement!
 }

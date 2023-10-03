@@ -102,6 +102,9 @@ private:
     // Fills the list m_entries, returns an error message or an empty string.
     QString readTripKitData();
 
+    // Check if the ZIP file contains image file with coordinates in the file name
+    void readVACs();
+
     struct chartEntry
     {
         QString name; // Name of the chart e.g. "EDTF"

@@ -111,6 +111,8 @@ public:
      */
     [[nodiscard]] auto warning() const -> QString { return m_warning; }
 
+
+
     //
     // Setter Methods
     //
@@ -142,6 +144,28 @@ public:
      *  error.
      */
     [[nodiscard]] auto save(const QString &directoryName) -> QString;
+
+    /*! \brief Read base name from file name
+     *
+     *  For file names of the form path/EDFR-geo_10.1535_49.4293_10.2822_49.3453.webp or path/EDFR_10.1535_49.4293_10.2822_49.3453.webp,
+     *  this method returns the string "EDFR".
+     *
+     *  @param fileName file name
+     *
+     *  @return Base name, or an empty string in case of an error
+     */
+    [[nodiscard]] static QString baseNameFromFileName(const QString& fileName);
+
+    /*! \brief Read bounding box from file name
+     *
+     *  This method checks if the file name is of the form EDFR-geo_10.1535_49.4293_10.2822_49.3453.webp or EDFR_10.1535_49.4293_10.2822_49.3453.webp.
+     *  If yes, it returns the bounding box for that file.
+     *
+     *  @param fileName file name
+     *
+     *  @return Bounding box, or an invalid bounding box in case of an error
+     */
+    [[nodiscard]] static QGeoRectangle bBoxFromFileName(const QString& fileName);
 
 private:
     void generateErrorsAndWarnings();

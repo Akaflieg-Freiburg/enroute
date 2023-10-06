@@ -28,41 +28,14 @@
 GeoMaps::VAC::VAC(const QString& fileName)
     : m_fileName(fileName), m_image(fileName)
 {
-    // Guess boundary box from file name
-    if (fileName.size() > 5)
-    {
-        auto idx = fileName.lastIndexOf('.');
-        if (idx == -1)
-        {
-            idx = fileName.size();
-        }
-
-        auto list = fileName.left(idx).split('_');
-        if (list.size() >= 4)
-        {
-            list = list.last(4);
-            m_bBox.setTopLeft(QGeoCoordinate(list[1].toDouble(), list[0].toDouble()));
-            m_bBox.setBottomRight(QGeoCoordinate(list[3].toDouble(), list[2].toDouble()));
-        }
-    }
+    m_bBox = VAC::bBoxFromFileName(fileName);
     if (!m_bBox.isValid())
     {
         m_bBox = GeoMaps::GeoTIFF::readCoordinates(fileName);
     }
 
     // Guess base name from file name
-    QFileInfo const fileInfo(fileName);
-    m_baseName = fileInfo.fileName();
-    auto idx = m_baseName.lastIndexOf(u"."_qs);
-    if (idx != -1)
-    {
-        m_baseName = m_baseName.left(idx);
-    }
-    idx = m_baseName.lastIndexOf(u"-geo_"_qs);
-    if (idx != -1)
-    {
-        m_baseName = m_baseName.left(idx);
-    }
+    m_baseName = VAC::baseNameFromFileName(fileName);
 
     // Generate errors and warnings
     generateErrorsAndWarnings();
@@ -113,6 +86,87 @@ auto GeoMaps::VAC::save(const QString &directory) -> QString
     return {};
 }
 
+QString GeoMaps::VAC::baseNameFromFileName(const QString& fileName)
+{
+    QFileInfo const fileInfo(fileName);
+    auto baseName = fileInfo.fileName();
+    auto idx = baseName.lastIndexOf(u"."_qs);
+    if (idx != -1)
+    {
+        baseName = baseName.left(idx);
+    }
+    idx = baseName.lastIndexOf(u"-geo_"_qs);
+    if (idx != -1)
+    {
+        baseName = baseName.left(idx);
+    }
+    return baseName;
+}
+
+QGeoRectangle GeoMaps::VAC::bBoxFromFileName(const QString& fileName)
+{
+    if (fileName.size() <= 5)
+    {
+        return {};
+    }
+    auto idx = fileName.lastIndexOf('.');
+    if (idx == -1)
+    {
+        return {};
+    }
+
+    auto list = fileName.left(idx).split('_');
+    if (list.size() < 4)
+    {
+        return {};
+    }
+    list = list.last(4);
+
+    bool success = false;
+    auto top = list[1].toDouble(&success);
+    if (!success)
+    {
+        return {};
+    }
+    if ((top < -90.0) || (top > 90.0))
+    {
+        return {};
+    }
+    auto left = list[0].toDouble(&success);
+    if (!success)
+    {
+        return {};
+    }
+    if ((left < -180.0) || (left > 180.0))
+    {
+        return {};
+    }
+    auto bottom = list[3].toDouble(&success);
+    if (!success)
+    {
+        return {};
+    }
+    if ((bottom < -90.0) || (bottom > 90.0) || (bottom >= top))
+    {
+        return {};
+    }
+    auto right = list[2].toDouble(&success);
+    if (!success)
+    {
+        return {};
+    }
+    if ((right < -180.0) || (right > 180.0) || (left >= right))
+    {
+        return {};
+    }
+
+    QGeoRectangle result;
+    result.setTopLeft({top, left});
+    result.setBottomRight({bottom, right});
+    return result;
+}
+
+
 
 //
 // Private Methods
@@ -136,7 +190,7 @@ void GeoMaps::VAC::generateErrorsAndWarnings()
     {
         m_warning = QObject::tr("The georeferencing data for the file %1 suggests that the image diagonal is less than 200m, which makes it unlikely that this is an approach chart.", "VAC").arg(m_fileName);
     }
-    if (diameter_in_m < 50000)
+    if (diameter_in_m > 50000)
     {
         m_warning = QObject::tr("The georeferencing data for the file %1 suggests that the image diagonal is more than 50km, which makes it unlikely that this is an approach chart.", "VAC").arg(m_fileName);
     }

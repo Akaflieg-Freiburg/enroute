@@ -62,7 +62,7 @@ public:
      *
      *  @returns The number of VACs in this trip kit
      */
-    [[nodiscard]] qsizetype numCharts() const { return m_charts.size(); }
+    [[nodiscard]] qsizetype numCharts() const { return m_entries.size(); }
 
 
 
@@ -99,6 +99,8 @@ public:
     [[nodiscard]] static QStringList mimeTypes() { return FileFormats::ZipFile::mimeTypes(); }
 
 private:
+    Q_DISABLE_COPY_MOVE(TripKit)
+
     // Fills the list m_entries, returns an error message or an empty string.
     QString readTripKitData();
 
@@ -119,7 +121,6 @@ private:
 
     FileFormats::ZipFile m_zip;
     QString m_name;
-    QJsonArray m_charts;
 };
 
 } // namespace GeoMaps

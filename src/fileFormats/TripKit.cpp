@@ -25,6 +25,7 @@
 #include <QJsonObject>
 
 #include "fileFormats/TripKit.h"
+#include "geomaps/VAC.h"
 
 
 FileFormats::TripKit::TripKit(const QString& fileName)
@@ -45,10 +46,13 @@ FileFormats::TripKit::TripKit(const QString& fileName)
     {
         setError(deferredErrorMsg);
     }
+    qWarning() << m_entries.size() << numCharts() << error();
 }
 
-QString FileFormats::TripKit::extract(const QString &directoryPath, qsizetype index)
+
+QString FileFormats::TripKit::extract(const QString& directoryPath, qsizetype index)
 {
+    qWarning() << directoryPath << index;
     if ((index < 0) || (index >= m_entries.size()))
     {
         return {};
@@ -63,6 +67,7 @@ QString FileFormats::TripKit::extract(const QString &directoryPath, qsizetype in
                        .arg(entry.bottomRight.latitude());
 
     auto imageData = m_zip.extract(entry.path);
+    qWarning() << entry.path << imageData.size();
     if (imageData.isEmpty())
     {
         imageData = m_zip.extract("charts/"+entry.name+"-geo."+entry.ending);
@@ -128,7 +133,7 @@ QString FileFormats::TripKit::readTripKitData()
             return QObject::tr("The file 'charts/charts_toc.json' from the zip archive %1 cannot be interpreted.", "FileFormats::TripKit");
         }
         auto rootObject = jDoc.object();
-        m_charts = rootObject[u"charts"_qs].toArray();
+        auto m_charts = rootObject[u"charts"_qs].toArray();
         if (m_charts.isEmpty())
         {
             return QObject::tr("The trip kit does not contain any charts.", "FileFormats::TripKit");
@@ -174,7 +179,24 @@ void FileFormats::TripKit::readVACs()
 {
     foreach (auto path, m_zip.fileNames())
     {
-        qWarning() << path;
+        auto bBox = GeoMaps::VAC::bBoxFromFileName(path);
+        if (!bBox.isValid())
+        {
+            continue;
+        }
+
+        QString ending;
+        auto idx = path.lastIndexOf('.');
+        if ((idx >= 0) && (idx < path.length()))
+        {
+            ending = path.mid(idx+1, -1).toLower();
+        }
+        m_entries.append({GeoMaps::VAC::baseNameFromFileName(path),
+                          ending,
+                          path,
+                          bBox.topLeft(),
+                          bBox.topRight(),
+                          bBox.bottomLeft(),
+                          bBox.bottomRight()});
     }
-#warning implement!
 }

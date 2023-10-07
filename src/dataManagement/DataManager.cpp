@@ -256,7 +256,6 @@ auto DataManagement::DataManager::importTripKit(const QString& fileName) -> QStr
         return {};
     }
     auto size = tripKit.numCharts();
-    qWarning() << size << tripKit.error() << tripKit.warnings() << fileName;
     int successfulImports = 0;
     for(auto idx=0; idx<size; idx++)
     {

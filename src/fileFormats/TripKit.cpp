@@ -46,13 +46,11 @@ FileFormats::TripKit::TripKit(const QString& fileName)
     {
         setError(deferredErrorMsg);
     }
-    qWarning() << m_entries.size() << numCharts() << error();
 }
 
 
 QString FileFormats::TripKit::extract(const QString& directoryPath, qsizetype index)
 {
-    qWarning() << directoryPath << index;
     if ((index < 0) || (index >= m_entries.size()))
     {
         return {};
@@ -67,7 +65,6 @@ QString FileFormats::TripKit::extract(const QString& directoryPath, qsizetype in
                        .arg(entry.bottomRight.latitude());
 
     auto imageData = m_zip.extract(entry.path);
-    qWarning() << entry.path << imageData.size();
     if (imageData.isEmpty())
     {
         imageData = m_zip.extract("charts/"+entry.name+"-geo."+entry.ending);

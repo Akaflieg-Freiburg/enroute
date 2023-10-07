@@ -30,17 +30,25 @@ namespace FileFormats
 
 /*! \brief Trip Kit
  *
- *  This class implements a Trip Kit reader. Trip kits are ZIP files
- *  that contain georeferences VACs and JSON files that describe the
- *  georeferencing.
+ *  This class implements a Trip Kit reader. Trip kits are ZIP files that
+ *  contain georeferenced VACs and/or other files that describe the
+ *  georeferencing. At present, this class supports trip kits in two different
+ *  formats:
+ *
+ *  - TripKits as produced by the "AIP Browser DE", as specified here:
+ *    https://mpmediasoft.de/products/AIPBrowserDE/help/AIPBrowserDE%20-%20Trip-Kit-Spezifikation.html
+ *
+ *  - ZIP file that contain image files of the form
+ *    "baseName-geo_7.739665_48.076416_7.9063883_47.96452.xxx" or
+ *    "baseName_7.739665_48.076416_7.9063883_47.96452.xxx", where xxx is an
+ *    ending such as jpg, png, webp.
  */
 class TripKit : public DataFileAbstract
 {
 public:
     /*! \brief Constructor
      *
-     *  The constructor opens the trip kit and reads the JSON file,
-     *  but does not yet extract any images.
+     *  The constructor opens and analyzed the trip kit.
      *
      *  \param fileName File name of a trip kit.
      */
@@ -54,7 +62,7 @@ public:
 
     /*! \brief Name of the trip kit, as specified in the JSON file
      *
-     *  @returns The name or an empty string in case of error.
+     *  @returns The name or an empty string if no name is specified.
      */
     [[nodiscard]] QString name() const { return m_name; }
 

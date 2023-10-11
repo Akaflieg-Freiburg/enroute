@@ -31,7 +31,7 @@ GeoMaps::VAC::VAC(const QString& fileName)
     m_bBox = VAC::bBoxFromFileName(fileName);
     if (!m_bBox.isValid())
     {
-        FileFormats::GeoTIFF geoTIFF(fileName);
+        FileFormats::GeoTIFF const geoTIFF(fileName);
         if (geoTIFF.isValid())
         {
             m_bBox = geoTIFF.bBox();

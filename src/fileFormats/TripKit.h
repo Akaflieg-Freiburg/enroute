@@ -54,6 +54,9 @@ public:
      */
     TripKit(const QString& fileName);
 
+    // Destructor
+    ~TripKit() = default;
+
 
 
     //
@@ -131,4 +134,4 @@ private:
     QString m_name;
 };
 
-} // namespace GeoMaps
+} // namespace FileFormats

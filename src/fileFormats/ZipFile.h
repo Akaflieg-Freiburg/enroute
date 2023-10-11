@@ -97,4 +97,4 @@ private:
     QList<qsizetype> m_fileSizes;
 };
 
-} // namespace GeoMaps
+} // namespace FileFormats

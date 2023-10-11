@@ -61,7 +61,25 @@ public:
      */
     VAC(const QString& fileName);
 
-    VAC(const QString& fileName,
+    /*! \brief Constructor
+     *
+     *  This reads raster data and geoCoordinates for the edges of the raster image.
+     *  The image is rotated to "north up" and the bounding box is computed accordingly.
+     *  A base name needs to be set before the VAC can be saved.
+     *
+     *  This constructor reads the raster data and performs rotation. It is therefore absolutely not lightweight.
+     *
+     *  \param data Raster data in a format the QImage can read
+     *
+     *  \param topLeft GeoCoordinate for image edge
+     *
+     *  \param topRight GeoCoordinate for image edge
+     *
+     *  \param bottomLeft GeoCoordinate for image edge
+     *
+     *  \param bottomRight GeoCoordinate for image edge
+     */
+    VAC(const QByteArray& data,
         const QGeoCoordinate& topLeft,
         const QGeoCoordinate& topRight,
         const QGeoCoordinate& bottomLeft,

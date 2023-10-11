@@ -45,13 +45,53 @@ FileFormats::VAC::VAC(const QString& fileName)
     generateErrorsAndWarnings();
 }
 
+FileFormats::VAC::VAC(const QByteArray& data,
+                      const QGeoCoordinate& topLeft,
+                      const QGeoCoordinate& topRight,
+                      const QGeoCoordinate& bottomLeft,
+                      const QGeoCoordinate& bottomRight)
+{
+    m_image.loadFromData(data);
+
+    auto angle = bottomLeft.azimuthTo(topLeft);
+    if (!qFuzzyIsNull(angle))
+    {
+        m_image = m_image.transformed( QTransform().rotate(angle) );
+    }
+
+    auto left = topLeft.longitude();
+    left = qMin(left, topRight.longitude());
+    left = qMin(left, bottomLeft.longitude());
+    left = qMin(left, bottomRight.longitude());
+
+    auto right = topLeft.longitude();
+    right = qMax(right, topRight.longitude());
+    right = qMax(right, bottomLeft.longitude());
+    right = qMax(right, bottomRight.longitude());
+
+    auto top = topLeft.latitude();
+    top = qMax(top, topRight.latitude());
+    top = qMax(top, bottomLeft.latitude());
+    top = qMax(top, bottomRight.latitude());
+
+    auto bottom = topLeft.latitude();
+    bottom = qMin(bottom, topRight.latitude());
+    bottom = qMin(bottom, bottomLeft.latitude());
+    bottom = qMin(bottom, bottomRight.latitude());
+
+    m_bBox.setTopLeft({top, left});
+    m_bBox.setBottomRight({bottom, right});
+
+    // Generate errors and warnings
+    generateErrorsAndWarnings();
+}
 
 
 //
 // Methods
 //
 
-auto FileFormats::VAC::save(const QString &directory) -> QString
+auto FileFormats::VAC::save(const QString& directory) -> QString
 {
     if (!isValid())
     {
@@ -72,12 +112,14 @@ auto FileFormats::VAC::save(const QString &directory) -> QString
                            .arg(bottomRight.longitude())
                            .arg(bottomRight.latitude());
 
+    QFile::remove(newFileName);
     if (m_fileName.endsWith(u"webp"_qs) &&
         QFile::exists(m_fileName) &&
         QFile::copy(m_fileName, newFileName))
     {
         return newFileName;
     }
+
     if (m_image.save(newFileName))
     {
         return newFileName;
@@ -173,7 +215,7 @@ QGeoRectangle FileFormats::VAC::bBoxFromFileName(const QString& fileName)
 
 void FileFormats::VAC::generateErrorsAndWarnings()
 {
-    if (m_bBox.isValid())
+    if (!m_bBox.isValid())
     {
         setError( QObject::tr("Unable to find georeferencing data for the file %1.", "VAC").arg(m_fileName) );
         return;

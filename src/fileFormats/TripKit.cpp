@@ -57,13 +57,6 @@ QString FileFormats::TripKit::extract(const QString& directoryPath, qsizetype in
     }
     auto entry = m_entries.at(index);
 
-    auto newPath = u"%1/%2-geo_%3_%4_%5_%6.webp"_qs
-                       .arg(directoryPath, entry.name)
-                       .arg(entry.topLeft.longitude())
-                       .arg(entry.topLeft.latitude())
-                       .arg(entry.bottomRight.longitude())
-                       .arg(entry.bottomRight.latitude());
-
     auto imageData = m_zip.extract(entry.path);
     if (imageData.isEmpty())
     {
@@ -74,31 +67,9 @@ QString FileFormats::TripKit::extract(const QString& directoryPath, qsizetype in
         return {};
     }
 
-    if (entry.ending == u"webp"_qs)
-    {
-        QFile outFile(newPath);
-        if (!outFile.open(QIODeviceBase::WriteOnly))
-        {
-            return {};
-        }
-        if (outFile.write(imageData) != imageData.size())
-        {
-            outFile.close();
-            outFile.remove();
-            return {};
-        }
-        outFile.close();
-    }
-    else
-    {
-        QImage const img = QImage::fromData(imageData);
-        if (!img.save(newPath))
-        {
-            QFile::remove(newPath);
-            return {};
-        }
-    }
-    return newPath;
+    FileFormats::VAC vac(imageData, entry.topLeft, entry.topRight, entry.bottomLeft, entry.bottomRight);
+    vac.setBaseName(entry.name);
+    return vac.save(directoryPath);
 }
 
 QString FileFormats::TripKit::readTripKitData()

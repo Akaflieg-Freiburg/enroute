@@ -40,6 +40,7 @@ set(SOURCES
     fileFormats/DataFileAbstract.h
     fileFormats/GeoTIFF.h
     fileFormats/TripKit.h
+    fileFormats/VAC.h
     fileFormats/ZipFile.h
     DemoRunner.h
     geomaps/Airspace.h
@@ -51,7 +52,6 @@ set(SOURCES
     geomaps/OpenAir.h
     geomaps/TileHandler.h
     geomaps/TileServer.h
-    geomaps/VAC.h
     geomaps/Waypoint.h
     geomaps/WaypointLibrary.h
     GlobalObject.h
@@ -122,6 +122,7 @@ set(SOURCES
     DemoRunner.cpp
     fileFormats/GeoTIFF.cpp
     fileFormats/TripKit.cpp
+    fileFormats/VAC.cpp
     fileFormats/ZipFile.cpp
     geomaps/Airspace.cpp
     geomaps/CUP.cpp
@@ -132,7 +133,6 @@ set(SOURCES
     geomaps/OpenAir.cpp
     geomaps/TileHandler.cpp
     geomaps/TileServer.cpp
-    geomaps/VAC.cpp
     geomaps/Waypoint.cpp
     geomaps/WaypointLibrary.cpp
     GlobalObject.cpp

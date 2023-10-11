@@ -23,7 +23,7 @@
 #include <QGeoRectangle>
 #include <QImage>
 
-namespace GeoMaps
+namespace FileFormats
 {
 
 /*! \brief Visual approach chart
@@ -178,4 +178,4 @@ private:
     QString m_error;
 };
 
-} // namespace GeoMaps
+} // namespace FileFormats

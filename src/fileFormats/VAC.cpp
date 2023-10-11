@@ -23,9 +23,9 @@
 #include <QImage>
 
 #include "fileFormats/GeoTIFF.h"
-#include "geomaps/VAC.h"
+#include "fileFormats/VAC.h"
 
-GeoMaps::VAC::VAC(const QString& fileName)
+FileFormats::VAC::VAC(const QString& fileName)
     : m_fileName(fileName), m_image(fileName)
 {
     m_bBox = VAC::bBoxFromFileName(fileName);
@@ -51,12 +51,12 @@ GeoMaps::VAC::VAC(const QString& fileName)
 // Methods
 //
 
-auto GeoMaps::VAC::isValid() const -> bool
+auto FileFormats::VAC::isValid() const -> bool
 {
     return m_bBox.isValid() && !m_image.isNull();
 }
 
-auto GeoMaps::VAC::save(const QString &directory) -> QString
+auto FileFormats::VAC::save(const QString &directory) -> QString
 {
     if (!isValid())
     {
@@ -90,7 +90,7 @@ auto GeoMaps::VAC::save(const QString &directory) -> QString
     return {};
 }
 
-QString GeoMaps::VAC::baseNameFromFileName(const QString& fileName)
+QString FileFormats::VAC::baseNameFromFileName(const QString& fileName)
 {
     QFileInfo const fileInfo(fileName);
     auto baseName = fileInfo.fileName();
@@ -107,7 +107,7 @@ QString GeoMaps::VAC::baseNameFromFileName(const QString& fileName)
     return baseName;
 }
 
-QGeoRectangle GeoMaps::VAC::bBoxFromFileName(const QString& fileName)
+QGeoRectangle FileFormats::VAC::bBoxFromFileName(const QString& fileName)
 {
     if (fileName.size() <= 5)
     {
@@ -176,7 +176,7 @@ QGeoRectangle GeoMaps::VAC::bBoxFromFileName(const QString& fileName)
 // Private Methods
 //
 
-void GeoMaps::VAC::generateErrorsAndWarnings()
+void FileFormats::VAC::generateErrorsAndWarnings()
 {
     if (m_bBox.isValid())
     {

@@ -30,13 +30,7 @@ namespace FileFormats
 
 /*! \brief Visual approach chart
  *
- *  This class reads a georeferenced image file, where georeferencing data is
- *  encoded in of the two following ways.
- *
- *  * The image file is a GeoTIFF file with embedded georeferencing information
- *
- *  * The file name is of the form
- *    "EDTF-geo_7.739665_48.076416_7.9063883_47.96452.jpg"
+ *  This class reads a georeferenced image file.
  *
  */
 class VAC : public DataFileAbstract
@@ -45,13 +39,16 @@ class VAC : public DataFileAbstract
 public:
     /*! \brief Constructor
      *
-     *  The constructor reads the boundary box of the georeferenced image file
-     *  and guesses a good base name.
+     *  This class reads a georeferenced image file, where georeferencing data is
+     *  encoded in of the two following ways.
      *
-     *  If the fileName presented to the constructor is "EDTF.tif", this method
-     *  sets "EDTF" for a base name. If the fileName is "EDTF
-     *  Freiburg-geo_7.739665_48.076416_7.9063883_47.96452.jpg", it set "EDTF
-     *  Freiburg". In other cases, the result is undefined, and the base name
+     *  * The image file is a GeoTIFF file with embedded georeferencing information
+     *
+     *  * The file name is of the form
+     *    "EDTF-geo_7.739665_48.076416_7.9063883_47.96452.jpg"
+     *
+     *  This constructor reads the boundary box of the georeferenced image file
+     *  and guesses a good base name.  If no good name can be guessed, the base name
      *  might well be empty.
      *
      *  This constructor reads the raster data. It is therefore not lightweight
@@ -67,7 +64,7 @@ public:
      *  The image is rotated to "north up" and the bounding box is computed accordingly.
      *  A base name needs to be set before the VAC can be saved.
      *
-     *  This constructor reads the raster data and performs rotation. It is therefore absolutely not lightweight.
+     *  This constructor reads the raster data and performs rotation. It is absolutely not lightweight.
      *
      *  \param data Raster data in a format the QImage can read
      *

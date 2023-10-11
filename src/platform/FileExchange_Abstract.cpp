@@ -127,19 +127,25 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     }
 
     // VAC
-    FileFormats::VAC const vac(myPath);
-    if (vac.isValid())
+    if (FileFormats::VAC::mimeTypes().contains(mimeType.name()))
     {
-        emit openFileRequest(myPath, vac.baseName(), VAC);
-        return;
+        FileFormats::VAC const vac(myPath);
+        if (vac.isValid())
+        {
+            emit openFileRequest(myPath, vac.baseName(), VAC);
+            return;
+        }
     }
 
     // Image
-    QImage const img(myPath);
-    if (!img.isNull())
+    if (mimeType.name().startsWith(u"image"_qs))
     {
-        emit openFileRequest(myPath, {}, Image);
-        return;
+        QImage const img(myPath);
+        if (!img.isNull())
+        {
+            emit openFileRequest(myPath, {}, Image);
+            return;
+        }
     }
 
     // TripKits

@@ -28,18 +28,23 @@
 FileFormats::VAC::VAC(const QString& fileName)
     : m_fileName(fileName), m_image(fileName)
 {
+    // Guess data from file name
     m_bBox = VAC::bBoxFromFileName(fileName);
+    m_baseName = VAC::baseNameFromFileName(fileName);
+
     if (!m_bBox.isValid())
     {
         FileFormats::GeoTIFF const geoTIFF(fileName);
         if (geoTIFF.isValid())
         {
             m_bBox = geoTIFF.bBox();
+            if (!geoTIFF.name().isEmpty())
+            {
+                m_baseName = geoTIFF.name();
+            }
         }
     }
 
-    // Guess base name from file name
-    m_baseName = VAC::baseNameFromFileName(fileName);
 
     // Generate errors and warnings
     generateErrorsAndWarnings();

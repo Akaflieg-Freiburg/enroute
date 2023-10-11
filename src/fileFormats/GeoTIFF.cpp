@@ -286,7 +286,7 @@ void FileFormats::GeoTIFF::interpretGeoData()
         {
             throw QObject::tr("No data for tag 270.", "FileFormats::GeoTIFF");
         }
-        m_name = values.constLast().toString();
+        m_name = values.constFirst().toString();
     }
 
     // Handle Tag 33922, compute top left of the bounding box

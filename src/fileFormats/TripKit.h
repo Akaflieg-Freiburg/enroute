@@ -20,62 +20,62 @@
 
 #pragma once
 
+#include <QGeoCoordinate>
 #include <QJsonArray>
 
-#include "geomaps/ZipFile.h"
+#include "fileFormats/ZipFile.h"
 
-namespace GeoMaps
+namespace FileFormats
 {
 
 /*! \brief Trip Kit
  *
- *  This class implements a Trip Kit reader. Trip kits are ZIP files
- *  that contain georeferences VACs and JSON files that describe the
- *  georeferencing.
+ *  This class implements a Trip Kit reader. Trip kits are ZIP files that
+ *  contain georeferenced VACs and/or other files that describe the
+ *  georeferencing. At present, this class supports trip kits in two different
+ *  formats:
+ *
+ *  - TripKits as produced by the "AIP Browser DE", as specified here:
+ *    https://mpmediasoft.de/products/AIPBrowserDE/help/AIPBrowserDE%20-%20Trip-Kit-Spezifikation.html
+ *
+ *  - ZIP file that contain image files of the form
+ *    "baseName-geo_7.739665_48.076416_7.9063883_47.96452.xxx" or
+ *    "baseName_7.739665_48.076416_7.9063883_47.96452.xxx", where xxx is an
+ *    ending such as jpg, png, webp.
  */
-class TripKit {
+class TripKit : public DataFileAbstract
+{
 public:
     /*! \brief Constructor
      *
-     *  The constructor opens the trip kit and reads the JSON file,
-     *  but does not yet extract any images.
+     *  The constructor opens and analyzed the trip kit.
      *
      *  \param fileName File name of a trip kit.
      */
     TripKit(const QString& fileName);
+
+    // Destructor
+    ~TripKit() = default;
+
 
 
     //
     // Getter Methods
     //
 
-    /*! \brief Error message
-     *
-     *  If the trip kit is invalid, this method contains a short
-     *  explanation.
-     *
-     *  @returns A human-readable, translated warning or an empty string if no
-     *  error.
-     */
-    [[nodiscard]] auto error() const -> QString { return m_error; }
-
-    /*! \brief Test for validity
-     *
-     *  @returns True if this trip kit appears to be valid
-     */
-    [[nodiscard]] auto isValid() const -> bool { return m_error.isEmpty(); }
-
     /*! \brief Name of the trip kit, as specified in the JSON file
      *
-     *  @returns The name or an empty string in case of error.
+     *  @returns The name or an empty string if no name is specified.
      */
-    [[nodiscard]] auto name() const -> QString { return m_name; }
+    [[nodiscard]] QString name() const { return m_name; }
 
     /*! \brief Number of VACs in this trip kit
      *
      *  @returns The number of VACs in this trip kit
      */
-    [[nodiscard]] auto numCharts() const -> qsizetype { return m_charts.size(); }
+    [[nodiscard]] qsizetype numCharts() const { return m_entries.size(); }
+
+
 
     //
     // Methods
@@ -94,16 +94,44 @@ public:
      *
      *  @param index Index of the VAC that is to be extracted
      *
-     *  @returns Path of the newly created file, or an empty string in case of
-     *  error.
+     *  @returns Path of the extracted VAC, or an empty string in case of error.
      */
-    auto extract(const QString &directoryPath, qsizetype index) -> QString;
+    [[nodiscard]] QString extract(const QString& directoryPath, qsizetype index);
+
+
+    //
+    // Static methods
+    //
+
+    /*! \brief Mime type for files that can be opened by this class
+     *
+     *  @returns Name of mime type
+     */
+    [[nodiscard]] static QStringList mimeTypes() { return FileFormats::ZipFile::mimeTypes(); }
 
 private:
-    GeoMaps::ZipFile m_zip;
-    QString m_error;
+    Q_DISABLE_COPY_MOVE(TripKit)
+
+    // Fills the list m_entries, returns an error message or an empty string.
+    QString readTripKitData();
+
+    // Check if the ZIP file contains image file with coordinates in the file name
+    void readVACs();
+
+    struct chartEntry
+    {
+        QString name; // Name of the chart e.g. "EDTF"
+        QString ending; // file path ending e.g. "webp" or "tiff". Will be in lower case, might be empty
+        QString path; // Path of the chart within the ZIP file
+        QGeoCoordinate topLeft;
+        QGeoCoordinate topRight;
+        QGeoCoordinate bottomLeft;
+        QGeoCoordinate bottomRight;
+    };
+    QList<TripKit::chartEntry> m_entries;
+
+    FileFormats::ZipFile m_zip;
     QString m_name;
-    QJsonArray m_charts;
 };
 
-} // namespace GeoMaps
+} // namespace FileFormats

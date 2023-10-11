@@ -42,8 +42,12 @@ auto Platform::PlatformAdaptor::currentSSID() -> QString
 {
     // get primary connection devices
     auto primaryConnection = networkManagerInterface.property("PrimaryConnection").value<QDBusObjectPath>();
-    QDBusInterface primaryConnectionInterface(QStringLiteral("org.freedesktop.NetworkManager"), primaryConnection.path(),
-            QStringLiteral("org.freedesktop.NetworkManager.Connection.Active"), QDBusConnection::systemBus());
+    QDBusInterface const
+        primaryConnectionInterface(QStringLiteral("org.freedesktop.NetworkManager"),
+                                   primaryConnection.path(),
+                                   QStringLiteral(
+                                       "org.freedesktop.NetworkManager.Connection.Active"),
+                                   QDBusConnection::systemBus());
     if(primaryConnectionInterface.isValid())
     {
         return primaryConnectionInterface.property("Id").toString();

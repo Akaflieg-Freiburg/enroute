@@ -29,11 +29,11 @@
 #include <QTemporaryDir>
 
 #include "GlobalSettings.h"
+#include "fileFormats/TripKit.h"
+#include "fileFormats/VAC.h"
 #include "dataManagement/DataManager.h"
 #include "geomaps/MBTILES.h"
 #include "geomaps/OpenAir.h"
-#include "geomaps/TripKit.h"
-#include "geomaps/VAC.h"
 #include <chrono>
 
 using namespace std::chrono_literals;
@@ -80,7 +80,7 @@ void DataManagement::DataManager::deferredInitialization()
         fileIterator.next();
         auto fileName = fileIterator.fileName();
         auto idx = fileName.lastIndexOf(u"-geo_"_qs, -1);
-        auto bBox = GeoMaps::VAC(fileName).bBox();
+        auto bBox = FileFormats::VAC(fileName).bBox();
 
         if ((!fileName.endsWith(u"jpeg"_qs)
              && !fileName.endsWith(u"jpg"_qs)
@@ -249,33 +249,46 @@ auto DataManagement::DataManager::importOpenAir(const QString& fileName, const Q
 
 auto DataManagement::DataManager::importTripKit(const QString& fileName) -> QString
 {
-    GeoMaps::TripKit tripKit(fileName);
+    FileFormats::TripKit tripKit(fileName);
     QTemporaryDir const tmpDir;
     if (!tmpDir.isValid())
     {
         return {};
     }
     auto size = tripKit.numCharts();
-    for(auto idx=0; idx<size; idx++) {
+    int successfulImports = 0;
+    for(auto idx=0; idx<size; idx++)
+    {
         emit importTripKitStatus((double)idx/(double)size);
         QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
 
-        tripKit.extract(tmpDir.path(), idx);
-    }
-    QDirIterator fileIterator(tmpDir.path(), QDir::Files);
-    while (fileIterator.hasNext())
-    {
-        fileIterator.next();
-        qWarning() << importVAC(tmpDir.path()+"/"+fileIterator.fileName(), {});
+        auto path = tripKit.extract(tmpDir.path(), idx);
+        if (!path.isEmpty())
+        {
+            if (importVAC(path, {}).isEmpty())
+            {
+                successfulImports++;
+            }
+        }
     }
     emit importTripKitStatus(1.0);
+
+    if (successfulImports == 0)
+    {
+        return tr("Error reading TripKip: No charts imported.");
+    }
+    if (successfulImports < size)
+    {
+        return tr("Error reading TripKip: Only %1 out of %2 charts were successfully imported.").arg(successfulImports).arg(size);
+    }
+
     return {};
 }
 
 
 auto DataManagement::DataManager::importVAC(const QString& fileName, QString newName) -> QString
 {
-    GeoMaps::VAC vac(fileName);
+    FileFormats::VAC vac(fileName);
     if (!vac.isValid())
     {
         return vac.error();

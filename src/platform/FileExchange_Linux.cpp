@@ -51,8 +51,8 @@ void Platform::FileExchange::importContent()
 
 auto Platform::FileExchange::shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
 {
-    QMimeDatabase db;
-    QMimeType mime = db.mimeTypeForName(mimeType);
+    QMimeDatabase const mimeDataBase;
+    QMimeType const mime = mimeDataBase.mimeTypeForName(mimeType);
 
     auto fileNameX = QFileDialog::getSaveFileName(nullptr, tr("Export flight route"), QDir::homePath()+"/"+fileNameTemplate+"."+mime.preferredSuffix(), tr("%1 (*.%2);;All files (*)").arg(mime.comment(), mime.preferredSuffix()));
     if (fileNameX.isEmpty())
@@ -84,7 +84,8 @@ auto Platform::FileExchange::viewContent(const QByteArray& content, const QStrin
     tmpFile.write(content);
     tmpFile.close();
 
-    bool success = QDesktopServices::openUrl(QUrl("file://" + tmpFile.fileName(), QUrl::TolerantMode));
+    bool const success = QDesktopServices::openUrl(
+        QUrl("file://" + tmpFile.fileName(), QUrl::TolerantMode));
     if (success)
     {
         return {};

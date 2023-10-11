@@ -331,7 +331,7 @@ public:
      * the name exists, the library entry will be replaced.
      *
      * @returns A human-readable HTML string on error, or an empty string on
-     * success
+     * success.
      */
     Q_INVOKABLE QString importVAC(const QString& fileName, QString newName);
 

@@ -94,6 +94,11 @@ Item {
                 importOpenAirDialog.open()
                 return
             }
+            if (fileFunction === FileExchange.ZipFile) {
+                errLbl.text = qsTr("The file <strong>%1</strong> seems to contain an zip file without the data required in a tripkit.").arg(fileName)
+                errorDialog.open()
+                return
+            }
 
             errLbl.text = qsTr("The file type of the file <strong>%1</strong> cannot be recognized.").arg(fileName)
             errorDialog.open()
@@ -520,11 +525,16 @@ Item {
             anchors.fill: parent
 
             Label {
+                id: txtLbl
                 Layout.fillWidth: true
 
-                text: qsTr("Extracting and converting files from the trip kit.")
+                text: qsTr("Extracting and converting files from the trip kit. Please do not interrupt or close the app.")
                 wrapMode: Text.Wrap
                 textFormat: Text.StyledText
+            }
+
+            Item {
+                height: txtLbl.font.pixelSize
             }
 
             ProgressBar {

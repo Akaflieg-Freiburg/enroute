@@ -22,7 +22,7 @@
 #include <QFileInfo>
 #include <QImage>
 
-#include "geomaps/GeoTIFF.h"
+#include "fileFormats/GeoTIFF.h"
 #include "geomaps/VAC.h"
 
 GeoMaps::VAC::VAC(const QString& fileName)
@@ -31,7 +31,11 @@ GeoMaps::VAC::VAC(const QString& fileName)
     m_bBox = VAC::bBoxFromFileName(fileName);
     if (!m_bBox.isValid())
     {
-        m_bBox = GeoMaps::GeoTIFF::readCoordinates(fileName);
+        FileFormats::GeoTIFF geoTIFF(fileName);
+        if (geoTIFF.isValid())
+        {
+            m_bBox = geoTIFF.bBox();
+        }
     }
 
     // Guess base name from file name

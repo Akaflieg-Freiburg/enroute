@@ -38,6 +38,7 @@ set(SOURCES
     dataManagement/Downloadable_SingleFile.h
     dataManagement/SSLErrorHandler.h
     fileFormats/DataFileAbstract.h
+    fileFormats/GeoTIFF.h
     fileFormats/TripKit.h
     fileFormats/ZipFile.h
     DemoRunner.h
@@ -45,7 +46,6 @@ set(SOURCES
     geomaps/CUP.h
     geomaps/GeoJSON.h
     geomaps/GeoMapProvider.h
-    geomaps/GeoTIFF.h
     geomaps/GPX.h
     geomaps/MBTILES.h
     geomaps/OpenAir.h
@@ -120,13 +120,13 @@ set(SOURCES
     dataManagement/Downloadable_SingleFile.cpp
     dataManagement/SSLErrorHandler.cpp
     DemoRunner.cpp
+    fileFormats/GeoTIFF.cpp
     fileFormats/TripKit.cpp
     fileFormats/ZipFile.cpp
     geomaps/Airspace.cpp
     geomaps/CUP.cpp
     geomaps/GeoJSON.cpp
     geomaps/GeoMapProvider.cpp
-    geomaps/GeoTIFF.cpp
     geomaps/GPX.cpp
     geomaps/MBTILES.cpp
     geomaps/OpenAir.cpp

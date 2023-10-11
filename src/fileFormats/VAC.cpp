@@ -51,11 +51,6 @@ FileFormats::VAC::VAC(const QString& fileName)
 // Methods
 //
 
-auto FileFormats::VAC::isValid() const -> bool
-{
-    return m_bBox.isValid() && !m_image.isNull();
-}
-
 auto FileFormats::VAC::save(const QString &directory) -> QString
 {
     if (!isValid())
@@ -180,22 +175,22 @@ void FileFormats::VAC::generateErrorsAndWarnings()
 {
     if (m_bBox.isValid())
     {
-        m_error = QObject::tr("Unable to find georeferencing data for the file %1.", "VAC").arg(m_fileName);
+        setError( QObject::tr("Unable to find georeferencing data for the file %1.", "VAC").arg(m_fileName) );
         return;
     }
     if (m_image.isNull())
     {
-        m_error = QObject::tr("Unable to load raster data from file %1.", "VAC").arg(m_fileName);
+        setError( QObject::tr("Unable to load raster data from file %1.", "VAC").arg(m_fileName) );
         return;
     }
 
     auto diameter_in_m = m_bBox.topLeft().distanceTo(m_bBox.bottomRight());
     if (diameter_in_m < 200)
     {
-        m_warning = QObject::tr("The georeferencing data for the file %1 suggests that the image diagonal is less than 200m, which makes it unlikely that this is an approach chart.", "VAC").arg(m_fileName);
+        addWarning( QObject::tr("The georeferencing data for the file %1 suggests that the image diagonal is less than 200m, which makes it unlikely that this is an approach chart.", "VAC").arg(m_fileName) );
     }
     if (diameter_in_m > 50000)
     {
-        m_warning = QObject::tr("The georeferencing data for the file %1 suggests that the image diagonal is more than 50km, which makes it unlikely that this is an approach chart.", "VAC").arg(m_fileName);
+        addWarning( QObject::tr("The georeferencing data for the file %1 suggests that the image diagonal is more than 50km, which makes it unlikely that this is an approach chart.", "VAC").arg(m_fileName) );
     }
 }

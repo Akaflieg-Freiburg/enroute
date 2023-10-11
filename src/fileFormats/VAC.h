@@ -23,6 +23,8 @@
 #include <QGeoRectangle>
 #include <QImage>
 
+#include "fileFormats/DataFileAbstract.h"
+
 namespace FileFormats
 {
 
@@ -37,7 +39,7 @@ namespace FileFormats
  *    "EDTF-geo_7.739665_48.076416_7.9063883_47.96452.jpg"
  *
  */
-class VAC
+class VAC : public DataFileAbstract
 {
 
 public:
@@ -58,6 +60,12 @@ public:
      *  \param fileName File name of a georeferenced image file.
      */
     VAC(const QString& fileName);
+
+    VAC(const QString& fileName,
+        const QGeoCoordinate& topLeft,
+        const QGeoCoordinate& topRight,
+        const QGeoCoordinate& bottomLeft,
+        const QGeoCoordinate& bottomRight);
 
 
     //
@@ -81,35 +89,6 @@ public:
      *  returned.
      */
     [[nodiscard]] auto bBox() const -> QGeoRectangle { return m_bBox; }
-
-    /*! \brief Error message
-     *
-     *  If the visual approach chart is invalid, this method contains a short
-     *  explanation.
-     *
-     *  @returns A human-readable, translated warning or an empty string if no
-     *  error.
-     */
-    [[nodiscard]] auto error() const -> QString { return m_error; }
-
-    /*! \brief Test for validity
-     *
-     *  A visual approach chart is considered valid if the bounding box is valid
-     *  and if the raster data can be loaded successfully.
-     *
-     *  @returns True if this visual approach chart is valid
-     */
-    [[nodiscard]] auto isValid() const -> bool;
-
-    /*! \brief Warning
-     *
-     *  If the visual approach chart is technically valid, but unlikely to be
-     *  correct, this method returns a short explanation of the problem.
-     *
-     *  @returns A human-readable, translated warning or an empty string if no
-     *  warning.
-     */
-    [[nodiscard]] auto warning() const -> QString { return m_warning; }
 
 
 
@@ -167,6 +146,17 @@ public:
      */
     [[nodiscard]] static QGeoRectangle bBoxFromFileName(const QString& fileName);
 
+    /*! \brief Mime type for files that can be opened by this class
+     *
+     *  @returns Name of mime type
+     */
+    [[nodiscard]] static QStringList mimeTypes() { return {u"image/jpg"_qs,
+                                                           u"image/jpeg"_qs,
+                                                           u"image/png"_qs,
+                                                           u"image/tif"_qs,
+                                                           u"image/tiff"_qs,
+                                                           u"image/webp"_qs}; }
+
 private:
     void generateErrorsAndWarnings();
 
@@ -174,8 +164,6 @@ private:
     QString m_baseName;
     QString m_fileName;
     QImage m_image;
-    QString m_warning;
-    QString m_error;
 };
 
 } // namespace FileFormats

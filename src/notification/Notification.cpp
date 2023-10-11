@@ -20,6 +20,7 @@
 
 #include <QTimer>
 #include <chrono>
+#include <utility>
 
 #include "notification/Notification.h"
 
@@ -30,8 +31,12 @@ using namespace std::chrono_literals;
 // Constructors and destructors
 //
 
-Notifications::Notification::Notification(const QString& _title, Notifications::Notification::Importance _importance, QObject* parent)
-    : QObject(parent), m_importance(_importance), m_title(_title)
+Notifications::Notification::Notification(QString _title,
+                                          Notifications::Notification::Importance _importance,
+                                          QObject *parent)
+    : QObject(parent)
+    , m_importance(_importance)
+    , m_title(std::move(_title))
 
 {
     // Auto-delete this notification in five minutes.

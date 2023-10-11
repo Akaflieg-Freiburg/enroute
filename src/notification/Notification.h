@@ -83,14 +83,16 @@ public:
      *
      *  @param parent The standard QObject parent pointer
      */
-    explicit Notification(const QString& _title, Notifications::Notification::Importance _importance = Notifications::Notification::Info, QObject* parent = nullptr);
+    explicit Notification(
+        QString _title,
+        Notifications::Notification::Importance _importance = Notifications::Notification::Info,
+        QObject *parent = nullptr);
 
     // No default constructor, always want a parent
     explicit Notification() = delete;
 
     /*! \brief Standard destructor */
-    ~Notification() = default;
-
+    ~Notification() override = default;
 
     //
     // PROPERTIES
@@ -295,6 +297,8 @@ signals:
 
 
 private:
+    Q_DISABLE_COPY_MOVE(Notification)
+
     // Property data
     QString m_button1Text {tr("Dismiss")};
     QString m_button2Text;

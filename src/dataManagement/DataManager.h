@@ -189,85 +189,85 @@ public:
      *
      *  @returns Property aviationMaps
      */
-    [[nodiscard]] auto appUpdateRequired() const -> bool { return m_appUpdateRequired; }
+    [[nodiscard]] bool appUpdateRequired() const { return m_appUpdateRequired; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property aviationMaps
      */
-    [[nodiscard]] auto aviationMaps() -> DataManagement::Downloadable_MultiFile* { return &m_aviationMaps; }
+    [[nodiscard]] DataManagement::Downloadable_MultiFile* aviationMaps() { return &m_aviationMaps; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property baseMaps
      */
-    [[nodiscard]] auto baseMaps() -> DataManagement::Downloadable_MultiFile* { return &m_baseMaps; }
+    [[nodiscard]] DataManagement::Downloadable_MultiFile* baseMaps() { return &m_baseMaps; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property baseMapsRaster
      */
-    [[nodiscard]] auto baseMapsRaster() -> DataManagement::Downloadable_MultiFile* { return &m_baseMapsRaster; }
+    [[nodiscard]] DataManagement::Downloadable_MultiFile* baseMapsRaster() { return &m_baseMapsRaster; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property baseMapsVector
      */
-    [[nodiscard]] auto baseMapsVector() -> DataManagement::Downloadable_MultiFile* { return &m_baseMapsVector; }
+    [[nodiscard]] DataManagement::Downloadable_MultiFile* baseMapsVector() { return &m_baseMapsVector; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property databases
      */
-    [[nodiscard]] auto databases() -> DataManagement::Downloadable_MultiFile* { return &m_databases; }
+    [[nodiscard]] DataManagement::Downloadable_MultiFile* databases() { return &m_databases; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property items
      */
-    [[nodiscard]] auto items() -> DataManagement::Downloadable_MultiFile* { return &m_items; }
+    [[nodiscard]] DataManagement::Downloadable_MultiFile* items() { return &m_items; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property mapsAndData
      */
-    [[nodiscard]] auto mapList() -> DataManagement::Downloadable_SingleFile* { return &m_mapList; }
+    [[nodiscard]] DataManagement::Downloadable_SingleFile* mapList() { return &m_mapList; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property mapsAndData
      */
-    [[nodiscard]] auto mapsAndData() -> DataManagement::Downloadable_MultiFile* { return &m_mapsAndData; }
+    [[nodiscard]] DataManagement::Downloadable_MultiFile* mapsAndData() { return &m_mapsAndData; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property mapSets
      */
-    [[nodiscard]] auto mapSets() -> DataManagement::Downloadable_MultiFile* { return &m_mapSets; }
+    [[nodiscard]] DataManagement::Downloadable_MultiFile* mapSets() { return &m_mapSets; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property terrainMaps
      */
-    [[nodiscard]] auto terrainMaps() -> DataManagement::Downloadable_MultiFile* { return &m_terrainMaps; }
+    [[nodiscard]] DataManagement::Downloadable_MultiFile* terrainMaps() { return &m_terrainMaps; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property VAC
      */
-    [[nodiscard]] auto VAC() -> DataManagement::Downloadable_MultiFile* { return &m_VAC; }
+    [[nodiscard]] DataManagement::Downloadable_MultiFile* VAC() { return &m_VAC; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property whatsNew
      */
-    [[nodiscard]] auto whatsNew() const -> QString { return m_whatsNew; }
+    [[nodiscard]] QString whatsNew() const { return m_whatsNew; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property lastWhatsNewHash
      */
-    [[nodiscard]] auto whatsNewHash() const -> Units::ByteSize { return qHash(m_whatsNew, 0); }
+    [[nodiscard]] Units::ByteSize whatsNewHash() const { return qHash(m_whatsNew, 0); }
 
 
     //

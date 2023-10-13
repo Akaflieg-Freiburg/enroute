@@ -29,9 +29,9 @@
 #include <QTemporaryDir>
 
 #include "GlobalSettings.h"
+#include "dataManagement/DataManager.h"
 #include "fileFormats/TripKit.h"
 #include "fileFormats/VAC.h"
-#include "dataManagement/DataManager.h"
 #include "geomaps/MBTILES.h"
 #include "geomaps/OpenAir.h"
 #include <chrono>
@@ -166,7 +166,7 @@ void DataManagement::DataManager::cleanDataDirectory()
 }
 
 
-auto DataManagement::DataManager::import(const QString& fileName, const QString& newName) -> QString
+QString DataManagement::DataManager::import(const QString& fileName, const QString& newName)
 {
 
     auto path = m_dataDirectory+"/Unsupported";
@@ -203,7 +203,7 @@ auto DataManagement::DataManager::import(const QString& fileName, const QString&
 }
 
 
-auto DataManagement::DataManager::importOpenAir(const QString& fileName, const QString& newName) -> QString
+QString DataManagement::DataManager::importOpenAir(const QString& fileName, const QString& newName)
 {
 
     auto path = m_dataDirectory+"/Unsupported";
@@ -247,7 +247,7 @@ auto DataManagement::DataManager::importOpenAir(const QString& fileName, const Q
 }
 
 
-auto DataManagement::DataManager::importTripKit(const QString& fileName) -> QString
+QString DataManagement::DataManager::importTripKit(const QString& fileName)
 {
     FileFormats::TripKit tripKit(fileName);
     QTemporaryDir const tmpDir;
@@ -286,7 +286,7 @@ auto DataManagement::DataManager::importTripKit(const QString& fileName) -> QStr
 }
 
 
-auto DataManagement::DataManager::importVAC(const QString& fileName, QString newName) -> QString
+QString DataManagement::DataManager::importVAC(const QString& fileName, QString newName)
 {
     FileFormats::VAC vac(fileName);
     if (!vac.isValid())
@@ -356,7 +356,7 @@ void DataManagement::DataManager::onItemFileChanged()
 }
 
 
-auto DataManagement::DataManager::createOrRecycleItem(const QUrl& url, const QString& localFileName, const QGeoRectangle& bBox) -> DataManagement::Downloadable_SingleFile*
+DataManagement::Downloadable_SingleFile* DataManagement::DataManager::createOrRecycleItem(const QUrl& url, const QString& localFileName, const QGeoRectangle& bBox)
 {
     // If a data item with the given local file name and the given URL already exists,
     // update that remoteFileDate and remoteFileSize of that element, annd delete its

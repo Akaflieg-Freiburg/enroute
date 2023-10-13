@@ -3057,7 +3057,7 @@ QString Weather::Decoder::visitVicinityGroup(const VicinityGroup & group, Report
         break;
     }
 
-    //: %1 is string like 'Smoke'
+    // Here %1 is string like 'Smoke'
     QStringList results;
     results << tr("%1 observed.");
 

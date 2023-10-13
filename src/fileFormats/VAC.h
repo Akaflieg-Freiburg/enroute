@@ -23,33 +23,32 @@
 #include <QGeoRectangle>
 #include <QImage>
 
-namespace GeoMaps
+#include "fileFormats/DataFileAbstract.h"
+
+namespace FileFormats
 {
 
 /*! \brief Visual approach chart
  *
- *  This class reads a georeferenced image file, where georeferencing data is
- *  encoded in of the two following ways.
- *
- *  * The image file is a GeoTIFF file with embedded georeferencing information
- *
- *  * The file name is of the form
- *    "EDTF-geo_7.739665_48.076416_7.9063883_47.96452.jpg"
+ *  This class reads a georeferenced image file.
  *
  */
-class VAC
+class VAC : public DataFileAbstract
 {
 
 public:
     /*! \brief Constructor
      *
-     *  The constructor reads the boundary box of the georeferenced image file
-     *  and guesses a good base name.
+     *  This class reads a georeferenced image file, where georeferencing data is
+     *  encoded in of the two following ways.
      *
-     *  If the fileName presented to the constructor is "EDTF.tif", this method
-     *  sets "EDTF" for a base name. If the fileName is "EDTF
-     *  Freiburg-geo_7.739665_48.076416_7.9063883_47.96452.jpg", it set "EDTF
-     *  Freiburg". In other cases, the result is undefined, and the base name
+     *  * The image file is a GeoTIFF file with embedded georeferencing information
+     *
+     *  * The file name is of the form
+     *    "EDTF-geo_7.739665_48.076416_7.9063883_47.96452.jpg"
+     *
+     *  This constructor reads the boundary box of the georeferenced image file
+     *  and guesses a good base name.  If no good name can be guessed, the base name
      *  might well be empty.
      *
      *  This constructor reads the raster data. It is therefore not lightweight
@@ -58,6 +57,30 @@ public:
      *  \param fileName File name of a georeferenced image file.
      */
     VAC(const QString& fileName);
+
+    /*! \brief Constructor
+     *
+     *  This reads raster data and geoCoordinates for the edges of the raster image.
+     *  The image is rotated to "north up" and the bounding box is computed accordingly.
+     *  A base name needs to be set before the VAC can be saved.
+     *
+     *  This constructor reads the raster data and performs rotation. It is absolutely not lightweight.
+     *
+     *  \param data Raster data in a format the QImage can read
+     *
+     *  \param topLeft GeoCoordinate for image edge
+     *
+     *  \param topRight GeoCoordinate for image edge
+     *
+     *  \param bottomLeft GeoCoordinate for image edge
+     *
+     *  \param bottomRight GeoCoordinate for image edge
+     */
+    VAC(const QByteArray& data,
+        const QGeoCoordinate& topLeft,
+        const QGeoCoordinate& topRight,
+        const QGeoCoordinate& bottomLeft,
+        const QGeoCoordinate& bottomRight);
 
 
     //
@@ -82,34 +105,7 @@ public:
      */
     [[nodiscard]] auto bBox() const -> QGeoRectangle { return m_bBox; }
 
-    /*! \brief Error message
-     *
-     *  If the visual approach chart is invalid, this method contains a short
-     *  explanation.
-     *
-     *  @returns A human-readable, translated warning or an empty string if no
-     *  error.
-     */
-    [[nodiscard]] auto error() const -> QString { return m_error; }
 
-    /*! \brief Test for validity
-     *
-     *  A visual approach chart is considered valid if the bounding box is valid
-     *  and if the raster data can be loaded successfully.
-     *
-     *  @returns True if this visual approach chart is valid
-     */
-    [[nodiscard]] auto isValid() const -> bool;
-
-    /*! \brief Warning
-     *
-     *  If the visual approach chart is technically valid, but unlikely to be
-     *  correct, this method returns a short explanation of the problem.
-     *
-     *  @returns A human-readable, translated warning or an empty string if no
-     *  warning.
-     */
-    [[nodiscard]] auto warning() const -> QString { return m_warning; }
 
     //
     // Setter Methods
@@ -143,6 +139,39 @@ public:
      */
     [[nodiscard]] auto save(const QString &directoryName) -> QString;
 
+    /*! \brief Read base name from file name
+     *
+     *  For file names of the form path/EDFR-geo_10.1535_49.4293_10.2822_49.3453.webp or path/EDFR_10.1535_49.4293_10.2822_49.3453.webp,
+     *  this method returns the string "EDFR".
+     *
+     *  @param fileName file name
+     *
+     *  @return Base name, or an empty string in case of an error
+     */
+    [[nodiscard]] static QString baseNameFromFileName(const QString& fileName);
+
+    /*! \brief Read bounding box from file name
+     *
+     *  This method checks if the file name is of the form EDFR-geo_10.1535_49.4293_10.2822_49.3453.webp or EDFR_10.1535_49.4293_10.2822_49.3453.webp.
+     *  If yes, it returns the bounding box for that file.
+     *
+     *  @param fileName file name
+     *
+     *  @return Bounding box, or an invalid bounding box in case of an error
+     */
+    [[nodiscard]] static QGeoRectangle bBoxFromFileName(const QString& fileName);
+
+    /*! \brief Mime type for files that can be opened by this class
+     *
+     *  @returns Name of mime type
+     */
+    [[nodiscard]] static QStringList mimeTypes() { return {u"image/jpg"_qs,
+                                                           u"image/jpeg"_qs,
+                                                           u"image/png"_qs,
+                                                           u"image/tif"_qs,
+                                                           u"image/tiff"_qs,
+                                                           u"image/webp"_qs}; }
+
 private:
     void generateErrorsAndWarnings();
 
@@ -150,8 +179,6 @@ private:
     QString m_baseName;
     QString m_fileName;
     QImage m_image;
-    QString m_warning;
-    QString m_error;
 };
 
-} // namespace GeoMaps
+} // namespace FileFormats

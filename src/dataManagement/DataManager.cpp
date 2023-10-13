@@ -30,10 +30,10 @@
 
 #include "GlobalSettings.h"
 #include "dataManagement/DataManager.h"
+#include "fileFormats/TripKit.h"
+#include "fileFormats/VAC.h"
 #include "geomaps/MBTILES.h"
 #include "geomaps/OpenAir.h"
-#include "geomaps/TripKit.h"
-#include "geomaps/VAC.h"
 #include <chrono>
 
 using namespace std::chrono_literals;
@@ -80,7 +80,7 @@ void DataManagement::DataManager::deferredInitialization()
         fileIterator.next();
         auto fileName = fileIterator.fileName();
         auto idx = fileName.lastIndexOf(u"-geo_"_qs, -1);
-        auto bBox = GeoMaps::VAC(fileName).bBox();
+        auto bBox = FileFormats::VAC(fileName).bBox();
 
         if ((!fileName.endsWith(u"jpeg"_qs)
              && !fileName.endsWith(u"jpg"_qs)
@@ -166,7 +166,7 @@ void DataManagement::DataManager::cleanDataDirectory()
 }
 
 
-auto DataManagement::DataManager::import(const QString& fileName, const QString& newName) -> QString
+QString DataManagement::DataManager::import(const QString& fileName, const QString& newName)
 {
 
     auto path = m_dataDirectory+"/Unsupported";
@@ -203,7 +203,7 @@ auto DataManagement::DataManager::import(const QString& fileName, const QString&
 }
 
 
-auto DataManagement::DataManager::importOpenAir(const QString& fileName, const QString& newName) -> QString
+QString DataManagement::DataManager::importOpenAir(const QString& fileName, const QString& newName)
 {
 
     auto path = m_dataDirectory+"/Unsupported";
@@ -247,35 +247,48 @@ auto DataManagement::DataManager::importOpenAir(const QString& fileName, const Q
 }
 
 
-auto DataManagement::DataManager::importTripKit(const QString& fileName) -> QString
+QString DataManagement::DataManager::importTripKit(const QString& fileName)
 {
-    GeoMaps::TripKit tripKit(fileName);
+    FileFormats::TripKit tripKit(fileName);
     QTemporaryDir const tmpDir;
     if (!tmpDir.isValid())
     {
         return {};
     }
     auto size = tripKit.numCharts();
-    for(auto idx=0; idx<size; idx++) {
+    int successfulImports = 0;
+    for(auto idx=0; idx<size; idx++)
+    {
         emit importTripKitStatus((double)idx/(double)size);
         QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
 
-        tripKit.extract(tmpDir.path(), idx);
-    }
-    QDirIterator fileIterator(tmpDir.path(), QDir::Files);
-    while (fileIterator.hasNext())
-    {
-        fileIterator.next();
-        qWarning() << importVAC(tmpDir.path()+"/"+fileIterator.fileName(), {});
+        auto path = tripKit.extract(tmpDir.path(), idx);
+        if (!path.isEmpty())
+        {
+            if (importVAC(path, {}).isEmpty())
+            {
+                successfulImports++;
+            }
+        }
     }
     emit importTripKitStatus(1.0);
+
+    if (successfulImports == 0)
+    {
+        return tr("Error reading TripKip: No charts imported.");
+    }
+    if (successfulImports < size)
+    {
+        return tr("Error reading TripKip: Only %1 out of %2 charts were successfully imported.").arg(successfulImports).arg(size);
+    }
+
     return {};
 }
 
 
-auto DataManagement::DataManager::importVAC(const QString& fileName, QString newName) -> QString
+QString DataManagement::DataManager::importVAC(const QString& fileName, QString newName)
 {
-    GeoMaps::VAC vac(fileName);
+    FileFormats::VAC vac(fileName);
     if (!vac.isValid())
     {
         return vac.error();
@@ -343,7 +356,7 @@ void DataManagement::DataManager::onItemFileChanged()
 }
 
 
-auto DataManagement::DataManager::createOrRecycleItem(const QUrl& url, const QString& localFileName, const QGeoRectangle& bBox) -> DataManagement::Downloadable_SingleFile*
+DataManagement::Downloadable_SingleFile* DataManagement::DataManager::createOrRecycleItem(const QUrl& url, const QString& localFileName, const QGeoRectangle& bBox)
 {
     // If a data item with the given local file name and the given URL already exists,
     // update that remoteFileDate and remoteFileSize of that element, annd delete its

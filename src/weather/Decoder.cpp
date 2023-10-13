@@ -45,7 +45,7 @@ Weather::Decoder::Decoder(QObject *parent)
 }
 
 
-auto Weather::Decoder::messageType() const -> QString
+QString Weather::Decoder::messageType() const
 {
     switch(parseResult.reportMetadata.type)
     {
@@ -109,7 +109,8 @@ void Weather::Decoder::parse()
 
 // explanation Methods
 
-auto Weather::Decoder::explainCloudType(const metaf::CloudType &ct) -> QString {
+QString Weather::Decoder::explainCloudType(const metaf::CloudType &ct)
+{
     const auto h = ct.height();
     if (h.isReported())
     {
@@ -123,7 +124,7 @@ auto Weather::Decoder::explainCloudType(const metaf::CloudType &ct) -> QString {
             .arg(cloudTypeToString(ct.type()));
 }
 
-auto Weather::Decoder::explainDirection(metaf::Direction direction, bool trueCardinalDirections) -> QString
+QString Weather::Decoder::explainDirection(metaf::Direction direction, bool trueCardinalDirections)
 {
     switch (direction.type())
     {
@@ -167,7 +168,7 @@ auto Weather::Decoder::explainDirection(metaf::Direction direction, bool trueCar
     return {};
 }
 
-auto Weather::Decoder::explainDirectionSector(const std::vector<metaf::Direction>& dir) -> QString
+QString Weather::Decoder::explainDirectionSector(const std::vector<metaf::Direction>& dir)
 {
     std::string result;
     for (auto i=0U; i<dir.size(); i++)
@@ -181,7 +182,7 @@ auto Weather::Decoder::explainDirectionSector(const std::vector<metaf::Direction
     return QString::fromStdString(result);
 }
 
-auto Weather::Decoder::explainDistance(metaf::Distance distance) -> QString
+QString Weather::Decoder::explainDistance(metaf::Distance distance)
 {
     if (!distance.isReported())
     {
@@ -310,7 +311,8 @@ auto Weather::Decoder::explainDistance(metaf::Distance distance) -> QString
     return results.join(QStringLiteral(" "));
 }
 
-auto Weather::Decoder::explainDistance_FT(metaf::Distance distance) -> QString {
+QString Weather::Decoder::explainDistance_FT(metaf::Distance distance)
+{
 
     if (!distance.isReported())
     {
@@ -346,7 +348,7 @@ auto Weather::Decoder::explainDistance_FT(metaf::Distance distance) -> QString {
     return QStringLiteral("[unable to convert distance to feet]");
 }
 
-auto Weather::Decoder::explainMetafTime(metaf::MetafTime metafTime) -> QString
+QString Weather::Decoder::explainMetafTime(metaf::MetafTime metafTime)
 {
     // QTime for result
     auto metafQTime = QTime(gsl::narrow_cast<int>(metafTime.hour()), gsl::narrow_cast<int>(metafTime.minute()) );
@@ -364,7 +366,7 @@ auto Weather::Decoder::explainMetafTime(metaf::MetafTime metafTime) -> QString
     return Navigation::Clock::describePointInTime(metafQDateTime);
 }
 
-auto Weather::Decoder::explainPrecipitation(metaf::Precipitation precipitation) -> QString
+QString Weather::Decoder::explainPrecipitation(metaf::Precipitation precipitation)
 {
     if (!precipitation.isReported())
     {
@@ -384,7 +386,8 @@ auto Weather::Decoder::explainPrecipitation(metaf::Precipitation precipitation) 
     return tr("[unable to convert precipitation to mm]");
 }
 
-auto Weather::Decoder::explainPressure(metaf::Pressure pressure) -> QString {
+QString Weather::Decoder::explainPressure(metaf::Pressure pressure)
+{
 
     if (!pressure.pressure().has_value())
     {
@@ -399,7 +402,8 @@ auto Weather::Decoder::explainPressure(metaf::Pressure pressure) -> QString {
     return tr("[unable to convert pressure to hPa]");
 }
 
-auto Weather::Decoder::explainRunway(metaf::Runway runway) -> QString {
+QString Weather::Decoder::explainRunway(metaf::Runway runway)
+{
     if (runway.isAllRunways())
     {
         return tr("all runways");
@@ -426,7 +430,7 @@ auto Weather::Decoder::explainRunway(metaf::Runway runway) -> QString {
     return {};
 }
 
-auto Weather::Decoder::explainSpeed(metaf::Speed speed) -> QString
+QString Weather::Decoder::explainSpeed(metaf::Speed speed)
 {
 
     if (const auto s = speed.speed(); !s.has_value())
@@ -452,7 +456,7 @@ auto Weather::Decoder::explainSpeed(metaf::Speed speed) -> QString
     return tr("[unable to convert speed to knots]");
 }
 
-auto Weather::Decoder::explainSurfaceFriction(metaf::SurfaceFriction surfaceFriction) -> QString
+QString Weather::Decoder::explainSurfaceFriction(metaf::SurfaceFriction surfaceFriction)
 {
     const auto c = surfaceFriction.coefficient();
 
@@ -477,7 +481,7 @@ auto Weather::Decoder::explainSurfaceFriction(metaf::SurfaceFriction surfaceFric
     return {};
 }
 
-auto Weather::Decoder::explainTemperature(metaf::Temperature temperature) -> QString
+QString Weather::Decoder::explainTemperature(metaf::Temperature temperature)
 {
     if (!temperature.temperature().has_value())
     {
@@ -505,7 +509,7 @@ auto Weather::Decoder::explainTemperature(metaf::Temperature temperature) -> QSt
     return temperatureString;
 }
 
-auto Weather::Decoder::explainWaveHeight(metaf::WaveHeight waveHeight) -> QString
+QString Weather::Decoder::explainWaveHeight(metaf::WaveHeight waveHeight)
 {
     switch (waveHeight.type()) {
     case metaf::WaveHeight::Type::STATE_OF_SURFACE:
@@ -526,7 +530,7 @@ auto Weather::Decoder::explainWaveHeight(metaf::WaveHeight waveHeight) -> QStrin
     return {};
 }
 
-auto Weather::Decoder::explainWeatherPhenomena(const metaf::WeatherPhenomena & wp) -> QString
+QString Weather::Decoder::explainWeatherPhenomena(const metaf::WeatherPhenomena & wp)
 {
     /* Handle special cases */
     auto weatherStr = Weather::Decoder::specialWeatherPhenomenaToString(wp);
@@ -629,7 +633,7 @@ auto Weather::Decoder::explainWeatherPhenomena(const metaf::WeatherPhenomena & w
 
 // …toString Methods
 
-auto Weather::Decoder::brakingActionToString(metaf::SurfaceFriction::BrakingAction brakingAction) -> QString
+ QString Weather::Decoder::brakingActionToString(metaf::SurfaceFriction::BrakingAction brakingAction)
 {
     switch(brakingAction)
     {
@@ -654,7 +658,7 @@ auto Weather::Decoder::brakingActionToString(metaf::SurfaceFriction::BrakingActi
     return {};
 }
 
-auto Weather::Decoder::cardinalDirectionToString(metaf::Direction::Cardinal cardinal) -> QString
+QString Weather::Decoder::cardinalDirectionToString(metaf::Direction::Cardinal cardinal)
 {
     switch(cardinal)
     {
@@ -715,7 +719,7 @@ auto Weather::Decoder::cardinalDirectionToString(metaf::Direction::Cardinal card
     return {};
 }
 
-auto Weather::Decoder::cloudAmountToString(metaf::CloudGroup::Amount amount) -> QString
+QString Weather::Decoder::cloudAmountToString(metaf::CloudGroup::Amount amount)
 {
     switch (amount)
     {
@@ -759,7 +763,7 @@ auto Weather::Decoder::cloudAmountToString(metaf::CloudGroup::Amount amount) -> 
     return {};
 }
 
-auto Weather::Decoder::cloudHighLayerToString(metaf::LowMidHighCloudGroup::HighLayer highLayer) -> QString
+ QString Weather::Decoder::cloudHighLayerToString(metaf::LowMidHighCloudGroup::HighLayer highLayer)
 {
     switch(highLayer)
     {
@@ -799,7 +803,7 @@ auto Weather::Decoder::cloudHighLayerToString(metaf::LowMidHighCloudGroup::HighL
     return {};
 }
 
-auto Weather::Decoder::cloudLowLayerToString(metaf::LowMidHighCloudGroup::LowLayer lowLayer) -> QString
+QString Weather::Decoder::cloudLowLayerToString(metaf::LowMidHighCloudGroup::LowLayer lowLayer)
 {
     switch(lowLayer)
     {
@@ -839,7 +843,7 @@ auto Weather::Decoder::cloudLowLayerToString(metaf::LowMidHighCloudGroup::LowLay
     return {};
 }
 
-auto Weather::Decoder::cloudMidLayerToString(metaf::LowMidHighCloudGroup::MidLayer midLayer) -> QString
+QString Weather::Decoder::cloudMidLayerToString(metaf::LowMidHighCloudGroup::MidLayer midLayer)
 {
     switch(midLayer)
     {
@@ -879,7 +883,7 @@ auto Weather::Decoder::cloudMidLayerToString(metaf::LowMidHighCloudGroup::MidLay
     return {};
 }
 
-auto Weather::Decoder::cloudTypeToString(metaf::CloudType::Type type) -> QString
+QString Weather::Decoder::cloudTypeToString(metaf::CloudType::Type type)
 {
     switch(type)
     {
@@ -970,7 +974,7 @@ auto Weather::Decoder::cloudTypeToString(metaf::CloudType::Type type) -> QString
     return {};
 }
 
-auto Weather::Decoder::convectiveTypeToString(metaf::CloudGroup::ConvectiveType type) -> QString
+QString Weather::Decoder::convectiveTypeToString(metaf::CloudGroup::ConvectiveType type)
 {
     switch (type)
     {
@@ -989,7 +993,7 @@ auto Weather::Decoder::convectiveTypeToString(metaf::CloudGroup::ConvectiveType 
     return {};
 }
 
-auto Weather::Decoder::distanceMilesFractionToString(metaf::Distance::MilesFraction f) -> QString
+ QString Weather::Decoder::distanceMilesFractionToString(metaf::Distance::MilesFraction f)
 {
     switch (f)
     {
@@ -1029,7 +1033,7 @@ auto Weather::Decoder::distanceMilesFractionToString(metaf::Distance::MilesFract
     return {};
 }
 
-auto Weather::Decoder::distanceUnitToString(metaf::Distance::Unit unit) -> QString
+ QString Weather::Decoder::distanceUnitToString(metaf::Distance::Unit unit)
 {
     switch (unit)
     {
@@ -1045,7 +1049,7 @@ auto Weather::Decoder::distanceUnitToString(metaf::Distance::Unit unit) -> QStri
     return {};
 }
 
-auto Weather::Decoder::layerForecastGroupTypeToString(metaf::LayerForecastGroup::Type type) -> QString
+QString Weather::Decoder::layerForecastGroupTypeToString(metaf::LayerForecastGroup::Type type)
 {
     switch(type)
     {
@@ -1115,7 +1119,7 @@ auto Weather::Decoder::layerForecastGroupTypeToString(metaf::LayerForecastGroup:
     return {};
 }
 
-auto Weather::Decoder::pressureTendencyTrendToString(metaf::PressureTendencyGroup::Trend trend) -> QString
+QString Weather::Decoder::pressureTendencyTrendToString(metaf::PressureTendencyGroup::Trend trend)
 {
     switch(trend)
     {
@@ -1140,7 +1144,7 @@ auto Weather::Decoder::pressureTendencyTrendToString(metaf::PressureTendencyGrou
     return {};
 }
 
-auto Weather::Decoder::pressureTendencyTypeToString(metaf::PressureTendencyGroup::Type type) -> QString
+QString Weather::Decoder::pressureTendencyTypeToString(metaf::PressureTendencyGroup::Type type)
 {
     switch(type)
     {
@@ -1183,7 +1187,7 @@ auto Weather::Decoder::pressureTendencyTypeToString(metaf::PressureTendencyGroup
     return {};
 }
 
-auto Weather::Decoder::probabilityToString(metaf::TrendGroup::Probability prob) -> QString
+QString Weather::Decoder::probabilityToString(metaf::TrendGroup::Probability prob)
 {
     switch (prob)
     {
@@ -1199,7 +1203,7 @@ auto Weather::Decoder::probabilityToString(metaf::TrendGroup::Probability prob) 
     return {};
 }
 
-auto Weather::Decoder::runwayStateDepositsToString(metaf::RunwayStateGroup::Deposits deposits) -> QString
+QString Weather::Decoder::runwayStateDepositsToString(metaf::RunwayStateGroup::Deposits deposits)
 {
     switch(deposits)
     {
@@ -1239,7 +1243,7 @@ auto Weather::Decoder::runwayStateDepositsToString(metaf::RunwayStateGroup::Depo
     return {};
 }
 
-auto Weather::Decoder::runwayStateExtentToString(metaf::RunwayStateGroup::Extent extent) -> QString
+QString Weather::Decoder::runwayStateExtentToString(metaf::RunwayStateGroup::Extent extent)
 {
     switch(extent)
     {
@@ -1269,7 +1273,7 @@ auto Weather::Decoder::runwayStateExtentToString(metaf::RunwayStateGroup::Extent
     return {};
 }
 
-auto Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPhenomena & wp) -> QString
+QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPhenomena & wp)
 {
     QStringList results;
     for (const auto &weather : wp.weather())
@@ -1954,7 +1958,7 @@ auto Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPheno
     return results.join(QStringLiteral(" • "));
 }
 
-auto Weather::Decoder::stateOfSeaSurfaceToString(metaf::WaveHeight::StateOfSurface stateOfSurface) -> QString
+QString Weather::Decoder::stateOfSeaSurfaceToString(metaf::WaveHeight::StateOfSurface stateOfSurface)
 {
     switch(stateOfSurface)
     {
@@ -1994,7 +1998,7 @@ auto Weather::Decoder::stateOfSeaSurfaceToString(metaf::WaveHeight::StateOfSurfa
     return {};
 }
 
-auto Weather::Decoder::visTrendToString(metaf::VisibilityGroup::Trend trend) -> QString
+QString Weather::Decoder::visTrendToString(metaf::VisibilityGroup::Trend trend)
 {
     switch(trend)
     {
@@ -2019,7 +2023,7 @@ auto Weather::Decoder::visTrendToString(metaf::VisibilityGroup::Trend trend) -> 
     return {};
 }
 
-auto Weather::Decoder::weatherPhenomenaDescriptorToString(metaf::WeatherPhenomena::Descriptor descriptor) -> QString
+QString Weather::Decoder::weatherPhenomenaDescriptorToString(metaf::WeatherPhenomena::Descriptor descriptor)
 {
     switch(descriptor)
     {
@@ -2053,7 +2057,7 @@ auto Weather::Decoder::weatherPhenomenaDescriptorToString(metaf::WeatherPhenomen
     return {};
 }
 
-auto Weather::Decoder::weatherPhenomenaQualifierToString(metaf::WeatherPhenomena::Qualifier qualifier) -> QString
+ QString Weather::Decoder::weatherPhenomenaQualifierToString(metaf::WeatherPhenomena::Qualifier qualifier)
 {
     switch (qualifier)
     {
@@ -2078,7 +2082,7 @@ auto Weather::Decoder::weatherPhenomenaQualifierToString(metaf::WeatherPhenomena
     return {};
 }
 
-auto Weather::Decoder::weatherPhenomenaWeatherToString(metaf::WeatherPhenomena::Weather weather) -> QString
+QString Weather::Decoder::weatherPhenomenaWeatherToString(metaf::WeatherPhenomena::Weather weather)
 {
     switch (weather)
     {
@@ -2157,7 +2161,7 @@ auto Weather::Decoder::weatherPhenomenaWeatherToString(metaf::WeatherPhenomena::
 
 // Visitor methods
 
-auto Weather::Decoder::visitCloudGroup(const CloudGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/) -> QString
+QString Weather::Decoder::visitCloudGroup(const CloudGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/)
 {
     if (!group.isValid())
     {
@@ -2267,7 +2271,7 @@ auto Weather::Decoder::visitCloudGroup(const CloudGroup & group, ReportPart /*re
     return {};
 }
 
-auto Weather::Decoder::visitCloudTypesGroup(const CloudTypesGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/) -> QString
+QString Weather::Decoder::visitCloudTypesGroup(const CloudTypesGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/)
 {
     if (!group.isValid()) {
         return tr("Invalid data");
@@ -2283,7 +2287,7 @@ auto Weather::Decoder::visitCloudTypesGroup(const CloudTypesGroup & group, Repor
     return tr("Cloud layers: %1").arg(layers.join(QStringLiteral(" • ")));
 }
 
-auto Weather::Decoder::visitKeywordGroup(const KeywordGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/) -> QString
+QString Weather::Decoder::visitKeywordGroup(const KeywordGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/)
 {
     if (!group.isValid())
     {
@@ -2343,7 +2347,7 @@ auto Weather::Decoder::visitKeywordGroup(const KeywordGroup & group, ReportPart 
     return {};
 }
 
-auto Weather::Decoder::visitLayerForecastGroup(const LayerForecastGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/) -> QString
+QString Weather::Decoder::visitLayerForecastGroup(const LayerForecastGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/)
 {
     if (!group.isValid())
     {
@@ -2362,7 +2366,7 @@ auto Weather::Decoder::visitLayerForecastGroup(const LayerForecastGroup & group,
                  explainDistance(group.topHeight()));
 }
 
-auto Weather::Decoder::visitLightningGroup(const LightningGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/) -> QString
+ QString Weather::Decoder::visitLightningGroup(const LightningGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/)
 {
     if (!group.isValid())
     {
@@ -2436,7 +2440,7 @@ auto Weather::Decoder::visitLightningGroup(const LightningGroup & group, ReportP
     return result.join(QStringLiteral(" "));
 }
 
-auto Weather::Decoder::visitLocationGroup(const LocationGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/) -> QString
+QString Weather::Decoder::visitLocationGroup(const LocationGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/)
 {
     if (!group.isValid())
     {
@@ -2446,7 +2450,7 @@ auto Weather::Decoder::visitLocationGroup(const LocationGroup & group, ReportPar
     return tr("Report for %1").arg(QString::fromStdString(group.toString()));
 }
 
-auto Weather::Decoder::visitLowMidHighCloudGroup(const LowMidHighCloudGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/) -> QString
+QString Weather::Decoder::visitLowMidHighCloudGroup(const LowMidHighCloudGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/)
 {
     if (!group.isValid())
     {
@@ -2459,7 +2463,7 @@ auto Weather::Decoder::visitLowMidHighCloudGroup(const LowMidHighCloudGroup & gr
                  cloudHighLayerToString(group.highLayer()));
 }
 
-auto Weather::Decoder::visitMinMaxTemperatureGroup(const MinMaxTemperatureGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/) -> QString
+QString Weather::Decoder::visitMinMaxTemperatureGroup(const MinMaxTemperatureGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/)
 {
     if (!group.isValid()) {
         return tr("Invalid data");
@@ -2494,7 +2498,7 @@ auto Weather::Decoder::visitMinMaxTemperatureGroup(const MinMaxTemperatureGroup 
     return {};
 }
 
-auto Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*reportPart*/, const std::string & /*rawString*/) -> QString
+QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*reportPart*/, const std::string & /*rawString*/)
 {
     if (!group.isValid())
     {
@@ -2628,7 +2632,7 @@ auto Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*rep
     return {};
 }
 
-auto Weather::Decoder::visitPrecipitationGroup(const PrecipitationGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/) -> QString
+QString Weather::Decoder::visitPrecipitationGroup(const PrecipitationGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/)
 {
     if (!group.isValid())
     {
@@ -2711,7 +2715,7 @@ auto Weather::Decoder::visitPrecipitationGroup(const PrecipitationGroup & group,
     return {};
 }
 
-auto Weather::Decoder::visitPressureGroup(const PressureGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/) -> QString
+QString Weather::Decoder::visitPressureGroup(const PressureGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/)
 {
     if (!group.isValid())
     {
@@ -2745,7 +2749,7 @@ auto Weather::Decoder::visitPressureGroup(const PressureGroup & group, ReportPar
     return {};
 }
 
-auto Weather::Decoder::visitPressureTendencyGroup(const PressureTendencyGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/) -> QString
+QString Weather::Decoder::visitPressureTendencyGroup(const PressureTendencyGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/)
 {
     if (!group.isValid())
     {
@@ -2772,7 +2776,7 @@ auto Weather::Decoder::visitPressureTendencyGroup(const PressureTendencyGroup & 
     return {};
 }
 
-auto Weather::Decoder::visitReportTimeGroup(const ReportTimeGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/) -> QString
+QString Weather::Decoder::visitReportTimeGroup(const ReportTimeGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/)
 {
     if (!group.isValid())
     {
@@ -2782,7 +2786,7 @@ auto Weather::Decoder::visitReportTimeGroup(const ReportTimeGroup & group, Repor
     return tr("Issued at %1").arg(explainMetafTime(group.time()));
 }
 
-auto Weather::Decoder::visitRunwayStateGroup(const RunwayStateGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/) -> QString
+QString Weather::Decoder::visitRunwayStateGroup(const RunwayStateGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/)
 {
     if (!group.isValid())
     {
@@ -2821,7 +2825,7 @@ auto Weather::Decoder::visitRunwayStateGroup(const RunwayStateGroup & group, Rep
     return result;
 }
 
-auto Weather::Decoder::visitSeaSurfaceGroup(const SeaSurfaceGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/) -> QString
+QString Weather::Decoder::visitSeaSurfaceGroup(const SeaSurfaceGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/)
 {
     if (!group.isValid())
     {
@@ -2833,7 +2837,7 @@ auto Weather::Decoder::visitSeaSurfaceGroup(const SeaSurfaceGroup & group, Repor
                  explainWaveHeight(group.waves()));
 }
 
-auto Weather::Decoder::visitTemperatureGroup(const TemperatureGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/) -> QString
+QString Weather::Decoder::visitTemperatureGroup(const TemperatureGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/)
 {
     if (!group.isValid())
     {
@@ -2863,7 +2867,7 @@ auto Weather::Decoder::visitTemperatureGroup(const TemperatureGroup & group, Rep
     return {};
 }
 
-auto Weather::Decoder::visitTrendGroup(const TrendGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/) -> QString
+QString Weather::Decoder::visitTrendGroup(const TrendGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/)
 {
     if (!group.isValid())
     {
@@ -2955,7 +2959,7 @@ auto Weather::Decoder::visitTrendGroup(const TrendGroup & group, ReportPart /*re
     return {};
 }
 
-auto Weather::Decoder::visitUnknownGroup(const UnknownGroup & group, ReportPart /*reportPart*/, const std::string & rawString) -> QString
+QString Weather::Decoder::visitUnknownGroup(const UnknownGroup & group, ReportPart /*reportPart*/, const std::string & rawString)
 {
     if (!group.isValid())
     {
@@ -2965,7 +2969,7 @@ auto Weather::Decoder::visitUnknownGroup(const UnknownGroup & group, ReportPart 
     return tr("Not recognised by parser: %1").arg(QString::fromStdString(rawString));
 }
 
-auto Weather::Decoder::visitVicinityGroup(const VicinityGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/) -> QString
+QString Weather::Decoder::visitVicinityGroup(const VicinityGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/)
 {
     if (!group.isValid())
     {
@@ -3053,7 +3057,7 @@ auto Weather::Decoder::visitVicinityGroup(const VicinityGroup & group, ReportPar
         break;
     }
 
-    //: %1 is string like 'Smoke'
+    // Here %1 is string like 'Smoke'
     QStringList results;
     results << tr("%1 observed.");
 
@@ -3074,7 +3078,7 @@ auto Weather::Decoder::visitVicinityGroup(const VicinityGroup & group, ReportPar
     return results.join(QStringLiteral(" "));
 }
 
-auto Weather::Decoder::visitVisibilityGroup(const VisibilityGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/) -> QString
+QString Weather::Decoder::visitVisibilityGroup(const VisibilityGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/)
 {
     if (!group.isValid())
     {
@@ -3199,7 +3203,7 @@ auto Weather::Decoder::visitVisibilityGroup(const VisibilityGroup & group, Repor
     return {};
 }
 
-auto Weather::Decoder::visitWeatherGroup(const WeatherGroup & group, ReportPart part, const std::string & /*rawString*/) -> QString
+QString Weather::Decoder::visitWeatherGroup(const WeatherGroup & group, ReportPart part, const std::string & /*rawString*/)
 {
     if (!group.isValid())
     {
@@ -3251,7 +3255,7 @@ auto Weather::Decoder::visitWeatherGroup(const WeatherGroup & group, ReportPart 
     return {};
 }
 
-auto Weather::Decoder::visitWindGroup(const WindGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/) -> QString
+QString Weather::Decoder::visitWindGroup(const WindGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/)
 {
     if (!group.isValid())
     {

@@ -100,6 +100,39 @@ add_custom_target(flightMapSprites
 
 
 #
+# Waypoint symbols for manua
+#
+
+add_custom_target(waypointIcons4manual
+    COMMAND rm -f *.png
+    COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD.svg -o AD.png -h 30 -w 30
+    COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-GLD.svg -o AD-GLD.png -h 30 -w 30
+    COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-GRASS.svg -o AD-GRASS.png -h 30 -w 30
+    COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-INOP.svg -o AD-INOP.png -h 30 -w 30
+    COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-MIL.svg -o AD-MIL.png -h 30 -w 30
+    COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-MIL-GRASS.svg -o AD-MIL-GRASS.png -h 30 -w 30
+    COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-MIL-PAVED.svg -o AD-MIL-PAVED.png -h 30 -w 30
+    COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-PAVED.svg -o AD-PAVED.png -h 30 -w 30
+    COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-UL.svg -o AD-UL.png -h 30 -w 30
+    COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-WATER.svg -o AD-WATER.png -h 30 -w 30
+    COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/MRP.svg -o MRP.png -h 30 -w 30
+    COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/NDB.svg -o NDB.png -h 30 -w 30
+    COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/RP.svg -o RP.png -h 30 -w 30
+    COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VOR.svg -o VOR.png -w 30
+    COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VOR.svg -o DVOR.png -w 30
+    COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VORDME.svg -o VOR-DME.png -w 30
+    COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VORDME.svg -o DVOR-DME.png -w 30
+    COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VORTAC.svg -o VORTAC.png -w 30
+    COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VORTAC.svg -o DVORTAC.png -w 30
+
+    COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/icons/waypoints/ic_warning_18px.svg -o NOTAM.png -w 30
+    COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/icons/waypoints/WP-map.svg -o WP.png -w 10
+    COMMAND mv *.png ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/03-reference
+    COMMENT "Generated sources: waypoint images for manual"
+)
+
+
+#
 # Waypoint icons
 #
 # Some waypoint icons cannot be rendered well by th Qt SVG module. We produce
@@ -233,4 +266,5 @@ add_custom_target(generatedSources
   DEPENDS mainIcons
   DEPENDS manualText
   DEPENDS waypointIcons
+  DEPENDS waypointIcons4manual
   )

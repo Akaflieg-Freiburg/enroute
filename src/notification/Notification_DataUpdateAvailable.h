@@ -51,15 +51,19 @@ public:
     explicit Notification_DataUpdateAvailable() = delete;
 
     /*! \brief Standard destructor */
-    ~Notification_DataUpdateAvailable() = default;
+    ~Notification_DataUpdateAvailable() override = default;
 
 public slots:
     /*! \brief Reimplemented from Notifications::Notification */
-    virtual void onButton1Clicked() override;
+    void onButton1Clicked() override;
 
 private slots:
     // Check if this notification is still useful and delete it if not.
     void update();
+
+private:
+    Q_DISABLE_COPY_MOVE(Notification_DataUpdateAvailable)
+
 };
 
 } // namespace Notifications

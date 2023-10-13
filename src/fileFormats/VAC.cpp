@@ -22,37 +22,81 @@
 #include <QFileInfo>
 #include <QImage>
 
-#include "geomaps/GeoTIFF.h"
-#include "geomaps/VAC.h"
+#include "fileFormats/GeoTIFF.h"
+#include "fileFormats/VAC.h"
 
-GeoMaps::VAC::VAC(const QString& fileName)
+FileFormats::VAC::VAC(const QString& fileName)
     : m_fileName(fileName), m_image(fileName)
 {
+    // Guess data from file name
     m_bBox = VAC::bBoxFromFileName(fileName);
+    m_baseName = VAC::baseNameFromFileName(fileName);
+
     if (!m_bBox.isValid())
     {
-        m_bBox = GeoMaps::GeoTIFF::readCoordinates(fileName);
+        FileFormats::GeoTIFF const geoTIFF(fileName);
+        if (geoTIFF.isValid())
+        {
+            m_bBox = geoTIFF.bBox();
+            if (!geoTIFF.name().isEmpty())
+            {
+                m_baseName = geoTIFF.name();
+            }
+        }
     }
 
-    // Guess base name from file name
-    m_baseName = VAC::baseNameFromFileName(fileName);
+
+    // Generate errors and warnings
+    generateErrorsAndWarnings();
+}
+
+FileFormats::VAC::VAC(const QByteArray& data,
+                      const QGeoCoordinate& topLeft,
+                      const QGeoCoordinate& topRight,
+                      const QGeoCoordinate& bottomLeft,
+                      const QGeoCoordinate& bottomRight)
+{
+    m_image.loadFromData(data);
+
+    auto angle = bottomLeft.azimuthTo(topLeft);
+    if (!qFuzzyIsNull(angle))
+    {
+        m_image = m_image.transformed( QTransform().rotate(angle) );
+    }
+
+    auto left = topLeft.longitude();
+    left = qMin(left, topRight.longitude());
+    left = qMin(left, bottomLeft.longitude());
+    left = qMin(left, bottomRight.longitude());
+
+    auto right = topLeft.longitude();
+    right = qMax(right, topRight.longitude());
+    right = qMax(right, bottomLeft.longitude());
+    right = qMax(right, bottomRight.longitude());
+
+    auto top = topLeft.latitude();
+    top = qMax(top, topRight.latitude());
+    top = qMax(top, bottomLeft.latitude());
+    top = qMax(top, bottomRight.latitude());
+
+    auto bottom = topLeft.latitude();
+    bottom = qMin(bottom, topRight.latitude());
+    bottom = qMin(bottom, bottomLeft.latitude());
+    bottom = qMin(bottom, bottomRight.latitude());
+
+    m_bBox.setTopLeft({top, left});
+    m_bBox.setBottomRight({bottom, right});
 
     // Generate errors and warnings
     generateErrorsAndWarnings();
 }
 
 
-
 //
 // Methods
 //
 
-auto GeoMaps::VAC::isValid() const -> bool
-{
-    return m_bBox.isValid() && !m_image.isNull();
-}
-
-auto GeoMaps::VAC::save(const QString &directory) -> QString
+auto FileFormats::VAC::save(const QString& directory) -> QString
 {
     if (!isValid())
     {
@@ -73,12 +117,14 @@ auto GeoMaps::VAC::save(const QString &directory) -> QString
                            .arg(bottomRight.longitude())
                            .arg(bottomRight.latitude());
 
+    QFile::remove(newFileName);
     if (m_fileName.endsWith(u"webp"_qs) &&
         QFile::exists(m_fileName) &&
         QFile::copy(m_fileName, newFileName))
     {
         return newFileName;
     }
+
     if (m_image.save(newFileName))
     {
         return newFileName;
@@ -86,7 +132,7 @@ auto GeoMaps::VAC::save(const QString &directory) -> QString
     return {};
 }
 
-QString GeoMaps::VAC::baseNameFromFileName(const QString& fileName)
+QString FileFormats::VAC::baseNameFromFileName(const QString& fileName)
 {
     QFileInfo const fileInfo(fileName);
     auto baseName = fileInfo.fileName();
@@ -103,7 +149,7 @@ QString GeoMaps::VAC::baseNameFromFileName(const QString& fileName)
     return baseName;
 }
 
-QGeoRectangle GeoMaps::VAC::bBoxFromFileName(const QString& fileName)
+QGeoRectangle FileFormats::VAC::bBoxFromFileName(const QString& fileName)
 {
     if (fileName.size() <= 5)
     {
@@ -172,26 +218,26 @@ QGeoRectangle GeoMaps::VAC::bBoxFromFileName(const QString& fileName)
 // Private Methods
 //
 
-void GeoMaps::VAC::generateErrorsAndWarnings()
+void FileFormats::VAC::generateErrorsAndWarnings()
 {
-    if (m_bBox.isValid())
+    if (!m_bBox.isValid())
     {
-        m_error = QObject::tr("Unable to find georeferencing data for the file %1.", "VAC").arg(m_fileName);
+        setError( QObject::tr("Unable to find georeferencing data for the file %1.", "VAC").arg(m_fileName) );
         return;
     }
     if (m_image.isNull())
     {
-        m_error = QObject::tr("Unable to load raster data from file %1.", "VAC").arg(m_fileName);
+        setError( QObject::tr("Unable to load raster data from file %1.", "VAC").arg(m_fileName) );
         return;
     }
 
     auto diameter_in_m = m_bBox.topLeft().distanceTo(m_bBox.bottomRight());
     if (diameter_in_m < 200)
     {
-        m_warning = QObject::tr("The georeferencing data for the file %1 suggests that the image diagonal is less than 200m, which makes it unlikely that this is an approach chart.", "VAC").arg(m_fileName);
+        addWarning( QObject::tr("The georeferencing data for the file %1 suggests that the image diagonal is less than 200m, which makes it unlikely that this is an approach chart.", "VAC").arg(m_fileName) );
     }
     if (diameter_in_m > 50000)
     {
-        m_warning = QObject::tr("The georeferencing data for the file %1 suggests that the image diagonal is more than 50km, which makes it unlikely that this is an approach chart.", "VAC").arg(m_fileName);
+        addWarning( QObject::tr("The georeferencing data for the file %1 suggests that the image diagonal is more than 50km, which makes it unlikely that this is an approach chart.", "VAC").arg(m_fileName) );
     }
 }

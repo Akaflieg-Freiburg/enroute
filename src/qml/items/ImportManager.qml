@@ -525,11 +525,16 @@ Item {
             anchors.fill: parent
 
             Label {
+                id: txtLbl
                 Layout.fillWidth: true
 
                 text: qsTr("Extracting and converting files from the trip kit. Please do not interrupt or close the app.")
                 wrapMode: Text.Wrap
                 textFormat: Text.StyledText
+            }
+
+            Item {
+                height: txtLbl.font.pixelSize
             }
 
             ProgressBar {

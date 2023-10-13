@@ -90,37 +90,37 @@ public:
      *
      *  @returns Property bottom
      */
-    double bottom() const {return m_bottom;}
+    [[nodiscard]] double bottom() const { return m_bottom; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property left
      */
-    double left() const {return m_left;}
+    [[nodiscard]] double left() const { return m_left; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property right
      */
-    double right() const {return m_right;}
+    [[nodiscard]] double right() const { return m_right; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property top
      */
-    double top() const {return m_top;}
+    [[nodiscard]] double top() const { return m_top; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property wHeight
      */
-    double wHeight() const {return m_wHeight;}
+    [[nodiscard]] double wHeight() const { return m_wHeight; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property wWidth
      */
-    double wWidth() const {return m_wWidth;}
+    [[nodiscard]] double wWidth() const { return m_wWidth; }
 
 signals:
     /*! \brief Notifier signal */

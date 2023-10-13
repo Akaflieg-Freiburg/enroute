@@ -62,7 +62,7 @@ public:
     explicit NotificationManager() = delete;
 
     /*! \brief Standard destructor */
-    ~NotificationManager() = default;
+    ~NotificationManager() override = default;
 
     // factory function for QML singleton
     static Notifications::NotificationManager* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
@@ -143,6 +143,9 @@ signals:
     void speakerChanged();
 
 private:
+    Q_DISABLE_COPY_MOVE(NotificationManager)
+
+
     // Adds a notification to m_notifications and rearranges the list. Removes
     // nullptrs and sorts list by importance.
     void addNotification(Notifications::Notification* notification);

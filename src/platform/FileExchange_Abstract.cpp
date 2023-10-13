@@ -23,11 +23,11 @@
 #include <QUrl>
 
 #include "fileFormats/TripKit.h"
+#include "fileFormats/VAC.h"
 #include "geomaps/CUP.h"
 #include "geomaps/GeoJSON.h"
 #include "geomaps/MBTILES.h"
 #include "geomaps/OpenAir.h"
-#include "geomaps/VAC.h"
 #include "platform/FileExchange_Abstract.h"
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficDataSource_File.h"
@@ -127,19 +127,25 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     }
 
     // VAC
-    GeoMaps::VAC const vac(myPath);
-    if (vac.isValid())
+    if (FileFormats::VAC::mimeTypes().contains(mimeType.name()))
     {
-        emit openFileRequest(myPath, vac.baseName(), VAC);
-        return;
+        FileFormats::VAC const vac(myPath);
+        if (vac.isValid())
+        {
+            emit openFileRequest(myPath, vac.baseName(), VAC);
+            return;
+        }
     }
 
     // Image
-    QImage const img(myPath);
-    if (!img.isNull())
+    if (mimeType.name().startsWith(u"image"_qs))
     {
-        emit openFileRequest(myPath, {}, Image);
-        return;
+        QImage const img(myPath);
+        if (!img.isNull())
+        {
+            emit openFileRequest(myPath, {}, Image);
+            return;
+        }
     }
 
     // TripKits

@@ -59,7 +59,7 @@ public:
      *
      * @returns Property currentWeather
      */
-    [[nodiscard]] auto currentWeather() const -> QString
+    [[nodiscard]] QString currentWeather() const
     {
         return _currentWeather;
     }
@@ -77,7 +77,7 @@ public:
      *
      * @returns Property decodedText
      */
-    [[nodiscard]] auto decodedText() const -> QString
+    [[nodiscard]] QString decodedText() const
     {
         return _decodedText;
     }
@@ -92,7 +92,7 @@ public:
      *
      * @returns Property currentWeather
      */
-    [[nodiscard]] auto messageType() const -> QString;
+    [[nodiscard]] QString messageType() const;
 
     /*! \brief Raw text of the METAR/TAF message */
     Q_PROPERTY(QString rawText READ rawText NOTIFY rawTextChanged)
@@ -101,7 +101,7 @@ public:
      *
      * @returns Property rawText
      */
-    [[nodiscard]] auto rawText() const -> QString
+    [[nodiscard]] QString rawText() const
     {
         return _rawText;
     }
@@ -123,7 +123,7 @@ protected:
 
     // Indicates if the parser was able to read the text without error. If an error occurs, the decoded will
     // still be available, but is probably incomplete
-    [[nodiscard]] auto hasParseError() const -> bool
+    [[nodiscard]] bool hasParseError() const
     {
         return (parseResult.reportMetadata.error != metaf::ReportError::NONE);
     }
@@ -134,68 +134,68 @@ private slots:
 
 private:
     // Explanation functions
-    static auto explainCloudType(const metaf::CloudType &ct) -> QString;
-    static auto explainDirection(metaf::Direction direction, bool trueCardinalDirections=true) -> QString;
-    static auto explainDirectionSector(const std::vector<metaf::Direction>& dir) -> QString;
-    static auto explainDistance(metaf::Distance distance) -> QString;
-    static auto explainDistance_FT(metaf::Distance distance) -> QString;
-    auto explainMetafTime(metaf::MetafTime metafTime) -> QString;
-    static auto explainPrecipitation(metaf::Precipitation precipitation) -> QString;
-    static auto explainPressure(metaf::Pressure pressure) -> QString;
-    static auto explainRunway(metaf::Runway runway) -> QString;
-    static auto explainSpeed(metaf::Speed speed) -> QString;
-    static auto explainSurfaceFriction(metaf::SurfaceFriction surfaceFriction) -> QString;
-    static auto explainTemperature(metaf::Temperature temperature) -> QString;
-    static auto explainWaveHeight(metaf::WaveHeight waveHeight) -> QString;
-    auto explainWeatherPhenomena(const metaf::WeatherPhenomena & wp) -> QString;
+    static QString explainCloudType(const metaf::CloudType &ct);
+    static QString explainDirection(metaf::Direction direction, bool trueCardinalDirections=true);
+    static QString explainDirectionSector(const std::vector<metaf::Direction>& dir);
+    static QString explainDistance(metaf::Distance distance);
+    static QString explainDistance_FT(metaf::Distance distance);
+    QString explainMetafTime(metaf::MetafTime metafTime);
+    static QString explainPrecipitation(metaf::Precipitation precipitation);
+    static QString explainPressure(metaf::Pressure pressure);
+    static QString explainRunway(metaf::Runway runway);
+    static QString explainSpeed(metaf::Speed speed);
+    static QString explainSurfaceFriction(metaf::SurfaceFriction surfaceFriction);
+    static QString explainTemperature(metaf::Temperature temperature);
+    static QString explainWaveHeight(metaf::WaveHeight waveHeight);
+    QString explainWeatherPhenomena(const metaf::WeatherPhenomena & wp);
 
     // … toString Methods
-    static auto brakingActionToString(metaf::SurfaceFriction::BrakingAction brakingAction) -> QString;
-    static auto cardinalDirectionToString(metaf::Direction::Cardinal cardinal) -> QString;
-    static auto cloudAmountToString(metaf::CloudGroup::Amount amount) -> QString;
-    static auto cloudHighLayerToString(metaf::LowMidHighCloudGroup::HighLayer highLayer) -> QString;
-    static auto cloudLowLayerToString(metaf::LowMidHighCloudGroup::LowLayer lowLayer) -> QString;
-    static auto cloudMidLayerToString(metaf::LowMidHighCloudGroup::MidLayer midLayer) -> QString;
-    static auto cloudTypeToString(metaf::CloudType::Type type) -> QString;
-    static auto convectiveTypeToString(metaf::CloudGroup::ConvectiveType type) -> QString;
-    static auto distanceMilesFractionToString(metaf::Distance::MilesFraction f) -> QString;
-    static auto distanceUnitToString(metaf::Distance::Unit unit) -> QString;
-    static auto layerForecastGroupTypeToString(metaf::LayerForecastGroup::Type type) -> QString;
-    static auto pressureTendencyTrendToString(metaf::PressureTendencyGroup::Trend trend) -> QString;
-    static auto pressureTendencyTypeToString(metaf::PressureTendencyGroup::Type type) -> QString;
-    static auto probabilityToString(metaf::TrendGroup::Probability prob) -> QString;
-    static auto runwayStateDepositsToString(metaf::RunwayStateGroup::Deposits deposits) -> QString;
-    static auto runwayStateExtentToString(metaf::RunwayStateGroup::Extent extent) -> QString;
-    static auto specialWeatherPhenomenaToString(const metaf::WeatherPhenomena & wp) -> QString;
-    static auto stateOfSeaSurfaceToString(metaf::WaveHeight::StateOfSurface stateOfSurface) -> QString;
-    static auto visTrendToString(metaf::VisibilityGroup::Trend trend) -> QString;
-    static auto weatherPhenomenaDescriptorToString(metaf::WeatherPhenomena::Descriptor descriptor) -> QString;
-    static auto weatherPhenomenaQualifierToString(metaf::WeatherPhenomena::Qualifier qualifier) -> QString;
-    static auto weatherPhenomenaWeatherToString(metaf::WeatherPhenomena::Weather weather) -> QString;
+    static QString brakingActionToString(metaf::SurfaceFriction::BrakingAction brakingAction);
+    static QString cardinalDirectionToString(metaf::Direction::Cardinal cardinal);
+    static QString cloudAmountToString(metaf::CloudGroup::Amount amount);
+    static QString cloudHighLayerToString(metaf::LowMidHighCloudGroup::HighLayer highLayer);
+    static QString cloudLowLayerToString(metaf::LowMidHighCloudGroup::LowLayer lowLayer);
+    static QString cloudMidLayerToString(metaf::LowMidHighCloudGroup::MidLayer midLayer);
+    static QString cloudTypeToString(metaf::CloudType::Type type);
+    static QString convectiveTypeToString(metaf::CloudGroup::ConvectiveType type);
+    static QString distanceMilesFractionToString(metaf::Distance::MilesFraction f);
+    static QString distanceUnitToString(metaf::Distance::Unit unit);
+    static QString layerForecastGroupTypeToString(metaf::LayerForecastGroup::Type type);
+    static QString pressureTendencyTrendToString(metaf::PressureTendencyGroup::Trend trend);
+    static QString pressureTendencyTypeToString(metaf::PressureTendencyGroup::Type type);
+    static QString probabilityToString(metaf::TrendGroup::Probability prob);
+    static QString runwayStateDepositsToString(metaf::RunwayStateGroup::Deposits deposits);
+    static QString runwayStateExtentToString(metaf::RunwayStateGroup::Extent extent);
+    static QString specialWeatherPhenomenaToString(const metaf::WeatherPhenomena & wp);
+    static QString stateOfSeaSurfaceToString(metaf::WaveHeight::StateOfSurface stateOfSurface);
+    static QString visTrendToString(metaf::VisibilityGroup::Trend trend);
+    static QString weatherPhenomenaDescriptorToString(metaf::WeatherPhenomena::Descriptor descriptor);
+    static QString weatherPhenomenaQualifierToString(metaf::WeatherPhenomena::Qualifier qualifier);
+    static QString weatherPhenomenaWeatherToString(metaf::WeatherPhenomena::Weather weather);
 
     // visitor Methods
-    auto visitCloudGroup(const CloudGroup & group, ReportPart reportPart, const std::string & rawString) -> QString override;
-    auto visitCloudTypesGroup(const CloudTypesGroup & group, ReportPart reportPart, const std::string & rawString) -> QString override;
-    auto visitKeywordGroup(const KeywordGroup & group, ReportPart reportPart, const std::string & rawString) -> QString override;
-    auto visitLayerForecastGroup(const LayerForecastGroup & group, ReportPart reportPart, const std::string & rawString) -> QString override;
-    auto visitLightningGroup(const LightningGroup & group, ReportPart reportPart, const std::string & rawString) -> QString override;
-    auto visitLocationGroup(const LocationGroup & group, ReportPart reportPart, const std::string & rawString) -> QString override;
-    auto visitLowMidHighCloudGroup(const LowMidHighCloudGroup & group, ReportPart reportPart, const std::string & rawString) -> QString override;
-    auto visitMinMaxTemperatureGroup(const MinMaxTemperatureGroup & group, ReportPart reportPart, const std::string & rawString) -> QString override;
-    auto visitMiscGroup(const MiscGroup & group,  ReportPart reportPart, const std::string & rawString) -> QString override;
-    auto visitPressureGroup(const PressureGroup & group, ReportPart reportPart, const std::string & rawString) -> QString override;
-    auto visitPressureTendencyGroup(const PressureTendencyGroup & group, ReportPart reportPart, const std::string & rawString) -> QString override;
-    auto visitReportTimeGroup(const ReportTimeGroup & group, ReportPart reportPart, const std::string & rawString) -> QString override;
-    auto visitPrecipitationGroup(const PrecipitationGroup & group, ReportPart reportPart, const std::string & rawString) -> QString override;
-    auto visitRunwayStateGroup(const RunwayStateGroup & group, ReportPart reportPart, const std::string & rawString) -> QString override;
-    auto visitSeaSurfaceGroup(const SeaSurfaceGroup & group, ReportPart reportPart, const std::string & rawString) -> QString override;
-    auto visitTemperatureGroup(const TemperatureGroup & group, ReportPart reportPart, const std::string & rawString) -> QString override;
-    auto visitTrendGroup(const TrendGroup & group, ReportPart reportPart, const std::string & rawString) -> QString override;
-    auto visitUnknownGroup(const UnknownGroup & group, ReportPart reportPart, const std::string & rawString) -> QString override;
-    auto visitVicinityGroup(const VicinityGroup & group, ReportPart reportPart, const std::string & rawString) -> QString override;
-    auto visitVisibilityGroup(const VisibilityGroup & group, ReportPart reportPart, const std::string & rawString) -> QString override;
-    auto visitWeatherGroup(const WeatherGroup & group, ReportPart reportPart, const std::string & rawString) -> QString override;
-    auto visitWindGroup(const WindGroup & group, ReportPart reportPart, const std::string & rawString) -> QString override;
+    QString visitCloudGroup(const CloudGroup & group, ReportPart reportPart, const std::string & rawString) override;
+    QString visitCloudTypesGroup(const CloudTypesGroup & group, ReportPart reportPart, const std::string & rawString) override;
+    QString visitKeywordGroup(const KeywordGroup & group, ReportPart reportPart, const std::string & rawString) override;
+    QString visitLayerForecastGroup(const LayerForecastGroup & group, ReportPart reportPart, const std::string & rawString) override;
+    QString visitLightningGroup(const LightningGroup & group, ReportPart reportPart, const std::string & rawString) override;
+    QString visitLocationGroup(const LocationGroup & group, ReportPart reportPart, const std::string & rawString) override;
+    QString visitLowMidHighCloudGroup(const LowMidHighCloudGroup & group, ReportPart reportPart, const std::string & rawString) override;
+    QString visitMinMaxTemperatureGroup(const MinMaxTemperatureGroup & group, ReportPart reportPart, const std::string & rawString) override;
+    QString visitMiscGroup(const MiscGroup & group,  ReportPart reportPart, const std::string & rawString) override;
+    QString visitPressureGroup(const PressureGroup & group, ReportPart reportPart, const std::string & rawString) override;
+    QString visitPressureTendencyGroup(const PressureTendencyGroup & group, ReportPart reportPart, const std::string & rawString) override;
+    QString visitReportTimeGroup(const ReportTimeGroup & group, ReportPart reportPart, const std::string & rawString) override;
+    QString visitPrecipitationGroup(const PrecipitationGroup & group, ReportPart reportPart, const std::string & rawString) override;
+    QString visitRunwayStateGroup(const RunwayStateGroup & group, ReportPart reportPart, const std::string & rawString) override;
+    QString visitSeaSurfaceGroup(const SeaSurfaceGroup & group, ReportPart reportPart, const std::string & rawString) override;
+    QString visitTemperatureGroup(const TemperatureGroup & group, ReportPart reportPart, const std::string & rawString) override;
+    QString visitTrendGroup(const TrendGroup & group, ReportPart reportPart, const std::string & rawString) override;
+    QString visitUnknownGroup(const UnknownGroup & group, ReportPart reportPart, const std::string & rawString) override;
+    QString visitVicinityGroup(const VicinityGroup & group, ReportPart reportPart, const std::string & rawString) override;
+    QString visitVisibilityGroup(const VisibilityGroup & group, ReportPart reportPart, const std::string & rawString) override;
+    QString visitWeatherGroup(const WeatherGroup & group, ReportPart reportPart, const std::string & rawString) override;
+    QString visitWindGroup(const WindGroup & group, ReportPart reportPart, const std::string & rawString) override;
 
 
     // Cached data

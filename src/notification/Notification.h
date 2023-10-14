@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QQmlEngine>
+#include <QObject>
 
 #include "units/Timespan.h"
 
@@ -86,10 +87,10 @@ public:
     explicit Notification(
         QString _title,
         Notifications::Notification::Importance _importance = Notifications::Notification::Info,
-        QObject *parent = nullptr);
+        QObject* parent = nullptr);
 
-    // No default constructor, always want a parent
-    explicit Notification() = delete;
+    // Standard constructor, required by QML
+    explicit Notification(QObject* parent = nullptr);
 
     /*! \brief Standard destructor */
     ~Notification() override = default;

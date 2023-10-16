@@ -313,12 +313,13 @@ if (UNIX AND NOT ANDROID AND NOT APPLE)
         Qt6::TextToSpeech
         Qt6::Widgets
         libzip::zip
+        QMapLibre::Location
     )
     target_precompile_headers(${PROJECT_NAME}
       PUBLIC
       <QQmlEngine>
     )
-
+    qmaplibre_location_copy_plugin(${PROJECT_NAME})
 # Install
 install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/docs/manual DESTINATION ${CMAKE_INSTALL_DOCDIR})

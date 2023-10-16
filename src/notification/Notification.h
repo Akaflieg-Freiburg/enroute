@@ -22,6 +22,7 @@
 
 #include <QObject>
 #include <QQmlEngine>
+#include <QObject>
 
 #include "units/Timespan.h"
 
@@ -73,13 +74,6 @@ public:
     //
 
 public:
-
-    /*! \brief Standard constructor
-     *
-     *  This constructor only exists because QML seens to require it. Do not use.
-     */
-    explicit Notification(QObject* parent = nullptr);
-
     /*! \brief Standard constructor
      *
      *  The constructor sets a time that calls deleteLater() after five minutes.
@@ -95,6 +89,9 @@ public:
         QString _title,
         Notifications::Notification::Importance _importance = Notifications::Notification::Info,
         QObject* parent = nullptr);
+
+    // Standard constructor, required by QML
+    explicit Notification(QObject* parent = nullptr);
 
     /*! \brief Standard destructor */
     ~Notification() override = default;

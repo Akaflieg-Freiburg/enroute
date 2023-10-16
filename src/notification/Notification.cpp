@@ -31,7 +31,7 @@ using namespace std::chrono_literals;
 // Constructors and destructors
 //
 
-Notifications::Notification::Notification(QObject *parent)
+Notifications::Notification::Notification(QObject* parent)
     : QObject(parent)
 {
 
@@ -39,10 +39,10 @@ Notifications::Notification::Notification(QObject *parent)
 
 Notifications::Notification::Notification(QString _title,
                                           Notifications::Notification::Importance _importance,
-                                          QObject *parent)
-    : QObject(parent)
-    , m_importance(_importance)
-    , m_title(std::move(_title))
+                                          QObject* parent)
+    : QObject(parent),
+    m_importance(_importance),
+    m_title(std::move(_title))
 
 {
     // Auto-delete this notification in five minutes.

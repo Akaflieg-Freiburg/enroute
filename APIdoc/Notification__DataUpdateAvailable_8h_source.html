@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.29.1</span>
+   &#160;<span id="projectnumber">2.29.2</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -88,21 +88,25 @@ $(function() {
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="comment">// No default constructor, always want a parent</span></div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classNotifications_1_1Notification__DataUpdateAvailable.html">Notification_DataUpdateAvailable</a>() = <span class="keyword">delete</span>;</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="classNotifications_1_1Notification__DataUpdateAvailable.html#a01d5c9244e08b65b4e3e508ee4adcf98">   54</a></span>&#160;    <a class="code" href="classNotifications_1_1Notification__DataUpdateAvailable.html#a01d5c9244e08b65b4e3e508ee4adcf98">~Notification_DataUpdateAvailable</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="classNotifications_1_1Notification__DataUpdateAvailable.html#a0a16e2928ade910784b8cf1263002222">   54</a></span>&#160;    <a class="code" href="classNotifications_1_1Notification__DataUpdateAvailable.html#a0a16e2928ade910784b8cf1263002222">~Notification_DataUpdateAvailable</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword">public</span> slots:</div>
-<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="classNotifications_1_1Notification__DataUpdateAvailable.html#afba3ee2953e245518d48c141b864b8c0">   58</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classNotifications_1_1Notification__DataUpdateAvailable.html#afba3ee2953e245518d48c141b864b8c0">onButton1Clicked</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="classNotifications_1_1Notification__DataUpdateAvailable.html#ad582335548d9daeb26f026e4f63dae22">   58</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classNotifications_1_1Notification__DataUpdateAvailable.html#ad582335548d9daeb26f026e4f63dae22">onButton1Clicked</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">private</span> slots:</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="comment">// Check if this notification is still useful and delete it if not.</span></div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordtype">void</span> update();</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;};</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;} <span class="comment">// namespace Notifications</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classNotifications_1_1Notification__DataUpdateAvailable.html">Notification_DataUpdateAvailable</a>)</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;};</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;} <span class="comment">// namespace Notifications</span></div>
 <div class="ttc" id="aclassNotifications_1_1Notification__DataUpdateAvailable_html"><div class="ttname"><a href="classNotifications_1_1Notification__DataUpdateAvailable.html">Notifications::Notification_DataUpdateAvailable</a></div><div class="ttdoc">Notification for available map &amp; data updates.</div><div class="ttdef"><b>Definition:</b> <a href="Notification__DataUpdateAvailable_8h_source.html#l00035">Notification_DataUpdateAvailable.h:36</a></div></div>
-<div class="ttc" id="aclassNotifications_1_1Notification__DataUpdateAvailable_html_a01d5c9244e08b65b4e3e508ee4adcf98"><div class="ttname"><a href="classNotifications_1_1Notification__DataUpdateAvailable.html#a01d5c9244e08b65b4e3e508ee4adcf98">Notifications::Notification_DataUpdateAvailable::~Notification_DataUpdateAvailable</a></div><div class="ttdeci">~Notification_DataUpdateAvailable()=default</div><div class="ttdoc">Standard destructor.</div></div>
+<div class="ttc" id="aclassNotifications_1_1Notification__DataUpdateAvailable_html_a0a16e2928ade910784b8cf1263002222"><div class="ttname"><a href="classNotifications_1_1Notification__DataUpdateAvailable.html#a0a16e2928ade910784b8cf1263002222">Notifications::Notification_DataUpdateAvailable::~Notification_DataUpdateAvailable</a></div><div class="ttdeci">~Notification_DataUpdateAvailable() override=default</div><div class="ttdoc">Standard destructor.</div></div>
+<div class="ttc" id="aclassNotifications_1_1Notification__DataUpdateAvailable_html_ad582335548d9daeb26f026e4f63dae22"><div class="ttname"><a href="classNotifications_1_1Notification__DataUpdateAvailable.html#ad582335548d9daeb26f026e4f63dae22">Notifications::Notification_DataUpdateAvailable::onButton1Clicked</a></div><div class="ttdeci">void onButton1Clicked() override</div><div class="ttdoc">Reimplemented from Notifications::Notification.</div></div>
 <div class="ttc" id="aclassNotifications_1_1Notification__DataUpdateAvailable_html_ae930a5d63934299b14a5155ac5b83479"><div class="ttname"><a href="classNotifications_1_1Notification__DataUpdateAvailable.html#ae930a5d63934299b14a5155ac5b83479">Notifications::Notification_DataUpdateAvailable::Notification_DataUpdateAvailable</a></div><div class="ttdeci">Notification_DataUpdateAvailable(QObject *parent=nullptr)</div><div class="ttdoc">Standard constructor.</div></div>
-<div class="ttc" id="aclassNotifications_1_1Notification__DataUpdateAvailable_html_afba3ee2953e245518d48c141b864b8c0"><div class="ttname"><a href="classNotifications_1_1Notification__DataUpdateAvailable.html#afba3ee2953e245518d48c141b864b8c0">Notifications::Notification_DataUpdateAvailable::onButton1Clicked</a></div><div class="ttdeci">virtual void onButton1Clicked() override</div><div class="ttdoc">Reimplemented from Notifications::Notification.</div></div>
 <div class="ttc" id="aclassNotifications_1_1Notification_html"><div class="ttname"><a href="classNotifications_1_1Notification.html">Notifications::Notification</a></div><div class="ttdoc">Base class for all notifications.</div><div class="ttdef"><b>Definition:</b> <a href="Notification_8h_source.html#l00041">Notification.h:42</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

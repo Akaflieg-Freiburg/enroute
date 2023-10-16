@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Enroute Flight Navigation: /home/runner/work/enroute/enroute/src/geomaps/ZipFile.h Source File</title>
+<title>Enroute Flight Navigation: /home/runner/work/enroute/enroute/src/fileFormats/ZipFile.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.29.1</span>
+   &#160;<span id="projectnumber">2.29.2</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -40,7 +40,7 @@ $(function() {
 <div id="main-nav"></div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_fb3165a2f87773a282fce5310e722f0d.html">geomaps</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_b05602f37bb521a7142c0a3e200b5f35.html">fileFormats</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -70,41 +70,55 @@ $(function() {
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;QStringList&gt;</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &quot;fileFormats/DataFileAbstract.h&quot;</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">namespace </span>GeoMaps</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">namespace </span>FileFormats</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;{</div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1ZipFile.html">   33</a></span>&#160;<span class="keyword">class </span><a class="code" href="classGeoMaps_1_1ZipFile.html">ZipFile</a> {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1ZipFile.html#aee18e0f2acdf5d8caf11df219de9fac8">   42</a></span>&#160;    <a class="code" href="classGeoMaps_1_1ZipFile.html#aee18e0f2acdf5d8caf11df219de9fac8">ZipFile</a>(<span class="keyword">const</span> QString&amp; fileName);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1ZipFile.html#ace1f13503560d72edfc95995e79f3d92">   45</a></span>&#160;    <a class="code" href="classGeoMaps_1_1ZipFile.html#ace1f13503560d72edfc95995e79f3d92">~ZipFile</a>();</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1ZipFile.html#a9ca4c2a868092e88557e7f7acef720d5">   51</a></span>&#160;    [[nodiscard]] <span class="keyword">auto</span> <a class="code" href="classGeoMaps_1_1ZipFile.html#a9ca4c2a868092e88557e7f7acef720d5">isValid</a>() const -&gt; <span class="keywordtype">bool</span> { <span class="keywordflow">return</span> (m_zip != <span class="keyword">nullptr</span>); }</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1ZipFile.html#a69fe7b1dd0b3a0837848a09fba54a7f6">   57</a></span>&#160;    [[nodiscard]] <span class="keyword">auto</span> <a class="code" href="classGeoMaps_1_1ZipFile.html#a69fe7b1dd0b3a0837848a09fba54a7f6">fileNames</a>() const -&gt; QStringList { <span class="keywordflow">return</span> m_fileNames; }</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1ZipFile.html#aa0e6c4a9cdbc437cedebd1272a3a0640">   65</a></span>&#160;    <span class="keyword">auto</span> <a class="code" href="classGeoMaps_1_1ZipFile.html#aa0e6c4a9cdbc437cedebd1272a3a0640">extract</a>(qsizetype index) -&gt; QByteArray;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="classGeoMaps_1_1ZipFile.html#ab56415e9e14394d6c80b936a718be21a">   78</a></span>&#160;    <span class="keyword">auto</span> <a class="code" href="classGeoMaps_1_1ZipFile.html#ab56415e9e14394d6c80b936a718be21a">extract</a>(<span class="keyword">const</span> QString&amp; fileName) -&gt; QByteArray;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classGeoMaps_1_1ZipFile.html">ZipFile</a>)</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordtype">void</span>* m_zip {<span class="keyword">nullptr</span>};</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    QStringList m_fileNames;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    QList&lt;qsizetype&gt; m_fileSizes;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;};</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;} <span class="comment">// namespace GeoMaps</span></div>
-<div class="ttc" id="aclassGeoMaps_1_1ZipFile_html"><div class="ttname"><a href="classGeoMaps_1_1ZipFile.html">GeoMaps::ZipFile</a></div><div class="ttdoc">ZIP Archive.</div><div class="ttdef"><b>Definition:</b> <a href="ZipFile_8h_source.html#l00033">ZipFile.h:33</a></div></div>
-<div class="ttc" id="aclassGeoMaps_1_1ZipFile_html_a69fe7b1dd0b3a0837848a09fba54a7f6"><div class="ttname"><a href="classGeoMaps_1_1ZipFile.html#a69fe7b1dd0b3a0837848a09fba54a7f6">GeoMaps::ZipFile::fileNames</a></div><div class="ttdeci">auto fileNames() const -&gt; QStringList</div><div class="ttdoc">List of files in the zip archive.</div><div class="ttdef"><b>Definition:</b> <a href="ZipFile_8h_source.html#l00057">ZipFile.h:57</a></div></div>
-<div class="ttc" id="aclassGeoMaps_1_1ZipFile_html_a9ca4c2a868092e88557e7f7acef720d5"><div class="ttname"><a href="classGeoMaps_1_1ZipFile.html#a9ca4c2a868092e88557e7f7acef720d5">GeoMaps::ZipFile::isValid</a></div><div class="ttdeci">auto isValid() const -&gt; bool</div><div class="ttdoc">Test for validity.</div><div class="ttdef"><b>Definition:</b> <a href="ZipFile_8h_source.html#l00051">ZipFile.h:51</a></div></div>
-<div class="ttc" id="aclassGeoMaps_1_1ZipFile_html_aa0e6c4a9cdbc437cedebd1272a3a0640"><div class="ttname"><a href="classGeoMaps_1_1ZipFile.html#aa0e6c4a9cdbc437cedebd1272a3a0640">GeoMaps::ZipFile::extract</a></div><div class="ttdeci">auto extract(qsizetype index) -&gt; QByteArray</div><div class="ttdoc">Content of file in the zip archive.</div></div>
-<div class="ttc" id="aclassGeoMaps_1_1ZipFile_html_ab56415e9e14394d6c80b936a718be21a"><div class="ttname"><a href="classGeoMaps_1_1ZipFile.html#ab56415e9e14394d6c80b936a718be21a">GeoMaps::ZipFile::extract</a></div><div class="ttdeci">auto extract(const QString &amp;fileName) -&gt; QByteArray</div><div class="ttdoc">Content of file in the zip archive.</div></div>
-<div class="ttc" id="aclassGeoMaps_1_1ZipFile_html_ace1f13503560d72edfc95995e79f3d92"><div class="ttname"><a href="classGeoMaps_1_1ZipFile.html#ace1f13503560d72edfc95995e79f3d92">GeoMaps::ZipFile::~ZipFile</a></div><div class="ttdeci">~ZipFile()</div><div class="ttdoc">Destructor.</div></div>
-<div class="ttc" id="aclassGeoMaps_1_1ZipFile_html_aee18e0f2acdf5d8caf11df219de9fac8"><div class="ttname"><a href="classGeoMaps_1_1ZipFile.html#aee18e0f2acdf5d8caf11df219de9fac8">GeoMaps::ZipFile::ZipFile</a></div><div class="ttdeci">ZipFile(const QString &amp;fileName)</div><div class="ttdoc">Constructor.</div></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="classFileFormats_1_1ZipFile.html">   33</a></span>&#160;<span class="keyword">class </span><a class="code" href="classFileFormats_1_1ZipFile.html">ZipFile</a> : <span class="keyword">public</span> <a class="code" href="classFileFormats_1_1DataFileAbstract.html">DataFileAbstract</a></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;{</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="classFileFormats_1_1ZipFile.html#aa6be2513d17ae4a9fd34521f21668e93">   43</a></span>&#160;    <a class="code" href="classFileFormats_1_1ZipFile.html#aa6be2513d17ae4a9fd34521f21668e93">ZipFile</a>(<span class="keyword">const</span> QString&amp; fileName);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="classFileFormats_1_1ZipFile.html#ace66fb5100a602ec0871a5096b12d139">   46</a></span>&#160;    <a class="code" href="classFileFormats_1_1ZipFile.html#ace66fb5100a602ec0871a5096b12d139">~ZipFile</a>();</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="comment">// Getter Methods</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="classFileFormats_1_1ZipFile.html#a38c284b1bae31e429d18bbdb3f935c03">   58</a></span>&#160;    [[nodiscard]] QStringList <a class="code" href="classFileFormats_1_1ZipFile.html#a38c284b1bae31e429d18bbdb3f935c03">fileNames</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_fileNames; }</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
+<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="classFileFormats_1_1ZipFile.html#a5ba7deca3e51bc76f814d4f5db88cc47">   66</a></span>&#160;    [[nodiscard]] QByteArray <a class="code" href="classFileFormats_1_1ZipFile.html#a5ba7deca3e51bc76f814d4f5db88cc47">extract</a>(qsizetype index);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="classFileFormats_1_1ZipFile.html#a6bc48873be506a79eb4ef1ec814e6fc4">   79</a></span>&#160;    [[nodiscard]] QByteArray <a class="code" href="classFileFormats_1_1ZipFile.html#a6bc48873be506a79eb4ef1ec814e6fc4">extract</a>(<span class="keyword">const</span> QString&amp; fileName);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="comment">// Static methods</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
+<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="classFileFormats_1_1ZipFile.html#a004d36dc51e351ff93b180c5140e8e2c">   90</a></span>&#160;    [[nodiscard]] <span class="keyword">static</span> QStringList <a class="code" href="classFileFormats_1_1ZipFile.html#a004d36dc51e351ff93b180c5140e8e2c">mimeTypes</a>() { <span class="keywordflow">return</span> {u<span class="stringliteral">&quot;application/zip&quot;</span>_qs}; }</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classFileFormats_1_1ZipFile.html">ZipFile</a>)</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keywordtype">void</span>* m_zip {<span class="keyword">nullptr</span>};</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    QStringList m_fileNames;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    QList&lt;qsizetype&gt; m_fileSizes;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;};</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;} <span class="comment">// namespace FileFormats</span></div>
+<div class="ttc" id="aclassFileFormats_1_1DataFileAbstract_html"><div class="ttname"><a href="classFileFormats_1_1DataFileAbstract.html">FileFormats::DataFileAbstract</a></div><div class="ttdoc">Base class for file reading classes.</div><div class="ttdef"><b>Definition:</b> <a href="DataFileAbstract_8h_source.html#l00041">DataFileAbstract.h:42</a></div></div>
+<div class="ttc" id="aclassFileFormats_1_1ZipFile_html"><div class="ttname"><a href="classFileFormats_1_1ZipFile.html">FileFormats::ZipFile</a></div><div class="ttdoc">ZIP Archive.</div><div class="ttdef"><b>Definition:</b> <a href="ZipFile_8h_source.html#l00033">ZipFile.h:34</a></div></div>
+<div class="ttc" id="aclassFileFormats_1_1ZipFile_html_a004d36dc51e351ff93b180c5140e8e2c"><div class="ttname"><a href="classFileFormats_1_1ZipFile.html#a004d36dc51e351ff93b180c5140e8e2c">FileFormats::ZipFile::mimeTypes</a></div><div class="ttdeci">static QStringList mimeTypes()</div><div class="ttdoc">Mime type for files that can be opened by this class.</div><div class="ttdef"><b>Definition:</b> <a href="ZipFile_8h_source.html#l00090">ZipFile.h:90</a></div></div>
+<div class="ttc" id="aclassFileFormats_1_1ZipFile_html_a38c284b1bae31e429d18bbdb3f935c03"><div class="ttname"><a href="classFileFormats_1_1ZipFile.html#a38c284b1bae31e429d18bbdb3f935c03">FileFormats::ZipFile::fileNames</a></div><div class="ttdeci">QStringList fileNames() const</div><div class="ttdoc">List of files in the zip archive.</div><div class="ttdef"><b>Definition:</b> <a href="ZipFile_8h_source.html#l00058">ZipFile.h:58</a></div></div>
+<div class="ttc" id="aclassFileFormats_1_1ZipFile_html_a5ba7deca3e51bc76f814d4f5db88cc47"><div class="ttname"><a href="classFileFormats_1_1ZipFile.html#a5ba7deca3e51bc76f814d4f5db88cc47">FileFormats::ZipFile::extract</a></div><div class="ttdeci">QByteArray extract(qsizetype index)</div><div class="ttdoc">Content of file in the zip archive.</div></div>
+<div class="ttc" id="aclassFileFormats_1_1ZipFile_html_a6bc48873be506a79eb4ef1ec814e6fc4"><div class="ttname"><a href="classFileFormats_1_1ZipFile.html#a6bc48873be506a79eb4ef1ec814e6fc4">FileFormats::ZipFile::extract</a></div><div class="ttdeci">QByteArray extract(const QString &amp;fileName)</div><div class="ttdoc">Content of file in the zip archive.</div></div>
+<div class="ttc" id="aclassFileFormats_1_1ZipFile_html_aa6be2513d17ae4a9fd34521f21668e93"><div class="ttname"><a href="classFileFormats_1_1ZipFile.html#aa6be2513d17ae4a9fd34521f21668e93">FileFormats::ZipFile::ZipFile</a></div><div class="ttdeci">ZipFile(const QString &amp;fileName)</div><div class="ttdoc">Constructor.</div></div>
+<div class="ttc" id="aclassFileFormats_1_1ZipFile_html_ace66fb5100a602ec0871a5096b12d139"><div class="ttname"><a href="classFileFormats_1_1ZipFile.html#ace66fb5100a602ec0871a5096b12d139">FileFormats::ZipFile::~ZipFile</a></div><div class="ttdeci">~ZipFile()</div><div class="ttdoc">Destructor.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

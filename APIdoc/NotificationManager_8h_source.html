@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.29.1</span>
+   &#160;<span id="projectnumber">2.29.2</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -100,7 +100,7 @@ $(function() {
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="comment">// No default constructor, important for QML singleton</span></div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classNotifications_1_1NotificationManager.html">NotificationManager</a>() = <span class="keyword">delete</span>;</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="classNotifications_1_1NotificationManager.html#a539bc69a86ea4ede1b8d6b0935c27fc3">   65</a></span>&#160;    <a class="code" href="classNotifications_1_1NotificationManager.html#a539bc69a86ea4ede1b8d6b0935c27fc3">~NotificationManager</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="classNotifications_1_1NotificationManager.html#adcac19022e92b1901335f6b355a1b9c1">   65</a></span>&#160;    <a class="code" href="classNotifications_1_1NotificationManager.html#adcac19022e92b1901335f6b355a1b9c1">~NotificationManager</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="comment">// factory function for QML singleton</span></div>
 <div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="classNotifications_1_1NotificationManager.html#a624d22314c362bb5e719a4af44727d34">   68</a></span>&#160;    <span class="keyword">static</span> <a class="code" href="classNotifications_1_1NotificationManager.html">Notifications::NotificationManager</a>* create(QQmlEngine* <span class="comment">/*unused*/</span>, QJSEngine* <span class="comment">/*unused*/</span>)</div>
@@ -153,92 +153,95 @@ $(function() {
 <div class="line"><a name="l00143"></a><span class="lineno"><a class="line" href="classNotifications_1_1NotificationManager.html#a3414d089db0524aebca89f3e1c200385">  143</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classNotifications_1_1NotificationManager.html#a3414d089db0524aebca89f3e1c200385">speakerChanged</a>();</div>
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160; </div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    <span class="comment">// Adds a notification to m_notifications and rearranges the list. Removes</span></div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    <span class="comment">// nullptrs and sorts list by importance.</span></div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <span class="keywordtype">void</span> addNotification(<a class="code" href="classNotifications_1_1Notification.html">Notifications::Notification</a>* notification);</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160; </div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160; </div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160; </div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="comment">// Members used for visual notifications</span></div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160; </div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <span class="comment">// This method clears all nullptrs from m_notifications, sorts the elements</span></div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <span class="comment">// by importance and emits currentNotificationChanged() whenever the first</span></div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <span class="comment">// element the list changes.</span></div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <span class="keywordtype">void</span> showNext();</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; </div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    <span class="comment">// List of Notifications, sorted so that the most important notification</span></div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    <span class="comment">// comes first.</span></div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    QVector&lt;QPointer&lt;Notifications::Notification&gt;&gt; m_visualNotifications;</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160; </div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <span class="comment">// Stores pointer to last current visual notification. This is used to</span></div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="comment">// determine when the signal currentVisualNotificationChanged should be</span></div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <span class="comment">// emitted.</span></div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <a class="code" href="classNotifications_1_1Notification.html">Notifications::Notification</a>* currentVisualNotificationCache {<span class="keyword">nullptr</span>};</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160; </div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160; </div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    <span class="comment">// Members used for voice notifications</span></div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; </div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160; </div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    <span class="comment">// If the speaker is finished, start m_speechBreakTimer, in order to call</span></div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    <span class="comment">// speakNext() after a one-second break.</span></div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    <span class="keywordtype">void</span> onSpeakerStateChanged(QTextToSpeech::State state);</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160; </div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <span class="comment">// Setup speaker: construct the speaker, move it to the GUI thread, make it</span></div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <span class="comment">// a child of this and wire it up.</span></div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <span class="keywordtype">void</span> setupSpeaker();</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160; </div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <span class="comment">// This method cleans the list m_spokenNotifications and sorts it by</span></div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <span class="comment">// importance. If a notification is in the list, it speaks the notication</span></div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="comment">// test.</span></div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <span class="keywordtype">void</span> speakNext();</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160; </div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <span class="comment">// List of Notifications, sorted so that the most important notification</span></div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    <span class="comment">// comes first.</span></div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    QVector&lt;QPointer&lt;Notifications::Notification&gt;&gt; m_voiceNotifications;</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160; </div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    <span class="comment">// Pointer to the speaker. This will be the nullpointer while the thread the</span></div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    <span class="comment">// constructs the object is still ongoing.</span></div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    QTextToSpeech* m_speaker {<span class="keyword">nullptr</span>};</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160; </div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    <span class="comment">// Future for the worker that constructs QTextToSpeek under Linux in a</span></div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    <span class="comment">// different thread</span></div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    QFuture&lt;void&gt; m_speakerFuture;</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160; </div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <span class="comment">// This timer is used to stop for one second between two spoken texts. The</span></div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    <span class="comment">// slot start() is called when m_speaker is done speaking. The signal</span></div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    <span class="comment">// timeout() is connected to speakNext().</span></div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    QTimer m_speechBreakTimer;</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160; </div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160; </div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160; </div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    <span class="comment">// Members used to watch other app components, and to generate notifications</span></div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <span class="comment">// when necessary</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    Q_DISABLE_COPY_MOVE(<a class="code" href="classNotifications_1_1NotificationManager.html">NotificationManager</a>)</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160; </div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    <span class="comment">// Adds a notification to m_notifications and rearranges the list. Removes</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    <span class="comment">// nullptrs and sorts list by importance.</span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    <span class="keywordtype">void</span> addNotification(<a class="code" href="classNotifications_1_1Notification.html">Notifications::Notification</a>* notification);</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160; </div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160; </div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160; </div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <span class="comment">// Members used for visual notifications</span></div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160; </div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <span class="comment">// This method clears all nullptrs from m_notifications, sorts the elements</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    <span class="comment">// by importance and emits currentNotificationChanged() whenever the first</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    <span class="comment">// element the list changes.</span></div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    <span class="keywordtype">void</span> showNext();</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <span class="comment">// List of Notifications, sorted so that the most important notification</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <span class="comment">// comes first.</span></div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    QVector&lt;QPointer&lt;Notifications::Notification&gt;&gt; m_visualNotifications;</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160; </div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <span class="comment">// Stores pointer to last current visual notification. This is used to</span></div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <span class="comment">// determine when the signal currentVisualNotificationChanged should be</span></div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <span class="comment">// emitted.</span></div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <a class="code" href="classNotifications_1_1Notification.html">Notifications::Notification</a>* currentVisualNotificationCache {<span class="keyword">nullptr</span>};</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160; </div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160; </div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160; </div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <span class="comment">// Members used for voice notifications</span></div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160; </div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160; </div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    <span class="comment">// If the speaker is finished, start m_speechBreakTimer, in order to call</span></div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <span class="comment">// speakNext() after a one-second break.</span></div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <span class="keywordtype">void</span> onSpeakerStateChanged(QTextToSpeech::State state);</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160; </div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <span class="comment">// Setup speaker: construct the speaker, move it to the GUI thread, make it</span></div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <span class="comment">// a child of this and wire it up.</span></div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <span class="keywordtype">void</span> setupSpeaker();</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160; </div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <span class="comment">// This method cleans the list m_spokenNotifications and sorts it by</span></div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    <span class="comment">// importance. If a notification is in the list, it speaks the notication</span></div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <span class="comment">// test.</span></div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    <span class="keywordtype">void</span> speakNext();</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160; </div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <span class="comment">// List of Notifications, sorted so that the most important notification</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    <span class="comment">// comes first.</span></div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    QVector&lt;QPointer&lt;Notifications::Notification&gt;&gt; m_voiceNotifications;</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160; </div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <span class="comment">// Pointer to the speaker. This will be the nullpointer while the thread the</span></div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    <span class="comment">// constructs the object is still ongoing.</span></div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    QTextToSpeech* m_speaker {<span class="keyword">nullptr</span>};</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160; </div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    <span class="comment">// Future for the worker that constructs QTextToSpeek under Linux in a</span></div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <span class="comment">// different thread</span></div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    QFuture&lt;void&gt; m_speakerFuture;</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160; </div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    <span class="comment">// This timer is used to stop for one second between two spoken texts. The</span></div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <span class="comment">// slot start() is called when m_speaker is done speaking. The signal</span></div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <span class="comment">// timeout() is connected to speakNext().</span></div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    QTimer m_speechBreakTimer;</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160; </div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160; </div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160; </div>
 <div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160; </div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    <span class="comment">// Called whenever map and data updates become (un)available</span></div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    <span class="keywordtype">void</span> onMapAndDataUpdateSizeChanged();</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    <span class="comment">// Members used to watch other app components, and to generate notifications</span></div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    <span class="comment">// when necessary</span></div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    <span class="comment">//</span></div>
 <div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160; </div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    <span class="comment">// Called whenever the traffic receiver reports a runtime error, or clears</span></div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    <span class="comment">// the error status.</span></div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    <span class="keywordtype">void</span> onTrafficReceiverRuntimeError();</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160; </div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    <span class="comment">// Called whenever the traffic receiver reports a self test error, or clears</span></div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    <span class="comment">// the error status.</span></div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    <span class="keywordtype">void</span> onTrafficReceiverSelfTestError();</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160; </div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    <span class="comment">// When notifications for maps and data are temporarily not possible, then</span></div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    <span class="comment">// use this timer to notify again.</span></div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    QTimer mapsAndDataNotificationTimer;</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;};</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160; </div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160; </div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;} <span class="comment">// namespace Notifications</span></div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    <span class="comment">// Called whenever map and data updates become (un)available</span></div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    <span class="keywordtype">void</span> onMapAndDataUpdateSizeChanged();</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160; </div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    <span class="comment">// Called whenever the traffic receiver reports a runtime error, or clears</span></div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    <span class="comment">// the error status.</span></div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    <span class="keywordtype">void</span> onTrafficReceiverRuntimeError();</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160; </div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <span class="comment">// Called whenever the traffic receiver reports a self test error, or clears</span></div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    <span class="comment">// the error status.</span></div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    <span class="keywordtype">void</span> onTrafficReceiverSelfTestError();</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160; </div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    <span class="comment">// When notifications for maps and data are temporarily not possible, then</span></div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    <span class="comment">// use this timer to notify again.</span></div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    QTimer mapsAndDataNotificationTimer;</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;};</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160; </div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160; </div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;} <span class="comment">// namespace Notifications</span></div>
 <div class="ttc" id="aclassGlobalObject_html"><div class="ttname"><a href="classGlobalObject.html">GlobalObject</a></div><div class="ttdoc">Base class for global singleton objects.</div><div class="ttdef"><b>Definition:</b> <a href="GlobalObject_8h_source.html#l00106">GlobalObject.h:107</a></div></div>
 <div class="ttc" id="aclassGlobalObject_html_ad13691c58c71ce9b8be146bf8743f08e"><div class="ttname"><a href="classGlobalObject.html#ad13691c58c71ce9b8be146bf8743f08e">GlobalObject::notificationManager</a></div><div class="ttdeci">static Q_INVOKABLE Notifications::NotificationManager * notificationManager()</div><div class="ttdoc">Pointer to appplication-wide static notification manager instance.</div></div>
 <div class="ttc" id="aclassNotifications_1_1NotificationManager_html"><div class="ttname"><a href="classNotifications_1_1NotificationManager.html">Notifications::NotificationManager</a></div><div class="ttdoc">This class manages notifications and presents them to the GUI.</div><div class="ttdef"><b>Definition:</b> <a href="NotificationManager_8h_source.html#l00041">NotificationManager.h:42</a></div></div>
@@ -246,13 +249,13 @@ $(function() {
 <div class="ttc" id="aclassNotifications_1_1NotificationManager_html_a3414d089db0524aebca89f3e1c200385"><div class="ttname"><a href="classNotifications_1_1NotificationManager.html#a3414d089db0524aebca89f3e1c200385">Notifications::NotificationManager::speakerChanged</a></div><div class="ttdeci">void speakerChanged()</div><div class="ttdoc">Notification signal.</div></div>
 <div class="ttc" id="aclassNotifications_1_1NotificationManager_html_a491ee0154d491a2a6ec072f4bee87f72"><div class="ttname"><a href="classNotifications_1_1NotificationManager.html#a491ee0154d491a2a6ec072f4bee87f72">Notifications::NotificationManager::deferredInitialization</a></div><div class="ttdeci">void deferredInitialization() override</div><div class="ttdoc">Non-constructor initialization.</div></div>
 <div class="ttc" id="aclassNotifications_1_1NotificationManager_html_a527f9cf11b4d609c5a760af12c3519dd"><div class="ttname"><a href="classNotifications_1_1NotificationManager.html#a527f9cf11b4d609c5a760af12c3519dd">Notifications::NotificationManager::speaker</a></div><div class="ttdeci">QTextToSpeech * speaker() const</div><div class="ttdoc">Getter function for property of the same name.</div><div class="ttdef"><b>Definition:</b> <a href="NotificationManager_8h_source.html#l00114">NotificationManager.h:114</a></div></div>
-<div class="ttc" id="aclassNotifications_1_1NotificationManager_html_a539bc69a86ea4ede1b8d6b0935c27fc3"><div class="ttname"><a href="classNotifications_1_1NotificationManager.html#a539bc69a86ea4ede1b8d6b0935c27fc3">Notifications::NotificationManager::~NotificationManager</a></div><div class="ttdeci">~NotificationManager()=default</div><div class="ttdoc">Standard destructor.</div></div>
 <div class="ttc" id="aclassNotifications_1_1NotificationManager_html_a587f0e14e79517f27319a8bd144819a0"><div class="ttname"><a href="classNotifications_1_1NotificationManager.html#a587f0e14e79517f27319a8bd144819a0">Notifications::NotificationManager::addTestNotification</a></div><div class="ttdeci">Q_INVOKABLE void addTestNotification()</div><div class="ttdoc">Issue test notification.</div></div>
 <div class="ttc" id="aclassNotifications_1_1NotificationManager_html_a624d22314c362bb5e719a4af44727d34"><div class="ttname"><a href="classNotifications_1_1NotificationManager.html#a624d22314c362bb5e719a4af44727d34">Notifications::NotificationManager::currentVisualNotification</a></div><div class="ttdeci">Notifications::Notification * currentVisualNotification</div><div class="ttdoc">Most important notification to be shown in the GUI.</div><div class="ttdef"><b>Definition:</b> <a href="NotificationManager_8h_source.html#l00068">NotificationManager.h:87</a></div></div>
 <div class="ttc" id="aclassNotifications_1_1NotificationManager_html_a67387ccbbbabfb74f321c758f79b6dd1"><div class="ttname"><a href="classNotifications_1_1NotificationManager.html#a67387ccbbbabfb74f321c758f79b6dd1">Notifications::NotificationManager::waitForSpeechEngine</a></div><div class="ttdeci">void waitForSpeechEngine()</div><div class="ttdoc">Wait until speech engine is fully constructed.</div><div class="ttdef"><b>Definition:</b> <a href="NotificationManager_8h_source.html#l00131">NotificationManager.h:131</a></div></div>
 <div class="ttc" id="aclassNotifications_1_1NotificationManager_html_a91a3a98371b518f85b818d5ae8db1d24"><div class="ttname"><a href="classNotifications_1_1NotificationManager.html#a91a3a98371b518f85b818d5ae8db1d24">Notifications::NotificationManager::currentVisualNotificationChanged</a></div><div class="ttdeci">void currentVisualNotificationChanged()</div><div class="ttdoc">Notification signal.</div></div>
 <div class="ttc" id="aclassNotifications_1_1NotificationManager_html_a92adf6077bdceb9b1e2b4bf6cc8d74cf"><div class="ttname"><a href="classNotifications_1_1NotificationManager.html#a92adf6077bdceb9b1e2b4bf6cc8d74cf">Notifications::NotificationManager::NotificationManager</a></div><div class="ttdeci">NotificationManager(QObject *parent=nullptr)</div><div class="ttdoc">Standard constructor.</div></div>
 <div class="ttc" id="aclassNotifications_1_1NotificationManager_html_ad8200e2b77131e436ac077a817439757"><div class="ttname"><a href="classNotifications_1_1NotificationManager.html#ad8200e2b77131e436ac077a817439757">Notifications::NotificationManager::speaker</a></div><div class="ttdeci">QTextToSpeech * speaker</div><div class="ttdoc">Pointer to QTextToSpeech.</div><div class="ttdef"><b>Definition:</b> <a href="NotificationManager_8h_source.html#l00068">NotificationManager.h:97</a></div></div>
+<div class="ttc" id="aclassNotifications_1_1NotificationManager_html_adcac19022e92b1901335f6b355a1b9c1"><div class="ttname"><a href="classNotifications_1_1NotificationManager.html#adcac19022e92b1901335f6b355a1b9c1">Notifications::NotificationManager::~NotificationManager</a></div><div class="ttdeci">~NotificationManager() override=default</div><div class="ttdoc">Standard destructor.</div></div>
 <div class="ttc" id="aclassNotifications_1_1NotificationManager_html_afafa8179320e7b3545e39714648b74cc"><div class="ttname"><a href="classNotifications_1_1NotificationManager.html#afafa8179320e7b3545e39714648b74cc">Notifications::NotificationManager::currentVisualNotification</a></div><div class="ttdeci">Notifications::Notification * currentVisualNotification() const</div><div class="ttdoc">Getter function for property of the same name.</div></div>
 <div class="ttc" id="aclassNotifications_1_1Notification_html"><div class="ttname"><a href="classNotifications_1_1Notification.html">Notifications::Notification</a></div><div class="ttdoc">Base class for all notifications.</div><div class="ttdef"><b>Definition:</b> <a href="Notification_8h_source.html#l00041">Notification.h:42</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

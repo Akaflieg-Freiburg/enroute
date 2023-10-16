@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Enroute Flight Navigation: /home/runner/work/enroute/enroute/src/geomaps/GeoTIFF.h Source File</title>
+<title>Enroute Flight Navigation: /home/runner/work/enroute/enroute/src/fileFormats/GeoTIFF.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.29.1</span>
+   &#160;<span id="projectnumber">2.29.2</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -40,7 +40,7 @@ $(function() {
 <div id="main-nav"></div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_fb3165a2f87773a282fce5310e722f0d.html">geomaps</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_b05602f37bb521a7142c0a3e200b5f35.html">fileFormats</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -49,7 +49,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/***************************************************************************</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *   Copyright (C) 2022 by Stefan Kebekus                                  *</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *   Copyright (C) 2023 by Stefan Kebekus                                  *</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *   stefan.kebekus@gmail.com                                              *</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *                                                                         *</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *   This program is free software; you can redistribute it and/or modify  *</span></div>
@@ -71,17 +71,89 @@ $(function() {
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;QGeoRectangle&gt;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;QString&gt;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;QVariant&gt;</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">namespace </span>GeoMaps</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;{</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">class </span>GeoTIFF</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    {</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keyword">static</span> <span class="keyword">auto</span> readCoordinates(<span class="keyword">const</span> QString &amp;path) -&gt; QGeoRectangle;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    };</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;} <span class="comment">// namespace GeoMaps</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;DataFileAbstract.h&quot;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">namespace </span>FileFormats</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="classFileFormats_1_1GeoTIFF.html">   42</a></span>&#160;<span class="keyword">class </span><a class="code" href="classFileFormats_1_1GeoTIFF.html">GeoTIFF</a> : <span class="keyword">public</span> <a class="code" href="classFileFormats_1_1DataFileAbstract.html">DataFileAbstract</a></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;{</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="classFileFormats_1_1GeoTIFF.html#a5592b873b1faac3113a2e1b9d20238f1">   52</a></span>&#160;    <a class="code" href="classFileFormats_1_1GeoTIFF.html#a5592b873b1faac3113a2e1b9d20238f1">GeoTIFF</a>(<span class="keyword">const</span> QString&amp; fileName);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="classFileFormats_1_1GeoTIFF.html#a3957e984972aa6cb81331ab0890d1111">   62</a></span>&#160;    <a class="code" href="classFileFormats_1_1GeoTIFF.html#a3957e984972aa6cb81331ab0890d1111">GeoTIFF</a>(QIODevice&amp; device);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="comment">// Getter Methods</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="classFileFormats_1_1GeoTIFF.html#a7cc5034900021ad17e78ce7730f229f2">   73</a></span>&#160;    [[nodiscard]] QString <a class="code" href="classFileFormats_1_1GeoTIFF.html#a7cc5034900021ad17e78ce7730f229f2">name</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_name; }</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="classFileFormats_1_1GeoTIFF.html#af02c6231430c86f7d046e0434a0df0b0">   79</a></span>&#160;    [[nodiscard]] QGeoRectangle <a class="code" href="classFileFormats_1_1GeoTIFF.html#af02c6231430c86f7d046e0434a0df0b0">bBox</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_bBox; }</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="comment">// Static methods</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
+<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="classFileFormats_1_1GeoTIFF.html#a20f45bbf2f89bae5292116412903438a">   91</a></span>&#160;    [[nodiscard]] <span class="keyword">static</span> QStringList <a class="code" href="classFileFormats_1_1GeoTIFF.html#a20f45bbf2f89bae5292116412903438a">mimeTypes</a>() { <span class="keywordflow">return</span> {u<span class="stringliteral">&quot;image/tiff&quot;</span>_qs}; }</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="comment">/* This methods reads the TIFF data from the device. On success, it fills</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="comment">     * the memeber m_TIFFFields with appropriate data. On failure, it throws a</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="comment">     * QString with a human-readable, translated error message.</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="comment">     *</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="comment">     * @param device QIODevice from which the TIFF header will be read. This</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="comment">     * device must be seekable.</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keywordtype">void</span> readTIFFData(QIODevice&amp; device);</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="comment">/* This methods reads a single TIFF field from the device. On success, it</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="comment">     * adds an entry to the member m_TIFFFields and positions the device on the</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="comment">     * byte following the structure. On failure, it throws a QString with a</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="comment">     * human-readable, translated error message.</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="comment">     *</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="comment">     * This method only reads values of type ASCII, SHORT and DOUBLE. Values of</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="comment">     * other types will be ignored.</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="comment">     *</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="comment">     * @param device QIODevice from which the TIFF header will be read. This</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="comment">     * device must be open, seekable, and positioned to the beginning of the</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="comment">     * TIFF field structure.</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="comment">     *</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="comment">     * @param dataStream QDataStream that is connected to the device and has the</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="comment">     * correct endianness set.</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="keywordtype">void</span> readTIFFField(QIODevice&amp; device, QDataStream&amp; dataStream);</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="comment">/* This methods interprets the data found in m_TIFFFields and writes to</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="comment">     * m_bBox and m_name.On failure, it throws a QString with a human-readable,</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="comment">     * translated error message.</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="keywordtype">void</span> interpretGeoData();</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <span class="comment">// TIFF tags and associated data</span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    QMap&lt;quint16, QVariantList&gt; m_TIFFFields;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    <span class="comment">// Bounding box</span></div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    QGeoRectangle m_bBox;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="comment">// Name</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    QString m_name;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;};</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160; </div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;} <span class="comment">// namespace FileFormats</span></div>
+<div class="ttc" id="aclassFileFormats_1_1DataFileAbstract_html"><div class="ttname"><a href="classFileFormats_1_1DataFileAbstract.html">FileFormats::DataFileAbstract</a></div><div class="ttdoc">Base class for file reading classes.</div><div class="ttdef"><b>Definition:</b> <a href="DataFileAbstract_8h_source.html#l00041">DataFileAbstract.h:42</a></div></div>
+<div class="ttc" id="aclassFileFormats_1_1GeoTIFF_html"><div class="ttname"><a href="classFileFormats_1_1GeoTIFF.html">FileFormats::GeoTIFF</a></div><div class="ttdoc">Trip Kit.</div><div class="ttdef"><b>Definition:</b> <a href="GeoTIFF_8h_source.html#l00042">GeoTIFF.h:43</a></div></div>
+<div class="ttc" id="aclassFileFormats_1_1GeoTIFF_html_a20f45bbf2f89bae5292116412903438a"><div class="ttname"><a href="classFileFormats_1_1GeoTIFF.html#a20f45bbf2f89bae5292116412903438a">FileFormats::GeoTIFF::mimeTypes</a></div><div class="ttdeci">static QStringList mimeTypes()</div><div class="ttdoc">Mime type for files that can be opened by this class.</div><div class="ttdef"><b>Definition:</b> <a href="GeoTIFF_8h_source.html#l00091">GeoTIFF.h:91</a></div></div>
+<div class="ttc" id="aclassFileFormats_1_1GeoTIFF_html_a3957e984972aa6cb81331ab0890d1111"><div class="ttname"><a href="classFileFormats_1_1GeoTIFF.html#a3957e984972aa6cb81331ab0890d1111">FileFormats::GeoTIFF::GeoTIFF</a></div><div class="ttdeci">GeoTIFF(QIODevice &amp;device)</div><div class="ttdoc">Constructor.</div></div>
+<div class="ttc" id="aclassFileFormats_1_1GeoTIFF_html_a5592b873b1faac3113a2e1b9d20238f1"><div class="ttname"><a href="classFileFormats_1_1GeoTIFF.html#a5592b873b1faac3113a2e1b9d20238f1">FileFormats::GeoTIFF::GeoTIFF</a></div><div class="ttdeci">GeoTIFF(const QString &amp;fileName)</div><div class="ttdoc">Constructor.</div></div>
+<div class="ttc" id="aclassFileFormats_1_1GeoTIFF_html_a7cc5034900021ad17e78ce7730f229f2"><div class="ttname"><a href="classFileFormats_1_1GeoTIFF.html#a7cc5034900021ad17e78ce7730f229f2">FileFormats::GeoTIFF::name</a></div><div class="ttdeci">QString name() const</div><div class="ttdoc">Name, as specified in the GeoTIFF file.</div><div class="ttdef"><b>Definition:</b> <a href="GeoTIFF_8h_source.html#l00073">GeoTIFF.h:73</a></div></div>
+<div class="ttc" id="aclassFileFormats_1_1GeoTIFF_html_af02c6231430c86f7d046e0434a0df0b0"><div class="ttname"><a href="classFileFormats_1_1GeoTIFF.html#af02c6231430c86f7d046e0434a0df0b0">FileFormats::GeoTIFF::bBox</a></div><div class="ttdeci">QGeoRectangle bBox() const</div><div class="ttdoc">Bounding box, as specified in the GeoTIFF file.</div><div class="ttdef"><b>Definition:</b> <a href="GeoTIFF_8h_source.html#l00079">GeoTIFF.h:79</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

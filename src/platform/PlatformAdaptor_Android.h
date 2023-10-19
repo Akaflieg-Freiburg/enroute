@@ -53,13 +53,13 @@ public:
      *
      *  @returns see PlatformAdaptor_Abstract
      */
-    Q_INVOKABLE QString checkPermissions() override;
+    QString checkPermissions() override;
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract
      *
      *  @returns see PlatformAdaptor_Abstract
      */
-    Q_INVOKABLE QString currentSSID() override;
+    QString currentSSID() override;
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
     void disableScreenSaver() override;
@@ -68,27 +68,25 @@ public:
      *
      *  @param lock see PlatformAdaptor_Abstract
      */
-    Q_INVOKABLE void lockWifi(bool lock) override;
+    void lockWifi(bool lock) override;
+
+    /*! \brief Implements pure virtual method from GlobalObject */
+    void requestPermissionsSync() override;
 
     /*! \brief Information about the system, in HTML format
      *
      * @returns Info string
      */
-    Q_INVOKABLE virtual QString systemInfo() override;
+    virtual QString systemInfo() override;
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
-    Q_INVOKABLE void vibrateBrief() override;
+    void vibrateBrief() override;
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
-    Q_INVOKABLE void vibrateLong() override;
+    void vibrateLong() override;
 
-
-public slots:
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
     void onGUISetupCompleted() override;
-
-    /*! \brief Implements pure virtual method from GlobalObject */
-    void requestPermissionsSync() override;
 
 
 protected:

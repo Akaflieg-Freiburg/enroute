@@ -48,42 +48,34 @@ public:
      *
      *  @returns see PlatformAdaptor_Abstract
      */
-    Q_INVOKABLE QString checkPermissions() override {return {};};
-
+    QString checkPermissions() override {return {};};
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract
      *
      *  @returns see PlatformAdaptor_Abstract
      */
-    Q_INVOKABLE QString currentSSID() override;
+    QString currentSSID() override;
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
     void disableScreenSaver() override;
-
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract
      *
      *  @param lock see PlatformAdaptor_Abstract
      */
-    Q_INVOKABLE void lockWifi(bool lock) override;
+    void lockWifi(bool lock) override;
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
     void requestPermissionsSync() override;
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
-    Q_INVOKABLE void vibrateBrief() override;
+    void vibrateBrief() override;
 
-    Q_INVOKABLE void vibrateLong() override;
-
-
-public slots:
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
-    Q_INVOKABLE void onGUISetupCompleted() override;
+    void vibrateLong() override;
 
-  
-protected:
-    /*! \brief Implements virtual method from GlobalObject */
-    //void Platform::PlatformAdaptor::deferredInitialization()
+    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
+    void onGUISetupCompleted() override;
 
 private:
     Q_DISABLE_COPY_MOVE(PlatformAdaptor)

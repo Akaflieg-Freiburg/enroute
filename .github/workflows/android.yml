@@ -38,7 +38,7 @@ jobs:
         target: 'android'
         version: '6.4.*'
         arch: 'android_arm64_v8a'
-        modules: 'qt5compat qthttpserver qtpositioning qtsensors qtshadertools qtspeech qtwebsockets qtwebview'
+        modules: 'qt5compat qthttpserver qtimageformats qtpositioning qtsensors qtshadertools qtspeech qtwebsockets qtwebview'
     - name: Install Additional Software
       run: |
         sudo apt install extra-cmake-modules ninja-build spirv-tools

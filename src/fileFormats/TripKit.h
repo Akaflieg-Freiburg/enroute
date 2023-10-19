@@ -48,7 +48,7 @@ class TripKit : public DataFileAbstract
 public:
     /*! \brief Constructor
      *
-     *  The constructor opens and analyzed the trip kit.
+     *  The constructor opens and analyzes the trip kit.
      *
      *  \param fileName File name of a trip kit.
      */

@@ -33,7 +33,7 @@ jobs:
       uses: jurplel/install-qt-action@v3
       with:
         version: '6.4.*'
-        modules: 'qt5compat qthttpserver qtpositioning qtshadertools qtspeech qtwebsockets'
+        modules: 'qt5compat qthttpserver qtimageformats qtpositioning qtshadertools qtspeech qtwebsockets'
     - name: Compile QtLocation
       run: |
         cmake -E make_directory build-qtlocation

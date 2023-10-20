@@ -553,28 +553,34 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate)
     // Generate queries
     const QGeoCoordinate& position = Positioning::PositionProvider::lastValidCoordinate();
     auto steerpts = GlobalObject::navigator()->flightRoute()->geoPath();
-    QList<QString> queries;
     if (position.isValid())
     {
-        https://aviationweather.gov/api/data/metar?taf=true&bbox=48%2C7%2C49%2C8
-        queries.push_back(QStringLiteral("bbox=48%2C7%2C49%2C8"));
-//        queries.push_back(QStringLiteral("dataSource=tafs&radialDistance=85;%1,%2").arg(position.longitude()).arg(position.latitude()));
+        steerpts.prepend(position);
     }
-    if (!steerpts.empty())
+    QGeoRectangle bBox(steerpts);
+    if (!bBox.isValid())
     {
-        QString qpos;
-        foreach(auto posit, steerpts)
-        {
-            qpos += ";" + QString::number(posit.longitude()) + "," + QString::number(posit.latitude());
-        }
-//        queries.push_back(QStringLiteral("dataSource=metars&flightPath=85%1").arg(qpos));
-//        queries.push_back(QStringLiteral("dataSource=tafs&flightPath=85%1").arg(qpos));
+        return;
     }
 
-    // Fetch data
-    foreach(auto query, queries)
+    // If bBox is crazy large, reduce its size by setting it centered around the current position
+    auto diagonal = Units::Distance::fromM(bBox.topLeft().distanceTo(bBox.bottomRight()));
+    if (diagonal > Units::Distance::fromNM(500))
     {
-        QUrl url = QUrl(QStringLiteral("https://aviationweather.gov/api/data/metar?taf=true&%1").arg(query));
+        bBox = QGeoRectangle({position});
+    }
+
+    bBox.setHeight( bBox.height()+2.0 );
+    auto factor =  cos(qDegreesToRadians( qMin(80.0, qAbs(bBox.center().latitude())) ));
+    bBox.setWidth( bBox.width() + 2.0/factor );
+
+    {
+        QString urlString = u"https://aviationweather.gov/api/data/metar?bbox=%1,%2,%3,%4"_qs
+                                .arg(bBox.bottomLeft().latitude())
+                                .arg(bBox.bottomLeft().longitude())
+                                .arg(bBox.topRight().latitude())
+                                .arg(bBox.topRight().longitude());
+        QUrl url = QUrl(urlString);
         QNetworkRequest request(url);
         request.setRawHeader("accept", "application/xml");
         QPointer<QNetworkReply> reply = GlobalObject::networkAccessManager()->get(request);
@@ -582,6 +588,22 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate)
         connect(reply, &QNetworkReply::finished, this, &Weather::WeatherDataProvider::downloadFinished);
         connect(reply, &QNetworkReply::errorOccurred, this, &Weather::WeatherDataProvider::downloadFinished);
     }
+
+    {
+        QString urlString = u"https://aviationweather.gov/api/data/taf?bbox=%1,%2,%3,%4"_qs
+                                .arg(bBox.bottomLeft().latitude())
+                                .arg(bBox.bottomLeft().longitude())
+                                .arg(bBox.topRight().latitude())
+                                .arg(bBox.topRight().longitude());
+        QUrl url = QUrl(urlString);
+        QNetworkRequest request(url);
+        request.setRawHeader("accept", "application/xml");
+        QPointer<QNetworkReply> reply = GlobalObject::networkAccessManager()->get(request);
+        _networkReplies.push_back(reply);
+        connect(reply, &QNetworkReply::finished, this, &Weather::WeatherDataProvider::downloadFinished);
+        connect(reply, &QNetworkReply::errorOccurred, this, &Weather::WeatherDataProvider::downloadFinished);
+    }
+
 
     // Emit "downloading"
     emit downloadingChanged();

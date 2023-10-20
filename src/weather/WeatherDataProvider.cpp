@@ -605,8 +605,9 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate)
     QList<QString> queries;
     if (position.isValid())
     {
-        queries.push_back(QStringLiteral("dataSource=metars&radialDistance=85;%1,%2").arg(position.longitude()).arg(position.latitude()));
-        queries.push_back(QStringLiteral("dataSource=tafs&radialDistance=85;%1,%2").arg(position.longitude()).arg(position.latitude()));
+        https://aviationweather.gov/api/data/metar?taf=true&bbox=48%2C7%2C49%2C8
+        queries.push_back(QStringLiteral("bbox=48%2C7%2C49%2C8"));
+//        queries.push_back(QStringLiteral("dataSource=tafs&radialDistance=85;%1,%2").arg(position.longitude()).arg(position.latitude()));
     }
     if (!steerpts.empty())
     {
@@ -615,15 +616,16 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate)
         {
             qpos += ";" + QString::number(posit.longitude()) + "," + QString::number(posit.latitude());
         }
-        queries.push_back(QStringLiteral("dataSource=metars&flightPath=85%1").arg(qpos));
-        queries.push_back(QStringLiteral("dataSource=tafs&flightPath=85%1").arg(qpos));
+//        queries.push_back(QStringLiteral("dataSource=metars&flightPath=85%1").arg(qpos));
+//        queries.push_back(QStringLiteral("dataSource=tafs&flightPath=85%1").arg(qpos));
     }
 
     // Fetch data
     foreach(auto query, queries)
     {
-        QUrl url = QUrl(QStringLiteral("https://www.aviationweather.gov/adds/dataserver_current/httpparam?requestType=retrieve&format=xml&hoursBeforeNow=1&mostRecentForEachStation=true&%1").arg(query));
+        QUrl url = QUrl(QStringLiteral("https://aviationweather.gov/api/data/metar?taf=true&%1").arg(query));
         QNetworkRequest request(url);
+        request.setRawHeader("accept", "application/xml");
         QPointer<QNetworkReply> reply = GlobalObject::networkAccessManager()->get(request);
         _networkReplies.push_back(reply);
         connect(reply, &QNetworkReply::finished, this, &Weather::WeatherDataProvider::downloadFinished);

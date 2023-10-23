@@ -33,6 +33,7 @@
 #include "GlobalObject.h"
 #include "TileServer.h"
 #include "Waypoint.h"
+#include "fileFormats/VAC.h"
 #include "geomaps/MBTILES.h"
 
 namespace GeoMaps
@@ -93,8 +94,11 @@ public:
     // Properties
     //
 
-    /*! \brief Current approach chart */
+    /*! \brief Current approach chart file name */
     Q_PROPERTY(QString approachChart READ approachChart WRITE setApproachChart NOTIFY approachChartChanged)
+
+    /*! \brief Current approach chart base name */
+    Q_PROPERTY(QString approachChartBaseName READ approachChartBaseName NOTIFY approachChartChanged)
 
     /*! \brief List of base map MBTILES */
     Q_PROPERTY(QList<QPointer<GeoMaps::MBTILES>> baseMapRasterTiles READ baseMapRasterTiles NOTIFY baseMapTilesChanged)
@@ -150,6 +154,15 @@ public:
     [[nodiscard]] QString approachChart() const
     {
         return m_approachChartFileName;
+    }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property approachChartBaseName
+     */
+    [[nodiscard]] QString approachChartBaseName() const
+    {
+        return  FileFormats::VAC::baseNameFromFileName(m_approachChartFileName);
     }
 
     /*! \brief Getter function for the property with the same name

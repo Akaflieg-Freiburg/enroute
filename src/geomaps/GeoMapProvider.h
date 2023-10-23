@@ -293,7 +293,7 @@ public:
      * the words in filter. The list contains both waypoints from the map, and
      * waypoints from the library and is sorted alphabetically.
      */
-    Q_INVOKABLE QVector<GeoMaps::Waypoint> filteredWaypoints(const QString &filter);
+    Q_INVOKABLE QVector<GeoMaps::Waypoint> filteredWaypoints(const QString& filter);
 
     /*! Find a waypoint by its ICAO code
      *
@@ -303,7 +303,7 @@ public:
      * to the waypoint. The object is owned by this class
      * and must not be deleted.
      */
-    auto findByID(const QString &id) -> Waypoint;
+    auto findByID(const QString& icaoID) -> Waypoint;
 
     /*! List of nearby waypoints
      *
@@ -315,7 +315,7 @@ public:
      * 20 items.  For better cooperation with QML the list does not contain
      * elements of type Waypoint*, but elements of type QObject*
      */
-    Q_INVOKABLE QList<GeoMaps::Waypoint> nearbyWaypoints(const QGeoCoordinate &position, const QString &type);
+    Q_INVOKABLE QList<GeoMaps::Waypoint> nearbyWaypoints(const QGeoCoordinate& position, const QString& type);
 
 
 signals:

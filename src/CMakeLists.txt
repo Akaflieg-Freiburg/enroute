@@ -467,6 +467,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/dialogs/NotamListDialog.qml
     qml/dialogs/PasswordDialog.qml
     qml/dialogs/PasswordStorageDialog.qml
+    qml/dialogs/RenameDialog.qml
     qml/dialogs/TooManyDownloadsDialog.qml
     qml/dialogs/WaypointDescription.qml
     qml/dialogs/WaypointEditor.qml

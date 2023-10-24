@@ -113,17 +113,17 @@ Item {
         }
 
         ToolButton {
-            id: removeButton
+            id: mapSetMenuButton
             icon.source: "/icons/material/ic_more_horiz.svg"
 
             visible: element.model.modelData.hasFile & !element.model.modelData.downloading
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                removeMenu.open()
+                mapSetMenu.open()
             }
 
             AutoSizingMenu {
-                id: removeMenu
+                id: mapSetMenu
 
                 Action {
                     id: infoAction
@@ -133,9 +133,9 @@ Item {
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         dialogLoader.active = false
-                        dialogLoader.title = element.model.modelData.objectName
-                        dialogLoader.text = element.model.modelData.description
-                        dialogLoader.source = "../dialogs/ErrorDialog.qml"
+                        dialogLoader.setSource("../dialogs/LongTextDialog.qml", {title: element.model.modelData.objectName,
+                                                   text: element.model.modelData.description,
+                                                   standardButtons: Dialog.Ok})
                         dialogLoader.active = true
                     }
                 }
@@ -143,14 +143,12 @@ Item {
                     id: renameAction
 
                     text: qsTr("Rename")
-                    enabled: false // (element.model.modelData.contentType === Downloadable_Abstract.VAC)
+                    enabled: (element.model.modelData.contentType === Downloadable_Abstract.VAC)
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         dialogLoader.active = false
-                        dialogLoader.title = element.model.modelData.objectName
-                        dialogLoader.text = element.model.modelData.description
-                        dialogLoader.source = "../dialogs/ErrorDialog.qml"
+                        dialogLoader.setSource("../dialogs/RenameDialog.qml", {title: qsTr("Rename VAC"), oldName: "xx"}                                              )
                         dialogLoader.active = true
                     }
                 }
@@ -173,9 +171,9 @@ Item {
         target: element.model.modelData
         function onError(objectName, message) {
             dialogLoader.active = false
-            dialogLoader.title = qsTr("Download Error")
-            dialogLoader.text = qsTr("<p>Failed to download <strong>%1</strong>.</p><p>Reason: %2.</p>").arg(objectName).arg(message)
-            dialogLoader.source = "../dialogs/ErrorDialog.qml"
+            dialogLoader.setSource("../dialogs/LongTextDialog.qml", {title: qsTr("Download Error"),
+                                       text: qsTr("<p>Failed to download <strong>%1</strong>.</p><p>Reason: %2.</p>").arg(objectName).arg(message),
+                                       standardButtons: Dialog.Ok})
             dialogLoader.active = true
         }
     }
@@ -183,18 +181,7 @@ Item {
     Loader {
         id: dialogLoader
 
-        property string title
-        property string text
-        property var dialogArgs: undefined
-
-        onLoaded: {
-            item.modal = true
-            if (dialogArgs && item.hasOwnProperty('dialogArgs')) {
-                item.dialogArgs = dialogArgs
-            }
-            item.open()
-        }
-
+        onLoaded: item.open()
     }
 
 

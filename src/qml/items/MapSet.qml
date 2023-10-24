@@ -140,6 +140,21 @@ Item {
                     }
                 }
                 Action {
+                    id: renameAction
+
+                    text: qsTr("Rename")
+                    enabled: false // (element.model.modelData.contentType === Downloadable_Abstract.VAC)
+
+                    onTriggered: {
+                        PlatformAdaptor.vibrateBrief()
+                        dialogLoader.active = false
+                        dialogLoader.title = element.model.modelData.objectName
+                        dialogLoader.text = element.model.modelData.description
+                        dialogLoader.source = "../dialogs/ErrorDialog.qml"
+                        dialogLoader.active = true
+                    }
+                }
+                Action {
                     id: removeAction
 
                     text: qsTr("Uninstall")

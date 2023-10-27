@@ -421,6 +421,7 @@ if (IOS)
         "ios/fr.lproj"
         "ios/it.lproj"
         "ios/pl.lproj"
+        "ios/pt.lproj"
     )
     target_sources(${PROJECT_NAME} PRIVATE ${bundle_resources})
     set_source_files_properties(${bundle_resources} PROPERTIES
@@ -536,6 +537,7 @@ qt_add_translations(${PROJECT_NAME}
     ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_fr.ts
     ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_it.ts
     ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_pl.ts
+    ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_pt.ts
 )
 
 find_path(Qt6_TRANSLATION_DIR qtbase_de.qm
@@ -553,11 +555,13 @@ qt_add_resources(${PROJECT_NAME} translations
     ${Qt6_TRANSLATION_DIR}/qtbase_fr.qm
     ${Qt6_TRANSLATION_DIR}/qtbase_it.qm
     ${Qt6_TRANSLATION_DIR}/qtbase_pl.qm
+    #${Qt6_TRANSLATION_DIR}/qtbase_pt.qm
     ${Qt6_TRANSLATION_DIR}/qtdeclarative_de.qm
     ${Qt6_TRANSLATION_DIR}/qtdeclarative_es.qm
     ${Qt6_TRANSLATION_DIR}/qtdeclarative_fr.qm
     #${Qt6_TRANSLATION_DIR}/qtdeclarative_it.qm
     ${Qt6_TRANSLATION_DIR}/qtdeclarative_pl.qm
+    #${Qt6_TRANSLATION_DIR}/qtdeclarative_pt.qm
 )
 
 

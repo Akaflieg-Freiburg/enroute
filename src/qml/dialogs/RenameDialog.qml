@@ -31,8 +31,9 @@ CenteringDialog {
     id: renameDialog
 
     required property string oldName
+    required property var toast
 
-    title: qsTr("Rename")
+    title: qsTr("Rename Approach Chart")
 
     modal: true
 
@@ -42,39 +43,47 @@ CenteringDialog {
         Label {
             Layout.fillWidth: true
 
-            text: qsTr("Enter new name for the VAC <strong>%1</strong>.").arg(finalFileName)
+            text: qsTr("Enter new name for the approach chart <strong>%1</strong>.").arg(renameDialog.oldName)
             wrapMode: Text.Wrap
             textFormat: Text.StyledText
         }
 
         MyTextField {
-            id: renameName
+            id: newName
 
             Layout.fillWidth: true
             focus: true
+
+            placeholderText: renameDialog.oldName
+            text: renameDialog.oldName
 
             onAccepted: renameDialog.onAccepted()
         }
     }
 
     footer: DialogButtonBox {
+        standardButtons: DialogButtonBox.Cancel
+
         ToolButton {
             id: renameButton
 
             DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
-            enabled: (renameName.text !== "") && !(Librarian.exists(Librarian.Routes, renameName.text))
+            enabled: (newName.text !== "") && (newName.text !== renameDialog.oldName)
             text: qsTr("Rename")
         }
     }
 
     onAccepted: {
         PlatformAdaptor.vibrateBrief()
-        if ((renameName.text !== "") && !Librarian.exists(Librarian.Routes, renameName.text)) {
-            Librarian.rename(Librarian.Routes, finalFileName, renameName.text)
-            page.reloadFlightRouteList()
-            close()
+        var errorMsg = DataManager.renameVAC(renameDialog.oldName, newName.text)
+        console.log(errorMsg)
+        /*
+        if (errorMsg === "")
             toast.doToast(qsTr("Flight route renamed"))
-        }
+        else
+            toast.doToast(qsTr("Error: %1").arg(errorMsg))
+        */
+        close()
     }
 
     onRejected: {

@@ -148,7 +148,7 @@ Item {
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         dialogLoader.active = false
-                        dialogLoader.setSource("../dialogs/RenameDialog.qml", {title: qsTr("Rename VAC"), oldName: "xx"}                                              )
+                        dialogLoader.setSource("../dialogs/RenameDialog.qml", {oldName: element.model.modelData.objectName, toast: toast})
                         dialogLoader.active = true
                     }
                 }

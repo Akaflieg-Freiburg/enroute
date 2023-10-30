@@ -128,11 +128,13 @@ public:
     Q_INVOKABLE void voiceTest();
 
     /*! \brief Wait until speech engine is fully constructed */
-    void waitForSpeechEngine()
+    void waitForSpeechEngine();
+
+#warning
+    Q_INVOKABLE void toast(QString text)
     {
-#if defined(Q_OS_LINUX) and not defined(Q_OS_ANDROID)
-        m_speakerFuture.waitForFinished();
-#endif
+        qWarning() << "YY";
+        // emit toastPosted(text);
     }
 
 signals:
@@ -141,6 +143,9 @@ signals:
 
     /*! \brief Notification signal */
     void speakerChanged();
+
+    /*! \brief Indicates that the GUI should show a toast */
+    void toastPosted(QString text);
 
 private:
     Q_DISABLE_COPY_MOVE(NotificationManager)

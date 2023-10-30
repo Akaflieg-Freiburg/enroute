@@ -746,6 +746,13 @@ AppWindow {
             }
         }
 
+        Connections { // Notification manager
+            target: NotificationManager
+            function onToastPosted(text) {
+                console.log("xx")
+                toast.doToast(text)
+            }
+        }
     }
 
     Loader {

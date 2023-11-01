@@ -450,8 +450,7 @@ target_include_directories(${PROJECT_NAME}
     weather
 )
 
-set_source_files_properties(qml/items/Global.qml
- PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
+set_source_files_properties(qml/items/Global.qml PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
 qt_add_qml_module(${PROJECT_NAME}
     URI akaflieg_freiburg.enroute
     VERSION 1.0

@@ -736,6 +736,8 @@ AppWindow {
             seqA.start()
         }
 
+        Component.onCompleted: Global.toast = this
+
         Connections { // Traffic receiver
             target: TrafficDataProvider
             function onReceivingHeartbeatChanged() {
@@ -772,6 +774,11 @@ AppWindow {
             item.open()
         }
 
+    }
+
+    Loader {
+        onLoaded: item.open()
+        Component.onCompleted: Global.dialogLoader = this
     }
 
     ImportManager {

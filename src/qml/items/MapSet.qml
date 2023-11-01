@@ -23,8 +23,6 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
-import "../dialogs"
-
 
 Item {
     id: element
@@ -39,10 +37,9 @@ Item {
         // the bandwidth is sponsored and they shouldn't over-consume.
         var nFilesTotal = DataManager.items.files.length
         if (nFilesTotal > 15) {
-            dialogLoader.active = false;
-            dialogLoader.dialogArgs = {onAcceptedCallback: model.modelData.startDownload};
-            dialogLoader.source = "../dialogs/TooManyDownloadsDialog.qml";
-            dialogLoader.active = true;
+            Global.dialogLoader.active = false;
+            Global.dialogLoader.setSource("../dialogs/TooManyDownloadsDialog.qml", {onAcceptedCallback: model.modelData.startDownload})
+            Global.dialogLoader.active = true;
         } else {
             model.modelData.startDownload();
         }
@@ -132,11 +129,11 @@ Item {
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
-                        dialogLoader.active = false
-                        dialogLoader.setSource("../dialogs/LongTextDialog.qml", {title: element.model.modelData.objectName,
+                        Global.dialogLoader.active = false
+                        Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {title: element.model.modelData.objectName,
                                                    text: element.model.modelData.description,
                                                    standardButtons: Dialog.Ok})
-                        dialogLoader.active = true
+                        Global.dialogLoader.active = true
                     }
                 }
                 Action {
@@ -147,9 +144,9 @@ Item {
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
-                        dialogLoader.active = false
-                        dialogLoader.setSource("../dialogs/RenameDialog.qml", {oldName: element.model.modelData.objectName, toast: toast})
-                        dialogLoader.active = true
+                        Global.dialogLoader.active = false
+                        Global.dialogLoader.setSource("../dialogs/RenameVACDialog.qml", {oldName: element.model.modelData.objectName})
+                        Global.dialogLoader.active = true
                     }
                 }
                 Action {
@@ -170,19 +167,12 @@ Item {
     Connections {
         target: element.model.modelData
         function onError(objectName, message) {
-            dialogLoader.active = false
-            dialogLoader.setSource("../dialogs/LongTextDialog.qml", {title: qsTr("Download Error"),
+            Global.dialogLoader.active = false
+            Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {title: qsTr("Download Error"),
                                        text: qsTr("<p>Failed to download <strong>%1</strong>.</p><p>Reason: %2.</p>").arg(objectName).arg(message),
                                        standardButtons: Dialog.Ok})
-            dialogLoader.active = true
+            Global.dialogLoader.active = true
         }
     }
-
-    Loader {
-        id: dialogLoader
-
-        onLoaded: item.open()
-    }
-
 
 }

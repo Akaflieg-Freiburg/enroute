@@ -330,6 +330,18 @@ QString DataManagement::DataManager::importVAC(const QString& fileName, QString 
 
 QString DataManagement::DataManager::renameVAC(const QString& oldName, const QString& newName)
 {
+    foreach(auto* vac, m_VAC.downloadables())
+    {
+        if (vac == nullptr)
+        {
+            continue;
+        }
+        if (vac->objectName() == newName)
+        {
+            return tr("An approach chart with name %1 already exists.").arg(oldName);
+        }
+    }
+
     foreach(auto* _vac, m_VAC.downloadables())
     {
         auto* vac = qobject_cast<DataManagement::Downloadable_SingleFile*>(_vac);
@@ -353,14 +365,13 @@ QString DataManagement::DataManager::renameVAC(const QString& oldName, const QSt
             return tr("Cannot copy file %1 to %2.").arg(oldFileName, newFileName);
         }
 
-#warning
-/*        auto* downloadable = new DataManagement::Downloadable_SingleFile({}, newFileName, vac->boundingBox(), this);
+        auto* downloadable = new DataManagement::Downloadable_SingleFile({}, newFileName, vac->boundingBox(), this);
         downloadable->setObjectName(newName);
         connect(downloadable, &DataManagement::Downloadable_Abstract::hasFileChanged, downloadable, &QObject::deleteLater);
         m_VAC.add(downloadable);
-*/
-//        vac->deleteFiles();
-        return "xx";
+
+        vac->deleteFiles();
+        return {};
     }
     return tr("Approach chart %1 could not be found.").arg(oldName);
 }

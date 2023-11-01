@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2023 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,28 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+pragma Singleton
+
 import QtQuick
-import QtQuick.Controls
 
-import akaflieg_freiburg.enroute
-
-LongTextDialog {
-    id: dlg
-
-    text: Librarian.getStringFromRessource(":text/tooManyDownloads.html")
-
-    required property var onAcceptedCallback
-
-    footer: DialogButtonBox {
-        ToolButton {
-            text: qsTr("Download anyways")
-            DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
-        }
-        ToolButton {
-            text: qsTr("Cancel")
-            DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
-        }
-
-        onAccepted: dlg.onAcceptedCallback()
-    } // DialogButtonBox
+QtObject {
+    property var dialogLoader
+    property var toast
 }

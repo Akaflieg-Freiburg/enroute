@@ -23,15 +23,12 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
-import "../dialogs"
-import "../pages"
 
 
 CenteringDialog {
     id: renameDialog
 
     required property string oldName
-    required property var toast
 
     title: qsTr("Rename Approach Chart")
 
@@ -76,13 +73,12 @@ CenteringDialog {
     onAccepted: {
         PlatformAdaptor.vibrateBrief()
         var errorMsg = DataManager.renameVAC(renameDialog.oldName, newName.text)
-        console.log(errorMsg)
-        /*
+
         if (errorMsg === "")
-            toast.doToast(qsTr("Flight route renamed"))
+            Global.toast.doToast(qsTr("Flight route renamed"))
         else
-            toast.doToast(qsTr("Error: %1").arg(errorMsg))
-        */
+            Global.toast.doToast(qsTr("Error: %1").arg(errorMsg))
+
         close()
     }
 

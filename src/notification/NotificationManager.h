@@ -130,13 +130,6 @@ public:
     /*! \brief Wait until speech engine is fully constructed */
     void waitForSpeechEngine();
 
-#warning
-    Q_INVOKABLE void toast(QString text)
-    {
-        qWarning() << "YY";
-        // emit toastPosted(text);
-    }
-
 signals:
     /*! \brief Notification signal */
     void currentVisualNotificationChanged();

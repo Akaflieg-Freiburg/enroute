@@ -451,6 +451,7 @@ target_include_directories(${PROJECT_NAME}
     weather
 )
 
+set_source_files_properties(qml/items/Global.qml PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
 qt_add_qml_module(${PROJECT_NAME}
     URI akaflieg_freiburg.enroute
     VERSION 1.0
@@ -468,6 +469,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/dialogs/NotamListDialog.qml
     qml/dialogs/PasswordDialog.qml
     qml/dialogs/PasswordStorageDialog.qml
+    qml/dialogs/RenameVACDialog.qml
     qml/dialogs/TooManyDownloadsDialog.qml
     qml/dialogs/WaypointDescription.qml
     qml/dialogs/WaypointEditor.qml
@@ -483,6 +485,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/FlightVector.qml
     qml/items/Footer.qml
     qml/items/+Material/Footer.qml
+    qml/items/Global.qml
     qml/items/Icon.qml
     qml/items/+Material/Icon.qml
     qml/items/ImportManager.qml

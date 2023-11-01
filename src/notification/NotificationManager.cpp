@@ -120,6 +120,14 @@ void Notifications::NotificationManager::voiceTest()
     speakNext();
 }
 
+void Notifications::NotificationManager::waitForSpeechEngine()
+{
+#if defined(Q_OS_LINUX) and not defined(Q_OS_ANDROID)
+    m_speakerFuture.waitForFinished();
+#endif
+}
+
+
 
 
 //

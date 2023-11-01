@@ -38,7 +38,7 @@ DataManagement::Downloadable_SingleFile::Downloadable_SingleFile(QUrl url, const
 
     m_boundingBox = bBox;
 
-    QFileInfo info(fileName);
+    QFileInfo const info(fileName);
     m_fileName = info.absoluteFilePath();
 
     connect(this, &Downloadable_SingleFile::remoteFileDateChanged, this, &Downloadable_SingleFile::infoTextChanged);
@@ -68,27 +68,9 @@ DataManagement::Downloadable_SingleFile::Downloadable_SingleFile(QUrl url, const
         {
             m_contentType = BaseMapVector;
         }
-        else if (tmpName.endsWith(u"jpeg"_qs))
-        {
-            m_contentType = VAC;
-        }
-        else if (tmpName.endsWith(u"jpg"_qs))
-        {
-            m_contentType = VAC;
-        }
-        else if (tmpName.endsWith(u"png"_qs))
-        {
-            m_contentType = VAC;
-        }
-        else if (tmpName.endsWith(u"tif"_qs))
-        {
-            m_contentType = VAC;
-        }
-        else if (tmpName.endsWith(u"tiff"_qs))
-        {
-            m_contentType = VAC;
-        }
-        else if (tmpName.endsWith(u"webp"_qs))
+        else if (tmpName.endsWith(u"jpeg"_qs) || tmpName.endsWith(u"jpg"_qs) ||
+                   tmpName.endsWith(u"png"_qs) || tmpName.endsWith(u"tif"_qs) ||
+                   tmpName.endsWith(u"tiff"_qs) || tmpName.endsWith(u"webp"_qs))
         {
             m_contentType = VAC;
         }
@@ -128,16 +110,16 @@ DataManagement::Downloadable_SingleFile::~Downloadable_SingleFile()
 
 auto DataManagement::Downloadable_SingleFile::description() -> QString
 {
-    QFileInfo fi(m_fileName);
-    if (!fi.exists())
+    QFileInfo const fileInfo(m_fileName);
+    if (!fileInfo.exists())
     {
         return tr("No information available.");
     }
     QString result = QStringLiteral("<table><tr><td><strong>%1 :&nbsp;&nbsp;</strong></td><td>%2</td></tr><tr><td><strong>%3 :&nbsp;&nbsp;</strong></td><td>%4</td></tr></table>")
                          .arg(tr("Installed"),
-                              fi.lastModified().toUTC().toString(),
+                              fileInfo.lastModified().toUTC().toString(),
                               tr("File Size"),
-                              QLocale::system().formattedDataSize(fi.size(), 1, QLocale::DataSizeSIFormat));
+                              QLocale::system().formattedDataSize(fileInfo.size(), 1, QLocale::DataSizeSIFormat));
 
     // Extract infomation from GeoJSON
     if (m_fileName.endsWith(u".geojson"))
@@ -149,7 +131,7 @@ auto DataManagement::Downloadable_SingleFile::description() -> QString
         auto document = QJsonDocument::fromJson(file.readAll());
         file.close();
         lockFile.unlock();
-        QString concatInfoString = document.object()[QStringLiteral("info")].toString();
+        QString const concatInfoString = document.object()[QStringLiteral("info")].toString();
         if (!concatInfoString.isEmpty())
         {
             result += "<p>" + tr("The map data was compiled from the following sources.") + "</p><ul>";
@@ -223,7 +205,7 @@ auto DataManagement::Downloadable_SingleFile::infoText() -> QString
     QString displayText;
     if (hasFile())
     {
-        QFileInfo info(m_fileName);
+        QFileInfo const info(m_fileName);
         displayText = tr("installed • %1")
                           .arg(QLocale::system().formattedDataSize(info.size(), 1,
                                                                    QLocale::DataSizeSIFormat));
@@ -265,7 +247,7 @@ auto DataManagement::Downloadable_SingleFile::updateSize() -> Units::ByteSize
         return 0;
     }
 
-    QFileInfo info(m_fileName);
+    QFileInfo const info(m_fileName);
     if (m_remoteFileDate.isValid() && (info.lastModified() < m_remoteFileDate))
     {
         return m_remoteFileSize;
@@ -380,7 +362,7 @@ void DataManagement::Downloadable_SingleFile::startDownload()
     delete m_saveFile;
 
     // Create directory that will hold the local file, if it does not yet exist
-    QDir dir(QFileInfo(m_fileName).dir());
+    QDir const dir(QFileInfo(m_fileName).dir());
     if (!dir.exists())
     {
         dir.mkpath(QStringLiteral("."));
@@ -391,7 +373,7 @@ void DataManagement::Downloadable_SingleFile::startDownload()
     m_saveFile->open(QIODevice::WriteOnly);
 
     // Start download
-    QNetworkRequest request(m_url);
+    QNetworkRequest const request(m_url);
     m_networkReplyDownloadFile = GlobalObject::networkAccessManager()->get(request);
     connect(m_networkReplyDownloadFile, &QNetworkReply::finished, this, &Downloadable_SingleFile::downloadFileFinished);
     connect(m_networkReplyDownloadFile, &QNetworkReply::readyRead, this, &Downloadable_SingleFile::downloadFilePartialDataReceiver);
@@ -679,7 +661,7 @@ void DataManagement::Downloadable_SingleFile::downloadFileFinished()
 
     // Save old value to see if anything changed
     auto oldUpdateSize = updateSize();
-    bool oldHasLocalFile = hasFile();
+    bool const oldHasLocalFile = hasFile();
 
     // Copy the temporary file to the local file
     emit aboutToChangeFile(m_fileName);

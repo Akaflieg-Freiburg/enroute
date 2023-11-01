@@ -23,6 +23,6 @@ pragma Singleton
 import QtQuick
 
 QtObject {
-    property var dialogLoader
+    property Loader dialogLoader
     property var toast
 }

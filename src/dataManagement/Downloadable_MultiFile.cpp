@@ -228,16 +228,16 @@ auto DataManagement::Downloadable_MultiFile::downloadables() -> QVector<DataMana
     }
 
     // Sort Downloadables according to section name and object name
-    std::sort(result.begin(), result.end(), [](Downloadable_Abstract* a, Downloadable_Abstract* b)
+    std::sort(result.begin(), result.end(), [](Downloadable_Abstract* first, Downloadable_Abstract* second)
     {
-        if (a->section() != b->section()) {
-            return (a->section() < b->section());
+        if (first->section() != second->section()) {
+            return (first->section() < second->section());
         }
-        if (a->objectName() != b->objectName())
+        if (first->objectName() != second->objectName())
         {
-            return a->objectName() < b->objectName();
+            return first->objectName() < second->objectName();
         }
-        return (a->contentType() < b->contentType());
+        return (first->contentType() < second->contentType());
     }
     );
 
@@ -264,13 +264,13 @@ auto DataManagement::Downloadable_MultiFile::downloadables4Location(const QGeoCo
     }
 
     // Sort Downloadables according to section name and object name
-    std::sort(result.begin(), result.end(), [](Downloadable_Abstract* a, Downloadable_Abstract* b)
+    std::sort(result.begin(), result.end(), [](Downloadable_Abstract* first, Downloadable_Abstract* second)
     {
-        if (a->objectName() != b->objectName())
+        if (first->objectName() != second->objectName())
         {
-            return a->objectName() < b->objectName();
+            return first->objectName() < second->objectName();
         }
-        return (a->contentType() < b->contentType());
+        return (first->contentType() < second->contentType());
     }
     );
 
@@ -293,10 +293,8 @@ auto DataManagement::Downloadable_MultiFile::downloadablesByDistance(const QGeoC
     }
 
     // Sort Downloadables according to section name and object name
-    std::sort(result.begin(), result.end(), [location](Downloadable_Abstract* a, Downloadable_Abstract* b)
-              {
-                return a->boundingBox().center().distanceTo(location) < b->boundingBox().center().distanceTo(location);
-              }
+    std::sort(result.begin(), result.end(), [location](Downloadable_Abstract* first, Downloadable_Abstract* second)
+              { return first->boundingBox().center().distanceTo(location) < second->boundingBox().center().distanceTo(location); }
               );
 
     return result;

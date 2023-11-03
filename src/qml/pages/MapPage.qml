@@ -61,7 +61,12 @@ Page {
             anchors.leftMargin: 72
             anchors.right: parent.right
 
-            text: qsTr("Approach Chart")
+            text: {
+                var result = qsTr("Approach Chart")
+                if (GeoMapProvider.approachChartBaseName !== "")
+                    result = result + ": " + GeoMapProvider.approachChartBaseName
+                return result
+            }
             elide: Label.ElideRight
             font.pixelSize: 20
             verticalAlignment: Qt.AlignVCenter

@@ -328,6 +328,55 @@ QString DataManagement::DataManager::importVAC(const QString& fileName, QString 
 }
 
 
+QString DataManagement::DataManager::renameVAC(const QString& oldName, const QString& newName)
+{
+    foreach(auto* vac, m_VAC.downloadables())
+    {
+        if (vac == nullptr)
+        {
+            continue;
+        }
+        if (vac->objectName() == newName)
+        {
+            return tr("An approach chart with name %1 already exists.").arg(oldName);
+        }
+    }
+
+    foreach(auto* _vac, m_VAC.downloadables())
+    {
+        auto* vac = qobject_cast<DataManagement::Downloadable_SingleFile*>(_vac);
+        if (vac == nullptr)
+        {
+            continue;
+        }
+        if (vac->objectName() != oldName)
+        {
+            continue;
+        }
+        auto oldFileName = vac->fileName();
+        auto newFileName = vac->fileName();
+        newFileName.replace(oldName, newName);
+        if (QFile::exists(newFileName))
+        {
+            return tr("An approach chart with name %1 already exists.").arg(oldName);
+        }
+        if (!QFile::copy(oldFileName, newFileName))
+        {
+            return tr("Cannot copy file %1 to %2.").arg(oldFileName, newFileName);
+        }
+
+        auto* downloadable = new DataManagement::Downloadable_SingleFile({}, newFileName, vac->boundingBox(), this);
+        downloadable->setObjectName(newName);
+        connect(downloadable, &DataManagement::Downloadable_Abstract::hasFileChanged, downloadable, &QObject::deleteLater);
+        m_VAC.add(downloadable);
+
+        vac->deleteFiles();
+        return {};
+    }
+    return tr("Approach chart %1 could not be found.").arg(oldName);
+}
+
+
 void DataManagement::DataManager::onItemFileChanged()
 {
     auto items = m_items.downloadables();

@@ -90,13 +90,27 @@ Item {
                                 flightMap.alignCoordinateToPoint(startCentroid, pinch.centroid.position)
                             }
         }
-
         WheelHandler {
-            id: wheel
-
-            rotationScale: 1/120
-            property: "zoomLevel"
-        }
+              id: wheel
+              // workaround for QTBUG-87646 / QTBUG-112394 / QTBUG-112432:
+              // Magic Mouse pretends to be a trackpad but doesn't work with PinchHandler
+              // and we don't yet distinguish mice and trackpads on Wayland either
+              acceptedDevices: Qt.platform.pluginName === "cocoa" || Qt.platform.pluginName === "wayland"
+                               ? PointerDevice.Mouse | PointerDevice.TouchPad
+                               : PointerDevice.Mouse
+              onWheel: (event) => {
+                  const loc = flightMap.toCoordinate(wheel.point.position)
+                  switch (event.modifiers) {
+                      case Qt.NoModifier:
+                          flightMap.zoomLevel += event.angleDelta.y / 120
+                          break
+                      case Qt.ShiftModifier:
+                          flightMap.bearing += event.angleDelta.y / 5
+                          break
+                  }
+                  flightMap.alignCoordinateToPoint(loc, wheel.point.position)
+              }
+          }
 
         DragHandler {
             id: drag

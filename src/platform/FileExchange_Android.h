@@ -70,12 +70,12 @@ public:
      *
      *  @returns see documentation for FileExchange_Abstract
      */
-    String viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) override;
+    QString viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) override;
 
 
 public slots:
     /*! \brief Implements pure virtual method from FileExchange_Abstract */
-    virtual void onGUISetupCompleted() override;
+    void onGUISetupCompleted() override;
 
     /*! \brief Implements pure virtual method from FileExchange_Abstract */
     void processFileOpenRequest(const QString& path) override;

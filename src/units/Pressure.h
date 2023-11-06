@@ -34,7 +34,7 @@ namespace Units {
      */
     class Pressure {
         Q_GADGET
-        QML_VALUE_TYPE(volume)
+        QML_VALUE_TYPE(pressure)
 
     public:
         /*! \brief Constructs a pressure

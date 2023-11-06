@@ -335,6 +335,19 @@ public:
      */
     Q_INVOKABLE QString importVAC(const QString& fileName, QString newName);
 
+    /*! \brief Rename VAC in the library of locally installed VACs
+     *
+     * This method imports the VAC into the library of locally installed VAC.
+     *
+     * @param oldName Old basename of the VAC.
+     *
+     * @param newName New basename of the VAC.
+     *
+     * @returns A human-readable HTML string on error, or an empty string on
+     * success.
+     */
+    Q_INVOKABLE QString renameVAC(const QString& oldName, const QString& newName);
+
 public slots:
     /*! \brief Triggers an update of the list of remotely available data items
      *

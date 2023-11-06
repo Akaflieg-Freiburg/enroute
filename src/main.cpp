@@ -209,6 +209,7 @@ auto main(int argc, char *argv[]) -> int
 #endif
 
     auto* engine = new QQmlApplicationEngine();
+    engine->addImportPath(":/");
     engine->rootContext()->setContextProperty(QStringLiteral("manual_location"), MANUAL_LOCATION );
     engine->rootContext()->setContextProperty(QStringLiteral("global"), new GlobalObject(engine) );
     engine->load(u"qrc:/qml/main.qml"_qs);

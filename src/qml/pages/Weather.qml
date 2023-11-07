@@ -159,7 +159,7 @@ Page {
                     verticalAlignment: Text.AlignVCenter
                     textFormat: Text.StyledText
                     wrapMode: Text.Wrap
-                    text: qsTr("<h3>Sorry!</h3><p>No METAR/TAF data available. You can restart the download manually using the item 'Update METAR/TAF' from the three-dot menu at the top right corner of the screen.</p>")
+                    text: qsTr("<h3>Sorry!</h3><p>No METAR/TAF data available. You can restart the download manually using the refresh button at the top right corner of the screen.</p>")
                 }
             }
 

@@ -45,7 +45,8 @@ export CC=/usr/bin/clang
 export CXX=/usr/bin/clang++
 
 $Qt6_DIR_LINUX/bin/qt-cmake \
-    -DCMAKE_UNITY_BUILD=ON \
+    -DCMAKE_C_COMPILER_LAUNCHER="ccache" \
+    -DCMAKE_CXX_COMPILER_LAUNCHER="ccache" \
     -G Ninja \
     ..
 

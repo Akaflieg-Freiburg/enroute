@@ -370,8 +370,8 @@ Page {
         // Without this, the downaloadIndication would not be visible on very quick downloads, leaving the user
         // without any feedback if the download did actually take place.
         Connections {
-            target: DataManager
-            function ondownloadingRemoteItemListChanged () {
+            target: DataManager.mapList
+            function onDownloadingChanged () {
                 if (DataManager.mapList.downloading) {
                     downloadIndicator.visible = true
                     downloadIndicator.opacity = 1.0

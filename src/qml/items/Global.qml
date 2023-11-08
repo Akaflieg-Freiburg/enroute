@@ -21,8 +21,10 @@
 pragma Singleton
 
 import QtQuick
+import QtQuick.Controls
 
 QtObject {
     property Loader dialogLoader
+    property Drawer drawer
     property var toast
 }

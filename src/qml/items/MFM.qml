@@ -90,6 +90,7 @@ Item {
                                 flightMap.alignCoordinateToPoint(startCentroid, pinch.centroid.position)
                             }
         }
+
         WheelHandler {
               id: wheel
               // workaround for QTBUG-87646 / QTBUG-112394 / QTBUG-112432:
@@ -116,7 +117,7 @@ Item {
             id: drag
             target: null
 
-            enabled: !waypointDescription.visible
+            enabled: !waypointDescription.visible && !Global.drawer.opened
 
             onTranslationChanged: (delta) => flightMap.pan(-delta.x, -delta.y)
 
@@ -227,7 +228,7 @@ Item {
         zoomLevel: 12
 
         // Animate changes in zoom level for visually smooth transition
-        Behavior on zoomLevel { NumberAnimation { duration: 400 } }
+        //WARNING Behavior on zoomLevel { NumberAnimation { duration: 400 } }
 
 
         // ADDITINAL MAP ITEMS
@@ -607,7 +608,7 @@ Item {
 
         anchors.left: parent.left
         anchors.leftMargin: 0.5*font.pixelSize + SafeInsets.left
-        anchors.top: remainingRoute.bottom
+        anchors.top: remainingRoute.visible ? remainingRoute.bottom : parent.top
         anchors.topMargin: 0.5*font.pixelSize
 
         visible: GeoMapProvider.approachChart == ""

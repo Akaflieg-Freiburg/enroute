@@ -69,6 +69,7 @@ Item {
             target: null
 
             property geoCoordinate startCentroid
+            property real rawBearing: 0
             property real startZoomLevel
 
             onActiveChanged: if (active) {
@@ -85,10 +86,21 @@ Item {
                                 if (newZoom > flightMap.maximumZoomLevel) {
                                     newZoom = flightMap.maximumZoomLevel
                                 }
+                                zoomLevelBehavior.enabled = false
                                 flightMap.zoomLevel = newZoom
-
                                 flightMap.alignCoordinateToPoint(startCentroid, pinch.centroid.position)
+                                zoomLevelBehavior.enabled = true
                             }
+
+            onRotationChanged: (delta) => {
+                                   pinch.rawBearing -= delta
+                                   // snap to 0° if we're close enough
+
+                                   bearingBehavior.enabled = false
+                                   flightMap.bearing = (Math.abs(pinch.rawBearing) < 5) ? 0 : pinch.rawBearing
+                                   flightMap.alignCoordinateToPoint(pinch.startCentroid, pinch.centroid.position)
+                                   bearingBehavior.enabled = true
+                               }
         }
 
         WheelHandler {
@@ -100,18 +112,20 @@ Item {
                                ? PointerDevice.Mouse | PointerDevice.TouchPad
                                : PointerDevice.Mouse
               onWheel: (event) => {
-                  const loc = flightMap.toCoordinate(wheel.point.position)
-                  switch (event.modifiers) {
-                      case Qt.NoModifier:
-                          flightMap.zoomLevel += event.angleDelta.y / 120
-                          break
-                      case Qt.ShiftModifier:
-                          flightMap.bearing += event.angleDelta.y / 5
-                          break
-                  }
-                  flightMap.alignCoordinateToPoint(loc, wheel.point.position)
-              }
-          }
+                           const loc = flightMap.toCoordinate(wheel.point.position)
+                           switch (event.modifiers) {
+                               case Qt.NoModifier:
+                               flightMap.zoomLevel += event.angleDelta.y / 120
+                               break
+                               case Qt.ShiftModifier:
+                               bearingBehavior.enabled = false
+                               flightMap.bearing += event.angleDelta.y / 5
+                               bearingBehavior.enabled = true
+                               break
+                           }
+                           flightMap.alignCoordinateToPoint(loc, wheel.point.position)
+                       }
+        }
 
         DragHandler {
             id: drag
@@ -157,7 +171,10 @@ Item {
         }
 
         // We expect GPS updates every second. So, we choose an animation of duration 1000ms here, to obtain a flowing movement
-        Behavior on bearing { RotationAnimation {duration: 1000; direction: RotationAnimation.Shortest } }
+        Behavior on bearing {
+            id: bearingBehavior
+            RotationAnimation {duration: 1000; direction: RotationAnimation.Shortest }
+        }
 
 
         //
@@ -228,7 +245,10 @@ Item {
         zoomLevel: 12
 
         // Animate changes in zoom level for visually smooth transition
-        //WARNING Behavior on zoomLevel { NumberAnimation { duration: 400 } }
+        Behavior on zoomLevel {
+            id: zoomLevelBehavior
+            NumberAnimation { duration: 400 }
+        }
 
 
         // ADDITINAL MAP ITEMS
@@ -316,6 +336,10 @@ Item {
             id: ownPosition
 
             coordinate: PositionProvider.lastValidCoordinate
+
+            Behavior on coordinate {
+                CoordinateAnimation { duration: 1000 }
+            }
 
             Connections {
                 // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem

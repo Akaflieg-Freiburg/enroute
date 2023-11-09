@@ -104,41 +104,42 @@ Item {
         }
 
         WheelHandler {
-              id: wheel
-              // workaround for QTBUG-87646 / QTBUG-112394 / QTBUG-112432:
-              // Magic Mouse pretends to be a trackpad but doesn't work with PinchHandler
-              // and we don't yet distinguish mice and trackpads on Wayland either
-              acceptedDevices: Qt.platform.pluginName === "cocoa" || Qt.platform.pluginName === "wayland"
-                               ? PointerDevice.Mouse | PointerDevice.TouchPad
-                               : PointerDevice.Mouse
-              onWheel: (event) => {
-                           const loc = flightMap.toCoordinate(wheel.point.position)
-                           switch (event.modifiers) {
-                               case Qt.NoModifier:
-                               flightMap.zoomLevel += event.angleDelta.y / 120
-                               break
-                               case Qt.ShiftModifier:
-                               bearingBehavior.enabled = false
-                               flightMap.bearing += event.angleDelta.y / 5
-                               bearingBehavior.enabled = true
-                               break
-                           }
-                           flightMap.alignCoordinateToPoint(loc, wheel.point.position)
-                       }
+            id: wheel
+            // workaround for QTBUG-87646 / QTBUG-112394 / QTBUG-112432:
+            // Magic Mouse pretends to be a trackpad but doesn't work with PinchHandler
+            // and we don't yet distinguish mice and trackpads on Wayland either
+            acceptedDevices: Qt.platform.pluginName === "cocoa" || Qt.platform.pluginName === "wayland"
+                             ? PointerDevice.Mouse | PointerDevice.TouchPad
+                             : PointerDevice.Mouse
+            onWheel: (event) => {
+                         const loc = flightMap.toCoordinate(wheel.point.position)
+                         switch (event.modifiers) {
+                             case Qt.NoModifier:
+                             flightMap.zoomLevel += event.angleDelta.y / 120
+                             break
+                             case Qt.ShiftModifier:
+                             bearingBehavior.enabled = false
+                             flightMap.bearing += event.angleDelta.y / 5
+                             bearingBehavior.enabled = true
+                             break
+                         }
+                         flightMap.alignCoordinateToPoint(loc, wheel.point.position)
+                     }
         }
 
         DragHandler {
             id: drag
             target: null
 
-            enabled: !waypointDescription.visible && !Global.drawer.opened
+            // Work around https://bugreports.qt.io/browse/QTBUG-87815
+            enabled: !waypointDescription.visible && !Global.drawer.opened && !((Global.dialogLoader.item) && Global.dialogLoader.item.opened)
 
             onTranslationChanged: (delta) => flightMap.pan(-delta.x, -delta.y)
 
             onActiveChanged: {
                 if (active)
                 {
-                  flightMap.followGPS = false
+                    flightMap.followGPS = false
                 }
             }
         }
@@ -737,8 +738,6 @@ Item {
         onClicked: {
             centerBindingAnimation.omitAnimationforZoom()
             PlatformAdaptor.vibrateBrief()
-            // Notification test
-            //            NotificationManager.addTestNotification()
             flightMap.zoomLevel -= 1
         }
     }
@@ -788,13 +787,12 @@ Item {
         Label {
             id: noCopyrightInfo
             text: "<a href='xx'>"+qsTr("Map Data Copyright Info")+"</a>"
-            onLinkActivated: copyrightDialog.open()
-
-            LongTextDialog {
-                id: copyrightDialog
-                title: qsTr("Map Data Copyright Information")
-                text: GeoMapProvider.copyrightNotice
-                standardButtons: Dialog.Cancel
+            onLinkActivated: {
+                Global.dialogLoader.active = false
+                Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {title: qsTr("Map Data Copyright Information"),
+                                           text: GeoMapProvider.copyrightNotice,
+                                           standardButtons: Dialog.Ok})
+                Global.dialogLoader.active = true
             }
         }
     }

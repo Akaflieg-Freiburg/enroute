@@ -90,7 +90,7 @@ public:
      *
      * @see permissiveFilter
      */
-    Q_INVOKABLE QStringList entries(Librarian::Library library, const QString &filter=QString());
+    Q_INVOKABLE QStringList entries(Librarian::Library library, const QString& filter=QString());
 
     /*! \brief Check if an entry with the given name exists in the library
      *
@@ -100,7 +100,7 @@ public:
      *
      *  @returns True if the file exists
      */
-    [[nodiscard]] Q_INVOKABLE static bool exists(Librarian::Library library, const QString &baseName) ;
+    [[nodiscard]] Q_INVOKABLE static bool exists(Librarian::Library library, const QString& baseName) ;
 
     /*! \brief Full path of a library entry
      *
@@ -111,7 +111,7 @@ public:
      *
      *  @returns Full path of the entry, with extension
      */
-    [[nodiscard]] Q_INVOKABLE static QString fullPath(Librarian::Library library, const QString &baseName) ;
+    [[nodiscard]] Q_INVOKABLE static QString fullPath(Librarian::Library library, const QString& baseName) ;
 
     /*! \brief Constructs an object from library entry
      *
@@ -170,7 +170,7 @@ public:
      *
      *  @param baseName File name, without path and without extension
      */
-    Q_INVOKABLE static void remove(Librarian::Library library, const QString &baseName) ;
+    Q_INVOKABLE static void remove(Librarian::Library library, const QString& baseName) ;
 
     /*! \brief Renames an entry in a library
      *
@@ -182,7 +182,7 @@ public:
      * @param newName New file name, without path and without extension. A file
      * with that name must not exist in the library
      */
-    Q_INVOKABLE static void rename(Librarian::Library library, const QString &oldName, const QString &newName) ;
+    Q_INVOKABLE static void rename(Librarian::Library library, const QString& oldName, const QString& newName);
 
     /*! \brief Filters a QStringList in a fuzzy way
      *
@@ -196,7 +196,7 @@ public:
      *
      * @returns Filteres QStringList
      */
-    auto permissiveFilter(const QStringList &in, const QString &filter) -> QStringList;
+    QStringList permissiveFilter(const QStringList &input, const QString &filter);
 
     /*! \brief Simplifies string by transforming and removing special characters
      *
@@ -208,7 +208,7 @@ public:
      *
      * @return Simplified string
      */
-    auto simplifySpecialChars(const QString &string) -> QString;
+    QString simplifySpecialChars(const QString& string);
 
 private:
     Q_DISABLE_COPY_MOVE(Librarian)

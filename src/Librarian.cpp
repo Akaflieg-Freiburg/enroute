@@ -37,13 +37,13 @@ Librarian::Librarian(QObject *parent) : QObject(parent)
     // https://developer.android.com/training/data-storage/use-cases#opt-out-in-production-app
     auto oldlibraryPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)+"/enroute flight navigation/flight routes";
     auto libraryPath = directory(Routes);
-    QDir d(oldlibraryPath);
-    foreach(auto elt, d.entryList( QStringList(), QDir::Files)) {
+    QDir const dir(oldlibraryPath);
+    foreach(auto elt, dir.entryList( QStringList(), QDir::Files)) {
         if (QFile::copy(oldlibraryPath+"/"+elt, libraryPath+"/"+elt)) {
             QFile::remove(oldlibraryPath+"/"+elt);
         }
     }
-    d.rmdir(oldlibraryPath);
+    dir.rmdir(oldlibraryPath);
 }
 
 
@@ -237,6 +237,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     if (name == u":text/whatsnew.html"_qs)
     {
         QString result;
+        result += u"<p>The technology underlying <strong>Enroute Flight Navigation</strong> has been updated, we expect a long beta test phase. Please report any issues or inconsistencies that you may find!</p>"_qs;
         result += "<p>" + tr("Our flight club <a href='https://akaflieg-freiburg.de'>Akaflieg Freiburg</a> has received the renowned Niethammer Innovation Award 2023. "
                              "The award recognizes our work on <strong>Enroute Flight Navigation</strong>. "
                              "But above all, we owe this prize to our many contributors and supporters. "
@@ -340,7 +341,7 @@ auto Librarian::entries(Library library, const QString &filter) -> QStringList
     QStringList filterList;
     filterList << QStringLiteral("*");
 
-    QDir dir(directory(library));
+    QDir const dir(directory(library));
     auto fileNames = dir.entryList(filterList, QDir::Files);
 
     QStringList fileBaseNames;
@@ -355,7 +356,7 @@ auto Librarian::entries(Library library, const QString &filter) -> QStringList
 
 auto Librarian::permissiveFilter(const QStringList &inputStrings, const QString &filter) -> QStringList
 {
-    QString simplifiedFilter = simplifySpecialChars(filter);
+    QString const simplifiedFilter = simplifySpecialChars(filter);
 
     QStringList result;
     foreach(auto inputString, inputStrings)

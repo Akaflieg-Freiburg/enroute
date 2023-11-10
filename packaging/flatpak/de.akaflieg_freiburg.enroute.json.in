@@ -190,11 +190,26 @@
             "sources": [
                 {
                     "type": "git",
-                    "url": "https://github.com/Akaflieg-Freiburg/qtlocationstatic.git",
-                    "commit": "7533d6c"
+                    "url": "https://github.com/qt/qtlocation.git",
+                    "tag": "v${Qt6_VERSION}"
                 }
             ],
             "buildsystem": "cmake-ninja"
+        },
+    	{
+            "name": "maplibre-native-qt",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/maplibre/maplibre-native-qt",
+                    "commit": "80fe60e"
+                }
+            ],
+            "buildsystem": "cmake-ninja",
+            "config-opts": [
+                "-DMLN_QT_WITH_INTERNAL_ICU=ON",
+		"-DBUILD_TESTING=OFF"
+            ]
         },
         {
             "name": "qttranslations",

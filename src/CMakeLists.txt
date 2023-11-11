@@ -250,7 +250,8 @@ if(ANDROID)
     # Compile definitions
     add_compile_definitions(MANUAL_LOCATION="/android_asset/manual")
 
-    qt_add_executable(${PROJECT_NAME} ${SOURCES} ${ANDROID_EXTRA_SOURCES})
+    qt_add_executable(${PROJECT_NAME} ${SOURCES} ${ANDROID_EXTRA_SOURCES}
+    )
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
         Qt6::Concurrent
@@ -271,6 +272,7 @@ if(ANDROID)
     set_target_properties(${PROJECT_NAME} PROPERTIES
         QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android"
         QT_ANDROID_TARGET_SDK_VERSION 33
+        QT_ANDROID_MIN_SDK_VERSION 26
     )
 
     # Include SSL Libraries

@@ -38,6 +38,7 @@ set -e
 
 #export JAVA_HOME=/usr/lib/jvm/java-openjdk
 
+rm -rf build-android-debug
 mkdir -p build-android-debug
 $Qt6_DIR_ANDROID\_x86_64/bin/qt-cmake \
     -S . \

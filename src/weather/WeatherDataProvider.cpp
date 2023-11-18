@@ -190,6 +190,7 @@ void Weather::WeatherDataProvider::downloadFinished()
         if (networkReply->error() != QNetworkReply::NoError)
         {
             hasError = true;
+            qWarning() << "Weather download error: " << networkReply->errorString();
             emit error(networkReply->errorString());
             continue;
         }
@@ -199,6 +200,12 @@ void Weather::WeatherDataProvider::downloadFinished()
         while (!xml.atEnd() && !xml.hasError())
         {
             xml.readNext();
+            if(xml.hasError())
+            {
+                hasError = true;
+                qWarning() << "Weather XML decoding error: " << xml.errorString();
+                break;
+            }
 
             // Read METAR
             if (xml.isStartElement() && (xml.name() == QStringLiteral("METAR")))

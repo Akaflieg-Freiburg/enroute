@@ -190,6 +190,7 @@ void Weather::WeatherDataProvider::downloadFinished()
         if (networkReply->error() != QNetworkReply::NoError)
         {
             hasError = true;
+            qWarning() << "Weather download error: " << networkReply->errorString();
             emit error(networkReply->errorString());
             continue;
         }
@@ -199,6 +200,12 @@ void Weather::WeatherDataProvider::downloadFinished()
         while (!xml.atEnd() && !xml.hasError())
         {
             xml.readNext();
+            if(xml.hasError())
+            {
+                hasError = true;
+                qWarning() << "Weather XML decoding error: " << xml.errorString();
+                break;
+            }
 
             // Read METAR
             if (xml.isStartElement() && (xml.name() == QStringLiteral("METAR")))
@@ -575,7 +582,7 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate)
     bBox.setWidth( bBox.width() + 2.0/factor );
 
     {
-        QString urlString = u"https://aviationweather.gov/api/data/metar?bbox=%1,%2,%3,%4"_qs
+        QString urlString = u"https://aviationweather.gov/api/data/metar?format=xml&bbox=%1,%2,%3,%4"_qs
                                 .arg(bBox.bottomLeft().latitude())
                                 .arg(bBox.bottomLeft().longitude())
                                 .arg(bBox.topRight().latitude())
@@ -590,7 +597,7 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate)
     }
 
     {
-        QString urlString = u"https://aviationweather.gov/api/data/taf?bbox=%1,%2,%3,%4"_qs
+        QString urlString = u"https://aviationweather.gov/api/data/taf?format=xml&bbox=%1,%2,%3,%4"_qs
                                 .arg(bBox.bottomLeft().latitude())
                                 .arg(bBox.bottomLeft().longitude())
                                 .arg(bBox.topRight().latitude())

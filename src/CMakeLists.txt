@@ -402,6 +402,7 @@ if (IOS)
         Qt6::Svg
         Qt6::TextToSpeech
         Qt6::WebView
+        libzip::zip
     )
     target_link_libraries(${PROJECT_NAME} PRIVATE
         "-framework UserNotifications"

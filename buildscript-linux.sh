@@ -37,18 +37,12 @@ rm  -rf build-linux-debug
 # Build the executable
 #
 
-mkdir build-linux-debug
-cd build-linux-debug
-
-export ASAN_OPTIONS=detect_leaks=0
-export CC=/usr/bin/clang
-export CXX=/usr/bin/clang++
-
 $Qt6_DIR_LINUX/bin/qt-cmake \
+    -B build-linux \
     -DCMAKE_C_COMPILER_LAUNCHER="ccache" \
     -DCMAKE_CXX_COMPILER_LAUNCHER="ccache" \
+    -DCMAKE_INSTALL_PREFIX=enrouteInstallation \
     -G Ninja \
-    ..
+    -S .
 
-ninja
-cd ..
+cmake --build build-linux

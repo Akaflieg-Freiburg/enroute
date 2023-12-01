@@ -21,8 +21,6 @@ set(APP_ID de.akaflieg_freiburg.enroute)
 set(DISPLAY_NAME "Enroute")
 math(EXPR PROJECT_VERSION_CODE 10000*${PROJECT_VERSION_MAJOR}+100*${PROJECT_VERSION_MINOR}+${PROJECT_VERSION_PATCH})
 add_compile_definitions(PROJECT_VERSION="${PROJECT_VERSION}")
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
 message("CMAKE_OSX_DEPLOYMENT_TARGET: ${CMAKE_OSX_DEPLOYMENT_TARGET}")
 
 #
@@ -49,13 +47,15 @@ set(CMAKE_AUTOUIC ON)
 find_package(Doxygen)
 find_package(libzip REQUIRED)
 find_package(Git REQUIRED)
-find_package(Qt6 COMPONENTS Concurrent Core Core5Compat Gui HttpServer LinguistTools Location Positioning Quick QuickControls2 QuickWidgets Sql Svg TextToSpeech Widgets REQUIRED)
+find_package(Qt6 6.6 COMPONENTS Concurrent Core Core5Compat Gui HttpServer LinguistTools Location Positioning Quick QuickControls2 QuickWidgets Sql Svg TextToSpeech Widgets REQUIRED)
 find_package(QMapLibre COMPONENTS Location REQUIRED)
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    find_package(Qt6 COMPONENTS DBus Widgets REQUIRED)
+endif()
 
 if( ANDROID OR IOS)
     find_package(Qt6 COMPONENTS Sensors WebView REQUIRED)
-else()
-    find_package(Qt6 COMPONENTS DBus Widgets REQUIRED)
 endif()
 
 if(IOS)

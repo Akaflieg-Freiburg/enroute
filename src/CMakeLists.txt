@@ -323,7 +323,6 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     )
 
     # Install
-    qmaplibre_location_copy_plugin(${PROJECT_NAME})
     install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
     install(DIRECTORY ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/docs/manual DESTINATION ${CMAKE_INSTALL_DOCDIR})
 endif()
@@ -364,6 +363,9 @@ if (APPLE AND NOT IOS)
         Qt6::Widgets
         libzip::zip
     )
+
+   # Not sure what this does
+   qmaplibre_location_copy_plugin(${PROJECT_NAME})
 endif()
 
 #
@@ -598,4 +600,16 @@ if ((CMAKE_SYSTEM_NAME STREQUAL "Darwin") OR ((CMAKE_SYSTEM_NAME STREQUAL "Linux
 
     # Call the deployment script on "cmake --install".
     install(SCRIPT ${deploy_script})
+
+    #
+    #
+    #
+
+    qt_generate_deploy_script(
+        TARGET ${PROJECT_NAME}
+        OUTPUT_SCRIPT deploy_script2
+        CONTENT "
+        qt_deploy_runtime_dependencies(
+        ADDITIONAL_LIBRARIES \"${helper_app_path}\"
+    )")
 endif()

@@ -73,6 +73,10 @@ template<typename T> auto GlobalObject::allocateInternal(QPointer<T>& pointer) -
     Q_ASSERT( !isConstructingOrDeconstructing );
     if (pointer.isNull()) {
         isConstructingOrDeconstructing = true;
+#if defined(Q_OS_MACOS)
+#warning The following line is necessary on macOS, or else the app hangs. No idea why.
+            qWarning() << "Print warning for unclear reasons";
+#endif
         pointer = new T( QCoreApplication::instance() );
         isConstructingOrDeconstructing = false;
         QQmlEngine::setObjectOwnership(pointer, QQmlEngine::CppOwnership);

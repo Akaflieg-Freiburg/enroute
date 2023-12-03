@@ -363,6 +363,10 @@ if (APPLE AND NOT IOS)
         Qt6::Widgets
         libzip::zip
     )
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    MACOSX_BUNDLE true
+    MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/ios/Info.plist"
+)
 
    # Not sure what this does
    qmaplibre_location_copy_plugin(${PROJECT_NAME})

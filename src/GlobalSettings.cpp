@@ -24,10 +24,12 @@
 //
 // Constructor and destructor
 //
-
+#include <QCoreApplication>
 GlobalSettings::GlobalSettings(QObject *parent)
     : QObject(parent)
 {
+    QCoreApplication::instance()->processEvents();
+
     // Save some values
     settings.setValue(QStringLiteral("lastVersion"), PROJECT_VERSION);
 

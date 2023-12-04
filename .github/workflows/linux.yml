@@ -21,8 +21,8 @@ jobs:
       uses: actions/checkout@v3
       with:
         path: enrouteDependencies
-        repository: Akaflieg-Freiburg/qtlocationstatic
-        submodules: true
+        repository: Akaflieg-Freiburg/enrouteDependencies
+        submodules: recursive
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
@@ -38,8 +38,8 @@ jobs:
         key: linux
     - name: Compile EnrouteDependencies
       run: |
-        cd enrouteDependencies
         Qt6_DIR_BASE=$(dirname "$Qt6_DIR") ./buildscript-linux
+      working-directory: enrouteDependencies
     - name: Compile Enroute Flight Navigation
       run: |
         cmake -B build-enroute -S enroute -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS='-Werror -Wall -Wextra'

@@ -24,15 +24,19 @@ import QtCore
 import QtQuick
 import QtQuick.Controls
 
-Item {
+QtObject {
     property Loader dialogLoader
     property Drawer drawer
     property var toast
 
-    LocationPermission {
+    property LocationPermission locationPermission: LocationPermission {
         id: locationPermission
 
         accuracy: LocationPermission.Precise
         availability: LocationPermission.WhenInUse
     }
+/*
+    Component.onCompleted: {        if (missingPermissionsText === "")
+    PositionProvider.startUpdates()
+*/
 }

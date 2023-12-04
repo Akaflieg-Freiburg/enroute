@@ -4,7 +4,7 @@ on:
   release:
     types: [published]
   push:
-    branches: [main]
+    branches: [feature/cleanup]
 
 jobs:
   build:
@@ -16,34 +16,31 @@ jobs:
       uses: actions/checkout@v3
       with:
         path: enroute
-        submodules: true
-    - name: Checkout qtlocation
+        submodules: recursive
+    - name: Checkout Enroute Dependencies
       uses: actions/checkout@v3
       with:
-        path: qtlocation
+        path: enrouteDependencies
         repository: Akaflieg-Freiburg/qtlocationstatic
         submodules: true
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
-        version: '6.4.*'
+        cache: 'true'
         modules: 'qt5compat qthttpserver qtimageformats qtpositioning qtshadertools qtspeech qtwebsockets'
+        version: '6.*.*'
     - name: Install Additional Software
       run: |
         sudo apt install extra-cmake-modules ninja-build spirv-tools
-    - name: Compile QtLocation
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+        key: linux
+    - name: Compile EnrouteDependencies
       run: |
-        cmake -E make_directory build-qtlocation
-        cd build-qtlocation
-        qt-configure-module ../qtlocation
-        cmake -DMBGL_QT_WITH_INTERNAL_ICU:BOOL=On .
-        ninja
-        ninja install
+        cd enrouteDependencies
+        Qt6_DIR_BASE=$(dirname "$Qt6_DIR") ./buildscript-linux
     - name: Compile Enroute Flight Navigation
       run: |
-        export CC=/usr/bin/clang
-        export CXX=/usr/bin/clang++
-        cmake -E make_directory build-enroute
-        cd build-enroute
-        cmake ../enroute -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS='-Werror -Wall -Wextra'
+        cmake -B build-enroute -S enroute -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS='-Werror -Wall -Wextra'
         cmake --build .

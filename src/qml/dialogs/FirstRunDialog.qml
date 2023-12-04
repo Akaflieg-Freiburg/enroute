@@ -38,12 +38,14 @@ CenteringDialog {
             required property var dialogMain
 
             contentWidth: availableWidth // Disable horizontal scrolling
+            contentHeight: lbl.contentHeight
 
             clip: true
 
             property string title: qsTr("Welcome!")
 
             Label {
+                id: lbl
                 text: "<p>" + qsTr("Thank you for using this flight navigation app!  Before we get started, we need to point out that <strong>this app and the aviation data come with no guarantees</strong>.")+"</p>"
                       + "<p>" + qsTr("The app is not certified to satisfy aviation standards. It may contain errors and may not work as expected.") + "</p>"
                       + "<p>" + qsTr("The aviation data does not come from official sources. It might be incomplete, outdated or otherwise incorrect.") + "</p>"
@@ -52,6 +54,7 @@ CenteringDialog {
                       + "<p>&#8212; Stefan Kebekus.</p>";
 
                 width: sv.dialogMain.availableWidth
+
                 textFormat: Text.RichText
                 wrapMode: Text.Wrap
                 onLinkActivated: (link) => Qt.openUrlExternally(link)
@@ -75,12 +78,15 @@ CenteringDialog {
             required property var dialogMain
 
             contentWidth: availableWidth // Disable horizontal scrolling
+            contentHeight: lbl.contentHeight
 
             clip: true
 
             property string title: qsTr("Privacy")
 
             Label {
+                id: lbl
+
                 text: "<p>" + qsTr("Please take a minute to review our privacy policies.") + "</p>"
                       + Librarian.getStringFromRessource(":text/privacy.html")
                 width: sv.dialogMain.availableWidth
@@ -102,17 +108,19 @@ CenteringDialog {
             id: sv
 
             required property var dialogMain
-            required property string text
 
             contentWidth: availableWidth // Disable horizontal scrolling
+            contentHeight: lbl.contentHeight
 
             clip: true
 
             property string title: qsTr("Permissions")
 
             Label {
+                id: lbl
+
                 text: "<p>" + qsTr("Please grant the following permissions when prompted.") + "</p>"
-                      + sv.text
+                      + "<p>" + qsTr("Enroute Flight Navigation needs to access your precise location. The app uses this data to show your position on the moving map and to provide relevant aeronautical information.") + "</p>"
                 width: sv.dialogMain.availableWidth
                 textFormat: Text.RichText
                 wrapMode: Text.Wrap
@@ -135,12 +143,15 @@ CenteringDialog {
             required property var dialogMain
 
             contentWidth: availableWidth // Disable horizontal scrolling
+            contentHeight: cl.implicitHeight
 
             clip: true
 
             property string title: qsTr("Download Maps")
 
             ColumnLayout {
+                id: cl
+
                 width: sv.dialogMain.availableWidth
 
                 Label {
@@ -244,20 +255,15 @@ CenteringDialog {
     }
 
     function conditionalOpen() {
-        if (!DataManager.aviationMaps.hasFile)
+//        if (!DataManager.aviationMaps.hasFile)
             stack.push(maps, {"dialogMain": dialogMain, "objectName": "maps"})
-
-        if (Global.locationPermission.status !== Qt.PermissionStatus.Granted)
-            stack.push(permissions, {"dialogMain": dialogMain, "text": "xx"})
-        var missingPermissionsText = PlatformAdaptor.checkPermissions()
-        if (missingPermissionsText === "")
-            PositionProvider.startUpdates()
-        else
-            stack.push(permissions, {"dialogMain": dialogMain, "text": missingPermissionsText})
-        if (GlobalSettings.privacyHash !== Librarian.getStringHashFromRessource(":text/privacy.html"))
+//        if (Global.locationPermission.status !== Qt.PermissionStatus.Granted)
+            stack.push(permissions, {"dialogMain": dialogMain})
+//        if (GlobalSettings.privacyHash !== Librarian.getStringHashFromRessource(":text/privacy.html"))
             stack.push(privacy, {"dialogMain": dialogMain})
-        if (GlobalSettings.acceptedTerms === 0)
+//        if (GlobalSettings.acceptedTerms === 0)
             stack.push(firstStart, {"dialogMain": dialogMain})
+
         if (!stack.empty)
             open()
         return !stack.empty

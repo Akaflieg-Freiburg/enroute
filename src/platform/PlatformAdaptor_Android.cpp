@@ -46,52 +46,6 @@ void Platform::PlatformAdaptor::deferredInitialization()
 // Methods
 //
 
-auto Platform::PlatformAdaptor::checkPermissions() -> QString
-{
-    QStringList results;
-
-    QLocationPermission locationPermission;
-    locationPermission.setAccuracy(QLocationPermission::Approximate);
-    locationPermission.setAvailability(QLocationPermission::WhenInUse);
-    auto coarseLocation = qApp->checkPermission(locationPermission);
-    locationPermission.setAccuracy(QLocationPermission::Precise);
-    auto fineLocation = qApp->checkPermission(locationPermission);
-    if ((coarseLocation != Qt::PermissionStatus::Granted)
-        || (fineLocation != Qt::PermissionStatus::Granted))
-    {
-        QString result;
-        result = "<strong>ACCESS_COARSE_LOCATION</strong> and <strong>ACCESS_FINE_LOCATION</strong>: "
-                 + tr("Enroute Flight Navigation needs to access your precise location. "
-                      "The app uses this data to show your position on the moving "
-                      "map and to provide relevant aeronautical information.");
-        results << result;
-    }
-
-    QString final;
-    foreach(auto result, results)
-    {
-        final += "<li>" + result + "</li>";
-    }
-    if (!final.isEmpty())
-    {
-        final = "<ul style='margin-left:-25px;'>"+final+"</ul>";
-
-        if ((coarseLocation == Qt::PermissionStatus::Denied)
-                || (fineLocation == Qt::PermissionStatus::Denied))
-        {
-            final += "<p>"
-                    + tr("Some permissions have previously been denied. "
-                         "The system might not show the permission dialog again. "
-                         "In that case, use the system settings to grant the necessary permissions. "
-                         "Some users find the settings hard to navigate and prefer to re-install the app.")
-                    + "</p>";
-        }
-    }
-
-    return final;
-}
-
-
 auto Platform::PlatformAdaptor::currentSSID() -> QString
 {
     QJniObject stringObject = QJniObject::callStaticObjectMethod("de/akaflieg_freiburg/enroute/MobileAdaptor",
@@ -148,16 +102,6 @@ void Platform::PlatformAdaptor::onGUISetupCompleted()
 
     // Hide Splash Screen
     QNativeInterface::QAndroidApplication::hideSplashScreen(200);
-}
-
-
-void Platform::PlatformAdaptor::requestPermissionsSync()
-{
-    QLocationPermission locationPermission;
-    locationPermission.setAccuracy(QLocationPermission::Precise);
-    locationPermission.setAvailability(QLocationPermission::WhenInUse);
-
-    qApp->requestPermission(locationPermission, [](const QPermission &permission){});
 }
 
 

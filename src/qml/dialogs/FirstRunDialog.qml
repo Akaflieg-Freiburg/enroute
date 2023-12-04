@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+import QtCore
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Material
@@ -128,6 +129,7 @@ CenteringDialog {
             }
 
             function accept() {
+                console.log("X")
                 Global.locationPermission.request()
                 PositionProvider.startUpdates()
             }
@@ -158,27 +160,40 @@ CenteringDialog {
                     Layout.fillWidth: true
                     Layout.preferredHeight: implicitHeight
                     text: {
-                    var result = "<p>" + qsTr("<strong>Enroute Flight Navigation</strong> needs geographic maps to work.")
-                    + " "
-                        if (DataManager.mapList.hasFile)
+                        var result = "<p>" + qsTr("<strong>Enroute Flight Navigation</strong> needs geographic maps to work.") + " "
+
+                        if (Global.locationPermission.status === Qt.PermissionStatus.Granted)
                         {
-                            if (PositionProvider.positionInfo.isValid())
+                            if (DataManager.mapList.hasFile)
                             {
-                                if (lv.model.length === 0)
-                                    result += qsTr("Regretfully, we do not offer maps for your present location (%1).").arg(PositionProvider.lastValidCoordinate)
-                                if (lv.model.length === 1)
-                                result += qsTr("Based on your location, we reckon that that the following map might be relevant for you. Click on the map to start the download, then click on 'Done' to close this dialog.")
-                                if (lv.model.length > 1)
-                                    result += qsTr("Based on your location, we reckon that that the following maps might be relevant for you. Click on any map to start the download, then click on 'Done' to close this dialog.")
+                                if (PositionProvider.positionInfo.isValid())
+                                {
+                                    if (lv.model.length === 0)
+                                        result += qsTr("Regretfully, we do not offer maps for your present location (%1).").arg(PositionProvider.lastValidCoordinate)
+                                    if (lv.model.length === 1)
+                                        result += qsTr("Based on your location, we reckon that that the following map might be relevant for you. Click on the map to start the download, then click on 'Done' to close this dialog.")
+                                    if (lv.model.length > 1)
+                                        result += qsTr("Based on your location, we reckon that that the following maps might be relevant for you. Click on any map to start the download, then click on 'Done' to close this dialog.")
+                                }
+                                else
+                                {
+                                    result += qsTr("We're waiting for SatNav position infoformation to suggest maps that might be relevant for you. Please stand by.")
+                                }
                             }
                             else
                             {
-                                result += qsTr("We're waiting for SatNav position infoformation to suggest maps that might be relevant for you. Please stand by.")
+                                result += qsTr("We're downloading the list of available maps. Please stand by.")
                             }
                         }
-                        else
+
+                        if (Global.locationPermission.status === Qt.PermissionStatus.Denied)
                         {
-                            result += qsTr("We're downloading the list of available maps. Please stand by.")
+                            result += "<strong>"+qsTr("Please grant location permissions, so we can suggest maps to download.")+"</strong>"
+                        }
+
+                        if (Global.locationPermission.status === Qt.PermissionStatus.Undetermined)
+                        {
+                            result += "<strong>"+qsTr("We're unable to suggest maps to download because the location permission was denied.")+"</strong>"
                         }
 
                         result += "</p>"
@@ -193,7 +208,7 @@ CenteringDialog {
                     Layout.preferredHeight: 1
                     Layout.fillWidth: true
                     color: "black"
-                    visible: lv.model ? lv.model.length !== 0 : false
+                    visible: PositionProvider.receivingPositionInfo
                 }
 
                 DecoratedListView {
@@ -215,7 +230,7 @@ CenteringDialog {
                     Layout.preferredHeight: 1
                     Layout.fillWidth: true
                     color: "black"
-                    visible: lv.model ? lv.model.length !== 0 : false
+                    visible: PositionProvider.receivingPositionInfo
                 }
 
                 Label {
@@ -232,6 +247,8 @@ CenteringDialog {
 
             function accept() {
             }
+
+            Component.onCompleted: Global.locationPermission.request()
 
         }
     }
@@ -255,16 +272,21 @@ CenteringDialog {
     }
 
     function conditionalOpen() {
-//        if (!DataManager.aviationMaps.hasFile)
+        if (!DataManager.aviationMaps.hasFile)
             stack.push(maps, {"dialogMain": dialogMain, "objectName": "maps"})
-//        if (Global.locationPermission.status !== Qt.PermissionStatus.Granted)
-            stack.push(permissions, {"dialogMain": dialogMain})
-//        if (GlobalSettings.privacyHash !== Librarian.getStringHashFromRessource(":text/privacy.html"))
+        if (Global.locationPermission.status !== Qt.PermissionStatus.Granted)
+        {
+            console.log(Global.locationPermission.status)
+    //        stack.push(permissions, {"dialogMain": dialogMain})
+        }
+        if (GlobalSettings.privacyHash !== Librarian.getStringHashFromRessource(":text/privacy.html"))
             stack.push(privacy, {"dialogMain": dialogMain})
-//        if (GlobalSettings.acceptedTerms === 0)
+        if (GlobalSettings.acceptedTerms === 0)
             stack.push(firstStart, {"dialogMain": dialogMain})
 
-        if (!stack.empty)
+        if (stack.empty)
+            Global.locationPermission.request()
+        else
             open()
         return !stack.empty
     }

@@ -30,7 +30,7 @@
 	<true/>
 	<key>NSHumanReadableCopyright</key>
 	<string>${MACOSX_BUNDLE_COPYRIGHT}</string>
-    <key>NSLocatioUsageDescription</key>
+    <key>NSLocationUsageDescription</key>
     <string>Navigation App needs Location</string>
 </dict>
 </plist>

@@ -77,18 +77,6 @@ public:
     // Methods
     //
 
-    /*! \brief Checks if all required permissions have been granted
-     *
-     * Depending on the platform, the app needs to ask for permissions to
-     * operate properly. This method can be used to check if all permissions
-     * have been granted. It returns an empty string if all permissions are
-     * there, and a human-readable, translated explanation of missing
-     * permissions otherwise.
-     *
-     * @returns Empty string or explanation
-    */
-    Q_INVOKABLE virtual QString checkPermissions() = 0;
-
     /*! \brief SSID of current Wi-Fi network
      *
      * @returns The SSID of the current Wi-Fi networks, an empty string if the
@@ -119,17 +107,6 @@ public:
      * lock.
      */
     Q_INVOKABLE virtual void lockWifi(bool lock) = 0;
-
-    /*! \brief Request permissions
-     *
-     * On some platforms, the app needs to ask for permissions to perform
-     * certain functions (e.g. receive location, query Wi-Fi status, …). This
-     * method is called before the GUI is set up and must request ALL
-     * permissions that the app will ever use. The method is meant to run
-     * synchroneously and shall return only once all permissions have been
-     * granted (or not). 
-     */
-    Q_INVOKABLE virtual void requestPermissionsSync() = 0;
 
     /*! \brief Workaround for QTBUG-80790
      *

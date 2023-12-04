@@ -34,9 +34,9 @@ QtObject {
 
         accuracy: LocationPermission.Precise
         availability: LocationPermission.WhenInUse
+
+        onStatusChanged: PositionProvider.startUpdates()
+        Component.onCompleted: PositionProvider.startUpdates()
     }
-/*
-    Component.onCompleted: {        if (missingPermissionsText === "")
-    PositionProvider.startUpdates()
-*/
+
 }

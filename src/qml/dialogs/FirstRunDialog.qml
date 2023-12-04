@@ -120,7 +120,7 @@ CenteringDialog {
             }
 
             function accept() {
-                PlatformAdaptor.requestPermissionsSync()
+                Global.locationPermission.request()
                 PositionProvider.startUpdates()
             }
         }
@@ -247,6 +247,8 @@ CenteringDialog {
         if (!DataManager.aviationMaps.hasFile)
             stack.push(maps, {"dialogMain": dialogMain, "objectName": "maps"})
 
+        if (Global.locationPermission.status !== Qt.PermissionStatus.Granted)
+            stack.push(permissions, {"dialogMain": dialogMain, "text": "xx"})
         var missingPermissionsText = PlatformAdaptor.checkPermissions()
         if (missingPermissionsText === "")
             PositionProvider.startUpdates()

@@ -67,16 +67,6 @@ auto Platform::PlatformAdaptor::checkPermissions() -> QString
         results << result;
     }
 
-    // Notifications are optional. Show text only if the user has not yet decided.
-    auto notificationFuture = QtAndroidPrivate::checkPermission(u"android.permission.POST_NOTIFICATIONS"_qs);
-    notificationFuture.waitForFinished();
-    if (notificationFuture.result() == QtAndroidPrivate::PermissionResult::Undetermined)
-    {
-        results << "<strong>POST_NOTIFICATIONS</strong>: "
-                   + tr("The app uses notifications, for instance to inform the user about "
-                        "critial updates of aviation data.");
-    }
-
     QString final;
     foreach(auto result, results)
     {
@@ -163,10 +153,11 @@ void Platform::PlatformAdaptor::onGUISetupCompleted()
 
 void Platform::PlatformAdaptor::requestPermissionsSync()
 {
-    auto permission = QtAndroidPrivate::requestPermission(u"android.permission.POST_NOTIFICATIONS"_qs);
-    permission.waitForFinished();
-    permission = QtAndroidPrivate::requestPermission(u"android.permission.ACCESS_FINE_LOCATION"_qs);
-    permission.waitForFinished();
+    QLocationPermission locationPermission;
+    locationPermission.setAccuracy(QLocationPermission::Precise);
+    locationPermission.setAvailability(QLocationPermission::WhenInUse);
+
+    qApp->requestPermission(locationPermission, [](const QPermission &permission){});
 }
 
 

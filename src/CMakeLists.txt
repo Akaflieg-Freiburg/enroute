@@ -238,7 +238,6 @@ if(ANDROID)
     configure_file(${CMAKE_SOURCE_DIR}/3rdParty/material-design-icons/alert/drawable-hdpi/ic_error_black_24dp.png ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable/ic_error.png COPYONLY)
     configure_file(${CMAKE_SOURCE_DIR}/3rdParty/material-design-icons/alert/drawable-hdpi/ic_warning_black_24dp.png ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable/ic_warning.png COPYONLY)
     configure_file(android/src/de/akaflieg_freiburg/enroute/IntentLauncher.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
-    configure_file(android/src/de/akaflieg_freiburg/enroute/Notifier.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
     configure_file(android/src/de/akaflieg_freiburg/enroute/ShareActivity.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
     configure_file(android/src/de/akaflieg_freiburg/enroute/ShareUtils.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
     configure_file(android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
@@ -318,8 +317,8 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
         libzip::zip
     )
     target_precompile_headers(${PROJECT_NAME}
-      PUBLIC
-      <QQmlEngine>
+        PUBLIC
+        <QQmlEngine>
     )
 
     # Install
@@ -332,7 +331,7 @@ endif()
 # Generate MacOS executable
 #
 
-if (APPLE AND NOT IOS)
+if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     list(APPEND SOURCES
         platform/FileExchange_MacOS.h
         platform/FileExchange_MacOS.cpp
@@ -352,7 +351,6 @@ if (APPLE AND NOT IOS)
         Qt6::Concurrent
         Qt6::Core
         Qt6::Core5Compat
-        Qt6::DBus
         Qt6::HttpServer
         Qt6::Positioning
         Qt6::Quick
@@ -361,16 +359,18 @@ if (APPLE AND NOT IOS)
         Qt6::Svg
         Qt6::TextToSpeech
         Qt6::Widgets
+        QMapLibre::Location
         libzip::zip
     )
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    MACOSX_BUNDLE true
-    MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/ios/Info.plist"
-)
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        MACOSX_BUNDLE true
+        MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/macos/Info.plist"
+    )
 
    # Not sure what this does
    qmaplibre_location_copy_plugin(${PROJECT_NAME})
 endif()
+
 
 #
 # Generate iOS executable
@@ -589,6 +589,7 @@ add_dependencies(fulldoc enroute_doc)
 #
 
 if ((CMAKE_SYSTEM_NAME STREQUAL "Darwin") OR ((CMAKE_SYSTEM_NAME STREQUAL "Linux") OR (CMAKE_SYSTEM_NAME STREQUAL "Windows")))
+
     # Install the executable into "${CMAKE_INSTALL_PREFIX}/bin".
     install(TARGETS ${PROJECT_NAME}
         BUNDLE  DESTINATION .
@@ -605,15 +606,4 @@ if ((CMAKE_SYSTEM_NAME STREQUAL "Darwin") OR ((CMAKE_SYSTEM_NAME STREQUAL "Linux
     # Call the deployment script on "cmake --install".
     install(SCRIPT ${deploy_script})
 
-    #
-    #
-    #
-
-    qt_generate_deploy_script(
-        TARGET ${PROJECT_NAME}
-        OUTPUT_SCRIPT deploy_script2
-        CONTENT "
-        qt_deploy_runtime_dependencies(
-        ADDITIONAL_LIBRARIES \"${helper_app_path}\"
-    )")
 endif()

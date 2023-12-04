@@ -20,11 +20,19 @@
 
 pragma Singleton
 
+import QtCore
 import QtQuick
 import QtQuick.Controls
 
-QtObject {
+Item {
     property Loader dialogLoader
     property Drawer drawer
     property var toast
+
+    LocationPermission {
+        id: locationPermission
+
+        accuracy: LocationPermission.Precise
+        availability: LocationPermission.WhenInUse
+    }
 }

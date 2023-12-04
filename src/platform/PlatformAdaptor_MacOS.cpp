@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "platform/PlatformAdaptor_Linux.h"
+#include "platform/PlatformAdaptor_MacOS.h"
 
 // This is a template file without actual implementation.
 

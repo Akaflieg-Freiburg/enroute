@@ -35,7 +35,7 @@ jobs:
         plugins: appimage
     - name: Install Additional Software
       run: |
-        sudo apt install  appstream extra-cmake-modules fuse libxcb-cursor0 ninja-build spirv-tools
+        sudo apt install appstream extra-cmake-modules fuse libxcb-cursor0 libzip-dev ninja-build spirv-tools
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:

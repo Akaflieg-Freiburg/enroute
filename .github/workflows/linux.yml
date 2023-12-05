@@ -27,11 +27,15 @@ jobs:
       uses: jurplel/install-qt-action@v3
       with:
         cache: 'true'
-        modules: 'qt5compat qthttpserver qtimageformats qtpositioning qtshadertools qtspeech qtwebsockets'
+        modules: 'qt5compat qthttpserver qtimageformats qtlocation qtpositioning qtshadertools qtspeech qtwebsockets'
         version: '6.*.*'
+    - name: Install LinuxDeploy
+      uses: miurahr/install-linuxdeploy-action@v1
+      with:
+        plugins: appimage
     - name: Install Additional Software
       run: |
-        sudo apt install extra-cmake-modules ninja-build spirv-tools
+        sudo apt install  appstream extra-cmake-modules fuse libxcb-cursor0 ninja-build spirv-tools
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -44,5 +48,15 @@ jobs:
       working-directory: enrouteDependencies
     - name: Compile Enroute Flight Navigation
       run: |
-        cmake -B build-enroute -S enroute -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS='-Werror -Wall -Wextra'
+        cmake -B build-enroute -S enroute -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS='-Werror -Wall -Wextra' -DCMAKE_INSTALL_PREFIX:STRING=$PWD/app/usr
         cmake --build .
+        cmake --build build --target install
+    - name: Package
+      run: |
+        linuxdeploy-x86_64.AppImage --appdir app --output appimage
+        mv *-x86_64.AppImage enroute-Linux.AppImage
+    - name: Upload to developerBuilds
+      run: |
+        gh release upload --clobber developerBuilds enroute-Linux.AppImage
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

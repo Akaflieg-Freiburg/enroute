@@ -38,7 +38,9 @@ jobs:
         key: linux
     - name: Compile EnrouteDependencies
       run: |
-        Qt6_DIR_BASE=$(dirname "$Qt6_DIR") ./buildscript-linux
+        pwd
+        ls
+        Qt6_DIR_BASE=$(dirname "$Qt6_DIR") ./buildscript-linux.sh
       working-directory: enrouteDependencies
     - name: Compile Enroute Flight Navigation
       run: |

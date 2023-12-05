@@ -50,12 +50,6 @@ public:
      *
      *  @returns see PlatformAdaptor_Abstract
      */
-    QString checkPermissions() override;
-
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract
-     *
-     *  @returns see PlatformAdaptor_Abstract
-     */
     QString currentSSID() override;
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
@@ -66,9 +60,6 @@ public:
      *  @param lock see PlatformAdaptor_Abstract
      */
     void lockWifi(bool lock) override;
-
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
-    void requestPermissionsSync() override;
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
     void vibrateBrief() override;

@@ -32,12 +32,6 @@ Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
 // Methods
 //
 
-auto Platform::PlatformAdaptor::checkPermissions() -> QString
-{
-    return {};
-}
-
-
 auto Platform::PlatformAdaptor::currentSSID() -> QString
 {
     // get primary connection devices
@@ -68,11 +62,6 @@ void Platform::PlatformAdaptor::lockWifi(bool lock)
 
 
 void Platform::PlatformAdaptor::onGUISetupCompleted()
-{
-}
-
-
-void Platform::PlatformAdaptor::requestPermissionsSync()
 {
 }
 

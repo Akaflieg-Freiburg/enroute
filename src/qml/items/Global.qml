@@ -24,6 +24,8 @@ import QtCore
 import QtQuick
 import QtQuick.Controls
 
+import akaflieg_freiburg.enroute
+
 QtObject {
     property Loader dialogLoader
     property Drawer drawer

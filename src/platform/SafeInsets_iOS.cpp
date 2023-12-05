@@ -21,7 +21,6 @@
 #include "ios/ObjCAdapter.h"
 
 #include <QGuiApplication>
-#include <QJniObject>
 #include <QScreen>
 #include <QTimer>
 #include <chrono>

@@ -411,7 +411,7 @@ if (IOS)
         Qt6::Sql
         Qt6::Svg
         Qt6::TextToSpeech
-        Qt6::WebView
+        QMapLibre::Location
         libzip::zip
     )
     target_link_libraries(${PROJECT_NAME} PRIVATE

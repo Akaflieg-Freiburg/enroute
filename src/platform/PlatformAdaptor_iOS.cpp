@@ -94,6 +94,7 @@ void Platform::PlatformAdaptor::onGUISetupCompleted()
       timer->start();
 }
 
+/*
 QString Platform::PlatformAdaptor::checkPermissions()
 {
     // This method is called once the GUI has been set up. The Android-specific
@@ -112,8 +113,9 @@ QString Platform::PlatformAdaptor::checkPermissions()
 
     return string;
 }
+*/
 
-
+/*
 void Platform::PlatformAdaptor::requestPermissionsSync()
 {
     // Most mobile platforms require that the app asks for permission to do
@@ -125,7 +127,7 @@ void Platform::PlatformAdaptor::requestPermissionsSync()
 
     //This seems unnessary on iOS
 }
-
+*/
 
 void Platform::PlatformAdaptor::vibrateBrief()
 {

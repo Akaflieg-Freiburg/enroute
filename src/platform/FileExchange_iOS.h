@@ -71,7 +71,7 @@ public:
      */
     QString viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) override;
 
-#warnig documentation
+#warning documentation
     Q_INVOKABLE void handleFileUrlReceived(const QUrl&);
 
 public slots:

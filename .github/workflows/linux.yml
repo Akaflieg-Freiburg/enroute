@@ -2,9 +2,9 @@ name: Compile on Linux
 
 on:
   release:
-    types: [published]
+    types: [ published ]
   push:
-    branches: [feature/cleanup]
+    branches: [ feature/cleanup ]
 
 jobs:
   build:
@@ -13,12 +13,12 @@ jobs:
     
     steps:
     - name: Checkout Enroute
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         path: enroute
         submodules: recursive
     - name: Checkout Enroute Dependencies
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         path: enrouteDependencies
         repository: Akaflieg-Freiburg/enrouteDependencies
@@ -35,15 +35,13 @@ jobs:
         plugins: appimage
     - name: Install Additional Software
       run: |
-        sudo apt install appstream extra-cmake-modules fuse libxcb-cursor0 libzip-dev ninja-build spirv-tools zipcmp
+        sudo apt install appstream extra-cmake-modules fuse libxcb-cursor0 libzip-dev ninja-build spirv-tools zipcmp zipmerge
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: linux
     - name: Compile EnrouteDependencies
       run: |
-        pwd
-        ls
         Qt6_DIR_BASE=$(dirname "$Qt6_DIR") ./buildscript-linux.sh
       working-directory: enrouteDependencies
     - name: Compile Enroute Flight Navigation

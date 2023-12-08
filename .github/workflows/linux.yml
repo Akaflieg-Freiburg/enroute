@@ -47,9 +47,16 @@ jobs:
       working-directory: enrouteDependencies
     - name: Compile Enroute Flight Navigation
       run: |
-        cmake -B build-enroute -S enroute -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS='-Werror -Wall -Wextra' -DCMAKE_INSTALL_PREFIX:STRING=$PWD/app/usr
-        cmake --build .
-        cmake --build build --target install
+        cmake \
+          -B build-enroute \
+          -S enroute \
+          -DCMAKE_BUILD_TYPE=Debug \
+          -DCMAKE_C_COMPILER_LAUNCHER="ccache" \
+          -DCMAKE_CXX_COMPILER_LAUNCHER="ccache" \
+          -DCMAKE_CXX_FLAGS='-Werror -Wall -Wextra' \
+          -DCMAKE_INSTALL_PREFIX:STRING=$PWD/app/usr
+        cmake --build build-enroute
+        cmake --build build-enroute --target install
     - name: Package
       run: |
         linuxdeploy-x86_64.AppImage --appdir app --output appimage

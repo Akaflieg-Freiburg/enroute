@@ -43,11 +43,11 @@ jobs:
     - name: Compile EnrouteDependencies
       run: |
         Qt6_DIR_BASE=$(dirname "$Qt6_DIR") ./buildscript-linux.sh
-        cp -prdv Qt/gcc_64 $Qt6_DIR
+        cp -prdv Qt/* $Qt6_DIR/../..
       working-directory: enrouteDependencies
     - name: Compile Enroute Flight Navigation
       run: |
-        cmake -B build-enroute -S enroute -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS='-Werror -Wall -Wextra' -DCMAKE_INSTALL_PREFIX:STRING=$Qt6_DIR$PWD/app/usr
+        cmake -B build-enroute -S enroute -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS='-Werror -Wall -Wextra' -DCMAKE_INSTALL_PREFIX:STRING=$PWD/app/usr
         cmake --build .
         cmake --build build --target install
     - name: Package

@@ -135,6 +135,7 @@ bool GeoMaps::TileServer::handleRequest(const QHttpServerRequest& request, QHttp
 
 void GeoMaps::TileServer::missingHandler(const QHttpServerRequest& request, QHttpServerResponder&& responder)
 {
+    Q_UNUSED(request)
     responder.write(QHttpServerResponder::StatusCode::NotFound);
 }
 

@@ -208,7 +208,7 @@ qt_add_big_resources(SOURCES
 
 
 #
-# Generate android executable
+# Generate Android executable
 #
 
 if(ANDROID)
@@ -328,7 +328,7 @@ endif()
 
 
 #
-# Generate MacOS executable
+# Generate macOS executable
 #
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")

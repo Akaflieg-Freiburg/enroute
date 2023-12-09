@@ -71,18 +71,6 @@ void Platform::PlatformAdaptor::disableScreenSaver()
 
 
 
-void Platform::PlatformAdaptor::lockWifi(bool lock)
-{
-    // If supported by the platform, this method shall (un)lock the Wi-Fi
-    // connection. Some platforms (such as Android) will switch Wi-Fi off after
-    // a few minutes of idle time, in order to save battery. To ensure that the
-    // app continuously receives traffic data, this function is calls whenever a
-    // connection to a traffic data receiver has been established.
-
-    //This seems unnessary on iOS
-}
-
-
 void Platform::PlatformAdaptor::onGUISetupCompleted()
 {
   // This method is called once the GUI has been set up. The Android-specific
@@ -94,40 +82,6 @@ void Platform::PlatformAdaptor::onGUISetupCompleted()
       timer->start();
 }
 
-/*
-QString Platform::PlatformAdaptor::checkPermissions()
-{
-    // This method is called once the GUI has been set up. The Android-specific
-    // implementes uses this method to hide the splash screen.
-    QString string = "";
-
-
-    if (!ObjCAdapter::hasLocationPermission()) {
-        QString result;
-        //TODO: Translation not working
-        result = tr("Enroute Flight Navigation needs to access your precise location. "
-                      "The app uses this data to show your position on the moving "
-                      "map and to provide relevant aeronautical information.");
-        string += result;
-    }
-
-    return string;
-}
-*/
-
-/*
-void Platform::PlatformAdaptor::requestPermissionsSync()
-{
-    // Most mobile platforms require that the app asks for permission to do
-    // tasks such as showing a notification or accessing location information.
-    // This method must request the necessary permissions. It will be called
-    // before the GUI is set up and is meant to run synchroneously. Once the
-    // method returns, the app will check if all permissions are there, or else
-    // refuse to run.
-
-    //This seems unnessary on iOS
-}
-*/
 
 void Platform::PlatformAdaptor::vibrateBrief()
 {

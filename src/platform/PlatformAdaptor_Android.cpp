@@ -48,21 +48,24 @@ void Platform::PlatformAdaptor::deferredInitialization()
 
 auto Platform::PlatformAdaptor::currentSSID() -> QString
 {
-    QJniObject stringObject = QJniObject::callStaticObjectMethod("de/akaflieg_freiburg/enroute/MobileAdaptor",
-                                                                 "getSSID", "()Ljava/lang/String;");
+    QJniObject const stringObject
+        = QJniObject::callStaticObjectMethod("de/akaflieg_freiburg/enroute/MobileAdaptor",
+                                             "getSSID",
+                                             "()Ljava/lang/String;");
     return stringObject.toString();
 }
 
 
 void Platform::PlatformAdaptor::disableScreenSaver()
 {
-    bool on=true;
+    bool const on = true;
     // Implementation follows a suggestion found in https://stackoverflow.com/questions/27758499/how-to-keep-the-screen-on-in-qt-for-android
-    QNativeInterface::QAndroidApplication::runOnAndroidMainThread([on]{
-        QJniObject activity = QNativeInterface::QAndroidApplication::context();
+    QNativeInterface::QAndroidApplication::runOnAndroidMainThread([on] {
+        QJniObject const activity = QNativeInterface::QAndroidApplication::context();
         if (activity.isValid())
         {
-            QJniObject window = activity.callObjectMethod("getWindow", "()Landroid/view/Window;");
+            QJniObject const window = activity.callObjectMethod("getWindow",
+                                                                "()Landroid/view/Window;");
 
             if (window.isValid())
             {
@@ -77,7 +80,7 @@ void Platform::PlatformAdaptor::disableScreenSaver()
                 }
             }
         }
-        QJniEnvironment env;
+        QJniEnvironment const env;
         if (env->ExceptionCheck() != 0U) {
             env->ExceptionClear();
         }
@@ -110,8 +113,9 @@ QString Platform::PlatformAdaptor::systemInfo()
     auto result = Platform::PlatformAdaptor_Abstract::systemInfo();
 
     // Device Name
-    QJniObject stringObject = QJniObject::callStaticObjectMethod<jstring>("de/akaflieg_freiburg/enroute/MobileAdaptor",
-                                                                          "deviceName");
+    QJniObject const stringObject
+        = QJniObject::callStaticObjectMethod<jstring>("de/akaflieg_freiburg/enroute/MobileAdaptor",
+                                                      "deviceName");
     result += u"<h3>Device</h3>\n"_qs;
     result += stringObject.toString();
 

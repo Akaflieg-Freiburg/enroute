@@ -68,7 +68,7 @@ public:
      *
      * @returns Info string
      */
-    virtual QString systemInfo() override;
+    QString systemInfo() override;
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
     void vibrateBrief() override;

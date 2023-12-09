@@ -33,7 +33,7 @@ class ImFixer : public QObject {
 protected:
     bool eventFilter(QObject *obj, QEvent *event) override {
         if (event->type() == QEvent::InputMethodQuery) {
-            QInputMethodQueryEvent *imEvt = static_cast<QInputMethodQueryEvent *>(event);
+            auto* imEvt = static_cast<QInputMethodQueryEvent *>(event);
             if (imEvt->queries() == Qt::InputMethodQuery::ImCursorRectangle) {
                 imEvt->setValue(Qt::InputMethodQuery::ImCursorRectangle, QRectF());
                 return true;
@@ -71,12 +71,6 @@ public:
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
     void disableScreenSaver() override;
-
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract
-     *
-     *  @param lock see PlatformAdaptor_Abstract
-     */
-    void lockWifi(bool lock) override;
 
     /*! \brief Implements virtual method from PlatformAdaptor_Abstract,
      *  workaround for QTBUG-80790

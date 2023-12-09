@@ -67,7 +67,6 @@ CenteringDialog {
                 GlobalSettings.lastWhatsNewInMapsHash = DataManager.whatsNewHash
             }
         }
-
     }
 
     Component {
@@ -98,40 +97,6 @@ CenteringDialog {
 
             function accept() {
                 GlobalSettings.privacyHash = Librarian.getStringHashFromRessource(":text/privacy.html")
-            }
-        }
-    }
-
-    Component {
-        id: permissions
-
-        DecoratedScrollView {
-            id: sv
-
-            required property var dialogMain
-
-            contentWidth: availableWidth // Disable horizontal scrolling
-            contentHeight: lbl.contentHeight
-
-            clip: true
-
-            property string title: qsTr("Permissions")
-
-            Label {
-                id: lbl
-
-                text: "<p>" + qsTr("Please grant the following permissions when prompted.") + "</p>"
-                      + "<p>" + qsTr("Enroute Flight Navigation needs to access your precise location. The app uses this data to show your position on the moving map and to provide relevant aeronautical information.") + "</p>"
-                width: sv.dialogMain.availableWidth
-                textFormat: Text.RichText
-                wrapMode: Text.Wrap
-                onLinkActivated: (link) => Qt.openUrlExternally(link)
-            }
-
-            function accept() {
-                console.log("X")
-                Global.locationPermission.request()
-                PositionProvider.startUpdates()
             }
         }
     }
@@ -274,11 +239,6 @@ CenteringDialog {
     function conditionalOpen() {
         if (!DataManager.aviationMaps.hasFile)
             stack.push(maps, {"dialogMain": dialogMain, "objectName": "maps"})
-        if (Global.locationPermission.status !== Qt.PermissionStatus.Granted)
-        {
-            console.log(Global.locationPermission.status)
-    //        stack.push(permissions, {"dialogMain": dialogMain})
-        }
         if (GlobalSettings.privacyHash !== Librarian.getStringHashFromRessource(":text/privacy.html"))
             stack.push(privacy, {"dialogMain": dialogMain})
         if (GlobalSettings.acceptedTerms === 0)

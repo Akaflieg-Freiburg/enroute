@@ -39,35 +39,6 @@ public:
 
     ~PlatformAdaptor() override = default;
 
-
-    //
-    // Methods
-    //
-
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract
-     *
-     *  @returns see PlatformAdaptor_Abstract
-     */
-    QString currentSSID() override;
-
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
-    void disableScreenSaver() override;
-
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract
-     *
-     *  @param lock see PlatformAdaptor_Abstract
-     */
-    void lockWifi(bool lock) override;
-
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
-    void vibrateBrief() override;
-
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
-    void vibrateLong() override;
-
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
-    void onGUISetupCompleted() override;
-
 private:
     Q_DISABLE_COPY_MOVE(PlatformAdaptor)
 };

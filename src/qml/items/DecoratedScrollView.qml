@@ -39,7 +39,10 @@ ScrollView {
         Label {
             anchors.top: parent.top
             anchors.left: parent.left
+            anchors.leftMargin: 4*font.pixelSize
             anchors.right: parent.right
+            anchors.rightMargin: 4*font.pixelSize
+
 
             background: Rectangle {
                 color: GlobalSettings.nightMode ? "black" : "white"
@@ -63,7 +66,9 @@ ScrollView {
         Label {
             anchors.bottom: parent.bottom
             anchors.left: parent.left
+            anchors.leftMargin: 4*font.pixelSize
             anchors.right: parent.right
+            anchors.rightMargin: 4*font.pixelSize
 
             background: Rectangle {
                 color: GlobalSettings.nightMode ? "black" : "white"
@@ -86,5 +91,12 @@ ScrollView {
         bottomItem.createObject(scrollView)
     }
 
+    // This seems necessary starting from Qt6.6.1
+    contentHeight: {
+        if (contentChildren.length > 0) {
+            return contentChildren[0].implicitHeight
+        }
+        return 0
+    }
 
 }

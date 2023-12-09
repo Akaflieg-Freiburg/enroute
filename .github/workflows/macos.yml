@@ -1,48 +1,54 @@
 name: Compile on MacOS
 
 on:
-  release:
-    types: [published]
   push:
-    branches: [main]
+    branches: [ feature/cleanup ]
 
 jobs:
   build:
 
-    runs-on: macos-12
+    runs-on: macos-latext
     
     steps:
     - name: Checkout Enroute
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         path: enroute
-        submodules: true
+        submodules: recursive
+    - name: Checkout Enroute Dependencies
+      uses: actions/checkout@v4
+      with:
+        path: enrouteDependencies
+        repository: Akaflieg-Freiburg/enrouteDependencies
+        submodules: recursive
     - name: Set up macOS
       uses: actions/setup-python@v4
       with:
         python-version: '3.8'
     - name: Install Ninja
       run: brew install ninja
-    - name: Checkout qtlocation
-      uses: actions/checkout@v3
-      with:
-        path: qtlocation
-        repository: Akaflieg-Freiburg/qtlocationstatic
-        submodules: true
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
-        version: '6.4.*'
+        version: '6.*.*'
         modules: 'qt5compat qthttpserver qtimageformats qtpositioning qtshadertools qtspeech qtwebsockets'
-    - name: Compile QtLocation
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+        key: macos
+    - name: Compile EnrouteDependencies
       run: |
-        cmake -E make_directory build-qtlocation
-        cd build-qtlocation
-        qt-configure-module ../qtlocation
-        cmake --build .
-        cmake --install .
+        Qt6_DIR_BASE=$(dirname "$Qt6_DIR") ./buildscript-macos.sh
+        cp -prdv Qt/* $Qt6_DIR/../..
+      working-directory: enrouteDependencies
     - name: Compile Enroute Flight Navigation
       run: |
-        cmake -E make_directory build-enroute
-        cmake -S enroute -B build-enroute
+        cmake \
+          -B build-enroute \
+          -S enroute \
+          -DCMAKE_BUILD_TYPE=Debug \
+          -DCMAKE_C_COMPILER_LAUNCHER="ccache" \
+          -DCMAKE_CXX_COMPILER_LAUNCHER="ccache" \
+          -DCMAKE_INSTALL_PREFIX:STRING=$PWD/app/usr
         cmake --build build-enroute
+        cmake --build build-enroute --target install

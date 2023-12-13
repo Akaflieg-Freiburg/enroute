@@ -207,6 +207,7 @@
             ],
             "buildsystem": "cmake-ninja",
             "config-opts": [
+		"-DCMAKE_CXX_FLAGS=-Wno-error",
                 "-DMLN_QT_WITH_INTERNAL_ICU=ON",
 		"-DBUILD_TESTING=OFF"
             ]
@@ -240,6 +241,17 @@
                     "type": "git",
                     "url": "https://github.com/qt/qthttpserver.git",
                     "tag": "v${Qt6_VERSION}"
+                }
+            ],
+            "buildsystem": "cmake-ninja"
+        },
+        {
+            "name": "libzip",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/nih-at/libzip",
+                    "commit": "00259560701600e0830002e9273c6c9097be3719"
                 }
             ],
             "buildsystem": "cmake-ninja"

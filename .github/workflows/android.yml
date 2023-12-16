@@ -11,16 +11,16 @@ jobs:
     
     steps:
     - name: Checkout enroute
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         path: enroute
-        submodules: true
+        submodules: recursive
     - name: Checkout enrouteDependencies
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         path: enrouteDependencies
         repository: Akaflieg-Freiburg/enrouteDependencies
-        submodules: true
+        submodules: recursive
     - name: Install Qt for Desktop
       uses: jurplel/install-qt-action@v3
       with:

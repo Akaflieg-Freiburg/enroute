@@ -85,7 +85,8 @@ jobs:
           -G Ninja\
           -DCMAKE_BUILD_TYPE:STRING=Debug
         cmake --build build-enroute
-    - uses: actions/upload-artifact@v3
-      with:
-        name: enroute-debug.apk
-        path: build-enroute/src/android-build//build/outputs/apk/debug/android-build-debug.apk
+    - name: Upload to developerBuilds
+      run: |
+        gh release upload --clobber developerBuilds build-enroute/src/android-build//build/outputs/apk/debug/android-build-debug.apk
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

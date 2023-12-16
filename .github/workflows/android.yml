@@ -47,7 +47,7 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: android
-      - name: Compile and Install libzip
+    - name: Compile and Install libzip
       run: |
         $Qt6_DIR/bin/qt-cmake \
           -S enrouteDependencies/libzip \

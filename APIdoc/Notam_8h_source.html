@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Enroute Flight Navigation
-   &#160;<span id="projectnumber">2.29.51</span>
+   &#160;<span id="projectnumber">2.29.52</span>
    </div>
    <div id="projectbrief">A navigation app for VFR pilots</div>
   </td>
@@ -155,26 +155,27 @@ $(function() {
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    QString         m_icaoLocation;</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    QString         m_number;</div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <a class="code" href="classUnits_1_1Distance.html">Units::Distance</a> m_radius;</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    QString         m_text;</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    QString         m_traffic;</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160; </div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <span class="comment">/* Derivative data, obtained from the FAA notam members above */</span></div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    QDateTime       m_effectiveEnd;</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    QDateTime       m_effectiveStart;</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    QGeoCircle      m_region;</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;};</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160; </div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    QString         m_schedule;</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    QString         m_text;</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    QString         m_traffic;</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160; </div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    <span class="comment">/* Derivative data, obtained from the FAA notam members above */</span></div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    QDateTime       m_effectiveEnd;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    QDateTime       m_effectiveStart;</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    QGeoCircle      m_region;</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;};</div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160; </div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;QGeoCoordinate interpretNOTAMCoordinates(<span class="keyword">const</span> QString&amp; <span class="keywordtype">string</span>);</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160; </div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;QDataStream&amp; operator&lt;&lt;(QDataStream&amp; stream, <span class="keyword">const</span> <a class="code" href="classNOTAM_1_1Notam.html">NOTAM::Notam</a> &amp;notam);</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160; </div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;QDataStream&amp; operator&gt;&gt;(QDataStream&amp; stream, <a class="code" href="classNOTAM_1_1Notam.html">NOTAM::Notam</a>&amp; notam);</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160; </div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;} <span class="comment">// namespace NOTAM</span></div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160; </div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;<span class="comment">// Declare meta types</span></div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;Q_DECLARE_METATYPE(<a class="code" href="classNOTAM_1_1Notam.html">NOTAM::Notam</a>)</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160; </div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;QGeoCoordinate interpretNOTAMCoordinates(<span class="keyword">const</span> QString&amp; <span class="keywordtype">string</span>);</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160; </div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;QDataStream&amp; operator&lt;&lt;(QDataStream&amp; stream, <span class="keyword">const</span> <a class="code" href="classNOTAM_1_1Notam.html">NOTAM::Notam</a> &amp;notam);</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160; </div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;QDataStream&amp; operator&gt;&gt;(QDataStream&amp; stream, <a class="code" href="classNOTAM_1_1Notam.html">NOTAM::Notam</a>&amp; notam);</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160; </div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;} <span class="comment">// namespace NOTAM</span></div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160; </div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;<span class="comment">// Declare meta types</span></div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;Q_DECLARE_METATYPE(<a class="code" href="classNOTAM_1_1Notam.html">NOTAM::Notam</a>)</div>
 <div class="ttc" id="aclassNOTAM_1_1Notam_html"><div class="ttname"><a href="classNOTAM_1_1Notam.html">NOTAM::Notam</a></div><div class="ttdoc">This extremely simple class holds a the data item of a NOTAM.</div><div class="ttdef"><b>Definition:</b> <a href="Notam_8h_source.html#l00033">Notam.h:33</a></div></div>
 <div class="ttc" id="aclassNOTAM_1_1Notam_html_a2196c1587de48dfa2db70100c60bfb04"><div class="ttname"><a href="classNOTAM_1_1Notam.html#a2196c1587de48dfa2db70100c60bfb04">NOTAM::Notam::effectiveStart</a></div><div class="ttdeci">QDateTime effectiveStart</div><div class="ttdoc">Effective start of the Notam, if date is given.</div><div class="ttdef"><b>Definition:</b> <a href="Notam_8h_source.html#l00048">Notam.h:79</a></div></div>
 <div class="ttc" id="aclassNOTAM_1_1Notam_html_a5c8cfa286eb6461d6e20f6a1c0312c8d"><div class="ttname"><a href="classNOTAM_1_1Notam.html#a5c8cfa286eb6461d6e20f6a1c0312c8d">NOTAM::Notam::effectiveStart</a></div><div class="ttdeci">Q_REQUIRED_RESULT QDateTime effectiveStart() const</div><div class="ttdoc">Getter function for the property with the same name.</div><div class="ttdef"><b>Definition:</b> <a href="Notam_8h_source.html#l00120">Notam.h:120</a></div></div>

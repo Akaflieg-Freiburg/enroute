@@ -33,7 +33,7 @@ NOTAM::NotamList::NotamList(const QByteArray& jsonData, const QGeoCircle& region
 
     foreach(auto item, items)
     {
-        Notam notam(item.toObject());
+        Notam const notam(item.toObject());
 
         // Ignore invalid notams
         if (!notam.isValid())
@@ -179,24 +179,24 @@ NOTAM::NotamList NOTAM::NotamList::restricted(const GeoMaps::Waypoint& waypoint)
     }
 
     std::sort(result.m_notams.begin(), result.m_notams.end(),
-              [](const Notam& a, const Notam& b)
+              [](const Notam& first, const Notam& second)
     {
-        auto aRead = GlobalObject::notamProvider()->isRead(a.number());
-        auto bRead = GlobalObject::notamProvider()->isRead(b.number());
+        auto aRead = GlobalObject::notamProvider()->isRead(first.number());
+        auto bRead = GlobalObject::notamProvider()->isRead(second.number());
         if (aRead != bRead)
         {
             return !aRead;
         }
 
         auto cur = QDateTime::currentDateTime();
-        auto a_effectiveStart = qMax(a.effectiveStart(), cur);
-        auto b_effectiveStart = qMax(b.effectiveStart(), cur);
+        auto a_effectiveStart = qMax(first.effectiveStart(), cur);
+        auto b_effectiveStart = qMax(second.effectiveStart(), cur);
 
         if (a_effectiveStart != b_effectiveStart)
         {
             return a_effectiveStart < b_effectiveStart;
         }
-        return a.effectiveEnd() < b.effectiveEnd();
+        return first.effectiveEnd() < second.effectiveEnd();
     });
 
     return result;

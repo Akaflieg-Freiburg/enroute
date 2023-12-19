@@ -337,7 +337,7 @@ void NOTAM::NotamProvider::downloadFinished()
         auto region = networkReply->property("area").value<QGeoCircle>();
         auto data = networkReply->readAll();
         networkReply->deleteLater();
-        NotamList notamList(data, region, &m_cancelledNotamNumbers);
+        NotamList const notamList(data, region, &m_cancelledNotamNumbers);
         m_notamLists.prepend(notamList);
         newDataAdded = true;
     }
@@ -384,7 +384,7 @@ void NOTAM::NotamProvider::updateData()
         foreach(auto leg, route->legs())
         {
             QGeoCoordinate startPoint = leg.startPoint().coordinate();
-            QGeoCoordinate endPoint = leg.endPoint().coordinate();
+            QGeoCoordinate const endPoint = leg.endPoint().coordinate();
             if (!startPoint.isValid() || !endPoint.isValid())
             {
                 continue;
@@ -480,9 +480,9 @@ void NOTAM::NotamProvider::startRequest(const QGeoCoordinate& coordinate)
     {
         return;
     }
-    auto ID = globalSettings()->FAA_ID();
-    auto KEY = globalSettings()->FAA_KEY();
-    if (ID.isEmpty() || KEY.isEmpty())
+    auto FAA_ID = globalSettings()->FAA_ID();
+    auto FAA_KEY = globalSettings()->FAA_KEY();
+    if (FAA_ID.isEmpty() || FAA_KEY.isEmpty())
     {
         return;
     }
@@ -496,8 +496,8 @@ void NOTAM::NotamProvider::startRequest(const QGeoCoordinate& coordinate)
             .arg(coordinate.latitude())
             .arg(1.2*requestRadius.toNM());
     QNetworkRequest request( urlString );
-    request.setRawHeader("client_id", ID.toLatin1());
-    request.setRawHeader("client_secret", KEY.toLatin1());
+    request.setRawHeader("client_id", FAA_ID.toLatin1());
+    request.setRawHeader("client_secret", FAA_KEY.toLatin1());
 
     auto* reply = GlobalObject::networkAccessManager()->get(request);
     reply->setProperty("area", QVariant::fromValue(QGeoCircle(coordinate, requestRadius.toM())) );

@@ -33,12 +33,20 @@ jobs:
         plugins: appimage
     - name: Install Additional Software
       run: |
+<<<<<<< HEAD
         sudo apt install appstream extra-cmake-modules fuse libxcb-cursor0 libzip-dev ninja-build spirv-tools zipcmp zipmerge ziptool
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: linux
     - name: Compile EnrouteDependencies
+=======
+        sudo apt install extra-cmake-modules ninja-build spirv-tools
+    - name: Remove GCC 13 to avoid conflicts with Clang
+      run: |
+        sudo apt remove gcc-13 g++-13 libgcc-13-dev libstdc++-13-dev
+    - name: Compile QtLocation
+>>>>>>> main
       run: |
         Qt6_DIR_BASE=$(dirname "$Qt6_DIR") ./buildscript-linux.sh
         cp -prdv Qt/* $Qt6_DIR/../..

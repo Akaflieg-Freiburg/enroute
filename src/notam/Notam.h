@@ -184,6 +184,7 @@ private:
     QString         m_icaoLocation;
     QString         m_number;
     Units::Distance m_radius;
+    QString         m_schedule;
     QString         m_text;
     QString         m_traffic;
 

@@ -28,9 +28,9 @@
 // Static objects
 
 // In cancel notams the text starts as "A0029/23 NOTAMC A0027/23"
-QRegularExpression cancelNotamStart(u"^[A-Z]\\d{4}/\\d{2} NOTAMC [A-Z]\\d{4}/\\d{2}"_qs);
+const QRegularExpression cancelNotamStart(u"^[A-Z]\\d{4}/\\d{2} NOTAMC [A-Z]\\d{4}/\\d{2}"_qs);
 
-QList<std::pair<QRegularExpression, QString>> contractions
+const QList<std::pair<QRegularExpression, QString>> contractions
 {
     {QRegularExpression(u"\\bU/S\\b"_qs), u"UNSERVICEABLE"_qs}, // MUST COME BEFORE SOUTH
 
@@ -116,6 +116,11 @@ NOTAM::Notam::Notam(const QJsonObject& jsonObject)
     m_effectiveEnd = QDateTime::fromString(m_effectiveEndString, Qt::ISODate);
     m_effectiveStart = QDateTime::fromString(m_effectiveStartString, Qt::ISODate);
     m_region = QGeoCircle(m_coordinates, qMax( Units::Distance::fromNM(1).toM(), m_radius.toM() ));
+
+    if (notamObject.contains(u"schedule"_qs))
+    {
+        m_schedule = notamObject[u"schedule"_qs].toString();
+    }
 }
 
 
@@ -189,6 +194,11 @@ QString NOTAM::Notam::richText() const
         result += u"<strong>%1</strong>"_qs.arg(effectiveEndString);
     }
 
+    if (!m_schedule.isEmpty())
+    {
+        result += u"<strong>Schedule %1</strong>"_qs.arg(m_schedule);
+    }
+
     if (GlobalObject::globalSettings()->expandNotamAbbreviations())
     {
         QString tmp = m_text;
@@ -219,7 +229,7 @@ QGeoCoordinate NOTAM::interpretNOTAMCoordinates(const QString& string)
         return {};
     }
 
-    bool ok;
+    bool ok {false};
     auto latD = string.left(2).toDouble(&ok);
     if (!ok)
     {
@@ -253,7 +263,7 @@ QGeoCoordinate NOTAM::interpretNOTAMCoordinates(const QString& string)
         lon *= -1.0;
     }
 
-    return QGeoCoordinate(lat, lon);
+    return {lat, lon};
 }
 
 
@@ -268,6 +278,7 @@ QDataStream& NOTAM::operator<<(QDataStream& stream, const NOTAM::Notam& notam)
     stream << notam.m_number;
     stream << notam.m_radius;
     stream << notam.m_region;
+    stream << notam.m_schedule;
     stream << notam.m_text;
     stream << notam.m_traffic;
 
@@ -286,6 +297,7 @@ QDataStream& NOTAM::operator>>(QDataStream& stream, NOTAM::Notam& notam)
     stream >> notam.m_number;
     stream >> notam.m_radius;
     stream >> notam.m_region;
+    stream >> notam.m_schedule;
     stream >> notam.m_text;
     stream >> notam.m_traffic;
 

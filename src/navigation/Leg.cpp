@@ -159,9 +159,9 @@ auto Navigation::Leg::WCA(Weather::Wind wind, const Navigation::Aircraft& aircra
         return {};
     }
 
-    Units::Speed TAS = aircraft.cruiseSpeed();
-    Units::Speed WS  = wind.speed();
-    Units::Angle WD  = wind.directionFrom();
+    Units::Speed const TAS = aircraft.cruiseSpeed();
+    Units::Speed const WS = wind.speed();
+    Units::Angle const WD = wind.directionFrom();
 
     // Law of sine for wind triangle
     return Units::Angle::asin(-(TC()-WD).sin() *(WS/TAS));
@@ -184,7 +184,7 @@ auto Navigation::Leg::description(Weather::Wind wind, const Navigation::Aircraft
     if (qIsFinite(TCInDEG)) {
         result += QStringLiteral(" • TC %1°").arg(qRound(TCInDEG));
     }
-    double THInDEG = TH(wind, aircraft).toDEG();
+    double const THInDEG = TH(wind, aircraft).toDEG();
     if (qIsFinite(THInDEG)) {
         result += QStringLiteral(" • TH %1°").arg(qRound(THInDEG));
     }

@@ -229,7 +229,7 @@ namespace Navigation
          *  Inserts the waypoint into the route, at the place that minimizes the
          *  overall route length. If canInsert() is false, this method does nothing.
          *
-         * @param waypoimt Waypoint to be inserted.
+         * @param waypoint Waypoint to be inserted.
          */
         Q_INVOKABLE void insert(const GeoMaps::Waypoint& waypoint);
 
@@ -251,7 +251,9 @@ namespace Navigation
          * method detects waypoints (such as airfields) by looking at the
          * coordinates.
          *
-         * @param fileName File name, needs to include path and extension
+         * @param fileName File name, needs to include path and extension.
+         * URLs of the form "file://path" are accepted.  Under Android, content
+         * URLs are also accepted.
          *
          * @returns Empty string in case of success, human-readable, translated
          * error message otherwise.

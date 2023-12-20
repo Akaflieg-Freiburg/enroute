@@ -297,7 +297,7 @@ public:
 
     /*! Find a waypoint by its ICAO code
      *
-     * @param id ICAO code of the waypoint, such as "EDDF" for Frankfurt
+     * @param icaoID ICAO code of the waypoint, such as "EDDF" for Frankfurt
      *
      * @returns a nullpointer if no waypoint has been found, or else a pointer
      * to the waypoint. The object is owned by this class

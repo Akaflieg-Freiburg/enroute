@@ -190,7 +190,7 @@ public:
      * entries whose name approximately contain the filter string.  For
      * instance, "Zürich" is supposed to contain "u", "Ü" and "ù"
      *
-     * @param in QStringList that is to be filtered
+     * @param input QStringList that is to be filtered
      *
      * @param filter Filter
      *

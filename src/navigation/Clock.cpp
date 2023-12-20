@@ -52,7 +52,7 @@ auto Navigation::Clock::describeTimeDifference(const QDateTime& pointInTime) -> 
 {
     auto minutes = qRound( ((double)QDateTime::currentDateTime().secsTo(pointInTime))/60.0);
 
-    bool past = minutes < 0;
+    bool const past = minutes < 0;
     minutes = qAbs(minutes);
 
     if (minutes == 0) {
@@ -105,8 +105,8 @@ auto Navigation::Clock::describePointInTime(QDateTime pointInTime) -> QString
 
 void Navigation::Clock::setSingleShotTimer()
 {
-    QTime current = QDateTime::currentDateTime().time();
-    int msecsToNextMinute = 60*1000 - (current.msecsSinceStartOfDay() % (60*1000));
+    QTime const current = QDateTime::currentDateTime().time();
+    int const msecsToNextMinute = 60 * 1000 - (current.msecsSinceStartOfDay() % (60 * 1000));
     QTimer::singleShot(msecsToNextMinute+500, this, &Clock::timeChanged);
     if (current.msecsSinceStartOfDay() < 1000*60) {
         emit dateChanged();

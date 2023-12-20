@@ -37,7 +37,7 @@ Navigation::Navigator::Navigator(QObject *parent) : GlobalObject(parent)
     m_aircraftFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/aircraft.json";
 
     // Restore wind
-    QSettings settings;
+    QSettings const settings;
     m_wind.setSpeed(Units::Speed::fromKN(settings.value(QStringLiteral("Wind/windSpeedInKT"), qQNaN()).toDouble()));
     m_wind.setDirectionFrom( Units::Angle::fromDEG(settings.value(QStringLiteral("Wind/windDirectionInDEG"), qQNaN()).toDouble()) );
 
@@ -282,7 +282,7 @@ void Navigation::Navigator::updateRemainingRouteInfo()
     //
     RemainingRouteInfo rri;
     rri.status = RemainingRouteInfo::OnRoute;
-    Leg legToNextWP(info.coordinate(), legs[currentLeg].endPoint());
+    Leg const legToNextWP(info.coordinate(), legs[currentLeg].endPoint());
     auto dist = legToNextWP.distance();
     auto ETE = legToNextWP.ETE(m_wind, m_aircraft);
 

@@ -22,6 +22,7 @@ import QtPositioning
 import QtQml
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Dialogs
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -32,8 +33,8 @@ Page {
     id: flightRoutePage
     title: qsTr("Route and Wind")
 
-    property bool isIos: Qt.platform.os == "ios"
-    property bool isAndroid: Qt.platform.os == "android"
+    property bool isIos: Qt.platform.os === "ios"
+    property bool isAndroid: Qt.platform.os === "android"
     property bool isAndroidOrIos: isAndroid || isIos
     property angle staticAngle
     property speed staticSpeed
@@ -245,16 +246,44 @@ Page {
 
                 MenuItem {
                     text: qsTr("Import…")
-                    enabled: !isAndroidOrIos
-                    visible: !isAndroidOrIos
-                    height: !isAndroidOrIos ? undefined : 0
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
 
-                        FileExchange.importContent()
+                        //FileExchange.importContent()
+                        importFileDialog.open()
                     }
+
+                    FileDialog {
+                        id: importFileDialog
+
+                        acceptLabel: qsTr("Import")
+                        rejectLabel: qsTr("Cancel")
+
+                        fileMode: FileDialog.OpenFile
+
+                        // Setting a non-trivial name filter on Android means we cannot select any
+                        // files at all.
+                        nameFilters: Qt.platform.os === "android" ? undefined : [qsTr("Flight Routes (*.geojson *.gpx *.json)")]
+
+                        onAccepted: {
+                            var errorString = Navigator.flightRoute.load(selectedFile)
+                            if (errorString !== "")
+                            {
+                                Global.dialogLoader.active = false
+                                Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {title: qsTr("File Import Error"),
+                                                                  text: errorString,
+                                                                  standardButtons: Dialog.Ok})
+                                Global.dialogLoader.active = true
+                            }
+                            else
+                            {
+                                toast.doToast(qsTr("Flight Route Imported"))
+                            }
+                        }
+                    }
+
                 }
 
                 AutoSizingMenu {

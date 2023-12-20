@@ -229,9 +229,9 @@ namespace Navigation
          *  Inserts the waypoint into the route, at the place that minimizes the
          *  overall route length. If canInsert() is false, this method does nothing.
          *
-         * @param wp Waypoint to be inserted.
+         * @param waypoimt Waypoint to be inserted.
          */
-        Q_INVOKABLE void insert(const GeoMaps::Waypoint& wp);
+        Q_INVOKABLE void insert(const GeoMaps::Waypoint& waypoint);
 
         /*! \brief Index for last occurrence of the waypoint in the flight route
          *

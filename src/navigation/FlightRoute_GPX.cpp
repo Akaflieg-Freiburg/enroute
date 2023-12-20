@@ -30,7 +30,8 @@ auto Navigation::FlightRoute::toGpx() const -> QByteArray
 {
     // now in UTC, ISO 8601 alike
     //
-    QString now = QDateTime::currentDateTimeUtc().toString(QStringLiteral("yyyy-MM-dd HH:mm:ssZ"));
+    QString const now = QDateTime::currentDateTimeUtc().toString(
+        QStringLiteral("yyyy-MM-dd HH:mm:ssZ"));
 
     // gpx header
     //
@@ -112,7 +113,7 @@ auto Navigation::FlightRoute::gpxElements(const QString& indent, const QString& 
             continue; // skip silently
         }
 
-        QGeoCoordinate position = _waypoint.coordinate();
+        QGeoCoordinate const position = _waypoint.coordinate();
         auto code = _waypoint.ICAOCode();
         auto name = _waypoint.extendedName();
 
@@ -143,34 +144,41 @@ auto Navigation::FlightRoute::gpxElements(const QString& indent, const QString& 
 
 auto Navigation::FlightRoute::load(const QString& fileName) -> QString
 {
-    auto result = GeoMaps::GPX::read(fileName);
+    QString myFileName = fileName;
+    if (fileName.startsWith(u"file://"_qs))
+    {
+        myFileName = fileName.mid(7);
+    }
+
+
+    auto result = GeoMaps::GPX::read(myFileName);
     if (result.isEmpty())
     {
-        result = GeoMaps::GeoJSON::read(fileName);
+        result = GeoMaps::GeoJSON::read(myFileName);
     }
     if (result.isEmpty())
     {
-        return tr("Error reading file '%1'").arg(fileName);
+        return tr("Error reading file '%1'").arg(myFileName);
     }
     if (result.length() > 100)
     {
-        return tr("The file '%1' contains too many waypoints. Flight routes with more than 100 waypoints are not supported.").arg(fileName);
+        return tr("The file '%1' contains too many waypoints. Flight routes with more than 100 waypoints are not supported.").arg(myFileName);
     }
 
     m_waypoints.clear();
-    foreach(auto wp, result)
+    foreach(auto waypoint, result)
     {
-        if (!wp.isValid())
+        if (!waypoint.isValid())
         {
             continue;
         }
 
-        auto pos = wp.coordinate();
+        auto pos = waypoint.coordinate();
         auto distPos = pos.atDistanceAndAzimuth(1000.0, 0.0, 0.0);
         auto nearest = GlobalObject::geoMapProvider()->closestWaypoint(pos, distPos);
         if (nearest.type() == u"WP")
         {
-            m_waypoints << wp;
+            m_waypoints << waypoint;
         }
         else
         {

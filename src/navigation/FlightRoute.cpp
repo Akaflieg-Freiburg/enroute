@@ -63,7 +63,7 @@ auto Navigation::FlightRoute::boundingRectangle() const -> QGeoRectangle
             continue;
         }
 
-        QGeoCoordinate position = _waypoint.coordinate();
+        QGeoCoordinate const position = _waypoint.coordinate();
         if (!bbox.isValid())
         {
             bbox.setTopLeft(position);
@@ -216,9 +216,9 @@ auto Navigation::FlightRoute::canInsert(const GeoMaps::Waypoint &other) const ->
     {
         return false;
     }
-    foreach(const auto& wp, m_waypoints)
+    foreach(const auto& waypoint, m_waypoints)
     {
-        if (wp.isNear(other))
+        if (waypoint.isNear(other))
         {
             return false;
         }
@@ -250,9 +250,9 @@ auto Navigation::FlightRoute::contains(const GeoMaps::Waypoint& waypoint) const 
     return false;
 }
 
-void Navigation::FlightRoute::insert(const GeoMaps::Waypoint& wp)
+void Navigation::FlightRoute::insert(const GeoMaps::Waypoint& waypoint)
 {
-    if (!canInsert(wp))
+    if (!canInsert(waypoint))
     {
         return;
     }
@@ -267,8 +267,8 @@ void Navigation::FlightRoute::insert(const GeoMaps::Waypoint& wp)
         {
             if (i == idx)
             {
-                routeSize += m_waypoints[i].coordinate().distanceTo(wp.coordinate());
-                routeSize += wp.coordinate().distanceTo(m_waypoints[i+1].coordinate());
+                routeSize += m_waypoints[i].coordinate().distanceTo(waypoint.coordinate());
+                routeSize += waypoint.coordinate().distanceTo(m_waypoints[i+1].coordinate());
             }
             else
             {
@@ -283,7 +283,7 @@ void Navigation::FlightRoute::insert(const GeoMaps::Waypoint& wp)
         }
     }
 
-    m_waypoints.insert(shortestIndex+1, wp);
+    m_waypoints.insert(shortestIndex+1, waypoint);
     updateLegs();
     emit waypointsChanged();
 }

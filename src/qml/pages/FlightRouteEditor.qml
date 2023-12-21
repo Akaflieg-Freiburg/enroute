@@ -245,6 +245,8 @@ Page {
                 MenuSeparator { }
 
                 MenuItem {
+                    id: menuImport
+
                     text: qsTr("Import…")
 
                     onTriggered: {
@@ -267,21 +269,48 @@ Page {
                         // files at all.
                         nameFilters: Qt.platform.os === "android" ? undefined : [qsTr("Flight Routes (*.geojson *.gpx *.json)")]
 
-                        onAccepted: {
-                            var errorString = Navigator.flightRoute.load(selectedFile)
-                            if (errorString !== "")
-                            {
-                                Global.dialogLoader.active = false
-                                Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {title: qsTr("File Import Error"),
-                                                                  text: errorString,
-                                                                  standardButtons: Dialog.Ok})
-                                Global.dialogLoader.active = true
-                            }
+                        onAccepted: { 
+                            if (Navigator.flightRoute.size > 0)
+                                overwriteDialog.open()
                             else
-                            {
-                                toast.doToast(qsTr("Flight Route Imported"))
-                            }
+                                menuImport.importFile()
                         }
+                    }
+
+                    LongTextDialog {
+                        id: overwriteDialog
+
+                        title: qsTr("Overwrite Current Flight Route?")
+                        standardButtons: Dialog.No | Dialog.Yes
+
+                        text: qsTr("Importing the route will overwrite the current route. Once overwritten, the current flight route cannot be restored.")
+
+                        onAccepted: {
+                            PlatformAdaptor.vibrateBrief()
+                            menuImport.importFile()
+                            close()
+                        }
+                        onRejected: {
+                            PlatformAdaptor.vibrateBrief()
+                            close()
+                        }
+                    }
+
+                    function importFile() {
+                        var errorString = Navigator.flightRoute.load(importFileDialog.selectedFile)
+                        if (errorString !== "")
+                        {
+                            Global.dialogLoader.active = false
+                            Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {title: qsTr("File Import Error"),
+                                                              text: errorString,
+                                                              standardButtons: Dialog.Ok})
+                            Global.dialogLoader.active = true
+                        }
+                        else
+                        {
+                            toast.doToast(qsTr("Flight Route Imported"))
+                        }
+
                     }
 
                 }

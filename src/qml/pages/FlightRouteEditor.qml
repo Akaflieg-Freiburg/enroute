@@ -252,8 +252,6 @@ Page {
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
-
-                        //FileExchange.importContent()
                         importFileDialog.open()
                     }
 
@@ -269,7 +267,16 @@ Page {
                         // files at all.
                         nameFilters: Qt.platform.os === "android" ? undefined : [qsTr("Flight Routes (*.geojson *.gpx *.json)")]
 
-                        onAccepted: menuImport.importFileOverwriteWarning()
+                        onAccepted: {
+                            PlatformAdaptor.vibrateBrief()
+                            if (Navigator.flightRoute.size === 0)
+                                menuImport.importFile()
+                            overwriteDialog.open()
+                        }
+                        onRejected: {
+                            PlatformAdaptor.vibrateBrief()
+                            close()
+                        }
                     }
 
                     LongTextDialog {
@@ -291,30 +298,23 @@ Page {
                         }
                     }
 
-                    function importFileOverwriteWarning() {
-                        if (Navigator.flightRoute.size > 0)
-                            overwriteDialog.open()
-                        else
-                            menuImport.importFile()
-                    }
-
                     function importFile() {
                         var errorString = Navigator.flightRoute.load(importFileDialog.selectedFile)
                         if (errorString !== "")
                         {
                             Global.dialogLoader.active = false
-                            Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {title: qsTr("File Import Error"),
+                            Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {
+                                                              title: qsTr("File Import Error"),
                                                               text: errorString,
-                                                              standardButtons: Dialog.Ok})
+                                                              standardButtons: Dialog.Ok
+                                                          })
                             Global.dialogLoader.active = true
                         }
                         else
                         {
-                            toast.doToast(qsTr("Flight Route Imported"))
+                            Global.toast.doToast(qsTr("Flight Route Imported"))
                         }
-
                     }
-
                 }
 
                 AutoSizingMenu {

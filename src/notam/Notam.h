@@ -155,7 +155,7 @@ public:
      *
      *  @returns True on equality.
      */
-    Q_REQUIRED_RESULT Q_INVOKABLE [[nodiscard]] bool operator==(const NOTAM::Notam& rhs) const = default;
+    Q_REQUIRED_RESULT [[nodiscard]] Q_INVOKABLE bool operator==(const NOTAM::Notam& rhs) const = default;
 
     /*! \brief Check if effectiveEnd is valid and earlier than currentTime
      *
@@ -184,6 +184,7 @@ private:
     QString         m_icaoLocation;
     QString         m_number;
     Units::Distance m_radius;
+    QString         m_schedule;
     QString         m_text;
     QString         m_traffic;
 

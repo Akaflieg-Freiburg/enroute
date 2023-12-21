@@ -269,12 +269,7 @@ Page {
                         // files at all.
                         nameFilters: Qt.platform.os === "android" ? undefined : [qsTr("Flight Routes (*.geojson *.gpx *.json)")]
 
-                        onAccepted: { 
-                            if (Navigator.flightRoute.size > 0)
-                                overwriteDialog.open()
-                            else
-                                menuImport.importFile()
-                        }
+                        onAccepted: menuImport.importFileOverwriteWarning()
                     }
 
                     LongTextDialog {
@@ -294,6 +289,13 @@ Page {
                             PlatformAdaptor.vibrateBrief()
                             close()
                         }
+                    }
+
+                    function importFileOverwriteWarning() {
+                        if (Navigator.flightRoute.size > 0)
+                            overwriteDialog.open()
+                        else
+                            menuImport.importFile()
                     }
 
                     function importFile() {

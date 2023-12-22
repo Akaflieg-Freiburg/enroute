@@ -129,6 +129,7 @@ namespace Navigation
          */
         Q_PROPERTY(QList<GeoMaps::Waypoint> waypoints READ waypoints NOTIFY waypointsChanged)
 
+
         //
         // Getter Methods
         //

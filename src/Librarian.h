@@ -164,6 +164,18 @@ public:
      */
     Q_INVOKABLE static Units::ByteSize getStringHashFromRessource(const QString& name);
 
+    /*! \brief Import a file into a library
+     *
+     * This method imports a file into a library.
+     *
+     * @param library The library to import the file. At the moment, only routs is supported.
+     *
+     * @param fileName Full file name
+     *
+     * @returns An empty string in case of success, or else a human-readable, translated error message.
+     */
+    [[nodiscard]] Q_INVOKABLE static QString import(Librarian::Library library, const QString& fileName) ;
+
     /*! \brief Removes an entry from a library
      *
      *  @param library The library that is accessed

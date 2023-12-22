@@ -307,6 +307,51 @@ auto Librarian::fullPath(Librarian::Library library, const QString &baseName) ->
 }
 
 
+QString Librarian::import(Librarian::Library library, const QString& fileName)
+{
+    if (library != Librarian::Routes)
+    {
+        return u"Importing into libraries other than routs is not yet implemented."_qs;
+    }
+
+    QString myFileName = fileName;
+    if (fileName.startsWith(u"file://"_qs))
+    {
+        myFileName = fileName.mid(7);
+    }
+
+    Navigation::FlightRoute route;
+    auto errorMsg = route.load(myFileName);
+    if (!errorMsg.isEmpty())
+    {
+        return errorMsg;
+    }
+
+    auto baseName = QFileInfo(myFileName).baseName();
+    auto savePath = fullPath(library, baseName);
+    if (QFile::exists(savePath))
+    {
+        for(int i=1; ; i++)
+        {
+            auto newBaseName = u"%1 (%2)"_qs.arg(baseName).arg(i);
+            savePath = fullPath(library, newBaseName);
+            if (!QFile::exists(savePath))
+            {
+                break;
+            }
+        }
+    }
+
+    errorMsg = route.save(savePath);
+    if (!errorMsg.isEmpty())
+    {
+        return errorMsg;
+    }
+
+    return {};
+}
+
+
 void Librarian::remove(Librarian::Library library, const QString& baseName) 
 {
     QFile::remove(fullPath(library, baseName));

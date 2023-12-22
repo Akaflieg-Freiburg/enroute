@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QQmlEngine>
+#include <QStandardPaths>
 
 #include "FlightRoute.h"
 #include "GlobalObject.h"
@@ -211,7 +212,10 @@ private:
     FlightStatus m_flightStatus {Unknown};
 
     Aircraft m_aircraft {};
+
     QPointer<FlightRoute> m_flightRoute {nullptr};
+    const QString m_flightRouteFileName {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/flight route.geojson"};
+
     Weather::Wind m_wind {};
 
     QString m_aircraftFileName;

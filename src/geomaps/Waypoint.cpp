@@ -363,11 +363,11 @@ auto GeoMaps::Waypoint::twoLineTitle() const -> QString
 }
 
 
-auto GeoMaps::qHash(const GeoMaps::Waypoint& wp) -> size_t
+size_t GeoMaps::qHash(const GeoMaps::Waypoint& waypoint)
 {
-    auto result = qHash(wp.m_coordinate);
+    auto result = qHash(waypoint.m_coordinate);
 
-    QMapIterator<QString, QVariant> i(wp.m_properties);
+    QMapIterator<QString, QVariant> i(waypoint.m_properties);
     while (i.hasNext()) {
         i.next();
         result += qHash(i.key())+1;

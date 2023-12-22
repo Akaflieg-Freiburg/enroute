@@ -24,7 +24,6 @@
 #include "FlightRoute.h"
 #include "geomaps/GPX.h"
 #include "geomaps/GeoJSON.h"
-#include "geomaps/GeoMapProvider.h"
 
 auto Navigation::FlightRoute::toGpx() const -> QByteArray
 {
@@ -140,54 +139,4 @@ auto Navigation::FlightRoute::gpxElements(const QString& indent, const QString& 
     }
 
     return gpx;
-}
-
-auto Navigation::FlightRoute::load(const QString& fileName) -> QString
-{
-    QString myFileName = fileName;
-    if (fileName.startsWith(u"file://"_qs))
-    {
-        myFileName = fileName.mid(7);
-    }
-
-
-    auto result = GeoMaps::GPX::read(myFileName);
-    if (result.isEmpty())
-    {
-        result = GeoMaps::GeoJSON::read(myFileName);
-    }
-    if (result.isEmpty())
-    {
-        return tr("Error reading file '%1'").arg(myFileName);
-    }
-    if (result.length() > 100)
-    {
-        return tr("The file '%1' contains too many waypoints. Flight routes with more than 100 waypoints are not supported.").arg(myFileName);
-    }
-
-    m_waypoints.clear();
-    foreach(auto waypoint, result)
-    {
-        if (!waypoint.isValid())
-        {
-            continue;
-        }
-
-        auto pos = waypoint.coordinate();
-        auto distPos = pos.atDistanceAndAzimuth(1000.0, 0.0, 0.0);
-        auto nearest = GlobalObject::geoMapProvider()->closestWaypoint(pos, distPos);
-        if (nearest.type() == u"WP")
-        {
-            m_waypoints << waypoint;
-        }
-        else
-        {
-            m_waypoints << nearest;
-        }
-
-    }
-
-    updateLegs();
-    emit waypointsChanged();
-    return {};
 }

@@ -347,11 +347,6 @@ namespace Navigation
         void summaryChanged();
 
     private slots:
-        // Saves the route into the file stdFileName. This slot is called
-        // whenever the route changes, so that the file will always contain the
-        // current route.
-        void saveToStdLocation() { (void)save(stdFileName); };
-
         void updateLegs();
 
     private:
@@ -359,12 +354,6 @@ namespace Navigation
 
         // Helper function for method toGPX
         [[nodiscard]] auto gpxElements(const QString& indent, const QString& tag) const -> QString;
-
-        // File name where the flight route is loaded upon startup are stored.
-        // This member is filled in in the constructor to
-        // QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +
-        // "/flight route.geojson"
-        QString stdFileName;
 
         QVector<GeoMaps::Waypoint> m_waypoints;
 

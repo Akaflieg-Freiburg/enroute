@@ -24,6 +24,8 @@
 #include "FlightRoute.h"
 #include "GlobalObject.h"
 #include "geomaps/GeoJSON.h"
+#include "geomaps/GeoMapProvider.h"
+#include "geomaps/GPX.h"
 #include "navigation/Navigator.h"
 
 
@@ -34,14 +36,6 @@
 Navigation::FlightRoute::FlightRoute(QObject *parent)
     : QObject(parent)
 {
-
-    stdFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/flight route.geojson";
-
-    // Load last flightRoute
-    m_waypoints = GeoMaps::GeoJSON::read(stdFileName);
-    updateLegs();
-
-    connect(this, &FlightRoute::waypointsChanged, this, &Navigation::FlightRoute::saveToStdLocation);
     connect(this, &FlightRoute::waypointsChanged, this, &Navigation::FlightRoute::summaryChanged);
     connect(GlobalObject::navigator(), &Navigation::Navigator::aircraftChanged, this, &Navigation::FlightRoute::summaryChanged);
     connect(GlobalObject::navigator(), &Navigation::Navigator::windChanged, this, &Navigation::FlightRoute::summaryChanged);
@@ -305,6 +299,56 @@ auto Navigation::FlightRoute::lastIndexOf(const GeoMaps::Waypoint& waypoint) con
     }
     return -1;
 
+}
+
+auto Navigation::FlightRoute::load(const QString& fileName) -> QString
+{
+    QString myFileName = fileName;
+    if (fileName.startsWith(u"file://"_qs))
+    {
+        myFileName = fileName.mid(7);
+    }
+
+
+    auto result = GeoMaps::GPX::read(myFileName);
+    if (result.isEmpty())
+    {
+        result = GeoMaps::GeoJSON::read(myFileName);
+    }
+    if (result.isEmpty())
+    {
+        return tr("Error reading file '%1'").arg(myFileName);
+    }
+    if (result.length() > 100)
+    {
+        return tr("The file '%1' contains too many waypoints. Flight routes with more than 100 waypoints are not supported.").arg(myFileName);
+    }
+
+    m_waypoints.clear();
+    foreach(auto waypoint, result)
+    {
+        if (!waypoint.isValid())
+        {
+            continue;
+        }
+
+        auto pos = waypoint.coordinate();
+        auto distPos = pos.atDistanceAndAzimuth(1000.0, 0.0, 0.0);
+        auto nearest = GlobalObject::geoMapProvider()->closestWaypoint(pos, distPos);
+        if (nearest.type() == u"WP")
+        {
+            m_waypoints << waypoint;
+        }
+        else
+        {
+            m_waypoints << nearest;
+        }
+
+    }
+
+    updateLegs();
+    emit waypointsChanged();
+    return {};
 }
 
 void Navigation::FlightRoute::moveDown(int idx)

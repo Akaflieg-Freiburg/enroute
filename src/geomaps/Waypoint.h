@@ -43,7 +43,7 @@ class Waypoint
     QML_VALUE_TYPE(waypoint)
 
     /*! \brief qHash */
-    friend auto qHash(const GeoMaps::Waypoint& wp) -> size_t;
+    friend size_t qHash(const GeoMaps::Waypoint& waypoint);
 
 public:
     /*! \brief Constructs an invalid way point

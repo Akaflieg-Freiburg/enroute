@@ -365,9 +365,6 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         MACOSX_BUNDLE true
         MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/macos/Info.plist"
     )
-
-   # Not sure what this does
-   qmaplibre_location_copy_plugin(${PROJECT_NAME})
 endif()
 
 
@@ -389,6 +386,15 @@ if (IOS)
         ios/ObjectiveC.m
         ios/SafeAreaService.h
         ios/SafeAreaService.m
+
+        ios/maplibreDependencies/csscolorparser/csscolorparser.cpp
+        ios/maplibreDependencies/nunicode/src/libnu/tounaccent.c
+        ios/maplibreDependencies/nunicode/src/libnu/strcoll.c
+        ios/maplibreDependencies/nunicode/src/libnu/utf8.c
+        ios/maplibreDependencies/nunicode/src/libnu/ducet.c
+        ios/maplibreDependencies/nunicode/src/libnu/toupper.c
+        ios/maplibreDependencies/parsedate/parsedate.cpp
+
     )
 
     # Compile definitions
@@ -403,6 +409,7 @@ if (IOS)
         Qt6::Core
         Qt6::Core5Compat
         Qt6::HttpServer
+        Qt6::Location
         Qt6::Positioning
         Qt6::Quick
         Qt6::QuickControls2
@@ -411,15 +418,21 @@ if (IOS)
         Qt6::Svg
         Qt6::TextToSpeech
         QMapLibre::Location
+        QMapLibre::PluginGeoServices
         libzip::zip
-    )
-    target_link_libraries(${PROJECT_NAME} PRIVATE
-        "-framework UserNotifications"
-        #"-framework NotificationCenter"
     )
     set_target_properties(${PROJECT_NAME} PROPERTIES
         MACOSX_BUNDLE true
         MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/ios/Info.plist"
+    )
+
+    target_include_directories(${PROJECT_NAME}
+        PUBLIC
+        ios/mapLibreDependencies
+        ios/mapLibreDependencies/optional
+        ios/mapLibreDependencies/csscolorparser
+        ios/mapLibreDependencies/parsedate
+        ios/mapLibreDependencies/nunicode/include
     )
 
     #Resources
@@ -458,6 +471,7 @@ target_include_directories(${PROJECT_NAME}
     ui
     units
     weather
+    nunicode/include
 )
 
 set_source_files_properties(qml/items/Global.qml PROPERTIES QT_QML_SINGLETON_TYPE TRUE)

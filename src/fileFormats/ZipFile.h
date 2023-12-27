@@ -93,6 +93,7 @@ private:
     Q_DISABLE_COPY_MOVE(ZipFile)
 
     void* m_zip {nullptr};
+    QSharedPointer<QFile> m_file;
     QStringList m_fileNames;
     QList<qsizetype> m_fileSizes;
 };

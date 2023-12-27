@@ -1250,8 +1250,6 @@
         "text-halo-width": 1.2
       }
     },
-
-
     {
       "id": "FIS",
       "type": "line",
@@ -1666,8 +1664,6 @@
         "text-halo-color": "white"
       }
     },
-
-
     {
       "id": "PRC_DEP",
       "type": "line",
@@ -1741,8 +1737,6 @@
         "text-halo-color": "white"
       }
     },
-
-
     {
       "id": "optionalText",
       "type": "symbol",
@@ -1759,8 +1753,7 @@
         "text-halo-width": 2,
         "text-halo-color": "white"
         } 
-      },
-
+    },
     {
       "id": "WPs",
       "type": "symbol",
@@ -1778,7 +1771,7 @@
         "text-halo-width": 2,
         "text-halo-color": "white"
         }
-      },
+    },
     {
       "id": "RPs",
       "type": "symbol",
@@ -1797,7 +1790,7 @@
         "text-halo-width": 2,
         "text-halo-color": "white"
         }
-      },
+    },
     {
       "id": "AD-GRASS",
       "type": "symbol",
@@ -1817,7 +1810,7 @@
         "text-halo-width": 2,
         "text-halo-color": "white"
         }
-      },
+    },
     {
         "id": "NavAidIcons",
         "type": "symbol",
@@ -1828,7 +1821,7 @@
           "icon-ignore-placement": true,
           "icon-allow-overlap": true
           }
-      },
+    },
     {
       "id": "AD-PAVED",
       "type": "symbol",
@@ -1848,8 +1841,8 @@
         "text-halo-width": 2,
         "text-halo-color": "white"
         }
-      },
-      {
+    },
+    {
       "id": "apch",
       "type": "raster",
       "source": "approach",

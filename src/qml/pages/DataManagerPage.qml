@@ -20,6 +20,7 @@
 
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Dialogs
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -131,6 +132,46 @@ Page {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
                         DataManager.items.update()
+                    }
+                }
+
+                MenuSeparator { }
+
+                MenuItem {
+                    id: menuImport
+
+                    text: qsTr("Import…")
+
+                    onTriggered: {
+                        PlatformAdaptor.vibrateBrief()
+                        highlighted = false
+                        importFileDialog.open()
+                    }
+
+                    FileDialog {
+                        id: importFileDialog
+
+                        acceptLabel: qsTr("Import")
+                        rejectLabel: qsTr("Cancel")
+
+                        fileMode: FileDialog.OpenFile
+
+                        // Setting a non-trivial name filter on Android means we cannot select any
+                        // files at all.
+                        nameFilters: Qt.platform.os === "android" ? undefined : [qsTr("OpenAir Airspace Data (*.txt)"),
+                                                                                 qsTr("Raster and Vector Maps (*.mbtiles)"),
+                                                                                 qsTr("Trip Kits (*.zip)"),
+                                                                                 qsTr("Visual Approach Charts (*.tif *.tiff)")]
+
+                        onAccepted: {
+                            PlatformAdaptor.vibrateBrief()
+                            close()
+                            FileExchange.processFileOpenRequest(importFileDialog.selectedFile)
+                        }
+                        onRejected: {
+                            PlatformAdaptor.vibrateBrief()
+                            close()
+                        }
                     }
                 }
 

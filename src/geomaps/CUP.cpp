@@ -20,6 +20,7 @@
 
 #include <QFile>
 
+#include "fileFormats/DataFileAbstract.h"
 #include "geomaps/CUP.h"
 
 //
@@ -221,15 +222,14 @@ GeoMaps::Waypoint GeoMaps::CUP::readWaypoint(const QString &line)
 
 bool GeoMaps::CUP::isValid(const QString &fileName)
 {
-
-    QFile file(fileName);
-    auto success = file.open(QIODevice::ReadOnly);
+    auto file = FileFormats::DataFileAbstract::openFileURL(fileName);
+    auto success = file->open(QIODevice::ReadOnly);
     if (!success)
     {
         return {};
     }
 
-    QTextStream stream(&file);
+    QTextStream stream(file.data());
     QString line;
     stream.readLineInto(&line);
     stream.readLineInto(&line);
@@ -240,14 +240,14 @@ auto GeoMaps::CUP::read(const QString &fileName) -> QVector<GeoMaps::Waypoint>
 {
     QVector<GeoMaps::Waypoint> result;
 
-    QFile file(fileName);
-    auto success = file.open(QIODevice::ReadOnly);
+    auto file = FileFormats::DataFileAbstract::openFileURL(fileName);
+    auto success = file->open(QIODevice::ReadOnly);
     if (!success)
     {
         return {};
     }
 
-    QTextStream stream(&file);
+    QTextStream stream(file.data());
     QString line;
     stream.readLineInto(&line);
     while (stream.readLineInto(&line))

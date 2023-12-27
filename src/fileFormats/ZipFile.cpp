@@ -28,8 +28,10 @@
 
 FileFormats::ZipFile::ZipFile(const QString& fileName)
 {
+    m_file = openFileURL(fileName);
+
     int error = 0;
-    m_zip = zip_open(fileName.toUtf8().data(), ZIP_RDONLY, &error);
+    m_zip = zip_open(m_file->fileName().toUtf8().data(), ZIP_RDONLY, &error);
     if (m_zip == nullptr)
     {
         setError(QObject::tr("Cannot open zip file %1 for reading.", "FileFormats::ZipFile").arg(fileName));
@@ -71,6 +73,7 @@ FileFormats::ZipFile::~ZipFile()
         zip_close( static_cast<zip_t*>(m_zip));
         m_zip = nullptr;
     }
+    m_file.clear();
 }
 
 

@@ -52,19 +52,13 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QByteArray& p
 
 void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path)
 {
-    QString myPath;
-    if (path.startsWith(u"file:"))
-    {
-        QUrl const url(path.trimmed());
-        myPath = url.toLocalFile();
-    }
-    else
-    {
-        myPath = path;
-    }
+    auto file = FileFormats::DataFileAbstract::openFileURL(path);
+    const QString myPath = file->fileName();
 
     QMimeDatabase const dataBase;
-    auto mimeType = dataBase.mimeTypeForFile(myPath);
+    auto mimeType = dataBase.mimeTypeForData(file.data());
+
+    qWarning() << path << myPath << mimeType;
 
     /*
      * Check for various possible file formats/contents
@@ -73,7 +67,7 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     // Flight Route in GPX format
     if ((mimeType.inherits(QStringLiteral("application/xml"))) || (mimeType.name() == u"application/x-gpx+xml"))
     {
-        emit openFileRequest(myPath, {}, FlightRouteOrWaypointLibrary);
+        emit openFileRequest(path, {}, FlightRouteOrWaypointLibrary);
         return;
     }
 
@@ -81,17 +75,17 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     auto fileContent = GeoMaps::GeoJSON::inspect(myPath);
     if (fileContent == GeoMaps::GeoJSON::flightRoute)
     {
-        emit openFileRequest(myPath, {}, FlightRoute);
+        emit openFileRequest(path, {}, FlightRoute);
         return;
     }
     if (fileContent == GeoMaps::GeoJSON::waypointLibrary)
     {
-        emit openFileRequest(myPath, {}, WaypointLibrary);
+        emit openFileRequest(path, {}, WaypointLibrary);
         return;
     }
     if (fileContent == GeoMaps::GeoJSON::valid)
     {
-        emit openFileRequest(myPath, {}, FlightRouteOrWaypointLibrary);
+        emit openFileRequest(path, {}, FlightRouteOrWaypointLibrary);
         return;
     }
 
@@ -108,21 +102,21 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     GeoMaps::MBTILES mbtiles(myPath);
     if (mbtiles.format() == GeoMaps::MBTILES::Vector)
     {
-        emit openFileRequest(myPath, {}, VectorMap);
+        emit openFileRequest(path, {}, VectorMap);
         return;
     }
 
     // MBTiles containing a raster map
     if (mbtiles.format() == GeoMaps::MBTILES::Raster)
     {
-        emit openFileRequest(myPath, {}, RasterMap);
+        emit openFileRequest(path, {}, RasterMap);
         return;
     }
 
     // CUP file
     if (GeoMaps::CUP::isValid(myPath))
     {
-        emit openFileRequest(myPath, {}, WaypointLibrary);
+        emit openFileRequest(path, {}, WaypointLibrary);
         return;
     }
 
@@ -132,7 +126,7 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
         FileFormats::VAC const vac(myPath);
         if (vac.isValid())
         {
-            emit openFileRequest(myPath, vac.baseName(), VAC);
+            emit openFileRequest(path, vac.baseName(), VAC);
             return;
         }
     }
@@ -143,7 +137,7 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
         QImage const img(myPath);
         if (!img.isNull())
         {
-            emit openFileRequest(myPath, {}, Image);
+            emit openFileRequest(path, {}, Image);
             return;
         }
     }
@@ -154,7 +148,7 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
         FileFormats::TripKit const tripKit(myPath);
         if (tripKit.isValid())
         {
-            emit openFileRequest(myPath, tripKit.name(), TripKit);
+            emit openFileRequest(path, tripKit.name(), TripKit);
             return;
         }
     }
@@ -165,7 +159,7 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
         FileFormats::ZipFile const zipFile(myPath);
         if (zipFile.isValid())
         {
-            emit openFileRequest(myPath, {}, ZipFile);
+            emit openFileRequest(path, {}, ZipFile);
             return;
         }
     }
@@ -174,9 +168,9 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     QString info;
     if (GeoMaps::openAir::isValid(myPath, &info))
     {
-        emit openFileRequest(myPath, info, OpenAir);
+        emit openFileRequest(path, info, OpenAir);
         return;
     }
 
-    emit openFileRequest(myPath, {}, UnknownFunction);
+    emit openFileRequest(path, {}, UnknownFunction);
 }

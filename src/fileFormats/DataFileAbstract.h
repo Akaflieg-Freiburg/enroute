@@ -20,7 +20,9 @@
 
 #pragma once
 
+#include <QFile>
 #include <QObject>
+#include <QSharedPointer>
 
 namespace FileFormats
 {
@@ -81,6 +83,23 @@ public:
      */
     [[nodiscard]] QStringList warnings() const { return m_warnings; }
 
+
+
+    //
+    // Methods
+    //
+
+    /*! \brief Open file, file URL or Android content URL
+     *
+     *  This method opens a file. It handles file URLs and Android content URLs. The
+     *  latter are downloaded to a temporary file.
+     *
+     *  @param fileName A file name, a file URL or an Android content URL
+     *
+     *  @returns A shared pointer to a file, which is already open. The file might be a QTemporaryFile.
+     *  The file might have an error condition set.
+     */
+    [[nodiscard]] static QSharedPointer<QFile> openFileURL(const QString& fileName);
 
 protected:
     void addWarning(const QString& warning) { m_warnings += warning; }

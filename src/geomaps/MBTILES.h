@@ -20,8 +20,10 @@
 
 #pragma once
 
+#include <QFile>
 #include <QMap>
 #include <QObject>
+#include <QSharedPointer>
 
 namespace GeoMaps
 {
@@ -125,6 +127,7 @@ namespace GeoMaps
 
     // Name of the MBTILES file
     QString m_fileName;
+    QSharedPointer<QFile> m_file;
 
     // Name of the data base connection. This name is unique to each instance of
     // this class, and should therefore not be copied.

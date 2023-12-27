@@ -22,6 +22,7 @@
 #include <QJsonArray>
 #include <QJsonParseError>
 
+#include "fileFormats/DataFileAbstract.h"
 #include "geomaps/GeoJSON.h"
 
 //
@@ -30,17 +31,17 @@
 
 GeoMaps::GeoJSON::fileContent GeoMaps::GeoJSON::inspect(const QString& fileName)
 {
-    QFile file(fileName);
-    if (!file.open(QIODevice::ReadOnly))
+    auto file = FileFormats::DataFileAbstract::openFileURL(fileName);
+    if (!file->open(QIODevice::ReadOnly))
     {
         return GeoMaps::GeoJSON::invalid;
     }
-    auto fileContent = file.readAll();
+    auto fileContent = file->readAll();
     if (fileContent.isEmpty())
     {
         return GeoMaps::GeoJSON::invalid;
     }
-    file.close();
+    file->close();
 
     QJsonParseError parseError{};
     auto document = QJsonDocument::fromJson(fileContent, &parseError);
@@ -76,17 +77,17 @@ GeoMaps::GeoJSON::fileContent GeoMaps::GeoJSON::inspect(const QString& fileName)
 
 auto GeoMaps::GeoJSON::read(const QString &fileName) -> QVector<GeoMaps::Waypoint>
 {
-    QFile file(fileName);
-    if (!file.open(QIODevice::ReadOnly))
+    auto file = FileFormats::DataFileAbstract::openFileURL(fileName);
+    if (!file->open(QIODevice::ReadOnly))
     {
         return {};
     }
-    auto fileContent = file.readAll();
+    auto fileContent = file->readAll();
     if (fileContent.isEmpty())
     {
         return {};
     }
-    file.close();
+    file->close();
 
     QJsonParseError parseError{};
     auto document = QJsonDocument::fromJson(fileContent, &parseError);

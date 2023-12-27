@@ -120,6 +120,7 @@ set(SOURCES
     dataManagement/Downloadable_SingleFile.cpp
     dataManagement/SSLErrorHandler.cpp
     DemoRunner.cpp
+    fileFormats/DataFileAbstract.cpp
     fileFormats/GeoTIFF.cpp
     fileFormats/TripKit.cpp
     fileFormats/VAC.cpp

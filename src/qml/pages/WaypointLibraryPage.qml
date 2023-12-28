@@ -21,6 +21,7 @@
 import QtPositioning
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Dialogs
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -29,7 +30,7 @@ import "../dialogs"
 import "../items"
 
 Page {
-    property bool isIos: Qt.platform.os == "ios"
+    property bool isIos: Qt.platform.os === "ios"
     property bool isAndroid: Qt.platform.os === "android"
     property bool isAndroidOrIos: isAndroid || isIos
 
@@ -91,15 +92,39 @@ Page {
                 cascade: true
 
                 MenuItem {
+                    id: menuImport
+
                     text: qsTr("Import…")
-                    enabled: !isAndroidOrIos
-                    visible: !isAndroidOrIos
-                    height: enabled ? undefined : 0
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
-                        FileExchange.importContent()
+                        importFileDialog.open()
+                    }
+
+                    FileDialog {
+                        id: importFileDialog
+
+                        acceptLabel: qsTr("Import")
+                        rejectLabel: qsTr("Cancel")
+
+                        fileMode: FileDialog.OpenFile
+
+                        // Setting a non-trivial name filter on Android means we cannot select any
+                        // files at all.
+                        nameFilters: Qt.platform.os === "android" ? undefined : [qsTr("CUP File (*.cup *.txt)"),
+                                                                                 qsTr("GeoJSON File (*.geojson *.json)"),
+                                                                                 qsTr("GPX File (*.gpx)")]
+
+                        onAccepted: {
+                            PlatformAdaptor.vibrateBrief()
+                            close()
+                            FileExchange.processFileOpenRequest(importFileDialog.selectedFile)
+                        }
+                        onRejected: {
+                            PlatformAdaptor.vibrateBrief()
+                            close()
+                        }
                     }
                 }
 
@@ -209,7 +234,6 @@ Page {
                     }
 
                 }
-
             }
         }
     }

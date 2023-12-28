@@ -419,14 +419,13 @@ if (IOS)
         Qt6::Svg
         Qt6::TextToSpeech
         QMapLibre::Location
-        QMapLibre::PluginGeoServices
         libzip::zip
     )
     set_target_properties(${PROJECT_NAME} PROPERTIES
         MACOSX_BUNDLE true
         MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/ios/Info.plist"
     )
-
+    qmaplibre_location_setup_plugins(${PROJECT_NAME})
     target_include_directories(${PROJECT_NAME}
         PUBLIC
         ios/mapLibreDependencies

@@ -265,8 +265,7 @@ Page {
 
                         // Setting a non-trivial name filter on Android means we cannot select any
                         // files at all.
-                        nameFilters: Qt.platform.os === "android" ? undefined : [qsTr("CUP File (*.cup *.txt)"),
-                                                                                 qsTr("GeoJSON File (*.geojson *.json)"),
+                        nameFilters: Qt.platform.os === "android" ? undefined : [qsTr("GeoJSON File (*.geojson *.json)"),
                                                                                  qsTr("GPX File (*.gpx)")]
 
                         onAccepted: {

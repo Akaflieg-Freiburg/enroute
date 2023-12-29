@@ -32,7 +32,7 @@ Page {
     title: qsTr("Flight Route Library")
     focus: true
 
-    property bool isIos: Qt.platform.os == "ios"
+    property bool isIos: Qt.platform.os === "ios"
     property bool isAndroid: Qt.platform.os === "android"
     property bool isAndroidOrIos: isAndroid || isIos
 
@@ -109,7 +109,8 @@ Page {
 
                         // Setting a non-trivial name filter on Android means we cannot select any
                         // files at all.
-                        nameFilters: Qt.platform.os === "android" ? undefined : [qsTr("Flight Routes (*.geojson *.gpx *.json)")]
+                        nameFilters: Qt.platform.os === "android" ? undefined : [qsTr("GeoJSON File (*.geojson *.json)"),
+                                                                                 qsTr("GPX File (*.gpx)")]
 
                         onAccepted: {
                             PlatformAdaptor.vibrateBrief()

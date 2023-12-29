@@ -387,15 +387,6 @@ if (IOS)
         ios/ObjectiveC.m
         ios/SafeAreaService.h
         ios/SafeAreaService.m
-
-        ios/maplibreDependencies/csscolorparser/csscolorparser.cpp
-        ios/maplibreDependencies/nunicode/src/libnu/tounaccent.c
-        ios/maplibreDependencies/nunicode/src/libnu/strcoll.c
-        ios/maplibreDependencies/nunicode/src/libnu/utf8.c
-        ios/maplibreDependencies/nunicode/src/libnu/ducet.c
-        ios/maplibreDependencies/nunicode/src/libnu/toupper.c
-        ios/maplibreDependencies/parsedate/parsedate.cpp
-
     )
 
     # Compile definitions

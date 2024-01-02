@@ -665,10 +665,12 @@ Page {
                 visible: text !== ""
             }
 
-            ToolButton {
+            Button {
                 id: addWPButton
 
                 visible: (sv.currentIndex === 0)
+                flat: true
+
                 Layout.alignment: Qt.AlignHCenter
                 text: qsTr("Add Waypoint")
                 icon.source: "/icons/material/ic_add_circle.svg"

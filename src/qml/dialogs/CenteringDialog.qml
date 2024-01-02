@@ -41,6 +41,4 @@ Dialog {
     }
 
     width: Math.min(avWidth, 40*font.pixelSize)
-
-    Material.roundedScale: Material.NotRounded
 }

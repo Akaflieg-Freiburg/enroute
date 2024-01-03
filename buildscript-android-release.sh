@@ -48,7 +48,7 @@ $Qt6_DIR_ANDROID\_x86_64/bin/qt-cmake \
     -B build-android-release \
     -DCMAKE_BUILD_TYPE:STRING=Release \
     -DQT_ANDROID_BUILD_ALL_ABIS:BOOL=On \
-    -DQT_HOST_PATH=$Qt6_DIR_LINUX \
+    -DQT_HOST_PATH=$Qt6_DIR_MACOS \
     -G Ninja
 
 #

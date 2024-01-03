@@ -30,7 +30,7 @@ Rectangle {
     // Remaining route info shown in this item
     property var rri: Navigator.remainingRouteInfo
 
-    height: col.implicitHeight + SafeInsets.top
+    height: grid.implicitHeight + SafeInsets.top
     Behavior on height { NumberAnimation { duration: 100 } }
 
     clip: true
@@ -46,29 +46,25 @@ Rectangle {
         visible: false
     }
 
-    ColumnLayout {
-        id: col
+    GridLayout {
+        id: grid
 
         anchors.fill: parent
         anchors.leftMargin: dummyControl.font.pixelSize + SafeInsets.left
         anchors.topMargin: SafeInsets.top + 0.2*dummyControl.font.pixelSize
         anchors.rightMargin: dummyControl.font.pixelSize + SafeInsets.right
 
-        NotificationArea {
-            Layout.fillWidth: true
-            Layout.maximumWidth: 40*dummyControl.font.pixelSize
-            Layout.alignment: Qt.AlignHCenter
-        }
-
-
-        GridLayout {
-        id: grid
-
         Layout.fillWidth: true
 
         rowSpacing: 0
         columns: baseRect.tcVisible ? 5 : 4
 
+        NotificationArea {
+            Layout.columnSpan: grid.columns
+            Layout.fillWidth: true
+            Layout.maximumWidth: 40*dummyControl.font.pixelSize
+            Layout.alignment: Qt.AlignHCenter
+        }
 
         Item { Layout.preferredWidth: 1 }
         Item {
@@ -217,12 +213,12 @@ Rectangle {
 
             text: {
                 switch (baseRect.rri.status) {
-                    case RemainingRouteInfo.PositionUnknown:
-                        return qsTr("Position unknown.");
-                    case RemainingRouteInfo.OffRoute:
-                        return qsTr("More than %1 off route.").arg(Navigator.aircraft.horizontalDistanceToString(staticLeg.nearThreshold));
-                    case RemainingRouteInfo.NearDestination:
-                        return qsTr("Near destination.");
+                case RemainingRouteInfo.PositionUnknown:
+                    return qsTr("Position unknown.");
+                case RemainingRouteInfo.OffRoute:
+                    return qsTr("More than %1 off route.").arg(Navigator.aircraft.horizontalDistanceToString(staticLeg.nearThreshold));
+                case RemainingRouteInfo.NearDestination:
+                    return qsTr("Near destination.");
                 }
                 return baseRect.rri.note
             }
@@ -239,6 +235,5 @@ Rectangle {
 
     }
 
-    }
 
 } // Rectangle

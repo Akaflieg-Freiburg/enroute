@@ -28,4 +28,4 @@
 	url = https://github.com/nih-at/libzip.git
 [submodule "3rdParty/enrouteManual"]
 	path = 3rdParty/enrouteManual
-	url = https://github.com/Akaflieg-Freiburg/enrouteManual.git
+	url = ../enrouteManual

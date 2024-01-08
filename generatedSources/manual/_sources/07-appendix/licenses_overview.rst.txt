@@ -4,12 +4,12 @@
 - `BLAKE2 (reference implementation) <https://blake2.net/>`_. Creative Commons Zero v1.0 Universal or Apache License 2.0.
 - `Catch2 <https://github.com/catchorg/Catch2>`_. Boost Software License 1.0.
 - `Clip2Tri Polygon Triangulation Library <https://github.com/raptor/clip2tri>`_. MIT License.
-- `Clipper Polygon Clipping Library <http://www.angusj.com/delphi/clipper.php>`_. Boost Software License 1.0.
+- `Clipper Polygon Clipping Library <https://sourceforge.net/projects/polyclipping/>`_. Boost Software License 1.0.
 - Cocoa Platform Plugin. BSD 3-clause "New" or "Revised" License.
 - Cycle. MIT License.
+- `D3D12 Memory Allocator <https://github.com/GPUOpen-LibrariesAndSDKs/D3D12MemoryAllocator>`_. MIT License.
 - `Data Compression Library (zlib) <https://zlib.net/>`_. zlib License.
 - `DejaVu Fonts <https://dejavu-fonts.github.io/>`_. Bitstream Vera Font License.
-- `Earcut Polygon Triangulation Library <https://github.com/mapbox/earcut.hpp>`_. ISC License.
 - `Earth Gravitational Model <https://earth-info.nga.mil>`_. Public Domain.
 - `Easing Equations by Robert Penner <http://robertpenner.com/easing/>`_. BSD 3-clause "New" or "Revised" License.
 - `Efficient Binary-Decimal and Decimal-Binary Conversion Routines for IEEE Doubles <https://github.com/google/double-conversion>`_. BSD 3-clause "New" or "Revised" License.
@@ -20,7 +20,6 @@
 - `Freetype 2 - Bitmap Distribution Format (BDF) support <http://www.freetype.org>`_. MIT License.
 - `Freetype 2 - Portable Compiled Format (PCF) support <http://www.freetype.org>`_. MIT License and MIT Open Group variant.
 - `Freetype 2 - zlib <http://www.freetype.org>`_. zlib License.
-- `geosimplify-js polyline simplification library <https://github.com/mapbox/geosimplify-js>`_. geosimplify-js License.
 - `Google Fonts <https://github.com/google/fonts>`_. Apache 2 License.
 - `Google Material Icon Font <https://fonts.google.com/icons>`_. Apache Licence 2.0.
 - `Gradle wrapper <https://gradle.org>`_. Apache License 2.0.
@@ -40,16 +39,18 @@
 - `lunr.js <https://github.com/olivernn/lunr.js>`_. MIT License.
 - `Material Design Icons <https://github.com/google/material-design-icons>`_. Apache License.
 - `Material Sphinx Theme <https://github.com/bashtage/sphinx-material/>`_. MIT License.
+- `Material Symbols and Icons <https://fonts.google.com/icons>`_. Apache License Version 2.0.
 - MD4. Public Domain.
 - `MD4C <https://github.com/mity/md4c>`_. MIT License.
 - MD5. Public Domain.
 - `Metaf library <https://github.com/nnaumenko/metaf>`_. MIT License.
+- `Mipmap generator for D3D12 <https://github.com/microsoft/DirectX-Graphics-Samples>`_. MIT License.
 - Native Style for Android. Apache License 2.0.
 - `OpenGL ES 2 Headers <https://www.khronos.org/>`_. MIT License.
 - `OpenGL Headers <https://www.khronos.org/>`_. MIT License.
 - `openSSL library <https://www.openssl.org>`_. Apache 2 License.
 - `OSM Liberty <https://github.com/maputnik/osm-liberty>`_. BSD License.
-- `PCRE2 <http://www.pcre.org/>`_. BSD 3-clause "New" or "Revised" License.
+- `PCRE2 <http://www.pcre.org/>`_. BSD 3-clause "New" or "Revised" License with PCRE2 binary-like Packages Exception.
 - `PCRE2 - Stack-less Just-In-Time Compiler <http://www.pcre.org/>`_. BSD 2-clause "Simplified" License.
 - `Pixman <http://www.pixman.org/>`_. MIT License.
 - `Poly2Tri Polygon Triangulation Library <https://github.com/greenm01/poly2tri>`_. BSD 3-clause "New" or "Revised" License.
@@ -70,6 +71,7 @@
 - `The Public Suffix List <http://publicsuffix.org/>`_. Mozilla Public License 2.0.
 - `TIFF Software Distribution (libtiff) <http://www.simplesystems.org/libtiff/>`_. libtiff License.
 - `TinyCBOR <https://github.com/intel/tinycbor>`_. MIT License.
+- `Titillium Web Font <https://fonts.google.com/specimen/Titillium+Web>`_. SIL OPEN FONT LICENSE Version 1.1.
 - `underscore <https://github.com/jashkenas/underscore>`_. MIT License.
 - `Unicode Character Database (UCD) <https://www.unicode.org/ucd/>`_. Unicode License Agreement - Data Files and Software (2016).
 - `Unicode Common Locale Data Repository (CLDR) <https://cldr.unicode.org/>`_. Unicode License Agreement - Data Files and Software (2016).

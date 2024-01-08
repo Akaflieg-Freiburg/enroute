@@ -6,7 +6,7 @@ English
 
 We do not process any personal data from you. Data that you enter into
 the app (including routes, waypoints, and aircraft specifics) is stored
-locally on your device. The data not transmitted to us and is not
+locally on your device. The data is not transmitted to us and is not
 processed by us.
 
 However, to ensure the functionality, the app must transmit following
@@ -56,10 +56,10 @@ Breisgau, Germany
 Deutsche Übersetzung
 --------------------
 
-Wir verarbeiten keine personenbezogenen Daten von Ihnen. Daten, die Sie
-in dieser App eingeben (wie zum Beispiel Routen, Wegpunkte und
-Luftfahrzeugdaten), werden nur lokal auf dem Gerät abgelegt. Die Daten
-werden nicht an uns übermittelt und nicht von uns verarbeitet.
+Wir verarbeiten keinerlei persönliche Daten von Ihnen. In die App
+eingegebene Datem wie z.B. Routen, Wegpunkte und Luftfahrzeugmerkmale
+liegen nur lokal auf Ihrem Gerät. Sie gelangen nicht zu uns und werden
+damit auch nicht von uns verarbeitet.
 
 Um die Funktionalität der App gewährleisten zu können müssen allerdings
 folgende Daten an Server im Internet übermittelt werden.
@@ -168,10 +168,10 @@ Breisgau, Germany
 Traduzione italiana
 -------------------
 
-Non elaboriamo alcun dato personale da te. I dati che inserisci nell'app
+Non elaboriamo alcun dato personale. I dati che inserisci nell'app
 (incluse rotte, waypoint e specifiche del velivolo) vengono memorizzati
-localmente sul tuo dispositivo. I dati non ci vengono trasmessi e non li
-elaboriamo.
+localmente sul tuo dispositivo. I dati non ci vengono trasmessi e non
+vengono elaborati da noi.
 
 Tuttavia, per garantire la funzionalità, l'app deve trasmettere i
 seguenti dati ai server in Internet.
@@ -223,10 +223,10 @@ Breisgau, Germany
 Polskie tłumaczenie
 -------------------
 
-Nie przetwarzamy żadnych danych osobowych użytkownika. Dane wprowadzane
-do aplikacji (w tym trasy, punkty trasy i dane samolotu) są
-przechowywane lokalnie na urządzeniu użytkownika. Dane te nie są
-przesyłane do nas i nie są przez nas przetwarzane.
+Nie przetwarzamy od Ciebie żadnych danych osobowych. Dane wprowadzane do
+aplikacji (w tym trasy, punkty trasy i dane dotyczące samolotu) są
+przechowywane lokalnie na Twoim urządzeniu. Dane nie są nam przekazywane
+i nie są przez nas przetwarzane.
 
 Aby jednak zapewnić funkcjonalność, aplikacja musi przesyłać następujące
 dane do serwerów w Internecie.

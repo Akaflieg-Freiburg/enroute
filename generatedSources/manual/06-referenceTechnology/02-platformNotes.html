@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Platform Notes &mdash; Enroute Flight Navigation  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+    <link rel="shortcut icon" href="../_static/de.akaflieg_freiburg.enroute.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="&lt;no title&gt;" href="../07-appendix.html" />
+    <link rel="prev" title="Traffic Data Receiver Support" href="01-trafficData.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Enroute Flight Navigation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../01-gettingStarted.html">Getting Started</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../02-tutorialBasic.html">Basic Use</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03-tutorialAdvanced.html">Advanced Use</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference Manual</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../04-referencePages.html">User Interface: Pages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05-referenceWorkflow.html">User Interface: Workflows</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../06-referenceTechnology.html">Technology</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01-trafficData.html">Traffic Data Receiver Support</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Platform Notes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#android">Android</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#network-security-problems-on-outdated-devices">Network Security Problems on Outdated Devices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#screen-backlighting">Screen Backlighting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#screen-locking">Screen Locking</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#wi-fi-locking">Wi-Fi Locking</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ios">iOS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#linux-desktop">Linux Desktop</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../07-appendix/01-dataSources.html">Data Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07-appendix/02-license.html">Software Licenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07-appendix/03-privacy.html">Privacy Policies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07-appendix/04-authors.html">Authors</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Enroute Flight Navigation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../06-referenceTechnology.html">Technology</a></li>
+      <li class="breadcrumb-item active">Platform Notes</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/06-referenceTechnology/02-platformNotes.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="platform-notes">
+<h1>Platform Notes<a class="headerlink" href="#platform-notes" title="Link to this heading"></a></h1>
+<section id="android">
+<h2>Android<a class="headerlink" href="#android" title="Link to this heading"></a></h2>
+<section id="network-security-problems-on-outdated-devices">
+<h3>Network Security Problems on Outdated Devices<a class="headerlink" href="#network-security-problems-on-outdated-devices" title="Link to this heading"></a></h3>
+<p>Like most other programs, <strong>Enroute Flight Navigation</strong> uses <a class="reference external" href="https://en.wikipedia.org/wiki/Transport_Layer_Security">Transport Layer
+Security (TLS)</a> for
+secure communication with servers on the internet.  The technology relies on
+<a class="reference external" href="https://en.wikipedia.org/wiki/Transport_Layer_Security#Digital_certificates">digital certificates</a>
+that are built into the Android operating system and can only be updated by the
+device manufacturer through system security updates. Regretfully, manufacturers
+of Android devices are often not interested in after-sales support and provide
+updates only for a very short period of time, if at all.</p>
+<p>If a device does not receive regular system updates, the certificates will
+expire after a while, and secure network connections are no longer possible. <a class="reference external" href="https://techcrunch.com/2021/09/21/lets-encrypt-root-expiry">As
+covered in the media</a>, many users of
+systems running Android 7.1 (or below) started to experience problems on 30.
+September 2021, when an important certificate expired.</p>
+<p>When certificates expire, some apps will stop working.  Other app authors prefer
+to hide the complexity of secure communication from their users and write apps
+that will silently revert to insecure communication.  These apps appear to run
+as normal, but leave communication (and eventually the system) open to tampering
+and manipulation.</p>
+<p>The author of <strong>Enroute Flight Navigation</strong> believes that pilots should be able
+to make an informed decision about the security of their systems.  <strong>Enroute
+Flight Navigation</strong> will tell the user of any network security errors.  Users
+can then decide to do one of the following.</p>
+<ul class="simple">
+<li><p>Replace the device by a more recent model, preferably from one of the few
+manufacturers who offer long-time support for their products.</p></li>
+<li><p>Accept the risk of insecure communication and ignore network security errors
+in the future.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The author, who is concerned about short-lived digital
+products, uses a <a class="reference external" href="https://www.fairphone.com">Fairphone</a> personally.
+Fairphones are long-lasting, can be repaired easily and receive many years
+of security updates.  Other brands might have similar offers.</p>
+</div>
+</section>
+<section id="screen-backlighting">
+<h3>Screen Backlighting<a class="headerlink" href="#screen-backlighting" title="Link to this heading"></a></h3>
+<p><strong>Enroute Flight Navigation</strong> overrides the system settings of your device and
+ensures that the screen backlighting is always on.  To save battery power, the
+screen can be switched off manually with the hardware “power button” of your
+device.</p>
+</section>
+<section id="screen-locking">
+<h3>Screen Locking<a class="headerlink" href="#screen-locking" title="Link to this heading"></a></h3>
+<p><strong>Enroute Flight Navigation</strong> stays on top of the lock screen of your device.
+It will therefore be shown immediately as soon as the screen is switched on.
+You can therefore use <strong>Enroute Flight Navigation</strong> without unlocking your
+device.</p>
+</section>
+<section id="wi-fi-locking">
+<h3>Wi-Fi Locking<a class="headerlink" href="#wi-fi-locking" title="Link to this heading"></a></h3>
+<p>When running on Android, <strong>Enroute Flight Navigation</strong> acquires a Wi-Fi lock as
+soon as the app receives heartbeat messages from one of the channels where it
+listens for traffic receivers.  The lock is released when the messages no longer
+arrive.</p>
+</section>
+</section>
+<section id="ios">
+<h2>iOS<a class="headerlink" href="#ios" title="Link to this heading"></a></h2>
+<p>Users may experience a degraded workflow when connecting to a traffic data
+receiver that requires a password, in addition to the password required to enter
+the Wi-Fi network. Privacy features of iOS prevent <strong>Enroute Flight Navigation</strong>
+from accessing the SSID of the Wi-Fi network, which makes in impossible to
+identify networks and suggest correct passwords from the password storage.</p>
+</section>
+<section id="linux-desktop">
+<h2>Linux Desktop<a class="headerlink" href="#linux-desktop" title="Link to this heading"></a></h2>
+<p>The following command line options are supported.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Option</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>-h, –help</p></td>
+<td><p>Displays help on commandline options.</p></td>
+</tr>
+<tr class="row-odd"><td><p>–help-all</p></td>
+<td><p>Displays help including Qt specific options.</p></td>
+</tr>
+<tr class="row-even"><td><p>-v, –version</p></td>
+<td><p>Displays version information.</p></td>
+</tr>
+<tr class="row-odd"><td><p>–sg</p></td>
+<td><p>Run simulator and generate screenshots for Google Play</p></td>
+</tr>
+<tr class="row-even"><td><p>–sm</p></td>
+<td><p>Run simulator and generate screenshots for the manual</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="01-trafficData.html" class="btn btn-neutral float-left" title="Traffic Data Receiver Support" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../07-appendix.html" class="btn btn-neutral float-right" title="&lt;no title&gt;" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Stefan Kebekus.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

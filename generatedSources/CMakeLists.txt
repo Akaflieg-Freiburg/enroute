@@ -254,6 +254,17 @@ add_custom_target(manualText
     DEPENDS ${PROJECT_NAME}
   )
 
+#
+# Manual
+#
+
+add_custom_target(manual
+  COMMAND cd ../3rdParty/enrouteManual && git pull origin main && cd ${CMAKE_CURRENT_SOURCE_DIR}
+  COMMAND sphinx-build ../3rdParty/enrouteManual manual
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  COMMENT "Generate manual"
+  )
+
 
 #
 # Target 'generatedSources' that combines all of the above

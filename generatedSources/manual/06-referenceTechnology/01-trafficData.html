@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Traffic Data Receiver Support &mdash; Enroute Flight Navigation  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+    <link rel="shortcut icon" href="../_static/de.akaflieg_freiburg.enroute.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Platform Notes" href="02-platformNotes.html" />
+    <link rel="prev" title="Technology" href="../06-referenceTechnology.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Enroute Flight Navigation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../01-gettingStarted.html">Getting Started</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../02-tutorialBasic.html">Basic Use</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03-tutorialAdvanced.html">Advanced Use</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference Manual</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../04-referencePages.html">User Interface: Pages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05-referenceWorkflow.html">User Interface: Workflows</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../06-referenceTechnology.html">Technology</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Traffic Data Receiver Support</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#communication">Communication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#known-issues-with-gdl90">Known Issues with GDL90</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#foreflight-broadcast">ForeFlight Broadcast</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#known-issues-with-skyecho-devices">Known Issues with SkyEcho Devices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#known-issues-with-pingusb-devices">Known Issues with pingUSB Devices</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="02-platformNotes.html">Platform Notes</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../07-appendix/01-dataSources.html">Data Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07-appendix/02-license.html">Software Licenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07-appendix/03-privacy.html">Privacy Policies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07-appendix/04-authors.html">Authors</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Enroute Flight Navigation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../06-referenceTechnology.html">Technology</a></li>
+      <li class="breadcrumb-item active">Traffic Data Receiver Support</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/06-referenceTechnology/01-trafficData.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="traffic-data-receiver-support">
+<h1>Traffic Data Receiver Support<a class="headerlink" href="#traffic-data-receiver-support" title="Link to this heading"></a></h1>
+<section id="communication">
+<h2>Communication<a class="headerlink" href="#communication" title="Link to this heading"></a></h2>
+<p><strong>Enroute Flight Navigation</strong> expects that the traffic receiver deploys a WLAN
+network via Wi-Fi and publishes traffic data via that network.  In order to
+support a wide range of devices, including flight simulators, the app listens to
+several network addresses simultaneously and understands a variety of protocols.</p>
+<p><strong>Enroute Flight Navigation</strong> watches the following data channels, in order of
+preference.</p>
+<ul class="simple">
+<li><p>A TCP connection to port 2000 at the IP addresses 192.168.1.1, where the app
+expects a stream of FLARM/NMEA sentences.</p></li>
+<li><p>A TCP connection to port 2000 at the IP addresses 192.168.10.1, where the app
+expects a stream of FLARM/NMEA sentences.</p></li>
+<li><p>A UDP connection to port 4000, where the app expects datagrams in GDL90 or
+XGPS format.</p></li>
+<li><p>A UDP connection to port 49002, where the app expects datagrams in GDL90 or
+XGPS format.</p></li>
+</ul>
+<p><strong>Enroute Flight Navigation</strong> expects traffic data in the following formats.</p>
+<ul class="simple">
+<li><p>FLARM/NMEA sentences must conform to the specification outlined in the
+document FTD-012 <a class="reference external" href="https://flarm.com/support/manuals-documents/">Data Port Interface Control Document (ICD)</a>, Version 7.13, as published
+by <a class="reference external" href="https://flarm.com/">FLARM Technology Ltd.</a>.</p></li>
+<li><p>Datagrams in GDL90 format must conform to the <a class="reference external" href="https://www.faa.gov/nextgen/programs/adsb/archival/media/gdl90_public_icd_reva.pdf">GDL 90 Data Interface
+Specification</a>.</p></li>
+<li><p>Datagrams in XGPS format must conform to the format specified on the
+<a class="reference external" href="https://www.foreflight.com/support/network-gps/">ForeFlight Web site</a>.</p></li>
+</ul>
+</section>
+<section id="known-issues-with-gdl90">
+<span id="gdl90problems"></span><h2>Known Issues with GDL90<a class="headerlink" href="#known-issues-with-gdl90" title="Link to this heading"></a></h2>
+<p>The GDL90 protocol has a number of shortcomings, and we recommend to use
+FLARM/NMEA whenever possible.  We are aware of the following issues.</p>
+<dl>
+<dt>Altitude measurements</dt><dd><p>According to the GDL90 Specification, the ownship geometric height is reported
+as height above WGS-84 ellipsoid.  There are however many devices on the
+market that wrongly report height above main sea level.  Different apps have
+different strategies to deal with these shortcomings.</p>
+<ul class="simple">
+<li><p><strong>Enroute Flight Navigation</strong> as well as the app Skydemon expect that
+traffic receivers comply with the GDL90 Specification.</p></li>
+<li><p>ForeFlight has extended the GDL90 Specification so that traffic receivers
+can indicate if they comply with the specification or not.</p></li>
+<li><p>Many other apps expect wrong GDL90 implementations and interpret the
+geometric height has height above main sea level.</p></li>
+</ul>
+</dd>
+<dt>MODE-S traffic</dt><dd><p>Most traffic receivers see traffic equipped with MODE-S transponders and can
+give an estimate for the distance to the traffic.  They are, however, unable
+to obtain the precise traffic position.  Unlike FLARM/NMEA, the GDL90
+Specification does not support traffic factors whose position is unknown.
+Different devices implement different workarounds.</p>
+<ul class="simple">
+<li><p>Stratux devices generate a ring of eight virtual targets around the own
+position.  These targets are named “Mode S”.</p></li>
+<li><p>Air Avioncs devices do the same, but only with one target.</p></li>
+<li><p>Other devices create a virtual target, either at the ownship position or at
+the north pole and abuse the field “Navigation Accuracy Category for
+Position” to give the approximate position to the target.</p></li>
+</ul>
+<p><strong>Enroute Flight Navigation</strong> has special provisions for handling targets
+called “Mode S”, but users should expect that this workaround is not perfect.</p>
+</dd>
+</dl>
+</section>
+<section id="foreflight-broadcast">
+<h2>ForeFlight Broadcast<a class="headerlink" href="#foreflight-broadcast" title="Link to this heading"></a></h2>
+<p>Following the standards established by the app ForeFlight, <strong>Enroute Flight
+Navigation</strong> broadcasts a UDP message on port 63093 every 5 seconds while the
+app is running in the foreground.  This message allows devices to discover
+Enroute’s IP address, which can be used as the target of UDP unicast messages.
+This broadcast will be a JSON message, with at least these fields:</p>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">   </span><span class="nt">&quot;App&quot;</span><span class="p">:</span><span class="s2">&quot;Enroute Flight Navigation&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">&quot;GDL90&quot;</span><span class="p">:{</span>
+<span class="w">      </span><span class="nt">&quot;port&quot;</span><span class="p">:</span><span class="mi">4000</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The GDL90 “port” field is currently 4000, but might change in the future.</p>
+</section>
+<section id="known-issues-with-skyecho-devices">
+<span id="skyecho"></span><h2>Known Issues with SkyEcho Devices<a class="headerlink" href="#known-issues-with-skyecho-devices" title="Link to this heading"></a></h2>
+<p><strong>Enroute Flight Navigation</strong> works fine with SkyEcho devices. There are,
+however, several shortcomings that users should be aware of.</p>
+<dl>
+<dt>Unidirectional FLARM</dt><dd><p>The SkyEcho can receive FLARM signals, but cannot send them.  The SkyEcho
+device cannot be seen by other FLARM users.  The author of <strong>Enroute Flight
+Navigation</strong> is not convinced that unidirectional FLARM is a good idea.</p>
+</dd>
+<dt>FLARM Output</dt><dd><p>uAvionix follows an unusual business model.  The FLARM/NMEA output of the
+SkyEcho is encrypted.  To read the FLARM data, all apps need to include
+commercial, closed-source decryption libraries that must be purchased by the
+app users.  The author of <strong>Enroute Flight Navigation</strong> feels that this is
+incompatible with the idea of free, open source software.</p>
+<p>To communicate with SkyEcho devices, <strong>Enroute Flight Navigation</strong> will switch
+to the GDL90 protocol.</p>
+</dd>
+<dt>Altimeter readings</dt><dd><p>SkyEcho includes an integrated barometric altimeter, but does not have any
+access to static pressure.  To estimate the barometric altitude, the SkyEcho
+correlates cabin pressure altitude to altitudes of nearby traffic.  The author
+of <strong>Enroute Flight Navigation</strong> is not convinced that this method gives
+altimeter readings that are sufficiently reliable for aviation purposes.</p>
+</dd>
+</dl>
+</section>
+<section id="known-issues-with-pingusb-devices">
+<span id="pingusb"></span><h2>Known Issues with pingUSB Devices<a class="headerlink" href="#known-issues-with-pingusb-devices" title="Link to this heading"></a></h2>
+<p><strong>Enroute Flight Navigation</strong> works fine with pingUSB devices. There are,
+however, several shortcomings that users should be aware of.</p>
+<dl class="simple">
+<dt>Unidirectional ADS-B</dt><dd><p>The pingUSB can receive ADS-B signals, but cannot send them.  The pingUSB
+device cannot be seen by other ADS-B users.  The author of <strong>Enroute Flight
+Navigation</strong> is not convinced that unidirectional ADS-B is a good idea.</p>
+</dd>
+<dt>Altimeter readings</dt><dd><p>pingUSB reports the <strong>barometric</strong> altitude of traffic opponents, but does not
+include a static pressure sensor required to measure the barometric altitude
+of the own aircraft. As a result, <strong>Enroute Flight Navigation</strong> cannot compute
+the relative height between the traffic and the own aircraft. The author of
+<strong>Enroute Flight Navigation</strong> is aware of apps that compare the <strong>barometric</strong>
+altitude of traffic to the <strong>geometric</strong> altitude of the own aircraft (which
+can be measured via GPS), and hence show misleading traffic information. The
+author is not convinced that pingUSB should be used for aviation purposes.</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../06-referenceTechnology.html" class="btn btn-neutral float-left" title="Technology" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="02-platformNotes.html" class="btn btn-neutral float-right" title="Platform Notes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Stefan Kebekus.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

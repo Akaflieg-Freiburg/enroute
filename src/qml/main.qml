@@ -505,7 +505,7 @@ AppWindow {
 
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
-                                Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteText/manual")
+                                Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteManual")
                                 manualMenu.close()
                                 aboutMenu.close()
                                 drawer.close()
@@ -520,7 +520,7 @@ AppWindow {
 
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
-                                Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteText/manual.epub")
+                                Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteManual/manual.epub")
                                 manualMenu.close()
                                 aboutMenu.close()
                                 drawer.close()
@@ -534,7 +534,7 @@ AppWindow {
 
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
-                                Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteText/manual.pdf")
+                                Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteManual/manual.pdf")
 
                                 manualMenu.close()
                                 aboutMenu.close()

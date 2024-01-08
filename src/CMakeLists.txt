@@ -227,7 +227,7 @@ if(ANDROID)
         )
 
     # Copy manual and other files into the Android directories
-    file(COPY ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/docs/manual DESTINATION android/assets)
+    file(COPY ${CMAKE_SOURCE_DIR}/generatedSources/manual DESTINATION android/assets)
     file(COPY ${CMAKE_SOURCE_DIR}/generatedSources/src/android DESTINATION .)
     file(COPY ${CMAKE_SOURCE_DIR}/src/android DESTINATION .)
 

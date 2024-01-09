@@ -120,7 +120,7 @@ Base Maps
 .........
 
 Our base maps are generated from `Open Streetmap
-<https://www.openstreetmap.org>`_ data.
+<https://www.openstreetmap.org>`_ data. 
 
 
 Terrain maps

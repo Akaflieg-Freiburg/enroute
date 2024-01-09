@@ -12,12 +12,9 @@ agreement.
 Airspaces defined in imported data will be shown in addition to the standard
 aviation maps included with **Enroute Flight Navigation**.
 
-
-Import Airspace Data
---------------------
-
-Transfer the OpenAir file to your device and open the file on your device.  The
-Section :ref:`importData` explains the process in detail.
+To import airspace data, transfer the OpenAir file to your device and open the
+file on your device.  The Section :ref:`importData` explains the process in
+detail.
 
 To view and manage your maps, open the main menu and go to "Library/Maps and
 Data".

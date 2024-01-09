@@ -31,7 +31,7 @@ Consult the `homepage <https://akaflieg-freiburg.github.io/enroute>`_ of
 
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    01-gettingStarted
 
@@ -43,7 +43,7 @@ Consult the `homepage <https://akaflieg-freiburg.github.io/enroute>`_ of
 
 .. toctree::
    :caption: Tutorials
-   :maxdepth: 2
+   :maxdepth: 1
 
    02-tutorialBasic
    03-tutorialAdvanced
@@ -55,7 +55,7 @@ Consult the `homepage <https://akaflieg-freiburg.github.io/enroute>`_ of
 
 .. toctree::
    :caption: Reference Manual
-   :maxdepth: 2
+   :maxdepth: 1
 
    04-referencePages
    05-referenceWorkflow
@@ -68,6 +68,6 @@ Consult the `homepage <https://akaflieg-freiburg.github.io/enroute>`_ of
 
 .. toctree::
    :caption: Appendix
-   :maxdepth: 2
+   :maxdepth: 1
 
    07-appendix

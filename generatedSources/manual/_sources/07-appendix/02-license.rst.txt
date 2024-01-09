@@ -1,5 +1,5 @@
-Software Licenses
-=================
+Software and Data Licenses
+==========================
 
 
 Enroute Flight Navigation
@@ -610,27 +610,28 @@ at your choice, any later version of this license.
     return for a fee.
 
 
-Geographic maps
+Geographic Maps
 ---------------
 
 As a flight navigation program, **Enroute Flight Navigation** heavily relies on
 geographic map data.  The geographic maps are not included in the program, but
 are downloaded at runtime.  They are compiled from the following sources.
 
-- The base maps are modified data from `OpenMapTiles
-  <https://github.com/openmaptiles/openmaptiles>`_, published under a `CC-BY 4.0
-  design license
-  <https://github.com/openmaptiles/openmaptiles/blob/master/LICENSE.md>`_.
+- The base maps are generated from OpenStreetMap open data, licensed under the
+  `Open Data Commons Open Database License
+  <https://www.openstreetmap.org/copyright/en>`_. 
+
 - The aviation maps contain data from `openAIP <http://www.openaip.net>`_,
   licensed under a `CC BY-NC-SA license
   <https://creativecommons.org/licenses/by-nc-sa/3.0/>`_.
+
 - The aviation maps contain data from `open flightmaps
   <https://www.openflightmaps.org/>`_, licensed under the `OFMA General Users´
   License <https://www.openflightmaps.org/live/downloads/20150306-LCN.pdf>`_.
 
 
 
-Software and data included in the program
+Software and Data Included in the Program
 -----------------------------------------
 
 Depending on platform and configuration, the following components might be

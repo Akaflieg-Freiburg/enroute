@@ -1,8 +1,7 @@
 User Interface: Workflows
 #########################
 
-The following tutorials walk you through more advanced functionality of
-**Enroute Flight Navigation**.  
+This part of the manual describes procedures that are used throughout the app.
 
 .. toctree::
    :maxdepth: 1

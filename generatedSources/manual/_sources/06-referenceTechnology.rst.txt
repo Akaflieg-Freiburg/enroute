@@ -1,6 +1,8 @@
 Technology
 ##########
 
+This part of the manual describes technical aspects of **Enroute Flight
+Navigation**.
 
 .. toctree::
    :maxdepth: 1

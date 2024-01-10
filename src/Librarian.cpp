@@ -237,18 +237,21 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     if (name == u":text/whatsnew.html"_qs)
     {
         QString result;
-        result += u"<p>The technology underlying <strong>Enroute Flight Navigation</strong> has been updated, we expect a long beta test phase. Please report any issues or inconsistencies that you may find!</p>"_qs;
+        result += "<p>" + tr("The manual has been updated, modernized and rewritten in part. "
+                             "We do hope that you find it helpful.")+ "</p>";
+        result += "<p>" + tr("The technology underlying <strong>Enroute Flight Navigation</strong> has been updated. "
+                             "Please report any issues or inconsistencies that you may find!")+ "</p>";
         result += "<p>" + tr("Our flight club <a href='https://akaflieg-freiburg.de'>Akaflieg Freiburg</a> has received the renowned Niethammer Innovation Award 2023. "
                              "The award recognizes our work on <strong>Enroute Flight Navigation</strong>. "
                              "But above all, we owe this prize to our many contributors and supporters. "
                              "None of this would have been possible without the incredible work of the communities at <a href='https://www.openaip.net'>openAIP</a> and <a href='https://www.openflightmaps.org'>open flightmaps</a>, who supply us with aviation data. "
                              "Thanks to all of you! "
                              "We will use the award money to finance our infrastructure and purchase urgently needed development hardware.") + "</p>";
-        result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> is now able to show visual approach charts within the moving map. Users in Germany can download official VACs from Deutsche Flugsicherung (DFS) using Michael Paus' very convenient <a href='https://mpmediasoft.de/products/AIPBrowserDE/help/AIPBrowserDE.html'>AIP Browser DE</a>. Please check the manual for details.") + "</p>";
-#if not defined(Q_OS_IOS)
-        result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> for iOS is now available on the Apple <a href='https://apps.apple.com/de/app/enroute-flight-navigation/id6448892176'>App Store</a>.") + "</p>";
-#endif
-        result += "<p>" + tr("We need help with promotional graphics for the app stores and with explainer videos. If you are a graphic/video artist and would like to help, then please be in touch.") + "</p>";
+        result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> is now able to show visual approach charts within the moving map. "
+                             "Users in Germany can download official VACs from Deutsche Flugsicherung (DFS) using Michael Paus' very convenient <a href='https://mpmediasoft.de/products/AIPBrowserDE/help/AIPBrowserDE.html'>AIP Browser DE</a>. "
+                             "Please check the manual for details.") + "</p>";
+        result += "<p>" + tr("We need help with promotional graphics for the app stores and with explainer videos. "
+                             "If you are a graphic/video artist and would like to help, then please be in touch.") + "</p>";
         return result;
     }
 

@@ -7,9 +7,8 @@ toc: true
 
 # Privacy Policies for the **Enroute Flight Navigation** App
 
-[Please consult the
-manual](https://akaflieg-freiburg.github.io/enrouteText/manual/04-appendix/privacy.html)
-for the privacy policies.
+Privacy Policies for the App **Enroute Flight Navigation** are found 
+[here](https://github.com/Akaflieg-Freiburg/enroute/blob/main/PRIVACY.md).
 
 
 # Privacy Policies for This Website

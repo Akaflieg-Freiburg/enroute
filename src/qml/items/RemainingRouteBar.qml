@@ -64,6 +64,7 @@ Rectangle {
             Layout.fillWidth: true
             Layout.maximumWidth: 40*dummyControl.font.pixelSize
             Layout.alignment: Qt.AlignHCenter
+            Layout.bottomMargin: 0.2*dummyControl.font.pixelSize
         }
 
         Item { Layout.preferredWidth: 1 }

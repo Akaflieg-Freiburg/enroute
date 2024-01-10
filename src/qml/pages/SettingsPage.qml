@@ -77,7 +77,7 @@ Page {
             icon.source: "/icons/material/ic_info_outline.svg"
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                openManual("03-reference/settings.html")
+                openManual("04-referencePages/02-settings.html")
             }
         }
 
@@ -374,7 +374,7 @@ Page {
                 Layout.columnSpan: 2
                 icon.source: "/icons/material/ic_info_outline.svg"
                 text: qsTr("Connect to a traffic receiver…")
-                onClicked: openManual("02-steps/traffic.html")
+                onClicked: openManual("02-tutorialBasic/01-traffic.html")
             }
 
             WordWrappingItemDelegate {
@@ -382,7 +382,7 @@ Page {
                 Layout.columnSpan: 2
                 icon.source: "/icons/material/ic_info_outline.svg"
                 text: qsTr("Connect to the SafeSky app…")
-                onClicked: openManual("02-steps/safesky.html")
+                onClicked: openManual("02-tutorialBasic/02-safesky.html")
             }
 
             WordWrappingItemDelegate {
@@ -390,7 +390,7 @@ Page {
                 Layout.columnSpan: 2
                 icon.source: "/icons/material/ic_info_outline.svg"
                 text: qsTr("Connect to a flight simulator…")
-                onClicked: openManual("02-steps/simulator.html")
+                onClicked: openManual("02-tutorialBasic/07-simulator.html")
             }
 
             Item { // Spacer

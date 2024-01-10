@@ -136,7 +136,7 @@ Page {
         wrapMode: Text.Wrap
 
         text: "<h3>"+ qsTr("Sorry!") + "</h3><p>" + qsTr("There are no approach charts installed. The <a href='x'>manual</a> explains how to install and use them.")+"</p>"
-        onLinkActivated: openManual("02-steps/simulator.html")
+        onLinkActivated: openManual("03-tutorialAdvanced/04-vac.html")
 
     }
 

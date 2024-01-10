@@ -170,7 +170,7 @@ Page {
                 visible: !TrafficDataProvider.receivingHeartbeat
                 icon.source: "/icons/material/ic_info_outline.svg"
                 text: qsTr("Connect to a traffic receiver…")
-                onClicked: trafficReceiverPage.appWindow.openManual("02-steps/safesky.html")
+                onClicked: trafficReceiverPage.appWindow.openManual("02-tutorialBasic/01-traffic.html")
             }
 
             WordWrappingItemDelegate {
@@ -178,16 +178,15 @@ Page {
                 visible: !TrafficDataProvider.receivingHeartbeat
                 icon.source: "/icons/material/ic_info_outline.svg"
                 text: qsTr("Connect to the SafeSky app…")
-                onClicked: trafficReceiverPage.appWindow.openManual("02-steps/traffic.html")
+                onClicked: trafficReceiverPage.appWindow.openManual("02-tutorialBasic/02-safesky.html")
             }
-
 
             WordWrappingItemDelegate {
                 Layout.fillWidth: true
                 visible: !TrafficDataProvider.receivingHeartbeat
                 icon.source: "/icons/material/ic_info_outline.svg"
                 text: qsTr("Connect to a flight simulator…")
-                onClicked: trafficReceiverPage.appWindow.openManual("02-steps/simulator.html")
+                onClicked: trafficReceiverPage.appWindow.openManual("02-tutorialBasic/07-simulator.html")
             }
 
         }

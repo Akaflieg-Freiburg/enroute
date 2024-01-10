@@ -437,9 +437,8 @@ AppWindow {
                             icon.source: "/icons/material/ic_attach_money.svg"
 
                             onClicked: {
-
                                 if (Qt.platform.os === "ios") {
-                                    Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteText/manual/02-steps/donate.html")
+                                    Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteManual/02-tutorialBasic/09-donate.html")
                                 } else {
                                     PlatformAdaptor.vibrateBrief()
                                     stackView.pop()
@@ -963,7 +962,7 @@ AppWindow {
         if (Qt.platform.os === "android")
             stackView.push("pages/Manual.qml", {"fileName": pageUrl})
         else
-            Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteText/manual/"+pageUrl)
+            Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteManual/"+pageUrl)
     }
 }
 

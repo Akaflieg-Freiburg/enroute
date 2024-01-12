@@ -637,8 +637,8 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate)
                                 .arg(bBox.bottomLeft().longitude())
                                 .arg(bBox.topRight().latitude())
                                 .arg(bBox.topRight().longitude());
-*/
-        QString urlString = u"https://cplx.vm.uni-freiburg.de/storage/enrouteProxy/awsProxy.php?format=xml&bbox=%1,%2,%3,%4"_qs
+        */
+        QString urlString = u"https://cplx.vm.uni-freiburg.de/storage/enrouteProxy/metar.php?format=xml&bbox=%1,%2,%3,%4"_qs
                                 .arg(bBox.bottomLeft().latitude())
                                 .arg(bBox.bottomLeft().longitude())
                                 .arg(bBox.topRight().latitude())
@@ -651,13 +651,20 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate)
         connect(reply, &QNetworkReply::finished, this, &Weather::WeatherDataProvider::downloadFinished);
         connect(reply, &QNetworkReply::errorOccurred, this, &Weather::WeatherDataProvider::downloadFinished);
     }
-/*
+
     {
+        /*
         QString urlString = u"https://aviationweather.gov/api/data/taf?format=xml&bbox=%1,%2,%3,%4"_qs
                                 .arg(bBox.bottomLeft().latitude())
                                 .arg(bBox.bottomLeft().longitude())
                                 .arg(bBox.topRight().latitude())
                                 .arg(bBox.topRight().longitude());
+        */
+        QString urlString = u"https://cplx.vm.uni-freiburg.de/storage/enrouteProxy/taf.php?format=xml&bbox=%1,%2,%3,%4"_qs
+                                .arg(bBox.bottomLeft().latitude())
+                                .arg(bBox.bottomLeft().longitude())
+                                .arg(bBox.topRight().latitude())
+                                .arg(bBox.topRight().longitude());
         QUrl url = QUrl(urlString);
         QNetworkRequest request(url);
         request.setRawHeader("accept", "application/xml");
@@ -666,7 +673,7 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate)
         connect(reply, &QNetworkReply::finished, this, &Weather::WeatherDataProvider::downloadFinished);
         connect(reply, &QNetworkReply::errorOccurred, this, &Weather::WeatherDataProvider::downloadFinished);
     }
-*/
+
 
     // Emit "downloading"
     emit downloadingChanged();

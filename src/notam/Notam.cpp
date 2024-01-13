@@ -175,13 +175,13 @@ QString NOTAM::Notam::richText() const
         }
         else
         {
-            effectiveStartString = m_effectiveStart.toString(u"ddMMMyy hh:00"_qs);
+            effectiveStartString = m_effectiveStart.toString(u"ddMMMyy hh:mm"_qs);
         }
     }
     auto effectiveEndString = m_effectiveEndString;
     if (m_effectiveEnd.isValid())
     {
-        effectiveEndString = m_effectiveEnd.toString(u"ddMMMyy hh:00"_qs);
+        effectiveEndString = m_effectiveEnd.toString(u"ddMMMyy hh:mm"_qs);
     }
 
     if (m_effectiveEnd.isValid())

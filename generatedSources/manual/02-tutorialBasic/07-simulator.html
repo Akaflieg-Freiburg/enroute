@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connect Your Flight Simulator &mdash; Enroute Flight Navigation  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+    <link rel="shortcut icon" href="../_static/de.akaflieg_freiburg.enroute.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Report Issues or Make a Suggestion" href="08-report.html" />
+    <link rel="prev" title="Manage a Waypoint Library" href="06-waypointLibrary.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Enroute Flight Navigation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../01-gettingStarted.html">Getting Started</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../02-tutorialBasic.html">Basic Use</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01-traffic.html">Connect Your Traffic Receiver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-safesky.html">Connect the SafeSky App</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-nearby.html">Find Nearby Waypoints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-weather.html">Check Weather</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05-plan.html">Plan a Flight</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06-waypointLibrary.html">Manage a Waypoint Library</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Connect Your Flight Simulator</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#before-you-connect">Before You Connect</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#set-up-your-flight-simulator">Set Up Your Flight Simulator</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#aerofly-fs">Aerofly FS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flightgear">FlightGear</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ms-flight-simulator">MS Flight Simulator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#x-plane-11">X-Plane 11</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#other-programs">Other Programs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="08-report.html">Report Issues or Make a Suggestion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="09-donate.html">Make a Donation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../03-tutorialAdvanced.html">Advanced Use</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference Manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../04-referencePages.html">User Interface: Pages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05-referenceWorkflow.html">User Interface: Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06-referenceTechnology.html">Technology</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../07-appendix/01-dataSources.html">Data Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07-appendix/02-license.html">Software and Data Licenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07-appendix/03-privacy.html">Privacy Policies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07-appendix/04-authors.html">Authors</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Enroute Flight Navigation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../02-tutorialBasic.html">Basic Use</a></li>
+      <li class="breadcrumb-item active">Connect Your Flight Simulator</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/02-tutorialBasic/07-simulator.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="connect-your-flight-simulator">
+<h1>Connect Your Flight Simulator<a class="headerlink" href="#connect-your-flight-simulator" title="Link to this heading"></a></h1>
+<p><strong>Enroute Flight Navigation</strong> can connect to flight simulator software.  When
+setup correctly, position and traffic information is sent from the flight
+simulator via Wi-Fi to the device that runs <strong>Enroute Flight Navigation</strong>.</p>
+<p>The author has tested <strong>Enroute Flight Navigation</strong> with the following flight
+simulator programs.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#flightgear">FlightGear</a></p></li>
+<li><p><a class="reference internal" href="#x-plane-11">X-Plane 11</a> for desktop computers</p></li>
+</ul>
+<p>Users have reported success with the following programs.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#aerofly-fs">Aerofly FS</a>, Version 2 and 4 for desktop computers</p></li>
+<li><p><a class="reference internal" href="#ms-flight-simulator">MS Flight Simulator</a></p></li>
+<li><p>X-Plane, Versions 10, 11 and 12 for desktop computers</p></li>
+</ul>
+<p>Please contact us if you are aware of other programs that also work.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Enroute Flight Navigation</strong> treats flight simulators as traffic
+receivers.  To see the connection status, open the main menu and navigate to
+the “Information” menu.</p>
+</div>
+<section id="before-you-connect">
+<h2>Before You Connect<a class="headerlink" href="#before-you-connect" title="Link to this heading"></a></h2>
+<p>This manual assumes a typical home setup, where both the computer that runs the
+flight simulator and the device that runs <strong>Enroute Flight Navigation</strong> are
+connected to a Wi-Fi network deployed by a home router.  Make sure that the
+following conditions are met.</p>
+<ul class="simple">
+<li><p>Open the “Settings” page in the main menu and tap on the entry “Primary
+position data source” and select the “Traffic data receiver” as the main
+source. <strong>As long as the built-in satnav receiver is selected, all position
+information provided by your flight simulator is ignored.</strong></p></li>
+<li><p>The computer that runs the flight simulator and the device that runs <strong>Enroute
+Flight Navigation</strong> are connected to the same Wi-Fi network.  Some routers
+deploy two networks, often called “main network” and a “guest network”.</p></li>
+<li><p>Make sure that the router allows data transfer between the devices in the
+Wi-Fi network.  Some routers have “security settings” that disallow data
+transfer between the devices in the “guest network”</p></li>
+</ul>
+</section>
+<section id="set-up-your-flight-simulator">
+<h2>Set Up Your Flight Simulator<a class="headerlink" href="#set-up-your-flight-simulator" title="Link to this heading"></a></h2>
+<p>Your flight simulation software needs to broadcast position and traffic
+information over the Wi-Fi network.  Once this is done, there is no further
+setup required.  As soon as the flight simulator starts to broadcast information
+over the Wi-Fi network, the moving map of <strong>Enroute Flight Navigation</strong> will
+adjust accordingly.  To end the connection to the flight simulator, simply leave
+the flight simulator’s Wi-Fi network.</p>
+<section id="aerofly-fs">
+<h3>Aerofly FS<a class="headerlink" href="#aerofly-fs" title="Link to this heading"></a></h3>
+<p>Aerofly works well with <strong>Enroute Flight Navigation</strong> if the program is set to
+broadcast flight information via the network.  Open the menu “Miscellaneous
+settings”, activate the option “Broadcast flight info to IP address” and enter
+the correct „Broadcast IP address“.  The figure <a class="reference internal" href="#aeroflyimg2"><span class="std std-ref">Aerofly Miscellaneous settings</span></a> and shows the
+settings that work for one of our users.</p>
+<figure class="align-center" id="id4">
+<span id="aeroflyimg1"></span><a class="reference internal image-reference" href="../_images/Aerofly-1.png"><img alt="../_images/Aerofly-1.png" src="../_images/Aerofly-1.png" style="width: 691.0px; height: 392.5px;" /></a>
+<figcaption>
+<p><span class="caption-text">Aerofly settings</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id5">
+<span id="aeroflyimg2"></span><a class="reference internal image-reference" href="../_images/Aerofly-2.png"><img alt="../_images/Aerofly-2.png" src="../_images/Aerofly-2.png" style="width: 691.0px; height: 391.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">Aerofly Miscellaneous settings</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="flightgear">
+<h3>FlightGear<a class="headerlink" href="#flightgear" title="Link to this heading"></a></h3>
+<p>FlightGear works well, even though position information is only broadcast when
+the simulated aircraft is moving.  The following two parameters in the text
+field of the settings dialog need to be set:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">--</span><span class="n">generic</span><span class="o">=</span><span class="n">socket</span><span class="p">,</span><span class="n">out</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">255.255.255.255</span><span class="p">,</span><span class="mi">49002</span><span class="p">,</span><span class="n">udp</span><span class="p">,</span><span class="n">foreflight</span><span class="o">-</span><span class="n">xgps</span>
+<span class="o">--</span><span class="n">httpd</span><span class="o">=</span><span class="mi">8080</span>
+</pre></div>
+</div>
+<p>The figure <a class="reference internal" href="#flightgear-img"><span class="std std-ref">FlightGear Settings</span></a> shows settings window.</p>
+<figure class="align-center" id="id6">
+<span id="flightgear-img"></span><a class="reference internal image-reference" href="../_images/FlightGear.png"><img alt="../_images/FlightGear.png" src="../_images/FlightGear.png" style="width: 644.0px; height: 220.5px;" /></a>
+<figcaption>
+<p><span class="caption-text">FlightGear Settings</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="ms-flight-simulator">
+<h3>MS Flight Simulator<a class="headerlink" href="#ms-flight-simulator" title="Link to this heading"></a></h3>
+<p>In order to communicate with other programs, the MS Flight Simulator requires
+additional software.  Users reported that <strong>Enroute Flight Navigation</strong> works
+well with the following EFB-connector programs.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/astenlund/fs2ff">fs2ff</a> (free, open source)</p></li>
+<li><p><a class="reference external" href="http://xmapsy.com/">XMapsy Essential</a> (commercial, inexpensive, does not
+provide barometric altitude data).</p></li>
+<li><p><a class="reference external" href="http://xmapsy.com/">XMapsy V3</a> (commercial, more expensive, provides
+barometric altitude data).</p></li>
+</ul>
+<p>The <a class="reference external" href="https://foreflight.com/support/support-center/category/about-foreflight-mobile/204115275">web site of the commerical EFB program ForeFlight</a>
+lists additional EFB-connector programs that might also work.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In MSFS2020 cold and dark mode, traffic in the air will not been
+shown. You have to power on the avionics!</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>At the time of writing (04Aug21), the MS Flight Simulator reports only
+traffic that has a tail number.  This is likely due to a bug in the MS
+Flight Simulator software.</p>
+</div>
+<section id="fs2ff">
+<h4>fs2ff<a class="headerlink" href="#fs2ff" title="Link to this heading"></a></h4>
+<p>The program <a class="reference external" href="https://github.com/astenlund/fs2ff">fs2ff</a> does not require any
+complicated installation or setup, just download and run.  The latest release of
+fs2ff can be downloaded <a class="reference external" href="https://github.com/astenlund/fs2ff/releases/latest">here</a>. Detailed instruction are
+found <a class="reference external" href="https://github.com/astenlund/fs2ff#fs2ff-flight-simulator-to-foreflight">here</a>.
+The figure <a class="reference internal" href="#fs2ff-img"><span class="std std-ref">fs2ff Settings</span></a> shows extremely simple settings window.</p>
+<figure class="align-center" id="id7">
+<span id="fs2ff-img"></span><a class="reference internal image-reference" href="../_images/fs2ff.png"><img alt="../_images/fs2ff.png" src="../_images/fs2ff.png" style="width: 876.0px; height: 705.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">fs2ff Settings</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="id2">
+<h4>XMapsy Essential<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<p>If you use XMapsy Essential, you need not to set up anything. Just start XMapsy
+Essential and start MSFS2020. The broadcast address will be setup automatically.
+The figure <a class="reference internal" href="#xmapsyessential"><span class="std std-ref">XMapsy Essential Settings</span></a> shows the settings.</p>
+<figure class="align-center" id="id8">
+<span id="xmapsyessential"></span><a class="reference internal image-reference" href="../_images/XMapsyEssential.png"><img alt="../_images/XMapsyEssential.png" src="../_images/XMapsyEssential.png" style="width: 760.5px; height: 667.5px;" /></a>
+<figcaption>
+<p><span class="caption-text">XMapsy Essential Settings</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="id3">
+<h4>XMapsy V3<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
+<p>If you use XMapsy V3, set the “Message-Format” to “ADS-B/GDL90” and the
+“Preferred Technology” to “SIMCONNECT”.  To receive the correct altitude, be
+sure to check the box “GDL90 ownship geometric altitudes based on MSL”.  The
+figure <a class="reference internal" href="#xmapsyv3"><span class="std std-ref">XMapsy V3 Settings</span></a> shows verified XMapsy V3 settings for proper work with
+MSFS2020. The Broadcast address will be determined by XMapsy and should not be
+touched except you have extended network configuration experience.</p>
+<figure class="align-center" id="id9">
+<span id="xmapsyv3"></span><a class="reference internal image-reference" href="../_images/XMapsyV3.png"><img alt="../_images/XMapsyV3.png" src="../_images/XMapsyV3.png" style="width: 764.25px; height: 602.25px;" /></a>
+<figcaption>
+<p><span class="caption-text">XMapsy V3 Settings</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="x-plane-11">
+<h3>X-Plane 11<a class="headerlink" href="#x-plane-11" title="Link to this heading"></a></h3>
+<p>Open the “Settings” window and choose the “Network” tab.  Locate the settings
+group “This machine’s role” on the right-hand side of the tab. Open the section
+“iPhone, iPad, and external apps” and select the item “Broadcast to all mapping
+apps on the network” under the headline “other mapping apps”.</p>
+<img alt="../_images/X-Plane-11.png" src="../_images/X-Plane-11.png" />
+</section>
+<section id="other-programs">
+<h3>Other Programs<a class="headerlink" href="#other-programs" title="Link to this heading"></a></h3>
+<p>The flight simulator needs to be set up to send UDP datagrams in one of the
+standard formats “GDL90” or “XGPS” to ports 4000 or 49002.  Given the choice,
+GDL90 is generally the preferred format.</p>
+</section>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<p><strong>Enroute Flight Navigation</strong> treats flight simulators as traffic receivers.  To
+see the connection status, open the main menu and navigate to the “Information”
+menu.  If the entry “Traffic Receiver” is highlighted in green, then <strong>Enroute
+Flight Navigation</strong> has already found the program in the network and has
+connected to it.  If not, then select the entry. The “Traffic Receiver Status”
+page will open, which explains the connection status in more detail.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="06-waypointLibrary.html" class="btn btn-neutral float-left" title="Manage a Waypoint Library" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="08-report.html" class="btn btn-neutral float-right" title="Report Issues or Make a Suggestion" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Stefan Kebekus.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

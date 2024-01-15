@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Import Visual Approach Charts &mdash; Enroute Flight Navigation  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+    <link rel="shortcut icon" href="../_static/de.akaflieg_freiburg.enroute.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="User Interface: Pages" href="../04-referencePages.html" />
+    <link rel="prev" title="Import Airspace Data" href="03-airspace.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Enroute Flight Navigation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../01-gettingStarted.html">Getting Started</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../02-tutorialBasic.html">Basic Use</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../03-tutorialAdvanced.html">Advanced Use</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01-customMapsVector.html">Import Custom Vector Maps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-customMapsRaster.html">Import Custom Raster Maps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-airspace.html">Import Airspace Data</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Import Visual Approach Charts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#obtain-approach-chart-files">Obtain Approach Chart Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#import-approach-chart-files">Import Approach Chart Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manage-your-approach-chart-library">Manage Your Approach Chart Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#use-approach-charts">Use Approach Charts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#appendix-create-approach-charts-with-gdal">Appendix: Create Approach Charts with GDAL</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference Manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../04-referencePages.html">User Interface: Pages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05-referenceWorkflow.html">User Interface: Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06-referenceTechnology.html">Technology</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../07-appendix/01-dataSources.html">Data Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07-appendix/02-license.html">Software and Data Licenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07-appendix/03-privacy.html">Privacy Policies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07-appendix/04-authors.html">Authors</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Enroute Flight Navigation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../03-tutorialAdvanced.html">Advanced Use</a></li>
+      <li class="breadcrumb-item active">Import Visual Approach Charts</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/03-tutorialAdvanced/04-vac.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="import-visual-approach-charts">
+<span id="vac"></span><h1>Import Visual Approach Charts<a class="headerlink" href="#import-visual-approach-charts" title="Link to this heading"></a></h1>
+<p><strong>Enroute Flight Navigation</strong> can import image files with visual approach charts
+and display them on the moving map.  The figure <a class="reference internal" href="#vacimg"><span class="std std-ref">Moving map display with embedded approach chart</span></a> shows how this
+will typically look.</p>
+<figure class="align-center" id="id2">
+<span id="vacimg"></span><a class="reference internal image-reference" href="../_images/03-03-VAC.png"><img alt="Moving map display with approach chart" src="../_images/03-03-VAC.png" style="width: 240.0px; height: 360.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">Moving map display with embedded approach chart</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p><strong>Enroute Flight Navigation</strong> accepts visual approach charts in one of the
+following formats.</p>
+<ul class="simple">
+<li><p>Geo-referenced image files in GeoTIFF format.</p></li>
+<li><p>TripKits that contain collections of approach charts for a specific area or
+flight route. The <a class="reference external" href="https://mpmediasoft.de/products/AIPBrowserDE/help/AIPBrowserDE.html">AIP Browser DE</a> can
+produce TripKits for Germany.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>GeoTIFF is a complex format that supports many use cases, ranging
+from astronomy to high-precision land survey. <strong>Enroute Flight Navigation</strong>
+only supports a subset of the GeoTIFF standard. If you encounter a GeoTIFF
+file that <strong>Enroute Flight Navigation</strong> does not recognize, please
+<a class="reference external" href="https://github.com/Akaflieg-Freiburg/enroute/issues/new/choose">open an issue report</a>.
+We will be glad to help!</p>
+</div>
+<section id="obtain-approach-chart-files">
+<h2>Obtain Approach Chart Files<a class="headerlink" href="#obtain-approach-chart-files" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Michael Paus’ free software <a class="reference external" href="https://mpmediasoft.de/products/AIPBrowserDE/help/AIPBrowserDE.html">AIP Browser DE</a> can
+generate GeoTIFF images and TripKits for all German airfields. The data comes
+from Germany’s official <a class="reference external" href="https://aip.dfs.de/basicAIP">AIP</a>, as provided by
+<a class="reference external" href="https://www.dfs.de/homepage">DFS Deutsche Flugsicherung GmbH</a>.</p></li>
+<li><p>Advanced users can use the GDAL command line utilities to convert raster
+graphic files into georeferenced GeoTIFF files.  The section <a class="reference internal" href="#gdal"><span class="std std-ref">Appendix: Create Approach Charts with GDAL</span></a>
+explains how to do this.</p></li>
+</ul>
+<p>Please get in touch with us if you are aware of other data sources. We will be
+glad to list them here.</p>
+</section>
+<section id="import-approach-chart-files">
+<h2>Import Approach Chart Files<a class="headerlink" href="#import-approach-chart-files" title="Link to this heading"></a></h2>
+<p>Transfer the OpenAir file to your device and open the file on your device.  The
+Section <a class="reference internal" href="../05-referenceWorkflow/01-share.html#importdata"><span class="std std-ref">Import Data</span></a> explains the process in detail.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>TripKits are ZIP files with specialized content. Trying to open a
+TripKit file, some file management utilities will automatically unpack the ZIP
+file rather than offering to open it in <strong>Enroute Flight Navigation</strong>.  Along
+similar lines, GeoTIFF files are image files with specialized metadata and some
+file management utilities will launch an image viewing application rather than
+offering to open a GeoTIFF file in <strong>Enroute Flight Navigation</strong>.</p>
+<p>If you encounter problems opening a TripKit or GeoTIFF file, look for an icon
+or menu item labeled “Open with…”.  Some utilities open an appropriate context
+menu after a tap-and-hold gesture.</p>
+</div>
+</section>
+<section id="manage-your-approach-chart-library">
+<h2>Manage Your Approach Chart Library<a class="headerlink" href="#manage-your-approach-chart-library" title="Link to this heading"></a></h2>
+<p>On the moving map screen, open the main menu and go to “Library/Maps and Data”.
+The page “Map and Data Library” will then open. The page has a “VAC” tab listing
+the approach charts. Use the context menus to uninstall charts and retrieve
+basic information.</p>
+<p>The three-dot menu at the top right of the screen allows clearing your approach
+chart library.</p>
+</section>
+<section id="use-approach-charts">
+<h2>Use Approach Charts<a class="headerlink" href="#use-approach-charts" title="Link to this heading"></a></h2>
+<p>Once approach charts are installed, open the main menu and go to “Approach
+Charts”. The page “Visual Approach Charts” will then open. The page lists all
+approach charts installed in your device, sorted by distance to the current
+position. Tap on a chart to open “Approach Chart” page, which shows a slightly
+simplified moving map with the approach chart superimposed on top of the usual
+map layer. As usual, tap on the left arrow symbol in the page title to close the
+page and return to the standard moving map display.</p>
+<p>In order to avoid surprises in flight, <strong>Enroute Flight Navigation</strong> will not
+open the approach chart page automatically.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The menu entry “Approach Charts” is only visible if approach
+charts are installed on your device. If you cannot find the menu entry,
+install some approach charts first.</p>
+</div>
+</section>
+<section id="appendix-create-approach-charts-with-gdal">
+<span id="gdal"></span><h2>Appendix: Create Approach Charts with GDAL<a class="headerlink" href="#appendix-create-approach-charts-with-gdal" title="Link to this heading"></a></h2>
+<p>Advanced users might wish to create their own approach chart files in GeoTIFF
+format, perhaps from a PDF of their official AIP.  One user has kindly provided
+the following tutorial, which explains how to accomplish this task on a Windows
+computer, using command line utilities.</p>
+<p><strong>Preparation</strong></p>
+<ol class="arabic simple">
+<li><p>Download and install <a class="reference external" href="https://maps.google.com/intl/en/earth/versions/#download-pro">Google Earth for Windows</a>.</p></li>
+<li><p>Download and install <a class="reference external" href="https://gdal.org/download.html">GDAL for Windows</a>.
+GDAL is a translator for raster and vector geospatial data formats.</p></li>
+</ol>
+<p><strong>Georeferencing and conversion to GeoTIFF</strong></p>
+<ol class="arabic">
+<li><p>Download the relevant chart from the AIP. The chart will typically come as a
+PDF file.</p></li>
+<li><p>Convert the relevant page of the AIP to PNG format. Most PDF viewer programs
+allow exporting a page to PNG.</p></li>
+<li><p>Use any image viewer program (for instance: Windows Photos) to crop the PNG,
+removing margins and legends and leaving only the parts that you would like
+to see in <strong>Enroute Flight Navigation</strong>. Copy the obtained file to the folder
+where you installed GDAL.</p></li>
+<li><p>Open Google Earth.</p></li>
+<li><p>In the top menu, go to “Add” → “Image overlay.”</p></li>
+<li><p>Click on “Browse” and select PNG file created in step 3.</p></li>
+<li><p>Set the “Transparency” to 50% between “Clear” and “Opaque.”</p></li>
+<li><p>Before pressing OK, adjust the image size, as it will be quite large, and
+move it to the airport area you’re interested in. Since it is transparent,
+you can adjust the size and position until roads and rivers align with the
+Google Earth image underneath. It’s not a very fast method, but you can
+change the transparency to check alignment.</p></li>
+<li><p>When the graphic is aligned with the map, press OK.</p></li>
+<li><p>Move the mouse to the upper-left corner of the VAC and note the coordinates
+at the bottom of the screen. Move the mouse to the lower-left corner of the
+VAC and note the coordinates.</p></li>
+<li><p>Open a console by typing “CMD” in the command line. Navigate to the
+directory where you installed GDAL.</p></li>
+<li><p>Type “SDKShell” and press Enter, this sets the paths</p></li>
+<li><p>Convert the PNG file to GeoTIFF format using a GDAL command as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gdal_translate</span> <span class="o">-</span><span class="n">a_srs</span> <span class="n">EPSG</span><span class="p">:</span><span class="mi">4326</span> <span class="o">-</span><span class="n">a_ullr</span> <span class="o">&lt;</span><span class="n">upper_left_longitude</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">upper_left_latitude</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">lower_right_longitude</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">lower_right_latitude</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">mo</span> <span class="s2">&quot;TIFFTAG_IMAGEDESCRIPTION=Chart Name&quot;</span> <span class="o">-</span><span class="n">co</span> <span class="n">COMPRESS</span><span class="o">=</span><span class="n">LZW</span> <span class="nb">input</span><span class="o">.</span><span class="n">png</span> <span class="n">output</span><span class="o">.</span><span class="n">tif</span>
+</pre></div>
+</div>
+<p>In the coordinates, north is positive, south is negative, east is positive,
+west is negative.  A call for a map in norther Spain could read as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gdal_translate</span> <span class="o">-</span><span class="n">a_srs</span> <span class="n">EPSG</span><span class="p">:</span><span class="mi">4326</span> <span class="o">-</span><span class="n">a_ullr</span> <span class="o">-</span><span class="mf">6.620555</span> <span class="mf">43.982777</span> <span class="o">-</span><span class="mf">5.736666</span> <span class="mf">43.387222</span> <span class="o">-</span><span class="n">mo</span> <span class="s2">&quot;TIFFTAG_IMAGEDESCRIPTION=Asturias&quot;</span> <span class="o">-</span><span class="n">co</span> <span class="n">COMPRESS</span><span class="o">=</span><span class="n">LZW</span> <span class="nb">input</span><span class="o">.</span><span class="n">png</span> <span class="n">output</span><span class="o">.</span><span class="n">tif</span>
+</pre></div>
+</div>
+</li>
+<li><p>Copy the output.tif file to your mobile device and import it into <strong>Enroute
+Flight Navigation</strong> as described above.</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="03-airspace.html" class="btn btn-neutral float-left" title="Import Airspace Data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../04-referencePages.html" class="btn btn-neutral float-right" title="User Interface: Pages" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Stefan Kebekus.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

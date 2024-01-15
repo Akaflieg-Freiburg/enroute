@@ -103,7 +103,7 @@ void Sensors::updateStatusString()
 
     QStringList sensorNames;
 #if defined(Q_OS_ANDROID) or defined(Q_OS_IOS)
-    auto types = m_pressureSensor.sensorTypes();
+    auto types = QPressureSensor::sensorTypes();
     if (types.contains("QPressureSensor"))
     {
         sensorNames += "<li>" + tr("Pressure sensor available") + "</li>";

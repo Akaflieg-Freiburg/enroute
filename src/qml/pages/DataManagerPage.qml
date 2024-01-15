@@ -20,6 +20,7 @@
 
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Dialogs
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -131,6 +132,46 @@ Page {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
                         DataManager.items.update()
+                    }
+                }
+
+                MenuSeparator { }
+
+                MenuItem {
+                    id: menuImport
+
+                    text: qsTr("Import…")
+
+                    onTriggered: {
+                        PlatformAdaptor.vibrateBrief()
+                        highlighted = false
+                        importFileDialog.open()
+                    }
+
+                    FileDialog {
+                        id: importFileDialog
+
+                        acceptLabel: qsTr("Import")
+                        rejectLabel: qsTr("Cancel")
+
+                        fileMode: FileDialog.OpenFile
+
+                        // Setting a non-trivial name filter on Android means we cannot select any
+                        // files at all.
+                        nameFilters: Qt.platform.os === "android" ? undefined : [qsTr("OpenAir Airspace Data (*.txt)"),
+                                                                                 qsTr("Raster and Vector Maps (*.mbtiles)"),
+                                                                                 qsTr("Trip Kits (*.zip)"),
+                                                                                 qsTr("Visual Approach Charts (*.tif *.tiff)")]
+
+                        onAccepted: {
+                            PlatformAdaptor.vibrateBrief()
+                            close()
+                            FileExchange.processFileOpenRequest(importFileDialog.selectedFile)
+                        }
+                        onRejected: {
+                            PlatformAdaptor.vibrateBrief()
+                            close()
+                        }
                     }
                 }
 
@@ -254,7 +295,7 @@ Page {
                 wrapMode: Text.Wrap
 
                 text: "<p>" + qsTr("There are no approach charts installed. The <a href='x'>manual</a> explains how to install and use them.") + "</p>"
-                onLinkActivated: openManual("02-advanced/vac.html")
+                onLinkActivated: openManual("03-tutorialAdvanced/04-vac.html")
 
             }
         }
@@ -370,8 +411,8 @@ Page {
         // Without this, the downaloadIndication would not be visible on very quick downloads, leaving the user
         // without any feedback if the download did actually take place.
         Connections {
-            target: DataManager
-            function ondownloadingRemoteItemListChanged () {
+            target: DataManager.mapList
+            function onDownloadingChanged () {
                 if (DataManager.mapList.downloading) {
                     downloadIndicator.visible = true
                     downloadIndicator.opacity = 1.0

@@ -37,29 +37,25 @@ set -e
 
 rm -rf build-android-release
 mkdir -p build-android-release
-cd build-android-release
 
 #
 # Configure
 #
 
-export ANDROID_NDK_ROOT=$ANDROID_SDK_ROOT/ndk/23.1.7779620
-#export JAVA_HOME=/opt/homebrew/Cellar/openjdk@17/17.0.9
-
-$Qt6_DIR_BASE/android_x86_64/bin/qt-cmake .. \
-      -DCMAKE_BUILD_TYPE:STRING=Release \
-      -DQT_ANDROID_BUILD_ALL_ABIS:BOOL=On \
-      -DQT_HOST_PATH=$Qt6_DIR_BASE/macos \
-      -G Ninja
+$Qt6_DIR_ANDROID\_x86_64/bin/qt-cmake \
+    -S . \
+    -B build-android-release \
+    -DCMAKE_BUILD_TYPE:STRING=Release \
+    -DQT_ANDROID_BUILD_ALL_ABIS:BOOL=On \
+    -DQT_HOST_PATH=$Qt6_DIR_MACOS \
+    -G Ninja
 
 #
 # Build the executable
 #
 
-ninja
-
-echo "Build AAB"
-ninja aab
+cmake --build build-android-release
+cmake --build build-android-release --target aab
 
 
 #
@@ -75,17 +71,17 @@ else
 	sign \
         --ks $ANDROID_KEYSTORE_FILE \
 	--ks-pass pass:$ANDROID_KEYSTORE_PASS \
-	--in src/android-build/build/outputs/apk/debug/android-build-debug.apk \
-	--out enroute-release-signed.apk
+	--in build-android-release/src/android-build/build/outputs/apk/release/android-build-release-unsigned.apk \
+	--out build-android-release/enroute-release-signed.apk
     echo "Signed APK file is available at $PWD/enroute-release-signed.apk"
     echo
     echo "Signing AAB"
     jarsigner \
 	-keystore $ANDROID_KEYSTORE_FILE \
         -storepass $ANDROID_KEYSTORE_PASS \
-	src/android-build/build/outputs/bundle/release/android-build-release.aab "Stefan Kebekus"
-    cp src/android-build/build/outputs/bundle/release/android-build-release.aab enroute-release-signed.aab
+	build-android-release/src/android-build/build/outputs/bundle/release/android-build-release.aab "Stefan Kebekus"
+    cp build-android-release/src/android-build/build/outputs/bundle/release/android-build-release.aab build-android-release/enroute-release-signed.aab
     
     echo "Signed AAB file is available at $PWD/enroute-release-signed.aab"
-    nautilus $PWD &
+    nautilus $PWD/build-android-release &
 fi

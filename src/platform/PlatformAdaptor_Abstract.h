@@ -77,25 +77,13 @@ public:
     // Methods
     //
 
-    /*! \brief Checks if all required permissions have been granted
-     *
-     * Depending on the platform, the app needs to ask for permissions to
-     * operate properly. This method can be used to check if all permissions
-     * have been granted. It returns an empty string if all permissions are
-     * there, and a human-readable, translated explanation of missing
-     * permissions otherwise.
-     *
-     * @returns Empty string or explanation
-    */
-    Q_INVOKABLE virtual QString checkPermissions() = 0;
-
     /*! \brief SSID of current Wi-Fi network
      *
      * @returns The SSID of the current Wi-Fi networks, an empty string if the
      * device is not connected to a Wi-Fi or a generic string if the SSID cannot
      * be determined.
      */
-    Q_INVOKABLE virtual QString currentSSID() = 0;
+    Q_INVOKABLE virtual QString currentSSID() { return {}; }
 
     /*! \brief Disable the screen saver
      *
@@ -104,7 +92,7 @@ public:
      * meant to ensure that the display remains on while the app is in use (e.g.
      * while the pilot is following a non-standard traffic pattern).
      */
-    Q_INVOKABLE virtual void disableScreenSaver() = 0;
+    Q_INVOKABLE virtual void disableScreenSaver() {}
 
     /*! \brief Lock connection to Wi-Fi network
      *
@@ -118,18 +106,7 @@ public:
      * @param lock If true, then lock the network. If false, then release the
      * lock.
      */
-    Q_INVOKABLE virtual void lockWifi(bool lock) = 0;
-
-    /*! \brief Request permissions
-     *
-     * On some platforms, the app needs to ask for permissions to perform
-     * certain functions (e.g. receive location, query Wi-Fi status, …). This
-     * method is called before the GUI is set up and must request ALL
-     * permissions that the app will ever use. The method is meant to run
-     * synchroneously and shall return only once all permissions have been
-     * granted (or not). 
-     */
-    Q_INVOKABLE virtual void requestPermissionsSync() = 0;
+    Q_INVOKABLE virtual void lockWifi(bool lock) { Q_UNUSED(lock) }
 
     /*! \brief Workaround for QTBUG-80790
      *
@@ -144,10 +121,7 @@ public:
      *
      *  @param item QQuickItem where the event filter is to be intalled.
      */
-    Q_INVOKABLE virtual void setupInputMethodEventFilter(QQuickItem* item)
-    {
-        Q_UNUSED(item)
-    }
+    Q_INVOKABLE virtual void setupInputMethodEventFilter(QQuickItem* item) { Q_UNUSED(item) }
 
     /*! \brief Information about the system, in HTML format
      *
@@ -160,7 +134,7 @@ public:
      *  On platforms that support this, make the device briefly vibrate if
      *  haptic feedback is enabled in the system settings.
      */
-    Q_INVOKABLE virtual void vibrateBrief() = 0;
+    Q_INVOKABLE virtual void vibrateBrief() {}
 
     /*! \brief Make the device vibrate for a longer period
      *
@@ -168,7 +142,7 @@ public:
      *  if haptic feedback is enabled in the system settings. This is used to
      *  when showing notifications.
      */
-    Q_INVOKABLE virtual void vibrateLong() = 0;
+    Q_INVOKABLE virtual void vibrateLong() {}
 
     /*! \brief Language code that is to be used in the GUI
      *
@@ -196,7 +170,7 @@ public slots:
      *  The implementation should guarentee that nothing bad happens if the
      *  method is called more than once.
      */
-    virtual void onGUISetupCompleted() = 0;
+    virtual void onGUISetupCompleted() {}
 
 
 signals:

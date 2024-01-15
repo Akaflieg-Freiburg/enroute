@@ -20,6 +20,7 @@
 
 #include <QFile>
 
+#include "fileFormats/DataFileAbstract.h"
 #include "GeoTIFF.h"
 
 
@@ -72,14 +73,14 @@ void checkForError(QDataStream& dataStream)
 
 FileFormats::GeoTIFF::GeoTIFF(const QString& fileName)
 {
-    QFile inFile(fileName);
-    if (!inFile.open(QFile::ReadOnly))
+    auto inFile = FileFormats::DataFileAbstract::openFileURL(fileName);
+    if (!inFile->open(QFile::ReadOnly))
     {
-        setError(inFile.errorString());
+        setError(inFile->errorString());
         return;
     }
 
-    readTIFFData(inFile);
+    readTIFFData(*inFile.data());
 }
 
 FileFormats::GeoTIFF::GeoTIFF(QIODevice& device)

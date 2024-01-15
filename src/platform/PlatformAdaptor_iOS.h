@@ -33,7 +33,7 @@ class ImFixer : public QObject {
 protected:
     bool eventFilter(QObject *obj, QEvent *event) override {
         if (event->type() == QEvent::InputMethodQuery) {
-            QInputMethodQueryEvent *imEvt = static_cast<QInputMethodQueryEvent *>(event);
+            auto* imEvt = static_cast<QInputMethodQueryEvent *>(event);
             if (imEvt->queries() == Qt::InputMethodQuery::ImCursorRectangle) {
                 imEvt->setValue(Qt::InputMethodQuery::ImCursorRectangle, QRectF());
                 return true;
@@ -67,54 +67,35 @@ public:
      *
      *  @returns see PlatformAdaptor_Abstract
      */
-    Q_INVOKABLE QString checkPermissions() override;
-
-
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract
-     *
-     *  @returns see PlatformAdaptor_Abstract
-     */
-    Q_INVOKABLE QString currentSSID() override;
+    QString currentSSID() override;
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
     void disableScreenSaver() override;
-
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract
-     *
-     *  @param lock see PlatformAdaptor_Abstract
-     */
-    Q_INVOKABLE void lockWifi(bool lock) override;
-
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
-    void requestPermissionsSync() override;
 
     /*! \brief Implements virtual method from PlatformAdaptor_Abstract,
      *  workaround for QTBUG-80790
      *
      *  @param item QQuickItem where the event filter is to be intalled.
      */
-    Q_INVOKABLE virtual void setupInputMethodEventFilter(QQuickItem *item) override {
+    void setupInputMethodEventFilter(QQuickItem *item) override {
         static thread_local ImFixer imf;
         item->installEventFilter(&imf);
     }
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
-    Q_INVOKABLE void vibrateBrief() override;
+    void vibrateBrief() override;
 
-    Q_INVOKABLE void vibrateLong() override;
-
-    Q_INVOKABLE QString language() override;
-
-    Q_INVOKABLE void saveScreenshot(QImage, QString) override;
-
-public slots:
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
-    Q_INVOKABLE void onGUISetupCompleted() override;
+    void vibrateLong() override;
 
-  
-protected:
-    /*! \brief Implements virtual method from GlobalObject */
-    //void Platform::PlatformAdaptor::deferredInitialization()
+    /*! \brief Reimplements virtual method from PlatformAdaptor_Abstract */
+    QString language() override;
+
+#warning documentation
+    Q_INVOKABLE void saveScreenshot(QImage, QString);
+
+    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
+    void onGUISetupCompleted() override;
 
 private:
     Q_DISABLE_COPY_MOVE(PlatformAdaptor)

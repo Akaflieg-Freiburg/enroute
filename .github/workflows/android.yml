@@ -1,12 +1,8 @@
 name: Compile on Android
 
 on:
-  create:
-    branches: [ main ]
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches: [ develop ]
 
 jobs:
   build:
@@ -14,20 +10,21 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout enroute
+      uses: actions/checkout@v4
       with:
         path: enroute
-        submodules: true
-    - name: Checkout qtlocation
-      uses: actions/checkout@v3
+        submodules: recursive
+    - name: Checkout enrouteDependencies
+      uses: actions/checkout@v4
       with:
-        path: qtlocation
-        repository: Akaflieg-Freiburg/qtlocationstatic
-        submodules: true
+        path: enrouteDependencies
+        repository: Akaflieg-Freiburg/enrouteDependencies
+        submodules: recursive
     - name: Install Qt for Desktop
       uses: jurplel/install-qt-action@v3
       with:
-        version: '6.4.*'
+        version: '6.6.*'
         modules: 'qtshadertools'	
     - name: Set QT_HOST_PATH
       run: |
@@ -36,9 +33,9 @@ jobs:
       uses: jurplel/install-qt-action@v3
       with:
         target: 'android'
-        version: '6.4.*'
+        version: '6.6.*'
         arch: 'android_arm64_v8a'
-        modules: 'qt5compat qthttpserver qtimageformats qtpositioning qtsensors qtshadertools qtspeech qtwebsockets qtwebview'
+        modules: 'qt5compat qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtsensors qtshadertools qtspeech qtwebsockets qtwebview'
     - name: Install Additional Software
       run: |
         sudo apt install extra-cmake-modules ninja-build spirv-tools
@@ -46,21 +43,51 @@ jobs:
         echo "y" | ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager --uninstall "platforms;android-33-ext5" "platforms;android-33-ext4"
         echo "y" | ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager "ndk;23.1.7779620"
         echo ANDROID_NDK_ROOT=$ANDROID_SDK_ROOT/ndk/23.1.7779620 >> $GITHUB_ENV
-    - name: Compile QtLocation
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+        key: android
+    - name: Compile and Install libzip
       run: |
-        cmake -E make_directory build-qtlocation
-        cd build-qtlocation
-        $Qt6_DIR/bin/qt-configure-module ../qtlocation
-        cmake -DMBGL_QT_WITH_INTERNAL_ICU:BOOL=On .
-        cmake --build .
-        cmake --install .
+        $Qt6_DIR/bin/qt-cmake \
+          -S enrouteDependencies/libzip \
+          -B build-libzip \
+          -G Ninja  \
+          -DBUILD_DOC=OFF \
+          -DBUILD_EXAMPLES=OFF \
+          -DBUILD_REGRESS=OFF \
+          -DBUILD_SHARED_LIBS=OFF \
+          -DBUILD_TOOLS=OFF \
+          -DENABLE_BZIP2=OFF \
+          -DENABLE_LZMA=OFF \
+          -DENABLE_ZSTD=OFF \
+          -DCMAKE_INSTALL_PREFIX=$Qt6_DIR
+        cmake --build build-libzip
+        cmake --install build-libzip
+    - name: Compile and Install maplibre-native-qt
+      run: |
+        $Qt6_DIR/bin/qt-cmake \
+          -S enrouteDependencies/maplibre-native-qt \
+          -B build-maplibre-native-qt \
+          -G Ninja \
+          -DBUILD_TESTING=OFF \
+          -DCMAKE_C_COMPILER_LAUNCHER="ccache" \
+          -DCMAKE_CXX_COMPILER_LAUNCHER="ccache" \
+          -DCMAKE_PREFIX_PATH=$Qt6_DIR \
+          -DCMAKE_INSTALL_PREFIX=$Qt6_DIR
+        cmake --build build-maplibre-native-qt
+        cmake --install build-maplibre-native-qt
     - name: Compile Enroute
       run: |
-        cmake -E make_directory build-enroute
-        cd build-enroute
-        $Qt6_DIR/bin/qt-cmake -DCMAKE_BUILD_TYPE:STRING=Debug ../enroute
-        cmake --build .
-    - uses: actions/upload-artifact@v3
-      with:
-        name: enroute-debug.apk
-        path: build-enroute/src/android-build//build/outputs/apk/debug/android-build-debug.apk
+        $Qt6_DIR/bin/qt-cmake \
+          -S enroute \
+          -B build-enroute\
+          -G Ninja\
+          -DCMAKE_BUILD_TYPE:STRING=Debug
+        cmake --build build-enroute
+    - name: Upload to developerBuilds
+      run: |
+        gh release upload --clobber developerBuilds ../build-enroute/src/android-build//build/outputs/apk/debug/android-build-debug.apk
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      working-directory: enroute

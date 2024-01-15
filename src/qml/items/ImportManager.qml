@@ -119,25 +119,14 @@ Item {
         }
     }
 
-    CenteringDialog {
+    LongTextDialog {
         id: chooseFRorWPDialog
 
         title: qsTr("Import Waypoint Data")
+        text: qsTr("The file contains a list of waypoints. Import as a flight route or add to the waypoint library?")
+
         standardButtons: Dialog.Abort
         modal: true
-
-        ColumnLayout {
-            anchors.fill: parent
-
-            Label {
-                Layout.fillWidth: true
-
-                text: qsTr("The file contains a list of waypoints. Import as a flight route or add to the waypoint library?")
-                wrapMode: Text.Wrap
-                textFormat: Text.StyledText
-            }
-
-        }
 
         footer: DialogButtonBox {
 
@@ -240,6 +229,12 @@ Item {
 
         ColumnLayout {
             anchors.fill: parent
+
+            // Delays evaluation and prevents binding loops
+            Binding on implicitHeight {
+//                value: lbl.implicitHeight
+                delayed: true    // Prevent intermediary values from being assigned
+            }
 
             Label {
                 Layout.fillWidth: true

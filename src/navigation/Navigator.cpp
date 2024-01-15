@@ -37,7 +37,7 @@ Navigation::Navigator::Navigator(QObject *parent) : GlobalObject(parent)
     m_aircraftFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/aircraft.json";
 
     // Restore wind
-    QSettings settings;
+    QSettings const settings;
     m_wind.setSpeed(Units::Speed::fromKN(settings.value(QStringLiteral("Wind/windSpeedInKT"), qQNaN()).toDouble()));
     m_wind.setDirectionFrom( Units::Angle::fromDEG(settings.value(QStringLiteral("Wind/windDirectionInDEG"), qQNaN()).toDouble()) );
 
@@ -75,6 +75,8 @@ auto Navigation::Navigator::flightRoute() -> FlightRoute*
 {
     if (m_flightRoute.isNull()) {
         m_flightRoute = new FlightRoute(this);
+        m_flightRoute->load(m_flightRouteFileName);
+        connect(m_flightRoute, &Navigation::FlightRoute::waypointsChanged, this, [this]() {if (m_flightRoute != nullptr) {(void)m_flightRoute->save(m_flightRouteFileName);}});
         QQmlEngine::setObjectOwnership(m_flightRoute, QQmlEngine::CppOwnership);
     }
     return m_flightRoute;
@@ -282,7 +284,7 @@ void Navigation::Navigator::updateRemainingRouteInfo()
     //
     RemainingRouteInfo rri;
     rri.status = RemainingRouteInfo::OnRoute;
-    Leg legToNextWP(info.coordinate(), legs[currentLeg].endPoint());
+    Leg const legToNextWP(info.coordinate(), legs[currentLeg].endPoint());
     auto dist = legToNextWP.distance();
     auto ETE = legToNextWP.ETE(m_wind, m_aircraft);
 

@@ -18,9 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+import QtCore
 import QtQuick
 import QtQuick.Controls
-import Qt.labs.settings
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -54,6 +54,8 @@ AppWindow {
 
         height: (Qt.platform.os === "android") ? SafeInsets.wHeight : parent.height
         width: col.implicitWidth
+        Material.roundedScale: Material.NotRounded
+
 
         DecoratedScrollView {
             anchors.fill: parent
@@ -435,9 +437,8 @@ AppWindow {
                             icon.source: "/icons/material/ic_attach_money.svg"
 
                             onClicked: {
-
                                 if (Qt.platform.os === "ios") {
-                                    Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteText/manual/02-steps/donate.html")
+                                    Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteManual/02-tutorialBasic/09-donate.html")
                                 } else {
                                     PlatformAdaptor.vibrateBrief()
                                     stackView.pop()
@@ -503,7 +504,7 @@ AppWindow {
 
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
-                                Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteText/manual")
+                                Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteManual")
                                 manualMenu.close()
                                 aboutMenu.close()
                                 drawer.close()
@@ -518,7 +519,7 @@ AppWindow {
 
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
-                                Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteText/manual.epub")
+                                Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteManual/manual.epub")
                                 manualMenu.close()
                                 aboutMenu.close()
                                 drawer.close()
@@ -532,7 +533,7 @@ AppWindow {
 
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
-                                Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteText/manual.pdf")
+                                Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteManual/manual.pdf")
 
                                 manualMenu.close()
                                 aboutMenu.close()
@@ -596,8 +597,10 @@ AppWindow {
                     Layout.fillHeight: true
                 }
             }
+
         }
 
+        Component.onCompleted: Global.drawer = this
     }
 
     StackView {
@@ -632,15 +635,30 @@ AppWindow {
                 return
             }
 
-            if ((GlobalSettings.lastWhatsNewHash !== Librarian.getStringHashFromRessource(":text/whatsnew.html")) && (Navigator.flightStatus !== Navigator.Flight)) {
-                whatsNewDialog.open()
+            if ((GlobalSettings.lastWhatsNewHash !== Librarian.getStringHashFromRessource(":text/whatsnew.html")) &&
+                    (Navigator.flightStatus !== Navigator.Flight)) {
+                Global.dialogLoader.active = false
+                Global.dialogLoader.setSource("dialogs/LongTextDialog.qml", {
+                                                  title: qsTr("What's new…?"),
+                                                  text: Librarian.getStringFromRessource(":text/whatsnew.html"),
+                                                  standardButtons: Dialog.Ok
+                                              })
+                Global.dialogLoader.active = true
+                GlobalSettings.lastWhatsNewHash = Librarian.getStringHashFromRessource(":text/whatsnew.html")
                 return
             }
 
-            if ((GlobalSettings.lastWhatsNewInMapsHash != DataManager.whatsNewHash) &&
+            if ((GlobalSettings.lastWhatsNewInMapsHash !== DataManager.whatsNewHash) &&
                     (DataManager.whatsNew !== "") &&
                     (Navigator.flightStatus !== Navigator.Flight)) {
-                whatsNewInMapsDialog.open()
+                Global.dialogLoader.active = false
+                Global.dialogLoader.setSource("dialogs/LongTextDialog.qml", {
+                                                  title: qsTr("What's new…?"),
+                                                  text: DataManager.whatsNew,
+                                                  standardButtons: Dialog.Ok
+                                              })
+                Global.dialogLoader.active = true
+                onOpened: GlobalSettings.lastWhatsNewInMapsHash = DataManager.whatsNewHash
                 return
             }
 
@@ -667,7 +685,8 @@ AppWindow {
             function onRequestClosePages() {
                 stackView.pop()
                 firstRunDialog.close()
-                whatsNewDialog.close()
+                if (Global.dialogLoader.item)
+                    Global.dialogLoader.item.close()
             }
 
             function onRequestOpenAircraftPage() {
@@ -751,7 +770,6 @@ AppWindow {
         Connections { // Notification manager
             target: NotificationManager
             function onToastPosted(text) {
-                console.log("xx")
                 toast.doToast(text)
             }
         }
@@ -799,24 +817,6 @@ AppWindow {
 
         onAccepted: Qt.quit()
         onRejected: close()
-    }
-
-    LongTextDialog {
-        id: whatsNewDialog
-        standardButtons: Dialog.Ok
-        
-        title: qsTr("What's new…?")
-        text: Librarian.getStringFromRessource(":text/whatsnew.html")
-        onOpened: GlobalSettings.lastWhatsNewHash = Librarian.getStringHashFromRessource(":text/whatsnew.html")
-    }
-
-    LongTextDialog {
-        id: whatsNewInMapsDialog
-        standardButtons: Dialog.Ok
-
-        title: qsTr("What's new…?")
-        text: DataManager.whatsNew
-        onOpened: GlobalSettings.lastWhatsNewInMapsHash = DataManager.whatsNewHash
     }
 
     FirstRunDialog {
@@ -960,7 +960,7 @@ AppWindow {
         if (Qt.platform.os === "android")
             stackView.push("pages/Manual.qml", {"fileName": pageUrl})
         else
-            Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteText/manual/"+pageUrl)
+            Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteManual/"+pageUrl)
     }
 }
 

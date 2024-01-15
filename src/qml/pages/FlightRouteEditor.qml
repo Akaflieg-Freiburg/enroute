@@ -22,6 +22,7 @@ import QtPositioning
 import QtQml
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Dialogs
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -32,8 +33,8 @@ Page {
     id: flightRoutePage
     title: qsTr("Route and Wind")
 
-    property bool isIos: Qt.platform.os == "ios"
-    property bool isAndroid: Qt.platform.os == "android"
+    property bool isIos: Qt.platform.os === "ios"
+    property bool isAndroid: Qt.platform.os === "android"
     property bool isAndroidOrIos: isAndroid || isIos
     property angle staticAngle
     property speed staticSpeed
@@ -244,16 +245,38 @@ Page {
                 MenuSeparator { }
 
                 MenuItem {
+                    id: menuImport
+
                     text: qsTr("Import…")
-                    enabled: !isAndroidOrIos
-                    visible: !isAndroidOrIos
-                    height: !isAndroidOrIos ? undefined : 0
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
+                        importFileDialog.open()
+                    }
 
-                        FileExchange.importContent()
+                    FileDialog {
+                        id: importFileDialog
+
+                        acceptLabel: qsTr("Import")
+                        rejectLabel: qsTr("Cancel")
+
+                        fileMode: FileDialog.OpenFile
+
+                        // Setting a non-trivial name filter on Android means we cannot select any
+                        // files at all.
+                        nameFilters: Qt.platform.os === "android" ? undefined : [qsTr("GeoJSON File (*.geojson *.json)"),
+                                                                                 qsTr("GPX File (*.gpx)")]
+
+                        onAccepted: {
+                            PlatformAdaptor.vibrateBrief()
+                            close()
+                            FileExchange.processFileOpenRequest(importFileDialog.selectedFile)
+                        }
+                        onRejected: {
+                            PlatformAdaptor.vibrateBrief()
+                            close()
+                        }
                     }
                 }
 
@@ -642,10 +665,12 @@ Page {
                 visible: text !== ""
             }
 
-            ToolButton {
+            Button {
                 id: addWPButton
 
                 visible: (sv.currentIndex === 0)
+                flat: true
+
                 Layout.alignment: Qt.AlignHCenter
                 text: qsTr("Add Waypoint")
                 icon.source: "/icons/material/ic_add_circle.svg"
@@ -741,5 +766,4 @@ Page {
             close()
         }
     }
-
 } // Page

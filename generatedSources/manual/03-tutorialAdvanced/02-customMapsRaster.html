@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Import Custom Raster Maps &mdash; Enroute Flight Navigation  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+    <link rel="shortcut icon" href="../_static/de.akaflieg_freiburg.enroute.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Import Airspace Data" href="03-airspace.html" />
+    <link rel="prev" title="Import Custom Vector Maps" href="01-customMapsVector.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Enroute Flight Navigation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../01-gettingStarted.html">Getting Started</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../02-tutorialBasic.html">Basic Use</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../03-tutorialAdvanced.html">Advanced Use</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01-customMapsVector.html">Import Custom Vector Maps</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Import Custom Raster Maps</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#import-maps">Import Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mbtiles-map-data-sources">MBTILES Map Data Sources</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#raster-maps-in-geotiff-format">Raster Maps in GeoTIFF Format</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="03-airspace.html">Import Airspace Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-vac.html">Import Visual Approach Charts</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference Manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../04-referencePages.html">User Interface: Pages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05-referenceWorkflow.html">User Interface: Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06-referenceTechnology.html">Technology</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../07-appendix/01-dataSources.html">Data Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07-appendix/02-license.html">Software and Data Licenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07-appendix/03-privacy.html">Privacy Policies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07-appendix/04-authors.html">Authors</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Enroute Flight Navigation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../03-tutorialAdvanced.html">Advanced Use</a></li>
+      <li class="breadcrumb-item active">Import Custom Raster Maps</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/03-tutorialAdvanced/02-customMapsRaster.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="import-custom-raster-maps">
+<h1>Import Custom Raster Maps<a class="headerlink" href="#import-custom-raster-maps" title="Link to this heading"></a></h1>
+<p><strong>Enroute Flight Navigation</strong> comes with a set of general-purpose base maps in
+vector format, which are shown together with the aviation data in a style that
+we consider suitable for most aviation purposes.  Still, there might be
+situations where a user would like to use their own base maps.</p>
+<ul class="simple">
+<li><p>Where available, some users might prefer to use official ICAO charts of their
+countries.</p></li>
+<li><p>Some users might prefer raster maps that follow a different style.</p></li>
+</ul>
+<p><strong>Enroute Flight Navigation</strong> is able to import MBTILES file containing raster
+data.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In order to avoid confusion, we decided against mixing raster- and
+vector maps. As soon as a single raster map is installed, the moving map of
+<strong>Enroute Flight Navigation</strong> will <strong>only</strong> display that raster map.  In
+particular, the moving map will no longer display the aviation data layer. Even
+though they become invisible, we still recommend installing our regular maps,
+because <strong>Enroute Flight Navigation</strong> needs the data to provide airspace and
+waypoint information.</p>
+</div>
+<section id="import-maps">
+<h2>Import Maps<a class="headerlink" href="#import-maps" title="Link to this heading"></a></h2>
+<p>Transfer the MBTILES file to your device and open the file on your device.  The
+Section <a class="reference internal" href="../05-referenceWorkflow/01-share.html#importdata"><span class="std std-ref">Import Data</span></a> explains the process in detail.</p>
+<p>To view and manage your maps, open the main menu and go to “Library/Maps and
+Data”.</p>
+</section>
+<section id="mbtiles-map-data-sources">
+<h2>MBTILES Map Data Sources<a class="headerlink" href="#mbtiles-map-data-sources" title="Link to this heading"></a></h2>
+<p>The website <a class="reference external" href="https://www.openflightmaps.org/https://www.openflightmaps.org">open flightmaps</a> provides
+excellent aviation maps in raster format for a variety of European countries, as
+well as South Africa and Namibia.</p>
+<section id="raster-maps-in-geotiff-format">
+<h3>Raster Maps in GeoTIFF Format<a class="headerlink" href="#raster-maps-in-geotiff-format" title="Link to this heading"></a></h3>
+<p>We are aware of websites that offer raster maps in GeoTIFF format. At present,
+<strong>Enroute Flight Navigation</strong> cannot handle GeoTIFF files, but there are tools
+that convert GeoTIFF to MBTILES.</p>
+<ul class="simple">
+<li><p>Official ICAO maps for Denmark are available from the danish <a class="reference external" href="https://aim.naviair.dk/en/charts/">AIM Naviair</a></p></li>
+<li><p>Official ICAO maps for Spain are available from the Spanish <a class="reference external" href="https://aip.enaire.es/AIP/CartasInsigniaImpresas-es.html">Insignia Servicio
+de Información Aeronáutica</a></p></li>
+<li><p>Official ICAO maps for Switzerland are available from the Swiss <a class="reference external" href="https://www.swisstopo.admin.ch/en/geodata/aero/icao.html">Federal
+Office of Topography swisstopo</a></p></li>
+<li><p>Official VFR raster charts are available from the <a class="reference external" href="https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/vfr/">United States Federal
+Aviation Administration</a></p></li>
+</ul>
+<p>Users have successfully used the free tool <a class="reference external" href="https://qgis.org/en/site">QGIS</a> to
+convert GeoTIFF files to MBTILES, which can then be used with <strong>Enroute Flight
+Navigation</strong>.</p>
+<figure class="align-center" id="id1">
+<span id="qgis-img"></span><a class="reference internal image-reference" href="../_images/QGIS-MainWindow.png"><img alt="../_images/QGIS-MainWindow.png" src="../_images/QGIS-MainWindow.png" style="width: 884.0px; height: 485.6px;" /></a>
+<figcaption>
+<p><span class="caption-text">QGIS Main Window</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>Since QGIS is a powerful tool that is not always easy to use, one user has
+kindly provided the following short tutorial.</p>
+<ul class="simple">
+<li><p>Install QGIS on your desktop computer. On Fedora Linux, we found that the
+packages provided by the default software repository were outdated and lacked
+the necessary functionality.  We followed the installations instructions on
+the <a class="reference external" href="https://qgis.org/en/site/forusers/download.html">QGIS website</a> to
+install a current and full-featured version of the program.</p></li>
+<li><p>Open QGIS. Create a new project and open the GeoTIFF file in QGIS by
+dragging-and-dropping the GeoTIFF file into the QGIS window. The content of
+the GeoTIFF file should become visible.</p></li>
+<li><p>Choose the menu item “Project/Properties…” to open the dialog window “Project
+Properties”. There, set the coordinate reference system to EPSG:3857. To
+locate the reference system, use the text field “Filter” and search for
+EPSG:3857.</p></li>
+<li><p>Use the menu items under “View/Panels/…” to ensure that the panels “Layer” and
+“Layer Styling” are visible. Select the layer of your GeoTIFF file and in the
+“Layer” panel.  Then, go to the “Layer Styling” panel and set “Resampling” to
+“Bilinear” for better image render quality.</p></li>
+<li><p>Use the menu items under “View/Panels/…” to ensure that the panel “Processing
+Toolbox” is visible. Inside the “Processing Toolbox”, double-click on “Raster
+Tools→Generate XYZ Tiles (MBTILES)”.  The dialog “Generate XYZ Tiles
+(MBTILES)” will open. Fill the necessary parameters, as seen in the image
+below. We found the function “Draw on Map Canvas” useful to specify the map
+extent. Pay attention to the maximum zoom level, as the time and file size
+increase significantly after zoom level 12. Depending on the size of your
+GeoTIFF and on the number of zoom levels you use, it may take a while to
+generate the MBTILES file.</p></li>
+</ul>
+<figure class="align-center" id="id2">
+<span id="qgis-gen-img"></span><a class="reference internal image-reference" href="../_images/QGIS-GenerateMBTILES.png"><img alt="../_images/QGIS-GenerateMBTILES.png" src="../_images/QGIS-GenerateMBTILES.png" style="width: 518.4px; height: 599.2px;" /></a>
+<figcaption>
+<p><span class="caption-text">QGIS Generate Tiles Dialog</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="01-customMapsVector.html" class="btn btn-neutral float-left" title="Import Custom Vector Maps" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="03-airspace.html" class="btn btn-neutral float-right" title="Import Airspace Data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Stefan Kebekus.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

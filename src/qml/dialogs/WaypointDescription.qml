@@ -406,8 +406,9 @@ CenteringDialog {
 
     footer: DialogButtonBox {
 
-        ToolButton {
+        Button {
             text: qsTr("Route")
+            flat: true
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
@@ -499,12 +500,12 @@ CenteringDialog {
                     }
                 }
             }
-
         }
 
-        ToolButton {
+        Button {
             text: qsTr("Library")
             enabled: waypoint.category === "WP" //TODO: Warum kann ich keine nearby waypoints speichern?
+            flat: true
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
@@ -557,7 +558,6 @@ CenteringDialog {
                 }
 
             }
-
         }
 
         onRejected: close()

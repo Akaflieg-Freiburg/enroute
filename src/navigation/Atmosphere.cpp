@@ -85,8 +85,8 @@ Units::Distance Navigation::Atmosphere::height(Units::Density d)
 
 Units::Distance Navigation::Atmosphere::height(Units::Pressure p)
 {
-    double exponent = 1.0/5.255; // (Rstar*Lb)/(g0*M);
-    double height_in_meter = (Tb/Lb)*(1.0-pow(p.toPa()/P0, exponent));
+    double const exponent = 1.0 / 5.255; // (Rstar*Lb)/(g0*M);
+    double const height_in_meter = (Tb / Lb) * (1.0 - pow(p.toPa() / P0, exponent));
 
     return Units::Distance::fromM(height_in_meter);
 }
@@ -94,8 +94,8 @@ Units::Distance Navigation::Atmosphere::height(Units::Pressure p)
 
 Units::Pressure Navigation::Atmosphere::pressure(Units::Distance height)
 {
-    double exponent = (g0*M)/(Rstar*Lb);
-    double pressure_in_pascal = P0*pow( (Tb-height.toM()*Lb)/Tb, exponent);
+    double const exponent = (g0 * M) / (Rstar * Lb);
+    double const pressure_in_pascal = P0 * pow((Tb - height.toM() * Lb) / Tb, exponent);
 
     return Units::Pressure::fromPa(pressure_in_pascal);
 }

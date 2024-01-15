@@ -129,6 +129,7 @@ namespace Navigation
          */
         Q_PROPERTY(QList<GeoMaps::Waypoint> waypoints READ waypoints NOTIFY waypointsChanged)
 
+
         //
         // Getter Methods
         //
@@ -229,9 +230,9 @@ namespace Navigation
          *  Inserts the waypoint into the route, at the place that minimizes the
          *  overall route length. If canInsert() is false, this method does nothing.
          *
-         * @param wp Waypoint to be inserted.
+         * @param waypoint Waypoint to be inserted.
          */
-        Q_INVOKABLE void insert(const GeoMaps::Waypoint& wp);
+        Q_INVOKABLE void insert(const GeoMaps::Waypoint& waypoint);
 
         /*! \brief Index for last occurrence of the waypoint in the flight route
          *
@@ -251,7 +252,9 @@ namespace Navigation
          * method detects waypoints (such as airfields) by looking at the
          * coordinates.
          *
-         * @param fileName File name, needs to include path and extension
+         * @param fileName File name, needs to include path and extension.
+         * URLs of the form "file://path" are accepted.  Under Android, content
+         * URLs are also accepted.
          *
          * @returns Empty string in case of success, human-readable, translated
          * error message otherwise.
@@ -345,11 +348,6 @@ namespace Navigation
         void summaryChanged();
 
     private slots:
-        // Saves the route into the file stdFileName. This slot is called
-        // whenever the route changes, so that the file will always contain the
-        // current route.
-        void saveToStdLocation() { (void)save(stdFileName); };
-
         void updateLegs();
 
     private:
@@ -357,12 +355,6 @@ namespace Navigation
 
         // Helper function for method toGPX
         [[nodiscard]] auto gpxElements(const QString& indent, const QString& tag) const -> QString;
-
-        // File name where the flight route is loaded upon startup are stored.
-        // This member is filled in in the constructor to
-        // QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +
-        // "/flight route.geojson"
-        QString stdFileName;
 
         QVector<GeoMaps::Waypoint> m_waypoints;
 

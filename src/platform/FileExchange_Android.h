@@ -46,7 +46,7 @@ public:
     //
 
     /*! \brief Implements pure virtual method from FileExchange_Abstract */
-    Q_INVOKABLE void importContent() override;
+    void importContent() override;
 
     /*! \brief Implements pure virtual method from FileExchange_Abstract
      *
@@ -58,7 +58,7 @@ public:
      *
      *  @returns see documentation for FileExchange_Abstract
      */
-    Q_INVOKABLE QString shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) override;
+    QString shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) override;
 
     /*! \brief Implements pure virtual method from FileExchange_Abstract
      *
@@ -70,12 +70,12 @@ public:
      *
      *  @returns see documentation for FileExchange_Abstract
      */
-    Q_INVOKABLE QString viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) override;
+    QString viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) override;
 
 
 public slots:
     /*! \brief Implements pure virtual method from FileExchange_Abstract */
-    virtual void onGUISetupCompleted() override;
+    void onGUISetupCompleted() override;
 
     /*! \brief Implements pure virtual method from FileExchange_Abstract */
     void processFileOpenRequest(const QString& path) override;

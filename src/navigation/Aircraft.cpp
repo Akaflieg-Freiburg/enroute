@@ -216,7 +216,7 @@ auto Navigation::Aircraft::operator==(const Navigation::Aircraft& other) const -
 auto Navigation::Aircraft::save(const QString& fileName) const -> QString
 {
     // Make directory, if it does not yet exist.
-    QDir dir;
+    QDir const dir;
     dir.mkpath(Librarian::directory(Librarian::Aircraft));
 
     QFile file(fileName);

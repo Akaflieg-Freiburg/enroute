@@ -26,8 +26,12 @@
 #include "fileFormats/VAC.h"
 
 FileFormats::VAC::VAC(const QString& fileName)
-    : m_fileName(fileName), m_image(fileName)
+    : m_fileName(fileName)
 {
+    // Load image
+    auto file = FileFormats::DataFileAbstract::openFileURL(fileName);
+    m_image = QImage(file->fileName());
+
     // Guess data from file name
     m_bBox = VAC::bBoxFromFileName(fileName);
     m_baseName = VAC::baseNameFromFileName(fileName);
@@ -44,7 +48,6 @@ FileFormats::VAC::VAC(const QString& fileName)
             }
         }
     }
-
 
     // Generate errors and warnings
     generateErrorsAndWarnings();

@@ -39,10 +39,10 @@ Item {
 
     Plugin {
         id: mapPlugin
-        name: "maplibregl"
+        name: "maplibre"
 
         PluginParameter {
-            name: "maplibregl.mapping.additional_style_urls"
+            name: "maplibre.map.styles"
             value: GeoMapProvider.styleFileURL
         }
 
@@ -64,13 +64,96 @@ Item {
         // GESTURES
 
         // Enable gestures. Make sure that whenever a gesture starts, the property "followGPS" is set to "false"
-        gesture.enabled: true
-        gesture.acceptedGestures: MapGestureArea.RotationGesture|MapGestureArea.PanGesture|MapGestureArea.PinchGesture
-        gesture.onPanStarted: {flightMap.followGPS = false}
-        gesture.onPinchStarted: {flightMap.followGPS = false}
-        gesture.onRotationStarted: {
-            flightMap.followGPS = false
-            GlobalSettings.mapBearingPolicy = GlobalSettings.UserDefinedBearingUp
+        PinchHandler {
+            id: pinch
+            target: null
+
+            property geoCoordinate startCentroid
+            property real rawBearing: 0
+            property real startZoomLevel
+
+            onActiveChanged: if (active) {
+                                 flightMap.followGPS = false
+                                 startCentroid = flightMap.toCoordinate(pinch.centroid.position, false)
+                                 startZoomLevel = flightMap.zoomLevel
+                             }
+
+            onScaleChanged: (delta) => {
+                                var newZoom = startZoomLevel+Math.log2(activeScale)
+                                if (newZoom < flightMap.minimumZoomLevel) {
+                                    newZoom = flightMap.minimumZoomLevel
+                                }
+                                if (newZoom > flightMap.maximumZoomLevel) {
+                                    newZoom = flightMap.maximumZoomLevel
+                                }
+                                zoomLevelBehavior.enabled = false
+                                flightMap.zoomLevel = newZoom
+                                flightMap.alignCoordinateToPoint(startCentroid, pinch.centroid.position)
+                                zoomLevelBehavior.enabled = true
+                            }
+
+            onRotationChanged: (delta) => {
+                                   pinch.rawBearing -= delta
+                                   // snap to 0° if we're close enough
+
+                                   bearingBehavior.enabled = false
+                                   flightMap.bearing = (Math.abs(pinch.rawBearing) < 5) ? 0 : pinch.rawBearing
+                                   flightMap.alignCoordinateToPoint(pinch.startCentroid, pinch.centroid.position)
+                                   bearingBehavior.enabled = true
+                               }
+        }
+
+        WheelHandler {
+            id: wheel
+            // workaround for QTBUG-87646 / QTBUG-112394 / QTBUG-112432:
+            // Magic Mouse pretends to be a trackpad but doesn't work with PinchHandler
+            // and we don't yet distinguish mice and trackpads on Wayland either
+            acceptedDevices: Qt.platform.pluginName === "cocoa" || Qt.platform.pluginName === "wayland"
+                             ? PointerDevice.Mouse | PointerDevice.TouchPad
+                             : PointerDevice.Mouse
+            onWheel: (event) => {
+                         const loc = flightMap.toCoordinate(wheel.point.position)
+                         switch (event.modifiers) {
+                             case Qt.NoModifier:
+                             flightMap.zoomLevel += event.angleDelta.y / 120
+                             break
+                             case Qt.ShiftModifier:
+                             bearingBehavior.enabled = false
+                             flightMap.bearing += event.angleDelta.y / 5
+                             bearingBehavior.enabled = true
+                             break
+                         }
+                         flightMap.alignCoordinateToPoint(loc, wheel.point.position)
+                     }
+        }
+
+        DragHandler {
+            id: drag
+            target: null
+
+            // Work around https://bugreports.qt.io/browse/QTBUG-87815
+            enabled: !waypointDescription.visible && !Global.drawer.opened && !((Global.dialogLoader.item) && Global.dialogLoader.item.opened)
+
+            onTranslationChanged: (delta) => flightMap.pan(-delta.x, -delta.y)
+
+            onActiveChanged: {
+                if (active)
+                {
+                    flightMap.followGPS = false
+                }
+            }
+        }
+
+        Shortcut {
+            enabled: flightMap.zoomLevel < flightMap.maximumZoomLevel
+            sequence: StandardKey.ZoomIn
+            onActivated: flightMap.zoomLevel = Math.round(flightMap.zoomLevel + 1)
+        }
+
+        Shortcut {
+            enabled: flightMap.zoomLevel > flightMap.minimumZoomLevel
+            sequence: StandardKey.ZoomOut
+            onActivated: flightMap.zoomLevel = Math.round(flightMap.zoomLevel - 1)
         }
 
 
@@ -89,7 +172,10 @@ Item {
         }
 
         // We expect GPS updates every second. So, we choose an animation of duration 1000ms here, to obtain a flowing movement
-        Behavior on bearing { RotationAnimation {duration: 1000; direction: RotationAnimation.Shortest } }
+        Behavior on bearing {
+            id: bearingBehavior
+            RotationAnimation {duration: 1000; direction: RotationAnimation.Shortest }
+        }
 
 
         //
@@ -160,7 +246,10 @@ Item {
         zoomLevel: 12
 
         // Animate changes in zoom level for visually smooth transition
-        Behavior on zoomLevel { NumberAnimation { duration: 400 } }
+        Behavior on zoomLevel {
+            id: zoomLevelBehavior
+            NumberAnimation { duration: 400 }
+        }
 
 
         // ADDITINAL MAP ITEMS
@@ -248,6 +337,10 @@ Item {
             id: ownPosition
 
             coordinate: PositionProvider.lastValidCoordinate
+
+            Behavior on coordinate {
+                CoordinateAnimation { duration: 1000 }
+            }
 
             Connections {
                 // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem
@@ -540,7 +633,7 @@ Item {
 
         anchors.left: parent.left
         anchors.leftMargin: 0.5*font.pixelSize + SafeInsets.left
-        anchors.top: remainingRoute.bottom
+        anchors.top: remainingRoute.visible ? remainingRoute.bottom : parent.top
         anchors.topMargin: 0.5*font.pixelSize
 
         visible: GeoMapProvider.approachChart == ""
@@ -645,8 +738,6 @@ Item {
         onClicked: {
             centerBindingAnimation.omitAnimationforZoom()
             PlatformAdaptor.vibrateBrief()
-            // Notification test
-            //            NotificationManager.addTestNotification()
             flightMap.zoomLevel -= 1
         }
     }
@@ -696,13 +787,12 @@ Item {
         Label {
             id: noCopyrightInfo
             text: "<a href='xx'>"+qsTr("Map Data Copyright Info")+"</a>"
-            onLinkActivated: copyrightDialog.open()
-
-            LongTextDialog {
-                id: copyrightDialog
-                title: qsTr("Map Data Copyright Information")
-                text: GeoMapProvider.copyrightNotice
-                standardButtons: Dialog.Cancel
+            onLinkActivated: {
+                Global.dialogLoader.active = false
+                Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {title: qsTr("Map Data Copyright Information"),
+                                           text: GeoMapProvider.copyrightNotice,
+                                           standardButtons: Dialog.Ok})
+                Global.dialogLoader.active = true
             }
         }
     }

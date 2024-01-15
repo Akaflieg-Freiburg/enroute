@@ -50,13 +50,7 @@ public:
      *
      *  @returns see PlatformAdaptor_Abstract
      */
-    Q_INVOKABLE QString checkPermissions() override;
-
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract
-     *
-     *  @returns see PlatformAdaptor_Abstract
-     */
-    Q_INVOKABLE QString currentSSID() override;
+    QString currentSSID() override;
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
     void disableScreenSaver() override;
@@ -65,21 +59,16 @@ public:
      *
      *  @param lock see PlatformAdaptor_Abstract
      */
-    Q_INVOKABLE void lockWifi(bool lock) override;
+    void lockWifi(bool lock) override;
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
-    void requestPermissionsSync() override;
+    void vibrateBrief() override;
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
-    Q_INVOKABLE void vibrateBrief() override;
+    void vibrateLong() override;
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
-    Q_INVOKABLE void vibrateLong() override;
-
-
-public slots:
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
-    Q_INVOKABLE void onGUISetupCompleted() override;
+    void onGUISetupCompleted() override;
 
 private slots:
     // This slot is called when the networkManagerInterface signals that the

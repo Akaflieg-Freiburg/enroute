@@ -43,51 +43,6 @@ double ObjCAdapter::safeAreaRightInset() {
 }
 
 
-//MARK: Location
-bool ObjCAdapter::hasLocationPermission() {
-    return ![[ObjectiveC sharedInstance] hasLocationPermissionDenied];
-}
-
-
-//MARK: Notifications
-bool ObjCAdapter::hasNotificationPermission() {
-    return [[ObjectiveC sharedInstance] hasNotificationPermission];
-}
-
-void ObjCAdapter::requestNotificationPermission() {
-    UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
-    [center requestAuthorizationWithOptions:(UNAuthorizationOptionAlert + UNAuthorizationOptionSound)
-                          completionHandler:^(BOOL granted, NSError * _Nullable error) {
-        if (granted) {
-            //ObjCAdapter::sendNotification("Test", "This is a test body");
-        }
-    }];
-    
-}
-
-//TODO: Notifications may be removed later
-void ObjCAdapter::sendNotification(QString title, QString message){
-    UNMutableNotificationContent* content = [[UNMutableNotificationContent alloc] init];
-    content.title = [NSString localizedUserNotificationStringForKey:title.toNSString() arguments:nil];
-    content.body = [NSString localizedUserNotificationStringForKey:message.toNSString() arguments:nil];
-    content.sound = [UNNotificationSound defaultSound];
-    
-    // Deliver the notification in five seconds.
-    UNTimeIntervalNotificationTrigger* trigger = [UNTimeIntervalNotificationTrigger
-                                                  triggerWithTimeInterval:5 repeats:NO];
-    UNNotificationRequest* request = [UNNotificationRequest requestWithIdentifier:[[NSUUID UUID] UUIDString]
-                                                                          content:content trigger:trigger];
-    [content release];
-    
-    // Schedule the notification.
-    UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
-    [center addNotificationRequest:request withCompletionHandler:^(NSError *__nullable error) {
-        //TODO: Handle error
-        //NSLog(@"Error: %@", error.localizedDescription);
-    }];
-}
-
-
 //MARK: File Transfer
 auto ObjCAdapter::shareContent(const QByteArray& contentByteArray, const QString& mimeType, const QString& fileNameTemplate, const QString& fileExtension) -> QString
 {

@@ -20,6 +20,7 @@
 
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Dialogs
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
@@ -31,7 +32,7 @@ Page {
     title: qsTr("Flight Route Library")
     focus: true
 
-    property bool isIos: Qt.platform.os == "ios"
+    property bool isIos: Qt.platform.os === "ios"
     property bool isAndroid: Qt.platform.os === "android"
     property bool isAndroidOrIos: isAndroid || isIos
 
@@ -71,7 +72,6 @@ Page {
 
         ToolButton {
             id: headerMenuToolButton
-            visible: !isAndroidOrIos
 
             anchors.verticalCenter: parent.verticalCenter
 
@@ -89,16 +89,54 @@ Page {
                 id: headerMenuX
 
                 MenuItem {
+                    id: menuImport
+
                     text: qsTr("Import…")
-                    enabled: !isAndroidOrIos
-                    height: isAndroidOrIos ? 0 : undefined
-                    visible: !isAndroidOrIos
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
-                        FileExchange.importContent()
+                        importFileDialog.open()
                     }
+
+                    FileDialog {
+                        id: importFileDialog
+
+                        acceptLabel: qsTr("Import")
+                        rejectLabel: qsTr("Cancel")
+
+                        fileMode: FileDialog.OpenFile
+
+                        // Setting a non-trivial name filter on Android means we cannot select any
+                        // files at all.
+                        nameFilters: Qt.platform.os === "android" ? undefined : [qsTr("GeoJSON File (*.geojson *.json)"),
+                                                                                 qsTr("GPX File (*.gpx)")]
+
+                        onAccepted: {
+                            PlatformAdaptor.vibrateBrief()
+                            var errorString = Librarian.import(Librarian.Routes, importFileDialog.selectedFile)
+                            if (errorString !== "")
+                            {
+                                Global.dialogLoader.active = false
+                                Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {
+                                                                  title: qsTr("File Import Error"),
+                                                                  text: errorString,
+                                                                  standardButtons: Dialog.Ok
+                                                              })
+                                Global.dialogLoader.active = true
+                            }
+                            else
+                            {
+                                Global.toast.doToast(qsTr("Flight Route Imported"))
+                                textInput.displayTextChanged()
+                            }
+                        }
+                        onRejected: {
+                            PlatformAdaptor.vibrateBrief()
+                            close()
+                        }
+                    }
+
                 }
 
             }

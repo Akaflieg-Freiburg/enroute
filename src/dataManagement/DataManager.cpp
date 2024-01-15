@@ -168,11 +168,12 @@ void DataManagement::DataManager::cleanDataDirectory()
 
 QString DataManagement::DataManager::import(const QString& fileName, const QString& newName)
 {
+    auto localFile = FileFormats::DataFileAbstract::openFileURL(fileName);
 
     auto path = m_dataDirectory+"/Unsupported";
     auto newFileName = path + "/" + newName;
 
-    GeoMaps::MBTILES mbtiles(fileName);
+    GeoMaps::MBTILES mbtiles(localFile->fileName());
     switch(mbtiles.format())
     {
     case GeoMaps::MBTILES::Raster:
@@ -190,7 +191,7 @@ QString DataManagement::DataManager::import(const QString& fileName, const QStri
         return tr("Unable to create directory '%1'.").arg(path);
     }
     QFile::remove(newFileName);
-    if (!QFile::copy(fileName, newFileName))
+    if (!localFile->copy(newFileName))
     {
         QFile::remove(newFileName);
         updateDataItemListAndWhatsNew();

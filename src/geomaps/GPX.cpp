@@ -20,6 +20,7 @@
 
 #include <QFile>
 
+#include "fileFormats/DataFileAbstract.h"
 #include "geomaps/GPX.h"
 
 //
@@ -128,13 +129,13 @@ bool GeoMaps::GPX::isValid(const QString& fileName)
 
 auto GeoMaps::GPX::read(const QString& fileName) -> QVector<GeoMaps::Waypoint>
 {
-    QFile file(fileName);
-    if (!file.open(QIODevice::ReadOnly))
+    auto file = FileFormats::DataFileAbstract::openFileURL(fileName);
+    if (!file->open(QIODevice::ReadOnly))
     {
         return {};
     }
 
-    QXmlStreamReader xml(&file);
+    QXmlStreamReader xml(file.data());
 
 
     // collect all route points and track points and waypoints

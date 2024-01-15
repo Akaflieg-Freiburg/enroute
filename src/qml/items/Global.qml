@@ -20,9 +20,25 @@
 
 pragma Singleton
 
+import QtCore
 import QtQuick
+import QtQuick.Controls
+
+import akaflieg_freiburg.enroute
 
 QtObject {
     property Loader dialogLoader
+    property Drawer drawer
     property var toast
+
+    property LocationPermission locationPermission: LocationPermission {
+        id: locationPermission
+
+        accuracy: LocationPermission.Precise
+        availability: LocationPermission.WhenInUse
+
+        onStatusChanged: PositionProvider.startUpdates()
+        Component.onCompleted: PositionProvider.startUpdates()
+    }
+
 }

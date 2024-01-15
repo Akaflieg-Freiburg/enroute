@@ -110,7 +110,7 @@ Page {
                         }
                     }
                 }
-            }
+        }
     }
 
     DecoratedScrollView {
@@ -832,5 +832,4 @@ Page {
             item.open()
         }
     }
-
 } // Page

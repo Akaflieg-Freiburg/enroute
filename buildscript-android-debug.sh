@@ -31,29 +31,28 @@
 
 set -e
 
-#
-# Clean up
-#
-
-rm -rf build-android-debug
-mkdir -p build-android-debug
-cd build-android-debug
 
 #
 # Configure
 #
 
-export ANDROID_NDK_ROOT=$ANDROID_SDK_ROOT/ndk/23.1.7779620
-export JAVA_HOME=/usr/lib/jvm/java-openjdk
+#export JAVA_HOME=/usr/lib/jvm/java-openjdk
 
-$Qt6_DIR_ANDROID\_x86_64/bin/qt-cmake .. \
-      -DCMAKE_BUILD_TYPE:STRING=Debug \
-      -DQT_ANDROID_ABIS="arm64-v8a" \
-      -DQT_HOST_PATH=$Qt6_DIR_LINUX \
-      -G Ninja
+rm -rf build-android-debug
+mkdir -p build-android-debug
+$Qt6_DIR_ANDROID\_x86_64/bin/qt-cmake \
+    -S . \
+    -B build-android-debug \
+    -DCMAKE_BUILD_TYPE:STRING=Debug \
+    -DCMAKE_C_COMPILER_LAUNCHER="ccache" \
+    -DCMAKE_CXX_COMPILER_LAUNCHER="ccache" \
+    -DQT_ANDROID_ABIS="arm64-v8a" \
+    -DQT_HOST_PATH=$Qt6_DIR_LINUX \
+    -G Ninja
+
 
 #
 # Build the executable
 #
 
-ninja
+cmake --build build-android-debug

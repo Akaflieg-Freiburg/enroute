@@ -24,13 +24,13 @@
 #include "FlightRoute.h"
 #include "geomaps/GPX.h"
 #include "geomaps/GeoJSON.h"
-#include "geomaps/GeoMapProvider.h"
 
 auto Navigation::FlightRoute::toGpx() const -> QByteArray
 {
     // now in UTC, ISO 8601 alike
     //
-    QString now = QDateTime::currentDateTimeUtc().toString(QStringLiteral("yyyy-MM-dd HH:mm:ssZ"));
+    QString const now = QDateTime::currentDateTimeUtc().toString(
+        QStringLiteral("yyyy-MM-dd HH:mm:ssZ"));
 
     // gpx header
     //
@@ -112,7 +112,7 @@ auto Navigation::FlightRoute::gpxElements(const QString& indent, const QString& 
             continue; // skip silently
         }
 
-        QGeoCoordinate position = _waypoint.coordinate();
+        QGeoCoordinate const position = _waypoint.coordinate();
         auto code = _waypoint.ICAOCode();
         auto name = _waypoint.extendedName();
 
@@ -139,47 +139,4 @@ auto Navigation::FlightRoute::gpxElements(const QString& indent, const QString& 
     }
 
     return gpx;
-}
-
-auto Navigation::FlightRoute::load(const QString& fileName) -> QString
-{
-    auto result = GeoMaps::GPX::read(fileName);
-    if (result.isEmpty())
-    {
-        result = GeoMaps::GeoJSON::read(fileName);
-    }
-    if (result.isEmpty())
-    {
-        return tr("Error reading file '%1'").arg(fileName);
-    }
-    if (result.length() > 100)
-    {
-        return tr("The file '%1' contains too many waypoints. Flight routes with more than 100 waypoints are not supported.").arg(fileName);
-    }
-
-    m_waypoints.clear();
-    foreach(auto wp, result)
-    {
-        if (!wp.isValid())
-        {
-            continue;
-        }
-
-        auto pos = wp.coordinate();
-        auto distPos = pos.atDistanceAndAzimuth(1000.0, 0.0, 0.0);
-        auto nearest = GlobalObject::geoMapProvider()->closestWaypoint(pos, distPos);
-        if (nearest.type() == u"WP")
-        {
-            m_waypoints << wp;
-        }
-        else
-        {
-            m_waypoints << nearest;
-        }
-
-    }
-
-    updateLegs();
-    emit waypointsChanged();
-    return {};
 }

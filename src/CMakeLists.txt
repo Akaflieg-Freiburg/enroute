@@ -120,6 +120,7 @@ set(SOURCES
     dataManagement/Downloadable_SingleFile.cpp
     dataManagement/SSLErrorHandler.cpp
     DemoRunner.cpp
+    fileFormats/DataFileAbstract.cpp
     fileFormats/GeoTIFF.cpp
     fileFormats/TripKit.cpp
     fileFormats/VAC.cpp
@@ -208,7 +209,7 @@ qt_add_big_resources(SOURCES
 
 
 #
-# Generate android executable
+# Generate Android executable
 #
 
 if(ANDROID)
@@ -221,13 +222,12 @@ if(ANDROID)
         platform/SafeInsets_Android.cpp
         android/src/de/akaflieg_freiburg/enroute/IntentLauncher.java
         android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java
-        android/src/de/akaflieg_freiburg/enroute/Notifier.java
         android/src/de/akaflieg_freiburg/enroute/ShareActivity.java
         android/src/de/akaflieg_freiburg/enroute/ShareUtils.java
         )
 
     # Copy manual and other files into the Android directories
-    file(COPY ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/docs/manual DESTINATION android/assets)
+    file(COPY ${CMAKE_SOURCE_DIR}/generatedSources/manual DESTINATION android/assets)
     file(COPY ${CMAKE_SOURCE_DIR}/generatedSources/src/android DESTINATION .)
     file(COPY ${CMAKE_SOURCE_DIR}/src/android DESTINATION .)
 
@@ -238,7 +238,6 @@ if(ANDROID)
     configure_file(${CMAKE_SOURCE_DIR}/3rdParty/material-design-icons/alert/drawable-hdpi/ic_error_black_24dp.png ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable/ic_error.png COPYONLY)
     configure_file(${CMAKE_SOURCE_DIR}/3rdParty/material-design-icons/alert/drawable-hdpi/ic_warning_black_24dp.png ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable/ic_warning.png COPYONLY)
     configure_file(android/src/de/akaflieg_freiburg/enroute/IntentLauncher.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
-    configure_file(android/src/de/akaflieg_freiburg/enroute/Notifier.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
     configure_file(android/src/de/akaflieg_freiburg/enroute/ShareActivity.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
     configure_file(android/src/de/akaflieg_freiburg/enroute/ShareUtils.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
     configure_file(android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
@@ -250,7 +249,8 @@ if(ANDROID)
     # Compile definitions
     add_compile_definitions(MANUAL_LOCATION="/android_asset/manual")
 
-    qt_add_executable(${PROJECT_NAME} ${SOURCES} ${ANDROID_EXTRA_SOURCES})
+    qt_add_executable(${PROJECT_NAME} ${SOURCES} ${ANDROID_EXTRA_SOURCES}
+    )
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
         Qt6::Concurrent
@@ -271,6 +271,7 @@ if(ANDROID)
     set_target_properties(${PROJECT_NAME} PROPERTIES
         QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android"
         QT_ANDROID_TARGET_SDK_VERSION 33
+        QT_ANDROID_MIN_SDK_VERSION 26
     )
 
     # Include SSL Libraries
@@ -283,7 +284,7 @@ endif()
 # Generate Linux executable
 #
 
-if (UNIX AND NOT ANDROID AND NOT APPLE)
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     list(APPEND SOURCES
         platform/FileExchange_Linux.h
         platform/FileExchange_Linux.cpp
@@ -312,24 +313,25 @@ if (UNIX AND NOT ANDROID AND NOT APPLE)
         Qt6::Svg
         Qt6::TextToSpeech
         Qt6::Widgets
+        QMapLibre::Location
         libzip::zip
     )
     target_precompile_headers(${PROJECT_NAME}
-      PUBLIC
-      <QQmlEngine>
+        PUBLIC
+        <QQmlEngine>
     )
 
-# Install
-install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/docs/manual DESTINATION ${CMAKE_INSTALL_DOCDIR})
+    # Install
+    install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
+    install(DIRECTORY ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/docs/manual DESTINATION ${CMAKE_INSTALL_DOCDIR})
 endif()
 
 
 #
-# Generate MacOS executable
+# Generate macOS executable
 #
 
-if (APPLE AND NOT IOS)
+if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     list(APPEND SOURCES
         platform/FileExchange_MacOS.h
         platform/FileExchange_MacOS.cpp
@@ -349,7 +351,6 @@ if (APPLE AND NOT IOS)
         Qt6::Concurrent
         Qt6::Core
         Qt6::Core5Compat
-        Qt6::DBus
         Qt6::HttpServer
         Qt6::Positioning
         Qt6::Quick
@@ -358,9 +359,15 @@ if (APPLE AND NOT IOS)
         Qt6::Svg
         Qt6::TextToSpeech
         Qt6::Widgets
+        QMapLibre::Location
         libzip::zip
     )
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        MACOSX_BUNDLE true
+        MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/macos/Info.plist"
+    )
 endif()
+
 
 #
 # Generate iOS executable
@@ -394,6 +401,7 @@ if (IOS)
         Qt6::Core
         Qt6::Core5Compat
         Qt6::HttpServer
+        Qt6::Location
         Qt6::Positioning
         Qt6::Quick
         Qt6::QuickControls2
@@ -401,15 +409,21 @@ if (IOS)
         Qt6::Sql
         Qt6::Svg
         Qt6::TextToSpeech
-        Qt6::WebView
-    )
-    target_link_libraries(${PROJECT_NAME} PRIVATE
-        "-framework UserNotifications"
-        #"-framework NotificationCenter"
+        QMapLibre::Location
+        libzip::zip
     )
     set_target_properties(${PROJECT_NAME} PROPERTIES
         MACOSX_BUNDLE true
         MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/ios/Info.plist"
+    )
+    qmaplibre_location_setup_plugins(${PROJECT_NAME})
+    target_include_directories(${PROJECT_NAME}
+        PUBLIC
+        ios/mapLibreDependencies
+        ios/mapLibreDependencies/optional
+        ios/mapLibreDependencies/csscolorparser
+        ios/mapLibreDependencies/parsedate
+        ios/mapLibreDependencies/nunicode/include
     )
 
     #Resources
@@ -448,6 +462,7 @@ target_include_directories(${PROJECT_NAME}
     ui
     units
     weather
+    nunicode/include
 )
 
 set_source_files_properties(qml/items/Global.qml PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
@@ -571,3 +586,28 @@ qt_add_resources(${PROJECT_NAME} translations
 configure_file(Doxyfile.in Doxyfile)
 add_custom_target(enroute_doc COMMAND doxygen)
 add_dependencies(fulldoc enroute_doc)
+
+
+#
+# Install
+#
+
+if ((CMAKE_SYSTEM_NAME STREQUAL "Darwin") OR ((CMAKE_SYSTEM_NAME STREQUAL "Linux") OR (CMAKE_SYSTEM_NAME STREQUAL "Windows")))
+
+    # Install the executable into "${CMAKE_INSTALL_PREFIX}/bin".
+    install(TARGETS ${PROJECT_NAME}
+        BUNDLE  DESTINATION .
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    )
+
+    # Generate the deployment script for the target MyApp.
+    qt_generate_deploy_qml_app_script(
+        TARGET ${PROJECT_NAME}
+        OUTPUT_SCRIPT deploy_script
+        NO_UNSUPPORTED_PLATFORM_ERROR
+    )
+
+    # Call the deployment script on "cmake --install".
+    install(SCRIPT ${deploy_script})
+
+endif()

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2022 by Stefan Kebekus                                  *
+ *   Copyright (C) 2022--2023 by Stefan Kebekus                            *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -42,6 +42,7 @@ namespace DataManagement {
 class Downloadable_Abstract : public QObject {
     Q_OBJECT
     QML_ELEMENT
+    QML_UNCREATABLE("")
 
 public:
     /*! \brief Type of content managed by this instance */

@@ -1,11 +1,8 @@
 name: Compile on Linux
 
 on:
-  release:
-    types: [published]
   push:
-    branches: [main]
-  pull_request:
+    branches: [ develop ]
 
 jobs:
   build:
@@ -14,40 +11,56 @@ jobs:
     
     steps:
     - name: Checkout Enroute
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         path: enroute
-        submodules: true
-    - name: Checkout qtlocation
-      uses: actions/checkout@v3
+        submodules: recursive
+    - name: Checkout Enroute Dependencies
+      uses: actions/checkout@v4
       with:
-        path: qtlocation
-        repository: Akaflieg-Freiburg/qtlocationstatic
-        submodules: true
+        path: enrouteDependencies
+        repository: Akaflieg-Freiburg/enrouteDependencies
+        submodules: recursive
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
-        version: '6.4.*'
-        modules: 'qt5compat qthttpserver qtimageformats qtpositioning qtshadertools qtspeech qtwebsockets'
+        cache: 'true'
+        modules: 'qt5compat qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtshadertools qtspeech qtwebsockets'
+        version: '6.6.*'
+    - name: Install LinuxDeploy
+      uses: miurahr/install-linuxdeploy-action@v1
+      with:
+        plugins: appimage
     - name: Install Additional Software
       run: |
-        sudo apt install extra-cmake-modules ninja-build spirv-tools
-    - name: Remove GCC 13 to avoid conflicts with Clang
-      run: |
-        sudo apt remove gcc-13 g++-13 libgcc-13-dev libstdc++-13-dev
+        sudo apt install appstream extra-cmake-modules fuse libxcb-cursor0 libzip-dev ninja-build spirv-tools zipcmp zipmerge ziptool
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+        key: linux
     - name: Compile QtLocation
       run: |
-        cmake -E make_directory build-qtlocation
-        cd build-qtlocation
-        qt-configure-module ../qtlocation
-        cmake -DMBGL_QT_WITH_INTERNAL_ICU:BOOL=On .
-        ninja
-        ninja install
+        Qt6_DIR_BASE=$(dirname "$Qt6_DIR") ./buildscript-linux.sh
+        cp -prdv Qt/* $Qt6_DIR/../..
+      working-directory: enrouteDependencies
     - name: Compile Enroute Flight Navigation
       run: |
-        export CC=/usr/bin/clang
-        export CXX=/usr/bin/clang++
-        cmake -E make_directory build-enroute
-        cd build-enroute
-        cmake ../enroute -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS='-Werror -Wall -Wextra'
-        cmake --build .
+        cmake \
+          -B build-enroute \
+          -S enroute \
+          -DCMAKE_BUILD_TYPE=Debug \
+          -DCMAKE_C_COMPILER_LAUNCHER="ccache" \
+          -DCMAKE_CXX_COMPILER_LAUNCHER="ccache" \
+          -DCMAKE_INSTALL_PREFIX:STRING=$PWD/app/usr
+        cmake --build build-enroute
+        cmake --build build-enroute --target install
+    - name: Package
+      run: |
+        linuxdeploy-x86_64.AppImage --appdir app --output appimage
+        mv *-x86_64.AppImage enroute-Linux.AppImage
+    - name: Upload to developerBuilds
+      run: |
+        gh release upload --clobber developerBuilds ../enroute-Linux.AppImage
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      working-directory: enroute

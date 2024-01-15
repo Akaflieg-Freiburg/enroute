@@ -83,7 +83,7 @@ QVector<GeoMaps::Waypoint> GeoMaps::WaypointLibrary::filteredWaypoints(const QSt
 
 bool GeoMaps::WaypointLibrary::hasNearbyEntry(const GeoMaps::Waypoint &waypoint) const
 {
-    for (const auto &wp : qAsConst(m_waypoints))
+    for (const auto &wp :  std::as_const(m_waypoints))
     {
         if (wp.isNear(waypoint))
         {

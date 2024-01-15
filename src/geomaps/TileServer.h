@@ -138,10 +138,10 @@ private:
     Q_DISABLE_COPY_MOVE(TileServer)
 
     // Implemented pure virtual method from QAbstractHttpServer
-    virtual bool handleRequest(const QHttpServerRequest& request, QTcpSocket* socket) override;
+    virtual bool handleRequest(const QHttpServerRequest& request, QHttpServerResponder& responder) override;
 
     // Implemented pure virtual method from QAbstractHttpServer
-    virtual void missingHandler(const QHttpServerRequest& request, QTcpSocket* socket) override;
+    virtual void missingHandler(const QHttpServerRequest& request, QHttpServerResponder&& responder) override;
 
     /*! \brief Restarts the server
      *

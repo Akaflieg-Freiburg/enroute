@@ -26,6 +26,7 @@
 #include <QTextStream>
 #include <stdexcept>
 
+#include "fileFormats/DataFileAbstract.h"
 #include "OpenAir.h"
 
 #include <cmath>
@@ -515,14 +516,14 @@ QJsonDocument GeoMaps::openAir::parse(const QString& fileName, QStringList& erro
     AirSpaceVector airSpaceVector;
 
 
-    QFile inputFile(fileName);
-    if (!inputFile.open(QIODeviceBase::ReadOnly))
+    auto inputFile = FileFormats::DataFileAbstract::openFileURL(fileName);
+    if (!inputFile->open(QIODeviceBase::ReadOnly))
     {
         errorList << QObject::tr("Cannot open file %1", "OpenAir").arg(fileName);
         return {};
     }
 
-    QTextStream inputStream(&inputFile);
+    QTextStream inputStream(inputFile.data());
     inputStream.setEncoding(QStringConverter::Latin1);
 
     bool hadError = false;

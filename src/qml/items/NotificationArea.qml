@@ -117,8 +117,9 @@ Rectangle {
 
             background: Item {}
 
-            ToolButton {
+            Button {
                 text: NotificationManager.currentVisualNotification ? NotificationManager.currentVisualNotification.button1Text : ""
+                flat: true
                 visible: text !== ""
 
                 onClicked: {
@@ -127,8 +128,9 @@ Rectangle {
                 }
             }
 
-            ToolButton {
+            Button {
                 text: NotificationManager.currentVisualNotification ? NotificationManager.currentVisualNotification.button2Text : ""
+                flat: true
                 visible: text !== ""
 
                 onClicked:  {

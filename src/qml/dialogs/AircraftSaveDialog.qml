@@ -55,7 +55,7 @@ CenteringDialog {
     }
 
     ColumnLayout {
-        anchors.fill: parent
+        width: dlg.availableWidth
 
         Label {
             Layout.fillWidth: true

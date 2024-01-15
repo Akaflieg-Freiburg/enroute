@@ -33,7 +33,9 @@ ListView {
 
     Label {
         anchors.left: listView.left
+        anchors.leftMargin: 4*font.pixelSize
         anchors.right: listView.right
+        anchors.rightMargin: 4*font.pixelSize
         anchors.top: listView.top
 
         background: Rectangle {
@@ -54,7 +56,9 @@ ListView {
     Label {
         anchors.bottom: listView.bottom
         anchors.left: listView.left
+        anchors.leftMargin: 4*font.pixelSize
         anchors.right: listView.right
+        anchors.rightMargin: 4*font.pixelSize
 
         background: Rectangle {
             color: GlobalSettings.nightMode ? "black" : "white"

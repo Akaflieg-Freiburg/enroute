@@ -22,14 +22,17 @@
 #include <QSqlQuery>
 #include <QVariant>
 
+#include "fileFormats/DataFileAbstract.h"
 #include "geomaps/MBTILES.h"
 
 GeoMaps::MBTILES::MBTILES(const QString& fileName, QObject *parent)
     : QObject(parent), m_fileName(fileName)
 {
+    m_file = FileFormats::DataFileAbstract::openFileURL(fileName);
+
     m_databaseConnectionName = QStringLiteral("GeoMaps::MBTILES::format %1,%2").arg(fileName).arg((quintptr)this);
     auto m_dataBase = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), m_databaseConnectionName);
-    m_dataBase.setDatabaseName(fileName);
+    m_dataBase.setDatabaseName(m_file->fileName());
     m_dataBase.open();
 
     QSqlQuery query(m_dataBase);

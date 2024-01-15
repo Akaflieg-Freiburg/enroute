@@ -55,7 +55,6 @@
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficFactor_WithPosition.h"
 #include "weather/Station.h"
-#include <chrono>
 
 
 using namespace std::chrono_literals;
@@ -203,10 +202,7 @@ auto main(int argc, char *argv[]) -> int
     /*
      * Set up ApplicationEngine for QML
      */
-
-#if defined(Q_OS_ANDROID) or defined(Q_OS_IOS) or defined(Q_OS_LINUX)
     QQuickStyle::setStyle(u"Material"_qs);
-#endif
 
     auto* engine = new QQmlApplicationEngine();
     engine->addImportPath(":/");

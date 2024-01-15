@@ -20,6 +20,7 @@
 
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Controls.Material
 
 import akaflieg_freiburg.enroute
 
@@ -33,6 +34,11 @@ Dialog {
     x: SafeInsets.left + font.pixelSize + (avWidth-width)/2.0
     y: SafeInsets.top + font.pixelSize + (avHeight-height)/2.0
 
-    height: Math.min(avHeight, implicitHeight)
+    // Delays evaluation and prevents binding loops
+    Binding on height {
+        value: Math.min(avHeight, implicitHeight)
+        delayed: true    // Prevent intermediary values from being assigned
+    }
+
     width: Math.min(avWidth, 40*font.pixelSize)
 }

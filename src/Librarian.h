@@ -90,7 +90,7 @@ public:
      *
      * @see permissiveFilter
      */
-    Q_INVOKABLE QStringList entries(Librarian::Library library, const QString &filter=QString());
+    Q_INVOKABLE QStringList entries(Librarian::Library library, const QString& filter=QString());
 
     /*! \brief Check if an entry with the given name exists in the library
      *
@@ -100,7 +100,7 @@ public:
      *
      *  @returns True if the file exists
      */
-    [[nodiscard]] Q_INVOKABLE static bool exists(Librarian::Library library, const QString &baseName) ;
+    [[nodiscard]] Q_INVOKABLE static bool exists(Librarian::Library library, const QString& baseName) ;
 
     /*! \brief Full path of a library entry
      *
@@ -111,7 +111,7 @@ public:
      *
      *  @returns Full path of the entry, with extension
      */
-    [[nodiscard]] Q_INVOKABLE static QString fullPath(Librarian::Library library, const QString &baseName) ;
+    [[nodiscard]] Q_INVOKABLE static QString fullPath(Librarian::Library library, const QString& baseName) ;
 
     /*! \brief Constructs an object from library entry
      *
@@ -164,13 +164,25 @@ public:
      */
     Q_INVOKABLE static Units::ByteSize getStringHashFromRessource(const QString& name);
 
+    /*! \brief Import a file into a library
+     *
+     * This method imports a file into a library.
+     *
+     * @param library The library to import the file. At the moment, only routs is supported.
+     *
+     * @param fileName Full file name
+     *
+     * @returns An empty string in case of success, or else a human-readable, translated error message.
+     */
+    [[nodiscard]] Q_INVOKABLE static QString import(Librarian::Library library, const QString& fileName) ;
+
     /*! \brief Removes an entry from a library
      *
      *  @param library The library that is accessed
      *
      *  @param baseName File name, without path and without extension
      */
-    Q_INVOKABLE static void remove(Librarian::Library library, const QString &baseName) ;
+    Q_INVOKABLE static void remove(Librarian::Library library, const QString& baseName) ;
 
     /*! \brief Renames an entry in a library
      *
@@ -182,7 +194,7 @@ public:
      * @param newName New file name, without path and without extension. A file
      * with that name must not exist in the library
      */
-    Q_INVOKABLE static void rename(Librarian::Library library, const QString &oldName, const QString &newName) ;
+    Q_INVOKABLE static void rename(Librarian::Library library, const QString& oldName, const QString& newName);
 
     /*! \brief Filters a QStringList in a fuzzy way
      *
@@ -190,13 +202,13 @@ public:
      * entries whose name approximately contain the filter string.  For
      * instance, "Zürich" is supposed to contain "u", "Ü" and "ù"
      *
-     * @param in QStringList that is to be filtered
+     * @param input QStringList that is to be filtered
      *
      * @param filter Filter
      *
      * @returns Filteres QStringList
      */
-    auto permissiveFilter(const QStringList &in, const QString &filter) -> QStringList;
+    QStringList permissiveFilter(const QStringList &input, const QString &filter);
 
     /*! \brief Simplifies string by transforming and removing special characters
      *
@@ -208,7 +220,7 @@ public:
      *
      * @return Simplified string
      */
-    auto simplifySpecialChars(const QString &string) -> QString;
+    QString simplifySpecialChars(const QString& string);
 
 private:
     Q_DISABLE_COPY_MOVE(Librarian)

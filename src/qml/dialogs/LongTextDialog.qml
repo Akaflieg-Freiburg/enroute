@@ -36,12 +36,6 @@ CenteringDialog {
         anchors.fill: parent
         contentWidth: availableWidth // Disable horizontal scrolling
 
-        // Delays evaluation and prevents binding loops
-        Binding on implicitHeight {
-            value: lbl.implicitHeight
-            delayed: true    // Prevent intermediary values from being assigned
-        }
-
         clip: true
 
         Label {

@@ -37,13 +37,13 @@ Librarian::Librarian(QObject *parent) : QObject(parent)
     // https://developer.android.com/training/data-storage/use-cases#opt-out-in-production-app
     auto oldlibraryPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)+"/enroute flight navigation/flight routes";
     auto libraryPath = directory(Routes);
-    QDir d(oldlibraryPath);
-    foreach(auto elt, d.entryList( QStringList(), QDir::Files)) {
+    QDir const dir(oldlibraryPath);
+    foreach(auto elt, dir.entryList( QStringList(), QDir::Files)) {
         if (QFile::copy(oldlibraryPath+"/"+elt, libraryPath+"/"+elt)) {
             QFile::remove(oldlibraryPath+"/"+elt);
         }
     }
-    d.rmdir(oldlibraryPath);
+    dir.rmdir(oldlibraryPath);
 }
 
 
@@ -237,17 +237,21 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     if (name == u":text/whatsnew.html"_qs)
     {
         QString result;
+        result += "<p>" + tr("The manual has been updated, modernized and rewritten in part. "
+                             "We do hope that you find it helpful.")+ "</p>";
+        result += "<p>" + tr("The technology underlying <strong>Enroute Flight Navigation</strong> has been updated. "
+                             "Please report any issues or inconsistencies that you may find!")+ "</p>";
         result += "<p>" + tr("Our flight club <a href='https://akaflieg-freiburg.de'>Akaflieg Freiburg</a> has received the renowned Niethammer Innovation Award 2023. "
                              "The award recognizes our work on <strong>Enroute Flight Navigation</strong>. "
                              "But above all, we owe this prize to our many contributors and supporters. "
                              "None of this would have been possible without the incredible work of the communities at <a href='https://www.openaip.net'>openAIP</a> and <a href='https://www.openflightmaps.org'>open flightmaps</a>, who supply us with aviation data. "
                              "Thanks to all of you! "
                              "We will use the award money to finance our infrastructure and purchase urgently needed development hardware.") + "</p>";
-        result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> is now able to show visual approach charts within the moving map. Users in Germany can download official VACs from Deutsche Flugsicherung (DFS) using Michael Paus' very convenient <a href='https://mpmediasoft.de/products/AIPBrowserDE/help/AIPBrowserDE.html'>AIP Browser DE</a>. Please check the manual for details.") + "</p>";
-#if not defined(Q_OS_IOS)
-        result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> for iOS is now available on the Apple <a href='https://apps.apple.com/de/app/enroute-flight-navigation/id6448892176'>App Store</a>.") + "</p>";
-#endif
-        result += "<p>" + tr("We need help with promotional graphics for the app stores and with explainer videos. If you are a graphic/video artist and would like to help, then please be in touch.") + "</p>";
+        result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> is now able to show visual approach charts within the moving map. "
+                             "Users in Germany can download official VACs from Deutsche Flugsicherung (DFS) using Michael Paus' very convenient <a href='https://mpmediasoft.de/products/AIPBrowserDE/help/AIPBrowserDE.html'>AIP Browser DE</a>. "
+                             "Please check the manual for details.") + "</p>";
+        result += "<p>" + tr("We need help with promotional graphics for the app stores and with explainer videos. "
+                             "If you are a graphic/video artist and would like to help, then please be in touch.") + "</p>";
         return result;
     }
 
@@ -306,6 +310,51 @@ auto Librarian::fullPath(Librarian::Library library, const QString &baseName) ->
 }
 
 
+QString Librarian::import(Librarian::Library library, const QString& fileName)
+{
+    if (library != Librarian::Routes)
+    {
+        return u"Importing into libraries other than routs is not yet implemented."_qs;
+    }
+
+    QString myFileName = fileName;
+    if (fileName.startsWith(u"file://"_qs))
+    {
+        myFileName = fileName.mid(7);
+    }
+
+    Navigation::FlightRoute route;
+    auto errorMsg = route.load(myFileName);
+    if (!errorMsg.isEmpty())
+    {
+        return errorMsg;
+    }
+
+    auto baseName = QFileInfo(myFileName).baseName();
+    auto savePath = fullPath(library, baseName);
+    if (QFile::exists(savePath))
+    {
+        for(int i=1; ; i++)
+        {
+            auto newBaseName = u"%1 (%2)"_qs.arg(baseName).arg(i);
+            savePath = fullPath(library, newBaseName);
+            if (!QFile::exists(savePath))
+            {
+                break;
+            }
+        }
+    }
+
+    errorMsg = route.save(savePath);
+    if (!errorMsg.isEmpty())
+    {
+        return errorMsg;
+    }
+
+    return {};
+}
+
+
 void Librarian::remove(Librarian::Library library, const QString& baseName) 
 {
     QFile::remove(fullPath(library, baseName));
@@ -340,7 +389,7 @@ auto Librarian::entries(Library library, const QString &filter) -> QStringList
     QStringList filterList;
     filterList << QStringLiteral("*");
 
-    QDir dir(directory(library));
+    QDir const dir(directory(library));
     auto fileNames = dir.entryList(filterList, QDir::Files);
 
     QStringList fileBaseNames;
@@ -355,7 +404,7 @@ auto Librarian::entries(Library library, const QString &filter) -> QStringList
 
 auto Librarian::permissiveFilter(const QStringList &inputStrings, const QString &filter) -> QStringList
 {
-    QString simplifiedFilter = simplifySpecialChars(filter);
+    QString const simplifiedFilter = simplifySpecialChars(filter);
 
     QStringList result;
     foreach(auto inputString, inputStrings)

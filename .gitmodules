@@ -26,3 +26,6 @@
 [submodule "3rdParty/libzip"]
 	path = 3rdParty/libzip
 	url = https://github.com/nih-at/libzip.git
+[submodule "3rdParty/enrouteManual"]
+	path = 3rdParty/enrouteManual
+	url = ../enrouteManual

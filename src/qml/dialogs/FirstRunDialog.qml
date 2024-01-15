@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+import QtCore
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Material
@@ -38,12 +39,14 @@ CenteringDialog {
             required property var dialogMain
 
             contentWidth: availableWidth // Disable horizontal scrolling
+            contentHeight: lbl.contentHeight
 
             clip: true
 
             property string title: qsTr("Welcome!")
 
             Label {
+                id: lbl
                 text: "<p>" + qsTr("Thank you for using this flight navigation app!  Before we get started, we need to point out that <strong>this app and the aviation data come with no guarantees</strong>.")+"</p>"
                       + "<p>" + qsTr("The app is not certified to satisfy aviation standards. It may contain errors and may not work as expected.") + "</p>"
                       + "<p>" + qsTr("The aviation data does not come from official sources. It might be incomplete, outdated or otherwise incorrect.") + "</p>"
@@ -52,6 +55,7 @@ CenteringDialog {
                       + "<p>&#8212; Stefan Kebekus.</p>";
 
                 width: sv.dialogMain.availableWidth
+
                 textFormat: Text.RichText
                 wrapMode: Text.Wrap
                 onLinkActivated: (link) => Qt.openUrlExternally(link)
@@ -63,7 +67,6 @@ CenteringDialog {
                 GlobalSettings.lastWhatsNewInMapsHash = DataManager.whatsNewHash
             }
         }
-
     }
 
     Component {
@@ -75,12 +78,15 @@ CenteringDialog {
             required property var dialogMain
 
             contentWidth: availableWidth // Disable horizontal scrolling
+            contentHeight: lbl.contentHeight
 
             clip: true
 
             property string title: qsTr("Privacy")
 
             Label {
+                id: lbl
+
                 text: "<p>" + qsTr("Please take a minute to review our privacy policies.") + "</p>"
                       + Librarian.getStringFromRessource(":text/privacy.html")
                 width: sv.dialogMain.availableWidth
@@ -96,37 +102,6 @@ CenteringDialog {
     }
 
     Component {
-        id: permissions
-
-        DecoratedScrollView {
-            id: sv
-
-            required property var dialogMain
-            required property string text
-
-            contentWidth: availableWidth // Disable horizontal scrolling
-
-            clip: true
-
-            property string title: qsTr("Permissions")
-
-            Label {
-                text: "<p>" + qsTr("Please grant the following permissions when prompted.") + "</p>"
-                      + sv.text
-                width: sv.dialogMain.availableWidth
-                textFormat: Text.RichText
-                wrapMode: Text.Wrap
-                onLinkActivated: (link) => Qt.openUrlExternally(link)
-            }
-
-            function accept() {
-                PlatformAdaptor.requestPermissionsSync()
-                PositionProvider.startUpdates()
-            }
-        }
-    }
-
-    Component {
         id: maps
 
         DecoratedScrollView {
@@ -135,39 +110,55 @@ CenteringDialog {
             required property var dialogMain
 
             contentWidth: availableWidth // Disable horizontal scrolling
+            contentHeight: cl.implicitHeight
 
             clip: true
 
             property string title: qsTr("Download Maps")
 
             ColumnLayout {
+                id: cl
+
                 width: sv.dialogMain.availableWidth
 
                 Label {
                     Layout.fillWidth: true
                     Layout.preferredHeight: implicitHeight
                     text: {
-                    var result = "<p>" + qsTr("<strong>Enroute Flight Navigation</strong> needs geographic maps to work.")
-                    + " "
-                        if (DataManager.mapList.hasFile)
+                        var result = "<p>" + qsTr("<strong>Enroute Flight Navigation</strong> needs geographic maps to work.") + " "
+
+                        if (Global.locationPermission.status === Qt.PermissionStatus.Granted)
                         {
-                            if (PositionProvider.positionInfo.isValid())
+                            if (DataManager.mapList.hasFile)
                             {
-                                if (lv.model.length === 0)
-                                    result += qsTr("Regretfully, we do not offer maps for your present location (%1).").arg(PositionProvider.lastValidCoordinate)
-                                if (lv.model.length === 1)
-                                result += qsTr("Based on your location, we reckon that that the following map might be relevant for you. Click on the map to start the download, then click on 'Done' to close this dialog.")
-                                if (lv.model.length > 1)
-                                    result += qsTr("Based on your location, we reckon that that the following maps might be relevant for you. Click on any map to start the download, then click on 'Done' to close this dialog.")
+                                if (PositionProvider.positionInfo.isValid())
+                                {
+                                    if (lv.model.length === 0)
+                                        result += qsTr("Regretfully, we do not offer maps for your present location (%1).").arg(PositionProvider.lastValidCoordinate)
+                                    if (lv.model.length === 1)
+                                        result += qsTr("Based on your location, we reckon that that the following map might be relevant for you. Click on the map to start the download, then click on 'Done' to close this dialog.")
+                                    if (lv.model.length > 1)
+                                        result += qsTr("Based on your location, we reckon that that the following maps might be relevant for you. Click on any map to start the download, then click on 'Done' to close this dialog.")
+                                }
+                                else
+                                {
+                                    result += qsTr("We're waiting for SatNav position infoformation to suggest maps that might be relevant for you. Please stand by.")
+                                }
                             }
                             else
                             {
-                                result += qsTr("We're waiting for SatNav position infoformation to suggest maps that might be relevant for you. Please stand by.")
+                                result += qsTr("We're downloading the list of available maps. Please stand by.")
                             }
                         }
-                        else
+
+                        if (Global.locationPermission.status === Qt.PermissionStatus.Denied)
                         {
-                            result += qsTr("We're downloading the list of available maps. Please stand by.")
+                            result += "<strong>"+qsTr("Please grant location permissions, so we can suggest maps to download.")+"</strong>"
+                        }
+
+                        if (Global.locationPermission.status === Qt.PermissionStatus.Undetermined)
+                        {
+                            result += "<strong>"+qsTr("We're unable to suggest maps to download because the location permission was denied.")+"</strong>"
                         }
 
                         result += "</p>"
@@ -182,7 +173,7 @@ CenteringDialog {
                     Layout.preferredHeight: 1
                     Layout.fillWidth: true
                     color: "black"
-                    visible: lv.model ? lv.model.length !== 0 : false
+                    visible: PositionProvider.receivingPositionInfo
                 }
 
                 DecoratedListView {
@@ -204,7 +195,7 @@ CenteringDialog {
                     Layout.preferredHeight: 1
                     Layout.fillWidth: true
                     color: "black"
-                    visible: lv.model ? lv.model.length !== 0 : false
+                    visible: PositionProvider.receivingPositionInfo
                 }
 
                 Label {
@@ -221,6 +212,8 @@ CenteringDialog {
 
             function accept() {
             }
+
+            Component.onCompleted: Global.locationPermission.request()
 
         }
     }
@@ -246,17 +239,14 @@ CenteringDialog {
     function conditionalOpen() {
         if (!DataManager.aviationMaps.hasFile)
             stack.push(maps, {"dialogMain": dialogMain, "objectName": "maps"})
-
-        var missingPermissionsText = PlatformAdaptor.checkPermissions()
-        if (missingPermissionsText === "")
-            PositionProvider.startUpdates()
-        else
-            stack.push(permissions, {"dialogMain": dialogMain, "text": missingPermissionsText})
         if (GlobalSettings.privacyHash !== Librarian.getStringHashFromRessource(":text/privacy.html"))
             stack.push(privacy, {"dialogMain": dialogMain})
         if (GlobalSettings.acceptedTerms === 0)
             stack.push(firstStart, {"dialogMain": dialogMain})
-        if (!stack.empty)
+
+        if (stack.empty)
+            Global.locationPermission.request()
+        else
             open()
         return !stack.empty
     }

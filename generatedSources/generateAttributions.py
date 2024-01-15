@@ -25,7 +25,7 @@ data += qtattributionsscanner(qtbaseDir+"/Src/qtbase")
 data += qtattributionsscanner(qtbaseDir+"/Src/qtdeclarative")
 data += qtattributionsscanner(qtbaseDir+"/Src/qthttpserver")
 data += qtattributionsscanner(qtbaseDir+"/Src/qtimageformats")
-data += qtattributionsscanner("/home/kebekus/Software/projects/qtlocation")
+#data += qtattributionsscanner("/home/kebekus/Software/projects/qtlocation")
 data += qtattributionsscanner(qtbaseDir+"/Src/qtpositioning")
 data += qtattributionsscanner(qtbaseDir+"/Src/qtsvg")
 data += qtattributionsscanner(qtbaseDir+"/Src/qttranslations")
@@ -59,7 +59,7 @@ for entry in data:
         htmlString += "<li>{}. {}.</li>\n".format(entry["Name"], entry["License"])
         
 
-with open("3rdParty/enrouteText/manual/04-appendix/licenses_overview.rst", "w") as rstFile:
+with open("3rdParty/enrouteManual/07-appendix/licenses_overview.rst", "w") as rstFile:
     rstFile.write(rstString)
     rstFile.close()
 

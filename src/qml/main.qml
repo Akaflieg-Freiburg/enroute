@@ -635,15 +635,30 @@ AppWindow {
                 return
             }
 
-            if ((GlobalSettings.lastWhatsNewHash !== Librarian.getStringHashFromRessource(":text/whatsnew.html")) && (Navigator.flightStatus !== Navigator.Flight)) {
-                whatsNewDialog.open()
+            if ((GlobalSettings.lastWhatsNewHash !== Librarian.getStringHashFromRessource(":text/whatsnew.html")) &&
+                    (Navigator.flightStatus !== Navigator.Flight)) {
+                Global.dialogLoader.active = false
+                Global.dialogLoader.setSource("dialogs/LongTextDialog.qml", {
+                                                  title: qsTr("What's new…?"),
+                                                  text: Librarian.getStringFromRessource(":text/whatsnew.html"),
+                                                  standardButtons: Dialog.Ok
+                                              })
+                Global.dialogLoader.active = true
+                GlobalSettings.lastWhatsNewHash = Librarian.getStringHashFromRessource(":text/whatsnew.html")
                 return
             }
 
             if ((GlobalSettings.lastWhatsNewInMapsHash !== DataManager.whatsNewHash) &&
                     (DataManager.whatsNew !== "") &&
                     (Navigator.flightStatus !== Navigator.Flight)) {
-                whatsNewInMapsDialog.open()
+                Global.dialogLoader.active = false
+                Global.dialogLoader.setSource("dialogs/LongTextDialog.qml", {
+                                                  title: qsTr("What's new…?"),
+                                                  text: DataManager.whatsNew,
+                                                  standardButtons: Dialog.Ok
+                                              })
+                Global.dialogLoader.active = true
+                onOpened: GlobalSettings.lastWhatsNewInMapsHash = DataManager.whatsNewHash
                 return
             }
 
@@ -670,7 +685,8 @@ AppWindow {
             function onRequestClosePages() {
                 stackView.pop()
                 firstRunDialog.close()
-                whatsNewDialog.close()
+                if (Global.dialogLoader.item)
+                    Global.dialogLoader.item.close()
             }
 
             function onRequestOpenAircraftPage() {
@@ -801,24 +817,6 @@ AppWindow {
 
         onAccepted: Qt.quit()
         onRejected: close()
-    }
-
-    LongTextDialog {
-        id: whatsNewDialog
-        standardButtons: Dialog.Ok
-        
-        title: qsTr("What's new…?")
-        text: Librarian.getStringFromRessource(":text/whatsnew.html")
-        onOpened: GlobalSettings.lastWhatsNewHash = Librarian.getStringHashFromRessource(":text/whatsnew.html")
-    }
-
-    LongTextDialog {
-        id: whatsNewInMapsDialog
-        standardButtons: Dialog.Ok
-
-        title: qsTr("What's new…?")
-        text: DataManager.whatsNew
-        onOpened: GlobalSettings.lastWhatsNewInMapsHash = DataManager.whatsNewHash
     }
 
     FirstRunDialog {

@@ -70,13 +70,25 @@ Item {
 
             property geoCoordinate startCentroid
             property real rawBearing: 0
+            property real startBearing: 0
+            property bool aboveRotationThreshold: false
             property real startZoomLevel
 
-            onActiveChanged: if (active) {
-                                 flightMap.followGPS = false
-                                 startCentroid = flightMap.toCoordinate(pinch.centroid.position, false)
-                                 startZoomLevel = flightMap.zoomLevel
-                             }
+            onActiveChanged: {
+                if (active) {
+                    flightMap.followGPS = false
+                    startCentroid = flightMap.toCoordinate(pinch.centroid.position, false)
+                    startZoomLevel = flightMap.zoomLevel
+                    rawBearing = flightMap.bearing
+                    startBearing = flightMap.bearing
+                    return
+                }
+
+                if (flightMap.bearing === 0.0)
+                {
+                    GlobalSettings.mapBearingPolicy = GlobalSettings.NUp
+                }
+            }
 
             onScaleChanged: (delta) => {
                                 var newZoom = startZoomLevel+Math.log2(activeScale)
@@ -88,18 +100,27 @@ Item {
                                 }
                                 zoomLevelBehavior.enabled = false
                                 flightMap.zoomLevel = newZoom
-                                flightMap.alignCoordinateToPoint(startCentroid, pinch.centroid.position)
+                                flightMap.alignCoordinateToPoint(pinch.startCentroid, pinch.centroid.position)
                                 zoomLevelBehavior.enabled = true
                             }
 
             onRotationChanged: (delta) => {
                                    pinch.rawBearing -= delta
-                                   // snap to 0° if we're close enough
 
-                                   bearingBehavior.enabled = false
-                                   flightMap.bearing = (Math.abs(pinch.rawBearing) < 5) ? 0 : pinch.rawBearing
-                                   flightMap.alignCoordinateToPoint(pinch.startCentroid, pinch.centroid.position)
-                                   bearingBehavior.enabled = true
+                                   if (GlobalSettings.mapBearingPolicy === GlobalSettings.UserDefinedBearingUp)
+                                   {
+                                       // snap to 0° if we're close enough
+                                       bearingBehavior.enabled = false
+                                       flightMap.bearing = (Math.abs(pinch.rawBearing) < 5) ? 0 : pinch.rawBearing
+                                       flightMap.alignCoordinateToPoint(pinch.startCentroid, pinch.centroid.position)
+                                       bearingBehavior.enabled = true
+                                       return
+                                   }
+
+                                   if (Math.abs(pinch.rawBearing-pinch.startBearing) > 5)
+                                   {
+                                       GlobalSettings.mapBearingPolicy = GlobalSettings.UserDefinedBearingUp
+                                   }
                                }
         }
 
@@ -166,7 +187,6 @@ Item {
 
         // If "followGPS" is true, then update the map bearing whenever a new GPS position comes in
         Binding on bearing {
-            restoreMode: Binding.RestoreBinding
             when: GlobalSettings.mapBearingPolicy !== GlobalSettings.UserDefinedBearingUp
             value: GlobalSettings.mapBearingPolicy === GlobalSettings.TTUp ? PositionProvider.lastValidTT.toDEG() : 0
         }
@@ -492,13 +512,13 @@ Item {
                 }
 
                 sourceItem: Image {
-                        id: image
+                    id: image
 
-                        source:  "/icons/waypoints/ic_warning.svg"
-                        opacity: 0.75
-                        sourceSize.width: 20
-                        sourceSize.height: 20
-                    }
+                    source:  "/icons/waypoints/ic_warning.svg"
+                    opacity: 0.75
+                    sourceSize.width: 20
+                    sourceSize.height: 20
+                }
             }
 
         }
@@ -790,8 +810,8 @@ Item {
             onLinkActivated: {
                 Global.dialogLoader.active = false
                 Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {title: qsTr("Map Data Copyright Information"),
-                                           text: GeoMapProvider.copyrightNotice,
-                                           standardButtons: Dialog.Ok})
+                                                  text: GeoMapProvider.copyrightNotice,
+                                                  standardButtons: Dialog.Ok})
                 Global.dialogLoader.active = true
             }
         }

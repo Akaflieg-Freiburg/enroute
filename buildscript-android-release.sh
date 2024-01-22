@@ -42,7 +42,6 @@ mkdir -p build-android-release
 # Configure
 #
 
-
 $Qt6_DIR_ANDROID\_x86_64/bin/qt-cmake \
     -S . \
     -B build-android-release \

@@ -271,6 +271,49 @@ add_custom_target(manual
 
 
 #
+# Privacy Statement
+#
+
+add_custom_target(privacy
+    COMMAND echo ${CMAKE_SOURCE_DIR}/PRIVACY.md
+    COMMAND echo "\\# Privacy Policies" >${CMAKE_SOURCE_DIR}/PRIVACY.md
+    COMMAND echo "" >>${CMAKE_SOURCE_DIR}/PRIVACY.md
+    COMMAND echo "\\#\\# English" >>${CMAKE_SOURCE_DIR}/PRIVACY.md
+    COMMAND echo "" >>${CMAKE_SOURCE_DIR}/PRIVACY.md
+    COMMAND QT_QPA_PLATFORM=xcb LC_ALL=EN ${CMAKE_BINARY_DIR}/src/enroute --string :text/privacy.html | pandoc --from=HTML --write=markdown>>${CMAKE_SOURCE_DIR}/PRIVACY.md
+    COMMAND echo "" >>${CMAKE_SOURCE_DIR}/PRIVACY.md
+    #
+    COMMAND echo "\\#\\# Deutsche Übersetzung" >>${CMAKE_SOURCE_DIR}/PRIVACY.md
+    COMMAND echo "" >>${CMAKE_SOURCE_DIR}/PRIVACY.md
+    COMMAND QT_QPA_PLATFORM=xcb LC_ALL=DE ${CMAKE_BINARY_DIR}/src/enroute --string :text/privacy.html | pandoc --from=HTML --write=markdown >>${CMAKE_SOURCE_DIR}/PRIVACY.md
+    COMMAND echo "" >>${CMAKE_SOURCE_DIR}/PRIVACY.md
+    #
+    COMMAND echo "\\#\\# Traduction en français" >>${CMAKE_SOURCE_DIR}/PRIVACY.md
+    COMMAND echo "" >>${CMAKE_SOURCE_DIR}/PRIVACY.md
+    COMMAND QT_QPA_PLATFORM=xcb LC_ALL=FR ${CMAKE_BINARY_DIR}/src/enroute --string :text/privacy.html | pandoc --from=HTML --write=markdown >>${CMAKE_SOURCE_DIR}/PRIVACY.md
+    COMMAND echo "" >>${CMAKE_SOURCE_DIR}/PRIVACY.md
+    #
+    COMMAND echo "\\#\\# Traduzione italiana" >>${CMAKE_SOURCE_DIR}/PRIVACY.md
+    COMMAND echo "" >>${CMAKE_SOURCE_DIR}/PRIVACY.md
+    COMMAND QT_QPA_PLATFORM=xcb LC_ALL=IT ${CMAKE_BINARY_DIR}/src/enroute --string :text/privacy.html | pandoc --from=HTML --write=markdown >>${CMAKE_SOURCE_DIR}/PRIVACY.md
+    COMMAND echo "" >>${CMAKE_SOURCE_DIR}/PRIVACY.md
+    #
+    COMMAND echo "\\#\\# Polskie tłumaczenie" >>${CMAKE_SOURCE_DIR}/PRIVACY.md
+    COMMAND echo "" >>${CMAKE_SOURCE_DIR}/PRIVACY.md
+    COMMAND QT_QPA_PLATFORM=xcb LC_ALL=PL ${CMAKE_BINARY_DIR}/src/enroute --string :text/privacy.html | pandoc --from=HTML --write=markdown >>${CMAKE_SOURCE_DIR}/PRIVACY.md
+    COMMAND echo "" >>${CMAKE_SOURCE_DIR}/PRIVACY.md
+    #
+    COMMAND echo "\\#\\# Traducción al español" >>${CMAKE_SOURCE_DIR}/PRIVACY.md
+    COMMAND echo "" >>${CMAKE_SOURCE_DIR}/PRIVACY.md
+    COMMAND QT_QPA_PLATFORM=xcb LC_ALL=ES ${CMAKE_BINARY_DIR}/src/enroute --string :text/privacy.html | pandoc --from=HTML --write=markdown >>${CMAKE_SOURCE_DIR}/PRIVACY.md
+    COMMAND echo "" >>${CMAKE_SOURCE_DIR}/PRIVACY.md
+    #
+    COMMENT "Generate privacy statement for github"
+    DEPENDS ${PROJECT_NAME}
+  )
+
+
+#
 # Target 'generatedSources' that combines all of the above
 #
 
@@ -280,6 +323,7 @@ add_custom_target(generatedSources
   DEPENDS flightMapSprites
   DEPENDS mainIcons
   DEPENDS manualText
+  DEPENDS privacy
   DEPENDS waypointIcons
   DEPENDS waypointIcons4manual
   )

@@ -33,7 +33,7 @@ import "../items"
 CenteringDialog {
     id: waypointDescriptionDialog
 
-    property var waypoint: GeoMapProvider.createWaypoint()
+    property waypoint waypoint: GeoMapProvider.createWaypoint()
     property var weatherStation: WeatherDataProvider.findWeatherStation( waypoint.ICAOCode )
 
     onWaypointChanged : {

@@ -210,8 +210,31 @@ GeoMaps::Waypoint GeoMaps::CUP::readWaypoint(const QString &line)
         }
     }
 
+    // Get additional information
+    QStringList notes;
+    if (fields.size() >= 8)
+    {
+        notes += QObject::tr("Direction: %1°", "GeoMaps::CUP").arg(fields[7]);
+    }
+    if (fields.size() >= 9)
+    {
+        notes += QObject::tr("Length: %1", "GeoMaps::CUP").arg(fields[8]);
+    }
+    if ((fields.size() >= 11) && (!fields[10].isEmpty()))
+    {
+        notes += QObject::tr("Frequency: %1", "GeoMaps::CUP").arg(fields[10]);
+    }
+    if (fields.size() >= 12)
+    {
+        notes += fields[11];
+    }
+
     GeoMaps::Waypoint result(QGeoCoordinate(lat, lon, ele));
     result.setName(name);
+    if (!notes.isEmpty())
+    {
+        result.setNotes(notes.join(" • "));
+    }
     return result;
 }
 

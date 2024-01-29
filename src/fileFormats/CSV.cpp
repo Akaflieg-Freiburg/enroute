@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <QFile>
+#include <QTextStream>
 
 #include "fileFormats/CSV.h"
 

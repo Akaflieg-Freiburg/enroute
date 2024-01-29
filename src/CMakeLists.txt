@@ -45,7 +45,6 @@ set(SOURCES
     fileFormats/ZipFile.h
     DemoRunner.h
     geomaps/Airspace.h
-    geomaps/CUP.h
     geomaps/GeoJSON.h
     geomaps/GeoMapProvider.h
     geomaps/GPX.h
@@ -128,7 +127,6 @@ set(SOURCES
     fileFormats/VAC.cpp
     fileFormats/ZipFile.cpp
     geomaps/Airspace.cpp
-    geomaps/CUP.cpp
     geomaps/GeoJSON.cpp
     geomaps/GeoMapProvider.cpp
     geomaps/GPX.cpp

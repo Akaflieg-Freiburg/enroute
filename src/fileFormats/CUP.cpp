@@ -110,14 +110,14 @@ QStringList FileFormats::CUP::parseCSV(const QString& string)
 
     // Quotes are left in until here; so when fields are trimmed, only whitespace outside of
     // quotes is removed.  The outermost quotes are removed here.
-    for (int i = 0; i < fields.size(); ++i)
+    for (auto &field : fields)
     {
-        if (fields[i].length() >= 1 && fields[i].at(0) == '"')
+        if (field.length() >= 1 && field.at(0) == '"')
         {
-            fields[i] = fields[i].mid(1);
-            if (fields[i].length() >= 1 && fields[i].right(1) == '"')
+            field = field.mid(1);
+            if (field.length() >= 1 && field.right(1) == '"')
             {
-                fields[i] = fields[i].left(fields[i].length() - 1);
+                field = field.left(field.length() - 1);
             }
         }
     }
@@ -241,52 +241,33 @@ GeoMaps::Waypoint FileFormats::CUP::readWaypoint(const QString &line)
 }
 
 
-//
-// Methods
-//
-
-bool FileFormats::CUP::isValid(const QString &fileName)
+FileFormats::CUP::CUP(const QString& fileName)
 {
     auto file = FileFormats::DataFileAbstract::openFileURL(fileName);
     auto success = file->open(QIODevice::ReadOnly);
     if (!success)
     {
-        return {};
+        setError(QObject::tr("Cannot open CUP file %1 for reading.", "FileFormats::CUP").arg(fileName));
+        return;
     }
 
     QTextStream stream(file.data());
     QString line;
     stream.readLineInto(&line);
-    stream.readLineInto(&line);
-    return readWaypoint(line).isValid();
-}
-
-auto FileFormats::CUP::read(const QString &fileName) -> QVector<GeoMaps::Waypoint>
-{
-    QVector<GeoMaps::Waypoint> result;
-
-    auto file = FileFormats::DataFileAbstract::openFileURL(fileName);
-    auto success = file->open(QIODevice::ReadOnly);
-    if (!success)
-    {
-        return {};
-    }
-
-    QTextStream stream(file.data());
-    QString line;
-    stream.readLineInto(&line);
+    int lineNumber = 0;
     while (stream.readLineInto(&line))
     {
+        lineNumber++;
         if (line.contains(u"-----Related Tasks-----"))
         {
             break;
         }
-        auto wp = readWaypoint(line);
-        if (!wp.isValid())
+        auto waypoint = readWaypoint(line);
+        if (!waypoint.isValid())
         {
-            return {};
+            setError(QObject::tr("Error reading line %1 in the CUP file %1.", "FileFormats::CUP").arg(lineNumber).arg(fileName));
+            return;
         }
-        result << wp;
+        m_waypoints << waypoint;
     }
-    return result;
 }

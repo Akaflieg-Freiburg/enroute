@@ -37,28 +37,32 @@ namespace FileFormats
     {
 
     public:
-        /*! \brief Check if file contains valid CUP data
-         *
-         *  @param fileName Name of a file
-         *
-         *  @returns True if the file is likely to contain valid CUP data.
-         */
-        static bool isValid(const QString &fileName);
-
-        /*! \brief Read a CUP file
+        /*! \brief Constructor
          *
          *  This method reads a CUP file and generates a vector of waypoints.
          *
          *  @param fileName Name of a CUP file
-         *
-         *  @returns QVector with waypoints. The vector is empty in case of an error.
          */
-        static QVector<GeoMaps::Waypoint> read(const QString &fileName);
+        CUP(const QString& fileName);
+
+
+
+        //
+        // Getter Methods
+        //
+
+        /*! \brief Waypoints specified in the CUP file
+         *
+         *  @returns Waypoints specified in the CUP file
+         */
+        [[nodiscard]] QVector<GeoMaps::Waypoint> waypoints() const { return m_waypoints; }
 
     private:
         // Private helper functions
         static QStringList parseCSV(const QString& string);
         static GeoMaps::Waypoint readWaypoint(const QString &line);
+
+        QVector<GeoMaps::Waypoint> m_waypoints;
     };
 
 } // namespace GeoMaps

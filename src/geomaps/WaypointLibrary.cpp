@@ -24,7 +24,7 @@
 #include <QXmlStreamWriter>
 
 #include "Librarian.h"
-#include "geomaps/CUP.h"
+#include "fileFormats/CUP.h"
 #include "geomaps/GPX.h"
 #include "geomaps/GeoJSON.h"
 #include "geomaps/WaypointLibrary.h"
@@ -139,7 +139,7 @@ auto GeoMaps::WaypointLibrary::loadFromGeoJSON(QString fileName) -> QString
 
 auto GeoMaps::WaypointLibrary::import(const QString& fileName, bool skip) -> QString
 {
-    auto result = GeoMaps::CUP::read(fileName);
+    auto result = FileFormats::CUP(fileName).waypoints();
     if (result.isEmpty())
     {
         result = GeoMaps::GeoJSON::read(fileName);

@@ -20,9 +20,8 @@
 
 #include <QFile>
 
-#include "fileFormats/DataFileAbstract.h"
 #include "GeoTIFF.h"
-
+#include "fileFormats/DataFileAbstract.h"
 
 //
 // Enums and static helper functions

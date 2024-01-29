@@ -20,6 +20,7 @@
 
 #include <QFile>
 
+#include "fileFormats/CSV.h"
 #include "fileFormats/CUP.h"
 
 #include "fileFormats/DataFileAbstract.h"
@@ -29,112 +30,15 @@
 // Private helper functions
 //
 
-QStringList FileFormats::CUP::parseCSV(const QString& string)
+GeoMaps::Waypoint FileFormats::CUP::readWaypoint(const QStringList& fields)
 {
-    // Thanks to https://stackoverflow.com/questions/27318631/parsing-through-a-csv-file-in-qt
-
-    enum State
-    {
-        Normal,
-        Quote
-    } state = Normal;
-    QStringList fields;
-    fields.reserve(10);
-    QString value;
-
-    for (int i = 0; i < string.size(); i++)
-    {
-        const QChar current = string.at(i);
-
-        // Normal state
-        if (state == Normal)
-        {
-            // Comma
-            if (current == ',')
-            {
-                // Save field
-                fields.append(value.trimmed());
-                value.clear();
-            }
-
-            // Double-quote
-            else if (current == '"')
-            {
-                state = Quote;
-                value += current;
-            }
-
-            // Other character
-            else
-            {
-                value += current;
-            }
-        }
-
-        // In-quote state
-        else if (state == Quote)
-        {
-            // Another double-quote
-            if (current == '"')
-            {
-                if (i < string.size())
-                {
-                    // A double double-quote?
-                    if (i + 1 < string.size() && string.at(i + 1) == '"')
-                    {
-                        value += '"';
-
-                        // Skip a second quote character in a row
-                        i++;
-                    }
-                    else
-                    {
-                        state = Normal;
-                        value += '"';
-                    }
-                }
-            }
-
-            // Other character
-            else
-            {
-                value += current;
-            }
-        }
-    }
-
-    if (!value.isEmpty())
-    {
-        fields.append(value.trimmed());
-    }
-
-    // Quotes are left in until here; so when fields are trimmed, only whitespace outside of
-    // quotes is removed.  The outermost quotes are removed here.
-    for (auto &field : fields)
-    {
-        if (field.length() >= 1 && field.at(0) == '"')
-        {
-            field = field.mid(1);
-            if (field.length() >= 1 && field.right(1) == '"')
-            {
-                field = field.left(field.length() - 1);
-            }
-        }
-    }
-
-    return fields;
-}
-
-GeoMaps::Waypoint FileFormats::CUP::readWaypoint(const QString &line)
-{
-    auto fields = parseCSV(line);
     if (fields.size() < 6)
     {
         return {};
     }
 
     // Get Name
-    auto name = fields[0];
+    const auto &name = fields[0];
 
     // Get Latitude
     double lat = NAN;
@@ -196,7 +100,7 @@ GeoMaps::Waypoint FileFormats::CUP::readWaypoint(const QString &line)
 
     double ele = NAN;
     {
-        auto eleString = fields[5];
+        const auto &eleString = fields[5];
         bool ok = false;
         if (eleString.endsWith(u"m"))
         {
@@ -214,19 +118,19 @@ GeoMaps::Waypoint FileFormats::CUP::readWaypoint(const QString &line)
 
     // Get additional information
     QStringList notes;
-    if (fields.size() >= 8)
+    if ((fields.size() >= 8) && (!fields[7].isEmpty()))
     {
         notes += QObject::tr("Direction: %1°", "GeoMaps::CUP").arg(fields[7]);
     }
-    if (fields.size() >= 9)
+    if ((fields.size() >= 9) && (!fields[8].isEmpty()))
     {
         notes += QObject::tr("Length: %1", "GeoMaps::CUP").arg(fields[8]);
     }
     if ((fields.size() >= 11) && (!fields[10].isEmpty()))
     {
-        notes += QObject::tr("Frequency: %1", "GeoMaps::CUP").arg(fields[10]);
+        notes += fields[10];
     }
-    if (fields.size() >= 12)
+    if ((fields.size() >= 12) && (!fields[11].isEmpty()))
     {
         notes += fields[11];
     }
@@ -243,19 +147,16 @@ GeoMaps::Waypoint FileFormats::CUP::readWaypoint(const QString &line)
 
 FileFormats::CUP::CUP(const QString& fileName)
 {
-    auto file = FileFormats::DataFileAbstract::openFileURL(fileName);
-    auto success = file->open(QIODevice::ReadOnly);
-    if (!success)
+    CSV const csv(fileName);
+
+    if (!csv.isValid())
     {
-        setError(QObject::tr("Cannot open CUP file %1 for reading.", "FileFormats::CUP").arg(fileName));
+        setError(csv.error());
         return;
     }
 
-    QTextStream stream(file.data());
-    QString line;
-    stream.readLineInto(&line);
     int lineNumber = 0;
-    while (stream.readLineInto(&line))
+    foreach (auto& line, csv.lines())
     {
         lineNumber++;
         if (line.contains(u"-----Related Tasks-----"))
@@ -265,7 +166,7 @@ FileFormats::CUP::CUP(const QString& fileName)
         auto waypoint = readWaypoint(line);
         if (!waypoint.isValid())
         {
-            setError(QObject::tr("Error reading line %1 in the CUP file %1.", "FileFormats::CUP").arg(lineNumber).arg(fileName));
+            setError(QObject::tr("Error reading line %1 in the CUP file %2.", "FileFormats::CUP").arg(lineNumber).arg(fileName));
             return;
         }
         m_waypoints << waypoint;

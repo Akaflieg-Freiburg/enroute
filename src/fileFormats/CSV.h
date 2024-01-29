@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2022 by Stefan Kebekus                                  *
+ *   Copyright (C) 2024 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,29 +21,27 @@
 #pragma once
 
 #include "DataFileAbstract.h"
-#include "geomaps/Waypoint.h"
 
 
 namespace FileFormats
 {
 
-    /*! \brief CUP file support class
+    /*! \brief CSV file support class
      *
-     *  The methods of this class read CUP waypoint files, as specified here:
-     *  http://download.naviter.com/docs/CUP-file-format-description.pdf
+     *  The methods of this class read CSV files.
      */
 
-    class CUP : public DataFileAbstract
+    class CSV : public DataFileAbstract
     {
 
     public:
         /*! \brief Constructor
          *
-         *  This method reads a CUP file and generates a vector of waypoints.
+         *  This method reads a CSV file.
          *
-         *  @param fileName Name of a CUP file
+         *  @param fileName Name of a CSV file
          */
-        CUP(const QString& fileName);
+        CSV(const QString& fileName);
 
 
 
@@ -55,15 +53,13 @@ namespace FileFormats
          *
          *  @returns Waypoints specified in the CUP file
          */
-        [[nodiscard]] QVector<GeoMaps::Waypoint> waypoints() const { return m_waypoints; }
+        [[nodiscard]] QVector<QStringList> lines() const { return m_lines; }
 
     private:
         // Private helper functions
         static QStringList parseCSV(const QString& string);
-        static GeoMaps::Waypoint readWaypoint(const QStringList& fields);
 
-
-        QVector<GeoMaps::Waypoint> m_waypoints;
+        QVector<QStringList> m_lines;
     };
 
-    } // namespace FileFormats
+} // namespace FileFormats

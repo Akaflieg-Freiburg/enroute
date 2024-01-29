@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2023 by Stefan Kebekus                                  *
+ *   Copyright (C) 2022 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,31 +18,47 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QTemporaryFile>
+#pragma once
 
-#include "fileFormats/DataFileAbstract.h"
+#include "DataFileAbstract.h"
+#include "geomaps/Waypoint.h"
 
-QSharedPointer<QFile> FileFormats::DataFileAbstract::openFileURL(const QString& fileName)
+
+namespace FileFormats
 {
-    if (fileName.startsWith("file://"))
+
+    /*! \brief CUP file support class
+     *
+     *  The methods of this class read CUP waypoint files, as specified here:
+     *  http://download.naviter.com/docs/CUP-file-format-description.pdf
+     */
+
+    class CUP : public DataFileAbstract
     {
-        auto* file = new QFile(fileName.mid(7));
-        return QSharedPointer<QFile>(file);
-    }
 
-    if (fileName.startsWith("content://"))
-    {
-        auto* file = new QTemporaryFile();
-        file->open();
+    public:
+        /*! \brief Check if file contains valid CUP data
+         *
+         *  @param fileName Name of a file
+         *
+         *  @returns True if the file is likely to contain valid CUP data.
+         */
+        static bool isValid(const QString &fileName);
 
-        QFile contentFile(fileName);
-        contentFile.open(QIODeviceBase::ReadOnly);
-        auto buffer = contentFile.readAll();
-        file->write(buffer);
-        file->close();
-        return QSharedPointer<QFile>(file);
-    }
+        /*! \brief Read a CUP file
+         *
+         *  This method reads a CUP file and generates a vector of waypoints.
+         *
+         *  @param fileName Name of a CUP file
+         *
+         *  @returns QVector with waypoints. The vector is empty in case of an error.
+         */
+        static QVector<GeoMaps::Waypoint> read(const QString &fileName);
 
-    auto *file = new QFile(fileName);
-    return QSharedPointer<QFile>(file);
-}
+    private:
+        // Private helper functions
+        static QStringList parseCSV(const QString& string);
+        static GeoMaps::Waypoint readWaypoint(const QString &line);
+    };
+
+} // namespace GeoMaps

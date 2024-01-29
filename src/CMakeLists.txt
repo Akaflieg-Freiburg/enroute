@@ -37,6 +37,7 @@ set(SOURCES
     dataManagement/Downloadable_MultiFile.h
     dataManagement/Downloadable_SingleFile.h
     dataManagement/SSLErrorHandler.h
+    fileFormats/CUP.h
     fileFormats/DataFileAbstract.h
     fileFormats/GeoTIFF.h
     fileFormats/TripKit.h
@@ -120,6 +121,7 @@ set(SOURCES
     dataManagement/Downloadable_SingleFile.cpp
     dataManagement/SSLErrorHandler.cpp
     DemoRunner.cpp
+    fileFormats/CUP.cpp
     fileFormats/DataFileAbstract.cpp
     fileFormats/GeoTIFF.cpp
     fileFormats/TripKit.cpp

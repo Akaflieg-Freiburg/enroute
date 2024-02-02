@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -176,47 +176,94 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     }
 
     if (name == u":text/privacy.html"_qs)
-      {
-        return "<p>" + tr("We do not process any personal data from you. Data that you enter into the app "
-                          "(including routes, waypoints, and aircraft specifics) is stored locally on your "
-                          "device. The data is not transmitted to us and is not processed by us.") + "</p>"
-               + "<p>" + tr("However, to ensure the functionality, the app must transmit following data to "
-                            "servers on the internet.") + "</p>"
-               + "<ul style='margin-left:-25px;'>"
-               + "<li>" + tr("The app regularly checks for updates and allows downloading maps and data from "
-                             "a <a href='https://cplx.vm.uni-freiburg.de/storage'>server at the University of Freiburg</a> "
-                             "to your device. In order to "
-                             "provide this functionality, your device's IP address must be transmitted to "
-                             "the server. Knowledge of the IP address is necessary for the server to "
-                             "respond. However, the server does not store any personal data about you in its "
-                             "log files. In particular, it does not store the IP address of your device in "
-                             "its log files. We can assure this because the server is under our control.") + "</li>"
-               + "<li>" + tr("The app shows METARs and TAFs for airfields near your current location and "
-                             "near your currently planned route. It also shows METARs and TAFs for all waypoints "
-                             "that you open in the app. In order to provide this functionality, your "
-                             "current location, your currently planned route, waypoint coordinates, and your "
-                             "device's IP address must be transmitted to web services at the <a href='https://www.aviationweather.gov'>Aviation Weather Center</a>. "
-                             "Knowledge of the IP "
-                             "address is necessary for the web services to respond. The web services cannot "
-                             "read any other data from your device in the process. However, you must expect "
-                             "that your device's IP address will be stored together with the transmitted "
-                             "position data. The web services are operated by the US government and are "
-                             "beyond our control. Detailed information about these web services can be found "
-                             "at <a href='https://www.aviationweather.gov/dataserver'>https://www.aviationweather.gov/dataserver</a>.") + "</li>"
-               + "<li>" + tr("The app shows NOTAMs for places near your current location and near your "
-                             "currently planned route. It also shows NOTAMs for all waypoints that you open in "
-                             "the app. In order to provide this functionality, your current location, your "
-                             "currently planned route, waypoint coordinates, and your device's IP address "
-                             "must be transmitted to web services at the <a href='https://api.faa.gov'>Federal Aviation Administration</a>. "
-                             "Knowledge of the IP address is necessary for the web "
-                             "services to respond. The web services cannot read any other data from your "
-                             "device in the process. However, you must expect that the IP address of your "
-                             "device will be stored together with the transmitted position data. The web "
-                             "services are operated by the US government and are beyond our control. "
-                             "Detailed information about these web services can be found at "
-                             "<a href='https://api.faa.gov/s'>https://api.faa.gov/s</a>.") + "</li>"
-               + "</ul>"
-               + "<p><strong>" + tr("Responsible") + ":</strong> " + "Stefan Kebekus, Wintererstraße 77, 79104 Freiburg im Breisgau, Germany"+"</p>";
+    {
+        return "<p>" +
+               tr("We do not collect our users' personal data.") + " " +
+               tr("We do not store any personally identifiable information.") + " " +
+               tr("However, to ensure functionality, the app must transmit the following data items to servers on the internet.") +
+               "</p>" +
+
+               "<h3>" +
+               tr("1. Map and Data Download Server") +
+               "</h3>" +
+
+               "<p>" +
+               tr("The app regularly checks for updates and allows downloading maps and data from a <a href='https://cplx.vm.uni-freiburg.de/storage'>server at the University of Freiburg</a> to your device.") + " " +
+               tr("Your device's IP address must be transmitted to the server to provide this functionality.") + " " +
+               tr("Knowledge of the IP address is necessary for the server to respond.") + " " +
+               tr("However, the server does not store any personal data about you in its log files.") + " " +
+               tr("In particular, it does not store the IP address of your device in its log files.") + " " +
+               tr("We can assure this because the server is under our control.") + "</p>" +
+
+               "<h3>" +
+               tr("2. METAR and TAF Server") +
+               "</h3>" +
+
+               "<p>" +
+               tr("The app shows METARs and TAFs for airfields near your current location and your currently planned route. ") + " " +
+               tr("It also shows METARs and TAFs for all waypoints you open in the app.") + " " +
+               tr("To provide this functionality, a request containing the following data is transmitted to a <a href='https://cplx.vm.uni-freiburg.de/storage'>server at the University of Freiburg</a>:") +
+               "</p>" +
+
+               "<ul style='margin-left:-25px;'>" +
+               "<li>" + tr("Your current location") + "</li>" +
+               "<li>" + tr("The currently planned route") + "</li>" +
+               "<li>" + tr("Waypoint coordinates") + "</li>" +
+               "<li>" + tr("Your device's IP address") + "</li>" +
+               "</ul>" +
+
+               "<p>" +
+               tr("Knowledge of the IP address is necessary for the server to respond.") + " " +
+               tr("However, the server does not store any personal data about you in its log files.") + " " +
+               tr("In particular, it does not store the IP address of your device in its log files.") + " " +
+               tr("We can assure this because the server is under our control.") + " " +
+               tr("The server cannot read any other data from your device in the process.") +
+               "</p>" +
+
+               "<p>" +
+               tr("The server forwards the request to a web service at the %1 but hides your IP address, so the web service will never see it.").arg(u"<a href='https://www.aviationweather.gov'>Aviation Weather Center</a>"_qs) + " " +
+               tr("The web services at the Aviation Weather Center are operated by the US government and are beyond our control.") + " " +
+               tr("Detailed information can be found at %1.").arg(u"<a href='https://www.aviationweather.gov/dataserver'>www.aviationweather.gov/dataserver</a>"_qs) +
+               "</p>" +
+
+               "<h3>" +
+               tr("3. NOTAM Server") +
+               "</h3>" +
+
+               "<p>" +
+               tr("The app shows NOTAMs for places near your current location and your currently planned route.") + " " +
+               tr("It also shows NOTAMs for all waypoints you open in the app.") + " " +
+               tr("To provide this functionality, a request containing the following data is transmitted to a <a href='https://cplx.vm.uni-freiburg.de/storage'>server at the University of Freiburg</a>:") + " " +
+               "</p>" +
+
+               "<ul style='margin-left:-25px;'>" +
+               "<li>" + tr("Your current location") + "</li>" +
+               "<li>" + tr("The currently planned route") + "</li>" +
+               "<li>" + tr("Waypoint coordinates") + "</li>" +
+               "<li>" + tr("Your device's IP address") + "</li>" +
+               "</ul>" +
+
+               + "<p>" +
+               tr("Knowledge of the IP address is necessary for the server to respond.") + " " +
+               tr("However, the server does not store any personal data about you in its log files.") + " " +
+               tr("In particular, it does not store the IP address of your device in its log files.") + " " +
+               tr("We can assure this because the server is under our control.") + " " +
+               tr("The server cannot read any other data from your device in the process.") +
+               "</p>" +
+
+               + "<p>" +
+               tr("The server forwards the request to a web service at the %1 but hides your IP address, so the web service will never see it.").arg(u"<a href='https://api.faa.gov'>Federal Aviation Administration</a>"_qs) + " " +
+               tr("The web services at the Federal Aviation Administration are operated by the US government and are beyond our control.") + " " +
+               tr("Detailed information can be found at %1.").arg(u"<a href='https://api.faa.gov/s'>api.faa.gov/s</a>"_qs) +
+               "</p>" +
+
+               "<h3>" +
+               tr("Responsible") +
+               "</h3> " +
+
+               "<p>" +
+               "Stefan Kebekus, Wintererstraße 77, 79104 Freiburg im Breisgau, Germany" +
+               "</p>";
     }
 
     if (name == u":text/tooManyDownloads.html"_qs)
@@ -421,7 +468,7 @@ auto Librarian::permissiveFilter(const QStringList &inputStrings, const QString 
 
 auto Librarian::simplifySpecialChars(const QString &string) -> QString
 {
-    QString cacheString = simplifySpecialChars_cache[string];
+    QString cacheString = simplifySpecialChars_cache.value(string);
     if (!cacheString.isEmpty())
     {
         return cacheString;

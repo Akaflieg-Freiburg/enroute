@@ -379,7 +379,7 @@ protected:
  *
  * @returns Hash value
  */
-auto qHash(const GeoMaps::Waypoint& wp) -> size_t;
+auto qHash(const GeoMaps::Waypoint& waypoint) -> size_t;
 
 } // namespace GeoMaps
 

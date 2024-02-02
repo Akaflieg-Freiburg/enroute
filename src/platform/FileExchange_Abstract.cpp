@@ -22,9 +22,9 @@
 #include <QMimeDatabase>
 #include <QUrl>
 
+#include "fileFormats/CUP.h"
 #include "fileFormats/TripKit.h"
 #include "fileFormats/VAC.h"
-#include "geomaps/CUP.h"
 #include "geomaps/GeoJSON.h"
 #include "geomaps/MBTILES.h"
 #include "geomaps/OpenAir.h"
@@ -114,7 +114,7 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     }
 
     // CUP file
-    if (GeoMaps::CUP::isValid(myPath))
+    if (FileFormats::CUP(myPath).isValid())
     {
         emit openFileRequest(path, {}, WaypointLibrary);
         return;

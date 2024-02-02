@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2022 by Stefan Kebekus                                  *
+ *   Copyright (C) 2024 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,43 +20,46 @@
 
 #pragma once
 
-#include "geomaps/Waypoint.h"
+#include "DataFileAbstract.h"
 
-namespace GeoMaps
+
+namespace FileFormats
 {
 
-    /*! \brief CUP file support class
+    /*! \brief CSV file support class
      *
-     *  The methods of this class read CUP waypoint files, as specified here:
-     *  http://download.naviter.com/docs/CUP-file-format-description.pdf
+     *  The methods of this class read CSV files.
      */
 
-    class CUP
+    class CSV : public DataFileAbstract
     {
 
     public:
-        /*! \brief Check if file contains valid CUP data
+        /*! \brief Constructor
          *
-         *  @param fileName Name of a file
+         *  This method reads a CSV file.
          *
-         *  @returns True if the file is likely to contain valid CUP data.
+         *  @param fileName Name of a CSV file
          */
-        static bool isValid(const QString &fileName);
+        CSV(const QString& fileName);
 
-        /*! \brief Read a CUP file
+
+
+        //
+        // Getter Methods
+        //
+
+        /*! \brief Waypoints specified in the CUP file
          *
-         *  This method reads a CUP file and generates a vector of waypoints.
-         *
-         *  @param fileName Name of a CUP file
-         *
-         *  @returns QVector with waypoints. The vector is empty in case of an error.
+         *  @returns Waypoints specified in the CUP file
          */
-        static QVector<GeoMaps::Waypoint> read(const QString &fileName);
+        [[nodiscard]] QVector<QStringList> lines() const { return m_lines; }
 
     private:
         // Private helper functions
         static QStringList parseCSV(const QString& string);
-        static GeoMaps::Waypoint readWaypoint(const QString &line);
+
+        QVector<QStringList> m_lines;
     };
 
-} // namespace GeoMaps
+} // namespace FileFormats

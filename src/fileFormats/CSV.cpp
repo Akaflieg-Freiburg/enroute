@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2022 by Stefan Kebekus                                  *
+ *   Copyright (C) 2024 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -19,15 +19,17 @@
  ***************************************************************************/
 
 #include <QFile>
+#include <QTextStream>
+
+#include "fileFormats/CSV.h"
 
 #include "fileFormats/DataFileAbstract.h"
-#include "geomaps/CUP.h"
 
 //
 // Private helper functions
 //
 
-QStringList GeoMaps::CUP::parseCSV(const QString& string)
+QStringList FileFormats::CSV::parseCSV(const QString& string)
 {
     // Thanks to https://stackoverflow.com/questions/27318631/parsing-through-a-csv-file-in-qt
 
@@ -108,14 +110,14 @@ QStringList GeoMaps::CUP::parseCSV(const QString& string)
 
     // Quotes are left in until here; so when fields are trimmed, only whitespace outside of
     // quotes is removed.  The outermost quotes are removed here.
-    for (int i = 0; i < fields.size(); ++i)
+    for (auto &field : fields)
     {
-        if (fields[i].length() >= 1 && fields[i].at(0) == '"')
+        if (field.length() >= 1 && field.at(0) == '"')
         {
-            fields[i] = fields[i].mid(1);
-            if (fields[i].length() >= 1 && fields[i].right(1) == '"')
+            field = field.mid(1);
+            if (field.length() >= 1 && field.right(1) == '"')
             {
-                fields[i] = fields[i].left(fields[i].length() - 1);
+                field = field.left(field.length() - 1);
             }
         }
     }
@@ -123,128 +125,15 @@ QStringList GeoMaps::CUP::parseCSV(const QString& string)
     return fields;
 }
 
-GeoMaps::Waypoint GeoMaps::CUP::readWaypoint(const QString &line)
-{
-    auto fields = parseCSV(line);
-    if (fields.size() < 6)
-    {
-        return {};
-    }
 
-    // Get Name
-    auto name = fields[0];
-
-    // Get Latitude
-    double lat;
-    {
-        auto latString = fields[3];
-        if (latString.size() != 9)
-        {
-            return {};
-        }
-        if ((latString[8] != 'N') && (latString[8] != 'S'))
-        {
-            return {};
-        }
-        bool ok = false;
-        lat = latString.left(2).toDouble(&ok);
-        if (!ok)
-        {
-            return {};
-        }
-        lat = lat + latString.mid(2, 6).toDouble(&ok) / 60.0;
-        if (!ok)
-        {
-            return {};
-        }
-        if (latString[8] == 'S')
-        {
-            lat = -lat;
-        }
-    }
-
-    // Get Longitude
-    double lon;
-    {
-        auto longString = fields[4];
-        if (longString.size() != 10)
-        {
-            return {};
-        }
-        if ((longString[9] != 'W') && (longString[9] != 'E'))
-        {
-            return {};
-        }
-        bool ok = false;
-        lon = longString.left(3).toDouble(&ok);
-        if (!ok)
-        {
-            return {};
-        }
-        lon = lon + longString.mid(3, 6).toDouble(&ok) / 60.0;
-        if (!ok)
-        {
-            return {};
-        }
-        if (longString[9] == 'W')
-        {
-            lon = -lon;
-        }
-    }
-
-    double ele;
-    {
-        auto eleString = fields[5];
-        bool ok = false;
-        if (eleString.endsWith(u"m"))
-        {
-            ele = eleString.chopped(1).toDouble(&ok);
-        }
-        if (eleString.endsWith(u"ft"))
-        {
-            ele = eleString.chopped(1).toDouble(&ok) * 0.3048;
-        }
-        if (!ok)
-        {
-            return {};
-        }
-    }
-
-    GeoMaps::Waypoint result(QGeoCoordinate(lat, lon, ele));
-    result.setName(name);
-    return result;
-}
-
-
-//
-// Methods
-//
-
-bool GeoMaps::CUP::isValid(const QString &fileName)
+FileFormats::CSV::CSV(const QString& fileName)
 {
     auto file = FileFormats::DataFileAbstract::openFileURL(fileName);
     auto success = file->open(QIODevice::ReadOnly);
     if (!success)
     {
-        return {};
-    }
-
-    QTextStream stream(file.data());
-    QString line;
-    stream.readLineInto(&line);
-    stream.readLineInto(&line);
-    return readWaypoint(line).isValid();
-}
-
-auto GeoMaps::CUP::read(const QString &fileName) -> QVector<GeoMaps::Waypoint>
-{
-    QVector<GeoMaps::Waypoint> result;
-
-    auto file = FileFormats::DataFileAbstract::openFileURL(fileName);
-    auto success = file->open(QIODevice::ReadOnly);
-    if (!success)
-    {
-        return {};
+        setError(QObject::tr("Cannot open CSV file %1 for reading.", "FileFormats::CSV").arg(fileName));
+        return;
     }
 
     QTextStream stream(file.data());
@@ -252,16 +141,6 @@ auto GeoMaps::CUP::read(const QString &fileName) -> QVector<GeoMaps::Waypoint>
     stream.readLineInto(&line);
     while (stream.readLineInto(&line))
     {
-        if (line.contains(u"-----Related Tasks-----"))
-        {
-            break;
-        }
-        auto wp = readWaypoint(line);
-        if (!wp.isValid())
-        {
-            return {};
-        }
-        result << wp;
+        m_lines << parseCSV(line);
     }
-    return result;
 }

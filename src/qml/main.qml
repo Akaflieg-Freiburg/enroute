@@ -619,8 +619,15 @@ AppWindow {
         Component.onCompleted: {
             PlatformAdaptor.onGUISetupCompleted()
 
-            if (firstRunDialog.conditionalOpen())
-                return;
+            if (!DataManager.aviationMaps.hasFile ||
+                    (GlobalSettings.privacyHash !== Librarian.getStringHashFromRessource(":text/privacy.html")) ||
+                    (GlobalSettings.acceptedTerms === 0)) {
+                Global.dialogLoader.active = false
+                Global.dialogLoader.setSource("dialogs/FirstRunDialog.qml")
+                Global.dialogLoader.active = true
+                return
+            }
+            Global.locationPermission.request()
 
             if (DataManager.appUpdateRequired) {
                 dialogLoader.active = false
@@ -684,7 +691,7 @@ AppWindow {
 
             function onRequestClosePages() {
                 stackView.pop()
-                firstRunDialog.close()
+                Global.dialogLoader.source = ""
                 if (Global.dialogLoader.item)
                     Global.dialogLoader.item.close()
             }
@@ -817,10 +824,6 @@ AppWindow {
 
         onAccepted: Qt.quit()
         onRejected: close()
-    }
-
-    FirstRunDialog {
-        id: firstRunDialog
     }
 
     Shortcut {

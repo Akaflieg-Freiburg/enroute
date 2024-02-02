@@ -97,6 +97,7 @@ CenteringDialog {
 
             function accept() {
                 GlobalSettings.privacyHash = Librarian.getStringHashFromRessource(":text/privacy.html")
+                Global.locationPermission.request()
             }
         }
     }
@@ -236,23 +237,23 @@ CenteringDialog {
         anchors.fill: parent
     }
 
-    function conditionalOpen() {
+    onClosed: {
+        Global.locationPermission.request()
+    }
+
+    Component.onCompleted: {
         if (!DataManager.aviationMaps.hasFile)
             stack.push(maps, {"dialogMain": dialogMain, "objectName": "maps"})
         if (GlobalSettings.privacyHash !== Librarian.getStringHashFromRessource(":text/privacy.html"))
             stack.push(privacy, {"dialogMain": dialogMain})
         if (GlobalSettings.acceptedTerms === 0)
             stack.push(firstStart, {"dialogMain": dialogMain})
-
-        if (stack.empty)
-            Global.locationPermission.request()
-        else
-            open()
-        return !stack.empty
     }
 
     footer: DialogButtonBox {
-        ToolButton {
+        Button {
+            flat: true
+
             text: {
                 if (!stack.currentItem)
                     return ""

@@ -32,5 +32,9 @@
 	<string>${MACOSX_BUNDLE_COPYRIGHT}</string>
     <key>NSLocationUsageDescription</key>
     <string>Navigation App needs Location</string>
+	<key>com.apple.security.network.client</key>
+	<true/>
+	<key>com.apple.security.network.server</key>
+	<true/>
 </dict>
 </plist>

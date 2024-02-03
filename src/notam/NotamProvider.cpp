@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2023 by Stefan Kebekus                                  *
+ *   Copyright (C) 2023-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -487,6 +487,15 @@ void NOTAM::NotamProvider::startRequest(const QGeoCoordinate& coordinate)
         return;
     }
 
+    auto urlString = u"https://cplx.vm.uni-freiburg.de/storage/enrouteProxy/notam.php?"
+                     "locationLongitude=%1&"
+                     "locationLatitude=%2&"
+                     "locationRadius=%3&"
+                     "pageSize=1000"_qs
+                         .arg(coordinate.longitude())
+                         .arg(coordinate.latitude())
+                         .arg(1.2*requestRadius.toNM());
+    /*
     auto urlString = u"https://external-api.faa.gov/notamapi/v1/notams?"
                      "locationLongitude=%1&"
                      "locationLatitude=%2&"
@@ -495,6 +504,7 @@ void NOTAM::NotamProvider::startRequest(const QGeoCoordinate& coordinate)
             .arg(coordinate.longitude())
             .arg(coordinate.latitude())
             .arg(1.2*requestRadius.toNM());
+    */
     QNetworkRequest request( urlString );
     request.setRawHeader("client_id", FAA_ID.toLatin1());
     request.setRawHeader("client_secret", FAA_KEY.toLatin1());

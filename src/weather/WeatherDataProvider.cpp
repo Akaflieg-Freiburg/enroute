@@ -631,7 +631,14 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate)
     bBox.setWidth( bBox.width() + 2.0/factor );
 
     {
+        /*
         QString urlString = u"https://aviationweather.gov/api/data/metar?format=xml&bbox=%1,%2,%3,%4"_qs
+                                .arg(bBox.bottomLeft().latitude())
+                                .arg(bBox.bottomLeft().longitude())
+                                .arg(bBox.topRight().latitude())
+                                .arg(bBox.topRight().longitude());
+        */
+        QString urlString = u"https://cplx.vm.uni-freiburg.de/storage/enrouteProxy/metar.php?format=xml&bbox=%1,%2,%3,%4"_qs
                                 .arg(bBox.bottomLeft().latitude())
                                 .arg(bBox.bottomLeft().longitude())
                                 .arg(bBox.topRight().latitude())
@@ -646,7 +653,14 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate)
     }
 
     {
+        /*
         QString urlString = u"https://aviationweather.gov/api/data/taf?format=xml&bbox=%1,%2,%3,%4"_qs
+                                .arg(bBox.bottomLeft().latitude())
+                                .arg(bBox.bottomLeft().longitude())
+                                .arg(bBox.topRight().latitude())
+                                .arg(bBox.topRight().longitude());
+        */
+        QString urlString = u"https://cplx.vm.uni-freiburg.de/storage/enrouteProxy/taf.php?format=xml&bbox=%1,%2,%3,%4"_qs
                                 .arg(bBox.bottomLeft().latitude())
                                 .arg(bBox.bottomLeft().longitude())
                                 .arg(bBox.topRight().latitude())

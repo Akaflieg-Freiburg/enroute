@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -31,11 +31,13 @@ LongTextDialog {
     required property var onAcceptedCallback
 
     footer: DialogButtonBox {
-        ToolButton {
+        Button {
+            flat: true
             text: qsTr("Download anyways")
             DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
         }
-        ToolButton {
+        Button {
+            flat: true
             text: qsTr("Cancel")
             DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
         }

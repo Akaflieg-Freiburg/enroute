@@ -130,8 +130,9 @@ Item {
 
         footer: DialogButtonBox {
 
-            ToolButton {
+            Button {
                 text: qsTr("Route")
+                flat: true
 
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
@@ -144,16 +145,17 @@ Item {
                 }
             }
 
-            ToolButton {
-                    text: qsTr("Library")
+            Button {
+                text: qsTr("Library")
+                flat: true
 
-                    onClicked: {
-                        PlatformAdaptor.vibrateBrief()
-                        importManager.fileFunction = FileExchange.WaypointLibrary
-                        chooseFRorWPDialog.close()
-                        importWPLibraryDialog.open()
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    importManager.fileFunction = FileExchange.WaypointLibrary
+                    chooseFRorWPDialog.close()
+                    importWPLibraryDialog.open()
                     }
-                }
+            }
         }
 
         onRejected: close()

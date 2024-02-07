@@ -48,11 +48,10 @@ CenteringDialog {
         MyTextField {
             id: newName
 
-            Layout.fillWidth: true
             focus: true
 
-            placeholderText: renameDialog.oldName
             text: renameDialog.oldName
+            implicitWidth: renameDialog.availableWidth
 
             onAccepted: renameDialog.onAccepted()
         }

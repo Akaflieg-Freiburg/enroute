@@ -353,6 +353,27 @@ Item {
             }
         }
 
+        MapPolyline {
+            id: flightPath
+            line.width: 4
+            line.color: "#ff00ff"
+            path: {
+                var array = []
+                //Looks weird, but is necessary. geoPath is an 'object' not an array
+                Navigator.flightRoute.geoPath.forEach(element => array.push(element))
+                return array
+            }
+        }
+
+        MapPolyline {
+            id: toNextWP
+            visible: PositionProvider.lastValidCoordinate.isValid &&
+                     (Navigator.remainingRouteInfo.status === RemainingRouteInfo.OnRoute)
+            line.width: 2
+            line.color: 'darkred'
+            path: visible ? [PositionProvider.lastValidCoordinate, Navigator.remainingRouteInfo.nextWP.coordinate] : []
+        }
+
         MapQuickItem {
             id: ownPosition
 
@@ -411,27 +432,6 @@ Item {
                     sourceSize.height: 50
                 }
             }
-        }
-
-        MapPolyline {
-            id: flightPath
-            line.width: 4
-            line.color: "#ff00ff"
-            path: {
-                var array = []
-                //Looks weird, but is necessary. geoPath is an 'object' not an array
-                Navigator.flightRoute.geoPath.forEach(element => array.push(element))
-                return array
-            }
-        }
-
-        MapPolyline {
-            id: toNextWP
-            visible: PositionProvider.lastValidCoordinate.isValid &&
-                     (Navigator.remainingRouteInfo.status === RemainingRouteInfo.OnRoute)
-            line.width: 2
-            line.color: 'darkred'
-            path: visible ? [PositionProvider.lastValidCoordinate, Navigator.remainingRouteInfo.nextWP.coordinate] : []
         }
 
         MapItemView { // Traffic opponents

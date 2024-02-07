@@ -117,7 +117,7 @@ CenteringDialog {
             saveToLibrary()
     }
 
-    Component.onCompleted: dlg.standardButton(DialogButtonBox.Save).enabled = (text !== "")
+    Component.onCompleted: dlg.standardButton(DialogButtonBox.Save).enabled = (fileName.text !== "")
 
     // This is the name of the file that openFromLibrary will open
     property string finalFileName;

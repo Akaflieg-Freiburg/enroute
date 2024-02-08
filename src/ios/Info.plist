@@ -105,6 +105,7 @@
                 <string>application/gpx+xml</string>
             </dict>
         </dict>
+
         <dict>
             <key>UTTypeIdentifier</key>
             <string>com.mapbox.mbtiles</string>
@@ -122,6 +123,42 @@
                 </array>
             </dict>
         </dict>
+
+        <dict>
+            <key>UTTypeIdentifier</key>
+            <string>enroute.cup</string>
+            <key>UTTypeDescription</key>
+            <string>cup</string>
+            <key>UTTypeConformsTo</key>
+            <array>
+                <string>public.data</string>
+            </array>
+            <key>UTTypeTagSpecification</key>
+            <dict>
+                <key>public.filename-extension</key>
+                <array>
+                    <string>cup</string>
+                </array>
+            </dict>
+        </dict>
+
+        <dict>
+            <key>UTTypeIdentifier</key>
+            <string>enroute.geojson</string>
+            <key>UTTypeConformsTo</key>
+            <array>
+                <string>public.json</string>
+            </array>
+            <key>UTTypeTagSpecification</key>
+            <dict>
+                <key>public.filename-extension</key>
+                <array>
+                    <string>geojson</string>
+                    <string>GEOJSON</string>
+                </array>
+            </dict>
+        </dict>
+
     </array>
     <key>CFBundleDocumentTypes</key>
     <array>
@@ -152,16 +189,20 @@
         <dict>
             <key>CFBundleTypeName</key>
             <string>GeoJSON</string>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>LSHandlerRank</key>
+            <string>Alternate</string>
             <key>CFBundleTypeExtensions</key>
             <array>
                     <string>geojson</string>
+                    <string>GEOJSON</string>
             </array>
             <key>LSHandlerRank</key>
             <string>Alternate</string>
             <key>LSItemContentTypes</key>
             <array>
                 <string>public.json</string>
-                <string>com.apple.dt.document.geojson</string>
             </array>
         </dict>
         <dict>
@@ -201,6 +242,27 @@
             <key>NSExportableTypes</key>
             <array>
                 <string>com.mapbox.mbtiles</string>
+            </array>
+        </dict>
+        <dict>
+            <key>CFBundleTypeName</key>
+            <string>CUP</string>
+            <key>CFBundleTypeRole</key>
+            <string>Viewer</string>
+            <key>LSHandlerRank</key>
+            <string>Alternate</string>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>CUP</string>
+                <string>cup</string>
+            </array>
+            <key>LSItemContentTypes</key>
+            <array>
+                <string>custom.cup</string>
+            </array>
+            <key>NSExportableTypes</key>
+            <array>
+                <string>com.cup</string>
             </array>
         </dict>
      </array>

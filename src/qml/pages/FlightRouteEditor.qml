@@ -247,6 +247,7 @@ Page {
                 MenuItem {
                     id: menuImport
 
+                    enabled: !isIos
                     text: qsTr("Import…")
 
                     onTriggered: {

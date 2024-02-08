@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2022 by Stefan Kebekus                                  *
+ *   Copyright (C) 2022-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -65,7 +65,7 @@ namespace GeoMaps
     MBTILES(const QString &fileName, QObject *parent = nullptr);
 
     /*! \brief Standard destructor */
-    ~MBTILES();
+    ~MBTILES() override;
 
     /*! \brief Attribution of MBTILES file
      *
@@ -74,7 +74,7 @@ namespace GeoMaps
      */
     [[nodiscard]] QString attribution();
 
-    /*! \brief Determine type of data contain in an MBTILES file
+    /*! \brief Determine type of data contained in an MBTILES file
      *
      *  @returns Type of data, or Unknown on error.
      */

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2022 by Stefan Kebekus                                  *
+ *   Copyright (C) 2022-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -40,8 +40,8 @@ GeoMaps::MBTILES::MBTILES(const QString& fileName, QObject *parent)
     {
         while(query.next())
         {
-            QString key = query.value(0).toString();
-            QString value = query.value(1).toString();
+            QString const key = query.value(0).toString();
+            QString const value = query.value(1).toString();
             m_metadata.insert(key, value);
         }
     }
@@ -101,7 +101,7 @@ auto GeoMaps::MBTILES::info() -> QString
     {
         while (query.next())
         {
-            QString key = query.value(0).toString();
+            QString const key = query.value(0).toString();
             if (key == u"json")
             {
                 continue;

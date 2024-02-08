@@ -258,11 +258,11 @@
             </array>
             <key>LSItemContentTypes</key>
             <array>
-                <string>custom.cup</string>
+                <string>enroute.cup</string>
             </array>
             <key>NSExportableTypes</key>
             <array>
-                <string>com.cup</string>
+                <string>enroute.cup</string>
             </array>
         </dict>
      </array>

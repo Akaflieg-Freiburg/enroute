@@ -26,8 +26,8 @@
 #include "fileFormats/DataFileAbstract.h"
 #include "fileFormats/MBTILES.h"
 
-GeoMaps::MBTILES::MBTILES(const QString& fileName, QObject *parent)
-    : QObject(parent), m_fileName(fileName)
+GeoMaps::MBTILES::MBTILES(const QString& fileName)
+    : m_fileName(fileName)
 {
     m_file = FileFormats::DataFileAbstract::openFileURL(fileName);
 

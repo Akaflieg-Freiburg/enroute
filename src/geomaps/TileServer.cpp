@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -53,7 +53,7 @@ GeoMaps::TileServer::TileServer(QObject* parent)
 }
 
 
-void GeoMaps::TileServer::addMbtilesFileSet(const QString& baseName, const QVector<QPointer<GeoMaps::MBTILES>>& MBTilesFiles)
+void GeoMaps::TileServer::addMbtilesFileSet(const QString& baseName, const QVector<QSharedPointer<GeoMaps::MBTILES>>& MBTilesFiles)
 {
     QString URL = serverUrl()+"/"+baseName;
     auto* handler = new TileHandler(MBTilesFiles, URL);
@@ -117,7 +117,7 @@ bool GeoMaps::TileServer::handleRequest(const QHttpServerRequest& request, QHttp
     //
     if (m_tileHandlers.contains(pathElements[0]))
     {
-        auto tileHandler = m_tileHandlers[pathElements[0]];
+        auto tileHandler = m_tileHandlers.value(pathElements[0]);
         if (tileHandler == nullptr)
         {
             return false;

@@ -120,7 +120,7 @@ public slots:
      *  more than one of the files, the data is expected to be identical in each
      *  of the files.
      */
-    void addMbtilesFileSet(const QString& baseName, const QVector<QPointer<GeoMaps::MBTILES>>& MBTilesFiles);
+    void addMbtilesFileSet(const QString& baseName, const QVector<QSharedPointer<GeoMaps::MBTILES>>& MBTilesFiles);
 
     /*! \brief Removes a set of tile files
      *
@@ -138,10 +138,10 @@ private:
     Q_DISABLE_COPY_MOVE(TileServer)
 
     // Implemented pure virtual method from QAbstractHttpServer
-    virtual bool handleRequest(const QHttpServerRequest& request, QHttpServerResponder& responder) override;
+    bool handleRequest(const QHttpServerRequest& request, QHttpServerResponder& responder) override;
 
     // Implemented pure virtual method from QAbstractHttpServer
-    virtual void missingHandler(const QHttpServerRequest& request, QHttpServerResponder&& responder) override;
+    void missingHandler(const QHttpServerRequest& request, QHttpServerResponder&& responder) override;
 
     /*! \brief Restarts the server
      *

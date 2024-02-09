@@ -511,7 +511,6 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
 {
     terrainTileCache.clear();
 
-    qDeleteAll(m_baseMapRasterTiles);
     m_baseMapRasterTiles.clear();
     foreach(auto downloadableX, GlobalObject::dataManager()->baseMapsRaster()->downloadables())
     {
@@ -525,9 +524,8 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
             continue;
         }
 
-        m_baseMapRasterTiles.append(new GeoMaps::MBTILES(downloadable->fileName(), this));
+        m_baseMapRasterTiles.append(QSharedPointer<GeoMaps::MBTILES>(new GeoMaps::MBTILES(downloadable->fileName())));
     }
-    qDeleteAll(m_baseMapVectorTiles);
     m_baseMapVectorTiles.clear();
     foreach(auto downloadableX, GlobalObject::dataManager()->baseMapsVector()->downloadables())
     {
@@ -541,11 +539,10 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
             continue;
         }
 
-        m_baseMapVectorTiles.append(new GeoMaps::MBTILES(downloadable->fileName(), this));
+        m_baseMapVectorTiles.append(QSharedPointer<GeoMaps::MBTILES>(new GeoMaps::MBTILES(downloadable->fileName())));
     }
     emit baseMapTilesChanged();
 
-    qDeleteAll(m_terrainMapTiles);
     m_terrainMapTiles.clear();
     foreach(auto downloadableX, GlobalObject::dataManager()->terrainMaps()->downloadables())
     {
@@ -559,7 +556,7 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
             continue;
         }
 
-        m_terrainMapTiles.append(new GeoMaps::MBTILES(downloadable->fileName(), this));
+        m_terrainMapTiles.append(QSharedPointer<GeoMaps::MBTILES>(new GeoMaps::MBTILES(downloadable->fileName())));
     }
     emit terrainMapTilesChanged();
 

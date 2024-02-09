@@ -25,6 +25,8 @@
 #include <QObject>
 #include <QSharedPointer>
 
+#warning should be in namespace FileFormats
+
 namespace GeoMaps
 {
 
@@ -35,9 +37,10 @@ namespace GeoMaps
    *  This class handles MBTILES and allows easy access to the data.
    */
 
-  class MBTILES : public QObject
+#warning Should inherit from "DataFileAbstract"
+
+  class MBTILES
   {
-    Q_OBJECT
 
   public:
     /*! \brief Format of data tiles */
@@ -59,13 +62,11 @@ namespace GeoMaps
      * and remain intact throughout the existence of this class instance.
      *
      * @param fileName Name of the MBTILES file
-     *
-     * @param parent The standard QObject parent pointer
      */
-    MBTILES(const QString &fileName, QObject *parent = nullptr);
+    MBTILES(const QString &fileName);
 
     /*! \brief Standard destructor */
-    ~MBTILES() override;
+    ~MBTILES();
 
     /*! \brief Attribution of MBTILES file
      *

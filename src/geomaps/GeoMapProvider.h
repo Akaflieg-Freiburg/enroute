@@ -101,10 +101,10 @@ public:
     Q_PROPERTY(QString approachChartBaseName READ approachChartBaseName NOTIFY approachChartChanged)
 
     /*! \brief List of base map MBTILES */
-    Q_PROPERTY(QList<QPointer<GeoMaps::MBTILES>> baseMapRasterTiles READ baseMapRasterTiles NOTIFY baseMapTilesChanged)
+    Q_PROPERTY(QList<QSharedPointer<GeoMaps::MBTILES>> baseMapRasterTiles READ baseMapRasterTiles NOTIFY baseMapTilesChanged)
 
     /*! \brief List of base map MBTILES */
-    Q_PROPERTY(QList<QPointer<GeoMaps::MBTILES>> baseMapVectorTiles READ baseMapVectorTiles NOTIFY baseMapTilesChanged)
+    Q_PROPERTY(QList<QSharedPointer<GeoMaps::MBTILES>> baseMapVectorTiles READ baseMapVectorTiles NOTIFY baseMapTilesChanged)
 
     /*! \brief Copyright notice for the map
      *
@@ -132,7 +132,7 @@ public:
     Q_PROPERTY(QString styleFileURL READ styleFileURL NOTIFY styleFileURLChanged)
 
     /*! \brief List of terrain map MBTILES */
-    Q_PROPERTY(QList<QPointer<GeoMaps::MBTILES>> terrainMapTiles READ terrainMapTiles NOTIFY terrainMapTilesChanged)
+    Q_PROPERTY(QList<QSharedPointer<GeoMaps::MBTILES>> terrainMapTiles READ terrainMapTiles NOTIFY terrainMapTilesChanged)
 
     /*! \brief Waypoints
      *
@@ -169,7 +169,7 @@ public:
      *
      * @returns Property baseMapRasterTiles
      */
-    [[nodiscard]] QList<QPointer<GeoMaps::MBTILES>> baseMapRasterTiles() const
+    [[nodiscard]] QList<QSharedPointer<GeoMaps::MBTILES>> baseMapRasterTiles() const
     {
         return m_baseMapRasterTiles;
     }
@@ -178,7 +178,7 @@ public:
      *
      * @returns Property baseMapVectorTiles
      */
-    [[nodiscard]] QList<QPointer<GeoMaps::MBTILES>> baseMapVectorTiles() const
+    [[nodiscard]] QList<QSharedPointer<GeoMaps::MBTILES>> baseMapVectorTiles() const
     {
         return m_baseMapVectorTiles;
     }
@@ -205,7 +205,7 @@ public:
      *
      * @returns Property terrainMapTiles
      */
-    [[nodiscard]] auto terrainMapTiles() const -> QList<QPointer<GeoMaps::MBTILES>>
+    [[nodiscard]] auto terrainMapTiles() const -> QList<QSharedPointer<GeoMaps::MBTILES>>
     {
         return m_terrainMapTiles;
     }
@@ -378,9 +378,9 @@ private:
     //
     // MBTILES
     //
-    QList<QPointer<GeoMaps::MBTILES>> m_baseMapVectorTiles;
-    QList<QPointer<GeoMaps::MBTILES>> m_baseMapRasterTiles;
-    QList<QPointer<GeoMaps::MBTILES>> m_terrainMapTiles;
+    QList<QSharedPointer<GeoMaps::MBTILES>> m_baseMapVectorTiles;
+    QList<QSharedPointer<GeoMaps::MBTILES>> m_baseMapRasterTiles;
+    QList<QSharedPointer<GeoMaps::MBTILES>> m_terrainMapTiles;
 
     //
     // Current approach chart

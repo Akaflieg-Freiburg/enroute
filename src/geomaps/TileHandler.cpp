@@ -26,10 +26,9 @@
 #include "TileHandler.h"
 
 
-GeoMaps::TileHandler::TileHandler(const QVector<QPointer<GeoMaps::MBTILES>>& mbtileFiles, const QString& baseURL)
+GeoMaps::TileHandler::TileHandler(const QVector<QSharedPointer<GeoMaps::MBTILES>>& mbtileFiles, const QString& baseURL) :
+    m_mbtiles(mbtileFiles)
 {
-    m_mbtiles = mbtileFiles;
-
     QString _name;
     QString _encoding;
     QString _tiles;
@@ -58,7 +57,7 @@ GeoMaps::TileHandler::TileHandler(const QVector<QPointer<GeoMaps::MBTILES>>& mbt
         _description = mbtPtr->metaData().value(QStringLiteral("description"));
         _version = mbtPtr->metaData().value(QStringLiteral("version"));
         _attribution = mbtPtr->metaData().value(QStringLiteral("attribution"));
-        bool ok;
+        bool ok = false;
         auto tmp_maxzoom = mbtPtr->metaData().value(QStringLiteral("maxzoom")).toInt(&ok);
         if (ok)
         {
@@ -146,7 +145,7 @@ bool GeoMaps::TileHandler::process(QHttpServerResponder* responder, const QStrin
         }
 
         // Get data
-        QByteArray tileData = mbtilesPtr->tile(z,x,y);
+        QByteArray const tileData = mbtilesPtr->tile(z,x,y);
         if (tileData.isEmpty())
         {
             continue;

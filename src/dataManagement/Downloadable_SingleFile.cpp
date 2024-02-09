@@ -145,7 +145,7 @@ auto DataManagement::Downloadable_SingleFile::description() -> QString
     // Extract infomation from MBTILES
     if (m_fileName.endsWith(u".mbtiles") || m_fileName.endsWith(u".raster") || m_fileName.endsWith(u".terrain"))
     {
-        GeoMaps::MBTILES mbtiles(m_fileName);
+        FileFormats::MBTILES mbtiles(m_fileName);
         result += "<p>" + mbtiles.info() + "</p>";
     }
 

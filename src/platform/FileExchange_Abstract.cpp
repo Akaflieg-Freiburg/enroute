@@ -99,15 +99,15 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     }
 
     // MBTiles containing a vector map
-    GeoMaps::MBTILES mbtiles(myPath);
-    if (mbtiles.format() == GeoMaps::MBTILES::Vector)
+    FileFormats::MBTILES mbtiles(myPath);
+    if (mbtiles.format() == FileFormats::MBTILES::Vector)
     {
         emit openFileRequest(path, {}, VectorMap);
         return;
     }
 
     // MBTiles containing a raster map
-    if (mbtiles.format() == GeoMaps::MBTILES::Raster)
+    if (mbtiles.format() == FileFormats::MBTILES::Raster)
     {
         emit openFileRequest(path, {}, RasterMap);
         return;

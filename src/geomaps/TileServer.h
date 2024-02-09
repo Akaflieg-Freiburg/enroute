@@ -120,7 +120,7 @@ public slots:
      *  more than one of the files, the data is expected to be identical in each
      *  of the files.
      */
-    void addMbtilesFileSet(const QString& baseName, const QVector<QSharedPointer<GeoMaps::MBTILES>>& MBTilesFiles);
+    void addMbtilesFileSet(const QString& baseName, const QVector<QSharedPointer<FileFormats::MBTILES>>& MBTilesFiles);
 
     /*! \brief Removes a set of tile files
      *

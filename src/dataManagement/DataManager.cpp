@@ -172,16 +172,16 @@ QString DataManagement::DataManager::import(const QString& fileName, const QStri
     auto path = m_dataDirectory+"/Unsupported";
     auto newFileName = path + "/" + newName;
 
-    GeoMaps::MBTILES mbtiles(localFile->fileName());
+    FileFormats::MBTILES mbtiles(localFile->fileName());
     switch(mbtiles.format())
     {
-    case GeoMaps::MBTILES::Raster:
+    case FileFormats::MBTILES::Raster:
         newFileName += u".raster"_qs;
         break;
-    case GeoMaps::MBTILES::Vector:
+    case FileFormats::MBTILES::Vector:
         newFileName += u".mbtiles"_qs;
         break;
-    case GeoMaps::MBTILES::Unknown:
+    case FileFormats::MBTILES::Unknown:
         return tr("Unable to recognize map file format.");
     }
 

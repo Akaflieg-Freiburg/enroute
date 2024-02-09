@@ -26,7 +26,7 @@
 #include "TileHandler.h"
 
 
-GeoMaps::TileHandler::TileHandler(const QVector<QSharedPointer<GeoMaps::MBTILES>>& mbtileFiles, const QString& baseURL) :
+GeoMaps::TileHandler::TileHandler(const QVector<QSharedPointer<FileFormats::MBTILES>>& mbtileFiles, const QString& baseURL) :
     m_mbtiles(mbtileFiles)
 {
     QString _name;

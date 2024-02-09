@@ -53,9 +53,9 @@ GeoMaps::TileServer::TileServer(QObject* parent)
 }
 
 
-void GeoMaps::TileServer::addMbtilesFileSet(const QString& baseName, const QVector<QSharedPointer<GeoMaps::MBTILES>>& MBTilesFiles)
+void GeoMaps::TileServer::addMbtilesFileSet(const QString& baseName, const QVector<QSharedPointer<FileFormats::MBTILES>>& MBTilesFiles)
 {
-    QString URL = serverUrl()+"/"+baseName;
+    QString const URL = serverUrl()+"/"+baseName;
     auto* handler = new TileHandler(MBTilesFiles, URL);
     m_tileHandlers[baseName] = QSharedPointer<GeoMaps::TileHandler>(handler);
 }

@@ -18,15 +18,15 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QRandomGenerator>
 #include <QSqlDatabase>
 #include <QSqlQuery>
-#include <QRandomGenerator>
 #include <QVariant>
 
 #include "fileFormats/DataFileAbstract.h"
 #include "fileFormats/MBTILES.h"
 
-GeoMaps::MBTILES::MBTILES(const QString& fileName)
+FileFormats::MBTILES::MBTILES(const QString& fileName)
     : m_fileName(fileName)
 {
     m_file = FileFormats::DataFileAbstract::openFileURL(fileName);
@@ -76,13 +76,13 @@ GeoMaps::MBTILES::MBTILES(const QString& fileName)
     }
 }
 
-GeoMaps::MBTILES::~MBTILES()
+FileFormats::MBTILES::~MBTILES()
 {
     QSqlDatabase::database(m_databaseConnectionName).close();
     QSqlDatabase::removeDatabase(m_databaseConnectionName);
 }
 
-auto GeoMaps::MBTILES::attribution() -> QString
+auto FileFormats::MBTILES::attribution() -> QString
 {
     auto m_dataBase = QSqlDatabase::database(m_databaseConnectionName);
     QSqlQuery query(m_dataBase);
@@ -96,7 +96,7 @@ auto GeoMaps::MBTILES::attribution() -> QString
     return {};
 }
 
-auto GeoMaps::MBTILES::format() -> GeoMaps::MBTILES::Format
+auto FileFormats::MBTILES::format() -> FileFormats::MBTILES::Format
 {
     auto m_dataBase = QSqlDatabase::database(m_databaseConnectionName);
     QSqlQuery query(m_dataBase);
@@ -118,7 +118,7 @@ auto GeoMaps::MBTILES::format() -> GeoMaps::MBTILES::Format
     return Unknown;
 }
 
-auto GeoMaps::MBTILES::info() -> QString
+auto FileFormats::MBTILES::info() -> QString
 {
     QMapIterator<QString, QString> i(m_metadata);
     QString intResult;
@@ -142,7 +142,7 @@ auto GeoMaps::MBTILES::info() -> QString
 }
 
 
-auto GeoMaps::MBTILES::tile(int zoom, int x, int y) -> QByteArray
+auto FileFormats::MBTILES::tile(int zoom, int x, int y) -> QByteArray
 {
     auto m_dataBase = QSqlDatabase::database(m_databaseConnectionName);
     QSqlQuery query(m_dataBase);

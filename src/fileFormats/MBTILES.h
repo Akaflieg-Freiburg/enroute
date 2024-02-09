@@ -25,9 +25,7 @@
 #include <QObject>
 #include <QSharedPointer>
 
-#warning should be in namespace FileFormats
-
-namespace GeoMaps
+namespace FileFormats
 {
 
   /*! \brief Utility class for databases in MBTILES format
@@ -79,7 +77,7 @@ namespace GeoMaps
      *
      *  @returns Type of data, or Unknown on error.
      */
-    [[nodiscard]] GeoMaps::MBTILES::Format format();
+    [[nodiscard]] FileFormats::MBTILES::Format format();
 
     /*! \brief Information about an MBTILES file
      *
@@ -136,4 +134,4 @@ namespace GeoMaps
     QMap<QString, QString> m_metadata;
   };
 
-} // namespace GeoMaps
+} // namespace FileFormats

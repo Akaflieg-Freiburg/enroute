@@ -56,7 +56,7 @@ public:
     *  access to this tile. Typically, this is a string of the form
     *  "http://localhost:8080/osm"
     */
-    explicit TileHandler(const QVector<QSharedPointer<GeoMaps::MBTILES>>& mbtileFiles, const QString& baseURLName);
+    explicit TileHandler(const QVector<QSharedPointer<FileFormats::MBTILES>>& mbtileFiles, const QString& baseURLName);
 
     // Standard descructor
     ~TileHandler() = default;
@@ -79,7 +79,7 @@ private:
     Q_DISABLE_COPY_MOVE(TileHandler)
 
     // List of MBTiles
-    QVector<QSharedPointer<GeoMaps::MBTILES>> m_mbtiles;
+    QVector<QSharedPointer<FileFormats::MBTILES>> m_mbtiles;
 
     // Format of tiles. This is a short string such as "jpg", "pbf", "png" or
     // "webp".

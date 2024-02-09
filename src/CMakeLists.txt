@@ -41,6 +41,7 @@ set(SOURCES
     fileFormats/CUP.h
     fileFormats/DataFileAbstract.h
     fileFormats/GeoTIFF.h
+    fileFormats/MBTILES.h
     fileFormats/TripKit.h
     fileFormats/VAC.h
     fileFormats/ZipFile.h
@@ -49,7 +50,6 @@ set(SOURCES
     geomaps/GeoJSON.h
     geomaps/GeoMapProvider.h
     geomaps/GPX.h
-    geomaps/MBTILES.h
     geomaps/OpenAir.h
     geomaps/TileHandler.h
     geomaps/TileServer.h
@@ -125,6 +125,7 @@ set(SOURCES
     fileFormats/CUP.cpp
     fileFormats/DataFileAbstract.cpp
     fileFormats/GeoTIFF.cpp
+    fileFormats/MBTILES.cpp
     fileFormats/TripKit.cpp
     fileFormats/VAC.cpp
     fileFormats/ZipFile.cpp
@@ -132,7 +133,6 @@ set(SOURCES
     geomaps/GeoJSON.cpp
     geomaps/GeoMapProvider.cpp
     geomaps/GPX.cpp
-    geomaps/MBTILES.cpp
     geomaps/OpenAir.cpp
     geomaps/TileHandler.cpp
     geomaps/TileServer.cpp

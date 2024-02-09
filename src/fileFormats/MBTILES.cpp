@@ -24,7 +24,7 @@
 #include <QVariant>
 
 #include "fileFormats/DataFileAbstract.h"
-#include "geomaps/MBTILES.h"
+#include "fileFormats/MBTILES.h"
 
 GeoMaps::MBTILES::MBTILES(const QString& fileName, QObject *parent)
     : QObject(parent), m_fileName(fileName)

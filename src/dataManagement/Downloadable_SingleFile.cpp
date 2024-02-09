@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -26,7 +26,7 @@
 #include "Downloadable_SingleFile.h"
 #include "GlobalObject.h"
 #include "GlobalSettings.h"
-#include "geomaps/MBTILES.h"
+#include "fileFormats/MBTILES.h"
 
 
 DataManagement::Downloadable_SingleFile::Downloadable_SingleFile(QUrl url, const QString& fileName, const QGeoRectangle& bBox, QObject* parent)

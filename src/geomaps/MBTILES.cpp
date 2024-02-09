@@ -20,6 +20,7 @@
 
 #include <QSqlDatabase>
 #include <QSqlQuery>
+#include <QRandomGenerator>
 #include <QVariant>
 
 #include "fileFormats/DataFileAbstract.h"
@@ -30,7 +31,7 @@ GeoMaps::MBTILES::MBTILES(const QString& fileName, QObject *parent)
 {
     m_file = FileFormats::DataFileAbstract::openFileURL(fileName);
 
-    m_databaseConnectionName = QStringLiteral("GeoMaps::MBTILES::format %1,%2").arg(fileName).arg((quintptr)this);
+    m_databaseConnectionName = QStringLiteral("GeoMaps::MBTILES::format %1,%2").arg(fileName).arg(QRandomGenerator::global()->generate());
     auto m_dataBase = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), m_databaseConnectionName);
     m_dataBase.setDatabaseName(m_file->fileName());
     m_dataBase.open();
@@ -43,6 +44,34 @@ GeoMaps::MBTILES::MBTILES(const QString& fileName, QObject *parent)
             QString const key = query.value(0).toString();
             QString const value = query.value(1).toString();
             m_metadata.insert(key, value);
+        }
+    }
+
+    // If the metadata does not contain a minzoom entry, then generate one by looking at the
+    // lowest zoom_level that exists in the "tiles" table.
+    if (!m_metadata.contains(u"minzoom"_qs))
+    {
+        if (query.exec(QStringLiteral("select min(zoom_level) from tiles;")))
+        {
+            while(query.next())
+            {
+                QString const minzoom = query.value(0).toString();
+                m_metadata.insert(u"minzoom"_qs, minzoom);
+            }
+        }
+    }
+
+    // If the metadata does not contain a maxzoom entry, then generate one by looking at the
+    // highest zoom_level that exists in the "tiles" table.
+    if (!m_metadata.contains(u"maxzoom"_qs))
+    {
+        if (query.exec(QStringLiteral("select max(zoom_level) from tiles;")))
+        {
+            while(query.next())
+            {
+                QString const maxzoom = query.value(0).toString();
+                m_metadata.insert(u"maxzoom"_qs, maxzoom);
+            }
         }
     }
 }
@@ -91,30 +120,24 @@ auto GeoMaps::MBTILES::format() -> GeoMaps::MBTILES::Format
 
 auto GeoMaps::MBTILES::info() -> QString
 {
-    QString result;
-
-    // Read metadata from database
-    auto m_dataBase = QSqlDatabase::database(m_databaseConnectionName);
-    QSqlQuery query(m_dataBase);
+    QMapIterator<QString, QString> i(m_metadata);
     QString intResult;
-    if (query.exec(QStringLiteral("select name, value from metadata;")))
-    {
-        while (query.next())
+    while (i.hasNext()) {
+        i.next();
+
+        if (i.key() == u"json")
         {
-            QString const key = query.value(0).toString();
-            if (key == u"json")
-            {
-                continue;
-            }
-            intResult += QStringLiteral("<tr><td><strong>%1 :&nbsp;&nbsp;</strong></td><td>%2</td></tr>")
-                    .arg(key, query.value(1).toString());
+            continue;
         }
+        intResult += QStringLiteral("<tr><td><strong>%1 :&nbsp;&nbsp;</strong></td><td>%2</td></tr>")
+                         .arg(i.key(), i.value());
     }
+
+    QString result;
     if (!intResult.isEmpty())
     {
         result += QStringLiteral("<table>%1</table>").arg(intResult);
     }
-
     return result;
 }
 

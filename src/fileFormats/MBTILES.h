@@ -25,6 +25,9 @@
 #include <QObject>
 #include <QSharedPointer>
 
+#include "fileFormats/DataFileAbstract.h"
+
+
 namespace FileFormats
 {
 
@@ -35,9 +38,7 @@ namespace FileFormats
    *  This class handles MBTILES and allows easy access to the data.
    */
 
-#warning Should inherit from "DataFileAbstract"
-
-  class MBTILES
+  class MBTILES : public DataFileAbstract
   {
 
   public:
@@ -61,7 +62,7 @@ namespace FileFormats
      *
      * @param fileName Name of the MBTILES file
      */
-    MBTILES(const QString &fileName);
+    MBTILES(const QString& fileName);
 
     /*! \brief Standard destructor */
     ~MBTILES();

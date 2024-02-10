@@ -29,22 +29,28 @@
 FileFormats::MBTILES::MBTILES(const QString& fileName)
     : m_fileName(fileName)
 {
-    m_file = FileFormats::DataFileAbstract::openFileURL(fileName);
+    m_file = openFileURL(fileName);
 
     m_databaseConnectionName = QStringLiteral("GeoMaps::MBTILES::format %1,%2").arg(fileName).arg(QRandomGenerator::global()->generate());
     auto m_dataBase = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), m_databaseConnectionName);
     m_dataBase.setDatabaseName(m_file->fileName());
-    m_dataBase.open();
+    if (!m_dataBase.open())
+    {
+        setError(QObject::tr("Unable to open database connection to MBTILES file.", "FileFormats::MBTILES"));
+        return;
+    }
 
     QSqlQuery query(m_dataBase);
-    if (query.exec(QStringLiteral("select name, value from metadata;")))
+    if (!query.exec(QStringLiteral("select name, value from metadata;")))
     {
-        while(query.next())
-        {
-            QString const key = query.value(0).toString();
-            QString const value = query.value(1).toString();
-            m_metadata.insert(key, value);
-        }
+        setError(QObject::tr("Unable to read metadata table from MBTILES file.", "FileFormats::MBTILES"));
+        return;
+    }
+    while(query.next())
+    {
+        QString const key = query.value(0).toString();
+        QString const value = query.value(1).toString();
+        m_metadata.insert(key, value);
     }
 
     // If the metadata does not contain a minzoom entry, then generate one by looking at the

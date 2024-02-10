@@ -76,6 +76,10 @@
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
     <string>Navigation App needs Location</string>
 
+    <key>NSCameraUsageDescription</key>
+    <string>Enroute does not use the camera</string>
+
+
     <key>LSSupportsOpeningDocumentsInPlace</key>
     <false />
 

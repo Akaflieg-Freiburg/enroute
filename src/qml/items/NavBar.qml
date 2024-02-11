@@ -62,6 +62,13 @@ Rectangle {
             Layout.preferredWidth: m_implicitWidth
             property real m_implicitWidth: Math.max(trueAltitude_1.contentWidth, trueAltitude_2.contentWidth)
 
+
+            TapHandler {
+                onTapped: {
+                    GlobalSettings.showAltitudeAGL = !GlobalSettings.showAltitudeAGL
+                }
+            }
+
             Label {
                 id: trueAltitude_1
 

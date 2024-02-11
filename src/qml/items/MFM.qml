@@ -529,11 +529,13 @@ Item {
             delegate: waypointComponent
         }
 
+        /*
         MapItemView {
             id: waypointLibrary
             model: WaypointLibrary.waypoints
             delegate: waypointComponent
         }
+        */
 
         MapItemView {
             id: notams

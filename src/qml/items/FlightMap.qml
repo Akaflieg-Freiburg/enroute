@@ -22,6 +22,9 @@ import QtLocation
 import QtQuick
 import QtQuick.Controls
 
+import QtLocation.MapLibre 3.0
+import akaflieg_freiburg.enroute
+
 Map {
     id: flightMap
 
@@ -53,5 +56,44 @@ Map {
 
     maximumZoomLevel: 13.5
     minimumZoomLevel: 7.0001  // When setting 7 precisely, MapBox is looking for tiles of zoom 6, which we do not have…
+
+
+    MapLibre.style: Style {
+        id: style
+
+        SourceParameter {
+            id: waypointLib
+
+            styleId: "waypointlib"
+            type: "geojson"
+            property string data: WaypointLibrary.toGeoJSON()
+        }
+
+        LayerParameter {
+            id: waypointLibParam
+
+            styleId: "waypoint-layer"
+
+            type: "symbol"
+            property string source: "waypointlib"
+
+            layout: {
+                "icon-image": '"dot_9"',
+                "text-field": '["get", "NAM"]',
+                "text-size": 12,
+                "text-anchor": "top",
+                "text-offset": [0, 1],
+                "text-optional": true,
+                "icon-image": ["get", "CAT"]
+            }
+
+            paint: {
+                "text-color": "black",
+                "text-halo-width": 2,
+                "text-halo-color": "white"
+            }
+        }
+
+    }
 
 } // End of FlightMap

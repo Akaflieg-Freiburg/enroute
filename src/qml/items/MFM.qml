@@ -760,7 +760,8 @@ Item {
         onClicked: {
             centerBindingAnimation.omitAnimationforZoom()
             PlatformAdaptor.vibrateBrief()
-            flightMap.zoomLevel -= 1
+            var newZoomLevel = Math.max(flightMap.zoomLevel - 1, flightMap.minimumZoomLevel)
+            flightMap.zoomLevel = newZoomLevel
         }
     }
 

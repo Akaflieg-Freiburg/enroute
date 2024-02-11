@@ -33,6 +33,7 @@ Page {
 
     required property var dialogLoader
     required property var stackView
+    property bool isIos: Qt.platform.os === "ios"
 
     title: qsTr("Map and Data Library")
 
@@ -141,6 +142,8 @@ Page {
                     id: menuImport
 
                     text: qsTr("Import…")
+
+                    enabled: !isIos
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()

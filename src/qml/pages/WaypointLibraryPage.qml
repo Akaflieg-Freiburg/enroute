@@ -95,6 +95,7 @@ Page {
                     id: menuImport
 
                     text: qsTr("Import…")
+                    enabled: !isIos
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()

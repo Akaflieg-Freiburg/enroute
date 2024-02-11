@@ -78,13 +78,12 @@ Map {
             property string source: "waypointlib"
 
             layout: {
-                "icon-image": '"dot_9"',
+                "icon-image": '["get", "CAT"]',
                 "text-field": '["get", "NAM"]',
                 "text-size": 12,
                 "text-anchor": "top",
                 "text-offset": [0, 1],
                 "text-optional": true,
-                "icon-image": ["get", "CAT"]
             }
 
             paint: {

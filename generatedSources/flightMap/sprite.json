@@ -132,6 +132,20 @@
         "x": 44,
         "y": 105
     },
+    "WP": {
+        "height": 20,
+        "pixelRatio": 1,
+        "width": 20,
+        "x": 90,
+        "y": 105
+    },
+    "WP-map": {
+        "height": 20,
+        "pixelRatio": 1,
+        "width": 20,
+        "x": 70,
+        "y": 105
+    },
     "default_1": {
         "height": 18,
         "pixelRatio": 1,

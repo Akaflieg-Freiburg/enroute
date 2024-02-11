@@ -50,6 +50,8 @@ add_custom_target(flightMapSprites
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VORDME.svg -o DVOR-DME.png -w 22
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VORTAC.svg -o VORTAC.png -w 26
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VORTAC.svg -o DVORTAC.png -w 26
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/WP.svg -o WP.png -w 20
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/WP-map.svg -o WP-map.png -w 20
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/3rdParty/osm-liberty/svgs/svgs_iconset/triangle_11.svg -o triangle_11.png -w 15
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/3rdParty/osm-liberty/svgs/svgs_not_in_iconset/default_1.svg -o default_1.png -h 18
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/3rdParty/osm-liberty/svgs/svgs_not_in_iconset/default_2.svg -o default_2.png -h 18
@@ -83,6 +85,8 @@ add_custom_target(flightMapSprites
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VORDME.svg -o DVOR-DME.png -w 44
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VORTAC.svg -o VORTAC.png -w 52
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/VORTAC.svg -o DVORTAC.png -w 52
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/WP.svg -o WP.png -w 40
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/WP-map.svg -o WP-map.png -w 40
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/3rdParty/osm-liberty/svgs/svgs_iconset/triangle_11.svg -o triangle_11.png -w 30
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/3rdParty/osm-liberty/svgs/svgs_not_in_iconset/default_1.svg -o default_1.png -h 36
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/3rdParty/osm-liberty/svgs/svgs_not_in_iconset/default_2.svg -o default_2.png -h 36

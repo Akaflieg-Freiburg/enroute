@@ -66,7 +66,7 @@ Map {
 
             styleId: "waypointlib"
             type: "geojson"
-            property string data: WaypointLibrary.toGeoJSON()
+            property string data: WaypointLibrary.GeoJSON
         }
 
         LayerParameter {

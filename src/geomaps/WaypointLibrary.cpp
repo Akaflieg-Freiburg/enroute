@@ -37,6 +37,33 @@ GeoMaps::WaypointLibrary::WaypointLibrary(QObject *parent)
     { (void)save(); });
 }
 
+
+//
+// Getter Methods
+//
+
+QByteArray GeoMaps::WaypointLibrary::GeoJSON() const
+{
+    QJsonArray waypointArray;
+    foreach (const auto& waypoint, m_waypoints)
+    {
+        if (waypoint.isValid())
+        {
+            waypointArray.append(waypoint.toJSON());
+        }
+    }
+
+    QJsonObject jsonObj;
+    jsonObj.insert(QStringLiteral("type"), "FeatureCollection");
+    jsonObj.insert(QStringLiteral("enroute"), GeoMaps::GeoJSON::indicatorWaypointLibrary());
+    jsonObj.insert(QStringLiteral("features"), waypointArray);
+
+    QJsonDocument doc;
+    doc.setObject(jsonObj);
+    return doc.toJson();
+}
+
+
 //
 // Methods
 //
@@ -225,7 +252,7 @@ auto GeoMaps::WaypointLibrary::save(QString fileName) const -> QString
     {
         return tr("Unable to open the file '%1' for writing.").arg(fileName);
     }
-    auto numBytesWritten = file.write(toGeoJSON());
+    auto numBytesWritten = file.write(GeoJSON());
     if (numBytesWritten == -1)
     {
         file.close();
@@ -234,27 +261,6 @@ auto GeoMaps::WaypointLibrary::save(QString fileName) const -> QString
     }
     file.close();
     return {};
-}
-
-auto GeoMaps::WaypointLibrary::toGeoJSON() const -> QByteArray
-{
-    QJsonArray waypointArray;
-    foreach (const auto& waypoint, m_waypoints)
-    {
-        if (waypoint.isValid())
-        {
-            waypointArray.append(waypoint.toJSON());
-        }
-    }
-
-    QJsonObject jsonObj;
-    jsonObj.insert(QStringLiteral("type"), "FeatureCollection");
-    jsonObj.insert(QStringLiteral("enroute"), GeoMaps::GeoJSON::indicatorWaypointLibrary());
-    jsonObj.insert(QStringLiteral("features"), waypointArray);
-
-    QJsonDocument doc;
-    doc.setObject(jsonObj);
-    return doc.toJson();
 }
 
 auto GeoMaps::WaypointLibrary::toGpx() const -> QByteArray

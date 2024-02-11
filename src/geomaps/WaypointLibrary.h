@@ -72,6 +72,13 @@ namespace GeoMaps
          */
         Q_PROPERTY(QList<GeoMaps::Waypoint> waypoints READ waypoints NOTIFY waypointsChanged)
 
+        /*! \brief List of waypoints
+         *
+         *  This property holds the list of waypoints, in alphabetical order.
+         */
+        Q_PROPERTY(QByteArray GeoJSON READ GeoJSON NOTIFY waypointsChanged)
+
+
         //
         // Getter Methods
         //
@@ -84,6 +91,13 @@ namespace GeoMaps
         {
             return m_waypoints;
         }
+
+        /*! \brief Getter function for property with the same name
+         *
+         * @returns Property GeoJSON
+         */
+        [[nodiscard]] QByteArray GeoJSON() const;
+
 
         //
         // Methods
@@ -197,16 +211,6 @@ namespace GeoMaps
          * error message otherwise.
          */
         [[nodiscard]] Q_INVOKABLE QString save(QString fileName = {}) const;
-
-        /*! \brief Serialize into GeoJSON document
-         *
-         * Serializes the library to as GeoJSON file. The resulting file contains a
-         * FeatureArray, where each member is of the form described in the
-         * documentation of the method GeoMaps::Waypoint::toJSON()
-         *
-         * @returns GeoJSON data
-         */
-        [[nodiscard]] Q_INVOKABLE QByteArray toGeoJSON() const;
 
         /*! \brief Serialize into GPX document
          *

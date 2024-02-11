@@ -140,13 +140,13 @@ Page {
                             PlatformAdaptor.vibrateBrief()
                             highlighted = false
                             parent.highlighted = false
-                            var errorString = FileExchange.shareContent(WaypointLibrary.toGeoJSON(), "application/geo+json", qsTr("Waypoint Library"))
+                            var errorString = FileExchange.shareContent(WaypointLibrary.GeoJSON, "application/geo+json", qsTr("Waypoint Library"))
                             if (errorString === "abort") {
                                 toast.doToast(qsTr("Aborted"))
                                 return
                             }
                             if (errorString !== "") {
-                                shareErrorDialogLabel.text = errorString
+                                shareErrorDialog.text = errorString
                                 shareErrorDialog.open()
                                 return
                             }
@@ -170,7 +170,7 @@ Page {
                                 return
                             }
                             if (errorString !== "") {
-                                shareErrorDialogLabel.text = errorString
+                                shareErrorDialog.text = errorString
                                 shareErrorDialog.open()
                                 return
                             }
@@ -194,7 +194,7 @@ Page {
                             highlighted = false
                             parent.highlighted = false
 
-                            var errorString = FileExchange.viewContent(WaypointLibrary.toGeoJSON(), "application/geo+json", "WaypointLibrary-%1.geojson")
+                            var errorString = FileExchange.viewContent(WaypointLibrary.GeoJSON, "application/geo+json", "WaypointLibrary-%1.geojson")
                             if (errorString !== "") {
                                 shareErrorDialog.text = errorString
                                 shareErrorDialog.open()

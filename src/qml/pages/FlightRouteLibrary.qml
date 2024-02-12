@@ -73,6 +73,8 @@ Page {
         ToolButton {
             id: headerMenuToolButton
 
+            visible: !isIos
+
             anchors.verticalCenter: parent.verticalCenter
 
             anchors.right: parent.right

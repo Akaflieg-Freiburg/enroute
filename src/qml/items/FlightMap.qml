@@ -61,33 +61,36 @@ Map {
     MapLibre.style: Style {
         id: style
 
-        SourceParameter {
-            id: waypointLib
-
-            styleId: "waypointlib"
-            type: "geojson"
-            property string data: WaypointLibrary.GeoJSON
-        }
 
         SourceParameter {
             id: approachChart
 
             styleId: "vac"
-            type: "raster"
+            type: "image"
             property string url: "https://cplx.vm.uni-freiburg.de/storage/users-per-day.png"
+            /*      property var coordinates: [
+                [-80.425, 46.437],
+                [-71.516, 46.437],
+                [-71.516, 37.936],
+                [-80.425, 37.936]
+            ]*/
             property var coordinates: [ [7, 48], [8, 48], [8, 47], [7, 47] ]
         }
 
         LayerParameter {
             id: approachChartLayer
 
-            styleId: "apch"
+            styleId: "vacLayer"
             type: "raster"
             property string source: "vac"
+      }
 
-            layout: {
-                "visibility": "visible"
-            }
+        SourceParameter {
+            id: waypointLib
+
+            styleId: "waypointlib"
+            type: "geojson"
+            property string data: WaypointLibrary.GeoJSON
         }
 
         LayerParameter {

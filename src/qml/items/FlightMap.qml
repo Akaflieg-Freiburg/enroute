@@ -69,6 +69,27 @@ Map {
             property string data: WaypointLibrary.GeoJSON
         }
 
+        SourceParameter {
+            id: approachChart
+
+            styleId: "vac"
+            type: "raster"
+            property string url: "https://cplx.vm.uni-freiburg.de/storage/users-per-day.png"
+            property var coordinates: [ [7, 48], [8, 48], [8, 47], [7, 47] ]
+        }
+
+        LayerParameter {
+            id: approachChartLayer
+
+            styleId: "apch"
+            type: "raster"
+            property string source: "vac"
+
+            layout: {
+                "visibility": "visible"
+            }
+        }
+
         LayerParameter {
             id: waypointLibParam
 

@@ -75,7 +75,7 @@ auto Traffic::TrafficDataSource_File::containsFLARMSimulationData(const QString&
     // "851002 $PGRMZ,4921,F,2*04"
     // "851342 $PFLAA,0,2205,-598,-71,1,AA123F,180,,0,1.5,1*24"
     //
-    QRegExp regExp(QString::fromLatin1("\\d* .*\\*[0-9A-F][0-9A-F]"));
+    QRegExp const regExp(QString::fromLatin1("\\d* .*\\*[0-9A-F][0-9A-F]"));
 
     inStream.readLine();
     for(int i=0;i<10;i++) {

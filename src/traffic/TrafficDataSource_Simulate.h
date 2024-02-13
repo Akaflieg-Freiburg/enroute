@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -146,6 +146,7 @@ private slots:
     void sendSimulatorData();
 
 private:
+    Q_DISABLE_COPY_MOVE(TrafficDataSource_Simulate)
 
     // Simulator related members
     QTimer simulatorTimer;

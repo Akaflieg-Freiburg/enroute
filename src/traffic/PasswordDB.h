@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021--2023 by Stefan Kebekus                            *
+ *   Copyright (C) 2021--2024 by Stefan Kebekus                            *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -139,6 +139,8 @@ signals:
     void emptyChanged();
 
 private:
+    Q_DISABLE_COPY_MOVE(PasswordDB)
+
     // Update the property 'empty' and emit the notifier signal, if appropriate
     void updateEmpty();
 

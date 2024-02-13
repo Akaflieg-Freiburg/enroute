@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -126,6 +126,8 @@ protected:
     void updateIcon();
 
 private:
+    Q_DISABLE_COPY_MOVE(TrafficFactor_WithPosition)
+
     // Setter function for the property valid. Implementors of this class must bind this to the
     // notifier signals of all the properties that validity depends on.
     void updateValid() override;

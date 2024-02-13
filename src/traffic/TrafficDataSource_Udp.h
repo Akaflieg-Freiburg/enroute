@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -87,6 +87,8 @@ private slots:
     void onReadyRead();
 
 private:
+    Q_DISABLE_COPY_MOVE(TrafficDataSource_Udp)
+
     QPointer<QUdpSocket> m_socket;
     quint16 m_port;
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -378,6 +378,8 @@ protected:
     void setTrafficReceiverSelfTestError(const QString& newErrorString);
 
 private:
+    Q_DISABLE_COPY_MOVE(TrafficDataSource_Abstract)
+
     // Property caches
     QString m_connectivityStatus {};
     QString m_errorString {};

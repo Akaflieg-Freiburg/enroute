@@ -74,7 +74,7 @@ auto pInfoFromOwnshipReport(const QByteArray &decodedData) -> QGeoPositionInfo
     if (laInt > 8388607) {
         laInt -= 16777216;
     }
-    double lat = (180.0/0x800000)*laInt;
+    double const lat = (180.0 / 0x800000) * laInt;
 
     // Find longitude
     auto ln0 = static_cast<quint8>(decodedData.at(7));
@@ -84,10 +84,10 @@ auto pInfoFromOwnshipReport(const QByteArray &decodedData) -> QGeoPositionInfo
     if (lnInt > 8388607) {
         lnInt -= 16777216;
     }
-    double lon = (180.0/0x800000)*lnInt;
+    double const lon = (180.0 / 0x800000) * lnInt;
 
     // Construct coordinate, generate position info
-    QGeoCoordinate coordinate(lat, lon);
+    QGeoCoordinate const coordinate(lat, lon);
     if (!coordinate.isValid()) {
         return {};
     }
@@ -136,16 +136,16 @@ auto pInfoFromOwnshipReport(const QByteArray &decodedData) -> QGeoPositionInfo
     // Find horizontal speed if available
     auto hh0 = static_cast<quint8>(decodedData.at(13));
     auto hh1 = static_cast<quint8>(decodedData.at(14));
-    quint32 hhTmp = (hh0 << 4) + (hh1 >> 4);
+    quint32 const hhTmp = (hh0 << 4) + (hh1 >> 4);
     if (hhTmp != 0xFFF) {
-        Units::Speed hSpeed = Units::Speed::fromKN(hhTmp);
+        Units::Speed const hSpeed = Units::Speed::fromKN(hhTmp);
         pInfo.setAttribute(QGeoPositionInfo::GroundSpeed, hSpeed.toMPS() );
     }
 
     // Find vertical speed if available
     auto vv0 = static_cast<quint8>(decodedData.at(14)) & 0x0FU;
     auto vv1 = static_cast<quint8>(decodedData.at(15));
-    qint32 vvTmp = (vv0 << 8) + vv1;
+    qint32 const vvTmp = (vv0 << 8) + vv1;
     if (vvTmp != 0x800) {
         Units::Speed vSpeed;
         if (vvTmp < 0x800) {
@@ -278,7 +278,7 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
         // Find pressure altitude and update information if need be
         auto dd0 = static_cast<quint8>(message.at(10));
         auto dd1 = static_cast<quint8>(message.at(11));
-        quint32 ddTmp = (dd0 << 4) + (dd1 >> 4);
+        quint32 const ddTmp = (dd0 << 4) + (dd1 >> 4);
         if (ddTmp != 0xFFF) {
             m_pressureAltitude = Units::Distance::fromFT(25.0*ddTmp - 1000.0);
             m_pressureAltitudeTimer.start();
@@ -378,7 +378,7 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
         if (m_pressureAltitudeTimer.isActive()) {
             auto dd0 = static_cast<quint8>(message.at(10));
             auto dd1 = static_cast<quint8>(message.at(11));
-            quint32 ddTmp = (dd0 << 4) + (dd1 >> 4);
+            quint32 const ddTmp = (dd0 << 4) + (dd1 >> 4);
             if (ddTmp != 0xFFF) {
                 auto trafficPressureAltitude = Units::Distance::fromFT(25.0*ddTmp - 1000.0);
                 vDist = trafficPressureAltitude - m_pressureAltitude;

@@ -133,9 +133,9 @@ auto Traffic::FlarmnetDB::getRegistrationFromFile(const QString& key) -> QString
     dataFile.readLine();
 
     // Now to a binary search in the file
-    qint64 lineSize   = 24;
-    qint64 firstEntry = dataFile.pos();
-    qint64 numEntries = (dataFile.size()-firstEntry)/lineSize;
+    qint64 const lineSize = 24;
+    qint64 const firstEntry = dataFile.pos();
+    qint64 const numEntries = (dataFile.size() - firstEntry) / lineSize;
 
     auto getKey = [firstEntry, lineSize](QFile& dataFile, qint64 entry) {
         dataFile.seek(firstEntry + entry*lineSize);
@@ -157,7 +157,7 @@ auto Traffic::FlarmnetDB::getRegistrationFromFile(const QString& key) -> QString
             auto value = getVal(dataFile, endIndex);
             return value;
         }
-        qint64 midIndex = (startIndex + endIndex)/2;
+        qint64 const midIndex = (startIndex + endIndex) / 2;
         if (midIndex == startIndex) {
             return {};
         }

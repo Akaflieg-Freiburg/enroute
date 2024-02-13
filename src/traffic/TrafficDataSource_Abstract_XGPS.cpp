@@ -34,31 +34,30 @@ void Traffic::TrafficDataSource_Abstract::processXGPSString(const QByteArray& da
 
     // Ownship report, serves also as heartbeat message
     if (data.startsWith("XGPS")) {
-
-        QString str = QString::fromLatin1(data);
+        QString const str = QString::fromLatin1(data);
         QStringList list = str.split(u',');
         if (list.size() != 6) {
             return;
         }
 
         bool ok = false;
-        double lon = list[1].toDouble(&ok);
+        double const lon = list[1].toDouble(&ok);
         if (!ok) {
             return;
         }
-        double lat = list[2].toDouble(&ok);
+        double const lat = list[2].toDouble(&ok);
         if (!ok) {
             return;
         }
-        double alt = list[3].toDouble(&ok);
+        double const alt = list[3].toDouble(&ok);
         if (!ok) {
             return;
         }
-        double tt = list[4].toDouble(&ok);
+        double const tt = list[4].toDouble(&ok);
         if (!ok) {
             return;
         }
-        double gs = list[5].toDouble(&ok);
+        double const gs = list[5].toDouble(&ok);
         if (!ok) {
             return;
         }
@@ -79,20 +78,19 @@ void Traffic::TrafficDataSource_Abstract::processXGPSString(const QByteArray& da
 
     // Traffic report
     if (data.startsWith("XTRA")) {
-
-        QString str = QString::fromLatin1(data);
+        QString const str = QString::fromLatin1(data);
         QStringList list = str.split(u',');
         if (list.size() != 10) {
             return;
         }
 
         bool ok = false;
-        QString targetID = list[1];
-        double lat = list[2].toDouble(&ok);
+        QString const targetID = list[1];
+        double const lat = list[2].toDouble(&ok);
         if (!ok) {
             return;
         }
-        double lon = list[3].toDouble(&ok);
+        double const lon = list[3].toDouble(&ok);
         if (!ok) {
             return;
         }
@@ -104,7 +102,7 @@ void Traffic::TrafficDataSource_Abstract::processXGPSString(const QByteArray& da
         if (!ok) {
             return;
         }
-        double tt = list[7].toDouble(&ok);
+        double const tt = list[7].toDouble(&ok);
         if (!ok) {
             return;
         }

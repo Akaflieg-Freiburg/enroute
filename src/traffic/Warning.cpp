@@ -128,7 +128,8 @@ auto Traffic::Warning::description() const -> QString
 
     // Vertical distance
     if (m_vDist.isFinite()) {
-        QString vDistString = GlobalObject::navigator()->aircraft().verticalDistanceToString(m_vDist, true);
+        QString const vDistString
+            = GlobalObject::navigator()->aircraft().verticalDistanceToString(m_vDist, true);
 
         if (qAbs(m_vDist.toFeet()) < 100) {
             result << QCoreApplication::translate("Traffic::Warning", "Same altitude");

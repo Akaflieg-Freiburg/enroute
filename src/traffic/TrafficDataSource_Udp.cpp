@@ -103,7 +103,7 @@ void Traffic::TrafficDataSource_Udp::onReadyRead()
     // Read datagrams
     while (m_socket->hasPendingDatagrams())
     {
-        QByteArray data = m_socket->receiveDatagram().data();
+        QByteArray const data = m_socket->receiveDatagram().data();
 
         // Return immediately if the datagram has already been received.
         auto currentDatagramHash = qHash(data);

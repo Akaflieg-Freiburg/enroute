@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -36,7 +36,7 @@ using namespace std::chrono_literals;
 Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning::PositionInfoSource_Abstract(parent) {
 
     // Create traffic objects
-    int numTrafficObjects = 20;
+    const int numTrafficObjects = 20;
     m_trafficObjects.reserve(numTrafficObjects);
     for(int i = 0; i<numTrafficObjects; i++)
     {
@@ -60,9 +60,10 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
     foreFlightBroadcastTimer.start();
 
     // Real data sources in order of preference, preferred sources first
-    addDataSource( new Traffic::TrafficDataSource_Tcp(QStringLiteral("192.168.1.1"), 2000, this));
     addDataSource( new Traffic::TrafficDataSource_Tcp(QStringLiteral("10.10.10.10"), 2000, this));
+    addDataSource( new Traffic::TrafficDataSource_Tcp(QStringLiteral("192.168.1.1"), 2000, this));
     addDataSource( new Traffic::TrafficDataSource_Tcp(QStringLiteral("192.168.10.1"), 2000, this) );
+    addDataSource( new Traffic::TrafficDataSource_Tcp(QStringLiteral("192.168.42.1"), 2000, this) );
     addDataSource( new Traffic::TrafficDataSource_Udp(4000, this) );
     addDataSource( new Traffic::TrafficDataSource_Udp(49002, this));
 
@@ -103,7 +104,6 @@ void Traffic::TrafficDataProvider::clearDataSources()
 
 void Traffic::TrafficDataProvider::addDataSource(Traffic::TrafficDataSource_Abstract* source)
 {
-
     Q_ASSERT( source != nullptr );
 
     source->setParent(this);

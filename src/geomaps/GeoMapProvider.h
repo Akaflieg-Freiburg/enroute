@@ -100,6 +100,9 @@ public:
     /*! \brief Current approach chart base name */
     Q_PROPERTY(QString approachChartBaseName READ approachChartBaseName NOTIFY approachChartChanged)
 
+    /*! \brief Current approach chart file name */
+    Q_PROPERTY(QGeoRectangle approachChartBox READ approachChartBox NOTIFY approachChartChanged)
+
     /*! \brief List of base map MBTILES */
     Q_PROPERTY(QList<QSharedPointer<FileFormats::MBTILES>> baseMapRasterTiles READ baseMapRasterTiles NOTIFY baseMapTilesChanged)
 
@@ -163,6 +166,15 @@ public:
     [[nodiscard]] QString approachChartBaseName() const
     {
         return  FileFormats::VAC::baseNameFromFileName(m_approachChartFileName);
+    }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property approachChartBox
+     */
+    [[nodiscard]] QGeoRectangle approachChartBox() const
+    {
+        return  FileFormats::VAC::bBoxFromFileName(m_approachChartFileName);
     }
 
     /*! \brief Getter function for the property with the same name

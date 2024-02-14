@@ -157,29 +157,6 @@ auto GeoMaps::GeoMapProvider::styleFileURL() -> QString
         data.replace("%URLT%", (_tileServer.serverUrl()+"/"+_currentTerrainMapPath).toLatin1());
         data.replace("%URL2%", _tileServer.serverUrl().toLatin1());
 
-        if (m_approachChartFileName.isEmpty())
-        {
-            data.replace("%APCHIMAGE%", (_tileServer.serverUrl()+"/icons/appIcon.png").toLatin1());
-            data.replace("%VISIBILITY", "none");
-            QGeoRectangle const bBox({7, 47}, {8, 46});
-            data.replace("%APCHLEFT%", "1");
-            data.replace("%APCHRIGHT%", "2");
-            data.replace("%APCHTOP%", "89");
-            data.replace("%APCHBOT%", "88");
-        }
-        else
-        {
-            auto topLeft = m_approachChartBBox.topLeft();
-            auto bottomRight = m_approachChartBBox.bottomRight();
-
-            data.replace("%APCHIMAGE%", "file://"+m_approachChartFileName.toLocal8Bit());
-            data.replace("%VISIBILITY", "visible");
-            data.replace("%APCHLEFT%", QString::number(topLeft.longitude()).toLocal8Bit());
-            data.replace("%APCHRIGHT%", QString::number(bottomRight.longitude()).toLocal8Bit());
-            data.replace("%APCHTOP%", QString::number(topLeft.latitude()).toLocal8Bit());
-            data.replace("%APCHBOT%", QString::number(bottomRight.latitude()).toLocal8Bit());
-        }
-
         m_styleFile = new QTemporaryFile(this);
         m_styleFile->open();
         m_styleFile->write(data);
@@ -214,8 +191,8 @@ void GeoMaps::GeoMapProvider::setApproachChart(const QString& apchChartName)
         }
     }
 
-    delete m_styleFile;
-    emit styleFileURLChanged();
+//    delete m_styleFile;
+//    emit styleFileURLChanged();
     emit approachChartChanged();
 }
 

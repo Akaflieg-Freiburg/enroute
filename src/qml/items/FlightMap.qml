@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 import QtLocation
+import QtQml
 import QtQuick
 import QtQuick.Controls
 
@@ -61,20 +62,47 @@ Map {
     MapLibre.style: Style {
         id: style
 
-
         SourceParameter {
             id: approachChart
 
             styleId: "vac"
             type: "image"
-            property string url: "https://cplx.vm.uni-freiburg.de/storage/users-per-day.png"
-            /*      property var coordinates: [
-                [-80.425, 46.437],
-                [-71.516, 46.437],
-                [-71.516, 37.936],
-                [-80.425, 37.936]
-            ]*/
-            property var coordinates: [ [7, 48], [8, 48], [8, 47], [7, 47] ]
+
+            property string url: {
+                GeoMapProvider.approachChart
+                console.log("url:" + GeoMapProvider.approachChart)
+
+                var bbox = GeoMapProvider.approachChartBox
+                if (!bbox.isValid)
+                    approachChart.coordinates = [ [7, 48], [8, 48], [8, 47], [7, 47] ]
+                else
+                    approachChart.coordinates = [[bbox.topLeft.longitude, bbox.topLeft.latitude],
+                                  [bbox.bottomRight.longitude, bbox.topLeft.latitude],
+                                  [bbox.bottomRight.longitude, bbox.bottomRight.latitude],
+                                  [bbox.topLeft.longitude, bbox.bottomRight.latitude]]
+
+                if (GeoMapProvider.approachChart === "")
+                    return "qrc:/icons/appIcon.png"
+                else
+                    return "file://" + GeoMapProvider.approachChart
+            }
+
+            property var coordinates: {
+                GeoMapProvider.approachChart
+                console.log("coordinate:" + GeoMapProvider.approachChart)
+
+                var bbox = GeoMapProvider.approachChartBox
+                if (!bbox.isValid)
+                    return [ [7, 48], [8, 48], [8, 47], [7, 47] ]
+                else
+                    return [[bbox.topLeft.longitude, bbox.topLeft.latitude],
+                                                 [bbox.bottomRight.longitude, bbox.topLeft.latitude],
+                                                 [bbox.bottomRight.longitude, bbox.bottomRight.latitude],
+                                                 [bbox.topLeft.longitude, bbox.bottomRight.latitude]]
+            }
+
+            onCoordinatesChanged: console.log(coordinates)
+
         }
 
         LayerParameter {
@@ -83,7 +111,11 @@ Map {
             styleId: "vacLayer"
             type: "raster"
             property string source: "vac"
-      }
+
+            layout: {
+                "visibility": GeoMapProvider.approachChart === "" ? 'none' : 'visible'
+            }
+        }
 
         SourceParameter {
             id: waypointLib

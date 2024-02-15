@@ -85,10 +85,16 @@ Page {
     }
 
     Connections {
-        // For unclear reasons, the line "target: GeoMapProvider" freezes the application
-        // target: GeoMapProvider
-        target: global.geoMapProvider()
+        target: GeoMapProvider
 
+        // NOTE: At of 15Feb24, the FlightMap does not react to changes of the property approachChart.coordinates
+        // As a temporary workaround, we reload the map in full
+        // whenever the approach chart changes.
+        function onApproachChartChanged() {
+            mapLoader.active = false
+            mapLoader.source = "../items/MFM.qml"
+            mapLoader.active = true
+        }
         function onStyleFileURLChanged() {
             mapLoader.active = false
             mapLoader.source = "../items/MFM.qml"

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -69,39 +69,28 @@ Map {
             type: "image"
 
             property string url: {
-                GeoMapProvider.approachChart
-                console.log("url:" + GeoMapProvider.approachChart)
-
-                var bbox = GeoMapProvider.approachChartBox
-                if (!bbox.isValid)
-                    approachChart.coordinates = [ [7, 48], [8, 48], [8, 47], [7, 47] ]
-                else
-                    approachChart.coordinates = [[bbox.topLeft.longitude, bbox.topLeft.latitude],
-                                  [bbox.bottomRight.longitude, bbox.topLeft.latitude],
-                                  [bbox.bottomRight.longitude, bbox.bottomRight.latitude],
-                                  [bbox.topLeft.longitude, bbox.bottomRight.latitude]]
-
                 if (GeoMapProvider.approachChart === "")
                     return "qrc:/icons/appIcon.png"
-                else
-                    return "file://" + GeoMapProvider.approachChart
+                return "file://" + GeoMapProvider.approachChart
             }
 
+            // NOTE: At of 15Feb24, the FlightMap does not react to changes of this property.
+            // As a temporary workaround, MapPage.qml will reload the map in full
+            // whenever the approach chart changes.
             property var coordinates: {
-                GeoMapProvider.approachChart
-                console.log("coordinate:" + GeoMapProvider.approachChart)
-
-                var bbox = GeoMapProvider.approachChartBox
-                if (!bbox.isValid)
-                    return [ [7, 48], [8, 48], [8, 47], [7, 47] ]
-                else
+                var bbox = GeoMapProvider.approachChartBoundingBox
+                if (bbox.isValid)
                     return [[bbox.topLeft.longitude, bbox.topLeft.latitude],
-                                                 [bbox.bottomRight.longitude, bbox.topLeft.latitude],
-                                                 [bbox.bottomRight.longitude, bbox.bottomRight.latitude],
-                                                 [bbox.topLeft.longitude, bbox.bottomRight.latitude]]
-            }
+                            [bbox.bottomRight.longitude, bbox.topLeft.latitude],
+                            [bbox.bottomRight.longitude, bbox.bottomRight.latitude],
+                            [bbox.topLeft.longitude, bbox.bottomRight.latitude]]
 
-            onCoordinatesChanged: console.log(coordinates)
+                // Default bounding box, at a place where no-one will see it,
+                return [ [1, 87.001], [1.001, 87.001], [1.001, 87], [1, 87] ]
+
+                // Default bounding box for debugging purposes, south-west of Freiburg.
+                // return [ [7, 48], [8, 48], [8, 47], [7, 47] ]
+            }
 
         }
 

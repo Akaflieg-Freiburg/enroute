@@ -191,8 +191,6 @@ void GeoMaps::GeoMapProvider::setApproachChart(const QString& apchChartName)
         }
     }
 
-//    delete m_styleFile;
-//    emit styleFileURLChanged();
     emit approachChartChanged();
 }
 

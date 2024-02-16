@@ -67,9 +67,25 @@ QString FileFormats::TripKit::extract(const QString& directoryPath, qsizetype in
         return {};
     }
 
-    FileFormats::VAC vac(imageData, entry.topLeft, entry.topRight, entry.bottomLeft, entry.bottomRight);
-    vac.setBaseName(entry.name);
-    return vac.save(directoryPath);
+    auto newFileName = u"%1/%2-geo_%3_%4_%5_%6.%7"_qs
+                           .arg(directoryPath, entry.name)
+                           .arg(entry.topLeft.longitude())
+                           .arg(entry.topLeft.latitude())
+                           .arg(entry.bottomRight.longitude())
+                           .arg(entry.bottomRight.latitude())
+                           .arg(entry.ending);
+
+    QFile out(newFileName);
+    if (!out.open(QIODeviceBase::WriteOnly))
+    {
+        return {};
+    }
+    if (out.write(imageData) != imageData.size())
+    {
+        return {};
+    }
+    out.close();
+    return newFileName;
 }
 
 QString FileFormats::TripKit::readTripKitData()

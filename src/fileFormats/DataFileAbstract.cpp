@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2023 by Stefan Kebekus                                  *
+ *   Copyright (C) 2023-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,13 +24,13 @@
 
 QSharedPointer<QFile> FileFormats::DataFileAbstract::openFileURL(const QString& fileName)
 {
-    if (fileName.startsWith("file://"))
+    if (fileName.startsWith(u"file://"_qs))
     {
         auto* file = new QFile(fileName.mid(7));
         return QSharedPointer<QFile>(file);
     }
 
-    if (fileName.startsWith("content://"))
+    if (fileName.startsWith(u"content://"_qs))
     {
         auto* file = new QTemporaryFile();
         file->open();

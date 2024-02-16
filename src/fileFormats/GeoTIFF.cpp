@@ -281,7 +281,7 @@ void FileFormats::GeoTIFF::interpretGeoData()
     // Handle Tag 33922, name
     if (m_TIFFFields.contains(270))
     {
-        auto values = m_TIFFFields[270];
+        auto values = m_TIFFFields.value(270);
         if (values.isEmpty())
         {
             throw QObject::tr("No data for tag 270.", "FileFormats::GeoTIFF");
@@ -293,19 +293,19 @@ void FileFormats::GeoTIFF::interpretGeoData()
     {
         if (m_TIFFFields.contains(33922))
         {
-            auto values = m_TIFFFields[33922];
+            auto values = m_TIFFFields.value(33922);
             if (values.size() < 5)
             {
                 throw QObject::tr("Invalid data for tag 33922.", "FileFormats::GeoTIFF");
             }
 
             bool ok = false;
-            auto lat = m_TIFFFields[33922].at(4).toDouble(&ok);
+            auto lat = m_TIFFFields.value(33922).at(4).toDouble(&ok);
             if (!ok)
             {
                 throw QObject::tr("Invalid data for tag 33922.", "FileFormats::GeoTIFF");
             }
-            auto lon = m_TIFFFields[33922].at(3).toDouble(&ok);
+            auto lon = m_TIFFFields.value(33922).at(3).toDouble(&ok);
             if (!ok)
             {
                 throw QObject::tr("Invalid data for tag 33922.", "FileFormats::GeoTIFF");
@@ -330,7 +330,7 @@ void FileFormats::GeoTIFF::interpretGeoData()
     {
         if (m_TIFFFields.contains(33550))
         {
-            auto values = m_TIFFFields[33550];
+            auto values = m_TIFFFields.value(33550);
             if (values.size() < 2)
             {
                 throw QObject::tr("Invalid data for tag 33550.", "FileFormats::GeoTIFF");

@@ -20,7 +20,8 @@
 
 #pragma once
 
-#include "DataFileAbstract.h"
+#include "fileFormats/CSV.h"
+#include "fileFormats/DataFileAbstract.h"
 #include "geomaps/Waypoint.h"
 
 
@@ -56,6 +57,17 @@ namespace FileFormats
          *  @returns Waypoints specified in the CUP file
          */
         [[nodiscard]] QVector<GeoMaps::Waypoint> waypoints() const { return m_waypoints; }
+
+
+        //
+        // Static methods
+        //
+
+        /*! \brief Mime type for files that can be opened by this class
+         *
+         *  @returns Name of mime type
+         */
+        [[nodiscard]] static QStringList mimeTypes() { return FileFormats::CSV::mimeTypes(); }
 
     private:
         // Private helper functions

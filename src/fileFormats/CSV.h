@@ -55,6 +55,17 @@ namespace FileFormats
          */
         [[nodiscard]] QVector<QStringList> lines() const { return m_lines; }
 
+
+        //
+        // Static methods
+        //
+
+        /*! \brief Mime type for files that can be opened by this class
+         *
+         *  @returns Name of mime type
+         */
+        [[nodiscard]] static QStringList mimeTypes() { return {u"text/csv"_qs, u"text/plain"_qs}; }
+
     private:
         // Private helper functions
         static QStringList parseCSV(const QString& string);

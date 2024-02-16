@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2022 by Stefan Kebekus                                  *
+ *   Copyright (C) 2022-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -19,12 +19,11 @@
  ***************************************************************************/
 
 #include <QFile>
+#include <cmath>
 
 #include "fileFormats/CSV.h"
 #include "fileFormats/CUP.h"
 
-#include "fileFormats/DataFileAbstract.h"
-#include <cmath>
 
 //
 // Private helper functions
@@ -139,7 +138,7 @@ GeoMaps::Waypoint FileFormats::CUP::readWaypoint(const QStringList& fields)
     result.setName(name);
     if (!notes.isEmpty())
     {
-        result.setNotes(notes.join(" • "));
+        result.setNotes(notes.join(u" • "_qs));
     }
     return result;
 }

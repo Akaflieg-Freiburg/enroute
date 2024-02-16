@@ -114,10 +114,14 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     }
 
     // CUP file
-    if (FileFormats::CUP(myPath).isValid())
+    if (FileFormats::CUP::mimeTypes().contains(mimeType.name()))
     {
-        emit openFileRequest(path, {}, WaypointLibrary);
-        return;
+        FileFormats::CUP const cup(myPath);
+        if (cup.isValid())
+        {
+            emit openFileRequest(path, {}, WaypointLibrary);
+            return;
+        }
     }
 
     // VAC

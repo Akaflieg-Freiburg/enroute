@@ -7,7 +7,7 @@ on:
 jobs:
   build:
 
-    runs-on: macos-latext
+    runs-on: macos-latest
     
     steps:
     - name: Checkout Enroute

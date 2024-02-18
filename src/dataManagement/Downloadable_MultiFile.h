@@ -142,6 +142,15 @@ public:
      */
     Q_INVOKABLE void add(DataManagement::Downloadable_Abstract* map);
 
+    /*! \brief Add 'Downloadable_SingleFile's to this Downloadable_MultiFile
+     *
+     *  This method differs from add(DataManagement::Downloadable_Abstract* map) only in that
+     *  it adds several maps, but emits notifier signals only once.
+     *
+     *  @param maps Maps to be added
+     */
+    Q_INVOKABLE void add(const QVector<DataManagement::Downloadable_Abstract*>& maps);
+
     /*! \brief Removes all children */
     Q_INVOKABLE void clear();
 

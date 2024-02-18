@@ -255,6 +255,8 @@ QString DataManagement::DataManager::importTripKit(const QString& fileName)
     {
         return {};
     }
+
+    // Unpack the VACs into m_vacDirectory
     auto size = tripKit.numCharts();
     int successfulImports = 0;
     for(auto idx=0; idx<size; idx++)
@@ -262,16 +264,65 @@ QString DataManagement::DataManager::importTripKit(const QString& fileName)
         emit importTripKitStatus((double)idx/(double)size);
         QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
 
-        auto path = tripKit.extract(tmpDir.path(), idx);
+        auto path = tripKit.extract(m_vacDirectory, idx);
+#warning convert to webp, if not yet in webp format
         if (!path.isEmpty())
         {
-            if (importVAC(path, {}).isEmpty())
-            {
-                successfulImports++;
-            }
+            successfulImports++;
         }
     }
     emit importTripKitStatus(1.0);
+
+
+    // Setup approach charts
+    QStringList vacFileBaseNames;
+    foreach (auto downloadable, m_VAC.downloadables())
+    {
+        if (downloadable == nullptr)
+        {
+            continue;
+        }
+        vacFileBaseNames += downloadable->objectName();
+    }
+
+#warning Avoid duplicated code, this is copied from deferredInitialization
+    QStringList filesToDelete;
+    QDirIterator fileIterator(m_vacDirectory, QDir::Files);
+    QVector<DataManagement::Downloadable_Abstract*> newDownloadables;
+    while (fileIterator.hasNext())
+    {
+        fileIterator.next();
+        auto fileName = fileIterator.fileName();
+        auto idx = fileName.lastIndexOf(u"-geo_"_qs, -1);
+        auto bBox = FileFormats::VAC(fileName).bBox();
+
+        if ((!fileName.endsWith(u"jpeg"_qs)
+             && !fileName.endsWith(u"jpg"_qs)
+             && !fileName.endsWith(u"png"_qs)
+             && !fileName.endsWith(u"tif"_qs)
+             && !fileName.endsWith(u"tiff"_qs)
+             && !fileName.endsWith(u"webp"_qs)) ||
+            (idx == -1) ||
+            !bBox.isValid())
+        {
+            filesToDelete += fileIterator.filePath();
+            continue;
+        }
+
+        auto vacFileBaseName = fileName.left(idx);
+        if (!vacFileBaseNames.contains(vacFileBaseName))
+        {
+            auto* downloadable = new DataManagement::Downloadable_SingleFile({}, fileIterator.filePath(), bBox, this);
+            downloadable->setObjectName(fileName.left(idx));
+            connect(downloadable, &DataManagement::Downloadable_Abstract::hasFileChanged, downloadable, &QObject::deleteLater);
+            newDownloadables += downloadable;
+        }
+    }
+    foreach (auto fileToDelete, filesToDelete)
+    {
+        QFile::remove(fileToDelete);
+    }
+    m_VAC.add(newDownloadables);
 
     if (successfulImports == 0)
     {

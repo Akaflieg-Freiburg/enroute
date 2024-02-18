@@ -185,6 +185,92 @@ void DataManagement::Downloadable_MultiFile::add(DataManagement::Downloadable_Ab
 }
 
 
+void DataManagement::Downloadable_MultiFile::add(const QVector<DataManagement::Downloadable_Abstract*>& maps)
+{
+#warning avoid duplicated code!
+
+    bool mustEmit_DownloadablesChanged = false;
+    bool mustEmit_FilesChanged = false;
+
+    foreach(auto map, maps)
+    {
+        if (map == nullptr)
+        {
+            continue;
+        }
+        if (m_downloadables.contains(map))
+        {
+            continue;
+        }
+
+        setObjectName(map->objectName());
+        setSection(map->section());
+        m_boundingBox = map->boundingBox();
+
+        mustEmit_DownloadablesChanged = true;
+
+
+        m_downloadables.append(map);
+
+        if (map->hasFile())
+        {
+            mustEmit_FilesChanged = true;
+        }
+
+        // Wire up: These properties will always change if they change in one of the members. We can therefore
+        // directly connect the notifier signals of our new member to the notifier signals of this instance
+        connect(map, &DataManagement::Downloadable_Abstract::descriptionChanged, this, &DataManagement::Downloadable_Abstract::descriptionChanged, Qt::QueuedConnection);
+        connect(map, &DataManagement::Downloadable_Abstract::infoTextChanged, this, &DataManagement::Downloadable_MultiFile::infoTextChanged, Qt::QueuedConnection);
+
+        // Wire up: These properties might or might not change if they change in one of the members. We therefore
+        // connect the notifier signals of our new member to the slot updateMembers(), which re-evaluates the
+        // properties and emits notifier signals when appropriate.
+        connect(map, &DataManagement::Downloadable_Abstract::downloadingChanged, this, &DataManagement::Downloadable_MultiFile::evaluateDownloading, Qt::QueuedConnection);
+
+        connect(map, &DataManagement::Downloadable_Abstract::filesChanged, this, &DataManagement::Downloadable_MultiFile::evaluateFiles, Qt::QueuedConnection);
+        connect(map, &DataManagement::Downloadable_Abstract::hasFileChanged, this, &DataManagement::Downloadable_MultiFile::evaluateHasFile, Qt::QueuedConnection);
+        connect(map, &DataManagement::Downloadable_Abstract::remoteFileSizeChanged, this, &DataManagement::Downloadable_MultiFile::evaluateRemoteFileSize, Qt::QueuedConnection);
+#warning Does this belong here?
+        connect(this, &DataManagement::Downloadable_MultiFile::downloadingChanged, this, &DataManagement::Downloadable_MultiFile::evaluateUpdateSize, Qt::QueuedConnection);
+        connect(map, &DataManagement::Downloadable_Abstract::hasFileChanged, this, &DataManagement::Downloadable_MultiFile::evaluateUpdateSize, Qt::QueuedConnection);
+        connect(map, &DataManagement::Downloadable_Abstract::remoteFileSizeChanged, this, &DataManagement::Downloadable_MultiFile::evaluateUpdateSize, Qt::QueuedConnection);
+        connect(map, &DataManagement::Downloadable_Abstract::updateSizeChanged, this, &DataManagement::Downloadable_MultiFile::evaluateUpdateSize, Qt::QueuedConnection);
+
+        // Wire up: when the new member gets destroyed, we need to change all properties.
+        connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::descriptionChanged);
+        connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::downloadablesChanged);
+        connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::infoTextChanged);
+        connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::evaluateDownloading);
+        connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::evaluateFiles);
+        connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::evaluateHasFile);
+        connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::evaluateRemoteFileSize);
+        connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::evaluateUpdateSize);
+
+        // Wire up: directly forward error messages and file content changed signals
+        connect(map, &DataManagement::Downloadable_Abstract::error, this, &DataManagement::Downloadable_MultiFile::error);
+        connect(map, &DataManagement::Downloadable_Abstract::fileContentChanged, this, &DataManagement::Downloadable_MultiFile::fileContentChanged);
+    }
+
+    evaluateDownloading();
+    evaluateFiles();
+    evaluateHasFile();
+    evaluateRemoteFileSize();
+    evaluateUpdateSize();
+
+    if (mustEmit_DownloadablesChanged)
+    {
+        emit downloadablesChanged();
+    }
+
+    if (mustEmit_FilesChanged)
+    {
+        emit fileContentChanged();
+        emit filesChanged();
+    }
+
+}
+
+
 void DataManagement::Downloadable_MultiFile::clear()
 {
     if (m_downloadables.isEmpty())

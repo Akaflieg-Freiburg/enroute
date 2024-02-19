@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2022-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2022-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -199,6 +199,10 @@ private:
     void evaluateHasFile();
     void evaluateRemoteFileSize();
     void evaluateUpdateSize();
+
+    // Similar to 'add', but does not emit any notifier signals
+    // Returns 'true' if item has actually been added.
+    bool rawAdd(DataManagement::Downloadable_Abstract* map);
 
     bool m_downloading {false};
     QStringList m_files;

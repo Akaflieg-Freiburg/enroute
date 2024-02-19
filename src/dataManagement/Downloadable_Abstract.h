@@ -63,6 +63,9 @@ public:
      */
     explicit Downloadable_Abstract(QObject* parent = nullptr);
 
+    // standard destructor
+    ~Downloadable_Abstract() override = default;
+
 
 
     //
@@ -299,6 +302,7 @@ protected:
 
     // Property section
     QString m_section;
+
 private:
     Q_DISABLE_COPY_MOVE(Downloadable_Abstract)
 

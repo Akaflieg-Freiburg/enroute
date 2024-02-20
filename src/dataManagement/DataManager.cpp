@@ -38,6 +38,38 @@
 using namespace std::chrono_literals;
 
 
+// Helper method: delete emptry directories
+
+#include <QStack>
+
+#warning need to think about this!
+
+void deleteEmptyDirectories(const QString& path)
+{
+    QStack<QString> stack;
+    stack.push(path);
+
+    while (!stack.isEmpty()) {
+        const QString currentPath = stack.pop();
+        const QDir dir(currentPath);
+
+        if (dir.exists()) {
+            const QFileInfoList entries = dir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
+            for (const QFileInfo& entry : entries)
+            {
+                stack.push(entry.filePath());
+            }
+
+            if (dir.entryList(QDir::NoDotAndDotDot | QDir::AllEntries).isEmpty())
+            {
+                dir.rmdir(currentPath);
+            }
+        }
+    }
+}
+
+
+
 DataManagement::DataManager::DataManager(QObject* parent) : GlobalObject(parent)
 {
     // Delete funny files that might have made their way into our data directory
@@ -78,7 +110,6 @@ void DataManagement::DataManager::deferredInitialization()
 
 void DataManagement::DataManager::cleanDataDirectory()
 {
-
     QStringList misnamedFiles;
     QStringList unexpectedFiles;
     QDirIterator fileIterator(m_dataDirectory, QDir::Files, QDirIterator::Subdirectories);
@@ -115,23 +146,7 @@ void DataManagement::DataManager::cleanDataDirectory()
         QFile::remove(unexpectedFile);
 
     // delete all empty directories
-    bool didDelete = false;
-    do
-    {
-        didDelete = false;
-        QDirIterator dirIterator(m_dataDirectory, QDir::Dirs | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
-        while (dirIterator.hasNext())
-        {
-            dirIterator.next();
-
-            QDir dir(dirIterator.filePath());
-            if (dir.isEmpty())
-            {
-                dir.removeRecursively();
-                didDelete = true;
-            }
-        }
-    } while (didDelete);
+    deleteEmptyDirectories(m_dataDirectory);
 }
 
 

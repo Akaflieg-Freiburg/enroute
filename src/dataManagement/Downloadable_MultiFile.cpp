@@ -26,7 +26,7 @@
 DataManagement::Downloadable_MultiFile::Downloadable_MultiFile(DataManagement::Downloadable_MultiFile::UpdatePolicy updatePolicy, QObject* parent)
     : Downloadable_Abstract(parent), m_updatePolicy(updatePolicy)
 {
-    m_contentType = MapSet;
+    setContentType(MapSet);
 
     connect(this, &DataManagement::Downloadable_MultiFile::downloadingChanged, this, &DataManagement::Downloadable_MultiFile::evaluateUpdateSize, Qt::QueuedConnection);
 }
@@ -498,7 +498,7 @@ bool DataManagement::Downloadable_MultiFile::rawAdd(DataManagement::Downloadable
     // Copy downloadable metadata into this
     setObjectName(map->objectName());
     setSection(map->section());
-    m_boundingBox = map->boundingBox();
+    setBoundingBox(map->boundingBox());
 
     // Add downloadable
     m_downloadables.append(map);

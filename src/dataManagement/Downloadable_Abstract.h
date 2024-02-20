@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2022--2023 by Stefan Kebekus                            *
+ *   Copyright (C) 2022--2024 by Stefan Kebekus                            *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -72,11 +72,11 @@ public:
     // PROPERTIES
     //
 
-    /*! \brief Most probable content of file(s) managed by this object */
-    Q_PROPERTY(QGeoRectangle boundingBox READ boundingBox CONSTANT)
+    /*! \brief Geographic bounding box */
+    Q_PROPERTY(QGeoRectangle boundingBox READ boundingBox WRITE setBoundingBox NOTIFY boundingBoxChanged)
 
     /*! \brief Most probable content of file(s) managed by this object */
-    Q_PROPERTY(DataManagement::Downloadable_Abstract::ContentType contentType READ contentType CONSTANT)
+    Q_PROPERTY(DataManagement::Downloadable_Abstract::ContentType contentType READ contentType WRITE setContentType NOTIFY contentTypeChanged)
 
     /*! \brief Describe installed file(s)
      *
@@ -145,13 +145,13 @@ public:
      *
      *  @returns Property boundingBox
      */
-    [[nodiscard]] auto boundingBox() const -> QGeoRectangle {return m_boundingBox;}
+    [[nodiscard]] QGeoRectangle boundingBox() const {return m_boundingBox;}
 
     /*! \brief Getter method for the property with the same name
      *
      *  @returns Property contentType
      */
-    [[nodiscard]] auto contentType() const -> DataManagement::Downloadable_Abstract::ContentType {return m_contentType;}
+    [[nodiscard]] DataManagement::Downloadable_Abstract::ContentType contentType() const {return m_contentType;}
 
     /*! \brief Getter method for the property with the same name
      *
@@ -215,6 +215,18 @@ public:
 
     /*! \brief Setter function for the property with the same name
      *
+     * @param boundingBox Property boundingBox
+     */
+    void setBoundingBox(const QGeoRectangle& boundingBox);
+
+    /*! \brief Setter function for the property with the same name
+     *
+     * @param contentType Property contentType
+     */
+    void setContentType(DataManagement::Downloadable_Abstract::ContentType contentType);
+
+    /*! \brief Setter function for the property with the same name
+     *
      * @param sectionName Property section
      */
     void setSection(const QString& sectionName);
@@ -244,6 +256,12 @@ public:
     Q_INVOKABLE virtual void update() = 0;
 
 signals:
+    /*! \brief Notifier signal */
+    void boundingBoxChanged();
+
+    /*! \brief Notifier signal */
+    void contentTypeChanged();
+
     /*! \brief Notifier signal */
     void descriptionChanged();
 
@@ -293,7 +311,9 @@ signals:
     /*! \brief Notifier signal */
     void updateSizeChanged();
 
-protected:
+private:
+    Q_DISABLE_COPY_MOVE(Downloadable_Abstract)
+
     // Property contentType
     QGeoRectangle m_boundingBox;
 
@@ -302,9 +322,6 @@ protected:
 
     // Property section
     QString m_section;
-
-private:
-    Q_DISABLE_COPY_MOVE(Downloadable_Abstract)
 
     // Provisions to provide the signal localFileContentChanged_delayed
     void emitFileContentChanged_delayed();

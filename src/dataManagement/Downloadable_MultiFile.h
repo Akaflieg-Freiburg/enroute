@@ -126,6 +126,7 @@ public:
     [[nodiscard]] auto updateSize() -> Units::ByteSize override { return m_updateSize; }
 
 
+
     //
     // Methods
     //

@@ -397,6 +397,11 @@ private:
     // anymore, and has an invalid URL, it is then removed.
     void onItemFileChanged();
 
+    // This method goes through the VAC data directory. It removes files that should
+    // not be there, and adds all image files to m_VAC, taking care of entries that
+    // are already present in m_VAC.
+    void readVACDirectory();
+
     // This slot updates the DownloadableGroups as well as the propery
     // 'whatsNew', by reading the file 'maps.json' and by checking the data
     // directory for locally installed, unsupported files.

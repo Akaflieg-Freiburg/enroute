@@ -265,11 +265,27 @@ QString DataManagement::DataManager::importTripKit(const QString& fileName)
         QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
 
         auto path = tripKit.extract(m_vacDirectory, idx);
-#warning convert to webp, if not yet in webp format
-        if (!path.isEmpty())
+        if (path.isEmpty())
+        {
+            continue;
+        }
+
+        if (path.endsWith(u"webp"_qs))
         {
             successfulImports++;
+            continue;
         }
+
+        FileFormats::VAC vac(path);
+        auto newPath = vac.save(m_vacDirectory);
+        QFile::remove(path);
+
+        if (newPath.isEmpty())
+        {
+            continue;
+        }
+        successfulImports++;
+
     }
     emit importTripKitStatus(1.0);
 

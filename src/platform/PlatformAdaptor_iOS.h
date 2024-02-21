@@ -88,7 +88,10 @@ public:
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
     void vibrateLong() override;
 
-    /*! \brief Reimplements virtual method from PlatformAdaptor_Abstract */
+    /*! \brief Reimplements virtual method from PlatformAdaptor_Abstract
+     *
+     *  @returns A two-letter language code, as documented in PlatformAdaptor_Abstract
+     */
     QString language() override;
 
 #warning documentation

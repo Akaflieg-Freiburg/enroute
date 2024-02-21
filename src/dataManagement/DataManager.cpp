@@ -26,6 +26,7 @@
 #include <QJsonObject>
 #include <QLockFile>
 #include <QSettings>
+#include <QStack>
 #include <QTemporaryDir>
 
 #include "GlobalSettings.h"
@@ -36,38 +37,6 @@
 #include "geomaps/OpenAir.h"
 
 using namespace std::chrono_literals;
-
-
-// Helper method: delete emptry directories
-
-#include <QStack>
-
-#warning need to think about this!
-
-void deleteEmptyDirectories(const QString& path)
-{
-    QStack<QString> stack;
-    stack.push(path);
-
-    while (!stack.isEmpty()) {
-        const QString currentPath = stack.pop();
-        const QDir dir(currentPath);
-
-        if (dir.exists()) {
-            const QFileInfoList entries = dir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
-            for (const QFileInfo& entry : entries)
-            {
-                stack.push(entry.filePath());
-            }
-
-            if (dir.entryList(QDir::NoDotAndDotDot | QDir::AllEntries).isEmpty())
-            {
-                dir.rmdir(currentPath);
-            }
-        }
-    }
-}
-
 
 
 DataManagement::DataManager::DataManager(QObject* parent) : GlobalObject(parent)
@@ -141,12 +110,43 @@ void DataManagement::DataManager::cleanDataDirectory()
         }
     }
     foreach (auto misnamedFile, misnamedFiles)
+    {
         QFile::rename(misnamedFile, misnamedFile.section('.', 0, -2));
+    }
     foreach (auto unexpectedFile, unexpectedFiles)
+    {
         QFile::remove(unexpectedFile);
+    }
 
-    // delete all empty directories
-    deleteEmptyDirectories(m_dataDirectory);
+    // Recurse into m_dataDirectory and delete all empty (sub)directories.
+    // Also delete directories that became empty because
+    // some of its subdirectories got deleted in the process.
+    bool directoryDeleted = true;
+    while(directoryDeleted)
+    {
+        directoryDeleted = false;
+        QStack<QString> stack;
+        stack.push(m_dataDirectory);
+
+        while (!stack.isEmpty()) {
+            const QString currentPath = stack.pop();
+            const QDir dir(currentPath);
+
+            if (dir.exists()) {
+                const QFileInfoList entries = dir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
+                for (const QFileInfo& entry : entries)
+                {
+                    stack.push(entry.filePath());
+                }
+
+                if (dir.entryList(QDir::NoDotAndDotDot | QDir::AllEntries).isEmpty())
+                {
+                    dir.rmdir(currentPath);
+                    directoryDeleted = true;
+                }
+            }
+        }
+    }
 }
 
 

@@ -226,6 +226,13 @@ public class ShareActivity extends QtActivity {
      * in setUriReceived().
      */
     private void setUriReceived(Uri src) {
+        // Safety check
+        if (src == null)
+        {
+            Log.d(TAG, "setUriReceived called with argument=null");
+            return;
+        }
+
         String pth = src.getPath();
         String ending = null;
         int lastIndexOfDot = pth.lastIndexOf('.');

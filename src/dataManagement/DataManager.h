@@ -274,6 +274,19 @@ public:
     // Methods
     //
 
+    /*! \brief Delete VACs
+     *
+     * This method delete all VAC files and clear the VAC list. It is equivalent
+     * to calling
+     *
+     * VAC->deleteFiles();
+     * VAC->clear();
+     *
+     * Compared to calling these two methods, this one emits much fewer notifier
+     * signals and is therefore potentially much faster when used with QML.
+     */
+    Q_INVOKABLE void clearVACs();
+
     /*! \brief Import raster or vector map into the library of locally installed
      * maps
      *

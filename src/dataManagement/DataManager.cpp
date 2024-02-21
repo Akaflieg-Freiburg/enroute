@@ -150,6 +150,16 @@ void DataManagement::DataManager::cleanDataDirectory()
 }
 
 
+void DataManagement::DataManager::clearVACs()
+{
+    auto downloadables = m_VAC.downloadables();
+    m_VAC.clear();
+    qDeleteAll(downloadables);
+    QDir dir(m_vacDirectory);
+    dir.removeRecursively();
+}
+
+
 QString DataManagement::DataManager::import(const QString& fileName, const QString& newName)
 {
     auto localFile = FileFormats::DataFileAbstract::openFileURL(fileName);
@@ -428,8 +438,6 @@ void DataManagement::DataManager::readVACDirectory()
         }
         vacFileBaseNames += downloadable->objectName();
     }
-
-
 
     // Go through list of files
     QDirIterator fileIterator(m_vacDirectory, QDir::Files);

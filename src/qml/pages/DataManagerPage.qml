@@ -498,7 +498,7 @@ Page {
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
-            DataManager.VAC.deleteFiles()
+            DataManager.clearVACs()
             toast.doToast(qsTr("Approach chart library cleared"))
         }
     }

@@ -41,6 +41,7 @@ set(SOURCES
     fileFormats/CUP.h
     fileFormats/DataFileAbstract.h
     fileFormats/GeoTIFF.h
+    fileFormats/MapURL.h
     fileFormats/MBTILES.h
     fileFormats/TripKit.h
     fileFormats/VAC.h
@@ -125,6 +126,7 @@ set(SOURCES
     fileFormats/CUP.cpp
     fileFormats/DataFileAbstract.cpp
     fileFormats/GeoTIFF.cpp
+    fileFormats/MapURL.cpp
     fileFormats/MBTILES.cpp
     fileFormats/TripKit.cpp
     fileFormats/VAC.cpp

@@ -65,10 +65,10 @@ void Platform::FileExchange::onGUISetupCompleted()
     // Start receiving file requests. This needs to be in deferredInitialization because
     // it has side effects and calls constructors of other GlobalObjects.
     receiveOpenFileRequestsStarted = true;
-    QJniObject activity = QNativeInterface::QAndroidApplication::context();
+    QJniObject const activity = QNativeInterface::QAndroidApplication::context();
     if (activity.isValid())
     {
-        QJniObject jniTempDir = QJniObject::fromString(fileExchangeDirectoryName);
+        QJniObject const jniTempDir = QJniObject::fromString(fileExchangeDirectoryName);
         if (!jniTempDir.isValid())
         {
             return;
@@ -103,12 +103,11 @@ auto Platform::FileExchange::shareContent(const QByteArray& content, const QStri
     Q_UNUSED(fileNameTemplate)
     (void)this;
 
-
-    QMimeDatabase db;
-    QMimeType mime = db.mimeTypeForName(mimeType);
+    QMimeDatabase const db;
+    QMimeType const mime = db.mimeTypeForName(mimeType);
 
     auto tmpPath = contentToTempFile(content, fileNameTemplate+"-%1."+mime.preferredSuffix());
-    bool success = outgoingIntent(QStringLiteral("sendFile"), tmpPath, mimeType);
+    bool const success = outgoingIntent(QStringLiteral("sendFile"), tmpPath, mimeType);
     if (success)
     {
         return {};
@@ -123,8 +122,8 @@ auto Platform::FileExchange::viewContent(const QByteArray& content, const QStrin
     Q_UNUSED(mimeType)
     Q_UNUSED(fileNameTemplate)
 
-    QString tmpPath = contentToTempFile(content, fileNameTemplate);
-    bool success = outgoingIntent(QStringLiteral("viewFile"), tmpPath, mimeType);
+    QString const tmpPath = contentToTempFile(content, fileNameTemplate);
+    bool const success = outgoingIntent(QStringLiteral("viewFile"), tmpPath, mimeType);
     if (success)
     {
         return {};
@@ -139,8 +138,8 @@ auto Platform::FileExchange::viewContent(const QByteArray& content, const QStrin
 
 auto Platform::FileExchange::contentToTempFile(const QByteArray& content, const QString& fileNameTemplate) -> QString
 {
-    QDateTime now = QDateTime::currentDateTimeUtc();
-    QString fname = fileNameTemplate.arg(now.toString(QStringLiteral("yyyy-MM-dd_hh.mm.ss")));
+    QDateTime const now = QDateTime::currentDateTimeUtc();
+    QString const fname = fileNameTemplate.arg(now.toString(QStringLiteral("yyyy-MM-dd_hh.mm.ss")));
 
     // in Qt, resources are not stored absolute file paths, so in order to
     // share the content we save it to disk. We save these temporary files
@@ -163,15 +162,14 @@ auto Platform::FileExchange::contentToTempFile(const QByteArray& content, const 
 
 auto Platform::FileExchange::outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType) -> bool
 {
-     QJniObject jsPath = QJniObject::fromString(filePath);
-     QJniObject jsMimeType = QJniObject::fromString(mimeType);
-     auto ok = QJniObject::callStaticMethod<jboolean>(
-                 "de/akaflieg_freiburg/enroute/IntentLauncher",
-                 methodName.toStdString().c_str(),
-                 "(Ljava/lang/String;Ljava/lang/String;)Z",
-                 jsPath.object<jstring>(),
-                 jsMimeType.object<jstring>());
-     return ok != 0U;
+    QJniObject const jsPath = QJniObject::fromString(filePath);
+    QJniObject const jsMimeType = QJniObject::fromString(mimeType);
+    auto ok = QJniObject::callStaticMethod<jboolean>("de/akaflieg_freiburg/enroute/IntentLauncher",
+                                                     methodName.toStdString().c_str(),
+                                                     "(Ljava/lang/String;Ljava/lang/String;)Z",
+                                                     jsPath.object<jstring>(),
+                                                     jsMimeType.object<jstring>());
+    return ok != 0U;
 }
 
 

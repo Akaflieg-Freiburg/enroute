@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -103,6 +103,14 @@ Item {
             errLbl.text = qsTr("The file type of the file <strong>%1</strong> cannot be recognized.").arg(fileName)
             errorDialog.open()
             return
+        }
+
+        function onOpenWaypointRequest(waypoint) {
+            Global.dialogLoader.active = false
+            Global.dialogLoader.setSource("../dialogs/WaypointDescription.qml", {waypoint: waypoint})
+            Global.dialogLoader.active = true
+
+            console.log(waypoint.coordinate)
         }
     }
 

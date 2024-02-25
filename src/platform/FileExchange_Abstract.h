@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include "geomaps/Waypoint.h"
 #include "GlobalObject.h"
 #include <QQmlEngine>
 
@@ -168,6 +169,9 @@ signals:
      * @param fileFunction Function and file type.
      */
     void openFileRequest(QString fileName, QString info, Platform::FileExchange_Abstract::FileFunction fileFunction);
+
+#warning
+    void openWaypointRequest(GeoMaps::Waypoint waypoint);
 
 private:
     Q_DISABLE_COPY_MOVE(FileExchange_Abstract)

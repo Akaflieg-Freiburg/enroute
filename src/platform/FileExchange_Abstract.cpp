@@ -23,6 +23,7 @@
 #include <QUrl>
 
 #include "fileFormats/CUP.h"
+#include "fileFormats/MapURL.h"
 #include "fileFormats/MBTILES.h"
 #include "fileFormats/TripKit.h"
 #include "fileFormats/VAC.h"
@@ -174,6 +175,16 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     {
         emit openFileRequest(path, info, OpenAir);
         return;
+    }
+
+    // MapURL
+    {
+        FileFormats::MapURL mapURL(myPath);
+        if (mapURL.isValid())
+        {
+            emit openWaypointRequest(mapURL.waypoint());
+            return;
+        }
     }
 
     emit openFileRequest(path, {}, UnknownFunction);

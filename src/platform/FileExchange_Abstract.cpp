@@ -20,6 +20,9 @@
 
 #include <QImage>
 #include <QMimeDatabase>
+#include <QNetworkReply>
+#include <QNetworkRequest>
+#include <QNetworkAccessManager>
 #include <QUrl>
 
 #include "fileFormats/CUP.h"
@@ -177,9 +180,9 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
         return;
     }
 
-    // MapURL
+    // MapURLPlatform::FileExchange_Abstract::processFileOpenRequest
     {
-        FileFormats::MapURL mapURL(myPath);
+        FileFormats::MapURL const mapURL(myPath);
         if (mapURL.isValid())
         {
             emit openWaypointRequest(mapURL.waypoint());
@@ -187,5 +190,29 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
         }
     }
 
+    QNetworkRequest request(myPath);
+    auto* reply = GlobalObject::networkAccessManager()->get(request);
+    connect(reply, &QNetworkReply::redirected, this, &Platform::FileExchange_Abstract::processUrlOpenRequest);
+
     emit openFileRequest(path, {}, UnknownFunction);
+}
+
+
+void Platform::FileExchange_Abstract::processUrlOpenRequest(const QUrl& url)
+{
+    qWarning() << "AA PATH" << url.path();
+
+/*    QUrl googleMapsUrl(url);
+    QString coordinateString = googleMapsUrl.path().section('/', -1).split("/data")[0];
+    QStringList parts = coordinateString.split("+");
+    qWarning() << coordinateString << parts;
+    double latitude = parts[0].toDouble();
+    double longitude = parts[1].toDouble();
+
+    qDebug() << "Latitude: " << latitude;
+    qDebug() << "Longitude: " << longitude;
+*/
+    qWarning() << url.toString(QUrl::FullyDecoded);
+    qWarning() << "AA";
+    processFileOpenRequest(url.toString());
 }

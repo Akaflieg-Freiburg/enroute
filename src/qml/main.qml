@@ -836,6 +836,15 @@ AppWindow {
         onActivated: Qt.quit()
     }
 
+    Shortcut {
+        sequences: [StandardKey.Paste]
+        onActivated: {
+            if (PlatformAdaptor.clipboardText() === "")
+                return
+            FileExchange.processFileOpenRequest(PlatformAdaptor.clipboardText())
+        }
+    }
+
     //
     // Connections
     //

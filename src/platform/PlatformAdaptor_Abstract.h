@@ -77,6 +77,9 @@ public:
     // Methods
     //
 
+    /*! \brief Content of ClipBoard */
+    Q_INVOKABLE static QString clipboardText();
+
     /*! \brief SSID of current Wi-Fi network
      *
      * @returns The SSID of the current Wi-Fi networks, an empty string if the

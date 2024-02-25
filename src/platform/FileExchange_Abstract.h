@@ -156,6 +156,14 @@ public slots:
      */
     void processFileOpenRequest(const QByteArray& path);
 
+    /*! \brief Determine file function and emit openFileRequest()
+     *
+     * Overloaded function for convenience
+     *
+     * @param url URL to be opened
+     */
+    void processUrlOpenRequest(const QUrl& url);
+
 signals:
     /*! \brief Emitted when platform asks this app to open a file
      *
@@ -170,7 +178,13 @@ signals:
      */
     void openFileRequest(QString fileName, QString info, Platform::FileExchange_Abstract::FileFunction fileFunction);
 
-#warning
+    /*! \brief Emitted when platform asks this app to show a waypoint
+     *
+     * This signal is emitted whenever the platform-dependent code receives
+     * information that enroute is requested to show a waypoint.
+     *
+     * @param waypoint Waypoint to be shown
+     */
     void openWaypointRequest(GeoMaps::Waypoint waypoint);
 
 private:

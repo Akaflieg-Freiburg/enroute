@@ -109,8 +109,6 @@ Item {
             Global.dialogLoader.active = false
             Global.dialogLoader.setSource("../dialogs/WaypointDescription.qml", {waypoint: waypoint})
             Global.dialogLoader.active = true
-
-            console.log(waypoint.coordinate)
         }
     }
 

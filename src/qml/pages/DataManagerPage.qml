@@ -263,7 +263,15 @@ Page {
             Layout.fillHeight: true
             Layout.fillWidth: true
             clip: true
-            model: DataManager.VAC.downloadables
+            // This delayed binding is necessary, or else there will be terrible delays
+            // when the user deletes all VACs -- the GUI is re-rendered after
+            // every delete, which takes very long time.
+            Binding on model {
+                value: DataManager.VAC.downloadables
+                delayed: true    // Prevent intermediary values from being assigned
+            }
+
+
             delegate: MapSet {}
             ScrollIndicator.vertical: ScrollIndicator {}
 
@@ -490,7 +498,7 @@ Page {
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
-            DataManager.VAC.deleteFiles()
+            DataManager.clearVACs()
             toast.doToast(qsTr("Approach chart library cleared"))
         }
     }

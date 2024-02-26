@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2022-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2022-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -126,6 +126,7 @@ public:
     [[nodiscard]] auto updateSize() -> Units::ByteSize override { return m_updateSize; }
 
 
+
     //
     // Methods
     //
@@ -141,6 +142,15 @@ public:
      *  @param map Map to be added
      */
     Q_INVOKABLE void add(DataManagement::Downloadable_Abstract* map);
+
+    /*! \brief Add 'Downloadable_SingleFile's to this Downloadable_MultiFile
+     *
+     *  This method differs from add(DataManagement::Downloadable_Abstract* map) only in that
+     *  it adds several maps, but emits notifier signals only once.
+     *
+     *  @param maps Maps to be added
+     */
+    Q_INVOKABLE void add(const QVector<DataManagement::Downloadable_Abstract*>& maps);
 
     /*! \brief Removes all children */
     Q_INVOKABLE void clear();
@@ -190,6 +200,10 @@ private:
     void evaluateHasFile();
     void evaluateRemoteFileSize();
     void evaluateUpdateSize();
+
+    // Similar to 'add', but does not emit any notifier signals
+    // Returns 'true' if item has actually been added.
+    bool rawAdd(DataManagement::Downloadable_Abstract* map);
 
     bool m_downloading {false};
     QStringList m_files;

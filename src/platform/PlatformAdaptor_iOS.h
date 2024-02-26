@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -88,7 +88,10 @@ public:
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
     void vibrateLong() override;
 
-    /*! \brief Reimplements virtual method from PlatformAdaptor_Abstract */
+    /*! \brief Reimplements virtual method from PlatformAdaptor_Abstract
+     *
+     *  @returns A two-letter language code, as documented in PlatformAdaptor_Abstract
+     */
     QString language() override;
 
 #warning documentation

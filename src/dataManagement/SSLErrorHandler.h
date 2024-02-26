@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -58,6 +58,8 @@ public:
         return GlobalObject::sslErrorHandler();
     }
 
+    // standard destructor
+    ~SSLErrorHandler() override = default;
 
 signals:
     /*! \brief Notification signal for the property with the same name */

@@ -36,7 +36,7 @@ DataManagement::Downloadable_SingleFile::Downloadable_SingleFile(QUrl url, const
     // Paranoid safety checks
     Q_ASSERT(!fileName.isEmpty());
 
-    m_boundingBox = bBox;
+    setBoundingBox(bBox);
 
     QFileInfo const info(fileName);
     m_fileName = info.absoluteFilePath();
@@ -62,25 +62,25 @@ DataManagement::Downloadable_SingleFile::Downloadable_SingleFile(QUrl url, const
 
         if (tmpName.endsWith(u"geojson"_qs))
         {
-            m_contentType = AviationMap;
+            setContentType(AviationMap);
         }
         else if (tmpName.endsWith(u"mbtiles"_qs))
         {
-            m_contentType = BaseMapVector;
+            setContentType(BaseMapVector);
         }
         else if (tmpName.endsWith(u"jpeg"_qs) || tmpName.endsWith(u"jpg"_qs) ||
                    tmpName.endsWith(u"png"_qs) || tmpName.endsWith(u"tif"_qs) ||
                    tmpName.endsWith(u"tiff"_qs) || tmpName.endsWith(u"webp"_qs))
         {
-            m_contentType = VAC;
+            setContentType(VAC);
         }
         else if (tmpName.endsWith(u"raster"_qs))
         {
-            m_contentType = BaseMapRaster;
+            setContentType(BaseMapRaster);
         }
         else if (tmpName.endsWith(u"terrain"_qs))
         {
-            m_contentType = TerrainMap;
+            setContentType(TerrainMap);
         }
     }
 }

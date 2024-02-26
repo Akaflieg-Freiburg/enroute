@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QDir>
 #include <QFile>
 #include <QGeoCoordinate>
 #include <QImage>
@@ -63,6 +64,10 @@ QString FileFormats::TripKit::extract(const QString& directoryPath, qsizetype in
         imageData = m_zip.extract("charts/"+entry.name+"-geo."+entry.ending);
     }
     if (imageData.isEmpty())
+    {
+        return {};
+    }
+    if (!QDir().mkpath(directoryPath))
     {
         return {};
     }

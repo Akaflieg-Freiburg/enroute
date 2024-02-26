@@ -26,6 +26,7 @@
 #include <QJsonObject>
 #include <QLockFile>
 #include <QSettings>
+#include <QStack>
 #include <QTemporaryDir>
 
 #include "GlobalSettings.h"
@@ -72,43 +73,12 @@ void DataManagement::DataManager::deferredInitialization()
     }
 
     // Setup approach charts
-    QStringList filesToDelete;
-    QDirIterator fileIterator(m_vacDirectory, QDir::Files);
-    while (fileIterator.hasNext())
-    {
-        fileIterator.next();
-        auto fileName = fileIterator.fileName();
-        auto idx = fileName.lastIndexOf(u"-geo_"_qs, -1);
-        auto bBox = FileFormats::VAC(fileName).bBox();
-
-        if ((!fileName.endsWith(u"jpeg"_qs)
-             && !fileName.endsWith(u"jpg"_qs)
-             && !fileName.endsWith(u"png"_qs)
-             && !fileName.endsWith(u"tif"_qs)
-             && !fileName.endsWith(u"tiff"_qs)
-             && !fileName.endsWith(u"webp"_qs)) ||
-            (idx == -1) ||
-            !bBox.isValid())
-        {
-            filesToDelete += fileIterator.filePath();
-            continue;
-        }
-
-        auto* downloadable = new DataManagement::Downloadable_SingleFile({}, fileIterator.filePath(), bBox, this);
-        downloadable->setObjectName(fileName.left(idx));
-        connect(downloadable, &DataManagement::Downloadable_Abstract::hasFileChanged, downloadable, &QObject::deleteLater);
-        m_VAC.add(downloadable);
-    }
-    foreach (auto fileToDelete, filesToDelete)
-    {
-        QFile::remove(fileToDelete);
-    }
+    readVACDirectory();
 }
 
 
 void DataManagement::DataManager::cleanDataDirectory()
 {
-
     QStringList misnamedFiles;
     QStringList unexpectedFiles;
     QDirIterator fileIterator(m_dataDirectory, QDir::Files, QDirIterator::Subdirectories);
@@ -140,28 +110,53 @@ void DataManagement::DataManager::cleanDataDirectory()
         }
     }
     foreach (auto misnamedFile, misnamedFiles)
-        QFile::rename(misnamedFile, misnamedFile.section('.', 0, -2));
-    foreach (auto unexpectedFile, unexpectedFiles)
-        QFile::remove(unexpectedFile);
-
-    // delete all empty directories
-    bool didDelete = false;
-    do
     {
-        didDelete = false;
-        QDirIterator dirIterator(m_dataDirectory, QDir::Dirs | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
-        while (dirIterator.hasNext())
-        {
-            dirIterator.next();
+        QFile::rename(misnamedFile, misnamedFile.section('.', 0, -2));
+    }
+    foreach (auto unexpectedFile, unexpectedFiles)
+    {
+        QFile::remove(unexpectedFile);
+    }
 
-            QDir dir(dirIterator.filePath());
-            if (dir.isEmpty())
-            {
-                dir.removeRecursively();
-                didDelete = true;
+    // Recurse into m_dataDirectory and delete all empty (sub)directories.
+    // Also delete directories that became empty because
+    // some of its subdirectories got deleted in the process.
+    bool directoryDeleted = true;
+    while(directoryDeleted)
+    {
+        directoryDeleted = false;
+        QStack<QString> stack;
+        stack.push(m_dataDirectory);
+
+        while (!stack.isEmpty()) {
+            const QString currentPath = stack.pop();
+            const QDir dir(currentPath);
+
+            if (dir.exists()) {
+                const QFileInfoList entries = dir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
+                for (const QFileInfo& entry : entries)
+                {
+                    stack.push(entry.filePath());
+                }
+
+                if (dir.entryList(QDir::NoDotAndDotDot | QDir::AllEntries).isEmpty())
+                {
+                    dir.rmdir(currentPath);
+                    directoryDeleted = true;
+                }
             }
         }
-    } while (didDelete);
+    }
+}
+
+
+void DataManagement::DataManager::clearVACs()
+{
+    auto downloadables = m_VAC.downloadables();
+    m_VAC.clear();
+    qDeleteAll(downloadables);
+    QDir dir(m_vacDirectory);
+    dir.removeRecursively();
 }
 
 
@@ -255,6 +250,8 @@ QString DataManagement::DataManager::importTripKit(const QString& fileName)
     {
         return {};
     }
+
+    // Unpack the VACs into m_vacDirectory
     auto size = tripKit.numCharts();
     int successfulImports = 0;
     for(auto idx=0; idx<size; idx++)
@@ -262,16 +259,33 @@ QString DataManagement::DataManager::importTripKit(const QString& fileName)
         emit importTripKitStatus((double)idx/(double)size);
         QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
 
-        auto path = tripKit.extract(tmpDir.path(), idx);
-        if (!path.isEmpty())
+        auto path = tripKit.extract(m_vacDirectory, idx);
+        if (path.isEmpty())
         {
-            if (importVAC(path, {}).isEmpty())
-            {
-                successfulImports++;
-            }
+            continue;
         }
+
+        if (path.endsWith(u"webp"_qs))
+        {
+            successfulImports++;
+            continue;
+        }
+
+        FileFormats::VAC vac(path);
+        auto newPath = vac.save(m_vacDirectory);
+        QFile::remove(path);
+
+        if (newPath.isEmpty())
+        {
+            continue;
+        }
+        successfulImports++;
+
     }
     emit importTripKitStatus(1.0);
+
+
+    readVACDirectory();
 
     if (successfulImports == 0)
     {
@@ -302,7 +316,8 @@ QString DataManagement::DataManager::importVAC(const QString& fileName, QString 
         vac.setBaseName(newName);
     }
 
-    foreach (auto downloadable, m_VAC.downloadables()) {
+    foreach (auto downloadable, m_VAC.downloadables())
+    {
         if (downloadable == nullptr)
         {
             continue;
@@ -319,10 +334,7 @@ QString DataManagement::DataManager::importVAC(const QString& fileName, QString 
     {
         return tr("Import failed. Unable to write raster data to directory %1.").arg(m_vacDirectory);
     }
-    auto* downloadable = new DataManagement::Downloadable_SingleFile({}, newFileName, vac.bBox(), this);
-    downloadable->setObjectName(newName);
-    connect(downloadable, &DataManagement::Downloadable_Abstract::hasFileChanged, downloadable, &QObject::deleteLater);
-    m_VAC.add(downloadable);
+    readVACDirectory();
 
     return {};
 }
@@ -402,6 +414,74 @@ void DataManagement::DataManager::onItemFileChanged()
         delete geoMapPtr;
         QTimer::singleShot(100ms, this, &DataManagement::DataManager::updateDataItemListAndWhatsNew);
     }
+}
+
+
+void DataManagement::DataManager::readVACDirectory()
+{
+    // List of files that should not be present in the VAC directory.
+    // These will be deleted at the end of the present method.
+    QStringList filesToDelete;
+
+    // List of downloadables that will be added to m_VAC at the end of
+    // this methods.
+    QVector<DataManagement::Downloadable_Abstract*> newDownloadables;
+
+    // Populate list of file basenames for VACs that are already
+    // present in m_VAC.q
+    QStringList vacFileBaseNames;
+    foreach (auto downloadable, m_VAC.downloadables())
+    {
+        if (downloadable == nullptr)
+        {
+            continue;
+        }
+        vacFileBaseNames += downloadable->objectName();
+    }
+
+    // Go through list of files
+    QDirIterator fileIterator(m_vacDirectory, QDir::Files);
+    while (fileIterator.hasNext())
+    {
+        fileIterator.next();
+
+        // Read file and try to identify the bounding box
+        auto fileName = fileIterator.fileName();
+        auto idx = fileName.lastIndexOf(u"-geo_"_qs, -1);
+        auto bBox = FileFormats::VAC(fileName).bBox();
+
+        // Identify files that should not be there
+        if ((!fileName.endsWith(u"jpeg"_qs)
+             && !fileName.endsWith(u"jpg"_qs)
+             && !fileName.endsWith(u"png"_qs)
+             && !fileName.endsWith(u"tif"_qs)
+             && !fileName.endsWith(u"tiff"_qs)
+             && !fileName.endsWith(u"webp"_qs)) ||
+            (idx == -1) ||
+            !bBox.isValid())
+        {
+            filesToDelete += fileIterator.filePath();
+            continue;
+        }
+
+        auto vacFileBaseName = fileName.left(idx);
+        if (!vacFileBaseNames.contains(vacFileBaseName))
+        {
+            auto* downloadable = new DataManagement::Downloadable_SingleFile({}, fileIterator.filePath(), bBox, this);
+            downloadable->setObjectName(fileName.left(idx));
+            connect(downloadable, &DataManagement::Downloadable_Abstract::hasFileChanged, downloadable, &QObject::deleteLater);
+            newDownloadables += downloadable;
+        }
+    }
+
+    // Delete files
+    foreach (auto fileToDelete, filesToDelete)
+    {
+        QFile::remove(fileToDelete);
+    }
+
+    // Add files to m_VAC
+    m_VAC.add(newDownloadables);
 }
 
 

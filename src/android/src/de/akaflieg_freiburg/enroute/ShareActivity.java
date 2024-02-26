@@ -226,21 +226,13 @@ public class ShareActivity extends QtActivity {
      * in setUriReceived().
      */
     private void setUriReceived(Uri src) {
-        String pth = src.getPath();
-        String ending = null;
-        int lastIndexOfDot = pth.lastIndexOf('.');
-        if (lastIndexOfDot >= 0) {
-            ending = pth.substring(lastIndexOfDot);
+        // Safety check
+        if (src == null)
+        {
+            Log.d(TAG, "setUriReceived called with argument=null");
+            return;
         }
-        Log.d(TAG, "setUriReceived");
-
-        try {
-            File tmpFile = File.createTempFile("tmp", ending, tmpDir);
-            copyContent(src, Uri.fromFile(tmpFile));
-            setFileReceived(tmpFile.getPath());
-        } catch (IOException exception) {
-            Log.d(TAG, exception.getMessage());
-        }
+        setFileReceived(src.toString());
     }
 
     /**

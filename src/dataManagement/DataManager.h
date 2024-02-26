@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -274,6 +274,19 @@ public:
     // Methods
     //
 
+    /*! \brief Delete VACs
+     *
+     * This method delete all VAC files and clear the VAC list. It is equivalent
+     * to calling
+     *
+     * VAC->deleteFiles();
+     * VAC->clear();
+     *
+     * Compared to calling these two methods, this one emits much fewer notifier
+     * signals and is therefore potentially much faster when used with QML.
+     */
+    Q_INVOKABLE void clearVACs();
+
     /*! \brief Import raster or vector map into the library of locally installed
      * maps
      *
@@ -396,6 +409,11 @@ private:
     // content or existence. If the Downloadable in question has no file
     // anymore, and has an invalid URL, it is then removed.
     void onItemFileChanged();
+
+    // This method goes through the VAC data directory. It removes files that should
+    // not be there, and adds all image files to m_VAC, taking care of entries that
+    // are already present in m_VAC.
+    void readVACDirectory();
 
     // This slot updates the DownloadableGroups as well as the propery
     // 'whatsNew', by reading the file 'maps.json' and by checking the data

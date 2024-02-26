@@ -375,7 +375,7 @@ protected:
 
 /*! \brief Hash function for airspaces
  *
- * @param wp Waypoint
+ * @param waypoint Waypoint
  *
  * @returns Hash value
  */

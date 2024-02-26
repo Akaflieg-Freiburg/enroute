@@ -17,7 +17,7 @@ option(BUILD_DOC "Build developer documentation" OFF)
 # Project data
 #
 
-project(enroute VERSION 2.30.5)
+project(enroute VERSION 2.30.6)
 set(APP_ID de.akaflieg_freiburg.enroute)
 set(DISPLAY_NAME "Enroute")
 math(EXPR PROJECT_VERSION_CODE 10000*${PROJECT_VERSION_MAJOR}+100*${PROJECT_VERSION_MINOR}+${PROJECT_VERSION_PATCH})
@@ -40,6 +40,9 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
+find_package(Qt6 6.6.2 COMPONENTS Concurrent Core Core5Compat Gui HttpServer LinguistTools Location Positioning Quick QuickControls2 QuickWidgets Sql Svg TextToSpeech Widgets REQUIRED)
+qt_policy(SET QTP0002 NEW)
+
 
 #
 # External Packages
@@ -48,8 +51,8 @@ set(CMAKE_AUTOUIC ON)
 find_package(Doxygen)
 find_package(libzip REQUIRED)
 find_package(Git REQUIRED)
-find_package(Qt6 6.6.2 COMPONENTS Concurrent Core Core5Compat Gui HttpServer LinguistTools Location Positioning Quick QuickControls2 QuickWidgets Sql Svg TextToSpeech Widgets REQUIRED)
 find_package(QMapLibre COMPONENTS Location REQUIRED)
+
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     find_package(Qt6 COMPONENTS DBus Widgets REQUIRED)

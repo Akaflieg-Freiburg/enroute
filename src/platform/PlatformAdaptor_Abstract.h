@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -77,7 +77,10 @@ public:
     // Methods
     //
 
-    /*! \brief Content of ClipBoard */
+    /*! \brief Content of ClipBoard
+     *
+     *  @returns Text content of the clipboard
+     */
     Q_INVOKABLE static QString clipboardText();
 
     /*! \brief SSID of current Wi-Fi network

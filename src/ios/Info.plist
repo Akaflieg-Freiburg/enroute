@@ -269,6 +269,32 @@
                 <string>enroute.cup</string>
             </array>
         </dict>
+        <dict>
+            <key>CFBundleTypeName</key>
+            <string>ZIP Archive</string>
+            <key>CFBundleTypeIconFile</key>
+            <string>zip</string>
+            <key>CFBundleTypeRole</key>
+            <string>Viewer</string>
+            <key>CFBundleTypeOSTypes</key>
+            <array>
+                <string>ZIP </string>
+            </array>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>zip</string>
+            </array>
+            <key>LSItemContentTypes</key>
+            <array>
+                <string>com.pkware.zip-archive</string>
+            </array>
+            <key>CFBundleTypeMIMETypes</key>
+            <array>
+                <string>application/zip</string>
+                <string>application/x-zip</string>
+                <string>application/x-zip-compressed</string>
+            </array>
+        </dict>
      </array>
 </dict>
 </plist>

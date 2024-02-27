@@ -75,7 +75,7 @@ Page {
                     wpMenu.open()
                 }
 
-                Menu {
+                AutoSizingMenu {
                     id: wpMenu
 
                     Action {
@@ -84,6 +84,8 @@ Page {
                         enabled: index > 0
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
+                            wpMenu.close() // Necessary on some devices, or else menu will stay open
+
                             Navigator.flightRoute.moveUp(index)
                         }
                     }
@@ -94,6 +96,8 @@ Page {
                         enabled: index < Navigator.flightRoute.size-1
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
+                            wpMenu.close() // Necessary on some devices, or else menu will stay open
+
                             Navigator.flightRoute.moveDown(index)
                         }
                     }
@@ -103,6 +107,8 @@ Page {
 
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
+                            wpMenu.close() // Necessary on some devices, or else menu will stay open
+
                             Navigator.flightRoute.removeWaypoint(index)
                         }
                     }
@@ -124,6 +130,8 @@ Page {
 
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
+                            wpMenu.close() // Necessary on some devices, or else menu will stay open
+
                             WaypointLibrary.add(waypoint)
                             toast.doToast(qsTr("Added %1 to waypoint library.").arg(waypoint.extendedName))
                         }

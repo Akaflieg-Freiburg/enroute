@@ -96,7 +96,7 @@ QVector<GeoMaps::Waypoint> GeoMaps::WaypointLibrary::filteredWaypoints(const QSt
 {
     QVector<GeoMaps::Waypoint> result;
 
-    QString simplifiedFilter = GlobalObject::librarian()->simplifySpecialChars(filter);
+    QString const simplifiedFilter = GlobalObject::librarian()->simplifySpecialChars(filter);
     foreach (auto waypoint, m_waypoints)
     {
         auto simplifiedName = GlobalObject::librarian()->simplifySpecialChars(waypoint.name());

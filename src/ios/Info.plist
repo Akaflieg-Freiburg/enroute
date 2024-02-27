@@ -276,6 +276,8 @@
             <string>zip</string>
             <key>CFBundleTypeRole</key>
             <string>Viewer</string>
+            <key>LSHandlerRank</key>
+            <string>Alternate</string>
             <key>CFBundleTypeOSTypes</key>
             <array>
                 <string>ZIP </string>

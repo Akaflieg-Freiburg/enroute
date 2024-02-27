@@ -164,6 +164,9 @@ public slots:
      */
     void processUrlOpenRequest(const QUrl& url);
 
+#warning
+    bool processUrlOpenRequestQuiet(const QString& url);
+
 signals:
     /*! \brief Emitted when platform asks this app to open a file
      *
@@ -186,6 +189,9 @@ signals:
      * @param waypoint Waypoint to be shown
      */
     void openWaypointRequest(GeoMaps::Waypoint waypoint);
+
+#warning
+    void resolveURL(QString url);
 
 private:
     Q_DISABLE_COPY_MOVE(FileExchange_Abstract)

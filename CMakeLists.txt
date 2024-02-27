@@ -55,7 +55,7 @@ find_package(QMapLibre COMPONENTS Location REQUIRED)
 
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    find_package(Qt6 COMPONENTS DBus Widgets REQUIRED)
+    find_package(Qt6 COMPONENTS DBus WebView Widgets REQUIRED)
 endif()
 
 if( ANDROID OR IOS)

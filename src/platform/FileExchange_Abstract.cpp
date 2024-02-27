@@ -190,10 +190,17 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
         }
     }
 
+    if (myPath.contains("maps.app.goo.gl"))
+    {
+        emit resolveURL(myPath);
+        return;
+    }
+
+        /*
     QNetworkRequest request(myPath);
     auto* reply = GlobalObject::networkAccessManager()->get(request);
     connect(reply, &QNetworkReply::redirected, this, &Platform::FileExchange_Abstract::processUrlOpenRequest);
-
+*/
     emit openFileRequest(path, {}, UnknownFunction);
 }
 
@@ -216,3 +223,15 @@ void Platform::FileExchange_Abstract::processUrlOpenRequest(const QUrl& url)
     qWarning() << "AA";
     processFileOpenRequest(url.toString());
 }
+
+bool Platform::FileExchange_Abstract::processUrlOpenRequestQuiet(const QString& url)
+{
+    FileFormats::MapURL const mapURL(url);
+    if (mapURL.isValid())
+    {
+        emit openWaypointRequest(mapURL.waypoint());
+        return true;
+    }
+    return false;
+}
+

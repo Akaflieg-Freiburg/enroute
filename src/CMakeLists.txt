@@ -316,6 +316,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
         Qt6::Sql
         Qt6::Svg
         Qt6::TextToSpeech
+        Qt6::WebView
         Qt6::Widgets
         QMapLibre::Location
         libzip::zip
@@ -544,6 +545,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/pages/PrivacyPage.qml
     qml/pages/SettingsPage.qml
     qml/pages/TrafficReceiver.qml
+    qml/pages/URLResolver.qml
     qml/pages/WaypointLibraryPage.qml
     qml/pages/Weather.qml
     SOURCES

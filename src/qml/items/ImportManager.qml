@@ -110,6 +110,11 @@ Item {
             Global.dialogLoader.setSource("../dialogs/WaypointDescription.qml", {waypoint: waypoint})
             Global.dialogLoader.active = true
         }
+
+        function onResolveURL(url) {
+            console.log("Need to resolve:" + url)
+            stackView.push("../pages/URLResolver.qml", {mapURL: url})
+        }
     }
 
     Connections {

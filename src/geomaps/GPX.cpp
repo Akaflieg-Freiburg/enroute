@@ -33,20 +33,20 @@ GeoMaps::Waypoint readWP(QXmlStreamReader& xml) {
 
     // capture rtept, trkpt or wpt
 
-    QXmlStreamAttributes attrs = xml.attributes();
+    QXmlStreamAttributes const attrs = xml.attributes();
     if (!attrs.hasAttribute(QStringLiteral("lon")) || !attrs.hasAttribute(QStringLiteral("lat")))
     {
         return {};
     }
 
     bool ok = false;
-    double lon = xml.attributes().value(QStringLiteral("lon")).toDouble(&ok);
+    double const lon = xml.attributes().value(QStringLiteral("lon")).toDouble(&ok);
     if (!ok)
     {
         return {};
     }
 
-    double lat = xml.attributes().value(QStringLiteral("lat")).toDouble(&ok);
+    double const lat = xml.attributes().value(QStringLiteral("lat")).toDouble(&ok);
     if (!ok)
     {
         return {};
@@ -64,14 +64,14 @@ GeoMaps::Waypoint readWP(QXmlStreamReader& xml) {
             break;
         }
 
-        QString xmlTag = xml.name().toString();
+        QString const xmlTag = xml.name().toString();
 
         if (xml.isStartElement())
         {
             if (xmlTag == u"ele"_qs)
             {
-                QString alt_s = xml.readElementText(QXmlStreamReader::SkipChildElements);
-                double alt = alt_s.toFloat(&ok);
+                QString const alt_s = xml.readElementText(QXmlStreamReader::SkipChildElements);
+                double const alt = alt_s.toFloat(&ok);
                 if (!ok)
                 {
                     return {};

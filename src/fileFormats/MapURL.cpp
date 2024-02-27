@@ -24,7 +24,8 @@
 
 namespace {
 Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexBingMap, ("cp=(-?\\d+\\.\\d+)%7E(-?\\d+\\.\\d+)"))
-Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexGoogleMap, ("@(-?\\d+\\.\\d+),(-?\\d+\\.\\d+)"))
+Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexGoogleMap1, ("@(-?\\d+\\.\\d+),(-?\\d+\\.\\d+)"))
+Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexGoogleMap2, ("!3d(-?\\d+\\.\\d+)!4d(-?\\d+\\.\\d+)"))
 Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexOpenStreetMap, ("#map=\\d+/(\\d+\\.\\d+)/(\\d+\\.\\d+)"))
 Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexWeGo, ("map=(\\d+\\.\\d+),(\\d+\\.\\d+)"))
 }
@@ -39,7 +40,22 @@ FileFormats::MapURL::MapURL(const QString& urlName)
 {
     {
         // Try to parse a Google Map URL
-        auto match = regexGoogleMap->match(urlName);
+        auto match = regexGoogleMap1->match(urlName);
+        if (match.hasMatch()) {
+            auto latitude = match.captured(1);
+            auto longitude = match.captured(2);
+            GeoMaps::Waypoint const waypoint({latitude.toDouble(), longitude.toDouble()});
+            if (waypoint.isValid())
+            {
+                m_waypoint = waypoint;
+                return;
+            }
+        }
+    }
+
+    {
+        // Try to parse a Google Map URL
+        auto match = regexGoogleMap2->match(urlName);
         if (match.hasMatch()) {
             auto latitude = match.captured(1);
             auto longitude = match.captured(2);

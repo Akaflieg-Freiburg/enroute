@@ -30,72 +30,9 @@ Page {
     id: pg
     title: qsTr("Google Map Resolver")
 
-    property string mapURL: ""
+    required property string mapURL
 
-    header: PageHeader {
-        height: 60 + SafeInsets.top
-        leftPadding: SafeInsets.left
-        rightPadding: SafeInsets.right
-        topPadding: SafeInsets.top
-
-        ToolButton {
-            id: closeButton
-
-            anchors.left: parent.left
-            anchors.verticalCenter: parent.verticalCenter
-
-            icon.source: "/icons/material/ic_clear.svg"
-
-            onClicked: {
-                PlatformAdaptor.vibrateBrief()
-                stackView.pop()
-            }
-        }
-
-        Label {
-            anchors.verticalCenter: parent.verticalCenter
-
-            anchors.left: parent.left
-            anchors.leftMargin: 72
-            anchors.right: backButton.left
-
-            text: stackView.currentItem.title
-            elide: Label.ElideRight
-            font.pixelSize: 20
-            verticalAlignment: Qt.AlignVCenter
-        }
-
-        ToolButton {
-            id: backButton
-
-            anchors.verticalCenter: parent.verticalCenter
-
-            anchors.right: forwardButton.left
-            visible: webView.canGoBack
-
-            icon.source: "/icons/material/ic_arrow_back.svg"
-            onClicked: {
-                webView.goBack()
-            }
-
-        }
-
-        ToolButton {
-            id: forwardButton
-
-            anchors.verticalCenter: parent.verticalCenter
-
-            anchors.right: parent.right
-            visible: webView.canGoForward
-
-            icon.source: "/icons/material/ic_arrow_forward.svg"
-            onClicked: {
-                webView.goForward()
-            }
-
-        }
-
-    }
+    header: StandardHeader {}
 
     WebView {
         id: webView
@@ -106,12 +43,11 @@ Page {
         url: pg.mapURL
 
         onUrlChanged: {
-            console.log("New URL: " + url)
+            console.log(url)
             if (FileExchange.processUrlOpenRequestQuiet(url)) {
                 PlatformAdaptor.vibrateBrief()
                 stackView.pop()
             }
-
         }
     }
 

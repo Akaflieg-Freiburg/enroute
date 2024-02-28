@@ -112,8 +112,8 @@ Item {
         }
 
         function onResolveURL(url) {
-            console.log("Need to resolve:" + url)
-            stackView.push("../pages/URLResolver.qml", {mapURL: url})
+            privacyWarning.url = url
+            privacyWarning.open()
         }
     }
 
@@ -127,6 +127,33 @@ Item {
             } else
                 importTripKitWaitDialog.close()
             return
+        }
+    }
+
+    LongTextDialog {
+        id: privacyWarning
+
+        property string url
+
+        title: qsTr("Privacy warning")
+        text: "<p>"
+              + qsTr("You have shared a Google Map location.")
+              + " "
+              + qsTr("In order to find the geographic coordinate for that location, <strong>Enroute Flight Navigation</strong> must briefly open the web site <strong>%1</strong> in an embedded web browser window.").arg(url)
+              + "</p>"
+              + "<p>"
+              + qsTr("The authors of <strong>Enroute Flight Navigation</strong>, do not control that external the web site.")
+              + " "
+              + qsTr("They do not know what data it collects or how that data is processed.")
+              + " "
+              + qsTr("If you do not agree with the terms and privacy policies of the web site <strong>%1</strong>, then please click on 'Cancel'.").arg(url)
+              + "</p>"
+
+        standardButtons: Dialog.Cancel|Dialog.Ok
+
+        onAccepted: {
+            PlatformAdaptor.vibrateBrief()
+            stackView.push("../pages/URLResolver.qml", {mapURL: url})
         }
     }
 

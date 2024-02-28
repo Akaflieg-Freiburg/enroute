@@ -28,11 +28,73 @@ import "../items"
 
 Page {
     id: pg
-    title: qsTr("Google Map Resolver")
+    title: qsTr("Google Map View")
 
     required property string mapURL
 
-    header: StandardHeader {}
+
+    header: PageHeader {
+
+        height: 60 + SafeInsets.top
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
+        topPadding: SafeInsets.top
+
+        ToolButton {
+            id: backButton
+
+            anchors.left: parent.left
+            anchors.verticalCenter: parent.verticalCenter
+
+            icon.source: "/icons/material/ic_arrow_back.svg"
+
+            onClicked: {
+                PlatformAdaptor.vibrateBrief()
+                stackView.pop()
+            }
+        }
+
+        Label {
+            id: lbl
+
+            anchors.verticalCenter: parent.verticalCenter
+
+            anchors.left: parent.left
+            anchors.leftMargin: 72
+            anchors.right: headerMenuToolButton.left
+
+            text: stackView.currentItem.title
+            elide: Label.ElideRight
+            font.pixelSize: 20
+            verticalAlignment: Qt.AlignVCenter
+        }
+
+        ToolButton {
+            id: headerMenuToolButton
+
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+
+            icon.source: "/icons/material/ic_info_outline.svg"
+            onClicked: {
+                PlatformAdaptor.vibrateBrief()
+                Global.dialogLoader.active = false
+                Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {
+                                                  title: pg.title,
+                                                  text: "<p>"
+                                                        + qsTr("This page features an embedded web browser, accessing Google Maps in order to retrieve geographic coordinates for locations defined by Google Map shares.")
+                                                        + "</p>"
+                                                        + "<p>"
+                                                        + qsTr("This page should close automatically within a few seconds.")
+                                                        + " "
+                                                        + qsTr("If it remains open for longer than 30 seconds, then either user interaction is required, or the coordinate lookup has failed.")
+                                                        + "</p>",
+                                                  standardButtons: Dialog.Ok
+                                              })
+                Global.dialogLoader.active = true
+            }
+        }
+    }
 
     WebView {
         id: webView
@@ -43,7 +105,6 @@ Page {
         url: pg.mapURL
 
         onUrlChanged: {
-            console.log(url)
             if (FileExchange.processUrlOpenRequestQuiet(url)) {
                 PlatformAdaptor.vibrateBrief()
                 stackView.pop()

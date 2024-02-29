@@ -547,6 +547,8 @@ qt_add_qml_module(${PROJECT_NAME}
     SOURCES
     ui/ScaleQuickItem.h
     ui/ScaleQuickItem.cpp
+    ui/SideViewQuickItem.h
+    ui/SideViewQuickItem.cpp
 )
 
 qt_add_translations(${PROJECT_NAME}

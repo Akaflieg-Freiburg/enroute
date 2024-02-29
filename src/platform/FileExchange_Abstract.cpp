@@ -192,7 +192,8 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
 
     if (myPath.contains("maps.app.goo.gl"))
     {
-        emit resolveURL(myPath);
+        QUrl url(myPath);
+        emit resolveURL(myPath, url.host());
         return;
     }
 

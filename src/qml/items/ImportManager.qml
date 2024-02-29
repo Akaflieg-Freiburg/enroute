@@ -24,6 +24,7 @@ import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
 import "../dialogs"
+import "../items"
 import "../pages"
 
 Item {
@@ -111,8 +112,9 @@ Item {
             Global.dialogLoader.active = true
         }
 
-        function onResolveURL(url) {
+        function onResolveURL(url, site) {
             privacyWarning.url = url
+            privacyWarning.site = site
             privacyWarning.open()
         }
     }
@@ -130,24 +132,61 @@ Item {
         }
     }
 
-    LongTextDialog {
+
+    CenteringDialog {
         id: privacyWarning
 
         property string url
+        property string site
+
+        modal: true
 
         title: qsTr("Privacy warning")
-        text: "<p>"
-              + qsTr("You have shared a Google Map location.")
-              + " "
-              + qsTr("In order to find the geographic coordinate for that location, <strong>Enroute Flight Navigation</strong> must briefly open the web site <strong>%1</strong> in an embedded web browser window.").arg(url)
-              + "</p>"
-              + "<p>"
-              + qsTr("The authors of <strong>Enroute Flight Navigation</strong>, do not control that external the web site.")
-              + " "
-              + qsTr("They do not know what data it collects or how that data is processed.")
-              + " "
-              + qsTr("If you do not agree with the terms and privacy policies of the web site <strong>%1</strong>, then please click on 'Cancel'.").arg(url)
-              + "</p>"
+
+        ColumnLayout {
+            anchors.fill: parent
+
+            DecoratedScrollView{
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+
+                contentWidth: availableWidth // Disable horizontal scrolling
+
+                clip: true
+
+                Label {
+                    id: lbl
+                    text: "<p>"
+                          + qsTr("You have shared a Google Map location.")
+                          + " "
+                          + qsTr("In order to find the geographic coordinate of that location, <strong>Enroute Flight Navigation</strong> must briefly open the web site <strong>%1</strong> in an embedded web browser window.").arg(privacyWarning.site)
+                          + "</p>"
+                          + "<p>"
+                          + qsTr("The authors of <strong>Enroute Flight Navigation</strong> do not control that external the web site.")
+                          + " "
+                          + qsTr("They do not know what data it collects or how that data is processed.")
+                          + " "
+                          + qsTr("Click OK only if you agree with the terms and privacy policies of the web site <strong>%1</strong>.").arg(privacyWarning.site)
+                          + "</p>"
+
+                    width: privacyWarning.availableWidth
+                    textFormat: Text.RichText
+                    wrapMode: Text.Wrap
+                }
+            }
+
+            Item {
+                Layout.preferredHeight: lbl.font.pixelSize
+            }
+
+            WordWrappingCheckDelegate {
+                Layout.fillWidth: true
+
+                text: qsTr("Do not ask again")
+            }
+        }
+
+
 
         standardButtons: Dialog.Cancel|Dialog.Ok
 
@@ -272,7 +311,6 @@ Item {
 
             // Delays evaluation and prevents binding loops
             Binding on implicitHeight {
-//                value: lbl.implicitHeight
                 delayed: true    // Prevent intermediary values from being assigned
             }
 

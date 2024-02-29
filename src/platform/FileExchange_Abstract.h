@@ -191,7 +191,7 @@ signals:
     void openWaypointRequest(GeoMaps::Waypoint waypoint);
 
 #warning
-    void resolveURL(QString url);
+    void resolveURL(QString url, QString site);
 
 private:
     Q_DISABLE_COPY_MOVE(FileExchange_Abstract)

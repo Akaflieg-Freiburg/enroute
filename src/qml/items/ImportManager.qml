@@ -158,15 +158,13 @@ Item {
                     id: lbl
                     text: "<p>"
                           + qsTr("You have shared a Google Map location.")
-                          + " "
-                          + qsTr("In order to find the geographic coordinate of that location, <strong>Enroute Flight Navigation</strong> must briefly open the web site <strong>%1</strong> in an embedded web browser window.").arg(privacyWarning.site)
+                          + " " + qsTr("In order to find the relevant geographic coordinate, <strong>Enroute Flight Navigation</strong> must briefly open the website <strong>%1</strong> in an embedded web browser window.").arg(privacyWarning.site)
+                          + " " + qsTr("The authors of <strong>Enroute Flight Navigation</strong> do not control this website.")
+                          + " " + qsTr("They do not know what data it collects or how that data is processed.")
                           + "</p>"
                           + "<p>"
-                          + qsTr("The authors of <strong>Enroute Flight Navigation</strong> do not control that external the web site.")
-                          + " "
-                          + qsTr("They do not know what data it collects or how that data is processed.")
-                          + " "
-                          + qsTr("Click OK only if you agree with the terms and privacy policies of the web site <strong>%1</strong>.").arg(privacyWarning.site)
+                          + " " + qsTr("With the click on OK, you consent to Enroute accessing <strong>%1</strong> from your device.").arg(privacyWarning.site)
+                          + " " + qsTr("Click OK only if you agree with the terms and privacy policies of that site.")
                           + "</p>"
 
                     width: privacyWarning.availableWidth
@@ -182,7 +180,7 @@ Item {
             WordWrappingCheckDelegate {
                 Layout.fillWidth: true
 
-                text: qsTr("Do not ask again")
+                text: qsTr("Always agree, do not ask again")
             }
         }
 

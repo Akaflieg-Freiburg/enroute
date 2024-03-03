@@ -361,6 +361,28 @@ Page {
                 }
             }
 
+            WordWrappingItemDelegate {
+                Layout.fillWidth: true
+                icon.source: "/icons/material/ic_lock.svg"
+                text: qsTr("Show Privacy Warnings")
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    GlobalSettings.alwaysOpenExternalWebsites = false
+                    Global.toast.doToast(qsTr("Privacy warnings will be shown again."))
+                }
+                visible: (GlobalSettings.alwaysOpenExternalWebsites === true)
+            }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                visible: (GlobalSettings.alwaysOpenExternalWebsites === true)
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("Show Privacy Warnings")
+                    helpDialog.text = "<p>" + qsTr("This entry is visible if you have disabled privacy warnings by selecting 'Do not ask again' in an appropriate dialog. Tap on this entry to re-enable all warnings.") + "</p>"
+                    helpDialog.open()
+                }
+            }
+
             Label {
                 Layout.leftMargin: settingsPage.font.pixelSize
                 Layout.columnSpan: 2
@@ -491,11 +513,13 @@ Page {
         text: qsTr("Once the storage is cleared, the passwords can no longer be retrieved.")
 
         footer: DialogButtonBox {
-            ToolButton {
+            Button {
+                flat: true
                 text: qsTr("Clear")
                 DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
             }
-            ToolButton {
+            Button {
+                flat: true
                 text: qsTr("Cancel")
                 DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
             }

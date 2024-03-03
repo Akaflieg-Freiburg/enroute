@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -101,6 +101,16 @@ void GlobalSettings::setAcceptedTerms(int terms)
     }
     settings.setValue(QStringLiteral("acceptedTerms"), terms);
     emit acceptedTermsChanged();
+}
+
+
+void GlobalSettings::setAlwaysOpenExternalWebsites(bool alwaysOpen)
+{
+    if (alwaysOpen == alwaysOpenExternalWebsites()) {
+        return;
+    }
+    settings.setValue(QStringLiteral("alwaysOpenExternalWebsites"), alwaysOpen);
+    emit alwaysOpenExternalWebsitesChanged();
 }
 
 

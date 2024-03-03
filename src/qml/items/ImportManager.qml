@@ -113,6 +113,13 @@ Item {
         }
 
         function onResolveURL(url, site) {
+
+            if (GlobalSettings.alwaysOpenExternalWebsites === true) {
+                PlatformAdaptor.vibrateBrief()
+                stackView.push("../pages/URLResolver.qml", {mapURL: url})
+                return
+            }
+
             privacyWarning.url = url
             privacyWarning.site = site
             privacyWarning.open()
@@ -178,18 +185,20 @@ Item {
             }
 
             WordWrappingCheckDelegate {
+                id: alwaysOpen
+
                 Layout.fillWidth: true
 
-                text: qsTr("Always agree, do not ask again")
+                text: qsTr("Always open external web sites, do not ask again")
+                checked: GlobalSettings.alwaysOpenExternalWebsites
             }
         }
-
-
 
         standardButtons: Dialog.Cancel|Dialog.Ok
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
+            GlobalSettings.alwaysOpenExternalWebsites = alwaysOpen.checked
             stackView.push("../pages/URLResolver.qml", {mapURL: url})
         }
     }

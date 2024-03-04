@@ -213,18 +213,15 @@ public class ShareActivity extends QtActivity {
         
         if (intent.getAction().equals("android.intent.action.SEND")) 
         {
-
             if (intent.getStringExtra(Intent.EXTRA_STREAM) != null)
             {
-                Log.d(TAG, "A " + intent.getStringExtra(Intent.EXTRA_STREAM));
                 setUriReceived(intent.getStringExtra(Intent.EXTRA_STREAM));
                 return;
             }
 
             if (intent.getStringExtra(Intent.EXTRA_TEXT) != null)
             {
-                Log.d(TAG, "B " + intent.getStringExtra(Intent.EXTRA_TEXT));
-                setUriReceived(intent.getStringExtra(Intent.EXTRA_TEXT));
+                setTextReceived(intent.getStringExtra(Intent.EXTRA_TEXT));
                 return;
             }
 

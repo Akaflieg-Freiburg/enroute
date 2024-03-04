@@ -192,4 +192,17 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setFileR
 }
 
 
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setTextReceived(JNIEnv* env, jobject /*unused*/, jstring jfname)
+{
+    const char* fname = env->GetStringUTFChars(jfname, nullptr);
+
+    // A little complicated because GlobalObject::fileExchange() lives in a different thread
+    QMetaObject::invokeMethod( GlobalObject::fileExchange(),
+                              "processText",
+                              Qt::QueuedConnection,
+                              Q_ARG( QString, QString::fromUtf8(fname)) );
+    env->ReleaseStringUTFChars(jfname, fname);
+}
+
+
 }

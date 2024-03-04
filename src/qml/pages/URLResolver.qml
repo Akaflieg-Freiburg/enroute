@@ -105,7 +105,7 @@ Page {
         url: pg.mapURL
 
         onUrlChanged: {
-            if (FileExchange.processUrlOpenRequestQuiet(url)) {
+            if (FileExchange.processTextQuiet(url)) {
                 PlatformAdaptor.vibrateBrief()
                 stackView.pop()
             }

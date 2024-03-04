@@ -156,16 +156,19 @@ public slots:
      */
     void processFileOpenRequest(const QByteArray& path);
 
-    /*! \brief Determine file function and emit openFileRequest()
+    /*! \brief Process text
      *
-     * Overloaded function for convenience
+     * This helper function is called by platform-dependent code whenever
+     * text is passed to the app (e.g. via drag-and-drop or via an
+     * Android intent).  It will look at the text, determine the
+     * text function and emit signals as appropriate.
      *
-     * @param url URL to be opened
+     * @param text Text
      */
-    void processUrlOpenRequest(const QUrl& url);
+    void processText(const QString& text);
 
 #warning
-    bool processUrlOpenRequestQuiet(const QString& url);
+    bool processTextQuiet(const QString& text);
 
 signals:
     /*! \brief Emitted when platform asks this app to open a file

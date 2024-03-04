@@ -722,7 +722,10 @@ AppWindow {
     DropArea {
         anchors.fill: stackView
         onDropped: (drop) => {
-            FileExchange.processFileOpenRequest(drop.text)
+                       if (!FileExchange.processTextQuiet(drop.text))
+                       {
+                           FileExchange.processFileOpenRequest(drop.text)
+                       }
         }
     }
 
@@ -841,7 +844,7 @@ AppWindow {
         onActivated: {
             if (PlatformAdaptor.clipboardText() === "")
                 return
-            FileExchange.processFileOpenRequest(PlatformAdaptor.clipboardText())
+            FileExchange.processText(PlatformAdaptor.clipboardText())
         }
     }
 

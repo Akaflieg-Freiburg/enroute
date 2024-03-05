@@ -20,14 +20,14 @@
 
 #include <QImage>
 #include <QMimeDatabase>
+#include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
-#include <QNetworkAccessManager>
 #include <QUrl>
 
 #include "fileFormats/CUP.h"
-#include "fileFormats/MapURL.h"
 #include "fileFormats/MBTILES.h"
+#include "fileFormats/MapURL.h"
 #include "fileFormats/TripKit.h"
 #include "fileFormats/VAC.h"
 #include "geomaps/GeoJSON.h"

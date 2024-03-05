@@ -18,17 +18,15 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QFile>
-
 #include "fileFormats/MapURL.h"
 
 namespace {
-Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexBingMap, ("cp=(-?\\d+\\.\\d+)%7E(-?\\d+\\.\\d+)"))
-Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexGoogleMap1, ("@(-?\\d+\\.\\d+),(-?\\d+\\.\\d+)"))
-Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexGoogleMap2, ("!3d(-?\\d+\\.\\d+)!4d(-?\\d+\\.\\d+)"))
-Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexOpenStreetMap, ("#map=\\d+/(\\d+\\.\\d+)/(\\d+\\.\\d+)"))
-Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexWeGo, ("map=(\\d+\\.\\d+),(\\d+\\.\\d+)"))
-}
+Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexBingMap, (u"cp=(-?\\d+\\.\\d+)%7E(-?\\d+\\.\\d+)"_qs))
+Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexGoogleMap1, (u"@(-?\\d+\\.\\d+),(-?\\d+\\.\\d+)"_qs))
+Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexGoogleMap2, (u"!3d(-?\\d+\\.\\d+)!4d(-?\\d+\\.\\d+)"_qs))
+Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexOpenStreetMap, (u"#map=\\d+/(\\d+\\.\\d+)/(\\d+\\.\\d+)"_qs))
+Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexWeGo, (u"map=(\\d+\\.\\d+),(\\d+\\.\\d+)"_qs))
+} // namespace
 
 
 //

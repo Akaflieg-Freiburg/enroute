@@ -20,9 +20,9 @@
 
 #pragma once
 
-#include "geomaps/Waypoint.h"
-#include "GlobalObject.h"
 #include <QQmlEngine>
+#include "GlobalObject.h"
+#include "geomaps/Waypoint.h"
 
 namespace Platform {
 

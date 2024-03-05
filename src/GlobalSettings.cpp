@@ -18,17 +18,20 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QCoreApplication>
+
 #include "GlobalSettings.h"
 
 
 //
 // Constructor and destructor
 //
-#include <QCoreApplication>
+
+
 GlobalSettings::GlobalSettings(QObject *parent)
     : QObject(parent)
 {
-    QCoreApplication::instance()->processEvents();
+    QCoreApplication::processEvents();
 
     // Save some values
     settings.setValue(QStringLiteral("lastVersion"), PROJECT_VERSION);

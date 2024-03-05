@@ -186,7 +186,16 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
 
 void Platform::FileExchange_Abstract::processText(const QString& text)
 {
-    processTextQuiet(text);
+    if (processTextQuiet(text))
+    {
+        return;
+    }
+    if (text.contains(u"maps.app.goo.gl"_qs))
+    {
+        emit resolveURL(text, QUrl(text).host());
+        return;
+    }
+    emit unableToProcessText(text);
 }
 
 
@@ -198,13 +207,5 @@ bool Platform::FileExchange_Abstract::processTextQuiet(const QString& text)
         emit openWaypointRequest(mapURL.waypoint());
         return true;
     }
-
-    if (text.contains("maps.app.goo.gl"))
-    {
-        emit resolveURL(text, QUrl(text).host());
-        return true;
-    }
-
     return false;
 }
-

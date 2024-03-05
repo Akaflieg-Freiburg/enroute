@@ -167,7 +167,16 @@ public slots:
      */
     void processText(const QString& text);
 
-#warning
+    /*! \brief Process text
+     *
+     * This helper function analyses the text and checks if it can be interpreted
+     * as containing geographic coordinates. If so, it emits the signal
+     * openWaypointRequest() and returns true. Otherwise, it returns false.
+     *
+     * @param text Text
+     *
+     * @returns True if the text can be interpreted as containing geographic coordinates
+     */
     bool processTextQuiet(const QString& text);
 
 signals:
@@ -193,8 +202,16 @@ signals:
      */
     void openWaypointRequest(GeoMaps::Waypoint waypoint);
 
-#warning
+    /*! \brief Emitted when Google Maps URL needs to be resolved
+     *
+     *  This signal is emitted if the method processText encounters a URL of type
+     *  https://maps.app.goo.gl/SOMECODE. The GUI will then open the page
+     *  URLResolver.
+     */
     void resolveURL(QString url, QString site);
+
+    /*! \brief Emitted when processText was unable to parse a text item */
+    void unableToProcessText(QString text);
 
 private:
     Q_DISABLE_COPY_MOVE(FileExchange_Abstract)

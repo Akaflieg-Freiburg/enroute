@@ -124,6 +124,16 @@ Item {
             privacyWarning.site = site
             privacyWarning.open()
         }
+
+        function onUnableToProcessText(txt) {
+            Global.dialogLoader.active = false
+            Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {
+                                              title: qsTr("Unable to import text item"),
+                                              text: qsTr("The text item could not be interpreted."),
+                                              standardButtons: Dialog.Ok
+                                          })
+            Global.dialogLoader.active = true
+        }
     }
 
     Connections {

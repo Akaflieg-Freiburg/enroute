@@ -56,13 +56,26 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QByteArray& p
 
 void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path)
 {
+    /*
+     * Check for location MapURLs
+     */
+
+    if (FileExchange_Abstract::processTextQuiet(path))
+    {
+        return;
+    }
     auto file = FileFormats::DataFileAbstract::openFileURL(path);
     const QString myPath = file->fileName();
 
+
+    /*
+     * Get MIME Type
+     */
+
     QMimeDatabase const dataBase;
     auto mimeType = dataBase.mimeTypeForData(file.data());
-
     qWarning() << path << myPath << mimeType;
+
 
     /*
      * Check for various possible file formats/contents

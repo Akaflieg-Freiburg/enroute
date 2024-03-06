@@ -24,8 +24,10 @@ namespace {
 Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexBingMap, (u"cp=(-?\\d+\\.\\d+)%7E(-?\\d+\\.\\d+)"_qs))
 Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexGoogleMap1, (u"@(-?\\d+\\.\\d+),(-?\\d+\\.\\d+)"_qs))
 Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexGoogleMap2, (u"!3d(-?\\d+\\.\\d+)!4d(-?\\d+\\.\\d+)"_qs))
-Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexOpenStreetMap, (u"#map=\\d+/(\\d+\\.\\d+)/(\\d+\\.\\d+)"_qs))
-Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexWeGo, (u"map=(\\d+\\.\\d+),(\\d+\\.\\d+)"_qs))
+Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexOpenStreetMap, (u"#map=\\d+/(-?\\d+\\.\\d+)/(-?\\d+\\.\\d+)"_qs))
+Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexWeGo1, (u"map=(-?\\d+\\.\\d+),(-?\\d+\\.\\d+)"_qs))
+Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexWeGo2, (u"l/(-?\\d+\\.\\d+),(-?\\d+\\.\\d+)"_qs))
+Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexGeo, (u"geo:(-?\\d+\\.\\d+),(-?\\d+\\.\\d+)"_qs))
 } // namespace
 
 
@@ -98,7 +100,37 @@ FileFormats::MapURL::MapURL(const QString& urlName)
 
     {
         // Try to parse a WeGO URL
-        auto match = regexWeGo->match(urlName);
+        auto match = regexWeGo1->match(urlName);
+        if (match.hasMatch()) {
+            auto latitude = match.captured(1);
+            auto longitude = match.captured(2);
+            GeoMaps::Waypoint const waypoint({latitude.toDouble(), longitude.toDouble()});
+            if (waypoint.isValid())
+            {
+                m_waypoint = waypoint;
+                return;
+            }
+        }
+    }
+
+    {
+        // Try to parse a WeGO URL
+        auto match = regexWeGo2->match(urlName);
+        if (match.hasMatch()) {
+            auto latitude = match.captured(1);
+            auto longitude = match.captured(2);
+            GeoMaps::Waypoint const waypoint({latitude.toDouble(), longitude.toDouble()});
+            if (waypoint.isValid())
+            {
+                m_waypoint = waypoint;
+                return;
+            }
+        }
+    }
+
+    {
+        // Try to parse a geo: URL
+        auto match = regexGeo->match(urlName);
         if (match.hasMatch()) {
             auto latitude = match.captured(1);
             auto longitude = match.captured(2);

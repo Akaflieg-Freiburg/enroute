@@ -51,6 +51,7 @@ public class ShareActivity extends QtActivity {
      * native method to send file data to Qt - implemented in Cpp via JNI.
      */
     public static native void setFileReceived(String fileName);
+    public static native void setTextReceived(String text);
 
     private static boolean isIntentPending = false;
     private static boolean isInitialized = false;

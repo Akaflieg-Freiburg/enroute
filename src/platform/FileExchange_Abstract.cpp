@@ -208,6 +208,11 @@ void Platform::FileExchange_Abstract::processText(const QString& text)
         emit resolveURL(text, QUrl(text).host());
         return;
     }
+    if (text.contains(u"share.here.com"_qs))
+    {
+        emit resolveURL(text, QUrl(text).host());
+        return;
+    }
     emit unableToProcessText(text);
 }
 

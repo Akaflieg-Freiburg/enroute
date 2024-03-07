@@ -129,7 +129,8 @@ Item {
             Global.dialogLoader.active = false
             Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {
                                               title: qsTr("Unable to import text item"),
-                                              text: qsTr("The text item could not be interpreted."),
+                                              text: "<p>" + qsTr("The text item could not be interpreted.") + "</p>"
+                                                    + "<p><strong>" + url + "</strong></p>",
                                               standardButtons: Dialog.Ok
                                           })
             Global.dialogLoader.active = true

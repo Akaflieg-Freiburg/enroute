@@ -102,6 +102,9 @@ Page {
         anchors.fill: parent
         anchors.bottomMargin: SafeInsets.bottom
 
+        // User Agent Setting is necessary, or else Google will reply
+        // with Android intents rather than https urls.
+        httpUserAgent: "EnrouteFlightNavigation/1.0"
         url: pg.mapURL
 
         onUrlChanged: {

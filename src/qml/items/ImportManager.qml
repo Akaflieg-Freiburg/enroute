@@ -175,8 +175,8 @@ Item {
                 Label {
                     id: lbl
                     text: "<p>"
-                          + qsTr("You have shared a Google Map location.")
-                          + " " + qsTr("In order to find the relevant geographic coordinate, <strong>Enroute Flight Navigation</strong> must briefly open the website <strong>%1</strong> in an embedded web browser window.").arg(privacyWarning.site)
+                          + qsTr("You have shared a location with <strong>Enroute Flight Navigation</strong>.")
+                          + " " + qsTr("In order to find the relevant geographic coordinate, the website <strong>%1</strong> must briefly be opened in an embedded web browser window.").arg(privacyWarning.site)
                           + " " + qsTr("The authors of <strong>Enroute Flight Navigation</strong> do not control this website.")
                           + " " + qsTr("They do not know what data it collects or how that data is processed.")
                           + "</p>"

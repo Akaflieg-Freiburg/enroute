@@ -28,7 +28,7 @@ import "../items"
 
 Page {
     id: pg
-    title: qsTr("Google Map View")
+    title: qsTr("Resolve Coordinates")
 
     required property string mapURL
 
@@ -82,7 +82,7 @@ Page {
                 Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {
                                                   title: pg.title,
                                                   text: "<p>"
-                                                        + qsTr("This page features an embedded web browser, accessing Google Maps in order to retrieve geographic coordinates for locations defined by Google Map shares.")
+                                                        + qsTr("This page features an embedded web browser, accessing an external web site in order to retrieve geographic coordinates for locations shared with <strong>Enroute Flight Navigation</strong>.")
                                                         + "</p>"
                                                         + "<p>"
                                                         + qsTr("This page should close automatically within a few seconds.")

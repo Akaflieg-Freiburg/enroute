@@ -47,6 +47,7 @@ Consult the `homepage <https://akaflieg-freiburg.github.io/enroute>`_ of
 
    02-tutorialBasic
    03-tutorialAdvanced
+   04-additionalSoftware
 
 
 .. raw:: latex
@@ -57,9 +58,9 @@ Consult the `homepage <https://akaflieg-freiburg.github.io/enroute>`_ of
    :caption: Reference Manual
    :maxdepth: 1
 
-   04-referencePages
-   05-referenceWorkflow
-   06-referenceTechnology
+   05-referencePages
+   06-referenceWorkflow
+   07-referenceTechnology
 
 
 .. raw:: latex
@@ -70,4 +71,4 @@ Consult the `homepage <https://akaflieg-freiburg.github.io/enroute>`_ of
    :caption: Appendix
    :maxdepth: 1
 
-   07-appendix
+   08-appendix

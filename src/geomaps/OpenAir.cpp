@@ -24,7 +24,6 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QTextStream>
-#include <stdexcept>
 
 #include "OpenAir.h"
 #include "fileFormats/DataFileAbstract.h"
@@ -443,13 +442,12 @@ public:
             {
                 coordArray.pop_back();
             }
-            for (int j = 0; j < i.polygon.size(); j++) {
-                while (coord.count() != 0)
-                {
+            for (const auto &j : i.polygon) {
+                while (coord.count() != 0) {
                     coord.pop_back();
                 }
-                coord.append(i.polygon.at(j).longitude());
-                coord.append(i.polygon.at(j).latitude());
+                coord.append(j.longitude());
+                coord.append(j.latitude());
                 coordArray.append(coord);
             }
             while (polygonArray.count() != 0)

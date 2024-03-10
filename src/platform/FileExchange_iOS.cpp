@@ -63,16 +63,17 @@ auto Platform::FileExchange::shareContent(const QByteArray& content, const QStri
 {
     // Share file content
 
-    QMimeDatabase db;
-    QMimeType mime = db.mimeTypeForName(mimeType);
-    QString fileExtension = mime.preferredSuffix();
+    QMimeDatabase const db;
+    QMimeType const mime = db.mimeTypeForName(mimeType);
+    QString const fileExtension = mime.preferredSuffix();
 
     ObjCAdapter::shareContent(content, mimeType, fileNameTemplate, fileExtension);
     return {};
 }
 
-
-auto Platform::FileExchange::viewContent(const QByteArray& content, const QString& /*mimeType*/, const QString& fileNameTemplate) -> QString
+auto Platform::FileExchange::viewContent(const QByteArray & /*content*/,
+                                         const QString & /*mimeType*/,
+                                         const QString & /*fileNameTemplate*/) -> QString
 {
     // View file content
 #warning not implemented
@@ -87,7 +88,7 @@ void Platform::FileExchange::handleFileUrlReceived(const QUrl &url)
     myUrl.remove(0, 7);
     // … remove "file://" from Url
     // … then check if File exists
-    QFileInfo fileInfo = QFileInfo(myUrl);
+    QFileInfo const fileInfo = QFileInfo(myUrl);
     if(fileInfo.exists()) {
         Platform::FileExchange_Abstract::processFileOpenRequest(myUrl);
     } else {

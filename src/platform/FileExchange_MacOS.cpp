@@ -51,16 +51,18 @@ void Platform::FileExchange::importContent()
 #warning not implemented
 }
 
-
-auto Platform::FileExchange::shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
+auto Platform::FileExchange::shareContent(const QByteArray & /*content*/,
+                                          const QString & /*mimeType*/,
+                                          const QString & /*fileNameTemplate*/) -> QString
 {
     // Share file content
 #warning not implemented
     return {};
 }
 
-
-auto Platform::FileExchange::viewContent(const QByteArray& content, const QString& /*mimeType*/, const QString& fileNameTemplate) -> QString
+auto Platform::FileExchange::viewContent(const QByteArray & /*content*/,
+                                         const QString & /*mimeType*/,
+                                         const QString & /*fileNameTemplate*/) -> QString
 {
     // View file content
 #warning not implemented

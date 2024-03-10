@@ -95,7 +95,7 @@ public:
     QString language() override;
 
 #warning documentation
-    Q_INVOKABLE void saveScreenshot(QImage, QString);
+    static Q_INVOKABLE void saveScreenshot(const QImage &, QString);
 
     /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
     void onGUISetupCompleted() override;

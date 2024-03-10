@@ -26,8 +26,8 @@
 #include <QTextStream>
 #include <stdexcept>
 
-#include "fileFormats/DataFileAbstract.h"
 #include "OpenAir.h"
+#include "fileFormats/DataFileAbstract.h"
 
 #include <cmath>
 
@@ -424,21 +424,18 @@ public:
         recObj.insert(u"type"_qs, QJsonValue::fromVariant("FeatureCollection"));
         recObj.insert(u"info"_qs, QJsonValue::fromVariant(fileName));
 
-        for (int i=0; i < airSpaceVector.size(); i++)
-        {
+        for (const auto &i : airSpaceVector) {
             featureObj.insert(u"type"_qs, QJsonValue::fromVariant("Feature"));
             propObj = QJsonObject();
-            propObj.insert(u"NAM"_qs, QJsonValue::fromVariant(airSpaceVector.at(i).an));
-            propObj.insert(u"ID"_qs, QJsonValue::fromVariant(airSpaceVector.at(i).an));
-            propObj.insert(u"CAT"_qs, QJsonValue::fromVariant(airSpaceVector.at(i).ac));
+            propObj.insert(u"NAM"_qs, QJsonValue::fromVariant(i.an));
+            propObj.insert(u"ID"_qs, QJsonValue::fromVariant(i.an));
+            propObj.insert(u"CAT"_qs, QJsonValue::fromVariant(i.ac));
             propObj.insert(u"TYP"_qs, QJsonValue::fromVariant("AS"));
-            if (!airSpaceVector.at(i).al.isEmpty())
-            {
-                propObj.insert(u"BOT"_qs, QJsonValue::fromVariant(airSpaceVector.at(i).al));
+            if (!i.al.isEmpty()) {
+                propObj.insert(u"BOT"_qs, QJsonValue::fromVariant(i.al));
             }
-            if (!airSpaceVector.at(i).ah.isEmpty())
-            {
-                propObj.insert(u"TOP"_qs, QJsonValue::fromVariant(airSpaceVector.at(i).ah));
+            if (!i.ah.isEmpty()) {
+                propObj.insert(u"TOP"_qs, QJsonValue::fromVariant(i.ah));
             }
             featureObj.insert(u"properties"_qs, propObj);
 
@@ -446,14 +443,13 @@ public:
             {
                 coordArray.pop_back();
             }
-            for (int j=0; j < airSpaceVector.at(i).polygon.size(); j++)
-            {
+            for (int j = 0; j < i.polygon.size(); j++) {
                 while (coord.count() != 0)
                 {
                     coord.pop_back();
                 }
-                coord.append(airSpaceVector.at(i).polygon.at(j).longitude());
-                coord.append(airSpaceVector.at(i).polygon.at(j).latitude());
+                coord.append(i.polygon.at(j).longitude());
+                coord.append(i.polygon.at(j).latitude());
                 coordArray.append(coord);
             }
             while (polygonArray.count() != 0)
@@ -461,13 +457,11 @@ public:
                 polygonArray.pop_back();
             }
             polygonArray.append(coordArray);
-            if  (airSpaceVector.at(i).polygon.size() > 1)
-            {
+            if (i.polygon.size() > 1) {
                 geomObj.insert(u"type"_qs, QJsonValue::fromVariant("Polygon"));
                 geomObj.insert(u"coordinates"_qs, polygonArray);
                 featureObj.insert(u"geometry"_qs, geomObj);
             }
-
 
             featureArray.append(featureObj);
         }

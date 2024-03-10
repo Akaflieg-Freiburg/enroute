@@ -722,7 +722,10 @@ AppWindow {
     DropArea {
         anchors.fill: stackView
         onDropped: (drop) => {
-            FileExchange.processFileOpenRequest(drop.text)
+                       if (!FileExchange.processTextQuiet(drop.text))
+                       {
+                           FileExchange.processFileOpenRequest(drop.text)
+                       }
         }
     }
 
@@ -834,6 +837,15 @@ AppWindow {
     Shortcut {
         sequences: [StandardKey.Close]
         onActivated: Qt.quit()
+    }
+
+    Shortcut {
+        sequences: [StandardKey.Paste]
+        onActivated: {
+            if (PlatformAdaptor.clipboardText() === "")
+                return
+            FileExchange.processText(PlatformAdaptor.clipboardText())
+        }
     }
 
     //

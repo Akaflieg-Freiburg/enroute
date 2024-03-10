@@ -51,6 +51,7 @@ public class ShareActivity extends QtActivity {
      * native method to send file data to Qt - implemented in Cpp via JNI.
      */
     public static native void setFileReceived(String fileName);
+    public static native void setTextReceived(String text);
 
     private static boolean isIntentPending = false;
     private static boolean isInitialized = false;
@@ -152,14 +153,13 @@ public class ShareActivity extends QtActivity {
 
         super.onActivityResult(requestCode, resultCode, intent);
 
-        if (resultCode == RESULT_OK) {
-
-            if (requestCode == ShareUtils.getOpenRequestCode()) {
-
-                setUriReceived(intent.getData());
-
-            } else if (requestCode == ShareUtils.getSaveRequestCode()) {
-
+        if (resultCode == RESULT_OK) 
+        {
+            if (requestCode == ShareUtils.getOpenRequestCode()) 
+            {
+                setUriReceived(intent.getData().toString());
+            } else if (requestCode == ShareUtils.getSaveRequestCode())
+            {
                 copyContent(ShareUtils.getShareUri(), intent.getData());
             }
         }
@@ -196,7 +196,8 @@ public class ShareActivity extends QtActivity {
         Intent intent = getIntent();
 
         Uri intentUri;
-        if (intent.getAction() == null) {
+        if (intent.getAction() == null) 
+        {
             Log.d(TAG, "processIntent intent.getAction() == null");
             return;
         }
@@ -204,18 +205,32 @@ public class ShareActivity extends QtActivity {
         Log.d(TAG, "processIntent() " + intent.getAction());
 
         // we are listening to android.intent.action.SEND or VIEW (see Manifest)
-        if (intent.getAction().equals("android.intent.action.VIEW")) {
+        if (intent.getAction().equals("android.intent.action.VIEW")) 
+        {
             intentUri = intent.getData();
-        } else if (intent.getAction().equals("android.intent.action.SEND")) {
-            Bundle bundle = intent.getExtras();
-            intentUri = (Uri) bundle.get(Intent.EXTRA_STREAM);
-        } else {
-            // could be for example
-            // action:anroid.intent.action.MAIN
+            setUriReceived(intentUri.toString());
             return;
         }
+        
+        if (intent.getAction().equals("android.intent.action.SEND")) 
+        {
+            if (intent.getStringExtra(Intent.EXTRA_STREAM) != null)
+            {
+                setUriReceived(intent.getStringExtra(Intent.EXTRA_STREAM));
+                return;
+            }
 
-        setUriReceived(intentUri);
+            if (intent.getStringExtra(Intent.EXTRA_TEXT) != null)
+            {
+                setTextReceived(intent.getStringExtra(Intent.EXTRA_TEXT));
+                return;
+            }
+
+        }
+
+        // could be for example
+        // action:anroid.intent.action.MAIN
+        return;
     }
 
     /**
@@ -225,14 +240,14 @@ public class ShareActivity extends QtActivity {
      * Extract intent URL from intent and process it further
      * in setUriReceived().
      */
-    private void setUriReceived(Uri src) {
+    private void setUriReceived(String src) {
         // Safety check
         if (src == null)
         {
             Log.d(TAG, "setUriReceived called with argument=null");
             return;
         }
-        setFileReceived(src.toString());
+        setFileReceived(src);
     }
 
     /**

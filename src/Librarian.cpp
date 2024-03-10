@@ -284,7 +284,9 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     if (name == u":text/whatsnew.html"_qs)
     {
         QString result;
+#if !defined(Q_OS_IOS)
         result += "<p>" + tr("As requested by the search-and-rescue community, <strong>Enroute Flight Navigation</strong> is now able to accept location shares from Google Maps.") + "</p>";
+#endif
         result += "<p>" + tr("For enhanced privacy, <strong>Enroute Flight Navigation</strong> routes requests for METAR/TAF and NOTAM data through our servers. "
                              "This hides your IP address from the web services that provide the data.")+ "</p>";
         result += "<p>" + tr("We need help with promotional graphics for the app stores and with explainer videos. "

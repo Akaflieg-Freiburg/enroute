@@ -21,7 +21,6 @@
 #include "fileFormats/MapURL.h"
 
 namespace {
-Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexBingMap, (u"cp=(-?\\d+\\.\\d+)%7E(-?\\d+\\.\\d+)"_qs))
 Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexGoogleMap1, (u"@(-?\\d+\\.\\d+),(-?\\d+\\.\\d+)"_qs))
 Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexGoogleMap2, (u"!3d(-?\\d+\\.\\d+)!4d(-?\\d+\\.\\d+)"_qs))
 Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexOpenStreetMap, (u"#map=\\d+/(-?\\d+\\.\\d+)/(-?\\d+\\.\\d+)"_qs))
@@ -56,21 +55,6 @@ FileFormats::MapURL::MapURL(const QString& urlName)
     {
         // Try to parse a Google Map URL
         auto match = regexGoogleMap2->match(urlName);
-        if (match.hasMatch()) {
-            auto latitude = match.captured(1);
-            auto longitude = match.captured(2);
-            GeoMaps::Waypoint const waypoint({latitude.toDouble(), longitude.toDouble()});
-            if (waypoint.isValid())
-            {
-                m_waypoint = waypoint;
-                return;
-            }
-        }
-    }
-
-    {
-        // Try to parse a Bing Map URL
-        auto match = regexBingMap->match(urlName);
         if (match.hasMatch()) {
             auto latitude = match.captured(1);
             auto longitude = match.captured(2);

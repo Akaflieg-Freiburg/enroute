@@ -33,6 +33,6 @@ data.
 
 ## What is the minimum Android version?
 
-At present **Enroute Flight Navigation** requires Android 6.0 or later.  We ask
+At present **Enroute Flight Navigation** requires Android 8.0 or later.  We ask
 for your understanding that we cannot support older devices, as this would
 require manpower that we simply do not have.

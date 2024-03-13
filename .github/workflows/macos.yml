@@ -60,6 +60,7 @@ jobs:
         mv enroute.dmg enroute-macOS-universal.dmg
     - name: Upload to developerBuilds
       run: |
-        gh release upload --clobber developerBuilds enroute-macOS-universal.dmg
+        gh release upload --clobber developerBuilds ../enroute-macOS-universal.dmg
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      working-directory: enroute

@@ -20,4 +20,4 @@
 
 * There is extensive [API documentation](https://akaflieg-freiburg.github.io/enroute/APIdoc) for the C++ classes.
 
-* GitHub automatically generates unsigned android debug binaries on every push. Go to [this page](https://github.com/Akaflieg-Freiburg/enroute/actions?query=workflow%3A%22Compile+on+Android%22) and click on the relevant element in the list.
+* Developers will find automatically generated experimental builds for a variety of platforms [here](https://github.com/Akaflieg-Freiburg/enroute/releases/tag/developerBuilds).

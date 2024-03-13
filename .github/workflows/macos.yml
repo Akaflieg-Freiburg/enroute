@@ -49,6 +49,16 @@ jobs:
           -DCMAKE_BUILD_TYPE=Debug \
           -DCMAKE_C_COMPILER_LAUNCHER="ccache" \
           -DCMAKE_CXX_COMPILER_LAUNCHER="ccache" \
-          -DCMAKE_INSTALL_PREFIX:STRING=$PWD/app/usr
+          -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" \
+          -DCMAKE_INSTALL_PREFIX=. 
         cmake --build build-enroute
+    - name: Package
+      run: |
         cmake --build build-enroute --target install
+        $Qt6_DIR/bin/macdeployqt enroute.app -dmg
+        mv enroute.dmg enroute-macOS-universal.dmg
+    - name: Upload to developerBuilds
+      run: |
+        gh release upload --clobber developerBuilds enroute-macOS-universal.dmg
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

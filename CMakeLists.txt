@@ -41,7 +41,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Android")
 endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-    find_package(Qt6 COMPONENTS Sensors WebView REQUIRED)
+    find_package(Qt6 COMPONENTS WebView REQUIRED)
 endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "iOS")

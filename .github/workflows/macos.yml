@@ -30,6 +30,7 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
+        cache: 'true'
         version: '6.6.*'
         modules: 'qt5compat qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtshadertools qtspeech qtwebsockets qtwebview'
     - name: ccache

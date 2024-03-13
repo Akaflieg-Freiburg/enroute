@@ -2,7 +2,7 @@
 
 ![API Documentation](https://github.com/Akaflieg-Freiburg/enroute/workflows/API%20Documentation/badge.svg) ![Compile on Android](https://github.com/Akaflieg-Freiburg/enroute/workflows/Compile%20on%20Android/badge.svg) ![Compile on Linux](https://github.com/Akaflieg-Freiburg/enroute/workflows/Compile%20on%20Linux/badge.svg) [![Compile on MacOS](https://github.com/Akaflieg-Freiburg/enroute/actions/workflows/macos.yml/badge.svg)](https://github.com/Akaflieg-Freiburg/enroute/actions/workflows/macos.yml)
 
-<img align="right" src="https://akaflieg-freiburg.github.io/enroute/assets/images/map-small.webp" width="250">**Enroute Flight Navigation** is a mobile flight navigation app for Android and other devices. The app is free, open source, 100% non-commercial and does not collect user data. 
+<img align="right" src="https://akaflieg-freiburg.github.io/enroute/assets/images/map-small.webp" width="250">**Enroute Flight Navigation** is a mobile flight navigation app for Android and iOS devices. The app is free, open source, 100% non-commercial and does not collect user data. 
 
 ## Information for users
 

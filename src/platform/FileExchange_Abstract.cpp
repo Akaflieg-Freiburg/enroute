@@ -20,10 +20,14 @@
 
 #include <QImage>
 #include <QMimeDatabase>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkRequest>
 #include <QUrl>
 
 #include "fileFormats/CUP.h"
 #include "fileFormats/MBTILES.h"
+#include "fileFormats/MapURL.h"
 #include "fileFormats/TripKit.h"
 #include "fileFormats/VAC.h"
 #include "geomaps/GeoJSON.h"
@@ -52,13 +56,26 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QByteArray& p
 
 void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path)
 {
+    /*
+     * Check for location MapURLs
+     */
+
+    if (FileExchange_Abstract::processTextQuiet(path))
+    {
+        return;
+    }
     auto file = FileFormats::DataFileAbstract::openFileURL(path);
     const QString myPath = file->fileName();
 
+
+    /*
+     * Get MIME Type
+     */
+
     QMimeDatabase const dataBase;
     auto mimeType = dataBase.mimeTypeForData(file.data());
-
     qWarning() << path << myPath << mimeType;
+
 
     /*
      * Check for various possible file formats/contents
@@ -92,7 +109,7 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     // FLARM Simulator file
     if (Traffic::TrafficDataSource_File::containsFLARMSimulationData(myPath))
     {
-        auto *source = new Traffic::TrafficDataSource_File(myPath);
+        auto* source = new Traffic::TrafficDataSource_File(myPath);
         GlobalObject::trafficDataProvider()->addDataSource(source); // Will take ownership of source
         source->connectToTrafficReceiver();
         return;
@@ -177,4 +194,36 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     }
 
     emit openFileRequest(path, {}, UnknownFunction);
+}
+
+
+void Platform::FileExchange_Abstract::processText(const QString& text)
+{
+    if (processTextQuiet(text))
+    {
+        return;
+    }
+    if (text.contains(u"maps.app.goo.gl"_qs))
+    {
+        emit resolveURL(text, QUrl(text).host());
+        return;
+    }
+    if (text.contains(u"share.here.com"_qs))
+    {
+        emit resolveURL(text, QUrl(text).host());
+        return;
+    }
+    emit unableToProcessText(text);
+}
+
+
+bool Platform::FileExchange_Abstract::processTextQuiet(const QString& text)
+{
+    FileFormats::MapURL const mapURL(text);
+    if (mapURL.isValid())
+    {
+        emit openWaypointRequest(mapURL.waypoint());
+        return true;
+    }
+    return false;
 }

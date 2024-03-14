@@ -145,7 +145,6 @@
                 </array>
             </dict>
         </dict>
-
         <dict>
             <key>UTTypeIdentifier</key>
             <string>enroute.geojson</string>
@@ -162,7 +161,6 @@
                 </array>
             </dict>
         </dict>
-
     </array>
     <key>CFBundleDocumentTypes</key>
     <array>
@@ -229,6 +227,24 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
+            <string>Tiff</string>
+            <key>CFBundleTypeRole</key>
+            <string>Viewer</string>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>tiff</string>
+                <string>TIFF</string>
+            </array>
+            <key>LSHandlerRank</key>
+            <string>Alternate</string>
+            <key>LSItemContentTypes</key>
+            <array>
+                <string>public.tiff</string>
+            </array>
+
+        </dict>
+        <dict>
+            <key>CFBundleTypeName</key>
             <string>MBTILES</string>
             <key>CFBundleTypeRole</key>
             <string>Viewer</string>
@@ -276,9 +292,11 @@
             <string>zip</string>
             <key>CFBundleTypeRole</key>
             <string>Viewer</string>
+            <key>LSHandlerRank</key>
+            <string>Alternate</string>
             <key>CFBundleTypeOSTypes</key>
             <array>
-                <string>ZIP </string>
+                <string>ZIP</string>
             </array>
             <key>CFBundleTypeExtensions</key>
             <array>
@@ -295,6 +313,7 @@
                 <string>application/x-zip-compressed</string>
             </array>
         </dict>
+
      </array>
 </dict>
 </plist>

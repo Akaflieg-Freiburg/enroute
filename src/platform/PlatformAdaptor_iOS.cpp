@@ -101,7 +101,7 @@ QString Platform::PlatformAdaptor::language()
     return ObjCAdapter::preferredLanguage();
 }
 
-void Platform::PlatformAdaptor::saveScreenshot(QImage image, QString path)
+void Platform::PlatformAdaptor::saveScreenshot(const QImage &image, QString path)
 {
     image.save(path);
     ObjCAdapter::saveToGallery(path);

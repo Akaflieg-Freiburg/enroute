@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,8 +20,9 @@
 
 #pragma once
 
-#include "GlobalObject.h"
 #include <QQmlEngine>
+#include "GlobalObject.h"
+#include "geomaps/Waypoint.h"
 
 namespace Platform {
 
@@ -155,6 +156,29 @@ public slots:
      */
     void processFileOpenRequest(const QByteArray& path);
 
+    /*! \brief Process text
+     *
+     * This helper function is called by platform-dependent code whenever
+     * text is passed to the app (e.g. via drag-and-drop or via an
+     * Android intent).  It will look at the text, determine the
+     * text function and emit signals as appropriate.
+     *
+     * @param text Text
+     */
+    void processText(const QString& text);
+
+    /*! \brief Process text
+     *
+     * This helper function analyses the text and checks if it can be interpreted
+     * as containing geographic coordinates. If so, it emits the signal
+     * openWaypointRequest() and returns true. Otherwise, it returns false.
+     *
+     * @param text Text
+     *
+     * @returns True if the text can be interpreted as containing geographic coordinates
+     */
+    bool processTextQuiet(const QString& text);
+
 signals:
     /*! \brief Emitted when platform asks this app to open a file
      *
@@ -168,6 +192,26 @@ signals:
      * @param fileFunction Function and file type.
      */
     void openFileRequest(QString fileName, QString info, Platform::FileExchange_Abstract::FileFunction fileFunction);
+
+    /*! \brief Emitted when platform asks this app to show a waypoint
+     *
+     * This signal is emitted whenever the platform-dependent code receives
+     * information that enroute is requested to show a waypoint.
+     *
+     * @param waypoint Waypoint to be shown
+     */
+    void openWaypointRequest(GeoMaps::Waypoint waypoint);
+
+    /*! \brief Emitted when Google Maps URL needs to be resolved
+     *
+     *  This signal is emitted if the method processText encounters a URL of type
+     *  https://maps.app.goo.gl/SOMECODE. The GUI will then open the page
+     *  URLResolver.
+     */
+    void resolveURL(QString url, QString site);
+
+    /*! \brief Emitted when processText was unable to parse a text item */
+    void unableToProcessText(QString text);
 
 private:
     Q_DISABLE_COPY_MOVE(FileExchange_Abstract)

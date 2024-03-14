@@ -74,19 +74,20 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../03-tutorialAdvanced.html">Advanced Use</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04-additionalSoftware.html">Additional software</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Reference Manual</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../04-referencePages.html">User Interface: Pages</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../05-referenceWorkflow.html">User Interface: Workflows</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../06-referenceTechnology.html">Technology</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05-referencePages.html">User Interface: Pages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06-referenceWorkflow.html">User Interface: Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07-referenceTechnology.html">Technology</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../07-appendix/01-dataSources.html">Data Sources</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../07-appendix/02-license.html">Software and Data Licenses</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../07-appendix/03-privacy.html">Privacy Policies</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../07-appendix/04-authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../08-appendix/01-dataSources.html">Data Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../08-appendix/02-license.html">Software and Data Licenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../08-appendix/03-privacy.html">Privacy Policies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../08-appendix/04-authors.html">Authors</a></li>
 </ul>
 
         </div>
@@ -138,7 +139,7 @@ receiver; this is often the case with traffic that has only a Mode-S
 transponder.  The traffic is most likely found within the yellow circle. The
 yellow color indicates that the traffic might be close enough to be dangerous.</p></li>
 </ul>
-<p>The section <a class="reference internal" href="../04-referencePages/01-mainPage.html#mainpage"><span class="std std-ref">Main Page and Moving Map</span></a> covers the traffic display in detail.</p>
+<p>The section <a class="reference internal" href="../05-referencePages/01-mainPage.html#mainpage"><span class="std std-ref">Main Page and Moving Map</span></a> covers the traffic display in detail.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>To show only relevant traffic, <strong>Enroute Flight Navigation</strong> will
@@ -163,13 +164,15 @@ Avionics</a>.</p></li>
 <li><p><a class="reference external" href="https://flarm.com/flarm-product/powerflarm-fusion/">PowerFLARM Fusison</a> by
 <a class="reference external" href="https://flarm.com/">FLARM Technology Ltd</a>.</p></li>
 </ul>
-<p>Users reported success with the following traffic receivers.</p>
+<p>Users reported success with the following traffic receiver hardware.</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://www.pilotaware.com/rosetta/">PilotAware Rosetta</a></p></li>
+<li><p>Classic FLARM and the <a class="reference external" href="https://in-circuit.de/shop/icfly-connect">ICFly Connect</a>
+Wi-Fi adaptor, set to IP 192.168.1.1 and TCP Port 2000.</p></li>
 <li><p><a class="reference external" href="https://uavionix.com/products/skyecho/">SkyEcho2</a> – but see the Sections
-<a class="reference internal" href="../06-referenceTechnology/01-trafficData.html#skyecho"><span class="std std-ref">Known Issues with SkyEcho Devices</span></a> and <a class="reference internal" href="../06-referenceTechnology/01-trafficData.html#gdl90problems"><span class="std std-ref">Known Issues with GDL90</span></a></p></li>
+<a class="reference internal" href="../07-referenceTechnology/01-trafficData.html#skyecho"><span class="std std-ref">Known Issues with SkyEcho Devices</span></a> and <a class="reference internal" href="../07-referenceTechnology/01-trafficData.html#gdl90problems"><span class="std std-ref">Known Issues with GDL90</span></a></p></li>
+<li><p><a class="reference external" href="https://www.pilotaware.com/rosetta/">PilotAware Rosetta</a></p></li>
 <li><p><a class="reference external" href="https://uavionix.com/products/pingusb">pingUSB</a> – but see the Sections
-<a class="reference internal" href="../06-referenceTechnology/01-trafficData.html#pingusb"><span class="std std-ref">Known Issues with pingUSB Devices</span></a> and <a class="reference internal" href="../06-referenceTechnology/01-trafficData.html#gdl90problems"><span class="std std-ref">Known Issues with GDL90</span></a></p></li>
+<a class="reference internal" href="../07-referenceTechnology/01-trafficData.html#pingusb"><span class="std std-ref">Known Issues with pingUSB Devices</span></a> and <a class="reference internal" href="../07-referenceTechnology/01-trafficData.html#gdl90problems"><span class="std std-ref">Known Issues with GDL90</span></a></p></li>
 <li><p><a class="reference external" href="http://stratux.me/">Stratux devices</a></p></li>
 <li><p><a class="reference external" href="https://www.amazon.de/TTGO-T-Beam-915Mhz-Wireless-Bluetooth/dp/B07SFVQ3Z8">TTGO T-Beam devices</a></p></li>
 </ul>
@@ -186,7 +189,7 @@ passengers to disable Wi-Fi on their phone before boarding.</p>
 receiver supports FLARM/NMEA as well as GDL90 output, always use FLARM/NMEA.
 The GDL90 protocol has a number of shortcomings that <strong>Enroute Flight
 Navigation</strong> cannot always work around.  See the Section
-<a class="reference internal" href="../06-referenceTechnology/01-trafficData.html#gdl90problems"><span class="std std-ref">Known Issues with GDL90</span></a> for more details.</p>
+<a class="reference internal" href="../07-referenceTechnology/01-trafficData.html#gdl90problems"><span class="std std-ref">Known Issues with GDL90</span></a> for more details.</p>
 </div>
 </section>
 <section id="connect">

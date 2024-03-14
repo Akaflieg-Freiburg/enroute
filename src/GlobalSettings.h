@@ -82,6 +82,9 @@ public:
     // Properties
     //
 
+    /*! \brief Privacy setting: always open external web sites */
+    Q_PROPERTY(bool alwaysOpenExternalWebsites READ alwaysOpenExternalWebsites WRITE setAlwaysOpenExternalWebsites NOTIFY alwaysOpenExternalWebsitesChanged)
+
     /*! \brief Find out if Terms & Conditions have been accepted
      *
      * This property says which version of our "terms and conditions" have been
@@ -191,6 +194,12 @@ public:
      * @returns Property acceptedTerms
      */
     [[nodiscard]] auto acceptedTerms() const -> int { return settings.value(QStringLiteral("acceptedTerms"), 0).toInt(); }
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property alwaysOpenExternalWebsites
+     */
+    [[nodiscard]] bool alwaysOpenExternalWebsites() const { return settings.value(QStringLiteral("alwaysOpenExternalWebsites"), false).toBool(); }
 
     /*! \brief Getter function for property of the same name
      *
@@ -314,6 +323,12 @@ public:
 
     /*! \brief Setter function for property of the same name
      *
+     * @param alwaysOpen Property alwaysOpenExternalWebsites
+     */
+    void setAlwaysOpenExternalWebsites(bool alwaysOpen);
+
+    /*! \brief Setter function for property of the same name
+     *
      *  If newAirspaceAltitudeLimit is less than airspaceHeightLimit_min, then
      *  airspaceHeightLimit_min will be set. If newAirspaceAltitudeLimit is higher than
      *  airspaceHeightLimit_max, then airspaceHeightLimit_max will be set.
@@ -419,6 +434,9 @@ public:
 signals:
     /*! \brief Notifier signal */
     void acceptedTermsChanged();
+
+    /*! \brief Notifier signal */
+    void alwaysOpenExternalWebsitesChanged();
 
     /*! \brief Notifier signal */
     void airspaceAltitudeLimitChanged();

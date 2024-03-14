@@ -41,6 +41,7 @@ set(SOURCES
     fileFormats/CUP.h
     fileFormats/DataFileAbstract.h
     fileFormats/GeoTIFF.h
+    fileFormats/MapURL.h
     fileFormats/MBTILES.h
     fileFormats/TripKit.h
     fileFormats/VAC.h
@@ -125,6 +126,7 @@ set(SOURCES
     fileFormats/CUP.cpp
     fileFormats/DataFileAbstract.cpp
     fileFormats/GeoTIFF.cpp
+    fileFormats/MapURL.cpp
     fileFormats/MBTILES.cpp
     fileFormats/TripKit.cpp
     fileFormats/VAC.cpp
@@ -314,6 +316,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
         Qt6::Sql
         Qt6::Svg
         Qt6::TextToSpeech
+        Qt6::WebView
         Qt6::Widgets
         QMapLibre::Location
         libzip::zip
@@ -360,6 +363,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         Qt6::Sql
         Qt6::Svg
         Qt6::TextToSpeech
+        Qt6::WebView
         Qt6::Widgets
         QMapLibre::Location
         libzip::zip
@@ -542,6 +546,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/pages/PrivacyPage.qml
     qml/pages/SettingsPage.qml
     qml/pages/TrafficReceiver.qml
+    qml/pages/URLResolver.qml
     qml/pages/WaypointLibraryPage.qml
     qml/pages/Weather.qml
     SOURCES

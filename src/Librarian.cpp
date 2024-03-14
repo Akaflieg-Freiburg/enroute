@@ -284,13 +284,11 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     if (name == u":text/whatsnew.html"_qs)
     {
         QString result;
+#if !defined(Q_OS_IOS)
+        result += "<p>" + tr("As requested by the search-and-rescue community, <strong>Enroute Flight Navigation</strong> is now able to accept location shares from Google Maps.") + "</p>";
+#endif
         result += "<p>" + tr("For enhanced privacy, <strong>Enroute Flight Navigation</strong> routes requests for METAR/TAF and NOTAM data through our servers. "
                              "This hides your IP address from the web services that provide the data.")+ "</p>";
-        result += "<p>" + tr("The technology underlying <strong>Enroute Flight Navigation</strong> has been updated. "
-                             "Please report any issues or inconsistencies that you may find!")+ "</p>";
-        result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> is now able to show visual approach charts within the moving map. "
-                             "Users in Germany can download official VACs from Deutsche Flugsicherung (DFS) using Michael Paus' very convenient <a href='https://mpmediasoft.de/products/AIPBrowserDE/help/AIPBrowserDE.html'>AIP Browser DE</a>. "
-                             "Please check the manual for details.") + "</p>";
         result += "<p>" + tr("We need help with promotional graphics for the app stores and with explainer videos. "
                              "If you are a graphic/video artist and would like to help, then please be in touch.") + "</p>";
         return result;

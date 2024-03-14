@@ -571,6 +571,16 @@ Item {
             // the write-once property 'plugin' on language changes
             plugin = mapPlugin
         }
+
+        Connections {
+            target: FileExchange
+
+            function onOpenWaypointRequest(waypoint) {
+                flightMap.followGPS = false
+                flightMap.center = waypoint.coordinate
+            }
+        }
+
     }
 
     BrightnessContrast { // Graphical effects: increase contrast, reduce brightness in dark mode

@@ -56,13 +56,12 @@ jobs:
       working-directory: enrouteDependencies
     - name: Compile Enroute Flight Navigation
       run: |
-        cmake \
+        $Qt6_DIR/bin/qt-cmake \
           -B build-enroute \
           -S enroute \
           -DCMAKE_BUILD_TYPE=Debug \
           -DCMAKE_C_COMPILER_LAUNCHER="ccache" \
           -DCMAKE_CXX_COMPILER_LAUNCHER="ccache" \
-          -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" \
           -DCMAKE_INSTALL_PREFIX=. \ 
           -- -sdk iphonesimulator
         cmake --build build-enroute

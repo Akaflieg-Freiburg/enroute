@@ -203,6 +203,8 @@ void Platform::FileExchange_Abstract::processText(const QString& text)
     {
         return;
     }
+
+#if __has_include (<QtWebView/QtWebView>)
     if (text.contains(u"maps.app.goo.gl"_qs))
     {
         emit resolveURL(text, QUrl(text).host());
@@ -213,6 +215,8 @@ void Platform::FileExchange_Abstract::processText(const QString& text)
         emit resolveURL(text, QUrl(text).host());
         return;
     }
+#endif
+
     emit unableToProcessText(text);
 }
 

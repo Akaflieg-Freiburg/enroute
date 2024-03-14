@@ -316,7 +316,6 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
         Qt6::Sql
         Qt6::Svg
         Qt6::TextToSpeech
-        Qt6::WebView
         Qt6::Widgets
         QMapLibre::Location
         libzip::zip

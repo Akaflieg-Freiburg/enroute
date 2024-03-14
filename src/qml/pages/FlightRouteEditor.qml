@@ -398,7 +398,7 @@ Page {
 
                 MenuItem {
                     text: qsTr("Reverse")
-                    enabled: (Navigator.flightRoute.size > 0) && (sv.currentIndex === 0)
+                    enabled: (Navigator.flightRoute.size > 1) && (sv.currentIndex === 0)
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()

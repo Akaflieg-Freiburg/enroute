@@ -1,8 +1,8 @@
-name: Compile on MacOS
+name: Compile on iOS
 
 on:
   push:
-    branches: [ develop ]
+    branches: [ feature/cleanup ]
 
 jobs:
   build:
@@ -27,40 +27,51 @@ jobs:
         python-version: '3.8'
     - name: Install Ninja
       run: brew install ninja
-    - name: Install Qt
+    - name: Install Qt for Desktop
       uses: jurplel/install-qt-action@v3
       with:
         cache: 'true'
+        cache-key-prefix: 'install-qt-action-macOS-host'
         version: '6.6.*'
         modules: 'qt5compat qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtshadertools qtspeech qtwebsockets qtwebview'
+    - name: Set QT_HOST_PATH
+      run: |
+        echo QT_HOST_PATH=$Qt6_DIR >> $GITHUB_ENV
+    - name: Install Qt for iOS
+      uses: jurplel/install-qt-action@v3
+      with:
+        cache: 'true'
+        cache-key-prefix: 'install-qt-action-iOS'
+        target: 'ios'
+        version: '6.6.*'
+        modules: 'qt5compat qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtshadertools qtsensors qtspeech qtwebsockets qtwebview'
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: macos
     - name: Compile EnrouteDependencies
       run: |
-        Qt6_DIR_BASE=$(dirname "$Qt6_DIR") ./buildscript-macos.sh
+        Qt6_DIR_BASE=$(dirname "$Qt6_DIR") ./buildscript-ios.sh
         cp -prv Qt/* $Qt6_DIR/../..
       working-directory: enrouteDependencies
     - name: Compile Enroute Flight Navigation
       run: |
-        cmake \
+        $Qt6_DIR/bin/qt-cmake \
           -B build-enroute \
           -S enroute \
           -DCMAKE_BUILD_TYPE=Debug \
           -DCMAKE_C_COMPILER_LAUNCHER="ccache" \
           -DCMAKE_CXX_COMPILER_LAUNCHER="ccache" \
-          -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" \
-          -DCMAKE_INSTALL_PREFIX=. 
+          -DCMAKE_INSTALL_PREFIX=. \ 
+          -- -sdk iphonesimulator
         cmake --build build-enroute
     - name: Package
       run: |
-        cmake --build build-enroute --target install
-        $Qt6_DIR/bin/macdeployqt enroute.app -dmg
-        mv enroute.dmg enroute-macOS-universal.dmg
+        brew install create-dmg
+        create-dmg enroute-iphonesimulator.dmg build-enroute/src/Debug-iphonesimulator
     - name: Upload to developerBuilds
       run: |
-        gh release upload --clobber developerBuilds ../enroute-macOS-universal.dmg
+        gh release upload --clobber developerBuilds ../enroute-iphonesimulator.dmg
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       working-directory: enroute

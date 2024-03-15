@@ -62,8 +62,8 @@ jobs:
           -DCMAKE_BUILD_TYPE=Debug \
           -DCMAKE_C_COMPILER_LAUNCHER="ccache" \
           -DCMAKE_CXX_COMPILER_LAUNCHER="ccache" \
-          -DCMAKE_INSTALL_PREFIX=. -- -sdk iphonesimulator
-        cmake --build build-enroute
+          -DCMAKE_INSTALL_PREFIX=.
+        cmake --build build-enroute -- -sdk iphonesimulator
     - name: Package
       run: |
         brew install create-dmg

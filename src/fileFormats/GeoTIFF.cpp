@@ -278,7 +278,7 @@ void FileFormats::GeoTIFF::readTIFFField(QIODevice& device, QDataStream& dataStr
 
 void FileFormats::GeoTIFF::interpretGeoData()
 {
-    // Handle Tag 33922, name
+    // Handle Tag 270, name
     if (m_TIFFFields.contains(270))
     {
         auto values = m_TIFFFields.value(270);
@@ -324,7 +324,7 @@ void FileFormats::GeoTIFF::interpretGeoData()
         }
     }
 
-    // Handle Tag 33922, compute pixel width and height
+    // Handle Tag 33550, compute pixel width and height
     double pixelWidth = NAN;
     double pixelHeight = NAN;
     {

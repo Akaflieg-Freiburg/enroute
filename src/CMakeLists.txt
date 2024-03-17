@@ -43,6 +43,7 @@ set(SOURCES
     fileFormats/GeoTIFF.h
     fileFormats/MapURL.h
     fileFormats/MBTILES.h
+    fileFormats/TIFF.h
     fileFormats/TripKit.h
     fileFormats/VAC.h
     fileFormats/ZipFile.h
@@ -129,6 +130,7 @@ set(SOURCES
     fileFormats/GeoTIFF.cpp
     fileFormats/MapURL.cpp
     fileFormats/MBTILES.cpp
+    fileFormats/TIFF.cpp
     fileFormats/TripKit.cpp
     fileFormats/VAC.cpp
     fileFormats/ZipFile.cpp

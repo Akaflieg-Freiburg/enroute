@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2023 by Stefan Kebekus                                  *
+ *   Copyright (C) 2023-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,14 +21,15 @@
 #pragma once
 
 #include <QGeoRectangle>
+#include <QPointF>
 #include <QVariant>
 
-#include "DataFileAbstract.h"
+#include "TIFF.h"
 
 namespace FileFormats
 {
 
-/*! \brief Trip Kit
+/*! \brief GeoTIFF support
  *
  *  This class reads GeoTIFF files, as specified here:
  *  https://gis-lab.info/docs/geotiff-1.8.2.pdf
@@ -39,7 +40,7 @@ namespace FileFormats
  *  files. We restrict ourselves to files that appear in real-world aviation.
  */
 
-class GeoTIFF : public DataFileAbstract
+class GeoTIFF : public TIFF
 {
 public:
     /*! \brief Constructor
@@ -88,35 +89,10 @@ public:
      *
      *  @returns Name of mime type
      */
-    [[nodiscard]] static QStringList mimeTypes() { return {u"image/tiff"_qs}; }
+    [[nodiscard]] static QStringList mimeTypes() { return FileFormats::TIFF::mimeTypes(); }
 
 private:
-
-    /* This methods reads the TIFF data from the device. On success, it fills
-     * the memeber m_TIFFFields with appropriate data. On failure, it throws a
-     * QString with a human-readable, translated error message.
-     *
-     * @param device QIODevice from which the TIFF header will be read. This
-     * device must be seekable.
-     */
-    void readTIFFData(QIODevice& device);
-
-    /* This methods reads a single TIFF field from the device. On success, it
-     * adds an entry to the member m_TIFFFields and positions the device on the
-     * byte following the structure. On failure, it throws a QString with a
-     * human-readable, translated error message.
-     *
-     * This method only reads values of type ASCII, SHORT and DOUBLE. Values of
-     * other types will be ignored.
-     *
-     * @param device QIODevice from which the TIFF header will be read. This
-     * device must be open, seekable, and positioned to the beginning of the
-     * TIFF field structure.
-     *
-     * @param dataStream QDataStream that is connected to the device and has the
-     * correct endianness set.
-     */
-    void readTIFFField(QIODevice& device, QDataStream& dataStream);
+    void readGeoTiepoints(QMap<quint16, QVariantList>& TIFFFields);
 
     /* This methods interprets the data found in m_TIFFFields and writes to
      * m_bBox and m_name.On failure, it throws a QString with a human-readable,
@@ -124,14 +100,19 @@ private:
      */
     void interpretGeoData();
 
-    // TIFF tags and associated data
-    QMap<quint16, QVariantList> m_TIFFFields;
-
     // Bounding box
     QGeoRectangle m_bBox;
 
     // Name
     QString m_name;
+
+    // Tiepoints
+    struct Tiepoint
+    {
+        QPointF rasterCoordinate;
+        QGeoCoordinate geoCoordinate;
+    };
+    QVector<Tiepoint> m_tiepoints;
 };
 
 } // namespace FileFormats

@@ -92,7 +92,9 @@ public:
     [[nodiscard]] static QStringList mimeTypes() { return FileFormats::TIFF::mimeTypes(); }
 
 private:
-    void readGeoTiepoints(QMap<quint16, QVariantList>& TIFFFields);
+    void readGeoTiepoints(const QMap<quint16, QVariantList>& TIFFFields);
+    void readName(const QMap<quint16, QVariantList>& TIFFFields);
+    void readPixelSize(const QMap<quint16, QVariantList>& TIFFFields);
 
     /* This methods interprets the data found in m_TIFFFields and writes to
      * m_bBox and m_name.On failure, it throws a QString with a human-readable,
@@ -113,6 +115,10 @@ private:
         QGeoCoordinate geoCoordinate;
     };
     QVector<Tiepoint> m_tiepoints;
+
+    double m_pixelWidth {NAN};
+    double m_pixelHeight {NAN};
+
 };
 
 } // namespace FileFormats

@@ -95,6 +95,7 @@ private:
     void readGeoTiepoints(const QMap<quint16, QVariantList>& TIFFFields);
     void readName(const QMap<quint16, QVariantList>& TIFFFields);
     void readPixelSize(const QMap<quint16, QVariantList>& TIFFFields);
+    void readTransformation(const QMap<quint16, QVariantList>& TIFFFields);
 
     /* This methods interprets the data found in m_TIFFFields and writes to
      * m_bBox and m_name.On failure, it throws a QString with a human-readable,
@@ -119,6 +120,7 @@ private:
     double m_pixelWidth {NAN};
     double m_pixelHeight {NAN};
 
+    QVector<double> m_transformation;
 };
 
 } // namespace FileFormats

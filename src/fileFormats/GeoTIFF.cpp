@@ -27,7 +27,7 @@
 //
 
 FileFormats::GeoTIFF::GeoTIFF(const QString& fileName)
-    : TIFF(fileName)
+    : TIFF(fileName), m_transformation(16, NAN)
 {
     if (isValid())
     {
@@ -36,14 +36,13 @@ FileFormats::GeoTIFF::GeoTIFF(const QString& fileName)
 }
 
 FileFormats::GeoTIFF::GeoTIFF(QIODevice& device)
-    : TIFF(device)
+    : TIFF(device), m_transformation(16, NAN)
 {
     if (isValid())
     {
         interpretGeoData();
     }
 }
-
 
 
 //
@@ -124,17 +123,49 @@ void FileFormats::GeoTIFF::readPixelSize(const QMap<quint16, QVariantList>& TIFF
     {
         throw QObject::tr("Invalid data for tag 33550.", "FileFormats::GeoTIFF");
     }
+
+    bool globalOK = true;
     bool ok = false;
     m_pixelWidth = values.at(0).toDouble(&ok);
-    if (!ok)
-    {
-        throw QObject::tr("Invalid data for tag 33550.", "FileFormats::GeoTIFF");
-    }
+    globalOK = globalOK && ok;
+
     m_pixelHeight = values.at(1).toDouble(&ok);
-    if (!ok)
+    globalOK = globalOK && ok;
+
+    if (!globalOK)
     {
         throw QObject::tr("Invalid data for tag 33550.", "FileFormats::GeoTIFF");
     }
+}
+
+void FileFormats::GeoTIFF::readTransformation(const QMap<quint16, QVariantList>& TIFFFields)
+{
+    if (!TIFFFields.contains(34264))
+    {
+        return;
+    }
+
+    auto values = TIFFFields.value(34264);
+    if (values.size() < 16)
+    {
+        throw QObject::tr("Invalid data for tag 34264.", "FileFormats::GeoTIFF");
+    }
+
+    QVector<double> dValues(16, NAN);
+    bool globalOK = true;
+    for(int i=0; i<16; i++)
+    {
+        bool ok = false;
+        dValues[i] = values.at(i).toDouble(&ok);
+        globalOK = globalOK && ok;
+    }
+    if (!globalOK)
+    {
+        throw QObject::tr("Invalid data for tag 34264.", "FileFormats::GeoTIFF");
+    }
+
+    qWarning() << "Found transformation" << dValues;
+    m_transformation = dValues;
 }
 
 void FileFormats::GeoTIFF::interpretGeoData()
@@ -146,6 +177,7 @@ void FileFormats::GeoTIFF::interpretGeoData()
         readName(TIFFFields);
         readGeoTiepoints(TIFFFields);
         readPixelSize(TIFFFields);
+        readTransformation(TIFFFields);
 
         if (m_tiepoints.empty())
         {

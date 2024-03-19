@@ -27,7 +27,7 @@
 //
 
 FileFormats::GeoTIFF::GeoTIFF(const QString& fileName)
-    : TIFF(fileName), m_transformation(16, NAN)
+    : TIFF(fileName)
 {
     if (isValid())
     {
@@ -36,7 +36,7 @@ FileFormats::GeoTIFF::GeoTIFF(const QString& fileName)
 }
 
 FileFormats::GeoTIFF::GeoTIFF(QIODevice& device)
-    : TIFF(device), m_transformation(16, NAN)
+    : TIFF(device)
 {
     if (isValid())
     {
@@ -49,16 +49,47 @@ FileFormats::GeoTIFF::GeoTIFF(QIODevice& device)
 // Private Methods
 //
 
-void FileFormats::GeoTIFF::readGeoTiepoints(const QMap<quint16, QVariantList>& TIFFFields)
+QList<double> FileFormats::GeoTIFF::getTransformation(const QMap<quint16, QVariantList>& TIFFFields)
+{
+    auto transformation = readTransformation(TIFFFields);
+    if (transformation.size() == 16)
+    {
+        return transformation;
+    }
+
+    auto tiepoints = readTiepoints(TIFFFields);
+    if (tiepoints.empty())
+    {
+        return {};
+    }
+    auto tiepoint = tiepoints[0];
+
+    auto pixelSize = readPixelSize(TIFFFields);
+    if (!pixelSize.isValid())
+    {
+        return {};
+    }
+
+    return {
+        pixelSize.width(), 0.0, 0.0, tiepoint.geoCoordinate.longitude() - tiepoint.rasterCoordinate.x()*pixelSize.width(),
+        0.0, -pixelSize.height(), 0.0, tiepoint.geoCoordinate.latitude() + tiepoint.rasterCoordinate.y()*pixelSize.height(),
+        0.0, 0.0, 0.0, 0.0,
+        0.0, 0.0, 0.0, 1.0
+    };
+}
+
+QList<FileFormats::GeoTIFF::Tiepoint> FileFormats::GeoTIFF::readTiepoints(const QMap<quint16, QVariantList>& TIFFFields)
 {
     // Handle Tag 33922, compute top left of the bounding box
     if (!TIFFFields.contains(33922))
     {
-        return;
+        return {};
     }
 
     auto values = TIFFFields.value(33922);
     auto numTiepoints = values.size()/6;
+    QVector<Tiepoint> tiepoints;
+    tiepoints.reserve(numTiepoints);
     for(auto numTiepoint = 0; numTiepoint < numTiepoints; numTiepoint++)
     {
         bool ok = false;
@@ -89,9 +120,10 @@ void FileFormats::GeoTIFF::readGeoTiepoints(const QMap<quint16, QVariantList>& T
         {
             throw QObject::tr("Invalid data for tag 33922.", "FileFormats::GeoTIFF");
         }
-        m_tiepoints.append({rasterPoint, coord});
+        tiepoints.append({rasterPoint, coord});
     }
 
+    return tiepoints;
 }
 
 void FileFormats::GeoTIFF::readName(const QMap<quint16, QVariantList>& TIFFFields)
@@ -110,11 +142,10 @@ void FileFormats::GeoTIFF::readName(const QMap<quint16, QVariantList>& TIFFField
     m_name = values.constFirst().toString();
 }
 
-void FileFormats::GeoTIFF::readPixelSize(const QMap<quint16, QVariantList>& TIFFFields)
+QSizeF FileFormats::GeoTIFF::readPixelSize(const QMap<quint16, QVariantList> &TIFFFields)
 {
-    if (!TIFFFields.contains(33550))
-    {
-        return;
+    if (!TIFFFields.contains(33550)) {
+        return {};
     }
 
     // Handle Tag 33550, compute pixel width and height
@@ -126,37 +157,37 @@ void FileFormats::GeoTIFF::readPixelSize(const QMap<quint16, QVariantList>& TIFF
 
     bool globalOK = true;
     bool ok = false;
-    m_pixelWidth = values.at(0).toDouble(&ok);
+    auto pixelWidth = values.at(0).toDouble(&ok);
     globalOK = globalOK && ok;
 
-    m_pixelHeight = values.at(1).toDouble(&ok);
+    auto pixelHeight = values.at(1).toDouble(&ok);
     globalOK = globalOK && ok;
 
     if (!globalOK)
     {
         throw QObject::tr("Invalid data for tag 33550.", "FileFormats::GeoTIFF");
     }
+
+    return {qAbs(pixelWidth), qAbs(pixelHeight)};
 }
 
-void FileFormats::GeoTIFF::readTransformation(const QMap<quint16, QVariantList>& TIFFFields)
+QList<double> FileFormats::GeoTIFF::readTransformation(const QMap<quint16, QVariantList> &TIFFFields)
 {
-    if (!TIFFFields.contains(34264))
-    {
-        return;
+    if (!TIFFFields.contains(34264)) {
+        return {};
     }
-
     auto values = TIFFFields.value(34264);
     if (values.size() < 16)
     {
         throw QObject::tr("Invalid data for tag 34264.", "FileFormats::GeoTIFF");
     }
 
-    QVector<double> dValues(16, NAN);
+    QVector<double> transformation(16, NAN);
     bool globalOK = true;
     for(int i=0; i<16; i++)
     {
         bool ok = false;
-        dValues[i] = values.at(i).toDouble(&ok);
+        transformation[i] = values.at(i).toDouble(&ok);
         globalOK = globalOK && ok;
     }
     if (!globalOK)
@@ -164,9 +195,40 @@ void FileFormats::GeoTIFF::readTransformation(const QMap<quint16, QVariantList>&
         throw QObject::tr("Invalid data for tag 34264.", "FileFormats::GeoTIFF");
     }
 
-    qWarning() << "Found transformation" << dValues;
-    m_transformation = dValues;
+    return transformation;
 }
+
+void FileFormats::GeoTIFF::computeGeoQuadrangle(const QMap<quint16, QVariantList>& TIFFFields)
+{
+    auto transformation = getTransformation(TIFFFields);
+    if (transformation.size() != 16)
+    {
+        return;
+    }
+
+    auto _rasterSize = rasterSize();
+    if (!_rasterSize.isValid())
+    {
+        return;
+    }
+
+    QGeoCoordinate const topLeft(transformation[7], transformation[3]);
+    QGeoCoordinate const topRight(transformation[4] * _rasterSize.width() + transformation[7],
+                                  transformation[0] * _rasterSize.width() + transformation[3]);
+    QGeoCoordinate const bottomLeft(transformation[5] * _rasterSize.height() + transformation[7],
+                                    transformation[1] * _rasterSize.height() + transformation[3]);
+    QGeoCoordinate const bottomRight(transformation[4] * _rasterSize.width()
+                                         + transformation[5] * _rasterSize.height()
+                                         + transformation[7],
+                                     transformation[0] * _rasterSize.width()
+                                         + transformation[1] * _rasterSize.height()
+                                         + transformation[3]);
+    qWarning() << topLeft << bottomRight;
+
+    m_bBox.setTopLeft(topLeft);
+    m_bBox.setBottomRight(bottomRight);
+}
+
 
 void FileFormats::GeoTIFF::interpretGeoData()
 {
@@ -175,36 +237,7 @@ void FileFormats::GeoTIFF::interpretGeoData()
         auto TIFFFields = fields();
 
         readName(TIFFFields);
-        readGeoTiepoints(TIFFFields);
-        readPixelSize(TIFFFields);
-        readTransformation(TIFFFields);
-
-        if (m_tiepoints.empty())
-        {
-            throw QObject::tr("Invalid data for tag 33922.", "FileFormats::GeoTIFF");
-        }
-        m_bBox.setTopLeft(m_tiepoints[0].geoCoordinate);
-
-
-        auto width = rasterSize().width();
-        auto height = rasterSize().height();
-
-        // Compute bottom right of bounding box
-        QGeoCoordinate coord = m_bBox.topLeft();
-        coord.setLongitude(coord.longitude() + (width-1)*m_pixelWidth);
-        if (m_pixelHeight > 0)
-        {
-            coord.setLatitude(coord.latitude() - (height-1)*m_pixelHeight);
-        }
-        else
-        {
-            coord.setLatitude(coord.latitude() + (height-1)*m_pixelHeight);
-        }
-        m_bBox.setBottomRight(coord);
-        if (!m_bBox.isValid())
-        {
-            throw QObject::tr("The bounding box is invalid.", "FileFormats::GeoTIFF");
-        }
+        computeGeoQuadrangle(TIFFFields);
     }
     catch (QString& message)
     {

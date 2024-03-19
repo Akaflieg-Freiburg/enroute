@@ -92,10 +92,19 @@ public:
     [[nodiscard]] static QStringList mimeTypes() { return FileFormats::TIFF::mimeTypes(); }
 
 private:
-    void readGeoTiepoints(const QMap<quint16, QVariantList>& TIFFFields);
+    struct Tiepoint
+    {
+        QPointF rasterCoordinate;
+        QGeoCoordinate geoCoordinate;
+    };
+
+    [[nodiscard]] static QList<double> getTransformation(const QMap<quint16, QVariantList> &TIFFFields);
+    [[nodiscard]] static QList<Tiepoint> readTiepoints(const QMap<quint16, QVariantList> &TIFFFields);
     void readName(const QMap<quint16, QVariantList>& TIFFFields);
-    void readPixelSize(const QMap<quint16, QVariantList>& TIFFFields);
-    void readTransformation(const QMap<quint16, QVariantList>& TIFFFields);
+    [[nodiscard]] static QSizeF readPixelSize(const QMap<quint16, QVariantList> &TIFFFields);
+    [[nodiscard]] static QList<double> readTransformation(const QMap<quint16, QVariantList> &TIFFFields);
+
+    void computeGeoQuadrangle(const QMap<quint16, QVariantList>& TIFFFields);
 
     /* This methods interprets the data found in m_TIFFFields and writes to
      * m_bBox and m_name.On failure, it throws a QString with a human-readable,
@@ -108,19 +117,6 @@ private:
 
     // Name
     QString m_name;
-
-    // Tiepoints
-    struct Tiepoint
-    {
-        QPointF rasterCoordinate;
-        QGeoCoordinate geoCoordinate;
-    };
-    QVector<Tiepoint> m_tiepoints;
-
-    double m_pixelWidth {NAN};
-    double m_pixelHeight {NAN};
-
-    QVector<double> m_transformation;
 };
 
 } // namespace FileFormats

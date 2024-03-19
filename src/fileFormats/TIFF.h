@@ -63,8 +63,10 @@ public:
     // Getter Methods
     //
 
+#warning docu
     [[nodiscard]] QMap<quint16, QVariantList> fields() { return m_TIFFFields; }
 
+#warning docu
     [[nodiscard]] QSize rasterSize() { return m_rasterSize; }
 
 

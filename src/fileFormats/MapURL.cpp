@@ -21,12 +21,12 @@
 #include "fileFormats/MapURL.h"
 
 namespace {
-Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexGoogleMap1, (u"@(-?\\d+\\.\\d+),(-?\\d+\\.\\d+)"_qs))
-Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexGoogleMap2, (u"!3d(-?\\d+\\.\\d+)!4d(-?\\d+\\.\\d+)"_qs))
-Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexOpenStreetMap, (u"#map=\\d+/(-?\\d+\\.\\d+)/(-?\\d+\\.\\d+)"_qs))
-Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexWeGo1, (u"map=(-?\\d+\\.\\d+),(-?\\d+\\.\\d+)"_qs))
-Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexWeGo2, (u"l/(-?\\d+\\.\\d+),(-?\\d+\\.\\d+)"_qs))
-Q_GLOBAL_STATIC_WITH_ARGS(QRegularExpression, regexGeo, (u"geo:(-?\\d+\\.\\d+),(-?\\d+\\.\\d+)"_qs))
+Q_GLOBAL_STATIC(QRegularExpression, regexGoogleMap1, u"@(-?\\d+\\.\\d+),(-?\\d+\\.\\d+)"_qs)
+Q_GLOBAL_STATIC(QRegularExpression, regexGoogleMap2, u"!3d(-?\\d+\\.\\d+)!4d(-?\\d+\\.\\d+)"_qs)
+Q_GLOBAL_STATIC(QRegularExpression, regexOpenStreetMap, u"#map=\\d+/(-?\\d+\\.\\d+)/(-?\\d+\\.\\d+)"_qs)
+Q_GLOBAL_STATIC(QRegularExpression, regexWeGo1, u"map=(-?\\d+\\.\\d+),(-?\\d+\\.\\d+)"_qs)
+Q_GLOBAL_STATIC(QRegularExpression, regexWeGo2, u"l/(-?\\d+\\.\\d+),(-?\\d+\\.\\d+)"_qs)
+Q_GLOBAL_STATIC(QRegularExpression, regexGeo, u"geo:(-?\\d+\\.\\d+),(-?\\d+\\.\\d+)"_qs)
 } // namespace
 
 

@@ -336,6 +336,12 @@ endif()
 #
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    set(app_icon_macos "${CMAKE_CURRENT_SOURCE_DIR}/macos/enroute.icns")
+    set_source_files_properties(${app_icon_macos} PROPERTIES
+        MACOSX_PACKAGE_LOCATION "Resources")
+
+    # qt_add_executable(photosurfaceexample MACOSX_BUNDLE main.cpp ${app_icon_macos})
+
     list(APPEND SOURCES
         platform/FileExchange_MacOS.h
         platform/FileExchange_MacOS.cpp
@@ -349,7 +355,13 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
 
     # Add executable and libraries
-    qt_add_executable(${PROJECT_NAME} ${SOURCES})
+    qt_add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${SOURCES} ${app_icon_macos})
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        MACOSX_BUNDLE true
+        MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/macos/Info.plist"
+        MACOSX_BUNDLE_ICON_FILE enroute.icns
+    )
+
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
         Qt6::Concurrent
@@ -366,10 +378,6 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         Qt6::Widgets
         QMapLibre::Location
         libzip::zip
-    )
-    set_target_properties(${PROJECT_NAME} PROPERTIES
-        MACOSX_BUNDLE true
-        MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/macos/Info.plist"
     )
 endif()
 

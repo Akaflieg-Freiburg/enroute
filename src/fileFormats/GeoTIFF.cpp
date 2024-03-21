@@ -212,21 +212,18 @@ void FileFormats::GeoTIFF::computeGeoQuadrangle(const QMap<quint16, QVariantList
         return;
     }
 
-    QGeoCoordinate const topLeft(transformation[7], transformation[3]);
-    QGeoCoordinate const topRight(transformation[4] * _rasterSize.width() + transformation[7],
-                                  transformation[0] * _rasterSize.width() + transformation[3]);
-    QGeoCoordinate const bottomLeft(transformation[5] * _rasterSize.height() + transformation[7],
-                                    transformation[1] * _rasterSize.height() + transformation[3]);
-    QGeoCoordinate const bottomRight(transformation[4] * _rasterSize.width()
-                                         + transformation[5] * _rasterSize.height()
-                                         + transformation[7],
-                                     transformation[0] * _rasterSize.width()
-                                         + transformation[1] * _rasterSize.height()
-                                         + transformation[3]);
-    qWarning() << topLeft << bottomRight;
+    m_topLeft = {transformation[7],
+                 transformation[3]};
+    m_topRight = {transformation[4] * _rasterSize.width() + transformation[7],
+                  transformation[0] * _rasterSize.width() + transformation[3]};
+    m_bottomLeft = {transformation[5] * _rasterSize.height() + transformation[7],
+                    transformation[1] * _rasterSize.height() + transformation[3]};
+    m_bottomRight = {transformation[4] * _rasterSize.width() + transformation[5] * _rasterSize.height() + transformation[7],
+                     transformation[0] * _rasterSize.width() + transformation[1] * _rasterSize.height() + transformation[3]};
+    qWarning() << m_topLeft << m_bottomRight;
 
-    m_bBox.setTopLeft(topLeft);
-    m_bBox.setBottomRight(bottomRight);
+    m_bBox.setTopLeft(m_topLeft);
+    m_bBox.setBottomRight(m_bottomRight);
 }
 
 

@@ -99,15 +99,32 @@ private:
         QGeoCoordinate geoCoordinate;
     };
 
-#warning docu
+    /* This method computes a 4x4 tranformation matrix that maps pixel coordinates to
+     * geographic coordinates.
+     *
+     * 1. First, the method uses readTransformation() to check if a matrix is specified
+     * within the GeoTIFF file. If so, that matrix is returned.
+     *
+     * 2. Second, the method uses readTiepoints() and readPixelSize() to generate a matrix.
+     * It assume at this point that the transformation is a simple scaling/translation,
+     * and does not involve any rotation orr shearing. If sufficient data is present to
+     * generate a transformation matrix, that matrix is returned.
+     *
+     * 3. An empty list is returned.
+     */
     [[nodiscard]] static QList<double> getTransformation(const QMap<quint16, QVariantList> &TIFFFields);
 
-#warning docu
+    /* This method interprets the TIFFFields and looks for the tag 33922, which is used to
+     * specify the tiepoints.  Returns a list with the data retrieved, or an empty
+     * list on failure.
+     *
+     * An expection might be thrown if the tag exists, but contains invalid data.
+     */
     [[nodiscard]] static QList<Tiepoint> readTiepoints(const QMap<quint16, QVariantList> &TIFFFields);
 
     /* This method interprets the TIFFFields and looks for the tag 270, which is used to
      * specify the image name.  Returns a QString with the data retrieved, or an empty
-     * QString F on failure.
+     * QString on failure.
      *
      * An expection might be thrown if the tag exists, but contains invalid data.
      */
@@ -122,7 +139,7 @@ private:
     [[nodiscard]] static QSizeF readPixelSize(const QMap<quint16, QVariantList> &TIFFFields);
 
     /* This method interprets the TIFFFields and looks for the tag 34264, which is used to
-     * specify a 4x4 translation matrix. Returns a list of 16 doubles on success, in order
+     * specify a 4x4 transformation matrix. Returns a list of 16 doubles on success, in order
      * (a00 a01 a02 a03 a10 ...). Returns an empty list on failure.
      *
      * An expection might be thrown if the tag exists, but contains invalid data.
@@ -142,6 +159,11 @@ private:
     // Bounding box
 #warning wrong!
     QGeoRectangle m_bBox;
+
+    QGeoCoordinate m_topLeft {};
+    QGeoCoordinate m_topRight {};
+    QGeoCoordinate m_bottomLeft {};
+    QGeoCoordinate m_bottomRight {};
 
     // Name
     QString m_name;

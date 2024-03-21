@@ -63,10 +63,16 @@ public:
     // Getter Methods
     //
 
-#warning docu
+    /*! \brief TIFF data fields
+     *
+     * @returns TIFF-internal data fields
+     */
     [[nodiscard]] QMap<quint16, QVariantList> fields() { return m_TIFFFields; }
 
-#warning docu
+    /*! \brief Size of the TIFF raster image
+     *
+     * @returns Size of the TIFF raster image, or an invalid size in case or error.
+     */
     [[nodiscard]] QSize rasterSize() { return m_rasterSize; }
 
 
@@ -107,7 +113,9 @@ private:
      */
     void readTIFFField(QIODevice& device, QDataStream& dataStream);
 
-#warning docu
+    /* This method interprets m_TIFFFields, extracts the size of the raster
+     * image and writes the result into m_rasterSize.
+     */
     void readRasterSize();
 
     // Size of the raster imags

@@ -46,10 +46,12 @@ enum DataType {
     DT_Ifd8
 };
 
+namespace {
+
 // Checks the status of dataStream. If status is OK, this method does nothing.
 // Otherwiese, it throws a QString with a human-readable, translated error
 // message.
-static void checkForError(QDataStream& dataStream)
+void checkForError(QDataStream &dataStream)
 {
     switch(dataStream.status())
     {
@@ -63,6 +65,8 @@ static void checkForError(QDataStream& dataStream)
         break;
     }
 }
+
+} // namespace
 
 
 

@@ -77,6 +77,7 @@ public:
      *
      *  @returns Bounding box, which might be invalid
      */
+#warning wrong
     [[nodiscard]] QGeoRectangle bBox() const { return m_bBox; }
 
 
@@ -98,7 +99,10 @@ private:
         QGeoCoordinate geoCoordinate;
     };
 
+#warning docu
     [[nodiscard]] static QList<double> getTransformation(const QMap<quint16, QVariantList> &TIFFFields);
+
+#warning docu
     [[nodiscard]] static QList<Tiepoint> readTiepoints(const QMap<quint16, QVariantList> &TIFFFields);
 
     /* This method interprets the TIFFFields and looks for the tag 270, which is used to
@@ -125,15 +129,18 @@ private:
      */
     [[nodiscard]] static QList<double> readTransformation(const QMap<quint16, QVariantList> &TIFFFields);
 
+#warning docu
     void computeGeoQuadrangle(const QMap<quint16, QVariantList>& TIFFFields);
 
     /* This methods interprets the data found in m_TIFFFields and writes to
      * m_bBox and m_name.On failure, it throws a QString with a human-readable,
      * translated error message.
      */
+#warning docu
     void interpretGeoData();
 
     // Bounding box
+#warning wrong!
     QGeoRectangle m_bBox;
 
     // Name

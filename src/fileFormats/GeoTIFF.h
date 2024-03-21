@@ -100,8 +100,29 @@ private:
 
     [[nodiscard]] static QList<double> getTransformation(const QMap<quint16, QVariantList> &TIFFFields);
     [[nodiscard]] static QList<Tiepoint> readTiepoints(const QMap<quint16, QVariantList> &TIFFFields);
-    void readName(const QMap<quint16, QVariantList>& TIFFFields);
+
+    /* This method interprets the TIFFFields and looks for the tag 270, which is used to
+     * specify the image name.  Returns a QString with the data retrieved, or an empty
+     * QString F on failure.
+     *
+     * An expection might be thrown if the tag exists, but contains invalid data.
+     */
+    [[nodiscard]] static QString readName(const QMap<quint16, QVariantList>& TIFFFields);
+
+    /* This method interprets the TIFFFields and looks for the tag 33550, which is used to
+     * specify the geographic size of a pixel.  Returns a QSizeF with the data retrieved,
+     * or an invalid QSizeF on failure.
+     *
+     * An expection might be thrown if the tag exists, but contains invalid data.
+     */
     [[nodiscard]] static QSizeF readPixelSize(const QMap<quint16, QVariantList> &TIFFFields);
+
+    /* This method interprets the TIFFFields and looks for the tag 34264, which is used to
+     * specify a 4x4 translation matrix. Returns a list of 16 doubles on success, in order
+     * (a00 a01 a02 a03 a10 ...). Returns an empty list on failure.
+     *
+     * An expection might be thrown if the tag exists, but contains invalid data.
+     */
     [[nodiscard]] static QList<double> readTransformation(const QMap<quint16, QVariantList> &TIFFFields);
 
     void computeGeoQuadrangle(const QMap<quint16, QVariantList>& TIFFFields);

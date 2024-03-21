@@ -126,12 +126,12 @@ QList<FileFormats::GeoTIFF::Tiepoint> FileFormats::GeoTIFF::readTiepoints(const 
     return tiepoints;
 }
 
-void FileFormats::GeoTIFF::readName(const QMap<quint16, QVariantList>& TIFFFields)
+QString FileFormats::GeoTIFF::readName(const QMap<quint16, QVariantList>& TIFFFields)
 {
     // Handle Tag 270, name
     if (!TIFFFields.contains(270))
     {
-        return;
+        return {};
     }
 
     auto values = TIFFFields.value(270);
@@ -139,7 +139,7 @@ void FileFormats::GeoTIFF::readName(const QMap<quint16, QVariantList>& TIFFField
     {
         throw QObject::tr("No data for tag 270.", "FileFormats::GeoTIFF");
     }
-    m_name = values.constFirst().toString();
+    return values.constFirst().toString();
 }
 
 QSizeF FileFormats::GeoTIFF::readPixelSize(const QMap<quint16, QVariantList> &TIFFFields)
@@ -235,8 +235,7 @@ void FileFormats::GeoTIFF::interpretGeoData()
     try
     {
         auto TIFFFields = fields();
-
-        readName(TIFFFields);
+        m_name = readName(TIFFFields);
         computeGeoQuadrangle(TIFFFields);
     }
     catch (QString& message)

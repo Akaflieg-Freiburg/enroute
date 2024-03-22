@@ -55,7 +55,7 @@ Map {
         onZoomLevelChanged(zoomLevel)
     }
 
-    maximumZoomLevel: 13.5
+    maximumZoomLevel: 17
     minimumZoomLevel: 7.0001  // When setting 7 precisely, MapBox is looking for tiles of zoom 6, which we do not have…
 
 

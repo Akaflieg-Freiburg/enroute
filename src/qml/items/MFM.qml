@@ -155,7 +155,13 @@ Item {
             // Work around https://bugreports.qt.io/browse/QTBUG-87815
             enabled: !waypointDescription.visible && !Global.drawer.opened && !((Global.dialogLoader.item) && Global.dialogLoader.item.opened)
 
-            onTranslationChanged: (delta) => flightMap.pan(-delta.x, -delta.y)
+            onActiveTranslationChanged: (delta) => {
+                                            if (delta === activeTranslation)
+                                            {
+                                                return;
+                                            }
+                                            flightMap.pan(-delta.x, -delta.y)
+                                        }
 
             onActiveChanged: {
                 if (active)

@@ -255,13 +255,21 @@ Page {
                 MenuItem {
                     id: menuImport
 
-                    enabled: !isIos
                     text: qsTr("Import…")
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
-                        importFileDialog.open()
+                        if (isIos) {
+                            iosImportHelpDialog.open()
+                        } else {
+                            importFileDialog.open()
+                        }
+
+                    }
+
+                    FileImportHelpDialog {
+                        id: iosImportHelpDialog
                     }
 
                     FileDialog {

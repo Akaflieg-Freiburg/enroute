@@ -505,13 +505,8 @@ Page {
         }
     }
 
-    LongTextDialog {
+    FileImportHelpDialog {
         id: importOnIosDialog
-
-        title: qsTr("Import files on iOS and iPad")
-        standardButtons: Dialog.Ok
-
-        text: qsTr("To import a file, locate your file in your file browser, then choose open with in the share menu and select Enroute")
     }
 
 } // Page

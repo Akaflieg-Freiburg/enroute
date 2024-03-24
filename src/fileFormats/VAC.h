@@ -20,8 +20,9 @@
 
 #pragma once
 
-#include <QGeoRectangle>
+#include <QGeoCoordinate>
 #include <QImage>
+#include <QQmlEngine>
 
 #include "fileFormats/DataFileAbstract.h"
 
@@ -35,8 +36,14 @@ namespace FileFormats
  */
 class VAC : public DataFileAbstract
 {
+    Q_GADGET
+    QML_VALUE_TYPE(vac)
 
 public:
+    /*! \brief Default constructor
+     */
+    VAC() = default;
+
     /*! \brief Constructor
      *
      *  This class reads a georeferenced image file, where georeferencing data is
@@ -76,11 +83,20 @@ public:
      *
      *  \param bottomRight GeoCoordinate for image edge
      */
-    VAC(const QByteArray& data,
+    VAC(const QString& fileName,
         const QGeoCoordinate& topLeft,
         const QGeoCoordinate& topRight,
         const QGeoCoordinate& bottomLeft,
         const QGeoCoordinate& bottomRight);
+
+    // Q_INVOKABLE bool isValid() const { return DataFileAbstract::isValid(); };
+
+    Q_PROPERTY(bool isValid READ isValid CONSTANT)
+    Q_PROPERTY(QGeoCoordinate topLeft READ topLeft CONSTANT)
+    Q_PROPERTY(QGeoCoordinate topRight READ topRight CONSTANT)
+    Q_PROPERTY(QGeoCoordinate bottomLeft READ bottomLeft CONSTANT)
+    Q_PROPERTY(QGeoCoordinate bottomRight READ bottomRight CONSTANT)
+    Q_PROPERTY(QString fileName READ fileName CONSTANT)
 
 
     //
@@ -96,15 +112,35 @@ public:
      */
     [[nodiscard]] auto baseName() const -> QString { return m_baseName; }
 
-    /*! \brief Bounding box
+    /*! \brief Geographic coordinate for corner of raster image
      *
-     *  This method returns the bounding box of the georeferenced image.
-     *
-     *  @returns The bounding box. In case of error, an invalid QGeoRectangle is
-     *  returned.
+     *  @returns Coordinate, or an invalid coordinate in case of error.
      */
-    [[nodiscard]] auto bBox() const -> QGeoRectangle { return m_bBox; }
+    [[nodiscard]] QGeoCoordinate bottomLeft() const { return m_bottomLeft; }
 
+    /*! \brief Geographic coordinate for corner of raster image
+     *
+     *  @returns Coordinate, or an invalid coordinate in case of error.
+     */
+    [[nodiscard]] QGeoCoordinate bottomRight() const { return m_bottomRight; }
+
+    /*! \brief File name
+     *
+     *  @returns A QString with the file name
+     */
+    [[nodiscard]] auto fileName() const -> QString { return m_fileName; }
+
+    /*! \brief Geographic coordinate for corner of raster image
+     *
+     *  @returns Coordinate, or an invalid coordinate in case of error.
+     */
+    [[nodiscard]] QGeoCoordinate topLeft() const { return m_topLeft; }
+
+    /*! \brief Geographic coordinate for corner of raster image
+     *
+     *  @returns Coordinate, or an invalid coordinate in case of error.
+     */
+    [[nodiscard]] QGeoCoordinate topRight() const { return m_topRight; }
 
 
     //
@@ -123,22 +159,6 @@ public:
     // Methods
     //
 
-    /*! \brief Save visual approach chart
-     *
-     *  This method copies the visual approach chart to a new directory, chooses
-     *  an appropriate file name of the form
-     *  "baseName-geo_7.739665_48.076416_7.9063883_47.96452.webp". If the image
-     *  is not in webp format already, it will be converted to webp using a
-     *  lossy encoder.
-     *
-     *  @param directoryName Name of a directory where the VAC will be stored.
-     *  The directory and its parents are created if necessary
-     *
-     *  @returns Path of the newly created file, or an empty string in case of
-     *  error.
-     */
-    [[nodiscard]] auto save(const QString &directoryName) -> QString;
-
     /*! \brief Read base name from file name
      *
      *  For file names of the form path/EDFR-geo_10.1535_49.4293_10.2822_49.3453.webp or path/EDFR_10.1535_49.4293_10.2822_49.3453.webp,
@@ -149,17 +169,6 @@ public:
      *  @return Base name, or an empty string in case of an error
      */
     [[nodiscard]] static QString baseNameFromFileName(const QString& fileName);
-
-    /*! \brief Read bounding box from file name
-     *
-     *  This method checks if the file name is of the form EDFR-geo_10.1535_49.4293_10.2822_49.3453.webp or EDFR_10.1535_49.4293_10.2822_49.3453.webp.
-     *  If yes, it returns the bounding box for that file.
-     *
-     *  @param fileName file name
-     *
-     *  @return Bounding box, or an invalid bounding box in case of an error
-     */
-    [[nodiscard]] static QGeoRectangle bBoxFromFileName(const QString& fileName);
 
     /*! \brief Mime type for files that can be opened by this class
      *
@@ -173,12 +182,20 @@ public:
                                                            u"image/webp"_qs}; }
 
 private:
+#warning document
+    bool coordsFromFileName();
+
+#warning document
     void generateErrorsAndWarnings();
 
-    QGeoRectangle m_bBox;
-    QString m_baseName;
-    QString m_fileName;
-    QImage m_image;
+    QString m_baseName {};
+    QString m_fileName {};
+
+    // Geographic coordinates for corner of raster image
+    QGeoCoordinate m_topLeft {};
+    QGeoCoordinate m_topRight {};
+    QGeoCoordinate m_bottomLeft {};
+    QGeoCoordinate m_bottomRight {};
 };
 
 } // namespace FileFormats

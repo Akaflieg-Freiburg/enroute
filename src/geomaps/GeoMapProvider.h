@@ -95,13 +95,10 @@ public:
     //
 
     /*! \brief Current approach chart file name */
-    Q_PROPERTY(QString approachChart READ approachChart WRITE setApproachChart NOTIFY approachChartChanged)
+    Q_PROPERTY(FileFormats::VAC approachChart READ approachChart NOTIFY approachChartChanged)
 
     /*! \brief Current approach chart base name */
     Q_PROPERTY(QString approachChartBaseName READ approachChartBaseName NOTIFY approachChartChanged)
-
-    /*! \brief Current approach chart file name */
-    Q_PROPERTY(QGeoRectangle approachChartBoundingBox READ approachChartBoundingBox NOTIFY approachChartChanged)
 
     /*! \brief List of base map MBTILES */
     Q_PROPERTY(QList<QSharedPointer<FileFormats::MBTILES>> baseMapRasterTiles READ baseMapRasterTiles NOTIFY baseMapTilesChanged)
@@ -154,9 +151,9 @@ public:
      *
      * @returns Property approachChart
      */
-    [[nodiscard]] QString approachChart() const
+    [[nodiscard]] FileFormats::VAC approachChart() const
     {
-        return m_approachChartFileName;
+        return FileFormats::VAC(m_approachChartFileName);
     }
 
     /*! \brief Getter function for the property with the same name
@@ -166,15 +163,6 @@ public:
     [[nodiscard]] QString approachChartBaseName() const
     {
         return  FileFormats::VAC::baseNameFromFileName(m_approachChartFileName);
-    }
-
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property approachChartBoundingBox
-     */
-    [[nodiscard]] QGeoRectangle approachChartBoundingBox() const
-    {
-        return m_approachChartBBox;
     }
 
     /*! \brief Getter function for the property with the same name
@@ -238,7 +226,7 @@ public:
      *
      * @param apchChartName Name of approach chart
      */
-    void setApproachChart(const QString& apchChartName = QString());
+    Q_INVOKABLE void setApproachChart(const QString& apchChartName = QString());
 
 
 
@@ -398,7 +386,6 @@ private:
     // Current approach chart
     //
     QString m_approachChartFileName;
-    QGeoRectangle m_approachChartBBox;
 
     // The data in this group is accessed by several threads. The following
     // classes (whose names ends in an underscore) are therefore protected by

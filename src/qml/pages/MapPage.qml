@@ -36,7 +36,7 @@ Page {
         leftPadding: SafeInsets.left
         rightPadding: SafeInsets.right
         topPadding: SafeInsets.top
-        visible: GeoMapProvider.approachChart !== ""
+        visible: GeoMapProvider.approachChart.isValid
 
         ToolButton {
             id: backButton
@@ -48,7 +48,7 @@ Page {
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                GeoMapProvider.approachChart = ""
+                GeoMapProvider.setApproachChart("")
             }
         }
 

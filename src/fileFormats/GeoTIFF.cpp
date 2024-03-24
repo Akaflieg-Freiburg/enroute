@@ -198,42 +198,41 @@ QList<double> FileFormats::GeoTIFF::readTransformation(const QMap<quint16, QVari
     return transformation;
 }
 
-void FileFormats::GeoTIFF::computeGeoQuadrangle(const QMap<quint16, QVariantList>& TIFFFields)
-{
-    auto transformation = getTransformation(TIFFFields);
-    if (transformation.size() != 16)
-    {
-        return;
-    }
-
-    auto _rasterSize = rasterSize();
-    if (!_rasterSize.isValid())
-    {
-        return;
-    }
-
-    m_topLeft = {transformation[7],
-                 transformation[3]};
-    m_topRight = {transformation[4] * _rasterSize.width() + transformation[7],
-                  transformation[0] * _rasterSize.width() + transformation[3]};
-    m_bottomLeft = {transformation[5] * _rasterSize.height() + transformation[7],
-                    transformation[1] * _rasterSize.height() + transformation[3]};
-    m_bottomRight = {transformation[4] * _rasterSize.width() + transformation[5] * _rasterSize.height() + transformation[7],
-                     transformation[0] * _rasterSize.width() + transformation[1] * _rasterSize.height() + transformation[3]};
-    qWarning() << m_topLeft << m_bottomRight;
-
-    m_bBox.setTopLeft(m_topLeft);
-    m_bBox.setBottomRight(m_bottomRight);
-}
-
-
 void FileFormats::GeoTIFF::interpretGeoData()
 {
     try
     {
         auto TIFFFields = fields();
+
         m_name = readName(TIFFFields);
-        computeGeoQuadrangle(TIFFFields);
+
+        auto _rasterSize = rasterSize();
+        if (!_rasterSize.isValid())
+        {
+            throw QObject::tr("No raster size data.", "FileFormats::GeoTIFF");
+        }
+
+        auto transformation = getTransformation(TIFFFields);
+        if (transformation.size() != 16)
+        {
+            throw QObject::tr("No transformation data.", "FileFormats::GeoTIFF");
+        }
+
+        m_topLeft = {transformation[7],
+                     transformation[3]};
+        m_topRight = {transformation[4] * _rasterSize.width() + transformation[7],
+                      transformation[0] * _rasterSize.width() + transformation[3]};
+        m_bottomLeft = {transformation[5] * _rasterSize.height() + transformation[7],
+                        transformation[1] * _rasterSize.height() + transformation[3]};
+        m_bottomRight = {transformation[4] * _rasterSize.width() + transformation[5] * _rasterSize.height() + transformation[7],
+                         transformation[0] * _rasterSize.width() + transformation[1] * _rasterSize.height() + transformation[3]};
+        if (!m_topLeft.isValid()
+            || !m_topRight.isValid()
+            || !m_bottomLeft.isValid()
+            || !m_bottomRight.isValid())
+        {
+            throw QObject::tr("Invalid coordinate data.", "FileFormats::GeoTIFF");
+        }
     }
     catch (QString& message)
     {

@@ -48,7 +48,7 @@ Page {
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                GeoMapProvider.approachChart = model.modelData.fileName
+                GeoMapProvider.setApproachChart(model.modelData.fileName)
                 stackView.pop()
             }
         }

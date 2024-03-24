@@ -28,20 +28,17 @@
 FileFormats::VAC::VAC(const QString& fileName)
     : m_fileName(fileName)
 {
-    // Load image
-    auto file = FileFormats::DataFileAbstract::openFileURL(fileName);
-    m_image = QImage(file->fileName());
-
-    // Guess data from file name
-    m_bBox = VAC::bBoxFromFileName(fileName);
     m_baseName = VAC::baseNameFromFileName(fileName);
 
-    if (!m_bBox.isValid())
+    if (!coordsFromFileName())
     {
         FileFormats::GeoTIFF const geoTIFF(fileName);
         if (geoTIFF.isValid())
         {
-            m_bBox = geoTIFF.bBox();
+            m_topLeft = geoTIFF.topLeft();
+            m_topRight = geoTIFF.topRight();
+            m_bottomLeft = geoTIFF.bottomLeft();
+            m_bottomRight = geoTIFF.bottomRight();
             if (!geoTIFF.name().isEmpty())
             {
                 m_baseName = geoTIFF.name();
@@ -53,42 +50,14 @@ FileFormats::VAC::VAC(const QString& fileName)
     generateErrorsAndWarnings();
 }
 
-FileFormats::VAC::VAC(const QByteArray& data,
+FileFormats::VAC::VAC(const QString& fileName,
                       const QGeoCoordinate& topLeft,
                       const QGeoCoordinate& topRight,
                       const QGeoCoordinate& bottomLeft,
                       const QGeoCoordinate& bottomRight)
+    : m_topLeft(topLeft), m_topRight(topRight), m_bottomLeft(bottomLeft), m_bottomRight(bottomRight)
 {
-    m_image.loadFromData(data);
-
-    auto angle = bottomLeft.azimuthTo(topLeft);
-    if (!qFuzzyIsNull(angle))
-    {
-        m_image = m_image.transformed( QTransform().rotate(angle) );
-    }
-
-    auto left = topLeft.longitude();
-    left = qMin(left, topRight.longitude());
-    left = qMin(left, bottomLeft.longitude());
-    left = qMin(left, bottomRight.longitude());
-
-    auto right = topLeft.longitude();
-    right = qMax(right, topRight.longitude());
-    right = qMax(right, bottomLeft.longitude());
-    right = qMax(right, bottomRight.longitude());
-
-    auto top = topLeft.latitude();
-    top = qMax(top, topRight.latitude());
-    top = qMax(top, bottomLeft.latitude());
-    top = qMax(top, bottomRight.latitude());
-
-    auto bottom = topLeft.latitude();
-    bottom = qMin(bottom, topRight.latitude());
-    bottom = qMin(bottom, bottomLeft.latitude());
-    bottom = qMin(bottom, bottomRight.latitude());
-
-    m_bBox.setTopLeft({top, left});
-    m_bBox.setBottomRight({bottom, right});
+    m_baseName = VAC::baseNameFromFileName(fileName);
 
     // Generate errors and warnings
     generateErrorsAndWarnings();
@@ -99,6 +68,8 @@ FileFormats::VAC::VAC(const QByteArray& data,
 // Methods
 //
 
+#warning
+/*
 auto FileFormats::VAC::save(const QString& directory) -> QString
 {
     if (!isValid())
@@ -134,7 +105,7 @@ auto FileFormats::VAC::save(const QString& directory) -> QString
     }
     return {};
 }
-
+*/
 QString FileFormats::VAC::baseNameFromFileName(const QString& fileName)
 {
     QFileInfo const fileInfo(fileName);
@@ -152,19 +123,21 @@ QString FileFormats::VAC::baseNameFromFileName(const QString& fileName)
     return baseName;
 }
 
-QGeoRectangle FileFormats::VAC::bBoxFromFileName(const QString& fileName)
+bool FileFormats::VAC::coordsFromFileName()
 {
-    if (fileName.size() <= 5)
+#warning too complicated
+
+    if (m_fileName.size() <= 5)
     {
-        return {};
+        return false;
     }
-    auto idx = fileName.lastIndexOf('.');
+    auto idx = m_fileName.lastIndexOf('.');
     if (idx == -1)
     {
-        return {};
+        return false;
     }
 
-    auto list = fileName.left(idx).split('_');
+    auto list = m_fileName.left(idx).split('_');
     if (list.size() < 4)
     {
         return {};
@@ -175,44 +148,47 @@ QGeoRectangle FileFormats::VAC::bBoxFromFileName(const QString& fileName)
     auto top = list[1].toDouble(&success);
     if (!success)
     {
-        return {};
+        return false;
     }
     if ((top < -90.0) || (top > 90.0))
     {
-        return {};
+        return false;
     }
     auto left = list[0].toDouble(&success);
     if (!success)
     {
-        return {};
+        return false;
     }
     if ((left < -180.0) || (left > 180.0))
     {
-        return {};
+        return false;
     }
     auto bottom = list[3].toDouble(&success);
     if (!success)
     {
-        return {};
+        return false;
     }
     if ((bottom < -90.0) || (bottom > 90.0) || (bottom >= top))
     {
-        return {};
+        return false;
     }
     auto right = list[2].toDouble(&success);
     if (!success)
     {
-        return {};
+        return false;
     }
     if ((right < -180.0) || (right > 180.0) || (left >= right))
     {
-        return {};
+        return false;
     }
 
-    QGeoRectangle result;
-    result.setTopLeft({top, left});
-    result.setBottomRight({bottom, right});
-    return result;
+    m_topLeft = {top, left};
+    m_topRight = {top, right};
+    m_bottomLeft = {bottom, left};
+    m_bottomRight = {bottom, right};
+
+    return m_topLeft.isValid() && m_topRight.isValid()
+           && m_bottomLeft.isValid() && m_bottomRight.isValid();
 }
 
 
@@ -223,18 +199,15 @@ QGeoRectangle FileFormats::VAC::bBoxFromFileName(const QString& fileName)
 
 void FileFormats::VAC::generateErrorsAndWarnings()
 {
-    if (!m_bBox.isValid())
+    if (!m_topLeft.isValid() || !m_topRight.isValid()
+        || !m_bottomLeft.isValid() || !m_bottomRight.isValid())
     {
         setError( QObject::tr("Unable to find georeferencing data for the file %1.", "VAC").arg(m_fileName) );
         return;
-    }
-    if (m_image.isNull())
-    {
-        setError( QObject::tr("Unable to load raster data from file %1.", "VAC").arg(m_fileName) );
-        return;
-    }
+        }
 
-    auto diameter_in_m = m_bBox.topLeft().distanceTo(m_bBox.bottomRight());
+#warning
+    auto diameter_in_m = m_topLeft.distanceTo(m_bottomRight);
     if (diameter_in_m < 200)
     {
         addWarning( QObject::tr("The georeferencing data for the file %1 suggests that the image diagonal is less than 200m, which makes it unlikely that this is an approach chart.", "VAC").arg(m_fileName) );

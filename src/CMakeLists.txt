@@ -469,6 +469,7 @@ target_include_directories(${PROJECT_NAME}
     ${CMAKE_SOURCE_DIR}/3rdParty/sunset/src
     ${CMAKE_SOURCE_DIR}/3rdParty/GSL/include
     dataManagement
+    fileFormats
     geomaps
     navigation
     notam

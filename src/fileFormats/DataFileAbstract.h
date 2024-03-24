@@ -106,8 +106,6 @@ protected:
     void setError(const QString& newError) { m_error = newError; }
 
 private:
-    Q_DISABLE_COPY_MOVE(DataFileAbstract)
-
     QString m_error;
     QStringList m_warnings;
 };

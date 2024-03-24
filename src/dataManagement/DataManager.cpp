@@ -272,7 +272,9 @@ QString DataManagement::DataManager::importTripKit(const QString& fileName)
         }
 
         FileFormats::VAC vac(path);
-        auto newPath = vac.save(m_vacDirectory);
+#warning
+        QString newPath;
+//        auto newPath = vac.save(m_vacDirectory);
         QFile::remove(path);
 
         if (newPath.isEmpty())
@@ -329,7 +331,9 @@ QString DataManagement::DataManager::importVAC(const QString& fileName, QString 
         }
     }
 
-    auto newFileName = vac.save(m_vacDirectory);
+#warning
+    QString newFileName;
+    // auto newFileName = vac.save(m_vacDirectory);
     if (newFileName.isEmpty())
     {
         return tr("Import failed. Unable to write raster data to directory %1.").arg(m_vacDirectory);
@@ -448,7 +452,6 @@ void DataManagement::DataManager::readVACDirectory()
         // Read file and try to identify the bounding box
         auto fileName = fileIterator.fileName();
         auto idx = fileName.lastIndexOf(u"-geo_"_qs, -1);
-        auto bBox = FileFormats::VAC(fileName).bBox();
 
         // Identify files that should not be there
         if ((!fileName.endsWith(u"jpeg"_qs)
@@ -457,8 +460,7 @@ void DataManagement::DataManager::readVACDirectory()
              && !fileName.endsWith(u"tif"_qs)
              && !fileName.endsWith(u"tiff"_qs)
              && !fileName.endsWith(u"webp"_qs)) ||
-            (idx == -1) ||
-            !bBox.isValid())
+            (idx == -1))
         {
             filesToDelete += fileIterator.filePath();
             continue;
@@ -467,7 +469,8 @@ void DataManagement::DataManager::readVACDirectory()
         auto vacFileBaseName = fileName.left(idx);
         if (!vacFileBaseNames.contains(vacFileBaseName))
         {
-            auto* downloadable = new DataManagement::Downloadable_SingleFile({}, fileIterator.filePath(), bBox, this);
+#warning
+            auto* downloadable = new DataManagement::Downloadable_SingleFile({}, fileIterator.filePath(), {}, this);
             downloadable->setObjectName(fileName.left(idx));
             connect(downloadable, &DataManagement::Downloadable_Abstract::hasFileChanged, downloadable, &QObject::deleteLater);
             newDownloadables += downloadable;

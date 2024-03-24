@@ -179,16 +179,10 @@ void GeoMaps::GeoMapProvider::setApproachChart(const QString& apchChartName)
     }
 
     m_approachChartFileName = {};
-    m_approachChartBBox = {};
 
     if (!apchChartName.isEmpty())
     {
-        auto bBox = FileFormats::VAC(apchChartName).bBox();
-        if (bBox.isValid())
-        {
-            m_approachChartFileName = apchChartName;
-            m_approachChartBBox = bBox;
-        }
+        m_approachChartFileName = apchChartName;
     }
 
     emit approachChartChanged();

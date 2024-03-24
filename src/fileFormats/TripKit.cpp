@@ -168,8 +168,8 @@ void FileFormats::TripKit::readVACs()
 {
     foreach (auto path, m_zip.fileNames())
     {
-        auto bBox = FileFormats::VAC::bBoxFromFileName(path);
-        if (!bBox.isValid())
+        auto vac = FileFormats::VAC(path);
+        if (!vac.isValid())
         {
             continue;
         }
@@ -183,9 +183,9 @@ void FileFormats::TripKit::readVACs()
         m_entries.append({FileFormats::VAC::baseNameFromFileName(path),
                           ending,
                           path,
-                          bBox.topLeft(),
-                          bBox.topRight(),
-                          bBox.bottomLeft(),
-                          bBox.bottomRight()});
+                          vac.topLeft(),
+                          vac.topRight(),
+                          vac.bottomLeft(),
+                          vac.bottomRight()});
     }
 }

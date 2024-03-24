@@ -67,19 +67,35 @@ public:
     // Getter Methods
     //
 
+    /*! \brief Geographic coordinate for corner of raster image
+     *
+     *  @returns Coordinate, or an invalid coordinate in case of error.
+     */
+    [[nodiscard]] QGeoCoordinate bottomLeft() const { return m_bottomLeft; }
+
+    /*! \brief Geographic coordinate for corner of raster image
+     *
+     *  @returns Coordinate, or an invalid coordinate in case of error.
+     */
+    [[nodiscard]] QGeoCoordinate bottomRight() const { return m_bottomRight; }
+
     /*! \brief Name, as specified in the GeoTIFF file
      *
      *  @returns The name or an empty string if no name is specified.
      */
     [[nodiscard]] QString name() const { return m_name; }
 
-    /*! \brief Bounding box, as specified in the GeoTIFF file
+    /*! \brief Geographic coordinate for corner of raster image
      *
-     *  @returns Bounding box, which might be invalid
+     *  @returns Coordinate, or an invalid coordinate in case of error.
      */
-#warning wrong
-    [[nodiscard]] QGeoRectangle bBox() const { return m_bBox; }
+    [[nodiscard]] QGeoCoordinate topLeft() const { return m_topLeft; }
 
+    /*! \brief Geographic coordinate for corner of raster image
+     *
+     *  @returns Coordinate, or an invalid coordinate in case of error.
+     */
+    [[nodiscard]] QGeoCoordinate topRight() const { return m_topRight; }
 
 
     //
@@ -91,6 +107,7 @@ public:
      *  @returns Name of mime type
      */
     [[nodiscard]] static QStringList mimeTypes() { return FileFormats::TIFF::mimeTypes(); }
+
 
 private:
     struct Tiepoint
@@ -146,20 +163,13 @@ private:
      */
     [[nodiscard]] static QList<double> readTransformation(const QMap<quint16, QVariantList> &TIFFFields);
 
-#warning docu
-    void computeGeoQuadrangle(const QMap<quint16, QVariantList>& TIFFFields);
-
     /* This methods interprets the data found in m_TIFFFields and writes to
-     * m_bBox and m_name.On failure, it throws a QString with a human-readable,
+     * m_name and m_topLeft etc. On failure, it throws a QString with a human-readable,
      * translated error message.
      */
-#warning docu
     void interpretGeoData();
 
-    // Bounding box
-#warning wrong!
-    QGeoRectangle m_bBox;
-
+    // Geographic coordinates for corner of raster image
     QGeoCoordinate m_topLeft {};
     QGeoCoordinate m_topRight {};
     QGeoCoordinate m_bottomLeft {};

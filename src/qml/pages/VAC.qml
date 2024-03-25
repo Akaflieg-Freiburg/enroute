@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -42,13 +42,12 @@ Page {
 
             required property var model
 
-            text: model.modelData.objectName
+            text: model.modelData.baseName
             icon.source: "/icons/material/ic_map.svg"
-            enabled: model.modelData.hasFile
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                GeoMapProvider.setApproachChart(model.modelData.fileName)
+                Global.currentVAC = model.modelData
                 stackView.pop()
             }
         }
@@ -114,7 +113,7 @@ Page {
             // Mention downloadable in order to get updates
             DataManager.VAC.downloadables
 
-            return DataManager.VAC.downloadablesByDistance(PositionProvider.lastValidCoordinate)
+            return VACLibrary.VACs
         }
         delegate: approachChartItem
         ScrollIndicator.vertical: ScrollIndicator {}

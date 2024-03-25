@@ -58,6 +58,7 @@ set(SOURCES
     geomaps/TileServer.h
     geomaps/Waypoint.h
     geomaps/WaypointLibrary.h
+    geomaps/VACLibrary.h
     GlobalObject.h
     GlobalSettings.h
     Librarian.h
@@ -144,6 +145,7 @@ set(SOURCES
     geomaps/TileServer.cpp
     geomaps/Waypoint.cpp
     geomaps/WaypointLibrary.cpp
+    geomaps/VACLibrary.cpp
     GlobalObject.cpp
     GlobalSettings.cpp
     Librarian.cpp

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2023-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2024 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,29 +18,81 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-pragma Singleton
+#pragma once
 
-import QtCore
-import QtQuick
-import QtQuick.Controls
+#include <QCache>
+#include <QFuture>
+#include <QGeoRectangle>
+#include <QImage>
+#include <QQmlEngine>
+#include <QStandardPaths>
+#include <QTemporaryFile>
+#include <QTimer>
 
-import akaflieg_freiburg.enroute
+#include "fileFormats/VAC.h"
 
-QtObject {
-    property Loader dialogLoader
-    property Drawer drawer
-    property var toast
-    property vac currentVAC
-    property vac defaultVAC
 
-    property LocationPermission locationPermission: LocationPermission {
-        id: locationPermission
+namespace GeoMaps
+{
 
-        accuracy: LocationPermission.Precise
-        availability: LocationPermission.WhenInUse
+#warning docu
 
-        onStatusChanged: PositionProvider.startUpdates()
-        Component.onCompleted: PositionProvider.startUpdates()
-    }
+class VACLibrary : public QObject
+{
+    Q_OBJECT
+    QML_ELEMENT
+    QML_SINGLETON
 
-}
+public:
+    /*! \brief Constructor */
+    VACLibrary();
+
+    /*! \brief Destructor */
+    ~VACLibrary() override = default;
+
+    //
+    // Properties
+    //
+
+#warning docu
+    Q_PROPERTY(bool isEmpty READ isEmpty NOTIFY dataChanged)
+
+#warning docu
+    Q_PROPERTY(QVector<FileFormats::VAC> VACs READ VACs NOTIFY dataChanged)
+
+
+    //
+    // Getter Methods
+    //
+
+#warning docu
+    [[nodiscard]] bool isEmpty() const { return m_vacs.isEmpty(); }
+
+#warning docu
+    [[nodiscard]] QVector<FileFormats::VAC> VACs() const { return m_vacs; }
+
+
+    //
+    // Setter Methods
+    //
+
+
+
+    //
+    // Methods
+    //
+
+
+signals:
+    /*! \brief Notifier signal */
+    void dataChanged();
+
+private:
+    Q_DISABLE_COPY_MOVE(VACLibrary)
+
+    QVector<FileFormats::VAC> m_vacs;
+    QString m_vacDirectory {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/VAC"};
+
+};
+
+} // namespace GeoMaps

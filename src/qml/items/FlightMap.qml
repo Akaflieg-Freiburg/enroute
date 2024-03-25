@@ -69,7 +69,7 @@ Map {
             type: "image"
 
             property string url: {
-                var vac = GeoMapProvider.approachChart
+                var vac = Global.currentVAC
                 if (!vac.isValid)
                     return "qrc:/icons/appIcon.png"
                 return "file://" + vac.fileName
@@ -79,7 +79,7 @@ Map {
             // As a temporary workaround, MapPage.qml will reload the map in full
             // whenever the approach chart changes.
             property var coordinates: {
-                var vac = GeoMapProvider.approachChart
+                var vac = Global.currentVAC
                 if (vac.isValid)
                     return [[vac.topLeft.longitude, vac.topLeft.latitude],
                             [vac.topRight.longitude, vac.topRight.latitude],
@@ -103,7 +103,7 @@ Map {
             property string source: "vac"
 
             layout: {
-                "visibility": GeoMapProvider.approachChart === "" ? 'none' : 'visible'
+                "visibility": Global.currentVAC.isValid ? 'visible' : 'none'
             }
         }
 

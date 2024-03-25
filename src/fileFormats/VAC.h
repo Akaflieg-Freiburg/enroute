@@ -42,7 +42,7 @@ class VAC : public DataFileAbstract
 public:
     /*! \brief Default constructor
      */
-    VAC() = default;
+    VAC();
 
     /*! \brief Constructor
      *
@@ -83,14 +83,14 @@ public:
      *
      *  \param bottomRight GeoCoordinate for image edge
      */
-    VAC(const QString& fileName,
-        const QGeoCoordinate& topLeft,
-        const QGeoCoordinate& topRight,
-        const QGeoCoordinate& bottomLeft,
-        const QGeoCoordinate& bottomRight);
+    VAC(const QString &fileName,
+        QGeoCoordinate topLeft,
+        QGeoCoordinate topRight,
+        QGeoCoordinate bottomLeft,
+        QGeoCoordinate bottomRight);
 
-    // Q_INVOKABLE bool isValid() const { return DataFileAbstract::isValid(); };
-
+#warning unfinished
+    Q_PROPERTY(QString baseName READ baseName CONSTANT)
     Q_PROPERTY(bool isValid READ isValid CONSTANT)
     Q_PROPERTY(QGeoCoordinate topLeft READ topLeft CONSTANT)
     Q_PROPERTY(QGeoCoordinate topRight READ topRight CONSTANT)

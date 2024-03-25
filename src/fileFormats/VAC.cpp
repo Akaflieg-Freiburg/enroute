@@ -21,9 +21,15 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QImage>
+#include <utility>
 
 #include "fileFormats/GeoTIFF.h"
 #include "fileFormats/VAC.h"
+
+FileFormats::VAC::VAC()
+{
+    setError("Default constructed object, no data set");
+}
 
 FileFormats::VAC::VAC(const QString& fileName)
     : m_fileName(fileName)
@@ -50,12 +56,15 @@ FileFormats::VAC::VAC(const QString& fileName)
     generateErrorsAndWarnings();
 }
 
-FileFormats::VAC::VAC(const QString& fileName,
-                      const QGeoCoordinate& topLeft,
-                      const QGeoCoordinate& topRight,
-                      const QGeoCoordinate& bottomLeft,
-                      const QGeoCoordinate& bottomRight)
-    : m_topLeft(topLeft), m_topRight(topRight), m_bottomLeft(bottomLeft), m_bottomRight(bottomRight)
+FileFormats::VAC::VAC(const QString &fileName,
+                      QGeoCoordinate topLeft,
+                      QGeoCoordinate topRight,
+                      QGeoCoordinate bottomLeft,
+                      QGeoCoordinate bottomRight)
+    : m_topLeft(std::move(topLeft))
+    , m_topRight(std::move(topRight))
+    , m_bottomLeft(std::move(bottomLeft))
+    , m_bottomRight(std::move(bottomRight))
 {
     m_baseName = VAC::baseNameFromFileName(fileName);
 

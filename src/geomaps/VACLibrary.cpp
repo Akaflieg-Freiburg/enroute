@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2023-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2024 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,29 +18,23 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-pragma Singleton
+#include <QDirIterator>
 
-import QtCore
-import QtQuick
-import QtQuick.Controls
+#include "VACLibrary.h"
 
-import akaflieg_freiburg.enroute
+GeoMaps::VACLibrary::VACLibrary()
+{
+    qWarning() << "create VAC library";
 
-QtObject {
-    property Loader dialogLoader
-    property Drawer drawer
-    property var toast
-    property vac currentVAC
-    property vac defaultVAC
-
-    property LocationPermission locationPermission: LocationPermission {
-        id: locationPermission
-
-        accuracy: LocationPermission.Precise
-        availability: LocationPermission.WhenInUse
-
-        onStatusChanged: PositionProvider.startUpdates()
-        Component.onCompleted: PositionProvider.startUpdates()
+    QDirIterator fileIterator(m_vacDirectory, QDir::Files);
+    while (fileIterator.hasNext())
+    {
+        fileIterator.next();
+        FileFormats::VAC const vac(fileIterator.filePath());
+        if (!vac.isValid())
+        {
+            continue;
+        }
+        m_vacs.append(vac);
     }
-
 }

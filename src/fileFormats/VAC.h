@@ -113,6 +113,7 @@ public:
      */
     [[nodiscard]] auto baseName() const -> QString { return m_baseName; }
 
+#warning docu
     [[nodiscard]] QGeoCoordinate center() const;
 
     /*! \brief Geographic coordinate for corner of raster image
@@ -156,6 +157,7 @@ public:
      */
     void setBaseName(const QString& newBaseName) { m_baseName = newBaseName; }
 
+    void setFileName(const QString& newFileName) { m_fileName = newFileName; }
 
 
     //

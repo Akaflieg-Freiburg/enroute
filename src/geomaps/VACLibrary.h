@@ -77,6 +77,9 @@ public:
 
     [[nodiscard]] Q_INVOKABLE QVector<FileFormats::VAC> vacsByDistance(const QGeoCoordinate& position);
 
+    [[nodiscard]] Q_INVOKABLE QString importVAC(const QString& fileName, QString newName);
+
+    Q_INVOKABLE void deleteVAC(const QString& baseName);
 
 
 signals:

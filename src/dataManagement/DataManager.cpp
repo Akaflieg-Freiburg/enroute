@@ -302,48 +302,6 @@ QString DataManagement::DataManager::importTripKit(const QString& fileName)
 }
 
 
-QString DataManagement::DataManager::importVAC(const QString& fileName, QString newName)
-{
-    FileFormats::VAC vac(fileName);
-    if (!vac.isValid())
-    {
-        return vac.error();
-    }
-    if (newName.isEmpty())
-    {
-        newName = vac.baseName();
-    }
-    else
-    {
-        vac.setBaseName(newName);
-    }
-
-    foreach (auto downloadable, m_VAC.downloadables())
-    {
-        if (downloadable == nullptr)
-        {
-            continue;
-        }
-        if (downloadable->objectName() == vac.baseName())
-        {
-            // This will also call deleteLater
-            downloadable->deleteFiles();
-        }
-    }
-
-#warning
-    QString newFileName;
-    // auto newFileName = vac.save(m_vacDirectory);
-    if (newFileName.isEmpty())
-    {
-        return tr("Import failed. Unable to write raster data to directory %1.").arg(m_vacDirectory);
-    }
-    readVACDirectory();
-
-    return {};
-}
-
-
 QString DataManagement::DataManager::renameVAC(const QString& oldName, const QString& newName)
 {
     foreach(auto* vac, m_VAC.downloadables())

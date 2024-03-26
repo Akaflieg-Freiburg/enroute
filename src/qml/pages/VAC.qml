@@ -127,7 +127,7 @@ Page {
         anchors.topMargin: font.pixelSize
 
         background: Rectangle {color: "white"}
-        visible: !DataManager.VAC.hasFile
+        visible: VACLibrary.isEmpty
 
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment : Text.AlignVCenter

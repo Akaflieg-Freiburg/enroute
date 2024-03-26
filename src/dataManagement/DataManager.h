@@ -334,20 +334,6 @@ public:
      */
     Q_INVOKABLE QString importTripKit(const QString& fileName);
 
-    /*! \brief Import VAC into the library of locally installed VACs
-     *
-     * This method imports the VAC into the library of locally installed VAC.
-     *
-     * @param fileName File name of the VAC.
-     *
-     * @param newName Name under which the VAC is available in the library. If
-     * the name exists, the library entry will be replaced.
-     *
-     * @returns A human-readable HTML string on error, or an empty string on
-     * success.
-     */
-    Q_INVOKABLE QString importVAC(const QString& fileName, QString newName);
-
     /*! \brief Rename VAC in the library of locally installed VACs
      *
      * This method imports the VAC into the library of locally installed VAC.

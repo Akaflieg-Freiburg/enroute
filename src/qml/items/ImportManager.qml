@@ -356,14 +356,12 @@ Item {
 
         }
 
-        onAboutToShow: {
-            importVACDialog.standardButton(DialogButtonBox.Ok).enabled = mapNameVAC.text !== ""
-        }
+        onAboutToShow: importVACDialog.standardButton(DialogButtonBox.Ok).enabled = mapNameVAC.text !== ""
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
 
-            var errorString = DataManager.importVAC(importManager.filePath, mapNameVAC.text)
+            var errorString = VACLibrary.importVAC(importManager.filePath, mapNameVAC.text)
             if (errorString !== "") {
                 errLbl.text = errorString
                 errorDialog.open()

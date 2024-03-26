@@ -45,3 +45,59 @@ QVector<FileFormats::VAC> GeoMaps::VACLibrary::vacsByDistance(const QGeoCoordina
     std::sort(m_vacs.begin(), m_vacs.end(), [position](const FileFormats::VAC& first, const FileFormats::VAC& second) {return position.distanceTo(first.center()) < position.distanceTo(second.center()); });
     return m_vacs;
 }
+
+QString GeoMaps::VACLibrary::importVAC(const QString& fileName, QString newName)
+{
+    // Check input data
+    if (!QFile::exists(fileName))
+    {
+        return tr("Input file <strong>%1</strong> does not exist.").arg(fileName);
+    }
+    FileFormats::VAC vac(fileName);
+    if (!vac.isValid())
+    {
+        return tr("Input file <strong>%1</strong> does not contain a valid chart. Error: %2").arg(fileName, vac.error());
+    }
+    QImage const image(fileName);
+    if (image.isNull())
+    {
+        return tr("Unable to read raster image data from input file <strong>%1</strong>.").arg(fileName);
+    }
+
+    // Set base name, delete all existing VACs with that basename
+    if (newName.isEmpty())
+    {
+        newName = vac.baseName();
+    }
+    else
+    {
+        vac.setBaseName(newName);
+    }
+    deleteVAC(newName);
+
+    // Copy file to VAC directory
+    QDir dir;
+    dir.mkpath(m_vacDirectory);
+
+    QString newFileName = m_vacDirectory+"/"+vac.baseName()+".webp";
+#warning copy webp files!
+    if (!image.save(newFileName))
+    {
+        return tr("Error: Unable to write VAC file <strong>%1</strong>.").arg(newFileName);
+    }
+    vac.setFileName(newFileName);
+    m_vacs.append(vac);
+
+    emit dataChanged();
+
+    return {};
+}
+
+void GeoMaps::VACLibrary::deleteVAC(const QString& baseName)
+{
+    auto numDeletions = erase_if(m_vacs, [baseName](const FileFormats::VAC& vac) { return baseName == vac.baseName(); });
+    if (numDeletions != 0)
+    {
+        emit dataChanged();
+    }
+}

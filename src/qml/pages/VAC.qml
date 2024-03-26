@@ -113,7 +113,7 @@ Page {
             // Mention downloadable in order to get updates
             DataManager.VAC.downloadables
 
-            return VACLibrary.VACs
+            return VACLibrary.vacsByDistance(PositionProvider.lastValidCoordinate)
         }
         delegate: approachChartItem
         ScrollIndicator.vertical: ScrollIndicator {}

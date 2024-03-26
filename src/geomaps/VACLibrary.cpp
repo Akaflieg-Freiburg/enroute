@@ -38,3 +38,10 @@ GeoMaps::VACLibrary::VACLibrary()
         m_vacs.append(vac);
     }
 }
+
+
+QVector<FileFormats::VAC> GeoMaps::VACLibrary::vacsByDistance(const QGeoCoordinate& position)
+{
+    std::sort(m_vacs.begin(), m_vacs.end(), [position](const FileFormats::VAC& first, const FileFormats::VAC& second) {return position.distanceTo(first.center()) < position.distanceTo(second.center()); });
+    return m_vacs;
+}

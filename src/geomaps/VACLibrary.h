@@ -20,14 +20,7 @@
 
 #pragma once
 
-#include <QCache>
-#include <QFuture>
-#include <QGeoRectangle>
-#include <QImage>
-#include <QQmlEngine>
 #include <QStandardPaths>
-#include <QTemporaryFile>
-#include <QTimer>
 
 #include "fileFormats/VAC.h"
 
@@ -58,7 +51,7 @@ public:
     Q_PROPERTY(bool isEmpty READ isEmpty NOTIFY dataChanged)
 
 #warning docu
-    Q_PROPERTY(QVector<FileFormats::VAC> VACs READ VACs NOTIFY dataChanged)
+    Q_PROPERTY(QVector<FileFormats::VAC> vacs READ vacs NOTIFY dataChanged)
 
 
     //
@@ -68,8 +61,8 @@ public:
 #warning docu
     [[nodiscard]] bool isEmpty() const { return m_vacs.isEmpty(); }
 
-#warning docu
-    [[nodiscard]] QVector<FileFormats::VAC> VACs() const { return m_vacs; }
+#warning docu, want to sort alphabetically
+    [[nodiscard]] QVector<FileFormats::VAC> vacs() const { return m_vacs; }
 
 
     //
@@ -81,6 +74,9 @@ public:
     //
     // Methods
     //
+
+    [[nodiscard]] Q_INVOKABLE QVector<FileFormats::VAC> vacsByDistance(const QGeoCoordinate& position);
+
 
 
 signals:

@@ -93,6 +93,7 @@ Page {
             mapLoader.active = true
         }
     }
+
     Connections {
         target: Global
 

@@ -90,6 +90,7 @@ public:
         QGeoCoordinate bottomRight);
 
 #warning unfinished
+    Q_PROPERTY(QGeoCoordinate center READ center CONSTANT)
     Q_PROPERTY(QString baseName READ baseName CONSTANT)
     Q_PROPERTY(bool isValid READ isValid CONSTANT)
     Q_PROPERTY(QGeoCoordinate topLeft READ topLeft CONSTANT)
@@ -111,6 +112,8 @@ public:
      *  @returns A QString with the base name
      */
     [[nodiscard]] auto baseName() const -> QString { return m_baseName; }
+
+    [[nodiscard]] QGeoCoordinate center() const;
 
     /*! \brief Geographic coordinate for corner of raster image
      *

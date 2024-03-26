@@ -94,12 +94,6 @@ public:
     // Properties
     //
 
-    /*! \brief Current approach chart file name */
-    Q_PROPERTY(FileFormats::VAC approachChart READ approachChart NOTIFY approachChartChanged)
-
-    /*! \brief Current approach chart base name */
-    Q_PROPERTY(QString approachChartBaseName READ approachChartBaseName NOTIFY approachChartChanged)
-
     /*! \brief List of base map MBTILES */
     Q_PROPERTY(QList<QSharedPointer<FileFormats::MBTILES>> baseMapRasterTiles READ baseMapRasterTiles NOTIFY baseMapTilesChanged)
 
@@ -146,24 +140,6 @@ public:
     //
     // Getter Methods
     //
-
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property approachChart
-     */
-    [[nodiscard]] FileFormats::VAC approachChart() const
-    {
-        return FileFormats::VAC(m_approachChartFileName);
-    }
-
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property approachChartBaseName
-     */
-    [[nodiscard]] QString approachChartBaseName() const
-    {
-        return  FileFormats::VAC::baseNameFromFileName(m_approachChartFileName);
-    }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -215,18 +191,6 @@ public:
      * @returns Property waypoints
      */
     [[nodiscard]] auto waypoints() -> QList<Waypoint>;
-
-
-
-    //
-    // Setter Methods
-    //
-
-    /*! \brief Setter function for the property with the same name
-     *
-     * @param apchChartName Name of approach chart
-     */
-    Q_INVOKABLE void setApproachChart(const QString& apchChartName = QString());
 
 
 
@@ -320,9 +284,6 @@ public:
 
 signals:
     /*! \brief Notification signal for the property with the same name */
-    void approachChartChanged();
-
-    /*! \brief Notification signal for the property with the same name */
     void baseMapTilesChanged();
 
     /*! \brief Notification signal for the property with the same name */
@@ -381,11 +342,6 @@ private:
     QList<QSharedPointer<FileFormats::MBTILES>> m_baseMapVectorTiles;
     QList<QSharedPointer<FileFormats::MBTILES>> m_baseMapRasterTiles;
     QList<QSharedPointer<FileFormats::MBTILES>> m_terrainMapTiles;
-
-    //
-    // Current approach chart
-    //
-    QString m_approachChartFileName;
 
     // The data in this group is accessed by several threads. The following
     // classes (whose names ends in an underscore) are therefore protected by

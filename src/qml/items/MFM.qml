@@ -627,7 +627,7 @@ Item {
     RemainingRouteBar {
         id: remainingRoute
 
-        visible: !GeoMapProvider.approachChart.isValid
+        visible: !Global.currentVAC.isValid
 
         anchors.top: parent.top
         anchors.left: parent.left
@@ -642,7 +642,7 @@ Item {
 
         topPadding: 0
         bottomPadding: 0
-        visible: (!GeoMapProvider.approachChart.isValid) && GlobalSettings.airspaceAltitudeLimit.isFinite() && !DataManager.baseMapsRaster.hasFile
+        visible: (!Global.currentVAC.isValid) && GlobalSettings.airspaceAltitudeLimit.isFinite() && !DataManager.baseMapsRaster.hasFile
 
         Label {
 
@@ -666,7 +666,7 @@ Item {
         anchors.top: remainingRoute.visible ? remainingRoute.bottom : parent.top
         anchors.topMargin: 0.5*font.pixelSize
 
-        visible: !GeoMapProvider.approachChart.isValid
+        visible: !Global.currentVAC.isValid
 
         onClicked: {
             PlatformAdaptor.vibrateBrief()
@@ -783,7 +783,7 @@ Item {
         anchors.horizontalCenter: followGPSButton.horizontalCenter
 
         opacity: GlobalSettings.nightMode ? 0.3 : 1.0
-        visible: (!GeoMapProvider.approachChart.isValid) && !scale.visible
+        visible: (!Global.currentVAC.isValid) && !scale.visible
 
         pixelPer10km: flightMap.pixelPer10km
         vertical: true
@@ -800,7 +800,7 @@ Item {
         anchors.verticalCenter: zoomOut.verticalCenter
 
         opacity: GlobalSettings.nightMode ? 0.3 : 1.0
-        visible: (!GeoMapProvider.approachChart.isValid) && (parent.height > parent.width)
+        visible: (!Global.currentVAC.isValid) && (parent.height > parent.width)
 
         pixelPer10km: flightMap.pixelPer10km
         vertical: false
@@ -814,7 +814,7 @@ Item {
         topPadding: 0
         bottomPadding: 0
 
-        visible: (!GeoMapProvider.approachChart.isValid)
+        visible: (!Global.currentVAC.isValid)
         Label {
             id: noCopyrightInfo
             text: "<a href='xx'>"+qsTr("Map Data Copyright Info")+"</a>"

@@ -77,6 +77,15 @@ FileFormats::VAC::VAC(const QString &fileName,
 // Methods
 //
 
+QGeoCoordinate FileFormats::VAC::center() const
+{
+    return {
+        0.25*(m_topLeft.latitude()+m_topRight.latitude()+m_bottomLeft.latitude()+m_bottomRight.latitude()),
+        0.25*(m_topLeft.longitude()+m_topRight.longitude()+m_bottomLeft.longitude()+m_bottomRight.longitude())
+    };
+}
+
+
 #warning
 /*
 auto FileFormats::VAC::save(const QString& directory) -> QString

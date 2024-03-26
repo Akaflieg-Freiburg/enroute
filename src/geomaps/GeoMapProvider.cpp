@@ -31,7 +31,6 @@
 #include "Librarian.h"
 #include "dataManagement/DataManager.h"
 #include "fileFormats/MBTILES.h"
-#include "fileFormats/VAC.h"
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/WaypointLibrary.h"
 #include "navigation/Navigator.h"
@@ -164,28 +163,6 @@ auto GeoMaps::GeoMapProvider::styleFileURL() -> QString
     }
 
     return "file://"+m_styleFile->fileName();
-}
-
-
-//
-// Setter Methods
-//
-
-void GeoMaps::GeoMapProvider::setApproachChart(const QString& apchChartName)
-{
-    if (m_approachChartFileName == apchChartName)
-    {
-        return;
-    }
-
-    m_approachChartFileName = {};
-
-    if (!apchChartName.isEmpty())
-    {
-        m_approachChartFileName = apchChartName;
-    }
-
-    emit approachChartChanged();
 }
 
 

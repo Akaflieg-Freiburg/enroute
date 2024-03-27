@@ -111,7 +111,7 @@ Page {
         clip: true
         model: {
             // Mention downloadable in order to get updates
-            DataManager.VAC.downloadables
+            VACLibrary.vacs
 
             return VACLibrary.vacsByDistance(PositionProvider.lastValidCoordinate)
         }

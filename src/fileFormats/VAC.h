@@ -164,6 +164,17 @@ public:
     // Methods
     //
 
+#warning want to default that, but need to get rid of DataFileAbstract first
+    bool operator==(const VAC& other) const
+    {
+        return (m_baseName == other.m_baseName)
+               && (m_fileName == other.m_fileName)
+               && (m_topLeft == other.m_topLeft)
+               && (m_topRight == other.m_topRight)
+               && (m_bottomLeft == other.m_bottomLeft)
+               && (m_bottomRight == other.m_bottomRight);
+    }
+
     /*! \brief Read base name from file name
      *
      *  For file names of the form path/EDFR-geo_10.1535_49.4293_10.2822_49.3453.webp or path/EDFR_10.1535_49.4293_10.2822_49.3453.webp,

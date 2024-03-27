@@ -32,8 +32,6 @@
 #include "GlobalSettings.h"
 #include "dataManagement/DataManager.h"
 #include "fileFormats/MBTILES.h"
-#include "fileFormats/TripKit.h"
-#include "fileFormats/VAC.h"
 #include "geomaps/OpenAir.h"
 
 using namespace std::chrono_literals;
@@ -71,9 +69,6 @@ void DataManagement::DataManager::deferredInitialization()
     {
         updateRemoteDataItemList();
     }
-
-    // Setup approach charts
-    readVACDirectory();
 }
 
 
@@ -147,16 +142,6 @@ void DataManagement::DataManager::cleanDataDirectory()
             }
         }
     }
-}
-
-
-void DataManagement::DataManager::clearVACs()
-{
-    auto downloadables = m_VAC.downloadables();
-    m_VAC.clear();
-    qDeleteAll(downloadables);
-    QDir dir(m_vacDirectory);
-    dir.removeRecursively();
 }
 
 
@@ -242,115 +227,6 @@ QString DataManagement::DataManager::importOpenAir(const QString& fileName, cons
 }
 
 
-QString DataManagement::DataManager::importTripKit(const QString& fileName)
-{
-    FileFormats::TripKit tripKit(fileName);
-    QTemporaryDir const tmpDir;
-    if (!tmpDir.isValid())
-    {
-        return {};
-    }
-
-    // Unpack the VACs into m_vacDirectory
-    auto size = tripKit.numCharts();
-    int successfulImports = 0;
-    for(auto idx=0; idx<size; idx++)
-    {
-        emit importTripKitStatus((double)idx/(double)size);
-        QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
-
-        auto path = tripKit.extract(m_vacDirectory, idx);
-        if (path.isEmpty())
-        {
-            continue;
-        }
-
-        if (path.endsWith(u"webp"_qs))
-        {
-            successfulImports++;
-            continue;
-        }
-
-        FileFormats::VAC vac(path);
-#warning
-        QString newPath;
-//        auto newPath = vac.save(m_vacDirectory);
-        QFile::remove(path);
-
-        if (newPath.isEmpty())
-        {
-            continue;
-        }
-        successfulImports++;
-
-    }
-    emit importTripKitStatus(1.0);
-
-
-    readVACDirectory();
-
-    if (successfulImports == 0)
-    {
-        return tr("Error reading TripKip: No charts imported.");
-    }
-    if (successfulImports < size)
-    {
-        return tr("Error reading TripKip: Only %1 out of %2 charts were successfully imported.").arg(successfulImports).arg(size);
-    }
-
-    return {};
-}
-
-
-QString DataManagement::DataManager::renameVAC(const QString& oldName, const QString& newName)
-{
-    foreach(auto* vac, m_VAC.downloadables())
-    {
-        if (vac == nullptr)
-        {
-            continue;
-        }
-        if (vac->objectName() == newName)
-        {
-            return tr("An approach chart with name %1 already exists.").arg(oldName);
-        }
-    }
-
-    foreach(auto* _vac, m_VAC.downloadables())
-    {
-        auto* vac = qobject_cast<DataManagement::Downloadable_SingleFile*>(_vac);
-        if (vac == nullptr)
-        {
-            continue;
-        }
-        if (vac->objectName() != oldName)
-        {
-            continue;
-        }
-        auto oldFileName = vac->fileName();
-        auto newFileName = vac->fileName();
-        newFileName.replace(oldName, newName);
-        if (QFile::exists(newFileName))
-        {
-            return tr("An approach chart with name %1 already exists.").arg(oldName);
-        }
-        if (!QFile::copy(oldFileName, newFileName))
-        {
-            return tr("Cannot copy file %1 to %2.").arg(oldFileName, newFileName);
-        }
-
-        auto* downloadable = new DataManagement::Downloadable_SingleFile({}, newFileName, vac->boundingBox(), this);
-        downloadable->setObjectName(newName);
-        connect(downloadable, &DataManagement::Downloadable_Abstract::hasFileChanged, downloadable, &QObject::deleteLater);
-        m_VAC.add(downloadable);
-
-        vac->deleteFiles();
-        return {};
-    }
-    return tr("Approach chart %1 could not be found.").arg(oldName);
-}
-
-
 void DataManagement::DataManager::onItemFileChanged()
 {
     auto items = m_items.downloadables();
@@ -376,73 +252,6 @@ void DataManagement::DataManager::onItemFileChanged()
         delete geoMapPtr;
         QTimer::singleShot(100ms, this, &DataManagement::DataManager::updateDataItemListAndWhatsNew);
     }
-}
-
-
-void DataManagement::DataManager::readVACDirectory()
-{
-    // List of files that should not be present in the VAC directory.
-    // These will be deleted at the end of the present method.
-    QStringList filesToDelete;
-
-    // List of downloadables that will be added to m_VAC at the end of
-    // this methods.
-    QVector<DataManagement::Downloadable_Abstract*> newDownloadables;
-
-    // Populate list of file basenames for VACs that are already
-    // present in m_VAC.q
-    QStringList vacFileBaseNames;
-    foreach (auto downloadable, m_VAC.downloadables())
-    {
-        if (downloadable == nullptr)
-        {
-            continue;
-        }
-        vacFileBaseNames += downloadable->objectName();
-    }
-
-    // Go through list of files
-    QDirIterator fileIterator(m_vacDirectory, QDir::Files);
-    while (fileIterator.hasNext())
-    {
-        fileIterator.next();
-
-        // Read file and try to identify the bounding box
-        auto fileName = fileIterator.fileName();
-        auto idx = fileName.lastIndexOf(u"-geo_"_qs, -1);
-
-        // Identify files that should not be there
-        if ((!fileName.endsWith(u"jpeg"_qs)
-             && !fileName.endsWith(u"jpg"_qs)
-             && !fileName.endsWith(u"png"_qs)
-             && !fileName.endsWith(u"tif"_qs)
-             && !fileName.endsWith(u"tiff"_qs)
-             && !fileName.endsWith(u"webp"_qs)) ||
-            (idx == -1))
-        {
-            filesToDelete += fileIterator.filePath();
-            continue;
-        }
-
-        auto vacFileBaseName = fileName.left(idx);
-        if (!vacFileBaseNames.contains(vacFileBaseName))
-        {
-#warning
-            auto* downloadable = new DataManagement::Downloadable_SingleFile({}, fileIterator.filePath(), {}, this);
-            downloadable->setObjectName(fileName.left(idx));
-            connect(downloadable, &DataManagement::Downloadable_Abstract::hasFileChanged, downloadable, &QObject::deleteLater);
-            newDownloadables += downloadable;
-        }
-    }
-
-    // Delete files
-    foreach (auto fileToDelete, filesToDelete)
-    {
-        QFile::remove(fileToDelete);
-    }
-
-    // Add files to m_VAC
-    m_VAC.add(newDownloadables);
 }
 
 

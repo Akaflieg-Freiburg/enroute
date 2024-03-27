@@ -75,9 +75,13 @@ public:
     // Methods
     //
 
+    Q_INVOKABLE void clear();
+
     [[nodiscard]] Q_INVOKABLE QVector<FileFormats::VAC> vacsByDistance(const QGeoCoordinate& position);
 
     [[nodiscard]] Q_INVOKABLE QString importVAC(const QString& fileName, QString newName);
+
+    [[nodiscard]] Q_INVOKABLE QString importTripKit(const QString& fileName);
 
     Q_INVOKABLE void deleteVAC(const QString& baseName);
 
@@ -85,6 +89,12 @@ public:
 signals:
     /*! \brief Notifier signal */
     void dataChanged();
+
+    /*! \brief Progress report when importing a trip kit
+     *
+     *  @param percent A number between 0.0 and 1.0.
+     */
+    void importTripKitStatus(double percent);
 
 private:
     Q_DISABLE_COPY_MOVE(VACLibrary)

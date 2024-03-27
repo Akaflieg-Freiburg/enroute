@@ -138,7 +138,7 @@ Item {
     }
 
     Connections {
-        target: DataManager
+        target: VACLibrary
 
         function onImportTripKitStatus(percent) {
             if (percent < 1.0) {
@@ -575,7 +575,7 @@ Item {
             PlatformAdaptor.vibrateBrief()
             close()
 
-            var errorString = DataManager.importTripKit(importManager.filePath)
+            var errorString = VACLibrary.importTripKit(importManager.filePath)
             if (errorString !== "") {
                 errLbl.text = errorString
                 errorDialog.open()

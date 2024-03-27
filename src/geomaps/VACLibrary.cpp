@@ -18,9 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QCoreApplication>
 #include <QDirIterator>
+#include <QTemporaryDir>
 
 #include "VACLibrary.h"
+#include "fileFormats/TripKit.h"
 
 GeoMaps::VACLibrary::VACLibrary()
 {
@@ -37,6 +40,8 @@ GeoMaps::VACLibrary::VACLibrary()
         }
         m_vacs.append(vac);
     }
+#warning need to save/restore VAC
+#warning need janitor method to clean up VAC directory
 }
 
 
@@ -76,15 +81,27 @@ QString GeoMaps::VACLibrary::importVAC(const QString& fileName, QString newName)
     deleteVAC(newName);
 
     // Copy file to VAC directory
-    QDir dir;
+    QDir const dir;
     dir.mkpath(m_vacDirectory);
 
     QString newFileName = m_vacDirectory+"/"+vac.baseName()+".webp";
-#warning copy webp files!
-    if (!image.save(newFileName))
+    QFile::remove(newFileName);
+    if (fileName.endsWith(".webp"))
     {
-        return tr("Error: Unable to write VAC file <strong>%1</strong>.").arg(newFileName);
+#warning This cannot handle Android content URLs
+        if (!QFile::copy(fileName, newFileName))
+        {
+            return tr("Error: Unable to copy VAC file <strong>%1</strong> to destination <strong>%2</strong>.").arg(fileName, newFileName);
+        }
     }
+    else
+    {
+        if (!image.save(newFileName))
+        {
+            return tr("Error: Unable to write VAC file <strong>%1</strong>.").arg(newFileName);
+        }
+    }
+
     vac.setFileName(newFileName);
     m_vacs.append(vac);
 
@@ -93,11 +110,86 @@ QString GeoMaps::VACLibrary::importVAC(const QString& fileName, QString newName)
     return {};
 }
 
+
+QString GeoMaps::VACLibrary::importTripKit(const QString& fileName)
+{
+    FileFormats::TripKit tripKit(fileName);
+    QTemporaryDir const tmpDir;
+    if (!tmpDir.isValid())
+    {
+        return {};
+    }
+
+    // Unpack the VACs into m_vacDirectory
+    auto size = tripKit.numCharts();
+    int successfulImports = 0;
+    for(auto idx=0; idx<size; idx++)
+    {
+        emit importTripKitStatus((double)idx/(double)size);
+        QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+
+        auto path = tripKit.extract(tmpDir.path(), idx);
+        if (path.isEmpty())
+        {
+            continue;
+        }
+
+#warning need to speed up; import VAC emits too many signals
+        if (importVAC(path, {}).isEmpty())
+        {
+            successfulImports++;
+        }
+        QFile::remove(path);
+    }
+    emit importTripKitStatus(1.0);
+
+    if (successfulImports == 0)
+    {
+        return tr("Error reading TripKip: No charts imported.");
+    }
+    if (successfulImports < size)
+    {
+        return tr("Error reading TripKip: Only %1 out of %2 charts were successfully imported.").arg(successfulImports).arg(size);
+    }
+
+    return {};
+}
+
+
 void GeoMaps::VACLibrary::deleteVAC(const QString& baseName)
 {
-    auto numDeletions = erase_if(m_vacs, [baseName](const FileFormats::VAC& vac) { return baseName == vac.baseName(); });
-    if (numDeletions != 0)
+    QVector<FileFormats::VAC> vacsToDelete;
+    foreach(auto vac, m_vacs)
     {
-        emit dataChanged();
+        if (vac.baseName() == baseName)
+        {
+            vacsToDelete.append(vac);
+        }
     }
+
+    if (vacsToDelete.isEmpty())
+    {
+        return;
+    }
+
+    foreach (auto vac, vacsToDelete)
+    {
+        QFile::remove(vac.fileName());
+        m_vacs.removeAll(vac);
+    }
+    emit dataChanged();
+}
+
+void GeoMaps::VACLibrary::clear()
+{
+    if (m_vacs.isEmpty())
+    {
+        return;
+    }
+    foreach(auto vac, m_vacs)
+    {
+        QFile::remove(vac.fileName());
+    }
+    m_vacs.clear();
+    emit dataChanged();
 }

@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QImage>
 #include <QCoreApplication>
 #include <QDirIterator>
 #include <QTemporaryDir>
@@ -61,9 +62,9 @@ QString GeoMaps::VACLibrary::importVAC(const QString& fileName, QString newName)
     FileFormats::VAC vac(fileName);
     if (!vac.isValid())
     {
-        return tr("Input file <strong>%1</strong> does not contain a valid chart. Error: %2").arg(fileName, vac.error());
+        return tr("Input file <strong>%1</strong> does not contain a valid chart.").arg(fileName);
     }
-    QImage const image(fileName);
+    QImage image(fileName);
     if (image.isNull())
     {
         return tr("Unable to read raster image data from input file <strong>%1</strong>.").arg(fileName);
@@ -72,7 +73,7 @@ QString GeoMaps::VACLibrary::importVAC(const QString& fileName, QString newName)
     // Set base name, delete all existing VACs with that basename
     if (newName.isEmpty())
     {
-        newName = vac.baseName();
+        newName = vac.name();
     }
     else
     {
@@ -84,7 +85,7 @@ QString GeoMaps::VACLibrary::importVAC(const QString& fileName, QString newName)
     QDir const dir;
     dir.mkpath(m_vacDirectory);
 
-    QString newFileName = m_vacDirectory+"/"+vac.baseName()+".webp";
+    QString newFileName = m_vacDirectory+"/"+vac.name()+".webp";
     QFile::remove(newFileName);
     if (fileName.endsWith(".webp"))
     {
@@ -109,7 +110,6 @@ QString GeoMaps::VACLibrary::importVAC(const QString& fileName, QString newName)
 
     return {};
 }
-
 
 QString GeoMaps::VACLibrary::importTripKit(const QString& fileName)
 {
@@ -155,13 +155,12 @@ QString GeoMaps::VACLibrary::importTripKit(const QString& fileName)
     return {};
 }
 
-
 void GeoMaps::VACLibrary::deleteVAC(const QString& baseName)
 {
     QVector<FileFormats::VAC> vacsToDelete;
     foreach(auto vac, m_vacs)
     {
-        if (vac.baseName() == baseName)
+        if (vac.name() == baseName)
         {
             vacsToDelete.append(vac);
         }

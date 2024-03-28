@@ -147,7 +147,7 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
         FileFormats::VAC const vac(myPath);
         if (vac.isValid())
         {
-            emit openFileRequest(path, vac.baseName(), VAC);
+            emit openFileRequest(path, vac.name(), VAC);
             return;
         }
     }

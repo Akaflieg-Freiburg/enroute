@@ -180,7 +180,7 @@ void FileFormats::TripKit::readVACs()
         {
             ending = path.mid(idx+1, -1).toLower();
         }
-        m_entries.append({FileFormats::VAC::baseNameFromFileName(path),
+        m_entries.append({FileFormats::VAC::getNameFromFileName(path),
                           ending,
                           path,
                           vac.topLeft(),

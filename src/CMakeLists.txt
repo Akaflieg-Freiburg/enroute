@@ -51,7 +51,6 @@ set(SOURCES
     geomaps/Airspace.h
     geomaps/GeoJSON.h
     geomaps/GeoMapProvider.h
-    geomaps/GeoQuadrangle.h
     geomaps/GPX.h
     geomaps/OpenAir.h
     geomaps/TileHandler.h
@@ -139,7 +138,6 @@ set(SOURCES
     geomaps/GeoJSON.cpp
     geomaps/GeoMapProvider.cpp
     geomaps/GPX.cpp
-    geomaps/GeoQuadrangle.cpp
     geomaps/OpenAir.cpp
     geomaps/TileHandler.cpp
     geomaps/TileServer.cpp

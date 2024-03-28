@@ -21,79 +21,73 @@
 #pragma once
 
 #include <QGeoCoordinate>
-#include <QImage>
 #include <QQmlEngine>
 
-#include "fileFormats/DataFileAbstract.h"
 
 namespace FileFormats
 {
 
 /*! \brief Visual approach chart
  *
- *  This class reads a georeferenced image file.
+ *  This class represents visual approach charts. It stores the following data items.
  *
+ *  - The name of the visual approach chart.
+ *
+ *  - The name of a raster image file.
+ *
+ *  - Geographic coordinates for the four corners of the raster image
  */
-class VAC : public DataFileAbstract
+class VAC
 {
     Q_GADGET
     QML_VALUE_TYPE(vac)
 
 public:
-    /*! \brief Default constructor
-     */
-    VAC();
+    /*! \brief Default constructor, creates an invalid VAC */
+    VAC() = default;
 
     /*! \brief Constructor
      *
-     *  This class reads a georeferenced image file, where georeferencing data is
-     *  encoded in of the two following ways.
+     *  This class reads a georeferenced image file, where geographic data is encoded in one of the following two forms.
      *
-     *  * The image file is a GeoTIFF file with embedded georeferencing information
+     *  - The image file is a GeoTIFF file with embedded georeferencing information.
      *
-     *  * The file name is of the form
-     *    "EDTF-geo_7.739665_48.076416_7.9063883_47.96452.jpg"
+     *  - The file name is of the form "EDTF-geo_7.739665_48.076416_7.9063883_47.96452.jpg"
      *
-     *  This constructor reads the boundary box of the georeferenced image file
-     *  and guesses a good base name.  If no good name can be guessed, the base name
-     *  might well be empty.
+     *  It attempt to extract the map name from the image file (if the image file is a GeoTIFF), or else from the file name.  The raster data is not read, so that this constructor is rather lightweight.
      *
-     *  This constructor reads the raster data. It is therefore not lightweight
-     *  on memory.
-     *
-     *  \param fileName File name of a georeferenced image file.
+     *  \param fileName File name of a georeferenced raster image file
      */
     VAC(const QString& fileName);
 
     /*! \brief Constructor
      *
-     *  This reads raster data and geoCoordinates for the edges of the raster image.
-     *  The image is rotated to "north up" and the bounding box is computed accordingly.
-     *  A base name needs to be set before the VAC can be saved.
+     *  This class takes the name of an image file and geographic coordinates for the four corners
+     *  of the raster image. It attempt to extract the map name from the image file (if the image file is a GeoTIFF), or else from the file name.
      *
-     *  This constructor reads the raster data and performs rotation. It is absolutely not lightweight.
+     *  The raster data is not read, so that this constructor is rather lightweight.
      *
-     *  \param data Raster data in a format the QImage can read
+     *  \param fileName File name of a raster image file
      *
-     *  \param topLeft GeoCoordinate for image edge
+     *  \param topLeft QGeoCoordinate for image corner
      *
-     *  \param topRight GeoCoordinate for image edge
+     *  \param topRight QGeoCoordinate for image corner
      *
-     *  \param bottomLeft GeoCoordinate for image edge
+     *  \param bottomLeft QGeoCoordinate for image corner
      *
-     *  \param bottomRight GeoCoordinate for image edge
+     *  \param bottomRight QGeoCoordinate for image corner
      */
-    VAC(const QString &fileName,
-        QGeoCoordinate topLeft,
-        QGeoCoordinate topRight,
-        QGeoCoordinate bottomLeft,
-        QGeoCoordinate bottomRight);
+    VAC(const QString& fileName,
+        const QGeoCoordinate& topLeft,
+        const QGeoCoordinate& topRight,
+        const QGeoCoordinate& bottomLeft,
+        const QGeoCoordinate& bottomRight);
 
 #warning unfinished
     Q_PROPERTY(QGeoCoordinate center READ center CONSTANT)
-    Q_PROPERTY(QString baseName READ baseName CONSTANT)
     Q_PROPERTY(QString infoText READ infoText CONSTANT)
     Q_PROPERTY(QString description READ description CONSTANT)
+    Q_PROPERTY(QString name READ name CONSTANT)
     Q_PROPERTY(bool isValid READ isValid CONSTANT)
     Q_PROPERTY(QGeoCoordinate topLeft READ topLeft CONSTANT)
     Q_PROPERTY(QGeoCoordinate topRight READ topRight CONSTANT)
@@ -113,7 +107,13 @@ public:
      *
      *  @returns A QString with the base name
      */
-    [[nodiscard]] auto baseName() const -> QString { return m_baseName; }
+    [[nodiscard]] QString name() const  { return m_name; }
+
+#warning docu
+    [[nodiscard]] bool isValid() const;
+
+    [[nodiscard]] bool hasValidCoordinates() const;
+
 
     [[nodiscard]] QString infoText() const;
 
@@ -162,7 +162,7 @@ public:
      *
      *  @param newBaseName New base name
      */
-    void setBaseName(const QString& newBaseName) { m_baseName = newBaseName; }
+    void setBaseName(const QString& newBaseName) { m_name = newBaseName; }
 
     void setFileName(const QString& newFileName) { m_fileName = newFileName; }
 
@@ -171,47 +171,29 @@ public:
     // Methods
     //
 
-#warning want to default that, but need to get rid of DataFileAbstract first
-    bool operator==(const VAC& other) const
-    {
-        return (m_baseName == other.m_baseName)
-               && (m_fileName == other.m_fileName)
-               && (m_topLeft == other.m_topLeft)
-               && (m_topRight == other.m_topRight)
-               && (m_bottomLeft == other.m_bottomLeft)
-               && (m_bottomRight == other.m_bottomRight);
-    }
-
-    /*! \brief Read base name from file name
-     *
-     *  For file names of the form path/EDFR-geo_10.1535_49.4293_10.2822_49.3453.webp or path/EDFR_10.1535_49.4293_10.2822_49.3453.webp,
-     *  this method returns the string "EDFR".
-     *
-     *  @param fileName file name
-     *
-     *  @return Base name, or an empty string in case of an error
-     */
-    [[nodiscard]] static QString baseNameFromFileName(const QString& fileName);
+    bool operator==(const VAC& other) const = default;
 
     /*! \brief Mime type for files that can be opened by this class
      *
      *  @returns Name of mime type
      */
-    [[nodiscard]] static QStringList mimeTypes() { return {u"image/jpg"_qs,
-                                                           u"image/jpeg"_qs,
-                                                           u"image/png"_qs,
-                                                           u"image/tif"_qs,
-                                                           u"image/tiff"_qs,
-                                                           u"image/webp"_qs}; }
+    [[nodiscard]] static QStringList mimeTypes()
+    {
+        return {u"image/jpg"_qs,
+                u"image/jpeg"_qs,
+                u"image/png"_qs,
+                u"image/tif"_qs,
+                u"image/tiff"_qs,
+                u"image/webp"_qs};
+    }
+
+    [[nodiscard]] static QString getNameFromFileName(const QString& fileName);
 
 private:
 #warning document
-    bool coordsFromFileName();
+    bool getCoordsFromFileName();
 
-#warning document
-    void generateErrorsAndWarnings();
-
-    QString m_baseName {};
+    QString m_name {};
     QString m_fileName {};
 
     // Geographic coordinates for corner of raster image

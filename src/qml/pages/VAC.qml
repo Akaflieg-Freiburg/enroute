@@ -42,7 +42,7 @@ Page {
 
             required property var model
 
-            text: model.modelData.baseName
+            text: model.modelData.name
             icon.source: "/icons/material/ic_map.svg"
 
             onClicked: {

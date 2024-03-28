@@ -61,7 +61,7 @@ Page {
             anchors.leftMargin: 72
             anchors.right: parent.right
 
-            text: qsTr("Approach Chart") + ": " + Global.currentVAC.baseName
+            text: qsTr("Approach Chart") + ": " + Global.currentVAC.name
             elide: Label.ElideRight
             font.pixelSize: 20
             verticalAlignment: Qt.AlignVCenter

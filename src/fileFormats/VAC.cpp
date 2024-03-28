@@ -21,55 +21,60 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QImage>
-#include <utility>
 
 #include "fileFormats/GeoTIFF.h"
 #include "fileFormats/VAC.h"
 
-FileFormats::VAC::VAC()
-{
-    setError("Default constructed object, no data set");
-}
-
 FileFormats::VAC::VAC(const QString& fileName)
     : m_fileName(fileName)
 {
-    m_baseName = VAC::baseNameFromFileName(fileName);
-
-    if (!coordsFromFileName())
+    // Check if file is a GeoTIFF file. If so, extract information from there.
+    FileFormats::GeoTIFF const geoTIFF(fileName);
+    if (geoTIFF.isValid())
     {
-        FileFormats::GeoTIFF const geoTIFF(fileName);
-        if (geoTIFF.isValid())
+        m_topLeft = geoTIFF.topLeft();
+        m_topRight = geoTIFF.topRight();
+        m_bottomLeft = geoTIFF.bottomLeft();
+        m_bottomRight = geoTIFF.bottomRight();
+        if (!geoTIFF.name().isEmpty())
         {
-            m_topLeft = geoTIFF.topLeft();
-            m_topRight = geoTIFF.topRight();
-            m_bottomLeft = geoTIFF.bottomLeft();
-            m_bottomRight = geoTIFF.bottomRight();
-            if (!geoTIFF.name().isEmpty())
-            {
-                m_baseName = geoTIFF.name();
-            }
+            m_name = geoTIFF.name();
         }
     }
 
-    // Generate errors and warnings
-    generateErrorsAndWarnings();
+    // If no baseName is known, try to extract a base name from the file name
+    if (m_name.isEmpty())
+    {
+        m_name = VAC::getNameFromFileName(fileName);
+    }
+
+    // If coordinates are not valid, try to extract coordinates from the file name
+    if (!hasValidCoordinates())
+    {
+        getCoordsFromFileName();
+    }
 }
 
-FileFormats::VAC::VAC(const QString &fileName,
-                      QGeoCoordinate topLeft,
-                      QGeoCoordinate topRight,
-                      QGeoCoordinate bottomLeft,
-                      QGeoCoordinate bottomRight)
-    : m_topLeft(std::move(topLeft))
-    , m_topRight(std::move(topRight))
-    , m_bottomLeft(std::move(bottomLeft))
-    , m_bottomRight(std::move(bottomRight))
+FileFormats::VAC::VAC(const QString& fileName,
+                      const QGeoCoordinate& topLeft,
+                      const QGeoCoordinate& topRight,
+                      const QGeoCoordinate& bottomLeft,
+                      const QGeoCoordinate& bottomRight)
+    : m_fileName(fileName),
+      m_topLeft(topLeft), m_topRight(topRight), m_bottomLeft(bottomLeft), m_bottomRight(bottomRight)
 {
-    m_baseName = VAC::baseNameFromFileName(fileName);
+    // Check if file is a GeoTIFF file. If so, extract information from there.
+    FileFormats::GeoTIFF const geoTIFF(fileName);
+    if (geoTIFF.isValid() && !geoTIFF.name().isEmpty())
+    {
+        m_name = geoTIFF.name();
+    }
 
-    // Generate errors and warnings
-    generateErrorsAndWarnings();
+    // If no baseName is known, try to extract a base name from the file name
+    if (m_name.isEmpty())
+    {
+        m_name = VAC::getNameFromFileName(fileName);
+    }
 }
 
 
@@ -108,52 +113,12 @@ QString FileFormats::VAC::infoText() const
 
 QGeoCoordinate FileFormats::VAC::center() const
 {
-    return {
-        0.25*(m_topLeft.latitude()+m_topRight.latitude()+m_bottomLeft.latitude()+m_bottomRight.latitude()),
-        0.25*(m_topLeft.longitude()+m_topRight.longitude()+m_bottomLeft.longitude()+m_bottomRight.longitude())
-    };
+    return {0.25*(m_topLeft.latitude()+m_topRight.latitude()+m_bottomLeft.latitude()+m_bottomRight.latitude()),
+            0.25*(m_topLeft.longitude()+m_topRight.longitude()+m_bottomLeft.longitude()+m_bottomRight.longitude())};
 }
 
 
-#warning
-/*
-auto FileFormats::VAC::save(const QString& directory) -> QString
-{
-    if (!isValid())
-    {
-        return {};
-    }
-
-    if (!QDir().mkpath(directory))
-    {
-        return {};
-    }
-
-    auto topLeft = m_bBox.topLeft();
-    auto bottomRight = m_bBox.bottomRight();
-    auto newFileName = u"%1/%2-geo_%3_%4_%5_%6.webp"_qs
-                           .arg(directory, m_baseName)
-                           .arg(topLeft.longitude())
-                           .arg(topLeft.latitude())
-                           .arg(bottomRight.longitude())
-                           .arg(bottomRight.latitude());
-
-    QFile::remove(newFileName);
-    if (m_fileName.endsWith(u"webp"_qs) &&
-        QFile::exists(m_fileName) &&
-        QFile::copy(m_fileName, newFileName))
-    {
-        return newFileName;
-    }
-
-    if (m_image.save(newFileName))
-    {
-        return newFileName;
-    }
-    return {};
-}
-*/
-QString FileFormats::VAC::baseNameFromFileName(const QString& fileName)
+QString FileFormats::VAC::getNameFromFileName(const QString& fileName)
 {
     QFileInfo const fileInfo(fileName);
     auto baseName = fileInfo.fileName();
@@ -170,7 +135,25 @@ QString FileFormats::VAC::baseNameFromFileName(const QString& fileName)
     return baseName;
 }
 
-bool FileFormats::VAC::coordsFromFileName()
+bool FileFormats::VAC::isValid() const
+{
+    return hasValidCoordinates()
+           && QFile::exists(m_fileName)
+           && !m_name.isEmpty();
+}
+
+
+bool FileFormats::VAC::hasValidCoordinates() const
+{
+    return m_topLeft.isValid()
+           && m_topRight.isValid()
+           && m_bottomLeft.isValid()
+           && m_bottomRight.isValid();
+}
+
+
+
+bool FileFormats::VAC::getCoordsFromFileName()
 {
 #warning too complicated
 
@@ -238,29 +221,3 @@ bool FileFormats::VAC::coordsFromFileName()
            && m_bottomLeft.isValid() && m_bottomRight.isValid();
 }
 
-
-
-//
-// Private Methods
-//
-
-void FileFormats::VAC::generateErrorsAndWarnings()
-{
-    if (!m_topLeft.isValid() || !m_topRight.isValid()
-        || !m_bottomLeft.isValid() || !m_bottomRight.isValid())
-    {
-        setError( QObject::tr("Unable to find georeferencing data for the file %1.", "VAC").arg(m_fileName) );
-        return;
-        }
-
-#warning
-    auto diameter_in_m = m_topLeft.distanceTo(m_bottomRight);
-    if (diameter_in_m < 200)
-    {
-        addWarning( QObject::tr("The georeferencing data for the file %1 suggests that the image diagonal is less than 200m, which makes it unlikely that this is an approach chart.", "VAC").arg(m_fileName) );
-    }
-    if (diameter_in_m > 50000)
-    {
-        addWarning( QObject::tr("The georeferencing data for the file %1 suggests that the image diagonal is more than 50km, which makes it unlikely that this is an approach chart.", "VAC").arg(m_fileName) );
-    }
-}

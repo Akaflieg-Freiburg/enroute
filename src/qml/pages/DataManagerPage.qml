@@ -79,7 +79,7 @@ Page {
                 columns: 6
 
                 WordWrappingItemDelegate {
-                    text: element.model.modelData.baseName + `<br><font color="#606060" size="2">${element.model.modelData.infoText}</font>`
+                    text: element.model.modelData.name + `<br><font color="#606060" size="2">${element.model.modelData.infoText}</font>`
                     icon.source: "/icons/material/ic_map.svg"
                     Layout.fillWidth: true
                 }
@@ -104,7 +104,7 @@ Page {
                             onTriggered: {
                                 PlatformAdaptor.vibrateBrief()
                                 Global.dialogLoader.active = false
-                                Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {title: element.model.modelData.baseName,
+                                Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {title: element.model.modelData.name,
                                                                   text: element.model.modelData.description,
                                                                   standardButtons: Dialog.Ok})
                                 Global.dialogLoader.active = true
@@ -118,7 +118,7 @@ Page {
                             onTriggered: {
                                 PlatformAdaptor.vibrateBrief()
                                 Global.dialogLoader.active = false
-                                Global.dialogLoader.setSource("../dialogs/RenameVACDialog.qml", {oldName: element.model.modelData.baseName})
+                                Global.dialogLoader.setSource("../dialogs/RenameVACDialog.qml", {oldName: element.model.modelData.name})
                                 Global.dialogLoader.active = true
                             }
                         }
@@ -129,7 +129,7 @@ Page {
 
                             onTriggered: {
                                 PlatformAdaptor.vibrateBrief()
-                                VACLibrary.deleteVAC(element.model.modelData.baseName)
+                                VACLibrary.deleteVAC(element.model.modelData.name)
                             }
                         }
                     }

@@ -179,27 +179,39 @@ void GeoMaps::VACLibrary::deleteVAC(const QString& baseName)
     emit dataChanged();
 }
 
-QString GeoMaps::VACLibrary::renameVAC(const QString& oldBaseName, const QString& newBaseName)
+QString GeoMaps::VACLibrary::renameVAC(const QString& oldName, const QString& newName)
 {
-#warning Does not work yet
-    foreach(auto vac, m_vacs)
+#warning error handling
+    auto vac = get(oldName);
+    if (!vac.isValid())
     {
-        if (vac.name() != oldBaseName)
-        {
-            continue;
-        }
-
-        auto msg = importVAC(vac.fileName(), newBaseName);
-        if (msg != "")
-        {
-            return msg;
-        }
+        return "xx";
     }
 
-    deleteVAC(oldBaseName);
+    m_vacs.removeAll(get(oldName));
+
+    auto newFileName = m_vacDirectory+"/"+newName+".webp";
+    QFile::rename(vac.fileName(), newFileName);
+    vac.setFileName(newFileName);
+    vac.setBaseName(newName);
+    m_vacs.append(vac);
+
+    emit dataChanged();
     return {};
 }
 
+FileFormats::VAC GeoMaps::VACLibrary::get(const QString& name)
+{
+    qWarning() << "AAA" << name;
+    foreach(auto vac, m_vacs)
+    {
+        if (vac.name() == name)
+        {
+            return vac;
+        }
+    }
+    return {};
+}
 
 void GeoMaps::VACLibrary::clear()
 {

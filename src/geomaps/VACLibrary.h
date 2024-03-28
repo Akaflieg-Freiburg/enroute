@@ -87,6 +87,8 @@ public:
 
     [[nodiscard]] Q_INVOKABLE QString renameVAC(const QString& oldBaseName, const QString& newBaseName);
 
+    [[nodiscard]] Q_INVOKABLE FileFormats::VAC get(const QString& name);
+
 signals:
     /*! \brief Notifier signal */
     void dataChanged();

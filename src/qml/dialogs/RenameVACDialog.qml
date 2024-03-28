@@ -72,7 +72,7 @@ CenteringDialog {
 
     onAccepted: {
         PlatformAdaptor.vibrateBrief()
-        var errorMsg = DataManager.renameVAC(renameDialog.oldName, newName.text)
+        var errorMsg = VACLibrary.renameVAC(renameDialog.oldName, newName.text)
 
         if (errorMsg === "")
             Global.toast.doToast(qsTr("Flight route renamed"))

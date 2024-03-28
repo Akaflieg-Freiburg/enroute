@@ -59,11 +59,12 @@ Page {
     Component {
         id: vacDelegate
         Item {
+            id: element
 
             width: parent ? parent.width : undefined
             height: gridLayout.height
 
-            property var model
+            required property var model
 
             GridLayout {
                 id: gridLayout
@@ -78,7 +79,7 @@ Page {
                 columns: 6
 
                 WordWrappingItemDelegate {
-                    text: "XX" // element.model.modelData.baseName + `<br><font color="#606060" size="2">${element.model.modelData.infoText}</font>`
+                    text: element.model.modelData.baseName + `<br><font color="#606060" size="2">${element.model.modelData.infoText}</font>`
                     icon.source: "/icons/material/ic_map.svg"
                     Layout.fillWidth: true
                 }
@@ -103,7 +104,7 @@ Page {
                             onTriggered: {
                                 PlatformAdaptor.vibrateBrief()
                                 Global.dialogLoader.active = false
-                                Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {title: element.model.modelData.objectName,
+                                Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {title: element.model.modelData.baseName,
                                                                   text: element.model.modelData.description,
                                                                   standardButtons: Dialog.Ok})
                                 Global.dialogLoader.active = true
@@ -117,7 +118,7 @@ Page {
                             onTriggered: {
                                 PlatformAdaptor.vibrateBrief()
                                 Global.dialogLoader.active = false
-                                Global.dialogLoader.setSource("../dialogs/RenameVACDialog.qml", {oldName: element.model.modelData.objectName})
+                                Global.dialogLoader.setSource("../dialogs/RenameVACDialog.qml", {oldName: element.model.modelData.baseName})
                                 Global.dialogLoader.active = true
                             }
                         }
@@ -128,16 +129,16 @@ Page {
 
                             onTriggered: {
                                 PlatformAdaptor.vibrateBrief()
-                                element.model.modelData.deleteFiles()
+                                VACLibrary.deleteVAC(element.model.modelData.baseName)
                             }
                         }
                     }
 
                 } // ToolButton
             }
-
         }
     }
+
     header: PageHeader {
 
         height: 60 + SafeInsets.top

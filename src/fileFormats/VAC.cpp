@@ -77,6 +77,35 @@ FileFormats::VAC::VAC(const QString &fileName,
 // Methods
 //
 
+QString FileFormats::VAC::description() const
+{
+    QFileInfo const fileInfo(m_fileName);
+    if (!fileInfo.exists())
+    {
+        return QObject::tr("No information available.", "VAC");
+    }
+    return QStringLiteral("<table><tr><td><strong>%1 :&nbsp;&nbsp;</strong></td><td>%2</td></tr><tr><td><strong>%3 :&nbsp;&nbsp;</strong></td><td>%4</td></tr></table>")
+        .arg(QObject::tr("Installed", "VAC"),
+             fileInfo.lastModified().toUTC().toString(),
+             QObject::tr("File Size", "VAC"),
+             QLocale::system().formattedDataSize(fileInfo.size(), 1, QLocale::DataSizeSIFormat));
+
+
+
+
+}
+
+QString FileFormats::VAC::infoText() const
+{
+    auto displayText = QObject::tr("manually imported", "VAC");
+    QFileInfo const info(m_fileName);
+    if (info.exists())
+    {
+        displayText += " • " + QLocale::system().formattedDataSize(info.size(), 1, QLocale::DataSizeSIFormat);
+    }
+    return displayText;
+}
+
 QGeoCoordinate FileFormats::VAC::center() const
 {
     return {

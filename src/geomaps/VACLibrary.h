@@ -85,6 +85,7 @@ public:
 
     Q_INVOKABLE void deleteVAC(const QString& baseName);
 
+    [[nodiscard]] Q_INVOKABLE QString renameVAC(const QString& oldBaseName, const QString& newBaseName);
 
 signals:
     /*! \brief Notifier signal */

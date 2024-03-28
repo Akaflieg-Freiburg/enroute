@@ -92,6 +92,8 @@ public:
 #warning unfinished
     Q_PROPERTY(QGeoCoordinate center READ center CONSTANT)
     Q_PROPERTY(QString baseName READ baseName CONSTANT)
+    Q_PROPERTY(QString infoText READ infoText CONSTANT)
+    Q_PROPERTY(QString description READ description CONSTANT)
     Q_PROPERTY(bool isValid READ isValid CONSTANT)
     Q_PROPERTY(QGeoCoordinate topLeft READ topLeft CONSTANT)
     Q_PROPERTY(QGeoCoordinate topRight READ topRight CONSTANT)
@@ -112,6 +114,11 @@ public:
      *  @returns A QString with the base name
      */
     [[nodiscard]] auto baseName() const -> QString { return m_baseName; }
+
+    [[nodiscard]] QString infoText() const;
+
+    [[nodiscard]] QString description() const;
+
 
 #warning docu
     [[nodiscard]] QGeoCoordinate center() const;

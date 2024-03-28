@@ -180,6 +180,28 @@ void GeoMaps::VACLibrary::deleteVAC(const QString& baseName)
     emit dataChanged();
 }
 
+QString GeoMaps::VACLibrary::renameVAC(const QString& oldBaseName, const QString& newBaseName)
+{
+#warning Does not work yet
+    foreach(auto vac, m_vacs)
+    {
+        if (vac.baseName() != oldBaseName)
+        {
+            continue;
+        }
+
+        auto msg = importVAC(vac.fileName(), newBaseName);
+        if (msg != "")
+        {
+            return msg;
+        }
+    }
+
+    deleteVAC(oldBaseName);
+    return {};
+}
+
+
 void GeoMaps::VACLibrary::clear()
 {
     if (m_vacs.isEmpty())

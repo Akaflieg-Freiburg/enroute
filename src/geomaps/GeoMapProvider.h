@@ -34,7 +34,7 @@
 #include "TileServer.h"
 #include "Waypoint.h"
 #include "fileFormats/MBTILES.h"
-#include "fileFormats/VAC.h"
+#include "geomaps/VAC.h"
 
 namespace GeoMaps
 {

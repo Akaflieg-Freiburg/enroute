@@ -23,29 +23,29 @@
 #include <QImage>
 
 #include "fileFormats/GeoTIFF.h"
-#include "fileFormats/VAC.h"
+#include "geomaps/VAC.h"
 
-FileFormats::VAC::VAC(const QString& fileName)
-    : m_fileName(fileName)
+GeoMaps::VAC::VAC(const QString& fName)
+    : fileName(fName)
 {
     // Check if file is a GeoTIFF file. If so, extract information from there.
     FileFormats::GeoTIFF const geoTIFF(fileName);
     if (geoTIFF.isValid())
     {
-        m_topLeft = geoTIFF.topLeft();
-        m_topRight = geoTIFF.topRight();
-        m_bottomLeft = geoTIFF.bottomLeft();
-        m_bottomRight = geoTIFF.bottomRight();
+        topLeft = geoTIFF.topLeft();
+        topRight = geoTIFF.topRight();
+        bottomLeft = geoTIFF.bottomLeft();
+        bottomRight = geoTIFF.bottomRight();
         if (!geoTIFF.name().isEmpty())
         {
-            m_name = geoTIFF.name();
+            name = geoTIFF.name();
         }
     }
 
     // If no baseName is known, try to extract a base name from the file name
-    if (m_name.isEmpty())
+    if (name.isEmpty())
     {
-        m_name = VAC::getNameFromFileName(fileName);
+        name = VAC::getNameFromFileName(fileName);
     }
 
     // If coordinates are not valid, try to extract coordinates from the file name
@@ -55,25 +55,25 @@ FileFormats::VAC::VAC(const QString& fileName)
     }
 }
 
-FileFormats::VAC::VAC(const QString& fileName,
+GeoMaps::VAC::VAC(const QString& fName,
                       const QGeoCoordinate& topLeft,
                       const QGeoCoordinate& topRight,
                       const QGeoCoordinate& bottomLeft,
                       const QGeoCoordinate& bottomRight)
-    : m_fileName(fileName),
-      m_topLeft(topLeft), m_topRight(topRight), m_bottomLeft(bottomLeft), m_bottomRight(bottomRight)
+    : fileName(fName),
+    topLeft(topLeft), topRight(topRight), bottomLeft(bottomLeft), bottomRight(bottomRight)
 {
     // Check if file is a GeoTIFF file. If so, extract information from there.
     FileFormats::GeoTIFF const geoTIFF(fileName);
     if (geoTIFF.isValid() && !geoTIFF.name().isEmpty())
     {
-        m_name = geoTIFF.name();
+        name = geoTIFF.name();
     }
 
     // If no baseName is known, try to extract a base name from the file name
-    if (m_name.isEmpty())
+    if (name.isEmpty())
     {
-        m_name = VAC::getNameFromFileName(fileName);
+        name = VAC::getNameFromFileName(fileName);
     }
 }
 
@@ -82,9 +82,9 @@ FileFormats::VAC::VAC(const QString& fileName,
 // Methods
 //
 
-QString FileFormats::VAC::description() const
+QString GeoMaps::VAC::description() const
 {
-    QFileInfo const fileInfo(m_fileName);
+    QFileInfo const fileInfo(fileName);
     if (!fileInfo.exists())
     {
         return QObject::tr("No information available.", "VAC");
@@ -100,10 +100,10 @@ QString FileFormats::VAC::description() const
 
 }
 
-QString FileFormats::VAC::infoText() const
+QString GeoMaps::VAC::infoText() const
 {
     auto displayText = QObject::tr("manually imported", "VAC");
-    QFileInfo const info(m_fileName);
+    QFileInfo const info(fileName);
     if (info.exists())
     {
         displayText += " • " + QLocale::system().formattedDataSize(info.size(), 1, QLocale::DataSizeSIFormat);
@@ -111,14 +111,14 @@ QString FileFormats::VAC::infoText() const
     return displayText;
 }
 
-QGeoCoordinate FileFormats::VAC::center() const
+QGeoCoordinate GeoMaps::VAC::center() const
 {
-    return {0.25*(m_topLeft.latitude()+m_topRight.latitude()+m_bottomLeft.latitude()+m_bottomRight.latitude()),
-            0.25*(m_topLeft.longitude()+m_topRight.longitude()+m_bottomLeft.longitude()+m_bottomRight.longitude())};
+    return {0.25*(topLeft.latitude()+topRight.latitude()+bottomLeft.latitude()+bottomRight.latitude()),
+            0.25*(topLeft.longitude()+topRight.longitude()+bottomLeft.longitude()+bottomRight.longitude())};
 }
 
 
-QString FileFormats::VAC::getNameFromFileName(const QString& fileName)
+QString GeoMaps::VAC::getNameFromFileName(const QString& fileName)
 {
     QFileInfo const fileInfo(fileName);
     auto baseName = fileInfo.fileName();
@@ -135,39 +135,39 @@ QString FileFormats::VAC::getNameFromFileName(const QString& fileName)
     return baseName;
 }
 
-bool FileFormats::VAC::isValid() const
+bool GeoMaps::VAC::isValid() const
 {
     return hasValidCoordinates()
-           && QFile::exists(m_fileName)
-           && !m_name.isEmpty();
+           && QFile::exists(fileName)
+           && !name.isEmpty();
 }
 
 
-bool FileFormats::VAC::hasValidCoordinates() const
+bool GeoMaps::VAC::hasValidCoordinates() const
 {
-    return m_topLeft.isValid()
-           && m_topRight.isValid()
-           && m_bottomLeft.isValid()
-           && m_bottomRight.isValid();
+    return topLeft.isValid()
+           && topRight.isValid()
+           && bottomLeft.isValid()
+           && bottomRight.isValid();
 }
 
 
 
-bool FileFormats::VAC::getCoordsFromFileName()
+bool GeoMaps::VAC::getCoordsFromFileName()
 {
 #warning too complicated
 
-    if (m_fileName.size() <= 5)
+    if (fileName.size() <= 5)
     {
         return false;
     }
-    auto idx = m_fileName.lastIndexOf('.');
+    auto idx = fileName.lastIndexOf('.');
     if (idx == -1)
     {
         return false;
     }
 
-    auto list = m_fileName.left(idx).split('_');
+    auto list = fileName.left(idx).split('_');
     if (list.size() < 4)
     {
         return {};
@@ -212,12 +212,36 @@ bool FileFormats::VAC::getCoordsFromFileName()
         return false;
     }
 
-    m_topLeft = {top, left};
-    m_topRight = {top, right};
-    m_bottomLeft = {bottom, left};
-    m_bottomRight = {bottom, right};
+    topLeft = {top, left};
+    topRight = {top, right};
+    bottomLeft = {bottom, left};
+    bottomRight = {bottom, right};
 
-    return m_topLeft.isValid() && m_topRight.isValid()
-           && m_bottomLeft.isValid() && m_bottomRight.isValid();
+    return topLeft.isValid() && topRight.isValid()
+           && bottomLeft.isValid() && bottomRight.isValid();
+}
+
+
+
+QDataStream& GeoMaps::operator<<(QDataStream& stream, const GeoMaps::VAC& vac)
+{
+    return stream
+           << vac.fileName
+           << vac.name
+           << vac.topLeft
+           << vac.topRight
+           << vac.bottomLeft
+           << vac.bottomRight;
+}
+
+QDataStream& GeoMaps::operator>>(QDataStream& stream, GeoMaps::VAC& vac)
+{
+    return stream
+           >> vac.fileName
+           >> vac.name
+           >> vac.topLeft
+           >> vac.topRight
+           >> vac.bottomLeft
+           >> vac.bottomRight;
 }
 

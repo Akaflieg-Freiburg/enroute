@@ -24,7 +24,7 @@
 #include <QQmlEngine>
 
 
-namespace FileFormats
+namespace GeoMaps
 {
 
 /*! \brief Visual approach chart
@@ -41,6 +41,9 @@ class VAC
 {
     Q_GADGET
     QML_VALUE_TYPE(vac)
+
+    friend QDataStream& operator<<(QDataStream& stream, const GeoMaps::VAC& vac);
+    friend QDataStream& operator>>(QDataStream& stream, GeoMaps::VAC& vac);
 
 public:
     /*! \brief Default constructor, creates an invalid VAC */
@@ -84,16 +87,16 @@ public:
         const QGeoCoordinate& bottomRight);
 
 #warning unfinished
-    Q_PROPERTY(QGeoCoordinate center READ center CONSTANT)
-    Q_PROPERTY(QString infoText READ infoText CONSTANT)
-    Q_PROPERTY(QString description READ description CONSTANT)
-    Q_PROPERTY(QString name READ name CONSTANT)
+    Q_PROPERTY(QGeoCoordinate center READ center)
+    Q_PROPERTY(QString infoText READ infoText)
+    Q_PROPERTY(QString description READ description)
+    Q_PROPERTY(QString name MEMBER name)
     Q_PROPERTY(bool isValid READ isValid CONSTANT)
-    Q_PROPERTY(QGeoCoordinate topLeft READ topLeft CONSTANT)
-    Q_PROPERTY(QGeoCoordinate topRight READ topRight CONSTANT)
-    Q_PROPERTY(QGeoCoordinate bottomLeft READ bottomLeft CONSTANT)
-    Q_PROPERTY(QGeoCoordinate bottomRight READ bottomRight CONSTANT)
-    Q_PROPERTY(QString fileName READ fileName CONSTANT)
+    Q_PROPERTY(QGeoCoordinate topLeft MEMBER topLeft)
+    Q_PROPERTY(QGeoCoordinate topRight MEMBER topRight)
+    Q_PROPERTY(QGeoCoordinate bottomLeft MEMBER bottomLeft)
+    Q_PROPERTY(QGeoCoordinate bottomRight MEMBER bottomRight)
+    Q_PROPERTY(QString fileName MEMBER fileName)
 
 
     //
@@ -107,7 +110,7 @@ public:
      *
      *  @returns A QString with the base name
      */
-    [[nodiscard]] QString name() const  { return m_name; }
+   // [[nodiscard]] QString name() const  { return m_name; }
 
 #warning docu
     [[nodiscard]] bool isValid() const;
@@ -127,31 +130,31 @@ public:
      *
      *  @returns Coordinate, or an invalid coordinate in case of error.
      */
-    [[nodiscard]] QGeoCoordinate bottomLeft() const { return m_bottomLeft; }
+  //  [[nodiscard]] QGeoCoordinate bottomLeft() const { return m_bottomLeft; }
 
     /*! \brief Geographic coordinate for corner of raster image
      *
      *  @returns Coordinate, or an invalid coordinate in case of error.
      */
-    [[nodiscard]] QGeoCoordinate bottomRight() const { return m_bottomRight; }
+  //  [[nodiscard]] QGeoCoordinate bottomRight() const { return m_bottomRight; }
 
     /*! \brief File name
      *
      *  @returns A QString with the file name
      */
-    [[nodiscard]] auto fileName() const -> QString { return m_fileName; }
+   // [[nodiscard]] auto fileName() const -> QString { return m_fileName; }
 
     /*! \brief Geographic coordinate for corner of raster image
      *
      *  @returns Coordinate, or an invalid coordinate in case of error.
      */
-    [[nodiscard]] QGeoCoordinate topLeft() const { return m_topLeft; }
+   // [[nodiscard]] QGeoCoordinate topLeft() const { return m_topLeft; }
 
     /*! \brief Geographic coordinate for corner of raster image
      *
      *  @returns Coordinate, or an invalid coordinate in case of error.
      */
-    [[nodiscard]] QGeoCoordinate topRight() const { return m_topRight; }
+  //  [[nodiscard]] QGeoCoordinate topRight() const { return m_topRight; }
 
 
     //
@@ -162,9 +165,9 @@ public:
      *
      *  @param newBaseName New base name
      */
-    void setBaseName(const QString& newBaseName) { m_name = newBaseName; }
+ //   void setBaseName(const QString& newBaseName) { m_name = newBaseName; }
 
-    void setFileName(const QString& newFileName) { m_fileName = newFileName; }
+  //  void setFileName(const QString& newFileName) { m_fileName = newFileName; }
 
 
     //
@@ -189,18 +192,27 @@ public:
 
     [[nodiscard]] static QString getNameFromFileName(const QString& fileName);
 
+    QString fileName {};
+
+    QString name {};
+
+    // Geographic coordinates for corner of raster image
+    QGeoCoordinate topLeft {};
+    QGeoCoordinate topRight {};
+    QGeoCoordinate bottomLeft {};
+    QGeoCoordinate bottomRight {};
 private:
 #warning document
     bool getCoordsFromFileName();
 
-    QString m_name {};
-    QString m_fileName {};
-
-    // Geographic coordinates for corner of raster image
-    QGeoCoordinate m_topLeft {};
-    QGeoCoordinate m_topRight {};
-    QGeoCoordinate m_bottomLeft {};
-    QGeoCoordinate m_bottomRight {};
 };
 
+/*! \brief Serialization */
+QDataStream& operator<<(QDataStream& stream, const GeoMaps::VAC& vac);
+
+/*! \brief Deserialization */
+QDataStream& operator>>(QDataStream& stream, GeoMaps::VAC& vac);
+
 } // namespace FileFormats
+
+

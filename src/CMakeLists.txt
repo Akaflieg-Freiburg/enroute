@@ -45,7 +45,6 @@ set(SOURCES
     fileFormats/MBTILES.h
     fileFormats/TIFF.h
     fileFormats/TripKit.h
-    fileFormats/VAC.h
     fileFormats/ZipFile.h
     DemoRunner.h
     geomaps/Airspace.h
@@ -57,6 +56,7 @@ set(SOURCES
     geomaps/TileServer.h
     geomaps/Waypoint.h
     geomaps/WaypointLibrary.h
+    geomaps/VAC.h
     geomaps/VACLibrary.h
     GlobalObject.h
     GlobalSettings.h
@@ -132,7 +132,6 @@ set(SOURCES
     fileFormats/MBTILES.cpp
     fileFormats/TIFF.cpp
     fileFormats/TripKit.cpp
-    fileFormats/VAC.cpp
     fileFormats/ZipFile.cpp
     geomaps/Airspace.cpp
     geomaps/GeoJSON.cpp
@@ -143,6 +142,7 @@ set(SOURCES
     geomaps/TileServer.cpp
     geomaps/Waypoint.cpp
     geomaps/WaypointLibrary.cpp
+    geomaps/VAC.cpp
     geomaps/VACLibrary.cpp
     GlobalObject.cpp
     GlobalSettings.cpp

@@ -30,11 +30,18 @@ GeoMaps::VACLibrary::VACLibrary()
 {
     qWarning() << "create VAC library";
 
+    connect(this, &GeoMaps::VACLibrary::dataChanged, this, &GeoMaps::VACLibrary::save);
+
+    QFile dataFile(m_vacDirectory+".data");
+    dataFile.open(QIODeviceBase::ReadOnly);
+    QDataStream dataStream(&dataFile);
+    dataStream >> m_vacs;
+
     QDirIterator fileIterator(m_vacDirectory, QDir::Files);
     while (fileIterator.hasNext())
     {
         fileIterator.next();
-        FileFormats::VAC const vac(fileIterator.filePath());
+        GeoMaps::VAC const vac(fileIterator.filePath());
         if (!vac.isValid())
         {
             continue;
@@ -46,9 +53,9 @@ GeoMaps::VACLibrary::VACLibrary()
 }
 
 
-QVector<FileFormats::VAC> GeoMaps::VACLibrary::vacsByDistance(const QGeoCoordinate& position)
+QVector<GeoMaps::VAC> GeoMaps::VACLibrary::vacsByDistance(const QGeoCoordinate& position)
 {
-    std::sort(m_vacs.begin(), m_vacs.end(), [position](const FileFormats::VAC& first, const FileFormats::VAC& second) {return position.distanceTo(first.center()) < position.distanceTo(second.center()); });
+    std::sort(m_vacs.begin(), m_vacs.end(), [position](const GeoMaps::VAC& first, const GeoMaps::VAC& second) {return position.distanceTo(first.center()) < position.distanceTo(second.center()); });
     return m_vacs;
 }
 
@@ -59,7 +66,7 @@ QString GeoMaps::VACLibrary::importVAC(const QString& fileName, QString newName)
     {
         return tr("Input file <strong>%1</strong> does not exist.").arg(fileName);
     }
-    FileFormats::VAC vac(fileName);
+    GeoMaps::VAC vac(fileName);
     if (!vac.isValid())
     {
         return tr("Input file <strong>%1</strong> does not contain a valid chart.").arg(fileName);
@@ -73,11 +80,11 @@ QString GeoMaps::VACLibrary::importVAC(const QString& fileName, QString newName)
     // Set base name, delete all existing VACs with that basename
     if (newName.isEmpty())
     {
-        newName = vac.name();
+        newName = vac.name;
     }
     else
     {
-        vac.setBaseName(newName);
+        vac.name = newName;
     }
     deleteVAC(newName);
 
@@ -85,7 +92,7 @@ QString GeoMaps::VACLibrary::importVAC(const QString& fileName, QString newName)
     QDir const dir;
     dir.mkpath(m_vacDirectory);
 
-    QString newFileName = m_vacDirectory+"/"+vac.name()+".webp";
+    QString newFileName = m_vacDirectory + "/" + vac.name + ".webp";
     QFile::remove(newFileName);
     if (fileName.endsWith(".webp"))
     {
@@ -103,7 +110,7 @@ QString GeoMaps::VACLibrary::importVAC(const QString& fileName, QString newName)
         }
     }
 
-    vac.setFileName(newFileName);
+    vac.fileName = newFileName;
     m_vacs.append(vac);
 
     emit dataChanged();
@@ -157,10 +164,10 @@ QString GeoMaps::VACLibrary::importTripKit(const QString& fileName)
 
 void GeoMaps::VACLibrary::deleteVAC(const QString& baseName)
 {
-    QVector<FileFormats::VAC> vacsToDelete;
+    QVector<GeoMaps::VAC> vacsToDelete;
     foreach(auto vac, m_vacs)
     {
-        if (vac.name() == baseName)
+        if (vac.name == baseName)
         {
             vacsToDelete.append(vac);
         }
@@ -173,7 +180,7 @@ void GeoMaps::VACLibrary::deleteVAC(const QString& baseName)
 
     foreach (auto vac, vacsToDelete)
     {
-        QFile::remove(vac.fileName());
+        QFile::remove(vac.fileName);
         m_vacs.removeAll(vac);
     }
     emit dataChanged();
@@ -191,21 +198,21 @@ QString GeoMaps::VACLibrary::renameVAC(const QString& oldName, const QString& ne
     m_vacs.removeAll(get(oldName));
 
     auto newFileName = m_vacDirectory+"/"+newName+".webp";
-    QFile::rename(vac.fileName(), newFileName);
-    vac.setFileName(newFileName);
-    vac.setBaseName(newName);
+    QFile::rename(vac.fileName, newFileName);
+    vac.fileName = newFileName;
+    vac.name = newName;
     m_vacs.append(vac);
 
     emit dataChanged();
     return {};
 }
 
-FileFormats::VAC GeoMaps::VACLibrary::get(const QString& name)
+GeoMaps::VAC GeoMaps::VACLibrary::get(const QString& name)
 {
     qWarning() << "AAA" << name;
     foreach(auto vac, m_vacs)
     {
-        if (vac.name() == name)
+        if (vac.name == name)
         {
             return vac;
         }
@@ -221,8 +228,17 @@ void GeoMaps::VACLibrary::clear()
     }
     foreach(auto vac, m_vacs)
     {
-        QFile::remove(vac.fileName());
+        QFile::remove(vac.fileName);
     }
     m_vacs.clear();
     emit dataChanged();
+}
+
+
+void GeoMaps::VACLibrary::save()
+{
+    QFile dataFile(m_vacDirectory+".data");
+    dataFile.open(QIODeviceBase::WriteOnly);
+    QDataStream dataStream(&dataFile);
+    dataStream << m_vacs;
 }

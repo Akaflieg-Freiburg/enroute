@@ -22,7 +22,7 @@
 
 #include <QStandardPaths>
 
-#include "fileFormats/VAC.h"
+#include "geomaps/VAC.h"
 
 
 namespace GeoMaps
@@ -51,7 +51,7 @@ public:
     Q_PROPERTY(bool isEmpty READ isEmpty NOTIFY dataChanged)
 
 #warning docu
-    Q_PROPERTY(QVector<FileFormats::VAC> vacs READ vacs NOTIFY dataChanged)
+    Q_PROPERTY(QVector<GeoMaps::VAC> vacs READ vacs NOTIFY dataChanged)
 
 
     //
@@ -62,7 +62,7 @@ public:
     [[nodiscard]] bool isEmpty() const { return m_vacs.isEmpty(); }
 
 #warning docu, want to sort alphabetically
-    [[nodiscard]] QVector<FileFormats::VAC> vacs() const { return m_vacs; }
+    [[nodiscard]] QVector<GeoMaps::VAC> vacs() const { return m_vacs; }
 
 
     //
@@ -77,7 +77,7 @@ public:
 
     Q_INVOKABLE void clear();
 
-    [[nodiscard]] Q_INVOKABLE QVector<FileFormats::VAC> vacsByDistance(const QGeoCoordinate& position);
+    [[nodiscard]] Q_INVOKABLE QVector<GeoMaps::VAC> vacsByDistance(const QGeoCoordinate& position);
 
     [[nodiscard]] Q_INVOKABLE QString importVAC(const QString& fileName, QString newName);
 
@@ -87,7 +87,9 @@ public:
 
     [[nodiscard]] Q_INVOKABLE QString renameVAC(const QString& oldBaseName, const QString& newBaseName);
 
-    [[nodiscard]] Q_INVOKABLE FileFormats::VAC get(const QString& name);
+    [[nodiscard]] Q_INVOKABLE GeoMaps::VAC get(const QString& name);
+
+    [[nodiscard]] Q_INVOKABLE void save();
 
 signals:
     /*! \brief Notifier signal */
@@ -102,9 +104,10 @@ signals:
 private:
     Q_DISABLE_COPY_MOVE(VACLibrary)
 
-    QVector<FileFormats::VAC> m_vacs;
+    QVector<GeoMaps::VAC> m_vacs;
     QString m_vacDirectory {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/VAC"};
 
 };
 
 } // namespace GeoMaps
+

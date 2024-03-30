@@ -168,12 +168,6 @@ public:
      */
     Q_PROPERTY(DataManagement::Downloadable_MultiFile* terrainMaps READ terrainMaps CONSTANT)
 
-    /*! \brief Downloadable_MultiFile that holds all approach charts
-     *
-     *  Pointer to a Downloadable_MultiFile that holds all approach charts.
-     */
-    Q_PROPERTY(DataManagement::Downloadable_MultiFile* VAC READ VAC CONSTANT)
-
     /*! \brief Current "what's new" message */
     Q_PROPERTY(QString whatsNew READ whatsNew NOTIFY whatsNewChanged)
 
@@ -253,12 +247,6 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
-     *  @returns Property VAC
-     */
-    [[nodiscard]] DataManagement::Downloadable_MultiFile* VAC() { return &m_VAC; }
-
-    /*! \brief Getter function for the property with the same name
-     *
      *  @returns Property whatsNew
      */
     [[nodiscard]] QString whatsNew() const { return m_whatsNew; }
@@ -273,19 +261,6 @@ public:
     //
     // Methods
     //
-
-    /*! \brief Delete VACs
-     *
-     * This method delete all VAC files and clear the VAC list. It is equivalent
-     * to calling
-     *
-     * VAC->deleteFiles();
-     * VAC->clear();
-     *
-     * Compared to calling these two methods, this one emits much fewer notifier
-     * signals and is therefore potentially much faster when used with QML.
-     */
-    Q_INVOKABLE void clearVACs();
 
     /*! \brief Import raster or vector map into the library of locally installed
      * maps
@@ -323,44 +298,6 @@ public:
      */
     Q_INVOKABLE QString importOpenAir(const QString& fileName, const QString& newName);
 
-    /*! \brief Import a trip kit into the library of locally installed VACs
-     *
-     * This method imports the trip kit into the library of locally installed VAC.
-     *
-     * @param fileName File name of the trip kit.
-     *
-     * @returns A human-readable HTML string on error, or an empty string on
-     * success
-     */
-    Q_INVOKABLE QString importTripKit(const QString& fileName);
-
-    /*! \brief Import VAC into the library of locally installed VACs
-     *
-     * This method imports the VAC into the library of locally installed VAC.
-     *
-     * @param fileName File name of the VAC.
-     *
-     * @param newName Name under which the VAC is available in the library. If
-     * the name exists, the library entry will be replaced.
-     *
-     * @returns A human-readable HTML string on error, or an empty string on
-     * success.
-     */
-    Q_INVOKABLE QString importVAC(const QString& fileName, QString newName);
-
-    /*! \brief Rename VAC in the library of locally installed VACs
-     *
-     * This method imports the VAC into the library of locally installed VAC.
-     *
-     * @param oldName Old basename of the VAC.
-     *
-     * @param newName New basename of the VAC.
-     *
-     * @returns A human-readable HTML string on error, or an empty string on
-     * success.
-     */
-    Q_INVOKABLE QString renameVAC(const QString& oldName, const QString& newName);
-
 public slots:
     /*! \brief Triggers an update of the list of remotely available data items
      *
@@ -387,12 +324,6 @@ signals:
     /*! \brief Notifier signal */
     void whatsNewChanged();
 
-    /*! \brief Progress report when importing a trip kit
-     *
-     *  @param percent A number between 0.0 and 1.0.
-     */
-    void importTripKitStatus(double percent);
-
 private:
     Q_DISABLE_COPY_MOVE(DataManager)
 
@@ -409,11 +340,6 @@ private:
     // content or existence. If the Downloadable in question has no file
     // anymore, and has an invalid URL, it is then removed.
     void onItemFileChanged();
-
-    // This method goes through the VAC data directory. It removes files that should
-    // not be there, and adds all image files to m_VAC, taking care of entries that
-    // are already present in m_VAC.
-    void readVACDirectory();
 
     // This slot updates the DownloadableGroups as well as the propery
     // 'whatsNew', by reading the file 'maps.json' and by checking the data
@@ -432,7 +358,6 @@ private:
 
     // Full path name of data directory, without trailing slash
     QString m_dataDirectory {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/aviation_maps"};
-    QString m_vacDirectory {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/VAC"};
 
     // The current whats new string from _aviationMaps.
     QString m_whatsNew {};
@@ -443,7 +368,6 @@ private:
     DataManagement::Downloadable_SingleFile m_mapList { QUrl(QStringLiteral("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv003/maps.json")), QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/maps.json" };
 
     // List of geographic maps
-    DataManagement::Downloadable_MultiFile m_VAC {DataManagement::Downloadable_MultiFile::SingleUpdate};
     DataManagement::Downloadable_MultiFile m_aviationMaps {DataManagement::Downloadable_MultiFile::SingleUpdate};
     DataManagement::Downloadable_MultiFile m_baseMaps {DataManagement::Downloadable_MultiFile::SingleUpdate};
     DataManagement::Downloadable_MultiFile m_baseMapsRaster {DataManagement::Downloadable_MultiFile::SingleUpdate};

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2023 by Stefan Kebekus                                  *
+ *   Copyright (C) 2023-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -30,6 +30,8 @@ QtObject {
     property Loader dialogLoader
     property Drawer drawer
     property var toast
+    property vac currentVAC
+    property vac defaultVAC
 
     property LocationPermission locationPermission: LocationPermission {
         id: locationPermission

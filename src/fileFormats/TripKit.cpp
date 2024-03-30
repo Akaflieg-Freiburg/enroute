@@ -26,7 +26,7 @@
 #include <QJsonObject>
 
 #include "fileFormats/TripKit.h"
-#include "fileFormats/VAC.h"
+#include "geomaps/VAC.h"
 
 
 FileFormats::TripKit::TripKit(const QString& fileName)
@@ -168,8 +168,8 @@ void FileFormats::TripKit::readVACs()
 {
     foreach (auto path, m_zip.fileNames())
     {
-        auto bBox = FileFormats::VAC::bBoxFromFileName(path);
-        if (!bBox.isValid())
+        auto vac = GeoMaps::VAC(path);
+        if (!vac.isValid())
         {
             continue;
         }
@@ -180,12 +180,12 @@ void FileFormats::TripKit::readVACs()
         {
             ending = path.mid(idx+1, -1).toLower();
         }
-        m_entries.append({FileFormats::VAC::baseNameFromFileName(path),
+        m_entries.append({vac.name,
                           ending,
                           path,
-                          bBox.topLeft(),
-                          bBox.topRight(),
-                          bBox.bottomLeft(),
-                          bBox.bottomRight()});
+                          vac.topLeft,
+                          vac.topRight,
+                          vac.bottomLeft,
+                          vac.bottomRight});
     }
 }

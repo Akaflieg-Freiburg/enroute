@@ -138,7 +138,7 @@ Item {
     }
 
     Connections {
-        target: DataManager
+        target: VACLibrary
 
         function onImportTripKitStatus(percent) {
             if (percent < 1.0) {
@@ -356,14 +356,12 @@ Item {
 
         }
 
-        onAboutToShow: {
-            importVACDialog.standardButton(DialogButtonBox.Ok).enabled = mapNameVAC.text !== ""
-        }
+        onAboutToShow: importVACDialog.standardButton(DialogButtonBox.Ok).enabled = mapNameVAC.text !== ""
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
 
-            var errorString = DataManager.importVAC(importManager.filePath, mapNameVAC.text)
+            var errorString = VACLibrary.importVAC(importManager.filePath, mapNameVAC.text)
             if (errorString !== "") {
                 errLbl.text = errorString
                 errorDialog.open()
@@ -577,7 +575,7 @@ Item {
             PlatformAdaptor.vibrateBrief()
             close()
 
-            var errorString = DataManager.importTripKit(importManager.filePath)
+            var errorString = VACLibrary.importTripKit(importManager.filePath)
             if (errorString !== "") {
                 errLbl.text = errorString
                 errorDialog.open()

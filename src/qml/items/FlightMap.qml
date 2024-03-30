@@ -69,24 +69,25 @@ Map {
             type: "image"
 
             property string url: {
-                if (GeoMapProvider.approachChart === "")
+                var vac = Global.currentVAC
+                if (!vac.isValid)
                     return "qrc:/icons/appIcon.png"
-                return "file://" + GeoMapProvider.approachChart
+                return "file://" + vac.fileName
             }
 
             // NOTE: At of 15Feb24, the FlightMap does not react to changes of this property.
             // As a temporary workaround, MapPage.qml will reload the map in full
             // whenever the approach chart changes.
             property var coordinates: {
-                var bbox = GeoMapProvider.approachChartBoundingBox
-                if (bbox.isValid)
-                    return [[bbox.topLeft.longitude, bbox.topLeft.latitude],
-                            [bbox.bottomRight.longitude, bbox.topLeft.latitude],
-                            [bbox.bottomRight.longitude, bbox.bottomRight.latitude],
-                            [bbox.topLeft.longitude, bbox.bottomRight.latitude]]
+                var vac = Global.currentVAC
+                if (vac.isValid)
+                    return [[vac.topLeft.longitude, vac.topLeft.latitude],
+                            [vac.topRight.longitude, vac.topRight.latitude],
+                            [vac.bottomRight.longitude, vac.bottomRight.latitude],
+                            [vac.bottomLeft.longitude, vac.bottomLeft.latitude]]
 
                 // Default bounding box, at a place where no-one will see it,
-                return [ [1, 87.001], [1.001, 87.001], [1.001, 87], [1, 87] ]
+                return [ [1, 77.001], [1.001, 77.001], [1.001, 77], [1, 77] ]
 
                 // Default bounding box for debugging purposes, south-west of Freiburg.
                 // return [ [7, 48], [8, 48], [8, 47], [7, 47] ]
@@ -102,7 +103,7 @@ Map {
             property string source: "vac"
 
             layout: {
-                "visibility": GeoMapProvider.approachChart === "" ? 'none' : 'visible'
+                "visibility": Global.currentVAC.isValid ? 'visible' : 'none'
             }
         }
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2023 by Stefan Kebekus                                  *
+ *   Copyright (C) 2023-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,14 +21,15 @@
 #pragma once
 
 #include <QGeoRectangle>
+#include <QPointF>
 #include <QVariant>
 
-#include "DataFileAbstract.h"
+#include "TIFF.h"
 
 namespace FileFormats
 {
 
-/*! \brief Trip Kit
+/*! \brief GeoTIFF support
  *
  *  This class reads GeoTIFF files, as specified here:
  *  https://gis-lab.info/docs/geotiff-1.8.2.pdf
@@ -39,7 +40,7 @@ namespace FileFormats
  *  files. We restrict ourselves to files that appear in real-world aviation.
  */
 
-class GeoTIFF : public DataFileAbstract
+class GeoTIFF : public TIFF
 {
 public:
     /*! \brief Constructor
@@ -66,18 +67,35 @@ public:
     // Getter Methods
     //
 
+    /*! \brief Geographic coordinate for corner of raster image
+     *
+     *  @returns Coordinate, or an invalid coordinate in case of error.
+     */
+    [[nodiscard]] QGeoCoordinate bottomLeft() const { return m_bottomLeft; }
+
+    /*! \brief Geographic coordinate for corner of raster image
+     *
+     *  @returns Coordinate, or an invalid coordinate in case of error.
+     */
+    [[nodiscard]] QGeoCoordinate bottomRight() const { return m_bottomRight; }
+
     /*! \brief Name, as specified in the GeoTIFF file
      *
      *  @returns The name or an empty string if no name is specified.
      */
     [[nodiscard]] QString name() const { return m_name; }
 
-    /*! \brief Bounding box, as specified in the GeoTIFF file
+    /*! \brief Geographic coordinate for corner of raster image
      *
-     *  @returns Bounding box, which might be invalid
+     *  @returns Coordinate, or an invalid coordinate in case of error.
      */
-    [[nodiscard]] QGeoRectangle bBox() const { return m_bBox; }
+    [[nodiscard]] QGeoCoordinate topLeft() const { return m_topLeft; }
 
+    /*! \brief Geographic coordinate for corner of raster image
+     *
+     *  @returns Coordinate, or an invalid coordinate in case of error.
+     */
+    [[nodiscard]] QGeoCoordinate topRight() const { return m_topRight; }
 
 
     //
@@ -88,47 +106,74 @@ public:
      *
      *  @returns Name of mime type
      */
-    [[nodiscard]] static QStringList mimeTypes() { return {u"image/tiff"_qs}; }
+    [[nodiscard]] static QStringList mimeTypes() { return FileFormats::TIFF::mimeTypes(); }
+
 
 private:
+    struct Tiepoint
+    {
+        QPointF rasterCoordinate;
+        QGeoCoordinate geoCoordinate;
+    };
 
-    /* This methods reads the TIFF data from the device. On success, it fills
-     * the memeber m_TIFFFields with appropriate data. On failure, it throws a
-     * QString with a human-readable, translated error message.
+    /* This method computes a 4x4 tranformation matrix that maps pixel coordinates to
+     * geographic coordinates.
      *
-     * @param device QIODevice from which the TIFF header will be read. This
-     * device must be seekable.
+     * 1. First, the method uses readTransformation() to check if a matrix is specified
+     * within the GeoTIFF file. If so, that matrix is returned.
+     *
+     * 2. Second, the method uses readTiepoints() and readPixelSize() to generate a matrix.
+     * It assume at this point that the transformation is a simple scaling/translation,
+     * and does not involve any rotation orr shearing. If sufficient data is present to
+     * generate a transformation matrix, that matrix is returned.
+     *
+     * 3. An empty list is returned.
      */
-    void readTIFFData(QIODevice& device);
+    [[nodiscard]] static QList<double> getTransformation(const QMap<quint16, QVariantList> &TIFFFields);
 
-    /* This methods reads a single TIFF field from the device. On success, it
-     * adds an entry to the member m_TIFFFields and positions the device on the
-     * byte following the structure. On failure, it throws a QString with a
-     * human-readable, translated error message.
+    /* This method interprets the TIFFFields and looks for the tag 33922, which is used to
+     * specify the tiepoints.  Returns a list with the data retrieved, or an empty
+     * list on failure.
      *
-     * This method only reads values of type ASCII, SHORT and DOUBLE. Values of
-     * other types will be ignored.
-     *
-     * @param device QIODevice from which the TIFF header will be read. This
-     * device must be open, seekable, and positioned to the beginning of the
-     * TIFF field structure.
-     *
-     * @param dataStream QDataStream that is connected to the device and has the
-     * correct endianness set.
+     * An expection might be thrown if the tag exists, but contains invalid data.
      */
-    void readTIFFField(QIODevice& device, QDataStream& dataStream);
+    [[nodiscard]] static QList<Tiepoint> readTiepoints(const QMap<quint16, QVariantList> &TIFFFields);
+
+    /* This method interprets the TIFFFields and looks for the tag 270, which is used to
+     * specify the image name.  Returns a QString with the data retrieved, or an empty
+     * QString on failure.
+     *
+     * An expection might be thrown if the tag exists, but contains invalid data.
+     */
+    [[nodiscard]] static QString readName(const QMap<quint16, QVariantList>& TIFFFields);
+
+    /* This method interprets the TIFFFields and looks for the tag 33550, which is used to
+     * specify the geographic size of a pixel.  Returns a QSizeF with the data retrieved,
+     * or an invalid QSizeF on failure.
+     *
+     * An expection might be thrown if the tag exists, but contains invalid data.
+     */
+    [[nodiscard]] static QSizeF readPixelSize(const QMap<quint16, QVariantList> &TIFFFields);
+
+    /* This method interprets the TIFFFields and looks for the tag 34264, which is used to
+     * specify a 4x4 transformation matrix. Returns a list of 16 doubles on success, in order
+     * (a00 a01 a02 a03 a10 ...). Returns an empty list on failure.
+     *
+     * An expection might be thrown if the tag exists, but contains invalid data.
+     */
+    [[nodiscard]] static QList<double> readTransformation(const QMap<quint16, QVariantList> &TIFFFields);
 
     /* This methods interprets the data found in m_TIFFFields and writes to
-     * m_bBox and m_name.On failure, it throws a QString with a human-readable,
+     * m_name and m_topLeft etc. On failure, it throws a QString with a human-readable,
      * translated error message.
      */
     void interpretGeoData();
 
-    // TIFF tags and associated data
-    QMap<quint16, QVariantList> m_TIFFFields;
-
-    // Bounding box
-    QGeoRectangle m_bBox;
+    // Geographic coordinates for corner of raster image
+    QGeoCoordinate m_topLeft {};
+    QGeoCoordinate m_topRight {};
+    QGeoCoordinate m_bottomLeft {};
+    QGeoCoordinate m_bottomRight {};
 
     // Name
     QString m_name;

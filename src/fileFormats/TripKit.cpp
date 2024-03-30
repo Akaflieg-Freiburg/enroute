@@ -180,7 +180,7 @@ void FileFormats::TripKit::readVACs()
         {
             ending = path.mid(idx+1, -1).toLower();
         }
-        m_entries.append({GeoMaps::VAC::getNameFromFileName(path),
+        m_entries.append({vac.name,
                           ending,
                           path,
                           vac.topLeft,

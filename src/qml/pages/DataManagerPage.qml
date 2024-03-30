@@ -129,7 +129,7 @@ Page {
 
                             onTriggered: {
                                 PlatformAdaptor.vibrateBrief()
-                                VACLibrary.deleteVAC(element.model.modelData.name)
+                                VACLibrary.remove(element.model.modelData.name)
                             }
                         }
                     }

@@ -28,7 +28,11 @@
 namespace GeoMaps
 {
 
-#warning docu
+/*! \brief Library of visual approach charts
+ *
+ * This class collects visual approach charts that the user has installed. The list is automatically loaded on startup,
+ *  and saved every time that a change is made.
+ */
 
 class VACLibrary : public QObject
 {
@@ -47,10 +51,13 @@ public:
     // Properties
     //
 
-#warning docu
+    /*! \brief True if library is empty. */
     Q_PROPERTY(bool isEmpty READ isEmpty NOTIFY dataChanged)
 
-#warning docu
+    /*! \brief List of all VACs installed
+     *
+     * This property holds the list of all installed VACs, sorted alphabetically by name.
+     */
     Q_PROPERTY(QVector<GeoMaps::VAC> vacs READ vacs NOTIFY dataChanged)
 
 
@@ -58,16 +65,17 @@ public:
     // Getter Methods
     //
 
-#warning docu
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property isEmpty
+     */
     [[nodiscard]] bool isEmpty() const { return m_vacs.isEmpty(); }
 
-#warning docu, want to sort alphabetically
-    [[nodiscard]] QVector<GeoMaps::VAC> vacs() const { return m_vacs; }
-
-
-    //
-    // Setter Methods
-    //
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property vacs
+     */
+    [[nodiscard]] QVector<GeoMaps::VAC> vacs();
 
 
 
@@ -75,27 +83,76 @@ public:
     // Methods
     //
 
+    /*! \brief Removes all VACs
+     *
+     *  This method also deletes the associated files.
+     */
     Q_INVOKABLE void clear();
 
-    [[nodiscard]] Q_INVOKABLE QVector<GeoMaps::VAC> vacsByDistance(const QGeoCoordinate& position);
-
-    [[nodiscard]] Q_INVOKABLE QString importVAC(const QString& fileName, QString newName);
-
-    [[nodiscard]] Q_INVOKABLE QString importTripKit(const QString& fileName);
-
-    Q_INVOKABLE void deleteVAC(const QString& baseName);
-
-    [[nodiscard]] Q_INVOKABLE QString renameVAC(const QString& oldBaseName, const QString& newBaseName);
-
+    /*! \brief Obtain VACs from the library
+     *
+     *  @param name Name of the VAC
+     *
+     *  @returns Returns an invalid, default-constructed VAC if the name does not exist in the library.
+     */
     [[nodiscard]] Q_INVOKABLE GeoMaps::VAC get(const QString& name);
 
-    [[nodiscard]] Q_INVOKABLE void save();
+    /*! \brief Import trip kit
+     *
+     *  @param fileName Name of the trip kit file
+     *
+     *  @returns A localized error message, or an empty string on success
+     */
+    [[nodiscard]] Q_INVOKABLE QString importTripKit(const QString& fileName);
+
+    /*! \brief Import VAC
+     *
+     *  This method copies the file 'fileName' to the library directory. It does not take
+     *  ownership of the file, and does not delete the file.
+     *
+     *  @param fileName Name of a graphics file
+     *
+     *  @param name Name under which the VAC is available in the library. If left empty, a default name is assigned.
+     *
+     *  @returns A localized error message, or an empty string on success
+     */
+    [[nodiscard]] Q_INVOKABLE QString importVAC(const QString& fileName, const QString& name = {});
+
+    /*! \brief Remove one VACs
+     *
+     *  @param name Name of the VAC
+     *
+     *  This method also deletes the associated file.
+     */
+    Q_INVOKABLE void remove(const QString& name);
+
+    /*! \brief Rename a VACs
+     *
+     *  @param oldName Name of the VAC to be removed
+     *
+     *  @param newName New name of the VAC
+     *
+     *  @returns A localized error message, or an empty string on success
+     */
+    [[nodiscard]] Q_INVOKABLE QString rename(const QString& oldName, const QString& newName);
+
+    /*! \brief List of all VACs installed
+     *
+     * This method returns the list of all installed VACs, sorted by distance to position
+     * (closest waypoints first).
+     *
+     * @returns List of all VACs installed
+     */
+    [[nodiscard]] Q_INVOKABLE QVector<GeoMaps::VAC> vacsByDistance(const QGeoCoordinate& position);
 
 signals:
     /*! \brief Notifier signal */
     void dataChanged();
 
-    /*! \brief Progress report when importing a trip kit
+    /*! \brief Progress report when importing a trip kit.
+     *
+     *  This signal is emitted when TripKits are imported. At the end of the import,
+     *  the precise value 1.0 is emitted.
      *
      *  @param percent A number between 0.0 and 1.0.
      */
@@ -103,6 +160,8 @@ signals:
 
 private:
     Q_DISABLE_COPY_MOVE(VACLibrary)
+
+    Q_INVOKABLE void save();
 
     QVector<GeoMaps::VAC> m_vacs;
     QString m_vacDirectory {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/VAC"};

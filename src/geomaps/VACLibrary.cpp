@@ -18,9 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QImage>
 #include <QCoreApplication>
 #include <QDirIterator>
+#include <QImage>
 #include <QTemporaryDir>
 
 #include "VACLibrary.h"
@@ -28,9 +28,7 @@
 
 GeoMaps::VACLibrary::VACLibrary()
 {
-    qWarning() << "create VAC library";
-
-    connect(this, &GeoMaps::VACLibrary::dataChanged, this, &GeoMaps::VACLibrary::save);
+    connect(this, &GeoMaps::VACLibrary::dataChanged, this, &GeoMaps::VACLibrary::save, Qt::QueuedConnection);
 
     QFile dataFile(m_vacDirectory+".data");
     dataFile.open(QIODeviceBase::ReadOnly);
@@ -59,8 +57,9 @@ QVector<GeoMaps::VAC> GeoMaps::VACLibrary::vacsByDistance(const QGeoCoordinate& 
     return m_vacs;
 }
 
-QString GeoMaps::VACLibrary::importVAC(const QString& fileName, QString newName)
+QString GeoMaps::VACLibrary::importVAC(const QString& fileName, const QString& _newName)
 {
+    auto newName = _newName;
     // Check input data
     if (!QFile::exists(fileName))
     {
@@ -71,7 +70,7 @@ QString GeoMaps::VACLibrary::importVAC(const QString& fileName, QString newName)
     {
         return tr("Input file <strong>%1</strong> does not contain a valid chart.").arg(fileName);
     }
-    QImage image(fileName);
+    QImage const image(fileName);
     if (image.isNull())
     {
         return tr("Unable to read raster image data from input file <strong>%1</strong>.").arg(fileName);
@@ -86,13 +85,13 @@ QString GeoMaps::VACLibrary::importVAC(const QString& fileName, QString newName)
     {
         vac.name = newName;
     }
-    deleteVAC(newName);
+    remove(newName);
 
     // Copy file to VAC directory
     QDir const dir;
     dir.mkpath(m_vacDirectory);
 
-    QString newFileName = m_vacDirectory + "/" + vac.name + ".webp";
+    QString const newFileName = m_vacDirectory + "/" + vac.name + ".webp";
     QFile::remove(newFileName);
     if (fileName.endsWith(".webp"))
     {
@@ -162,7 +161,13 @@ QString GeoMaps::VACLibrary::importTripKit(const QString& fileName)
     return {};
 }
 
-void GeoMaps::VACLibrary::deleteVAC(const QString& baseName)
+QVector<GeoMaps::VAC> GeoMaps::VACLibrary::vacs()
+{
+    std::sort(m_vacs.begin(), m_vacs.end(), [](const GeoMaps::VAC& first, const GeoMaps::VAC& second) { return first.name < second.name; });
+    return m_vacs;
+}
+
+void GeoMaps::VACLibrary::remove(const QString& baseName)
 {
     QVector<GeoMaps::VAC> vacsToDelete;
     foreach(auto vac, m_vacs)
@@ -186,7 +191,7 @@ void GeoMaps::VACLibrary::deleteVAC(const QString& baseName)
     emit dataChanged();
 }
 
-QString GeoMaps::VACLibrary::renameVAC(const QString& oldName, const QString& newName)
+QString GeoMaps::VACLibrary::rename(const QString& oldName, const QString& newName)
 {
 #warning error handling
     auto vac = get(oldName);
@@ -209,7 +214,6 @@ QString GeoMaps::VACLibrary::renameVAC(const QString& oldName, const QString& ne
 
 GeoMaps::VAC GeoMaps::VACLibrary::get(const QString& name)
 {
-    qWarning() << "AAA" << name;
     foreach(auto vac, m_vacs)
     {
         if (vac.name == name)
@@ -233,7 +237,6 @@ void GeoMaps::VACLibrary::clear()
     m_vacs.clear();
     emit dataChanged();
 }
-
 
 void GeoMaps::VACLibrary::save()
 {

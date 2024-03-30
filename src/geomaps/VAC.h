@@ -59,43 +59,72 @@ public:
      *
      *  It attempt to extract the map name from the image file (if the image file is a GeoTIFF), or else from the file name.  The raster data is not read, so that this constructor is rather lightweight.
      *
-     *  \param fileName File name of a georeferenced raster image file
+     *  \param fName File name of a georeferenced raster image file
      */
-    VAC(const QString& fileName);
+    VAC(const QString& fName);
 
-    /*! \brief Constructor
+
+    //
+    // Properties
+    //
+
+    /*! \brief Geographic coordinate of raster image corner
      *
-     *  This class takes the name of an image file and geographic coordinates for the four corners
-     *  of the raster image. It attempt to extract the map name from the image file (if the image file is a GeoTIFF), or else from the file name.
-     *
-     *  The raster data is not read, so that this constructor is rather lightweight.
-     *
-     *  \param fileName File name of a raster image file
-     *
-     *  \param topLeft QGeoCoordinate for image corner
-     *
-     *  \param topRight QGeoCoordinate for image corner
-     *
-     *  \param bottomLeft QGeoCoordinate for image corner
-     *
-     *  \param bottomRight QGeoCoordinate for image corner
+     * This coordinate might be invalid.
      */
-    VAC(const QString& fileName,
-        const QGeoCoordinate& topLeft,
-        const QGeoCoordinate& topRight,
-        const QGeoCoordinate& bottomLeft,
-        const QGeoCoordinate& bottomRight);
-
-#warning unfinished
-    Q_PROPERTY(QGeoCoordinate center READ center)
-    Q_PROPERTY(QString infoText READ infoText)
-    Q_PROPERTY(QString description READ description)
-    Q_PROPERTY(QString name MEMBER name)
-    Q_PROPERTY(bool isValid READ isValid CONSTANT)
-    Q_PROPERTY(QGeoCoordinate topLeft MEMBER topLeft)
-    Q_PROPERTY(QGeoCoordinate topRight MEMBER topRight)
     Q_PROPERTY(QGeoCoordinate bottomLeft MEMBER bottomLeft)
+
+    /*! \brief Geographic coordinate of raster image corner
+     *
+     * This coordinate might be invalid.
+     */
     Q_PROPERTY(QGeoCoordinate bottomRight MEMBER bottomRight)
+
+    /*! \brief Center coordinate
+     *
+     * This property holds the geographic coordinate of the raster image center,
+     * or an invalid coordinate if no valid corner coordinates are available.
+     */
+    Q_PROPERTY(QGeoCoordinate center READ center)
+
+    /*! \brief Describe installed file(s)
+     *
+     * This property contains a description of the locally installed
+     * file(s), localized and in HTML format. If no description is available,
+     * then the property contains an empty string.
+     */
+    Q_PROPERTY(QString description READ description)
+
+    /*! \brief Short info text
+     *
+     * The text is typically one lines "manually installed • 203 kB",
+     * translated to the local language.
+     */
+    Q_PROPERTY(QString infoText READ infoText)
+
+    /*! \brief Validity
+     *
+     * The VAC is considered valid if all corner coordinate are valid, the file 'fileName' exists and
+     * the name is not empty.
+     */
+    Q_PROPERTY(bool isValid READ isValid)
+
+    /*! \brief Name of the VAC. */
+    Q_PROPERTY(QString name MEMBER name)
+
+    /*! \brief Geographic coordinate of raster image corner
+     *
+     * This coordinate might be invalid.
+     */
+    Q_PROPERTY(QGeoCoordinate topLeft MEMBER topLeft)
+
+    /*! \brief Geographic coordinate of raster image corner
+     *
+     * This coordinate might be invalid.
+     */
+    Q_PROPERTY(QGeoCoordinate topRight MEMBER topRight)
+
+    /*! \brief Name of raster image file */
     Q_PROPERTY(QString fileName MEMBER fileName)
 
 
@@ -103,78 +132,41 @@ public:
     // Getter Methods
     //
 
-    /*! \brief Base name
+    /*! \brief Getter function for property of the same name
      *
-     *  The base name is a suggested name for this visual approach chart, to be
-     *  used in the GUI and as a file name. It can be invalid or empty.
-     *
-     *  @returns A QString with the base name
+     * @returns Property center
      */
-   // [[nodiscard]] QString name() const  { return m_name; }
-
-#warning docu
-    [[nodiscard]] bool isValid() const;
-
-    [[nodiscard]] bool hasValidCoordinates() const;
-
-
-    [[nodiscard]] QString infoText() const;
-
-    [[nodiscard]] QString description() const;
-
-
-#warning docu
     [[nodiscard]] QGeoCoordinate center() const;
 
-    /*! \brief Geographic coordinate for corner of raster image
+    /*! \brief Getter function for property of the same name
      *
-     *  @returns Coordinate, or an invalid coordinate in case of error.
+     * @returns Property description
      */
-  //  [[nodiscard]] QGeoCoordinate bottomLeft() const { return m_bottomLeft; }
+    [[nodiscard]] QString description() const;
 
-    /*! \brief Geographic coordinate for corner of raster image
+    /*! \brief Getter function for property of the same name
      *
-     *  @returns Coordinate, or an invalid coordinate in case of error.
+     * @returns Property infoText
      */
-  //  [[nodiscard]] QGeoCoordinate bottomRight() const { return m_bottomRight; }
+    [[nodiscard]] QString infoText() const;
 
-    /*! \brief File name
+    /*! \brief Getter function for property of the same name
      *
-     *  @returns A QString with the file name
+     * @returns Property isValid
      */
-   // [[nodiscard]] auto fileName() const -> QString { return m_fileName; }
+    [[nodiscard]] bool isValid() const;
 
-    /*! \brief Geographic coordinate for corner of raster image
-     *
-     *  @returns Coordinate, or an invalid coordinate in case of error.
-     */
-   // [[nodiscard]] QGeoCoordinate topLeft() const { return m_topLeft; }
-
-    /*! \brief Geographic coordinate for corner of raster image
-     *
-     *  @returns Coordinate, or an invalid coordinate in case of error.
-     */
-  //  [[nodiscard]] QGeoCoordinate topRight() const { return m_topRight; }
-
-
-    //
-    // Setter Methods
-    //
-
-    /*! \brief Setter function for the base name
-     *
-     *  @param newBaseName New base name
-     */
- //   void setBaseName(const QString& newBaseName) { m_name = newBaseName; }
-
-  //  void setFileName(const QString& newFileName) { m_fileName = newFileName; }
 
 
     //
     // Methods
     //
 
-    bool operator==(const VAC& other) const = default;
+    /*! \brief Comparison
+     *
+     * @returns True on equality
+     */
+    [[nodiscard]] bool operator==(const VAC& other) const = default;
 
     /*! \brief Mime type for files that can be opened by this class
      *
@@ -190,21 +182,39 @@ public:
                 u"image/webp"_qs};
     }
 
-    [[nodiscard]] static QString getNameFromFileName(const QString& fileName);
 
+
+    //
+    // Member variable
+    //
+
+    /*! \brief Member variable for property of the same name */
+    QGeoCoordinate bottomLeft {};
+
+    /*! \brief Member variable for property of the same name */
+    QGeoCoordinate bottomRight {};
+
+    /*! \brief Member variable for property of the same name */
     QString fileName {};
 
+    /*! \brief Member variable for property of the same name */
     QString name {};
 
-    // Geographic coordinates for corner of raster image
+    /*! \brief Member variable for property of the same name */
     QGeoCoordinate topLeft {};
-    QGeoCoordinate topRight {};
-    QGeoCoordinate bottomLeft {};
-    QGeoCoordinate bottomRight {};
-private:
-#warning document
-    bool getCoordsFromFileName();
 
+    /*! \brief Member variable for property of the same name */
+    QGeoCoordinate topRight {};
+
+private:
+    // Obtain values for topLeft etc by looking at the file name
+    void getCoordsFromFileName();
+
+    // Obtain value name by looking at the file name
+    void getNameFromFileName();
+
+    // Check if all geo coordinates are valid
+    [[nodiscard]] bool hasValidCoordinates() const;
 };
 
 /*! \brief Serialization */

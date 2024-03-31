@@ -22,34 +22,86 @@
 #include <QDirIterator>
 #include <QImage>
 #include <QTemporaryDir>
+#include <QTimer>
 
 #include "VACLibrary.h"
 #include "fileFormats/TripKit.h"
 
-GeoMaps::VACLibrary::VACLibrary()
+
+
+//
+// Constructor and destructor
+//
+
+GeoMaps::VACLibrary::VACLibrary(QObject *parent)
+    : QObject(parent)
 {
+    // Wire up: Save library whenever the content changes
     connect(this, &GeoMaps::VACLibrary::dataChanged, this, &GeoMaps::VACLibrary::save, Qt::QueuedConnection);
 
-    QFile dataFile(m_vacDirectory+".data");
-    dataFile.open(QIODeviceBase::ReadOnly);
-    QDataStream dataStream(&dataFile);
-    dataStream >> m_vacs;
-
-    QDirIterator fileIterator(m_vacDirectory, QDir::Files);
-    while (fileIterator.hasNext())
+    // Restore previously saves VAC library
+    if (m_dataFile.open(QIODeviceBase::ReadOnly))
     {
-        fileIterator.next();
-        GeoMaps::VAC const vac(fileIterator.filePath());
-        if (!vac.isValid())
-        {
-            continue;
-        }
-        m_vacs.append(vac);
+        QDataStream dataStream(&m_dataFile);
+        dataStream >> m_vacs;
     }
-#warning need to save/restore VAC
-#warning need janitor method to clean up VAC directory
+    m_dataFile.close();
+
+    // Call the janitor as soon as we have some time
+    QTimer::singleShot(0, this, &GeoMaps::VACLibrary::janitor);
 }
 
+GeoMaps::VACLibrary::~VACLibrary()
+{
+    save();
+}
+
+
+//
+// Getter Methods
+//
+
+
+QVector<GeoMaps::VAC> GeoMaps::VACLibrary::vacs()
+{
+    std::sort(m_vacs.begin(), m_vacs.end(), [](const GeoMaps::VAC& first, const GeoMaps::VAC& second) { return first.name < second.name; });
+    return m_vacs;
+}
+
+
+
+//
+// Methods
+//
+
+void GeoMaps::VACLibrary::clear()
+{
+    if (m_vacs.isEmpty())
+    {
+        return;
+    }
+    foreach(auto vac, m_vacs)
+    {
+        QFile::remove(vac.fileName);
+    }
+    m_vacs.clear();
+    emit dataChanged();
+}
+
+GeoMaps::VAC GeoMaps::VACLibrary::get(const QString& name)
+{
+    foreach(auto vac, m_vacs)
+    {
+        if (vac.name == name)
+        {
+            return vac;
+        }
+    }
+    return {};
+}
+
+
+// -----------
 
 QVector<GeoMaps::VAC> GeoMaps::VACLibrary::vacsByDistance(const QGeoCoordinate& position)
 {
@@ -57,8 +109,12 @@ QVector<GeoMaps::VAC> GeoMaps::VACLibrary::vacsByDistance(const QGeoCoordinate& 
     return m_vacs;
 }
 
-QString GeoMaps::VACLibrary::importVAC(const QString& fileName, const QString& _newName)
+QString GeoMaps::VACLibrary::importVAC(const QString& _fileName, const QString& _newName)
 {
+    auto file = FileFormats::DataFileAbstract::openFileURL(_fileName);
+    auto fileName = file->fileName();
+
+#warning need to handle file URLs
     auto newName = _newName;
     // Check input data
     if (!QFile::exists(fileName))
@@ -120,11 +176,6 @@ QString GeoMaps::VACLibrary::importVAC(const QString& fileName, const QString& _
 QString GeoMaps::VACLibrary::importTripKit(const QString& fileName)
 {
     FileFormats::TripKit tripKit(fileName);
-    QTemporaryDir const tmpDir;
-    if (!tmpDir.isValid())
-    {
-        return {};
-    }
 
     // Unpack the VACs into m_vacDirectory
     auto size = tripKit.numCharts();
@@ -134,20 +185,23 @@ QString GeoMaps::VACLibrary::importTripKit(const QString& fileName)
         emit importTripKitStatus((double)idx/(double)size);
         QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
 
-        auto path = tripKit.extract(tmpDir.path(), idx);
-        if (path.isEmpty())
+#warning
+        auto vac = tripKit.extract(m_vacDirectory, idx);
+        if (!vac.isValid())
         {
             continue;
         }
-
-#warning need to speed up; import VAC emits too many signals
-        if (importVAC(path, {}).isEmpty())
+        auto oldVac = get(vac.name);
+        if (oldVac.isValid())
         {
-            successfulImports++;
+            m_vacs.removeAll(oldVac);
         }
-        QFile::remove(path);
+
+        m_vacs.append(vac);
+        successfulImports++;
     }
     emit importTripKitStatus(1.0);
+    emit dataChanged();
 
     if (successfulImports == 0)
     {
@@ -159,12 +213,6 @@ QString GeoMaps::VACLibrary::importTripKit(const QString& fileName)
     }
 
     return {};
-}
-
-QVector<GeoMaps::VAC> GeoMaps::VACLibrary::vacs()
-{
-    std::sort(m_vacs.begin(), m_vacs.end(), [](const GeoMaps::VAC& first, const GeoMaps::VAC& second) { return first.name < second.name; });
-    return m_vacs;
 }
 
 void GeoMaps::VACLibrary::remove(const QString& baseName)
@@ -212,36 +260,62 @@ QString GeoMaps::VACLibrary::rename(const QString& oldName, const QString& newNa
     return {};
 }
 
-GeoMaps::VAC GeoMaps::VACLibrary::get(const QString& name)
-{
-    foreach(auto vac, m_vacs)
-    {
-        if (vac.name == name)
-        {
-            return vac;
-        }
-    }
-    return {};
-}
-
-void GeoMaps::VACLibrary::clear()
-{
-    if (m_vacs.isEmpty())
-    {
-        return;
-    }
-    foreach(auto vac, m_vacs)
-    {
-        QFile::remove(vac.fileName);
-    }
-    m_vacs.clear();
-    emit dataChanged();
-}
-
 void GeoMaps::VACLibrary::save()
 {
-    QFile dataFile(m_vacDirectory+".data");
-    dataFile.open(QIODeviceBase::WriteOnly);
-    QDataStream dataStream(&dataFile);
-    dataStream << m_vacs;
+    if (m_dataFile.open(QIODeviceBase::WriteOnly))
+    {
+        QDataStream dataStream(&m_dataFile);
+        dataStream << m_vacs;
+    }
+    m_dataFile.close();
+}
+
+void GeoMaps::VACLibrary::janitor()
+{
+    bool hasChange = false;
+
+    // Go through the list of all VAC. Find all VACs without image file, and a list of all image file managed
+    // by VACs in the list
+    QVector<GeoMaps::VAC> vacsWithoutImageFile;
+    QVector<QFileInfo> imageFilesWithVAC;
+
+    foreach(auto vac, m_vacs)
+    {
+        if (QFile::exists(vac.fileName))
+        {
+            imageFilesWithVAC.append(QFileInfo(vac.fileName));
+        }
+        else
+        {
+            vacsWithoutImageFile.append(vac);
+        }
+    }
+
+    // Delete all VACs without image file
+    foreach(auto vac, vacsWithoutImageFile)
+    {
+        hasChange = true;
+        m_vacs.removeAll(vac);
+    }
+
+    // Find list of all image files without VAC
+    QVector<QFileInfo> imageFilesWithoutVAC;
+    QDirIterator fileIterator(m_vacDirectory, QDir::Files);
+    while (fileIterator.hasNext())
+    {
+        fileIterator.next();
+        QFileInfo fInfo(fileIterator.filePath());
+        if (!imageFilesWithVAC.contains(fInfo))
+        {
+            imageFilesWithoutVAC.append(fInfo);
+        }
+    }
+
+    // Go through the list of image files without VAC. Try to import them.
+    // Failing that, delete those files.
+
+    if (hasChange)
+    {
+        emit dataChanged();
+    }
 }

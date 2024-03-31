@@ -50,7 +50,7 @@ FileFormats::TripKit::TripKit(const QString& fileName)
 }
 
 
-QString FileFormats::TripKit::extract(const QString& directoryPath, qsizetype index)
+GeoMaps::VAC FileFormats::TripKit::extract(const QString& directoryPath, qsizetype index)
 {
     if ((index < 0) || (index >= m_entries.size()))
     {
@@ -72,14 +72,8 @@ QString FileFormats::TripKit::extract(const QString& directoryPath, qsizetype in
         return {};
     }
 
-    auto newFileName = u"%1/%2-geo_%3_%4_%5_%6.%7"_qs
-                           .arg(directoryPath, entry.name)
-                           .arg(entry.topLeft.longitude())
-                           .arg(entry.topLeft.latitude())
-                           .arg(entry.bottomRight.longitude())
-                           .arg(entry.bottomRight.latitude())
-                           .arg(entry.ending);
-
+    auto newFileName = u"%1/%2.%3"_qs.arg(directoryPath, entry.name, entry.ending);
+#warning documentation promises webp format!
     QFile out(newFileName);
     if (!out.open(QIODeviceBase::WriteOnly))
     {
@@ -90,7 +84,15 @@ QString FileFormats::TripKit::extract(const QString& directoryPath, qsizetype in
         return {};
     }
     out.close();
-    return newFileName;
+
+    GeoMaps::VAC vac;
+    vac.name = entry.name;
+    vac.fileName = newFileName;
+    vac.topLeft = entry.topLeft;
+    vac.topRight = entry.topRight;
+    vac.bottomLeft = entry.bottomLeft;
+    vac.bottomRight = entry.bottomRight;
+    return vac;
 }
 
 QString FileFormats::TripKit::readTripKitData()

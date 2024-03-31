@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QFile>
 #include <QStandardPaths>
 
 #include "geomaps/VAC.h"
@@ -41,11 +42,14 @@ class VACLibrary : public QObject
     QML_SINGLETON
 
 public:
-    /*! \brief Constructor */
-    VACLibrary();
+    /*! \brief Constructor
+     *
+     *  @param parent Standard QObject parent
+     */
+    VACLibrary(QObject *parent = nullptr);
 
     /*! \brief Destructor */
-    ~VACLibrary() override = default;
+    ~VACLibrary() override;
 
     //
     // Properties
@@ -161,10 +165,12 @@ signals:
 private:
     Q_DISABLE_COPY_MOVE(VACLibrary)
 
+    Q_INVOKABLE void janitor();
     Q_INVOKABLE void save();
 
     QVector<GeoMaps::VAC> m_vacs;
     QString m_vacDirectory {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/VAC"};
+    QFile m_dataFile {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/VAC.data"};
 
 };
 

@@ -165,8 +165,13 @@ signals:
 private:
     Q_DISABLE_COPY_MOVE(VACLibrary)
 
-    Q_INVOKABLE void janitor();
-    Q_INVOKABLE void save();
+    // This method cleans the VAC directory. It deletes all VAC from m_vacs that have no
+    // raster image files. It looks for unmanaged raster image files and either imports them
+    // or deletes them.
+    void janitor();
+
+    // This method saves m_vacs to m_dataFile.
+    void save();
 
     QVector<GeoMaps::VAC> m_vacs;
     QString m_vacDirectory {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/VAC"};

@@ -72,18 +72,32 @@ GeoMaps::VAC FileFormats::TripKit::extract(const QString& directoryPath, qsizety
         return {};
     }
 
-    auto newFileName = u"%1/%2.%3"_qs.arg(directoryPath, entry.name, entry.ending);
-#warning documentation promises webp format!
-    QFile out(newFileName);
-    if (!out.open(QIODeviceBase::WriteOnly))
+    auto newFileName = u"%1/%2.webp"_qs.arg(directoryPath, entry.name);
+    if (entry.ending == u"webp"_qs)
     {
-        return {};
+        QFile out(newFileName);
+        if (!out.open(QIODeviceBase::WriteOnly))
+        {
+            return {};
+        }
+        if (out.write(imageData) != imageData.size())
+        {
+            return {};
+        }
+        out.close();
     }
-    if (out.write(imageData) != imageData.size())
+    else
     {
-        return {};
+        auto image = QImage::fromData(imageData);
+        if (image.isNull())
+        {
+            return {};
+        }
+        if (!image.save(newFileName))
+        {
+            return {};
+        }
     }
-    out.close();
 
     GeoMaps::VAC vac;
     vac.name = entry.name;

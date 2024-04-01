@@ -100,82 +100,18 @@ GeoMaps::VAC GeoMaps::VACLibrary::get(const QString& name)
     return {};
 }
 
-
-// -----------
-
-QVector<GeoMaps::VAC> GeoMaps::VACLibrary::vacsByDistance(const QGeoCoordinate& position)
-{
-    std::sort(m_vacs.begin(), m_vacs.end(), [position](const GeoMaps::VAC& first, const GeoMaps::VAC& second) {return position.distanceTo(first.center()) < position.distanceTo(second.center()); });
-    return m_vacs;
-}
-
-QString GeoMaps::VACLibrary::importVAC(const QString& _fileName, const QString& _newName)
-{
-    auto file = FileFormats::DataFileAbstract::openFileURL(_fileName);
-    auto fileName = file->fileName();
-
-#warning need to handle file URLs
-    auto newName = _newName;
-    // Check input data
-    if (!QFile::exists(fileName))
-    {
-        return tr("Input file <strong>%1</strong> does not exist.").arg(fileName);
-    }
-    GeoMaps::VAC vac(fileName);
-    if (!vac.isValid())
-    {
-        return tr("Input file <strong>%1</strong> does not contain a valid chart.").arg(fileName);
-    }
-    QImage const image(fileName);
-    if (image.isNull())
-    {
-        return tr("Unable to read raster image data from input file <strong>%1</strong>.").arg(fileName);
-    }
-
-    // Set base name, delete all existing VACs with that basename
-    if (newName.isEmpty())
-    {
-        newName = vac.name;
-    }
-    else
-    {
-        vac.name = newName;
-    }
-    remove(newName);
-
-    // Copy file to VAC directory
-    QDir const dir;
-    dir.mkpath(m_vacDirectory);
-
-    QString const newFileName = m_vacDirectory + "/" + vac.name + ".webp";
-    QFile::remove(newFileName);
-    if (fileName.endsWith(".webp"))
-    {
-#warning This cannot handle Android content URLs
-        if (!QFile::copy(fileName, newFileName))
-        {
-            return tr("Error: Unable to copy VAC file <strong>%1</strong> to destination <strong>%2</strong>.").arg(fileName, newFileName);
-        }
-    }
-    else
-    {
-        if (!image.save(newFileName))
-        {
-            return tr("Error: Unable to write VAC file <strong>%1</strong>.").arg(newFileName);
-        }
-    }
-
-    vac.fileName = newFileName;
-    m_vacs.append(vac);
-
-    emit dataChanged();
-
-    return {};
-}
-
 QString GeoMaps::VACLibrary::importTripKit(const QString& fileName)
 {
+    // Open Trip Kit
     FileFormats::TripKit tripKit(fileName);
+    if (!tripKit.isValid())
+    {
+        return tr("Unable to open TripKit file <strong>%1</strong>. Error: %2.").arg(fileName, tripKit.error());
+    }
+
+    // Create directory
+    QDir const dir;
+    dir.mkpath(m_vacDirectory);
 
     // Unpack the VACs into m_vacDirectory
     auto size = tripKit.numCharts();
@@ -185,7 +121,6 @@ QString GeoMaps::VACLibrary::importTripKit(const QString& fileName)
         emit importTripKitStatus((double)idx/(double)size);
         QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
 
-#warning
         auto vac = tripKit.extract(m_vacDirectory, idx);
         if (!vac.isValid())
         {
@@ -211,6 +146,72 @@ QString GeoMaps::VACLibrary::importTripKit(const QString& fileName)
     {
         return tr("Error reading TripKip: Only %1 out of %2 charts were successfully imported.").arg(successfulImports).arg(size);
     }
+
+    return {};
+}
+
+QString GeoMaps::VACLibrary::importVAC(const QString& fileName, const QString& newName)
+{
+    // Download content URL if necessary, get name of the downloaded file
+    auto _file = FileFormats::DataFileAbstract::openFileURL(fileName);
+    auto _fileName = _file->fileName();
+
+    // Check input data
+    if (!_file->exists())
+    {
+        return tr("Input file <strong>%1</strong> does not exist.").arg(_fileName);
+    }
+    GeoMaps::VAC vac(_fileName);
+    if (!vac.isValid())
+    {
+        return tr("Input file <strong>%1</strong> does not contain a valid chart.").arg(_fileName);
+    }
+    QImage const image(_fileName);
+    if (image.isNull())
+    {
+        return tr("Unable to read raster image data from the input file <strong>%1</strong>.").arg(_fileName);
+    }
+
+    // Get new name of VAC, either by taking the newName specified in the argument
+    // or the name gleaned from the filename.
+    auto _newName = newName;
+    if (_newName.isEmpty())
+    {
+        _newName = vac.name;
+    }
+    else
+    {
+        vac.name = _newName;
+    }
+
+    // Delete all existing VACs with the new name
+    remove(_newName);
+
+    // Copy file to VAC directory
+    QDir const dir;
+    dir.mkpath(m_vacDirectory);
+    QString const newFileName = m_vacDirectory + "/" + vac.name + ".webp";
+    QFile::remove(newFileName);
+    if (_fileName.endsWith(".webp"))
+    {
+        if (!QFile::copy(_fileName, newFileName))
+        {
+            return tr("Error: Unable to copy the VAC file <strong>%1</strong> to destination <strong>%2</strong>.").arg(_fileName, newFileName);
+        }
+    }
+    else
+    {
+        if (!image.save(newFileName))
+        {
+            return tr("Error: Unable to write the VAC file <strong>%1</strong>.").arg(newFileName);
+        }
+    }
+
+    // Set new file name and add to library
+    vac.fileName = newFileName;
+    m_vacs.append(vac);
+
+    emit dataChanged();
 
     return {};
 }
@@ -241,17 +242,22 @@ void GeoMaps::VACLibrary::remove(const QString& baseName)
 
 QString GeoMaps::VACLibrary::rename(const QString& oldName, const QString& newName)
 {
-#warning error handling
+    // Get VAC with old name
     auto vac = get(oldName);
     if (!vac.isValid())
     {
-        return "xx";
+        return tr("VAC <strong>%1</strong> does not exist.").arg(oldName);
     }
 
-    m_vacs.removeAll(get(oldName));
-
+    // Rename raster image file
     auto newFileName = m_vacDirectory+"/"+newName+".webp";
-    QFile::rename(vac.fileName, newFileName);
+    if (!QFile::rename(vac.fileName, newFileName))
+    {
+        return tr("VAC file renaming failed.");
+    }
+
+    // Remove old VAC from list, update data and add agaib
+    m_vacs.removeAll(vac);
     vac.fileName = newFileName;
     vac.name = newName;
     m_vacs.append(vac);
@@ -260,25 +266,24 @@ QString GeoMaps::VACLibrary::rename(const QString& oldName, const QString& newNa
     return {};
 }
 
-void GeoMaps::VACLibrary::save()
+QVector<GeoMaps::VAC> GeoMaps::VACLibrary::vacsByDistance(const QGeoCoordinate& position)
 {
-    if (m_dataFile.open(QIODeviceBase::WriteOnly))
-    {
-        QDataStream dataStream(&m_dataFile);
-        dataStream << m_vacs;
-    }
-    m_dataFile.close();
+    std::sort(m_vacs.begin(), m_vacs.end(), [position](const GeoMaps::VAC& first, const GeoMaps::VAC& second) {return position.distanceTo(first.center()) < position.distanceTo(second.center()); });
+    return m_vacs;
 }
+
+
+
+//
+// Private Methods
+//
 
 void GeoMaps::VACLibrary::janitor()
 {
-    bool hasChange = false;
-
     // Go through the list of all VAC. Find all VACs without image file, and a list of all image file managed
     // by VACs in the list
     QVector<GeoMaps::VAC> vacsWithoutImageFile;
     QVector<QFileInfo> imageFilesWithVAC;
-
     foreach(auto vac, m_vacs)
     {
         if (QFile::exists(vac.fileName))
@@ -292,6 +297,7 @@ void GeoMaps::VACLibrary::janitor()
     }
 
     // Delete all VACs without image file
+    bool hasChange = false;
     foreach(auto vac, vacsWithoutImageFile)
     {
         hasChange = true;
@@ -304,7 +310,7 @@ void GeoMaps::VACLibrary::janitor()
     while (fileIterator.hasNext())
     {
         fileIterator.next();
-        QFileInfo fInfo(fileIterator.filePath());
+        QFileInfo const fInfo(fileIterator.filePath());
         if (!imageFilesWithVAC.contains(fInfo))
         {
             imageFilesWithoutVAC.append(fInfo);
@@ -313,9 +319,27 @@ void GeoMaps::VACLibrary::janitor()
 
     // Go through the list of image files without VAC. Try to import them.
     // Failing that, delete those files.
+    foreach(auto fInfo, imageFilesWithVAC)
+    {
+        if (importVAC(fInfo.fileName()).isEmpty())
+        {
+            hasChange = true;
+        }
+        QFile::remove(fInfo.fileName());
+    }
 
     if (hasChange)
     {
         emit dataChanged();
     }
+}
+
+void GeoMaps::VACLibrary::save()
+{
+    if (m_dataFile.open(QIODeviceBase::WriteOnly))
+    {
+        QDataStream dataStream(&m_dataFile);
+        dataStream << m_vacs;
+    }
+    m_dataFile.close();
 }

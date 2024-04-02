@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -155,7 +155,7 @@ AppWindow {
 
                     text: qsTr("Approach Charts")
                     icon.source: "/icons/material/ic_flight_land.svg"
-                    visible: DataManager.VAC.hasFile
+                    visible: !VACLibrary.isEmpty
 
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()

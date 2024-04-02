@@ -43,8 +43,8 @@ set(SOURCES
     fileFormats/GeoTIFF.h
     fileFormats/MapURL.h
     fileFormats/MBTILES.h
+    fileFormats/TIFF.h
     fileFormats/TripKit.h
-    fileFormats/VAC.h
     fileFormats/ZipFile.h
     DemoRunner.h
     geomaps/Airspace.h
@@ -56,6 +56,8 @@ set(SOURCES
     geomaps/TileServer.h
     geomaps/Waypoint.h
     geomaps/WaypointLibrary.h
+    geomaps/VAC.h
+    geomaps/VACLibrary.h
     GlobalObject.h
     GlobalSettings.h
     Librarian.h
@@ -128,8 +130,8 @@ set(SOURCES
     fileFormats/GeoTIFF.cpp
     fileFormats/MapURL.cpp
     fileFormats/MBTILES.cpp
+    fileFormats/TIFF.cpp
     fileFormats/TripKit.cpp
-    fileFormats/VAC.cpp
     fileFormats/ZipFile.cpp
     geomaps/Airspace.cpp
     geomaps/GeoJSON.cpp
@@ -140,6 +142,8 @@ set(SOURCES
     geomaps/TileServer.cpp
     geomaps/Waypoint.cpp
     geomaps/WaypointLibrary.cpp
+    geomaps/VAC.cpp
+    geomaps/VACLibrary.cpp
     GlobalObject.cpp
     GlobalSettings.cpp
     Librarian.cpp
@@ -269,9 +273,10 @@ if(ANDROID)
         Qt6::Svg
         Qt6::TextToSpeech
         Qt6::WebView
+        QMapLibre::Location
         libzip::zip
     )
-
+    qmaplibre_location_setup_plugins(${PROJECT_NAME})
     set_target_properties(${PROJECT_NAME} PROPERTIES
         QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android"
         QT_ANDROID_TARGET_SDK_VERSION 33
@@ -465,6 +470,7 @@ target_include_directories(${PROJECT_NAME}
     ${CMAKE_SOURCE_DIR}/3rdParty/sunset/src
     ${CMAKE_SOURCE_DIR}/3rdParty/GSL/include
     dataManagement
+    fileFormats
     geomaps
     navigation
     notam

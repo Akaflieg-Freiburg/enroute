@@ -29,9 +29,9 @@
 #include "fileFormats/MBTILES.h"
 #include "fileFormats/MapURL.h"
 #include "fileFormats/TripKit.h"
-#include "fileFormats/VAC.h"
 #include "geomaps/GeoJSON.h"
 #include "geomaps/OpenAir.h"
+#include "geomaps/VAC.h"
 #include "platform/FileExchange_Abstract.h"
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficDataSource_File.h"
@@ -142,12 +142,12 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     }
 
     // VAC
-    if (FileFormats::VAC::mimeTypes().contains(mimeType.name()))
+    if (GeoMaps::VAC::mimeTypes().contains(mimeType.name()))
     {
-        FileFormats::VAC const vac(myPath);
+        GeoMaps::VAC const vac(myPath);
         if (vac.isValid())
         {
-            emit openFileRequest(path, vac.baseName(), VAC);
+            emit openFileRequest(path, vac.name, VAC);
             return;
         }
     }

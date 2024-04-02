@@ -24,6 +24,7 @@
 #include <QJsonArray>
 
 #include "fileFormats/ZipFile.h"
+#include "geomaps/VAC.h"
 
 namespace FileFormats
 {
@@ -94,9 +95,9 @@ public:
      *
      *  @param index Index of the VAC that is to be extracted
      *
-     *  @returns Path of the extracted VAC, or an empty string in case of error.
+     *  @returns VAC, invalid in case of error.
      */
-    [[nodiscard]] QString extract(const QString& directoryPath, qsizetype index);
+    [[nodiscard]] GeoMaps::VAC extract(const QString& directoryPath, qsizetype index);
 
 
     //

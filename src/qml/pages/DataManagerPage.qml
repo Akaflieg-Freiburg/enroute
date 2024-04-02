@@ -56,6 +56,89 @@ Page {
         }
     }
 
+    Component {
+        id: vacDelegate
+        Item {
+            id: element
+
+            width: parent ? parent.width : undefined
+            height: gridLayout.height
+
+            required property var model
+
+            GridLayout {
+                id: gridLayout
+
+                columnSpacing: 0
+                rowSpacing: 0
+
+                anchors.right: parent.right
+                anchors.rightMargin: 0
+                anchors.left: parent.left
+                anchors.leftMargin: 0
+                columns: 6
+
+                WordWrappingItemDelegate {
+                    text: element.model.modelData.name + `<br><font color="#606060" size="2">${element.model.modelData.infoText}</font>`
+                    icon.source: "/icons/material/ic_map.svg"
+                    Layout.fillWidth: true
+                }
+
+                ToolButton {
+                    id: mapSetMenuButton
+                    icon.source: "/icons/material/ic_more_horiz.svg"
+
+                    onClicked: {
+                        PlatformAdaptor.vibrateBrief()
+                        mapSetMenu.open()
+                    }
+
+                    AutoSizingMenu {
+                        id: mapSetMenu
+
+                        Action {
+                            id: infoAction
+
+                            text: qsTr("Info")
+
+                            onTriggered: {
+                                PlatformAdaptor.vibrateBrief()
+                                Global.dialogLoader.active = false
+                                Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {title: element.model.modelData.name,
+                                                                  text: element.model.modelData.description,
+                                                                  standardButtons: Dialog.Ok})
+                                Global.dialogLoader.active = true
+                            }
+                        }
+                        Action {
+                            id: renameAction
+
+                            text: qsTr("Rename")
+
+                            onTriggered: {
+                                PlatformAdaptor.vibrateBrief()
+                                Global.dialogLoader.active = false
+                                Global.dialogLoader.setSource("../dialogs/RenameVACDialog.qml", {oldName: element.model.modelData.name})
+                                Global.dialogLoader.active = true
+                            }
+                        }
+                        Action {
+                            id: removeAction
+
+                            text: qsTr("Uninstall")
+
+                            onTriggered: {
+                                PlatformAdaptor.vibrateBrief()
+                                VACLibrary.remove(element.model.modelData.name)
+                            }
+                        }
+                    }
+
+                } // ToolButton
+            }
+        }
+    }
+
     header: PageHeader {
 
         height: 60 + SafeInsets.top
@@ -184,7 +267,7 @@ Page {
 
                 MenuItem {
                     text: qsTr("Clear VAC library…")
-                    enabled: DataManager.VAC.downloadables.length > 0
+                    enabled: !VACLibrary.isEmpty
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
@@ -269,12 +352,11 @@ Page {
             // when the user deletes all VACs -- the GUI is re-rendered after
             // every delete, which takes very long time.
             Binding on model {
-                value: DataManager.VAC.downloadables
+                value: VACLibrary.vacs
                 delayed: true    // Prevent intermediary values from being assigned
             }
 
-
-            delegate: MapSet {}
+            delegate: vacDelegate
             ScrollIndicator.vertical: ScrollIndicator {}
 
             section.property: "modelData.section"
@@ -300,7 +382,7 @@ Page {
                 anchors.topMargin: font.pixelSize
 
                 background: Rectangle {color: "white"}
-                visible: !DataManager.VAC.hasFile
+                visible: VACLibrary.isEmpty
 
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment : Text.AlignVCenter
@@ -500,7 +582,7 @@ Page {
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
-            DataManager.clearVACs()
+            VACLibrary.clear()
             toast.doToast(qsTr("Approach chart library cleared"))
         }
     }

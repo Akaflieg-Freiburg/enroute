@@ -2,7 +2,7 @@ name: Compile on MacOS
 
 on:
   push:
-    branches: [ feature/cleanup ]
+    branches: [ develop ]
 
 jobs:
   build:
@@ -30,8 +30,9 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
+        cache: 'true'
         version: '6.6.*'
-        modules: 'qt5compat qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtshadertools qtspeech qtwebsockets'
+        modules: 'qt5compat qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtshadertools qtspeech qtwebsockets qtwebview'
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -49,6 +50,17 @@ jobs:
           -DCMAKE_BUILD_TYPE=Debug \
           -DCMAKE_C_COMPILER_LAUNCHER="ccache" \
           -DCMAKE_CXX_COMPILER_LAUNCHER="ccache" \
-          -DCMAKE_INSTALL_PREFIX:STRING=$PWD/app/usr
+          -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" \
+          -DCMAKE_INSTALL_PREFIX=. 
         cmake --build build-enroute
+    - name: Package
+      run: |
         cmake --build build-enroute --target install
+        $Qt6_DIR/bin/macdeployqt enroute.app -dmg
+        mv enroute.dmg enroute-macOS-universal.dmg
+    - name: Upload to developerBuilds
+      run: |
+        gh release upload --clobber developerBuilds ../enroute-macOS-universal.dmg
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      working-directory: enroute

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2022 by Stefan Kebekus                                  *
+ *   Copyright (C) 2022-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -23,7 +23,7 @@
 #include <QGuiApplication>
 #include <QScreen>
 #include <QTimer>
-#include <chrono>
+//#include <chrono>
 
 #include "platform/SafeInsets_iOS.h"
 
@@ -63,17 +63,13 @@ Platform::SafeInsets::SafeInsets(QObject* parent)
 
 void Platform::SafeInsets::updateSafeInsets()
 {
-    auto bottom {m_bottom};
-    auto left {m_left};
-    auto right {m_right};
-    auto top {m_top};
     auto wHeight {m_wHeight};
     auto wWidth {m_wWidth};
 
-    top = ObjCAdapter::safeAreaTopInset();
-    bottom = ObjCAdapter::safeAreaBottomInset();
-    left = ObjCAdapter::safeAreaLeftInset();
-    right = ObjCAdapter::safeAreaRightInset();
+    auto top = ObjCAdapter::safeAreaTopInset();
+    auto bottom = ObjCAdapter::safeAreaBottomInset();
+    auto left = ObjCAdapter::safeAreaLeftInset();
+    auto right = ObjCAdapter::safeAreaRightInset();
 
     // Update properties and emit notification signals
     if (bottom != m_bottom)

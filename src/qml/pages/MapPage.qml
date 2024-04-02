@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -36,7 +36,7 @@ Page {
         leftPadding: SafeInsets.left
         rightPadding: SafeInsets.right
         topPadding: SafeInsets.top
-        visible: GeoMapProvider.approachChart !== ""
+        visible: Global.currentVAC.isValid
 
         ToolButton {
             id: backButton
@@ -48,7 +48,7 @@ Page {
 
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                GeoMapProvider.approachChart = ""
+                Global.currentVAC = Global.defaultVAC
             }
         }
 
@@ -61,12 +61,7 @@ Page {
             anchors.leftMargin: 72
             anchors.right: parent.right
 
-            text: {
-                var result = qsTr("Approach Chart")
-                if (GeoMapProvider.approachChartBaseName !== "")
-                    result = result + ": " + GeoMapProvider.approachChartBaseName
-                return result
-            }
+            text: qsTr("Approach Chart") + ": " + Global.currentVAC.name
             elide: Label.ElideRight
             font.pixelSize: 20
             verticalAlignment: Qt.AlignVCenter
@@ -87,20 +82,25 @@ Page {
     Connections {
         target: GeoMapProvider
 
-        // NOTE: At of 15Feb24, the FlightMap does not react to changes of the property approachChart.coordinates
-        // As a temporary workaround, we reload the map in full
-        // whenever the approach chart changes.
-        function onApproachChartChanged() {
-            mapLoader.active = false
-            mapLoader.source = "../items/MFM.qml"
-            mapLoader.active = true
-        }
         function onStyleFileURLChanged() {
             mapLoader.active = false
             mapLoader.source = "../items/MFM.qml"
             mapLoader.active = true
         }
         function onGeoJSONChanged() {
+            mapLoader.active = false
+            mapLoader.source = "../items/MFM.qml"
+            mapLoader.active = true
+        }
+    }
+
+    Connections {
+        target: Global
+
+        // NOTE: At of 15Feb24, the FlightMap does not react to changes of the property approachChart.coordinates
+        // As a temporary workaround, we reload the map in full
+        // whenever the approach chart changes.
+        function onCurrentVACChanged() {
             mapLoader.active = false
             mapLoader.source = "../items/MFM.qml"
             mapLoader.active = true

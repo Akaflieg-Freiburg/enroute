@@ -76,11 +76,11 @@ public:
 
 public slots:
     /*! \brief Implements pure virtual method from FileExchange_Abstract */
-    virtual void onGUISetupCompleted() override {};
+    void onGUISetupCompleted() override{};
 
 protected:
     /*! \brief Implements virtual method from GlobalObject */
-    virtual void deferredInitialization() override {};
+    void deferredInitialization() override{};
 
 private:
     Q_DISABLE_COPY_MOVE(FileExchange);

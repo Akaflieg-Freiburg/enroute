@@ -537,12 +537,15 @@ void DemoRunner::generateManualScreenshots()
         QString VACFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +
                               "/VAC/LFGA COLMAR HOUSSEN 2-geo_7.33169_48.1354_7.40045_48.0894.webp";
         Q_ASSERT(QFile::exists(VACFileName));
+#warning Need to adjust!
+        /*
         GlobalObject::geoMapProvider()->setApproachChart(VACFileName);
         GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::NUp);
 
         delay(4s);
         applicationWindow->grabWindow().save(QStringLiteral("03-03-VAC.png"));
         GlobalObject::geoMapProvider()->setApproachChart();
+*/
     }
 
     // Done. Terminate the program.

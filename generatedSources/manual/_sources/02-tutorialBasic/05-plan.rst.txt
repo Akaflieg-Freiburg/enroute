@@ -153,11 +153,9 @@ Option 4: Import a GPX File From Another Program
 ................................................
 
 To prepare your flight, you might want to use full-featured flight preparation
-software or online services, such as `FL95 <https://fl95.de>`_. Most (if not
-all) programs allow exporting the route in GPX format. Transfer the GPX file to
-your device (using Bluetooth file transfer, Google Drive, sending yourself an
-e-mail, or any other communication channel) and open the file on your device.
-The Section :ref:`importData` explains the process in detail.
+software or online services.  All programs known to us are able to export flight
+routes in GPX format, which can be read by **Enroute Flight Navigation**. The
+Section :ref:`flightPlanningTools` explains the process in detail.
 
 
 

@@ -41,9 +41,10 @@ set(SOURCES
     fileFormats/CUP.h
     fileFormats/DataFileAbstract.h
     fileFormats/GeoTIFF.h
+    fileFormats/MapURL.h
     fileFormats/MBTILES.h
+    fileFormats/TIFF.h
     fileFormats/TripKit.h
-    fileFormats/VAC.h
     fileFormats/ZipFile.h
     DemoRunner.h
     geomaps/Airspace.h
@@ -55,6 +56,8 @@ set(SOURCES
     geomaps/TileServer.h
     geomaps/Waypoint.h
     geomaps/WaypointLibrary.h
+    geomaps/VAC.h
+    geomaps/VACLibrary.h
     GlobalObject.h
     GlobalSettings.h
     Librarian.h
@@ -125,9 +128,10 @@ set(SOURCES
     fileFormats/CUP.cpp
     fileFormats/DataFileAbstract.cpp
     fileFormats/GeoTIFF.cpp
+    fileFormats/MapURL.cpp
     fileFormats/MBTILES.cpp
+    fileFormats/TIFF.cpp
     fileFormats/TripKit.cpp
-    fileFormats/VAC.cpp
     fileFormats/ZipFile.cpp
     geomaps/Airspace.cpp
     geomaps/GeoJSON.cpp
@@ -138,6 +142,8 @@ set(SOURCES
     geomaps/TileServer.cpp
     geomaps/Waypoint.cpp
     geomaps/WaypointLibrary.cpp
+    geomaps/VAC.cpp
+    geomaps/VACLibrary.cpp
     GlobalObject.cpp
     GlobalSettings.cpp
     Librarian.cpp
@@ -267,9 +273,10 @@ if(ANDROID)
         Qt6::Svg
         Qt6::TextToSpeech
         Qt6::WebView
+        QMapLibre::Location
         libzip::zip
     )
-
+    qmaplibre_location_setup_plugins(${PROJECT_NAME})
     set_target_properties(${PROJECT_NAME} PROPERTIES
         QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android"
         QT_ANDROID_TARGET_SDK_VERSION 33
@@ -325,7 +332,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 
     # Install
     install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
-    install(DIRECTORY ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/docs/manual DESTINATION ${CMAKE_INSTALL_DOCDIR})
+    install(DIRECTORY ${CMAKE_SOURCE_DIR}/generatedSources/manual DESTINATION ${CMAKE_INSTALL_DOCDIR})
 endif()
 
 
@@ -334,6 +341,12 @@ endif()
 #
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    set(app_icon_macos "${CMAKE_CURRENT_SOURCE_DIR}/macos/enroute.icns")
+    set_source_files_properties(${app_icon_macos} PROPERTIES
+        MACOSX_PACKAGE_LOCATION "Resources")
+
+    # qt_add_executable(photosurfaceexample MACOSX_BUNDLE main.cpp ${app_icon_macos})
+
     list(APPEND SOURCES
         platform/FileExchange_MacOS.h
         platform/FileExchange_MacOS.cpp
@@ -347,7 +360,13 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
 
     # Add executable and libraries
-    qt_add_executable(${PROJECT_NAME} ${SOURCES})
+    qt_add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${SOURCES} ${app_icon_macos})
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        MACOSX_BUNDLE true
+        MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/macos/Info.plist"
+        MACOSX_BUNDLE_ICON_FILE enroute.icns
+    )
+
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
         Qt6::Concurrent
@@ -360,13 +379,10 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         Qt6::Sql
         Qt6::Svg
         Qt6::TextToSpeech
+        Qt6::WebView
         Qt6::Widgets
         QMapLibre::Location
         libzip::zip
-    )
-    set_target_properties(${PROJECT_NAME} PROPERTIES
-        MACOSX_BUNDLE true
-        MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/macos/Info.plist"
     )
 endif()
 
@@ -454,6 +470,7 @@ target_include_directories(${PROJECT_NAME}
     ${CMAKE_SOURCE_DIR}/3rdParty/sunset/src
     ${CMAKE_SOURCE_DIR}/3rdParty/GSL/include
     dataManagement
+    fileFormats
     geomaps
     navigation
     notam
@@ -542,6 +559,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/pages/PrivacyPage.qml
     qml/pages/SettingsPage.qml
     qml/pages/TrafficReceiver.qml
+    qml/pages/URLResolver.qml
     qml/pages/WaypointLibraryPage.qml
     qml/pages/Weather.qml
     SOURCES

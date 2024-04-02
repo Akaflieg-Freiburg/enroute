@@ -18,6 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QDesktopServices>
+#include <QDir>
+#include <QFileDialog>
+#include <QMimeDatabase>
+#include <QTemporaryFile>
+
 #include "platform/FileExchange_MacOS.h"
 
 
@@ -25,18 +31,7 @@
 Platform::FileExchange::FileExchange(QObject *parent)
     : FileExchange_Abstract(parent)
 {
-    // Standard constructor. Recall that the constructor must not call virtual functions.
-    // If you need virtual functions, use the methode deferredInitialization below.
-#warning Not implemented
 }
-
-
-/*void Platform::FileExchange::deferredInitialization()
-{
-    // This method is called immediately after the instance has been constructed.
-    // It can be used to implement initialization that calls virtual methods.
-#warning Not implemented
-}*/
 
 
 
@@ -46,23 +41,54 @@ Platform::FileExchange::FileExchange(QObject *parent)
 
 void Platform::FileExchange::importContent()
 {
-    // Desktop: open file dialog and call processFileOpenRequest() on the filename.
-    // Mobile platforms: do nothing
-#warning not implemented
+    auto fileNameX = QFileDialog::getOpenFileName(nullptr, tr("Import data"), QDir::homePath(), tr("All files (*)"));
+    if (!fileNameX.isEmpty())
+    {
+        processFileOpenRequest(fileNameX);
+    }
 }
 
 
 auto Platform::FileExchange::shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
 {
-    // Share file content
-#warning not implemented
+    QMimeDatabase const mimeDataBase;
+    QMimeType const mime = mimeDataBase.mimeTypeForName(mimeType);
+
+    auto fileNameX = QFileDialog::getSaveFileName(nullptr, tr("Export flight route"), QDir::homePath()+"/"+fileNameTemplate+"."+mime.preferredSuffix(), tr("%1 (*.%2);;All files (*)").arg(mime.comment(), mime.preferredSuffix()));
+    if (fileNameX.isEmpty())
+    {
+        return QStringLiteral("abort");
+    }
+    QFile file(fileNameX);
+    if (!file.open(QIODevice::WriteOnly))
+    {
+        return tr("Unable to open file <strong>%1</strong>.").arg(fileNameX);
+    }
+
+    if (file.write(content) != content.size())
+    {
+        return tr("Unable to write to file <strong>%1</strong>.").arg(fileNameX);
+    }
+    file.close();
     return {};
 }
 
 
 auto Platform::FileExchange::viewContent(const QByteArray& content, const QString& /*mimeType*/, const QString& fileNameTemplate) -> QString
 {
-    // View file content
-#warning not implemented
-    return {};
+    QTemporaryFile tmpFile(fileNameTemplate.arg(QStringLiteral("XXXXXX")));
+    tmpFile.setAutoRemove(false);
+    if (!tmpFile.open()) {
+        return tr("Unable to open temporary file.");
+    }
+    tmpFile.write(content);
+    tmpFile.close();
+
+    bool const success = QDesktopServices::openUrl(
+        QUrl("file://" + tmpFile.fileName(), QUrl::TolerantMode));
+    if (success)
+    {
+        return {};
+    }
+    return tr("Unable to open data in other app.");
 }

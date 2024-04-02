@@ -26,7 +26,7 @@
 #include <QJsonObject>
 
 #include "fileFormats/TripKit.h"
-#include "fileFormats/VAC.h"
+#include "geomaps/VAC.h"
 
 
 FileFormats::TripKit::TripKit(const QString& fileName)
@@ -50,7 +50,7 @@ FileFormats::TripKit::TripKit(const QString& fileName)
 }
 
 
-QString FileFormats::TripKit::extract(const QString& directoryPath, qsizetype index)
+GeoMaps::VAC FileFormats::TripKit::extract(const QString& directoryPath, qsizetype index)
 {
     if ((index < 0) || (index >= m_entries.size()))
     {
@@ -72,25 +72,41 @@ QString FileFormats::TripKit::extract(const QString& directoryPath, qsizetype in
         return {};
     }
 
-    auto newFileName = u"%1/%2-geo_%3_%4_%5_%6.%7"_qs
-                           .arg(directoryPath, entry.name)
-                           .arg(entry.topLeft.longitude())
-                           .arg(entry.topLeft.latitude())
-                           .arg(entry.bottomRight.longitude())
-                           .arg(entry.bottomRight.latitude())
-                           .arg(entry.ending);
+    auto newFileName = u"%1/%2.webp"_qs.arg(directoryPath, entry.name);
+    if (entry.ending == u"webp"_qs)
+    {
+        QFile out(newFileName);
+        if (!out.open(QIODeviceBase::WriteOnly))
+        {
+            return {};
+        }
+        if (out.write(imageData) != imageData.size())
+        {
+            return {};
+        }
+        out.close();
+    }
+    else
+    {
+        auto image = QImage::fromData(imageData);
+        if (image.isNull())
+        {
+            return {};
+        }
+        if (!image.save(newFileName))
+        {
+            return {};
+        }
+    }
 
-    QFile out(newFileName);
-    if (!out.open(QIODeviceBase::WriteOnly))
-    {
-        return {};
-    }
-    if (out.write(imageData) != imageData.size())
-    {
-        return {};
-    }
-    out.close();
-    return newFileName;
+    GeoMaps::VAC vac;
+    vac.name = entry.name;
+    vac.fileName = newFileName;
+    vac.topLeft = entry.topLeft;
+    vac.topRight = entry.topRight;
+    vac.bottomLeft = entry.bottomLeft;
+    vac.bottomRight = entry.bottomRight;
+    return vac;
 }
 
 QString FileFormats::TripKit::readTripKitData()
@@ -168,8 +184,8 @@ void FileFormats::TripKit::readVACs()
 {
     foreach (auto path, m_zip.fileNames())
     {
-        auto bBox = FileFormats::VAC::bBoxFromFileName(path);
-        if (!bBox.isValid())
+        auto vac = GeoMaps::VAC(path);
+        if (!vac.isValid())
         {
             continue;
         }
@@ -180,12 +196,12 @@ void FileFormats::TripKit::readVACs()
         {
             ending = path.mid(idx+1, -1).toLower();
         }
-        m_entries.append({FileFormats::VAC::baseNameFromFileName(path),
+        m_entries.append({vac.name,
                           ending,
                           path,
-                          bBox.topLeft(),
-                          bBox.topRight(),
-                          bBox.bottomLeft(),
-                          bBox.bottomRight()});
+                          vac.topLeft,
+                          vac.topRight,
+                          vac.bottomLeft,
+                          vac.bottomRight});
     }
 }

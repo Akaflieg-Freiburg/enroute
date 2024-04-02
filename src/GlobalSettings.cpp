@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,17 +18,20 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QCoreApplication>
+
 #include "GlobalSettings.h"
 
 
 //
 // Constructor and destructor
 //
-#include <QCoreApplication>
+
+
 GlobalSettings::GlobalSettings(QObject *parent)
     : QObject(parent)
 {
-    QCoreApplication::instance()->processEvents();
+    QCoreApplication::processEvents();
 
     // Save some values
     settings.setValue(QStringLiteral("lastVersion"), PROJECT_VERSION);
@@ -101,6 +104,16 @@ void GlobalSettings::setAcceptedTerms(int terms)
     }
     settings.setValue(QStringLiteral("acceptedTerms"), terms);
     emit acceptedTermsChanged();
+}
+
+
+void GlobalSettings::setAlwaysOpenExternalWebsites(bool alwaysOpen)
+{
+    if (alwaysOpen == alwaysOpenExternalWebsites()) {
+        return;
+    }
+    settings.setValue(QStringLiteral("alwaysOpenExternalWebsites"), alwaysOpen);
+    emit alwaysOpenExternalWebsitesChanged();
 }
 
 

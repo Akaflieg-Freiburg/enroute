@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Sources &mdash; Enroute Flight Navigation  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+    <link rel="shortcut icon" href="../_static/de.akaflieg_freiburg.enroute.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Software and Data Licenses" href="02-license.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="../08-appendix.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Enroute Flight Navigation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../01-gettingStarted.html">Getting Started</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../02-tutorialBasic.html">Basic Use</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03-tutorialAdvanced.html">Advanced Use</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04-additionalSoftware.html">Additional software</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference Manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../05-referencePages.html">User Interface: Pages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06-referenceWorkflow.html">User Interface: Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07-referenceTechnology.html">Technology</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Data Sources</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#map-data">Map Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#aeronautical-maps">Aeronautical Maps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#list-of-maps">List of maps</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#base-maps">Base Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#terrain-maps">Terrain maps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#attributions">Attributions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#metar-taf">METAR/TAF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#notams">NOTAMs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="02-license.html">Software and Data Licenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-privacy.html">Privacy Policies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-authors.html">Authors</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Enroute Flight Navigation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../08-appendix.html">&lt;no title&gt;</a></li>
+      <li class="breadcrumb-item active">Data Sources</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/08-appendix/01-dataSources.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="data-sources">
+<h1>Data Sources<a class="headerlink" href="#data-sources" title="Link to this heading"></a></h1>
+<section id="map-data">
+<span id="aeromapdata"></span><h2>Map Data<a class="headerlink" href="#map-data" title="Link to this heading"></a></h2>
+<section id="aeronautical-maps">
+<h3>Aeronautical Maps<a class="headerlink" href="#aeronautical-maps" title="Link to this heading"></a></h3>
+<p>Our maps available for offline use, so that the app does not require any
+internet connection in flight. The maps are updated once per day, provided that
+new data is available. Note, however, that we do not <strong>guarantee</strong> regular
+updates.</p>
+<p>The aeronautical maps are compiled from databases provided by the <a class="reference external" href="http://openaip.net">openAIP</a> and the <a class="reference external" href="https://www.openflightmaps.org/">open flightmaps</a> projects.  While openAIP covers most of the
+world, the open flightmaps cover fewer countries but contain more detailed
+information.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Map Feature</p></th>
+<th class="head"><p>Data Origin</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Airfields</p></td>
+<td><p>openAIP</p></td>
+</tr>
+<tr class="row-odd"><td><p>Airspace: Nature Preserve Areas</p></td>
+<td><p>open flightmaps</p></td>
+</tr>
+<tr class="row-even"><td><p>Airspace: all other</p></td>
+<td><p>openAIP</p></td>
+</tr>
+<tr class="row-odd"><td><p>Navaids</p></td>
+<td><p>openAIP</p></td>
+</tr>
+<tr class="row-even"><td><p>Procedures (Traffic Circuits, …)</p></td>
+<td><p>open flightmaps</p></td>
+</tr>
+<tr class="row-odd"><td><p>Reporting Points</p></td>
+<td><p>open flightmaps</p></td>
+</tr>
+</tbody>
+</table>
+<section id="list-of-maps">
+<h4>List of maps<a class="headerlink" href="#list-of-maps" title="Link to this heading"></a></h4>
+<p>For simplicity, our maps are divided in “Class 1” and “Class 2”.</p>
+<ul class="simple">
+<li><p>Class 1 maps are compiled from <a class="reference external" href="http://openaip.net">openAIP</a> and <a class="reference external" href="https://www.openflightmaps.org/">open
+flightmaps</a> data. These maps contain
+complete information about airspaces, airfields and navaids.  In addition, the
+maps contain (mandatory) reporting points. Some of our class 1 maps also show
+traffic circuits and flight procedures for control zones.</p></li>
+<li><p>Class 2 maps are compiled from <a class="reference external" href="http://openaip.net">openAIP</a> data only. They
+contain complete information about airspaces, airfields and navaids.</p></li>
+</ul>
+<p>Below is a complete list of the maps that we offer.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Continent</p></th>
+<th class="head"><p>Country</p></th>
+<th class="head"><p>Class</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Africa</p></td>
+<td><p>Botswana</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-odd"><td><p>Africa</p></td>
+<td><p>Canary Islands</p></td>
+<td><p>Class 1</p></td>
+</tr>
+<tr class="row-even"><td><p>Africa</p></td>
+<td><p>Kenya</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-odd"><td><p>Africa</p></td>
+<td><p>Madagascar</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-even"><td><p>Africa</p></td>
+<td><p>Mauritius</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-odd"><td><p>Africa</p></td>
+<td><p>Namibia</p></td>
+<td><p>Class 1</p></td>
+</tr>
+<tr class="row-even"><td><p>Africa</p></td>
+<td><p>South Africa</p></td>
+<td><p>Class 1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Asia</p></td>
+<td><p>Bahrain</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-even"><td><p>Asia</p></td>
+<td><p>Japan</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-odd"><td><p>Asia</p></td>
+<td><p>Laos</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-even"><td><p>Asia</p></td>
+<td><p>Nepal</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-odd"><td><p>Asia</p></td>
+<td><p>Qatar</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-even"><td><p>Asia</p></td>
+<td><p>Sri Lanka</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-odd"><td><p>Asia</p></td>
+<td><p>Unit. Emirates</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-even"><td><p>Australia Oceanica</p></td>
+<td><p>Australia</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-odd"><td><p>Australia Oceanica</p></td>
+<td><p>New Zealand</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-even"><td><p>Australia Oceanica</p></td>
+<td><p>Vanuatu</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-odd"><td><p>Europe</p></td>
+<td><p>Albania</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-even"><td><p>Europe</p></td>
+<td><p>Austria</p></td>
+<td><p>Class 1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Europe</p></td>
+<td><p>Belgium</p></td>
+<td><p>Class 1</p></td>
+</tr>
+<tr class="row-even"><td><p>Europe</p></td>
+<td><p>Bosnia and H.</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-odd"><td><p>Europe</p></td>
+<td><p>Bulgaria</p></td>
+<td><p>Class 1</p></td>
+</tr>
+<tr class="row-even"><td><p>Europe</p></td>
+<td><p>Croatia</p></td>
+<td><p>Class 1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Europe</p></td>
+<td><p>Cyprus</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-even"><td><p>Europe</p></td>
+<td><p>Czech Republic</p></td>
+<td><p>Class 1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Europe</p></td>
+<td><p>Denmark</p></td>
+<td><p>Class 1</p></td>
+</tr>
+<tr class="row-even"><td><p>Europe</p></td>
+<td><p>Estonia</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-odd"><td><p>Europe</p></td>
+<td><p>Finland</p></td>
+<td><p>Class 1</p></td>
+</tr>
+<tr class="row-even"><td><p>Europe</p></td>
+<td><p>France</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-odd"><td><p>Europe</p></td>
+<td><p>Germany</p></td>
+<td><p>Class 1</p></td>
+</tr>
+<tr class="row-even"><td><p>Europe</p></td>
+<td><p>Great Britain</p></td>
+<td><p>Class 1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Europe</p></td>
+<td><p>Greece</p></td>
+<td><p>Class 1</p></td>
+</tr>
+<tr class="row-even"><td><p>Europe</p></td>
+<td><p>Hungary</p></td>
+<td><p>Class 1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Europe</p></td>
+<td><p>Iceland</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-even"><td><p>Europe</p></td>
+<td><p>Ireland</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-odd"><td><p>Europe</p></td>
+<td><p>Italy</p></td>
+<td><p>Class 1</p></td>
+</tr>
+<tr class="row-even"><td><p>Europe</p></td>
+<td><p>Latvia</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-odd"><td><p>Europe</p></td>
+<td><p>Liechtenstein</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-even"><td><p>Europe</p></td>
+<td><p>Lithuania</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-odd"><td><p>Europe</p></td>
+<td><p>Luxembourg</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-even"><td><p>Europe</p></td>
+<td><p>Malta</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-odd"><td><p>Europe</p></td>
+<td><p>Moldova</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-even"><td><p>Europe</p></td>
+<td><p>Montenegro</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-odd"><td><p>Europe</p></td>
+<td><p>Netherlands</p></td>
+<td><p>Class 1</p></td>
+</tr>
+<tr class="row-even"><td><p>Europe</p></td>
+<td><p>North. Ireland</p></td>
+<td><p>Class 1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Europe</p></td>
+<td><p>Norway</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-even"><td><p>Europe</p></td>
+<td><p>Poland</p></td>
+<td><p>Class 1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Europe</p></td>
+<td><p>Portugal</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-even"><td><p>Europe</p></td>
+<td><p>Romania</p></td>
+<td><p>Class 1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Europe</p></td>
+<td><p>Serbia</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-even"><td><p>Europe</p></td>
+<td><p>Slovakia</p></td>
+<td><p>Class 1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Europe</p></td>
+<td><p>Slowenia</p></td>
+<td><p>Class 1</p></td>
+</tr>
+<tr class="row-even"><td><p>Europe</p></td>
+<td><p>Spain</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-odd"><td><p>Europe</p></td>
+<td><p>Sweden</p></td>
+<td><p>Class 1</p></td>
+</tr>
+<tr class="row-even"><td><p>Europe</p></td>
+<td><p>Switzerland</p></td>
+<td><p>Class 1</p></td>
+</tr>
+<tr class="row-odd"><td><p>North America</p></td>
+<td><p>Canada</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-even"><td><p>North America</p></td>
+<td><p>United States</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-odd"><td><p>South America</p></td>
+<td><p>Argentina</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-even"><td><p>South America</p></td>
+<td><p>Brazil</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-odd"><td><p>South America</p></td>
+<td><p>Colombia</p></td>
+<td><p>Class 2</p></td>
+</tr>
+<tr class="row-even"><td><p>South America</p></td>
+<td><p>Falkland Is.</p></td>
+<td><p>Class 2</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="base-maps">
+<h3>Base Maps<a class="headerlink" href="#base-maps" title="Link to this heading"></a></h3>
+<p>Our base maps are generated from <a class="reference external" href="https://www.openstreetmap.org">Open Streetmap</a> data.</p>
+</section>
+<section id="terrain-maps">
+<h3>Terrain maps<a class="headerlink" href="#terrain-maps" title="Link to this heading"></a></h3>
+<p>Our terrain maps are derived from the <a class="reference external" href="https://registry.opendata.aws/terrain-tiles/">Terrain Tiles Open Dataset on Amazon AWS</a>. The underlying data sources
+are a mix of:</p>
+<ul class="simple">
+<li><p>3DEP (formerly NED and NED Topobathy) in the United States, 10 meters outside
+of Alaska, 3 meter in select land and territorial water areas</p></li>
+<li><p>ArcticDEM strips of 5 meter mosaics across all of the land north of 60°
+latitude, including Alaska, Canada, Greenland, Iceland, Norway, Russia, and
+Sweden</p></li>
+<li><p>CDEM (Canadian Digital Elevation Model) in Canada, with variable spatial
+resolution (from 20-400 meters) depending on the latitude.</p></li>
+<li><p>data.gov.uk, 2 meters over most of the United Kingdom</p></li>
+<li><p>data.gv.at, 10 meters over Austria</p></li>
+<li><p>ETOPO1 for ocean bathymetry, 1 arc-minute resolution globally</p></li>
+<li><p>EUDEM in most of Europe at 30 meter resolution, including Albania, Austria,
+Belgium, Bosnia and Herzegovina, Bulgaria, Croatia, Cyprus, Czechia, Denmark,
+Estonia, Finland, France, Germany, Greece, Hungary, Iceland, Ireland, Italy,
+Kosovo, Latvia, Liechtenstein, Lithuania, Luxembourg, Macedonia, Malta,
+Montenegro, Netherlands, Norway, Poland, Portugal, Romania, Serbia, Slovakia,
+Slovenia, Spain, Sweden, Switzerland, and United Kingdom</p></li>
+<li><p>Geoscience Australia’s DEM of Australia, 5 meters around coastal regions in
+South Australia, Victoria, and Northern Territory</p></li>
+<li><p>GMTED globally, coarser resolutions at 7.5”, 15”, and 30” in land areas</p></li>
+<li><p>INEGI’s continental relief in Mexico</p></li>
+<li><p>Kartverket’s Digital Terrain Model, 10 meters over Norway</p></li>
+<li><p>LINZ, 8 meters over New Zealand</p></li>
+<li><p>SRTM globally except high latitudes, 30 meters (90 meters nominal quality) in
+land areas</p></li>
+</ul>
+<section id="attributions">
+<h4>Attributions<a class="headerlink" href="#attributions" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>ArcticDEM terrain data DEM(s) were created from DigitalGlobe, Inc., imagery
+and funded under National Science Foundation awards 1043681, 1559691, and
+1542736;</p></li>
+<li><p>Australia terrain data © Commonwealth of Australia (Geoscience Australia)
+2017;</p></li>
+<li><p>Austria terrain data © offene Daten Österreichs – Digitales Geländemodell
+(DGM) Österreich;</p></li>
+<li><p>Canada terrain data contains information licensed under the Open Government
+Licence – Canada;</p></li>
+<li><p>Europe terrain data produced using Copernicus data and information funded by
+the European Union - EU-DEM layers;</p></li>
+<li><p>Global ETOPO1 terrain data U.S. National Oceanic and Atmospheric
+Administration</p></li>
+<li><p>Mexico terrain data source: INEGI, Continental relief, 2016;</p></li>
+<li><p>New Zealand terrain data Copyright 2011 Crown copyright (c) Land Information
+New Zealand and the New Zealand Government (All rights reserved);</p></li>
+<li><p>Norway terrain data © Kartverket;</p></li>
+<li><p>United Kingdom terrain data © Environment Agency copyright and/or database
+right 2015. All rights reserved;</p></li>
+<li><p>United States 3DEP (formerly NED) and global GMTED2010 and SRTM terrain data
+courtesy of the U.S. Geological Survey.</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="metar-taf">
+<h2>METAR/TAF<a class="headerlink" href="#metar-taf" title="Link to this heading"></a></h2>
+<p>METAR and TAF data is provided by the <a class="reference external" href="https://www.aviationweather.gov/">Aviation Weather Center</a>, an office of the United States Department
+of Commerce.</p>
+</section>
+<section id="notams">
+<h2>NOTAMs<a class="headerlink" href="#notams" title="Link to this heading"></a></h2>
+<p>NOTAMs are provided by the <a class="reference external" href="https://api.faa.gov">Federal Aviation Administration</a>, an office of the United States Department of
+Transportation.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../08-appendix.html" class="btn btn-neutral float-left" title="&lt;no title&gt;" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="02-license.html" class="btn btn-neutral float-right" title="Software and Data Licenses" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Stefan Kebekus.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,6 +24,7 @@ import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
 import "../dialogs"
+import "../items"
 import "../pages"
 
 Item {
@@ -104,10 +105,40 @@ Item {
             errorDialog.open()
             return
         }
+
+        function onOpenWaypointRequest(waypoint) {
+            Global.dialogLoader.active = false
+            Global.dialogLoader.setSource("../dialogs/WaypointDescription.qml", {waypoint: waypoint})
+            Global.dialogLoader.active = true
+        }
+
+        function onResolveURL(url, site) {
+
+            if (GlobalSettings.alwaysOpenExternalWebsites === true) {
+                PlatformAdaptor.vibrateBrief()
+                stackView.push("../pages/URLResolver.qml", {mapURL: url})
+                return
+            }
+
+            privacyWarning.url = url
+            privacyWarning.site = site
+            privacyWarning.open()
+        }
+
+        function onUnableToProcessText(txt) {
+            Global.dialogLoader.active = false
+            Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {
+                                              title: qsTr("Unable to import text item"),
+                                              text: "<p>" + qsTr("The text item could not be interpreted.") + "</p>"
+                                                    + "<p><strong>" + txt + "</strong></p>",
+                                              standardButtons: Dialog.Ok
+                                          })
+            Global.dialogLoader.active = true
+        }
     }
 
     Connections {
-        target: DataManager
+        target: VACLibrary
 
         function onImportTripKitStatus(percent) {
             if (percent < 1.0) {
@@ -116,6 +147,70 @@ Item {
             } else
                 importTripKitWaitDialog.close()
             return
+        }
+    }
+
+
+    CenteringDialog {
+        id: privacyWarning
+
+        property string url
+        property string site
+
+        modal: true
+
+        title: qsTr("Privacy warning")
+
+        ColumnLayout {
+            anchors.fill: parent
+
+            DecoratedScrollView{
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+
+                contentWidth: availableWidth // Disable horizontal scrolling
+
+                clip: true
+
+                Label {
+                    id: lbl
+                    text: "<p>"
+                          + qsTr("You have shared a location with <strong>Enroute Flight Navigation</strong>.")
+                          + " " + qsTr("In order to find the relevant geographic coordinate, the website <strong>%1</strong> must briefly be opened in an embedded web browser window.").arg(privacyWarning.site)
+                          + " " + qsTr("The authors of <strong>Enroute Flight Navigation</strong> do not control this website.")
+                          + " " + qsTr("They do not know what data it collects or how that data is processed.")
+                          + "</p>"
+                          + "<p>"
+                          + " " + qsTr("With the click on OK, you consent to Enroute accessing <strong>%1</strong> from your device.").arg(privacyWarning.site)
+                          + " " + qsTr("Click OK only if you agree with the terms and privacy policies of that site.")
+                          + "</p>"
+
+                    width: privacyWarning.availableWidth
+                    textFormat: Text.RichText
+                    wrapMode: Text.Wrap
+                }
+            }
+
+            Item {
+                Layout.preferredHeight: lbl.font.pixelSize
+            }
+
+            WordWrappingCheckDelegate {
+                id: alwaysOpen
+
+                Layout.fillWidth: true
+
+                text: qsTr("Always open external web sites, do not ask again")
+                checked: GlobalSettings.alwaysOpenExternalWebsites
+            }
+        }
+
+        standardButtons: Dialog.Cancel|Dialog.Ok
+
+        onAccepted: {
+            PlatformAdaptor.vibrateBrief()
+            GlobalSettings.alwaysOpenExternalWebsites = alwaysOpen.checked
+            stackView.push("../pages/URLResolver.qml", {mapURL: url})
         }
     }
 
@@ -234,7 +329,6 @@ Item {
 
             // Delays evaluation and prevents binding loops
             Binding on implicitHeight {
-//                value: lbl.implicitHeight
                 delayed: true    // Prevent intermediary values from being assigned
             }
 
@@ -262,14 +356,12 @@ Item {
 
         }
 
-        onAboutToShow: {
-            importVACDialog.standardButton(DialogButtonBox.Ok).enabled = mapNameVAC.text !== ""
-        }
+        onAboutToShow: importVACDialog.standardButton(DialogButtonBox.Ok).enabled = mapNameVAC.text !== ""
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
 
-            var errorString = DataManager.importVAC(importManager.filePath, mapNameVAC.text)
+            var errorString = VACLibrary.importVAC(importManager.filePath, mapNameVAC.text)
             if (errorString !== "") {
                 errLbl.text = errorString
                 errorDialog.open()
@@ -483,7 +575,7 @@ Item {
             PlatformAdaptor.vibrateBrief()
             close()
 
-            var errorString = DataManager.importTripKit(importManager.filePath)
+            var errorString = VACLibrary.importTripKit(importManager.filePath)
             if (errorString !== "") {
                 errLbl.text = errorString
                 errorDialog.open()

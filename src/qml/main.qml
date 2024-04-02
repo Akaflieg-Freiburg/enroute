@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -155,7 +155,7 @@ AppWindow {
 
                     text: qsTr("Approach Charts")
                     icon.source: "/icons/material/ic_flight_land.svg"
-                    visible: DataManager.VAC.hasFile
+                    visible: !VACLibrary.isEmpty
 
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
@@ -722,7 +722,10 @@ AppWindow {
     DropArea {
         anchors.fill: stackView
         onDropped: (drop) => {
-            FileExchange.processFileOpenRequest(drop.text)
+                       if (!FileExchange.processTextQuiet(drop.text))
+                       {
+                           FileExchange.processFileOpenRequest(drop.text)
+                       }
         }
     }
 
@@ -834,6 +837,15 @@ AppWindow {
     Shortcut {
         sequences: [StandardKey.Close]
         onActivated: Qt.quit()
+    }
+
+    Shortcut {
+        sequences: [StandardKey.Paste]
+        onActivated: {
+            if (PlatformAdaptor.clipboardText() === "")
+                return
+            FileExchange.processText(PlatformAdaptor.clipboardText())
+        }
     }
 
     //

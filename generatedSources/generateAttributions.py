@@ -59,7 +59,7 @@ for entry in data:
         htmlString += "<li>{}. {}.</li>\n".format(entry["Name"], entry["License"])
         
 
-with open("3rdParty/enrouteManual/07-appendix/licenses_overview.rst", "w") as rstFile:
+with open("3rdParty/enrouteManual/08-appendix/licenses_overview.rst", "w") as rstFile:
     rstFile.write(rstString)
     rstFile.close()
 

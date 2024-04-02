@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -155,7 +155,13 @@ Item {
             // Work around https://bugreports.qt.io/browse/QTBUG-87815
             enabled: !waypointDescription.visible && !Global.drawer.opened && !((Global.dialogLoader.item) && Global.dialogLoader.item.opened)
 
-            onTranslationChanged: (delta) => flightMap.pan(-delta.x, -delta.y)
+            onActiveTranslationChanged: (delta) => {
+                                            if (delta === activeTranslation)
+                                            {
+                                                return;
+                                            }
+                                            flightMap.pan(-delta.x, -delta.y)
+                                        }
 
             onActiveChanged: {
                 if (active)
@@ -571,6 +577,16 @@ Item {
             // the write-once property 'plugin' on language changes
             plugin = mapPlugin
         }
+
+        Connections {
+            target: FileExchange
+
+            function onOpenWaypointRequest(waypoint) {
+                flightMap.followGPS = false
+                flightMap.center = waypoint.coordinate
+            }
+        }
+
     }
 
     BrightnessContrast { // Graphical effects: increase contrast, reduce brightness in dark mode
@@ -611,7 +627,7 @@ Item {
     RemainingRouteBar {
         id: remainingRoute
 
-        visible: GeoMapProvider.approachChart == ""
+        visible: !Global.currentVAC.isValid
 
         anchors.top: parent.top
         anchors.left: parent.left
@@ -626,7 +642,7 @@ Item {
 
         topPadding: 0
         bottomPadding: 0
-        visible: (GeoMapProvider.approachChart == "") && GlobalSettings.airspaceAltitudeLimit.isFinite() && !DataManager.baseMapsRaster.hasFile
+        visible: (!Global.currentVAC.isValid) && GlobalSettings.airspaceAltitudeLimit.isFinite() && !DataManager.baseMapsRaster.hasFile
 
         Label {
 
@@ -650,7 +666,7 @@ Item {
         anchors.top: remainingRoute.visible ? remainingRoute.bottom : parent.top
         anchors.topMargin: 0.5*font.pixelSize
 
-        visible: GeoMapProvider.approachChart == ""
+        visible: !Global.currentVAC.isValid
 
         onClicked: {
             PlatformAdaptor.vibrateBrief()
@@ -767,7 +783,7 @@ Item {
         anchors.horizontalCenter: followGPSButton.horizontalCenter
 
         opacity: GlobalSettings.nightMode ? 0.3 : 1.0
-        visible: (GeoMapProvider.approachChart == "") && !scale.visible
+        visible: (!Global.currentVAC.isValid) && !scale.visible
 
         pixelPer10km: flightMap.pixelPer10km
         vertical: true
@@ -784,7 +800,7 @@ Item {
         anchors.verticalCenter: zoomOut.verticalCenter
 
         opacity: GlobalSettings.nightMode ? 0.3 : 1.0
-        visible: (GeoMapProvider.approachChart == "") && (parent.height > parent.width)
+        visible: (!Global.currentVAC.isValid) && (parent.height > parent.width)
 
         pixelPer10km: flightMap.pixelPer10km
         vertical: false
@@ -798,7 +814,7 @@ Item {
         topPadding: 0
         bottomPadding: 0
 
-        visible: (GeoMapProvider.approachChart == "")
+        visible: (!Global.currentVAC.isValid)
         Label {
             id: noCopyrightInfo
             text: "<a href='xx'>"+qsTr("Map Data Copyright Info")+"</a>"

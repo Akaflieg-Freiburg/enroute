@@ -230,7 +230,12 @@ Page {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
                         if (isIos) {
-                            importOnIosDialog.open()
+                            Global.dialogLoader.active = false
+                            Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {
+                                                              title: qsTr("Import files"),
+                                                              text: qsTr("Locate your file in the browser, then select 'Open with' from the share menu, and choose Enroute"),
+                                                              standardButtons: Dialog.Ok})
+                            Global.dialogLoader.active = true
                         } else {
                             importFileDialog.open()
                         }
@@ -585,10 +590,6 @@ Page {
             VACLibrary.clear()
             toast.doToast(qsTr("Approach chart library cleared"))
         }
-    }
-
-    FileImportHelpDialog {
-        id: importOnIosDialog
     }
 
 } // Page

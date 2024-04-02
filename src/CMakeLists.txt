@@ -495,7 +495,6 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/dialogs/LongTextDialog.qml
     qml/dialogs/AircraftSaveDialog.qml
     qml/dialogs/ErrorDialog.qml
-    qml/dialogs/FileImportHelpDialog.qml
     qml/dialogs/FirstRunDialog.qml
     qml/dialogs/FlightRouteAddWPDialog.qml
     qml/dialogs/FlightRouteSaveDialog.qml

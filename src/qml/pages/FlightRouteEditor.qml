@@ -261,17 +261,16 @@ Page {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
                         if (isIos) {
-                            iosImportHelpDialog.open()
+                            Global.dialogLoader.active = false
+                            Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {
+                                                              title: qsTr("Import files"),
+                                                              text: qsTr("Locate your file in the browser, then select 'Open with' from the share menu, and choose Enroute"),
+                                                              standardButtons: Dialog.Ok})
+                            Global.dialogLoader.active = true
                         } else {
                             importFileDialog.open()
                         }
-
                     }
-
-                    FileImportHelpDialog {
-                        id: iosImportHelpDialog
-                    }
-
                     FileDialog {
                         id: importFileDialog
 

@@ -273,9 +273,10 @@ if(ANDROID)
         Qt6::Svg
         Qt6::TextToSpeech
         Qt6::WebView
+        QMapLibre::Location
         libzip::zip
     )
-
+    qmaplibre_location_setup_plugins(${PROJECT_NAME})
     set_target_properties(${PROJECT_NAME} PROPERTIES
         QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android"
         QT_ANDROID_TARGET_SDK_VERSION 33

@@ -1638,7 +1638,7 @@
           "symbol-placement": "line",
           "text-allow-overlap": false,
           "text-anchor": "center",
-          "text-field": ["get", "NAM"],
+          "text-field": ["get", "MLI"],
           "text-ignore-placement": false,
           "text-justify": "center",
           "text-offset": [0,1],

@@ -109,9 +109,42 @@ auto Navigation::Aircraft::describeWay(const QGeoCoordinate &from, const QGeoCoo
         return {};
     }
 
+    QStringList result;
+
     auto dist = Units::Distance::fromM(from.distanceTo(to));
+    result += QStringLiteral("DIST %1").arg(horizontalDistanceToString(dist));
+
     auto QUJ = qRound(from.azimuthTo(to));
-    return QStringLiteral("DIST %1 • QUJ %2°").arg(horizontalDistanceToString(dist)).arg(QUJ);
+    result += QStringLiteral("QUJ %1°").arg(QUJ);
+
+    if ((from.type() == QGeoCoordinate::Coordinate3D) && (to.type() == QGeoCoordinate::Coordinate3D))
+    {
+        auto hDistM = from.distanceTo(to);
+        auto vDistM = from.altitude() - to.altitude() - 300;
+
+        if (hDistM > 1000.0)
+        {
+            if (vDistM < 1)
+            {
+                result += QStringLiteral("Emin ∞");
+            }
+            else
+            {
+                auto E = hDistM/vDistM;
+                if (E > 100)
+                {
+                    result += QStringLiteral("Emin ∞");
+                }
+                else
+                {
+                    result += QStringLiteral("Emin %1").arg(qRound(E));
+                }
+            }
+        }
+
+    }
+
+    return result.join(" • ");
 }
 
 

@@ -62,6 +62,7 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
     // Real data sources in order of preference, preferred sources first
     addDataSource( new Traffic::TrafficDataSource_Tcp(QStringLiteral("10.10.10.10"), 2000, this));
     addDataSource( new Traffic::TrafficDataSource_Tcp(QStringLiteral("192.168.1.1"), 2000, this));
+    addDataSource( new Traffic::TrafficDataSource_Tcp(QStringLiteral("192.168.4.1"), 2000, this));
     addDataSource( new Traffic::TrafficDataSource_Tcp(QStringLiteral("192.168.10.1"), 2000, this) );
     addDataSource( new Traffic::TrafficDataSource_Tcp(QStringLiteral("192.168.42.1"), 2000, this) );
     addDataSource( new Traffic::TrafficDataSource_Udp(4000, this) );

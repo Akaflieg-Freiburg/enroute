@@ -261,6 +261,7 @@ if(ANDROID)
     )
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
+        Qt6::Bluetooth
         Qt6::Concurrent
         Qt6::Core
         Qt6::Core5Compat
@@ -310,6 +311,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     qt_add_executable(${PROJECT_NAME} ${SOURCES})
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
+        Qt6::Bluetooth
         Qt6::Concurrent
         Qt6::Core
         Qt6::Core5Compat
@@ -369,6 +371,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
+        Qt6::Bluetooth
         Qt6::Concurrent
         Qt6::Core
         Qt6::Core5Compat
@@ -415,6 +418,7 @@ if (IOS)
     set(CMAKE_MACOSX_RPATH OFF)
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
+        Qt6::Bluetooth
         Qt6::Concurrent
         Qt6::Core
         Qt6::Core5Compat

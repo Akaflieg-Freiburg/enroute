@@ -24,6 +24,7 @@
 
 #include "GlobalObject.h"
 #include "platform/PlatformAdaptor_Abstract.h"
+#include "traffic/BT.h"
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficDataSource_Tcp.h"
 #include "traffic/TrafficDataSource_Udp.h"
@@ -33,8 +34,9 @@ using namespace std::chrono_literals;
 
 // Member functions
 
-Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning::PositionInfoSource_Abstract(parent) {
-
+Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning::PositionInfoSource_Abstract(parent)
+{
+    new BT(this);
     // Create traffic objects
     const int numTrafficObjects = 20;
     m_trafficObjects.reserve(numTrafficObjects);

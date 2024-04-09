@@ -284,8 +284,8 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     if (name == u":text/whatsnew.html"_qs)
     {
         QString result;
-        result += "<p>" + tr("The moving map has been updated to follow the style of the ICAO maps more closely.  Vertical airspace boundaries are now shown directly in the map.") + "</p>";
-        result += "<p>" + tr("In addition to distance and QUJ, the app now shows the gliding ration required to reach a waypoint (arrival height 300 m AGL, no consideration of terrain).") + "</p>";
+        result += "<p>" + tr("The moving map has been updated to more closely follow the style of the ICAO maps. Vertical airspace boundaries are now shown directly on the map.") + "</p>";
+        result += "<p>" + tr("In addition to distance and QUJ, the app shows the gliding ratio required to reach a waypoint (arrival height 300 m AGL, no terrain consideration).") + "</p>";
         result += "<p>" + tr("We need help with promotional graphics for the app stores and with explainer videos. "
                              "If you are a graphic/video artist and would like to help, then please be in touch.") + "</p>";
         return result;

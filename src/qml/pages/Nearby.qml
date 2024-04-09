@@ -46,6 +46,7 @@ Page {
         currentIndex: sv.currentIndex
 
         TabButton { text: "AD" }
+        TabButton { text: "WP" }
         TabButton { text: "NAV" }
         TabButton { text: "REP" }
 //        Material.elevation: 3
@@ -81,6 +82,27 @@ Page {
             delegate: waypointDelegate
 
             Component.onCompleted: adList.model = GeoMapProvider.nearbyWaypoints(PositionProvider.lastValidCoordinate, "AD")
+
+            Label {
+                anchors.fill: parent
+                anchors.topMargin: font.pixelSize*2
+                visible: parent.count === 0
+
+                horizontalAlignment: Text.AlignHCenter
+                textFormat: Text.StyledText
+                wrapMode: Text.Wrap
+                text: qsTr("<h3>Sorry!</h3><p>No aerodrome data available. Please make sure that an aviation map is installed.</p>")
+            }
+        }
+
+        DecoratedListView {
+            id: wpList
+
+            clip: true
+
+            delegate: waypointDelegate
+
+            Component.onCompleted: wpList.model = GeoMapProvider.nearbyWaypoints(PositionProvider.lastValidCoordinate, "WP")
 
             Label {
                 anchors.fill: parent

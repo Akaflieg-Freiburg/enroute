@@ -126,18 +126,18 @@ auto Navigation::Aircraft::describeWay(const QGeoCoordinate &from, const QGeoCoo
         {
             if (vDistM < 1)
             {
-                result += QStringLiteral("Emin ∞");
+                result += QStringLiteral("E ∞");
             }
             else
             {
                 auto E = hDistM/vDistM;
                 if (E > 100)
                 {
-                    result += QStringLiteral("Emin ∞");
+                    result += QStringLiteral("E ∞");
                 }
                 else
                 {
-                    result += QStringLiteral("Emin %1").arg(qRound(E));
+                    result += QStringLiteral("E %1").arg(qRound(E));
                 }
             }
         }

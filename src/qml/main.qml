@@ -716,6 +716,10 @@ AppWindow {
                 stackView.push("pages/Weather.qml")
             }
 
+            function onRequestVAC(vacName) {
+                Global.currentVAC = VACLibrary.get(vacName)
+            }
+
         }
     }
 

@@ -98,6 +98,7 @@ auto main(int argc, char *argv[]) -> int
 
     // Install translators
     QString const preferredLanguage = GlobalObject::platformAdaptor()->language();
+    qWarning() << preferredLanguage;
     auto* enrouteTranslator = new QTranslator(&app);
     if (enrouteTranslator->load(QStringLiteral(":i18n/enroute_%1.qm").arg(preferredLanguage)))
     {

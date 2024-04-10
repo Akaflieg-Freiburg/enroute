@@ -41,23 +41,15 @@ Traffic::BT::BT(QObject* parent) : QObject(parent)
     qWarning() << remotes;
 
     // Create a discovery agent and connect to its signals
-    QBluetoothDeviceDiscoveryAgent *discoveryAgent = new QBluetoothDeviceDiscoveryAgent(localDevice.address(), this);
-    connect(discoveryAgent, SIGNAL(deviceDiscovered(QBluetoothDeviceInfo)),
-            this, SLOT(deviceDiscovered(QBluetoothDeviceInfo)));
-
-    // Start a discovery
-   // discoveryAgent->start();
+    auto* discoveryAgent = new QBluetoothDeviceDiscoveryAgent(localDevice.address(), this);
+    connect(discoveryAgent, SIGNAL(deviceDiscovered(QBluetoothDeviceInfo)), this, SLOT(deviceDiscovered(QBluetoothDeviceInfo)));
+    // discoveryAgent->start();
 
     auto* m_discoveryAgent = new QBluetoothServiceDiscoveryAgent(this);
-
-    connect(m_discoveryAgent, &QBluetoothServiceDiscoveryAgent::serviceDiscovered,
-            this, &BT::serviceDiscovered);
-    connect(m_discoveryAgent, &QBluetoothServiceDiscoveryAgent::finished,
-            this, &BT::discoveryFinished);
-    connect(m_discoveryAgent, &QBluetoothServiceDiscoveryAgent::canceled,
-            this, &BT::discoveryFinished);
-    m_discoveryAgent->start();
-    // m_discoveryAgent->start(QBluetoothServiceDiscoveryAgent::FullDiscovery);
+    connect(m_discoveryAgent, &QBluetoothServiceDiscoveryAgent::serviceDiscovered, this, &BT::serviceDiscovered);
+    connect(m_discoveryAgent, &QBluetoothServiceDiscoveryAgent::finished, this, &BT::discoveryFinished);
+    connect(m_discoveryAgent, &QBluetoothServiceDiscoveryAgent::canceled, this, &BT::discoveryFinished);
+    m_discoveryAgent->start(QBluetoothServiceDiscoveryAgent::FullDiscovery);
 }
 
 void Traffic::BT::deviceDiscovered(QBluetoothDeviceInfo device)

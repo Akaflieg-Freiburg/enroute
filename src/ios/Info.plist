@@ -79,6 +79,10 @@
     <key>NSCameraUsageDescription</key>
     <string>Enroute does not use the camera</string>
 
+    <key>UIBackgroundModes</key>
+    <array>
+        <string>location</string>
+    </array>
 
     <key>LSSupportsOpeningDocumentsInPlace</key>
     <false />

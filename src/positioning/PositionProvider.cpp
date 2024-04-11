@@ -158,6 +158,7 @@ void Positioning::PositionProvider::onPositionUpdated()
     setLastValidTT(newInfo.trueTrack());
     setSourceName(source);
     updateStatusString();
+    qWarning() << "position updated: Speed " << newInfo.groundSpeed().toKMH(); //TODO: Remove
 }
 
 

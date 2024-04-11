@@ -34,7 +34,7 @@ include(GNUInstallDirs)
 # Qt Setup
 #
 
-find_package(Qt6 6.6.3 COMPONENTS Concurrent Core Core5Compat Gui HttpServer LinguistTools Location Positioning Quick QuickControls2 QuickWidgets Sql Svg TextToSpeech Widgets REQUIRED)
+find_package(Qt6 6.7 COMPONENTS Concurrent Core Core5Compat Gui HttpServer LinguistTools Location Positioning Quick QuickControls2 QuickWidgets Sql Svg TextToSpeech Widgets REQUIRED)
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Android")
     find_package(Qt6 COMPONENTS Sensors WebView REQUIRED)
@@ -51,6 +51,8 @@ endif()
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     find_package(Qt6 COMPONENTS DBus Widgets REQUIRED)
 endif()
+
+qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES de es fr it pl)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)

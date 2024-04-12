@@ -356,7 +356,6 @@ void DemoRunner::generateManualScreenshots()
     // Clear flight route
     GlobalObject::navigator()->flightRoute()->clear();
 
-
     // Route page
     {
         qWarning() << "… Route Page";
@@ -534,18 +533,19 @@ void DemoRunner::generateManualScreenshots()
         trafficSimulator->setTT( Units::Angle::fromDEG(270) );
         trafficSimulator->setGS( Units::Speed::fromKN(89) );
 
-        QString VACFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +
-                              "/VAC/LFGA COLMAR HOUSSEN 2-geo_7.33169_48.1354_7.40045_48.0894.webp";
+        auto VACFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +
+                              "/VAC/LFGA COLMAR HOUSSEN 2.webp";
+        if (!QFile::exists(VACFileName))
+        {
+            qCritical() << "VAC does not exist" << VACFileName;
+        }
         Q_ASSERT(QFile::exists(VACFileName));
-#warning Need to adjust!
-        /*
-        GlobalObject::geoMapProvider()->setApproachChart(VACFileName);
+        emit requestVAC(u"LFGA COLMAR HOUSSEN 2"_qs);
+        delay(2s);
         GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::NUp);
-
-        delay(4s);
+        delay(2s);
         applicationWindow->grabWindow().save(QStringLiteral("03-03-VAC.png"));
-        GlobalObject::geoMapProvider()->setApproachChart();
-*/
+        emit requestVAC(u""_qs);
     }
 
     // Done. Terminate the program.

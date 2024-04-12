@@ -66,6 +66,12 @@ Weather::METAR::METAR(QXmlStreamReader &xml, QObject *parent)
             continue;
         }
 
+        // Read temperature
+        if (xml.isStartElement() && name == u"temp_c"_qs) {
+            _temperature = Units::Temperature::fromDegreeCelsius(xml.readElementText().toDouble());
+            continue;
+        }
+
         // QNH
         if (xml.isStartElement() && name == u"altim_in_hg"_qs) {
             auto content = xml.readElementText();
@@ -140,6 +146,7 @@ Weather::METAR::METAR(QDataStream &inputStream, QObject *parent)
     inputStream >> _raw_text;
     inputStream >> _wind;
     inputStream >> _gust;
+    inputStream >> _temperature;
 
     // Interpret the METAR message
     setRawText(_raw_text, _observationTime.date());
@@ -296,4 +303,5 @@ void Weather::METAR::write(QDataStream &out)
     out << _raw_text;
     out << _wind;
     out << _gust;
+    out << _temperature;
 }

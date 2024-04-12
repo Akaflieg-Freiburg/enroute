@@ -20,7 +20,7 @@
 
 #include "geomaps/GeoMapProvider.h"
 #include "weather/Station.h"
-
+#include "weather/DensityAltitude.h"
 #include <utility>
 
 
@@ -131,6 +131,8 @@ void Weather::Station::setMETAR(Weather::METAR *metar)
         }
     }
 
+    calculateDensityAltitude();
+
     // Let the world know that the metar changed
     if (cacheHasMETAR != hasMETAR()) {
         emit hasMETARChanged();
@@ -186,4 +188,26 @@ void Weather::Station::setTAF(Weather::TAF *taf)
         emit hasTAFChanged();
     }
     emit tafChanged();
+}
+
+void Weather::Station::calculateDensityAltitude()
+{
+    auto cacheCalculatedDensityAltitude = _calculatedDensityAltitude;
+    if (hasMETAR() && _metar->isValid() 
+                   && _metar->coordinate().isValid() 
+                   && _metar->QNH().isFinite() 
+                   && _metar->temperature().isFinite() ) {
+        using Weather::calculateDensityAltitude;
+        double altFeet = Units::Distance::fromM(_coordinate.altitude()).toFeet();
+        double qnh = _metar->QNH().toHPa();
+        double temp_c = _metar->temperature().toDegreeCelsius();
+        _calculatedDensityAltitude = calculateDensityAltitude(altFeet, qnh, temp_c);
+    }
+    else {
+        _calculatedDensityAltitude.reset();
+    }
+    if(cacheCalculatedDensityAltitude != _calculatedDensityAltitude)
+    {
+        emit calculatedDensityAltitudeChanged();
+    }
 }

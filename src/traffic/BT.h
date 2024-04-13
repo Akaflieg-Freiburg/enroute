@@ -23,12 +23,16 @@
 #include <QBluetoothLocalDevice>
 #include <QBluetoothDeviceInfo>
 #include <QBluetoothServiceInfo>
+#include <QBluetoothSocket>
+
 #include <QObject>
+
+#include "traffic/TrafficDataSource_AbstractSocket.h"
 
 
 namespace Traffic {
 
-class BT : public QObject {
+class BT : public TrafficDataSource_AbstractSocket {
     Q_OBJECT
 
 public:
@@ -36,14 +40,29 @@ public:
 
     ~BT() override = default;
 
+    QString sourceName() const override {return "BT " + socket.peerName();}
+
 public slots:
+    void connectToTrafficReceiver() override {};
+    void disconnectFromTrafficReceiver() override {}
+
     void deviceDiscovered(QBluetoothDeviceInfo info);
     void serviceDiscovered(const QBluetoothServiceInfo &info);
     void discoveryFinished();
+
+    void onConnected();
+    void onDisconnected();
+    void onErrorOccurred(QBluetoothSocket::SocketError error);
+    void onStateChanged(QBluetoothSocket::SocketState state);
+    void onReadyRead();
+
 private:
     Q_DISABLE_COPY_MOVE(BT)
 
     QBluetoothLocalDevice localDevice;
+    QBluetoothSocket socket {QBluetoothServiceInfo::RfcommProtocol};
+    QTextStream m_textStream {&socket};
+
 };
 
 } // namespace Traffic

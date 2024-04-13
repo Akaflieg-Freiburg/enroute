@@ -25,7 +25,8 @@
 #include "traffic/BT.h"
 
 
-Traffic::BT::BT(QObject* parent) : QObject(parent)
+Traffic::BT::BT(QObject* parent)
+    : TrafficDataSource_AbstractSocket(parent)
 {
     qWarning() << "BT constructor" << localDevice.isValid();
 
@@ -43,31 +44,81 @@ Traffic::BT::BT(QObject* parent) : QObject(parent)
     // Create a discovery agent and connect to its signals
     auto* discoveryAgent = new QBluetoothDeviceDiscoveryAgent(localDevice.address(), this);
     connect(discoveryAgent, SIGNAL(deviceDiscovered(QBluetoothDeviceInfo)), this, SLOT(deviceDiscovered(QBluetoothDeviceInfo)));
-    // discoveryAgent->start();
+    discoveryAgent->start();
 
     auto* m_discoveryAgent = new QBluetoothServiceDiscoveryAgent(this);
-    connect(m_discoveryAgent, &QBluetoothServiceDiscoveryAgent::serviceDiscovered, this, &BT::serviceDiscovered);
-    connect(m_discoveryAgent, &QBluetoothServiceDiscoveryAgent::finished, this, &BT::discoveryFinished);
-    connect(m_discoveryAgent, &QBluetoothServiceDiscoveryAgent::canceled, this, &BT::discoveryFinished);
+    connect(m_discoveryAgent, &QBluetoothServiceDiscoveryAgent::serviceDiscovered, this, &Traffic::BT::serviceDiscovered);
+    connect(m_discoveryAgent, &QBluetoothServiceDiscoveryAgent::finished, this, &Traffic::BT::discoveryFinished);
+    connect(m_discoveryAgent, &QBluetoothServiceDiscoveryAgent::canceled, this, &Traffic::BT::discoveryFinished);
     m_discoveryAgent->start(QBluetoothServiceDiscoveryAgent::FullDiscovery);
+
+    connect(&socket, &QBluetoothSocket::connected, this, &Traffic::BT::onConnected);
+    connect(&socket, &QBluetoothSocket::disconnected, this, &Traffic::BT::onDisconnected);
+    connect(&socket, &QBluetoothSocket::errorOccurred, this, &Traffic::BT::onErrorOccurred);
+    connect(&socket, &QBluetoothSocket::stateChanged, this, &Traffic::BT::onStateChanged);
+    connect(&socket, &QBluetoothSocket::readyRead, this, &Traffic::BT::onReadyRead);
+
 }
 
 void Traffic::BT::deviceDiscovered(QBluetoothDeviceInfo device)
 {
-    qDebug() << "Found new device:" << device.name() << '(' << device.address().toString() << ')';
+    qDebug() << "Found new device:" << device.name();
+    if (device.serviceUuids().contains(QBluetoothUuid::ServiceClassUuid::SerialPort))
+    {
+        socket.connectToService(device.address(), QBluetoothUuid::ServiceClassUuid::SerialPort);
+        qWarning() << "Serial port found";
+
+    }
+
+}
+
+
+void Traffic::BT::onConnected()
+{
+    qWarning() << "onConnected";
+}
+
+void Traffic::BT::onDisconnected()
+{
+    qWarning() << "onConnected";
+}
+
+void Traffic::BT::onErrorOccurred(QBluetoothSocket::SocketError error)
+{
+    qWarning() << "onError" << error;
+}
+
+void Traffic::BT::onStateChanged(QBluetoothSocket::SocketState state)
+{
+    qWarning() << "onState" << state;
 }
 
 void Traffic::BT::serviceDiscovered(const QBluetoothServiceInfo &info)
 {
-    qDebug() << "Traffic::BT::serviceDiscovered"
-             << info.device().name()
-             << info.serviceName()
-             << info.serviceClassUuids();
+
+    if (info.serviceClassUuids().contains(QBluetoothUuid::ServiceClassUuid::SerialPort))
+    {
+//        socket.connectToService(info);
+        qWarning() << "Serial port service found";
+
+    }
 }
 
 void Traffic::BT::discoveryFinished()
 {
     qDebug() << "Traffic::BT::servicediscoveryFinished()";
+}
+
+void Traffic::BT::onReadyRead()
+{
+    qDebug() << "Traffic::BT::onReadyRead()";
+
+
+    QString sentence;
+    while( m_textStream.readLineInto(&sentence) ) {
+        qWarning() << sentence;
+        processFLARMSentence(sentence);
+    }
 }
 
 

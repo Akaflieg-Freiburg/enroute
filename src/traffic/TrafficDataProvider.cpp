@@ -36,7 +36,6 @@ using namespace std::chrono_literals;
 
 Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning::PositionInfoSource_Abstract(parent)
 {
-    new BT(this);
     // Create traffic objects
     const int numTrafficObjects = 20;
     m_trafficObjects.reserve(numTrafficObjects);
@@ -69,6 +68,7 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
     addDataSource( new Traffic::TrafficDataSource_Tcp(QStringLiteral("192.168.42.1"), 2000, this) );
     addDataSource( new Traffic::TrafficDataSource_Udp(4000, this) );
     addDataSource( new Traffic::TrafficDataSource_Udp(49002, this));
+    addDataSource( new BT(this));
 
     // Bindings for status string
     connect(this, &Traffic::TrafficDataProvider::positionInfoChanged, this, &Traffic::TrafficDataProvider::updateStatusString);

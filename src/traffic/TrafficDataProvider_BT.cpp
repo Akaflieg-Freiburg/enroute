@@ -42,6 +42,15 @@ QString Traffic::TrafficDataProvider::BTStatus()
         return "<p>" + tr("Bluetooth INOP: No valid device or insufficient permissions.") + "<p>";
     }
 
+    switch (qApp->checkPermission(m_bluetoothPermission)) {
+    case Qt::PermissionStatus::Undetermined:
+        return "<p>" + tr("Bluetooth INOP: Waiting for permission.") + "<p>";
+    case Qt::PermissionStatus::Denied:
+        return "<p>" + tr("Bluetooth INOP: No permission.") + "<p>";
+    case Qt::PermissionStatus::Granted:
+        break;
+    }
+
     if (localBTDevice.hostMode() == QBluetoothLocalDevice::HostPoweredOff)
     {
         return "<p>" + tr("Bluetooth INOP: Powered off.") + "<p>";
@@ -77,7 +86,7 @@ void Traffic::TrafficDataProvider::deviceDiscovered(const QBluetoothDeviceInfo& 
         }
     }
 
-//    if (info.serviceUuids().contains(QBluetoothUuid::ServiceClassUuid::SerialPort))
+    if (info.serviceUuids().contains(QBluetoothUuid::ServiceClassUuid::SerialPort))
     {
         qWarning() << "Serial port device found";
         auto* source = new TrafficDataSource_BTClassic(info, this);

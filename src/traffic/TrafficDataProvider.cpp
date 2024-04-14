@@ -35,6 +35,7 @@ using namespace std::chrono_literals;
 
 Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning::PositionInfoSource_Abstract(parent)
 {
+
     // Create traffic objects
     const int numTrafficObjects = 20;
     m_trafficObjects.reserve(numTrafficObjects);
@@ -87,6 +88,7 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
     connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, this, &Traffic::TrafficDataProvider::clearDataSources);
 
     // Wire up Bluetooth-related members
+    m_bluetoothPermission.setCommunicationModes(QBluetoothPermission::Access);
     connect(&localBTDevice, &QBluetoothLocalDevice::errorOccurred, this, &Traffic::TrafficDataProvider::updateStatusString);
     connect(&localBTDevice, &QBluetoothLocalDevice::hostModeStateChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
     connect(&discoveryAgent, &QBluetoothDeviceDiscoveryAgent::errorOccurred, this, &Traffic::TrafficDataProvider::updateStatusString);
@@ -141,7 +143,16 @@ void Traffic::TrafficDataProvider::connectToTrafficReceiver()
         dataSource->connectToTrafficReceiver();
     }
 
-    discoveryAgent.start(QBluetoothDeviceDiscoveryAgent::ClassicMethod);
+    switch (qApp->checkPermission(m_bluetoothPermission)) {
+    case Qt::PermissionStatus::Undetermined:
+        qApp->requestPermission(m_bluetoothPermission, [this](const QPermission &permission) { connectToTrafficReceiver(); });
+        break;
+    case Qt::PermissionStatus::Denied:
+        break;
+    case Qt::PermissionStatus::Granted:
+        discoveryAgent.start(QBluetoothDeviceDiscoveryAgent::ClassicMethod);
+        break;
+    }
     updateStatusString();
 }
 

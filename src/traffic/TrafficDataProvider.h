@@ -22,6 +22,7 @@
 
 #include <QBluetoothDeviceDiscoveryAgent>
 #include <QBluetoothLocalDevice>
+#include <QBluetoothPermission>
 #include <QNetworkDatagram>
 #include <QPointer>
 #include <QQmlEngine>
@@ -350,6 +351,7 @@ private:
     bool m_receivingHeartbeat {false};
 
     // Bluetooth related members
+    QBluetoothPermission m_bluetoothPermission;
     QBluetoothLocalDevice localBTDevice;
     QBluetoothDeviceDiscoveryAgent discoveryAgent;
 };

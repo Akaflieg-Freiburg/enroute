@@ -24,7 +24,6 @@
 
 #include "GlobalObject.h"
 #include "platform/PlatformAdaptor_Abstract.h"
-#include "traffic/BT.h"
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficDataSource_Tcp.h"
 #include "traffic/TrafficDataSource_Udp.h"
@@ -68,7 +67,6 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
     addDataSource( new Traffic::TrafficDataSource_Tcp(QStringLiteral("192.168.42.1"), 2000, this) );
     addDataSource( new Traffic::TrafficDataSource_Udp(4000, this) );
     addDataSource( new Traffic::TrafficDataSource_Udp(49002, this));
-    addDataSource( new BT(this));
 
     // Bindings for status string
     connect(this, &Traffic::TrafficDataProvider::positionInfoChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
@@ -87,6 +85,15 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
 
     // Clean up
     connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, this, &Traffic::TrafficDataProvider::clearDataSources);
+
+    // Wire up Bluetooth-related members
+    connect(&localBTDevice, &QBluetoothLocalDevice::errorOccurred, this, &Traffic::TrafficDataProvider::updateStatusString);
+    connect(&localBTDevice, &QBluetoothLocalDevice::hostModeStateChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
+    connect(&discoveryAgent, &QBluetoothDeviceDiscoveryAgent::errorOccurred, this, &Traffic::TrafficDataProvider::updateStatusString);
+    connect(&discoveryAgent, &QBluetoothDeviceDiscoveryAgent::canceled, this, &Traffic::TrafficDataProvider::updateStatusString);
+    connect(&discoveryAgent, &QBluetoothDeviceDiscoveryAgent::finished, this, &Traffic::TrafficDataProvider::updateStatusString);
+    connect(&discoveryAgent, &QBluetoothDeviceDiscoveryAgent::deviceDiscovered, this, &Traffic::TrafficDataProvider::deviceDiscovered);
+    ;
 }
 
 
@@ -133,6 +140,9 @@ void Traffic::TrafficDataProvider::connectToTrafficReceiver()
         }
         dataSource->connectToTrafficReceiver();
     }
+
+    discoveryAgent.start(QBluetoothDeviceDiscoveryAgent::ClassicMethod);
+    updateStatusString();
 }
 
 
@@ -457,7 +467,10 @@ void Traffic::TrafficDataProvider::updateStatusString()
         return;
     }
 
-    QString result = "<p>" + tr("Not receiving heartbeat.") + "<p><ul style='margin-left:-25px;'>";
+    QString result = "<p>" + tr("Not receiving heartbeat.") + "<p>";
+
+    result += BTStatus();
+    result += "<ul style='margin-left:-25px;'>";
     foreach(auto source, m_dataSources)
     {
         if (source.isNull())

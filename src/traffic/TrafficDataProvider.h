@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include <QBluetoothDeviceDiscoveryAgent>
+#include <QBluetoothLocalDevice>
 #include <QNetworkDatagram>
 #include <QPointer>
 #include <QQmlEngine>
@@ -73,6 +75,9 @@ public:
     {
         return GlobalObject::trafficDataProvider();
     }
+
+
+
     //
     // Methods
     //
@@ -89,6 +94,8 @@ public:
 
     /*! \brief Clear all data sources */
     void clearDataSources();
+
+
 
     //
     // Properties
@@ -278,6 +285,9 @@ private slots:
     // nested uses of constructors in Global.
     void deferredInitialization() const;
 
+#warning documentation
+    void deviceDiscovered(const QBluetoothDeviceInfo& info);
+
     // Sends out foreflight broadcast message See
     // https://www.foreflight.com/connect/spec/
     void foreFlightBroadcast();
@@ -311,6 +321,8 @@ private slots:
     void updateStatusString();
 
 private:
+    QString BTStatus();
+
     // UDP Socket for ForeFlight Broadcast messages.
     // See https://www.foreflight.com/connect/spec/
     QNetworkDatagram foreFlightBroadcastDatagram {R"({"App":"Enroute Flight Navigation","GDL90":{"port":4000}})", QHostAddress::Broadcast, 63093};
@@ -336,6 +348,10 @@ private:
 
     // Property Cache
     bool m_receivingHeartbeat {false};
+
+    // Bluetooth related members
+    QBluetoothLocalDevice localBTDevice;
+    QBluetoothDeviceDiscoveryAgent discoveryAgent;
 };
 
 } // namespace Traffic

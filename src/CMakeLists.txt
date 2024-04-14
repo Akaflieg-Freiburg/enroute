@@ -90,6 +90,7 @@ set(SOURCES
     traffic/PasswordDB.h
     traffic/TrafficDataSource_Abstract.h
     traffic/TrafficDataSource_AbstractSocket.h
+    traffic/TrafficDataSource_BTClassic.h
     traffic/TrafficDataSource_File.h
     traffic/TrafficDataSource_Simulate.h
     traffic/TrafficDataSource_Tcp.h
@@ -180,11 +181,13 @@ set(SOURCES
     traffic/TrafficDataSource_Abstract_GDL90.cpp
     traffic/TrafficDataSource_Abstract_XGPS.cpp
     traffic/TrafficDataSource_AbstractSocket.cpp
+    traffic/TrafficDataSource_BTClassic.cpp
     traffic/TrafficDataSource_File.cpp
     traffic/TrafficDataSource_Simulate.cpp
     traffic/TrafficDataSource_Tcp.cpp
     traffic/TrafficDataSource_Udp.cpp
     traffic/TrafficDataProvider.cpp
+    traffic/TrafficDataProvider_BT.cpp
     traffic/TrafficFactor_Abstract.cpp
     traffic/TrafficFactor_DistanceOnly.cpp
     traffic/TrafficFactor_WithPosition.cpp

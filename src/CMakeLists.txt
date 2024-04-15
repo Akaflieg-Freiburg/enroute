@@ -470,7 +470,14 @@ if (IOS)
     source_group("Resources" FILES ${bundle_resources})
 
     #Launchscreen
-    set_target_properties(${PROJECT_NAME} PROPERTIES  QT_IOS_LAUNCH_SCREEN "${CMAKE_CURRENT_SOURCE_DIR}/ios/LaunchScreen.storyboard")
+    set_target_properties(${PROJECT_NAME} PROPERTIES QT_IOS_LAUNCH_SCREEN "${CMAKE_CURRENT_SOURCE_DIR}/ios/LaunchScreen.storyboard")
+
+    #Privacy Manifest
+    set(privacy_manifest "${CMAKE_CURRENT_SOURCE_DIR}/ios/PrivacyInfo.xcprivacy")
+    target_sources("${PROJECT_NAME}" PRIVATE "${privacy_manifest}")
+    set_property(TARGET "${PROJECT_NAME}" APPEND PROPERTY RESOURCE "${privacy_manifest}")
+
+
 endif()
 
 target_include_directories(${PROJECT_NAME}

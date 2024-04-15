@@ -69,7 +69,7 @@ auto findQQuickItem(const QString &objectName, QQmlApplicationEngine* engine) ->
         {
             return rootItem;
         }
-        auto *objectPtr = rootItem->findChild<QObject*>(objectName);
+        auto* objectPtr = rootItem->findChild<QObject*>(objectName);
         if (objectPtr != nullptr)
         {
             return objectPtr;

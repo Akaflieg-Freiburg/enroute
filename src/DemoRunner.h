@@ -100,6 +100,12 @@ signals:
     /*! \brief Emitted to indicate that the GUI return to the main page */
     void requestClosePages();
 
+    /*! \brief Emitted to indicate that the GUI should set a VAC
+     *
+     *  @param vacName Name of the VAC
+     */
+    void requestVAC(QString vacName);
+
 private:
     Q_DISABLE_COPY_MOVE(DemoRunner)
 

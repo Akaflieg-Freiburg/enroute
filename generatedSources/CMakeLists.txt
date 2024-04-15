@@ -250,9 +250,9 @@ add_custom_target(manualText
     COMMAND QT_QPA_PLATFORM=xcb LC_ALL=ES ${CMAKE_BINARY_DIR}/src/enroute --string :text/privacy.html | pandoc --from=HTML --write=rst >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteManual/08-appendix/03-privacy.rst
     COMMAND echo "" >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteManual/08-appendix/03-privacy.rst
     #
-    COMMAND echo "Authors" >${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/authors.rst
-    COMMAND echo "=======" >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/authors.rst
-    COMMAND QT_QPA_PLATFORM=xcb LC_ALL=EN ${CMAKE_BINARY_DIR}/src/enroute --string :text/authors.html | pandoc --from=HTML --write=rst >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/manual/04-appendix/authors.rst
+    COMMAND echo "Authors" >${CMAKE_SOURCE_DIR}/3rdParty/enrouteManual/08-appendix/04-authors.rst
+    COMMAND echo "=======" >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteManual/08-appendix/04-authors.rst
+    COMMAND QT_QPA_PLATFORM=xcb LC_ALL=EN ${CMAKE_BINARY_DIR}/src/enroute --string :text/authors.html | pandoc --from=HTML --write=rst >>${CMAKE_SOURCE_DIR}/3rdParty/enrouteManual/08-appendix/04-authors.rst
     #
     COMMENT "Generate texts for manual"
     DEPENDS ${PROJECT_NAME}

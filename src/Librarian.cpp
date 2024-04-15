@@ -284,11 +284,8 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     if (name == u":text/whatsnew.html"_qs)
     {
         QString result;
-#if !defined(Q_OS_IOS)
-        result += "<p>" + tr("As requested by the search-and-rescue community, <strong>Enroute Flight Navigation</strong> is now able to accept location shares from Google Maps.") + "</p>";
-#endif
-        result += "<p>" + tr("For enhanced privacy, <strong>Enroute Flight Navigation</strong> routes requests for METAR/TAF and NOTAM data through our servers. "
-                             "This hides your IP address from the web services that provide the data.")+ "</p>";
+        result += "<p>" + tr("The moving map has been updated to more closely follow the style of the ICAO maps. Vertical airspace boundaries are now shown directly on the map.") + "</p>";
+        result += "<p>" + tr("In addition to distance and QUJ, the app shows the gliding ratio required to reach a waypoint (arrival height 300 m AGL, no terrain consideration).") + "</p>";
         result += "<p>" + tr("We need help with promotional graphics for the app stores and with explainer videos. "
                              "If you are a graphic/video artist and would like to help, then please be in touch.") + "</p>";
         return result;

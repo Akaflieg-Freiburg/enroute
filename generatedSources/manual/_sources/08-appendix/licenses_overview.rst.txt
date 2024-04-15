@@ -74,7 +74,7 @@
 - `Titillium Web Font <https://fonts.google.com/specimen/Titillium+Web>`_. SIL OPEN FONT LICENSE Version 1.1.
 - `underscore <https://github.com/jashkenas/underscore>`_. MIT License.
 - `Unicode Character Database (UCD) <https://www.unicode.org/ucd/>`_. Unicode License Agreement - Data Files and Software (2016).
-- `Unicode Common Locale Data Repository (CLDR) <https://cldr.unicode.org/>`_. Unicode License Agreement - Data Files and Software (2016).
+- `Unicode Common Locale Data Repository (CLDR) <https://cldr.unicode.org/>`_. Unicode License V3.
 - `Valgrind <http://valgrind.org/>`_. BSD 4-clause "Original" or "Old" License.
 - `Vulkan API Registry <https://www.khronos.org/>`_. Apache License 2.0 or MIT License.
 - `Vulkan Memory Allocator <https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator>`_. MIT License.

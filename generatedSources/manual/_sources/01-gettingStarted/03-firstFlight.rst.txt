@@ -119,6 +119,16 @@ will be shown.  The figure :ref:`wpInfo` shows how this will typically look.
 
    Information about EDFE airport
 
+The dialog uses the following abbreviations.
+
+============= ================================
+Abbreviations 
+============= ================================
+DIST          Distance to the waypoint
+QUJ           True track to the waypoint
+E             Minimal gliding ratio required to reach waypoint in 300 m AGL (disregarding terrain)
+============= ================================
+
 
 Go Flying!
 ----------

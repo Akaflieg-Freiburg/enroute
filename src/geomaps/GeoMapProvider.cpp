@@ -393,10 +393,23 @@ auto GeoMaps::GeoMapProvider::findByID(const QString &icaoID) -> Waypoint
 
 auto GeoMaps::GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, const QString& type) -> QList<GeoMaps::Waypoint>
 {
-    auto wps = waypoints();
 
     QVector<Waypoint> tWps;
+
+    auto wps = waypoints();
     foreach(auto waypoint, wps) {
+        if (!waypoint.isValid()) {
+            continue;
+        }
+        if (waypoint.type() != type) {
+            continue;
+        }
+        tWps.append(waypoint);
+    }
+
+
+    auto wpsLib = GlobalObject::waypointLibrary()->waypoints();
+    foreach(auto waypoint, wpsLib) {
         if (!waypoint.isValid()) {
             continue;
         }

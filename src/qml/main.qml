@@ -691,9 +691,7 @@ AppWindow {
 
             function onRequestClosePages() {
                 stackView.pop()
-                Global.dialogLoader.source = ""
-                if (Global.dialogLoader.item)
-                    Global.dialogLoader.item.close()
+                Global.dialogLoader.item.close()
             }
 
             function onRequestOpenAircraftPage() {

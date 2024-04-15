@@ -19,3 +19,5 @@ CMakeLists.txt.user
 
 # fastlane
 generatedSources/.bundle
+generatedSources/rubyStuff
+generatedSources/vendor

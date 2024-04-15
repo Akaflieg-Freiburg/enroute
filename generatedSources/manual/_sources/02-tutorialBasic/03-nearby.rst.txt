@@ -17,6 +17,5 @@ brings you directly to the aerodrome.
 
    List of Airfields Close to the Current Position
 
-
-Apart from aerodromes, there are additional tabs that list nearby navaids and
-reporting points.
+Apart from aerodromes, there are additional tabs that list nearby waypoints, 
+navaids and reporting points.

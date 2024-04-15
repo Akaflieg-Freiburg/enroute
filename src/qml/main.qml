@@ -691,9 +691,7 @@ AppWindow {
 
             function onRequestClosePages() {
                 stackView.pop()
-                Global.dialogLoader.source = ""
-                if (Global.dialogLoader.item)
-                    Global.dialogLoader.item.close()
+                Global.dialogLoader.item.close()
             }
 
             function onRequestOpenAircraftPage() {
@@ -714,6 +712,10 @@ AppWindow {
             function onRequestOpenWeatherPage() {
                 stackView.pop()
                 stackView.push("pages/Weather.qml")
+            }
+
+            function onRequestVAC(vacName) {
+                Global.currentVAC = VACLibrary.get(vacName)
             }
 
         }

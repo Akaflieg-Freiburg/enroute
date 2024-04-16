@@ -49,6 +49,8 @@ public:
     // Standard destructor
     ~TrafficDataSource_Abstract() override = default;
 
+
+
     //
     // Properties
     //

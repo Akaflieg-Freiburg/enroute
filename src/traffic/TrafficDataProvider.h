@@ -21,7 +21,6 @@
 #pragma once
 
 #include <QBluetoothDeviceDiscoveryAgent>
-#include <QBluetoothLocalDevice>
 #include <QBluetoothPermission>
 #include <QNetworkDatagram>
 #include <QPointer>
@@ -286,12 +285,13 @@ private slots:
     // nested uses of constructors in Global.
     void deferredInitialization() const;
 
-#warning documentation
-    void deviceDiscovered(const QBluetoothDeviceInfo& info);
-
     // Sends out foreflight broadcast message See
     // https://www.foreflight.com/connect/spec/
     void foreFlightBroadcast();
+
+    // Called once a BT device has been discovered.  Checks if the device
+    // offers serial port service. If so, it adds a new source.
+    void onBTDeviceDiscovered(const QBluetoothDeviceInfo& info);
 
     // Called if one of the sources indicates a heartbeat change
     void onSourceHeartbeatChanged();
@@ -322,6 +322,7 @@ private slots:
     void updateStatusString();
 
 private:
+#warning documentation
     QString BTStatus();
 
     // UDP Socket for ForeFlight Broadcast messages.
@@ -352,8 +353,7 @@ private:
 
     // Bluetooth related members
     QBluetoothPermission m_bluetoothPermission;
-    QBluetoothLocalDevice localBTDevice;
-    QBluetoothDeviceDiscoveryAgent discoveryAgent;
+    QBluetoothDeviceDiscoveryAgent m_discoveryAgent;
 };
 
 } // namespace Traffic

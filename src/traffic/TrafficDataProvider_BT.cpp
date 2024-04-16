@@ -30,49 +30,8 @@ using namespace std::chrono_literals;
 
 // Member functions
 
-
-QString Traffic::TrafficDataProvider::BTStatus()
+void Traffic::TrafficDataProvider::onBTDeviceDiscovered(const QBluetoothDeviceInfo& info)
 {
-#if defined(Q_OS_IOS)
-    return "<p>" + tr("Bluetooth INOP: Classic BT is not supported on iOS.") + "<p>";
-#endif
-
-    if (!localBTDevice.isValid())
-    {
-        return "<p>" + tr("Bluetooth INOP: No valid device or insufficient permissions.") + "<p>";
-    }
-
-    switch (qApp->checkPermission(m_bluetoothPermission)) {
-    case Qt::PermissionStatus::Undetermined:
-        return "<p>" + tr("Bluetooth INOP: Waiting for permission.") + "<p>";
-    case Qt::PermissionStatus::Denied:
-        return "<p>" + tr("Bluetooth INOP: No permission.") + "<p>";
-    case Qt::PermissionStatus::Granted:
-        break;
-    }
-
-    if (localBTDevice.hostMode() == QBluetoothLocalDevice::HostPoweredOff)
-    {
-        return "<p>" + tr("Bluetooth INOP: Powered off.") + "<p>";
-    }
-
-    if (discoveryAgent.error() != QBluetoothDeviceDiscoveryAgent::NoError)
-    {
-        return "<p>" + tr("Bluetooth INOP: %1").arg(discoveryAgent.errorString()) + "<p>";
-    }
-
-    if (discoveryAgent.isActive())
-    {
-        return "<p>" + tr("Bluetooth: Scanning for classic BT devices offering serial port service.") + "<p>";
-    }
-
-    return "<p>" + tr("Bluetooth: Operational.") + "<p>";
-}
-
-
-void Traffic::TrafficDataProvider::deviceDiscovered(const QBluetoothDeviceInfo& info)
-{
-    qDebug() << "Found new device:" << info.name();
     foreach(auto _dataSource, m_dataSources)
     {
         auto* dataSource = qobject_cast<TrafficDataSource_BTClassic*>(_dataSource);
@@ -88,10 +47,45 @@ void Traffic::TrafficDataProvider::deviceDiscovered(const QBluetoothDeviceInfo& 
 
     if (info.serviceUuids().contains(QBluetoothUuid::ServiceClassUuid::SerialPort))
     {
-        qWarning() << "Serial port device found";
         auto* source = new TrafficDataSource_BTClassic(info, this);
         source->connectToTrafficReceiver();
         addDataSource(source);
     }
 
+}
+
+
+QString Traffic::TrafficDataProvider::BTStatus()
+{
+#if defined(Q_OS_IOS)
+    return "<p>" + tr("Bluetooth INOP: Not supported on iOS.") + "<p>";
+#endif
+
+    switch (qApp->checkPermission(m_bluetoothPermission)) {
+    case Qt::PermissionStatus::Undetermined:
+        return "<p>" + tr("Bluetooth INOP: Waiting for permission.") + "<p>";
+    case Qt::PermissionStatus::Denied:
+        return "<p>" + tr("Bluetooth INOP: No permission.") + "<p>";
+    case Qt::PermissionStatus::Granted:
+        break;
+    }
+
+    QBluetoothLocalDevice const localBTDevice;
+    if (!localBTDevice.isValid())
+    {
+        return "<p>" + tr("Bluetooth INOP: No adaptor found.") + "<p>";
+    }
+    if (localBTDevice.hostMode() == QBluetoothLocalDevice::HostPoweredOff)
+    {
+        return "<p>" + tr("Bluetooth INOP: Powered off.") + "<p>";
+    }
+    if (m_discoveryAgent.error() != QBluetoothDeviceDiscoveryAgent::NoError)
+    {
+        return "<p>" + tr("Bluetooth INOP: %1").arg(m_discoveryAgent.errorString()) + "<p>";
+    }
+    if (m_discoveryAgent.isActive())
+    {
+        return "<p>" + tr("Bluetooth: Scanning for classic BT devices offering serial port service.") + "<p>";
+    }
+    return "<p>" + tr("Bluetooth: Operational.") + "<p>";
 }

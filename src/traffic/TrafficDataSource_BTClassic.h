@@ -25,40 +25,106 @@
 #include <QBluetoothServiceInfo>
 #include <QBluetoothSocket>
 
-#include <QObject>
-
 #include "traffic/TrafficDataSource_AbstractSocket.h"
 
 
 namespace Traffic {
 
+/*! \brief Traffic receiver: Bluetooth Classic connection to FLARM/NMEA source
+ *
+ *  This class connects to a traffic receiver via a Bluetooth Classic serial port
+ *  service.
+ */
+
 class TrafficDataSource_BTClassic : public TrafficDataSource_AbstractSocket {
     Q_OBJECT
 
 public:
+    /*! \brief Default constructor
+     *
+     *  @param info Description of a Bluetooth Classic device offering
+     *  serial port service.
+     *
+     *  @param parent The standard QObject parent pointer
+     */
     TrafficDataSource_BTClassic(const QBluetoothDeviceInfo& info, QObject* parent=nullptr);
 
+    // Standard destructor
     ~TrafficDataSource_BTClassic() override = default;
 
+
+
+    //
+    // Properties
+    //
+
+    /*! \brief Source info
+     *
+     *  Device info, as set in the constructor of this class.
+     */
+    Q_PROPERTY(QBluetoothDeviceInfo sourceInfo READ sourceInfo CONSTANT)
+
+
+
+    //
+    // Methods
+    //
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  This method implements the pure virtual method declared by its
+     *  superclass.
+     *
+     *  @returns Property sourceName
+     */
     [[nodiscard]] QString sourceName() const override;
+
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property sourceInfo
+     */
     [[nodiscard]] QBluetoothDeviceInfo sourceInfo() const
     {
         return m_info;
     }
 
+
 public slots:
+    /*! \brief Start attempt to connect to traffic receiver
+     *
+     *  This method implements the pure virtual method declared by its
+     *  superclass.
+     */
     void connectToTrafficReceiver() override;
+
+    /*! \brief Disconnect from traffic receiver
+     *
+     *  This method implements the pure virtual method declared by its
+     *  superclass.
+     */
     void disconnectFromTrafficReceiver() override;
 
+private slots:
+    // Handle BT socket errors
     void onErrorOccurred(QBluetoothSocket::SocketError error);
+
+    // Handle BT socket state changes
     void onStateChanged(QBluetoothSocket::SocketState state);
+
+    // Read and process received NMEA sentences
     void onReadyRead();
 
 private:
     Q_DISABLE_COPY_MOVE(TrafficDataSource_BTClassic)
 
+    // Copied from the constructor
     QBluetoothDeviceInfo m_info;
+
+    // BT socket used for reading data
     QBluetoothSocket socket {QBluetoothServiceInfo::RfcommProtocol};
+
+    // Text stream used for reading NMEA sentences
     QTextStream m_textStream {&socket};
 };
 

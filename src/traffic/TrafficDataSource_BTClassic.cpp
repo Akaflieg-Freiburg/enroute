@@ -18,8 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QDebug>
-
 #include "traffic/TrafficDataSource_BTClassic.h"
 
 
@@ -35,22 +33,18 @@ Traffic::TrafficDataSource_BTClassic::TrafficDataSource_BTClassic(const QBluetoo
 
 void Traffic::TrafficDataSource_BTClassic::connectToTrafficReceiver()
 {
-    qWarning() << "Traffic::TrafficDataSource_BTClassic::connectToTrafficReceiver()";
     socket.connectToService(m_info.address(), QBluetoothUuid::ServiceClassUuid::SerialPort);
 }
 
 
 void Traffic::TrafficDataSource_BTClassic::disconnectFromTrafficReceiver()
 {
-    qWarning() << "Traffic::TrafficDataSource_BTClassic::disconnectFromTrafficReceiver()";
     socket.disconnectFromService();
 }
 
 
 void Traffic::TrafficDataSource_BTClassic::onErrorOccurred(QBluetoothSocket::SocketError error)
 {
-    qWarning() << "onError" << error;
-
     switch (error)
     {
     case QBluetoothSocket::SocketError::UnknownSocketError:
@@ -87,8 +81,6 @@ void Traffic::TrafficDataSource_BTClassic::onErrorOccurred(QBluetoothSocket::Soc
 
 void Traffic::TrafficDataSource_BTClassic::onStateChanged(QBluetoothSocket::SocketState state)
 {
-    qWarning() << "onState" << state;
-
     // Compute new status
     switch(state)
     {

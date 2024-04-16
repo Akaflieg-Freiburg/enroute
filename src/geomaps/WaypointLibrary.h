@@ -144,7 +144,7 @@ namespace GeoMaps
          *
          *  @returns True if yes
          */
-        [[nodiscard]] Q_INVOKABLE bool hasNearbyEntry(const GeoMaps::Waypoint &waypoint) const;
+        [[nodiscard]] Q_INVOKABLE bool hasNearbyEntry(const GeoMaps::Waypoint& waypoint) const;
 
         /*! \brief Import waypoints into the library
          *

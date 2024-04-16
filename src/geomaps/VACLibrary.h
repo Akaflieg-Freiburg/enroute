@@ -31,8 +31,9 @@ namespace GeoMaps
 
 /*! \brief Library of visual approach charts
  *
- * This class collects visual approach charts that the user has installed. The list is automatically loaded on startup,
- *  and saved every time that a change is made.
+ * This class collects visual approach charts that the user has installed. The
+ * list is automatically loaded on startup, and saved every time that a change
+ * is made.
  */
 
 class VACLibrary : public QObject
@@ -60,7 +61,8 @@ public:
 
     /*! \brief List of all VACs installed
      *
-     * This property holds the list of all installed VACs, sorted alphabetically by name.
+     * This property holds the list of all installed VACs, sorted alphabetically
+     * by name.
      */
     Q_PROPERTY(QVector<GeoMaps::VAC> vacs READ vacs NOTIFY dataChanged)
 
@@ -97,7 +99,8 @@ public:
      *
      *  @param name Name of the VAC
      *
-     *  @returns Returns an invalid, default-constructed VAC if the name does not exist in the library.
+     *  @returns Returns an invalid, default-constructed VAC if the name does
+     *  not exist in the library.
      */
     [[nodiscard]] Q_INVOKABLE GeoMaps::VAC get(const QString& name);
 
@@ -111,12 +114,13 @@ public:
 
     /*! \brief Import VAC
      *
-     *  This method copies the file 'fileName' to the library directory. It does not take
-     *  ownership of the file, and does not delete the file.
+     *  This method copies the file 'fileName' to the library directory. It does
+     *  not take ownership of the file, and does not delete the file.
      *
      *  @param fileName Name of a graphics file
      *
-     *  @param name Name under which the VAC is available in the library. If left empty, a default name is assigned.
+     *  @param name Name under which the VAC is available in the library. If
+     *  left empty, a default name is assigned.
      *
      *  @returns A localized error message, or an empty string on success
      */
@@ -142,8 +146,10 @@ public:
 
     /*! \brief List of all VACs installed
      *
-     * This method returns the list of all installed VACs, sorted by distance to position
-     * (closest waypoints first).
+     * This method returns the list of all installed VACs, sorted by distance to
+     * position (closest waypoints first).
+     *
+     * @param position Geographic position used for sorting
      *
      * @returns List of all VACs installed
      */
@@ -155,8 +161,8 @@ signals:
 
     /*! \brief Progress report when importing a trip kit.
      *
-     *  This signal is emitted when TripKits are imported. At the end of the import,
-     *  the precise value 1.0 is emitted.
+     *  This signal is emitted when TripKits are imported. At the end of the
+     *  import, the precise value 1.0 is emitted.
      *
      *  @param percent A number between 0.0 and 1.0.
      */
@@ -165,9 +171,9 @@ signals:
 private:
     Q_DISABLE_COPY_MOVE(VACLibrary)
 
-    // This method cleans the VAC directory. It deletes all VAC from m_vacs that have no
-    // raster image files. It looks for unmanaged raster image files and either imports them
-    // or deletes them.
+    // This method cleans the VAC directory. It deletes all VAC from m_vacs that
+    // have no raster image files. It looks for unmanaged raster image files and
+    // either imports them or deletes them.
     void janitor();
 
     // This method saves m_vacs to m_dataFile.

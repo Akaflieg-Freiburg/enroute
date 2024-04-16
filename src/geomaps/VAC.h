@@ -29,7 +29,8 @@ namespace GeoMaps
 
 /*! \brief Visual approach chart
  *
- *  This class represents visual approach charts. It stores the following data items.
+ *  This class represents visual approach charts. It stores the following data
+ *  items.
  *
  *  - The name of the visual approach chart.
  *
@@ -51,13 +52,18 @@ public:
 
     /*! \brief Constructor
      *
-     *  This class reads a georeferenced image file, where geographic data is encoded in one of the following two forms.
+     *  This class reads a georeferenced image file, where geographic data is
+     *  encoded in one of the following two forms.
      *
-     *  - The image file is a GeoTIFF file with embedded georeferencing information.
+     *  - The image file is a GeoTIFF file with embedded georeferencing
+     *    information.
      *
-     *  - The file name is of the form "EDTF-geo_7.739665_48.076416_7.9063883_47.96452.jpg"
+     *  - The file name is of the form
+     *    "EDTF-geo_7.739665_48.076416_7.9063883_47.96452.jpg"
      *
-     *  It attempt to extract the map name from the image file (if the image file is a GeoTIFF), or else from the file name.  The raster data is not read, so that this constructor is rather lightweight.
+     *  It attempt to extract the map name from the image file (if the image
+     *  file is a GeoTIFF), or else from the file name.  The raster data is not
+     *  read, so that this constructor is rather lightweight.
      *
      *  \param fName File name of a georeferenced raster image file
      */
@@ -89,23 +95,23 @@ public:
 
     /*! \brief Describe installed file(s)
      *
-     * This property contains a description of the locally installed
-     * file(s), localized and in HTML format. If no description is available,
-     * then the property contains an empty string.
+     * This property contains a description of the locally installed file(s),
+     * localized and in HTML format. If no description is available, then the
+     * property contains an empty string.
      */
     Q_PROPERTY(QString description READ description)
 
     /*! \brief Short info text
      *
-     * The text is typically one lines "manually installed • 203 kB",
-     * translated to the local language.
+     * The text is typically one lines "manually installed • 203 kB", translated
+     * to the local language.
      */
     Q_PROPERTY(QString infoText READ infoText)
 
     /*! \brief Validity
      *
-     * The VAC is considered valid if all corner coordinate are valid, the file 'fileName' exists and
-     * the name is not empty.
+     * The VAC is considered valid if all corner coordinate are valid, the file
+     * 'fileName' exists and the name is not empty.
      */
     Q_PROPERTY(bool isValid READ isValid)
 
@@ -163,6 +169,8 @@ public:
     //
 
     /*! \brief Comparison
+     *
+     * @param other VAC to compare *this with
      *
      * @returns True on equality
      */

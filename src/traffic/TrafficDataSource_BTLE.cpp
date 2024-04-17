@@ -33,19 +33,11 @@ Traffic::TrafficDataSource_BTLE::TrafficDataSource_BTLE(const QBluetoothDeviceIn
     connect(m_control, &QLowEnergyController::connected, this, &Traffic::TrafficDataSource_BTLE::onConnected);
     /*
     connect(m_control, &QLowEnergyController::discoveryFinished, this, &DeviceHandler::serviceScanDone);
-
-    connect(m_control, &QLowEnergyController::connected, this, [this]() {
-        setInfo("Controller connected. Search services...");
-        setIcon(IconProgress);
-        m_control->discoverServices();
-    });
     connect(m_control, &QLowEnergyController::disconnected, this, [this]() {
         setError("LowEnergy controller disconnected");
         setIcon(IconError);
     });
     */
-
-    // Connect
 }
 
 void Traffic::TrafficDataSource_BTLE::onConnected()

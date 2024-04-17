@@ -126,6 +126,7 @@ void Traffic::TrafficDataProvider::addDataSource(Traffic::TrafficDataSource_Abst
     connect(source, &Traffic::TrafficDataSource_Abstract::trafficReceiverRuntimeErrorChanged, this, &Traffic::TrafficDataProvider::onTrafficReceiverRuntimeError);
     connect(source, &Traffic::TrafficDataSource_Abstract::trafficReceiverSelfTestErrorChanged, this, &Traffic::TrafficDataProvider::onTrafficReceiverSelfTestError);
 
+    updateStatusString();
 }
 
 
@@ -147,7 +148,7 @@ void Traffic::TrafficDataProvider::connectToTrafficReceiver()
     case Qt::PermissionStatus::Denied:
         break;
     case Qt::PermissionStatus::Granted:
-        m_discoveryAgent.start(QBluetoothDeviceDiscoveryAgent::ClassicMethod);
+        m_discoveryAgent.start();
         break;
     }
     updateStatusString();

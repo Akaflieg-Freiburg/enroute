@@ -24,6 +24,7 @@
 #include "GlobalObject.h"
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficDataSource_BTClassic.h"
+#include "traffic/TrafficDataSource_BTLE.h"
 
 using namespace std::chrono_literals;
 
@@ -32,24 +33,43 @@ using namespace std::chrono_literals;
 
 void Traffic::TrafficDataProvider::onBTDeviceDiscovered(const QBluetoothDeviceInfo& info)
 {
+    // Ignore new device if data source already exists.
     foreach(auto _dataSource, m_dataSources)
     {
-        auto* dataSource = qobject_cast<TrafficDataSource_BTClassic*>(_dataSource);
-        if (dataSource == nullptr)
+        auto* dataSourceBTClassic = qobject_cast<TrafficDataSource_BTClassic*>(_dataSource);
+        if (dataSourceBTClassic != nullptr)
         {
-            continue;
+            if (info.address() == dataSourceBTClassic->sourceInfo().address())
+            {
+                return;
+            }
         }
-        if (info.address() == dataSource->sourceInfo().address())
+        auto* dataSourceBTLE = qobject_cast<TrafficDataSource_BTLE*>(_dataSource);
+        if (dataSourceBTLE != nullptr)
         {
-            return;
+            if (info.address() == dataSourceBTLE->sourceInfo().address())
+            {
+                return;
+            }
         }
     }
 
+    // Check if we have a BT LE device
+    if (info.coreConfigurations() & QBluetoothDeviceInfo::LowEnergyCoreConfiguration)
+    {
+        auto* source = new TrafficDataSource_BTLE(info, this);
+        source->connectToTrafficReceiver();
+        addDataSource(source);
+        return;
+    }
+
+    // Check if we have a BT classic device offering serial port service.
     if (info.serviceUuids().contains(QBluetoothUuid::ServiceClassUuid::SerialPort))
     {
         auto* source = new TrafficDataSource_BTClassic(info, this);
         source->connectToTrafficReceiver();
         addDataSource(source);
+        return;
     }
 
 }
@@ -57,9 +77,6 @@ void Traffic::TrafficDataProvider::onBTDeviceDiscovered(const QBluetoothDeviceIn
 
 QString Traffic::TrafficDataProvider::BTStatus()
 {
-#if defined(Q_OS_IOS)
-    return "<p>" + tr("Bluetooth INOP: Not supported on iOS.") + "<p>";
-#endif
 
     switch (qApp->checkPermission(m_bluetoothPermission)) {
     case Qt::PermissionStatus::Undetermined:
@@ -85,7 +102,16 @@ QString Traffic::TrafficDataProvider::BTStatus()
     }
     if (m_discoveryAgent.isActive())
     {
-        return "<p>" + tr("Bluetooth: Scanning for classic BT devices offering serial port service.") + "<p>";
+#if defined(Q_OS_IOS)
+        return "<p>" + tr("Bluetooth: Scanning for Bluetooth LE devices offering serial port service.") + "<p>";
+#else
+        return "<p>" + tr("Bluetooth: Scanning for Bluetooth devices offering serial port service.") + "<p>";
+#endif
     }
-    return "<p>" + tr("Bluetooth: Operational.") + "<p>";
+
+#if defined(Q_OS_IOS)
+    return "<p>" + tr("Bluetooth: Only Bluetooth LE is supported on iOS. Classic Bluetooth is not supported.") + "<p>";
+#else
+    return {};
+#endif
 }

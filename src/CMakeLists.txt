@@ -90,6 +90,7 @@ set(SOURCES
     traffic/TrafficDataSource_Abstract.h
     traffic/TrafficDataSource_AbstractSocket.h
     traffic/TrafficDataSource_BTClassic.h
+    traffic/TrafficDataSource_BTLE.h
     traffic/TrafficDataSource_File.h
     traffic/TrafficDataSource_Simulate.h
     traffic/TrafficDataSource_Tcp.h
@@ -180,6 +181,7 @@ set(SOURCES
     traffic/TrafficDataSource_Abstract_XGPS.cpp
     traffic/TrafficDataSource_AbstractSocket.cpp
     traffic/TrafficDataSource_BTClassic.cpp
+    traffic/TrafficDataSource_BTLE.cpp
     traffic/TrafficDataSource_File.cpp
     traffic/TrafficDataSource_Simulate.cpp
     traffic/TrafficDataSource_Tcp.cpp

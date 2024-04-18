@@ -85,6 +85,7 @@ set(SOURCES
     positioning/PositionInfoSource_Abstract.h
     positioning/PositionInfoSource_Satellite.h
     positioning/PositionProvider.h
+    traffic/BTScanner.h
     traffic/FlarmnetDB.h
     traffic/PasswordDB.h
     traffic/TrafficDataSource_Abstract.h
@@ -173,6 +174,7 @@ set(SOURCES
     positioning/PositionInfoSource_Abstract.cpp
     positioning/PositionInfoSource_Satellite.cpp
     positioning/PositionProvider.cpp
+    traffic/BTScanner.cpp
     traffic/FlarmnetDB.cpp
     traffic/PasswordDB.cpp
     traffic/TrafficDataSource_Abstract.cpp
@@ -507,6 +509,7 @@ qt_add_qml_module(${PROJECT_NAME}
     NO_RESOURCE_TARGET_PATH
     QML_FILES
     qml/main.qml
+    qml/dialogs/AddBTDeviceDialog.qml
     qml/dialogs/CenteringDialog.qml
     qml/dialogs/LongTextDialog.qml
     qml/dialogs/AircraftSaveDialog.qml

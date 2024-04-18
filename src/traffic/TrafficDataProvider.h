@@ -29,6 +29,7 @@
 
 #include "GlobalObject.h"
 #include "positioning/PositionInfoSource_Abstract.h"
+#include "traffic/BTScanner.h"
 #include "traffic/TrafficFactor_DistanceOnly.h"
 #include "traffic/TrafficFactor_WithPosition.h"
 #include "traffic/Warning.h"
@@ -100,6 +101,10 @@ public:
     //
     // Properties
     //
+
+#warning
+    Q_PROPERTY(Traffic::BTScanner* btScanner READ btScanner CONSTANT)
+    Traffic::BTScanner* btScanner() const { return m_BTScanner; }
 
     /*! \brief Heartbeat indicator
      *
@@ -354,6 +359,7 @@ private:
     // Bluetooth related members
     QBluetoothPermission m_bluetoothPermission;
     QBluetoothDeviceDiscoveryAgent m_discoveryAgent;
+    Traffic::BTScanner* m_BTScanner;
 };
 
 } // namespace Traffic

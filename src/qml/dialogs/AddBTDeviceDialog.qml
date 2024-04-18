@@ -33,47 +33,60 @@ CenteringDialog {
     standardButtons: Dialog.Ok
 
     property BTScanner btScanner: TrafficDataProvider.btScanner
-    
-    DecoratedScrollView{
+
+
+    ColumnLayout {
         anchors.fill: parent
-        contentWidth: availableWidth // Disable horizontal scrolling
 
-        clip: true
+        Label {
+            Layout.fillWidth: true
 
-        ColumnLayout {
-            width: dlg.availableWidth
-
-            Label {
-                Layout.fillWidth: true
-
-                text: btScanner.error
-                wrapMode: Text.Wrap
-            }
-
-            BusyIndicator {
-                Layout.alignment: Qt.AlignHCenter
-
-                running: true
-                visible: btScanner.isScanning
-            }
-
-            Label {
-                Layout.fillWidth: true
-
-                horizontalAlignment: Text.AlignHCenter
-                text: qsTr("Standby. Searching for Bluetooth devices.")
-                wrapMode: Text.Wrap
-                visible: btScanner.isScanning
-            }
-
-            Label {
-                Layout.fillWidth: true
-
-                text: "Placeholder for the list of devices."
-                wrapMode: Text.Wrap
-            }
-
+            text: btScanner.error
+            wrapMode: Text.Wrap
         }
+
+        BusyIndicator {
+            Layout.alignment: Qt.AlignHCenter
+
+            running: true
+            visible: btScanner.isScanning
+        }
+
+        Label {
+            Layout.fillWidth: true
+
+            horizontalAlignment: Text.AlignHCenter
+            text: qsTr("Standby. Searching for Bluetooth devices.")
+            visible: btScanner.isScanning
+            wrapMode: Text.Wrap
+        }
+
+        DecoratedListView {
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            Layout.preferredHeight: contentHeight
+
+            clip: true
+
+            model: btScanner.devices
+
+            section.property: "modelData.category"
+            section.delegate: Label {
+                required property string section
+                width: dlg.availableWidth
+
+                text: "section"
+                font.bold: true
+            }
+
+            delegate: WordWrappingItemDelegate {
+                width: dlg.availableWidth
+
+                icon.source: model.modelData.icon
+                text: model.modelData.name
+            }
+        }
+
     }
 
 }

@@ -21,61 +21,38 @@
 #pragma once
 
 #include <QBluetoothDeviceDiscoveryAgent>
-#include <QBluetoothPermission>
+#include <QBluetoothDeviceInfo>
 #include <QNetworkDatagram>
 #include <QPointer>
 #include <QQmlEngine>
 #include <QUdpSocket>
 
-#include "traffic/BTDeviceInfo.h"
+
 
 namespace Traffic {
 
 
-class BTScanner : public QObject {
-    Q_OBJECT
+class BTDeviceInfo {
+    Q_GADGET
     QML_ELEMENT
 
 public:
-    explicit BTScanner(QObject *parent = nullptr);
+    BTDeviceInfo() = default;
+    explicit BTDeviceInfo(const QBluetoothDeviceInfo& info);
 
-    // No default constructor, important for QML singleton
-    explicit BTScanner() = delete;
+    Q_PROPERTY(QString name READ name CONSTANT)
+    [[nodiscard]] QString name() const { return m_deviceInfo.name(); }
 
-    Q_PROPERTY(QVector<BTDeviceInfo> devices READ devices NOTIFY devicesChanged)
-    Q_PROPERTY(QString error READ error NOTIFY errorChanged)
-    Q_PROPERTY(bool isScanning READ isScanning NOTIFY isScanningChanged)
+    Q_PROPERTY(QString icon READ icon CONSTANT)
+    [[nodiscard]] QString icon() const { return "/icons/material/ic_add.svg"; }
 
-    [[nodiscard]] QVector<BTDeviceInfo> devices() const { return m_devices; }
-    [[nodiscard]] QString error() const { return m_error; }
-    [[nodiscard]] bool isScanning() const { return m_isScanning; }
+    Q_PROPERTY(QString category READ category CONSTANT)
+    [[nodiscard]] QString category() const { return "Bluetooth Device"; }
 
-public slots:
-    void start();
-    void stop() {;}
-
-signals:
-    void devicesChanged();
-    void errorChanged();
-    void isScanningChanged();
-
-private slots:
-    void onCanceled();
-    void onDeviceDiscovered(const QBluetoothDeviceInfo& info);
-    void onErrorOccurred(QBluetoothDeviceDiscoveryAgent::Error error);
-    void onFinished();
-    void setDevices(const QVector<Traffic::BTDeviceInfo>& _devices);
-    void setError(const QString& errorString);
-    void setIsScanning(bool _isScanning);
+    bool operator == (const BTDeviceInfo& other) const = default;
 
 private:
-    // Bluetooth related members
-    QBluetoothPermission m_bluetoothPermission;
-    QBluetoothDeviceDiscoveryAgent m_discoveryAgent;
-
-    QVector<BTDeviceInfo> m_devices;
-    QString m_error {};
-    bool m_isScanning {false};
+    QBluetoothDeviceInfo m_deviceInfo;
 };
 
 } // namespace Traffic

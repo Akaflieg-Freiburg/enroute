@@ -57,9 +57,9 @@ void Traffic::TrafficDataProvider::onBTDeviceDiscovered(const QBluetoothDeviceIn
     // Check if we have a BT LE device
     if (info.coreConfigurations() & QBluetoothDeviceInfo::LowEnergyCoreConfiguration)
     {
-        auto* source = new TrafficDataSource_BTLE(info, this);
-        source->connectToTrafficReceiver();
-        addDataSource(source);
+//        auto* source = new TrafficDataSource_BTLE(info, this);
+//        source->connectToTrafficReceiver();
+//        addDataSource(source);
         return;
     }
 

@@ -21,7 +21,9 @@
 #include <QCoreApplication>
 #include <QQmlEngine>
 
+#include "GlobalObject.h"
 #include "traffic/BTDeviceInfo.h"
+#include "traffic/TrafficDataProvider.h"
 
 
 // Member functions
@@ -33,29 +35,99 @@ Traffic::BTDeviceInfo::BTDeviceInfo(const QBluetoothDeviceInfo& info)
 
 QString Traffic::BTDeviceInfo::name() const
 {
-    //<strong>%1</strong><br><font size='2'>%2</font>
-
     if (!m_deviceInfo.isValid())
     {
-        return "<strong>Invalid Device</strong>";;
+        return QObject::tr("Invalid Device", "BTDeviceInfo");
     }
 
-    QString result;
     QString name = m_deviceInfo.name();
     if (name.isEmpty())
     {
-        result += "<strong>Unnamed Device</strong>";
+        return QObject::tr("Unnamed Device", "BTDeviceInfo");
+    }
+
+    return name;
+}
+
+
+QString Traffic::BTDeviceInfo::description() const
+{
+
+    QStringList descriptionItems;
+    if (m_deviceInfo.coreConfigurations() == QBluetoothDeviceInfo::LowEnergyCoreConfiguration)
+    {
+        descriptionItems += QObject::tr("Bluetooth Low Energy Device (mot supported)", "BTDeviceInfo");
     }
     else
     {
-        result += "<strong>"+name+"</strong>";
+        if (GlobalObject::trafficDataProvider()->hasSource(m_deviceInfo))
+        {
+            descriptionItems += QObject::tr("Device already added", "BTDeviceInfo");
+        }
+        else
+        {
+            switch(m_deviceInfo.majorDeviceClass())
+            {
+            case QBluetoothDeviceInfo::MiscellaneousDevice:
+                descriptionItems += QObject::tr("Miscellaneous Device", "BTDeviceInfo");
+                break;
+            case QBluetoothDeviceInfo::ComputerDevice:
+                descriptionItems += QObject::tr("Computer or PDA Device", "BTDeviceInfo");
+                break;
+            case QBluetoothDeviceInfo::PhoneDevice:
+                descriptionItems += QObject::tr("Telephone Device", "BTDeviceInfo");
+                break;
+            case QBluetoothDeviceInfo::NetworkDevice:
+                descriptionItems += QObject::tr("Network Device", "BTDeviceInfo");
+                break;
+            case QBluetoothDeviceInfo::AudioVideoDevice:
+                descriptionItems += QObject::tr("Audio/Video Device", "BTDeviceInfo");
+                break;
+            case QBluetoothDeviceInfo::PeripheralDevice:
+                descriptionItems += QObject::tr("Peripheral Device", "BTDeviceInfo");
+                break;
+            case QBluetoothDeviceInfo::ImagingDevice:
+                descriptionItems += QObject::tr("Imaging Device", "BTDeviceInfo");
+                break;
+            case QBluetoothDeviceInfo::WearableDevice:
+                descriptionItems += QObject::tr("Wearable Device", "BTDeviceInfo");
+                break;
+            case QBluetoothDeviceInfo::ToyDevice:
+                descriptionItems += QObject::tr("Toy Device", "BTDeviceInfo");
+                break;
+            case QBluetoothDeviceInfo::HealthDevice:
+                descriptionItems += QObject::tr("Health Device", "BTDeviceInfo");
+                break;
+            case QBluetoothDeviceInfo::UncategorizedDevice:
+                descriptionItems += QObject::tr("Uncategorized Device", "BTDeviceInfo");
+                break;
+            }
+            if (m_deviceInfo.serviceUuids().contains(QBluetoothUuid::ServiceClassUuid::SerialPort))
+            {
+                descriptionItems += QObject::tr("Serial Port Service", "BTDeviceInfo");
+            }
+        }
     }
 
+    return u"%1<br><font size='2'>%2</font>"_qs.arg(name(), descriptionItems.join(" • "));
+}
+
+bool Traffic::BTDeviceInfo::canAddConnection()
+{
+    if (!m_deviceInfo.isValid())
+    {
+        return false;
+    }
     if (m_deviceInfo.coreConfigurations() == QBluetoothDeviceInfo::LowEnergyCoreConfiguration)
     {
-        result += "<br><font size='2'>Bluetooth Low Energy Device (mot supported)</font>";
+        return false;
     }
-    return result;
+    if (GlobalObject::trafficDataProvider()->hasSource(m_deviceInfo))
+    {
+        return false;
+    }
+
+    return true;
 }
 
 QString Traffic::BTDeviceInfo::icon() const

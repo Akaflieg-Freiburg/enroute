@@ -29,8 +29,8 @@ CenteringDialog {
     id: dlg
 
     modal: true
-    title: qsTr("Add Device: Classic Bluetooth")
-    standardButtons: Dialog.Ok
+    title: qsTr("Add Bluetooth Device")
+    standardButtons: Dialog.Cancel
 
     property BTScanner btScanner: TrafficDataProvider.btScanner
 
@@ -42,8 +42,16 @@ CenteringDialog {
             Layout.fillWidth: true
 
             text: qsTr("Error") + ": " + btScanner.error
-            wrapMode: Text.Wrap
             visible: btScanner.error !== ""
+            wrapMode: Text.Wrap
+        }
+
+        Label {
+            Layout.fillWidth: true
+
+            text: qsTr("No Device Found")
+            visible: btScanner.devices.length === 0
+            wrapMode: Text.Wrap
         }
 
         DecoratedListView {
@@ -55,28 +63,25 @@ CenteringDialog {
 
             model: btScanner.devices
 
-            section.property: "modelData.category"
-            section.delegate: Label {
-                required property string section
-                width: dlg.availableWidth
-
-                text: "section"
-                font.bold: true
-            }
-
             delegate: WordWrappingItemDelegate {
                 width: dlg.availableWidth
 
+                enabled: model.modelData.canAddConnection
                 icon.source: model.modelData.icon
-                text: model.modelData.name
+                text: model.modelData.description
+
+                onClicked: {
+                    var resultString = TrafficDataProvider.addDataSource(model.modelData)
+                    Global.toast.doToast( qsTr("Added Device %1").arg(model.modelData.name) )
+                    dlg.close()
+                }
             }
         }
 
         Button {
             Layout.alignment: Qt.AlignHCenter
 
-            text: btScanner.isScanning ?
-                      qsTr("Searching...") : qsTr("Search Devices")
+            text: btScanner.isScanning ? qsTr("Scanning…") : qsTr("Scan for Devices")
 
             enabled: !btScanner.isScanning
             icon.source: "/icons/material/ic_bluetooth_searching.svg"

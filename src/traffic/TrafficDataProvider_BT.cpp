@@ -31,6 +31,46 @@ using namespace std::chrono_literals;
 
 // Member functions
 
+QString Traffic::TrafficDataProvider::addDataSource(Traffic::BTDeviceInfo deviceInfo)
+{
+    if (hasSource(deviceInfo.deviceInfo()))
+    {
+        return tr("Device Already Added");
+    }
+
+    auto* source = new TrafficDataSource_BTClassic(deviceInfo.deviceInfo(), this);
+    source->connectToTrafficReceiver();
+    addDataSource(source);
+#warning
+    return "not implemented";
+}
+
+
+bool Traffic::TrafficDataProvider::hasSource(const QBluetoothDeviceInfo& device)
+{
+    // Ignore new device if data source already exists.
+    foreach(auto _dataSource, m_dataSources)
+    {
+        auto* dataSourceBTClassic = qobject_cast<TrafficDataSource_BTClassic*>(_dataSource);
+        if (dataSourceBTClassic != nullptr)
+        {
+            if (device.address() == dataSourceBTClassic->sourceInfo().address())
+            {
+                return true;
+            }
+        }
+        auto* dataSourceBTLE = qobject_cast<TrafficDataSource_BTLE*>(_dataSource);
+        if (dataSourceBTLE != nullptr)
+        {
+            if (device.address() == dataSourceBTLE->sourceInfo().address())
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 void Traffic::TrafficDataProvider::onBTDeviceDiscovered(const QBluetoothDeviceInfo& info)
 {
     // Ignore new device if data source already exists.

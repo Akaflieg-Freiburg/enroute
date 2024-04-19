@@ -96,7 +96,9 @@ public:
     /*! \brief Clear all data sources */
     void clearDataSources();
 
-
+#warning docu
+    bool hasSource(const QBluetoothDeviceInfo& device);
+    Q_INVOKABLE QString addDataSource(Traffic::BTDeviceInfo deviceInfo);
 
     //
     // Properties
@@ -149,7 +151,7 @@ public:
      *  position is not known.  This item should be ignored if invalid. The item
      *  is owned by this class.
      */
-    Q_PROPERTY(Traffic::TrafficFactor_DistanceOnly *trafficObjectWithoutPosition READ trafficObjectWithoutPosition CONSTANT)
+    Q_PROPERTY(Traffic::TrafficFactor_DistanceOnly* trafficObjectWithoutPosition READ trafficObjectWithoutPosition CONSTANT)
 
     /*! \brief Getter method for property with the same name
      *

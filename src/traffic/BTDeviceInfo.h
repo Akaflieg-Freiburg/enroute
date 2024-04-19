@@ -34,7 +34,7 @@ namespace Traffic {
 
 class BTDeviceInfo {
     Q_GADGET
-    QML_ELEMENT
+    QML_VALUE_TYPE(btDeviceInfo)
 
 public:
     BTDeviceInfo() = default;
@@ -43,13 +43,18 @@ public:
     Q_PROPERTY(QString name READ name CONSTANT)
     [[nodiscard]] QString name() const;
 
+    Q_PROPERTY(QString description READ description CONSTANT)
+    [[nodiscard]] QString description() const;
+
     Q_PROPERTY(QString icon READ icon CONSTANT)
     [[nodiscard]] QString icon() const;
 
-    Q_PROPERTY(QString category READ category CONSTANT)
-    [[nodiscard]] QString category() const { return "Bluetooth Device"; }
+    Q_PROPERTY(bool canAddConnection READ canAddConnection CONSTANT)
+    [[nodiscard]] bool canAddConnection();
 
     bool operator == (const BTDeviceInfo& other) const = default;
+
+    [[nodiscard]] QBluetoothDeviceInfo deviceInfo() const { return m_deviceInfo; }
 
 private:
     QBluetoothDeviceInfo m_deviceInfo;

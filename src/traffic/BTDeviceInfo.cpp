@@ -31,3 +31,42 @@ Traffic::BTDeviceInfo::BTDeviceInfo(const QBluetoothDeviceInfo& info)
 {
 }
 
+QString Traffic::BTDeviceInfo::name() const
+{
+    //<strong>%1</strong><br><font size='2'>%2</font>
+
+    if (!m_deviceInfo.isValid())
+    {
+        return "<strong>Invalid Device</strong>";;
+    }
+
+    QString result;
+    QString name = m_deviceInfo.name();
+    if (name.isEmpty())
+    {
+        result += "<strong>Unnamed Device</strong>";
+    }
+    else
+    {
+        result += "<strong>"+name+"</strong>";
+    }
+
+    if (m_deviceInfo.coreConfigurations() == QBluetoothDeviceInfo::LowEnergyCoreConfiguration)
+    {
+        result += "<br><font size='2'>Bluetooth Low Energy Device (mot supported)</font>";
+    }
+    return result;
+}
+
+QString Traffic::BTDeviceInfo::icon() const
+{
+    if (!m_deviceInfo.isValid())
+    {
+        return "/icons/material/ic_delete.svg";
+    }
+    if (m_deviceInfo.coreConfigurations() == QBluetoothDeviceInfo::LowEnergyCoreConfiguration)
+    {
+        return "/icons/material/ic_bluetooth_disabled.svg";
+    }
+    return "/icons/material/ic_bluetooth.svg";
+}

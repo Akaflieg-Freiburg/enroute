@@ -49,6 +49,15 @@ void Traffic::BTScanner::onCanceled()
 void Traffic::BTScanner::onDeviceDiscovered(const QBluetoothDeviceInfo& info)
 {
     qWarning() << "Found device" << info.name();
+
+    QVector<Traffic::BTDeviceInfo> result;
+    auto deviceInfos = m_discoveryAgent.discoveredDevices();
+    foreach (auto deviceInfo, deviceInfos)
+    {
+        result += BTDeviceInfo(deviceInfo);
+    }
+    setDevices(result);
+
 }
 
 void Traffic::BTScanner::onErrorOccurred(QBluetoothDeviceDiscoveryAgent::Error error)
@@ -96,16 +105,6 @@ void Traffic::BTScanner::onFinished()
     foreach (auto deviceInfo, deviceInfos)
     {
         result += BTDeviceInfo(deviceInfo);
-        /*
-        if (deviceInfo.coreConfigurations() == QBluetoothDeviceInfo::LowEnergyCoreConfiguration)
-        {
-            result += "<p>LE Sensor " + deviceInfo.name() + "</p>";
-        }
-        else
-        {
-            result += "<p>Classic Device " + deviceInfo.name() + "</p>";
-        }
-*/
     }
     setDevices(result);
 }

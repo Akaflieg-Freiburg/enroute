@@ -41,24 +41,9 @@ CenteringDialog {
         Label {
             Layout.fillWidth: true
 
-            text: btScanner.error
+            text: qsTr("Error") + ": " + btScanner.error
             wrapMode: Text.Wrap
-        }
-
-        BusyIndicator {
-            Layout.alignment: Qt.AlignHCenter
-
-            running: true
-            visible: btScanner.isScanning
-        }
-
-        Label {
-            Layout.fillWidth: true
-
-            horizontalAlignment: Text.AlignHCenter
-            text: qsTr("Standby. Searching for Bluetooth devices.")
-            visible: btScanner.isScanning
-            wrapMode: Text.Wrap
+            visible: btScanner.error !== ""
         }
 
         DecoratedListView {
@@ -85,6 +70,18 @@ CenteringDialog {
                 icon.source: model.modelData.icon
                 text: model.modelData.name
             }
+        }
+
+        Button {
+            Layout.alignment: Qt.AlignHCenter
+
+            text: btScanner.isScanning ?
+                      qsTr("Searching...") : qsTr("Search Devices")
+
+            enabled: !btScanner.isScanning
+            icon.source: "/icons/material/ic_bluetooth_searching.svg"
+            onClicked: btScanner.start()
+            visible: btScanner.error === ""
         }
 
     }

@@ -41,10 +41,10 @@ public:
     explicit BTDeviceInfo(const QBluetoothDeviceInfo& info);
 
     Q_PROPERTY(QString name READ name CONSTANT)
-    [[nodiscard]] QString name() const { return m_deviceInfo.name(); }
+    [[nodiscard]] QString name() const;
 
     Q_PROPERTY(QString icon READ icon CONSTANT)
-    [[nodiscard]] QString icon() const { return "/icons/material/ic_add.svg"; }
+    [[nodiscard]] QString icon() const;
 
     Q_PROPERTY(QString category READ category CONSTANT)
     [[nodiscard]] QString category() const { return "Bluetooth Device"; }

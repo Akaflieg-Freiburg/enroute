@@ -54,6 +54,7 @@ void Traffic::TrafficDataProvider::onBTDeviceDiscovered(const QBluetoothDeviceIn
         }
     }
 
+/*
     // Check if we have a BT LE device
     if (info.coreConfigurations() & QBluetoothDeviceInfo::LowEnergyCoreConfiguration)
     {
@@ -62,6 +63,7 @@ void Traffic::TrafficDataProvider::onBTDeviceDiscovered(const QBluetoothDeviceIn
         addDataSource(source);
         return;
     }
+*/
 
     // Check if we have a BT classic device offering serial port service.
     if (info.serviceUuids().contains(QBluetoothUuid::ServiceClassUuid::SerialPort))

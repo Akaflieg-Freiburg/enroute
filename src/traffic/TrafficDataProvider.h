@@ -29,6 +29,7 @@
 
 #include "GlobalObject.h"
 #include "positioning/PositionInfoSource_Abstract.h"
+#include "traffic/BTScanner.h"
 #include "traffic/TrafficFactor_DistanceOnly.h"
 #include "traffic/TrafficFactor_WithPosition.h"
 #include "traffic/Warning.h"
@@ -95,11 +96,17 @@ public:
     /*! \brief Clear all data sources */
     void clearDataSources();
 
-
+#warning docu
+    bool hasSource(const QBluetoothDeviceInfo& device);
+    Q_INVOKABLE QString addDataSource(Traffic::BTDeviceInfo deviceInfo);
 
     //
     // Properties
     //
+
+#warning
+    Q_PROPERTY(Traffic::BTScanner* btScanner READ btScanner CONSTANT)
+    Traffic::BTScanner* btScanner() const { return m_BTScanner; }
 
     /*! \brief Heartbeat indicator
      *
@@ -144,7 +151,7 @@ public:
      *  position is not known.  This item should be ignored if invalid. The item
      *  is owned by this class.
      */
-    Q_PROPERTY(Traffic::TrafficFactor_DistanceOnly *trafficObjectWithoutPosition READ trafficObjectWithoutPosition CONSTANT)
+    Q_PROPERTY(Traffic::TrafficFactor_DistanceOnly* trafficObjectWithoutPosition READ trafficObjectWithoutPosition CONSTANT)
 
     /*! \brief Getter method for property with the same name
      *
@@ -354,6 +361,7 @@ private:
     // Bluetooth related members
     QBluetoothPermission m_bluetoothPermission;
     QBluetoothDeviceDiscoveryAgent m_discoveryAgent;
+    Traffic::BTScanner* m_BTScanner;
 };
 
 } // namespace Traffic

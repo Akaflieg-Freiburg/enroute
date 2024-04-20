@@ -93,6 +93,9 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
     connect(&m_discoveryAgent, &QBluetoothDeviceDiscoveryAgent::canceled, this, &Traffic::TrafficDataProvider::updateStatusString);
     connect(&m_discoveryAgent, &QBluetoothDeviceDiscoveryAgent::finished, this, &Traffic::TrafficDataProvider::updateStatusString);
     connect(&m_discoveryAgent, &QBluetoothDeviceDiscoveryAgent::deviceDiscovered, this, &Traffic::TrafficDataProvider::onBTDeviceDiscovered);
+
+    m_BTScanner = new BTScanner(this);
+    QQmlEngine::setObjectOwnership(m_BTScanner, QQmlEngine::CppOwnership);
 }
 
 

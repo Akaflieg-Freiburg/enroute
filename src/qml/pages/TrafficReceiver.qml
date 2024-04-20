@@ -134,7 +134,6 @@ Page {
 
             }
 
-
             Button {
                 Layout.alignment: Qt.AlignHCenter
                 icon.source: "/icons/material/ic_tap_and_play.svg"
@@ -148,6 +147,21 @@ Page {
                 Timer {
                     id: timer
                     interval: 1000
+                }
+            }
+
+            Button {
+                id: addBTDevice
+
+                Layout.alignment: Qt.AlignHCenter
+                icon.source: "/icons/material/ic_tap_and_play.svg"
+                text: qsTr("Add new BT device")
+                visible: !TrafficDataProvider.receivingHeartbeat
+
+                onClicked: {
+                    Global.dialogLoader.active = false
+                    Global.dialogLoader.setSource("../dialogs/AddBTDeviceDialog.qml", {})
+                    Global.dialogLoader.active = true
                 }
             }
 

@@ -67,7 +67,7 @@ public:
 
 
     //
-    // Methods
+    // Getter Methods
     //
 
     /*! \brief Getter function for the property with the same name

@@ -89,13 +89,13 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
 
     // Wire up Bluetooth-related members
     m_bluetoothPermission.setCommunicationModes(QBluetoothPermission::Access);
-    connect(&m_discoveryAgent, &QBluetoothDeviceDiscoveryAgent::errorOccurred, this, &Traffic::TrafficDataProvider::updateStatusString);
+/*    connect(&m_discoveryAgent, &QBluetoothDeviceDiscoveryAgent::errorOccurred, this, &Traffic::TrafficDataProvider::updateStatusString);
     connect(&m_discoveryAgent, &QBluetoothDeviceDiscoveryAgent::canceled, this, &Traffic::TrafficDataProvider::updateStatusString);
     connect(&m_discoveryAgent, &QBluetoothDeviceDiscoveryAgent::finished, this, &Traffic::TrafficDataProvider::updateStatusString);
     connect(&m_discoveryAgent, &QBluetoothDeviceDiscoveryAgent::deviceDiscovered, this, &Traffic::TrafficDataProvider::onBTDeviceDiscovered);
-
-    m_BTScanner = new BTScanner(this);
-    QQmlEngine::setObjectOwnership(m_BTScanner, QQmlEngine::CppOwnership);
+*/
+    m_connectionScanner_Bluetooth = new ConnectionScanner_Bluetooth(this);
+    QQmlEngine::setObjectOwnership(m_connectionScanner_Bluetooth, QQmlEngine::CppOwnership);
 }
 
 
@@ -151,7 +151,7 @@ void Traffic::TrafficDataProvider::connectToTrafficReceiver()
     case Qt::PermissionStatus::Denied:
         break;
     case Qt::PermissionStatus::Granted:
-        m_discoveryAgent.start();
+        //m_discoveryAgent.start();
         break;
     }
     updateStatusString();

@@ -85,8 +85,9 @@ set(SOURCES
     positioning/PositionInfoSource_Abstract.h
     positioning/PositionInfoSource_Satellite.h
     positioning/PositionProvider.h
-    traffic/BTDeviceInfo.h
-    traffic/BTScanner.h
+    traffic/ConnectionInfo.h
+    traffic/ConnectionScanner_Abstract.h
+    traffic/ConnectionScanner_Bluetooth.h
     traffic/FlarmnetDB.h
     traffic/PasswordDB.h
     traffic/TrafficDataSource_Abstract.h
@@ -175,8 +176,9 @@ set(SOURCES
     positioning/PositionInfoSource_Abstract.cpp
     positioning/PositionInfoSource_Satellite.cpp
     positioning/PositionProvider.cpp
-    traffic/BTDeviceInfo.cpp
-    traffic/BTScanner.cpp
+    traffic/ConnectionInfo.cpp
+    traffic/ConnectionScanner_Abstract.cpp
+    traffic/ConnectionScanner_Bluetooth.cpp
     traffic/FlarmnetDB.cpp
     traffic/PasswordDB.cpp
     traffic/TrafficDataSource_Abstract.cpp

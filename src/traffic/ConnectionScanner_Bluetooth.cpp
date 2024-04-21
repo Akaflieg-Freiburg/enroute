@@ -19,51 +19,62 @@
  ***************************************************************************/
 
 #include <QCoreApplication>
-#include <QQmlEngine>
 
-#include "traffic/BTScanner.h"
+#include "traffic/ConnectionScanner_Bluetooth.h"
 
 
 // Member functions
 
-Traffic::BTScanner::BTScanner(QObject* parent)
-    : QObject(parent)
+Traffic::ConnectionScanner_Bluetooth::ConnectionScanner_Bluetooth(QObject* parent)
+    : ConnectionScanner_Abstract(parent)
 {
-    // Wire up Bluetooth-related members
+#if defined(Q_OS_IOS)
+    setError( tr("Due to platform limitations, Bluetooth is not supported on iOS."));
+    return;
+#endif
+
+    // Rectify Permissions
     m_bluetoothPermission.setCommunicationModes(QBluetoothPermission::Access);
 
-    connect(&m_discoveryAgent, &QBluetoothDeviceDiscoveryAgent::errorOccurred, this, &Traffic::BTScanner::onErrorOccurred);
-    connect(&m_discoveryAgent, &QBluetoothDeviceDiscoveryAgent::canceled, this, &Traffic::BTScanner::onCanceled);
-    connect(&m_discoveryAgent, &QBluetoothDeviceDiscoveryAgent::finished, this, &Traffic::BTScanner::onFinished);
-    connect(&m_discoveryAgent, &QBluetoothDeviceDiscoveryAgent::deviceDiscovered, this, &Traffic::BTScanner::onDeviceDiscovered);
-
-    start();
+    // Wire up Bluetooth-related members
+    connect(&m_discoveryAgent, &QBluetoothDeviceDiscoveryAgent::canceled, this, &Traffic::ConnectionScanner_Bluetooth::onCanceled);
+    connect(&m_discoveryAgent, &QBluetoothDeviceDiscoveryAgent::deviceDiscovered, this, &Traffic::ConnectionScanner_Bluetooth::onDeviceDiscovered);
+    connect(&m_discoveryAgent, &QBluetoothDeviceDiscoveryAgent::deviceUpdated, this, &Traffic::ConnectionScanner_Bluetooth::onDeviceUpdated);
+    connect(&m_discoveryAgent, &QBluetoothDeviceDiscoveryAgent::errorOccurred, this, &Traffic::ConnectionScanner_Bluetooth::onErrorOccurred);
+    connect(&m_discoveryAgent, &QBluetoothDeviceDiscoveryAgent::finished, this, &Traffic::ConnectionScanner_Bluetooth::onFinished);
 }
 
 
-void Traffic::BTScanner::onCanceled()
+void Traffic::ConnectionScanner_Bluetooth::onCanceled()
 {
     setIsScanning(m_discoveryAgent.isActive());
+    updateConnectionInfos();
 }
 
-void Traffic::BTScanner::onDeviceDiscovered(const QBluetoothDeviceInfo& info)
+void Traffic::ConnectionScanner_Bluetooth::onDeviceDiscovered(const QBluetoothDeviceInfo& info)
 {
-    qWarning() << "Found device" << info.name();
-
-    QVector<Traffic::BTDeviceInfo> result;
-    auto deviceInfos = m_discoveryAgent.discoveredDevices();
-    foreach (auto deviceInfo, deviceInfos)
+    // Ignore devices that we cannot connect to
+    ConnectionInfo connectionInfo(info);
+    if (!connectionInfo.canAddConnection())
     {
-        result += BTDeviceInfo(deviceInfo);
+        return;
     }
-    setDevices(result);
 
+    setIsScanning(m_discoveryAgent.isActive());
+    updateConnectionInfos();
 }
 
-void Traffic::BTScanner::onErrorOccurred(QBluetoothDeviceDiscoveryAgent::Error error)
+void Traffic::ConnectionScanner_Bluetooth::onDeviceUpdated(const QBluetoothDeviceInfo& info, QBluetoothDeviceInfo::Fields updatedFields)
 {
-    setIsScanning(m_discoveryAgent.isActive());
+    // Ignore if only irrelevant fields are updated
+    if ((updatedFields & QBluetoothDeviceInfo::Field::ServiceData) != 0)
+    {
+        onDeviceDiscovered(info);
+    }
+}
 
+void Traffic::ConnectionScanner_Bluetooth::onErrorOccurred(QBluetoothDeviceDiscoveryAgent::Error error)
+{
     switch(error)
     {
     case QBluetoothDeviceDiscoveryAgent::NoError:
@@ -94,55 +105,62 @@ void Traffic::BTScanner::onErrorOccurred(QBluetoothDeviceDiscoveryAgent::Error e
         setError( tr("An unknown error has occurred.") );
         break;
     }
+    setIsScanning(m_discoveryAgent.isActive());
 }
 
-void Traffic::BTScanner::onFinished()
+void Traffic::ConnectionScanner_Bluetooth::onFinished()
 {
     setIsScanning(m_discoveryAgent.isActive());
-
-    QVector<Traffic::BTDeviceInfo> result;
-    auto deviceInfos = m_discoveryAgent.discoveredDevices();
-    foreach (auto deviceInfo, deviceInfos)
-    {
-        result += BTDeviceInfo(deviceInfo);
-    }
-    setDevices(result);
+    updateConnectionInfos();
 }
 
-void Traffic::BTScanner::setDevices(const QVector<Traffic::BTDeviceInfo>& _devices)
+void Traffic::ConnectionScanner_Bluetooth::start()
 {
-    if (_devices == m_devices)
+#if defined(Q_OS_IOS)
+    return;
+#endif
+
+    if (m_discoveryAgent.isActive())
     {
         return;
     }
-    m_devices = _devices;
-    qWarning() << "Size of list" << m_devices.length();
-    emit devicesChanged();
-}
 
-void Traffic::BTScanner::setError(const QString& errorString)
-{
-    if (errorString == m_error)
-    {
+    switch (qApp->checkPermission(m_bluetoothPermission)) {
+    case Qt::PermissionStatus::Undetermined:
+        qApp->requestPermission(m_bluetoothPermission, this, [this]() { start(); });
         return;
-    }
-    m_error = errorString;
-    emit errorChanged();
-}
-
-void Traffic::BTScanner::setIsScanning(bool _isScanning)
-{
-    if (_isScanning == m_isScanning)
-    {
+    case Qt::PermissionStatus::Denied:
+        setError( tr("Necessary permission have been denied.") );
         return;
+    case Qt::PermissionStatus::Granted:
+        break;
     }
-    m_isScanning = _isScanning;
-    emit isScanningChanged();
 
-}
-
-void Traffic::BTScanner::start()
-{
+    setError({});
     m_discoveryAgent.start();
     setIsScanning(m_discoveryAgent.isActive());
 }
+
+void Traffic::ConnectionScanner_Bluetooth::stop()
+{
+    if (!m_discoveryAgent.isActive())
+    {
+        return;
+    }
+
+    m_discoveryAgent.stop();
+}
+
+void Traffic::ConnectionScanner_Bluetooth::updateConnectionInfos()
+{
+    QVector<Traffic::ConnectionInfo> result;
+    auto deviceInfos = m_discoveryAgent.discoveredDevices();
+    foreach (auto deviceInfo, deviceInfos)
+    {
+        result += ConnectionInfo(deviceInfo);
+    }
+
+    std::sort(result.begin(), result.end());
+    setDevices(result);
+}
+

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2024 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,46 +18,45 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#pragma once
-
-#include <QBluetoothDeviceDiscoveryAgent>
-#include <QBluetoothDeviceInfo>
-#include <QNetworkDatagram>
-#include <QPointer>
-#include <QQmlEngine>
-#include <QUdpSocket>
+#include "traffic/ConnectionScanner_Abstract.h"
 
 
+Traffic::ConnectionScanner_Abstract::ConnectionScanner_Abstract(QObject* parent)
+    : QObject(parent)
+{
+}
 
-namespace Traffic {
 
+//
+// Getter functions
+//
 
-class BTDeviceInfo {
-    Q_GADGET
-    QML_VALUE_TYPE(btDeviceInfo)
+void Traffic::ConnectionScanner_Abstract::setDevices(const QList<Traffic::ConnectionInfo>& newConnectionInfos)
+{
+    if (newConnectionInfos == m_connectionInfos)
+    {
+        return;
+    }
+    m_connectionInfos = newConnectionInfos;
+    emit connectionInfosChanged();
+}
 
-public:
-    BTDeviceInfo() = default;
-    explicit BTDeviceInfo(const QBluetoothDeviceInfo& info);
+void Traffic::ConnectionScanner_Abstract::setError(const QString& newError)
+{
+    if (newError == m_error)
+    {
+        return;
+    }
+    m_error = newError;
+    emit errorChanged();
+}
 
-    Q_PROPERTY(QString name READ name CONSTANT)
-    [[nodiscard]] QString name() const;
-
-    Q_PROPERTY(QString description READ description CONSTANT)
-    [[nodiscard]] QString description() const;
-
-    Q_PROPERTY(QString icon READ icon CONSTANT)
-    [[nodiscard]] QString icon() const;
-
-    Q_PROPERTY(bool canAddConnection READ canAddConnection CONSTANT)
-    [[nodiscard]] bool canAddConnection();
-
-    bool operator == (const BTDeviceInfo& other) const = default;
-
-    [[nodiscard]] QBluetoothDeviceInfo deviceInfo() const { return m_deviceInfo; }
-
-private:
-    QBluetoothDeviceInfo m_deviceInfo;
-};
-
-} // namespace Traffic
+void Traffic::ConnectionScanner_Abstract::setIsScanning(bool newScanning)
+{
+    if (newScanning == m_isScanning)
+    {
+        return;
+    }
+    m_isScanning = newScanning;
+    emit scanningChanged();
+}

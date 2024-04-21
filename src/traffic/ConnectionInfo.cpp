@@ -22,18 +22,18 @@
 #include <QQmlEngine>
 
 #include "GlobalObject.h"
-#include "traffic/BTDeviceInfo.h"
+#include "traffic/ConnectionInfo.h"
 #include "traffic/TrafficDataProvider.h"
 
 
 // Member functions
 
-Traffic::BTDeviceInfo::BTDeviceInfo(const QBluetoothDeviceInfo& info)
+Traffic::ConnectionInfo::ConnectionInfo(const QBluetoothDeviceInfo& info)
     : m_deviceInfo(info)
 {
 }
 
-QString Traffic::BTDeviceInfo::name() const
+QString Traffic::ConnectionInfo::name() const
 {
     if (!m_deviceInfo.isValid())
     {
@@ -49,8 +49,7 @@ QString Traffic::BTDeviceInfo::name() const
     return name;
 }
 
-
-QString Traffic::BTDeviceInfo::description() const
+QString Traffic::ConnectionInfo::description() const
 {
 
     QStringList descriptionItems;
@@ -112,7 +111,7 @@ QString Traffic::BTDeviceInfo::description() const
     return u"%1<br><font size='2'>%2</font>"_qs.arg(name(), descriptionItems.join(" • "));
 }
 
-bool Traffic::BTDeviceInfo::canAddConnection()
+bool Traffic::ConnectionInfo::canAddConnection() const
 {
     if (!m_deviceInfo.isValid())
     {
@@ -130,7 +129,7 @@ bool Traffic::BTDeviceInfo::canAddConnection()
     return true;
 }
 
-QString Traffic::BTDeviceInfo::icon() const
+QString Traffic::ConnectionInfo::icon() const
 {
     if (!m_deviceInfo.isValid())
     {
@@ -141,4 +140,20 @@ QString Traffic::BTDeviceInfo::icon() const
         return "/icons/material/ic_bluetooth_disabled.svg";
     }
     return "/icons/material/ic_bluetooth.svg";
+}
+
+bool Traffic::ConnectionInfo::operator< (const ConnectionInfo& other) const
+{
+    const bool canAddConnectionFst = canAddConnection();
+    const bool canAddConnectionSnd = other.canAddConnection();
+    if (canAddConnectionFst && !canAddConnectionSnd)
+    {
+        return true;
+    }
+    if (!canAddConnectionFst && canAddConnectionSnd)
+    {
+        return false;
+    }
+
+    return name() < other.name();
 }

@@ -31,7 +31,7 @@ using namespace std::chrono_literals;
 
 // Member functions
 
-QString Traffic::TrafficDataProvider::addDataSource(Traffic::BTDeviceInfo deviceInfo)
+QString Traffic::TrafficDataProvider::addDataSource(Traffic::ConnectionInfo deviceInfo)
 {
     if (hasSource(deviceInfo.deviceInfo()))
     {
@@ -70,6 +70,7 @@ bool Traffic::TrafficDataProvider::hasSource(const QBluetoothDeviceInfo& device)
     }
     return false;
 }
+
 
 void Traffic::TrafficDataProvider::onBTDeviceDiscovered(const QBluetoothDeviceInfo& info)
 {
@@ -137,18 +138,6 @@ QString Traffic::TrafficDataProvider::BTStatus()
     if (localBTDevice.hostMode() == QBluetoothLocalDevice::HostPoweredOff)
     {
         return "<p>" + tr("Bluetooth INOP: Powered off.") + "<p>";
-    }
-    if (m_discoveryAgent.error() != QBluetoothDeviceDiscoveryAgent::NoError)
-    {
-        return "<p>" + tr("Bluetooth INOP: %1").arg(m_discoveryAgent.errorString()) + "<p>";
-    }
-    if (m_discoveryAgent.isActive())
-    {
-#if defined(Q_OS_IOS)
-        return "<p>" + tr("Bluetooth: Scanning for Bluetooth LE devices offering serial port service.") + "<p>";
-#else
-        return "<p>" + tr("Bluetooth: Scanning for Bluetooth devices offering serial port service.") + "<p>";
-#endif
     }
 
 #if defined(Q_OS_IOS)

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2024 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -22,60 +22,70 @@
 
 #include <QBluetoothDeviceDiscoveryAgent>
 #include <QBluetoothPermission>
-#include <QNetworkDatagram>
-#include <QPointer>
 #include <QQmlEngine>
-#include <QUdpSocket>
 
-#include "traffic/BTDeviceInfo.h"
+#include "traffic/ConnectionInfo.h"
+#include "traffic/ConnectionScanner_Abstract.h"
 
 namespace Traffic {
 
-
-class BTScanner : public QObject {
+/*! \brief Connection Scanner: Bluetooth Devices
+ *
+ *  This class is a wrapper for QBluetoothDeviceDiscoveryAgent, providing data in a format
+ *  that can by used by C++ and QML.
+ */
+class ConnectionScanner_Bluetooth : public ConnectionScanner_Abstract {
     Q_OBJECT
     QML_ELEMENT
+    QML_UNCREATABLE("This object is a C++ singleton")
+
+    // Properties need to be repeated, or else the Qt CMake macros cannot find them.
+    Q_PROPERTY(QList<ConnectionInfo> connectionInfos READ connectionInfos NOTIFY connectionInfosChanged)
+    Q_PROPERTY(QString error READ error NOTIFY errorChanged)
+    Q_PROPERTY(bool scanning READ scanning NOTIFY scanningChanged)
 
 public:
-    explicit BTScanner(QObject *parent = nullptr);
+    /*! \brief Constructor
+     *
+     *  This constructor does not start the scanning process.
+     *
+     *  @param parent The standard QObject parent pointer
+     */
+    explicit ConnectionScanner_Bluetooth(QObject* parent = nullptr);
 
-    // No default constructor, important for QML singleton
-    explicit BTScanner() = delete;
-
-    Q_PROPERTY(QVector<BTDeviceInfo> devices READ devices NOTIFY devicesChanged)
-    Q_PROPERTY(QString error READ error NOTIFY errorChanged)
-    Q_PROPERTY(bool isScanning READ isScanning NOTIFY isScanningChanged)
-
-    [[nodiscard]] QVector<BTDeviceInfo> devices() const { return m_devices; }
-    [[nodiscard]] QString error() const { return m_error; }
-    [[nodiscard]] bool isScanning() const { return m_isScanning; }
 
 public slots:
-    void start();
-    void stop() {;}
+    // Re-implemented from ConnectionScanner_Abstract
+    void start() override;
 
-signals:
-    void devicesChanged();
-    void errorChanged();
-    void isScanningChanged();
+    // Re-implemented from ConnectionScanner_Abstract
+    void stop() override;
+
 
 private slots:
+    // Connected to m_discoveryAgent
     void onCanceled();
+
+    // Connected to m_discoveryAgent
     void onDeviceDiscovered(const QBluetoothDeviceInfo& info);
+
+    // Connected to m_discoveryAgent
+    void onDeviceUpdated(const QBluetoothDeviceInfo& info, QBluetoothDeviceInfo::Fields updatedFields);
+
+    // Connected to m_discoveryAgent
     void onErrorOccurred(QBluetoothDeviceDiscoveryAgent::Error error);
+
+    // Connected to m_discoveryAgent
     void onFinished();
-    void setDevices(const QVector<Traffic::BTDeviceInfo>& _devices);
-    void setError(const QString& errorString);
-    void setIsScanning(bool _isScanning);
 
 private:
+    // Update connectionInfos
+    void updateConnectionInfos();
+
     // Bluetooth related members
     QBluetoothPermission m_bluetoothPermission;
     QBluetoothDeviceDiscoveryAgent m_discoveryAgent;
 
-    QVector<BTDeviceInfo> m_devices;
-    QString m_error {};
-    bool m_isScanning {false};
 };
 
 } // namespace Traffic

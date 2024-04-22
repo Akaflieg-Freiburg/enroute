@@ -36,6 +36,9 @@ class ConnectionInfo {
     Q_GADGET
     QML_VALUE_TYPE(connectionInfo)
 
+    friend QDataStream& operator<<(QDataStream& stream, const Traffic::ConnectionInfo &connectionInfo);
+    friend QDataStream& operator>>(QDataStream& stream, Traffic::ConnectionInfo& connectionInfo);
+
 public:
     /*! \brief Connection Type */
     enum Type {
@@ -51,7 +54,7 @@ public:
 
     ConnectionInfo() = default;
 
-    explicit ConnectionInfo(const QBluetoothDeviceInfo& info);
+    explicit ConnectionInfo(const QBluetoothDeviceInfo& info, bool canonical=false);
 
 
 
@@ -60,6 +63,7 @@ public:
     //
 
     Q_PROPERTY(bool canConnect READ canConnect CONSTANT)
+    Q_PROPERTY(bool canonical READ canonical CONSTANT)
     Q_PROPERTY(QString description READ description CONSTANT)
     Q_PROPERTY(QString icon READ icon CONSTANT)
     Q_PROPERTY(QString name READ name CONSTANT)
@@ -71,32 +75,87 @@ public:
     // Getter Methods
     //
 
+    /*!
+     * \brief Getter function for the property with the same name
+     *
+     * \returns Property canConnect
+     */
     [[nodiscard]] bool canConnect() const { return m_canConnect; }
+
+    /*!
+     * \brief Getter function for the property with the same name
+     *
+     * \returns Property canonical
+     */
+    [[nodiscard]] bool canonical() const { return m_canonical; }
+
+    /*!
+     * \brief Getter function for the property with the same name
+     *
+     * \returns Property description
+     */
     [[nodiscard]] QString description() const { return m_description; }
+
+    /*!
+     * \brief Getter function for the property with the same name
+     *
+     * \returns Property name
+     */
     [[nodiscard]] QString name() const { return m_name; }
+
+    /*!
+     * \brief Getter function for the property with the same name
+     *
+     * \returns Property icon
+     */
     [[nodiscard]] QString icon() const { return m_icon; }
+
+    /*!
+     * \brief Getter function for the property with the same name
+     *
+     * \returns Property type
+     */
     [[nodiscard]] Traffic::ConnectionInfo::Type type() const { return m_type; }
 
 
-    // ----------
 
+    //
+    // Methods
+    //
 
-
+    [[nodiscard]] QBluetoothDeviceInfo bluetoothDeviceInfo() const { return m_bluetoothDeviceInfo; }
 
     bool operator== (const ConnectionInfo& other) const;
 
     bool operator< (const ConnectionInfo& other) const;
 
-    [[nodiscard]] QBluetoothDeviceInfo bluetoothDeviceInfo() const { return m_bluetoothDeviceInfo; }
-
 private:
+    //
+    // Properties
+    //
     bool                          m_canConnect { false };
+    bool                          m_canonical { false };
     QString                       m_description {};
     QString                       m_icon { u"/icons/material/ic_delete.svg"_qs };
     QString                       m_name { QObject::tr("Invalid Device", "BTDeviceInfo") };
     Traffic::ConnectionInfo::Type m_type { Traffic::ConnectionInfo::Invalid };
 
+    //
+    // Private members, depending on m_type
+    //
     QBluetoothDeviceInfo          m_bluetoothDeviceInfo {};
 };
+
+/*! \brief Serialization
+ *
+ *  There is no checks for errors of any kind.
+ */
+QDataStream& operator<<(QDataStream& stream, const Traffic::ConnectionInfo &connectionInfo);
+
+/*! \brief Deserialization
+ *
+ *  There is no checks for errors of any kind.
+ */
+QDataStream& operator>>(QDataStream& stream, Traffic::ConnectionInfo& connectionInfo);
 
 } // namespace Traffic

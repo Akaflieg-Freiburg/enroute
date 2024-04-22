@@ -28,8 +28,8 @@
 
 // Member functions
 
-Traffic::ConnectionInfo::ConnectionInfo(const QBluetoothDeviceInfo& info)
-    : m_bluetoothDeviceInfo(info)
+Traffic::ConnectionInfo::ConnectionInfo(const QBluetoothDeviceInfo& info, bool canonical)
+    : m_bluetoothDeviceInfo(info), m_canonical(canonical)
 {
 
     // Set Name
@@ -186,3 +186,81 @@ bool Traffic::ConnectionInfo::operator< (const ConnectionInfo& other) const
 }
 
 
+
+/*! \brief Deserialization
+ *
+ *  There is no checks for errors of any kind.
+ */
+
+QDataStream& Traffic::operator<<(QDataStream& stream, const Traffic::ConnectionInfo &connectionInfo)
+{
+    stream << connectionInfo.m_canConnect;
+    stream << connectionInfo.m_canonical;
+    stream << connectionInfo.m_description;
+    stream << connectionInfo.m_icon;
+    stream << connectionInfo.m_name;
+    stream << connectionInfo.m_type;
+
+    switch(connectionInfo.m_type)
+    {
+    case Traffic::ConnectionInfo::Invalid:
+        break;
+    case Traffic::ConnectionInfo::BluetoothClassic:
+    case Traffic::ConnectionInfo::BluetoothLowEnergy:
+    {
+        stream << connectionInfo.m_bluetoothDeviceInfo.address().toUInt64();
+        stream << connectionInfo.m_bluetoothDeviceInfo.name();
+
+        quint32 classOfDevice = 0;
+        classOfDevice |= connectionInfo.m_bluetoothDeviceInfo.minorDeviceClass() << 2;
+        classOfDevice |= connectionInfo.m_bluetoothDeviceInfo.majorDeviceClass() << 8;
+        classOfDevice |= connectionInfo.m_bluetoothDeviceInfo.serviceClasses() << 13;
+        stream << classOfDevice;
+        break;
+    }
+    case Traffic::ConnectionInfo::TCP:
+    case Traffic::ConnectionInfo::UDP:
+    case Traffic::ConnectionInfo::Serial:
+    case Traffic::ConnectionInfo::FLARMFile:
+        break;
+    }
+
+    return stream;
+}
+
+
+QDataStream& Traffic::operator>>(QDataStream& stream, Traffic::ConnectionInfo& connectionInfo)
+{
+    stream >> connectionInfo.m_canConnect;
+    stream >> connectionInfo.m_canonical;
+    stream >> connectionInfo.m_description;
+    stream >> connectionInfo.m_icon;
+    stream >> connectionInfo.m_name;
+    stream >> connectionInfo.m_type;
+
+    switch(connectionInfo.m_type)
+    {
+    case Traffic::ConnectionInfo::Invalid:
+        break;
+    case Traffic::ConnectionInfo::BluetoothClassic:
+    case Traffic::ConnectionInfo::BluetoothLowEnergy:
+    {
+        quint64 address = 0;
+        quint32 classOfDevice = 0;
+        QString name;
+
+        stream >> address;
+        stream >> name;
+        stream >> classOfDevice;
+        connectionInfo.m_bluetoothDeviceInfo = QBluetoothDeviceInfo(QBluetoothAddress(address), name, classOfDevice);
+        break;
+    }
+    case Traffic::ConnectionInfo::TCP:
+    case Traffic::ConnectionInfo::UDP:
+    case Traffic::ConnectionInfo::Serial:
+    case Traffic::ConnectionInfo::FLARMFile:
+        break;
+    }
+
+    return stream;
+}

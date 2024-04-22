@@ -48,8 +48,6 @@ Page {
         TabButton { text: "AD" }
         TabButton { text: "WP" }
         TabButton { text: "NAV" }
-        TabButton { text: "REP" }
-//        Material.elevation: 3
     }
 
     SwipeView {
@@ -89,6 +87,7 @@ Page {
                 visible: parent.count === 0
 
                 horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
                 textFormat: Text.StyledText
                 wrapMode: Text.Wrap
                 text: qsTr("<h3>Sorry!</h3><p>No aerodrome data available. Please make sure that an aviation map is installed.</p>")
@@ -110,9 +109,10 @@ Page {
                 visible: parent.count === 0
 
                 horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
                 textFormat: Text.StyledText
                 wrapMode: Text.Wrap
-                text: qsTr("<h3>Sorry!</h3><p>No aerodrome data available. Please make sure that an aviation map is installed.</p>")
+                text: qsTr("<h3>Sorry!</h3><p>No waypoints available.</p>")
             }
         }
 
@@ -131,30 +131,10 @@ Page {
                 visible: parent.count === 0
 
                 horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
                 textFormat: Text.StyledText
                 wrapMode: Text.Wrap
                 text: qsTr("<h3>Sorry!</h3><p>No navaid data available.</p>")
-            }
-        }
-
-        DecoratedListView {
-            id: rpList
-
-            clip: true
-
-            delegate: waypointDelegate
-
-            Component.onCompleted: rpList.model = GeoMapProvider.nearbyWaypoints(PositionProvider.lastValidCoordinate, "WP")
-            
-            Label {
-                anchors.fill: parent
-                anchors.topMargin: font.pixelSize*2
-                visible: parent.count === 0
-
-                horizontalAlignment: Text.AlignHCenter
-                textFormat: Text.StyledText
-                wrapMode: Text.Wrap
-                text: qsTr("<h3>Sorry!</h3><p>No reporting point data available.</p>")
             }
         }
     }

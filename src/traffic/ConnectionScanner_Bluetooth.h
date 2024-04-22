@@ -31,8 +31,8 @@ namespace Traffic {
 
 /*! \brief Connection Scanner: Bluetooth Devices
  *
- *  This class is a wrapper for QBluetoothDeviceDiscoveryAgent, providing data in a format
- *  that can by used by C++ and QML.
+ *  This class is a wrapper for QBluetoothDeviceDiscoveryAgent, providing data
+ *  in a format that can by used by C++ and QML.
  */
 class ConnectionScanner_Bluetooth : public ConnectionScanner_Abstract {
     Q_OBJECT
@@ -60,9 +60,10 @@ public:
     //
 
     /*!
-     * \brief bluetooth system status
+     * \brief Bluetooth system status
      *
-     * \return In case where Bluetooth is INOP, this method returns a string with a human-readable, translated error message. Otherwise, an empty
+     * \return In case where Bluetooth is INOP, this method returns a string
+     * with a human-readable, translated error message. Otherwise, an empty
      * string is returned.
      */
     [[nodiscard]] static QString bluetoothStatus();

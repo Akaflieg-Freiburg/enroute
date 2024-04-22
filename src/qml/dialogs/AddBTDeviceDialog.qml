@@ -66,7 +66,7 @@ CenteringDialog {
             delegate: WordWrappingItemDelegate {
                 width: dlg.availableWidth
 
-                enabled: model.modelData.canAddConnection
+                enabled: model.modelData.canConnect
                 icon.source: model.modelData.icon
                 text: model.modelData.description
 

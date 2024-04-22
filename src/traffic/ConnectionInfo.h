@@ -49,7 +49,7 @@ public:
     };
     Q_ENUM(Type)
 
-    ConnectionInfo();
+    ConnectionInfo() = default;
 
     explicit ConnectionInfo(const QBluetoothDeviceInfo& info);
 
@@ -59,8 +59,11 @@ public:
     // Properties
     //
 
+    Q_PROPERTY(bool canConnect READ canConnect CONSTANT)
     Q_PROPERTY(QString description READ description CONSTANT)
+    Q_PROPERTY(QString icon READ icon CONSTANT)
     Q_PROPERTY(QString name READ name CONSTANT)
+    Q_PROPERTY(Traffic::ConnectionInfo::Type type READ type CONSTANT)
 
 
 
@@ -68,34 +71,32 @@ public:
     // Getter Methods
     //
 
+    [[nodiscard]] bool canConnect() const { return m_canConnect; }
     [[nodiscard]] QString description() const { return m_description; }
     [[nodiscard]] QString name() const { return m_name; }
+    [[nodiscard]] QString icon() const { return m_icon; }
+    [[nodiscard]] Traffic::ConnectionInfo::Type type() const { return m_type; }
+
 
     // ----------
 
-    Q_PROPERTY(QString icon READ icon CONSTANT)
-    [[nodiscard]] QString icon() const;
 
-    Q_PROPERTY(bool canAddConnection READ canAddConnection CONSTANT)
-    [[nodiscard]] bool canAddConnection() const;
 
-    Q_PROPERTY(Traffic::ConnectionInfo::Type type READ type CONSTANT)
-    [[nodiscard]] Traffic::ConnectionInfo::Type type() const { return Traffic::ConnectionInfo::Type::Invalid; }
 
-    bool operator== (const ConnectionInfo& other) const = default;
+    bool operator== (const ConnectionInfo& other) const;
 
     bool operator< (const ConnectionInfo& other) const;
 
-    [[nodiscard]] QBluetoothDeviceInfo deviceInfo() const { return m_deviceInfo; }
+    [[nodiscard]] QBluetoothDeviceInfo bluetoothDeviceInfo() const { return m_bluetoothDeviceInfo; }
 
 private:
-    bool                          m_canConnect;
-    QString                       m_description;
-    QString                       m_icon;
-    QString                       m_name;
-    Traffic::ConnectionInfo::Type m_type;
+    bool                          m_canConnect { false };
+    QString                       m_description {};
+    QString                       m_icon { u"/icons/material/ic_delete.svg"_qs };
+    QString                       m_name { QObject::tr("Invalid Device", "BTDeviceInfo") };
+    Traffic::ConnectionInfo::Type m_type { Traffic::ConnectionInfo::Invalid };
 
-    QBluetoothDeviceInfo          m_deviceInfo;
+    QBluetoothDeviceInfo          m_bluetoothDeviceInfo {};
 };
 
 } // namespace Traffic

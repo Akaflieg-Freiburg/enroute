@@ -80,7 +80,7 @@ void Traffic::ConnectionScanner_Bluetooth::onDeviceDiscovered(const QBluetoothDe
 {
     // Ignore devices that we cannot connect to
     ConnectionInfo connectionInfo(info);
-    if (!connectionInfo.canAddConnection())
+    if (!connectionInfo.canConnect())
     {
         return;
     }

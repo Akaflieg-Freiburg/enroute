@@ -33,12 +33,12 @@ using namespace std::chrono_literals;
 
 QString Traffic::TrafficDataProvider::addDataSource(Traffic::ConnectionInfo deviceInfo)
 {
-    if (hasSource(deviceInfo.deviceInfo()))
+    if (hasSource(deviceInfo.bluetoothDeviceInfo()))
     {
         return tr("Device Already Added");
     }
 
-    auto* source = new TrafficDataSource_BTClassic(deviceInfo.deviceInfo(), this);
+    auto* source = new TrafficDataSource_BTClassic(deviceInfo.bluetoothDeviceInfo(), this);
     source->connectToTrafficReceiver();
     addDataSource(source);
 #warning

@@ -54,6 +54,19 @@ public:
     explicit ConnectionScanner_Bluetooth(QObject* parent = nullptr);
 
 
+
+    //
+    // Methods
+    //
+
+    /*!
+     * \brief bluetooth system status
+     *
+     * \return In case where Bluetooth is INOP, this method returns a string with a human-readable, translated error message. Otherwise, an empty
+     * string is returned.
+     */
+    [[nodiscard]] static QString bluetoothStatus();
+
 public slots:
     // Re-implemented from ConnectionScanner_Abstract
     void start() override;

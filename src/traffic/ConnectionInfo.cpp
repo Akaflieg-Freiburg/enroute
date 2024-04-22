@@ -28,87 +28,85 @@
 
 // Member functions
 
+Traffic::ConnectionInfo::ConnectionInfo()
+{
+    m_description = {};
+    m_name = QObject::tr("Invalid Device", "BTDeviceInfo");
+
+}
+
 Traffic::ConnectionInfo::ConnectionInfo(const QBluetoothDeviceInfo& info)
     : m_deviceInfo(info)
 {
-}
 
-QString Traffic::ConnectionInfo::name() const
-{
-    if (!m_deviceInfo.isValid())
+    // Set Name
     {
-        return QObject::tr("Invalid Device", "BTDeviceInfo");
-    }
-
-    QString name = m_deviceInfo.name();
-    if (name.isEmpty())
-    {
-        return QObject::tr("Unnamed Device", "BTDeviceInfo");
-    }
-
-    return name;
-}
-
-QString Traffic::ConnectionInfo::description() const
-{
-
-    QStringList descriptionItems;
-    if (m_deviceInfo.coreConfigurations() == QBluetoothDeviceInfo::LowEnergyCoreConfiguration)
-    {
-        descriptionItems += QObject::tr("Bluetooth Low Energy Device (mot supported)", "BTDeviceInfo");
-    }
-    else
-    {
-        if (GlobalObject::trafficDataProvider()->hasSource(m_deviceInfo))
+        if (m_deviceInfo.isValid())
         {
-            descriptionItems += QObject::tr("Device already added", "BTDeviceInfo");
+            m_name = m_deviceInfo.name();
+            if (m_name.isEmpty())
+            {
+                m_name = QObject::tr("Unnamed Device", "BTDeviceInfo");
+            }
         }
         else
         {
-            switch(m_deviceInfo.majorDeviceClass())
-            {
-            case QBluetoothDeviceInfo::MiscellaneousDevice:
-                descriptionItems += QObject::tr("Miscellaneous Device", "BTDeviceInfo");
-                break;
-            case QBluetoothDeviceInfo::ComputerDevice:
-                descriptionItems += QObject::tr("Computer or PDA Device", "BTDeviceInfo");
-                break;
-            case QBluetoothDeviceInfo::PhoneDevice:
-                descriptionItems += QObject::tr("Telephone Device", "BTDeviceInfo");
-                break;
-            case QBluetoothDeviceInfo::NetworkDevice:
-                descriptionItems += QObject::tr("Network Device", "BTDeviceInfo");
-                break;
-            case QBluetoothDeviceInfo::AudioVideoDevice:
-                descriptionItems += QObject::tr("Audio/Video Device", "BTDeviceInfo");
-                break;
-            case QBluetoothDeviceInfo::PeripheralDevice:
-                descriptionItems += QObject::tr("Peripheral Device", "BTDeviceInfo");
-                break;
-            case QBluetoothDeviceInfo::ImagingDevice:
-                descriptionItems += QObject::tr("Imaging Device", "BTDeviceInfo");
-                break;
-            case QBluetoothDeviceInfo::WearableDevice:
-                descriptionItems += QObject::tr("Wearable Device", "BTDeviceInfo");
-                break;
-            case QBluetoothDeviceInfo::ToyDevice:
-                descriptionItems += QObject::tr("Toy Device", "BTDeviceInfo");
-                break;
-            case QBluetoothDeviceInfo::HealthDevice:
-                descriptionItems += QObject::tr("Health Device", "BTDeviceInfo");
-                break;
-            case QBluetoothDeviceInfo::UncategorizedDevice:
-                descriptionItems += QObject::tr("Uncategorized Device", "BTDeviceInfo");
-                break;
-            }
-            if (m_deviceInfo.serviceUuids().contains(QBluetoothUuid::ServiceClassUuid::SerialPort))
-            {
-                descriptionItems += QObject::tr("Serial Port Service", "BTDeviceInfo");
-            }
+            m_name = QObject::tr("Invalid Device", "BTDeviceInfo");
         }
     }
 
-    return u"%1<br><font size='2'>%2</font>"_qs.arg(name(), descriptionItems.join(" • "));
+    // Set Description (must come after name)
+    {
+        QStringList descriptionItems;
+        if (m_deviceInfo.coreConfigurations() == QBluetoothDeviceInfo::LowEnergyCoreConfiguration)
+        {
+            descriptionItems += QObject::tr("Bluetooth Low Energy Device (mot supported)", "BTDeviceInfo");
+        }
+        else
+        {
+                switch(m_deviceInfo.majorDeviceClass())
+                {
+                case QBluetoothDeviceInfo::MiscellaneousDevice:
+                    descriptionItems += QObject::tr("Miscellaneous Device", "BTDeviceInfo");
+                    break;
+                case QBluetoothDeviceInfo::ComputerDevice:
+                    descriptionItems += QObject::tr("Computer or PDA Device", "BTDeviceInfo");
+                    break;
+                case QBluetoothDeviceInfo::PhoneDevice:
+                    descriptionItems += QObject::tr("Telephone Device", "BTDeviceInfo");
+                    break;
+                case QBluetoothDeviceInfo::NetworkDevice:
+                    descriptionItems += QObject::tr("Network Device", "BTDeviceInfo");
+                    break;
+                case QBluetoothDeviceInfo::AudioVideoDevice:
+                    descriptionItems += QObject::tr("Audio/Video Device", "BTDeviceInfo");
+                    break;
+                case QBluetoothDeviceInfo::PeripheralDevice:
+                    descriptionItems += QObject::tr("Peripheral Device", "BTDeviceInfo");
+                    break;
+                case QBluetoothDeviceInfo::ImagingDevice:
+                    descriptionItems += QObject::tr("Imaging Device", "BTDeviceInfo");
+                    break;
+                case QBluetoothDeviceInfo::WearableDevice:
+                    descriptionItems += QObject::tr("Wearable Device", "BTDeviceInfo");
+                    break;
+                case QBluetoothDeviceInfo::ToyDevice:
+                    descriptionItems += QObject::tr("Toy Device", "BTDeviceInfo");
+                    break;
+                case QBluetoothDeviceInfo::HealthDevice:
+                    descriptionItems += QObject::tr("Health Device", "BTDeviceInfo");
+                    break;
+                case QBluetoothDeviceInfo::UncategorizedDevice:
+                    descriptionItems += QObject::tr("Uncategorized Device", "BTDeviceInfo");
+                    break;
+                }
+                if (m_deviceInfo.serviceUuids().contains(QBluetoothUuid::ServiceClassUuid::SerialPort))
+                {
+                    descriptionItems += QObject::tr("Serial Port Service", "BTDeviceInfo");
+                }
+        }
+        m_description = u"%1<br><font size='2'>%2</font>"_qs.arg(m_name, descriptionItems.join(" • "));
+    }
 }
 
 bool Traffic::ConnectionInfo::canAddConnection() const

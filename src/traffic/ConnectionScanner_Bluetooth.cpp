@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QBluetoothLocalDevice>
 #include <QCoreApplication>
 
 #include "traffic/ConnectionScanner_Bluetooth.h"
@@ -44,6 +45,30 @@ Traffic::ConnectionScanner_Bluetooth::ConnectionScanner_Bluetooth(QObject* paren
     connect(&m_discoveryAgent, &QBluetoothDeviceDiscoveryAgent::finished, this, &Traffic::ConnectionScanner_Bluetooth::onFinished);
 }
 
+
+QString Traffic::ConnectionScanner_Bluetooth::bluetoothStatus()
+{
+    QBluetoothPermission const m_bluetoothPermission;
+    switch (qApp->checkPermission(m_bluetoothPermission)) {
+    case Qt::PermissionStatus::Undetermined:
+        return tr("Waiting for permissions.");
+    case Qt::PermissionStatus::Denied:
+        return tr("Necessary permissions have been denied.");
+    case Qt::PermissionStatus::Granted:
+        break;
+    }
+
+    QBluetoothLocalDevice const localBTDevice;
+    if (!localBTDevice.isValid())
+    {
+        return tr("No Bluetooth adaptor has been found.");
+    }
+    if (localBTDevice.hostMode() == QBluetoothLocalDevice::HostPoweredOff)
+    {
+        return tr("Bluetooth is powered off.");
+    }
+    return {};
+}
 
 void Traffic::ConnectionScanner_Bluetooth::onCanceled()
 {
@@ -102,7 +127,7 @@ void Traffic::ConnectionScanner_Bluetooth::onErrorOccurred(QBluetoothDeviceDisco
         setError( tr("The operating system requests permissions which were not granted by the user.") );
         break;
     case QBluetoothDeviceDiscoveryAgent::UnknownError:
-        setError( tr("An unknown error has occurred.") );
+        setError( tr("An unknown error has occurred.") + " " + bluetoothStatus() );
         break;
     }
     setIsScanning(m_discoveryAgent.isActive());

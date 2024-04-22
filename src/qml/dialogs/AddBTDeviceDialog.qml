@@ -86,7 +86,6 @@ CenteringDialog {
             enabled: !btScanner.scanning
             icon.source: "/icons/material/ic_bluetooth_searching.svg"
             onClicked: btScanner.start()
-            visible: btScanner.error === ""
         }
 
     }

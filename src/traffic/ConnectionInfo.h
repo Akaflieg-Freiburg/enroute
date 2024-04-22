@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QBluetoothDeviceInfo>
+#include <QQmlEngine>
 
 
 namespace Traffic {
@@ -48,15 +49,29 @@ public:
     };
     Q_ENUM(Type)
 
-    ConnectionInfo() = default;
+    ConnectionInfo();
 
     explicit ConnectionInfo(const QBluetoothDeviceInfo& info);
 
-    Q_PROPERTY(QString name READ name CONSTANT)
-    [[nodiscard]] QString name() const;
+
+
+    //
+    // Properties
+    //
 
     Q_PROPERTY(QString description READ description CONSTANT)
-    [[nodiscard]] QString description() const;
+    Q_PROPERTY(QString name READ name CONSTANT)
+
+
+
+    //
+    // Getter Methods
+    //
+
+    [[nodiscard]] QString description() const { return m_description; }
+    [[nodiscard]] QString name() const { return m_name; }
+
+    // ----------
 
     Q_PROPERTY(QString icon READ icon CONSTANT)
     [[nodiscard]] QString icon() const;
@@ -74,7 +89,13 @@ public:
     [[nodiscard]] QBluetoothDeviceInfo deviceInfo() const { return m_deviceInfo; }
 
 private:
-    QBluetoothDeviceInfo m_deviceInfo;
+    bool                          m_canConnect;
+    QString                       m_description;
+    QString                       m_icon;
+    QString                       m_name;
+    Traffic::ConnectionInfo::Type m_type;
+
+    QBluetoothDeviceInfo          m_deviceInfo;
 };
 
 } // namespace Traffic

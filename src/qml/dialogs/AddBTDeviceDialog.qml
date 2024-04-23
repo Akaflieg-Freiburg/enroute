@@ -32,17 +32,14 @@ CenteringDialog {
     title: qsTr("Add Bluetooth Device")
     standardButtons: Dialog.Cancel
 
-    property ConnectionScanner_Bluetooth btScanner: TrafficDataProvider.btScanner
-
-
     ColumnLayout {
         anchors.fill: parent
 
         Label {
             Layout.fillWidth: true
 
-            text: qsTr("Error") + ": " + btScanner.error
-            visible: btScanner.error !== ""
+            text: qsTr("Error") + ": " + ConnectionScanner_Bluetooth.error
+            visible: ConnectionScanner_Bluetooth.error !== ""
             wrapMode: Text.Wrap
         }
 
@@ -50,7 +47,7 @@ CenteringDialog {
             Layout.fillWidth: true
 
             text: qsTr("No Device Found")
-            visible: btScanner.connectionInfos.length === 0
+            visible: ConnectionScanner_Bluetooth.connectionInfos.length === 0
             wrapMode: Text.Wrap
         }
 
@@ -61,7 +58,7 @@ CenteringDialog {
 
             clip: true
 
-            model: btScanner.connectionInfos
+            model: ConnectionScanner_Bluetooth.connectionInfos
 
             delegate: WordWrappingItemDelegate {
                 width: dlg.availableWidth
@@ -81,11 +78,11 @@ CenteringDialog {
         Button {
             Layout.alignment: Qt.AlignHCenter
 
-            text: btScanner.scanning ? qsTr("Scanning…") : qsTr("Scan for Devices")
+            text: ConnectionScanner_Bluetooth.scanning ? qsTr("Scanning…") : qsTr("Scan for Devices")
 
-            enabled: !btScanner.scanning
+            enabled: !ConnectionScanner_Bluetooth.scanning
             icon.source: "/icons/material/ic_bluetooth_searching.svg"
-            onClicked: btScanner.start()
+            onClicked: ConnectionScanner_Bluetooth.start()
         }
 
     }

@@ -98,15 +98,11 @@ public:
 
 #warning docu
     bool hasSource(const QBluetoothDeviceInfo& device);
-    Q_INVOKABLE QString addDataSource(Traffic::ConnectionInfo deviceInfo);
+    Q_INVOKABLE QString addDataSource(const Traffic::ConnectionInfo &deviceInfo);
 
     //
     // Properties
     //
-
-#warning
-    Q_PROPERTY(Traffic::ConnectionScanner_Bluetooth* btScanner READ btScanner CONSTANT)
-    Traffic::ConnectionScanner_Bluetooth* btScanner() const { return m_connectionScanner_Bluetooth; }
 
     /*! \brief Heartbeat indicator
      *
@@ -329,9 +325,6 @@ private slots:
     void updateStatusString();
 
 private:
-#warning documentation
-    QString BTStatus();
-
     // UDP Socket for ForeFlight Broadcast messages.
     // See https://www.foreflight.com/connect/spec/
     QNetworkDatagram foreFlightBroadcastDatagram {R"({"App":"Enroute Flight Navigation","GDL90":{"port":4000}})", QHostAddress::Broadcast, 63093};
@@ -357,10 +350,6 @@ private:
 
     // Property Cache
     bool m_receivingHeartbeat {false};
-
-    // Bluetooth related members
-    QBluetoothPermission m_bluetoothPermission;
-    Traffic::ConnectionScanner_Bluetooth* m_connectionScanner_Bluetooth;
 };
 
 } // namespace Traffic

@@ -24,7 +24,6 @@
 #include <QBluetoothPermission>
 #include <QQmlEngine>
 
-#include "traffic/ConnectionInfo.h"
 #include "traffic/ConnectionScanner_Abstract.h"
 
 namespace Traffic {
@@ -37,7 +36,7 @@ namespace Traffic {
 class ConnectionScanner_Bluetooth : public ConnectionScanner_Abstract {
     Q_OBJECT
     QML_ELEMENT
-    QML_UNCREATABLE("This object is a C++ singleton")
+    QML_SINGLETON
 
     // Properties need to be repeated, or else the Qt CMake macros cannot find them.
     Q_PROPERTY(QList<ConnectionInfo> connectionInfos READ connectionInfos NOTIFY connectionInfosChanged)
@@ -52,6 +51,16 @@ public:
      *  @param parent The standard QObject parent pointer
      */
     explicit ConnectionScanner_Bluetooth(QObject* parent = nullptr);
+
+    // No default constructor, important for QML singleton
+    explicit ConnectionScanner_Bluetooth() = delete;
+
+    // factory function for QML singleton
+    static Traffic::ConnectionScanner_Bluetooth* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
+    {
+        return new Traffic::ConnectionScanner_Bluetooth(nullptr);
+    }
+
 
 
 

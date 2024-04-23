@@ -195,7 +195,7 @@ bool Traffic::ConnectionInfo::operator< (const ConnectionInfo& other) const
     const bool canConnectSnd = other.canConnect();
     if (canConnectFst != canConnectSnd)
     {
-        return canConnectFst < canConnectSnd;
+        return static_cast<int>(canConnectFst) < static_cast<int>(canConnectSnd);
     }
 
     if (m_type != other.m_type)

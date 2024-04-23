@@ -45,7 +45,6 @@ Traffic::ConnectionScanner_Bluetooth::ConnectionScanner_Bluetooth(QObject* paren
     connect(&m_discoveryAgent, &QBluetoothDeviceDiscoveryAgent::finished, this, &Traffic::ConnectionScanner_Bluetooth::onFinished);
 }
 
-
 QString Traffic::ConnectionScanner_Bluetooth::bluetoothStatus()
 {
     QBluetoothPermission const m_bluetoothPermission;

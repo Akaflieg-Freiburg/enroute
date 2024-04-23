@@ -31,7 +31,7 @@ using namespace std::chrono_literals;
 
 // Member functions
 
-QString Traffic::TrafficDataProvider::addDataSource(Traffic::ConnectionInfo deviceInfo)
+QString Traffic::TrafficDataProvider::addDataSource(const Traffic::ConnectionInfo &deviceInfo)
 {
     if (hasSource(deviceInfo.bluetoothDeviceInfo()))
     {
@@ -42,7 +42,7 @@ QString Traffic::TrafficDataProvider::addDataSource(Traffic::ConnectionInfo devi
     source->connectToTrafficReceiver();
     addDataSource(source);
 #warning
-    return "not implemented";
+    return u"not implemented"_qs;
 }
 
 
@@ -117,32 +117,3 @@ void Traffic::TrafficDataProvider::onBTDeviceDiscovered(const QBluetoothDeviceIn
 
 }
 
-
-QString Traffic::TrafficDataProvider::BTStatus()
-{
-
-    switch (qApp->checkPermission(m_bluetoothPermission)) {
-    case Qt::PermissionStatus::Undetermined:
-        return "<p>" + tr("Bluetooth INOP: Waiting for permission.") + "<p>";
-    case Qt::PermissionStatus::Denied:
-        return "<p>" + tr("Bluetooth INOP: No permission.") + "<p>";
-    case Qt::PermissionStatus::Granted:
-        break;
-    }
-
-    QBluetoothLocalDevice const localBTDevice;
-    if (!localBTDevice.isValid())
-    {
-        return "<p>" + tr("Bluetooth INOP: No adaptor found.") + "<p>";
-    }
-    if (localBTDevice.hostMode() == QBluetoothLocalDevice::HostPoweredOff)
-    {
-        return "<p>" + tr("Bluetooth INOP: Powered off.") + "<p>";
-    }
-
-#if defined(Q_OS_IOS)
-    return "<p>" + tr("Bluetooth: Only Bluetooth LE is supported on iOS. Classic Bluetooth is not supported.") + "<p>";
-#else
-    return {};
-#endif
-}

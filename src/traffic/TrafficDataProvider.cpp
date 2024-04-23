@@ -86,16 +86,6 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
 
     // Clean up
     connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, this, &Traffic::TrafficDataProvider::clearDataSources);
-
-    // Wire up Bluetooth-related members
-    m_bluetoothPermission.setCommunicationModes(QBluetoothPermission::Access);
-/*    connect(&m_discoveryAgent, &QBluetoothDeviceDiscoveryAgent::errorOccurred, this, &Traffic::TrafficDataProvider::updateStatusString);
-    connect(&m_discoveryAgent, &QBluetoothDeviceDiscoveryAgent::canceled, this, &Traffic::TrafficDataProvider::updateStatusString);
-    connect(&m_discoveryAgent, &QBluetoothDeviceDiscoveryAgent::finished, this, &Traffic::TrafficDataProvider::updateStatusString);
-    connect(&m_discoveryAgent, &QBluetoothDeviceDiscoveryAgent::deviceDiscovered, this, &Traffic::TrafficDataProvider::onBTDeviceDiscovered);
-*/
-    m_connectionScanner_Bluetooth = new ConnectionScanner_Bluetooth(this);
-    QQmlEngine::setObjectOwnership(m_connectionScanner_Bluetooth, QQmlEngine::CppOwnership);
 }
 
 
@@ -144,16 +134,6 @@ void Traffic::TrafficDataProvider::connectToTrafficReceiver()
         dataSource->connectToTrafficReceiver();
     }
 
-    switch (qApp->checkPermission(m_bluetoothPermission)) {
-    case Qt::PermissionStatus::Undetermined:
-        qApp->requestPermission(m_bluetoothPermission, this, [this]() { connectToTrafficReceiver(); });
-        break;
-    case Qt::PermissionStatus::Denied:
-        break;
-    case Qt::PermissionStatus::Granted:
-        //m_discoveryAgent.start();
-        break;
-    }
     updateStatusString();
 }
 
@@ -481,7 +461,6 @@ void Traffic::TrafficDataProvider::updateStatusString()
 
     QString result = "<p>" + tr("Not receiving heartbeat.") + "<p>";
 
-    result += BTStatus();
     result += u"<ul style='margin-left:-25px;'>"_qs;
     foreach(auto source, m_dataSources)
     {

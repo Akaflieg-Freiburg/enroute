@@ -18,18 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QBluetoothAddress>
 #include <QCoreApplication>
 #include <QQmlEngine>
 
-#include "GlobalObject.h"
 #include "traffic/ConnectionInfo.h"
-#include "traffic/TrafficDataProvider.h"
 
 
-// Member functions
+
+//
+// Constructors
+//
 
 Traffic::ConnectionInfo::ConnectionInfo(const QBluetoothDeviceInfo& info, bool canonical)
-    : m_bluetoothDeviceInfo(info), m_canonical(canonical)
+    : m_bluetoothDeviceInfo(info),
+    m_canonical(canonical)
 {
 
     // Set Name
@@ -39,7 +42,7 @@ Traffic::ConnectionInfo::ConnectionInfo(const QBluetoothDeviceInfo& info, bool c
             m_name = m_bluetoothDeviceInfo.name();
             if (m_name.isEmpty())
             {
-                m_name = QObject::tr("Unnamed Device", "BTDeviceInfo");
+                m_name = QObject::tr("Unnamed Device", "Traffic::ConnectionInfo");
             }
         }
     }
@@ -49,52 +52,52 @@ Traffic::ConnectionInfo::ConnectionInfo(const QBluetoothDeviceInfo& info, bool c
         QStringList descriptionItems;
         if (m_bluetoothDeviceInfo.coreConfigurations() == QBluetoothDeviceInfo::LowEnergyCoreConfiguration)
         {
-            descriptionItems += QObject::tr("Bluetooth Low Energy Device (mot supported)", "BTDeviceInfo");
+            descriptionItems += QObject::tr("Bluetooth Low Energy Device (mot supported)", "Traffic::ConnectionInfo");
         }
         else
         {
             switch(m_bluetoothDeviceInfo.majorDeviceClass())
             {
             case QBluetoothDeviceInfo::MiscellaneousDevice:
-                descriptionItems += QObject::tr("Miscellaneous Device", "BTDeviceInfo");
+                descriptionItems += QObject::tr("Miscellaneous Device", "Traffic::ConnectionInfo");
                 break;
             case QBluetoothDeviceInfo::ComputerDevice:
-                descriptionItems += QObject::tr("Computer or PDA Device", "BTDeviceInfo");
+                descriptionItems += QObject::tr("Computer or PDA Device", "Traffic::ConnectionInfo");
                 break;
             case QBluetoothDeviceInfo::PhoneDevice:
-                descriptionItems += QObject::tr("Telephone Device", "BTDeviceInfo");
+                descriptionItems += QObject::tr("Telephone Device", "Traffic::ConnectionInfo");
                 break;
             case QBluetoothDeviceInfo::NetworkDevice:
-                descriptionItems += QObject::tr("Network Device", "BTDeviceInfo");
+                descriptionItems += QObject::tr("Network Device", "Traffic::ConnectionInfo");
                 break;
             case QBluetoothDeviceInfo::AudioVideoDevice:
-                descriptionItems += QObject::tr("Audio/Video Device", "BTDeviceInfo");
+                descriptionItems += QObject::tr("Audio/Video Device", "Traffic::ConnectionInfo");
                 break;
             case QBluetoothDeviceInfo::PeripheralDevice:
-                descriptionItems += QObject::tr("Peripheral Device", "BTDeviceInfo");
+                descriptionItems += QObject::tr("Peripheral Device", "Traffic::ConnectionInfo");
                 break;
             case QBluetoothDeviceInfo::ImagingDevice:
-                descriptionItems += QObject::tr("Imaging Device", "BTDeviceInfo");
+                descriptionItems += QObject::tr("Imaging Device", "Traffic::ConnectionInfo");
                 break;
             case QBluetoothDeviceInfo::WearableDevice:
-                descriptionItems += QObject::tr("Wearable Device", "BTDeviceInfo");
+                descriptionItems += QObject::tr("Wearable Device", "Traffic::ConnectionInfo");
                 break;
             case QBluetoothDeviceInfo::ToyDevice:
-                descriptionItems += QObject::tr("Toy Device", "BTDeviceInfo");
+                descriptionItems += QObject::tr("Toy Device", "Traffic::ConnectionInfo");
                 break;
             case QBluetoothDeviceInfo::HealthDevice:
-                descriptionItems += QObject::tr("Health Device", "BTDeviceInfo");
+                descriptionItems += QObject::tr("Health Device", "Traffic::ConnectionInfo");
                 break;
             case QBluetoothDeviceInfo::UncategorizedDevice:
-                descriptionItems += QObject::tr("Uncategorized Device", "BTDeviceInfo");
+                descriptionItems += QObject::tr("Uncategorized Device", "Traffic::ConnectionInfo");
                 break;
             }
             if (m_bluetoothDeviceInfo.serviceUuids().contains(QBluetoothUuid::ServiceClassUuid::SerialPort))
             {
-                descriptionItems += QObject::tr("Serial Port Service", "BTDeviceInfo");
+                descriptionItems += QObject::tr("Serial Port Service", "Traffic::ConnectionInfo");
             }
         }
-        m_description = u"%1<br><font size='2'>%2</font>"_qs.arg(m_name, descriptionItems.join(" • "));
+        m_description = u"%1<br><font size='2'>%2</font>"_qs.arg(m_name, descriptionItems.join(u" • "_qs));
     }
 
     // Set Icon
@@ -103,11 +106,11 @@ Traffic::ConnectionInfo::ConnectionInfo(const QBluetoothDeviceInfo& info, bool c
         {
             if (m_bluetoothDeviceInfo.coreConfigurations() == QBluetoothDeviceInfo::LowEnergyCoreConfiguration)
             {
-                m_icon = "/icons/material/ic_bluetooth_disabled.svg";
+                m_icon = u"/icons/material/ic_bluetooth_disabled.svg"_qs;
             }
             else
             {
-                m_icon = "/icons/material/ic_bluetooth.svg";
+                m_icon = u"/icons/material/ic_bluetooth.svg"_qs;
             }
         }
     }
@@ -133,7 +136,13 @@ Traffic::ConnectionInfo::ConnectionInfo(const QBluetoothDeviceInfo& info, bool c
     }
 }
 
-bool Traffic::ConnectionInfo::operator== (const ConnectionInfo& other) const
+
+
+//
+// Methods
+//
+
+bool Traffic::ConnectionInfo::sameConnectionAs(const ConnectionInfo& other) const
 {
     if (m_type != other.m_type)
     {
@@ -146,11 +155,17 @@ bool Traffic::ConnectionInfo::operator== (const ConnectionInfo& other) const
         {
             return false;
         }
-        if (!m_bluetoothDeviceInfo.isValid() & !other.m_bluetoothDeviceInfo.isValid())
+        if (!m_bluetoothDeviceInfo.isValid() && !other.m_bluetoothDeviceInfo.isValid())
         {
             return true;
         }
+
+#if defined(Q_OS_IOS)
+        // iOS hides the device address and works with anonymized device UUIDs
+        return m_bluetoothDeviceInfo.deviceUuid() == other.m_bluetoothDeviceInfo.deviceUuid();
+#else
         return m_bluetoothDeviceInfo.address() == other.m_bluetoothDeviceInfo.address();
+#endif
     }
 
     if (m_type == Traffic::ConnectionInfo::BluetoothLowEnergy)
@@ -163,7 +178,12 @@ bool Traffic::ConnectionInfo::operator== (const ConnectionInfo& other) const
         {
             return true;
         }
+#if defined(Q_OS_IOS)
+        // iOS hides the device address and works with anonymized device UUIDs
+        return m_bluetoothDeviceInfo.deviceUuid() == other.m_bluetoothDeviceInfo.deviceUuid();
+#else
         return m_bluetoothDeviceInfo.address() == other.m_bluetoothDeviceInfo.address();
+#endif
     }
 
     return true;
@@ -173,13 +193,14 @@ bool Traffic::ConnectionInfo::operator< (const ConnectionInfo& other) const
 {
     const bool canConnectFst = canConnect();
     const bool canConnectSnd = other.canConnect();
-    if (canConnectFst && !canConnectSnd)
+    if (canConnectFst != canConnectSnd)
     {
-        return true;
+        return canConnectFst < canConnectSnd;
     }
-    if (!canConnectFst && canConnectSnd)
+
+    if (m_type != other.m_type)
     {
-        return false;
+        return m_type < other.m_type;
     }
 
     return name() < other.name();
@@ -187,10 +208,9 @@ bool Traffic::ConnectionInfo::operator< (const ConnectionInfo& other) const
 
 
 
-/*! \brief Deserialization
- *
- *  There is no checks for errors of any kind.
- */
+//
+// Friends
+//
 
 QDataStream& Traffic::operator<<(QDataStream& stream, const Traffic::ConnectionInfo &connectionInfo)
 {
@@ -209,6 +229,7 @@ QDataStream& Traffic::operator<<(QDataStream& stream, const Traffic::ConnectionI
     case Traffic::ConnectionInfo::BluetoothLowEnergy:
     {
         stream << connectionInfo.m_bluetoothDeviceInfo.address().toUInt64();
+        stream << connectionInfo.m_bluetoothDeviceInfo.deviceUuid();
         stream << connectionInfo.m_bluetoothDeviceInfo.name();
 
         quint32 classOfDevice = 0;
@@ -246,13 +267,21 @@ QDataStream& Traffic::operator>>(QDataStream& stream, Traffic::ConnectionInfo& c
     case Traffic::ConnectionInfo::BluetoothLowEnergy:
     {
         quint64 address = 0;
+        QBluetoothUuid uuid;
         quint32 classOfDevice = 0;
         QString name;
 
         stream >> address;
+        stream >> uuid;
         stream >> name;
         stream >> classOfDevice;
+
+#if defined(Q_OS_IOS)
+        // iOS hides the device address and works with anonymized device UUIDs
+        connectionInfo.m_bluetoothDeviceInfo = QBluetoothDeviceInfo(uuid, name, classOfDevice);
+#else
         connectionInfo.m_bluetoothDeviceInfo = QBluetoothDeviceInfo(QBluetoothAddress(address), name, classOfDevice);
+#endif
         break;
     }
     case Traffic::ConnectionInfo::TCP:

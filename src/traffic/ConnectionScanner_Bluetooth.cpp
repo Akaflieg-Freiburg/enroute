@@ -79,7 +79,7 @@ void Traffic::ConnectionScanner_Bluetooth::onCanceled()
 void Traffic::ConnectionScanner_Bluetooth::onDeviceDiscovered(const QBluetoothDeviceInfo& info)
 {
     // Ignore devices that we cannot connect to
-    ConnectionInfo connectionInfo(info);
+    ConnectionInfo const connectionInfo(info);
     if (!connectionInfo.canConnect())
     {
         return;

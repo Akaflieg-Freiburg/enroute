@@ -20,14 +20,18 @@
 
 #include "traffic/TrafficDataSource_BTLE.h"
 
-
 Traffic::TrafficDataSource_BTLE::TrafficDataSource_BTLE(const QBluetoothDeviceInfo& info, QObject* parent)
-    : TrafficDataSource_AbstractSocket(parent), m_info(info)
+    : TrafficDataSource_AbstractSocket(parent),
+    m_info(info),
+    m_control(QLowEnergyController::createCentral(info, this))
 {
+#warning
     qWarning() << "New data source" << info.name();
 
-    m_control = QLowEnergyController::createCentral(info, this);
-    connect(m_control, &QLowEnergyController::serviceDiscovered, this, &Traffic::TrafficDataSource_BTLE::onServiceDiscovered);
+    connect(m_control,
+            &QLowEnergyController::serviceDiscovered,
+            this,
+            &Traffic::TrafficDataSource_BTLE::onServiceDiscovered);
     connect(m_control, &QLowEnergyController::stateChanged, this, &Traffic::TrafficDataSource_BTLE::onStateChanged);
     connect(m_control, &QLowEnergyController::errorOccurred, this, &Traffic::TrafficDataSource_BTLE::onErrorOccurred);
     connect(m_control, &QLowEnergyController::connected, this, &Traffic::TrafficDataSource_BTLE::onConnected);

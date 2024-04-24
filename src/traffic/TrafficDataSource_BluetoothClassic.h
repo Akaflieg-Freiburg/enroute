@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QBluetoothDeviceInfo>
+#include <QBluetoothPermission>
 #include <QBluetoothSocket>
 
 #include "traffic/TrafficDataSource_AbstractSocket.h"
@@ -118,6 +119,9 @@ private:
 
     // Copied from the constructor
     QBluetoothDeviceInfo m_info;
+
+    // Permissions
+    QBluetoothPermission m_bluetoothPermission;
 
     // Bluetooth socket used for reading data
     QBluetoothSocket m_socket {QBluetoothServiceInfo::RfcommProtocol};

@@ -18,14 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QApplication>
+
 #include "traffic/TrafficDataSource_BluetoothClassic.h"
 
-
-#warning Need to ask for permissions!
 
 Traffic::TrafficDataSource_BluetoothClassic::TrafficDataSource_BluetoothClassic(const QBluetoothDeviceInfo& info, QObject* parent)
     : TrafficDataSource_AbstractSocket(parent), m_info(info)
 {
+    // Rectify Permissions
+    m_bluetoothPermission.setCommunicationModes(QBluetoothPermission::Access);
+
     // Connect socket
     connect(&m_socket, &QBluetoothSocket::errorOccurred, this, &Traffic::TrafficDataSource_BluetoothClassic::onErrorOccurred);
     connect(&m_socket, &QBluetoothSocket::stateChanged, this, &Traffic::TrafficDataSource_BluetoothClassic::onStateChanged);
@@ -38,6 +41,23 @@ void Traffic::TrafficDataSource_BluetoothClassic::connectToTrafficReceiver()
     if (receivingHeartbeat())
     {
         return;
+    }
+
+#if defined(Q_OS_IOS)
+    setError( tr("Due to platform limitations, Bluetooth Classic is not supported on iOS."));
+    return;
+#endif
+
+    // Check if we have sufficient permissions
+    switch (qApp->checkPermission(m_bluetoothPermission)) {
+    case Qt::PermissionStatus::Undetermined:
+        qApp->requestPermission(m_bluetoothPermission, this, [this]() { connectToTrafficReceiver(); });
+        return;
+    case Qt::PermissionStatus::Denied:
+        setErrorString( tr("Necessary permission have been denied.") );
+        return;
+    case Qt::PermissionStatus::Granted:
+        break;
     }
 
     // Start new connection
@@ -120,7 +140,8 @@ void Traffic::TrafficDataSource_BluetoothClassic::onStateChanged(QBluetoothSocke
 void Traffic::TrafficDataSource_BluetoothClassic::onReadyRead()
 {
     QString sentence;
-    while(m_textStream.readLineInto(&sentence) ) {
+    while(m_textStream.readLineInto(&sentence) )
+    {
 #warning
         qWarning() << sentence;
         processFLARMSentence(sentence);

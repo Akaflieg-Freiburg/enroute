@@ -42,7 +42,6 @@ Traffic::TrafficDataSource_Tcp::TrafficDataSource_Tcp(QString hostName, quint16 
     // Initialize properties
     //
     onStateChanged(m_socket.state());
-
 }
 
 
@@ -51,14 +50,14 @@ Traffic::TrafficDataSource_Tcp::~TrafficDataSource_Tcp()
 
     Traffic::TrafficDataSource_Tcp::disconnectFromTrafficReceiver();
     setReceivingHeartbeat(false); // This will release the WiFi lock if necessary
-
 }
 
 
 void Traffic::TrafficDataSource_Tcp::connectToTrafficReceiver()
 {
     // Do not do anything if the traffic receiver is connected and is receiving.
-    if (receivingHeartbeat()) {
+    if (receivingHeartbeat())
+    {
         return;
     }
 
@@ -75,7 +74,6 @@ void Traffic::TrafficDataSource_Tcp::connectToTrafficReceiver()
 
     // Update properties
     onStateChanged(m_socket.state());
-
 }
 
 

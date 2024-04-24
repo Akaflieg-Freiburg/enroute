@@ -32,6 +32,8 @@ CenteringDialog {
     title: qsTr("Add Bluetooth Device")
     standardButtons: Dialog.Cancel
 
+    Component.onCompleted: ConnectionScanner_Bluetooth.start()
+
     ColumnLayout {
         anchors.fill: parent
 
@@ -69,6 +71,12 @@ CenteringDialog {
 
                 onClicked: {
                     var resultString = TrafficDataProvider.addDataSource(model.modelData)
+                    if (resultString !== "")
+                    {
+                        ltd.text = resultString
+                        ltd.open()
+                        return
+                    }
                     Global.toast.doToast( qsTr("Added Device %1").arg(model.modelData.name) )
                     dlg.close()
                 }
@@ -84,7 +92,12 @@ CenteringDialog {
             icon.source: "/icons/material/ic_bluetooth_searching.svg"
             onClicked: ConnectionScanner_Bluetooth.start()
         }
+    }
 
+    LongTextDialog {
+        id: ltd
+        title: qsTr("Error Adding Device")
+        standardButtons: Dialog.Ok
     }
 
 }

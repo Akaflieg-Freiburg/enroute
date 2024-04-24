@@ -123,6 +123,27 @@ void Traffic::TrafficDataProvider::addDataSource(Traffic::TrafficDataSource_Abst
 }
 
 
+QString Traffic::TrafficDataProvider::addDataSource(const Traffic::ConnectionInfo &connectionInfo)
+{
+    switch (connectionInfo.type()) {
+    case Traffic::ConnectionInfo::Invalid:
+        return tr("Invalid connection.");
+    case Traffic::ConnectionInfo::BluetoothClassic:
+    case Traffic::ConnectionInfo::BluetoothLowEnergy:
+        return addDataSource_BluetoothClassic(connectionInfo);
+    case Traffic::ConnectionInfo::TCP:
+        return tr("Unable to add TCP connection. This is not implemented at the moment.");
+    case Traffic::ConnectionInfo::UDP:
+        return tr("Unable to add UDP connection. This is not implemented at the moment.");
+    case Traffic::ConnectionInfo::Serial:
+        return tr("Unable to add serial port connection. This is not implemented at the moment.");
+    case Traffic::ConnectionInfo::FLARMFile:
+        return tr("Unable to add FLARM simulator file connection. This is not implemented at the moment.");
+    }
+    return {};
+}
+
+
 void Traffic::TrafficDataProvider::connectToTrafficReceiver()
 {
     foreach(auto dataSource, m_dataSources)

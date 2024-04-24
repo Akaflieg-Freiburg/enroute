@@ -37,7 +37,7 @@ namespace Traffic {
  *  service.
  */
 
-class TrafficDataSource_BTLE : public TrafficDataSource_AbstractSocket {
+class TrafficDataSource_BluetoothLowEnergy : public TrafficDataSource_AbstractSocket {
     Q_OBJECT
 
 public:
@@ -48,10 +48,10 @@ public:
      *
      *  @param parent The standard QObject parent pointer
      */
-    TrafficDataSource_BTLE(const QBluetoothDeviceInfo& info, QObject* parent=nullptr);
+    TrafficDataSource_BluetoothLowEnergy(const QBluetoothDeviceInfo& info, QObject* parent=nullptr);
 
     // Standard destructor
-    ~TrafficDataSource_BTLE() override = default;
+    ~TrafficDataSource_BluetoothLowEnergy() override = default;
 
 
 
@@ -124,7 +124,7 @@ private slots:
 
 
 private:
-    Q_DISABLE_COPY_MOVE(TrafficDataSource_BTLE)
+    Q_DISABLE_COPY_MOVE(TrafficDataSource_BluetoothLowEnergy)
 
     // Copied from the constructor
     QBluetoothDeviceInfo m_info;

@@ -93,12 +93,20 @@ public:
      */
     void addDataSource(Traffic::TrafficDataSource_Abstract* source);
 
+    /*!
+     * \brief Add an additional data source
+     *
+     * This method adds an additional data source to this TrafficDataProvider,
+     * typically a Bluetooth device.
+     *
+     * \param connectionInfo Description of the new connection.
+     *
+     * \returns An empty string on success, and a human-readable, translated error message on failure.
+     */
+    Q_INVOKABLE QString addDataSource(const Traffic::ConnectionInfo &connectionInfo);
+
     /*! \brief Clear all data sources */
     void clearDataSources();
-
-#warning docu
-    bool hasSource(const QBluetoothDeviceInfo& device);
-    Q_INVOKABLE QString addDataSource(const Traffic::ConnectionInfo &deviceInfo);
 
     //
     // Properties
@@ -283,7 +291,13 @@ public slots:
      */
     void setPassword(const QString& SSID, const QString &password);
 
-private slots:   
+private slots:
+    // Identical to addDataSource, but handles Bluetooth Classic connections only.
+    QString addDataSource_BluetoothClassic(const Traffic::ConnectionInfo &connectionInfo);
+
+    // Identical to addDataSource, but handles Bluetooth Low Energy connections only.
+    static QString addDataSource_BluetoothLowEnergy(const Traffic::ConnectionInfo &connectionInfo);
+
     // Intializations that are moved out of the constructor, in order to avoid
     // nested uses of constructors in Global.
     void deferredInitialization() const;
@@ -291,10 +305,6 @@ private slots:
     // Sends out foreflight broadcast message See
     // https://www.foreflight.com/connect/spec/
     void foreFlightBroadcast();
-
-    // Called once a BT device has been discovered.  Checks if the device
-    // offers serial port service. If so, it adds a new source.
-    void onBTDeviceDiscovered(const QBluetoothDeviceInfo& info);
 
     // Called if one of the sources indicates a heartbeat change
     void onSourceHeartbeatChanged();

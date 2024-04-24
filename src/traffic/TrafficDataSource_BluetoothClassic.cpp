@@ -18,32 +18,41 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "traffic/TrafficDataSource_BTClassic.h"
+#include "traffic/TrafficDataSource_BluetoothClassic.h"
 
 
-Traffic::TrafficDataSource_BTClassic::TrafficDataSource_BTClassic(const QBluetoothDeviceInfo& info, QObject* parent)
+Traffic::TrafficDataSource_BluetoothClassic::TrafficDataSource_BluetoothClassic(const QBluetoothDeviceInfo& info, QObject* parent)
     : TrafficDataSource_AbstractSocket(parent), m_info(info)
 {
     // Connect socket
-    connect(&socket, &QBluetoothSocket::errorOccurred, this, &Traffic::TrafficDataSource_BTClassic::onErrorOccurred);
-    connect(&socket, &QBluetoothSocket::stateChanged, this, &Traffic::TrafficDataSource_BTClassic::onStateChanged);
-    connect(&socket, &QBluetoothSocket::readyRead, this, &Traffic::TrafficDataSource_BTClassic::onReadyRead);
+    connect(&m_socket, &QBluetoothSocket::errorOccurred, this, &Traffic::TrafficDataSource_BluetoothClassic::onErrorOccurred);
+    connect(&m_socket, &QBluetoothSocket::stateChanged, this, &Traffic::TrafficDataSource_BluetoothClassic::onStateChanged);
+    connect(&m_socket, &QBluetoothSocket::readyRead, this, &Traffic::TrafficDataSource_BluetoothClassic::onReadyRead);
 }
 
-
-void Traffic::TrafficDataSource_BTClassic::connectToTrafficReceiver()
+void Traffic::TrafficDataSource_BluetoothClassic::connectToTrafficReceiver()
 {
-    socket.connectToService(m_info.address(), QBluetoothUuid::ServiceClassUuid::SerialPort);
+    // Do not do anything if the traffic receiver is connected and is receiving.
+    if (receivingHeartbeat())
+    {
+        return;
+    }
+
+    // Start new connection
+    m_socket.abort();
+    setErrorString();
+    m_socket.connectToService(m_info.address(), QBluetoothUuid::ServiceClassUuid::SerialPort);
+
+    // Update properties
+    onStateChanged(m_socket.state());
 }
 
-
-void Traffic::TrafficDataSource_BTClassic::disconnectFromTrafficReceiver()
+void Traffic::TrafficDataSource_BluetoothClassic::disconnectFromTrafficReceiver()
 {
-    socket.disconnectFromService();
+    m_socket.disconnectFromService();
 }
 
-
-void Traffic::TrafficDataSource_BTClassic::onErrorOccurred(QBluetoothSocket::SocketError error)
+void Traffic::TrafficDataSource_BluetoothClassic::onErrorOccurred(QBluetoothSocket::SocketError error)
 {
     switch (error)
     {
@@ -75,11 +84,9 @@ void Traffic::TrafficDataSource_BTClassic::onErrorOccurred(QBluetoothSocket::Soc
         setErrorString( tr("The operating system requests permissions which were not granted by the user.") );
         break;
     }
-
 }
 
-
-void Traffic::TrafficDataSource_BTClassic::onStateChanged(QBluetoothSocket::SocketState state)
+void Traffic::TrafficDataSource_BluetoothClassic::onStateChanged(QBluetoothSocket::SocketState state)
 {
     // Compute new status
     switch(state)
@@ -108,23 +115,22 @@ void Traffic::TrafficDataSource_BTClassic::onStateChanged(QBluetoothSocket::Sock
     }
 }
 
-
-void Traffic::TrafficDataSource_BTClassic::onReadyRead()
+void Traffic::TrafficDataSource_BluetoothClassic::onReadyRead()
 {
     QString sentence;
     while(m_textStream.readLineInto(&sentence) ) {
+#warning
         qWarning() << sentence;
         processFLARMSentence(sentence);
     }
 }
 
-
-QString Traffic::TrafficDataSource_BTClassic::sourceName() const
+QString Traffic::TrafficDataSource_BluetoothClassic::sourceName() const
 {
     auto name = m_info.name();
     if (name.isEmpty())
     {
         name = tr("Unnamed Device");
     }
-    return tr("BT Classic connection to %1").arg(name);
+    return tr("Bluetooth Classic connection to %1").arg(name);
 }

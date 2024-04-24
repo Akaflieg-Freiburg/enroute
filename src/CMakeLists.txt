@@ -92,8 +92,8 @@ set(SOURCES
     traffic/PasswordDB.h
     traffic/TrafficDataSource_Abstract.h
     traffic/TrafficDataSource_AbstractSocket.h
-    traffic/TrafficDataSource_BTClassic.h
-    traffic/TrafficDataSource_BTLE.h
+    traffic/TrafficDataSource_BluetoothClassic.h
+    traffic/TrafficDataSource_BluetoothLowEnergy.h
     traffic/TrafficDataSource_File.h
     traffic/TrafficDataSource_Simulate.h
     traffic/TrafficDataSource_Tcp.h
@@ -186,14 +186,14 @@ set(SOURCES
     traffic/TrafficDataSource_Abstract_GDL90.cpp
     traffic/TrafficDataSource_Abstract_XGPS.cpp
     traffic/TrafficDataSource_AbstractSocket.cpp
-    traffic/TrafficDataSource_BTClassic.cpp
-    traffic/TrafficDataSource_BTLE.cpp
+    traffic/TrafficDataSource_BluetoothClassic.cpp
+    traffic/TrafficDataSource_BluetoothLowEnergy.cpp
     traffic/TrafficDataSource_File.cpp
     traffic/TrafficDataSource_Simulate.cpp
     traffic/TrafficDataSource_Tcp.cpp
     traffic/TrafficDataSource_Udp.cpp
     traffic/TrafficDataProvider.cpp
-    traffic/TrafficDataProvider_BT.cpp
+    traffic/TrafficDataProvider_BluetoothClassic.cpp
     traffic/TrafficFactor_Abstract.cpp
     traffic/TrafficFactor_DistanceOnly.cpp
     traffic/TrafficFactor_WithPosition.cpp
@@ -588,6 +588,7 @@ qt_add_qml_module(${PROJECT_NAME}
     SOURCES
     ui/ScaleQuickItem.h
     ui/ScaleQuickItem.cpp
+    SOURCES traffic/TrafficDataProvider_BluetoothLowEnergy.cpp
 )
 
 qt_add_translations(${PROJECT_NAME}

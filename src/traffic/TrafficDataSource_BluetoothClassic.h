@@ -20,13 +20,10 @@
 
 #pragma once
 
-#include <QBluetoothLocalDevice>
 #include <QBluetoothDeviceInfo>
-#include <QBluetoothServiceInfo>
 #include <QBluetoothSocket>
 
 #include "traffic/TrafficDataSource_AbstractSocket.h"
-
 
 namespace Traffic {
 
@@ -36,7 +33,7 @@ namespace Traffic {
  *  service.
  */
 
-class TrafficDataSource_BTClassic : public TrafficDataSource_AbstractSocket {
+class TrafficDataSource_BluetoothClassic : public TrafficDataSource_AbstractSocket {
     Q_OBJECT
 
 public:
@@ -47,10 +44,10 @@ public:
      *
      *  @param parent The standard QObject parent pointer
      */
-    TrafficDataSource_BTClassic(const QBluetoothDeviceInfo& info, QObject* parent=nullptr);
+    TrafficDataSource_BluetoothClassic(const QBluetoothDeviceInfo& info, QObject* parent=nullptr);
 
     // Standard destructor
-    ~TrafficDataSource_BTClassic() override = default;
+    ~TrafficDataSource_BluetoothClassic() override = default;
 
 
 
@@ -116,16 +113,16 @@ private slots:
     void onReadyRead();
 
 private:
-    Q_DISABLE_COPY_MOVE(TrafficDataSource_BTClassic)
+    Q_DISABLE_COPY_MOVE(TrafficDataSource_BluetoothClassic)
 
     // Copied from the constructor
     QBluetoothDeviceInfo m_info;
 
-    // BT socket used for reading data
-    QBluetoothSocket socket {QBluetoothServiceInfo::RfcommProtocol};
+    // Bluetooth socket used for reading data
+    QBluetoothSocket m_socket {QBluetoothServiceInfo::RfcommProtocol};
 
     // Text stream used for reading NMEA sentences
-    QTextStream m_textStream {&socket};
+    QTextStream m_textStream {&m_socket};
 };
 
 } // namespace Traffic

@@ -26,6 +26,7 @@
 
 #include "traffic/ConnectionScanner_Abstract.h"
 
+
 namespace Traffic {
 
 /*! \brief Connection Scanner: Bluetooth Devices
@@ -60,7 +61,6 @@ public:
     {
         return new Traffic::ConnectionScanner_Bluetooth(nullptr);
     }
-
 
 
 

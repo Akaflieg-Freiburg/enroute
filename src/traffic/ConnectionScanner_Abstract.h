@@ -24,6 +24,7 @@
 
 #include "traffic/ConnectionInfo.h"
 
+
 namespace Traffic {
 
 /*! \brief Connection Scanner

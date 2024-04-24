@@ -19,19 +19,12 @@
  ***************************************************************************/
 
 #include <QCoreApplication>
-#include <QQmlEngine>
-#include <chrono>
 
-#include "GlobalObject.h"
 #include "platform/PlatformAdaptor_Abstract.h"
-#include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficDataSource_Tcp.h"
 #include "traffic/TrafficDataSource_Udp.h"
+#include "traffic/TrafficDataProvider.h"
 
-using namespace std::chrono_literals;
-
-
-// Member functions
 
 Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning::PositionInfoSource_Abstract(parent)
 {

@@ -20,6 +20,7 @@
 
 #include "traffic/TrafficDataProvider.h"
 
+
 QString Traffic::TrafficDataProvider::addDataSource_BluetoothLowEnergy(const Traffic::ConnectionInfo& /*connectionInfo*/)
 {
     return tr("Connections to Bluetooth Low Energy devices are currently not supported.");

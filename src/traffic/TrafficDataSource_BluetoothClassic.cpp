@@ -21,6 +21,8 @@
 #include "traffic/TrafficDataSource_BluetoothClassic.h"
 
 
+#warning Need to ask for permissions!
+
 Traffic::TrafficDataSource_BluetoothClassic::TrafficDataSource_BluetoothClassic(const QBluetoothDeviceInfo& info, QObject* parent)
     : TrafficDataSource_AbstractSocket(parent), m_info(info)
 {

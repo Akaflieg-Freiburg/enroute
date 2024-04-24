@@ -21,6 +21,7 @@
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficDataSource_BluetoothClassic.h"
 
+
 QString Traffic::TrafficDataProvider::addDataSource_BluetoothClassic(const Traffic::ConnectionInfo &connectionInfo)
 {
 #if defined(Q_OS_IOS)

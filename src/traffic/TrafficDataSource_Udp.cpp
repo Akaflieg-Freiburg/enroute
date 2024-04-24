@@ -23,8 +23,6 @@
 #include "traffic/TrafficDataSource_Udp.h"
 
 
-// Member functions
-
 Traffic::TrafficDataSource_Udp::TrafficDataSource_Udp(quint16 port, QObject *parent) :
     Traffic::TrafficDataSource_AbstractSocket(parent), m_port(port)
 {
@@ -39,15 +37,11 @@ Traffic::TrafficDataSource_Udp::TrafficDataSource_Udp(quint16 port, QObject *par
     TrafficDataSource_Udp::disconnectFromTrafficReceiver();
 }
 
-
 Traffic::TrafficDataSource_Udp::~TrafficDataSource_Udp()
 {
-
     Traffic::TrafficDataSource_Udp::disconnectFromTrafficReceiver();
     setReceivingHeartbeat(false); // This will release the WiFi lock if necessary
-
 }
-
 
 void Traffic::TrafficDataSource_Udp::connectToTrafficReceiver()
 {
@@ -75,10 +69,8 @@ void Traffic::TrafficDataSource_Udp::connectToTrafficReceiver()
     onStateChanged(m_socket->state());
 }
 
-
 void Traffic::TrafficDataSource_Udp::disconnectFromTrafficReceiver()
 {
-
     // Disconnect socket.
     if (!m_socket.isNull())
     {
@@ -88,9 +80,7 @@ void Traffic::TrafficDataSource_Udp::disconnectFromTrafficReceiver()
 
     // Update properties
     onStateChanged(QAbstractSocket::UnconnectedState);
-
 }
-
 
 void Traffic::TrafficDataSource_Udp::onReadyRead()
 {
@@ -132,8 +122,6 @@ void Traffic::TrafficDataSource_Udp::onReadyRead()
                     processGDLMessage(rawMessage);
                 }
             }
-
         }
     }
-
 }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,20 +20,13 @@
 
 #pragma once
 
-#include <QBluetoothDeviceDiscoveryAgent>
-#include <QBluetoothPermission>
 #include <QNetworkDatagram>
-#include <QPointer>
-#include <QQmlEngine>
 #include <QUdpSocket>
 
 #include "GlobalObject.h"
 #include "positioning/PositionInfoSource_Abstract.h"
-#include "traffic/ConnectionScanner_Bluetooth.h"
-#include "traffic/TrafficFactor_DistanceOnly.h"
-#include "traffic/TrafficFactor_WithPosition.h"
-#include "traffic/Warning.h"
-
+#include "traffic/ConnectionInfo.h"
+#include "traffic/TrafficDataSource_Abstract.h"
 
 namespace Traffic {
 

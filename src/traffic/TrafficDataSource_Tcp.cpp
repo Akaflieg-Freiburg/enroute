@@ -23,7 +23,6 @@
 #include "traffic/PasswordDB.h"
 #include "traffic/TrafficDataSource_Tcp.h"
 
-// Member functions
 
 Traffic::TrafficDataSource_Tcp::TrafficDataSource_Tcp(QString hostName, quint16 port, QObject *parent) :
     Traffic::TrafficDataSource_AbstractSocket(parent), m_hostName(std::move(hostName)), m_port(port) {
@@ -44,14 +43,12 @@ Traffic::TrafficDataSource_Tcp::TrafficDataSource_Tcp(QString hostName, quint16 
     onStateChanged(m_socket.state());
 }
 
-
 Traffic::TrafficDataSource_Tcp::~TrafficDataSource_Tcp()
 {
 
     Traffic::TrafficDataSource_Tcp::disconnectFromTrafficReceiver();
     setReceivingHeartbeat(false); // This will release the WiFi lock if necessary
 }
-
 
 void Traffic::TrafficDataSource_Tcp::connectToTrafficReceiver()
 {
@@ -76,7 +73,6 @@ void Traffic::TrafficDataSource_Tcp::connectToTrafficReceiver()
     onStateChanged(m_socket.state());
 }
 
-
 void Traffic::TrafficDataSource_Tcp::disconnectFromTrafficReceiver()
 {
 
@@ -90,7 +86,6 @@ void Traffic::TrafficDataSource_Tcp::disconnectFromTrafficReceiver()
     onStateChanged(m_socket.state());
 
 }
-
 
 void Traffic::TrafficDataSource_Tcp::onReadyRead()
 {
@@ -117,7 +112,6 @@ void Traffic::TrafficDataSource_Tcp::onReadyRead()
 
 }
 
-
 void Traffic::TrafficDataSource_Tcp::resetPasswordLifecycle()
 {
     passwordRequest_Status = idle;
@@ -128,7 +122,6 @@ void Traffic::TrafficDataSource_Tcp::resetPasswordLifecycle()
     disconnect(&m_socket, &QTcpSocket::disconnected, this, &Traffic::TrafficDataSource_Tcp::updatePasswordStatusOnDisconnected);
 
 }
-
 
 void Traffic::TrafficDataSource_Tcp::setPassword(const QString& SSID, const QString& password)
 {
@@ -158,7 +151,6 @@ void Traffic::TrafficDataSource_Tcp::setPassword(const QString& SSID, const QStr
     QTimer::singleShot(0, this, &Traffic::TrafficDataSource_Tcp::sendPassword_internal);
 }
 
-
 void Traffic::TrafficDataSource_Tcp::sendPassword_internal()
 {
 
@@ -181,7 +173,6 @@ void Traffic::TrafficDataSource_Tcp::sendPassword_internal()
 
 }
 
-
 void Traffic::TrafficDataSource_Tcp::updatePasswordStatusOnDisconnected()
 {
     if (passwordRequest_Status != waitingForDevice) {
@@ -198,7 +189,6 @@ void Traffic::TrafficDataSource_Tcp::updatePasswordStatusOnDisconnected()
     // Clear and reset
     resetPasswordLifecycle();
 }
-
 
 void Traffic::TrafficDataSource_Tcp::updatePasswordStatusOnHeartbeatChange(bool newHeartbeat)
 {

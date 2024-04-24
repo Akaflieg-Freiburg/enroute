@@ -25,6 +25,7 @@
 
 #include "traffic/TrafficDataSource_AbstractSocket.h"
 
+
 namespace Traffic {
 
 /*! \brief Traffic receiver: Bluetooth Classic connection to FLARM/NMEA source

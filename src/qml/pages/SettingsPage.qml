@@ -77,7 +77,7 @@ Page {
             icon.source: "/icons/material/ic_info_outline.svg"
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                openManual("04-referencePages/02-settings.html")
+                openManual("05-referencePages/02-settings.html")
             }
         }
 

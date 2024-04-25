@@ -423,7 +423,8 @@ void Traffic::TrafficDataProvider::setPassword(const QString& SSID, const QStrin
 
 
 void Traffic::TrafficDataProvider::setReceivingHeartbeat(bool newReceivingHeartbeat)
-{
+{    QList<Traffic::TrafficDataSource_Abstract> dataSources;
+
     if (m_receivingHeartbeat == newReceivingHeartbeat)
     {
         return;
@@ -494,4 +495,24 @@ void Traffic::TrafficDataProvider::updateStatusString()
     result += u"</ul>"_qs;
 
     setStatusString(result);
+}
+
+
+#warning new and testworthy
+
+QList<Traffic::TrafficDataSource_Abstract*> Traffic::TrafficDataProvider::dataSources()
+{
+    QList<Traffic::TrafficDataSource_Abstract*> result;
+    foreach(auto dataSource, m_dataSources)
+    {
+        if (dataSource == nullptr)
+        {
+            continue;
+        }
+        result.append(dataSource);
+    }
+
+    qWarning() << "RESULT" << result.size();
+
+    return result;
 }

@@ -61,9 +61,18 @@ public:
      *  This method implements the pure virtual method declared by its
      *  superclass.
      *
+     *  @returns Property icon
+     */
+    [[nodiscard]] QString icon() const override { return u"/icons/material/ic_file_download.svg"_qs; }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  This method implements the pure virtual method declared by its
+     *  superclass.
+     *
      *  @returns Property sourceName
      */
-    [[nodiscard]] auto sourceName() const -> QString override
+    [[nodiscard]] QString sourceName() const override
     {
         return tr("Simulator file %1").arg(simulatorFile.fileName());
     }

@@ -68,8 +68,17 @@ public:
 
 
     //
-    // Methods
+    // Getter Methods
     //
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  This method implements the pure virtual method declared by its
+     *  superclass.
+     *
+     *  @returns Property icon
+     */
+    [[nodiscard]] QString icon() const override { return u"/icons/material/ic_bluetooth.svg"_qs; }
 
     /*! \brief Getter function for the property with the same name
      *

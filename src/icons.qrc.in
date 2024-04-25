@@ -65,6 +65,7 @@
 	<file alias="icons/material/ic_vpn_key.svg">${material-design-icons_SOURCE_DIR}/communication/svg/production/ic_vpn_key_24px.svg</file>
 	<file alias="icons/material/ic_warning.svg">${material-design-icons_SOURCE_DIR}/alert/svg/production/ic_warning_24px.svg</file>
 	<file alias="icons/material/ic_wb_sunny.svg">${material-design-icons_SOURCE_DIR}/image/svg/production/ic_wb_sunny_24px.svg</file>
+	<file alias="icons/material/ic_wifi.svg">${material-design-icons_SOURCE_DIR}/notification/svg/production/ic_wifi_24px.svg</file>
 
 	<!-- GUI icons: General -->
     <file alias="icons/icon_airfield.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/icon_airfield.svg</file>

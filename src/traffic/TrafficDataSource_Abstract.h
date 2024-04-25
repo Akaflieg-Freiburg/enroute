@@ -55,23 +55,6 @@ public:
     // Properties
     //
 
-    /*! \brief String describing the last socket error
-     *
-     *  This property holds a translated, human-readable string that describes
-     *  the last error, or an empty string when there is not error.  The string
-     *  is cleared when a new connection attempt is started.
-     */
-    Q_PROPERTY(QString errorString READ errorString WRITE setErrorString NOTIFY errorStringChanged)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property errorString
-     */
-    auto errorString() -> QString
-    {
-        return m_errorString;
-    }
-
     /*! \brief Connectivity status
      *
      *  This property contains a human-readable, translated string that
@@ -85,14 +68,16 @@ public:
      */
     Q_PROPERTY(QString connectivityStatus READ connectivityStatus WRITE setConnectivityStatus NOTIFY connectivityStatusChanged)
 
-    /*! \brief Getter function for the property with the same name
+    /*! \brief String describing the last socket error
      *
-     * @returns Property connectivityStatus
+     *  This property holds a translated, human-readable string that describes
+     *  the last error, or an empty string when there is not error.  The string
+     *  is cleared when a new connection attempt is started.
      */
-    [[nodiscard]] auto connectivityStatus() const -> QString
-    {
-        return m_connectivityStatus;
-    }
+    Q_PROPERTY(QString errorString READ errorString WRITE setErrorString NOTIFY errorStringChanged)
+
+    /*! \brief Icon that can be used to represent the connection in a GUI */
+    Q_PROPERTY(QString icon READ icon CONSTANT)
 
     /*! \brief Heartbeat indicator
      *
@@ -106,15 +91,6 @@ public:
      */
     Q_PROPERTY(bool receivingHeartbeat READ receivingHeartbeat WRITE setReceivingHeartbeat RESET resetReceivingHeartbeat NOTIFY receivingHeartbeatChanged)
 
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property receivingHeartbeat
-     */
-    auto receivingHeartbeat() -> bool
-    {
-        return m_heartbeatTimer.isActive();
-    }
-
     /*! \brief Source name
      *
      *  This property contains a short, human-readable and translated
@@ -122,12 +98,6 @@ public:
      *  132.168.1.1 port 2000".
      */
     Q_PROPERTY(QString sourceName READ sourceName CONSTANT)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property sourceName
-     */
-    [[nodiscard]] virtual auto sourceName() const -> QString = 0;
 
     /*! \brief String describing the last traffic data receiver runtime error
      *
@@ -138,15 +108,6 @@ public:
      */
     Q_PROPERTY(QString trafficReceiverRuntimeError READ trafficReceiverRuntimeError WRITE setTrafficReceiverRuntimeError NOTIFY trafficReceiverRuntimeErrorChanged)
 
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property errorString
-     */
-    auto trafficReceiverRuntimeError() -> QString
-    {
-        return m_trafficReceiverRuntimeError;
-    }
-
     /*! \brief String describing the last traffic data receiver self-test error
      *
      *  This property holds a translated, human-readable string that describes
@@ -156,11 +117,65 @@ public:
      */
     Q_PROPERTY(QString trafficReceiverSelfTestError READ trafficReceiverSelfTestError WRITE setTrafficReceiverSelfTestError NOTIFY trafficReceiverSelfTestErrorChanged)
 
+
+
+    //
+    // Getter methods
+    //
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property connectivityStatus
+     */
+    [[nodiscard]] QString connectivityStatus() const
+    {
+        return m_connectivityStatus;
+    }
+
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property errorString
      */
-    auto trafficReceiverSelfTestError() -> QString
+    [[nodiscard]] QString errorString() const
+    {
+        return m_errorString;
+    }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property icon
+     */
+    [[nodiscard]] virtual QString icon() const = 0;
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property receivingHeartbeat
+     */
+    [[nodiscard]] bool receivingHeartbeat() const
+    {
+        return m_heartbeatTimer.isActive();
+    }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property sourceName
+     */
+    [[nodiscard]] virtual QString sourceName() const = 0;
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property errorString
+     */
+    [[nodiscard]] QString trafficReceiverRuntimeError() const
+    {
+        return m_trafficReceiverRuntimeError;
+    }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property errorString
+     */
+    [[nodiscard]] QString trafficReceiverSelfTestError() const
     {
         return m_trafficReceiverSelfTestError;
     }

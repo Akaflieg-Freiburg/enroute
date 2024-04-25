@@ -71,6 +71,9 @@ public:
     }
 
 
+#warning New and testworthy
+    Q_INVOKABLE QList<Traffic::TrafficDataSource_Abstract*> dataSources();
+
 
     //
     // Methods
@@ -100,6 +103,9 @@ public:
 
     /*! \brief Clear all data sources */
     void clearDataSources();
+
+
+
 
     //
     // Properties

@@ -175,37 +175,6 @@ Page {
 
             Label {
                 Layout.leftMargin: settingsPage.font.pixelSize
-                Layout.fillWidth: true
-                Layout.columnSpan: 2
-                text: qsTr("Navigation Bar")
-                font.pixelSize: settingsPage.font.pixelSize*1.2
-                font.bold: true
-            }
-
-            WordWrappingItemDelegate {
-                id: showAltAGL
-                text: {
-                    const line1 = qsTr("Altimeter Mode")
-                    const line2 = GlobalSettings.showAltitudeAGL ? qsTr("Currently showing altitude AGL") : qsTr("Currently showing altitude AMSL")
-                    return line1 + `<br><font color="#606060" size="2">` + line2 + `</font>`
-                }
-
-                icon.source: "/icons/material/ic_speed.svg"
-                Layout.fillWidth: true
-                onClicked: altimeterDialog.open()
-            }
-            ToolButton {
-                icon.source: "/icons/material/ic_info_outline.svg"
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    helpDialog.title = qsTr("Altimeter Mode")
-                    helpDialog.text = "<p>"+qsTr("Use this settings item to chose if the altimeter shows height above ground level (AGL) or height above main sea level (AMSL).")+"</p>"
-                    helpDialog.open()
-                }
-            }
-
-            Label {
-                Layout.leftMargin: settingsPage.font.pixelSize
                 Layout.columnSpan: 2
                 text: qsTr("User Interface")
                 font.pixelSize: settingsPage.font.pixelSize*1.2
@@ -460,48 +429,6 @@ Page {
             stackView.pop()
             stackView.push("../pages/DataManagerPage.qml")
         }
-    }
-
-    CenteringDialog {
-        id: altimeterDialog
-
-        modal: true
-
-        title: qsTr("Altimeter Mode")
-        standardButtons: Dialog.Ok|Dialog.Cancel
-
-        ColumnLayout {
-            width: altimeterDialog.availableWidth
-
-            Label {
-                text: qsTr("This setting applies to the altimeter in the Navigation Bar, at the bottom of the moving map screen.")
-                Layout.fillWidth: true
-                wrapMode: Text.Wrap
-            }
-
-            WordWrappingRadioDelegate {
-                id: a1
-                text: qsTr("Height above ground level (AGL)")
-                Layout.fillWidth: true
-                checked: GlobalSettings.showAltitudeAGL
-                onCheckedChanged: b1.checked = !checked
-            }
-
-            WordWrappingRadioDelegate {
-                id: b1
-                text: qsTr("Height above main sea level (AMSL)")
-                Layout.fillWidth: true
-                onCheckedChanged: a1.checked = !checked
-            }
-        }
-
-        onAboutToShow: {
-            a1.checked = GlobalSettings.showAltitudeAGL
-            b1.checked = !a1.checked
-        }
-
-        onAccepted: GlobalSettings.showAltitudeAGL = a1.checked
-
     }
 
     LongTextDialog {

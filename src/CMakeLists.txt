@@ -568,6 +568,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/pages/AircraftPage.qml
     qml/pages/AircraftLibrary.qml
     qml/pages/BugReportPage.qml
+    qml/pages/ConnectionManager.qml
     qml/pages/DonatePage.qml
     qml/pages/FlightRouteEditor.qml
     qml/pages/FlightRouteLibrary.qml

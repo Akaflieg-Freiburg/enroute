@@ -318,6 +318,28 @@ Page {
                 }
             }
 
+
+            WordWrappingItemDelegate {
+                id: trafficDataReceiverConnections
+                text: qsTr("Traffic Data Receivers")
+                icon.source: "/icons/material/ic_airplanemode_active.svg"
+                Layout.fillWidth: true
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    stackView.push("ConnectionManager.qml", {"appWindow": view})
+                }
+            }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("Traffic Data Receivers")
+                    helpDialog.text = "<p>" + qsTr("A click on this item opens the page 'Traffic Data Receivers', used to configure connections to traffic data receivers.") + "</p>"
+                            + "<p>" + qsTr("Use this item to register traffic data receivers that connect via Bluetooth.") + "</p>"
+                    helpDialog.open()
+                }
+            }
+
             WordWrappingSwitchDelegate {
                 id: ignoreSSL
                 text: qsTr("Ignore Network Security Errors")

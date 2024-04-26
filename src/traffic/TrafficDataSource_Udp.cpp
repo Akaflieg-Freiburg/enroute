@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -89,6 +89,9 @@ void Traffic::TrafficDataSource_Udp::onReadyRead()
     {
         return;
     }
+
+    // Update connectivity status
+    setConnectivityStatus( tr("Receiving Data.") );
 
     // Read datagrams
     while (m_socket->hasPendingDatagrams())

@@ -72,7 +72,9 @@ public:
 
 
 #warning New and testworthy
-    Q_INVOKABLE QList<Traffic::TrafficDataSource_Abstract*> dataSources();
+    Q_PROPERTY(QList<Traffic::TrafficDataSource_Abstract*> dataSources READ dataSources NOTIFY dataSourcesChanged)
+    [[nodiscard]] QList<Traffic::TrafficDataSource_Abstract*> dataSources() const;
+    Q_INVOKABLE void removeDataSource(Traffic::TrafficDataSource_Abstract* source);
 
 
     //
@@ -233,6 +235,9 @@ public:
     static constexpr Units::Distance maxHorizontalDistance = Units::Distance::fromNM(20.0);
 
 signals:
+    /*! \brief Notifier signal */
+    void dataSourcesChanged();
+
     /*! \brief Password request
      *
      *  This signal is emitted whenever one of the traffic data sources requires

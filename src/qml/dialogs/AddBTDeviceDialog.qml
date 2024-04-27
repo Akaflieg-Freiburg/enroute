@@ -77,7 +77,7 @@ CenteringDialog {
                         ltd.open()
                         return
                     }
-                    Global.toast.doToast( qsTr("Added Device %1").arg(model.modelData.name) )
+                    Global.toast.doToast( qsTr("Adding Connection: %1").arg(model.modelData.name) )
                     dlg.close()
                 }
             }

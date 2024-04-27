@@ -102,6 +102,8 @@ void Traffic::TrafficDataProvider::addDataSource(Traffic::TrafficDataSource_Abst
     Q_ASSERT( source != nullptr );
 
     source->setParent(this);
+    QQmlEngine::setObjectOwnership(source, QQmlEngine::CppOwnership);
+
     m_dataSources << source;
     connect(source, &Traffic::TrafficDataSource_Abstract::connectivityStatusChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
     connect(source, &Traffic::TrafficDataSource_Abstract::errorStringChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
@@ -112,6 +114,7 @@ void Traffic::TrafficDataProvider::addDataSource(Traffic::TrafficDataSource_Abst
     connect(source, &Traffic::TrafficDataSource_Abstract::trafficReceiverRuntimeErrorChanged, this, &Traffic::TrafficDataProvider::onTrafficReceiverRuntimeError);
     connect(source, &Traffic::TrafficDataSource_Abstract::trafficReceiverSelfTestErrorChanged, this, &Traffic::TrafficDataProvider::onTrafficReceiverSelfTestError);
 
+    emit dataSourcesChanged();
     updateStatusString();
 }
 
@@ -500,7 +503,23 @@ void Traffic::TrafficDataProvider::updateStatusString()
 
 #warning new and testworthy
 
-QList<Traffic::TrafficDataSource_Abstract*> Traffic::TrafficDataProvider::dataSources()
+void Traffic::TrafficDataProvider::removeDataSource(Traffic::TrafficDataSource_Abstract* source)
+{
+    if (source == nullptr)
+    {
+        return;
+    }
+    if (source->canonical() == true)
+    {
+        return;
+    }
+
+    m_dataSources.removeAll(source);
+    emit dataSourcesChanged();
+    source->deleteLater();
+}
+
+QList<Traffic::TrafficDataSource_Abstract*> Traffic::TrafficDataProvider::dataSources() const
 {
     QList<Traffic::TrafficDataSource_Abstract*> result;
     foreach(auto dataSource, m_dataSources)
@@ -512,7 +531,10 @@ QList<Traffic::TrafficDataSource_Abstract*> Traffic::TrafficDataProvider::dataSo
         result.append(dataSource);
     }
 
-    qWarning() << "RESULT" << result.size();
+    std::sort(result.begin(),
+              result.end(),
+              [](const Traffic::TrafficDataSource_Abstract* first, const Traffic::TrafficDataSource_Abstract* second)
+              { return first->sourceName() < second->sourceName(); });
 
     return result;
 }

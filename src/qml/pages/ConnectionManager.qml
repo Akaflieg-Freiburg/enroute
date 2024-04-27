@@ -44,7 +44,7 @@ Page {
 
         clip: true
 
-        model: TrafficDataProvider.dataSources()
+        model: TrafficDataProvider.dataSources
 
         delegate: Item {
             width: parent ? parent.width : 0
@@ -76,6 +76,7 @@ Page {
                     id: cptMenuButton
 
                     icon.source: "/icons/material/ic_more_horiz.svg"
+                    enabled: !model.modelData.canonical
 
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
@@ -90,6 +91,9 @@ Page {
                             text: qsTr("Remove…")
                             onTriggered: {
                                 PlatformAdaptor.vibrateBrief()
+                                Global.toast.doToast( qsTr("Removing Connection: %1").arg(model.modelData.sourceName))
+                                TrafficDataProvider.removeDataSource(model.modelData)
+                                cptMenu.close()
                             }
                         }
                     }

@@ -52,7 +52,7 @@ Traffic::ConnectionInfo::ConnectionInfo(const QBluetoothDeviceInfo& info, bool c
         QStringList descriptionItems;
         if (m_bluetoothDeviceInfo.coreConfigurations() == QBluetoothDeviceInfo::LowEnergyCoreConfiguration)
         {
-            descriptionItems += QObject::tr("Bluetooth Low Energy Device (mot supported)", "Traffic::ConnectionInfo");
+            descriptionItems += QObject::tr("Bluetooth Low Energy Device (unsupported)", "Traffic::ConnectionInfo");
         }
         else
         {

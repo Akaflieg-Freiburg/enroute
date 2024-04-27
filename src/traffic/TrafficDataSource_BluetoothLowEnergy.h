@@ -43,12 +43,14 @@ class TrafficDataSource_BluetoothLowEnergy : public TrafficDataSource_AbstractSo
 public:
     /*! \brief Default constructor
      *
+     * @param isCanonical Intializer for property canonical
+     *
      *  @param info Description of a Bluetooth LE device offering
      *  serial port service.
      *
      *  @param parent The standard QObject parent pointer
      */
-    TrafficDataSource_BluetoothLowEnergy(const QBluetoothDeviceInfo& info, QObject* parent=nullptr);
+    TrafficDataSource_BluetoothLowEnergy(bool isCanonical, const QBluetoothDeviceInfo& info, QObject* parent);
 
     // Standard destructor
     ~TrafficDataSource_BluetoothLowEnergy() override = default;

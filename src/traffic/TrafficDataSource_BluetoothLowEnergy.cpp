@@ -20,8 +20,8 @@
 
 #include "traffic/TrafficDataSource_BluetoothLowEnergy.h"
 
-Traffic::TrafficDataSource_BluetoothLowEnergy::TrafficDataSource_BluetoothLowEnergy(const QBluetoothDeviceInfo& info, QObject* parent)
-    : TrafficDataSource_AbstractSocket(parent),
+Traffic::TrafficDataSource_BluetoothLowEnergy::TrafficDataSource_BluetoothLowEnergy(bool isCanonical, const QBluetoothDeviceInfo& info, QObject* parent) :
+    TrafficDataSource_AbstractSocket(isCanonical, parent),
     m_info(info),
     m_control(QLowEnergyController::createCentral(info, this))
 {

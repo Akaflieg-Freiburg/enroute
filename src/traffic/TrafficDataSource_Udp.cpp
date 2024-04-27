@@ -23,8 +23,9 @@
 #include "traffic/TrafficDataSource_Udp.h"
 
 
-Traffic::TrafficDataSource_Udp::TrafficDataSource_Udp(quint16 port, QObject *parent) :
-    Traffic::TrafficDataSource_AbstractSocket(parent), m_port(port)
+Traffic::TrafficDataSource_Udp::TrafficDataSource_Udp(bool isCanonical, quint16 port, QObject *parent) :
+    Traffic::TrafficDataSource_AbstractSocket(isCanonical, parent),
+    m_port(port)
 {
 
     // Initialize timers

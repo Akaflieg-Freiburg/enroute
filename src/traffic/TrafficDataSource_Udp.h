@@ -45,11 +45,13 @@ class TrafficDataSource_Udp : public TrafficDataSource_AbstractSocket {
 public:
     /*! \brief Default constructor
      *
+     * @param isCanonical Intializer for property canonical
+     *
      *  @param port Port at the host where the traffic receiver is expected
      *
      *  @param parent The standard QObject parent pointer
      */
-    explicit TrafficDataSource_Udp(quint16 port, QObject *parent = nullptr);
+    TrafficDataSource_Udp(bool isCanonical, quint16 port, QObject *parent = nullptr);
 
     // Standard destructor
     ~TrafficDataSource_Udp() override;

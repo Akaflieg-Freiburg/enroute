@@ -42,9 +42,11 @@ class TrafficDataSource_Abstract : public QObject {
 public:
     /*! \brief Default constructor
      *
+     * @param isCanonical Intializer for property canonical
+     *
      * @param parent The standard QObject parent pointer
      */
-    explicit TrafficDataSource_Abstract(QObject *parent = nullptr);
+    TrafficDataSource_Abstract(bool isCanonical, QObject* parent);
 
     // Standard destructor
     ~TrafficDataSource_Abstract() override = default;
@@ -54,6 +56,13 @@ public:
     //
     // Properties
     //
+
+    /*! \brief Canonicity
+     *
+     *  This property contains 'true' if the connection is a canonical connection
+     *  that cannot be deleted.
+     */
+    Q_PROPERTY(bool canonical READ canonical CONSTANT)
 
     /*! \brief Connectivity status
      *
@@ -122,6 +131,15 @@ public:
     //
     // Getter methods
     //
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property canonical
+     */
+    [[nodiscard]] bool canonical() const
+    {
+        return m_canonical;
+    }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -398,6 +416,7 @@ private:
     Q_DISABLE_COPY_MOVE(TrafficDataSource_Abstract)
 
     // Property caches
+    bool m_canonical {false};
     QString m_connectivityStatus {};
     QString m_errorString {};
     QString m_trafficReceiverRuntimeError {};

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -25,8 +25,9 @@
 
 // Member functions
 
-Traffic::TrafficDataSource_File::TrafficDataSource_File(const QString& fileName, QObject *parent) :
-    TrafficDataSource_Abstract(parent), simulatorFile(fileName) {
+Traffic::TrafficDataSource_File::TrafficDataSource_File(bool isCanonical, const QString& fileName, QObject *parent) :
+    TrafficDataSource_Abstract(isCanonical, parent), simulatorFile(fileName)
+{
 
     connect(&simulatorTimer, &QTimer::timeout, this, &Traffic::TrafficDataSource_File::readFromSimulatorStream);
 

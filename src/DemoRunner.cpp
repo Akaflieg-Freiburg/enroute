@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -106,7 +106,7 @@ void DemoRunner::generateScreenshotsForDevices(QStringList devices, bool manual)
 
     // Set up traffic simulator
     GlobalObject::globalSettings()->setPositioningByTrafficDataReceiver(true);
-    auto* trafficSimulator = new Traffic::TrafficDataSource_Simulate();
+    auto* trafficSimulator = new Traffic::TrafficDataSource_Simulate(false, GlobalObject::trafficDataProvider());
     GlobalObject::trafficDataProvider()->addDataSource( trafficSimulator );
     trafficSimulator->connectToTrafficReceiver();
     delay(5s);
@@ -313,7 +313,7 @@ void DemoRunner::generateManualScreenshots()
 
     // Set up traffic simulator
     GlobalObject::globalSettings()->setPositioningByTrafficDataReceiver(true);
-    auto* trafficSimulator = new Traffic::TrafficDataSource_Simulate();
+    auto* trafficSimulator = new Traffic::TrafficDataSource_Simulate(false, GlobalObject::trafficDataProvider());
     GlobalObject::trafficDataProvider()->addDataSource( trafficSimulator );
     trafficSimulator->connectToTrafficReceiver();
     delay(5s);

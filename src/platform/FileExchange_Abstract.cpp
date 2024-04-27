@@ -109,7 +109,7 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     // FLARM Simulator file
     if (Traffic::TrafficDataSource_File::containsFLARMSimulationData(myPath))
     {
-        auto* source = new Traffic::TrafficDataSource_File(myPath);
+        auto* source = new Traffic::TrafficDataSource_File(false, myPath, GlobalObject::trafficDataProvider());
         GlobalObject::trafficDataProvider()->addDataSource(source); // Will take ownership of source
         source->connectToTrafficReceiver();
         return;

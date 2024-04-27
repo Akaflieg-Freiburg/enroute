@@ -48,7 +48,7 @@ QString Traffic::TrafficDataProvider::addDataSource_BluetoothClassic(const Traff
         }
     }
 
-    auto* source = new TrafficDataSource_BluetoothClassic(connectionInfo.bluetoothDeviceInfo(), this);
+    auto* source = new TrafficDataSource_BluetoothClassic(false, connectionInfo.bluetoothDeviceInfo(), this);
     source->connectToTrafficReceiver();
     addDataSource(source);
     return {};

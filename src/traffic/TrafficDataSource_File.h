@@ -39,11 +39,13 @@ class TrafficDataSource_File : public TrafficDataSource_Abstract {
 public:
     /*! \brief Default constructor
      *
+     * @param isCanonical Intializer for property canonical
+     *
      *  @param fileName Name of the simulator file
      *
      *  @param parent The standard QObject parent pointer
      */
-    explicit TrafficDataSource_File(const QString& fileName, QObject *parent = nullptr);
+    TrafficDataSource_File(bool isCanonical, const QString& fileName, QObject* parent);
 
     // Standard destructor
     ~TrafficDataSource_File() override = default;

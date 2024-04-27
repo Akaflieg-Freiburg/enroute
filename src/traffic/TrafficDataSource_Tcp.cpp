@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,9 +24,10 @@
 #include "traffic/TrafficDataSource_Tcp.h"
 
 
-Traffic::TrafficDataSource_Tcp::TrafficDataSource_Tcp(QString hostName, quint16 port, QObject *parent) :
-    Traffic::TrafficDataSource_AbstractSocket(parent), m_hostName(std::move(hostName)), m_port(port) {
-
+Traffic::TrafficDataSource_Tcp::TrafficDataSource_Tcp(bool isCanonical, QString hostName, quint16 port, QObject *parent) :
+    Traffic::TrafficDataSource_AbstractSocket(isCanonical, parent),
+    m_hostName(std::move(hostName)), m_port(port)
+{
     // Connect socket
     connect(&m_socket, &QTcpSocket::errorOccurred, this, &Traffic::TrafficDataSource_Tcp::onErrorOccurred);
     connect(&m_socket, &QTcpSocket::readyRead, this, &Traffic::TrafficDataSource_Tcp::onReadyRead);

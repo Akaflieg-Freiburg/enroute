@@ -41,12 +41,14 @@ class TrafficDataSource_BluetoothClassic : public TrafficDataSource_AbstractSock
 public:
     /*! \brief Default constructor
      *
+     * @param isCanonical Intializer for property canonical
+     *
      *  @param info Description of a Bluetooth Classic device offering
      *  serial port service.
      *
      *  @param parent The standard QObject parent pointer
      */
-    TrafficDataSource_BluetoothClassic(const QBluetoothDeviceInfo& info, QObject* parent=nullptr);
+    TrafficDataSource_BluetoothClassic(bool isCanonical, const QBluetoothDeviceInfo& info, QObject* parent);
 
     // Standard destructor
     ~TrafficDataSource_BluetoothClassic() override = default;

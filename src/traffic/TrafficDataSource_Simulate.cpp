@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,9 +24,9 @@
 
 // Member functions
 
-Traffic::TrafficDataSource_Simulate::TrafficDataSource_Simulate(QObject *parent) :
-    TrafficDataSource_Abstract(parent) {
-
+Traffic::TrafficDataSource_Simulate::TrafficDataSource_Simulate(bool isCanonical, QObject* parent) :
+    TrafficDataSource_Abstract(isCanonical, parent)
+{
     simulatorTimer.setInterval(1s);
     simulatorTimer.setSingleShot(false);
     connect(&simulatorTimer, &QTimer::timeout, this, &Traffic::TrafficDataSource_Simulate::sendSimulatorData);

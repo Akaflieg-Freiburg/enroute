@@ -23,8 +23,9 @@
 #include "traffic/TrafficDataSource_BluetoothClassic.h"
 
 
-Traffic::TrafficDataSource_BluetoothClassic::TrafficDataSource_BluetoothClassic(const QBluetoothDeviceInfo& info, QObject* parent)
-    : TrafficDataSource_AbstractSocket(parent), m_info(info)
+Traffic::TrafficDataSource_BluetoothClassic::TrafficDataSource_BluetoothClassic(bool isCanonical, const QBluetoothDeviceInfo& info, QObject* parent) :
+    TrafficDataSource_AbstractSocket(isCanonical, parent),
+    m_info(info)
 {
     // Rectify Permissions
     m_bluetoothPermission.setCommunicationModes(QBluetoothPermission::Access);

@@ -38,9 +38,11 @@ class TrafficDataSource_Simulate : public TrafficDataSource_Abstract {
 public:
     /*! \brief Default constructor
      *
+     * @param isCanonical Intializer for property canonical
+     *
      *  @param parent The standard QObject parent pointer
      */
-    explicit TrafficDataSource_Simulate(QObject *parent = nullptr);
+    TrafficDataSource_Simulate(bool isCanonical, QObject* parent);
 
     // Standard destructor
     ~TrafficDataSource_Simulate() override = default;

@@ -426,8 +426,7 @@ void Traffic::TrafficDataProvider::setPassword(const QString& SSID, const QStrin
 
 
 void Traffic::TrafficDataProvider::setReceivingHeartbeat(bool newReceivingHeartbeat)
-{    QList<Traffic::TrafficDataSource_Abstract> dataSources;
-
+{
     if (m_receivingHeartbeat == newReceivingHeartbeat)
     {
         return;

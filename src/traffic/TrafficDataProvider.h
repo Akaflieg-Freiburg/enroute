@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QNetworkDatagram>
+#include <QStandardPaths>
 #include <QUdpSocket>
 
 #include "GlobalObject.h"
@@ -304,11 +305,14 @@ private slots:
 
     // Intializations that are moved out of the constructor, in order to avoid
     // nested uses of constructors in Global.
-    void deferredInitialization() const;
+    void deferredInitialization();
 
     // Sends out foreflight broadcast message See
     // https://www.foreflight.com/connect/spec/
     void foreFlightBroadcast();
+
+    // Load connection infos from file and create connections
+    void loadConnectionInfos();
 
     // Called if one of the sources indicates a heartbeat change
     void onSourceHeartbeatChanged();
@@ -367,6 +371,9 @@ private:
 
     // Property Cache
     bool m_receivingHeartbeat {false};
+
+    // Standard file name for saveConnectionInfos()
+    QString stdFileName{QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/connectionInfos.data"};
 };
 
 } // namespace Traffic

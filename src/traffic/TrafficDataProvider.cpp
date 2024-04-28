@@ -19,11 +19,12 @@
  ***************************************************************************/
 
 #include <QCoreApplication>
+#include <QFile>
 
 #include "platform/PlatformAdaptor_Abstract.h"
+#include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficDataSource_Tcp.h"
 #include "traffic/TrafficDataSource_Udp.h"
-#include "traffic/TrafficDataProvider.h"
 
 
 Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning::PositionInfoSource_Abstract(parent)
@@ -63,7 +64,7 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
     addDataSource( new Traffic::TrafficDataSource_Udp(true, 49002, this));
 
     // Bindings for saving
-   // connect(this, &Traffic::TrafficDataProvider::dataSourcesChanged, this, &Traffic::TrafficDataProvider::saveConnectionInfos);
+    connect(this, &Traffic::TrafficDataProvider::dataSourcesChanged, this, &Traffic::TrafficDataProvider::saveConnectionInfos);
 
     // Bindings for status string
     connect(this, &Traffic::TrafficDataProvider::positionInfoChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
@@ -87,6 +88,11 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
 
 void Traffic::TrafficDataProvider::clearDataSources()
 {
+#warning this should go to the destructor!
+    if (m_dataSources.isEmpty())
+    {
+        return;
+    }
     foreach(auto dataSource, m_dataSources)
     {
         if (dataSource.isNull())
@@ -158,10 +164,12 @@ void Traffic::TrafficDataProvider::connectToTrafficReceiver()
 }
 
 
-void Traffic::TrafficDataProvider::deferredInitialization() const
+void Traffic::TrafficDataProvider::deferredInitialization()
 {
     // Try to (re)connect whenever the network situation changes
     connect(GlobalObject::platformAdaptor(), &Platform::PlatformAdaptor_Abstract::wifiConnected, this, &Traffic::TrafficDataProvider::connectToTrafficReceiver);
+
+    loadConnectionInfos();
 }
 
 
@@ -184,11 +192,29 @@ void Traffic::TrafficDataProvider::foreFlightBroadcast()
 }
 
 
+void Traffic::TrafficDataProvider::loadConnectionInfos()
+{
+    QFile outFile(stdFileName);
+    if (!outFile.open(QIODeviceBase::ReadOnly))
+    {
+        return;
+    }
+    QDataStream outStream(&outFile);
+    QList<Traffic::ConnectionInfo> connectionInfos;
+    outStream >> connectionInfos;
+    foreach (auto connectionInfo, connectionInfos) {
+        addDataSource(connectionInfo);
+
+    }
+}
+
+
+
 void Traffic::TrafficDataProvider::onSourceHeartbeatChanged()
 {
     // If we have a current source, if the current source has a heartbeat and if the current source is a TCP source, then we simply stick with it.
     if ((qobject_cast<Traffic::TrafficDataSource_Tcp*>(m_currentSource) != nullptr)
-            && m_currentSource->receivingHeartbeat() )
+        && m_currentSource->receivingHeartbeat() )
     {
         setReceivingHeartbeat(true);
         return;
@@ -413,8 +439,9 @@ void Traffic::TrafficDataProvider::resetWarning()
 
 void Traffic::TrafficDataProvider::saveConnectionInfos()
 {
-    qWarning() << "Traffic::TrafficDataProvider::saveConnectionInfos()";
-    foreach (auto dataSource, m_dataSources) {
+    QList<Traffic::ConnectionInfo> connectionInfos;
+    foreach (auto dataSource, m_dataSources)
+    {
         if (dataSource == nullptr)
         {
             continue;
@@ -428,8 +455,17 @@ void Traffic::TrafficDataProvider::saveConnectionInfos()
         {
             continue;
         }
-        qWarning() << "need to save" << connectionInfo.name();
+        connectionInfos << connectionInfo;
     }
+
+    QFile outFile(stdFileName);
+    if (!outFile.open(QIODeviceBase::WriteOnly))
+    {
+        return;
+    }
+    QDataStream outStream(&outFile);
+    outStream << connectionInfos;
+    outFile.close();
 }
 
 

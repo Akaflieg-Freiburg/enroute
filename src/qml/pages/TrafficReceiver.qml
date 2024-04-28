@@ -170,7 +170,7 @@ Page {
 
                 clip: true
 
-                model: TrafficDataProvider.dataSources()
+                model: TrafficDataProvider.dataSources
 
                 delegate: Item {
                     width: parent ? parent.width : 0

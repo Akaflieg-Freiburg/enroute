@@ -62,6 +62,9 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
     addDataSource( new Traffic::TrafficDataSource_Udp(true, 4000, this) );
     addDataSource( new Traffic::TrafficDataSource_Udp(true, 49002, this));
 
+    // Bindings for saving
+   // connect(this, &Traffic::TrafficDataProvider::dataSourcesChanged, this, &Traffic::TrafficDataProvider::saveConnectionInfos);
+
     // Bindings for status string
     connect(this, &Traffic::TrafficDataProvider::positionInfoChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
     connect(this, &Traffic::TrafficDataProvider::pressureAltitudeChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
@@ -252,7 +255,6 @@ void Traffic::TrafficDataProvider::onSourceHeartbeatChanged()
                     source->disconnectFromTrafficReceiver();
                 }
             }
-
         }
         else
         {
@@ -260,8 +262,6 @@ void Traffic::TrafficDataProvider::onSourceHeartbeatChanged()
             // traffic receiver out there.
             QTimer::singleShot(1s, this, &Traffic::TrafficDataProvider::connectToTrafficReceiver);
         }
-
-
     }
 
     // Update heartbeat status
@@ -411,6 +411,28 @@ void Traffic::TrafficDataProvider::resetWarning()
 }
 
 
+void Traffic::TrafficDataProvider::saveConnectionInfos()
+{
+    qWarning() << "Traffic::TrafficDataProvider::saveConnectionInfos()";
+    foreach (auto dataSource, m_dataSources) {
+        if (dataSource == nullptr)
+        {
+            continue;
+        }
+        if (dataSource->canonical())
+        {
+            continue;
+        }
+        auto connectionInfo = dataSource->connectionInfo();
+        if (connectionInfo.type() == Traffic::ConnectionInfo::Invalid)
+        {
+            continue;
+        }
+        qWarning() << "need to save" << connectionInfo.name();
+    }
+}
+
+
 void Traffic::TrafficDataProvider::setPassword(const QString& SSID, const QString &password)
 {
     foreach(auto dataSource, m_dataSources)
@@ -421,7 +443,6 @@ void Traffic::TrafficDataProvider::setPassword(const QString& SSID, const QStrin
         }
         dataSource->setPassword(SSID, password);
     }
-
 }
 
 

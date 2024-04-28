@@ -21,6 +21,7 @@
 #pragma once
 
 #include "positioning/PositionInfo.h"
+#include "traffic/ConnectionInfo.h"
 #include "traffic/TrafficFactor_DistanceOnly.h"
 #include "traffic/TrafficFactor_WithPosition.h"
 #include "traffic/Warning.h"
@@ -76,6 +77,13 @@ public:
      *  the property content.
      */
     Q_PROPERTY(QString connectivityStatus READ connectivityStatus WRITE setConnectivityStatus NOTIFY connectivityStatusChanged)
+
+    /*! \brief Connection Info
+     *
+     *  This property contains a connection info that can be used to save
+     *  and restore this connection.
+     */
+    Q_PROPERTY(Traffic::ConnectionInfo connectionInfo READ connectionInfo CONSTANT)
 
     /*! \brief String describing the last socket error
      *
@@ -140,6 +148,12 @@ public:
     {
         return m_canonical;
     }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property connectionInfo
+     */
+    [[nodiscard]] virtual Traffic::ConnectionInfo connectionInfo() const { return {}; }
 
     /*! \brief Getter function for the property with the same name
      *

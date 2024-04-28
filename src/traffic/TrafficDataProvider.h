@@ -328,6 +328,9 @@ private slots:
     // Resetter method
     void resetWarning();
 
+    // Save connection infos to file
+    void saveConnectionInfos();
+
     // Setter method
     void setReceivingHeartbeat(bool newReceivingHeartbeat);
 

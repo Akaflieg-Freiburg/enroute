@@ -31,7 +31,8 @@ Traffic::TrafficDataSource_BluetoothClassic::TrafficDataSource_BluetoothClassic(
     m_bluetoothPermission.setCommunicationModes(QBluetoothPermission::Access);
 
     // Connect socket
-    connect(&m_socket, &QBluetoothSocket::errorOccurred, this, &Traffic::TrafficDataSource_BluetoothClassic::onErrorOccurred);
+#warning any connection here causes the app to crash on macos!
+    connect(&m_socket, &QBluetoothSocket::errorOccurred, this, &Traffic::TrafficDataSource_BluetoothClassic::onErrorOccurred, Qt::QueuedConnection);
     connect(&m_socket, &QBluetoothSocket::stateChanged, this, &Traffic::TrafficDataSource_BluetoothClassic::onStateChanged);
     connect(&m_socket, &QBluetoothSocket::readyRead, this, &Traffic::TrafficDataSource_BluetoothClassic::onReadyRead);
 }

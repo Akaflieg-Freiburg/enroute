@@ -31,7 +31,7 @@ Page {
     id: trafficReceiverPage
     objectName: "TrafficReceiverPage"
 
-    title: qsTr("Settings: Traffic Data Receivers")
+    title: qsTr("Data Connections: Traffic Data")
 
     required property var appWindow
 
@@ -45,6 +45,15 @@ Page {
         clip: true
 
         model: TrafficDataProvider.dataSources
+
+        header: Label {
+            width: parent ? parent.width : 0
+            height: implicitHeight
+
+            text: "Traffic Data Receivers"
+            font.pixelSize: trafficReceiverPage.font.pixelSize*1.2
+            font.bold: true
+        }
 
         delegate: Item {
             width: parent ? parent.width : 0
@@ -112,16 +121,28 @@ Page {
 
                 Layout.alignment: Qt.AlignHCenter
                 icon.source: "/icons/material/ic_tap_and_play.svg"
-                text: qsTr("Reconnect")
-                enabled: !timer.running
+                text: {
+                    if (disconnectTimer.running)
+                        return qsTr("Disconnecting...")
+                    if (connectTimer.running)
+                        return qsTr("Reconnecting...")
+                    return qsTr("Reconnect")
+                }
+                enabled: !connectTimer.running
                 visible: !TrafficDataProvider.receivingHeartbeat
                 onClicked: {
-                    TrafficDataProvider.connectToTrafficReceiver()
-                    timer.running = true;
+                    TrafficDataProvider.disconnectFromTrafficReceiver()
+                    disconnectTimer.running = true;
+                    connectTimer.running = true;
                 }
                 Timer {
-                    id: timer
+                    id: disconnectTimer
                     interval: 1000
+                    onTriggered: TrafficDataProvider.connectToTrafficReceiver()
+                }
+                Timer {
+                    id: connectTimer
+                    interval: 2000
                 }
             }
 

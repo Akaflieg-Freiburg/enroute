@@ -71,10 +71,13 @@ ColumnLayout {
                 Layout.preferredWidth: m_implicitWidth
                 property real m_implicitWidth: Math.max(trueAltitude_1.contentWidth, trueAltitude_2.contentWidth)
 
-
                 TapHandler {
                     onTapped: {
                         GlobalSettings.showAltitudeAGL = !GlobalSettings.showAltitudeAGL
+                        if (GlobalSettings.showAltitudeAGL)
+                            Global.toast.doToast(qsTr("Showing Alitude Above Ground Level"))
+                        else
+                            Global.toast.doToast(qsTr("Showing Alitude Above Main Sea Level"))
                     }
                 }
 

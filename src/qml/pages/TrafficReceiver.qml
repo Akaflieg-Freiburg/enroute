@@ -149,55 +149,6 @@ Page {
                 }
             }
 
-            Button {
-                id: addBTDevice
-
-                Layout.alignment: Qt.AlignHCenter
-                icon.source: "/icons/material/ic_tap_and_play.svg"
-                text: qsTr("Add new BT device")
-                visible: !TrafficDataProvider.receivingHeartbeat
-
-                onClicked: {
-                    Global.dialogLoader.active = false
-                    Global.dialogLoader.setSource("../dialogs/AddBTDeviceDialog.qml", {})
-                    Global.dialogLoader.active = true
-                }
-            }
-
-            ListView {
-                Layout.fillWidth: true
-                Layout.preferredHeight: contentHeight
-
-                clip: true
-
-                model: TrafficDataProvider.dataSources
-
-                delegate: Item {
-                    width: parent ? parent.width : 0
-                    height: idel.implicitHeight
-
-                    Rectangle {
-                        anchors.fill: parent
-                        color: {
-                            if (model.modelData.receivingHeartbeat)
-                                return "green"
-                            return "transparent"
-                        }
-                        opacity: 0.2
-                    }
-
-                    WordWrappingItemDelegate {
-                        id: idel
-
-                        width: parent.width
-
-                        //enabled: model.modelData.canConnect
-                        icon.source: model.modelData.icon
-                        text: model.modelData.sourceName + "<br><font size='2'>%1</font>".arg(model.modelData.connectivityStatus)
-                    }
-                }
-            }
-
             Item {
                 Layout.preferredHeight: sView.font.pixelSize*0.5
                 Layout.columnSpan: 2

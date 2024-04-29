@@ -86,25 +86,9 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
 }
 
 
-void Traffic::TrafficDataProvider::clearDataSources()
-{
-#warning this should go to the destructor!
-    if (m_dataSources.isEmpty())
-    {
-        return;
-    }
-    foreach(auto dataSource, m_dataSources)
-    {
-        if (dataSource.isNull())
-        {
-            continue;
-        }
-        dataSource->disconnect();
-        delete dataSource;
-    }
-    m_dataSources.clear();
-}
-
+//
+// Methods
+//
 
 void Traffic::TrafficDataProvider::addDataSource(Traffic::TrafficDataSource_Abstract* source)
 {
@@ -127,7 +111,6 @@ void Traffic::TrafficDataProvider::addDataSource(Traffic::TrafficDataSource_Abst
     updateStatusString();
 }
 
-
 QString Traffic::TrafficDataProvider::addDataSource(const Traffic::ConnectionInfo &connectionInfo)
 {
     switch (connectionInfo.type()) {
@@ -148,6 +131,23 @@ QString Traffic::TrafficDataProvider::addDataSource(const Traffic::ConnectionInf
     return {};
 }
 
+void Traffic::TrafficDataProvider::clearDataSources()
+{
+    if (m_dataSources.isEmpty())
+    {
+        return;
+    }
+    foreach(auto dataSource, m_dataSources)
+    {
+        if (dataSource.isNull())
+        {
+            continue;
+        }
+        dataSource->disconnect();
+        delete dataSource;
+    }
+    m_dataSources.clear();
+}
 
 void Traffic::TrafficDataProvider::connectToTrafficReceiver()
 {
@@ -163,6 +163,25 @@ void Traffic::TrafficDataProvider::connectToTrafficReceiver()
     updateStatusString();
 }
 
+QList<Traffic::TrafficDataSource_Abstract*> Traffic::TrafficDataProvider::dataSources() const
+{
+    QList<Traffic::TrafficDataSource_Abstract*> result;
+    foreach(auto dataSource, m_dataSources)
+    {
+        if (dataSource == nullptr)
+        {
+            continue;
+        }
+        result.append(dataSource);
+    }
+
+    std::sort(result.begin(),
+              result.end(),
+              [](const Traffic::TrafficDataSource_Abstract* first, const Traffic::TrafficDataSource_Abstract* second)
+              { return first->sourceName() < second->sourceName(); });
+
+    return result;
+}
 
 void Traffic::TrafficDataProvider::deferredInitialization()
 {
@@ -171,7 +190,6 @@ void Traffic::TrafficDataProvider::deferredInitialization()
 
     loadConnectionInfos();
 }
-
 
 void Traffic::TrafficDataProvider::disconnectFromTrafficReceiver()
 {
@@ -185,12 +203,10 @@ void Traffic::TrafficDataProvider::disconnectFromTrafficReceiver()
     }
 }
 
-
 void Traffic::TrafficDataProvider::foreFlightBroadcast()
 {
     foreFlightBroadcastSocket.writeDatagram(foreFlightBroadcastDatagram);
 }
-
 
 void Traffic::TrafficDataProvider::loadConnectionInfos()
 {
@@ -207,8 +223,6 @@ void Traffic::TrafficDataProvider::loadConnectionInfos()
 
     }
 }
-
-
 
 void Traffic::TrafficDataProvider::onSourceHeartbeatChanged()
 {
@@ -301,7 +315,6 @@ void Traffic::TrafficDataProvider::onSourceHeartbeatChanged()
     }
 }
 
-
 void Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition(const Traffic::TrafficFactor_DistanceOnly &factor)
 {
 
@@ -320,7 +333,6 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition(const Traffic:
     }
 
 }
-
 
 void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::TrafficFactor_WithPosition &factor)
 {
@@ -380,7 +392,6 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::Tr
 
 }
 
-
 void Traffic::TrafficDataProvider::onTrafficReceiverRuntimeError()
 {
     QString result;
@@ -404,7 +415,6 @@ void Traffic::TrafficDataProvider::onTrafficReceiverRuntimeError()
     m_trafficReceiverRuntimeError = result;
     emit trafficReceiverRuntimeErrorChanged();
 }
-
 
 void Traffic::TrafficDataProvider::onTrafficReceiverSelfTestError()
 {
@@ -430,12 +440,25 @@ void Traffic::TrafficDataProvider::onTrafficReceiverSelfTestError()
     emit trafficReceiverSelfTestErrorChanged();
 }
 
+void Traffic::TrafficDataProvider::removeDataSource(Traffic::TrafficDataSource_Abstract* source)
+{
+    if (source == nullptr)
+    {
+        return;
+    }
+    if (source->canonical()) {
+        return;
+    }
+
+    m_dataSources.removeAll(source);
+    emit dataSourcesChanged();
+    source->deleteLater();
+}
 
 void Traffic::TrafficDataProvider::resetWarning()
 {
     setWarning( Traffic::Warning() );
 }
-
 
 void Traffic::TrafficDataProvider::saveConnectionInfos()
 {
@@ -468,7 +491,6 @@ void Traffic::TrafficDataProvider::saveConnectionInfos()
     outFile.close();
 }
 
-
 void Traffic::TrafficDataProvider::setPassword(const QString& SSID, const QString &password)
 {
     foreach(auto dataSource, m_dataSources)
@@ -481,7 +503,6 @@ void Traffic::TrafficDataProvider::setPassword(const QString& SSID, const QStrin
     }
 }
 
-
 void Traffic::TrafficDataProvider::setReceivingHeartbeat(bool newReceivingHeartbeat)
 {
     if (m_receivingHeartbeat == newReceivingHeartbeat)
@@ -491,7 +512,6 @@ void Traffic::TrafficDataProvider::setReceivingHeartbeat(bool newReceivingHeartb
     m_receivingHeartbeat = newReceivingHeartbeat;
     emit receivingHeartbeatChanged(m_receivingHeartbeat);
 }
-
 
 void Traffic::TrafficDataProvider::setWarning(const Traffic::Warning& warning)
 {
@@ -508,7 +528,6 @@ void Traffic::TrafficDataProvider::setWarning(const Traffic::Warning& warning)
     m_Warning = warning;
     emit warningChanged(m_Warning);
 }
-
 
 void Traffic::TrafficDataProvider::updateStatusString()
 {
@@ -554,43 +573,4 @@ void Traffic::TrafficDataProvider::updateStatusString()
     result += u"</ul>"_qs;
 
     setStatusString(result);
-}
-
-
-#warning new and testworthy
-
-void Traffic::TrafficDataProvider::removeDataSource(Traffic::TrafficDataSource_Abstract* source)
-{
-    if (source == nullptr)
-    {
-        return;
-    }
-    if (source->canonical() == true)
-    {
-        return;
-    }
-
-    m_dataSources.removeAll(source);
-    emit dataSourcesChanged();
-    source->deleteLater();
-}
-
-QList<Traffic::TrafficDataSource_Abstract*> Traffic::TrafficDataProvider::dataSources() const
-{
-    QList<Traffic::TrafficDataSource_Abstract*> result;
-    foreach(auto dataSource, m_dataSources)
-    {
-        if (dataSource == nullptr)
-        {
-            continue;
-        }
-        result.append(dataSource);
-    }
-
-    std::sort(result.begin(),
-              result.end(),
-              [](const Traffic::TrafficDataSource_Abstract* first, const Traffic::TrafficDataSource_Abstract* second)
-              { return first->sourceName() < second->sourceName(); });
-
-    return result;
 }

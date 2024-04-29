@@ -72,10 +72,137 @@ public:
     }
 
 
-#warning New and testworthy
+
+    //
+    // Properties
+    //
+
+    /*! \brief Traffic data sources
+     *
+     * This property holds a list of all traffic data sources currently in use.
+     * The items are owned by this class.
+     */
     Q_PROPERTY(QList<Traffic::TrafficDataSource_Abstract*> dataSources READ dataSources NOTIFY dataSourcesChanged)
+
+    /*! \brief Heartbeat indicator
+     *
+     *  When active, traffic receivers send regular heartbeat messages. These
+     *  can be used to verify that the connection to the receiver works, even in
+     *  times when no traffic is reported. This property indicates if the class
+     *  receives heartbeat messages from at least one of the known receivers.
+     */
+    Q_PROPERTY(bool receivingHeartbeat READ receivingHeartbeat WRITE setReceivingHeartbeat NOTIFY receivingHeartbeatChanged)
+
+    /*! \brief Traffic objects whose position is known
+     *
+     *  This property holds a list of the most relevant traffic objects, as a
+     *  QQmlListProperty for better cooperation with QML. Note that only the
+     *  valid items in this list pertain to actual traffic. Invalid items should
+     *  be ignored. The list is not sorted in any way. The items themselves are
+     *  owned by this class.
+     */
+    Q_PROPERTY(QList<Traffic::TrafficFactor_WithPosition*> trafficObjects READ trafficObjects CONSTANT)
+
+    /*! \brief Most relevant traffic object whose position is not known
+     *
+     *  This property holds a pointer to the most relevant traffic object whose
+     *  position is not known.  This item should be ignored if invalid. The item
+     *  is owned by this class.
+     */
+    Q_PROPERTY(Traffic::TrafficFactor_DistanceOnly* trafficObjectWithoutPosition READ trafficObjectWithoutPosition CONSTANT)
+
+    /*! \brief String describing the current traffic data receiver errors
+     *
+     *  This property holds a translated, human-readable string that describes
+     *  the current errors reported by the traffic receiver, or an empty string
+     *  when there is no error.  The string is cleared when a new connection
+     *  attempt is started.
+     */
+    Q_PROPERTY(QString trafficReceiverRuntimeError READ trafficReceiverRuntimeError NOTIFY trafficReceiverRuntimeErrorChanged)
+
+    /*! \brief String describing the traffic data receiver errors found in self-test
+     *
+     *  This property holds a translated, human-readable string that describes
+     *  the errors reported by the traffic receiver during self-test, or an
+     *  empty string when there is no error.  The string is cleared when a new
+     *  connection attempt is started.
+     */
+    Q_PROPERTY(QString trafficReceiverSelfTestError READ trafficReceiverSelfTestError NOTIFY trafficReceiverSelfTestErrorChanged)
+
+    /*! \brief Current traffic warning
+     *
+     *  This property holds the current traffic warning.  The traffic warning is
+     *  updated regularly and set to an invalid warning (i.e. one with
+     *  alarmLevel == -1) after a certain period.
+     */
+    Q_PROPERTY(Traffic::Warning warning READ warning NOTIFY warningChanged)
+
+
+
+    //
+    // Getter Methods
+    //
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property dataSources
+     */
     [[nodiscard]] QList<Traffic::TrafficDataSource_Abstract*> dataSources() const;
-    Q_INVOKABLE void removeDataSource(Traffic::TrafficDataSource_Abstract* source);
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property receiving
+     */
+    [[nodiscard]] bool receivingHeartbeat() const
+    {
+        return m_receivingHeartbeat;
+    }
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property trafficObjects
+     */
+    [[nodiscard]] QList<Traffic::TrafficFactor_WithPosition*> trafficObjects() const
+    {
+        return m_trafficObjects;
+    }
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property trafficObjectWithoutPosition
+     */
+    [[nodiscard]] Traffic::TrafficFactor_DistanceOnly* trafficObjectWithoutPosition() const
+    {
+        return m_trafficObjectWithoutPosition;
+    }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property trafficReceiverRuntimeError
+     */
+    [[nodiscard]] QString trafficReceiverRuntimeError() const
+    {
+        return m_trafficReceiverRuntimeError;
+    }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property trafficReceiverSelfTestError
+     */
+    [[nodiscard]] QString trafficReceiverSelfTestError() const
+    {
+        return m_trafficReceiverSelfTestError;
+    }
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property Warning
+     */
+    [[nodiscard]] Traffic::Warning warning() const
+    {
+        return m_Warning;
+    }
+
 
 
     //
@@ -92,8 +219,7 @@ public:
      */
     void addDataSource(Traffic::TrafficDataSource_Abstract* source);
 
-    /*!
-     * \brief Add an additional data source
+    /*! \brief Add an additional data source
      *
      * This method adds an additional data source to this TrafficDataProvider,
      * typically a Bluetooth device.
@@ -104,122 +230,21 @@ public:
      */
     Q_INVOKABLE QString addDataSource(const Traffic::ConnectionInfo &connectionInfo);
 
-    /*! \brief Clear all data sources */
-    void clearDataSources();
-
+    /*! \brief Remove data sources
+     *
+     * This method removes a data source from this TrafficDataProvider.
+     * Canonical data sources cannot be removed
+     *
+     * \param source New TrafficDataSource that is to be removed.
+     */
+    Q_INVOKABLE void removeDataSource(Traffic::TrafficDataSource_Abstract* source);
 
 
 
     //
-    // Properties
+    // Constants
     //
 
-    /*! \brief Heartbeat indicator
-     *
-     *  When active, traffic receivers send regular heartbeat messages. These
-     *  can be used to verify that the connection to the receiver works, even in
-     *  times when no traffic is reported. This property indicates if the class
-     *  receives heartbeat messages from at least one of the known receivers.
-     */
-    Q_PROPERTY(bool receivingHeartbeat READ receivingHeartbeat WRITE setReceivingHeartbeat NOTIFY receivingHeartbeatChanged)
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property receiving
-     */
-    [[nodiscard]] auto receivingHeartbeat() const -> bool
-    {
-        return m_receivingHeartbeat;
-    }
-
-    /*! \brief Traffic objects whose position is known
-     *
-     *  This property holds a list of the most relevant traffic objects, as a
-     *  QQmlListProperty for better cooperation with QML. Note that only the
-     *  valid items in this list pertain to actual traffic. Invalid items should
-     *  be ignored. The list is not sorted in any way. The items themselves are
-     *  owned by this class.
-     */
-    Q_PROPERTY(QList<Traffic::TrafficFactor_WithPosition*> trafficObjects READ trafficObjects CONSTANT)
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property trafficObjects
-     */
-    auto trafficObjects() -> QList<Traffic::TrafficFactor_WithPosition*>
-    {
-        return m_trafficObjects;
-    }
-
-    /*! \brief Most relevant traffic object whose position is not known
-     *
-     *  This property holds a pointer to the most relevant traffic object whose
-     *  position is not known.  This item should be ignored if invalid. The item
-     *  is owned by this class.
-     */
-    Q_PROPERTY(Traffic::TrafficFactor_DistanceOnly* trafficObjectWithoutPosition READ trafficObjectWithoutPosition CONSTANT)
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property trafficObjectWithoutPosition
-     */
-    auto trafficObjectWithoutPosition() -> Traffic::TrafficFactor_DistanceOnly *
-    {
-        return m_trafficObjectWithoutPosition;
-    }
-
-    /*! \brief String describing the current traffic data receiver errors
-     *
-     *  This property holds a translated, human-readable string that describes
-     *  the current errors reported by the traffic receiver, or an empty string
-     *  when there is no error.  The string is cleared when a new connection
-     *  attempt is started.
-     */
-    Q_PROPERTY(QString trafficReceiverRuntimeError READ trafficReceiverRuntimeError NOTIFY trafficReceiverRuntimeErrorChanged)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property trafficReceiverRuntimeError
-     */
-    auto trafficReceiverRuntimeError() -> QString
-    {
-        return m_trafficReceiverRuntimeError;
-    }
-
-    /*! \brief String describing the traffic data receiver errors found in self-test
-     *
-     *  This property holds a translated, human-readable string that describes
-     *  the errors reported by the traffic receiver during self-test, or an
-     *  empty string when there is no error.  The string is cleared when a new
-     *  connection attempt is started.
-     */
-    Q_PROPERTY(QString trafficReceiverSelfTestError READ trafficReceiverSelfTestError NOTIFY trafficReceiverSelfTestErrorChanged)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property trafficReceiverSelfTestError
-     */
-    auto trafficReceiverSelfTestError() -> QString
-    {
-        return m_trafficReceiverSelfTestError;
-    }
-
-    /*! \brief Current traffic warning
-     *
-     *  This property holds the current traffic warning.  The traffic warning is
-     *  updated regularly and set to an invalid warning (i.e. one with
-     *  alarmLevel == -1) after a certain period.
-     */
-    Q_PROPERTY(Traffic::Warning warning READ warning NOTIFY warningChanged)
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property Warning
-     */
-    [[nodiscard]] auto warning() const -> Traffic::Warning
-    {
-        return m_Warning;
-    }
 
     /*! \brief Maximal vertical distance for relevant traffic
      *
@@ -302,6 +327,9 @@ private slots:
 
     // Identical to addDataSource, but handles Bluetooth Low Energy connections only.
     static QString addDataSource_BluetoothLowEnergy(const Traffic::ConnectionInfo &connectionInfo);
+
+    // Clear all data sources
+    void clearDataSources();
 
     // Intializations that are moved out of the constructor, in order to avoid
     // nested uses of constructors in Global.

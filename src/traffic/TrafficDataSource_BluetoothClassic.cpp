@@ -46,7 +46,7 @@ void Traffic::TrafficDataSource_BluetoothClassic::connectToTrafficReceiver()
     }
 
 #if defined(Q_OS_IOS)
-    setError( tr("Due to platform limitations, Bluetooth Classic is not supported on iOS."));
+    setErrorString( tr("Due to platform limitations, Bluetooth Classic is not supported on iOS."));
     return;
 #endif
 

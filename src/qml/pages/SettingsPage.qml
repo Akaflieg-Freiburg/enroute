@@ -290,8 +290,8 @@ Page {
 
             WordWrappingItemDelegate {
                 id: trafficDataReceiverConnections
-                text: qsTr("Traffic Data Receivers")
-                icon.source: "/icons/material/ic_airplanemode_active.svg"
+                text: qsTr("Data Connections")
+                icon.source: "/icons/material/ic_wifi.svg"
                 Layout.fillWidth: true
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
@@ -302,8 +302,8 @@ Page {
                 icon.source: "/icons/material/ic_info_outline.svg"
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    helpDialog.title = qsTr("Traffic Data Receivers")
-                    helpDialog.text = "<p>" + qsTr("A click on this item opens the page 'Traffic Data Receivers', used to configure connections to traffic data receivers.") + "</p>"
+                    helpDialog.title = qsTr("Data Connections")
+                    helpDialog.text = "<p>" + qsTr("Configure data connections to peripheral devices.") + "</p>"
                             + "<p>" + qsTr("Use this item to register traffic data receivers that connect via Bluetooth.") + "</p>"
                     helpDialog.open()
                 }

@@ -31,7 +31,7 @@ Page {
     id: trafficReceiverPage
     objectName: "TrafficReceiverPage"
 
-    title: qsTr("Data Connections: Traffic Data")
+    title: qsTr("Data Connections")
 
     required property var appWindow
 
@@ -47,12 +47,16 @@ Page {
         model: TrafficDataProvider.dataSources
 
         header: Label {
+            height: 2*implicitHeight
             width: parent ? parent.width : 0
-            height: implicitHeight
 
             text: "Traffic Data Receivers"
+
+            leftPadding: trafficReceiverPage.font.pixelSize
             font.pixelSize: trafficReceiverPage.font.pixelSize*1.2
             font.bold: true
+            verticalAlignment: Text.AlignVCenter
+            wrapMode: Text.WordWrap
         }
 
         delegate: Item {
@@ -64,6 +68,8 @@ Page {
                 color: {
                     if (model.modelData.receivingHeartbeat)
                         return "green"
+                    if (model.modelData.errorString !== "")
+                        return "red"
                     return "transparent"
                 }
                 opacity: 0.2
@@ -78,7 +84,12 @@ Page {
 
                     //enabled: model.modelData.canConnect
                     icon.source: model.modelData.icon
-                    text: model.modelData.sourceName + "<br><font size='2'>%1</font>".arg(model.modelData.connectivityStatus)
+                    text: {
+                        var sndLine = model.modelData.connectivityStatus
+                        if (model.modelData.errorString !== "")
+                            sndLine += " • " + qsTr("Error") + ": " + model.modelData.errorString
+                        model.modelData.sourceName + "<br><font size='2'>%1</font>".arg(sndLine)
+                    }
                 }
 
                 ToolButton {
@@ -108,7 +119,6 @@ Page {
                     }
                 }
             }
-
         }
     }
 

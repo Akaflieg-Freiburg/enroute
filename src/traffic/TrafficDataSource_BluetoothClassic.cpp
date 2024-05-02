@@ -31,7 +31,6 @@ Traffic::TrafficDataSource_BluetoothClassic::TrafficDataSource_BluetoothClassic(
     m_bluetoothPermission.setCommunicationModes(QBluetoothPermission::Access);
 
     // Connect socket
-#warning any connection here causes the app to crash on macos!
     connect(&m_socket, &QBluetoothSocket::errorOccurred, this, &Traffic::TrafficDataSource_BluetoothClassic::onErrorOccurred, Qt::QueuedConnection);
     connect(&m_socket, &QBluetoothSocket::stateChanged, this, &Traffic::TrafficDataSource_BluetoothClassic::onStateChanged);
     connect(&m_socket, &QBluetoothSocket::readyRead, this, &Traffic::TrafficDataSource_BluetoothClassic::onReadyRead);
@@ -122,10 +121,10 @@ void Traffic::TrafficDataSource_BluetoothClassic::onStateChanged(QBluetoothSocke
         setConnectivityStatus( tr("The socket is querying connection parameters.") );
         break;
     case QBluetoothSocket::SocketState::ConnectingState:
-        setConnectivityStatus( tr("The socket is attempting to connect to a device.") );
+        setConnectivityStatus( tr("The socket is attempting to connect.") );
         break;
     case QBluetoothSocket::SocketState::ConnectedState:
-        setConnectivityStatus( tr("The socket is connected to a device.") );
+        setConnectivityStatus( tr("The socket is connected.") );
         break;
     case QBluetoothSocket::SocketState::BoundState:
         setConnectivityStatus( tr("The socket is bound to a local address and port.") );
@@ -144,8 +143,6 @@ void Traffic::TrafficDataSource_BluetoothClassic::onReadyRead()
     QString sentence;
     while(m_textStream.readLineInto(&sentence) )
     {
-#warning
-        qWarning() << sentence;
         processFLARMSentence(sentence);
     }
 }

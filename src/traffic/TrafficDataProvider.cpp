@@ -552,8 +552,10 @@ void Traffic::TrafficDataProvider::updateStatusString()
         return;
     }
 
-    QString result = "<p>" + tr("Not receiving heartbeat.") + "<p>";
+    const QString result = tr("Not receiving traffic receiver heartbeat through any of the configured data connections.");
+    //const QString result = "<p>" + tr("Not receiving heartbeat.") + "<p>";
 
+    /*
     result += u"<ul style='margin-left:-25px;'>"_qs;
     foreach(auto source, m_dataSources)
     {
@@ -571,6 +573,7 @@ void Traffic::TrafficDataProvider::updateStatusString()
         result += u"</li>"_qs;
     }
     result += u"</ul>"_qs;
+*/
 
     setStatusString(result);
 }

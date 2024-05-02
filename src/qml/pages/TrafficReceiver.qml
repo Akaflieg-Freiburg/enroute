@@ -133,22 +133,6 @@ Page {
 
             }
 
-            Button {
-                Layout.alignment: Qt.AlignHCenter
-                icon.source: "/icons/material/ic_tap_and_play.svg"
-                text: qsTr("Connect")
-                enabled: !timer.running
-                visible: !TrafficDataProvider.receivingHeartbeat
-                onClicked: {
-                    TrafficDataProvider.connectToTrafficReceiver()
-                    timer.running = true;
-                }
-                Timer {
-                    id: timer
-                    interval: 1000
-                }
-            }
-
             Item {
                 Layout.preferredHeight: sView.font.pixelSize*0.5
                 Layout.columnSpan: 2
@@ -171,24 +155,56 @@ Page {
                 onClicked: trafficReceiverPage.appWindow.openManual("02-tutorialBasic/01-traffic.html")
             }
 
-            WordWrappingItemDelegate {
-                Layout.fillWidth: true
-                visible: !TrafficDataProvider.receivingHeartbeat
-                icon.source: "/icons/material/ic_info_outline.svg"
-                text: qsTr("Connect to the SafeSky app…")
-                onClicked: trafficReceiverPage.appWindow.openManual("02-tutorialBasic/02-safesky.html")
-            }
-
-            WordWrappingItemDelegate {
-                Layout.fillWidth: true
-                visible: !TrafficDataProvider.receivingHeartbeat
-                icon.source: "/icons/material/ic_info_outline.svg"
-                text: qsTr("Connect to a flight simulator…")
-                onClicked: trafficReceiverPage.appWindow.openManual("02-tutorialBasic/07-simulator.html")
-            }
-
         }
 
     }
 
+    footer: Footer {
+        ColumnLayout {
+            width: parent.width
+
+            Button {
+                flat: true
+
+                Layout.alignment: Qt.AlignHCenter
+                icon.source: "/icons/material/ic_tap_and_play.svg"
+                text: {
+                    if (disconnectTimer.running)
+                        return qsTr("Disconnecting...")
+                    if (connectTimer.running)
+                        return qsTr("Reconnecting...")
+                    return qsTr("Reconnect")
+                }
+                enabled: !connectTimer.running
+                visible: !TrafficDataProvider.receivingHeartbeat
+                onClicked: {
+                    TrafficDataProvider.disconnectFromTrafficReceiver()
+                    disconnectTimer.running = true;
+                    connectTimer.running = true;
+                }
+                Timer {
+                    id: disconnectTimer
+                    interval: 1000
+                    onTriggered: TrafficDataProvider.connectToTrafficReceiver()
+                }
+                Timer {
+                    id: connectTimer
+                    interval: 2000
+                }
+            }
+
+            Button {
+                flat: true
+
+                Layout.alignment: Qt.AlignHCenter
+                text: qsTr("Manage Data Connections")
+                icon.source: "/icons/material/ic_wifi.svg"
+
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    stackView.push("ConnectionManager.qml", {"appWindow": view})
+                }
+            }
+        }
+    }
 }

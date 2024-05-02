@@ -130,7 +130,7 @@ Page {
                 flat: true
 
                 Layout.alignment: Qt.AlignHCenter
-                icon.source: "/icons/material/ic_tap_and_play.svg"
+                icon.source: "/icons/material/ic_refresh.svg"
                 text: {
                     if (disconnectTimer.running)
                         return qsTr("Disconnecting...")

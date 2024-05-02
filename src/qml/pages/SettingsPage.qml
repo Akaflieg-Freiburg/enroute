@@ -291,7 +291,7 @@ Page {
             WordWrappingItemDelegate {
                 id: trafficDataReceiverConnections
                 text: qsTr("Data Connections")
-                icon.source: "/icons/material/ic_wifi.svg"
+                icon.source: "/icons/material/ic_tap_and_play.svg"
                 Layout.fillWidth: true
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()

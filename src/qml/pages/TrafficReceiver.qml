@@ -155,6 +155,21 @@ Page {
                 onClicked: trafficReceiverPage.appWindow.openManual("02-tutorialBasic/01-traffic.html")
             }
 
+            WordWrappingItemDelegate {
+                Layout.fillWidth: true
+                visible: !TrafficDataProvider.receivingHeartbeat
+                icon.source: "/icons/material/ic_info_outline.svg"
+                text: qsTr("Connect to the SafeSky app…")
+                onClicked: trafficReceiverPage.appWindow.openManual("02-tutorialBasic/02-safesky.html")
+            }
+
+            WordWrappingItemDelegate {
+                Layout.fillWidth: true
+                visible: !TrafficDataProvider.receivingHeartbeat
+                icon.source: "/icons/material/ic_info_outline.svg"
+                text: qsTr("Connect to a flight simulator…")
+                onClicked: trafficReceiverPage.appWindow.openManual("02-tutorialBasic/07-simulator.html")
+            }
         }
 
     }
@@ -167,7 +182,7 @@ Page {
                 flat: true
 
                 Layout.alignment: Qt.AlignHCenter
-                icon.source: "/icons/material/ic_tap_and_play.svg"
+                icon.source: "/icons/material/ic_refresh.svg"
                 text: {
                     if (disconnectTimer.running)
                         return qsTr("Disconnecting...")
@@ -197,8 +212,8 @@ Page {
                 flat: true
 
                 Layout.alignment: Qt.AlignHCenter
-                text: qsTr("Manage Data Connections")
-                icon.source: "/icons/material/ic_wifi.svg"
+                text: qsTr("Configure Data Connections")
+                icon.source: "/icons/material/ic_tap_and_play.svg"
 
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()

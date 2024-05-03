@@ -25,7 +25,7 @@ jobs:
       uses: jurplel/install-qt-action@v3
       with:
         cache: 'true'
-        modules: 'qt5compat qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtshadertools qtspeech qtwebsockets qtwebview'
+        modules: 'qt5compat qtbluetooth qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtshadertools qtspeech qtwebsockets qtwebview'
         version: '6.6.*'
     - name: Install LinuxDeploy
       uses: miurahr/install-linuxdeploy-action@v1

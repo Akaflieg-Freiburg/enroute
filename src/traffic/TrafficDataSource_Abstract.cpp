@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -25,8 +25,9 @@
 
 // Member functions
 
-Traffic::TrafficDataSource_Abstract::TrafficDataSource_Abstract(QObject *parent) : QObject(parent) {
-
+Traffic::TrafficDataSource_Abstract::TrafficDataSource_Abstract(bool isCanonical, QObject *parent)
+    : QObject(parent), m_canonical(isCanonical)
+{
     QQmlEngine::setObjectOwnership(&m_factor, QQmlEngine::CppOwnership);
 
     // Setup heartbeat timer
@@ -39,7 +40,6 @@ Traffic::TrafficDataSource_Abstract::TrafficDataSource_Abstract(QObject *parent)
     m_pressureAltitudeTimer.setSingleShot(true);
     m_trueAltitudeTimer.setInterval(5s);
     m_trueAltitudeTimer.setSingleShot(true);
-
 }
 
 

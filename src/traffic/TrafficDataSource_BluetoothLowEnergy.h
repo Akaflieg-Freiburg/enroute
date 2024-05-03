@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2024 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,26 +20,24 @@
 
 #pragma once
 
-
-#include <QPointer>
-#include <QUdpSocket>
+#include <QBluetoothLocalDevice>
+#include <QBluetoothDeviceInfo>
+#include <QBluetoothServiceInfo>
+#include <QBluetoothSocket>
+#include <QLowEnergyController>
 
 #include "traffic/TrafficDataSource_AbstractSocket.h"
 
 
 namespace Traffic {
 
-/*! \brief Traffic receiver: UDP connection to GDL90 source
+/*! \brief Traffic receiver: Bluetooth LE connection to FLARM/NMEA source
  *
- *  This class connects to a traffic receiver via a GDL90 connection. It expects
- *  to find a receiver at the specifed IP-Address and port that emits GDL90
- *  messages.
- *
- *  In most use cases, the connection will be established via the device's WiFi
- *  interface.  The class will therefore try to lock the WiFi once a heartbeat
- *  has been detected, and release the WiFi at the appropriate time.
+ *  This class connects to a traffic receiver via a Bluetooth LE serial port
+ *  service.
  */
-class TrafficDataSource_Udp : public TrafficDataSource_AbstractSocket {
+
+class TrafficDataSource_BluetoothLowEnergy : public TrafficDataSource_AbstractSocket {
     Q_OBJECT
 
 public:
@@ -47,14 +45,33 @@ public:
      *
      * @param isCanonical Intializer for property canonical
      *
-     *  @param port Port at the host where the traffic receiver is expected
+     *  @param info Description of a Bluetooth LE device offering
+     *  serial port service.
      *
      *  @param parent The standard QObject parent pointer
      */
-    TrafficDataSource_Udp(bool isCanonical, quint16 port, QObject *parent = nullptr);
+    TrafficDataSource_BluetoothLowEnergy(bool isCanonical, const QBluetoothDeviceInfo& info, QObject* parent);
 
     // Standard destructor
-    ~TrafficDataSource_Udp() override;
+    ~TrafficDataSource_BluetoothLowEnergy() override = default;
+
+
+
+    //
+    // Properties
+    //
+
+    /*! \brief Source info
+     *
+     *  Device info, as set in the constructor of this class.
+     */
+    Q_PROPERTY(QBluetoothDeviceInfo sourceInfo READ sourceInfo CONSTANT)
+
+
+
+    //
+    // Getter Methods
+    //
 
     /*! \brief Getter function for the property with the same name
      *
@@ -63,7 +80,7 @@ public:
      *
      *  @returns Property icon
      */
-    [[nodiscard]] QString icon() const override { return u"/icons/material/ic_wifi.svg"_qs; }
+    [[nodiscard]] QString icon() const override { return u"/icons/material/ic_bluetooth.svg"_qs; }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -72,10 +89,18 @@ public:
      *
      *  @returns Property sourceName
      */
-    [[nodiscard]] auto sourceName() const -> QString override
+    [[nodiscard]] QString sourceName() const override;
+
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property sourceInfo
+     */
+    [[nodiscard]] QBluetoothDeviceInfo sourceInfo() const
     {
-        return tr("UDP connection to port %1").arg(m_port);
+        return m_info;
     }
+
 
 public slots:
     /*! \brief Start attempt to connect to traffic receiver
@@ -93,26 +118,35 @@ public slots:
     void disconnectFromTrafficReceiver() override;
 
 private slots:
-    // Read messages from the socket datagrams and passes the messages on to
-    // processGDLMessage
+    // Handle BT socket errors
+    void onErrorOccurred(QLowEnergyController::Error error);
+
+    // Handle BT socket state changes
+    void onStateChanged(QLowEnergyController::ControllerState state);
+
+    // Read and process received NMEA sentences
+    void onConnected();
+
+
+    // Read and process received NMEA sentences
     void onReadyRead();
 
+    void onServiceDiscovered(const QBluetoothUuid &newService);
+
+
 private:
-    Q_DISABLE_COPY_MOVE(TrafficDataSource_Udp)
+    Q_DISABLE_COPY_MOVE(TrafficDataSource_BluetoothLowEnergy)
 
-    QPointer<QUdpSocket> m_socket;
-    quint16 m_port;
+    // Copied from the constructor
+    QBluetoothDeviceInfo m_info;
 
-    // We use this vector to store the last 512 datatgram hashes in a circular
-    // array. This is used to sort out doubly sent datagrams. The nextHashIndex
-    // points to the next vector entry that will be re-written.
-    QVector<uint> receivedDatagramHashes {512, 0};
-    qsizetype nextHashIndex {0};
+    // BT socket used for reading data
+    QBluetoothSocket socket {QBluetoothServiceInfo::RfcommProtocol};
 
-    // GPS altitude of owncraft
-    Units::Distance m_trueAltitude;
-    Units::Distance m_trueAltitude_FOM;
-    QTimer m_trueAltitudeTimer;
+    // Text stream used for reading NMEA sentences
+    QTextStream m_textStream {&socket};
+
+    QLowEnergyController* m_control {nullptr};
 
 };
 

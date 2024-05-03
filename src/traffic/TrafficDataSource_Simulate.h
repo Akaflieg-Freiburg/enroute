@@ -38,12 +38,23 @@ class TrafficDataSource_Simulate : public TrafficDataSource_Abstract {
 public:
     /*! \brief Default constructor
      *
+     * @param isCanonical Intializer for property canonical
+     *
      *  @param parent The standard QObject parent pointer
      */
-    explicit TrafficDataSource_Simulate(QObject *parent = nullptr);
+    TrafficDataSource_Simulate(bool isCanonical, QObject* parent);
 
     // Standard destructor
     ~TrafficDataSource_Simulate() override = default;
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  This method implements the pure virtual method declared by its
+     *  superclass.
+     *
+     *  @returns Property icon
+     */
+    [[nodiscard]] QString icon() const override { return u"/icons/material/ic_file_download.svg"_qs; }
 
     /*! \brief Getter function for the property with the same name
      *

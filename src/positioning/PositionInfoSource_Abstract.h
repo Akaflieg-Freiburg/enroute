@@ -50,6 +50,8 @@ public:
      */
     explicit PositionInfoSource_Abstract(QObject *parent = nullptr);
 
+
+
     //
     // Properties
     //

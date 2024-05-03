@@ -287,6 +287,28 @@ Page {
                 }
             }
 
+
+            WordWrappingItemDelegate {
+                id: trafficDataReceiverConnections
+                text: qsTr("Data Connections")
+                icon.source: "/icons/material/ic_tap_and_play.svg"
+                Layout.fillWidth: true
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    stackView.push("ConnectionManager.qml", {"appWindow": view})
+                }
+            }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("Data Connections")
+                    helpDialog.text = "<p>" + qsTr("Configure data connections to peripheral devices.") + "</p>"
+                            + "<p>" + qsTr("Use this item to register traffic data receivers that connect via Bluetooth.") + "</p>"
+                    helpDialog.open()
+                }
+            }
+
             WordWrappingSwitchDelegate {
                 id: ignoreSSL
                 text: qsTr("Ignore Network Security Errors")

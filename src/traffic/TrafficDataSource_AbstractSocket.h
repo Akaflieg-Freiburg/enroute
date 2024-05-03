@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -45,9 +45,11 @@ class TrafficDataSource_AbstractSocket : public TrafficDataSource_Abstract {
 public:
     /*! \brief Default constructor
      *
+     * @param isCanonical Intializer for property canonical
+     *
      * @param parent The standard QObject parent pointer
      */
-    explicit TrafficDataSource_AbstractSocket(QObject *parent = nullptr);
+    explicit TrafficDataSource_AbstractSocket(bool isCanonical, QObject* parent);
 
 protected slots:
     // Handle socket errors. This method will call

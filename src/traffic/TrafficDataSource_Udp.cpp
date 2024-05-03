@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -23,10 +23,9 @@
 #include "traffic/TrafficDataSource_Udp.h"
 
 
-// Member functions
-
-Traffic::TrafficDataSource_Udp::TrafficDataSource_Udp(quint16 port, QObject *parent) :
-    Traffic::TrafficDataSource_AbstractSocket(parent), m_port(port)
+Traffic::TrafficDataSource_Udp::TrafficDataSource_Udp(bool isCanonical, quint16 port, QObject *parent) :
+    Traffic::TrafficDataSource_AbstractSocket(isCanonical, parent),
+    m_port(port)
 {
 
     // Initialize timers
@@ -39,15 +38,11 @@ Traffic::TrafficDataSource_Udp::TrafficDataSource_Udp(quint16 port, QObject *par
     TrafficDataSource_Udp::disconnectFromTrafficReceiver();
 }
 
-
 Traffic::TrafficDataSource_Udp::~TrafficDataSource_Udp()
 {
-
     Traffic::TrafficDataSource_Udp::disconnectFromTrafficReceiver();
     setReceivingHeartbeat(false); // This will release the WiFi lock if necessary
-
 }
-
 
 void Traffic::TrafficDataSource_Udp::connectToTrafficReceiver()
 {
@@ -75,10 +70,8 @@ void Traffic::TrafficDataSource_Udp::connectToTrafficReceiver()
     onStateChanged(m_socket->state());
 }
 
-
 void Traffic::TrafficDataSource_Udp::disconnectFromTrafficReceiver()
 {
-
     // Disconnect socket.
     if (!m_socket.isNull())
     {
@@ -88,9 +81,7 @@ void Traffic::TrafficDataSource_Udp::disconnectFromTrafficReceiver()
 
     // Update properties
     onStateChanged(QAbstractSocket::UnconnectedState);
-
 }
-
 
 void Traffic::TrafficDataSource_Udp::onReadyRead()
 {
@@ -99,6 +90,9 @@ void Traffic::TrafficDataSource_Udp::onReadyRead()
     {
         return;
     }
+
+    // Update connectivity status
+    setConnectivityStatus( tr("Receiving Data.") );
 
     // Read datagrams
     while (m_socket->hasPendingDatagrams())
@@ -132,8 +126,6 @@ void Traffic::TrafficDataSource_Udp::onReadyRead()
                     processGDLMessage(rawMessage);
                 }
             }
-
         }
     }
-
 }

@@ -85,10 +85,15 @@ set(SOURCES
     positioning/PositionInfoSource_Abstract.h
     positioning/PositionInfoSource_Satellite.h
     positioning/PositionProvider.h
+    traffic/ConnectionInfo.h
+    traffic/ConnectionScanner_Abstract.h
+    traffic/ConnectionScanner_Bluetooth.h
     traffic/FlarmnetDB.h
     traffic/PasswordDB.h
     traffic/TrafficDataSource_Abstract.h
     traffic/TrafficDataSource_AbstractSocket.h
+    traffic/TrafficDataSource_BluetoothClassic.h
+    traffic/TrafficDataSource_BluetoothLowEnergy.h
     traffic/TrafficDataSource_File.h
     traffic/TrafficDataSource_Simulate.h
     traffic/TrafficDataSource_Tcp.h
@@ -171,6 +176,9 @@ set(SOURCES
     positioning/PositionInfoSource_Abstract.cpp
     positioning/PositionInfoSource_Satellite.cpp
     positioning/PositionProvider.cpp
+    traffic/ConnectionInfo.cpp
+    traffic/ConnectionScanner_Abstract.cpp
+    traffic/ConnectionScanner_Bluetooth.cpp
     traffic/FlarmnetDB.cpp
     traffic/PasswordDB.cpp
     traffic/TrafficDataSource_Abstract.cpp
@@ -178,11 +186,14 @@ set(SOURCES
     traffic/TrafficDataSource_Abstract_GDL90.cpp
     traffic/TrafficDataSource_Abstract_XGPS.cpp
     traffic/TrafficDataSource_AbstractSocket.cpp
+    traffic/TrafficDataSource_BluetoothClassic.cpp
+    traffic/TrafficDataSource_BluetoothLowEnergy.cpp
     traffic/TrafficDataSource_File.cpp
     traffic/TrafficDataSource_Simulate.cpp
     traffic/TrafficDataSource_Tcp.cpp
     traffic/TrafficDataSource_Udp.cpp
     traffic/TrafficDataProvider.cpp
+    traffic/TrafficDataProvider_BluetoothClassic.cpp
     traffic/TrafficFactor_Abstract.cpp
     traffic/TrafficFactor_DistanceOnly.cpp
     traffic/TrafficFactor_WithPosition.cpp
@@ -261,6 +272,7 @@ if(ANDROID)
     )
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
+        Qt6::Bluetooth
         Qt6::Concurrent
         Qt6::Core
         Qt6::Core5Compat
@@ -310,6 +322,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     qt_add_executable(${PROJECT_NAME} ${SOURCES})
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
+        Qt6::Bluetooth
         Qt6::Concurrent
         Qt6::Core
         Qt6::Core5Compat
@@ -369,6 +382,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
+        Qt6::Bluetooth
         Qt6::Concurrent
         Qt6::Core
         Qt6::Core5Compat
@@ -415,6 +429,7 @@ if (IOS)
     set(CMAKE_MACOSX_RPATH OFF)
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
+        Qt6::Bluetooth
         Qt6::Concurrent
         Qt6::Core
         Qt6::Core5Compat
@@ -498,6 +513,7 @@ qt_add_qml_module(${PROJECT_NAME}
     NO_RESOURCE_TARGET_PATH
     QML_FILES
     qml/main.qml
+    qml/dialogs/AddBTDeviceDialog.qml
     qml/dialogs/CenteringDialog.qml
     qml/dialogs/LongTextDialog.qml
     qml/dialogs/AircraftSaveDialog.qml
@@ -552,6 +568,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/pages/AircraftPage.qml
     qml/pages/AircraftLibrary.qml
     qml/pages/BugReportPage.qml
+    qml/pages/ConnectionManager.qml
     qml/pages/DonatePage.qml
     qml/pages/FlightRouteEditor.qml
     qml/pages/FlightRouteLibrary.qml
@@ -574,6 +591,7 @@ qt_add_qml_module(${PROJECT_NAME}
     ui/ScaleQuickItem.cpp
     ui/SideViewQuickItem.h
     ui/SideViewQuickItem.cpp
+    traffic/TrafficDataProvider_BluetoothLowEnergy.cpp
 )
 
 qt_add_translations(${PROJECT_NAME}

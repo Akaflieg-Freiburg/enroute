@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -25,12 +25,11 @@
 
 // Member functions
 
-Traffic::TrafficDataSource_AbstractSocket::TrafficDataSource_AbstractSocket(QObject *parent) :
-    Traffic::TrafficDataSource_Abstract(parent) {
-
+Traffic::TrafficDataSource_AbstractSocket::TrafficDataSource_AbstractSocket(bool isCanonical, QObject* parent) :
+    Traffic::TrafficDataSource_Abstract(isCanonical, parent)
+{
     // Connect WiFi locker/unlocker
     connect(this, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged, this, &Traffic::TrafficDataSource_AbstractSocket::onReceivingHeartbeatChanged);
-
 }
 
 

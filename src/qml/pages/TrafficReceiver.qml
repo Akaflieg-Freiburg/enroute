@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -79,7 +79,6 @@ Page {
                 leftInset: -4
                 rightInset: -4
 
-                // Background color according to METAR/FAA flight category
                 background: Rectangle {
                     border.color: "black"
                     color: (TrafficDataProvider.receivingHeartbeat) ? "green" : "red"
@@ -134,23 +133,6 @@ Page {
 
             }
 
-
-            Button {
-                Layout.alignment: Qt.AlignHCenter
-                icon.source: "/icons/material/ic_tap_and_play.svg"
-                text: qsTr("Connect")
-                enabled: !timer.running
-                visible: !TrafficDataProvider.receivingHeartbeat
-                onClicked: {
-                    TrafficDataProvider.connectToTrafficReceiver()
-                    timer.running = true;
-                }
-                Timer {
-                    id: timer
-                    interval: 1000
-                }
-            }
-
             Item {
                 Layout.preferredHeight: sView.font.pixelSize*0.5
                 Layout.columnSpan: 2
@@ -188,9 +170,56 @@ Page {
                 text: qsTr("Connect to a flight simulator…")
                 onClicked: trafficReceiverPage.appWindow.openManual("02-tutorialBasic/07-simulator.html")
             }
-
         }
 
     }
 
+    footer: Footer {
+        ColumnLayout {
+            width: parent.width
+
+            Button {
+                flat: true
+
+                Layout.alignment: Qt.AlignHCenter
+                icon.source: "/icons/material/ic_refresh.svg"
+                text: {
+                    if (disconnectTimer.running)
+                        return qsTr("Disconnecting...")
+                    if (connectTimer.running)
+                        return qsTr("Reconnecting...")
+                    return qsTr("Reconnect")
+                }
+                enabled: !connectTimer.running
+                visible: !TrafficDataProvider.receivingHeartbeat
+                onClicked: {
+                    TrafficDataProvider.disconnectFromTrafficReceiver()
+                    disconnectTimer.running = true;
+                    connectTimer.running = true;
+                }
+                Timer {
+                    id: disconnectTimer
+                    interval: 1000
+                    onTriggered: TrafficDataProvider.connectToTrafficReceiver()
+                }
+                Timer {
+                    id: connectTimer
+                    interval: 2000
+                }
+            }
+
+            Button {
+                flat: true
+
+                Layout.alignment: Qt.AlignHCenter
+                text: qsTr("Configure Data Connections")
+                icon.source: "/icons/material/ic_tap_and_play.svg"
+
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    stackView.push("ConnectionManager.qml", {"appWindow": view})
+                }
+            }
+        }
+    }
 }

@@ -299,7 +299,7 @@ Page {
 
                     onClicked: {
                         PlatformAdaptor.vibrateBrief()
-                    waypointDescription.waypoint = modelData
+                        waypointDescription.waypoint = modelData
                         waypointDescription.open()
                     }
 
@@ -308,7 +308,6 @@ Page {
                         removeDialog.waypoint = modelData
                         removeDialog.open()
                     }
-
                 }
 
                 ToolButton {
@@ -316,11 +315,11 @@ Page {
 
                     icon.source: "/icons/material/ic_mode_edit.svg"
                     onClicked: {
-                    PlatformAdaptor.vibrateBrief()
+                        PlatformAdaptor.vibrateBrief()
                         wpEditor.waypoint = modelData
                         wpEditor.open()
                     }
-            }
+                }
 
                 ToolButton {
                     id: cptMenuButton
@@ -332,19 +331,19 @@ Page {
                         cptMenu.open()
                     }
 
-                AutoSizingMenu {
-                    id: cptMenu
+                    AutoSizingMenu {
+                        id: cptMenu
 
-                    Action {
-                        id: removeAction
-                        text: qsTr("Remove…")
-                        onTriggered: {
-                            PlatformAdaptor.vibrateBrief()
-                            removeDialog.waypoint = modelData
-                            removeDialog.open()
-                        }
-                    } // removeAction
-                } // AutoSizingMenu
+                        Action {
+                            id: removeAction
+                            text: qsTr("Remove…")
+                            onTriggered: {
+                                PlatformAdaptor.vibrateBrief()
+                                removeDialog.waypoint = modelData
+                                removeDialog.open()
+                            }
+                        } // removeAction
+                    } // AutoSizingMenu
 
                 }
 
@@ -353,25 +352,25 @@ Page {
         }
 
         DecoratedListView {
-        id: wpList
+            id: wpList
 
-        anchors.fill: parent
+            anchors.fill: parent
 
-        leftMargin: SafeInsets.left
-        rightMargin: SafeInsets.right
-        bottomMargin: SafeInsets.bottom
+            leftMargin: SafeInsets.left
+            rightMargin: SafeInsets.right
+            bottomMargin: SafeInsets.bottom
 
-        clip: true
+            clip: true
 
-        model: {
-            // Mention waypoints to ensure that the list gets updated
-            WaypointLibrary.waypoints
+            model: {
+                // Mention waypoints to ensure that the list gets updated
+                WaypointLibrary.waypoints
 
-            return WaypointLibrary.filteredWaypoints(textInput.text)
+                return WaypointLibrary.filteredWaypoints(textInput.text)
+            }
+            delegate: waypointDelegate
+            ScrollIndicator.vertical: ScrollIndicator {}
         }
-        delegate: waypointDelegate
-        ScrollIndicator.vertical: ScrollIndicator {}
-    }
     }
 
     Label {

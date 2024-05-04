@@ -589,7 +589,7 @@ qt_add_qml_module(${PROJECT_NAME}
     SOURCES
     ui/ScaleQuickItem.h
     ui/ScaleQuickItem.cpp
-    SOURCES traffic/TrafficDataProvider_BluetoothLowEnergy.cpp
+    traffic/TrafficDataProvider_BluetoothLowEnergy.cpp
 )
 
 qt_add_translations(${PROJECT_NAME}

@@ -550,7 +550,7 @@ AppWindow {
 
                     leftPadding: 16+SafeInsets.left
 
-                    text: qsTr("Bug report")
+                    text: qsTr("Bug Report")
                     icon.source: "/icons/material/ic_bug_report.svg"
 
                     onClicked: {

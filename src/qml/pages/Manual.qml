@@ -102,7 +102,16 @@ Page {
         anchors.fill: parent
         anchors.bottomMargin: SafeInsets.bottom
 
-        url: "file://" + manual_location + "/"  + pg.fileName
+        url: "file://" + manual_location + "/" + pg.fileName
+
+        settings.allowFileAccess: true
+        onUrlChanged: console.log(url)
+        Component.onCompleted: {
+
+            url = "file://" + manual_location + "/manual/" + pg.fileName
+            console.log("AAA", "file://" + manual_location + "/manual/" + pg.fileName)
+            console.log("BAA", url)
+        }
     }
 
 

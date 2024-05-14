@@ -405,6 +405,7 @@ if (IOS)
         ios/ObjectiveC.m
         ios/SafeAreaService.h
         ios/SafeAreaService.m
+        ${CMAKE_SOURCE_DIR}/generatedSources/manual
     )
 
     # Compile definitions
@@ -427,6 +428,7 @@ if (IOS)
         Qt6::Sql
         Qt6::Svg
         Qt6::TextToSpeech
+        Qt6::WebView
         QMapLibre::Location
         libzip::zip
     )
@@ -434,6 +436,9 @@ if (IOS)
         MACOSX_BUNDLE true
         MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/ios/Info.plist"
     )
+    set_source_files_properties(
+        ${CMAKE_SOURCE_DIR}/generatedSources/manual
+        PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
     qmaplibre_location_setup_plugins(${PROJECT_NAME})
     target_include_directories(${PROJECT_NAME}
         PUBLIC

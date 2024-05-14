@@ -19,7 +19,7 @@ feature_row:
   - image_path: /assets/images/maps.jpg
     alt: "Free maps"
     title: "Maps Included"
-    excerpt: "Our free maps receive near-weekly updates and cover large parts of the world. [More …](https://akaflieg-freiburg.github.io/enrouteText/manual/03-reference/mapData.html)"
+    excerpt: "Our free maps receive near-weekly updates and cover large parts of the world. [More …](https://akaflieg-freiburg.github.io/enrouteManual/08-appendix/01-dataSources.html#map-data)"
   - image_path: /assets/images/simple.jpg
     alt: "placeholder image 2"
     title: "Simple by Design"
@@ -54,7 +54,7 @@ Our free aeronautical maps can be downloaded for offline use.  In addition to
 airspaces, airfields and navaids, selected maps also show traffic circuits as
 well as flight procedures for control zones.  [The maps receive daily updates
 and cover large parts of the
-world.](https://akaflieg-freiburg.github.io/enrouteText/manual/03-reference/mapData.html)
+world.](https://akaflieg-freiburg.github.io/enrouteManual/08-appendix/01-dataSources.html#map-data)
 
 While **Enroute Flight Navigation** is no substitute for full-featured flight
 planning software, it allows you to quickly and easily compute distances,

@@ -487,7 +487,6 @@ AppWindow {
                                 aboutMenu.close()
                                 drawer.close()
                             }
-
                         }
 
                         Rectangle {
@@ -974,7 +973,7 @@ AppWindow {
     }
 
     function openManual(pageUrl) {
-        if (Qt.platform.os === "android")
+        if ((Qt.platform.os === "android") || (Qt.platform.os === "ios"))
             stackView.push("pages/Manual.qml", {"fileName": pageUrl})
         else
             Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteManual/"+pageUrl)

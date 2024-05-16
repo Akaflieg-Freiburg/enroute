@@ -429,6 +429,16 @@ protected:
 private:
     Q_DISABLE_COPY_MOVE(TrafficDataSource_Abstract)
 
+    // Methods interpreting specific FLARM/NMEA messages
+    void processFLARMMessageGPGGA(const QStringList& arguments); // NMEA GPS 3D-fix data
+    void processFLARMMessageGPRMC(const QStringList& arguments); // Recommended minimum specific GPS/Transit data
+    void processFLARMMessagePFLAA(const QStringList& arguments); // Data on other proximate aircraft
+    void processFLARMMessagePFLAE(const QStringList& arguments); // Self-test result and errors codes
+    static void processFLARMMessagePFLAS(const QStringList& arguments); // Debug Information
+    void processFLARMMessagePFLAU(const QStringList& arguments); // FLARM Heartbeat
+    void processFLARMMessagePFLAV(const QStringList& arguments); // Version information
+    void processFLARMMessagePGRMZ(const QStringList& arguments); // Garmin's barometric altitude
+
     // Property caches
     bool m_canonical {false};
     QString m_connectivityStatus {};

@@ -361,7 +361,7 @@ protected:
      *
      *  @param sentence A QString containing a FLARM/NMEA sentence.
      */
-    void processFLARMSentence(QString sentence);
+    void processFLARMSentence(const QString& sentence);
 
     /*! \brief Process one GDL90 message
      *

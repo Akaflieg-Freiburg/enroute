@@ -19,15 +19,15 @@
  ***************************************************************************/
 
 #include "GlobalObject.h"
-#include "platform/PlatformAdaptor_Abstract.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/FlarmnetDB.h"
 #include "traffic/TrafficDataSource_Abstract.h"
 
-
+//
 // Static Helper functions
+//
 
-auto interpretNMEALatLong(const QString& A, const QString& B) -> qreal
+qreal interpretNMEALatLong(const QString& A, const QString& B)
 {
     bool ok1 = false;
     bool ok2 = false;
@@ -42,7 +42,7 @@ auto interpretNMEALatLong(const QString& A, const QString& B) -> qreal
     return result;
 }
 
-auto interpretNMEATime(const QString& timeString) -> QDateTime
+QDateTime interpretNMEATime(const QString& timeString)
 {
     auto HH = timeString.mid(0,2);
     auto MM = timeString.mid(2,2);
@@ -57,42 +57,61 @@ auto interpretNMEATime(const QString& timeString) -> QDateTime
     return dateTime;
 }
 
-
-// Member functions
-
-void Traffic::TrafficDataSource_Abstract::processFLARMSentence(QString sentence)
+// This method takes an input string and checks if it is a valid NMEA sentence, of the form $message*checksum, where 'message' is the message and 'checksum' is a valid checksum of the message.
+// If a valid sentence is detected, the substring message is returned. If the input string is not a valid NMEA sentence, an empty string is returned.
+QString getNMEAMessage(const QString& input)
 {
-    if (sentence.isEmpty()) {
-        return;
+    // Paranoid safety checks
+    if (input.length() < 5)
+    {
+        return {};
+    }
+    if (input[0] != QChar('$'))
+    {
+        return {};
     }
 
-    // Check that line starts with a dollar sign
-    if (sentence.isEmpty()) {
-        return;
+    // Split input into Message and CheckSum
+    auto pieces = input.split(QStringLiteral("*"));
+    if (pieces.length() != 2)
+    {
+        return {};
     }
-    if (sentence[0] != QStringLiteral("$")) {
-        return;
-    }
-    sentence = sentence.mid(1);
-
-    // Check the NMEA checksum
-    auto pieces = sentence.split(QStringLiteral("*"));
-    if (pieces.length() != 2) {
-        return;
-    }
-    sentence = pieces[0];
+    auto message = pieces[0].mid(1);
     auto checksum = pieces[1].toInt(nullptr, 16);
+
+    // Compute my own checksum and compare
     quint8 myChecksum = 0;
-    for(auto && i : sentence) {
+    for(auto && i : message)
+    {
         myChecksum ^= static_cast<quint8>(i.toLatin1());
     }
-    if (checksum != myChecksum) {
+    if (checksum != myChecksum)
+    {
+        return {};
+    }
+
+    return message;
+}
+
+
+//
+// Member functions
+//
+
+void Traffic::TrafficDataSource_Abstract::processFLARMSentence(const QString& sentence)
+{
+    auto message = getNMEAMessage(sentence);
+    if (message.isEmpty())
+    {
         return;
     }
 
+
     // Split the message into pieces
-    auto arguments = sentence.split(QStringLiteral(","));
-    if (arguments.isEmpty()) {
+    auto arguments = message.split(QStringLiteral(","));
+    if (arguments.isEmpty())
+    {
         return;
     }
     auto messageType = arguments.takeFirst();

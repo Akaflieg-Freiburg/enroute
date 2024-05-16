@@ -213,7 +213,12 @@ auto main(int argc, char *argv[]) -> int
 
     auto* engine = new QQmlApplicationEngine();
     engine->addImportPath(":/");
+
+#if defined(Q_OS_IOS)
+    engine->rootContext()->setContextProperty(QStringLiteral("manual_location"), QCoreApplication::applicationDirPath()+"/manual/");
+#else
     engine->rootContext()->setContextProperty(QStringLiteral("manual_location"), MANUAL_LOCATION );
+#endif
     engine->rootContext()->setContextProperty(QStringLiteral("global"), new GlobalObject(engine) );
     engine->load(u"qrc:/qml/main.qml"_qs);
 

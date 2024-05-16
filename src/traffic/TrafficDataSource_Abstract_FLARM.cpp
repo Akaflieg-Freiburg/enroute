@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -57,8 +57,12 @@ QDateTime interpretNMEATime(const QString& timeString)
     return dateTime;
 }
 
-// This method takes an input string and checks if it is a valid NMEA sentence, of the form $message*checksum, where 'message' is the message and 'checksum' is a valid checksum of the message.
-// If a valid sentence is detected, the substring message is returned. If the input string is not a valid NMEA sentence, an empty string is returned.
+// This method takes an input string and checks if it is a valid NMEA sentence,
+// of the form $message*checksum, where 'message' is the message and 'checksum'
+// is a valid checksum of the message. If a valid sentence is detected, the
+// substring message is returned. If the input string is not a valid NMEA
+// sentence, an empty string is returned.
+
 QString getNMEAMessage(const QString& input)
 {
     // Paranoid safety checks
@@ -101,6 +105,9 @@ QString getNMEAMessage(const QString& input)
 
 void Traffic::TrafficDataSource_Abstract::processFLARMSentence(const QString& sentence)
 {
+#warning Remove me
+    qWarning() << "NMEA:" << sentence;
+
     auto message = getNMEAMessage(sentence);
     if (message.isEmpty())
     {
@@ -326,7 +333,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessagePFLAA(const QString
     // Target type is optional
     Traffic::TrafficFactor_Abstract::AircraftType type = Traffic::TrafficFactor_Abstract::unknown;
     {
-        auto targetType = arguments[10];
+        const auto &targetType = arguments[10];
         if (targetType == u"1")
         {
             type = Traffic::TrafficFactor_Abstract::Glider;
@@ -395,8 +402,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessagePFLAA(const QString
 
 
     // Target ID is optional
-    auto targetID = arguments[5];
-
+    const auto &targetID = arguments[5];
 
     //
     // Handle non-directional targets
@@ -502,8 +508,8 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessagePFLAE(const QString
         return;
     }
 
-    auto severity = arguments[1];
-    auto errorCode = arguments[2];
+    const auto &severity = arguments[1];
+    const auto &errorCode = arguments[2];
 
     QStringList results;
     if (severity == u"0")
@@ -715,28 +721,28 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessagePFLAU(const QString
     QStringList results;
 
     // auto RX = arguments[0];
-    auto TX = arguments[1];
+    const auto &TX = arguments[1];
     if (TX == u"0"_qs)
     {
         results += tr("No FLARM transmission");
     }
-    auto GPS = arguments[2];
+    const auto &GPS = arguments[2];
     if (GPS == u"0"_qs)
     {
         results += tr("No GPS reception");
     }
-    auto Power = arguments[3];
+    const auto &Power = arguments[3];
     if (Power == u"0"_qs)
     {
         results += tr("Under- or Overvoltage");
     }
     setTrafficReceiverRuntimeError(results.join(QStringLiteral(" • ")));
 
-    auto AlarmLevel = arguments[4];
-    auto RelativeBearing = arguments[5];
-    auto AlarmType = arguments[6];
-    auto RelativeVertical = arguments[7];
-    auto RelativeDistance = arguments[8];
+    const auto &AlarmLevel = arguments[4];
+    const auto &RelativeBearing = arguments[5];
+    const auto &AlarmType = arguments[6];
+    const auto &RelativeVertical = arguments[7];
+    const auto &RelativeDistance = arguments[8];
 
     auto wrning = Traffic::Warning(AlarmLevel, RelativeBearing, AlarmType, RelativeVertical, RelativeDistance);
     emit warning(wrning);

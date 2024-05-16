@@ -103,33 +103,48 @@ void Traffic::TrafficDataSource_File::disconnectFromTrafficReceiver()
 
 void Traffic::TrafficDataSource_File::readFromSimulatorStream()
 {
-    if ((simulatorFile.error() != QFileDevice::NoError) || simulatorTextStream.atEnd()) {
+    if ((simulatorFile.error() != QFileDevice::NoError) || simulatorTextStream.atEnd())
+    {
         disconnectFromTrafficReceiver();
         return;
     }
 
-    if (!lastPayload.isEmpty()) {
-        processFLARMSentence(lastPayload);
+    if (!lastPayload.isEmpty())
+    {
+        // We simulate problems that we have experienced in the wild, where
+        // Bluetooth adaptors randomly split NMEA messages into smaller
+        // packages. Instead of sending the lastPayload to our FLARM/NMEA
+        // interpreter directly, we split the string up and send only one part
+        // of it, and the next part together with the next message
+        buffer += lastPayload;
+        int const i = buffer.length() / 2;
+        processFLARMSentence(buffer.left(i));
+        buffer = buffer.mid(i);
     }
 
     // Read line
     QString line;
-    if (!simulatorTextStream.readLineInto(&line)) {
+    if (!simulatorTextStream.readLineInto(&line))
+    {
         disconnectFromTrafficReceiver();
         return;
     }
 
     // Set lastPayload, set timer
     auto tuple = line.split(QStringLiteral(" "));
-    if (tuple.length() < 2) {
+    if (tuple.length() < 2)
+    {
         return;
     }
     auto time = tuple[0].toInt();
     lastPayload = tuple[1];
 
-    if (lastTime == 0) {
+    if (lastTime == 0)
+    {
         simulatorTimer.setInterval(0);
-    } else {
+    }
+    else
+    {
         simulatorTimer.setInterval(time-lastTime);
     }
     simulatorTimer.start();

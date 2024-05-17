@@ -19,30 +19,31 @@
  ***************************************************************************/
 
 #include <QPainter>
-#include <cmath>
 
 #include "GlobalObject.h"
 #include "PositionProvider.h"
 #include "PositionInfo.h"
 #include "GeoMapProvider.h"
-#include "GlobalSettings.h"
 #include "SideViewQuickItem.h"
-#include "navigation/Aircraft.h"
-#include "navigation/Navigator.h"
-#include "Airspace.h"
+#include "QRandomGenerator"
 
 
 Ui::SideViewQuickItem::SideViewQuickItem(QQuickItem *parent)
     : QQuickPaintedItem(parent)
 {
 
+    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &QQuickItem::update);
     setRenderTarget(QQuickPaintedItem::FramebufferObject);
-
 }
 
 
 void Ui::SideViewQuickItem::paint(QPainter *painter)
 {
+
+    QElapsedTimer timer;
+    timer.start();
+
+
     int widgetHeight = static_cast<int>(height());
     int widgetWidth = static_cast<int>(width());
 
@@ -56,11 +57,15 @@ void Ui::SideViewQuickItem::paint(QPainter *painter)
 
     //Paint the Terrain - Initialize
     float steps = 50;
-    float stepSizeInMeter = 100;
+    float stepSizeInMeter = 500; //TODO: Make Dynamic
     int defaultUpperLimit = 3000;
     painter->setBrush(QColor("brown"));
 
-    auto track = info.trueTrack().toDEG();
+    auto track = info.trueTrack().toDEG(); //TODO: Dont use that function
+    if (qIsNaN(track)) {
+        track = QRandomGenerator::global()->bounded(360);; //TODO: What to do when stationary?
+    }
+    qWarning() << "Track (DEG): " << track;
 
     //Paint the Terrain - Get Elevations and find the highest
     std::vector<int> elevations;
@@ -97,6 +102,8 @@ void Ui::SideViewQuickItem::paint(QPainter *painter)
 
     //Paint the Aircraft
     painter->fillRect(0, yCoordinate(info.trueAltitudeAMSL().toFeet(), widgetHeight, highestElevation, 10), 10, 10, QColor("white"));
+
+    qDebug() << "Drawing took" << timer.elapsed() << "milliseconds"; //TODO Remove
 
 }
 

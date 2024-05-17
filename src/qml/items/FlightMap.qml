@@ -96,6 +96,34 @@ Map {
         }
 
         LayerParameter {
+          id:  airspaceLabels
+
+          styleId: "AirspaceLabels"
+
+          type: "symbol"
+          property string source: "aviation-data"
+//        property string filter: '["==", ["GET", "TYP"], "AS"]'
+          property string metadata: '{}'
+
+          layout: {
+              "symbol-placement": "line",
+              "text-allow-overlap": false,
+              "text-anchor": "center",
+              "text-field": Navigator.aircraft.verticalDistanceUnit === Aircraft.Meters ? '["get", "MLM"]' : '["get", "MLI"]',
+              "text-ignore-placement": false,
+              "text-justify": "center",
+              "text-offset": '[0,1]',
+              "text-optional": true,
+              "text-size": 12
+          }
+
+          paint: {
+              "text-halo-width": 2,
+              "text-halo-color": "white"
+          }
+        }
+
+        LayerParameter {
             id: approachChartLayer
 
             styleId: "vacLayer"
@@ -139,33 +167,6 @@ Map {
             }
         }
 
-        LayerParameter {
-          id:  airspaceLabels
-
-          styleId: "AirspaceLabels"
-
-          type: "symbol"
-          property string source: "aviation-data"
-//        property string filter: '["==", ["GET", "TYP"], "AS"]'
-          property string metadata: '{}'
-
-          layout: {
-              "symbol-placement": "line",
-              "text-allow-overlap": false,
-              "text-anchor": "center",
-              "text-field": Navigator.aircraft.verticalDistanceUnit === Aircraft.Meters ? '["get", "MLM"]' : '["get", "MLI"]',
-              "text-ignore-placement": false,
-              "text-justify": "center",
-              "text-offset": '[0,1]',
-              "text-optional": true,
-              "text-size": 12
-          }
-
-          paint: {
-              "text-halo-width": 2,
-              "text-halo-color": "white"
-          }
-        }
 
 
     }

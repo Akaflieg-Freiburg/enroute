@@ -108,7 +108,7 @@ void Traffic::TrafficDataSource_Tcp::onReadyRead()
         }
 
         // Process FLARM sentence
-        processFLARMSentence(sentence);
+        processFLARMData(sentence);
     }
 
 }

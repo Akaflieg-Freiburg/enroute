@@ -114,6 +114,7 @@ private:
     QTimer simulatorTimer;
     int lastTime {0};
     QString lastPayload;
+    QString buffer;
 };
 
 } // namespace Traffic

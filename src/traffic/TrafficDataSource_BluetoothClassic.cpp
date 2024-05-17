@@ -143,7 +143,7 @@ void Traffic::TrafficDataSource_BluetoothClassic::onReadyRead()
     QString sentence;
     while(m_textStream.readLineInto(&sentence) )
     {
-        processFLARMSentence(sentence);
+        processFLARMData(sentence);
     }
 }
 

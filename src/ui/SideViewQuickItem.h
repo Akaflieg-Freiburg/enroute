@@ -47,7 +47,10 @@ public:
   void paint(QPainter *painter) override;
 
 private:
+  int yCoordinate(int altitude, int windowHeight, int highestElevation, int objectHeight);
+    void paintForX(int x, QPainter *painter);
   Q_DISABLE_COPY_MOVE(SideViewQuickItem)
+
 };
 
 } // namespace Ui

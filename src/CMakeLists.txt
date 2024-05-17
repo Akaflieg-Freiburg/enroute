@@ -452,7 +452,6 @@ if (IOS)
         MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/ios/Info.plist"
     )
     set_source_files_properties(
-        ${CMAKE_SOURCE_DIR}/generatedSources/manual
         PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
     qmaplibre_location_setup_plugins(${PROJECT_NAME})
     target_include_directories(${PROJECT_NAME}
@@ -487,8 +486,6 @@ if (IOS)
     set(privacy_manifest "${CMAKE_CURRENT_SOURCE_DIR}/ios/PrivacyInfo.xcprivacy")
     target_sources("${PROJECT_NAME}" PRIVATE "${privacy_manifest}")
     set_property(TARGET "${PROJECT_NAME}" APPEND PROPERTY RESOURCE "${privacy_manifest}")
-
-
 endif()
 
 target_include_directories(${PROJECT_NAME}

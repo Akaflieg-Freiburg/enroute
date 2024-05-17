@@ -56,12 +56,13 @@ void Ui::SideViewQuickItem::paint(QPainter *painter)
 
 
     //Paint the Terrain - Initialize
-    float steps = 50;
-    float stepSizeInMeter = 500; //TODO: Make Dynamic
-    int defaultUpperLimit = 3000;
+    float steps = 100;
+    float stepSizeInMeter = (info.groundSpeed().toKMH() > 3) ? (info.groundSpeed().toKMH() / 6 / steps * 1000) : 250;
+    float defaultUpperLimit = 1000;
+
     painter->setBrush(QColor("brown"));
 
-    auto track = info.trueTrack().toDEG(); //TODO: Dont use that function
+    auto track = info.trueTrack().toDEG();
     if (qIsNaN(track)) {
         track = QRandomGenerator::global()->bounded(360);; //TODO: What to do when stationary?
     }
@@ -81,27 +82,27 @@ void Ui::SideViewQuickItem::paint(QPainter *painter)
         }
     }
     elevations.push_back(info.trueAltitudeAMSL().toFeet());
-    highestElevation = (highestElevation > defaultUpperLimit) ? highestElevation * 1.1 : defaultUpperLimit;
+    highestElevation = qMax(highestElevation * 1.2, defaultUpperLimit);
     elevations.pop_back();
 
 
     //Paint the Terrain - Draw the polygon
     std::vector<QPointF> polygons;
 
-    polygons.push_back(QPointF(0, widgetHeight));
+    polygons.push_back(QPointF(0, widgetHeight)); //Additional polygon at the very left side to fill the terrain with color
     for (int i = 0; i < elevations.size(); i++) {
         auto elevation = elevations[i];
         auto x = widgetWidth / steps * i;
-        auto y = yCoordinate(elevation, widgetHeight, highestElevation, 0);
+        auto y = yCoordinate(elevation, highestElevation, 0);
         polygons.push_back(QPointF(x, y));
     }
-    polygons.push_back(QPointF(widgetWidth * 1.1, widgetHeight));
+    polygons.push_back(QPointF(widgetWidth * 1.1, widgetHeight)); //Additional polygon outside the screen for improved design at the RH sight of the screen.
     painter->drawPolygon(polygons.data(), polygons.size());
 
 
 
     //Paint the Aircraft
-    painter->fillRect(0, yCoordinate(info.trueAltitudeAMSL().toFeet(), widgetHeight, highestElevation, 10), 10, 10, QColor("white"));
+    painter->fillRect(0, yCoordinate(info.trueAltitudeAMSL().toFeet(), highestElevation, 10), 10, 10, QColor("lightgrey"));
 
     qDebug() << "Drawing took" << timer.elapsed() << "milliseconds"; //TODO Remove
 
@@ -109,13 +110,16 @@ void Ui::SideViewQuickItem::paint(QPainter *painter)
 
 
 
-int Ui::SideViewQuickItem::yCoordinate(int altitude, int windowHeight, int maxHeight, int objectHeight) {
+int Ui::SideViewQuickItem::yCoordinate(int altitude, int maxHeight, int objectHeight) {
+    int safeAreaBottom = 34; //TODO: Replace with correct value
+    int widgetHeight = static_cast<int>(height());
+    auto availableHeight = widgetHeight - safeAreaBottom;
     if (altitude > maxHeight) {
         return maxHeight;
     }
 
-    int heightOnDisplay = static_cast<double>(altitude) / maxHeight * windowHeight;
+    int heightOnDisplay = static_cast<double>(altitude) / maxHeight * availableHeight;
 
-    auto result = windowHeight - heightOnDisplay - objectHeight / 2;
+    auto result = availableHeight - heightOnDisplay - objectHeight / 2;
     return result;
 }

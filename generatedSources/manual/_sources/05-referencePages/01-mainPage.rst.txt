@@ -121,7 +121,7 @@ Moving Map
 
 The moving map shows a physical map with shaded terrain relief, overlaid with
 aviation data.  At low zoom values, the map looks similar to the standard
-1:50.000 ICAO maps. At higher zoom value, the map will also show traffic
+1:50.000 ICAO maps. At higher zoom values, the map will also show traffic
 circuits and control zone procedures, as you would expect from an approach
 chart.
 

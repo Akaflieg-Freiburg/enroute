@@ -351,17 +351,14 @@ public slots:
     }
 
 protected:
-    /*! \brief Process one FLARM/NMEA sentence
+    /*! \brief Process FLARM/NMEA data
      *
-     *  This method expects exactly one line containing a valid FLARM/NMEA
-     *  sentence. This is a string typically looks like
-     *  "$PFLAA,0,1587,1588,40,1,AA1237,225,,37,-1.6,1*7F".  The method
-     *  interprets the string and updates the properties and emits signals as
-     *  appropriate. Invalid strings are silently ignored.
+     *  This method handles FLARM/NMEA data. It collects data until a full FLARM/NMEA sentence is found
+     *  and then calls processFLARMSentence() to handle that sentence.
      *
-     *  @param sentence A QString containing a FLARM/NMEA sentence.
+     *  @param data A QString containing FLARM/NMEA data.
      */
-    void processFLARMSentence(QString sentence);
+    void processFLARMData(const QString& data);
 
     /*! \brief Process one GDL90 message
      *
@@ -428,6 +425,24 @@ protected:
 
 private:
     Q_DISABLE_COPY_MOVE(TrafficDataSource_Abstract)
+
+    /*  This method expects exactly one line containing a valid FLARM/NMEA
+     *  sentence. This is a string typically looks like
+     *  "$PFLAA,0,1587,1588,40,1,AA1237,225,,37,-1.6,1*7F".  The method
+     *  interprets the string and updates the properties and emits signals as
+     *  appropriate. Invalid strings are silently ignored.
+     */
+    void processFLARMSentence(const QString& sentence);
+    // Methods interpreting specific FLARM/NMEA messages
+    void processFLARMMessageGPGGA(const QStringList& arguments); // NMEA GPS 3D-fix data
+    void processFLARMMessageGPRMC(const QStringList& arguments); // Recommended minimum specific GPS/Transit data
+    void processFLARMMessagePFLAA(const QStringList& arguments); // Data on other proximate aircraft
+    void processFLARMMessagePFLAE(const QStringList& arguments); // Self-test result and errors codes
+    static void processFLARMMessagePFLAS(const QStringList& arguments); // Debug Information
+    void processFLARMMessagePFLAU(const QStringList& arguments); // FLARM Heartbeat
+    void processFLARMMessagePFLAV(const QStringList& arguments); // Version information
+    void processFLARMMessagePGRMZ(const QStringList& arguments); // Garmin's barometric altitude
+    QString m_FLARMDataBuffer;
 
     // Property caches
     bool m_canonical {false};

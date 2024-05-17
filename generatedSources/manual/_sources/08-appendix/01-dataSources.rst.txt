@@ -52,13 +52,17 @@ Below is a complete list of the maps that we offer.
 =================== ============== =======
 Continent           Country        Class
 =================== ============== =======
+Africa              Algeria        Class 2
 Africa              Botswana       Class 2
 Africa              Canary Islands Class 1
 Africa              Kenya          Class 2
 Africa              Madagascar     Class 2
 Africa              Mauritius      Class 2
+Africa              Morocco        Class 2
 Africa              Namibia        Class 1
+Africa              Réunion        Class 2
 Africa              South Africa   Class 1
+Africa              Tunisia        Class 2
 Asia                Bahrain        Class 2
 Asia                Japan          Class 2
 Asia                Laos           Class 2

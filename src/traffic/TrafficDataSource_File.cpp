@@ -118,7 +118,7 @@ void Traffic::TrafficDataSource_File::readFromSimulatorStream()
         // of it, and the next part together with the next message
         buffer += lastPayload;
         int const i = buffer.length() / 2;
-        processFLARMSentence(buffer.left(i));
+        processFLARMData(buffer.left(i));
         buffer = buffer.mid(i);
     }
 

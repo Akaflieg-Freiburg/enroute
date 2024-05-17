@@ -103,17 +103,45 @@ QString getNMEAMessage(const QString& input)
 // Member functions
 //
 
+void Traffic::TrafficDataSource_Abstract::processFLARMData(const QString& data)
+{
+    m_FLARMDataBuffer += data;
+
+    // Abort if the buffer is small that it cannot possibly contain a single valid NMEA sentence.
+    if (m_FLARMDataBuffer.length() < 5)
+    {
+        return;
+    }
+
+    // Search for the first '$' that is *not* at the beginning of the string. If a '$' is found, interpret
+    // the beginning of the string as a NMEA sentence and shorten the buffer.
+    auto idx = m_FLARMDataBuffer.indexOf('$', 1);
+    while (idx != -1)
+    {
+        auto potentialSentence = m_FLARMDataBuffer.first(idx);
+        m_FLARMDataBuffer = m_FLARMDataBuffer.mid(idx);
+        processFLARMSentence(potentialSentence);
+        idx = m_FLARMDataBuffer.indexOf('$', 1);
+    }
+
+    // m_FLARMDataBuffer is a string that might be a full or incomplete NMEA sentence.
+    // If it is a full sentence, then consume it. Otherwise, ignore it.
+    if (!getNMEAMessage(m_FLARMDataBuffer).isEmpty())
+    {
+        processFLARMSentence(m_FLARMDataBuffer);
+        m_FLARMDataBuffer.clear();
+    }
+
+}
+
+
 void Traffic::TrafficDataSource_Abstract::processFLARMSentence(const QString& sentence)
 {
-#warning Remove me
-    qWarning() << "NMEA:" << sentence;
-
     auto message = getNMEAMessage(sentence);
     if (message.isEmpty())
     {
         return;
     }
-
 
     // Split the message into pieces
     auto arguments = message.split(QStringLiteral(","));

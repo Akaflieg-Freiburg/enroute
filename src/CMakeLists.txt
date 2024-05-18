@@ -419,7 +419,6 @@ if (IOS)
         ios/ObjectiveC.m
         ios/SafeAreaService.h
         ios/SafeAreaService.m
-        ${CMAKE_SOURCE_DIR}/generatedSources/manual
     )
 
     # Compile definitions
@@ -472,6 +471,7 @@ if (IOS)
         "ios/fr.lproj"
         "ios/it.lproj"
         "ios/pl.lproj"
+        ${CMAKE_SOURCE_DIR}/generatedSources/manual
     )
     target_sources(${PROJECT_NAME} PRIVATE ${bundle_resources})
     set_source_files_properties(${bundle_resources} PROPERTIES

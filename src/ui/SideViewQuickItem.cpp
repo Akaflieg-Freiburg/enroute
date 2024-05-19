@@ -40,6 +40,19 @@ Ui::SideViewQuickItem::SideViewQuickItem(QQuickItem *parent)
 void Ui::SideViewQuickItem::paint(QPainter *painter)
 {
 
+    auto info = GlobalObject::positionProvider()->positionInfo();
+    auto track = info.trueTrack().toDEG();
+    if (qIsNaN(track)) {
+        //TODO: Make more beautiful and dynamic
+        painter->fillRect(0, 0, static_cast<int>(width()), static_cast<int>(height()), QColor("lightblue"));
+        painter->fillRect(0, static_cast<int>(height())*0.8, static_cast<int>(width()), static_cast<int>(height()), QColor("brown"));
+        QFont font = painter->font();
+        font.setPixelSize(25);
+        painter->setFont(font);
+        painter->drawText(0, 20, "No track available");
+        return;
+    }
+
     QElapsedTimer timer;
     timer.start();
 
@@ -47,7 +60,7 @@ void Ui::SideViewQuickItem::paint(QPainter *painter)
     int widgetHeight = static_cast<int>(height());
     int widgetWidth = static_cast<int>(width());
 
-    auto info = GlobalObject::positionProvider()->positionInfo();
+
     auto geoMapProvider = GlobalObject::geoMapProvider();
 
 
@@ -56,17 +69,11 @@ void Ui::SideViewQuickItem::paint(QPainter *painter)
 
 
     //Paint the Terrain - Initialize
-    float steps = 100;
+    float steps = 200;
     float stepSizeInMeter = (info.groundSpeed().toKMH() > 3) ? (info.groundSpeed().toKMH() / 6 / steps * 1000) : 250;
     float defaultUpperLimit = 1000;
 
     painter->setBrush(QColor("brown"));
-
-    auto track = info.trueTrack().toDEG();
-    if (qIsNaN(track)) {
-        track = QRandomGenerator::global()->bounded(360);; //TODO: What to do when stationary?
-    }
-    qWarning() << "Track (DEG): " << track;
 
     //Paint the Terrain - Get Elevations and find the highest
     std::vector<int> elevations;
@@ -75,14 +82,15 @@ void Ui::SideViewQuickItem::paint(QPainter *painter)
         auto elevation = geoMapProvider->terrainElevationAMSL(position).toFeet();
         elevations.push_back(elevation);
     }
+
+    elevations.push_back(info.trueAltitudeAMSL().toFeet());
     int highestElevation = elevations[0];
     for (int elevation : elevations) {
         if (elevation > highestElevation) {
             highestElevation = elevation;
         }
     }
-    elevations.push_back(info.trueAltitudeAMSL().toFeet());
-    highestElevation = qMax(highestElevation * 1.2, defaultUpperLimit);
+    highestElevation = qMax(highestElevation * 1.3, defaultUpperLimit);
     elevations.pop_back();
 
 
@@ -102,7 +110,18 @@ void Ui::SideViewQuickItem::paint(QPainter *painter)
 
 
     //Paint the Aircraft
-    painter->fillRect(0, yCoordinate(info.trueAltitudeAMSL().toFeet(), highestElevation, 10), 10, 10, QColor("lightgrey"));
+    auto altitude = info.trueAltitudeAMSL().toFeet();
+    painter->fillRect(0, yCoordinate(altitude, highestElevation, 10), 10, 10, QColor("black"));
+
+
+    //Paint Flight Path
+    auto verticalSpeed = info.verticalSpeed().toFPM();
+    auto altitudeIn10Minutes = verticalSpeed * 10 + altitude;
+    painter->drawLine(0 + 10, yCoordinate(altitude, highestElevation, 0), widgetWidth + 10, yCoordinate(altitude, highestElevation, 0));
+    QPen pen = painter->pen();
+    pen.setStyle(Qt::DotLine);
+    painter->setPen(pen);
+    painter->drawLine(0 + 10, yCoordinate(altitude, highestElevation, 0), widgetWidth + 10, yCoordinate(altitudeIn10Minutes, highestElevation, 0));
 
     qDebug() << "Drawing took" << timer.elapsed() << "milliseconds"; //TODO Remove
 
@@ -115,7 +134,7 @@ int Ui::SideViewQuickItem::yCoordinate(int altitude, int maxHeight, int objectHe
     int widgetHeight = static_cast<int>(height());
     auto availableHeight = widgetHeight - safeAreaBottom;
     if (altitude > maxHeight) {
-        return maxHeight;
+        //return maxHeight;
     }
 
     int heightOnDisplay = static_cast<double>(altitude) / maxHeight * availableHeight;

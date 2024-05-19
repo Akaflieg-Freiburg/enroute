@@ -139,6 +139,11 @@ Page {
                             sndLine += " • " + qsTr("Error") + ": " + model.modelData.errorString
                         model.modelData.sourceName + "<br><font size='2'>%1</font>".arg(sndLine)
                     }
+
+                    onClicked: {
+                        connectionDescription.connection = model.modelData
+                        connectionDescription.open()
+                    }
                 }
 
                 ToolButton {
@@ -170,6 +175,7 @@ Page {
             }
         }
     }
+
 
     footer: Footer {
         ColumnLayout {
@@ -222,4 +228,86 @@ Page {
         }
     }
 
+
+    CenteringDialog {
+        id: connectionDescription
+
+        property var connection
+
+        title: "Connection Info" // connection.sourceName //"Data Connection"
+        standardButtons: Dialog.Ok
+
+        DecoratedScrollView {
+            anchors.fill: parent
+
+            contentHeight: co.height
+            contentWidth: availableWidth // Disable horizontal scrolling
+
+            ColumnLayout {
+                id: co
+                width: parent.width
+
+                Label {
+                    Layout.fillWidth: true
+                    text: {
+                        if (connectionDescription.connection)
+                            return connectionDescription.connection.sourceName
+                        return ""
+                    }
+                    wrapMode: Text.WordWrap
+                }
+
+                Label {
+                    Layout.fillWidth: true
+                    text: if (connectionDescription.connection) {
+                              var sndLine = "<strong>" + qsTr("Status") +":</strong> " + connectionDescription.connection.connectivityStatus
+                              if (connectionDescription.connection.errorString !== "")
+                                  sndLine += "<br><strong>" + qsTr("Error") + ":</strong> " + connectionDescription.connection.errorString
+                              return sndLine
+                          } else {
+                              return ""
+                          }
+
+                    Layout.leftMargin: 4
+                    Layout.rightMargin: 4
+                    wrapMode: Text.WordWrap
+
+                    bottomPadding: 0.2*font.pixelSize
+                    topPadding: 0.2*font.pixelSize
+                    leftPadding: 0.2*font.pixelSize
+                    rightPadding: 0.2*font.pixelSize
+
+                    leftInset: -4
+                    rightInset: -4
+
+                    // Background color according to METAR/FAA flight category
+                    background: Rectangle {
+                        border.color: "black"
+                        color: {
+                            if (connectionDescription.connection && connectionDescription.connection.receivingHeartbeat)
+                                return "green"
+                            if (connectionDescription.connection && connectionDescription.connection.errorString !== "")
+                                return "red"
+                            return "transparent"
+                        }
+
+                        opacity: 0.2
+                        radius: 4
+                    }
+                }
+
+                Label {
+                    Layout.fillWidth: true
+                    visible: {
+                        if (connectionDescription.connection)
+                            return connectionDescription.connection.canonical
+                        return false
+                    }
+                    text: qsTr("This is a standard connection that cannot be deleted by the user.")
+                    wrapMode: Text.WordWrap
+                }
+
+            }
+        }
+    }
 }

@@ -58,6 +58,12 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
+     * @returns Property dataFormat
+     */
+    [[nodiscard]] QString dataFormat() const override { return u"GDL90 · XGPS"_qs; }
+
+    /*! \brief Getter function for the property with the same name
+     *
      *  This method implements the pure virtual method declared by its
      *  superclass.
      *

@@ -151,7 +151,7 @@ Page {
                 Layout.fillWidth: true
                 visible: !TrafficDataProvider.receivingHeartbeat
                 icon.source: "/icons/material/ic_info_outline.svg"
-                text: qsTr("Connect to a traffic receiver or the SafeSky app…")
+                text: qsTr("Connect to a traffic receiver…")
                 onClicked: trafficReceiverPage.appWindow.openManual("02-senseAndAvoid.html")
             }
 

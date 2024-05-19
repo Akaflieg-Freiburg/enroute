@@ -9,8 +9,6 @@ Flight Navigation**.
 .. toctree::
    :maxdepth: 1
 
-   02-tutorialBasic/01-traffic
-   02-tutorialBasic/02-safesky
    02-tutorialBasic/03-nearby
    02-tutorialBasic/04-weather
    02-tutorialBasic/05-plan

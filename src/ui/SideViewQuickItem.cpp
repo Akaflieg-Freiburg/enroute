@@ -115,6 +115,7 @@ int Ui::SideViewQuickItem::getHighestElevation(std::vector<int> &elevations, con
 std::vector<Ui::SideViewQuickItem::MergedAirspace> Ui::SideViewQuickItem::getMergedAirspaces(const Positioning::PositionInfo &info, double track, float steps, float stepSizeInMeter, const GeoMaps::GeoMapProvider *geoMapProvider)
 {
     std::map<int, std::vector<GeoMaps::Airspace>> stepAirspaces;
+    QString categories[5]{"CTR", "DNG", "D", "C", "R"};
     for (int i = 0; i <= steps; i++) {
         auto position = info.coordinate().atDistanceAndAzimuth(i * stepSizeInMeter, track, 0);
 
@@ -122,7 +123,7 @@ std::vector<Ui::SideViewQuickItem::MergedAirspace> Ui::SideViewQuickItem::getMer
 
         for (const QVariant &var : airspaces) {
             GeoMaps::Airspace airspace = qvariant_cast<GeoMaps::Airspace>(var);
-            if (airspace.CAT() == "CTR" || airspace.CAT() == "D") {
+            if (std::find(std::begin(categories), std::end(categories), airspace.CAT()) != std::end(categories)) {
                 stepAirspaces[i].push_back(airspace);
             }
         }
@@ -174,7 +175,7 @@ void Ui::SideViewQuickItem::drawAirspaces(QPainter *painter, const std::vector<M
         QRect rect(xStart, upperY, xEnd - xStart, lowerY - upperY);
 
         // Set brush color based on airspace category
-        if (mergedAirspace.airspace.CAT() == "CTR") {
+        if (mergedAirspace.airspace.CAT() == "CTR" || mergedAirspace.airspace.CAT() == "R") {
             painter->setBrush(QColor("red").lighter(160));
         } else {
             painter->setBrush(QColor("blue").lighter(160));

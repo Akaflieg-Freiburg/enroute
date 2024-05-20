@@ -22,6 +22,13 @@
 
 #include <QQmlEngine>
 #include <QtQuick/QQuickPaintedItem>
+#include <set>
+
+#include "GlobalObject.h"
+#include "PositionProvider.h"
+#include "PositionInfo.h"
+#include "GeoMapProvider.h"
+#include "SideViewQuickItem.h"
 
 namespace Ui {
 
@@ -47,8 +54,22 @@ public:
   void paint(QPainter *painter) override;
 
 private:
-  int yCoordinate(int altitude, int highestElevation, int objectHeight);
-    void paintForX(int x, QPainter *painter);
+  struct MergedAirspace {
+      GeoMaps::Airspace airspace;
+      int firstStep;
+      int lastStep;
+  };
+
+  void drawNoTrackAvailable(QPainter *painter);
+  void drawSky(QPainter *painter, int widgetHeight, int widgetWidth);
+  std::vector<int> getElevations(const Positioning::PositionInfo &info, double track, float steps, float stepSizeInMeter, const GeoMaps::GeoMapProvider *geoMapProvider);
+  int getHighestElevation(std::vector<int> &elevations, const Positioning::PositionInfo &info, float defaultUpperLimit);
+  std::vector<MergedAirspace> getMergedAirspaces(const Positioning::PositionInfo &info, double track, float steps, float stepSizeInMeter, const GeoMaps::GeoMapProvider *geoMapProvider);
+  void drawAirspaces(QPainter *painter, const std::vector<MergedAirspace> &mergedAirspaces, int widgetWidth, int widgetHeight, int highestElevation, float steps);
+  void drawTerrain(QPainter *painter, const std::vector<int> &elevations, int highestElevation, int widgetWidth, int widgetHeight, float steps);
+  void drawAircraft(QPainter *painter, const Positioning::PositionInfo &info, int highestElevation);
+  void drawFlightPath(QPainter *painter, const Positioning::PositionInfo &info, int widgetWidth, int highestElevation);
+  int yCoordinate(int altitude, int maxHeight, int objectHeight);
   Q_DISABLE_COPY_MOVE(SideViewQuickItem)
 
 };

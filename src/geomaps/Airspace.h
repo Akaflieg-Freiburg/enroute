@@ -59,6 +59,16 @@ public:
      * level
      */
     [[nodiscard]] auto estimatedLowerBoundMSL() const -> Units::Distance;
+    /*! \brief Estimates the lower limit of the airspace above MSL
+     *
+     * This method gives a rought estimate for the lower limit of the airspace.
+     * The result is not reliable enough for aviation purposes but
+     * can be used to sort the airspaces in the GUI.
+     *
+     * @returns Estimated lower bound of the airspace, above main sea
+     * level
+     */
+    [[nodiscard]] auto estimatedUpperBoundMSL() const -> Units::Distance;
 
     /*! \brief Validity */
     Q_PROPERTY(bool isValid READ isValid CONSTANT)

@@ -116,6 +116,42 @@ auto GeoMaps::Airspace::estimatedLowerBoundMSL() const -> Units::Distance
 }
 
 
+auto GeoMaps::Airspace::estimatedUpperBoundMSL() const -> Units::Distance
+{
+    double result = 0.0;
+    bool ok = false;
+
+    QString AL = m_upperBound.simplified();
+
+    if (AL.startsWith(u"FL"_qs, Qt::CaseInsensitive)) {
+        result = AL.remove(0, 2).toDouble(&ok);
+        if (ok) {
+            return Units::Distance::fromFT(100*result);
+        }
+        return Units::Distance::fromFT(0.0);
+    }
+
+    if (AL.endsWith(u"msl"_qs)) {
+        AL.chop(3);
+        AL = AL.simplified();
+    }
+    if (AL.endsWith(u"agl"_qs)) {
+        AL.chop(3);
+        AL = AL.simplified();
+    }
+    if (AL.endsWith(u"ft"_qs)) {
+        AL.chop(2);
+        AL = AL.simplified();
+    }
+
+    result = AL.toDouble(&ok);
+    if (ok) {
+        return Units::Distance::fromFT(result);
+    }
+    return Units::Distance::fromFT(0.0);
+}
+
+
 auto GeoMaps::Airspace::makeMetric(const QString& standard) -> QString
 {
     QStringList list = standard.split(' ', Qt::SkipEmptyParts);

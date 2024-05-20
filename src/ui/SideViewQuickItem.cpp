@@ -69,7 +69,7 @@ void Ui::SideViewQuickItem::paint(QPainter *painter)
 
 
     //Paint the Terrain - Initialize
-    float steps = 200;
+    float steps = 100;
     float stepSizeInMeter = (info.groundSpeed().toKMH() > 3) ? (info.groundSpeed().toKMH() / 6 / steps * 1000) : 250;
     float defaultUpperLimit = 1000;
 
@@ -122,6 +122,86 @@ void Ui::SideViewQuickItem::paint(QPainter *painter)
     pen.setStyle(Qt::DotLine);
     painter->setPen(pen);
     painter->drawLine(0 + 10, yCoordinate(altitude, highestElevation, 0), widgetWidth + 10, yCoordinate(altitudeIn10Minutes, highestElevation, 0));
+
+
+    // Paint Airspaces
+    std::map<int, std::vector<GeoMaps::Airspace>> stepAirspaces;
+
+    for (int i = 0; i <= steps; i++) {
+        auto position = info.coordinate().atDistanceAndAzimuth(i * stepSizeInMeter, track, 0);
+        auto airspaces = GlobalObject::geoMapProvider()->airspaces(position);
+
+        for (const QVariant &var : airspaces) {
+            GeoMaps::Airspace airspace = qvariant_cast<GeoMaps::Airspace>(var);
+            if (airspace.CAT() == "CTR" || airspace.CAT() == "D") {
+                stepAirspaces[i].push_back(airspace);
+            }
+
+        }
+    }
+
+    // Step 2: Merge airspaces that span multiple steps
+    struct MergedAirspace {
+        GeoMaps::Airspace airspace;
+        int firstStep;
+        int lastStep;
+    };
+
+    std::vector<MergedAirspace> mergedAirspaces;
+
+    for (const auto &step : stepAirspaces) {
+        int stepIndex = step.first;
+
+        for (const GeoMaps::Airspace &airspace : step.second) {
+            bool merged = false;
+
+            for (auto &mergedAirspace : mergedAirspaces) {
+                if (mergedAirspace.airspace.CAT() == airspace.CAT() &&
+                    mergedAirspace.airspace.name() == airspace.name() &&
+                    mergedAirspace.airspace.lowerBound() == airspace.lowerBound() &&
+                    mergedAirspace.airspace.upperBound() == airspace.upperBound()) {
+                    mergedAirspace.lastStep = stepIndex;
+                    merged = true;
+                    break;
+                }
+            }
+
+            if (!merged) {
+                MergedAirspace newMergedAirspace = { airspace, stepIndex, stepIndex };
+                mergedAirspaces.push_back(newMergedAirspace);
+            }
+        }
+    }
+
+    // Step 3: Draw the merged airspaces
+
+
+    for (const MergedAirspace &mergedAirspace : mergedAirspaces) {
+        int firstStep = mergedAirspace.firstStep;
+        int lastStep = mergedAirspace.lastStep;
+
+        int xStart = static_cast<int>((firstStep / steps) * widgetWidth);
+        int xEnd = static_cast<int>((lastStep / steps) * widgetWidth);
+
+        auto upperBoundMetric = mergedAirspace.airspace.upperBoundMetric();
+        double lowerBound = mergedAirspace.airspace.estimatedLowerBoundMSL().toFeet();
+        double upperBound = mergedAirspace.airspace.estimatedUpperBoundMSL().toFeet();
+        //double upperBound = mergedAirspace.airspace.upperBoundMetric().split(' ', Qt::SkipEmptyParts)[0].toDouble();
+        //double upperBound = mergedAirspace.airspace.upperBoundMetric().toDouble() * 3;
+
+
+
+        int lowerY = yCoordinate(lowerBound, highestElevation, 0);
+        int upperY = yCoordinate(upperBound, highestElevation, 0);
+
+        if (mergedAirspace.airspace.CAT() == "CTR") {
+            painter->setBrush(QColor("red").lighter(160));
+        } else {
+            painter->setBrush(QColor("blue").lighter(160));
+        }
+
+        painter->drawRect(xStart, upperY, xEnd - xStart, lowerY - upperY);
+    }
 
     qDebug() << "Drawing took" << timer.elapsed() << "milliseconds"; //TODO Remove
 

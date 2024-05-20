@@ -67,15 +67,10 @@ void Ui::SideViewQuickItem::paint(QPainter *painter)
     //Paint the Sky
     painter->fillRect(0, 0, static_cast<int>(width()), widgetHeight, QColor("lightblue"));
 
-
-    //Paint the Terrain - Initialize
     float steps = 100;
     float stepSizeInMeter = (info.groundSpeed().toKMH() > 3) ? (info.groundSpeed().toKMH() / 6 / steps * 1000) : 250;
     float defaultUpperLimit = 1000;
 
-    painter->setBrush(QColor("brown"));
-
-    //Paint the Terrain - Get Elevations and find the highest
     std::vector<int> elevations;
     for (int i = 0; i <= steps; i++) {
         auto position = info.coordinate().atDistanceAndAzimuth(i * stepSizeInMeter, track, 0);
@@ -93,35 +88,6 @@ void Ui::SideViewQuickItem::paint(QPainter *painter)
     highestElevation = qMax(highestElevation * 1.3, defaultUpperLimit);
     elevations.pop_back();
 
-
-    //Paint the Terrain - Draw the polygon
-    std::vector<QPointF> polygons;
-
-    polygons.push_back(QPointF(0, widgetHeight)); //Additional polygon at the very left side to fill the terrain with color
-    for (int i = 0; i < elevations.size(); i++) {
-        auto elevation = elevations[i];
-        auto x = widgetWidth / steps * i;
-        auto y = yCoordinate(elevation, highestElevation, 0);
-        polygons.push_back(QPointF(x, y));
-    }
-    polygons.push_back(QPointF(widgetWidth * 1.1, widgetHeight)); //Additional polygon outside the screen for improved design at the RH sight of the screen.
-    painter->drawPolygon(polygons.data(), polygons.size());
-
-
-
-    //Paint the Aircraft
-    auto altitude = info.trueAltitudeAMSL().toFeet();
-    painter->fillRect(0, yCoordinate(altitude, highestElevation, 10), 10, 10, QColor("black"));
-
-
-    //Paint Flight Path
-    auto verticalSpeed = info.verticalSpeed().toFPM();
-    auto altitudeIn10Minutes = verticalSpeed * 10 + altitude;
-    painter->drawLine(0 + 10, yCoordinate(altitude, highestElevation, 0), widgetWidth + 10, yCoordinate(altitude, highestElevation, 0));
-    QPen pen = painter->pen();
-    pen.setStyle(Qt::DotLine);
-    painter->setPen(pen);
-    painter->drawLine(0 + 10, yCoordinate(altitude, highestElevation, 0), widgetWidth + 10, yCoordinate(altitudeIn10Minutes, highestElevation, 0));
 
 
     // Paint Airspaces
@@ -175,7 +141,6 @@ void Ui::SideViewQuickItem::paint(QPainter *painter)
 
     // Step 3: Draw the merged airspaces
 
-
     for (const MergedAirspace &mergedAirspace : mergedAirspaces) {
         int firstStep = mergedAirspace.firstStep;
         int lastStep = mergedAirspace.lastStep;
@@ -186,13 +151,10 @@ void Ui::SideViewQuickItem::paint(QPainter *painter)
         auto upperBoundMetric = mergedAirspace.airspace.upperBoundMetric();
         double lowerBound = mergedAirspace.airspace.estimatedLowerBoundMSL().toFeet();
         double upperBound = mergedAirspace.airspace.estimatedUpperBoundMSL().toFeet();
-        //double upperBound = mergedAirspace.airspace.upperBoundMetric().split(' ', Qt::SkipEmptyParts)[0].toDouble();
-        //double upperBound = mergedAirspace.airspace.upperBoundMetric().toDouble() * 3;
-
 
 
         int lowerY = yCoordinate(lowerBound, highestElevation, 0);
-        int upperY = yCoordinate(upperBound, highestElevation, 0);
+        int upperY = qMax(yCoordinate(upperBound, highestElevation, 0), 0);
 
         if (mergedAirspace.airspace.CAT() == "CTR") {
             painter->setBrush(QColor("red").lighter(160));
@@ -200,8 +162,62 @@ void Ui::SideViewQuickItem::paint(QPainter *painter)
             painter->setBrush(QColor("blue").lighter(160));
         }
 
-        painter->drawRect(xStart, upperY, xEnd - xStart, lowerY - upperY);
+        QPen pen = painter->pen();
+        pen.setStyle(Qt::DotLine);
+        painter->setPen(pen);
+
+        QRect rect(xStart, upperY, xEnd - xStart, lowerY - upperY);
+        painter->drawRect(rect);
+        pen.setStyle(Qt::SolidLine);
+        painter->setPen(pen);
+
+        QFont font = painter->font();
+        font.setPointSizeF(10); // Make the font size 20% of the rectangle height
+        painter->setFont(font);
+        painter->drawText(rect, Qt::AlignCenter, mergedAirspace.airspace.CAT());
     }
+
+    //Paint the Terrain - Initialize
+
+    painter->setBrush(QColor("brown"));
+
+    //Paint the Terrain - Get Elevations and find the highest
+
+
+
+
+
+    //Paint the Terrain - Draw the polygon
+    std::vector<QPointF> polygons;
+
+    polygons.push_back(QPointF(0, widgetHeight)); //Additional polygon at the very left side to fill the terrain with color
+    for (int i = 0; i < elevations.size(); i++) {
+        auto elevation = elevations[i];
+        auto x = widgetWidth / steps * i;
+        auto y = yCoordinate(elevation, highestElevation, 0);
+        polygons.push_back(QPointF(x, y));
+    }
+    polygons.push_back(QPointF(widgetWidth * 1.1, widgetHeight)); //Additional polygon outside the screen for improved design at the RH sight of the screen.
+    painter->drawPolygon(polygons.data(), polygons.size());
+
+
+
+    //Paint the Aircraft
+    auto altitude = info.trueAltitudeAMSL().toFeet();
+    painter->fillRect(0, yCoordinate(altitude, highestElevation, 10), 10, 10, QColor("black"));
+
+
+    //Paint Flight Path
+    auto verticalSpeed = info.verticalSpeed().toFPM();
+    auto altitudeIn10Minutes = verticalSpeed * 10 + altitude;
+    painter->drawLine(0 + 10, yCoordinate(altitude, highestElevation, 0), widgetWidth + 10, yCoordinate(altitude, highestElevation, 0));
+    QPen pen = painter->pen();
+    pen.setStyle(Qt::DotLine);
+    painter->setPen(pen);
+    painter->drawLine(0 + 10, yCoordinate(altitude, highestElevation, 0), widgetWidth + 10, yCoordinate(altitudeIn10Minutes, highestElevation, 0));
+
+
+
 
     qDebug() << "Drawing took" << timer.elapsed() << "milliseconds"; //TODO Remove
 

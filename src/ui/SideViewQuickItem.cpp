@@ -114,8 +114,6 @@ int Ui::SideViewQuickItem::getHighestElevation(std::vector<int> &elevations, con
 
 std::vector<Ui::SideViewQuickItem::MergedAirspace> Ui::SideViewQuickItem::getMergedAirspaces(const Positioning::PositionInfo &info, double track, float steps, float stepSizeInMeter, const GeoMaps::GeoMapProvider *geoMapProvider)
 {
-    QElapsedTimer airspaceTimer;
-    airspaceTimer.start();
     std::map<int, std::vector<GeoMaps::Airspace>> stepAirspaces;
     auto categories = airspaceSortedCategories();
     for (int i = 0; i <= steps; i++) {
@@ -130,8 +128,6 @@ std::vector<Ui::SideViewQuickItem::MergedAirspace> Ui::SideViewQuickItem::getMer
             }
         }
     }
-
-    qDebug() << "Airspace timer" << airspaceTimer.elapsed() << "milliseconds"; //TODO Remove
 
     std::vector<MergedAirspace> mergedAirspaces;
     for (const auto &step : stepAirspaces) {
@@ -208,7 +204,22 @@ void Ui::SideViewQuickItem::drawAirspaces(QPainter *painter, std::vector<int> el
                 polygons.push_back(QPointF(x, y));
             }
             painter->drawPolygon(polygons.data(), static_cast<int>(polygons.size()));
-            //TODO: Airspace label
+
+            // Calculate the centroid of the polygon
+            QPointF centroid(0, 0);
+            for (const auto &point : polygons) {
+                centroid += point;
+            }
+            centroid /= polygons.size();
+
+            // Adjust for label positioning
+            QFontMetrics metrics = painter->fontMetrics();
+            QString label = airspace.CAT();
+            int textWidth = metrics.horizontalAdvance(label);
+            int textHeight = metrics.height();
+
+            // Draw the label at the centroid, adjusting to center the text
+            painter->drawText(centroid.x() - textWidth / 2, centroid.y() + textHeight / 2, label);
         } else {
             int lowerY = yCoordinate(airspace.estimatedLowerBoundMSL().toFeet(), highestElevation, 0);
             int upperY = qMax(yCoordinate(airspace.estimatedUpperBoundMSL().toFeet(), highestElevation, 0), 0);

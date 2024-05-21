@@ -42,6 +42,9 @@ Ui::SideViewQuickItem::SideViewQuickItem(QQuickItem *parent)
 
 void Ui::SideViewQuickItem::paint(QPainter *painter)
 {
+    QElapsedTimer timer;
+    timer.start();
+
     auto info = GlobalObject::positionProvider()->positionInfo();
     auto track = info.trueTrack().toDEG();
     if (qIsNaN(track)) {
@@ -49,8 +52,6 @@ void Ui::SideViewQuickItem::paint(QPainter *painter)
         return;
     }
 
-    QElapsedTimer timer;
-    timer.start();
 
     int widgetHeight = static_cast<int>(height());
     int widgetWidth = static_cast<int>(width());
@@ -115,7 +116,7 @@ int Ui::SideViewQuickItem::getHighestElevation(std::vector<int> &elevations, con
 std::vector<Ui::SideViewQuickItem::MergedAirspace> Ui::SideViewQuickItem::getMergedAirspaces(const Positioning::PositionInfo &info, double track, float steps, float stepSizeInMeter, const GeoMaps::GeoMapProvider *geoMapProvider)
 {
     std::map<int, std::vector<GeoMaps::Airspace>> stepAirspaces;
-    QString categories[5]{"CTR", "DNG", "D", "C", "R"};
+    QString categories[7]{"CTR", "DNG", "D", "C", "R", "TMZ", "RMZ"};
     for (int i = 0; i <= steps; i++) {
         auto position = info.coordinate().atDistanceAndAzimuth(i * stepSizeInMeter, track, 0);
 
@@ -160,12 +161,15 @@ std::vector<Ui::SideViewQuickItem::MergedAirspace> Ui::SideViewQuickItem::getMer
 void Ui::SideViewQuickItem::drawAirspaces(QPainter *painter, const std::vector<MergedAirspace> &mergedAirspaces, int widgetWidth, int widgetHeight, int highestElevation, float steps)
 {
     for (const MergedAirspace &mergedAirspace : mergedAirspaces) {
+
         int firstStep = mergedAirspace.firstStep;
         int lastStep = mergedAirspace.lastStep;
 
         int xStart = static_cast<int>((firstStep / steps) * widgetWidth);
         int xEnd = static_cast<int>((lastStep / steps) * widgetWidth);
 
+
+        //TODO: Bounds does not work with AGL
         double lowerBound = mergedAirspace.airspace.estimatedLowerBoundMSL().toFeet();
         double upperBound = mergedAirspace.airspace.estimatedUpperBoundMSL().toFeet();
 
@@ -175,11 +179,15 @@ void Ui::SideViewQuickItem::drawAirspaces(QPainter *painter, const std::vector<M
         QRect rect(xStart, upperY, xEnd - xStart, lowerY - upperY);
 
         // Set brush color based on airspace category
+        QString color = "";
         if (mergedAirspace.airspace.CAT() == "CTR" || mergedAirspace.airspace.CAT() == "R") {
-            painter->setBrush(QColor("red").lighter(160));
+            color = "red";
+        } else if (mergedAirspace.airspace.CAT() == "TMZ"){
+            color = "black";
         } else {
-            painter->setBrush(QColor("blue").lighter(160));
+            color = "blue";
         }
+        painter->setBrush(QColor(color).lighter(160));
 
         QPen pen = painter->pen();
         pen.setStyle(Qt::DotLine);

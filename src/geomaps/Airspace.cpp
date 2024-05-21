@@ -85,9 +85,9 @@ auto GeoMaps::Airspace::estimatedLowerBoundMSL() const -> Units::Distance
     double result = 0.0;
     bool ok = false;
 
-    QString AL = m_lowerBound.simplified();
+    QString AL = m_lowerBound.simplified().toLower();
 
-    if (AL.startsWith(u"FL"_qs, Qt::CaseInsensitive)) {
+    if (AL.startsWith(u"fl"_qs, Qt::CaseInsensitive)) {
         result = AL.remove(0, 2).toDouble(&ok);
         if (ok) {
             return Units::Distance::fromFT(100*result);
@@ -121,9 +121,9 @@ auto GeoMaps::Airspace::estimatedUpperBoundMSL() const -> Units::Distance
     double result = 0.0;
     bool ok = false;
 
-    QString AL = m_upperBound.simplified();
+    QString AL = m_upperBound.simplified().toLower();
 
-    if (AL.startsWith(u"FL"_qs, Qt::CaseInsensitive)) {
+    if (AL.startsWith(u"fl"_qs, Qt::CaseInsensitive)) {
         result = AL.remove(0, 2).toDouble(&ok);
         if (ok) {
             return Units::Distance::fromFT(100*result);

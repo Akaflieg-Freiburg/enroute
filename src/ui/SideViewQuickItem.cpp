@@ -116,7 +116,7 @@ int Ui::SideViewQuickItem::getHighestElevation(std::vector<int> &elevations, con
 std::vector<Ui::SideViewQuickItem::MergedAirspace> Ui::SideViewQuickItem::getMergedAirspaces(const Positioning::PositionInfo &info, double track, float steps, float stepSizeInMeter, const GeoMaps::GeoMapProvider *geoMapProvider)
 {
     std::map<int, std::vector<GeoMaps::Airspace>> stepAirspaces;
-    QString categories[7]{"CTR", "DNG", "D", "C", "R", "TMZ", "RMZ"};
+    QString categories[7]{ "CTR", "DNG", "D", "C", "R", "TMZ", "RMZ"};
     for (int i = 0; i <= steps; i++) {
         auto position = info.coordinate().atDistanceAndAzimuth(i * stepSizeInMeter, track, 0);
 
@@ -160,7 +160,13 @@ std::vector<Ui::SideViewQuickItem::MergedAirspace> Ui::SideViewQuickItem::getMer
 
 void Ui::SideViewQuickItem::drawAirspaces(QPainter *painter, const std::vector<MergedAirspace> &mergedAirspaces, int widgetWidth, int widgetHeight, int highestElevation, float steps)
 {
-    for (const MergedAirspace &mergedAirspace : mergedAirspaces) {
+    std::vector<MergedAirspace> sortedAirspaces = mergedAirspaces;
+    std::sort(sortedAirspaces.begin(), sortedAirspaces.end(), [](const MergedAirspace &a, const MergedAirspace &b) {
+        const QStringList categoryOrder = {"TMZ", "RMZ", "DNG", "D", "C", "CTR", "R"}; //TODO: Use this as only list of airspace
+        return categoryOrder.indexOf(a.airspace.CAT()) < categoryOrder.indexOf(b.airspace.CAT());
+    });
+
+    for (const MergedAirspace &mergedAirspace : sortedAirspaces) {
 
         int firstStep = mergedAirspace.firstStep;
         int lastStep = mergedAirspace.lastStep;
@@ -201,7 +207,7 @@ void Ui::SideViewQuickItem::drawAirspaces(QPainter *painter, const std::vector<M
         // Calculate appropriate font size
         QFont font = painter->font();
         int rectHeight = lowerY - upperY;
-        int fontSize = qMax(10, rectHeight / 3); // Ensure minimum font size
+        int fontSize = qMin(10.0, qMax(qMin(rect.height() * 0.9, (double)rect.width()), 15.0)); // Ensure minimum font size
         font.setPointSizeF(fontSize);
         painter->setFont(font);
 
@@ -210,8 +216,10 @@ void Ui::SideViewQuickItem::drawAirspaces(QPainter *painter, const std::vector<M
         // Draw category text inside the rectangle
         painter->drawText(rect, Qt::AlignCenter, category);
         //TODO: What if that possition is blocked? -> Draw labels later on top?
+        //TODO: Draw font beyond rect if needed and possible?
     }
 }
+
 
 void Ui::SideViewQuickItem::drawTerrain(QPainter *painter, const std::vector<int> &elevations, int highestElevation, int widgetWidth, int widgetHeight, float steps)
 {
@@ -233,13 +241,13 @@ void Ui::SideViewQuickItem::drawTerrain(QPainter *painter, const std::vector<int
 
 void Ui::SideViewQuickItem::drawAircraft(QPainter *painter, const Positioning::PositionInfo &info, int highestElevation)
 {
-    auto altitude = info.trueAltitudeAMSL().toFeet();
+    auto altitude = info.trueAltitudeAMSL().toFeet(); //TODO: This is the wrong altitude
     painter->fillRect(0, yCoordinate(altitude, highestElevation, 10), 10, 10, QColor("black"));
 }
 
 void Ui::SideViewQuickItem::drawFlightPath(QPainter *painter, const Positioning::PositionInfo &info, int widgetWidth, int highestElevation)
 {
-    auto altitude = info.trueAltitudeAMSL().toFeet();
+    auto altitude = info.trueAltitudeAMSL().toFeet(); //TODO: This is the wrong altitude
     auto verticalSpeed = info.verticalSpeed().toFPM();
     auto altitudeIn10Minutes = verticalSpeed * 10 + altitude;
 
@@ -252,7 +260,7 @@ void Ui::SideViewQuickItem::drawFlightPath(QPainter *painter, const Positioning:
 
 int Ui::SideViewQuickItem::yCoordinate(int altitude, int maxHeight, int objectHeight)
 {
-    int safeAreaBottom = 34; //TODO: Replace with correct value
+    int safeAreaBottom = 0; //TODO: Replace with correct value
     int widgetHeight = static_cast<int>(height());
     auto availableHeight = widgetHeight - safeAreaBottom;
 

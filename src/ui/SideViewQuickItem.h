@@ -25,10 +25,8 @@
 #include <set>
 
 #include "GlobalObject.h"
-#include "PositionProvider.h"
 #include "PositionInfo.h"
 #include "GeoMapProvider.h"
-#include "SideViewQuickItem.h"
 
 namespace Ui {
 

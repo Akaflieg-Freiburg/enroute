@@ -79,8 +79,11 @@ GeoMaps::Airspace::Airspace(const QJsonObject &geoJSONObject) {
     m_lowerBound = properties[QStringLiteral("BOT")].toString();
 }
 
-
 auto GeoMaps::Airspace::estimatedLowerBoundMSL() const -> Units::Distance
+{
+    return estimatedLowerBoundMSL(0);
+}
+auto GeoMaps::Airspace::estimatedLowerBoundMSL(int elevation) const -> Units::Distance
 {
     double result = 0.0;
     bool ok = false;
@@ -97,15 +100,19 @@ auto GeoMaps::Airspace::estimatedLowerBoundMSL() const -> Units::Distance
 
     if (AL.endsWith(u"msl"_qs)) {
         AL.chop(3);
-        AL = AL.simplified();
+        result = AL.simplified().toDouble(&ok);
     }
     if (AL.endsWith(u"agl"_qs)) {
         AL.chop(3);
-        AL = AL.simplified();
+        result = AL.simplified().toDouble(&ok) + elevation;
+        return Units::Distance::fromFT(result);
     }
     if (AL.endsWith(u"ft"_qs)) {
         AL.chop(2);
         AL = AL.simplified();
+    }
+    if (AL.size() == 3 && AL.endsWith(u"gnd"_qs, Qt::CaseInsensitive)) { //TODO: This is ugly
+        return Units::Distance::fromFT((double)elevation);
     }
 
     result = AL.toDouble(&ok);
@@ -117,6 +124,11 @@ auto GeoMaps::Airspace::estimatedLowerBoundMSL() const -> Units::Distance
 
 
 auto GeoMaps::Airspace::estimatedUpperBoundMSL() const -> Units::Distance
+{
+    return estimatedUpperBoundMSL(0);
+}
+
+auto GeoMaps::Airspace::estimatedUpperBoundMSL(int elevation) const -> Units::Distance
 {
     double result = 0.0;
     bool ok = false;
@@ -133,15 +145,19 @@ auto GeoMaps::Airspace::estimatedUpperBoundMSL() const -> Units::Distance
 
     if (AL.endsWith(u"msl"_qs)) {
         AL.chop(3);
-        AL = AL.simplified();
+        result = AL.simplified().toDouble(&ok);
     }
     if (AL.endsWith(u"agl"_qs)) {
         AL.chop(3);
-        AL = AL.simplified();
+        result = AL.simplified().toDouble(&ok) + elevation;
+        return Units::Distance::fromFT(result);
     }
     if (AL.endsWith(u"ft"_qs)) {
         AL.chop(2);
         AL = AL.simplified();
+    }
+    if (AL.size() == 3 && AL.endsWith(u"gnd"_qs, Qt::CaseInsensitive)) { //TODO: This is ugly
+        return Units::Distance::fromFT((double)elevation);
     }
 
     result = AL.toDouble(&ok);
@@ -150,7 +166,6 @@ auto GeoMaps::Airspace::estimatedUpperBoundMSL() const -> Units::Distance
     }
     return Units::Distance::fromFT(0.0);
 }
-
 
 auto GeoMaps::Airspace::makeMetric(const QString& standard) -> QString
 {

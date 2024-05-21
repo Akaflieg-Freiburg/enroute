@@ -59,6 +59,7 @@ public:
      * level
      */
     [[nodiscard]] auto estimatedLowerBoundMSL() const -> Units::Distance;
+    [[nodiscard]] auto estimatedLowerBoundMSL(int elevation) const -> Units::Distance;
     /*! \brief Estimates the lower limit of the airspace above MSL
      *
      * This method gives a rought estimate for the lower limit of the airspace.
@@ -69,6 +70,7 @@ public:
      * level
      */
     [[nodiscard]] auto estimatedUpperBoundMSL() const -> Units::Distance;
+    [[nodiscard]] auto estimatedUpperBoundMSL(int elevation) const -> Units::Distance;
 
     /*! \brief Validity */
     Q_PROPERTY(bool isValid READ isValid CONSTANT)

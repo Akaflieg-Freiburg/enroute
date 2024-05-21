@@ -53,11 +53,8 @@ void Ui::SideViewQuickItem::paint(QPainter *painter)
     }
 
 
-    int widgetHeight = static_cast<int>(height());
-    int widgetWidth = static_cast<int>(width());
-
     auto geoMapProvider = GlobalObject::geoMapProvider();
-    drawSky(painter, widgetHeight, widgetWidth);
+    drawSky(painter);
 
     const float steps = 100;
     const float stepSizeInMeter = (info.groundSpeed().toKMH() > 3) ? (info.groundSpeed().toKMH() / 6 / steps * 1000) : 250;
@@ -66,13 +63,15 @@ void Ui::SideViewQuickItem::paint(QPainter *painter)
     std::vector<int> elevations = getElevations(info, track, steps, stepSizeInMeter, geoMapProvider);
     int highestElevation = getHighestElevation(elevations, info, defaultUpperLimit);
 
-    auto mergedAirspaces = getMergedAirspaces(info, track, steps, stepSizeInMeter, geoMapProvider);
-    drawAirspaces(painter, mergedAirspaces, widgetWidth, widgetHeight, highestElevation, steps);
 
-    drawTerrain(painter, elevations, highestElevation, widgetWidth, widgetHeight, steps);
+    auto mergedAirspaces = getMergedAirspaces(info, track, steps, stepSizeInMeter, geoMapProvider);
+
+    drawAirspaces(painter, elevations, mergedAirspaces, highestElevation, steps);
+
+    drawTerrain(painter, elevations, highestElevation, steps);
     drawAircraft(painter, info, highestElevation);
 
-    drawFlightPath(painter, info, widgetWidth, highestElevation);
+    drawFlightPath(painter, info, highestElevation);
 
 
     qDebug() << "Drawing took" << timer.elapsed() << "milliseconds"; //TODO Remove
@@ -88,9 +87,9 @@ void Ui::SideViewQuickItem::drawNoTrackAvailable(QPainter *painter)
     painter->drawText(0, 20, "No track available");
 }
 
-void Ui::SideViewQuickItem::drawSky(QPainter *painter, int widgetHeight, int widgetWidth)
+void Ui::SideViewQuickItem::drawSky(QPainter *painter)
 {
-    painter->fillRect(0, 0, widgetWidth, widgetHeight, QColor("lightblue"));
+    painter->fillRect(0, 0, widgetWidth(), widgetHeight(), QColor("lightblue"));
 }
 
 std::vector<int> Ui::SideViewQuickItem::getElevations(const Positioning::PositionInfo &info, double track, float steps, float stepSizeInMeter, const GeoMaps::GeoMapProvider *geoMapProvider)
@@ -115,8 +114,10 @@ int Ui::SideViewQuickItem::getHighestElevation(std::vector<int> &elevations, con
 
 std::vector<Ui::SideViewQuickItem::MergedAirspace> Ui::SideViewQuickItem::getMergedAirspaces(const Positioning::PositionInfo &info, double track, float steps, float stepSizeInMeter, const GeoMaps::GeoMapProvider *geoMapProvider)
 {
+    QElapsedTimer airspaceTimer;
+    airspaceTimer.start();
     std::map<int, std::vector<GeoMaps::Airspace>> stepAirspaces;
-    QString categories[7]{ "CTR", "DNG", "D", "C", "R", "TMZ", "RMZ"};
+    auto categories = airspaceSortedCategories();
     for (int i = 0; i <= steps; i++) {
         auto position = info.coordinate().atDistanceAndAzimuth(i * stepSizeInMeter, track, 0);
 
@@ -129,6 +130,8 @@ std::vector<Ui::SideViewQuickItem::MergedAirspace> Ui::SideViewQuickItem::getMer
             }
         }
     }
+
+    qDebug() << "Airspace timer" << airspaceTimer.elapsed() << "milliseconds"; //TODO Remove
 
     std::vector<MergedAirspace> mergedAirspaces;
     for (const auto &step : stepAirspaces) {
@@ -158,84 +161,106 @@ std::vector<Ui::SideViewQuickItem::MergedAirspace> Ui::SideViewQuickItem::getMer
     return mergedAirspaces;
 }
 
-void Ui::SideViewQuickItem::drawAirspaces(QPainter *painter, const std::vector<MergedAirspace> &mergedAirspaces, int widgetWidth, int widgetHeight, int highestElevation, float steps)
+QStringList Ui::SideViewQuickItem::airspaceSortedCategories() {
+    return {"TMZ", "RMZ", "DNG", "D", "C", "CTR", "R"};
+}
+
+void Ui::SideViewQuickItem::drawAirspaces(QPainter *painter, std::vector<int> elevations, const std::vector<MergedAirspace> &mergedAirspaces, int highestElevation, float steps)
 {
+    auto categories = airspaceSortedCategories();
     std::vector<MergedAirspace> sortedAirspaces = mergedAirspaces;
-    std::sort(sortedAirspaces.begin(), sortedAirspaces.end(), [](const MergedAirspace &a, const MergedAirspace &b) {
-        const QStringList categoryOrder = {"TMZ", "RMZ", "DNG", "D", "C", "CTR", "R"}; //TODO: Use this as only list of airspace
-        return categoryOrder.indexOf(a.airspace.CAT()) < categoryOrder.indexOf(b.airspace.CAT());
+    std::sort(sortedAirspaces.begin(), sortedAirspaces.end(), [categories](const MergedAirspace &a, const MergedAirspace &b) {
+        return categories.indexOf(a.airspace.CAT()) < categories.indexOf(b.airspace.CAT());
     });
 
     for (const MergedAirspace &mergedAirspace : sortedAirspaces) {
 
+        auto airspace = mergedAirspace.airspace;
+
         int firstStep = mergedAirspace.firstStep;
         int lastStep = mergedAirspace.lastStep;
 
-        int xStart = static_cast<int>((firstStep / steps) * widgetWidth);
-        int xEnd = static_cast<int>((lastStep / steps) * widgetWidth);
+        int xStart = static_cast<int>((firstStep / steps) * widgetWidth());
+        int xEnd = static_cast<int>((lastStep / steps) * widgetWidth());
 
-
-        //TODO: Bounds does not work with AGL
-        double lowerBound = mergedAirspace.airspace.estimatedLowerBoundMSL().toFeet();
-        double upperBound = mergedAirspace.airspace.estimatedUpperBoundMSL().toFeet();
-
-        int lowerY = yCoordinate(lowerBound, highestElevation, 0);
-        int upperY = qMax(yCoordinate(upperBound, highestElevation, 0), 0);
-
-        QRect rect(xStart, upperY, xEnd - xStart, lowerY - upperY);
-
-        // Set brush color based on airspace category
         QString color = "";
-        if (mergedAirspace.airspace.CAT() == "CTR" || mergedAirspace.airspace.CAT() == "R") {
+        if (mergedAirspace.airspace.CAT() == "CTR" || mergedAirspace.airspace.CAT() == "R" || mergedAirspace.airspace.CAT() == "DNG") {
             color = "red";
         } else if (mergedAirspace.airspace.CAT() == "TMZ"){
-            color = "black";
+            color = "grey";
         } else {
             color = "blue";
         }
         painter->setBrush(QColor(color).lighter(160));
 
-        QPen pen = painter->pen();
-        pen.setStyle(Qt::DotLine);
-        painter->setPen(pen);
-        painter->drawRect(rect);
+        auto lowerBound = mergedAirspace.airspace.lowerBound().toLower();
+        auto upperBound = mergedAirspace.airspace.upperBound().toLower();
+        if (lowerBound.endsWith("agl") || lowerBound.endsWith("gnd") || upperBound.endsWith("agl") || upperBound.endsWith("gnd") ) {
+            std::vector<QPointF> polygons;
+            for (int i = mergedAirspace.firstStep; i <= mergedAirspace.lastStep; i++) {
+                auto x = widgetWidth() / steps * i;
+                auto y = yCoordinate(airspace.estimatedLowerBoundMSL(elevations[i]).toFeet(), highestElevation, 0);
+                polygons.push_back(QPointF(x, y));
+            }
+            for (int i = mergedAirspace.lastStep; i >= mergedAirspace.firstStep; i--) {
+                auto x = widgetWidth() / steps * i;
+                auto y = yCoordinate(airspace.estimatedUpperBoundMSL(elevations[i]).toFeet(), highestElevation, 0);
+                polygons.push_back(QPointF(x, y));
+            }
+            painter->drawPolygon(polygons.data(), static_cast<int>(polygons.size()));
+            //TODO: Airspace label
+        } else {
+            int lowerY = yCoordinate(airspace.estimatedLowerBoundMSL().toFeet(), highestElevation, 0);
+            int upperY = qMax(yCoordinate(airspace.estimatedUpperBoundMSL().toFeet(), highestElevation, 0), 0);
 
-        // Restore solid line for text
-        pen.setStyle(Qt::SolidLine);
-        painter->setPen(pen);
+            QRect rect(xStart, upperY, xEnd - xStart, lowerY - upperY);
 
-        // Calculate appropriate font size
-        QFont font = painter->font();
-        int rectHeight = lowerY - upperY;
-        int fontSize = qMin(10.0, qMax(qMin(rect.height() * 0.9, (double)rect.width()), 15.0)); // Ensure minimum font size
-        font.setPointSizeF(fontSize);
-        painter->setFont(font);
+            // Set brush color based on airspace category
 
-        QString category = mergedAirspace.airspace.CAT();
+            QPen pen = painter->pen();
+            pen.setStyle(Qt::DotLine);
+            painter->setPen(pen);
+            painter->drawRect(rect);
 
-        // Draw category text inside the rectangle
-        painter->drawText(rect, Qt::AlignCenter, category);
-        //TODO: What if that possition is blocked? -> Draw labels later on top?
-        //TODO: Draw font beyond rect if needed and possible?
+            // Restore solid line for text
+            pen.setStyle(Qt::SolidLine);
+            painter->setPen(pen);
+
+            // Calculate appropriate font size
+            QFont font = painter->font();
+            int fontSize = qMin(12.0, qMax(qMin(rect.height() * 0.9, (double)rect.width()), 15.0)); // Ensure minimum font size
+            font.setPointSizeF(fontSize);
+            painter->setFont(font);
+
+            QString category = mergedAirspace.airspace.CAT();
+
+            // Draw category text inside the rectangle
+            painter->drawText(rect, Qt::AlignCenter, category);
+            //TODO: What if that possition is blocked? -> Draw labels later on top?
+            //TODO: Draw font beyond rect if needed and possible?
+        }
+
     }
 }
 
 
-void Ui::SideViewQuickItem::drawTerrain(QPainter *painter, const std::vector<int> &elevations, int highestElevation, int widgetWidth, int widgetHeight, float steps)
+
+
+void Ui::SideViewQuickItem::drawTerrain(QPainter *painter, const std::vector<int> &elevations, int highestElevation, float steps)
 {
     painter->setBrush(QColor("brown"));
 
     std::vector<QPointF> polygons;
-    polygons.push_back(QPointF(0, widgetHeight)); // Additional polygon at the very left side to fill the terrain with color
+    polygons.push_back(QPointF(0, widgetHeight())); // Additional polygon at the very left side to fill the terrain with color
 
     for (size_t i = 0; i < elevations.size(); ++i) {
         auto elevation = elevations[i];
-        auto x = widgetWidth / steps * i;
+        auto x = widgetWidth() / steps * i;
         auto y = yCoordinate(elevation, highestElevation, 0);
         polygons.push_back(QPointF(x, y));
     }
 
-    polygons.push_back(QPointF(widgetWidth * 1.1, widgetHeight)); // Additional polygon outside the screen for improved design at the RH side of the screen
+    polygons.push_back(QPointF(widgetWidth() * 1.1, widgetHeight())); // Additional polygon outside the screen for improved design at the RH side of the screen
     painter->drawPolygon(polygons.data(), static_cast<int>(polygons.size()));
 }
 
@@ -245,25 +270,34 @@ void Ui::SideViewQuickItem::drawAircraft(QPainter *painter, const Positioning::P
     painter->fillRect(0, yCoordinate(altitude, highestElevation, 10), 10, 10, QColor("black"));
 }
 
-void Ui::SideViewQuickItem::drawFlightPath(QPainter *painter, const Positioning::PositionInfo &info, int widgetWidth, int highestElevation)
+void Ui::SideViewQuickItem::drawFlightPath(QPainter *painter, const Positioning::PositionInfo &info, int highestElevation)
 {
     auto altitude = info.trueAltitudeAMSL().toFeet(); //TODO: This is the wrong altitude
     auto verticalSpeed = info.verticalSpeed().toFPM();
     auto altitudeIn10Minutes = verticalSpeed * 10 + altitude;
 
-    painter->drawLine(10, yCoordinate(altitude, highestElevation, 0), widgetWidth + 10, yCoordinate(altitude, highestElevation, 0));
+    painter->drawLine(10, yCoordinate(altitude, highestElevation, 0), widgetWidth() + 10, yCoordinate(altitude, highestElevation, 0));
     QPen pen = painter->pen();
     pen.setStyle(Qt::DotLine);
     painter->setPen(pen);
-    painter->drawLine(10, yCoordinate(altitude, highestElevation, 0), widgetWidth + 10, yCoordinate(altitudeIn10Minutes, highestElevation, 0));
+    painter->drawLine(10, yCoordinate(altitude, highestElevation, 0), widgetWidth() + 10, yCoordinate(altitudeIn10Minutes, highestElevation, 0));
 }
 
 int Ui::SideViewQuickItem::yCoordinate(int altitude, int maxHeight, int objectHeight)
 {
     int safeAreaBottom = 0; //TODO: Replace with correct value
-    int widgetHeight = static_cast<int>(height());
-    auto availableHeight = widgetHeight - safeAreaBottom;
+    auto availableHeight = widgetHeight() - safeAreaBottom;
 
     int heightOnDisplay = static_cast<int>(static_cast<double>(altitude) / maxHeight * availableHeight);
     return availableHeight - heightOnDisplay - objectHeight / 2;
+}
+
+int Ui::SideViewQuickItem::widgetHeight()
+{
+    return static_cast<int>(height());
+}
+
+int Ui::SideViewQuickItem::widgetWidth()
+{
+    return static_cast<int>(width());
 }

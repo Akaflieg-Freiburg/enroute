@@ -59,15 +59,18 @@ private:
   };
 
   void drawNoTrackAvailable(QPainter *painter);
-  void drawSky(QPainter *painter, int widgetHeight, int widgetWidth);
+  void drawSky(QPainter *painter);
   std::vector<int> getElevations(const Positioning::PositionInfo &info, double track, float steps, float stepSizeInMeter, const GeoMaps::GeoMapProvider *geoMapProvider);
   int getHighestElevation(std::vector<int> &elevations, const Positioning::PositionInfo &info, float defaultUpperLimit);
   std::vector<MergedAirspace> getMergedAirspaces(const Positioning::PositionInfo &info, double track, float steps, float stepSizeInMeter, const GeoMaps::GeoMapProvider *geoMapProvider);
-  void drawAirspaces(QPainter *painter, const std::vector<MergedAirspace> &mergedAirspaces, int widgetWidth, int widgetHeight, int highestElevation, float steps);
-  void drawTerrain(QPainter *painter, const std::vector<int> &elevations, int highestElevation, int widgetWidth, int widgetHeight, float steps);
+  void drawAirspaces(QPainter *painter, std::vector<int> elevations, const std::vector<MergedAirspace> &mergedAirspaces, int highestElevation, float steps);
+  void drawTerrain(QPainter *painter, const std::vector<int> &elevations, int highestElevation, float steps);
+  QStringList airspaceSortedCategories();
   void drawAircraft(QPainter *painter, const Positioning::PositionInfo &info, int highestElevation);
-  void drawFlightPath(QPainter *painter, const Positioning::PositionInfo &info, int widgetWidth, int highestElevation);
+  void drawFlightPath(QPainter *painter, const Positioning::PositionInfo &info, int highestElevation);
   int yCoordinate(int altitude, int maxHeight, int objectHeight);
+  int widgetHeight();
+  int widgetWidth();
   Q_DISABLE_COPY_MOVE(SideViewQuickItem)
 
 };

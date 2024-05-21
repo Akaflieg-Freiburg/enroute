@@ -298,12 +298,14 @@ Page {
 
                 Label {
                     Layout.fillWidth: true
-                    visible: {
-                        if (connectionDescription.connection)
-                            return connectionDescription.connection.canonical
-                        return false
+                    text: {
+                        if (!connectionDescription.connection)
+                            return ""
+                        var s = qsTr("Data Format: %1.").arg(connectionDescription.connection.dataFormat)
+                        if (connectionDescription.connection.canonical)
+                            s += "<br>" + qsTr("This is a standard connection that cannot be deleted by the user.")
+                        return s
                     }
-                    text: qsTr("This is a standard connection that cannot be deleted by the user.")
                     wrapMode: Text.WordWrap
                 }
 

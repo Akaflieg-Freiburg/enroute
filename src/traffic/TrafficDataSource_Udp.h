@@ -60,7 +60,7 @@ public:
      *
      * @returns Property dataFormat
      */
-    [[nodiscard]] QString dataFormat() const override { return u"GDL90 · XGPS"_qs; }
+    [[nodiscard]] QString dataFormat() const override { return u"GDL90, XGPS"_qs; }
 
     /*! \brief Getter function for the property with the same name
      *

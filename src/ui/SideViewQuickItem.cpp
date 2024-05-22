@@ -179,15 +179,16 @@ void Ui::SideViewQuickItem::drawAirspaces(QPainter *painter, std::vector<int> el
         int xStart = static_cast<int>((firstStep / steps) * widgetWidth());
         int xEnd = static_cast<int>((lastStep / steps) * widgetWidth());
 
-        QString color = "";
+        QColor color;
         if (mergedAirspace.airspace.CAT() == "CTR" || mergedAirspace.airspace.CAT() == "R" || mergedAirspace.airspace.CAT() == "DNG") {
-            color = "red";
+            color = QColor("red");
         } else if (mergedAirspace.airspace.CAT() == "TMZ"){
-            color = "grey";
+            color = QColor("grey");
         } else {
-            color = "blue";
+            color = QColor("blue");
         }
-        painter->setBrush(QColor(color).lighter(160));
+        color.setAlphaF(0.5);
+        painter->setBrush(color.lighter(160));
 
         auto lowerBound = mergedAirspace.airspace.lowerBound().toLower();
         auto upperBound = mergedAirspace.airspace.upperBound().toLower();

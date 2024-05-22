@@ -63,7 +63,6 @@ void Ui::SideViewQuickItem::paint(QPainter *painter)
     std::vector<int> elevations = getElevations(info, track, steps, stepSizeInMeter, geoMapProvider);
     int highestElevation = getHighestElevation(elevations, info, defaultUpperLimit);
 
-
     auto mergedAirspaces = getMergedAirspaces(info, track, steps, stepSizeInMeter, geoMapProvider);
 
     drawAirspaces(painter, elevations, mergedAirspaces, highestElevation, steps);
@@ -79,17 +78,45 @@ void Ui::SideViewQuickItem::paint(QPainter *painter)
 
 void Ui::SideViewQuickItem::drawNoTrackAvailable(QPainter *painter)
 {
-    painter->fillRect(0, 0, static_cast<int>(width()), static_cast<int>(height()), QColor("lightblue"));
-    painter->fillRect(0, static_cast<int>(height()) * 0.8, static_cast<int>(width()), static_cast<int>(height()), QColor("brown"));
+    drawSky(painter);
+
+    // Define gradient for the ground
+    QLinearGradient groundGradient(0, widgetHeight() * 0.8, 0, widgetHeight());
+    groundGradient.setColorAt(0.0, QColor(139, 69, 19));   // SaddleBrown at the top
+    groundGradient.setColorAt(1.0, QColor(210, 180, 140)); // Tan at the bottom
+
+    // Fill the ground with the ground gradient
+    painter->fillRect(0, widgetHeight() * 0.8, widgetWidth(), widgetHeight(), groundGradient);
+
+    // Draw a semi-transparent overlay
+    painter->fillRect(0, 0, widgetWidth(), widgetHeight(), QColor(0, 0, 0, 50));
+
+    // Set up the font
     QFont font = painter->font();
-    font.setPixelSize(25);
+    font.setPixelSize(35); // Larger font size
+    font.setBold(true);    // Bold font
     painter->setFont(font);
-    painter->drawText(0, 20, "No track available");
+
+    // Set up text color
+    painter->setPen(QPen(Qt::white));
+
+    // Draw the text with shadow for better readability
+    auto text = "Not sufficient data";
+    painter->setPen(QPen(Qt::black));
+    painter->drawText(1, 21, widgetWidth(), 40, Qt::AlignCenter, text);
+    painter->setPen(QPen(Qt::white));
+    painter->drawText(0, 20, widgetWidth(), 40, Qt::AlignCenter, text);
 }
 
 void Ui::SideViewQuickItem::drawSky(QPainter *painter)
 {
-    painter->fillRect(0, 0, widgetWidth(), widgetHeight(), QColor("lightblue"));
+    // Define gradient for the sky
+    QLinearGradient skyGradient(0, 0, 0, widgetHeight());
+    skyGradient.setColorAt(0.0, QColor(135, 206, 235)); // Light blue at the top
+    skyGradient.setColorAt(1.0, QColor(0, 191, 255));   // Deeper blue at the bottom
+
+    // Fill the background with the sky gradient
+    painter->fillRect(0, 0, widgetWidth(), widgetHeight(), skyGradient);
 }
 
 std::vector<int> Ui::SideViewQuickItem::getElevations(const Positioning::PositionInfo &info, double track, float steps, float stepSizeInMeter, const GeoMaps::GeoMapProvider *geoMapProvider)
@@ -187,21 +214,25 @@ void Ui::SideViewQuickItem::drawAirspaces(QPainter *painter, std::vector<int> el
         } else {
             color = QColor("blue");
         }
-        color.setAlphaF(0.5);
+        color.setAlphaF(0.75);
         painter->setBrush(color.lighter(160));
 
         auto lowerBound = mergedAirspace.airspace.lowerBound().toLower();
         auto upperBound = mergedAirspace.airspace.upperBound().toLower();
+
+        //Are Bounds relative to Ground? If so, we cant use rects, we have to use polygons to follow the elevation
         if (lowerBound.endsWith("agl") || lowerBound.endsWith("gnd") || upperBound.endsWith("agl") || upperBound.endsWith("gnd") ) {
             std::vector<QPointF> polygons;
             for (int i = mergedAirspace.firstStep; i <= mergedAirspace.lastStep; i++) {
                 auto x = widgetWidth() / steps * i;
                 auto y = yCoordinate(airspace.estimatedLowerBoundMSL(elevations[i]).toFeet(), highestElevation, 0);
+                qWarning() << "y" << y;
                 polygons.push_back(QPointF(x, y));
             }
             for (int i = mergedAirspace.lastStep; i >= mergedAirspace.firstStep; i--) {
                 auto x = widgetWidth() / steps * i;
                 auto y = yCoordinate(airspace.estimatedUpperBoundMSL(elevations[i]).toFeet(), highestElevation, 0);
+                qWarning() << "y" << y;
                 polygons.push_back(QPointF(x, y));
             }
             painter->drawPolygon(polygons.data(), static_cast<int>(polygons.size()));
@@ -213,6 +244,9 @@ void Ui::SideViewQuickItem::drawAirspaces(QPainter *painter, std::vector<int> el
             }
             centroid /= polygons.size();
 
+            QFont font = painter->font();
+            font.setPointSizeF(13); //TODO: Make dynamic??
+            painter->setFont(font);
             // Adjust for label positioning
             QFontMetrics metrics = painter->fontMetrics();
             QString label = airspace.CAT();
@@ -256,11 +290,12 @@ void Ui::SideViewQuickItem::drawAirspaces(QPainter *painter, std::vector<int> el
 }
 
 
-
-
 void Ui::SideViewQuickItem::drawTerrain(QPainter *painter, const std::vector<int> &elevations, int highestElevation, float steps)
 {
-    painter->setBrush(QColor("brown"));
+    QLinearGradient terrainGradient(0, 0, 0, widgetHeight());
+    terrainGradient.setColorAt(0.0, QColor(153, 102, 51));   // Dark brown at the base
+    terrainGradient.setColorAt(1.0, QColor(101, 67, 33));  // Lighter brown at the top
+    painter->setBrush(terrainGradient);
 
     std::vector<QPointF> polygons;
     polygons.push_back(QPointF(0, widgetHeight())); // Additional polygon at the very left side to fill the terrain with color
@@ -297,11 +332,10 @@ void Ui::SideViewQuickItem::drawFlightPath(QPainter *painter, const Positioning:
 
 int Ui::SideViewQuickItem::yCoordinate(int altitude, int maxHeight, int objectHeight)
 {
-    int safeAreaBottom = 0; //TODO: Replace with correct value
-    auto availableHeight = widgetHeight() - safeAreaBottom;
 
-    int heightOnDisplay = static_cast<int>(static_cast<double>(altitude) / maxHeight * availableHeight);
-    return availableHeight - heightOnDisplay - objectHeight / 2;
+    if (altitude > maxHeight) return 0;
+    int heightOnDisplay = static_cast<int>(static_cast<double>(altitude) / maxHeight * widgetHeight());
+    return widgetHeight() - heightOnDisplay - objectHeight / 2;
 }
 
 int Ui::SideViewQuickItem::widgetHeight()

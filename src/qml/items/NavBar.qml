@@ -35,6 +35,12 @@ ColumnLayout {
     anchors.leftMargin: SafeInsets.left
     anchors.rightMargin: SafeInsets.right
 
+    spacing: 0  // Set the spacing between children to 0
+    SideView {
+        Layout.fillWidth: true
+        Layout.preferredHeight: 100
+    }
+
     Rectangle {
         id: grid
 
@@ -59,6 +65,7 @@ ColumnLayout {
                 return 4
             return 5
         }
+
 
         RowLayout {
             width: grid.width
@@ -239,9 +246,6 @@ ColumnLayout {
 
     }
 
-    SideView {
-        Layout.fillWidth: true
-        Layout.preferredHeight: 100
-    }
+
 
 } // Rectangle

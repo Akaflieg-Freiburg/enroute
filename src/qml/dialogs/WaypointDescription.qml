@@ -59,6 +59,9 @@ CenteringDialog {
         var asl = GeoMapProvider.airspaces(waypoint.coordinate)
         for (var i in asl)
             airspaceDelegate.createObject(co, {airspace: asl[i]});
+
+        satButtonDelegate.createObject(co, {});
+        empty.createObject(co, {});  // This is bizarrely necessary, or else the link will not work
     }
 
     modal: true
@@ -367,6 +370,40 @@ CenteringDialog {
                 wrapMode: Text.WordWrap
             }
         }
+    }
+
+    Component {
+        id: satButtonDelegate
+
+        RowLayout {
+            Layout.preferredWidth: sv.width
+
+            Icon {
+                Layout.preferredWidth: font.pixelSize*3
+                Layout.alignment: Qt.AlignVCenter
+                source: "/icons/material/ic_open_in_browser.svg"
+            }
+
+            Label {
+                text: "<a href='xx'>" + qsTr("Satellite View") + "</a>"
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignVCenter
+                wrapMode: Text.WordWrap
+                onLinkActivated: link => {
+                    PlatformAdaptor.vibrateBrief()
+                    Qt.openUrlExternally("https://www.google.com/maps/@?api=1&map_action=map&center="
+                                         + waypoint.coordinate.latitude
+                                         + "%2C"
+                                         + waypoint.coordinate.longitude
+                                         + "&zoom=15&basemap=satellite")
+                }
+            }
+        }
+    }
+
+    Component {
+        id: empty
+        Item {}
     }
 
     ColumnLayout {

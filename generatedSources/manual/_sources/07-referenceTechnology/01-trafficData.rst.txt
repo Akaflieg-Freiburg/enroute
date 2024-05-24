@@ -4,22 +4,33 @@ Traffic Data Receiver Support
 Communication
 ^^^^^^^^^^^^^
 
-**Enroute Flight Navigation** expects that the traffic receiver deploys a WLAN
-network via Wi-Fi and publishes traffic data via that network.  In order to
-support a wide range of devices, including flight simulators, the app listens to
-several network addresses simultaneously and understands a variety of protocols.
+In order to support a wide range of devices, including flight simulators,
+**Enroute Flight Navigation** listens to several data channels simultaneously
+and understands a variety of protocols.  By default, **Enroute Flight
+Navigation** watches the following data channels.  This should cover a large
+part of the devices presently on the market.
 
-**Enroute Flight Navigation** watches the following data channels, in order of
-preference.
-
+- A TCP connection to port 2000 at the IP addresses 10.10.10.10, where the app
+  expects a stream of FLARM/NMEA sentences.
 - A TCP connection to port 2000 at the IP addresses 192.168.1.1, where the app
   expects a stream of FLARM/NMEA sentences.
 - A TCP connection to port 2000 at the IP addresses 192.168.10.1, where the app
+  expects a stream of FLARM/NMEA sentences.
+- A TCP connection to port 2000 at the IP addresses 192.168.4.1, where the app
+  expects a stream of FLARM/NMEA sentences.
+- A TCP connection to port 2000 at the IP addresses 192.168.42.1, where the app
   expects a stream of FLARM/NMEA sentences.
 - A UDP connection to port 4000, where the app expects datagrams in GDL90 or
   XGPS format.
 - A UDP connection to port 49002, where the app expects datagrams in GDL90 or
   XGPS format.
+
+Users can configure additional data channels between **Enroute Flight
+Navigation** and traffic data receivers with Bluetooth Classic interfaces. 
+
+
+Data Formats
+^^^^^^^^^^^^
 
 **Enroute Flight Navigation** expects traffic data in the following formats.
 
@@ -67,7 +78,7 @@ MODE-S traffic
     position.  These targets are named "Mode S".
   - Air Avioncs devices do the same, but only with one target.
   - Other devices create a virtual target, either at the ownship position or at
-    the north pole and abuse the field "Navigation Accuracy Category for
+    the North Pole and abuse the field "Navigation Accuracy Category for
     Position" to give the approximate position to the target.
 
   **Enroute Flight Navigation** has special provisions for handling targets

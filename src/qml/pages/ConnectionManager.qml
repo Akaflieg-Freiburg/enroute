@@ -99,7 +99,7 @@ Page {
             height: 2*implicitHeight
             width: parent ? parent.width : 0
 
-            text: "Traffic Data Receivers"
+            text: qsTr("Traffic Data Receivers")
 
             leftPadding: trafficReceiverPage.font.pixelSize
             font.pixelSize: trafficReceiverPage.font.pixelSize*1.2
@@ -234,7 +234,7 @@ Page {
 
         property var connection
 
-        title: "Connection Info" // connection.sourceName //"Data Connection"
+        title: qsTr("Connection Info")
         standardButtons: Dialog.Ok
 
         DecoratedScrollView {

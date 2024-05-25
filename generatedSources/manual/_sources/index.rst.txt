@@ -34,6 +34,7 @@ Consult the `homepage <https://akaflieg-freiburg.github.io/enroute>`_ of
    :maxdepth: 1
 
    01-gettingStarted
+   02-senseAndAvoid
 
 .. raw:: latex
 

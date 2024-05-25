@@ -38,6 +38,8 @@ CenteringDialog {
         anchors.fill: parent
 
         Label {
+            id: errorLabel
+
             Layout.fillWidth: true
 
             text: qsTr("Error") + ": " + ConnectionScanner_Bluetooth.error
@@ -49,7 +51,7 @@ CenteringDialog {
             Layout.fillWidth: true
 
             text: qsTr("No Device Found")
-            visible: ConnectionScanner_Bluetooth.connectionInfos.length === 0
+            visible: (ConnectionScanner_Bluetooth.connectionInfos.length === 0) && !errorLabel.visible
             wrapMode: Text.Wrap
         }
 

@@ -387,15 +387,7 @@ Page {
                 Layout.columnSpan: 2
                 icon.source: "/icons/material/ic_info_outline.svg"
                 text: qsTr("Connect to a traffic receiver…")
-                onClicked: openManual("02-tutorialBasic/01-traffic.html")
-            }
-
-            WordWrappingItemDelegate {
-                Layout.fillWidth: true
-                Layout.columnSpan: 2
-                icon.source: "/icons/material/ic_info_outline.svg"
-                text: qsTr("Connect to the SafeSky app…")
-                onClicked: openManual("02-tutorialBasic/02-safesky.html")
+                onClicked: openManual("02-senseAndAvoid.html")
             }
 
             WordWrappingItemDelegate {

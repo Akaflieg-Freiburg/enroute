@@ -114,6 +114,14 @@ This setting is essential if your device has reception problems or if you use
     back using the built-in satnav receiver of your device.
 
 
+Data connections
+^^^^^^^^^^^^^^^^
+
+Tap on this entry to view the list of data connections that **Enroute Flight
+Navigation** uses to communicate with traffic data receivers, and to register
+traffic data receivers that communicate via Bluetooth.
+
+
 Ignore Network Security Errors
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

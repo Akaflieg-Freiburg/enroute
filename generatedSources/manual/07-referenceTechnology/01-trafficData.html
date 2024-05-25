@@ -47,6 +47,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../01-gettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02-senseAndAvoid.html">Sense and Avoid</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
@@ -61,6 +62,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../07-referenceTechnology.html">Technology</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Traffic Data Receiver Support</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#communication">Communication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data-formats">Data Formats</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#known-issues-with-gdl90">Known Issues with GDL90</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#foreflight-broadcast">ForeFlight Broadcast</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#known-issues-with-skyecho-devices">Known Issues with SkyEcho Devices</a></li>
@@ -108,22 +110,32 @@
 <h1>Traffic Data Receiver Support<a class="headerlink" href="#traffic-data-receiver-support" title="Link to this heading"></a></h1>
 <section id="communication">
 <h2>Communication<a class="headerlink" href="#communication" title="Link to this heading"></a></h2>
-<p><strong>Enroute Flight Navigation</strong> expects that the traffic receiver deploys a WLAN
-network via Wi-Fi and publishes traffic data via that network.  In order to
-support a wide range of devices, including flight simulators, the app listens to
-several network addresses simultaneously and understands a variety of protocols.</p>
-<p><strong>Enroute Flight Navigation</strong> watches the following data channels, in order of
-preference.</p>
+<p>In order to support a wide range of devices, including flight simulators,
+<strong>Enroute Flight Navigation</strong> listens to several data channels simultaneously
+and understands a variety of protocols.  By default, <strong>Enroute Flight
+Navigation</strong> watches the following data channels.  This should cover a large
+part of the devices presently on the market.</p>
 <ul class="simple">
+<li><p>A TCP connection to port 2000 at the IP addresses 10.10.10.10, where the app
+expects a stream of FLARM/NMEA sentences.</p></li>
 <li><p>A TCP connection to port 2000 at the IP addresses 192.168.1.1, where the app
 expects a stream of FLARM/NMEA sentences.</p></li>
 <li><p>A TCP connection to port 2000 at the IP addresses 192.168.10.1, where the app
+expects a stream of FLARM/NMEA sentences.</p></li>
+<li><p>A TCP connection to port 2000 at the IP addresses 192.168.4.1, where the app
+expects a stream of FLARM/NMEA sentences.</p></li>
+<li><p>A TCP connection to port 2000 at the IP addresses 192.168.42.1, where the app
 expects a stream of FLARM/NMEA sentences.</p></li>
 <li><p>A UDP connection to port 4000, where the app expects datagrams in GDL90 or
 XGPS format.</p></li>
 <li><p>A UDP connection to port 49002, where the app expects datagrams in GDL90 or
 XGPS format.</p></li>
 </ul>
+<p>Users can configure additional data channels between <strong>Enroute Flight
+Navigation</strong> and traffic data receivers with Bluetooth Classic interfaces.</p>
+</section>
+<section id="data-formats">
+<h2>Data Formats<a class="headerlink" href="#data-formats" title="Link to this heading"></a></h2>
 <p><strong>Enroute Flight Navigation</strong> expects traffic data in the following formats.</p>
 <ul class="simple">
 <li><p>FLARM/NMEA sentences must conform to the specification outlined in the
@@ -163,7 +175,7 @@ Different devices implement different workarounds.</p>
 position.  These targets are named “Mode S”.</p></li>
 <li><p>Air Avioncs devices do the same, but only with one target.</p></li>
 <li><p>Other devices create a virtual target, either at the ownship position or at
-the north pole and abuse the field “Navigation Accuracy Category for
+the North Pole and abuse the field “Navigation Accuracy Category for
 Position” to give the approximate position to the target.</p></li>
 </ul>
 <p><strong>Enroute Flight Navigation</strong> has special provisions for handling targets

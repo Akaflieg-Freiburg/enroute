@@ -85,6 +85,12 @@ public:
      */
     Q_PROPERTY(Traffic::ConnectionInfo connectionInfo READ connectionInfo CONSTANT)
 
+    /*! \brief Data format
+     *
+     *  This property contains a string of the form "FLARM/NMEA" or "GDL90 · XGPS".
+     */
+    Q_PROPERTY(QString dataFormat READ dataFormat CONSTANT)
+
     /*! \brief String describing the last socket error
      *
      *  This property holds a translated, human-readable string that describes
@@ -163,6 +169,12 @@ public:
     {
         return m_connectivityStatus;
     }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property dataFormat
+     */
+    [[nodiscard]] virtual QString dataFormat() const = 0;
 
     /*! \brief Getter function for the property with the same name
      *

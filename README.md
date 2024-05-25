@@ -10,7 +10,7 @@
 
 * Download the app for Linux Desktop on [flathub.org](https://flathub.org/apps/details/de.akaflieg_freiburg.enroute). Depending on your distribution, it might also be listed in your software management app.
 
-* Read the [user manual](https://akaflieg-freiburg.github.io/enrouteText/manual).
+* Read the [user manual](https://akaflieg-freiburg.github.io/enrouteManual/index.html).
 
 ## Information for developers
 

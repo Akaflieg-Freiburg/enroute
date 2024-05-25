@@ -284,8 +284,9 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     if (name == u":text/whatsnew.html"_qs)
     {
         QString result;
-        result += "<p>" + tr("The moving map has been updated to more closely follow the style of the ICAO maps. Vertical airspace boundaries are now shown directly on the map.") + "</p>";
-        result += "<p>" + tr("In addition to distance and QUJ, the app shows the gliding ratio required to reach a waypoint (arrival height 300 m AGL, no terrain consideration).") + "</p>";
+        result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> is now able to connected to your traffic data receiver via Bluetooth radio. "
+                             "At the moment, Enroute supports only the 'Bluetooth Classic' radio standard, 'Bluetooth Low Energy' is are not supported. "
+                             "Due to platform limitations, Bluetooth is not supported on iOS devices.") + "</p>";
         result += "<p>" + tr("We need help with promotional graphics for the app stores and with explainer videos. "
                              "If you are a graphic/video artist and would like to help, then please be in touch.") + "</p>";
         return result;

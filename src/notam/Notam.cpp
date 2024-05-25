@@ -308,5 +308,4 @@ QDataStream& NOTAM::operator>>(QDataStream& stream, NOTAM::Notam& notam)
     stream >> notam.m_traffic;
 
     return stream;
-
 }

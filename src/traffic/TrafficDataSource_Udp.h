@@ -45,14 +45,25 @@ class TrafficDataSource_Udp : public TrafficDataSource_AbstractSocket {
 public:
     /*! \brief Default constructor
      *
+     * @param isCanonical Intializer for property canonical
+     *
      *  @param port Port at the host where the traffic receiver is expected
      *
      *  @param parent The standard QObject parent pointer
      */
-    explicit TrafficDataSource_Udp(quint16 port, QObject *parent = nullptr);
+    TrafficDataSource_Udp(bool isCanonical, quint16 port, QObject *parent = nullptr);
 
     // Standard destructor
     ~TrafficDataSource_Udp() override;
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  This method implements the pure virtual method declared by its
+     *  superclass.
+     *
+     *  @returns Property icon
+     */
+    [[nodiscard]] QString icon() const override { return u"/icons/material/ic_wifi.svg"_qs; }
 
     /*! \brief Getter function for the property with the same name
      *

@@ -21,6 +21,7 @@
 #pragma once
 
 #include "positioning/PositionInfo.h"
+#include "traffic/ConnectionInfo.h"
 #include "traffic/TrafficFactor_DistanceOnly.h"
 #include "traffic/TrafficFactor_WithPosition.h"
 #include "traffic/Warning.h"
@@ -42,33 +43,27 @@ class TrafficDataSource_Abstract : public QObject {
 public:
     /*! \brief Default constructor
      *
+     * @param isCanonical Intializer for property canonical
+     *
      * @param parent The standard QObject parent pointer
      */
-    explicit TrafficDataSource_Abstract(QObject *parent = nullptr);
+    TrafficDataSource_Abstract(bool isCanonical, QObject* parent);
 
     // Standard destructor
     ~TrafficDataSource_Abstract() override = default;
+
+
 
     //
     // Properties
     //
 
-    /*! \brief String describing the last socket error
+    /*! \brief Canonicity
      *
-     *  This property holds a translated, human-readable string that describes
-     *  the last error, or an empty string when there is not error.  The string
-     *  is cleared when a new connection attempt is started.
+     *  This property contains 'true' if the connection is a canonical connection
+     *  that cannot be deleted.
      */
-    Q_PROPERTY(QString errorString READ errorString WRITE setErrorString NOTIFY errorStringChanged)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property errorString
-     */
-    auto errorString() -> QString
-    {
-        return m_errorString;
-    }
+    Q_PROPERTY(bool canonical READ canonical CONSTANT)
 
     /*! \brief Connectivity status
      *
@@ -83,14 +78,23 @@ public:
      */
     Q_PROPERTY(QString connectivityStatus READ connectivityStatus WRITE setConnectivityStatus NOTIFY connectivityStatusChanged)
 
-    /*! \brief Getter function for the property with the same name
+    /*! \brief Connection Info
      *
-     * @returns Property connectivityStatus
+     *  This property contains a connection info that can be used to save
+     *  and restore this connection.
      */
-    [[nodiscard]] auto connectivityStatus() const -> QString
-    {
-        return m_connectivityStatus;
-    }
+    Q_PROPERTY(Traffic::ConnectionInfo connectionInfo READ connectionInfo CONSTANT)
+
+    /*! \brief String describing the last socket error
+     *
+     *  This property holds a translated, human-readable string that describes
+     *  the last error, or an empty string when there is not error.  The string
+     *  is cleared when a new connection attempt is started.
+     */
+    Q_PROPERTY(QString errorString READ errorString WRITE setErrorString NOTIFY errorStringChanged)
+
+    /*! \brief Icon that can be used to represent the connection in a GUI */
+    Q_PROPERTY(QString icon READ icon CONSTANT)
 
     /*! \brief Heartbeat indicator
      *
@@ -104,15 +108,6 @@ public:
      */
     Q_PROPERTY(bool receivingHeartbeat READ receivingHeartbeat WRITE setReceivingHeartbeat RESET resetReceivingHeartbeat NOTIFY receivingHeartbeatChanged)
 
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property receivingHeartbeat
-     */
-    auto receivingHeartbeat() -> bool
-    {
-        return m_heartbeatTimer.isActive();
-    }
-
     /*! \brief Source name
      *
      *  This property contains a short, human-readable and translated
@@ -120,12 +115,6 @@ public:
      *  132.168.1.1 port 2000".
      */
     Q_PROPERTY(QString sourceName READ sourceName CONSTANT)
-
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property sourceName
-     */
-    [[nodiscard]] virtual auto sourceName() const -> QString = 0;
 
     /*! \brief String describing the last traffic data receiver runtime error
      *
@@ -136,15 +125,6 @@ public:
      */
     Q_PROPERTY(QString trafficReceiverRuntimeError READ trafficReceiverRuntimeError WRITE setTrafficReceiverRuntimeError NOTIFY trafficReceiverRuntimeErrorChanged)
 
-    /*! \brief Getter function for the property with the same name
-     *
-     * @returns Property errorString
-     */
-    auto trafficReceiverRuntimeError() -> QString
-    {
-        return m_trafficReceiverRuntimeError;
-    }
-
     /*! \brief String describing the last traffic data receiver self-test error
      *
      *  This property holds a translated, human-readable string that describes
@@ -154,11 +134,80 @@ public:
      */
     Q_PROPERTY(QString trafficReceiverSelfTestError READ trafficReceiverSelfTestError WRITE setTrafficReceiverSelfTestError NOTIFY trafficReceiverSelfTestErrorChanged)
 
+
+
+    //
+    // Getter methods
+    //
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property canonical
+     */
+    [[nodiscard]] bool canonical() const
+    {
+        return m_canonical;
+    }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property connectionInfo
+     */
+    [[nodiscard]] virtual Traffic::ConnectionInfo connectionInfo() const { return {}; }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property connectivityStatus
+     */
+    [[nodiscard]] QString connectivityStatus() const
+    {
+        return m_connectivityStatus;
+    }
+
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property errorString
      */
-    auto trafficReceiverSelfTestError() -> QString
+    [[nodiscard]] QString errorString() const
+    {
+        return m_errorString;
+    }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property icon
+     */
+    [[nodiscard]] virtual QString icon() const = 0;
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property receivingHeartbeat
+     */
+    [[nodiscard]] bool receivingHeartbeat() const
+    {
+        return m_heartbeatTimer.isActive();
+    }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property sourceName
+     */
+    [[nodiscard]] virtual QString sourceName() const = 0;
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property errorString
+     */
+    [[nodiscard]] QString trafficReceiverRuntimeError() const
+    {
+        return m_trafficReceiverRuntimeError;
+    }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property errorString
+     */
+    [[nodiscard]] QString trafficReceiverSelfTestError() const
     {
         return m_trafficReceiverSelfTestError;
     }
@@ -302,17 +351,14 @@ public slots:
     }
 
 protected:
-    /*! \brief Process one FLARM/NMEA sentence
+    /*! \brief Process FLARM/NMEA data
      *
-     *  This method expects exactly one line containing a valid FLARM/NMEA
-     *  sentence. This is a string typically looks like
-     *  "$PFLAA,0,1587,1588,40,1,AA1237,225,,37,-1.6,1*7F".  The method
-     *  interprets the string and updates the properties and emits signals as
-     *  appropriate. Invalid strings are silently ignored.
+     *  This method handles FLARM/NMEA data. It collects data until a full FLARM/NMEA sentence is found
+     *  and then calls processFLARMSentence() to handle that sentence.
      *
-     *  @param sentence A QString containing a FLARM/NMEA sentence.
+     *  @param data A QString containing FLARM/NMEA data.
      */
-    void processFLARMSentence(QString sentence);
+    void processFLARMData(const QString& data);
 
     /*! \brief Process one GDL90 message
      *
@@ -380,7 +426,26 @@ protected:
 private:
     Q_DISABLE_COPY_MOVE(TrafficDataSource_Abstract)
 
+    /*  This method expects exactly one line containing a valid FLARM/NMEA
+     *  sentence. This is a string typically looks like
+     *  "$PFLAA,0,1587,1588,40,1,AA1237,225,,37,-1.6,1*7F".  The method
+     *  interprets the string and updates the properties and emits signals as
+     *  appropriate. Invalid strings are silently ignored.
+     */
+    void processFLARMSentence(const QString& sentence);
+    // Methods interpreting specific FLARM/NMEA messages
+    void processFLARMMessageGPGGA(const QStringList& arguments); // NMEA GPS 3D-fix data
+    void processFLARMMessageGPRMC(const QStringList& arguments); // Recommended minimum specific GPS/Transit data
+    void processFLARMMessagePFLAA(const QStringList& arguments); // Data on other proximate aircraft
+    void processFLARMMessagePFLAE(const QStringList& arguments); // Self-test result and errors codes
+    static void processFLARMMessagePFLAS(const QStringList& arguments); // Debug Information
+    void processFLARMMessagePFLAU(const QStringList& arguments); // FLARM Heartbeat
+    void processFLARMMessagePFLAV(const QStringList& arguments); // Version information
+    void processFLARMMessagePGRMZ(const QStringList& arguments); // Garmin's barometric altitude
+    QString m_FLARMDataBuffer;
+
     // Property caches
+    bool m_canonical {false};
     QString m_connectivityStatus {};
     QString m_errorString {};
     QString m_trafficReceiverRuntimeError {};

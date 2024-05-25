@@ -66,6 +66,10 @@ Rectangle {
             TapHandler {
                 onTapped: {
                     GlobalSettings.showAltitudeAGL = !GlobalSettings.showAltitudeAGL
+                    if (GlobalSettings.showAltitudeAGL)
+                        Global.toast.doToast(qsTr("Showing Altitude Above Ground Level"))
+                    else
+                        Global.toast.doToast(qsTr("Showing Altitude Above Main Sea Level"))
                 }
             }
 

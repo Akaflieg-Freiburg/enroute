@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -25,8 +25,9 @@
 
 // Member functions
 
-Traffic::TrafficDataSource_File::TrafficDataSource_File(const QString& fileName, QObject *parent) :
-    TrafficDataSource_Abstract(parent), simulatorFile(fileName) {
+Traffic::TrafficDataSource_File::TrafficDataSource_File(bool isCanonical, const QString& fileName, QObject *parent) :
+    TrafficDataSource_Abstract(isCanonical, parent), simulatorFile(fileName)
+{
 
     connect(&simulatorTimer, &QTimer::timeout, this, &Traffic::TrafficDataSource_File::readFromSimulatorStream);
 
@@ -102,33 +103,48 @@ void Traffic::TrafficDataSource_File::disconnectFromTrafficReceiver()
 
 void Traffic::TrafficDataSource_File::readFromSimulatorStream()
 {
-    if ((simulatorFile.error() != QFileDevice::NoError) || simulatorTextStream.atEnd()) {
+    if ((simulatorFile.error() != QFileDevice::NoError) || simulatorTextStream.atEnd())
+    {
         disconnectFromTrafficReceiver();
         return;
     }
 
-    if (!lastPayload.isEmpty()) {
-        processFLARMSentence(lastPayload);
+    if (!lastPayload.isEmpty())
+    {
+        // We simulate problems that we have experienced in the wild, where
+        // Bluetooth adaptors randomly split NMEA messages into smaller
+        // packages. Instead of sending the lastPayload to our FLARM/NMEA
+        // interpreter directly, we split the string up and send only one part
+        // of it, and the next part together with the next message
+        buffer += lastPayload;
+        int const i = buffer.length() / 2;
+        processFLARMData(buffer.left(i));
+        buffer = buffer.mid(i);
     }
 
     // Read line
     QString line;
-    if (!simulatorTextStream.readLineInto(&line)) {
+    if (!simulatorTextStream.readLineInto(&line))
+    {
         disconnectFromTrafficReceiver();
         return;
     }
 
     // Set lastPayload, set timer
     auto tuple = line.split(QStringLiteral(" "));
-    if (tuple.length() < 2) {
+    if (tuple.length() < 2)
+    {
         return;
     }
     auto time = tuple[0].toInt();
     lastPayload = tuple[1];
 
-    if (lastTime == 0) {
+    if (lastTime == 0)
+    {
         simulatorTimer.setInterval(0);
-    } else {
+    }
+    else
+    {
         simulatorTimer.setInterval(time-lastTime);
     }
     simulatorTimer.start();

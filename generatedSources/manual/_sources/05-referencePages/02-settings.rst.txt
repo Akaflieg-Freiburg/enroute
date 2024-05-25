@@ -58,19 +58,6 @@ These settings apply to the Navigation Bar, shown at the bottom of the moving
 map screen.
 
 
-Altimeter Mode
-^^^^^^^^^^^^^^
-
-Use this settings item to chose if the altimeter shows height above ground level
-(AGL) or height above main sea level (AMSL). 
-
-.. note:: In order to compute height above ground, if terrain maps for your 
-  region must be installed. If terrain data is not available, the altimeter 
-  field of the navigation bar will display "--".  If you are unsure if terrain 
-  data is available, open the main menu and go to "Library/Maps and Data" to 
-  check which maps are installed in your device.
-
-
 User Interface
 --------------
 

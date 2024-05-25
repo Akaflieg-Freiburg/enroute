@@ -60,7 +60,7 @@ public:
     ConnectionInfo() = default;
 
     /*!
-     * \brief Default constructor
+     * \brief Constructor for Bluetooth Device Connections
      *
      * This method constructs a ConnectionInfo for a connection to a Bluetooth
      * device. The type will either be BluetoothClassic or BluetoothLowEnergy.
@@ -70,6 +70,17 @@ public:
      * \param canonical Property 'canonical', as described below.
      */
     explicit ConnectionInfo(const QBluetoothDeviceInfo& info, bool canonical=false);
+
+    /*!
+     * \brief Constructor for UDP Connections
+     *
+     * This method constructs a ConnectionInfo for a UDP connection.
+     *
+     * \param port Port number
+     *
+     * \param canonical Property 'canonical', as described below.
+     */
+    explicit ConnectionInfo(quint16 port, bool canonical=false);
 
 
 
@@ -200,6 +211,14 @@ public:
     [[nodiscard]] bool operator== (const ConnectionInfo& other) const = default;
 
     /*!
+     * \brief Port
+     *
+     * \return If the connection is of type UDP, this method returns
+     * the port used in the UDP connection.
+     */
+    [[nodiscard]] quint16 port() const { return m_port; }
+
+    /*!
      * \brief Equality of connection
      *
      * This test for equality is not strict. It returns 'true' if the two
@@ -241,6 +260,7 @@ private:
     // Private members, depending on m_type
     //
     QBluetoothDeviceInfo          m_bluetoothDeviceInfo {};
+    quint16                       m_port {0};
 };
 
 /*!

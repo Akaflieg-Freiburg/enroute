@@ -56,6 +56,28 @@ public:
     // Standard destructor
     ~TrafficDataSource_Udp() override;
 
+
+
+    //
+    // Properties
+    //
+
+    /*! \brief Port
+     */
+    Q_PROPERTY(quint16 port READ port CONSTANT)
+
+
+
+    //
+    // Getter Methods
+    //
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property connectionInfo
+     */
+    [[nodiscard]] Traffic::ConnectionInfo connectionInfo() const override  { return Traffic::ConnectionInfo(m_port, canonical()); }
+
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property dataFormat
@@ -82,6 +104,19 @@ public:
     {
         return tr("UDP connection to port %1").arg(m_port);
     }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  This method implements the pure virtual method declared by its
+     *  superclass.
+     *
+     *  @returns Property port
+     */
+    [[nodiscard]] quint16 port() const
+    {
+        return m_port;
+    }
+
 
 public slots:
     /*! \brief Start attempt to connect to traffic receiver

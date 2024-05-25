@@ -34,7 +34,6 @@ Traffic::ConnectionInfo::ConnectionInfo(const QBluetoothDeviceInfo& info, bool c
     : m_bluetoothDeviceInfo(info),
     m_canonical(canonical)
 {
-
     // Set Name
     {
         if (m_bluetoothDeviceInfo.isValid())
@@ -134,6 +133,16 @@ Traffic::ConnectionInfo::ConnectionInfo(const QBluetoothDeviceInfo& info, bool c
             m_type = Traffic::ConnectionInfo::BluetoothClassic;
         }
     }
+}
+
+
+Traffic::ConnectionInfo::ConnectionInfo(quint16 port, bool canonical)
+    : m_port(port), m_canonical(canonical)
+{
+    m_name = QObject::tr("UDP connection to port %1", "Traffic::ConnectionInfo").arg(m_port);
+    m_icon = u"/icons/material/ic_wifi.svg"_qs;
+    m_canConnect = true;
+    m_type = Traffic::ConnectionInfo::UDP;
 }
 
 
@@ -241,6 +250,8 @@ QDataStream& Traffic::operator<<(QDataStream& stream, const Traffic::ConnectionI
     }
     case Traffic::ConnectionInfo::TCP:
     case Traffic::ConnectionInfo::UDP:
+        stream << connectionInfo.m_port;
+        break;
     case Traffic::ConnectionInfo::Serial:
     case Traffic::ConnectionInfo::FLARMFile:
         break;
@@ -286,6 +297,8 @@ QDataStream& Traffic::operator>>(QDataStream& stream, Traffic::ConnectionInfo& c
     }
     case Traffic::ConnectionInfo::TCP:
     case Traffic::ConnectionInfo::UDP:
+        stream >> connectionInfo.m_port;
+        break;
     case Traffic::ConnectionInfo::Serial:
     case Traffic::ConnectionInfo::FLARMFile:
         break;

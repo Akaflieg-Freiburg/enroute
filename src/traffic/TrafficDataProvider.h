@@ -230,6 +230,16 @@ public:
      */
     Q_INVOKABLE QString addDataSource(const Traffic::ConnectionInfo &connectionInfo);
 
+    /*! \brief Add an additional data source
+     *
+     * This method adds an additional UDP data source to this TrafficDataProvider.
+     *
+     * \param port UDP Port.
+     *
+     * \returns An empty string on success, and a human-readable, translated error message on failure.
+     */
+    Q_INVOKABLE QString addDataSource_UDP(quint16 port);
+
     /*! \brief Remove data sources
      *
      * This method removes a data source from this TrafficDataProvider.

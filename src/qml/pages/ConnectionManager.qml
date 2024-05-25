@@ -215,19 +215,50 @@ Page {
                 flat: true
 
                 Layout.alignment: Qt.AlignHCenter
-                text: qsTr("Add Bluetooth Device")
+                text: qsTr("New Connection")
                 icon.source: "/icons/material/ic_add_circle.svg"
 
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    Global.dialogLoader.active = false
-                    Global.dialogLoader.setSource("../dialogs/AddBTDeviceDialog.qml", {})
-                    Global.dialogLoader.active = true
+                    addMenu.open()
                 }
+
+                AutoSizingMenu {
+                    id: addMenu
+
+                    Action {
+                        text: qsTr("Bluetooth Classic")
+
+                        onTriggered: {
+                            PlatformAdaptor.vibrateBrief()
+                            Global.dialogLoader.active = false
+                            Global.dialogLoader.setSource("../dialogs/AddBTDeviceDialog.qml", {})
+                            Global.dialogLoader.active = true
+                            addMenu.close()
+                        }
+                    }
+
+                    Action {
+                        text: qsTr("UDP")
+
+                        onTriggered: {
+                            PlatformAdaptor.vibrateBrief()
+                            addUDPDialog.open()
+                            addMenu.close()
+                        }
+                    }
+                }
+
             }
         }
     }
 
+
+    LongTextDialog {
+        id: ltd
+        title: qsTr("Error Adding Device")
+        standardButtons: Dialog.Ok
+    }
 
     CenteringDialog {
         id: connectionDescription
@@ -311,5 +342,46 @@ Page {
 
             }
         }
+    }
+
+    CenteringDialog {
+        id: addUDPDialog
+
+        modal: true
+        title: qsTr("Add UDP Connection")
+        standardButtons: mtf.acceptableInput ? Dialog.Cancel|Dialog.Ok :  Dialog.Cancel
+
+        RowLayout {
+            width: addUDPDialog.availableWidth
+
+            Label {
+                text: qsTr("Port")
+            }
+            MyTextField {
+                id: mtf
+                focus: true
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignBaseline
+                inputMethodHints: Qt.ImhDigitsOnly
+                validator: IntValidator {
+                    bottom: 0
+                    top: 65535
+                }
+            }
+        }
+
+        onAccepted: {
+            var resultString = TrafficDataProvider.addDataSource_UDP(Number(mtf.text))
+            if (resultString !== "")
+            {
+                ltd.text = resultString
+                ltd.open()
+                return
+            }
+            Global.toast.doToast( qsTr("Adding UDP Connection: Port %1").arg(mtf.text) )
+            addUDPDialog.close()
+
+        }
+
     }
 }

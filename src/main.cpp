@@ -99,7 +99,7 @@ auto main(int argc, char *argv[]) -> int
     // Install translators
     auto preferredLanguage = GlobalObject::platformAdaptor()->language();
     auto* enrouteTranslator = new QTranslator(&app);
-    if (enrouteTranslator->load(QStringLiteral(":i18n/src/enroute_%1.qm").arg(preferredLanguage)))
+    if (enrouteTranslator->load(QStringLiteral(":i18n/enroute_%1.qm").arg(preferredLanguage)))
     {
         QCoreApplication::installTranslator(enrouteTranslator);
     }

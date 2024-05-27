@@ -71,6 +71,7 @@ private:
   int yCoordinate(int altitude, int maxHeight, int objectHeight);
   int widgetHeight();
   int widgetWidth();
+  Units::Distance pressureAltitude();
   Q_DISABLE_COPY_MOVE(SideViewQuickItem)
 
 };

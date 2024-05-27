@@ -47,7 +47,7 @@ void Ui::SideViewQuickItem::paint(QPainter *painter)
 
     auto info = GlobalObject::positionProvider()->positionInfo();
     auto track = info.trueTrack().toDEG();
-    if (qIsNaN(track)) {
+    if (!pressureAltitude().isFinite() || qIsNaN(track)) {
         drawNoTrackAvailable(painter);
         return;
     }
@@ -168,7 +168,7 @@ std::vector<Ui::SideViewQuickItem::MergedAirspace> Ui::SideViewQuickItem::getMer
                     mergedAirspace.airspace.name() == airspace.name() &&
                     mergedAirspace.airspace.lowerBound() == airspace.lowerBound() &&
                     mergedAirspace.airspace.upperBound() == airspace.upperBound()) {
-                    mergedAirspace.lastStep = stepIndex;
+                    mergedAirspace.lastStep = stepIndex + 1; //TODO: Is the +1 a good idea?
                     merged = true;
                     break;
                 }
@@ -185,7 +185,7 @@ std::vector<Ui::SideViewQuickItem::MergedAirspace> Ui::SideViewQuickItem::getMer
 }
 
 QStringList Ui::SideViewQuickItem::airspaceSortedCategories() {
-    return {"TMZ", "RMZ", "DNG", "D", "C", "CTR", "R"};
+    return {"TMZ", "RMZ", "NRA", "DNG", "D", "C", "B", "A", "CTR", "R"};
 }
 
 void Ui::SideViewQuickItem::drawAirspaces(QPainter *painter, std::vector<int> elevations, const std::vector<MergedAirspace> &mergedAirspaces, int highestElevation, float steps)
@@ -211,6 +211,8 @@ void Ui::SideViewQuickItem::drawAirspaces(QPainter *painter, std::vector<int> el
             color = QColor("red");
         } else if (mergedAirspace.airspace.CAT() == "TMZ"){
             color = QColor("grey");
+        } else if (airspace.CAT() == "NRA") {
+            color = QColor("green");
         } else {
             color = QColor("blue");
         }
@@ -226,16 +228,19 @@ void Ui::SideViewQuickItem::drawAirspaces(QPainter *painter, std::vector<int> el
             for (int i = mergedAirspace.firstStep; i <= mergedAirspace.lastStep; i++) {
                 auto x = widgetWidth() / steps * i;
                 auto y = yCoordinate(airspace.estimatedLowerBoundMSL(elevations[i]).toFeet(), highestElevation, 0);
-                qWarning() << "y" << y;
                 polygons.push_back(QPointF(x, y));
             }
             for (int i = mergedAirspace.lastStep; i >= mergedAirspace.firstStep; i--) {
                 auto x = widgetWidth() / steps * i;
                 auto y = yCoordinate(airspace.estimatedUpperBoundMSL(elevations[i]).toFeet(), highestElevation, 0);
-                qWarning() << "y" << y;
                 polygons.push_back(QPointF(x, y));
             }
+            QPen pen = painter->pen();
+            pen.setStyle(Qt::DotLine);
+            painter->setPen(pen);
             painter->drawPolygon(polygons.data(), static_cast<int>(polygons.size()));
+            pen.setStyle(Qt::SolidLine);
+            painter->setPen(pen);
 
             // Calculate the centroid of the polygon
             QPointF centroid(0, 0);
@@ -293,8 +298,8 @@ void Ui::SideViewQuickItem::drawAirspaces(QPainter *painter, std::vector<int> el
 void Ui::SideViewQuickItem::drawTerrain(QPainter *painter, const std::vector<int> &elevations, int highestElevation, float steps)
 {
     QLinearGradient terrainGradient(0, 0, 0, widgetHeight());
-    terrainGradient.setColorAt(0.0, QColor(153, 102, 51));   // Dark brown at the base
-    terrainGradient.setColorAt(1.0, QColor(101, 67, 33));  // Lighter brown at the top
+    terrainGradient.setColorAt(0.0, QColor(153, 102, 51));
+    terrainGradient.setColorAt(1.0, QColor(101, 67, 33));
     painter->setBrush(terrainGradient);
 
     std::vector<QPointF> polygons;
@@ -313,13 +318,13 @@ void Ui::SideViewQuickItem::drawTerrain(QPainter *painter, const std::vector<int
 
 void Ui::SideViewQuickItem::drawAircraft(QPainter *painter, const Positioning::PositionInfo &info, int highestElevation)
 {
-    auto altitude = info.trueAltitudeAMSL().toFeet(); //TODO: This is the wrong altitude
+    auto altitude = pressureAltitude().toFeet();
     painter->fillRect(0, yCoordinate(altitude, highestElevation, 10), 10, 10, QColor("black"));
 }
 
 void Ui::SideViewQuickItem::drawFlightPath(QPainter *painter, const Positioning::PositionInfo &info, int highestElevation)
 {
-    auto altitude = info.trueAltitudeAMSL().toFeet(); //TODO: This is the wrong altitude
+    auto altitude = pressureAltitude().toFeet();
     auto verticalSpeed = info.verticalSpeed().toFPM();
     auto altitudeIn10Minutes = verticalSpeed * 10 + altitude;
 
@@ -333,7 +338,7 @@ void Ui::SideViewQuickItem::drawFlightPath(QPainter *painter, const Positioning:
 int Ui::SideViewQuickItem::yCoordinate(int altitude, int maxHeight, int objectHeight)
 {
 
-    if (altitude > maxHeight) return 0;
+    if (altitude > maxHeight) return 0; //Dont draw above the widget
     int heightOnDisplay = static_cast<int>(static_cast<double>(altitude) / maxHeight * widgetHeight());
     return widgetHeight() - heightOnDisplay - objectHeight / 2;
 }
@@ -346,4 +351,9 @@ int Ui::SideViewQuickItem::widgetHeight()
 int Ui::SideViewQuickItem::widgetWidth()
 {
     return static_cast<int>(width());
+}
+
+Units::Distance Ui::SideViewQuickItem::pressureAltitude() {
+    //return GlobalObject::positionProvider()->pressureAltitude();
+    return GlobalObject::positionProvider()->positionInfo().trueAltitudeAMSL();
 }

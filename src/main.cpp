@@ -97,7 +97,7 @@ auto main(int argc, char *argv[]) -> int
     QGuiApplication::setWindowIcon(QIcon(u":/icons/appIcon.png"_qs));
 
     // Install translators
-    QString const preferredLanguage = GlobalObject::platformAdaptor()->language();
+    auto preferredLanguage = GlobalObject::platformAdaptor()->language();
     auto* enrouteTranslator = new QTranslator(&app);
     if (enrouteTranslator->load(QStringLiteral(":i18n/enroute_%1.qm").arg(preferredLanguage)))
     {

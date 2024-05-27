@@ -197,7 +197,7 @@ public:
      *
      * \return True if the ConnectionInfo describe the same connection.
      */
-    [[nodiscard]] bool operator== (const ConnectionInfo& other) const = default;
+    [[nodiscard]] bool operator== (const Traffic::ConnectionInfo& other) const = default;
 
     /*!
      * \brief Equality of connection
@@ -212,7 +212,7 @@ public:
      *
      * \return True if the ConnectionInfo describe the same connection.
      */
-    [[nodiscard]] bool sameConnectionAs(const ConnectionInfo& other) const;
+    [[nodiscard]] bool sameConnectionAs(const Traffic::ConnectionInfo& other) const;
 
     /*!
      * \brief Comparison
@@ -224,7 +224,7 @@ public:
      *
      * \return True if the ConnectionInfo describe the same connection.
      */
-    bool operator< (const ConnectionInfo& other) const;
+    bool operator< (const Traffic::ConnectionInfo& other) const;
 
 private:
     //

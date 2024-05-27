@@ -26,7 +26,7 @@ jobs:
       with:
         cache: 'true'
         modules: 'qt5compat qtconnectivity qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtshadertools qtspeech qtwebsockets qtwebview'
-        version: '6.6.*'
+        version: '6.*.*'
     - name: Install LinuxDeploy
       uses: miurahr/install-linuxdeploy-action@v1
       with:

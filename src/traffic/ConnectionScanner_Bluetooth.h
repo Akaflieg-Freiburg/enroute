@@ -40,7 +40,7 @@ class ConnectionScanner_Bluetooth : public ConnectionScanner_Abstract {
     QML_SINGLETON
 
     // Properties need to be repeated, or else the Qt CMake macros cannot find them.
-    Q_PROPERTY(QList<ConnectionInfo> connectionInfos READ connectionInfos NOTIFY connectionInfosChanged)
+    Q_PROPERTY(QList<Traffic::ConnectionInfo> connectionInfos READ connectionInfos NOTIFY connectionInfosChanged)
     Q_PROPERTY(QString error READ error NOTIFY errorChanged)
     Q_PROPERTY(bool scanning READ scanning NOTIFY scanningChanged)
 

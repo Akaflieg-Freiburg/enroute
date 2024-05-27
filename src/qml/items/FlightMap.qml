@@ -52,7 +52,7 @@ Map {
     }
 
     onMapReadyChanged: {
-        flightMap.onZoomLevelChanged(zoomLevel)
+        zoomLevelChanged(zoomLevel)
     }
 
     maximumZoomLevel: 17

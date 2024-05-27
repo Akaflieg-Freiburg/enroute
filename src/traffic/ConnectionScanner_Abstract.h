@@ -117,7 +117,7 @@ signals:
      *  data receiver. The final list of connections might contain elements that
      *  have not been advertised via this signal.
      */
-    void connectionDiscovered(const ConnectionInfo& info);
+    void connectionDiscovered(const Traffic::ConnectionInfo& info);
 
     /*! \brief Notifier signal */
     void errorChanged();
@@ -144,7 +144,7 @@ protected:
 
 private:
     // Property connectionInfos
-    QList<ConnectionInfo> m_connectionInfos;
+    QList<Traffic::ConnectionInfo> m_connectionInfos;
 
     // Property error
     QString m_error {};

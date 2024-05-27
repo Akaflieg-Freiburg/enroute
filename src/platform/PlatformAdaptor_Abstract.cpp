@@ -67,6 +67,7 @@ QString Platform::PlatformAdaptor_Abstract::systemInfo()
     result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("System Name", QSysInfo::prettyProductName());
     result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("System Type", QSysInfo::productType());
     result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("System Version", QSysInfo::productVersion());
+    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("Locale", language());
     result += u"</table><br>\n"_qs;
 
     return result;

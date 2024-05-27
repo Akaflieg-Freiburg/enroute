@@ -23,7 +23,7 @@ import QtQml
 import QtQuick
 import QtQuick.Controls
 
-import QtLocation.MapLibre 3.0
+import MapLibre 3.0
 import akaflieg_freiburg.enroute
 
 Map {

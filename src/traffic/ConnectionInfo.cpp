@@ -136,13 +136,14 @@ Traffic::ConnectionInfo::ConnectionInfo(const QBluetoothDeviceInfo& info, bool c
 }
 
 
-Traffic::ConnectionInfo::ConnectionInfo(quint16 port, bool canonical)
-    : m_port(port), m_canonical(canonical)
+Traffic::ConnectionInfo::ConnectionInfo(quint16 port, bool canonical) :
+    m_canConnect(true),
+    m_canonical(canonical),
+    m_port(port),
+    m_type(Traffic::ConnectionInfo::UDP)
 {
     m_name = QObject::tr("UDP connection to port %1", "Traffic::ConnectionInfo").arg(m_port);
     m_icon = u"/icons/material/ic_wifi.svg"_qs;
-    m_canConnect = true;
-    m_type = Traffic::ConnectionInfo::UDP;
 }
 
 
@@ -194,9 +195,10 @@ bool Traffic::ConnectionInfo::sameConnectionAs(const ConnectionInfo& other) cons
         return m_bluetoothDeviceInfo.address() == other.m_bluetoothDeviceInfo.address();
 #endif
     }
-
+#warning Support UDP!
     return true;
 }
+
 
 bool Traffic::ConnectionInfo::operator< (const ConnectionInfo& other) const
 {

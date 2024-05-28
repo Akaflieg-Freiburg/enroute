@@ -365,7 +365,7 @@ private:
     // This Downloadable object manages the central text file that describes the
     // remotely available aviation maps. It is set in the constructor to point
     // to the URL "https://cplx.vm.uni-freiburg.de/storage/enroute/maps.json"
-    DataManagement::Downloadable_SingleFile m_mapList { QUrl(QStringLiteral("https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv003/maps.json")), QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/maps.json" };
+    DataManagement::Downloadable_SingleFile m_mapList { QUrl(QStringLiteral("http://enroute-data.akaflieg-freiburg.de/enroute-GeoJSONv003/maps.json")), QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/maps.json" };
 
     // List of geographic maps
     DataManagement::Downloadable_MultiFile m_aviationMaps {DataManagement::Downloadable_MultiFile::SingleUpdate};

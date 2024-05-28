@@ -32,7 +32,7 @@ jobs:
       with:
         cache: 'true'
         cache-key-prefix: 'install-qt-action-macOS-host'
-        version: '6.6.*'
+        version: '6.*.*'
         modules: 'qt5compat qtconnectivity qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtshadertools qtspeech qtwebsockets qtwebview'
     - name: Set QT_HOST_PATH
       run: |
@@ -43,7 +43,7 @@ jobs:
         cache: 'true'
         cache-key-prefix: 'install-qt-action-iOS'
         target: 'ios'
-        version: '6.6.*'
+        version: '6.*.*'
         modules: 'qt5compat qtconnectivity qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtshadertools qtsensors qtspeech qtwebsockets qtwebview'
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2

@@ -228,7 +228,7 @@ Page {
 
                     Action {
                         text: qsTr("Bluetooth Classic")
-
+                        enabled: (Qt.platform.os !== "ios")
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
                             Global.dialogLoader.active = false
@@ -349,7 +349,9 @@ Page {
 
         modal: true
         title: qsTr("Add UDP Connection")
-        standardButtons: mtf.acceptableInput ? Dialog.Cancel|Dialog.Ok :  Dialog.Cancel
+        standardButtons: Dialog.Cancel|Dialog.Ok
+
+        onAboutToShow: mtf.text = ""
 
         RowLayout {
             width: addUDPDialog.availableWidth
@@ -367,6 +369,10 @@ Page {
                     bottom: 0
                     top: 65535
                 }
+                onAcceptableInputChanged: {
+                    addUDPDialog.standardButton(DialogButtonBox.Ok).enabled = acceptableInput
+                }
+                onAccepted: addUDPDialog.accepted()
             }
         }
 
@@ -380,7 +386,6 @@ Page {
             }
             Global.toast.doToast( qsTr("Adding UDP Connection: Port %1").arg(mtf.text) )
             addUDPDialog.close()
-
         }
 
     }

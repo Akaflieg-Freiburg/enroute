@@ -379,7 +379,6 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/macos/Info.plist"
         MACOSX_BUNDLE_ICON_FILE enroute.icns
     )
-
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
         Qt6::Bluetooth
@@ -594,20 +593,29 @@ qt_add_qml_module(${PROJECT_NAME}
     traffic/TrafficDataProvider_BluetoothLowEnergy.cpp
 )
 
-qt_add_translations(${PROJECT_NAME}
+qt_add_lrelease(
     TS_FILES
     ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_de.ts
     ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_es.ts
     ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_fr.ts
     ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_it.ts
     ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_pl.ts
+    QM_FILES_OUTPUT_VARIABLE qmFiles
+)
+qt_add_resources(${PROJECT_NAME} translations_enroute
+    BASE
+    ${CMAKE_CURRENT_BINARY_DIR}
+    PREFIX
+    i18n
+    FILES
+    ${qmFiles}
 )
 
 find_path(Qt6_TRANSLATION_DIR qtbase_de.qm
     HINTS ${Qt6Core_DIR}/../../../translations
     REQUIRED
 )
-qt_add_resources(${PROJECT_NAME} translations
+qt_add_resources(${PROJECT_NAME} translations_qt
     BASE
     ${Qt6_TRANSLATION_DIR}
     PREFIX
@@ -624,7 +632,6 @@ qt_add_resources(${PROJECT_NAME} translations
     #${Qt6_TRANSLATION_DIR}/qtdeclarative_it.qm
     ${Qt6_TRANSLATION_DIR}/qtdeclarative_pl.qm
 )
-
 
 #
 # Generate documentation

@@ -24,7 +24,7 @@ jobs:
     - name: Install Qt for Desktop
       uses: jurplel/install-qt-action@v3
       with:
-        version: '6.6.*'
+        version: '6.*.*'
         modules: 'qtshadertools'	
     - name: Set QT_HOST_PATH
       run: |
@@ -33,7 +33,7 @@ jobs:
       uses: jurplel/install-qt-action@v3
       with:
         target: 'android'
-        version: '6.6.*'
+        version: '6.*.*'
         arch: 'android_arm64_v8a'
         modules: 'qt5compat qtconnectivity qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtsensors qtshadertools qtspeech qtwebsockets qtwebview'
     - name: Install Additional Software

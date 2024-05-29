@@ -247,6 +247,16 @@ Page {
                             addMenu.close()
                         }
                     }
+
+                    Action {
+                        text: qsTr("TCP")
+
+                        onTriggered: {
+                            PlatformAdaptor.vibrateBrief()
+                            addTCPDialog.open()
+                            addMenu.close()
+                        }
+                    }
                 }
 
             }
@@ -256,7 +266,7 @@ Page {
 
     LongTextDialog {
         id: ltd
-        title: qsTr("Error Adding Device")
+        title: qsTr("Error Adding Connection")
         standardButtons: Dialog.Ok
     }
 
@@ -353,8 +363,18 @@ Page {
 
         onAboutToShow: mtf.text = ""
 
-        RowLayout {
+        GridLayout {
             width: addUDPDialog.availableWidth
+            columns: 2
+
+            Label {
+                text: qsTr("Please enter the port used by your traffic data receiver.")
+                      + " "
+                      + qsTr("This is a number between 0 and 65535.")
+                wrapMode: Text.WordWrap
+                Layout.columnSpan: 2
+                Layout.fillWidth: true
+            }
 
             Label {
                 text: qsTr("Port")
@@ -386,6 +406,81 @@ Page {
             }
             Global.toast.doToast( qsTr("Adding UDP Connection: Port %1").arg(mtf.text) )
             addUDPDialog.close()
+        }
+
+    }
+
+    CenteringDialog {
+        id: addTCPDialog
+
+        modal: true
+        title: qsTr("Add TCP Connection")
+        standardButtons: Dialog.Cancel|Dialog.Ok
+
+        onAboutToShow: {
+            host.text = ""
+            port.text = ""
+            binding.target = addTCPDialog.standardButton(DialogButtonBox.Ok)
+        }
+
+        GridLayout {
+            width: addUDPDialog.availableWidth
+            columns: 2
+
+            Label {
+                text: qsTr("Please enter the host name and port number used by your traffic data receiver.")
+                      + " "
+                      + qsTr("The host is typically an IPv4 address of the form '192.168.4.1', but can be any internet address.")
+                      + " "
+                      + qsTr("The port is a number between 0 and 65535.")
+                wrapMode: Text.WordWrap
+                Layout.columnSpan: 2
+                Layout.fillWidth: true
+            }
+
+            Label {
+                text: qsTr("Host")
+            }
+            MyTextField {
+                id: host
+                focus: true
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignBaseline
+            }
+
+            Label {
+                text: qsTr("Port")
+            }
+            MyTextField {
+                id: port
+                focus: true
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignBaseline
+                inputMethodHints: Qt.ImhDigitsOnly
+                validator: IntValidator {
+                    bottom: 0
+                    top: 65535
+                }
+                onAccepted: addTCPDialog.accepted()
+            }
+        }
+
+        Binding {
+            id: binding
+            property: "enabled"
+            value: (host.text !== "") && port.acceptableInput
+        }
+
+        onAccepted: {
+            var resultString = TrafficDataProvider.addDataSource_TCP(host.text, Number(port.text))
+            if (resultString !== "")
+            {
+                ltd.text = resultString
+                ltd.open()
+                return
+            }
+            Global.toast.doToast( qsTr("Adding TCP Connection to %1, Port %2").arg(host.text).arg(port.text) )
+            addTCPDialog.close()
         }
 
     }

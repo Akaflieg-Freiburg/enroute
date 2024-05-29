@@ -58,11 +58,46 @@ public:
     // Standard destructor
     ~TrafficDataSource_Tcp() override;
 
+
+
+    //
+    // Properties
+    //
+
+    /*! \brief Host
+     */
+    Q_PROPERTY(QString host READ host CONSTANT)
+
+    /*! \brief Port
+     */
+    Q_PROPERTY(quint16 port READ port CONSTANT)
+
+
+
+    //
+    // Getter Methods
+    //
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property connectionInfo
+     */
+    [[nodiscard]] Traffic::ConnectionInfo connectionInfo() const override  { return Traffic::ConnectionInfo(m_hostName, m_port, canonical()); }
+
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property dataFormat
      */
     [[nodiscard]] QString dataFormat() const override { return u"FLARM/NMEA"_qs; }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property host
+     */
+    [[nodiscard]] QString host() const
+    {
+        return m_hostName;
+    }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -83,6 +118,15 @@ public:
     [[nodiscard]] auto sourceName() const -> QString override
     {
         return tr("TCP connection to %1 port %2").arg(m_hostName).arg(m_port);
+    }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property port
+     */
+    [[nodiscard]] quint16 port() const
+    {
+        return m_port;
     }
 
 public slots:

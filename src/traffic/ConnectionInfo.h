@@ -82,6 +82,19 @@ public:
      */
     explicit ConnectionInfo(quint16 port, bool canonical=false);
 
+    /*!
+     * \brief Constructor for TCP Connections
+     *
+     * This method constructs a ConnectionInfo for a TCP connection.
+     *
+     * \param host Host name or IP Address
+     *
+     * \param port Port number
+     *
+     * \param canonical Property 'canonical', as described below.
+     */
+    explicit ConnectionInfo(const QString& host, quint16 port, bool canonical=false);
+
 
 
     //
@@ -261,6 +274,7 @@ private:
     //
     QBluetoothDeviceInfo          m_bluetoothDeviceInfo {};
     quint16                       m_port {0};
+    QString                       m_host;
 };
 
 /*!

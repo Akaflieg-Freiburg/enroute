@@ -281,6 +281,7 @@ if(ANDROID)
         Qt6::Quick
         Qt6::QuickControls2
         Qt6::Sensors
+        Qt6::SerialPort
         Qt6::Sql
         Qt6::Svg
         Qt6::TextToSpeech
@@ -331,6 +332,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
         Qt6::Positioning
         Qt6::Quick
         Qt6::QuickControls2
+        Qt6::SerialPort
         Qt6::Sql
         Qt6::Svg
         Qt6::TextToSpeech
@@ -389,6 +391,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         Qt6::Positioning
         Qt6::Quick
         Qt6::QuickControls2
+        Qt6::SerialPort
         Qt6::Sql
         Qt6::Svg
         Qt6::TextToSpeech
@@ -438,6 +441,7 @@ if (IOS)
         Qt6::Quick
         Qt6::QuickControls2
         Qt6::Sensors
+        Qt6::SerialPort
         Qt6::Sql
         Qt6::Svg
         Qt6::TextToSpeech

@@ -108,7 +108,7 @@ Page {
     }
 
 
-    Keys.onReleased: {
+    Keys.onReleased: event => {
         if (event.key === Qt.Key_Back) {
             if (webView.canGoBack) {
                 webView.goBack()

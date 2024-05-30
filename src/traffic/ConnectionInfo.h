@@ -22,6 +22,7 @@
 
 #include <QBluetoothDeviceInfo>
 #include <QQmlEngine>
+#include <QSerialPortInfo>
 
 
 namespace Traffic {
@@ -72,6 +73,17 @@ public:
     explicit ConnectionInfo(const QBluetoothDeviceInfo& info, bool canonical=false);
 
     /*!
+     * \brief Constructor for Bluetooth Device Connections
+     *
+     * This method constructs a ConnectionInfo for a connection to a serial port.
+     *
+     * \param info QBluetoothDeviceInfo that describes the Bluetooth device
+     *
+     * \param canonical Property 'canonical', as described below.
+     */
+    explicit ConnectionInfo(const QSerialPortInfo& info, bool canonical=false);
+
+    /*!
      * \brief Constructor for UDP Connections
      *
      * This method constructs a ConnectionInfo for a UDP connection.
@@ -81,6 +93,19 @@ public:
      * \param canonical Property 'canonical', as described below.
      */
     explicit ConnectionInfo(quint16 port, bool canonical=false);
+
+    /*!
+     * \brief Constructor for TCP Connections
+     *
+     * This method constructs a ConnectionInfo for a TCP connection.
+     *
+     * \param host Host name or IP Address
+     *
+     * \param port Port number
+     *
+     * \param canonical Property 'canonical', as described below.
+     */
+    explicit ConnectionInfo(const QString& host, quint16 port, bool canonical=false);
 
 
 
@@ -261,6 +286,7 @@ private:
     //
     QBluetoothDeviceInfo          m_bluetoothDeviceInfo {};
     quint16                       m_port {0};
+    QString                       m_host;
 };
 
 /*!

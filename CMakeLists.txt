@@ -35,7 +35,7 @@ include(GNUInstallDirs)
 #
 
 
-find_package(Qt6 6.7 COMPONENTS Bluetooth Concurrent Core Core5Compat Gui HttpServer LinguistTools Location Positioning Quick QuickControls2 QuickWidgets Sql Svg TextToSpeech Widgets REQUIRED)
+find_package(Qt6 6.7 COMPONENTS Bluetooth Concurrent Core Core5Compat Gui HttpServer LinguistTools Location Positioning Quick QuickControls2 QuickWidgets SerialPort Sql Svg TextToSpeech Widgets REQUIRED)
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Android")
     find_package(Qt6 COMPONENTS Sensors WebView REQUIRED)

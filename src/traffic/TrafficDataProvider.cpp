@@ -152,6 +152,27 @@ QString Traffic::TrafficDataProvider::addDataSource_UDP(quint16 port)
     return {};
 }
 
+QString Traffic::TrafficDataProvider::addDataSource_TCP(const QString& host, quint16 port)
+{
+    // Ignore new device if data source already exists.
+    foreach(auto _dataSource, m_dataSources)
+    {
+        auto* dataSourceTCP = qobject_cast<TrafficDataSource_Tcp*>(_dataSource);
+        if (dataSourceTCP != nullptr)
+        {
+            if ((port == dataSourceTCP->port()) && (host == dataSourceTCP->host()))
+            {
+                return tr("A connection to this device already exists.");
+            }
+        }
+    }
+
+    auto* source = new TrafficDataSource_Tcp(false, host, port, this);
+    source->connectToTrafficReceiver();
+    addDataSource(source);
+    return {};
+}
+
 void Traffic::TrafficDataProvider::clearDataSources()
 {
     if (m_dataSources.isEmpty())

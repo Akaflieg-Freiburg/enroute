@@ -88,6 +88,7 @@ set(SOURCES
     traffic/ConnectionInfo.h
     traffic/ConnectionScanner_Abstract.h
     traffic/ConnectionScanner_Bluetooth.h
+    traffic/ConnectionScanner_SerialPort.h
     traffic/FlarmnetDB.h
     traffic/PasswordDB.h
     traffic/TrafficDataSource_Abstract.h
@@ -179,6 +180,7 @@ set(SOURCES
     traffic/ConnectionInfo.cpp
     traffic/ConnectionScanner_Abstract.cpp
     traffic/ConnectionScanner_Bluetooth.cpp
+    traffic/ConnectionScanner_SerialPort.cpp
     traffic/FlarmnetDB.cpp
     traffic/PasswordDB.cpp
     traffic/TrafficDataSource_Abstract.cpp
@@ -281,6 +283,7 @@ if(ANDROID)
         Qt6::Quick
         Qt6::QuickControls2
         Qt6::Sensors
+        Qt6::SerialPort
         Qt6::Sql
         Qt6::Svg
         Qt6::TextToSpeech
@@ -331,6 +334,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
         Qt6::Positioning
         Qt6::Quick
         Qt6::QuickControls2
+        Qt6::SerialPort
         Qt6::Sql
         Qt6::Svg
         Qt6::TextToSpeech
@@ -389,6 +393,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         Qt6::Positioning
         Qt6::Quick
         Qt6::QuickControls2
+        Qt6::SerialPort
         Qt6::Sql
         Qt6::Svg
         Qt6::TextToSpeech
@@ -438,6 +443,7 @@ if (IOS)
         Qt6::Quick
         Qt6::QuickControls2
         Qt6::Sensors
+        Qt6::SerialPort
         Qt6::Sql
         Qt6::Svg
         Qt6::TextToSpeech

@@ -136,16 +136,28 @@ Traffic::ConnectionInfo::ConnectionInfo(const QBluetoothDeviceInfo& info, bool c
 }
 
 
-Traffic::ConnectionInfo::ConnectionInfo(quint16 port, bool canonical) :
-    m_canConnect(true),
-    m_canonical(canonical),
-    m_port(port),
-    m_type(Traffic::ConnectionInfo::UDP)
+Traffic::ConnectionInfo::ConnectionInfo(const QSerialPortInfo& info, bool canonical)
+    : m_canConnect(true), m_canonical(canonical), m_host(info.portName()), m_type(Traffic::ConnectionInfo::Serial)
 {
-    m_name = QObject::tr("UDP connection to port %1", "Traffic::ConnectionInfo").arg(m_port);
+    m_name = info.portName();
+    m_description = QObject::tr("Serial Port Connection to %1", "Traffic::ConnectionInfo").arg(info.portName());
+}
+
+
+Traffic::ConnectionInfo::ConnectionInfo(quint16 port, bool canonical)
+    : m_canConnect(true), m_canonical(canonical), m_port(port), m_type(Traffic::ConnectionInfo::UDP)
+{
+    m_name = QObject::tr("UDP Connection to Port %1", "Traffic::ConnectionInfo").arg(m_port);
     m_icon = u"/icons/material/ic_wifi.svg"_qs;
 }
 
+
+Traffic::ConnectionInfo::ConnectionInfo(const QString& host, quint16 port, bool canonical)
+    : m_canConnect(true), m_canonical(canonical), m_host(host), m_port(port), m_type(Traffic::ConnectionInfo::UDP)
+{
+    m_name = QObject::tr("TCP Connection to %1, Port %1", "Traffic::ConnectionInfo").arg(m_host, m_port);
+    m_icon = u"/icons/material/ic_wifi.svg"_qs;
+}
 
 
 //
@@ -195,7 +207,17 @@ bool Traffic::ConnectionInfo::sameConnectionAs(const ConnectionInfo& other) cons
         return m_bluetoothDeviceInfo.address() == other.m_bluetoothDeviceInfo.address();
 #endif
     }
-#warning Support UDP!
+
+    if (m_type == Traffic::ConnectionInfo::UDP)
+    {
+        return m_port == other.m_port;
+    }
+
+    if (m_type == Traffic::ConnectionInfo::TCP)
+    {
+        return (m_port == other.m_port) && (m_host == other.m_host);
+    }
+
     return true;
 }
 
@@ -224,7 +246,7 @@ bool Traffic::ConnectionInfo::operator< (const ConnectionInfo& other) const
 //
 
 QDataStream& Traffic::operator<<(QDataStream& stream, const Traffic::ConnectionInfo &connectionInfo)
-{
+{  
     stream << connectionInfo.m_canConnect;
     stream << connectionInfo.m_canonical;
     stream << connectionInfo.m_description;
@@ -251,6 +273,9 @@ QDataStream& Traffic::operator<<(QDataStream& stream, const Traffic::ConnectionI
         break;
     }
     case Traffic::ConnectionInfo::TCP:
+        stream << connectionInfo.m_host;
+        stream << connectionInfo.m_port;
+        break;
     case Traffic::ConnectionInfo::UDP:
         stream << connectionInfo.m_port;
         break;
@@ -298,6 +323,9 @@ QDataStream& Traffic::operator>>(QDataStream& stream, Traffic::ConnectionInfo& c
         break;
     }
     case Traffic::ConnectionInfo::TCP:
+        stream >> connectionInfo.m_host;
+        stream >> connectionInfo.m_port;
+        break;
     case Traffic::ConnectionInfo::UDP:
         stream >> connectionInfo.m_port;
         break;

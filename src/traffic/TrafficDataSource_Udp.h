@@ -107,9 +107,6 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
-     *  This method implements the pure virtual method declared by its
-     *  superclass.
-     *
      *  @returns Property port
      */
     [[nodiscard]] quint16 port() const

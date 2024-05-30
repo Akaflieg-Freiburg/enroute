@@ -239,7 +239,27 @@ Page {
                     }
 
                     Action {
-                        text: qsTr("UDP")
+                        text: qsTr("Serial Port Connection")
+
+                        onTriggered: {
+                            PlatformAdaptor.vibrateBrief()
+                            addSerialPortDialog.open()
+                            addMenu.close()
+                        }
+                    }
+
+                    Action {
+                        text: qsTr("TCP Connection")
+
+                        onTriggered: {
+                            PlatformAdaptor.vibrateBrief()
+                            addTCPDialog.open()
+                            addMenu.close()
+                        }
+                    }
+
+                    Action {
+                        text: qsTr("UDP Connection")
 
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
@@ -248,15 +268,6 @@ Page {
                         }
                     }
 
-                    Action {
-                        text: qsTr("TCP")
-
-                        onTriggered: {
-                            PlatformAdaptor.vibrateBrief()
-                            addTCPDialog.open()
-                            addMenu.close()
-                        }
-                    }
                 }
 
             }
@@ -481,6 +492,69 @@ Page {
             }
             Global.toast.doToast( qsTr("Adding TCP Connection to %1, Port %2").arg(host.text).arg(port.text) )
             addTCPDialog.close()
+        }
+
+    }
+
+
+    CenteringDialog {
+        id: addSerialPortDialog
+
+        modal: true
+        title: qsTr("Add Serial Port Connection")
+        standardButtons: Dialog.Cancel
+
+        Component.onCompleted: ConnectionScanner_SerialPort.start()
+
+        ColumnLayout {
+            anchors.fill: parent
+
+            Label {
+                Layout.fillWidth: true
+
+                text: qsTr("No Device Found")
+                visible: (ConnectionScanner_SerialPort.connectionInfos.length === 0)
+                wrapMode: Text.Wrap
+            }
+
+            DecoratedListView {
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                Layout.preferredHeight: contentHeight
+
+                clip: true
+
+                model: ConnectionScanner_SerialPort.connectionInfos
+
+                delegate: WordWrappingItemDelegate {
+                    width: addSerialPortDialog.availableWidth
+
+                    enabled: model.modelData.canConnect
+                    icon.source: model.modelData.icon
+                    text: model.modelData.description
+
+                    onClicked: {
+                        var resultString = TrafficDataProvider.addDataSource(model.modelData)
+                        if (resultString !== "")
+                        {
+                            ltd.text = resultString
+                            ltd.open()
+                            return
+                        }
+                        Global.toast.doToast( qsTr("Adding Connection: %1").arg(model.modelData.name) )
+                        dlg.close()
+                    }
+                }
+            }
+
+            Button {
+                Layout.alignment: Qt.AlignHCenter
+
+                text: qsTr("Scan for Devices")
+
+                icon.source: "/icons/material/ic_bluetooth_searching.svg"
+                onClicked: ConnectionScanner_SerialPort.start()
+            }
         }
 
     }

@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QSerialPortInfo>
 #include "traffic/ConnectionScanner_SerialPort.h"
 
 
@@ -34,12 +35,11 @@ Traffic::ConnectionScanner_SerialPort::ConnectionScanner_SerialPort(QObject* par
 void Traffic::ConnectionScanner_SerialPort::start()
 {
     QVector<Traffic::ConnectionInfo> result;
-/*    auto deviceInfos = m_discoveryAgent.discoveredDevices();
+    auto deviceInfos = QSerialPortInfo::availablePorts();
     foreach (auto deviceInfo, deviceInfos)
     {
         result += ConnectionInfo(deviceInfo);
     }
-  */
     std::sort(result.begin(), result.end());
     setDevices(result);
 

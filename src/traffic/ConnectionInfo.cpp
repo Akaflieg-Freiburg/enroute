@@ -136,6 +136,14 @@ Traffic::ConnectionInfo::ConnectionInfo(const QBluetoothDeviceInfo& info, bool c
 }
 
 
+Traffic::ConnectionInfo::ConnectionInfo(const QSerialPortInfo& info, bool canonical)
+    : m_canConnect(true), m_canonical(canonical), m_host(info.portName()), m_type(Traffic::ConnectionInfo::Serial)
+{
+    m_name = info.portName();
+    m_description = QObject::tr("Serial Port Connection to %1", "Traffic::ConnectionInfo").arg(info.portName());
+}
+
+
 Traffic::ConnectionInfo::ConnectionInfo(quint16 port, bool canonical)
     : m_canConnect(true), m_canonical(canonical), m_port(port), m_type(Traffic::ConnectionInfo::UDP)
 {
@@ -237,7 +245,7 @@ bool Traffic::ConnectionInfo::operator< (const ConnectionInfo& other) const
 //
 
 QDataStream& Traffic::operator<<(QDataStream& stream, const Traffic::ConnectionInfo &connectionInfo)
-{
+{  
     stream << connectionInfo.m_canConnect;
     stream << connectionInfo.m_canonical;
     stream << connectionInfo.m_description;

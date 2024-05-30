@@ -88,6 +88,7 @@ set(SOURCES
     traffic/ConnectionInfo.h
     traffic/ConnectionScanner_Abstract.h
     traffic/ConnectionScanner_Bluetooth.h
+    traffic/ConnectionScanner_SerialPort.h
     traffic/FlarmnetDB.h
     traffic/PasswordDB.h
     traffic/TrafficDataSource_Abstract.h
@@ -179,6 +180,7 @@ set(SOURCES
     traffic/ConnectionInfo.cpp
     traffic/ConnectionScanner_Abstract.cpp
     traffic/ConnectionScanner_Bluetooth.cpp
+    traffic/ConnectionScanner_SerialPort.cpp
     traffic/FlarmnetDB.cpp
     traffic/PasswordDB.cpp
     traffic/TrafficDataSource_Abstract.cpp

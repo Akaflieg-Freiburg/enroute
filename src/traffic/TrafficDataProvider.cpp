@@ -23,6 +23,7 @@
 
 #include "platform/PlatformAdaptor_Abstract.h"
 #include "traffic/TrafficDataProvider.h"
+#include "traffic/TrafficDataSource_SerialPort.h"
 #include "traffic/TrafficDataSource_Tcp.h"
 #include "traffic/TrafficDataSource_Udp.h"
 
@@ -124,7 +125,7 @@ QString Traffic::TrafficDataProvider::addDataSource(const Traffic::ConnectionInf
     case Traffic::ConnectionInfo::UDP:
         return addDataSource_UDP(connectionInfo.port());
     case Traffic::ConnectionInfo::Serial:
-        return tr("Unable to add serial port connection. This is not implemented at the moment.");
+        return addDataSource_SerialPort(connectionInfo.name());
     case Traffic::ConnectionInfo::FLARMFile:
         return tr("Unable to add FLARM simulator file connection. This is not implemented at the moment.");
     }
@@ -147,6 +148,27 @@ QString Traffic::TrafficDataProvider::addDataSource_UDP(quint16 port)
     }
 
     auto* source = new TrafficDataSource_Udp(false, port, this);
+    source->connectToTrafficReceiver();
+    addDataSource(source);
+    return {};
+}
+
+QString Traffic::TrafficDataProvider::addDataSource_SerialPort(const QString& portName)
+{
+    // Ignore new device if data source already exists.
+    foreach(auto _dataSource, m_dataSources)
+    {
+        auto* dataSourceSerialPort = qobject_cast<TrafficDataSource_SerialPort*>(_dataSource);
+        if (dataSourceSerialPort != nullptr)
+        {
+            if (portName == dataSourceSerialPort->sourceName())
+            {
+                return tr("A connection to this device already exists.");
+            }
+        }
+    }
+
+    auto* source = new TrafficDataSource_SerialPort(false, portName, this);
     source->connectToTrafficReceiver();
     addDataSource(source);
     return {};

@@ -242,6 +242,16 @@ public:
 
     /*! \brief Add an additional data source
      *
+     * This method adds an additional serial port data source to this TrafficDataProvider.
+     *
+     * \param portName Name of the serial port
+     *
+     * \returns An empty string on success, and a human-readable, translated error message on failure.
+     */
+    Q_INVOKABLE QString addDataSource_SerialPort(const QString& portName);
+
+    /*! \brief Add an additional data source
+     *
      * This method adds an additional TCP data source to this TrafficDataProvider.
      *
      * \param host Internet address

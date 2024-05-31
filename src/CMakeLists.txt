@@ -96,6 +96,7 @@ set(SOURCES
     traffic/TrafficDataSource_BluetoothClassic.h
     traffic/TrafficDataSource_BluetoothLowEnergy.h
     traffic/TrafficDataSource_File.h
+    traffic/TrafficDataSource_SerialPort.h
     traffic/TrafficDataSource_Simulate.h
     traffic/TrafficDataSource_Tcp.h
     traffic/TrafficDataSource_Udp.h
@@ -191,6 +192,7 @@ set(SOURCES
     traffic/TrafficDataSource_BluetoothClassic.cpp
     traffic/TrafficDataSource_BluetoothLowEnergy.cpp
     traffic/TrafficDataSource_File.cpp
+    traffic/TrafficDataSource_SerialPort.cpp
     traffic/TrafficDataSource_Simulate.cpp
     traffic/TrafficDataSource_Tcp.cpp
     traffic/TrafficDataSource_Udp.cpp

@@ -542,7 +542,7 @@ Page {
                             return
                         }
                         Global.toast.doToast( qsTr("Adding Connection: %1").arg(model.modelData.name) )
-                        dlg.close()
+                        addSerialPortDialog.close()
                     }
                 }
             }

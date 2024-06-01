@@ -240,7 +240,7 @@ Page {
 
                     Action {
                         text: qsTr("Serial Port Connection")
-
+                        enabled: (Qt.platform.os !== "ios")
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
                             addSerialPortDialog.open()
@@ -250,7 +250,6 @@ Page {
 
                     Action {
                         text: qsTr("TCP Connection")
-
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
                             addTCPDialog.open()
@@ -552,7 +551,7 @@ Page {
 
                 text: qsTr("Scan for Devices")
 
-                icon.source: "/icons/material/ic_bluetooth_searching.svg"
+                icon.source: "/icons/material/ic_settings_ethernet.svg"
                 onClicked: ConnectionScanner_SerialPort.start()
             }
         }

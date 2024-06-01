@@ -96,7 +96,6 @@ set(SOURCES
     traffic/TrafficDataSource_BluetoothClassic.h
     traffic/TrafficDataSource_BluetoothLowEnergy.h
     traffic/TrafficDataSource_File.h
-    traffic/TrafficDataSource_SerialPort.h
     traffic/TrafficDataSource_Simulate.h
     traffic/TrafficDataSource_Tcp.h
     traffic/TrafficDataSource_Udp.h
@@ -192,7 +191,6 @@ set(SOURCES
     traffic/TrafficDataSource_BluetoothClassic.cpp
     traffic/TrafficDataSource_BluetoothLowEnergy.cpp
     traffic/TrafficDataSource_File.cpp
-    traffic/TrafficDataSource_SerialPort.cpp
     traffic/TrafficDataSource_Simulate.cpp
     traffic/TrafficDataSource_Tcp.cpp
     traffic/TrafficDataSource_Udp.cpp
@@ -243,6 +241,8 @@ if(ANDROID)
         platform/PlatformAdaptor_Android.cpp
         platform/SafeInsets_Android.h
         platform/SafeInsets_Android.cpp
+        traffic/TrafficDataSource_SerialPort.h
+        traffic/TrafficDataSource_SerialPort.cpp
         android/src/de/akaflieg_freiburg/enroute/IntentLauncher.java
         android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java
         android/src/de/akaflieg_freiburg/enroute/ShareActivity.java
@@ -318,6 +318,8 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
         platform/PlatformAdaptor_Linux.cpp
         platform/SafeInsets_Desktop.h
         platform/SafeInsets_Desktop.cpp
+        traffic/TrafficDataSource_SerialPort.h
+        traffic/TrafficDataSource_SerialPort.cpp
     )
 
     # Compile definitions
@@ -373,6 +375,8 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         platform/PlatformAdaptor_MacOS.cpp
         platform/SafeInsets_Desktop.h
         platform/SafeInsets_Desktop.cpp
+        traffic/TrafficDataSource_SerialPort.h
+        traffic/TrafficDataSource_SerialPort.cpp
     )
 
     # Compile definitions
@@ -445,7 +449,6 @@ if (IOS)
         Qt6::Quick
         Qt6::QuickControls2
         Qt6::Sensors
-        Qt6::SerialPort
         Qt6::Sql
         Qt6::Svg
         Qt6::TextToSpeech

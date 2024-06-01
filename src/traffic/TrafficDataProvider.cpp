@@ -23,7 +23,10 @@
 
 #include "platform/PlatformAdaptor_Abstract.h"
 #include "traffic/TrafficDataProvider.h"
+
+#if __has_include(<QSerialPort>)
 #include "traffic/TrafficDataSource_SerialPort.h"
+#endif
 #include "traffic/TrafficDataSource_Tcp.h"
 #include "traffic/TrafficDataSource_Udp.h"
 
@@ -155,6 +158,7 @@ QString Traffic::TrafficDataProvider::addDataSource_UDP(quint16 port)
 
 QString Traffic::TrafficDataProvider::addDataSource_SerialPort(const QString& portName)
 {
+#if __has_include(<QSerialPort>)
     // Ignore new device if data source already exists.
     foreach(auto _dataSource, m_dataSources)
     {
@@ -172,6 +176,9 @@ QString Traffic::TrafficDataProvider::addDataSource_SerialPort(const QString& po
     source->connectToTrafficReceiver();
     addDataSource(source);
     return {};
+#else
+    return tr("Serial ports are not supported on this platform.");
+#endif
 }
 
 QString Traffic::TrafficDataProvider::addDataSource_TCP(const QString& host, quint16 port)
@@ -615,27 +622,5 @@ void Traffic::TrafficDataProvider::updateStatusString()
     }
 
     const QString result = tr("Not receiving traffic receiver heartbeat through any of the configured data connections.");
-    //const QString result = "<p>" + tr("Not receiving heartbeat.") + "<p>";
-
-    /*
-    result += u"<ul style='margin-left:-25px;'>"_qs;
-    foreach(auto source, m_dataSources)
-    {
-        if (source.isNull())
-        {
-            continue;
-        }
-
-        result += u"<li>"_qs;
-        result += source->sourceName() + ": " + source->connectivityStatus();
-        if (!source->errorString().isEmpty())
-        {
-            result += " " + source->errorString();
-        }
-        result += u"</li>"_qs;
-    }
-    result += u"</ul>"_qs;
-*/
-
     setStatusString(result);
 }

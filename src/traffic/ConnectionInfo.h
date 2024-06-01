@@ -22,7 +22,10 @@
 
 #include <QBluetoothDeviceInfo>
 #include <QQmlEngine>
+
+#if __has_include (<QSerialPortInfo>)
 #include <QSerialPortInfo>
+#endif
 
 
 namespace Traffic {
@@ -81,7 +84,9 @@ public:
      *
      * \param canonical Property 'canonical', as described below.
      */
+#if __has_include (<QSerialPortInfo>)
     explicit ConnectionInfo(const QSerialPortInfo& info, bool canonical=false);
+#endif
 
     /*!
      * \brief Constructor for UDP Connections

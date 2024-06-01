@@ -28,10 +28,7 @@ Traffic::TrafficDataSource_SerialPort::TrafficDataSource_SerialPort(bool isCanon
     m_port(portName)
 {
     // Connect socket
-    //connect(&m_socket, &QBluetoothSocket::errorOccurred, this, &Traffic::TrafficDataSource_SerialPort::onErrorOccurred, Qt::QueuedConnection);
-    //connect(&m_socket, &QBluetoothSocket::stateChanged, this, &Traffic::TrafficDataSource_SerialPort::onStateChanged);
     connect(&m_port, &QSerialPort::readyRead, this, &Traffic::TrafficDataSource_SerialPort::onReadyRead);
-
     m_errorChangeHandler = m_port.bindableError().addNotifier([&]{onErrorOccurred(m_port.error());});
 }
 

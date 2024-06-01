@@ -92,7 +92,7 @@ public:
      *
      *  @returns Property icon
      */
-    [[nodiscard]] QString icon() const override { return u"/icons/material/ic_bluetooth.svg"_qs; }
+    [[nodiscard]] QString icon() const override { return u"/icons/material/ic_settings_ethernet.svg"_qs; }
 
     /*! \brief Getter function for the property with the same name
      *

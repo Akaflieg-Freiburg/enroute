@@ -141,6 +141,7 @@ Traffic::ConnectionInfo::ConnectionInfo(const QSerialPortInfo& info, bool canoni
 {
     m_name = info.portName();
     m_description = QObject::tr("Serial Port Connection to %1", "Traffic::ConnectionInfo").arg(info.portName());
+    m_icon = u"/icons/material/ic_settings_ethernet.svg"_qs;
 }
 
 
@@ -280,6 +281,8 @@ QDataStream& Traffic::operator<<(QDataStream& stream, const Traffic::ConnectionI
         stream << connectionInfo.m_port;
         break;
     case Traffic::ConnectionInfo::Serial:
+        stream << connectionInfo.m_host;
+        break;
     case Traffic::ConnectionInfo::FLARMFile:
         break;
     }
@@ -330,6 +333,8 @@ QDataStream& Traffic::operator>>(QDataStream& stream, Traffic::ConnectionInfo& c
         stream >> connectionInfo.m_port;
         break;
     case Traffic::ConnectionInfo::Serial:
+        stream >> connectionInfo.m_host;
+        break;
     case Traffic::ConnectionInfo::FLARMFile:
         break;
     }

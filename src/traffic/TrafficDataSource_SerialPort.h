@@ -140,6 +140,7 @@ private:
 
     // Copied from the constructor
     QSerialPort m_port;
+    QPropertyNotifier m_errorChangeHandler;
 
     // Text stream used for reading NMEA sentences
     QTextStream m_textStream {&m_port};

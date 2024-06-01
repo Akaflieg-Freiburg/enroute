@@ -32,7 +32,7 @@ Traffic::TrafficDataSource_SerialPort::TrafficDataSource_SerialPort(bool isCanon
     //connect(&m_socket, &QBluetoothSocket::stateChanged, this, &Traffic::TrafficDataSource_SerialPort::onStateChanged);
     connect(&m_port, &QSerialPort::readyRead, this, &Traffic::TrafficDataSource_SerialPort::onReadyRead);
 
-    auto errorChangeHandler = m_port.bindableError().subscribe([&]{onErrorOccurred(m_port.error());});
+    m_errorChangeHandler = m_port.bindableError().addNotifier([&]{onErrorOccurred(m_port.error());});
 }
 
 void Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver()
@@ -49,51 +49,58 @@ void Traffic::TrafficDataSource_SerialPort::connectToTrafficReceiver()
 #endif
 
     // Close old connection
-    m_port.clear();
-    m_port.close();
-    m_port.clearError();
-    setErrorString();
+    disconnectFromTrafficReceiver();
 
     // Start new connection
     m_port.open(QIODeviceBase::ReadWrite);
+    if (m_port.isOpen())
+    {
+        setConnectivityStatus(tr("Connected."));
+    }
 }
 
 void Traffic::TrafficDataSource_SerialPort::disconnectFromTrafficReceiver()
 {
-    m_port.close();
+    if (m_port.isOpen())
+    {
+        m_port.clear();
+        m_port.close();
+    }
+    m_port.clearError();
+    onErrorOccurred(m_port.error());
+    setConnectivityStatus(tr("Not connected."));
 }
 
 
 void Traffic::TrafficDataSource_SerialPort::onErrorOccurred(QSerialPort::SerialPortError error)
 {
-#warning This is never called!
     switch (error)
     {
     case QSerialPort::NoError:
-        setErrorString( tr("No error.") );
+        setErrorString("");
     case QSerialPort::DeviceNotFoundError:
-        setErrorString( tr("An error occurred while attempting to open an non-existing device.") );
+        setErrorString( tr("Non-existing device") );
         break;
     case QSerialPort::PermissionError:
-        setErrorString( tr("An error occurred while attempting to open an already opened device by another process or a user not having enough permission and credentials to open.") );
+        setErrorString( tr("Attempting to open an already opened device by another process or a user not having enough permission and credentials to open.") );
         break;
     case QSerialPort::OpenError:
         setErrorString( tr("An error occurred while attempting to open an already opened device in this object.") );
         break;
     case QSerialPort::NotOpenError:
-        setErrorString( tr("This error occurs when an operation is executed that can only be successfully performed if the device is open.") );
+        setErrorString( tr("Attempted to execute an operation that can only be successfully performed if the device is open.") );
         break;
     case QSerialPort::WriteError:
-        setErrorString( tr("An I/O error occurred while writing the data.") );
+        setErrorString( tr("I/O error while writing data.") );
         break;
     case QSerialPort::ReadError:
-        setErrorString( tr("An I/O error occurred while reading the data.") );
+        setErrorString( tr("I/O error while reading data.") );
         break;
     case QSerialPort::ResourceError:
-        setErrorString( tr("An I/O error occurred when a resource becomes unavailable, e.g. when the device is unexpectedly removed from the system.") );
+        setErrorString( tr("I/O error occurred when a resource becomes unavailable, e.g. when the device is unexpectedly removed from the system.") );
         break;
     case QSerialPort::UnsupportedOperationError:
-        setErrorString( tr("The requested device operation is not supported or prohibited by the running operating system.") );
+        setErrorString( tr("Device operation unsupported or prohibited by the operating system.") );
         break;
     case  QSerialPort::TimeoutError:
         setErrorString( tr("A timeout error occurred.") );

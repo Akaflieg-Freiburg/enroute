@@ -57,13 +57,14 @@ void Ui::SideViewQuickItem::paint(QPainter *painter)
     drawSky(painter);
 
     const float steps = 100;
-    const float stepSizeInMeter = (info.groundSpeed().toKMH() > 3) ? (info.groundSpeed().toKMH() / 6 / steps * 1000) : 250;
+    const float stepSizeInMeter = info.groundSpeed().toKMH() / 6 / steps * 1000;
     const float defaultUpperLimit = 1000;
 
     std::vector<int> elevations = getElevations(info, track, steps, stepSizeInMeter, geoMapProvider);
     int highestElevation = getHighestElevation(elevations, info, defaultUpperLimit);
 
-    auto mergedAirspaces = getMergedAirspaces(info, track, steps, stepSizeInMeter, geoMapProvider);
+    auto airspaces = getMergedAirspaces(info, track, steps, stepSizeInMeter, geoMapProvider);
+    auto mergedAirspaces = processAirspaces(airspaces, elevations, steps, highestElevation);
 
     drawAirspaces(painter, elevations, mergedAirspaces, highestElevation, steps);
 
@@ -150,20 +151,23 @@ std::vector<Ui::SideViewQuickItem::MergedAirspace> Ui::SideViewQuickItem::getMer
 
         for (const QVariant &var : airspaces) {
             GeoMaps::Airspace airspace = qvariant_cast<GeoMaps::Airspace>(var);
+            if (!airspace.name().contains("KARLSRUHE")) {
+                //continue;
+            }
             if (std::find(std::begin(categories), std::end(categories), airspace.CAT()) != std::end(categories)) {
                 stepAirspaces[i].push_back(airspace);
             }
         }
     }
 
-    std::vector<MergedAirspace> mergedAirspaces;
+    std::vector<MergedAirspace> allMergedAirspaces;
     for (const auto &step : stepAirspaces) {
         int stepIndex = step.first;
 
         for (const GeoMaps::Airspace &airspace : step.second) {
             bool merged = false;
 
-            for (auto &mergedAirspace : mergedAirspaces) {
+            for (auto &mergedAirspace : allMergedAirspaces) {
                 if (mergedAirspace.airspace.CAT() == airspace.CAT() &&
                     mergedAirspace.airspace.name() == airspace.name() &&
                     mergedAirspace.airspace.lowerBound() == airspace.lowerBound() &&
@@ -176,13 +180,71 @@ std::vector<Ui::SideViewQuickItem::MergedAirspace> Ui::SideViewQuickItem::getMer
 
             if (!merged) {
                 MergedAirspace newMergedAirspace = { airspace, stepIndex, stepIndex };
-                mergedAirspaces.push_back(newMergedAirspace);
+                allMergedAirspaces.push_back(newMergedAirspace);
             }
         }
     }
 
-    return mergedAirspaces;
+    return allMergedAirspaces;
 }
+
+std::vector<Ui::SideViewQuickItem::MergedAirspace> Ui::SideViewQuickItem::processAirspaces(std::vector<MergedAirspace> mergedAirspaces, std::vector<int> &elevations, float steps, int highestElevation) {
+    for (auto &mergedAirspace : mergedAirspaces) {
+        auto airspace = mergedAirspace.airspace;
+        auto lowerBound = airspace.lowerBound().toLower();
+        auto upperBound = airspace.upperBound().toLower();
+
+        QList<QPoint> polygons;
+
+        //Are Bounds relative to Ground? If so, we cant use simple rectangles
+        if (lowerBound.endsWith("agl") || lowerBound.endsWith("gnd") || upperBound.endsWith("agl") || upperBound.endsWith("gnd") ) {
+            for (int i = mergedAirspace.firstStep; i <= mergedAirspace.lastStep; i++) {
+                auto x = widgetWidth() / steps * i;
+                auto y = yCoordinate(airspace.estimatedLowerBoundMSL(elevations[i]).toFeet(), highestElevation, 0);
+                polygons.push_back(QPoint(x, y));
+            }
+            for (int i = mergedAirspace.lastStep; i >= mergedAirspace.firstStep; i--) {
+                auto x = widgetWidth() / steps * i;
+                auto y = yCoordinate(airspace.estimatedUpperBoundMSL(elevations[i]).toFeet(), highestElevation, 0);
+                polygons.push_back(QPoint(x, y));
+            }
+
+        } else {
+            int xStart = static_cast<int>((mergedAirspace.firstStep / steps) * widgetWidth());
+            int xEnd = static_cast<int>((mergedAirspace.lastStep / steps) * widgetWidth());
+
+            int lowerY = yCoordinate(airspace.estimatedLowerBoundMSL().toFeet(), highestElevation, 0);
+            int upperY = qMax(yCoordinate(airspace.estimatedUpperBoundMSL().toFeet(), highestElevation, 0), 0);
+
+            QRect rect(xStart, upperY, xEnd - xStart, lowerY - upperY);
+            //qWarning() << "xStart" << xStart << "upperY" << upperY << "xEnd" << xEnd << "lowerY" << lowerY << airspace.estimatedLowerBoundMSL().toFeet();
+            polygons.push_back(QPoint(xStart, lowerY));
+            polygons.push_back(QPoint(xStart, upperY));
+            polygons.push_back(QPoint(xEnd, upperY));
+            polygons.push_back(QPoint(xEnd, lowerY));
+        }
+        mergedAirspace.polygon = QPolygon(polygons);
+    }
+
+    /*
+    std::vector<MergedAirspace> airspacesBefore = mergedAirspaces;
+    std::vector<MergedAirspace> airspacesAfter = mergeAirspaces(airspacesBefore);
+    int counter = 1;
+
+
+    while (airspacesBefore.size() != airspacesAfter.size()) {
+        airspacesBefore = airspacesAfter;
+        airspacesAfter = mergeAirspaces(airspacesBefore);
+        counter++;
+    }
+    qWarning() << "counter" << counter;
+
+
+*/
+
+    return mergedAirspaces; //TODO merge later
+}
+
 
 QStringList Ui::SideViewQuickItem::airspaceSortedCategories() {
     return {"TMZ", "RMZ", "NRA", "DNG", "D", "C", "B", "A", "CTR", "R"};
@@ -216,80 +278,37 @@ void Ui::SideViewQuickItem::drawAirspaces(QPainter *painter, std::vector<int> el
         } else {
             color = QColor("blue");
         }
-        color.setAlphaF(0.75);
+        //color.setAlphaF(0.75);
         painter->setBrush(color.lighter(160));
 
         auto lowerBound = mergedAirspace.airspace.lowerBound().toLower();
         auto upperBound = mergedAirspace.airspace.upperBound().toLower();
 
-        //Are Bounds relative to Ground? If so, we cant use rects, we have to use polygons to follow the elevation
-        if (lowerBound.endsWith("agl") || lowerBound.endsWith("gnd") || upperBound.endsWith("agl") || upperBound.endsWith("gnd") ) {
-            std::vector<QPointF> polygons;
-            for (int i = mergedAirspace.firstStep; i <= mergedAirspace.lastStep; i++) {
-                auto x = widgetWidth() / steps * i;
-                auto y = yCoordinate(airspace.estimatedLowerBoundMSL(elevations[i]).toFeet(), highestElevation, 0);
-                polygons.push_back(QPointF(x, y));
-            }
-            for (int i = mergedAirspace.lastStep; i >= mergedAirspace.firstStep; i--) {
-                auto x = widgetWidth() / steps * i;
-                auto y = yCoordinate(airspace.estimatedUpperBoundMSL(elevations[i]).toFeet(), highestElevation, 0);
-                polygons.push_back(QPointF(x, y));
-            }
-            QPen pen = painter->pen();
-            pen.setStyle(Qt::DotLine);
-            painter->setPen(pen);
-            painter->drawPolygon(polygons.data(), static_cast<int>(polygons.size()));
-            pen.setStyle(Qt::SolidLine);
-            painter->setPen(pen);
+        QPolygon polygons;
+        polygons = mergedAirspace.polygon;
 
-            // Calculate the centroid of the polygon
-            QPointF centroid(0, 0);
-            for (const auto &point : polygons) {
-                centroid += point;
-            }
-            centroid /= polygons.size();
 
-            QFont font = painter->font();
-            font.setPointSizeF(13); //TODO: Make dynamic??
-            painter->setFont(font);
-            // Adjust for label positioning
-            QFontMetrics metrics = painter->fontMetrics();
-            QString label = airspace.CAT();
-            int textWidth = metrics.horizontalAdvance(label);
-            int textHeight = metrics.height();
+        QPen pen = painter->pen();
+        pen.setStyle(Qt::DotLine);
+        painter->setPen(pen);
+        painter->drawPolygon(polygons);
+        pen.setStyle(Qt::SolidLine);
+        painter->setPen(pen);
 
-            // Draw the label at the centroid, adjusting to center the text
-            painter->drawText(centroid.x() - textWidth / 2, centroid.y() + textHeight / 2, label);
-        } else {
-            int lowerY = yCoordinate(airspace.estimatedLowerBoundMSL().toFeet(), highestElevation, 0);
-            int upperY = qMax(yCoordinate(airspace.estimatedUpperBoundMSL().toFeet(), highestElevation, 0), 0);
+        QPointF centroid = getPolygonCentroid(mergedAirspace.polygon);
 
-            QRect rect(xStart, upperY, xEnd - xStart, lowerY - upperY);
+        QFont font = painter->font();
+        font.setPointSizeF(13); //TODO: Make dynamic??
+        painter->setFont(font);
+        // Adjust for label positioning
+        QFontMetrics metrics = painter->fontMetrics();
+        QString label = airspace.CAT();
+        int textWidth = metrics.horizontalAdvance(label);
+        int textHeight = metrics.height();
 
-            // Set brush color based on airspace category
+        // Draw the label at the centroid, adjusting to center the text
+        painter->drawText(centroid.x() - textWidth / 2, centroid.y() + textHeight / 2, label);
 
-            QPen pen = painter->pen();
-            pen.setStyle(Qt::DotLine);
-            painter->setPen(pen);
-            painter->drawRect(rect);
-
-            // Restore solid line for text
-            pen.setStyle(Qt::SolidLine);
-            painter->setPen(pen);
-
-            // Calculate appropriate font size
-            QFont font = painter->font();
-            int fontSize = qMin(12.0, qMax(qMin(rect.height() * 0.9, (double)rect.width()), 15.0)); // Ensure minimum font size
-            font.setPointSizeF(fontSize);
-            painter->setFont(font);
-
-            QString category = mergedAirspace.airspace.CAT();
-
-            // Draw category text inside the rectangle
-            painter->drawText(rect, Qt::AlignCenter, category);
-            //TODO: What if that possition is blocked? -> Draw labels later on top?
-            //TODO: Draw font beyond rect if needed and possible?
-        }
 
     }
 }
@@ -356,4 +375,81 @@ int Ui::SideViewQuickItem::widgetWidth()
 Units::Distance Ui::SideViewQuickItem::pressureAltitude() {
     //return GlobalObject::positionProvider()->pressureAltitude();
     return GlobalObject::positionProvider()->positionInfo().trueAltitudeAMSL();
+}
+
+
+QPointF Ui::SideViewQuickItem::getPolygonCentroid(const QPolygonF &polygon)
+{
+    qreal centroid_x = 0.0, centroid_y = 0.0;
+    qreal signedArea = 0.0;
+    qreal x0 = 0.0, y0 = 0.0;  // Current vertex coordinates
+    qreal x1 = 0.0, y1 = 0.0;  // Next vertex coordinates
+    qreal a = 0.0;  // Partial signed area
+
+    // For all vertices except last
+    int i;
+    for (i = 0; i < polygon.size() - 1; ++i)
+    {
+        x0 = polygon[i].x();
+        y0 = polygon[i].y();
+        x1 = polygon[i + 1].x();
+        y1 = polygon[i + 1].y();
+        a = x0 * y1 - x1 * y0;
+        signedArea += a;
+        centroid_x += (x0 + x1) * a;
+        centroid_y += (y0 + y1) * a;
+    }
+
+    // Do last vertex separately to avoid performing an expensive modulo operation in each iteration
+    x0 = polygon[i].x();
+    y0 = polygon[i].y();
+    x1 = polygon[0].x();
+    y1 = polygon[0].y();
+    a = x0 * y1 - x1 * y0;
+    signedArea += a;
+    centroid_x += (x0 + x1) * a;
+    centroid_y += (y0 + y1) * a;
+
+    signedArea *= 0.5;
+    centroid_x /= (6 * signedArea);
+    centroid_y /= (6 * signedArea);
+
+    return QPointF(centroid_x, centroid_y);
+}
+
+std::vector<Ui::SideViewQuickItem::MergedAirspace> Ui::SideViewQuickItem::mergeAirspaces(std::vector<MergedAirspace> mergedAirspaces) {
+    std::vector<MergedAirspace> reallyMergedAirspaces;
+    std::set<MergedAirspace> processed;
+    for (size_t i = 0; i < mergedAirspaces.size(); ++i) {
+        auto airspace = mergedAirspaces[i];
+        qWarning() << "Outer loop" << airspace.airspace.name();
+        if (!processed.contains(airspace)) {
+            MergedAirspace merged = airspace;
+            processed.insert(airspace);
+            qWarning() << "inserting airspace" << airspace.airspace.name();
+
+            // Iterate through the remaining airspaces to find and merge overlapping ones
+            for (size_t j = i + 1; j < mergedAirspaces.size(); ++j) {
+                auto comparingAirspace = mergedAirspaces[j];
+                qWarning() << "Comparing to airspace" << comparingAirspace.airspace.name();
+                if (!processed.contains(comparingAirspace) &&
+                    comparingAirspace.airspace.name() == airspace.airspace.name() &&
+                    comparingAirspace.airspace.CAT() == airspace.airspace.CAT() &&
+                    comparingAirspace.polygon.intersects(airspace.polygon)) {
+
+                    // Merge the polygons
+                    merged.polygon = merged.polygon.united(comparingAirspace.polygon);
+                    merged.firstStep = std::min(merged.firstStep, comparingAirspace.firstStep);
+                    merged.lastStep = std::max(merged.lastStep, comparingAirspace.lastStep);
+                    processed.insert(comparingAirspace);
+                    qWarning() << "Merged" << merged.airspace.name();
+                }
+            }
+
+            reallyMergedAirspaces.push_back(merged);
+        } else {
+            qWarning() << "skipping airspace" << airspace.airspace.name();
+        }
+    }
+    return reallyMergedAirspaces;
 }

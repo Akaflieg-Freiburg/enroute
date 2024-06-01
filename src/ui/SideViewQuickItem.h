@@ -56,6 +56,10 @@ private:
       GeoMaps::Airspace airspace;
       int firstStep;
       int lastStep;
+      QPolygon polygon;
+      bool operator<(const MergedAirspace &other) const {
+          return GeoMaps::qHash(airspace) < GeoMaps::qHash(other.airspace);
+      }
   };
 
   void drawNoTrackAvailable(QPainter *painter);
@@ -63,6 +67,8 @@ private:
   std::vector<int> getElevations(const Positioning::PositionInfo &info, double track, float steps, float stepSizeInMeter, const GeoMaps::GeoMapProvider *geoMapProvider);
   int getHighestElevation(std::vector<int> &elevations, const Positioning::PositionInfo &info, float defaultUpperLimit);
   std::vector<MergedAirspace> getMergedAirspaces(const Positioning::PositionInfo &info, double track, float steps, float stepSizeInMeter, const GeoMaps::GeoMapProvider *geoMapProvider);
+  std::vector<MergedAirspace> processAirspaces(std::vector<MergedAirspace> airspaces, std::vector<int> &elevations, float steps, int highestElevation);
+  std::vector<MergedAirspace> mergeAirspaces(std::vector<MergedAirspace> mergedAirspaces);
   void drawAirspaces(QPainter *painter, std::vector<int> elevations, const std::vector<MergedAirspace> &mergedAirspaces, int highestElevation, float steps);
   void drawTerrain(QPainter *painter, const std::vector<int> &elevations, int highestElevation, float steps);
   QStringList airspaceSortedCategories();
@@ -72,6 +78,7 @@ private:
   int widgetHeight();
   int widgetWidth();
   Units::Distance pressureAltitude();
+  QPointF getPolygonCentroid(const QPolygonF &polygon);
   Q_DISABLE_COPY_MOVE(SideViewQuickItem)
 
 };

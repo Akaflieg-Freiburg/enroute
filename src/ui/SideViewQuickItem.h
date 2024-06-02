@@ -52,27 +52,36 @@ public:
   void paint(QPainter *painter) override;
 
 private:
-  struct MergedAirspace {
+  struct Airspace2D { //TODO: Rename later
       GeoMaps::Airspace airspace;
       int firstStep;
       int lastStep;
       QPolygon polygon;
-      bool operator<(const MergedAirspace &other) const {
+      bool operator<(const Airspace2D &other) const {
           return GeoMaps::qHash(airspace) < GeoMaps::qHash(other.airspace);
       }
   };
 
+  struct MergedAirspace2D {
+      std::vector<Airspace2D> airspaces;
+      QString category;
+
+  };
+
   void drawNoTrackAvailable(QPainter *painter);
   void drawSky(QPainter *painter);
-  std::vector<int> getElevations(const Positioning::PositionInfo &info, double track, float steps, float stepSizeInMeter, const GeoMaps::GeoMapProvider *geoMapProvider);
+  std::vector<int> getElevations(const Positioning::PositionInfo &info, double track, float steps, float stepSizeInMeter, float stepOffset);
   int getHighestElevation(std::vector<int> &elevations, const Positioning::PositionInfo &info, float defaultUpperLimit);
-  std::vector<MergedAirspace> getMergedAirspaces(const Positioning::PositionInfo &info, double track, float steps, float stepSizeInMeter, const GeoMaps::GeoMapProvider *geoMapProvider);
-  std::vector<MergedAirspace> processAirspaces(std::vector<MergedAirspace> airspaces, std::vector<int> &elevations, float steps, int highestElevation);
-  std::vector<MergedAirspace> mergeAirspaces(std::vector<MergedAirspace> mergedAirspaces);
-  void drawAirspaces(QPainter *painter, std::vector<int> elevations, const std::vector<MergedAirspace> &mergedAirspaces, int highestElevation, float steps);
+  std::vector<Airspace2D> getMergedAirspaces(const Positioning::PositionInfo &info, double track, float steps, float stepsBackwards, float stepSizeInMeter, const GeoMaps::GeoMapProvider *geoMapProvider);
+  std::vector<MergedAirspace2D> processAirspaces(std::vector<Airspace2D> airspaces, std::vector<int> &elevations, float steps, int highestElevation);
+  std::vector<MergedAirspace2D> mergeAirspaces(std::vector<Airspace2D> mergedAirspaces);
+  void drawAirspacesOutline(QPainter *painter, std::vector<int> elevations, const MergedAirspace2D &mergedAirspaces2D, int highestElevation, float steps);
+  void drawAirspacesArea(QPainter *painter, std::vector<int> elevations, const MergedAirspace2D &mergedAirspaces2D, int highestElevation, float steps);
+  void drawAirspacesLabel(QPainter *painter, const MergedAirspace2D &mergedAirspaces2D);
   void drawTerrain(QPainter *painter, const std::vector<int> &elevations, int highestElevation, float steps);
   QStringList airspaceSortedCategories();
-  void drawAircraft(QPainter *painter, const Positioning::PositionInfo &info, int highestElevation);
+  void drawAircraft(QPainter *painter, const Positioning::PositionInfo &info, int highestElevation, float steps, float stepsOffset);
+  void drawCurrentHorizontalPosition(QPainter *painter, const Positioning::PositionInfo &info, float steps, float stepsBackwards);
   void drawFlightPath(QPainter *painter, const Positioning::PositionInfo &info, int highestElevation);
   int yCoordinate(int altitude, int maxHeight, int objectHeight);
   int widgetHeight();

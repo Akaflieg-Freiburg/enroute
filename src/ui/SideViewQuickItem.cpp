@@ -25,6 +25,9 @@
 #include <QPen>
 #include <QRect>
 #include <QVector>
+#include <QtConcurrent>
+#include <QMutex>
+#include <QMutexLocker>
 #include <set>
 
 #include "GlobalObject.h"
@@ -156,21 +159,34 @@ std::vector<Ui::SideViewQuickItem::Airspace2D> Ui::SideViewQuickItem::getMergedA
 {
     std::map<int, std::vector<GeoMaps::Airspace>> stepAirspaces;
     auto categories = airspaceSortedCategories();
-    for (int i = 0 - stepsBackwards; i <= steps - stepsBackwards; i++) {
+
+
+    QSet<QString> categorySet;
+    for (const QString &item : categories) {
+        categorySet.insert(item);
+    }
+
+    QElapsedTimer timer;
+    timer.start();
+  
+    QVector<QGeoCoordinate> positions;
+    for (int i = 0 - stepsBackwards; i <= steps - stepsBackwards; ++i) {
         auto position = info.coordinate().atDistanceAndAzimuth(i * stepSizeInMeter, track, 0);
-        auto step = i + stepsBackwards;
+        positions.append(position);
+    }
 
-        auto airspaces = GlobalObject::geoMapProvider()->airspaces(position);
+    auto airspacesAtPositions = GlobalObject::geoMapProvider()->airspaces(positions, categorySet);
 
-        for (const QVariant &var : airspaces) {
+    for (int step = 0; step < airspacesAtPositions.size(); ++step) {
+        const auto& airspaces = airspacesAtPositions[step];
+        for (const QVariant& var : airspaces) {
             GeoMaps::Airspace airspace = qvariant_cast<GeoMaps::Airspace>(var);
-            if (std::find(std::begin(categories), std::end(categories), airspace.CAT()) != std::end(categories)) {
-                stepAirspaces[step].push_back(airspace);
-                qWarning() << "Airspaces found at step" << i;
+            if (categorySet.contains(airspace.CAT())) {
+                stepAirspaces[step - stepsBackwards].push_back(airspace);
             }
         }
     }
-
+    
     std::vector<Airspace2D> allMergedAirspaces;
     for (const auto &step : stepAirspaces) {
         int stepIndex = step.first;
@@ -195,6 +211,7 @@ std::vector<Ui::SideViewQuickItem::Airspace2D> Ui::SideViewQuickItem::getMergedA
             }
         }
     }
+
 
     return allMergedAirspaces;
 }
@@ -250,15 +267,11 @@ void Ui::SideViewQuickItem::drawAirspacesOutline(QPainter *painter, std::vector<
     auto penWidth = pen.width();
     pen.setWidth(2);
     painter->setPen(pen);
-    for (const Airspace2D airspace2D : mergedAirspaces2D.airspaces) {
 
-        auto airspace = airspace2D.airspace;
-
-        QPolygon polygons;
-        polygons = airspace2D.polygon;
-        painter->drawPolygon(polygons);
-
+    for (const Airspace2D &airspace2D : mergedAirspaces2D.airspaces) {
+        painter->drawPolygon(airspace2D.polygon);
     }
+
     pen.setStyle(Qt::SolidLine);
     pen.setWidth(penWidth);
 
@@ -282,23 +295,21 @@ void Ui::SideViewQuickItem::drawAirspacesArea(QPainter *painter, std::vector<int
     QPen pen = painter->pen();
     pen.setStyle(Qt::NoPen);
     painter->setPen(pen);
+    painter->setBrush(color.lighter(160));
 
-    for (const Airspace2D airspace2D : mergedAirspaces2D.airspaces) {
+    QFont font = painter->font();
+    font.setPointSizeF(13); //TODO: Make dynamic??
+    painter->setFont(font);
 
-        auto airspace = airspace2D.airspace;
-
-        painter->setBrush(color.lighter(160));
+    for (const Airspace2D &airspace2D : mergedAirspaces2D.airspaces) {
 
         painter->drawPolygon(airspace2D.polygon);
 
         QPointF centroid = getPolygonCentroid(airspace2D.polygon);
 
-        QFont font = painter->font();
-        font.setPointSizeF(13); //TODO: Make dynamic??
-        painter->setFont(font);
         // Adjust for label positioning
         QFontMetrics metrics = painter->fontMetrics();
-        QString label = airspace.CAT();
+        QString label = airspace2D.airspace.CAT();
         int textWidth = metrics.horizontalAdvance(label);
         int textHeight = metrics.height();
 
@@ -313,7 +324,7 @@ void Ui::SideViewQuickItem::drawAirspacesLabel(QPainter *painter, const MergedAi
 {
     auto polygon = QPolygon{};
 
-    for (auto airspace : mergedAirspaces2D.airspaces) {
+    for (auto &airspace : mergedAirspaces2D.airspaces) {
         polygon = polygon.united(airspace.polygon);
     }
 

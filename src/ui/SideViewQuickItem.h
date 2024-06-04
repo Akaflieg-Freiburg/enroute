@@ -78,7 +78,7 @@ private:
   void drawAirspacesOutline(QPainter *painter, const MergedAirspace2D &mergedAirspaces2D);
   void drawAirspacesArea(QPainter *painter, const MergedAirspace2D &mergedAirspaces2D);
   void drawAirspacesLabel(QPainter *painter, const MergedAirspace2D &mergedAirspaces2D);
-  void drawTerrain(QPainter *painter, const std::vector<int> &elevations, int highestElevation);
+  void drawTerrain(QPainter *painter, const std::vector<int> &elevations, int highestElevation, float steps);
   QStringList airspaceSortedCategories();
   void drawAircraft(QPainter *painter, const Positioning::PositionInfo &info, int highestElevation, float steps, float stepsOffset);
   void drawCurrentHorizontalPosition(QPainter *painter, const Positioning::PositionInfo &info, float steps, float stepsBackwards);

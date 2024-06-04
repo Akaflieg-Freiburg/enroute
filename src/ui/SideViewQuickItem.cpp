@@ -84,7 +84,7 @@ void Ui::SideViewQuickItem::paint(QPainter *painter)
         drawAirspacesLabel(painter, mergedAirspace2D);
     }
 
-    drawTerrain(painter, elevations, highestElevation);
+    drawTerrain(painter, elevations, highestElevation, steps);
     drawAircraft(painter, info, highestElevation, steps, stepsOffset);
     drawFlightPath(painter, info, highestElevation, steps, stepsOffset);
     drawCurrentHorizontalPosition(painter, info, steps, stepsOffset);
@@ -138,7 +138,7 @@ void Ui::SideViewQuickItem::drawSky(QPainter *painter)
 std::vector<int> Ui::SideViewQuickItem::getElevations(const Positioning::PositionInfo &info, double track, float steps, float stepSizeInMeter, float stepOffset)
 {
     std::vector<int> elevations;
-    for (int i = 0 - stepOffset; i < steps - stepOffset; i++) {
+    for (int i = 0 - stepOffset; i < steps - stepOffset + 1; i++) {
         auto position = info.coordinate().atDistanceAndAzimuth(i * stepSizeInMeter, track, 0);
         auto elevation = GlobalObject::geoMapProvider()->terrainElevationAMSL(position).toFeet();
         elevations.push_back(elevation);
@@ -325,7 +325,7 @@ void Ui::SideViewQuickItem::drawAirspacesLabel(QPainter *painter, const MergedAi
 }
 
 
-void Ui::SideViewQuickItem::drawTerrain(QPainter *painter, const std::vector<int> &elevations, int highestElevation)
+void Ui::SideViewQuickItem::drawTerrain(QPainter *painter, const std::vector<int> &elevations, int highestElevation, float steps)
 {
     QLinearGradient terrainGradient(0, 0, 0, widgetHeight());
     terrainGradient.setColorAt(0.0, QColor(153, 102, 51));
@@ -335,9 +335,9 @@ void Ui::SideViewQuickItem::drawTerrain(QPainter *painter, const std::vector<int
     std::vector<QPointF> polygons;
     polygons.push_back(QPointF(0, widgetHeight())); // Additional polygon at the very left side to fill the terrain with color
 
-    for (size_t i = 0; i < elevations.size(); ++i) {
+    for (size_t i = 0; i < steps; ++i) {
         auto elevation = elevations[i];
-        auto x = widgetWidth() / static_cast<float>(elevations.size()) * i;
+        auto x = widgetWidth() / steps * i;
         auto y = yCoordinate(elevation, highestElevation, 0);
         polygons.push_back(QPointF(x, y));
     }
@@ -461,11 +461,6 @@ std::vector<Ui::SideViewQuickItem::MergedAirspace2D> Ui::SideViewQuickItem::merg
                     comparingAirspace.airspace.CAT() == airspace.airspace.CAT()) {
 
                     mergedAirspace.airspaces.push_back(comparingAirspace);
-
-                    // Merge the polygons
-                    merged.polygon = merged.polygon.united(comparingAirspace.polygon);
-                    merged.firstStep = std::min(merged.firstStep, comparingAirspace.firstStep);
-                    merged.lastStep = std::max(merged.lastStep, comparingAirspace.lastStep);
                     processed.insert(comparingAirspace);
                 }
             }

@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QPropertyNotifier>
 #include <QSerialPort>
 #include <QSerialPortInfo>
 

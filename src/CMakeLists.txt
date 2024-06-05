@@ -303,16 +303,6 @@ if(ANDROID)
     # Include SSL Libraries
     set(ANDROID_TARGET_ARCH ${CMAKE_ANDROID_ARCH_ABI})
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/android_openssl dummyBinaryDir)
-
-    # Translations
-    qt_add_translations(${PROJECT_NAME}
-        TS_FILES
-        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_de.ts
-        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_es.ts
-        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_fr.ts
-        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_it.ts
-        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_pl.ts
-    )
 endif()
 
 
@@ -364,17 +354,6 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     # Install
     install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
     install(DIRECTORY ${CMAKE_SOURCE_DIR}/generatedSources/manual DESTINATION ${CMAKE_INSTALL_DOCDIR})
-
-    # Translations
-    qt_add_lrelease(
-        TS_FILES
-        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_de.ts
-        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_es.ts
-        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_fr.ts
-        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_it.ts
-        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_pl.ts
-        QM_FILES_OUTPUT_VARIABLE qmFiles
-    )
 endif()
 
 
@@ -428,17 +407,6 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         Qt6::Widgets
         QMapLibre::Location
         libzip::zip
-    )
-
-    # Translations
-    qt_add_lrelease(
-        TS_FILES
-        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_de.ts
-        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_es.ts
-        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_fr.ts
-        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_it.ts
-        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_pl.ts
-        QM_FILES_OUTPUT_VARIABLE qmFiles
     )
 endif()
 
@@ -528,17 +496,6 @@ if (IOS)
     set(privacy_manifest "${CMAKE_CURRENT_SOURCE_DIR}/ios/PrivacyInfo.xcprivacy")
     target_sources("${PROJECT_NAME}" PRIVATE "${privacy_manifest}")
     set_property(TARGET "${PROJECT_NAME}" APPEND PROPERTY RESOURCE "${privacy_manifest}")
-
-    # Translations
-    qt_add_lrelease(
-        TS_FILES
-        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_de.ts
-        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_es.ts
-        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_fr.ts
-        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_it.ts
-        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_pl.ts
-        QM_FILES_OUTPUT_VARIABLE qmFiles
-    )
 endif()
 
 target_include_directories(${PROJECT_NAME}
@@ -647,14 +604,41 @@ qt_add_qml_module(${PROJECT_NAME}
     traffic/TrafficDataProvider_BluetoothLowEnergy.cpp
 )
 
-qt_add_resources(${PROJECT_NAME} translations_enroute
-    BASE
-    ${CMAKE_CURRENT_BINARY_DIR}
-    PREFIX
-    i18n
-    FILES
-    ${qmFiles}
-)
+
+#
+# Translations
+#
+
+if(${QT_VERSION} VERSION_GREATER_EQUAL "6.7.0")
+    qt_add_lrelease(
+        TS_FILES
+        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_de.ts
+        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_es.ts
+        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_fr.ts
+        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_it.ts
+        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_pl.ts
+        QM_FILES_OUTPUT_VARIABLE qmFiles
+    )
+    qt_add_resources(
+        ${PROJECT_NAME}
+        translations_enroute
+        BASE
+        ${CMAKE_CURRENT_BINARY_DIR}
+        PREFIX
+        i18n
+        FILES
+        ${qmFiles}
+    )
+else()
+    qt_add_translations(${PROJECT_NAME}
+        TS_FILES
+        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_de.ts
+        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_es.ts
+        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_fr.ts
+        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_it.ts
+        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_pl.ts
+    )
+endif()
 
 find_path(Qt6_TRANSLATION_DIR qtbase_de.qm
     HINTS ${Qt6Core_DIR}/../../../translations
@@ -677,6 +661,7 @@ qt_add_resources(${PROJECT_NAME} translations_qt
     #${Qt6_TRANSLATION_DIR}/qtdeclarative_it.qm
     ${Qt6_TRANSLATION_DIR}/qtdeclarative_pl.qm
 )
+
 
 #
 # Generate documentation

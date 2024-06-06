@@ -974,7 +974,8 @@ AppWindow {
 
     function openManual(pageUrl) {
 
-        if (Qt.platform.os === "ios")
+        if ((Qt.platform.os === "ios") ||
+                ((Qt.platform.os === "android") && (Qt.application.version < "6.7.0")))
         {
             stackView.push("pages/Manual.qml", {"fileName": pageUrl})
             return

@@ -51,7 +51,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "iOS")
 endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    find_package(Qt6 6.7 COMPONENTS DBus SerialPort Widgets REQUIRED)
+    find_package(Qt6 6.6 COMPONENTS DBus SerialPort Widgets REQUIRED)
 endif()
 
 if(${QT_VERSION} VERSION_GREATER_EQUAL "6.7.0")

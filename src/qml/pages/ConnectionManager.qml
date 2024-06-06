@@ -215,19 +215,70 @@ Page {
                 flat: true
 
                 Layout.alignment: Qt.AlignHCenter
-                text: qsTr("Add Bluetooth Device")
+                text: qsTr("New Connection")
                 icon.source: "/icons/material/ic_add_circle.svg"
 
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    Global.dialogLoader.active = false
-                    Global.dialogLoader.setSource("../dialogs/AddBTDeviceDialog.qml", {})
-                    Global.dialogLoader.active = true
+                    addMenu.open()
                 }
+
+                AutoSizingMenu {
+                    id: addMenu
+
+                    Action {
+                        text: qsTr("Bluetooth Classic")
+                        enabled: (Qt.platform.os !== "ios")
+                        onTriggered: {
+                            PlatformAdaptor.vibrateBrief()
+                            Global.dialogLoader.active = false
+                            Global.dialogLoader.setSource("../dialogs/AddBTDeviceDialog.qml", {})
+                            Global.dialogLoader.active = true
+                            addMenu.close()
+                        }
+                    }
+
+                    Action {
+                        text: qsTr("Serial Port Connection")
+                        enabled: (Qt.platform.os !== "ios")
+                        onTriggered: {
+                            PlatformAdaptor.vibrateBrief()
+                            addSerialPortDialog.open()
+                            addMenu.close()
+                        }
+                    }
+
+                    Action {
+                        text: qsTr("TCP Connection")
+                        onTriggered: {
+                            PlatformAdaptor.vibrateBrief()
+                            addTCPDialog.open()
+                            addMenu.close()
+                        }
+                    }
+
+                    Action {
+                        text: qsTr("UDP Connection")
+
+                        onTriggered: {
+                            PlatformAdaptor.vibrateBrief()
+                            addUDPDialog.open()
+                            addMenu.close()
+                        }
+                    }
+
+                }
+
             }
         }
     }
 
+
+    LongTextDialog {
+        id: ltd
+        title: qsTr("Error Adding Connection")
+        standardButtons: Dialog.Ok
+    }
 
     CenteringDialog {
         id: connectionDescription
@@ -311,5 +362,199 @@ Page {
 
             }
         }
+    }
+
+    CenteringDialog {
+        id: addUDPDialog
+
+        modal: true
+        title: qsTr("Add UDP Connection")
+        standardButtons: Dialog.Cancel|Dialog.Ok
+
+        onAboutToShow: mtf.text = ""
+
+        GridLayout {
+            width: addUDPDialog.availableWidth
+            columns: 2
+
+            Label {
+                text: qsTr("Please enter the port used by your traffic data receiver.")
+                      + " "
+                      + qsTr("This is a number between 0 and 65535.")
+                wrapMode: Text.WordWrap
+                Layout.columnSpan: 2
+                Layout.fillWidth: true
+            }
+
+            Label {
+                text: qsTr("Port")
+            }
+            MyTextField {
+                id: mtf
+                focus: true
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignBaseline
+                inputMethodHints: Qt.ImhDigitsOnly
+                validator: IntValidator {
+                    bottom: 0
+                    top: 65535
+                }
+                onAcceptableInputChanged: {
+                    addUDPDialog.standardButton(DialogButtonBox.Ok).enabled = acceptableInput
+                }
+                onAccepted: addUDPDialog.accepted()
+            }
+        }
+
+        onAccepted: {
+            var resultString = TrafficDataProvider.addDataSource_UDP(Number(mtf.text))
+            if (resultString !== "")
+            {
+                ltd.text = resultString
+                ltd.open()
+                return
+            }
+            Global.toast.doToast( qsTr("Adding UDP Connection: Port %1").arg(mtf.text) )
+            addUDPDialog.close()
+        }
+
+    }
+
+    CenteringDialog {
+        id: addTCPDialog
+
+        modal: true
+        title: qsTr("Add TCP Connection")
+        standardButtons: Dialog.Cancel|Dialog.Ok
+
+        onAboutToShow: {
+            host.text = ""
+            port.text = ""
+            binding.target = addTCPDialog.standardButton(DialogButtonBox.Ok)
+        }
+
+        GridLayout {
+            width: addUDPDialog.availableWidth
+            columns: 2
+
+            Label {
+                text: qsTr("Please enter the host name and port number used by your traffic data receiver.")
+                      + " "
+                      + qsTr("The host is typically an IPv4 address of the form '192.168.4.1', but can be any internet address.")
+                      + " "
+                      + qsTr("The port is a number between 0 and 65535.")
+                wrapMode: Text.WordWrap
+                Layout.columnSpan: 2
+                Layout.fillWidth: true
+            }
+
+            Label {
+                text: qsTr("Host")
+            }
+            MyTextField {
+                id: host
+                focus: true
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignBaseline
+            }
+
+            Label {
+                text: qsTr("Port")
+            }
+            MyTextField {
+                id: port
+                focus: true
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignBaseline
+                inputMethodHints: Qt.ImhDigitsOnly
+                validator: IntValidator {
+                    bottom: 0
+                    top: 65535
+                }
+                onAccepted: addTCPDialog.accepted()
+            }
+        }
+
+        Binding {
+            id: binding
+            property: "enabled"
+            value: (host.text !== "") && port.acceptableInput
+        }
+
+        onAccepted: {
+            var resultString = TrafficDataProvider.addDataSource_TCP(host.text, Number(port.text))
+            if (resultString !== "")
+            {
+                ltd.text = resultString
+                ltd.open()
+                return
+            }
+            Global.toast.doToast( qsTr("Adding TCP Connection to %1, Port %2").arg(host.text).arg(port.text) )
+            addTCPDialog.close()
+        }
+
+    }
+
+
+    CenteringDialog {
+        id: addSerialPortDialog
+
+        modal: true
+        title: qsTr("Add Serial Port Connection")
+        standardButtons: Dialog.Cancel
+
+        Component.onCompleted: ConnectionScanner_SerialPort.start()
+
+        ColumnLayout {
+            anchors.fill: parent
+
+            Label {
+                Layout.fillWidth: true
+
+                text: qsTr("No Device Found")
+                visible: (ConnectionScanner_SerialPort.connectionInfos.length === 0)
+                wrapMode: Text.Wrap
+            }
+
+            DecoratedListView {
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                Layout.preferredHeight: contentHeight
+
+                clip: true
+
+                model: ConnectionScanner_SerialPort.connectionInfos
+
+                delegate: WordWrappingItemDelegate {
+                    width: addSerialPortDialog.availableWidth
+
+                    enabled: model.modelData.canConnect
+                    icon.source: model.modelData.icon
+                    text: model.modelData.description
+
+                    onClicked: {
+                        var resultString = TrafficDataProvider.addDataSource(model.modelData)
+                        if (resultString !== "")
+                        {
+                            ltd.text = resultString
+                            ltd.open()
+                            return
+                        }
+                        Global.toast.doToast( qsTr("Adding Connection: %1").arg(model.modelData.name) )
+                        addSerialPortDialog.close()
+                    }
+                }
+            }
+
+            Button {
+                Layout.alignment: Qt.AlignHCenter
+
+                text: qsTr("Scan for Devices")
+
+                icon.source: "/icons/material/ic_settings_ethernet.svg"
+                onClicked: ConnectionScanner_SerialPort.start()
+            }
+        }
+
     }
 }

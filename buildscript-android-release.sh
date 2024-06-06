@@ -67,7 +67,7 @@ then
     echo "Not signing APK because \$ANDROID_KEYSTORE_FILE or \$ANDROID_KEYSTORE_PASS not set"
 else
     echo "Signing APK"
-    $ANDROID_SDK_ROOT/build-tools/33.0.1/apksigner \
+    $ANDROID_SDK_ROOT/build-tools/34.0.0/apksigner \
 	sign \
         --ks $ANDROID_KEYSTORE_FILE \
 	--ks-pass pass:$ANDROID_KEYSTORE_PASS \

@@ -230,6 +230,38 @@ public:
      */
     Q_INVOKABLE QString addDataSource(const Traffic::ConnectionInfo &connectionInfo);
 
+    /*! \brief Add an additional data source
+     *
+     * This method adds an additional UDP data source to this TrafficDataProvider.
+     *
+     * \param port UDP Port.
+     *
+     * \returns An empty string on success, and a human-readable, translated error message on failure.
+     */
+    Q_INVOKABLE QString addDataSource_UDP(quint16 port);
+
+    /*! \brief Add an additional data source
+     *
+     * This method adds an additional serial port data source to this TrafficDataProvider.
+     *
+     * \param portName Name of the serial port
+     *
+     * \returns An empty string on success, and a human-readable, translated error message on failure.
+     */
+    Q_INVOKABLE QString addDataSource_SerialPort(const QString& portName);
+
+    /*! \brief Add an additional data source
+     *
+     * This method adds an additional TCP data source to this TrafficDataProvider.
+     *
+     * \param host Internet address
+     *
+     * \param port TCP Port.
+     *
+     * \returns An empty string on success, and a human-readable, translated error message on failure.
+     */
+    Q_INVOKABLE QString addDataSource_TCP(const QString& host, quint16 port);
+
     /*! \brief Remove data sources
      *
      * This method removes a data source from this TrafficDataProvider.

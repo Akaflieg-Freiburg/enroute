@@ -23,13 +23,16 @@
 
 #include "platform/PlatformAdaptor_Abstract.h"
 #include "traffic/TrafficDataProvider.h"
+
+#if __has_include(<QSerialPort>)
+#include "traffic/TrafficDataSource_SerialPort.h"
+#endif
 #include "traffic/TrafficDataSource_Tcp.h"
 #include "traffic/TrafficDataSource_Udp.h"
 
 
 Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning::PositionInfoSource_Abstract(parent)
 {
-
     // Create traffic objects
     const int numTrafficObjects = 20;
     m_trafficObjects.reserve(numTrafficObjects);
@@ -64,6 +67,7 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
     addDataSource( new Traffic::TrafficDataSource_Udp(true, 49002, this));
 
     // Bindings for saving
+    loadConnectionInfos();
     connect(this, &Traffic::TrafficDataProvider::dataSourcesChanged, this, &Traffic::TrafficDataProvider::saveConnectionInfos);
 
     // Bindings for status string
@@ -122,12 +126,79 @@ QString Traffic::TrafficDataProvider::addDataSource(const Traffic::ConnectionInf
     case Traffic::ConnectionInfo::TCP:
         return tr("Unable to add TCP connection. This is not implemented at the moment.");
     case Traffic::ConnectionInfo::UDP:
-        return tr("Unable to add UDP connection. This is not implemented at the moment.");
+        return addDataSource_UDP(connectionInfo.port());
     case Traffic::ConnectionInfo::Serial:
-        return tr("Unable to add serial port connection. This is not implemented at the moment.");
+        return addDataSource_SerialPort(connectionInfo.name());
     case Traffic::ConnectionInfo::FLARMFile:
         return tr("Unable to add FLARM simulator file connection. This is not implemented at the moment.");
     }
+    return {};
+}
+
+QString Traffic::TrafficDataProvider::addDataSource_UDP(quint16 port)
+{
+    // Ignore new device if data source already exists.
+    foreach(auto _dataSource, m_dataSources)
+    {
+        auto* dataSourceUDP = qobject_cast<TrafficDataSource_Udp*>(_dataSource);
+        if (dataSourceUDP != nullptr)
+        {
+            if (port == dataSourceUDP->port())
+            {
+                return tr("A connection to this device already exists.");
+            }
+        }
+    }
+
+    auto* source = new TrafficDataSource_Udp(false, port, this);
+    source->connectToTrafficReceiver();
+    addDataSource(source);
+    return {};
+}
+
+QString Traffic::TrafficDataProvider::addDataSource_SerialPort(const QString& portName)
+{
+#if __has_include(<QSerialPort>)
+    // Ignore new device if data source already exists.
+    foreach(auto _dataSource, m_dataSources)
+    {
+        auto* dataSourceSerialPort = qobject_cast<TrafficDataSource_SerialPort*>(_dataSource);
+        if (dataSourceSerialPort != nullptr)
+        {
+            if (portName == dataSourceSerialPort->sourceName())
+            {
+                return tr("A connection to this device already exists.");
+            }
+        }
+    }
+
+    auto* source = new TrafficDataSource_SerialPort(false, portName, this);
+    source->connectToTrafficReceiver();
+    addDataSource(source);
+    return {};
+#else
+    return tr("Serial ports are not supported on this platform.");
+#endif
+}
+
+QString Traffic::TrafficDataProvider::addDataSource_TCP(const QString& host, quint16 port)
+{
+    // Ignore new device if data source already exists.
+    foreach(auto _dataSource, m_dataSources)
+    {
+        auto* dataSourceTCP = qobject_cast<TrafficDataSource_Tcp*>(_dataSource);
+        if (dataSourceTCP != nullptr)
+        {
+            if ((port == dataSourceTCP->port()) && (host == dataSourceTCP->host()))
+            {
+                return tr("A connection to this device already exists.");
+            }
+        }
+    }
+
+    auto* source = new TrafficDataSource_Tcp(false, host, port, this);
+    source->connectToTrafficReceiver();
+    addDataSource(source);
     return {};
 }
 
@@ -187,8 +258,6 @@ void Traffic::TrafficDataProvider::deferredInitialization()
 {
     // Try to (re)connect whenever the network situation changes
     connect(GlobalObject::platformAdaptor(), &Platform::PlatformAdaptor_Abstract::wifiConnected, this, &Traffic::TrafficDataProvider::connectToTrafficReceiver);
-
-    loadConnectionInfos();
 }
 
 void Traffic::TrafficDataProvider::disconnectFromTrafficReceiver()
@@ -218,9 +287,9 @@ void Traffic::TrafficDataProvider::loadConnectionInfos()
     QDataStream outStream(&outFile);
     QList<Traffic::ConnectionInfo> connectionInfos;
     outStream >> connectionInfos;
-    foreach (auto connectionInfo, connectionInfos) {
+    foreach (auto connectionInfo, connectionInfos)
+    {
         addDataSource(connectionInfo);
-
     }
 }
 
@@ -553,27 +622,5 @@ void Traffic::TrafficDataProvider::updateStatusString()
     }
 
     const QString result = tr("Not receiving traffic receiver heartbeat through any of the configured data connections.");
-    //const QString result = "<p>" + tr("Not receiving heartbeat.") + "<p>";
-
-    /*
-    result += u"<ul style='margin-left:-25px;'>"_qs;
-    foreach(auto source, m_dataSources)
-    {
-        if (source.isNull())
-        {
-            continue;
-        }
-
-        result += u"<li>"_qs;
-        result += source->sourceName() + ": " + source->connectivityStatus();
-        if (!source->errorString().isEmpty())
-        {
-            result += " " + source->errorString();
-        }
-        result += u"</li>"_qs;
-    }
-    result += u"</ul>"_qs;
-*/
-
     setStatusString(result);
 }

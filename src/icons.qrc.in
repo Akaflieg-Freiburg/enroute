@@ -57,6 +57,7 @@
     <file alias="icons/material/ic_satellite.svg">${material-design-icons_SOURCE_DIR}/maps/svg/production/ic_satellite_24px.svg</file>
     <file alias="icons/material/ic_send.svg">${material-design-icons_SOURCE_DIR}/content/svg/design/ic_send_24px.svg</file>
 	<file alias="icons/material/ic_settings.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_settings_24px.svg</file>
+	<file alias="icons/material/ic_settings_ethernet.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_settings_ethernet_24px.svg</file>
 	<file alias="icons/material/ic_speaker_phone.svg">${material-design-icons_SOURCE_DIR}/communication/svg/production/ic_speaker_phone_24px.svg</file>
 	<file alias="icons/material/ic_swap_horiz.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_swap_horiz_24px.svg</file>
 	<file alias="icons/material/ic_swap_vert.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_swap_vert_24px.svg</file>

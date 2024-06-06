@@ -88,6 +88,7 @@ set(SOURCES
     traffic/ConnectionInfo.h
     traffic/ConnectionScanner_Abstract.h
     traffic/ConnectionScanner_Bluetooth.h
+    traffic/ConnectionScanner_SerialPort.h
     traffic/FlarmnetDB.h
     traffic/PasswordDB.h
     traffic/TrafficDataSource_Abstract.h
@@ -179,6 +180,7 @@ set(SOURCES
     traffic/ConnectionInfo.cpp
     traffic/ConnectionScanner_Abstract.cpp
     traffic/ConnectionScanner_Bluetooth.cpp
+    traffic/ConnectionScanner_SerialPort.cpp
     traffic/FlarmnetDB.cpp
     traffic/PasswordDB.cpp
     traffic/TrafficDataSource_Abstract.cpp
@@ -239,6 +241,8 @@ if(ANDROID)
         platform/PlatformAdaptor_Android.cpp
         platform/SafeInsets_Android.h
         platform/SafeInsets_Android.cpp
+        traffic/TrafficDataSource_SerialPort.h
+        traffic/TrafficDataSource_SerialPort.cpp
         android/src/de/akaflieg_freiburg/enroute/IntentLauncher.java
         android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java
         android/src/de/akaflieg_freiburg/enroute/ShareActivity.java
@@ -281,6 +285,7 @@ if(ANDROID)
         Qt6::Quick
         Qt6::QuickControls2
         Qt6::Sensors
+        Qt6::SerialPort
         Qt6::Sql
         Qt6::Svg
         Qt6::TextToSpeech
@@ -313,6 +318,8 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
         platform/PlatformAdaptor_Linux.cpp
         platform/SafeInsets_Desktop.h
         platform/SafeInsets_Desktop.cpp
+        traffic/TrafficDataSource_SerialPort.h
+        traffic/TrafficDataSource_SerialPort.cpp
     )
 
     # Compile definitions
@@ -331,6 +338,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
         Qt6::Positioning
         Qt6::Quick
         Qt6::QuickControls2
+        Qt6::SerialPort
         Qt6::Sql
         Qt6::Svg
         Qt6::TextToSpeech
@@ -367,6 +375,8 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         platform/PlatformAdaptor_MacOS.cpp
         platform/SafeInsets_Desktop.h
         platform/SafeInsets_Desktop.cpp
+        traffic/TrafficDataSource_SerialPort.h
+        traffic/TrafficDataSource_SerialPort.cpp
     )
 
     # Compile definitions
@@ -389,6 +399,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         Qt6::Positioning
         Qt6::Quick
         Qt6::QuickControls2
+        Qt6::SerialPort
         Qt6::Sql
         Qt6::Svg
         Qt6::TextToSpeech
@@ -593,23 +604,41 @@ qt_add_qml_module(${PROJECT_NAME}
     traffic/TrafficDataProvider_BluetoothLowEnergy.cpp
 )
 
-qt_add_lrelease(
-    TS_FILES
-    ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_de.ts
-    ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_es.ts
-    ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_fr.ts
-    ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_it.ts
-    ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_pl.ts
-    QM_FILES_OUTPUT_VARIABLE qmFiles
-)
-qt_add_resources(${PROJECT_NAME} translations_enroute
-    BASE
-    ${CMAKE_CURRENT_BINARY_DIR}
-    PREFIX
-    i18n
-    FILES
-    ${qmFiles}
-)
+
+#
+# Translations
+#
+
+if(${QT_VERSION} VERSION_GREATER_EQUAL "6.7.0")
+    qt_add_lrelease(
+        TS_FILES
+        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_de.ts
+        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_es.ts
+        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_fr.ts
+        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_it.ts
+        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_pl.ts
+        QM_FILES_OUTPUT_VARIABLE qmFiles
+    )
+    qt_add_resources(
+        ${PROJECT_NAME}
+        translations_enroute
+        BASE
+        ${CMAKE_CURRENT_BINARY_DIR}
+        PREFIX
+        i18n
+        FILES
+        ${qmFiles}
+    )
+else()
+    qt_add_translations(${PROJECT_NAME}
+        TS_FILES
+        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_de.ts
+        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_es.ts
+        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_fr.ts
+        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_it.ts
+        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_pl.ts
+    )
+endif()
 
 find_path(Qt6_TRANSLATION_DIR qtbase_de.qm
     HINTS ${Qt6Core_DIR}/../../../translations
@@ -632,6 +661,7 @@ qt_add_resources(${PROJECT_NAME} translations_qt
     #${Qt6_TRANSLATION_DIR}/qtdeclarative_it.qm
     ${Qt6_TRANSLATION_DIR}/qtdeclarative_pl.qm
 )
+
 
 #
 # Generate documentation

@@ -134,7 +134,8 @@ private slots:
     void clean();
 
     // Clear all data and upateData(). This is called when API keys change.
-    void clearAllAndUpdate();
+#warning
+    //void clearAllAndUpdate();
 
     // This slot is connected to signals QNetworkReply::finished and
     // QNetworkReply::errorOccurred of the QNetworkReply contained in the list

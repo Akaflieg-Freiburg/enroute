@@ -23,7 +23,6 @@
 #include <QTimer>
 #include <chrono>
 
-#include "GlobalSettings.h"
 #include "navigation/Navigator.h"
 #include "notam/NotamProvider.h"
 #include "positioning/PositionProvider.h"
@@ -47,7 +46,8 @@ NOTAM::NotamProvider::NotamProvider(QObject* parent) :
 void NOTAM::NotamProvider::deferredInitialization()
 {
     // Start from scratch if FAA keys change
-    connect(globalSettings(), &GlobalSettings::FAADataChanged, this, &NOTAM::NotamProvider::clearAllAndUpdate);
+#warning
+//    connect(globalSettings(), &GlobalSettings::FAADataChanged, this, &NOTAM::NotamProvider::clearAllAndUpdate);
 
     // Wire up updateData. Check NOTAM database every 10 seconds after start, every 11 minutes, and whenever the flight route changes.
     auto* timer = new QTimer(this);
@@ -286,10 +286,10 @@ void NOTAM::NotamProvider::clean()
         m_notamLists = newNotamLists;
         emit dataChanged();
     }
-
 }
 
-
+#warning
+/*
 void NOTAM::NotamProvider::clearAllAndUpdate()
 {
     foreach(auto networkReply, m_networkReplies)
@@ -306,7 +306,7 @@ void NOTAM::NotamProvider::clearAllAndUpdate()
 
     updateData();
 }
-
+*/
 
 void NOTAM::NotamProvider::downloadFinished()
 {
@@ -480,14 +480,8 @@ void NOTAM::NotamProvider::startRequest(const QGeoCoordinate& coordinate)
     {
         return;
     }
-    auto FAA_ID = globalSettings()->FAA_ID();
-    auto FAA_KEY = globalSettings()->FAA_KEY();
-    if (FAA_ID.isEmpty() || FAA_KEY.isEmpty())
-    {
-        return;
-    }
 
-    auto urlString = u"https://cplx.vm.uni-freiburg.de/storage/enrouteProxy/notam.php?"
+    auto urlString = u"https://enroute-data.akaflieg-freiburg.de/proxy/notam.php?"
                      "locationLongitude=%1&"
                      "locationLatitude=%2&"
                      "locationRadius=%3&"
@@ -495,19 +489,7 @@ void NOTAM::NotamProvider::startRequest(const QGeoCoordinate& coordinate)
                          .arg(coordinate.longitude())
                          .arg(coordinate.latitude())
                          .arg(1.2*requestRadius.toNM());
-    /*
-    auto urlString = u"https://external-api.faa.gov/notamapi/v1/notams?"
-                     "locationLongitude=%1&"
-                     "locationLatitude=%2&"
-                     "locationRadius=%3&"
-                     "pageSize=1000"_qs
-            .arg(coordinate.longitude())
-            .arg(coordinate.latitude())
-            .arg(1.2*requestRadius.toNM());
-    */
     QNetworkRequest request( urlString );
-    request.setRawHeader("client_id", FAA_ID.toLatin1());
-    request.setRawHeader("client_secret", FAA_KEY.toLatin1());
 
     auto* reply = GlobalObject::networkAccessManager()->get(request);
     reply->setProperty("area", QVariant::fromValue(QGeoCircle(coordinate, requestRadius.toM())) );

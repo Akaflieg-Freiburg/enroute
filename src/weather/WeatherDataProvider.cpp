@@ -195,6 +195,8 @@ void Weather::WeatherDataProvider::downloadFinished()
             continue;
         }
 
+        qWarning() << QString(networkReply->readAll());
+
         // Decode XML
         QXmlStreamReader xml(networkReply);
         while (!xml.atEnd() && !xml.hasError())
@@ -631,18 +633,12 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate)
     bBox.setWidth( bBox.width() + 2.0/factor );
 
     {
-        /*
-        QString urlString = u"https://aviationweather.gov/api/data/metar?format=xml&bbox=%1,%2,%3,%4"_qs
+        QString urlString = u"https://enroute-data.akaflieg-freiburg.de/proxy/metar.php?format=xml&bbox=%1,%2,%3,%4"_qs
                                 .arg(bBox.bottomLeft().latitude())
                                 .arg(bBox.bottomLeft().longitude())
                                 .arg(bBox.topRight().latitude())
                                 .arg(bBox.topRight().longitude());
-        */
-        QString urlString = u"https://cplx.vm.uni-freiburg.de/storage/enrouteProxy/metar.php?format=xml&bbox=%1,%2,%3,%4"_qs
-                                .arg(bBox.bottomLeft().latitude())
-                                .arg(bBox.bottomLeft().longitude())
-                                .arg(bBox.topRight().latitude())
-                                .arg(bBox.topRight().longitude());
+        qWarning() << urlString;
         QUrl url = QUrl(urlString);
         QNetworkRequest request(url);
         request.setRawHeader("accept", "application/xml");
@@ -653,14 +649,7 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate)
     }
 
     {
-        /*
-        QString urlString = u"https://aviationweather.gov/api/data/taf?format=xml&bbox=%1,%2,%3,%4"_qs
-                                .arg(bBox.bottomLeft().latitude())
-                                .arg(bBox.bottomLeft().longitude())
-                                .arg(bBox.topRight().latitude())
-                                .arg(bBox.topRight().longitude());
-        */
-        QString urlString = u"https://cplx.vm.uni-freiburg.de/storage/enrouteProxy/taf.php?format=xml&bbox=%1,%2,%3,%4"_qs
+        QString urlString = u"https://enroute-data.akaflieg-freiburg.de/proxy/taf.php?format=xml&bbox=%1,%2,%3,%4"_qs
                                 .arg(bBox.bottomLeft().latitude())
                                 .arg(bBox.bottomLeft().longitude())
                                 .arg(bBox.topRight().latitude())

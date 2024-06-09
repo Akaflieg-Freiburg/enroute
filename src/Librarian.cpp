@@ -287,8 +287,10 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
         result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> is now able to connected to your traffic data receiver via Bluetooth radio. "
                              "At the moment, Enroute supports only the 'Bluetooth Classic' radio standard, 'Bluetooth Low Energy' is are not supported. "
                              "Due to platform limitations, Bluetooth is not supported on iOS devices.") + "</p>";
+/*
         result += "<p>" + tr("Users with nonstandard hardware can now configure IP adresses for their traffic data receivers. "
                              "Serial port connections are also supported.") + "</p>";
+*/
         result += "<p>" + tr("We need help with promotional graphics for the app stores and with explainer videos. "
                              "If you are a graphic/video artist and would like to help, then please be in touch.") + "</p>";
         return result;

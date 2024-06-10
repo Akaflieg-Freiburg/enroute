@@ -107,34 +107,50 @@ If you are sure that your device has connected to the correct Wi-Fi network,
 then return to **Enroute Flight Navigation** open the main menu and go to
 "Settings/Data Connections".  Look at the connections of type "TCP" and "UDP".
 
-If none of the TCP/UDP connections has status "Connected", then **Enroute Flight
-Navigation** cannot see your traffic data receiver in the Wi-Fi network.  This
-means that your traffic data receiver is not available at any of the standard IP
-address/Port combinations known to **Enroute Flight Navigation**.
+- If none of the TCP/UDP connections has status "Connected", then **Enroute
+  Flight Navigation** cannot see your traffic data receiver in the Wi-Fi
+  network.  This means that your traffic data receiver is not available at any
+  of the IP address/Port combinations known to **Enroute Flight Navigation**.
 
-Check the manual of your traffic data receiver or Wi-Fi interface and note the
-IP address and port that the traffic data receiver uses.  Go back to **Enroute
-Flight Navigation** and check that the combination of IP address and port
-appears in the list of data connections.  
+  Check the manual of your traffic data receiver or Wi-Fi interface and note the
+  connection type (TCP or UDP), IP address and port that the traffic data
+  receiver uses.  Go back to **Enroute Flight Navigation** and check whether the
+  combination of IP address and port appears in the list of data connections.  
 
-If a data connection for that IP address and port exists but cannot connect,
-then there is a communication issue that we cannot resolve. It might be
-interesting to check if another app is able to communicate with your traffic
-data receiver.  If a data connection for that IP address and port does not
-exist, then please do the following.
+  If a data connection for that IP address and port exists but cannot connect,
+  then there is a communication issue that we cannot resolve. It might be
+  interesting to check if another app is able to communicate with your traffic
+  data receiver.  
+  
+  If a data connection for that IP address and port does not exist, then please
+  do the following.
 
-- Contact us! We want to support all traffic data receivers on the market, and
-  we will be glad to support your traffic data receiver as well. Return to the
-  main moving map screen of **Enroute Flight Navigation**, open the main menu
-  and go to "Bug Report".
+  - Contact us! We want to support all traffic data receivers on the market, and
+    we will be glad to support your traffic data receiver as well. For this,
+    return to the main moving map screen of **Enroute Flight Navigation**, open
+    the main menu and go to "Bug Report".
 
-- Check if your traffic data receiver can be configured to use one of the
-  supported IP address/port combinations.
+  - Check if your traffic data receiver can be configured to use one of the
+    supported IP address/port combinations. If possible, this will ensure that
+    users of **Enroute Flight Navigation** can connect to your traffic data
+    receiver without manual configuration.
+
+  - Configure a new data connection for the IP address/port combination used by
+    your traffic data receiver. The section :ref:`SettingsDataConnectionsPage`
+    explains how to do that.
+
+- If one or several of the TCP/UDP connections have status "Connected" but no
+  heartbeat is received, then you are out of luck. **Enroute Flight Navigation**
+  does not receive any data or cannot understand the data it receives.  Please
+  contact us! We want to support all traffic data receivers on the market, and
+  we will be interested to hear about your case. For this, return to the main
+  moving map screen of **Enroute Flight Navigation**, open the main menu and go
+  to "Bug Report".
 
 **Step 3: [Censored Profanity]** 
 
 If **Enroute Flight Navigation** has connected to your traffic data receiver via
-a TCP/UDP connections but does not receive heartbeat of traffic data, then you
+a TCP/UDP connection but does not receive heartbeat of traffic data, then you
 are out of luck. Please contact us, as we would like to hear about your case.
 Return to the main moving map screen of **Enroute Flight Navigation**, open the
 main menu and go to "Bug Report".  It might be worth checking if other apps

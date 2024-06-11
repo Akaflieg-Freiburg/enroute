@@ -503,10 +503,23 @@ AppWindow {
 
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
-                                Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteManual")
                                 manualMenu.close()
                                 aboutMenu.close()
                                 drawer.close()
+                                if (GlobalSettings.alwaysOpenExternalWebsites)
+                                {
+                                    Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteManual")
+                                    return
+                                }
+
+                                Global.dialogLoader.active = false
+                                Global.dialogLoader.setSource("dialogs/PrivacyWarning.qml",
+                                                              {
+                                                                  openExternally: true,
+                                                                  text: qsTr("In order to show the manual, <strong>Enroute Flight Navigation</strong> will ask your system to open an external web site hosted by GitHub."),
+                                                                  url: "https://akaflieg-freiburg.github.io/enrouteManual"
+                                                              })
+                                Global.dialogLoader.active = true
                             }
 
                         }
@@ -518,10 +531,22 @@ AppWindow {
 
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
-                                Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteManual/manual.epub")
                                 manualMenu.close()
                                 aboutMenu.close()
                                 drawer.close()
+                                if (GlobalSettings.alwaysOpenExternalWebsites)
+                                {
+                                    Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteManual/manual.epub")
+                                    return
+                                }
+                                Global.dialogLoader.active = false
+                                Global.dialogLoader.setSource("dialogs/PrivacyWarning.qml",
+                                                              {
+                                                                  openExternally: true,
+                                                                  text: qsTr("In order to download the manual, <strong>Enroute Flight Navigation</strong> will ask your system to open an external web site hosted by GitHub."),
+                                                                  url: "https://akaflieg-freiburg.github.io/enrouteManual/manual.epub"
+                                                              })
+                                Global.dialogLoader.active = true
                             }
                         }
 
@@ -532,11 +557,22 @@ AppWindow {
 
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
-                                Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteManual/manual.pdf")
-
                                 manualMenu.close()
                                 aboutMenu.close()
                                 drawer.close()
+                                if (GlobalSettings.alwaysOpenExternalWebsites)
+                                {
+                                    Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteManual/manual.pdf")
+                                    return
+                                }
+                                Global.dialogLoader.active = false
+                                Global.dialogLoader.setSource("dialogs/PrivacyWarning.qml",
+                                                              {
+                                                                  openExternally: true,
+                                                                  text: qsTr("In order to download the manual, <strong>Enroute Flight Navigation</strong> will ask your system to open an external web site hosted by GitHub."),
+                                                                  url: "https://akaflieg-freiburg.github.io/enrouteManual/manual.pdf"
+                                                              })
+                                Global.dialogLoader.active = true
                             }
                         }
 

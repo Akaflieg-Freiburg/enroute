@@ -511,7 +511,6 @@ AppWindow {
                                     Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteManual")
                                     return
                                 }
-
                                 Global.dialogLoader.active = false
                                 Global.dialogLoader.setSource("dialogs/PrivacyWarning.qml",
                                                               {

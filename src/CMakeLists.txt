@@ -346,6 +346,13 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
         QMapLibre::Location
         libzip::zip
     )
+if (TARGET Qt6::WebView)
+    message(STATUS "QtWebView found.")
+    target_link_libraries(${PROJECT_NAME}
+        PRIVATE
+        Qt6::WebView
+    )
+endif()
     target_precompile_headers(${PROJECT_NAME}
         PUBLIC
         <QQmlEngine>

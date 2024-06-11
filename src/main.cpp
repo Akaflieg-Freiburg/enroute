@@ -31,9 +31,11 @@
 #include <QSettings>
 #include <QTranslator>
 
-#if defined(Q_OS_ANDROID) or defined(Q_OS_IOS)
+#if __has_include (<QtWebView/QtWebView>)
 #include <QtWebView/QtWebView>
-#else
+#endif
+
+#if !(defined(Q_OS_ANDROID) and defined(Q_OS_IOS))
 #include <QApplication>
 #include <kdsingleapplication.h>
 #endif
@@ -81,10 +83,12 @@ auto main(int argc, char *argv[]) -> int
 
     // Required by the maplibre plugin to QtLocation
     QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGL);
-    // Set up application
 
-#if defined(Q_OS_ANDROID) or defined(Q_OS_IOS)
+// Set up application
+#if __has_include (<QtWebView/QtWebView>)
     QtWebView::initialize();
+#endif
+#if defined(Q_OS_ANDROID) or defined(Q_OS_IOS)
     QGuiApplication app(argc, argv);
 #else
     QApplication app(argc, argv);

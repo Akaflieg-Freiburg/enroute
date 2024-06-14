@@ -76,7 +76,7 @@ void Weather::WeatherDataProvider::deferredInitialization()
     connect(Navigation::Navigator::clock(), &Navigation::Clock::timeChanged, this, &Weather::WeatherDataProvider::sunInfoChanged);
 
     // Read METAR/TAF from "weather.dat"
-    bool success = load();
+    bool const success = load();
 
     // Compute time for next update
     auto remainingTime = QDateTime::currentDateTimeUtc().msecsTo( _lastUpdate.addMSecs(updateIntervalNormal_ms) );
@@ -518,7 +518,7 @@ auto Weather::WeatherDataProvider::QNH() const -> Units::Pressure
             continue;
         }
 
-        QGeoCoordinate here = Positioning::PositionProvider::lastValidCoordinate();
+        QGeoCoordinate const here = Positioning::PositionProvider::lastValidCoordinate();
         if (here.distanceTo(weatherStationPtr->coordinate()) < here.distanceTo(closestReportWithQNH->coordinate()))
         {
             closestReportWithQNH = weatherStationPtr;
@@ -567,7 +567,7 @@ auto Weather::WeatherDataProvider::QNHInfo() const -> QString
             continue;
         }
 
-        QGeoCoordinate here = Positioning::PositionProvider::lastValidCoordinate();
+        QGeoCoordinate const here = Positioning::PositionProvider::lastValidCoordinate();
         if (here.distanceTo(weatherStationPtr->coordinate()) < here.distanceTo(closestReportWithQNH->coordinate()))
         {
             closestReportWithQNH = weatherStationPtr;
@@ -638,11 +638,10 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate)
                                 .arg(bBox.bottomLeft().longitude())
                                 .arg(bBox.topRight().latitude())
                                 .arg(bBox.topRight().longitude());
-        qWarning() << urlString;
         QUrl url = QUrl(urlString);
         QNetworkRequest request(url);
         request.setRawHeader("accept", "application/xml");
-        QPointer<QNetworkReply> reply = GlobalObject::networkAccessManager()->get(request);
+        QPointer<QNetworkReply> const reply = GlobalObject::networkAccessManager()->get(request);
         _networkReplies.push_back(reply);
         connect(reply, &QNetworkReply::finished, this, &Weather::WeatherDataProvider::downloadFinished);
         connect(reply, &QNetworkReply::errorOccurred, this, &Weather::WeatherDataProvider::downloadFinished);
@@ -657,7 +656,7 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate)
         QUrl url = QUrl(urlString);
         QNetworkRequest request(url);
         request.setRawHeader("accept", "application/xml");
-        QPointer<QNetworkReply> reply = GlobalObject::networkAccessManager()->get(request);
+        QPointer<QNetworkReply> const reply = GlobalObject::networkAccessManager()->get(request);
         _networkReplies.push_back(reply);
         connect(reply, &QNetworkReply::finished, this, &Weather::WeatherDataProvider::downloadFinished);
         connect(reply, &QNetworkReply::errorOccurred, this, &Weather::WeatherDataProvider::downloadFinished);
@@ -684,9 +683,8 @@ auto Weather::WeatherDataProvider::weatherStations() const -> QList<Weather::Sta
         }
 
     // Sort list
-    auto compare = [&](const Weather::Station *a, const Weather::Station* b)
-    {
-        QGeoCoordinate here = Positioning::PositionProvider::lastValidCoordinate();
+    auto compare = [&](const Weather::Station *a, const Weather::Station *b) {
+        QGeoCoordinate const here = Positioning::PositionProvider::lastValidCoordinate();
         return here.distanceTo(a->coordinate()) < here.distanceTo(b->coordinate());
     };
     std::sort(sortedReports.begin(), sortedReports.end(), compare);

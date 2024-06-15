@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <QFile>
+#include <QJsonArray>
 #include <QStandardPaths>
 #include <QTimer>
 #include <chrono>
@@ -101,6 +102,29 @@ NOTAM::NotamProvider::~NotamProvider()
 //
 // Getter Methods
 //
+
+QByteArray NOTAM::NotamProvider::GeoJSON() const
+{
+    QJsonArray waypointArray;
+    foreach (const auto& waypoint, waypoints())
+    {
+        if (waypoint.isValid())
+        {
+            waypointArray.append(waypoint.toJSON());
+        }
+    }
+
+    QJsonObject jsonObj;
+    jsonObj.insert(QStringLiteral("type"), "FeatureCollection");
+    //jsonObj.insert(QStringLiteral("enroute"), GeoMaps::GeoJSON::indicatorWaypointLibrary());
+    jsonObj.insert(QStringLiteral("features"), waypointArray);
+
+    QJsonDocument doc;
+    doc.setObject(jsonObj);
+    //qWarning() << doc.toJson();
+    return doc.toJson();
+}
+
 
 QList<GeoMaps::Waypoint> NOTAM::NotamProvider::waypoints() const
 {

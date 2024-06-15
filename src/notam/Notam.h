@@ -47,6 +47,7 @@ public:
      */
     explicit Notam(const QJsonObject& jsonObject);
 
+
     //
     // Properties
     //

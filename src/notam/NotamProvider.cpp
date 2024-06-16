@@ -105,23 +105,71 @@ NOTAM::NotamProvider::~NotamProvider()
 
 QByteArray NOTAM::NotamProvider::GeoJSON() const
 {
-    QJsonArray waypointArray;
-    foreach (const auto& waypoint, waypoints())
+    QList<QJsonObject> result;
+    QSet<QGeoCoordinate> coordinatesSeen;
+    QSet<QGeoCircle> regionsCovered;
+
+    foreach(auto notamList, m_notamLists)
     {
-        if (waypoint.isValid())
+        foreach(auto notam, notamList.notams())
         {
-            waypointArray.append(waypoint.toJSON());
+            if (!notam.isValid() || notam.isOutdated())
+            {
+                continue;
+            }
+            auto coordinate = notam.coordinate();
+            if (!coordinate.isValid())
+            {
+                continue;
+            }
+            if (!notamList.region().contains(coordinate))
+            {
+                continue;
+            }
+
+
+            // If we already have a waypoint for that coordinate, then don't add another one.
+            if (coordinatesSeen.contains(coordinate))
+            {
+                continue;
+            }
+
+            // If the coordinate has already been handled by an earlier (=newer) notamList,
+            // then don't add it here.
+            bool hasBeenCovered = false;
+            foreach(auto region, regionsCovered)
+            {
+                if (region.contains(coordinate))
+                {
+                    hasBeenCovered = true;
+                    break;
+                }
+            }
+            if (hasBeenCovered)
+            {
+                continue;
+            }
+
+            coordinatesSeen += coordinate;
+            result.append(notam.GeoJSON());
         }
+
+        regionsCovered += notamList.region();
+    }
+
+
+    QJsonArray waypointArray;
+    foreach (const auto& jsonObject, result)
+    {
+        waypointArray.append(jsonObject);
     }
 
     QJsonObject jsonObj;
     jsonObj.insert(QStringLiteral("type"), "FeatureCollection");
-    //jsonObj.insert(QStringLiteral("enroute"), GeoMaps::GeoJSON::indicatorWaypointLibrary());
     jsonObj.insert(QStringLiteral("features"), waypointArray);
 
     QJsonDocument doc;
     doc.setObject(jsonObj);
-    //qWarning() << doc.toJson();
     return doc.toJson();
 }
 

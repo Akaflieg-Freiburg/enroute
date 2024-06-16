@@ -185,6 +185,7 @@ Map {
             property string source: "notams"
 
             layout: {
+                "icon-ignore-placement": true,
                 "icon-image": '["get", "CAT"]',
                 "text-field": '["get", "NAM"]',
                 "text-size": 12,

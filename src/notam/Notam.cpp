@@ -150,7 +150,7 @@ QJsonObject NOTAM::Notam::GeoJSON() const
 {
     QMap<QString, QVariant> m_properties;
     m_properties["CAT"] = "WP";
-    m_properties["NAM"] = "NOTAM";
+    m_properties["NAM"] = "";
 
     QJsonArray coords;
     coords.insert(0, m_coordinate.longitude());

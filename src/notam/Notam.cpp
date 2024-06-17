@@ -149,8 +149,8 @@ QString NOTAM::Notam::cancels() const
 QJsonObject NOTAM::Notam::GeoJSON() const
 {
     QMap<QString, QVariant> m_properties;
-    m_properties["CAT"] = "WP";
-    m_properties["NAM"] = "";
+    m_properties["CAT"] = u"NOTAM"_qs;
+    m_properties["NAM"] = {};
 
     QJsonArray coords;
     coords.insert(0, m_coordinate.longitude());

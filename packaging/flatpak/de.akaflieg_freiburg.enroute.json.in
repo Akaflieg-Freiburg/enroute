@@ -200,9 +200,9 @@
             "name": "maplibre-native-qt",
             "sources": [
                 {
-                    "type": "git",
-                    "url": "https://github.com/maplibre/maplibre-native-qt",
-                    "commit": "80fe60e"
+                    "type": "archive",
+                    "url": "https://cplx.vm.uni-freiburg.de/storage/maplibre-native-qt.tar.xz",
+		    "sha256": "df7d3ab7d474d36d3e4a8218558dd277a76774e5a3885651eb7fff2c1ad19372"
                 }
             ],
             "buildsystem": "cmake-ninja",
@@ -218,6 +218,28 @@
                 {
                     "type": "git",
                     "url": "https://github.com/qt/qttranslations.git",
+                    "tag": "v${Qt6_VERSION}"
+                }
+            ],
+            "buildsystem": "cmake-ninja"
+        },
+        {
+            "name": "qtconnectivity",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/qt/qtconnectivity.git",
+                    "tag": "v${Qt6_VERSION}"
+                }
+            ],
+            "buildsystem": "cmake-ninja"
+        },
+        {
+            "name": "qtserialport",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/qt/qtserialport.git",
                     "tag": "v${Qt6_VERSION}"
                 }
             ],

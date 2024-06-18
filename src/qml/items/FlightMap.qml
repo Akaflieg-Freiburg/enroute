@@ -202,6 +202,20 @@ Map {
         }
 
 
+        LayerParameter {
+            id: notamZonesOutlines
+            styleId: "notamZonesOutlines"
+
+            type: "line"
+            property string source: "notams"
+
+            paint: {
+                "line-color": "red",
+                "line-width": 2
+                //"line-dasharray": [4.0, 3.0]
+          }
+        }
+
 
     }
 

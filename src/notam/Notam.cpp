@@ -109,6 +109,8 @@ Q_GLOBAL_STATIC(ContractionList,
 
 NOTAM::Notam::Notam(const QJsonObject& jsonObject)
 {
+    qWarning() << jsonObject;
+
     auto notamObject = jsonObject[u"properties"_qs][u"coreNOTAMData"_qs][u"notam"_qs].toObject();
 
     m_coordinate = interpretNOTAMCoordinates(notamObject[u"coordinates"_qs].toString());
@@ -118,8 +120,9 @@ NOTAM::Notam::Notam(const QJsonObject& jsonObject)
     m_number = notamObject[u"number"_qs].toString();
     m_text = notamObject[u"text"_qs].toString();
     m_traffic = notamObject[u"traffic"_qs].toString();
-    m_radius = Units::Distance::fromNM( notamObject[u"radius"_qs].toDouble() );
+    m_radius = Units::Distance::fromNM( notamObject[u"radius"_qs].toString().toDouble() );
 
+    qWarning() << notamObject[u"radius"_qs] << notamObject[u"radius"_qs].toString().toDouble();
     m_effectiveEnd = QDateTime::fromString(m_effectiveEndString, Qt::ISODate);
     m_effectiveStart = QDateTime::fromString(m_effectiveStartString, Qt::ISODate);
     m_region = QGeoCircle(m_coordinate, qMax( Units::Distance::fromNM(1).toM(), m_radius.toM() ));
@@ -148,20 +151,41 @@ QString NOTAM::Notam::cancels() const
 
 QJsonObject NOTAM::Notam::GeoJSON() const
 {
+    // Create properties
     QMap<QString, QVariant> m_properties;
-    m_properties["CAT"] = u"NOTAM"_qs;
-    m_properties["NAM"] = {};
+    m_properties[u"CAT"_qs] = u"NOTAM"_qs;
+    m_properties[u"NAM"_qs] = {};
 
+    // Create geometry
+    /*
     QJsonArray coords;
     coords.insert(0, m_coordinate.longitude());
     coords.insert(1, m_coordinate.latitude());
     QJsonObject geometry;
     geometry.insert(QStringLiteral("type"), "Point");
     geometry.insert(QStringLiteral("coordinates"), coords);
+*/
+
+    QJsonArray coords;
+    for(int angle=0; angle <= 360; angle += 10)
+    {
+        auto perimeterPoint = m_coordinate.atDistanceAndAzimuth( m_radius.toM(), qreal(angle));
+        QJsonArray coord;
+        coord.insert(0, perimeterPoint.longitude());
+        coord.insert(1, perimeterPoint.latitude());
+        coords.append(coord);
+    }
+    QJsonObject geometry;
+    geometry.insert(QStringLiteral("type"), "LineString");
+    geometry.insert(QStringLiteral("coordinates"), coords);
+
+    // Create feature and return
     QJsonObject feature;
     feature.insert(QStringLiteral("type"), "Feature");
     feature.insert(QStringLiteral("properties"), QJsonObject::fromVariantMap(m_properties));
     feature.insert(QStringLiteral("geometry"), geometry);
+
+//    qWarning() << m_radius.toM();
 
     return feature;
 }

@@ -62,6 +62,9 @@ namespace GeoMaps
             return GlobalObject::waypointLibrary();
         }
 
+        ~WaypointLibrary() override = default;
+
+
         //
         // Properties
         //

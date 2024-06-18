@@ -61,7 +61,14 @@
 <li class="toctree-l2"><a class="reference internal" href="01-mainPage.html">Main Page and Moving Map</a></li>
 <li class="toctree-l2"><a class="reference internal" href="02-settings.html">Settings</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Settings: Data Connections</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#configure-a-data-connection-to-a-bluetooth-classic-device">Configure a Data Connection to a Bluetooth Classic Device</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#user-interface">User Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configure-new-data-connections">Configure New Data Connections</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bluetooth-classic">Bluetooth Classic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#serial-port">Serial Port</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tcp-via-wi-fi-or-lan">TCP via Wi-Fi or LAN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#udp-via-wi-fi-or-lan">UDP via Wi-Fi or LAN</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#remove-a-data-connection">Remove a Data Connection</a></li>
 </ul>
 </li>
@@ -109,19 +116,40 @@
 <p>This page lists all data connections that <strong>Enroute Flight Navigation</strong> uses to
 communicate with traffic data receivers.  It shows that status of each
 connection and allows adding/removing connections to Bluetooth devices that
-cannot be automatically configured.</p>
+cannot be automatically configured.  The page also allows configuring additional
+data connections through a variety of communication channels.</p>
+<section id="user-interface">
+<h2>User Interface<a class="headerlink" href="#user-interface" title="Link to this heading"></a></h2>
+<p>The body of the page displays a list of configured connections. Tap on a
+connection to obtain more detailed information.</p>
 <ul class="simple">
 <li><p>Data connections are colored in green if <strong>Enroute Flight Navigation</strong>
 receives heartbeat signals from a traffic data receiver via that connection.</p></li>
 <li><p>Data connections are colored in red if <strong>Enroute Flight Navigation</strong> failed to
 open the connection.</p></li>
 </ul>
+<p>The footer of the page contains two buttons.</p>
+<ul class="simple">
+<li><p>The button “Reconnect” resets all configured connections and starts a new
+connection process for each. This can be useful in settings where a connection
+failed and where you do not want to wait until the next reconnection attempt
+starts automatically.</p></li>
+<li><p>If <strong>Enroute Flight Navigation</strong> cannot detect your traffic data receiver
+automatically, use the button “New Connection” to configure a connection. The
+remainder of the present manual section explains how this is done.</p></li>
+</ul>
+</section>
+<section id="configure-new-data-connections">
+<h2>Configure New Data Connections<a class="headerlink" href="#configure-new-data-connections" title="Link to this heading"></a></h2>
 <p>In a typical setup, where traffic data receivers broadcast information via one
-of the standard Wi-Fi channels, the default data connection allow <strong>Enroute
+of the standard Wi-Fi channels, the default data connections allow <strong>Enroute
 Flight Navigation</strong> to automatically detect (and connect to) all customary
-devices.  In that case, no user interaction is ever required.</p>
-<section id="configure-a-data-connection-to-a-bluetooth-classic-device">
-<h2>Configure a Data Connection to a Bluetooth Classic Device<a class="headerlink" href="#configure-a-data-connection-to-a-bluetooth-classic-device" title="Link to this heading"></a></h2>
+devices.  In that case, no user interaction is ever required.  There are however
+settings where <strong>Enroute Flight Navigation</strong> cannot detect your traffic data
+receiver automatically.  Depending on the communication channel, the following
+subsections describe how to configure a new data connection in that case.</p>
+<section id="bluetooth-classic">
+<h3>Bluetooth Classic<a class="headerlink" href="#bluetooth-classic" title="Link to this heading"></a></h3>
 <p>The <strong>Enroute Flight Navigation</strong> is able to communicate with your traffic data
 receiver via the “Bluetooth Classic” radio standard.</p>
 <div class="admonition note">
@@ -167,16 +195,122 @@ data connections.</p></li>
 connect to your traffic receiver a few minutes after it becomes visible on
 Bluetooth radio.</p>
 </section>
+<section id="serial-port">
+<h3>Serial Port<a class="headerlink" href="#serial-port" title="Link to this heading"></a></h3>
+<p>The <strong>Enroute Flight Navigation</strong> is able to communicate with your traffic data
+receiver via the serial port.  Serial port communication via USB is supported.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Due to limitations of the iOS platform, serial port communication is not
+supported on iPhone and iPad devices.</p>
+</div>
+<ul class="simple">
+<li><p>Ensure that your traffic data receiver is switched on and connected to the
+serial port/USB input of your device.</p></li>
+<li><p>Open <strong>Enroute Flight Navigation</strong> on your phone, navigate to this page and
+tap on “New Connection” at the bottom of the page and choose “Serial Port
+Connection” from the menu.  A device discovery dialog will open.</p></li>
+<li><p>The device discovery dialog shows a list of all nearby serial ports in your
+device.  If necessary, tap on the button “Scan for Devices” to re-start the
+device discovery process.</p></li>
+<li><p>Choose the relevant serial port from the list. A data connection to that
+serial port has now been configured.  Enroute will determine the necessary
+parameter (such as bit rate) automatically.</p></li>
+<li><p><strong>Enroute Flight Navigation</strong> will try to connect to your traffic data
+receiver via the serial port.  Check the connectivity status by looking at the
+relevant entry in the list of data connections.</p></li>
+</ul>
+<p>In the future, <strong>Enroute Flight Navigation</strong> will automatically detect and
+connect to your traffic receiver a few minutes after it is connected to your
+device.</p>
+</section>
+<section id="tcp-via-wi-fi-or-lan">
+<h3>TCP via Wi-Fi or LAN<a class="headerlink" href="#tcp-via-wi-fi-or-lan" title="Link to this heading"></a></h3>
+<p>The Transmission Control Protocol (TCP) is one of the main protocols of the
+internet.  Traffic data receivers based on FLARM typically use TCP to transmit
+traffic data via Wi-Fi and LAN networks.  To configure a TCP connection, you
+need the following data.</p>
+<ul class="simple">
+<li><p>The internet address of the traffic data receiver in its network. This is
+typically a string of the form “192.168.1.1”.</p></li>
+<li><p>The port number. This is a number between 0 and 65535, but most FLARM based
+devices use port 2000.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To simplify the setup process, <strong>Enroute Flight Navigation</strong> includes a number
+of predefined TCP connections.  These suffice to connect to any traffic data
+receiver that we have seen.  Manual configuration of TCP connections should
+never be necessary.  If you are aware of hardware that uses an internet
+address/port combination not covered by the predefined connections, then please
+open the main menu and use the entry “Bug Report” to let us know.</p>
+</div>
+<p>To configure a new TCP data connection, proceed as follows.</p>
+<ul class="simple">
+<li><p>Read the manual of your traffic data receiver to find out what internet
+address and port number it uses.</p></li>
+<li><p>Start the traffic data receiver.</p></li>
+<li><p>Connect to the Wi-Fi or LAN network of your traffic data receiver.</p></li>
+<li><p>Open <strong>Enroute Flight Navigation</strong> on your phone, navigate to this page and
+tap on “New Connection” at the bottom of the page and choose “TCP Connection”
+from the menu.  A dialog will open.</p></li>
+<li><p>Enter the IP address and port number used by your traffic data receiver. While
+all devices that we have seen use IPv4 addresses of the form “192.168.1.1”,
+IPv6 addresses and internet host names are also supported.  Tap on “OK”.  A
+new data connection has been configured.</p></li>
+<li><p><strong>Enroute Flight Navigation</strong> will try to connect to your traffic data
+receiver. Check the connectivity status by looking at the relevant entry in
+the list of data connections.</p></li>
+</ul>
+<p>In the future, <strong>Enroute Flight Navigation</strong> will automatically detect and
+connect to your traffic receiver a few minutes after it becomes visible on
+Wi-Fi or LAN.</p>
+</section>
+<section id="udp-via-wi-fi-or-lan">
+<h3>UDP via Wi-Fi or LAN<a class="headerlink" href="#udp-via-wi-fi-or-lan" title="Link to this heading"></a></h3>
+<p>The User Datagram Protocol (UDP) is one of the main protocols of the internet.
+Flight simulators and traffic data receivers based on Garmin hardware typically
+use UDP to transmit traffic data via Wi-Fi and LAN networks.  To configure a UDP
+connection, you need the following data.</p>
+<ul class="simple">
+<li><p>The port number. This is a number between 0 and 65535, but most devices use
+ports 4000 or 49002.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To simplify the setup process, <strong>Enroute Flight Navigation</strong> includes
+a number of predefined UDP connections.  These suffice to connect to any
+traffic data receiver that we have seen.  Manual configuration of UDP
+connections should never be necessary.  If you are aware of hardware that
+uses a port not covered by the predefined connections, then please open the
+main menu and use the entry “Bug Report” to let us know.</p>
+</div>
+<p>To configure a new TCP data connection, proceed as follows.</p>
+<ul class="simple">
+<li><p>Read the manual of your traffic data receiver to find out what port number it
+uses.</p></li>
+<li><p>Start the traffic data receiver.</p></li>
+<li><p>Connect to the Wi-Fi or LAN network of your traffic data receiver.</p></li>
+<li><p>Open <strong>Enroute Flight Navigation</strong> on your phone, navigate to this page and
+tap on “New Connection” at the bottom of the page and choose “UDP Connection”
+from the menu.  A dialog will open.</p></li>
+<li><p>Enter the port number used by your traffic data receiver.  Tap on “OK”.  A new
+data connection has been configured.</p></li>
+<li><p><strong>Enroute Flight Navigation</strong> will try to connect to your traffic data
+receiver. Check the connectivity status by looking at the relevant entry in
+the list of data connections.</p></li>
+</ul>
+<p>In the future, <strong>Enroute Flight Navigation</strong> will automatically detect and
+connect to your traffic receiver a few minutes after it becomes visible on
+Wi-Fi or LAN.</p>
+</section>
+</section>
 <section id="remove-a-data-connection">
 <h2>Remove a Data Connection<a class="headerlink" href="#remove-a-data-connection" title="Link to this heading"></a></h2>
 <p>We recommended removing data connections that you will no longer use.  In order
 to remove a data connection, locate the data connection in the list, tap on the
-three-dot menu and choose the menu item “Remove”.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><strong>Enroute Flight Navigation</strong> maintains a list of default data
-connections, which cannot be removed.</p>
-</div>
+three-dot menu and choose the menu item “Remove”.  Note that default data
+connections cannot be removed.</p>
 </section>
 </section>
 

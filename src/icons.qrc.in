@@ -64,7 +64,6 @@
 	<file alias="icons/material/ic_tap_and_play.svg">${material-design-icons_SOURCE_DIR}/notification/svg/production/ic_tap_and_play_24px.svg</file>
     <file alias="icons/material/ic_terrain.svg">${material-design-icons_SOURCE_DIR}/maps/svg/production/ic_terrain_24px.svg</file>
 	<file alias="icons/material/ic_vpn_key.svg">${material-design-icons_SOURCE_DIR}/communication/svg/production/ic_vpn_key_24px.svg</file>
-	<file alias="icons/material/ic_warning.svg">${material-design-icons_SOURCE_DIR}/alert/svg/production/ic_warning_24px.svg</file>
 	<file alias="icons/material/ic_wb_sunny.svg">${material-design-icons_SOURCE_DIR}/image/svg/production/ic_wb_sunny_24px.svg</file>
 	<file alias="icons/material/ic_wifi.svg">${material-design-icons_SOURCE_DIR}/notification/svg/production/ic_wifi_24px.svg</file>
 
@@ -109,6 +108,5 @@
 	<file alias="icons/waypoints/AD-GRASS.png">${CMAKE_SOURCE_DIR}/generatedSources/src/icons/waypoints/AD-GRASS.png</file>
 	<file alias="icons/waypoints/AD-MIL-GRASS.png">${CMAKE_SOURCE_DIR}/generatedSources/src/icons/waypoints/AD-MIL-GRASS.png</file>
 	<file alias="icons/waypoints/AD-UL.png">${CMAKE_SOURCE_DIR}/generatedSources/src/icons/waypoints/AD-UL.png</file>
-	<file alias="icons/waypoints/ic_warning.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/ic_warning_18px.svg</file>
     </qresource>
 </RCC>

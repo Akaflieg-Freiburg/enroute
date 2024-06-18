@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QJsonArray>
 #include <QJsonObject>
 
 #include "GlobalObject.h"
@@ -110,7 +111,7 @@ NOTAM::Notam::Notam(const QJsonObject& jsonObject)
 {
     auto notamObject = jsonObject[u"properties"_qs][u"coreNOTAMData"_qs][u"notam"_qs].toObject();
 
-    m_coordinates = interpretNOTAMCoordinates(notamObject[u"coordinates"_qs].toString());
+    m_coordinate = interpretNOTAMCoordinates(notamObject[u"coordinates"_qs].toString());
     m_effectiveEndString = notamObject[u"effectiveEnd"_qs].toString();
     m_effectiveStartString = notamObject[u"effectiveStart"_qs].toString();
     m_icaoLocation = notamObject[u"icaoLocation"_qs].toString();
@@ -121,7 +122,7 @@ NOTAM::Notam::Notam(const QJsonObject& jsonObject)
 
     m_effectiveEnd = QDateTime::fromString(m_effectiveEndString, Qt::ISODate);
     m_effectiveStart = QDateTime::fromString(m_effectiveStartString, Qt::ISODate);
-    m_region = QGeoCircle(m_coordinates, qMax( Units::Distance::fromNM(1).toM(), m_radius.toM() ));
+    m_region = QGeoCircle(m_coordinate, qMax( Units::Distance::fromNM(1).toM(), m_radius.toM() ));
 
     if (notamObject.contains(u"schedule"_qs))
     {
@@ -145,9 +146,31 @@ QString NOTAM::Notam::cancels() const
 }
 
 
+QJsonObject NOTAM::Notam::GeoJSON() const
+{
+    QMap<QString, QVariant> m_properties;
+    m_properties["CAT"] = u"NOTAM"_qs;
+    m_properties["NAM"] = {};
+
+    QJsonArray coords;
+    coords.insert(0, m_coordinate.longitude());
+    coords.insert(1, m_coordinate.latitude());
+    QJsonObject geometry;
+    geometry.insert(QStringLiteral("type"), "Point");
+    geometry.insert(QStringLiteral("coordinates"), coords);
+    QJsonObject feature;
+    feature.insert(QStringLiteral("type"), "Feature");
+    feature.insert(QStringLiteral("properties"), QJsonObject::fromVariantMap(m_properties));
+    feature.insert(QStringLiteral("geometry"), geometry);
+
+    return feature;
+}
+
+
+
 bool NOTAM::Notam::isValid() const
 {
-    if (!m_coordinates.isValid())
+    if (!m_coordinate.isValid())
     {
         return false;
     }
@@ -275,7 +298,7 @@ QGeoCoordinate NOTAM::interpretNOTAMCoordinates(const QString& string)
 
 QDataStream& NOTAM::operator<<(QDataStream& stream, const NOTAM::Notam& notam)
 {
-    stream << notam.m_coordinates;
+    stream << notam.m_coordinate;
     stream << notam.m_effectiveEnd;
     stream << notam.m_effectiveEndString;
     stream << notam.m_effectiveStart;
@@ -294,7 +317,7 @@ QDataStream& NOTAM::operator<<(QDataStream& stream, const NOTAM::Notam& notam)
 
 QDataStream& NOTAM::operator>>(QDataStream& stream, NOTAM::Notam& notam)
 {
-    stream >> notam.m_coordinates;
+    stream >> notam.m_coordinate;
     stream >> notam.m_effectiveEnd;
     stream >> notam.m_effectiveEndString;
     stream >> notam.m_effectiveStart;

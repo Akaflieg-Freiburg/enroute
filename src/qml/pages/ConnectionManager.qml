@@ -240,7 +240,7 @@ Page {
 
                     Action {
                         text: qsTr("Serial Port Connection")
-                        enabled: (Qt.platform.os !== "ios")
+                        enabled: (Qt.platform.os !== "ios") && (Qt.platform.os !== "android")
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()
                             addSerialPortDialog.open()
@@ -494,7 +494,6 @@ Page {
         }
 
     }
-
 
     CenteringDialog {
         id: addSerialPortDialog

@@ -59,6 +59,13 @@ public:
     // Properties
     //
 
+
+    /*! \brief List of NOTAM points
+     *
+     *  This property holds GeoJSON, to describe points where NOTAMs are active.
+     */
+    Q_PROPERTY(QByteArray GeoJSON READ GeoJSON NOTIFY dataChanged)
+
     /*! \brief Time of last database update */
     Q_PROPERTY(QDateTime lastUpdate READ lastUpdate NOTIFY dataChanged)
 
@@ -70,6 +77,13 @@ public:
     //
     // Getter Methods
     //
+
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property GeoJSON
+     */
+    [[nodiscard]] QByteArray GeoJSON() const;
 
     /*! \brief Getter function for the property with the same name
      *

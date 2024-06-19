@@ -31,6 +31,7 @@ add_custom_target(featureGraphic
 add_custom_target(flightMapSprites
   COMMAND mkdir -p ${CMAKE_CURRENT_SOURCE_DIR}/flightMap/sprites
   COMMAND rm -f *.png
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/NOTAM.svg -o NOTAM.png -h 15 -w 15
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD.svg -o AD.png -h 30 -w 30
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-GLD.svg -o AD-GLD.png -h 20 -w 20
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-GRASS.svg -o AD-GRASS.png -h 30 -w 30
@@ -60,12 +61,13 @@ add_custom_target(flightMapSprites
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/3rdParty/osm-liberty/svgs/svgs_not_in_iconset/default_5.svg -o default_5.png -h 18
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/3rdParty/osm-liberty/svgs/svgs_not_in_iconset/default_6.svg -o default_6.png -h 18
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/3rdParty/osm-liberty/svgs/svgs_not_in_iconset/dot_9.svg -o dot_9.png -w 9
-
   COMMAND spriteGenerator *.png
   COMMAND zopflipng -m -y sprite.png sprite.png
   COMMAND mv sprite.json ${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprite.json
   COMMAND mv sprite.png ${CMAKE_SOURCE_DIR}/generatedSources/flightMap/sprite.png
   COMMAND rm -f *.png
+
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/NOTAM.svg -o NOTAM.png -h 30 -w 30
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD.svg -o AD.png -h 60 -w 60
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-GLD.svg -o AD-GLD.png -h 40 -w 40
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-GRASS.svg -o AD-GRASS.png -h 60 -w 60

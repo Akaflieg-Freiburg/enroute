@@ -408,6 +408,10 @@ void NOTAM::NotamProvider::downloadFinished()
 
         auto region = networkReply->property("area").value<QGeoCircle>();
         auto data = networkReply->readAll();
+        if (data.isEmpty())
+        {
+            qWarning() << "FAA NOTAM Server returned with empty data.";
+        }
         networkReply->deleteLater();
         NotamList const notamList(data, region, &m_cancelledNotamNumbers);
         m_notamLists.prepend(notamList);

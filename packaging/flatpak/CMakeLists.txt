@@ -15,10 +15,9 @@ configure_file(${APP_ID}.json.in ${APP_ID}.json)
 #
 
 add_custom_target(flatpak-binary
-    COMMAND rm -rf flatpakBuildDirectory .flatpak-builder
     COMMAND flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     COMMAND flatpak install --system --assumeyes runtime/org.freedesktop.Sdk/x86_64/22.08
-    COMMAND flatpak-builder flatpakBuildDirectory ${APP_ID}.json
+    COMMAND flatpak-builder --force-clean flatpakBuildDirectory ${APP_ID}.json
     COMMAND echo ""
     COMMAND echo ""
     COMMAND echo "Run your flatpak with the following command"
@@ -30,6 +29,18 @@ add_custom_target(flatpak-binary
     COMMENT "Generating flatpak binary"
     )
 
+
+#
+# Run linter on sample build
+#
+
+add_custom_target(flatpak-lint
+    COMMAND flatpak run --command=flatpak-builder-lint org.flatpak.Builder manifest de.akaflieg_freiburg.enroute.json
+    COMMAND flatpak run --command=flatpak-builder-lint org.flatpak.Builder appstream ../../metadata/de.akaflieg_freiburg.enroute.appdata.xml
+    COMMAND flatpak run --command=flatpak-builder-lint org.flatpak.Builder builddir flatpakBuildDirectory
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    COMMENT "Linting flatpak build"
+    )
 
 #
 # Publication

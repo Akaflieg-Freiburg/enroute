@@ -150,18 +150,6 @@ void GlobalSettings::setExpandNotamAbbreviations(bool newExpandNotamAbbreviation
 }
 
 
-void GlobalSettings::setFAAData(const QString& newID, const QString& newKey)
-{
-    if ((newID == FAA_ID()) && (newKey == FAA_KEY()))
-    {
-        return;
-    }
-    settings.setValue(QStringLiteral("FAA_ID"), newID);
-    settings.setValue(QStringLiteral("FAA_KEY"), newKey);
-    emit FAADataChanged();
-}
-
-
 void GlobalSettings::setFontSize(int newFontSize)
 {
     newFontSize = qBound(14, newFontSize, 20);

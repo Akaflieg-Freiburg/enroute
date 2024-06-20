@@ -29,7 +29,6 @@
 #include <QStack>
 #include <QTemporaryDir>
 
-#include "GlobalSettings.h"
 #include "dataManagement/DataManager.h"
 #include "fileFormats/MBTILES.h"
 #include "geomaps/OpenAir.h"
@@ -416,13 +415,6 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
         {
             m_appUpdateRequired = false;
             emit appUpdateRequiredChanged();
-        }
-
-        auto FAA_ID = top.value(QStringLiteral("FAA_ID")).toString();
-        auto FAA_KEY = top.value(QStringLiteral("FAA_KEY")).toString();
-        if (!FAA_ID.isEmpty() && !FAA_KEY.isEmpty())
-        {
-            globalSettings()->setFAAData(FAA_ID, FAA_KEY);
         }
 
         auto baseURL = top.value(QStringLiteral("url")).toString();

@@ -38,7 +38,7 @@ Weather::METAR::METAR(QXmlStreamReader &xml, QObject *parent)
 
     while (true) {
         xml.readNextStartElement();
-        QString name = xml.name().toString();
+        QString const name = xml.name().toString();
 
         // Read Station_ID
         if (xml.isStartElement() && name == u"station_id"_qs) {

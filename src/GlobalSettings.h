@@ -117,18 +117,6 @@ public:
     /*! \brief Should we expand notam abbreviations */
     Q_PROPERTY(bool expandNotamAbbreviations READ expandNotamAbbreviations WRITE setExpandNotamAbbreviations NOTIFY expandNotamAbbreviationsChanged)
 
-    /*! \brief ID of our app for the FAA API
-     *
-     *  Set data using the method setFAAData().
-     */
-    Q_PROPERTY(QString FAA_ID READ FAA_ID NOTIFY FAADataChanged)
-
-    /*! \brief KEY of our app for the FAA API
-     *
-     *  Set data using the method setFAAData().
-     */
-    Q_PROPERTY(QString FAA_KEY READ FAA_KEY NOTIFY FAADataChanged)
-
     /*! \brief Font size
      *
      *  This is a value between 14 (normal font size) and 20 (giant fonts)
@@ -212,18 +200,6 @@ public:
      * @returns Property expandNotamAbbreviations
      */
     [[nodiscard]] bool expandNotamAbbreviations() const { return settings.value(QStringLiteral("expandNotamAbbreviations"), false).toBool(); }
-
-    /*! \brief Getter function for property of the same name
-     *
-     * @returns Property FAA_ID
-     */
-    [[nodiscard]] QString FAA_ID() const { return settings.value(QStringLiteral("FAA_ID"), "").toString(); }
-
-    /*! \brief Getter function for property of the same name
-     *
-     * @returns Property FAA_KEY
-     */
-    [[nodiscard]] QString FAA_KEY() const { return settings.value(QStringLiteral("FAA_KEY"), "").toString(); }
 
     /*! \brief Getter function for property with the same name
      *
@@ -345,14 +321,6 @@ public:
 
     /*! \brief Setter function for property of the same name
      *
-     * @param newID Property FAA_ID
-     *
-     * @param newKey Property FAA_KEY
-     */
-    void setFAAData(const QString& newID, const QString& newKey);
-
-    /*! \brief Setter function for property of the same name
-     *
      * @param hide Property hideGlidingSectors
      */
     void setHideGlidingSectors(bool hide);
@@ -443,9 +411,6 @@ signals:
 
     /*! \brief Notifier signal */
     void expandNotamAbbreviationsChanged();
-
-    /*! \brief Notifier signal */
-    void FAADataChanged();
 
     /*! \brief Notifier signal */
     void fontSizeChanged();

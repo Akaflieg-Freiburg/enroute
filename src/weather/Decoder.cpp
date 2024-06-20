@@ -84,8 +84,8 @@ void Weather::Decoder::parse()
     parseResult = metaf::Parser::parse(_rawText.toStdString());
     QStringList decodedStrings;
     decodedStrings.reserve(64);
-    QString listStart = QStringLiteral("<ul style=\"margin-left:-25px;\">");
-    QString listEnd = QStringLiteral("</ul>");
+    QString const listStart = QStringLiteral("<ul style=\"margin-left:-25px;\">");
+    QString const listEnd = QStringLiteral("</ul>");
     for (const auto &groupInfo : parseResult.groups)
     {
         auto decodedString = visit(groupInfo);

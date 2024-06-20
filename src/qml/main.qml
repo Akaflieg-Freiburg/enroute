@@ -473,7 +473,7 @@ AppWindow {
                             text: qsTr("Read manual")
                             icon.source: "/icons/material/ic_book.svg"
                             Layout.fillWidth: true
-                            visible: (Qt.platform.os === "android") || (Qt.platform.os === "ios")
+                            visible: (Qt.platform.os === "ios")
                             height: visible ? undefined : 0
 
                             onClicked: {
@@ -490,7 +490,7 @@ AppWindow {
                         }
 
                         Rectangle {
-                            visible: (Qt.platform.os === "android") || (Qt.platform.os === "ios")
+                            visible: (Qt.platform.os === "ios")
                             height: visible ? 1 : 0
                             Layout.fillWidth: true
                             color: "black"
@@ -973,10 +973,14 @@ AppWindow {
     }
 
     function openManual(pageUrl) {
-        if ((Qt.platform.os === "android") || (Qt.platform.os === "ios"))
+
+        if ((Qt.platform.os === "ios") ||
+                ((Qt.platform.os === "android") && (Qt.application.version < "6.7.0")))
+        {
             stackView.push("pages/Manual.qml", {"fileName": pageUrl})
-        else
-            Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteManual/"+pageUrl)
+            return
+        }
+        Qt.openUrlExternally("https://akaflieg-freiburg.github.io/enrouteManual/"+pageUrl)
     }
 }
 

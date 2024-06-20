@@ -59,8 +59,10 @@ void checkForError(QDataStream &dataStream)
         throw QObject::tr("Found corrupt data while reading the data stream.", "FileFormats::TIFF");
     case QDataStream::ReadPastEnd:
         throw QObject::tr("Read past end of data stream.", "FileFormats::TIFF");
+ #if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
     case QDataStream::SizeLimitExceeded:
         throw QObject::tr("Data is larger than supported by the current platform.", "FileFormats::TIFF");
+#endif
     case QDataStream::WriteFailed:
         throw QObject::tr("Error writing to data stream.", "FileFormats::TIFF");
     case QDataStream::Ok:

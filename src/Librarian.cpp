@@ -177,85 +177,107 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 
     if (name == u":text/privacy.html"_qs)
     {
-        return "<p>" +
-               tr("We do not collect our users' personal data.") + " " +
-               tr("We do not store any personally identifiable information.") + " " +
-               tr("However, to ensure functionality, the app must transmit the following data items to servers on the internet.") +
+        return  "<p>" +
+               tr("This Privacy Policy outlines the data handling practices for the app <strong>Enroute Flight Navigation</strong>.") + " " +
+               tr("We prioritize your privacy and do not collect or store personally identifiable information.") + " " +
+               tr("However, for the app to function properly, it must communicate with certain servers on the Internet.") + " " +
+               tr("The following sections list the servers that <strong>Enroute Flight Navigation</strong> communicates with and explain the communication purposes.") + " " +
+               "</p>" +
+
+               "<p>" +
+               tr("By using Enroute Flight Navigation, you agree to this Privacy Policy.") + " " +
+               tr("We may update this policy periodically, and any changes will be posted within the app.") +
                "</p>" +
 
                "<h3>" +
-               tr("1. Map and Data Download Server") +
+               tr("1. Data and Anonymization Server (enroute-data)") +
                "</h3>" +
 
                "<p>" +
-               tr("The app regularly checks for updates and allows downloading maps and data from a <a href='https://cplx.vm.uni-freiburg.de/storage'>server at the University of Freiburg</a> to your device.") + " " +
-               tr("Your device's IP address must be transmitted to the server to provide this functionality.") + " " +
-               tr("Knowledge of the IP address is necessary for the server to respond.") + " " +
-               tr("However, the server does not store any personal data about you in its log files.") + " " +
-               tr("In particular, it does not store the IP address of your device in its log files.") + " " +
-               tr("We can assure this because the server is under our control.") + "</p>" +
+               tr("<strong>Enroute Flight Navigation</strong> regularly communicates with the server <strong>enroute-data.akaflieg-freiburg.de</strong> (referred to as <strong>enroute-data</strong>), operated by Hetzner Online GmbH on behalf of Akaflieg Freiburg.") + " " +
+               tr("The server's primary role is to facilitate the app's functionality while maintaining user privacy.") + " " +
+               "</p>" +
 
-               "<h3>" +
-               tr("2. METAR and TAF Server") +
-               "</h3>" +
+               "<h4>" +
+               tr("1.1. Data Collected") +
+               "</h4>" +
 
                "<p>" +
-               tr("The app shows METARs and TAFs for airfields near your current location and your currently planned route. ") + " " +
-               tr("It also shows METARs and TAFs for all waypoints you open in the app.") + " " +
-               tr("To provide this functionality, a request containing the following data is transmitted to a <a href='https://cplx.vm.uni-freiburg.de/storage'>server at the University of Freiburg</a>:") +
+               tr("In every communication with <strong>enroute-data</strong>, your device's IP address is transmitted to the server.") + " " +
+               tr("The server needs to know the IP address to respond.") +
+               "</p>" +
+
+               "<p>" +
+               tr("The server stores the following data items in its log files.") +
+               "</p>" +
+
+               "<ul style='margin-left:-25px;'>" +
+               "<li>" + tr("<strong>Pseudonymized IP Address</strong>: The last byte of your IP address is replaced with a random number, ensuring it cannot identify you.") + "</li>" +
+               "<li>" + tr("<strong>Access Data</strong>: Date and time of access, error codes, and data sent.") + "</li>" +
+               "<li>" + tr("<strong>Software Information</strong>: The name of the web browser or software in use if the visitor’s software provides this information to the server.") + " " +
+               tr("<strong>Enroute Flight Navigation</strong> does not provide this information and sends a standard text ('Mozilla/5.0') instead.") + "</li>" +
+               "<li>" + tr("<strong>Operating System:</strong> The operating system's name if the visitor’s software provides this information to the server.") + " " +
+               tr("<strong>Enroute Flight Navigation</strong> does not provide this information. ") + "</li>" +
+               "</ul>" +
+
+               "<h4>" +
+               tr("1.2. Communication: Data Download") +
+               "</h4>" +
+
+               "<p>" +
+               tr("The app checks for updates and downloads data from <strong>enroute-data</strong> to provide current maps and aviation data.") + " " +
+               tr("Your IP address is transmitted in the process.") +
+               "</p>" +
+
+               "<h4>" +
+               tr("1.3. Communication: NOTAM, METAR and TAF ") + " " +
+               "</h4>" +
+
+               "<p>" +
+               tr("<strong>Enroute Flight Navigation</strong> shows NOTAMs, METARs, and TAFs for airfields near your current location and your currently planned route.") + " " +
+               tr("It also shows NOTAMs, METARs, and TAFs for all waypoints you open in the app.") + " " +
+               tr("To provide this functionality, requests are transmitted to the server <strong>enroute-data</strong> at regular intervals and whenever new data is requested.") + " " +
+               tr("In addition to your device's IP address, the following data items will be sent.") + " " +
                "</p>" +
 
                "<ul style='margin-left:-25px;'>" +
                "<li>" + tr("Your current location") + "</li>" +
                "<li>" + tr("The currently planned route") + "</li>" +
                "<li>" + tr("Waypoint coordinates") + "</li>" +
-               "<li>" + tr("Your device's IP address") + "</li>" +
                "</ul>" +
 
                "<p>" +
-               tr("Knowledge of the IP address is necessary for the server to respond.") + " " +
-               tr("However, the server does not store any personal data about you in its log files.") + " " +
-               tr("In particular, it does not store the IP address of your device in its log files.") + " " +
-               tr("We can assure this because the server is under our control.") + " " +
-               tr("The server cannot read any other data from your device in the process.") +
+               tr("The server forwards requests for METARs and TAFs to a web service at the Aviation Weather Center but hides your IP address, so the web service will never see it.") + " " +
+               tr("The web services at the Aviation Weather Center are operated by the US government.") + " " +
+               tr("We do not control the data handling practices of these external services.") + " " +
+               tr("Detailed information can be found at <strong>www.aviationweather.gov/dataserver</strong>.") +
                "</p>" +
 
                "<p>" +
-               tr("The server forwards the request to a web service at the %1 but hides your IP address, so the web service will never see it.").arg(u"<a href='https://www.aviationweather.gov'>Aviation Weather Center</a>"_qs) + " " +
-               tr("The web services at the Aviation Weather Center are operated by the US government and are beyond our control.") + " " +
-               tr("Detailed information can be found at %1.").arg(u"<a href='https://www.aviationweather.gov/dataserver'>www.aviationweather.gov/dataserver</a>"_qs) +
+               tr("The server forwards requests for NOTAMs to a Federal Aviation Administration web service but hides your IP address, so the service will never see it.") + " " +
+               tr("The Federal Aviation Administration's web services are operated by the US government.") + " " +
+               tr("We do not control the data handling practices of these external services.") + " " +
+               tr("Detailed information can be found at <strong>api.faa.gov</strong>.") +
                "</p>" +
 
                "<h3>" +
-               tr("3. NOTAM Server") +
+               tr("Other Servers ") +
                "</h3>" +
 
                "<p>" +
-               tr("The app shows NOTAMs for places near your current location and your currently planned route.") + " " +
-               tr("It also shows NOTAMs for all waypoints you open in the app.") + " " +
-               tr("To provide this functionality, a request containing the following data is transmitted to a <a href='https://cplx.vm.uni-freiburg.de/storage'>server at the University of Freiburg</a>:") + " " +
+               tr("At the user's request, <strong>Enroute Flight Navigation</strong> may display external websites in an embedded browser window or ask the operating system to open external apps such as Google Maps.") + " " +
+               tr("These external sites and apps are beyond our control and may collect their own data.") +
+               "</p>" +
+
+               "<p>" +
+               tr("Users expect web browsers to follow hyperlinks immediately but may not expect the same behavior elsewhere in the app.") + " " +
+               tr("To account for these expectations, <strong>Enroute Flight Navigation</strong> operates as follows.") +
                "</p>" +
 
                "<ul style='margin-left:-25px;'>" +
-               "<li>" + tr("Your current location") + "</li>" +
-               "<li>" + tr("The currently planned route") + "</li>" +
-               "<li>" + tr("Waypoint coordinates") + "</li>" +
-               "<li>" + tr("Your device's IP address") + "</li>" +
+               "<li>" + tr("<strong>Embedded Browser Windows</strong>: Clicking a hyperlink is considered authorization to open the external site.") + "</li>"
+               "<li>" + tr("<strong>Outside Embedded Browser Windows</strong>: The app will ask for explicit user authorization before opening any external site or app.") + "</li>"
                "</ul>" +
-
-               + "<p>" +
-               tr("Knowledge of the IP address is necessary for the server to respond.") + " " +
-               tr("However, the server does not store any personal data about you in its log files.") + " " +
-               tr("In particular, it does not store the IP address of your device in its log files.") + " " +
-               tr("We can assure this because the server is under our control.") + " " +
-               tr("The server cannot read any other data from your device in the process.") +
-               "</p>" +
-
-               + "<p>" +
-               tr("The server forwards the request to a web service at the %1 but hides your IP address, so the web service will never see it.").arg(u"<a href='https://api.faa.gov'>Federal Aviation Administration</a>"_qs) + " " +
-               tr("The web services at the Federal Aviation Administration are operated by the US government and are beyond our control.") + " " +
-               tr("Detailed information can be found at %1.").arg(u"<a href='https://api.faa.gov/s'>api.faa.gov/s</a>"_qs) +
-               "</p>" +
 
                "<h3>" +
                tr("Responsible") +
@@ -287,6 +309,10 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
         result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> is now able to connected to your traffic data receiver via Bluetooth radio. "
                              "At the moment, Enroute supports only the 'Bluetooth Classic' radio standard, 'Bluetooth Low Energy' is are not supported. "
                              "Due to platform limitations, Bluetooth is not supported on iOS devices.") + "</p>";
+/*
+        result += "<p>" + tr("Users with nonstandard hardware can now configure IP adresses for their traffic data receivers. "
+                             "Serial port connections are also supported.") + "</p>";
+*/
         result += "<p>" + tr("We need help with promotional graphics for the app stores and with explainer videos. "
                              "If you are a graphic/video artist and would like to help, then please be in touch.") + "</p>";
         return result;

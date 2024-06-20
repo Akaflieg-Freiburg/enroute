@@ -16,6 +16,7 @@ aircraft's traffic receiver and show nearby traffic in the moving map.
    02-senseAndAvoid/01-whatToExpect
    02-senseAndAvoid/02-setup-wifi
    02-senseAndAvoid/03-setup-bluetooth
+   02-senseAndAvoid/03-setup-serialport
    02-senseAndAvoid/04-safesky
    02-senseAndAvoid/05-compatibility
 

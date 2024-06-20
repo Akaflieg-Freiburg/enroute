@@ -61,7 +61,6 @@ CenteringDialog {
             airspaceDelegate.createObject(co, {airspace: asl[i]});
 
         satButtonDelegate.createObject(co, {});
-        empty.createObject(co, {});  // This is bizarrely necessary, or else the link will not work
     }
 
     modal: true
@@ -384,12 +383,11 @@ CenteringDialog {
                 source: "/icons/material/ic_open_in_browser.svg"
             }
 
-            Label {
+            Button {
                 text: "<a href='xx'>" + qsTr("Satellite View") + "</a>"
-                Layout.fillWidth: true
+                flat: true
                 Layout.alignment: Qt.AlignVCenter
-                wrapMode: Text.WordWrap
-                onLinkActivated: link => {
+                onPressed:  {
                     PlatformAdaptor.vibrateBrief()
                     Qt.openUrlExternally("https://www.google.com/maps/@?api=1&map_action=map&center="
                                          + waypoint.coordinate.latitude
@@ -397,6 +395,10 @@ CenteringDialog {
                                          + waypoint.coordinate.longitude
                                          + "&zoom=15&basemap=satellite")
                 }
+            }
+
+            Item {
+                Layout.fillWidth: true
             }
         }
     }

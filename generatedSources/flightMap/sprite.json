@@ -104,46 +104,53 @@
         "x": 73,
         "y": 80
     },
+    "NOTAM": {
+        "height": 15,
+        "pixelRatio": 1,
+        "width": 15,
+        "x": 98,
+        "y": 80
+    },
     "RP": {
         "height": 25,
         "pixelRatio": 1,
         "width": 25,
-        "x": 98,
+        "x": 113,
         "y": 80
     },
     "VOR": {
         "height": 20,
         "pixelRatio": 1,
         "width": 22,
-        "x": 22,
+        "x": 37,
         "y": 105
     },
     "VOR-DME": {
         "height": 20,
         "pixelRatio": 1,
         "width": 22,
-        "x": 0,
+        "x": 15,
         "y": 105
     },
     "VORTAC": {
         "height": 22,
         "pixelRatio": 1,
         "width": 26,
-        "x": 44,
+        "x": 59,
         "y": 105
     },
     "WP": {
         "height": 20,
         "pixelRatio": 1,
         "width": 20,
-        "x": 90,
+        "x": 105,
         "y": 105
     },
     "WP-map": {
         "height": 20,
         "pixelRatio": 1,
         "width": 20,
-        "x": 70,
+        "x": 85,
         "y": 105
     },
     "default_1": {
@@ -199,7 +206,7 @@
         "height": 15,
         "pixelRatio": 1,
         "width": 15,
-        "x": 123,
-        "y": 80
+        "x": 0,
+        "y": 105
     }
 }

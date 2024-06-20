@@ -29,7 +29,7 @@ CenteringDialog {
     id: dlg
 
     modal: true
-    title: qsTr("Add Bluetooth Device")
+    title: qsTr("Add Bluetooth Connection")
     standardButtons: Dialog.Cancel
 
     Component.onCompleted: ConnectionScanner_Bluetooth.start()

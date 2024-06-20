@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2024 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,26 +20,22 @@
 
 #pragma once
 
-
-#include <QPointer>
-#include <QUdpSocket>
+#include <QPropertyNotifier>
+#include <QSerialPort>
+#include <QSerialPortInfo>
 
 #include "traffic/TrafficDataSource_AbstractSocket.h"
 
 
 namespace Traffic {
 
-/*! \brief Traffic receiver: UDP connection to GDL90 source
+/*! \brief Traffic receiver: Bluetooth Classic connection to FLARM/NMEA source
  *
- *  This class connects to a traffic receiver via a GDL90 connection. It expects
- *  to find a receiver at the specifed IP-Address and port that emits GDL90
- *  messages.
- *
- *  In most use cases, the connection will be established via the device's WiFi
- *  interface.  The class will therefore try to lock the WiFi once a heartbeat
- *  has been detected, and release the WiFi at the appropriate time.
+ *  This class connects to a traffic receiver via a Bluetooth Classic serial port
+ *  service.
  */
-class TrafficDataSource_Udp : public TrafficDataSource_AbstractSocket {
+
+class TrafficDataSource_SerialPort : public TrafficDataSource_AbstractSocket {
     Q_OBJECT
 
 public:
@@ -47,14 +43,15 @@ public:
      *
      * @param isCanonical Intializer for property canonical
      *
-     *  @param port Port at the host where the traffic receiver is expected
+     *  @param info Description of a Bluetooth Classic device offering
+     *  serial port service.
      *
      *  @param parent The standard QObject parent pointer
      */
-    TrafficDataSource_Udp(bool isCanonical, quint16 port, QObject *parent = nullptr);
+    TrafficDataSource_SerialPort(bool isCanonical, const QString& portName, QObject* parent);
 
     // Standard destructor
-    ~TrafficDataSource_Udp() override;
+    ~TrafficDataSource_SerialPort() override = default;
 
 
 
@@ -62,9 +59,11 @@ public:
     // Properties
     //
 
-    /*! \brief Port
+    /*! \brief Source info
+     *
+     *  Device info, as set in the constructor of this class.
      */
-    Q_PROPERTY(quint16 port READ port CONSTANT)
+    Q_PROPERTY(QSerialPortInfo sourceInfo READ sourceInfo CONSTANT)
 
 
 
@@ -76,13 +75,16 @@ public:
      *
      * @returns Property connectionInfo
      */
-    [[nodiscard]] Traffic::ConnectionInfo connectionInfo() const override  { return Traffic::ConnectionInfo(m_port, canonical()); }
+    [[nodiscard]] Traffic::ConnectionInfo connectionInfo() const override
+    {
+        return Traffic::ConnectionInfo(sourceInfo(), canonical());
+    }
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property dataFormat
      */
-    [[nodiscard]] QString dataFormat() const override { return u"GDL90, XGPS"_qs; }
+    [[nodiscard]] QString dataFormat() const override { return u"FLARM/NMEA"_qs; }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -91,7 +93,7 @@ public:
      *
      *  @returns Property icon
      */
-    [[nodiscard]] QString icon() const override { return u"/icons/material/ic_wifi.svg"_qs; }
+    [[nodiscard]] QString icon() const override { return u"/icons/material/ic_settings_ethernet.svg"_qs; }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -100,18 +102,15 @@ public:
      *
      *  @returns Property sourceName
      */
-    [[nodiscard]] auto sourceName() const -> QString override
-    {
-        return tr("UDP connection to port %1").arg(m_port);
-    }
+    [[nodiscard]] QString sourceName() const override;
 
     /*! \brief Getter function for the property with the same name
      *
-     *  @returns Property port
+     *  @returns Property sourceInfo
      */
-    [[nodiscard]] quint16 port() const
+    [[nodiscard]] QSerialPortInfo sourceInfo() const
     {
-        return m_port;
+        return QSerialPortInfo(m_port.portName());
     }
 
 
@@ -131,27 +130,21 @@ public slots:
     void disconnectFromTrafficReceiver() override;
 
 private slots:
-    // Read messages from the socket datagrams and passes the messages on to
-    // processGDLMessage
+    // Handle serial port errors
+    void onErrorOccurred(QSerialPort::SerialPortError error);
+
+    // Read and process received NMEA sentences
     void onReadyRead();
 
 private:
-    Q_DISABLE_COPY_MOVE(TrafficDataSource_Udp)
+    Q_DISABLE_COPY_MOVE(TrafficDataSource_SerialPort)
 
-    QPointer<QUdpSocket> m_socket;
-    quint16 m_port;
+    // Copied from the constructor
+    QSerialPort m_port;
+    QPropertyNotifier m_errorChangeHandler;
 
-    // We use this vector to store the last 512 datatgram hashes in a circular
-    // array. This is used to sort out doubly sent datagrams. The nextHashIndex
-    // points to the next vector entry that will be re-written.
-    QVector<uint> receivedDatagramHashes {512, 0};
-    qsizetype nextHashIndex {0};
-
-    // GPS altitude of owncraft
-    Units::Distance m_trueAltitude;
-    Units::Distance m_trueAltitude_FOM;
-    QTimer m_trueAltitudeTimer;
-
+    // Text stream used for reading NMEA sentences
+    QTextStream m_textStream {&m_port};
 };
 
 } // namespace Traffic

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Connect via Bluetooth &mdash; Enroute Flight Navigation  documentation</title>
+  <title>Connect via the Serial Port &mdash; Enroute Flight Navigation  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
@@ -22,8 +22,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Connect via the Serial Port" href="03-setup-serialport.html" />
-    <link rel="prev" title="Connect via Wi-Fi" href="02-setup-wifi.html" /> 
+    <link rel="next" title="Connect the SafeSky App" href="04-safesky.html" />
+    <link rel="prev" title="Connect via Bluetooth" href="03-setup-bluetooth.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -50,17 +50,17 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../02-senseAndAvoid.html">Sense and Avoid</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="01-whatToExpect.html">What to Expect</a></li>
 <li class="toctree-l2"><a class="reference internal" href="02-setup-wifi.html">Connect via Wi-Fi</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Connect via Bluetooth</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="03-setup-bluetooth.html">Connect via Bluetooth</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Connect via the Serial Port</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#one-time-setup">One-time Setup</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#step-0-before-you-connect">Step 0: Before You Connect</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#step-1-configure-a-data-connection-to-the-bluetooth-classic-device">Step 1: Configure a Data Connection to the Bluetooth Classic Device</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-1-configure-a-data-connection-to-the-serial-port-device">Step 1: Configure a Data Connection to the Serial Port Device</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#step-2-check-connectivity">Step 2: Check Connectivity</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#daily-operations">Daily Operations</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="03-setup-serialport.html">Connect via the Serial Port</a></li>
 <li class="toctree-l2"><a class="reference internal" href="04-safesky.html">Connect the SafeSky App</a></li>
 <li class="toctree-l2"><a class="reference internal" href="05-compatibility.html">Compatibility List</a></li>
 </ul>
@@ -101,9 +101,9 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../02-senseAndAvoid.html">Sense and Avoid</a></li>
-      <li class="breadcrumb-item active">Connect via Bluetooth</li>
+      <li class="breadcrumb-item active">Connect via the Serial Port</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/02-senseAndAvoid/03-setup-bluetooth.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/02-senseAndAvoid/03-setup-serialport.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -111,26 +111,30 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="connect-via-bluetooth">
-<h1>Connect via Bluetooth<a class="headerlink" href="#connect-via-bluetooth" title="Link to this heading"></a></h1>
+  <section id="connect-via-the-serial-port">
+<h1>Connect via the Serial Port<a class="headerlink" href="#connect-via-the-serial-port" title="Link to this heading"></a></h1>
 <p><strong>Enroute Flight Navigation</strong> is able to connect to your traffic data receiver
-using the Bluetooth Classic radio standard. Compared with Wi-Fi, Bluetooth
-connections are less reliable and require manual configuration. We found that
-many Bluetooth adaptors are build with cheap and unreliable hardware and
-implement industry standards only partially, if at all.</p>
-<p>Bluetooth Classic supports only point-to-point connections, so that only one single app
-can access traffic data at any given time.  Pilots and co-pilots must
-therefore decide who gets to see traffic data and configure their devices appropriately.</p>
+using serial port connections. Connections via USB are also supported. Compared
+with Wi-Fi, serial port connections are equally reliable, but require manual
+configuration. By nature, serial ports support only point-to-point connections,
+so that only one single app can access traffic data at any given time.  Pilots
+and co-pilots must therefore decide who gets to see traffic data.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>At present, <strong>Enroute Flight Navigation</strong> supports only Bluetooth Classic
-communication. Bluetooth Low Energy may be supported in the future if there is
-sufficient demand from the user community.</p>
+<p><strong>Enroute Flight Navigation</strong> expects a stream for FLARM/NMEA sentences
+from the serial port device. <strong>Enroute Flight Navigation</strong> is not able to
+integrate into a CAN-Bus environment.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Access to Bluetooth radio is severely limited on iOS platforms. For that reason,
-Bluetooth communication is not supported at all on iPhone or iPad devices.</p>
+<p>Serial port devices are currently not supported on the Android
+platform. For that reason, serial port communication is not available at
+all on Android devices.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Serial port devices are not supported by the iOS platform. For that reason,
+serial port communication is not available at all on iPhone or iPad devices.</p>
 </div>
 <section id="one-time-setup">
 <h2>One-time Setup<a class="headerlink" href="#one-time-setup" title="Link to this heading"></a></h2>
@@ -139,18 +143,17 @@ Bluetooth communication is not supported at all on iPhone or iPad devices.</p>
 <p>Before you try to connect this app to your traffic receiver, make sure that the
 following conditions are met.</p>
 <ul class="simple">
-<li><p>Your traffic receiver supports Bluetooth Classic radio.</p></li>
-<li><p>You know the Bluetooth name of your traffic receiver.</p></li>
-<li><p>Bluetooth is switched on in your phone.</p></li>
-<li><p>Bluetooth is switched on in your traffic data receiver and set to
-‘discoverable mode’.</p></li>
-<li><p>If possible, configure your traffic data receiver to always be in
-‘discoverable mode’.</p></li>
+<li><p>The hardware is set up.</p></li>
+<li><p>Your traffic receiver is switched on and broadcasts FLARM/NMEA via its serial
+port.</p></li>
+<li><p>Your device is connected to the serial port and no other app uses the serial
+port connection.</p></li>
 </ul>
 </section>
-<section id="step-1-configure-a-data-connection-to-the-bluetooth-classic-device">
-<h3>Step 1: Configure a Data Connection to the Bluetooth Classic Device<a class="headerlink" href="#step-1-configure-a-data-connection-to-the-bluetooth-classic-device" title="Link to this heading"></a></h3>
-<p>Follow the steps described in the Section <a class="reference internal" href="../05-referencePages/03-settingsDataConnections.html#settingsdataconnectionspage"><span class="std std-ref">Settings: Data Connections</span></a>.</p>
+<section id="step-1-configure-a-data-connection-to-the-serial-port-device">
+<h3>Step 1: Configure a Data Connection to the Serial Port Device<a class="headerlink" href="#step-1-configure-a-data-connection-to-the-serial-port-device" title="Link to this heading"></a></h3>
+<p>Follow the steps described in the Section <a class="reference internal" href="../05-referencePages/03-settingsDataConnections.html#settingsdataconnectionspage"><span class="std std-ref">Settings: Data Connections</span></a>.
+You will need to know or guess the name of the serial port on your device.</p>
 </section>
 <section id="step-2-check-connectivity">
 <h3>Step 2: Check Connectivity<a class="headerlink" href="#step-2-check-connectivity" title="Link to this heading"></a></h3>
@@ -171,20 +174,14 @@ Failing that, you are out of luck.</p>
 traffic receiver’s Bluetooth adaptor and connect to the traffic data stream
 whenever you go flying.  We recommend the following procedure.</p>
 <ul class="simple">
-<li><p>Bluetooth Classic can handle only one data connection. Before boarding,
-clarify which device should connect to the traffic data receiver. Ask your
-co-pilot and all passengers to switch off Bluetooth in all other devices. Make
-sure that there are no undetected devices (e.g. in someone’s baggage) that
-could interfere with your data connection.</p></li>
-<li><p>A few moments after you power on the avionics, the traffic receiver’s
-Bluetooth adaptor will become discoverable.  Start <strong>Enroute Flight
-Navigation</strong> while the traffic data receiver is discoverable.</p></li>
-<li><p><strong>Enroute Flight Navigation</strong> will connect to your traffic data receiver via the
-configured Bluetooth data connection and show traffic information in the moving map.</p></li>
+<li><p>Connect your device to the serial port cable.</p></li>
+<li><p>After you power on the avionics and the traffic receiver has booted, start
+<strong>Enroute Flight Navigation</strong>.</p></li>
+<li><p><strong>Enroute Flight Navigation</strong> will connect to your traffic data receiver via
+the configured serial port connection and show traffic information in the
+moving map.</p></li>
 <li><p>If the data connection gets lost in mid-flight, <strong>Enroute Flight Navigation</strong>
-will automatically try to re-connect. Depending on your hardware, it might be
-necessary to restart the traffic data receiver in order to enter discoverable
-mode.</p></li>
+will automatically try to re-connect.</p></li>
 </ul>
 </section>
 </section>
@@ -193,8 +190,8 @@ mode.</p></li>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="02-setup-wifi.html" class="btn btn-neutral float-left" title="Connect via Wi-Fi" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="03-setup-serialport.html" class="btn btn-neutral float-right" title="Connect via the Serial Port" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="03-setup-bluetooth.html" class="btn btn-neutral float-left" title="Connect via Bluetooth" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="04-safesky.html" class="btn btn-neutral float-right" title="Connect the SafeSky App" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

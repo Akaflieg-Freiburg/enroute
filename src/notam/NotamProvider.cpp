@@ -19,11 +19,11 @@
  ***************************************************************************/
 
 #include <QFile>
+#include <QJsonArray>
 #include <QStandardPaths>
 #include <QTimer>
 #include <chrono>
 
-#include "GlobalSettings.h"
 #include "navigation/Navigator.h"
 #include "notam/NotamProvider.h"
 #include "positioning/PositionProvider.h"
@@ -46,9 +46,6 @@ NOTAM::NotamProvider::NotamProvider(QObject* parent) :
 
 void NOTAM::NotamProvider::deferredInitialization()
 {
-    // Start from scratch if FAA keys change
-    connect(globalSettings(), &GlobalSettings::FAADataChanged, this, &NOTAM::NotamProvider::clearAllAndUpdate);
-
     // Wire up updateData. Check NOTAM database every 10 seconds after start, every 11 minutes, and whenever the flight route changes.
     auto* timer = new QTimer(this);
     timer->start(10min);
@@ -101,6 +98,77 @@ NOTAM::NotamProvider::~NotamProvider()
 //
 // Getter Methods
 //
+
+QByteArray NOTAM::NotamProvider::GeoJSON() const
+{
+    QList<QJsonObject> result;
+    QSet<QGeoCoordinate> coordinatesSeen;
+    QSet<QGeoCircle> regionsCovered;
+
+    foreach(auto notamList, m_notamLists)
+    {
+        foreach(auto notam, notamList.notams())
+        {
+            if (!notam.isValid() || notam.isOutdated())
+            {
+                continue;
+            }
+            auto coordinate = notam.coordinate();
+            if (!coordinate.isValid())
+            {
+                continue;
+            }
+            if (!notamList.region().contains(coordinate))
+            {
+                continue;
+            }
+
+
+            // If we already have a waypoint for that coordinate, then don't add another one.
+            if (coordinatesSeen.contains(coordinate))
+            {
+                continue;
+            }
+
+            // If the coordinate has already been handled by an earlier (=newer) notamList,
+            // then don't add it here.
+            bool hasBeenCovered = false;
+            foreach(auto region, regionsCovered)
+            {
+                if (region.contains(coordinate))
+                {
+                    hasBeenCovered = true;
+                    break;
+                }
+            }
+            if (hasBeenCovered)
+            {
+                continue;
+            }
+
+            coordinatesSeen += coordinate;
+            result.append(notam.GeoJSON());
+        }
+
+        regionsCovered += notamList.region();
+    }
+
+
+    QJsonArray waypointArray;
+    foreach (const auto& jsonObject, result)
+    {
+        waypointArray.append(jsonObject);
+    }
+
+    QJsonObject jsonObj;
+    jsonObj.insert(QStringLiteral("type"), "FeatureCollection");
+    jsonObj.insert(QStringLiteral("features"), waypointArray);
+
+    QJsonDocument doc;
+    doc.setObject(jsonObj);
+    return doc.toJson();
+}
+
 
 QList<GeoMaps::Waypoint> NOTAM::NotamProvider::waypoints() const
 {
@@ -286,25 +354,6 @@ void NOTAM::NotamProvider::clean()
         m_notamLists = newNotamLists;
         emit dataChanged();
     }
-
-}
-
-
-void NOTAM::NotamProvider::clearAllAndUpdate()
-{
-    foreach(auto networkReply, m_networkReplies)
-    {
-        if (networkReply.isNull())
-        {
-            continue;
-        }
-        networkReply->abort();
-    }
-
-    m_notamLists.clear();
-    m_networkReplies.clear();
-
-    updateData();
 }
 
 
@@ -336,6 +385,10 @@ void NOTAM::NotamProvider::downloadFinished()
 
         auto region = networkReply->property("area").value<QGeoCircle>();
         auto data = networkReply->readAll();
+        if (data.isEmpty())
+        {
+            qWarning() << "FAA NOTAM Server returned with empty data.";
+        }
         networkReply->deleteLater();
         NotamList const notamList(data, region, &m_cancelledNotamNumbers);
         m_notamLists.prepend(notamList);
@@ -480,14 +533,8 @@ void NOTAM::NotamProvider::startRequest(const QGeoCoordinate& coordinate)
     {
         return;
     }
-    auto FAA_ID = globalSettings()->FAA_ID();
-    auto FAA_KEY = globalSettings()->FAA_KEY();
-    if (FAA_ID.isEmpty() || FAA_KEY.isEmpty())
-    {
-        return;
-    }
 
-    auto urlString = u"https://cplx.vm.uni-freiburg.de/storage/enrouteProxy/notam.php?"
+    auto urlString = u"https://enroute-data.akaflieg-freiburg.de/enrouteProxy/notam.php?"
                      "locationLongitude=%1&"
                      "locationLatitude=%2&"
                      "locationRadius=%3&"
@@ -495,19 +542,7 @@ void NOTAM::NotamProvider::startRequest(const QGeoCoordinate& coordinate)
                          .arg(coordinate.longitude())
                          .arg(coordinate.latitude())
                          .arg(1.2*requestRadius.toNM());
-    /*
-    auto urlString = u"https://external-api.faa.gov/notamapi/v1/notams?"
-                     "locationLongitude=%1&"
-                     "locationLatitude=%2&"
-                     "locationRadius=%3&"
-                     "pageSize=1000"_qs
-            .arg(coordinate.longitude())
-            .arg(coordinate.latitude())
-            .arg(1.2*requestRadius.toNM());
-    */
-    QNetworkRequest request( urlString );
-    request.setRawHeader("client_id", FAA_ID.toLatin1());
-    request.setRawHeader("client_secret", FAA_KEY.toLatin1());
+    QNetworkRequest const request(urlString);
 
     auto* reply = GlobalObject::networkAccessManager()->get(request);
     reply->setProperty("area", QVariant::fromValue(QGeoCircle(coordinate, requestRadius.toM())) );

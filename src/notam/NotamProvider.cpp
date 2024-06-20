@@ -542,7 +542,7 @@ void NOTAM::NotamProvider::startRequest(const QGeoCoordinate& coordinate)
                          .arg(coordinate.longitude())
                          .arg(coordinate.latitude())
                          .arg(1.2*requestRadius.toNM());
-    QNetworkRequest request( urlString );
+    QNetworkRequest const request(urlString);
 
     auto* reply = GlobalObject::networkAccessManager()->get(request);
     reply->setProperty("area", QVariant::fromValue(QGeoCircle(coordinate, requestRadius.toM())) );

@@ -6,7 +6,6 @@
     "command": "${PROJECT_NAME}",
     "finish-args": [
         "--device=dri",
-        "--device=shm",
     	"--filesystem=host",
     	"--share=ipc",
         "--share=network",

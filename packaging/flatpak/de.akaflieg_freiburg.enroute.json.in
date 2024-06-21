@@ -267,6 +267,17 @@
             "buildsystem": "cmake-ninja"
         },
         {
+            "name": "qtwayland",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/qt/qtwayland.git",
+                    "tag": "v${Qt6_VERSION}"
+                }
+            ],
+            "buildsystem": "cmake-ninja"
+        },
+        {
             "name": "libzip",
             "sources": [
                 {

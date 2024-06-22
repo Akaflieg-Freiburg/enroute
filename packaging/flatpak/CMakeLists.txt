@@ -16,7 +16,7 @@ configure_file(${APP_ID}.json.in ${APP_ID}.json)
 
 add_custom_target(flatpak-binary
     COMMAND flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-    COMMAND flatpak install --system --assumeyes runtime/org.freedesktop.Sdk/x86_64/22.08
+    COMMAND flatpak install --system --assumeyes runtime/org.freedesktop.Sdk/x86_64/23.08
     COMMAND flatpak-builder --force-clean flatpakBuildDirectory ${APP_ID}.json
     COMMAND echo ""
     COMMAND echo ""

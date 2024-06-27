@@ -35,7 +35,7 @@
 #include <QtWebView/QtWebView>
 #endif
 
-#if !(defined(Q_OS_ANDROID) and defined(Q_OS_IOS))
+#if !defined(Q_OS_ANDROID) and !defined(Q_OS_IOS)
 #include <QApplication>
 #include <kdsingleapplication.h>
 #endif

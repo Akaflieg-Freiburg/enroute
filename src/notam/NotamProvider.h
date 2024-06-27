@@ -59,6 +59,13 @@ public:
     // Properties
     //
 
+
+    /*! \brief List of NOTAM points
+     *
+     *  This property holds GeoJSON, to describe points where NOTAMs are active.
+     */
+    Q_PROPERTY(QByteArray GeoJSON READ GeoJSON NOTIFY dataChanged)
+
     /*! \brief Time of last database update */
     Q_PROPERTY(QDateTime lastUpdate READ lastUpdate NOTIFY dataChanged)
 
@@ -70,6 +77,13 @@ public:
     //
     // Getter Methods
     //
+
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property GeoJSON
+     */
+    [[nodiscard]] QByteArray GeoJSON() const;
 
     /*! \brief Getter function for the property with the same name
      *
@@ -132,9 +146,6 @@ private slots:
     // Removes outdated and irrelevant data from the database. This slot is called
     // once per hour.
     void clean();
-
-    // Clear all data and upateData(). This is called when API keys change.
-    void clearAllAndUpdate();
 
     // This slot is connected to signals QNetworkReply::finished and
     // QNetworkReply::errorOccurred of the QNetworkReply contained in the list

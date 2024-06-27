@@ -168,6 +168,40 @@ Map {
         }
 
 
+        SourceParameter {
+            id: notams
+
+            styleId: "notams"
+            type: "geojson"
+            property string data: NotamProvider.GeoJSON
+        }
+
+        LayerParameter {
+            id: notamParam
+
+            styleId: "notam-layer"
+
+            type: "symbol"
+            property string source: "notams"
+
+            layout: {
+                "icon-ignore-placement": true,
+                "icon-image": '["get", "CAT"]',
+                "text-field": '["get", "NAM"]',
+                "text-size": 12,
+                "text-anchor": "top",
+                "text-offset": [0, 1],
+                "text-optional": true,
+            }
+
+            paint: {
+                "text-color": "black",
+                "text-halo-width": 2,
+                "text-halo-color": "white"
+            }
+        }
+
+
 
     }
 

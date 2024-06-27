@@ -29,14 +29,13 @@ Weather::Station::Station(QObject *parent)
 {
 }
 
-
 Weather::Station::Station(QString id, GeoMaps::GeoMapProvider *geoMapProvider, QObject *parent)
-    : QObject(parent),
-      m_ICAOCode(std::move(id)),
-      _geoMapProvider(geoMapProvider)
+    : QObject(parent)
+    , m_ICAOCode(std::move(id))
+    , _twoLineTitle(m_ICAOCode)
+    , _geoMapProvider(geoMapProvider)
 {
     _extendedName = m_ICAOCode;
-    _twoLineTitle = m_ICAOCode;
 
     // Wire up with GeoMapProvider, in order to learn about future changes in waypoints
     connect(_geoMapProvider, &GeoMaps::GeoMapProvider::waypointsChanged, this, &Weather::Station::readDataFromWaypoint);

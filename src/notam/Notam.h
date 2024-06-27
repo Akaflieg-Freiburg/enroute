@@ -47,6 +47,7 @@ public:
      */
     explicit Notam(const QJsonObject& jsonObject);
 
+
     //
     // Properties
     //
@@ -78,6 +79,10 @@ public:
      */
     Q_PROPERTY(QDateTime effectiveStart READ effectiveStart CONSTANT)
 
+    /*! \brief Waypoint in GeoJSON format
+     */
+    Q_PROPERTY(QJsonObject GeoJSON READ GeoJSON CONSTANT)
+
     /*! \brief Validity of this Notam */
     Q_PROPERTY(bool isValid READ isValid CONSTANT)
 
@@ -105,7 +110,7 @@ public:
      *
      *  @returns Property coordinate
      */
-    Q_REQUIRED_RESULT QGeoCoordinate coordinate() const { return m_coordinates; }
+    Q_REQUIRED_RESULT QGeoCoordinate coordinate() const { return m_coordinate; }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -118,6 +123,12 @@ public:
      *  @returns Property effectiveStart
      */
     Q_REQUIRED_RESULT QDateTime effectiveStart() const { return m_effectiveStart; }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property GeoJSON
+     */
+    Q_REQUIRED_RESULT QJsonObject GeoJSON() const;
 
     /*! \brief Getter function for the property with the same name
      *
@@ -178,7 +189,7 @@ public:
 
 private:
     /* Notam members, as described by the FAA */
-    QGeoCoordinate  m_coordinates;
+    QGeoCoordinate  m_coordinate;
     QString         m_effectiveEndString;
     QString         m_effectiveStartString;
     QString         m_icaoLocation;

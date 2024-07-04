@@ -200,7 +200,7 @@
                 {
                     "type": "archive",
                     "url": "https://cplx.vm.uni-freiburg.de/storage/maplibre-native-qt.tar.xz",
-		    "sha256": "df7d3ab7d474d36d3e4a8218558dd277a76774e5a3885651eb7fff2c1ad19372"
+		    "sha256": "6b081300e6a805c1883b8c213368fe7fcab8dc074e3dc8db9a1a8e11112f91b5"
                 }
             ],
             "buildsystem": "cmake-ninja",

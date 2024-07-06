@@ -38,7 +38,7 @@
 #include <QApplication>
 #endif
 
-#if !(defined(Q_OS_ANDROID) and defined(Q_OS_IOS))
+#if !defined(Q_OS_ANDROID) and !defined(Q_OS_IOS)
 #include <kdsingleapplication.h>
 #endif
 

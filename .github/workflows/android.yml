@@ -22,7 +22,7 @@ jobs:
         repository: Akaflieg-Freiburg/enrouteDependencies
         submodules: recursive
     - name: Install Qt for Desktop
-      uses: jurplel/install-qt-action@v3
+      uses: jurplel/install-qt-action@v4
       with:
         version: '6.6.*'
         modules: 'qtshadertools'	
@@ -30,7 +30,7 @@ jobs:
       run: |
         echo QT_HOST_PATH=$Qt6_DIR >> $GITHUB_ENV
     - name: Install Qt for Android
-      uses: jurplel/install-qt-action@v3
+      uses: jurplel/install-qt-action@v4
       with:
         target: 'android'
         version: '6.6.*'

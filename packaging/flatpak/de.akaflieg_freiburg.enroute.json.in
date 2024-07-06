@@ -1,17 +1,15 @@
 {
     "app-id": "${APP_ID}",
     "runtime": "org.freedesktop.Platform",
-    "runtime-version": "22.08",
+    "runtime-version": "23.08",
     "sdk": "org.freedesktop.Sdk",
     "command": "${PROJECT_NAME}",
     "finish-args": [
         "--device=dri",
-        "--device=shm",
     	"--filesystem=host",
     	"--share=ipc",
         "--share=network",
         "--socket=pulseaudio",
-        "--socket=wayland",
         "--socket=x11",
         "--system-talk-name=org.freedesktop.GeoClue2",
         "--system-talk-name=org.freedesktop.NetworkManager",
@@ -201,8 +199,8 @@
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://cplx.vm.uni-freiburg.de/storage/maplibre-native-qt.tar.xz",
-		    "sha256": "df7d3ab7d474d36d3e4a8218558dd277a76774e5a3885651eb7fff2c1ad19372"
+                    "url": "https://github.com/Akaflieg-Freiburg/enrouteDependencies/releases/download/developerBuilds/maplibre-native-qt.tar.xz",
+		    "sha256": "e52d72dba8b6986a230a426078e46a7d1b5adeb796aee83da79fec15748f6607"
                 }
             ],
             "buildsystem": "cmake-ninja",

@@ -389,11 +389,19 @@ CenteringDialog {
                 Layout.alignment: Qt.AlignVCenter
                 onPressed:  {
                     PlatformAdaptor.vibrateBrief()
-                    Qt.openUrlExternally("https://www.google.com/maps/@?api=1&map_action=map&center="
-                                         + waypoint.coordinate.latitude
-                                         + "%2C"
-                                         + waypoint.coordinate.longitude
-                                         + "&zoom=15&basemap=satellite")
+                    var url = "https://www.google.com/maps/@?api=1&map_action=map&center="
+                            + waypoint.coordinate.latitude
+                            + "%2C"
+                            + waypoint.coordinate.longitude
+                            + "&zoom=15&basemap=satellite"
+                    if (GlobalSettings.alwaysOpenExternalWebsites === true)
+                    {
+                        Qt.openUrlExternally(url)
+                        return
+                    }
+                    privacyWarning.url = url
+                    privacyWarning.site = "Google Maps"
+                    privacyWarning.open()
                 }
             }
 
@@ -401,11 +409,6 @@ CenteringDialog {
                 Layout.fillWidth: true
             }
         }
-    }
-
-    Component {
-        id: empty
-        Item {}
     }
 
     ColumnLayout {
@@ -600,6 +603,69 @@ CenteringDialog {
         }
 
         onRejected: close()
+    }
+
+
+    CenteringDialog {
+        id: privacyWarning
+
+        property string url
+        property string site
+
+        modal: true
+
+        title: qsTr("Privacy warning")
+
+        ColumnLayout {
+            anchors.fill: parent
+
+            DecoratedScrollView{
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+
+                contentWidth: availableWidth // Disable horizontal scrolling
+
+                clip: true
+
+                Label {
+                    id: lbl
+                    text: "<p>"
+                          + qsTr("In order to show a satellite view, <strong>Enroute Flight Navigation</strong> will ask your system to open Google Maps in an external web browser or a dedicated app.")
+                          + " " + qsTr("The authors of <strong>Enroute Flight Navigation</strong> do not control Google Maps.")
+                          + " " + qsTr("They do not know what data it collects or how that data is processed.")
+                          + "</p>"
+                          + "<p>"
+                          + " " + qsTr("With the click on OK, you consent to opening Google Maps on your device.")
+                          + " " + qsTr("Click OK only if you agree with the terms and privacy policies of that site.")
+                          + "</p>"
+
+                    width: privacyWarning.availableWidth
+                    textFormat: Text.RichText
+                    wrapMode: Text.Wrap
+                }
+            }
+
+            Item {
+                Layout.preferredHeight: lbl.font.pixelSize
+            }
+
+            WordWrappingCheckDelegate {
+                id: alwaysOpen
+
+                Layout.fillWidth: true
+
+                text: qsTr("Always open external web sites, do not ask again")
+                checked: GlobalSettings.alwaysOpenExternalWebsites
+            }
+        }
+
+        standardButtons: Dialog.Cancel|Dialog.Ok
+
+        onAccepted: {
+            PlatformAdaptor.vibrateBrief()
+            GlobalSettings.alwaysOpenExternalWebsites = alwaysOpen.checked
+            Qt.openUrlExternally(url)
+        }
     }
 
     LongTextDialog {

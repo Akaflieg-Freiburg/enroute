@@ -21,7 +21,7 @@ jobs:
         repository: Akaflieg-Freiburg/qtlocationstatic
         submodules: true
     - name: Install Qt
-      uses: jurplel/install-qt-action@v3
+      uses: jurplel/install-qt-action@v4
       with:
         version: '6.*.*'
         modules: 'qt5compat qtconnectivity qthttpserver qtimageformats qtpositioning qtshadertools qtspeech qtwebsockets'	

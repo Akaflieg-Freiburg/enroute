@@ -346,6 +346,13 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
         QMapLibre::Location
         libzip::zip
     )
+if (TARGET Qt6::WebView)
+    message(STATUS "QtWebView found.")
+    target_link_libraries(${PROJECT_NAME}
+        PRIVATE
+        Qt6::WebView
+    )
+endif()
     target_precompile_headers(${PROJECT_NAME}
         PUBLIC
         <QQmlEngine>
@@ -537,6 +544,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/dialogs/NotamListDialog.qml
     qml/dialogs/PasswordDialog.qml
     qml/dialogs/PasswordStorageDialog.qml
+    qml/dialogs/PrivacyWarning.qml
     qml/dialogs/RenameVACDialog.qml
     qml/dialogs/TooManyDownloadsDialog.qml
     qml/dialogs/WaypointDescription.qml

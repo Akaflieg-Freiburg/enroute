@@ -39,7 +39,7 @@ jobs:
         key: macos
     - name: Compile EnrouteDependencies
       run: |
-        Qt6_DIR_BASE=$(dirname "$Qt6_DIR") ./buildscript-macos.sh
+        Qt6_DIR_BASE=$QT_ROOT_DIR/.. ./buildscript-macos.sh
         cp -prv Qt/* $Qt6_DIR/../..
       working-directory: enrouteDependencies
     - name: Compile Enroute Flight Navigation

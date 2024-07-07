@@ -36,7 +36,7 @@ jobs:
         modules: 'qt5compat qtconnectivity qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtshadertools qtspeech qtwebsockets qtwebview'
     - name: Set QT_HOST_PATH
       run: |
-        echo QT_HOST_PATH=$Qt6_DIR >> $GITHUB_ENV
+        echo QT_HOST_PATH=$QT_ROOT_DIR >> $GITHUB_ENV
     - name: Install Qt for iOS
       uses: jurplel/install-qt-action@v4
       with:
@@ -51,12 +51,12 @@ jobs:
         key: macos
     - name: Compile EnrouteDependencies
       run: |
-        Qt6_DIR_BASE=$(dirname "$Qt6_DIR") ./buildscript-ios.sh
+        Qt6_DIR_BASE=$QT_ROOT_DIR/.. ./buildscript-ios.sh
         cp -prv Qt/* $Qt6_DIR/../..
       working-directory: enrouteDependencies
     - name: Compile Enroute Flight Navigation
       run: |
-        $Qt6_DIR/bin/qt-cmake \
+        $QT_ROOT_DIR/bin/qt-cmake \
           -B build-enroute \
           -S enroute \
           -DCMAKE_BUILD_TYPE=Debug \

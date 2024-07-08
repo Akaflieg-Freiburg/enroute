@@ -40,8 +40,8 @@ jobs:
         key: linux
     - name: Compile QtLocation
       run: |
-        Qt6_DIR_BASE=$QT_ROOT_DIR/.. ./buildscript-linux.sh
-        cp -prdv Qt/* $Qt6_DIR/../..
+        Qt6_DIR_BASE=$(echo "$QT_ROOT_DIR" | sed 's|/[^/]*$||; s|/[^/]*$||') ./buildscript-linux.sh
+        Qt6_DIR_BASE=$(echo "$QT_ROOT_DIR" | sed 's|/[^/]*$||; s|/[^/]*$||') cp -prdv Qt/* $Qt6_DIR/../..
       working-directory: enrouteDependencies
     - name: Compile Enroute Flight Navigation
       run: |

@@ -83,7 +83,7 @@ jobs:
     - name: Package
       run: |
         cmake --build build-enroute --target install
-        $Qt6_DIR/bin/macdeployqt enroute.app -dmg
+        $QT_ROOT_DIR/bin/macdeployqt enroute.app -dmg
         mv enroute.dmg enroute-macOS-universal.dmg
     - name: Upload to developerBuilds
       run: |

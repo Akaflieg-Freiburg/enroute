@@ -49,6 +49,30 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: macos
+    - name: Compile and Install bzip2
+      run: |
+        $QT_ROOT_DIR/bin/qt-cmake \
+          -G Ninja  \
+          -S enrouteDependencies/bzip2 \
+          -B build-bzip2-iOS \
+          -DENABLE_APP=OFF \
+          -DENABLE_DOCS=OFF \
+          -DENABLE_SHARED_LIB=OFF \
+          -DENABLE_STATIC_LIB=ON \
+          -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" \
+          -DCMAKE_INSTALL_PREFIX=$QT_ROOT_DIR
+        cmake --build build-bzip2-iOS
+        cmake --install build-bzip2-iOS
+    - name: Compile and Install zlib
+      run: |
+        $QT_ROOT_DIR/bin/qt-cmake \
+          -G Ninja  \
+          -S enrouteDependencies/zlib \
+          -B build-zlib-iOS \
+          -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" \
+          -DCMAKE_INSTALL_PREFIX=$QT_ROOT_DIR
+        cmake --build build-zlib-iOS
+        cmake --install build-zlib-iOS
     - name: Compile and Install libzip
       run: |
         $QT_ROOT_DIR/bin/qt-cmake \

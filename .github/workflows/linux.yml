@@ -38,11 +38,19 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: linux
-    - name: Compile QtLocation
+    - name: Compile and Install maplibre-native-qt
       run: |
-        Qt6_DIR_BASE=$(echo "$QT_ROOT_DIR" | sed 's|/[^/]*$||') ./buildscript-linux.sh
-        Qt6_DIR_BASE=$(echo "$QT_ROOT_DIR" | sed 's|/[^/]*$||') cp -prdv Qt/* $Qt6_DIR/../..
-      working-directory: enrouteDependencies
+        $QT_ROOT_DIR/bin/qt-cmake \
+          -S enrouteDependencies/maplibre-native-qt \
+          -B build-maplibre-native-qt \
+          -G Ninja \
+          -DBUILD_TESTING=OFF \
+          -DCMAKE_C_COMPILER_LAUNCHER="ccache" \
+          -DCMAKE_CXX_COMPILER_LAUNCHER="ccache" \
+          -DCMAKE_PREFIX_PATH=$QT_ROOT_DIR \
+          -DCMAKE_INSTALL_PREFIX=$QT_ROOT_DIR
+        cmake --build build-maplibre-native-qt
+        cmake --install build-maplibre-native-qt
     - name: Compile Enroute Flight Navigation
       run: |
         cmake \

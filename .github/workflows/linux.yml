@@ -44,6 +44,7 @@ jobs:
           -S enrouteDependencies/maplibre-native-qt \
           -B build-maplibre-native-qt \
           -G Ninja \
+          -DMLN_QT_WITH_INTERNAL_ICU=ON \
           -DBUILD_TESTING=OFF \
           -DCMAKE_C_COMPILER_LAUNCHER="ccache" \
           -DCMAKE_CXX_COMPILER_LAUNCHER="ccache" \

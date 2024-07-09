@@ -37,6 +37,24 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: macos
+    - name: Compile and Install libzip
+      run: |
+        $QT_ROOT_DIR/bin/qt-cmake \
+          -S enrouteDependencies/libzip \
+          -B build-libzip \
+          -G Ninja  \
+          -DBUILD_DOC=OFF \
+          -DBUILD_EXAMPLES=OFF \
+          -DBUILD_REGRESS=OFF \
+          -DBUILD_SHARED_LIBS=OFF \
+          -DBUILD_TOOLS=OFF \
+          -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" \
+          -DENABLE_BZIP2=OFF \
+          -DENABLE_LZMA=OFF \
+          -DENABLE_ZSTD=OFF \
+          -DCMAKE_INSTALL_PREFIX=$QT_ROOT_DIR
+        cmake --build build-libzip
+        cmake --install build-libzip
     - name: Compile and Install maplibre-native-qt
       run: |
         $QT_ROOT_DIR/bin/qt-cmake \

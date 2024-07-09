@@ -63,6 +63,7 @@ jobs:
           -DENABLE_BZIP2=OFF \
           -DENABLE_LZMA=OFF \
           -DENABLE_ZSTD=OFF \
+          -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" \
           -DCMAKE_INSTALL_PREFIX=$QT_ROOT_DIR
         cmake --build build-libzip
         cmake --install build-libzip
@@ -75,6 +76,7 @@ jobs:
           -DBUILD_TESTING=OFF \
           -DCMAKE_C_COMPILER_LAUNCHER="ccache" \
           -DCMAKE_CXX_COMPILER_LAUNCHER="ccache" \
+          -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" \
           -DCMAKE_PREFIX_PATH=$QT_ROOT_DIR \
           -DCMAKE_INSTALL_PREFIX=$QT_ROOT_DIR
         cmake --build build-maplibre-native-qt

@@ -2,7 +2,7 @@ name: Compile on Linux
 
 on:
   push:
-    branches: [ develop ]
+    branches: [ developx ]
 
 jobs:
   build:

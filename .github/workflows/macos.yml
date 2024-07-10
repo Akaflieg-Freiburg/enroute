@@ -7,7 +7,7 @@ on:
 jobs:
   build:
 
-    runs-on: macos-13
+    runs-on: macos-latest
     
     steps:
     - name: Checkout Enroute
@@ -83,7 +83,7 @@ jobs:
     - name: Package
       run: |
         cmake --build build-enroute --target install
-        $QT_ROOT_DIR/bin/macdeployqt enroute.app -dmg
+        /usr/bin/sudo $QT_ROOT_DIR/bin/macdeployqt enroute.app -dmg
         mv enroute.dmg enroute-macOS-universal.dmg
     - name: Upload to developerBuilds
       run: |

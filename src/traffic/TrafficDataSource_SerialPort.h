@@ -41,10 +41,9 @@ class TrafficDataSource_SerialPort : public TrafficDataSource_AbstractSocket {
 public:
     /*! \brief Default constructor
      *
-     * @param isCanonical Intializer for property canonical
+     *  @param isCanonical Intializer for property canonical
      *
-     *  @param info Description of a Bluetooth Classic device offering
-     *  serial port service.
+     *  @param portName Name of the port
      *
      *  @param parent The standard QObject parent pointer
      */

@@ -73,6 +73,9 @@
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>Navigation App needs Location</string>
 
+    <key>NSMotionUsageDescription</key>
+    <string>Enroute needs this permission to measure the current pressure</string>
+
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
     <string>Navigation App needs Location</string>
 

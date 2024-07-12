@@ -7,3 +7,4 @@
 */
 "NSLocationAlwaysAndWhenInUseUsageDescription" = "Für die Navigation ist eine Standortfreigabe erforderlich";
 "NSLocationWhenInUseUsageDescription" = "Für die Navigation ist eine Standortfreigabe erforderlich";
+"NSMotionUsageDescription" = "Enroute benötigt diese Berechtigung um den aktuellen Druck messen zu können";

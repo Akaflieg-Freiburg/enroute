@@ -7,3 +7,4 @@
 */
 "NSLocationAlwaysAndWhenInUseUsageDescription" = "Udostępnianie lokalizacji jest wymagane do nawigacji";
 "NSLocationWhenInUseUsageDescription" = "Udostępnianie lokalizacji jest wymagane do nawigacji";
+"NSMotionUsageDescription" = "Enroute potrzebuje tego uprawnienia, aby mierzyć bieżące ciśnienie";

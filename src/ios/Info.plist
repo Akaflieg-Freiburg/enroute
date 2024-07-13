@@ -82,6 +82,8 @@
     <key>NSCameraUsageDescription</key>
     <string>Enroute does not use the camera</string>
 
+    <key>NSBluetoothAlwaysUsageDescription</key>
+    <string>Enroute does not use Bluetooth currently</string>
 
     <key>LSSupportsOpeningDocumentsInPlace</key>
     <false />

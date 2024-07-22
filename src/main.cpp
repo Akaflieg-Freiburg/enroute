@@ -34,9 +34,11 @@
 #if __has_include (<QtWebView/QtWebView>)
 #include <QtWebView/QtWebView>
 #endif
+#if __has_include (<QApplication>)
+#include <QApplication>
+#endif
 
 #if !defined(Q_OS_ANDROID) and !defined(Q_OS_IOS)
-#include <QApplication>
 #include <kdsingleapplication.h>
 #endif
 

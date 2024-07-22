@@ -22,15 +22,15 @@ jobs:
         repository: Akaflieg-Freiburg/enrouteDependencies
         submodules: recursive
     - name: Install Qt for Desktop
-      uses: jurplel/install-qt-action@v3
+      uses: jurplel/install-qt-action@v4
       with:
         version: '6.6.*'
         modules: 'qtshadertools'	
     - name: Set QT_HOST_PATH
       run: |
-        echo QT_HOST_PATH=$Qt6_DIR >> $GITHUB_ENV
+        echo QT_HOST_PATH=$QT_ROOT_DIR >> $GITHUB_ENV
     - name: Install Qt for Android
-      uses: jurplel/install-qt-action@v3
+      uses: jurplel/install-qt-action@v4
       with:
         target: 'android'
         version: '6.6.*'
@@ -49,7 +49,7 @@ jobs:
         key: android
     - name: Compile and Install libzip
       run: |
-        $Qt6_DIR/bin/qt-cmake \
+        $QT_ROOT_DIR/bin/qt-cmake \
           -S enrouteDependencies/libzip \
           -B build-libzip \
           -G Ninja  \
@@ -61,25 +61,25 @@ jobs:
           -DENABLE_BZIP2=OFF \
           -DENABLE_LZMA=OFF \
           -DENABLE_ZSTD=OFF \
-          -DCMAKE_INSTALL_PREFIX=$Qt6_DIR
+          -DCMAKE_INSTALL_PREFIX=$QT_ROOT_DIR
         cmake --build build-libzip
         cmake --install build-libzip
     - name: Compile and Install maplibre-native-qt
       run: |
-        $Qt6_DIR/bin/qt-cmake \
+        $QT_ROOT_DIR/bin/qt-cmake \
           -S enrouteDependencies/maplibre-native-qt \
           -B build-maplibre-native-qt \
           -G Ninja \
           -DBUILD_TESTING=OFF \
           -DCMAKE_C_COMPILER_LAUNCHER="ccache" \
           -DCMAKE_CXX_COMPILER_LAUNCHER="ccache" \
-          -DCMAKE_PREFIX_PATH=$Qt6_DIR \
-          -DCMAKE_INSTALL_PREFIX=$Qt6_DIR
+          -DCMAKE_PREFIX_PATH=$QT_ROOT_DIR \
+          -DCMAKE_INSTALL_PREFIX=$QT_ROOT_DIR
         cmake --build build-maplibre-native-qt
         cmake --install build-maplibre-native-qt
     - name: Compile Enroute
       run: |
-        $Qt6_DIR/bin/qt-cmake \
+        $QT_ROOT_DIR/bin/qt-cmake \
           -S enroute \
           -B build-enroute\
           -G Ninja\

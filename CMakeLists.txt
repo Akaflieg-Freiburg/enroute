@@ -15,7 +15,7 @@ option(BUILD_DOC "Build developer documentation" OFF)
 # Project data
 #
 
-project(enroute VERSION 2.31.03)
+project(enroute VERSION 2.31.5)
 set(APP_ID de.akaflieg_freiburg.enroute)
 set(DISPLAY_NAME "Enroute")
 math(EXPR PROJECT_VERSION_CODE 10000*${PROJECT_VERSION_MAJOR}+100*${PROJECT_VERSION_MINOR}+${PROJECT_VERSION_PATCH})
@@ -52,6 +52,7 @@ endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     find_package(Qt6 6.6 COMPONENTS DBus SerialPort Widgets REQUIRED)
+    find_package(Qt6 6.6 COMPONENTS WebView)
 endif()
 
 if(${QT_VERSION} VERSION_GREATER_EQUAL "6.7.0")

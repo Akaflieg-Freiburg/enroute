@@ -4,79 +4,99 @@ Privacy Policies
 English
 -------
 
-We do not collect our users' personal data. We do not store any
-personally identifiable information. However, to ensure functionality,
-the app must transmit the following data items to servers on the
-internet.
+This Privacy Policy outlines the data handling practices for the app
+**Enroute Flight Navigation**. We prioritize your privacy and do not
+collect or store personally identifiable information. However, for the
+app to function properly, it must communicate with certain servers on
+the Internet. The following sections list the servers that **Enroute
+Flight Navigation** communicates with and explain the communication
+purposes.
 
-1. Map and Data Download Server
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+By using Enroute Flight Navigation, you agree to this Privacy Policy. We
+may update this policy periodically, and any changes will be posted
+within the app.
 
-The app regularly checks for updates and allows downloading maps and
-data from a `server at the University of
-Freiburg <https://cplx.vm.uni-freiburg.de/storage>`__ to your device.
-Your device's IP address must be transmitted to the server to provide
-this functionality. Knowledge of the IP address is necessary for the
-server to respond. However, the server does not store any personal data
-about you in its log files. In particular, it does not store the IP
-address of your device in its log files. We can assure this because the
-server is under our control.
+1. Data and Anonymization Server (enroute-data)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2. METAR and TAF Server
-~~~~~~~~~~~~~~~~~~~~~~~
+**Enroute Flight Navigation** regularly communicates with the server
+**enroute-data.akaflieg-freiburg.de** (referred to as **enroute-data**),
+operated by Hetzner Online GmbH on behalf of Akaflieg Freiburg. The
+server's primary role is to facilitate the app's functionality while
+maintaining user privacy.
 
-The app shows METARs and TAFs for airfields near your current location
-and your currently planned route. It also shows METARs and TAFs for all
-waypoints you open in the app. To provide this functionality, a request
-containing the following data is transmitted to a `server at the
-University of Freiburg <https://cplx.vm.uni-freiburg.de/storage>`__:
+1.1. Data Collected
+^^^^^^^^^^^^^^^^^^^
+
+In every communication with **enroute-data**, your device's IP address
+is transmitted to the server. The server needs to know the IP address to
+respond.
+
+The server stores the following data items in its log files.
+
+-  **Pseudonymized IP Address**: The last byte of your IP address is
+   replaced with a random number, ensuring it cannot identify you.
+-  **Access Data**: Date and time of access, error codes, and data sent.
+-  **Software Information**: The name of the web browser or software in
+   use if the visitor’s software provides this information to the
+   server. **Enroute Flight Navigation** does not provide this
+   information and sends a standard text ('Mozilla/5.0') instead.
+-  **Operating System:** The operating system's name if the visitor’s
+   software provides this information to the server. **Enroute Flight
+   Navigation** does not provide this information.
+
+1.2. Communication: Data Download
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The app checks for updates and downloads data from **enroute-data** to
+provide current maps and aviation data. Your IP address is transmitted
+in the process.
+
+1.3. Communication: NOTAM, METAR and TAF
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Enroute Flight Navigation** shows NOTAMs, METARs, and TAFs for
+airfields near your current location and your currently planned route.
+It also shows NOTAMs, METARs, and TAFs for all waypoints you open in the
+app. To provide this functionality, requests are transmitted to the
+server **enroute-data** at regular intervals and whenever new data is
+requested. In addition to your device's IP address, the following data
+items will be sent.
 
 -  Your current location
 -  The currently planned route
 -  Waypoint coordinates
--  Your device's IP address
 
-Knowledge of the IP address is necessary for the server to respond.
-However, the server does not store any personal data about you in its
-log files. In particular, it does not store the IP address of your
-device in its log files. We can assure this because the server is under
-our control. The server cannot read any other data from your device in
-the process.
+The server forwards requests for METARs and TAFs to a web service at the
+Aviation Weather Center but hides your IP address, so the web service
+will never see it. The web services at the Aviation Weather Center are
+operated by the US government. We do not control the data handling
+practices of these external services. Detailed information can be found
+at **www.aviationweather.gov/dataserver**.
 
-The server forwards the request to a web service at the `Aviation
-Weather Center <https://www.aviationweather.gov>`__ but hides your IP
-address, so the web service will never see it. The web services at the
-Aviation Weather Center are operated by the US government and are beyond
-our control. Detailed information can be found at
-`www.aviationweather.gov/dataserver <https://www.aviationweather.gov/dataserver>`__.
+The server forwards requests for NOTAMs to a Federal Aviation
+Administration web service but hides your IP address, so the service
+will never see it. The Federal Aviation Administration's web services
+are operated by the US government. We do not control the data handling
+practices of these external services. Detailed information can be found
+at **api.faa.gov**.
 
-3. NOTAM Server
-~~~~~~~~~~~~~~~
+Other Servers
+~~~~~~~~~~~~~
 
-The app shows NOTAMs for places near your current location and your
-currently planned route. It also shows NOTAMs for all waypoints you open
-in the app. To provide this functionality, a request containing the
-following data is transmitted to a `server at the University of
-Freiburg <https://cplx.vm.uni-freiburg.de/storage>`__:
+At the user's request, **Enroute Flight Navigation** may display
+external websites in an embedded browser window or ask the operating
+system to open external apps such as Google Maps. These external sites
+and apps are beyond our control and may collect their own data.
 
--  Your current location
--  The currently planned route
--  Waypoint coordinates
--  Your device's IP address
+Users expect web browsers to follow hyperlinks immediately but may not
+expect the same behavior elsewhere in the app. To account for these
+expectations, **Enroute Flight Navigation** operates as follows.
 
-Knowledge of the IP address is necessary for the server to respond.
-However, the server does not store any personal data about you in its
-log files. In particular, it does not store the IP address of your
-device in its log files. We can assure this because the server is under
-our control. The server cannot read any other data from your device in
-the process.
-
-The server forwards the request to a web service at the `Federal
-Aviation Administration <https://api.faa.gov>`__ but hides your IP
-address, so the web service will never see it. The web services at the
-Federal Aviation Administration are operated by the US government and
-are beyond our control. Detailed information can be found at
-`api.faa.gov/s <https://api.faa.gov/s>`__.
+-  **Embedded Browser Windows**: Clicking a hyperlink is considered
+   authorization to open the external site.
+-  **Outside Embedded Browser Windows**: The app will ask for explicit
+   user authorization before opening any external site or app.
 
 Responsible
 ~~~~~~~~~~~
@@ -86,79 +106,105 @@ Stefan Kebekus, Wintererstraße 77, 79104 Freiburg im Breisgau, Germany
 Deutsche Übersetzung
 --------------------
 
-Wir sammeln keine persönlichen Daten unserer Benutzer. Wir speichern
-keinerlei personenbezogene Daten. Um zu funktionieren, muss die App
-allerdings die folgenden Daten zu Servern im Internet übertragen.
+Diese Datenschutzrichtlinie beschreibt den Umgang der App **Enroute
+Flight Navigation** mit Daten. Wir legen großen Wert auf Ihre
+Privatsphäre und sammeln und speichern keine persönlich
+identifizierbaren Informationen. Damit die App jedoch ordnungsgemäß
+funktioniert, muss sie mit bestimmten Servern im Internet kommunizieren.
+In den folgenden Abschnitten werden die Server aufgeführt, mit denen
+**Enroute Flight Navigation** kommuniziert, und die Zwecke der
+Kommunikation erläutert.
 
-1. Server zum Karten- und Daten-Download
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Mit der Verwendung von Enroute Flight Navigation stimmen Sie dieser
+Datenschutzrichtlinie zu. Gelegentliche Änderungen dieser Richtlinie
+sind möglich. Sie werden innerhalb der App bekanntgegeben.
 
-Die App prüft regelmäßig, ob Updates vorliegen, und ermöglicht den
-Download von Karten und Daten von einem `Server der Universität
-Freiburg <https://cplx.vm.uni-freiburg.de/storage>`__ auf Ihr Gerät. Die
-IP-Adresse Ihres Geräts muss zum Server übertragen werden, damit das
-funktioniert. Der Server kann nur antworten, wenn er die IP-Adresse
-kennt. Der Server speichert aber keinerlei personenbezogene Daten über
-Sie in seinen Loggdateien. Insbesondere speichert er Ihre IP-Adresse
-nicht in seinen Loggdateien. Wir können das zusichern, da sich der
-Server unter unserer Kontrolle befindet.
+1. Daten- und Anonymisierungs-Server (enroute-data)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2. METAR- und TAF-Server
-~~~~~~~~~~~~~~~~~~~~~~~~
+**Enroute Flight Navigation** kommuniziert regelmäßig mit dem Server
+**enroute-data.akaflieg-freiburg.de** (genannt **enroute-data**),
+betrieben von der Hetzner Online GmbH für die Akaflieg Freiburg. Die
+Hauptaufgabe des Servers besteht darin, die Funktionalität der App zu
+ermöglichen und gleichzeitig die Privatsphäre der Nutzer zu schützen.
 
-Die App zeigt METARs und TAFs für Flugplätze nahe Ihrer aktuellen
-Position und der jeweils geplanten Route. Sie zeigt außerdem METARs und
-TAFs für alle Wegpunkte, die Sie in der App öffnen. Für diese Funktion
-überträgt eine Abruf folgende Daten zu einem `Server der Universität
-Freiburg <https://cplx.vm.uni-freiburg.de/storage>`__:
+1.1. Gesammelte Daten
+^^^^^^^^^^^^^^^^^^^^^
+
+Bei jeder Kommunikation mit **enroute-data** wird die IP-Adresse Ihres
+Geräts zum Server übertragen. Der Server benötigt die IP-Adresse, um zu
+antworten.
+
+Der Server speichert die folgenden Daten in seinen Loggdateien.
+
+-  **Pseudonymisierte IP-Adresse**: Das letzte Byte Ihrer IP-Adresse
+   wird durch eine Zufallszahl ersetzt. Damit können Sie nicht
+   identifiziert werden.
+-  **Access Data**: Datum und Uhrzeit des Zugriffs, Fehlercodes, und
+   gesendete Daten.
+-  **Software Information**: Der Name des Web-Browsers oder der
+   verwendeten Software, falls er von der anfragenden Software
+   übertragen wird. **Enroute Flight Navigation** liefert diese
+   Information nicht und sendet stattdessen einen Standardtext
+   ('Mozilla/5.0').
+-  **Operating System:** Der Name des Betriebssystems, falls er von der
+   anfragenden Software übertragen wird. **Enroute Flight Navigation**
+   überträgt diese Information nicht.
+
+1.2. Kommunikation: Daten-Download
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Die App prüft auf vorhandene Updates und lädt Daten von
+**enroute-data**, um aktuelle Karten und Luftfahrtdaten bereitzustellen.
+Ihre IP-Adresse wird in diesem Prozess übertragen.
+
+1.3. Kommunikation: NOTAM, METAR und TAF
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Enroute Flight Navigation** zeigt NOTAMs, METARs und TAFs für
+Flugplätze in der Nähe Ihrer aktuellen Position und Ihrer aktiven
+geplanten Route. Es zeigt auch NOTAMs, METARs und TAFs für alle
+Wegpunkte, die Sie in der App öffnen. Um diese Funktion zu bieten,
+werden Anfragen zum Server **enroute-data** regelmäßig und außerdem bei
+der Abfrage neuer Daten gestellt. Zusätzlich zur IP-Adresse Ihres Geräts
+werden noch folgende Daten gesendet.
 
 -  Ihre aktuelle Position
 -  Die aktuell geplante Route
 -  Wegpunktkoordinaten
--  Die IP-Adresse Ihres Geräts
 
-Der Server kann nur antworten, wenn er die IP-Adresse kennt. Der Server
-speichert aber keinerlei personenbezogene Daten über Sie in seinen
-Loggdateien. Insbesondere speichert er Ihre IP-Adresse nicht in seinen
-Loggdateien. Wir können das zusichern, da sich der Server unter unserer
-Kontrolle befindet. Der Server kann in diesem Vorgang keinerlei andere
-Daten von Ihrem Gerät lesen.
+Der Server leitet METAR- und TAF-Anfragen zu einem Dienst des Aviation
+Weather Center weiter, verbirgt aber Ihre IP-Adresse, sodass dieser
+Dienst sie niemals sehen kann. Die Dienste des Aviation Weather Center
+werden von der US-Regierung betrieben. Auf die Datenverarbeitung dieser
+externen Dienste haben wir keinen Einfluss. Genaue Informationen finden
+Sie beim **www.aviationweather.gov/dataserver**.
 
-Der Server leitet die Anfrage zu einem Web-Service in der `Aviation
-Weather Center <https://www.aviationweather.gov>`__ weiter, aber
-verbirgt Ihre IP-Adresse, die der Web-Service damit niemals sieht. Die
-Web-Dienste des Aviation Weather Center werden von der US-Regierung
-betrieben und sind jenseits unserer Kontrolle. Detaillierte information
-finden Sie hier:
-`www.aviationweather.gov/dataserver <https://www.aviationweather.gov/dataserver>`__.
+Der Server leitet NOTAM-Anfragen zu einem Dienst der Federal Aviation
+Administration weiter, verbirgt aber Ihre IP-Adresse, sodass dieser
+Dienst sie niemals sehen kann. Die Dienste der Federal Aviation
+Administration werden von der US-Regierung betrieben. Auf die
+Datenverarbeitung dieser externen Dienste haben wir keinen Einfluss.
+Genaue Informationen finden Sie auf **api.faa.gov**.
 
-3. NOTAM-Server
-~~~~~~~~~~~~~~~
+Andere Server
+~~~~~~~~~~~~~
 
-Die App zeigt NOTAMs für Orte nahe Ihrer aktuellen Position und Ihrer
-jeweils geplanten Route. Sie zeigt auch NOTAMs für alle Wegpunkte, die
-Sie in der App öffnen. Für diese Funktion überträgt eine Abruf folgende
-Daten zu einem `Server der Universität
-Freiburg <https://cplx.vm.uni-freiburg.de/storage>`__:
+Auf Anforderung des Benutzers kann **Enroute Flight Navigation** externe
+Webseiten öffnen. Diese werden enteder in einem eingebetteten Browser
+angezeigt, oder das Betriebssystem wird eine externe App (wie z.B.
+Google Maps) öffnen. Diese externen Webseiten entziehen sich unserer
+Kontrolle und sammeln eventuell Daten.
 
--  Ihre aktuelle Position
--  Die aktuell geplante Route
--  Wegpunktkoordinaten
--  Die IP-Adresse Ihres Geräts
+Benutzer erwarten, dass der eingebette Browser jeden Link sofort öffnet.
+Ausserhalb des eingebetten Browsers werden die Benutzer unter Umständen
+ein anderes Verhalten erwarten. Um diesen Erwartungen zu entsprechen,
+verhält sich **Enroute Flight Navigation** folgendermaßen.
 
-Der Server kann nur antworten, wenn er die IP-Adresse kennt. Der Server
-speichert aber keinerlei personenbezogene Daten über Sie in seinen
-Loggdateien. Insbesondere speichert er Ihre IP-Adresse nicht in seinen
-Loggdateien. Wir können das zusichern, da sich der Server unter unserer
-Kontrolle befindet. Der Server kann in diesem Vorgang keinerlei andere
-Daten von Ihrem Gerät lesen.
-
-Der Server leitet die Anfrage zu einem Web-Service in der `Federal
-Aviation Administration <https://api.faa.gov>`__ weiter, aber verbirgt
-Ihre IP-Adresse, die der Web-Service damit niemals sieht. Die
-Web-Dienste der Federal Aviation Administration werden von der
-US-Regierung betrieben und sind jenseits unserer Kontrolle. Detaillierte
-information finden Sie hier: `api.faa.gov/s <https://api.faa.gov/s>`__.
+-  **Innerhalb des eingebetteten Browsers**: Ein Klick auf einen Link
+   wird als Autorisierung gewertet, die externe Seite sofort zu öffnen.
+-  **Außerhalb des eingebetteten Browsers**: Die App fragt ausdrücklich
+   nach Berechtigung, bevor sie eine externe Seite oder App öffnet.
 
 Verantwortlich
 ~~~~~~~~~~~~~~
@@ -168,85 +214,99 @@ Stefan Kebekus, Wintererstraße 77, 79104 Freiburg im Breisgau, Germany
 Traduction en français
 ----------------------
 
-Nous ne collectons pas les données personnelles de nos utilisateurs.
-Nous ne stockons aucune information personnelle. Cependant, pour assurer
-la fonctionnalité, l'application doit transmettre les données suivantes
-aux serveurs sur Internet.
+This Privacy Policy outlines the data handling practices for the app
+**Enroute Flight Navigation**. We prioritize your privacy and do not
+collect or store personally identifiable information. However, for the
+app to function properly, it must communicate with certain servers on
+the Internet. The following sections list the servers that **Enroute
+Flight Navigation** communicates with and explain the communication
+purposes.
 
-1. Serveur de téléchargement de cartes et de données
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+By using Enroute Flight Navigation, you agree to this Privacy Policy. We
+may update this policy periodically, and any changes will be posted
+within the app.
 
-L'application vérifie régulièrement les mises à jour et permet de
-télécharger des cartes et des données depuis un `serveur de l'Université
-de Fribourg <https://cplx.vm.uni-freiburg.de/storage>`__ sur votre
-appareil. L'adresse IP de votre appareil doit être transmise au serveur
-pour fournir cette fonctionnalité. La connaissance de l'adresse IP est
-nécessaire pour que le serveur puisse répondre. Cependant, le serveur ne
-stocke aucune donnée personnelle vous concernant dans ses fichiers
-journaux. En particulier, il ne stocke pas l'adresse IP de votre
-appareil dans ses fichiers journaux. Nous pouvons l'assurer car le
-serveur est sous notre contrôle.
+1. Data and Anonymization Server (enroute-data)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2. Serveur METAR et TAF
-~~~~~~~~~~~~~~~~~~~~~~~
+**Enroute Flight Navigation** regularly communicates with the server
+**enroute-data.akaflieg-freiburg.de** (referred to as **enroute-data**),
+operated by Hetzner Online GmbH on behalf of Akaflieg Freiburg. The
+server's primary role is to facilitate the app's functionality while
+maintaining user privacy.
 
-L'application affiche les METAR et les TAF des aérodromes proches de
-votre position actuelle et de votre itinéraire actuellement prévu. Il
-affiche également les METAR et les TAF pour tous les waypoints que vous
-ouvrez dans l'application. Pour fournir cette fonctionnalité, une
-requête contenant les données suivantes est transmise à un `serveur de
-l'Université de Fribourg <https://cplx.vm.uni-freiburg.de/storage>`__ :
+1.1. Data Collected
+^^^^^^^^^^^^^^^^^^^
+
+In every communication with **enroute-data**, your device's IP address
+is transmitted to the server. The server needs to know the IP address to
+respond.
+
+The server stores the following data items in its log files.
+
+-  **Pseudonymized IP Address**: The last byte of your IP address is
+   replaced with a random number, ensuring it cannot identify you.
+-  **Access Data**: Date and time of access, error codes, and data sent.
+-  **Software Information**: The name of the web browser or software in
+   use if the visitor’s software provides this information to the
+   server. **Enroute Flight Navigation** does not provide this
+   information and sends a standard text ('Mozilla/5.0') instead.
+-  **Operating System:** The operating system's name if the visitor’s
+   software provides this information to the server. **Enroute Flight
+   Navigation** does not provide this information.
+
+1.2. Communication: Data Download
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The app checks for updates and downloads data from **enroute-data** to
+provide current maps and aviation data. Your IP address is transmitted
+in the process.
+
+1.3. Communication: NOTAM, METAR and TAF
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Enroute Flight Navigation** shows NOTAMs, METARs, and TAFs for
+airfields near your current location and your currently planned route.
+It also shows NOTAMs, METARs, and TAFs for all waypoints you open in the
+app. To provide this functionality, requests are transmitted to the
+server **enroute-data** at regular intervals and whenever new data is
+requested. In addition to your device's IP address, the following data
+items will be sent.
 
 -  Votre position actuelle
 -  L'itinéraire actuellement prévu
 -  Coordonnées du point de cheminement
--  L'adresse IP de votre appareil
 
-La connaissance de l'adresse IP est nécessaire pour que le serveur
-puisse répondre. Cependant, le serveur ne stocke aucune donnée
-personnelle vous concernant dans ses fichiers journaux. En particulier,
-il ne stocke pas l'adresse IP de votre appareil dans ses fichiers
-journaux. Nous pouvons l'assurer car le serveur est sous notre contrôle.
-Le serveur ne peut lire aucune autre donnée de votre appareil au cours
-du processus.
+The server forwards requests for METARs and TAFs to a web service at the
+Aviation Weather Center but hides your IP address, so the web service
+will never see it. The web services at the Aviation Weather Center are
+operated by the US government. We do not control the data handling
+practices of these external services. Detailed information can be found
+at **www.aviationweather.gov/dataserver**.
 
-Le serveur transmet la demande à un service Web au `Aviation Weather
-Center <https://www.aviationweather.gov>`__ mais masque votre adresse IP
-afin que le service Web ne la voie jamais. Les services Web de
-l'Aviation Weather Center sont exploités par le gouvernement des
-Etats-Unis et sont hors de notre contrôle. Des informations détaillées
-peuvent être trouvées sur
-`www.aviationweather.gov/dataserver <https://www.aviationweather.gov/dataserver>`__.
+The server forwards requests for NOTAMs to a Federal Aviation
+Administration web service but hides your IP address, so the service
+will never see it. The Federal Aviation Administration's web services
+are operated by the US government. We do not control the data handling
+practices of these external services. Detailed information can be found
+at **api.faa.gov**.
 
-3. Serveur NOTAM
-~~~~~~~~~~~~~~~~
+Other Servers
+~~~~~~~~~~~~~
 
-L'application affiche les NOTAM pour les lieux proches de votre position
-actuelle et de votre itinéraire actuellement prévu. Il affiche également
-les NOTAM pour tous les waypoints que vous ouvrez dans l'application.
-Pour fournir cette fonctionnalité, une requête contenant les données
-suivantes est transmise à un `serveur de l'Université de
-Fribourg <https://cplx.vm.uni-freiburg.de/storage>`__ :
+At the user's request, **Enroute Flight Navigation** may display
+external websites in an embedded browser window or ask the operating
+system to open external apps such as Google Maps. These external sites
+and apps are beyond our control and may collect their own data.
 
--  Votre position actuelle
--  L'itinéraire actuellement prévu
--  Coordonnées du point de cheminement
--  L'adresse IP de votre appareil
+Users expect web browsers to follow hyperlinks immediately but may not
+expect the same behavior elsewhere in the app. To account for these
+expectations, **Enroute Flight Navigation** operates as follows.
 
-La connaissance de l'adresse IP est nécessaire pour que le serveur
-puisse répondre. Cependant, le serveur ne stocke aucune donnée
-personnelle vous concernant dans ses fichiers journaux. En particulier,
-il ne stocke pas l'adresse IP de votre appareil dans ses fichiers
-journaux. Nous pouvons l'assurer car le serveur est sous notre contrôle.
-Le serveur ne peut lire aucune autre donnée de votre appareil au cours
-du processus.
-
-Le serveur transmet la demande à un service Web au `Federal Aviation
-Administration <https://api.faa.gov>`__ mais masque votre adresse IP
-afin que le service Web ne la voie jamais. Les services Web de la
-Federal Aviation Administration sont exploités par le gouvernement des
-Etats-Unis et échappent à notre contrôle. Des informations détaillées
-peuvent être trouvées sur `api.faa.gov/s <https://api.faa.gov/s>`__.
+-  **Embedded Browser Windows**: Clicking a hyperlink is considered
+   authorization to open the external site.
+-  **Outside Embedded Browser Windows**: The app will ask for explicit
+   user authorization before opening any external site or app.
 
 Responsable
 ~~~~~~~~~~~
@@ -256,81 +316,102 @@ Stefan Kebekus, Wintererstraße 77, 79104 Freiburg im Breisgau, Germany
 Traduzione italiana
 -------------------
 
-Non raccogliamo i dati personali degli utenti. Non memorizziamo nessuna
-informazione personale. Comunque, per assicurare le funzionalità, la app
-deve trasmettere i seguenti dati sui server su internet.
+Questa Privacy Policy evidenzia il processo di gestione dei dati per
+**Enroute Flight Navigation**. Diamo priorità alla tua privacy e non
+raccogliamo o immagazziniamo nessun dato personale. Comunque, per far
+funzionare bene, la app deve comunicare con certi servers su internet.
+La sezione seguente elenca i servers con cui **Enroute Flight
+Navigation** comunica e spiega gli scopi della comunicazione.
 
-1. Server di Mappe e Dati
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Usando Enroute Flight Navigation, sei daccordo con questa Privacy
+Policy. Potremmo aggiornare questa policy periodicamente, e ogni
+modifica sarà evidenziata nella app.
 
-La app controlla regolarmente gli aggiornamenti e consente di scaricare
-mappe e dati dal server di `presso l'Università di
-Freiburg <https://cplx.vm.uni-freiburg.de/storage>`__ sul tuo
-dispositivo. L'indirizzo IP del tuo dispositivo deve essere trasmesso al
-server per fornire questa funzionalità. L'indirizzo IP è necessario al
-server per rispondere. In ogni caso il server non immagazzina nessun
-dato personale nel propri files log. In particolare, non immagazzina
-l'indirizzo IP del tuo dispositivo nei suoi file log. Possiamo
-assicurare questo in quanto il server è sotto il nostro controllo.
+1. Dati e anonimato dei server (dati di Enroute)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2. Server METAR e TAF
-~~~~~~~~~~~~~~~~~~~~~
+**Enroute Flight Navigation** comunica regolarmente con il server di
+**enroute-data.akaflieg-freiburg.de** (chiamato anche **enroute-data**),
+operato per conto di Akaflieg Freiburs da Hetzner Online GmbH. Il ruolo
+primario del server è di facilitare le funzionalità della app
+preservando la privacy dell'utente.
 
-La app mostra METAR e TAF per aeroporti vicino la tua posizione corrente
-e il vicino il tuo piano di volo. Mostra anche METAR e TAF per tutti i
-waypoints che apri nella app. Per fornire questa funzionalità, viene
-trasmessa una richiesta contenente i seguenti dati al server
-`all'Università di
-Freiburg <https://cplx.vm.uni-freiburg.de/storage>`__:
+1.1. Raccolta dati
+^^^^^^^^^^^^^^^^^^
+
+In ogni comunicazione con **enroute-data**, l'indirizzo IP del tuo
+dispositivo è trasmesso al server. Il server ha bisogno di conoscere
+l'indirizzo IP per rispondere.
+
+Il server immagazzina i seguenti dati per proprio file log.
+
+-  **Indirizzo IP pseudonimo**: L'ultimo byte del tuo IP è rimpiazzato
+   con un numero casuale, per garantire l'anonimato.
+-  **Accesso ai Dati**: Data e ora dell'accesso, codici di errore e dati
+   inviati.
+-  **Informazioni sul Software**: Il nome del browser web o del software
+   in uso se il software del visitatore fornisce queste informazioni al
+   server. **Enroute Flight Navigation** non fornisce queste
+   informazioni, invia invece un testo standart ('Mozilla/5.0').
+-  **Operating System:**: Il nome del sistema operativo se il software
+   del visitatore fornisce questa informazione al server. **Enroute
+   Flight Navigation** non fornisce questa informazione.
+
+1.2. Comunicazione: scaricamento di dati
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+La app controlla gli aggiornamenti e lo scaricamento dei dati da
+**enroute-data** per fornire le mappe installate e dati aeronautici. Il
+tuo indirizzo IP è fornito nel processo.
+
+1.3. Comunicazioni: NOTAM, METAR e TAF
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Enroute Flight Navigation** mostra NOTAM, METAR e TAF per gli
+aeroporti vicini alla tua posizione corrente e la tua rotta pianificata.
+Mostra anche NOTAM, METAR e TAF per tutti i punti intermedi che apri
+nella app. Per fornire questa funzione, le richieste sono trasmesse ai
+server di **enroute-data** ad intervalli regolari o ogni volta che un
+nuovo dato viere richiesto. Oltre all'IP del dispositivo, vengono
+trasmessi i seguenti dati.
 
 -  La tua posizione corrente
 -  Il piano di volo corrente
 -  Coordinate dei waypoints
--  L'indirizzo IP del tuo dispositivo
 
-L'indirizzo IP è necessario al server per rispondere. In ogni caso il
-server non immagazzina nessun dato personale nel propri files log. In
-particolare, non immagazzina l'indirizzo IP del tuo dispositivo nei suoi
-file log. Possiamo assicurare questo in quanto il server è sotto il
-nostro controllo. Durante il processo il server non può leggere nessun
-altro dato del tuo dispositivo.
+Il server inoltra la richiesta di METAR e TAF a un servizio web presso
+l'Aviation Weather Center ma nasconde il tuo IP, in questo modo il
+servizio web non lo vedrà. Il servizio web presso l'Aviation Weather
+Center è operato dal governo USA. Noi non controlliamo la gestione dei
+dati di questi server esterni. Informazioni più dettagliate possono
+essere trovate su **www.aviationweather.gov/dataserver**.
 
-Il server rimanda la richiesta a un servizio web al `Aviation Weather
-Center <https://www.aviationweather.gov>`__ ma nasconde il tuo indirizzo
-IP, così il servizio web non lo vedrà mai. I servizi web presso
-l'Aviation Weather Center (Centro Meteo dell'Aviazione) sono operati dal
-governo USA e non sono sotto il nostro controllo. Informazioni di
-dettaglio possono essere trovate a
-`www.aviationweather.gov/dataserver <https://www.aviationweather.gov/dataserver>`__.
+il server inoltra la richiesta di NOTAM ai servizi web della Federal
+Aviation Administration ma nasconde il tuo IP,così il servizio non può
+vederlo. I servizi web della Federal Aviation Administration sono
+operati dal governo USA. Noi non controlliamo la gestione dei dati di
+questi server esterni. Informazioni più dettagliate possono essere
+trovate su **api.faa.gov**.
 
-3. Server NOTAM
-~~~~~~~~~~~~~~~
+Altri server
+~~~~~~~~~~~~
 
-La app mostra i NOTAM per i luoghi vicino la tua posizione corrente e il
-piano di volo. Mostra anche i NOTAM per tutti i waypoint che apri nella
-app. Per fornire questa funzionalità, viene trasmessa una richiesta
-contenente i seguenti dati al server `all'Università di
-Freiburg <https://cplx.vm.uni-freiburg.de/storage>`__:
+A seguito della richiesta dell'utente, **Enroute Flight Navigation** può
+mostrare siti web esterni in un browser incorporato o chiedere al
+sistema operativo di aprire una app esterna come Google Maps. Questi
+siti esterni e app sono oltre il nostro controllo e potrebbero
+raccogliere i tuoi dati.
 
--  La tua posizione corrente
--  Il piano di volo corrente
--  Coordinate dei waypoints
--  L'indirizzo IP del tuo dispositivo
+Gli utenti si aspettano che il browser segua il link immediatamente ma
+lo stesso comportamento non deve essere atteso in altre parti della app.
+Per giustificare queste aspettative, **Enroute Flight Navigation** opera
+come segue.
 
-L'indirizzo IP è necessario al server per rispondere. In ogni caso il
-server non immagazzina nessun dato personale nel propri files log. In
-particolare, non immagazzina l'indirizzo IP del tuo dispositivo nei suoi
-file log. Possiamo assicurare questo in quanto il server è sotto il
-nostro controllo. Durante il processo il server non può leggere nessun
-altro dato del tuo dispositivo.
-
-Il server rimanda la richiesta a un servizio web al `Federal Aviation
-Administration <https://api.faa.gov>`__ ma nasconde il tuo indirizzo IP,
-così il servizio web non lo vedrà mai. I servizi web presso la Federal
-Aviation Administration (Amministrazione Federale per l'Aviazione) sono
-operati dal governo USA e non sono sotto il nostro controllo.
-Informazioni di dettaglio possono essere trovate a
-`api.faa.gov/s <https://api.faa.gov/s>`__.
+-  **Finestra del Browser integrato**: Cliccare su un link è considerato
+   come una autorizzazione ad aprire il sito esterno.
+-  **Finestra di un browser integrato esterno**: La app chiederà
+   esplicitamente all'utente l'autorizzazione prima di aprire qualsiasi
+   sito esterno o app.
 
 Responsabile
 ~~~~~~~~~~~~
@@ -340,82 +421,105 @@ Stefan Kebekus, Wintererstraße 77, 79104 Freiburg im Breisgau, Germany
 Polskie tłumaczenie
 -------------------
 
-Nie zbieramy danych osobowych naszych użytkowników. Nie przechowujemy
-żadnych identyfikowalnych danych osobowych. Aby jednak zapewnić
-funkcjonalność, aplikacja musi przesyłać następujące elementy danych do
-serwerów w Internecie.
+Niniejsza Polityka prywatności opisuje praktyki przetwarzania danych w
+aplikacji **Enroute Flight Navigation**. Priorytetowo traktujemy Twoją
+prywatność i nie gromadzimy ani nie przechowujemy danych osobowych. Aby
+jednak aplikacja działała prawidłowo, musi komunikować się z określonymi
+serwerami w Internecie. W poniższych sekcjach wymieniono serwery, z
+którymi komunikuje się **Enroute Flight Nawigacja**, i wyjaśniono cele
+komunikacji.
 
-1. Serwer map i danych
-~~~~~~~~~~~~~~~~~~~~~~
+Korzystając z Enroute Flight Navigation, wyrażasz zgodę na niniejszą
+Politykę prywatności. Możemy okresowo aktualizować tę politykę, a
+wszelkie zmiany będą publikowane w aplikacji.
 
-Aplikacja regularnie sprawdza dostępność aktualizacji i umożliwia
-pobieranie map i danych na Twoje urządzenie z `serwera na Uniwersytecie
-we Fryburgu <https://cplx.vm.uni-freiburg.de/storage>`__. Aby móc
-korzystać z tej funkcji, adres IP Twojego urządzenia musi zostać
-przesłany do serwera. Aby serwer mógł odpowiedzieć, konieczna jest
-znajomość adresu IP. Serwer nie przechowuje jednak żadnych danych
-osobowych o Tobie w swoich plikach dziennika. W szczególności nie
-zapisuje adresu IP Twojego urządzenia w swoich plikach logów. Możemy to
-zapewnić, ponieważ serwer jest pod naszą kontrolą.
+1. Serwer danych i anonimizacji (enroute-data)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2. Serwer METAR i TAF
-~~~~~~~~~~~~~~~~~~~~~
+**Enroute Flight Nawigacja** regularnie komunikuje się z serwerem
+**enroute-data.akaflieg-freiburg.de** (określanym jako
+**enroute-data**), obsługiwanym przez firmę Hetzner Online GmbH w
+imieniu Akaflieg Freiburg. Podstawową rolą serwera jest ułatwianie
+funkcjonalności aplikacji przy jednoczesnym zachowaniu prywatności
+użytkownika.
 
-Aplikacja wyświetla komunikaty METAR i TAF dla lotnisk w pobliżu Twojej
-bieżącej lokalizacji oraz aktualnie zaplanowanej trasy. Pokazuje także
-METAR i TAF dla wszystkich punktów trasy otwieranych w aplikacji. Aby
-zapewnić tę funkcjonalność, do `serwera na Uniwersytecie we
-Freiburgu <https://cplx.vm.uni-freiburg.de/storage>`__ przesyłane jest
-żądanie zawierające następujące dane:
+1.1. Informacje zbierane
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Przy każdej komunikacji z **enroute-data** adres IP Twojego urządzenia
+jest przesyłany do serwera. Serwer musi znać adres IP, aby odpowiedzieć.
+
+Serwer przechowuje następujące elementy danych w swoich plikach
+dziennika.
+
+-  **Pseudonimizowany adres IP**: ostatni bajt adresu IP jest
+   zastępowany losową liczbą, dzięki czemu nie można go zidentyfikować.
+-  **Dane dostępu**: data i godzina dostępu, kody błędów i przesłane
+   dane.
+-  **Informacje o oprogramowaniu**: nazwa przeglądarki internetowej lub
+   używanego oprogramowania, jeśli oprogramowanie odwiedzającego
+   udostępnia te informacje serwerowi. **Enroute Flight Navigation** nie
+   dostarcza tych informacji i zamiast tego wysyła standardowy tekst
+   („Mozilla/5.0”).
+-  **System operacyjny:** nazwa systemu operacyjnego, jeśli
+   oprogramowanie odwiedzającego udostępnia te informacje serwerowi.
+   **Enroute Flight Navigation** nie udostępnia tych informacji.
+
+1.2. Komunikacja: Pobieranie danych
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Aplikacja sprawdza dostępność aktualizacji i pobiera dane z
+**enroute-data**, aby zapewnić aktualne mapy i dane lotnicze. W trakcie
+tego procesu przesyłany jest Twój adres IP.
+
+1.3. Komunikacja: NOTAM, METAR i TAF
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Enroute Flight Navigation** pokazuje NOTAM, METAR i TAF dla lotnisk w
+pobliżu Twojej bieżącej lokalizacji i aktualnie zaplanowanej trasy.
+Pokazuje także NOTAM, METAR i TAF dla wszystkich punktów otwartych w
+aplikacji. Aby zapewnić tę funkcjonalność, żądania są przesyłane do
+serwera **dane-enroute-data** w regularnych odstępach czasu oraz za
+każdym razem, gdy wymagane są nowe dane. Oprócz adresu IP Twojego
+urządzenia przesłane zostaną następujące dane.
 
 -  Twoja aktualna lokalizacja
 -  Aktualnie planowana trasa
 -  Współrzędne punktu trasy
--  Adres IP Twojego urządzenia
 
-Aby serwer mógł odpowiedzieć, konieczna jest znajomość adresu IP. Serwer
-nie przechowuje jednak żadnych danych osobowych o Tobie w swoich plikach
-dziennika. W szczególności nie zapisuje adresu IP Twojego urządzenia w
-swoich plikach logów. Możemy to zapewnić, ponieważ serwer jest pod naszą
-kontrolą. Serwer nie może w tym procesie odczytać żadnych innych danych
-z Twojego urządzenia.
+Serwer przekazuje żądania METAR i TAF do usługi internetowej w Aviation
+Weather Center, ale ukrywa Twój adres IP, więc usługa internetowa nigdy
+go nie zobaczy. Usługi internetowe Aviation Weather Center są
+obsługiwane przez rząd USA. Nie kontrolujemy praktyk przetwarzania
+danych w tych usługach zewnętrznych. Szczegółowe informacje można
+znaleźć na stronie **www.aviationweather.gov/dataserver**.
 
-Serwer przekazuje żądanie do usługi internetowej o adresie `Aviation
-Weather Center <https://www.aviationweather.gov>`__, ale ukrywa Twój
-adres IP, więc usługa internetowa nigdy go nie zobaczy. Usługi
-internetowe Aviation Weather Center są obsługiwane przez rząd Stanów
-Zjednoczonych i są poza naszą kontrolą. Szczegółowe informacje można
-znaleźć na stronie
-`www.aviationweather.gov/dataserver <https://www.aviationweather.gov/dataserver>`__.
+Serwer przekazuje żądania NOTAM do usługi internetowej Federalnej
+Administracji Lotniczej, ale ukrywa Twój adres IP, więc usługa nigdy go
+nie zobaczy. Usługi internetowe Federalnej Administracji Lotniczej są
+obsługiwane przez rząd Stanów Zjednoczonych. Nie kontrolujemy praktyk
+przetwarzania danych w tych usługach zewnętrznych. Szczegółowe
+informacje można znaleźć na stronie **api.faa.gov**.
 
-3. Serwer NOTAM
-~~~~~~~~~~~~~~~
+Inne serwery
+~~~~~~~~~~~~
 
-Aplikacja wyświetla NOTAM dla miejsc w pobliżu Twojej aktualnej
-lokalizacji oraz aktualnie zaplanowanej trasy. Pokazuje także NOTAM dla
-wszystkich punktów trasy otwartych w aplikacji. Aby zapewnić tę
-funkcjonalność, do `serwera na Uniwersytecie we
-Freiburgu <https://cplx.vm.uni-freiburg.de/storage>`__ przesyłane jest
-żądanie zawierające następujące dane:
+Na żądanie użytkownika **Enroute Flight Navigation** może wyświetlić
+zewnętrzne strony internetowe we wbudowanym oknie przeglądarki lub
+poprosić system operacyjny o otwarcie aplikacji zewnętrznych, takich jak
+Mapy Google. Te zewnętrzne witryny i aplikacje są poza naszą kontrolą i
+mogą gromadzić własne dane.
 
--  Twoja aktualna lokalizacja
--  Aktualnie planowana trasa
--  Współrzędne punktu trasy
--  Adres IP Twojego urządzenia
+Użytkownicy oczekują, że przeglądarki internetowe będą natychmiast
+podążać za hiperłączami, ale nie mogą spodziewać się takiego samego
+zachowania w innych miejscach aplikacji. Aby uwzględnić te oczekiwania,
+**Enroute Flight Navigation** działa w następujący sposób.
 
-Aby serwer mógł odpowiedzieć, konieczna jest znajomość adresu IP. Serwer
-nie przechowuje jednak żadnych danych osobowych o Tobie w swoich plikach
-dziennika. W szczególności nie zapisuje adresu IP Twojego urządzenia w
-swoich plikach logów. Możemy to zapewnić, ponieważ serwer jest pod naszą
-kontrolą. Serwer nie może w tym procesie odczytać żadnych innych danych
-z Twojego urządzenia.
-
-Serwer przekazuje żądanie do usługi internetowej o adresie `Federal
-Aviation Administration <https://api.faa.gov>`__, ale ukrywa Twój adres
-IP, więc usługa internetowa nigdy go nie zobaczy. Usługi internetowe
-Federalnej Administracji Lotniczej są obsługiwane przez rząd Stanów
-Zjednoczonych i pozostają poza naszą kontrolą. Szczegółowe informacje
-można znaleźć na stronie `api.faa.gov/s <https://api.faa.gov/s>`__.
+-  **Okna wbudowanej przeglądarki**: kliknięcie hiperłącza jest uznawane
+   za autoryzację do otwarcia witryny zewnętrznej.
+-  **Poza oknem wbudowanej przeglądarki**: aplikacja poprosi użytkownika
+   o wyraźną autoryzację przed otwarciem jakiejkolwiek zewnętrznej
+   witryny lub aplikacji.
 
 Odpowiedzialny
 ~~~~~~~~~~~~~~
@@ -425,82 +529,107 @@ Stefan Kebekus, Wintererstraße 77, 79104 Freiburg im Breisgau, Germany
 Traducción al español
 ---------------------
 
-No recopilamos datos personales de nuestros usuarios. No almacenamos
-ninguna información de identificación personal. Sin embargo, para
-garantizar la funcionalidad, la aplicación debe transmitir los
-siguientes elementos de datos a servidores en Internet.
+Esta política de privacidad describe las prácticas de manejo de datos
+para la aplicación **Enroute Flight Navigation**. Priorizamos su
+privacidad y no recopilamos ni almacenamos información de identificación
+personal. Sin embargo, para que la aplicación funcione correctamente,
+debe comunicarse con ciertos servidores de Internet. Las siguientes
+secciones enumeran los servidores con los que se comunica **Enroute
+Flight Navigation** y explican los propósitos de la comunicación.
 
-1. Servidor de descarga de mapas y datos
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Al utilizar Enroute Flight Navigation, acepta esta Política de
+privacidad. Podemos actualizar esta política periódicamente y cualquier
+cambio se publicará en la aplicación.
 
-La aplicación busca periódicamente actualizaciones y permite descargar
-mapas y datos desde un `servidor de la Universidad de
-Friburgo <https://cplx.vm.uni-freiburg.de/storage>`__ a su dispositivo.
-La dirección IP de su dispositivo debe transmitirse al servidor para
-proporcionar esta funcionalidad. El conocimiento de la dirección IP es
-necesario para que el servidor responda. Sin embargo, el servidor no
-almacena ningún dato personal sobre usted en sus archivos de registro.
-En particular, no almacena la dirección IP de su dispositivo en sus
-archivos de registro. Esto lo podemos asegurar porque el servidor está
-bajo nuestro control.
+1. Servidor de datos y anonimización (datos en ruta)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2. Servidor METAR y TAF
-~~~~~~~~~~~~~~~~~~~~~~~
+**Enroute Flight Navigation** se comunica periódicamente con el servidor
+**enroute-data.akaflieg-freiburg.de** (denominado **enroute-data**),
+operado por Hetzner Online GmbH en nombre de Akaflieg Freiburg. La
+función principal del servidor es facilitar la funcionalidad de la
+aplicación manteniendo la privacidad del usuario.
 
-La aplicación muestra METAR y TAF para aeródromos cercanos a su
-ubicación actual y su ruta planificada actualmente. También muestra
-METAR y TAF para todos los waypoints que abres en la aplicación. Para
-proporcionar esta funcionalidad, se transmite una solicitud que contiene
-los siguientes datos a un `servidor de la Universidad de
-Friburgo <https://cplx.vm.uni-freiburg.de/storage>`__:
+1.1. Datos recolectados
+^^^^^^^^^^^^^^^^^^^^^^^
+
+En cada comunicación con **enroute-data**, la dirección IP de su
+dispositivo se transmite al servidor. El servidor necesita saber la
+dirección IP para responder.
+
+El servidor almacena los siguientes elementos de datos en sus archivos
+de registro.
+
+-  **Dirección IP seudonimizada**: el último byte de su dirección IP se
+   reemplaza con un número aleatorio, lo que garantiza que no pueda
+   identificarlo.
+-  **Datos de acceso**: Fecha y hora de acceso, códigos de error y datos
+   enviados.
+-  **Información de software**: el nombre del navegador web o software
+   en uso si el software del visitante proporciona esta información al
+   servidor. **Enroute Flight Navigation** no proporciona esta
+   información y en su lugar envía un texto estándar ('Mozilla/5.0').
+-  **Sistema operativo:** el nombre del sistema operativo si el software
+   del visitante proporciona esta información al servidor. **Enroute
+   Flight Navigation** no proporciona esta información.
+
+1.2. Comunicación: Descarga de datos
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+La aplicación busca actualizaciones y descarga datos de **enroute-data**
+para proporcionar mapas actuales y datos de aviación. Su dirección IP se
+transmite en el proceso.
+
+1.3. Comunicación: NOTAM, METAR y TAF
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Navegación de vuelo en ruta** muestra NOTAM, METAR y TAF para
+aeródromos cercanos a su ubicación actual y su ruta planificada
+actualmente. También muestra NOTAM, METAR y TAF para todos los puntos de
+referencia que abre en la aplicación. Para proporcionar esta
+funcionalidad, las solicitudes se transmiten al servidor
+**enroute-data** a intervalos regulares y cada vez que se solicitan
+nuevos datos. Además de la dirección IP de su dispositivo, se enviarán
+los siguientes elementos de datos.
 
 -  Su ubicación actual
 -  La ruta actualmente planificada
 -  Coordenadas del punto de ruta
--  La dirección IP de su dispositivo
 
-El conocimiento de la dirección IP es necesario para que el servidor
-responda. Sin embargo, el servidor no almacena ningún dato personal
-sobre usted en sus archivos de registro. En particular, no almacena la
-dirección IP de su dispositivo en sus archivos de registro. Esto lo
-podemos asegurar porque el servidor está bajo nuestro control. El
-servidor no puede leer ningún otro dato de su dispositivo en el proceso.
+El servidor reenvía solicitudes de METAR y TAF a un servicio web en el
+Aviation Weather Center, pero oculta su dirección IP, por lo que el
+servicio web nunca la verá. Los servicios web del Aviation Weather
+Center son operados por el gobierno de EE. UU. No controlamos las
+prácticas de manejo de datos de estos servicios externos. Puede
+encontrar información detallada en
+**www.aviationweather.gov/dataserver**.
 
-El servidor reenvía la solicitud a un servicio web en `Aviation Weather
-Center <https://www.aviationweather.gov>`__ pero oculta su dirección IP,
-por lo que el servicio web nunca la verá. Los servicios web del Aviation
-Weather Center son operados por el gobierno de EE. UU. y están fuera de
-nuestro control. Puede encontrar información detallada en
-`www.aviationweather.gov/dataserver <https://www.aviationweather.gov/dataserver>`__.
+El servidor reenvía solicitudes de NOTAM a un servicio web de la
+Administración Federal de Aviación, pero oculta su dirección IP, por lo
+que el servicio nunca la verá. Los servicios web de la Administración
+Federal de Aviación son operados por el gobierno de EE. UU. No
+controlamos las prácticas de manejo de datos de estos servicios
+externos. Puede encontrar información detallada en **api.faa.gov**.
 
-3. Servidor NOTAM
-~~~~~~~~~~~~~~~~~
+Otros servidores
+~~~~~~~~~~~~~~~~
 
-La aplicación muestra NOTAM de lugares cercanos a su ubicación actual y
-su ruta planificada actualmente. También muestra NOTAM para todos los
-puntos de referencia que abre en la aplicación. Para proporcionar esta
-funcionalidad, se transmite una solicitud que contiene los siguientes
-datos a un `servidor de la Universidad de
-Friburgo <https://cplx.vm.uni-freiburg.de/storage>`__:
+A petición del usuario, **Enroute Flight Navigation** puede mostrar
+sitios web externos en una ventana integrada del navegador o solicitar
+al sistema operativo que abra aplicaciones externas como Google Maps.
+Estos sitios y aplicaciones externos están fuera de nuestro control y
+pueden recopilar sus propios datos.
 
--  Su ubicación actual
--  La ruta actualmente planificada
--  Coordenadas del punto de ruta
--  La dirección IP de su dispositivo
+Los usuarios esperan que los navegadores web abran los hipervínculos
+inmediatamente, pero es posible que no tengan el mismo comportamiento en
+otras partes de la aplicación. Para tener en cuenta estas expectativas,
+**Enroute Flight Navigation** funciona de la siguiente manera.
 
-El conocimiento de la dirección IP es necesario para que el servidor
-responda. Sin embargo, el servidor no almacena ningún dato personal
-sobre usted en sus archivos de registro. En particular, no almacena la
-dirección IP de su dispositivo en sus archivos de registro. Esto lo
-podemos asegurar porque el servidor está bajo nuestro control. El
-servidor no puede leer ningún otro dato de su dispositivo en el proceso.
-
-El servidor reenvía la solicitud a un servicio web en `Federal Aviation
-Administration <https://api.faa.gov>`__ pero oculta su dirección IP, por
-lo que el servicio web nunca la verá. Los servicios web de la
-Administración Federal de Aviación son operados por el gobierno de EE.
-UU. y están fuera de nuestro control. Puede encontrar información
-detallada en `api.faa.gov/s <https://api.faa.gov/s>`__.
+-  **Navegador integrado de Windows**: hacer clic en un hipervínculo se
+   considera autorización para abrir el sitio externo.
+-  **Windows externo del navegador integrado**: la aplicación solicitará
+   autorización explícita del usuario antes de abrir cualquier sitio o
+   aplicación externa.
 
 Responsable
 ~~~~~~~~~~~

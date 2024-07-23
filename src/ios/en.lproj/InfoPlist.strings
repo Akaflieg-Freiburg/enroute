@@ -7,3 +7,4 @@
 */
 "NSLocationAlwaysAndWhenInUseUsageDescription" = "Navigation requires location sharing";
 "NSLocationWhenInUseUsageDescription" = "Navigation requires location sharing";
+"NSMotionUsageDescription" = "Enroute needs this permission to measure the current pressure";

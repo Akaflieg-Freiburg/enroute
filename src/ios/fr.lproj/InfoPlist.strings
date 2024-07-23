@@ -7,3 +7,4 @@
 */
 "NSLocationAlwaysAndWhenInUseUsageDescription" = "Une autorisation du site est nécessaire pour la navigation";
 "NSLocationWhenInUseUsageDescription" = "Une autorisation du site est nécessaire pour la navigation";
+"NSMotionUsageDescription" = "Enroute a besoin de cette autorisation pour mesurer la pression actuelle";

@@ -94,19 +94,4 @@ Page {
         }
     }
 
-    Connections {
-        target: Global
-
-        // NOTE: At of 15Feb24, the FlightMap does not react to changes of the property approachChart.coordinates
-        // As a temporary workaround, we reload the map in full
-        // whenever the approach chart changes.
-        function onCurrentVACChanged() {
-            // Clearing the VAC does not require reloading the map
-            if (Global.currentVAC === Global.defaultVAC)
-                return;
-            mapLoader.active = false
-            mapLoader.source = "../items/MFM.qml"
-            mapLoader.active = true
-        }
-    }
 }

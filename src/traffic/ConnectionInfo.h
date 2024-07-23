@@ -75,6 +75,7 @@ public:
      */
     explicit ConnectionInfo(const QBluetoothDeviceInfo& info, bool canonical=false);
 
+#if __has_include (<QSerialPortInfo>)
     /*!
      * \brief Constructor for Bluetooth Device Connections
      *
@@ -84,7 +85,6 @@ public:
      *
      * \param canonical Property 'canonical', as described below.
      */
-#if __has_include (<QSerialPortInfo>)
     explicit ConnectionInfo(const QSerialPortInfo& info, bool canonical=false);
 #endif
 

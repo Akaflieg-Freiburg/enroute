@@ -113,16 +113,20 @@ Item {
         }
 
         function onResolveURL(url, site) {
-
+            PlatformAdaptor.vibrateBrief()
             if (GlobalSettings.alwaysOpenExternalWebsites === true) {
-                PlatformAdaptor.vibrateBrief()
                 stackView.push("../pages/URLResolver.qml", {mapURL: url})
                 return
             }
-
-            privacyWarning.url = url
-            privacyWarning.site = site
-            privacyWarning.open()
+            Global.dialogLoader.active = false
+            Global.dialogLoader.setSource("dialogs/PrivacyWarning.qml",
+                                          {
+                                              openExternally: false,
+                                              text: qsTr("You have shared a location with <strong>Enroute Flight Navigation</strong>.")
+                                                    + " " + qsTr("In order to find the relevant geographic coordinate, the website <strong>Google Maps</strong> must briefly be opened in an embedded web browser window."),
+                                              url: url
+                                          })
+            Global.dialogLoader.active = true
         }
 
         function onUnableToProcessText(txt) {
@@ -150,7 +154,7 @@ Item {
         }
     }
 
-
+/*
     CenteringDialog {
         id: privacyWarning
 
@@ -213,7 +217,7 @@ Item {
             stackView.push("../pages/URLResolver.qml", {mapURL: url})
         }
     }
-
+*/
     LongTextDialog {
         id: chooseFRorWPDialog
 

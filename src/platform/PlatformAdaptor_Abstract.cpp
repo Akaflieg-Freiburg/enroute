@@ -22,6 +22,7 @@
 #include <QGuiApplication>
 #include <QLibraryInfo>
 #include <QLocale>
+#include <QSettings>
 
 
 #include "platform/PlatformAdaptor_Abstract.h"
@@ -68,6 +69,13 @@ QString Platform::PlatformAdaptor_Abstract::systemInfo()
     result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("System Type", QSysInfo::productType());
     result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("System Version", QSysInfo::productVersion());
     result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("Locale", language());
+    result += u"</table><br>\n"_qs;
+
+    QString updateCheckTimeStamp = QSettings().value(QStringLiteral("DataManager/MapListTimeStamp")).toString();
+    result += u"<h3>Data</h3>\n"_qs;
+    result += u"<table>\n"_qs;
+    result += u"<tr></tr>\n"_qs;
+    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("Last Map Update Check", updateCheckTimeStamp);
     result += u"</table><br>\n"_qs;
 
     return result;

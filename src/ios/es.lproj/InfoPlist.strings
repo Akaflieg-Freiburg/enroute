@@ -7,3 +7,4 @@
 */
 "NSLocationAlwaysAndWhenInUseUsageDescription" = "Para navegar es necesario compartir la ubicación";
 "NSLocationWhenInUseUsageDescription" = "Para navegar es necesario compartir la ubicación";
+"NSMotionUsageDescription" = "Enroute necesita este permiso para medir la presión actual";

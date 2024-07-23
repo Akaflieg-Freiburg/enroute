@@ -73,12 +73,17 @@
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>Navigation App needs Location</string>
 
+    <key>NSMotionUsageDescription</key>
+    <string>Enroute needs this permission to measure the current pressure</string>
+
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
     <string>Navigation App needs Location</string>
 
     <key>NSCameraUsageDescription</key>
     <string>Enroute does not use the camera</string>
 
+    <key>NSBluetoothAlwaysUsageDescription</key>
+    <string>Enroute does not use Bluetooth currently</string>
 
     <key>LSSupportsOpeningDocumentsInPlace</key>
     <false />

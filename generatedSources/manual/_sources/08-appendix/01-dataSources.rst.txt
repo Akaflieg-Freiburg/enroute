@@ -57,6 +57,7 @@ Africa              Botswana       Class 2
 Africa              Canary Islands Class 1
 Africa              Kenya          Class 2
 Africa              Madagascar     Class 2
+Africa              Malawi         Class 2
 Africa              Mauritius      Class 2
 Africa              Morocco        Class 2
 Africa              Namibia        Class 1
@@ -111,6 +112,7 @@ Europe              Slowenia       Class 1
 Europe              Spain          Class 2
 Europe              Sweden         Class 1
 Europe              Switzerland    Class 1
+Europe              Turkey         Class 2
 North America       Canada         Class 2
 North America       United States  Class 2
 South America       Argentina      Class 2

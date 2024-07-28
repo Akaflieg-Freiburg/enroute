@@ -82,7 +82,7 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 		m_notifyClickReceiver = new NotifyClickReceiver();
 		IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction("de.akaflieg_freiburg.enroute.onNotificationClick");
-		m_instance.registerReceiver(m_notifyClickReceiver, intentFilter);
+                m_instance.registerReceiver(m_notifyClickReceiver, intentFilter, RECEIVER_EXPORTED);
 
 		// Be informed when the window size changes, and call the C++ method
 		// onWindowSizeChanged() whenever it changes. The window size changes

@@ -379,6 +379,7 @@ void NOTAM::NotamProvider::downloadFinished()
         }
         if (networkReply->error() != QNetworkReply::NoError)
         {
+            qWarning() << "FAA NOTAM Server returned with an error." << networkReply->error();
             networkReply->deleteLater();
             continue;
         }
@@ -388,9 +389,12 @@ void NOTAM::NotamProvider::downloadFinished()
         if (data.isEmpty())
         {
             qWarning() << "FAA NOTAM Server returned with empty data.";
+            networkReply->deleteLater();
+            continue;
         }
         networkReply->deleteLater();
         NotamList const notamList(data, region, &m_cancelledNotamNumbers);
+        qWarning() << u"FAA NOTAM Server returned with %1 NOTAMs."_qs.arg(notamList.notams().size());
         m_notamLists.prepend(notamList);
         newDataAdded = true;
     }
@@ -541,7 +545,8 @@ void NOTAM::NotamProvider::startRequest(const QGeoCoordinate& coordinate)
                      "pageSize=1000"_qs
                          .arg(coordinate.longitude())
                          .arg(coordinate.latitude())
-                         .arg(1.2*requestRadius.toNM());
+                         .arg( qRound(1.2*requestRadius.toNM()) );
+    qWarning() << "NOTAM::NotamProvider::startRequest" << urlString;
     QNetworkRequest const request(urlString);
 
     auto* reply = GlobalObject::networkAccessManager()->get(request);

@@ -440,6 +440,27 @@ void NOTAM::NotamProvider::updateData()
     {
         foreach(auto leg, route->legs())
         {
+            QGeoCoordinate const startPoint = leg.startPoint().coordinate();
+            if (startPoint.isValid())
+            {
+                auto _range = range(startPoint);
+                if (_range < marginRadius)
+                {
+                    startRequest(startPoint);
+                }
+            }
+
+            QGeoCoordinate const endPoint = leg.endPoint().coordinate();
+            if (endPoint.isValid())
+            {
+                auto _range = range(endPoint);
+                if (_range < marginRadius)
+                {
+                    startRequest(endPoint);
+                }
+            }
+
+/*
             QGeoCoordinate startPoint = leg.startPoint().coordinate();
             QGeoCoordinate const endPoint = leg.endPoint().coordinate();
             if (!startPoint.isValid() || !endPoint.isValid())
@@ -473,6 +494,7 @@ void NOTAM::NotamProvider::updateData()
                 auto azimuth = startPoint.azimuthTo(endPoint);
                 startPoint = startPoint.atDistanceAndAzimuth((rangeAtStartPoint-marginRadius).toM(), azimuth);
             }
+*/
         }
     }
 

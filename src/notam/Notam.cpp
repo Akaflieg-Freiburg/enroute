@@ -118,7 +118,8 @@ NOTAM::Notam::Notam(const QJsonObject& jsonObject)
     m_number = notamObject[u"number"_qs].toString();
     m_text = notamObject[u"text"_qs].toString();
     m_traffic = notamObject[u"traffic"_qs].toString();
-    m_radius = Units::Distance::fromNM( notamObject[u"radius"_qs].toString().toDouble() );
+#warning
+    m_radius = qMin( Units::Distance::fromNM(4), Units::Distance::fromNM(notamObject[u"radius"_qs].toString().toDouble()) );
 
     m_effectiveEnd = QDateTime::fromString(m_effectiveEndString, Qt::ISODate);
     m_effectiveStart = QDateTime::fromString(m_effectiveStartString, Qt::ISODate);

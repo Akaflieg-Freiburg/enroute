@@ -559,20 +559,21 @@ void NOTAM::NotamProvider::startRequest(const QGeoCoordinate& coordinate)
     {
         return;
     }
+    const QGeoCoordinate coordinateRounded( qRound(coordinate.latitude()), qRound(coordinate.longitude()) );
 
     auto urlString = u"https://enroute-data.akaflieg-freiburg.de/enrouteProxy/notam.php?"
                      "locationLongitude=%1&"
                      "locationLatitude=%2&"
                      "locationRadius=%3&"
                      "pageSize=1000"_qs
-                         .arg(coordinate.longitude())
-                         .arg(coordinate.latitude())
+                         .arg(coordinateRounded.longitude())
+                         .arg(coordinateRounded.latitude())
                          .arg( qRound(1.2*requestRadius.toNM()) );
     qWarning() << "NOTAM::NotamProvider::startRequest" << urlString;
     QNetworkRequest const request(urlString);
 
     auto* reply = GlobalObject::networkAccessManager()->get(request);
-    reply->setProperty("area", QVariant::fromValue(QGeoCircle(coordinate, requestRadius.toM())) );
+    reply->setProperty("area", QVariant::fromValue(QGeoCircle(coordinateRounded, requestRadius.toM())) );
 
     m_networkReplies.append(reply);
     connect(reply, &QNetworkReply::finished, this, &NOTAM::NotamProvider::downloadFinished);

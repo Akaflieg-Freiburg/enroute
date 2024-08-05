@@ -379,6 +379,7 @@ void NOTAM::NotamProvider::downloadFinished()
         }
         if (networkReply->error() != QNetworkReply::NoError)
         {
+            qWarning() << "FAA NOTAM Server returned with an error." << networkReply->error();
             networkReply->deleteLater();
             continue;
         }
@@ -388,9 +389,12 @@ void NOTAM::NotamProvider::downloadFinished()
         if (data.isEmpty())
         {
             qWarning() << "FAA NOTAM Server returned with empty data.";
+            networkReply->deleteLater();
+            continue;
         }
         networkReply->deleteLater();
         NotamList const notamList(data, region, &m_cancelledNotamNumbers);
+        qWarning() << u"FAA NOTAM Server returned with %1 NOTAMs."_qs.arg(notamList.notams().size());
         m_notamLists.prepend(notamList);
         newDataAdded = true;
     }
@@ -436,6 +440,27 @@ void NOTAM::NotamProvider::updateData()
     {
         foreach(auto leg, route->legs())
         {
+            QGeoCoordinate const startPoint = leg.startPoint().coordinate();
+            if (startPoint.isValid())
+            {
+                auto _range = range(startPoint);
+                if (_range < marginRadius)
+                {
+                    startRequest(startPoint);
+                }
+            }
+
+            QGeoCoordinate const endPoint = leg.endPoint().coordinate();
+            if (endPoint.isValid())
+            {
+                auto _range = range(endPoint);
+                if (_range < marginRadius)
+                {
+                    startRequest(endPoint);
+                }
+            }
+
+/*
             QGeoCoordinate startPoint = leg.startPoint().coordinate();
             QGeoCoordinate const endPoint = leg.endPoint().coordinate();
             if (!startPoint.isValid() || !endPoint.isValid())
@@ -469,6 +494,7 @@ void NOTAM::NotamProvider::updateData()
                 auto azimuth = startPoint.azimuthTo(endPoint);
                 startPoint = startPoint.atDistanceAndAzimuth((rangeAtStartPoint-marginRadius).toM(), azimuth);
             }
+*/
         }
     }
 
@@ -533,19 +559,21 @@ void NOTAM::NotamProvider::startRequest(const QGeoCoordinate& coordinate)
     {
         return;
     }
+    const QGeoCoordinate coordinateRounded( qRound(coordinate.latitude()), qRound(coordinate.longitude()) );
 
     auto urlString = u"https://enroute-data.akaflieg-freiburg.de/enrouteProxy/notam.php?"
                      "locationLongitude=%1&"
                      "locationLatitude=%2&"
                      "locationRadius=%3&"
                      "pageSize=1000"_qs
-                         .arg(coordinate.longitude())
-                         .arg(coordinate.latitude())
-                         .arg(1.2*requestRadius.toNM());
+                         .arg(coordinateRounded.longitude())
+                         .arg(coordinateRounded.latitude())
+                         .arg( qRound(1.2*requestRadius.toNM()) );
+    qWarning() << "NOTAM::NotamProvider::startRequest" << urlString;
     QNetworkRequest const request(urlString);
 
     auto* reply = GlobalObject::networkAccessManager()->get(request);
-    reply->setProperty("area", QVariant::fromValue(QGeoCircle(coordinate, requestRadius.toM())) );
+    reply->setProperty("area", QVariant::fromValue(QGeoCircle(coordinateRounded, requestRadius.toM())) );
 
     m_networkReplies.append(reply);
     connect(reply, &QNetworkReply::finished, this, &NOTAM::NotamProvider::downloadFinished);

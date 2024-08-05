@@ -199,7 +199,7 @@ private:
     // Requests for Notam data are requestRadius around given position.
     // This is the maximum that FAA API currently allows (FAA max is 100NM, but
     // the number here is multiplied internally with a factor of 1.2)
-    static constexpr Units::Distance requestRadius = Units::Distance::fromNM(75.0);
+    static constexpr Units::Distance requestRadius = Units::Distance::fromNM(83.0);
 };
 
 } // namespace NOTAM

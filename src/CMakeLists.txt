@@ -649,6 +649,7 @@ endif()
 
 find_path(Qt6_TRANSLATION_DIR qtbase_de.qm
     HINTS ${Qt6Core_DIR}/../../../translations
+    HINTS /use/translations
     REQUIRED
 )
 qt_add_resources(${PROJECT_NAME} translations_qt

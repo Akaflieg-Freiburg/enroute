@@ -693,6 +693,10 @@ if ((CMAKE_SYSTEM_NAME STREQUAL "Darwin") OR ((CMAKE_SYSTEM_NAME STREQUAL "Linux
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     )
 
+endif()
+
+if ( QTDEPLOY )
+
     # Generate the deployment script for the target MyApp.
     qt_generate_deploy_qml_app_script(
         TARGET ${PROJECT_NAME}

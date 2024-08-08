@@ -9,6 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include(ExternalProject)
 option(BUILD_DOC "Build developer documentation" OFF)
+option(QTDEPLOY "Generate and run Qt deployment scripts" OFF)
 
 
 #

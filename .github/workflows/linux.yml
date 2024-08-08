@@ -60,7 +60,8 @@ jobs:
           -DCMAKE_BUILD_TYPE=Debug \
           -DCMAKE_C_COMPILER_LAUNCHER="ccache" \
           -DCMAKE_CXX_COMPILER_LAUNCHER="ccache" \
-          -DCMAKE_INSTALL_PREFIX:STRING=$PWD/app/usr
+          -DCMAKE_INSTALL_PREFIX:STRING=$PWD/app/usr \
+          -DQTDEPLOY=ON
         cmake --build build-enroute
         cmake --build build-enroute --target install
     - name: Package

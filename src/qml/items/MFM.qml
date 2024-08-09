@@ -293,7 +293,7 @@ Item {
                 ColorAnimation { duration: 400 }
                 enabled: TrafficDataProvider.trafficObjectWithoutPosition.animate
             }
-            opacity: 0.3
+            opacity: 0.1
             visible: TrafficDataProvider.trafficObjectWithoutPosition.valid
         }
 

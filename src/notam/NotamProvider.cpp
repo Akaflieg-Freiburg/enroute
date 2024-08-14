@@ -48,7 +48,7 @@ void NOTAM::NotamProvider::deferredInitialization()
 {
     // Wire up updateData. Check NOTAM database every 10 seconds after start, every 11 minutes, and whenever the flight route changes.
     auto* timer = new QTimer(this);
-    timer->start(10min);
+    timer->start(11min);
     connect(timer, &QTimer::timeout, this, &NOTAM::NotamProvider::updateData);
     connect(navigator()->flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, &NOTAM::NotamProvider::updateData);
     QTimer::singleShot(10s, this, &NOTAM::NotamProvider::updateData);
@@ -386,14 +386,15 @@ void NOTAM::NotamProvider::downloadFinished()
 
         auto region = networkReply->property("area").value<QGeoCircle>();
         auto data = networkReply->readAll();
-        if (data.isEmpty())
+        networkReply->deleteLater();
+
+        auto jsonDoc = QJsonDocument::fromJson(data);
+        if (jsonDoc.isNull())
         {
-            qWarning() << "FAA NOTAM Server returned with empty data.";
-            networkReply->deleteLater();
+            qWarning() << u"FAA NOTAM Server returned with invalid or empty JSON data."_qs;
             continue;
         }
-        networkReply->deleteLater();
-        NotamList const notamList(data, region, &m_cancelledNotamNumbers);
+        NotamList const notamList(jsonDoc, region, &m_cancelledNotamNumbers);
         qWarning() << u"FAA NOTAM Server returned with %1 NOTAMs."_qs.arg(notamList.notams().size());
         m_notamLists.prepend(notamList);
         newDataAdded = true;

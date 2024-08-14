@@ -16,7 +16,9 @@
         "--socket=wayland",
         "--system-talk-name=org.freedesktop.GeoClue2",
         "--system-talk-name=org.freedesktop.NetworkManager",
-        "--talk-name=org.freedesktop.Notifications"
+        "--talk-name=org.freedesktop.Notifications",
+	"--env=QML_IMPORT_PATH=/app/qml",
+	"--env=QT_PLUGIN_PATH=/app/plugins"
     ],
     "modules": [
     	{
@@ -75,16 +77,12 @@
             ],
             "buildsystem": "cmake-ninja"
         },
-        {
-            "name": "qttranslations",
-            "sources": [
-                {
-                    "type": "git",
-                    "url": "https://github.com/qt/qttranslations.git",
-                    "tag": "v${Qt6_VERSION}"
-                }
-            ],
-            "buildsystem": "cmake-ninja"
+	{
+            "name": "symlink",
+            "buildsystem": "simple",
+            "build-commands": [
+                "ln -sr ${FLATPAK_DEST}/lib/${FLATPAK_ARCH}-linux-gnu/libQt6HttpServer*.so* -t ${FLATPAK_DEST}/lib/"
+            ]
         },
         {
             "name": "enroute",

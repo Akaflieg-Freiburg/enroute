@@ -137,7 +137,7 @@ Item {
                          switch (event.modifiers) {
                              case Qt.NoModifier:
                              zoomLevelBehavior.enabled = false
-                             flightMap.zoomLevel += event.angleDelta.y / 120
+                             flightMap.zoomLevel += event.angleDelta.y / 240
                              zoomLevelBehavior.enabled = true
                              break
                              case Qt.ShiftModifier:

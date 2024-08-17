@@ -136,7 +136,9 @@ Item {
                          const loc = flightMap.toCoordinate(wheel.point.position)
                          switch (event.modifiers) {
                              case Qt.NoModifier:
-                             flightMap.zoomLevel += event.angleDelta.y / 120
+                             zoomLevelBehavior.enabled = false
+                             flightMap.zoomLevel += event.angleDelta.y / 240
+                             zoomLevelBehavior.enabled = true
                              break
                              case Qt.ShiftModifier:
                              bearingBehavior.enabled = false

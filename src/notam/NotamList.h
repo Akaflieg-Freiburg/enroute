@@ -57,14 +57,14 @@ public:
      *  QDateTime::currentDateTimeUtc(). Invalid Notams and Cancel Notams
      *  will not be added to the list.
      *
-     *  @param jsonData JSON data, as provided by the FAA
+     *  @param jsonDoc JSON dociment, as provided by the FAA
      *
      *  @param region Geographic region covered by this notam list
      *
      *  @param cancelledNotamNumbers Pointer to a set where numbers of cancelled
      *  Notams are added. The nullptr is allowed.
      */
-    NotamList(const QByteArray& jsonData, const QGeoCircle& region, QSet<QString>* cancelledNotamNumbers=nullptr);
+    NotamList(const QJsonDocument& jsonDoc, const QGeoCircle& region, QSet<QString>* cancelledNotamNumbers=nullptr);
 
 
 

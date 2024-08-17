@@ -1,33 +1,298 @@
 {
-  "app-id": "de.akaflieg_freiburg.enroute",
-  "runtime": "org.kde.Platform",
-  "runtime-version": "6.7",
-  "sdk": "org.kde.Sdk",
-  "base": "io.qt.qtwebengine.BaseApp",
-  "base-version": "6.7",
-  "command": "enroute",
-  "finish-args": [
-    "--device=dri",
-    "--env=QML_IMPORT_PATH=/app/qml",
-    "--env=QT_PLUGIN_PATH=/app/plugins",
-    "--filesystem=host",
-    "--share=ipc",
-    "--share=network",
-    "--socket=fallback-x11",
-    "--socket=pulseaudio",
-    "--socket=wayland",
-    "--system-talk-name=org.freedesktop.GeoClue2",
-    "--system-talk-name=org.freedesktop.NetworkManager",
-    "--talk-name=org.freedesktop.Notifications"
-  ],
-  "modules": [
-    {
-      "name": "flite",
-      "sources": [
+    "app-id": "${APP_ID}",
+    "runtime": "org.freedesktop.Platform",
+    "runtime-version": "23.08",
+    "sdk": "org.freedesktop.Sdk",
+    "command": "${PROJECT_NAME}",
+    "finish-args": [
+        "--device=dri",
+    	"--filesystem=host",
+    	"--share=ipc",
+        "--share=network",
+        "--socket=pulseaudio",
+        "--socket=x11",
+        "--system-talk-name=org.freedesktop.GeoClue2",
+        "--system-talk-name=org.freedesktop.NetworkManager",
+        "--talk-name=org.freedesktop.Notifications",
+        "--env=QT_QPA_PLATFORM=xcb"
+    ],
+    "modules": [
         {
-          "type": "git",
-          "url": "https://github.com/festvox/flite.git",
-          "tag": "v2.2"
+            "name": "qtbase",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/qt/qtbase.git",
+                    "tag": "v${Qt6_VERSION}"
+                }
+            ],
+            "buildsystem": "cmake-ninja",
+            "config-opts": [
+                "-DCMAKE_BUILD_TYPE=Release",
+                "-DQT_BUILD_EXAMPLES_BY_DEFAULT=OFF",
+                "-DQT_BUILD_TESTS_BY_DEFAULT=OFF"
+            ]
+        },
+    	{
+            "name": "qtsvg",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/qt/qtsvg.git",
+                    "tag": "v${Qt6_VERSION}"
+                }
+            ],
+            "buildsystem": "cmake-ninja",
+            "config-opts": [
+                "-DCMAKE_FIND_ROOT_PATH:PATH=/app",
+                "-DCMAKE_BUILD_TYPE:STRING=Release"
+            ]
+        },
+        {
+            "name": "qttools",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/qt/qttools.git",
+                    "tag": "v${Qt6_VERSION}"
+                }
+            ],
+            "buildsystem": "cmake-ninja",
+            "config-opts": [
+                "-DCMAKE_FIND_ROOT_PATH:PATH=/app",
+                "-DCMAKE_BUILD_TYPE:STRING=Release",
+                "-DQT_BUILD_EXAMPLES_BY_DEFAULT=OFF",
+                "-DQT_BUILD_TESTS_BY_DEFAULT=OFF",
+                "-DFEATURE_assistant=ON",
+                "-DFEATURE_clang=OFF",
+                "-DFEATURE_clangcpp=OFF",
+                "-DFEATURE_designer=ON",
+                "-DFEATURE_distancefieldgenerator=OFF",
+                "-DFEATURE_kmap2qmap=OFF",
+                "-DFEATURE_macdeployqt=OFF",
+                "-DFEATURE_pixeltool=OFF",
+                "-DFEATURE_pkg_config=OFF",
+                "-DFEATURE_qdbus=OFF",
+                "-DFEATURE_qev=OFF",
+                "-DFEATURE_qtattributionsscanner=OFF",
+                "-DFEATURE_qtdiag=OFF",
+                "-DFEATURE_qtplugininfo=OFF",
+                "-DFEATURE_windeployqt=OFF"
+            ]
+        },
+        {
+            "name": "qtshadertools",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/qt/qtshadertools.git",
+                    "tag": "v${Qt6_VERSION}"
+                }
+            ],
+            "buildsystem": "cmake-ninja",
+            "config-opts": [
+                "-DCMAKE_FIND_ROOT_PATH:PATH=/app",
+                "-DCMAKE_BUILD_TYPE:STRING=Release"
+            ]
+        },
+        {
+            "name": "qtdeclarative",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/qt/qtdeclarative.git",
+                    "tag": "v${Qt6_VERSION}"
+                }
+            ],
+            "buildsystem": "cmake-ninja",
+            "config-opts": [
+                "-DCMAKE_FIND_ROOT_PATH:PATH=/app",
+                "-DCMAKE_BUILD_TYPE:STRING=Release",
+                "-DQT_BUILD_EXAMPLES_BY_DEFAULT=OFF",
+                "-DQT_BUILD_TESTS_BY_DEFAULT=OFF",
+                "-DFEATURE_qml_debug=OFF"
+           ]
+        },
+    	{
+            "name": "qtmultimedia",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/qt/qtmultimedia.git",
+                    "tag": "v${Qt6_VERSION}"
+                }
+            ],
+            "buildsystem": "cmake-ninja",
+            "config-opts": [
+                "-DCMAKE_FIND_ROOT_PATH:PATH=/app",
+                "-DCMAKE_BUILD_TYPE:STRING=Release"
+            ]
+        },
+    	{
+            "name": "flite",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/festvox/flite.git",
+                    "tag": "v2.2"
+                }
+            ],
+            "buildsystem": "simple",
+            "build-commands": [
+                "./configure --prefix=/app --with-langvox=ben --with-pic",
+                "make",
+		"make get_voices",
+		"echo >bin/flite_time",
+                "make install"
+            ]
+        },
+    	{
+            "name": "qtspeech",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/qt/qtspeech.git",
+                    "tag": "v${Qt6_VERSION}"
+                }
+            ],
+            "buildsystem": "cmake-ninja",
+            "config-opts": [
+                "-DCMAKE_FIND_ROOT_PATH:PATH=/app",
+                "-DCMAKE_BUILD_TYPE:STRING=Release"
+            ]
+        },
+        {
+            "name": "qt5compat",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/qt/qt5compat.git",
+                    "tag": "v${Qt6_VERSION}"
+                }
+            ],
+            "buildsystem": "cmake-ninja"
+        },
+        {
+            "name": "qtpositioning",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/qt/qtpositioning.git",
+                    "tag": "v${Qt6_VERSION}"
+                }
+            ],
+            "buildsystem": "cmake-ninja"
+        },
+        {
+            "name": "qtlocation",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/qt/qtlocation.git",
+                    "tag": "v${Qt6_VERSION}"
+                }
+            ],
+            "buildsystem": "cmake-ninja"
+        },
+    	{
+            "name": "maplibre-native-qt",
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://github.com/Akaflieg-Freiburg/enrouteDependencies/releases/download/developerBuilds/maplibre-native-qt.tar.xz",
+		    "sha256": "e52d72dba8b6986a230a426078e46a7d1b5adeb796aee83da79fec15748f6607"
+                }
+            ],
+            "buildsystem": "cmake-ninja",
+            "config-opts": [
+		"-DCMAKE_CXX_FLAGS=-Wno-error",
+                "-DMLN_QT_WITH_INTERNAL_ICU=ON",
+		"-DBUILD_TESTING=OFF"
+            ]
+        },
+        {
+            "name": "qttranslations",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/qt/qttranslations.git",
+                    "tag": "v${Qt6_VERSION}"
+                }
+            ],
+            "buildsystem": "cmake-ninja"
+        },
+        {
+            "name": "qtconnectivity",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/qt/qtconnectivity.git",
+                    "tag": "v${Qt6_VERSION}"
+                }
+            ],
+            "buildsystem": "cmake-ninja"
+        },
+        {
+            "name": "qtserialport",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/qt/qtserialport.git",
+                    "tag": "v${Qt6_VERSION}"
+                }
+            ],
+            "buildsystem": "cmake-ninja"
+        },
+        {
+            "name": "qtimageformats",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/qt/qtimageformats.git",
+                    "tag": "v${Qt6_VERSION}"
+                }
+            ],
+            "buildsystem": "cmake-ninja"
+        },
+        {
+            "name": "qthttpserver",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/qt/qthttpserver.git",
+                    "tag": "v${Qt6_VERSION}"
+                }
+            ],
+            "buildsystem": "cmake-ninja"
+        },
+        {
+            "name": "libzip",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/nih-at/libzip",
+                    "commit": "00259560701600e0830002e9273c6c9097be3719"
+                }
+            ],
+            "buildsystem": "cmake-ninja"
+        },
+        {
+            "name": "enroute",
+            "buildsystem": "cmake-ninja",
+            "config-opts": [
+		"-DCMAKE_BUILD_TYPE=RelWithDebInfo"
+	    ],
+            "sources": [
+                {
+		    "type": "git",
+                    "url": "https://github.com/Akaflieg-Freiburg/enroute.git",
+		    "commit": "${GIT_COMMIT}"
+                }
+            ],
+	    "post-install": [
+		"mkdir -p /app/usr/share/icons",
+		"cp /app/share/icons/hicolor/scalable/apps/de.akaflieg_freiburg.enroute.svg /app/usr/share/icons/de.akaflieg_freiburg.enroute.svg"
+	    ]
         }
       ],
       "buildsystem": "simple",

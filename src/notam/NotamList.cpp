@@ -26,10 +26,9 @@
 #include "notam/NotamProvider.h"
 
 
-NOTAM::NotamList::NotamList(const QByteArray& jsonData, const QGeoCircle& region, QSet<QString>* cancelledNotamNumbers)
+NOTAM::NotamList::NotamList(const QJsonDocument& jsonDoc, const QGeoCircle& region, QSet<QString>* cancelledNotamNumbers)
 {
-    auto doc = QJsonDocument::fromJson(jsonData);
-    auto items = doc[u"items"_qs].toArray();
+    auto items = jsonDoc[u"items"_qs].toArray();
 
     foreach(auto item, items)
     {

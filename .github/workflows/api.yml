@@ -13,25 +13,15 @@ jobs:
     - name: Checkout Enroute
       uses: actions/checkout@v4
       with:
-        path: enroute
-        submodules: recursive
-    - name: Install Qt
-      uses: jurplel/install-qt-action@v4
-      with:
-        cache: 'true'
-        modules: 'qt5compat qtconnectivity qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtserialport qtshadertools qtspeech qtwebsockets qtwebview'
-        version: '6.6.*'
-    - name: Install Additional Software
-      run: |
-        sudo apt install doxygen extra-cmake-modules graphviz libzip-dev ninja-build spirv-tools zipcmp zipmerge ziptool
-    - name: Compile Enroute Flight Navigation
-      run: |
-        cmake \
-          -B build-enroute \
-          -S enroute \
-          -DCMAKE_BUILD_TYPE=Debug
-        cmake --build build-enroute --target enroute_doc
-        mv build-enroute/src/APIdoc/html ./APIdoc
+        submodules: true
+        fetch-depth: 0
+    - name: Install Doxygen
+      uses: ssciwr/doxygen-install@v1
+    - name: Install doxyqml
+      run: pip install doxyqml
+    - name: Generate documentation
+      working-directory: docs
+      run: doxygen
     - name: Publish Documentation
       if: github.event_name == 'push'
       uses: JamesIves/github-pages-deploy-action@v4

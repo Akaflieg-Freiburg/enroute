@@ -13,14 +13,13 @@ jobs:
     - name: Checkout Enroute
       uses: actions/checkout@v4
       with:
-        submodules: true
-        fetch-depth: 0
+        submodules: false
     - name: Install Doxygen
       uses: ssciwr/doxygen-install@v1
     - name: Install doxyqml
       run: pip install doxyqml
     - name: Generate documentation
-      working-directory: docs
+      working-directory: doc
       run: doxygen
     - name: Publish Documentation
       if: github.event_name == 'push'

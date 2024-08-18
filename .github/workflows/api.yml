@@ -23,7 +23,7 @@ jobs:
         version: '6.6.*'
     - name: Install Additional Software
       run: |
-        sudo apt install doxygen extra-cmake-modules graphviz libzip-dev ninja-build spirv-tools
+        sudo apt install doxygen extra-cmake-modules graphviz libzip-dev ninja-build spirv-tools zipcmp zipmerge ziptool
     - name: Compile Enroute Flight Navigation
       run: |
         cmake \

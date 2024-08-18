@@ -8,7 +8,6 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include(ExternalProject)
-option(BUILD_DOC "Build developer documentation" OFF)
 option(QTDEPLOY "Generate and run Qt deployment scripts" OFF)
 
 
@@ -82,17 +81,6 @@ if(IOS)
     set(PRODUCT_BUNDLE_IDENTIFIER de.akafliegfreiburg.enroute)
     set(CMAKE_XCODE_ATTRIBUTE_ASSETCATALOG_COMPILER_APPICON_NAME AppIcon)
     include(CMakeLists_ios.txt OPTIONAL)
-endif()
-
-
-#
-# Create target collecting all documentation
-#
-
-if ( BUILD_DOC )
-    add_custom_target(fulldoc ALL)
-else()
-    add_custom_target(fulldoc)
 endif()
 
 

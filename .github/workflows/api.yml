@@ -2,7 +2,7 @@ name: API Documentation
 
 on:
   push:
-    branches: [ xx ]
+    branches: [ develop ]
 
 jobs:
   build:
@@ -11,38 +11,18 @@ jobs:
     
     steps:
     - name: Checkout Enroute
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
-        submodules: true
-    - name: Checkout qtlocation
-      uses: actions/checkout@v3
-      with:
-        path: qtlocation
-        repository: Akaflieg-Freiburg/qtlocationstatic
-        submodules: true
-    - name: Install Qt
-      uses: jurplel/install-qt-action@v4
-      with:
-        version: '6.*.*'
-        modules: 'qt5compat qtconnectivity qthttpserver qtimageformats qtpositioning qtshadertools qtspeech qtwebsockets'	
-    - name: Install Additional Software
+        submodules: false
+    - name: Install Doxygen
+      uses: ssciwr/doxygen-install@v1
+    - name: Install doxyqml
+      run: pip install doxyqml
+    - name: Generate documentation
+      working-directory: doc
       run: |
-        sudo apt install doxygen extra-cmake-modules graphviz ninja-build spirv-tools
-    - name: Compile QtLocation
-      run: |
-        cmake -E make_directory build-qtlocation
-        cd build-qtlocation
-        qt-configure-module ../qtlocation
-        cmake -DMBGL_QT_WITH_INTERNAL_ICU:BOOL=On .
-        ninja
-        ninja install
-    - name: Compile Enroute Flight Navigation
-      run: |
-        cmake -E make_directory build-enroute
-        cd build-enroute
-        cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS='-Werror -Wall -Wextra'
-        make enroute_doc
-        mv src/APIdoc/html ../APIdoc
+        doxygen
+        mv APIdoc ..
     - name: Publish Documentation
       if: github.event_name == 'push'
       uses: JamesIves/github-pages-deploy-action@v4

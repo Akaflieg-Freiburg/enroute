@@ -98,7 +98,7 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
-     *  @returns Property isValid
+     *  @returns Property isEmpty
      */
     Q_REQUIRED_RESULT bool isEmpty() const { return m_notams.isEmpty(); }
 

@@ -2,7 +2,7 @@ name: API Documentation
 
 on:
   push:
-    branches: [ feature/cleanup ]
+    branches: [ develop ]
 
 jobs:
   build:

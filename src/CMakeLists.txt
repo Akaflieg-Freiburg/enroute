@@ -673,15 +673,6 @@ qt_add_resources(${PROJECT_NAME} translations_qt
 
 
 #
-# Generate documentation
-#
-
-configure_file(Doxyfile.in Doxyfile)
-add_custom_target(enroute_doc COMMAND doxygen)
-add_dependencies(fulldoc enroute_doc)
-
-
-#
 # Install
 #
 

@@ -26,11 +26,12 @@ jobs:
         sudo apt install doxygen extra-cmake-modules graphviz ninja-build spirv-tools
     - name: Compile Enroute Flight Navigation
       run: |
-        cmake -E make_directory build-enroute
-        cd build-enroute
-        cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS='-Werror -Wall -Wextra'
-        make enroute_doc
-        mv src/APIdoc/html ../APIdoc
+        cmake \
+          -B build-enroute \
+          -S enroute \
+          -DCMAKE_BUILD_TYPE=Debug
+        cmake --build build-enroute --target enroute_doc
+        mv build-enroute/src/APIdoc/html ./APIdoc
     - name: Publish Documentation
       if: github.event_name == 'push'
       uses: JamesIves/github-pages-deploy-action@v4

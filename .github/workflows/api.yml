@@ -11,20 +11,16 @@ jobs:
     
     steps:
     - name: Checkout Enroute
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
-        submodules: true
-    - name: Checkout qtlocation
-      uses: actions/checkout@v3
-      with:
-        path: qtlocation
-        repository: Akaflieg-Freiburg/qtlocationstatic
-        submodules: true
+        path: enroute
+        submodules: recursive
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
-        version: '6.*.*'
-        modules: 'qt5compat qtconnectivity qthttpserver qtimageformats qtpositioning qtshadertools qtspeech qtwebsockets'	
+        cache: 'true'
+        modules: 'qt5compat qtconnectivity qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtserialport qtshadertools qtspeech qtwebsockets qtwebview'
+        version: '6.6.*'
     - name: Install Additional Software
       run: |
         sudo apt install doxygen extra-cmake-modules graphviz ninja-build spirv-tools

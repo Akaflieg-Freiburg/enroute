@@ -1,0 +1,478 @@
+\doxysection{Units\+::Distance Class Reference}
+\hypertarget{classUnits_1_1Distance}{}\label{classUnits_1_1Distance}\index{Units::Distance@{Units::Distance}}
+
+
+Convenience class for distance computations.  
+
+
+
+
+{\ttfamily \#include $<$Distance.\+h$>$}
+
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classUnits_1_1Distance_a7c443eb4174c47f0ab4174f9ecef8a09}\label{classUnits_1_1Distance_a7c443eb4174c47f0ab4174f9ecef8a09} 
+enum \mbox{\hyperlink{classUnits_1_1Distance_a7c443eb4174c47f0ab4174f9ecef8a09}{Distance\+Unit}} 
+\begin{DoxyCompactList}\small\item\em \doxylink{namespaceUnits}{Units} of measurement for distances. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} \& \mbox{\hyperlink{classUnits_1_1Distance_aaf0f4af6d464cf29d8e26e8ab25d2b17}{operator+=}} (\mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} other)
+\begin{DoxyCompactList}\small\item\em Add distance to this distance. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE bool \mbox{\hyperlink{classUnits_1_1Distance_aecae92d613c199fd5c53eca525a61c32}{is\+Finite}} () const
+\begin{DoxyCompactList}\small\item\em Checks if the distance is valid. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE bool \mbox{\hyperlink{classUnits_1_1Distance_ac9551c9dc052872f95dec214e4ca0397}{is\+Negative}} () const
+\begin{DoxyCompactList}\small\item\em Checks if the distance is negative. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} \mbox{\hyperlink{classUnits_1_1Distance_a6651eefe7b6260d4d430d3a1aca12bf2}{operator+}} (\mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} rhs) const
+\begin{DoxyCompactList}\small\item\em Addition. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} \mbox{\hyperlink{classUnits_1_1Distance_abd318909805f6d6511628fbfd6775a94}{operator-\/}} (\mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} rhs) const
+\begin{DoxyCompactList}\small\item\em Subtraction. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} \mbox{\hyperlink{classUnits_1_1Distance_a600f20f1e84593fb9ff1bed896dab59b}{subtract}} (\mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} rhs) const
+\begin{DoxyCompactList}\small\item\em Subtraction. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} \mbox{\hyperlink{classUnits_1_1Distance_a757f22993c3c07defbb3b1992419139c}{operator\texorpdfstring{$\ast$}{*}}} (double factor) const
+\begin{DoxyCompactList}\small\item\em Scaling. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE std\+::partial\+\_\+ordering \mbox{\hyperlink{classUnits_1_1Distance_ad87a7ecf519462660d4b72b0ac667a80}{operator$<$=$>$}} (const \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} \&rhs) const =default
+\begin{DoxyCompactList}\small\item\em Comparison. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE double \mbox{\hyperlink{classUnits_1_1Distance_a4948fd352179521de69ea4e8f1d27f0b}{to\+Feet}} () const
+\begin{DoxyCompactList}\small\item\em Convert to feet. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE double \mbox{\hyperlink{classUnits_1_1Distance_ad04cf6783a7a0ca36ff5ed80cf37a8bf}{to\+KM}} () const
+\begin{DoxyCompactList}\small\item\em Convert to meters. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE double \mbox{\hyperlink{classUnits_1_1Distance_a78490eb95b7cfaee0247e4059124a3ff}{toM}} () const
+\begin{DoxyCompactList}\small\item\em Convert to meters. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE double \mbox{\hyperlink{classUnits_1_1Distance_af300d4be5c6f4cfa135cf23fae5910f6}{to\+MIL}} () const
+\begin{DoxyCompactList}\small\item\em Convert to international miles. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE double \mbox{\hyperlink{classUnits_1_1Distance_aef19c9ef5a02805933421983b8970c7e}{to\+NM}} () const
+\begin{DoxyCompactList}\small\item\em Convert to nautical miles. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE QString \mbox{\hyperlink{classUnits_1_1Distance_ab095aabf5e58e3f9534f73c7bd06f164}{to\+String}} (\mbox{\hyperlink{classUnits_1_1Distance_a7c443eb4174c47f0ab4174f9ecef8a09}{Units\+::\+Distance\+::\+Distance\+Unit}} units, bool round\+Big\+Numbers=false, bool force\+Sign=false) const
+\begin{DoxyCompactList}\small\item\em Convert to string. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static Q\+\_\+\+INVOKABLE constexpr \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} \mbox{\hyperlink{classUnits_1_1Distance_a50ed9d5c1f61c8ea2b650390d68a43d4}{fromM}} (double distance\+InM)
+\begin{DoxyCompactList}\small\item\em Constructs a distance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE constexpr \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} \mbox{\hyperlink{classUnits_1_1Distance_a9f6905406447375000a16ac03d4f88e2}{from\+KM}} (double distance\+In\+KM)
+\begin{DoxyCompactList}\small\item\em Constructs a distance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE constexpr \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} \mbox{\hyperlink{classUnits_1_1Distance_a0cf2f43b39c1e90cffccee3b0d7a1970}{from\+NM}} (double distance\+In\+NM)
+\begin{DoxyCompactList}\small\item\em Constructs a distance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE constexpr \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} \mbox{\hyperlink{classUnits_1_1Distance_adf7406ef151a19edb8cf0d28b438378d}{from\+MIL}} (double distance\+In\+MIL)
+\begin{DoxyCompactList}\small\item\em Constructs a distance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE constexpr \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} \mbox{\hyperlink{classUnits_1_1Distance_a12822f6b7676d3de7ef089bdd606794b}{from\+FT}} (double distance\+In\+FT)
+\begin{DoxyCompactList}\small\item\em Constructs a distance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE constexpr \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} \mbox{\hyperlink{classUnits_1_1Distance_a3aca5e406a59250b6db6ba25867d3d97}{nan}} ()
+\begin{DoxyCompactList}\small\item\em Constructs an invalid distance. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Convenience class for distance computations. 
+
+This extremely simple class allows computation with distances, without the need to worry about units. On construction, the distance is set to NaN. 
+
+Definition at line \mbox{\hyperlink{Distance_8h_source_l00035}{35}} of file \mbox{\hyperlink{Distance_8h_source}{Distance.\+h}}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classUnits_1_1Distance_a12822f6b7676d3de7ef089bdd606794b}\index{Units::Distance@{Units::Distance}!fromFT@{fromFT}}
+\index{fromFT@{fromFT}!Units::Distance@{Units::Distance}}
+\doxysubsubsection{\texorpdfstring{fromFT()}{fromFT()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Distance_a12822f6b7676d3de7ef089bdd606794b} 
+static Q\+\_\+\+INVOKABLE constexpr \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} Units\+::\+Distance\+::from\+FT (\begin{DoxyParamCaption}\item[{double}]{distance\+In\+FT}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+
+
+Constructs a distance. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em distance\+In\+FT} & distance in feet\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+distance 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Distance_8h_source_l00108}{108}} of file \mbox{\hyperlink{Distance_8h_source}{Distance.\+h}}.
+
+\Hypertarget{classUnits_1_1Distance_a9f6905406447375000a16ac03d4f88e2}\index{Units::Distance@{Units::Distance}!fromKM@{fromKM}}
+\index{fromKM@{fromKM}!Units::Distance@{Units::Distance}}
+\doxysubsubsection{\texorpdfstring{fromKM()}{fromKM()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Distance_a9f6905406447375000a16ac03d4f88e2} 
+static Q\+\_\+\+INVOKABLE constexpr \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} Units\+::\+Distance\+::from\+KM (\begin{DoxyParamCaption}\item[{double}]{distance\+In\+KM}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+
+
+Constructs a distance. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em distance\+In\+KM} & distance in kilometers\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+distance 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Distance_8h_source_l00069}{69}} of file \mbox{\hyperlink{Distance_8h_source}{Distance.\+h}}.
+
+\Hypertarget{classUnits_1_1Distance_a50ed9d5c1f61c8ea2b650390d68a43d4}\index{Units::Distance@{Units::Distance}!fromM@{fromM}}
+\index{fromM@{fromM}!Units::Distance@{Units::Distance}}
+\doxysubsubsection{\texorpdfstring{fromM()}{fromM()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Distance_a50ed9d5c1f61c8ea2b650390d68a43d4} 
+static Q\+\_\+\+INVOKABLE constexpr \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} Units\+::\+Distance\+::fromM (\begin{DoxyParamCaption}\item[{double}]{distance\+InM}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+
+
+Constructs a distance. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em distance\+InM} & distance in meters\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+distance 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Distance_8h_source_l00056}{56}} of file \mbox{\hyperlink{Distance_8h_source}{Distance.\+h}}.
+
+\Hypertarget{classUnits_1_1Distance_adf7406ef151a19edb8cf0d28b438378d}\index{Units::Distance@{Units::Distance}!fromMIL@{fromMIL}}
+\index{fromMIL@{fromMIL}!Units::Distance@{Units::Distance}}
+\doxysubsubsection{\texorpdfstring{fromMIL()}{fromMIL()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Distance_adf7406ef151a19edb8cf0d28b438378d} 
+static Q\+\_\+\+INVOKABLE constexpr \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} Units\+::\+Distance\+::from\+MIL (\begin{DoxyParamCaption}\item[{double}]{distance\+In\+MIL}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+
+
+Constructs a distance. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em distance\+In\+MIL} & distance in international miles\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+distance 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Distance_8h_source_l00095}{95}} of file \mbox{\hyperlink{Distance_8h_source}{Distance.\+h}}.
+
+\Hypertarget{classUnits_1_1Distance_a0cf2f43b39c1e90cffccee3b0d7a1970}\index{Units::Distance@{Units::Distance}!fromNM@{fromNM}}
+\index{fromNM@{fromNM}!Units::Distance@{Units::Distance}}
+\doxysubsubsection{\texorpdfstring{fromNM()}{fromNM()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Distance_a0cf2f43b39c1e90cffccee3b0d7a1970} 
+static Q\+\_\+\+INVOKABLE constexpr \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} Units\+::\+Distance\+::from\+NM (\begin{DoxyParamCaption}\item[{double}]{distance\+In\+NM}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+
+
+Constructs a distance. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em distance\+In\+NM} & distance in nautical miles\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+distance 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Distance_8h_source_l00082}{82}} of file \mbox{\hyperlink{Distance_8h_source}{Distance.\+h}}.
+
+\Hypertarget{classUnits_1_1Distance_aecae92d613c199fd5c53eca525a61c32}\index{Units::Distance@{Units::Distance}!isFinite@{isFinite}}
+\index{isFinite@{isFinite}!Units::Distance@{Units::Distance}}
+\doxysubsubsection{\texorpdfstring{isFinite()}{isFinite()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Distance_aecae92d613c199fd5c53eca525a61c32} 
+Q\+\_\+\+INVOKABLE bool Units\+::\+Distance\+::is\+Finite (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Checks if the distance is valid. 
+
+\begin{DoxyReturn}{Returns}
+True is the distance is a finite number 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Distance_8h_source_l00140}{140}} of file \mbox{\hyperlink{Distance_8h_source}{Distance.\+h}}.
+
+\Hypertarget{classUnits_1_1Distance_ac9551c9dc052872f95dec214e4ca0397}\index{Units::Distance@{Units::Distance}!isNegative@{isNegative}}
+\index{isNegative@{isNegative}!Units::Distance@{Units::Distance}}
+\doxysubsubsection{\texorpdfstring{isNegative()}{isNegative()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Distance_ac9551c9dc052872f95dec214e4ca0397} 
+Q\+\_\+\+INVOKABLE bool Units\+::\+Distance\+::is\+Negative (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Checks if the distance is negative. 
+
+\begin{DoxyReturn}{Returns}
+True is the distance is negative 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Distance_8h_source_l00149}{149}} of file \mbox{\hyperlink{Distance_8h_source}{Distance.\+h}}.
+
+\Hypertarget{classUnits_1_1Distance_a3aca5e406a59250b6db6ba25867d3d97}\index{Units::Distance@{Units::Distance}!nan@{nan}}
+\index{nan@{nan}!Units::Distance@{Units::Distance}}
+\doxysubsubsection{\texorpdfstring{nan()}{nan()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Distance_a3aca5e406a59250b6db6ba25867d3d97} 
+static Q\+\_\+\+INVOKABLE constexpr \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} Units\+::\+Distance\+::nan (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+
+
+Constructs an invalid distance. 
+
+\begin{DoxyReturn}{Returns}
+Invalid distance 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Distance_8h_source_l00119}{119}} of file \mbox{\hyperlink{Distance_8h_source}{Distance.\+h}}.
+
+\Hypertarget{classUnits_1_1Distance_a757f22993c3c07defbb3b1992419139c}\index{Units::Distance@{Units::Distance}!operator\texorpdfstring{$\ast$}{*}@{operator\texorpdfstring{$\ast$}{*}}}
+\index{operator\texorpdfstring{$\ast$}{*}@{operator\texorpdfstring{$\ast$}{*}}!Units::Distance@{Units::Distance}}
+\doxysubsubsection{\texorpdfstring{operator\texorpdfstring{$\ast$}{*}()}{operator*()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Distance_a757f22993c3c07defbb3b1992419139c} 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} Units\+::\+Distance\+::operator\texorpdfstring{$\ast$}{*} (\begin{DoxyParamCaption}\item[{double}]{factor}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Scaling. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em factor} & Factor of scaling\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Result of the scaling 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Distance_8h_source_l00193}{193}} of file \mbox{\hyperlink{Distance_8h_source}{Distance.\+h}}.
+
+\Hypertarget{classUnits_1_1Distance_a6651eefe7b6260d4d430d3a1aca12bf2}\index{Units::Distance@{Units::Distance}!operator+@{operator+}}
+\index{operator+@{operator+}!Units::Distance@{Units::Distance}}
+\doxysubsubsection{\texorpdfstring{operator+()}{operator+()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Distance_a6651eefe7b6260d4d430d3a1aca12bf2} 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} Units\+::\+Distance\+::operator+ (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}}}]{rhs}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Addition. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rhs} & Right hand side of the addition\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Result of the addition 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Distance_8h_source_l00160}{160}} of file \mbox{\hyperlink{Distance_8h_source}{Distance.\+h}}.
+
+\Hypertarget{classUnits_1_1Distance_aaf0f4af6d464cf29d8e26e8ab25d2b17}\index{Units::Distance@{Units::Distance}!operator+=@{operator+=}}
+\index{operator+=@{operator+=}!Units::Distance@{Units::Distance}}
+\doxysubsubsection{\texorpdfstring{operator+=()}{operator+=()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Distance_aaf0f4af6d464cf29d8e26e8ab25d2b17} 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} \& Units\+::\+Distance\+::operator+= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}}}]{other}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Add distance to this distance. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & distance to be added\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+reference to this distance 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Distance_8h_source_l00130}{130}} of file \mbox{\hyperlink{Distance_8h_source}{Distance.\+h}}.
+
+\Hypertarget{classUnits_1_1Distance_abd318909805f6d6511628fbfd6775a94}\index{Units::Distance@{Units::Distance}!operator-\/@{operator-\/}}
+\index{operator-\/@{operator-\/}!Units::Distance@{Units::Distance}}
+\doxysubsubsection{\texorpdfstring{operator-\/()}{operator-()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Distance_abd318909805f6d6511628fbfd6775a94} 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} Units\+::\+Distance\+::operator-\/ (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}}}]{rhs}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Subtraction. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rhs} & Right hand side of the subtraction\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Result of the subtraction 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Distance_8h_source_l00171}{171}} of file \mbox{\hyperlink{Distance_8h_source}{Distance.\+h}}.
+
+\Hypertarget{classUnits_1_1Distance_ad87a7ecf519462660d4b72b0ac667a80}\index{Units::Distance@{Units::Distance}!operator$<$=$>$@{operator$<$=$>$}}
+\index{operator$<$=$>$@{operator$<$=$>$}!Units::Distance@{Units::Distance}}
+\doxysubsubsection{\texorpdfstring{operator$<$=$>$()}{operator<=>()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Distance_ad87a7ecf519462660d4b72b0ac667a80} 
+Q\+\_\+\+INVOKABLE std\+::partial\+\_\+ordering Units\+::\+Distance\+::operator$<$=$>$ (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} \&}]{rhs}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}, {\ttfamily [default]}}
+
+
+
+Comparison. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rhs} & Right hand side of the comparison\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Result of the comparison 
+\end{DoxyReturn}
+\Hypertarget{classUnits_1_1Distance_a600f20f1e84593fb9ff1bed896dab59b}\index{Units::Distance@{Units::Distance}!subtract@{subtract}}
+\index{subtract@{subtract}!Units::Distance@{Units::Distance}}
+\doxysubsubsection{\texorpdfstring{subtract()}{subtract()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Distance_a600f20f1e84593fb9ff1bed896dab59b} 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} Units\+::\+Distance\+::subtract (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}}}]{rhs}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Subtraction. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rhs} & Right hand side of the subtraction\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Result of the subtraction 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Distance_8h_source_l00182}{182}} of file \mbox{\hyperlink{Distance_8h_source}{Distance.\+h}}.
+
+\Hypertarget{classUnits_1_1Distance_a4948fd352179521de69ea4e8f1d27f0b}\index{Units::Distance@{Units::Distance}!toFeet@{toFeet}}
+\index{toFeet@{toFeet}!Units::Distance@{Units::Distance}}
+\doxysubsubsection{\texorpdfstring{toFeet()}{toFeet()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Distance_a4948fd352179521de69ea4e8f1d27f0b} 
+Q\+\_\+\+INVOKABLE double Units\+::\+Distance\+::to\+Feet (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Convert to feet. 
+
+\begin{DoxyReturn}{Returns}
+distance in feet 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Distance_8h_source_l00210}{210}} of file \mbox{\hyperlink{Distance_8h_source}{Distance.\+h}}.
+
+\Hypertarget{classUnits_1_1Distance_ad04cf6783a7a0ca36ff5ed80cf37a8bf}\index{Units::Distance@{Units::Distance}!toKM@{toKM}}
+\index{toKM@{toKM}!Units::Distance@{Units::Distance}}
+\doxysubsubsection{\texorpdfstring{toKM()}{toKM()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Distance_ad04cf6783a7a0ca36ff5ed80cf37a8bf} 
+Q\+\_\+\+INVOKABLE double Units\+::\+Distance\+::to\+KM (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Convert to meters. 
+
+\begin{DoxyReturn}{Returns}
+distance in meters 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Distance_8h_source_l00219}{219}} of file \mbox{\hyperlink{Distance_8h_source}{Distance.\+h}}.
+
+\Hypertarget{classUnits_1_1Distance_a78490eb95b7cfaee0247e4059124a3ff}\index{Units::Distance@{Units::Distance}!toM@{toM}}
+\index{toM@{toM}!Units::Distance@{Units::Distance}}
+\doxysubsubsection{\texorpdfstring{toM()}{toM()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Distance_a78490eb95b7cfaee0247e4059124a3ff} 
+Q\+\_\+\+INVOKABLE double Units\+::\+Distance\+::toM (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Convert to meters. 
+
+\begin{DoxyReturn}{Returns}
+distance in meters 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Distance_8h_source_l00228}{228}} of file \mbox{\hyperlink{Distance_8h_source}{Distance.\+h}}.
+
+\Hypertarget{classUnits_1_1Distance_af300d4be5c6f4cfa135cf23fae5910f6}\index{Units::Distance@{Units::Distance}!toMIL@{toMIL}}
+\index{toMIL@{toMIL}!Units::Distance@{Units::Distance}}
+\doxysubsubsection{\texorpdfstring{toMIL()}{toMIL()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Distance_af300d4be5c6f4cfa135cf23fae5910f6} 
+Q\+\_\+\+INVOKABLE double Units\+::\+Distance\+::to\+MIL (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Convert to international miles. 
+
+\begin{DoxyReturn}{Returns}
+distance in international miles 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Distance_8h_source_l00237}{237}} of file \mbox{\hyperlink{Distance_8h_source}{Distance.\+h}}.
+
+\Hypertarget{classUnits_1_1Distance_aef19c9ef5a02805933421983b8970c7e}\index{Units::Distance@{Units::Distance}!toNM@{toNM}}
+\index{toNM@{toNM}!Units::Distance@{Units::Distance}}
+\doxysubsubsection{\texorpdfstring{toNM()}{toNM()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Distance_aef19c9ef5a02805933421983b8970c7e} 
+Q\+\_\+\+INVOKABLE double Units\+::\+Distance\+::to\+NM (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Convert to nautical miles. 
+
+\begin{DoxyReturn}{Returns}
+distance in nautical miles 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Distance_8h_source_l00246}{246}} of file \mbox{\hyperlink{Distance_8h_source}{Distance.\+h}}.
+
+\Hypertarget{classUnits_1_1Distance_ab095aabf5e58e3f9534f73c7bd06f164}\index{Units::Distance@{Units::Distance}!toString@{toString}}
+\index{toString@{toString}!Units::Distance@{Units::Distance}}
+\doxysubsubsection{\texorpdfstring{toString()}{toString()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Distance_ab095aabf5e58e3f9534f73c7bd06f164} 
+Q\+\_\+\+INVOKABLE QString Units\+::\+Distance\+::to\+String (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classUnits_1_1Distance_a7c443eb4174c47f0ab4174f9ecef8a09}{Units\+::\+Distance\+::\+Distance\+Unit}}}]{units}{, }\item[{bool}]{round\+Big\+Numbers}{ = {\ttfamily false}, }\item[{bool}]{force\+Sign}{ = {\ttfamily false}}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Convert to string. 
+
+This method converts the distance to string that is fit for human consumption, of the form "{}10.\+9 nm"{}, "{}130 ft"{} or "{}3500 m"{}. The distance is rounded to reasonable precision.
+
+
+\begin{DoxyParams}{Parameters}
+{\em units} & Determines the units that are used.\\
+\hline
+{\em round\+Big\+Numbers} & If true, then round "{}1234"{} to "{}1200"{} and "{}117"{} to "{}120"{}\\
+\hline
+{\em force\+Sign} & If \textquotesingle{}true\textquotesingle{}, then positive distances are prepended by a "{}+"{} sign.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A string that describes the distance, or an empty string if no reasonable distance is set. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/units/Distance.\+h\end{DoxyCompactItemize}

@@ -1,0 +1,370 @@
+\doxysection{Librarian Class Reference}
+\hypertarget{classLibrarian}{}\label{classLibrarian}\index{Librarian@{Librarian}}
+
+
+Manage libraries and text assets.  
+
+
+
+
+{\ttfamily \#include $<$Librarian.\+h$>$}
+
+
+
+Inherits QObject.
+
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{classLibrarian_a2b754918a55e72090791575e42388714}{Library}} \{ \mbox{\hyperlink{classLibrarian_a2b754918a55e72090791575e42388714abe17840a43266fea355a5a29bd8f96f1}{Aircraft}}
+, \mbox{\hyperlink{classLibrarian_a2b754918a55e72090791575e42388714afdc20d8a45e9bc1d2c3f9e9778c2b81c}{Routes}}
+ \}
+\begin{DoxyCompactList}\small\item\em Type of library. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classLibrarian_a7a8d33e313658242b6ac8f37c01fc75e}{Librarian}} (QObject \texorpdfstring{$\ast$}{*}parent=nullptr)
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE QString\+List \mbox{\hyperlink{classLibrarian_aa51ac87e98c51f9da434a9c4fc0d0e2d}{entries}} (\mbox{\hyperlink{classLibrarian_a2b754918a55e72090791575e42388714}{Librarian\+::\+Library}} library, const QString \&filter=QString())
+\begin{DoxyCompactList}\small\item\em Lists all entries in the library whose name contains the string \textquotesingle{}filter\textquotesingle{}. \end{DoxyCompactList}\item 
+QString\+List \mbox{\hyperlink{classLibrarian_a62c49a3f1b314849a6f2ad8366275fb0}{permissive\+Filter}} (const QString\+List \&input, const QString \&filter)
+\begin{DoxyCompactList}\small\item\em Filters a QString\+List in a fuzzy way. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classLibrarian_a1c41138e3775e3a2b0c8235f193e9889}{simplify\+Special\+Chars}} (const QString \&string)
+\begin{DoxyCompactList}\small\item\em Simplifies string by transforming and removing special characters. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static Q\+\_\+\+INVOKABLE QString \mbox{\hyperlink{classLibrarian_a3502ea43c67a61919781d03a542a9e0d}{directory}} (\mbox{\hyperlink{classLibrarian_a2b754918a55e72090791575e42388714}{Librarian\+::\+Library}} library)
+\begin{DoxyCompactList}\small\item\em Name of the directory containing the given. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE bool \mbox{\hyperlink{classLibrarian_aef06b896f9fd0d63b86c6a4f7153ab98}{exists}} (\mbox{\hyperlink{classLibrarian_a2b754918a55e72090791575e42388714}{Librarian\+::\+Library}} library, const QString \&base\+Name)
+\begin{DoxyCompactList}\small\item\em Check if an entry with the given name exists in the library. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE QString \mbox{\hyperlink{classLibrarian_a56c7b61f8f22eeb8bd665a46a804e302}{full\+Path}} (\mbox{\hyperlink{classLibrarian_a2b754918a55e72090791575e42388714}{Librarian\+::\+Library}} library, const QString \&base\+Name)
+\begin{DoxyCompactList}\small\item\em Full path of a library entry. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE QObject \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classLibrarian_a798c6e9e21d87773595ecd3756766f1a}{get}} (\mbox{\hyperlink{classLibrarian_a2b754918a55e72090791575e42388714}{Librarian\+::\+Library}} library, const QString \&base\+Name)
+\begin{DoxyCompactList}\small\item\em Constructs an object from library entry. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE QString \mbox{\hyperlink{classLibrarian_a4217f59c8ca660de11177244629fc6a0}{get\+String\+From\+Ressource}} (const QString \&name)
+\begin{DoxyCompactList}\small\item\em Exposes string stored in QRessource to QML. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1ByteSize}{Units\+::\+Byte\+Size}} \mbox{\hyperlink{classLibrarian_ab83fa9faeaaf937ae5dde1b47eafc293}{get\+String\+Hash\+From\+Ressource}} (const QString \&name)
+\begin{DoxyCompactList}\small\item\em Exposes the hash of string stored in QRessource to QML. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE QString \mbox{\hyperlink{classLibrarian_aecb8b6db60ede08f8d4a26c01cda3cc4}{import}} (\mbox{\hyperlink{classLibrarian_a2b754918a55e72090791575e42388714}{Librarian\+::\+Library}} library, const QString \&file\+Name)
+\begin{DoxyCompactList}\small\item\em Import a file into a library. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE void \mbox{\hyperlink{classLibrarian_a96efe7349bbe47e5d3d56f1fdba7b9d0}{remove}} (\mbox{\hyperlink{classLibrarian_a2b754918a55e72090791575e42388714}{Librarian\+::\+Library}} library, const QString \&base\+Name)
+\begin{DoxyCompactList}\small\item\em Removes an entry from a library. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE void \mbox{\hyperlink{classLibrarian_a6fbd6fae7ea18c086f5b5bf28182d3d6}{rename}} (\mbox{\hyperlink{classLibrarian_a2b754918a55e72090791575e42388714}{Librarian\+::\+Library}} library, const QString \&old\+Name, const QString \&new\+Name)
+\begin{DoxyCompactList}\small\item\em Renames an entry in a library. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Manage libraries and text assets. 
+
+This class manages libraries of aircrafts and routes, as well as text assets, and exposes these objects to QML. 
+
+Definition at line \mbox{\hyperlink{Librarian_8h_source_l00038}{38}} of file \mbox{\hyperlink{Librarian_8h_source}{Librarian.\+h}}.
+
+
+
+\doxysubsection{Member Enumeration Documentation}
+\Hypertarget{classLibrarian_a2b754918a55e72090791575e42388714}\index{Librarian@{Librarian}!Library@{Library}}
+\index{Library@{Library}!Librarian@{Librarian}}
+\doxysubsubsection{\texorpdfstring{Library}{Library}}
+{\footnotesize\ttfamily \label{classLibrarian_a2b754918a55e72090791575e42388714} 
+enum \mbox{\hyperlink{classLibrarian_a2b754918a55e72090791575e42388714}{Librarian\+::\+Library}}}
+
+
+
+Type of library. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Aircraft@{Aircraft}!Librarian@{Librarian}}\index{Librarian@{Librarian}!Aircraft@{Aircraft}}}\Hypertarget{classLibrarian_a2b754918a55e72090791575e42388714abe17840a43266fea355a5a29bd8f96f1}\label{classLibrarian_a2b754918a55e72090791575e42388714} 
+Aircraft&Aircraft library. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Routes@{Routes}!Librarian@{Librarian}}\index{Librarian@{Librarian}!Routes@{Routes}}}\Hypertarget{classLibrarian_a2b754918a55e72090791575e42388714afdc20d8a45e9bc1d2c3f9e9778c2b81c}\label{classLibrarian_a2b754918a55e72090791575e42388714} 
+Routes&Flight route library. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line \mbox{\hyperlink{Librarian_8h_source_l00064}{64}} of file \mbox{\hyperlink{Librarian_8h_source}{Librarian.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classLibrarian_a7a8d33e313658242b6ac8f37c01fc75e}\index{Librarian@{Librarian}!Librarian@{Librarian}}
+\index{Librarian@{Librarian}!Librarian@{Librarian}}
+\doxysubsubsection{\texorpdfstring{Librarian()}{Librarian()}}
+{\footnotesize\ttfamily \label{classLibrarian_a7a8d33e313658242b6ac8f37c01fc75e} 
+Librarian\+::\+Librarian (\begin{DoxyParamCaption}\item[{QObject \texorpdfstring{$\ast$}{*}}]{parent}{ = {\ttfamily nullptr}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Default constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em parent} & The standard QObject parent pointer \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classLibrarian_a3502ea43c67a61919781d03a542a9e0d}\index{Librarian@{Librarian}!directory@{directory}}
+\index{directory@{directory}!Librarian@{Librarian}}
+\doxysubsubsection{\texorpdfstring{directory()}{directory()}}
+{\footnotesize\ttfamily \label{classLibrarian_a3502ea43c67a61919781d03a542a9e0d} 
+static Q\+\_\+\+INVOKABLE QString Librarian\+::directory (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classLibrarian_a2b754918a55e72090791575e42388714}{Librarian\+::\+Library}}}]{library}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [nodiscard]}}
+
+
+
+Name of the directory containing the given. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em library} & The library that is accessed\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Name of the directory, without trailing slash 
+\end{DoxyReturn}
+\Hypertarget{classLibrarian_aa51ac87e98c51f9da434a9c4fc0d0e2d}\index{Librarian@{Librarian}!entries@{entries}}
+\index{entries@{entries}!Librarian@{Librarian}}
+\doxysubsubsection{\texorpdfstring{entries()}{entries()}}
+{\footnotesize\ttfamily \label{classLibrarian_aa51ac87e98c51f9da434a9c4fc0d0e2d} 
+Q\+\_\+\+INVOKABLE QString\+List Librarian\+::entries (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classLibrarian_a2b754918a55e72090791575e42388714}{Librarian\+::\+Library}}}]{library}{, }\item[{const QString \&}]{filter}{ = {\ttfamily QString()}}\end{DoxyParamCaption})}
+
+
+
+Lists all entries in the library whose name contains the string \textquotesingle{}filter\textquotesingle{}. 
+
+The check for string containment is done in a fuzzy way.
+
+
+\begin{DoxyParams}{Parameters}
+{\em library} & The library that is to be searched\\
+\hline
+{\em filter} & String used to filter the list\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A filtered QString\+List with the base names of flight routes
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See also}
+\doxylink{classLibrarian_a62c49a3f1b314849a6f2ad8366275fb0}{permissive\+Filter} 
+\end{DoxySeeAlso}
+\Hypertarget{classLibrarian_aef06b896f9fd0d63b86c6a4f7153ab98}\index{Librarian@{Librarian}!exists@{exists}}
+\index{exists@{exists}!Librarian@{Librarian}}
+\doxysubsubsection{\texorpdfstring{exists()}{exists()}}
+{\footnotesize\ttfamily \label{classLibrarian_aef06b896f9fd0d63b86c6a4f7153ab98} 
+static Q\+\_\+\+INVOKABLE bool Librarian\+::exists (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classLibrarian_a2b754918a55e72090791575e42388714}{Librarian\+::\+Library}}}]{library}{, }\item[{const QString \&}]{base\+Name}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [nodiscard]}}
+
+
+
+Check if an entry with the given name exists in the library. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em library} & The library that is accessed\\
+\hline
+{\em base\+Name} & File name, without path and without extension\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the file exists 
+\end{DoxyReturn}
+\Hypertarget{classLibrarian_a56c7b61f8f22eeb8bd665a46a804e302}\index{Librarian@{Librarian}!fullPath@{fullPath}}
+\index{fullPath@{fullPath}!Librarian@{Librarian}}
+\doxysubsubsection{\texorpdfstring{fullPath()}{fullPath()}}
+{\footnotesize\ttfamily \label{classLibrarian_a56c7b61f8f22eeb8bd665a46a804e302} 
+static Q\+\_\+\+INVOKABLE QString Librarian\+::full\+Path (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classLibrarian_a2b754918a55e72090791575e42388714}{Librarian\+::\+Library}}}]{library}{, }\item[{const QString \&}]{base\+Name}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [nodiscard]}}
+
+
+
+Full path of a library entry. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em library} & The library that is accessed\\
+\hline
+{\em base\+Name} & Name of the entry, without path and without extension\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Full path of the entry, with extension 
+\end{DoxyReturn}
+\Hypertarget{classLibrarian_a798c6e9e21d87773595ecd3756766f1a}\index{Librarian@{Librarian}!get@{get}}
+\index{get@{get}!Librarian@{Librarian}}
+\doxysubsubsection{\texorpdfstring{get()}{get()}}
+{\footnotesize\ttfamily \label{classLibrarian_a798c6e9e21d87773595ecd3756766f1a} 
+static Q\+\_\+\+INVOKABLE QObject \texorpdfstring{$\ast$}{*} Librarian\+::get (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classLibrarian_a2b754918a55e72090791575e42388714}{Librarian\+::\+Library}}}]{library}{, }\item[{const QString \&}]{base\+Name}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [nodiscard]}}
+
+
+
+Constructs an object from library entry. 
+
+This method constructs an object from a library entry.
+
+If the entry is a route, the route is construted with aircraft and wind set to nullptr, so that no wind computations are possible. It is, however, possible to export the flight route (for instance to Geo\+JSON or GPX format).
+
+Ownership is transferred to the caller, so it is up to the caller to delete the flight route once it is no longer used. Note that QML does that automatically.
+
+
+\begin{DoxyParams}{Parameters}
+{\em library} & The library that is accessed\\
+\hline
+{\em base\+Name} & File name, without path and without extension\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pointer to the object, or a nullptr in case of error. 
+\end{DoxyReturn}
+\Hypertarget{classLibrarian_a4217f59c8ca660de11177244629fc6a0}\index{Librarian@{Librarian}!getStringFromRessource@{getStringFromRessource}}
+\index{getStringFromRessource@{getStringFromRessource}!Librarian@{Librarian}}
+\doxysubsubsection{\texorpdfstring{getStringFromRessource()}{getStringFromRessource()}}
+{\footnotesize\ttfamily \label{classLibrarian_a4217f59c8ca660de11177244629fc6a0} 
+static Q\+\_\+\+INVOKABLE QString Librarian\+::get\+String\+From\+Ressource (\begin{DoxyParamCaption}\item[{const QString \&}]{name}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Exposes string stored in QRessource to QML. 
+
+This method reads a string from a file stored in the QRessource system. The method expects that the file contains a string in UTF8 encoding. There are a few special strings that are not read from QRessource, but are stored internally and that will be translated. These are the following.
+
+
+\begin{DoxyItemize}
+\item "{}\+:text/whatsnew.\+html"{} A text that describes new features in the current program version
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & Name of the file in the QRessource, such as "{}\+:text/bug\+Report.\+html"{}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+File content as a QString 
+\end{DoxyReturn}
+\Hypertarget{classLibrarian_ab83fa9faeaaf937ae5dde1b47eafc293}\index{Librarian@{Librarian}!getStringHashFromRessource@{getStringHashFromRessource}}
+\index{getStringHashFromRessource@{getStringHashFromRessource}!Librarian@{Librarian}}
+\doxysubsubsection{\texorpdfstring{getStringHashFromRessource()}{getStringHashFromRessource()}}
+{\footnotesize\ttfamily \label{classLibrarian_ab83fa9faeaaf937ae5dde1b47eafc293} 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1ByteSize}{Units\+::\+Byte\+Size}} Librarian\+::get\+String\+Hash\+From\+Ressource (\begin{DoxyParamCaption}\item[{const QString \&}]{name}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Exposes the hash of string stored in QRessource to QML. 
+
+This method reads a string from a file stored in the QRessource system. The method expects that the file contains a string in UTF8 encoding.
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & Name of the file in the QRessource, such as "{}\+:text/bug\+Report.\+html"{}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Hash of file content 
+\end{DoxyReturn}
+\Hypertarget{classLibrarian_aecb8b6db60ede08f8d4a26c01cda3cc4}\index{Librarian@{Librarian}!import@{import}}
+\index{import@{import}!Librarian@{Librarian}}
+\doxysubsubsection{\texorpdfstring{import()}{import()}}
+{\footnotesize\ttfamily \label{classLibrarian_aecb8b6db60ede08f8d4a26c01cda3cc4} 
+static Q\+\_\+\+INVOKABLE QString Librarian\+::import (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classLibrarian_a2b754918a55e72090791575e42388714}{Librarian\+::\+Library}}}]{library}{, }\item[{const QString \&}]{file\+Name}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [nodiscard]}}
+
+
+
+Import a file into a library. 
+
+This method imports a file into a library.
+
+
+\begin{DoxyParams}{Parameters}
+{\em library} & The library to import the file. At the moment, only routs is supported.\\
+\hline
+{\em file\+Name} & Full file name\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+An empty string in case of success, or else a human-\/readable, translated error message. 
+\end{DoxyReturn}
+\Hypertarget{classLibrarian_a62c49a3f1b314849a6f2ad8366275fb0}\index{Librarian@{Librarian}!permissiveFilter@{permissiveFilter}}
+\index{permissiveFilter@{permissiveFilter}!Librarian@{Librarian}}
+\doxysubsubsection{\texorpdfstring{permissiveFilter()}{permissiveFilter()}}
+{\footnotesize\ttfamily \label{classLibrarian_a62c49a3f1b314849a6f2ad8366275fb0} 
+QString\+List Librarian\+::permissive\+Filter (\begin{DoxyParamCaption}\item[{const QString\+List \&}]{input}{, }\item[{const QString \&}]{filter}{}\end{DoxyParamCaption})}
+
+
+
+Filters a QString\+List in a fuzzy way. 
+
+This helper method filters a QString\+List. It returns a sublist of those entries whose name approximately contain the filter string. For instance, "{}\+Zürich"{} is supposed to contain "{}u"{}, "{}Ü"{} and "{}ù"{}
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & QString\+List that is to be filtered\\
+\hline
+{\em filter} & Filter\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Filteres QString\+List 
+\end{DoxyReturn}
+\Hypertarget{classLibrarian_a96efe7349bbe47e5d3d56f1fdba7b9d0}\index{Librarian@{Librarian}!remove@{remove}}
+\index{remove@{remove}!Librarian@{Librarian}}
+\doxysubsubsection{\texorpdfstring{remove()}{remove()}}
+{\footnotesize\ttfamily \label{classLibrarian_a96efe7349bbe47e5d3d56f1fdba7b9d0} 
+static Q\+\_\+\+INVOKABLE void Librarian\+::remove (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classLibrarian_a2b754918a55e72090791575e42388714}{Librarian\+::\+Library}}}]{library}{, }\item[{const QString \&}]{base\+Name}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Removes an entry from a library. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em library} & The library that is accessed\\
+\hline
+{\em base\+Name} & File name, without path and without extension \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classLibrarian_a6fbd6fae7ea18c086f5b5bf28182d3d6}\index{Librarian@{Librarian}!rename@{rename}}
+\index{rename@{rename}!Librarian@{Librarian}}
+\doxysubsubsection{\texorpdfstring{rename()}{rename()}}
+{\footnotesize\ttfamily \label{classLibrarian_a6fbd6fae7ea18c086f5b5bf28182d3d6} 
+static Q\+\_\+\+INVOKABLE void Librarian\+::rename (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classLibrarian_a2b754918a55e72090791575e42388714}{Librarian\+::\+Library}}}]{library}{, }\item[{const QString \&}]{old\+Name}{, }\item[{const QString \&}]{new\+Name}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Renames an entry in a library. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em library} & The library that is accessed\\
+\hline
+{\em old\+Name} & Name of the file that is to be renamed, without path and without extension\\
+\hline
+{\em new\+Name} & New file name, without path and without extension. A file with that name must not exist in the library \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classLibrarian_a1c41138e3775e3a2b0c8235f193e9889}\index{Librarian@{Librarian}!simplifySpecialChars@{simplifySpecialChars}}
+\index{simplifySpecialChars@{simplifySpecialChars}!Librarian@{Librarian}}
+\doxysubsubsection{\texorpdfstring{simplifySpecialChars()}{simplifySpecialChars()}}
+{\footnotesize\ttfamily \label{classLibrarian_a1c41138e3775e3a2b0c8235f193e9889} 
+QString Librarian\+::simplify\+Special\+Chars (\begin{DoxyParamCaption}\item[{const QString \&}]{string}{}\end{DoxyParamCaption})}
+
+
+
+Simplifies string by transforming and removing special characters. 
+
+This helper method simplifies a unicode string, by transforming it to QString\+::\+Normalization\+Form\+\_\+\+KD and then removing all \textquotesingle{}special\textquotesingle{} character. The results are cached for better performance.
+
+
+\begin{DoxyParams}{Parameters}
+{\em string} & Input string\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Simplified string 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/Librarian.\+h\end{DoxyCompactItemize}

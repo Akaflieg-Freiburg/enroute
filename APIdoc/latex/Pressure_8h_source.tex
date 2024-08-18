@@ -1,0 +1,106 @@
+\doxysection{Pressure.\+h}
+\hypertarget{Pressure_8h_source}{}\label{Pressure_8h_source}\index{/home/runner/work/enroute/enroute/src/units/Pressure.h@{/home/runner/work/enroute/enroute/src/units/Pressure.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00001}00001\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00002}00002\ \textcolor{comment}{\ *\ \ \ Copyright\ (C)\ 2023\ by\ Stefan\ Kebekus\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00003}00003\ \textcolor{comment}{\ *\ \ \ stefan.kebekus@gmail.com\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00004}00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ free\ software;\ you\ can\ redistribute\ it\ and/or\ modify\ \ *}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00006}00006\ \textcolor{comment}{\ *\ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by\ \ *}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00007}00007\ \textcolor{comment}{\ *\ \ \ the\ Free\ Software\ Foundation;\ either\ version\ 3\ of\ the\ License,\ or\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00008}00008\ \textcolor{comment}{\ *\ \ \ (at\ your\ option)\ any\ later\ version.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00009}00009\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00010}00010\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,\ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00011}00011\ \textcolor{comment}{\ *\ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of\ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00012}00012\ \textcolor{comment}{\ *\ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00013}00013\ \textcolor{comment}{\ *\ \ \ GNU\ General\ Public\ License\ for\ more\ details.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00014}00014\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00015}00015\ \textcolor{comment}{\ *\ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00016}00016\ \textcolor{comment}{\ *\ \ \ along\ with\ this\ program;\ if\ not,\ write\ to\ the\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00017}00017\ \textcolor{comment}{\ *\ \ \ Free\ Software\ Foundation,\ Inc.,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00018}00018\ \textcolor{comment}{\ *\ \ \ 59\ Temple\ Place\ -\/\ Suite\ 330,\ Boston,\ MA\ \ 02111-\/1307,\ USA.\ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00019}00019\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00021}00021\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ <QObject>}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00024}00024\ \textcolor{preprocessor}{\#include\ <QQmlEngine>}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00025}00025\ \textcolor{preprocessor}{\#include\ <QtMath>}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00027}00027\ }
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00028}00028\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceUnits}{Units}}\ \{}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00029}00029\ }
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00035}\mbox{\hyperlink{classUnits_1_1Pressure}{00035}}\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classUnits_1_1Pressure}{Pressure}}\ \{}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00036}00036\ \ \ \ \ \ \ \ \ Q\_GADGET}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00037}00037\ \ \ \ \ \ \ \ \ QML\_VALUE\_TYPE(pressure)}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00038}00038\ }
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00039}00039\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00046}\mbox{\hyperlink{classUnits_1_1Pressure_aaecaf8fcc55efb8f99cfc3c19353902c}{00046}}\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classUnits_1_1Pressure_aaecaf8fcc55efb8f99cfc3c19353902c}{fromHPa}}(\textcolor{keywordtype}{double}\ pressureInHPa)\ -\/>\ \mbox{\hyperlink{classUnits_1_1Pressure}{Pressure}}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00047}00047\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00048}00048\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classUnits_1_1Pressure}{Pressure}}\ result;}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00049}00049\ \ \ \ \ \ \ \ \ \ \ \ \ result.m\_pressureInPa\ =\ 100.0*pressureInHPa;}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00050}00050\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00051}00051\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00052}00052\ }
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00059}\mbox{\hyperlink{classUnits_1_1Pressure_aa007c45b4546da0fa48fd72837e4e148}{00059}}\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classUnits_1_1Pressure_aa007c45b4546da0fa48fd72837e4e148}{fromInHg}}(\textcolor{keywordtype}{double}\ pressureInInHg)\ -\/>\ \mbox{\hyperlink{classUnits_1_1Pressure}{Pressure}}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00060}00060\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00061}00061\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classUnits_1_1Pressure}{Pressure}}\ result;}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00062}00062\ \ \ \ \ \ \ \ \ \ \ \ \ result.m\_pressureInPa\ =\ PascalPerInHg*pressureInInHg;}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00063}00063\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00064}00064\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00065}00065\ }
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00072}\mbox{\hyperlink{classUnits_1_1Pressure_a6222e6f7968d739bc011e5b7508459a0}{00072}}\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classUnits_1_1Pressure_a6222e6f7968d739bc011e5b7508459a0}{fromPa}}(\textcolor{keywordtype}{double}\ pressureInPa)\ -\/>\ \mbox{\hyperlink{classUnits_1_1Pressure}{Pressure}}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00073}00073\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00074}00074\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classUnits_1_1Pressure}{Pressure}}\ result;}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00075}00075\ \ \ \ \ \ \ \ \ \ \ \ \ result.m\_pressureInPa\ =\ pressureInPa;}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00076}00076\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00077}00077\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00078}00078\ }
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00083}\mbox{\hyperlink{classUnits_1_1Pressure_adb9075152497513978245e5d51c6f270}{00083}}\ \ \ \ \ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classUnits_1_1Pressure_adb9075152497513978245e5d51c6f270}{isFinite}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00084}00084\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00085}00085\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::isfinite(m\_pressureInPa);}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00086}00086\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00087}00087\ }
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00094}\mbox{\hyperlink{classUnits_1_1Pressure_a36747df53095cc44664c1b192c1afd40}{00094}}\ \ \ \ \ \ \ \ \ Q\_INVOKABLE\ \mbox{\hyperlink{classUnits_1_1Pressure}{Units::Pressure}}\&\ \mbox{\hyperlink{classUnits_1_1Pressure_a36747df53095cc44664c1b192c1afd40}{operator+=}}(\mbox{\hyperlink{classUnits_1_1Pressure}{Units::Pressure}}\ other)}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00095}00095\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00096}00096\ \ \ \ \ \ \ \ \ \ \ \ \ m\_pressureInPa\ +=\ other.m\_pressureInPa;}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00097}00097\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00098}00098\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00099}00099\ }
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00106}\mbox{\hyperlink{classUnits_1_1Pressure_a981ff2ae70d66c20f59ed89c21c93735}{00106}}\ \ \ \ \ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ std::partial\_ordering\ \mbox{\hyperlink{classUnits_1_1Pressure_a981ff2ae70d66c20f59ed89c21c93735}{operator<=>}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classUnits_1_1Pressure}{Units::Pressure}}\&\ rhs)\ \textcolor{keyword}{const}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00107}00107\ }
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00112}\mbox{\hyperlink{classUnits_1_1Pressure_ad34afd98c186ed38918798db666289b9}{00112}}\ \ \ \ \ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classUnits_1_1Pressure_ad34afd98c186ed38918798db666289b9}{toHPa}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00113}00113\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00114}00114\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_pressureInPa/100.0;}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00115}00115\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00116}00116\ }
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00121}\mbox{\hyperlink{classUnits_1_1Pressure_a3cb6046ad080c5c732be7460cb29cc70}{00121}}\ \ \ \ \ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classUnits_1_1Pressure_a3cb6046ad080c5c732be7460cb29cc70}{toInHg}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00122}00122\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00123}00123\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_pressureInPa/PascalPerInHg;}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00124}00124\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00125}00125\ }
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00130}\mbox{\hyperlink{classUnits_1_1Pressure_a2e787c76688517f50608356c2ca95e52}{00130}}\ \ \ \ \ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classUnits_1_1Pressure_a2e787c76688517f50608356c2ca95e52}{toPa}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00131}00131\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00132}00132\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_pressureInPa;}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00133}00133\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00134}00134\ }
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00135}00135\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00136}00136\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{double}\ PascalPerInHg\ =\ 3386.39;}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00137}00137\ }
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00138}00138\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Pressure\ in\ Pascal}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00139}00139\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ m\_pressureInPa\{\ NAN\ \};}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00140}00140\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00141}00141\ \}\ \textcolor{comment}{//\ namespace\ Units}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00142}00142\ }
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00143}00143\ }
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00152}00152\ \textcolor{keyword}{auto}\ operator<<(QDataStream\ \&out,\ \mbox{\hyperlink{classUnits_1_1Pressure}{Units::Pressure}}\ pressure)\ -\/>\ QDataStream\ \&;}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00153}00153\ }
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00154}00154\ }
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00163}00163\ \textcolor{keyword}{auto}\ operator>>(QDataStream\ \&in,\ \mbox{\hyperlink{classUnits_1_1Pressure}{Units::Pressure}}\ \&pressure)\ -\/>\ QDataStream\ \&;}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00164}00164\ }
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00165}00165\ }
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00166}00166\ \textcolor{comment}{//\ Declare\ meta\ types}}
+\DoxyCodeLine{\Hypertarget{Pressure_8h_source_l00167}00167\ Q\_DECLARE\_METATYPE(\mbox{\hyperlink{classUnits_1_1Pressure}{Units::Pressure}})}
+
+\end{DoxyCode}

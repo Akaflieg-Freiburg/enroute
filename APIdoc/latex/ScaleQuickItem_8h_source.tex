@@ -1,0 +1,72 @@
+\doxysection{Scale\+Quick\+Item.\+h}
+\hypertarget{ScaleQuickItem_8h_source}{}\label{ScaleQuickItem_8h_source}\index{/home/runner/work/enroute/enroute/src/ui/ScaleQuickItem.h@{/home/runner/work/enroute/enroute/src/ui/ScaleQuickItem.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00001}00001\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00002}00002\ \textcolor{comment}{\ *\ \ \ Copyright\ (C)\ 2019-\/2020\ by\ Stefan\ Kebekus\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00003}00003\ \textcolor{comment}{\ *\ \ \ stefan.kebekus@gmail.com\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00004}00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ free\ software;\ you\ can\ redistribute\ it\ and/or\ modify\ \ *}}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00006}00006\ \textcolor{comment}{\ *\ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by\ \ *}}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00007}00007\ \textcolor{comment}{\ *\ \ \ the\ Free\ Software\ Foundation;\ either\ version\ 3\ of\ the\ License,\ or\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00008}00008\ \textcolor{comment}{\ *\ \ \ (at\ your\ option)\ any\ later\ version.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00009}00009\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00010}00010\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,\ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00011}00011\ \textcolor{comment}{\ *\ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of\ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00012}00012\ \textcolor{comment}{\ *\ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00013}00013\ \textcolor{comment}{\ *\ \ \ GNU\ General\ Public\ License\ for\ more\ details.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00014}00014\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00015}00015\ \textcolor{comment}{\ *\ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00016}00016\ \textcolor{comment}{\ *\ \ \ along\ with\ this\ program;\ if\ not,\ write\ to\ the\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00017}00017\ \textcolor{comment}{\ *\ \ \ Free\ Software\ Foundation,\ Inc.,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00018}00018\ \textcolor{comment}{\ *\ \ \ 59\ Temple\ Place\ -\/\ Suite\ 330,\ Boston,\ MA\ \ 02111-\/1307,\ USA.\ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00019}00019\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00021}00021\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ <QQmlEngine>}}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00024}00024\ \textcolor{preprocessor}{\#include\ <QtQuick/QQuickPaintedItem>}}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00026}00026\ \textcolor{keyword}{namespace\ }Ui\ \{}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00027}00027\ }
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00038}\mbox{\hyperlink{classUi_1_1ScaleQuickItem}{00038}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classUi_1_1ScaleQuickItem}{ScaleQuickItem}}\ :\ \textcolor{keyword}{public}\ QQuickPaintedItem}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00039}00039\ \{}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00040}00040\ \ \ Q\_OBJECT}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00041}00041\ \ \ QML\_NAMED\_ELEMENT(Scale)}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00042}00042\ }
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00043}00043\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00048}\mbox{\hyperlink{classUi_1_1ScaleQuickItem_ae27e700270b82661698d08e0a13e87e2}{00048}}\ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classUi_1_1ScaleQuickItem_ae27e700270b82661698d08e0a13e87e2}{ScaleQuickItem}}(QQuickItem\ *parent\ =\ \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00049}00049\ }
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00051}\mbox{\hyperlink{classUi_1_1ScaleQuickItem_a240269c3e33154d53d413df6deeee073}{00051}}\ \ \ Q\_PROPERTY(qreal\ \mbox{\hyperlink{classUi_1_1ScaleQuickItem_a240269c3e33154d53d413df6deeee073}{pixelPer10km}}\ READ\ \mbox{\hyperlink{classUi_1_1ScaleQuickItem_a240269c3e33154d53d413df6deeee073}{pixelPer10km}}\ WRITE\ \mbox{\hyperlink{classUi_1_1ScaleQuickItem_a1919554d31ffe008c64537bfeb92835f}{setPixelPer10km}}\ NOTIFY\ \mbox{\hyperlink{classUi_1_1ScaleQuickItem_acb7ded18c71cd130dd516937dcc2bae4}{pixelPer10kmChanged}})}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00052}00052\ }
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00053}00053\ \ \ }
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00057}\mbox{\hyperlink{classUi_1_1ScaleQuickItem_ad5d97370ec4ba41e252399460c4fa53e}{00057}}\ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classUi_1_1ScaleQuickItem_ad5d97370ec4ba41e252399460c4fa53e}{pixelPer10km}}()\ const\ -\/>\ qreal\ \{\textcolor{keywordflow}{return}\ \_pixelPer10km;\}}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00058}00058\ }
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00063}\mbox{\hyperlink{classUi_1_1ScaleQuickItem_a1919554d31ffe008c64537bfeb92835f}{00063}}\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classUi_1_1ScaleQuickItem_a1919554d31ffe008c64537bfeb92835f}{setPixelPer10km}}(qreal\ \_pxp10k);}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00064}00064\ }
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00071}\mbox{\hyperlink{classUi_1_1ScaleQuickItem_a88c36e206f3aa0963e117dbe0d0b7b39}{00071}}\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classUi_1_1ScaleQuickItem_a88c36e206f3aa0963e117dbe0d0b7b39}{paint}}(QPainter\ *painter)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00072}00072\ }
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00077}\mbox{\hyperlink{classUi_1_1ScaleQuickItem_aa04a12f55a48af3156eea25906437208}{00077}}\ \ \ Q\_PROPERTY(\textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classUi_1_1ScaleQuickItem_aa04a12f55a48af3156eea25906437208}{vertical}}\ READ\ \mbox{\hyperlink{classUi_1_1ScaleQuickItem_aa04a12f55a48af3156eea25906437208}{vertical}}\ WRITE\ \mbox{\hyperlink{classUi_1_1ScaleQuickItem_a6282839357d1216a0daf3154c64f9d5f}{setVertical}}\ NOTIFY\ \mbox{\hyperlink{classUi_1_1ScaleQuickItem_a38b10516c31fc37cde7e479c747734eb}{verticalChanged}})}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00078}00078\ }
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00079}00079\ \ \ }
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00083}\mbox{\hyperlink{classUi_1_1ScaleQuickItem_a68718f9e221b746efab6db5aff602dc4}{00083}}\ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classUi_1_1ScaleQuickItem_a68718f9e221b746efab6db5aff602dc4}{vertical}}()\ const\ -\/>\ \textcolor{keywordtype}{bool}\ \{\textcolor{keywordflow}{return}\ \_vertical;\}}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00084}00084\ }
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00089}\mbox{\hyperlink{classUi_1_1ScaleQuickItem_a6282839357d1216a0daf3154c64f9d5f}{00089}}\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classUi_1_1ScaleQuickItem_a6282839357d1216a0daf3154c64f9d5f}{setVertical}}(\textcolor{keywordtype}{bool}\ newVertical);}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00090}00090\ }
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00091}00091\ signals:}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00093}\mbox{\hyperlink{classUi_1_1ScaleQuickItem_acb7ded18c71cd130dd516937dcc2bae4}{00093}}\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classUi_1_1ScaleQuickItem_acb7ded18c71cd130dd516937dcc2bae4}{pixelPer10kmChanged}}();}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00094}00094\ }
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00096}\mbox{\hyperlink{classUi_1_1ScaleQuickItem_ab4782b6e161d43bd88fada343c579c53}{00096}}\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classUi_1_1ScaleQuickItem_ab4782b6e161d43bd88fada343c579c53}{useMetricUnitsChanged}}();}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00097}00097\ }
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00099}\mbox{\hyperlink{classUi_1_1ScaleQuickItem_a38b10516c31fc37cde7e479c747734eb}{00099}}\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classUi_1_1ScaleQuickItem_a38b10516c31fc37cde7e479c747734eb}{verticalChanged}}();}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00100}00100\ }
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00101}00101\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00102}00102\ \ \ Q\_DISABLE\_COPY\_MOVE(\mbox{\hyperlink{classUi_1_1ScaleQuickItem}{ScaleQuickItem}})}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00103}00103\ }
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00104}00104\ \ \ qreal\ \_pixelPer10km\ \{0.0\};}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00105}00105\ \ \ \textcolor{keywordtype}{bool}\ \_vertical\ \{\textcolor{keyword}{false}\};}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00106}00106\ \};}
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00107}00107\ }
+\DoxyCodeLine{\Hypertarget{ScaleQuickItem_8h_source_l00108}00108\ \}\ \textcolor{comment}{//\ namespace\ Ui}}
+
+\end{DoxyCode}

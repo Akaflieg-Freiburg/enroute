@@ -1,0 +1,404 @@
+\doxysection{Platform\+::Platform\+Adaptor\+\_\+\+Abstract Class Reference}
+\hypertarget{classPlatform_1_1PlatformAdaptor__Abstract}{}\label{classPlatform_1_1PlatformAdaptor__Abstract}\index{Platform::PlatformAdaptor\_Abstract@{Platform::PlatformAdaptor\_Abstract}}
+
+
+Interface to platform-\/specific functionality.  
+
+
+
+
+{\ttfamily \#include $<$Platform\+Adaptor\+\_\+\+Abstract.\+h$>$}
+
+Inheritance diagram for Platform\+::Platform\+Adaptor\+\_\+\+Abstract\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.290323cm]{classPlatform_1_1PlatformAdaptor__Abstract}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Slots}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor__Abstract_a3f80b31fec85f158b6034811f9c74593}{on\+GUISetup\+Completed}} ()
+\begin{DoxyCompactList}\small\item\em Signal handler\+: GUI setup completed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Signals}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor__Abstract_a5ad6095ebd2bfbbe00c70f8a887d6a20}{wifi\+Connected}} ()
+\begin{DoxyCompactList}\small\item\em Emitted when a new Wi\+Fi connections becomes available. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor__Abstract_a5e5b18d291a808d67af87f7442221fe2}{error}} (const QString \&message)
+\begin{DoxyCompactList}\small\item\em Emitted when an error occurs. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classPlatform_1_1PlatformAdaptor__Abstract_aac61d7122ddaae8c2fefd030826a655c}{Platform\+Adaptor\+\_\+\+Abstract}} (QObject \texorpdfstring{$\ast$}{*}parent=nullptr)
+\begin{DoxyCompactList}\small\item\em Standard constructor. \end{DoxyCompactList}\item 
+virtual Q\+\_\+\+INVOKABLE QString \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor__Abstract_ab845af74e1ffedd44b01cc8907db52db}{current\+SSID}} ()
+\begin{DoxyCompactList}\small\item\em SSID of current Wi-\/\+Fi network. \end{DoxyCompactList}\item 
+virtual Q\+\_\+\+INVOKABLE void \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor__Abstract_a4db6abd2332427f362c52b2e0ff034de}{disable\+Screen\+Saver}} ()
+\begin{DoxyCompactList}\small\item\em Disable the screen saver. \end{DoxyCompactList}\item 
+virtual Q\+\_\+\+INVOKABLE void \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor__Abstract_acedc161efcac0e8c88b0374869665910}{lock\+Wifi}} (bool lock)
+\begin{DoxyCompactList}\small\item\em Lock connection to Wi-\/\+Fi network. \end{DoxyCompactList}\item 
+virtual Q\+\_\+\+INVOKABLE void \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor__Abstract_a81fcd1a14c37093d15157b15daa50a96}{setup\+Input\+Method\+Event\+Filter}} (QQuick\+Item \texorpdfstring{$\ast$}{*}item)
+\begin{DoxyCompactList}\small\item\em Workaround for QTBUG-\/80790. \end{DoxyCompactList}\item 
+virtual Q\+\_\+\+INVOKABLE QString \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor__Abstract_ab6739c7b19f57e2a21079af9906ca56c}{system\+Info}} ()
+\begin{DoxyCompactList}\small\item\em Information about the system, in HTML format. \end{DoxyCompactList}\item 
+virtual Q\+\_\+\+INVOKABLE void \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor__Abstract_a0490e905528b2edd36c77621f8f26814}{vibrate\+Brief}} ()
+\begin{DoxyCompactList}\small\item\em Make the device briefly vibrate. \end{DoxyCompactList}\item 
+virtual Q\+\_\+\+INVOKABLE void \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor__Abstract_aa86a1e194931478b253e0d58438a5796}{vibrate\+Long}} ()
+\begin{DoxyCompactList}\small\item\em Make the device vibrate for a longer period. \end{DoxyCompactList}\item 
+virtual Q\+\_\+\+INVOKABLE QString \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor__Abstract_aa8aa63274f9aab00f34ba2e01616b952}{language}} ()
+\begin{DoxyCompactList}\small\item\em Language code that is to be used in the GUI. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classGlobalObject}{Global\+Object}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classGlobalObject_ac8dfa53c492975de42fa7972e77abbc1}{Global\+Object}} (QObject \texorpdfstring{$\ast$}{*}parent=nullptr)
+\begin{DoxyCompactList}\small\item\em Standard constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classGlobalObject_a96c4d476061f33a53b8c7de446c639eb}{\texorpdfstring{$\sim$}{\string~}\+Global\+Object}} () override=default
+\begin{DoxyCompactList}\small\item\em Standard deconstructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static Q\+\_\+\+INVOKABLE QString \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor__Abstract_ac0b7605ac067b7cf25f44f30006a3b68}{clipboard\+Text}} ()
+\begin{DoxyCompactList}\small\item\em Content of Clip\+Board. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE void \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor__Abstract_a181bddd146dc11334b0ea2d65c3c5dd2}{save\+Screenshot}} (const QImage \&image, const QString \&path)
+\begin{DoxyCompactList}\small\item\em Save image as a raster graphic file in path. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions inherited from \mbox{\hyperlink{classGlobalObject}{Global\+Object}}}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classGlobalObject_ae5d0c94af509c9744e1b344201928715}{clear}} ()
+\begin{DoxyCompactList}\small\item\em Deletes all globally defined objects. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE bool \mbox{\hyperlink{classGlobalObject_a0501f0fd4dbb0252ff120fd07ea2f703}{can\+Construct}} ()
+\begin{DoxyCompactList}\small\item\em Indicates if the static methods are ready to be used. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classNavigation_1_1Clock}{Navigation\+::\+Clock}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_ad479148c920adcb9c9ea9d99c762a08f}{clock}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static \doxylink{classNavigation_1_1Clock}{Navigation\+::\+Clock} instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classDataManagement_1_1DataManager}{Data\+Management\+::\+Data\+Manager}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a88f9800ff5290634fbb1507bd509afc9}{data\+Manager}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Geo\+Maps\+::\+Data\+Manager instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classDemoRunner}{Demo\+Runner}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_abb18a18cba455a65c8773aa5f4fbcdd6}{demo\+Runner}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static \doxylink{classDemoRunner}{Demo\+Runner} instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classTraffic_1_1FlarmnetDB}{Traffic\+::\+Flarmnet\+DB}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_ad195e7630ee65b97b837fb8bc26e1ba9}{flarmnet\+DB}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Flarmnet\+DB instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classPlatform_1_1FileExchange__Abstract}{Platform\+::\+File\+Exchange\+\_\+\+Abstract}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a2c2011587fd8d46f9425d61d0b740922}{file\+Exchange}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static File\+Exchange instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider}{Geo\+Maps\+::\+Geo\+Map\+Provider}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a241d8d74ad20f5b5fdfa3eff30a20077}{geo\+Map\+Provider}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static \doxylink{classGeoMaps_1_1GeoMapProvider}{Geo\+Maps\+::\+Geo\+Map\+Provider} instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classGlobalSettings}{Global\+Settings}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_af94f3ad5c6bb06982abf5d2759b63186}{global\+Settings}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Settings instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classLibrarian}{Librarian}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a311415802470c0ca323e8a44c96d2773}{librarian}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static librarian instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor__Abstract}{Platform\+::\+Platform\+Adaptor\+\_\+\+Abstract}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_af4497d953402cc7891edfe5e9f6f56ac}{platform\+Adaptor}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Platform\+Adaptor instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classSensors}{Sensors}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a8df42e3160bee431602e14e9b605ffa8}{sensors}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static \doxylink{classNavigation_1_1Clock}{Navigation\+::\+Clock} instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classNavigation_1_1Navigator}{Navigation\+::\+Navigator}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a6e6835796fd3ab2f304c96272f50054c}{navigator}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static \doxylink{classNavigation_1_1Navigator}{Navigation\+::\+Navigator} instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classTraffic_1_1PasswordDB}{Traffic\+::\+Password\+DB}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a0ac7c3ccb518e122c8565e40c1fb8cdb}{password\+DB}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Password\+DB instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classPositioning_1_1PositionProvider}{Positioning\+::\+Position\+Provider}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a7837aeb4bcabe6542db1bccdab5ebd59}{position\+Provider}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Position\+Provider instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classNOTAM_1_1NotamProvider}{NOTAM\+::\+Notam\+Provider}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_ac11d38af2df8dcdb78679abf92b6de7a}{notam\+Provider}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static notification manager instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classNotifications_1_1NotificationManager}{Notifications\+::\+Notification\+Manager}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_aa90c2b17a6930dfb2cd258c8349e94cc}{notification\+Manager}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static notification manager instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE QNetwork\+Access\+Manager \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_aece9ee1f2507b4bcd825d4f61ebd4643}{network\+Access\+Manager}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static QNetwork\+Access\+Manager instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classDataManagement_1_1SSLErrorHandler}{Data\+Management\+::\+SSLError\+Handler}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_ab4e66c880bdcfa33720b51364c484044}{ssl\+Error\+Handler}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static QNetwork\+Access\+Manager instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classTraffic_1_1TrafficDataProvider}{Traffic\+::\+Traffic\+Data\+Provider}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_acc3b67374f1eac467da729151c31aff6}{traffic\+Data\+Provider}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Traffic\+Data\+Provider instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary}{Geo\+Maps\+::\+Waypoint\+Library}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a0fe5454852ab2b913efe469bfd2630b4}{waypoint\+Library}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Waypoint\+Library instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classWeather_1_1WeatherDataProvider}{Weather\+::\+Weather\+Data\+Provider}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_abff9f661cf7e78967606d10692c03412}{weather\+Data\+Provider}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Weather\+Data\+Provider instance. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{classGlobalObject}{Global\+Object}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{classGlobalObject_ad89d4b5b146c91f65f282572629c2f5f}{deferred\+Initialization}} ()
+\begin{DoxyCompactList}\small\item\em Non-\/constructor initialization. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Interface to platform-\/specific functionality. 
+
+This pure virtual class is an interface to capabilities of mobile devices (e.\+g. vibration) that need platform-\/specific code to operate. The files Platform\+Adaptor\+\_\+\+XXX.(h\texorpdfstring{$\vert$}{|}cpp) implement a child class \doxylink{classPlatform_1_1PlatformAdaptor}{Platform\+Adaptor} that contains the actual implementation.
+
+Child classes need to implement all pure virtual functions, and need to provide the following additional functionality.
+
+
+\begin{DoxyItemize}
+\item Child classes need to monitor the Wi-\/\+Fi network and emit the signal \doxylink{classPlatform_1_1PlatformAdaptor__Abstract_a5ad6095ebd2bfbbe00c70f8a887d6a20}{wifi\+Connected()} whenever a new Wi-\/\+Fi connection becomes available. The app will then check if a traffic data receiver is active in the network.
+\item If supported by the platform, child classes need to react to requests by the platform to open a file (e.\+g. a Geo\+JSON file containing a flight route). Once a request is received, the method process\+File\+Request() should be called. 
+\end{DoxyItemize}
+
+Definition at line \mbox{\hyperlink{PlatformAdaptor__Abstract_8h_source_l00051}{51}} of file \mbox{\hyperlink{PlatformAdaptor__Abstract_8h_source}{Platform\+Adaptor\+\_\+\+Abstract.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classPlatform_1_1PlatformAdaptor__Abstract_aac61d7122ddaae8c2fefd030826a655c}\index{Platform::PlatformAdaptor\_Abstract@{Platform::PlatformAdaptor\_Abstract}!PlatformAdaptor\_Abstract@{PlatformAdaptor\_Abstract}}
+\index{PlatformAdaptor\_Abstract@{PlatformAdaptor\_Abstract}!Platform::PlatformAdaptor\_Abstract@{Platform::PlatformAdaptor\_Abstract}}
+\doxysubsubsection{\texorpdfstring{PlatformAdaptor\_Abstract()}{PlatformAdaptor\_Abstract()}}
+{\footnotesize\ttfamily \label{classPlatform_1_1PlatformAdaptor__Abstract_aac61d7122ddaae8c2fefd030826a655c} 
+Platform\+::\+Platform\+Adaptor\+\_\+\+Abstract\+::\+Platform\+Adaptor\+\_\+\+Abstract (\begin{DoxyParamCaption}\item[{QObject \texorpdfstring{$\ast$}{*}}]{parent}{ = {\ttfamily nullptr}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Standard constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em parent} & Standard QObject parent pointer \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classPlatform_1_1PlatformAdaptor__Abstract_ac0b7605ac067b7cf25f44f30006a3b68}\index{Platform::PlatformAdaptor\_Abstract@{Platform::PlatformAdaptor\_Abstract}!clipboardText@{clipboardText}}
+\index{clipboardText@{clipboardText}!Platform::PlatformAdaptor\_Abstract@{Platform::PlatformAdaptor\_Abstract}}
+\doxysubsubsection{\texorpdfstring{clipboardText()}{clipboardText()}}
+{\footnotesize\ttfamily \label{classPlatform_1_1PlatformAdaptor__Abstract_ac0b7605ac067b7cf25f44f30006a3b68} 
+static Q\+\_\+\+INVOKABLE QString Platform\+::\+Platform\+Adaptor\+\_\+\+Abstract\+::clipboard\+Text (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Content of Clip\+Board. 
+
+\begin{DoxyReturn}{Returns}
+Text content of the clipboard 
+\end{DoxyReturn}
+\Hypertarget{classPlatform_1_1PlatformAdaptor__Abstract_ab845af74e1ffedd44b01cc8907db52db}\index{Platform::PlatformAdaptor\_Abstract@{Platform::PlatformAdaptor\_Abstract}!currentSSID@{currentSSID}}
+\index{currentSSID@{currentSSID}!Platform::PlatformAdaptor\_Abstract@{Platform::PlatformAdaptor\_Abstract}}
+\doxysubsubsection{\texorpdfstring{currentSSID()}{currentSSID()}}
+{\footnotesize\ttfamily \label{classPlatform_1_1PlatformAdaptor__Abstract_ab845af74e1ffedd44b01cc8907db52db} 
+virtual Q\+\_\+\+INVOKABLE QString Platform\+::\+Platform\+Adaptor\+\_\+\+Abstract\+::current\+SSID (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+SSID of current Wi-\/\+Fi network. 
+
+\begin{DoxyReturn}{Returns}
+The SSID of the current Wi-\/\+Fi networks, an empty string if the device is not connected to a Wi-\/\+Fi or a generic string if the SSID cannot be determined. 
+\end{DoxyReturn}
+
+
+Reimplemented in \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_ac9afa49073d65afd354851379afe0986}{Platform\+::\+Platform\+Adaptor}}, \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_ac9afa49073d65afd354851379afe0986}{Platform\+::\+Platform\+Adaptor}}, \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_ac9afa49073d65afd354851379afe0986}{Platform\+::\+Platform\+Adaptor}}, \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_ac9afa49073d65afd354851379afe0986}{Platform\+::\+Platform\+Adaptor}}, and \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_ac9afa49073d65afd354851379afe0986}{Platform\+::\+Platform\+Adaptor}}.
+
+
+
+Definition at line \mbox{\hyperlink{PlatformAdaptor__Abstract_8h_source_l00092}{92}} of file \mbox{\hyperlink{PlatformAdaptor__Abstract_8h_source}{Platform\+Adaptor\+\_\+\+Abstract.\+h}}.
+
+\Hypertarget{classPlatform_1_1PlatformAdaptor__Abstract_a4db6abd2332427f362c52b2e0ff034de}\index{Platform::PlatformAdaptor\_Abstract@{Platform::PlatformAdaptor\_Abstract}!disableScreenSaver@{disableScreenSaver}}
+\index{disableScreenSaver@{disableScreenSaver}!Platform::PlatformAdaptor\_Abstract@{Platform::PlatformAdaptor\_Abstract}}
+\doxysubsubsection{\texorpdfstring{disableScreenSaver()}{disableScreenSaver()}}
+{\footnotesize\ttfamily \label{classPlatform_1_1PlatformAdaptor__Abstract_a4db6abd2332427f362c52b2e0ff034de} 
+virtual Q\+\_\+\+INVOKABLE void Platform\+::\+Platform\+Adaptor\+\_\+\+Abstract\+::disable\+Screen\+Saver (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Disable the screen saver. 
+
+On platforms that support this, this method shall disable to screen saver, so that the display does not switch off automatically. This is meant to ensure that the display remains on while the app is in use (e.\+g. while the pilot is following a non-\/standard traffic pattern). 
+
+Reimplemented in \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_aa576dfcc599121d187d40999654a67a3}{Platform\+::\+Platform\+Adaptor}}, \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_aa576dfcc599121d187d40999654a67a3}{Platform\+::\+Platform\+Adaptor}}, \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_aa576dfcc599121d187d40999654a67a3}{Platform\+::\+Platform\+Adaptor}}, \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_aa576dfcc599121d187d40999654a67a3}{Platform\+::\+Platform\+Adaptor}}, and \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_aa576dfcc599121d187d40999654a67a3}{Platform\+::\+Platform\+Adaptor}}.
+
+
+
+Definition at line \mbox{\hyperlink{PlatformAdaptor__Abstract_8h_source_l00101}{101}} of file \mbox{\hyperlink{PlatformAdaptor__Abstract_8h_source}{Platform\+Adaptor\+\_\+\+Abstract.\+h}}.
+
+\Hypertarget{classPlatform_1_1PlatformAdaptor__Abstract_a5e5b18d291a808d67af87f7442221fe2}\index{Platform::PlatformAdaptor\_Abstract@{Platform::PlatformAdaptor\_Abstract}!error@{error}}
+\index{error@{error}!Platform::PlatformAdaptor\_Abstract@{Platform::PlatformAdaptor\_Abstract}}
+\doxysubsubsection{\texorpdfstring{error}{error}}
+{\footnotesize\ttfamily \label{classPlatform_1_1PlatformAdaptor__Abstract_a5e5b18d291a808d67af87f7442221fe2} 
+void Platform\+::\+Platform\+Adaptor\+\_\+\+Abstract\+::error (\begin{DoxyParamCaption}\item[{const QString \&}]{message}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [signal]}}
+
+
+
+Emitted when an error occurs. 
+
+This signal is emitted when an error occurs. The GUI will show the message in an appropriate dialog.
+
+
+\begin{DoxyParams}{Parameters}
+{\em message} & Human-\/readable, translated message \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classPlatform_1_1PlatformAdaptor__Abstract_aa8aa63274f9aab00f34ba2e01616b952}\index{Platform::PlatformAdaptor\_Abstract@{Platform::PlatformAdaptor\_Abstract}!language@{language}}
+\index{language@{language}!Platform::PlatformAdaptor\_Abstract@{Platform::PlatformAdaptor\_Abstract}}
+\doxysubsubsection{\texorpdfstring{language()}{language()}}
+{\footnotesize\ttfamily \label{classPlatform_1_1PlatformAdaptor__Abstract_aa8aa63274f9aab00f34ba2e01616b952} 
+virtual Q\+\_\+\+INVOKABLE QString Platform\+::\+Platform\+Adaptor\+\_\+\+Abstract\+::language (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Language code that is to be used in the GUI. 
+
+\begin{DoxyReturn}{Returns}
+A two-\/letter language code (such as "{}en"{} or "{}de"{}) that describes the language that is to be used in the GUI. 
+\end{DoxyReturn}
+
+
+Reimplemented in \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_a809e840558e2321e6190293e7c8b0ae3}{Platform\+::\+Platform\+Adaptor}}.
+
+\Hypertarget{classPlatform_1_1PlatformAdaptor__Abstract_acedc161efcac0e8c88b0374869665910}\index{Platform::PlatformAdaptor\_Abstract@{Platform::PlatformAdaptor\_Abstract}!lockWifi@{lockWifi}}
+\index{lockWifi@{lockWifi}!Platform::PlatformAdaptor\_Abstract@{Platform::PlatformAdaptor\_Abstract}}
+\doxysubsubsection{\texorpdfstring{lockWifi()}{lockWifi()}}
+{\footnotesize\ttfamily \label{classPlatform_1_1PlatformAdaptor__Abstract_acedc161efcac0e8c88b0374869665910} 
+virtual Q\+\_\+\+INVOKABLE void Platform\+::\+Platform\+Adaptor\+\_\+\+Abstract\+::lock\+Wifi (\begin{DoxyParamCaption}\item[{bool}]{lock}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Lock connection to Wi-\/\+Fi network. 
+
+If supported by the platform, this method is supposed to lock the current Wi-\/\+Fi connection, that is, to prevent the device from dropping the connection or shutting down the Wi-\/\+Fi interface.
+
+The app calls that method after connecting to a traffic data receiver, in order to ensure that traffic data is continuously received.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lock} & If true, then lock the network. If false, then release the lock. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented in \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_ab3e670851224649b0eb2cead871fe50a}{Platform\+::\+Platform\+Adaptor}}, \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_ab3e670851224649b0eb2cead871fe50a}{Platform\+::\+Platform\+Adaptor}}, \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_ab3e670851224649b0eb2cead871fe50a}{Platform\+::\+Platform\+Adaptor}}, and \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_ab3e670851224649b0eb2cead871fe50a}{Platform\+::\+Platform\+Adaptor}}.
+
+
+
+Definition at line \mbox{\hyperlink{PlatformAdaptor__Abstract_8h_source_l00115}{115}} of file \mbox{\hyperlink{PlatformAdaptor__Abstract_8h_source}{Platform\+Adaptor\+\_\+\+Abstract.\+h}}.
+
+\Hypertarget{classPlatform_1_1PlatformAdaptor__Abstract_a3f80b31fec85f158b6034811f9c74593}\index{Platform::PlatformAdaptor\_Abstract@{Platform::PlatformAdaptor\_Abstract}!onGUISetupCompleted@{onGUISetupCompleted}}
+\index{onGUISetupCompleted@{onGUISetupCompleted}!Platform::PlatformAdaptor\_Abstract@{Platform::PlatformAdaptor\_Abstract}}
+\doxysubsubsection{\texorpdfstring{onGUISetupCompleted}{onGUISetupCompleted}}
+{\footnotesize\ttfamily \label{classPlatform_1_1PlatformAdaptor__Abstract_a3f80b31fec85f158b6034811f9c74593} 
+virtual void Platform\+::\+Platform\+Adaptor\+\_\+\+Abstract\+::on\+GUISetup\+Completed (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}, {\ttfamily [slot]}}
+
+
+
+Signal handler\+: GUI setup completed. 
+
+This method is called as soon as the GUI setup is completed. On Android, this method is used to hide the splash screen and to show the app.
+
+The implementation should guarentee that nothing bad happens if the method is called more than once. 
+
+Reimplemented in \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_a0594d8a1751db54ebd6155715d179b74}{Platform\+::\+Platform\+Adaptor}}, \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_a0594d8a1751db54ebd6155715d179b74}{Platform\+::\+Platform\+Adaptor}}, \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_a0594d8a1751db54ebd6155715d179b74}{Platform\+::\+Platform\+Adaptor}}, \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_a0594d8a1751db54ebd6155715d179b74}{Platform\+::\+Platform\+Adaptor}}, and \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_a0594d8a1751db54ebd6155715d179b74}{Platform\+::\+Platform\+Adaptor}}.
+
+
+
+Definition at line \mbox{\hyperlink{PlatformAdaptor__Abstract_8h_source_l00179}{179}} of file \mbox{\hyperlink{PlatformAdaptor__Abstract_8h_source}{Platform\+Adaptor\+\_\+\+Abstract.\+h}}.
+
+\Hypertarget{classPlatform_1_1PlatformAdaptor__Abstract_a181bddd146dc11334b0ea2d65c3c5dd2}\index{Platform::PlatformAdaptor\_Abstract@{Platform::PlatformAdaptor\_Abstract}!saveScreenshot@{saveScreenshot}}
+\index{saveScreenshot@{saveScreenshot}!Platform::PlatformAdaptor\_Abstract@{Platform::PlatformAdaptor\_Abstract}}
+\doxysubsubsection{\texorpdfstring{saveScreenshot()}{saveScreenshot()}}
+{\footnotesize\ttfamily \label{classPlatform_1_1PlatformAdaptor__Abstract_a181bddd146dc11334b0ea2d65c3c5dd2} 
+static Q\+\_\+\+INVOKABLE void Platform\+::\+Platform\+Adaptor\+\_\+\+Abstract\+::save\+Screenshot (\begin{DoxyParamCaption}\item[{const QImage \&}]{image}{, }\item[{const QString \&}]{path}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Save image as a raster graphic file in path. 
+
+The image file type (PNG, JPG, …) is inferred from the file path
+
+
+\begin{DoxyParams}{Parameters}
+{\em image} & Image to be saved.\\
+\hline
+{\em path} & File path where the image will be stored \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classPlatform_1_1PlatformAdaptor__Abstract_a81fcd1a14c37093d15157b15daa50a96}\index{Platform::PlatformAdaptor\_Abstract@{Platform::PlatformAdaptor\_Abstract}!setupInputMethodEventFilter@{setupInputMethodEventFilter}}
+\index{setupInputMethodEventFilter@{setupInputMethodEventFilter}!Platform::PlatformAdaptor\_Abstract@{Platform::PlatformAdaptor\_Abstract}}
+\doxysubsubsection{\texorpdfstring{setupInputMethodEventFilter()}{setupInputMethodEventFilter()}}
+{\footnotesize\ttfamily \label{classPlatform_1_1PlatformAdaptor__Abstract_a81fcd1a14c37093d15157b15daa50a96} 
+virtual Q\+\_\+\+INVOKABLE void Platform\+::\+Platform\+Adaptor\+\_\+\+Abstract\+::setup\+Input\+Method\+Event\+Filter (\begin{DoxyParamCaption}\item[{QQuick\+Item \texorpdfstring{$\ast$}{*}}]{item}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Workaround for QTBUG-\/80790. 
+
+This method is empty except on i\+OS, where it installs a special event filter for a QQuick\+Item. The event filter avoids problematic behavior where the virtual keyboard pushes up the whole qml page. Details for this problem and the present workaround are described here.
+
+\href{https://stackoverflow.com/questions/34716462/ios-sometimes-keyboard-pushes-up-the-whole-qml-page}{\texttt{ https\+://stackoverflow.\+com/questions/34716462/ios-\/sometimes-\/keyboard-\/pushes-\/up-\/the-\/whole-\/qml-\/page}}
+
+\href{https://bugreports.qt.io/browse/QTBUG-80790}{\texttt{ https\+://bugreports.\+qt.\+io/browse/\+QTBUG-\/80790}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em item} & QQuick\+Item where the event filter is to be intalled. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented in \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_a052242cc2a7e044f0666f33423f43054}{Platform\+::\+Platform\+Adaptor}}.
+
+
+
+Definition at line \mbox{\hyperlink{PlatformAdaptor__Abstract_8h_source_l00130}{130}} of file \mbox{\hyperlink{PlatformAdaptor__Abstract_8h_source}{Platform\+Adaptor\+\_\+\+Abstract.\+h}}.
+
+\Hypertarget{classPlatform_1_1PlatformAdaptor__Abstract_ab6739c7b19f57e2a21079af9906ca56c}\index{Platform::PlatformAdaptor\_Abstract@{Platform::PlatformAdaptor\_Abstract}!systemInfo@{systemInfo}}
+\index{systemInfo@{systemInfo}!Platform::PlatformAdaptor\_Abstract@{Platform::PlatformAdaptor\_Abstract}}
+\doxysubsubsection{\texorpdfstring{systemInfo()}{systemInfo()}}
+{\footnotesize\ttfamily \label{classPlatform_1_1PlatformAdaptor__Abstract_ab6739c7b19f57e2a21079af9906ca56c} 
+virtual Q\+\_\+\+INVOKABLE QString Platform\+::\+Platform\+Adaptor\+\_\+\+Abstract\+::system\+Info (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Information about the system, in HTML format. 
+
+\begin{DoxyReturn}{Returns}
+Info string 
+\end{DoxyReturn}
+
+
+Reimplemented in \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_a6a75411333db6748fb7e06e71fd50bc6}{Platform\+::\+Platform\+Adaptor}}.
+
+\Hypertarget{classPlatform_1_1PlatformAdaptor__Abstract_a0490e905528b2edd36c77621f8f26814}\index{Platform::PlatformAdaptor\_Abstract@{Platform::PlatformAdaptor\_Abstract}!vibrateBrief@{vibrateBrief}}
+\index{vibrateBrief@{vibrateBrief}!Platform::PlatformAdaptor\_Abstract@{Platform::PlatformAdaptor\_Abstract}}
+\doxysubsubsection{\texorpdfstring{vibrateBrief()}{vibrateBrief()}}
+{\footnotesize\ttfamily \label{classPlatform_1_1PlatformAdaptor__Abstract_a0490e905528b2edd36c77621f8f26814} 
+virtual Q\+\_\+\+INVOKABLE void Platform\+::\+Platform\+Adaptor\+\_\+\+Abstract\+::vibrate\+Brief (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Make the device briefly vibrate. 
+
+On platforms that support this, make the device briefly vibrate if haptic feedback is enabled in the system settings. 
+
+Reimplemented in \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_aee82844ae442df23bdd2ab407c1887f6}{Platform\+::\+Platform\+Adaptor}}, \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_aee82844ae442df23bdd2ab407c1887f6}{Platform\+::\+Platform\+Adaptor}}, \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_aee82844ae442df23bdd2ab407c1887f6}{Platform\+::\+Platform\+Adaptor}}, \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_aee82844ae442df23bdd2ab407c1887f6}{Platform\+::\+Platform\+Adaptor}}, and \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_aee82844ae442df23bdd2ab407c1887f6}{Platform\+::\+Platform\+Adaptor}}.
+
+
+
+Definition at line \mbox{\hyperlink{PlatformAdaptor__Abstract_8h_source_l00143}{143}} of file \mbox{\hyperlink{PlatformAdaptor__Abstract_8h_source}{Platform\+Adaptor\+\_\+\+Abstract.\+h}}.
+
+\Hypertarget{classPlatform_1_1PlatformAdaptor__Abstract_aa86a1e194931478b253e0d58438a5796}\index{Platform::PlatformAdaptor\_Abstract@{Platform::PlatformAdaptor\_Abstract}!vibrateLong@{vibrateLong}}
+\index{vibrateLong@{vibrateLong}!Platform::PlatformAdaptor\_Abstract@{Platform::PlatformAdaptor\_Abstract}}
+\doxysubsubsection{\texorpdfstring{vibrateLong()}{vibrateLong()}}
+{\footnotesize\ttfamily \label{classPlatform_1_1PlatformAdaptor__Abstract_aa86a1e194931478b253e0d58438a5796} 
+virtual Q\+\_\+\+INVOKABLE void Platform\+::\+Platform\+Adaptor\+\_\+\+Abstract\+::vibrate\+Long (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Make the device vibrate for a longer period. 
+
+On platforms that support this, make the device vibrate for a longer time, if haptic feedback is enabled in the system settings. This is used to when showing notifications. 
+
+Reimplemented in \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_a224659e7cce4e6cdf416183751c188c7}{Platform\+::\+Platform\+Adaptor}}, \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_a224659e7cce4e6cdf416183751c188c7}{Platform\+::\+Platform\+Adaptor}}, and \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_a224659e7cce4e6cdf416183751c188c7}{Platform\+::\+Platform\+Adaptor}}.
+
+
+
+Definition at line \mbox{\hyperlink{PlatformAdaptor__Abstract_8h_source_l00151}{151}} of file \mbox{\hyperlink{PlatformAdaptor__Abstract_8h_source}{Platform\+Adaptor\+\_\+\+Abstract.\+h}}.
+
+\Hypertarget{classPlatform_1_1PlatformAdaptor__Abstract_a5ad6095ebd2bfbbe00c70f8a887d6a20}\index{Platform::PlatformAdaptor\_Abstract@{Platform::PlatformAdaptor\_Abstract}!wifiConnected@{wifiConnected}}
+\index{wifiConnected@{wifiConnected}!Platform::PlatformAdaptor\_Abstract@{Platform::PlatformAdaptor\_Abstract}}
+\doxysubsubsection{\texorpdfstring{wifiConnected}{wifiConnected}}
+{\footnotesize\ttfamily \label{classPlatform_1_1PlatformAdaptor__Abstract_a5ad6095ebd2bfbbe00c70f8a887d6a20} 
+void Platform\+::\+Platform\+Adaptor\+\_\+\+Abstract\+::wifi\+Connected (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [signal]}}
+
+
+
+Emitted when a new Wi\+Fi connections becomes available. 
+
+This signal is emitted when a new Wi\+Fi connection becomes available. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/platform/Platform\+Adaptor\+\_\+\+Abstract.\+h\end{DoxyCompactItemize}

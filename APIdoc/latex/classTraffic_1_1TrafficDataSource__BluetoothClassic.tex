@@ -1,0 +1,326 @@
+\doxysection{Traffic\+::Traffic\+Data\+Source\+\_\+\+Bluetooth\+Classic Class Reference}
+\hypertarget{classTraffic_1_1TrafficDataSource__BluetoothClassic}{}\label{classTraffic_1_1TrafficDataSource__BluetoothClassic}\index{Traffic::TrafficDataSource\_BluetoothClassic@{Traffic::TrafficDataSource\_BluetoothClassic}}
+
+
+Traffic receiver\+: Bluetooth Classic connection to FLARM/\+NMEA source.  
+
+
+
+
+{\ttfamily \#include $<$Traffic\+Data\+Source\+\_\+\+Bluetooth\+Classic.\+h$>$}
+
+Inheritance diagram for Traffic\+::Traffic\+Data\+Source\+\_\+\+Bluetooth\+Classic\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classTraffic_1_1TrafficDataSource__BluetoothClassic}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Slots}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic_a2ee178aca334b6ce6b48f7f17573fc76}{connect\+To\+Traffic\+Receiver}} () override
+\begin{DoxyCompactList}\small\item\em Start attempt to connect to traffic receiver. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic_a830ec342fe1873b5ad5829744be846ea}{disconnect\+From\+Traffic\+Receiver}} () override
+\begin{DoxyCompactList}\small\item\em Disconnect from traffic receiver. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Slots inherited from \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_aa34e7e3468a845ae1031ea699b16cc95}{connect\+To\+Traffic\+Receiver}} ()=0
+\begin{DoxyCompactList}\small\item\em Start attempt to connect to traffic receiver. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_ac21f37301fc64105aa4909fe33b20cb9}{disconnect\+From\+Traffic\+Receiver}} ()=0
+\begin{DoxyCompactList}\small\item\em Disconnect from traffic receiver. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a5a527f496b25f0525684b5773d7fdf55}{set\+Password}} (const QString \&SSID, const QString \&password)
+\begin{DoxyCompactList}\small\item\em Set password. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic_ae87c2e77c20ab82cdd15ffa4efd1ac59}{Traffic\+Data\+Source\+\_\+\+Bluetooth\+Classic}} (bool is\+Canonical, const QBluetooth\+Device\+Info \&info, QObject \texorpdfstring{$\ast$}{*}parent)
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classTraffic_1_1ConnectionInfo}{Traffic\+::\+Connection\+Info}} \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic_a256e58785802dd20cb11084af1d9e0e5}{connection\+Info}} () const override
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic_a48d21592299c3dcc617e847ffcb6c61f}{data\+Format}} () const override
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic_ae8c876328c444e08816553cbb1605c16}{icon}} () const override
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic_aa6fd911a88616809c4a49af8d67f1a9b}{source\+Name}} () const override
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+QBluetooth\+Device\+Info \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic_afb42b056796a9d98c043e4dc0d771ba7}{source\+Info}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__AbstractSocket}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+Socket}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classTraffic_1_1TrafficDataSource__AbstractSocket_a4a445b729b2ac390df0d3dc703f055d0}{Traffic\+Data\+Source\+\_\+\+Abstract\+Socket}} (bool is\+Canonical, QObject \texorpdfstring{$\ast$}{*}parent)
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a1f1b84f93e7566c82a1b6e0d876ec363}{Traffic\+Data\+Source\+\_\+\+Abstract}} (bool is\+Canonical, QObject \texorpdfstring{$\ast$}{*}parent)
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a0c0b7de2782d5bb64dbdac690ed0a4fd}{canonical}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a3eb47fb6ebab35c8931547027d1eadf2}{connectivity\+Status}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_ae42e5eae8707539f939a7ea7aeec8017}{error\+String}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a148ecc55ff94efa1a55d519b80152c8a}{receiving\+Heartbeat}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a17f5b531099897fdfaedd17ab42b883c}{traffic\+Receiver\+Runtime\+Error}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a3a65a01edf054196bd1de496488fd05f}{traffic\+Receiver\+Self\+Test\+Error}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+QBluetooth\+Device\+Info \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic_a02c6772f34c402055e5db41f58a98b10}{source\+Info}}
+\begin{DoxyCompactList}\small\item\em Source info. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Properties inherited from \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract}}}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a5d7761678f5f74ba2c2d79e30ed61a5e}{canonical}}
+\begin{DoxyCompactList}\small\item\em Canonicity. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_ab81961d198aa8f53cf1d6935394a6a6f}{connectivity\+Status}}
+\begin{DoxyCompactList}\small\item\em Connectivity status. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classTraffic_1_1ConnectionInfo}{Traffic\+::\+Connection\+Info}} \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_aae0b79a83c439a1d5d5ed83dd0085873}{connection\+Info}}
+\begin{DoxyCompactList}\small\item\em Connection Info. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a418e4e3c28695ec6426b4d000f695dde}{data\+Format}}
+\begin{DoxyCompactList}\small\item\em Data format. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_ad5c337d3284f03c1beaaf0da7e494618}{error\+String}}
+\begin{DoxyCompactList}\small\item\em String describing the last socket error. \end{DoxyCompactList}\item 
+QString {\bfseries icon}
+\begin{DoxyCompactList}\small\item\em Icon that can be used to represent the connection in a GUI. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a13a3c0bfa4d3819adea943c564018e55}{receiving\+Heartbeat}}
+\begin{DoxyCompactList}\small\item\em Heartbeat indicator. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_afc6b13feeee5bd9ea1011eaeed6fb2a2}{source\+Name}}
+\begin{DoxyCompactList}\small\item\em Source name. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a90d1b6ff4762390477c05e0404e32060}{traffic\+Receiver\+Runtime\+Error}}
+\begin{DoxyCompactList}\small\item\em String describing the last traffic data receiver runtime error. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_ae9e66e5600baf14b4ef7503a6f5e3191}{traffic\+Receiver\+Self\+Test\+Error}}
+\begin{DoxyCompactList}\small\item\em String describing the last traffic data receiver self-\/test error. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Signals inherited from \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract}}}
+\begin{DoxyCompactItemize}
+\item 
+void {\bfseries connectivity\+Status\+Changed} (QString new\+Status)
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+void {\bfseries error\+String\+Changed} (QString new\+Error)
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_ae5543aa5fa931f0dda6f376492c10ff4}{factor\+Without\+Position}} (const \mbox{\hyperlink{classTraffic_1_1TrafficFactor__DistanceOnly}{Traffic\+::\+Traffic\+Factor\+\_\+\+Distance\+Only}} \&factor)
+\begin{DoxyCompactList}\small\item\em Traffic factor without position. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a6e6718fc854bee5f87f7bc95825bc261}{factor\+With\+Position}} (const \mbox{\hyperlink{classTraffic_1_1TrafficFactor__WithPosition}{Traffic\+::\+Traffic\+Factor\+\_\+\+With\+Position}} \&factor)
+\begin{DoxyCompactList}\small\item\em Traffic factor with position. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a93337f2a8b80cf7b0873549fc7dbb4c0}{pressure\+Altitude\+Updated}} (\mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}})
+\begin{DoxyCompactList}\small\item\em Pressure altitude. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_ae6badc04c773060708920464471afee4}{position\+Updated}} (\mbox{\hyperlink{classPositioning_1_1PositionInfo}{Positioning\+::\+Position\+Info}} p\+Info)
+\begin{DoxyCompactList}\small\item\em Position info. \end{DoxyCompactList}\item 
+void {\bfseries receiving\+Heartbeat\+Changed} (bool)
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+void {\bfseries traffic\+Receiver\+Runtime\+Error\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+void {\bfseries traffic\+Receiver\+Self\+Test\+Error\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a6e08c56143cd22a1fe5f750ff43c0b0c}{traffic\+Receiver\+Hw\+Version}} (QString result)
+\begin{DoxyCompactList}\small\item\em Traffic receiver hardware version. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_af0e969dddeb1d98288428ccca235f663}{traffic\+Receiver\+Ob\+Version}} (QString result)
+\begin{DoxyCompactList}\small\item\em Traffic receiver obstacle database version. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_acaa3da4d838e22ff511f0828a34bd7aa}{traffic\+Receiver\+Sw\+Version}} (QString result)
+\begin{DoxyCompactList}\small\item\em Traffic receiver software version. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a5c183f3d353775394079a77761dc1fc6}{warning}} (const \mbox{\hyperlink{classTraffic_1_1Warning}{Traffic\+::\+Warning}} \&warning)
+\begin{DoxyCompactList}\small\item\em Traffic warning. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract}}}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_aac401d3c39711343a5d4e240e5ae351e}{process\+FLARMData}} (const QString \&data)
+\begin{DoxyCompactList}\small\item\em Process FLARM/\+NMEA data. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a6b26687aa06b80260d341c84fe5d592b}{process\+GDLMessage}} (const QByte\+Array \&message)
+\begin{DoxyCompactList}\small\item\em Process one GDL90 message. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a3d13ac6b531ce304590c921d8784c9a7}{process\+XGPSString}} (const QByte\+Array \&data)
+\begin{DoxyCompactList}\small\item\em Process one XGPS string. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a5edbc4d5d739e95eff16c39358b10c6e}{reset\+Receiving\+Heartbeat}} ()
+\begin{DoxyCompactList}\small\item\em Resetter method for the property with the same name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_ac88a41ad7a4268a53f6d416effbdffb7}{set\+Connectivity\+Status}} (const QString \&new\+Connectivity\+Status)
+\begin{DoxyCompactList}\small\item\em Setter function for the property with the same name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a571c20201fb3a902e8a5df99efab1377}{set\+Error\+String}} (const QString \&new\+Error\+String=QString())
+\begin{DoxyCompactList}\small\item\em Setter function for the property with the same name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a53d634de1067eddc68df8a43f0898fc5}{set\+Receiving\+Heartbeat}} (bool new\+Receiving\+Heartbeat)
+\begin{DoxyCompactList}\small\item\em Setter method for the property with the same name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_adf4777529f39b5e2c226d7370968ea4d}{set\+Traffic\+Receiver\+Runtime\+Error}} (const QString \&new\+Error\+String)
+\begin{DoxyCompactList}\small\item\em Setter function for the property with the same name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a8361236d0d61cbb169b348ca726ba404}{set\+Traffic\+Receiver\+Self\+Test\+Error}} (const QString \&new\+Error\+String)
+\begin{DoxyCompactList}\small\item\em Setter function for the property with the same name. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Traffic receiver\+: Bluetooth Classic connection to FLARM/\+NMEA source. 
+
+This class connects to a traffic receiver via a Bluetooth Classic serial port service. 
+
+Definition at line \mbox{\hyperlink{TrafficDataSource__BluetoothClassic_8h_source_l00038}{38}} of file \mbox{\hyperlink{TrafficDataSource__BluetoothClassic_8h_source}{Traffic\+Data\+Source\+\_\+\+Bluetooth\+Classic.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classTraffic_1_1TrafficDataSource__BluetoothClassic_ae87c2e77c20ab82cdd15ffa4efd1ac59}\index{Traffic::TrafficDataSource\_BluetoothClassic@{Traffic::TrafficDataSource\_BluetoothClassic}!TrafficDataSource\_BluetoothClassic@{TrafficDataSource\_BluetoothClassic}}
+\index{TrafficDataSource\_BluetoothClassic@{TrafficDataSource\_BluetoothClassic}!Traffic::TrafficDataSource\_BluetoothClassic@{Traffic::TrafficDataSource\_BluetoothClassic}}
+\doxysubsubsection{\texorpdfstring{TrafficDataSource\_BluetoothClassic()}{TrafficDataSource\_BluetoothClassic()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__BluetoothClassic_ae87c2e77c20ab82cdd15ffa4efd1ac59} 
+Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Bluetooth\+Classic\+::\+Traffic\+Data\+Source\+\_\+\+Bluetooth\+Classic (\begin{DoxyParamCaption}\item[{bool}]{is\+Canonical}{, }\item[{const QBluetooth\+Device\+Info \&}]{info}{, }\item[{QObject \texorpdfstring{$\ast$}{*}}]{parent}{}\end{DoxyParamCaption})}
+
+
+
+Default constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em is\+Canonical} & Intializer for property canonical\\
+\hline
+{\em info} & Description of a Bluetooth Classic device offering serial port service.\\
+\hline
+{\em parent} & The standard QObject parent pointer \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classTraffic_1_1TrafficDataSource__BluetoothClassic_a256e58785802dd20cb11084af1d9e0e5}\index{Traffic::TrafficDataSource\_BluetoothClassic@{Traffic::TrafficDataSource\_BluetoothClassic}!connectionInfo@{connectionInfo}}
+\index{connectionInfo@{connectionInfo}!Traffic::TrafficDataSource\_BluetoothClassic@{Traffic::TrafficDataSource\_BluetoothClassic}}
+\doxysubsubsection{\texorpdfstring{connectionInfo()}{connectionInfo()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__BluetoothClassic_a256e58785802dd20cb11084af1d9e0e5} 
+\mbox{\hyperlink{classTraffic_1_1ConnectionInfo}{Traffic\+::\+Connection\+Info}} Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Bluetooth\+Classic\+::connection\+Info (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property connection\+Info 
+\end{DoxyReturn}
+
+
+Reimplemented from \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a49ff830aa2f9c946aae844521b517dfb}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract}}.
+
+
+
+Definition at line \mbox{\hyperlink{TrafficDataSource__BluetoothClassic_8h_source_l00078}{78}} of file \mbox{\hyperlink{TrafficDataSource__BluetoothClassic_8h_source}{Traffic\+Data\+Source\+\_\+\+Bluetooth\+Classic.\+h}}.
+
+\Hypertarget{classTraffic_1_1TrafficDataSource__BluetoothClassic_a2ee178aca334b6ce6b48f7f17573fc76}\index{Traffic::TrafficDataSource\_BluetoothClassic@{Traffic::TrafficDataSource\_BluetoothClassic}!connectToTrafficReceiver@{connectToTrafficReceiver}}
+\index{connectToTrafficReceiver@{connectToTrafficReceiver}!Traffic::TrafficDataSource\_BluetoothClassic@{Traffic::TrafficDataSource\_BluetoothClassic}}
+\doxysubsubsection{\texorpdfstring{connectToTrafficReceiver}{connectToTrafficReceiver}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__BluetoothClassic_a2ee178aca334b6ce6b48f7f17573fc76} 
+void Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Bluetooth\+Classic\+::connect\+To\+Traffic\+Receiver (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [slot]}}
+
+
+
+Start attempt to connect to traffic receiver. 
+
+This method implements the pure virtual method declared by its superclass. \Hypertarget{classTraffic_1_1TrafficDataSource__BluetoothClassic_a48d21592299c3dcc617e847ffcb6c61f}\index{Traffic::TrafficDataSource\_BluetoothClassic@{Traffic::TrafficDataSource\_BluetoothClassic}!dataFormat@{dataFormat}}
+\index{dataFormat@{dataFormat}!Traffic::TrafficDataSource\_BluetoothClassic@{Traffic::TrafficDataSource\_BluetoothClassic}}
+\doxysubsubsection{\texorpdfstring{dataFormat()}{dataFormat()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__BluetoothClassic_a48d21592299c3dcc617e847ffcb6c61f} 
+QString Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Bluetooth\+Classic\+::data\+Format (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property data\+Format 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a064eeeaacd5886aa73678ddef8a00c7f}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract}}.
+
+
+
+Definition at line \mbox{\hyperlink{TrafficDataSource__BluetoothClassic_8h_source_l00087}{87}} of file \mbox{\hyperlink{TrafficDataSource__BluetoothClassic_8h_source}{Traffic\+Data\+Source\+\_\+\+Bluetooth\+Classic.\+h}}.
+
+\Hypertarget{classTraffic_1_1TrafficDataSource__BluetoothClassic_a830ec342fe1873b5ad5829744be846ea}\index{Traffic::TrafficDataSource\_BluetoothClassic@{Traffic::TrafficDataSource\_BluetoothClassic}!disconnectFromTrafficReceiver@{disconnectFromTrafficReceiver}}
+\index{disconnectFromTrafficReceiver@{disconnectFromTrafficReceiver}!Traffic::TrafficDataSource\_BluetoothClassic@{Traffic::TrafficDataSource\_BluetoothClassic}}
+\doxysubsubsection{\texorpdfstring{disconnectFromTrafficReceiver}{disconnectFromTrafficReceiver}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__BluetoothClassic_a830ec342fe1873b5ad5829744be846ea} 
+void Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Bluetooth\+Classic\+::disconnect\+From\+Traffic\+Receiver (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [slot]}}
+
+
+
+Disconnect from traffic receiver. 
+
+This method implements the pure virtual method declared by its superclass. \Hypertarget{classTraffic_1_1TrafficDataSource__BluetoothClassic_ae8c876328c444e08816553cbb1605c16}\index{Traffic::TrafficDataSource\_BluetoothClassic@{Traffic::TrafficDataSource\_BluetoothClassic}!icon@{icon}}
+\index{icon@{icon}!Traffic::TrafficDataSource\_BluetoothClassic@{Traffic::TrafficDataSource\_BluetoothClassic}}
+\doxysubsubsection{\texorpdfstring{icon()}{icon()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__BluetoothClassic_ae8c876328c444e08816553cbb1605c16} 
+QString Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Bluetooth\+Classic\+::icon (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Getter function for the property with the same name. 
+
+This method implements the pure virtual method declared by its superclass.
+
+\begin{DoxyReturn}{Returns}
+Property icon 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_aacc1922346405a538496b212b6d05a16}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract}}.
+
+
+
+Definition at line \mbox{\hyperlink{TrafficDataSource__BluetoothClassic_8h_source_l00096}{96}} of file \mbox{\hyperlink{TrafficDataSource__BluetoothClassic_8h_source}{Traffic\+Data\+Source\+\_\+\+Bluetooth\+Classic.\+h}}.
+
+\Hypertarget{classTraffic_1_1TrafficDataSource__BluetoothClassic_afb42b056796a9d98c043e4dc0d771ba7}\index{Traffic::TrafficDataSource\_BluetoothClassic@{Traffic::TrafficDataSource\_BluetoothClassic}!sourceInfo@{sourceInfo}}
+\index{sourceInfo@{sourceInfo}!Traffic::TrafficDataSource\_BluetoothClassic@{Traffic::TrafficDataSource\_BluetoothClassic}}
+\doxysubsubsection{\texorpdfstring{sourceInfo()}{sourceInfo()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__BluetoothClassic_afb42b056796a9d98c043e4dc0d771ba7} 
+QBluetooth\+Device\+Info Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Bluetooth\+Classic\+::source\+Info (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property source\+Info 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{TrafficDataSource__BluetoothClassic_8h_source_l00111}{111}} of file \mbox{\hyperlink{TrafficDataSource__BluetoothClassic_8h_source}{Traffic\+Data\+Source\+\_\+\+Bluetooth\+Classic.\+h}}.
+
+\Hypertarget{classTraffic_1_1TrafficDataSource__BluetoothClassic_aa6fd911a88616809c4a49af8d67f1a9b}\index{Traffic::TrafficDataSource\_BluetoothClassic@{Traffic::TrafficDataSource\_BluetoothClassic}!sourceName@{sourceName}}
+\index{sourceName@{sourceName}!Traffic::TrafficDataSource\_BluetoothClassic@{Traffic::TrafficDataSource\_BluetoothClassic}}
+\doxysubsubsection{\texorpdfstring{sourceName()}{sourceName()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__BluetoothClassic_aa6fd911a88616809c4a49af8d67f1a9b} 
+QString Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Bluetooth\+Classic\+::source\+Name (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Getter function for the property with the same name. 
+
+This method implements the pure virtual method declared by its superclass.
+
+\begin{DoxyReturn}{Returns}
+Property source\+Name 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_af3a0ebcb9bf2719f8ade8d4ff6f8468d}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract}}.
+
+
+
+\doxysubsection{Property Documentation}
+\Hypertarget{classTraffic_1_1TrafficDataSource__BluetoothClassic_a02c6772f34c402055e5db41f58a98b10}\index{Traffic::TrafficDataSource\_BluetoothClassic@{Traffic::TrafficDataSource\_BluetoothClassic}!sourceInfo@{sourceInfo}}
+\index{sourceInfo@{sourceInfo}!Traffic::TrafficDataSource\_BluetoothClassic@{Traffic::TrafficDataSource\_BluetoothClassic}}
+\doxysubsubsection{\texorpdfstring{sourceInfo}{sourceInfo}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__BluetoothClassic_a02c6772f34c402055e5db41f58a98b10} 
+QBluetooth\+Device\+Info Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Bluetooth\+Classic\+::source\+Info\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Source info. 
+
+Device info, as set in the constructor of this class. 
+
+Definition at line \mbox{\hyperlink{TrafficDataSource__BluetoothClassic_8h_source_l00066}{66}} of file \mbox{\hyperlink{TrafficDataSource__BluetoothClassic_8h_source}{Traffic\+Data\+Source\+\_\+\+Bluetooth\+Classic.\+h}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/traffic/Traffic\+Data\+Source\+\_\+\+Bluetooth\+Classic.\+h\end{DoxyCompactItemize}

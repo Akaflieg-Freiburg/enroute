@@ -1,0 +1,191 @@
+\doxysection{Downloadable\+\_\+\+Abstract.\+h}
+\hypertarget{Downloadable__Abstract_8h_source}{}\label{Downloadable__Abstract_8h_source}\index{/home/runner/work/enroute/enroute/src/dataManagement/Downloadable\_Abstract.h@{/home/runner/work/enroute/enroute/src/dataManagement/Downloadable\_Abstract.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00001}00001\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00002}00002\ \textcolor{comment}{\ *\ \ \ Copyright\ (C)\ 2022-\/-\/2024\ by\ Stefan\ Kebekus\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00003}00003\ \textcolor{comment}{\ *\ \ \ stefan.kebekus@gmail.com\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00004}00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ free\ software;\ you\ can\ redistribute\ it\ and/or\ modify\ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00006}00006\ \textcolor{comment}{\ *\ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by\ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00007}00007\ \textcolor{comment}{\ *\ \ \ the\ Free\ Software\ Foundation;\ either\ version\ 3\ of\ the\ License,\ or\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00008}00008\ \textcolor{comment}{\ *\ \ \ (at\ your\ option)\ any\ later\ version.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00009}00009\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00010}00010\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,\ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00011}00011\ \textcolor{comment}{\ *\ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of\ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00012}00012\ \textcolor{comment}{\ *\ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00013}00013\ \textcolor{comment}{\ *\ \ \ GNU\ General\ Public\ License\ for\ more\ details.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00014}00014\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00015}00015\ \textcolor{comment}{\ *\ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00016}00016\ \textcolor{comment}{\ *\ \ \ along\ with\ this\ program;\ if\ not,\ write\ to\ the\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00017}00017\ \textcolor{comment}{\ *\ \ \ Free\ Software\ Foundation,\ Inc.,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00018}00018\ \textcolor{comment}{\ *\ \ \ 59\ Temple\ Place\ -\/\ Suite\ 330,\ Boston,\ MA\ \ 02111-\/1307,\ USA.\ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00019}00019\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00021}00021\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ <QGeoRectangle>}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00024}00024\ \textcolor{preprocessor}{\#include\ <QQmlEngine>}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00025}00025\ \textcolor{preprocessor}{\#include\ <QTimer>}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00027}00027\ \textcolor{preprocessor}{\#include\ "{}units/ByteSize.h"{}}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00028}00028\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00029}00029\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00030}00030\ \textcolor{keyword}{namespace\ }DataManagement\ \{}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00031}00031\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00042}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract}{00042}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract}{Downloadable\_Abstract}}\ :\ \textcolor{keyword}{public}\ QObject\ \{}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00043}00043\ \ \ \ \ Q\_OBJECT}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00044}00044\ \ \ \ \ QML\_ELEMENT}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00045}00045\ \ \ \ \ QML\_UNCREATABLE(\textcolor{stringliteral}{"{}"{}})}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00046}00046\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00047}00047\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00049}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a43fcd87601d16172eb324b7680f169d1}{00049}}\ \ \ \ \ \textcolor{keyword}{enum}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a43fcd87601d16172eb324b7680f169d1}{ContentType}}\ \{}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00050}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a43fcd87601d16172eb324b7680f169d1a2a7c86b1653b7fe4c9b694e84d37e6eb}{00050}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a43fcd87601d16172eb324b7680f169d1a2a7c86b1653b7fe4c9b694e84d37e6eb}{VAC}},\ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00051}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a43fcd87601d16172eb324b7680f169d1aa900287a6fc92e7ae9f86a8904460adf}{00051}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a43fcd87601d16172eb324b7680f169d1aa900287a6fc92e7ae9f86a8904460adf}{AviationMap}},\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00052}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a43fcd87601d16172eb324b7680f169d1a7803d9cd4bc257ac3f0254d19b1eae96}{00052}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a43fcd87601d16172eb324b7680f169d1a7803d9cd4bc257ac3f0254d19b1eae96}{BaseMapVector}},\ \ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00053}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a43fcd87601d16172eb324b7680f169d1acf2b4f329c517105b8fd0ac591838246}{00053}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a43fcd87601d16172eb324b7680f169d1acf2b4f329c517105b8fd0ac591838246}{BaseMapRaster}},\ \ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00054}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a43fcd87601d16172eb324b7680f169d1a0f6600ad1c408ca017a1cf93f57e29f8}{00054}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a43fcd87601d16172eb324b7680f169d1a0f6600ad1c408ca017a1cf93f57e29f8}{Data}},\ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00055}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a43fcd87601d16172eb324b7680f169d1ad11f26c728f87fc132b9b9637319857e}{00055}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a43fcd87601d16172eb324b7680f169d1ad11f26c728f87fc132b9b9637319857e}{MapSet}},\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00056}00056\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a43fcd87601d16172eb324b7680f169d1a3df875072865cd877ca357dc74a80d5e}{TerrainMap}}\ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00057}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a43fcd87601d16172eb324b7680f169d1a3df875072865cd877ca357dc74a80d5e}{00057}}\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00058}00058\ \ \ \ \ Q\_ENUM(ContentType)}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00059}00059\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00060}00060\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00064}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a61e0319e1684029c5b27eb9c2e5b43ea}{00064}}\ \ \ \ \ explicit\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract}{Downloadable\_Abstract}}(QObject*\ parent\ =\ \textcolor{keywordtype}{nullptr});}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00065}00065\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00066}00066\ \ \ \ \ \textcolor{comment}{//\ standard\ destructor}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00067}00067\ \ \ \ \ \string~\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract}{Downloadable\_Abstract}}()\ override\ =\ default;}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00068}00068\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00069}00069\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00070}00070\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00071}00071\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00072}00072\ \ \ \ \ \textcolor{comment}{//\ PROPERTIES}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00073}00073\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00074}00074\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00076}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_ae5177c6dd9e8d8eb841064448eb3e0c7}{00076}}\ \ \ \ \ Q\_PROPERTY(QGeoRectangle\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_ae5177c6dd9e8d8eb841064448eb3e0c7}{boundingBox}}\ READ\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_ae5177c6dd9e8d8eb841064448eb3e0c7}{boundingBox}}\ WRITE\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_aeb1a8dff7102ad948b3abe93715636d9}{setBoundingBox}}\ NOTIFY\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a3e571d2217e9f5b05a359a4efad326ea}{boundingBoxChanged}})}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00077}00077\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00079}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_afedc84cefaaa0d14e600acc8e868556a}{00079}}\ \ \ \ \ Q\_PROPERTY(DataManagement::\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract}{Downloadable\_Abstract}}::\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a43fcd87601d16172eb324b7680f169d1}{ContentType}}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_afedc84cefaaa0d14e600acc8e868556a}{contentType}}\ READ\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_afedc84cefaaa0d14e600acc8e868556a}{contentType}}\ WRITE\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a41f6582173aeca47eeb2f9a72cf44adf}{setContentType}}\ NOTIFY\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a410f7a6192d2107ef96bc77e3e6997ce}{contentTypeChanged}})}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00080}00080\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00087}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a8893b5a2c3e58772f099bb1c5db7d25c}{00087}}\ \ \ \ \ Q\_PROPERTY(QString\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a8893b5a2c3e58772f099bb1c5db7d25c}{description}}\ READ\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a8893b5a2c3e58772f099bb1c5db7d25c}{description}}\ NOTIFY\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_abaa74f2769a40290272b63119bd7c904}{descriptionChanged}})}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00088}00088\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00090}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_af0458b68042e58bcf831af6b90faf3a3}{00090}}\ \ \ \ \ Q\_PROPERTY(\textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_af0458b68042e58bcf831af6b90faf3a3}{downloading}}\ READ\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_af0458b68042e58bcf831af6b90faf3a3}{downloading}}\ NOTIFY\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a11d3c674e06e6c38654d20169414c1d0}{downloadingChanged}})}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00091}00091\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00095}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_af2e45e6ac68951cdd274ab9e7a5764af}{00095}}\ \ \ \ \ Q\_PROPERTY(QStringList\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_af2e45e6ac68951cdd274ab9e7a5764af}{files}}\ READ\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_af2e45e6ac68951cdd274ab9e7a5764af}{files}}\ NOTIFY\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a293c737ab8d7a1e07c82b179359ecb37}{filesChanged}})}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00096}00096\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00098}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a3be9c54ca1f9cbb9e0f9f972732e1f0c}{00098}}\ \ \ \ \ Q\_PROPERTY(\textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a3be9c54ca1f9cbb9e0f9f972732e1f0c}{hasFile}}\ READ\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a3be9c54ca1f9cbb9e0f9f972732e1f0c}{hasFile}}\ NOTIFY\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_ab36e09631e438293d671619ceed06979}{hasFileChanged}})}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00099}00099\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00110}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a70f58f53a021cc261f51c87651dd0995}{00110}}\ \ \ \ \ Q\_PROPERTY(QString\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a70f58f53a021cc261f51c87651dd0995}{infoText}}\ READ\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a70f58f53a021cc261f51c87651dd0995}{infoText}}\ NOTIFY\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_ad78f9f4a3cd544ef48c797f49e41121d}{infoTextChanged}})}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00111}00111\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00117}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_ac91c397a50fcef508e3d24b0a5c24d56}{00117}}\ \ \ \ \ Q\_PROPERTY(qint64\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_ac91c397a50fcef508e3d24b0a5c24d56}{remoteFileSize}}\ READ\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_ac91c397a50fcef508e3d24b0a5c24d56}{remoteFileSize}}\ NOTIFY\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a229a98b7e114dcb75343145f070a6ab4}{remoteFileSizeChanged}})}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00118}00118\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00126}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a0a22a2a62205d794701b6caba5cc0d7c}{00126}}\ \ \ \ \ Q\_PROPERTY(QString\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a0a22a2a62205d794701b6caba5cc0d7c}{section}}\ READ\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a0a22a2a62205d794701b6caba5cc0d7c}{section}}\ WRITE\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_aea2628d41d9b7bf68506e94f797a627e}{setSection}}\ NOTIFY\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a9b8e65e9d12d2ee730636b6e46f71370}{sectionChanged}})}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00127}00127\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00134}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a4b5c4fd31fccacba36f438e801448e78}{00134}}\ \ \ \ \ Q\_PROPERTY(\mbox{\hyperlink{namespaceUnits}{Units}}::ByteSize\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a4b5c4fd31fccacba36f438e801448e78}{updateSize}}\ READ\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a4b5c4fd31fccacba36f438e801448e78}{updateSize}}\ NOTIFY\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_afc3b263e55d44f7214a8fea2b2b8e375}{updateSizeChanged}})}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00135}00135\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00137}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_ad6f7b252715357b20306c8d5fd894413}{00137}}\ \ \ \ \ Q\_PROPERTY(QString\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_ad6f7b252715357b20306c8d5fd894413}{updateSizeString}}\ READ\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_ad6f7b252715357b20306c8d5fd894413}{updateSizeString}}\ NOTIFY\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_afc3b263e55d44f7214a8fea2b2b8e375}{updateSizeChanged}})}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00138}00138\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00139}00139\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00140}00140\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00141}00141\ \ \ \ \ \textcolor{comment}{//\ Getter\ Methods}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00142}00142\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00143}00143\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00148}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a08564e7edd6ac3f60e171adb4f7af9c9}{00148}}\ \ \ \ \ [[nodiscard]]\ QGeoRectangle\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_ae5177c6dd9e8d8eb841064448eb3e0c7}{boundingBox}}()\textcolor{keyword}{\ const\ }\{\textcolor{keywordflow}{return}\ m\_boundingBox;\}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00149}00149\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00154}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_aebde1a559fa6867c66c2af189e9c93c6}{00154}}\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a43fcd87601d16172eb324b7680f169d1}{DataManagement::Downloadable\_Abstract::ContentType}}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_aebde1a559fa6867c66c2af189e9c93c6}{contentType}}()\textcolor{keyword}{\ const\ }\{\textcolor{keywordflow}{return}\ m\_contentType;\}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00155}00155\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00160}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a7abb20eb80bce6a20d12d91435207206}{00160}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{virtual}\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a7abb20eb80bce6a20d12d91435207206}{description}}()\ -\/>\ QString\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00161}00161\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00166}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a2a42bc0a6d5161d5199c030d400cbf95}{00166}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{virtual}\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a2a42bc0a6d5161d5199c030d400cbf95}{downloading}}()\ -\/>\ \textcolor{keywordtype}{bool}\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00167}00167\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00172}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a70e8170b7e88bc60f7f9274af1118f11}{00172}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{virtual}\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a70e8170b7e88bc60f7f9274af1118f11}{files}}()\ -\/>\ QStringList\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00173}00173\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00178}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a7acc926679adbb0d1117cf8d9bb1c9eb}{00178}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{virtual}\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a7acc926679adbb0d1117cf8d9bb1c9eb}{hasFile}}()\ -\/>\ \textcolor{keywordtype}{bool}\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00179}00179\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00184}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_ad8b39dff84456732f36c0db174a99953}{00184}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{virtual}\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_ad8b39dff84456732f36c0db174a99953}{infoText}}()\ -\/>\ QString\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00185}00185\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00190}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a9d7f57b59c3d83cb8bc261c572fadc32}{00190}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{virtual}\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a9d7f57b59c3d83cb8bc261c572fadc32}{remoteFileSize}}()\ -\/>\ qint64\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00191}00191\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00196}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a648d307557ccb38e749d8ca24464af21}{00196}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a648d307557ccb38e749d8ca24464af21}{section}}()\ const\ -\/>\ QString\ \{\ \textcolor{keywordflow}{return}\ m\_section;\ \}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00197}00197\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00202}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_ad415acc4f0ce31e08bc9beeff752e289}{00202}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{virtual}\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_ad415acc4f0ce31e08bc9beeff752e289}{updateSize}}()\ -\/>\ \mbox{\hyperlink{classUnits_1_1ByteSize}{Units::ByteSize}}\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00203}00203\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00208}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a44c213cfe59b11871d2ea9d347562684}{00208}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{virtual}\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a44c213cfe59b11871d2ea9d347562684}{updateSizeString}}()\ -\/>\ QString;}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00209}00209\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00210}00210\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00211}00211\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00212}00212\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00213}00213\ \ \ \ \ \textcolor{comment}{//\ Setter\ Methods}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00214}00214\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00215}00215\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00220}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_aeb1a8dff7102ad948b3abe93715636d9}{00220}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_aeb1a8dff7102ad948b3abe93715636d9}{setBoundingBox}}(\textcolor{keyword}{const}\ QGeoRectangle\&\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_ae5177c6dd9e8d8eb841064448eb3e0c7}{boundingBox}});}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00221}00221\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00226}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a41f6582173aeca47eeb2f9a72cf44adf}{00226}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a41f6582173aeca47eeb2f9a72cf44adf}{setContentType}}(\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a43fcd87601d16172eb324b7680f169d1}{DataManagement::Downloadable\_Abstract::ContentType}}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_afedc84cefaaa0d14e600acc8e868556a}{contentType}});}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00227}00227\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00232}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_aea2628d41d9b7bf68506e94f797a627e}{00232}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_aea2628d41d9b7bf68506e94f797a627e}{setSection}}(\textcolor{keyword}{const}\ QString\&\ sectionName);}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00233}00233\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00234}00234\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00235}00235\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00236}00236\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00237}00237\ \ \ \ \ \textcolor{comment}{//\ Methods}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00238}00238\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00239}00239\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00241}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_afe1ec594fbb9c9cf417883a017cebe90}{00241}}\ \ \ \ \ Q\_INVOKABLE\ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_afe1ec594fbb9c9cf417883a017cebe90}{deleteFiles}}()\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00242}00242\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00244}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a6c0de8f39cd82b6800612101122bdbe8}{00244}}\ \ \ \ \ Q\_INVOKABLE\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a6c0de8f39cd82b6800612101122bdbe8}{killFileContentChanged\_delayed}}()}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00245}00245\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00246}00246\ \ \ \ \ \ \ \ \ emitFileContentChanged\_delayedTimer.stop();}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00247}00247\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00248}00248\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00250}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a0b245f0704e7eb92fb2c15bb77233e59}{00250}}\ \ \ \ \ Q\_INVOKABLE\ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a0b245f0704e7eb92fb2c15bb77233e59}{startDownload}}()\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00251}00251\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00253}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a7cd390912d64b3f9547993467926a106}{00253}}\ \ \ \ \ Q\_INVOKABLE\ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a7cd390912d64b3f9547993467926a106}{stopDownload}}()\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00254}00254\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00256}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a7ef9c3b4dea9eed821b2bf1aeeb5541a}{00256}}\ \ \ \ \ Q\_INVOKABLE\ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a7ef9c3b4dea9eed821b2bf1aeeb5541a}{update}}()\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00257}00257\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00258}00258\ signals:}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00260}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a3e571d2217e9f5b05a359a4efad326ea}{00260}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a3e571d2217e9f5b05a359a4efad326ea}{boundingBoxChanged}}();}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00261}00261\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00263}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a410f7a6192d2107ef96bc77e3e6997ce}{00263}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a410f7a6192d2107ef96bc77e3e6997ce}{contentTypeChanged}}();}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00264}00264\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00266}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_abaa74f2769a40290272b63119bd7c904}{00266}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_abaa74f2769a40290272b63119bd7c904}{descriptionChanged}}();}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00267}00267\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00269}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a11d3c674e06e6c38654d20169414c1d0}{00269}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a11d3c674e06e6c38654d20169414c1d0}{downloadingChanged}}();}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00270}00270\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00283}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a0d0cedd2c97765a34ead1b0553389499}{00283}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a0d0cedd2c97765a34ead1b0553389499}{error}}(QString\ objectName,\ QString\ message);}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00284}00284\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00286}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_afea09ee5100fdf287bd3491440a69e70}{00286}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_afea09ee5100fdf287bd3491440a69e70}{fileContentChanged}}();}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00287}00287\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00294}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_ad053102a0247b0f0cc40ffc3124af898}{00294}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_ad053102a0247b0f0cc40ffc3124af898}{fileContentChanged\_delayed}}();}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00295}00295\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00297}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a293c737ab8d7a1e07c82b179359ecb37}{00297}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a293c737ab8d7a1e07c82b179359ecb37}{filesChanged}}();}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00298}00298\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00300}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_ab36e09631e438293d671619ceed06979}{00300}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_ab36e09631e438293d671619ceed06979}{hasFileChanged}}();}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00301}00301\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00303}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_ad78f9f4a3cd544ef48c797f49e41121d}{00303}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_ad78f9f4a3cd544ef48c797f49e41121d}{infoTextChanged}}();}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00304}00304\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00306}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a229a98b7e114dcb75343145f070a6ab4}{00306}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a229a98b7e114dcb75343145f070a6ab4}{remoteFileSizeChanged}}();}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00307}00307\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00309}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a9b8e65e9d12d2ee730636b6e46f71370}{00309}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a9b8e65e9d12d2ee730636b6e46f71370}{sectionChanged}}();}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00310}00310\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00312}\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_afc3b263e55d44f7214a8fea2b2b8e375}{00312}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_afc3b263e55d44f7214a8fea2b2b8e375}{updateSizeChanged}}();}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00313}00313\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00314}00314\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00315}00315\ \ \ \ \ Q\_DISABLE\_COPY\_MOVE(\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract}{Downloadable\_Abstract}})}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00316}00316\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00317}00317\ \ \ \ \ \textcolor{comment}{//\ Property\ contentType}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00318}00318\ \ \ \ \ QGeoRectangle\ m\_boundingBox;}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00319}00319\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00320}00320\ \ \ \ \ \textcolor{comment}{//\ Property\ contentType}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00321}00321\ \ \ \ \ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a43fcd87601d16172eb324b7680f169d1}{ContentType}}\ m\_contentType\ \{\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a43fcd87601d16172eb324b7680f169d1a0f6600ad1c408ca017a1cf93f57e29f8}{Data}}\};}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00322}00322\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00323}00323\ \ \ \ \ \textcolor{comment}{//\ Property\ section}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00324}00324\ \ \ \ \ QString\ m\_section;}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00325}00325\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00326}00326\ \ \ \ \ \textcolor{comment}{//\ Provisions\ to\ provide\ the\ signal\ localFileContentChanged\_delayed}}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00327}00327\ \ \ \ \ \textcolor{keywordtype}{void}\ emitFileContentChanged\_delayed();}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00328}00328\ \ \ \ \ QTimer\ emitFileContentChanged\_delayedTimer;}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00329}00329\ \};}
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00330}00330\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__Abstract_8h_source_l00331}00331\ \}\ \textcolor{comment}{//\ namespace\ DataManagement}}
+
+\end{DoxyCode}

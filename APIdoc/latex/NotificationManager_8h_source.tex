@@ -1,0 +1,196 @@
+\doxysection{Notification\+Manager.\+h}
+\hypertarget{NotificationManager_8h_source}{}\label{NotificationManager_8h_source}\index{/home/runner/work/enroute/enroute/src/notification/NotificationManager.h@{/home/runner/work/enroute/enroute/src/notification/NotificationManager.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00001}00001\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00002}00002\ \textcolor{comment}{\ *\ \ \ Copyright\ (C)\ 2023\ by\ Stefan\ Kebekus\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00003}00003\ \textcolor{comment}{\ *\ \ \ stefan.kebekus@gmail.com\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00004}00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ free\ software;\ you\ can\ redistribute\ it\ and/or\ modify\ \ *}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00006}00006\ \textcolor{comment}{\ *\ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by\ \ *}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00007}00007\ \textcolor{comment}{\ *\ \ \ the\ Free\ Software\ Foundation;\ either\ version\ 3\ of\ the\ License,\ or\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00008}00008\ \textcolor{comment}{\ *\ \ \ (at\ your\ option)\ any\ later\ version.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00009}00009\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00010}00010\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,\ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00011}00011\ \textcolor{comment}{\ *\ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of\ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00012}00012\ \textcolor{comment}{\ *\ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00013}00013\ \textcolor{comment}{\ *\ \ \ GNU\ General\ Public\ License\ for\ more\ details.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00014}00014\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00015}00015\ \textcolor{comment}{\ *\ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00016}00016\ \textcolor{comment}{\ *\ \ \ along\ with\ this\ program;\ if\ not,\ write\ to\ the\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00017}00017\ \textcolor{comment}{\ *\ \ \ Free\ Software\ Foundation,\ Inc.,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00018}00018\ \textcolor{comment}{\ *\ \ \ 59\ Temple\ Place\ -\/\ Suite\ 330,\ Boston,\ MA\ \ 02111-\/1307,\ USA.\ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00019}00019\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00021}00021\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ <QFuture>}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00024}00024\ \textcolor{preprocessor}{\#include\ <QQmlEngine>}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00025}00025\ \textcolor{preprocessor}{\#include\ <QTextToSpeech>}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00026}00026\ \textcolor{preprocessor}{\#include\ <QTimer>}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00027}00027\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00028}00028\ \textcolor{preprocessor}{\#include\ "{}GlobalObject.h"{}}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00029}00029\ \textcolor{preprocessor}{\#include\ "{}Notification.h"{}}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00031}00031\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00032}00032\ \textcolor{keyword}{namespace\ }Notifications\ \{}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00033}00033\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00041}\mbox{\hyperlink{classNotifications_1_1NotificationManager}{00041}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classNotifications_1_1NotificationManager}{NotificationManager}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classGlobalObject}{GlobalObject}}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00042}00042\ \{}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00043}00043\ \ \ \ \ Q\_OBJECT}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00044}00044\ \ \ \ \ QML\_ELEMENT}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00045}00045\ \ \ \ \ QML\_SINGLETON}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00046}00046\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00047}00047\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00048}00048\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00049}00049\ \ \ \ \ \textcolor{comment}{//\ Constructors\ and\ destructors}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00050}00050\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00051}00051\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00056}\mbox{\hyperlink{classNotifications_1_1NotificationManager_a92adf6077bdceb9b1e2b4bf6cc8d74cf}{00056}}\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classNotifications_1_1NotificationManager_a92adf6077bdceb9b1e2b4bf6cc8d74cf}{NotificationManager}}(QObject*\ parent\ =\ \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00057}00057\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00058}00058\ \ \ \ \ \textcolor{comment}{//\ deferred\ initialization}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00059}\mbox{\hyperlink{classNotifications_1_1NotificationManager_a491ee0154d491a2a6ec072f4bee87f72}{00059}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classNotifications_1_1NotificationManager_a491ee0154d491a2a6ec072f4bee87f72}{deferredInitialization}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00060}00060\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00061}00061\ \ \ \ \ \textcolor{comment}{//\ No\ default\ constructor,\ important\ for\ QML\ singleton}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00062}00062\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classNotifications_1_1NotificationManager}{NotificationManager}}()\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00063}00063\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00065}\mbox{\hyperlink{classNotifications_1_1NotificationManager_adcac19022e92b1901335f6b355a1b9c1}{00065}}\ \ \ \ \ \mbox{\hyperlink{classNotifications_1_1NotificationManager_adcac19022e92b1901335f6b355a1b9c1}{\string~NotificationManager}}()\ \textcolor{keyword}{override}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00066}00066\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00067}00067\ \ \ \ \ \textcolor{comment}{//\ factory\ function\ for\ QML\ singleton}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00068}00068\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classNotifications_1_1NotificationManager}{Notifications::NotificationManager}}*\ create(QQmlEngine*\ \textcolor{comment}{/*unused*/},\ QJSEngine*\ \textcolor{comment}{/*unused*/})}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00069}00069\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00070}00070\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classGlobalObject_aa90c2b17a6930dfb2cd258c8349e94cc}{GlobalObject::notificationManager}}();}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00071}00071\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00072}00072\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00073}00073\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00074}00074\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00075}00075\ \ \ \ \ \textcolor{comment}{//\ PROPERTIES}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00076}00076\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00077}00077\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00087}\mbox{\hyperlink{classNotifications_1_1NotificationManager_a624d22314c362bb5e719a4af44727d34}{00087}}\ \ \ \ \ Q\_PROPERTY(\mbox{\hyperlink{classNotifications_1_1Notification}{Notifications::Notification}}*\ \mbox{\hyperlink{classNotifications_1_1NotificationManager_a624d22314c362bb5e719a4af44727d34}{currentVisualNotification}}\ READ\ \mbox{\hyperlink{classNotifications_1_1NotificationManager_a624d22314c362bb5e719a4af44727d34}{currentVisualNotification}}\ NOTIFY\ \mbox{\hyperlink{classNotifications_1_1NotificationManager_a91a3a98371b518f85b818d5ae8db1d24}{currentVisualNotificationChanged}})}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00088}00088\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00089}00089\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00097}\mbox{\hyperlink{classNotifications_1_1NotificationManager_ad8200e2b77131e436ac077a817439757}{00097}}\ \ \ \ \ Q\_PROPERTY(QTextToSpeech*\ \mbox{\hyperlink{classNotifications_1_1NotificationManager_ad8200e2b77131e436ac077a817439757}{speaker}}\ READ\ \mbox{\hyperlink{classNotifications_1_1NotificationManager_ad8200e2b77131e436ac077a817439757}{speaker}}\ NOTIFY\ \mbox{\hyperlink{classNotifications_1_1NotificationManager_a3414d089db0524aebca89f3e1c200385}{speakerChanged}})}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00098}00098\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00099}00099\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00100}00100\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00101}00101\ \ \ \ \ \textcolor{comment}{//\ Getter\ Methods}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00102}00102\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00103}00103\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00108}\mbox{\hyperlink{classNotifications_1_1NotificationManager_a9aa4e2bc9242d06256bb34dc7f4f4808}{00108}}\ \ \ \ \ [[nodiscard]]\ Notifications::\mbox{\hyperlink{classNotifications_1_1Notification}{Notification}}*\ \mbox{\hyperlink{classNotifications_1_1NotificationManager_a624d22314c362bb5e719a4af44727d34}{currentVisualNotification}}()\ const;}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00109}00109\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00114}\mbox{\hyperlink{classNotifications_1_1NotificationManager_a8cae77c8abdd214443ff80aea76fc61e}{00114}}\ \ \ \ \ [[nodiscard]]\ QTextToSpeech*\ \mbox{\hyperlink{classNotifications_1_1NotificationManager_ad8200e2b77131e436ac077a817439757}{speaker}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00115}00115\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00116}00116\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_speaker;}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00117}00117\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00118}00118\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00119}00119\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00120}00120\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00121}00121\ \ \ \ \ \textcolor{comment}{//\ Methods}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00122}00122\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00123}00123\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00125}\mbox{\hyperlink{classNotifications_1_1NotificationManager_a587f0e14e79517f27319a8bd144819a0}{00125}}\ \ \ \ \ Q\_INVOKABLE\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classNotifications_1_1NotificationManager_a587f0e14e79517f27319a8bd144819a0}{addTestNotification}}();}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00126}00126\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00128}\mbox{\hyperlink{classNotifications_1_1NotificationManager_a24121156686387c7b48be8af9b82b890}{00128}}\ \ \ \ \ Q\_INVOKABLE\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classNotifications_1_1NotificationManager_a24121156686387c7b48be8af9b82b890}{voiceTest}}();}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00129}00129\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00131}\mbox{\hyperlink{classNotifications_1_1NotificationManager_a67387ccbbbabfb74f321c758f79b6dd1}{00131}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classNotifications_1_1NotificationManager_a67387ccbbbabfb74f321c758f79b6dd1}{waitForSpeechEngine}}();}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00132}00132\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00133}00133\ signals:}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00135}\mbox{\hyperlink{classNotifications_1_1NotificationManager_a91a3a98371b518f85b818d5ae8db1d24}{00135}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classNotifications_1_1NotificationManager_a91a3a98371b518f85b818d5ae8db1d24}{currentVisualNotificationChanged}}();}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00136}00136\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00138}\mbox{\hyperlink{classNotifications_1_1NotificationManager_a3414d089db0524aebca89f3e1c200385}{00138}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classNotifications_1_1NotificationManager_a3414d089db0524aebca89f3e1c200385}{speakerChanged}}();}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00139}00139\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00141}\mbox{\hyperlink{classNotifications_1_1NotificationManager_a84b9eb6ed04dff63629e3c9e74af4db4}{00141}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classNotifications_1_1NotificationManager_a84b9eb6ed04dff63629e3c9e74af4db4}{toastPosted}}(QString\ text);}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00142}00142\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00143}00143\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00144}00144\ \ \ \ \ Q\_DISABLE\_COPY\_MOVE(\mbox{\hyperlink{classNotifications_1_1NotificationManager}{NotificationManager}})}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00145}00145\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00146}00146\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00147}00147\ \ \ \ \ \textcolor{comment}{//\ Adds\ a\ notification\ to\ m\_notifications\ and\ rearranges\ the\ list.\ Removes}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00148}00148\ \ \ \ \ \textcolor{comment}{//\ nullptrs\ and\ sorts\ list\ by\ importance.}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00149}00149\ \ \ \ \ \textcolor{keywordtype}{void}\ addNotification(\mbox{\hyperlink{classNotifications_1_1Notification}{Notifications::Notification}}*\ notification);}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00150}00150\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00151}00151\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00152}00152\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00153}00153\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00154}00154\ \ \ \ \ \textcolor{comment}{//\ Members\ used\ for\ visual\ notifications}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00155}00155\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00156}00156\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00157}00157\ \ \ \ \ \textcolor{comment}{//\ This\ method\ clears\ all\ nullptrs\ from\ m\_notifications,\ sorts\ the\ elements}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00158}00158\ \ \ \ \ \textcolor{comment}{//\ by\ importance\ and\ emits\ currentNotificationChanged()\ whenever\ the\ first}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00159}00159\ \ \ \ \ \textcolor{comment}{//\ element\ the\ list\ changes.}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00160}00160\ \ \ \ \ \textcolor{keywordtype}{void}\ showNext();}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00161}00161\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00162}00162\ \ \ \ \ \textcolor{comment}{//\ List\ of\ Notifications,\ sorted\ so\ that\ the\ most\ important\ notification}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00163}00163\ \ \ \ \ \textcolor{comment}{//\ comes\ first.}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00164}00164\ \ \ \ \ QVector<QPointer<Notifications::Notification>>\ m\_visualNotifications;}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00165}00165\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00166}00166\ \ \ \ \ \textcolor{comment}{//\ Stores\ pointer\ to\ last\ current\ visual\ notification.\ This\ is\ used\ to}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00167}00167\ \ \ \ \ \textcolor{comment}{//\ determine\ when\ the\ signal\ currentVisualNotificationChanged\ should\ be}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00168}00168\ \ \ \ \ \textcolor{comment}{//\ emitted.}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00169}00169\ \ \ \ \ \mbox{\hyperlink{classNotifications_1_1Notification}{Notifications::Notification}}*\ currentVisualNotificationCache\ \{\textcolor{keyword}{nullptr}\};}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00170}00170\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00171}00171\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00172}00172\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00173}00173\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00174}00174\ \ \ \ \ \textcolor{comment}{//\ Members\ used\ for\ voice\ notifications}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00175}00175\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00176}00176\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00177}00177\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00178}00178\ \ \ \ \ \textcolor{comment}{//\ If\ the\ speaker\ is\ finished,\ start\ m\_speechBreakTimer,\ in\ order\ to\ call}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00179}00179\ \ \ \ \ \textcolor{comment}{//\ speakNext()\ after\ a\ one-\/second\ break.}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00180}00180\ \ \ \ \ \textcolor{keywordtype}{void}\ onSpeakerStateChanged(QTextToSpeech::State\ state);}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00181}00181\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00182}00182\ \ \ \ \ \textcolor{comment}{//\ Setup\ speaker:\ construct\ the\ speaker,\ move\ it\ to\ the\ GUI\ thread,\ make\ it}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00183}00183\ \ \ \ \ \textcolor{comment}{//\ a\ child\ of\ this\ and\ wire\ it\ up.}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00184}00184\ \ \ \ \ \textcolor{keywordtype}{void}\ setupSpeaker();}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00185}00185\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00186}00186\ \ \ \ \ \textcolor{comment}{//\ This\ method\ cleans\ the\ list\ m\_spokenNotifications\ and\ sorts\ it\ by}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00187}00187\ \ \ \ \ \textcolor{comment}{//\ importance.\ If\ a\ notification\ is\ in\ the\ list,\ it\ speaks\ the\ notication}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00188}00188\ \ \ \ \ \textcolor{comment}{//\ test.}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00189}00189\ \ \ \ \ \textcolor{keywordtype}{void}\ speakNext();}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00190}00190\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00191}00191\ \ \ \ \ \textcolor{comment}{//\ List\ of\ Notifications,\ sorted\ so\ that\ the\ most\ important\ notification}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00192}00192\ \ \ \ \ \textcolor{comment}{//\ comes\ first.}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00193}00193\ \ \ \ \ QVector<QPointer<Notifications::Notification>>\ m\_voiceNotifications;}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00194}00194\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00195}00195\ \ \ \ \ \textcolor{comment}{//\ Pointer\ to\ the\ speaker.\ This\ will\ be\ the\ nullpointer\ while\ the\ thread\ the}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00196}00196\ \ \ \ \ \textcolor{comment}{//\ constructs\ the\ object\ is\ still\ ongoing.}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00197}00197\ \ \ \ \ QTextToSpeech*\ m\_speaker\ \{\textcolor{keyword}{nullptr}\};}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00198}00198\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00199}00199\ \ \ \ \ \textcolor{comment}{//\ Future\ for\ the\ worker\ that\ constructs\ QTextToSpeek\ under\ Linux\ in\ a}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00200}00200\ \ \ \ \ \textcolor{comment}{//\ different\ thread}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00201}00201\ \ \ \ \ QFuture<void>\ m\_speakerFuture;}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00202}00202\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00203}00203\ \ \ \ \ \textcolor{comment}{//\ This\ timer\ is\ used\ to\ stop\ for\ one\ second\ between\ two\ spoken\ texts.\ The}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00204}00204\ \ \ \ \ \textcolor{comment}{//\ slot\ start()\ is\ called\ when\ m\_speaker\ is\ done\ speaking.\ The\ signal}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00205}00205\ \ \ \ \ \textcolor{comment}{//\ timeout()\ is\ connected\ to\ speakNext().}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00206}00206\ \ \ \ \ QTimer\ m\_speechBreakTimer;}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00207}00207\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00208}00208\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00209}00209\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00210}00210\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00211}00211\ \ \ \ \ \textcolor{comment}{//\ Members\ used\ to\ watch\ other\ app\ components,\ and\ to\ generate\ notifications}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00212}00212\ \ \ \ \ \textcolor{comment}{//\ when\ necessary}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00213}00213\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00214}00214\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00215}00215\ \ \ \ \ \textcolor{comment}{//\ Called\ whenever\ map\ and\ data\ updates\ become\ (un)available}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00216}00216\ \ \ \ \ \textcolor{keywordtype}{void}\ onMapAndDataUpdateSizeChanged();}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00217}00217\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00218}00218\ \ \ \ \ \textcolor{comment}{//\ Called\ whenever\ the\ traffic\ receiver\ reports\ a\ runtime\ error,\ or\ clears}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00219}00219\ \ \ \ \ \textcolor{comment}{//\ the\ error\ status.}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00220}00220\ \ \ \ \ \textcolor{keywordtype}{void}\ onTrafficReceiverRuntimeError();}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00221}00221\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00222}00222\ \ \ \ \ \textcolor{comment}{//\ Called\ whenever\ the\ traffic\ receiver\ reports\ a\ self\ test\ error,\ or\ clears}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00223}00223\ \ \ \ \ \textcolor{comment}{//\ the\ error\ status.}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00224}00224\ \ \ \ \ \textcolor{keywordtype}{void}\ onTrafficReceiverSelfTestError();}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00225}00225\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00226}00226\ \ \ \ \ \textcolor{comment}{//\ When\ notifications\ for\ maps\ and\ data\ are\ temporarily\ not\ possible,\ then}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00227}00227\ \ \ \ \ \textcolor{comment}{//\ use\ this\ timer\ to\ notify\ again.}}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00228}00228\ \ \ \ \ QTimer\ mapsAndDataNotificationTimer;}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00229}00229\ \};}
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00230}00230\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00231}00231\ }
+\DoxyCodeLine{\Hypertarget{NotificationManager_8h_source_l00232}00232\ \}\ \textcolor{comment}{//\ namespace\ Notifications}}
+
+\end{DoxyCode}

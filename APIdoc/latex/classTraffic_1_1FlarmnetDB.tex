@@ -1,0 +1,77 @@
+\doxysection{Traffic\+::Flarmnet\+DB Class Reference}
+\hypertarget{classTraffic_1_1FlarmnetDB}{}\label{classTraffic_1_1FlarmnetDB}\index{Traffic::FlarmnetDB@{Traffic::FlarmnetDB}}
+
+
+Flarmnet database.  
+
+
+
+
+{\ttfamily \#include $<$Flarmnet\+DB.\+h$>$}
+
+
+
+Inherits QObject.
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classTraffic_1_1FlarmnetDB_a3d82a2ccdd25e281ff2518691b41f2d3}{Flarmnet\+DB}} (QObject \texorpdfstring{$\ast$}{*}parent=nullptr)
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE QString \mbox{\hyperlink{classTraffic_1_1FlarmnetDB_a1b7e190d11eb57aeabaea14af819fc85}{get\+Registration}} (const QString \&key)
+\begin{DoxyCompactList}\small\item\em Find password for a given key. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Flarmnet database. 
+
+This simple class provides access to a Flarmnet database, which is in essence a glorified QHash$<$\+QString, QString$>$, where keys are Flarm IDs and values are aircraft registration strings. 
+
+Definition at line \mbox{\hyperlink{FlarmnetDB_8h_source_l00037}{37}} of file \mbox{\hyperlink{FlarmnetDB_8h_source}{Flarmnet\+DB.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classTraffic_1_1FlarmnetDB_a3d82a2ccdd25e281ff2518691b41f2d3}\index{Traffic::FlarmnetDB@{Traffic::FlarmnetDB}!FlarmnetDB@{FlarmnetDB}}
+\index{FlarmnetDB@{FlarmnetDB}!Traffic::FlarmnetDB@{Traffic::FlarmnetDB}}
+\doxysubsubsection{\texorpdfstring{FlarmnetDB()}{FlarmnetDB()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1FlarmnetDB_a3d82a2ccdd25e281ff2518691b41f2d3} 
+Traffic\+::\+Flarmnet\+DB\+::\+Flarmnet\+DB (\begin{DoxyParamCaption}\item[{QObject \texorpdfstring{$\ast$}{*}}]{parent}{ = {\ttfamily nullptr}}\end{DoxyParamCaption})}
+
+
+
+Default constructor. 
+
+This default constructor will read the database from a file into memory.
+
+
+\begin{DoxyParams}{Parameters}
+{\em parent} & The standard QObject parent pointer \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classTraffic_1_1FlarmnetDB_a1b7e190d11eb57aeabaea14af819fc85}\index{Traffic::FlarmnetDB@{Traffic::FlarmnetDB}!getRegistration@{getRegistration}}
+\index{getRegistration@{getRegistration}!Traffic::FlarmnetDB@{Traffic::FlarmnetDB}}
+\doxysubsubsection{\texorpdfstring{getRegistration()}{getRegistration()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1FlarmnetDB_a1b7e190d11eb57aeabaea14af819fc85} 
+Q\+\_\+\+INVOKABLE QString Traffic\+::\+Flarmnet\+DB\+::get\+Registration (\begin{DoxyParamCaption}\item[{const QString \&}]{key}{}\end{DoxyParamCaption})}
+
+
+
+Find password for a given key. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & Flarm\+ID to look up\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Aircraft registration, or an empty string if the database does not contain the key 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/traffic/Flarmnet\+DB.\+h\end{DoxyCompactItemize}

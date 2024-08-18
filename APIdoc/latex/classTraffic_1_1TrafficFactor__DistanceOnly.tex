@@ -1,0 +1,275 @@
+\doxysection{Traffic\+::Traffic\+Factor\+\_\+\+Distance\+Only Class Reference}
+\hypertarget{classTraffic_1_1TrafficFactor__DistanceOnly}{}\label{classTraffic_1_1TrafficFactor__DistanceOnly}\index{Traffic::TrafficFactor\_DistanceOnly@{Traffic::TrafficFactor\_DistanceOnly}}
+
+
+Traffic factor where only distance is known.  
+
+
+
+
+{\ttfamily \#include $<$Traffic\+Factor\+\_\+\+Distance\+Only.\+h$>$}
+
+Inheritance diagram for Traffic\+::Traffic\+Factor\+\_\+\+Distance\+Only\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classTraffic_1_1TrafficFactor__DistanceOnly}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Signals}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classTraffic_1_1TrafficFactor__DistanceOnly_a7104e6e70786c7519855d09deb48c2fb}\label{classTraffic_1_1TrafficFactor__DistanceOnly_a7104e6e70786c7519855d09deb48c2fb} 
+void {\bfseries coordinate\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Signals inherited from \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract}{Traffic\+::\+Traffic\+Factor\+\_\+\+Abstract}}}
+\begin{DoxyCompactItemize}
+\item 
+void {\bfseries alarm\+Level\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+void {\bfseries animate\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+void {\bfseries call\+Sign\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+void {\bfseries color\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+void {\bfseries description\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+void {\bfseries h\+Dist\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+void {\bfseries IDChanged} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+void {\bfseries type\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+void {\bfseries v\+Dist\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+void {\bfseries valid\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classTraffic_1_1TrafficFactor__DistanceOnly_a8433da78a7f87f63dcdd1a66c6372446}{Traffic\+Factor\+\_\+\+Distance\+Only}} (QObject \texorpdfstring{$\ast$}{*}parent=nullptr)
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficFactor__DistanceOnly_ae6a6c16bb05c500aaae9c561c8c63048}{copy\+From}} (const \mbox{\hyperlink{classTraffic_1_1TrafficFactor__DistanceOnly}{Traffic\+Factor\+\_\+\+Distance\+Only}} \&other)
+\begin{DoxyCompactList}\small\item\em Copy data from other object. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classTraffic_1_1TrafficFactor__DistanceOnly_a4b74f01e9b3e1dbd45fa6fb5cdbc6b1f}{coordinate}} () const -\/$>$ QGeo\+Coordinate
+\begin{DoxyCompactList}\small\item\em Getter method for property with the same name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficFactor__DistanceOnly_aed748d651683b113df785ade1a9928ab}{set\+Coordinate}} (const QGeo\+Coordinate \&new\+Coordinate)
+\begin{DoxyCompactList}\small\item\em Setter function for property with the same name. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract}{Traffic\+::\+Traffic\+Factor\+\_\+\+Abstract}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_abd1deb339a20027579cad52a4c147462}{Traffic\+Factor\+\_\+\+Abstract}} (QObject \texorpdfstring{$\ast$}{*}parent=nullptr)
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_aee61977cb69a8dc34ecddba7ea73607b}{copy\+From}} (const \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract}{Traffic\+Factor\+\_\+\+Abstract}} \&other)
+\begin{DoxyCompactList}\small\item\em Copy data from other object. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a39b1b6d50be9fee64e04433948e8438e}{has\+Higher\+Priority\+Than}} (const \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract}{Traffic\+Factor\+\_\+\+Abstract}} \&rhs) const -\/$>$ bool
+\begin{DoxyCompactList}\small\item\em Estimates if this traffic object has higher priority than other traffic object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a4003adf4148a51b76887e73b0d9b1b5f}{start\+Live\+Time}} ()
+\begin{DoxyCompactList}\small\item\em Starts or extends the lifetime of this object. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a67eb58585bd8f09ba535dac7315cda13}{alarm\+Level}} () const -\/$>$ int
+\begin{DoxyCompactList}\small\item\em Getter method for property with the same name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a78f94e4a9999bca507cf2b4b9ad3209b}{set\+Alarm\+Level}} (int new\+Alarm\+Level)
+\begin{DoxyCompactList}\small\item\em Setter function for property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_ae9486665107ff966e07130655a880bc1}{animate}} () const -\/$>$ bool
+\begin{DoxyCompactList}\small\item\em Getter method for property with the same name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a90bb2375bee44f2a634520102b8aca56}{set\+Animate}} (bool new\+Animate)
+\begin{DoxyCompactList}\small\item\em Setter function for property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a627cb0fefd94403b37b5f2017c73e973}{call\+Sign}} () const -\/$>$ QString
+\begin{DoxyCompactList}\small\item\em Getter method for property with the same name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a20dddefca6096f93cc6fc5628614c4dc}{set\+Call\+Sign}} (const QString \&new\+Call\+Sign)
+\begin{DoxyCompactList}\small\item\em Setter function for property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a3e6e655c017cfc82c7f347a54520cc99}{color}} () const -\/$>$ QString
+\begin{DoxyCompactList}\small\item\em Getter method for property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a2b793f3437edcdd8417e6a543002bd8e}{description}} () const -\/$>$ QString
+\begin{DoxyCompactList}\small\item\em Getter method for property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a324f0bbb1d75d01a33c7b8fe8ad1e3ee}{h\+Dist}} () const -\/$>$ \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}}
+\begin{DoxyCompactList}\small\item\em Getter method for property with the same name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a702277c846cde90cc241bcb475da56d6}{set\+HDist}} (\mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} new\+HDist)
+\begin{DoxyCompactList}\small\item\em Setter function for property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a36a94f2d1f53ab4536e69c08cbf5a330}{ID}} () const -\/$>$ QString
+\begin{DoxyCompactList}\small\item\em Getter method for property with the same name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_af84919314330123936dd247761868369}{set\+ID}} (const QString \&new\+ID)
+\begin{DoxyCompactList}\small\item\em Setter function for property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a749c70a871467bcc4a4f18bd130f37e1}{type}} () const -\/$>$ \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a2d4037a51a4c128d19cb65816379cb00}{Aircraft\+Type}}
+\begin{DoxyCompactList}\small\item\em Getter method for property with the same name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_ac015bf1e9f86f95108b52a833effad3b}{set\+Type}} (\mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a2d4037a51a4c128d19cb65816379cb00}{Aircraft\+Type}} new\+Type)
+\begin{DoxyCompactList}\small\item\em Setter function for property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a86f8d0c5b8b11bbbfc5db41d657bf968}{valid}} () const -\/$>$ bool
+\begin{DoxyCompactList}\small\item\em Getter method for property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a7396f64174f143caf684cab3485a2958}{v\+Dist}} () const -\/$>$ \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}}
+\begin{DoxyCompactList}\small\item\em Getter method for property with the same name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a453bf488468e851f296fc9941034f85a}{set\+VDist}} (\mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} new\+VDist)
+\begin{DoxyCompactList}\small\item\em Setter function for property with the same name. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+QGeo\+Coordinate \mbox{\hyperlink{classTraffic_1_1TrafficFactor__DistanceOnly_afb88b434b910850126924d279c4bea38}{coordinate}}
+\begin{DoxyCompactList}\small\item\em Center coordinate. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Properties inherited from \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract}{Traffic\+::\+Traffic\+Factor\+\_\+\+Abstract}}}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a4598a80b9e3f9b4e3052caf4f169edf8}{alarm\+Level}}
+\begin{DoxyCompactList}\small\item\em Alarm Level. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_af6fc8f607abf3375bfb7166c1f68a098}{animate}}
+\begin{DoxyCompactList}\small\item\em Indicates if changes in properties should be animated in the GUI. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a927b11903db29b5009169ee1a03318a9}{call\+Sign}}
+\begin{DoxyCompactList}\small\item\em Call sign. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a8ad169c374ec5825bd39183008f8741e}{color}}
+\begin{DoxyCompactList}\small\item\em Suggested color for GUI representation of the traffic. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a38e110cf165cc1f587e3ad9762a30959}{description}}
+\begin{DoxyCompactList}\small\item\em Description of the traffic, for use in GUI. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a7eb263619cfee5c696f98672315523ff}{h\+Dist}}
+\begin{DoxyCompactList}\small\item\em Horizontal distance from own position to the traffic, at the time of report. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a18b1c7f18f75acaba7296eb502b79f3d}{ID}}
+\begin{DoxyCompactList}\small\item\em Identifier string of the traffic. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a2d4037a51a4c128d19cb65816379cb00}{Aircraft\+Type}} {\bfseries type}
+\begin{DoxyCompactList}\small\item\em Type of aircraft, as reported by the traffic receiver. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_ad4e345e36e36b34efc7495aebecb5087}{valid}}
+\begin{DoxyCompactList}\small\item\em Validity. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a1c451240e942286e27e5bad91639cfc2}{v\+Dist}}
+\begin{DoxyCompactList}\small\item\em Vertical distance from own position to the traffic, at the time of report. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Public Types inherited from \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract}{Traffic\+::\+Traffic\+Factor\+\_\+\+Abstract}}}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a2d4037a51a4c128d19cb65816379cb00}{Aircraft\+Type}} \{ \newline
+\mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a2d4037a51a4c128d19cb65816379cb00a6faacace95eb7c4eef83f2ec9be668c0}{unknown}}
+, \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a2d4037a51a4c128d19cb65816379cb00a3d6ebada72a0acc15153c4e015e09370}{Aircraft}}
+, \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a2d4037a51a4c128d19cb65816379cb00aa1939763806dc624d0f9095bfd0a2ed8}{Airship}}
+, \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a2d4037a51a4c128d19cb65816379cb00a946ed31bb8039ccc6c28c36ae194e920}{Balloon}}
+, \newline
+\mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a2d4037a51a4c128d19cb65816379cb00a797a355997f3cbcce7722a4e55889161}{Copter}}
+, \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a2d4037a51a4c128d19cb65816379cb00a3a64600552969625e2157cc5e51e9bb0}{Drone}}
+, \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a2d4037a51a4c128d19cb65816379cb00aafbfc4101b3a024a4a1bed6ffedcc343}{Glider}}
+, \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a2d4037a51a4c128d19cb65816379cb00ac49ecd2db0f9a864a9f33911b1bad6f6}{Hang\+Glider}}
+, \newline
+\mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a2d4037a51a4c128d19cb65816379cb00a7a71844cf88d4c76c3c12f175066f9fe}{Jet}}
+, \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a2d4037a51a4c128d19cb65816379cb00a4b28a0ced6a8eb9ec885af2660a4996f}{Paraglider}}
+, \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a2d4037a51a4c128d19cb65816379cb00adf30eb648ed462e0dde5fbaf38f287b2}{Skydiver}}
+, \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a2d4037a51a4c128d19cb65816379cb00a0e3a2546f2947b26272cb7342325e86e}{Static\+Obstacle}}
+, \newline
+\mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_a2d4037a51a4c128d19cb65816379cb00ab248c778c8a6cc87f99f378199dcfe16}{Tow\+Plane}}
+ \}
+\begin{DoxyCompactList}\small\item\em Aircraft type. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes inherited from \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract}{Traffic\+::\+Traffic\+Factor\+\_\+\+Abstract}}}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr auto {\bfseries life\+Time} = 10s
+\begin{DoxyCompactList}\small\item\em Length of lifetime for objects of this class. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Traffic factor where only distance is known. 
+
+Objects of this class represent traffic factors, where only the horizontal distance to the traffic is known. This is typically the case for aircraft that report their position only through a Mode-\/S transponder. Compared to \doxylink{classTraffic_1_1TrafficFactor__Abstract}{Traffic\+Factor\+\_\+\+Abstract}, instances of this class hold one additional property, namely the ownship position at the time of report. The traffic must then be expected within a cylinder centered in coordinate with radius h\+Dist. 
+
+Definition at line \mbox{\hyperlink{TrafficFactor__DistanceOnly_8h_source_l00039}{39}} of file \mbox{\hyperlink{TrafficFactor__DistanceOnly_8h_source}{Traffic\+Factor\+\_\+\+Distance\+Only.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classTraffic_1_1TrafficFactor__DistanceOnly_a8433da78a7f87f63dcdd1a66c6372446}\index{Traffic::TrafficFactor\_DistanceOnly@{Traffic::TrafficFactor\_DistanceOnly}!TrafficFactor\_DistanceOnly@{TrafficFactor\_DistanceOnly}}
+\index{TrafficFactor\_DistanceOnly@{TrafficFactor\_DistanceOnly}!Traffic::TrafficFactor\_DistanceOnly@{Traffic::TrafficFactor\_DistanceOnly}}
+\doxysubsubsection{\texorpdfstring{TrafficFactor\_DistanceOnly()}{TrafficFactor\_DistanceOnly()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficFactor__DistanceOnly_a8433da78a7f87f63dcdd1a66c6372446} 
+Traffic\+::\+Traffic\+Factor\+\_\+\+Distance\+Only\+::\+Traffic\+Factor\+\_\+\+Distance\+Only (\begin{DoxyParamCaption}\item[{QObject \texorpdfstring{$\ast$}{*}}]{parent}{ = {\ttfamily nullptr}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Default constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em parent} & The standard QObject parent pointer \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classTraffic_1_1TrafficFactor__DistanceOnly_a4b74f01e9b3e1dbd45fa6fb5cdbc6b1f}\index{Traffic::TrafficFactor\_DistanceOnly@{Traffic::TrafficFactor\_DistanceOnly}!coordinate@{coordinate}}
+\index{coordinate@{coordinate}!Traffic::TrafficFactor\_DistanceOnly@{Traffic::TrafficFactor\_DistanceOnly}}
+\doxysubsubsection{\texorpdfstring{coordinate()}{coordinate()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficFactor__DistanceOnly_a4b74f01e9b3e1dbd45fa6fb5cdbc6b1f} 
+auto Traffic\+::\+Traffic\+Factor\+\_\+\+Distance\+Only\+::coordinate (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ QGeo\+Coordinate     \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter method for property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property coordinate 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{TrafficFactor__DistanceOnly_8h_source_l00088}{88}} of file \mbox{\hyperlink{TrafficFactor__DistanceOnly_8h_source}{Traffic\+Factor\+\_\+\+Distance\+Only.\+h}}.
+
+\Hypertarget{classTraffic_1_1TrafficFactor__DistanceOnly_ae6a6c16bb05c500aaae9c561c8c63048}\index{Traffic::TrafficFactor\_DistanceOnly@{Traffic::TrafficFactor\_DistanceOnly}!copyFrom@{copyFrom}}
+\index{copyFrom@{copyFrom}!Traffic::TrafficFactor\_DistanceOnly@{Traffic::TrafficFactor\_DistanceOnly}}
+\doxysubsubsection{\texorpdfstring{copyFrom()}{copyFrom()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficFactor__DistanceOnly_ae6a6c16bb05c500aaae9c561c8c63048} 
+void Traffic\+::\+Traffic\+Factor\+\_\+\+Distance\+Only\+::copy\+From (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classTraffic_1_1TrafficFactor__DistanceOnly}{Traffic\+Factor\+\_\+\+Distance\+Only}} \&}]{other}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Copy data from other object. 
+
+This method copies all properties from the other object, with two notable exceptions.
+
+
+\begin{DoxyItemize}
+\item The property "{}animate"{} is not copied, the property "{}animate"{} of this class is not touched.
+\item The life\+Time of this object is not changed.
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & Instance whose properties are copied \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{TrafficFactor__DistanceOnly_8h_source_l00065}{65}} of file \mbox{\hyperlink{TrafficFactor__DistanceOnly_8h_source}{Traffic\+Factor\+\_\+\+Distance\+Only.\+h}}.
+
+\Hypertarget{classTraffic_1_1TrafficFactor__DistanceOnly_aed748d651683b113df785ade1a9928ab}\index{Traffic::TrafficFactor\_DistanceOnly@{Traffic::TrafficFactor\_DistanceOnly}!setCoordinate@{setCoordinate}}
+\index{setCoordinate@{setCoordinate}!Traffic::TrafficFactor\_DistanceOnly@{Traffic::TrafficFactor\_DistanceOnly}}
+\doxysubsubsection{\texorpdfstring{setCoordinate()}{setCoordinate()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficFactor__DistanceOnly_aed748d651683b113df785ade1a9928ab} 
+void Traffic\+::\+Traffic\+Factor\+\_\+\+Distance\+Only\+::set\+Coordinate (\begin{DoxyParamCaption}\item[{const QGeo\+Coordinate \&}]{new\+Coordinate}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Setter function for property with the same name. 
+
+Setting a new position info does not update the h\+Dist or v\+Dist properties.
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Coordinate} & Property coordinate \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{TrafficFactor__DistanceOnly_8h_source_l00099}{99}} of file \mbox{\hyperlink{TrafficFactor__DistanceOnly_8h_source}{Traffic\+Factor\+\_\+\+Distance\+Only.\+h}}.
+
+
+
+\doxysubsection{Property Documentation}
+\Hypertarget{classTraffic_1_1TrafficFactor__DistanceOnly_afb88b434b910850126924d279c4bea38}\index{Traffic::TrafficFactor\_DistanceOnly@{Traffic::TrafficFactor\_DistanceOnly}!coordinate@{coordinate}}
+\index{coordinate@{coordinate}!Traffic::TrafficFactor\_DistanceOnly@{Traffic::TrafficFactor\_DistanceOnly}}
+\doxysubsubsection{\texorpdfstring{coordinate}{coordinate}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficFactor__DistanceOnly_afb88b434b910850126924d279c4bea38} 
+QGeo\+Coordinate Traffic\+::\+Traffic\+Factor\+\_\+\+Distance\+Only\+::coordinate\hspace{0.3cm}{\ttfamily [read]}, {\ttfamily [write]}}
+
+
+
+Center coordinate. 
+
+This property contains the coordinate of the center of the cylinder where the traffic is most likely located. 
+
+Definition at line \mbox{\hyperlink{TrafficFactor__DistanceOnly_8h_source_l00082}{82}} of file \mbox{\hyperlink{TrafficFactor__DistanceOnly_8h_source}{Traffic\+Factor\+\_\+\+Distance\+Only.\+h}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/traffic/Traffic\+Factor\+\_\+\+Distance\+Only.\+h\end{DoxyCompactItemize}

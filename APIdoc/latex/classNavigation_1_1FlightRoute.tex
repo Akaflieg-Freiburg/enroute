@@ -1,0 +1,608 @@
+\doxysection{Navigation\+::Flight\+Route Class Reference}
+\hypertarget{classNavigation_1_1FlightRoute}{}\label{classNavigation_1_1FlightRoute}\index{Navigation::FlightRoute@{Navigation::FlightRoute}}
+
+
+Intended flight route.  
+
+
+
+
+{\ttfamily \#include $<$Flight\+Route.\+h$>$}
+
+
+
+Inherits QObject.
+
+\doxysubsubsection*{Signals}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classNavigation_1_1FlightRoute_aab2d4232e6c3ac843f98f80340a37f48}\label{classNavigation_1_1FlightRoute_aab2d4232e6c3ac843f98f80340a37f48} 
+void {\bfseries waypoints\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notification signal for the property with the same name. \end{DoxyCompactList}\item 
+\Hypertarget{classNavigation_1_1FlightRoute_a3569d518f8c54af3d03c4eccf2dd31e1}\label{classNavigation_1_1FlightRoute_a3569d518f8c54af3d03c4eccf2dd31e1} 
+void {\bfseries summary\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notification signal for the property with the same name. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classNavigation_1_1FlightRoute_a88b36228c5cb2e5d34160c41e285b44b}{Flight\+Route}} (QObject \texorpdfstring{$\ast$}{*}parent=nullptr)
+\begin{DoxyCompactList}\small\item\em Construct a flight route. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classNavigation_1_1FlightRoute_a3ec78330b85fa08c04ed5b0c66fb192e}{bounding\+Rectangle}} () const -\/$>$ QGeo\+Rectangle
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classNavigation_1_1FlightRoute_a4c3be0c4467f6ad85daed9bd437c5d04}{geo\+Path}} () const -\/$>$ QList$<$ QGeo\+Coordinate $>$
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classNavigation_1_1FlightRoute_a7c3b0ca3415ba088f1ea226fe5e69a37}{mid\+Field\+Waypoints}} () const -\/$>$ QList$<$ \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Geo\+Maps\+::\+Waypoint}} $>$
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classNavigation_1_1FlightRoute_aa3c1f763ce02fa0d7c4c7117ed712125}{legs}} () const -\/$>$ QList$<$ \mbox{\hyperlink{classNavigation_1_1Leg}{Navigation\+::\+Leg}} $>$
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classNavigation_1_1FlightRoute_a123824167bf76e7c77a8e451b808cb2b}{size}} () const -\/$>$ qsizetype
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classNavigation_1_1FlightRoute_a38dca34e7b6efae66490ec4b71b3ae6d}{summary}} () const -\/$>$ QString
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classNavigation_1_1FlightRoute_aec7f62d5273542312e947e65e1cf8c8c}{waypoints}} () const -\/$>$ QList$<$ \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Geo\+Maps\+::\+Waypoint}} $>$
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE void \mbox{\hyperlink{classNavigation_1_1FlightRoute_a36281a5ec1fa6117a8f0bbf80c3e0345}{append}} (const \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Geo\+Maps\+::\+Waypoint}} \&waypoint)
+\begin{DoxyCompactList}\small\item\em Adds a waypoint to the end of the route. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE void \mbox{\hyperlink{classNavigation_1_1FlightRoute_a7cd270cd3d907f089964359ef3428d0c}{append}} (const QGeo\+Coordinate \&position)
+\begin{DoxyCompactList}\small\item\em Adds a waypoint to the end of the route. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE bool \mbox{\hyperlink{classNavigation_1_1FlightRoute_a4f4d558108617ad8547a742dc25d571f}{can\+Append}} (const \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Geo\+Maps\+::\+Waypoint}} \&other) const
+\begin{DoxyCompactList}\small\item\em Checks if waypoint can be added as the new end of this route. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE bool \mbox{\hyperlink{classNavigation_1_1FlightRoute_a1f369caf6a9f6dbd5ce1f11cd12dc63b}{can\+Insert}} (const \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Geo\+Maps\+::\+Waypoint}} \&other) const
+\begin{DoxyCompactList}\small\item\em Checks if waypoint can reasonably be inserted into this route. \end{DoxyCompactList}\item 
+\Hypertarget{classNavigation_1_1FlightRoute_a47c044530caad662e4d7bbcef4bf6748}\label{classNavigation_1_1FlightRoute_a47c044530caad662e4d7bbcef4bf6748} 
+Q\+\_\+\+INVOKABLE void {\bfseries clear} ()
+\begin{DoxyCompactList}\small\item\em Deletes all waypoints in the current route. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE bool \mbox{\hyperlink{classNavigation_1_1FlightRoute_a29d34ed4295e600fcfee79c3fad21085}{contains}} (const \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Geo\+Maps\+::\+Waypoint}} \&waypoint) const
+\begin{DoxyCompactList}\small\item\em Returns true if waypoint is in this route. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE void \mbox{\hyperlink{classNavigation_1_1FlightRoute_a17eeac572e23137159f90934e8bf4ed8}{insert}} (const \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Geo\+Maps\+::\+Waypoint}} \&waypoint)
+\begin{DoxyCompactList}\small\item\em Inserts a waypoint into the route. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE qsizetype \mbox{\hyperlink{classNavigation_1_1FlightRoute_aa35946b4a7bd66b5e3ded6feabc23878}{last\+Index\+Of}} (const \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Geo\+Maps\+::\+Waypoint}} \&waypoint) const
+\begin{DoxyCompactList}\small\item\em Index for last occurrence of the waypoint in the flight route. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE QString \mbox{\hyperlink{classNavigation_1_1FlightRoute_a0125257af233daa8991e1ae0bed78c15}{load}} (const QString \&file\+Name)
+\begin{DoxyCompactList}\small\item\em Loads the route from a Geo\+JSON or GPX document. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE void \mbox{\hyperlink{classNavigation_1_1FlightRoute_a36c588232f915a3f32e12dc1f2dcd681}{move\+Down}} (int idx)
+\begin{DoxyCompactList}\small\item\em Move waypoint one position down in the list of waypoints. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE void \mbox{\hyperlink{classNavigation_1_1FlightRoute_a4fbe79cfc24e8f95841f0cdb43e3b451}{move\+Up}} (int idx)
+\begin{DoxyCompactList}\small\item\em Move waypoint one position up in the list of waypoints. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE void \mbox{\hyperlink{classNavigation_1_1FlightRoute_a7fd62a92b057c83105a0b3a75a53bccd}{remove\+Waypoint}} (int idx)
+\begin{DoxyCompactList}\small\item\em Remove waypoint from the current route. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE void \mbox{\hyperlink{classNavigation_1_1FlightRoute_aaaaf85909dc534461efa48ba76f9d849}{replace\+Waypoint}} (int idx, const \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Geo\+Maps\+::\+Waypoint}} \&new\+Waypoint)
+\begin{DoxyCompactList}\small\item\em Replaces a waypoint. \end{DoxyCompactList}\item 
+\Hypertarget{classNavigation_1_1FlightRoute_ad037b26d060cea9e5124d1a282ffdcaa}\label{classNavigation_1_1FlightRoute_ad037b26d060cea9e5124d1a282ffdcaa} 
+Q\+\_\+\+INVOKABLE void {\bfseries reverse} ()
+\begin{DoxyCompactList}\small\item\em Reverse the route. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE QString \mbox{\hyperlink{classNavigation_1_1FlightRoute_a6d4b14c2b073f577f13f8eb58476cdcc}{save}} (const QString \&file\+Name=QString()) const
+\begin{DoxyCompactList}\small\item\em Saves flight route to a file. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE QString \mbox{\hyperlink{classNavigation_1_1FlightRoute_abdf8265d94681dfa09fd9aa471c4d67d}{suggested\+Filename}} () const
+\begin{DoxyCompactList}\small\item\em Suggests a name for saving this route. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE QByte\+Array \mbox{\hyperlink{classNavigation_1_1FlightRoute_a30ee6879225c4314e21fb7a6f2c2ebb5}{to\+Geo\+JSON}} () const
+\begin{DoxyCompactList}\small\item\em Exports to route to Geo\+JSON. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE QByte\+Array \mbox{\hyperlink{classNavigation_1_1FlightRoute_ab1ad073b327824c9fe76fbe23bb20ea6}{to\+Gpx}} () const
+\begin{DoxyCompactList}\small\item\em Exports to route to GPX. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+QGeo\+Rectangle \mbox{\hyperlink{classNavigation_1_1FlightRoute_a8d42cd2b85a05f615bde2a6955748e50}{bounding\+Rectangle}}
+\begin{DoxyCompactList}\small\item\em Bounding rectangle. \end{DoxyCompactList}\item 
+QList$<$ QGeo\+Coordinate $>$ \mbox{\hyperlink{classNavigation_1_1FlightRoute_a83be9510a2cff6ec97e4ff0f1c7d3ea4}{geo\+Path}}
+\begin{DoxyCompactList}\small\item\em List of coordinates for the waypoints. \end{DoxyCompactList}\item 
+QList$<$ \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Geo\+Maps\+::\+Waypoint}} $>$ \mbox{\hyperlink{classNavigation_1_1FlightRoute_ac1b1fe3430478e46df2dace46654add1}{mid\+Field\+Waypoints}}
+\begin{DoxyCompactList}\small\item\em List of waypoints in the flight route that are not airfields. \end{DoxyCompactList}\item 
+QList$<$ \mbox{\hyperlink{classNavigation_1_1Leg}{Navigation\+::\+Leg}} $>$ \mbox{\hyperlink{classNavigation_1_1FlightRoute_a940b36ce1bf2e9fa3f6d01ce6e900331}{legs}}
+\begin{DoxyCompactList}\small\item\em List of legs. \end{DoxyCompactList}\item 
+\Hypertarget{classNavigation_1_1FlightRoute_a030d06efd3b1ca2a1fd9fcd2f3e99e67}\label{classNavigation_1_1FlightRoute_a030d06efd3b1ca2a1fd9fcd2f3e99e67} 
+qsizetype {\bfseries size}
+\begin{DoxyCompactList}\small\item\em Number of waypoints in the route. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classNavigation_1_1FlightRoute_a60fae946d0a40b374efdf3e19fe0b936}{summary}}
+\begin{DoxyCompactList}\small\item\em Human-\/readable summary of the flight route. \end{DoxyCompactList}\item 
+QList$<$ \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Geo\+Maps\+::\+Waypoint}} $>$ \mbox{\hyperlink{classNavigation_1_1FlightRoute_a776236dd14420827446dde4c0abc9d6b}{waypoints}}
+\begin{DoxyCompactList}\small\item\em List of waypoints in the flight route that are not airfields. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Intended flight route. 
+
+This class represents an intended flight route. In essence, this class is little more than a list of waypoint and a number of methods that do the following.
+
+
+\begin{DoxyItemize}
+\item Expose the list of waypoints and legs to QML and allow some manipulation from there, such as adding or re-\/arranging waypoints.
+\item Compute length and true course for the legs in the flight path, as well as a total length and expose this data to QML. 
+\end{DoxyItemize}
+
+Definition at line \mbox{\hyperlink{FlightRoute_8h_source_l00058}{58}} of file \mbox{\hyperlink{FlightRoute_8h_source}{Flight\+Route.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classNavigation_1_1FlightRoute_a88b36228c5cb2e5d34160c41e285b44b}\index{Navigation::FlightRoute@{Navigation::FlightRoute}!FlightRoute@{FlightRoute}}
+\index{FlightRoute@{FlightRoute}!Navigation::FlightRoute@{Navigation::FlightRoute}}
+\doxysubsubsection{\texorpdfstring{FlightRoute()}{FlightRoute()}}
+{\footnotesize\ttfamily \label{classNavigation_1_1FlightRoute_a88b36228c5cb2e5d34160c41e285b44b} 
+Navigation\+::\+Flight\+Route\+::\+Flight\+Route (\begin{DoxyParamCaption}\item[{QObject \texorpdfstring{$\ast$}{*}}]{parent}{ = {\ttfamily nullptr}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Construct a flight route. 
+
+This default constructor calls \doxylink{classNavigation_1_1FlightRoute_a0125257af233daa8991e1ae0bed78c15}{load()}, restoring the last saved route. The route is saved to a standard location whenever it changes, so that the route survives when the app is closed unexpectantly.
+
+
+\begin{DoxyParams}{Parameters}
+{\em parent} & The standard QObject parent pointer. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classNavigation_1_1FlightRoute_a36281a5ec1fa6117a8f0bbf80c3e0345}\index{Navigation::FlightRoute@{Navigation::FlightRoute}!append@{append}}
+\index{append@{append}!Navigation::FlightRoute@{Navigation::FlightRoute}}
+\doxysubsubsection{\texorpdfstring{append()}{append()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classNavigation_1_1FlightRoute_a36281a5ec1fa6117a8f0bbf80c3e0345} 
+Q\+\_\+\+INVOKABLE void Navigation\+::\+Flight\+Route\+::append (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Geo\+Maps\+::\+Waypoint}} \&}]{waypoint}{}\end{DoxyParamCaption})}
+
+
+
+Adds a waypoint to the end of the route. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em waypoint} & Waypoint to be added \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classNavigation_1_1FlightRoute_a7cd270cd3d907f089964359ef3428d0c}\index{Navigation::FlightRoute@{Navigation::FlightRoute}!append@{append}}
+\index{append@{append}!Navigation::FlightRoute@{Navigation::FlightRoute}}
+\doxysubsubsection{\texorpdfstring{append()}{append()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classNavigation_1_1FlightRoute_a7cd270cd3d907f089964359ef3428d0c} 
+Q\+\_\+\+INVOKABLE void Navigation\+::\+Flight\+Route\+::append (\begin{DoxyParamCaption}\item[{const QGeo\+Coordinate \&}]{position}{}\end{DoxyParamCaption})}
+
+
+
+Adds a waypoint to the end of the route. 
+
+This method generates a generic waypoint with the given coordinates.
+
+
+\begin{DoxyParams}{Parameters}
+{\em position} & Coordinates of the waypoint. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classNavigation_1_1FlightRoute_a3ec78330b85fa08c04ed5b0c66fb192e}\index{Navigation::FlightRoute@{Navigation::FlightRoute}!boundingRectangle@{boundingRectangle}}
+\index{boundingRectangle@{boundingRectangle}!Navigation::FlightRoute@{Navigation::FlightRoute}}
+\doxysubsubsection{\texorpdfstring{boundingRectangle()}{boundingRectangle()}}
+{\footnotesize\ttfamily \label{classNavigation_1_1FlightRoute_a3ec78330b85fa08c04ed5b0c66fb192e} 
+auto Navigation\+::\+Flight\+Route\+::bounding\+Rectangle (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$  QGeo\+Rectangle\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property bounding\+Rectangle 
+\end{DoxyReturn}
+\Hypertarget{classNavigation_1_1FlightRoute_a4f4d558108617ad8547a742dc25d571f}\index{Navigation::FlightRoute@{Navigation::FlightRoute}!canAppend@{canAppend}}
+\index{canAppend@{canAppend}!Navigation::FlightRoute@{Navigation::FlightRoute}}
+\doxysubsubsection{\texorpdfstring{canAppend()}{canAppend()}}
+{\footnotesize\ttfamily \label{classNavigation_1_1FlightRoute_a4f4d558108617ad8547a742dc25d571f} 
+Q\+\_\+\+INVOKABLE bool Navigation\+::\+Flight\+Route\+::can\+Append (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Geo\+Maps\+::\+Waypoint}} \&}]{other}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Checks if waypoint can be added as the new end of this route. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & Waypoint to be appended\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if route is empty or if other waypoint is not near the current end of the route. 
+\end{DoxyReturn}
+\Hypertarget{classNavigation_1_1FlightRoute_a1f369caf6a9f6dbd5ce1f11cd12dc63b}\index{Navigation::FlightRoute@{Navigation::FlightRoute}!canInsert@{canInsert}}
+\index{canInsert@{canInsert}!Navigation::FlightRoute@{Navigation::FlightRoute}}
+\doxysubsubsection{\texorpdfstring{canInsert()}{canInsert()}}
+{\footnotesize\ttfamily \label{classNavigation_1_1FlightRoute_a1f369caf6a9f6dbd5ce1f11cd12dc63b} 
+Q\+\_\+\+INVOKABLE bool Navigation\+::\+Flight\+Route\+::can\+Insert (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Geo\+Maps\+::\+Waypoint}} \&}]{other}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Checks if waypoint can reasonably be inserted into this route. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & Waypoint to be inserted\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if it makes sense to insert the waypoint. 
+\end{DoxyReturn}
+\Hypertarget{classNavigation_1_1FlightRoute_a29d34ed4295e600fcfee79c3fad21085}\index{Navigation::FlightRoute@{Navigation::FlightRoute}!contains@{contains}}
+\index{contains@{contains}!Navigation::FlightRoute@{Navigation::FlightRoute}}
+\doxysubsubsection{\texorpdfstring{contains()}{contains()}}
+{\footnotesize\ttfamily \label{classNavigation_1_1FlightRoute_a29d34ed4295e600fcfee79c3fad21085} 
+Q\+\_\+\+INVOKABLE bool Navigation\+::\+Flight\+Route\+::contains (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Geo\+Maps\+::\+Waypoint}} \&}]{waypoint}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Returns true if waypoint is in this route. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em waypoint} & Waypoint\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+bool Returns true if waypoint geographically close to a waypoint in the route 
+\end{DoxyReturn}
+\Hypertarget{classNavigation_1_1FlightRoute_a4c3be0c4467f6ad85daed9bd437c5d04}\index{Navigation::FlightRoute@{Navigation::FlightRoute}!geoPath@{geoPath}}
+\index{geoPath@{geoPath}!Navigation::FlightRoute@{Navigation::FlightRoute}}
+\doxysubsubsection{\texorpdfstring{geoPath()}{geoPath()}}
+{\footnotesize\ttfamily \label{classNavigation_1_1FlightRoute_a4c3be0c4467f6ad85daed9bd437c5d04} 
+auto Navigation\+::\+Flight\+Route\+::geo\+Path (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$  QList$<$ QGeo\+Coordinate $>$\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property geo\+Path 
+\end{DoxyReturn}
+\Hypertarget{classNavigation_1_1FlightRoute_a17eeac572e23137159f90934e8bf4ed8}\index{Navigation::FlightRoute@{Navigation::FlightRoute}!insert@{insert}}
+\index{insert@{insert}!Navigation::FlightRoute@{Navigation::FlightRoute}}
+\doxysubsubsection{\texorpdfstring{insert()}{insert()}}
+{\footnotesize\ttfamily \label{classNavigation_1_1FlightRoute_a17eeac572e23137159f90934e8bf4ed8} 
+Q\+\_\+\+INVOKABLE void Navigation\+::\+Flight\+Route\+::insert (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Geo\+Maps\+::\+Waypoint}} \&}]{waypoint}{}\end{DoxyParamCaption})}
+
+
+
+Inserts a waypoint into the route. 
+
+Inserts the waypoint into the route, at the place that minimizes the overall route length. If \doxylink{classNavigation_1_1FlightRoute_a1f369caf6a9f6dbd5ce1f11cd12dc63b}{can\+Insert()} is false, this method does nothing.
+
+
+\begin{DoxyParams}{Parameters}
+{\em waypoint} & Waypoint to be inserted. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classNavigation_1_1FlightRoute_aa35946b4a7bd66b5e3ded6feabc23878}\index{Navigation::FlightRoute@{Navigation::FlightRoute}!lastIndexOf@{lastIndexOf}}
+\index{lastIndexOf@{lastIndexOf}!Navigation::FlightRoute@{Navigation::FlightRoute}}
+\doxysubsubsection{\texorpdfstring{lastIndexOf()}{lastIndexOf()}}
+{\footnotesize\ttfamily \label{classNavigation_1_1FlightRoute_aa35946b4a7bd66b5e3ded6feabc23878} 
+Q\+\_\+\+INVOKABLE qsizetype Navigation\+::\+Flight\+Route\+::last\+Index\+Of (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Geo\+Maps\+::\+Waypoint}} \&}]{waypoint}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Index for last occurrence of the waypoint in the flight route. 
+
+This method finds the index position of the last waypoint in the route that is geograhphically close to the given waypoint.
+
+
+\begin{DoxyParams}{Parameters}
+{\em waypoint} & Waypoint to be searched\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Index position of the last waypoint in the route close to the given waypoint. Returns -\/1 if no waypoint is close. 
+\end{DoxyReturn}
+\Hypertarget{classNavigation_1_1FlightRoute_aa3c1f763ce02fa0d7c4c7117ed712125}\index{Navigation::FlightRoute@{Navigation::FlightRoute}!legs@{legs}}
+\index{legs@{legs}!Navigation::FlightRoute@{Navigation::FlightRoute}}
+\doxysubsubsection{\texorpdfstring{legs()}{legs()}}
+{\footnotesize\ttfamily \label{classNavigation_1_1FlightRoute_aa3c1f763ce02fa0d7c4c7117ed712125} 
+auto Navigation\+::\+Flight\+Route\+::legs (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ QList$<$\mbox{\hyperlink{classNavigation_1_1Leg}{Navigation\+::\+Leg}}$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property legs 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FlightRoute_8h_source_l00159}{159}} of file \mbox{\hyperlink{FlightRoute_8h_source}{Flight\+Route.\+h}}.
+
+\Hypertarget{classNavigation_1_1FlightRoute_a0125257af233daa8991e1ae0bed78c15}\index{Navigation::FlightRoute@{Navigation::FlightRoute}!load@{load}}
+\index{load@{load}!Navigation::FlightRoute@{Navigation::FlightRoute}}
+\doxysubsubsection{\texorpdfstring{load()}{load()}}
+{\footnotesize\ttfamily \label{classNavigation_1_1FlightRoute_a0125257af233daa8991e1ae0bed78c15} 
+Q\+\_\+\+INVOKABLE QString Navigation\+::\+Flight\+Route\+::load (\begin{DoxyParamCaption}\item[{const QString \&}]{file\+Name}{}\end{DoxyParamCaption})}
+
+
+
+Loads the route from a Geo\+JSON or GPX document. 
+
+This method loads the flight route from a Geo\+JSON or GPX file. The method detects waypoints (such as airfields) by looking at the coordinates.
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Name} & File name, needs to include path and extension. URLs of the form "{}file\+://path"{} are accepted. Under Android, content URLs are also accepted.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Empty string in case of success, human-\/readable, translated error message otherwise. 
+\end{DoxyReturn}
+\Hypertarget{classNavigation_1_1FlightRoute_a7c3b0ca3415ba088f1ea226fe5e69a37}\index{Navigation::FlightRoute@{Navigation::FlightRoute}!midFieldWaypoints@{midFieldWaypoints}}
+\index{midFieldWaypoints@{midFieldWaypoints}!Navigation::FlightRoute@{Navigation::FlightRoute}}
+\doxysubsubsection{\texorpdfstring{midFieldWaypoints()}{midFieldWaypoints()}}
+{\footnotesize\ttfamily \label{classNavigation_1_1FlightRoute_a7c3b0ca3415ba088f1ea226fe5e69a37} 
+auto Navigation\+::\+Flight\+Route\+::mid\+Field\+Waypoints (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$  QList$<$ \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Geo\+Maps\+::\+Waypoint}} $>$\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property mid\+Field\+Waypoints 
+\end{DoxyReturn}
+\Hypertarget{classNavigation_1_1FlightRoute_a36c588232f915a3f32e12dc1f2dcd681}\index{Navigation::FlightRoute@{Navigation::FlightRoute}!moveDown@{moveDown}}
+\index{moveDown@{moveDown}!Navigation::FlightRoute@{Navigation::FlightRoute}}
+\doxysubsubsection{\texorpdfstring{moveDown()}{moveDown()}}
+{\footnotesize\ttfamily \label{classNavigation_1_1FlightRoute_a36c588232f915a3f32e12dc1f2dcd681} 
+Q\+\_\+\+INVOKABLE void Navigation\+::\+Flight\+Route\+::move\+Down (\begin{DoxyParamCaption}\item[{int}]{idx}{}\end{DoxyParamCaption})}
+
+
+
+Move waypoint one position down in the list of waypoints. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em idx} & Index of the waypoint \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classNavigation_1_1FlightRoute_a4fbe79cfc24e8f95841f0cdb43e3b451}\index{Navigation::FlightRoute@{Navigation::FlightRoute}!moveUp@{moveUp}}
+\index{moveUp@{moveUp}!Navigation::FlightRoute@{Navigation::FlightRoute}}
+\doxysubsubsection{\texorpdfstring{moveUp()}{moveUp()}}
+{\footnotesize\ttfamily \label{classNavigation_1_1FlightRoute_a4fbe79cfc24e8f95841f0cdb43e3b451} 
+Q\+\_\+\+INVOKABLE void Navigation\+::\+Flight\+Route\+::move\+Up (\begin{DoxyParamCaption}\item[{int}]{idx}{}\end{DoxyParamCaption})}
+
+
+
+Move waypoint one position up in the list of waypoints. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em idx} & Index of the waypoint \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classNavigation_1_1FlightRoute_a7fd62a92b057c83105a0b3a75a53bccd}\index{Navigation::FlightRoute@{Navigation::FlightRoute}!removeWaypoint@{removeWaypoint}}
+\index{removeWaypoint@{removeWaypoint}!Navigation::FlightRoute@{Navigation::FlightRoute}}
+\doxysubsubsection{\texorpdfstring{removeWaypoint()}{removeWaypoint()}}
+{\footnotesize\ttfamily \label{classNavigation_1_1FlightRoute_a7fd62a92b057c83105a0b3a75a53bccd} 
+Q\+\_\+\+INVOKABLE void Navigation\+::\+Flight\+Route\+::remove\+Waypoint (\begin{DoxyParamCaption}\item[{int}]{idx}{}\end{DoxyParamCaption})}
+
+
+
+Remove waypoint from the current route. 
+
+If the waypoint is contained in the route, the method returns immediately.
+
+
+\begin{DoxyParams}{Parameters}
+{\em idx} & Index of the waypoint \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classNavigation_1_1FlightRoute_aaaaf85909dc534461efa48ba76f9d849}\index{Navigation::FlightRoute@{Navigation::FlightRoute}!replaceWaypoint@{replaceWaypoint}}
+\index{replaceWaypoint@{replaceWaypoint}!Navigation::FlightRoute@{Navigation::FlightRoute}}
+\doxysubsubsection{\texorpdfstring{replaceWaypoint()}{replaceWaypoint()}}
+{\footnotesize\ttfamily \label{classNavigation_1_1FlightRoute_aaaaf85909dc534461efa48ba76f9d849} 
+Q\+\_\+\+INVOKABLE void Navigation\+::\+Flight\+Route\+::replace\+Waypoint (\begin{DoxyParamCaption}\item[{int}]{idx}{, }\item[{const \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Geo\+Maps\+::\+Waypoint}} \&}]{new\+Waypoint}{}\end{DoxyParamCaption})}
+
+
+
+Replaces a waypoint. 
+
+Replaces the waypoint with the given index. If the index is invalid if the new waypoint equals the old one, then this method does nothing. The signal "{}waypoint changed"{} is emitted as appropriate.
+
+
+\begin{DoxyParams}{Parameters}
+{\em idx} & Index of waypoint\\
+\hline
+{\em new\+Waypoint} & New waypoint \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classNavigation_1_1FlightRoute_a6d4b14c2b073f577f13f8eb58476cdcc}\index{Navigation::FlightRoute@{Navigation::FlightRoute}!save@{save}}
+\index{save@{save}!Navigation::FlightRoute@{Navigation::FlightRoute}}
+\doxysubsubsection{\texorpdfstring{save()}{save()}}
+{\footnotesize\ttfamily \label{classNavigation_1_1FlightRoute_a6d4b14c2b073f577f13f8eb58476cdcc} 
+Q\+\_\+\+INVOKABLE QString Navigation\+::\+Flight\+Route\+::save (\begin{DoxyParamCaption}\item[{const QString \&}]{file\+Name}{ = {\ttfamily QString()}}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Saves flight route to a file. 
+
+This method saves the flight route as a Geo\+JSON file. The file conforms to the specification outlined \href{https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation}{\texttt{ here}}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Name} & File name, needs to include path and extension\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Empty string in case of success, human-\/readable, translated error message otherwise. 
+\end{DoxyReturn}
+\Hypertarget{classNavigation_1_1FlightRoute_a123824167bf76e7c77a8e451b808cb2b}\index{Navigation::FlightRoute@{Navigation::FlightRoute}!size@{size}}
+\index{size@{size}!Navigation::FlightRoute@{Navigation::FlightRoute}}
+\doxysubsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily \label{classNavigation_1_1FlightRoute_a123824167bf76e7c77a8e451b808cb2b} 
+auto Navigation\+::\+Flight\+Route\+::size (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ qsizetype \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property size 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FlightRoute_8h_source_l00165}{165}} of file \mbox{\hyperlink{FlightRoute_8h_source}{Flight\+Route.\+h}}.
+
+\Hypertarget{classNavigation_1_1FlightRoute_abdf8265d94681dfa09fd9aa471c4d67d}\index{Navigation::FlightRoute@{Navigation::FlightRoute}!suggestedFilename@{suggestedFilename}}
+\index{suggestedFilename@{suggestedFilename}!Navigation::FlightRoute@{Navigation::FlightRoute}}
+\doxysubsubsection{\texorpdfstring{suggestedFilename()}{suggestedFilename()}}
+{\footnotesize\ttfamily \label{classNavigation_1_1FlightRoute_abdf8265d94681dfa09fd9aa471c4d67d} 
+Q\+\_\+\+INVOKABLE QString Navigation\+::\+Flight\+Route\+::suggested\+Filename (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Suggests a name for saving this route. 
+
+This method suggests a name for saving the present route (without path and file extension).
+
+\begin{DoxyReturn}{Returns}
+Suggested name for saving the file. If no useful suggestion can be made, the returned string is a translation of "{}\+Flight Route"{} 
+\end{DoxyReturn}
+\Hypertarget{classNavigation_1_1FlightRoute_a38dca34e7b6efae66490ec4b71b3ae6d}\index{Navigation::FlightRoute@{Navigation::FlightRoute}!summary@{summary}}
+\index{summary@{summary}!Navigation::FlightRoute@{Navigation::FlightRoute}}
+\doxysubsubsection{\texorpdfstring{summary()}{summary()}}
+{\footnotesize\ttfamily \label{classNavigation_1_1FlightRoute_a38dca34e7b6efae66490ec4b71b3ae6d} 
+auto Navigation\+::\+Flight\+Route\+::summary (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$  QString\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property summary 
+\end{DoxyReturn}
+\Hypertarget{classNavigation_1_1FlightRoute_a30ee6879225c4314e21fb7a6f2c2ebb5}\index{Navigation::FlightRoute@{Navigation::FlightRoute}!toGeoJSON@{toGeoJSON}}
+\index{toGeoJSON@{toGeoJSON}!Navigation::FlightRoute@{Navigation::FlightRoute}}
+\doxysubsubsection{\texorpdfstring{toGeoJSON()}{toGeoJSON()}}
+{\footnotesize\ttfamily \label{classNavigation_1_1FlightRoute_a30ee6879225c4314e21fb7a6f2c2ebb5} 
+Q\+\_\+\+INVOKABLE QByte\+Array Navigation\+::\+Flight\+Route\+::to\+Geo\+JSON (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Exports to route to Geo\+JSON. 
+
+This method serialises the current flight route as a Geo\+JSON document. The document conforms to the specification outlined \href{https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation}{\texttt{ here}}.
+
+\begin{DoxyReturn}{Returns}
+QByte\+Array describing the flight route 
+\end{DoxyReturn}
+\Hypertarget{classNavigation_1_1FlightRoute_ab1ad073b327824c9fe76fbe23bb20ea6}\index{Navigation::FlightRoute@{Navigation::FlightRoute}!toGpx@{toGpx}}
+\index{toGpx@{toGpx}!Navigation::FlightRoute@{Navigation::FlightRoute}}
+\doxysubsubsection{\texorpdfstring{toGpx()}{toGpx()}}
+{\footnotesize\ttfamily \label{classNavigation_1_1FlightRoute_ab1ad073b327824c9fe76fbe23bb20ea6} 
+Q\+\_\+\+INVOKABLE QByte\+Array Navigation\+::\+Flight\+Route\+::to\+Gpx (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Exports to route to GPX. 
+
+This method serialises the current flight route as a GPX document. The document conforms to the specification outlined \href{https://www.topografix.com/gpx.asp}{\texttt{ here}}
+
+\begin{DoxyReturn}{Returns}
+QByte\+Array containing GPX data describing the flight route 
+\end{DoxyReturn}
+\Hypertarget{classNavigation_1_1FlightRoute_aec7f62d5273542312e947e65e1cf8c8c}\index{Navigation::FlightRoute@{Navigation::FlightRoute}!waypoints@{waypoints}}
+\index{waypoints@{waypoints}!Navigation::FlightRoute@{Navigation::FlightRoute}}
+\doxysubsubsection{\texorpdfstring{waypoints()}{waypoints()}}
+{\footnotesize\ttfamily \label{classNavigation_1_1FlightRoute_aec7f62d5273542312e947e65e1cf8c8c} 
+auto Navigation\+::\+Flight\+Route\+::waypoints (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ QList$<$\mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Geo\+Maps\+::\+Waypoint}}$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property waypoints 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{FlightRoute_8h_source_l00177}{177}} of file \mbox{\hyperlink{FlightRoute_8h_source}{Flight\+Route.\+h}}.
+
+
+
+\doxysubsection{Property Documentation}
+\Hypertarget{classNavigation_1_1FlightRoute_a8d42cd2b85a05f615bde2a6955748e50}\index{Navigation::FlightRoute@{Navigation::FlightRoute}!boundingRectangle@{boundingRectangle}}
+\index{boundingRectangle@{boundingRectangle}!Navigation::FlightRoute@{Navigation::FlightRoute}}
+\doxysubsubsection{\texorpdfstring{boundingRectangle}{boundingRectangle}}
+{\footnotesize\ttfamily \label{classNavigation_1_1FlightRoute_a8d42cd2b85a05f615bde2a6955748e50} 
+QGeo\+Rectangle Navigation\+::\+Flight\+Route\+::bounding\+Rectangle\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Bounding rectangle. 
+
+This is a QGeo\+Rectangle that contains the route. The rectangle might be invalid, for instance if the route is empty. 
+
+Definition at line \mbox{\hyperlink{FlightRoute_8h_source_l00090}{90}} of file \mbox{\hyperlink{FlightRoute_8h_source}{Flight\+Route.\+h}}.
+
+\Hypertarget{classNavigation_1_1FlightRoute_a83be9510a2cff6ec97e4ff0f1c7d3ea4}\index{Navigation::FlightRoute@{Navigation::FlightRoute}!geoPath@{geoPath}}
+\index{geoPath@{geoPath}!Navigation::FlightRoute@{Navigation::FlightRoute}}
+\doxysubsubsection{\texorpdfstring{geoPath}{geoPath}}
+{\footnotesize\ttfamily \label{classNavigation_1_1FlightRoute_a83be9510a2cff6ec97e4ff0f1c7d3ea4} 
+QList$<$QGeo\+Coordinate$>$ Navigation\+::\+Flight\+Route\+::geo\+Path\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+List of coordinates for the waypoints. 
+
+This property holds a list of coordinates of the waypoints, suitable for drawing the flight path on a QML map. 
+
+Definition at line \mbox{\hyperlink{FlightRoute_8h_source_l00097}{97}} of file \mbox{\hyperlink{FlightRoute_8h_source}{Flight\+Route.\+h}}.
+
+\Hypertarget{classNavigation_1_1FlightRoute_a940b36ce1bf2e9fa3f6d01ce6e900331}\index{Navigation::FlightRoute@{Navigation::FlightRoute}!legs@{legs}}
+\index{legs@{legs}!Navigation::FlightRoute@{Navigation::FlightRoute}}
+\doxysubsubsection{\texorpdfstring{legs}{legs}}
+{\footnotesize\ttfamily \label{classNavigation_1_1FlightRoute_a940b36ce1bf2e9fa3f6d01ce6e900331} 
+QList$<$\mbox{\hyperlink{classNavigation_1_1Leg}{Navigation\+::\+Leg}}$>$ Navigation\+::\+Flight\+Route\+::legs\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+List of legs. 
+
+This property returns a list of all legs in the route. 
+
+Definition at line \mbox{\hyperlink{FlightRoute_8h_source_l00110}{110}} of file \mbox{\hyperlink{FlightRoute_8h_source}{Flight\+Route.\+h}}.
+
+\Hypertarget{classNavigation_1_1FlightRoute_ac1b1fe3430478e46df2dace46654add1}\index{Navigation::FlightRoute@{Navigation::FlightRoute}!midFieldWaypoints@{midFieldWaypoints}}
+\index{midFieldWaypoints@{midFieldWaypoints}!Navigation::FlightRoute@{Navigation::FlightRoute}}
+\doxysubsubsection{\texorpdfstring{midFieldWaypoints}{midFieldWaypoints}}
+{\footnotesize\ttfamily \label{classNavigation_1_1FlightRoute_ac1b1fe3430478e46df2dace46654add1} 
+QList$<$\mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Geo\+Maps\+::\+Waypoint}}$>$ Navigation\+::\+Flight\+Route\+::mid\+Field\+Waypoints\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+List of waypoints in the flight route that are not airfields. 
+
+This property lists all the waypoints in the route that are not airfields, navaids, reporting points, etc. 
+
+Definition at line \mbox{\hyperlink{FlightRoute_8h_source_l00104}{104}} of file \mbox{\hyperlink{FlightRoute_8h_source}{Flight\+Route.\+h}}.
+
+\Hypertarget{classNavigation_1_1FlightRoute_a60fae946d0a40b374efdf3e19fe0b936}\index{Navigation::FlightRoute@{Navigation::FlightRoute}!summary@{summary}}
+\index{summary@{summary}!Navigation::FlightRoute@{Navigation::FlightRoute}}
+\doxysubsubsection{\texorpdfstring{summary}{summary}}
+{\footnotesize\ttfamily \label{classNavigation_1_1FlightRoute_a60fae946d0a40b374efdf3e19fe0b936} 
+QString Navigation\+::\+Flight\+Route\+::summary\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Human-\/readable summary of the flight route. 
+
+This is a string of the form "{}48 nm · 0\+:28 h · 1,9 gal"{}, potentially with HTML complaints if wind or aircraft data was missing.
+
+The summary is computed for the aircraft and wind that are presently set in the global \doxylink{classNavigation_1_1Navigator}{Navigator} class. 
+
+Definition at line \mbox{\hyperlink{FlightRoute_8h_source_l00123}{123}} of file \mbox{\hyperlink{FlightRoute_8h_source}{Flight\+Route.\+h}}.
+
+\Hypertarget{classNavigation_1_1FlightRoute_a776236dd14420827446dde4c0abc9d6b}\index{Navigation::FlightRoute@{Navigation::FlightRoute}!waypoints@{waypoints}}
+\index{waypoints@{waypoints}!Navigation::FlightRoute@{Navigation::FlightRoute}}
+\doxysubsubsection{\texorpdfstring{waypoints}{waypoints}}
+{\footnotesize\ttfamily \label{classNavigation_1_1FlightRoute_a776236dd14420827446dde4c0abc9d6b} 
+QList$<$\mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Geo\+Maps\+::\+Waypoint}}$>$ Navigation\+::\+Flight\+Route\+::waypoints\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+List of waypoints in the flight route that are not airfields. 
+
+This property lists all the waypoints in the route that are not airfields, navaids, reporting points, etc. 
+
+Definition at line \mbox{\hyperlink{FlightRoute_8h_source_l00130}{130}} of file \mbox{\hyperlink{FlightRoute_8h_source}{Flight\+Route.\+h}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/navigation/Flight\+Route.\+h\end{DoxyCompactItemize}

@@ -1,0 +1,227 @@
+\doxysection{File\+Formats\+::Geo\+TIFF Class Reference}
+\hypertarget{classFileFormats_1_1GeoTIFF}{}\label{classFileFormats_1_1GeoTIFF}\index{FileFormats::GeoTIFF@{FileFormats::GeoTIFF}}
+
+
+\doxylink{classFileFormats_1_1GeoTIFF}{Geo\+TIFF} support.  
+
+
+
+
+{\ttfamily \#include $<$Geo\+TIFF.\+h$>$}
+
+Inheritance diagram for File\+Formats\+::Geo\+TIFF\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classFileFormats_1_1GeoTIFF}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classFileFormats_1_1GeoTIFF_a5592b873b1faac3113a2e1b9d20238f1}{Geo\+TIFF}} (const QString \&file\+Name)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classFileFormats_1_1GeoTIFF_a3957e984972aa6cb81331ab0890d1111}{Geo\+TIFF}} (QIODevice \&device)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+QGeo\+Coordinate \mbox{\hyperlink{classFileFormats_1_1GeoTIFF_a31e2e2203026eaf6f1034aeec8ee2b18}{bottom\+Left}} () const
+\begin{DoxyCompactList}\small\item\em Geographic coordinate for corner of raster image. \end{DoxyCompactList}\item 
+QGeo\+Coordinate \mbox{\hyperlink{classFileFormats_1_1GeoTIFF_ab577d27c5551d091d4331051ea20e2e3}{bottom\+Right}} () const
+\begin{DoxyCompactList}\small\item\em Geographic coordinate for corner of raster image. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classFileFormats_1_1GeoTIFF_a7cc5034900021ad17e78ce7730f229f2}{name}} () const
+\begin{DoxyCompactList}\small\item\em Name, as specified in the \doxylink{classFileFormats_1_1GeoTIFF}{Geo\+TIFF} file. \end{DoxyCompactList}\item 
+QGeo\+Coordinate \mbox{\hyperlink{classFileFormats_1_1GeoTIFF_abc0dc3c09e81ee986023e2b49fbd1999}{top\+Left}} () const
+\begin{DoxyCompactList}\small\item\em Geographic coordinate for corner of raster image. \end{DoxyCompactList}\item 
+QGeo\+Coordinate \mbox{\hyperlink{classFileFormats_1_1GeoTIFF_a2471ff22de57136630815f800117aa56}{top\+Right}} () const
+\begin{DoxyCompactList}\small\item\em Geographic coordinate for corner of raster image. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classFileFormats_1_1TIFF}{File\+Formats\+::\+TIFF}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classFileFormats_1_1TIFF_a778345d0277a2f73b5780c4c4fb0aeee}{TIFF}} (const QString \&file\+Name)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classFileFormats_1_1TIFF_a6f34d992a0c8f79c79eec8ecccea605d}{TIFF}} (QIODevice \&device)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+QMap$<$ quint16, QVariant\+List $>$ \mbox{\hyperlink{classFileFormats_1_1TIFF_abccffd93d477153d9b5a92c781958196}{fields}} ()
+\begin{DoxyCompactList}\small\item\em \doxylink{classFileFormats_1_1TIFF}{TIFF} data fields. \end{DoxyCompactList}\item 
+QSize \mbox{\hyperlink{classFileFormats_1_1TIFF_ad4d3dc157c1d24adb3d5700914cac78c}{raster\+Size}} ()
+\begin{DoxyCompactList}\small\item\em Size of the \doxylink{classFileFormats_1_1TIFF}{TIFF} raster image. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classFileFormats_1_1DataFileAbstract}{File\+Formats\+::\+Data\+File\+Abstract}}}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classFileFormats_1_1DataFileAbstract_a830a91581e5655ab1f14b6fe8719e60f}{is\+Valid}} () const
+\begin{DoxyCompactList}\small\item\em Validity check. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classFileFormats_1_1DataFileAbstract_a292d1144d1c23b119601170f4c6b8e20}{error}} () const
+\begin{DoxyCompactList}\small\item\em Error string. \end{DoxyCompactList}\item 
+QString\+List \mbox{\hyperlink{classFileFormats_1_1DataFileAbstract_ab770740e6d6c20e076dd342e978b86ee}{warnings}} () const
+\begin{DoxyCompactList}\small\item\em Warnings. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static QString\+List \mbox{\hyperlink{classFileFormats_1_1GeoTIFF_a20f45bbf2f89bae5292116412903438a}{mime\+Types}} ()
+\begin{DoxyCompactList}\small\item\em Mime type for files that can be opened by this class. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions inherited from \mbox{\hyperlink{classFileFormats_1_1TIFF}{File\+Formats\+::\+TIFF}}}
+\begin{DoxyCompactItemize}
+\item 
+static QString\+List \mbox{\hyperlink{classFileFormats_1_1TIFF_ad2bda22fe41b7ba422856a56b0ca3c52}{mime\+Types}} ()
+\begin{DoxyCompactList}\small\item\em Mime type for files that can be opened by this class. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions inherited from \mbox{\hyperlink{classFileFormats_1_1DataFileAbstract}{File\+Formats\+::\+Data\+File\+Abstract}}}
+\begin{DoxyCompactItemize}
+\item 
+static QShared\+Pointer$<$ QFile $>$ \mbox{\hyperlink{classFileFormats_1_1DataFileAbstract_a2380fb7a4ab503cf73d618ea96ef216c}{open\+File\+URL}} (const QString \&file\+Name)
+\begin{DoxyCompactList}\small\item\em Open file, file URL or Android content URL. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\doxylink{classFileFormats_1_1GeoTIFF}{Geo\+TIFF} support. 
+
+This class reads \doxylink{classFileFormats_1_1GeoTIFF}{Geo\+TIFF} files, as specified here\+: \href{https://gis-lab.info/docs/geotiff-1.8.2.pdf}{\texttt{ https\+://gis-\/lab.\+info/docs/geotiff-\/1.\+8.\+2.\+pdf}}
+
+It extracts bounding box coordinates, as well as the name of the file. This class does not read the raster data. \doxylink{classFileFormats_1_1GeoTIFF}{Geo\+TIFF} is a huge and complex standard, and this class is definitively not able to read all possible valid \doxylink{classFileFormats_1_1GeoTIFF}{Geo\+TIFF} files. We restrict ourselves to files that appear in real-\/world aviation. 
+
+Definition at line \mbox{\hyperlink{GeoTIFF_8h_source_l00043}{43}} of file \mbox{\hyperlink{GeoTIFF_8h_source}{Geo\+TIFF.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classFileFormats_1_1GeoTIFF_a5592b873b1faac3113a2e1b9d20238f1}\index{FileFormats::GeoTIFF@{FileFormats::GeoTIFF}!GeoTIFF@{GeoTIFF}}
+\index{GeoTIFF@{GeoTIFF}!FileFormats::GeoTIFF@{FileFormats::GeoTIFF}}
+\doxysubsubsection{\texorpdfstring{GeoTIFF()}{GeoTIFF()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classFileFormats_1_1GeoTIFF_a5592b873b1faac3113a2e1b9d20238f1} 
+File\+Formats\+::\+Geo\+TIFF\+::\+Geo\+TIFF (\begin{DoxyParamCaption}\item[{const QString \&}]{file\+Name}{}\end{DoxyParamCaption})}
+
+
+
+Constructor. 
+
+The constructor opens and analyzes the \doxylink{classFileFormats_1_1GeoTIFF}{Geo\+TIFF} file. It does not read the raster data and is therefore lightweight.
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Name} & File name of a \doxylink{classFileFormats_1_1GeoTIFF}{Geo\+TIFF} file. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classFileFormats_1_1GeoTIFF_a3957e984972aa6cb81331ab0890d1111}\index{FileFormats::GeoTIFF@{FileFormats::GeoTIFF}!GeoTIFF@{GeoTIFF}}
+\index{GeoTIFF@{GeoTIFF}!FileFormats::GeoTIFF@{FileFormats::GeoTIFF}}
+\doxysubsubsection{\texorpdfstring{GeoTIFF()}{GeoTIFF()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classFileFormats_1_1GeoTIFF_a3957e984972aa6cb81331ab0890d1111} 
+File\+Formats\+::\+Geo\+TIFF\+::\+Geo\+TIFF (\begin{DoxyParamCaption}\item[{QIODevice \&}]{device}{}\end{DoxyParamCaption})}
+
+
+
+Constructor. 
+
+The constructor opens and analyzes the \doxylink{classFileFormats_1_1GeoTIFF}{Geo\+TIFF} file. It does not read the raster data and is therefore lightweight.
+
+
+\begin{DoxyParams}{Parameters}
+{\em device} & Device from which the \doxylink{classFileFormats_1_1GeoTIFF}{Geo\+TIFF} is read. The device must be opened and seekable. The device will not be closed by this method. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classFileFormats_1_1GeoTIFF_a31e2e2203026eaf6f1034aeec8ee2b18}\index{FileFormats::GeoTIFF@{FileFormats::GeoTIFF}!bottomLeft@{bottomLeft}}
+\index{bottomLeft@{bottomLeft}!FileFormats::GeoTIFF@{FileFormats::GeoTIFF}}
+\doxysubsubsection{\texorpdfstring{bottomLeft()}{bottomLeft()}}
+{\footnotesize\ttfamily \label{classFileFormats_1_1GeoTIFF_a31e2e2203026eaf6f1034aeec8ee2b18} 
+QGeo\+Coordinate File\+Formats\+::\+Geo\+TIFF\+::bottom\+Left (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Geographic coordinate for corner of raster image. 
+
+\begin{DoxyReturn}{Returns}
+Coordinate, or an invalid coordinate in case of error. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{GeoTIFF_8h_source_l00074}{74}} of file \mbox{\hyperlink{GeoTIFF_8h_source}{Geo\+TIFF.\+h}}.
+
+\Hypertarget{classFileFormats_1_1GeoTIFF_ab577d27c5551d091d4331051ea20e2e3}\index{FileFormats::GeoTIFF@{FileFormats::GeoTIFF}!bottomRight@{bottomRight}}
+\index{bottomRight@{bottomRight}!FileFormats::GeoTIFF@{FileFormats::GeoTIFF}}
+\doxysubsubsection{\texorpdfstring{bottomRight()}{bottomRight()}}
+{\footnotesize\ttfamily \label{classFileFormats_1_1GeoTIFF_ab577d27c5551d091d4331051ea20e2e3} 
+QGeo\+Coordinate File\+Formats\+::\+Geo\+TIFF\+::bottom\+Right (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Geographic coordinate for corner of raster image. 
+
+\begin{DoxyReturn}{Returns}
+Coordinate, or an invalid coordinate in case of error. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{GeoTIFF_8h_source_l00080}{80}} of file \mbox{\hyperlink{GeoTIFF_8h_source}{Geo\+TIFF.\+h}}.
+
+\Hypertarget{classFileFormats_1_1GeoTIFF_a20f45bbf2f89bae5292116412903438a}\index{FileFormats::GeoTIFF@{FileFormats::GeoTIFF}!mimeTypes@{mimeTypes}}
+\index{mimeTypes@{mimeTypes}!FileFormats::GeoTIFF@{FileFormats::GeoTIFF}}
+\doxysubsubsection{\texorpdfstring{mimeTypes()}{mimeTypes()}}
+{\footnotesize\ttfamily \label{classFileFormats_1_1GeoTIFF_a20f45bbf2f89bae5292116412903438a} 
+static QString\+List File\+Formats\+::\+Geo\+TIFF\+::mime\+Types (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [nodiscard]}}
+
+
+
+Mime type for files that can be opened by this class. 
+
+\begin{DoxyReturn}{Returns}
+Name of mime type 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{GeoTIFF_8h_source_l00109}{109}} of file \mbox{\hyperlink{GeoTIFF_8h_source}{Geo\+TIFF.\+h}}.
+
+\Hypertarget{classFileFormats_1_1GeoTIFF_a7cc5034900021ad17e78ce7730f229f2}\index{FileFormats::GeoTIFF@{FileFormats::GeoTIFF}!name@{name}}
+\index{name@{name}!FileFormats::GeoTIFF@{FileFormats::GeoTIFF}}
+\doxysubsubsection{\texorpdfstring{name()}{name()}}
+{\footnotesize\ttfamily \label{classFileFormats_1_1GeoTIFF_a7cc5034900021ad17e78ce7730f229f2} 
+QString File\+Formats\+::\+Geo\+TIFF\+::name (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Name, as specified in the \doxylink{classFileFormats_1_1GeoTIFF}{Geo\+TIFF} file. 
+
+\begin{DoxyReturn}{Returns}
+The name or an empty string if no name is specified. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{GeoTIFF_8h_source_l00086}{86}} of file \mbox{\hyperlink{GeoTIFF_8h_source}{Geo\+TIFF.\+h}}.
+
+\Hypertarget{classFileFormats_1_1GeoTIFF_abc0dc3c09e81ee986023e2b49fbd1999}\index{FileFormats::GeoTIFF@{FileFormats::GeoTIFF}!topLeft@{topLeft}}
+\index{topLeft@{topLeft}!FileFormats::GeoTIFF@{FileFormats::GeoTIFF}}
+\doxysubsubsection{\texorpdfstring{topLeft()}{topLeft()}}
+{\footnotesize\ttfamily \label{classFileFormats_1_1GeoTIFF_abc0dc3c09e81ee986023e2b49fbd1999} 
+QGeo\+Coordinate File\+Formats\+::\+Geo\+TIFF\+::top\+Left (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Geographic coordinate for corner of raster image. 
+
+\begin{DoxyReturn}{Returns}
+Coordinate, or an invalid coordinate in case of error. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{GeoTIFF_8h_source_l00092}{92}} of file \mbox{\hyperlink{GeoTIFF_8h_source}{Geo\+TIFF.\+h}}.
+
+\Hypertarget{classFileFormats_1_1GeoTIFF_a2471ff22de57136630815f800117aa56}\index{FileFormats::GeoTIFF@{FileFormats::GeoTIFF}!topRight@{topRight}}
+\index{topRight@{topRight}!FileFormats::GeoTIFF@{FileFormats::GeoTIFF}}
+\doxysubsubsection{\texorpdfstring{topRight()}{topRight()}}
+{\footnotesize\ttfamily \label{classFileFormats_1_1GeoTIFF_a2471ff22de57136630815f800117aa56} 
+QGeo\+Coordinate File\+Formats\+::\+Geo\+TIFF\+::top\+Right (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Geographic coordinate for corner of raster image. 
+
+\begin{DoxyReturn}{Returns}
+Coordinate, or an invalid coordinate in case of error. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{GeoTIFF_8h_source_l00098}{98}} of file \mbox{\hyperlink{GeoTIFF_8h_source}{Geo\+TIFF.\+h}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/file\+Formats/Geo\+TIFF.\+h\end{DoxyCompactItemize}

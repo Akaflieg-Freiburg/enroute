@@ -1,0 +1,57 @@
+\doxysection{Position\+Info\+Source\+\_\+\+Satellite.\+h}
+\hypertarget{PositionInfoSource__Satellite_8h_source}{}\label{PositionInfoSource__Satellite_8h_source}\index{/home/runner/work/enroute/enroute/src/positioning/PositionInfoSource\_Satellite.h@{/home/runner/work/enroute/enroute/src/positioning/PositionInfoSource\_Satellite.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00001}00001\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00002}00002\ \textcolor{comment}{\ *\ \ \ Copyright\ (C)\ 2019-\/2020\ by\ Stefan\ Kebekus\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00003}00003\ \textcolor{comment}{\ *\ \ \ stefan.kebekus@gmail.com\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00004}00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ free\ software;\ you\ can\ redistribute\ it\ and/or\ modify\ \ *}}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00006}00006\ \textcolor{comment}{\ *\ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by\ \ *}}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00007}00007\ \textcolor{comment}{\ *\ \ \ the\ Free\ Software\ Foundation;\ either\ version\ 3\ of\ the\ License,\ or\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00008}00008\ \textcolor{comment}{\ *\ \ \ (at\ your\ option)\ any\ later\ version.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00009}00009\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00010}00010\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,\ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00011}00011\ \textcolor{comment}{\ *\ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of\ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00012}00012\ \textcolor{comment}{\ *\ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00013}00013\ \textcolor{comment}{\ *\ \ \ GNU\ General\ Public\ License\ for\ more\ details.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00014}00014\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00015}00015\ \textcolor{comment}{\ *\ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00016}00016\ \textcolor{comment}{\ *\ \ \ along\ with\ this\ program;\ if\ not,\ write\ to\ the\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00017}00017\ \textcolor{comment}{\ *\ \ \ Free\ Software\ Foundation,\ Inc.,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00018}00018\ \textcolor{comment}{\ *\ \ \ 59\ Temple\ Place\ -\/\ Suite\ 330,\ Boston,\ MA\ \ 02111-\/1307,\ USA.\ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00019}00019\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00021}00021\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ <QGeoPositionInfoSource>}}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00024}00024\ \textcolor{preprocessor}{\#include\ <QPointer>}}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00026}00026\ \textcolor{preprocessor}{\#include\ "{}positioning/PositionInfoSource\_Abstract.h"{}}}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00027}00027\ }
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00028}00028\ }
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00029}00029\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacePositioning}{Positioning}}\ \{}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00040}\mbox{\hyperlink{classPositioning_1_1PositionInfoSource__Satellite}{00040}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classPositioning_1_1PositionInfoSource__Satellite}{PositionInfoSource\_Satellite}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classPositioning_1_1PositionInfoSource__Abstract}{PositionInfoSource\_Abstract}}}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00041}00041\ \{}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00042}00042\ \ \ \ \ Q\_OBJECT}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00043}00043\ }
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00044}00044\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00049}\mbox{\hyperlink{classPositioning_1_1PositionInfoSource__Satellite_afd5d2d74cfaf6a27cb152e1e1d382541}{00049}}\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classPositioning_1_1PositionInfoSource__Satellite_afd5d2d74cfaf6a27cb152e1e1d382541}{PositionInfoSource\_Satellite}}(QObject\ *parent\ =\ \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00050}00050\ }
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00056}\mbox{\hyperlink{classPositioning_1_1PositionInfoSource__Satellite_a541cab495565e32892b73f5fe846b445}{00056}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classPositioning_1_1PositionInfoSource__Satellite_a541cab495565e32892b73f5fe846b445}{startUpdates}}();}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00057}00057\ }
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00058}00058\ \textcolor{keyword}{private}\ slots:}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00059}00059\ \ \ \ \ \textcolor{keywordtype}{void}\ onPositionUpdated(\textcolor{keyword}{const}\ QGeoPositionInfo\ \&info);}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00060}00060\ }
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00061}00061\ \ \ \ \ \textcolor{keywordtype}{void}\ updateStatusString();}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00062}00062\ }
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00063}00063\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00064}00064\ \ \ \ \ Q\_DISABLE\_COPY\_MOVE(\mbox{\hyperlink{classPositioning_1_1PositionInfoSource__Satellite}{PositionInfoSource\_Satellite}})}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00065}00065\ }
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00066}00066\ \ \ \ \ QPointer<QGeoPositionInfoSource>\ source\ \{\textcolor{keyword}{nullptr}\};}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00067}00067\ \};}
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00068}00068\ }
+\DoxyCodeLine{\Hypertarget{PositionInfoSource__Satellite_8h_source_l00069}00069\ \}\ \textcolor{comment}{//\ namespace\ Positioning}}
+
+\end{DoxyCode}

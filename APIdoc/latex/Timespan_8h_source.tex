@@ -1,0 +1,105 @@
+\doxysection{Timespan.\+h}
+\hypertarget{Timespan_8h_source}{}\label{Timespan_8h_source}\index{/home/runner/work/enroute/enroute/src/units/Timespan.h@{/home/runner/work/enroute/enroute/src/units/Timespan.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00001}00001\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00002}00002\ \textcolor{comment}{\ *\ \ \ Copyright\ (C)\ 2019-\/2023\ by\ Stefan\ Kebekus\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00003}00003\ \textcolor{comment}{\ *\ \ \ stefan.kebekus@gmail.com\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00004}00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ free\ software;\ you\ can\ redistribute\ it\ and/or\ modify\ \ *}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00006}00006\ \textcolor{comment}{\ *\ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by\ \ *}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00007}00007\ \textcolor{comment}{\ *\ \ \ the\ Free\ Software\ Foundation;\ either\ version\ 3\ of\ the\ License,\ or\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00008}00008\ \textcolor{comment}{\ *\ \ \ (at\ your\ option)\ any\ later\ version.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00009}00009\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00010}00010\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,\ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00011}00011\ \textcolor{comment}{\ *\ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of\ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00012}00012\ \textcolor{comment}{\ *\ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00013}00013\ \textcolor{comment}{\ *\ \ \ GNU\ General\ Public\ License\ for\ more\ details.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00014}00014\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00015}00015\ \textcolor{comment}{\ *\ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00016}00016\ \textcolor{comment}{\ *\ \ \ along\ with\ this\ program;\ if\ not,\ write\ to\ the\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00017}00017\ \textcolor{comment}{\ *\ \ \ Free\ Software\ Foundation,\ Inc.,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00018}00018\ \textcolor{comment}{\ *\ \ \ 59\ Temple\ Place\ -\/\ Suite\ 330,\ Boston,\ MA\ \ 02111-\/1307,\ USA.\ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00019}00019\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00021}00021\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ <QObject>}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00024}00024\ \textcolor{preprocessor}{\#include\ <QQmlEngine>}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00025}00025\ \textcolor{preprocessor}{\#include\ <QtMath>}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00027}00027\ }
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00028}00028\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceUnits}{Units}}\ \{}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00029}00029\ }
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00035}\mbox{\hyperlink{classUnits_1_1Timespan}{00035}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classUnits_1_1Timespan}{Timespan}}\ \{}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00036}00036\ \ \ \ \ \ \ \ \ Q\_GADGET}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00037}00037\ \ \ \ \ \ \ \ \ QML\_VALUE\_TYPE(time)}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00038}00038\ }
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00039}00039\ \ \ \ \ \textcolor{keyword}{public}:\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00046}\mbox{\hyperlink{classUnits_1_1Timespan_adcdb6c19fbbcf3dbae8da5fbe8ee1168}{00046}}\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classUnits_1_1Timespan_adcdb6c19fbbcf3dbae8da5fbe8ee1168}{fromH}}(\textcolor{keywordtype}{double}\ timeInH)\ -\/>\ \mbox{\hyperlink{classUnits_1_1Timespan}{Timespan}}\ \{}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00047}00047\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classUnits_1_1Timespan}{Timespan}}\ result;}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00048}00048\ \ \ \ \ \ \ \ \ \ \ \ \ result.m\_timeInS\ =\ timeInH*Seconds\_per\_Hour;}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00049}00049\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00050}00050\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00051}00051\ }
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00058}\mbox{\hyperlink{classUnits_1_1Timespan_ab816ba586f640999c1423009dfa636af}{00058}}\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classUnits_1_1Timespan_ab816ba586f640999c1423009dfa636af}{fromMS}}(\textcolor{keywordtype}{double}\ timeInMS)\ -\/>\ \mbox{\hyperlink{classUnits_1_1Timespan}{Timespan}}\ \{}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00059}00059\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classUnits_1_1Timespan}{Timespan}}\ result;}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00060}00060\ \ \ \ \ \ \ \ \ \ \ \ \ result.m\_timeInS\ =\ qRound(timeInMS/1000.0);}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00061}00061\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00062}00062\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00063}00063\ }
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00070}\mbox{\hyperlink{classUnits_1_1Timespan_afdeefa6531dcb0740e26691c6f315b38}{00070}}\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classUnits_1_1Timespan_afdeefa6531dcb0740e26691c6f315b38}{fromS}}(\textcolor{keywordtype}{double}\ timeInS)\ -\/>\ \mbox{\hyperlink{classUnits_1_1Timespan}{Timespan}}\ \{}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00071}00071\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classUnits_1_1Timespan}{Timespan}}\ result;}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00072}00072\ \ \ \ \ \ \ \ \ \ \ \ \ result.m\_timeInS\ =\ timeInS;}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00073}00073\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00074}00074\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00075}00075\ }
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00080}\mbox{\hyperlink{classUnits_1_1Timespan_adc5c368ce4c8b47c6f59bb5ca4b9471a}{00080}}\ \ \ \ \ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classUnits_1_1Timespan_adc5c368ce4c8b47c6f59bb5ca4b9471a}{isFinite}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00081}00081\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00082}00082\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::isfinite(m\_timeInS);}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00083}00083\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00084}00084\ }
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00089}\mbox{\hyperlink{classUnits_1_1Timespan_a9aee46665b686fbd9128e75860861120}{00089}}\ \ \ \ \ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classUnits_1_1Timespan_a9aee46665b686fbd9128e75860861120}{isNegative}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00090}00090\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00091}00091\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_timeInS\ <\ 0.0;}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00092}00092\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00093}00093\ }
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00100}\mbox{\hyperlink{classUnits_1_1Timespan_a87ba35e3d41576718036e5e3f8689546}{00100}}\ \ \ \ \ \ \ \ \ Q\_INVOKABLE\ \mbox{\hyperlink{classUnits_1_1Timespan}{Units::Timespan}}\&\ \mbox{\hyperlink{classUnits_1_1Timespan_a87ba35e3d41576718036e5e3f8689546}{operator+=}}(\mbox{\hyperlink{classUnits_1_1Timespan}{Units::Timespan}}\ other)}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00101}00101\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00102}00102\ \ \ \ \ \ \ \ \ \ \ \ \ m\_timeInS\ +=\ other.m\_timeInS;}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00103}00103\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00104}00104\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00105}00105\ }
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00112}\mbox{\hyperlink{classUnits_1_1Timespan_ad53cf1774092ba90cd7773e08e4dc3bd}{00112}}\ \ \ \ \ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ std::partial\_ordering\ \mbox{\hyperlink{classUnits_1_1Timespan_ad53cf1774092ba90cd7773e08e4dc3bd}{operator<=>}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classUnits_1_1Timespan}{Units::Timespan}}\&\ rhs)\ \textcolor{keyword}{const}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00113}00113\ }
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00118}\mbox{\hyperlink{classUnits_1_1Timespan_acfab9f3821cca88fdb899556f8574d23}{00118}}\ \ \ \ \ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classUnits_1_1Timespan_acfab9f3821cca88fdb899556f8574d23}{toS}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00119}00119\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00120}00120\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_timeInS;}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00121}00121\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00122}00122\ }
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00127}\mbox{\hyperlink{classUnits_1_1Timespan_ac956d9225b6e38aa044af696e1029d89}{00127}}\ \ \ \ \ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classUnits_1_1Timespan_ac956d9225b6e38aa044af696e1029d89}{toM}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00128}00128\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00129}00129\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_timeInS\ /\ Seconds\_per\_Minute;}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00130}00130\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00131}00131\ }
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00136}\mbox{\hyperlink{classUnits_1_1Timespan_af3615fcbd2220b0388cfd19a0413696d}{00136}}\ \ \ \ \ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classUnits_1_1Timespan_af3615fcbd2220b0388cfd19a0413696d}{toH}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00137}00137\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00138}00138\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_timeInS\ /\ Seconds\_per\_Hour;}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00139}00139\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00140}00140\ }
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00145}\mbox{\hyperlink{classUnits_1_1Timespan_a362a7ffa482a99457e74bfcd13039640}{00145}}\ \ \ \ \ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ QString\ \mbox{\hyperlink{classUnits_1_1Timespan_a362a7ffa482a99457e74bfcd13039640}{toHoursAndMinutes}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00146}00146\ }
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00147}00147\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00148}00148\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{double}\ Seconds\_per\_Minute\ =\ 60.0;}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00149}00149\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{double}\ Seconds\_per\_Hour\ =\ 60.0\ *\ 60.0;}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00150}00150\ }
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00151}00151\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Speed\ in\ meters\ per\ second}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00152}00152\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ m\_timeInS\{qQNaN()\};}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00153}00153\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00154}00154\ \}\ \textcolor{comment}{//\ namespace\ Units}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00155}00155\ }
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00156}00156\ }
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00157}00157\ \textcolor{comment}{//\ Declare\ meta\ types}}
+\DoxyCodeLine{\Hypertarget{Timespan_8h_source_l00158}00158\ Q\_DECLARE\_METATYPE(\mbox{\hyperlink{classUnits_1_1Timespan}{Units::Timespan}})}
+
+\end{DoxyCode}

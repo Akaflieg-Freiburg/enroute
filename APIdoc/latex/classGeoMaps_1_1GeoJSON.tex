@@ -1,0 +1,131 @@
+\doxysection{Geo\+Maps\+::Geo\+JSON Class Reference}
+\hypertarget{classGeoMaps_1_1GeoJSON}{}\label{classGeoMaps_1_1GeoJSON}\index{GeoMaps::GeoJSON@{GeoMaps::GeoJSON}}
+
+
+\doxylink{classGeoMaps_1_1GeoJSON}{Geo\+JSON} file support class.  
+
+
+
+
+{\ttfamily \#include $<$Geo\+JSON.\+h$>$}
+
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{classGeoMaps_1_1GeoJSON_aa34f0276509de6ff0e91a382d7a757e9}{file\+Content}} 
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static QString \mbox{\hyperlink{classGeoMaps_1_1GeoJSON_a5c287d8496e474d353089c459b645fd4}{indicator\+Flight\+Route}} ()
+\item 
+static QString \mbox{\hyperlink{classGeoMaps_1_1GeoJSON_a3fa026f70c9a0def83e59778b6a5aa9e}{indicator\+Waypoint\+Library}} ()
+\item 
+static \mbox{\hyperlink{classGeoMaps_1_1GeoJSON_aa34f0276509de6ff0e91a382d7a757e9}{file\+Content}} \mbox{\hyperlink{classGeoMaps_1_1GeoJSON_ab6fe5dfc986e86180471987a4d5a2b11}{inspect}} (const QString \&file\+Name)
+\begin{DoxyCompactList}\small\item\em Inspect file. \end{DoxyCompactList}\item 
+static QVector$<$ \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Geo\+Maps\+::\+Waypoint}} $>$ \mbox{\hyperlink{classGeoMaps_1_1GeoJSON_a122432bb6731f35fd711193f6e102e5b}{read}} (const QString \&file\+Name)
+\begin{DoxyCompactList}\small\item\em Read a \doxylink{classGeoMaps_1_1GeoJSON}{Geo\+JSON} file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\doxylink{classGeoMaps_1_1GeoJSON}{Geo\+JSON} file support class. 
+
+The methods of this class read \doxylink{classGeoMaps_1_1GeoJSON}{Geo\+JSON} waypoint files, as specified here\+: \href{https://geojson.org/}{\texttt{ https\+://geojson.\+org/}} 
+
+Definition at line \mbox{\hyperlink{GeoJSON_8h_source_l00034}{34}} of file \mbox{\hyperlink{GeoJSON_8h_source}{Geo\+JSON.\+h}}.
+
+
+
+\doxysubsection{Member Enumeration Documentation}
+\Hypertarget{classGeoMaps_1_1GeoJSON_aa34f0276509de6ff0e91a382d7a757e9}\index{GeoMaps::GeoJSON@{GeoMaps::GeoJSON}!fileContent@{fileContent}}
+\index{fileContent@{fileContent}!GeoMaps::GeoJSON@{GeoMaps::GeoJSON}}
+\doxysubsubsection{\texorpdfstring{fileContent}{fileContent}}
+{\footnotesize\ttfamily \label{classGeoMaps_1_1GeoJSON_aa34f0276509de6ff0e91a382d7a757e9} 
+enum \mbox{\hyperlink{classGeoMaps_1_1GeoJSON_aa34f0276509de6ff0e91a382d7a757e9}{Geo\+Maps\+::\+Geo\+JSON\+::file\+Content}}}
+
+File type 
+
+Definition at line \mbox{\hyperlink{GeoJSON_8h_source_l00039}{39}} of file \mbox{\hyperlink{GeoJSON_8h_source}{Geo\+JSON.\+h}}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classGeoMaps_1_1GeoJSON_a5c287d8496e474d353089c459b645fd4}\index{GeoMaps::GeoJSON@{GeoMaps::GeoJSON}!indicatorFlightRoute@{indicatorFlightRoute}}
+\index{indicatorFlightRoute@{indicatorFlightRoute}!GeoMaps::GeoJSON@{GeoMaps::GeoJSON}}
+\doxysubsubsection{\texorpdfstring{indicatorFlightRoute()}{indicatorFlightRoute()}}
+{\footnotesize\ttfamily \label{classGeoMaps_1_1GeoJSON_a5c287d8496e474d353089c459b645fd4} 
+static QString Geo\+Maps\+::\+Geo\+JSON\+::indicator\+Flight\+Route (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+Indicator string for flight routes
+
+A \doxylink{classGeoMaps_1_1GeoJSON}{Geo\+JSON} file is expected to contain a flight route if this string appears as \textquotesingle{}enroute\textquotesingle{} in the top-\/level JSON objects.
+
+\begin{DoxyReturn}{Returns}
+Indicator string 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{GeoJSON_8h_source_l00053}{53}} of file \mbox{\hyperlink{GeoJSON_8h_source}{Geo\+JSON.\+h}}.
+
+\Hypertarget{classGeoMaps_1_1GeoJSON_a3fa026f70c9a0def83e59778b6a5aa9e}\index{GeoMaps::GeoJSON@{GeoMaps::GeoJSON}!indicatorWaypointLibrary@{indicatorWaypointLibrary}}
+\index{indicatorWaypointLibrary@{indicatorWaypointLibrary}!GeoMaps::GeoJSON@{GeoMaps::GeoJSON}}
+\doxysubsubsection{\texorpdfstring{indicatorWaypointLibrary()}{indicatorWaypointLibrary()}}
+{\footnotesize\ttfamily \label{classGeoMaps_1_1GeoJSON_a3fa026f70c9a0def83e59778b6a5aa9e} 
+static QString Geo\+Maps\+::\+Geo\+JSON\+::indicator\+Waypoint\+Library (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+Indicator string for flight routes
+
+A \doxylink{classGeoMaps_1_1GeoJSON}{Geo\+JSON} file is expected to contain a waypoint library if this string appears as \textquotesingle{}enroute\textquotesingle{} in the top-\/level JSON objects.
+
+\begin{DoxyReturn}{Returns}
+Indicator string 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{GeoJSON_8h_source_l00065}{65}} of file \mbox{\hyperlink{GeoJSON_8h_source}{Geo\+JSON.\+h}}.
+
+\Hypertarget{classGeoMaps_1_1GeoJSON_ab6fe5dfc986e86180471987a4d5a2b11}\index{GeoMaps::GeoJSON@{GeoMaps::GeoJSON}!inspect@{inspect}}
+\index{inspect@{inspect}!GeoMaps::GeoJSON@{GeoMaps::GeoJSON}}
+\doxysubsubsection{\texorpdfstring{inspect()}{inspect()}}
+{\footnotesize\ttfamily \label{classGeoMaps_1_1GeoJSON_ab6fe5dfc986e86180471987a4d5a2b11} 
+static \mbox{\hyperlink{classGeoMaps_1_1GeoJSON_aa34f0276509de6ff0e91a382d7a757e9}{file\+Content}} Geo\+Maps\+::\+Geo\+JSON\+::inspect (\begin{DoxyParamCaption}\item[{const QString \&}]{file\+Name}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Inspect file. 
+
+This method reads a file, to check if it contains \doxylink{classGeoMaps_1_1GeoJSON}{Geo\+JSON} data. If so, it tries to determine the type of the datat
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Name} & Name of a file\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Most probably file type 
+\end{DoxyReturn}
+\Hypertarget{classGeoMaps_1_1GeoJSON_a122432bb6731f35fd711193f6e102e5b}\index{GeoMaps::GeoJSON@{GeoMaps::GeoJSON}!read@{read}}
+\index{read@{read}!GeoMaps::GeoJSON@{GeoMaps::GeoJSON}}
+\doxysubsubsection{\texorpdfstring{read()}{read()}}
+{\footnotesize\ttfamily \label{classGeoMaps_1_1GeoJSON_a122432bb6731f35fd711193f6e102e5b} 
+static QVector$<$ \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Geo\+Maps\+::\+Waypoint}} $>$ Geo\+Maps\+::\+Geo\+JSON\+::read (\begin{DoxyParamCaption}\item[{const QString \&}]{file\+Name}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Read a \doxylink{classGeoMaps_1_1GeoJSON}{Geo\+JSON} file. 
+
+This method reads a \doxylink{classGeoMaps_1_1GeoJSON}{Geo\+JSON} file and generates a vector of waypoints.
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Name} & Name of a CUP file\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+QVector with waypoints. The vector is empty in case of an error. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/geomaps/Geo\+JSON.\+h\end{DoxyCompactItemize}

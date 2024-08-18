@@ -1,0 +1,135 @@
+\doxysection{Sensors.\+h}
+\hypertarget{Sensors_8h_source}{}\label{Sensors_8h_source}\index{/home/runner/work/enroute/enroute/src/Sensors.h@{/home/runner/work/enroute/enroute/src/Sensors.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00001}00001\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00002}00002\ \textcolor{comment}{\ *\ \ \ Copyright\ (C)\ 2023\ by\ Stefan\ Kebekus\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00003}00003\ \textcolor{comment}{\ *\ \ \ stefan.kebekus@gmail.com\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00004}00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ free\ software;\ you\ can\ redistribute\ it\ and/or\ modify\ \ *}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00006}00006\ \textcolor{comment}{\ *\ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by\ \ *}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00007}00007\ \textcolor{comment}{\ *\ \ \ the\ Free\ Software\ Foundation;\ either\ version\ 3\ of\ the\ License,\ or\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00008}00008\ \textcolor{comment}{\ *\ \ \ (at\ your\ option)\ any\ later\ version.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00009}00009\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00010}00010\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,\ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00011}00011\ \textcolor{comment}{\ *\ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of\ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00012}00012\ \textcolor{comment}{\ *\ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00013}00013\ \textcolor{comment}{\ *\ \ \ GNU\ General\ Public\ License\ for\ more\ details.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00014}00014\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00015}00015\ \textcolor{comment}{\ *\ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00016}00016\ \textcolor{comment}{\ *\ \ \ along\ with\ this\ program;\ if\ not,\ write\ to\ the\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00017}00017\ \textcolor{comment}{\ *\ \ \ Free\ Software\ Foundation,\ Inc.,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00018}00018\ \textcolor{comment}{\ *\ \ \ 59\ Temple\ Place\ -\/\ Suite\ 330,\ Boston,\ MA\ \ 02111-\/1307,\ USA.\ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00019}00019\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00021}00021\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ <QQmlEngine>}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00024}00024\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00025}00025\ \textcolor{preprocessor}{\#include\ "{}GlobalObject.h"{}}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00026}00026\ \textcolor{preprocessor}{\#include\ "{}navigation/Atmosphere.h"{}}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00027}00027\ \textcolor{preprocessor}{\#include\ "{}units/Pressure.h"{}}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00028}00028\ \textcolor{preprocessor}{\#include\ "{}units/Temperature.h"{}}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00029}00029\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00030}00030\ \textcolor{preprocessor}{\#if\ defined(Q\_OS\_ANDROID)\ or\ defined(Q\_OS\_IOS)}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00031}00031\ \textcolor{preprocessor}{\#include\ <QAmbientTemperatureSensor>}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00032}00032\ \textcolor{preprocessor}{\#include\ <QPressureSensor>}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00033}00033\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00034}00034\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00035}00035\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00042}\mbox{\hyperlink{classSensors}{00042}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classSensors}{Sensors}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classGlobalObject}{GlobalObject}}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00043}00043\ \{}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00044}00044\ \ \ \ \ Q\_OBJECT}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00045}00045\ \ \ \ \ QML\_ELEMENT}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00046}00046\ \ \ \ \ QML\_SINGLETON}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00047}00047\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00048}00048\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00049}00049\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00050}00050\ \ \ \ \ \textcolor{comment}{//\ Constructors\ and\ destructors}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00051}00051\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00052}00052\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00057}\mbox{\hyperlink{classSensors_ad629186293e8b68dd553c9a7bcff7ee4}{00057}}\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classSensors_ad629186293e8b68dd553c9a7bcff7ee4}{Sensors}}(QObject*\ parent\ =\ \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00058}00058\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00059}00059\ \ \ \ \ \textcolor{comment}{//\ deferred\ initialization}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00060}\mbox{\hyperlink{classSensors_a07b172fffe0efe4f670e247eba8182c9}{00060}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classSensors_a07b172fffe0efe4f670e247eba8182c9}{deferredInitialization}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00061}00061\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00062}00062\ \ \ \ \ \textcolor{comment}{//\ No\ default\ constructor,\ important\ for\ QML\ singleton}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00063}00063\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classSensors}{Sensors}}()\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00064}00064\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00066}\mbox{\hyperlink{classSensors_a52769bd0b6485975ed2a2090aa78b11a}{00066}}\ \ \ \ \ \mbox{\hyperlink{classSensors_a52769bd0b6485975ed2a2090aa78b11a}{\string~Sensors}}()\ \textcolor{keyword}{override}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00067}00067\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00068}00068\ \ \ \ \ \textcolor{comment}{//\ factory\ function\ for\ QML\ singleton}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00069}00069\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classSensors}{Sensors}}*\ create(QQmlEngine*\ \textcolor{comment}{/*unused*/},\ QJSEngine*\ \textcolor{comment}{/*unused*/})}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00070}00070\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00071}00071\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classGlobalObject_a8df42e3160bee431602e14e9b605ffa8}{GlobalObject::sensors}}();}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00072}00072\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00073}00073\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00074}00074\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00075}00075\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00076}00076\ \ \ \ \ \textcolor{comment}{//\ PROPERTIES}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00077}00077\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00078}00078\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00083}\mbox{\hyperlink{classSensors_af895099ff188313beb8a6736ff3de818}{00083}}\ \ \ \ \ Q\_PROPERTY(\mbox{\hyperlink{classUnits_1_1Density}{Units::Density}}\ \mbox{\hyperlink{classSensors_af895099ff188313beb8a6736ff3de818}{ambientDensity}}\ READ\ \mbox{\hyperlink{classSensors_af895099ff188313beb8a6736ff3de818}{ambientDensity}}\ NOTIFY\ \mbox{\hyperlink{classSensors_ace290a83f404703ac5aa3fafa80472b2}{ambientDensityChanged}})}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00084}00084\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00085}00085\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00089}\mbox{\hyperlink{classSensors_a66597ec26a323abe0dc01e4c37232697}{00089}}\ \ \ \ \ Q\_PROPERTY(\mbox{\hyperlink{namespaceUnits}{Units}}::Pressure\ \mbox{\hyperlink{classSensors_a66597ec26a323abe0dc01e4c37232697}{ambientPressure}}\ READ\ \mbox{\hyperlink{classSensors_a66597ec26a323abe0dc01e4c37232697}{ambientPressure}}\ NOTIFY\ \mbox{\hyperlink{classSensors_a2720a231f3bbe8430b891e2e37ee1767}{ambientPressureChanged}})}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00090}00090\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00095}\mbox{\hyperlink{classSensors_a58f2dd3fd817273e00cb7c560ad21bd3}{00095}}\ \ \ \ \ Q\_PROPERTY(\mbox{\hyperlink{namespaceUnits}{Units}}::Temperature\ \mbox{\hyperlink{classSensors_a58f2dd3fd817273e00cb7c560ad21bd3}{ambientTemperature}}\ READ\ \mbox{\hyperlink{classSensors_a58f2dd3fd817273e00cb7c560ad21bd3}{ambientTemperature}}\ NOTIFY\ \mbox{\hyperlink{classSensors_a1684d58c129c37af9bfd72240529a15e}{ambientTemperatureChanged}})}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00096}00096\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00101}\mbox{\hyperlink{classSensors_af4a9a396e5c87709ca3536332175393c}{00101}}\ \ \ \ \ Q\_PROPERTY(\mbox{\hyperlink{namespaceUnits}{Units}}::Distance\ \mbox{\hyperlink{classSensors_af4a9a396e5c87709ca3536332175393c}{densityAltitude}}\ READ\ \mbox{\hyperlink{classSensors_af4a9a396e5c87709ca3536332175393c}{densityAltitude}}\ NOTIFY\ \mbox{\hyperlink{classSensors_ace290a83f404703ac5aa3fafa80472b2}{ambientDensityChanged}})}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00102}00102\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00108}\mbox{\hyperlink{classSensors_ad9711b650ab1f0a5e4ee549a465b05ad}{00108}}\ \ \ \ \ Q\_PROPERTY(\mbox{\hyperlink{namespaceUnits}{Units}}::Distance\ \mbox{\hyperlink{classSensors_ad9711b650ab1f0a5e4ee549a465b05ad}{pressureAltitude}}\ READ\ \mbox{\hyperlink{classSensors_ad9711b650ab1f0a5e4ee549a465b05ad}{pressureAltitude}}\ NOTIFY\ \mbox{\hyperlink{classSensors_a2720a231f3bbe8430b891e2e37ee1767}{ambientPressureChanged}})}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00109}00109\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00111}\mbox{\hyperlink{classSensors_a91ddefff4cccb916dfc0a4e11b653a6b}{00111}}\ \ \ \ \ Q\_PROPERTY(QString\ \mbox{\hyperlink{classSensors_a91ddefff4cccb916dfc0a4e11b653a6b}{statusString}}\ READ\ \mbox{\hyperlink{classSensors_a91ddefff4cccb916dfc0a4e11b653a6b}{statusString}}\ NOTIFY\ \mbox{\hyperlink{classSensors_a85e57fbd4f614b86217ba8bdb1dac8d6}{statusStringChanged}})}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00112}00112\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00113}00113\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00114}00114\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00115}00115\ \ \ \ \ \textcolor{comment}{//\ Getter\ Methods}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00116}00116\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00117}00117\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00122}\mbox{\hyperlink{classSensors_a99b3cf295dcf04f7872b6a5e2c25ba07}{00122}}\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{namespaceUnits}{Units}}::Density\ \mbox{\hyperlink{classSensors_af895099ff188313beb8a6736ff3de818}{ambientDensity}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_ambientDensity;\ \}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00123}00123\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00128}\mbox{\hyperlink{classSensors_ac02055299495ef30630491d3a2281883}{00128}}\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{classUnits_1_1Pressure}{Units::Pressure}}\ \mbox{\hyperlink{classSensors_ac02055299495ef30630491d3a2281883}{ambientPressure}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_ambientPressure;\ \}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00129}00129\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00134}\mbox{\hyperlink{classSensors_a8a48910b0d20872db2d887f3295c23f9}{00134}}\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{classUnits_1_1Temperature}{Units::Temperature}}\ \mbox{\hyperlink{classSensors_a8a48910b0d20872db2d887f3295c23f9}{ambientTemperature}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_ambientTemperature;\ \}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00135}00135\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00140}\mbox{\hyperlink{classSensors_aadb8410d35f8dbbbdd08a04d89e384ca}{00140}}\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{classUnits_1_1Distance}{Units::Distance}}\ \mbox{\hyperlink{classSensors_aadb8410d35f8dbbbdd08a04d89e384ca}{pressureAltitude}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classNavigation_1_1Atmosphere_a6c7b84653047ee6b673160ed7adf6090}{Navigation::Atmosphere::height}}(m\_ambientPressure);\ \}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00141}00141\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00146}\mbox{\hyperlink{classSensors_a4eea1f80a587af0bb948920fac37949b}{00146}}\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{classUnits_1_1Distance}{Units::Distance}}\ \mbox{\hyperlink{classSensors_a4eea1f80a587af0bb948920fac37949b}{densityAltitude}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classNavigation_1_1Atmosphere_a6c7b84653047ee6b673160ed7adf6090}{Navigation::Atmosphere::height}}(\mbox{\hyperlink{classNavigation_1_1Atmosphere_a58eca1259b5fc1b207f826c654f31720}{Navigation::Atmosphere::density}}(m\_ambientPressure,\ m\_ambientTemperature));\ \}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00147}00147\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00152}\mbox{\hyperlink{classSensors_a1f15ac1a94879409f70cb7600daf25ef}{00152}}\ \ \ \ \ [[nodiscard]]\ QString\ \mbox{\hyperlink{classSensors_a1f15ac1a94879409f70cb7600daf25ef}{statusString}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_statusString;\ \}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00153}00153\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00154}00154\ signals:}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00156}\mbox{\hyperlink{classSensors_ace290a83f404703ac5aa3fafa80472b2}{00156}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classSensors_ace290a83f404703ac5aa3fafa80472b2}{ambientDensityChanged}}();}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00157}00157\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00159}\mbox{\hyperlink{classSensors_a2720a231f3bbe8430b891e2e37ee1767}{00159}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classSensors_a2720a231f3bbe8430b891e2e37ee1767}{ambientPressureChanged}}();}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00160}00160\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00162}\mbox{\hyperlink{classSensors_a1684d58c129c37af9bfd72240529a15e}{00162}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classSensors_a1684d58c129c37af9bfd72240529a15e}{ambientTemperatureChanged}}();}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00163}00163\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00165}\mbox{\hyperlink{classSensors_a85e57fbd4f614b86217ba8bdb1dac8d6}{00165}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classSensors_a85e57fbd4f614b86217ba8bdb1dac8d6}{statusStringChanged}}();}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00166}00166\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00167}00167\ \textcolor{keyword}{private}\ slots:}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00168}00168\ \ \ \ \ \textcolor{comment}{//\ Update\ sensor\ readings.\ For\ performance\ reasons,\ we\ poll\ sensors.}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00169}00169\ \ \ \ \ \textcolor{keywordtype}{void}\ updateSensorReadings();}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00170}00170\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00171}00171\ \ \ \ \ \textcolor{comment}{//\ Update\ the\ status\ string}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00172}00172\ \ \ \ \ \textcolor{keywordtype}{void}\ updateStatusString();}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00173}00173\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00174}00174\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00175}00175\ \ \ \ \ Q\_DISABLE\_COPY\_MOVE(\mbox{\hyperlink{classSensors}{Sensors}})}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00176}00176\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00177}00177\ \textcolor{preprocessor}{\#if\ defined(Q\_OS\_ANDROID)\ or\ defined(Q\_OS\_IOS)}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00178}00178\ \ \ \ \ \textcolor{comment}{//\ Ambient\ temperature\ sensor}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00179}00179\ \ \ \ \ QAmbientTemperatureSensor\ m\_temperatureSensor;}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00180}00180\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00181}00181\ \ \ \ \ \textcolor{comment}{//\ Ambient\ pressure\ sensor}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00182}00182\ \ \ \ \ QPressureSensor\ m\_pressureSensor;}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00183}00183\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00184}00184\ }
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00185}00185\ \ \ \ \ \mbox{\hyperlink{classUnits_1_1Density}{Units::Density}}\ m\_ambientDensity;}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00186}00186\ \ \ \ \ \mbox{\hyperlink{classUnits_1_1Pressure}{Units::Pressure}}\ m\_ambientPressure;}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00187}00187\ \ \ \ \ \mbox{\hyperlink{classUnits_1_1Temperature}{Units::Temperature}}\ m\_ambientTemperature;}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00188}00188\ \ \ \ \ QString\ m\_statusString;}
+\DoxyCodeLine{\Hypertarget{Sensors_8h_source_l00189}00189\ \};}
+
+\end{DoxyCode}

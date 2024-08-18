@@ -1,0 +1,110 @@
+\doxysection{Traffic\+Factor\+\_\+\+With\+Position.\+h}
+\hypertarget{TrafficFactor__WithPosition_8h_source}{}\label{TrafficFactor__WithPosition_8h_source}\index{/home/runner/work/enroute/enroute/src/traffic/TrafficFactor\_WithPosition.h@{/home/runner/work/enroute/enroute/src/traffic/TrafficFactor\_WithPosition.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00001}00001\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00002}00002\ \textcolor{comment}{\ *\ \ \ Copyright\ (C)\ 2021-\/2024\ by\ Stefan\ Kebekus\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00003}00003\ \textcolor{comment}{\ *\ \ \ stefan.kebekus@gmail.com\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00004}00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ free\ software;\ you\ can\ redistribute\ it\ and/or\ modify\ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00006}00006\ \textcolor{comment}{\ *\ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by\ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00007}00007\ \textcolor{comment}{\ *\ \ \ the\ Free\ Software\ Foundation;\ either\ version\ 3\ of\ the\ License,\ or\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00008}00008\ \textcolor{comment}{\ *\ \ \ (at\ your\ option)\ any\ later\ version.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00009}00009\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00010}00010\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,\ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00011}00011\ \textcolor{comment}{\ *\ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of\ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00012}00012\ \textcolor{comment}{\ *\ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00013}00013\ \textcolor{comment}{\ *\ \ \ GNU\ General\ Public\ License\ for\ more\ details.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00014}00014\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00015}00015\ \textcolor{comment}{\ *\ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00016}00016\ \textcolor{comment}{\ *\ \ \ along\ with\ this\ program;\ if\ not,\ write\ to\ the\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00017}00017\ \textcolor{comment}{\ *\ \ \ Free\ Software\ Foundation,\ Inc.,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00018}00018\ \textcolor{comment}{\ *\ \ \ 59\ Temple\ Place\ -\/\ Suite\ 330,\ Boston,\ MA\ \ 02111-\/1307,\ USA.\ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00019}00019\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00021}00021\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ "{}positioning/PositionInfo.h"{}}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00024}00024\ \textcolor{preprocessor}{\#include\ "{}traffic/TrafficFactor\_Abstract.h"{}}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00027}00027\ \textcolor{keyword}{namespace\ }Traffic\ \{}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00028}00028\ }
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00029}00029\ }
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00038}\mbox{\hyperlink{classTraffic_1_1TrafficFactor__WithPosition}{00038}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTraffic_1_1TrafficFactor__WithPosition}{TrafficFactor\_WithPosition}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract}{TrafficFactor\_Abstract}}\ \{}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00039}00039\ \ \ \ \ Q\_OBJECT}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00040}00040\ \ \ \ \ QML\_ELEMENT}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00041}00041\ }
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00042}00042\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00047}\mbox{\hyperlink{classTraffic_1_1TrafficFactor__WithPosition_aa3fc91c8daddefeae49250815df99120}{00047}}\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classTraffic_1_1TrafficFactor__WithPosition_aa3fc91c8daddefeae49250815df99120}{TrafficFactor\_WithPosition}}(QObject\ *parent\ =\ \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00048}00048\ }
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00049}00049\ \ \ \ \ \textcolor{comment}{//\ Standard\ destructor}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00050}00050\ \ \ \ \ \mbox{\hyperlink{classTraffic_1_1TrafficFactor__WithPosition}{\string~TrafficFactor\_WithPosition}}()\ \textcolor{keyword}{override}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00051}00051\ }
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00052}00052\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00053}00053\ \ \ \ \ \textcolor{comment}{//\ Methods}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00054}00054\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00055}00055\ }
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00065}\mbox{\hyperlink{classTraffic_1_1TrafficFactor__WithPosition_af4bcae1deb04f9f86a83485b9fc812ec}{00065}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTraffic_1_1TrafficFactor__WithPosition_af4bcae1deb04f9f86a83485b9fc812ec}{copyFrom}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTraffic_1_1TrafficFactor__WithPosition}{TrafficFactor\_WithPosition}}\&\ other)}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00066}00066\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00067}00067\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTraffic_1_1TrafficFactor__WithPosition_a7bb3021ae77a4ea07b24844a0ded12d5}{setPositionInfo}}(other.\mbox{\hyperlink{classTraffic_1_1TrafficFactor__WithPosition_a6ccf08071b251ceccc88c58fd2643b64}{positionInfo}}());}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00068}00068\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTraffic_1_1TrafficFactor__Abstract_aee61977cb69a8dc34ecddba7ea73607b}{TrafficFactor\_Abstract::copyFrom}}(other);\ \textcolor{comment}{//\ This\ will\ also\ call\ updateDescription}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00069}00069\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00070}00070\ }
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00071}00071\ }
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00072}00072\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00073}00073\ \ \ \ \ \textcolor{comment}{//\ PROPERTIES}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00074}00074\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00075}00075\ }
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00081}\mbox{\hyperlink{classTraffic_1_1TrafficFactor__WithPosition_a56e258e5ec4f6083ebf2a31a0aa6896b}{00081}}\ \ \ \ \ Q\_PROPERTY(QString\ \mbox{\hyperlink{classTraffic_1_1TrafficFactor__WithPosition_a56e258e5ec4f6083ebf2a31a0aa6896b}{icon}}\ READ\ \mbox{\hyperlink{classTraffic_1_1TrafficFactor__WithPosition_a56e258e5ec4f6083ebf2a31a0aa6896b}{icon}}\ NOTIFY\ \mbox{\hyperlink{classTraffic_1_1TrafficFactor__WithPosition_a42b7ff4689eaa8226270ddfbe78f9756}{iconChanged}})}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00082}00082\ }
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00083}00083\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00087}\mbox{\hyperlink{classTraffic_1_1TrafficFactor__WithPosition_a1da50493e1f2d3d56109c9c8d00c6878}{00087}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classTraffic_1_1TrafficFactor__WithPosition_a1da50493e1f2d3d56109c9c8d00c6878}{icon}}()\ const\ -\/>\ QString}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00088}00088\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00089}00089\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_icon;}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00090}00090\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00091}00091\ }
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00093}\mbox{\hyperlink{classTraffic_1_1TrafficFactor__WithPosition_a6ccf08071b251ceccc88c58fd2643b64}{00093}}\ \ \ \ \ Q\_PROPERTY(\mbox{\hyperlink{classPositioning_1_1PositionInfo}{Positioning::PositionInfo}}\ \mbox{\hyperlink{classTraffic_1_1TrafficFactor__WithPosition_a6ccf08071b251ceccc88c58fd2643b64}{positionInfo}}\ READ\ \mbox{\hyperlink{classTraffic_1_1TrafficFactor__WithPosition_a6ccf08071b251ceccc88c58fd2643b64}{positionInfo}}\ WRITE\ \mbox{\hyperlink{classTraffic_1_1TrafficFactor__WithPosition_a7bb3021ae77a4ea07b24844a0ded12d5}{setPositionInfo}}\ NOTIFY\ \mbox{\hyperlink{classTraffic_1_1TrafficFactor__WithPosition_a537ef5184280f729598b703fadd27f2a}{positionInfoChanged}})}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00094}00094\ }
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00095}00095\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00099}\mbox{\hyperlink{classTraffic_1_1TrafficFactor__WithPosition_a8a21ab8bdf4925416d1919fabcd72a6d}{00099}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classTraffic_1_1TrafficFactor__WithPosition_a8a21ab8bdf4925416d1919fabcd72a6d}{positionInfo}}()\ const\ -\/>\ \mbox{\hyperlink{namespacePositioning}{Positioning}}::PositionInfo}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00100}00100\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00101}00101\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classPositioning_1_1PositionInfo}{Positioning::PositionInfo}}(m\_positionInfo);}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00102}00102\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00103}00103\ }
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00110}\mbox{\hyperlink{classTraffic_1_1TrafficFactor__WithPosition_a7bb3021ae77a4ea07b24844a0ded12d5}{00110}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTraffic_1_1TrafficFactor__WithPosition_a7bb3021ae77a4ea07b24844a0ded12d5}{setPositionInfo}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classPositioning_1_1PositionInfo}{Positioning::PositionInfo}}\&\ newPositionInfo);}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00111}00111\ }
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00112}00112\ }
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00113}00113\ signals:}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00115}\mbox{\hyperlink{classTraffic_1_1TrafficFactor__WithPosition_a42b7ff4689eaa8226270ddfbe78f9756}{00115}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTraffic_1_1TrafficFactor__WithPosition_a42b7ff4689eaa8226270ddfbe78f9756}{iconChanged}}();}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00116}00116\ }
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00118}\mbox{\hyperlink{classTraffic_1_1TrafficFactor__WithPosition_a537ef5184280f729598b703fadd27f2a}{00118}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTraffic_1_1TrafficFactor__WithPosition_a537ef5184280f729598b703fadd27f2a}{positionInfoChanged}}();}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00119}00119\ }
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00120}00120\ }
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00121}00121\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00122}00122\ \ \ \ \ \textcolor{comment}{//\ See\ documentation\ in\ base\ class}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00123}00123\ \ \ \ \ \textcolor{keywordtype}{void}\ updateDescription()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00124}00124\ }
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00125}00125\ \ \ \ \ \textcolor{comment}{//\ Updates\ property\ icon}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00126}00126\ \ \ \ \ \textcolor{keywordtype}{void}\ updateIcon();}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00127}00127\ }
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00128}00128\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00129}00129\ \ \ \ \ Q\_DISABLE\_COPY\_MOVE(\mbox{\hyperlink{classTraffic_1_1TrafficFactor__WithPosition}{TrafficFactor\_WithPosition}})}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00130}00130\ }
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00131}00131\ \ \ \ \ \textcolor{comment}{//\ Setter\ function\ for\ the\ property\ valid.\ Implementors\ of\ this\ class\ must\ bind\ this\ to\ the}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00132}00132\ \ \ \ \ \textcolor{comment}{//\ notifier\ signals\ of\ all\ the\ properties\ that\ validity\ depends\ on.}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00133}00133\ \ \ \ \ \textcolor{keywordtype}{void}\ updateValid()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00134}00134\ }
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00135}00135\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00136}00136\ \ \ \ \ \textcolor{comment}{//\ Property\ values}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00137}00137\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00138}00138\ \ \ \ \ QString\ m\_icon;}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00139}00139\ \ \ \ \ QGeoPositionInfo\ m\_positionInfo;}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00140}00140\ \ \ \ \ \mbox{\hyperlink{classUnits_1_1Distance}{Units::Distance}}\ m\_vDist;}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00141}00141\ \ \ \ \ \mbox{\hyperlink{classUnits_1_1Distance}{Units::Distance}}\ m\_hDist;}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00142}00142\ }
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00143}00143\ \};}
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00144}00144\ }
+\DoxyCodeLine{\Hypertarget{TrafficFactor__WithPosition_8h_source_l00145}00145\ \}\ \textcolor{comment}{//\ namespace\ Traffic}}
+
+\end{DoxyCode}

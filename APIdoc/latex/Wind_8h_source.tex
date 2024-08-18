@@ -1,0 +1,91 @@
+\doxysection{Wind.\+h}
+\hypertarget{Wind_8h_source}{}\label{Wind_8h_source}\index{/home/runner/work/enroute/enroute/src/weather/Wind.h@{/home/runner/work/enroute/enroute/src/weather/Wind.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00001}00001\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00002}00002\ \textcolor{comment}{\ *\ \ \ Copyright\ (C)\ 2019-\/2022\ by\ Stefan\ Kebekus\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00003}00003\ \textcolor{comment}{\ *\ \ \ stefan.kebekus@gmail.com\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00004}00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ free\ software;\ you\ can\ redistribute\ it\ and/or\ modify\ \ *}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00006}00006\ \textcolor{comment}{\ *\ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by\ \ *}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00007}00007\ \textcolor{comment}{\ *\ \ \ the\ Free\ Software\ Foundation;\ either\ version\ 3\ of\ the\ License,\ or\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00008}00008\ \textcolor{comment}{\ *\ \ \ (at\ your\ option)\ any\ later\ version.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00009}00009\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00010}00010\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,\ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00011}00011\ \textcolor{comment}{\ *\ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of\ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00012}00012\ \textcolor{comment}{\ *\ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00013}00013\ \textcolor{comment}{\ *\ \ \ GNU\ General\ Public\ License\ for\ more\ details.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00014}00014\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00015}00015\ \textcolor{comment}{\ *\ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00016}00016\ \textcolor{comment}{\ *\ \ \ along\ with\ this\ program;\ if\ not,\ write\ to\ the\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00017}00017\ \textcolor{comment}{\ *\ \ \ Free\ Software\ Foundation,\ Inc.,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00018}00018\ \textcolor{comment}{\ *\ \ \ 59\ Temple\ Place\ -\/\ Suite\ 330,\ Boston,\ MA\ \ 02111-\/1307,\ USA.\ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00019}00019\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00021}00021\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ <QQmlEngine>}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00024}00024\ }
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00025}00025\ \textcolor{preprocessor}{\#include\ "{}units/Angle.h"{}}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00026}00026\ \textcolor{preprocessor}{\#include\ "{}units/Speed.h"{}}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00027}00027\ }
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00028}00028\ \textcolor{keyword}{namespace\ }Weather\ \{}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00029}00029\ }
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00032}\mbox{\hyperlink{classWeather_1_1Wind}{00032}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classWeather_1_1Wind}{Wind}}\ \{}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00033}00033\ \ \ \ \ Q\_GADGET}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00034}00034\ \ \ \ \ QML\_VALUE\_TYPE(wind)}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00035}00035\ }
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00036}00036\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00037}00037\ }
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00038}00038\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00039}00039\ \ \ \ \ \textcolor{comment}{//\ Properties}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00040}00040\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00041}00041\ }
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00043}\mbox{\hyperlink{classWeather_1_1Wind_a78e5097c0dba922f75db0b51ac76ce65}{00043}}\ \ \ \ \ Q\_PROPERTY(\mbox{\hyperlink{classUnits_1_1Speed}{Units::Speed}}\ \mbox{\hyperlink{classWeather_1_1Wind_a78e5097c0dba922f75db0b51ac76ce65}{minWindSpeed}}\ MEMBER\ \mbox{\hyperlink{classWeather_1_1Wind_a78e5097c0dba922f75db0b51ac76ce65}{minWindSpeed}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00044}00044\ }
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00045}00045\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00046}\mbox{\hyperlink{classWeather_1_1Wind_a2768ae32d32e658b9a4b1881c377dc87}{00046}}\ \ \ \ \ Q\_PROPERTY(\mbox{\hyperlink{namespaceUnits}{Units}}::Speed\ \mbox{\hyperlink{classWeather_1_1Wind_a2768ae32d32e658b9a4b1881c377dc87}{maxWindSpeed}}\ MEMBER\ \mbox{\hyperlink{classWeather_1_1Wind_a2768ae32d32e658b9a4b1881c377dc87}{maxWindSpeed}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00047}00047\ }
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00053}\mbox{\hyperlink{classWeather_1_1Wind_af9156d503d3385cc6469500f541a0468}{00053}}\ \ \ \ \ Q\_PROPERTY(\mbox{\hyperlink{namespaceUnits}{Units}}::Angle\ \mbox{\hyperlink{classWeather_1_1Wind_af9156d503d3385cc6469500f541a0468}{directionFrom}}\ READ\ \mbox{\hyperlink{classWeather_1_1Wind_af9156d503d3385cc6469500f541a0468}{directionFrom}}\ WRITE\ \mbox{\hyperlink{classWeather_1_1Wind_aa4535ea6618618f2e5466895e2620f5c}{setDirectionFrom}})}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00054}00054\ }
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00061}\mbox{\hyperlink{classWeather_1_1Wind_adc766346c4a623a91b09fc85c7ac15fc}{00061}}\ \ \ \ \ Q\_PROPERTY(\mbox{\hyperlink{namespaceUnits}{Units}}::Speed\ \mbox{\hyperlink{classWeather_1_1Wind_adc766346c4a623a91b09fc85c7ac15fc}{speed}}\ READ\ \mbox{\hyperlink{classWeather_1_1Wind_adc766346c4a623a91b09fc85c7ac15fc}{speed}}\ WRITE\ \mbox{\hyperlink{classWeather_1_1Wind_af4334f78aad064f8f9f565ed78cf30ee}{setSpeed}})}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00062}00062\ }
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00063}00063\ }
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00064}00064\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00065}00065\ \ \ \ \ \textcolor{comment}{//\ Getter\ Methods}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00066}00066\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00067}00067\ }
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00072}\mbox{\hyperlink{classWeather_1_1Wind_aff56e78215ad6e86813275112d056436}{00072}}\ \ \ \ \ [[nodiscard]]\ auto\ \mbox{\hyperlink{classWeather_1_1Wind_af9156d503d3385cc6469500f541a0468}{directionFrom}}()\ const\ -\/>\ \mbox{\hyperlink{namespaceUnits}{Units}}::Angle\ \{\ \textcolor{keywordflow}{return}\ m\_directionFrom;\ \}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00073}00073\ }
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00078}\mbox{\hyperlink{classWeather_1_1Wind_ad61d0a0b4b8885894203e0d8d3ccd18b}{00078}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classWeather_1_1Wind_ad61d0a0b4b8885894203e0d8d3ccd18b}{speed}}()\ const\ -\/>\ \mbox{\hyperlink{namespaceUnits}{Units}}::Speed\ \{\ \textcolor{keywordflow}{return}\ m\_speed;\ \}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00079}00079\ }
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00080}00080\ }
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00081}00081\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00082}00082\ \ \ \ \ \textcolor{comment}{//\ Setter\ Methods}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00083}00083\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00084}00084\ }
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00093}\mbox{\hyperlink{classWeather_1_1Wind_af4334f78aad064f8f9f565ed78cf30ee}{00093}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classWeather_1_1Wind_af4334f78aad064f8f9f565ed78cf30ee}{setSpeed}}(\mbox{\hyperlink{classUnits_1_1Speed}{Units::Speed}}\ newSpeed);}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00094}00094\ }
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00099}\mbox{\hyperlink{classWeather_1_1Wind_aa4535ea6618618f2e5466895e2620f5c}{00099}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classWeather_1_1Wind_aa4535ea6618618f2e5466895e2620f5c}{setDirectionFrom}}(\mbox{\hyperlink{classUnits_1_1Angle}{Units::Angle}}\ newDirectionFrom);}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00100}00100\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00101}00101\ }
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00102}00102\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00103}00103\ \ \ \ \ \textcolor{comment}{//\ Methods}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00104}00104\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00105}00105\ }
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00112}\mbox{\hyperlink{classWeather_1_1Wind_adbad49f5d4a750a6d1e49dd2981449e7}{00112}}\ \ \ \ \ Q\_INVOKABLE\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classWeather_1_1Wind_adbad49f5d4a750a6d1e49dd2981449e7}{operator==}}(\mbox{\hyperlink{classWeather_1_1Wind}{Weather::Wind}}\ other)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00113}00113\ }
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00114}00114\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00115}00115\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{classUnits_1_1Speed}{Units::Speed}}\ \mbox{\hyperlink{classWeather_1_1Wind_a78e5097c0dba922f75db0b51ac76ce65}{minWindSpeed}}\ =\ \mbox{\hyperlink{classUnits_1_1Speed_aca99ffbc0f3a4ec0b87a8a904b266bd7}{Units::Speed::fromKN}}(0.0);}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00116}00116\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{classUnits_1_1Speed}{Units::Speed}}\ \mbox{\hyperlink{classWeather_1_1Wind_a2768ae32d32e658b9a4b1881c377dc87}{maxWindSpeed}}\ =\ \mbox{\hyperlink{classUnits_1_1Speed_aca99ffbc0f3a4ec0b87a8a904b266bd7}{Units::Speed::fromKN}}(100.0);}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00117}00117\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00118}00118\ \ \ \ \ \mbox{\hyperlink{classUnits_1_1Speed}{Units::Speed}}\ m\_speed\ \{\};}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00119}00119\ \ \ \ \ \mbox{\hyperlink{classUnits_1_1Angle}{Units::Angle}}\ m\_directionFrom\ \{\};}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00120}00120\ \};}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00121}00121\ }
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00122}00122\ \}\ \textcolor{comment}{//\ namespace\ Weather}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00123}00123\ }
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00124}00124\ \textcolor{comment}{//\ Declare\ meta\ types}}
+\DoxyCodeLine{\Hypertarget{Wind_8h_source_l00125}00125\ Q\_DECLARE\_METATYPE(\mbox{\hyperlink{classWeather_1_1Wind}{Weather::Wind}})}
+
+\end{DoxyCode}

@@ -1,0 +1,327 @@
+\doxysection{Positioning\+::Position\+Info Class Reference}
+\hypertarget{classPositioning_1_1PositionInfo}{}\label{classPositioning_1_1PositionInfo}\index{Positioning::PositionInfo@{Positioning::PositionInfo}}
+
+
+Geographic position.  
+
+
+
+
+{\ttfamily \#include $<$Position\+Info.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classPositioning_1_1PositionInfo_a8265e136dc04440a224a87598073902c}\label{classPositioning_1_1PositionInfo_a8265e136dc04440a224a87598073902c} 
+{\bfseries Position\+Info} ()=default
+\begin{DoxyCompactList}\small\item\em Default Constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classPositioning_1_1PositionInfo_a1f7a883187cd3f7cf4a53986615261b5}{Position\+Info}} (const QGeo\+Position\+Info \&info)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE QGeo\+Coordinate \mbox{\hyperlink{classPositioning_1_1PositionInfo_a67fca2f200c21ef40ced18f7cd46f7bc}{coordinate}} () const
+\begin{DoxyCompactList}\small\item\em Coordinate. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}} \mbox{\hyperlink{classPositioning_1_1PositionInfo_a90f821abb4aa1e63c93fd90d104b0dd8}{ground\+Speed}} () const
+\begin{DoxyCompactList}\small\item\em Ground speed. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE bool \mbox{\hyperlink{classPositioning_1_1PositionInfo_a6f7528068d6d1501edd49b0382865a38}{is\+Valid}} () const
+\begin{DoxyCompactList}\small\item\em Validity. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} \mbox{\hyperlink{classPositioning_1_1PositionInfo_a08a36f2c3b6a99c964887e1dc926e200}{position\+Error\+Estimate}} () const
+\begin{DoxyCompactList}\small\item\em Position error estimate. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} \mbox{\hyperlink{classPositioning_1_1PositionInfo_ad92faf16dd43094d012fcf3fbf86c384}{terrain\+Elevation\+AMSL}} ()
+\begin{DoxyCompactList}\small\item\em Elevation of terrain at a given coordinate, above sea level. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE QDate\+Time \mbox{\hyperlink{classPositioning_1_1PositionInfo_aa3800ca5b4dac2b290f4f5c9fc0bd71f}{timestamp}} () const
+\begin{DoxyCompactList}\small\item\em Timestamp. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE QString \mbox{\hyperlink{classPositioning_1_1PositionInfo_a8b48da3bee8445ddd4cd502f4512a013}{timestamp\+String}} () const
+\begin{DoxyCompactList}\small\item\em Timestamp string. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} \mbox{\hyperlink{classPositioning_1_1PositionInfo_aef5648e70f9eb2e256a70e181dc155fe}{true\+Altitude\+AGL}} ()
+\begin{DoxyCompactList}\small\item\em True Altitude above ground level. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} \mbox{\hyperlink{classPositioning_1_1PositionInfo_a7b3915c89687f6043441bbb475219bbe}{true\+Altitude\+AMSL}} () const
+\begin{DoxyCompactList}\small\item\em True Altitude above main sea level. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} \mbox{\hyperlink{classPositioning_1_1PositionInfo_a2fc6b1bf76d7861aa885b2d85a2bb47e}{true\+Altitude\+Error\+Estimate}} () const
+\begin{DoxyCompactList}\small\item\em True altitude error estimate. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Angle}{Units\+::\+Angle}} \mbox{\hyperlink{classPositioning_1_1PositionInfo_a1263a7639f7fc1b37cf8a84f230cde29}{true\+Track}} () const
+\begin{DoxyCompactList}\small\item\em True track. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Angle}{Units\+::\+Angle}} \mbox{\hyperlink{classPositioning_1_1PositionInfo_a892a6ffed2b2dc26563d6e4bebc5c66e}{true\+Track\+Error\+Estimate}} () const
+\begin{DoxyCompactList}\small\item\em True track error estimate. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Angle}{Units\+::\+Angle}} \mbox{\hyperlink{classPositioning_1_1PositionInfo_a41fbb5fcd6bd3591ef33032966355eec}{variation}} () const
+\begin{DoxyCompactList}\small\item\em Magnetic variation. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}} \mbox{\hyperlink{classPositioning_1_1PositionInfo_ad2b69fe3e819ec4db3f885346fab7654}{vertical\+Speed}} () const
+\begin{DoxyCompactList}\small\item\em Vertical speed. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE bool \mbox{\hyperlink{classPositioning_1_1PositionInfo_a69eabe30977df60ea1fd3e2d9920f839}{operator==}} (const \mbox{\hyperlink{classPositioning_1_1PositionInfo}{Positioning\+::\+Position\+Info}} \&rhs) const
+\begin{DoxyCompactList}\small\item\em Comparison\+: equal. \end{DoxyCompactList}\item 
+\Hypertarget{classPositioning_1_1PositionInfo_a0b04c4ccdb356fdd44b70371ec684a17}\label{classPositioning_1_1PositionInfo_a0b04c4ccdb356fdd44b70371ec684a17} 
+{\bfseries operator QGeo\+Position\+Info} () const
+\begin{DoxyCompactList}\small\item\em Conversion. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr auto \mbox{\hyperlink{classPositioning_1_1PositionInfo_a39cdf5ebe3689e532be2e2ffeb40dbb2}{lifetime}} = 20min
+\begin{DoxyCompactList}\small\item\em Liftetime of geographic positioning information. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Geographic position. 
+
+This class is a thin wrapper around QGeo\+Position\+Info. It exports the data from QGeo\+Position\+Info in a way that can be read from QML. In addition to QGeo\+Position\+Info, the class also contains information about the pressure altitude. 
+
+Definition at line \mbox{\hyperlink{PositionInfo_8h_source_l00044}{44}} of file \mbox{\hyperlink{PositionInfo_8h_source}{Position\+Info.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classPositioning_1_1PositionInfo_a1f7a883187cd3f7cf4a53986615261b5}\index{Positioning::PositionInfo@{Positioning::PositionInfo}!PositionInfo@{PositionInfo}}
+\index{PositionInfo@{PositionInfo}!Positioning::PositionInfo@{Positioning::PositionInfo}}
+\doxysubsubsection{\texorpdfstring{PositionInfo()}{PositionInfo()}}
+{\footnotesize\ttfamily \label{classPositioning_1_1PositionInfo_a1f7a883187cd3f7cf4a53986615261b5} 
+Positioning\+::\+Position\+Info\+::\+Position\+Info (\begin{DoxyParamCaption}\item[{const QGeo\+Position\+Info \&}]{info}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em info} & QGeo\+Position\+Info this is copied into this class \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classPositioning_1_1PositionInfo_a67fca2f200c21ef40ced18f7cd46f7bc}\index{Positioning::PositionInfo@{Positioning::PositionInfo}!coordinate@{coordinate}}
+\index{coordinate@{coordinate}!Positioning::PositionInfo@{Positioning::PositionInfo}}
+\doxysubsubsection{\texorpdfstring{coordinate()}{coordinate()}}
+{\footnotesize\ttfamily \label{classPositioning_1_1PositionInfo_a67fca2f200c21ef40ced18f7cd46f7bc} 
+Q\+\_\+\+INVOKABLE QGeo\+Coordinate Positioning\+::\+Position\+Info\+::coordinate (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Coordinate. 
+
+If the coordinate contains altitude information, this refers to true altitude.
+
+\begin{DoxyReturn}{Returns}
+Coordinate 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{PositionInfo_8h_source_l00066}{66}} of file \mbox{\hyperlink{PositionInfo_8h_source}{Position\+Info.\+h}}.
+
+\Hypertarget{classPositioning_1_1PositionInfo_a90f821abb4aa1e63c93fd90d104b0dd8}\index{Positioning::PositionInfo@{Positioning::PositionInfo}!groundSpeed@{groundSpeed}}
+\index{groundSpeed@{groundSpeed}!Positioning::PositionInfo@{Positioning::PositionInfo}}
+\doxysubsubsection{\texorpdfstring{groundSpeed()}{groundSpeed()}}
+{\footnotesize\ttfamily \label{classPositioning_1_1PositionInfo_a90f821abb4aa1e63c93fd90d104b0dd8} 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}} Positioning\+::\+Position\+Info\+::ground\+Speed (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Ground speed. 
+
+\begin{DoxyReturn}{Returns}
+Ground speed or NaN if unknown. 
+\end{DoxyReturn}
+\Hypertarget{classPositioning_1_1PositionInfo_a6f7528068d6d1501edd49b0382865a38}\index{Positioning::PositionInfo@{Positioning::PositionInfo}!isValid@{isValid}}
+\index{isValid@{isValid}!Positioning::PositionInfo@{Positioning::PositionInfo}}
+\doxysubsubsection{\texorpdfstring{isValid()}{isValid()}}
+{\footnotesize\ttfamily \label{classPositioning_1_1PositionInfo_a6f7528068d6d1501edd49b0382865a38} 
+Q\+\_\+\+INVOKABLE bool Positioning\+::\+Position\+Info\+::is\+Valid (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Validity. 
+
+\begin{DoxyReturn}{Returns}
+True if the underlying QGeo\+Position\+Info is valid and if its age is less then \doxylink{classPositioning_1_1PositionInfo_a39cdf5ebe3689e532be2e2ffeb40dbb2}{Position\+Info\+::lifetime}. 
+\end{DoxyReturn}
+\Hypertarget{classPositioning_1_1PositionInfo_a69eabe30977df60ea1fd3e2d9920f839}\index{Positioning::PositionInfo@{Positioning::PositionInfo}!operator==@{operator==}}
+\index{operator==@{operator==}!Positioning::PositionInfo@{Positioning::PositionInfo}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily \label{classPositioning_1_1PositionInfo_a69eabe30977df60ea1fd3e2d9920f839} 
+Q\+\_\+\+INVOKABLE bool Positioning\+::\+Position\+Info\+::operator== (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classPositioning_1_1PositionInfo}{Positioning\+::\+Position\+Info}} \&}]{rhs}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Comparison\+: equal. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rhs} & Right hand side of the comparison\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Result of the comparison 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{PositionInfo_8h_source_l00165}{165}} of file \mbox{\hyperlink{PositionInfo_8h_source}{Position\+Info.\+h}}.
+
+\Hypertarget{classPositioning_1_1PositionInfo_a08a36f2c3b6a99c964887e1dc926e200}\index{Positioning::PositionInfo@{Positioning::PositionInfo}!positionErrorEstimate@{positionErrorEstimate}}
+\index{positionErrorEstimate@{positionErrorEstimate}!Positioning::PositionInfo@{Positioning::PositionInfo}}
+\doxysubsubsection{\texorpdfstring{positionErrorEstimate()}{positionErrorEstimate()}}
+{\footnotesize\ttfamily \label{classPositioning_1_1PositionInfo_a08a36f2c3b6a99c964887e1dc926e200} 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} Positioning\+::\+Position\+Info\+::position\+Error\+Estimate (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Position error estimate. 
+
+\begin{DoxyReturn}{Returns}
+Position error estimate or NaN if unknown. 
+\end{DoxyReturn}
+\Hypertarget{classPositioning_1_1PositionInfo_ad92faf16dd43094d012fcf3fbf86c384}\index{Positioning::PositionInfo@{Positioning::PositionInfo}!terrainElevationAMSL@{terrainElevationAMSL}}
+\index{terrainElevationAMSL@{terrainElevationAMSL}!Positioning::PositionInfo@{Positioning::PositionInfo}}
+\doxysubsubsection{\texorpdfstring{terrainElevationAMSL()}{terrainElevationAMSL()}}
+{\footnotesize\ttfamily \label{classPositioning_1_1PositionInfo_ad92faf16dd43094d012fcf3fbf86c384} 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} Positioning\+::\+Position\+Info\+::terrain\+Elevation\+AMSL (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Elevation of terrain at a given coordinate, above sea level. 
+
+\begin{DoxyReturn}{Returns}
+Elevation of the terrain at position, or NaN if the terrain elevation is unknown 
+\end{DoxyReturn}
+\Hypertarget{classPositioning_1_1PositionInfo_aa3800ca5b4dac2b290f4f5c9fc0bd71f}\index{Positioning::PositionInfo@{Positioning::PositionInfo}!timestamp@{timestamp}}
+\index{timestamp@{timestamp}!Positioning::PositionInfo@{Positioning::PositionInfo}}
+\doxysubsubsection{\texorpdfstring{timestamp()}{timestamp()}}
+{\footnotesize\ttfamily \label{classPositioning_1_1PositionInfo_aa3800ca5b4dac2b290f4f5c9fc0bd71f} 
+Q\+\_\+\+INVOKABLE QDate\+Time Positioning\+::\+Position\+Info\+::timestamp (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Timestamp. 
+
+\begin{DoxyReturn}{Returns}
+Timestamp of the position info. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{PositionInfo_8h_source_l00101}{101}} of file \mbox{\hyperlink{PositionInfo_8h_source}{Position\+Info.\+h}}.
+
+\Hypertarget{classPositioning_1_1PositionInfo_a8b48da3bee8445ddd4cd502f4512a013}\index{Positioning::PositionInfo@{Positioning::PositionInfo}!timestampString@{timestampString}}
+\index{timestampString@{timestampString}!Positioning::PositionInfo@{Positioning::PositionInfo}}
+\doxysubsubsection{\texorpdfstring{timestampString()}{timestampString()}}
+{\footnotesize\ttfamily \label{classPositioning_1_1PositionInfo_a8b48da3bee8445ddd4cd502f4512a013} 
+Q\+\_\+\+INVOKABLE QString Positioning\+::\+Position\+Info\+::timestamp\+String (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Timestamp string. 
+
+\begin{DoxyReturn}{Returns}
+Timestamp of the position info, as a string. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{PositionInfo_8h_source_l00110}{110}} of file \mbox{\hyperlink{PositionInfo_8h_source}{Position\+Info.\+h}}.
+
+\Hypertarget{classPositioning_1_1PositionInfo_aef5648e70f9eb2e256a70e181dc155fe}\index{Positioning::PositionInfo@{Positioning::PositionInfo}!trueAltitudeAGL@{trueAltitudeAGL}}
+\index{trueAltitudeAGL@{trueAltitudeAGL}!Positioning::PositionInfo@{Positioning::PositionInfo}}
+\doxysubsubsection{\texorpdfstring{trueAltitudeAGL()}{trueAltitudeAGL()}}
+{\footnotesize\ttfamily \label{classPositioning_1_1PositionInfo_aef5648e70f9eb2e256a70e181dc155fe} 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} Positioning\+::\+Position\+Info\+::true\+Altitude\+AGL (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+True Altitude above ground level. 
+
+\begin{DoxyReturn}{Returns}
+True altitude with geoid correction taken into account or NaN if unknown. 
+\end{DoxyReturn}
+\Hypertarget{classPositioning_1_1PositionInfo_a7b3915c89687f6043441bbb475219bbe}\index{Positioning::PositionInfo@{Positioning::PositionInfo}!trueAltitudeAMSL@{trueAltitudeAMSL}}
+\index{trueAltitudeAMSL@{trueAltitudeAMSL}!Positioning::PositionInfo@{Positioning::PositionInfo}}
+\doxysubsubsection{\texorpdfstring{trueAltitudeAMSL()}{trueAltitudeAMSL()}}
+{\footnotesize\ttfamily \label{classPositioning_1_1PositionInfo_a7b3915c89687f6043441bbb475219bbe} 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} Positioning\+::\+Position\+Info\+::true\+Altitude\+AMSL (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+True Altitude above main sea level. 
+
+\begin{DoxyReturn}{Returns}
+True altitude with geoid correction taken into account or NaN if unknown. 
+\end{DoxyReturn}
+\Hypertarget{classPositioning_1_1PositionInfo_a2fc6b1bf76d7861aa885b2d85a2bb47e}\index{Positioning::PositionInfo@{Positioning::PositionInfo}!trueAltitudeErrorEstimate@{trueAltitudeErrorEstimate}}
+\index{trueAltitudeErrorEstimate@{trueAltitudeErrorEstimate}!Positioning::PositionInfo@{Positioning::PositionInfo}}
+\doxysubsubsection{\texorpdfstring{trueAltitudeErrorEstimate()}{trueAltitudeErrorEstimate()}}
+{\footnotesize\ttfamily \label{classPositioning_1_1PositionInfo_a2fc6b1bf76d7861aa885b2d85a2bb47e} 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} Positioning\+::\+Position\+Info\+::true\+Altitude\+Error\+Estimate (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+True altitude error estimate. 
+
+\begin{DoxyReturn}{Returns}
+True altitude error estimate or NaN if unknown. 
+\end{DoxyReturn}
+\Hypertarget{classPositioning_1_1PositionInfo_a1263a7639f7fc1b37cf8a84f230cde29}\index{Positioning::PositionInfo@{Positioning::PositionInfo}!trueTrack@{trueTrack}}
+\index{trueTrack@{trueTrack}!Positioning::PositionInfo@{Positioning::PositionInfo}}
+\doxysubsubsection{\texorpdfstring{trueTrack()}{trueTrack()}}
+{\footnotesize\ttfamily \label{classPositioning_1_1PositionInfo_a1263a7639f7fc1b37cf8a84f230cde29} 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Angle}{Units\+::\+Angle}} Positioning\+::\+Position\+Info\+::true\+Track (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+True track. 
+
+\begin{DoxyReturn}{Returns}
+True track or NaN if unknown. 
+\end{DoxyReturn}
+\Hypertarget{classPositioning_1_1PositionInfo_a892a6ffed2b2dc26563d6e4bebc5c66e}\index{Positioning::PositionInfo@{Positioning::PositionInfo}!trueTrackErrorEstimate@{trueTrackErrorEstimate}}
+\index{trueTrackErrorEstimate@{trueTrackErrorEstimate}!Positioning::PositionInfo@{Positioning::PositionInfo}}
+\doxysubsubsection{\texorpdfstring{trueTrackErrorEstimate()}{trueTrackErrorEstimate()}}
+{\footnotesize\ttfamily \label{classPositioning_1_1PositionInfo_a892a6ffed2b2dc26563d6e4bebc5c66e} 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Angle}{Units\+::\+Angle}} Positioning\+::\+Position\+Info\+::true\+Track\+Error\+Estimate (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+True track error estimate. 
+
+\begin{DoxyReturn}{Returns}
+True track error estimate or NaN if unknown. 
+\end{DoxyReturn}
+\Hypertarget{classPositioning_1_1PositionInfo_a41fbb5fcd6bd3591ef33032966355eec}\index{Positioning::PositionInfo@{Positioning::PositionInfo}!variation@{variation}}
+\index{variation@{variation}!Positioning::PositionInfo@{Positioning::PositionInfo}}
+\doxysubsubsection{\texorpdfstring{variation()}{variation()}}
+{\footnotesize\ttfamily \label{classPositioning_1_1PositionInfo_a41fbb5fcd6bd3591ef33032966355eec} 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Angle}{Units\+::\+Angle}} Positioning\+::\+Position\+Info\+::variation (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Magnetic variation. 
+
+\begin{DoxyReturn}{Returns}
+Magnetic variation or NaN if unknown. 
+\end{DoxyReturn}
+\Hypertarget{classPositioning_1_1PositionInfo_ad2b69fe3e819ec4db3f885346fab7654}\index{Positioning::PositionInfo@{Positioning::PositionInfo}!verticalSpeed@{verticalSpeed}}
+\index{verticalSpeed@{verticalSpeed}!Positioning::PositionInfo@{Positioning::PositionInfo}}
+\doxysubsubsection{\texorpdfstring{verticalSpeed()}{verticalSpeed()}}
+{\footnotesize\ttfamily \label{classPositioning_1_1PositionInfo_ad2b69fe3e819ec4db3f885346fab7654} 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}} Positioning\+::\+Position\+Info\+::vertical\+Speed (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Vertical speed. 
+
+\begin{DoxyReturn}{Returns}
+Vertical speed or NaN if unknown. 
+\end{DoxyReturn}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classPositioning_1_1PositionInfo_a39cdf5ebe3689e532be2e2ffeb40dbb2}\index{Positioning::PositionInfo@{Positioning::PositionInfo}!lifetime@{lifetime}}
+\index{lifetime@{lifetime}!Positioning::PositionInfo@{Positioning::PositionInfo}}
+\doxysubsubsection{\texorpdfstring{lifetime}{lifetime}}
+{\footnotesize\ttfamily \label{classPositioning_1_1PositionInfo_a39cdf5ebe3689e532be2e2ffeb40dbb2} 
+auto Positioning\+::\+Position\+Info\+::lifetime = 20min\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+
+
+Liftetime of geographic positioning information. 
+
+Geographic position information is considered valid only for this amount of time after it has been received. 
+
+Definition at line \mbox{\hyperlink{PositionInfo_8h_source_l00184}{184}} of file \mbox{\hyperlink{PositionInfo_8h_source}{Position\+Info.\+h}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/positioning/Position\+Info.\+h\end{DoxyCompactItemize}

@@ -1,0 +1,114 @@
+\doxysection{File\+Formats\+::CSV Class Reference}
+\hypertarget{classFileFormats_1_1CSV}{}\label{classFileFormats_1_1CSV}\index{FileFormats::CSV@{FileFormats::CSV}}
+
+
+\doxylink{classFileFormats_1_1CSV}{CSV} file support class.  
+
+
+
+
+{\ttfamily \#include $<$CSV.\+h$>$}
+
+Inheritance diagram for File\+Formats\+::CSV\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classFileFormats_1_1CSV}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classFileFormats_1_1CSV_a56b47e6c427d957e1b9f1b49daaf822b}{CSV}} (const QString \&file\+Name)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+QVector$<$ QString\+List $>$ \mbox{\hyperlink{classFileFormats_1_1CSV_ad62e6fcb7c58a7cdd5064bad921e502b}{lines}} () const
+\begin{DoxyCompactList}\small\item\em Waypoints specified in the \doxylink{classFileFormats_1_1CUP}{CUP} file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classFileFormats_1_1DataFileAbstract}{File\+Formats\+::\+Data\+File\+Abstract}}}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classFileFormats_1_1DataFileAbstract_a830a91581e5655ab1f14b6fe8719e60f}{is\+Valid}} () const
+\begin{DoxyCompactList}\small\item\em Validity check. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classFileFormats_1_1DataFileAbstract_a292d1144d1c23b119601170f4c6b8e20}{error}} () const
+\begin{DoxyCompactList}\small\item\em Error string. \end{DoxyCompactList}\item 
+QString\+List \mbox{\hyperlink{classFileFormats_1_1DataFileAbstract_ab770740e6d6c20e076dd342e978b86ee}{warnings}} () const
+\begin{DoxyCompactList}\small\item\em Warnings. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static QString\+List \mbox{\hyperlink{classFileFormats_1_1CSV_ade7aefc91a1f759565aac30b1063c3ea}{mime\+Types}} ()
+\begin{DoxyCompactList}\small\item\em Mime type for files that can be opened by this class. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions inherited from \mbox{\hyperlink{classFileFormats_1_1DataFileAbstract}{File\+Formats\+::\+Data\+File\+Abstract}}}
+\begin{DoxyCompactItemize}
+\item 
+static QShared\+Pointer$<$ QFile $>$ \mbox{\hyperlink{classFileFormats_1_1DataFileAbstract_a2380fb7a4ab503cf73d618ea96ef216c}{open\+File\+URL}} (const QString \&file\+Name)
+\begin{DoxyCompactList}\small\item\em Open file, file URL or Android content URL. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\doxylink{classFileFormats_1_1CSV}{CSV} file support class. 
+
+The methods of this class read \doxylink{classFileFormats_1_1CSV}{CSV} files. 
+
+Definition at line \mbox{\hyperlink{CSV_8h_source_l00034}{34}} of file \mbox{\hyperlink{CSV_8h_source}{CSV.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classFileFormats_1_1CSV_a56b47e6c427d957e1b9f1b49daaf822b}\index{FileFormats::CSV@{FileFormats::CSV}!CSV@{CSV}}
+\index{CSV@{CSV}!FileFormats::CSV@{FileFormats::CSV}}
+\doxysubsubsection{\texorpdfstring{CSV()}{CSV()}}
+{\footnotesize\ttfamily \label{classFileFormats_1_1CSV_a56b47e6c427d957e1b9f1b49daaf822b} 
+File\+Formats\+::\+CSV\+::\+CSV (\begin{DoxyParamCaption}\item[{const QString \&}]{file\+Name}{}\end{DoxyParamCaption})}
+
+
+
+Constructor. 
+
+This method reads a \doxylink{classFileFormats_1_1CSV}{CSV} file.
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Name} & Name of a \doxylink{classFileFormats_1_1CSV}{CSV} file \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classFileFormats_1_1CSV_ad62e6fcb7c58a7cdd5064bad921e502b}\index{FileFormats::CSV@{FileFormats::CSV}!lines@{lines}}
+\index{lines@{lines}!FileFormats::CSV@{FileFormats::CSV}}
+\doxysubsubsection{\texorpdfstring{lines()}{lines()}}
+{\footnotesize\ttfamily \label{classFileFormats_1_1CSV_ad62e6fcb7c58a7cdd5064bad921e502b} 
+QVector$<$ QString\+List $>$ File\+Formats\+::\+CSV\+::lines (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Waypoints specified in the \doxylink{classFileFormats_1_1CUP}{CUP} file. 
+
+\begin{DoxyReturn}{Returns}
+Waypoints specified in the \doxylink{classFileFormats_1_1CUP}{CUP} file 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{CSV_8h_source_l00056}{56}} of file \mbox{\hyperlink{CSV_8h_source}{CSV.\+h}}.
+
+\Hypertarget{classFileFormats_1_1CSV_ade7aefc91a1f759565aac30b1063c3ea}\index{FileFormats::CSV@{FileFormats::CSV}!mimeTypes@{mimeTypes}}
+\index{mimeTypes@{mimeTypes}!FileFormats::CSV@{FileFormats::CSV}}
+\doxysubsubsection{\texorpdfstring{mimeTypes()}{mimeTypes()}}
+{\footnotesize\ttfamily \label{classFileFormats_1_1CSV_ade7aefc91a1f759565aac30b1063c3ea} 
+static QString\+List File\+Formats\+::\+CSV\+::mime\+Types (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [nodiscard]}}
+
+
+
+Mime type for files that can be opened by this class. 
+
+\begin{DoxyReturn}{Returns}
+Name of mime type 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{CSV_8h_source_l00067}{67}} of file \mbox{\hyperlink{CSV_8h_source}{CSV.\+h}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/file\+Formats/CSV.\+h\end{DoxyCompactItemize}

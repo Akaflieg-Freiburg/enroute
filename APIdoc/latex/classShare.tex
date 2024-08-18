@@ -1,0 +1,233 @@
+\doxysection{Share Class Reference}
+\hypertarget{classShare}{}\label{classShare}\index{Share@{Share}}
+
+
+The \doxylink{classShare}{Share} class provides synchronous and asynchronous communication between the android native share and the Qt application.  
+
+
+
+
+{\ttfamily \#include $<$Share.\+h$>$}
+
+
+
+Inherits QObject.
+
+\doxysubsubsection*{Signals}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classShare_a394e7a09928aa96cfbff5b2de6015f6b}\label{classShare_a394e7a09928aa96cfbff5b2de6015f6b} 
+void {\bfseries share\+No\+App\+Available} ()
+\begin{DoxyCompactList}\small\item\em emits when a share fails because an app could not be found \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classShare_a83adbf60c55f3a867eb38f9078a43a1f}{file\+Received}} (const QString \&fname)
+\begin{DoxyCompactList}\small\item\em emits when a file is received \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+Q\+\_\+\+INVOKABLE void \mbox{\hyperlink{classShare_a57636c142e76dd674522c2b2ef8940ce}{send\+Content}} (const QString \&content, const QString \&mime\+Type, const QString \&suffix)
+\begin{DoxyCompactList}\small\item\em share text content with other app. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE void \mbox{\hyperlink{classShare_a8c135697e2a985635cbc6f85b2141af1}{view\+Content}} (const QString \&content, const QString \&mime\+Type, const QString \&suffix)
+\begin{DoxyCompactList}\small\item\em open content in other app \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE void \mbox{\hyperlink{classShare_a7a83cbb2add6d849f9c1dcba677b6a85}{save\+Content}} (const QString \&content, const QString \&mime\+Type, const QString \&suffix)
+\begin{DoxyCompactList}\small\item\em save content to file system \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE void \mbox{\hyperlink{classShare_ab4bdf2869fc1659e90ca1c468287175c}{import\+File}} (const QString \&mime\+Type=nullptr)
+\begin{DoxyCompactList}\small\item\em import file \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE void \mbox{\hyperlink{classShare_a6a46635071ebca2396e78c18f192c7d6}{check\+Pending\+Intents}} ()
+\begin{DoxyCompactList}\small\item\em fired if the main window becomes active, triggered from main.\+qml. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classShare_ab6cda95d4b4ec646c08a46530c90496a}{set\+File\+Received}} (const QString \&fname)
+\begin{DoxyCompactList}\small\item\em called from the JNI "{}callback"{} \doxylink{classShare_ab6cda95d4b4ec646c08a46530c90496a}{set\+File\+Received()} to receive the received file name and to emit \doxylink{classShare_a83adbf60c55f3a867eb38f9078a43a1f}{file\+Received()} to connected slots. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classShare}{Share}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classShare_a4f139b9befdfe425012c0f4c280695fa}{get\+Instance}} ()
+\begin{DoxyCompactList}\small\item\em get single instance of the \doxylink{classShare}{Share}. used from the JNI "{}callback"{} \doxylink{classShare_ab6cda95d4b4ec646c08a46530c90496a}{set\+File\+Received()} \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The \doxylink{classShare}{Share} class provides synchronous and asynchronous communication between the android native share and the Qt application. 
+
+Copyright (C) 2020 by Johannes Zellner, \href{mailto:johannes@zellner.org}{\texttt{ johannes@zellner.\+org}}
+
+This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place -\/ Suite 330, Boston, MA 02111-\/1307, USA.
+
+Sending is done via Intent\+Launcher.\+java. Receiving is via \doxylink{classShare_ab6cda95d4b4ec646c08a46530c90496a}{set\+File\+Received()} from Share\+Activity.\+java.\hypertarget{classShare_autotoc_md5}{}\doxysubsubsection{\texorpdfstring{Send content}{Send content}}\label{classShare_autotoc_md5}
+send\+Content -\/ android "{}share"{} with other apps (email, messenger, ...) view\+Content -\/ open content in other android app save\+Content -\/ save to file
+
+all three methods call static methods in Intent\+Launcher.\+java to create correspoding intents and call start\+Activity(). This works asynchronously for send and view which means that enroute doesn\textquotesingle{}t block after the receiving app has received the content. It works synchronously for save thus save returns only if the file has been saved or the operation has been cancelled.\hypertarget{classShare_autotoc_md6}{}\doxysubsubsection{\texorpdfstring{Receive content}{Receive content}}\label{classShare_autotoc_md6}
+import\+File -\/ to import file from file system. This calls a static method in Intent\+Launcher.\+java to create correspoding intents and call the "{}blocking"{} start\+Activity\+For\+Result(). This works synchronously, therefore enroute will block until either a new file URL will be sent back from Share\+Activity or the activity has been cancelled.
+
+furthermore, SEND and VIEW intents from other apps will trigger the \doxylink{classShare_ab6cda95d4b4ec646c08a46530c90496a}{set\+File\+Received()} methods too.
+
+Technically, all content is received in the class de.\+akaflieg\+\_\+freiburg.\+enroute.\+Share\+Activity from share intents by the two methods
+
+
+\begin{DoxyItemize}
+\item on\+Activity\+Result()
+\item on\+New\+Intent()
+\end{DoxyItemize}
+
+The file URL which is passed in these intents is then sent back from java to Qt in the following order\+:
+
+java (de.\+akaflieg\+\_\+freiburg.\+enroute.\+Share\+Activity from share intents) -\/\texorpdfstring{$>$}{>}Java\+\_\+de\+\_\+akaflieg\+\_\+1freiburg\+\_\+enroute\+\_\+\+Share\+Activity\+\_\+set\+File\+Received() -\/\texorpdfstring{$>$}{>}\doxylink{classShare_ab6cda95d4b4ec646c08a46530c90496a}{set\+File\+Received()} -\/\texorpdfstring{$>$}{>}emit \doxylink{classShare_a83adbf60c55f3a867eb38f9078a43a1f}{file\+Received()} -\/\texorpdfstring{$>$}{>}to connected slots like Flight\+Route\+::from\+Gpx() 
+
+Definition at line \mbox{\hyperlink{Share_8h_source_l00074}{74}} of file \mbox{\hyperlink{Share_8h_source}{Share.\+h}}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classShare_a6a46635071ebca2396e78c18f192c7d6}\index{Share@{Share}!checkPendingIntents@{checkPendingIntents}}
+\index{checkPendingIntents@{checkPendingIntents}!Share@{Share}}
+\doxysubsubsection{\texorpdfstring{checkPendingIntents()}{checkPendingIntents()}}
+{\footnotesize\ttfamily \label{classShare_a6a46635071ebca2396e78c18f192c7d6} 
+Q\+\_\+\+INVOKABLE void Share\+::check\+Pending\+Intents (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+fired if the main window becomes active, triggered from main.\+qml. 
+
+This method checks if there are pending intents which should be processed in the java activity de.\+akaflieg\+\_\+freiburg.\+enroute.\+Share\+Activity.
+
+This is usually necessary if the app has been launched by an incoming intent and the java Share\+Activity postponed processing of the intent until enroute has been fully initialized. \Hypertarget{classShare_a83adbf60c55f3a867eb38f9078a43a1f}\index{Share@{Share}!fileReceived@{fileReceived}}
+\index{fileReceived@{fileReceived}!Share@{Share}}
+\doxysubsubsection{\texorpdfstring{fileReceived}{fileReceived}}
+{\footnotesize\ttfamily \label{classShare_a83adbf60c55f3a867eb38f9078a43a1f} 
+void Share\+::file\+Received (\begin{DoxyParamCaption}\item[{const QString \&}]{fname}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [signal]}}
+
+
+
+emits when a file is received 
+
+
+\begin{DoxyParams}{Parameters}
+{\em fname} & absolute file path in cache directory \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classShare_a4f139b9befdfe425012c0f4c280695fa}\index{Share@{Share}!getInstance@{getInstance}}
+\index{getInstance@{getInstance}!Share@{Share}}
+\doxysubsubsection{\texorpdfstring{getInstance()}{getInstance()}}
+{\footnotesize\ttfamily \label{classShare_a4f139b9befdfe425012c0f4c280695fa} 
+static \mbox{\hyperlink{classShare}{Share}} \texorpdfstring{$\ast$}{*} Share\+::get\+Instance (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+get single instance of the \doxylink{classShare}{Share}. used from the JNI "{}callback"{} \doxylink{classShare_ab6cda95d4b4ec646c08a46530c90496a}{set\+File\+Received()} 
+
+\begin{DoxyReturn}{Returns}
+the single instance of the \doxylink{classShare}{Share} class. 
+\end{DoxyReturn}
+\Hypertarget{classShare_ab4bdf2869fc1659e90ca1c468287175c}\index{Share@{Share}!importFile@{importFile}}
+\index{importFile@{importFile}!Share@{Share}}
+\doxysubsubsection{\texorpdfstring{importFile()}{importFile()}}
+{\footnotesize\ttfamily \label{classShare_ab4bdf2869fc1659e90ca1c468287175c} 
+Q\+\_\+\+INVOKABLE void Share\+::import\+File (\begin{DoxyParamCaption}\item[{const QString \&}]{mime\+Type}{ = {\ttfamily nullptr}}\end{DoxyParamCaption})}
+
+
+
+import file 
+
+This method will call java static method where an OPEN intent is created and start\+Activity\+For\+Result() is called.
+
+
+\begin{DoxyParams}{Parameters}
+{\em mime\+Type} & the mime\+Type of the content \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classShare_a7a83cbb2add6d849f9c1dcba677b6a85}\index{Share@{Share}!saveContent@{saveContent}}
+\index{saveContent@{saveContent}!Share@{Share}}
+\doxysubsubsection{\texorpdfstring{saveContent()}{saveContent()}}
+{\footnotesize\ttfamily \label{classShare_a7a83cbb2add6d849f9c1dcba677b6a85} 
+Q\+\_\+\+INVOKABLE void Share\+::save\+Content (\begin{DoxyParamCaption}\item[{const QString \&}]{content}{, }\item[{const QString \&}]{mime\+Type}{, }\item[{const QString \&}]{suffix}{}\end{DoxyParamCaption})}
+
+
+
+save content to file system 
+
+This method will
+\begin{DoxyItemize}
+\item save content to temporary file in the app\textquotesingle{}s private cache
+\item call the corresponding java static method where a CREATE\+\_\+\+DOCUMENT intent is created and start\+Activity is called
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em content} & content text \\
+\hline
+{\em mime\+Type} & the mime\+Type of the content \\
+\hline
+{\em suffix} & the suffix for the file \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classShare_a57636c142e76dd674522c2b2ef8940ce}\index{Share@{Share}!sendContent@{sendContent}}
+\index{sendContent@{sendContent}!Share@{Share}}
+\doxysubsubsection{\texorpdfstring{sendContent()}{sendContent()}}
+{\footnotesize\ttfamily \label{classShare_a57636c142e76dd674522c2b2ef8940ce} 
+Q\+\_\+\+INVOKABLE void Share\+::send\+Content (\begin{DoxyParamCaption}\item[{const QString \&}]{content}{, }\item[{const QString \&}]{mime\+Type}{, }\item[{const QString \&}]{suffix}{}\end{DoxyParamCaption})}
+
+
+
+share text content with other app. 
+
+This method will
+\begin{DoxyItemize}
+\item save content to temporary file in the app\textquotesingle{}s private cache
+\item call the corresponding java static method where a SEND intent is created and start\+Activity is called
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em content} & content text \\
+\hline
+{\em mime\+Type} & the mime\+Type of the content \\
+\hline
+{\em suffix} & the suffix for a temporary file \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classShare_ab6cda95d4b4ec646c08a46530c90496a}\index{Share@{Share}!setFileReceived@{setFileReceived}}
+\index{setFileReceived@{setFileReceived}!Share@{Share}}
+\doxysubsubsection{\texorpdfstring{setFileReceived()}{setFileReceived()}}
+{\footnotesize\ttfamily \label{classShare_ab6cda95d4b4ec646c08a46530c90496a} 
+void Share\+::set\+File\+Received (\begin{DoxyParamCaption}\item[{const QString \&}]{fname}{}\end{DoxyParamCaption})}
+
+
+
+called from the JNI "{}callback"{} \doxylink{classShare_ab6cda95d4b4ec646c08a46530c90496a}{set\+File\+Received()} to receive the received file name and to emit \doxylink{classShare_a83adbf60c55f3a867eb38f9078a43a1f}{file\+Received()} to connected slots. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em fname} & absolute file path in cache directory \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classShare_a8c135697e2a985635cbc6f85b2141af1}\index{Share@{Share}!viewContent@{viewContent}}
+\index{viewContent@{viewContent}!Share@{Share}}
+\doxysubsubsection{\texorpdfstring{viewContent()}{viewContent()}}
+{\footnotesize\ttfamily \label{classShare_a8c135697e2a985635cbc6f85b2141af1} 
+Q\+\_\+\+INVOKABLE void Share\+::view\+Content (\begin{DoxyParamCaption}\item[{const QString \&}]{content}{, }\item[{const QString \&}]{mime\+Type}{, }\item[{const QString \&}]{suffix}{}\end{DoxyParamCaption})}
+
+
+
+open content in other app 
+
+This method will
+\begin{DoxyItemize}
+\item save content to temporary file in the app\textquotesingle{}s private cache
+\item call the corresponding java static method where a VIEW intent is created and start\+Activity is called
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em content} & content text \\
+\hline
+{\em mime\+Type} & the mime\+Type of the content \\
+\hline
+{\em suffix} & the suffix for a temporary file \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/Share.\+h\end{DoxyCompactItemize}

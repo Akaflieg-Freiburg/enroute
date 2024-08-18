@@ -1,0 +1,335 @@
+\doxysection{Weather\+::TAF Class Reference}
+\hypertarget{classWeather_1_1TAF}{}\label{classWeather_1_1TAF}\index{Weather::TAF@{Weather::TAF}}
+
+
+\doxylink{classWeather_1_1TAF}{TAF} report.  
+
+
+
+
+{\ttfamily \#include $<$TAF.\+h$>$}
+
+Inheritance diagram for Weather\+::TAF\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classWeather_1_1TAF}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Signals}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classWeather_1_1TAF_a5a563ecc3240ebdfcaa1f26e6cea63df}\label{classWeather_1_1TAF_a5a563ecc3240ebdfcaa1f26e6cea63df} 
+void {\bfseries relative\+Issue\+Time\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Signals inherited from \mbox{\hyperlink{classWeather_1_1Decoder}{Weather\+::\+Decoder}}}
+\begin{DoxyCompactItemize}
+\item 
+void {\bfseries decoded\+Text\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+void {\bfseries raw\+Text\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classWeather_1_1TAF_a95bc84d821007dcba0c2de88a3d79571}{TAF}} (QObject \texorpdfstring{$\ast$}{*}parent=nullptr)
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classWeather_1_1TAF_adf1c25caa20f4cd9ca51a30dc93cba11}{coordinate}} () const -\/$>$ QGeo\+Coordinate
+\begin{DoxyCompactList}\small\item\em Getter function for property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classWeather_1_1TAF_a0b66f0def80f7ea0d56ca66ad7aea8d9}{expiration}} () const -\/$>$ QDate\+Time
+\begin{DoxyCompactList}\small\item\em Getter function for property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classWeather_1_1TAF_acced0b8619bd61e9f15a6c341daa3a9b}{ICAOCode}} () const -\/$>$ QString
+\begin{DoxyCompactList}\small\item\em Getter function for property with the same name. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE bool \mbox{\hyperlink{classWeather_1_1TAF_a155986b42f5ff978f794e7ecb8f35b8c}{is\+Expired}} () const
+\begin{DoxyCompactList}\small\item\em Convenience method to check if this \doxylink{classWeather_1_1TAF}{TAF} is already expired. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classWeather_1_1TAF_a9181d7bc920fce1df4715cf3491d05e6}{is\+Valid}} () const -\/$>$ bool
+\begin{DoxyCompactList}\small\item\em Getter function for property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classWeather_1_1TAF_a43b78c153903902f3043a22cf3fd3d69}{issue\+Time}} () const -\/$>$ QDate\+Time
+\begin{DoxyCompactList}\small\item\em Getter function for property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classWeather_1_1TAF_aab6b87da5632346cecc7ae2a01e5ca0c}{raw\+Text}} () const -\/$>$ QString
+\begin{DoxyCompactList}\small\item\em Getter function for property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classWeather_1_1TAF_a68e9add437ce845fdce63c463cd20b46}{relative\+Issue\+Time}} () const -\/$>$ QString
+\begin{DoxyCompactList}\small\item\em Getter function for property with the same name. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classWeather_1_1Decoder}{Weather\+::\+Decoder}}}
+\begin{DoxyCompactItemize}
+\item 
+QString \mbox{\hyperlink{classWeather_1_1Decoder_ab902c9b79b7018b699bdc58fe06374a5}{current\+Weather}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for property with the same name. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classWeather_1_1Decoder_a024de8bf78f1d922229427528ae9a700}{decoded\+Text}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for property with the same name. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classWeather_1_1Decoder_a2070baf567df268a617963a0a58afb4d}{message\+Type}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for property with the same name. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classWeather_1_1Decoder_a125a758ded48cd59452dc3d3639e1cb1}{raw\+Text}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for property with the same name. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+QGeo\+Coordinate \mbox{\hyperlink{classWeather_1_1TAF_aefd062dc010deb83aebeeb0b43ce8000}{coordinate}}
+\begin{DoxyCompactList}\small\item\em Geographical coordinate of the station reporting this \doxylink{classWeather_1_1TAF}{TAF}. \end{DoxyCompactList}\item 
+QDate\+Time \mbox{\hyperlink{classWeather_1_1TAF_abbd80f34ee9273c92ccd4af41d5f832c}{expiration}}
+\begin{DoxyCompactList}\small\item\em Expiration time and date. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classWeather_1_1TAF_ae4c29f20d08697a37d0fff693ebea360}{ICAOCode}}
+\begin{DoxyCompactList}\small\item\em ICAO code of the station reporting this \doxylink{classWeather_1_1TAF}{TAF}. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classWeather_1_1TAF_a90983bc41febd79676a5a393e85d6bc1}{is\+Valid}}
+\item 
+\Hypertarget{classWeather_1_1TAF_a0718a9e696ebeee028506338b49b9703}\label{classWeather_1_1TAF_a0718a9e696ebeee028506338b49b9703} 
+QDate\+Time {\bfseries issue\+Time}
+\begin{DoxyCompactList}\small\item\em Issue time of this \doxylink{classWeather_1_1TAF}{TAF}. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classWeather_1_1TAF_a576e23c91d6934d2fb58a9075eb63f27}{raw\+Text}}
+\begin{DoxyCompactList}\small\item\em Raw \doxylink{classWeather_1_1TAF}{TAF} text. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classWeather_1_1TAF_a4d780241e4890fecf6fcbb155266cc1e}{relative\+Issue\+Time}}
+\begin{DoxyCompactList}\small\item\em Issue time, relative to now. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Properties inherited from \mbox{\hyperlink{classWeather_1_1Decoder}{Weather\+::\+Decoder}}}
+\begin{DoxyCompactItemize}
+\item 
+QString \mbox{\hyperlink{classWeather_1_1Decoder_ab23ddfd6bfe3c897334118a9e407e408}{current\+Weather}}
+\begin{DoxyCompactList}\small\item\em Description of the current weather. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classWeather_1_1Decoder_a293cace0b214bef4878cac602c97fcdd}{decoded\+Text}}
+\begin{DoxyCompactList}\small\item\em Decoded text of the METAR/\+TAF message. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classWeather_1_1Decoder_a2e551134c8c780db0ec4eacd1108dd62}{message\+Type}}
+\begin{DoxyCompactList}\small\item\em Message Type. \end{DoxyCompactList}\item 
+QString {\bfseries raw\+Text}
+\begin{DoxyCompactList}\small\item\em Raw text of the METAR/\+TAF message. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\doxylink{classWeather_1_1TAF}{TAF} report. 
+
+This class contains the data of a \doxylink{classWeather_1_1TAF}{TAF} report and provided a few methods to access the data. Instances of this class are provided by the \doxylink{classWeather_1_1WeatherDataProvider}{Weather\+Data\+Provider} class; there is no way to construct valid instances yourself. 
+
+Definition at line \mbox{\hyperlink{TAF_8h_source_l00042}{42}} of file \mbox{\hyperlink{TAF_8h_source}{TAF.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classWeather_1_1TAF_a95bc84d821007dcba0c2de88a3d79571}\index{Weather::TAF@{Weather::TAF}!TAF@{TAF}}
+\index{TAF@{TAF}!Weather::TAF@{Weather::TAF}}
+\doxysubsubsection{\texorpdfstring{TAF()}{TAF()}}
+{\footnotesize\ttfamily \label{classWeather_1_1TAF_a95bc84d821007dcba0c2de88a3d79571} 
+Weather\+::\+TAF\+::\+TAF (\begin{DoxyParamCaption}\item[{QObject \texorpdfstring{$\ast$}{*}}]{parent}{ = {\ttfamily nullptr}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Default constructor. 
+
+This constructor creates an invalid \doxylink{classWeather_1_1TAF}{TAF} instance.
+
+
+\begin{DoxyParams}{Parameters}
+{\em parent} & The standard QObject parent pointer \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classWeather_1_1TAF_adf1c25caa20f4cd9ca51a30dc93cba11}\index{Weather::TAF@{Weather::TAF}!coordinate@{coordinate}}
+\index{coordinate@{coordinate}!Weather::TAF@{Weather::TAF}}
+\doxysubsubsection{\texorpdfstring{coordinate()}{coordinate()}}
+{\footnotesize\ttfamily \label{classWeather_1_1TAF_adf1c25caa20f4cd9ca51a30dc93cba11} 
+auto Weather\+::\+TAF\+::coordinate (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ QGeo\+Coordinate     \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property coordiante 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{TAF_8h_source_l00069}{69}} of file \mbox{\hyperlink{TAF_8h_source}{TAF.\+h}}.
+
+\Hypertarget{classWeather_1_1TAF_a0b66f0def80f7ea0d56ca66ad7aea8d9}\index{Weather::TAF@{Weather::TAF}!expiration@{expiration}}
+\index{expiration@{expiration}!Weather::TAF@{Weather::TAF}}
+\doxysubsubsection{\texorpdfstring{expiration()}{expiration()}}
+{\footnotesize\ttfamily \label{classWeather_1_1TAF_a0b66f0def80f7ea0d56ca66ad7aea8d9} 
+auto Weather\+::\+TAF\+::expiration (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ QDate\+Time     \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property expiration 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{TAF_8h_source_l00084}{84}} of file \mbox{\hyperlink{TAF_8h_source}{TAF.\+h}}.
+
+\Hypertarget{classWeather_1_1TAF_acced0b8619bd61e9f15a6c341daa3a9b}\index{Weather::TAF@{Weather::TAF}!ICAOCode@{ICAOCode}}
+\index{ICAOCode@{ICAOCode}!Weather::TAF@{Weather::TAF}}
+\doxysubsubsection{\texorpdfstring{ICAOCode()}{ICAOCode()}}
+{\footnotesize\ttfamily \label{classWeather_1_1TAF_acced0b8619bd61e9f15a6c341daa3a9b} 
+auto Weather\+::\+TAF\+::\+ICAOCode (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ QString     \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property ICAOCode 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{TAF_8h_source_l00100}{100}} of file \mbox{\hyperlink{TAF_8h_source}{TAF.\+h}}.
+
+\Hypertarget{classWeather_1_1TAF_a155986b42f5ff978f794e7ecb8f35b8c}\index{Weather::TAF@{Weather::TAF}!isExpired@{isExpired}}
+\index{isExpired@{isExpired}!Weather::TAF@{Weather::TAF}}
+\doxysubsubsection{\texorpdfstring{isExpired()}{isExpired()}}
+{\footnotesize\ttfamily \label{classWeather_1_1TAF_a155986b42f5ff978f794e7ecb8f35b8c} 
+Q\+\_\+\+INVOKABLE bool Weather\+::\+TAF\+::is\+Expired (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Convenience method to check if this \doxylink{classWeather_1_1TAF}{TAF} is already expired. 
+
+\begin{DoxyReturn}{Returns}
+true if an expiration date/time is known and if the current time is larger than the expiration 
+\end{DoxyReturn}
+\Hypertarget{classWeather_1_1TAF_a43b78c153903902f3043a22cf3fd3d69}\index{Weather::TAF@{Weather::TAF}!issueTime@{issueTime}}
+\index{issueTime@{issueTime}!Weather::TAF@{Weather::TAF}}
+\doxysubsubsection{\texorpdfstring{issueTime()}{issueTime()}}
+{\footnotesize\ttfamily \label{classWeather_1_1TAF_a43b78c153903902f3043a22cf3fd3d69} 
+auto Weather\+::\+TAF\+::issue\+Time (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ QDate\+Time     \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property observation\+Time 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{TAF_8h_source_l00127}{127}} of file \mbox{\hyperlink{TAF_8h_source}{TAF.\+h}}.
+
+\Hypertarget{classWeather_1_1TAF_a9181d7bc920fce1df4715cf3491d05e6}\index{Weather::TAF@{Weather::TAF}!isValid@{isValid}}
+\index{isValid@{isValid}!Weather::TAF@{Weather::TAF}}
+\doxysubsubsection{\texorpdfstring{isValid()}{isValid()}}
+{\footnotesize\ttfamily \label{classWeather_1_1TAF_a9181d7bc920fce1df4715cf3491d05e6} 
+auto Weather\+::\+TAF\+::is\+Valid (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$  bool\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Getter function for property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property is\+Valid 
+\end{DoxyReturn}
+\Hypertarget{classWeather_1_1TAF_aab6b87da5632346cecc7ae2a01e5ca0c}\index{Weather::TAF@{Weather::TAF}!rawText@{rawText}}
+\index{rawText@{rawText}!Weather::TAF@{Weather::TAF}}
+\doxysubsubsection{\texorpdfstring{rawText()}{rawText()}}
+{\footnotesize\ttfamily \label{classWeather_1_1TAF_aab6b87da5632346cecc7ae2a01e5ca0c} 
+auto Weather\+::\+TAF\+::raw\+Text (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ QString     \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property extended\+Name 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{TAF_8h_source_l00142}{142}} of file \mbox{\hyperlink{TAF_8h_source}{TAF.\+h}}.
+
+\Hypertarget{classWeather_1_1TAF_a68e9add437ce845fdce63c463cd20b46}\index{Weather::TAF@{Weather::TAF}!relativeIssueTime@{relativeIssueTime}}
+\index{relativeIssueTime@{relativeIssueTime}!Weather::TAF@{Weather::TAF}}
+\doxysubsubsection{\texorpdfstring{relativeIssueTime()}{relativeIssueTime()}}
+{\footnotesize\ttfamily \label{classWeather_1_1TAF_a68e9add437ce845fdce63c463cd20b46} 
+auto Weather\+::\+TAF\+::relative\+Issue\+Time (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$  QString\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Getter function for property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property relative\+Observation\+Time 
+\end{DoxyReturn}
+
+
+\doxysubsection{Property Documentation}
+\Hypertarget{classWeather_1_1TAF_aefd062dc010deb83aebeeb0b43ce8000}\index{Weather::TAF@{Weather::TAF}!coordinate@{coordinate}}
+\index{coordinate@{coordinate}!Weather::TAF@{Weather::TAF}}
+\doxysubsubsection{\texorpdfstring{coordinate}{coordinate}}
+{\footnotesize\ttfamily \label{classWeather_1_1TAF_aefd062dc010deb83aebeeb0b43ce8000} 
+QGeo\+Coordinate Weather\+::\+TAF\+::coordinate\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Geographical coordinate of the station reporting this \doxylink{classWeather_1_1TAF}{TAF}. 
+
+If the station coordinate is unknown, the property contains an invalid coordinate. 
+
+Definition at line \mbox{\hyperlink{TAF_8h_source_l00063}{63}} of file \mbox{\hyperlink{TAF_8h_source}{TAF.\+h}}.
+
+\Hypertarget{classWeather_1_1TAF_abbd80f34ee9273c92ccd4af41d5f832c}\index{Weather::TAF@{Weather::TAF}!expiration@{expiration}}
+\index{expiration@{expiration}!Weather::TAF@{Weather::TAF}}
+\doxysubsubsection{\texorpdfstring{expiration}{expiration}}
+{\footnotesize\ttfamily \label{classWeather_1_1TAF_abbd80f34ee9273c92ccd4af41d5f832c} 
+QDate\+Time Weather\+::\+TAF\+::expiration\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Expiration time and date. 
+
+A \doxylink{classWeather_1_1TAF}{TAF} message is supposed to expire once the last forecast period ends. 
+
+Definition at line \mbox{\hyperlink{TAF_8h_source_l00078}{78}} of file \mbox{\hyperlink{TAF_8h_source}{TAF.\+h}}.
+
+\Hypertarget{classWeather_1_1TAF_ae4c29f20d08697a37d0fff693ebea360}\index{Weather::TAF@{Weather::TAF}!ICAOCode@{ICAOCode}}
+\index{ICAOCode@{ICAOCode}!Weather::TAF@{Weather::TAF}}
+\doxysubsubsection{\texorpdfstring{ICAOCode}{ICAOCode}}
+{\footnotesize\ttfamily \label{classWeather_1_1TAF_ae4c29f20d08697a37d0fff693ebea360} 
+QString Weather\+::\+TAF\+::\+ICAOCode\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+ICAO code of the station reporting this \doxylink{classWeather_1_1TAF}{TAF}. 
+
+This is a string such as "{}\+LSZB"{} for Bern/\+Belp airport. If the station code is unknown, the property contains an empty string. 
+
+Definition at line \mbox{\hyperlink{TAF_8h_source_l00094}{94}} of file \mbox{\hyperlink{TAF_8h_source}{TAF.\+h}}.
+
+\Hypertarget{classWeather_1_1TAF_a90983bc41febd79676a5a393e85d6bc1}\index{Weather::TAF@{Weather::TAF}!isValid@{isValid}}
+\index{isValid@{isValid}!Weather::TAF@{Weather::TAF}}
+\doxysubsubsection{\texorpdfstring{isValid}{isValid}}
+{\footnotesize\ttfamily \label{classWeather_1_1TAF_a90983bc41febd79676a5a393e85d6bc1} 
+bool Weather\+::\+TAF\+::is\+Valid\hspace{0.3cm}{\ttfamily [read]}}
+
+Indicates if the class represents a valid \doxylink{classWeather_1_1TAF}{TAF} report 
+
+Definition at line \mbox{\hyperlink{TAF_8h_source_l00112}{112}} of file \mbox{\hyperlink{TAF_8h_source}{TAF.\+h}}.
+
+\Hypertarget{classWeather_1_1TAF_a576e23c91d6934d2fb58a9075eb63f27}\index{Weather::TAF@{Weather::TAF}!rawText@{rawText}}
+\index{rawText@{rawText}!Weather::TAF@{Weather::TAF}}
+\doxysubsubsection{\texorpdfstring{rawText}{rawText}}
+{\footnotesize\ttfamily \label{classWeather_1_1TAF_a576e23c91d6934d2fb58a9075eb63f27} 
+QString Weather\+::\+TAF\+::raw\+Text\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Raw \doxylink{classWeather_1_1TAF}{TAF} text. 
+
+This is a string such as "{}\+TAF EICK 092100\+Z 23007\+KT 9999 FEW038 BKN180 11/08 Q1019 NOSIG="{}. 
+
+Definition at line \mbox{\hyperlink{TAF_8h_source_l00136}{136}} of file \mbox{\hyperlink{TAF_8h_source}{TAF.\+h}}.
+
+\Hypertarget{classWeather_1_1TAF_a4d780241e4890fecf6fcbb155266cc1e}\index{Weather::TAF@{Weather::TAF}!relativeIssueTime@{relativeIssueTime}}
+\index{relativeIssueTime@{relativeIssueTime}!Weather::TAF@{Weather::TAF}}
+\doxysubsubsection{\texorpdfstring{relativeIssueTime}{relativeIssueTime}}
+{\footnotesize\ttfamily \label{classWeather_1_1TAF_a4d780241e4890fecf6fcbb155266cc1e} 
+QString Weather\+::\+TAF\+::relative\+Issue\+Time\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Issue time, relative to now. 
+
+This is a translated, human-\/readable string such as "{}1h and 43min ago"{} that describes the observation time. 
+
+Definition at line \mbox{\hyperlink{TAF_8h_source_l00152}{152}} of file \mbox{\hyperlink{TAF_8h_source}{TAF.\+h}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/weather/TAF.\+h\end{DoxyCompactItemize}

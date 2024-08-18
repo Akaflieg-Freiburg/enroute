@@ -1,0 +1,197 @@
+\doxysection{Traffic\+Data\+Source\+\_\+\+Tcp.\+h}
+\hypertarget{TrafficDataSource__Tcp_8h_source}{}\label{TrafficDataSource__Tcp_8h_source}\index{/home/runner/work/enroute/enroute/src/traffic/TrafficDataSource\_Tcp.h@{/home/runner/work/enroute/enroute/src/traffic/TrafficDataSource\_Tcp.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00001}00001\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00002}00002\ \textcolor{comment}{\ *\ \ \ Copyright\ (C)\ 2021-\/2024\ by\ Stefan\ Kebekus\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00003}00003\ \textcolor{comment}{\ *\ \ \ stefan.kebekus@gmail.com\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00004}00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ free\ software;\ you\ can\ redistribute\ it\ and/or\ modify\ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00006}00006\ \textcolor{comment}{\ *\ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by\ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00007}00007\ \textcolor{comment}{\ *\ \ \ the\ Free\ Software\ Foundation;\ either\ version\ 3\ of\ the\ License,\ or\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00008}00008\ \textcolor{comment}{\ *\ \ \ (at\ your\ option)\ any\ later\ version.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00009}00009\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00010}00010\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,\ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00011}00011\ \textcolor{comment}{\ *\ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of\ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00012}00012\ \textcolor{comment}{\ *\ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00013}00013\ \textcolor{comment}{\ *\ \ \ GNU\ General\ Public\ License\ for\ more\ details.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00014}00014\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00015}00015\ \textcolor{comment}{\ *\ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00016}00016\ \textcolor{comment}{\ *\ \ \ along\ with\ this\ program;\ if\ not,\ write\ to\ the\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00017}00017\ \textcolor{comment}{\ *\ \ \ Free\ Software\ Foundation,\ Inc.,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00018}00018\ \textcolor{comment}{\ *\ \ \ 59\ Temple\ Place\ -\/\ Suite\ 330,\ Boston,\ MA\ \ 02111-\/1307,\ USA.\ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00019}00019\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00021}00021\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ <QPointer>}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00024}00024\ \textcolor{preprocessor}{\#include\ <QTcpSocket>}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00026}00026\ \textcolor{preprocessor}{\#include\ "{}traffic/TrafficDataSource\_AbstractSocket.h"{}}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00027}00027\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00028}00028\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00029}00029\ \textcolor{keyword}{namespace\ }Traffic\ \{}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00042}\mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp}{00042}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp}{TrafficDataSource\_Tcp}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__AbstractSocket}{TrafficDataSource\_AbstractSocket}}\ \{}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00043}00043\ \ \ \ \ Q\_OBJECT}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00044}00044\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00045}00045\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00056}\mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp_a6e62efcf67263630025b78844cbc011e}{00056}}\ \ \ \ \ \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp_a6e62efcf67263630025b78844cbc011e}{TrafficDataSource\_Tcp}}(\textcolor{keywordtype}{bool}\ isCanonical,\ QString\ hostName,\ quint16\ \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp_a578f3f461dc5dd44effd6a0696ff4e62}{port}},\ QObject\ *parent\ =\ \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00057}00057\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00058}00058\ \ \ \ \ \textcolor{comment}{//\ Standard\ destructor}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00059}00059\ \ \ \ \ \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp}{\string~TrafficDataSource\_Tcp}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00060}00060\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00061}00061\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00062}00062\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00063}00063\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00064}00064\ \ \ \ \ \textcolor{comment}{//\ Properties}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00065}00065\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00066}00066\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00069}\mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp_a249a1dfa3a4c327e963798b952d68f36}{00069}}\ \ \ \ \ Q\_PROPERTY(QString\ \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp_a249a1dfa3a4c327e963798b952d68f36}{host}}\ READ\ \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp_a249a1dfa3a4c327e963798b952d68f36}{host}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00070}00070\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00071}00071\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00073}\mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp_a578f3f461dc5dd44effd6a0696ff4e62}{00073}}\ \ \ \ \ Q\_PROPERTY(quint16\ \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp_a578f3f461dc5dd44effd6a0696ff4e62}{port}}\ READ\ \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp_a578f3f461dc5dd44effd6a0696ff4e62}{port}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00074}00074\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00075}00075\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00076}00076\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00077}00077\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00078}00078\ \ \ \ \ \textcolor{comment}{//\ Getter\ Methods}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00079}00079\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00080}00080\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00085}\mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp_a8b115b0034b31f5df746cae5718a05b1}{00085}}\ \ \ \ \ [[nodiscard]]\ Traffic::\mbox{\hyperlink{classTraffic_1_1ConnectionInfo}{ConnectionInfo}}\ \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp_a8b115b0034b31f5df746cae5718a05b1}{connectionInfo}}()\textcolor{keyword}{\ const\ override\ \ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo}{Traffic::ConnectionInfo}}(m\_hostName,\ m\_port,\ \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a5d7761678f5f74ba2c2d79e30ed61a5e}{canonical}}());\ \}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00086}00086\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00091}\mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp_a03da919a2dc27fed0062432b87d46547}{00091}}\ \ \ \ \ [[nodiscard]]\ QString\ \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp_a03da919a2dc27fed0062432b87d46547}{dataFormat}}()\textcolor{keyword}{\ const\ override\ }\{\ \textcolor{keywordflow}{return}\ u\textcolor{stringliteral}{"{}FLARM/NMEA"{}}\_qs;\ \}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00092}00092\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00097}\mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp_a893c694a68a161d94044a5957a1c9f1d}{00097}}\ \ \ \ \ [[nodiscard]]\ QString\ \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp_a893c694a68a161d94044a5957a1c9f1d}{host}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00098}00098\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00099}00099\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_hostName;}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00100}00100\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00101}00101\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00109}\mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp_ab6424198a69ef1267cbf11d5503a187f}{00109}}\ \ \ \ \ [[nodiscard]]\ QString\ \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp_ab6424198a69ef1267cbf11d5503a187f}{icon}}()\textcolor{keyword}{\ const\ override\ }\{\ \textcolor{keywordflow}{return}\ u\textcolor{stringliteral}{"{}/icons/material/ic\_wifi.svg"{}}\_qs;\ \}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00110}00110\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00118}\mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp_af19a983b2b917d655c20d27c2ad541fa}{00118}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp_af19a983b2b917d655c20d27c2ad541fa}{sourceName}}()\ const\ -\/>\ QString\textcolor{keyword}{\ override}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00119}00119\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00120}00120\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ tr(\textcolor{stringliteral}{"{}TCP\ connection\ to\ \%1\ port\ \%2"{}}).arg(m\_hostName).arg(m\_port);}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00121}00121\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00122}00122\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00127}\mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp_a28ab84db8ae292f59e3552c79e67df17}{00127}}\ \ \ \ \ [[nodiscard]]\ quint16\ \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp_a28ab84db8ae292f59e3552c79e67df17}{port}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00128}00128\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00129}00129\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_port;}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00130}00130\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00131}00131\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00132}00132\ \textcolor{keyword}{public}\ slots:}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00138}\mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp_abac4b492e1744ff4380bcd596a710d91}{00138}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp_abac4b492e1744ff4380bcd596a710d91}{connectToTrafficReceiver}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00139}00139\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00145}\mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp_a301e9c64c9279c362657db7f81bfc0f9}{00145}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp_a301e9c64c9279c362657db7f81bfc0f9}{disconnectFromTrafficReceiver}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00146}00146\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00152}\mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp_a888cbc3ff2af51b685b2160ed17cb539}{00152}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp_a888cbc3ff2af51b685b2160ed17cb539}{setPassword}}(\textcolor{keyword}{const}\ QString\&\ SSID,\ \textcolor{keyword}{const}\ QString\&\ password)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00153}00153\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00154}00154\ \textcolor{keyword}{private}\ slots:}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00155}00155\ \ \ \ \ \textcolor{comment}{//\ Read\ lines\ from\ the\ socket's\ text\ stream\ and\ passes\ the\ string\ on\ to}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00156}00156\ \ \ \ \ \textcolor{comment}{//\ processFLARMMessage.}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00157}00157\ \ \ \ \ \textcolor{keywordtype}{void}\ onReadyRead();}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00158}00158\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00159}00159\ \ \ \ \ \textcolor{comment}{//\ This\ method\ does\ the\ actual\ job\ of\ sending\ the\ password\ to\ the\ traffic}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00160}00160\ \ \ \ \ \textcolor{comment}{//\ data\ receiver}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00161}00161\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00162}00162\ \ \ \ \ \textcolor{comment}{//\ It\ checks\ if\ the\ instance\ is\ actually\ waiting\ for\ a\ password\ and\ returns}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00163}00163\ \ \ \ \ \textcolor{comment}{//\ if\ it\ is\ not.}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00164}00164\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00165}00165\ \ \ \ \ \textcolor{comment}{//\ It\ connects\ the\ slots\ updatePasswordStatusOnHeartbeatChange\ that\ will}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00166}00166\ \ \ \ \ \textcolor{comment}{//\ respond\ to\ heartbeat\ (=password\ accepted)\ and}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00167}00167\ \ \ \ \ \textcolor{comment}{//\ updatePasswordStatusOnDisconnected\ (=password\ rejected).\ It\ will\ send\ the}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00168}00168\ \ \ \ \ \textcolor{comment}{//\ password\ and\ set\ passwordRequest\_Status\ to\ "{}waitingForDevice"{}}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00169}00169\ \ \ \ \ \textcolor{keywordtype}{void}\ sendPassword\_internal();}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00170}00170\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00171}00171\ \ \ \ \ \textcolor{comment}{//\ This\ method\ set\ passwordRequest\_Status\ to\ "{}idle"{},\ resets}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00172}00172\ \ \ \ \ \textcolor{comment}{//\ passwordRequest\_SSID\ and\ passwordRequest\_password,\ and\ disconnects\ the}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00173}00173\ \ \ \ \ \textcolor{comment}{//\ slots\ updatePasswordStatusOnHeartbeatChange\ and}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00174}00174\ \ \ \ \ \textcolor{comment}{//\ updatePasswordStatusOnDisconnected);}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00175}00175\ \ \ \ \ \textcolor{keywordtype}{void}\ resetPasswordLifecycle();}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00176}00176\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00177}00177\ \ \ \ \ \textcolor{comment}{//\ This\ slot\ is\ called\ when\ the\ password\ has\ been\ rejected\ by\ the\ traffic}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00178}00178\ \ \ \ \ \textcolor{comment}{//\ data\ receiver.\ It\ clears\ the\ password\ from\ the\ database,\ schedules\ a}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00179}00179\ \ \ \ \ \textcolor{comment}{//\ reconnect\ and\ calls\ resetPasswordLifecycle().}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00180}00180\ \ \ \ \ \textcolor{keywordtype}{void}\ updatePasswordStatusOnDisconnected();}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00181}00181\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00182}00182\ \ \ \ \ \textcolor{comment}{//\ This\ slot\ is\ called\ when\ the\ password\ has\ been\ accepted\ by\ the\ traffic}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00183}00183\ \ \ \ \ \textcolor{comment}{//\ data\ receiver.\ It\ emits\ a\ password\ storage\ request\ if\ appropriate\ and}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00184}00184\ \ \ \ \ \textcolor{comment}{//\ calls\ resetPasswordLifecycle().}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00185}00185\ \ \ \ \ \textcolor{keywordtype}{void}\ updatePasswordStatusOnHeartbeatChange(\textcolor{keywordtype}{bool}\ newHeartbeat);}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00186}00186\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00187}00187\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00188}00188\ \ \ \ \ Q\_DISABLE\_COPY\_MOVE(\mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp}{TrafficDataSource\_Tcp}})}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00189}00189\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00190}00190\ \ \ \ \ QTcpSocket\ m\_socket;}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00191}00191\ \ \ \ \ QTextStream\ m\_textStream;}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00192}00192\ \ \ \ \ QString\ m\_hostName;}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00193}00193\ \ \ \ \ quint16\ m\_port;}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00194}00194\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00195}00195\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00196}00196\ \ \ \ \ \textcolor{comment}{/*\ Password\ lifecycle}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00197}00197\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00198}00198\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ The\ method\ onReadyRead\ detects\ that\ the\ device\ requests\ password.\ It}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00199}00199\ \textcolor{comment}{\ \ \ \ \ *\ \ \ will\ store\ the\ current\ SSID\ in\ passwordRequest\_SSID\ and\ set}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00200}00200\ \textcolor{comment}{\ \ \ \ \ *\ \ \ passwordRequest\_Status\ to\ waitingForPassword.}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00201}00201\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00202}00202\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ If\ a\ password\ for\ the\ SSID\ is\ found\ in\ the\ database,\ the\ method}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00203}00203\ \textcolor{comment}{\ \ \ \ \ *\ \ \ sendPassword\ is\ called\ with\ that\ password.\ \ Otherwise,\ the\ signal}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00204}00204\ \textcolor{comment}{\ \ \ \ \ *\ \ \ passwordRequest\ is\ emitted,\ which\ will\ hopefully\ lead\ to\ lead\ to\ a}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00205}00205\ \textcolor{comment}{\ \ \ \ \ *\ \ \ user-\/provided\ password\ through\ sendPassword()}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00206}00206\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00207}00207\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ The\ method\ send\ password\ will\ store\ the\ password\ in}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00208}00208\ \textcolor{comment}{\ \ \ \ \ *\ \ \ passwordRequest\_password,\ send\ the\ password\ to\ the\ device\ and\ set}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00209}00209\ \textcolor{comment}{\ \ \ \ \ *\ \ \ passwordRequest\_Status\ to\ waitingForDevice.}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00210}00210\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00211}00211\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ When\ the\ connection\ is\ closed\ while\ passwordRequest\_Status\ ==}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00212}00212\ \textcolor{comment}{\ \ \ \ \ *\ \ \ waitingForDevice,\ this\ means\ that\ the\ traffic\ data\ receiver\ has}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00213}00213\ \textcolor{comment}{\ \ \ \ \ *\ \ \ rejected\ the\ password.\ The\ password\ stored\ in\ passwordRequest\_password}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00214}00214\ \textcolor{comment}{\ \ \ \ \ *\ \ \ for\ passwordRequest\_SSID\ is\ removed\ from\ the\ password\ database,}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00215}00215\ \textcolor{comment}{\ \ \ \ \ *\ \ \ passwordRequest\_Status\ is\ set\ to\ idle,\ the\ members\ passwordRequest\_SSID}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00216}00216\ \textcolor{comment}{\ \ \ \ \ *\ \ \ and\ passwordRequest\_password\ are\ cleared\ and\ an\ immediate\ reconnect\ is}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00217}00217\ \textcolor{comment}{\ \ \ \ \ *\ \ \ scheduled.}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00218}00218\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00219}00219\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ When\ the\ heartbeat\ is\ received\ while\ passwordRequest\_Status\ ==}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00220}00220\ \textcolor{comment}{\ \ \ \ \ *\ \ \ waitingForDevice,\ this\ means\ that\ the\ traffic\ data\ receiver\ has}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00221}00221\ \textcolor{comment}{\ \ \ \ \ *\ \ \ accepted\ the\ password.\ The\ instance\ will\ then\ emit\ the}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00222}00222\ \textcolor{comment}{\ \ \ \ \ *\ \ \ passwordStorageRequest.\ The\ member\ passwordRequest\_Status\ is\ set\ to}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00223}00223\ \textcolor{comment}{\ \ \ \ \ *\ \ \ idle,\ and\ the\ members\ passwordRequest\_SSID\ and\ passwordRequest\_password}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00224}00224\ \textcolor{comment}{\ \ \ \ \ *\ \ \ are\ cleared.}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00225}00225\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00226}00226\ \ \ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00227}00227\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ \ No\ password-\/related\ activity\ is\ pending\ */}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00228}00228\ \ \ \ \ \ \ \ \ idle,}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00229}00229\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00230}00230\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ \ Waiting\ for\ password}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00231}00231\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00232}00232\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ \ A\ password\ has\ been\ requested\ by\ the\ traffic\ data\ receiver.}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00233}00233\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00234}00234\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ \ At\ this\ stage,\ the\ member\ passwordRequest\_SSID\ contains\ the\ network}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00235}00235\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ \ name\ of\ the\ WiFi\ network\ that\ the\ device\ was\ connected\ to\ at\ the}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00236}00236\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ \ time\ of\ the\ request.}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00237}00237\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00238}00238\ \ \ \ \ \ \ \ \ waitingForPassword,}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00239}00239\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00240}00240\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ \ Waiting\ for\ device}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00241}00241\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00242}00242\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ \ A\ password\ has\ been\ sent\ to\ the\ traffic\ data\ receiver,\ and\ this}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00243}00243\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ \ class\ is\ now\ waiting\ for\ the\ device\ to\ respond.}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00244}00244\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00245}00245\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ \ At\ this\ stage,\ the\ member\ passwordRequest\_SSID\ contains\ the\ network}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00246}00246\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ \ name\ of\ the\ WiFi\ network\ that\ the\ device\ was\ connected\ to\ at\ the}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00247}00247\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ \ time\ of\ the\ request.\ The\ member\ passwordRequest\_password\ contains}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00248}00248\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ \ the\ password\ that\ has\ been\ sent\ to\ the\ traffic\ data\ receiver}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00249}00249\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00250}00250\ \ \ \ \ \ \ \ \ waitingForDevice}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00251}00251\ \ \ \ \ \}\ passwordRequest\_Status\ \{idle\};}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00252}00252\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00253}00253\ \ \ \ \ \textcolor{comment}{//\ See\ passwordRequest\_Status\ documentation}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00254}00254\ \ \ \ \ QString\ passwordRequest\_SSID;}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00255}00255\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00256}00256\ \ \ \ \ \textcolor{comment}{//\ See\ passwordRequest\_Status\ documentation}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00257}00257\ \ \ \ \ QString\ passwordRequest\_password;}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00258}00258\ \};}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00259}00259\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__Tcp_8h_source_l00260}00260\ \}\ \textcolor{comment}{//\ namespace\ Traffic}}
+
+\end{DoxyCode}

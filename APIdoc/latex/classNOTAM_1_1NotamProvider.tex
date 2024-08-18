@@ -1,0 +1,261 @@
+\doxysection{NOTAM\+::Notam\+Provider Class Reference}
+\hypertarget{classNOTAM_1_1NotamProvider}{}\label{classNOTAM_1_1NotamProvider}\index{NOTAM::NotamProvider@{NOTAM::NotamProvider}}
+
+
+This extremely simple class holds a the data item of a NOTAM.  
+
+
+
+
+{\ttfamily \#include $<$Notam\+Provider.\+h$>$}
+
+Inheritance diagram for NOTAM\+::Notam\+Provider\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classNOTAM_1_1NotamProvider}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Signals}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classNOTAM_1_1NotamProvider_ad670bd26e0119a071c22fa757af43872}\label{classNOTAM_1_1NotamProvider_ad670bd26e0119a071c22fa757af43872} 
+void {\bfseries data\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classNOTAM_1_1NotamProvider_a47f4d06a4317122c50578e32722c9c82}{deferred\+Initialization}} () override
+\begin{DoxyCompactList}\small\item\em Non-\/constructor initialization. \end{DoxyCompactList}\item 
+\Hypertarget{classNOTAM_1_1NotamProvider_a5f81c3ce91c5ab5fd220a900d064d2ff}\label{classNOTAM_1_1NotamProvider_a5f81c3ce91c5ab5fd220a900d064d2ff} 
+{\bfseries \texorpdfstring{$\sim$}{\string~}\+Notam\+Provider} () override
+\begin{DoxyCompactList}\small\item\em Standard destructor. \end{DoxyCompactList}\item 
+QByte\+Array \mbox{\hyperlink{classNOTAM_1_1NotamProvider_afebb7ef78fd1a7e28bcb151ab5755ac3}{Geo\+JSON}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for property with the same name. \end{DoxyCompactList}\item 
+Q\+\_\+\+REQUIRED\+\_\+\+RESULT QDate\+Time \mbox{\hyperlink{classNOTAM_1_1NotamProvider_a707840e7e509e173d9d4c4656c890e38}{last\+Update}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+Q\+\_\+\+REQUIRED\+\_\+\+RESULT QList$<$ \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Geo\+Maps\+::\+Waypoint}} $>$ \mbox{\hyperlink{classNOTAM_1_1NotamProvider_ad7014a7422ef53bbd0ba7af0cbe7e5e6}{waypoints}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classNOTAM_1_1NotamList}{NOTAM\+::\+Notam\+List}} \mbox{\hyperlink{classNOTAM_1_1NotamProvider_a73bab769d97b82094d2318a1a765a31b}{notams}} (const \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Geo\+Maps\+::\+Waypoint}} \&waypoint)
+\begin{DoxyCompactList}\small\item\em Notams for a given waypoint. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE bool \mbox{\hyperlink{classNOTAM_1_1NotamProvider_ad6fe03afb19ed0d894475480ad319aca}{is\+Read}} (const QString \&number)
+\begin{DoxyCompactList}\small\item\em Check is a notam number is registred as read. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE void \mbox{\hyperlink{classNOTAM_1_1NotamProvider_adbd8026f690b01e55aef950b675f4c76}{set\+Read}} (const QString \&number, bool read)
+\begin{DoxyCompactList}\small\item\em Register notam number as read or unread. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classGlobalObject}{Global\+Object}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classGlobalObject_ac8dfa53c492975de42fa7972e77abbc1}{Global\+Object}} (QObject \texorpdfstring{$\ast$}{*}parent=nullptr)
+\begin{DoxyCompactList}\small\item\em Standard constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classGlobalObject_a96c4d476061f33a53b8c7de446c639eb}{\texorpdfstring{$\sim$}{\string~}\+Global\+Object}} () override=default
+\begin{DoxyCompactList}\small\item\em Standard deconstructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+QByte\+Array \mbox{\hyperlink{classNOTAM_1_1NotamProvider_a01c460cf5424a4b21719c7e77a019876}{Geo\+JSON}}
+\begin{DoxyCompactList}\small\item\em List of NOTAM points. \end{DoxyCompactList}\item 
+\Hypertarget{classNOTAM_1_1NotamProvider_a00a825ccdbd710fc2fecbb16637930d3}\label{classNOTAM_1_1NotamProvider_a00a825ccdbd710fc2fecbb16637930d3} 
+QDate\+Time {\bfseries last\+Update}
+\begin{DoxyCompactList}\small\item\em Time of last database update. \end{DoxyCompactList}\item 
+\Hypertarget{classNOTAM_1_1NotamProvider_a1b616a9148c53cb2f70ef0faa091784a}\label{classNOTAM_1_1NotamProvider_a1b616a9148c53cb2f70ef0faa091784a} 
+QList$<$ \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Geo\+Maps\+::\+Waypoint}} $>$ {\bfseries waypoints}
+\begin{DoxyCompactList}\small\item\em Waypoints with \doxylink{classNOTAM_1_1Notam}{Notam} items, for presentation in a map. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Static Public Member Functions inherited from \mbox{\hyperlink{classGlobalObject}{Global\+Object}}}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classGlobalObject_ae5d0c94af509c9744e1b344201928715}{clear}} ()
+\begin{DoxyCompactList}\small\item\em Deletes all globally defined objects. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE bool \mbox{\hyperlink{classGlobalObject_a0501f0fd4dbb0252ff120fd07ea2f703}{can\+Construct}} ()
+\begin{DoxyCompactList}\small\item\em Indicates if the static methods are ready to be used. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classNavigation_1_1Clock}{Navigation\+::\+Clock}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_ad479148c920adcb9c9ea9d99c762a08f}{clock}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static \doxylink{classNavigation_1_1Clock}{Navigation\+::\+Clock} instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classDataManagement_1_1DataManager}{Data\+Management\+::\+Data\+Manager}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a88f9800ff5290634fbb1507bd509afc9}{data\+Manager}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Geo\+Maps\+::\+Data\+Manager instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classDemoRunner}{Demo\+Runner}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_abb18a18cba455a65c8773aa5f4fbcdd6}{demo\+Runner}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static \doxylink{classDemoRunner}{Demo\+Runner} instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classTraffic_1_1FlarmnetDB}{Traffic\+::\+Flarmnet\+DB}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_ad195e7630ee65b97b837fb8bc26e1ba9}{flarmnet\+DB}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Flarmnet\+DB instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classPlatform_1_1FileExchange__Abstract}{Platform\+::\+File\+Exchange\+\_\+\+Abstract}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a2c2011587fd8d46f9425d61d0b740922}{file\+Exchange}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static File\+Exchange instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider}{Geo\+Maps\+::\+Geo\+Map\+Provider}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a241d8d74ad20f5b5fdfa3eff30a20077}{geo\+Map\+Provider}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static \doxylink{classGeoMaps_1_1GeoMapProvider}{Geo\+Maps\+::\+Geo\+Map\+Provider} instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classGlobalSettings}{Global\+Settings}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_af94f3ad5c6bb06982abf5d2759b63186}{global\+Settings}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Settings instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classLibrarian}{Librarian}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a311415802470c0ca323e8a44c96d2773}{librarian}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static librarian instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor__Abstract}{Platform\+::\+Platform\+Adaptor\+\_\+\+Abstract}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_af4497d953402cc7891edfe5e9f6f56ac}{platform\+Adaptor}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Platform\+Adaptor instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classSensors}{Sensors}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a8df42e3160bee431602e14e9b605ffa8}{sensors}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static \doxylink{classNavigation_1_1Clock}{Navigation\+::\+Clock} instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classNavigation_1_1Navigator}{Navigation\+::\+Navigator}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a6e6835796fd3ab2f304c96272f50054c}{navigator}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static \doxylink{classNavigation_1_1Navigator}{Navigation\+::\+Navigator} instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classTraffic_1_1PasswordDB}{Traffic\+::\+Password\+DB}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a0ac7c3ccb518e122c8565e40c1fb8cdb}{password\+DB}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Password\+DB instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classPositioning_1_1PositionProvider}{Positioning\+::\+Position\+Provider}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a7837aeb4bcabe6542db1bccdab5ebd59}{position\+Provider}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Position\+Provider instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classNOTAM_1_1NotamProvider}{NOTAM\+::\+Notam\+Provider}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_ac11d38af2df8dcdb78679abf92b6de7a}{notam\+Provider}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static notification manager instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classNotifications_1_1NotificationManager}{Notifications\+::\+Notification\+Manager}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_aa90c2b17a6930dfb2cd258c8349e94cc}{notification\+Manager}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static notification manager instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE QNetwork\+Access\+Manager \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_aece9ee1f2507b4bcd825d4f61ebd4643}{network\+Access\+Manager}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static QNetwork\+Access\+Manager instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classDataManagement_1_1SSLErrorHandler}{Data\+Management\+::\+SSLError\+Handler}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_ab4e66c880bdcfa33720b51364c484044}{ssl\+Error\+Handler}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static QNetwork\+Access\+Manager instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classTraffic_1_1TrafficDataProvider}{Traffic\+::\+Traffic\+Data\+Provider}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_acc3b67374f1eac467da729151c31aff6}{traffic\+Data\+Provider}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Traffic\+Data\+Provider instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary}{Geo\+Maps\+::\+Waypoint\+Library}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a0fe5454852ab2b913efe469bfd2630b4}{waypoint\+Library}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Waypoint\+Library instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classWeather_1_1WeatherDataProvider}{Weather\+::\+Weather\+Data\+Provider}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_abff9f661cf7e78967606d10692c03412}{weather\+Data\+Provider}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Weather\+Data\+Provider instance. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This extremely simple class holds a the data item of a NOTAM. 
+
+Definition at line \mbox{\hyperlink{NotamProvider_8h_source_l00033}{33}} of file \mbox{\hyperlink{NotamProvider_8h_source}{Notam\+Provider.\+h}}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classNOTAM_1_1NotamProvider_a47f4d06a4317122c50578e32722c9c82}\index{NOTAM::NotamProvider@{NOTAM::NotamProvider}!deferredInitialization@{deferredInitialization}}
+\index{deferredInitialization@{deferredInitialization}!NOTAM::NotamProvider@{NOTAM::NotamProvider}}
+\doxysubsubsection{\texorpdfstring{deferredInitialization()}{deferredInitialization()}}
+{\footnotesize\ttfamily \label{classNOTAM_1_1NotamProvider_a47f4d06a4317122c50578e32722c9c82} 
+void NOTAM\+::\+Notam\+Provider\+::deferred\+Initialization (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Non-\/constructor initialization. 
+
+This method is called by the static methods that create global instances immediately after the constructor returns. This class can be re-\/implemented to perform initialization steps that refer to other singleton objects. 
+
+Reimplemented from \mbox{\hyperlink{classGlobalObject_ad89d4b5b146c91f65f282572629c2f5f}{Global\+Object}}.
+
+\Hypertarget{classNOTAM_1_1NotamProvider_afebb7ef78fd1a7e28bcb151ab5755ac3}\index{NOTAM::NotamProvider@{NOTAM::NotamProvider}!GeoJSON@{GeoJSON}}
+\index{GeoJSON@{GeoJSON}!NOTAM::NotamProvider@{NOTAM::NotamProvider}}
+\doxysubsubsection{\texorpdfstring{GeoJSON()}{GeoJSON()}}
+{\footnotesize\ttfamily \label{classNOTAM_1_1NotamProvider_afebb7ef78fd1a7e28bcb151ab5755ac3} 
+QByte\+Array NOTAM\+::\+Notam\+Provider\+::\+Geo\+JSON (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Getter function for property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property Geo\+JSON 
+\end{DoxyReturn}
+\Hypertarget{classNOTAM_1_1NotamProvider_ad6fe03afb19ed0d894475480ad319aca}\index{NOTAM::NotamProvider@{NOTAM::NotamProvider}!isRead@{isRead}}
+\index{isRead@{isRead}!NOTAM::NotamProvider@{NOTAM::NotamProvider}}
+\doxysubsubsection{\texorpdfstring{isRead()}{isRead()}}
+{\footnotesize\ttfamily \label{classNOTAM_1_1NotamProvider_ad6fe03afb19ed0d894475480ad319aca} 
+Q\+\_\+\+INVOKABLE bool NOTAM\+::\+Notam\+Provider\+::is\+Read (\begin{DoxyParamCaption}\item[{const QString \&}]{number}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Check is a notam number is registred as read. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em number} & \doxylink{classNOTAM_1_1Notam}{Notam} number\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True is notam is known as read 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{NotamProvider_8h_source_l00131}{131}} of file \mbox{\hyperlink{NotamProvider_8h_source}{Notam\+Provider.\+h}}.
+
+\Hypertarget{classNOTAM_1_1NotamProvider_a707840e7e509e173d9d4c4656c890e38}\index{NOTAM::NotamProvider@{NOTAM::NotamProvider}!lastUpdate@{lastUpdate}}
+\index{lastUpdate@{lastUpdate}!NOTAM::NotamProvider@{NOTAM::NotamProvider}}
+\doxysubsubsection{\texorpdfstring{lastUpdate()}{lastUpdate()}}
+{\footnotesize\ttfamily \label{classNOTAM_1_1NotamProvider_a707840e7e509e173d9d4c4656c890e38} 
+Q\+\_\+\+REQUIRED\+\_\+\+RESULT QDate\+Time NOTAM\+::\+Notam\+Provider\+::last\+Update (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property last\+Update 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{NotamProvider_8h_source_l00092}{92}} of file \mbox{\hyperlink{NotamProvider_8h_source}{Notam\+Provider.\+h}}.
+
+\Hypertarget{classNOTAM_1_1NotamProvider_a73bab769d97b82094d2318a1a765a31b}\index{NOTAM::NotamProvider@{NOTAM::NotamProvider}!notams@{notams}}
+\index{notams@{notams}!NOTAM::NotamProvider@{NOTAM::NotamProvider}}
+\doxysubsubsection{\texorpdfstring{notams()}{notams()}}
+{\footnotesize\ttfamily \label{classNOTAM_1_1NotamProvider_a73bab769d97b82094d2318a1a765a31b} 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classNOTAM_1_1NotamList}{NOTAM\+::\+Notam\+List}} NOTAM\+::\+Notam\+Provider\+::notams (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Geo\+Maps\+::\+Waypoint}} \&}]{waypoint}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Notams for a given waypoint. 
+
+The returned list is empty and has a valid property "{}retrieved"{} if the \doxylink{classNOTAM_1_1NotamProvider}{Notam\+Provider} is sure that there are no relevant notams for the given waypoint.
+
+The returned list is empty and has an invalid property "{}retrieved"{} if the \doxylink{classNOTAM_1_1NotamProvider}{Notam\+Provider} has no data.
+
+Calling this method might trigger an update of the \doxylink{classNOTAM_1_1Notam}{Notam} database. Consumers can watch the property last\+Update to learn about database updates.
+
+
+\begin{DoxyParams}{Parameters}
+{\em waypoint} & Waypoint for which the notam list is compiled\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+List of Notams relevant for the waypoint 
+\end{DoxyReturn}
+\Hypertarget{classNOTAM_1_1NotamProvider_adbd8026f690b01e55aef950b675f4c76}\index{NOTAM::NotamProvider@{NOTAM::NotamProvider}!setRead@{setRead}}
+\index{setRead@{setRead}!NOTAM::NotamProvider@{NOTAM::NotamProvider}}
+\doxysubsubsection{\texorpdfstring{setRead()}{setRead()}}
+{\footnotesize\ttfamily \label{classNOTAM_1_1NotamProvider_adbd8026f690b01e55aef950b675f4c76} 
+Q\+\_\+\+INVOKABLE void NOTAM\+::\+Notam\+Provider\+::set\+Read (\begin{DoxyParamCaption}\item[{const QString \&}]{number}{, }\item[{bool}]{read}{}\end{DoxyParamCaption})}
+
+
+
+Register notam number as read or unread. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em number} & \doxylink{classNOTAM_1_1Notam}{Notam} number\\
+\hline
+{\em read} & True if notam is to be registred as read \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classNOTAM_1_1NotamProvider_ad7014a7422ef53bbd0ba7af0cbe7e5e6}\index{NOTAM::NotamProvider@{NOTAM::NotamProvider}!waypoints@{waypoints}}
+\index{waypoints@{waypoints}!NOTAM::NotamProvider@{NOTAM::NotamProvider}}
+\doxysubsubsection{\texorpdfstring{waypoints()}{waypoints()}}
+{\footnotesize\ttfamily \label{classNOTAM_1_1NotamProvider_ad7014a7422ef53bbd0ba7af0cbe7e5e6} 
+Q\+\_\+\+REQUIRED\+\_\+\+RESULT QList$<$ \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Geo\+Maps\+::\+Waypoint}} $>$ NOTAM\+::\+Notam\+Provider\+::waypoints (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property waypoints 
+\end{DoxyReturn}
+
+
+\doxysubsection{Property Documentation}
+\Hypertarget{classNOTAM_1_1NotamProvider_a01c460cf5424a4b21719c7e77a019876}\index{NOTAM::NotamProvider@{NOTAM::NotamProvider}!GeoJSON@{GeoJSON}}
+\index{GeoJSON@{GeoJSON}!NOTAM::NotamProvider@{NOTAM::NotamProvider}}
+\doxysubsubsection{\texorpdfstring{GeoJSON}{GeoJSON}}
+{\footnotesize\ttfamily \label{classNOTAM_1_1NotamProvider_a01c460cf5424a4b21719c7e77a019876} 
+QByte\+Array NOTAM\+::\+Notam\+Provider\+::\+Geo\+JSON\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+List of NOTAM points. 
+
+This property holds Geo\+JSON, to describe points where NOTAMs are active. 
+
+Definition at line \mbox{\hyperlink{NotamProvider_8h_source_l00067}{67}} of file \mbox{\hyperlink{NotamProvider_8h_source}{Notam\+Provider.\+h}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/notam/Notam\+Provider.\+h\end{DoxyCompactItemize}

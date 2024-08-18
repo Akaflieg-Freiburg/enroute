@@ -1,0 +1,279 @@
+\doxysection{Geo\+Maps\+::VACLibrary Class Reference}
+\hypertarget{classGeoMaps_1_1VACLibrary}{}\label{classGeoMaps_1_1VACLibrary}\index{GeoMaps::VACLibrary@{GeoMaps::VACLibrary}}
+
+
+Library of visual approach charts.  
+
+
+
+
+{\ttfamily \#include $<$VACLibrary.\+h$>$}
+
+
+
+Inherits QObject.
+
+\doxysubsubsection*{Signals}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classGeoMaps_1_1VACLibrary_a29cc30cb0494222a624a1ef0d7d9b588}\label{classGeoMaps_1_1VACLibrary_a29cc30cb0494222a624a1ef0d7d9b588} 
+void {\bfseries data\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classGeoMaps_1_1VACLibrary_af026c7a5fdd5cb3c0cdc157530ba69f6}{import\+Trip\+Kit\+Status}} (double percent)
+\begin{DoxyCompactList}\small\item\em Progress report when importing a trip kit. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classGeoMaps_1_1VACLibrary_a60293890ca87e0d4b56d321b8c4a6e9c}{VACLibrary}} (QObject \texorpdfstring{$\ast$}{*}parent=nullptr)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\Hypertarget{classGeoMaps_1_1VACLibrary_a5118c847bc89fbaa37a65cef20143f42}\label{classGeoMaps_1_1VACLibrary_a5118c847bc89fbaa37a65cef20143f42} 
+{\bfseries \texorpdfstring{$\sim$}{\string~}\+VACLibrary} () override
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classGeoMaps_1_1VACLibrary_a1c8b903f36dd68e083a6ceb971ea0dfe}{is\+Empty}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for property of the same name. \end{DoxyCompactList}\item 
+QVector$<$ \mbox{\hyperlink{classGeoMaps_1_1VAC}{Geo\+Maps\+::\+VAC}} $>$ \mbox{\hyperlink{classGeoMaps_1_1VACLibrary_ab385666d450255a421131438ccb0e0ed}{vacs}} ()
+\begin{DoxyCompactList}\small\item\em Getter function for property of the same name. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE void \mbox{\hyperlink{classGeoMaps_1_1VACLibrary_a0b828737405263d36cfa544488c076a6}{clear}} ()
+\begin{DoxyCompactList}\small\item\em Removes all VACs. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classGeoMaps_1_1VAC}{Geo\+Maps\+::\+VAC}} \mbox{\hyperlink{classGeoMaps_1_1VACLibrary_a1aff765f4f51f2e4e4f60b6c2acac204}{get}} (const QString \&name)
+\begin{DoxyCompactList}\small\item\em Obtain VACs from the library. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE QString \mbox{\hyperlink{classGeoMaps_1_1VACLibrary_ae96ea1ac6e89c09a7f9ebdf39ff1ecb2}{import\+Trip\+Kit}} (const QString \&file\+Name)
+\begin{DoxyCompactList}\small\item\em Import trip kit. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE QString \mbox{\hyperlink{classGeoMaps_1_1VACLibrary_a9af9cc708f57f32feea18020e1ea96fd}{import\+VAC}} (const QString \&file\+Name, const QString \&name=\{\})
+\begin{DoxyCompactList}\small\item\em Import \doxylink{classGeoMaps_1_1VAC}{VAC}. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE void \mbox{\hyperlink{classGeoMaps_1_1VACLibrary_a1c85f944148edc2fd500121be5b6c302}{remove}} (const QString \&name)
+\begin{DoxyCompactList}\small\item\em Remove one VACs. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE QString \mbox{\hyperlink{classGeoMaps_1_1VACLibrary_ae228d118883c75c7af215060d784b709}{rename}} (const QString \&old\+Name, const QString \&new\+Name)
+\begin{DoxyCompactList}\small\item\em Rename a VACs. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE QVector$<$ \mbox{\hyperlink{classGeoMaps_1_1VAC}{Geo\+Maps\+::\+VAC}} $>$ \mbox{\hyperlink{classGeoMaps_1_1VACLibrary_ae1979631773e60076ac81469608e992f}{vacs\+By\+Distance}} (const QGeo\+Coordinate \&position)
+\begin{DoxyCompactList}\small\item\em List of all VACs installed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classGeoMaps_1_1VACLibrary_aad0d39a75c3a219ccc60f9e77a9c76fd}\label{classGeoMaps_1_1VACLibrary_aad0d39a75c3a219ccc60f9e77a9c76fd} 
+bool {\bfseries is\+Empty}
+\begin{DoxyCompactList}\small\item\em True if library is empty. \end{DoxyCompactList}\item 
+QVector$<$ \mbox{\hyperlink{classGeoMaps_1_1VAC}{Geo\+Maps\+::\+VAC}} $>$ \mbox{\hyperlink{classGeoMaps_1_1VACLibrary_afe177f3c5b847ad02f4915a90a08746d}{vacs}}
+\begin{DoxyCompactList}\small\item\em List of all VACs installed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Library of visual approach charts. 
+
+This class collects visual approach charts that the user has installed. The list is automatically loaded on startup, and saved every time that a change is made. 
+
+Definition at line \mbox{\hyperlink{VACLibrary_8h_source_l00039}{39}} of file \mbox{\hyperlink{VACLibrary_8h_source}{VACLibrary.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classGeoMaps_1_1VACLibrary_a60293890ca87e0d4b56d321b8c4a6e9c}\index{GeoMaps::VACLibrary@{GeoMaps::VACLibrary}!VACLibrary@{VACLibrary}}
+\index{VACLibrary@{VACLibrary}!GeoMaps::VACLibrary@{GeoMaps::VACLibrary}}
+\doxysubsubsection{\texorpdfstring{VACLibrary()}{VACLibrary()}}
+{\footnotesize\ttfamily \label{classGeoMaps_1_1VACLibrary_a60293890ca87e0d4b56d321b8c4a6e9c} 
+Geo\+Maps\+::\+VACLibrary\+::\+VACLibrary (\begin{DoxyParamCaption}\item[{QObject \texorpdfstring{$\ast$}{*}}]{parent}{ = {\ttfamily nullptr}}\end{DoxyParamCaption})}
+
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em parent} & Standard QObject parent \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classGeoMaps_1_1VACLibrary_a0b828737405263d36cfa544488c076a6}\index{GeoMaps::VACLibrary@{GeoMaps::VACLibrary}!clear@{clear}}
+\index{clear@{clear}!GeoMaps::VACLibrary@{GeoMaps::VACLibrary}}
+\doxysubsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily \label{classGeoMaps_1_1VACLibrary_a0b828737405263d36cfa544488c076a6} 
+Q\+\_\+\+INVOKABLE void Geo\+Maps\+::\+VACLibrary\+::clear (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Removes all VACs. 
+
+This method also deletes the associated files. \Hypertarget{classGeoMaps_1_1VACLibrary_a1aff765f4f51f2e4e4f60b6c2acac204}\index{GeoMaps::VACLibrary@{GeoMaps::VACLibrary}!get@{get}}
+\index{get@{get}!GeoMaps::VACLibrary@{GeoMaps::VACLibrary}}
+\doxysubsubsection{\texorpdfstring{get()}{get()}}
+{\footnotesize\ttfamily \label{classGeoMaps_1_1VACLibrary_a1aff765f4f51f2e4e4f60b6c2acac204} 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classGeoMaps_1_1VAC}{Geo\+Maps\+::\+VAC}} Geo\+Maps\+::\+VACLibrary\+::get (\begin{DoxyParamCaption}\item[{const QString \&}]{name}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Obtain VACs from the library. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & Name of the \doxylink{classGeoMaps_1_1VAC}{VAC}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns an invalid, default-\/constructed \doxylink{classGeoMaps_1_1VAC}{VAC} if the name does not exist in the library. 
+\end{DoxyReturn}
+\Hypertarget{classGeoMaps_1_1VACLibrary_ae96ea1ac6e89c09a7f9ebdf39ff1ecb2}\index{GeoMaps::VACLibrary@{GeoMaps::VACLibrary}!importTripKit@{importTripKit}}
+\index{importTripKit@{importTripKit}!GeoMaps::VACLibrary@{GeoMaps::VACLibrary}}
+\doxysubsubsection{\texorpdfstring{importTripKit()}{importTripKit()}}
+{\footnotesize\ttfamily \label{classGeoMaps_1_1VACLibrary_ae96ea1ac6e89c09a7f9ebdf39ff1ecb2} 
+Q\+\_\+\+INVOKABLE QString Geo\+Maps\+::\+VACLibrary\+::import\+Trip\+Kit (\begin{DoxyParamCaption}\item[{const QString \&}]{file\+Name}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Import trip kit. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Name} & Name of the trip kit file\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A localized error message, or an empty string on success 
+\end{DoxyReturn}
+\Hypertarget{classGeoMaps_1_1VACLibrary_af026c7a5fdd5cb3c0cdc157530ba69f6}\index{GeoMaps::VACLibrary@{GeoMaps::VACLibrary}!importTripKitStatus@{importTripKitStatus}}
+\index{importTripKitStatus@{importTripKitStatus}!GeoMaps::VACLibrary@{GeoMaps::VACLibrary}}
+\doxysubsubsection{\texorpdfstring{importTripKitStatus}{importTripKitStatus}}
+{\footnotesize\ttfamily \label{classGeoMaps_1_1VACLibrary_af026c7a5fdd5cb3c0cdc157530ba69f6} 
+void Geo\+Maps\+::\+VACLibrary\+::import\+Trip\+Kit\+Status (\begin{DoxyParamCaption}\item[{double}]{percent}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [signal]}}
+
+
+
+Progress report when importing a trip kit. 
+
+This signal is emitted when Trip\+Kits are imported. At the end of the import, the precise value 1.\+0 is emitted.
+
+
+\begin{DoxyParams}{Parameters}
+{\em percent} & A number between 0.\+0 and 1.\+0. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classGeoMaps_1_1VACLibrary_a9af9cc708f57f32feea18020e1ea96fd}\index{GeoMaps::VACLibrary@{GeoMaps::VACLibrary}!importVAC@{importVAC}}
+\index{importVAC@{importVAC}!GeoMaps::VACLibrary@{GeoMaps::VACLibrary}}
+\doxysubsubsection{\texorpdfstring{importVAC()}{importVAC()}}
+{\footnotesize\ttfamily \label{classGeoMaps_1_1VACLibrary_a9af9cc708f57f32feea18020e1ea96fd} 
+Q\+\_\+\+INVOKABLE QString Geo\+Maps\+::\+VACLibrary\+::import\+VAC (\begin{DoxyParamCaption}\item[{const QString \&}]{file\+Name}{, }\item[{const QString \&}]{name}{ = {\ttfamily \{\}}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Import \doxylink{classGeoMaps_1_1VAC}{VAC}. 
+
+This method copies the file \textquotesingle{}file\+Name\textquotesingle{} to the library directory. It does not take ownership of the file, and does not delete the file.
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Name} & Name of a graphics file\\
+\hline
+{\em name} & Name under which the \doxylink{classGeoMaps_1_1VAC}{VAC} is available in the library. If left empty, a default name is assigned.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A localized error message, or an empty string on success 
+\end{DoxyReturn}
+\Hypertarget{classGeoMaps_1_1VACLibrary_a1c8b903f36dd68e083a6ceb971ea0dfe}\index{GeoMaps::VACLibrary@{GeoMaps::VACLibrary}!isEmpty@{isEmpty}}
+\index{isEmpty@{isEmpty}!GeoMaps::VACLibrary@{GeoMaps::VACLibrary}}
+\doxysubsubsection{\texorpdfstring{isEmpty()}{isEmpty()}}
+{\footnotesize\ttfamily \label{classGeoMaps_1_1VACLibrary_a1c8b903f36dd68e083a6ceb971ea0dfe} 
+bool Geo\+Maps\+::\+VACLibrary\+::is\+Empty (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for property of the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property is\+Empty 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{VACLibrary_8h_source_l00078}{78}} of file \mbox{\hyperlink{VACLibrary_8h_source}{VACLibrary.\+h}}.
+
+\Hypertarget{classGeoMaps_1_1VACLibrary_a1c85f944148edc2fd500121be5b6c302}\index{GeoMaps::VACLibrary@{GeoMaps::VACLibrary}!remove@{remove}}
+\index{remove@{remove}!GeoMaps::VACLibrary@{GeoMaps::VACLibrary}}
+\doxysubsubsection{\texorpdfstring{remove()}{remove()}}
+{\footnotesize\ttfamily \label{classGeoMaps_1_1VACLibrary_a1c85f944148edc2fd500121be5b6c302} 
+Q\+\_\+\+INVOKABLE void Geo\+Maps\+::\+VACLibrary\+::remove (\begin{DoxyParamCaption}\item[{const QString \&}]{name}{}\end{DoxyParamCaption})}
+
+
+
+Remove one VACs. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & Name of the \doxylink{classGeoMaps_1_1VAC}{VAC}\\
+\hline
+\end{DoxyParams}
+This method also deletes the associated file. \Hypertarget{classGeoMaps_1_1VACLibrary_ae228d118883c75c7af215060d784b709}\index{GeoMaps::VACLibrary@{GeoMaps::VACLibrary}!rename@{rename}}
+\index{rename@{rename}!GeoMaps::VACLibrary@{GeoMaps::VACLibrary}}
+\doxysubsubsection{\texorpdfstring{rename()}{rename()}}
+{\footnotesize\ttfamily \label{classGeoMaps_1_1VACLibrary_ae228d118883c75c7af215060d784b709} 
+Q\+\_\+\+INVOKABLE QString Geo\+Maps\+::\+VACLibrary\+::rename (\begin{DoxyParamCaption}\item[{const QString \&}]{old\+Name}{, }\item[{const QString \&}]{new\+Name}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Rename a VACs. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em old\+Name} & Name of the \doxylink{classGeoMaps_1_1VAC}{VAC} to be removed\\
+\hline
+{\em new\+Name} & New name of the \doxylink{classGeoMaps_1_1VAC}{VAC}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A localized error message, or an empty string on success 
+\end{DoxyReturn}
+\Hypertarget{classGeoMaps_1_1VACLibrary_ab385666d450255a421131438ccb0e0ed}\index{GeoMaps::VACLibrary@{GeoMaps::VACLibrary}!vacs@{vacs}}
+\index{vacs@{vacs}!GeoMaps::VACLibrary@{GeoMaps::VACLibrary}}
+\doxysubsubsection{\texorpdfstring{vacs()}{vacs()}}
+{\footnotesize\ttfamily \label{classGeoMaps_1_1VACLibrary_ab385666d450255a421131438ccb0e0ed} 
+QVector$<$ \mbox{\hyperlink{classGeoMaps_1_1VAC}{Geo\+Maps\+::\+VAC}} $>$ Geo\+Maps\+::\+VACLibrary\+::vacs (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Getter function for property of the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property vacs 
+\end{DoxyReturn}
+\Hypertarget{classGeoMaps_1_1VACLibrary_ae1979631773e60076ac81469608e992f}\index{GeoMaps::VACLibrary@{GeoMaps::VACLibrary}!vacsByDistance@{vacsByDistance}}
+\index{vacsByDistance@{vacsByDistance}!GeoMaps::VACLibrary@{GeoMaps::VACLibrary}}
+\doxysubsubsection{\texorpdfstring{vacsByDistance()}{vacsByDistance()}}
+{\footnotesize\ttfamily \label{classGeoMaps_1_1VACLibrary_ae1979631773e60076ac81469608e992f} 
+Q\+\_\+\+INVOKABLE QVector$<$ \mbox{\hyperlink{classGeoMaps_1_1VAC}{Geo\+Maps\+::\+VAC}} $>$ Geo\+Maps\+::\+VACLibrary\+::vacs\+By\+Distance (\begin{DoxyParamCaption}\item[{const QGeo\+Coordinate \&}]{position}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+List of all VACs installed. 
+
+This method returns the list of all installed VACs, sorted by distance to position (closest waypoints first).
+
+
+\begin{DoxyParams}{Parameters}
+{\em position} & Geographic position used for sorting\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+List of all VACs installed 
+\end{DoxyReturn}
+
+
+\doxysubsection{Property Documentation}
+\Hypertarget{classGeoMaps_1_1VACLibrary_afe177f3c5b847ad02f4915a90a08746d}\index{GeoMaps::VACLibrary@{GeoMaps::VACLibrary}!vacs@{vacs}}
+\index{vacs@{vacs}!GeoMaps::VACLibrary@{GeoMaps::VACLibrary}}
+\doxysubsubsection{\texorpdfstring{vacs}{vacs}}
+{\footnotesize\ttfamily \label{classGeoMaps_1_1VACLibrary_afe177f3c5b847ad02f4915a90a08746d} 
+QVector$<$\mbox{\hyperlink{classGeoMaps_1_1VAC}{Geo\+Maps\+::\+VAC}}$>$ Geo\+Maps\+::\+VACLibrary\+::vacs\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+List of all VACs installed. 
+
+This property holds the list of all installed VACs, sorted alphabetically by name. 
+
+Definition at line \mbox{\hyperlink{VACLibrary_8h_source_l00067}{67}} of file \mbox{\hyperlink{VACLibrary_8h_source}{VACLibrary.\+h}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/geomaps/VACLibrary.\+h\end{DoxyCompactItemize}

@@ -1,0 +1,159 @@
+\doxysection{File\+Formats\+::Zip\+File Class Reference}
+\hypertarget{classFileFormats_1_1ZipFile}{}\label{classFileFormats_1_1ZipFile}\index{FileFormats::ZipFile@{FileFormats::ZipFile}}
+
+
+ZIP Archive.  
+
+
+
+
+{\ttfamily \#include $<$Zip\+File.\+h$>$}
+
+Inheritance diagram for File\+Formats\+::Zip\+File\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classFileFormats_1_1ZipFile}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classFileFormats_1_1ZipFile_aa6be2513d17ae4a9fd34521f21668e93}{Zip\+File}} (const QString \&file\+Name)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\Hypertarget{classFileFormats_1_1ZipFile_ace66fb5100a602ec0871a5096b12d139}\label{classFileFormats_1_1ZipFile_ace66fb5100a602ec0871a5096b12d139} 
+{\bfseries \texorpdfstring{$\sim$}{\string~}\+Zip\+File} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+QString\+List \mbox{\hyperlink{classFileFormats_1_1ZipFile_a38c284b1bae31e429d18bbdb3f935c03}{file\+Names}} () const
+\begin{DoxyCompactList}\small\item\em List of files in the zip archive. \end{DoxyCompactList}\item 
+QByte\+Array \mbox{\hyperlink{classFileFormats_1_1ZipFile_a5ba7deca3e51bc76f814d4f5db88cc47}{extract}} (qsizetype index)
+\begin{DoxyCompactList}\small\item\em Content of file in the zip archive. \end{DoxyCompactList}\item 
+QByte\+Array \mbox{\hyperlink{classFileFormats_1_1ZipFile_a6bc48873be506a79eb4ef1ec814e6fc4}{extract}} (const QString \&file\+Name)
+\begin{DoxyCompactList}\small\item\em Content of file in the zip archive. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classFileFormats_1_1DataFileAbstract}{File\+Formats\+::\+Data\+File\+Abstract}}}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classFileFormats_1_1DataFileAbstract_a830a91581e5655ab1f14b6fe8719e60f}{is\+Valid}} () const
+\begin{DoxyCompactList}\small\item\em Validity check. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classFileFormats_1_1DataFileAbstract_a292d1144d1c23b119601170f4c6b8e20}{error}} () const
+\begin{DoxyCompactList}\small\item\em Error string. \end{DoxyCompactList}\item 
+QString\+List \mbox{\hyperlink{classFileFormats_1_1DataFileAbstract_ab770740e6d6c20e076dd342e978b86ee}{warnings}} () const
+\begin{DoxyCompactList}\small\item\em Warnings. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static QString\+List \mbox{\hyperlink{classFileFormats_1_1ZipFile_a004d36dc51e351ff93b180c5140e8e2c}{mime\+Types}} ()
+\begin{DoxyCompactList}\small\item\em Mime type for files that can be opened by this class. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions inherited from \mbox{\hyperlink{classFileFormats_1_1DataFileAbstract}{File\+Formats\+::\+Data\+File\+Abstract}}}
+\begin{DoxyCompactItemize}
+\item 
+static QShared\+Pointer$<$ QFile $>$ \mbox{\hyperlink{classFileFormats_1_1DataFileAbstract_a2380fb7a4ab503cf73d618ea96ef216c}{open\+File\+URL}} (const QString \&file\+Name)
+\begin{DoxyCompactList}\small\item\em Open file, file URL or Android content URL. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+ZIP Archive. 
+
+This class reads a ZIP file and allows extracting individual files. 
+
+Definition at line \mbox{\hyperlink{ZipFile_8h_source_l00033}{33}} of file \mbox{\hyperlink{ZipFile_8h_source}{Zip\+File.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classFileFormats_1_1ZipFile_aa6be2513d17ae4a9fd34521f21668e93}\index{FileFormats::ZipFile@{FileFormats::ZipFile}!ZipFile@{ZipFile}}
+\index{ZipFile@{ZipFile}!FileFormats::ZipFile@{FileFormats::ZipFile}}
+\doxysubsubsection{\texorpdfstring{ZipFile()}{ZipFile()}}
+{\footnotesize\ttfamily \label{classFileFormats_1_1ZipFile_aa6be2513d17ae4a9fd34521f21668e93} 
+File\+Formats\+::\+Zip\+File\+::\+Zip\+File (\begin{DoxyParamCaption}\item[{const QString \&}]{file\+Name}{}\end{DoxyParamCaption})}
+
+
+
+Constructor. 
+
+The constructor opens the ZIP file. The class assumes that the ZIP file remains untouched throughout the life cycle of this instance.
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Name} & File name of a zip file. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classFileFormats_1_1ZipFile_a6bc48873be506a79eb4ef1ec814e6fc4}\index{FileFormats::ZipFile@{FileFormats::ZipFile}!extract@{extract}}
+\index{extract@{extract}!FileFormats::ZipFile@{FileFormats::ZipFile}}
+\doxysubsubsection{\texorpdfstring{extract()}{extract()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classFileFormats_1_1ZipFile_a6bc48873be506a79eb4ef1ec814e6fc4} 
+QByte\+Array File\+Formats\+::\+Zip\+File\+::extract (\begin{DoxyParamCaption}\item[{const QString \&}]{file\+Name}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Content of file in the zip archive. 
+
+If a file with the given name does not exist in the archive, then the method tries to replace the path separator characters \textquotesingle{}/\textquotesingle{} in the file name with windows-\/style separators \textquotesingle{}\textbackslash{}\textquotesingle{} and checks if a file with that name exists.
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Name} & File name\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Content of file, or a Null array in case of error 
+\end{DoxyReturn}
+\Hypertarget{classFileFormats_1_1ZipFile_a5ba7deca3e51bc76f814d4f5db88cc47}\index{FileFormats::ZipFile@{FileFormats::ZipFile}!extract@{extract}}
+\index{extract@{extract}!FileFormats::ZipFile@{FileFormats::ZipFile}}
+\doxysubsubsection{\texorpdfstring{extract()}{extract()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classFileFormats_1_1ZipFile_a5ba7deca3e51bc76f814d4f5db88cc47} 
+QByte\+Array File\+Formats\+::\+Zip\+File\+::extract (\begin{DoxyParamCaption}\item[{qsizetype}]{index}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Content of file in the zip archive. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & Index of the file in the list returned by file\+Names\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Content of file, or a Null array in case of error. 
+\end{DoxyReturn}
+\Hypertarget{classFileFormats_1_1ZipFile_a38c284b1bae31e429d18bbdb3f935c03}\index{FileFormats::ZipFile@{FileFormats::ZipFile}!fileNames@{fileNames}}
+\index{fileNames@{fileNames}!FileFormats::ZipFile@{FileFormats::ZipFile}}
+\doxysubsubsection{\texorpdfstring{fileNames()}{fileNames()}}
+{\footnotesize\ttfamily \label{classFileFormats_1_1ZipFile_a38c284b1bae31e429d18bbdb3f935c03} 
+QString\+List File\+Formats\+::\+Zip\+File\+::file\+Names (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+List of files in the zip archive. 
+
+\begin{DoxyReturn}{Returns}
+List of files in the zip archive. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{ZipFile_8h_source_l00058}{58}} of file \mbox{\hyperlink{ZipFile_8h_source}{Zip\+File.\+h}}.
+
+\Hypertarget{classFileFormats_1_1ZipFile_a004d36dc51e351ff93b180c5140e8e2c}\index{FileFormats::ZipFile@{FileFormats::ZipFile}!mimeTypes@{mimeTypes}}
+\index{mimeTypes@{mimeTypes}!FileFormats::ZipFile@{FileFormats::ZipFile}}
+\doxysubsubsection{\texorpdfstring{mimeTypes()}{mimeTypes()}}
+{\footnotesize\ttfamily \label{classFileFormats_1_1ZipFile_a004d36dc51e351ff93b180c5140e8e2c} 
+static QString\+List File\+Formats\+::\+Zip\+File\+::mime\+Types (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [nodiscard]}}
+
+
+
+Mime type for files that can be opened by this class. 
+
+\begin{DoxyReturn}{Returns}
+Name of mime type 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{ZipFile_8h_source_l00090}{90}} of file \mbox{\hyperlink{ZipFile_8h_source}{Zip\+File.\+h}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/file\+Formats/Zip\+File.\+h\end{DoxyCompactItemize}

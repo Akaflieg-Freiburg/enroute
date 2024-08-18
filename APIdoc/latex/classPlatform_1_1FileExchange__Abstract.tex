@@ -1,0 +1,355 @@
+\doxysection{Platform\+::File\+Exchange\+\_\+\+Abstract Class Reference}
+\hypertarget{classPlatform_1_1FileExchange__Abstract}{}\label{classPlatform_1_1FileExchange__Abstract}\index{Platform::FileExchange\_Abstract@{Platform::FileExchange\_Abstract}}
+
+
+Interface to platform-\/specific file exchange functionality.  
+
+
+
+
+{\ttfamily \#include $<$File\+Exchange\+\_\+\+Abstract.\+h$>$}
+
+Inheritance diagram for Platform\+::File\+Exchange\+\_\+\+Abstract\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.379310cm]{classPlatform_1_1FileExchange__Abstract}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classPlatform_1_1FileExchange__Abstract_ada6b341cdc3eca82eddf018b04af547b}\label{classPlatform_1_1FileExchange__Abstract_ada6b341cdc3eca82eddf018b04af547b} 
+enum \mbox{\hyperlink{classPlatform_1_1FileExchange__Abstract_ada6b341cdc3eca82eddf018b04af547b}{File\+Function}} 
+\begin{DoxyCompactList}\small\item\em Functions and types of a file that this app handles. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Slots}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{classPlatform_1_1FileExchange__Abstract_af6ec076a319bd8976bb1917968bf1a6a}{on\+GUISetup\+Completed}} ()=0
+\begin{DoxyCompactList}\small\item\em GUI setup completed. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classPlatform_1_1FileExchange__Abstract_a50d02cafa04ea8b25d00d78e39a80a57}{process\+File\+Open\+Request}} (const QString \&path)
+\begin{DoxyCompactList}\small\item\em Determine file function and emit \doxylink{classPlatform_1_1FileExchange__Abstract_af73cbaa9a94c84ca492ac8529bf8de8d}{open\+File\+Request()} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classPlatform_1_1FileExchange__Abstract_aa84c47181a3261bd9fbea4fc3c7893fd}{process\+File\+Open\+Request}} (const QByte\+Array \&path)
+\begin{DoxyCompactList}\small\item\em Determine file function and emit \doxylink{classPlatform_1_1FileExchange__Abstract_af73cbaa9a94c84ca492ac8529bf8de8d}{open\+File\+Request()} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classPlatform_1_1FileExchange__Abstract_a6b9fac2ca1c369812a302324d7b92a96}{process\+Text}} (const QString \&text)
+\begin{DoxyCompactList}\small\item\em Process text. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classPlatform_1_1FileExchange__Abstract_a1fd02aef2f50f7233b9e8a053351f471}{process\+Text\+Quiet}} (const QString \&text)
+\begin{DoxyCompactList}\small\item\em Process text. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Signals}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classPlatform_1_1FileExchange__Abstract_af73cbaa9a94c84ca492ac8529bf8de8d}{open\+File\+Request}} (QString file\+Name, QString info, \mbox{\hyperlink{classPlatform_1_1FileExchange__Abstract_ada6b341cdc3eca82eddf018b04af547b}{Platform\+::\+File\+Exchange\+\_\+\+Abstract\+::\+File\+Function}} file\+Function)
+\begin{DoxyCompactList}\small\item\em Emitted when platform asks this app to open a file. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classPlatform_1_1FileExchange__Abstract_a43fe09eaac43a11140d6104a756fcae6}{open\+Waypoint\+Request}} (\mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Geo\+Maps\+::\+Waypoint}} waypoint)
+\begin{DoxyCompactList}\small\item\em Emitted when platform asks this app to show a waypoint. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classPlatform_1_1FileExchange__Abstract_a110558b15f0c233665b5cdc3a1fdfb93}{resolve\+URL}} (QString url, QString site)
+\begin{DoxyCompactList}\small\item\em Emitted when Google Maps URL needs to be resolved. \end{DoxyCompactList}\item 
+\Hypertarget{classPlatform_1_1FileExchange__Abstract_a17966a89f5134faa68b70b10ad2f6a1f}\label{classPlatform_1_1FileExchange__Abstract_a17966a89f5134faa68b70b10ad2f6a1f} 
+void {\bfseries unable\+To\+Process\+Text} (QString text)
+\begin{DoxyCompactList}\small\item\em Emitted when process\+Text was unable to parse a text item. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classPlatform_1_1FileExchange__Abstract_ab1c9d0044f727d2d69c075ec4a590030}{File\+Exchange\+\_\+\+Abstract}} (QObject \texorpdfstring{$\ast$}{*}parent=nullptr)
+\begin{DoxyCompactList}\small\item\em Standard constructor. \end{DoxyCompactList}\item 
+virtual Q\+\_\+\+INVOKABLE void \mbox{\hyperlink{classPlatform_1_1FileExchange__Abstract_acac26971d30dcda4d7be83f176da6b7a}{import\+Content}} ()=0
+\begin{DoxyCompactList}\small\item\em Import content from file. \end{DoxyCompactList}\item 
+virtual Q\+\_\+\+INVOKABLE QString \mbox{\hyperlink{classPlatform_1_1FileExchange__Abstract_a1d7bc29efba49cdf97038d5e4536b93b}{share\+Content}} (const QByte\+Array \&content, const QString \&mime\+Type, const QString \&file\+Name\+Template)=0
+\begin{DoxyCompactList}\small\item\em \doxylink{classShare}{Share} content. \end{DoxyCompactList}\item 
+virtual Q\+\_\+\+INVOKABLE QString \mbox{\hyperlink{classPlatform_1_1FileExchange__Abstract_a0fc5c782285934ae3041d8912e282f63}{view\+Content}} (const QByte\+Array \&content, const QString \&mime\+Type, const QString \&file\+Name\+Template)=0
+\begin{DoxyCompactList}\small\item\em View content. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classGlobalObject}{Global\+Object}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classGlobalObject_ac8dfa53c492975de42fa7972e77abbc1}{Global\+Object}} (QObject \texorpdfstring{$\ast$}{*}parent=nullptr)
+\begin{DoxyCompactList}\small\item\em Standard constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classGlobalObject_a96c4d476061f33a53b8c7de446c639eb}{\texorpdfstring{$\sim$}{\string~}\+Global\+Object}} () override=default
+\begin{DoxyCompactList}\small\item\em Standard deconstructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Static Public Member Functions inherited from \mbox{\hyperlink{classGlobalObject}{Global\+Object}}}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classGlobalObject_ae5d0c94af509c9744e1b344201928715}{clear}} ()
+\begin{DoxyCompactList}\small\item\em Deletes all globally defined objects. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE bool \mbox{\hyperlink{classGlobalObject_a0501f0fd4dbb0252ff120fd07ea2f703}{can\+Construct}} ()
+\begin{DoxyCompactList}\small\item\em Indicates if the static methods are ready to be used. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classNavigation_1_1Clock}{Navigation\+::\+Clock}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_ad479148c920adcb9c9ea9d99c762a08f}{clock}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static \doxylink{classNavigation_1_1Clock}{Navigation\+::\+Clock} instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classDataManagement_1_1DataManager}{Data\+Management\+::\+Data\+Manager}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a88f9800ff5290634fbb1507bd509afc9}{data\+Manager}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Geo\+Maps\+::\+Data\+Manager instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classDemoRunner}{Demo\+Runner}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_abb18a18cba455a65c8773aa5f4fbcdd6}{demo\+Runner}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static \doxylink{classDemoRunner}{Demo\+Runner} instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classTraffic_1_1FlarmnetDB}{Traffic\+::\+Flarmnet\+DB}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_ad195e7630ee65b97b837fb8bc26e1ba9}{flarmnet\+DB}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Flarmnet\+DB instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classPlatform_1_1FileExchange__Abstract}{Platform\+::\+File\+Exchange\+\_\+\+Abstract}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a2c2011587fd8d46f9425d61d0b740922}{file\+Exchange}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static File\+Exchange instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider}{Geo\+Maps\+::\+Geo\+Map\+Provider}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a241d8d74ad20f5b5fdfa3eff30a20077}{geo\+Map\+Provider}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static \doxylink{classGeoMaps_1_1GeoMapProvider}{Geo\+Maps\+::\+Geo\+Map\+Provider} instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classGlobalSettings}{Global\+Settings}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_af94f3ad5c6bb06982abf5d2759b63186}{global\+Settings}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Settings instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classLibrarian}{Librarian}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a311415802470c0ca323e8a44c96d2773}{librarian}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static librarian instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor__Abstract}{Platform\+::\+Platform\+Adaptor\+\_\+\+Abstract}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_af4497d953402cc7891edfe5e9f6f56ac}{platform\+Adaptor}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Platform\+Adaptor instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classSensors}{Sensors}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a8df42e3160bee431602e14e9b605ffa8}{sensors}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static \doxylink{classNavigation_1_1Clock}{Navigation\+::\+Clock} instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classNavigation_1_1Navigator}{Navigation\+::\+Navigator}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a6e6835796fd3ab2f304c96272f50054c}{navigator}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static \doxylink{classNavigation_1_1Navigator}{Navigation\+::\+Navigator} instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classTraffic_1_1PasswordDB}{Traffic\+::\+Password\+DB}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a0ac7c3ccb518e122c8565e40c1fb8cdb}{password\+DB}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Password\+DB instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classPositioning_1_1PositionProvider}{Positioning\+::\+Position\+Provider}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a7837aeb4bcabe6542db1bccdab5ebd59}{position\+Provider}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Position\+Provider instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classNOTAM_1_1NotamProvider}{NOTAM\+::\+Notam\+Provider}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_ac11d38af2df8dcdb78679abf92b6de7a}{notam\+Provider}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static notification manager instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classNotifications_1_1NotificationManager}{Notifications\+::\+Notification\+Manager}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_aa90c2b17a6930dfb2cd258c8349e94cc}{notification\+Manager}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static notification manager instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE QNetwork\+Access\+Manager \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_aece9ee1f2507b4bcd825d4f61ebd4643}{network\+Access\+Manager}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static QNetwork\+Access\+Manager instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classDataManagement_1_1SSLErrorHandler}{Data\+Management\+::\+SSLError\+Handler}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_ab4e66c880bdcfa33720b51364c484044}{ssl\+Error\+Handler}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static QNetwork\+Access\+Manager instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classTraffic_1_1TrafficDataProvider}{Traffic\+::\+Traffic\+Data\+Provider}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_acc3b67374f1eac467da729151c31aff6}{traffic\+Data\+Provider}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Traffic\+Data\+Provider instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary}{Geo\+Maps\+::\+Waypoint\+Library}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a0fe5454852ab2b913efe469bfd2630b4}{waypoint\+Library}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Waypoint\+Library instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classWeather_1_1WeatherDataProvider}{Weather\+::\+Weather\+Data\+Provider}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_abff9f661cf7e78967606d10692c03412}{weather\+Data\+Provider}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Weather\+Data\+Provider instance. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{classGlobalObject}{Global\+Object}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{classGlobalObject_ad89d4b5b146c91f65f282572629c2f5f}{deferred\+Initialization}} ()
+\begin{DoxyCompactList}\small\item\em Non-\/constructor initialization. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Interface to platform-\/specific file exchange functionality. 
+
+This pure virtual class is an interface to file exchange functionality that need platform-\/specific code to operate. The files File\+Exchange\+\_\+\+XXX.(h\texorpdfstring{$\vert$}{|}cpp) implement a child class \doxylink{classPlatform_1_1FileExchange}{File\+Exchange} that contains the actual implementation.
+
+If supported by the platform, child classes need to react to requests by the platform to open a file (e.\+g. a Geo\+JSON file containing a flight route). Once a request is received, the method process\+File\+Request() should be called. 
+
+Definition at line \mbox{\hyperlink{FileExchange__Abstract_8h_source_l00040}{40}} of file \mbox{\hyperlink{FileExchange__Abstract_8h_source}{File\+Exchange\+\_\+\+Abstract.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classPlatform_1_1FileExchange__Abstract_ab1c9d0044f727d2d69c075ec4a590030}\index{Platform::FileExchange\_Abstract@{Platform::FileExchange\_Abstract}!FileExchange\_Abstract@{FileExchange\_Abstract}}
+\index{FileExchange\_Abstract@{FileExchange\_Abstract}!Platform::FileExchange\_Abstract@{Platform::FileExchange\_Abstract}}
+\doxysubsubsection{\texorpdfstring{FileExchange\_Abstract()}{FileExchange\_Abstract()}}
+{\footnotesize\ttfamily \label{classPlatform_1_1FileExchange__Abstract_ab1c9d0044f727d2d69c075ec4a590030} 
+Platform\+::\+File\+Exchange\+\_\+\+Abstract\+::\+File\+Exchange\+\_\+\+Abstract (\begin{DoxyParamCaption}\item[{QObject \texorpdfstring{$\ast$}{*}}]{parent}{ = {\ttfamily nullptr}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Standard constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em parent} & Standard QObject parent pointer \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classPlatform_1_1FileExchange__Abstract_acac26971d30dcda4d7be83f176da6b7a}\index{Platform::FileExchange\_Abstract@{Platform::FileExchange\_Abstract}!importContent@{importContent}}
+\index{importContent@{importContent}!Platform::FileExchange\_Abstract@{Platform::FileExchange\_Abstract}}
+\doxysubsubsection{\texorpdfstring{importContent()}{importContent()}}
+{\footnotesize\ttfamily \label{classPlatform_1_1FileExchange__Abstract_acac26971d30dcda4d7be83f176da6b7a} 
+virtual Q\+\_\+\+INVOKABLE void Platform\+::\+File\+Exchange\+\_\+\+Abstract\+::import\+Content (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Import content from file. 
+
+On desktop systems, this method is supposed to open a file dialog to import a file. On mobile systems, this method is supposed to do nothing. 
+
+Implemented in \mbox{\hyperlink{classPlatform_1_1FileExchange_a2e60a9bd04c3360c229a8c8310cb3169}{Platform\+::\+File\+Exchange}}, \mbox{\hyperlink{classPlatform_1_1FileExchange_a2e60a9bd04c3360c229a8c8310cb3169}{Platform\+::\+File\+Exchange}}, \mbox{\hyperlink{classPlatform_1_1FileExchange_a2e60a9bd04c3360c229a8c8310cb3169}{Platform\+::\+File\+Exchange}}, \mbox{\hyperlink{classPlatform_1_1FileExchange_a2e60a9bd04c3360c229a8c8310cb3169}{Platform\+::\+File\+Exchange}}, \mbox{\hyperlink{classPlatform_1_1FileExchange_a2e60a9bd04c3360c229a8c8310cb3169}{Platform\+::\+File\+Exchange}}, and \mbox{\hyperlink{classPlatform_1_1FileExchange_a2e60a9bd04c3360c229a8c8310cb3169}{Platform\+::\+File\+Exchange}}.
+
+\Hypertarget{classPlatform_1_1FileExchange__Abstract_af6ec076a319bd8976bb1917968bf1a6a}\index{Platform::FileExchange\_Abstract@{Platform::FileExchange\_Abstract}!onGUISetupCompleted@{onGUISetupCompleted}}
+\index{onGUISetupCompleted@{onGUISetupCompleted}!Platform::FileExchange\_Abstract@{Platform::FileExchange\_Abstract}}
+\doxysubsubsection{\texorpdfstring{onGUISetupCompleted}{onGUISetupCompleted}}
+{\footnotesize\ttfamily \label{classPlatform_1_1FileExchange__Abstract_af6ec076a319bd8976bb1917968bf1a6a} 
+virtual void Platform\+::\+File\+Exchange\+\_\+\+Abstract\+::on\+GUISetup\+Completed (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}, {\ttfamily [slot]}}
+
+
+
+GUI setup completed. 
+
+This method is must called as soon as the GUI setup is completed. On Android, this method will start looking for file import requests from the OS. On Desktop system, this method does nothing. \Hypertarget{classPlatform_1_1FileExchange__Abstract_af73cbaa9a94c84ca492ac8529bf8de8d}\index{Platform::FileExchange\_Abstract@{Platform::FileExchange\_Abstract}!openFileRequest@{openFileRequest}}
+\index{openFileRequest@{openFileRequest}!Platform::FileExchange\_Abstract@{Platform::FileExchange\_Abstract}}
+\doxysubsubsection{\texorpdfstring{openFileRequest}{openFileRequest}}
+{\footnotesize\ttfamily \label{classPlatform_1_1FileExchange__Abstract_af73cbaa9a94c84ca492ac8529bf8de8d} 
+void Platform\+::\+File\+Exchange\+\_\+\+Abstract\+::open\+File\+Request (\begin{DoxyParamCaption}\item[{QString}]{file\+Name}{, }\item[{QString}]{info}{, }\item[{\mbox{\hyperlink{classPlatform_1_1FileExchange__Abstract_ada6b341cdc3eca82eddf018b04af547b}{Platform\+::\+File\+Exchange\+\_\+\+Abstract\+::\+File\+Function}}}]{file\+Function}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [signal]}}
+
+
+
+Emitted when platform asks this app to open a file. 
+
+This signal is emitted whenever the platform-\/dependent code receives information that enroute is requested to open a file.
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Name} & Path of the file on the local file system\\
+\hline
+{\em info} & Additional information about the file, as a translated, human-\/readable string in HTML format.\\
+\hline
+{\em file\+Function} & Function and file type. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classPlatform_1_1FileExchange__Abstract_a43fe09eaac43a11140d6104a756fcae6}\index{Platform::FileExchange\_Abstract@{Platform::FileExchange\_Abstract}!openWaypointRequest@{openWaypointRequest}}
+\index{openWaypointRequest@{openWaypointRequest}!Platform::FileExchange\_Abstract@{Platform::FileExchange\_Abstract}}
+\doxysubsubsection{\texorpdfstring{openWaypointRequest}{openWaypointRequest}}
+{\footnotesize\ttfamily \label{classPlatform_1_1FileExchange__Abstract_a43fe09eaac43a11140d6104a756fcae6} 
+void Platform\+::\+File\+Exchange\+\_\+\+Abstract\+::open\+Waypoint\+Request (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Geo\+Maps\+::\+Waypoint}}}]{waypoint}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [signal]}}
+
+
+
+Emitted when platform asks this app to show a waypoint. 
+
+This signal is emitted whenever the platform-\/dependent code receives information that enroute is requested to show a waypoint.
+
+
+\begin{DoxyParams}{Parameters}
+{\em waypoint} & Waypoint to be shown \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classPlatform_1_1FileExchange__Abstract_aa84c47181a3261bd9fbea4fc3c7893fd}\index{Platform::FileExchange\_Abstract@{Platform::FileExchange\_Abstract}!processFileOpenRequest@{processFileOpenRequest}}
+\index{processFileOpenRequest@{processFileOpenRequest}!Platform::FileExchange\_Abstract@{Platform::FileExchange\_Abstract}}
+\doxysubsubsection{\texorpdfstring{processFileOpenRequest}{processFileOpenRequest}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classPlatform_1_1FileExchange__Abstract_aa84c47181a3261bd9fbea4fc3c7893fd} 
+void Platform\+::\+File\+Exchange\+\_\+\+Abstract\+::process\+File\+Open\+Request (\begin{DoxyParamCaption}\item[{const QByte\+Array \&}]{path}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [slot]}}
+
+
+
+Determine file function and emit \doxylink{classPlatform_1_1FileExchange__Abstract_af73cbaa9a94c84ca492ac8529bf8de8d}{open\+File\+Request()} 
+
+Overloaded function for convenience
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & QByte\+Array containing an UTF8-\/\+Encoded strong \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classPlatform_1_1FileExchange__Abstract_a50d02cafa04ea8b25d00d78e39a80a57}\index{Platform::FileExchange\_Abstract@{Platform::FileExchange\_Abstract}!processFileOpenRequest@{processFileOpenRequest}}
+\index{processFileOpenRequest@{processFileOpenRequest}!Platform::FileExchange\_Abstract@{Platform::FileExchange\_Abstract}}
+\doxysubsubsection{\texorpdfstring{processFileOpenRequest}{processFileOpenRequest}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classPlatform_1_1FileExchange__Abstract_a50d02cafa04ea8b25d00d78e39a80a57} 
+virtual void Platform\+::\+File\+Exchange\+\_\+\+Abstract\+::process\+File\+Open\+Request (\begin{DoxyParamCaption}\item[{const QString \&}]{path}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}, {\ttfamily [slot]}}
+
+
+
+Determine file function and emit \doxylink{classPlatform_1_1FileExchange__Abstract_af73cbaa9a94c84ca492ac8529bf8de8d}{open\+File\+Request()} 
+
+This helper function is called by platform-\/dependent code whenever the app is asked to open a file. It will look at the file, determine the file function and emit the signal \doxylink{classPlatform_1_1FileExchange__Abstract_af73cbaa9a94c84ca492ac8529bf8de8d}{open\+File\+Request()} as appropriate.
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & File name \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classPlatform_1_1FileExchange__Abstract_a6b9fac2ca1c369812a302324d7b92a96}\index{Platform::FileExchange\_Abstract@{Platform::FileExchange\_Abstract}!processText@{processText}}
+\index{processText@{processText}!Platform::FileExchange\_Abstract@{Platform::FileExchange\_Abstract}}
+\doxysubsubsection{\texorpdfstring{processText}{processText}}
+{\footnotesize\ttfamily \label{classPlatform_1_1FileExchange__Abstract_a6b9fac2ca1c369812a302324d7b92a96} 
+void Platform\+::\+File\+Exchange\+\_\+\+Abstract\+::process\+Text (\begin{DoxyParamCaption}\item[{const QString \&}]{text}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [slot]}}
+
+
+
+Process text. 
+
+This helper function is called by platform-\/dependent code whenever text is passed to the app (e.\+g. via drag-\/and-\/drop or via an Android intent). It will look at the text, determine the text function and emit signals as appropriate.
+
+
+\begin{DoxyParams}{Parameters}
+{\em text} & Text \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classPlatform_1_1FileExchange__Abstract_a1fd02aef2f50f7233b9e8a053351f471}\index{Platform::FileExchange\_Abstract@{Platform::FileExchange\_Abstract}!processTextQuiet@{processTextQuiet}}
+\index{processTextQuiet@{processTextQuiet}!Platform::FileExchange\_Abstract@{Platform::FileExchange\_Abstract}}
+\doxysubsubsection{\texorpdfstring{processTextQuiet}{processTextQuiet}}
+{\footnotesize\ttfamily \label{classPlatform_1_1FileExchange__Abstract_a1fd02aef2f50f7233b9e8a053351f471} 
+bool Platform\+::\+File\+Exchange\+\_\+\+Abstract\+::process\+Text\+Quiet (\begin{DoxyParamCaption}\item[{const QString \&}]{text}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [slot]}}
+
+
+
+Process text. 
+
+This helper function analyses the text and checks if it can be interpreted as containing geographic coordinates. If so, it emits the signal \doxylink{classPlatform_1_1FileExchange__Abstract_a43fe09eaac43a11140d6104a756fcae6}{open\+Waypoint\+Request()} and returns true. Otherwise, it returns false.
+
+
+\begin{DoxyParams}{Parameters}
+{\em text} & Text\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the text can be interpreted as containing geographic coordinates 
+\end{DoxyReturn}
+\Hypertarget{classPlatform_1_1FileExchange__Abstract_a110558b15f0c233665b5cdc3a1fdfb93}\index{Platform::FileExchange\_Abstract@{Platform::FileExchange\_Abstract}!resolveURL@{resolveURL}}
+\index{resolveURL@{resolveURL}!Platform::FileExchange\_Abstract@{Platform::FileExchange\_Abstract}}
+\doxysubsubsection{\texorpdfstring{resolveURL}{resolveURL}}
+{\footnotesize\ttfamily \label{classPlatform_1_1FileExchange__Abstract_a110558b15f0c233665b5cdc3a1fdfb93} 
+void Platform\+::\+File\+Exchange\+\_\+\+Abstract\+::resolve\+URL (\begin{DoxyParamCaption}\item[{QString}]{url}{, }\item[{QString}]{site}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [signal]}}
+
+
+
+Emitted when Google Maps URL needs to be resolved. 
+
+This signal is emitted if the method process\+Text encounters a URL of type \href{https://maps.app.goo.gl/SOMECODE}{\texttt{ https\+://maps.\+app.\+goo.\+gl/\+SOMECODE}}. The GUI will then open the page URLResolver. \Hypertarget{classPlatform_1_1FileExchange__Abstract_a1d7bc29efba49cdf97038d5e4536b93b}\index{Platform::FileExchange\_Abstract@{Platform::FileExchange\_Abstract}!shareContent@{shareContent}}
+\index{shareContent@{shareContent}!Platform::FileExchange\_Abstract@{Platform::FileExchange\_Abstract}}
+\doxysubsubsection{\texorpdfstring{shareContent()}{shareContent()}}
+{\footnotesize\ttfamily \label{classPlatform_1_1FileExchange__Abstract_a1d7bc29efba49cdf97038d5e4536b93b} 
+virtual Q\+\_\+\+INVOKABLE QString Platform\+::\+File\+Exchange\+\_\+\+Abstract\+::share\+Content (\begin{DoxyParamCaption}\item[{const QByte\+Array \&}]{content}{, }\item[{const QString \&}]{mime\+Type}{, }\item[{const QString \&}]{file\+Name\+Template}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+\doxylink{classShare}{Share} content. 
+
+On desktop systems, this method is supposed to show a file dialog to save the file. On mobile devices, this method is supposed to open a dialog that allows to chose the method to send this file (e-\/mail, dropbox, signal chat, …)
+
+
+\begin{DoxyParams}{Parameters}
+{\em content} & File content\\
+\hline
+{\em mime\+Type} & the mime\+Type of the content\\
+\hline
+{\em file\+Name\+Template} & A string of the form "{}\+EDTF -\/ EDTG"{}, without suffix of path. This can be used, e.\+g. as the name of the attachment when sending files by e-\/mail.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Empty string on success, the string "{}abort"{} on abort, and a translated error message otherwise 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{classPlatform_1_1FileExchange_a5555bbc0bd6bcbe5c92a7a065dfb8098}{Platform\+::\+File\+Exchange}}, \mbox{\hyperlink{classPlatform_1_1FileExchange_a5555bbc0bd6bcbe5c92a7a065dfb8098}{Platform\+::\+File\+Exchange}}, \mbox{\hyperlink{classPlatform_1_1FileExchange_a5555bbc0bd6bcbe5c92a7a065dfb8098}{Platform\+::\+File\+Exchange}}, \mbox{\hyperlink{classPlatform_1_1FileExchange_a5555bbc0bd6bcbe5c92a7a065dfb8098}{Platform\+::\+File\+Exchange}}, \mbox{\hyperlink{classPlatform_1_1FileExchange_a5555bbc0bd6bcbe5c92a7a065dfb8098}{Platform\+::\+File\+Exchange}}, and \mbox{\hyperlink{classPlatform_1_1FileExchange_a5555bbc0bd6bcbe5c92a7a065dfb8098}{Platform\+::\+File\+Exchange}}.
+
+\Hypertarget{classPlatform_1_1FileExchange__Abstract_a0fc5c782285934ae3041d8912e282f63}\index{Platform::FileExchange\_Abstract@{Platform::FileExchange\_Abstract}!viewContent@{viewContent}}
+\index{viewContent@{viewContent}!Platform::FileExchange\_Abstract@{Platform::FileExchange\_Abstract}}
+\doxysubsubsection{\texorpdfstring{viewContent()}{viewContent()}}
+{\footnotesize\ttfamily \label{classPlatform_1_1FileExchange__Abstract_a0fc5c782285934ae3041d8912e282f63} 
+virtual Q\+\_\+\+INVOKABLE QString Platform\+::\+File\+Exchange\+\_\+\+Abstract\+::view\+Content (\begin{DoxyParamCaption}\item[{const QByte\+Array \&}]{content}{, }\item[{const QString \&}]{mime\+Type}{, }\item[{const QString \&}]{file\+Name\+Template}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+View content. 
+
+This method is supposed open the content in an appropriate app. Example\+: if the content is Geo\+JSON, the content might be opened in Google Earth, or in a mobile mapping application.
+
+
+\begin{DoxyParams}{Parameters}
+{\em content} & content text\\
+\hline
+{\em mime\+Type} & the mime\+Type of the content\\
+\hline
+{\em file\+Name\+Template} & A string of the form "{}\+Flight\+Route-\/\%1.\+geojson"{}.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Empty string on success, a translated error message otherwise 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{classPlatform_1_1FileExchange_a1fa0ead3a5497777d371be14c2d53073}{Platform\+::\+File\+Exchange}}, \mbox{\hyperlink{classPlatform_1_1FileExchange_a1fa0ead3a5497777d371be14c2d53073}{Platform\+::\+File\+Exchange}}, \mbox{\hyperlink{classPlatform_1_1FileExchange_a1fa0ead3a5497777d371be14c2d53073}{Platform\+::\+File\+Exchange}}, \mbox{\hyperlink{classPlatform_1_1FileExchange_a1fa0ead3a5497777d371be14c2d53073}{Platform\+::\+File\+Exchange}}, \mbox{\hyperlink{classPlatform_1_1FileExchange_a1fa0ead3a5497777d371be14c2d53073}{Platform\+::\+File\+Exchange}}, and \mbox{\hyperlink{classPlatform_1_1FileExchange_a1fa0ead3a5497777d371be14c2d53073}{Platform\+::\+File\+Exchange}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/platform/File\+Exchange\+\_\+\+Abstract.\+h\end{DoxyCompactItemize}

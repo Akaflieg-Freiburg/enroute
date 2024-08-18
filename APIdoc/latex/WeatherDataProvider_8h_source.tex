@@ -1,0 +1,181 @@
+\doxysection{Weather\+Data\+Provider.\+h}
+\hypertarget{WeatherDataProvider_8h_source}{}\label{WeatherDataProvider_8h_source}\index{/home/runner/work/enroute/enroute/src/weather/WeatherDataProvider.h@{/home/runner/work/enroute/enroute/src/weather/WeatherDataProvider.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00001}00001\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00002}00002\ \textcolor{comment}{\ *\ \ \ Copyright\ (C)\ 2019-\/2023\ by\ Stefan\ Kebekus\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00003}00003\ \textcolor{comment}{\ *\ \ \ stefan.kebekus@gmail.com\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00004}00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ free\ software;\ you\ can\ redistribute\ it\ and/or\ modify\ \ *}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00006}00006\ \textcolor{comment}{\ *\ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by\ \ *}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00007}00007\ \textcolor{comment}{\ *\ \ \ the\ Free\ Software\ Foundation;\ either\ version\ 3\ of\ the\ License,\ or\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00008}00008\ \textcolor{comment}{\ *\ \ \ (at\ your\ option)\ any\ later\ version.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00009}00009\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00010}00010\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,\ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00011}00011\ \textcolor{comment}{\ *\ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of\ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00012}00012\ \textcolor{comment}{\ *\ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00013}00013\ \textcolor{comment}{\ *\ \ \ GNU\ General\ Public\ License\ for\ more\ details.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00014}00014\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00015}00015\ \textcolor{comment}{\ *\ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00016}00016\ \textcolor{comment}{\ *\ \ \ along\ with\ this\ program;\ if\ not,\ write\ to\ the\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00017}00017\ \textcolor{comment}{\ *\ \ \ Free\ Software\ Foundation,\ Inc.,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00018}00018\ \textcolor{comment}{\ *\ \ \ 59\ Temple\ Place\ -\/\ Suite\ 330,\ Boston,\ MA\ \ 02111-\/1307,\ USA.\ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00019}00019\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00021}00021\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ <QMap>}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00024}00024\ \textcolor{preprocessor}{\#include\ <QPointer>}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00025}00025\ \textcolor{preprocessor}{\#include\ <QQmlEngine>}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00026}00026\ \textcolor{preprocessor}{\#include\ <QTimer>}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00027}00027\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00028}00028\ \textcolor{keyword}{class\ }QNetworkAccessManager;}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00029}00029\ \textcolor{keyword}{class\ }QNetworkReply;}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00031}00031\ \textcolor{preprocessor}{\#include\ "{}GlobalObject.h"{}}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00032}00032\ \textcolor{preprocessor}{\#include\ "{}navigation/Atmosphere.h"{}}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00033}00033\ \textcolor{preprocessor}{\#include\ "{}units/Distance.h"{}}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00034}00034\ \textcolor{preprocessor}{\#include\ "{}weather/Station.h"{}}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00035}00035\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00036}00036\ \textcolor{keyword}{class\ }FlightRoute;}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00037}00037\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classGlobalSettings}{GlobalSettings}};}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00038}00038\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00039}00039\ \textcolor{keyword}{namespace\ }Weather\ \{}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00040}00040\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00065}\mbox{\hyperlink{classWeather_1_1WeatherDataProvider}{00065}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classWeather_1_1WeatherDataProvider}{WeatherDataProvider}}\ :\ \textcolor{keyword}{public}\ QObject\ \{}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00066}00066\ \ \ \ \ Q\_OBJECT}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00067}00067\ \ \ \ \ QML\_ELEMENT}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00068}00068\ \ \ \ \ QML\_SINGLETON}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00069}00069\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00070}00070\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00071}00071\ \ \ \ \ \textcolor{keyword}{class\ }WeatherStation;}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00072}00072\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00077}\mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a2dd0260bb1c01b72103652a2e96b35d3}{00077}}\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a2dd0260bb1c01b72103652a2e96b35d3}{WeatherDataProvider}}(QObject\ *parent\ =\ \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00078}00078\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00079}00079\ \ \ \ \ \textcolor{comment}{//\ No\ default\ constructor,\ important\ for\ QML\ singleton}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00080}00080\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider}{WeatherDataProvider}}()\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00081}00081\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00083}\mbox{\hyperlink{classWeather_1_1WeatherDataProvider_aa9f20f5c6fe86fddf7aeed9438bba139}{00083}}\ \ \ \ \ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_aa9f20f5c6fe86fddf7aeed9438bba139}{\string~WeatherDataProvider}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00084}00084\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00085}00085\ \ \ \ \ \textcolor{comment}{//\ factory\ function\ for\ QML\ singleton}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00086}00086\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider}{Weather::WeatherDataProvider}}*\ create(QQmlEngine*\ \textcolor{comment}{/*unused*/},\ QJSEngine*\ \textcolor{comment}{/*unused*/})}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00087}00087\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00088}00088\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classGlobalObject_abff9f661cf7e78967606d10692c03412}{GlobalObject::weatherDataProvider}}();}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00089}00089\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00090}00090\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00091}00091\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00092}00092\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00093}00093\ \ \ \ \ \textcolor{comment}{//\ Properties}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00094}00094\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00095}00095\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00100}\mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a56bf601a83772e02d316b5f01da3975e}{00100}}\ \ \ \ \ Q\_PROPERTY(\textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a56bf601a83772e02d316b5f01da3975e}{backgroundUpdate}}\ READ\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a56bf601a83772e02d316b5f01da3975e}{backgroundUpdate}}\ NOTIFY\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a1f5c01f8cda0c5d745238b4e54fbd501}{backgroundUpdateChanged}})}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00101}00101\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00102}00102\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00106}\mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a0f76b69baa886737363afe6d7d7d41fe}{00106}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a0f76b69baa886737363afe6d7d7d41fe}{backgroundUpdate}}()\ const\ -\/>\ \textcolor{keywordtype}{bool}\ \{\ \textcolor{keywordflow}{return}\ \_backgroundUpdate;\ \};}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00107}00107\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00113}\mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a6ec5dc5d952f6e91c2cac03d52005be6}{00113}}\ \ \ \ \ Q\_PROPERTY(\textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a6ec5dc5d952f6e91c2cac03d52005be6}{downloading}}\ READ\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a6ec5dc5d952f6e91c2cac03d52005be6}{downloading}}\ NOTIFY\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a39abdd9eb031cdab206478ee04f2ed8a}{downloadingChanged}})}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00114}00114\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00115}00115\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00119}\mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a95493a3a3038b276b90e7e23dda97f90}{00119}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a95493a3a3038b276b90e7e23dda97f90}{downloading}}()\ const\ -\/>\ \textcolor{keywordtype}{bool};}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00120}00120\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00135}\mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a22412b04623604100a8e55c14294113c}{00135}}\ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ Weather::\mbox{\hyperlink{classWeather_1_1Station}{Station}}*\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a22412b04623604100a8e55c14294113c}{findWeatherStation}}(const\ QString\ \&ICAOCode)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00136}00136\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00137}00137\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_weatherStationsByICAOCode.value(ICAOCode,\ \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00138}00138\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00139}00139\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00145}\mbox{\hyperlink{classWeather_1_1WeatherDataProvider_affffdb22f464b53cf59276c2b49376c7}{00145}}\ \ \ \ \ Q\_PROPERTY(\mbox{\hyperlink{classUnits_1_1Pressure}{Units::Pressure}}\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_affffdb22f464b53cf59276c2b49376c7}{QNH}}\ READ\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_affffdb22f464b53cf59276c2b49376c7}{QNH}}\ NOTIFY\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a60c015caab8446faf71a5958912a2c02}{QNHInfoChanged}})}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00146}00146\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00147}00147\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00151}\mbox{\hyperlink{classWeather_1_1WeatherDataProvider_aa5f0de5c69063bf1bd12ecc6ebc72dce}{00151}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_aa5f0de5c69063bf1bd12ecc6ebc72dce}{QNH}}()\ const\ -\/>\ \mbox{\hyperlink{namespaceUnits}{Units}}::Pressure;}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00152}00152\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00158}\mbox{\hyperlink{classWeather_1_1WeatherDataProvider_ae7db932767004bff92a34f4da1f8b49b}{00158}}\ \ \ \ \ Q\_PROPERTY(\mbox{\hyperlink{namespaceUnits}{Units}}::Distance\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_ae7db932767004bff92a34f4da1f8b49b}{QNHPressureAltitude}}\ READ\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_ae7db932767004bff92a34f4da1f8b49b}{QNHPressureAltitude}}\ NOTIFY\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a60c015caab8446faf71a5958912a2c02}{QNHInfoChanged}})}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00159}00159\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00164}\mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a3c9ce6d3c34e076f4e773da03124eabd}{00164}}\ \ \ \ \ [[nodiscard]]\ auto\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_ae7db932767004bff92a34f4da1f8b49b}{QNHPressureAltitude}}()\ const\ -\/>\ \mbox{\hyperlink{namespaceUnits}{Units}}::Distance\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classNavigation_1_1Atmosphere_a6c7b84653047ee6b673160ed7adf6090}{Navigation::Atmosphere::height}}(\mbox{\hyperlink{classWeather_1_1WeatherDataProvider_affffdb22f464b53cf59276c2b49376c7}{QNH}}());\ \}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00165}00165\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00173}\mbox{\hyperlink{classWeather_1_1WeatherDataProvider_af8e354b66e38c248d1fa7286097a5e3b}{00173}}\ \ \ \ \ Q\_PROPERTY(QString\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_af8e354b66e38c248d1fa7286097a5e3b}{QNHInfo}}\ READ\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_af8e354b66e38c248d1fa7286097a5e3b}{QNHInfo}}\ NOTIFY\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a60c015caab8446faf71a5958912a2c02}{QNHInfoChanged}})}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00174}00174\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00175}00175\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00179}\mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a3e784ce2c231044eec32989c1ae03869}{00179}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a3e784ce2c231044eec32989c1ae03869}{QNHInfo}}()\ const\ -\/>\ QString;}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00180}00180\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00188}\mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a3e86b97258a906b0e0692007be230d58}{00188}}\ \ \ \ \ Q\_PROPERTY(QString\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a3e86b97258a906b0e0692007be230d58}{sunInfo}}\ READ\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a3e86b97258a906b0e0692007be230d58}{sunInfo}}\ NOTIFY\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a8c707fa8e25ec16286dc6928a7503129}{sunInfoChanged}})}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00189}00189\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00194}\mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a26994c0221faace14d3cd97a7db46098}{00194}}\ \ \ \ \ static\ auto\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a3e86b97258a906b0e0692007be230d58}{sunInfo}}()\ -\/>\ QString\ ;}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00195}00195\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00215}\mbox{\hyperlink{classWeather_1_1WeatherDataProvider_aed52eaaa5a67a913ef7647fc4c7edf4e}{00215}}\ \ \ \ \ Q\_INVOKABLE\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_aed52eaaa5a67a913ef7647fc4c7edf4e}{update}}(\textcolor{keywordtype}{bool}\ isBackgroundUpdate=true);}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00216}00216\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00228}\mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a02fc9711982f7cca1ea2cf0c15eb84c9}{00228}}\ \ \ \ \ Q\_PROPERTY(QList<Weather::\mbox{\hyperlink{classWeather_1_1Station}{Station}}*>\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a02fc9711982f7cca1ea2cf0c15eb84c9}{weatherStations}}\ READ\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a02fc9711982f7cca1ea2cf0c15eb84c9}{weatherStations}}\ NOTIFY\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_ad74174b2df0e872e225cdf1c22f27a1a}{weatherStationsChanged}})}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00229}00229\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00234}\mbox{\hyperlink{classWeather_1_1WeatherDataProvider_ab95abd73a3fcd9c411c04cddb51b72db}{00234}}\ \ \ \ \ [[nodiscard]]\ auto\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a02fc9711982f7cca1ea2cf0c15eb84c9}{weatherStations}}()\ const\ -\/>\ QList<Weather::\mbox{\hyperlink{classWeather_1_1Station}{Station}}*>;}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00235}00235\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00236}00236\ signals:}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00238}\mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a1f5c01f8cda0c5d745238b4e54fbd501}{00238}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a1f5c01f8cda0c5d745238b4e54fbd501}{backgroundUpdateChanged}}();}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00239}00239\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00241}\mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a39abdd9eb031cdab206478ee04f2ed8a}{00241}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a39abdd9eb031cdab206478ee04f2ed8a}{downloadingChanged}}();}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00242}00242\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00250}\mbox{\hyperlink{classWeather_1_1WeatherDataProvider_aa83bdd18eb7cdeb9b23208e29ff73f56}{00250}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_aa83bdd18eb7cdeb9b23208e29ff73f56}{error}}(QString\ message);}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00251}00251\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00253}\mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a60c015caab8446faf71a5958912a2c02}{00253}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a60c015caab8446faf71a5958912a2c02}{QNHInfoChanged}}();}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00254}00254\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00256}\mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a8c707fa8e25ec16286dc6928a7503129}{00256}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a8c707fa8e25ec16286dc6928a7503129}{sunInfoChanged}}();}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00257}00257\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00259}\mbox{\hyperlink{classWeather_1_1WeatherDataProvider_ad74174b2df0e872e225cdf1c22f27a1a}{00259}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_ad74174b2df0e872e225cdf1c22f27a1a}{weatherStationsChanged}}();}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00260}00260\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00261}00261\ private\ slots:}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00262}00262\ \ \ \ \ \textcolor{comment}{//\ Called\ when\ a\ download\ is\ finished}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00263}00263\ \ \ \ \ \textcolor{keywordtype}{void}\ downloadFinished();}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00264}00264\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00265}00265\ \ \ \ \ \textcolor{comment}{//\ Check\ for\ expired\ METARs\ and\ TAFs\ and\ delete\ them.}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00266}00266\ \ \ \ \ \textcolor{comment}{//\ This\ also\ deletes\ weather\ stations\ if\ they\ are\ no\ longer\ in\ use.}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00267}00267\ \ \ \ \ \textcolor{keywordtype}{void}\ deleteExpiredMesages();}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00268}00268\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00269}00269\ \ \ \ \ \textcolor{comment}{//\ Name\ says\ it\ all.\ This\ method\ is\ called\ from\ the\ constructor,}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00270}00270\ \ \ \ \ \textcolor{comment}{//\ but\ with\ a\ little\ lag\ to\ avoid\ conflicts\ in\ the\ initialisation\ of}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00271}00271\ \ \ \ \ \textcolor{comment}{//\ static\ objects.}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00272}00272\ \ \ \ \ \textcolor{keywordtype}{void}\ deferredInitialization();}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00273}00273\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00274}00274\ private:}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00275}00275\ \ \ \ \ Q\_DISABLE\_COPY\_MOVE(\mbox{\hyperlink{classWeather_1_1WeatherDataProvider}{WeatherDataProvider}})}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00276}00276\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00277}00277\ \ \ \ \ \textcolor{comment}{//\ Update\ interval\ is\ 30\ mins,\ or\ 5\ mins\ if\ update\ failed}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00278}00278\ \ \ \ \ static\ const\ \textcolor{keywordtype}{int}\ updateIntervalNormal\_ms\ \ =\ 30*60*1000;}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00279}00279\ \ \ \ \ static\ const\ \textcolor{keywordtype}{int}\ updateIntervalOnError\_ms\ =\ \ 5*60*1000;}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00280}00280\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00281}00281\ \ \ \ \ \textcolor{comment}{//\ Similar\ to\ findWeatherStation,\ but\ will\ create\ a\ weather\ station\ if\ no}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00282}00282\ \ \ \ \ \textcolor{comment}{//\ station\ with\ the\ given\ code\ is\ known}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00283}00283\ \ \ \ \ auto\ findOrConstructWeatherStation(const\ QString\ \&ICAOCode)\ -\/>\ Weather::\mbox{\hyperlink{classWeather_1_1Station}{Station}}\ *;}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00284}00284\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00285}00285\ \ \ \ \ \textcolor{comment}{//\ This\ method\ loads\ METAR/TAFs\ from\ a\ file\ "{}weather.dat"{}\ in}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00286}00286\ \ \ \ \ \textcolor{comment}{//\ QStandardPaths::AppDataLocation.\ \ There\ is\ locking\ to\ ensure\ that\ no\ two}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00287}00287\ \ \ \ \ \textcolor{comment}{//\ processes\ access\ the\ file.\ The\ method\ will\ fail\ silently\ on\ error.}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00288}00288\ \ \ \ \ \textcolor{comment}{//\ Returns\ true\ on\ success\ and\ false\ on\ failure.}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00289}00289\ \ \ \ \ auto\ load()\ -\/>\ \textcolor{keywordtype}{bool};}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00290}00290\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00291}00291\ \ \ \ \ \textcolor{comment}{//\ This\ method\ saves\ all\ METAR/TAFs\ that\ are\ valid\ and\ not\ yet\ expired\ to\ a}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00292}00292\ \ \ \ \ \textcolor{comment}{//\ file\ "{}weather.dat"{}\ in\ QStandardPaths::AppDataLocation.\ \ There\ is\ locking}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00293}00293\ \ \ \ \ \textcolor{comment}{//\ to\ ensure\ that\ no\ two\ processes\ access\ the\ file.\ The\ method\ will\ fail}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00294}00294\ \ \ \ \ \textcolor{comment}{//\ silently\ on\ error.}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00295}00295\ \ \ \ \ \textcolor{keywordtype}{void}\ save();}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00296}00296\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00297}00297\ \ \ \ \ \textcolor{comment}{//\ List\ of\ replies\ from\ aviationweather.com}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00298}00298\ \ \ \ \ QList<QPointer<QNetworkReply>>\ \_networkReplies;}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00299}00299\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00300}00300\ \ \ \ \ \textcolor{comment}{//\ A\ timer\ used\ for\ auto-\/updating\ the\ weather\ reports\ every\ 30\ minutes}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00301}00301\ \ \ \ \ QTimer\ \_updateTimer;}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00302}00302\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00303}00303\ \ \ \ \ \textcolor{comment}{//\ A\ timer\ used\ for\ deleting\ expired\ weather\ reports\ ever\ 11\ minutes}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00304}00304\ \ \ \ \ QTimer\ \_deleteExiredMessagesTimer;}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00305}00305\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00306}00306\ \ \ \ \ \textcolor{comment}{//\ Flag,\ as\ set\ by\ the\ update()\ method}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00307}00307\ \ \ \ \ \textcolor{keywordtype}{bool}\ \_backgroundUpdate\ \{\textcolor{keyword}{true}\};}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00308}00308\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00309}00309\ \ \ \ \ \textcolor{comment}{//\ List\ of\ weather\ stations,\ accessible\ by\ ICAO\ code}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00310}00310\ \ \ \ \ QMap<QString,\ QPointer<Weather::Station>>\ \_weatherStationsByICAOCode;}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00311}00311\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00312}00312\ \ \ \ \ \textcolor{comment}{//\ Date\ and\ Time\ of\ last\ update}}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00313}00313\ \ \ \ \ QDateTime\ \_lastUpdate;}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00314}00314\ \};}
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00315}00315\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00316}00316\ }
+\DoxyCodeLine{\Hypertarget{WeatherDataProvider_8h_source_l00317}00317\ \}\ \textcolor{comment}{//\ namespace\ Weather}}
+
+\end{DoxyCode}

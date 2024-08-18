@@ -1,0 +1,167 @@
+\doxysection{Weather\+::Wind Class Reference}
+\hypertarget{classWeather_1_1Wind}{}\label{classWeather_1_1Wind}\index{Weather::Wind@{Weather::Wind}}
+
+
+This extremely simple class holds the wind speed and direction.  
+
+
+
+
+{\ttfamily \#include $<$Wind.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+auto \mbox{\hyperlink{classWeather_1_1Wind_aff56e78215ad6e86813275112d056436}{direction\+From}} () const -\/$>$ \mbox{\hyperlink{classUnits_1_1Angle}{Units\+::\+Angle}}
+\begin{DoxyCompactList}\small\item\em Getter function for property of the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classWeather_1_1Wind_ad61d0a0b4b8885894203e0d8d3ccd18b}{speed}} () const -\/$>$ \mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}}
+\begin{DoxyCompactList}\small\item\em Getter function for property of the same name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classWeather_1_1Wind_af4334f78aad064f8f9f565ed78cf30ee}{set\+Speed}} (\mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}} new\+Speed)
+\begin{DoxyCompactList}\small\item\em Setter function for property of the same name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classWeather_1_1Wind_aa4535ea6618618f2e5466895e2620f5c}{set\+Direction\+From}} (\mbox{\hyperlink{classUnits_1_1Angle}{Units\+::\+Angle}} new\+Direction\+From)
+\begin{DoxyCompactList}\small\item\em Setter function for property of the same name. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE bool \mbox{\hyperlink{classWeather_1_1Wind_adbad49f5d4a750a6d1e49dd2981449e7}{operator==}} (\mbox{\hyperlink{classWeather_1_1Wind}{Weather\+::\+Wind}} other) const
+\begin{DoxyCompactList}\small\item\em Equality check. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classWeather_1_1Wind_a78e5097c0dba922f75db0b51ac76ce65}\label{classWeather_1_1Wind_a78e5097c0dba922f75db0b51ac76ce65} 
+\mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}} {\bfseries min\+Wind\+Speed}
+\begin{DoxyCompactList}\small\item\em Minimal wind speed that is considered valid. \end{DoxyCompactList}\item 
+\Hypertarget{classWeather_1_1Wind_a2768ae32d32e658b9a4b1881c377dc87}\label{classWeather_1_1Wind_a2768ae32d32e658b9a4b1881c377dc87} 
+\mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}} {\bfseries max\+Wind\+Speed}
+\begin{DoxyCompactList}\small\item\em Maximal wind speed that is considered valid. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classUnits_1_1Angle}{Units\+::\+Angle}} \mbox{\hyperlink{classWeather_1_1Wind_af9156d503d3385cc6469500f541a0468}{direction\+From}}
+\begin{DoxyCompactList}\small\item\em \doxylink{classWeather_1_1Wind}{Wind} Direction. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}} \mbox{\hyperlink{classWeather_1_1Wind_adc766346c4a623a91b09fc85c7ac15fc}{speed}}
+\begin{DoxyCompactList}\small\item\em \doxylink{classWeather_1_1Wind}{Wind} Speed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This extremely simple class holds the wind speed and direction. 
+
+Definition at line \mbox{\hyperlink{Wind_8h_source_l00032}{32}} of file \mbox{\hyperlink{Wind_8h_source}{Wind.\+h}}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classWeather_1_1Wind_aff56e78215ad6e86813275112d056436}\index{Weather::Wind@{Weather::Wind}!directionFrom@{directionFrom}}
+\index{directionFrom@{directionFrom}!Weather::Wind@{Weather::Wind}}
+\doxysubsubsection{\texorpdfstring{directionFrom()}{directionFrom()}}
+{\footnotesize\ttfamily \label{classWeather_1_1Wind_aff56e78215ad6e86813275112d056436} 
+auto Weather\+::\+Wind\+::direction\+From (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ \mbox{\hyperlink{classUnits_1_1Angle}{Units\+::\+Angle}} \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for property of the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property wind\+Direction 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Wind_8h_source_l00072}{72}} of file \mbox{\hyperlink{Wind_8h_source}{Wind.\+h}}.
+
+\Hypertarget{classWeather_1_1Wind_adbad49f5d4a750a6d1e49dd2981449e7}\index{Weather::Wind@{Weather::Wind}!operator==@{operator==}}
+\index{operator==@{operator==}!Weather::Wind@{Weather::Wind}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily \label{classWeather_1_1Wind_adbad49f5d4a750a6d1e49dd2981449e7} 
+Q\+\_\+\+INVOKABLE bool Weather\+::\+Wind\+::operator== (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classWeather_1_1Wind}{Weather\+::\+Wind}}}]{other}{}\end{DoxyParamCaption}) const}
+
+
+
+Equality check. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & \doxylink{classWeather_1_1Wind}{Wind} that is compared to this\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+equality 
+\end{DoxyReturn}
+\Hypertarget{classWeather_1_1Wind_aa4535ea6618618f2e5466895e2620f5c}\index{Weather::Wind@{Weather::Wind}!setDirectionFrom@{setDirectionFrom}}
+\index{setDirectionFrom@{setDirectionFrom}!Weather::Wind@{Weather::Wind}}
+\doxysubsubsection{\texorpdfstring{setDirectionFrom()}{setDirectionFrom()}}
+{\footnotesize\ttfamily \label{classWeather_1_1Wind_aa4535ea6618618f2e5466895e2620f5c} 
+void Weather\+::\+Wind\+::set\+Direction\+From (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classUnits_1_1Angle}{Units\+::\+Angle}}}]{new\+Direction\+From}{}\end{DoxyParamCaption})}
+
+
+
+Setter function for property of the same name. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Direction\+From} & Property direction\+From \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classWeather_1_1Wind_af4334f78aad064f8f9f565ed78cf30ee}\index{Weather::Wind@{Weather::Wind}!setSpeed@{setSpeed}}
+\index{setSpeed@{setSpeed}!Weather::Wind@{Weather::Wind}}
+\doxysubsubsection{\texorpdfstring{setSpeed()}{setSpeed()}}
+{\footnotesize\ttfamily \label{classWeather_1_1Wind_af4334f78aad064f8f9f565ed78cf30ee} 
+void Weather\+::\+Wind\+::set\+Speed (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}}}]{new\+Speed}{}\end{DoxyParamCaption})}
+
+
+
+Setter function for property of the same name. 
+
+If new\+Wind\+Speed is outside of the interval \mbox{[}min\+Wind\+Speed, max\+Wind\+Speed\mbox{]}, the property will be set to NaN.
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Speed} & Property speed \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classWeather_1_1Wind_ad61d0a0b4b8885894203e0d8d3ccd18b}\index{Weather::Wind@{Weather::Wind}!speed@{speed}}
+\index{speed@{speed}!Weather::Wind@{Weather::Wind}}
+\doxysubsubsection{\texorpdfstring{speed()}{speed()}}
+{\footnotesize\ttfamily \label{classWeather_1_1Wind_ad61d0a0b4b8885894203e0d8d3ccd18b} 
+auto Weather\+::\+Wind\+::speed (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ \mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}} \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for property of the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property wind\+Speed 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Wind_8h_source_l00078}{78}} of file \mbox{\hyperlink{Wind_8h_source}{Wind.\+h}}.
+
+
+
+\doxysubsection{Property Documentation}
+\Hypertarget{classWeather_1_1Wind_af9156d503d3385cc6469500f541a0468}\index{Weather::Wind@{Weather::Wind}!directionFrom@{directionFrom}}
+\index{directionFrom@{directionFrom}!Weather::Wind@{Weather::Wind}}
+\doxysubsubsection{\texorpdfstring{directionFrom}{directionFrom}}
+{\footnotesize\ttfamily \label{classWeather_1_1Wind_af9156d503d3385cc6469500f541a0468} 
+\mbox{\hyperlink{classUnits_1_1Angle}{Units\+::\+Angle}} Weather\+::\+Wind\+::direction\+From\hspace{0.3cm}{\ttfamily [read]}, {\ttfamily [write]}}
+
+
+
+\doxylink{classWeather_1_1Wind}{Wind} Direction. 
+
+This property holds the wind direction. This is NaN if no value has been set. 
+
+Definition at line \mbox{\hyperlink{Wind_8h_source_l00053}{53}} of file \mbox{\hyperlink{Wind_8h_source}{Wind.\+h}}.
+
+\Hypertarget{classWeather_1_1Wind_adc766346c4a623a91b09fc85c7ac15fc}\index{Weather::Wind@{Weather::Wind}!speed@{speed}}
+\index{speed@{speed}!Weather::Wind@{Weather::Wind}}
+\doxysubsubsection{\texorpdfstring{speed}{speed}}
+{\footnotesize\ttfamily \label{classWeather_1_1Wind_adc766346c4a623a91b09fc85c7ac15fc} 
+\mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}} Weather\+::\+Wind\+::speed\hspace{0.3cm}{\ttfamily [read]}, {\ttfamily [write]}}
+
+
+
+\doxylink{classWeather_1_1Wind}{Wind} Speed. 
+
+This property holds the wind speed. This is a number that lies in the interval \mbox{[}min\+Wind\+Speed, max\+Wind\+Speed\mbox{]} or NaN if the wind speed has not been set. 
+
+Definition at line \mbox{\hyperlink{Wind_8h_source_l00061}{61}} of file \mbox{\hyperlink{Wind_8h_source}{Wind.\+h}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/weather/Wind.\+h\end{DoxyCompactItemize}

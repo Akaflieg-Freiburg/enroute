@@ -1,0 +1,397 @@
+\doxysection{Units\+::Speed Class Reference}
+\hypertarget{classUnits_1_1Speed}{}\label{classUnits_1_1Speed}\index{Units::Speed@{Units::Speed}}
+
+
+Convenience class for speed computations.  
+
+
+
+
+{\ttfamily \#include $<$Speed.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+Q\+\_\+\+INVOKABLE bool \mbox{\hyperlink{classUnits_1_1Speed_a578c994dc4fa328bd22721c3c0743282}{is\+Finite}} () const
+\begin{DoxyCompactList}\small\item\em Checks if the speed is valid. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE bool \mbox{\hyperlink{classUnits_1_1Speed_ac77cf34386ce964250887d1877dbad26}{is\+Negative}} () const
+\begin{DoxyCompactList}\small\item\em Checks if the speed is negative. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE double \mbox{\hyperlink{classUnits_1_1Speed_ae839675adc6c4d6f4b20bfd34bc3bcf8}{operator/}} (\mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}} rhs) const
+\begin{DoxyCompactList}\small\item\em Divides two speeds. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}} \mbox{\hyperlink{classUnits_1_1Speed_ae070803b98e19e5923f3e5ab7441b059}{operator+}} (\mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}} rhs) const
+\begin{DoxyCompactList}\small\item\em Adds two speeds. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}} \mbox{\hyperlink{classUnits_1_1Speed_ac1a80e8424750cb4b2f038f4296f5d1d}{operator-\/}} (\mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}} rhs) const
+\begin{DoxyCompactList}\small\item\em Difference of two speeds. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE std\+::partial\+\_\+ordering \mbox{\hyperlink{classUnits_1_1Speed_a6f07a8deb76a1c45fc670247d47c0793}{operator$<$=$>$}} (const \mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}} \&rhs) const =default
+\begin{DoxyCompactList}\small\item\em Comparison. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE double \mbox{\hyperlink{classUnits_1_1Speed_a5f77535b4025b5d13c7551542424a18d}{to\+FPM}} () const
+\begin{DoxyCompactList}\small\item\em Convert to feet per minute. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE double \mbox{\hyperlink{classUnits_1_1Speed_a9be54e40338f3b9cd5aa8285beeb3694}{to\+MPS}} () const
+\begin{DoxyCompactList}\small\item\em Convert to meters per second. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE double \mbox{\hyperlink{classUnits_1_1Speed_af5f6d320d33cbec8ca3c709f0d6bc9c5}{to\+MPH}} () const
+\begin{DoxyCompactList}\small\item\em Convert to meters per second. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE double \mbox{\hyperlink{classUnits_1_1Speed_ab0d1928e424d6662994b2c9e075b0b40}{to\+KN}} () const
+\begin{DoxyCompactList}\small\item\em Convert to knots. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE double \mbox{\hyperlink{classUnits_1_1Speed_ad2490866a74c976ba68705a57bd9627e}{to\+KMH}} () const
+\begin{DoxyCompactList}\small\item\em Convert to km/h. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static Q\+\_\+\+INVOKABLE constexpr \mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}} \mbox{\hyperlink{classUnits_1_1Speed_ab5a6658c9392cd7276b8f6401658d6c5}{from\+FPM}} (double speed\+In\+FPM)
+\begin{DoxyCompactList}\small\item\em Constructs a speed. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE constexpr \mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}} \mbox{\hyperlink{classUnits_1_1Speed_a2cbe51e6f81012de452f099389a4d47d}{from\+MPS}} (double speed\+In\+MPS)
+\begin{DoxyCompactList}\small\item\em Constructs a speed. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE constexpr \mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}} \mbox{\hyperlink{classUnits_1_1Speed_a697c182f19029629a000b0f470b33e98}{from\+MPH}} (double speed\+In\+MPH)
+\begin{DoxyCompactList}\small\item\em Constructs a speed. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE constexpr \mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}} \mbox{\hyperlink{classUnits_1_1Speed_aca99ffbc0f3a4ec0b87a8a904b266bd7}{from\+KN}} (double speed\+In\+KT)
+\begin{DoxyCompactList}\small\item\em Constructs a speed. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE constexpr \mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}} \mbox{\hyperlink{classUnits_1_1Speed_a68cc518f753858439bab8a784a39c753}{from\+KMH}} (double speed\+In\+KMH)
+\begin{DoxyCompactList}\small\item\em Constructs a speed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classUnits_1_1Speed_a524e38bbfbf5478137b903d87ac7f07c}\label{classUnits_1_1Speed_a524e38bbfbf5478137b903d87ac7f07c} 
+static constexpr double {\bfseries FPM\+\_\+per\+\_\+\+MPS} = 196.\+85039370079
+\begin{DoxyCompactList}\small\item\em Unitless constant\+: one feet per minute / meters per second. \end{DoxyCompactList}\item 
+\Hypertarget{classUnits_1_1Speed_a1085282ac79f61f01e2b6f3408668d50}\label{classUnits_1_1Speed_a1085282ac79f61f01e2b6f3408668d50} 
+static constexpr double {\bfseries MPS\+\_\+per\+\_\+\+MPH} = 0.\+44704
+\begin{DoxyCompactList}\small\item\em Unitless constant\+: one mile per hour / meters per second. \end{DoxyCompactList}\item 
+\Hypertarget{classUnits_1_1Speed_a9620b111ba171a9b60a1e73f102a7673}\label{classUnits_1_1Speed_a9620b111ba171a9b60a1e73f102a7673} 
+static constexpr double {\bfseries KMH\+\_\+per\+\_\+\+MPS} = 3.\+6
+\begin{DoxyCompactList}\small\item\em Unitless constant\+: one km/h / meters per second. \end{DoxyCompactList}\item 
+\Hypertarget{classUnits_1_1Speed_a5118377ff84db7faec93b303d12fcb07}\label{classUnits_1_1Speed_a5118377ff84db7faec93b303d12fcb07} 
+static constexpr double {\bfseries KN\+\_\+per\+\_\+\+MPS} = 1.\+943844
+\begin{DoxyCompactList}\small\item\em Unitless constant\+: one knot / meters per second. \end{DoxyCompactList}\item 
+\Hypertarget{classUnits_1_1Speed_a44d8e8fc35eeb569b532bc3966c01326}\label{classUnits_1_1Speed_a44d8e8fc35eeb569b532bc3966c01326} 
+static constexpr double {\bfseries KMH\+\_\+per\+\_\+\+KT} = \mbox{\hyperlink{classUnits_1_1Speed_a9620b111ba171a9b60a1e73f102a7673}{KMH\+\_\+per\+\_\+\+MPS}} / \mbox{\hyperlink{classUnits_1_1Speed_a5118377ff84db7faec93b303d12fcb07}{KN\+\_\+per\+\_\+\+MPS}}
+\begin{DoxyCompactList}\small\item\em Unitless constant\+: one km/h / knot. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Convenience class for speed computations. 
+
+This extremely simple class allows computation with speeds, without the need to worry about units. 
+
+Definition at line \mbox{\hyperlink{Speed_8h_source_l00036}{36}} of file \mbox{\hyperlink{Speed_8h_source}{Speed.\+h}}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classUnits_1_1Speed_ab5a6658c9392cd7276b8f6401658d6c5}\index{Units::Speed@{Units::Speed}!fromFPM@{fromFPM}}
+\index{fromFPM@{fromFPM}!Units::Speed@{Units::Speed}}
+\doxysubsubsection{\texorpdfstring{fromFPM()}{fromFPM()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Speed_ab5a6658c9392cd7276b8f6401658d6c5} 
+static Q\+\_\+\+INVOKABLE constexpr \mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}} Units\+::\+Speed\+::from\+FPM (\begin{DoxyParamCaption}\item[{double}]{speed\+In\+FPM}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+
+
+Constructs a speed. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em speed\+In\+FPM} & speed in feet per minute\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+speed 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Speed_8h_source_l00047}{47}} of file \mbox{\hyperlink{Speed_8h_source}{Speed.\+h}}.
+
+\Hypertarget{classUnits_1_1Speed_a68cc518f753858439bab8a784a39c753}\index{Units::Speed@{Units::Speed}!fromKMH@{fromKMH}}
+\index{fromKMH@{fromKMH}!Units::Speed@{Units::Speed}}
+\doxysubsubsection{\texorpdfstring{fromKMH()}{fromKMH()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Speed_a68cc518f753858439bab8a784a39c753} 
+static Q\+\_\+\+INVOKABLE constexpr \mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}} Units\+::\+Speed\+::from\+KMH (\begin{DoxyParamCaption}\item[{double}]{speed\+In\+KMH}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+
+
+Constructs a speed. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em speed\+In\+KMH} & speed in km/h\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+speed 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Speed_8h_source_l00100}{100}} of file \mbox{\hyperlink{Speed_8h_source}{Speed.\+h}}.
+
+\Hypertarget{classUnits_1_1Speed_aca99ffbc0f3a4ec0b87a8a904b266bd7}\index{Units::Speed@{Units::Speed}!fromKN@{fromKN}}
+\index{fromKN@{fromKN}!Units::Speed@{Units::Speed}}
+\doxysubsubsection{\texorpdfstring{fromKN()}{fromKN()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Speed_aca99ffbc0f3a4ec0b87a8a904b266bd7} 
+static Q\+\_\+\+INVOKABLE constexpr \mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}} Units\+::\+Speed\+::from\+KN (\begin{DoxyParamCaption}\item[{double}]{speed\+In\+KT}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+
+
+Constructs a speed. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em speed\+In\+KT} & speed in knots\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+speed 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Speed_8h_source_l00087}{87}} of file \mbox{\hyperlink{Speed_8h_source}{Speed.\+h}}.
+
+\Hypertarget{classUnits_1_1Speed_a697c182f19029629a000b0f470b33e98}\index{Units::Speed@{Units::Speed}!fromMPH@{fromMPH}}
+\index{fromMPH@{fromMPH}!Units::Speed@{Units::Speed}}
+\doxysubsubsection{\texorpdfstring{fromMPH()}{fromMPH()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Speed_a697c182f19029629a000b0f470b33e98} 
+static Q\+\_\+\+INVOKABLE constexpr \mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}} Units\+::\+Speed\+::from\+MPH (\begin{DoxyParamCaption}\item[{double}]{speed\+In\+MPH}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+
+
+Constructs a speed. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em speed\+In\+MPH} & speed in statute miles per hous\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+speed 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Speed_8h_source_l00074}{74}} of file \mbox{\hyperlink{Speed_8h_source}{Speed.\+h}}.
+
+\Hypertarget{classUnits_1_1Speed_a2cbe51e6f81012de452f099389a4d47d}\index{Units::Speed@{Units::Speed}!fromMPS@{fromMPS}}
+\index{fromMPS@{fromMPS}!Units::Speed@{Units::Speed}}
+\doxysubsubsection{\texorpdfstring{fromMPS()}{fromMPS()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Speed_a2cbe51e6f81012de452f099389a4d47d} 
+static Q\+\_\+\+INVOKABLE constexpr \mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}} Units\+::\+Speed\+::from\+MPS (\begin{DoxyParamCaption}\item[{double}]{speed\+In\+MPS}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+
+
+Constructs a speed. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em speed\+In\+MPS} & speed in meters per second\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+speed 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Speed_8h_source_l00060}{60}} of file \mbox{\hyperlink{Speed_8h_source}{Speed.\+h}}.
+
+\Hypertarget{classUnits_1_1Speed_a578c994dc4fa328bd22721c3c0743282}\index{Units::Speed@{Units::Speed}!isFinite@{isFinite}}
+\index{isFinite@{isFinite}!Units::Speed@{Units::Speed}}
+\doxysubsubsection{\texorpdfstring{isFinite()}{isFinite()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Speed_a578c994dc4fa328bd22721c3c0743282} 
+Q\+\_\+\+INVOKABLE bool Units\+::\+Speed\+::is\+Finite (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Checks if the speed is valid. 
+
+\begin{DoxyReturn}{Returns}
+True is the speed is a finite number 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Speed_8h_source_l00111}{111}} of file \mbox{\hyperlink{Speed_8h_source}{Speed.\+h}}.
+
+\Hypertarget{classUnits_1_1Speed_ac77cf34386ce964250887d1877dbad26}\index{Units::Speed@{Units::Speed}!isNegative@{isNegative}}
+\index{isNegative@{isNegative}!Units::Speed@{Units::Speed}}
+\doxysubsubsection{\texorpdfstring{isNegative()}{isNegative()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Speed_ac77cf34386ce964250887d1877dbad26} 
+Q\+\_\+\+INVOKABLE bool Units\+::\+Speed\+::is\+Negative (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Checks if the speed is negative. 
+
+\begin{DoxyReturn}{Returns}
+True is the distance is negative 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Speed_8h_source_l00120}{120}} of file \mbox{\hyperlink{Speed_8h_source}{Speed.\+h}}.
+
+\Hypertarget{classUnits_1_1Speed_ae070803b98e19e5923f3e5ab7441b059}\index{Units::Speed@{Units::Speed}!operator+@{operator+}}
+\index{operator+@{operator+}!Units::Speed@{Units::Speed}}
+\doxysubsubsection{\texorpdfstring{operator+()}{operator+()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Speed_ae070803b98e19e5923f3e5ab7441b059} 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}} Units\+::\+Speed\+::operator+ (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}}}]{rhs}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Adds two speeds. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rhs} & Right hand side\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Sum 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Speed_8h_source_l00145}{145}} of file \mbox{\hyperlink{Speed_8h_source}{Speed.\+h}}.
+
+\Hypertarget{classUnits_1_1Speed_ac1a80e8424750cb4b2f038f4296f5d1d}\index{Units::Speed@{Units::Speed}!operator-\/@{operator-\/}}
+\index{operator-\/@{operator-\/}!Units::Speed@{Units::Speed}}
+\doxysubsubsection{\texorpdfstring{operator-\/()}{operator-()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Speed_ac1a80e8424750cb4b2f038f4296f5d1d} 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}} Units\+::\+Speed\+::operator-\/ (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}}}]{rhs}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Difference of two speeds. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rhs} & Right hand side\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Difference 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Speed_8h_source_l00156}{156}} of file \mbox{\hyperlink{Speed_8h_source}{Speed.\+h}}.
+
+\Hypertarget{classUnits_1_1Speed_ae839675adc6c4d6f4b20bfd34bc3bcf8}\index{Units::Speed@{Units::Speed}!operator/@{operator/}}
+\index{operator/@{operator/}!Units::Speed@{Units::Speed}}
+\doxysubsubsection{\texorpdfstring{operator/()}{operator/()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Speed_ae839675adc6c4d6f4b20bfd34bc3bcf8} 
+Q\+\_\+\+INVOKABLE double Units\+::\+Speed\+::operator/ (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}}}]{rhs}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Divides two speeds. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rhs} & Denominator of the division\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Quotient as a dimension-\/less number 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Speed_8h_source_l00131}{131}} of file \mbox{\hyperlink{Speed_8h_source}{Speed.\+h}}.
+
+\Hypertarget{classUnits_1_1Speed_a6f07a8deb76a1c45fc670247d47c0793}\index{Units::Speed@{Units::Speed}!operator$<$=$>$@{operator$<$=$>$}}
+\index{operator$<$=$>$@{operator$<$=$>$}!Units::Speed@{Units::Speed}}
+\doxysubsubsection{\texorpdfstring{operator$<$=$>$()}{operator<=>()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Speed_a6f07a8deb76a1c45fc670247d47c0793} 
+Q\+\_\+\+INVOKABLE std\+::partial\+\_\+ordering Units\+::\+Speed\+::operator$<$=$>$ (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classUnits_1_1Speed}{Units\+::\+Speed}} \&}]{rhs}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}, {\ttfamily [default]}}
+
+
+
+Comparison. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rhs} & Right hand side of the comparison\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Result of the comparison 
+\end{DoxyReturn}
+\Hypertarget{classUnits_1_1Speed_a5f77535b4025b5d13c7551542424a18d}\index{Units::Speed@{Units::Speed}!toFPM@{toFPM}}
+\index{toFPM@{toFPM}!Units::Speed@{Units::Speed}}
+\doxysubsubsection{\texorpdfstring{toFPM()}{toFPM()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Speed_a5f77535b4025b5d13c7551542424a18d} 
+Q\+\_\+\+INVOKABLE double Units\+::\+Speed\+::to\+FPM (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Convert to feet per minute. 
+
+\begin{DoxyReturn}{Returns}
+\doxylink{classUnits_1_1Speed}{Speed} in feet per minute 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Speed_8h_source_l00173}{173}} of file \mbox{\hyperlink{Speed_8h_source}{Speed.\+h}}.
+
+\Hypertarget{classUnits_1_1Speed_ad2490866a74c976ba68705a57bd9627e}\index{Units::Speed@{Units::Speed}!toKMH@{toKMH}}
+\index{toKMH@{toKMH}!Units::Speed@{Units::Speed}}
+\doxysubsubsection{\texorpdfstring{toKMH()}{toKMH()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Speed_ad2490866a74c976ba68705a57bd9627e} 
+Q\+\_\+\+INVOKABLE double Units\+::\+Speed\+::to\+KMH (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Convert to km/h. 
+
+\begin{DoxyReturn}{Returns}
+speed in knots (=Nautical miles per hour) 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Speed_8h_source_l00209}{209}} of file \mbox{\hyperlink{Speed_8h_source}{Speed.\+h}}.
+
+\Hypertarget{classUnits_1_1Speed_ab0d1928e424d6662994b2c9e075b0b40}\index{Units::Speed@{Units::Speed}!toKN@{toKN}}
+\index{toKN@{toKN}!Units::Speed@{Units::Speed}}
+\doxysubsubsection{\texorpdfstring{toKN()}{toKN()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Speed_ab0d1928e424d6662994b2c9e075b0b40} 
+Q\+\_\+\+INVOKABLE double Units\+::\+Speed\+::to\+KN (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Convert to knots. 
+
+\begin{DoxyReturn}{Returns}
+speed in knots (=Nautical miles per hour) 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Speed_8h_source_l00200}{200}} of file \mbox{\hyperlink{Speed_8h_source}{Speed.\+h}}.
+
+\Hypertarget{classUnits_1_1Speed_af5f6d320d33cbec8ca3c709f0d6bc9c5}\index{Units::Speed@{Units::Speed}!toMPH@{toMPH}}
+\index{toMPH@{toMPH}!Units::Speed@{Units::Speed}}
+\doxysubsubsection{\texorpdfstring{toMPH()}{toMPH()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Speed_af5f6d320d33cbec8ca3c709f0d6bc9c5} 
+Q\+\_\+\+INVOKABLE double Units\+::\+Speed\+::to\+MPH (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Convert to meters per second. 
+
+\begin{DoxyReturn}{Returns}
+speed in status miles per hour 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Speed_8h_source_l00191}{191}} of file \mbox{\hyperlink{Speed_8h_source}{Speed.\+h}}.
+
+\Hypertarget{classUnits_1_1Speed_a9be54e40338f3b9cd5aa8285beeb3694}\index{Units::Speed@{Units::Speed}!toMPS@{toMPS}}
+\index{toMPS@{toMPS}!Units::Speed@{Units::Speed}}
+\doxysubsubsection{\texorpdfstring{toMPS()}{toMPS()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Speed_a9be54e40338f3b9cd5aa8285beeb3694} 
+Q\+\_\+\+INVOKABLE double Units\+::\+Speed\+::to\+MPS (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Convert to meters per second. 
+
+\begin{DoxyReturn}{Returns}
+speed in meters per second 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Speed_8h_source_l00182}{182}} of file \mbox{\hyperlink{Speed_8h_source}{Speed.\+h}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/units/Speed.\+h\end{DoxyCompactItemize}

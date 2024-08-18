@@ -1,0 +1,56 @@
+\doxysection{Byte\+Size.\+h}
+\hypertarget{ByteSize_8h_source}{}\label{ByteSize_8h_source}\index{/home/runner/work/enroute/enroute/src/units/ByteSize.h@{/home/runner/work/enroute/enroute/src/units/ByteSize.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00001}00001\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00002}00002\ \textcolor{comment}{\ *\ \ \ Copyright\ (C)\ 2023\ by\ Stefan\ Kebekus\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00003}00003\ \textcolor{comment}{\ *\ \ \ stefan.kebekus@gmail.com\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00004}00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ free\ software;\ you\ can\ redistribute\ it\ and/or\ modify\ \ *}}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00006}00006\ \textcolor{comment}{\ *\ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by\ \ *}}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00007}00007\ \textcolor{comment}{\ *\ \ \ the\ Free\ Software\ Foundation;\ either\ version\ 3\ of\ the\ License,\ or\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00008}00008\ \textcolor{comment}{\ *\ \ \ (at\ your\ option)\ any\ later\ version.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00009}00009\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00010}00010\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,\ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00011}00011\ \textcolor{comment}{\ *\ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of\ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00012}00012\ \textcolor{comment}{\ *\ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00013}00013\ \textcolor{comment}{\ *\ \ \ GNU\ General\ Public\ License\ for\ more\ details.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00014}00014\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00015}00015\ \textcolor{comment}{\ *\ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00016}00016\ \textcolor{comment}{\ *\ \ \ along\ with\ this\ program;\ if\ not,\ write\ to\ the\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00017}00017\ \textcolor{comment}{\ *\ \ \ Free\ Software\ Foundation,\ Inc.,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00018}00018\ \textcolor{comment}{\ *\ \ \ 59\ Temple\ Place\ -\/\ Suite\ 330,\ Boston,\ MA\ \ 02111-\/1307,\ USA.\ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00019}00019\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00021}00021\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ <QQmlEngine>}}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00024}00024\ }
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00033}00033\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceUnits}{Units}}\ \{}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00034}00034\ }
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00037}\mbox{\hyperlink{classUnits_1_1ByteSize}{00037}}\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classUnits_1_1ByteSize}{ByteSize}}\ \{}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00038}00038\ \ \ \ \ \ \ \ \ Q\_GADGET}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00039}00039\ \ \ \ \ \ \ \ \ QML\_VALUE\_TYPE(byteSize)}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00040}00040\ }
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00041}00041\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00042}00042\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classUnits_1_1ByteSize}{ByteSize}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00043}00043\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classUnits_1_1ByteSize}{ByteSize}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classUnits_1_1ByteSize}{ByteSize}}\&)\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00044}00044\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classUnits_1_1ByteSize}{ByteSize}}(\mbox{\hyperlink{classUnits_1_1ByteSize}{ByteSize}}\&\&)\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00045}00045\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classUnits_1_1ByteSize}{ByteSize}}\&\ operator=(\textcolor{keyword}{const}\ \mbox{\hyperlink{classUnits_1_1ByteSize}{ByteSize}}\&)\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00046}00046\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classUnits_1_1ByteSize}{ByteSize}}\&\ operator=(\mbox{\hyperlink{classUnits_1_1ByteSize}{ByteSize}}\&\&)\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00047}00047\ }
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00052}\mbox{\hyperlink{classUnits_1_1ByteSize_ae6a8b18482c3165539d2dcae68964348}{00052}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classUnits_1_1ByteSize_ae6a8b18482c3165539d2dcae68964348}{ByteSize}}(\textcolor{keywordtype}{size\_t}\ val)\ :\ value(val)\ \{\}}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00053}00053\ }
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00058}\mbox{\hyperlink{classUnits_1_1ByteSize_a38db28e6f5f4a7f56c358e57c6406359}{00058}}\ \ \ \ \ \ \ \ \ Q\_INVOKABLE\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classUnits_1_1ByteSize_a38db28e6f5f4a7f56c358e57c6406359}{isNull}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ value==0;\ \}}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00059}00059\ }
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00064}\mbox{\hyperlink{classUnits_1_1ByteSize_a0433d874f3435592bce6d53c797bfba4}{00064}}\ \ \ \ \ \ \ \ \ \textcolor{keyword}{operator}\ size\_t()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ value;\ \}}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00065}00065\ }
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00066}00066\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00067}00067\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ value\ \{0\};}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00068}00068\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00069}00069\ \}\ \textcolor{comment}{//\ namespace\ Units}}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00070}00070\ }
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00071}00071\ \textcolor{comment}{//\ Declare\ meta\ types}}
+\DoxyCodeLine{\Hypertarget{ByteSize_8h_source_l00072}00072\ Q\_DECLARE\_METATYPE(\mbox{\hyperlink{classUnits_1_1ByteSize}{Units::ByteSize}})}
+
+\end{DoxyCode}

@@ -1,0 +1,71 @@
+\doxysection{Data\+File\+Abstract.\+h}
+\hypertarget{DataFileAbstract_8h_source}{}\label{DataFileAbstract_8h_source}\index{/home/runner/work/enroute/enroute/src/fileFormats/DataFileAbstract.h@{/home/runner/work/enroute/enroute/src/fileFormats/DataFileAbstract.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00001}00001\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00002}00002\ \textcolor{comment}{\ *\ \ \ Copyright\ (C)\ 2023.2024\ by\ Stefan\ Kebekus\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00003}00003\ \textcolor{comment}{\ *\ \ \ stefan.kebekus@gmail.com\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00004}00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ free\ software;\ you\ can\ redistribute\ it\ and/or\ modify\ \ *}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00006}00006\ \textcolor{comment}{\ *\ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by\ \ *}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00007}00007\ \textcolor{comment}{\ *\ \ \ the\ Free\ Software\ Foundation;\ either\ version\ 3\ of\ the\ License,\ or\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00008}00008\ \textcolor{comment}{\ *\ \ \ (at\ your\ option)\ any\ later\ version.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00009}00009\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00010}00010\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,\ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00011}00011\ \textcolor{comment}{\ *\ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of\ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00012}00012\ \textcolor{comment}{\ *\ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00013}00013\ \textcolor{comment}{\ *\ \ \ GNU\ General\ Public\ License\ for\ more\ details.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00014}00014\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00015}00015\ \textcolor{comment}{\ *\ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00016}00016\ \textcolor{comment}{\ *\ \ \ along\ with\ this\ program;\ if\ not,\ write\ to\ the\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00017}00017\ \textcolor{comment}{\ *\ \ \ Free\ Software\ Foundation,\ Inc.,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00018}00018\ \textcolor{comment}{\ *\ \ \ 59\ Temple\ Place\ -\/\ Suite\ 330,\ Boston,\ MA\ \ 02111-\/1307,\ USA.\ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00019}00019\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00021}00021\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ <QFile>}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00024}00024\ \textcolor{preprocessor}{\#include\ <QObject>}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00025}00025\ \textcolor{preprocessor}{\#include\ <QSharedPointer>}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00027}00027\ \textcolor{keyword}{namespace\ }FileFormats}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00028}00028\ \{}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00029}00029\ }
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00043}\mbox{\hyperlink{classFileFormats_1_1DataFileAbstract}{00043}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classFileFormats_1_1DataFileAbstract}{DataFileAbstract}}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00044}00044\ \{}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00045}00045\ }
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00046}00046\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00047}00047\ \ \ \ \ \mbox{\hyperlink{classFileFormats_1_1DataFileAbstract}{DataFileAbstract}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00048}00048\ \ \ \ \ \mbox{\hyperlink{classFileFormats_1_1DataFileAbstract}{\string~DataFileAbstract}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00049}00049\ }
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00050}00050\ }
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00051}00051\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00052}00052\ \ \ \ \ \textcolor{comment}{//\ Getter\ methods}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00053}00053\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00054}00054\ }
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00066}\mbox{\hyperlink{classFileFormats_1_1DataFileAbstract_a830a91581e5655ab1f14b6fe8719e60f}{00066}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classFileFormats_1_1DataFileAbstract_a830a91581e5655ab1f14b6fe8719e60f}{isValid}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_error.isEmpty();\ \}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00067}00067\ }
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00075}\mbox{\hyperlink{classFileFormats_1_1DataFileAbstract_a292d1144d1c23b119601170f4c6b8e20}{00075}}\ \ \ \ \ [[nodiscard]]\ QString\ \mbox{\hyperlink{classFileFormats_1_1DataFileAbstract_a292d1144d1c23b119601170f4c6b8e20}{error}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_error;\ \}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00076}00076\ }
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00084}\mbox{\hyperlink{classFileFormats_1_1DataFileAbstract_ab770740e6d6c20e076dd342e978b86ee}{00084}}\ \ \ \ \ [[nodiscard]]\ QStringList\ \mbox{\hyperlink{classFileFormats_1_1DataFileAbstract_ab770740e6d6c20e076dd342e978b86ee}{warnings}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_warnings;\ \}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00085}00085\ }
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00086}00086\ }
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00087}00087\ }
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00088}00088\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00089}00089\ \ \ \ \ \textcolor{comment}{//\ Methods}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00090}00090\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00091}00091\ }
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00102}\mbox{\hyperlink{classFileFormats_1_1DataFileAbstract_a2380fb7a4ab503cf73d618ea96ef216c}{00102}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{static}\ QSharedPointer<QFile>\ \mbox{\hyperlink{classFileFormats_1_1DataFileAbstract_a2380fb7a4ab503cf73d618ea96ef216c}{openFileURL}}(\textcolor{keyword}{const}\ QString\&\ fileName);}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00103}00103\ }
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00104}00104\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00105}00105\ \ \ \ \ \textcolor{keywordtype}{void}\ addWarning(\textcolor{keyword}{const}\ QString\&\ warning)\ \{\ m\_warnings\ +=\ warning;\ \}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00106}00106\ \ \ \ \ \textcolor{keywordtype}{void}\ setError(\textcolor{keyword}{const}\ QString\&\ newError)\ \{\ m\_error\ =\ newError;\ \}}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00107}00107\ }
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00108}00108\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00109}00109\ \ \ \ \ QString\ m\_error;}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00110}00110\ \ \ \ \ QStringList\ m\_warnings;}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00111}00111\ \};}
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00112}00112\ }
+\DoxyCodeLine{\Hypertarget{DataFileAbstract_8h_source_l00113}00113\ \}\ \textcolor{comment}{//\ namespace\ FileFormats}}
+
+\end{DoxyCode}

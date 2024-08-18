@@ -1,0 +1,244 @@
+\doxysection{Global\+Settings.\+h}
+\hypertarget{GlobalSettings_8h_source}{}\label{GlobalSettings_8h_source}\index{/home/runner/work/enroute/enroute/src/GlobalSettings.h@{/home/runner/work/enroute/enroute/src/GlobalSettings.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00001}00001\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00002}00002\ \textcolor{comment}{\ *\ \ \ Copyright\ (C)\ 2019-\/2023\ by\ Stefan\ Kebekus\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00003}00003\ \textcolor{comment}{\ *\ \ \ stefan.kebekus@gmail.com\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00004}00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ free\ software;\ you\ can\ redistribute\ it\ and/or\ modify\ \ *}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00006}00006\ \textcolor{comment}{\ *\ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by\ \ *}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00007}00007\ \textcolor{comment}{\ *\ \ \ the\ Free\ Software\ Foundation;\ either\ version\ 3\ of\ the\ License,\ or\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00008}00008\ \textcolor{comment}{\ *\ \ \ (at\ your\ option)\ any\ later\ version.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00009}00009\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00010}00010\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,\ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00011}00011\ \textcolor{comment}{\ *\ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of\ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00012}00012\ \textcolor{comment}{\ *\ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00013}00013\ \textcolor{comment}{\ *\ \ \ GNU\ General\ Public\ License\ for\ more\ details.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00014}00014\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00015}00015\ \textcolor{comment}{\ *\ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00016}00016\ \textcolor{comment}{\ *\ \ \ along\ with\ this\ program;\ if\ not,\ write\ to\ the\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00017}00017\ \textcolor{comment}{\ *\ \ \ Free\ Software\ Foundation,\ Inc.,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00018}00018\ \textcolor{comment}{\ *\ \ \ 59\ Temple\ Place\ -\/\ Suite\ 330,\ Boston,\ MA\ \ 02111-\/1307,\ USA.\ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00019}00019\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00021}00021\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ <QQmlEngine>}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00024}00024\ \textcolor{preprocessor}{\#include\ <QSettings>}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00026}00026\ \textcolor{preprocessor}{\#include\ "{}GlobalObject.h"{}}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00027}00027\ \textcolor{preprocessor}{\#include\ "{}notification/Notification.h"{}}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00028}00028\ \textcolor{preprocessor}{\#include\ "{}units/ByteSize.h"{}}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00029}00029\ \textcolor{preprocessor}{\#include\ "{}units/Distance.h"{}}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00031}00031\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00044}\mbox{\hyperlink{classGlobalSettings}{00044}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classGlobalSettings}{GlobalSettings}}\ :\ \textcolor{keyword}{public}\ QObject}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00045}00045\ \{}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00046}00046\ \ \ \ \ Q\_OBJECT}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00047}00047\ \ \ \ \ QML\_ELEMENT}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00048}00048\ \ \ \ \ QML\_SINGLETON}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00049}00049\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00050}00050\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00052}\mbox{\hyperlink{classGlobalSettings_aaaed393c9035889a9cac125cf37e23d1}{00052}}\ \ \ \ \ \textcolor{keyword}{enum}\ \mbox{\hyperlink{classGlobalSettings_aaaed393c9035889a9cac125cf37e23d1}{MapBearingPolicy}}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00053}00053\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00054}\mbox{\hyperlink{classGlobalSettings_aaaed393c9035889a9cac125cf37e23d1a8a4ed5a4e508f75c1e155236cb27cde8}{00054}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classGlobalSettings_aaaed393c9035889a9cac125cf37e23d1a8a4ed5a4e508f75c1e155236cb27cde8}{NUp}},\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00055}\mbox{\hyperlink{classGlobalSettings_aaaed393c9035889a9cac125cf37e23d1a51919af6c9bb07dd41804e9550eb9be1}{00055}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classGlobalSettings_aaaed393c9035889a9cac125cf37e23d1a51919af6c9bb07dd41804e9550eb9be1}{TTUp}},\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00056}00056\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classGlobalSettings_aaaed393c9035889a9cac125cf37e23d1ac8166b66cdb224802ebee123fbf9a7f1}{UserDefinedBearingUp}}\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00057}\mbox{\hyperlink{classGlobalSettings_aaaed393c9035889a9cac125cf37e23d1ac8166b66cdb224802ebee123fbf9a7f1}{00057}}\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00058}00058\ \ \ \ \ Q\_ENUM(\mbox{\hyperlink{classGlobalSettings_aaaed393c9035889a9cac125cf37e23d1}{MapBearingPolicy}})}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00059}00059\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00060}00060\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00061}00061\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00062}00062\ \ \ \ \ \textcolor{comment}{//\ Constructor\ and\ destructor}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00063}00063\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00064}00064\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00065}00065\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00069}\mbox{\hyperlink{classGlobalSettings_a02d443f7d431bd3c913964b2177d210c}{00069}}\ \ \ \ \ explicit\ \mbox{\hyperlink{classGlobalSettings}{GlobalSettings}}(QObject\ *parent\ =\ \textcolor{keywordtype}{nullptr});}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00070}00070\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00071}00071\ \ \ \ \ \textcolor{comment}{//\ No\ default\ constructor,\ important\ for\ QML\ singleton}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00072}00072\ \ \ \ \ explicit\ \mbox{\hyperlink{classGlobalSettings}{GlobalSettings}}()\ =\ delete;}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00073}00073\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00074}00074\ \ \ \ \ \textcolor{comment}{//\ factory\ function\ for\ QML\ singleton}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00075}00075\ \ \ \ \ static\ \mbox{\hyperlink{classGlobalSettings}{GlobalSettings}}*\ create(QQmlEngine\ *\ \textcolor{comment}{/*unused*/},\ QJSEngine\ *\ \textcolor{comment}{/*unused*/})}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00076}00076\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00077}00077\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classGlobalObject_af94f3ad5c6bb06982abf5d2759b63186}{GlobalObject::globalSettings}}();}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00078}00078\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00079}00079\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00080}00080\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00081}00081\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00082}00082\ \ \ \ \ \textcolor{comment}{//\ Properties}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00083}00083\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00084}00084\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00086}\mbox{\hyperlink{classGlobalSettings_a2690712435e49df5744fbdcc39681d82}{00086}}\ \ \ \ \ Q\_PROPERTY(\textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classGlobalSettings_a2690712435e49df5744fbdcc39681d82}{alwaysOpenExternalWebsites}}\ READ\ \mbox{\hyperlink{classGlobalSettings_a2690712435e49df5744fbdcc39681d82}{alwaysOpenExternalWebsites}}\ WRITE\ \mbox{\hyperlink{classGlobalSettings_ad7e6efe1300bf879147997d0e5590f7f}{setAlwaysOpenExternalWebsites}}\ NOTIFY\ \mbox{\hyperlink{classGlobalSettings_a69970e9971da12c895dca2dbb54ff13a}{alwaysOpenExternalWebsitesChanged}})}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00087}00087\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00088}00088\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00095}\mbox{\hyperlink{classGlobalSettings_ae23a599964215140c627ebfec52b90d9}{00095}}\ \ \ \ \ Q\_PROPERTY(\textcolor{keywordtype}{int}\ \mbox{\hyperlink{classGlobalSettings_ae23a599964215140c627ebfec52b90d9}{acceptedTerms}}\ READ\ \mbox{\hyperlink{classGlobalSettings_ae23a599964215140c627ebfec52b90d9}{acceptedTerms}}\ WRITE\ \mbox{\hyperlink{classGlobalSettings_ad3ede4004dbb9a054f28600645e3cde7}{setAcceptedTerms}}\ NOTIFY\ \mbox{\hyperlink{classGlobalSettings_ac3c07e7748331ad2db7237d4fe6d3a96}{acceptedTermsChanged}})}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00096}00096\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00103}\mbox{\hyperlink{classGlobalSettings_a3c78212b1c55bb78d0f7fd980e5fae27}{00103}}\ \ \ \ \ Q\_PROPERTY(\mbox{\hyperlink{namespaceUnits}{Units}}::Distance\ \mbox{\hyperlink{classGlobalSettings_a3c78212b1c55bb78d0f7fd980e5fae27}{airspaceAltitudeLimit}}\ READ\ \mbox{\hyperlink{classGlobalSettings_a3c78212b1c55bb78d0f7fd980e5fae27}{airspaceAltitudeLimit}}\ WRITE\ \mbox{\hyperlink{classGlobalSettings_a93201fb8bf38a73b61a8be74d7cc963f}{setAirspaceAltitudeLimit}}\ NOTIFY\ \mbox{\hyperlink{classGlobalSettings_a5886c77ccf08b262da019e1eb2f95856}{airspaceAltitudeLimitChanged}})}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00104}00104\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00109}\mbox{\hyperlink{classGlobalSettings_aea5b403bbc14d416f136eb17f05398a7}{00109}}\ \ \ \ \ Q\_PROPERTY(\mbox{\hyperlink{namespaceUnits}{Units}}::Distance\ \mbox{\hyperlink{classGlobalSettings_aea5b403bbc14d416f136eb17f05398a7}{airspaceAltitudeLimit\_min}}\ MEMBER\ \mbox{\hyperlink{classGlobalSettings_aea5b403bbc14d416f136eb17f05398a7}{airspaceAltitudeLimit\_min}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00110}00110\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00115}\mbox{\hyperlink{classGlobalSettings_a4b4d828621d0984fc774373129efb2fc}{00115}}\ \ \ \ \ Q\_PROPERTY(\mbox{\hyperlink{namespaceUnits}{Units}}::Distance\ \mbox{\hyperlink{classGlobalSettings_a4b4d828621d0984fc774373129efb2fc}{airspaceAltitudeLimit\_max}}\ MEMBER\ \mbox{\hyperlink{classGlobalSettings_a4b4d828621d0984fc774373129efb2fc}{airspaceAltitudeLimit\_max}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00116}00116\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00118}\mbox{\hyperlink{classGlobalSettings_a12bd3e3f477588c0344eaad3a2124559}{00118}}\ \ \ \ \ Q\_PROPERTY(\textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classGlobalSettings_a12bd3e3f477588c0344eaad3a2124559}{expandNotamAbbreviations}}\ READ\ \mbox{\hyperlink{classGlobalSettings_a12bd3e3f477588c0344eaad3a2124559}{expandNotamAbbreviations}}\ WRITE\ \mbox{\hyperlink{classGlobalSettings_a7e76b8c10e7cc0703d4d251b859bbbdc}{setExpandNotamAbbreviations}}\ NOTIFY\ \mbox{\hyperlink{classGlobalSettings_ab132168fc2fa75f3365236fe70050c68}{expandNotamAbbreviationsChanged}})}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00119}00119\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00124}\mbox{\hyperlink{classGlobalSettings_ac664808ad43e087a2f193a1f22b78a73}{00124}}\ \ \ \ \ Q\_PROPERTY(\textcolor{keywordtype}{int}\ \mbox{\hyperlink{classGlobalSettings_ac664808ad43e087a2f193a1f22b78a73}{fontSize}}\ READ\ \mbox{\hyperlink{classGlobalSettings_ac664808ad43e087a2f193a1f22b78a73}{fontSize}}\ WRITE\ \mbox{\hyperlink{classGlobalSettings_a18e5d39ad72b1db37ca49f0b7fcce463}{setFontSize}}\ NOTIFY\ \mbox{\hyperlink{classGlobalSettings_a5f3c8fec944787ba5256e165b2329126}{fontSizeChanged}})}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00125}00125\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00127}\mbox{\hyperlink{classGlobalSettings_ab0e1b445178d2a213880372c0839cb35}{00127}}\ \ \ \ \ Q\_PROPERTY(\textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classGlobalSettings_ab0e1b445178d2a213880372c0839cb35}{hideGlidingSectors}}\ READ\ \mbox{\hyperlink{classGlobalSettings_ab0e1b445178d2a213880372c0839cb35}{hideGlidingSectors}}\ WRITE\ \mbox{\hyperlink{classGlobalSettings_ac4e472a7538f54a6c1821ff36330d54b}{setHideGlidingSectors}}\ NOTIFY\ \mbox{\hyperlink{classGlobalSettings_acdefaf0a2c4d6b38e28e8f8871b5d4c8}{hideGlidingSectorsChanged}})}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00128}00128\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00130}\mbox{\hyperlink{classGlobalSettings_a1cda39cb96ab095158b40ed356afb1ed}{00130}}\ \ \ \ \ Q\_PROPERTY(\textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classGlobalSettings_a1cda39cb96ab095158b40ed356afb1ed}{ignoreSSLProblems}}\ READ\ \mbox{\hyperlink{classGlobalSettings_a1cda39cb96ab095158b40ed356afb1ed}{ignoreSSLProblems}}\ WRITE\ \mbox{\hyperlink{classGlobalSettings_abfc3bc1d877d806c8bb370ce96a9f4b6}{setIgnoreSSLProblems}}\ NOTIFY\ \mbox{\hyperlink{classGlobalSettings_a7bbdcb21da38a56b767d14791db168c4}{ignoreSSLProblemsChanged}})}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00131}00131\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00133}\mbox{\hyperlink{classGlobalSettings_af66a1204b502f3f92eb2178b0d016bdd}{00133}}\ \ \ \ \ Q\_PROPERTY(\mbox{\hyperlink{namespaceUnits}{Units}}::Distance\ \mbox{\hyperlink{classGlobalSettings_af66a1204b502f3f92eb2178b0d016bdd}{lastValidAirspaceAltitudeLimit}}\ READ\ \mbox{\hyperlink{classGlobalSettings_af66a1204b502f3f92eb2178b0d016bdd}{lastValidAirspaceAltitudeLimit}}\ NOTIFY\ \mbox{\hyperlink{classGlobalSettings_af0361167e4cb28efc0f0c56b5c4eb669}{lastValidAirspaceAltitudeLimitChanged}})}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00134}00134\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00140}\mbox{\hyperlink{classGlobalSettings_a4e3a9171b2a1d4607448927a3a1caf52}{00140}}\ \ \ \ \ Q\_PROPERTY(\mbox{\hyperlink{namespaceUnits}{Units}}::ByteSize\ \mbox{\hyperlink{classGlobalSettings_a4e3a9171b2a1d4607448927a3a1caf52}{lastWhatsNewHash}}\ READ\ \mbox{\hyperlink{classGlobalSettings_a4e3a9171b2a1d4607448927a3a1caf52}{lastWhatsNewHash}}\ WRITE\ \mbox{\hyperlink{classGlobalSettings_a12bb03eef45eb428a13aa59e4c2978df}{setLastWhatsNewHash}}\ NOTIFY\ \mbox{\hyperlink{classGlobalSettings_a8174a8745ad813e6be972aaaf20df419}{lastWhatsNewHashChanged}})}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00141}00141\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00147}\mbox{\hyperlink{classGlobalSettings_ae9a2830356c66442bb5d778ab078b0ff}{00147}}\ \ \ \ \ Q\_PROPERTY(\mbox{\hyperlink{namespaceUnits}{Units}}::ByteSize\ \mbox{\hyperlink{classGlobalSettings_ae9a2830356c66442bb5d778ab078b0ff}{lastWhatsNewInMapsHash}}\ READ\ \mbox{\hyperlink{classGlobalSettings_ae9a2830356c66442bb5d778ab078b0ff}{lastWhatsNewInMapsHash}}\ WRITE\ \mbox{\hyperlink{classGlobalSettings_a74ec9b4994af9578c0f09b8d6a1b6b76}{setLastWhatsNewInMapsHash}}\ NOTIFY\ \mbox{\hyperlink{classGlobalSettings_a0aab6cb2bac9b7052c79b1060cde8f31}{lastWhatsNewInMapsHashChanged}})}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00148}00148\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00150}\mbox{\hyperlink{classGlobalSettings_a5ddbf1a1c2349b9698f334ff328061d4}{00150}}\ \ \ \ \ Q\_PROPERTY(\mbox{\hyperlink{classGlobalSettings_aaaed393c9035889a9cac125cf37e23d1}{MapBearingPolicy}}\ \mbox{\hyperlink{classGlobalSettings_a5ddbf1a1c2349b9698f334ff328061d4}{mapBearingPolicy}}\ READ\ \mbox{\hyperlink{classGlobalSettings_a5ddbf1a1c2349b9698f334ff328061d4}{mapBearingPolicy}}\ WRITE\ \mbox{\hyperlink{classGlobalSettings_ad70d5e6abc9476383333366cc2f5bf63}{setMapBearingPolicy}}\ NOTIFY\ \mbox{\hyperlink{classGlobalSettings_a90cf3d822d2e7d292d791e977075bc0d}{mapBearingPolicyChanged}})}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00151}00151\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00153}\mbox{\hyperlink{classGlobalSettings_a2543839bc9eb4fedb1ac6d2b210c6a3e}{00153}}\ \ \ \ \ Q\_PROPERTY(\textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classGlobalSettings_a2543839bc9eb4fedb1ac6d2b210c6a3e}{nightMode}}\ READ\ \mbox{\hyperlink{classGlobalSettings_a2543839bc9eb4fedb1ac6d2b210c6a3e}{nightMode}}\ WRITE\ \mbox{\hyperlink{classGlobalSettings_a6b7dd86382b442ea6188f58ddd93e9a2}{setNightMode}}\ NOTIFY\ \mbox{\hyperlink{classGlobalSettings_adee559f9cc4d03e3756f62ac33149344}{nightModeChanged}})}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00154}00154\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00160}\mbox{\hyperlink{classGlobalSettings_a8149d665d89e28f426a2188f3a322e9a}{00160}}\ \ \ \ \ Q\_PROPERTY(\mbox{\hyperlink{namespaceUnits}{Units}}::ByteSize\ \mbox{\hyperlink{classGlobalSettings_a8149d665d89e28f426a2188f3a322e9a}{privacyHash}}\ READ\ \mbox{\hyperlink{classGlobalSettings_a8149d665d89e28f426a2188f3a322e9a}{privacyHash}}\ WRITE\ \mbox{\hyperlink{classGlobalSettings_aa557d428a80c371ebead6417bdfffdd1}{setPrivacyHash}}\ NOTIFY\ \mbox{\hyperlink{classGlobalSettings_a5d5821813aa414c62b0fa9b90b12bf44}{privacyHashChanged}})}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00161}00161\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00163}\mbox{\hyperlink{classGlobalSettings_aecf1e6c2f2172d583d1a3e718d684b99}{00163}}\ \ \ \ \ Q\_PROPERTY(\textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classGlobalSettings_aecf1e6c2f2172d583d1a3e718d684b99}{showAltitudeAGL}}\ READ\ \mbox{\hyperlink{classGlobalSettings_aecf1e6c2f2172d583d1a3e718d684b99}{showAltitudeAGL}}\ WRITE\ \mbox{\hyperlink{classGlobalSettings_a03697ca1f0be6436b2b5e601391df585}{setShowAltitudeAGL}}\ NOTIFY\ \mbox{\hyperlink{classGlobalSettings_a6c6f980111af524bb3c9c9997615a4b9}{showAltitudeAGLChanged}})}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00164}00164\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00166}\mbox{\hyperlink{classGlobalSettings_a293c71160da7fd051840a467c1f91b31}{00166}}\ \ \ \ \ Q\_PROPERTY(\textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classGlobalSettings_a293c71160da7fd051840a467c1f91b31}{positioningByTrafficDataReceiver}}\ READ\ \mbox{\hyperlink{classGlobalSettings_a293c71160da7fd051840a467c1f91b31}{positioningByTrafficDataReceiver}}\ WRITE\ \mbox{\hyperlink{classGlobalSettings_a5355d890eb03e9e8bc60ff0c6795a5ee}{setPositioningByTrafficDataReceiver}}\ NOTIFY\ \mbox{\hyperlink{classGlobalSettings_ab40c1f2f57ff49e253eeeeaf39a89bf4}{positioningByTrafficDataReceiverChanged}})}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00167}00167\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00173}\mbox{\hyperlink{classGlobalSettings_a1aec30579e8b90cc5abb4130da23e213}{00173}}\ \ \ \ \ Q\_PROPERTY(uint\ \mbox{\hyperlink{classGlobalSettings_a1aec30579e8b90cc5abb4130da23e213}{voiceNotifications}}\ READ\ \mbox{\hyperlink{classGlobalSettings_a1aec30579e8b90cc5abb4130da23e213}{voiceNotifications}}\ WRITE\ \mbox{\hyperlink{classGlobalSettings_a92b1afdc1cdfc5a84b8ba7c1349ea966}{setVoiceNotifications}}\ NOTIFY\ \mbox{\hyperlink{classGlobalSettings_aa0229b0d5f0fa3c6bb66225d4382ca5a}{voiceNotificationsChanged}})}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00174}00174\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00175}00175\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00176}00176\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00177}00177\ \ \ \ \ \textcolor{comment}{//\ Getter\ Methods}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00178}00178\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00179}00179\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00184}\mbox{\hyperlink{classGlobalSettings_a0dd243b47d251311d53af2c0be04eda8}{00184}}\ \ \ \ \ [[nodiscard]]\ auto\ \mbox{\hyperlink{classGlobalSettings_ae23a599964215140c627ebfec52b90d9}{acceptedTerms}}()\ const\ -\/>\ \textcolor{keywordtype}{int}\ \{\ \textcolor{keywordflow}{return}\ settings.value(QStringLiteral(\textcolor{stringliteral}{"{}acceptedTerms"{}}),\ 0).toInt();\ \}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00185}00185\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00190}\mbox{\hyperlink{classGlobalSettings_a8ee99a1a518c5fbf2a43a23cdbed2a1c}{00190}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classGlobalSettings_a8ee99a1a518c5fbf2a43a23cdbed2a1c}{alwaysOpenExternalWebsites}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ settings.value(QStringLiteral(\textcolor{stringliteral}{"{}alwaysOpenExternalWebsites"{}}),\ \textcolor{keyword}{false}).toBool();\ \}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00191}00191\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00196}\mbox{\hyperlink{classGlobalSettings_a675cbc1424d2835af7bbbb3268a03881}{00196}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classGlobalSettings_a675cbc1424d2835af7bbbb3268a03881}{airspaceAltitudeLimit}}()\ const\ -\/>\ \mbox{\hyperlink{namespaceUnits}{Units}}::Distance;}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00197}00197\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00202}\mbox{\hyperlink{classGlobalSettings_a78d7be43767af6417ffe94ea3902650e}{00202}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classGlobalSettings_a12bd3e3f477588c0344eaad3a2124559}{expandNotamAbbreviations}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ settings.value(QStringLiteral(\textcolor{stringliteral}{"{}expandNotamAbbreviations"{}}),\ \textcolor{keyword}{false}).toBool();\ \}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00203}00203\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00208}\mbox{\hyperlink{classGlobalSettings_afb27699f04d78d6b1087f7b2825b7f65}{00208}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classGlobalSettings_afb27699f04d78d6b1087f7b2825b7f65}{fontSize}}()\ const\ -\/>\ \textcolor{keywordtype}{int};}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00209}00209\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00214}\mbox{\hyperlink{classGlobalSettings_abf679edcd637b06273e79040695534ec}{00214}}\ \ \ \ \ [[nodiscard]]\ auto\ \mbox{\hyperlink{classGlobalSettings_ab0e1b445178d2a213880372c0839cb35}{hideGlidingSectors}}()\ const\ -\/>\ \textcolor{keywordtype}{bool}\ \{\ \textcolor{keywordflow}{return}\ settings.value(QStringLiteral(\textcolor{stringliteral}{"{}Map/hideGlidingSectors"{}}),\ \textcolor{keyword}{true}).toBool();\ \}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00215}00215\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00220}\mbox{\hyperlink{classGlobalSettings_adbc49cef07f1dd224a6e5d1cdfad9c26}{00220}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classGlobalSettings_adbc49cef07f1dd224a6e5d1cdfad9c26}{ignoreSSLProblems}}()\ const\ -\/>\ \textcolor{keywordtype}{bool}\ \{\ \textcolor{keywordflow}{return}\ settings.value(QStringLiteral(\textcolor{stringliteral}{"{}ignoreSSLProblems"{}}),\ \textcolor{keyword}{false}).toBool();\ \}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00221}00221\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00226}\mbox{\hyperlink{classGlobalSettings_a8cfbefb69f0521f8cf4a735407a7e7cb}{00226}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classGlobalSettings_a8cfbefb69f0521f8cf4a735407a7e7cb}{lastValidAirspaceAltitudeLimit}}()\ const\ -\/>\ \mbox{\hyperlink{namespaceUnits}{Units}}::Distance;}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00227}00227\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00232}\mbox{\hyperlink{classGlobalSettings_a4ade9c55701fa16ded3798d0766ce901}{00232}}\ \ \ \ \ [[nodiscard]]\ auto\ \mbox{\hyperlink{classGlobalSettings_a4e3a9171b2a1d4607448927a3a1caf52}{lastWhatsNewHash}}()\ const\ -\/>\ \mbox{\hyperlink{namespaceUnits}{Units}}::ByteSize}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00233}00233\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00234}00234\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ settings.value(QStringLiteral(\textcolor{stringliteral}{"{}lastWhatsNewHash"{}}),\ 0).value<\textcolor{keywordtype}{size\_t}>();}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00235}00235\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00236}00236\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00241}\mbox{\hyperlink{classGlobalSettings_a6811aaddcfac4092cbe2e67ae6b4c37a}{00241}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classGlobalSettings_a6811aaddcfac4092cbe2e67ae6b4c37a}{lastWhatsNewInMapsHash}}()\ const\ -\/>\ \mbox{\hyperlink{namespaceUnits}{Units}}::ByteSize}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00242}00242\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00243}00243\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ settings.value(QStringLiteral(\textcolor{stringliteral}{"{}lastWhatsNewInMapsHash"{}}),\ 0).value<\textcolor{keywordtype}{size\_t}>();}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00244}00244\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00245}00245\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00250}\mbox{\hyperlink{classGlobalSettings_a761518dc9bc6c93df9ef7bad0db8f606}{00250}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classGlobalSettings_a761518dc9bc6c93df9ef7bad0db8f606}{mapBearingPolicy}}()\ const\ -\/>\ \mbox{\hyperlink{classGlobalSettings_aaaed393c9035889a9cac125cf37e23d1}{MapBearingPolicy}};}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00251}00251\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00256}\mbox{\hyperlink{classGlobalSettings_ab10a41b5ad196dd3b6cf488f3cf8d798}{00256}}\ \ \ \ \ [[nodiscard]]\ auto\ \mbox{\hyperlink{classGlobalSettings_a2543839bc9eb4fedb1ac6d2b210c6a3e}{nightMode}}()\ const\ -\/>\ \textcolor{keywordtype}{bool}\ \{\ \textcolor{keywordflow}{return}\ settings.value(QStringLiteral(\textcolor{stringliteral}{"{}Map/nightMode"{}}),\ \textcolor{keyword}{false}).toBool();\ \}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00257}00257\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00262}\mbox{\hyperlink{classGlobalSettings_ab04f316ce49a140cc409d59e75165539}{00262}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classGlobalSettings_ab04f316ce49a140cc409d59e75165539}{positioningByTrafficDataReceiver}}()\ const\ -\/>\ \textcolor{keywordtype}{bool}\ \{\ \textcolor{keywordflow}{return}\ settings.value(QStringLiteral(\textcolor{stringliteral}{"{}positioningByTrafficDataReceiver"{}}),\ \textcolor{keyword}{false}).toBool();\ \}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00263}00263\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00268}\mbox{\hyperlink{classGlobalSettings_a8bed66d87a6b5c4067e90c71ec2dcee3}{00268}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classGlobalSettings_a8bed66d87a6b5c4067e90c71ec2dcee3}{privacyHash}}()\ const\ -\/>\ \mbox{\hyperlink{namespaceUnits}{Units}}::ByteSize\ \ \{\ \textcolor{keywordflow}{return}\ settings.value(QStringLiteral(\textcolor{stringliteral}{"{}privacyHash"{}}),\ 0).value<\textcolor{keywordtype}{size\_t}>();\ \}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00269}00269\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00274}\mbox{\hyperlink{classGlobalSettings_ad822f63998d9b3bfb12d0d1462a71972}{00274}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classGlobalSettings_ad822f63998d9b3bfb12d0d1462a71972}{showAltitudeAGL}}()\ const\ -\/>\ \textcolor{keywordtype}{bool}\ \{\ \textcolor{keywordflow}{return}\ settings.value(QStringLiteral(\textcolor{stringliteral}{"{}showAltitudeAGL"{}}),\ \textcolor{keyword}{false}).toBool();\ \}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00275}00275\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00280}\mbox{\hyperlink{classGlobalSettings_a571745ea52013349d3245d07cd757d1a}{00280}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classGlobalSettings_a571745ea52013349d3245d07cd757d1a}{voiceNotifications}}()\ const\ -\/>\ uint}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00281}00281\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00282}00282\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ settings.value(QStringLiteral(\textcolor{stringliteral}{"{}voiceNotifications"{}}),}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00283}00283\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classNotifications_1_1Notification_a2280308b403e6773a6a02cdaff4d8b8aa1ef5c61adac56ac97370bb09a3eb4a4f}{Notifications::Notification::Info\_Navigation}}\ |}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00284}00284\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classNotifications_1_1Notification_a2280308b403e6773a6a02cdaff4d8b8aaaa8b056c943f5c4cb155d0e8e9b13977}{Notifications::Notification::Warning}}\ |}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00285}00285\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classNotifications_1_1Notification_a2280308b403e6773a6a02cdaff4d8b8aa115d79a056f5d7269d7d39e37cd764bf}{Notifications::Notification::Warning\_Navigation}}\ |}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00286}00286\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classNotifications_1_1Notification_a2280308b403e6773a6a02cdaff4d8b8aa222835b82f842b7f5f97daa9a10bb31b}{Notifications::Notification::Alert}}).toUInt();}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00287}00287\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00288}00288\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00289}00289\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00290}00290\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00291}00291\ \ \ \ \ \textcolor{comment}{//\ Setter\ Methods}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00292}00292\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00293}00293\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00298}\mbox{\hyperlink{classGlobalSettings_ad3ede4004dbb9a054f28600645e3cde7}{00298}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGlobalSettings_ad3ede4004dbb9a054f28600645e3cde7}{setAcceptedTerms}}(\textcolor{keywordtype}{int}\ terms);}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00299}00299\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00304}\mbox{\hyperlink{classGlobalSettings_ad7e6efe1300bf879147997d0e5590f7f}{00304}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGlobalSettings_ad7e6efe1300bf879147997d0e5590f7f}{setAlwaysOpenExternalWebsites}}(\textcolor{keywordtype}{bool}\ alwaysOpen);}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00305}00305\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00314}\mbox{\hyperlink{classGlobalSettings_a93201fb8bf38a73b61a8be74d7cc963f}{00314}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGlobalSettings_a93201fb8bf38a73b61a8be74d7cc963f}{setAirspaceAltitudeLimit}}(\mbox{\hyperlink{classUnits_1_1Distance}{Units::Distance}}\ newAirspaceAltitudeLimit);}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00315}00315\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00320}\mbox{\hyperlink{classGlobalSettings_a7e76b8c10e7cc0703d4d251b859bbbdc}{00320}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGlobalSettings_a7e76b8c10e7cc0703d4d251b859bbbdc}{setExpandNotamAbbreviations}}(\textcolor{keywordtype}{bool}\ newExpandNotamAbbreviations);}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00321}00321\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00326}\mbox{\hyperlink{classGlobalSettings_ac4e472a7538f54a6c1821ff36330d54b}{00326}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGlobalSettings_ac4e472a7538f54a6c1821ff36330d54b}{setHideGlidingSectors}}(\textcolor{keywordtype}{bool}\ hide);}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00327}00327\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00332}\mbox{\hyperlink{classGlobalSettings_a18e5d39ad72b1db37ca49f0b7fcce463}{00332}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGlobalSettings_a18e5d39ad72b1db37ca49f0b7fcce463}{setFontSize}}(\textcolor{keywordtype}{int}\ newFontSize);}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00333}00333\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00338}\mbox{\hyperlink{classGlobalSettings_abfc3bc1d877d806c8bb370ce96a9f4b6}{00338}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGlobalSettings_abfc3bc1d877d806c8bb370ce96a9f4b6}{setIgnoreSSLProblems}}(\textcolor{keywordtype}{bool}\ ignore);}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00339}00339\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00344}\mbox{\hyperlink{classGlobalSettings_a3759e78c1603e816a25e7e2cfb684714}{00344}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGlobalSettings_a3759e78c1603e816a25e7e2cfb684714}{setLargeFonts}}(\textcolor{keywordtype}{bool}\ newLargeFonts);}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00345}00345\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00350}\mbox{\hyperlink{classGlobalSettings_a12bb03eef45eb428a13aa59e4c2978df}{00350}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGlobalSettings_a12bb03eef45eb428a13aa59e4c2978df}{setLastWhatsNewHash}}(\mbox{\hyperlink{classUnits_1_1ByteSize}{Units::ByteSize}}\ lwnh);}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00351}00351\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00356}\mbox{\hyperlink{classGlobalSettings_a74ec9b4994af9578c0f09b8d6a1b6b76}{00356}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGlobalSettings_a74ec9b4994af9578c0f09b8d6a1b6b76}{setLastWhatsNewInMapsHash}}(\mbox{\hyperlink{classUnits_1_1ByteSize}{Units::ByteSize}}\ lwnh);}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00357}00357\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00362}\mbox{\hyperlink{classGlobalSettings_ad70d5e6abc9476383333366cc2f5bf63}{00362}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGlobalSettings_ad70d5e6abc9476383333366cc2f5bf63}{setMapBearingPolicy}}(\mbox{\hyperlink{classGlobalSettings_aaaed393c9035889a9cac125cf37e23d1}{MapBearingPolicy}}\ policy);}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00363}00363\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00368}\mbox{\hyperlink{classGlobalSettings_a6b7dd86382b442ea6188f58ddd93e9a2}{00368}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGlobalSettings_a6b7dd86382b442ea6188f58ddd93e9a2}{setNightMode}}(\textcolor{keywordtype}{bool}\ newNightMode);}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00369}00369\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00374}\mbox{\hyperlink{classGlobalSettings_a5355d890eb03e9e8bc60ff0c6795a5ee}{00374}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGlobalSettings_a5355d890eb03e9e8bc60ff0c6795a5ee}{setPositioningByTrafficDataReceiver}}(\textcolor{keywordtype}{bool}\ newPositioningByTrafficDataReceiver);}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00375}00375\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00380}\mbox{\hyperlink{classGlobalSettings_aa557d428a80c371ebead6417bdfffdd1}{00380}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGlobalSettings_aa557d428a80c371ebead6417bdfffdd1}{setPrivacyHash}}(\mbox{\hyperlink{classUnits_1_1ByteSize}{Units::ByteSize}}\ newHash);}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00381}00381\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00386}\mbox{\hyperlink{classGlobalSettings_a03697ca1f0be6436b2b5e601391df585}{00386}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGlobalSettings_a03697ca1f0be6436b2b5e601391df585}{setShowAltitudeAGL}}(\textcolor{keywordtype}{bool}\ newShowAltitudeAGL);}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00387}00387\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00392}\mbox{\hyperlink{classGlobalSettings_a92b1afdc1cdfc5a84b8ba7c1349ea966}{00392}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGlobalSettings_a92b1afdc1cdfc5a84b8ba7c1349ea966}{setVoiceNotifications}}(uint\ newVoiceNotifications);}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00393}00393\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00394}00394\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00395}00395\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00396}00396\ \ \ \ \ \textcolor{comment}{//\ Constants}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00397}00397\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00398}00398\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00399}00399\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{classUnits_1_1Distance}{Units::Distance}}\ \mbox{\hyperlink{classGlobalSettings_aea5b403bbc14d416f136eb17f05398a7}{airspaceAltitudeLimit\_min}}\ =\ \mbox{\hyperlink{classUnits_1_1Distance_a12822f6b7676d3de7ef089bdd606794b}{Units::Distance::fromFT}}(3000);}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00400}00400\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{classUnits_1_1Distance}{Units::Distance}}\ \mbox{\hyperlink{classGlobalSettings_a4b4d828621d0984fc774373129efb2fc}{airspaceAltitudeLimit\_max}}\ =\ \mbox{\hyperlink{classUnits_1_1Distance_a12822f6b7676d3de7ef089bdd606794b}{Units::Distance::fromFT}}(15000);}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00401}00401\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00402}00402\ signals:}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00404}\mbox{\hyperlink{classGlobalSettings_ac3c07e7748331ad2db7237d4fe6d3a96}{00404}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGlobalSettings_ac3c07e7748331ad2db7237d4fe6d3a96}{acceptedTermsChanged}}();}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00405}00405\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00407}\mbox{\hyperlink{classGlobalSettings_a69970e9971da12c895dca2dbb54ff13a}{00407}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGlobalSettings_a69970e9971da12c895dca2dbb54ff13a}{alwaysOpenExternalWebsitesChanged}}();}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00408}00408\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00410}\mbox{\hyperlink{classGlobalSettings_a5886c77ccf08b262da019e1eb2f95856}{00410}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGlobalSettings_a5886c77ccf08b262da019e1eb2f95856}{airspaceAltitudeLimitChanged}}();}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00411}00411\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00413}\mbox{\hyperlink{classGlobalSettings_ab132168fc2fa75f3365236fe70050c68}{00413}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGlobalSettings_ab132168fc2fa75f3365236fe70050c68}{expandNotamAbbreviationsChanged}}();}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00414}00414\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00416}\mbox{\hyperlink{classGlobalSettings_a5f3c8fec944787ba5256e165b2329126}{00416}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGlobalSettings_a5f3c8fec944787ba5256e165b2329126}{fontSizeChanged}}();}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00417}00417\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00419}\mbox{\hyperlink{classGlobalSettings_acdefaf0a2c4d6b38e28e8f8871b5d4c8}{00419}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGlobalSettings_acdefaf0a2c4d6b38e28e8f8871b5d4c8}{hideGlidingSectorsChanged}}();}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00420}00420\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00422}\mbox{\hyperlink{classGlobalSettings_a7bbdcb21da38a56b767d14791db168c4}{00422}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGlobalSettings_a7bbdcb21da38a56b767d14791db168c4}{ignoreSSLProblemsChanged}}();}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00423}00423\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00425}\mbox{\hyperlink{classGlobalSettings_af0361167e4cb28efc0f0c56b5c4eb669}{00425}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGlobalSettings_af0361167e4cb28efc0f0c56b5c4eb669}{lastValidAirspaceAltitudeLimitChanged}}();}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00426}00426\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00428}\mbox{\hyperlink{classGlobalSettings_a8174a8745ad813e6be972aaaf20df419}{00428}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGlobalSettings_a8174a8745ad813e6be972aaaf20df419}{lastWhatsNewHashChanged}}();}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00429}00429\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00431}\mbox{\hyperlink{classGlobalSettings_a0aab6cb2bac9b7052c79b1060cde8f31}{00431}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGlobalSettings_a0aab6cb2bac9b7052c79b1060cde8f31}{lastWhatsNewInMapsHashChanged}}();}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00432}00432\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00434}\mbox{\hyperlink{classGlobalSettings_a90cf3d822d2e7d292d791e977075bc0d}{00434}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGlobalSettings_a90cf3d822d2e7d292d791e977075bc0d}{mapBearingPolicyChanged}}();}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00435}00435\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00437}\mbox{\hyperlink{classGlobalSettings_adee559f9cc4d03e3756f62ac33149344}{00437}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGlobalSettings_adee559f9cc4d03e3756f62ac33149344}{nightModeChanged}}();}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00438}00438\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00440}\mbox{\hyperlink{classGlobalSettings_ab40c1f2f57ff49e253eeeeaf39a89bf4}{00440}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGlobalSettings_ab40c1f2f57ff49e253eeeeaf39a89bf4}{positioningByTrafficDataReceiverChanged}}();}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00441}00441\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00443}\mbox{\hyperlink{classGlobalSettings_a5d5821813aa414c62b0fa9b90b12bf44}{00443}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGlobalSettings_a5d5821813aa414c62b0fa9b90b12bf44}{privacyHashChanged}}();}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00444}00444\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00446}\mbox{\hyperlink{classGlobalSettings_a6c6f980111af524bb3c9c9997615a4b9}{00446}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGlobalSettings_a6c6f980111af524bb3c9c9997615a4b9}{showAltitudeAGLChanged}}();}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00447}00447\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00449}\mbox{\hyperlink{classGlobalSettings_aa0229b0d5f0fa3c6bb66225d4382ca5a}{00449}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGlobalSettings_aa0229b0d5f0fa3c6bb66225d4382ca5a}{voiceNotificationsChanged}}();}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00450}00450\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00451}00451\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00452}00452\ \ \ \ \ Q\_DISABLE\_COPY\_MOVE(\mbox{\hyperlink{classGlobalSettings}{GlobalSettings}})}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00453}00453\ }
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00454}00454\ \ \ \ \ QSettings\ settings;}
+\DoxyCodeLine{\Hypertarget{GlobalSettings_8h_source_l00455}00455\ \};}
+
+\end{DoxyCode}

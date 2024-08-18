@@ -1,0 +1,70 @@
+\doxysection{Density.\+h}
+\hypertarget{Density_8h_source}{}\label{Density_8h_source}\index{/home/runner/work/enroute/enroute/src/units/Density.h@{/home/runner/work/enroute/enroute/src/units/Density.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00001}00001\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00002}00002\ \textcolor{comment}{\ *\ \ \ Copyright\ (C)\ 2023\ by\ Stefan\ Kebekus\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00003}00003\ \textcolor{comment}{\ *\ \ \ stefan.kebekus@gmail.com\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00004}00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ free\ software;\ you\ can\ redistribute\ it\ and/or\ modify\ \ *}}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00006}00006\ \textcolor{comment}{\ *\ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by\ \ *}}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00007}00007\ \textcolor{comment}{\ *\ \ \ the\ Free\ Software\ Foundation;\ either\ version\ 3\ of\ the\ License,\ or\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00008}00008\ \textcolor{comment}{\ *\ \ \ (at\ your\ option)\ any\ later\ version.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00009}00009\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00010}00010\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,\ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00011}00011\ \textcolor{comment}{\ *\ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of\ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00012}00012\ \textcolor{comment}{\ *\ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00013}00013\ \textcolor{comment}{\ *\ \ \ GNU\ General\ Public\ License\ for\ more\ details.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00014}00014\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00015}00015\ \textcolor{comment}{\ *\ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00016}00016\ \textcolor{comment}{\ *\ \ \ along\ with\ this\ program;\ if\ not,\ write\ to\ the\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00017}00017\ \textcolor{comment}{\ *\ \ \ Free\ Software\ Foundation,\ Inc.,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00018}00018\ \textcolor{comment}{\ *\ \ \ 59\ Temple\ Place\ -\/\ Suite\ 330,\ Boston,\ MA\ \ 02111-\/1307,\ USA.\ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00019}00019\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00021}00021\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ <QObject>}}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00024}00024\ \textcolor{preprocessor}{\#include\ <QQmlEngine>}}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00025}00025\ \textcolor{preprocessor}{\#include\ <QtMath>}}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00027}00027\ }
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00028}00028\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceUnits}{Units}}\ \{}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00029}00029\ }
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00035}\mbox{\hyperlink{classUnits_1_1Density}{00035}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classUnits_1_1Density}{Density}}\ \{}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00036}00036\ \ \ \ \ Q\_GADGET}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00037}00037\ \ \ \ \ QML\_VALUE\_TYPE(density)}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00038}00038\ }
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00039}00039\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00046}\mbox{\hyperlink{classUnits_1_1Density_a213bfae30c57ce209d6aacd0eb16cb84}{00046}}\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classUnits_1_1Density_a213bfae30c57ce209d6aacd0eb16cb84}{fromKgPerCubeMeter}}(\textcolor{keywordtype}{double}\ densityInKgPerCubeMeter)\ -\/>\ \mbox{\hyperlink{classUnits_1_1Density}{Density}}}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00047}00047\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00048}00048\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classUnits_1_1Density}{Density}}\ result;}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00049}00049\ \ \ \ \ \ \ \ \ result.m\_densityInKgPerCubeMeter\ =\ densityInKgPerCubeMeter;}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00050}00050\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00051}00051\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00052}00052\ }
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00053}00053\ }
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00058}\mbox{\hyperlink{classUnits_1_1Density_a8723b9e449c9fd9a717ec7fb791474a0}{00058}}\ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classUnits_1_1Density_a8723b9e449c9fd9a717ec7fb791474a0}{isFinite}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00059}00059\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00060}00060\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::isfinite(m\_densityInKgPerCubeMeter);}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00061}00061\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00062}00062\ }
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00069}\mbox{\hyperlink{classUnits_1_1Density_a06e0662f897e8e504a0c5db67caaebd7}{00069}}\ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ std::partial\_ordering\ \mbox{\hyperlink{classUnits_1_1Density_a06e0662f897e8e504a0c5db67caaebd7}{operator<=>}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classUnits_1_1Density}{Units::Density}}\&\ rhs)\ \textcolor{keyword}{const}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00070}00070\ }
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00075}\mbox{\hyperlink{classUnits_1_1Density_ab95b8439ce7dece761aab70aa95d3f71}{00075}}\ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classUnits_1_1Density_ab95b8439ce7dece761aab70aa95d3f71}{toKgPerCubeMeter}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00076}00076\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00077}00077\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_densityInKgPerCubeMeter;}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00078}00078\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00079}00079\ }
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00080}00080\ }
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00081}00081\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00082}00082\ \ \ \ \ \textcolor{comment}{//\ Density\ in\ kg\ per\ m³}}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00083}00083\ \ \ \ \ \textcolor{keywordtype}{double}\ m\_densityInKgPerCubeMeter\{\ NAN\ \};}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00084}00084\ \};}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00085}00085\ \}\ \textcolor{comment}{//\ namespace\ Units}}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00086}00086\ }
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00087}00087\ }
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00088}00088\ \textcolor{comment}{//\ Declare\ meta\ types}}
+\DoxyCodeLine{\Hypertarget{Density_8h_source_l00089}00089\ Q\_DECLARE\_METATYPE(\mbox{\hyperlink{classUnits_1_1Density}{Units::Density}})}
+
+\end{DoxyCode}

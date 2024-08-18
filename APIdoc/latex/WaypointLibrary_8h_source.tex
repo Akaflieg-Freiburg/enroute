@@ -1,0 +1,123 @@
+\doxysection{Waypoint\+Library.\+h}
+\hypertarget{WaypointLibrary_8h_source}{}\label{WaypointLibrary_8h_source}\index{/home/runner/work/enroute/enroute/src/geomaps/WaypointLibrary.h@{/home/runner/work/enroute/enroute/src/geomaps/WaypointLibrary.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00001}00001\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00002}00002\ \textcolor{comment}{\ *\ \ \ Copyright\ (C)\ 2022-\/2023\ by\ Stefan\ Kebekus\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00003}00003\ \textcolor{comment}{\ *\ \ \ stefan.kebekus@gmail.com\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00004}00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ free\ software;\ you\ can\ redistribute\ it\ and/or\ modify\ \ *}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00006}00006\ \textcolor{comment}{\ *\ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by\ \ *}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00007}00007\ \textcolor{comment}{\ *\ \ \ the\ Free\ Software\ Foundation;\ either\ version\ 3\ of\ the\ License,\ or\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00008}00008\ \textcolor{comment}{\ *\ \ \ (at\ your\ option)\ any\ later\ version.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00009}00009\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00010}00010\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,\ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00011}00011\ \textcolor{comment}{\ *\ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of\ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00012}00012\ \textcolor{comment}{\ *\ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00013}00013\ \textcolor{comment}{\ *\ \ \ GNU\ General\ Public\ License\ for\ more\ details.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00014}00014\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00015}00015\ \textcolor{comment}{\ *\ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00016}00016\ \textcolor{comment}{\ *\ \ \ along\ with\ this\ program;\ if\ not,\ write\ to\ the\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00017}00017\ \textcolor{comment}{\ *\ \ \ Free\ Software\ Foundation,\ Inc.,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00018}00018\ \textcolor{comment}{\ *\ \ \ 59\ Temple\ Place\ -\/\ Suite\ 330,\ Boston,\ MA\ \ 02111-\/1307,\ USA.\ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00019}00019\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00021}00021\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ <QQmlEngine>}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00024}00024\ \textcolor{preprocessor}{\#include\ <QStandardPaths>}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00026}00026\ \textcolor{preprocessor}{\#include\ "{}GlobalObject.h"{}}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00027}00027\ \textcolor{preprocessor}{\#include\ "{}geomaps/Waypoint.h"{}}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00028}00028\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00029}00029\ \textcolor{keyword}{namespace\ }GeoMaps}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00030}00030\ \{}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00031}00031\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00039}\mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary}{00039}}\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary}{WaypointLibrary}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classGlobalObject}{GlobalObject}}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00040}00040\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00041}00041\ \ \ \ \ \ \ \ \ Q\_OBJECT}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00042}00042\ \ \ \ \ \ \ \ \ QML\_ELEMENT}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00043}00043\ \ \ \ \ \ \ \ \ QML\_SINGLETON}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00044}00044\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00045}00045\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00054}\mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_a260cef19f2cb41e1a82759eb54073581}{00054}}\ \ \ \ \ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_a260cef19f2cb41e1a82759eb54073581}{WaypointLibrary}}(QObject\ *parent\ =\ \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00055}00055\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00056}00056\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ No\ default\ constructor,\ important\ for\ QML\ singleton}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00057}00057\ \ \ \ \ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary}{WaypointLibrary}}()\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00058}00058\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00059}00059\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ factory\ function\ for\ QML\ singleton}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00060}00060\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary}{GeoMaps::WaypointLibrary}}*\ create(QQmlEngine*\ \textcolor{comment}{/*unused*/},\ QJSEngine*\ \textcolor{comment}{/*unused*/})}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00061}00061\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00062}00062\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classGlobalObject_a0fe5454852ab2b913efe469bfd2630b4}{GlobalObject::waypointLibrary}}();}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00063}00063\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00064}00064\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00065}00065\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary}{\string~WaypointLibrary}}()\ \textcolor{keyword}{override}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00066}00066\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00067}00067\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00068}00068\ \ \ \ \ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00069}00069\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Properties}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00070}00070\ \ \ \ \ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00071}00071\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00076}\mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_a9986d8dcae3b5e14cc7c513a9f4a02d8}{00076}}\ \ \ \ \ \ \ \ \ Q\_PROPERTY(QList<GeoMaps::Waypoint>\ \mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_a9986d8dcae3b5e14cc7c513a9f4a02d8}{waypoints}}\ READ\ \mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_a9986d8dcae3b5e14cc7c513a9f4a02d8}{waypoints}}\ NOTIFY\ \mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_a3aee65bd57d8b123b6944effb2c1819a}{waypointsChanged}})}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00077}00077\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00078}00078\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00082}\mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_a0a10af13405ca71c7ee0b0fcf8e57007}{00082}}\ \ \ \ \ \ \ \ \ Q\_PROPERTY(QByteArray\ \mbox{\hyperlink{classGeoMaps_1_1GeoJSON}{GeoJSON}}\ READ\ \mbox{\hyperlink{classGeoMaps_1_1GeoJSON}{GeoJSON}}\ NOTIFY\ \mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_a3aee65bd57d8b123b6944effb2c1819a}{waypointsChanged}})}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00083}00083\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00084}00084\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00085}00085\ \ \ \ \ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00086}00086\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Getter\ Methods}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00087}00087\ \ \ \ \ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00088}00088\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00093}\mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_ae91e470e3b3681734781cb261d979a96}{00093}}\ \ \ \ \ \ \ \ \ [[nodiscard]]\ QList<GeoMaps::\mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Waypoint}}>\ \mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_a9986d8dcae3b5e14cc7c513a9f4a02d8}{waypoints}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00094}00094\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00095}00095\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_waypoints;}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00096}00096\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00097}00097\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00102}\mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_af19e0b19db5cbc51272fca344c4f8b3d}{00102}}\ \ \ \ \ \ \ \ \ [[nodiscard]]\ QByteArray\ \mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_af19e0b19db5cbc51272fca344c4f8b3d}{GeoJSON}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00103}00103\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00104}00104\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00105}00105\ \ \ \ \ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00106}00106\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Methods}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00107}00107\ \ \ \ \ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00108}00108\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00114}\mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_a518937549eb2f288b6268df9d8e04164}{00114}}\ \ \ \ \ \ \ \ \ Q\_INVOKABLE\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_a518937549eb2f288b6268df9d8e04164}{add}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{GeoMaps::Waypoint}}\ \&waypoint);}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00115}00115\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00117}\mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_a2a2675539efa6618d9c74e31585b1e5c}{00117}}\ \ \ \ \ \ \ \ \ Q\_INVOKABLE\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_a2a2675539efa6618d9c74e31585b1e5c}{clear}}();}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00118}00118\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00126}\mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_a054cddbd6494111494fec58285d3ac47}{00126}}\ \ \ \ \ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_a054cddbd6494111494fec58285d3ac47}{contains}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{GeoMaps::Waypoint}}\ \&waypoint)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00127}00127\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00128}00128\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_waypoints.contains(waypoint);}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00129}00129\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00130}00130\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00140}\mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_aeb83487c2433059eb7e8bb387d3dac6b}{00140}}\ \ \ \ \ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ QVector<GeoMaps::Waypoint>\ \mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_aeb83487c2433059eb7e8bb387d3dac6b}{filteredWaypoints}}(\textcolor{keyword}{const}\ QString\ \&filter)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00141}00141\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00150}\mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_a1e2e10b450e6dd1155650e493a9ff86c}{00150}}\ \ \ \ \ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_a1e2e10b450e6dd1155650e493a9ff86c}{hasNearbyEntry}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{GeoMaps::Waypoint}}\&\ waypoint)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00151}00151\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00162}\mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_a964b014cac391400fbc9bc1fd7d35f36}{00162}}\ \ \ \ \ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ QString\ \textcolor{keyword}{import}(\textcolor{keyword}{const}\ QString\&\ fileName,\ \textcolor{keywordtype}{bool}\ skip);}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00163}00163\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00177}\mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_aa078ad99475a11cef48703e67968721a}{00177}}\ \ \ \ \ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ QString\ \mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_aa078ad99475a11cef48703e67968721a}{loadFromGeoJSON}}(QString\ fileName\ =\ \{\});}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00178}00178\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00188}\mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_abc995a9abf9a943d6901c863f459c6d1}{00188}}\ \ \ \ \ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_abc995a9abf9a943d6901c863f459c6d1}{remove}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{GeoMaps::Waypoint}}\ \&waypoint);}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00189}00189\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00203}\mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_aca56b1fd8c8ad3f79096a93f27a3a3c4}{00203}}\ \ \ \ \ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_aca56b1fd8c8ad3f79096a93f27a3a3c4}{replace}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{GeoMaps::Waypoint}}\ \&oldWaypoint,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{GeoMaps::Waypoint}}\ \&newWaypoint);}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00204}00204\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00216}\mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_ad3aa867c447354b223779ca8a0a6ec02}{00216}}\ \ \ \ \ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ QString\ \mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_ad3aa867c447354b223779ca8a0a6ec02}{save}}(QString\ fileName\ =\ \{\})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00217}00217\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00226}\mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_a11c65b802ee48efdb1fc393ba1f16861}{00226}}\ \ \ \ \ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ QByteArray\ \mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_a11c65b802ee48efdb1fc393ba1f16861}{toGpx}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00227}00227\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00228}00228\ \ \ \ \ signals:}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00230}\mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_a3aee65bd57d8b123b6944effb2c1819a}{00230}}\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary_a3aee65bd57d8b123b6944effb2c1819a}{waypointsChanged}}();}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00231}00231\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00232}00232\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00233}00233\ \ \ \ \ \ \ \ \ Q\_DISABLE\_COPY\_MOVE(\mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary}{WaypointLibrary}})}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00234}00234\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00235}00235\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Standard\ file\ name\ for\ save()\ and\ loadFromGeoJGON()\ methods}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00236}00236\ \ \ \ \ \ \ \ \ QString\ stdFileName\{QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)\ +\ \textcolor{stringliteral}{"{}/waypoint\ library.geojson"{}}\};}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00237}00237\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00238}00238\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Acutual\ list\ of\ waypoints.}}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00239}00239\ \ \ \ \ \ \ \ \ QList<GeoMaps::Waypoint>\ m\_waypoints;}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00240}00240\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00241}00241\ }
+\DoxyCodeLine{\Hypertarget{WaypointLibrary_8h_source_l00242}00242\ \}\ \textcolor{comment}{//\ namespace\ GeoMaps}}
+
+\end{DoxyCode}

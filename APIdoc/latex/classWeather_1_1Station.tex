@@ -1,0 +1,405 @@
+\doxysection{Weather\+::Station Class Reference}
+\hypertarget{classWeather_1_1Station}{}\label{classWeather_1_1Station}\index{Weather::Station@{Weather::Station}}
+
+
+This class represents a weather station that issues \doxylink{classWeather_1_1METAR}{METAR} or \doxylink{classWeather_1_1TAF}{TAF} report.  
+
+
+
+
+{\ttfamily \#include $<$Station.\+h$>$}
+
+
+
+Inherits QObject.
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classWeather_1_1Station_a63ccdb9be16c434b7389b3eb105a7f3c}{Station}} (QObject \texorpdfstring{$\ast$}{*}parent=nullptr)
+\begin{DoxyCompactList}\small\item\em Standard constructor. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classWeather_1_1Station_ac525db954177d4e4df3b92cc1ce565f2}{coordinate}} () const -\/$>$ QGeo\+Coordinate
+\begin{DoxyCompactList}\small\item\em Getter function for property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classWeather_1_1Station_a302a8de707123474a4767f6e43dbb018}{extended\+Name}} () const -\/$>$ QString
+\begin{DoxyCompactList}\small\item\em Getter function for property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classWeather_1_1Station_abea781b7520cc4e17e9e1adb87a7c18d}{has\+METAR}} () const -\/$>$ bool
+\begin{DoxyCompactList}\small\item\em Getter function for property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classWeather_1_1Station_a43053c73128fc4fa7899a0b4b309cdf4}{has\+TAF}} () const -\/$>$ bool
+\begin{DoxyCompactList}\small\item\em Getter function for property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classWeather_1_1Station_a2e2f184071e80b88d4b8d3b6971fb192}{ICAOCode}} () const -\/$>$ QString
+\begin{DoxyCompactList}\small\item\em Getter method for property of the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classWeather_1_1Station_af95c9f4a97b64a23dcfe79bd34dab233}{icon}} () const -\/$>$ QString
+\begin{DoxyCompactList}\small\item\em Getter method for property of the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classWeather_1_1Station_a658466a9fda9c9658012439db94aea6b}{is\+Valid}} () const -\/$>$ bool
+\begin{DoxyCompactList}\small\item\em Getter function for property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classWeather_1_1Station_ac4a69ff3eca62e45da5a76a007694d19}{metar}} () const -\/$>$ \mbox{\hyperlink{classWeather_1_1METAR}{Weather\+::\+METAR}} \texorpdfstring{$\ast$}{*}
+\begin{DoxyCompactList}\small\item\em Getter method for property of the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classWeather_1_1Station_aa5bf0deae617b1da218d943dba9d9bef}{two\+Line\+Title}} () const -\/$>$ QString
+\begin{DoxyCompactList}\small\item\em Getter function for property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classWeather_1_1Station_aa842c730bd158357fb357010f8588bf7}{taf}} () const -\/$>$ \mbox{\hyperlink{classWeather_1_1TAF}{Weather\+::\+TAF}} \texorpdfstring{$\ast$}{*}
+\begin{DoxyCompactList}\small\item\em Getter method for property of the same name. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+QGeo\+Coordinate \mbox{\hyperlink{classWeather_1_1Station_ae26bbee44189ebf75c76f9f0b76bd677}{coordinate}}
+\begin{DoxyCompactList}\small\item\em Geographical coordinate of the Weather\+Station reporting this \doxylink{classWeather_1_1METAR}{METAR}. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classWeather_1_1Station_a5eaebdca9c5639b84bcaa8f7011bdf35}{extended\+Name}}
+\begin{DoxyCompactList}\small\item\em Extended name of the waypoint. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classWeather_1_1Station_ac07dbbf24723923c7a66af3a60c2fab5}{has\+METAR}}
+\begin{DoxyCompactList}\small\item\em Check if a \doxylink{classWeather_1_1METAR}{METAR} weather report is known for this weather station. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classWeather_1_1Station_a4d92b6fcefc4ed5cef7bafa125ff16f0}{has\+TAF}}
+\begin{DoxyCompactList}\small\item\em Check if a \doxylink{classWeather_1_1TAF}{TAF} weather forecast is known for this weather station. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classWeather_1_1Station_a392e19cf9968604ae20c4c54c58175cf}{ICAOCode}}
+\begin{DoxyCompactList}\small\item\em ICAO code of the weather station. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classWeather_1_1Station_aef58d2a5822040ac83898150c621bd45}{icon}}
+\begin{DoxyCompactList}\small\item\em Suggested icon for this weather station. \end{DoxyCompactList}\item 
+\Hypertarget{classWeather_1_1Station_ac8c46eaccf99aa3dcfae8d762c3263f6}\label{classWeather_1_1Station_ac8c46eaccf99aa3dcfae8d762c3263f6} 
+bool {\bfseries is\+Valid}
+\begin{DoxyCompactList}\small\item\em Indicates if the Weather\+Station is valid. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classWeather_1_1METAR}{Weather\+::\+METAR}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classWeather_1_1Station_ac999a22760fe31a188e612c73e5bcf5b}{metar}}
+\begin{DoxyCompactList}\small\item\em Last \doxylink{classWeather_1_1METAR}{METAR} provided by this Weather\+Station. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classWeather_1_1Station_aba720eb9ddf734227ee0a1e7704e20d1}{two\+Line\+Title}}
+\begin{DoxyCompactList}\small\item\em Two-\/line description of the waypoint name. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classWeather_1_1TAF}{Weather\+::\+TAF}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classWeather_1_1Station_a4dce131da9b7594122859a99afb14688}{taf}}
+\begin{DoxyCompactList}\small\item\em Last \doxylink{classWeather_1_1TAF}{TAF} provided by this Weather\+Station. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class represents a weather station that issues \doxylink{classWeather_1_1METAR}{METAR} or \doxylink{classWeather_1_1TAF}{TAF} report. 
+
+This is a very simple class that represents a weather station. Weather stations are uniquely identified by their ICAO code. Depending on available data, they hold pointers to the latest \doxylink{classWeather_1_1METAR}{METAR} and \doxylink{classWeather_1_1TAF}{TAF} reports. 
+
+Definition at line \mbox{\hyperlink{Station_8h_source_l00043}{43}} of file \mbox{\hyperlink{Station_8h_source}{Station.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classWeather_1_1Station_a63ccdb9be16c434b7389b3eb105a7f3c}\index{Weather::Station@{Weather::Station}!Station@{Station}}
+\index{Station@{Station}!Weather::Station@{Weather::Station}}
+\doxysubsubsection{\texorpdfstring{Station()}{Station()}}
+{\footnotesize\ttfamily \label{classWeather_1_1Station_a63ccdb9be16c434b7389b3eb105a7f3c} 
+Weather\+::\+Station\+::\+Station (\begin{DoxyParamCaption}\item[{QObject \texorpdfstring{$\ast$}{*}}]{parent}{ = {\ttfamily nullptr}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Standard constructor. 
+
+This standard constructor creates an weather Weather\+Station invalid. Valid weather Weather\+Stations can only be created by instances of the \doxylink{classWeather_1_1WeatherDataProvider}{Weather\+Data\+Provider} class.
+
+
+\begin{DoxyParams}{Parameters}
+{\em parent} & The standard QObject parent pointer \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classWeather_1_1Station_ac525db954177d4e4df3b92cc1ce565f2}\index{Weather::Station@{Weather::Station}!coordinate@{coordinate}}
+\index{coordinate@{coordinate}!Weather::Station@{Weather::Station}}
+\doxysubsubsection{\texorpdfstring{coordinate()}{coordinate()}}
+{\footnotesize\ttfamily \label{classWeather_1_1Station_ac525db954177d4e4df3b92cc1ce565f2} 
+auto Weather\+::\+Station\+::coordinate (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ QGeo\+Coordinate     \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property coordiante 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Station_8h_source_l00074}{74}} of file \mbox{\hyperlink{Station_8h_source}{Station.\+h}}.
+
+\Hypertarget{classWeather_1_1Station_a302a8de707123474a4767f6e43dbb018}\index{Weather::Station@{Weather::Station}!extendedName@{extendedName}}
+\index{extendedName@{extendedName}!Weather::Station@{Weather::Station}}
+\doxysubsubsection{\texorpdfstring{extendedName()}{extendedName()}}
+{\footnotesize\ttfamily \label{classWeather_1_1Station_a302a8de707123474a4767f6e43dbb018} 
+auto Weather\+::\+Station\+::extended\+Name (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ QString     \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property extended\+Name 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Station_8h_source_l00089}{89}} of file \mbox{\hyperlink{Station_8h_source}{Station.\+h}}.
+
+\Hypertarget{classWeather_1_1Station_abea781b7520cc4e17e9e1adb87a7c18d}\index{Weather::Station@{Weather::Station}!hasMETAR@{hasMETAR}}
+\index{hasMETAR@{hasMETAR}!Weather::Station@{Weather::Station}}
+\doxysubsubsection{\texorpdfstring{hasMETAR()}{hasMETAR()}}
+{\footnotesize\ttfamily \label{classWeather_1_1Station_abea781b7520cc4e17e9e1adb87a7c18d} 
+auto Weather\+::\+Station\+::has\+METAR (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ bool     \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property has\+Metar 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Station_8h_source_l00106}{106}} of file \mbox{\hyperlink{Station_8h_source}{Station.\+h}}.
+
+\Hypertarget{classWeather_1_1Station_a43053c73128fc4fa7899a0b4b309cdf4}\index{Weather::Station@{Weather::Station}!hasTAF@{hasTAF}}
+\index{hasTAF@{hasTAF}!Weather::Station@{Weather::Station}}
+\doxysubsubsection{\texorpdfstring{hasTAF()}{hasTAF()}}
+{\footnotesize\ttfamily \label{classWeather_1_1Station_a43053c73128fc4fa7899a0b4b309cdf4} 
+auto Weather\+::\+Station\+::has\+TAF (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ bool     \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property is\+Valid 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Station_8h_source_l00123}{123}} of file \mbox{\hyperlink{Station_8h_source}{Station.\+h}}.
+
+\Hypertarget{classWeather_1_1Station_a2e2f184071e80b88d4b8d3b6971fb192}\index{Weather::Station@{Weather::Station}!ICAOCode@{ICAOCode}}
+\index{ICAOCode@{ICAOCode}!Weather::Station@{Weather::Station}}
+\doxysubsubsection{\texorpdfstring{ICAOCode()}{ICAOCode()}}
+{\footnotesize\ttfamily \label{classWeather_1_1Station_a2e2f184071e80b88d4b8d3b6971fb192} 
+auto Weather\+::\+Station\+::\+ICAOCode (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ QString     \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter method for property of the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property ICAOCode 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Station_8h_source_l00139}{139}} of file \mbox{\hyperlink{Station_8h_source}{Station.\+h}}.
+
+\Hypertarget{classWeather_1_1Station_af95c9f4a97b64a23dcfe79bd34dab233}\index{Weather::Station@{Weather::Station}!icon@{icon}}
+\index{icon@{icon}!Weather::Station@{Weather::Station}}
+\doxysubsubsection{\texorpdfstring{icon()}{icon()}}
+{\footnotesize\ttfamily \label{classWeather_1_1Station_af95c9f4a97b64a23dcfe79bd34dab233} 
+auto Weather\+::\+Station\+::icon (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ QString     \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter method for property of the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property id 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Station_8h_source_l00155}{155}} of file \mbox{\hyperlink{Station_8h_source}{Station.\+h}}.
+
+\Hypertarget{classWeather_1_1Station_a658466a9fda9c9658012439db94aea6b}\index{Weather::Station@{Weather::Station}!isValid@{isValid}}
+\index{isValid@{isValid}!Weather::Station@{Weather::Station}}
+\doxysubsubsection{\texorpdfstring{isValid()}{isValid()}}
+{\footnotesize\ttfamily \label{classWeather_1_1Station_a658466a9fda9c9658012439db94aea6b} 
+auto Weather\+::\+Station\+::is\+Valid (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ bool     \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property is\+Valid 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Station_8h_source_l00167}{167}} of file \mbox{\hyperlink{Station_8h_source}{Station.\+h}}.
+
+\Hypertarget{classWeather_1_1Station_ac4a69ff3eca62e45da5a76a007694d19}\index{Weather::Station@{Weather::Station}!metar@{metar}}
+\index{metar@{metar}!Weather::Station@{Weather::Station}}
+\doxysubsubsection{\texorpdfstring{metar()}{metar()}}
+{\footnotesize\ttfamily \label{classWeather_1_1Station_ac4a69ff3eca62e45da5a76a007694d19} 
+auto Weather\+::\+Station\+::metar (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ \mbox{\hyperlink{classWeather_1_1METAR}{Weather\+::\+METAR}} \texorpdfstring{$\ast$}{*}     \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter method for property of the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property metar 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Station_8h_source_l00185}{185}} of file \mbox{\hyperlink{Station_8h_source}{Station.\+h}}.
+
+\Hypertarget{classWeather_1_1Station_aa842c730bd158357fb357010f8588bf7}\index{Weather::Station@{Weather::Station}!taf@{taf}}
+\index{taf@{taf}!Weather::Station@{Weather::Station}}
+\doxysubsubsection{\texorpdfstring{taf()}{taf()}}
+{\footnotesize\ttfamily \label{classWeather_1_1Station_aa842c730bd158357fb357010f8588bf7} 
+auto Weather\+::\+Station\+::taf (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ \mbox{\hyperlink{classWeather_1_1TAF}{Weather\+::\+TAF}} \texorpdfstring{$\ast$}{*}     \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter method for property of the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property taf 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Station_8h_source_l00223}{223}} of file \mbox{\hyperlink{Station_8h_source}{Station.\+h}}.
+
+\Hypertarget{classWeather_1_1Station_aa5bf0deae617b1da218d943dba9d9bef}\index{Weather::Station@{Weather::Station}!twoLineTitle@{twoLineTitle}}
+\index{twoLineTitle@{twoLineTitle}!Weather::Station@{Weather::Station}}
+\doxysubsubsection{\texorpdfstring{twoLineTitle()}{twoLineTitle()}}
+{\footnotesize\ttfamily \label{classWeather_1_1Station_aa5bf0deae617b1da218d943dba9d9bef} 
+auto Weather\+::\+Station\+::two\+Line\+Title (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ QString     \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property two\+Line\+Title 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Station_8h_source_l00205}{205}} of file \mbox{\hyperlink{Station_8h_source}{Station.\+h}}.
+
+
+
+\doxysubsection{Property Documentation}
+\Hypertarget{classWeather_1_1Station_ae26bbee44189ebf75c76f9f0b76bd677}\index{Weather::Station@{Weather::Station}!coordinate@{coordinate}}
+\index{coordinate@{coordinate}!Weather::Station@{Weather::Station}}
+\doxysubsubsection{\texorpdfstring{coordinate}{coordinate}}
+{\footnotesize\ttfamily \label{classWeather_1_1Station_ae26bbee44189ebf75c76f9f0b76bd677} 
+QGeo\+Coordinate Weather\+::\+Station\+::coordinate\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Geographical coordinate of the Weather\+Station reporting this \doxylink{classWeather_1_1METAR}{METAR}. 
+
+If the Weather\+Station coordinate is unknown, the property contains an invalid coordinate. 
+
+Definition at line \mbox{\hyperlink{Station_8h_source_l00068}{68}} of file \mbox{\hyperlink{Station_8h_source}{Station.\+h}}.
+
+\Hypertarget{classWeather_1_1Station_a5eaebdca9c5639b84bcaa8f7011bdf35}\index{Weather::Station@{Weather::Station}!extendedName@{extendedName}}
+\index{extendedName@{extendedName}!Weather::Station@{Weather::Station}}
+\doxysubsubsection{\texorpdfstring{extendedName}{extendedName}}
+{\footnotesize\ttfamily \label{classWeather_1_1Station_a5eaebdca9c5639b84bcaa8f7011bdf35} 
+QString Weather\+::\+Station\+::extended\+Name\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Extended name of the waypoint. 
+
+This property holds a string of the form "{}\+Karlsruhe (\+DVOR-\/\+DME)"{} 
+
+Definition at line \mbox{\hyperlink{Station_8h_source_l00083}{83}} of file \mbox{\hyperlink{Station_8h_source}{Station.\+h}}.
+
+\Hypertarget{classWeather_1_1Station_ac07dbbf24723923c7a66af3a60c2fab5}\index{Weather::Station@{Weather::Station}!hasMETAR@{hasMETAR}}
+\index{hasMETAR@{hasMETAR}!Weather::Station@{Weather::Station}}
+\doxysubsubsection{\texorpdfstring{hasMETAR}{hasMETAR}}
+{\footnotesize\ttfamily \label{classWeather_1_1Station_ac07dbbf24723923c7a66af3a60c2fab5} 
+bool Weather\+::\+Station\+::has\+METAR\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Check if a \doxylink{classWeather_1_1METAR}{METAR} weather report is known for this weather station. 
+
+This convenience property can be used to check if a \doxylink{classWeather_1_1METAR}{METAR} report is available for the weather station. The actual \doxylink{classWeather_1_1METAR}{METAR} report can be accessed via the property metar. 
+
+Definition at line \mbox{\hyperlink{Station_8h_source_l00100}{100}} of file \mbox{\hyperlink{Station_8h_source}{Station.\+h}}.
+
+\Hypertarget{classWeather_1_1Station_a4d92b6fcefc4ed5cef7bafa125ff16f0}\index{Weather::Station@{Weather::Station}!hasTAF@{hasTAF}}
+\index{hasTAF@{hasTAF}!Weather::Station@{Weather::Station}}
+\doxysubsubsection{\texorpdfstring{hasTAF}{hasTAF}}
+{\footnotesize\ttfamily \label{classWeather_1_1Station_a4d92b6fcefc4ed5cef7bafa125ff16f0} 
+bool Weather\+::\+Station\+::has\+TAF\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Check if a \doxylink{classWeather_1_1TAF}{TAF} weather forecast is known for this weather station. 
+
+This convenience property can be used to check if a \doxylink{classWeather_1_1TAF}{TAF} forecast is available for the weather station. The actual \doxylink{classWeather_1_1TAF}{TAF} can be accessed via the property taf. 
+
+Definition at line \mbox{\hyperlink{Station_8h_source_l00117}{117}} of file \mbox{\hyperlink{Station_8h_source}{Station.\+h}}.
+
+\Hypertarget{classWeather_1_1Station_a392e19cf9968604ae20c4c54c58175cf}\index{Weather::Station@{Weather::Station}!ICAOCode@{ICAOCode}}
+\index{ICAOCode@{ICAOCode}!Weather::Station@{Weather::Station}}
+\doxysubsubsection{\texorpdfstring{ICAOCode}{ICAOCode}}
+{\footnotesize\ttfamily \label{classWeather_1_1Station_a392e19cf9968604ae20c4c54c58175cf} 
+QString Weather\+::\+Station\+::\+ICAOCode\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+ICAO code of the weather station. 
+
+This property holds the ICAO designator of the aerodrome on which the weather station is located. 
+
+Definition at line \mbox{\hyperlink{Station_8h_source_l00133}{133}} of file \mbox{\hyperlink{Station_8h_source}{Station.\+h}}.
+
+\Hypertarget{classWeather_1_1Station_aef58d2a5822040ac83898150c621bd45}\index{Weather::Station@{Weather::Station}!icon@{icon}}
+\index{icon@{icon}!Weather::Station@{Weather::Station}}
+\doxysubsubsection{\texorpdfstring{icon}{icon}}
+{\footnotesize\ttfamily \label{classWeather_1_1Station_aef58d2a5822040ac83898150c621bd45} 
+QString Weather\+::\+Station\+::icon\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Suggested icon for this weather station. 
+
+This property holds the name of an icon file in SVG format that best describes the weather station. 
+
+Definition at line \mbox{\hyperlink{Station_8h_source_l00149}{149}} of file \mbox{\hyperlink{Station_8h_source}{Station.\+h}}.
+
+\Hypertarget{classWeather_1_1Station_ac999a22760fe31a188e612c73e5bcf5b}\index{Weather::Station@{Weather::Station}!metar@{metar}}
+\index{metar@{metar}!Weather::Station@{Weather::Station}}
+\doxysubsubsection{\texorpdfstring{metar}{metar}}
+{\footnotesize\ttfamily \label{classWeather_1_1Station_ac999a22760fe31a188e612c73e5bcf5b} 
+\mbox{\hyperlink{classWeather_1_1METAR}{Weather\+::\+METAR}} \texorpdfstring{$\ast$}{*} Weather\+::\+Station\+::metar\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Last \doxylink{classWeather_1_1METAR}{METAR} provided by this Weather\+Station. 
+
+This property holds a pointer to the last \doxylink{classWeather_1_1METAR}{METAR} provided by this Weather\+Station, which can be a nullptr if no data is available. The \doxylink{classWeather_1_1METAR}{METAR} instance is owned by an instance of \doxylink{classWeather_1_1WeatherDataProvider}{Weather\+Data\+Provider}, and can be deleted or updated by the \doxylink{classWeather_1_1WeatherDataProvider}{Weather\+Data\+Provider} anytime. 
+
+Definition at line \mbox{\hyperlink{Station_8h_source_l00179}{179}} of file \mbox{\hyperlink{Station_8h_source}{Station.\+h}}.
+
+\Hypertarget{classWeather_1_1Station_a4dce131da9b7594122859a99afb14688}\index{Weather::Station@{Weather::Station}!taf@{taf}}
+\index{taf@{taf}!Weather::Station@{Weather::Station}}
+\doxysubsubsection{\texorpdfstring{taf}{taf}}
+{\footnotesize\ttfamily \label{classWeather_1_1Station_a4dce131da9b7594122859a99afb14688} 
+\mbox{\hyperlink{classWeather_1_1TAF}{Weather\+::\+TAF}} \texorpdfstring{$\ast$}{*} Weather\+::\+Station\+::taf\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Last \doxylink{classWeather_1_1TAF}{TAF} provided by this Weather\+Station. 
+
+This property holds a pointer to the last \doxylink{classWeather_1_1TAF}{TAF} provided by this Weather\+Station, which can be a nullptr if no data is available. The \doxylink{classWeather_1_1TAF}{TAF} instance is owned by an instance of \doxylink{classWeather_1_1WeatherDataProvider}{Weather\+Data\+Provider}, and can be deleted or updated by the \doxylink{classWeather_1_1WeatherDataProvider}{Weather\+Data\+Provider} anytime. 
+
+Definition at line \mbox{\hyperlink{Station_8h_source_l00217}{217}} of file \mbox{\hyperlink{Station_8h_source}{Station.\+h}}.
+
+\Hypertarget{classWeather_1_1Station_aba720eb9ddf734227ee0a1e7704e20d1}\index{Weather::Station@{Weather::Station}!twoLineTitle@{twoLineTitle}}
+\index{twoLineTitle@{twoLineTitle}!Weather::Station@{Weather::Station}}
+\doxysubsubsection{\texorpdfstring{twoLineTitle}{twoLineTitle}}
+{\footnotesize\ttfamily \label{classWeather_1_1Station_aba720eb9ddf734227ee0a1e7704e20d1} 
+QString Weather\+::\+Station\+::two\+Line\+Title\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Two-\/line description of the waypoint name. 
+
+This property holds a one-\/line or two-\/line description of the waypoint. Depending on available data, this is a string of the form "{}$<$strong$>$\+LFKA$<$/strong$>$$<$br$>$$<$font size=\textquotesingle{}2\textquotesingle{}$>$\+ALBERTVILLE$<$/font$>$"{} or simply "{}\+KIRCHZARTEN"{}
+
+\begin{DoxySeeAlso}{See also}
+three\+Line\+Title 
+\end{DoxySeeAlso}
+
+
+Definition at line \mbox{\hyperlink{Station_8h_source_l00199}{199}} of file \mbox{\hyperlink{Station_8h_source}{Station.\+h}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/weather/Station.\+h\end{DoxyCompactItemize}

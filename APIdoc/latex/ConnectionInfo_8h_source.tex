@@ -1,0 +1,147 @@
+\doxysection{Connection\+Info.\+h}
+\hypertarget{ConnectionInfo_8h_source}{}\label{ConnectionInfo_8h_source}\index{/home/runner/work/enroute/enroute/src/traffic/ConnectionInfo.h@{/home/runner/work/enroute/enroute/src/traffic/ConnectionInfo.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00001}00001\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00002}00002\ \textcolor{comment}{\ *\ \ \ Copyright\ (C)\ 2024\ by\ Stefan\ Kebekus\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00003}00003\ \textcolor{comment}{\ *\ \ \ stefan.kebekus@gmail.com\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00004}00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ free\ software;\ you\ can\ redistribute\ it\ and/or\ modify\ \ *}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00006}00006\ \textcolor{comment}{\ *\ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by\ \ *}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00007}00007\ \textcolor{comment}{\ *\ \ \ the\ Free\ Software\ Foundation;\ either\ version\ 3\ of\ the\ License,\ or\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00008}00008\ \textcolor{comment}{\ *\ \ \ (at\ your\ option)\ any\ later\ version.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00009}00009\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00010}00010\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,\ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00011}00011\ \textcolor{comment}{\ *\ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of\ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00012}00012\ \textcolor{comment}{\ *\ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00013}00013\ \textcolor{comment}{\ *\ \ \ GNU\ General\ Public\ License\ for\ more\ details.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00014}00014\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00015}00015\ \textcolor{comment}{\ *\ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00016}00016\ \textcolor{comment}{\ *\ \ \ along\ with\ this\ program;\ if\ not,\ write\ to\ the\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00017}00017\ \textcolor{comment}{\ *\ \ \ Free\ Software\ Foundation,\ Inc.,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00018}00018\ \textcolor{comment}{\ *\ \ \ 59\ Temple\ Place\ -\/\ Suite\ 330,\ Boston,\ MA\ \ 02111-\/1307,\ USA.\ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00019}00019\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00021}00021\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ <QBluetoothDeviceInfo>}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00024}00024\ \textcolor{preprocessor}{\#include\ <QQmlEngine>}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00026}00026\ \textcolor{preprocessor}{\#if\ \_\_has\_include\ (<QSerialPortInfo>)}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00027}00027\ \textcolor{preprocessor}{\#include\ <QSerialPortInfo>}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00028}00028\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00029}00029\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00031}00031\ \textcolor{keyword}{namespace\ }Traffic\ \{}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00032}00032\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00039}\mbox{\hyperlink{classTraffic_1_1ConnectionInfo}{00039}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTraffic_1_1ConnectionInfo}{ConnectionInfo}}\ \{}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00040}00040\ \ \ \ \ Q\_GADGET}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00041}00041\ \ \ \ \ QML\_VALUE\_TYPE(connectionInfo)}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00042}00042\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00043}\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_acf80c6eb440a33a21c5f5727417fc612}{00043}}\ \ \ \ \ friend\ QDataStream\&\ operator<<(QDataStream\&\ stream,\ const\ Traffic::\mbox{\hyperlink{classTraffic_1_1ConnectionInfo}{ConnectionInfo}}\ \&connectionInfo);}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00044}\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a53c3407f4e039d3e773d445bbca3500f}{00044}}\ \ \ \ \ friend\ QDataStream\&\ operator>>(QDataStream\&\ stream,\ Traffic::\mbox{\hyperlink{classTraffic_1_1ConnectionInfo}{ConnectionInfo}}\&\ connectionInfo);}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00045}00045\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00046}00046\ public:}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00048}\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5}{00048}}\ \ \ \ \ enum\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5}{Type}}\ \{}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00049}\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5aa8197ea595df1228c0c9678367c526b4}{00049}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5aa8197ea595df1228c0c9678367c526b4}{Invalid}},\ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00050}\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5a5daf2ac890354cec8c0309b104424d52}{00050}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5a5daf2ac890354cec8c0309b104424d52}{BluetoothClassic}},\ \ \ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00051}\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5af4bc05b2ee972c902119b5f3ca8cf526}{00051}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5af4bc05b2ee972c902119b5f3ca8cf526}{BluetoothLowEnergy}},\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00052}\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5ac3abaabb40af547d4053d077c070d4d0}{00052}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5ac3abaabb40af547d4053d077c070d4d0}{TCP}},\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00053}\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5a44c397a720aa3689889270e45acd0213}{00053}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5a44c397a720aa3689889270e45acd0213}{UDP}},\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00054}\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5a064d4f0bebca2b38a841af85d87de76a}{00054}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5a064d4f0bebca2b38a841af85d87de76a}{Serial}},\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00055}00055\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5a02bd8d2ca9201cdb73d1493e0915cc48}{FLARMFile}}\ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00056}\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5a02bd8d2ca9201cdb73d1493e0915cc48}{00056}}\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00057}00057\ \ \ \ \ Q\_ENUM(Type)}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00058}00058\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00059}00059\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00064}\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a4b08ead190a204084e66775247b7a104}{00064}}\ \ \ \ \ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo}{ConnectionInfo}}()\ =\ default;}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00065}00065\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00076}\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_aa1557f83840085cbcd44a579e602178e}{00076}}\ \ \ \ \ explicit\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo}{ConnectionInfo}}(const\ QBluetoothDeviceInfo\&\ info,\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a4a95bbb6a01c4fffe9ed9d01044a5897}{canonical}}=false);}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00077}00077\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00078}00078\ \textcolor{preprocessor}{\#if\ \_\_has\_include\ (<QSerialPortInfo>)}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00088}00088\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a4b08ead190a204084e66775247b7a104}{ConnectionInfo}}(\textcolor{keyword}{const}\ QSerialPortInfo\&\ info,\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a4a95bbb6a01c4fffe9ed9d01044a5897}{canonical}}=\textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00089}00089\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00090}00090\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00100}\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_ab93dfbe94e0044b667d1715c76773ee8}{00100}}\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_ab93dfbe94e0044b667d1715c76773ee8}{ConnectionInfo}}(quint16\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a26567c5149039c156cb0182ecea59b44}{port}},\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a4a95bbb6a01c4fffe9ed9d01044a5897}{canonical}}=\textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00101}00101\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00113}\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_ae848e93ddf260e2397a2acbe25fdbd01}{00113}}\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_ae848e93ddf260e2397a2acbe25fdbd01}{ConnectionInfo}}(\textcolor{keyword}{const}\ QString\&\ host,\ quint16\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a26567c5149039c156cb0182ecea59b44}{port}},\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a4a95bbb6a01c4fffe9ed9d01044a5897}{canonical}}=\textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00114}00114\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00115}00115\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00116}00116\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00117}00117\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00118}00118\ \ \ \ \ \textcolor{comment}{//\ Properties}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00119}00119\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00120}00120\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00129}\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_aa83626d0a273287a4cc11598d64f0331}{00129}}\ \ \ \ \ Q\_PROPERTY(\textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_aa83626d0a273287a4cc11598d64f0331}{canConnect}}\ READ\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_aa83626d0a273287a4cc11598d64f0331}{canConnect}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00130}00130\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00131}00131\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00138}\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a4a95bbb6a01c4fffe9ed9d01044a5897}{00138}}\ \ \ \ \ Q\_PROPERTY(\textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a4a95bbb6a01c4fffe9ed9d01044a5897}{canonical}}\ READ\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a4a95bbb6a01c4fffe9ed9d01044a5897}{canonical}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00139}00139\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00146}\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_ae8b20c9758fca836df484ff65dfa9432}{00146}}\ \ \ \ \ Q\_PROPERTY(QString\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_ae8b20c9758fca836df484ff65dfa9432}{description}}\ READ\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_ae8b20c9758fca836df484ff65dfa9432}{description}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00147}00147\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00154}\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_af2db5645d18c311586ad195a3bc836fd}{00154}}\ \ \ \ \ Q\_PROPERTY(QString\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_af2db5645d18c311586ad195a3bc836fd}{icon}}\ READ\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_af2db5645d18c311586ad195a3bc836fd}{icon}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00155}00155\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00161}\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a65433aa64e0c5513fde33ac80c4b5e5b}{00161}}\ \ \ \ \ Q\_PROPERTY(QString\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a65433aa64e0c5513fde33ac80c4b5e5b}{name}}\ READ\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a65433aa64e0c5513fde33ac80c4b5e5b}{name}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00162}00162\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00168}\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a1d58ea243c253aa8a70393d5ce6a945a}{00168}}\ \ \ \ \ Q\_PROPERTY(Traffic::\mbox{\hyperlink{classTraffic_1_1ConnectionInfo}{ConnectionInfo}}::\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5}{Type}}\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a1d58ea243c253aa8a70393d5ce6a945a}{type}}\ READ\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a1d58ea243c253aa8a70393d5ce6a945a}{type}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00169}00169\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00170}00170\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00171}00171\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00172}00172\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00173}00173\ \ \ \ \ \textcolor{comment}{//\ Getter\ Methods}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00174}00174\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00175}00175\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00181}\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a2827acea39de818bd808e076fe669d74}{00181}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_aa83626d0a273287a4cc11598d64f0331}{canConnect}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_canConnect;\ \}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00182}00182\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00188}\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a37803824a2e91f2bd62e749168d535e3}{00188}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a37803824a2e91f2bd62e749168d535e3}{canonical}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_canonical;\ \}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00189}00189\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00195}\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a5a89ec86a3b135b2c78a5a41600cf374}{00195}}\ \ \ \ \ [[nodiscard]]\ QString\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a5a89ec86a3b135b2c78a5a41600cf374}{description}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_description;\ \}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00196}00196\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00202}\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a413febf4f94643fe6efc5244c241c24c}{00202}}\ \ \ \ \ [[nodiscard]]\ QString\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a413febf4f94643fe6efc5244c241c24c}{name}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_name;\ \}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00203}00203\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00209}\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a8d1e81aea58c0aac51c38bbde93ed9a0}{00209}}\ \ \ \ \ [[nodiscard]]\ QString\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a8d1e81aea58c0aac51c38bbde93ed9a0}{icon}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_icon;\ \}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00210}00210\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00216}\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0ec1c74b5efe0a72ccc36f6de85cfbf5}{00216}}\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5}{Traffic::ConnectionInfo::Type}}\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0ec1c74b5efe0a72ccc36f6de85cfbf5}{type}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_type;\ \}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00217}00217\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00218}00218\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00219}00219\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00220}00220\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00221}00221\ \ \ \ \ \textcolor{comment}{//\ Methods}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00222}00222\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00223}00223\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00232}\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a8f11aaf94c98f562ef0ba761c2f6bc72}{00232}}\ \ \ \ \ [[nodiscard]]\ QBluetoothDeviceInfo\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a8f11aaf94c98f562ef0ba761c2f6bc72}{bluetoothDeviceInfo}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_bluetoothDeviceInfo;\ \}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00233}00233\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00241}\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a06b3fb84ebf739afecb81672954e23ad}{00241}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a06b3fb84ebf739afecb81672954e23ad}{operator==\ }}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo}{Traffic::ConnectionInfo}}\&\ other)\ \textcolor{keyword}{const}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00242}00242\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00249}\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a26567c5149039c156cb0182ecea59b44}{00249}}\ \ \ \ \ [[nodiscard]]\ quint16\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a26567c5149039c156cb0182ecea59b44}{port}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_port;\ \}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00250}00250\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00264}\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a64c12259db945beb9c1e4b0b5a95de74}{00264}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a64c12259db945beb9c1e4b0b5a95de74}{sameConnectionAs}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo}{Traffic::ConnectionInfo}}\&\ other)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00265}00265\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00276}\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_aba1bfa6561fd82d8f4529866fe61c159}{00276}}\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_aba1bfa6561fd82d8f4529866fe61c159}{operator<\ }}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo}{Traffic::ConnectionInfo}}\&\ other)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00277}00277\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00278}00278\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00279}00279\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00280}00280\ \ \ \ \ \textcolor{comment}{//\ Properties}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00281}00281\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00282}00282\ \ \ \ \ \textcolor{keywordtype}{bool}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_canConnect\ \{\ \textcolor{keyword}{false}\ \};}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00283}00283\ \ \ \ \ \textcolor{keywordtype}{bool}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_canonical\ \{\ \textcolor{keyword}{false}\ \};}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00284}00284\ \ \ \ \ QString\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_description\ \{\};}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00285}00285\ \ \ \ \ QString\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_icon\ \{\ u\textcolor{stringliteral}{"{}/icons/material/ic\_delete.svg"{}}\_qs\ \};}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00286}00286\ \ \ \ \ QString\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_name\ \{\ QObject::tr(\textcolor{stringliteral}{"{}Invalid\ Device"{}},\ \textcolor{stringliteral}{"{}Traffic::ConnectionInfo"{}})\ \};}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00287}00287\ \ \ \ \ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5}{Traffic::ConnectionInfo::Type}}\ m\_type\ \{\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5aa8197ea595df1228c0c9678367c526b4}{Traffic::ConnectionInfo::Invalid}}\ \};}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00288}00288\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00289}00289\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00290}00290\ \ \ \ \ \textcolor{comment}{//\ Private\ members,\ depending\ on\ m\_type}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00291}00291\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00292}00292\ \ \ \ \ QBluetoothDeviceInfo\ \ \ \ \ \ \ \ \ \ m\_bluetoothDeviceInfo\ \{\};}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00293}00293\ \ \ \ \ quint16\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_port\ \{0\};}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00294}00294\ \ \ \ \ QString\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_host;}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00295}00295\ \};}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00296}00296\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00302}00302\ QDataStream\&\ operator<<(QDataStream\&\ stream,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo}{Traffic::ConnectionInfo}}\ \&connectionInfo);}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00303}00303\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00309}00309\ QDataStream\&\ operator>>(QDataStream\&\ stream,\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo}{Traffic::ConnectionInfo}}\&\ connectionInfo);}
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00310}00310\ }
+\DoxyCodeLine{\Hypertarget{ConnectionInfo_8h_source_l00311}00311\ \}\ \textcolor{comment}{//\ namespace\ Traffic}}
+
+\end{DoxyCode}

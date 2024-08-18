@@ -1,0 +1,432 @@
+\doxysection{Global\+Object Class Reference}
+\hypertarget{classGlobalObject}{}\label{classGlobalObject}\index{GlobalObject@{GlobalObject}}
+
+
+Base class for global singleton objects.  
+
+
+
+
+{\ttfamily \#include $<$Global\+Object.\+h$>$}
+
+Inheritance diagram for Global\+Object\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=12.000000cm]{classGlobalObject}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classGlobalObject_ac8dfa53c492975de42fa7972e77abbc1}{Global\+Object}} (QObject \texorpdfstring{$\ast$}{*}parent=nullptr)
+\begin{DoxyCompactList}\small\item\em Standard constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classGlobalObject_a96c4d476061f33a53b8c7de446c639eb}{\texorpdfstring{$\sim$}{\string~}\+Global\+Object}} () override=default
+\begin{DoxyCompactList}\small\item\em Standard deconstructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classGlobalObject_ae5d0c94af509c9744e1b344201928715}{clear}} ()
+\begin{DoxyCompactList}\small\item\em Deletes all globally defined objects. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE bool \mbox{\hyperlink{classGlobalObject_a0501f0fd4dbb0252ff120fd07ea2f703}{can\+Construct}} ()
+\begin{DoxyCompactList}\small\item\em Indicates if the static methods are ready to be used. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classNavigation_1_1Clock}{Navigation\+::\+Clock}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_ad479148c920adcb9c9ea9d99c762a08f}{clock}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static \doxylink{classNavigation_1_1Clock}{Navigation\+::\+Clock} instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classDataManagement_1_1DataManager}{Data\+Management\+::\+Data\+Manager}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a88f9800ff5290634fbb1507bd509afc9}{data\+Manager}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Geo\+Maps\+::\+Data\+Manager instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classDemoRunner}{Demo\+Runner}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_abb18a18cba455a65c8773aa5f4fbcdd6}{demo\+Runner}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static \doxylink{classDemoRunner}{Demo\+Runner} instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classTraffic_1_1FlarmnetDB}{Traffic\+::\+Flarmnet\+DB}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_ad195e7630ee65b97b837fb8bc26e1ba9}{flarmnet\+DB}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Flarmnet\+DB instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classPlatform_1_1FileExchange__Abstract}{Platform\+::\+File\+Exchange\+\_\+\+Abstract}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a2c2011587fd8d46f9425d61d0b740922}{file\+Exchange}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static File\+Exchange instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider}{Geo\+Maps\+::\+Geo\+Map\+Provider}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a241d8d74ad20f5b5fdfa3eff30a20077}{geo\+Map\+Provider}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static \doxylink{classGeoMaps_1_1GeoMapProvider}{Geo\+Maps\+::\+Geo\+Map\+Provider} instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classGlobalSettings}{Global\+Settings}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_af94f3ad5c6bb06982abf5d2759b63186}{global\+Settings}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Settings instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classLibrarian}{Librarian}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a311415802470c0ca323e8a44c96d2773}{librarian}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static librarian instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor__Abstract}{Platform\+::\+Platform\+Adaptor\+\_\+\+Abstract}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_af4497d953402cc7891edfe5e9f6f56ac}{platform\+Adaptor}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Platform\+Adaptor instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classSensors}{Sensors}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a8df42e3160bee431602e14e9b605ffa8}{sensors}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static \doxylink{classNavigation_1_1Clock}{Navigation\+::\+Clock} instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classNavigation_1_1Navigator}{Navigation\+::\+Navigator}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a6e6835796fd3ab2f304c96272f50054c}{navigator}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static \doxylink{classNavigation_1_1Navigator}{Navigation\+::\+Navigator} instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classTraffic_1_1PasswordDB}{Traffic\+::\+Password\+DB}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a0ac7c3ccb518e122c8565e40c1fb8cdb}{password\+DB}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Password\+DB instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classPositioning_1_1PositionProvider}{Positioning\+::\+Position\+Provider}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a7837aeb4bcabe6542db1bccdab5ebd59}{position\+Provider}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Position\+Provider instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classNOTAM_1_1NotamProvider}{NOTAM\+::\+Notam\+Provider}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_ac11d38af2df8dcdb78679abf92b6de7a}{notam\+Provider}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static notification manager instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classNotifications_1_1NotificationManager}{Notifications\+::\+Notification\+Manager}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_aa90c2b17a6930dfb2cd258c8349e94cc}{notification\+Manager}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static notification manager instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE QNetwork\+Access\+Manager \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_aece9ee1f2507b4bcd825d4f61ebd4643}{network\+Access\+Manager}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static QNetwork\+Access\+Manager instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classDataManagement_1_1SSLErrorHandler}{Data\+Management\+::\+SSLError\+Handler}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_ab4e66c880bdcfa33720b51364c484044}{ssl\+Error\+Handler}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static QNetwork\+Access\+Manager instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classTraffic_1_1TrafficDataProvider}{Traffic\+::\+Traffic\+Data\+Provider}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_acc3b67374f1eac467da729151c31aff6}{traffic\+Data\+Provider}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Traffic\+Data\+Provider instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary}{Geo\+Maps\+::\+Waypoint\+Library}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a0fe5454852ab2b913efe469bfd2630b4}{waypoint\+Library}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Waypoint\+Library instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classWeather_1_1WeatherDataProvider}{Weather\+::\+Weather\+Data\+Provider}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_abff9f661cf7e78967606d10692c03412}{weather\+Data\+Provider}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Weather\+Data\+Provider instance. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{classGlobalObject_ad89d4b5b146c91f65f282572629c2f5f}{deferred\+Initialization}} ()
+\begin{DoxyCompactList}\small\item\em Non-\/constructor initialization. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Base class for global singleton objects. 
+
+This is the base class for static instances of classes that are used throughout the application. The instances are constructed lazily at runtime, whenever the appropriate methods are called. They are children of the QCore\+Application object and deleted along with this object.
+
+Although all relevant methods are static, it is possible to construct an instance of this class, which allows to use this class from QML.
+
+The static methods return pointers to application-\/wide static objects. They must only be called while a global QCore\+Application instance exists. If these conditions are satisfied, the pointers returned are guaranteed to be valid. The instances are owned by this class and must not be deleted. QML ownership has been set to QQml\+Engine\+::\+Cpp\+Ownership.
+
+Objects that inherit from this class MUST NOT call any of the static methods from their constructors. Instead, the method \doxylink{classGlobalObject_ad89d4b5b146c91f65f282572629c2f5f}{deferred\+Initialization()} can be used, which is called immediately after the constructor returns.
+
+The methods in this class are reentrant, but not thread safe. 
+
+Definition at line \mbox{\hyperlink{GlobalObject_8h_source_l00106}{106}} of file \mbox{\hyperlink{GlobalObject_8h_source}{Global\+Object.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classGlobalObject_ac8dfa53c492975de42fa7972e77abbc1}\index{GlobalObject@{GlobalObject}!GlobalObject@{GlobalObject}}
+\index{GlobalObject@{GlobalObject}!GlobalObject@{GlobalObject}}
+\doxysubsubsection{\texorpdfstring{GlobalObject()}{GlobalObject()}}
+{\footnotesize\ttfamily \label{classGlobalObject_ac8dfa53c492975de42fa7972e77abbc1} 
+Global\+Object\+::\+Global\+Object (\begin{DoxyParamCaption}\item[{QObject \texorpdfstring{$\ast$}{*}}]{parent}{ = {\ttfamily nullptr}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Standard constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em parent} & The standard QObject parent pointer \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classGlobalObject_a96c4d476061f33a53b8c7de446c639eb}\index{GlobalObject@{GlobalObject}!````~GlobalObject@{\texorpdfstring{$\sim$}{\string~}GlobalObject}}
+\index{````~GlobalObject@{\texorpdfstring{$\sim$}{\string~}GlobalObject}!GlobalObject@{GlobalObject}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}GlobalObject()}{\string~GlobalObject()}}
+{\footnotesize\ttfamily \label{classGlobalObject_a96c4d476061f33a53b8c7de446c639eb} 
+Global\+Object\+::\texorpdfstring{$\sim$}{\string~}\+Global\+Object (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [default]}}
+
+
+
+Standard deconstructor. 
+
+This destructor will destruct all application-\/wide static instances managed by this class. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classGlobalObject_a0501f0fd4dbb0252ff120fd07ea2f703}\index{GlobalObject@{GlobalObject}!canConstruct@{canConstruct}}
+\index{canConstruct@{canConstruct}!GlobalObject@{GlobalObject}}
+\doxysubsubsection{\texorpdfstring{canConstruct()}{canConstruct()}}
+{\footnotesize\ttfamily \label{classGlobalObject_a0501f0fd4dbb0252ff120fd07ea2f703} 
+static Q\+\_\+\+INVOKABLE bool Global\+Object\+::can\+Construct (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Indicates if the static methods are ready to be used. 
+
+This is relevant for C++ code that is called from Android, often at unexpected times (during startup, …). This code should check that the \doxylink{classGlobalObject}{Global\+Object} class is ready before using it.
+
+\begin{DoxyReturn}{Returns}
+False if the app is in constructing state where the pointer-\/returning methods should not be used. 
+\end{DoxyReturn}
+\Hypertarget{classGlobalObject_ae5d0c94af509c9744e1b344201928715}\index{GlobalObject@{GlobalObject}!clear@{clear}}
+\index{clear@{clear}!GlobalObject@{GlobalObject}}
+\doxysubsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily \label{classGlobalObject_ae5d0c94af509c9744e1b344201928715} 
+static void Global\+Object\+::clear (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Deletes all globally defined objects. 
+
+This method will delete all globally defined objects in the correct order. \Hypertarget{classGlobalObject_ad479148c920adcb9c9ea9d99c762a08f}\index{GlobalObject@{GlobalObject}!clock@{clock}}
+\index{clock@{clock}!GlobalObject@{GlobalObject}}
+\doxysubsubsection{\texorpdfstring{clock()}{clock()}}
+{\footnotesize\ttfamily \label{classGlobalObject_ad479148c920adcb9c9ea9d99c762a08f} 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classNavigation_1_1Clock}{Navigation\+::\+Clock}} \texorpdfstring{$\ast$}{*} Global\+Object\+::clock (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Pointer to appplication-\/wide static \doxylink{classNavigation_1_1Clock}{Navigation\+::\+Clock} instance. 
+
+\begin{DoxyReturn}{Returns}
+Pointer to appplication-\/wide static instance. 
+\end{DoxyReturn}
+\Hypertarget{classGlobalObject_a88f9800ff5290634fbb1507bd509afc9}\index{GlobalObject@{GlobalObject}!dataManager@{dataManager}}
+\index{dataManager@{dataManager}!GlobalObject@{GlobalObject}}
+\doxysubsubsection{\texorpdfstring{dataManager()}{dataManager()}}
+{\footnotesize\ttfamily \label{classGlobalObject_a88f9800ff5290634fbb1507bd509afc9} 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classDataManagement_1_1DataManager}{Data\+Management\+::\+Data\+Manager}} \texorpdfstring{$\ast$}{*} Global\+Object\+::data\+Manager (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Pointer to appplication-\/wide static Geo\+Maps\+::\+Data\+Manager instance. 
+
+\begin{DoxyReturn}{Returns}
+Pointer to appplication-\/wide static instance. 
+\end{DoxyReturn}
+\Hypertarget{classGlobalObject_ad89d4b5b146c91f65f282572629c2f5f}\index{GlobalObject@{GlobalObject}!deferredInitialization@{deferredInitialization}}
+\index{deferredInitialization@{deferredInitialization}!GlobalObject@{GlobalObject}}
+\doxysubsubsection{\texorpdfstring{deferredInitialization()}{deferredInitialization()}}
+{\footnotesize\ttfamily \label{classGlobalObject_ad89d4b5b146c91f65f282572629c2f5f} 
+virtual void Global\+Object\+::deferred\+Initialization (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Non-\/constructor initialization. 
+
+This method is called by the static methods that create global instances immediately after the constructor returns. This class can be re-\/implemented to perform initialization steps that refer to other singleton objects. 
+
+Reimplemented in \mbox{\hyperlink{classDataManagement_1_1DataManager_a32d353064fd94a0af5173e4951a241e7}{Data\+Management\+::\+Data\+Manager}}, \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_ad2b0640861db6e1383da6a0461e9936c}{Geo\+Maps\+::\+Geo\+Map\+Provider}}, \mbox{\hyperlink{classNavigation_1_1Navigator_a9f95457f009e0c581a3703b69f04b63d}{Navigation\+::\+Navigator}}, \mbox{\hyperlink{classNOTAM_1_1NotamProvider_a47f4d06a4317122c50578e32722c9c82}{NOTAM\+::\+Notam\+Provider}}, \mbox{\hyperlink{classNotifications_1_1NotificationManager_a491ee0154d491a2a6ec072f4bee87f72}{Notifications\+::\+Notification\+Manager}}, \mbox{\hyperlink{classPlatform_1_1FileExchange_a83d1fff8813619e716d518cc42956d9a}{Platform\+::\+File\+Exchange}}, \mbox{\hyperlink{classPlatform_1_1FileExchange_a83d1fff8813619e716d518cc42956d9a}{Platform\+::\+File\+Exchange}}, \mbox{\hyperlink{classPlatform_1_1FileExchange_a83d1fff8813619e716d518cc42956d9a}{Platform\+::\+File\+Exchange}}, \mbox{\hyperlink{classPlatform_1_1FileExchange_aa02f3bc70cc1e4e1f2de22ee63ad919a}{Platform\+::\+File\+Exchange}}, \mbox{\hyperlink{classPlatform_1_1FileExchange_aa02f3bc70cc1e4e1f2de22ee63ad919a}{Platform\+::\+File\+Exchange}}, \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_a0a762312201deb36e9ff3c458e7ff696}{Platform\+::\+Platform\+Adaptor}}, and \mbox{\hyperlink{classSensors_a07b172fffe0efe4f670e247eba8182c9}{Sensors}}.
+
+
+
+Definition at line \mbox{\hyperlink{GlobalObject_8h_source_l00270}{270}} of file \mbox{\hyperlink{GlobalObject_8h_source}{Global\+Object.\+h}}.
+
+\Hypertarget{classGlobalObject_abb18a18cba455a65c8773aa5f4fbcdd6}\index{GlobalObject@{GlobalObject}!demoRunner@{demoRunner}}
+\index{demoRunner@{demoRunner}!GlobalObject@{GlobalObject}}
+\doxysubsubsection{\texorpdfstring{demoRunner()}{demoRunner()}}
+{\footnotesize\ttfamily \label{classGlobalObject_abb18a18cba455a65c8773aa5f4fbcdd6} 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classDemoRunner}{Demo\+Runner}} \texorpdfstring{$\ast$}{*} Global\+Object\+::demo\+Runner (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Pointer to appplication-\/wide static \doxylink{classDemoRunner}{Demo\+Runner} instance. 
+
+\begin{DoxyReturn}{Returns}
+Pointer to appplication-\/wide static instance. 
+\end{DoxyReturn}
+\Hypertarget{classGlobalObject_a2c2011587fd8d46f9425d61d0b740922}\index{GlobalObject@{GlobalObject}!fileExchange@{fileExchange}}
+\index{fileExchange@{fileExchange}!GlobalObject@{GlobalObject}}
+\doxysubsubsection{\texorpdfstring{fileExchange()}{fileExchange()}}
+{\footnotesize\ttfamily \label{classGlobalObject_a2c2011587fd8d46f9425d61d0b740922} 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classPlatform_1_1FileExchange__Abstract}{Platform\+::\+File\+Exchange\+\_\+\+Abstract}} \texorpdfstring{$\ast$}{*} Global\+Object\+::file\+Exchange (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Pointer to appplication-\/wide static File\+Exchange instance. 
+
+\begin{DoxyReturn}{Returns}
+Pointer to appplication-\/wide static instance. 
+\end{DoxyReturn}
+\Hypertarget{classGlobalObject_ad195e7630ee65b97b837fb8bc26e1ba9}\index{GlobalObject@{GlobalObject}!flarmnetDB@{flarmnetDB}}
+\index{flarmnetDB@{flarmnetDB}!GlobalObject@{GlobalObject}}
+\doxysubsubsection{\texorpdfstring{flarmnetDB()}{flarmnetDB()}}
+{\footnotesize\ttfamily \label{classGlobalObject_ad195e7630ee65b97b837fb8bc26e1ba9} 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classTraffic_1_1FlarmnetDB}{Traffic\+::\+Flarmnet\+DB}} \texorpdfstring{$\ast$}{*} Global\+Object\+::flarmnet\+DB (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Pointer to appplication-\/wide static Flarmnet\+DB instance. 
+
+\begin{DoxyReturn}{Returns}
+Pointer to appplication-\/wide static instance. 
+\end{DoxyReturn}
+\Hypertarget{classGlobalObject_a241d8d74ad20f5b5fdfa3eff30a20077}\index{GlobalObject@{GlobalObject}!geoMapProvider@{geoMapProvider}}
+\index{geoMapProvider@{geoMapProvider}!GlobalObject@{GlobalObject}}
+\doxysubsubsection{\texorpdfstring{geoMapProvider()}{geoMapProvider()}}
+{\footnotesize\ttfamily \label{classGlobalObject_a241d8d74ad20f5b5fdfa3eff30a20077} 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider}{Geo\+Maps\+::\+Geo\+Map\+Provider}} \texorpdfstring{$\ast$}{*} Global\+Object\+::geo\+Map\+Provider (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Pointer to appplication-\/wide static \doxylink{classGeoMaps_1_1GeoMapProvider}{Geo\+Maps\+::\+Geo\+Map\+Provider} instance. 
+
+\begin{DoxyReturn}{Returns}
+Pointer to appplication-\/wide static instance. 
+\end{DoxyReturn}
+\Hypertarget{classGlobalObject_af94f3ad5c6bb06982abf5d2759b63186}\index{GlobalObject@{GlobalObject}!globalSettings@{globalSettings}}
+\index{globalSettings@{globalSettings}!GlobalObject@{GlobalObject}}
+\doxysubsubsection{\texorpdfstring{globalSettings()}{globalSettings()}}
+{\footnotesize\ttfamily \label{classGlobalObject_af94f3ad5c6bb06982abf5d2759b63186} 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classGlobalSettings}{Global\+Settings}} \texorpdfstring{$\ast$}{*} Global\+Object\+::global\+Settings (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Pointer to appplication-\/wide static Settings instance. 
+
+\begin{DoxyReturn}{Returns}
+Pointer to appplication-\/wide static instance. 
+\end{DoxyReturn}
+\Hypertarget{classGlobalObject_a311415802470c0ca323e8a44c96d2773}\index{GlobalObject@{GlobalObject}!librarian@{librarian}}
+\index{librarian@{librarian}!GlobalObject@{GlobalObject}}
+\doxysubsubsection{\texorpdfstring{librarian()}{librarian()}}
+{\footnotesize\ttfamily \label{classGlobalObject_a311415802470c0ca323e8a44c96d2773} 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classLibrarian}{Librarian}} \texorpdfstring{$\ast$}{*} Global\+Object\+::librarian (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Pointer to appplication-\/wide static librarian instance. 
+
+\begin{DoxyReturn}{Returns}
+Pointer to appplication-\/wide static instance. 
+\end{DoxyReturn}
+\Hypertarget{classGlobalObject_a6e6835796fd3ab2f304c96272f50054c}\index{GlobalObject@{GlobalObject}!navigator@{navigator}}
+\index{navigator@{navigator}!GlobalObject@{GlobalObject}}
+\doxysubsubsection{\texorpdfstring{navigator()}{navigator()}}
+{\footnotesize\ttfamily \label{classGlobalObject_a6e6835796fd3ab2f304c96272f50054c} 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classNavigation_1_1Navigator}{Navigation\+::\+Navigator}} \texorpdfstring{$\ast$}{*} Global\+Object\+::navigator (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Pointer to appplication-\/wide static \doxylink{classNavigation_1_1Navigator}{Navigation\+::\+Navigator} instance. 
+
+\begin{DoxyReturn}{Returns}
+Pointer to appplication-\/wide static instance. 
+\end{DoxyReturn}
+\Hypertarget{classGlobalObject_aece9ee1f2507b4bcd825d4f61ebd4643}\index{GlobalObject@{GlobalObject}!networkAccessManager@{networkAccessManager}}
+\index{networkAccessManager@{networkAccessManager}!GlobalObject@{GlobalObject}}
+\doxysubsubsection{\texorpdfstring{networkAccessManager()}{networkAccessManager()}}
+{\footnotesize\ttfamily \label{classGlobalObject_aece9ee1f2507b4bcd825d4f61ebd4643} 
+static Q\+\_\+\+INVOKABLE QNetwork\+Access\+Manager \texorpdfstring{$\ast$}{*} Global\+Object\+::network\+Access\+Manager (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Pointer to appplication-\/wide static QNetwork\+Access\+Manager instance. 
+
+\begin{DoxyReturn}{Returns}
+Pointer to appplication-\/wide static instance. 
+\end{DoxyReturn}
+\Hypertarget{classGlobalObject_ac11d38af2df8dcdb78679abf92b6de7a}\index{GlobalObject@{GlobalObject}!notamProvider@{notamProvider}}
+\index{notamProvider@{notamProvider}!GlobalObject@{GlobalObject}}
+\doxysubsubsection{\texorpdfstring{notamProvider()}{notamProvider()}}
+{\footnotesize\ttfamily \label{classGlobalObject_ac11d38af2df8dcdb78679abf92b6de7a} 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classNOTAM_1_1NotamProvider}{NOTAM\+::\+Notam\+Provider}} \texorpdfstring{$\ast$}{*} Global\+Object\+::notam\+Provider (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Pointer to appplication-\/wide static notification manager instance. 
+
+\begin{DoxyReturn}{Returns}
+Pointer to appplication-\/wide static instance. 
+\end{DoxyReturn}
+\Hypertarget{classGlobalObject_aa90c2b17a6930dfb2cd258c8349e94cc}\index{GlobalObject@{GlobalObject}!notificationManager@{notificationManager}}
+\index{notificationManager@{notificationManager}!GlobalObject@{GlobalObject}}
+\doxysubsubsection{\texorpdfstring{notificationManager()}{notificationManager()}}
+{\footnotesize\ttfamily \label{classGlobalObject_aa90c2b17a6930dfb2cd258c8349e94cc} 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classNotifications_1_1NotificationManager}{Notifications\+::\+Notification\+Manager}} \texorpdfstring{$\ast$}{*} Global\+Object\+::notification\+Manager (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Pointer to appplication-\/wide static notification manager instance. 
+
+\begin{DoxyReturn}{Returns}
+Pointer to appplication-\/wide static instance. 
+\end{DoxyReturn}
+\Hypertarget{classGlobalObject_a0ac7c3ccb518e122c8565e40c1fb8cdb}\index{GlobalObject@{GlobalObject}!passwordDB@{passwordDB}}
+\index{passwordDB@{passwordDB}!GlobalObject@{GlobalObject}}
+\doxysubsubsection{\texorpdfstring{passwordDB()}{passwordDB()}}
+{\footnotesize\ttfamily \label{classGlobalObject_a0ac7c3ccb518e122c8565e40c1fb8cdb} 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classTraffic_1_1PasswordDB}{Traffic\+::\+Password\+DB}} \texorpdfstring{$\ast$}{*} Global\+Object\+::password\+DB (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Pointer to appplication-\/wide static Password\+DB instance. 
+
+\begin{DoxyReturn}{Returns}
+Pointer to appplication-\/wide static instance. 
+\end{DoxyReturn}
+\Hypertarget{classGlobalObject_af4497d953402cc7891edfe5e9f6f56ac}\index{GlobalObject@{GlobalObject}!platformAdaptor@{platformAdaptor}}
+\index{platformAdaptor@{platformAdaptor}!GlobalObject@{GlobalObject}}
+\doxysubsubsection{\texorpdfstring{platformAdaptor()}{platformAdaptor()}}
+{\footnotesize\ttfamily \label{classGlobalObject_af4497d953402cc7891edfe5e9f6f56ac} 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor__Abstract}{Platform\+::\+Platform\+Adaptor\+\_\+\+Abstract}} \texorpdfstring{$\ast$}{*} Global\+Object\+::platform\+Adaptor (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Pointer to appplication-\/wide static Platform\+Adaptor instance. 
+
+\begin{DoxyReturn}{Returns}
+Pointer to appplication-\/wide static instance. 
+\end{DoxyReturn}
+\Hypertarget{classGlobalObject_a7837aeb4bcabe6542db1bccdab5ebd59}\index{GlobalObject@{GlobalObject}!positionProvider@{positionProvider}}
+\index{positionProvider@{positionProvider}!GlobalObject@{GlobalObject}}
+\doxysubsubsection{\texorpdfstring{positionProvider()}{positionProvider()}}
+{\footnotesize\ttfamily \label{classGlobalObject_a7837aeb4bcabe6542db1bccdab5ebd59} 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classPositioning_1_1PositionProvider}{Positioning\+::\+Position\+Provider}} \texorpdfstring{$\ast$}{*} Global\+Object\+::position\+Provider (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Pointer to appplication-\/wide static Position\+Provider instance. 
+
+\begin{DoxyReturn}{Returns}
+Pointer to appplication-\/wide static instance. 
+\end{DoxyReturn}
+\Hypertarget{classGlobalObject_a8df42e3160bee431602e14e9b605ffa8}\index{GlobalObject@{GlobalObject}!sensors@{sensors}}
+\index{sensors@{sensors}!GlobalObject@{GlobalObject}}
+\doxysubsubsection{\texorpdfstring{sensors()}{sensors()}}
+{\footnotesize\ttfamily \label{classGlobalObject_a8df42e3160bee431602e14e9b605ffa8} 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classSensors}{Sensors}} \texorpdfstring{$\ast$}{*} Global\+Object\+::sensors (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Pointer to appplication-\/wide static \doxylink{classNavigation_1_1Clock}{Navigation\+::\+Clock} instance. 
+
+\begin{DoxyReturn}{Returns}
+Pointer to appplication-\/wide static instance. 
+\end{DoxyReturn}
+\Hypertarget{classGlobalObject_ab4e66c880bdcfa33720b51364c484044}\index{GlobalObject@{GlobalObject}!sslErrorHandler@{sslErrorHandler}}
+\index{sslErrorHandler@{sslErrorHandler}!GlobalObject@{GlobalObject}}
+\doxysubsubsection{\texorpdfstring{sslErrorHandler()}{sslErrorHandler()}}
+{\footnotesize\ttfamily \label{classGlobalObject_ab4e66c880bdcfa33720b51364c484044} 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classDataManagement_1_1SSLErrorHandler}{Data\+Management\+::\+SSLError\+Handler}} \texorpdfstring{$\ast$}{*} Global\+Object\+::ssl\+Error\+Handler (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Pointer to appplication-\/wide static QNetwork\+Access\+Manager instance. 
+
+\begin{DoxyReturn}{Returns}
+Pointer to appplication-\/wide static instance. 
+\end{DoxyReturn}
+\Hypertarget{classGlobalObject_acc3b67374f1eac467da729151c31aff6}\index{GlobalObject@{GlobalObject}!trafficDataProvider@{trafficDataProvider}}
+\index{trafficDataProvider@{trafficDataProvider}!GlobalObject@{GlobalObject}}
+\doxysubsubsection{\texorpdfstring{trafficDataProvider()}{trafficDataProvider()}}
+{\footnotesize\ttfamily \label{classGlobalObject_acc3b67374f1eac467da729151c31aff6} 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classTraffic_1_1TrafficDataProvider}{Traffic\+::\+Traffic\+Data\+Provider}} \texorpdfstring{$\ast$}{*} Global\+Object\+::traffic\+Data\+Provider (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Pointer to appplication-\/wide static Traffic\+Data\+Provider instance. 
+
+\begin{DoxyReturn}{Returns}
+Pointer to appplication-\/wide static instance. 
+\end{DoxyReturn}
+\Hypertarget{classGlobalObject_a0fe5454852ab2b913efe469bfd2630b4}\index{GlobalObject@{GlobalObject}!waypointLibrary@{waypointLibrary}}
+\index{waypointLibrary@{waypointLibrary}!GlobalObject@{GlobalObject}}
+\doxysubsubsection{\texorpdfstring{waypointLibrary()}{waypointLibrary()}}
+{\footnotesize\ttfamily \label{classGlobalObject_a0fe5454852ab2b913efe469bfd2630b4} 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary}{Geo\+Maps\+::\+Waypoint\+Library}} \texorpdfstring{$\ast$}{*} Global\+Object\+::waypoint\+Library (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Pointer to appplication-\/wide static Waypoint\+Library instance. 
+
+\begin{DoxyReturn}{Returns}
+Pointer to appplication-\/wide static instance. 
+\end{DoxyReturn}
+\Hypertarget{classGlobalObject_abff9f661cf7e78967606d10692c03412}\index{GlobalObject@{GlobalObject}!weatherDataProvider@{weatherDataProvider}}
+\index{weatherDataProvider@{weatherDataProvider}!GlobalObject@{GlobalObject}}
+\doxysubsubsection{\texorpdfstring{weatherDataProvider()}{weatherDataProvider()}}
+{\footnotesize\ttfamily \label{classGlobalObject_abff9f661cf7e78967606d10692c03412} 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classWeather_1_1WeatherDataProvider}{Weather\+::\+Weather\+Data\+Provider}} \texorpdfstring{$\ast$}{*} Global\+Object\+::weather\+Data\+Provider (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Pointer to appplication-\/wide static Weather\+Data\+Provider instance. 
+
+\begin{DoxyReturn}{Returns}
+Pointer to appplication-\/wide static instance. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/Global\+Object.\+h\end{DoxyCompactItemize}

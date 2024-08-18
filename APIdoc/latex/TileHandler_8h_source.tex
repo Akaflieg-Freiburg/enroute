@@ -1,0 +1,63 @@
+\doxysection{Tile\+Handler.\+h}
+\hypertarget{TileHandler_8h_source}{}\label{TileHandler_8h_source}\index{/home/runner/work/enroute/enroute/src/geomaps/TileHandler.h@{/home/runner/work/enroute/enroute/src/geomaps/TileHandler.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00001}00001\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00002}00002\ \textcolor{comment}{\ *\ \ \ Copyright\ (C)\ 2019-\/2024\ by\ Stefan\ Kebekus\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00003}00003\ \textcolor{comment}{\ *\ \ \ stefan.kebekus@gmail.com\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00004}00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ free\ software;\ you\ can\ redistribute\ it\ and/or\ modify\ \ *}}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00006}00006\ \textcolor{comment}{\ *\ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by\ \ *}}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00007}00007\ \textcolor{comment}{\ *\ \ \ the\ Free\ Software\ Foundation;\ either\ version\ 3\ of\ the\ License,\ or\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00008}00008\ \textcolor{comment}{\ *\ \ \ (at\ your\ option)\ any\ later\ version.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00009}00009\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00010}00010\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,\ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00011}00011\ \textcolor{comment}{\ *\ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of\ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00012}00012\ \textcolor{comment}{\ *\ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00013}00013\ \textcolor{comment}{\ *\ \ \ GNU\ General\ Public\ License\ for\ more\ details.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00014}00014\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00015}00015\ \textcolor{comment}{\ *\ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00016}00016\ \textcolor{comment}{\ *\ \ \ along\ with\ this\ program;\ if\ not,\ write\ to\ the\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00017}00017\ \textcolor{comment}{\ *\ \ \ Free\ Software\ Foundation,\ Inc.,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00018}00018\ \textcolor{comment}{\ *\ \ \ 59\ Temple\ Place\ -\/\ Suite\ 330,\ Boston,\ MA\ \ 02111-\/1307,\ USA.\ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00019}00019\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00021}00021\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ <QJsonDocument>}}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00024}00024\ }
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00025}00025\ \textcolor{preprocessor}{\#include\ "{}fileFormats/MBTILES.h"{}}}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00027}00027\ \textcolor{keyword}{class\ }QHttpServerResponder;}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00028}00028\ }
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00029}00029\ \textcolor{keyword}{namespace\ }GeoMaps\ \{}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00031}00031\ }
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00041}\mbox{\hyperlink{classGeoMaps_1_1TileHandler}{00041}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classGeoMaps_1_1TileHandler}{TileHandler}}}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00042}00042\ \{}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00043}00043\ }
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00044}00044\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00059}\mbox{\hyperlink{classGeoMaps_1_1TileHandler_aec4c068aa4ff6d1c99d49179765f1f5d}{00059}}\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classGeoMaps_1_1TileHandler_aec4c068aa4ff6d1c99d49179765f1f5d}{TileHandler}}(\textcolor{keyword}{const}\ QVector<QSharedPointer<FileFormats::MBTILES>>\&\ mbtileFiles,\ \textcolor{keyword}{const}\ QString\&\ baseURLName);}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00060}00060\ }
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00061}00061\ \ \ \ \ \textcolor{comment}{//\ Standard\ descructor}}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00062}00062\ \ \ \ \ \mbox{\hyperlink{classGeoMaps_1_1TileHandler}{\string~TileHandler}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00063}00063\ }
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00076}\mbox{\hyperlink{classGeoMaps_1_1TileHandler_a58ebe88bd1a4b517337ae5d71b211975}{00076}}\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classGeoMaps_1_1TileHandler_a58ebe88bd1a4b517337ae5d71b211975}{process}}(QHttpServerResponder*\ responder,\ \textcolor{keyword}{const}\ QStringList\&\ pathElements);}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00077}00077\ }
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00078}00078\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00079}00079\ \ \ \ \ Q\_DISABLE\_COPY\_MOVE(\mbox{\hyperlink{classGeoMaps_1_1TileHandler}{TileHandler}})}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00080}00080\ }
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00081}00081\ \ \ \ \ \textcolor{comment}{//\ List\ of\ MBTiles}}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00082}00082\ \ \ \ \ QVector<QSharedPointer<FileFormats::MBTILES>>\ m\_mbtiles;}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00083}00083\ }
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00084}00084\ \ \ \ \ \textcolor{comment}{//\ Format\ of\ tiles.\ This\ is\ a\ short\ string\ such\ as\ "{}jpg"{},\ "{}pbf"{},\ "{}png"{}\ or}}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00085}00085\ \ \ \ \ \textcolor{comment}{//\ "{}webp"{}.}}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00086}00086\ \ \ \ \ QString\ m\_format;}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00087}00087\ }
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00088}00088\ \ \ \ \ \textcolor{comment}{//\ TileJSON\ that\ will\ be\ served\ in\ appropriate\ requests.}}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00089}00089\ \ \ \ \ QJsonDocument\ m\_tileJSON;}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00090}00090\ \};}
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00091}00091\ }
+\DoxyCodeLine{\Hypertarget{TileHandler_8h_source_l00092}00092\ \}\ \textcolor{comment}{//\ namespace\ GeoMaps}}
+
+\end{DoxyCode}

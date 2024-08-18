@@ -1,0 +1,90 @@
+\doxysection{Platform\+Adaptor\+\_\+i\+OS.\+h}
+\hypertarget{PlatformAdaptor__iOS_8h_source}{}\label{PlatformAdaptor__iOS_8h_source}\index{/home/runner/work/enroute/enroute/src/platform/PlatformAdaptor\_iOS.h@{/home/runner/work/enroute/enroute/src/platform/PlatformAdaptor\_iOS.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00001}00001\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00002}00002\ \textcolor{comment}{\ *\ \ \ Copyright\ (C)\ 2019-\/2024\ by\ Stefan\ Kebekus\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00003}00003\ \textcolor{comment}{\ *\ \ \ stefan.kebekus@gmail.com\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00004}00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ free\ software;\ you\ can\ redistribute\ it\ and/or\ modify\ \ *}}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00006}00006\ \textcolor{comment}{\ *\ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by\ \ *}}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00007}00007\ \textcolor{comment}{\ *\ \ \ the\ Free\ Software\ Foundation;\ either\ version\ 3\ of\ the\ License,\ or\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00008}00008\ \textcolor{comment}{\ *\ \ \ (at\ your\ option)\ any\ later\ version.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00009}00009\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00010}00010\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,\ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00011}00011\ \textcolor{comment}{\ *\ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of\ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00012}00012\ \textcolor{comment}{\ *\ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00013}00013\ \textcolor{comment}{\ *\ \ \ GNU\ General\ Public\ License\ for\ more\ details.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00014}00014\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00015}00015\ \textcolor{comment}{\ *\ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00016}00016\ \textcolor{comment}{\ *\ \ \ along\ with\ this\ program;\ if\ not,\ write\ to\ the\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00017}00017\ \textcolor{comment}{\ *\ \ \ Free\ Software\ Foundation,\ Inc.,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00018}00018\ \textcolor{comment}{\ *\ \ \ 59\ Temple\ Place\ -\/\ Suite\ 330,\ Boston,\ MA\ \ 02111-\/1307,\ USA.\ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00019}00019\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00021}00021\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ "{}PlatformAdaptor\_Abstract.h"{}}}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00024}00024\ \textcolor{preprocessor}{\#include\ "{}qcoreevent.h"{}}}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00025}00025\ \textcolor{preprocessor}{\#include\ "{}qevent.h"{}}}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00026}00026\ \textcolor{preprocessor}{\#include\ "{}qquickitem.h"{}}}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00027}00027\ }
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00028}00028\ \textcolor{keyword}{namespace\ }Platform\ \{}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00029}00029\ }
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00031}00031\ \textcolor{keyword}{class\ }ImFixer\ :\ \textcolor{keyword}{public}\ QObject\ \{}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00032}00032\ \ \ \ \ Q\_OBJECT}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00033}00033\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00034}00034\ \ \ \ \ \textcolor{keywordtype}{bool}\ eventFilter(QObject\ *obj,\ QEvent\ *event)\textcolor{keyword}{\ override\ }\{}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00035}00035\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (event-\/>type()\ ==\ QEvent::InputMethodQuery)\ \{}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00036}00036\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}*\ imEvt\ =\ \textcolor{keyword}{static\_cast<}QInputMethodQueryEvent\ *\textcolor{keyword}{>}(event);}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00037}00037\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (imEvt-\/>queries()\ ==\ Qt::InputMethodQuery::ImCursorRectangle)\ \{}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00038}00038\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ imEvt-\/>setValue(Qt::InputMethodQuery::ImCursorRectangle,\ QRectF());}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00039}00039\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00040}00040\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00041}00041\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00042}00042\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ QObject::eventFilter(obj,\ event);}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00043}00043\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00044}00044\ \};}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00045}00045\ }
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00048}00048\ \textcolor{keyword}{class\ }PlatformAdaptor\ :\ \textcolor{keyword}{public}\ PlatformAdaptor\_Abstract}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00049}00049\ \{}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00050}00050\ \ \ \ \ Q\_OBJECT}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00051}00051\ }
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00052}00052\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00057}\mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_a2e767fa1e4b2a4e9c2227f3639ff62c0}{00057}}\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_a2e767fa1e4b2a4e9c2227f3639ff62c0}{PlatformAdaptor}}(QObject\ *parent\ =\ \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00058}00058\ }
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00059}00059\ \ \ \ \ \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor}{\string~PlatformAdaptor}}()\ \textcolor{keyword}{override}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00060}00060\ }
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00061}00061\ }
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00062}00062\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00063}00063\ \ \ \ \ \textcolor{comment}{//\ Methods}}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00064}00064\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00065}00065\ }
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00070}\mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_ac9afa49073d65afd354851379afe0986}{00070}}\ \ \ \ \ QString\ \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_ac9afa49073d65afd354851379afe0986}{currentSSID}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00071}00071\ }
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00073}\mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_aa576dfcc599121d187d40999654a67a3}{00073}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_aa576dfcc599121d187d40999654a67a3}{disableScreenSaver}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00074}00074\ }
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00080}\mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_a052242cc2a7e044f0666f33423f43054}{00080}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_a052242cc2a7e044f0666f33423f43054}{setupInputMethodEventFilter}}(QQuickItem\ *item)\textcolor{keyword}{\ override\ }\{}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00081}00081\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{thread\_local}\ ImFixer\ imf;}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00082}00082\ \ \ \ \ \ \ \ \ item-\/>installEventFilter(\&imf);}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00083}00083\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00084}00084\ }
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00086}\mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_aee82844ae442df23bdd2ab407c1887f6}{00086}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_aee82844ae442df23bdd2ab407c1887f6}{vibrateBrief}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00087}00087\ }
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00089}\mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_a224659e7cce4e6cdf416183751c188c7}{00089}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_a224659e7cce4e6cdf416183751c188c7}{vibrateLong}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00090}00090\ }
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00095}\mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_a809e840558e2321e6190293e7c8b0ae3}{00095}}\ \ \ \ \ QString\ \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_a809e840558e2321e6190293e7c8b0ae3}{language}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00096}00096\ }
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00097}00097\ \textcolor{preprocessor}{\#warning\ documentation}}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00098}00098\ \ \ \ \ \textcolor{keyword}{static}\ Q\_INVOKABLE\ \textcolor{keywordtype}{void}\ saveScreenshot(\textcolor{keyword}{const}\ QImage\ \&,\ QString);}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00099}00099\ }
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00101}\mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_a0594d8a1751db54ebd6155715d179b74}{00101}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor_a0594d8a1751db54ebd6155715d179b74}{onGUISetupCompleted}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00102}00102\ }
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00103}00103\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00104}00104\ \ \ \ \ Q\_DISABLE\_COPY\_MOVE(\mbox{\hyperlink{classPlatform_1_1PlatformAdaptor}{PlatformAdaptor}})}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00105}00105\ \};}
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00106}00106\ }
+\DoxyCodeLine{\Hypertarget{PlatformAdaptor__iOS_8h_source_l00107}00107\ \}\ \textcolor{comment}{//\ namespace\ Platform}}
+
+\end{DoxyCode}

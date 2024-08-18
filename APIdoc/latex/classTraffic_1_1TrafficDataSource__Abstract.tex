@@ -1,0 +1,772 @@
+\doxysection{Traffic\+::Traffic\+Data\+Source\+\_\+\+Abstract Class Reference}
+\hypertarget{classTraffic_1_1TrafficDataSource__Abstract}{}\label{classTraffic_1_1TrafficDataSource__Abstract}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+
+
+Base class for all traffic receiver data sources.  
+
+
+
+
+{\ttfamily \#include $<$Traffic\+Data\+Source\+\_\+\+Abstract.\+h$>$}
+
+Inheritance diagram for Traffic\+::Traffic\+Data\+Source\+\_\+\+Abstract\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.158621cm]{classTraffic_1_1TrafficDataSource__Abstract}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Slots}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_aa34e7e3468a845ae1031ea699b16cc95}{connect\+To\+Traffic\+Receiver}} ()=0
+\begin{DoxyCompactList}\small\item\em Start attempt to connect to traffic receiver. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_ac21f37301fc64105aa4909fe33b20cb9}{disconnect\+From\+Traffic\+Receiver}} ()=0
+\begin{DoxyCompactList}\small\item\em Disconnect from traffic receiver. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a5a527f496b25f0525684b5773d7fdf55}{set\+Password}} (const QString \&SSID, const QString \&password)
+\begin{DoxyCompactList}\small\item\em Set password. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Signals}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_a29175a0a6310a645e7ba34e26fcf42ca}\label{classTraffic_1_1TrafficDataSource__Abstract_a29175a0a6310a645e7ba34e26fcf42ca} 
+void {\bfseries connectivity\+Status\+Changed} (QString new\+Status)
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_a287d4c6523682facee4e2ef8a3f703db}\label{classTraffic_1_1TrafficDataSource__Abstract_a287d4c6523682facee4e2ef8a3f703db} 
+void {\bfseries error\+String\+Changed} (QString new\+Error)
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_ae5543aa5fa931f0dda6f376492c10ff4}{factor\+Without\+Position}} (const \mbox{\hyperlink{classTraffic_1_1TrafficFactor__DistanceOnly}{Traffic\+::\+Traffic\+Factor\+\_\+\+Distance\+Only}} \&factor)
+\begin{DoxyCompactList}\small\item\em Traffic factor without position. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a6e6718fc854bee5f87f7bc95825bc261}{factor\+With\+Position}} (const \mbox{\hyperlink{classTraffic_1_1TrafficFactor__WithPosition}{Traffic\+::\+Traffic\+Factor\+\_\+\+With\+Position}} \&factor)
+\begin{DoxyCompactList}\small\item\em Traffic factor with position. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a93337f2a8b80cf7b0873549fc7dbb4c0}{pressure\+Altitude\+Updated}} (\mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}})
+\begin{DoxyCompactList}\small\item\em Pressure altitude. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_ae6badc04c773060708920464471afee4}{position\+Updated}} (\mbox{\hyperlink{classPositioning_1_1PositionInfo}{Positioning\+::\+Position\+Info}} p\+Info)
+\begin{DoxyCompactList}\small\item\em Position info. \end{DoxyCompactList}\item 
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_a91a00e00db640da40c1eb40887b7d82b}\label{classTraffic_1_1TrafficDataSource__Abstract_a91a00e00db640da40c1eb40887b7d82b} 
+void {\bfseries receiving\+Heartbeat\+Changed} (bool)
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_ae58962aa9c1f0b6b237c474201920aa7}\label{classTraffic_1_1TrafficDataSource__Abstract_ae58962aa9c1f0b6b237c474201920aa7} 
+void {\bfseries traffic\+Receiver\+Runtime\+Error\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_a01984c18fef4314b4c630fa3bd205f9b}\label{classTraffic_1_1TrafficDataSource__Abstract_a01984c18fef4314b4c630fa3bd205f9b} 
+void {\bfseries traffic\+Receiver\+Self\+Test\+Error\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a6e08c56143cd22a1fe5f750ff43c0b0c}{traffic\+Receiver\+Hw\+Version}} (QString result)
+\begin{DoxyCompactList}\small\item\em Traffic receiver hardware version. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_af0e969dddeb1d98288428ccca235f663}{traffic\+Receiver\+Ob\+Version}} (QString result)
+\begin{DoxyCompactList}\small\item\em Traffic receiver obstacle database version. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_acaa3da4d838e22ff511f0828a34bd7aa}{traffic\+Receiver\+Sw\+Version}} (QString result)
+\begin{DoxyCompactList}\small\item\em Traffic receiver software version. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a5c183f3d353775394079a77761dc1fc6}{warning}} (const \mbox{\hyperlink{classTraffic_1_1Warning}{Traffic\+::\+Warning}} \&warning)
+\begin{DoxyCompactList}\small\item\em Traffic warning. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a1f1b84f93e7566c82a1b6e0d876ec363}{Traffic\+Data\+Source\+\_\+\+Abstract}} (bool is\+Canonical, QObject \texorpdfstring{$\ast$}{*}parent)
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a0c0b7de2782d5bb64dbdac690ed0a4fd}{canonical}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{classTraffic_1_1ConnectionInfo}{Traffic\+::\+Connection\+Info}} \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a49ff830aa2f9c946aae844521b517dfb}{connection\+Info}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a3eb47fb6ebab35c8931547027d1eadf2}{connectivity\+Status}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+virtual QString \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a064eeeaacd5886aa73678ddef8a00c7f}{data\+Format}} () const =0
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_ae42e5eae8707539f939a7ea7aeec8017}{error\+String}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+virtual QString \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_aacc1922346405a538496b212b6d05a16}{icon}} () const =0
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a148ecc55ff94efa1a55d519b80152c8a}{receiving\+Heartbeat}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+virtual QString \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_af3a0ebcb9bf2719f8ade8d4ff6f8468d}{source\+Name}} () const =0
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a17f5b531099897fdfaedd17ab42b883c}{traffic\+Receiver\+Runtime\+Error}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a3a65a01edf054196bd1de496488fd05f}{traffic\+Receiver\+Self\+Test\+Error}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_aac401d3c39711343a5d4e240e5ae351e}{process\+FLARMData}} (const QString \&data)
+\begin{DoxyCompactList}\small\item\em Process FLARM/\+NMEA data. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a6b26687aa06b80260d341c84fe5d592b}{process\+GDLMessage}} (const QByte\+Array \&message)
+\begin{DoxyCompactList}\small\item\em Process one GDL90 message. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a3d13ac6b531ce304590c921d8784c9a7}{process\+XGPSString}} (const QByte\+Array \&data)
+\begin{DoxyCompactList}\small\item\em Process one XGPS string. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a5edbc4d5d739e95eff16c39358b10c6e}{reset\+Receiving\+Heartbeat}} ()
+\begin{DoxyCompactList}\small\item\em Resetter method for the property with the same name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_ac88a41ad7a4268a53f6d416effbdffb7}{set\+Connectivity\+Status}} (const QString \&new\+Connectivity\+Status)
+\begin{DoxyCompactList}\small\item\em Setter function for the property with the same name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a571c20201fb3a902e8a5df99efab1377}{set\+Error\+String}} (const QString \&new\+Error\+String=QString())
+\begin{DoxyCompactList}\small\item\em Setter function for the property with the same name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a53d634de1067eddc68df8a43f0898fc5}{set\+Receiving\+Heartbeat}} (bool new\+Receiving\+Heartbeat)
+\begin{DoxyCompactList}\small\item\em Setter method for the property with the same name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_adf4777529f39b5e2c226d7370968ea4d}{set\+Traffic\+Receiver\+Runtime\+Error}} (const QString \&new\+Error\+String)
+\begin{DoxyCompactList}\small\item\em Setter function for the property with the same name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a8361236d0d61cbb169b348ca726ba404}{set\+Traffic\+Receiver\+Self\+Test\+Error}} (const QString \&new\+Error\+String)
+\begin{DoxyCompactList}\small\item\em Setter function for the property with the same name. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a5d7761678f5f74ba2c2d79e30ed61a5e}{canonical}}
+\begin{DoxyCompactList}\small\item\em Canonicity. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_ab81961d198aa8f53cf1d6935394a6a6f}{connectivity\+Status}}
+\begin{DoxyCompactList}\small\item\em Connectivity status. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classTraffic_1_1ConnectionInfo}{Traffic\+::\+Connection\+Info}} \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_aae0b79a83c439a1d5d5ed83dd0085873}{connection\+Info}}
+\begin{DoxyCompactList}\small\item\em Connection Info. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a418e4e3c28695ec6426b4d000f695dde}{data\+Format}}
+\begin{DoxyCompactList}\small\item\em Data format. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_ad5c337d3284f03c1beaaf0da7e494618}{error\+String}}
+\begin{DoxyCompactList}\small\item\em String describing the last socket error. \end{DoxyCompactList}\item 
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_a121c59656590c1f94689a0a4ad50e485}\label{classTraffic_1_1TrafficDataSource__Abstract_a121c59656590c1f94689a0a4ad50e485} 
+QString {\bfseries icon}
+\begin{DoxyCompactList}\small\item\em Icon that can be used to represent the connection in a GUI. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a13a3c0bfa4d3819adea943c564018e55}{receiving\+Heartbeat}}
+\begin{DoxyCompactList}\small\item\em Heartbeat indicator. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_afc6b13feeee5bd9ea1011eaeed6fb2a2}{source\+Name}}
+\begin{DoxyCompactList}\small\item\em Source name. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a90d1b6ff4762390477c05e0404e32060}{traffic\+Receiver\+Runtime\+Error}}
+\begin{DoxyCompactList}\small\item\em String describing the last traffic data receiver runtime error. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_ae9e66e5600baf14b4ef7503a6f5e3191}{traffic\+Receiver\+Self\+Test\+Error}}
+\begin{DoxyCompactList}\small\item\em String describing the last traffic data receiver self-\/test error. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Base class for all traffic receiver data sources. 
+
+This is an abstract base class for all classes that connect to a traffic receiver. In addition to the properties listed below, the class also emits imporant data via the signals barometric\+Altitude\+Updated, factor\+Without\+Position, factor\+With\+Position and warning. It contains methods to interpret FLARM and GDL90 data streams. 
+
+Definition at line \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source_l00040}{40}} of file \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source}{Traffic\+Data\+Source\+\_\+\+Abstract.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_a1f1b84f93e7566c82a1b6e0d876ec363}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!TrafficDataSource\_Abstract@{TrafficDataSource\_Abstract}}
+\index{TrafficDataSource\_Abstract@{TrafficDataSource\_Abstract}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{TrafficDataSource\_Abstract()}{TrafficDataSource\_Abstract()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_a1f1b84f93e7566c82a1b6e0d876ec363} 
+Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::\+Traffic\+Data\+Source\+\_\+\+Abstract (\begin{DoxyParamCaption}\item[{bool}]{is\+Canonical}{, }\item[{QObject \texorpdfstring{$\ast$}{*}}]{parent}{}\end{DoxyParamCaption})}
+
+
+
+Default constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em is\+Canonical} & Intializer for property canonical\\
+\hline
+{\em parent} & The standard QObject parent pointer \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_a0c0b7de2782d5bb64dbdac690ed0a4fd}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!canonical@{canonical}}
+\index{canonical@{canonical}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{canonical()}{canonical()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_a0c0b7de2782d5bb64dbdac690ed0a4fd} 
+bool Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::canonical (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property canonical 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source_l00153}{153}} of file \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source}{Traffic\+Data\+Source\+\_\+\+Abstract.\+h}}.
+
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_a49ff830aa2f9c946aae844521b517dfb}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!connectionInfo@{connectionInfo}}
+\index{connectionInfo@{connectionInfo}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{connectionInfo()}{connectionInfo()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_a49ff830aa2f9c946aae844521b517dfb} 
+virtual \mbox{\hyperlink{classTraffic_1_1ConnectionInfo}{Traffic\+::\+Connection\+Info}} Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::connection\+Info (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}, {\ttfamily [virtual]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property connection\+Info 
+\end{DoxyReturn}
+
+
+Reimplemented in \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic_a256e58785802dd20cb11084af1d9e0e5}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Bluetooth\+Classic}}, \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__SerialPort_aef1fafa1f8f49bab852ddafb25c2ac47}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Serial\+Port}}, \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp_a8b115b0034b31f5df746cae5718a05b1}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Tcp}}, and \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Udp_ae3768401c867a4f79be1eefc96524e60}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Udp}}.
+
+
+
+Definition at line \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source_l00162}{162}} of file \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source}{Traffic\+Data\+Source\+\_\+\+Abstract.\+h}}.
+
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_a3eb47fb6ebab35c8931547027d1eadf2}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!connectivityStatus@{connectivityStatus}}
+\index{connectivityStatus@{connectivityStatus}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{connectivityStatus()}{connectivityStatus()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_a3eb47fb6ebab35c8931547027d1eadf2} 
+QString Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::connectivity\+Status (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property connectivity\+Status 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source_l00168}{168}} of file \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source}{Traffic\+Data\+Source\+\_\+\+Abstract.\+h}}.
+
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_aa34e7e3468a845ae1031ea699b16cc95}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!connectToTrafficReceiver@{connectToTrafficReceiver}}
+\index{connectToTrafficReceiver@{connectToTrafficReceiver}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{connectToTrafficReceiver}{connectToTrafficReceiver}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_aa34e7e3468a845ae1031ea699b16cc95} 
+virtual void Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::connect\+To\+Traffic\+Receiver (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}, {\ttfamily [slot]}}
+
+
+
+Start attempt to connect to traffic receiver. 
+
+If this class is connected to a traffic receiver, this method does nothing. Otherwise, it stops any ongoing connection attempt and starts a new attempt to connect to a potential receiver. \Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_a064eeeaacd5886aa73678ddef8a00c7f}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!dataFormat@{dataFormat}}
+\index{dataFormat@{dataFormat}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{dataFormat()}{dataFormat()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_a064eeeaacd5886aa73678ddef8a00c7f} 
+virtual QString Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::data\+Format (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}, {\ttfamily [pure virtual]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property data\+Format 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic_a48d21592299c3dcc617e847ffcb6c61f}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Bluetooth\+Classic}}, \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__File_aed0baa2cf9ff5f10dec290862b63c046}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+File}}, \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__SerialPort_af4cd7adf086c2081061d2d6fa42f8e4c}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Serial\+Port}}, \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Simulate_a71992b13c3a5e65f1bc0d00e9ef5097d}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Simulate}}, \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp_a03da919a2dc27fed0062432b87d46547}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Tcp}}, and \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Udp_a8479b7b967521857c06d66b190c77303}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Udp}}.
+
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_ac21f37301fc64105aa4909fe33b20cb9}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!disconnectFromTrafficReceiver@{disconnectFromTrafficReceiver}}
+\index{disconnectFromTrafficReceiver@{disconnectFromTrafficReceiver}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{disconnectFromTrafficReceiver}{disconnectFromTrafficReceiver}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_ac21f37301fc64105aa4909fe33b20cb9} 
+virtual void Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::disconnect\+From\+Traffic\+Receiver (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}, {\ttfamily [slot]}}
+
+
+
+Disconnect from traffic receiver. 
+
+This method stops any ongoing connection or connection attempt. This method will not reset the property error\+String, so that the error remains visible even after the class has been disconnected from the traffic receiver. \Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_ae42e5eae8707539f939a7ea7aeec8017}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!errorString@{errorString}}
+\index{errorString@{errorString}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{errorString()}{errorString()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_ae42e5eae8707539f939a7ea7aeec8017} 
+QString Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::error\+String (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property error\+String 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source_l00183}{183}} of file \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source}{Traffic\+Data\+Source\+\_\+\+Abstract.\+h}}.
+
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_ae5543aa5fa931f0dda6f376492c10ff4}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!factorWithoutPosition@{factorWithoutPosition}}
+\index{factorWithoutPosition@{factorWithoutPosition}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{factorWithoutPosition}{factorWithoutPosition}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_ae5543aa5fa931f0dda6f376492c10ff4} 
+void Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::factor\+Without\+Position (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classTraffic_1_1TrafficFactor__DistanceOnly}{Traffic\+::\+Traffic\+Factor\+\_\+\+Distance\+Only}} \&}]{factor}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [signal]}}
+
+
+
+Traffic factor without position. 
+
+This signal is emitted when the traffic receiver informs this class about traffic whose position is not known.
+
+
+\begin{DoxyParams}{Parameters}
+{\em factor} & Traffic factor. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_a6e6718fc854bee5f87f7bc95825bc261}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!factorWithPosition@{factorWithPosition}}
+\index{factorWithPosition@{factorWithPosition}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{factorWithPosition}{factorWithPosition}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_a6e6718fc854bee5f87f7bc95825bc261} 
+void Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::factor\+With\+Position (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classTraffic_1_1TrafficFactor__WithPosition}{Traffic\+::\+Traffic\+Factor\+\_\+\+With\+Position}} \&}]{factor}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [signal]}}
+
+
+
+Traffic factor with position. 
+
+This signal is emitted when the traffic receiver informs this class about traffic whose position is known.
+
+
+\begin{DoxyParams}{Parameters}
+{\em factor} & Traffic factor. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_aacc1922346405a538496b212b6d05a16}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!icon@{icon}}
+\index{icon@{icon}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{icon()}{icon()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_aacc1922346405a538496b212b6d05a16} 
+virtual QString Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::icon (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}, {\ttfamily [pure virtual]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property icon 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic_ae8c876328c444e08816553cbb1605c16}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Bluetooth\+Classic}}, \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothLowEnergy_a407987ef3211562f1ff5343ba4690ba0}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Bluetooth\+Low\+Energy}}, \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__File_affe33ce8530598079f1a9cddd7a2f559}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+File}}, \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__SerialPort_a5c035a9421b29c64da356d8edc5b2e39}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Serial\+Port}}, \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Simulate_a4a5a05d79617db05e1a804b3a0132271}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Simulate}}, \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp_ab6424198a69ef1267cbf11d5503a187f}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Tcp}}, and \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Udp_af02aeba1d12a9a7499f05d5684a7323f}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Udp}}.
+
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_ae6badc04c773060708920464471afee4}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!positionUpdated@{positionUpdated}}
+\index{positionUpdated@{positionUpdated}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{positionUpdated}{positionUpdated}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_ae6badc04c773060708920464471afee4} 
+void Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::position\+Updated (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classPositioning_1_1PositionInfo}{Positioning\+::\+Position\+Info}}}]{p\+Info}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [signal]}}
+
+
+
+Position info. 
+
+If this class received position information from a connected traffic receiver, this information is emitted here. \Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_a93337f2a8b80cf7b0873549fc7dbb4c0}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!pressureAltitudeUpdated@{pressureAltitudeUpdated}}
+\index{pressureAltitudeUpdated@{pressureAltitudeUpdated}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{pressureAltitudeUpdated}{pressureAltitudeUpdated}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_a93337f2a8b80cf7b0873549fc7dbb4c0} 
+void Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::pressure\+Altitude\+Updated (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}}}]{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [signal]}}
+
+
+
+Pressure altitude. 
+
+If this class received pressure altitude information from a connected traffic receiver, this information is emitted here. Pressure altitude is the altitude shown by your altimeter if the altimeter is set to 1013.\+2 h\+Pa. \Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_aac401d3c39711343a5d4e240e5ae351e}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!processFLARMData@{processFLARMData}}
+\index{processFLARMData@{processFLARMData}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{processFLARMData()}{processFLARMData()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_aac401d3c39711343a5d4e240e5ae351e} 
+void Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::process\+FLARMData (\begin{DoxyParamCaption}\item[{const QString \&}]{data}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Process FLARM/\+NMEA data. 
+
+This method handles FLARM/\+NMEA data. It collects data until a full FLARM/\+NMEA sentence is found and then calls process\+FLARMSentence() to handle that sentence.
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & A QString containing FLARM/\+NMEA data. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_a6b26687aa06b80260d341c84fe5d592b}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!processGDLMessage@{processGDLMessage}}
+\index{processGDLMessage@{processGDLMessage}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{processGDLMessage()}{processGDLMessage()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_a6b26687aa06b80260d341c84fe5d592b} 
+void Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::process\+GDLMessage (\begin{DoxyParamCaption}\item[{const QByte\+Array \&}]{message}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Process one GDL90 message. 
+
+This method expects exactly one GDL90 message, including starting and trailing 0x7e bytes. The method interprets the string and updates the properties and emits signals as appropriate. Invalid messages are silently ignored.
+
+
+\begin{DoxyParams}{Parameters}
+{\em message} & A QByte\+Array containing a GDL90 message. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_a3d13ac6b531ce304590c921d8784c9a7}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!processXGPSString@{processXGPSString}}
+\index{processXGPSString@{processXGPSString}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{processXGPSString()}{processXGPSString()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_a3d13ac6b531ce304590c921d8784c9a7} 
+void Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::process\+XGPSString (\begin{DoxyParamCaption}\item[{const QByte\+Array \&}]{data}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Process one XGPS string. 
+
+This method expects exactly XGPS/\+XTRAFFIC string, as specified in
+
+\href{https://www.foreflight.com/support/network-gps/}{\texttt{ https\+://www.\+foreflight.\+com/support/network-\/gps/}}
+
+The method interprets the string and updates the properties and emits signals as appropriate. Invalid messages are silently ignored.
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & A QByte\+Array containing an XGPS string. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_a148ecc55ff94efa1a55d519b80152c8a}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!receivingHeartbeat@{receivingHeartbeat}}
+\index{receivingHeartbeat@{receivingHeartbeat}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{receivingHeartbeat()}{receivingHeartbeat()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_a148ecc55ff94efa1a55d519b80152c8a} 
+bool Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::receiving\+Heartbeat (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property receiving\+Heartbeat 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source_l00198}{198}} of file \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source}{Traffic\+Data\+Source\+\_\+\+Abstract.\+h}}.
+
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_a5edbc4d5d739e95eff16c39358b10c6e}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!resetReceivingHeartbeat@{resetReceivingHeartbeat}}
+\index{resetReceivingHeartbeat@{resetReceivingHeartbeat}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{resetReceivingHeartbeat()}{resetReceivingHeartbeat()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_a5edbc4d5d739e95eff16c39358b10c6e} 
+void Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::reset\+Receiving\+Heartbeat (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Resetter method for the property with the same name. 
+
+This is equivalent to calling set\+Receiving\+Heartbeat(false) \Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_ac88a41ad7a4268a53f6d416effbdffb7}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!setConnectivityStatus@{setConnectivityStatus}}
+\index{setConnectivityStatus@{setConnectivityStatus}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{setConnectivityStatus()}{setConnectivityStatus()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_ac88a41ad7a4268a53f6d416effbdffb7} 
+void Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::set\+Connectivity\+Status (\begin{DoxyParamCaption}\item[{const QString \&}]{new\+Connectivity\+Status}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Setter function for the property with the same name. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Connectivity\+Status} & Property connectivity\+Status \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_a571c20201fb3a902e8a5df99efab1377}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!setErrorString@{setErrorString}}
+\index{setErrorString@{setErrorString}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{setErrorString()}{setErrorString()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_a571c20201fb3a902e8a5df99efab1377} 
+void Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::set\+Error\+String (\begin{DoxyParamCaption}\item[{const QString \&}]{new\+Error\+String}{ = {\ttfamily QString()}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Setter function for the property with the same name. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Error\+String} & Property error\+String \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_a5a527f496b25f0525684b5773d7fdf55}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!setPassword@{setPassword}}
+\index{setPassword@{setPassword}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{setPassword}{setPassword}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_a5a527f496b25f0525684b5773d7fdf55} 
+virtual void Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::set\+Password (\begin{DoxyParamCaption}\item[{const QString \&}]{SSID}{, }\item[{const QString \&}]{password}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}, {\ttfamily [slot]}}
+
+
+
+Set password. 
+
+If the implementation of the traffic data source supports passwords, this method checks if the traffic data source is waiting for a password with key SSID. If so, it will send the password to the traffic data receiver. If the implementation of the traffic data source does not support passwords, this method does nothing. 
+
+Definition at line \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source_l00359}{359}} of file \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source}{Traffic\+Data\+Source\+\_\+\+Abstract.\+h}}.
+
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_a53d634de1067eddc68df8a43f0898fc5}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!setReceivingHeartbeat@{setReceivingHeartbeat}}
+\index{setReceivingHeartbeat@{setReceivingHeartbeat}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{setReceivingHeartbeat()}{setReceivingHeartbeat()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_a53d634de1067eddc68df8a43f0898fc5} 
+void Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::set\+Receiving\+Heartbeat (\begin{DoxyParamCaption}\item[{bool}]{new\+Receiving\+Heartbeat}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Setter method for the property with the same name. 
+
+When set to \textquotesingle{}true\textquotesingle{} a timer is stated that will automatically reset the property to \textquotesingle{}false\textquotesingle{} after 5 seconds of inactivity.
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Receiving\+Heartbeat} & Property receiving\+Heartbeat \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_adf4777529f39b5e2c226d7370968ea4d}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!setTrafficReceiverRuntimeError@{setTrafficReceiverRuntimeError}}
+\index{setTrafficReceiverRuntimeError@{setTrafficReceiverRuntimeError}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{setTrafficReceiverRuntimeError()}{setTrafficReceiverRuntimeError()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_adf4777529f39b5e2c226d7370968ea4d} 
+void Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::set\+Traffic\+Receiver\+Runtime\+Error (\begin{DoxyParamCaption}\item[{const QString \&}]{new\+Error\+String}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Setter function for the property with the same name. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Error\+String} & Property error\+String \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_a8361236d0d61cbb169b348ca726ba404}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!setTrafficReceiverSelfTestError@{setTrafficReceiverSelfTestError}}
+\index{setTrafficReceiverSelfTestError@{setTrafficReceiverSelfTestError}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{setTrafficReceiverSelfTestError()}{setTrafficReceiverSelfTestError()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_a8361236d0d61cbb169b348ca726ba404} 
+void Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::set\+Traffic\+Receiver\+Self\+Test\+Error (\begin{DoxyParamCaption}\item[{const QString \&}]{new\+Error\+String}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Setter function for the property with the same name. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Error\+String} & Property error\+String \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_af3a0ebcb9bf2719f8ade8d4ff6f8468d}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!sourceName@{sourceName}}
+\index{sourceName@{sourceName}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{sourceName()}{sourceName()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_af3a0ebcb9bf2719f8ade8d4ff6f8468d} 
+virtual QString Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::source\+Name (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}, {\ttfamily [pure virtual]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property source\+Name 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic_aa6fd911a88616809c4a49af8d67f1a9b}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Bluetooth\+Classic}}, \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothLowEnergy_ad2c9c3cda625c16376dfb4ae3a972f62}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Bluetooth\+Low\+Energy}}, \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__File_a547c442589e2fdd7872996c5f159650b}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+File}}, \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__SerialPort_a0bde7b9f0ccc380171ad1d36cc3766ac}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Serial\+Port}}, \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Simulate_a7bb350e54f4a7cb3d4888094b46b3ad8}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Simulate}}, \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Tcp_af19a983b2b917d655c20d27c2ad541fa}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Tcp}}, and \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Udp_a6e9c1e5d7f15fc7e377f3f7abc66ba7b}{Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Udp}}.
+
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_a6e08c56143cd22a1fe5f750ff43c0b0c}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!trafficReceiverHwVersion@{trafficReceiverHwVersion}}
+\index{trafficReceiverHwVersion@{trafficReceiverHwVersion}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{trafficReceiverHwVersion}{trafficReceiverHwVersion}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_a6e08c56143cd22a1fe5f750ff43c0b0c} 
+void Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::traffic\+Receiver\+Hw\+Version (\begin{DoxyParamCaption}\item[{QString}]{result}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [signal]}}
+
+
+
+Traffic receiver hardware version. 
+
+If this class receives information about the hardware version of a connected traffic receiver, this information is emitted here.
+
+
+\begin{DoxyParams}{Parameters}
+{\em result} & String that identifies the hardware version \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_af0e969dddeb1d98288428ccca235f663}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!trafficReceiverObVersion@{trafficReceiverObVersion}}
+\index{trafficReceiverObVersion@{trafficReceiverObVersion}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{trafficReceiverObVersion}{trafficReceiverObVersion}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_af0e969dddeb1d98288428ccca235f663} 
+void Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::traffic\+Receiver\+Ob\+Version (\begin{DoxyParamCaption}\item[{QString}]{result}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [signal]}}
+
+
+
+Traffic receiver obstacle database version. 
+
+If this class receives information about the obstacle database version of a connected traffic receiver, this information is emitted here.
+
+
+\begin{DoxyParams}{Parameters}
+{\em result} & String that identifies the obstacle database version \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_a17f5b531099897fdfaedd17ab42b883c}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!trafficReceiverRuntimeError@{trafficReceiverRuntimeError}}
+\index{trafficReceiverRuntimeError@{trafficReceiverRuntimeError}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{trafficReceiverRuntimeError()}{trafficReceiverRuntimeError()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_a17f5b531099897fdfaedd17ab42b883c} 
+QString Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::traffic\+Receiver\+Runtime\+Error (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property error\+String 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source_l00213}{213}} of file \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source}{Traffic\+Data\+Source\+\_\+\+Abstract.\+h}}.
+
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_a3a65a01edf054196bd1de496488fd05f}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!trafficReceiverSelfTestError@{trafficReceiverSelfTestError}}
+\index{trafficReceiverSelfTestError@{trafficReceiverSelfTestError}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{trafficReceiverSelfTestError()}{trafficReceiverSelfTestError()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_a3a65a01edf054196bd1de496488fd05f} 
+QString Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::traffic\+Receiver\+Self\+Test\+Error (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property error\+String 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source_l00222}{222}} of file \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source}{Traffic\+Data\+Source\+\_\+\+Abstract.\+h}}.
+
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_acaa3da4d838e22ff511f0828a34bd7aa}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!trafficReceiverSwVersion@{trafficReceiverSwVersion}}
+\index{trafficReceiverSwVersion@{trafficReceiverSwVersion}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{trafficReceiverSwVersion}{trafficReceiverSwVersion}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_acaa3da4d838e22ff511f0828a34bd7aa} 
+void Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::traffic\+Receiver\+Sw\+Version (\begin{DoxyParamCaption}\item[{QString}]{result}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [signal]}}
+
+
+
+Traffic receiver software version. 
+
+If this class receives information about the software version of a connected traffic receiver, this information is emitted here.
+
+
+\begin{DoxyParams}{Parameters}
+{\em result} & String that identifies the software version \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_a5c183f3d353775394079a77761dc1fc6}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!warning@{warning}}
+\index{warning@{warning}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{warning}{warning}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_a5c183f3d353775394079a77761dc1fc6} 
+void Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::warning (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classTraffic_1_1Warning}{Traffic\+::\+Warning}} \&}]{warning}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [signal]}}
+
+
+
+Traffic warning. 
+
+This signal is emitted when the traffic receiver issues a traffic warning. An invalid warning (i.\+e. a warning with alarm level = -\/1) is emitted to indicate that the last warning is no longer active and should be disregarded.
+
+
+\begin{DoxyParams}{Parameters}
+{\em warning} & Traffic warning. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Property Documentation}
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_a5d7761678f5f74ba2c2d79e30ed61a5e}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!canonical@{canonical}}
+\index{canonical@{canonical}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{canonical}{canonical}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_a5d7761678f5f74ba2c2d79e30ed61a5e} 
+bool Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::canonical\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Canonicity. 
+
+This property contains \textquotesingle{}true\textquotesingle{} if the connection is a canonical connection that cannot be deleted. 
+
+Definition at line \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source_l00066}{66}} of file \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source}{Traffic\+Data\+Source\+\_\+\+Abstract.\+h}}.
+
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_aae0b79a83c439a1d5d5ed83dd0085873}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!connectionInfo@{connectionInfo}}
+\index{connectionInfo@{connectionInfo}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{connectionInfo}{connectionInfo}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_aae0b79a83c439a1d5d5ed83dd0085873} 
+\mbox{\hyperlink{classTraffic_1_1ConnectionInfo}{Traffic\+::\+Connection\+Info}} Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::connection\+Info\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Connection Info. 
+
+This property contains a connection info that can be used to save and restore this connection. 
+
+Definition at line \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source_l00086}{86}} of file \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source}{Traffic\+Data\+Source\+\_\+\+Abstract.\+h}}.
+
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_ab81961d198aa8f53cf1d6935394a6a6f}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!connectivityStatus@{connectivityStatus}}
+\index{connectivityStatus@{connectivityStatus}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{connectivityStatus}{connectivityStatus}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_ab81961d198aa8f53cf1d6935394a6a6f} 
+QString Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::connectivity\+Status\hspace{0.3cm}{\ttfamily [read]}, {\ttfamily [write]}}
+
+
+
+Connectivity status. 
+
+This property contains a human-\/readable, translated string that describes if the class has established a connection to a traffic receiver. A typical string could be "{}\+Bound to an address and port, but not connected yet."{}. Subclasses shall use the setter function to set the property content.
+
+The setter method is protected and can be used by subclasses to update the property content. 
+
+Definition at line \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source_l00079}{79}} of file \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source}{Traffic\+Data\+Source\+\_\+\+Abstract.\+h}}.
+
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_a418e4e3c28695ec6426b4d000f695dde}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!dataFormat@{dataFormat}}
+\index{dataFormat@{dataFormat}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{dataFormat}{dataFormat}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_a418e4e3c28695ec6426b4d000f695dde} 
+QString Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::data\+Format\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Data format. 
+
+This property contains a string of the form "{}\+FLARM/\+NMEA"{} or "{}\+GDL90 · XGPS"{}. 
+
+Definition at line \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source_l00092}{92}} of file \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source}{Traffic\+Data\+Source\+\_\+\+Abstract.\+h}}.
+
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_ad5c337d3284f03c1beaaf0da7e494618}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!errorString@{errorString}}
+\index{errorString@{errorString}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{errorString}{errorString}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_ad5c337d3284f03c1beaaf0da7e494618} 
+QString Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::error\+String\hspace{0.3cm}{\ttfamily [read]}, {\ttfamily [write]}}
+
+
+
+String describing the last socket error. 
+
+This property holds a translated, human-\/readable string that describes the last error, or an empty string when there is not error. The string is cleared when a new connection attempt is started. 
+
+Definition at line \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source_l00100}{100}} of file \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source}{Traffic\+Data\+Source\+\_\+\+Abstract.\+h}}.
+
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_a13a3c0bfa4d3819adea943c564018e55}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!receivingHeartbeat@{receivingHeartbeat}}
+\index{receivingHeartbeat@{receivingHeartbeat}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{receivingHeartbeat}{receivingHeartbeat}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_a13a3c0bfa4d3819adea943c564018e55} 
+bool Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::receiving\+Heartbeat\hspace{0.3cm}{\ttfamily [read]}, {\ttfamily [write]}}
+
+
+
+Heartbeat indicator. 
+
+When active, traffic receivers send regular heartbeat messages. These can be used to verify that the connection to the receiver works, even in times when no traffic is reported. This property indicates if the class receives heartbeat messages from at least one of the known receivers.
+
+The setter and resetter methods are protected and can be used by subclasses to update the property content. 
+
+Definition at line \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source_l00115}{115}} of file \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source}{Traffic\+Data\+Source\+\_\+\+Abstract.\+h}}.
+
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_afc6b13feeee5bd9ea1011eaeed6fb2a2}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!sourceName@{sourceName}}
+\index{sourceName@{sourceName}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{sourceName}{sourceName}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_afc6b13feeee5bd9ea1011eaeed6fb2a2} 
+QString Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::source\+Name\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Source name. 
+
+This property contains a short, human-\/readable and translated description of the source. A typical string is "{}\+TCP connection to 132.\+168.\+1.\+1 port 2000"{}. 
+
+Definition at line \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source_l00123}{123}} of file \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source}{Traffic\+Data\+Source\+\_\+\+Abstract.\+h}}.
+
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_a90d1b6ff4762390477c05e0404e32060}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!trafficReceiverRuntimeError@{trafficReceiverRuntimeError}}
+\index{trafficReceiverRuntimeError@{trafficReceiverRuntimeError}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{trafficReceiverRuntimeError}{trafficReceiverRuntimeError}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_a90d1b6ff4762390477c05e0404e32060} 
+QString Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::traffic\+Receiver\+Runtime\+Error\hspace{0.3cm}{\ttfamily [read]}, {\ttfamily [write]}}
+
+
+
+String describing the last traffic data receiver runtime error. 
+
+This property holds a translated, human-\/readable string that describes the last error reported by the traffic receiver, or an empty string when there is not error. The string is cleared when a new connection attempt is started. 
+
+Definition at line \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source_l00132}{132}} of file \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source}{Traffic\+Data\+Source\+\_\+\+Abstract.\+h}}.
+
+\Hypertarget{classTraffic_1_1TrafficDataSource__Abstract_ae9e66e5600baf14b4ef7503a6f5e3191}\index{Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}!trafficReceiverSelfTestError@{trafficReceiverSelfTestError}}
+\index{trafficReceiverSelfTestError@{trafficReceiverSelfTestError}!Traffic::TrafficDataSource\_Abstract@{Traffic::TrafficDataSource\_Abstract}}
+\doxysubsubsection{\texorpdfstring{trafficReceiverSelfTestError}{trafficReceiverSelfTestError}}
+{\footnotesize\ttfamily \label{classTraffic_1_1TrafficDataSource__Abstract_ae9e66e5600baf14b4ef7503a6f5e3191} 
+QString Traffic\+::\+Traffic\+Data\+Source\+\_\+\+Abstract\+::traffic\+Receiver\+Self\+Test\+Error\hspace{0.3cm}{\ttfamily [read]}, {\ttfamily [write]}}
+
+
+
+String describing the last traffic data receiver self-\/test error. 
+
+This property holds a translated, human-\/readable string that describes the last error reported by the traffic receiver self-\/test, or an empty string when there is not error. The string is cleared when a new connection attempt is started. 
+
+Definition at line \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source_l00141}{141}} of file \mbox{\hyperlink{TrafficDataSource__Abstract_8h_source}{Traffic\+Data\+Source\+\_\+\+Abstract.\+h}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/traffic/Traffic\+Data\+Source\+\_\+\+Abstract.\+h\end{DoxyCompactItemize}

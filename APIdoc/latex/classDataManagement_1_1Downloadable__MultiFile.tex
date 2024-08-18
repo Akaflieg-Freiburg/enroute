@@ -1,0 +1,490 @@
+\doxysection{Data\+Management\+::Downloadable\+\_\+\+Multi\+File Class Reference}
+\hypertarget{classDataManagement_1_1Downloadable__MultiFile}{}\label{classDataManagement_1_1Downloadable__MultiFile}\index{DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}}
+
+
+Group of closely related downloadable items.  
+
+
+
+
+{\ttfamily \#include $<$Downloadable\+\_\+\+Multi\+File.\+h$>$}
+
+Inheritance diagram for Data\+Management\+::Downloadable\+\_\+\+Multi\+File\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classDataManagement_1_1Downloadable__MultiFile}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile_aa10fbcc5d85d811c4e43faf90eefe2d1}{Update\+Policy}} \{ \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile_aa10fbcc5d85d811c4e43faf90eefe2d1a6219e1b27b4ad850343b76a919213207}{Single\+Update}}
+, \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile_aa10fbcc5d85d811c4e43faf90eefe2d1a4b0bbb5398d1d58bb7bd11b05b5b3397}{Multi\+Update}}
+ \}
+\begin{DoxyCompactList}\small\item\em Update Policy. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Types inherited from \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract}{Data\+Management\+::\+Downloadable\+\_\+\+Abstract}}}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a43fcd87601d16172eb324b7680f169d1}{Content\+Type}} \{ \newline
+\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a43fcd87601d16172eb324b7680f169d1a2a7c86b1653b7fe4c9b694e84d37e6eb}{VAC}}
+, \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a43fcd87601d16172eb324b7680f169d1aa900287a6fc92e7ae9f86a8904460adf}{Aviation\+Map}}
+, \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a43fcd87601d16172eb324b7680f169d1a7803d9cd4bc257ac3f0254d19b1eae96}{Base\+Map\+Vector}}
+, \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a43fcd87601d16172eb324b7680f169d1acf2b4f329c517105b8fd0ac591838246}{Base\+Map\+Raster}}
+, \newline
+\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a43fcd87601d16172eb324b7680f169d1a0f6600ad1c408ca017a1cf93f57e29f8}{Data}}
+, \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a43fcd87601d16172eb324b7680f169d1ad11f26c728f87fc132b9b9637319857e}{Map\+Set}}
+, \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a43fcd87601d16172eb324b7680f169d1a3df875072865cd877ca357dc74a80d5e}{Terrain\+Map}}
+ \}
+\begin{DoxyCompactList}\small\item\em Type of content managed by this instance. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Signals}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDataManagement_1_1Downloadable__MultiFile_ac0878b9dff69e734bb7c05c3ab55b65d}\label{classDataManagement_1_1Downloadable__MultiFile_ac0878b9dff69e734bb7c05c3ab55b65d} 
+void {\bfseries downloadables\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Signals inherited from \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract}{Data\+Management\+::\+Downloadable\+\_\+\+Abstract}}}
+\begin{DoxyCompactItemize}
+\item 
+void {\bfseries bounding\+Box\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+void {\bfseries content\+Type\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+void {\bfseries description\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+void {\bfseries downloading\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a0d0cedd2c97765a34ead1b0553389499}{error}} (QString object\+Name, QString message)
+\begin{DoxyCompactList}\small\item\em Download error. \end{DoxyCompactList}\item 
+void {\bfseries file\+Content\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Indicates that the content of a local file (or several local files) has changed. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_ad053102a0247b0f0cc40ffc3124af898}{file\+Content\+Changed\+\_\+delayed}} ()
+\begin{DoxyCompactList}\small\item\em Emitted some time after the content of one of the local files changes. \end{DoxyCompactList}\item 
+void {\bfseries files\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+void {\bfseries has\+File\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+void {\bfseries info\+Text\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+void {\bfseries remote\+File\+Size\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+void {\bfseries section\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+void {\bfseries update\+Size\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile_a4b1e20b99741cce6d855757af8233677}{Downloadable\+\_\+\+Multi\+File}} (\mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile_aa10fbcc5d85d811c4e43faf90eefe2d1}{Data\+Management\+::\+Downloadable\+\_\+\+Multi\+File\+::\+Update\+Policy}} update\+Policy, QObject \texorpdfstring{$\ast$}{*}parent=nullptr)
+\begin{DoxyCompactList}\small\item\em Standard constructor. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile_a64e2cfe006acd151c46f53063c8880cd}{description}} () -\/$>$ QString override
+\begin{DoxyCompactList}\small\item\em Implementation of pure virtual getter method from \doxylink{classDataManagement_1_1Downloadable__Abstract}{Downloadable\+\_\+\+Abstract}. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile_a812835c259ea6012e1a9612e3cf498b7}{downloadables}} () -\/$>$ QList$<$ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract}{Data\+Management\+::\+Downloadable\+\_\+\+Abstract}} \texorpdfstring{$\ast$}{*} $>$
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile_a1431902efee190ce2ca2f07033c82d00}{downloading}} () -\/$>$ bool override
+\begin{DoxyCompactList}\small\item\em Implementation of pure virtual getter method from \doxylink{classDataManagement_1_1Downloadable__Abstract}{Downloadable\+\_\+\+Abstract}. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile_ad62f0026ea5d929bfff2d7246f07d70e}{files}} () -\/$>$ QString\+List override
+\begin{DoxyCompactList}\small\item\em Implementation of pure virtual getter method from \doxylink{classDataManagement_1_1Downloadable__Abstract}{Downloadable\+\_\+\+Abstract}. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile_a52de4504f62d3820c27cb5b09b0dee41}{has\+File}} () -\/$>$ bool override
+\begin{DoxyCompactList}\small\item\em Implementation of pure virtual getter method from \doxylink{classDataManagement_1_1Downloadable__Abstract}{Downloadable\+\_\+\+Abstract}. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile_a1f31de92df63b8716a3f3fe34ae43733}{info\+Text}} () -\/$>$ QString override
+\begin{DoxyCompactList}\small\item\em Implementation of pure virtual getter method from \doxylink{classDataManagement_1_1Downloadable__Abstract}{Downloadable\+\_\+\+Abstract}. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile_aebad08f72b9a3abaa8aabac6fcf5a727}{remote\+File\+Size}} () -\/$>$ qint64 override
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile_abbb42cc494674e7bae8e760ff0a59f84}{update\+Size}} () -\/$>$ \mbox{\hyperlink{classUnits_1_1ByteSize}{Units\+::\+Byte\+Size}} override
+\begin{DoxyCompactList}\small\item\em Implementation of pure virtual getter method from \doxylink{classDataManagement_1_1Downloadable__Abstract}{Downloadable\+\_\+\+Abstract}. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE void \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile_a3d94c556e3ffb8324ff1c0e57ba3f4f7}{add}} (\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract}{Data\+Management\+::\+Downloadable\+\_\+\+Abstract}} \texorpdfstring{$\ast$}{*}map)
+\begin{DoxyCompactList}\small\item\em Add a \doxylink{classDataManagement_1_1Downloadable__SingleFile}{Downloadable\+\_\+\+Single\+File} to this \doxylink{classDataManagement_1_1Downloadable__MultiFile}{Downloadable\+\_\+\+Multi\+File}. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE void \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile_ac84ffc4996cdb063d4869800ee898eef}{add}} (const QVector$<$ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract}{Data\+Management\+::\+Downloadable\+\_\+\+Abstract}} \texorpdfstring{$\ast$}{*} $>$ \&maps)
+\begin{DoxyCompactList}\small\item\em Add \textquotesingle{}\doxylink{classDataManagement_1_1Downloadable__SingleFile}{Downloadable\+\_\+\+Single\+File}\textquotesingle{}s to this \doxylink{classDataManagement_1_1Downloadable__MultiFile}{Downloadable\+\_\+\+Multi\+File}. \end{DoxyCompactList}\item 
+\Hypertarget{classDataManagement_1_1Downloadable__MultiFile_a4b5fb470073a93bd24b244fe8cfc046f}\label{classDataManagement_1_1Downloadable__MultiFile_a4b5fb470073a93bd24b244fe8cfc046f} 
+Q\+\_\+\+INVOKABLE void {\bfseries clear} ()
+\begin{DoxyCompactList}\small\item\em Removes all children. \end{DoxyCompactList}\item 
+\Hypertarget{classDataManagement_1_1Downloadable__MultiFile_a516af80e74a4b7b4f641cac988c7b0ec}\label{classDataManagement_1_1Downloadable__MultiFile_a516af80e74a4b7b4f641cac988c7b0ec} 
+Q\+\_\+\+INVOKABLE void {\bfseries delete\+Files} () override
+\begin{DoxyCompactList}\small\item\em Implementation of pure virtual method from \doxylink{classDataManagement_1_1Downloadable__Abstract}{Downloadable\+\_\+\+Abstract}. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE QList$<$ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract}{Data\+Management\+::\+Downloadable\+\_\+\+Abstract}} \texorpdfstring{$\ast$}{*} $>$ \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile_a94b31ba47861576f647b00e770109983}{downloadables4\+Location}} (const QGeo\+Coordinate \&location)
+\begin{DoxyCompactList}\small\item\em Downloadables for a given location. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE QList$<$ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract}{Data\+Management\+::\+Downloadable\+\_\+\+Abstract}} \texorpdfstring{$\ast$}{*} $>$ \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile_af92253160b8df4047f00c4046b431728}{downloadables\+By\+Distance}} (const QGeo\+Coordinate \&location)
+\begin{DoxyCompactList}\small\item\em Downloadables, sorted by distance to a given location. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE void \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile_ad6186e3b48dc6f40f92bdeb93946a4cb}{remove}} (\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract}{Data\+Management\+::\+Downloadable\+\_\+\+Abstract}} \texorpdfstring{$\ast$}{*}map)
+\begin{DoxyCompactList}\small\item\em Remove a \doxylink{classDataManagement_1_1Downloadable__SingleFile}{Downloadable\+\_\+\+Single\+File} from this \doxylink{classDataManagement_1_1Downloadable__MultiFile}{Downloadable\+\_\+\+Multi\+File}. \end{DoxyCompactList}\item 
+\Hypertarget{classDataManagement_1_1Downloadable__MultiFile_a8e62ecb0eae94e21cea9096794ae5745}\label{classDataManagement_1_1Downloadable__MultiFile_a8e62ecb0eae94e21cea9096794ae5745} 
+Q\+\_\+\+INVOKABLE void {\bfseries start\+Download} () override
+\begin{DoxyCompactList}\small\item\em Implementation of pure virtual method from \doxylink{classDataManagement_1_1Downloadable__Abstract}{Downloadable\+\_\+\+Abstract}. \end{DoxyCompactList}\item 
+\Hypertarget{classDataManagement_1_1Downloadable__MultiFile_af4dedaf787385053fcdc66caba4e1a69}\label{classDataManagement_1_1Downloadable__MultiFile_af4dedaf787385053fcdc66caba4e1a69} 
+Q\+\_\+\+INVOKABLE void {\bfseries stop\+Download} () override
+\begin{DoxyCompactList}\small\item\em Implementation of pure virtual method from \doxylink{classDataManagement_1_1Downloadable__Abstract}{Downloadable\+\_\+\+Abstract}. \end{DoxyCompactList}\item 
+\Hypertarget{classDataManagement_1_1Downloadable__MultiFile_a09cba5fa07f8e61fa9fd323e0039ebdb}\label{classDataManagement_1_1Downloadable__MultiFile_a09cba5fa07f8e61fa9fd323e0039ebdb} 
+Q\+\_\+\+INVOKABLE void {\bfseries update} () override
+\begin{DoxyCompactList}\small\item\em Implementation of pure virtual method from \doxylink{classDataManagement_1_1Downloadable__Abstract}{Downloadable\+\_\+\+Abstract}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract}{Data\+Management\+::\+Downloadable\+\_\+\+Abstract}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a61e0319e1684029c5b27eb9c2e5b43ea}{Downloadable\+\_\+\+Abstract}} (QObject \texorpdfstring{$\ast$}{*}parent=nullptr)
+\begin{DoxyCompactList}\small\item\em Standard constructor. \end{DoxyCompactList}\item 
+QGeo\+Rectangle \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a08564e7edd6ac3f60e171adb4f7af9c9}{bounding\+Box}} () const
+\begin{DoxyCompactList}\small\item\em Getter method for the property with the same name. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a43fcd87601d16172eb324b7680f169d1}{Data\+Management\+::\+Downloadable\+\_\+\+Abstract\+::\+Content\+Type}} \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_aebde1a559fa6867c66c2af189e9c93c6}{content\+Type}} () const
+\begin{DoxyCompactList}\small\item\em Getter method for the property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a648d307557ccb38e749d8ca24464af21}{section}} () const -\/$>$ QString
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+virtual auto \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a44c213cfe59b11871d2ea9d347562684}{update\+Size\+String}} () -\/$>$ QString
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_aeb1a8dff7102ad948b3abe93715636d9}{set\+Bounding\+Box}} (const QGeo\+Rectangle \&\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_ae5177c6dd9e8d8eb841064448eb3e0c7}{bounding\+Box}})
+\begin{DoxyCompactList}\small\item\em Setter function for the property with the same name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a41f6582173aeca47eeb2f9a72cf44adf}{set\+Content\+Type}} (\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a43fcd87601d16172eb324b7680f169d1}{Data\+Management\+::\+Downloadable\+\_\+\+Abstract\+::\+Content\+Type}} \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_afedc84cefaaa0d14e600acc8e868556a}{content\+Type}})
+\begin{DoxyCompactList}\small\item\em Setter function for the property with the same name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_aea2628d41d9b7bf68506e94f797a627e}{set\+Section}} (const QString \&section\+Name)
+\begin{DoxyCompactList}\small\item\em Setter function for the property with the same name. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE void {\bfseries kill\+File\+Content\+Changed\+\_\+delayed} ()
+\begin{DoxyCompactList}\small\item\em Kill pending emission of signal file\+Content\+Changed\+\_\+delayed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+QList$<$ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract}{Data\+Management\+::\+Downloadable\+\_\+\+Abstract}} \texorpdfstring{$\ast$}{*} $>$ \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile_a67b8ca94c149bf7069f30ba9cd34ff95}{downloadables}}
+\begin{DoxyCompactList}\small\item\em List of Downloadables in this group. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Properties inherited from \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract}{Data\+Management\+::\+Downloadable\+\_\+\+Abstract}}}
+\begin{DoxyCompactItemize}
+\item 
+QGeo\+Rectangle {\bfseries bounding\+Box}
+\begin{DoxyCompactList}\small\item\em Geographic bounding box. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a43fcd87601d16172eb324b7680f169d1}{Data\+Management\+::\+Downloadable\+\_\+\+Abstract\+::\+Content\+Type}} {\bfseries content\+Type}
+\begin{DoxyCompactList}\small\item\em Most probable content of file(s) managed by this object. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a8893b5a2c3e58772f099bb1c5db7d25c}{description}}
+\begin{DoxyCompactList}\small\item\em Describe installed file(s) \end{DoxyCompactList}\item 
+bool {\bfseries downloading}
+\begin{DoxyCompactList}\small\item\em Indicates whether a download process is currently running. \end{DoxyCompactList}\item 
+QString\+List {\bfseries files}
+\begin{DoxyCompactList}\small\item\em Names of all files that have been downloaded by any of the Downloadble objects in this group (and their children) \end{DoxyCompactList}\item 
+bool {\bfseries has\+File}
+\begin{DoxyCompactList}\small\item\em Indicates if (at least one) local file exists. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a70f58f53a021cc261f51c87651dd0995}{info\+Text}}
+\begin{DoxyCompactList}\small\item\em Short info text describing the state of the downloadable(s) \end{DoxyCompactList}\item 
+qint64 \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_ac91c397a50fcef508e3d24b0a5c24d56}{remote\+File\+Size}}
+\begin{DoxyCompactList}\small\item\em Size of the remote file. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a0a22a2a62205d794701b6caba5cc0d7c}{section}}
+\begin{DoxyCompactList}\small\item\em Headline name for the Downloadable. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classUnits_1_1ByteSize}{Units\+::\+Byte\+Size}} \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a4b5c4fd31fccacba36f438e801448e78}{update\+Size}}
+\begin{DoxyCompactList}\small\item\em Update size. \end{DoxyCompactList}\item 
+QString {\bfseries update\+Size\+String}
+\begin{DoxyCompactList}\small\item\em Update size as a localized string. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Group of closely related downloadable items. 
+
+This class implements a group of \doxylink{classDataManagement_1_1Downloadable__Abstract}{Downloadable\+\_\+\+Abstract} objects. 
+
+Definition at line \mbox{\hyperlink{Downloadable__MultiFile_8h_source_l00035}{35}} of file \mbox{\hyperlink{Downloadable__MultiFile_8h_source}{Downloadable\+\_\+\+Multi\+File.\+h}}.
+
+
+
+\doxysubsection{Member Enumeration Documentation}
+\Hypertarget{classDataManagement_1_1Downloadable__MultiFile_aa10fbcc5d85d811c4e43faf90eefe2d1}\index{DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}!UpdatePolicy@{UpdatePolicy}}
+\index{UpdatePolicy@{UpdatePolicy}!DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}}
+\doxysubsubsection{\texorpdfstring{UpdatePolicy}{UpdatePolicy}}
+{\footnotesize\ttfamily \label{classDataManagement_1_1Downloadable__MultiFile_aa10fbcc5d85d811c4e43faf90eefe2d1} 
+enum \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile_aa10fbcc5d85d811c4e43faf90eefe2d1}{Data\+Management\+::\+Downloadable\+\_\+\+Multi\+File\+::\+Update\+Policy}}}
+
+
+
+Update Policy. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SingleUpdate@{SingleUpdate}!DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}}\index{DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}!SingleUpdate@{SingleUpdate}}}\Hypertarget{classDataManagement_1_1Downloadable__MultiFile_aa10fbcc5d85d811c4e43faf90eefe2d1a6219e1b27b4ad850343b76a919213207}\label{classDataManagement_1_1Downloadable__MultiFile_aa10fbcc5d85d811c4e43faf90eefe2d1} 
+Single\+Update&Update children that are updatable. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{MultiUpdate@{MultiUpdate}!DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}}\index{DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}!MultiUpdate@{MultiUpdate}}}\Hypertarget{classDataManagement_1_1Downloadable__MultiFile_aa10fbcc5d85d811c4e43faf90eefe2d1a4b0bbb5398d1d58bb7bd11b05b5b3397}\label{classDataManagement_1_1Downloadable__MultiFile_aa10fbcc5d85d811c4e43faf90eefe2d1} 
+Multi\+Update&Update children that are updatable. If one local file exist, download all other files on update. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line \mbox{\hyperlink{Downloadable__MultiFile_8h_source_l00042}{42}} of file \mbox{\hyperlink{Downloadable__MultiFile_8h_source}{Downloadable\+\_\+\+Multi\+File.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classDataManagement_1_1Downloadable__MultiFile_a4b1e20b99741cce6d855757af8233677}\index{DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}!Downloadable\_MultiFile@{Downloadable\_MultiFile}}
+\index{Downloadable\_MultiFile@{Downloadable\_MultiFile}!DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}}
+\doxysubsubsection{\texorpdfstring{Downloadable\_MultiFile()}{Downloadable\_MultiFile()}}
+{\footnotesize\ttfamily \label{classDataManagement_1_1Downloadable__MultiFile_a4b1e20b99741cce6d855757af8233677} 
+Data\+Management\+::\+Downloadable\+\_\+\+Multi\+File\+::\+Downloadable\+\_\+\+Multi\+File (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile_aa10fbcc5d85d811c4e43faf90eefe2d1}{Data\+Management\+::\+Downloadable\+\_\+\+Multi\+File\+::\+Update\+Policy}}}]{update\+Policy}{, }\item[{QObject \texorpdfstring{$\ast$}{*}}]{parent}{ = {\ttfamily nullptr}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Standard constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em update\+Policy} & Update policy of this instance\\
+\hline
+{\em parent} & The standard QObject parent pointer. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classDataManagement_1_1Downloadable__MultiFile_ac84ffc4996cdb063d4869800ee898eef}\index{DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}!add@{add}}
+\index{add@{add}!DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classDataManagement_1_1Downloadable__MultiFile_ac84ffc4996cdb063d4869800ee898eef} 
+Q\+\_\+\+INVOKABLE void Data\+Management\+::\+Downloadable\+\_\+\+Multi\+File\+::add (\begin{DoxyParamCaption}\item[{const QVector$<$ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract}{Data\+Management\+::\+Downloadable\+\_\+\+Abstract}} \texorpdfstring{$\ast$}{*} $>$ \&}]{maps}{}\end{DoxyParamCaption})}
+
+
+
+Add \textquotesingle{}\doxylink{classDataManagement_1_1Downloadable__SingleFile}{Downloadable\+\_\+\+Single\+File}\textquotesingle{}s to this \doxylink{classDataManagement_1_1Downloadable__MultiFile}{Downloadable\+\_\+\+Multi\+File}. 
+
+This method differs from \doxylink{classDataManagement_1_1Downloadable__MultiFile_a3d94c556e3ffb8324ff1c0e57ba3f4f7}{add(\+Data\+Management\+::\+Downloadable\+\_\+\+Abstract\texorpdfstring{$\ast$}{*} map)} only in that it adds several maps, but emits notifier signals only once.
+
+
+\begin{DoxyParams}{Parameters}
+{\em maps} & Maps to be added \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classDataManagement_1_1Downloadable__MultiFile_a3d94c556e3ffb8324ff1c0e57ba3f4f7}\index{DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}!add@{add}}
+\index{add@{add}!DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classDataManagement_1_1Downloadable__MultiFile_a3d94c556e3ffb8324ff1c0e57ba3f4f7} 
+Q\+\_\+\+INVOKABLE void Data\+Management\+::\+Downloadable\+\_\+\+Multi\+File\+::add (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract}{Data\+Management\+::\+Downloadable\+\_\+\+Abstract}} \texorpdfstring{$\ast$}{*}}]{map}{}\end{DoxyParamCaption})}
+
+
+
+Add a \doxylink{classDataManagement_1_1Downloadable__SingleFile}{Downloadable\+\_\+\+Single\+File} to this \doxylink{classDataManagement_1_1Downloadable__MultiFile}{Downloadable\+\_\+\+Multi\+File}. 
+
+This method copies the values of map-\/\texorpdfstring{$>$}{>}object\+Name and map-\/\texorpdfstring{$>$}{>}section into \texorpdfstring{$\ast$}{*}this object. As a result, these properties are always set to match those of the last map added. This instance does not take ownership of the map.
+
+It is perfectly possible that a map is a child of more than one \doxylink{classDataManagement_1_1Downloadable__MultiFile}{Downloadable\+\_\+\+Multi\+File}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em map} & Map to be added \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classDataManagement_1_1Downloadable__MultiFile_a64e2cfe006acd151c46f53063c8880cd}\index{DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}!description@{description}}
+\index{description@{description}!DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}}
+\doxysubsubsection{\texorpdfstring{description()}{description()}}
+{\footnotesize\ttfamily \label{classDataManagement_1_1Downloadable__MultiFile_a64e2cfe006acd151c46f53063c8880cd} 
+auto Data\+Management\+::\+Downloadable\+\_\+\+Multi\+File\+::description (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) -\/$>$  QString\hspace{0.3cm}{\ttfamily [nodiscard]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implementation of pure virtual getter method from \doxylink{classDataManagement_1_1Downloadable__Abstract}{Downloadable\+\_\+\+Abstract}. 
+
+\begin{DoxyReturn}{Returns}
+Property description 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a7abb20eb80bce6a20d12d91435207206}{Data\+Management\+::\+Downloadable\+\_\+\+Abstract}}.
+
+\Hypertarget{classDataManagement_1_1Downloadable__MultiFile_a812835c259ea6012e1a9612e3cf498b7}\index{DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}!downloadables@{downloadables}}
+\index{downloadables@{downloadables}!DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}}
+\doxysubsubsection{\texorpdfstring{downloadables()}{downloadables()}}
+{\footnotesize\ttfamily \label{classDataManagement_1_1Downloadable__MultiFile_a812835c259ea6012e1a9612e3cf498b7} 
+auto Data\+Management\+::\+Downloadable\+\_\+\+Multi\+File\+::downloadables (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) -\/$>$  QList$<$ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract}{Data\+Management\+::\+Downloadable\+\_\+\+Abstract}} \texorpdfstring{$\ast$}{*} $>$\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property downloadables 
+\end{DoxyReturn}
+\Hypertarget{classDataManagement_1_1Downloadable__MultiFile_a94b31ba47861576f647b00e770109983}\index{DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}!downloadables4Location@{downloadables4Location}}
+\index{downloadables4Location@{downloadables4Location}!DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}}
+\doxysubsubsection{\texorpdfstring{downloadables4Location()}{downloadables4Location()}}
+{\footnotesize\ttfamily \label{classDataManagement_1_1Downloadable__MultiFile_a94b31ba47861576f647b00e770109983} 
+Q\+\_\+\+INVOKABLE QList$<$ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract}{Data\+Management\+::\+Downloadable\+\_\+\+Abstract}} \texorpdfstring{$\ast$}{*} $>$ Data\+Management\+::\+Downloadable\+\_\+\+Multi\+File\+::downloadables4\+Location (\begin{DoxyParamCaption}\item[{const QGeo\+Coordinate \&}]{location}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Downloadables for a given location. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em location} & QGeo\+Coordinate with a location\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+list of downloadables whose bounding box contains the given location 
+\end{DoxyReturn}
+\Hypertarget{classDataManagement_1_1Downloadable__MultiFile_af92253160b8df4047f00c4046b431728}\index{DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}!downloadablesByDistance@{downloadablesByDistance}}
+\index{downloadablesByDistance@{downloadablesByDistance}!DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}}
+\doxysubsubsection{\texorpdfstring{downloadablesByDistance()}{downloadablesByDistance()}}
+{\footnotesize\ttfamily \label{classDataManagement_1_1Downloadable__MultiFile_af92253160b8df4047f00c4046b431728} 
+Q\+\_\+\+INVOKABLE QList$<$ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract}{Data\+Management\+::\+Downloadable\+\_\+\+Abstract}} \texorpdfstring{$\ast$}{*} $>$ Data\+Management\+::\+Downloadable\+\_\+\+Multi\+File\+::downloadables\+By\+Distance (\begin{DoxyParamCaption}\item[{const QGeo\+Coordinate \&}]{location}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Downloadables, sorted by distance to a given location. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em location} & QGeo\+Coordinate with a location\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+list of downloadables whose bounding box contains the given location 
+\end{DoxyReturn}
+\Hypertarget{classDataManagement_1_1Downloadable__MultiFile_a1431902efee190ce2ca2f07033c82d00}\index{DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}!downloading@{downloading}}
+\index{downloading@{downloading}!DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}}
+\doxysubsubsection{\texorpdfstring{downloading()}{downloading()}}
+{\footnotesize\ttfamily \label{classDataManagement_1_1Downloadable__MultiFile_a1431902efee190ce2ca2f07033c82d00} 
+auto Data\+Management\+::\+Downloadable\+\_\+\+Multi\+File\+::downloading (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) -\/$>$ bool\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implementation of pure virtual getter method from \doxylink{classDataManagement_1_1Downloadable__Abstract}{Downloadable\+\_\+\+Abstract}. 
+
+\begin{DoxyReturn}{Returns}
+Property downloading 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a2a42bc0a6d5161d5199c030d400cbf95}{Data\+Management\+::\+Downloadable\+\_\+\+Abstract}}.
+
+
+
+Definition at line \mbox{\hyperlink{Downloadable__MultiFile_8h_source_l00096}{96}} of file \mbox{\hyperlink{Downloadable__MultiFile_8h_source}{Downloadable\+\_\+\+Multi\+File.\+h}}.
+
+\Hypertarget{classDataManagement_1_1Downloadable__MultiFile_ad62f0026ea5d929bfff2d7246f07d70e}\index{DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}!files@{files}}
+\index{files@{files}!DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}}
+\doxysubsubsection{\texorpdfstring{files()}{files()}}
+{\footnotesize\ttfamily \label{classDataManagement_1_1Downloadable__MultiFile_ad62f0026ea5d929bfff2d7246f07d70e} 
+auto Data\+Management\+::\+Downloadable\+\_\+\+Multi\+File\+::files (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) -\/$>$ QString\+List\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implementation of pure virtual getter method from \doxylink{classDataManagement_1_1Downloadable__Abstract}{Downloadable\+\_\+\+Abstract}. 
+
+\begin{DoxyReturn}{Returns}
+Property files 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a70e8170b7e88bc60f7f9274af1118f11}{Data\+Management\+::\+Downloadable\+\_\+\+Abstract}}.
+
+
+
+Definition at line \mbox{\hyperlink{Downloadable__MultiFile_8h_source_l00102}{102}} of file \mbox{\hyperlink{Downloadable__MultiFile_8h_source}{Downloadable\+\_\+\+Multi\+File.\+h}}.
+
+\Hypertarget{classDataManagement_1_1Downloadable__MultiFile_a52de4504f62d3820c27cb5b09b0dee41}\index{DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}!hasFile@{hasFile}}
+\index{hasFile@{hasFile}!DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}}
+\doxysubsubsection{\texorpdfstring{hasFile()}{hasFile()}}
+{\footnotesize\ttfamily \label{classDataManagement_1_1Downloadable__MultiFile_a52de4504f62d3820c27cb5b09b0dee41} 
+auto Data\+Management\+::\+Downloadable\+\_\+\+Multi\+File\+::has\+File (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) -\/$>$ bool\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implementation of pure virtual getter method from \doxylink{classDataManagement_1_1Downloadable__Abstract}{Downloadable\+\_\+\+Abstract}. 
+
+\begin{DoxyReturn}{Returns}
+Property has\+File 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a7acc926679adbb0d1117cf8d9bb1c9eb}{Data\+Management\+::\+Downloadable\+\_\+\+Abstract}}.
+
+
+
+Definition at line \mbox{\hyperlink{Downloadable__MultiFile_8h_source_l00108}{108}} of file \mbox{\hyperlink{Downloadable__MultiFile_8h_source}{Downloadable\+\_\+\+Multi\+File.\+h}}.
+
+\Hypertarget{classDataManagement_1_1Downloadable__MultiFile_a1f31de92df63b8716a3f3fe34ae43733}\index{DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}!infoText@{infoText}}
+\index{infoText@{infoText}!DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}}
+\doxysubsubsection{\texorpdfstring{infoText()}{infoText()}}
+{\footnotesize\ttfamily \label{classDataManagement_1_1Downloadable__MultiFile_a1f31de92df63b8716a3f3fe34ae43733} 
+auto Data\+Management\+::\+Downloadable\+\_\+\+Multi\+File\+::info\+Text (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) -\/$>$  QString\hspace{0.3cm}{\ttfamily [nodiscard]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implementation of pure virtual getter method from \doxylink{classDataManagement_1_1Downloadable__Abstract}{Downloadable\+\_\+\+Abstract}. 
+
+\begin{DoxyReturn}{Returns}
+Property info\+Text 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_ad8b39dff84456732f36c0db174a99953}{Data\+Management\+::\+Downloadable\+\_\+\+Abstract}}.
+
+\Hypertarget{classDataManagement_1_1Downloadable__MultiFile_aebad08f72b9a3abaa8aabac6fcf5a727}\index{DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}!remoteFileSize@{remoteFileSize}}
+\index{remoteFileSize@{remoteFileSize}!DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}}
+\doxysubsubsection{\texorpdfstring{remoteFileSize()}{remoteFileSize()}}
+{\footnotesize\ttfamily \label{classDataManagement_1_1Downloadable__MultiFile_aebad08f72b9a3abaa8aabac6fcf5a727} 
+auto Data\+Management\+::\+Downloadable\+\_\+\+Multi\+File\+::remote\+File\+Size (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) -\/$>$ qint64\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property remote\+File\+Size 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a9d7f57b59c3d83cb8bc261c572fadc32}{Data\+Management\+::\+Downloadable\+\_\+\+Abstract}}.
+
+
+
+Definition at line \mbox{\hyperlink{Downloadable__MultiFile_8h_source_l00120}{120}} of file \mbox{\hyperlink{Downloadable__MultiFile_8h_source}{Downloadable\+\_\+\+Multi\+File.\+h}}.
+
+\Hypertarget{classDataManagement_1_1Downloadable__MultiFile_ad6186e3b48dc6f40f92bdeb93946a4cb}\index{DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}!remove@{remove}}
+\index{remove@{remove}!DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}}
+\doxysubsubsection{\texorpdfstring{remove()}{remove()}}
+{\footnotesize\ttfamily \label{classDataManagement_1_1Downloadable__MultiFile_ad6186e3b48dc6f40f92bdeb93946a4cb} 
+Q\+\_\+\+INVOKABLE void Data\+Management\+::\+Downloadable\+\_\+\+Multi\+File\+::remove (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract}{Data\+Management\+::\+Downloadable\+\_\+\+Abstract}} \texorpdfstring{$\ast$}{*}}]{map}{}\end{DoxyParamCaption})}
+
+
+
+Remove a \doxylink{classDataManagement_1_1Downloadable__SingleFile}{Downloadable\+\_\+\+Single\+File} from this \doxylink{classDataManagement_1_1Downloadable__MultiFile}{Downloadable\+\_\+\+Multi\+File}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em map} & Map to be removed \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classDataManagement_1_1Downloadable__MultiFile_abbb42cc494674e7bae8e760ff0a59f84}\index{DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}!updateSize@{updateSize}}
+\index{updateSize@{updateSize}!DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}}
+\doxysubsubsection{\texorpdfstring{updateSize()}{updateSize()}}
+{\footnotesize\ttfamily \label{classDataManagement_1_1Downloadable__MultiFile_abbb42cc494674e7bae8e760ff0a59f84} 
+auto Data\+Management\+::\+Downloadable\+\_\+\+Multi\+File\+::update\+Size (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) -\/$>$ \mbox{\hyperlink{classUnits_1_1ByteSize}{Units\+::\+Byte\+Size}}\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implementation of pure virtual getter method from \doxylink{classDataManagement_1_1Downloadable__Abstract}{Downloadable\+\_\+\+Abstract}. 
+
+\begin{DoxyReturn}{Returns}
+Property update\+Size 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_ad415acc4f0ce31e08bc9beeff752e289}{Data\+Management\+::\+Downloadable\+\_\+\+Abstract}}.
+
+
+
+Definition at line \mbox{\hyperlink{Downloadable__MultiFile_8h_source_l00126}{126}} of file \mbox{\hyperlink{Downloadable__MultiFile_8h_source}{Downloadable\+\_\+\+Multi\+File.\+h}}.
+
+
+
+\doxysubsection{Property Documentation}
+\Hypertarget{classDataManagement_1_1Downloadable__MultiFile_a67b8ca94c149bf7069f30ba9cd34ff95}\index{DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}!downloadables@{downloadables}}
+\index{downloadables@{downloadables}!DataManagement::Downloadable\_MultiFile@{DataManagement::Downloadable\_MultiFile}}
+\doxysubsubsection{\texorpdfstring{downloadables}{downloadables}}
+{\footnotesize\ttfamily \label{classDataManagement_1_1Downloadable__MultiFile_a67b8ca94c149bf7069f30ba9cd34ff95} 
+QList$<$\mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract}{Data\+Management\+::\+Downloadable\+\_\+\+Abstract}}\texorpdfstring{$\ast$}{*}$>$ Data\+Management\+::\+Downloadable\+\_\+\+Multi\+File\+::downloadables\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+List of Downloadables in this group. 
+
+This property holds a list of direct children of the instance. The list is sorted by section and object name, and never contains a zero pointer. 
+
+Definition at line \mbox{\hyperlink{Downloadable__MultiFile_8h_source_l00070}{70}} of file \mbox{\hyperlink{Downloadable__MultiFile_8h_source}{Downloadable\+\_\+\+Multi\+File.\+h}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/data\+Management/Downloadable\+\_\+\+Multi\+File.\+h\end{DoxyCompactItemize}

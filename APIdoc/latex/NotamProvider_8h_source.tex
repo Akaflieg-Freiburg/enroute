@@ -1,0 +1,162 @@
+\doxysection{Notam\+Provider.\+h}
+\hypertarget{NotamProvider_8h_source}{}\label{NotamProvider_8h_source}\index{/home/runner/work/enroute/enroute/src/notam/NotamProvider.h@{/home/runner/work/enroute/enroute/src/notam/NotamProvider.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00001}00001\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00002}00002\ \textcolor{comment}{\ *\ \ \ Copyright\ (C)\ 2023\ by\ Stefan\ Kebekus\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00003}00003\ \textcolor{comment}{\ *\ \ \ stefan.kebekus@gmail.com\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00004}00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ free\ software;\ you\ can\ redistribute\ it\ and/or\ modify\ \ *}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00006}00006\ \textcolor{comment}{\ *\ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by\ \ *}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00007}00007\ \textcolor{comment}{\ *\ \ \ the\ Free\ Software\ Foundation;\ either\ version\ 3\ of\ the\ License,\ or\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00008}00008\ \textcolor{comment}{\ *\ \ \ (at\ your\ option)\ any\ later\ version.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00009}00009\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00010}00010\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,\ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00011}00011\ \textcolor{comment}{\ *\ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of\ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00012}00012\ \textcolor{comment}{\ *\ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00013}00013\ \textcolor{comment}{\ *\ \ \ GNU\ General\ Public\ License\ for\ more\ details.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00014}00014\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00015}00015\ \textcolor{comment}{\ *\ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00016}00016\ \textcolor{comment}{\ *\ \ \ along\ with\ this\ program;\ if\ not,\ write\ to\ the\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00017}00017\ \textcolor{comment}{\ *\ \ \ Free\ Software\ Foundation,\ Inc.,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00018}00018\ \textcolor{comment}{\ *\ \ \ 59\ Temple\ Place\ -\/\ Suite\ 330,\ Boston,\ MA\ \ 02111-\/1307,\ USA.\ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00019}00019\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00021}00021\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ <QNetworkReply>}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00024}00024\ \textcolor{preprocessor}{\#include\ <QQmlEngine>}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00026}00026\ \textcolor{preprocessor}{\#include\ "{}GlobalObject.h"{}}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00027}00027\ \textcolor{preprocessor}{\#include\ "{}notam/NotamList.h"{}}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00028}00028\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00029}00029\ \textcolor{keyword}{namespace\ }NOTAM\ \{}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00033}\mbox{\hyperlink{classNOTAM_1_1NotamProvider}{00033}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classNOTAM_1_1NotamProvider}{NotamProvider}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classGlobalObject}{GlobalObject}}\ \{}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00034}00034\ \ \ \ \ Q\_OBJECT}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00035}00035\ \ \ \ \ QML\_ELEMENT}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00036}00036\ \ \ \ \ QML\_SINGLETON}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00037}00037\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00038}00038\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00039}00039\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classNOTAM_1_1NotamProvider}{NotamProvider}}(QObject*\ parent\ =\ \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00040}00040\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00041}00041\ \ \ \ \ \textcolor{comment}{//\ deferred\ initialization}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00042}\mbox{\hyperlink{classNOTAM_1_1NotamProvider_a47f4d06a4317122c50578e32722c9c82}{00042}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classNOTAM_1_1NotamProvider_a47f4d06a4317122c50578e32722c9c82}{deferredInitialization}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00043}00043\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00044}00044\ \ \ \ \ \textcolor{comment}{//\ No\ default\ constructor,\ important\ for\ QML\ singleton}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00045}00045\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classNOTAM_1_1NotamProvider}{NotamProvider}}()\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00046}00046\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00048}\mbox{\hyperlink{classNOTAM_1_1NotamProvider_a5f81c3ce91c5ab5fd220a900d064d2ff}{00048}}\ \ \ \ \ \mbox{\hyperlink{classNOTAM_1_1NotamProvider_a5f81c3ce91c5ab5fd220a900d064d2ff}{\string~NotamProvider}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00049}00049\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00050}00050\ \ \ \ \ \textcolor{comment}{//\ factory\ function\ for\ QML\ singleton}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00051}00051\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classNOTAM_1_1NotamProvider}{NOTAM::NotamProvider}}*\ create(QQmlEngine*\ \textcolor{comment}{/*unused*/},\ QJSEngine*\ \textcolor{comment}{/*unused*/})}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00052}00052\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00053}00053\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classGlobalObject_ac11d38af2df8dcdb78679abf92b6de7a}{GlobalObject::notamProvider}}();}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00054}00054\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00055}00055\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00056}00056\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00057}00057\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00058}00058\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00059}00059\ \ \ \ \ \textcolor{comment}{//\ Properties}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00060}00060\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00061}00061\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00062}00062\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00067}\mbox{\hyperlink{classNOTAM_1_1NotamProvider_a01c460cf5424a4b21719c7e77a019876}{00067}}\ \ \ \ \ Q\_PROPERTY(QByteArray\ \mbox{\hyperlink{classNOTAM_1_1NotamProvider_a01c460cf5424a4b21719c7e77a019876}{GeoJSON}}\ READ\ \mbox{\hyperlink{classNOTAM_1_1NotamProvider_a01c460cf5424a4b21719c7e77a019876}{GeoJSON}}\ NOTIFY\ \mbox{\hyperlink{classNOTAM_1_1NotamProvider_ad670bd26e0119a071c22fa757af43872}{dataChanged}})}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00068}00068\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00069}00069\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00070}\mbox{\hyperlink{classNOTAM_1_1NotamProvider_a00a825ccdbd710fc2fecbb16637930d3}{00070}}\ \ \ \ \ Q\_PROPERTY(QDateTime\ \mbox{\hyperlink{classNOTAM_1_1NotamProvider_a00a825ccdbd710fc2fecbb16637930d3}{lastUpdate}}\ READ\ \mbox{\hyperlink{classNOTAM_1_1NotamProvider_a00a825ccdbd710fc2fecbb16637930d3}{lastUpdate}}\ NOTIFY\ \mbox{\hyperlink{classNOTAM_1_1NotamProvider_ad670bd26e0119a071c22fa757af43872}{dataChanged}})}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00071}00071\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00073}\mbox{\hyperlink{classNOTAM_1_1NotamProvider_a1b616a9148c53cb2f70ef0faa091784a}{00073}}\ \ \ \ \ Q\_PROPERTY(QList<GeoMaps::Waypoint>\ \mbox{\hyperlink{classNOTAM_1_1NotamProvider_a1b616a9148c53cb2f70ef0faa091784a}{waypoints}}\ READ\ \mbox{\hyperlink{classNOTAM_1_1NotamProvider_a1b616a9148c53cb2f70ef0faa091784a}{waypoints}}\ NOTIFY\ \mbox{\hyperlink{classNOTAM_1_1NotamProvider_ad670bd26e0119a071c22fa757af43872}{dataChanged}})}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00074}00074\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00075}00075\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00076}00076\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00077}00077\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00078}00078\ \ \ \ \ \textcolor{comment}{//\ Getter\ Methods}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00079}00079\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00080}00080\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00081}00081\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00086}\mbox{\hyperlink{classNOTAM_1_1NotamProvider_afebb7ef78fd1a7e28bcb151ab5755ac3}{00086}}\ \ \ \ \ [[nodiscard]]\ QByteArray\ \mbox{\hyperlink{classNOTAM_1_1NotamProvider_a01c460cf5424a4b21719c7e77a019876}{GeoJSON}}()\ const;}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00087}00087\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00092}\mbox{\hyperlink{classNOTAM_1_1NotamProvider_a707840e7e509e173d9d4c4656c890e38}{00092}}\ \ \ \ \ Q\_REQUIRED\_RESULT\ QDateTime\ \mbox{\hyperlink{classNOTAM_1_1NotamProvider_a00a825ccdbd710fc2fecbb16637930d3}{lastUpdate}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_lastUpdate;\ \}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00093}00093\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00098}\mbox{\hyperlink{classNOTAM_1_1NotamProvider_ad7014a7422ef53bbd0ba7af0cbe7e5e6}{00098}}\ \ \ \ \ Q\_REQUIRED\_RESULT\ QList<GeoMaps::Waypoint>\ \mbox{\hyperlink{classNOTAM_1_1NotamProvider_ad7014a7422ef53bbd0ba7af0cbe7e5e6}{waypoints}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00099}00099\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00100}00100\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00101}00101\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00102}00102\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00103}00103\ \ \ \ \ \textcolor{comment}{//\ Methods}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00104}00104\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00105}00105\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00123}\mbox{\hyperlink{classNOTAM_1_1NotamProvider_a73bab769d97b82094d2318a1a765a31b}{00123}}\ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ \mbox{\hyperlink{classNOTAM_1_1NotamList}{NOTAM::NotamList}}\ \mbox{\hyperlink{classNOTAM_1_1NotamProvider_a73bab769d97b82094d2318a1a765a31b}{notams}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{GeoMaps::Waypoint}}\&\ waypoint);}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00124}00124\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00131}\mbox{\hyperlink{classNOTAM_1_1NotamProvider_ad6fe03afb19ed0d894475480ad319aca}{00131}}\ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classNOTAM_1_1NotamProvider_ad6fe03afb19ed0d894475480ad319aca}{isRead}}(\textcolor{keyword}{const}\ QString\&\ number)\ \{\ \textcolor{keywordflow}{return}\ m\_readNotamNumbers.contains(number);\ \}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00132}00132\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00139}\mbox{\hyperlink{classNOTAM_1_1NotamProvider_adbd8026f690b01e55aef950b675f4c76}{00139}}\ \ \ \ \ Q\_INVOKABLE\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classNOTAM_1_1NotamProvider_adbd8026f690b01e55aef950b675f4c76}{setRead}}(\textcolor{keyword}{const}\ QString\&\ number,\ \textcolor{keywordtype}{bool}\ read);}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00140}00140\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00141}00141\ signals:}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00143}\mbox{\hyperlink{classNOTAM_1_1NotamProvider_ad670bd26e0119a071c22fa757af43872}{00143}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classNOTAM_1_1NotamProvider_ad670bd26e0119a071c22fa757af43872}{dataChanged}}();}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00144}00144\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00145}00145\ \textcolor{keyword}{private}\ slots:\ \ \ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00146}00146\ \ \ \ \ \textcolor{comment}{//\ Removes\ outdated\ and\ irrelevant\ data\ from\ the\ database.\ This\ slot\ is\ called}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00147}00147\ \ \ \ \ \textcolor{comment}{//\ once\ per\ hour.}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00148}00148\ \ \ \ \ \textcolor{keywordtype}{void}\ clean();}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00149}00149\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00150}00150\ \ \ \ \ \textcolor{comment}{//\ This\ slot\ is\ connected\ to\ signals\ QNetworkReply::finished\ and}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00151}00151\ \ \ \ \ \textcolor{comment}{//\ QNetworkReply::errorOccurred\ of\ the\ QNetworkReply\ contained\ in\ the\ list}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00152}00152\ \ \ \ \ \textcolor{comment}{//\ in\ m\_networkReply.\ This\ method\ reads\ the\ incoming\ data\ and\ adds\ it\ to\ the}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00153}00153\ \ \ \ \ \textcolor{comment}{//\ database}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00154}00154\ \ \ \ \ \textcolor{keywordtype}{void}\ downloadFinished();}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00155}00155\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00156}00156\ \ \ \ \ \textcolor{comment}{//\ Save\ NOTAM\ data\ to\ file\ whose\ name\ is\ found\ in\ m\_stdFileName.\ There\ are}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00157}00157\ \ \ \ \ \textcolor{comment}{//\ no\ error\ checks\ of\ any\ kind.}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00158}00158\ \ \ \ \ \textcolor{keywordtype}{void}\ save()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00159}00159\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00160}00160\ \ \ \ \ \textcolor{comment}{//\ Checks\ if\ NOTAM\ data\ is\ available\ for\ an\ area\ of\ marginRadius\ around\ the}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00161}00161\ \ \ \ \ \textcolor{comment}{//\ current\ position\ and\ around\ the\ current\ flight\ route.\ If\ not,\ requests}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00162}00162\ \ \ \ \ \textcolor{comment}{//\ the\ data.}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00163}00163\ \ \ \ \ \textcolor{keywordtype}{void}\ updateData();}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00164}00164\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00165}00165\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00166}00166\ \ \ \ \ Q\_DISABLE\_COPY\_MOVE(\mbox{\hyperlink{classNOTAM_1_1NotamProvider}{NotamProvider}})}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00167}00167\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00168}00168\ \ \ \ \ \textcolor{comment}{//\ Compute\ the\ radius\ of\ the\ circle\ around\ the\ waypoint\ that\ is\ covered\ by}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00169}00169\ \ \ \ \ \textcolor{comment}{//\ existing\ or\ requested\ notam\ data.\ Returns\ Units::Distance::fromM(-\/1)\ if}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00170}00170\ \ \ \ \ \textcolor{comment}{//\ the\ waypoint\ is\ not\ covered\ by\ data.}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00171}00171\ \ \ \ \ \mbox{\hyperlink{classUnits_1_1Distance}{Units::Distance}}\ range(\textcolor{keyword}{const}\ QGeoCoordinate\&\ position);}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00172}00172\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00173}00173\ \ \ \ \ \textcolor{comment}{//\ Request\ Notam\ data\ from\ the\ FAA,\ for\ a\ circle\ of\ radius\ requestRadius}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00174}00174\ \ \ \ \ \textcolor{comment}{//\ around\ the\ coordinate.}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00175}00175\ \ \ \ \ \textcolor{keywordtype}{void}\ startRequest(\textcolor{keyword}{const}\ QGeoCoordinate\&\ coordinate);}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00176}00176\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00177}00177\ \ \ \ \ \textcolor{comment}{//\ List\ with\ numbers\ of\ notams\ that\ have\ been\ marked\ as\ read}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00178}00178\ \ \ \ \ QList<QString>\ m\_readNotamNumbers;}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00179}00179\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00180}00180\ \ \ \ \ \textcolor{comment}{//\ Set\ with\ numbers\ of\ notams\ that\ have\ been\ cancelled}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00181}00181\ \ \ \ \ QSet<QString>\ m\_cancelledNotamNumbers;}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00182}00182\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00183}00183\ \ \ \ \ \textcolor{comment}{//\ List\ of\ pending\ network\ requests}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00184}00184\ \ \ \ \ QList<QPointer<QNetworkReply>>\ m\_networkReplies;}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00185}00185\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00186}00186\ \ \ \ \ \textcolor{comment}{//\ List\ of\ NotamLists,\ sorted\ so\ that\ newest\ lists\ come\ first}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00187}00187\ \ \ \ \ QList<NotamList>\ m\_notamLists;}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00188}00188\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00189}00189\ \ \ \ \ \textcolor{comment}{//\ Time\ of\ last\ update\ to\ data}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00190}00190\ \ \ \ \ QDateTime\ m\_lastUpdate;}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00191}00191\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00192}00192\ \ \ \ \ \textcolor{comment}{//\ Filename\ for\ loading/saving\ NOTAM\ data}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00193}00193\ \ \ \ \ QString\ m\_stdFileName;}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00194}00194\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00195}00195\ \ \ \ \ \textcolor{comment}{//\ The\ method\ updateDate()\ ensures\ that\ data\ is\ requested\ for\ marginRadius\ around}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00196}00196\ \ \ \ \ \textcolor{comment}{//\ own\ position\ and\ current\ flight\ route.}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00197}00197\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{classUnits_1_1Distance}{Units::Distance}}\ marginRadius\ =\ \mbox{\hyperlink{classUnits_1_1Distance_a0cf2f43b39c1e90cffccee3b0d7a1970}{Units::Distance::fromNM}}(5.0);}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00198}00198\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00199}00199\ \ \ \ \ \textcolor{comment}{//\ Requests\ for\ Notam\ data\ are\ requestRadius\ around\ given\ position.}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00200}00200\ \ \ \ \ \textcolor{comment}{//\ This\ is\ the\ maximum\ that\ FAA\ API\ currently\ allows\ (FAA\ max\ is\ 100NM,\ but}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00201}00201\ \ \ \ \ \textcolor{comment}{//\ the\ number\ here\ is\ multiplied\ internally\ with\ a\ factor\ of\ 1.2)}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00202}00202\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{classUnits_1_1Distance}{Units::Distance}}\ requestRadius\ =\ \mbox{\hyperlink{classUnits_1_1Distance_a0cf2f43b39c1e90cffccee3b0d7a1970}{Units::Distance::fromNM}}(83.0);}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00203}00203\ \};}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00204}00204\ }
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00205}00205\ \}\ \textcolor{comment}{//\ namespace\ NOTAM}}
+\DoxyCodeLine{\Hypertarget{NotamProvider_8h_source_l00206}00206\ }
+
+\end{DoxyCode}

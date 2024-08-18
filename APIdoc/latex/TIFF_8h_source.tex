@@ -1,0 +1,100 @@
+\doxysection{TIFF.\+h}
+\hypertarget{TIFF_8h_source}{}\label{TIFF_8h_source}\index{/home/runner/work/enroute/enroute/src/fileFormats/TIFF.h@{/home/runner/work/enroute/enroute/src/fileFormats/TIFF.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00001}00001\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00002}00002\ \textcolor{comment}{\ *\ \ \ Copyright\ (C)\ 2023-\/2024\ by\ Stefan\ Kebekus\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00003}00003\ \textcolor{comment}{\ *\ \ \ stefan.kebekus@gmail.com\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00004}00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ free\ software;\ you\ can\ redistribute\ it\ and/or\ modify\ \ *}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00006}00006\ \textcolor{comment}{\ *\ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by\ \ *}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00007}00007\ \textcolor{comment}{\ *\ \ \ the\ Free\ Software\ Foundation;\ either\ version\ 3\ of\ the\ License,\ or\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00008}00008\ \textcolor{comment}{\ *\ \ \ (at\ your\ option)\ any\ later\ version.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00009}00009\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00010}00010\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,\ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00011}00011\ \textcolor{comment}{\ *\ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of\ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00012}00012\ \textcolor{comment}{\ *\ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00013}00013\ \textcolor{comment}{\ *\ \ \ GNU\ General\ Public\ License\ for\ more\ details.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00014}00014\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00015}00015\ \textcolor{comment}{\ *\ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00016}00016\ \textcolor{comment}{\ *\ \ \ along\ with\ this\ program;\ if\ not,\ write\ to\ the\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00017}00017\ \textcolor{comment}{\ *\ \ \ Free\ Software\ Foundation,\ Inc.,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00018}00018\ \textcolor{comment}{\ *\ \ \ 59\ Temple\ Place\ -\/\ Suite\ 330,\ Boston,\ MA\ \ 02111-\/1307,\ USA.\ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00019}00019\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00021}00021\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ <QSize>}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00024}00024\ \textcolor{preprocessor}{\#include\ <QVariant>}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00026}00026\ \textcolor{preprocessor}{\#include\ "{}DataFileAbstract.h"{}}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00027}00027\ }
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00028}00028\ \textcolor{keyword}{namespace\ }FileFormats}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00029}00029\ \{}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00038}\mbox{\hyperlink{classFileFormats_1_1TIFF}{00038}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classFileFormats_1_1TIFF}{TIFF}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classFileFormats_1_1DataFileAbstract}{DataFileAbstract}}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00039}00039\ \{}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00040}00040\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00048}\mbox{\hyperlink{classFileFormats_1_1TIFF_a778345d0277a2f73b5780c4c4fb0aeee}{00048}}\ \ \ \ \ \mbox{\hyperlink{classFileFormats_1_1TIFF_a778345d0277a2f73b5780c4c4fb0aeee}{TIFF}}(\textcolor{keyword}{const}\ QString\&\ fileName);}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00049}00049\ }
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00058}\mbox{\hyperlink{classFileFormats_1_1TIFF_a6f34d992a0c8f79c79eec8ecccea605d}{00058}}\ \ \ \ \ \mbox{\hyperlink{classFileFormats_1_1TIFF_a6f34d992a0c8f79c79eec8ecccea605d}{TIFF}}(QIODevice\&\ device);}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00059}00059\ }
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00060}00060\ }
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00061}00061\ }
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00062}00062\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00063}00063\ \ \ \ \ \textcolor{comment}{//\ Getter\ Methods}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00064}00064\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00065}00065\ }
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00070}\mbox{\hyperlink{classFileFormats_1_1TIFF_abccffd93d477153d9b5a92c781958196}{00070}}\ \ \ \ \ [[nodiscard]]\ QMap<quint16,\ QVariantList>\ \mbox{\hyperlink{classFileFormats_1_1TIFF_abccffd93d477153d9b5a92c781958196}{fields}}()\ \{\ \textcolor{keywordflow}{return}\ m\_TIFFFields;\ \}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00071}00071\ }
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00076}\mbox{\hyperlink{classFileFormats_1_1TIFF_ad4d3dc157c1d24adb3d5700914cac78c}{00076}}\ \ \ \ \ [[nodiscard]]\ QSize\ \mbox{\hyperlink{classFileFormats_1_1TIFF_ad4d3dc157c1d24adb3d5700914cac78c}{rasterSize}}()\ \{\ \textcolor{keywordflow}{return}\ m\_rasterSize;\ \}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00077}00077\ }
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00078}00078\ }
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00079}00079\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00080}00080\ \ \ \ \ \textcolor{comment}{//\ Static\ methods}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00081}00081\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00082}00082\ }
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00087}\mbox{\hyperlink{classFileFormats_1_1TIFF_ad2bda22fe41b7ba422856a56b0ca3c52}{00087}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{static}\ QStringList\ \mbox{\hyperlink{classFileFormats_1_1TIFF_ad2bda22fe41b7ba422856a56b0ca3c52}{mimeTypes}}()\ \{\ \textcolor{keywordflow}{return}\ \{u\textcolor{stringliteral}{"{}image/tiff"{}}\_qs\};\ \}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00088}00088\ }
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00089}00089\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00090}00090\ \ \ \ \ \textcolor{comment}{/*\ This\ methods\ reads\ the\ TIFF\ data\ from\ the\ device.\ On\ success,\ it\ fills}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00091}00091\ \textcolor{comment}{\ \ \ \ \ *\ the\ memeber\ m\_TIFFFields\ with\ appropriate\ data.\ On\ failure,\ it\ throws\ a}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00092}00092\ \textcolor{comment}{\ \ \ \ \ *\ QString\ with\ a\ human-\/readable,\ translated\ error\ message.}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00093}00093\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00094}00094\ \textcolor{comment}{\ \ \ \ \ *\ @param\ device\ QIODevice\ from\ which\ the\ TIFF\ header\ will\ be\ read.\ This}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00095}00095\ \textcolor{comment}{\ \ \ \ \ *\ device\ must\ be\ seekable.}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00096}00096\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00097}00097\ \ \ \ \ \textcolor{keywordtype}{void}\ readTIFFData(QIODevice\&\ device);}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00098}00098\ }
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00099}00099\ \ \ \ \ \textcolor{comment}{/*\ This\ methods\ reads\ a\ single\ TIFF\ field\ from\ the\ device.\ On\ success,\ it}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00100}00100\ \textcolor{comment}{\ \ \ \ \ *\ adds\ an\ entry\ to\ the\ member\ m\_TIFFFields\ and\ positions\ the\ device\ on\ the}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00101}00101\ \textcolor{comment}{\ \ \ \ \ *\ byte\ following\ the\ structure.\ On\ failure,\ it\ throws\ a\ QString\ with\ a}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00102}00102\ \textcolor{comment}{\ \ \ \ \ *\ human-\/readable,\ translated\ error\ message.}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00103}00103\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00104}00104\ \textcolor{comment}{\ \ \ \ \ *\ This\ method\ only\ reads\ values\ of\ type\ ASCII,\ SHORT\ and\ DOUBLE.\ Values\ of}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00105}00105\ \textcolor{comment}{\ \ \ \ \ *\ other\ types\ will\ be\ ignored.}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00106}00106\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00107}00107\ \textcolor{comment}{\ \ \ \ \ *\ @param\ device\ QIODevice\ from\ which\ the\ TIFF\ header\ will\ be\ read.\ This}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00108}00108\ \textcolor{comment}{\ \ \ \ \ *\ device\ must\ be\ open,\ seekable,\ and\ positioned\ to\ the\ beginning\ of\ the}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00109}00109\ \textcolor{comment}{\ \ \ \ \ *\ TIFF\ field\ structure.}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00110}00110\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00111}00111\ \textcolor{comment}{\ \ \ \ \ *\ @param\ dataStream\ QDataStream\ that\ is\ connected\ to\ the\ device\ and\ has\ the}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00112}00112\ \textcolor{comment}{\ \ \ \ \ *\ correct\ endianness\ set.}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00113}00113\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00114}00114\ \ \ \ \ \textcolor{keywordtype}{void}\ readTIFFField(QIODevice\&\ device,\ QDataStream\&\ dataStream);}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00115}00115\ }
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00116}00116\ \ \ \ \ \textcolor{comment}{/*\ This\ method\ interprets\ m\_TIFFFields,\ extracts\ the\ size\ of\ the\ raster}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00117}00117\ \textcolor{comment}{\ \ \ \ \ *\ image\ and\ writes\ the\ result\ into\ m\_rasterSize.}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00118}00118\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00119}00119\ \ \ \ \ \textcolor{keywordtype}{void}\ readRasterSize();}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00120}00120\ }
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00121}00121\ \ \ \ \ \textcolor{comment}{//\ Size\ of\ the\ raster\ imags}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00122}00122\ \ \ \ \ QSize\ m\_rasterSize\ \{\};}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00123}00123\ }
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00124}00124\ \ \ \ \ \textcolor{comment}{//\ TIFF\ tags\ and\ associated\ data}}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00125}00125\ \ \ \ \ QMap<quint16,\ QVariantList>\ m\_TIFFFields;}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00126}00126\ \};}
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00127}00127\ }
+\DoxyCodeLine{\Hypertarget{TIFF_8h_source_l00128}00128\ \}\ \textcolor{comment}{//\ namespace\ FileFormats}}
+
+\end{DoxyCode}

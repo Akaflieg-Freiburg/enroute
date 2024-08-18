@@ -1,0 +1,520 @@
+\doxysection{Traffic\+::Connection\+Info Class Reference}
+\hypertarget{classTraffic_1_1ConnectionInfo}{}\label{classTraffic_1_1ConnectionInfo}\index{Traffic::ConnectionInfo@{Traffic::ConnectionInfo}}
+
+
+Connection to a traffic data receiver.  
+
+
+
+
+{\ttfamily \#include $<$Connection\+Info.\+h$>$}
+
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5}{Type}} \{ \newline
+\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5aa8197ea595df1228c0c9678367c526b4}{Invalid}}
+, \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5a5daf2ac890354cec8c0309b104424d52}{Bluetooth\+Classic}}
+, \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5af4bc05b2ee972c902119b5f3ca8cf526}{Bluetooth\+Low\+Energy}}
+, \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5ac3abaabb40af547d4053d077c070d4d0}{TCP}}
+, \newline
+\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5a44c397a720aa3689889270e45acd0213}{UDP}}
+, \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5a064d4f0bebca2b38a841af85d87de76a}{Serial}}
+, \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5a02bd8d2ca9201cdb73d1493e0915cc48}{FLARMFile}}
+ \}
+\begin{DoxyCompactList}\small\item\em Connection Type. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a4b08ead190a204084e66775247b7a104}{Connection\+Info}} ()=default
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_aa1557f83840085cbcd44a579e602178e}{Connection\+Info}} (const QBluetooth\+Device\+Info \&info, bool \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a4a95bbb6a01c4fffe9ed9d01044a5897}{canonical}}=false)
+\begin{DoxyCompactList}\small\item\em Constructor for Bluetooth Device Connections. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_ab93dfbe94e0044b667d1715c76773ee8}{Connection\+Info}} (quint16 \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a26567c5149039c156cb0182ecea59b44}{port}}, bool \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a4a95bbb6a01c4fffe9ed9d01044a5897}{canonical}}=false)
+\begin{DoxyCompactList}\small\item\em Constructor for UDP Connections. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_ae848e93ddf260e2397a2acbe25fdbd01}{Connection\+Info}} (const QString \&host, quint16 \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a26567c5149039c156cb0182ecea59b44}{port}}, bool \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a4a95bbb6a01c4fffe9ed9d01044a5897}{canonical}}=false)
+\begin{DoxyCompactList}\small\item\em Constructor for TCP Connections. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a2827acea39de818bd808e076fe669d74}{can\+Connect}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a37803824a2e91f2bd62e749168d535e3}{canonical}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a5a89ec86a3b135b2c78a5a41600cf374}{description}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a413febf4f94643fe6efc5244c241c24c}{name}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a8d1e81aea58c0aac51c38bbde93ed9a0}{icon}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5}{Traffic\+::\+Connection\+Info\+::\+Type}} \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0ec1c74b5efe0a72ccc36f6de85cfbf5}{type}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+QBluetooth\+Device\+Info \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a8f11aaf94c98f562ef0ba761c2f6bc72}{bluetooth\+Device\+Info}} () const
+\begin{DoxyCompactList}\small\item\em Bluetooth Device Info. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a06b3fb84ebf739afecb81672954e23ad}{operator==}} (const \mbox{\hyperlink{classTraffic_1_1ConnectionInfo}{Traffic\+::\+Connection\+Info}} \&other) const =default
+\begin{DoxyCompactList}\small\item\em Equality of Connection\+Infos. \end{DoxyCompactList}\item 
+quint16 \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a26567c5149039c156cb0182ecea59b44}{port}} () const
+\begin{DoxyCompactList}\small\item\em Port. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a64c12259db945beb9c1e4b0b5a95de74}{same\+Connection\+As}} (const \mbox{\hyperlink{classTraffic_1_1ConnectionInfo}{Traffic\+::\+Connection\+Info}} \&other) const
+\begin{DoxyCompactList}\small\item\em Equality of connection. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_aba1bfa6561fd82d8f4529866fe61c159}{operator$<$}} (const \mbox{\hyperlink{classTraffic_1_1ConnectionInfo}{Traffic\+::\+Connection\+Info}} \&other) const
+\begin{DoxyCompactList}\small\item\em Comparison. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_aa83626d0a273287a4cc11598d64f0331}{can\+Connect}}
+\begin{DoxyCompactList}\small\item\em Connectability. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a4a95bbb6a01c4fffe9ed9d01044a5897}{canonical}}
+\begin{DoxyCompactList}\small\item\em Canonicity. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_ae8b20c9758fca836df484ff65dfa9432}{description}}
+\begin{DoxyCompactList}\small\item\em Description. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_af2db5645d18c311586ad195a3bc836fd}{icon}}
+\begin{DoxyCompactList}\small\item\em Description. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a65433aa64e0c5513fde33ac80c4b5e5b}{name}}
+\begin{DoxyCompactList}\small\item\em Description. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5}{Traffic\+::\+Connection\+Info\+::\+Type}} \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a1d58ea243c253aa8a70393d5ce6a945a}{type}}
+\begin{DoxyCompactList}\small\item\em Type. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+QData\+Stream \& \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_acf80c6eb440a33a21c5f5727417fc612}{operator$<$$<$}} (QData\+Stream \&stream, const \mbox{\hyperlink{classTraffic_1_1ConnectionInfo}{Traffic\+::\+Connection\+Info}} \&connection\+Info)
+\begin{DoxyCompactList}\small\item\em Serialization. \end{DoxyCompactList}\item 
+QData\+Stream \& \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a53c3407f4e039d3e773d445bbca3500f}{operator$>$$>$}} (QData\+Stream \&stream, \mbox{\hyperlink{classTraffic_1_1ConnectionInfo}{Traffic\+::\+Connection\+Info}} \&connection\+Info)
+\begin{DoxyCompactList}\small\item\em Deserialization. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Connection to a traffic data receiver. 
+
+This class describes a connection to a traffic data receiver. It exposes connection properties in a format that is suitable for QML. 
+
+Definition at line \mbox{\hyperlink{ConnectionInfo_8h_source_l00039}{39}} of file \mbox{\hyperlink{ConnectionInfo_8h_source}{Connection\+Info.\+h}}.
+
+
+
+\doxysubsection{Member Enumeration Documentation}
+\Hypertarget{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5}\index{Traffic::ConnectionInfo@{Traffic::ConnectionInfo}!Type@{Type}}
+\index{Type@{Type}!Traffic::ConnectionInfo@{Traffic::ConnectionInfo}}
+\doxysubsubsection{\texorpdfstring{Type}{Type}}
+{\footnotesize\ttfamily \label{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5} 
+enum \mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5}{Traffic\+::\+Connection\+Info\+::\+Type}}}
+
+
+
+Connection Type. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Invalid@{Invalid}!Traffic::ConnectionInfo@{Traffic::ConnectionInfo}}\index{Traffic::ConnectionInfo@{Traffic::ConnectionInfo}!Invalid@{Invalid}}}\Hypertarget{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5aa8197ea595df1228c0c9678367c526b4}\label{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5} 
+Invalid&Invalid connection \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{BluetoothClassic@{BluetoothClassic}!Traffic::ConnectionInfo@{Traffic::ConnectionInfo}}\index{Traffic::ConnectionInfo@{Traffic::ConnectionInfo}!BluetoothClassic@{BluetoothClassic}}}\Hypertarget{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5a5daf2ac890354cec8c0309b104424d52}\label{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5} 
+Bluetooth\+Classic&Bluetooth Classic \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{BluetoothLowEnergy@{BluetoothLowEnergy}!Traffic::ConnectionInfo@{Traffic::ConnectionInfo}}\index{Traffic::ConnectionInfo@{Traffic::ConnectionInfo}!BluetoothLowEnergy@{BluetoothLowEnergy}}}\Hypertarget{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5af4bc05b2ee972c902119b5f3ca8cf526}\label{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5} 
+Bluetooth\+Low\+Energy&Bluetooth LE \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TCP@{TCP}!Traffic::ConnectionInfo@{Traffic::ConnectionInfo}}\index{Traffic::ConnectionInfo@{Traffic::ConnectionInfo}!TCP@{TCP}}}\Hypertarget{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5ac3abaabb40af547d4053d077c070d4d0}\label{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5} 
+TCP&TCP Connection \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UDP@{UDP}!Traffic::ConnectionInfo@{Traffic::ConnectionInfo}}\index{Traffic::ConnectionInfo@{Traffic::ConnectionInfo}!UDP@{UDP}}}\Hypertarget{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5a44c397a720aa3689889270e45acd0213}\label{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5} 
+UDP&UDP Connection \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Serial@{Serial}!Traffic::ConnectionInfo@{Traffic::ConnectionInfo}}\index{Traffic::ConnectionInfo@{Traffic::ConnectionInfo}!Serial@{Serial}}}\Hypertarget{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5a064d4f0bebca2b38a841af85d87de76a}\label{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5} 
+Serial&Serial Port Connection \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{FLARMFile@{FLARMFile}!Traffic::ConnectionInfo@{Traffic::ConnectionInfo}}\index{Traffic::ConnectionInfo@{Traffic::ConnectionInfo}!FLARMFile@{FLARMFile}}}\Hypertarget{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5a02bd8d2ca9201cdb73d1493e0915cc48}\label{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5} 
+FLARMFile&FLARM Simulator File \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line \mbox{\hyperlink{ConnectionInfo_8h_source_l00048}{48}} of file \mbox{\hyperlink{ConnectionInfo_8h_source}{Connection\+Info.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classTraffic_1_1ConnectionInfo_a4b08ead190a204084e66775247b7a104}\index{Traffic::ConnectionInfo@{Traffic::ConnectionInfo}!ConnectionInfo@{ConnectionInfo}}
+\index{ConnectionInfo@{ConnectionInfo}!Traffic::ConnectionInfo@{Traffic::ConnectionInfo}}
+\doxysubsubsection{\texorpdfstring{ConnectionInfo()}{ConnectionInfo()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily \label{classTraffic_1_1ConnectionInfo_a4b08ead190a204084e66775247b7a104} 
+Traffic\+::\+Connection\+Info\+::\+Connection\+Info (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+
+
+Default constructor. 
+
+This method constructs an invalid \doxylink{classTraffic_1_1ConnectionInfo}{Connection\+Info} \Hypertarget{classTraffic_1_1ConnectionInfo_aa1557f83840085cbcd44a579e602178e}\index{Traffic::ConnectionInfo@{Traffic::ConnectionInfo}!ConnectionInfo@{ConnectionInfo}}
+\index{ConnectionInfo@{ConnectionInfo}!Traffic::ConnectionInfo@{Traffic::ConnectionInfo}}
+\doxysubsubsection{\texorpdfstring{ConnectionInfo()}{ConnectionInfo()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily \label{classTraffic_1_1ConnectionInfo_aa1557f83840085cbcd44a579e602178e} 
+Traffic\+::\+Connection\+Info\+::\+Connection\+Info (\begin{DoxyParamCaption}\item[{const QBluetooth\+Device\+Info \&}]{info}{, }\item[{bool}]{canonical}{ = {\ttfamily false}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Constructor for Bluetooth Device Connections. 
+
+This method constructs a \doxylink{classTraffic_1_1ConnectionInfo}{Connection\+Info} for a connection to a Bluetooth device. The type will either be Bluetooth\+Classic or Bluetooth\+Low\+Energy.
+
+
+\begin{DoxyParams}{Parameters}
+{\em info} & QBluetooth\+Device\+Info that describes the Bluetooth device\\
+\hline
+{\em canonical} & Property \textquotesingle{}canonical\textquotesingle{}, as described below. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classTraffic_1_1ConnectionInfo_ab93dfbe94e0044b667d1715c76773ee8}\index{Traffic::ConnectionInfo@{Traffic::ConnectionInfo}!ConnectionInfo@{ConnectionInfo}}
+\index{ConnectionInfo@{ConnectionInfo}!Traffic::ConnectionInfo@{Traffic::ConnectionInfo}}
+\doxysubsubsection{\texorpdfstring{ConnectionInfo()}{ConnectionInfo()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \label{classTraffic_1_1ConnectionInfo_ab93dfbe94e0044b667d1715c76773ee8} 
+Traffic\+::\+Connection\+Info\+::\+Connection\+Info (\begin{DoxyParamCaption}\item[{quint16}]{port}{, }\item[{bool}]{canonical}{ = {\ttfamily false}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Constructor for UDP Connections. 
+
+This method constructs a \doxylink{classTraffic_1_1ConnectionInfo}{Connection\+Info} for a UDP connection.
+
+
+\begin{DoxyParams}{Parameters}
+{\em port} & Port number\\
+\hline
+{\em canonical} & Property \textquotesingle{}canonical\textquotesingle{}, as described below. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classTraffic_1_1ConnectionInfo_ae848e93ddf260e2397a2acbe25fdbd01}\index{Traffic::ConnectionInfo@{Traffic::ConnectionInfo}!ConnectionInfo@{ConnectionInfo}}
+\index{ConnectionInfo@{ConnectionInfo}!Traffic::ConnectionInfo@{Traffic::ConnectionInfo}}
+\doxysubsubsection{\texorpdfstring{ConnectionInfo()}{ConnectionInfo()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily \label{classTraffic_1_1ConnectionInfo_ae848e93ddf260e2397a2acbe25fdbd01} 
+Traffic\+::\+Connection\+Info\+::\+Connection\+Info (\begin{DoxyParamCaption}\item[{const QString \&}]{host}{, }\item[{quint16}]{port}{, }\item[{bool}]{canonical}{ = {\ttfamily false}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Constructor for TCP Connections. 
+
+This method constructs a \doxylink{classTraffic_1_1ConnectionInfo}{Connection\+Info} for a TCP connection.
+
+
+\begin{DoxyParams}{Parameters}
+{\em host} & Host name or IP Address\\
+\hline
+{\em port} & Port number\\
+\hline
+{\em canonical} & Property \textquotesingle{}canonical\textquotesingle{}, as described below. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classTraffic_1_1ConnectionInfo_a8f11aaf94c98f562ef0ba761c2f6bc72}\index{Traffic::ConnectionInfo@{Traffic::ConnectionInfo}!bluetoothDeviceInfo@{bluetoothDeviceInfo}}
+\index{bluetoothDeviceInfo@{bluetoothDeviceInfo}!Traffic::ConnectionInfo@{Traffic::ConnectionInfo}}
+\doxysubsubsection{\texorpdfstring{bluetoothDeviceInfo()}{bluetoothDeviceInfo()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1ConnectionInfo_a8f11aaf94c98f562ef0ba761c2f6bc72} 
+QBluetooth\+Device\+Info Traffic\+::\+Connection\+Info\+::bluetooth\+Device\+Info (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Bluetooth Device Info. 
+
+\begin{DoxyReturn}{Returns}
+If the connection is of type Bluetooth\+Classic or Bluetooth\+Low\+Energy, this method returns a QBluetooth\+Device\+Info describing the Bluetooth device. For all other connections, an invalid QBluetooth\+Device\+Info is returned. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{ConnectionInfo_8h_source_l00232}{232}} of file \mbox{\hyperlink{ConnectionInfo_8h_source}{Connection\+Info.\+h}}.
+
+\Hypertarget{classTraffic_1_1ConnectionInfo_a2827acea39de818bd808e076fe669d74}\index{Traffic::ConnectionInfo@{Traffic::ConnectionInfo}!canConnect@{canConnect}}
+\index{canConnect@{canConnect}!Traffic::ConnectionInfo@{Traffic::ConnectionInfo}}
+\doxysubsubsection{\texorpdfstring{canConnect()}{canConnect()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1ConnectionInfo_a2827acea39de818bd808e076fe669d74} 
+bool Traffic\+::\+Connection\+Info\+::can\+Connect (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property can\+Connect 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{ConnectionInfo_8h_source_l00181}{181}} of file \mbox{\hyperlink{ConnectionInfo_8h_source}{Connection\+Info.\+h}}.
+
+\Hypertarget{classTraffic_1_1ConnectionInfo_a37803824a2e91f2bd62e749168d535e3}\index{Traffic::ConnectionInfo@{Traffic::ConnectionInfo}!canonical@{canonical}}
+\index{canonical@{canonical}!Traffic::ConnectionInfo@{Traffic::ConnectionInfo}}
+\doxysubsubsection{\texorpdfstring{canonical()}{canonical()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1ConnectionInfo_a37803824a2e91f2bd62e749168d535e3} 
+bool Traffic\+::\+Connection\+Info\+::canonical (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property canonical 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{ConnectionInfo_8h_source_l00188}{188}} of file \mbox{\hyperlink{ConnectionInfo_8h_source}{Connection\+Info.\+h}}.
+
+\Hypertarget{classTraffic_1_1ConnectionInfo_a5a89ec86a3b135b2c78a5a41600cf374}\index{Traffic::ConnectionInfo@{Traffic::ConnectionInfo}!description@{description}}
+\index{description@{description}!Traffic::ConnectionInfo@{Traffic::ConnectionInfo}}
+\doxysubsubsection{\texorpdfstring{description()}{description()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1ConnectionInfo_a5a89ec86a3b135b2c78a5a41600cf374} 
+QString Traffic\+::\+Connection\+Info\+::description (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property description 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{ConnectionInfo_8h_source_l00195}{195}} of file \mbox{\hyperlink{ConnectionInfo_8h_source}{Connection\+Info.\+h}}.
+
+\Hypertarget{classTraffic_1_1ConnectionInfo_a8d1e81aea58c0aac51c38bbde93ed9a0}\index{Traffic::ConnectionInfo@{Traffic::ConnectionInfo}!icon@{icon}}
+\index{icon@{icon}!Traffic::ConnectionInfo@{Traffic::ConnectionInfo}}
+\doxysubsubsection{\texorpdfstring{icon()}{icon()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1ConnectionInfo_a8d1e81aea58c0aac51c38bbde93ed9a0} 
+QString Traffic\+::\+Connection\+Info\+::icon (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property icon 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{ConnectionInfo_8h_source_l00209}{209}} of file \mbox{\hyperlink{ConnectionInfo_8h_source}{Connection\+Info.\+h}}.
+
+\Hypertarget{classTraffic_1_1ConnectionInfo_a413febf4f94643fe6efc5244c241c24c}\index{Traffic::ConnectionInfo@{Traffic::ConnectionInfo}!name@{name}}
+\index{name@{name}!Traffic::ConnectionInfo@{Traffic::ConnectionInfo}}
+\doxysubsubsection{\texorpdfstring{name()}{name()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1ConnectionInfo_a413febf4f94643fe6efc5244c241c24c} 
+QString Traffic\+::\+Connection\+Info\+::name (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property name 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{ConnectionInfo_8h_source_l00202}{202}} of file \mbox{\hyperlink{ConnectionInfo_8h_source}{Connection\+Info.\+h}}.
+
+\Hypertarget{classTraffic_1_1ConnectionInfo_aba1bfa6561fd82d8f4529866fe61c159}\index{Traffic::ConnectionInfo@{Traffic::ConnectionInfo}!operator$<$@{operator$<$}}
+\index{operator$<$@{operator$<$}!Traffic::ConnectionInfo@{Traffic::ConnectionInfo}}
+\doxysubsubsection{\texorpdfstring{operator$<$()}{operator<()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1ConnectionInfo_aba1bfa6561fd82d8f4529866fe61c159} 
+bool Traffic\+::\+Connection\+Info\+::operator$<$ (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classTraffic_1_1ConnectionInfo}{Traffic\+::\+Connection\+Info}} \&}]{other}{}\end{DoxyParamCaption}) const}
+
+
+
+Comparison. 
+
+This operator can be used to sort Connection\+Infos in the GUI. Sorting is by connectability, type and name.
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & Other \doxylink{classTraffic_1_1ConnectionInfo}{Connection\+Info} to compare with.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the \doxylink{classTraffic_1_1ConnectionInfo}{Connection\+Info} describe the same connection. 
+\end{DoxyReturn}
+\Hypertarget{classTraffic_1_1ConnectionInfo_a06b3fb84ebf739afecb81672954e23ad}\index{Traffic::ConnectionInfo@{Traffic::ConnectionInfo}!operator==@{operator==}}
+\index{operator==@{operator==}!Traffic::ConnectionInfo@{Traffic::ConnectionInfo}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1ConnectionInfo_a06b3fb84ebf739afecb81672954e23ad} 
+bool Traffic\+::\+Connection\+Info\+::operator== (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classTraffic_1_1ConnectionInfo}{Traffic\+::\+Connection\+Info}} \&}]{other}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}, {\ttfamily [default]}}
+
+
+
+Equality of Connection\+Infos. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & Other \doxylink{classTraffic_1_1ConnectionInfo}{Connection\+Info} to compare with.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the \doxylink{classTraffic_1_1ConnectionInfo}{Connection\+Info} describe the same connection. 
+\end{DoxyReturn}
+\Hypertarget{classTraffic_1_1ConnectionInfo_a26567c5149039c156cb0182ecea59b44}\index{Traffic::ConnectionInfo@{Traffic::ConnectionInfo}!port@{port}}
+\index{port@{port}!Traffic::ConnectionInfo@{Traffic::ConnectionInfo}}
+\doxysubsubsection{\texorpdfstring{port()}{port()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1ConnectionInfo_a26567c5149039c156cb0182ecea59b44} 
+quint16 Traffic\+::\+Connection\+Info\+::port (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Port. 
+
+\begin{DoxyReturn}{Returns}
+If the connection is of type UDP, this method returns the port used in the UDP connection. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{ConnectionInfo_8h_source_l00249}{249}} of file \mbox{\hyperlink{ConnectionInfo_8h_source}{Connection\+Info.\+h}}.
+
+\Hypertarget{classTraffic_1_1ConnectionInfo_a64c12259db945beb9c1e4b0b5a95de74}\index{Traffic::ConnectionInfo@{Traffic::ConnectionInfo}!sameConnectionAs@{sameConnectionAs}}
+\index{sameConnectionAs@{sameConnectionAs}!Traffic::ConnectionInfo@{Traffic::ConnectionInfo}}
+\doxysubsubsection{\texorpdfstring{sameConnectionAs()}{sameConnectionAs()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1ConnectionInfo_a64c12259db945beb9c1e4b0b5a95de74} 
+bool Traffic\+::\+Connection\+Info\+::same\+Connection\+As (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classTraffic_1_1ConnectionInfo}{Traffic\+::\+Connection\+Info}} \&}]{other}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Equality of connection. 
+
+This test for equality is not strict. It returns \textquotesingle{}true\textquotesingle{} if the two connection infos describe the same connection. Still, they can differ in aspects such as the connection name or description. This is possible, e.\+g., for Bluetooth devices whose name was not know when one of the Connection\+Infos was constructed.
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & Other \doxylink{classTraffic_1_1ConnectionInfo}{Connection\+Info} to compare with.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the \doxylink{classTraffic_1_1ConnectionInfo}{Connection\+Info} describe the same connection. 
+\end{DoxyReturn}
+\Hypertarget{classTraffic_1_1ConnectionInfo_a0ec1c74b5efe0a72ccc36f6de85cfbf5}\index{Traffic::ConnectionInfo@{Traffic::ConnectionInfo}!type@{type}}
+\index{type@{type}!Traffic::ConnectionInfo@{Traffic::ConnectionInfo}}
+\doxysubsubsection{\texorpdfstring{type()}{type()}}
+{\footnotesize\ttfamily \label{classTraffic_1_1ConnectionInfo_a0ec1c74b5efe0a72ccc36f6de85cfbf5} 
+\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5}{Traffic\+::\+Connection\+Info\+::\+Type}} Traffic\+::\+Connection\+Info\+::type (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property type 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{ConnectionInfo_8h_source_l00216}{216}} of file \mbox{\hyperlink{ConnectionInfo_8h_source}{Connection\+Info.\+h}}.
+
+
+
+\doxysubsection{Friends And Related Symbol Documentation}
+\Hypertarget{classTraffic_1_1ConnectionInfo_acf80c6eb440a33a21c5f5727417fc612}\index{Traffic::ConnectionInfo@{Traffic::ConnectionInfo}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!Traffic::ConnectionInfo@{Traffic::ConnectionInfo}}
+\doxysubsubsection{\texorpdfstring{operator$<$$<$}{operator<<}}
+{\footnotesize\ttfamily \label{classTraffic_1_1ConnectionInfo_acf80c6eb440a33a21c5f5727417fc612} 
+QData\+Stream \& operator$<$$<$ (\begin{DoxyParamCaption}\item[{QData\+Stream \&}]{stream}{, }\item[{const \mbox{\hyperlink{classTraffic_1_1ConnectionInfo}{Traffic\+::\+Connection\+Info}} \&}]{connection\+Info}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+Serialization. 
+
+There are no checks for errors of any kind. \Hypertarget{classTraffic_1_1ConnectionInfo_a53c3407f4e039d3e773d445bbca3500f}\index{Traffic::ConnectionInfo@{Traffic::ConnectionInfo}!operator$>$$>$@{operator$>$$>$}}
+\index{operator$>$$>$@{operator$>$$>$}!Traffic::ConnectionInfo@{Traffic::ConnectionInfo}}
+\doxysubsubsection{\texorpdfstring{operator$>$$>$}{operator>>}}
+{\footnotesize\ttfamily \label{classTraffic_1_1ConnectionInfo_a53c3407f4e039d3e773d445bbca3500f} 
+QData\+Stream \& operator$>$$>$ (\begin{DoxyParamCaption}\item[{QData\+Stream \&}]{stream}{, }\item[{\mbox{\hyperlink{classTraffic_1_1ConnectionInfo}{Traffic\+::\+Connection\+Info}} \&}]{connection\+Info}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+Deserialization. 
+
+There are no checks for errors of any kind. 
+
+\doxysubsection{Property Documentation}
+\Hypertarget{classTraffic_1_1ConnectionInfo_aa83626d0a273287a4cc11598d64f0331}\index{Traffic::ConnectionInfo@{Traffic::ConnectionInfo}!canConnect@{canConnect}}
+\index{canConnect@{canConnect}!Traffic::ConnectionInfo@{Traffic::ConnectionInfo}}
+\doxysubsubsection{\texorpdfstring{canConnect}{canConnect}}
+{\footnotesize\ttfamily \label{classTraffic_1_1ConnectionInfo_aa83626d0a273287a4cc11598d64f0331} 
+bool Traffic\+::\+Connection\+Info\+::can\+Connect\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Connectability. 
+
+This property holds true if a connection is possible in principle. It does not guarantee that a connection attempt will be successful. Example\+: This property is \textquotesingle{}false\textquotesingle{} for connections to Bluetooth Low Energy devices, which are currently unsupported. 
+
+Definition at line \mbox{\hyperlink{ConnectionInfo_8h_source_l00129}{129}} of file \mbox{\hyperlink{ConnectionInfo_8h_source}{Connection\+Info.\+h}}.
+
+\Hypertarget{classTraffic_1_1ConnectionInfo_a4a95bbb6a01c4fffe9ed9d01044a5897}\index{Traffic::ConnectionInfo@{Traffic::ConnectionInfo}!canonical@{canonical}}
+\index{canonical@{canonical}!Traffic::ConnectionInfo@{Traffic::ConnectionInfo}}
+\doxysubsubsection{\texorpdfstring{canonical}{canonical}}
+{\footnotesize\ttfamily \label{classTraffic_1_1ConnectionInfo_a4a95bbb6a01c4fffe9ed9d01044a5897} 
+bool Traffic\+::\+Connection\+Info\+::canonical\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Canonicity. 
+
+This property holds true if the connection is canonical. Canonical connections are those that will always be in the connection library and cannot be edited or deleted in the GUI. 
+
+Definition at line \mbox{\hyperlink{ConnectionInfo_8h_source_l00138}{138}} of file \mbox{\hyperlink{ConnectionInfo_8h_source}{Connection\+Info.\+h}}.
+
+\Hypertarget{classTraffic_1_1ConnectionInfo_ae8b20c9758fca836df484ff65dfa9432}\index{Traffic::ConnectionInfo@{Traffic::ConnectionInfo}!description@{description}}
+\index{description@{description}!Traffic::ConnectionInfo@{Traffic::ConnectionInfo}}
+\doxysubsubsection{\texorpdfstring{description}{description}}
+{\footnotesize\ttfamily \label{classTraffic_1_1ConnectionInfo_ae8b20c9758fca836df484ff65dfa9432} 
+QString Traffic\+::\+Connection\+Info\+::description\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Description. 
+
+This property holds a human-\/readable, translated, two-\/line description of the connection, in HTML format. 
+
+Definition at line \mbox{\hyperlink{ConnectionInfo_8h_source_l00146}{146}} of file \mbox{\hyperlink{ConnectionInfo_8h_source}{Connection\+Info.\+h}}.
+
+\Hypertarget{classTraffic_1_1ConnectionInfo_af2db5645d18c311586ad195a3bc836fd}\index{Traffic::ConnectionInfo@{Traffic::ConnectionInfo}!icon@{icon}}
+\index{icon@{icon}!Traffic::ConnectionInfo@{Traffic::ConnectionInfo}}
+\doxysubsubsection{\texorpdfstring{icon}{icon}}
+{\footnotesize\ttfamily \label{classTraffic_1_1ConnectionInfo_af2db5645d18c311586ad195a3bc836fd} 
+QString Traffic\+::\+Connection\+Info\+::icon\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Description. 
+
+This property holds the name of an icon file that can be used to represent the connection in the GUI. 
+
+Definition at line \mbox{\hyperlink{ConnectionInfo_8h_source_l00154}{154}} of file \mbox{\hyperlink{ConnectionInfo_8h_source}{Connection\+Info.\+h}}.
+
+\Hypertarget{classTraffic_1_1ConnectionInfo_a65433aa64e0c5513fde33ac80c4b5e5b}\index{Traffic::ConnectionInfo@{Traffic::ConnectionInfo}!name@{name}}
+\index{name@{name}!Traffic::ConnectionInfo@{Traffic::ConnectionInfo}}
+\doxysubsubsection{\texorpdfstring{name}{name}}
+{\footnotesize\ttfamily \label{classTraffic_1_1ConnectionInfo_a65433aa64e0c5513fde33ac80c4b5e5b} 
+QString Traffic\+::\+Connection\+Info\+::name\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Description. 
+
+This property holds a human-\/readable, translated name of the connection. 
+
+Definition at line \mbox{\hyperlink{ConnectionInfo_8h_source_l00161}{161}} of file \mbox{\hyperlink{ConnectionInfo_8h_source}{Connection\+Info.\+h}}.
+
+\Hypertarget{classTraffic_1_1ConnectionInfo_a1d58ea243c253aa8a70393d5ce6a945a}\index{Traffic::ConnectionInfo@{Traffic::ConnectionInfo}!type@{type}}
+\index{type@{type}!Traffic::ConnectionInfo@{Traffic::ConnectionInfo}}
+\doxysubsubsection{\texorpdfstring{type}{type}}
+{\footnotesize\ttfamily \label{classTraffic_1_1ConnectionInfo_a1d58ea243c253aa8a70393d5ce6a945a} 
+\mbox{\hyperlink{classTraffic_1_1ConnectionInfo_a0382547fe28b3606e2910671205ea9a5}{Traffic\+::\+Connection\+Info\+::\+Type}} Traffic\+::\+Connection\+Info\+::type\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Type. 
+
+This property holds the type of the connection. 
+
+Definition at line \mbox{\hyperlink{ConnectionInfo_8h_source_l00168}{168}} of file \mbox{\hyperlink{ConnectionInfo_8h_source}{Connection\+Info.\+h}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/traffic/Connection\+Info.\+h\end{DoxyCompactItemize}

@@ -1,0 +1,60 @@
+\doxysection{Geo\+JSON.\+h}
+\hypertarget{GeoJSON_8h_source}{}\label{GeoJSON_8h_source}\index{/home/runner/work/enroute/enroute/src/geomaps/GeoJSON.h@{/home/runner/work/enroute/enroute/src/geomaps/GeoJSON.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00001}00001\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00002}00002\ \textcolor{comment}{\ *\ \ \ Copyright\ (C)\ 2022\ by\ Stefan\ Kebekus\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00003}00003\ \textcolor{comment}{\ *\ \ \ stefan.kebekus@gmail.com\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00004}00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ free\ software;\ you\ can\ redistribute\ it\ and/or\ modify\ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00006}00006\ \textcolor{comment}{\ *\ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by\ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00007}00007\ \textcolor{comment}{\ *\ \ \ the\ Free\ Software\ Foundation;\ either\ version\ 3\ of\ the\ License,\ or\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00008}00008\ \textcolor{comment}{\ *\ \ \ (at\ your\ option)\ any\ later\ version.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00009}00009\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00010}00010\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,\ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00011}00011\ \textcolor{comment}{\ *\ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of\ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00012}00012\ \textcolor{comment}{\ *\ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00013}00013\ \textcolor{comment}{\ *\ \ \ GNU\ General\ Public\ License\ for\ more\ details.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00014}00014\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00015}00015\ \textcolor{comment}{\ *\ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00016}00016\ \textcolor{comment}{\ *\ \ \ along\ with\ this\ program;\ if\ not,\ write\ to\ the\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00017}00017\ \textcolor{comment}{\ *\ \ \ Free\ Software\ Foundation,\ Inc.,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00018}00018\ \textcolor{comment}{\ *\ \ \ 59\ Temple\ Place\ -\/\ Suite\ 330,\ Boston,\ MA\ \ 02111-\/1307,\ USA.\ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00019}00019\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00021}00021\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ "{}geomaps/Waypoint.h"{}}}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00024}00024\ }
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00025}00025\ \textcolor{keyword}{namespace\ }GeoMaps}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00026}00026\ \{}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00027}00027\ }
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00034}\mbox{\hyperlink{classGeoMaps_1_1GeoJSON}{00034}}\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classGeoMaps_1_1GeoJSON}{GeoJSON}}}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00035}00035\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00036}00036\ }
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00037}00037\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00039}\mbox{\hyperlink{classGeoMaps_1_1GeoJSON_aa34f0276509de6ff0e91a382d7a757e9}{00039}}\ \ \ \ \ \ \ \ \ \textcolor{keyword}{enum}\ \mbox{\hyperlink{classGeoMaps_1_1GeoJSON_aa34f0276509de6ff0e91a382d7a757e9}{fileContent}}\ \{}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00040}00040\ \ \ \ \ \ \ \ \ \ \ \ \ flightRoute,\ \textcolor{comment}{/*<\ File\ is\ valid\ and\ contains\ a\ flight\ route\ */}}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00041}00041\ \ \ \ \ \ \ \ \ \ \ \ \ invalid,\ \textcolor{comment}{/*<\ File\ is\ invalid\ */}}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00042}00042\ \ \ \ \ \ \ \ \ \ \ \ \ valid,\ \textcolor{comment}{/*<\ File\ is\ valid,\ content\ unspecified\ */}}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00043}00043\ \ \ \ \ \ \ \ \ \ \ \ \ waypointLibrary\ \textcolor{comment}{/*<\ File\ is\ valid\ and\ contains\ a\ waypoint\ library\ */}}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00044}00044\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00045}00045\ }
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00053}\mbox{\hyperlink{classGeoMaps_1_1GeoJSON_a5c287d8496e474d353089c459b645fd4}{00053}}\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ QString\ \mbox{\hyperlink{classGeoMaps_1_1GeoJSON_a5c287d8496e474d353089c459b645fd4}{indicatorFlightRoute}}()}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00054}00054\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00055}00055\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ QStringLiteral(\textcolor{stringliteral}{"{}flight\ route"{}});}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00056}00056\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00057}00057\ }
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00065}\mbox{\hyperlink{classGeoMaps_1_1GeoJSON_a3fa026f70c9a0def83e59778b6a5aa9e}{00065}}\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ QString\ \mbox{\hyperlink{classGeoMaps_1_1GeoJSON_a3fa026f70c9a0def83e59778b6a5aa9e}{indicatorWaypointLibrary}}()}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00066}00066\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00067}00067\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ QStringLiteral(\textcolor{stringliteral}{"{}waypoint\ library"{}});}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00068}00068\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00069}00069\ }
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00079}\mbox{\hyperlink{classGeoMaps_1_1GeoJSON_ab6fe5dfc986e86180471987a4d5a2b11}{00079}}\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classGeoMaps_1_1GeoJSON_aa34f0276509de6ff0e91a382d7a757e9}{fileContent}}\ \mbox{\hyperlink{classGeoMaps_1_1GeoJSON_ab6fe5dfc986e86180471987a4d5a2b11}{inspect}}(\textcolor{keyword}{const}\ QString\&\ fileName);}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00080}00080\ }
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00089}\mbox{\hyperlink{classGeoMaps_1_1GeoJSON_a122432bb6731f35fd711193f6e102e5b}{00089}}\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ QVector<GeoMaps::Waypoint>\ \mbox{\hyperlink{classGeoMaps_1_1GeoJSON_a122432bb6731f35fd711193f6e102e5b}{read}}(\textcolor{keyword}{const}\ QString\ \&fileName);}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00090}00090\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00091}00091\ }
+\DoxyCodeLine{\Hypertarget{GeoJSON_8h_source_l00092}00092\ \}\ \textcolor{comment}{//\ namespace\ GeoMaps}}
+
+\end{DoxyCode}

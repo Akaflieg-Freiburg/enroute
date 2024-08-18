@@ -1,0 +1,125 @@
+\doxysection{Angle.\+h}
+\hypertarget{Angle_8h_source}{}\label{Angle_8h_source}\index{/home/runner/work/enroute/enroute/src/units/Angle.h@{/home/runner/work/enroute/enroute/src/units/Angle.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00001}00001\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00002}00002\ \textcolor{comment}{\ *\ \ \ Copyright\ (C)\ 2019-\/2021\ by\ Stefan\ Kebekus\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00003}00003\ \textcolor{comment}{\ *\ \ \ stefan.kebekus@gmail.com\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00004}00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ free\ software;\ you\ can\ redistribute\ it\ and/or\ modify\ \ *}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00006}00006\ \textcolor{comment}{\ *\ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by\ \ *}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00007}00007\ \textcolor{comment}{\ *\ \ \ the\ Free\ Software\ Foundation;\ either\ version\ 3\ of\ the\ License,\ or\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00008}00008\ \textcolor{comment}{\ *\ \ \ (at\ your\ option)\ any\ later\ version.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00009}00009\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00010}00010\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,\ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00011}00011\ \textcolor{comment}{\ *\ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of\ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00012}00012\ \textcolor{comment}{\ *\ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00013}00013\ \textcolor{comment}{\ *\ \ \ GNU\ General\ Public\ License\ for\ more\ details.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00014}00014\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00015}00015\ \textcolor{comment}{\ *\ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00016}00016\ \textcolor{comment}{\ *\ \ \ along\ with\ this\ program;\ if\ not,\ write\ to\ the\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00017}00017\ \textcolor{comment}{\ *\ \ \ Free\ Software\ Foundation,\ Inc.,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00018}00018\ \textcolor{comment}{\ *\ \ \ 59\ Temple\ Place\ -\/\ Suite\ 330,\ Boston,\ MA\ \ 02111-\/1307,\ USA.\ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00019}00019\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00021}00021\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ <QObject>}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00024}00024\ \textcolor{preprocessor}{\#include\ <QQmlEngine>}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00025}00025\ \textcolor{preprocessor}{\#include\ <QtMath>}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00034}\mbox{\hyperlink{namespaceUnits}{00034}}\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceUnits}{Units}}\ \{}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00035}00035\ }
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00041}\mbox{\hyperlink{classUnits_1_1Angle}{00041}}\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classUnits_1_1Angle}{Angle}}\ \{}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00042}00042\ \ \ \ \ \ \ \ \ Q\_GADGET}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00043}00043\ \ \ \ \ \ \ \ \ QML\_VALUE\_TYPE(angle)}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00044}00044\ }
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00045}00045\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00052}\mbox{\hyperlink{classUnits_1_1Angle_ab603cd689a472d17933623807c62ba56}{00052}}\ \ \ \ \ \ \ \ \ Q\_INVOKABLE\ \textcolor{keyword}{static}\ \mbox{\hyperlink{classUnits_1_1Angle}{Units::Angle}}\ \mbox{\hyperlink{classUnits_1_1Angle_ab603cd689a472d17933623807c62ba56}{fromRAD}}(\textcolor{keywordtype}{double}\ angleInRAD)}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00053}00053\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00054}00054\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classUnits_1_1Angle}{Angle}}\ result;}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00055}00055\ \ \ \ \ \ \ \ \ \ \ \ \ result.m\_angleInRAD\ =\ angleInRAD;}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00056}00056\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00057}00057\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00058}00058\ }
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00065}\mbox{\hyperlink{classUnits_1_1Angle_aca8075bc42502769474dfd34a125e181}{00065}}\ \ \ \ \ \ \ \ \ Q\_INVOKABLE\ \textcolor{keyword}{static}\ \mbox{\hyperlink{classUnits_1_1Angle}{Units::Angle}}\ \mbox{\hyperlink{classUnits_1_1Angle_aca8075bc42502769474dfd34a125e181}{fromDEG}}(\textcolor{keywordtype}{double}\ angleInDEG)}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00066}00066\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00067}00067\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classUnits_1_1Angle}{Angle}}\ result;}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00068}00068\ \ \ \ \ \ \ \ \ \ \ \ \ result.m\_angleInRAD\ =\ qDegreesToRadians(angleInDEG);}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00069}00069\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00070}00070\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00071}00071\ }
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00076}\mbox{\hyperlink{classUnits_1_1Angle_a186a4f2cfdbdece64274918ad0e80740}{00076}}\ \ \ \ \ \ \ \ \ Q\_INVOKABLE\ \textcolor{keyword}{static}\ \mbox{\hyperlink{classUnits_1_1Angle}{Units::Angle}}\ \mbox{\hyperlink{classUnits_1_1Angle_a186a4f2cfdbdece64274918ad0e80740}{nan}}()}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00077}00077\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00078}00078\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \{\};}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00079}00079\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00080}00080\ }
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00085}\mbox{\hyperlink{classUnits_1_1Angle_a6f7eb8420f1e2ea38641a79fcd68cb69}{00085}}\ \ \ \ \ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classUnits_1_1Angle_a6f7eb8420f1e2ea38641a79fcd68cb69}{isFinite}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00086}00086\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00087}00087\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::isfinite(m\_angleInRAD);}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00088}00088\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00089}00089\ }
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00096}\mbox{\hyperlink{classUnits_1_1Angle_ade706056578acfda14d1424d52a02e5f}{00096}}\ \ \ \ \ \ \ \ \ Q\_INVOKABLE\ \mbox{\hyperlink{classUnits_1_1Angle}{Units::Angle}}\ \mbox{\hyperlink{classUnits_1_1Angle_ade706056578acfda14d1424d52a02e5f}{operator+}}(\mbox{\hyperlink{classUnits_1_1Angle}{Units::Angle}}\ rhs)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00097}00097\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00098}00098\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classUnits_1_1Angle}{Angle}}\ result;}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00099}00099\ \ \ \ \ \ \ \ \ \ \ \ \ result.m\_angleInRAD\ =\ m\_angleInRAD\ +\ rhs.m\_angleInRAD;}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00100}00100\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00101}00101\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00102}00102\ }
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00109}\mbox{\hyperlink{classUnits_1_1Angle_aea302cc0d5b71ccf95ae3d679c95a34a}{00109}}\ \ \ \ \ \ \ \ \ Q\_INVOKABLE\ \mbox{\hyperlink{classUnits_1_1Angle}{Units::Angle}}\ \mbox{\hyperlink{classUnits_1_1Angle_aea302cc0d5b71ccf95ae3d679c95a34a}{operator-\/}}(\mbox{\hyperlink{classUnits_1_1Angle}{Units::Angle}}\ rhs)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00110}00110\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00111}00111\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classUnits_1_1Angle}{Angle}}\ result;}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00112}00112\ \ \ \ \ \ \ \ \ \ \ \ \ result.m\_angleInRAD\ =\ m\_angleInRAD\ -\/\ rhs.m\_angleInRAD;}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00113}00113\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00114}00114\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00115}00115\ }
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00122}\mbox{\hyperlink{classUnits_1_1Angle_a0038f0a2b6284f0de6368d27340e7a1b}{00122}}\ \ \ \ \ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classUnits_1_1Angle_a0038f0a2b6284f0de6368d27340e7a1b}{operator==}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classUnits_1_1Angle}{Units::Angle}}\&\ rhs)\ \textcolor{keyword}{const}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00123}00123\ }
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00130}\mbox{\hyperlink{classUnits_1_1Angle_a5af4461c6344a2fac7a5623a2bdb633d}{00130}}\ \ \ \ \ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classUnits_1_1Angle_a5af4461c6344a2fac7a5623a2bdb633d}{operator!=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classUnits_1_1Angle}{Units::Angle}}\&\ rhs)\ \textcolor{keyword}{const}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00131}00131\ }
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00136}\mbox{\hyperlink{classUnits_1_1Angle_a746839effb8fcf3de0300a7b2ef6d5c7}{00136}}\ \ \ \ \ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classUnits_1_1Angle_a746839effb8fcf3de0300a7b2ef6d5c7}{cos}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00137}00137\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00138}00138\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::cos(m\_angleInRAD);}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00139}00139\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00140}00140\ }
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00145}\mbox{\hyperlink{classUnits_1_1Angle_a7457628d8560f4556d2a17a72bb6d64d}{00145}}\ \ \ \ \ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classUnits_1_1Angle_a7457628d8560f4556d2a17a72bb6d64d}{sin}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00146}00146\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00147}00147\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::sin(m\_angleInRAD);}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00148}00148\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00149}00149\ }
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00156}\mbox{\hyperlink{classUnits_1_1Angle_a233073f38b5187d3e880ca55730eebe4}{00156}}\ \ \ \ \ \ \ \ \ Q\_INVOKABLE\ \textcolor{keyword}{static}\ \mbox{\hyperlink{classUnits_1_1Angle}{Units::Angle}}\ \mbox{\hyperlink{classUnits_1_1Angle_a233073f38b5187d3e880ca55730eebe4}{asin}}(\textcolor{keywordtype}{double}\ arg)\ \{}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00157}00157\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classUnits_1_1Angle}{Angle}}\ result;}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00158}00158\ \ \ \ \ \ \ \ \ \ \ \ \ result.m\_angleInRAD\ =\ std::asin(arg);}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00159}00159\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00160}00160\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00161}00161\ }
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00166}\mbox{\hyperlink{classUnits_1_1Angle_ae7290d5a9ce0f0f417bcd1b36a49bd08}{00166}}\ \ \ \ \ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ QString\ \mbox{\hyperlink{classUnits_1_1Angle_ae7290d5a9ce0f0f417bcd1b36a49bd08}{toClock}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00167}00167\ }
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00172}\mbox{\hyperlink{classUnits_1_1Angle_ae00ac88ea6de4084b445459b399ca7d0}{00172}}\ \ \ \ \ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classUnits_1_1Angle_ae00ac88ea6de4084b445459b399ca7d0}{toDEG}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00173}00173\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00174}00174\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!qIsFinite(m\_angleInRAD))\ \{}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00175}00175\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ qQNaN();}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00176}00176\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00177}00177\ }
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00178}00178\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ d\ =\ std::fmod(qRadiansToDegrees(m\_angleInRAD),\ 360.0);}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00179}00179\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (d\ >\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00180}00180\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ d;}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00181}00181\ \}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00182}00182\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ d+360.0;}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00183}00183\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00184}00184\ }
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00189}\mbox{\hyperlink{classUnits_1_1Angle_adb314015a90f78ea1d8a1ef92f9f1fba}{00189}}\ \ \ \ \ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classUnits_1_1Angle_adb314015a90f78ea1d8a1ef92f9f1fba}{toRAD}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00190}00190\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00191}00191\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_angleInRAD;}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00192}00192\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00193}00193\ }
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00194}00194\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00195}00195\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Angle\ in\ Radians}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00196}00196\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ m\_angleInRAD\{qQNaN()\};}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00197}00197\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00198}00198\ \}\ \textcolor{comment}{//\ namespace\ Units}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00199}00199\ }
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00200}00200\ \textcolor{comment}{//\ Declare\ meta\ types}}
+\DoxyCodeLine{\Hypertarget{Angle_8h_source_l00201}00201\ Q\_DECLARE\_METATYPE(\mbox{\hyperlink{classUnits_1_1Angle}{Units::Angle}})}
+
+\end{DoxyCode}

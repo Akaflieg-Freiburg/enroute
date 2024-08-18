@@ -1,0 +1,110 @@
+\doxysection{Traffic\+Data\+Source\+\_\+\+Bluetooth\+Classic.\+h}
+\hypertarget{TrafficDataSource__BluetoothClassic_8h_source}{}\label{TrafficDataSource__BluetoothClassic_8h_source}\index{/home/runner/work/enroute/enroute/src/traffic/TrafficDataSource\_BluetoothClassic.h@{/home/runner/work/enroute/enroute/src/traffic/TrafficDataSource\_BluetoothClassic.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00001}00001\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00002}00002\ \textcolor{comment}{\ *\ \ \ Copyright\ (C)\ 2024\ by\ Stefan\ Kebekus\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00003}00003\ \textcolor{comment}{\ *\ \ \ stefan.kebekus@gmail.com\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00004}00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ free\ software;\ you\ can\ redistribute\ it\ and/or\ modify\ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00006}00006\ \textcolor{comment}{\ *\ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by\ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00007}00007\ \textcolor{comment}{\ *\ \ \ the\ Free\ Software\ Foundation;\ either\ version\ 3\ of\ the\ License,\ or\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00008}00008\ \textcolor{comment}{\ *\ \ \ (at\ your\ option)\ any\ later\ version.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00009}00009\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00010}00010\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,\ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00011}00011\ \textcolor{comment}{\ *\ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of\ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00012}00012\ \textcolor{comment}{\ *\ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00013}00013\ \textcolor{comment}{\ *\ \ \ GNU\ General\ Public\ License\ for\ more\ details.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00014}00014\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00015}00015\ \textcolor{comment}{\ *\ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00016}00016\ \textcolor{comment}{\ *\ \ \ along\ with\ this\ program;\ if\ not,\ write\ to\ the\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00017}00017\ \textcolor{comment}{\ *\ \ \ Free\ Software\ Foundation,\ Inc.,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00018}00018\ \textcolor{comment}{\ *\ \ \ 59\ Temple\ Place\ -\/\ Suite\ 330,\ Boston,\ MA\ \ 02111-\/1307,\ USA.\ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00019}00019\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00021}00021\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ <QBluetoothDeviceInfo>}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00024}00024\ \textcolor{preprocessor}{\#include\ <QBluetoothPermission>}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00025}00025\ \textcolor{preprocessor}{\#include\ <QBluetoothSocket>}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00027}00027\ \textcolor{preprocessor}{\#include\ "{}traffic/TrafficDataSource\_AbstractSocket.h"{}}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00028}00028\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00029}00029\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00030}00030\ \textcolor{keyword}{namespace\ }Traffic\ \{}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00031}00031\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00038}\mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic}{00038}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic}{TrafficDataSource\_BluetoothClassic}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__AbstractSocket}{TrafficDataSource\_AbstractSocket}}\ \{}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00039}00039\ \ \ \ \ Q\_OBJECT}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00040}00040\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00041}00041\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00051}\mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic_ae87c2e77c20ab82cdd15ffa4efd1ac59}{00051}}\ \ \ \ \ \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic_ae87c2e77c20ab82cdd15ffa4efd1ac59}{TrafficDataSource\_BluetoothClassic}}(\textcolor{keywordtype}{bool}\ isCanonical,\ \textcolor{keyword}{const}\ QBluetoothDeviceInfo\&\ info,\ QObject*\ parent);}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00052}00052\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00053}00053\ \ \ \ \ \textcolor{comment}{//\ Standard\ destructor}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00054}00054\ \ \ \ \ \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic}{\string~TrafficDataSource\_BluetoothClassic}}()\ \textcolor{keyword}{override}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00055}00055\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00056}00056\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00057}00057\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00058}00058\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00059}00059\ \ \ \ \ \textcolor{comment}{//\ Properties}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00060}00060\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00061}00061\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00066}\mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic_a02c6772f34c402055e5db41f58a98b10}{00066}}\ \ \ \ \ Q\_PROPERTY(QBluetoothDeviceInfo\ \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic_a02c6772f34c402055e5db41f58a98b10}{sourceInfo}}\ READ\ \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic_a02c6772f34c402055e5db41f58a98b10}{sourceInfo}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00067}00067\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00068}00068\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00069}00069\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00070}00070\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00071}00071\ \ \ \ \ \textcolor{comment}{//\ Getter\ Methods}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00072}00072\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00073}00073\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00074}00074\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00078}\mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic_a256e58785802dd20cb11084af1d9e0e5}{00078}}\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo}{Traffic::ConnectionInfo}}\ \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic_a256e58785802dd20cb11084af1d9e0e5}{connectionInfo}}()\textcolor{keyword}{\ const\ override}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00079}00079\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00080}00080\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classTraffic_1_1ConnectionInfo}{Traffic::ConnectionInfo}}(m\_info,\ \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__Abstract_a5d7761678f5f74ba2c2d79e30ed61a5e}{canonical}}());}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00081}00081\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00082}00082\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00087}\mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic_a48d21592299c3dcc617e847ffcb6c61f}{00087}}\ \ \ \ \ [[nodiscard]]\ QString\ \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic_a48d21592299c3dcc617e847ffcb6c61f}{dataFormat}}()\textcolor{keyword}{\ const\ override\ }\{\ \textcolor{keywordflow}{return}\ u\textcolor{stringliteral}{"{}FLARM/NMEA"{}}\_qs;\ \}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00088}00088\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00096}\mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic_ae8c876328c444e08816553cbb1605c16}{00096}}\ \ \ \ \ [[nodiscard]]\ QString\ \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic_ae8c876328c444e08816553cbb1605c16}{icon}}()\textcolor{keyword}{\ const\ override\ }\{\ \textcolor{keywordflow}{return}\ u\textcolor{stringliteral}{"{}/icons/material/ic\_bluetooth.svg"{}}\_qs;\ \}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00097}00097\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00105}\mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic_aa6fd911a88616809c4a49af8d67f1a9b}{00105}}\ \ \ \ \ [[nodiscard]]\ QString\ \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic_aa6fd911a88616809c4a49af8d67f1a9b}{sourceName}}()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00106}00106\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00111}\mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic_afb42b056796a9d98c043e4dc0d771ba7}{00111}}\ \ \ \ \ [[nodiscard]]\ QBluetoothDeviceInfo\ \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic_afb42b056796a9d98c043e4dc0d771ba7}{sourceInfo}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00112}00112\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00113}00113\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_info;}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00114}00114\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00115}00115\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00116}00116\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00117}00117\ \textcolor{keyword}{public}\ slots:}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00123}\mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic_a2ee178aca334b6ce6b48f7f17573fc76}{00123}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic_a2ee178aca334b6ce6b48f7f17573fc76}{connectToTrafficReceiver}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00124}00124\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00130}\mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic_a830ec342fe1873b5ad5829744be846ea}{00130}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic_a830ec342fe1873b5ad5829744be846ea}{disconnectFromTrafficReceiver}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00131}00131\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00132}00132\ \textcolor{keyword}{private}\ slots:}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00133}00133\ \ \ \ \ \textcolor{comment}{//\ Handle\ BT\ socket\ errors}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00134}00134\ \ \ \ \ \textcolor{keywordtype}{void}\ onErrorOccurred(QBluetoothSocket::SocketError\ error);}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00135}00135\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00136}00136\ \ \ \ \ \textcolor{comment}{//\ Handle\ BT\ socket\ state\ changes}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00137}00137\ \ \ \ \ \textcolor{keywordtype}{void}\ onStateChanged(QBluetoothSocket::SocketState\ state);}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00138}00138\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00139}00139\ \ \ \ \ \textcolor{comment}{//\ Read\ and\ process\ received\ NMEA\ sentences}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00140}00140\ \ \ \ \ \textcolor{keywordtype}{void}\ onReadyRead();}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00141}00141\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00142}00142\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00143}00143\ \ \ \ \ Q\_DISABLE\_COPY\_MOVE(\mbox{\hyperlink{classTraffic_1_1TrafficDataSource__BluetoothClassic}{TrafficDataSource\_BluetoothClassic}})}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00144}00144\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00145}00145\ \ \ \ \ \textcolor{comment}{//\ Copied\ from\ the\ constructor}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00146}00146\ \ \ \ \ QBluetoothDeviceInfo\ m\_info;}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00147}00147\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00148}00148\ \ \ \ \ \textcolor{comment}{//\ Permissions}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00149}00149\ \ \ \ \ QBluetoothPermission\ m\_bluetoothPermission;}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00150}00150\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00151}00151\ \ \ \ \ \textcolor{comment}{//\ Bluetooth\ socket\ used\ for\ reading\ data}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00152}00152\ \ \ \ \ QBluetoothSocket\ m\_socket\ \{QBluetoothServiceInfo::RfcommProtocol\};}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00153}00153\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00154}00154\ \ \ \ \ \textcolor{comment}{//\ Text\ stream\ used\ for\ reading\ NMEA\ sentences}}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00155}00155\ \ \ \ \ QTextStream\ m\_textStream\ \{\&m\_socket\};}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00156}00156\ \};}
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00157}00157\ }
+\DoxyCodeLine{\Hypertarget{TrafficDataSource__BluetoothClassic_8h_source_l00158}00158\ \}\ \textcolor{comment}{//\ namespace\ Traffic}}
+
+\end{DoxyCode}

@@ -1,0 +1,57 @@
+\doxysection{Positioning\+::Geoid Class Reference}
+\hypertarget{classPositioning_1_1Geoid}{}\label{classPositioning_1_1Geoid}\index{Positioning::Geoid@{Positioning::Geoid}}
+
+
+Provide geoidal separation according to \href{https://en.wikipedia.org/wiki/Geoid}{\texttt{ https\+://en.\+wikipedia.\+org/wiki/\+Geoid}}.  
+
+
+
+
+{\ttfamily \#include $<$Geoid.\+h$>$}
+
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static auto \mbox{\hyperlink{classPositioning_1_1Geoid_ae57440d7fdf2510f025d9fb76d8e14e6}{separation}} (const QGeo\+Coordinate \&coord) -\/$>$ \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}}
+\begin{DoxyCompactList}\small\item\em return geoidal separation -- the difference between AMSL and ellipsoidal height. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Provide geoidal separation according to \href{https://en.wikipedia.org/wiki/Geoid}{\texttt{ https\+://en.\+wikipedia.\+org/wiki/\+Geoid}}. 
+
+In maps and common use (like VFR) the height over the mean sea level (such as orthometric height) is used to indicate the height of elevations while the ellipsoidal height results from the GPS system and similar GNSS.
+
+The deviation between the ellipsoidal height and the orthometric height is provided here.
+
+The implementation uses the data from \href{https://earth-info.nga.mil/GandG/wgs84/gravitymod/egm96/binary/binarygeoid.html}{\texttt{ https\+://earth-\/info.\+nga.\+mil/\+Gand\+G/wgs84/gravitymod/egm96/binary/binarygeoid.\+html}} and does a bilinear interpolation between the four neighboring data points of the requested location.
+
+The implementation was {\itshape very} carefully tested and compared with both a bilinear and a bicubic spline interpolation in python. The comparison of the method here with the python bilinear interpolation verified that both implementations yield the same numbers (within numerical precision). The comparison of the bilinear implementation here with the python\textquotesingle{}s bicubic interpolation showed a worldwide max deviation of about 1 m. 
+
+Definition at line \mbox{\hyperlink{Geoid_8h_source_l00049}{49}} of file \mbox{\hyperlink{Geoid_8h_source}{Geoid.\+h}}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classPositioning_1_1Geoid_ae57440d7fdf2510f025d9fb76d8e14e6}\index{Positioning::Geoid@{Positioning::Geoid}!separation@{separation}}
+\index{separation@{separation}!Positioning::Geoid@{Positioning::Geoid}}
+\doxysubsubsection{\texorpdfstring{separation()}{separation()}}
+{\footnotesize\ttfamily \label{classPositioning_1_1Geoid_ae57440d7fdf2510f025d9fb76d8e14e6} 
+static auto Positioning\+::\+Geoid\+::separation (\begin{DoxyParamCaption}\item[{const QGeo\+Coordinate \&}]{coord}{}\end{DoxyParamCaption}) -\/$>$  \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}}\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+return geoidal separation -- the difference between AMSL and ellipsoidal height. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em coord} & location for which the geoidal separation should be calculated.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Geoidal separation. In case that the method fails, NAN is returned 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/positioning/Geoid.\+h\end{DoxyCompactItemize}

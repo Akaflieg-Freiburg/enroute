@@ -1,0 +1,310 @@
+\doxysection{Geo\+Maps\+::Airspace Class Reference}
+\hypertarget{classGeoMaps_1_1Airspace}{}\label{classGeoMaps_1_1Airspace}\index{GeoMaps::Airspace@{GeoMaps::Airspace}}
+
+
+A very simple class that describes an airspace.  
+
+
+
+
+{\ttfamily \#include $<$Airspace.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classGeoMaps_1_1Airspace_ae1ee9a8821a186548dc8750be7311ee2}\label{classGeoMaps_1_1Airspace_ae1ee9a8821a186548dc8750be7311ee2} 
+{\bfseries Airspace} ()=default
+\begin{DoxyCompactList}\small\item\em Constructs an invalid airspace. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classGeoMaps_1_1Airspace_afbdf3892b8bd9dd827dfcd79401d7a5a}{Airspace}} (const QJson\+Object \&geo\+JSONObject)
+\begin{DoxyCompactList}\small\item\em Constructs an airspace from a \doxylink{classGeoMaps_1_1GeoJSON}{Geo\+JSON} object. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classGeoMaps_1_1Airspace_a0222e533e364f0fb3ef7bdc75c2f63c4}{estimated\+Lower\+Bound\+MSL}} () const -\/$>$ \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}}
+\begin{DoxyCompactList}\small\item\em Estimates the lower limit of the airspace above MSL. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classGeoMaps_1_1Airspace_aa10cdbd0c2633925681e2cb9d7990eea}{is\+Valid}} () const -\/$>$ bool
+\begin{DoxyCompactList}\small\item\em Getter function for property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classGeoMaps_1_1Airspace_a71b9688efd4393b448c7bb18e4e4c877}{lower\+Bound}} () const -\/$>$ QString
+\begin{DoxyCompactList}\small\item\em Getter function for property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classGeoMaps_1_1Airspace_a87cca846e898bca7785ee74fb683d9e9}{lower\+Bound\+Metric}} () const -\/$>$ QString
+\begin{DoxyCompactList}\small\item\em Getter function for property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classGeoMaps_1_1Airspace_a9447eb9fb991a6151480e8da411eea3a}{name}} () const -\/$>$ QString
+\begin{DoxyCompactList}\small\item\em Getter function for property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classGeoMaps_1_1Airspace_a9687fc541d99e6b8de4f3b2c162e3207}{polygon}} () const -\/$>$ QGeo\+Polygon
+\begin{DoxyCompactList}\small\item\em Getter function for property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classGeoMaps_1_1Airspace_a1bb3963d2fc3cfabab8f0a297029ec6d}{CAT}} () const -\/$>$ QString
+\begin{DoxyCompactList}\small\item\em Getter function for property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classGeoMaps_1_1Airspace_afa26b43931f8b6e1cfcae5a193fb4f71}{upper\+Bound}} () const -\/$>$ QString
+\begin{DoxyCompactList}\small\item\em Getter function for property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classGeoMaps_1_1Airspace_afb8dd305c1eea04e720dbe2bdb2fc8bb}{upper\+Bound\+Metric}} () const -\/$>$ QString
+\begin{DoxyCompactList}\small\item\em Getter function for property with the same name. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classGeoMaps_1_1Airspace_a23a75577d0b58e2287afd28b50c4d49b}\label{classGeoMaps_1_1Airspace_a23a75577d0b58e2287afd28b50c4d49b} 
+bool {\bfseries is\+Valid}
+\begin{DoxyCompactList}\small\item\em Validity. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classGeoMaps_1_1Airspace_acf1bb39993a117a1104f391cf9e7743a}{lower\+Bound}}
+\begin{DoxyCompactList}\small\item\em Lower limit of the airspace. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classGeoMaps_1_1Airspace_a9080eacac710fbf829b6f515669cea7a}{lower\+Bound\+Metric}}
+\begin{DoxyCompactList}\small\item\em Lower limit of the airspace. \end{DoxyCompactList}\item 
+\Hypertarget{classGeoMaps_1_1Airspace_aa77c133735959b4597c3e17fdcff8178}\label{classGeoMaps_1_1Airspace_aa77c133735959b4597c3e17fdcff8178} 
+QGeo\+Polygon {\bfseries polygon}
+\begin{DoxyCompactList}\small\item\em QGeo\+Polygon that describes the lateral limits of the airspace. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classGeoMaps_1_1Airspace_aaf33383272ae13062e87e03c1911d886}{upper\+Bound}}
+\begin{DoxyCompactList}\small\item\em Upper limit of the airspace. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classGeoMaps_1_1Airspace_a7103ae9c4f56ddad4b08458e15b7fa3d}{upper\+Bound\+Metric}}
+\begin{DoxyCompactList}\small\item\em Upper limit of the airspace. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classGeoMaps_1_1Airspace_aa18f46d37edf75539317d1eb7014512e}\label{classGeoMaps_1_1Airspace_aa18f46d37edf75539317d1eb7014512e} 
+auto {\bfseries operator==} (const \mbox{\hyperlink{classGeoMaps_1_1Airspace}{Geo\+Maps\+::\+Airspace}} \&, const \mbox{\hyperlink{classGeoMaps_1_1Airspace}{Geo\+Maps\+::\+Airspace}} \&) -\/$>$ bool
+\begin{DoxyCompactList}\small\item\em Comparison. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A very simple class that describes an airspace. 
+
+Definition at line \mbox{\hyperlink{Airspace_8h_source_l00032}{32}} of file \mbox{\hyperlink{Airspace_8h_source}{Airspace.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classGeoMaps_1_1Airspace_afbdf3892b8bd9dd827dfcd79401d7a5a}\index{GeoMaps::Airspace@{GeoMaps::Airspace}!Airspace@{Airspace}}
+\index{Airspace@{Airspace}!GeoMaps::Airspace@{GeoMaps::Airspace}}
+\doxysubsubsection{\texorpdfstring{Airspace()}{Airspace()}}
+{\footnotesize\ttfamily \label{classGeoMaps_1_1Airspace_afbdf3892b8bd9dd827dfcd79401d7a5a} 
+Geo\+Maps\+::\+Airspace\+::\+Airspace (\begin{DoxyParamCaption}\item[{const QJson\+Object \&}]{geo\+JSONObject}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Constructs an airspace from a \doxylink{classGeoMaps_1_1GeoJSON}{Geo\+JSON} object. 
+
+This method constructs an Airpace from a \doxylink{classGeoMaps_1_1GeoJSON}{Geo\+JSON} description. The \doxylink{classGeoMaps_1_1GeoJSON}{Geo\+JSON} file specification is found \href{https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation}{\texttt{ here}}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em geo\+JSONObject} & \doxylink{classGeoMaps_1_1GeoJSON}{Geo\+JSON} Object that describes the airspace. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classGeoMaps_1_1Airspace_a1bb3963d2fc3cfabab8f0a297029ec6d}\index{GeoMaps::Airspace@{GeoMaps::Airspace}!CAT@{CAT}}
+\index{CAT@{CAT}!GeoMaps::Airspace@{GeoMaps::Airspace}}
+\doxysubsubsection{\texorpdfstring{CAT()}{CAT()}}
+{\footnotesize\ttfamily \label{classGeoMaps_1_1Airspace_a1bb3963d2fc3cfabab8f0a297029ec6d} 
+auto Geo\+Maps\+::\+Airspace\+::\+CAT (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ QString \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property CAT 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Airspace_8h_source_l00128}{128}} of file \mbox{\hyperlink{Airspace_8h_source}{Airspace.\+h}}.
+
+\Hypertarget{classGeoMaps_1_1Airspace_a0222e533e364f0fb3ef7bdc75c2f63c4}\index{GeoMaps::Airspace@{GeoMaps::Airspace}!estimatedLowerBoundMSL@{estimatedLowerBoundMSL}}
+\index{estimatedLowerBoundMSL@{estimatedLowerBoundMSL}!GeoMaps::Airspace@{GeoMaps::Airspace}}
+\doxysubsubsection{\texorpdfstring{estimatedLowerBoundMSL()}{estimatedLowerBoundMSL()}}
+{\footnotesize\ttfamily \label{classGeoMaps_1_1Airspace_a0222e533e364f0fb3ef7bdc75c2f63c4} 
+auto Geo\+Maps\+::\+Airspace\+::estimated\+Lower\+Bound\+MSL (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$  \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}}\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Estimates the lower limit of the airspace above MSL. 
+
+This method gives a rought estimate for the lower limit of the airspace. The result is not reliable enough for aviation purposes but can be used to sort the airspaces in the GUI.
+
+\begin{DoxyReturn}{Returns}
+Estimated lower bound of the airspace, above main sea level 
+\end{DoxyReturn}
+\Hypertarget{classGeoMaps_1_1Airspace_aa10cdbd0c2633925681e2cb9d7990eea}\index{GeoMaps::Airspace@{GeoMaps::Airspace}!isValid@{isValid}}
+\index{isValid@{isValid}!GeoMaps::Airspace@{GeoMaps::Airspace}}
+\doxysubsubsection{\texorpdfstring{isValid()}{isValid()}}
+{\footnotesize\ttfamily \label{classGeoMaps_1_1Airspace_aa10cdbd0c2633925681e2cb9d7990eea} 
+auto Geo\+Maps\+::\+Airspace\+::is\+Valid (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ bool \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property is\+Valid 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Airspace_8h_source_l00070}{70}} of file \mbox{\hyperlink{Airspace_8h_source}{Airspace.\+h}}.
+
+\Hypertarget{classGeoMaps_1_1Airspace_a71b9688efd4393b448c7bb18e4e4c877}\index{GeoMaps::Airspace@{GeoMaps::Airspace}!lowerBound@{lowerBound}}
+\index{lowerBound@{lowerBound}!GeoMaps::Airspace@{GeoMaps::Airspace}}
+\doxysubsubsection{\texorpdfstring{lowerBound()}{lowerBound()}}
+{\footnotesize\ttfamily \label{classGeoMaps_1_1Airspace_a71b9688efd4393b448c7bb18e4e4c877} 
+auto Geo\+Maps\+::\+Airspace\+::lower\+Bound (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ QString \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property lower\+Bound 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Airspace_8h_source_l00084}{84}} of file \mbox{\hyperlink{Airspace_8h_source}{Airspace.\+h}}.
+
+\Hypertarget{classGeoMaps_1_1Airspace_a87cca846e898bca7785ee74fb683d9e9}\index{GeoMaps::Airspace@{GeoMaps::Airspace}!lowerBoundMetric@{lowerBoundMetric}}
+\index{lowerBoundMetric@{lowerBoundMetric}!GeoMaps::Airspace@{GeoMaps::Airspace}}
+\doxysubsubsection{\texorpdfstring{lowerBoundMetric()}{lowerBoundMetric()}}
+{\footnotesize\ttfamily \label{classGeoMaps_1_1Airspace_a87cca846e898bca7785ee74fb683d9e9} 
+auto Geo\+Maps\+::\+Airspace\+::lower\+Bound\+Metric (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ QString \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property lower\+Bound\+Metric 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Airspace_8h_source_l00096}{96}} of file \mbox{\hyperlink{Airspace_8h_source}{Airspace.\+h}}.
+
+\Hypertarget{classGeoMaps_1_1Airspace_a9447eb9fb991a6151480e8da411eea3a}\index{GeoMaps::Airspace@{GeoMaps::Airspace}!name@{name}}
+\index{name@{name}!GeoMaps::Airspace@{GeoMaps::Airspace}}
+\doxysubsubsection{\texorpdfstring{name()}{name()}}
+{\footnotesize\ttfamily \label{classGeoMaps_1_1Airspace_a9447eb9fb991a6151480e8da411eea3a} 
+auto Geo\+Maps\+::\+Airspace\+::name (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ QString \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property name 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Airspace_8h_source_l00105}{105}} of file \mbox{\hyperlink{Airspace_8h_source}{Airspace.\+h}}.
+
+\Hypertarget{classGeoMaps_1_1Airspace_a9687fc541d99e6b8de4f3b2c162e3207}\index{GeoMaps::Airspace@{GeoMaps::Airspace}!polygon@{polygon}}
+\index{polygon@{polygon}!GeoMaps::Airspace@{GeoMaps::Airspace}}
+\doxysubsubsection{\texorpdfstring{polygon()}{polygon()}}
+{\footnotesize\ttfamily \label{classGeoMaps_1_1Airspace_a9687fc541d99e6b8de4f3b2c162e3207} 
+auto Geo\+Maps\+::\+Airspace\+::polygon (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ QGeo\+Polygon \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property polygon 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Airspace_8h_source_l00114}{114}} of file \mbox{\hyperlink{Airspace_8h_source}{Airspace.\+h}}.
+
+\Hypertarget{classGeoMaps_1_1Airspace_afa26b43931f8b6e1cfcae5a193fb4f71}\index{GeoMaps::Airspace@{GeoMaps::Airspace}!upperBound@{upperBound}}
+\index{upperBound@{upperBound}!GeoMaps::Airspace@{GeoMaps::Airspace}}
+\doxysubsubsection{\texorpdfstring{upperBound()}{upperBound()}}
+{\footnotesize\ttfamily \label{classGeoMaps_1_1Airspace_afa26b43931f8b6e1cfcae5a193fb4f71} 
+auto Geo\+Maps\+::\+Airspace\+::upper\+Bound (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ QString \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property upper\+Bound 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Airspace_8h_source_l00140}{140}} of file \mbox{\hyperlink{Airspace_8h_source}{Airspace.\+h}}.
+
+\Hypertarget{classGeoMaps_1_1Airspace_afb8dd305c1eea04e720dbe2bdb2fc8bb}\index{GeoMaps::Airspace@{GeoMaps::Airspace}!upperBoundMetric@{upperBoundMetric}}
+\index{upperBoundMetric@{upperBoundMetric}!GeoMaps::Airspace@{GeoMaps::Airspace}}
+\doxysubsubsection{\texorpdfstring{upperBoundMetric()}{upperBoundMetric()}}
+{\footnotesize\ttfamily \label{classGeoMaps_1_1Airspace_afb8dd305c1eea04e720dbe2bdb2fc8bb} 
+auto Geo\+Maps\+::\+Airspace\+::upper\+Bound\+Metric (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ QString \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property upper\+Bound\+Metric 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Airspace_8h_source_l00152}{152}} of file \mbox{\hyperlink{Airspace_8h_source}{Airspace.\+h}}.
+
+
+
+\doxysubsection{Property Documentation}
+\Hypertarget{classGeoMaps_1_1Airspace_acf1bb39993a117a1104f391cf9e7743a}\index{GeoMaps::Airspace@{GeoMaps::Airspace}!lowerBound@{lowerBound}}
+\index{lowerBound@{lowerBound}!GeoMaps::Airspace@{GeoMaps::Airspace}}
+\doxysubsubsection{\texorpdfstring{lowerBound}{lowerBound}}
+{\footnotesize\ttfamily \label{classGeoMaps_1_1Airspace_acf1bb39993a117a1104f391cf9e7743a} 
+QString Geo\+Maps\+::\+Airspace\+::lower\+Bound\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Lower limit of the airspace. 
+
+A string that describes the lower bound of the airspace
+
+\begin{DoxySeeAlso}{See also}
+\doxylink{classGeoMaps_1_1Airspace_aaf33383272ae13062e87e03c1911d886}{upper\+Bound} 
+\end{DoxySeeAlso}
+
+
+Definition at line \mbox{\hyperlink{Airspace_8h_source_l00078}{78}} of file \mbox{\hyperlink{Airspace_8h_source}{Airspace.\+h}}.
+
+\Hypertarget{classGeoMaps_1_1Airspace_a9080eacac710fbf829b6f515669cea7a}\index{GeoMaps::Airspace@{GeoMaps::Airspace}!lowerBoundMetric@{lowerBoundMetric}}
+\index{lowerBoundMetric@{lowerBoundMetric}!GeoMaps::Airspace@{GeoMaps::Airspace}}
+\doxysubsubsection{\texorpdfstring{lowerBoundMetric}{lowerBoundMetric}}
+{\footnotesize\ttfamily \label{classGeoMaps_1_1Airspace_a9080eacac710fbf829b6f515669cea7a} 
+QString Geo\+Maps\+::\+Airspace\+::lower\+Bound\+Metric\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Lower limit of the airspace. 
+
+A string that describes the lower bound of the airspace in metric terms 
+
+Definition at line \mbox{\hyperlink{Airspace_8h_source_l00090}{90}} of file \mbox{\hyperlink{Airspace_8h_source}{Airspace.\+h}}.
+
+\Hypertarget{classGeoMaps_1_1Airspace_aaf33383272ae13062e87e03c1911d886}\index{GeoMaps::Airspace@{GeoMaps::Airspace}!upperBound@{upperBound}}
+\index{upperBound@{upperBound}!GeoMaps::Airspace@{GeoMaps::Airspace}}
+\doxysubsubsection{\texorpdfstring{upperBound}{upperBound}}
+{\footnotesize\ttfamily \label{classGeoMaps_1_1Airspace_aaf33383272ae13062e87e03c1911d886} 
+QString Geo\+Maps\+::\+Airspace\+::upper\+Bound\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Upper limit of the airspace. 
+
+A string that describes the upper bound of the airspace 
+
+Definition at line \mbox{\hyperlink{Airspace_8h_source_l00134}{134}} of file \mbox{\hyperlink{Airspace_8h_source}{Airspace.\+h}}.
+
+\Hypertarget{classGeoMaps_1_1Airspace_a7103ae9c4f56ddad4b08458e15b7fa3d}\index{GeoMaps::Airspace@{GeoMaps::Airspace}!upperBoundMetric@{upperBoundMetric}}
+\index{upperBoundMetric@{upperBoundMetric}!GeoMaps::Airspace@{GeoMaps::Airspace}}
+\doxysubsubsection{\texorpdfstring{upperBoundMetric}{upperBoundMetric}}
+{\footnotesize\ttfamily \label{classGeoMaps_1_1Airspace_a7103ae9c4f56ddad4b08458e15b7fa3d} 
+QString Geo\+Maps\+::\+Airspace\+::upper\+Bound\+Metric\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Upper limit of the airspace. 
+
+A string that describes the upper bound of the airspace in metric terms 
+
+Definition at line \mbox{\hyperlink{Airspace_8h_source_l00146}{146}} of file \mbox{\hyperlink{Airspace_8h_source}{Airspace.\+h}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/geomaps/Airspace.\+h\end{DoxyCompactItemize}

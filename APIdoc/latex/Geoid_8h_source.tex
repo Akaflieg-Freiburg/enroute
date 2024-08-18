@@ -1,0 +1,41 @@
+\doxysection{Geoid.\+h}
+\hypertarget{Geoid_8h_source}{}\label{Geoid_8h_source}\index{/home/runner/work/enroute/enroute/src/positioning/Geoid.h@{/home/runner/work/enroute/enroute/src/positioning/Geoid.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00019}00019\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00021}00021\ \textcolor{preprocessor}{\#include\ <QGeoCoordinate>}}
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ "{}units/Distance.h"{}}}
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00024}00024\ }
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00025}00025\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacePositioning}{Positioning}}\ \{}
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00049}\mbox{\hyperlink{classPositioning_1_1Geoid}{00049}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classPositioning_1_1Geoid}{Geoid}}}
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00050}00050\ \{}
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00051}00051\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00052}00052\ \ \ \ \ \mbox{\hyperlink{classPositioning_1_1Geoid}{Geoid}}()\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00053}00053\ }
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00054}00054\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00055}00055\ \ \ \ \ \textcolor{comment}{//\ Methods}}
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00056}00056\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00057}00057\ }
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00064}\mbox{\hyperlink{classPositioning_1_1Geoid_ae57440d7fdf2510f025d9fb76d8e14e6}{00064}}\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classPositioning_1_1Geoid_ae57440d7fdf2510f025d9fb76d8e14e6}{separation}}(\textcolor{keyword}{const}\ QGeoCoordinate\&\ coord)\ -\/>\ \mbox{\hyperlink{classUnits_1_1Distance}{Units::Distance}};}
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00065}00065\ }
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00066}00066\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00067}00067\ \ \ \ \ \textcolor{comment}{//\ Reads\ data\ into\ the\ vector\ egm}}
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00068}00068\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ readEGM();}
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00069}00069\ }
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00070}00070\ \ \ \ \ \textcolor{keyword}{static}\ QVector<qint16>\ egm;\ \textcolor{comment}{//\ holds\ the\ data\ read\ from\ the\ binaray\ data\ file\ WW15MGH.DAC}}
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00071}00071\ }
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00072}00072\ \ \ \ \ \textcolor{comment}{//\ https://earth-\/info.nga.mil/GandG/wgs84/gravitymod/egm96/binary/readme.txt}}
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00073}00073\ \ \ \ \ \textcolor{comment}{//\ https://earth-\/info.nga.mil/GandG/wgs84/gravitymod/egm96/binary/binarygeoid.html}}
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00074}00074\ }
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00075}00075\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{static}\ qint32\ egm96\_rows\ =\ 721;}
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00076}00076\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{static}\ qint32\ egm96\_cols\ =\ 1440;}
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00077}00077\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{static}\ qint32\ egm96\_size\ =\ egm96\_rows\ *\ egm96\_cols;}
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00078}00078\ \};}
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00079}00079\ }
+\DoxyCodeLine{\Hypertarget{Geoid_8h_source_l00080}00080\ \}\ \textcolor{comment}{//\ namespace\ Positioning}}
+
+\end{DoxyCode}

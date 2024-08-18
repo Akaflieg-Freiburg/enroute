@@ -1,0 +1,394 @@
+\doxysection{Weather\+::Weather\+Data\+Provider Class Reference}
+\hypertarget{classWeather_1_1WeatherDataProvider}{}\label{classWeather_1_1WeatherDataProvider}\index{Weather::WeatherDataProvider@{Weather::WeatherDataProvider}}
+
+
+\doxylink{classWeather_1_1WeatherDataProvider}{Weather\+Data\+Provider}, weather service manager.  
+
+
+
+
+{\ttfamily \#include $<$Weather\+Data\+Provider.\+h$>$}
+
+
+
+Inherits QObject.
+
+\doxysubsubsection*{Signals}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classWeather_1_1WeatherDataProvider_a1f5c01f8cda0c5d745238b4e54fbd501}\label{classWeather_1_1WeatherDataProvider_a1f5c01f8cda0c5d745238b4e54fbd501} 
+void {\bfseries background\+Update\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+\Hypertarget{classWeather_1_1WeatherDataProvider_a39abdd9eb031cdab206478ee04f2ed8a}\label{classWeather_1_1WeatherDataProvider_a39abdd9eb031cdab206478ee04f2ed8a} 
+void {\bfseries downloading\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_aa83bdd18eb7cdeb9b23208e29ff73f56}{error}} (QString message)
+\begin{DoxyCompactList}\small\item\em Signal emitted when a network error occurs. \end{DoxyCompactList}\item 
+\Hypertarget{classWeather_1_1WeatherDataProvider_a60c015caab8446faf71a5958912a2c02}\label{classWeather_1_1WeatherDataProvider_a60c015caab8446faf71a5958912a2c02} 
+void {\bfseries QNHInfo\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+\Hypertarget{classWeather_1_1WeatherDataProvider_a8c707fa8e25ec16286dc6928a7503129}\label{classWeather_1_1WeatherDataProvider_a8c707fa8e25ec16286dc6928a7503129} 
+void {\bfseries sun\+Info\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+\Hypertarget{classWeather_1_1WeatherDataProvider_ad74174b2df0e872e225cdf1c22f27a1a}\label{classWeather_1_1WeatherDataProvider_ad74174b2df0e872e225cdf1c22f27a1a} 
+void {\bfseries weather\+Stations\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Signal emitted when the list of weather reports changes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a2dd0260bb1c01b72103652a2e96b35d3}{Weather\+Data\+Provider}} (QObject \texorpdfstring{$\ast$}{*}parent=nullptr)
+\begin{DoxyCompactList}\small\item\em Standard constructor. \end{DoxyCompactList}\item 
+\Hypertarget{classWeather_1_1WeatherDataProvider_aa9f20f5c6fe86fddf7aeed9438bba139}\label{classWeather_1_1WeatherDataProvider_aa9f20f5c6fe86fddf7aeed9438bba139} 
+{\bfseries \texorpdfstring{$\sim$}{\string~}\+Weather\+Data\+Provider} () override
+\begin{DoxyCompactList}\small\item\em Standard destructor. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a0f76b69baa886737363afe6d7d7d41fe}{background\+Update}} () const -\/$>$ bool
+\begin{DoxyCompactList}\small\item\em Getter method for property of the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a95493a3a3038b276b90e7e23dda97f90}{downloading}} () const -\/$>$ bool
+\begin{DoxyCompactList}\small\item\em Getter method for property of the same name. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classWeather_1_1Station}{Weather\+::\+Station}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a22412b04623604100a8e55c14294113c}{find\+Weather\+Station}} (const QString \&ICAOCode) const
+\begin{DoxyCompactList}\small\item\em Find Weather\+Station by ICAO code. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_aa5f0de5c69063bf1bd12ecc6ebc72dce}{QNH}} () const -\/$>$ \mbox{\hyperlink{classUnits_1_1Pressure}{Units\+::\+Pressure}}
+\begin{DoxyCompactList}\small\item\em Getter method for property of the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a3c9ce6d3c34e076f4e773da03124eabd}{QNHPressure\+Altitude}} () const -\/$>$ \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}}
+\begin{DoxyCompactList}\small\item\em Getter method for property of the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a3e784ce2c231044eec32989c1ae03869}{QNHInfo}} () const -\/$>$ QString
+\begin{DoxyCompactList}\small\item\em Getter method for property of the same name. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE void \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_aed52eaaa5a67a913ef7647fc4c7edf4e}{update}} (bool is\+Background\+Update=true)
+\begin{DoxyCompactList}\small\item\em Update method. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_ab95abd73a3fcd9c411c04cddb51b72db}{weather\+Stations}} () const -\/$>$ QList$<$ \mbox{\hyperlink{classWeather_1_1Station}{Weather\+::\+Station}} \texorpdfstring{$\ast$}{*} $>$
+\begin{DoxyCompactList}\small\item\em Getter method for property of the same name. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static auto \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a26994c0221faace14d3cd97a7db46098}{sun\+Info}} () -\/$>$ QString
+\begin{DoxyCompactList}\small\item\em Getter method for property of the same name. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a56bf601a83772e02d316b5f01da3975e}{background\+Update}}
+\begin{DoxyCompactList}\small\item\em Background update flag. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a6ec5dc5d952f6e91c2cac03d52005be6}{downloading}}
+\begin{DoxyCompactList}\small\item\em Downloading flag. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classUnits_1_1Pressure}{Units\+::\+Pressure}} \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_affffdb22f464b53cf59276c2b49376c7}{QNH}}
+\begin{DoxyCompactList}\small\item\em QNH. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_ae7db932767004bff92a34f4da1f8b49b}{QNHPressure\+Altitude}}
+\begin{DoxyCompactList}\small\item\em QNHPressure\+Altitude. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_af8e354b66e38c248d1fa7286097a5e3b}{QNHInfo}}
+\begin{DoxyCompactList}\small\item\em QNHInfo. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a3e86b97258a906b0e0692007be230d58}{sun\+Info}}
+\begin{DoxyCompactList}\small\item\em sun\+Info \end{DoxyCompactList}\item 
+QList$<$ \mbox{\hyperlink{classWeather_1_1Station}{Weather\+::\+Station}} \texorpdfstring{$\ast$}{*} $>$ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider_a02fc9711982f7cca1ea2cf0c15eb84c9}{weather\+Stations}}
+\begin{DoxyCompactList}\small\item\em List of weather stations. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\doxylink{classWeather_1_1WeatherDataProvider}{Weather\+Data\+Provider}, weather service manager. 
+
+This class retrieves METAR/\+TAF weather reports from the "{}\+Aviation Weather \+Center"{} at aviationweather.\+com, for all weather stations that are within 75nm from the last-\/known user position or current route. The reports can then be accessed via the property "{}weather\+Stations"{} and the method find\+Weather\+Station. The \doxylink{classWeather_1_1WeatherDataProvider}{Weather\+Data\+Provider} class honors Global\+Settings\+::accepted\+Weather\+Terms() and will initiate a download only if the user agreed to the privacy warning.
+
+Once constructed, the \doxylink{classWeather_1_1WeatherDataProvider}{Weather\+Data\+Provider} class will regularly perform background updates to retrieve up-\/to-\/date information. It will update the list of known weather stations and also the METAR/\+TAF reports for the weather stations. The class checks regularly for outdated \doxylink{classWeather_1_1METAR}{METAR} and \doxylink{classWeather_1_1TAF}{TAF} reports and deletes them automatically, along with those Weather\+Stations that no longer contain any report.
+
+In order to avoid loss of data when the app is accidently closed in-\/flight, the class stores all weather data at destruction and at regular intervals, and reads the data back in on construction.
+
+This class also contains a number or convenience methods and properties pertaining to sunrise/sunset 
+
+Definition at line \mbox{\hyperlink{WeatherDataProvider_8h_source_l00065}{65}} of file \mbox{\hyperlink{WeatherDataProvider_8h_source}{Weather\+Data\+Provider.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classWeather_1_1WeatherDataProvider_a2dd0260bb1c01b72103652a2e96b35d3}\index{Weather::WeatherDataProvider@{Weather::WeatherDataProvider}!WeatherDataProvider@{WeatherDataProvider}}
+\index{WeatherDataProvider@{WeatherDataProvider}!Weather::WeatherDataProvider@{Weather::WeatherDataProvider}}
+\doxysubsubsection{\texorpdfstring{WeatherDataProvider()}{WeatherDataProvider()}}
+{\footnotesize\ttfamily \label{classWeather_1_1WeatherDataProvider_a2dd0260bb1c01b72103652a2e96b35d3} 
+Weather\+::\+Weather\+Data\+Provider\+::\+Weather\+Data\+Provider (\begin{DoxyParamCaption}\item[{QObject \texorpdfstring{$\ast$}{*}}]{parent}{ = {\ttfamily nullptr}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Standard constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em parent} & The standard QObject parent pointer \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classWeather_1_1WeatherDataProvider_a0f76b69baa886737363afe6d7d7d41fe}\index{Weather::WeatherDataProvider@{Weather::WeatherDataProvider}!backgroundUpdate@{backgroundUpdate}}
+\index{backgroundUpdate@{backgroundUpdate}!Weather::WeatherDataProvider@{Weather::WeatherDataProvider}}
+\doxysubsubsection{\texorpdfstring{backgroundUpdate()}{backgroundUpdate()}}
+{\footnotesize\ttfamily \label{classWeather_1_1WeatherDataProvider_a0f76b69baa886737363afe6d7d7d41fe} 
+auto Weather\+::\+Weather\+Data\+Provider\+::background\+Update (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ bool \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter method for property of the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property background\+Update 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{WeatherDataProvider_8h_source_l00106}{106}} of file \mbox{\hyperlink{WeatherDataProvider_8h_source}{Weather\+Data\+Provider.\+h}}.
+
+\Hypertarget{classWeather_1_1WeatherDataProvider_a95493a3a3038b276b90e7e23dda97f90}\index{Weather::WeatherDataProvider@{Weather::WeatherDataProvider}!downloading@{downloading}}
+\index{downloading@{downloading}!Weather::WeatherDataProvider@{Weather::WeatherDataProvider}}
+\doxysubsubsection{\texorpdfstring{downloading()}{downloading()}}
+{\footnotesize\ttfamily \label{classWeather_1_1WeatherDataProvider_a95493a3a3038b276b90e7e23dda97f90} 
+auto Weather\+::\+Weather\+Data\+Provider\+::downloading (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$  bool\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Getter method for property of the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property downloading 
+\end{DoxyReturn}
+\Hypertarget{classWeather_1_1WeatherDataProvider_aa83bdd18eb7cdeb9b23208e29ff73f56}\index{Weather::WeatherDataProvider@{Weather::WeatherDataProvider}!error@{error}}
+\index{error@{error}!Weather::WeatherDataProvider@{Weather::WeatherDataProvider}}
+\doxysubsubsection{\texorpdfstring{error}{error}}
+{\footnotesize\ttfamily \label{classWeather_1_1WeatherDataProvider_aa83bdd18eb7cdeb9b23208e29ff73f56} 
+void Weather\+::\+Weather\+Data\+Provider\+::error (\begin{DoxyParamCaption}\item[{QString}]{message}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [signal]}}
+
+
+
+Signal emitted when a network error occurs. 
+
+This signal is emitted to indicate that the \doxylink{classWeather_1_1WeatherDataProvider}{Weather\+Data\+Provider} failed to download weather data.
+
+
+\begin{DoxyParams}{Parameters}
+{\em message} & A human-\/readable, translated error message \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classWeather_1_1WeatherDataProvider_a22412b04623604100a8e55c14294113c}\index{Weather::WeatherDataProvider@{Weather::WeatherDataProvider}!findWeatherStation@{findWeatherStation}}
+\index{findWeatherStation@{findWeatherStation}!Weather::WeatherDataProvider@{Weather::WeatherDataProvider}}
+\doxysubsubsection{\texorpdfstring{findWeatherStation()}{findWeatherStation()}}
+{\footnotesize\ttfamily \label{classWeather_1_1WeatherDataProvider_a22412b04623604100a8e55c14294113c} 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classWeather_1_1Station}{Weather\+::\+Station}} \texorpdfstring{$\ast$}{*} Weather\+::\+Weather\+Data\+Provider\+::find\+Weather\+Station (\begin{DoxyParamCaption}\item[{const QString \&}]{ICAOCode}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Find Weather\+Station by ICAO code. 
+
+This method returns a pointer to the Weather\+Station with the given ICAO code, or a nullptr if no Weather\+Station with the given code is known to the \doxylink{classWeather_1_1WeatherDataProvider}{Weather\+Data\+Provider}.
+
+\begin{DoxyWarning}{Warning}
+The Weather\+Station objects are owned by the \doxylink{classWeather_1_1WeatherDataProvider}{Weather\+Data\+Provider} and can be deleted anytime. Store it in a QPointer to avoid dangling pointers.
+\end{DoxyWarning}
+
+\begin{DoxyParams}{Parameters}
+{\em ICAOCode} & ICAO code name of the Weather\+Station, such as "{}\+EDDF"{}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pointer to Weather\+Station 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{WeatherDataProvider_8h_source_l00135}{135}} of file \mbox{\hyperlink{WeatherDataProvider_8h_source}{Weather\+Data\+Provider.\+h}}.
+
+\Hypertarget{classWeather_1_1WeatherDataProvider_aa5f0de5c69063bf1bd12ecc6ebc72dce}\index{Weather::WeatherDataProvider@{Weather::WeatherDataProvider}!QNH@{QNH}}
+\index{QNH@{QNH}!Weather::WeatherDataProvider@{Weather::WeatherDataProvider}}
+\doxysubsubsection{\texorpdfstring{QNH()}{QNH()}}
+{\footnotesize\ttfamily \label{classWeather_1_1WeatherDataProvider_aa5f0de5c69063bf1bd12ecc6ebc72dce} 
+auto Weather\+::\+Weather\+Data\+Provider\+::\+QNH (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$  \mbox{\hyperlink{classUnits_1_1Pressure}{Units\+::\+Pressure}}\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Getter method for property of the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property QNH 
+\end{DoxyReturn}
+\Hypertarget{classWeather_1_1WeatherDataProvider_a3e784ce2c231044eec32989c1ae03869}\index{Weather::WeatherDataProvider@{Weather::WeatherDataProvider}!QNHInfo@{QNHInfo}}
+\index{QNHInfo@{QNHInfo}!Weather::WeatherDataProvider@{Weather::WeatherDataProvider}}
+\doxysubsubsection{\texorpdfstring{QNHInfo()}{QNHInfo()}}
+{\footnotesize\ttfamily \label{classWeather_1_1WeatherDataProvider_a3e784ce2c231044eec32989c1ae03869} 
+auto Weather\+::\+Weather\+Data\+Provider\+::\+QNHInfo (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$  QString\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Getter method for property of the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property QNHInfo 
+\end{DoxyReturn}
+\Hypertarget{classWeather_1_1WeatherDataProvider_a3c9ce6d3c34e076f4e773da03124eabd}\index{Weather::WeatherDataProvider@{Weather::WeatherDataProvider}!QNHPressureAltitude@{QNHPressureAltitude}}
+\index{QNHPressureAltitude@{QNHPressureAltitude}!Weather::WeatherDataProvider@{Weather::WeatherDataProvider}}
+\doxysubsubsection{\texorpdfstring{QNHPressureAltitude()}{QNHPressureAltitude()}}
+{\footnotesize\ttfamily \label{classWeather_1_1WeatherDataProvider_a3c9ce6d3c34e076f4e773da03124eabd} 
+auto Weather\+::\+Weather\+Data\+Provider\+::\+QNHPressure\+Altitude (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ \mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter method for property of the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property QNHPressure\+Altitude 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{WeatherDataProvider_8h_source_l00164}{164}} of file \mbox{\hyperlink{WeatherDataProvider_8h_source}{Weather\+Data\+Provider.\+h}}.
+
+\Hypertarget{classWeather_1_1WeatherDataProvider_a26994c0221faace14d3cd97a7db46098}\index{Weather::WeatherDataProvider@{Weather::WeatherDataProvider}!sunInfo@{sunInfo}}
+\index{sunInfo@{sunInfo}!Weather::WeatherDataProvider@{Weather::WeatherDataProvider}}
+\doxysubsubsection{\texorpdfstring{sunInfo()}{sunInfo()}}
+{\footnotesize\ttfamily \label{classWeather_1_1WeatherDataProvider_a26994c0221faace14d3cd97a7db46098} 
+static auto Weather\+::\+Weather\+Data\+Provider\+::sun\+Info (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) -\/$>$  QString\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Getter method for property of the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property info\+String 
+\end{DoxyReturn}
+\Hypertarget{classWeather_1_1WeatherDataProvider_aed52eaaa5a67a913ef7647fc4c7edf4e}\index{Weather::WeatherDataProvider@{Weather::WeatherDataProvider}!update@{update}}
+\index{update@{update}!Weather::WeatherDataProvider@{Weather::WeatherDataProvider}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily \label{classWeather_1_1WeatherDataProvider_aed52eaaa5a67a913ef7647fc4c7edf4e} 
+Q\+\_\+\+INVOKABLE void Weather\+::\+Weather\+Data\+Provider\+::update (\begin{DoxyParamCaption}\item[{bool}]{is\+Background\+Update}{ = {\ttfamily true}}\end{DoxyParamCaption})}
+
+
+
+Update method. 
+
+If the global settings indicate that connections to aviationweather.\+com are not allowed, this method does nothing and returns immediately. Otherwise, this method initiates the asynchronous download of weather information from the internet. It generates the necessary network queries and sends them to aviationweather.\+com.
+
+
+\begin{DoxyItemize}
+\item If an error occurred while downloading, the signal "{}error"{} will be emitted.
+\item If the download completes successfully, the notifier signal for the property weather\+Stations will be emitted.
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em is\+Background\+Update} & This is a simple flag that can be set and later retrieved in the "{}background\+Update"{} property. This is a little helper for the GUI that might want to wish to make a distinction between automatically triggered background updates (which should not be shown to the user) and those that are explicitly started by the user. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classWeather_1_1WeatherDataProvider_ab95abd73a3fcd9c411c04cddb51b72db}\index{Weather::WeatherDataProvider@{Weather::WeatherDataProvider}!weatherStations@{weatherStations}}
+\index{weatherStations@{weatherStations}!Weather::WeatherDataProvider@{Weather::WeatherDataProvider}}
+\doxysubsubsection{\texorpdfstring{weatherStations()}{weatherStations()}}
+{\footnotesize\ttfamily \label{classWeather_1_1WeatherDataProvider_ab95abd73a3fcd9c411c04cddb51b72db} 
+auto Weather\+::\+Weather\+Data\+Provider\+::weather\+Stations (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$  QList$<$ \mbox{\hyperlink{classWeather_1_1Station}{Weather\+::\+Station}} \texorpdfstring{$\ast$}{*} $>$\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Getter method for property of the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property weather\+Stations 
+\end{DoxyReturn}
+
+
+\doxysubsection{Property Documentation}
+\Hypertarget{classWeather_1_1WeatherDataProvider_a56bf601a83772e02d316b5f01da3975e}\index{Weather::WeatherDataProvider@{Weather::WeatherDataProvider}!backgroundUpdate@{backgroundUpdate}}
+\index{backgroundUpdate@{backgroundUpdate}!Weather::WeatherDataProvider@{Weather::WeatherDataProvider}}
+\doxysubsubsection{\texorpdfstring{backgroundUpdate}{backgroundUpdate}}
+{\footnotesize\ttfamily \label{classWeather_1_1WeatherDataProvider_a56bf601a83772e02d316b5f01da3975e} 
+bool Weather\+::\+Weather\+Data\+Provider\+::background\+Update\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Background update flag. 
+
+Indicates if the last download process was started as a background update. 
+
+Definition at line \mbox{\hyperlink{WeatherDataProvider_8h_source_l00100}{100}} of file \mbox{\hyperlink{WeatherDataProvider_8h_source}{Weather\+Data\+Provider.\+h}}.
+
+\Hypertarget{classWeather_1_1WeatherDataProvider_a6ec5dc5d952f6e91c2cac03d52005be6}\index{Weather::WeatherDataProvider@{Weather::WeatherDataProvider}!downloading@{downloading}}
+\index{downloading@{downloading}!Weather::WeatherDataProvider@{Weather::WeatherDataProvider}}
+\doxysubsubsection{\texorpdfstring{downloading}{downloading}}
+{\footnotesize\ttfamily \label{classWeather_1_1WeatherDataProvider_a6ec5dc5d952f6e91c2cac03d52005be6} 
+bool Weather\+::\+Weather\+Data\+Provider\+::downloading\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Downloading flag. 
+
+Indicates that the \doxylink{classWeather_1_1WeatherDataProvider}{Weather\+Data\+Provider} is currently downloading METAR/\+TAF information from the internet. 
+
+Definition at line \mbox{\hyperlink{WeatherDataProvider_8h_source_l00113}{113}} of file \mbox{\hyperlink{WeatherDataProvider_8h_source}{Weather\+Data\+Provider.\+h}}.
+
+\Hypertarget{classWeather_1_1WeatherDataProvider_affffdb22f464b53cf59276c2b49376c7}\index{Weather::WeatherDataProvider@{Weather::WeatherDataProvider}!QNH@{QNH}}
+\index{QNH@{QNH}!Weather::WeatherDataProvider@{Weather::WeatherDataProvider}}
+\doxysubsubsection{\texorpdfstring{QNH}{QNH}}
+{\footnotesize\ttfamily \label{classWeather_1_1WeatherDataProvider_affffdb22f464b53cf59276c2b49376c7} 
+\mbox{\hyperlink{classUnits_1_1Pressure}{Units\+::\+Pressure}} Weather\+::\+Weather\+Data\+Provider\+::\+QNH\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+QNH. 
+
+This property holds the QNH of the next airfield, if known. If no QNH is known, this property holds QNaN. 
+
+Definition at line \mbox{\hyperlink{WeatherDataProvider_8h_source_l00145}{145}} of file \mbox{\hyperlink{WeatherDataProvider_8h_source}{Weather\+Data\+Provider.\+h}}.
+
+\Hypertarget{classWeather_1_1WeatherDataProvider_af8e354b66e38c248d1fa7286097a5e3b}\index{Weather::WeatherDataProvider@{Weather::WeatherDataProvider}!QNHInfo@{QNHInfo}}
+\index{QNHInfo@{QNHInfo}!Weather::WeatherDataProvider@{Weather::WeatherDataProvider}}
+\doxysubsubsection{\texorpdfstring{QNHInfo}{QNHInfo}}
+{\footnotesize\ttfamily \label{classWeather_1_1WeatherDataProvider_af8e354b66e38c248d1fa7286097a5e3b} 
+QString Weather\+::\+Weather\+Data\+Provider\+::\+QNHInfo\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+QNHInfo. 
+
+This property holds a human-\/readable, translated, rich-\/text string with information about the QNH of the nearest weather station. This could typically read like "{}\+QNH\+: 1019 h\+Pa in LFGA, 4min ago"{}. If no information is available, the property holds an empty string. 
+
+Definition at line \mbox{\hyperlink{WeatherDataProvider_8h_source_l00173}{173}} of file \mbox{\hyperlink{WeatherDataProvider_8h_source}{Weather\+Data\+Provider.\+h}}.
+
+\Hypertarget{classWeather_1_1WeatherDataProvider_ae7db932767004bff92a34f4da1f8b49b}\index{Weather::WeatherDataProvider@{Weather::WeatherDataProvider}!QNHPressureAltitude@{QNHPressureAltitude}}
+\index{QNHPressureAltitude@{QNHPressureAltitude}!Weather::WeatherDataProvider@{Weather::WeatherDataProvider}}
+\doxysubsubsection{\texorpdfstring{QNHPressureAltitude}{QNHPressureAltitude}}
+{\footnotesize\ttfamily \label{classWeather_1_1WeatherDataProvider_ae7db932767004bff92a34f4da1f8b49b} 
+\mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} Weather\+::\+Weather\+Data\+Provider\+::\+QNHPressure\+Altitude\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+QNHPressure\+Altitude. 
+
+This property holds the altitude in the standard atmosphere which corresponds to the current QNH value 
+
+Definition at line \mbox{\hyperlink{WeatherDataProvider_8h_source_l00158}{158}} of file \mbox{\hyperlink{WeatherDataProvider_8h_source}{Weather\+Data\+Provider.\+h}}.
+
+\Hypertarget{classWeather_1_1WeatherDataProvider_a3e86b97258a906b0e0692007be230d58}\index{Weather::WeatherDataProvider@{Weather::WeatherDataProvider}!sunInfo@{sunInfo}}
+\index{sunInfo@{sunInfo}!Weather::WeatherDataProvider@{Weather::WeatherDataProvider}}
+\doxysubsubsection{\texorpdfstring{sunInfo}{sunInfo}}
+{\footnotesize\ttfamily \label{classWeather_1_1WeatherDataProvider_a3e86b97258a906b0e0692007be230d58} 
+QString Weather\+::\+Weather\+Data\+Provider\+::sun\+Info\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+sun\+Info 
+
+This property holds a human-\/readable, translated, rich-\/text string with information about the next sunset or sunrise at the current position. This could typically read like "{}\+SS 17\+:01, in 3h and 5min"{} or "{}\+Waiting for exact position …"{} 
+
+Definition at line \mbox{\hyperlink{WeatherDataProvider_8h_source_l00188}{188}} of file \mbox{\hyperlink{WeatherDataProvider_8h_source}{Weather\+Data\+Provider.\+h}}.
+
+\Hypertarget{classWeather_1_1WeatherDataProvider_a02fc9711982f7cca1ea2cf0c15eb84c9}\index{Weather::WeatherDataProvider@{Weather::WeatherDataProvider}!weatherStations@{weatherStations}}
+\index{weatherStations@{weatherStations}!Weather::WeatherDataProvider@{Weather::WeatherDataProvider}}
+\doxysubsubsection{\texorpdfstring{weatherStations}{weatherStations}}
+{\footnotesize\ttfamily \label{classWeather_1_1WeatherDataProvider_a02fc9711982f7cca1ea2cf0c15eb84c9} 
+QList$<$\mbox{\hyperlink{classWeather_1_1Station}{Weather\+::\+Station}}\texorpdfstring{$\ast$}{*}$>$ Weather\+::\+Weather\+Data\+Provider\+::weather\+Stations\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+List of weather stations. 
+
+This property holds a list of all weather stations that are currently known to this instance of the \doxylink{classWeather_1_1WeatherDataProvider}{Weather\+Data\+Provider} class, sorted according to the distance to the last known position. The list can change at any time.
+
+\begin{DoxyWarning}{Warning}
+The Weather\+Station objects are owned by the \doxylink{classWeather_1_1WeatherDataProvider}{Weather\+Data\+Provider} and can be deleted anytime. Store it in a QPointer to avoid dangling pointers. 
+\end{DoxyWarning}
+
+
+Definition at line \mbox{\hyperlink{WeatherDataProvider_8h_source_l00228}{228}} of file \mbox{\hyperlink{WeatherDataProvider_8h_source}{Weather\+Data\+Provider.\+h}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/weather/Weather\+Data\+Provider.\+h\end{DoxyCompactItemize}

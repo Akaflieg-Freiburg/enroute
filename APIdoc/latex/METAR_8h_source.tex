@@ -1,0 +1,183 @@
+\doxysection{METAR.\+h}
+\hypertarget{METAR_8h_source}{}\label{METAR_8h_source}\index{/home/runner/work/enroute/enroute/src/weather/METAR.h@{/home/runner/work/enroute/enroute/src/weather/METAR.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00001}00001\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00002}00002\ \textcolor{comment}{\ *\ \ \ Copyright\ (C)\ 2019-\/2022\ by\ Stefan\ Kebekus\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00003}00003\ \textcolor{comment}{\ *\ \ \ stefan.kebekus@gmail.com\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00004}00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ free\ software;\ you\ can\ redistribute\ it\ and/or\ modify\ \ *}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00006}00006\ \textcolor{comment}{\ *\ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by\ \ *}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00007}00007\ \textcolor{comment}{\ *\ \ \ the\ Free\ Software\ Foundation;\ either\ version\ 3\ of\ the\ License,\ or\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00008}00008\ \textcolor{comment}{\ *\ \ \ (at\ your\ option)\ any\ later\ version.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00009}00009\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00010}00010\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,\ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00011}00011\ \textcolor{comment}{\ *\ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of\ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00012}00012\ \textcolor{comment}{\ *\ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00013}00013\ \textcolor{comment}{\ *\ \ \ GNU\ General\ Public\ License\ for\ more\ details.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00014}00014\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00015}00015\ \textcolor{comment}{\ *\ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00016}00016\ \textcolor{comment}{\ *\ \ \ along\ with\ this\ program;\ if\ not,\ write\ to\ the\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00017}00017\ \textcolor{comment}{\ *\ \ \ Free\ Software\ Foundation,\ Inc.,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00018}00018\ \textcolor{comment}{\ *\ \ \ 59\ Temple\ Place\ -\/\ Suite\ 330,\ Boston,\ MA\ \ 02111-\/1307,\ USA.\ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00019}00019\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00021}00021\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ <QDataStream>}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00024}00024\ \textcolor{preprocessor}{\#include\ <QGeoCoordinate>}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00025}00025\ \textcolor{preprocessor}{\#include\ <QXmlStreamReader>}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00027}00027\ \textcolor{preprocessor}{\#include\ "{}units/Pressure.h"{}}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00028}00028\ \textcolor{preprocessor}{\#include\ "{}units/Speed.h"{}}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00029}00029\ \textcolor{preprocessor}{\#include\ "{}weather/Decoder.h"{}}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00031}00031\ \textcolor{keyword}{namespace\ }Weather\ \{}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00032}00032\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00033}00033\ \textcolor{keyword}{class\ }WeatherDataProvider;}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00034}00034\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00042}\mbox{\hyperlink{classWeather_1_1METAR}{00042}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classWeather_1_1METAR}{METAR}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classWeather_1_1Decoder}{Decoder}}\ \{}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00043}00043\ \ \ \ \ Q\_OBJECT}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00044}00044\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00045}00045\ \ \ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classWeather_1_1WeatherDataProvider}{WeatherDataProvider}};}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00046}00046\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00047}00047\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00054}\mbox{\hyperlink{classWeather_1_1METAR_a64afc20634688882da83c6d067480287}{00054}}\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classWeather_1_1METAR_a64afc20634688882da83c6d067480287}{METAR}}(QObject\ *parent\ =\ \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00055}00055\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00056}00056\ \ \ \ \ \textcolor{comment}{//\ Standard\ destructor}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00057}00057\ \ \ \ \ \mbox{\hyperlink{classWeather_1_1METAR}{\string~METAR}}()\ \textcolor{keyword}{override}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00058}00058\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00064}\mbox{\hyperlink{classWeather_1_1METAR_ae624d6b0294ce1371f1d6ae80ba26c4d}{00064}}\ \ \ \ \ \textcolor{keyword}{enum}\ \mbox{\hyperlink{classWeather_1_1METAR_ae624d6b0294ce1371f1d6ae80ba26c4d}{FlightCategory}}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00065}00065\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00066}\mbox{\hyperlink{classWeather_1_1METAR_ae624d6b0294ce1371f1d6ae80ba26c4daf533038e41f2e0f79f29ec13dc882e8b}{00066}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classWeather_1_1METAR_ae624d6b0294ce1371f1d6ae80ba26c4daf533038e41f2e0f79f29ec13dc882e8b}{VFR}},\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00067}\mbox{\hyperlink{classWeather_1_1METAR_ae624d6b0294ce1371f1d6ae80ba26c4da8bbb7c4a4f1b83501df9d73188c59fa6}{00067}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classWeather_1_1METAR_ae624d6b0294ce1371f1d6ae80ba26c4da8bbb7c4a4f1b83501df9d73188c59fa6}{MVFR}},\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00068}\mbox{\hyperlink{classWeather_1_1METAR_ae624d6b0294ce1371f1d6ae80ba26c4daa715e1460180dd0a06035b401a915d65}{00068}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classWeather_1_1METAR_ae624d6b0294ce1371f1d6ae80ba26c4daa715e1460180dd0a06035b401a915d65}{IFR}},\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00069}\mbox{\hyperlink{classWeather_1_1METAR_ae624d6b0294ce1371f1d6ae80ba26c4dab924f410385780d4f5ac20145a6c1167}{00069}}\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classWeather_1_1METAR_ae624d6b0294ce1371f1d6ae80ba26c4dab924f410385780d4f5ac20145a6c1167}{LIFR}},\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00070}00070\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classWeather_1_1METAR_ae624d6b0294ce1371f1d6ae80ba26c4dab686b1eb9dd11089f42a9d9290788d13}{unknown}}\ \ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00071}\mbox{\hyperlink{classWeather_1_1METAR_ae624d6b0294ce1371f1d6ae80ba26c4dab686b1eb9dd11089f42a9d9290788d13}{00071}}\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00072}00072\ \ \ \ \ Q\_ENUM(FlightCategory)}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00073}00073\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00074}00074\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00079}\mbox{\hyperlink{classWeather_1_1METAR_acd6278e6a3b9d64813e6920258c91910}{00079}}\ \ \ \ \ Q\_PROPERTY(QGeoCoordinate\ \mbox{\hyperlink{classWeather_1_1METAR_acd6278e6a3b9d64813e6920258c91910}{coordinate}}\ READ\ \mbox{\hyperlink{classWeather_1_1METAR_acd6278e6a3b9d64813e6920258c91910}{coordinate}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00080}00080\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00085}\mbox{\hyperlink{classWeather_1_1METAR_a7cfd3819a7f81988f6ab039a77d9fb64}{00085}}\ \ \ \ \ [[nodiscard]]\ auto\ \mbox{\hyperlink{classWeather_1_1METAR_acd6278e6a3b9d64813e6920258c91910}{coordinate}}()\ const\ -\/>\ QGeoCoordinate}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00086}00086\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00087}00087\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_location;}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00088}00088\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00089}00089\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00095}\mbox{\hyperlink{classWeather_1_1METAR_a90a708583dd6e8dde038160d519f63f5}{00095}}\ \ \ \ \ Q\_PROPERTY(QDateTime\ \mbox{\hyperlink{classWeather_1_1METAR_a90a708583dd6e8dde038160d519f63f5}{expiration}}\ READ\ \mbox{\hyperlink{classWeather_1_1METAR_a90a708583dd6e8dde038160d519f63f5}{expiration}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00096}00096\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00097}00097\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00101}\mbox{\hyperlink{classWeather_1_1METAR_a03fa549cfa9b5db2c2b6d57597707a26}{00101}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classWeather_1_1METAR_a03fa549cfa9b5db2c2b6d57597707a26}{expiration}}()\ const\ -\/>\ QDateTime;}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00102}00102\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00115}\mbox{\hyperlink{classWeather_1_1METAR_ad41f584c576436f2f636b60534444f9d}{00115}}\ \ \ \ \ Q\_PROPERTY(QString\ \mbox{\hyperlink{classWeather_1_1METAR_ad41f584c576436f2f636b60534444f9d}{flightCategoryColor}}\ READ\ \mbox{\hyperlink{classWeather_1_1METAR_ad41f584c576436f2f636b60534444f9d}{flightCategoryColor}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00116}00116\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00121}\mbox{\hyperlink{classWeather_1_1METAR_a630bcc6f1d9a2dbcc33f069705a4c3bd}{00121}}\ \ \ \ \ [[nodiscard]]\ auto\ \mbox{\hyperlink{classWeather_1_1METAR_ad41f584c576436f2f636b60534444f9d}{flightCategoryColor}}()\ const\ -\/>\ QString;}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00122}00122\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00124}\mbox{\hyperlink{classWeather_1_1METAR_ae95f45f5587dd3adeac389a1dcd60d03}{00124}}\ \ \ \ \ Q\_PROPERTY(\mbox{\hyperlink{classWeather_1_1METAR_ae624d6b0294ce1371f1d6ae80ba26c4d}{FlightCategory}}\ \mbox{\hyperlink{classWeather_1_1METAR_ae95f45f5587dd3adeac389a1dcd60d03}{flightCategory}}\ READ\ \mbox{\hyperlink{classWeather_1_1METAR_ae95f45f5587dd3adeac389a1dcd60d03}{flightCategory}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00125}00125\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00130}\mbox{\hyperlink{classWeather_1_1METAR_ab46b16afdda25e43564e9894a9c17de0}{00130}}\ \ \ \ \ [[nodiscard]]\ auto\ \mbox{\hyperlink{classWeather_1_1METAR_ae95f45f5587dd3adeac389a1dcd60d03}{flightCategory}}()\ const\ -\/>\ \mbox{\hyperlink{classWeather_1_1METAR_ae624d6b0294ce1371f1d6ae80ba26c4d}{FlightCategory}}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00131}00131\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00132}00132\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_flightCategory;}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00133}00133\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00134}00134\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00140}\mbox{\hyperlink{classWeather_1_1METAR_a82c5f343374f9f52bb87e676e2dbaa10}{00140}}\ \ \ \ \ Q\_PROPERTY(QString\ \mbox{\hyperlink{classWeather_1_1METAR_a82c5f343374f9f52bb87e676e2dbaa10}{ICAOCode}}\ READ\ \mbox{\hyperlink{classWeather_1_1METAR_a82c5f343374f9f52bb87e676e2dbaa10}{ICAOCode}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00141}00141\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00142}00142\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00146}\mbox{\hyperlink{classWeather_1_1METAR_ae2fe388711440490ab4cf95fdc6bf677}{00146}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classWeather_1_1METAR_ae2fe388711440490ab4cf95fdc6bf677}{ICAOCode}}()\ const\ -\/>\ QString}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00147}00147\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00148}00148\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_ICAOCode;}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00149}00149\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00150}00150\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00156}\mbox{\hyperlink{classWeather_1_1METAR_a2141d9630a2a09d46d986761aefe46c8}{00156}}\ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classWeather_1_1METAR_a2141d9630a2a09d46d986761aefe46c8}{isExpired}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00157}00157\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00159}\mbox{\hyperlink{classWeather_1_1METAR_a0a202203300afef144220573b289f1c0}{00159}}\ \ \ \ \ Q\_PROPERTY(\textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classWeather_1_1METAR_a0a202203300afef144220573b289f1c0}{isValid}}\ READ\ \mbox{\hyperlink{classWeather_1_1METAR_a0a202203300afef144220573b289f1c0}{isValid}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00160}00160\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00161}00161\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00165}\mbox{\hyperlink{classWeather_1_1METAR_a432089ba7301f3225aac4e702c8b601f}{00165}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classWeather_1_1METAR_a432089ba7301f3225aac4e702c8b601f}{isValid}}()\ const\ -\/>\ \textcolor{keywordtype}{bool};}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00166}00166\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00168}\mbox{\hyperlink{classWeather_1_1METAR_a1d6a7b3047a187a13d0f598f204a5332}{00168}}\ \ \ \ \ Q\_PROPERTY(QDateTime\ \mbox{\hyperlink{classWeather_1_1METAR_a1d6a7b3047a187a13d0f598f204a5332}{observationTime}}\ READ\ \mbox{\hyperlink{classWeather_1_1METAR_a1d6a7b3047a187a13d0f598f204a5332}{observationTime}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00169}00169\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00174}\mbox{\hyperlink{classWeather_1_1METAR_a20e2ae33112ba3618a0063fd4be311eb}{00174}}\ \ \ \ \ [[nodiscard]]\ auto\ \mbox{\hyperlink{classWeather_1_1METAR_a1d6a7b3047a187a13d0f598f204a5332}{observationTime}}()\ const\ -\/>\ QDateTime}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00175}00175\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00176}00176\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_observationTime;}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00177}00177\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00178}00178\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00184}\mbox{\hyperlink{classWeather_1_1METAR_a3ad67caac3eda703dc1727004e0a43ad}{00184}}\ \ \ \ \ Q\_PROPERTY(\mbox{\hyperlink{classUnits_1_1Pressure}{Units::Pressure}}\ \mbox{\hyperlink{classWeather_1_1METAR_a3ad67caac3eda703dc1727004e0a43ad}{QNH}}\ READ\ \mbox{\hyperlink{classWeather_1_1METAR_a3ad67caac3eda703dc1727004e0a43ad}{QNH}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00185}00185\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00186}00186\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00190}\mbox{\hyperlink{classWeather_1_1METAR_a475333698abac45cb24f497c2eff6f25}{00190}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classWeather_1_1METAR_a475333698abac45cb24f497c2eff6f25}{QNH}}()\ const\ -\/>\ \mbox{\hyperlink{namespaceUnits}{Units}}::Pressure}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00191}00191\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00192}00192\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_qnh;}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00193}00193\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00194}00194\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00200}\mbox{\hyperlink{classWeather_1_1METAR_a0b97842a08959fedd6f65f688a4961f0}{00200}}\ \ \ \ \ Q\_PROPERTY(QString\ \mbox{\hyperlink{classWeather_1_1METAR_a0b97842a08959fedd6f65f688a4961f0}{rawText}}\ READ\ \mbox{\hyperlink{classWeather_1_1METAR_a0b97842a08959fedd6f65f688a4961f0}{rawText}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00201}00201\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00202}00202\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00206}\mbox{\hyperlink{classWeather_1_1METAR_a653de3b6cec4478891195574f9131a33}{00206}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classWeather_1_1METAR_a653de3b6cec4478891195574f9131a33}{rawText}}()\ const\ -\/>\ QString}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00207}00207\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00208}00208\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_raw\_text;}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00209}00209\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00210}00210\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00216}\mbox{\hyperlink{classWeather_1_1METAR_ace9ce9c086873899a5dde6ba7df9a8a8}{00216}}\ \ \ \ \ Q\_PROPERTY(QString\ \mbox{\hyperlink{classWeather_1_1METAR_ace9ce9c086873899a5dde6ba7df9a8a8}{relativeObservationTime}}\ READ\ \mbox{\hyperlink{classWeather_1_1METAR_ace9ce9c086873899a5dde6ba7df9a8a8}{relativeObservationTime}}\ NOTIFY\ \mbox{\hyperlink{classWeather_1_1METAR_a4ae28cee32d69ad6587b4126fc9e5da9}{relativeObservationTimeChanged}})}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00217}00217\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00218}00218\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00222}\mbox{\hyperlink{classWeather_1_1METAR_a808ad45af14aba825c05706e40b34c5d}{00222}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classWeather_1_1METAR_a808ad45af14aba825c05706e40b34c5d}{relativeObservationTime}}()\ const\ -\/>\ QString;}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00223}00223\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00229}\mbox{\hyperlink{classWeather_1_1METAR_a64ee6087e0dc1a9142e39f056206490a}{00229}}\ \ \ \ \ Q\_PROPERTY(QString\ \mbox{\hyperlink{classWeather_1_1METAR_a64ee6087e0dc1a9142e39f056206490a}{summary}}\ READ\ \mbox{\hyperlink{classWeather_1_1METAR_a64ee6087e0dc1a9142e39f056206490a}{summary}}\ NOTIFY\ \mbox{\hyperlink{classWeather_1_1METAR_aa63fb781601fa1908d8b724a41085b86}{summaryChanged}})}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00230}00230\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00235}\mbox{\hyperlink{classWeather_1_1METAR_abae6fd945d6a6df1e9f9410c4168a62c}{00235}}\ \ \ \ \ [[nodiscard]]\ auto\ \mbox{\hyperlink{classWeather_1_1METAR_a64ee6087e0dc1a9142e39f056206490a}{summary}}()\ const\ -\/>\ QString;}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00236}00236\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00237}00237\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00238}00238\ signals:}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00240}\mbox{\hyperlink{classWeather_1_1METAR_aa63fb781601fa1908d8b724a41085b86}{00240}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classWeather_1_1METAR_aa63fb781601fa1908d8b724a41085b86}{summaryChanged}}();}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00241}00241\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00243}\mbox{\hyperlink{classWeather_1_1METAR_a4ae28cee32d69ad6587b4126fc9e5da9}{00243}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classWeather_1_1METAR_a4ae28cee32d69ad6587b4126fc9e5da9}{relativeObservationTimeChanged}}();}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00244}00244\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00245}00245\ protected:}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00246}00246\ \ \ \ \ \textcolor{comment}{//\ This\ constructor\ reads\ a\ XML\ stream,\ as\ provided\ by\ the\ Aviation\ Weather}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00247}00247\ \ \ \ \ \textcolor{comment}{//\ Center's\ Text\ Data\ Server,\ https://www.aviationweather.gov/dataserver}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00248}00248\ \ \ \ \ explicit\ \mbox{\hyperlink{classWeather_1_1METAR}{METAR}}(QXmlStreamReader\ \&xml,\ QObject\ *parent\ =\ \textcolor{keywordtype}{nullptr});}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00249}00249\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00250}00250\ \ \ \ \ \textcolor{comment}{//\ This\ constructor\ reads\ a\ serialized\ METAR\ from\ a\ QDataStream}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00251}00251\ \ \ \ \ explicit\ \mbox{\hyperlink{classWeather_1_1METAR}{METAR}}(QDataStream\ \&inputStream,\ QObject\ *parent\ =\ \textcolor{keywordtype}{nullptr});}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00252}00252\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00253}00253\ private:}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00254}00254\ \ \ \ \ \textcolor{comment}{//\ Connects\ signals;\ this\ method\ is\ used\ internally\ from\ the\ constructor(s)}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00255}00255\ \ \ \ \ \textcolor{keywordtype}{void}\ setupSignals()\ const;}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00256}00256\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00257}00257\ \ \ \ \ \textcolor{comment}{//\ Writes\ the\ METAR\ report\ to\ a\ data\ stream}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00258}00258\ \ \ \ \ \textcolor{keywordtype}{void}\ write(QDataStream\ \&out);}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00259}00259\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00260}00260\ \ \ \ \ Q\_DISABLE\_COPY\_MOVE(\mbox{\hyperlink{classWeather_1_1METAR}{METAR}})}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00261}00261\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00262}00262\ \ \ \ \ \textcolor{comment}{//\ Decoded\ METAR\ text}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00263}00263\ \ \ \ \ QString\ \_decoded;}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00264}00264\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00265}00265\ \ \ \ \ \textcolor{comment}{//\ Flight\ category,\ as\ returned\ by\ the\ Aviation\ Weather\ Center}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00266}00266\ \ \ \ \ \mbox{\hyperlink{classWeather_1_1METAR_ae624d6b0294ce1371f1d6ae80ba26c4d}{FlightCategory}}\ \_flightCategory\ \{\mbox{\hyperlink{classWeather_1_1METAR_ae624d6b0294ce1371f1d6ae80ba26c4dab686b1eb9dd11089f42a9d9290788d13}{unknown}}\};}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00267}00267\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00268}00268\ \ \ \ \ \textcolor{comment}{//\ Gust\ speed,\ as\ returned\ by\ the\ Aviation\ Weather\ Center}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00269}00269\ \ \ \ \ \mbox{\hyperlink{classUnits_1_1Speed}{Units::Speed}}\ \_gust;}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00270}00270\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00271}00271\ \ \ \ \ \textcolor{comment}{//\ Station\ ID,\ as\ returned\ by\ the\ Aviation\ Weather\ Center}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00272}00272\ \ \ \ \ QString\ m\_ICAOCode;}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00273}00273\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00274}00274\ \ \ \ \ \textcolor{comment}{//\ Station\ coordinate,\ as\ returned\ by\ the\ Aviation\ Weather\ Center}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00275}00275\ \ \ \ \ QGeoCoordinate\ \_location;}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00276}00276\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00277}00277\ \ \ \ \ \textcolor{comment}{//\ Observation\ time,\ as\ returned\ by\ the\ Aviation\ Weather\ Center}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00278}00278\ \ \ \ \ QDateTime\ \_observationTime;}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00279}00279\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00280}00280\ \ \ \ \ \textcolor{comment}{//\ QNH\ in\ hPa,\ as\ returned\ by\ the\ Aviation\ Weather\ Center}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00281}00281\ \ \ \ \ \mbox{\hyperlink{classUnits_1_1Pressure}{Units::Pressure}}\ m\_qnh;}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00282}00282\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00283}00283\ \ \ \ \ \textcolor{comment}{//\ Raw\ METAR\ text,\ as\ returned\ by\ the\ Aviation\ Weather\ Center}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00284}00284\ \ \ \ \ QString\ \_raw\_text;}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00285}00285\ }
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00286}00286\ \ \ \ \ \textcolor{comment}{//\ Wind\ speed,\ as\ returned\ by\ the\ Aviation\ Weather\ Center}}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00287}00287\ \ \ \ \ \mbox{\hyperlink{classUnits_1_1Speed}{Units::Speed}}\ \_wind;}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00288}00288\ \};}
+\DoxyCodeLine{\Hypertarget{METAR_8h_source_l00289}00289\ \}\ \textcolor{comment}{//\ namespace\ Weather}}
+
+\end{DoxyCode}

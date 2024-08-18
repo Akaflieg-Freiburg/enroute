@@ -1,0 +1,369 @@
+\doxysection{NOTAM\+::Notam Class Reference}
+\hypertarget{classNOTAM_1_1Notam}{}\label{classNOTAM_1_1Notam}\index{NOTAM::Notam@{NOTAM::Notam}}
+
+
+This extremely simple class holds a the data item of a NOTAM.  
+
+
+
+
+{\ttfamily \#include $<$Notam.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classNOTAM_1_1Notam_a6044f7bde26fde6deb4c5a0340f2fccb}\label{classNOTAM_1_1Notam_a6044f7bde26fde6deb4c5a0340f2fccb} 
+{\bfseries Notam} ()=default
+\begin{DoxyCompactList}\small\item\em Constructs an invalid \doxylink{classNOTAM_1_1Notam}{Notam}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classNOTAM_1_1Notam_aeaafbfbdfbf72504c647e69fc2335da8}{Notam}} (const QJson\+Object \&json\+Object)
+\begin{DoxyCompactList}\small\item\em Constructs a \doxylink{classNOTAM_1_1Notam}{Notam} from Geo\+JSON data, as provided by the FAA. \end{DoxyCompactList}\item 
+Q\+\_\+\+REQUIRED\+\_\+\+RESULT QString \mbox{\hyperlink{classNOTAM_1_1Notam_ae52269782a80e192e124c22c1f484837}{cancels}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+Q\+\_\+\+REQUIRED\+\_\+\+RESULT QGeo\+Coordinate \mbox{\hyperlink{classNOTAM_1_1Notam_a4c512da6643cee18f9869cd62540c889}{coordinate}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+Q\+\_\+\+REQUIRED\+\_\+\+RESULT QDate\+Time \mbox{\hyperlink{classNOTAM_1_1Notam_a8f8086eb2771f1763af1a8a994056c4c}{effective\+End}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+Q\+\_\+\+REQUIRED\+\_\+\+RESULT QDate\+Time \mbox{\hyperlink{classNOTAM_1_1Notam_a5c8cfa286eb6461d6e20f6a1c0312c8d}{effective\+Start}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+Q\+\_\+\+REQUIRED\+\_\+\+RESULT QJson\+Object \mbox{\hyperlink{classNOTAM_1_1Notam_a430eb9d57fdc1544d24690b29e2abe69}{Geo\+JSON}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+Q\+\_\+\+REQUIRED\+\_\+\+RESULT bool \mbox{\hyperlink{classNOTAM_1_1Notam_ad217586606d9d0ced18b1e491d291140}{is\+Valid}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+Q\+\_\+\+REQUIRED\+\_\+\+RESULT QString \mbox{\hyperlink{classNOTAM_1_1Notam_ad0fbaeb330ea228555317cca1f69416c}{number}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+Q\+\_\+\+REQUIRED\+\_\+\+RESULT QGeo\+Circle \mbox{\hyperlink{classNOTAM_1_1Notam_a6669ddb7becc6ab04b77d83dfeca6a4d}{region}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+Q\+\_\+\+REQUIRED\+\_\+\+RESULT QString \mbox{\hyperlink{classNOTAM_1_1Notam_af9d2ef9a91d99392860f9f507fff0f42}{traffic}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+Q\+\_\+\+REQUIRED\+\_\+\+RESULT Q\+\_\+\+INVOKABLE bool \mbox{\hyperlink{classNOTAM_1_1Notam_a98981dfbdb1746fc6b943f1f67ad90f5}{operator==}} (const \mbox{\hyperlink{classNOTAM_1_1Notam}{NOTAM\+::\+Notam}} \&rhs) const =default
+\begin{DoxyCompactList}\small\item\em Comparison. \end{DoxyCompactList}\item 
+Q\+\_\+\+REQUIRED\+\_\+\+RESULT bool \mbox{\hyperlink{classNOTAM_1_1Notam_ad7df47607ac1041eb5686579b4673ae3}{is\+Outdated}} () const
+\begin{DoxyCompactList}\small\item\em Check if effective\+End is valid and earlier than current\+Time. \end{DoxyCompactList}\item 
+Q\+\_\+\+REQUIRED\+\_\+\+RESULT Q\+\_\+\+INVOKABLE QString \mbox{\hyperlink{classNOTAM_1_1Notam_ac427031305157e3b6ffa2dbaa25ae96e}{rich\+Text}} () const
+\begin{DoxyCompactList}\small\item\em Rich text description of the \doxylink{classNOTAM_1_1Notam}{Notam}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+QString \mbox{\hyperlink{classNOTAM_1_1Notam_a6eb34c0fe31203c548f57ed9530fa736}{cancels}}
+\begin{DoxyCompactList}\small\item\em Cancels other \doxylink{classNOTAM_1_1Notam}{Notam}. \end{DoxyCompactList}\item 
+\Hypertarget{classNOTAM_1_1Notam_a9f331cf8da9284fb7ead74f130f46651}\label{classNOTAM_1_1Notam_a9f331cf8da9284fb7ead74f130f46651} 
+QGeo\+Coordinate {\bfseries coordinate}
+\begin{DoxyCompactList}\small\item\em Coordinates of the \doxylink{classNOTAM_1_1Notam}{Notam}. \end{DoxyCompactList}\item 
+QDate\+Time \mbox{\hyperlink{classNOTAM_1_1Notam_a6a36911f46fbd6fcb9afc9b1013f23f4}{effective\+End}}
+\begin{DoxyCompactList}\small\item\em Effective end of the \doxylink{classNOTAM_1_1Notam}{Notam}, if date is given. \end{DoxyCompactList}\item 
+QDate\+Time \mbox{\hyperlink{classNOTAM_1_1Notam_a2196c1587de48dfa2db70100c60bfb04}{effective\+Start}}
+\begin{DoxyCompactList}\small\item\em Effective start of the \doxylink{classNOTAM_1_1Notam}{Notam}, if date is given. \end{DoxyCompactList}\item 
+\Hypertarget{classNOTAM_1_1Notam_a50e580dc0f556ec255c6b2129a45a37e}\label{classNOTAM_1_1Notam_a50e580dc0f556ec255c6b2129a45a37e} 
+QJson\+Object {\bfseries Geo\+JSON}
+\begin{DoxyCompactList}\small\item\em Waypoint in Geo\+JSON format. \end{DoxyCompactList}\item 
+\Hypertarget{classNOTAM_1_1Notam_aebeb7a194cf420b7e57cf3aeb7a30e9f}\label{classNOTAM_1_1Notam_aebeb7a194cf420b7e57cf3aeb7a30e9f} 
+bool {\bfseries is\+Valid}
+\begin{DoxyCompactList}\small\item\em Validity of this \doxylink{classNOTAM_1_1Notam}{Notam}. \end{DoxyCompactList}\item 
+\Hypertarget{classNOTAM_1_1Notam_ac584b1bde83f5f902fd5e66cf04243a5}\label{classNOTAM_1_1Notam_ac584b1bde83f5f902fd5e66cf04243a5} 
+QString {\bfseries number}
+\begin{DoxyCompactList}\small\item\em Number of this \doxylink{classNOTAM_1_1Notam}{Notam}. \end{DoxyCompactList}\item 
+\Hypertarget{classNOTAM_1_1Notam_ae3515f59a7d80fa3dc106977ab137ef6}\label{classNOTAM_1_1Notam_ae3515f59a7d80fa3dc106977ab137ef6} 
+QGeo\+Circle {\bfseries region}
+\begin{DoxyCompactList}\small\item\em Rich text description of the \doxylink{classNOTAM_1_1Notam}{Notam}. \end{DoxyCompactList}\item 
+\Hypertarget{classNOTAM_1_1Notam_a6a9318885c40aeb7c8ffcaa830d554a8}\label{classNOTAM_1_1Notam_a6a9318885c40aeb7c8ffcaa830d554a8} 
+QString {\bfseries traffic}
+\begin{DoxyCompactList}\small\item\em Traffic entry of the \doxylink{classNOTAM_1_1Notam}{Notam}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+QData\+Stream \& \mbox{\hyperlink{classNOTAM_1_1Notam_a1ceb99477243e4c93dd4840bee7d79f0}{operator$<$$<$}} (QData\+Stream \&stream, const \mbox{\hyperlink{classNOTAM_1_1Notam}{NOTAM\+::\+Notam}} \&notam)
+\begin{DoxyCompactList}\small\item\em Serialization. \end{DoxyCompactList}\item 
+QData\+Stream \& \mbox{\hyperlink{classNOTAM_1_1Notam_ae5c7424893d18fd867cacc0c7fd463cd}{operator$>$$>$}} (QData\+Stream \&stream, \mbox{\hyperlink{classNOTAM_1_1Notam}{NOTAM\+::\+Notam}} \&notam)
+\begin{DoxyCompactList}\small\item\em Deserialization. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This extremely simple class holds a the data item of a NOTAM. 
+
+Definition at line \mbox{\hyperlink{Notam_8h_source_l00033}{33}} of file \mbox{\hyperlink{Notam_8h_source}{Notam.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classNOTAM_1_1Notam_aeaafbfbdfbf72504c647e69fc2335da8}\index{NOTAM::Notam@{NOTAM::Notam}!Notam@{Notam}}
+\index{Notam@{Notam}!NOTAM::Notam@{NOTAM::Notam}}
+\doxysubsubsection{\texorpdfstring{Notam()}{Notam()}}
+{\footnotesize\ttfamily \label{classNOTAM_1_1Notam_aeaafbfbdfbf72504c647e69fc2335da8} 
+NOTAM\+::\+Notam\+::\+Notam (\begin{DoxyParamCaption}\item[{const QJson\+Object \&}]{json\+Object}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Constructs a \doxylink{classNOTAM_1_1Notam}{Notam} from Geo\+JSON data, as provided by the FAA. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em json\+Object} & JSON object, as provided by the FAA \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classNOTAM_1_1Notam_ae52269782a80e192e124c22c1f484837}\index{NOTAM::Notam@{NOTAM::Notam}!cancels@{cancels}}
+\index{cancels@{cancels}!NOTAM::Notam@{NOTAM::Notam}}
+\doxysubsubsection{\texorpdfstring{cancels()}{cancels()}}
+{\footnotesize\ttfamily \label{classNOTAM_1_1Notam_ae52269782a80e192e124c22c1f484837} 
+Q\+\_\+\+REQUIRED\+\_\+\+RESULT QString NOTAM\+::\+Notam\+::cancels (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property cancels 
+\end{DoxyReturn}
+\Hypertarget{classNOTAM_1_1Notam_a4c512da6643cee18f9869cd62540c889}\index{NOTAM::Notam@{NOTAM::Notam}!coordinate@{coordinate}}
+\index{coordinate@{coordinate}!NOTAM::Notam@{NOTAM::Notam}}
+\doxysubsubsection{\texorpdfstring{coordinate()}{coordinate()}}
+{\footnotesize\ttfamily \label{classNOTAM_1_1Notam_a4c512da6643cee18f9869cd62540c889} 
+Q\+\_\+\+REQUIRED\+\_\+\+RESULT QGeo\+Coordinate NOTAM\+::\+Notam\+::coordinate (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property coordinate 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Notam_8h_source_l00113}{113}} of file \mbox{\hyperlink{Notam_8h_source}{Notam.\+h}}.
+
+\Hypertarget{classNOTAM_1_1Notam_a8f8086eb2771f1763af1a8a994056c4c}\index{NOTAM::Notam@{NOTAM::Notam}!effectiveEnd@{effectiveEnd}}
+\index{effectiveEnd@{effectiveEnd}!NOTAM::Notam@{NOTAM::Notam}}
+\doxysubsubsection{\texorpdfstring{effectiveEnd()}{effectiveEnd()}}
+{\footnotesize\ttfamily \label{classNOTAM_1_1Notam_a8f8086eb2771f1763af1a8a994056c4c} 
+Q\+\_\+\+REQUIRED\+\_\+\+RESULT QDate\+Time NOTAM\+::\+Notam\+::effective\+End (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property effective\+End 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Notam_8h_source_l00119}{119}} of file \mbox{\hyperlink{Notam_8h_source}{Notam.\+h}}.
+
+\Hypertarget{classNOTAM_1_1Notam_a5c8cfa286eb6461d6e20f6a1c0312c8d}\index{NOTAM::Notam@{NOTAM::Notam}!effectiveStart@{effectiveStart}}
+\index{effectiveStart@{effectiveStart}!NOTAM::Notam@{NOTAM::Notam}}
+\doxysubsubsection{\texorpdfstring{effectiveStart()}{effectiveStart()}}
+{\footnotesize\ttfamily \label{classNOTAM_1_1Notam_a5c8cfa286eb6461d6e20f6a1c0312c8d} 
+Q\+\_\+\+REQUIRED\+\_\+\+RESULT QDate\+Time NOTAM\+::\+Notam\+::effective\+Start (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property effective\+Start 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Notam_8h_source_l00125}{125}} of file \mbox{\hyperlink{Notam_8h_source}{Notam.\+h}}.
+
+\Hypertarget{classNOTAM_1_1Notam_a430eb9d57fdc1544d24690b29e2abe69}\index{NOTAM::Notam@{NOTAM::Notam}!GeoJSON@{GeoJSON}}
+\index{GeoJSON@{GeoJSON}!NOTAM::Notam@{NOTAM::Notam}}
+\doxysubsubsection{\texorpdfstring{GeoJSON()}{GeoJSON()}}
+{\footnotesize\ttfamily \label{classNOTAM_1_1Notam_a430eb9d57fdc1544d24690b29e2abe69} 
+Q\+\_\+\+REQUIRED\+\_\+\+RESULT QJson\+Object NOTAM\+::\+Notam\+::\+Geo\+JSON (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property Geo\+JSON 
+\end{DoxyReturn}
+\Hypertarget{classNOTAM_1_1Notam_ad7df47607ac1041eb5686579b4673ae3}\index{NOTAM::Notam@{NOTAM::Notam}!isOutdated@{isOutdated}}
+\index{isOutdated@{isOutdated}!NOTAM::Notam@{NOTAM::Notam}}
+\doxysubsubsection{\texorpdfstring{isOutdated()}{isOutdated()}}
+{\footnotesize\ttfamily \label{classNOTAM_1_1Notam_ad7df47607ac1041eb5686579b4673ae3} 
+Q\+\_\+\+REQUIRED\+\_\+\+RESULT bool NOTAM\+::\+Notam\+::is\+Outdated (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Check if effective\+End is valid and earlier than current\+Time. 
+
+\begin{DoxyReturn}{Returns}
+True if effective\+End is valid and earlier than current\+Time 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Notam_8h_source_l00175}{175}} of file \mbox{\hyperlink{Notam_8h_source}{Notam.\+h}}.
+
+\Hypertarget{classNOTAM_1_1Notam_ad217586606d9d0ced18b1e491d291140}\index{NOTAM::Notam@{NOTAM::Notam}!isValid@{isValid}}
+\index{isValid@{isValid}!NOTAM::Notam@{NOTAM::Notam}}
+\doxysubsubsection{\texorpdfstring{isValid()}{isValid()}}
+{\footnotesize\ttfamily \label{classNOTAM_1_1Notam_ad217586606d9d0ced18b1e491d291140} 
+Q\+\_\+\+REQUIRED\+\_\+\+RESULT bool NOTAM\+::\+Notam\+::is\+Valid (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property is\+Valid 
+\end{DoxyReturn}
+\Hypertarget{classNOTAM_1_1Notam_ad0fbaeb330ea228555317cca1f69416c}\index{NOTAM::Notam@{NOTAM::Notam}!number@{number}}
+\index{number@{number}!NOTAM::Notam@{NOTAM::Notam}}
+\doxysubsubsection{\texorpdfstring{number()}{number()}}
+{\footnotesize\ttfamily \label{classNOTAM_1_1Notam_ad0fbaeb330ea228555317cca1f69416c} 
+Q\+\_\+\+REQUIRED\+\_\+\+RESULT QString NOTAM\+::\+Notam\+::number (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property number 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Notam_8h_source_l00143}{143}} of file \mbox{\hyperlink{Notam_8h_source}{Notam.\+h}}.
+
+\Hypertarget{classNOTAM_1_1Notam_a98981dfbdb1746fc6b943f1f67ad90f5}\index{NOTAM::Notam@{NOTAM::Notam}!operator==@{operator==}}
+\index{operator==@{operator==}!NOTAM::Notam@{NOTAM::Notam}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily \label{classNOTAM_1_1Notam_a98981dfbdb1746fc6b943f1f67ad90f5} 
+Q\+\_\+\+REQUIRED\+\_\+\+RESULT Q\+\_\+\+INVOKABLE bool NOTAM\+::\+Notam\+::operator== (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classNOTAM_1_1Notam}{NOTAM\+::\+Notam}} \&}]{rhs}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}, {\ttfamily [default]}}
+
+
+
+Comparison. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rhs} & Right hand side of the comparison\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True on equality. 
+\end{DoxyReturn}
+\Hypertarget{classNOTAM_1_1Notam_a6669ddb7becc6ab04b77d83dfeca6a4d}\index{NOTAM::Notam@{NOTAM::Notam}!region@{region}}
+\index{region@{region}!NOTAM::Notam@{NOTAM::Notam}}
+\doxysubsubsection{\texorpdfstring{region()}{region()}}
+{\footnotesize\ttfamily \label{classNOTAM_1_1Notam_a6669ddb7becc6ab04b77d83dfeca6a4d} 
+Q\+\_\+\+REQUIRED\+\_\+\+RESULT QGeo\+Circle NOTAM\+::\+Notam\+::region (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property region 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Notam_8h_source_l00149}{149}} of file \mbox{\hyperlink{Notam_8h_source}{Notam.\+h}}.
+
+\Hypertarget{classNOTAM_1_1Notam_ac427031305157e3b6ffa2dbaa25ae96e}\index{NOTAM::Notam@{NOTAM::Notam}!richText@{richText}}
+\index{richText@{richText}!NOTAM::Notam@{NOTAM::Notam}}
+\doxysubsubsection{\texorpdfstring{richText()}{richText()}}
+{\footnotesize\ttfamily \label{classNOTAM_1_1Notam_ac427031305157e3b6ffa2dbaa25ae96e} 
+Q\+\_\+\+REQUIRED\+\_\+\+RESULT Q\+\_\+\+INVOKABLE QString NOTAM\+::\+Notam\+::rich\+Text (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Rich text description of the \doxylink{classNOTAM_1_1Notam}{Notam}. 
+
+The description and changes with time (e.\+g. when passing the effective start date of the \doxylink{classNOTAM_1_1Notam}{Notam}.
+
+\begin{DoxyReturn}{Returns}
+HTML string 
+\end{DoxyReturn}
+\Hypertarget{classNOTAM_1_1Notam_af9d2ef9a91d99392860f9f507fff0f42}\index{NOTAM::Notam@{NOTAM::Notam}!traffic@{traffic}}
+\index{traffic@{traffic}!NOTAM::Notam@{NOTAM::Notam}}
+\doxysubsubsection{\texorpdfstring{traffic()}{traffic()}}
+{\footnotesize\ttfamily \label{classNOTAM_1_1Notam_af9d2ef9a91d99392860f9f507fff0f42} 
+Q\+\_\+\+REQUIRED\+\_\+\+RESULT QString NOTAM\+::\+Notam\+::traffic (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property traffic 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Notam_8h_source_l00155}{155}} of file \mbox{\hyperlink{Notam_8h_source}{Notam.\+h}}.
+
+
+
+\doxysubsection{Friends And Related Symbol Documentation}
+\Hypertarget{classNOTAM_1_1Notam_a1ceb99477243e4c93dd4840bee7d79f0}\index{NOTAM::Notam@{NOTAM::Notam}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!NOTAM::Notam@{NOTAM::Notam}}
+\doxysubsubsection{\texorpdfstring{operator$<$$<$}{operator<<}}
+{\footnotesize\ttfamily \label{classNOTAM_1_1Notam_a1ceb99477243e4c93dd4840bee7d79f0} 
+QData\+Stream \& operator$<$$<$ (\begin{DoxyParamCaption}\item[{QData\+Stream \&}]{stream}{, }\item[{const \mbox{\hyperlink{classNOTAM_1_1Notam}{NOTAM\+::\+Notam}} \&}]{notam}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+Serialization. 
+
+There is no checks for errors of any kind. \Hypertarget{classNOTAM_1_1Notam_ae5c7424893d18fd867cacc0c7fd463cd}\index{NOTAM::Notam@{NOTAM::Notam}!operator$>$$>$@{operator$>$$>$}}
+\index{operator$>$$>$@{operator$>$$>$}!NOTAM::Notam@{NOTAM::Notam}}
+\doxysubsubsection{\texorpdfstring{operator$>$$>$}{operator>>}}
+{\footnotesize\ttfamily \label{classNOTAM_1_1Notam_ae5c7424893d18fd867cacc0c7fd463cd} 
+QData\+Stream \& operator$>$$>$ (\begin{DoxyParamCaption}\item[{QData\+Stream \&}]{stream}{, }\item[{\mbox{\hyperlink{classNOTAM_1_1Notam}{NOTAM\+::\+Notam}} \&}]{notam}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+Deserialization. 
+
+There is no checks for errors of any kind. 
+
+\doxysubsection{Property Documentation}
+\Hypertarget{classNOTAM_1_1Notam_a6eb34c0fe31203c548f57ed9530fa736}\index{NOTAM::Notam@{NOTAM::Notam}!cancels@{cancels}}
+\index{cancels@{cancels}!NOTAM::Notam@{NOTAM::Notam}}
+\doxysubsubsection{\texorpdfstring{cancels}{cancels}}
+{\footnotesize\ttfamily \label{classNOTAM_1_1Notam_a6eb34c0fe31203c548f57ed9530fa736} 
+QString NOTAM\+::\+Notam\+::cancels\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Cancels other \doxylink{classNOTAM_1_1Notam}{Notam}. 
+
+If this is a cancel notam, then this property holds the number of the notam that is to be cancelled. Otherwise, this property holds an empty string. 
+
+Definition at line \mbox{\hyperlink{Notam_8h_source_l00061}{61}} of file \mbox{\hyperlink{Notam_8h_source}{Notam.\+h}}.
+
+\Hypertarget{classNOTAM_1_1Notam_a6a36911f46fbd6fcb9afc9b1013f23f4}\index{NOTAM::Notam@{NOTAM::Notam}!effectiveEnd@{effectiveEnd}}
+\index{effectiveEnd@{effectiveEnd}!NOTAM::Notam@{NOTAM::Notam}}
+\doxysubsubsection{\texorpdfstring{effectiveEnd}{effectiveEnd}}
+{\footnotesize\ttfamily \label{classNOTAM_1_1Notam_a6a36911f46fbd6fcb9afc9b1013f23f4} 
+QDate\+Time NOTAM\+::\+Notam\+::effective\+End\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Effective end of the \doxylink{classNOTAM_1_1Notam}{Notam}, if date is given. 
+
+If the effective\+End field of the \doxylink{classNOTAM_1_1Notam}{Notam} specified a precise date/time, then this time is found here. If not, the property contains an invalid QDate\+Time. 
+
+Definition at line \mbox{\hyperlink{Notam_8h_source_l00072}{72}} of file \mbox{\hyperlink{Notam_8h_source}{Notam.\+h}}.
+
+\Hypertarget{classNOTAM_1_1Notam_a2196c1587de48dfa2db70100c60bfb04}\index{NOTAM::Notam@{NOTAM::Notam}!effectiveStart@{effectiveStart}}
+\index{effectiveStart@{effectiveStart}!NOTAM::Notam@{NOTAM::Notam}}
+\doxysubsubsection{\texorpdfstring{effectiveStart}{effectiveStart}}
+{\footnotesize\ttfamily \label{classNOTAM_1_1Notam_a2196c1587de48dfa2db70100c60bfb04} 
+QDate\+Time NOTAM\+::\+Notam\+::effective\+Start\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Effective start of the \doxylink{classNOTAM_1_1Notam}{Notam}, if date is given. 
+
+If the effective\+Start field of the \doxylink{classNOTAM_1_1Notam}{Notam} specified a precise date/time, then this time is found here. If not, the property contains an invalid QDate\+Time. 
+
+Definition at line \mbox{\hyperlink{Notam_8h_source_l00080}{80}} of file \mbox{\hyperlink{Notam_8h_source}{Notam.\+h}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/notam/Notam.\+h\end{DoxyCompactItemize}

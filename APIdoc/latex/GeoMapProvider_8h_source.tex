@@ -1,0 +1,218 @@
+\doxysection{Geo\+Map\+Provider.\+h}
+\hypertarget{GeoMapProvider_8h_source}{}\label{GeoMapProvider_8h_source}\index{/home/runner/work/enroute/enroute/src/geomaps/GeoMapProvider.h@{/home/runner/work/enroute/enroute/src/geomaps/GeoMapProvider.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00001}00001\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00002}00002\ \textcolor{comment}{\ *\ \ \ Copyright\ (C)\ 2019-\/2024\ by\ Stefan\ Kebekus\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00003}00003\ \textcolor{comment}{\ *\ \ \ stefan.kebekus@gmail.com\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00004}00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ free\ software;\ you\ can\ redistribute\ it\ and/or\ modify\ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00006}00006\ \textcolor{comment}{\ *\ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by\ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00007}00007\ \textcolor{comment}{\ *\ \ \ the\ Free\ Software\ Foundation;\ either\ version\ 3\ of\ the\ License,\ or\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00008}00008\ \textcolor{comment}{\ *\ \ \ (at\ your\ option)\ any\ later\ version.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00009}00009\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00010}00010\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,\ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00011}00011\ \textcolor{comment}{\ *\ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of\ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00012}00012\ \textcolor{comment}{\ *\ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00013}00013\ \textcolor{comment}{\ *\ \ \ GNU\ General\ Public\ License\ for\ more\ details.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00014}00014\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00015}00015\ \textcolor{comment}{\ *\ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00016}00016\ \textcolor{comment}{\ *\ \ \ along\ with\ this\ program;\ if\ not,\ write\ to\ the\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00017}00017\ \textcolor{comment}{\ *\ \ \ Free\ Software\ Foundation,\ Inc.,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00018}00018\ \textcolor{comment}{\ *\ \ \ 59\ Temple\ Place\ -\/\ Suite\ 330,\ Boston,\ MA\ \ 02111-\/1307,\ USA.\ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00019}00019\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00021}00021\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ <QCache>}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00024}00024\ \textcolor{preprocessor}{\#include\ <QFuture>}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00025}00025\ \textcolor{preprocessor}{\#include\ <QGeoRectangle>}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00026}00026\ \textcolor{preprocessor}{\#include\ <QImage>}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00027}00027\ \textcolor{preprocessor}{\#include\ <QQmlEngine>}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00028}00028\ \textcolor{preprocessor}{\#include\ <QStandardPaths>}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00029}00029\ \textcolor{preprocessor}{\#include\ <QTemporaryFile>}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00030}00030\ \textcolor{preprocessor}{\#include\ <QTimer>}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00031}00031\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00032}00032\ \textcolor{preprocessor}{\#include\ "{}Airspace.h"{}}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00033}00033\ \textcolor{preprocessor}{\#include\ "{}GlobalObject.h"{}}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00034}00034\ \textcolor{preprocessor}{\#include\ "{}TileServer.h"{}}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00035}00035\ \textcolor{preprocessor}{\#include\ "{}Waypoint.h"{}}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00036}00036\ \textcolor{preprocessor}{\#include\ "{}fileFormats/MBTILES.h"{}}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00037}00037\ \textcolor{preprocessor}{\#include\ "{}geomaps/VAC.h"{}}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00038}00038\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00039}00039\ \textcolor{keyword}{namespace\ }GeoMaps}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00040}00040\ \{}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00041}00041\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00061}\mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider}{00061}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider}{GeoMapProvider}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classGlobalObject}{GlobalObject}}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00062}00062\ \{}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00063}00063\ \ \ \ \ Q\_OBJECT}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00064}00064\ \ \ \ \ QML\_ELEMENT}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00065}00065\ \ \ \ \ QML\_SINGLETON}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00066}00066\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00067}00067\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00074}\mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a7b0f04d852a4d5947b9eacebecfb3716}{00074}}\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a7b0f04d852a4d5947b9eacebecfb3716}{GeoMapProvider}}(QObject\ *parent\ =\ \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00075}00075\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00076}00076\ \ \ \ \ \textcolor{comment}{//\ No\ default\ constructor,\ important\ for\ QML\ singleton}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00077}00077\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider}{GeoMapProvider}}()\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00078}00078\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00079}00079\ \ \ \ \ \textcolor{comment}{//\ deferred\ initialization}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00080}\mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_ad2b0640861db6e1383da6a0461e9936c}{00080}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_ad2b0640861db6e1383da6a0461e9936c}{deferredInitialization}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00081}00081\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00082}00082\ \ \ \ \ \textcolor{comment}{//\ factory\ function\ for\ QML\ singleton}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00083}00083\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider}{GeoMaps::GeoMapProvider}}*\ create(QQmlEngine*\ \textcolor{comment}{/*unused*/},\ QJSEngine*\ \textcolor{comment}{/*unused*/})}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00084}00084\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00085}00085\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classGlobalObject_a241d8d74ad20f5b5fdfa3eff30a20077}{GlobalObject::geoMapProvider}}();}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00086}00086\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00087}00087\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00089}\mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a46297d0e04a54c0f8ce441d1a0f6ff3c}{00089}}\ \ \ \ \ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a46297d0e04a54c0f8ce441d1a0f6ff3c}{\string~GeoMapProvider}}()\ \textcolor{keyword}{override}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00090}00090\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00091}00091\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00092}00092\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00093}00093\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00094}00094\ \ \ \ \ \textcolor{comment}{//\ Properties}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00095}00095\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00096}00096\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00098}\mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a8ff8b5abdb3d962dcec8784033eedbd4}{00098}}\ \ \ \ \ Q\_PROPERTY(QList<QSharedPointer<FileFormats::MBTILES>>\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a8ff8b5abdb3d962dcec8784033eedbd4}{baseMapRasterTiles}}\ READ\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a8ff8b5abdb3d962dcec8784033eedbd4}{baseMapRasterTiles}}\ NOTIFY\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a05d5efe93e112f160fc0a3ccf10e9247}{baseMapTilesChanged}})}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00099}00099\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00100}00100\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00101}\mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_ac0c66b69fa7f76fd84661dc73890eede}{00101}}\ \ \ \ \ Q\_PROPERTY(QList<QSharedPointer<FileFormats::MBTILES>>\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_ac0c66b69fa7f76fd84661dc73890eede}{baseMapVectorTiles}}\ READ\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_ac0c66b69fa7f76fd84661dc73890eede}{baseMapVectorTiles}}\ NOTIFY\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a05d5efe93e112f160fc0a3ccf10e9247}{baseMapTilesChanged}})}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00102}00102\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00108}\mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a8c10e32b9b38a7174e632475c1dc2002}{00108}}\ \ \ \ \ Q\_PROPERTY(QString\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a8c10e32b9b38a7174e632475c1dc2002}{copyrightNotice}}\ READ\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a8c10e32b9b38a7174e632475c1dc2002}{copyrightNotice}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00109}00109\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00115}\mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a54c3286040d622453e26e5580a7f5898}{00115}}\ \ \ \ \ Q\_PROPERTY(QByteArray\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a54c3286040d622453e26e5580a7f5898}{geoJSON}}\ READ\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a54c3286040d622453e26e5580a7f5898}{geoJSON}}\ NOTIFY\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a85ae3b15fa2f5833af0b79ed20bc1f3b}{geoJSONChanged}})}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00116}00116\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00126}\mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_ae548d8d722c7cc995ec40302849894b8}{00126}}\ \ \ \ \ Q\_PROPERTY(QString\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_ae548d8d722c7cc995ec40302849894b8}{styleFileURL}}\ READ\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_ae548d8d722c7cc995ec40302849894b8}{styleFileURL}}\ NOTIFY\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a5b84ce07f9f38a7960ae435c218a9a31}{styleFileURLChanged}})}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00127}00127\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00129}\mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_af8460c9dc246b616e1c02f4aa1506080}{00129}}\ \ \ \ \ Q\_PROPERTY(QList<QSharedPointer<FileFormats::MBTILES>>\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_af8460c9dc246b616e1c02f4aa1506080}{terrainMapTiles}}\ READ\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_af8460c9dc246b616e1c02f4aa1506080}{terrainMapTiles}}\ NOTIFY\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a131c37192a4d80ac6a54a837cb43a869}{terrainMapTilesChanged}})}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00130}00130\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00136}\mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_ac219d785b3c3d46093bd4600dfa9c1aa}{00136}}\ \ \ \ \ Q\_PROPERTY(QList<GeoMaps::\mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Waypoint}}>\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_ac219d785b3c3d46093bd4600dfa9c1aa}{waypoints}}\ READ\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_ac219d785b3c3d46093bd4600dfa9c1aa}{waypoints}}\ NOTIFY\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_ae52d9916d21cd5dab1701251bb5cc368}{waypointsChanged}})}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00137}00137\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00138}00138\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00139}00139\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00140}00140\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00141}00141\ \ \ \ \ \textcolor{comment}{//\ Getter\ Methods}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00142}00142\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00143}00143\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00148}\mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_ad789e3014852decb950694d8a8ecbd64}{00148}}\ \ \ \ \ [[nodiscard]]\ QList<QSharedPointer<FileFormats::MBTILES>>\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a8ff8b5abdb3d962dcec8784033eedbd4}{baseMapRasterTiles}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00149}00149\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00150}00150\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_baseMapRasterTiles;}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00151}00151\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00152}00152\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00157}\mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_af14cbd967f3731e5deea3a4edb48d4aa}{00157}}\ \ \ \ \ [[nodiscard]]\ QList<QSharedPointer<FileFormats::MBTILES>>\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_af14cbd967f3731e5deea3a4edb48d4aa}{baseMapVectorTiles}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00158}00158\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00159}00159\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_baseMapVectorTiles;}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00160}00160\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00161}00161\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00166}\mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a3b16806b7e6485cb8641eab27106365b}{00166}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{static}\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a3b16806b7e6485cb8641eab27106365b}{copyrightNotice}}()\ -\/>\ QString;}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00167}00167\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00172}\mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a3f2231d515abd6e6902b48e7744069e2}{00172}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a3f2231d515abd6e6902b48e7744069e2}{geoJSON}}()\ -\/>\ QByteArray;}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00173}00173\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00178}\mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_ab0bbd1fe2c635edaf23f1e74b45d0f20}{00178}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_ab0bbd1fe2c635edaf23f1e74b45d0f20}{styleFileURL}}()\ -\/>\ QString;}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00179}00179\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00184}\mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_ad38a414bff2e6b3965dde38edd5d8bcb}{00184}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_ad38a414bff2e6b3965dde38edd5d8bcb}{terrainMapTiles}}()\ const\ -\/>\ QList<QSharedPointer<FileFormats::MBTILES>>}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00185}00185\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00186}00186\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_terrainMapTiles;}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00187}00187\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00188}00188\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00193}\mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_af2bbae268333459a6d9b6033647f84ce}{00193}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_af2bbae268333459a6d9b6033647f84ce}{waypoints}}()\ -\/>\ QList<Waypoint>;}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00194}00194\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00195}00195\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00196}00196\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00197}00197\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00198}00198\ \ \ \ \ \textcolor{comment}{//\ Methods}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00199}00199\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00200}00200\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00209}\mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a0cee1fd088c20e2ef4b9afb8640a8d98}{00209}}\ \ \ \ \ Q\_INVOKABLE\ QVariantList\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a0cee1fd088c20e2ef4b9afb8640a8d98}{airspaces}}(\textcolor{keyword}{const}\ QGeoCoordinate\ \&position);}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00210}00210\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00223}\mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_afc75ee5b84f9ae1c5056037ac7875c02}{00223}}\ \ \ \ \ Q\_INVOKABLE\ \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{GeoMaps::Waypoint}}\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_afc75ee5b84f9ae1c5056037ac7875c02}{closestWaypoint}}(QGeoCoordinate\ position,\ \textcolor{keyword}{const}\ QGeoCoordinate\ \&distPosition);}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00224}00224\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00232}\mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a460d0b8845cc06219d31c2560fddf9b0}{00232}}\ \ \ \ \ Q\_INVOKABLE\ \textcolor{keyword}{static}\ \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{GeoMaps::Waypoint}}\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a460d0b8845cc06219d31c2560fddf9b0}{createWaypoint}}()}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00233}00233\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00234}00234\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \{\};}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00235}00235\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00236}00236\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00244}\mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a7401e0e4196a332bc49aeaba8790083b}{00244}}\ \ \ \ \ [[nodiscard]]\ Q\_INVOKABLE\ \mbox{\hyperlink{classUnits_1_1Distance}{Units::Distance}}\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a7401e0e4196a332bc49aeaba8790083b}{terrainElevationAMSL}}(\textcolor{keyword}{const}\ QGeoCoordinate\&\ coordinate);}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00245}00245\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00250}\mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a4c83c65837369b4e91dd32550bb5941d}{00250}}\ \ \ \ \ Q\_INVOKABLE\ \textcolor{keyword}{static}\ QByteArray\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a4c83c65837369b4e91dd32550bb5941d}{emptyGeoJSON}}();}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00251}00251\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00260}\mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a4b92b0fd7f43a349a3db601c358b65c7}{00260}}\ \ \ \ \ Q\_INVOKABLE\ QVector<GeoMaps::Waypoint>\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a4b92b0fd7f43a349a3db601c358b65c7}{filteredWaypoints}}(\textcolor{keyword}{const}\ QString\&\ filter);}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00261}00261\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00270}\mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_ab9c03f3c5e84e1fd2fc8794090f7d622}{00270}}\ \ \ \ \ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_ab9c03f3c5e84e1fd2fc8794090f7d622}{findByID}}(\textcolor{keyword}{const}\ QString\&\ icaoID)\ -\/>\ \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Waypoint}};}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00271}00271\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00282}\mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a10a42268fcb955c4728b5dbb790de42e}{00282}}\ \ \ \ \ Q\_INVOKABLE\ QList<GeoMaps::Waypoint>\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a10a42268fcb955c4728b5dbb790de42e}{nearbyWaypoints}}(\textcolor{keyword}{const}\ QGeoCoordinate\&\ position,\ \textcolor{keyword}{const}\ QString\&\ type);}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00283}00283\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00284}00284\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00285}00285\ signals:}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00287}\mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a05d5efe93e112f160fc0a3ccf10e9247}{00287}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a05d5efe93e112f160fc0a3ccf10e9247}{baseMapTilesChanged}}();}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00288}00288\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00290}\mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a85ae3b15fa2f5833af0b79ed20bc1f3b}{00290}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a85ae3b15fa2f5833af0b79ed20bc1f3b}{geoJSONChanged}}();}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00291}00291\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00293}\mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a5b84ce07f9f38a7960ae435c218a9a31}{00293}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a5b84ce07f9f38a7960ae435c218a9a31}{styleFileURLChanged}}();}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00294}00294\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00296}\mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a131c37192a4d80ac6a54a837cb43a869}{00296}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_a131c37192a4d80ac6a54a837cb43a869}{terrainMapTilesChanged}}();}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00297}00297\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00299}\mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_ae52d9916d21cd5dab1701251bb5cc368}{00299}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider_ae52d9916d21cd5dab1701251bb5cc368}{waypointsChanged}}();}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00300}00300\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00301}00301\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00302}00302\ \ \ \ \ Q\_DISABLE\_COPY\_MOVE(\mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider}{GeoMapProvider}})}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00303}00303\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00304}00304\ \ \ \ \ \textcolor{comment}{//\ This\ slot\ is\ called\ every\ time\ the\ the\ set\ of\ aviation\ maps\ qchanges.\ It}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00305}00305\ \ \ \ \ \textcolor{comment}{//\ fills\ the\ aviation\ data\ cache.}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00306}00306\ \ \ \ \ \textcolor{keywordtype}{void}\ onAviationMapsChanged();}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00307}00307\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00308}00308\ \ \ \ \ \textcolor{comment}{//\ This\ slot\ is\ called\ every\ time\ the\ the\ set\ of\ MBTile\ files\ changes.\ It}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00309}00309\ \ \ \ \ \textcolor{comment}{//\ sets\ up\ the\ tile\ server\ to\ and\ generates\ a\ new\ style\ file.}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00310}00310\ \ \ \ \ \textcolor{keywordtype}{void}\ onMBTILESChanged();}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00311}00311\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00312}00312\ \ \ \ \ \textcolor{comment}{//\ Interal\ function\ that\ does\ most\ of\ the\ work\ for\ aviationMapsChanged()}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00313}00313\ \ \ \ \ \textcolor{comment}{//\ emits\ geoJSONChanged()\ when\ done.\ This\ function\ is\ meant\ to\ be\ run\ in\ a}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00314}00314\ \ \ \ \ \textcolor{comment}{//\ separate\ thread.}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00315}00315\ \ \ \ \ \textcolor{keywordtype}{void}\ fillAviationDataCache(QStringList\ JSONFileNames,\ \mbox{\hyperlink{classUnits_1_1Distance}{Units::Distance}}\ airspaceAltitudeLimit,\ \textcolor{keywordtype}{bool}\ hideGlidingSectors);}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00316}00316\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00317}00317\ \ \ \ \ \textcolor{comment}{//\ Caches\ used\ to\ speed\ up\ the\ method\ simplifySpecialChars}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00318}00318\ \ \ \ \ QRegularExpression\ specialChars\{QStringLiteral(\textcolor{stringliteral}{"{}[\string^a-\/zA-\/Z0-\/9]"{}})\};}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00319}00319\ \ \ \ \ QHash<QString,\ QString>\ simplifySpecialChars\_cache;}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00320}00320\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00321}00321\ \ \ \ \ \textcolor{comment}{//\ This\ is\ the\ path\ under\ which\ map\ tiles\ are\ available\ on\ the\ \_tileServer.}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00322}00322\ \ \ \ \ \textcolor{comment}{//\ This\ is\ set\ to\ a\ random\ number\ that\ changes\ every\ time\ the\ set\ of\ MBTile}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00323}00323\ \ \ \ \ \textcolor{comment}{//\ files\ changes}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00324}00324\ \ \ \ \ QString\ \_currentBaseMapPath;}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00325}00325\ \ \ \ \ QString\ \_currentTerrainMapPath;}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00326}00326\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00327}00327\ \ \ \ \ \textcolor{comment}{//\ Tile\ Server}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00328}00328\ \ \ \ \ \mbox{\hyperlink{classGeoMaps_1_1TileServer}{TileServer}}\ \_tileServer;}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00329}00329\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00330}00330\ \ \ \ \ \textcolor{comment}{//\ Temporary\ file\ that\ holds\ the\ current\ style\ file}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00331}00331\ \ \ \ \ QPointer<QTemporaryFile>\ m\_styleFile;}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00332}00332\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00333}00333\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00334}00334\ \ \ \ \ \textcolor{comment}{//\ Aviation\ Data\ Cache}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00335}00335\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00336}00336\ \ \ \ \ QFuture<void>\ \_aviationDataCacheFuture;\ \textcolor{comment}{//\ Future;\ indicates\ if\ fillAviationDataCache()\ is\ currently\ running}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00337}00337\ \ \ \ \ QTimer\ \_aviationDataCacheTimer;\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Timer\ used\ to\ start\ another\ run\ of\ fillAviationDataCache()}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00338}00338\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00339}00339\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00340}00340\ \ \ \ \ \textcolor{comment}{//\ MBTILES}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00341}00341\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00342}00342\ \ \ \ \ QList<QSharedPointer<FileFormats::MBTILES>>\ m\_baseMapVectorTiles;}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00343}00343\ \ \ \ \ QList<QSharedPointer<FileFormats::MBTILES>>\ m\_baseMapRasterTiles;}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00344}00344\ \ \ \ \ QList<QSharedPointer<FileFormats::MBTILES>>\ m\_terrainMapTiles;}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00345}00345\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00346}00346\ \ \ \ \ \textcolor{comment}{//\ The\ data\ in\ this\ group\ is\ accessed\ by\ several\ threads.\ The\ following}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00347}00347\ \ \ \ \ \textcolor{comment}{//\ classes\ (whose\ names\ ends\ in\ an\ underscore)\ are\ therefore\ protected\ by}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00348}00348\ \ \ \ \ \textcolor{comment}{//\ this\ mutex.}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00349}00349\ \ \ \ \ QMutex\ \_aviationDataMutex;}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00350}00350\ \ \ \ \ QByteArray\ \_combinedGeoJSON\_;\ \ \textcolor{comment}{//\ Cache:\ GeoJSON}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00351}00351\ \ \ \ \ QList<Waypoint>\ \_waypoints\_;\ \textcolor{comment}{//\ Cache:\ Waypoints}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00352}00352\ \ \ \ \ QList<Airspace>\ \_airspaces\_;\ \textcolor{comment}{//\ Cache:\ Airspaces}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00353}00353\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00354}00354\ \ \ \ \ \textcolor{comment}{//\ TerrainImageCache}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00355}00355\ \ \ \ \ QCache<qint64,QImage>\ terrainTileCache\ \{6\};\ \textcolor{comment}{//\ Hold\ 6\ tiles,\ roughly\ 1.2MB}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00356}00356\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00357}00357\ \ \ \ \ \textcolor{comment}{//\ GeoJSON\ file}}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00358}00358\ \ \ \ \ QString\ geoJSONCache\ \{QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+\textcolor{stringliteral}{"{}/aviationData.json"{}}\};}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00359}00359\ \};}
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00360}00360\ }
+\DoxyCodeLine{\Hypertarget{GeoMapProvider_8h_source_l00361}00361\ \}\ \textcolor{comment}{//\ namespace\ GeoMaps}}
+
+\end{DoxyCode}

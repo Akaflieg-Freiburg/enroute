@@ -1,0 +1,40 @@
+\doxysection{Units Namespace Reference}
+\hypertarget{namespaceUnits}{}\label{namespaceUnits}\index{Units@{Units}}
+
+
+Conversion between units used in aviation.  
+
+
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classUnits_1_1Angle}{Angle}}
+\begin{DoxyCompactList}\small\item\em Convenience class for angle computations. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classUnits_1_1ByteSize}{Byte\+Size}}
+\begin{DoxyCompactList}\small\item\em Convenience class for size\+\_\+t. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classUnits_1_1Density}{Density}}
+\begin{DoxyCompactList}\small\item\em Convenience class for density computations. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classUnits_1_1Distance}{Distance}}
+\begin{DoxyCompactList}\small\item\em Convenience class for distance computations. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classUnits_1_1Pressure}{Pressure}}
+\begin{DoxyCompactList}\small\item\em Convenience class for pressure computations. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classUnits_1_1Speed}{Speed}}
+\begin{DoxyCompactList}\small\item\em Convenience class for speed computations. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classUnits_1_1Temperature}{Temperature}}
+\begin{DoxyCompactList}\small\item\em Convenience class for temperature computations. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classUnits_1_1Timespan}{Timespan}}
+\begin{DoxyCompactList}\small\item\em Convenience class for time computations. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classUnits_1_1Volume}{Volume}}
+\begin{DoxyCompactList}\small\item\em Convenience class for volume computations. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classUnits_1_1VolumeFlow}{Volume\+Flow}}
+\begin{DoxyCompactList}\small\item\em Convenience class for volume flow computations. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Conversion between units used in aviation. 
+
+Wrapper around size\+\_\+t, to make it available to QML.
+
+This class contains a few classes that help with the conversion of units, as used in aviation. It contains a few subclasses that computation with angles, speeds, distances, etc, without the need to worry about units.
+
+This is a trivial C++ and QML value type, with a single member of type size\+\_\+t. Conversion methods guarantee that this class can be used in C++ as a drop-\/in replacement for size\+\_\+t. In QML, the class can be used to work to size\+\_\+t, which is otherwise not available. 

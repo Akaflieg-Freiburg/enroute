@@ -1,0 +1,386 @@
+\doxysection{Navigation\+::Navigator Class Reference}
+\hypertarget{classNavigation_1_1Navigator}{}\label{classNavigation_1_1Navigator}\index{Navigation::Navigator@{Navigation::Navigator}}
+
+
+Main hub for navigation data.  
+
+
+
+
+{\ttfamily \#include $<$Navigator.\+h$>$}
+
+Inheritance diagram for Navigation\+::Navigator\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classNavigation_1_1Navigator}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{classNavigation_1_1Navigator_a577fd3b296e1f2bb63cf834d2991dd01}{Flight\+Status}} \{ \mbox{\hyperlink{classNavigation_1_1Navigator_a577fd3b296e1f2bb63cf834d2991dd01a132109e6cbcfbe5abdd3e7f2f78bc1a9}{Ground}}
+, \mbox{\hyperlink{classNavigation_1_1Navigator_a577fd3b296e1f2bb63cf834d2991dd01a351bf8e5ae6162e24a27d32121d90faa}{Flight}}
+, \mbox{\hyperlink{classNavigation_1_1Navigator_a577fd3b296e1f2bb63cf834d2991dd01a5eb66afc569e21f23d92c805411c3d65}{Unknown}}
+ \}
+\begin{DoxyCompactList}\small\item\em Flight\+Status. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Signals}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classNavigation_1_1Navigator_a9308c46dd3be470a2f13af615a4d8453}\label{classNavigation_1_1Navigator_a9308c46dd3be470a2f13af615a4d8453} 
+void {\bfseries aircraft\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classNavigation_1_1Navigator_adfc2b1f1ec9ff475ed1c31697ddafed8}{airspace\+Altitude\+Limit\+Adjusted}} ()
+\begin{DoxyCompactList}\small\item\em Emitted when the airspace\+Altitude\+Limit is adjusted. \end{DoxyCompactList}\item 
+\Hypertarget{classNavigation_1_1Navigator_a6be084caff4db0bcf5d59a9df9d20010}\label{classNavigation_1_1Navigator_a6be084caff4db0bcf5d59a9df9d20010} 
+void {\bfseries flight\+Status\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+\Hypertarget{classNavigation_1_1Navigator_a149833e84ada0904c0121b7250304446}\label{classNavigation_1_1Navigator_a149833e84ada0904c0121b7250304446} 
+void {\bfseries remaining\+Route\+Info\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+\Hypertarget{classNavigation_1_1Navigator_af0626456dc4efba5d97b5a3e1a801cd5}\label{classNavigation_1_1Navigator_af0626456dc4efba5d97b5a3e1a801cd5} 
+void {\bfseries wind\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classNavigation_1_1Navigator_a610f07279978c37984d35b0fc6f1d59e}{Navigator}} (QObject \texorpdfstring{$\ast$}{*}parent=nullptr)
+\begin{DoxyCompactList}\small\item\em Standard constructor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classNavigation_1_1Navigator_a9f95457f009e0c581a3703b69f04b63d}{deferred\+Initialization}} () override
+\begin{DoxyCompactList}\small\item\em Non-\/constructor initialization. \end{DoxyCompactList}\item 
+\Hypertarget{classNavigation_1_1Navigator_a7ea71b61356e6e662864d3a6b4655f82}\label{classNavigation_1_1Navigator_a7ea71b61356e6e662864d3a6b4655f82} 
+{\bfseries \texorpdfstring{$\sim$}{\string~}\+Navigator} () override=default
+\begin{DoxyCompactList}\small\item\em Standard destructor. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classNavigation_1_1Navigator_a158468c2d337ddcd79851d5246aacec9}{aircraft}} () const -\/$>$ \mbox{\hyperlink{classNavigation_1_1Aircraft}{Navigation\+::\+Aircraft}}
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classNavigation_1_1Navigator_aa20f7894ae9ad736e9c3966742ec52b9}{flight\+Route}} () -\/$>$ \mbox{\hyperlink{classNavigation_1_1FlightRoute}{Navigation\+::\+Flight\+Route}} \texorpdfstring{$\ast$}{*}
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classNavigation_1_1Navigator_a10438fdfefaaa3bc86449f6ffe57edbb}{flight\+Status}} () const -\/$>$ \mbox{\hyperlink{classNavigation_1_1Navigator_a577fd3b296e1f2bb63cf834d2991dd01}{Flight\+Status}}
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classNavigation_1_1Navigator_aa3de4d9515f5c84fe1c61a47b6a1006d}{remaining\+Route\+Info}} () const -\/$>$ \mbox{\hyperlink{classNavigation_1_1RemainingRouteInfo}{Navigation\+::\+Remaining\+Route\+Info}}
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classNavigation_1_1Navigator_a92f09aedb61550c7f4135bb1e9cb689b}{wind}} () const -\/$>$ \mbox{\hyperlink{classWeather_1_1Wind}{Weather\+::\+Wind}}
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classNavigation_1_1Navigator_a764920162d94ae111614ac29d8ab72fa}{set\+Aircraft}} (const \mbox{\hyperlink{classNavigation_1_1Aircraft}{Navigation\+::\+Aircraft}} \&new\+Aircraft)
+\begin{DoxyCompactList}\small\item\em Setter function for property of the same name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classNavigation_1_1Navigator_a2e625778214992b3d53f2a7546fc7be7}{set\+Wind}} (\mbox{\hyperlink{classWeather_1_1Wind}{Weather\+::\+Wind}} new\+Wind)
+\begin{DoxyCompactList}\small\item\em Setter function for property of the same name. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classGlobalObject}{Global\+Object}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classGlobalObject_ac8dfa53c492975de42fa7972e77abbc1}{Global\+Object}} (QObject \texorpdfstring{$\ast$}{*}parent=nullptr)
+\begin{DoxyCompactList}\small\item\em Standard constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classGlobalObject_a96c4d476061f33a53b8c7de446c639eb}{\texorpdfstring{$\sim$}{\string~}\+Global\+Object}} () override=default
+\begin{DoxyCompactList}\small\item\em Standard deconstructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classNavigation_1_1Aircraft}{Navigation\+::\+Aircraft}} \mbox{\hyperlink{classNavigation_1_1Navigator_adf36fdd45f2e6fbed549047178014698}{aircraft}}
+\begin{DoxyCompactList}\small\item\em Current aircraft. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classNavigation_1_1FlightRoute}{Navigation\+::\+Flight\+Route}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classNavigation_1_1Navigator_ad24e156eba1d422b9f9d2d004f1186d5}{flight\+Route}}
+\begin{DoxyCompactList}\small\item\em Current flight route. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classNavigation_1_1Navigator_a577fd3b296e1f2bb63cf834d2991dd01}{Flight\+Status}} \mbox{\hyperlink{classNavigation_1_1Navigator_a1c6674deec9e2810d3cc3288c18553f8}{flight\+Status}}
+\begin{DoxyCompactList}\small\item\em Estimate whether the device is flying or on the ground. \end{DoxyCompactList}\item 
+\Hypertarget{classNavigation_1_1Navigator_aa7cb1e2cf8427eac2daa18434562e234}\label{classNavigation_1_1Navigator_aa7cb1e2cf8427eac2daa18434562e234} 
+\mbox{\hyperlink{classNavigation_1_1RemainingRouteInfo}{Navigation\+::\+Remaining\+Route\+Info}} {\bfseries remaining\+Route\+Info}
+\begin{DoxyCompactList}\small\item\em Up-\/to-\/date information about the remaining route. \end{DoxyCompactList}\item 
+\Hypertarget{classNavigation_1_1Navigator_aa1f3662dd2465080eec9bf2b73c3c0b9}\label{classNavigation_1_1Navigator_aa1f3662dd2465080eec9bf2b73c3c0b9} 
+\mbox{\hyperlink{classWeather_1_1Wind}{Weather\+::\+Wind}} {\bfseries wind}
+\begin{DoxyCompactList}\small\item\em Current wind. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Static Public Member Functions inherited from \mbox{\hyperlink{classGlobalObject}{Global\+Object}}}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classGlobalObject_ae5d0c94af509c9744e1b344201928715}{clear}} ()
+\begin{DoxyCompactList}\small\item\em Deletes all globally defined objects. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE bool \mbox{\hyperlink{classGlobalObject_a0501f0fd4dbb0252ff120fd07ea2f703}{can\+Construct}} ()
+\begin{DoxyCompactList}\small\item\em Indicates if the static methods are ready to be used. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classNavigation_1_1Clock}{Navigation\+::\+Clock}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_ad479148c920adcb9c9ea9d99c762a08f}{clock}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static \doxylink{classNavigation_1_1Clock}{Navigation\+::\+Clock} instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classDataManagement_1_1DataManager}{Data\+Management\+::\+Data\+Manager}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a88f9800ff5290634fbb1507bd509afc9}{data\+Manager}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Geo\+Maps\+::\+Data\+Manager instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classDemoRunner}{Demo\+Runner}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_abb18a18cba455a65c8773aa5f4fbcdd6}{demo\+Runner}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static \doxylink{classDemoRunner}{Demo\+Runner} instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classTraffic_1_1FlarmnetDB}{Traffic\+::\+Flarmnet\+DB}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_ad195e7630ee65b97b837fb8bc26e1ba9}{flarmnet\+DB}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Flarmnet\+DB instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classPlatform_1_1FileExchange__Abstract}{Platform\+::\+File\+Exchange\+\_\+\+Abstract}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a2c2011587fd8d46f9425d61d0b740922}{file\+Exchange}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static File\+Exchange instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider}{Geo\+Maps\+::\+Geo\+Map\+Provider}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a241d8d74ad20f5b5fdfa3eff30a20077}{geo\+Map\+Provider}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static \doxylink{classGeoMaps_1_1GeoMapProvider}{Geo\+Maps\+::\+Geo\+Map\+Provider} instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classGlobalSettings}{Global\+Settings}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_af94f3ad5c6bb06982abf5d2759b63186}{global\+Settings}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Settings instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classLibrarian}{Librarian}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a311415802470c0ca323e8a44c96d2773}{librarian}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static librarian instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor__Abstract}{Platform\+::\+Platform\+Adaptor\+\_\+\+Abstract}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_af4497d953402cc7891edfe5e9f6f56ac}{platform\+Adaptor}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Platform\+Adaptor instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classSensors}{Sensors}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a8df42e3160bee431602e14e9b605ffa8}{sensors}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static \doxylink{classNavigation_1_1Clock}{Navigation\+::\+Clock} instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classNavigation_1_1Navigator}{Navigation\+::\+Navigator}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a6e6835796fd3ab2f304c96272f50054c}{navigator}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static \doxylink{classNavigation_1_1Navigator}{Navigation\+::\+Navigator} instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classTraffic_1_1PasswordDB}{Traffic\+::\+Password\+DB}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a0ac7c3ccb518e122c8565e40c1fb8cdb}{password\+DB}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Password\+DB instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classPositioning_1_1PositionProvider}{Positioning\+::\+Position\+Provider}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a7837aeb4bcabe6542db1bccdab5ebd59}{position\+Provider}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Position\+Provider instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classNOTAM_1_1NotamProvider}{NOTAM\+::\+Notam\+Provider}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_ac11d38af2df8dcdb78679abf92b6de7a}{notam\+Provider}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static notification manager instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classNotifications_1_1NotificationManager}{Notifications\+::\+Notification\+Manager}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_aa90c2b17a6930dfb2cd258c8349e94cc}{notification\+Manager}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static notification manager instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE QNetwork\+Access\+Manager \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_aece9ee1f2507b4bcd825d4f61ebd4643}{network\+Access\+Manager}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static QNetwork\+Access\+Manager instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classDataManagement_1_1SSLErrorHandler}{Data\+Management\+::\+SSLError\+Handler}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_ab4e66c880bdcfa33720b51364c484044}{ssl\+Error\+Handler}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static QNetwork\+Access\+Manager instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classTraffic_1_1TrafficDataProvider}{Traffic\+::\+Traffic\+Data\+Provider}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_acc3b67374f1eac467da729151c31aff6}{traffic\+Data\+Provider}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Traffic\+Data\+Provider instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary}{Geo\+Maps\+::\+Waypoint\+Library}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a0fe5454852ab2b913efe469bfd2630b4}{waypoint\+Library}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Waypoint\+Library instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classWeather_1_1WeatherDataProvider}{Weather\+::\+Weather\+Data\+Provider}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_abff9f661cf7e78967606d10692c03412}{weather\+Data\+Provider}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Weather\+Data\+Provider instance. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Main hub for navigation data. 
+
+This class collects all data items that are relevant for navigation.
+
+The methods in this class are reentrant, but not thread safe. 
+
+Definition at line \mbox{\hyperlink{Navigator_8h_source_l00041}{41}} of file \mbox{\hyperlink{Navigator_8h_source}{Navigator.\+h}}.
+
+
+
+\doxysubsection{Member Enumeration Documentation}
+\Hypertarget{classNavigation_1_1Navigator_a577fd3b296e1f2bb63cf834d2991dd01}\index{Navigation::Navigator@{Navigation::Navigator}!FlightStatus@{FlightStatus}}
+\index{FlightStatus@{FlightStatus}!Navigation::Navigator@{Navigation::Navigator}}
+\doxysubsubsection{\texorpdfstring{FlightStatus}{FlightStatus}}
+{\footnotesize\ttfamily \label{classNavigation_1_1Navigator_a577fd3b296e1f2bb63cf834d2991dd01} 
+enum \mbox{\hyperlink{classNavigation_1_1Navigator_a577fd3b296e1f2bb63cf834d2991dd01}{Navigation\+::\+Navigator\+::\+Flight\+Status}}}
+
+
+
+Flight\+Status. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Ground@{Ground}!Navigation::Navigator@{Navigation::Navigator}}\index{Navigation::Navigator@{Navigation::Navigator}!Ground@{Ground}}}\Hypertarget{classNavigation_1_1Navigator_a577fd3b296e1f2bb63cf834d2991dd01a132109e6cbcfbe5abdd3e7f2f78bc1a9}\label{classNavigation_1_1Navigator_a577fd3b296e1f2bb63cf834d2991dd01} 
+Ground&Device is on the ground \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Flight@{Flight}!Navigation::Navigator@{Navigation::Navigator}}\index{Navigation::Navigator@{Navigation::Navigator}!Flight@{Flight}}}\Hypertarget{classNavigation_1_1Navigator_a577fd3b296e1f2bb63cf834d2991dd01a351bf8e5ae6162e24a27d32121d90faa}\label{classNavigation_1_1Navigator_a577fd3b296e1f2bb63cf834d2991dd01} 
+Flight&Device is flying \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Unknown@{Unknown}!Navigation::Navigator@{Navigation::Navigator}}\index{Navigation::Navigator@{Navigation::Navigator}!Unknown@{Unknown}}}\Hypertarget{classNavigation_1_1Navigator_a577fd3b296e1f2bb63cf834d2991dd01a5eb66afc569e21f23d92c805411c3d65}\label{classNavigation_1_1Navigator_a577fd3b296e1f2bb63cf834d2991dd01} 
+Unknown&Unknown \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line \mbox{\hyperlink{Navigator_8h_source_l00049}{49}} of file \mbox{\hyperlink{Navigator_8h_source}{Navigator.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classNavigation_1_1Navigator_a610f07279978c37984d35b0fc6f1d59e}\index{Navigation::Navigator@{Navigation::Navigator}!Navigator@{Navigator}}
+\index{Navigator@{Navigator}!Navigation::Navigator@{Navigation::Navigator}}
+\doxysubsubsection{\texorpdfstring{Navigator()}{Navigator()}}
+{\footnotesize\ttfamily \label{classNavigation_1_1Navigator_a610f07279978c37984d35b0fc6f1d59e} 
+Navigation\+::\+Navigator\+::\+Navigator (\begin{DoxyParamCaption}\item[{QObject \texorpdfstring{$\ast$}{*}}]{parent}{ = {\ttfamily nullptr}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Standard constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em parent} & The standard QObject parent pointer \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classNavigation_1_1Navigator_a158468c2d337ddcd79851d5246aacec9}\index{Navigation::Navigator@{Navigation::Navigator}!aircraft@{aircraft}}
+\index{aircraft@{aircraft}!Navigation::Navigator@{Navigation::Navigator}}
+\doxysubsubsection{\texorpdfstring{aircraft()}{aircraft()}}
+{\footnotesize\ttfamily \label{classNavigation_1_1Navigator_a158468c2d337ddcd79851d5246aacec9} 
+auto Navigation\+::\+Navigator\+::aircraft (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ \mbox{\hyperlink{classNavigation_1_1Aircraft}{Navigation\+::\+Aircraft}} \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property aircraft 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Navigator_8h_source_l00123}{123}} of file \mbox{\hyperlink{Navigator_8h_source}{Navigator.\+h}}.
+
+\Hypertarget{classNavigation_1_1Navigator_adfc2b1f1ec9ff475ed1c31697ddafed8}\index{Navigation::Navigator@{Navigation::Navigator}!airspaceAltitudeLimitAdjusted@{airspaceAltitudeLimitAdjusted}}
+\index{airspaceAltitudeLimitAdjusted@{airspaceAltitudeLimitAdjusted}!Navigation::Navigator@{Navigation::Navigator}}
+\doxysubsubsection{\texorpdfstring{airspaceAltitudeLimitAdjusted}{airspaceAltitudeLimitAdjusted}}
+{\footnotesize\ttfamily \label{classNavigation_1_1Navigator_adfc2b1f1ec9ff475ed1c31697ddafed8} 
+void Navigation\+::\+Navigator\+::airspace\+Altitude\+Limit\+Adjusted (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [signal]}}
+
+
+
+Emitted when the airspace\+Altitude\+Limit is adjusted. 
+
+To ensure that all relevant airspaces are visible on the moving map, the navigator class will automatically adjust the property airspace\+Altitude\+Limit of the global settings object whenever (ownship true altitude + 1000ft) is higher than the present airspace\+Altitude\+Limit.
+
+This signal is emitted whenever that happens. \Hypertarget{classNavigation_1_1Navigator_a9f95457f009e0c581a3703b69f04b63d}\index{Navigation::Navigator@{Navigation::Navigator}!deferredInitialization@{deferredInitialization}}
+\index{deferredInitialization@{deferredInitialization}!Navigation::Navigator@{Navigation::Navigator}}
+\doxysubsubsection{\texorpdfstring{deferredInitialization()}{deferredInitialization()}}
+{\footnotesize\ttfamily \label{classNavigation_1_1Navigator_a9f95457f009e0c581a3703b69f04b63d} 
+void Navigation\+::\+Navigator\+::deferred\+Initialization (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Non-\/constructor initialization. 
+
+This method is called by the static methods that create global instances immediately after the constructor returns. This class can be re-\/implemented to perform initialization steps that refer to other singleton objects. 
+
+Reimplemented from \mbox{\hyperlink{classGlobalObject_ad89d4b5b146c91f65f282572629c2f5f}{Global\+Object}}.
+
+\Hypertarget{classNavigation_1_1Navigator_aa20f7894ae9ad736e9c3966742ec52b9}\index{Navigation::Navigator@{Navigation::Navigator}!flightRoute@{flightRoute}}
+\index{flightRoute@{flightRoute}!Navigation::Navigator@{Navigation::Navigator}}
+\doxysubsubsection{\texorpdfstring{flightRoute()}{flightRoute()}}
+{\footnotesize\ttfamily \label{classNavigation_1_1Navigator_aa20f7894ae9ad736e9c3966742ec52b9} 
+auto Navigation\+::\+Navigator\+::flight\+Route (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) -\/$>$  \mbox{\hyperlink{classNavigation_1_1FlightRoute}{Navigation\+::\+Flight\+Route}} \texorpdfstring{$\ast$}{*}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property flight\+Route 
+\end{DoxyReturn}
+\Hypertarget{classNavigation_1_1Navigator_a10438fdfefaaa3bc86449f6ffe57edbb}\index{Navigation::Navigator@{Navigation::Navigator}!flightStatus@{flightStatus}}
+\index{flightStatus@{flightStatus}!Navigation::Navigator@{Navigation::Navigator}}
+\doxysubsubsection{\texorpdfstring{flightStatus()}{flightStatus()}}
+{\footnotesize\ttfamily \label{classNavigation_1_1Navigator_a10438fdfefaaa3bc86449f6ffe57edbb} 
+auto Navigation\+::\+Navigator\+::flight\+Status (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ \mbox{\hyperlink{classNavigation_1_1Navigator_a577fd3b296e1f2bb63cf834d2991dd01}{Flight\+Status}} \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property flight\+Status 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Navigator_8h_source_l00135}{135}} of file \mbox{\hyperlink{Navigator_8h_source}{Navigator.\+h}}.
+
+\Hypertarget{classNavigation_1_1Navigator_aa3de4d9515f5c84fe1c61a47b6a1006d}\index{Navigation::Navigator@{Navigation::Navigator}!remainingRouteInfo@{remainingRouteInfo}}
+\index{remainingRouteInfo@{remainingRouteInfo}!Navigation::Navigator@{Navigation::Navigator}}
+\doxysubsubsection{\texorpdfstring{remainingRouteInfo()}{remainingRouteInfo()}}
+{\footnotesize\ttfamily \label{classNavigation_1_1Navigator_aa3de4d9515f5c84fe1c61a47b6a1006d} 
+auto Navigation\+::\+Navigator\+::remaining\+Route\+Info (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ \mbox{\hyperlink{classNavigation_1_1RemainingRouteInfo}{Navigation\+::\+Remaining\+Route\+Info}} \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property remaining route info 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Navigator_8h_source_l00141}{141}} of file \mbox{\hyperlink{Navigator_8h_source}{Navigator.\+h}}.
+
+\Hypertarget{classNavigation_1_1Navigator_a764920162d94ae111614ac29d8ab72fa}\index{Navigation::Navigator@{Navigation::Navigator}!setAircraft@{setAircraft}}
+\index{setAircraft@{setAircraft}!Navigation::Navigator@{Navigation::Navigator}}
+\doxysubsubsection{\texorpdfstring{setAircraft()}{setAircraft()}}
+{\footnotesize\ttfamily \label{classNavigation_1_1Navigator_a764920162d94ae111614ac29d8ab72fa} 
+void Navigation\+::\+Navigator\+::set\+Aircraft (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classNavigation_1_1Aircraft}{Navigation\+::\+Aircraft}} \&}]{new\+Aircraft}{}\end{DoxyParamCaption})}
+
+
+
+Setter function for property of the same name. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Aircraft} & Property aircraft \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classNavigation_1_1Navigator_a2e625778214992b3d53f2a7546fc7be7}\index{Navigation::Navigator@{Navigation::Navigator}!setWind@{setWind}}
+\index{setWind@{setWind}!Navigation::Navigator@{Navigation::Navigator}}
+\doxysubsubsection{\texorpdfstring{setWind()}{setWind()}}
+{\footnotesize\ttfamily \label{classNavigation_1_1Navigator_a2e625778214992b3d53f2a7546fc7be7} 
+void Navigation\+::\+Navigator\+::set\+Wind (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classWeather_1_1Wind}{Weather\+::\+Wind}}}]{new\+Wind}{}\end{DoxyParamCaption})}
+
+
+
+Setter function for property of the same name. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Wind} & Property wind \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classNavigation_1_1Navigator_a92f09aedb61550c7f4135bb1e9cb689b}\index{Navigation::Navigator@{Navigation::Navigator}!wind@{wind}}
+\index{wind@{wind}!Navigation::Navigator@{Navigation::Navigator}}
+\doxysubsubsection{\texorpdfstring{wind()}{wind()}}
+{\footnotesize\ttfamily \label{classNavigation_1_1Navigator_a92f09aedb61550c7f4135bb1e9cb689b} 
+auto Navigation\+::\+Navigator\+::wind (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const -\/$>$ \mbox{\hyperlink{classWeather_1_1Wind}{Weather\+::\+Wind}} \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property wind 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Navigator_8h_source_l00147}{147}} of file \mbox{\hyperlink{Navigator_8h_source}{Navigator.\+h}}.
+
+
+
+\doxysubsection{Property Documentation}
+\Hypertarget{classNavigation_1_1Navigator_adf36fdd45f2e6fbed549047178014698}\index{Navigation::Navigator@{Navigation::Navigator}!aircraft@{aircraft}}
+\index{aircraft@{aircraft}!Navigation::Navigator@{Navigation::Navigator}}
+\doxysubsubsection{\texorpdfstring{aircraft}{aircraft}}
+{\footnotesize\ttfamily \label{classNavigation_1_1Navigator_adf36fdd45f2e6fbed549047178014698} 
+\mbox{\hyperlink{classNavigation_1_1Aircraft}{Navigation\+::\+Aircraft}} Navigation\+::\+Navigator\+::aircraft\hspace{0.3cm}{\ttfamily [read]}, {\ttfamily [write]}}
+
+
+
+Current aircraft. 
+
+The aircraft returned here is owned by this class and must not be deleted. QML ownership has been set to QQml\+Engine\+::\+Cpp\+Ownership. 
+
+Definition at line \mbox{\hyperlink{Navigator_8h_source_l00092}{92}} of file \mbox{\hyperlink{Navigator_8h_source}{Navigator.\+h}}.
+
+\Hypertarget{classNavigation_1_1Navigator_ad24e156eba1d422b9f9d2d004f1186d5}\index{Navigation::Navigator@{Navigation::Navigator}!flightRoute@{flightRoute}}
+\index{flightRoute@{flightRoute}!Navigation::Navigator@{Navigation::Navigator}}
+\doxysubsubsection{\texorpdfstring{flightRoute}{flightRoute}}
+{\footnotesize\ttfamily \label{classNavigation_1_1Navigator_ad24e156eba1d422b9f9d2d004f1186d5} 
+\mbox{\hyperlink{classNavigation_1_1FlightRoute}{Navigation\+::\+Flight\+Route}}\texorpdfstring{$\ast$}{*} Navigation\+::\+Navigator\+::flight\+Route\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Current flight route. 
+
+This flight route returned here is owned by this class and must not be deleted. QML ownership has been set to QQml\+Engine\+::\+Cpp\+Ownership. 
+
+Definition at line \mbox{\hyperlink{Navigator_8h_source_l00099}{99}} of file \mbox{\hyperlink{Navigator_8h_source}{Navigator.\+h}}.
+
+\Hypertarget{classNavigation_1_1Navigator_a1c6674deec9e2810d3cc3288c18553f8}\index{Navigation::Navigator@{Navigation::Navigator}!flightStatus@{flightStatus}}
+\index{flightStatus@{flightStatus}!Navigation::Navigator@{Navigation::Navigator}}
+\doxysubsubsection{\texorpdfstring{flightStatus}{flightStatus}}
+{\footnotesize\ttfamily \label{classNavigation_1_1Navigator_a1c6674deec9e2810d3cc3288c18553f8} 
+\mbox{\hyperlink{classNavigation_1_1Navigator_a577fd3b296e1f2bb63cf834d2991dd01}{Flight\+Status}} Navigation\+::\+Navigator\+::flight\+Status\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Estimate whether the device is flying or on the ground. 
+
+This property holds an estimate, as to whether the device is flying or on the ground. 
+
+Definition at line \mbox{\hyperlink{Navigator_8h_source_l00106}{106}} of file \mbox{\hyperlink{Navigator_8h_source}{Navigator.\+h}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/navigation/Navigator.\+h\end{DoxyCompactItemize}

@@ -1,0 +1,114 @@
+\doxysection{File\+Formats\+::CUP Class Reference}
+\hypertarget{classFileFormats_1_1CUP}{}\label{classFileFormats_1_1CUP}\index{FileFormats::CUP@{FileFormats::CUP}}
+
+
+\doxylink{classFileFormats_1_1CUP}{CUP} file support class.  
+
+
+
+
+{\ttfamily \#include $<$CUP.\+h$>$}
+
+Inheritance diagram for File\+Formats\+::CUP\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classFileFormats_1_1CUP}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classFileFormats_1_1CUP_a7e4511a136f13aefa079abaac2b65d7a}{CUP}} (const QString \&file\+Name)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+QVector$<$ \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Geo\+Maps\+::\+Waypoint}} $>$ \mbox{\hyperlink{classFileFormats_1_1CUP_a81384309d10588f196bc7813e8683512}{waypoints}} () const
+\begin{DoxyCompactList}\small\item\em Waypoints specified in the \doxylink{classFileFormats_1_1CUP}{CUP} file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classFileFormats_1_1DataFileAbstract}{File\+Formats\+::\+Data\+File\+Abstract}}}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classFileFormats_1_1DataFileAbstract_a830a91581e5655ab1f14b6fe8719e60f}{is\+Valid}} () const
+\begin{DoxyCompactList}\small\item\em Validity check. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classFileFormats_1_1DataFileAbstract_a292d1144d1c23b119601170f4c6b8e20}{error}} () const
+\begin{DoxyCompactList}\small\item\em Error string. \end{DoxyCompactList}\item 
+QString\+List \mbox{\hyperlink{classFileFormats_1_1DataFileAbstract_ab770740e6d6c20e076dd342e978b86ee}{warnings}} () const
+\begin{DoxyCompactList}\small\item\em Warnings. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static QString\+List \mbox{\hyperlink{classFileFormats_1_1CUP_a4e4c8a4044dbae90fa5f338415c21acb}{mime\+Types}} ()
+\begin{DoxyCompactList}\small\item\em Mime type for files that can be opened by this class. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions inherited from \mbox{\hyperlink{classFileFormats_1_1DataFileAbstract}{File\+Formats\+::\+Data\+File\+Abstract}}}
+\begin{DoxyCompactItemize}
+\item 
+static QShared\+Pointer$<$ QFile $>$ \mbox{\hyperlink{classFileFormats_1_1DataFileAbstract_a2380fb7a4ab503cf73d618ea96ef216c}{open\+File\+URL}} (const QString \&file\+Name)
+\begin{DoxyCompactList}\small\item\em Open file, file URL or Android content URL. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\doxylink{classFileFormats_1_1CUP}{CUP} file support class. 
+
+The methods of this class read \doxylink{classFileFormats_1_1CUP}{CUP} waypoint files, as specified here\+: \href{http://download.naviter.com/docs/CUP-file-format-description.pdf}{\texttt{ http\+://download.\+naviter.\+com/docs/\+CUP-\/file-\/format-\/description.\+pdf}} 
+
+Definition at line \mbox{\hyperlink{CUP_8h_source_l00037}{37}} of file \mbox{\hyperlink{CUP_8h_source}{CUP.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classFileFormats_1_1CUP_a7e4511a136f13aefa079abaac2b65d7a}\index{FileFormats::CUP@{FileFormats::CUP}!CUP@{CUP}}
+\index{CUP@{CUP}!FileFormats::CUP@{FileFormats::CUP}}
+\doxysubsubsection{\texorpdfstring{CUP()}{CUP()}}
+{\footnotesize\ttfamily \label{classFileFormats_1_1CUP_a7e4511a136f13aefa079abaac2b65d7a} 
+File\+Formats\+::\+CUP\+::\+CUP (\begin{DoxyParamCaption}\item[{const QString \&}]{file\+Name}{}\end{DoxyParamCaption})}
+
+
+
+Constructor. 
+
+This method reads a \doxylink{classFileFormats_1_1CUP}{CUP} file and generates a vector of waypoints.
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Name} & Name of a \doxylink{classFileFormats_1_1CUP}{CUP} file \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classFileFormats_1_1CUP_a4e4c8a4044dbae90fa5f338415c21acb}\index{FileFormats::CUP@{FileFormats::CUP}!mimeTypes@{mimeTypes}}
+\index{mimeTypes@{mimeTypes}!FileFormats::CUP@{FileFormats::CUP}}
+\doxysubsubsection{\texorpdfstring{mimeTypes()}{mimeTypes()}}
+{\footnotesize\ttfamily \label{classFileFormats_1_1CUP_a4e4c8a4044dbae90fa5f338415c21acb} 
+static QString\+List File\+Formats\+::\+CUP\+::mime\+Types (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [nodiscard]}}
+
+
+
+Mime type for files that can be opened by this class. 
+
+\begin{DoxyReturn}{Returns}
+Name of mime type 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{CUP_8h_source_l00070}{70}} of file \mbox{\hyperlink{CUP_8h_source}{CUP.\+h}}.
+
+\Hypertarget{classFileFormats_1_1CUP_a81384309d10588f196bc7813e8683512}\index{FileFormats::CUP@{FileFormats::CUP}!waypoints@{waypoints}}
+\index{waypoints@{waypoints}!FileFormats::CUP@{FileFormats::CUP}}
+\doxysubsubsection{\texorpdfstring{waypoints()}{waypoints()}}
+{\footnotesize\ttfamily \label{classFileFormats_1_1CUP_a81384309d10588f196bc7813e8683512} 
+QVector$<$ \mbox{\hyperlink{classGeoMaps_1_1Waypoint}{Geo\+Maps\+::\+Waypoint}} $>$ File\+Formats\+::\+CUP\+::waypoints (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Waypoints specified in the \doxylink{classFileFormats_1_1CUP}{CUP} file. 
+
+\begin{DoxyReturn}{Returns}
+Waypoints specified in the \doxylink{classFileFormats_1_1CUP}{CUP} file 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{CUP_8h_source_l00059}{59}} of file \mbox{\hyperlink{CUP_8h_source}{CUP.\+h}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/file\+Formats/CUP.\+h\end{DoxyCompactItemize}

@@ -1,0 +1,584 @@
+\doxysection{Notifications\+::Notification Class Reference}
+\hypertarget{classNotifications_1_1Notification}{}\label{classNotifications_1_1Notification}\index{Notifications::Notification@{Notifications::Notification}}
+
+
+Base class for all notifications.  
+
+
+
+
+{\ttfamily \#include $<$Notification.\+h$>$}
+
+Inheritance diagram for Notifications\+::Notification\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classNotifications_1_1Notification}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{classNotifications_1_1Notification_a2280308b403e6773a6a02cdaff4d8b8a}{Importance}} \{ \newline
+\mbox{\hyperlink{classNotifications_1_1Notification_a2280308b403e6773a6a02cdaff4d8b8aa1686dc32321b0b8936eb410132af4a37}{Info}} = 1\texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<}1
+, \mbox{\hyperlink{classNotifications_1_1Notification_a2280308b403e6773a6a02cdaff4d8b8aa1ef5c61adac56ac97370bb09a3eb4a4f}{Info\+\_\+\+Navigation}} = 1\texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<}2
+, \mbox{\hyperlink{classNotifications_1_1Notification_a2280308b403e6773a6a02cdaff4d8b8aaaa8b056c943f5c4cb155d0e8e9b13977}{Warning}} = 1\texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<}3
+, \mbox{\hyperlink{classNotifications_1_1Notification_a2280308b403e6773a6a02cdaff4d8b8aa115d79a056f5d7269d7d39e37cd764bf}{Warning\+\_\+\+Navigation}} = 1\texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<}4
+, \newline
+\mbox{\hyperlink{classNotifications_1_1Notification_a2280308b403e6773a6a02cdaff4d8b8aa222835b82f842b7f5f97daa9a10bb31b}{Alert}} = 1\texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<}5
+ \}
+\begin{DoxyCompactList}\small\item\em Importance classification. \end{DoxyCompactList}\item 
+enum \mbox{\hyperlink{classNotifications_1_1Notification_ab86a06b9ca133ef5385df8c2a8d3fe64}{Text\+Body\+Action}} \{ \mbox{\hyperlink{classNotifications_1_1Notification_ab86a06b9ca133ef5385df8c2a8d3fe64a78db959687c7f48b61ccfd7fd8e63c49}{None}}
+, \mbox{\hyperlink{classNotifications_1_1Notification_ab86a06b9ca133ef5385df8c2a8d3fe64a11649b80a2d04208821659b126b94bff}{Open\+Maps\+And\+Data\+Page}}
+, \mbox{\hyperlink{classNotifications_1_1Notification_ab86a06b9ca133ef5385df8c2a8d3fe64a47d3b84cac82dc54d89552aeb6013b74}{Open\+Traffic\+Receiver\+Page}}
+ \}
+\begin{DoxyCompactList}\small\item\em Text body action. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Signals}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classNotifications_1_1Notification_a8827f2d393106b1c362a4fd24fba805a}\label{classNotifications_1_1Notification_a8827f2d393106b1c362a4fd24fba805a} 
+void {\bfseries button1\+Text\+Changed} ()
+\begin{DoxyCompactList}\small\item\em \doxylink{classNotifications_1_1Notification}{Notification} signal. \end{DoxyCompactList}\item 
+\Hypertarget{classNotifications_1_1Notification_a080cc9ea1bb437f7b4ee2a12d449ecd9}\label{classNotifications_1_1Notification_a080cc9ea1bb437f7b4ee2a12d449ecd9} 
+void {\bfseries button2\+Text\+Changed} ()
+\begin{DoxyCompactList}\small\item\em \doxylink{classNotifications_1_1Notification}{Notification} signal. \end{DoxyCompactList}\item 
+\Hypertarget{classNotifications_1_1Notification_a82b2ed8d502facfc0d476b300a9d39af}\label{classNotifications_1_1Notification_a82b2ed8d502facfc0d476b300a9d39af} 
+void {\bfseries reaction\+Time\+Changed} ()
+\begin{DoxyCompactList}\small\item\em \doxylink{classNotifications_1_1Notification}{Notification} signal. \end{DoxyCompactList}\item 
+\Hypertarget{classNotifications_1_1Notification_a4663e59dfa057ceca75cfd1367115b3e}\label{classNotifications_1_1Notification_a4663e59dfa057ceca75cfd1367115b3e} 
+void {\bfseries spoken\+Text\+Changed} ()
+\begin{DoxyCompactList}\small\item\em \doxylink{classNotifications_1_1Notification}{Notification} signal. \end{DoxyCompactList}\item 
+\Hypertarget{classNotifications_1_1Notification_afda8f781c119dedc6bb138859022cb69}\label{classNotifications_1_1Notification_afda8f781c119dedc6bb138859022cb69} 
+void {\bfseries text\+Changed} ()
+\begin{DoxyCompactList}\small\item\em \doxylink{classNotifications_1_1Notification}{Notification} signal. \end{DoxyCompactList}\item 
+\Hypertarget{classNotifications_1_1Notification_ac6f5de7d04080a73de6e85f8ea6770c1}\label{classNotifications_1_1Notification_ac6f5de7d04080a73de6e85f8ea6770c1} 
+void {\bfseries text\+Body\+Action\+Changed} ()
+\begin{DoxyCompactList}\small\item\em \doxylink{classNotifications_1_1Notification}{Notification} signal. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classNotifications_1_1Notification_a10957d525b965a4546495b4cff63fa4a}{Notification}} (QString \+\_\+title, \mbox{\hyperlink{classNotifications_1_1Notification_a2280308b403e6773a6a02cdaff4d8b8a}{Notifications\+::\+Notification\+::\+Importance}} \+\_\+importance=\mbox{\hyperlink{classNotifications_1_1Notification_a2280308b403e6773a6a02cdaff4d8b8aa1686dc32321b0b8936eb410132af4a37}{Notifications\+::\+Notification\+::\+Info}}, QObject \texorpdfstring{$\ast$}{*}parent=nullptr)
+\begin{DoxyCompactList}\small\item\em Standard constructor. \end{DoxyCompactList}\item 
+\Hypertarget{classNotifications_1_1Notification_ae5a764fd77edf7036f5ba20dfcf8e394}\label{classNotifications_1_1Notification_ae5a764fd77edf7036f5ba20dfcf8e394} 
+{\bfseries \texorpdfstring{$\sim$}{\string~}\+Notification} () override=default
+\begin{DoxyCompactList}\small\item\em Standard destructor. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classNotifications_1_1Notification_acb872866b2b45637529ba256a6869f50}{button1\+Text}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for property of the same name. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classNotifications_1_1Notification_a066cb6c18774ef91840ed8b8f96b1fc2}{button2\+Text}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for property of the same name. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classNotifications_1_1Notification_a2280308b403e6773a6a02cdaff4d8b8a}{Notifications\+::\+Notification\+::\+Importance}} \mbox{\hyperlink{classNotifications_1_1Notification_a7a26eec9077c2ced85bf1064c70bdb83}{importance}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for property of the same name. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classUnits_1_1Timespan}{Units\+::\+Timespan}} \mbox{\hyperlink{classNotifications_1_1Notification_a5e23daeda770939176e6ec193ab72208}{reaction\+Time}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for property of the same name. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classNotifications_1_1Notification_a6a960faef134bd80671a18fa94428a4c}{spoken\+Text}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for property of the same name. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classNotifications_1_1Notification_a7d7fa885c8f135382974d7d997dc1d32}{text}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for property of the same name. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classNotifications_1_1Notification_ab86a06b9ca133ef5385df8c2a8d3fe64}{Notifications\+::\+Notification\+::\+Text\+Body\+Action}} \mbox{\hyperlink{classNotifications_1_1Notification_af99d366f4972ab2d4766e530416d3bd1}{text\+Body\+Action}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for property of the same name. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classNotifications_1_1Notification_a61c993384d65abcfd95606e6c6b8b359}{title}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for property of the same name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classNotifications_1_1Notification_a017c8400f24c1b43b3bcbcde6d81968e}{set\+Button1\+Text}} (const QString \&new\+Button1\+Text)
+\begin{DoxyCompactList}\small\item\em Setter function for property of the same name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classNotifications_1_1Notification_a149adf4fc2947d01bb4a68fc657ea5e4}{set\+Button2\+Text}} (const QString \&new\+Button2\+Text)
+\begin{DoxyCompactList}\small\item\em Setter function for property of the same name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classNotifications_1_1Notification_a190496fc699406dc0bebc6fddcc1c1de}{set\+Reaction\+Time}} (\mbox{\hyperlink{classUnits_1_1Timespan}{Units\+::\+Timespan}} new\+Reaction\+Time)
+\begin{DoxyCompactList}\small\item\em Setter function for property of the same name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classNotifications_1_1Notification_a17d970d899ad3d879c4ad20d18b10290}{set\+Spoken\+Text}} (const QString \&new\+Spoken\+Text)
+\begin{DoxyCompactList}\small\item\em Setter function for property of the same name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classNotifications_1_1Notification_aff907ae63fe987819a63cb2f79c6b7ef}{set\+Text}} (const QString \&new\+Text)
+\begin{DoxyCompactList}\small\item\em Setter function for property of the same name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classNotifications_1_1Notification_afb1f9fdd3411b874e17ea5a8d6380a27}{set\+Text\+Body\+Action}} (\mbox{\hyperlink{classNotifications_1_1Notification_ab86a06b9ca133ef5385df8c2a8d3fe64}{Notifications\+::\+Notification\+::\+Text\+Body\+Action}} new\+Text\+Body\+Action)
+\begin{DoxyCompactList}\small\item\em Setter function for property of the same name. \end{DoxyCompactList}\item 
+virtual Q\+\_\+\+INVOKABLE void \mbox{\hyperlink{classNotifications_1_1Notification_aa67cc226652ce33a5135661fbfc42ad3}{on\+Button1\+Clicked}} ()
+\begin{DoxyCompactList}\small\item\em Mouse click handler. \end{DoxyCompactList}\item 
+virtual Q\+\_\+\+INVOKABLE void \mbox{\hyperlink{classNotifications_1_1Notification_a81b1c9c68bf39c4da758b04bd1c0218a}{on\+Button2\+Clicked}} ()
+\begin{DoxyCompactList}\small\item\em Mouse click handler. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+QString \mbox{\hyperlink{classNotifications_1_1Notification_af20fac8e653be2621467d2b1c630ebdb}{button1\+Text}}
+\begin{DoxyCompactList}\small\item\em Text for first button. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classNotifications_1_1Notification_aa139b94a612725b09f58b42985291fe7}{button2\+Text}}
+\begin{DoxyCompactList}\small\item\em Text for second button. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classNotifications_1_1Notification_a2280308b403e6773a6a02cdaff4d8b8a}{Notifications\+::\+Notification\+::\+Importance}} \mbox{\hyperlink{classNotifications_1_1Notification_a3ed022dcf8addfee15ec18ee808b9cf9}{importance}}
+\begin{DoxyCompactList}\small\item\em Importance of the notification. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classUnits_1_1Timespan}{Units\+::\+Timespan}} \mbox{\hyperlink{classNotifications_1_1Notification_abf8669874f773b5840f4d6cc2e89dee9}{reaction\+Time}}
+\begin{DoxyCompactList}\small\item\em Time left to avert negative consequences. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classNotifications_1_1Notification_ad2a78184694e4934fac41253254893f6}{spoken\+Text}}
+\begin{DoxyCompactList}\small\item\em Spoken text message for the notification. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classNotifications_1_1Notification_a590abe78a96269db202fc793a5247fb0}{text}}
+\begin{DoxyCompactList}\small\item\em Text body of the notification. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classNotifications_1_1Notification_ab86a06b9ca133ef5385df8c2a8d3fe64}{Notifications\+::\+Notification\+::\+Text\+Body\+Action}} \mbox{\hyperlink{classNotifications_1_1Notification_adc02610d005b5a03e7d15cb2bd24b8d8}{text\+Body\+Action}}
+\begin{DoxyCompactList}\small\item\em Text body action. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classNotifications_1_1Notification_aa5ab2a8355087236866892427d60e740}{title}}
+\begin{DoxyCompactList}\small\item\em Title of the notification. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Base class for all notifications. 
+
+This is the base class for all notifications. This notifications sets button1\+Text to "{}\+Dismiss"{}, button2\+Text to "{}\+Empty"{} and reacts to clicks with a delete\+Later(). More elaborate notifications can inherit from this class and re-\/implement some of the virtual methods.
+
+\begin{DoxyNote}{Note}
+Instance of this class may safely call delete\+Later() at any time to indicate that the notification is no longer relevant. 
+\end{DoxyNote}
+
+
+Definition at line \mbox{\hyperlink{Notification_8h_source_l00043}{43}} of file \mbox{\hyperlink{Notification_8h_source}{Notification.\+h}}.
+
+
+
+\doxysubsection{Member Enumeration Documentation}
+\Hypertarget{classNotifications_1_1Notification_a2280308b403e6773a6a02cdaff4d8b8a}\index{Notifications::Notification@{Notifications::Notification}!Importance@{Importance}}
+\index{Importance@{Importance}!Notifications::Notification@{Notifications::Notification}}
+\doxysubsubsection{\texorpdfstring{Importance}{Importance}}
+{\footnotesize\ttfamily \label{classNotifications_1_1Notification_a2280308b403e6773a6a02cdaff4d8b8a} 
+enum \mbox{\hyperlink{classNotifications_1_1Notification_a2280308b403e6773a6a02cdaff4d8b8a}{Notifications\+::\+Notification\+::\+Importance}}}
+
+
+
+Importance classification. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Info@{Info}!Notifications::Notification@{Notifications::Notification}}\index{Notifications::Notification@{Notifications::Notification}!Info@{Info}}}\Hypertarget{classNotifications_1_1Notification_a2280308b403e6773a6a02cdaff4d8b8aa1686dc32321b0b8936eb410132af4a37}\label{classNotifications_1_1Notification_a2280308b403e6773a6a02cdaff4d8b8a} 
+Info&Generic information, "{}\+Map updates available"{}. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Info\_Navigation@{Info\_Navigation}!Notifications::Notification@{Notifications::Notification}}\index{Notifications::Notification@{Notifications::Notification}!Info\_Navigation@{Info\_Navigation}}}\Hypertarget{classNotifications_1_1Notification_a2280308b403e6773a6a02cdaff4d8b8aa1ef5c61adac56ac97370bb09a3eb4a4f}\label{classNotifications_1_1Notification_a2280308b403e6773a6a02cdaff4d8b8a} 
+Info\+\_\+\+Navigation&Information pertaining to navigation, "{}\+Top of descent reached"{}. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Warning@{Warning}!Notifications::Notification@{Notifications::Notification}}\index{Notifications::Notification@{Notifications::Notification}!Warning@{Warning}}}\Hypertarget{classNotifications_1_1Notification_a2280308b403e6773a6a02cdaff4d8b8aaaa8b056c943f5c4cb155d0e8e9b13977}\label{classNotifications_1_1Notification_a2280308b403e6773a6a02cdaff4d8b8a} 
+Warning&Generic warning, "{}\+Traffic data receiver inop"{}. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Warning\_Navigation@{Warning\_Navigation}!Notifications::Notification@{Notifications::Notification}}\index{Notifications::Notification@{Notifications::Notification}!Warning\_Navigation@{Warning\_Navigation}}}\Hypertarget{classNotifications_1_1Notification_a2280308b403e6773a6a02cdaff4d8b8aa115d79a056f5d7269d7d39e37cd764bf}\label{classNotifications_1_1Notification_a2280308b403e6773a6a02cdaff4d8b8a} 
+Warning\+\_\+\+Navigation&Serious warning, "{}\+Prohibited Airspace 1 minutes ahead"{}. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Alert@{Alert}!Notifications::Notification@{Notifications::Notification}}\index{Notifications::Notification@{Notifications::Notification}!Alert@{Alert}}}\Hypertarget{classNotifications_1_1Notification_a2280308b403e6773a6a02cdaff4d8b8aa222835b82f842b7f5f97daa9a10bb31b}\label{classNotifications_1_1Notification_a2280308b403e6773a6a02cdaff4d8b8a} 
+Alert&Alert. Immediate action is required to avoid accident or serious rule infringion. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line \mbox{\hyperlink{Notification_8h_source_l00050}{50}} of file \mbox{\hyperlink{Notification_8h_source}{Notification.\+h}}.
+
+\Hypertarget{classNotifications_1_1Notification_ab86a06b9ca133ef5385df8c2a8d3fe64}\index{Notifications::Notification@{Notifications::Notification}!TextBodyAction@{TextBodyAction}}
+\index{TextBodyAction@{TextBodyAction}!Notifications::Notification@{Notifications::Notification}}
+\doxysubsubsection{\texorpdfstring{TextBodyAction}{TextBodyAction}}
+{\footnotesize\ttfamily \label{classNotifications_1_1Notification_ab86a06b9ca133ef5385df8c2a8d3fe64} 
+enum \mbox{\hyperlink{classNotifications_1_1Notification_ab86a06b9ca133ef5385df8c2a8d3fe64}{Notifications\+::\+Notification\+::\+Text\+Body\+Action}}}
+
+
+
+Text body action. 
+
+Describes the action that the GUI should take then the text body of this notification is clicked. \begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{None@{None}!Notifications::Notification@{Notifications::Notification}}\index{Notifications::Notification@{Notifications::Notification}!None@{None}}}\Hypertarget{classNotifications_1_1Notification_ab86a06b9ca133ef5385df8c2a8d3fe64a78db959687c7f48b61ccfd7fd8e63c49}\label{classNotifications_1_1Notification_ab86a06b9ca133ef5385df8c2a8d3fe64} 
+None&No action. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{OpenMapsAndDataPage@{OpenMapsAndDataPage}!Notifications::Notification@{Notifications::Notification}}\index{Notifications::Notification@{Notifications::Notification}!OpenMapsAndDataPage@{OpenMapsAndDataPage}}}\Hypertarget{classNotifications_1_1Notification_ab86a06b9ca133ef5385df8c2a8d3fe64a11649b80a2d04208821659b126b94bff}\label{classNotifications_1_1Notification_ab86a06b9ca133ef5385df8c2a8d3fe64} 
+Open\+Maps\+And\+Data\+Page&Open the page \textquotesingle{}maps and data\textquotesingle{}. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{OpenTrafficReceiverPage@{OpenTrafficReceiverPage}!Notifications::Notification@{Notifications::Notification}}\index{Notifications::Notification@{Notifications::Notification}!OpenTrafficReceiverPage@{OpenTrafficReceiverPage}}}\Hypertarget{classNotifications_1_1Notification_ab86a06b9ca133ef5385df8c2a8d3fe64a47d3b84cac82dc54d89552aeb6013b74}\label{classNotifications_1_1Notification_ab86a06b9ca133ef5385df8c2a8d3fe64} 
+Open\+Traffic\+Receiver\+Page&Open the page \textquotesingle{}traffic receiver\textquotesingle{}. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line \mbox{\hyperlink{Notification_8h_source_l00064}{64}} of file \mbox{\hyperlink{Notification_8h_source}{Notification.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classNotifications_1_1Notification_a10957d525b965a4546495b4cff63fa4a}\index{Notifications::Notification@{Notifications::Notification}!Notification@{Notification}}
+\index{Notification@{Notification}!Notifications::Notification@{Notifications::Notification}}
+\doxysubsubsection{\texorpdfstring{Notification()}{Notification()}}
+{\footnotesize\ttfamily \label{classNotifications_1_1Notification_a10957d525b965a4546495b4cff63fa4a} 
+Notifications\+::\+Notification\+::\+Notification (\begin{DoxyParamCaption}\item[{QString}]{\+\_\+title}{, }\item[{\mbox{\hyperlink{classNotifications_1_1Notification_a2280308b403e6773a6a02cdaff4d8b8a}{Notifications\+::\+Notification\+::\+Importance}}}]{\+\_\+importance}{ = {\ttfamily \mbox{\hyperlink{classNotifications_1_1Notification_a2280308b403e6773a6a02cdaff4d8b8aa1686dc32321b0b8936eb410132af4a37}{Notifications\+::\+Notification\+::\+Info}}}, }\item[{QObject \texorpdfstring{$\ast$}{*}}]{parent}{ = {\ttfamily nullptr}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Standard constructor. 
+
+The constructor sets a time that calls delete\+Later() after five minutes. This way, notifications are never shown permanently.
+
+
+\begin{DoxyParams}{Parameters}
+{\em \+\_\+title} & \doxylink{classNotifications_1_1Notification}{Notification} title\\
+\hline
+{\em \+\_\+importance} & \doxylink{classNotifications_1_1Notification}{Notification} importance\\
+\hline
+{\em parent} & The standard QObject parent pointer \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classNotifications_1_1Notification_acb872866b2b45637529ba256a6869f50}\index{Notifications::Notification@{Notifications::Notification}!button1Text@{button1Text}}
+\index{button1Text@{button1Text}!Notifications::Notification@{Notifications::Notification}}
+\doxysubsubsection{\texorpdfstring{button1Text()}{button1Text()}}
+{\footnotesize\ttfamily \label{classNotifications_1_1Notification_acb872866b2b45637529ba256a6869f50} 
+QString Notifications\+::\+Notification\+::button1\+Text (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for property of the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property button1\+Text 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Notification_8h_source_l00172}{172}} of file \mbox{\hyperlink{Notification_8h_source}{Notification.\+h}}.
+
+\Hypertarget{classNotifications_1_1Notification_a066cb6c18774ef91840ed8b8f96b1fc2}\index{Notifications::Notification@{Notifications::Notification}!button2Text@{button2Text}}
+\index{button2Text@{button2Text}!Notifications::Notification@{Notifications::Notification}}
+\doxysubsubsection{\texorpdfstring{button2Text()}{button2Text()}}
+{\footnotesize\ttfamily \label{classNotifications_1_1Notification_a066cb6c18774ef91840ed8b8f96b1fc2} 
+QString Notifications\+::\+Notification\+::button2\+Text (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for property of the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property button1\+Text 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Notification_8h_source_l00178}{178}} of file \mbox{\hyperlink{Notification_8h_source}{Notification.\+h}}.
+
+\Hypertarget{classNotifications_1_1Notification_a7a26eec9077c2ced85bf1064c70bdb83}\index{Notifications::Notification@{Notifications::Notification}!importance@{importance}}
+\index{importance@{importance}!Notifications::Notification@{Notifications::Notification}}
+\doxysubsubsection{\texorpdfstring{importance()}{importance()}}
+{\footnotesize\ttfamily \label{classNotifications_1_1Notification_a7a26eec9077c2ced85bf1064c70bdb83} 
+\mbox{\hyperlink{classNotifications_1_1Notification_a2280308b403e6773a6a02cdaff4d8b8a}{Notifications\+::\+Notification\+::\+Importance}} Notifications\+::\+Notification\+::importance (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for property of the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property importance 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Notification_8h_source_l00184}{184}} of file \mbox{\hyperlink{Notification_8h_source}{Notification.\+h}}.
+
+\Hypertarget{classNotifications_1_1Notification_aa67cc226652ce33a5135661fbfc42ad3}\index{Notifications::Notification@{Notifications::Notification}!onButton1Clicked@{onButton1Clicked}}
+\index{onButton1Clicked@{onButton1Clicked}!Notifications::Notification@{Notifications::Notification}}
+\doxysubsubsection{\texorpdfstring{onButton1Clicked()}{onButton1Clicked()}}
+{\footnotesize\ttfamily \label{classNotifications_1_1Notification_aa67cc226652ce33a5135661fbfc42ad3} 
+virtual Q\+\_\+\+INVOKABLE void Notifications\+::\+Notification\+::on\+Button1\+Clicked (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Mouse click handler. 
+
+This method is called whenever the user clicks on the first button in the GUI representation of this notification. This implementation calls delete\+Later(). Reimplement this method for proper reaction to GUI events. \Hypertarget{classNotifications_1_1Notification_a81b1c9c68bf39c4da758b04bd1c0218a}\index{Notifications::Notification@{Notifications::Notification}!onButton2Clicked@{onButton2Clicked}}
+\index{onButton2Clicked@{onButton2Clicked}!Notifications::Notification@{Notifications::Notification}}
+\doxysubsubsection{\texorpdfstring{onButton2Clicked()}{onButton2Clicked()}}
+{\footnotesize\ttfamily \label{classNotifications_1_1Notification_a81b1c9c68bf39c4da758b04bd1c0218a} 
+virtual Q\+\_\+\+INVOKABLE void Notifications\+::\+Notification\+::on\+Button2\+Clicked (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Mouse click handler. 
+
+This method is called whenever the user clicks on the first button in the GUI representation of this notification. This implementation calls delete\+Later(). Reimplement this method for proper reaction to GUI events. \Hypertarget{classNotifications_1_1Notification_a5e23daeda770939176e6ec193ab72208}\index{Notifications::Notification@{Notifications::Notification}!reactionTime@{reactionTime}}
+\index{reactionTime@{reactionTime}!Notifications::Notification@{Notifications::Notification}}
+\doxysubsubsection{\texorpdfstring{reactionTime()}{reactionTime()}}
+{\footnotesize\ttfamily \label{classNotifications_1_1Notification_a5e23daeda770939176e6ec193ab72208} 
+\mbox{\hyperlink{classUnits_1_1Timespan}{Units\+::\+Timespan}} Notifications\+::\+Notification\+::reaction\+Time (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for property of the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property reaction\+Time 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Notification_8h_source_l00190}{190}} of file \mbox{\hyperlink{Notification_8h_source}{Notification.\+h}}.
+
+\Hypertarget{classNotifications_1_1Notification_a017c8400f24c1b43b3bcbcde6d81968e}\index{Notifications::Notification@{Notifications::Notification}!setButton1Text@{setButton1Text}}
+\index{setButton1Text@{setButton1Text}!Notifications::Notification@{Notifications::Notification}}
+\doxysubsubsection{\texorpdfstring{setButton1Text()}{setButton1Text()}}
+{\footnotesize\ttfamily \label{classNotifications_1_1Notification_a017c8400f24c1b43b3bcbcde6d81968e} 
+void Notifications\+::\+Notification\+::set\+Button1\+Text (\begin{DoxyParamCaption}\item[{const QString \&}]{new\+Button1\+Text}{}\end{DoxyParamCaption})}
+
+
+
+Setter function for property of the same name. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Button1\+Text} & Property button1\+Text \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classNotifications_1_1Notification_a149adf4fc2947d01bb4a68fc657ea5e4}\index{Notifications::Notification@{Notifications::Notification}!setButton2Text@{setButton2Text}}
+\index{setButton2Text@{setButton2Text}!Notifications::Notification@{Notifications::Notification}}
+\doxysubsubsection{\texorpdfstring{setButton2Text()}{setButton2Text()}}
+{\footnotesize\ttfamily \label{classNotifications_1_1Notification_a149adf4fc2947d01bb4a68fc657ea5e4} 
+void Notifications\+::\+Notification\+::set\+Button2\+Text (\begin{DoxyParamCaption}\item[{const QString \&}]{new\+Button2\+Text}{}\end{DoxyParamCaption})}
+
+
+
+Setter function for property of the same name. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Button2\+Text} & Property button1\+Text \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classNotifications_1_1Notification_a190496fc699406dc0bebc6fddcc1c1de}\index{Notifications::Notification@{Notifications::Notification}!setReactionTime@{setReactionTime}}
+\index{setReactionTime@{setReactionTime}!Notifications::Notification@{Notifications::Notification}}
+\doxysubsubsection{\texorpdfstring{setReactionTime()}{setReactionTime()}}
+{\footnotesize\ttfamily \label{classNotifications_1_1Notification_a190496fc699406dc0bebc6fddcc1c1de} 
+void Notifications\+::\+Notification\+::set\+Reaction\+Time (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classUnits_1_1Timespan}{Units\+::\+Timespan}}}]{new\+Reaction\+Time}{}\end{DoxyParamCaption})}
+
+
+
+Setter function for property of the same name. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Reaction\+Time} & Property reaction\+Time \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classNotifications_1_1Notification_a17d970d899ad3d879c4ad20d18b10290}\index{Notifications::Notification@{Notifications::Notification}!setSpokenText@{setSpokenText}}
+\index{setSpokenText@{setSpokenText}!Notifications::Notification@{Notifications::Notification}}
+\doxysubsubsection{\texorpdfstring{setSpokenText()}{setSpokenText()}}
+{\footnotesize\ttfamily \label{classNotifications_1_1Notification_a17d970d899ad3d879c4ad20d18b10290} 
+void Notifications\+::\+Notification\+::set\+Spoken\+Text (\begin{DoxyParamCaption}\item[{const QString \&}]{new\+Spoken\+Text}{}\end{DoxyParamCaption})}
+
+
+
+Setter function for property of the same name. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Spoken\+Text} & Property reaction\+Time \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classNotifications_1_1Notification_aff907ae63fe987819a63cb2f79c6b7ef}\index{Notifications::Notification@{Notifications::Notification}!setText@{setText}}
+\index{setText@{setText}!Notifications::Notification@{Notifications::Notification}}
+\doxysubsubsection{\texorpdfstring{setText()}{setText()}}
+{\footnotesize\ttfamily \label{classNotifications_1_1Notification_aff907ae63fe987819a63cb2f79c6b7ef} 
+void Notifications\+::\+Notification\+::set\+Text (\begin{DoxyParamCaption}\item[{const QString \&}]{new\+Text}{}\end{DoxyParamCaption})}
+
+
+
+Setter function for property of the same name. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Text} & Property text \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classNotifications_1_1Notification_afb1f9fdd3411b874e17ea5a8d6380a27}\index{Notifications::Notification@{Notifications::Notification}!setTextBodyAction@{setTextBodyAction}}
+\index{setTextBodyAction@{setTextBodyAction}!Notifications::Notification@{Notifications::Notification}}
+\doxysubsubsection{\texorpdfstring{setTextBodyAction()}{setTextBodyAction()}}
+{\footnotesize\ttfamily \label{classNotifications_1_1Notification_afb1f9fdd3411b874e17ea5a8d6380a27} 
+void Notifications\+::\+Notification\+::set\+Text\+Body\+Action (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classNotifications_1_1Notification_ab86a06b9ca133ef5385df8c2a8d3fe64}{Notifications\+::\+Notification\+::\+Text\+Body\+Action}}}]{new\+Text\+Body\+Action}{}\end{DoxyParamCaption})}
+
+
+
+Setter function for property of the same name. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Text\+Body\+Action} & Property text\+Body\+Action \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classNotifications_1_1Notification_a6a960faef134bd80671a18fa94428a4c}\index{Notifications::Notification@{Notifications::Notification}!spokenText@{spokenText}}
+\index{spokenText@{spokenText}!Notifications::Notification@{Notifications::Notification}}
+\doxysubsubsection{\texorpdfstring{spokenText()}{spokenText()}}
+{\footnotesize\ttfamily \label{classNotifications_1_1Notification_a6a960faef134bd80671a18fa94428a4c} 
+QString Notifications\+::\+Notification\+::spoken\+Text (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Getter function for property of the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property spoken\+Text 
+\end{DoxyReturn}
+\Hypertarget{classNotifications_1_1Notification_a7d7fa885c8f135382974d7d997dc1d32}\index{Notifications::Notification@{Notifications::Notification}!text@{text}}
+\index{text@{text}!Notifications::Notification@{Notifications::Notification}}
+\doxysubsubsection{\texorpdfstring{text()}{text()}}
+{\footnotesize\ttfamily \label{classNotifications_1_1Notification_a7d7fa885c8f135382974d7d997dc1d32} 
+QString Notifications\+::\+Notification\+::text (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for property of the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property text 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Notification_8h_source_l00202}{202}} of file \mbox{\hyperlink{Notification_8h_source}{Notification.\+h}}.
+
+\Hypertarget{classNotifications_1_1Notification_af99d366f4972ab2d4766e530416d3bd1}\index{Notifications::Notification@{Notifications::Notification}!textBodyAction@{textBodyAction}}
+\index{textBodyAction@{textBodyAction}!Notifications::Notification@{Notifications::Notification}}
+\doxysubsubsection{\texorpdfstring{textBodyAction()}{textBodyAction()}}
+{\footnotesize\ttfamily \label{classNotifications_1_1Notification_af99d366f4972ab2d4766e530416d3bd1} 
+\mbox{\hyperlink{classNotifications_1_1Notification_ab86a06b9ca133ef5385df8c2a8d3fe64}{Notifications\+::\+Notification\+::\+Text\+Body\+Action}} Notifications\+::\+Notification\+::text\+Body\+Action (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for property of the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property text\+Body\+Action 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Notification_8h_source_l00208}{208}} of file \mbox{\hyperlink{Notification_8h_source}{Notification.\+h}}.
+
+\Hypertarget{classNotifications_1_1Notification_a61c993384d65abcfd95606e6c6b8b359}\index{Notifications::Notification@{Notifications::Notification}!title@{title}}
+\index{title@{title}!Notifications::Notification@{Notifications::Notification}}
+\doxysubsubsection{\texorpdfstring{title()}{title()}}
+{\footnotesize\ttfamily \label{classNotifications_1_1Notification_a61c993384d65abcfd95606e6c6b8b359} 
+QString Notifications\+::\+Notification\+::title (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for property of the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property title 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Notification_8h_source_l00214}{214}} of file \mbox{\hyperlink{Notification_8h_source}{Notification.\+h}}.
+
+
+
+\doxysubsection{Property Documentation}
+\Hypertarget{classNotifications_1_1Notification_af20fac8e653be2621467d2b1c630ebdb}\index{Notifications::Notification@{Notifications::Notification}!button1Text@{button1Text}}
+\index{button1Text@{button1Text}!Notifications::Notification@{Notifications::Notification}}
+\doxysubsubsection{\texorpdfstring{button1Text}{button1Text}}
+{\footnotesize\ttfamily \label{classNotifications_1_1Notification_af20fac8e653be2621467d2b1c630ebdb} 
+QString Notifications\+::\+Notification\+::button1\+Text\hspace{0.3cm}{\ttfamily [read]}, {\ttfamily [write]}}
+
+
+
+Text for first button. 
+
+This is the text string for the first button in the notification GUI. If empty, the button is invisible. The importance is initialized with an empty string. 
+
+Definition at line \mbox{\hyperlink{Notification_8h_source_l00109}{109}} of file \mbox{\hyperlink{Notification_8h_source}{Notification.\+h}}.
+
+\Hypertarget{classNotifications_1_1Notification_aa139b94a612725b09f58b42985291fe7}\index{Notifications::Notification@{Notifications::Notification}!button2Text@{button2Text}}
+\index{button2Text@{button2Text}!Notifications::Notification@{Notifications::Notification}}
+\doxysubsubsection{\texorpdfstring{button2Text}{button2Text}}
+{\footnotesize\ttfamily \label{classNotifications_1_1Notification_aa139b94a612725b09f58b42985291fe7} 
+QString Notifications\+::\+Notification\+::button2\+Text\hspace{0.3cm}{\ttfamily [read]}, {\ttfamily [write]}}
+
+
+
+Text for second button. 
+
+This is the text string for the second button in the notification GUI. If empty, the button is invisible. The importance is initialized with an empty string. 
+
+Definition at line \mbox{\hyperlink{Notification_8h_source_l00117}{117}} of file \mbox{\hyperlink{Notification_8h_source}{Notification.\+h}}.
+
+\Hypertarget{classNotifications_1_1Notification_a3ed022dcf8addfee15ec18ee808b9cf9}\index{Notifications::Notification@{Notifications::Notification}!importance@{importance}}
+\index{importance@{importance}!Notifications::Notification@{Notifications::Notification}}
+\doxysubsubsection{\texorpdfstring{importance}{importance}}
+{\footnotesize\ttfamily \label{classNotifications_1_1Notification_a3ed022dcf8addfee15ec18ee808b9cf9} 
+\mbox{\hyperlink{classNotifications_1_1Notification_a2280308b403e6773a6a02cdaff4d8b8a}{Notifications\+::\+Notification\+::\+Importance}} Notifications\+::\+Notification\+::importance\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Importance of the notification. 
+
+The importance is used to choose the notification that is most relevant to the pilot. The importance is initialized with "{}\+Info"{}. 
+
+Definition at line \mbox{\hyperlink{Notification_8h_source_l00124}{124}} of file \mbox{\hyperlink{Notification_8h_source}{Notification.\+h}}.
+
+\Hypertarget{classNotifications_1_1Notification_abf8669874f773b5840f4d6cc2e89dee9}\index{Notifications::Notification@{Notifications::Notification}!reactionTime@{reactionTime}}
+\index{reactionTime@{reactionTime}!Notifications::Notification@{Notifications::Notification}}
+\doxysubsubsection{\texorpdfstring{reactionTime}{reactionTime}}
+{\footnotesize\ttfamily \label{classNotifications_1_1Notification_abf8669874f773b5840f4d6cc2e89dee9} 
+\mbox{\hyperlink{classUnits_1_1Timespan}{Units\+::\+Timespan}} Notifications\+::\+Notification\+::reaction\+Time\hspace{0.3cm}{\ttfamily [read]}, {\ttfamily [write]}}
+
+
+
+Time left to avert negative consequences. 
+
+This property holds the time that the pilot has in order to avert potential negative consequences. This data is used to choose the notification that is most relevant to the pilot. The importance is initialized with q\+NaN. 
+
+Definition at line \mbox{\hyperlink{Notification_8h_source_l00133}{133}} of file \mbox{\hyperlink{Notification_8h_source}{Notification.\+h}}.
+
+\Hypertarget{classNotifications_1_1Notification_ad2a78184694e4934fac41253254893f6}\index{Notifications::Notification@{Notifications::Notification}!spokenText@{spokenText}}
+\index{spokenText@{spokenText}!Notifications::Notification@{Notifications::Notification}}
+\doxysubsubsection{\texorpdfstring{spokenText}{spokenText}}
+{\footnotesize\ttfamily \label{classNotifications_1_1Notification_ad2a78184694e4934fac41253254893f6} 
+QString Notifications\+::\+Notification\+::spoken\+Text\hspace{0.3cm}{\ttfamily [read]}, {\ttfamily [write]}}
+
+
+
+Spoken text message for the notification. 
+
+This property holds a text announcement which is spoken. When set to empty, a message is generated from the title and text properties. This property is initialized with an empty string 
+
+Definition at line \mbox{\hyperlink{Notification_8h_source_l00141}{141}} of file \mbox{\hyperlink{Notification_8h_source}{Notification.\+h}}.
+
+\Hypertarget{classNotifications_1_1Notification_a590abe78a96269db202fc793a5247fb0}\index{Notifications::Notification@{Notifications::Notification}!text@{text}}
+\index{text@{text}!Notifications::Notification@{Notifications::Notification}}
+\doxysubsubsection{\texorpdfstring{text}{text}}
+{\footnotesize\ttfamily \label{classNotifications_1_1Notification_a590abe78a96269db202fc793a5247fb0} 
+QString Notifications\+::\+Notification\+::text\hspace{0.3cm}{\ttfamily [read]}, {\ttfamily [write]}}
+
+
+
+Text body of the notification. 
+
+This property holds the text body, which can be empty. 
+
+Definition at line \mbox{\hyperlink{Notification_8h_source_l00147}{147}} of file \mbox{\hyperlink{Notification_8h_source}{Notification.\+h}}.
+
+\Hypertarget{classNotifications_1_1Notification_adc02610d005b5a03e7d15cb2bd24b8d8}\index{Notifications::Notification@{Notifications::Notification}!textBodyAction@{textBodyAction}}
+\index{textBodyAction@{textBodyAction}!Notifications::Notification@{Notifications::Notification}}
+\doxysubsubsection{\texorpdfstring{textBodyAction}{textBodyAction}}
+{\footnotesize\ttfamily \label{classNotifications_1_1Notification_adc02610d005b5a03e7d15cb2bd24b8d8} 
+\mbox{\hyperlink{classNotifications_1_1Notification_ab86a06b9ca133ef5385df8c2a8d3fe64}{Notifications\+::\+Notification\+::\+Text\+Body\+Action}} Notifications\+::\+Notification\+::text\+Body\+Action\hspace{0.3cm}{\ttfamily [read]}, {\ttfamily [write]}}
+
+
+
+Text body action. 
+
+This property describes the action the that GUI should take when the text body is clicked. This property is initialized to \textquotesingle{}None\textquotesingle{}. 
+
+Definition at line \mbox{\hyperlink{Notification_8h_source_l00154}{154}} of file \mbox{\hyperlink{Notification_8h_source}{Notification.\+h}}.
+
+\Hypertarget{classNotifications_1_1Notification_aa5ab2a8355087236866892427d60e740}\index{Notifications::Notification@{Notifications::Notification}!title@{title}}
+\index{title@{title}!Notifications::Notification@{Notifications::Notification}}
+\doxysubsubsection{\texorpdfstring{title}{title}}
+{\footnotesize\ttfamily \label{classNotifications_1_1Notification_aa5ab2a8355087236866892427d60e740} 
+QString Notifications\+::\+Notification\+::title\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Title of the notification. 
+
+This property holds the title, which should never be empty. This property is initialized with an enbarrassing placeholder string. 
+
+Definition at line \mbox{\hyperlink{Notification_8h_source_l00161}{161}} of file \mbox{\hyperlink{Notification_8h_source}{Notification.\+h}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/notification/Notification.\+h\end{DoxyCompactItemize}

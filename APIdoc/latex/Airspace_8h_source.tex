@@ -1,0 +1,114 @@
+\doxysection{Airspace.\+h}
+\hypertarget{Airspace_8h_source}{}\label{Airspace_8h_source}\index{/home/runner/work/enroute/enroute/src/geomaps/Airspace.h@{/home/runner/work/enroute/enroute/src/geomaps/Airspace.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00001}00001\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00002}00002\ \textcolor{comment}{\ *\ \ \ Copyright\ (C)\ 2019-\/2022\ by\ Stefan\ Kebekus\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00003}00003\ \textcolor{comment}{\ *\ \ \ stefan.kebekus@gmail.com\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00004}00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ free\ software;\ you\ can\ redistribute\ it\ and/or\ modify\ \ *}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00006}00006\ \textcolor{comment}{\ *\ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by\ \ *}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00007}00007\ \textcolor{comment}{\ *\ \ \ the\ Free\ Software\ Foundation;\ either\ version\ 3\ of\ the\ License,\ or\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00008}00008\ \textcolor{comment}{\ *\ \ \ (at\ your\ option)\ any\ later\ version.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00009}00009\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00010}00010\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,\ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00011}00011\ \textcolor{comment}{\ *\ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of\ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00012}00012\ \textcolor{comment}{\ *\ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00013}00013\ \textcolor{comment}{\ *\ \ \ GNU\ General\ Public\ License\ for\ more\ details.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00014}00014\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00015}00015\ \textcolor{comment}{\ *\ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00016}00016\ \textcolor{comment}{\ *\ \ \ along\ with\ this\ program;\ if\ not,\ write\ to\ the\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00017}00017\ \textcolor{comment}{\ *\ \ \ Free\ Software\ Foundation,\ Inc.,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00018}00018\ \textcolor{comment}{\ *\ \ \ 59\ Temple\ Place\ -\/\ Suite\ 330,\ Boston,\ MA\ \ 02111-\/1307,\ USA.\ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00019}00019\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00021}00021\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ <QGeoPolygon>}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00024}00024\ \textcolor{preprocessor}{\#include\ <QJsonObject>}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00026}00026\ \textcolor{preprocessor}{\#include\ "{}units/Distance.h"{}}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00027}00027\ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00028}00028\ \textcolor{keyword}{namespace\ }GeoMaps\ \{}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00029}00029\ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00032}\mbox{\hyperlink{classGeoMaps_1_1Airspace}{00032}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classGeoMaps_1_1Airspace}{Airspace}}\ \{}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00033}00033\ \ \ \ \ Q\_GADGET}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00034}00034\ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00036}\mbox{\hyperlink{classGeoMaps_1_1Airspace_aa18f46d37edf75539317d1eb7014512e}{00036}}\ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classGeoMaps_1_1Airspace_aa18f46d37edf75539317d1eb7014512e}{operator==}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classGeoMaps_1_1Airspace}{GeoMaps::Airspace}}\&,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classGeoMaps_1_1Airspace}{GeoMaps::Airspace}}\&)\ -\/>\ bool;}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00037}00037\ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00038}00038\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00040}\mbox{\hyperlink{classGeoMaps_1_1Airspace_ae1ee9a8821a186548dc8750be7311ee2}{00040}}\ \ \ \ \ \mbox{\hyperlink{classGeoMaps_1_1Airspace_ae1ee9a8821a186548dc8750be7311ee2}{Airspace}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00041}00041\ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00050}\mbox{\hyperlink{classGeoMaps_1_1Airspace_afbdf3892b8bd9dd827dfcd79401d7a5a}{00050}}\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classGeoMaps_1_1Airspace_afbdf3892b8bd9dd827dfcd79401d7a5a}{Airspace}}(\textcolor{keyword}{const}\ QJsonObject\ \&geoJSONObject);}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00051}00051\ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00061}\mbox{\hyperlink{classGeoMaps_1_1Airspace_a0222e533e364f0fb3ef7bdc75c2f63c4}{00061}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classGeoMaps_1_1Airspace_a0222e533e364f0fb3ef7bdc75c2f63c4}{estimatedLowerBoundMSL}}()\ const\ -\/>\ \mbox{\hyperlink{namespaceUnits}{Units}}::Distance;}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00062}00062\ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00064}\mbox{\hyperlink{classGeoMaps_1_1Airspace_a23a75577d0b58e2287afd28b50c4d49b}{00064}}\ \ \ \ \ Q\_PROPERTY(\textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classGeoMaps_1_1Airspace_a23a75577d0b58e2287afd28b50c4d49b}{isValid}}\ READ\ \mbox{\hyperlink{classGeoMaps_1_1Airspace_a23a75577d0b58e2287afd28b50c4d49b}{isValid}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00065}00065\ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00070}\mbox{\hyperlink{classGeoMaps_1_1Airspace_aa10cdbd0c2633925681e2cb9d7990eea}{00070}}\ \ \ \ \ [[nodiscard]]\ auto\ \mbox{\hyperlink{classGeoMaps_1_1Airspace_a23a75577d0b58e2287afd28b50c4d49b}{isValid}}()\ const\ -\/>\ \textcolor{keywordtype}{bool}\ \{\ \textcolor{keywordflow}{return}\ !m\_polygon.isEmpty();\ \}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00071}00071\ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00078}\mbox{\hyperlink{classGeoMaps_1_1Airspace_acf1bb39993a117a1104f391cf9e7743a}{00078}}\ \ \ \ \ Q\_PROPERTY(QString\ \mbox{\hyperlink{classGeoMaps_1_1Airspace_acf1bb39993a117a1104f391cf9e7743a}{lowerBound}}\ READ\ \mbox{\hyperlink{classGeoMaps_1_1Airspace_acf1bb39993a117a1104f391cf9e7743a}{lowerBound}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00079}00079\ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00080}00080\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00084}\mbox{\hyperlink{classGeoMaps_1_1Airspace_a71b9688efd4393b448c7bb18e4e4c877}{00084}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classGeoMaps_1_1Airspace_a71b9688efd4393b448c7bb18e4e4c877}{lowerBound}}()\ const\ -\/>\ QString\ \{\ \textcolor{keywordflow}{return}\ m\_lowerBound;\ \}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00085}00085\ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00090}\mbox{\hyperlink{classGeoMaps_1_1Airspace_a9080eacac710fbf829b6f515669cea7a}{00090}}\ \ \ \ \ Q\_PROPERTY(QString\ \mbox{\hyperlink{classGeoMaps_1_1Airspace_a9080eacac710fbf829b6f515669cea7a}{lowerBoundMetric}}\ READ\ \mbox{\hyperlink{classGeoMaps_1_1Airspace_a9080eacac710fbf829b6f515669cea7a}{lowerBoundMetric}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00091}00091\ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00092}00092\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00096}\mbox{\hyperlink{classGeoMaps_1_1Airspace_a87cca846e898bca7785ee74fb683d9e9}{00096}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classGeoMaps_1_1Airspace_a87cca846e898bca7785ee74fb683d9e9}{lowerBoundMetric}}()\ const\ -\/>\ QString\ \{\ \textcolor{keywordflow}{return}\ makeMetric(m\_lowerBound);\ \}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00097}00097\ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00098}00098\ \ \ \ \ \textcolor{comment}{/*\ \(\backslash\)brief\ Name\ of\ the\ airspace,\ such\ as\ "{}ED-\/R\ 31"{}\ */}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00099}00099\ \ \ \ \ Q\_PROPERTY(QString\ name\ READ\ name\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00100}00100\ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00101}00101\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00105}\mbox{\hyperlink{classGeoMaps_1_1Airspace_a9447eb9fb991a6151480e8da411eea3a}{00105}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classGeoMaps_1_1Airspace_a9447eb9fb991a6151480e8da411eea3a}{name}}()\ const\ -\/>\ QString\ \{\ \textcolor{keywordflow}{return}\ m\_name;\ \}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00106}00106\ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00108}\mbox{\hyperlink{classGeoMaps_1_1Airspace_aa77c133735959b4597c3e17fdcff8178}{00108}}\ \ \ \ \ Q\_PROPERTY(QGeoPolygon\ \mbox{\hyperlink{classGeoMaps_1_1Airspace_aa77c133735959b4597c3e17fdcff8178}{polygon}}\ READ\ \mbox{\hyperlink{classGeoMaps_1_1Airspace_aa77c133735959b4597c3e17fdcff8178}{polygon}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00109}00109\ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00110}00110\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00114}\mbox{\hyperlink{classGeoMaps_1_1Airspace_a9687fc541d99e6b8de4f3b2c162e3207}{00114}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classGeoMaps_1_1Airspace_a9687fc541d99e6b8de4f3b2c162e3207}{polygon}}()\ const\ -\/>\ QGeoPolygon\ \{\ \textcolor{keywordflow}{return}\ m\_polygon;\ \}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00115}00115\ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00116}00116\ \ \ \ \ \textcolor{comment}{/*\ \(\backslash\)brief\ Category\ of\ the\ airspace}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00117}00117\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00118}00118\ \textcolor{comment}{\ \ \ \ \ *\ A\ string\ with\ the\ category\ of\ the\ airspace,\ as\ described\ in\ the\ GeoJSON}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00119}00119\ \textcolor{comment}{\ \ \ \ \ *\ file\ specification}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00120}00120\ \textcolor{comment}{\ \ \ \ \ *\ [here](https://github.com/Akaflieg-\/Freiburg/enrouteServer/wiki/GeoJSON-\/files-\/used-\/in-\/enroute-\/flight-\/navigation).}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00121}00121\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00122}00122\ \ \ \ \ Q\_PROPERTY(QString\ CAT\ READ\ CAT\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00123}00123\ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00124}00124\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00128}\mbox{\hyperlink{classGeoMaps_1_1Airspace_a1bb3963d2fc3cfabab8f0a297029ec6d}{00128}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classGeoMaps_1_1Airspace_a1bb3963d2fc3cfabab8f0a297029ec6d}{CAT}}()\ const\ -\/>\ QString\ \{\ \textcolor{keywordflow}{return}\ m\_CAT;\ \}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00129}00129\ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00134}\mbox{\hyperlink{classGeoMaps_1_1Airspace_aaf33383272ae13062e87e03c1911d886}{00134}}\ \ \ \ \ Q\_PROPERTY(QString\ \mbox{\hyperlink{classGeoMaps_1_1Airspace_aaf33383272ae13062e87e03c1911d886}{upperBound}}\ READ\ \mbox{\hyperlink{classGeoMaps_1_1Airspace_aaf33383272ae13062e87e03c1911d886}{upperBound}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00135}00135\ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00136}00136\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00140}\mbox{\hyperlink{classGeoMaps_1_1Airspace_afa26b43931f8b6e1cfcae5a193fb4f71}{00140}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classGeoMaps_1_1Airspace_afa26b43931f8b6e1cfcae5a193fb4f71}{upperBound}}()\ const\ -\/>\ QString\ \{\ \textcolor{keywordflow}{return}\ m\_upperBound;\ \}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00141}00141\ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00146}\mbox{\hyperlink{classGeoMaps_1_1Airspace_a7103ae9c4f56ddad4b08458e15b7fa3d}{00146}}\ \ \ \ \ Q\_PROPERTY(QString\ \mbox{\hyperlink{classGeoMaps_1_1Airspace_a7103ae9c4f56ddad4b08458e15b7fa3d}{upperBoundMetric}}\ READ\ \mbox{\hyperlink{classGeoMaps_1_1Airspace_a7103ae9c4f56ddad4b08458e15b7fa3d}{upperBoundMetric}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00147}00147\ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00148}00148\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00152}\mbox{\hyperlink{classGeoMaps_1_1Airspace_afb8dd305c1eea04e720dbe2bdb2fc8bb}{00152}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classGeoMaps_1_1Airspace_afb8dd305c1eea04e720dbe2bdb2fc8bb}{upperBoundMetric}}()\ const\ -\/>\ QString\ \{\ \textcolor{keywordflow}{return}\ makeMetric(m\_upperBound);\ \}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00153}00153\ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00154}00154\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00155}00155\ \ \ \ \ \textcolor{comment}{//\ Transforms\ a\ height\ string\ such\ as\ "{}4500"{},\ "{}1500\ GND"{}\ or\ "{}FL\ 130"{}\ into\ a\ string\ that\ describes\ the\ height}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00156}00156\ \ \ \ \ \textcolor{comment}{//\ in\ meters.\ If\ the\ height\ string\ cannot\ be\ parsed,\ returns\ the\ original\ string}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00157}00157\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{static}\ \textcolor{keyword}{auto}\ makeMetric(\textcolor{keyword}{const}\ QString\&\ standard)\ -\/>\ QString;}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00158}00158\ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00159}00159\ \ \ \ \ QString\ m\_name\{\};}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00160}00160\ \ \ \ \ QString\ m\_CAT\{\};}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00161}00161\ \ \ \ \ QString\ m\_upperBound\{\};}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00162}00162\ \ \ \ \ QString\ m\_lowerBound\{\};}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00163}00163\ \ \ \ \ QGeoPolygon\ m\_polygon\{\};}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00164}00164\ \};}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00165}00165\ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00167}00167\ \textcolor{keyword}{auto}\ operator==(\textcolor{keyword}{const}\ \mbox{\hyperlink{classGeoMaps_1_1Airspace}{GeoMaps::Airspace}}\&,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classGeoMaps_1_1Airspace}{GeoMaps::Airspace}}\&)\ -\/>\ bool;}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00168}00168\ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00175}00175\ \textcolor{keyword}{auto}\ qHash(\textcolor{keyword}{const}\ \mbox{\hyperlink{classGeoMaps_1_1Airspace}{GeoMaps::Airspace}}\&\ as)\ -\/>\ size\_t;}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00176}00176\ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00177}00177\ \}\ \textcolor{comment}{//\ namespace\ GeoMaps}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00178}00178\ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00179}00179\ }
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00180}00180\ \textcolor{comment}{//\ Declare\ meta\ types}}
+\DoxyCodeLine{\Hypertarget{Airspace_8h_source_l00181}00181\ Q\_DECLARE\_METATYPE(\mbox{\hyperlink{classGeoMaps_1_1Airspace}{GeoMaps::Airspace}})}
+
+\end{DoxyCode}

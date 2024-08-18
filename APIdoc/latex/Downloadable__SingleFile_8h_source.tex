@@ -1,0 +1,201 @@
+\doxysection{Downloadable\+\_\+\+Single\+File.\+h}
+\hypertarget{Downloadable__SingleFile_8h_source}{}\label{Downloadable__SingleFile_8h_source}\index{/home/runner/work/enroute/enroute/src/dataManagement/Downloadable\_SingleFile.h@{/home/runner/work/enroute/enroute/src/dataManagement/Downloadable\_SingleFile.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00001}00001\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00002}00002\ \textcolor{comment}{\ *\ \ \ Copyright\ (C)\ 2019-\/2024\ by\ Stefan\ Kebekus\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00003}00003\ \textcolor{comment}{\ *\ \ \ stefan.kebekus@gmail.com\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00004}00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ free\ software;\ you\ can\ redistribute\ it\ and/or\ modify\ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00006}00006\ \textcolor{comment}{\ *\ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by\ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00007}00007\ \textcolor{comment}{\ *\ \ \ the\ Free\ Software\ Foundation;\ either\ version\ 3\ of\ the\ License,\ or\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00008}00008\ \textcolor{comment}{\ *\ \ \ (at\ your\ option)\ any\ later\ version.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00009}00009\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00010}00010\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,\ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00011}00011\ \textcolor{comment}{\ *\ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of\ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00012}00012\ \textcolor{comment}{\ *\ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00013}00013\ \textcolor{comment}{\ *\ \ \ GNU\ General\ Public\ License\ for\ more\ details.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00014}00014\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00015}00015\ \textcolor{comment}{\ *\ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00016}00016\ \textcolor{comment}{\ *\ \ \ along\ with\ this\ program;\ if\ not,\ write\ to\ the\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00017}00017\ \textcolor{comment}{\ *\ \ \ Free\ Software\ Foundation,\ Inc.,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00018}00018\ \textcolor{comment}{\ *\ \ \ 59\ Temple\ Place\ -\/\ Suite\ 330,\ Boston,\ MA\ \ 02111-\/1307,\ USA.\ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00019}00019\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00021}00021\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ <QDateTime>}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00024}00024\ \textcolor{preprocessor}{\#include\ <QFile>}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00025}00025\ \textcolor{preprocessor}{\#include\ <QFileInfo>}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00026}00026\ \textcolor{preprocessor}{\#include\ <QNetworkReply>}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00027}00027\ \textcolor{preprocessor}{\#include\ <QPointer>}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00028}00028\ \textcolor{preprocessor}{\#include\ <QQmlEngine>}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00029}00029\ \textcolor{preprocessor}{\#include\ <QSaveFile>}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00031}00031\ \textcolor{preprocessor}{\#include\ "{}Downloadable\_Abstract.h"{}}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00032}00032\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00033}00033\ \textcolor{keyword}{namespace\ }DataManagement}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00034}00034\ \{}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00035}00035\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00051}\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile}{00051}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile}{Downloadable\_SingleFile}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract}{Downloadable\_Abstract}}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00052}00052\ \{}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00053}00053\ \ \ \ \ Q\_OBJECT}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00054}00054\ \ \ \ \ QML\_ELEMENT}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00055}00055\ \ \ \ \ QML\_UNCREATABLE(\textcolor{stringliteral}{"{}"{}})}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00056}00056\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00057}00057\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00084}\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a83d9d1f0ad108ddf13c229d7f27e3cb8}{00084}}\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a83d9d1f0ad108ddf13c229d7f27e3cb8}{Downloadable\_SingleFile}}(QUrl\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a8e2b3337089d35cac1a8da625bb1a4de}{url}},\ \textcolor{keyword}{const}\ QString\&\ localFileName,\ \textcolor{keyword}{const}\ QGeoRectangle\&\ bBox\ =\ \{\},\ QObject*\ parent\ =\ \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00085}00085\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00091}\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a258f99e0a8c68511600aae37ef1ca131}{00091}}\ \ \ \ \ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a258f99e0a8c68511600aae37ef1ca131}{\string~Downloadable\_SingleFile}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00092}00092\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00093}00093\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00094}00094\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00095}00095\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00096}00096\ \ \ \ \ \textcolor{comment}{//\ Properties}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00097}00097\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00098}00098\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00099}00099\ \ \ \ \ \textcolor{comment}{//\ Repeated\ from\ Downloadable\_Abstract\ to\ keep\ QML\ happy}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00100}00100\ \ \ \ \ Q\_PROPERTY(\textcolor{keywordtype}{bool}\ downloading\ READ\ downloading\ NOTIFY\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a11d3c674e06e6c38654d20169414c1d0}{downloadingChanged}})}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00101}00101\ \ \ \ \ Q\_PROPERTY(\textcolor{keywordtype}{bool}\ hasFile\ READ\ hasFile\ NOTIFY\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_ab36e09631e438293d671619ceed06979}{hasFileChanged}})}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00102}00102\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00103}00103\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00108}\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_ad3cab1f161975ff2d30f2950bc494e85}{00108}}\ \ \ \ \ Q\_PROPERTY(\textcolor{keywordtype}{int}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_ad3cab1f161975ff2d30f2950bc494e85}{downloadProgress}}\ READ\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_ad3cab1f161975ff2d30f2950bc494e85}{downloadProgress}}\ NOTIFY\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a02c9fffc8f330dd277d5599696876bc2}{downloadProgressChanged}})}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00109}00109\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00111}\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a89315c6cc9e560d2836436e7e1b05872}{00111}}\ \ \ \ \ Q\_PROPERTY(QString\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a89315c6cc9e560d2836436e7e1b05872}{fileName}}\ READ\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a89315c6cc9e560d2836436e7e1b05872}{fileName}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00112}00112\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00118}\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a275b6616e3e64c5e56bf045b471e7050}{00118}}\ \ \ \ \ Q\_PROPERTY(QByteArray\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a275b6616e3e64c5e56bf045b471e7050}{fileContent}}\ READ\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a275b6616e3e64c5e56bf045b471e7050}{fileContent}}\ NOTIFY\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_afea09ee5100fdf287bd3491440a69e70}{fileContentChanged}})}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00119}00119\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00126}\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a6c9716bb55c1d36c65e854e7eded97ca}{00126}}\ \ \ \ \ Q\_PROPERTY(QDateTime\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a6c9716bb55c1d36c65e854e7eded97ca}{remoteFileDate}}\ READ\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a6c9716bb55c1d36c65e854e7eded97ca}{remoteFileDate}}\ WRITE\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_af1936ac99f113ecea342d28327c35803}{setRemoteFileDate}}\ NOTIFY\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_aa5c9aab48efc26eec891727e2205f580}{remoteFileDateChanged}})}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00127}00127\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00134}\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_aba8262405894879825ed95730b48f1e2}{00134}}\ \ \ \ \ Q\_PROPERTY(qint64\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_aba8262405894879825ed95730b48f1e2}{remoteFileSize}}\ READ\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_aba8262405894879825ed95730b48f1e2}{remoteFileSize}}\ WRITE\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a86f4334efc9833d6394d26cb745548b4}{setRemoteFileSize}}\ NOTIFY\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__Abstract_a229a98b7e114dcb75343145f070a6ab4}{remoteFileSizeChanged}})}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00135}00135\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00137}\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a8e2b3337089d35cac1a8da625bb1a4de}{00137}}\ \ \ \ \ Q\_PROPERTY(QUrl\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a8e2b3337089d35cac1a8da625bb1a4de}{url}}\ READ\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a8e2b3337089d35cac1a8da625bb1a4de}{url}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00138}00138\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00139}00139\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00140}00140\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00141}00141\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00142}00142\ \ \ \ \ \textcolor{comment}{//\ Getter\ Methods}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00143}00143\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00144}00144\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00149}\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_ad3fe3dad01adc6a69f4c9a37ba698287}{00149}}\ \ \ \ \ [[nodiscard]]\ auto\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_ad3fe3dad01adc6a69f4c9a37ba698287}{description}}()\ -\/>\ QString\ override;}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00150}00150\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00155}\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a6eb2b556f6384aaf262c9ff889ed863a}{00155}}\ \ \ \ \ [[nodiscard]]\ auto\ downloading()\ -\/>\ \textcolor{keywordtype}{bool}\textcolor{keyword}{\ override\ }\{\ \textcolor{keywordflow}{return}\ !m\_networkReplyDownloadFile.isNull();\ \}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00156}00156\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00161}\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a751fea9ff20b8ff0059109f580f5e286}{00161}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a751fea9ff20b8ff0059109f580f5e286}{downloadProgress}}()\ const\ -\/>\ \textcolor{keywordtype}{int}\ \{\ \textcolor{keywordflow}{return}\ m\_downloadProgress;\ \}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00162}00162\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00167}\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a0548a6a7624cf38df98a2a670be87626}{00167}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a0548a6a7624cf38df98a2a670be87626}{fileName}}()\ const\ -\/>\ QString\ \{\ \textcolor{keywordflow}{return}\ m\_fileName;\ \}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00168}00168\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00173}\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a04d4bcc66a60dd32eae815a7f886f8bd}{00173}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a04d4bcc66a60dd32eae815a7f886f8bd}{fileContent}}()\ const\ -\/>\ QByteArray;}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00174}00174\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00179}\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_ae1db077996dc01dae1559de0228b79ea}{00179}}\ \ \ \ \ [[nodiscard]]\ auto\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_ae1db077996dc01dae1559de0228b79ea}{files}}()\ -\/>\ QStringList\ override;}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00180}00180\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00185}\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a4c98fbe1663e2c9d7b258796c2723018}{00185}}\ \ \ \ \ [[nodiscard]]\ auto\ hasFile()\ -\/>\ \textcolor{keywordtype}{bool}\textcolor{keyword}{\ override\ }\{\ \textcolor{keywordflow}{return}\ QFile::exists(m\_fileName);\ \}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00186}00186\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00191}\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a2df7937d802b2321fe1c035ea1945376}{00191}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a2df7937d802b2321fe1c035ea1945376}{infoText}}()\ -\/>\ QString\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00192}00192\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00197}\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a0191eff8aa84d38aa8dcf2d8bc1865d6}{00197}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a0191eff8aa84d38aa8dcf2d8bc1865d6}{remoteFileDate}}()\ const\ -\/>\ QDateTime\ \{\ \textcolor{keywordflow}{return}\ m\_remoteFileDate;\ \}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00198}00198\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00203}\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a047f166b0fea977692f001d56121df9c}{00203}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a047f166b0fea977692f001d56121df9c}{remoteFileSize}}()\ -\/>\ qint64\ \textcolor{keyword}{override}\ \{\ \textcolor{keywordflow}{return}\ m\_remoteFileSize;\ \}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00204}00204\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00209}\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_ac05f14885f8dcf562ba5b5ce89366c3b}{00209}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_ac05f14885f8dcf562ba5b5ce89366c3b}{updateSize}}()\ -\/>\ \mbox{\hyperlink{classUnits_1_1ByteSize}{Units::ByteSize}}\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00210}00210\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00215}\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_ad009e2a7e1d70365947174375f164bbe}{00215}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_ad009e2a7e1d70365947174375f164bbe}{url}}()\ const\ -\/>\ QUrl\ \{\ \textcolor{keywordflow}{return}\ m\_url;\ \}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00216}00216\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00217}00217\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00218}00218\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00219}00219\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00220}00220\ \ \ \ \ \textcolor{comment}{//\ Setter\ Methods}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00221}00221\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00222}00222\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00227}\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_af1936ac99f113ecea342d28327c35803}{00227}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_af1936ac99f113ecea342d28327c35803}{setRemoteFileDate}}(\textcolor{keyword}{const}\ QDateTime\ \&date);}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00228}00228\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00233}\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a86f4334efc9833d6394d26cb745548b4}{00233}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a86f4334efc9833d6394d26cb745548b4}{setRemoteFileSize}}(qint64\ size);}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00234}00234\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00235}00235\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00236}00236\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00237}00237\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00238}00238\ \ \ \ \ \textcolor{comment}{//\ Methods}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00239}00239\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00240}00240\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00247}\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_af973ad1f787e830499e53af5f00dd643}{00247}}\ \ \ \ \ Q\_INVOKABLE\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_af973ad1f787e830499e53af5f00dd643}{deleteFiles}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00248}00248\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00280}\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_ac572ce2dd771329cfbf08c66cfd7335b}{00280}}\ \ \ \ \ Q\_INVOKABLE\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_ac572ce2dd771329cfbf08c66cfd7335b}{startDownload}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00281}00281\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00294}\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a3d5907834b2c8ebccc9a8e7324865e19}{00294}}\ \ \ \ \ Q\_INVOKABLE\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a3d5907834b2c8ebccc9a8e7324865e19}{startInfoDownload}}();}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00295}00295\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00302}\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a1c6cbbf4b5f6c9b7e5e83ba15a79bc10}{00302}}\ \ \ \ \ Q\_INVOKABLE\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a1c6cbbf4b5f6c9b7e5e83ba15a79bc10}{stopDownload}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00303}00303\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00305}\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a920852ad936c2b5b1fcb3acf51135466}{00305}}\ \ \ \ \ Q\_INVOKABLE\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a920852ad936c2b5b1fcb3acf51135466}{update}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00306}00306\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00307}00307\ signals:}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00320}\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_adf932773896c812a988796f56f66b1c5}{00320}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_adf932773896c812a988796f56f66b1c5}{aboutToChangeFile}}(QString\ localFileName);}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00321}00321\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00329}\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a02c9fffc8f330dd277d5599696876bc2}{00329}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_a02c9fffc8f330dd277d5599696876bc2}{downloadProgressChanged}}(\textcolor{keywordtype}{int}\ percentage);}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00330}00330\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00338}\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_aa5c9aab48efc26eec891727e2205f580}{00338}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_aa5c9aab48efc26eec891727e2205f580}{remoteFileDateChanged}}();}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00339}00339\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00340}00340\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00341}00341\ \ \ \ \ Q\_DISABLE\_COPY\_MOVE(\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile}{Downloadable\_SingleFile}})}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00342}00342\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00343}00343\ \ \ \ \ \textcolor{comment}{//\ Called\ when\ an\ error\ occurs\ during\ the\ download\ of\ the\ remote\ file,\ this}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00344}00344\ \ \ \ \ \textcolor{comment}{//\ method\ deletes\ QTemporaryFile\ \_tmpFile,\ emits\ the\ signal\ error()\ and}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00345}00345\ \ \ \ \ \textcolor{comment}{//\ deletes\ \_networkReplyDownload\ by\ calling\ deleteLater.\ \ Connected\ to}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00346}00346\ \ \ \ \ \textcolor{comment}{//\ \&QNetworkReply::error\ of\ \_networkReplyDownload.}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00347}00347\ \ \ \ \ \textcolor{keywordtype}{void}\ downloadFileErrorReceiver(QNetworkReply::NetworkError\ code);}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00348}00348\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00349}00349\ \ \ \ \ \textcolor{comment}{//\ Called\ once\ download\ of\ the\ remote\ file\ is\ finished,\ this\ method}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00350}00350\ \ \ \ \ \textcolor{comment}{//\ overwrites\ the\ local\ file.\ It\ deletes\ the\ QTemporaryFile\ \_tmpFile,\ and}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00351}00351\ \ \ \ \ \textcolor{comment}{//\ deletes\ \_networkReplyDownload\ by\ calling\ deleteLater.\ Connected\ to}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00352}00352\ \ \ \ \ \textcolor{comment}{//\ \&QNetworkReply::finished\ of\ \_networkReplyDownload.}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00353}00353\ \ \ \ \ \textcolor{keywordtype}{void}\ downloadFileFinished();}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00354}00354\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00355}00355\ \ \ \ \ \textcolor{comment}{//\ Called\ during\ the\ download\ of\ the\ remote\ file,\ this\ method\ emits\ the}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00356}00356\ \ \ \ \ \textcolor{comment}{//\ signal\ downloadProgress().\ \ Connected\ to\ \&QNetworkReply::downloadProgress}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00357}00357\ \ \ \ \ \textcolor{comment}{//\ of\ \_networkReplyDownload.}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00358}00358\ \ \ \ \ \textcolor{keywordtype}{void}\ downloadFileProgressReceiver(qint64\ bytesReceived,\ qint64\ bytesTotal);}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00359}00359\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00360}00360\ \ \ \ \ \textcolor{comment}{//\ Called\ during\ the\ download\ of\ the\ remote\ file,\ this\ method\ reads\ all\ the}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00361}00361\ \ \ \ \ \textcolor{comment}{//\ data\ that\ has\ been\ downloaded\ so\ far\ and\ stores\ it\ in\ the\ QTemporaryFile}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00362}00362\ \ \ \ \ \textcolor{comment}{//\ \_tmpFile.\ \ Connected\ to\ \&QNetworkReply::readyRead\ of}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00363}00363\ \ \ \ \ \textcolor{comment}{//\ \_networkReplyDownload.}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00364}00364\ \ \ \ \ \textcolor{keywordtype}{void}\ downloadFilePartialDataReceiver();}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00365}00365\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00366}00366\ \ \ \ \ \textcolor{comment}{//\ Called\ once\ download\ of\ the\ remote\ file\ header\ data\ is\ finished,\ this}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00367}00367\ \ \ \ \ \textcolor{comment}{//\ method\ updates\ the\ properties\ remoteFileDate\ and\ remoteFileSize,\ and}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00368}00368\ \ \ \ \ \textcolor{comment}{//\ \_networkReplyDownloadHeader\ by\ calling\ deleteLater.\ Connected\ to}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00369}00369\ \ \ \ \ \textcolor{comment}{//\ \&QNetworkReply::finished\ of\ \_networkReplyDownloadHeader.}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00370}00370\ \ \ \ \ \textcolor{keywordtype}{void}\ downloadHeaderFinished();}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00371}00371\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00372}00372\ \ \ \ \ \textcolor{comment}{//\ This\ member\ holds\ the\ download\ progress.}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00373}00373\ \ \ \ \ \textcolor{keywordtype}{int}\ m\_downloadProgress\{0\};}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00374}00374\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00375}00375\ \ \ \ \ \textcolor{comment}{//\ NetworkReply\ for\ downloading\ of\ remote\ file\ data.\ Set\ to\ nullptr\ when\ no}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00376}00376\ \ \ \ \ \textcolor{comment}{//\ download\ is\ in\ progress.}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00377}00377\ \ \ \ \ QPointer<QNetworkReply>\ m\_networkReplyDownloadFile;}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00378}00378\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00379}00379\ \ \ \ \ \textcolor{comment}{//\ NetworkReply\ for\ downloading\ of\ remote\ file\ header.\ Set\ to\ nullptr\ when}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00380}00380\ \ \ \ \ \textcolor{comment}{//\ no\ download\ is\ in\ progress.}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00381}00381\ \ \ \ \ QPointer<QNetworkReply>\ m\_networkReplyDownloadHeader;}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00382}00382\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00383}00383\ \ \ \ \ \textcolor{comment}{//\ Temporary\ file\ for\ storing\ partiall\ data\ when\ downloading\ the\ remote}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00384}00384\ \ \ \ \ \textcolor{comment}{//\ file.\ Set\ to\ nullptr\ when\ no\ download\ is\ in\ progress.}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00385}00385\ \ \ \ \ QPointer<QSaveFile>\ m\_saveFile\{\};}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00386}00386\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00387}00387\ \ \ \ \ \textcolor{comment}{//\ URL\ of\ the\ remote\ file,\ as\ set\ in\ the\ constructor}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00388}00388\ \ \ \ \ QUrl\ m\_url;}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00389}00389\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00390}00390\ \ \ \ \ \textcolor{comment}{//\ Name\ of\ the\ local\ file,\ as\ set\ in\ the\ constructor}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00391}00391\ \ \ \ \ QString\ m\_fileName\{\};}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00392}00392\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00393}00393\ \ \ \ \ \textcolor{comment}{//\ Modification\ date\ of\ the\ remote\ file,\ set\ directly\ via\ a\ setter\ method\ or}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00394}00394\ \ \ \ \ \textcolor{comment}{//\ by\ calling\ downloadRemoteFileInfo().}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00395}00395\ \ \ \ \ QDateTime\ m\_remoteFileDate;}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00396}00396\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00397}00397\ \ \ \ \ \textcolor{comment}{//\ Size\ of\ the\ remote\ file,\ set\ directly\ via\ a\ setter\ method\ or\ by\ calling}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00398}00398\ \ \ \ \ \textcolor{comment}{//\ downloadRemoteFileInfo().}}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00399}00399\ \ \ \ \ qint64\ m\_remoteFileSize\{-\/1\};}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00400}00400\ \};}
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00401}00401\ }
+\DoxyCodeLine{\Hypertarget{Downloadable__SingleFile_8h_source_l00402}00402\ \}\ \textcolor{comment}{//\ namespace\ DataManagement}}
+
+\end{DoxyCode}

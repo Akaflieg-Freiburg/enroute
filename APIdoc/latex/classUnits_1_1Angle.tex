@@ -1,0 +1,323 @@
+\doxysection{Units\+::Angle Class Reference}
+\hypertarget{classUnits_1_1Angle}{}\label{classUnits_1_1Angle}\index{Units::Angle@{Units::Angle}}
+
+
+Convenience class for angle computations.  
+
+
+
+
+{\ttfamily \#include $<$Angle.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+Q\+\_\+\+INVOKABLE bool \mbox{\hyperlink{classUnits_1_1Angle_a6f7eb8420f1e2ea38641a79fcd68cb69}{is\+Finite}} () const
+\begin{DoxyCompactList}\small\item\em Checks if the angle is valid. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Angle}{Units\+::\+Angle}} \mbox{\hyperlink{classUnits_1_1Angle_ade706056578acfda14d1424d52a02e5f}{operator+}} (\mbox{\hyperlink{classUnits_1_1Angle}{Units\+::\+Angle}} rhs) const
+\begin{DoxyCompactList}\small\item\em Sum of two angles. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Angle}{Units\+::\+Angle}} \mbox{\hyperlink{classUnits_1_1Angle_aea302cc0d5b71ccf95ae3d679c95a34a}{operator-\/}} (\mbox{\hyperlink{classUnits_1_1Angle}{Units\+::\+Angle}} rhs) const
+\begin{DoxyCompactList}\small\item\em Difference of two angles. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE bool \mbox{\hyperlink{classUnits_1_1Angle_a0038f0a2b6284f0de6368d27340e7a1b}{operator==}} (const \mbox{\hyperlink{classUnits_1_1Angle}{Units\+::\+Angle}} \&rhs) const =default
+\begin{DoxyCompactList}\small\item\em Comparison\+: equal. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE bool \mbox{\hyperlink{classUnits_1_1Angle_a5af4461c6344a2fac7a5623a2bdb633d}{operator!=}} (const \mbox{\hyperlink{classUnits_1_1Angle}{Units\+::\+Angle}} \&rhs) const =default
+\begin{DoxyCompactList}\small\item\em Comparison\+: not equal. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE double \mbox{\hyperlink{classUnits_1_1Angle_a746839effb8fcf3de0300a7b2ef6d5c7}{cos}} () const
+\begin{DoxyCompactList}\small\item\em Cosine of an angle, as a dimension-\/less number. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE double \mbox{\hyperlink{classUnits_1_1Angle_a7457628d8560f4556d2a17a72bb6d64d}{sin}} () const
+\begin{DoxyCompactList}\small\item\em Sine of an angle, as a dimension-\/less number. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE QString \mbox{\hyperlink{classUnits_1_1Angle_ae7290d5a9ce0f0f417bcd1b36a49bd08}{to\+Clock}} () const
+\begin{DoxyCompactList}\small\item\em Convert angle to clock position. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE double \mbox{\hyperlink{classUnits_1_1Angle_ae00ac88ea6de4084b445459b399ca7d0}{to\+DEG}} () const
+\begin{DoxyCompactList}\small\item\em Convert angle to degrees. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE double \mbox{\hyperlink{classUnits_1_1Angle_adb314015a90f78ea1d8a1ef92f9f1fba}{to\+RAD}} () const
+\begin{DoxyCompactList}\small\item\em Convert angle to radian. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Angle}{Units\+::\+Angle}} \mbox{\hyperlink{classUnits_1_1Angle_ab603cd689a472d17933623807c62ba56}{from\+RAD}} (double angle\+In\+RAD)
+\begin{DoxyCompactList}\small\item\em Constructs an angle. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Angle}{Units\+::\+Angle}} \mbox{\hyperlink{classUnits_1_1Angle_aca8075bc42502769474dfd34a125e181}{from\+DEG}} (double angle\+In\+DEG)
+\begin{DoxyCompactList}\small\item\em Constructs an angle. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Angle}{Units\+::\+Angle}} \mbox{\hyperlink{classUnits_1_1Angle_a186a4f2cfdbdece64274918ad0e80740}{nan}} ()
+\begin{DoxyCompactList}\small\item\em Constructs an invalid angle. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Angle}{Units\+::\+Angle}} \mbox{\hyperlink{classUnits_1_1Angle_a233073f38b5187d3e880ca55730eebe4}{asin}} (double arg)
+\begin{DoxyCompactList}\small\item\em Arcsine of a dimension-\/less number as an angle. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Convenience class for angle computations. 
+
+This extremely simple class allows computation with angles, without the need to worry about units. 
+
+Definition at line \mbox{\hyperlink{Angle_8h_source_l00041}{41}} of file \mbox{\hyperlink{Angle_8h_source}{Angle.\+h}}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classUnits_1_1Angle_a233073f38b5187d3e880ca55730eebe4}\index{Units::Angle@{Units::Angle}!asin@{asin}}
+\index{asin@{asin}!Units::Angle@{Units::Angle}}
+\doxysubsubsection{\texorpdfstring{asin()}{asin()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Angle_a233073f38b5187d3e880ca55730eebe4} 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Angle}{Units\+::\+Angle}} Units\+::\+Angle\+::asin (\begin{DoxyParamCaption}\item[{double}]{arg}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Arcsine of a dimension-\/less number as an angle. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em arg} & Number whose arcsine is computed\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\doxylink{classUnits_1_1Angle}{Angle} computed 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Angle_8h_source_l00156}{156}} of file \mbox{\hyperlink{Angle_8h_source}{Angle.\+h}}.
+
+\Hypertarget{classUnits_1_1Angle_a746839effb8fcf3de0300a7b2ef6d5c7}\index{Units::Angle@{Units::Angle}!cos@{cos}}
+\index{cos@{cos}!Units::Angle@{Units::Angle}}
+\doxysubsubsection{\texorpdfstring{cos()}{cos()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Angle_a746839effb8fcf3de0300a7b2ef6d5c7} 
+Q\+\_\+\+INVOKABLE double Units\+::\+Angle\+::cos (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Cosine of an angle, as a dimension-\/less number. 
+
+\begin{DoxyReturn}{Returns}
+Cosine of the angle 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Angle_8h_source_l00136}{136}} of file \mbox{\hyperlink{Angle_8h_source}{Angle.\+h}}.
+
+\Hypertarget{classUnits_1_1Angle_aca8075bc42502769474dfd34a125e181}\index{Units::Angle@{Units::Angle}!fromDEG@{fromDEG}}
+\index{fromDEG@{fromDEG}!Units::Angle@{Units::Angle}}
+\doxysubsubsection{\texorpdfstring{fromDEG()}{fromDEG()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Angle_aca8075bc42502769474dfd34a125e181} 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Angle}{Units\+::\+Angle}} Units\+::\+Angle\+::from\+DEG (\begin{DoxyParamCaption}\item[{double}]{angle\+In\+DEG}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Constructs an angle. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em angle\+In\+DEG} & \doxylink{classUnits_1_1Angle}{Angle} in degrees\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\doxylink{classUnits_1_1Angle}{Angle} 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Angle_8h_source_l00065}{65}} of file \mbox{\hyperlink{Angle_8h_source}{Angle.\+h}}.
+
+\Hypertarget{classUnits_1_1Angle_ab603cd689a472d17933623807c62ba56}\index{Units::Angle@{Units::Angle}!fromRAD@{fromRAD}}
+\index{fromRAD@{fromRAD}!Units::Angle@{Units::Angle}}
+\doxysubsubsection{\texorpdfstring{fromRAD()}{fromRAD()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Angle_ab603cd689a472d17933623807c62ba56} 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Angle}{Units\+::\+Angle}} Units\+::\+Angle\+::from\+RAD (\begin{DoxyParamCaption}\item[{double}]{angle\+In\+RAD}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Constructs an angle. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em angle\+In\+RAD} & \doxylink{classUnits_1_1Angle}{Angle} in radian\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\doxylink{classUnits_1_1Angle}{Angle} 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Angle_8h_source_l00052}{52}} of file \mbox{\hyperlink{Angle_8h_source}{Angle.\+h}}.
+
+\Hypertarget{classUnits_1_1Angle_a6f7eb8420f1e2ea38641a79fcd68cb69}\index{Units::Angle@{Units::Angle}!isFinite@{isFinite}}
+\index{isFinite@{isFinite}!Units::Angle@{Units::Angle}}
+\doxysubsubsection{\texorpdfstring{isFinite()}{isFinite()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Angle_a6f7eb8420f1e2ea38641a79fcd68cb69} 
+Q\+\_\+\+INVOKABLE bool Units\+::\+Angle\+::is\+Finite (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Checks if the angle is valid. 
+
+\begin{DoxyReturn}{Returns}
+True is the angle is a finite number 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Angle_8h_source_l00085}{85}} of file \mbox{\hyperlink{Angle_8h_source}{Angle.\+h}}.
+
+\Hypertarget{classUnits_1_1Angle_a186a4f2cfdbdece64274918ad0e80740}\index{Units::Angle@{Units::Angle}!nan@{nan}}
+\index{nan@{nan}!Units::Angle@{Units::Angle}}
+\doxysubsubsection{\texorpdfstring{nan()}{nan()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Angle_a186a4f2cfdbdece64274918ad0e80740} 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Angle}{Units\+::\+Angle}} Units\+::\+Angle\+::nan (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Constructs an invalid angle. 
+
+\begin{DoxyReturn}{Returns}
+Invalid \doxylink{classUnits_1_1Angle}{Angle} 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Angle_8h_source_l00076}{76}} of file \mbox{\hyperlink{Angle_8h_source}{Angle.\+h}}.
+
+\Hypertarget{classUnits_1_1Angle_a5af4461c6344a2fac7a5623a2bdb633d}\index{Units::Angle@{Units::Angle}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!Units::Angle@{Units::Angle}}
+\doxysubsubsection{\texorpdfstring{operator"!=()}{operator!=()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Angle_a5af4461c6344a2fac7a5623a2bdb633d} 
+Q\+\_\+\+INVOKABLE bool Units\+::\+Angle\+::operator!= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classUnits_1_1Angle}{Units\+::\+Angle}} \&}]{rhs}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}, {\ttfamily [default]}}
+
+
+
+Comparison\+: not equal. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rhs} & Right hand side of the comparison\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Result of the comparison 
+\end{DoxyReturn}
+\Hypertarget{classUnits_1_1Angle_ade706056578acfda14d1424d52a02e5f}\index{Units::Angle@{Units::Angle}!operator+@{operator+}}
+\index{operator+@{operator+}!Units::Angle@{Units::Angle}}
+\doxysubsubsection{\texorpdfstring{operator+()}{operator+()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Angle_ade706056578acfda14d1424d52a02e5f} 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Angle}{Units\+::\+Angle}} Units\+::\+Angle\+::operator+ (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classUnits_1_1Angle}{Units\+::\+Angle}}}]{rhs}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Sum of two angles. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rhs} & Right hand side of the sum\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Sum of the two angles 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Angle_8h_source_l00096}{96}} of file \mbox{\hyperlink{Angle_8h_source}{Angle.\+h}}.
+
+\Hypertarget{classUnits_1_1Angle_aea302cc0d5b71ccf95ae3d679c95a34a}\index{Units::Angle@{Units::Angle}!operator-\/@{operator-\/}}
+\index{operator-\/@{operator-\/}!Units::Angle@{Units::Angle}}
+\doxysubsubsection{\texorpdfstring{operator-\/()}{operator-()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Angle_aea302cc0d5b71ccf95ae3d679c95a34a} 
+Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classUnits_1_1Angle}{Units\+::\+Angle}} Units\+::\+Angle\+::operator-\/ (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classUnits_1_1Angle}{Units\+::\+Angle}}}]{rhs}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Difference of two angles. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rhs} & Right hand side of the difference\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Difference of the two angles 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Angle_8h_source_l00109}{109}} of file \mbox{\hyperlink{Angle_8h_source}{Angle.\+h}}.
+
+\Hypertarget{classUnits_1_1Angle_a0038f0a2b6284f0de6368d27340e7a1b}\index{Units::Angle@{Units::Angle}!operator==@{operator==}}
+\index{operator==@{operator==}!Units::Angle@{Units::Angle}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Angle_a0038f0a2b6284f0de6368d27340e7a1b} 
+Q\+\_\+\+INVOKABLE bool Units\+::\+Angle\+::operator== (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classUnits_1_1Angle}{Units\+::\+Angle}} \&}]{rhs}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}, {\ttfamily [default]}}
+
+
+
+Comparison\+: equal. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rhs} & Right hand side of the comparison\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Result of the comparison 
+\end{DoxyReturn}
+\Hypertarget{classUnits_1_1Angle_a7457628d8560f4556d2a17a72bb6d64d}\index{Units::Angle@{Units::Angle}!sin@{sin}}
+\index{sin@{sin}!Units::Angle@{Units::Angle}}
+\doxysubsubsection{\texorpdfstring{sin()}{sin()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Angle_a7457628d8560f4556d2a17a72bb6d64d} 
+Q\+\_\+\+INVOKABLE double Units\+::\+Angle\+::sin (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Sine of an angle, as a dimension-\/less number. 
+
+\begin{DoxyReturn}{Returns}
+Sine of the angle 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Angle_8h_source_l00145}{145}} of file \mbox{\hyperlink{Angle_8h_source}{Angle.\+h}}.
+
+\Hypertarget{classUnits_1_1Angle_ae7290d5a9ce0f0f417bcd1b36a49bd08}\index{Units::Angle@{Units::Angle}!toClock@{toClock}}
+\index{toClock@{toClock}!Units::Angle@{Units::Angle}}
+\doxysubsubsection{\texorpdfstring{toClock()}{toClock()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Angle_ae7290d5a9ce0f0f417bcd1b36a49bd08} 
+Q\+\_\+\+INVOKABLE QString Units\+::\+Angle\+::to\+Clock (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Convert angle to clock position. 
+
+\begin{DoxyReturn}{Returns}
+Translated, human-\/readable string of of the form "{}12 o\textquotesingle{}clock"{}, or "{}-\/"{} if the angle is not finite. 
+\end{DoxyReturn}
+\Hypertarget{classUnits_1_1Angle_ae00ac88ea6de4084b445459b399ca7d0}\index{Units::Angle@{Units::Angle}!toDEG@{toDEG}}
+\index{toDEG@{toDEG}!Units::Angle@{Units::Angle}}
+\doxysubsubsection{\texorpdfstring{toDEG()}{toDEG()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Angle_ae00ac88ea6de4084b445459b399ca7d0} 
+Q\+\_\+\+INVOKABLE double Units\+::\+Angle\+::to\+DEG (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Convert angle to degrees. 
+
+\begin{DoxyReturn}{Returns}
+\doxylink{classUnits_1_1Angle}{Angle}, as a number in degrees. The result is NaN, or lies in the interval \mbox{[}0.\+0, 360.\+0\mbox{]} 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Angle_8h_source_l00172}{172}} of file \mbox{\hyperlink{Angle_8h_source}{Angle.\+h}}.
+
+\Hypertarget{classUnits_1_1Angle_adb314015a90f78ea1d8a1ef92f9f1fba}\index{Units::Angle@{Units::Angle}!toRAD@{toRAD}}
+\index{toRAD@{toRAD}!Units::Angle@{Units::Angle}}
+\doxysubsubsection{\texorpdfstring{toRAD()}{toRAD()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Angle_adb314015a90f78ea1d8a1ef92f9f1fba} 
+Q\+\_\+\+INVOKABLE double Units\+::\+Angle\+::to\+RAD (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Convert angle to radian. 
+
+\begin{DoxyReturn}{Returns}
+\doxylink{classUnits_1_1Angle}{Angle}, as a number in radian 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Angle_8h_source_l00189}{189}} of file \mbox{\hyperlink{Angle_8h_source}{Angle.\+h}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/units/Angle.\+h\end{DoxyCompactItemize}

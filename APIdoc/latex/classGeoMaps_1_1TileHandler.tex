@@ -1,0 +1,79 @@
+\doxysection{Geo\+Maps\+::Tile\+Handler Class Reference}
+\hypertarget{classGeoMaps_1_1TileHandler}{}\label{classGeoMaps_1_1TileHandler}\index{GeoMaps::TileHandler@{GeoMaps::TileHandler}}
+
+
+Implementation of QHttp\+Engine\+::\+Handler that serves mbtile files.  
+
+
+
+
+{\ttfamily \#include $<$Tile\+Handler.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classGeoMaps_1_1TileHandler_aec4c068aa4ff6d1c99d49179765f1f5d}{Tile\+Handler}} (const QVector$<$ QShared\+Pointer$<$ \mbox{\hyperlink{classFileFormats_1_1MBTILES}{File\+Formats\+::\+MBTILES}} $>$ $>$ \&mbtile\+Files, const QString \&base\+URLName)
+\begin{DoxyCompactList}\small\item\em Create a new tile handler. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classGeoMaps_1_1TileHandler_a58ebe88bd1a4b517337ae5d71b211975}{process}} (QHttp\+Server\+Responder \texorpdfstring{$\ast$}{*}responder, const QString\+List \&path\+Elements)
+\begin{DoxyCompactList}\small\item\em Process request. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implementation of QHttp\+Engine\+::\+Handler that serves mbtile files. 
+
+This is a helper clas for \doxylink{classGeoMaps_1_1TileServer}{Tile\+Server}. It gathers a set of MBTiles files. The method \doxylink{classGeoMaps_1_1TileHandler_a58ebe88bd1a4b517337ae5d71b211975}{process()} takes the path of an incoming HTTP request and uses a QHttp\+Server\+Responder to reply with appropriate tile data, and with Tile\+JSON (following the Tile\+JSON Specification 2.\+2.\+0 found in \href{https://github.com/mapbox/tilejson-spec/tree/master/2.2.0}{\texttt{ https\+://github.\+com/mapbox/tilejson-\/spec/tree/master/2.\+2.\+0}}). 
+
+Definition at line \mbox{\hyperlink{TileHandler_8h_source_l00041}{41}} of file \mbox{\hyperlink{TileHandler_8h_source}{Tile\+Handler.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classGeoMaps_1_1TileHandler_aec4c068aa4ff6d1c99d49179765f1f5d}\index{GeoMaps::TileHandler@{GeoMaps::TileHandler}!TileHandler@{TileHandler}}
+\index{TileHandler@{TileHandler}!GeoMaps::TileHandler@{GeoMaps::TileHandler}}
+\doxysubsubsection{\texorpdfstring{TileHandler()}{TileHandler()}}
+{\footnotesize\ttfamily \label{classGeoMaps_1_1TileHandler_aec4c068aa4ff6d1c99d49179765f1f5d} 
+Geo\+Maps\+::\+Tile\+Handler\+::\+Tile\+Handler (\begin{DoxyParamCaption}\item[{const QVector$<$ QShared\+Pointer$<$ \mbox{\hyperlink{classFileFormats_1_1MBTILES}{File\+Formats\+::\+MBTILES}} $>$ $>$ \&}]{mbtile\+Files}{, }\item[{const QString \&}]{base\+URLName}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Create a new tile handler. 
+
+This constructor sets up a new tile handler.
+
+
+\begin{DoxyParams}{Parameters}
+{\em mbtile\+Files} & A list of pointers to MBTiles. The MBTiles are expected to agree in their metadata, and the metadata (attribution, description, format, name, minzoom, maxzoom) is read only from one of the files (a random one, in fact). If a tile is contained in more than one of the files, the data is expected to be identical in each of the files.\\
+\hline
+{\em base\+URLName} & The name of the URL under which the tile server allows access to this tile. Typically, this is a string of the form "{}http\+://localhost\+:8080/osm"{} \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classGeoMaps_1_1TileHandler_a58ebe88bd1a4b517337ae5d71b211975}\index{GeoMaps::TileHandler@{GeoMaps::TileHandler}!process@{process}}
+\index{process@{process}!GeoMaps::TileHandler@{GeoMaps::TileHandler}}
+\doxysubsubsection{\texorpdfstring{process()}{process()}}
+{\footnotesize\ttfamily \label{classGeoMaps_1_1TileHandler_a58ebe88bd1a4b517337ae5d71b211975} 
+bool Geo\+Maps\+::\+Tile\+Handler\+::process (\begin{DoxyParamCaption}\item[{QHttp\+Server\+Responder \texorpdfstring{$\ast$}{*}}]{responder}{, }\item[{const QString\+List \&}]{path\+Elements}{}\end{DoxyParamCaption})}
+
+
+
+Process request. 
+
+The method processes and answers an incomin HTTP request for \doxylink{classGeoMaps_1_1TileServer}{Tile\+Server}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em responder} & QHttp\+Server\+Responder that is used to send the reply.\\
+\hline
+{\em path\+Elements} & URL string of the incoming HTTP request. This is the part of the URL following the base\+URLName that was given in the constructor, split at the \textquotesingle{}/\textquotesingle{}.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the request could be answered. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/geomaps/Tile\+Handler.\+h\end{DoxyCompactItemize}

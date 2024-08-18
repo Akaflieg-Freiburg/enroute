@@ -1,0 +1,349 @@
+\doxysection{Sensors Class Reference}
+\hypertarget{classSensors}{}\label{classSensors}\index{Sensors@{Sensors}}
+
+
+Sensor data.  
+
+
+
+
+{\ttfamily \#include $<$Sensors.\+h$>$}
+
+Inheritance diagram for Sensors\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classSensors}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Signals}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classSensors_ace290a83f404703ac5aa3fafa80472b2}\label{classSensors_ace290a83f404703ac5aa3fafa80472b2} 
+void {\bfseries ambient\+Density\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+\Hypertarget{classSensors_a2720a231f3bbe8430b891e2e37ee1767}\label{classSensors_a2720a231f3bbe8430b891e2e37ee1767} 
+void {\bfseries ambient\+Pressure\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+\Hypertarget{classSensors_a1684d58c129c37af9bfd72240529a15e}\label{classSensors_a1684d58c129c37af9bfd72240529a15e} 
+void {\bfseries ambient\+Temperature\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\item 
+\Hypertarget{classSensors_a85e57fbd4f614b86217ba8bdb1dac8d6}\label{classSensors_a85e57fbd4f614b86217ba8bdb1dac8d6} 
+void {\bfseries status\+String\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Notifier signal. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classSensors_ad629186293e8b68dd553c9a7bcff7ee4}{Sensors}} (QObject \texorpdfstring{$\ast$}{*}parent=nullptr)
+\begin{DoxyCompactList}\small\item\em Standard constructor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classSensors_a07b172fffe0efe4f670e247eba8182c9}{deferred\+Initialization}} () override
+\begin{DoxyCompactList}\small\item\em Non-\/constructor initialization. \end{DoxyCompactList}\item 
+\Hypertarget{classSensors_a52769bd0b6485975ed2a2090aa78b11a}\label{classSensors_a52769bd0b6485975ed2a2090aa78b11a} 
+{\bfseries \texorpdfstring{$\sim$}{\string~}\+Sensors} () override=default
+\begin{DoxyCompactList}\small\item\em Standard destructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classUnits_1_1Density}{Units\+::\+Density}} \mbox{\hyperlink{classSensors_a99b3cf295dcf04f7872b6a5e2c25ba07}{ambient\+Density}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classUnits_1_1Pressure}{Units\+::\+Pressure}} \mbox{\hyperlink{classSensors_ac02055299495ef30630491d3a2281883}{ambient\+Pressure}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classUnits_1_1Temperature}{Units\+::\+Temperature}} \mbox{\hyperlink{classSensors_a8a48910b0d20872db2d887f3295c23f9}{ambient\+Temperature}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} \mbox{\hyperlink{classSensors_aadb8410d35f8dbbbdd08a04d89e384ca}{pressure\+Altitude}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} \mbox{\hyperlink{classSensors_a4eea1f80a587af0bb948920fac37949b}{density\+Altitude}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\item 
+QString \mbox{\hyperlink{classSensors_a1f15ac1a94879409f70cb7600daf25ef}{status\+String}} () const
+\begin{DoxyCompactList}\small\item\em Getter function for the property with the same name. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classGlobalObject}{Global\+Object}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classGlobalObject_ac8dfa53c492975de42fa7972e77abbc1}{Global\+Object}} (QObject \texorpdfstring{$\ast$}{*}parent=nullptr)
+\begin{DoxyCompactList}\small\item\em Standard constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classGlobalObject_a96c4d476061f33a53b8c7de446c639eb}{\texorpdfstring{$\sim$}{\string~}\+Global\+Object}} () override=default
+\begin{DoxyCompactList}\small\item\em Standard deconstructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classUnits_1_1Density}{Units\+::\+Density}} \mbox{\hyperlink{classSensors_af895099ff188313beb8a6736ff3de818}{ambient\+Density}}
+\begin{DoxyCompactList}\small\item\em Ambient air density. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classUnits_1_1Pressure}{Units\+::\+Pressure}} \mbox{\hyperlink{classSensors_a66597ec26a323abe0dc01e4c37232697}{ambient\+Pressure}}
+\begin{DoxyCompactList}\small\item\em Ambient pressure. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classUnits_1_1Temperature}{Units\+::\+Temperature}} \mbox{\hyperlink{classSensors_a58f2dd3fd817273e00cb7c560ad21bd3}{ambient\+Temperature}}
+\begin{DoxyCompactList}\small\item\em Ambient temperature. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} \mbox{\hyperlink{classSensors_af4a9a396e5c87709ca3536332175393c}{density\+Altitude}}
+\begin{DoxyCompactList}\small\item\em Density altitude. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} \mbox{\hyperlink{classSensors_ad9711b650ab1f0a5e4ee549a465b05ad}{pressure\+Altitude}}
+\begin{DoxyCompactList}\small\item\em Pressure altitude. \end{DoxyCompactList}\item 
+\Hypertarget{classSensors_a91ddefff4cccb916dfc0a4e11b653a6b}\label{classSensors_a91ddefff4cccb916dfc0a4e11b653a6b} 
+QString {\bfseries status\+String}
+\begin{DoxyCompactList}\small\item\em Status string. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Static Public Member Functions inherited from \mbox{\hyperlink{classGlobalObject}{Global\+Object}}}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classGlobalObject_ae5d0c94af509c9744e1b344201928715}{clear}} ()
+\begin{DoxyCompactList}\small\item\em Deletes all globally defined objects. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE bool \mbox{\hyperlink{classGlobalObject_a0501f0fd4dbb0252ff120fd07ea2f703}{can\+Construct}} ()
+\begin{DoxyCompactList}\small\item\em Indicates if the static methods are ready to be used. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classNavigation_1_1Clock}{Navigation\+::\+Clock}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_ad479148c920adcb9c9ea9d99c762a08f}{clock}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static \doxylink{classNavigation_1_1Clock}{Navigation\+::\+Clock} instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classDataManagement_1_1DataManager}{Data\+Management\+::\+Data\+Manager}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a88f9800ff5290634fbb1507bd509afc9}{data\+Manager}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Geo\+Maps\+::\+Data\+Manager instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classDemoRunner}{Demo\+Runner}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_abb18a18cba455a65c8773aa5f4fbcdd6}{demo\+Runner}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static \doxylink{classDemoRunner}{Demo\+Runner} instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classTraffic_1_1FlarmnetDB}{Traffic\+::\+Flarmnet\+DB}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_ad195e7630ee65b97b837fb8bc26e1ba9}{flarmnet\+DB}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Flarmnet\+DB instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classPlatform_1_1FileExchange__Abstract}{Platform\+::\+File\+Exchange\+\_\+\+Abstract}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a2c2011587fd8d46f9425d61d0b740922}{file\+Exchange}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static File\+Exchange instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classGeoMaps_1_1GeoMapProvider}{Geo\+Maps\+::\+Geo\+Map\+Provider}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a241d8d74ad20f5b5fdfa3eff30a20077}{geo\+Map\+Provider}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static \doxylink{classGeoMaps_1_1GeoMapProvider}{Geo\+Maps\+::\+Geo\+Map\+Provider} instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classGlobalSettings}{Global\+Settings}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_af94f3ad5c6bb06982abf5d2759b63186}{global\+Settings}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Settings instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classLibrarian}{Librarian}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a311415802470c0ca323e8a44c96d2773}{librarian}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static librarian instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classPlatform_1_1PlatformAdaptor__Abstract}{Platform\+::\+Platform\+Adaptor\+\_\+\+Abstract}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_af4497d953402cc7891edfe5e9f6f56ac}{platform\+Adaptor}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Platform\+Adaptor instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classSensors}{Sensors}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a8df42e3160bee431602e14e9b605ffa8}{sensors}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static \doxylink{classNavigation_1_1Clock}{Navigation\+::\+Clock} instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classNavigation_1_1Navigator}{Navigation\+::\+Navigator}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a6e6835796fd3ab2f304c96272f50054c}{navigator}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static \doxylink{classNavigation_1_1Navigator}{Navigation\+::\+Navigator} instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classTraffic_1_1PasswordDB}{Traffic\+::\+Password\+DB}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a0ac7c3ccb518e122c8565e40c1fb8cdb}{password\+DB}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Password\+DB instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classPositioning_1_1PositionProvider}{Positioning\+::\+Position\+Provider}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a7837aeb4bcabe6542db1bccdab5ebd59}{position\+Provider}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Position\+Provider instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classNOTAM_1_1NotamProvider}{NOTAM\+::\+Notam\+Provider}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_ac11d38af2df8dcdb78679abf92b6de7a}{notam\+Provider}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static notification manager instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classNotifications_1_1NotificationManager}{Notifications\+::\+Notification\+Manager}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_aa90c2b17a6930dfb2cd258c8349e94cc}{notification\+Manager}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static notification manager instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE QNetwork\+Access\+Manager \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_aece9ee1f2507b4bcd825d4f61ebd4643}{network\+Access\+Manager}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static QNetwork\+Access\+Manager instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classDataManagement_1_1SSLErrorHandler}{Data\+Management\+::\+SSLError\+Handler}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_ab4e66c880bdcfa33720b51364c484044}{ssl\+Error\+Handler}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static QNetwork\+Access\+Manager instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classTraffic_1_1TrafficDataProvider}{Traffic\+::\+Traffic\+Data\+Provider}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_acc3b67374f1eac467da729151c31aff6}{traffic\+Data\+Provider}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Traffic\+Data\+Provider instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classGeoMaps_1_1WaypointLibrary}{Geo\+Maps\+::\+Waypoint\+Library}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_a0fe5454852ab2b913efe469bfd2630b4}{waypoint\+Library}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Waypoint\+Library instance. \end{DoxyCompactList}\item 
+static Q\+\_\+\+INVOKABLE \mbox{\hyperlink{classWeather_1_1WeatherDataProvider}{Weather\+::\+Weather\+Data\+Provider}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classGlobalObject_abff9f661cf7e78967606d10692c03412}{weather\+Data\+Provider}} ()
+\begin{DoxyCompactList}\small\item\em Pointer to appplication-\/wide static Weather\+Data\+Provider instance. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Sensor data. 
+
+This class collects data from ambient pressure/temperature sensors. 
+
+Definition at line \mbox{\hyperlink{Sensors_8h_source_l00042}{42}} of file \mbox{\hyperlink{Sensors_8h_source}{Sensors.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classSensors_ad629186293e8b68dd553c9a7bcff7ee4}\index{Sensors@{Sensors}!Sensors@{Sensors}}
+\index{Sensors@{Sensors}!Sensors@{Sensors}}
+\doxysubsubsection{\texorpdfstring{Sensors()}{Sensors()}}
+{\footnotesize\ttfamily \label{classSensors_ad629186293e8b68dd553c9a7bcff7ee4} 
+Sensors\+::\+Sensors (\begin{DoxyParamCaption}\item[{QObject \texorpdfstring{$\ast$}{*}}]{parent}{ = {\ttfamily nullptr}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Standard constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em parent} & The standard QObject parent pointer \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classSensors_a99b3cf295dcf04f7872b6a5e2c25ba07}\index{Sensors@{Sensors}!ambientDensity@{ambientDensity}}
+\index{ambientDensity@{ambientDensity}!Sensors@{Sensors}}
+\doxysubsubsection{\texorpdfstring{ambientDensity()}{ambientDensity()}}
+{\footnotesize\ttfamily \label{classSensors_a99b3cf295dcf04f7872b6a5e2c25ba07} 
+\mbox{\hyperlink{classUnits_1_1Density}{Units\+::\+Density}} Sensors\+::ambient\+Density (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property ambient\+Density 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Sensors_8h_source_l00122}{122}} of file \mbox{\hyperlink{Sensors_8h_source}{Sensors.\+h}}.
+
+\Hypertarget{classSensors_ac02055299495ef30630491d3a2281883}\index{Sensors@{Sensors}!ambientPressure@{ambientPressure}}
+\index{ambientPressure@{ambientPressure}!Sensors@{Sensors}}
+\doxysubsubsection{\texorpdfstring{ambientPressure()}{ambientPressure()}}
+{\footnotesize\ttfamily \label{classSensors_ac02055299495ef30630491d3a2281883} 
+\mbox{\hyperlink{classUnits_1_1Pressure}{Units\+::\+Pressure}} Sensors\+::ambient\+Pressure (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property ambient\+Pressure 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Sensors_8h_source_l00128}{128}} of file \mbox{\hyperlink{Sensors_8h_source}{Sensors.\+h}}.
+
+\Hypertarget{classSensors_a8a48910b0d20872db2d887f3295c23f9}\index{Sensors@{Sensors}!ambientTemperature@{ambientTemperature}}
+\index{ambientTemperature@{ambientTemperature}!Sensors@{Sensors}}
+\doxysubsubsection{\texorpdfstring{ambientTemperature()}{ambientTemperature()}}
+{\footnotesize\ttfamily \label{classSensors_a8a48910b0d20872db2d887f3295c23f9} 
+\mbox{\hyperlink{classUnits_1_1Temperature}{Units\+::\+Temperature}} Sensors\+::ambient\+Temperature (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property ambient\+Pressure 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Sensors_8h_source_l00134}{134}} of file \mbox{\hyperlink{Sensors_8h_source}{Sensors.\+h}}.
+
+\Hypertarget{classSensors_a07b172fffe0efe4f670e247eba8182c9}\index{Sensors@{Sensors}!deferredInitialization@{deferredInitialization}}
+\index{deferredInitialization@{deferredInitialization}!Sensors@{Sensors}}
+\doxysubsubsection{\texorpdfstring{deferredInitialization()}{deferredInitialization()}}
+{\footnotesize\ttfamily \label{classSensors_a07b172fffe0efe4f670e247eba8182c9} 
+void Sensors\+::deferred\+Initialization (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Non-\/constructor initialization. 
+
+This method is called by the static methods that create global instances immediately after the constructor returns. This class can be re-\/implemented to perform initialization steps that refer to other singleton objects. 
+
+Reimplemented from \mbox{\hyperlink{classGlobalObject_ad89d4b5b146c91f65f282572629c2f5f}{Global\+Object}}.
+
+\Hypertarget{classSensors_a4eea1f80a587af0bb948920fac37949b}\index{Sensors@{Sensors}!densityAltitude@{densityAltitude}}
+\index{densityAltitude@{densityAltitude}!Sensors@{Sensors}}
+\doxysubsubsection{\texorpdfstring{densityAltitude()}{densityAltitude()}}
+{\footnotesize\ttfamily \label{classSensors_a4eea1f80a587af0bb948920fac37949b} 
+\mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} Sensors\+::density\+Altitude (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property density\+Altitude 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Sensors_8h_source_l00146}{146}} of file \mbox{\hyperlink{Sensors_8h_source}{Sensors.\+h}}.
+
+\Hypertarget{classSensors_aadb8410d35f8dbbbdd08a04d89e384ca}\index{Sensors@{Sensors}!pressureAltitude@{pressureAltitude}}
+\index{pressureAltitude@{pressureAltitude}!Sensors@{Sensors}}
+\doxysubsubsection{\texorpdfstring{pressureAltitude()}{pressureAltitude()}}
+{\footnotesize\ttfamily \label{classSensors_aadb8410d35f8dbbbdd08a04d89e384ca} 
+\mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} Sensors\+::pressure\+Altitude (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property pressure\+Altitude 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Sensors_8h_source_l00140}{140}} of file \mbox{\hyperlink{Sensors_8h_source}{Sensors.\+h}}.
+
+\Hypertarget{classSensors_a1f15ac1a94879409f70cb7600daf25ef}\index{Sensors@{Sensors}!statusString@{statusString}}
+\index{statusString@{statusString}!Sensors@{Sensors}}
+\doxysubsubsection{\texorpdfstring{statusString()}{statusString()}}
+{\footnotesize\ttfamily \label{classSensors_a1f15ac1a94879409f70cb7600daf25ef} 
+QString Sensors\+::status\+String (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Getter function for the property with the same name. 
+
+\begin{DoxyReturn}{Returns}
+Property status\+String 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Sensors_8h_source_l00152}{152}} of file \mbox{\hyperlink{Sensors_8h_source}{Sensors.\+h}}.
+
+
+
+\doxysubsection{Property Documentation}
+\Hypertarget{classSensors_af895099ff188313beb8a6736ff3de818}\index{Sensors@{Sensors}!ambientDensity@{ambientDensity}}
+\index{ambientDensity@{ambientDensity}!Sensors@{Sensors}}
+\doxysubsubsection{\texorpdfstring{ambientDensity}{ambientDensity}}
+{\footnotesize\ttfamily \label{classSensors_af895099ff188313beb8a6736ff3de818} 
+\mbox{\hyperlink{classUnits_1_1Density}{Units\+::\+Density}} Sensors\+::ambient\+Density\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Ambient air density. 
+
+This property holds the ambient air density in kg/m³, computed from pressure and temperature. 
+
+Definition at line \mbox{\hyperlink{Sensors_8h_source_l00083}{83}} of file \mbox{\hyperlink{Sensors_8h_source}{Sensors.\+h}}.
+
+\Hypertarget{classSensors_a66597ec26a323abe0dc01e4c37232697}\index{Sensors@{Sensors}!ambientPressure@{ambientPressure}}
+\index{ambientPressure@{ambientPressure}!Sensors@{Sensors}}
+\doxysubsubsection{\texorpdfstring{ambientPressure}{ambientPressure}}
+{\footnotesize\ttfamily \label{classSensors_a66597ec26a323abe0dc01e4c37232697} 
+\mbox{\hyperlink{classUnits_1_1Pressure}{Units\+::\+Pressure}} Sensors\+::ambient\+Pressure\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Ambient pressure. 
+
+This property holds the ambient pressure recorded by the device sensor (if any). 
+
+Definition at line \mbox{\hyperlink{Sensors_8h_source_l00089}{89}} of file \mbox{\hyperlink{Sensors_8h_source}{Sensors.\+h}}.
+
+\Hypertarget{classSensors_a58f2dd3fd817273e00cb7c560ad21bd3}\index{Sensors@{Sensors}!ambientTemperature@{ambientTemperature}}
+\index{ambientTemperature@{ambientTemperature}!Sensors@{Sensors}}
+\doxysubsubsection{\texorpdfstring{ambientTemperature}{ambientTemperature}}
+{\footnotesize\ttfamily \label{classSensors_a58f2dd3fd817273e00cb7c560ad21bd3} 
+\mbox{\hyperlink{classUnits_1_1Temperature}{Units\+::\+Temperature}} Sensors\+::ambient\+Temperature\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Ambient temperature. 
+
+This property holds the ambient temperature recorded by the device sensor (if any). 
+
+Definition at line \mbox{\hyperlink{Sensors_8h_source_l00095}{95}} of file \mbox{\hyperlink{Sensors_8h_source}{Sensors.\+h}}.
+
+\Hypertarget{classSensors_af4a9a396e5c87709ca3536332175393c}\index{Sensors@{Sensors}!densityAltitude@{densityAltitude}}
+\index{densityAltitude@{densityAltitude}!Sensors@{Sensors}}
+\doxysubsubsection{\texorpdfstring{densityAltitude}{densityAltitude}}
+{\footnotesize\ttfamily \label{classSensors_af4a9a396e5c87709ca3536332175393c} 
+\mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} Sensors\+::density\+Altitude\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Density altitude. 
+
+This property holds the density altitude, computed from ambient\+Density and ambient\+Temperature. 
+
+Definition at line \mbox{\hyperlink{Sensors_8h_source_l00101}{101}} of file \mbox{\hyperlink{Sensors_8h_source}{Sensors.\+h}}.
+
+\Hypertarget{classSensors_ad9711b650ab1f0a5e4ee549a465b05ad}\index{Sensors@{Sensors}!pressureAltitude@{pressureAltitude}}
+\index{pressureAltitude@{pressureAltitude}!Sensors@{Sensors}}
+\doxysubsubsection{\texorpdfstring{pressureAltitude}{pressureAltitude}}
+{\footnotesize\ttfamily \label{classSensors_ad9711b650ab1f0a5e4ee549a465b05ad} 
+\mbox{\hyperlink{classUnits_1_1Distance}{Units\+::\+Distance}} Sensors\+::pressure\+Altitude\hspace{0.3cm}{\ttfamily [read]}}
+
+
+
+Pressure altitude. 
+
+This property holds the pressure altitude for the ambient pressure measured by the device sensor. In most practical setups, this will be the cabin altitude 
+
+Definition at line \mbox{\hyperlink{Sensors_8h_source_l00108}{108}} of file \mbox{\hyperlink{Sensors_8h_source}{Sensors.\+h}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/Sensors.\+h\end{DoxyCompactItemize}

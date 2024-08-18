@@ -1,0 +1,206 @@
+\doxysection{Data\+Manager.\+h}
+\hypertarget{DataManager_8h_source}{}\label{DataManager_8h_source}\index{/home/runner/work/enroute/enroute/src/dataManagement/DataManager.h@{/home/runner/work/enroute/enroute/src/dataManagement/DataManager.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00001}00001\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00002}00002\ \textcolor{comment}{\ *\ \ \ Copyright\ (C)\ 2019-\/2024\ by\ Stefan\ Kebekus\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00003}00003\ \textcolor{comment}{\ *\ \ \ stefan.kebekus@gmail.com\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00004}00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ free\ software;\ you\ can\ redistribute\ it\ and/or\ modify\ \ *}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00006}00006\ \textcolor{comment}{\ *\ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by\ \ *}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00007}00007\ \textcolor{comment}{\ *\ \ \ the\ Free\ Software\ Foundation;\ either\ version\ 3\ of\ the\ License,\ or\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00008}00008\ \textcolor{comment}{\ *\ \ \ (at\ your\ option)\ any\ later\ version.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00009}00009\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00010}00010\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,\ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00011}00011\ \textcolor{comment}{\ *\ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of\ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00012}00012\ \textcolor{comment}{\ *\ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00013}00013\ \textcolor{comment}{\ *\ \ \ GNU\ General\ Public\ License\ for\ more\ details.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00014}00014\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00015}00015\ \textcolor{comment}{\ *\ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00016}00016\ \textcolor{comment}{\ *\ \ \ along\ with\ this\ program;\ if\ not,\ write\ to\ the\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00017}00017\ \textcolor{comment}{\ *\ \ \ Free\ Software\ Foundation,\ Inc.,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00018}00018\ \textcolor{comment}{\ *\ \ \ 59\ Temple\ Place\ -\/\ Suite\ 330,\ Boston,\ MA\ \ 02111-\/1307,\ USA.\ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00019}00019\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00021}00021\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ <QQmlEngine>}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00024}00024\ \textcolor{preprocessor}{\#include\ <QStandardPaths>}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00026}00026\ \textcolor{preprocessor}{\#include\ "{}GlobalObject.h"{}}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00027}00027\ \textcolor{preprocessor}{\#include\ "{}dataManagement/Downloadable\_MultiFile.h"{}}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00028}00028\ \textcolor{preprocessor}{\#include\ "{}dataManagement/Downloadable\_SingleFile.h"{}}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00029}00029\ \textcolor{preprocessor}{\#include\ "{}units/ByteSize.h"{}}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00031}00031\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00032}00032\ \textcolor{keyword}{namespace\ }DataManagement\ \{}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00033}00033\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00070}\mbox{\hyperlink{classDataManagement_1_1DataManager}{00070}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classDataManagement_1_1DataManager}{DataManager}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classGlobalObject}{GlobalObject}}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00071}00071\ \{}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00072}00072\ \ \ \ \ Q\_OBJECT}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00073}00073\ \ \ \ \ QML\_ELEMENT}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00074}00074\ \ \ \ \ QML\_SINGLETON}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00075}00075\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00076}00076\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00085}\mbox{\hyperlink{classDataManagement_1_1DataManager_aa2ed55a60c00c77d00b88c7fc00f1c2a}{00085}}\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classDataManagement_1_1DataManager_aa2ed55a60c00c77d00b88c7fc00f1c2a}{DataManager}}(QObject*\ parent=\textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00086}00086\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00087}00087\ \ \ \ \ \mbox{\hyperlink{classDataManagement_1_1DataManager}{\string~DataManager}}()\ \textcolor{keyword}{override}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00088}00088\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00089}00089\ \ \ \ \ \textcolor{comment}{//\ No\ default\ constructor,\ important\ for\ QML\ singleton}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00090}00090\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classDataManagement_1_1DataManager}{DataManager}}()\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00091}00091\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00092}00092\ \ \ \ \ \textcolor{comment}{//\ factory\ function\ for\ QML\ singleton}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00093}00093\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classDataManagement_1_1DataManager}{DataManagement::DataManager}}*\ create(QQmlEngine*\ \textcolor{comment}{/*unused*/},\ QJSEngine*\ \textcolor{comment}{/*unused*/})}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00094}00094\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00095}00095\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classGlobalObject_a88f9800ff5290634fbb1507bd509afc9}{GlobalObject::dataManager}}();}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00096}00096\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00097}00097\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00098}00098\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00099}00099\ \ \ \ \ \textcolor{comment}{//\ deferred\ initialization}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00100}\mbox{\hyperlink{classDataManagement_1_1DataManager_a32d353064fd94a0af5173e4951a241e7}{00100}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a32d353064fd94a0af5173e4951a241e7}{deferredInitialization}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00101}00101\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00102}00102\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00103}00103\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00104}00104\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00105}00105\ \ \ \ \ \textcolor{comment}{//\ PROPERTIES}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00106}00106\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00107}00107\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00114}\mbox{\hyperlink{classDataManagement_1_1DataManager_a3fa38b3b478015bdbb17452d36c34a51}{00114}}\ \ \ \ \ Q\_PROPERTY(\textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a3fa38b3b478015bdbb17452d36c34a51}{appUpdateRequired}}\ READ\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a3fa38b3b478015bdbb17452d36c34a51}{appUpdateRequired}}\ NOTIFY\ \mbox{\hyperlink{classDataManagement_1_1DataManager_afe298160f9e9b59384db2b8201c156ec}{appUpdateRequiredChanged}})}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00115}00115\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00116}00116\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00120}\mbox{\hyperlink{classDataManagement_1_1DataManager_a46243647019fe5bf2575a31f332d692e}{00120}}\ \ \ \ \ Q\_PROPERTY(DataManagement::\mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile}{Downloadable\_MultiFile}}*\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a46243647019fe5bf2575a31f332d692e}{aviationMaps}}\ READ\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a46243647019fe5bf2575a31f332d692e}{aviationMaps}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00121}00121\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00126}\mbox{\hyperlink{classDataManagement_1_1DataManager_a87ff4141f26bf015d8cd4dc40da22e38}{00126}}\ \ \ \ \ Q\_PROPERTY(DataManagement::\mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile}{Downloadable\_MultiFile}}*\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a87ff4141f26bf015d8cd4dc40da22e38}{baseMapsRaster}}\ READ\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a87ff4141f26bf015d8cd4dc40da22e38}{baseMapsRaster}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00127}00127\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00132}\mbox{\hyperlink{classDataManagement_1_1DataManager_a90e6c2739498250cf0f547b460de2624}{00132}}\ \ \ \ \ Q\_PROPERTY(DataManagement::\mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile}{Downloadable\_MultiFile}}*\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a90e6c2739498250cf0f547b460de2624}{baseMapsVector}}\ READ\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a90e6c2739498250cf0f547b460de2624}{baseMapsVector}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00133}00133\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00138}\mbox{\hyperlink{classDataManagement_1_1DataManager_a314a280f78624d728ba7394f6ad29ef0}{00138}}\ \ \ \ \ Q\_PROPERTY(DataManagement::\mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile}{Downloadable\_MultiFile}}*\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a314a280f78624d728ba7394f6ad29ef0}{baseMaps}}\ READ\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a314a280f78624d728ba7394f6ad29ef0}{baseMaps}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00139}00139\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00144}\mbox{\hyperlink{classDataManagement_1_1DataManager_a486d4c18e5b677e1e7fc88d093d35d48}{00144}}\ \ \ \ \ Q\_PROPERTY(DataManagement::\mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile}{Downloadable\_MultiFile}}*\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a486d4c18e5b677e1e7fc88d093d35d48}{databases}}\ READ\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a486d4c18e5b677e1e7fc88d093d35d48}{databases}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00145}00145\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00151}\mbox{\hyperlink{classDataManagement_1_1DataManager_a837b921096dd79fb4477693a250ca986}{00151}}\ \ \ \ \ Q\_PROPERTY(DataManagement::\mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile}{Downloadable\_MultiFile}}*\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a837b921096dd79fb4477693a250ca986}{items}}\ READ\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a837b921096dd79fb4477693a250ca986}{items}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00152}00152\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00154}\mbox{\hyperlink{classDataManagement_1_1DataManager_aafa010130c4bfa55fc5fc575fcbabfb5}{00154}}\ \ \ \ \ Q\_PROPERTY(DataManagement::\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile}{Downloadable\_SingleFile}}*\ \mbox{\hyperlink{classDataManagement_1_1DataManager_aafa010130c4bfa55fc5fc575fcbabfb5}{mapList}}\ READ\ \mbox{\hyperlink{classDataManagement_1_1DataManager_aafa010130c4bfa55fc5fc575fcbabfb5}{mapList}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00155}00155\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00157}\mbox{\hyperlink{classDataManagement_1_1DataManager_a9cb7f835afefd1e1dbbd40bf815789fa}{00157}}\ \ \ \ \ Q\_PROPERTY(DataManagement::\mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile}{Downloadable\_MultiFile}}*\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a9cb7f835afefd1e1dbbd40bf815789fa}{mapsAndData}}\ READ\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a9cb7f835afefd1e1dbbd40bf815789fa}{mapsAndData}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00158}00158\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00163}\mbox{\hyperlink{classDataManagement_1_1DataManager_ac369ea15d5318bce8b86d542a72b9073}{00163}}\ \ \ \ \ Q\_PROPERTY(DataManagement::\mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile}{Downloadable\_MultiFile}}*\ \mbox{\hyperlink{classDataManagement_1_1DataManager_ac369ea15d5318bce8b86d542a72b9073}{mapSets}}\ READ\ \mbox{\hyperlink{classDataManagement_1_1DataManager_ac369ea15d5318bce8b86d542a72b9073}{mapSets}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00164}00164\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00169}\mbox{\hyperlink{classDataManagement_1_1DataManager_a33bc1f5437f77cda129fddc0374bff8d}{00169}}\ \ \ \ \ Q\_PROPERTY(DataManagement::\mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile}{Downloadable\_MultiFile}}*\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a33bc1f5437f77cda129fddc0374bff8d}{terrainMaps}}\ READ\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a33bc1f5437f77cda129fddc0374bff8d}{terrainMaps}}\ CONSTANT)}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00170}00170\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00172}\mbox{\hyperlink{classDataManagement_1_1DataManager_af3f9f93e3016a6eecc34606ecd07a7ef}{00172}}\ \ \ \ \ Q\_PROPERTY(QString\ \mbox{\hyperlink{classDataManagement_1_1DataManager_af3f9f93e3016a6eecc34606ecd07a7ef}{whatsNew}}\ READ\ \mbox{\hyperlink{classDataManagement_1_1DataManager_af3f9f93e3016a6eecc34606ecd07a7ef}{whatsNew}}\ NOTIFY\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a97df0120eda2544197b32668eefab30f}{whatsNewChanged}})}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00173}00173\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00175}\mbox{\hyperlink{classDataManagement_1_1DataManager_a1356f40be7f3a32beed10bfc8d800386}{00175}}\ \ \ \ \ Q\_PROPERTY(\mbox{\hyperlink{namespaceUnits}{Units}}::ByteSize\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a1356f40be7f3a32beed10bfc8d800386}{whatsNewHash}}\ READ\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a1356f40be7f3a32beed10bfc8d800386}{whatsNewHash}}\ NOTIFY\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a97df0120eda2544197b32668eefab30f}{whatsNewChanged}})}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00176}00176\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00177}00177\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00178}00178\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00179}00179\ \ \ \ \ \textcolor{comment}{//\ Getter\ Methods}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00180}00180\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00181}00181\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00186}\mbox{\hyperlink{classDataManagement_1_1DataManager_a5a613e0b5e148e5fd98a33f3938e8ef8}{00186}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a3fa38b3b478015bdbb17452d36c34a51}{appUpdateRequired}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_appUpdateRequired;\ \}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00187}00187\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00192}\mbox{\hyperlink{classDataManagement_1_1DataManager_a576d569c992f063f57e749e2dc7d63e0}{00192}}\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile}{DataManagement::Downloadable\_MultiFile}}*\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a576d569c992f063f57e749e2dc7d63e0}{aviationMaps}}()\ \{\ \textcolor{keywordflow}{return}\ \&m\_aviationMaps;\ \}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00193}00193\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00198}\mbox{\hyperlink{classDataManagement_1_1DataManager_ae8a29e017f126f64cc0c5c2ccb60f238}{00198}}\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile}{DataManagement::Downloadable\_MultiFile}}*\ \mbox{\hyperlink{classDataManagement_1_1DataManager_ae8a29e017f126f64cc0c5c2ccb60f238}{baseMaps}}()\ \{\ \textcolor{keywordflow}{return}\ \&m\_baseMaps;\ \}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00199}00199\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00204}\mbox{\hyperlink{classDataManagement_1_1DataManager_ae8c29c0ea4611cd6fe29f17e6cfc3acf}{00204}}\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile}{DataManagement::Downloadable\_MultiFile}}*\ \mbox{\hyperlink{classDataManagement_1_1DataManager_ae8c29c0ea4611cd6fe29f17e6cfc3acf}{baseMapsRaster}}()\ \{\ \textcolor{keywordflow}{return}\ \&m\_baseMapsRaster;\ \}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00205}00205\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00210}\mbox{\hyperlink{classDataManagement_1_1DataManager_a71da12d4e241066e98ab1f38e9a96ac9}{00210}}\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile}{DataManagement::Downloadable\_MultiFile}}*\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a71da12d4e241066e98ab1f38e9a96ac9}{baseMapsVector}}()\ \{\ \textcolor{keywordflow}{return}\ \&m\_baseMapsVector;\ \}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00211}00211\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00216}\mbox{\hyperlink{classDataManagement_1_1DataManager_af86831e133a5675d8f3497035312ef6e}{00216}}\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile}{DataManagement::Downloadable\_MultiFile}}*\ \mbox{\hyperlink{classDataManagement_1_1DataManager_af86831e133a5675d8f3497035312ef6e}{databases}}()\ \{\ \textcolor{keywordflow}{return}\ \&m\_databases;\ \}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00217}00217\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00222}\mbox{\hyperlink{classDataManagement_1_1DataManager_a7bf9e8b0c1f5889d15778716336bc0cf}{00222}}\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile}{DataManagement::Downloadable\_MultiFile}}*\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a7bf9e8b0c1f5889d15778716336bc0cf}{items}}()\ \{\ \textcolor{keywordflow}{return}\ \&m\_items;\ \}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00223}00223\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00228}\mbox{\hyperlink{classDataManagement_1_1DataManager_a5084402866bc0f0c8fa57b6932505d3e}{00228}}\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile}{DataManagement::Downloadable\_SingleFile}}*\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a5084402866bc0f0c8fa57b6932505d3e}{mapList}}()\ \{\ \textcolor{keywordflow}{return}\ \&m\_mapList;\ \}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00229}00229\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00234}\mbox{\hyperlink{classDataManagement_1_1DataManager_a9e84aed2caa385de3d883fab42a20ab5}{00234}}\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile}{DataManagement::Downloadable\_MultiFile}}*\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a9e84aed2caa385de3d883fab42a20ab5}{mapsAndData}}()\ \{\ \textcolor{keywordflow}{return}\ \&m\_mapsAndData;\ \}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00235}00235\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00240}\mbox{\hyperlink{classDataManagement_1_1DataManager_a48cd8b5dfd5691f9bb2fc6a20ad61c23}{00240}}\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile}{DataManagement::Downloadable\_MultiFile}}*\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a48cd8b5dfd5691f9bb2fc6a20ad61c23}{mapSets}}()\ \{\ \textcolor{keywordflow}{return}\ \&m\_mapSets;\ \}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00241}00241\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00246}\mbox{\hyperlink{classDataManagement_1_1DataManager_a15e909e4f578a10e6947cc6739e93993}{00246}}\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile}{DataManagement::Downloadable\_MultiFile}}*\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a15e909e4f578a10e6947cc6739e93993}{terrainMaps}}()\ \{\ \textcolor{keywordflow}{return}\ \&m\_terrainMaps;\ \}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00247}00247\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00252}\mbox{\hyperlink{classDataManagement_1_1DataManager_a5478eebd45c980465f296a7ff8adb352}{00252}}\ \ \ \ \ [[nodiscard]]\ QString\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a5478eebd45c980465f296a7ff8adb352}{whatsNew}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_whatsNew;\ \}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00253}00253\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00258}\mbox{\hyperlink{classDataManagement_1_1DataManager_ae3dbd3fc0e556e31182208eca1ed6501}{00258}}\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{classUnits_1_1ByteSize}{Units::ByteSize}}\ \mbox{\hyperlink{classDataManagement_1_1DataManager_ae3dbd3fc0e556e31182208eca1ed6501}{whatsNewHash}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ qHash(m\_whatsNew,\ 0);\ \}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00259}00259\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00260}00260\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00261}00261\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00262}00262\ \ \ \ \ \textcolor{comment}{//\ Methods}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00263}00263\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00264}00264\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00282}\mbox{\hyperlink{classDataManagement_1_1DataManager_a0342eef656ba8a681c4516d689944a60}{00282}}\ \ \ \ \ Q\_INVOKABLE\ QString\ \textcolor{keyword}{import}(\textcolor{keyword}{const}\ QString\&\ fileName,\ \textcolor{keyword}{const}\ QString\&\ newName);}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00283}00283\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00299}\mbox{\hyperlink{classDataManagement_1_1DataManager_a7cc2acc87439514311189e3d7c13cc8c}{00299}}\ \ \ \ \ Q\_INVOKABLE\ QString\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a7cc2acc87439514311189e3d7c13cc8c}{importOpenAir}}(\textcolor{keyword}{const}\ QString\&\ fileName,\ \textcolor{keyword}{const}\ QString\&\ newName);}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00300}00300\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00301}00301\ \textcolor{keyword}{public}\ slots:}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00306}\mbox{\hyperlink{classDataManagement_1_1DataManager_ae64687ed56050c4c25e85e4dc1a1c64c}{00306}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1DataManager_ae64687ed56050c4c25e85e4dc1a1c64c}{updateRemoteDataItemList}}()}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00307}00307\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00308}00308\ \ \ \ \ \ \ \ \ m\_mapList.\mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile_ac572ce2dd771329cfbf08c66cfd7335b}{startDownload}}();}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00309}00309\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00310}00310\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00311}00311\ signals:}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00313}\mbox{\hyperlink{classDataManagement_1_1DataManager_afe298160f9e9b59384db2b8201c156ec}{00313}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1DataManager_afe298160f9e9b59384db2b8201c156ec}{appUpdateRequiredChanged}}();}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00314}00314\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00322}\mbox{\hyperlink{classDataManagement_1_1DataManager_ae3e074e441db9809c0ebd0023d465299}{00322}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1DataManager_ae3e074e441db9809c0ebd0023d465299}{error}}(\textcolor{keyword}{const}\ QString\&\ message);}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00323}00323\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00325}\mbox{\hyperlink{classDataManagement_1_1DataManager_a97df0120eda2544197b32668eefab30f}{00325}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDataManagement_1_1DataManager_a97df0120eda2544197b32668eefab30f}{whatsNewChanged}}();}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00326}00326\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00327}00327\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00328}00328\ \ \ \ \ Q\_DISABLE\_COPY\_MOVE(\mbox{\hyperlink{classDataManagement_1_1DataManager}{DataManager}})}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00329}00329\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00330}00330\ \ \ \ \ \textcolor{comment}{//\ Clean\ the\ data\ directory.}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00331}00331\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00332}00332\ \ \ \ \ \textcolor{comment}{//\ -\/\ delete\ all\ files\ with\ unexpected\ file\ names}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00333}00333\ \ \ \ \ \textcolor{comment}{//\ -\/\ earlier\ versions\ of\ this\ program\ constructed\ files\ with\ names\ ending\ in}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00334}00334\ \ \ \ \ \textcolor{comment}{//\ \ \ "{}.geojson.geojson"{}\ or\ "{}.mbtiles.mbtiles"{}.\ We\ correct\ those\ file\ names}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00335}00335\ \ \ \ \ \textcolor{comment}{//\ \ \ here.}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00336}00336\ \ \ \ \ \textcolor{comment}{//\ -\/\ remove\ all\ empty\ sub\ directories}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00337}00337\ \ \ \ \ \textcolor{keywordtype}{void}\ cleanDataDirectory();}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00338}00338\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00339}00339\ \ \ \ \ \textcolor{comment}{//\ This\ slot\ is\ called\ when\ a\ local\ file\ of\ one\ of\ the\ Downloadables\ changes}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00340}00340\ \ \ \ \ \textcolor{comment}{//\ content\ or\ existence.\ If\ the\ Downloadable\ in\ question\ has\ no\ file}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00341}00341\ \ \ \ \ \textcolor{comment}{//\ anymore,\ and\ has\ an\ invalid\ URL,\ it\ is\ then\ removed.}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00342}00342\ \ \ \ \ \textcolor{keywordtype}{void}\ onItemFileChanged();}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00343}00343\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00344}00344\ \ \ \ \ \textcolor{comment}{//\ This\ slot\ updates\ the\ DownloadableGroups\ as\ well\ as\ the\ propery}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00345}00345\ \ \ \ \ \textcolor{comment}{//\ 'whatsNew',\ by\ reading\ the\ file\ 'maps.json'\ and\ by\ checking\ the\ data}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00346}00346\ \ \ \ \ \textcolor{comment}{//\ directory\ for\ locally\ installed,\ unsupported\ files.}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00347}00347\ \ \ \ \ \textcolor{keywordtype}{void}\ updateDataItemListAndWhatsNew();}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00348}00348\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00349}00349\ \ \ \ \ \textcolor{comment}{//\ This\ method\ checks\ if\ a\ Downloadable\ item\ with\ the\ given\ url\ and}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00350}00350\ \ \ \ \ \textcolor{comment}{//\ localFileName\ already\ exists\ in\ \_items.\ If\ so,\ it\ returns\ a\ pointer\ to}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00351}00351\ \ \ \ \ \textcolor{comment}{//\ that\ item.\ If\ not,\ then\ a\ Downloadable\ with\ the\ url\ and\ localFileName\ is}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00352}00352\ \ \ \ \ \textcolor{comment}{//\ created\ and\ added\ to\ \_items.\ Depending\ on\ localFileName,\ it\ will\ also\ be}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00353}00353\ \ \ \ \ \textcolor{comment}{//\ added\ to\ \_aviationMap,\ \_baseMaps,\ or\ \_databases.\ A\ pointer\ to\ that\ item\ is}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00354}00354\ \ \ \ \ \textcolor{comment}{//\ then\ returned.}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00355}00355\ \ \ \ \ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile}{DataManagement::Downloadable\_SingleFile}}*\ createOrRecycleItem(\textcolor{keyword}{const}\ QUrl\&\ url,\ \textcolor{keyword}{const}\ QString\&\ localFileName,\ \textcolor{keyword}{const}\ QGeoRectangle\&\ bBox);}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00356}00356\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00357}00357\ \ \ \ \ \textcolor{keywordtype}{bool}\ m\_appUpdateRequired\ \{\textcolor{keyword}{false}\};}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00358}00358\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00359}00359\ \ \ \ \ \textcolor{comment}{//\ Full\ path\ name\ of\ data\ directory,\ without\ trailing\ slash}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00360}00360\ \ \ \ \ QString\ m\_dataDirectory\ \{QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)\ +\ \textcolor{stringliteral}{"{}/aviation\_maps"{}}\};}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00361}00361\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00362}00362\ \ \ \ \ \textcolor{comment}{//\ The\ current\ whats\ new\ string\ from\ \_aviationMaps.}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00363}00363\ \ \ \ \ QString\ m\_whatsNew\ \{\};}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00364}00364\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00365}00365\ \ \ \ \ \textcolor{comment}{//\ This\ Downloadable\ object\ manages\ the\ central\ text\ file\ that\ describes\ the}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00366}00366\ \ \ \ \ \textcolor{comment}{//\ remotely\ available\ aviation\ maps.}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00367}00367\ \ \ \ \ \mbox{\hyperlink{classDataManagement_1_1Downloadable__SingleFile}{DataManagement::Downloadable\_SingleFile}}\ m\_mapList\ \{\ QUrl(QStringLiteral(\textcolor{stringliteral}{"{}https://enroute-\/data.akaflieg-\/freiburg.de/enroute-\/GeoJSONv003/maps.json"{}})),\ QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)\ +\ \textcolor{stringliteral}{"{}/maps.json"{}}\ \};}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00368}00368\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00369}00369\ \ \ \ \ \textcolor{comment}{//\ List\ of\ geographic\ maps}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00370}00370\ \ \ \ \ \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile}{DataManagement::Downloadable\_MultiFile}}\ m\_aviationMaps\ \{\mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile_aa10fbcc5d85d811c4e43faf90eefe2d1a6219e1b27b4ad850343b76a919213207}{DataManagement::Downloadable\_MultiFile::SingleUpdate}}\};}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00371}00371\ \ \ \ \ \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile}{DataManagement::Downloadable\_MultiFile}}\ m\_baseMaps\ \{\mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile_aa10fbcc5d85d811c4e43faf90eefe2d1a6219e1b27b4ad850343b76a919213207}{DataManagement::Downloadable\_MultiFile::SingleUpdate}}\};}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00372}00372\ \ \ \ \ \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile}{DataManagement::Downloadable\_MultiFile}}\ m\_baseMapsRaster\ \{\mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile_aa10fbcc5d85d811c4e43faf90eefe2d1a6219e1b27b4ad850343b76a919213207}{DataManagement::Downloadable\_MultiFile::SingleUpdate}}\};}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00373}00373\ \ \ \ \ \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile}{DataManagement::Downloadable\_MultiFile}}\ m\_baseMapsVector\ \{\mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile_aa10fbcc5d85d811c4e43faf90eefe2d1a6219e1b27b4ad850343b76a919213207}{DataManagement::Downloadable\_MultiFile::SingleUpdate}}\};}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00374}00374\ \ \ \ \ \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile}{DataManagement::Downloadable\_MultiFile}}\ m\_databases\ \{\mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile_aa10fbcc5d85d811c4e43faf90eefe2d1a6219e1b27b4ad850343b76a919213207}{DataManagement::Downloadable\_MultiFile::SingleUpdate}}\};}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00375}00375\ \ \ \ \ \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile}{DataManagement::Downloadable\_MultiFile}}\ m\_items\ \{\mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile_aa10fbcc5d85d811c4e43faf90eefe2d1a6219e1b27b4ad850343b76a919213207}{DataManagement::Downloadable\_MultiFile::SingleUpdate}}\};}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00376}00376\ \ \ \ \ \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile}{DataManagement::Downloadable\_MultiFile}}\ m\_mapsAndData\ \{\mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile_aa10fbcc5d85d811c4e43faf90eefe2d1a6219e1b27b4ad850343b76a919213207}{DataManagement::Downloadable\_MultiFile::SingleUpdate}}\};}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00377}00377\ \ \ \ \ \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile}{DataManagement::Downloadable\_MultiFile}}\ m\_terrainMaps\ \{\mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile_aa10fbcc5d85d811c4e43faf90eefe2d1a6219e1b27b4ad850343b76a919213207}{DataManagement::Downloadable\_MultiFile::SingleUpdate}}\};}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00378}00378\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00379}00379\ \ \ \ \ \textcolor{comment}{//\ List\ of\ geographic\ map\ sets}}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00380}00380\ \ \ \ \ \mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile}{DataManagement::Downloadable\_MultiFile}}\ m\_mapSets\ \ \{\mbox{\hyperlink{classDataManagement_1_1Downloadable__MultiFile_aa10fbcc5d85d811c4e43faf90eefe2d1a6219e1b27b4ad850343b76a919213207}{DataManagement::Downloadable\_MultiFile::SingleUpdate}}\};}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00381}00381\ \};}
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00382}00382\ }
+\DoxyCodeLine{\Hypertarget{DataManager_8h_source_l00383}00383\ \}\ \textcolor{comment}{//\ namespace\ DataManagement}}
+
+\end{DoxyCode}

@@ -1,0 +1,202 @@
+\doxysection{Units\+::Temperature Class Reference}
+\hypertarget{classUnits_1_1Temperature}{}\label{classUnits_1_1Temperature}\index{Units::Temperature@{Units::Temperature}}
+
+
+Convenience class for temperature computations.  
+
+
+
+
+{\ttfamily \#include $<$Temperature.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+Q\+\_\+\+INVOKABLE bool \mbox{\hyperlink{classUnits_1_1Temperature_a1598938c3b93e45b9f133cb2811b2d96}{is\+Finite}} () const
+\begin{DoxyCompactList}\small\item\em Checks if the temperature is valid. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE std\+::partial\+\_\+ordering \mbox{\hyperlink{classUnits_1_1Temperature_a5daf5820bf90e2cd4246065d5b0836b8}{operator$<$=$>$}} (const \mbox{\hyperlink{classUnits_1_1Temperature}{Units\+::\+Temperature}} \&rhs) const =default
+\begin{DoxyCompactList}\small\item\em Comparison. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE double \mbox{\hyperlink{classUnits_1_1Temperature_af5f4e9a8d3a02bd10c88482f25ee0aa1}{to\+Degree\+Celsius}} () const
+\begin{DoxyCompactList}\small\item\em Convert to degree Celsius. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE double \mbox{\hyperlink{classUnits_1_1Temperature_afc59f595222d5a75f51035e7104db507}{to\+Degree\+Farenheit}} () const
+\begin{DoxyCompactList}\small\item\em Convert to degree Farenheit. \end{DoxyCompactList}\item 
+Q\+\_\+\+INVOKABLE double \mbox{\hyperlink{classUnits_1_1Temperature_a2a8618c9ede9c3e84d2caa11f640726d}{to\+Degree\+Kelvin}} () const
+\begin{DoxyCompactList}\small\item\em Convert to degree Kelvin. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr auto \mbox{\hyperlink{classUnits_1_1Temperature_a68b7ff2c502caf4ae38afafd5d65c672}{from\+Degree\+Celsius}} (double temperature\+In\+Degree\+Celsius) -\/$>$ \mbox{\hyperlink{classUnits_1_1Temperature}{Temperature}}
+\begin{DoxyCompactList}\small\item\em Constructs a temperature. \end{DoxyCompactList}\item 
+static constexpr auto \mbox{\hyperlink{classUnits_1_1Temperature_a7b4d6079b4d55c1b0536243468b30ce4}{from\+Degree\+Farenheit}} (double temperature\+In\+Degree\+Farenheit) -\/$>$ \mbox{\hyperlink{classUnits_1_1Temperature}{Temperature}}
+\begin{DoxyCompactList}\small\item\em Constructs a temperature. \end{DoxyCompactList}\item 
+static constexpr auto \mbox{\hyperlink{classUnits_1_1Temperature_a70a2bb3a255bb972c49679045642a58d}{from\+Degree\+Kelvin}} (double temperature\+In\+Degree\+Kelvin) -\/$>$ \mbox{\hyperlink{classUnits_1_1Temperature}{Temperature}}
+\begin{DoxyCompactList}\small\item\em Constructs a temperature. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Convenience class for temperature computations. 
+
+This extremely simple class allows computation with temperatures, without the need to worry about units. On construction, the temperature is set to NaN. 
+
+Definition at line \mbox{\hyperlink{Temperature_8h_source_l00035}{35}} of file \mbox{\hyperlink{Temperature_8h_source}{Temperature.\+h}}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classUnits_1_1Temperature_a68b7ff2c502caf4ae38afafd5d65c672}\index{Units::Temperature@{Units::Temperature}!fromDegreeCelsius@{fromDegreeCelsius}}
+\index{fromDegreeCelsius@{fromDegreeCelsius}!Units::Temperature@{Units::Temperature}}
+\doxysubsubsection{\texorpdfstring{fromDegreeCelsius()}{fromDegreeCelsius()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Temperature_a68b7ff2c502caf4ae38afafd5d65c672} 
+static constexpr auto Units\+::\+Temperature\+::from\+Degree\+Celsius (\begin{DoxyParamCaption}\item[{double}]{temperature\+In\+Degree\+Celsius}{}\end{DoxyParamCaption}) -\/$>$ \mbox{\hyperlink{classUnits_1_1Temperature}{Temperature}}     \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+
+
+Constructs a temperature. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em temperature\+In\+Degree\+Celsius} & temperature in degree Celsius\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+temperature 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Temperature_8h_source_l00046}{46}} of file \mbox{\hyperlink{Temperature_8h_source}{Temperature.\+h}}.
+
+\Hypertarget{classUnits_1_1Temperature_a7b4d6079b4d55c1b0536243468b30ce4}\index{Units::Temperature@{Units::Temperature}!fromDegreeFarenheit@{fromDegreeFarenheit}}
+\index{fromDegreeFarenheit@{fromDegreeFarenheit}!Units::Temperature@{Units::Temperature}}
+\doxysubsubsection{\texorpdfstring{fromDegreeFarenheit()}{fromDegreeFarenheit()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Temperature_a7b4d6079b4d55c1b0536243468b30ce4} 
+static constexpr auto Units\+::\+Temperature\+::from\+Degree\+Farenheit (\begin{DoxyParamCaption}\item[{double}]{temperature\+In\+Degree\+Farenheit}{}\end{DoxyParamCaption}) -\/$>$ \mbox{\hyperlink{classUnits_1_1Temperature}{Temperature}}     \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+
+
+Constructs a temperature. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em temperature\+In\+Degree\+Farenheit} & temperature in Farenheit\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+temperature 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Temperature_8h_source_l00059}{59}} of file \mbox{\hyperlink{Temperature_8h_source}{Temperature.\+h}}.
+
+\Hypertarget{classUnits_1_1Temperature_a70a2bb3a255bb972c49679045642a58d}\index{Units::Temperature@{Units::Temperature}!fromDegreeKelvin@{fromDegreeKelvin}}
+\index{fromDegreeKelvin@{fromDegreeKelvin}!Units::Temperature@{Units::Temperature}}
+\doxysubsubsection{\texorpdfstring{fromDegreeKelvin()}{fromDegreeKelvin()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Temperature_a70a2bb3a255bb972c49679045642a58d} 
+static constexpr auto Units\+::\+Temperature\+::from\+Degree\+Kelvin (\begin{DoxyParamCaption}\item[{double}]{temperature\+In\+Degree\+Kelvin}{}\end{DoxyParamCaption}) -\/$>$ \mbox{\hyperlink{classUnits_1_1Temperature}{Temperature}}     \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+
+
+Constructs a temperature. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em temperature\+In\+Degree\+Kelvin} & temperature in degree Kevin\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+temperature 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Temperature_8h_source_l00072}{72}} of file \mbox{\hyperlink{Temperature_8h_source}{Temperature.\+h}}.
+
+\Hypertarget{classUnits_1_1Temperature_a1598938c3b93e45b9f133cb2811b2d96}\index{Units::Temperature@{Units::Temperature}!isFinite@{isFinite}}
+\index{isFinite@{isFinite}!Units::Temperature@{Units::Temperature}}
+\doxysubsubsection{\texorpdfstring{isFinite()}{isFinite()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Temperature_a1598938c3b93e45b9f133cb2811b2d96} 
+Q\+\_\+\+INVOKABLE bool Units\+::\+Temperature\+::is\+Finite (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Checks if the temperature is valid. 
+
+\begin{DoxyReturn}{Returns}
+True is the volume is a finite number 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Temperature_8h_source_l00083}{83}} of file \mbox{\hyperlink{Temperature_8h_source}{Temperature.\+h}}.
+
+\Hypertarget{classUnits_1_1Temperature_a5daf5820bf90e2cd4246065d5b0836b8}\index{Units::Temperature@{Units::Temperature}!operator$<$=$>$@{operator$<$=$>$}}
+\index{operator$<$=$>$@{operator$<$=$>$}!Units::Temperature@{Units::Temperature}}
+\doxysubsubsection{\texorpdfstring{operator$<$=$>$()}{operator<=>()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Temperature_a5daf5820bf90e2cd4246065d5b0836b8} 
+Q\+\_\+\+INVOKABLE std\+::partial\+\_\+ordering Units\+::\+Temperature\+::operator$<$=$>$ (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classUnits_1_1Temperature}{Units\+::\+Temperature}} \&}]{rhs}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}, {\ttfamily [default]}}
+
+
+
+Comparison. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rhs} & Right hand side of the comparison\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Result of the comparison 
+\end{DoxyReturn}
+\Hypertarget{classUnits_1_1Temperature_af5f4e9a8d3a02bd10c88482f25ee0aa1}\index{Units::Temperature@{Units::Temperature}!toDegreeCelsius@{toDegreeCelsius}}
+\index{toDegreeCelsius@{toDegreeCelsius}!Units::Temperature@{Units::Temperature}}
+\doxysubsubsection{\texorpdfstring{toDegreeCelsius()}{toDegreeCelsius()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Temperature_af5f4e9a8d3a02bd10c88482f25ee0aa1} 
+Q\+\_\+\+INVOKABLE double Units\+::\+Temperature\+::to\+Degree\+Celsius (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Convert to degree Celsius. 
+
+\begin{DoxyReturn}{Returns}
+temperature in degree Celsius 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Temperature_8h_source_l00100}{100}} of file \mbox{\hyperlink{Temperature_8h_source}{Temperature.\+h}}.
+
+\Hypertarget{classUnits_1_1Temperature_afc59f595222d5a75f51035e7104db507}\index{Units::Temperature@{Units::Temperature}!toDegreeFarenheit@{toDegreeFarenheit}}
+\index{toDegreeFarenheit@{toDegreeFarenheit}!Units::Temperature@{Units::Temperature}}
+\doxysubsubsection{\texorpdfstring{toDegreeFarenheit()}{toDegreeFarenheit()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Temperature_afc59f595222d5a75f51035e7104db507} 
+Q\+\_\+\+INVOKABLE double Units\+::\+Temperature\+::to\+Degree\+Farenheit (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Convert to degree Farenheit. 
+
+\begin{DoxyReturn}{Returns}
+temperature in degree Farenheit 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Temperature_8h_source_l00109}{109}} of file \mbox{\hyperlink{Temperature_8h_source}{Temperature.\+h}}.
+
+\Hypertarget{classUnits_1_1Temperature_a2a8618c9ede9c3e84d2caa11f640726d}\index{Units::Temperature@{Units::Temperature}!toDegreeKelvin@{toDegreeKelvin}}
+\index{toDegreeKelvin@{toDegreeKelvin}!Units::Temperature@{Units::Temperature}}
+\doxysubsubsection{\texorpdfstring{toDegreeKelvin()}{toDegreeKelvin()}}
+{\footnotesize\ttfamily \label{classUnits_1_1Temperature_a2a8618c9ede9c3e84d2caa11f640726d} 
+Q\+\_\+\+INVOKABLE double Units\+::\+Temperature\+::to\+Degree\+Kelvin (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}}
+
+
+
+Convert to degree Kelvin. 
+
+\begin{DoxyReturn}{Returns}
+temperature in degree Kelvin 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{Temperature_8h_source_l00118}{118}} of file \mbox{\hyperlink{Temperature_8h_source}{Temperature.\+h}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/runner/work/enroute/enroute/src/units/Temperature.\+h\end{DoxyCompactItemize}

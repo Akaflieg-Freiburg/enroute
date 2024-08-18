@@ -1,0 +1,70 @@
+\doxysection{Zip\+File.\+h}
+\hypertarget{ZipFile_8h_source}{}\label{ZipFile_8h_source}\index{/home/runner/work/enroute/enroute/src/fileFormats/ZipFile.h@{/home/runner/work/enroute/enroute/src/fileFormats/ZipFile.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00001}00001\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00002}00002\ \textcolor{comment}{\ *\ \ \ Copyright\ (C)\ 2023-\/2024\ by\ Stefan\ Kebekus\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00003}00003\ \textcolor{comment}{\ *\ \ \ stefan.kebekus@gmail.com\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00004}00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ free\ software;\ you\ can\ redistribute\ it\ and/or\ modify\ \ *}}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00006}00006\ \textcolor{comment}{\ *\ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by\ \ *}}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00007}00007\ \textcolor{comment}{\ *\ \ \ the\ Free\ Software\ Foundation;\ either\ version\ 3\ of\ the\ License,\ or\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00008}00008\ \textcolor{comment}{\ *\ \ \ (at\ your\ option)\ any\ later\ version.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00009}00009\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00010}00010\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,\ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00011}00011\ \textcolor{comment}{\ *\ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of\ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00012}00012\ \textcolor{comment}{\ *\ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00013}00013\ \textcolor{comment}{\ *\ \ \ GNU\ General\ Public\ License\ for\ more\ details.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00014}00014\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00015}00015\ \textcolor{comment}{\ *\ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00016}00016\ \textcolor{comment}{\ *\ \ \ along\ with\ this\ program;\ if\ not,\ write\ to\ the\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00017}00017\ \textcolor{comment}{\ *\ \ \ Free\ Software\ Foundation,\ Inc.,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00018}00018\ \textcolor{comment}{\ *\ \ \ 59\ Temple\ Place\ -\/\ Suite\ 330,\ Boston,\ MA\ \ 02111-\/1307,\ USA.\ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00019}00019\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00021}00021\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ "{}fileFormats/DataFileAbstract.h"{}}}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00024}00024\ }
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00026}00026\ \textcolor{keyword}{namespace\ }FileFormats}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00027}00027\ \{}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00028}00028\ }
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00033}\mbox{\hyperlink{classFileFormats_1_1ZipFile}{00033}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classFileFormats_1_1ZipFile}{ZipFile}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classFileFormats_1_1DataFileAbstract}{DataFileAbstract}}}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00034}00034\ \{}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00035}00035\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00043}\mbox{\hyperlink{classFileFormats_1_1ZipFile_aa6be2513d17ae4a9fd34521f21668e93}{00043}}\ \ \ \ \ \mbox{\hyperlink{classFileFormats_1_1ZipFile_aa6be2513d17ae4a9fd34521f21668e93}{ZipFile}}(\textcolor{keyword}{const}\ QString\&\ fileName);}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00044}00044\ }
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00046}\mbox{\hyperlink{classFileFormats_1_1ZipFile_ace66fb5100a602ec0871a5096b12d139}{00046}}\ \ \ \ \ \mbox{\hyperlink{classFileFormats_1_1ZipFile_ace66fb5100a602ec0871a5096b12d139}{\string~ZipFile}}();}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00047}00047\ }
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00048}00048\ }
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00049}00049\ }
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00050}00050\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00051}00051\ \ \ \ \ \textcolor{comment}{//\ Getter\ Methods}}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00052}00052\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00053}00053\ }
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00058}\mbox{\hyperlink{classFileFormats_1_1ZipFile_a38c284b1bae31e429d18bbdb3f935c03}{00058}}\ \ \ \ \ [[nodiscard]]\ QStringList\ \mbox{\hyperlink{classFileFormats_1_1ZipFile_a38c284b1bae31e429d18bbdb3f935c03}{fileNames}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_fileNames;\ \}}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00059}00059\ }
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00066}\mbox{\hyperlink{classFileFormats_1_1ZipFile_a5ba7deca3e51bc76f814d4f5db88cc47}{00066}}\ \ \ \ \ [[nodiscard]]\ QByteArray\ \mbox{\hyperlink{classFileFormats_1_1ZipFile_a5ba7deca3e51bc76f814d4f5db88cc47}{extract}}(qsizetype\ index);}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00067}00067\ }
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00079}\mbox{\hyperlink{classFileFormats_1_1ZipFile_a6bc48873be506a79eb4ef1ec814e6fc4}{00079}}\ \ \ \ \ [[nodiscard]]\ QByteArray\ \mbox{\hyperlink{classFileFormats_1_1ZipFile_a6bc48873be506a79eb4ef1ec814e6fc4}{extract}}(\textcolor{keyword}{const}\ QString\&\ fileName);}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00080}00080\ }
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00081}00081\ }
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00082}00082\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00083}00083\ \ \ \ \ \textcolor{comment}{//\ Static\ methods}}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00084}00084\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00085}00085\ }
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00090}\mbox{\hyperlink{classFileFormats_1_1ZipFile_a004d36dc51e351ff93b180c5140e8e2c}{00090}}\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{static}\ QStringList\ \mbox{\hyperlink{classFileFormats_1_1ZipFile_a004d36dc51e351ff93b180c5140e8e2c}{mimeTypes}}()\ \{\ \textcolor{keywordflow}{return}\ \{u\textcolor{stringliteral}{"{}application/zip"{}}\_qs\};\ \}}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00091}00091\ }
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00092}00092\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00093}00093\ \ \ \ \ Q\_DISABLE\_COPY\_MOVE(\mbox{\hyperlink{classFileFormats_1_1ZipFile}{ZipFile}})}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00094}00094\ }
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00095}00095\ \ \ \ \ \textcolor{keywordtype}{void}*\ m\_zip\ \{\textcolor{keyword}{nullptr}\};}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00096}00096\ \ \ \ \ QSharedPointer<QFile>\ m\_file;}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00097}00097\ \ \ \ \ QStringList\ m\_fileNames;}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00098}00098\ \ \ \ \ QList<qsizetype>\ m\_fileSizes;}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00099}00099\ \};}
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00100}00100\ }
+\DoxyCodeLine{\Hypertarget{ZipFile_8h_source_l00101}00101\ \}\ \textcolor{comment}{//\ namespace\ FileFormats}}
+
+\end{DoxyCode}

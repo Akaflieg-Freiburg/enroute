@@ -1,0 +1,94 @@
+\doxysection{Demo\+Runner.\+h}
+\hypertarget{DemoRunner_8h_source}{}\label{DemoRunner_8h_source}\index{/home/runner/work/enroute/enroute/src/DemoRunner.h@{/home/runner/work/enroute/enroute/src/DemoRunner.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00001}00001\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00002}00002\ \textcolor{comment}{\ *\ \ \ Copyright\ (C)\ 2021-\/2023\ by\ Stefan\ Kebekus\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00003}00003\ \textcolor{comment}{\ *\ \ \ stefan.kebekus@gmail.com\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00004}00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00005}00005\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ free\ software;\ you\ can\ redistribute\ it\ and/or\ modify\ \ *}}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00006}00006\ \textcolor{comment}{\ *\ \ \ it\ under\ the\ terms\ of\ the\ GNU\ General\ Public\ License\ as\ published\ by\ \ *}}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00007}00007\ \textcolor{comment}{\ *\ \ \ the\ Free\ Software\ Foundation;\ either\ version\ 3\ of\ the\ License,\ or\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00008}00008\ \textcolor{comment}{\ *\ \ \ (at\ your\ option)\ any\ later\ version.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00009}00009\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00010}00010\ \textcolor{comment}{\ *\ \ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,\ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00011}00011\ \textcolor{comment}{\ *\ \ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of\ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00012}00012\ \textcolor{comment}{\ *\ \ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ \ See\ the\ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00013}00013\ \textcolor{comment}{\ *\ \ \ GNU\ General\ Public\ License\ for\ more\ details.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00014}00014\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00015}00015\ \textcolor{comment}{\ *\ \ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ General\ Public\ License\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00016}00016\ \textcolor{comment}{\ *\ \ \ along\ with\ this\ program;\ if\ not,\ write\ to\ the\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00017}00017\ \textcolor{comment}{\ *\ \ \ Free\ Software\ Foundation,\ Inc.,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00018}00018\ \textcolor{comment}{\ *\ \ \ 59\ Temple\ Place\ -\/\ Suite\ 330,\ Boston,\ MA\ \ 02111-\/1307,\ USA.\ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00019}00019\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00021}00021\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ <QQmlApplicationEngine>}}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00024}00024\ \textcolor{preprocessor}{\#include\ <QQmlEngine>}}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00025}00025\ \textcolor{preprocessor}{\#include\ <QQuickWindow>}}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00027}00027\ \textcolor{preprocessor}{\#include\ "{}GlobalObject.h"{}}}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00028}00028\ }
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00029}00029\ }
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00037}\mbox{\hyperlink{classDemoRunner}{00037}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classDemoRunner}{DemoRunner}}\ :\ \textcolor{keyword}{public}\ QObject\ \{}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00038}00038\ \ \ \ \ Q\_OBJECT}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00039}00039\ \ \ \ \ QML\_ELEMENT}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00040}00040\ \ \ \ \ QML\_SINGLETON}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00041}00041\ }
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00042}00042\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00049}\mbox{\hyperlink{classDemoRunner_a6a65ea26f415fbcac035a00f5a6dd9f8}{00049}}\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classDemoRunner_a6a65ea26f415fbcac035a00f5a6dd9f8}{DemoRunner}}(QObject\ *parent\ =\ \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00050}00050\ }
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00051}00051\ \ \ \ \ \textcolor{comment}{//\ No\ default\ constructor,\ important\ for\ QML\ singleton}}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00052}00052\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classDemoRunner}{DemoRunner}}()\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00053}00053\ }
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00054}00054\ \ \ \ \ \textcolor{comment}{//\ Standard\ destructor}}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00055}00055\ \ \ \ \ \mbox{\hyperlink{classDemoRunner}{\string~DemoRunner}}()\ \textcolor{keyword}{override}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00056}00056\ }
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00057}00057\ \ \ \ \ \textcolor{comment}{//\ factory\ function\ for\ QML\ singleton}}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00058}00058\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classDemoRunner}{DemoRunner}}*\ create(QQmlEngine*\ \textcolor{comment}{/*unused*/},\ QJSEngine*\ \textcolor{comment}{/*unused*/})}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00059}00059\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00060}00060\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classGlobalObject_abb18a18cba455a65c8773aa5f4fbcdd6}{GlobalObject::demoRunner}}();}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00061}00061\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00062}00062\ }
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00069}\mbox{\hyperlink{classDemoRunner_ac2a302b436ca39e05faeaa6b683b7f58}{00069}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDemoRunner_ac2a302b436ca39e05faeaa6b683b7f58}{setEngine}}(QQmlApplicationEngine*\ engine)}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00070}00070\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00071}00071\ \ \ \ \ \ \ \ \ m\_engine\ =\ engine;}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00072}00072\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00073}00073\ }
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00074}00074\ \textcolor{keyword}{public}\ slots:}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00075}00075\ \ \ \ \ \textcolor{comment}{//\ Begin\ to\ remote-\/control\ the\ app}}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00076}00076\ \ \ \ \ \textcolor{keywordtype}{void}\ generateGooglePlayScreenshots();}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00077}00077\ }
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00078}00078\ \ \ \ \ \textcolor{comment}{//\ Begin\ to\ remote-\/control\ the\ app}}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00079}00079\ \ \ \ \ \textcolor{keywordtype}{void}\ generateIosScreenshots();}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00080}00080\ }
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00081}00081\ \ \ \ \ \textcolor{comment}{//\ Begin\ to\ remote-\/control\ the\ app}}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00082}00082\ \ \ \ \ \textcolor{keywordtype}{void}\ generateManualScreenshots();}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00083}00083\ }
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00084}00084\ signals:}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00086}\mbox{\hyperlink{classDemoRunner_ad6a8b679098631a890bacd5af5dae8c1}{00086}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDemoRunner_ad6a8b679098631a890bacd5af5dae8c1}{requestOpenFlightRouteAddWPDialog}}();}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00087}00087\ }
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00089}\mbox{\hyperlink{classDemoRunner_a126544d571bfdd1d9d75e21554fdf74e}{00089}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDemoRunner_a126544d571bfdd1d9d75e21554fdf74e}{requestOpenAircraftPage}}();}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00090}00090\ }
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00092}\mbox{\hyperlink{classDemoRunner_a5aa15fd0c1aec84702211d8eeee87803}{00092}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDemoRunner_a5aa15fd0c1aec84702211d8eeee87803}{requestOpenNearbyPage}}();}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00093}00093\ }
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00095}\mbox{\hyperlink{classDemoRunner_a21c3794f1b5ba5f0692230ca45c9eb67}{00095}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDemoRunner_a21c3794f1b5ba5f0692230ca45c9eb67}{requestOpenWeatherPage}}();}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00096}00096\ }
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00098}\mbox{\hyperlink{classDemoRunner_aa01d236a383c11d87f8ef0fe350327e6}{00098}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDemoRunner_aa01d236a383c11d87f8ef0fe350327e6}{requestOpenRoutePage}}();}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00099}00099\ }
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00101}\mbox{\hyperlink{classDemoRunner_a0f3267bf286b33d8aa5e2af7fc70ffdc}{00101}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDemoRunner_a0f3267bf286b33d8aa5e2af7fc70ffdc}{requestClosePages}}();}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00102}00102\ }
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00107}\mbox{\hyperlink{classDemoRunner_ae5fe113f3a29bd975adb49316f366e46}{00107}}\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classDemoRunner_ae5fe113f3a29bd975adb49316f366e46}{requestVAC}}(QString\ vacName);}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00108}00108\ }
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00109}00109\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00110}00110\ \ \ \ \ Q\_DISABLE\_COPY\_MOVE(\mbox{\hyperlink{classDemoRunner}{DemoRunner}})}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00111}00111\ }
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00112}00112\ \ \ \ \ QPointer<QQmlApplicationEngine>\ m\_engine;}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00113}00113\ }
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00114}00114\ \ \ \ \ \textcolor{keywordtype}{void}\ generateScreenshotsForDevices(QStringList,\ \textcolor{keywordtype}{bool});}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00115}00115\ }
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00116}00116\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ saveScreenshot(\textcolor{keywordtype}{bool},\ QQuickWindow\ *,\ \textcolor{keyword}{const}\ QString\&);}
+\DoxyCodeLine{\Hypertarget{DemoRunner_8h_source_l00117}00117\ \};}
+
+\end{DoxyCode}

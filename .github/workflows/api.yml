@@ -20,7 +20,9 @@ jobs:
       run: pip install doxyqml
     - name: Generate documentation
       working-directory: doc
-      run: doxygen
+      run: |
+        doxygen
+        mv APIdoc ..
     - name: Publish Documentation
       if: github.event_name == 'push'
       uses: JamesIves/github-pages-deploy-action@v4

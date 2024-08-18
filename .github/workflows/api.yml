@@ -24,14 +24,6 @@ jobs:
     - name: Install Additional Software
       run: |
         sudo apt install doxygen extra-cmake-modules graphviz ninja-build spirv-tools
-    - name: Compile QtLocation
-      run: |
-        cmake -E make_directory build-qtlocation
-        cd build-qtlocation
-        qt-configure-module ../qtlocation
-        cmake -DMBGL_QT_WITH_INTERNAL_ICU:BOOL=On .
-        ninja
-        ninja install
     - name: Compile Enroute Flight Navigation
       run: |
         cmake -E make_directory build-enroute

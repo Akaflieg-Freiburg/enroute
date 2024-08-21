@@ -111,6 +111,8 @@ NOTAM::Notam::Notam(const QJsonObject& jsonObject)
 {
     auto notamObject = jsonObject[u"properties"_qs][u"coreNOTAMData"_qs][u"notam"_qs].toObject();
 
+
+    m_affectedFIR = notamObject[u"affectedFIR"_qs].toString();
     m_coordinate = interpretNOTAMCoordinates(notamObject[u"coordinates"_qs].toString());
     m_effectiveEndString = notamObject[u"effectiveEnd"_qs].toString();
     m_effectiveStartString = notamObject[u"effectiveStart"_qs].toString();
@@ -119,7 +121,8 @@ NOTAM::Notam::Notam(const QJsonObject& jsonObject)
     m_text = notamObject[u"text"_qs].toString();
     m_traffic = notamObject[u"traffic"_qs].toString();
 #warning
-    m_radius = qMin( Units::Distance::fromNM(4), Units::Distance::fromNM(notamObject[u"radius"_qs].toString().toDouble()) );
+    //m_radius = qMin( Units::Distance::fromNM(4), Units::Distance::fromNM(notamObject[u"radius"_qs].toString().toDouble()) );
+    m_radius = Units::Distance::fromNM(notamObject[u"radius"_qs].toString().toDouble());
 
     m_effectiveEnd = QDateTime::fromString(m_effectiveEndString, Qt::ISODate);
     m_effectiveStart = QDateTime::fromString(m_effectiveStartString, Qt::ISODate);
@@ -299,6 +302,7 @@ QGeoCoordinate NOTAM::interpretNOTAMCoordinates(const QString& string)
 
 QDataStream& NOTAM::operator<<(QDataStream& stream, const NOTAM::Notam& notam)
 {
+    stream << notam.m_affectedFIR;
     stream << notam.m_coordinate;
     stream << notam.m_effectiveEnd;
     stream << notam.m_effectiveEndString;
@@ -318,6 +322,7 @@ QDataStream& NOTAM::operator<<(QDataStream& stream, const NOTAM::Notam& notam)
 
 QDataStream& NOTAM::operator>>(QDataStream& stream, NOTAM::Notam& notam)
 {
+    stream >> notam.m_affectedFIR;
     stream >> notam.m_coordinate;
     stream >> notam.m_effectiveEnd;
     stream >> notam.m_effectiveEndString;

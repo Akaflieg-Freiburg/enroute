@@ -100,6 +100,24 @@ CenteringDialog {
 
     }
 
+    Component {
+        id: sectionHeading
+
+        Control {
+            required property string section
+
+            height: lbl.height
+
+            Label {
+                id: lbl
+
+                text: qsTr("NOTAM for %1").arg(parent.section)
+                font.pixelSize: parent.font.pixelSize*1.2
+                font.bold: true
+            }
+        }
+    }
+
     ColumnLayout {
         anchors.fill: parent
 
@@ -141,15 +159,13 @@ CenteringDialog {
 
             clip: true
 
+            model: notamListDialog.notamList.notams
+
+            section.property: "sectionTitle"
+            section.delegate: sectionHeading
+
             delegate: notamDelegate
 
-            header: Label {
-                text: "NOTAM"
-                font.bold: true
-                font.pixelSize: 1.2*notamListDialog.font.pixelSize
-            }
-
-            model: notamListDialog.notamList.notams
             ScrollIndicator.vertical: ScrollIndicator {}
         }
 

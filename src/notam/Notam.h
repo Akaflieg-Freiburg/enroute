@@ -52,6 +52,9 @@ public:
     // Properties
     //
 
+    /*! \brief Flight Information Region of this NOTAM */
+    Q_PROPERTY(QString affectedFIR READ affectedFIR CONSTANT)
+
     /*! \brief Cancels other Notam
      *
      *  If this is a cancel notam, then this property holds the number
@@ -83,22 +86,34 @@ public:
      */
     Q_PROPERTY(QJsonObject GeoJSON READ GeoJSON CONSTANT)
 
-    /*! \brief Validity of this Notam */
+    /*! \brief ICAO location of this NOTAM */
+    Q_PROPERTY(QString icaoLocation READ icaoLocation CONSTANT)
+
+    /*! \brief Validity of this NOTAM */
     Q_PROPERTY(bool isValid READ isValid CONSTANT)
 
-    /*! \brief Number of this Notam */
+    /*! \brief Number of this NOTAM */
     Q_PROPERTY(QString number READ number CONSTANT)
 
-    /*! \brief Rich text description of the Notam */
+    /*! \brief Region where this NOTAM is valid */
     Q_PROPERTY(QGeoCircle region READ region CONSTANT)
 
-    /*! \brief Traffic entry of the Notam */
+#warning
+    Q_PROPERTY(QString sectionTitle READ sectionTitle CONSTANT)
+
+    /*! \brief Traffic entry of the NOTAM */
     Q_PROPERTY(QString traffic READ traffic CONSTANT)
 
 
     //
     // Getter Methods
     //
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property affectedFIR
+     */
+    Q_REQUIRED_RESULT QString affectedFIR() const { return m_affectedFIR; }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -132,6 +147,12 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
+     *  @returns Property icaoLocation
+     */
+    Q_REQUIRED_RESULT QString icaoLocation() const { return m_icaoLocation; }
+
+    /*! \brief Getter function for the property with the same name
+     *
      *  @returns Property isValid
      */
     Q_REQUIRED_RESULT bool isValid() const;
@@ -147,6 +168,14 @@ public:
      *  @returns Property region
      */
     Q_REQUIRED_RESULT QGeoCircle region() const { return m_region; }
+
+    Q_REQUIRED_RESULT QString sectionTitle() const {
+        if (m_icaoLocation == m_affectedFIR)
+        {
+            return u"FIR %1"_qs.arg(m_icaoLocation);
+        }
+        return m_icaoLocation;
+    }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -189,6 +218,7 @@ public:
 
 private:
     /* Notam members, as described by the FAA */
+    QString         m_affectedFIR;
     QGeoCoordinate  m_coordinate;
     QString         m_effectiveEndString;
     QString         m_effectiveStartString;

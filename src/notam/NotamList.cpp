@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2023 by Stefan Kebekus                                  *
+ *   Copyright (C) 2023-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -48,14 +48,14 @@ NOTAM::NotamList::NotamList(const QJsonDocument& jsonDoc, const QGeoCircle& regi
             continue;
         }
 
-        // Ignore outdated notams
+        // Ignore outdated NOTAMs
         if (notam.isOutdated())
         {
             continue;
         }
 
-        // Ignore IFR notams
-        if (notam.traffic() == u"I"_qs)
+        // Ignore NOTAMs that do not pertain to VFR traffic. This excludes IFR-only NOTAMs and checklist NOTAMs.
+        if (!notam.traffic().contains(u"V"_qs))
         {
             continue;
         }

@@ -62,13 +62,13 @@ NOTAM::NotamList::NotamList(const QJsonDocument& jsonDoc, const QGeoCircle& regi
             continue;
         }
 
-        // Ignore duplicated entries
-/*
+        // Ignore duplicated entries. It turns out that the FAA duplicates NOTAMS, with multiple
+        // FIR entries, providing one copy for each FIR.
         if (numbersSeen.contains(notam.number()))
         {
             continue;
         }
-*/
+
         m_notams.append(notam);
         numbersSeen += notam.number();
     }
@@ -156,7 +156,7 @@ NOTAM::NotamList NOTAM::NotamList::restricted(const GeoMaps::Waypoint& waypoint)
 {
     NotamList result;
     result.m_retrieved = m_retrieved;
-    auto radius = qMax(0.0, m_region.radius() - m_region.center().distanceTo(waypoint.coordinate()));
+    auto radius = qMin(restrictionRadius.toM(), qMax(0.0, m_region.radius() - m_region.center().distanceTo(waypoint.coordinate())));
 
     result.m_region = QGeoCircle(waypoint.coordinate(), radius);
 
@@ -167,6 +167,10 @@ NOTAM::NotamList NOTAM::NotamList::restricted(const GeoMaps::Waypoint& waypoint)
             continue;
         }
         if (notam.isOutdated())
+        {
+            continue;
+        }
+        if (notam.coordinate().distanceTo(waypoint.coordinate()) > restrictionRadius.toM())
         {
             continue;
         }

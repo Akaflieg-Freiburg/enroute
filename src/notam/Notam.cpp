@@ -111,7 +111,6 @@ NOTAM::Notam::Notam(const QJsonObject& jsonObject)
 {
     auto notamObject = jsonObject[u"properties"_qs][u"coreNOTAMData"_qs][u"notam"_qs].toObject();
 
-
     m_affectedFIR = notamObject[u"affectedFIR"_qs].toString();
     m_coordinate = interpretNOTAMCoordinates(notamObject[u"coordinates"_qs].toString());
     m_effectiveEndString = notamObject[u"effectiveEnd"_qs].toString();
@@ -120,8 +119,6 @@ NOTAM::Notam::Notam(const QJsonObject& jsonObject)
     m_number = notamObject[u"number"_qs].toString();
     m_text = notamObject[u"text"_qs].toString();
     m_traffic = notamObject[u"traffic"_qs].toString();
-#warning
-    //m_radius = qMin( Units::Distance::fromNM(4), Units::Distance::fromNM(notamObject[u"radius"_qs].toString().toDouble()) );
     m_radius = Units::Distance::fromNM(notamObject[u"radius"_qs].toString().toDouble());
 
     m_effectiveEnd = QDateTime::fromString(m_effectiveEndString, Qt::ISODate);
@@ -227,6 +224,8 @@ QString NOTAM::Notam::richText() const
         result += u"<strong>%1</strong>"_qs.arg(effectiveEndString);
     }
 
+#warning Need to include upper and lower flight levels
+
     if (!m_schedule.isEmpty())
     {
         result += u"<strong>Schedule %1</strong>"_qs.arg(m_schedule);
@@ -246,7 +245,7 @@ QString NOTAM::Notam::richText() const
     {
         result += m_text;
     }
-    return result.join(u" • "_qs).replace(u"  "_qs, u" "_qs);
+    return u"<strong>%1: </strong>"_qs.arg(m_icaoLocation) + result.join(u" • "_qs).replace(u"  "_qs, u" "_qs);
 }
 
 

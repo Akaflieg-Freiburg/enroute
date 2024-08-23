@@ -170,6 +170,8 @@ public:
     Q_REQUIRED_RESULT QGeoCircle region() const { return m_region; }
 
     Q_REQUIRED_RESULT QString sectionTitle() const {
+        return {};
+#warning Need to work here
         if (m_icaoLocation == m_affectedFIR)
         {
             return u"FIR %1"_qs.arg(m_icaoLocation);

@@ -33,7 +33,11 @@ CenteringDialog {
 
     modal: true
     standardButtons: Dialog.Close
-    title: waypoint.extendedName
+    title: {
+        if (waypoint.ICAOCode === "")
+            return waypoint.extendedName
+        return waypoint.ICAOCode + " • " +waypoint.extendedName
+    }
 
     Component {
         id: notamDelegate
@@ -131,8 +135,13 @@ CenteringDialog {
 
         Label { // Incomplete Data warning
 
-            visible: !notamListDialog.notamList.isValid
-            text: qsTr("Data potentially outdated. Update requested.")
+            //visible: !notamListDialog.notamList.isValid
+            text: {
+                var txt = qsTr("Only showing NOTAMs centered nearby. Other NOTAMs may apply.")
+                if (!notamListDialog.notamList.isValid)
+                    txt += " • " + qsTr("Data potentially outdated. Update requested.")
+                return txt
+            }
             Layout.fillWidth: true
             wrapMode: Text.WordWrap
 
@@ -141,7 +150,6 @@ CenteringDialog {
             leftPadding: 0.2*font.pixelSize
             rightPadding: 0.2*font.pixelSize
 
-            // Background color according to METAR/FAA flight category
             background: Rectangle {
                 border.color: "black"
                 color: "yellow"

@@ -67,7 +67,11 @@ CenteringDialog {
     standardButtons: Dialog.Close
     focus: true
 
-    title: waypoint.extendedName
+    title:  {
+        if (waypoint.ICAOCode === "")
+            return waypoint.extendedName
+        return waypoint.ICAOCode + " • " +waypoint.extendedName
+    }
 
     Component {
         id: metarInfo

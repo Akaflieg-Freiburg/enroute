@@ -28,6 +28,8 @@
 
 NOTAM::NotamList::NotamList(const QJsonDocument& jsonDoc, const QGeoCircle& region, QSet<QString>* cancelledNotamNumbers)
 {
+    QSet<QString> numbersSeen;
+
     auto items = jsonDoc[u"items"_qs].toArray();
 
     foreach(auto item, items)
@@ -61,12 +63,14 @@ NOTAM::NotamList::NotamList(const QJsonDocument& jsonDoc, const QGeoCircle& regi
         }
 
         // Ignore duplicated entries
-        if (m_notams.contains(notam))
+/*
+        if (numbersSeen.contains(notam.number()))
         {
             continue;
         }
-
+*/
         m_notams.append(notam);
+        numbersSeen += notam.number();
     }
 
     m_retrieved = QDateTime::currentDateTimeUtc();

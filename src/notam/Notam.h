@@ -225,6 +225,8 @@ private:
     QString         m_effectiveEndString;
     QString         m_effectiveStartString;
     QString         m_icaoLocation;
+    QString         m_maximumFL;
+    QString         m_minimumFL;
     QString         m_number;
     Units::Distance m_radius;
     QString         m_schedule;

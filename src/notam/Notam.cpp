@@ -116,6 +116,8 @@ NOTAM::Notam::Notam(const QJsonObject& jsonObject)
     m_effectiveEndString = notamObject[u"effectiveEnd"_qs].toString();
     m_effectiveStartString = notamObject[u"effectiveStart"_qs].toString();
     m_icaoLocation = notamObject[u"icaoLocation"_qs].toString();
+    m_maximumFL = notamObject[u"maximumFL"_qs].toString();
+    m_minimumFL = notamObject[u"minimumFL"_qs].toString();
     m_number = notamObject[u"number"_qs].toString();
     m_text = notamObject[u"text"_qs].toString();
     m_traffic = notamObject[u"traffic"_qs].toString();
@@ -224,7 +226,10 @@ QString NOTAM::Notam::richText() const
         result += u"<strong>%1</strong>"_qs.arg(effectiveEndString);
     }
 
-#warning Need to include upper and lower flight levels
+    if (m_minimumFL != "000" || m_maximumFL != "999")
+    {
+        result += u"<strong>FL%1-FL%2</strong>"_qs.arg(m_minimumFL, m_maximumFL).replace("FL000", "GND");
+    }
 
     if (!m_schedule.isEmpty())
     {
@@ -308,6 +313,8 @@ QDataStream& NOTAM::operator<<(QDataStream& stream, const NOTAM::Notam& notam)
     stream << notam.m_effectiveStart;
     stream << notam.m_effectiveStartString;
     stream << notam.m_icaoLocation;
+    stream << notam.m_maximumFL;
+    stream << notam.m_minimumFL;
     stream << notam.m_number;
     stream << notam.m_radius;
     stream << notam.m_region;
@@ -328,6 +335,8 @@ QDataStream& NOTAM::operator>>(QDataStream& stream, NOTAM::Notam& notam)
     stream >> notam.m_effectiveStart;
     stream >> notam.m_effectiveStartString;
     stream >> notam.m_icaoLocation;
+    stream >> notam.m_maximumFL;
+    stream >> notam.m_minimumFL;
     stream >> notam.m_number;
     stream >> notam.m_radius;
     stream >> notam.m_region;

@@ -26,12 +26,17 @@ import QtQuick.Controls
 
 import akaflieg_freiburg.enroute
 
-QtObject {
+Item {
+    id: global
+
     property Loader dialogLoader
     property Drawer drawer
     property var toast
     property vac currentVAC
     property vac defaultVAC
+
+    // Warning
+    property bool warnNOTAMLocation: true
 
     property LocationPermission locationPermission: LocationPermission {
         id: locationPermission
@@ -42,5 +47,11 @@ QtObject {
         onStatusChanged: PositionProvider.startUpdates()
         Component.onCompleted: PositionProvider.startUpdates()
     }
+
+    Settings {
+        category: "GUIWarnings"
+        property alias warnNOTAMLocation: global.warnNOTAMLocation
+    }
+
 
 }

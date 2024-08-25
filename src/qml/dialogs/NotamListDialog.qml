@@ -135,13 +135,26 @@ CenteringDialog {
 
         Label { // Incomplete Data warning
 
-            //visible: !notamListDialog.notamList.isValid
+            visible: text !== ""
             text: {
-                var txt = qsTr("Only showing NOTAMs centered nearby. Other NOTAMs may apply.")
+                var txt = ""
                 if (!notamListDialog.notamList.isValid)
-                    txt += " • " + qsTr("Data potentially outdated. Update requested.")
+                    txt = qsTr("Data potentially outdated. Update requested.")
+
+                if (Global.warnNOTAMLocation)
+                {
+                    if (txt !== "")
+                        txt += " • "
+                    txt += qsTr("Only showing NOTAMs centered nearby. Other NOTAMs may apply.")
+                    txt += " <a href='xx'>" + qsTr("Dismiss this warning.") + "</a>"
+                }
                 return txt
             }
+            onLinkActivated: {
+                PlatformAdaptor.vibrateBrief()
+                Global.warnNOTAMLocation = false
+            }
+
             Layout.fillWidth: true
             wrapMode: Text.WordWrap
 

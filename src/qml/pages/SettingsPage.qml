@@ -246,6 +246,29 @@ Page {
                 }
             }
 
+            WordWrappingItemDelegate {
+                Layout.fillWidth: true
+                icon.source: "/icons/material/ic_warning.svg"
+                text: qsTr("Show All Warnings")
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    GlobalSettings.alwaysOpenExternalWebsites = false
+                    Global.warnNOTAMLocation = true
+                    Global.toast.doToast(qsTr("Warnings will be shown again."))
+                }
+                visible: GlobalSettings.alwaysOpenExternalWebsites || !Global.warnNOTAMLocation
+            }
+            ToolButton {
+                icon.source: "/icons/material/ic_info_outline.svg"
+                visible: GlobalSettings.alwaysOpenExternalWebsites || !Global.warnNOTAMLocation
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    helpDialog.title = qsTr("Show All Warnings")
+                    helpDialog.text = "<p>" + qsTr("This entry is visible if you have previously disabled warnings. Tap on this entry to show all warnings again.") + "</p>"
+                    helpDialog.open()
+                }
+            }
+
             Label {
                 Layout.leftMargin: settingsPage.font.pixelSize
                 Layout.columnSpan: 2
@@ -348,28 +371,6 @@ Page {
                     PlatformAdaptor.vibrateBrief()
                     helpDialog.title = qsTr("Clear Password Storage")
                     helpDialog.text = "<p>" + qsTr("This entry is visible if you have connected to a traffic data receiver that requires a password in addition to the Wi-Fi password and if you have asked the app to remember the password. Tap on this entry to clear the password storage.") + "</p>"
-                    helpDialog.open()
-                }
-            }
-
-            WordWrappingItemDelegate {
-                Layout.fillWidth: true
-                icon.source: "/icons/material/ic_lock.svg"
-                text: qsTr("Show Privacy Warnings")
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    GlobalSettings.alwaysOpenExternalWebsites = false
-                    Global.toast.doToast(qsTr("Privacy warnings will be shown again."))
-                }
-                visible: (GlobalSettings.alwaysOpenExternalWebsites === true)
-            }
-            ToolButton {
-                icon.source: "/icons/material/ic_info_outline.svg"
-                visible: (GlobalSettings.alwaysOpenExternalWebsites === true)
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                    helpDialog.title = qsTr("Show Privacy Warnings")
-                    helpDialog.text = "<p>" + qsTr("This entry is visible if you have disabled privacy warnings by selecting 'Do not ask again' in an appropriate dialog. Tap on this entry to re-enable all warnings.") + "</p>"
                     helpDialog.open()
                 }
             }

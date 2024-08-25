@@ -198,6 +198,7 @@ QString NOTAM::Notam::richText() const
 {
     QStringList result;
 
+    // Generate a string description for the effective start. This might be empty.
     auto effectiveStartString = m_effectiveStartString;
     if (m_effectiveStart.isValid())
     {
@@ -217,6 +218,7 @@ QString NOTAM::Notam::richText() const
             }
         }
     }
+
     auto effectiveEndString = m_effectiveEndString;
     if (m_effectiveEnd.isValid())
     {
@@ -246,8 +248,7 @@ QString NOTAM::Notam::richText() const
     result += u"<strong>%1 until %2</strong>"_qs.arg(effectiveStartString, effectiveEndString);
     }
 
-
-    if (m_minimumFL != "000" || m_maximumFL != "999")
+    if ((m_minimumFL.size() == 3) && (m_maximumFL.size() == 3) && !(m_minimumFL == "000" && m_maximumFL == "999"))
     {
         result += u"<strong>FL%1-FL%2</strong>"_qs.arg(m_minimumFL, m_maximumFL).replace("FL000", "GND");
     }

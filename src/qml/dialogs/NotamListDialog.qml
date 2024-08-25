@@ -36,7 +36,7 @@ CenteringDialog {
     title: {
         if (waypoint.ICAOCode === "")
             return waypoint.extendedName
-        return waypoint.ICAOCode + " • " +waypoint.extendedName
+        return waypoint.ICAOCode + " • " + waypoint.extendedName
     }
 
     Component {

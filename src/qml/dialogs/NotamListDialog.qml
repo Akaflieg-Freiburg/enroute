@@ -115,7 +115,7 @@ CenteringDialog {
             Label {
                 id: lbl
 
-                text: qsTr("NOTAM for %1").arg(parent.section)
+                text: parent.section
                 font.pixelSize: parent.font.pixelSize*1.2
                 font.bold: true
             }

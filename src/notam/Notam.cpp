@@ -24,6 +24,7 @@
 #include "GlobalObject.h"
 #include "GlobalSettings.h"
 #include "notam/Notam.h"
+#include "notam/NotamProvider.h"
 
 
 // Static objects
@@ -170,7 +171,6 @@ QJsonObject NOTAM::Notam::GeoJSON() const
 }
 
 
-
 bool NOTAM::Notam::isValid() const
 {
     if (!m_coordinate.isValid())
@@ -207,24 +207,45 @@ QString NOTAM::Notam::richText() const
         }
         else
         {
-            effectiveStartString = m_effectiveStart.toString(u"ddMMMyy hh:mm"_qs);
+            if (m_effectiveStart.date() == QDateTime::currentDateTimeUtc().date())
+            {
+                effectiveStartString = u"Today %1"_qs.arg(m_effectiveStart.toString(u"hh:mm"_qs));
+            }
+            else
+            {
+                effectiveStartString = m_effectiveStart.toString(u"ddMMMyy hh:mm"_qs);
+            }
         }
     }
     auto effectiveEndString = m_effectiveEndString;
     if (m_effectiveEnd.isValid())
     {
-        effectiveEndString = m_effectiveEnd.toString(u"ddMMMyy hh:mm"_qs);
+        if (m_effectiveStart.isValid() && !m_effectiveStartString.isEmpty() && m_effectiveStart.date() == m_effectiveEnd.date() )
+        {
+            effectiveEndString = m_effectiveEnd.toString(u"hh:mm"_qs);
+        }
+        else
+        {
+            effectiveEndString = m_effectiveEnd.toString(u"ddMMMyy hh:mm"_qs);
+        }
     }
 
-    if (m_effectiveEnd.isValid())
+    if (effectiveStartString.isEmpty())
     {
-        result += u"<strong>Effective %1 to %2</strong>"_qs.arg(effectiveStartString, effectiveEndString);
+        if (m_effectiveEnd.isValid())
+        {
+            result += u"<strong>Until %1</strong>"_qs.arg(effectiveEndString);
+        }
+        else
+        {
+            result += u"<strong>%1</strong>"_qs.arg(effectiveEndString);
+        }
     }
     else
     {
-        result += u"<strong>Effective %1</strong>"_qs.arg(effectiveStartString);
-        result += u"<strong>%1</strong>"_qs.arg(effectiveEndString);
+    result += u"<strong>%1 until %2</strong>"_qs.arg(effectiveStartString, effectiveEndString);
     }
+
 
     if (m_minimumFL != "000" || m_maximumFL != "999")
     {
@@ -253,6 +274,35 @@ QString NOTAM::Notam::richText() const
     return u"<strong>%1: </strong>"_qs.arg(m_icaoLocation) + result.join(u" • "_qs).replace(u"  "_qs, u" "_qs);
 }
 
+
+QString NOTAM::Notam::sectionTitle() const
+{
+    if (GlobalObject::notamProvider()->isRead(m_number))
+    {
+        return "Marked as read";
+    }
+
+    if (m_effectiveStart.isValid())
+    {
+        if (m_effectiveStart < QDateTime::currentDateTimeUtc())
+        {
+            return "Current";
+        }
+        if (m_effectiveStart < QDateTime::currentDateTimeUtc().addDays(1))
+        {
+            return "Next 24h";
+        }
+        if (m_effectiveStart < QDateTime::currentDateTimeUtc().addDays(90))
+        {
+            return "Next 90 days";
+        }
+        if (m_effectiveStart < QDateTime::currentDateTimeUtc().addDays(90))
+        {
+            return "> 90 days";
+        }
+    }
+    return "NOTAM";
+}
 
 
 //

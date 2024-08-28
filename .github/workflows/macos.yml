@@ -52,7 +52,8 @@ jobs:
           -DENABLE_BZIP2=OFF \
           -DENABLE_LZMA=OFF \
           -DENABLE_ZSTD=OFF \
-          -DCMAKE_INSTALL_PREFIX=$QT_ROOT_DIR
+          -DCMAKE_INSTALL_PREFIX=$QT_ROOT_DIR \
+          -DQTDEPLOY=ON 
         cmake --build build-libzip
         cmake --install build-libzip
     - name: Compile and Install maplibre-native-qt

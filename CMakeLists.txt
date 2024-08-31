@@ -72,7 +72,6 @@ qt_policy(SET QTP0002 NEW)
 # External Packages
 #
 
-find_package(Doxygen)
 find_package(libzip REQUIRED)
 find_package(Git REQUIRED)
 find_package(QMapLibre COMPONENTS Location REQUIRED)

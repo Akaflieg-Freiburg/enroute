@@ -250,9 +250,9 @@ QString NOTAM::Notam::richText() const
     result += u"<strong>%1 until %2</strong>"_qs.arg(effectiveStartString, effectiveEndString);
     }
 
-    if ((m_minimumFL.size() == 3) && (m_maximumFL.size() == 3) && !(m_minimumFL == "000" && m_maximumFL == "999"))
+    if ((m_minimumFL.size() == 3) && (m_maximumFL.size() == 3) && !(m_minimumFL == u"000"_qs && m_maximumFL == u"999"_qs))
     {
-        result += u"<strong>FL%1-FL%2</strong>"_qs.arg(m_minimumFL, m_maximumFL).replace("FL000", "GND");
+        result += u"<strong>FL%1-FL%2</strong>"_qs.arg(m_minimumFL, m_maximumFL).replace(u"FL000"_qs, u"GND"_qs);
     }
 
     if (!m_schedule.isEmpty())
@@ -278,33 +278,38 @@ QString NOTAM::Notam::richText() const
 }
 
 
-QString NOTAM::Notam::sectionTitle() const
+void NOTAM::Notam::updateSectionTitle()
 {
     if (GlobalObject::notamProvider()->isRead(m_number))
     {
-        return "Marked as read";
+        m_sectionTitle = u"Marked as read"_qs;
+        return;
     }
 
     if (m_effectiveStart.isValid())
     {
         if (m_effectiveStart < QDateTime::currentDateTimeUtc())
         {
-            return "Current";
+            m_sectionTitle = u"Current"_qs;
+            return;
         }
         if (m_effectiveStart < QDateTime::currentDateTimeUtc().addDays(1))
         {
-            return "Next 24h";
+            m_sectionTitle = u"Next 24h"_qs;
+            return;
         }
         if (m_effectiveStart < QDateTime::currentDateTimeUtc().addDays(90))
         {
-            return "Next 90 days";
+            m_sectionTitle = u"Next 90 days"_qs;
+            return;
         }
         if (m_effectiveStart < QDateTime::currentDateTimeUtc().addDays(90))
         {
-            return "> 90 days";
+            m_sectionTitle = u"> 90 days"_qs;
+            return;
         }
     }
-    return "NOTAM";
+    m_sectionTitle = u"NOTAM"_qs;
 }
 
 
@@ -372,6 +377,7 @@ QDataStream& NOTAM::operator<<(QDataStream& stream, const NOTAM::Notam& notam)
     stream << notam.m_radius;
     stream << notam.m_region;
     stream << notam.m_schedule;
+    stream << notam.m_sectionTitle;
     stream << notam.m_text;
     stream << notam.m_traffic;
 
@@ -394,6 +400,7 @@ QDataStream& NOTAM::operator>>(QDataStream& stream, NOTAM::Notam& notam)
     stream >> notam.m_radius;
     stream >> notam.m_region;
     stream >> notam.m_schedule;
+    stream >> notam.m_sectionTitle;
     stream >> notam.m_text;
     stream >> notam.m_traffic;
 

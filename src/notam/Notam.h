@@ -98,8 +98,12 @@ public:
     /*! \brief Region where this NOTAM is valid */
     Q_PROPERTY(QGeoCircle region READ region CONSTANT)
 
-#warning
-    Q_PROPERTY(QString sectionTitle READ sectionTitle CONSTANT)
+    /*! \brief Section title
+     *
+     *  This member can be set as desired, to allow for section titles
+     *  when displaying NOTAMs in a QML ListView.
+     */
+    Q_PROPERTY(QString sectionTitle MEMBER m_sectionTitle)
 
     /*! \brief Traffic entry of the NOTAM */
     Q_PROPERTY(QString traffic READ traffic CONSTANT)
@@ -169,9 +173,6 @@ public:
      */
     Q_REQUIRED_RESULT QGeoCircle region() const { return m_region; }
 
-#warning
-    Q_REQUIRED_RESULT QString sectionTitle() const;
-
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property traffic
@@ -210,6 +211,13 @@ public:
      */
     Q_REQUIRED_RESULT Q_INVOKABLE QString richText() const;
 
+    /*! \brief Update section title according to the current time
+     *
+     *  This method uses the current time to set the NOTAM's section title to one of
+     *  "Marked as read", "Current", "Next 24h", "Next 90 days", "> 90 days" or
+     *  "NOTAM".
+     */
+    void updateSectionTitle();
 
 private:
     /* Notam members, as described by the FAA */
@@ -222,6 +230,7 @@ private:
     QString         m_minimumFL;
     QString         m_number;
     Units::Distance m_radius;
+    QString         m_sectionTitle;
     QString         m_schedule;
     QString         m_text;
     QString         m_traffic;

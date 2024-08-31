@@ -174,6 +174,7 @@ public:
      *  @param waypoint Waypoint
      *
      *  @returns NotamList with all notams centered within restrictionRadius of the given waypoint, without expired and duplicated NOTAMs.
+     *  Section titles are set depending on the current time, using NOTAM::updateSectionTitle().
      */
     Q_REQUIRED_RESULT NOTAM::NotamList restricted(const GeoMaps::Waypoint& waypoint) const;
 

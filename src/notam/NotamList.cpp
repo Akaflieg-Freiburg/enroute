@@ -182,6 +182,7 @@ NOTAM::NotamList NOTAM::NotamList::restricted(const GeoMaps::Waypoint& waypoint)
         {
             continue;
         }
+        notam.updateSectionTitle();
         result.m_notams.append(notam);
     }
 

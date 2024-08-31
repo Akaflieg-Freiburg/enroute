@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2023 by Stefan Kebekus                                  *
+ *   Copyright (C) 2023-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -55,18 +55,18 @@ public:
     /*! \brief Flight Information Region of this NOTAM */
     Q_PROPERTY(QString affectedFIR READ affectedFIR CONSTANT)
 
-    /*! \brief Cancels other Notam
+    /*! \brief Cancels other NOTAM
      *
-     *  If this is a cancel notam, then this property holds the number
-     *  of the notam that is to be cancelled. Otherwise, this property
-     *  holds an empty string.
+     *  If this is a cancel notam, then this property holds the number of the
+     *  notam that is to be cancelled. Otherwise, this property holds an empty
+     *  string.
      */
     Q_PROPERTY(QString cancels READ cancels CONSTANT)
 
-    /*! \brief Coordinates of the Notam */
+    /*! \brief Coordinates of the NOTAM */
     Q_PROPERTY(QGeoCoordinate coordinate READ coordinate CONSTANT)
 
-    /*! \brief Effective end of the Notam, if date is given
+    /*! \brief Effective end of the NOTAM, if date is given
      *
      *  If the effectiveEnd field of the Notam specified a precise date/time,
      *  then this time is found here. If not, the property contains an invalid
@@ -74,7 +74,7 @@ public:
      */
     Q_PROPERTY(QDateTime effectiveEnd READ effectiveEnd CONSTANT)
 
-    /*! \brief Effective start of the Notam, if date is given
+    /*! \brief Effective start of the NOTAM, if date is given
      *
      *  If the effectiveStart field of the Notam specified a precise date/time,
      *  then this time is found here. If not, the property contains an invalid
@@ -213,9 +213,9 @@ public:
 
     /*! \brief Update section title according to the current time
      *
-     *  This method uses the current time to set the NOTAM's section title to one of
-     *  "Marked as read", "Current", "Next 24h", "Next 90 days", "> 90 days" or
-     *  "NOTAM".
+     *  This method uses the current time to set the NOTAM's section title to
+     *  one of "Marked as read", "Current", "Next 24h", "Next 90 days", "> 90
+     *  days" or "NOTAM".
      */
     void updateSectionTitle();
 

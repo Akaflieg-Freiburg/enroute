@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2023 by Stefan Kebekus                                  *
+ *   Copyright (C) 2023-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -72,6 +72,8 @@ public:
     /*! \brief Waypoints with Notam items, for presentation in a map */
     Q_PROPERTY(QList<GeoMaps::Waypoint> waypoints READ waypoints NOTIFY dataChanged)
 
+#warning
+    Q_PROPERTY(QString status READ status NOTIFY statusChanged)
 
 
     //
@@ -97,6 +99,8 @@ public:
      */
     Q_REQUIRED_RESULT QList<GeoMaps::Waypoint> waypoints() const;
 
+#warning
+    Q_REQUIRED_RESULT QString status() const;
 
 
     //
@@ -141,6 +145,9 @@ public:
 signals:
     /*! \brief Notifier signal */
     void dataChanged();
+
+    /*! \brief Notifier signal */
+    void statusChanged();
 
 private slots:   
     // Removes outdated and irrelevant data from the database. This slot is called

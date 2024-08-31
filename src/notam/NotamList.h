@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2023 by Stefan Kebekus                                  *
+ *   Copyright (C) 2023-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -54,8 +54,8 @@ public:
     /*! \brief Constructs a NotamList from FAA GeoJSON data
      *
      *  This constructor sets  the member m_retrieved to
-     *  QDateTime::currentDateTimeUtc(). Invalid Notams and Cancel Notams
-     *  will not be added to the list.
+     *  QDateTime::currentDateTimeUtc(). Invalid Notams and Cancel Notams will
+     *  not be added to the list.
      *
      *  @param jsonDoc JSON dociment, as provided by the FAA
      *
@@ -140,14 +140,15 @@ public:
 
     /*! \brief Time span between retrieved and now
      *
-     *  @returns Time span between retrieved and now. If retrieved() is invalid, and invalid time is returned.
+     *  @returns Time span between retrieved and now. If retrieved() is invalid,
+     *  and invalid time is returned.
      */
     Q_REQUIRED_RESULT Units::Timespan age() const;
 
     /*! \brief Sublist with expired and duplicated entries removed
      *
-     *  @param cancelledNotamNumbers Set with numbers of notams that are
-     *  known as cancelled
+     *  @param cancelledNotamNumbers Set with numbers of notams that are known
+     *  as cancelled
      *
      *  @returns Sublist with expired and duplicated entries removed.
      */
@@ -173,8 +174,10 @@ public:
      *
      *  @param waypoint Waypoint
      *
-     *  @returns NotamList with all notams centered within restrictionRadius of the given waypoint, without expired and duplicated NOTAMs.
-     *  Section titles are set depending on the current time, using NOTAM::updateSectionTitle().
+     *  @returns NotamList with all notams centered within restrictionRadius of
+     *  the given waypoint, without expired and duplicated NOTAMs. Section
+     *  titles are set depending on the current time, using
+     *  NOTAM::updateSectionTitle().
      */
     Q_REQUIRED_RESULT NOTAM::NotamList restricted(const GeoMaps::Waypoint& waypoint) const;
 

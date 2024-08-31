@@ -42,7 +42,7 @@ jobs:
         $QT_ROOT_DIR/bin/qt-cmake \
           -S enrouteDependencies/libzip \
           -B build-libzip \
-          -G Ninja  \
+          -G Ninja \
           -DBUILD_DOC=OFF \
           -DBUILD_EXAMPLES=OFF \
           -DBUILD_REGRESS=OFF \
@@ -52,8 +52,7 @@ jobs:
           -DENABLE_BZIP2=OFF \
           -DENABLE_LZMA=OFF \
           -DENABLE_ZSTD=OFF \
-          -DCMAKE_INSTALL_PREFIX=$QT_ROOT_DIR \
-          -DQTDEPLOY=ON 
+          -DCMAKE_INSTALL_PREFIX=$QT_ROOT_DIR
         cmake --build build-libzip
         cmake --install build-libzip
     - name: Compile and Install maplibre-native-qt
@@ -79,7 +78,8 @@ jobs:
           -DCMAKE_C_COMPILER_LAUNCHER="ccache" \
           -DCMAKE_CXX_COMPILER_LAUNCHER="ccache" \
           -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" \
-          -DCMAKE_INSTALL_PREFIX=. 
+          -DCMAKE_INSTALL_PREFIX=. \
+          -DQTDEPLOY=ON 
         cmake --build build-enroute
     - name: Package
       run: |

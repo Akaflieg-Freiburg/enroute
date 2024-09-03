@@ -72,9 +72,6 @@ public:
     /*! \brief Waypoints with Notam items, for presentation in a map */
     Q_PROPERTY(QList<GeoMaps::Waypoint> waypoints READ waypoints NOTIFY dataChanged)
 
-#warning
-    Q_PROPERTY(QString status READ status NOTIFY statusChanged)
-
 
     //
     // Getter Methods
@@ -98,9 +95,6 @@ public:
      *  @returns Property waypoints
      */
     Q_REQUIRED_RESULT QList<GeoMaps::Waypoint> waypoints() const;
-
-#warning
-    Q_REQUIRED_RESULT QString status() const;
 
 
     //
@@ -145,9 +139,6 @@ public:
 signals:
     /*! \brief Notifier signal */
     void dataChanged();
-
-    /*! \brief Notifier signal */
-    void statusChanged();
 
 private slots:   
     // Removes outdated and irrelevant data from the database. This slot is called

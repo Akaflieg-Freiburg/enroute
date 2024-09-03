@@ -30,8 +30,8 @@ Rectangle {
     // Remaining route info shown in this item
     property var rri: Navigator.remainingRouteInfo
 
-    height: grid.implicitHeight + SafeInsets.top
-    Behavior on height { NumberAnimation { duration: 100 } }
+    implicitHeight: grid.implicitHeight + SafeInsets.top
+    Behavior on implicitHeight { NumberAnimation { duration: 100 } }
 
     clip: true
 

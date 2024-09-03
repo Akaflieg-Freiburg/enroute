@@ -218,6 +218,10 @@ Item {
         Binding on center {
             id: centerBinding
 
+            // #warning
+            // Error here: this section should compute the coordinate for the center of the display
+            // It does compute the coordiname for the center of centerItem, which is not the same.
+
             restoreMode: Binding.RestoreNone
             when: flightMap.followGPS === true
             value: {
@@ -232,13 +236,11 @@ Item {
                 // of the aircraft. The following lines find a good radius for that
                 // circle, which ensures that the circle does not collide with any of the
                 // GUI elements.
-                const xCenter = flightMap.width/2.0
-                const yCenter = flightMap.height/2.0
+                const xCenter = centerItem.x + centerItem.width/2.0
+                const yCenter = centerItem.y + centerItem.height/2.0
                 const radiusInPixel = Math.min(
-                                        Math.abs(xCenter-zoomIn.x),
-                                        Math.abs(xCenter-followGPSButton.x-followGPSButton.width),
-                                        Math.abs(yCenter-northButton.y-northButton.height),
-                                        Math.abs(yCenter-zoomIn.y)
+                                        centerItem.width/2.0,
+                                        centerItem.height/2.0
                                         )
                 const radiusInM = 10000.0*radiusInPixel/flightMap.pixelPer10km
 
@@ -590,218 +592,245 @@ Item {
         }
     }
 
-    RemainingRouteBar {
-        id: remainingRoute
+    GridLayout {
+        anchors.fill: parent
+        columns: 3
 
-        visible: !Global.currentVAC.isValid
+        RemainingRouteBar {
+            id: remainingRoute
 
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-    }
+            Layout.columnSpan: 3
+            Layout.fillWidth: true
 
-    Pane {
-        id: airspaceAltLabel
+            visible: !Global.currentVAC.isValid
+        }
 
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: menuButton.verticalCenter
 
-        topPadding: 0
-        bottomPadding: 0
-        visible: (!Global.currentVAC.isValid) && GlobalSettings.airspaceAltitudeLimit.isFinite() && !DataManager.baseMapsRaster.hasFile
+        Item {
+            implicitHeight: menuButton.implicitHeight
+            implicitWidth: menuButton.implicitBackgroundWidth
 
-        Label {
+            MapButton {
+                id: menuButton
 
-            text: {
-                // Mention
-                Navigator.aircraft.verticalDistanceUnit
+                icon.source: "/icons/material/ic_menu.svg"
+                visible: !Global.currentVAC.isValid
 
-                var airspaceAltitudeLimit = GlobalSettings.airspaceAltitudeLimit
-                var airspaceAltitudeLimitString = Navigator.aircraft.verticalDistanceToString(airspaceAltitudeLimit)
-                return " "+qsTr("Airspaces up to %1").arg(airspaceAltitudeLimitString)+" "
+                onClicked: {
+                PlatformAdaptor.vibrateBrief()
+                drawer.open()
+            }
             }
         }
-    }
 
-    MapButton {
-        id: menuButton
-        icon.source: "/icons/material/ic_menu.svg"
+        Item {
+            Layout.alignment: Qt.AlignHCenter
 
-        anchors.left: parent.left
-        anchors.leftMargin: 0.5*font.pixelSize + SafeInsets.left
-        anchors.top: remainingRoute.visible ? remainingRoute.bottom : parent.top
-        anchors.topMargin: 0.5*font.pixelSize
+            implicitHeight: airspaceAltLabel.implicitHeight
+            implicitWidth: airspaceAltLabel.implicitWidth
 
-        visible: !Global.currentVAC.isValid
+            Label {
+                id: airspaceAltLabel
+                visible: (!Global.currentVAC.isValid) && GlobalSettings.airspaceAltitudeLimit.isFinite() && !DataManager.baseMapsRaster.hasFile
 
-        onClicked: {
-            PlatformAdaptor.vibrateBrief()
-            drawer.open()
-        }
-    }
+                text: {
+                    // Mention
+                    Navigator.aircraft.verticalDistanceUnit
 
-    MapButton {
-        id: northButton
+                    var airspaceAltitudeLimit = GlobalSettings.airspaceAltitudeLimit
+                    var airspaceAltitudeLimitString = Navigator.aircraft.verticalDistanceToString(airspaceAltitudeLimit)
+                    return " "+qsTr("Airspaces up to %1").arg(airspaceAltitudeLimitString)+" "
+                }
+                background: Rectangle {
+                    color: "white"
+                    opacity: 0.8
+                }
 
-        anchors.horizontalCenter: zoomIn.horizontalCenter
-        anchors.verticalCenter: menuButton.verticalCenter
-
-        rotation: -flightMap.bearing
-
-        icon.source: "/icons/NorthArrow.svg"
-
-        onClicked: {
-            if (GlobalSettings.mapBearingPolicy === GlobalSettings.NUp) {
-                GlobalSettings.mapBearingPolicy = GlobalSettings.TTUp
-                toast.doToast(qsTr("Map Mode: Track Up"))
-            } else {
-                GlobalSettings.mapBearingPolicy = GlobalSettings.NUp
-                toast.doToast(qsTr("Map Mode: North Up"))
             }
         }
-    }
 
-    MapButton {
-        id: followGPSButton
+        MapButton {
+            id: northButton
 
-        icon.source: "/icons/material/ic_my_location.svg"
+            rotation: -flightMap.bearing
 
-        enabled: !flightMap.followGPS
+            icon.source: "/icons/NorthArrow.svg"
 
-        anchors.left: parent.left
-        anchors.leftMargin: 0.5*font.pixelSize + SafeInsets.left
-        anchors.bottom: trafficDataReceiverButton.top
-        anchors.bottomMargin: trafficDataReceiverButton.visible ? 0.5*font.pixelSize : 1.5*font.pixelSize
-
-        onClicked: {
-            PlatformAdaptor.vibrateBrief()
-            flightMap.followGPS = true
-            toast.doToast(qsTr("Map Mode: Autopan"))
-        }
-    }
-
-    MapButton {
-        id: trafficDataReceiverButton
-
-        icon.source: "/icons/material/ic_airplanemode_active.svg"
-        icon.color: "red"
-        enabled: !TrafficDataProvider.receivingHeartbeat
-
-        anchors.left: parent.left
-        anchors.leftMargin: 0.5*font.pixelSize + SafeInsets.left
-        anchors.bottom: navBar.top
-        anchors.bottomMargin: visible ? 1.5*font.pixelSize : 0
-
-        onClicked: {
-            PlatformAdaptor.vibrateBrief()
-            PlatformAdaptor.vibrateBrief()
-            stackView.pop()
-            stackView.push("../pages/TrafficReceiver.qml", {"appWindow": view})
-        }
-    }
-
-    MapButton {
-        id: zoomIn
-
-        icon.source: "/icons/material/ic_add.svg"
-        enabled: flightMap.zoomLevel < flightMap.maximumZoomLevel
-        autoRepeat: true
-
-        anchors.right: parent.right
-        anchors.rightMargin: 0.5*font.pixelSize + SafeInsets.right
-        anchors.bottom: zoomOut.top
-        anchors.bottomMargin: 0.5*font.pixelSize
-
-        onClicked: {
-            centerBindingAnimation.omitAnimationforZoom()
-            PlatformAdaptor.vibrateBrief()
-            flightMap.zoomLevel += 1
-        }
-    }
-
-    MapButton {
-        id: zoomOut
-
-        icon.source: "/icons/material/ic_remove.svg"
-        enabled: flightMap.zoomLevel > flightMap.minimumZoomLevel
-        autoRepeat: true
-
-        anchors.right: parent.right
-        anchors.rightMargin: 0.5*font.pixelSize + SafeInsets.right
-        anchors.bottom: navBar.top
-        anchors.bottomMargin: 1.5*font.pixelSize
-
-        onClicked: {
-            centerBindingAnimation.omitAnimationforZoom()
-            PlatformAdaptor.vibrateBrief()
-            var newZoomLevel = Math.max(flightMap.zoomLevel - 1, flightMap.minimumZoomLevel)
-            flightMap.zoomLevel = newZoomLevel
-        }
-    }
-
-    Scale {
-        id: leftScale
-
-        anchors.top: northButton.bottom
-        anchors.topMargin: 0.5*font.pixelSize
-        anchors.bottom: followGPSButton.top
-        anchors.bottomMargin: 0.5*font.pixelSize
-        anchors.horizontalCenter: followGPSButton.horizontalCenter
-
-        opacity: GlobalSettings.nightMode ? 0.3 : 1.0
-        visible: (!Global.currentVAC.isValid) && !scale.visible
-
-        pixelPer10km: flightMap.pixelPer10km
-        vertical: true
-        width: 30
-    }
-
-    Scale {
-        id: scale
-
-        anchors.left: followGPSButton.right
-        anchors.leftMargin: 0.5*font.pixelSize
-        anchors.right: zoomIn.left
-        anchors.rightMargin: 0.5*font.pixelSize
-        anchors.verticalCenter: zoomOut.verticalCenter
-
-        opacity: GlobalSettings.nightMode ? 0.3 : 1.0
-        visible: (!Global.currentVAC.isValid) && (parent.height > parent.width)
-
-        pixelPer10km: flightMap.pixelPer10km
-        vertical: false
-        height: 30
-    }
-
-    Pane {
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.bottom: navBar.top
-        anchors.bottomMargin: 0.4*font.pixelSize
-        topPadding: 0
-        bottomPadding: 0
-
-        visible: (!Global.currentVAC.isValid)
-        Label {
-            id: noCopyrightInfo
-            text: "<a href='xx'>"+qsTr("Map Data Copyright Info")+"</a>"
-            onLinkActivated: {
-                Global.dialogLoader.active = false
-                Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {title: qsTr("Map Data Copyright Information"),
-                                                  text: GeoMapProvider.copyrightNotice,
-                                                  standardButtons: Dialog.Ok})
-                Global.dialogLoader.active = true
+            onClicked: {
+                if (GlobalSettings.mapBearingPolicy === GlobalSettings.NUp) {
+                    GlobalSettings.mapBearingPolicy = GlobalSettings.TTUp
+                    toast.doToast(qsTr("Map Mode: Track Up"))
+                } else {
+                    GlobalSettings.mapBearingPolicy = GlobalSettings.NUp
+                    toast.doToast(qsTr("Map Mode: North Up"))
+                }
             }
         }
+
+
+        Item {
+            Layout.fillHeight: true
+            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredWidth: 24
+
+            Scale {
+                id: leftScale
+
+                anchors.fill: parent
+                opacity: GlobalSettings.nightMode ? 0.3 : 1.0
+                visible: (!Global.currentVAC.isValid) && !scale.visible
+
+                pixelPer10km: flightMap.pixelPer10km
+                vertical: true
+            }
+        }
+
+        Rectangle {
+            id: centerItem
+
+            color: "white"
+            opacity: 0.3
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+        }
+
+        Item {
+            Layout.fillHeight: true
+        }
+
+
+        Item {
+            implicitHeight: followGPSButton.implicitHeight
+            implicitWidth: followGPSButton.implicitBackgroundWidth
+            MapButton {
+                id: followGPSButton
+
+                icon.source: "/icons/material/ic_my_location.svg"
+
+                enabled: !flightMap.followGPS
+
+                onClicked: {
+                PlatformAdaptor.vibrateBrief()
+                flightMap.followGPS = true
+                toast.doToast(qsTr("Map Mode: Autopan"))
+            }
+            }
+        }
+
+        Item {
+            Layout.fillWidth: true
+        }
+
+        Item {
+            implicitHeight: zoomIn.implicitHeight
+            implicitWidth: zoomIn.implicitBackgroundWidth
+            MapButton {
+                id: zoomIn
+
+                icon.source: "/icons/material/ic_add.svg"
+                enabled: flightMap.zoomLevel < flightMap.maximumZoomLevel
+                autoRepeat: true
+
+                onClicked: {
+                    centerBindingAnimation.omitAnimationforZoom()
+                    PlatformAdaptor.vibrateBrief()
+                    flightMap.zoomLevel += 1
+                }
+            }
+        }
+
+
+        Item {
+            implicitHeight: trafficDataReceiverButton.implicitHeight
+            implicitWidth: trafficDataReceiverButton.implicitWidth
+            MapButton {
+                id: trafficDataReceiverButton
+
+                icon.source: "/icons/material/ic_airplanemode_active.svg"
+                icon.color: "red"
+                enabled: !TrafficDataProvider.receivingHeartbeat
+
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                PlatformAdaptor.vibrateBrief()
+                    stackView.pop()
+                    stackView.push("../pages/TrafficReceiver.qml", {"appWindow": view})
+                }
+            }
+        }
+
+        Item {
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignVCenter
+            Layout.preferredHeight: 24
+
+            Scale {
+                id: scale
+
+                anchors.fill: parent
+
+                opacity: GlobalSettings.nightMode ? 0.3 : 1.0
+                visible: (!Global.currentVAC.isValid) && (page.height > page.width)
+
+                pixelPer10km: flightMap.pixelPer10km
+                vertical: false
+            }
+        }
+
+        Item {
+            implicitHeight: zoomOut.implicitHeight
+            implicitWidth: zoomOut.implicitBackgroundWidth
+            MapButton {
+                id: zoomOut
+
+                icon.source: "/icons/material/ic_remove.svg"
+                enabled: flightMap.zoomLevel > flightMap.minimumZoomLevel
+                autoRepeat: true
+
+                onClicked: {
+                centerBindingAnimation.omitAnimationforZoom()
+                PlatformAdaptor.vibrateBrief()
+                var newZoomLevel = Math.max(flightMap.zoomLevel - 1, flightMap.minimumZoomLevel)
+                flightMap.zoomLevel = newZoomLevel
+            }
+            }
+        }
+
+
+        Item {
+            Layout.columnSpan: 3
+            Layout.alignment: Qt.AlignHCenter
+
+            implicitHeight: noCopyrightInfo.implicitHeight
+            implicitWidth: noCopyrightInfo.implicitWidth
+
+            Label {
+                id: noCopyrightInfo
+                visible: (!Global.currentVAC.isValid)
+                text: "<a href='xx'>"+qsTr("Map Data Copyright Info")+"</a>"
+                onLinkActivated: {
+                    Global.dialogLoader.active = false
+                    Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {title: qsTr("Map Data Copyright Information"),
+                                                      text: GeoMapProvider.copyrightNotice,
+                                                      standardButtons: Dialog.Ok})
+                    Global.dialogLoader.active = true
+                }
+                background: Rectangle {
+                    color: "white"
+                    opacity: 0.8
+                }
+            }
+        }
+
+        NavBar {
+            id: navBar
+
+            Layout.fillWidth: true
+            Layout.columnSpan: 3
+        }
+
     }
 
-    NavBar {
-        id: navBar
-
-        anchors.right: parent.right
-        anchors.left: parent.left
-
-        y: parent.height - height
-    }
 
     WaypointDescription {
         id: waypointDescription

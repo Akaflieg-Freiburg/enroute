@@ -58,7 +58,7 @@ Item {
 
         property bool followGPS: true
         property real animatedTrack: PositionProvider.lastValidTT.isFinite() ? PositionProvider.lastValidTT.toDEG() : 0
-        Behavior on animatedTrack { RotationAnimation {duration: 400; direction: RotationAnimation.Shortest } }
+        Behavior on animatedTrack { RotationAnimation {duration: 1000; direction: RotationAnimation.Shortest } }
 
 
         // GESTURES
@@ -210,9 +210,22 @@ Item {
         // PROPERTY "center"
         //
 
-        // Initially, set the center to the last saved value
-        center: PositionProvider.lastValidCoordinate
 
+        // Initially, set the center to the last saved value
+        //center: PositionProvider.lastValidCoordinate
+
+        property real xx: {
+            var xCenter = centerItem.x + centerItem.width/2.0
+            var yCenter = centerItem.y + centerItem.height/2.0
+
+            const radiusInPixel = Math.min(centerItem.width/2.0, centerItem.height/2.0)
+            xCenter -= (radiusInPixel*Math.sin((animatedTrack - flightMap.bearing) * Math.PI / 180.0))
+            yCenter += (radiusInPixel*Math.cos((animatedTrack - flightMap.bearing) * Math.PI / 180.0))
+            flightMap.alignCoordinateToPoint(ownPosition.coordinate, Qt.point(xCenter, yCenter))
+            return 0
+        }
+
+/*
         // If "followGPS" is true, then update the map center whenever a new GPS position comes in
         // or the zoom level changes
         Binding on center {
@@ -266,7 +279,7 @@ Item {
             interval: 410  // little more than time for animation
             onTriggered: centerBindingAnimation.enabled = true
         }
-
+*/
 
         //
         // PROPERTY "zoomLevel"
@@ -788,11 +801,11 @@ Item {
                 autoRepeat: true
 
                 onClicked: {
-                centerBindingAnimation.omitAnimationforZoom()
-                PlatformAdaptor.vibrateBrief()
-                var newZoomLevel = Math.max(flightMap.zoomLevel - 1, flightMap.minimumZoomLevel)
-                flightMap.zoomLevel = newZoomLevel
-            }
+                    centerBindingAnimation.omitAnimationforZoom()
+                    PlatformAdaptor.vibrateBrief()
+                    var newZoomLevel = Math.max(flightMap.zoomLevel - 1, flightMap.minimumZoomLevel)
+                    flightMap.zoomLevel = newZoomLevel
+                }
             }
         }
 

@@ -215,12 +215,18 @@ Item {
         //center: PositionProvider.lastValidCoordinate
 
         property real xx: {
+            if (!flightMap.followGPS)
+                return 0
+
             var xCenter = centerItem.x + centerItem.width/2.0
             var yCenter = centerItem.y + centerItem.height/2.0
 
-            const radiusInPixel = Math.min(centerItem.width/2.0, centerItem.height/2.0)
-            xCenter -= (radiusInPixel*Math.sin((animatedTrack - flightMap.bearing) * Math.PI / 180.0))
-            yCenter += (radiusInPixel*Math.cos((animatedTrack - flightMap.bearing) * Math.PI / 180.0))
+            if ((Navigator.flightStatus === Navigator.Flight) && PositionProvider.lastValidTT.isFinite())
+            {
+                const radiusInPixel = Math.min(centerItem.width/2.0, centerItem.height/2.0)
+                xCenter -= (radiusInPixel*Math.sin((animatedTrack - flightMap.bearing) * Math.PI / 180.0))
+                yCenter += (radiusInPixel*Math.cos((animatedTrack - flightMap.bearing) * Math.PI / 180.0))
+            }
             flightMap.alignCoordinateToPoint(ownPosition.coordinate, Qt.point(xCenter, yCenter))
             return 0
         }

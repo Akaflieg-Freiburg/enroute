@@ -134,18 +134,19 @@ Item {
                              : PointerDevice.Mouse
             onWheel: (event) => {
                          const loc = flightMap.toCoordinate(wheel.point.position)
-                         switch (event.modifiers) {
-                             case Qt.NoModifier:
+                         if (event.modifiers === Qt.NoModifier)
+                         {
                              zoomLevelBehavior.enabled = false
                              flightMap.zoomLevel += event.angleDelta.y / 240
                              zoomLevelBehavior.enabled = true
-                             break
-                             case Qt.ShiftModifier:
+                         }
+                         else
+                         {
                              bearingBehavior.enabled = false
                              flightMap.bearing += event.angleDelta.y / 5
                              bearingBehavior.enabled = true
-                             break
                          }
+                         flightMap.followGPS = false;
                          flightMap.alignCoordinateToPoint(loc, wheel.point.position)
                      }
         }
@@ -214,78 +215,35 @@ Item {
         // Initially, set the center to the last saved value
         //center: PositionProvider.lastValidCoordinate
 
-        property real xx: {
-            if (!flightMap.followGPS)
-                return 0
 
-            var xCenter = centerItem.x + centerItem.width/2.0
-            var yCenter = centerItem.y + centerItem.height/2.0
-
-            if ((Navigator.flightStatus === Navigator.Flight) && PositionProvider.lastValidTT.isFinite())
-            {
-                const radiusInPixel = Math.min(centerItem.width/2.0, centerItem.height/2.0)
-                xCenter -= (radiusInPixel*Math.sin((animatedTrack - flightMap.bearing) * Math.PI / 180.0))
-                yCenter += (radiusInPixel*Math.cos((animatedTrack - flightMap.bearing) * Math.PI / 180.0))
-            }
-            flightMap.alignCoordinateToPoint(ownPosition.coordinate, Qt.point(xCenter, yCenter))
-            return 0
-        }
-
-/*
         // If "followGPS" is true, then update the map center whenever a new GPS position comes in
         // or the zoom level changes
-        Binding on center {
-            id: centerBinding
+        property var centerCoordinate: {
+            // If not in flight, then aircraft stays in center of display
+            if (Navigator.flightStatus !== Navigator.Flight)
+                return ownPosition.coordinate
+            if (!PositionProvider.lastValidTT.isFinite())
+                return ownPosition.coordinate
 
-            // #warning
-            // Error here: this section should compute the coordinate for the center of the display
-            // It does compute the coordiname for the center of centerItem, which is not the same.
+            // Otherwise, we position the aircraft someplace on a circle around the
+            // center, so that the map shows a larger portion of the airspace ahead
+            // of the aircraft. The following lines find a good radius for that
+            // circle, which ensures that the circle does not collide with any of the
+            // GUI elements.
+            const radiusInPixel = Math.min(centerItem.width/2.0, centerItem.height/2.0)
+            const radiusInM = 10000.0*radiusInPixel/flightMap.pixelPer10km
 
-            restoreMode: Binding.RestoreNone
-            when: flightMap.followGPS === true
-            value: {
-                // If not in flight, then aircraft stays in center of display
-                if (Navigator.flightStatus !== Navigator.Flight)
-                    return PositionProvider.lastValidCoordinate
-                if (!PositionProvider.lastValidTT.isFinite())
-                    return PositionProvider.lastValidCoordinate
-
-                // Otherwise, we position the aircraft someplace on a circle around the
-                // center, so that the map shows a larger portion of the airspace ahead
-                // of the aircraft. The following lines find a good radius for that
-                // circle, which ensures that the circle does not collide with any of the
-                // GUI elements.
-                const xCenter = centerItem.x + centerItem.width/2.0
-                const yCenter = centerItem.y + centerItem.height/2.0
-                const radiusInPixel = Math.min(
-                                        centerItem.width/2.0,
-                                        centerItem.height/2.0
-                                        )
-                const radiusInM = 10000.0*radiusInPixel/flightMap.pixelPer10km
-
-                return PositionProvider.lastValidCoordinate.atDistanceAndAzimuth(radiusInM, PositionProvider.lastValidTT.toDEG())
-            }
+            return ownPosition.coordinate.atDistanceAndAzimuth(radiusInM, animatedTrack)
         }
 
-        // We expect GPS updates every second. So, we choose an animation of duration 1000ms here, to obtain a flowing movement
-        Behavior on center {
-            id: centerBindingAnimation
-            CoordinateAnimation { duration: 1000 }
-            enabled: true
-
-            function omitAnimationforZoom() {
-                centerBindingAnimation.enabled = false
-                omitAnimationForZoomTimer.stop()  // stop in case it was already runnnig
-                omitAnimationForZoomTimer.start()
-            }
+        onCenterCoordinateChanged: {
+            if (!flightMap.followGPS)
+                return
+            var xCenter = centerItem.x + centerItem.width/2.0
+            var yCenter = centerItem.y + centerItem.height/2.0
+            flightMap.alignCoordinateToPoint(centerCoordinate, Qt.point(xCenter, yCenter))
         }
 
-        Timer {
-            id: omitAnimationForZoomTimer
-            interval: 410  // little more than time for animation
-            onTriggered: centerBindingAnimation.enabled = true
-        }
-*/
 
         //
         // PROPERTY "zoomLevel"
@@ -407,10 +365,7 @@ Item {
             id: ownPosition
 
             coordinate: PositionProvider.lastValidCoordinate
-
-            Behavior on coordinate {
-                CoordinateAnimation { duration: 1000 }
-            }
+            Behavior on coordinate { CoordinateAnimation { duration: 1000 } }
 
             Connections {
                 // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem
@@ -751,7 +706,6 @@ Item {
                 autoRepeat: true
 
                 onClicked: {
-                    centerBindingAnimation.omitAnimationforZoom()
                     PlatformAdaptor.vibrateBrief()
                     flightMap.zoomLevel += 1
                 }
@@ -807,7 +761,6 @@ Item {
                 autoRepeat: true
 
                 onClicked: {
-                    centerBindingAnimation.omitAnimationforZoom()
                     PlatformAdaptor.vibrateBrief()
                     var newZoomLevel = Math.max(flightMap.zoomLevel - 1, flightMap.minimumZoomLevel)
                     flightMap.zoomLevel = newZoomLevel

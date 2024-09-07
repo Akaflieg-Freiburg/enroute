@@ -98,7 +98,7 @@ public:
     /*! \brief Region where this NOTAM is valid */
     Q_PROPERTY(QGeoCircle region READ region CONSTANT)
 
-#warning
+    /*! \brief Section title for this NOTAM */
     Q_PROPERTY(QString sectionTitle READ sectionTitle CONSTANT)
 
     /*! \brief Traffic entry of the NOTAM */
@@ -169,7 +169,10 @@ public:
      */
     Q_REQUIRED_RESULT QGeoCircle region() const { return m_region; }
 
-#warning
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property sectionTitle
+     */
     Q_REQUIRED_RESULT QString sectionTitle() const;
 
     /*! \brief Getter function for the property with the same name

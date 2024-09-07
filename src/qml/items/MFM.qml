@@ -170,6 +170,10 @@ Item {
                 if (active)
                 {
                     flightMap.followGPS = false
+                    if (GlobalSettings.mapBearingPolicy === GlobalSettings.TTUp)
+                    {
+                        GlobalSettings.mapBearingPolicy = GlobalSettings.UserDefinedBearingUp
+                    }
                 }
             }
         }
@@ -196,6 +200,7 @@ Item {
 
         // If "followGPS" is true, then update the map bearing whenever a new GPS position comes in
         Binding on bearing {
+            restoreMode: Binding.RestoreNone
             when: GlobalSettings.mapBearingPolicy !== GlobalSettings.UserDefinedBearingUp
             value: GlobalSettings.mapBearingPolicy === GlobalSettings.TTUp ? PositionProvider.lastValidTT.toDEG() : 0
         }
@@ -239,6 +244,12 @@ Item {
         onCenterCoordinateChanged: {
             if (!flightMap.followGPS)
                 return
+            var xCenter = centerItem.x + centerItem.width/2.0
+            var yCenter = centerItem.y + centerItem.height/2.0
+            flightMap.alignCoordinateToPoint(centerCoordinate, Qt.point(xCenter, yCenter))
+        }
+
+        onMapReadyChanged: {
             var xCenter = centerItem.x + centerItem.width/2.0
             var yCenter = centerItem.y + centerItem.height/2.0
             flightMap.alignCoordinateToPoint(centerCoordinate, Qt.point(xCenter, yCenter))

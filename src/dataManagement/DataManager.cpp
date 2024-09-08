@@ -401,8 +401,6 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
         }
     }
 
-    qWarning() << minVersionString << currentVersionString;
-
     if (minVersionString > currentVersionString)
     {
         if (!m_appUpdateRequired)

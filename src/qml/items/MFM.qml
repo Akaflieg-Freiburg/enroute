@@ -539,7 +539,6 @@ Item {
                 flightMap.center = waypoint.coordinate
             }
         }
-
     }
 
     BrightnessContrast { // Graphical effects: increase contrast, reduce brightness in dark mode
@@ -591,7 +590,6 @@ Item {
         }
 
         // Column 1: Main Menu / Vertical Scale / ...
-
         ColumnLayout {
             Layout.fillHeight: true
 
@@ -655,7 +653,6 @@ Item {
         }
 
         // Colmnn 2: Info Label / Center Item / Copyright / Horizontal Scale
-
         ColumnLayout {
             Layout.fillHeight: true
             Layout.fillWidth: true
@@ -675,7 +672,7 @@ Item {
                     var airspaceAltitudeLimitString = Navigator.aircraft.verticalDistanceToString(airspaceAltitudeLimit)
                     return " "+qsTr("Airspaces up to %1").arg(airspaceAltitudeLimitString)+" "
                 }
-                background: Rectangle { color: "white" }
+                background: Pane {} // Rectangle { color: "white" }
             }
 
             Rectangle {
@@ -693,21 +690,18 @@ Item {
                 Layout.alignment: Qt.AlignRight
 
                 visible: (!Global.currentVAC.isValid)
-                text: "<a href='xx'>&nbsp;"+qsTr("Map Data ⓒ Info")+"&nbsp;</a>"
+                text: "<font size='2'><a href='xx'>&nbsp;"+qsTr("ⓒ Map Data")+"&nbsp;</a></font>"
                 opacity: 0.8
 
                 //style: Text.Outline
-                //styleColor: "white"
+                //styleColor: GlobalSettings.nightMode ? "black" : "white"
+                background: Pane { opacity: GlobalSettings.nightMode ? 0.3 : 0.8 }
                 onLinkActivated: {
                     Global.dialogLoader.active = false
                     Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {title: qsTr("Map Data Copyright Information"),
                                                       text: GeoMapProvider.copyrightNotice,
                                                       standardButtons: Dialog.Ok})
                     Global.dialogLoader.active = true
-                }
-                background: Rectangle {
-                    opacity: 0.8
-                    color: "lightgray"
                 }
             }
 
@@ -725,11 +719,9 @@ Item {
                 pixelPer10km: flightMap.pixelPer10km
                 vertical: false
             }
-
         }
 
         // Column 3: North Button / Spacer / Zoom In / Zoom Out
-
         ColumnLayout {
             Layout.fillHeight: true
 
@@ -789,7 +781,6 @@ Item {
             Layout.fillWidth: true
             Layout.columnSpan: 3
         }
-
     }
 
 

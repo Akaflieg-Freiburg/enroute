@@ -72,6 +72,9 @@ public:
     /*! \brief Waypoints with Notam items, for presentation in a map */
     Q_PROPERTY(QList<GeoMaps::Waypoint> waypoints READ waypoints NOTIFY dataChanged)
 
+#warning
+//    Q_PROPERTY(QString status READ status NOTIFY statusChanged)
+
 
     //
     // Getter Methods

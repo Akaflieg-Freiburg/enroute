@@ -250,9 +250,9 @@ QString NOTAM::Notam::richText() const
     result += u"<strong>%1 until %2</strong>"_qs.arg(effectiveStartString, effectiveEndString);
     }
 
-    if ((m_minimumFL.size() == 3) && (m_maximumFL.size() == 3) && !(m_minimumFL == "000" && m_maximumFL == "999"))
+    if ((m_minimumFL.size() == 3) && (m_maximumFL.size() == 3) && !(m_minimumFL == u"000"_qs && m_maximumFL == u"999"_qs))
     {
-        result += u"<strong>FL%1-FL%2</strong>"_qs.arg(m_minimumFL, m_maximumFL).replace("FL000", "GND");
+        result += u"<strong>FL%1-FL%2</strong>"_qs.arg(m_minimumFL, m_maximumFL).replace(u"FL000"_qs, u"GND"_qs);
     }
 
     if (!m_schedule.isEmpty())
@@ -282,29 +282,29 @@ QString NOTAM::Notam::sectionTitle() const
 {
     if (GlobalObject::notamProvider()->isRead(m_number))
     {
-        return "Marked as read";
+        return u"Marked as read"_qs;
     }
 
     if (m_effectiveStart.isValid())
     {
         if (m_effectiveStart < QDateTime::currentDateTimeUtc())
         {
-            return "Current";
+            return u"Current"_qs;
         }
         if (m_effectiveStart < QDateTime::currentDateTimeUtc().addDays(1))
         {
-            return "Next 24h";
+            return u"Next 24h"_qs;
         }
         if (m_effectiveStart < QDateTime::currentDateTimeUtc().addDays(90))
         {
-            return "Next 90 days";
+            return u"Next 90 days"_qs;
         }
         if (m_effectiveStart < QDateTime::currentDateTimeUtc().addDays(90))
         {
-            return "> 90 days";
+            return u"> 90 days"_qs;
         }
     }
-    return "NOTAM";
+    return u"NOTAM"_qs;
 }
 
 

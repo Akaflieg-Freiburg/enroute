@@ -590,10 +590,10 @@ Item {
             visible: !Global.currentVAC.isValid
         }
 
+        // Column 1: Main Menu / Vertical Scale / ...
 
-        Item {
-            implicitHeight: menuButton.implicitHeight
-            implicitWidth: menuButton.implicitBackgroundWidth
+        ColumnLayout {
+            Layout.fillHeight: true
 
             MapButton {
                 id: menuButton
@@ -602,20 +602,69 @@ Item {
                 visible: !Global.currentVAC.isValid
 
                 onClicked: {
-                PlatformAdaptor.vibrateBrief()
-                drawer.open()
+                    PlatformAdaptor.vibrateBrief()
+                    drawer.open()
+                }
             }
+
+            Item {
+                Layout.alignment: Qt.AlignHCenter
+                Layout.fillHeight: true
+                Layout.preferredWidth: 24
+
+                Scale {
+                    id: leftScale
+
+                    anchors.fill: parent
+                    opacity: GlobalSettings.nightMode ? 0.3 : 1.0
+                    visible: (!Global.currentVAC.isValid) && !scale.visible
+
+                    pixelPer10km: flightMap.pixelPer10km
+                    vertical: true
+                }
+            }
+
+            MapButton {
+                id: followGPSButton
+
+                icon.source: "/icons/material/ic_my_location.svg"
+
+                enabled: !flightMap.followGPS
+
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    flightMap.followGPS = true
+                    toast.doToast(qsTr("Map Mode: Autopan"))
+                }
+            }
+
+            MapButton {
+                id: trafficDataReceiverButton
+
+                icon.source: "/icons/material/ic_airplanemode_active.svg"
+                icon.color: "red"
+                enabled: !TrafficDataProvider.receivingHeartbeat
+
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    PlatformAdaptor.vibrateBrief()
+                    stackView.pop()
+                    stackView.push("../pages/TrafficReceiver.qml", {"appWindow": view})
+                }
             }
         }
 
-        Item {
-            Layout.alignment: Qt.AlignHCenter
+        // Colmnn 2: Info Label / Center Item / Copyright / Horizontal Scale
 
-            implicitHeight: airspaceAltLabel.implicitHeight
-            implicitWidth: airspaceAltLabel.implicitWidth
+        ColumnLayout {
+            Layout.fillHeight: true
+            Layout.fillWidth: true
 
             Label {
                 id: airspaceAltLabel
+
+                Layout.alignment: Qt.AlignHCenter
+
                 visible: (!Global.currentVAC.isValid) && GlobalSettings.airspaceAltitudeLimit.isFinite() && !DataManager.baseMapsRaster.hasFile
 
                 text: {
@@ -626,89 +675,86 @@ Item {
                     var airspaceAltitudeLimitString = Navigator.aircraft.verticalDistanceToString(airspaceAltitudeLimit)
                     return " "+qsTr("Airspaces up to %1").arg(airspaceAltitudeLimitString)+" "
                 }
+                background: Rectangle { color: "white" }
+            }
+
+            Rectangle {
+                id: centerItem
+
+                color: "white"
+                opacity: 0.3
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+            }
+
+            Label {
+                id: noCopyrightInfo
+
+                Layout.alignment: Qt.AlignRight
+
+                visible: (!Global.currentVAC.isValid)
+                text: "<a href='xx'>&nbsp;"+qsTr("Map Data ⓒ Info")+"&nbsp;</a>"
+                opacity: 0.8
+
+                //style: Text.Outline
+                //styleColor: "white"
+                onLinkActivated: {
+                    Global.dialogLoader.active = false
+                    Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {title: qsTr("Map Data Copyright Information"),
+                                                      text: GeoMapProvider.copyrightNotice,
+                                                      standardButtons: Dialog.Ok})
+                    Global.dialogLoader.active = true
+                }
                 background: Rectangle {
-                    color: "white"
                     opacity: 0.8
-                }
-
-            }
-        }
-
-        MapButton {
-            id: northButton
-
-            rotation: -flightMap.bearing
-
-            icon.source: "/icons/NorthArrow.svg"
-
-            onClicked: {
-                if (GlobalSettings.mapBearingPolicy === GlobalSettings.NUp) {
-                    GlobalSettings.mapBearingPolicy = GlobalSettings.TTUp
-                    toast.doToast(qsTr("Map Mode: Track Up"))
-                } else {
-                    GlobalSettings.mapBearingPolicy = GlobalSettings.NUp
-                    toast.doToast(qsTr("Map Mode: North Up"))
+                    color: "lightgray"
                 }
             }
-        }
-
-
-        Item {
-            Layout.fillHeight: true
-            Layout.alignment: Qt.AlignHCenter
-            Layout.preferredWidth: 24
 
             Scale {
-                id: leftScale
+                id: scale
 
-                anchors.fill: parent
+                Layout.bottomMargin: 14
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignVCenter
+                Layout.preferredHeight: 24
+
                 opacity: GlobalSettings.nightMode ? 0.3 : 1.0
-                visible: (!Global.currentVAC.isValid) && !scale.visible
+                visible: (!Global.currentVAC.isValid) && (page.height > page.width)
 
                 pixelPer10km: flightMap.pixelPer10km
-                vertical: true
+                vertical: false
             }
+
         }
 
-        Rectangle {
-            id: centerItem
+        // Column 3: North Button / Spacer / Zoom In / Zoom Out
 
-            color: "white"
-            opacity: 0.3
+        ColumnLayout {
             Layout.fillHeight: true
-            Layout.fillWidth: true
-        }
 
-        Item {
-            Layout.fillHeight: true
-        }
-
-
-        Item {
-            implicitHeight: followGPSButton.implicitHeight
-            implicitWidth: followGPSButton.implicitBackgroundWidth
             MapButton {
-                id: followGPSButton
+                id: northButton
 
-                icon.source: "/icons/material/ic_my_location.svg"
+                rotation: -flightMap.bearing
 
-                enabled: !flightMap.followGPS
+                icon.source: "/icons/NorthArrow.svg"
 
                 onClicked: {
-                PlatformAdaptor.vibrateBrief()
-                flightMap.followGPS = true
-                toast.doToast(qsTr("Map Mode: Autopan"))
+                    if (GlobalSettings.mapBearingPolicy === GlobalSettings.NUp) {
+                        GlobalSettings.mapBearingPolicy = GlobalSettings.TTUp
+                        toast.doToast(qsTr("Map Mode: Track Up"))
+                    } else {
+                        GlobalSettings.mapBearingPolicy = GlobalSettings.NUp
+                        toast.doToast(qsTr("Map Mode: North Up"))
+                    }
+                }
             }
+
+            Item {
+                Layout.fillHeight: true
             }
-        }
 
-        Item {
-            Layout.fillWidth: true
-        }
-
-        Item {
-            implicitHeight: zoomIn.implicitHeight
-            implicitWidth: zoomIn.implicitBackgroundWidth
             MapButton {
                 id: zoomIn
 
@@ -721,49 +767,7 @@ Item {
                     flightMap.zoomLevel += 1
                 }
             }
-        }
 
-
-        Item {
-            implicitHeight: trafficDataReceiverButton.implicitHeight
-            implicitWidth: trafficDataReceiverButton.implicitWidth
-            MapButton {
-                id: trafficDataReceiverButton
-
-                icon.source: "/icons/material/ic_airplanemode_active.svg"
-                icon.color: "red"
-                enabled: !TrafficDataProvider.receivingHeartbeat
-
-                onClicked: {
-                    PlatformAdaptor.vibrateBrief()
-                PlatformAdaptor.vibrateBrief()
-                    stackView.pop()
-                    stackView.push("../pages/TrafficReceiver.qml", {"appWindow": view})
-                }
-            }
-        }
-
-        Item {
-            Layout.fillWidth: true
-            Layout.alignment: Qt.AlignVCenter
-            Layout.preferredHeight: 24
-
-            Scale {
-                id: scale
-
-                anchors.fill: parent
-
-                opacity: GlobalSettings.nightMode ? 0.3 : 1.0
-                visible: (!Global.currentVAC.isValid) && (page.height > page.width)
-
-                pixelPer10km: flightMap.pixelPer10km
-                vertical: false
-            }
-        }
-
-        Item {
-            implicitHeight: zoomOut.implicitHeight
-            implicitWidth: zoomOut.implicitBackgroundWidth
             MapButton {
                 id: zoomOut
 
@@ -775,32 +779,6 @@ Item {
                     PlatformAdaptor.vibrateBrief()
                     var newZoomLevel = Math.max(flightMap.zoomLevel - 1, flightMap.minimumZoomLevel)
                     flightMap.zoomLevel = newZoomLevel
-                }
-            }
-        }
-
-
-        Item {
-            Layout.columnSpan: 3
-            Layout.alignment: Qt.AlignHCenter
-
-            implicitHeight: noCopyrightInfo.implicitHeight
-            implicitWidth: noCopyrightInfo.implicitWidth
-
-            Label {
-                id: noCopyrightInfo
-                visible: (!Global.currentVAC.isValid)
-                text: "<a href='xx'>"+qsTr("Map Data Copyright Info")+"</a>"
-                onLinkActivated: {
-                    Global.dialogLoader.active = false
-                    Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {title: qsTr("Map Data Copyright Information"),
-                                                      text: GeoMapProvider.copyrightNotice,
-                                                      standardButtons: Dialog.Ok})
-                    Global.dialogLoader.active = true
-                }
-                background: Rectangle {
-                    color: "white"
-                    opacity: 0.8
                 }
             }
         }

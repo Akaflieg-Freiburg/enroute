@@ -385,7 +385,7 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
         }
         if (minVersionString.size() < 8)
         {
-            minVersionString.insert(7, '0');
+            minVersionString.insert(6, '0');
         }
         if (currentVersionString[1] == '.')
         {
@@ -397,9 +397,11 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
         }
         if (currentVersionString.size() < 8)
         {
-            currentVersionString.insert(7, '0');
+            currentVersionString.insert(6, '0');
         }
     }
+
+    qWarning() << minVersionString << currentVersionString;
 
     if (minVersionString > currentVersionString)
     {

@@ -248,8 +248,8 @@ Item {
         }
 
         property var centerPoint: {
-            const xCenter = centerItem.x + centerItem.width/2.0
-            const yCenter = centerItem.y + centerItem.height/2.0
+            const xCenter = col2.x + centerItem.x + centerItem.width/2.0
+            const yCenter = col2.y + centerItem.y + centerItem.height/2.0
             return Qt.point(xCenter, yCenter)
         }
 
@@ -262,9 +262,7 @@ Item {
         onMapReadyChanged: alignMapToCenter()
 
         function alignMapToCenter() {
-            const xCenter = col2.x + centerItem.x + centerItem.width/2.0
-            const yCenter = col2.y + centerItem.y + centerItem.height/2.0
-            flightMap.alignCoordinateToPoint(centerCoordinate, Qt.point(xCenter, yCenter))
+            flightMap.alignCoordinateToPoint(centerCoordinate, centerPoint)
         }
 
 
@@ -604,6 +602,7 @@ Item {
         // Column 1: Main Menu / Vertical Scale / ...
         ColumnLayout {
             Layout.fillHeight: true
+            Layout.leftMargin: SafeInsets.left
 
             MapButton {
                 id: menuButton
@@ -736,6 +735,7 @@ Item {
         // Column 3: North Button / Spacer / Zoom In / Zoom Out
         ColumnLayout {
             Layout.fillHeight: true
+            Layout.rightMargin: SafeInsets.right
 
             MapButton {
                 id: northButton

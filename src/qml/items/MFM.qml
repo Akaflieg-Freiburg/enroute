@@ -216,11 +216,6 @@ Item {
         // PROPERTY "center"
         //
 
-
-        // Initially, set the center to the last saved value
-        //center: PositionProvider.lastValidCoordinate
-
-
         // If "followGPS" is true, then update the map center whenever a new GPS position comes in
         // or the zoom level changes
         property var centerCoordinate: {
@@ -244,17 +239,28 @@ Item {
         onCenterCoordinateChanged: {
             if (!flightMap.followGPS)
                 return
-            var xCenter = centerItem.x + centerItem.width/2.0
-            var yCenter = centerItem.y + centerItem.height/2.0
-            flightMap.alignCoordinateToPoint(centerCoordinate, Qt.point(xCenter, yCenter))
+            alignMapToCenter()
         }
 
-        onMapReadyChanged: {
-            var xCenter = centerItem.x + centerItem.width/2.0
-            var yCenter = centerItem.y + centerItem.height/2.0
-            flightMap.alignCoordinateToPoint(centerCoordinate, Qt.point(xCenter, yCenter))
+        property var centerPoint: {
+            const xCenter = centerItem.x + centerItem.width/2.0
+            const yCenter = centerItem.y + centerItem.height/2.0
+            return Qt.point(xCenter, yCenter)
         }
 
+        onCenterPointChanged:  {
+            if (!flightMap.followGPS)
+                return
+            alignMapToCenter()
+        }
+
+        onMapReadyChanged: alignMapToCenter()
+
+        function alignMapToCenter() {
+            const xCenter = centerItem.x + centerItem.width/2.0
+            const yCenter = centerItem.y + centerItem.height/2.0
+            flightMap.alignCoordinateToPoint(centerCoordinate, Qt.point(xCenter, yCenter))
+        }
 
         //
         // PROPERTY "zoomLevel"

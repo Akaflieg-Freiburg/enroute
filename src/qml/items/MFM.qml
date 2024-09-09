@@ -57,6 +57,11 @@ Item {
         copyrightsVisible: false // We have our own copyrights notice
 
         property bool followGPS: true
+        onFollowGPSChanged: {
+            if (followGPS)
+                alignMapToCenter()
+        }
+
         property real animatedTrack: PositionProvider.lastValidTT.isFinite() ? PositionProvider.lastValidTT.toDEG() : 0
         Behavior on animatedTrack { RotationAnimation {duration: 1000; direction: RotationAnimation.Shortest } }
 
@@ -257,10 +262,11 @@ Item {
         onMapReadyChanged: alignMapToCenter()
 
         function alignMapToCenter() {
-            const xCenter = centerItem.x + centerItem.width/2.0
-            const yCenter = centerItem.y + centerItem.height/2.0
+            const xCenter = col2.x + centerItem.x + centerItem.width/2.0
+            const yCenter = col2.y + centerItem.y + centerItem.height/2.0
             flightMap.alignCoordinateToPoint(centerCoordinate, Qt.point(xCenter, yCenter))
         }
+
 
         //
         // PROPERTY "zoomLevel"
@@ -660,6 +666,8 @@ Item {
 
         // Colmnn 2: Info Label / Center Item / Copyright / Horizontal Scale
         ColumnLayout {
+            id: col2
+
             Layout.fillHeight: true
             Layout.fillWidth: true
 
@@ -681,11 +689,9 @@ Item {
                 background: Pane {} // Rectangle { color: "white" }
             }
 
-            Rectangle {
+            Item {
                 id: centerItem
 
-                color: "white"
-                opacity: 0.3
                 Layout.fillHeight: true
                 Layout.fillWidth: true
             }

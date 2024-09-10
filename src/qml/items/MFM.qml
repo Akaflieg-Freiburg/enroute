@@ -669,12 +669,14 @@ Item {
 
             Layout.fillHeight: true
             Layout.fillWidth: true
+            Layout.minimumWidth: 0
 
             Label {
                 id: airspaceAltLabel
 
                 Layout.alignment: Qt.AlignHCenter
-                Layout.minimumWidth: 10
+                //Layout.preferredWidth: Math.min(col2.width, implicitWidth)
+                Layout.maximumWidth: col2.width
 
                 visible: (!Global.currentVAC.isValid) && GlobalSettings.airspaceAltitudeLimit.isFinite() && !DataManager.baseMapsRaster.hasFile
                 wrapMode: Text.WordWrap

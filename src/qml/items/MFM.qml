@@ -674,8 +674,10 @@ Item {
                 id: airspaceAltLabel
 
                 Layout.alignment: Qt.AlignHCenter
+                Layout.minimumWidth: 10
 
                 visible: (!Global.currentVAC.isValid) && GlobalSettings.airspaceAltitudeLimit.isFinite() && !DataManager.baseMapsRaster.hasFile
+                wrapMode: Text.WordWrap
 
                 text: {
                     // Mention
@@ -683,9 +685,11 @@ Item {
 
                     var airspaceAltitudeLimit = GlobalSettings.airspaceAltitudeLimit
                     var airspaceAltitudeLimitString = Navigator.aircraft.verticalDistanceToString(airspaceAltitudeLimit)
-                    return " "+qsTr("Airspaces up to %1").arg(airspaceAltitudeLimitString)+" "
+                    return " fdjk fg skgl dfjghdjfghlshjdf fj "+qsTr("Airspaces up to %1").arg(airspaceAltitudeLimitString)+" "
                 }
-                background: Pane {} // Rectangle { color: "white" }
+                background: Pane {
+                Material.elevation: 3
+                } // Rectangle { color: "white" }
             }
 
             Item {

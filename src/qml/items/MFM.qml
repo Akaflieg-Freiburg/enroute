@@ -677,16 +677,22 @@ Item {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.maximumWidth: col2.width
 
-                visible: (!Global.currentVAC.isValid) && GlobalSettings.airspaceAltitudeLimit.isFinite() && !DataManager.baseMapsRaster.hasFile
+                visible: (!Global.currentVAC.isValid) && !DataManager.baseMapsRaster.hasFile && (text !== "")
                 wrapMode: Text.WordWrap
 
                 text: {
-                    // Mention
-                    Navigator.aircraft.verticalDistanceUnit
+                    var resultList = []
 
-                    var airspaceAltitudeLimit = GlobalSettings.airspaceAltitudeLimit
-                    var airspaceAltitudeLimitString = Navigator.aircraft.verticalDistanceToString(airspaceAltitudeLimit)
-                    return qsTr("Airspaces up to %1").arg(airspaceAltitudeLimitString)
+                    if (GlobalSettings.airspaceAltitudeLimit.isFinite())
+                    {
+                        var airspaceAltitudeLimit = GlobalSettings.airspaceAltitudeLimit
+                        var airspaceAltitudeLimitString = Navigator.aircraft.verticalDistanceToString(airspaceAltitudeLimit)
+                        resultList.push(qsTr("Airspaces up to %1").arg(airspaceAltitudeLimitString))
+                    }
+                    if (DataManager.items.downloading)
+                        resultList.push(qsTr("Downloading Maps and Data"))
+                    return resultList.join(" • ")
+
                 }
 
                 leftPadding: font.pixelSize/2.0

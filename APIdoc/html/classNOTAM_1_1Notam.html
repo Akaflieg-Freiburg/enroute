@@ -111,9 +111,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6669ddb7becc6ab04b77d83dfeca6a4d" id="r_a6669ddb7becc6ab04b77d83dfeca6a4d"><td class="memItemLeft" align="right" valign="top">Q_REQUIRED_RESULT QGeoCircle&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6669ddb7becc6ab04b77d83dfeca6a4d">region</a> () const</td></tr>
 <tr class="memdesc:a6669ddb7becc6ab04b77d83dfeca6a4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
 <tr class="separator:a6669ddb7becc6ab04b77d83dfeca6a4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19eeb9e2f301bbde347305ae691c4084" id="r_a19eeb9e2f301bbde347305ae691c4084"><td class="memItemLeft" align="right" valign="top">Q_REQUIRED_RESULT QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a19eeb9e2f301bbde347305ae691c4084">sectionTitle</a> () const</td></tr>
-<tr class="memdesc:a19eeb9e2f301bbde347305ae691c4084"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
-<tr class="separator:a19eeb9e2f301bbde347305ae691c4084"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af9d2ef9a91d99392860f9f507fff0f42" id="r_af9d2ef9a91d99392860f9f507fff0f42"><td class="memItemLeft" align="right" valign="top">Q_REQUIRED_RESULT QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af9d2ef9a91d99392860f9f507fff0f42">traffic</a> () const</td></tr>
 <tr class="memdesc:af9d2ef9a91d99392860f9f507fff0f42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
 <tr class="separator:af9d2ef9a91d99392860f9f507fff0f42"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -126,6 +123,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac427031305157e3b6ffa2dbaa25ae96e" id="r_ac427031305157e3b6ffa2dbaa25ae96e"><td class="memItemLeft" align="right" valign="top">Q_REQUIRED_RESULT Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac427031305157e3b6ffa2dbaa25ae96e">richText</a> () const</td></tr>
 <tr class="memdesc:ac427031305157e3b6ffa2dbaa25ae96e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rich text description of the <a class="el" href="classNOTAM_1_1Notam.html" title="This extremely simple class holds a the data item of a NOTAM.">Notam</a>.  <br /></td></tr>
 <tr class="separator:ac427031305157e3b6ffa2dbaa25ae96e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e182dc845a210ab15b698736d2cf915" id="r_a8e182dc845a210ab15b698736d2cf915"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8e182dc845a210ab15b698736d2cf915">updateSectionTitle</a> ()</td></tr>
+<tr class="memdesc:a8e182dc845a210ab15b698736d2cf915"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update section title according to the current time.  <br /></td></tr>
+<tr class="separator:a8e182dc845a210ab15b698736d2cf915"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -134,17 +134,17 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>affectedFIR</b></t
 <tr class="memdesc:aa91d39ae4652b07c9096fa33ad945d7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flight Information Region of this NOTAM. <br /></td></tr>
 <tr class="separator:aa91d39ae4652b07c9096fa33ad945d7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6eb34c0fe31203c548f57ed9530fa736" id="r_a6eb34c0fe31203c548f57ed9530fa736"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6eb34c0fe31203c548f57ed9530fa736">cancels</a></td></tr>
-<tr class="memdesc:a6eb34c0fe31203c548f57ed9530fa736"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cancels other <a class="el" href="classNOTAM_1_1Notam.html" title="This extremely simple class holds a the data item of a NOTAM.">Notam</a>.  <br /></td></tr>
+<tr class="memdesc:a6eb34c0fe31203c548f57ed9530fa736"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cancels other NOTAM.  <br /></td></tr>
 <tr class="separator:a6eb34c0fe31203c548f57ed9530fa736"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f331cf8da9284fb7ead74f130f46651" id="r_a9f331cf8da9284fb7ead74f130f46651"><td class="memItemLeft" align="right" valign="top"><a id="a9f331cf8da9284fb7ead74f130f46651" name="a9f331cf8da9284fb7ead74f130f46651"></a>
 QGeoCoordinate&#160;</td><td class="memItemRight" valign="bottom"><b>coordinate</b></td></tr>
-<tr class="memdesc:a9f331cf8da9284fb7ead74f130f46651"><td class="mdescLeft">&#160;</td><td class="mdescRight">Coordinates of the <a class="el" href="classNOTAM_1_1Notam.html" title="This extremely simple class holds a the data item of a NOTAM.">Notam</a>. <br /></td></tr>
+<tr class="memdesc:a9f331cf8da9284fb7ead74f130f46651"><td class="mdescLeft">&#160;</td><td class="mdescRight">Coordinates of the NOTAM. <br /></td></tr>
 <tr class="separator:a9f331cf8da9284fb7ead74f130f46651"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a36911f46fbd6fcb9afc9b1013f23f4" id="r_a6a36911f46fbd6fcb9afc9b1013f23f4"><td class="memItemLeft" align="right" valign="top">QDateTime&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6a36911f46fbd6fcb9afc9b1013f23f4">effectiveEnd</a></td></tr>
-<tr class="memdesc:a6a36911f46fbd6fcb9afc9b1013f23f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Effective end of the <a class="el" href="classNOTAM_1_1Notam.html" title="This extremely simple class holds a the data item of a NOTAM.">Notam</a>, if date is given.  <br /></td></tr>
+<tr class="memdesc:a6a36911f46fbd6fcb9afc9b1013f23f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Effective end of the NOTAM, if date is given.  <br /></td></tr>
 <tr class="separator:a6a36911f46fbd6fcb9afc9b1013f23f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2196c1587de48dfa2db70100c60bfb04" id="r_a2196c1587de48dfa2db70100c60bfb04"><td class="memItemLeft" align="right" valign="top">QDateTime&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2196c1587de48dfa2db70100c60bfb04">effectiveStart</a></td></tr>
-<tr class="memdesc:a2196c1587de48dfa2db70100c60bfb04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Effective start of the <a class="el" href="classNOTAM_1_1Notam.html" title="This extremely simple class holds a the data item of a NOTAM.">Notam</a>, if date is given.  <br /></td></tr>
+<tr class="memdesc:a2196c1587de48dfa2db70100c60bfb04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Effective start of the NOTAM, if date is given.  <br /></td></tr>
 <tr class="separator:a2196c1587de48dfa2db70100c60bfb04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a50e580dc0f556ec255c6b2129a45a37e" id="r_a50e580dc0f556ec255c6b2129a45a37e"><td class="memItemLeft" align="right" valign="top"><a id="a50e580dc0f556ec255c6b2129a45a37e" name="a50e580dc0f556ec255c6b2129a45a37e"></a>
 QJsonObject&#160;</td><td class="memItemRight" valign="bottom"><b>GeoJSON</b></td></tr>
@@ -166,9 +166,8 @@ QString&#160;</td><td class="memItemRight" valign="bottom"><b>number</b></td></t
 QGeoCircle&#160;</td><td class="memItemRight" valign="bottom"><b>region</b></td></tr>
 <tr class="memdesc:ae3515f59a7d80fa3dc106977ab137ef6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Region where this NOTAM is valid. <br /></td></tr>
 <tr class="separator:ae3515f59a7d80fa3dc106977ab137ef6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a09d82fda93512e141813fed8faabda47" id="r_a09d82fda93512e141813fed8faabda47"><td class="memItemLeft" align="right" valign="top"><a id="a09d82fda93512e141813fed8faabda47" name="a09d82fda93512e141813fed8faabda47"></a>
-QString&#160;</td><td class="memItemRight" valign="bottom"><b>sectionTitle</b></td></tr>
-<tr class="memdesc:a09d82fda93512e141813fed8faabda47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Section title for this NOTAM. <br /></td></tr>
+<tr class="memitem:a09d82fda93512e141813fed8faabda47" id="r_a09d82fda93512e141813fed8faabda47"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a09d82fda93512e141813fed8faabda47">sectionTitle</a></td></tr>
+<tr class="memdesc:a09d82fda93512e141813fed8faabda47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Section title.  <br /></td></tr>
 <tr class="separator:a09d82fda93512e141813fed8faabda47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a9318885c40aeb7c8ffcaa830d554a8" id="r_a6a9318885c40aeb7c8ffcaa830d554a8"><td class="memItemLeft" align="right" valign="top"><a id="a6a9318885c40aeb7c8ffcaa830d554a8" name="a6a9318885c40aeb7c8ffcaa830d554a8"></a>
 QString&#160;</td><td class="memItemRight" valign="bottom"><b>traffic</b></td></tr>
@@ -249,7 +248,7 @@ Friends</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property affectedFIR </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Notam_8h_source.html#l00116">116</a> of file <a class="el" href="Notam_8h_source.html">Notam.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Notam_8h_source.html#l00120">120</a> of file <a class="el" href="Notam_8h_source.html">Notam.h</a>.</p>
 
 </div>
 </div>
@@ -299,7 +298,7 @@ Friends</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property coordinate </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Notam_8h_source.html#l00128">128</a> of file <a class="el" href="Notam_8h_source.html">Notam.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Notam_8h_source.html#l00132">132</a> of file <a class="el" href="Notam_8h_source.html">Notam.h</a>.</p>
 
 </div>
 </div>
@@ -329,7 +328,7 @@ Friends</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property effectiveEnd </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Notam_8h_source.html#l00134">134</a> of file <a class="el" href="Notam_8h_source.html">Notam.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Notam_8h_source.html#l00138">138</a> of file <a class="el" href="Notam_8h_source.html">Notam.h</a>.</p>
 
 </div>
 </div>
@@ -359,7 +358,7 @@ Friends</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property effectiveStart </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Notam_8h_source.html#l00140">140</a> of file <a class="el" href="Notam_8h_source.html">Notam.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Notam_8h_source.html#l00144">144</a> of file <a class="el" href="Notam_8h_source.html">Notam.h</a>.</p>
 
 </div>
 </div>
@@ -409,7 +408,7 @@ Friends</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property icaoLocation </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Notam_8h_source.html#l00152">152</a> of file <a class="el" href="Notam_8h_source.html">Notam.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Notam_8h_source.html#l00156">156</a> of file <a class="el" href="Notam_8h_source.html">Notam.h</a>.</p>
 
 </div>
 </div>
@@ -439,7 +438,7 @@ Friends</h2></td></tr>
 <p>Check if effectiveEnd is valid and earlier than currentTime. </p>
 <dl class="section return"><dt>Returns</dt><dd>True if effectiveEnd is valid and earlier than currentTime </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Notam_8h_source.html#l00202">202</a> of file <a class="el" href="Notam_8h_source.html">Notam.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Notam_8h_source.html#l00200">200</a> of file <a class="el" href="Notam_8h_source.html">Notam.h</a>.</p>
 
 </div>
 </div>
@@ -489,7 +488,7 @@ Friends</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property number </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Notam_8h_source.html#l00164">164</a> of file <a class="el" href="Notam_8h_source.html">Notam.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Notam_8h_source.html#l00168">168</a> of file <a class="el" href="Notam_8h_source.html">Notam.h</a>.</p>
 
 </div>
 </div>
@@ -553,7 +552,7 @@ Friends</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property region </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Notam_8h_source.html#l00170">170</a> of file <a class="el" href="Notam_8h_source.html">Notam.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Notam_8h_source.html#l00174">174</a> of file <a class="el" href="Notam_8h_source.html">Notam.h</a>.</p>
 
 </div>
 </div>
@@ -575,26 +574,6 @@ Friends</h2></td></tr>
 <p>Rich text description of the <a class="el" href="classNOTAM_1_1Notam.html" title="This extremely simple class holds a the data item of a NOTAM.">Notam</a>. </p>
 <p>The description and changes with time (e.g. when passing the effective start date of the <a class="el" href="classNOTAM_1_1Notam.html" title="This extremely simple class holds a the data item of a NOTAM.">Notam</a>.</p>
 <dl class="section return"><dt>Returns</dt><dd>HTML string </dd></dl>
-
-</div>
-</div>
-<a id="a19eeb9e2f301bbde347305ae691c4084" name="a19eeb9e2f301bbde347305ae691c4084"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a19eeb9e2f301bbde347305ae691c4084">&#9670;&#160;</a></span>sectionTitle()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Q_REQUIRED_RESULT QString NOTAM::Notam::sectionTitle </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Getter function for the property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property sectionTitle </dd></dl>
 
 </div>
 </div>
@@ -624,7 +603,28 @@ Friends</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property traffic </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Notam_8h_source.html#l00182">182</a> of file <a class="el" href="Notam_8h_source.html">Notam.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Notam_8h_source.html#l00180">180</a> of file <a class="el" href="Notam_8h_source.html">Notam.h</a>.</p>
+
+</div>
+</div>
+<a id="a8e182dc845a210ab15b698736d2cf915" name="a8e182dc845a210ab15b698736d2cf915"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e182dc845a210ab15b698736d2cf915">&#9670;&#160;</a></span>updateSectionTitle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NOTAM::Notam::updateSectionTitle </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Update section title according to the current time. </p>
+<p>This method uses the current time to set the NOTAM's section title to one of "Marked as read", "Current", "Next 24h", "Next 90 days", "&gt; 90
+days" or "NOTAM". </p>
 
 </div>
 </div>
@@ -714,7 +714,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Cancels other <a class="el" href="classNOTAM_1_1Notam.html" title="This extremely simple class holds a the data item of a NOTAM.">Notam</a>. </p>
+<p>Cancels other NOTAM. </p>
 <p>If this is a cancel notam, then this property holds the number of the notam that is to be cancelled. Otherwise, this property holds an empty string. </p>
 
 <p class="definition">Definition at line <a class="el" href="Notam_8h_source.html#l00064">64</a> of file <a class="el" href="Notam_8h_source.html">Notam.h</a>.</p>
@@ -741,7 +741,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Effective end of the <a class="el" href="classNOTAM_1_1Notam.html" title="This extremely simple class holds a the data item of a NOTAM.">Notam</a>, if date is given. </p>
+<p>Effective end of the NOTAM, if date is given. </p>
 <p>If the effectiveEnd field of the <a class="el" href="classNOTAM_1_1Notam.html" title="This extremely simple class holds a the data item of a NOTAM.">Notam</a> specified a precise date/time, then this time is found here. If not, the property contains an invalid QDateTime. </p>
 
 <p class="definition">Definition at line <a class="el" href="Notam_8h_source.html#l00075">75</a> of file <a class="el" href="Notam_8h_source.html">Notam.h</a>.</p>
@@ -768,10 +768,29 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Effective start of the <a class="el" href="classNOTAM_1_1Notam.html" title="This extremely simple class holds a the data item of a NOTAM.">Notam</a>, if date is given. </p>
+<p>Effective start of the NOTAM, if date is given. </p>
 <p>If the effectiveStart field of the <a class="el" href="classNOTAM_1_1Notam.html" title="This extremely simple class holds a the data item of a NOTAM.">Notam</a> specified a precise date/time, then this time is found here. If not, the property contains an invalid QDateTime. </p>
 
 <p class="definition">Definition at line <a class="el" href="Notam_8h_source.html#l00083">83</a> of file <a class="el" href="Notam_8h_source.html">Notam.h</a>.</p>
+
+</div>
+</div>
+<a id="a09d82fda93512e141813fed8faabda47" name="a09d82fda93512e141813fed8faabda47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09d82fda93512e141813fed8faabda47">&#9670;&#160;</a></span>sectionTitle</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">QString NOTAM::Notam::sectionTitle</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Section title. </p>
+<p>This member can be set as desired, to allow for section titles when displaying NOTAMs in a QML ListView. </p>
+
+<p class="definition">Definition at line <a class="el" href="Notam_8h_source.html#l00106">106</a> of file <a class="el" href="Notam_8h_source.html">Notam.h</a>.</p>
 
 </div>
 </div>

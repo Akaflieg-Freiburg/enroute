@@ -676,6 +676,7 @@ Item {
 
                 Layout.alignment: Qt.AlignHCenter
                 Layout.maximumWidth: col2.width
+                Layout.topMargin: 14
 
                 visible: (!Global.currentVAC.isValid) && !DataManager.baseMapsRaster.hasFile && (text !== "")
                 wrapMode: Text.WordWrap
@@ -691,8 +692,9 @@ Item {
                     }
                     if (DataManager.items.downloading)
                         resultList.push(qsTr("Downloading Maps and Data"))
+                    if (NotamProvider.status !== "")
+                        resultList.push(NotamProvider.status)
                     return resultList.join(" • ")
-
                 }
 
                 leftPadding: font.pixelSize/2.0

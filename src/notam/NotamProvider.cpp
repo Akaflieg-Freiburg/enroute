@@ -170,6 +170,13 @@ QByteArray NOTAM::NotamProvider::GeoJSON() const
 }
 
 
+QString NOTAM::NotamProvider::status() const
+{
+#warning
+    return u"NOTAM status template"_qs;
+}
+
+
 QList<GeoMaps::Waypoint> NOTAM::NotamProvider::waypoints() const
 {
     QList<GeoMaps::Waypoint> result;

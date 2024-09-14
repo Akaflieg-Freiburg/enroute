@@ -172,8 +172,26 @@ QByteArray NOTAM::NotamProvider::GeoJSON() const
 
 QString NOTAM::NotamProvider::status() const
 {
-#warning
-    return u"NOTAM status template"_qs;
+    auto position = Positioning::PositionProvider::lastValidCoordinate();
+    foreach (auto notamList, m_notamLists)
+    {
+        if (notamList.isOutdated())
+        {
+            continue;
+        }
+
+        auto region = notamList.region();
+        if (!region.isValid())
+        {
+            continue;
+        }
+        auto rangeInM = region.radius() - region.center().distanceTo(position);
+        if (rangeInM >= marginRadius.toM())
+        {
+            return {};
+        }
+    }
+    return tr("NOTAMs not current, requesting update");
 }
 
 

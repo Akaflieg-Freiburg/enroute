@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QBindable>
 #include <QNetworkReply>
 #include <QQmlEngine>
 
@@ -77,7 +78,7 @@ public:
      *  This is a translated, human-readable text with warnings about incomplete NOTAM data,
      *  or an empty string in case of no warning.
      */
-    Q_PROPERTY(QString status READ status NOTIFY statusChanged)
+    Q_PROPERTY(QString status READ status BINDABLE bindableStatus)
 
 
     //
@@ -101,7 +102,8 @@ public:
      *
      *  @returns Property status
      */
-    Q_REQUIRED_RESULT QString status() const;
+    Q_REQUIRED_RESULT QString status() const {return m_status;}
+    Q_REQUIRED_RESULT QBindable<QString> bindableStatus() {return &m_status;}
 
     /*! \brief Getter function for the property with the same name
      *
@@ -153,9 +155,6 @@ signals:
     /*! \brief Notifier signal */
     void dataChanged();
 
-    /*! \brief Notifier signal */
-    void statusChanged();
-
 private slots:   
     // Removes outdated and irrelevant data from the database. This slot is called
     // once per hour.
@@ -175,6 +174,10 @@ private slots:
     // current position and around the current flight route. If not, requests
     // the data.
     void updateData();
+
+    // Checks if NOTAM data is available for an area of marginRadius around the
+    // current position and around the current flight route. Update status accordingly.
+    void updateStatus();
 
 private:
     Q_DISABLE_COPY_MOVE(NotamProvider)
@@ -202,6 +205,9 @@ private:
 
     // Time of last update to data
     QDateTime m_lastUpdate;
+
+    // Filename for loading/saving NOTAM data
+    QProperty<QString> m_status;
 
     // Filename for loading/saving NOTAM data
     QString m_stdFileName;

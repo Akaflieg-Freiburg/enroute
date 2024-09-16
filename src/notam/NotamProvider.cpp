@@ -51,7 +51,7 @@ void NOTAM::NotamProvider::deferredInitialization()
     timer->start(11min);
     connect(timer, &QTimer::timeout, this, &NOTAM::NotamProvider::updateData);
     connect(navigator()->flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, &NOTAM::NotamProvider::updateData);
-    QTimer::singleShot(10s, this, &NOTAM::NotamProvider::updateData);
+    QTimer::singleShot(2s, this, &NOTAM::NotamProvider::updateData);
 
     // Wire up clean(). Clean the data every 61 minutes.
     timer = new QTimer(this);
@@ -75,6 +75,14 @@ void NOTAM::NotamProvider::deferredInitialization()
         }
     }
     clean();
+
+    // Setup Status
+    auto* statusTimer = new QTimer(this);
+    connect(statusTimer, &QTimer::timeout, this, &NOTAM::NotamProvider::updateStatus);
+    statusTimer->setInterval(5min+1s);
+    statusTimer->start();
+    connect(this, &NOTAM::NotamProvider::dataChanged, this, &NOTAM::NotamProvider::updateStatus);
+    updateStatus();
 }
 
 
@@ -167,31 +175,6 @@ QByteArray NOTAM::NotamProvider::GeoJSON() const
     QJsonDocument doc;
     doc.setObject(jsonObj);
     return doc.toJson();
-}
-
-
-QString NOTAM::NotamProvider::status() const
-{
-    auto position = Positioning::PositionProvider::lastValidCoordinate();
-    foreach (auto notamList, m_notamLists)
-    {
-        if (notamList.isOutdated())
-        {
-            continue;
-        }
-
-        auto region = notamList.region();
-        if (!region.isValid())
-        {
-            continue;
-        }
-        auto rangeInM = region.radius() - region.center().distanceTo(position);
-        if (rangeInM >= marginRadius.toM())
-        {
-            return {};
-        }
-    }
-    return tr("NOTAMs not current, requesting update");
 }
 
 
@@ -340,7 +323,6 @@ void NOTAM::NotamProvider::setRead(const QString& number, bool read)
 
 void NOTAM::NotamProvider::clean()
 {
-
     QList<NotamList> newNotamLists;
     QSet<QGeoCircle> regionsSeen;
     bool haveChange = false;
@@ -604,4 +586,30 @@ void NOTAM::NotamProvider::startRequest(const QGeoCoordinate& coordinate)
     m_networkReplies.append(reply);
     connect(reply, &QNetworkReply::finished, this, &NOTAM::NotamProvider::downloadFinished);
     connect(reply, &QNetworkReply::errorOccurred, this, &NOTAM::NotamProvider::downloadFinished);
+}
+
+
+void NOTAM::NotamProvider::updateStatus()
+{
+    auto position = Positioning::PositionProvider::lastValidCoordinate();
+    foreach (auto notamList, m_notamLists)
+    {
+        if (notamList.isOutdated())
+        {
+            continue;
+        }
+
+        auto region = notamList.region();
+        if (!region.isValid())
+        {
+            continue;
+        }
+        auto rangeInM = region.radius() - region.center().distanceTo(position);
+        if (rangeInM >= marginRadius.toM())
+        {
+            m_status = QString();
+            return;
+        }
+    }
+    m_status = tr("NOTAMs not current around own position, requesting update");
 }

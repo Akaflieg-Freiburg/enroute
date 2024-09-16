@@ -20,7 +20,6 @@
 
 #include <QFile>
 #include <QJsonArray>
-#include <QStandardPaths>
 #include <QTimer>
 #include <chrono>
 
@@ -39,8 +38,6 @@ using namespace std::chrono_literals;
 NOTAM::NotamProvider::NotamProvider(QObject* parent) :
     GlobalObject(parent)
 {
-    // Set stdFileName for saving and loading NOTAM data
-    m_stdFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+u"/notam.dat"_qs;
 }
 
 
@@ -72,6 +69,10 @@ void NOTAM::NotamProvider::deferredInitialization()
         {
             inputStream >> m_readNotamNumbers;
             inputStream >> m_notamLists;
+        }
+        if (!m_notamLists.isEmpty())
+        {
+            m_lastUpdate = m_notamLists[0].retrieved();
         }
     }
     clean();

@@ -23,6 +23,7 @@
 #include <QBindable>
 #include <QNetworkReply>
 #include <QQmlEngine>
+#include <QStandardPaths>
 
 #include "GlobalObject.h"
 #include "notam/NotamList.h"
@@ -68,7 +69,7 @@ public:
     Q_PROPERTY(QByteArray GeoJSON READ GeoJSON NOTIFY dataChanged)
 
     /*! \brief Time of last database update */
-    Q_PROPERTY(QDateTime lastUpdate READ lastUpdate NOTIFY dataChanged)
+    Q_PROPERTY(QDateTime lastUpdate READ lastUpdate BINDABLE bindableLastUpdate)
 
     /*! \brief Waypoints with Notam items, for presentation in a map */
     Q_PROPERTY(QList<GeoMaps::Waypoint> waypoints READ waypoints NOTIFY dataChanged)
@@ -96,13 +97,14 @@ public:
      *
      *  @returns Property lastUpdate
      */
-    Q_REQUIRED_RESULT QDateTime lastUpdate() const { return m_lastUpdate; }
+    Q_REQUIRED_RESULT QDateTime lastUpdate() const {return {m_lastUpdate};}
+    Q_REQUIRED_RESULT QBindable<QDateTime> bindableLastUpdate() { return &m_lastUpdate; }
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property status
      */
-    Q_REQUIRED_RESULT QString status() const {return m_status;}
+    Q_REQUIRED_RESULT QString status() const {return {m_status};}
     Q_REQUIRED_RESULT QBindable<QString> bindableStatus() {return &m_status;}
 
     /*! \brief Getter function for the property with the same name
@@ -204,13 +206,13 @@ private:
     QList<NotamList> m_notamLists;
 
     // Time of last update to data
-    QDateTime m_lastUpdate;
+    QProperty<QDateTime> m_lastUpdate;
 
     // Filename for loading/saving NOTAM data
     QProperty<QString> m_status;
 
     // Filename for loading/saving NOTAM data
-    QString m_stdFileName;
+    QString m_stdFileName { QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+u"/notam.dat"_qs };
 
     // The method updateDate() ensures that data is requested for marginRadius around
     // own position and current flight route.

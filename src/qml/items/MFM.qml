@@ -122,7 +122,7 @@ Item {
                                        return
                                    }
 
-                                   if (Math.abs(pinch.rawBearing-pinch.startBearing) > 5)
+                                   if (Math.abs(pinch.rawBearing-pinch.startBearing) > 20)
                                    {
                                        GlobalSettings.mapBearingPolicy = GlobalSettings.UserDefinedBearingUp
                                    }

@@ -80,8 +80,7 @@ void NOTAM::NotamProvider::deferredInitialization()
     // Setup Status
     auto* statusTimer = new QTimer(this);
     connect(statusTimer, &QTimer::timeout, this, &NOTAM::NotamProvider::updateStatus);
-    statusTimer->setInterval(5min+1s);
-    statusTimer->start();
+    statusTimer->start(5min+1s);
     connect(this, &NOTAM::NotamProvider::dataChanged, this, &NOTAM::NotamProvider::updateStatus);
     connect(navigator()->flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, &NOTAM::NotamProvider::updateStatus);
     updateStatus();

@@ -301,12 +301,10 @@ public:
 public slots:
     /*! \brief Triggers an update of the list of remotely available data items
      *
-     *  This will trigger a download the file maps.json from the remote server.
+     *  This will trigger a download the file maps.json from the remote server if the last update
+     *  is more than one day ago.
      */
-    void updateRemoteDataItemList()
-    {
-        m_mapList.startDownload();
-    }
+    void updateRemoteDataItemListIfOutdated();
 
 signals:
     /*! Notifier signal */
@@ -360,7 +358,7 @@ private:
     QString m_dataDirectory {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/aviation_maps"};
 
     // The current whats new string from _aviationMaps.
-    QString m_whatsNew {};
+    QString m_whatsNew;
 
     // This Downloadable object manages the central text file that describes the
     // remotely available aviation maps.

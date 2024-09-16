@@ -20,6 +20,7 @@
 
 #include <QCoreApplication>
 #include <QDirIterator>
+#include <QGuiApplication>
 #include <QImage>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -61,13 +62,16 @@ void DataManagement::DataManager::deferredInitialization()
     // If there is a downloaded maps.json file, we read it.
     updateDataItemListAndWhatsNew();
 
-    // If the last update is more than one day ago, automatically initiate an
-    // update, so that maps stay at least roughly current.
-    auto lastUpdate = QSettings().value(QStringLiteral("DataManager/MapListTimeStamp"), QDateTime()).toDateTime();
-    if (!lastUpdate.isValid() || (qAbs(lastUpdate.daysTo(QDateTime::currentDateTime()) > 0)))
-    {
-        updateRemoteDataItemList();
-    }
+    // Update maps.json file if that is too old. Check that whenever the app comes forward.
+    updateRemoteDataItemListIfOutdated();
+    connect(qGuiApp, &QGuiApplication::applicationStateChanged, this,
+            [this](Qt::ApplicationState state)
+            {
+                if (state == Qt::ApplicationActive)
+                {
+                    updateRemoteDataItemListIfOutdated();
+                }
+            });
 }
 
 
@@ -485,5 +489,17 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
     {
         m_whatsNew = newWhatsNew;
         emit whatsNewChanged();
+    }
+}
+
+
+void DataManagement::DataManager::updateRemoteDataItemListIfOutdated()
+{
+    // If the last update is more than one day ago, automatically initiate an
+    // update, so that maps stay at least roughly current.
+    auto lastUpdate = QSettings().value(QStringLiteral("DataManager/MapListTimeStamp"), QDateTime()).toDateTime();
+    if (!lastUpdate.isValid() || (qAbs(lastUpdate.daysTo(QDateTime::currentDateTime()) > 0)))
+    {
+        m_mapList.startDownload();
     }
 }

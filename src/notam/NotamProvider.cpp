@@ -82,6 +82,7 @@ void NOTAM::NotamProvider::deferredInitialization()
     statusTimer->setInterval(5min+1s);
     statusTimer->start();
     connect(this, &NOTAM::NotamProvider::dataChanged, this, &NOTAM::NotamProvider::updateStatus);
+    connect(navigator()->flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, &NOTAM::NotamProvider::updateStatus);
     updateStatus();
 }
 
@@ -386,7 +387,6 @@ void NOTAM::NotamProvider::downloadFinished()
         }
         if (networkReply->error() != QNetworkReply::NoError)
         {
-            qWarning() << "FAA NOTAM Server returned with an error." << networkReply->error();
             networkReply->deleteLater();
             continue;
         }
@@ -398,11 +398,9 @@ void NOTAM::NotamProvider::downloadFinished()
         auto jsonDoc = QJsonDocument::fromJson(data);
         if (jsonDoc.isNull())
         {
-            qWarning() << u"FAA NOTAM Server returned with invalid or empty JSON data."_qs;
             continue;
         }
         NotamList const notamList(jsonDoc, region, &m_cancelledNotamNumbers);
-        qWarning() << u"FAA NOTAM Server returned with %1 NOTAMs."_qs.arg(notamList.notams().size());
         m_notamLists.prepend(notamList);
         newDataAdded = true;
     }
@@ -468,7 +466,7 @@ void NOTAM::NotamProvider::updateData()
                 }
             }
 
-/*
+            /*
             QGeoCoordinate startPoint = leg.startPoint().coordinate();
             QGeoCoordinate const endPoint = leg.endPoint().coordinate();
             if (!startPoint.isValid() || !endPoint.isValid())
@@ -577,7 +575,6 @@ void NOTAM::NotamProvider::startRequest(const QGeoCoordinate& coordinate)
                          .arg(coordinateRounded.longitude())
                          .arg(coordinateRounded.latitude())
                          .arg( qRound(1.2*requestRadius.toNM()) );
-    qWarning() << "NOTAM::NotamProvider::startRequest" << urlString;
     QNetworkRequest const request(urlString);
 
     auto* reply = GlobalObject::networkAccessManager()->get(request);
@@ -592,24 +589,54 @@ void NOTAM::NotamProvider::startRequest(const QGeoCoordinate& coordinate)
 void NOTAM::NotamProvider::updateStatus()
 {
     auto position = Positioning::PositionProvider::lastValidCoordinate();
-    foreach (auto notamList, m_notamLists)
+
+    QList<QGeoCoordinate> positionList;
+    positionList.append(position);
+    auto* route = navigator()->flightRoute();
+    if (route != nullptr)
     {
-        if (notamList.isOutdated())
+        positionList += route->geoPath();
+    }
+
+    foreach (auto pos, positionList)
+    {
+        if (!pos.isValid())
         {
             continue;
         }
 
-        auto region = notamList.region();
-        if (!region.isValid())
+        bool hasNOTAM = false;
+        foreach (auto notamList, m_notamLists)
         {
-            continue;
+            if (notamList.isOutdated())
+            {
+                continue;
+            }
+
+            auto region = notamList.region();
+            if (!region.isValid())
+            {
+                continue;
+            }
+            auto rangeInM = region.radius() - region.center().distanceTo(pos);
+            if (rangeInM >= marginRadius.toM())
+            {
+                hasNOTAM = true;
+                break;
+            }
         }
-        auto rangeInM = region.radius() - region.center().distanceTo(position);
-        if (rangeInM >= marginRadius.toM())
+        if (!hasNOTAM)
         {
-            m_status = QString();
+            if (position == pos)
+            {
+                m_status = tr("NOTAMs not current around own position, requesting update");
+            }
+            else
+            {
+                m_status = tr("NOTAMs not current around route, requesting update");
+            }
             return;
         }
     }
-    m_status = tr("NOTAMs not current around own position, requesting update");
+    m_status = QString();
 }

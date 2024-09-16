@@ -51,7 +51,6 @@ void NOTAM::NotamProvider::deferredInitialization()
     timer->start(11min);
     connect(timer, &QTimer::timeout, this, &NOTAM::NotamProvider::updateData);
     connect(navigator()->flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, &NOTAM::NotamProvider::updateData);
-    QTimer::singleShot(2s, this, &NOTAM::NotamProvider::updateData);
 
     // Wire up clean(). Clean the data every 61 minutes.
     timer = new QTimer(this);
@@ -83,6 +82,8 @@ void NOTAM::NotamProvider::deferredInitialization()
     statusTimer->start();
     connect(this, &NOTAM::NotamProvider::dataChanged, this, &NOTAM::NotamProvider::updateStatus);
     connect(navigator()->flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, &NOTAM::NotamProvider::updateStatus);
+
+    updateData();
     updateStatus();
 }
 
@@ -444,63 +445,17 @@ void NOTAM::NotamProvider::updateData()
     auto* route = navigator()->flightRoute();
     if (route != nullptr)
     {
-        foreach(auto leg, route->legs())
+        foreach(auto pos, route->geoPath())
         {
-            QGeoCoordinate const startPoint = leg.startPoint().coordinate();
-            if (startPoint.isValid())
+            if (pos.isValid())
             {
-                auto _range = range(startPoint);
+                auto _range = range(pos);
                 if (_range < marginRadius)
                 {
-                    startRequest(startPoint);
+                    startRequest(pos);
                 }
             }
 
-            QGeoCoordinate const endPoint = leg.endPoint().coordinate();
-            if (endPoint.isValid())
-            {
-                auto _range = range(endPoint);
-                if (_range < marginRadius)
-                {
-                    startRequest(endPoint);
-                }
-            }
-
-            /*
-            QGeoCoordinate startPoint = leg.startPoint().coordinate();
-            QGeoCoordinate const endPoint = leg.endPoint().coordinate();
-            if (!startPoint.isValid() || !endPoint.isValid())
-            {
-                continue;
-            }
-
-            while(true)
-            {
-                // Check if the range at the startPoint at least marginRadius+1NM
-                // If not, request data for startPoint and start over
-                auto rangeAtStartPoint = range(startPoint);
-                if (rangeAtStartPoint < marginRadius+Units::Distance::fromNM(1))
-                {
-                    startRequest(startPoint);
-                    continue;
-                }
-
-                // Check if every point between startPoint and endPoint has a range
-                // of at least marginRadius. If so, there is nothing to do for this
-                // and we continue with the next leg.
-                auto distanceToEndPoint = Units::Distance::fromM(startPoint.distanceTo(endPoint));
-                if (rangeAtStartPoint > distanceToEndPoint+marginRadius)
-                {
-                    break;
-                }
-
-                // Move the startPoint closer to the endPoint, so all points between
-                // the new and the old startPoint have a range of at least
-                // marginRadius. Then start over.
-                auto azimuth = startPoint.azimuthTo(endPoint);
-                startPoint = startPoint.atDistanceAndAzimuth((rangeAtStartPoint-marginRadius).toM(), azimuth);
-            }
-*/
         }
     }
 

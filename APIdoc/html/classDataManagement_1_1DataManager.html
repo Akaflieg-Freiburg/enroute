@@ -84,9 +84,9 @@ Inheritance diagram for DataManagement::DataManager:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-slots" name="pub-slots"></a>
 Public Slots</h2></td></tr>
-<tr class="memitem:ae64687ed56050c4c25e85e4dc1a1c64c" id="r_ae64687ed56050c4c25e85e4dc1a1c64c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae64687ed56050c4c25e85e4dc1a1c64c">updateRemoteDataItemList</a> ()</td></tr>
-<tr class="memdesc:ae64687ed56050c4c25e85e4dc1a1c64c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Triggers an update of the list of remotely available data items.  <br /></td></tr>
-<tr class="separator:ae64687ed56050c4c25e85e4dc1a1c64c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed5f9a5110d5c863886a9dc3e581897c" id="r_aed5f9a5110d5c863886a9dc3e581897c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aed5f9a5110d5c863886a9dc3e581897c">updateRemoteDataItemListIfOutdated</a> ()</td></tr>
+<tr class="memdesc:aed5f9a5110d5c863886a9dc3e581897c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Triggers an update of the list of remotely available data items.  <br /></td></tr>
+<tr class="separator:aed5f9a5110d5c863886a9dc3e581897c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="signals" name="signals"></a>
 Signals</h2></td></tr>
@@ -819,8 +819,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="ae64687ed56050c4c25e85e4dc1a1c64c" name="ae64687ed56050c4c25e85e4dc1a1c64c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae64687ed56050c4c25e85e4dc1a1c64c">&#9670;&#160;</a></span>updateRemoteDataItemList</h2>
+<a id="aed5f9a5110d5c863886a9dc3e581897c" name="aed5f9a5110d5c863886a9dc3e581897c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed5f9a5110d5c863886a9dc3e581897c">&#9670;&#160;</a></span>updateRemoteDataItemListIfOutdated</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -829,7 +829,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void DataManagement::DataManager::updateRemoteDataItemList </td>
+          <td class="memname">void DataManagement::DataManager::updateRemoteDataItemListIfOutdated </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -837,15 +837,13 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">slot</span></span>  </td>
+<span class="mlabels"><span class="mlabel">slot</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Triggers an update of the list of remotely available data items. </p>
-<p>This will trigger a download the file maps.json from the remote server. </p>
-
-<p class="definition">Definition at line <a class="el" href="DataManager_8h_source.html#l00306">306</a> of file <a class="el" href="DataManager_8h_source.html">DataManager.h</a>.</p>
+<p>This will trigger a download the file maps.json from the remote server if the last update is more than one day ago. </p>
 
 </div>
 </div>

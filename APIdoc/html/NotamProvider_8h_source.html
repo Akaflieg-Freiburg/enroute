@@ -86,165 +86,167 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &lt;QBindable&gt;</span></div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &lt;QNetworkReply&gt;</span></div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#include &lt;QQmlEngine&gt;</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#include &quot;GlobalObject.h&quot;</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#include &quot;notam/NotamList.h&quot;</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">namespace </span>NOTAM {</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="foldopen" id="foldopen00034" data-start="{" data-end="};">
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="classNOTAM_1_1NotamProvider.html">   34</a></span><span class="keyword">class </span><a class="code hl_class" href="classNOTAM_1_1NotamProvider.html">NotamProvider</a> : <span class="keyword">public</span> <a class="code hl_class" href="classGlobalObject.html">GlobalObject</a> {</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    Q_OBJECT</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    QML_ELEMENT</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    QML_SINGLETON</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keyword">explicit</span> <a class="code hl_class" href="classNOTAM_1_1NotamProvider.html">NotamProvider</a>(QObject* parent = <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="comment">// deferred initialization</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="classNOTAM_1_1NotamProvider.html#a47f4d06a4317122c50578e32722c9c82">   43</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classNOTAM_1_1NotamProvider.html#a47f4d06a4317122c50578e32722c9c82">deferredInitialization</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="comment">// No default constructor, important for QML singleton</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keyword">explicit</span> <a class="code hl_class" href="classNOTAM_1_1NotamProvider.html">NotamProvider</a>() = <span class="keyword">delete</span>;</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="classNOTAM_1_1NotamProvider.html#a5f81c3ce91c5ab5fd220a900d064d2ff">   49</a></span>    <a class="code hl_function" href="classNOTAM_1_1NotamProvider.html#a5f81c3ce91c5ab5fd220a900d064d2ff">~NotamProvider</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="comment">// factory function for QML singleton</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keyword">static</span> <a class="code hl_class" href="classNOTAM_1_1NotamProvider.html">NOTAM::NotamProvider</a>* create(QQmlEngine* <span class="comment">/*unused*/</span>, QJSEngine* <span class="comment">/*unused*/</span>)</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    {</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="classGlobalObject.html#ac11d38af2df8dcdb78679abf92b6de7a">GlobalObject::notamProvider</a>();</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    }</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#include &lt;QStandardPaths&gt;</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#include &quot;GlobalObject.h&quot;</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#include &quot;notam/NotamList.h&quot;</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keyword">namespace </span>NOTAM {</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="foldopen" id="foldopen00035" data-start="{" data-end="};">
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="classNOTAM_1_1NotamProvider.html">   35</a></span><span class="keyword">class </span><a class="code hl_class" href="classNOTAM_1_1NotamProvider.html">NotamProvider</a> : <span class="keyword">public</span> <a class="code hl_class" href="classGlobalObject.html">GlobalObject</a> {</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    Q_OBJECT</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    QML_ELEMENT</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    QML_SINGLETON</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keyword">explicit</span> <a class="code hl_class" href="classNOTAM_1_1NotamProvider.html">NotamProvider</a>(QObject* parent = <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="comment">// deferred initialization</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="classNOTAM_1_1NotamProvider.html#a47f4d06a4317122c50578e32722c9c82">   44</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classNOTAM_1_1NotamProvider.html#a47f4d06a4317122c50578e32722c9c82">deferredInitialization</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="comment">// No default constructor, important for QML singleton</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keyword">explicit</span> <a class="code hl_class" href="classNOTAM_1_1NotamProvider.html">NotamProvider</a>() = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="classNOTAM_1_1NotamProvider.html#a5f81c3ce91c5ab5fd220a900d064d2ff">   50</a></span>    <a class="code hl_function" href="classNOTAM_1_1NotamProvider.html#a5f81c3ce91c5ab5fd220a900d064d2ff">~NotamProvider</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="comment">// factory function for QML singleton</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keyword">static</span> <a class="code hl_class" href="classNOTAM_1_1NotamProvider.html">NOTAM::NotamProvider</a>* create(QQmlEngine* <span class="comment">/*unused*/</span>, QJSEngine* <span class="comment">/*unused*/</span>)</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    {</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="classGlobalObject.html#ac11d38af2df8dcdb78679abf92b6de7a">GlobalObject::notamProvider</a>();</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    }</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="comment">//</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="comment">// Properties</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="comment">//</span></div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="comment">//</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="comment">// Properties</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="comment">//</span></div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="classNOTAM_1_1NotamProvider.html#a01c460cf5424a4b21719c7e77a019876">   68</a></span>    Q_PROPERTY(QByteArray <a class="code hl_property" href="classNOTAM_1_1NotamProvider.html#a01c460cf5424a4b21719c7e77a019876">GeoJSON</a> READ <a class="code hl_property" href="classNOTAM_1_1NotamProvider.html#a01c460cf5424a4b21719c7e77a019876">GeoJSON</a> NOTIFY <a class="code hl_signal" href="classNOTAM_1_1NotamProvider.html#ad670bd26e0119a071c22fa757af43872">dataChanged</a>)</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="classNOTAM_1_1NotamProvider.html#a00a825ccdbd710fc2fecbb16637930d3">   71</a></span>    Q_PROPERTY(QDateTime <a class="code hl_property" href="classNOTAM_1_1NotamProvider.html#a00a825ccdbd710fc2fecbb16637930d3">lastUpdate</a> READ <a class="code hl_property" href="classNOTAM_1_1NotamProvider.html#a00a825ccdbd710fc2fecbb16637930d3">lastUpdate</a> NOTIFY <a class="code hl_signal" href="classNOTAM_1_1NotamProvider.html#ad670bd26e0119a071c22fa757af43872">dataChanged</a>)</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="classNOTAM_1_1NotamProvider.html#a1b616a9148c53cb2f70ef0faa091784a">   74</a></span>    Q_PROPERTY(QList&lt;GeoMaps::Waypoint&gt; <a class="code hl_property" href="classNOTAM_1_1NotamProvider.html#a1b616a9148c53cb2f70ef0faa091784a">waypoints</a> READ <a class="code hl_property" href="classNOTAM_1_1NotamProvider.html#a1b616a9148c53cb2f70ef0faa091784a">waypoints</a> NOTIFY <a class="code hl_signal" href="classNOTAM_1_1NotamProvider.html#ad670bd26e0119a071c22fa757af43872">dataChanged</a>)</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno"><a class="line" href="classNOTAM_1_1NotamProvider.html#a2fd97019a67daef63329614c7b325dca">   81</a></span>    Q_PROPERTY(QString <a class="code hl_property" href="classNOTAM_1_1NotamProvider.html#a2fd97019a67daef63329614c7b325dca">status</a> READ <a class="code hl_property" href="classNOTAM_1_1NotamProvider.html#a2fd97019a67daef63329614c7b325dca">status</a> BINDABLE bindableStatus)</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="classNOTAM_1_1NotamProvider.html#a01c460cf5424a4b21719c7e77a019876">   69</a></span>    Q_PROPERTY(QByteArray <a class="code hl_property" href="classNOTAM_1_1NotamProvider.html#a01c460cf5424a4b21719c7e77a019876">GeoJSON</a> READ <a class="code hl_property" href="classNOTAM_1_1NotamProvider.html#a01c460cf5424a4b21719c7e77a019876">GeoJSON</a> NOTIFY <a class="code hl_signal" href="classNOTAM_1_1NotamProvider.html#ad670bd26e0119a071c22fa757af43872">dataChanged</a>)</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="classNOTAM_1_1NotamProvider.html#a00a825ccdbd710fc2fecbb16637930d3">   72</a></span>    Q_PROPERTY(QDateTime <a class="code hl_property" href="classNOTAM_1_1NotamProvider.html#a00a825ccdbd710fc2fecbb16637930d3">lastUpdate</a> READ <a class="code hl_property" href="classNOTAM_1_1NotamProvider.html#a00a825ccdbd710fc2fecbb16637930d3">lastUpdate</a> BINDABLE bindableLastUpdate)</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="classNOTAM_1_1NotamProvider.html#a1b616a9148c53cb2f70ef0faa091784a">   75</a></span>    Q_PROPERTY(QList&lt;GeoMaps::Waypoint&gt; <a class="code hl_property" href="classNOTAM_1_1NotamProvider.html#a1b616a9148c53cb2f70ef0faa091784a">waypoints</a> READ <a class="code hl_property" href="classNOTAM_1_1NotamProvider.html#a1b616a9148c53cb2f70ef0faa091784a">waypoints</a> NOTIFY <a class="code hl_signal" href="classNOTAM_1_1NotamProvider.html#ad670bd26e0119a071c22fa757af43872">dataChanged</a>)</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="classNOTAM_1_1NotamProvider.html#a2fd97019a67daef63329614c7b325dca">   82</a></span>    Q_PROPERTY(QString <a class="code hl_property" href="classNOTAM_1_1NotamProvider.html#a2fd97019a67daef63329614c7b325dca">status</a> READ <a class="code hl_property" href="classNOTAM_1_1NotamProvider.html#a2fd97019a67daef63329614c7b325dca">status</a> BINDABLE bindableStatus)</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <span class="comment">//</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    <span class="comment">// Getter Methods</span></div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <span class="comment">//</span></div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    <span class="comment">//</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <span class="comment">// Getter Methods</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <span class="comment">//</span></div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="classNOTAM_1_1NotamProvider.html#afebb7ef78fd1a7e28bcb151ab5755ac3">   93</a></span>    [[nodiscard]] QByteArray <a class="code hl_property" href="classNOTAM_1_1NotamProvider.html#a01c460cf5424a4b21719c7e77a019876">GeoJSON</a>() const;</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="classNOTAM_1_1NotamProvider.html#a707840e7e509e173d9d4c4656c890e38">   99</a></span>    Q_REQUIRED_RESULT QDateTime <a class="code hl_property" href="classNOTAM_1_1NotamProvider.html#a00a825ccdbd710fc2fecbb16637930d3">lastUpdate</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_lastUpdate; }</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="classNOTAM_1_1NotamProvider.html#a2d3f272c632ab7f87fd13170ca732013">  105</a></span>    Q_REQUIRED_RESULT QString <a class="code hl_function" href="classNOTAM_1_1NotamProvider.html#a2d3f272c632ab7f87fd13170ca732013">status</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> m_status;}</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    Q_REQUIRED_RESULT QBindable&lt;QString&gt; bindableStatus() {<span class="keywordflow">return</span> &amp;m_status;}</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno"><a class="line" href="classNOTAM_1_1NotamProvider.html#ad7014a7422ef53bbd0ba7af0cbe7e5e6">  112</a></span>    Q_REQUIRED_RESULT QList&lt;GeoMaps::Waypoint&gt; <a class="code hl_function" href="classNOTAM_1_1NotamProvider.html#ad7014a7422ef53bbd0ba7af0cbe7e5e6">waypoints</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    <span class="comment">//</span></div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    <span class="comment">// Methods</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="classNOTAM_1_1NotamProvider.html#afebb7ef78fd1a7e28bcb151ab5755ac3">   94</a></span>    [[nodiscard]] QByteArray <a class="code hl_property" href="classNOTAM_1_1NotamProvider.html#a01c460cf5424a4b21719c7e77a019876">GeoJSON</a>() const;</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="classNOTAM_1_1NotamProvider.html#a707840e7e509e173d9d4c4656c890e38">  100</a></span>    Q_REQUIRED_RESULT QDateTime <a class="code hl_property" href="classNOTAM_1_1NotamProvider.html#a00a825ccdbd710fc2fecbb16637930d3">lastUpdate</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> {m_lastUpdate};}</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    Q_REQUIRED_RESULT QBindable&lt;QDateTime&gt; bindableLastUpdate() { <span class="keywordflow">return</span> &amp;m_lastUpdate; }</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="classNOTAM_1_1NotamProvider.html#a2d3f272c632ab7f87fd13170ca732013">  107</a></span>    Q_REQUIRED_RESULT QString <a class="code hl_function" href="classNOTAM_1_1NotamProvider.html#a2d3f272c632ab7f87fd13170ca732013">status</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> {m_status};}</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    Q_REQUIRED_RESULT QBindable&lt;QString&gt; bindableStatus() {<span class="keywordflow">return</span> &amp;m_status;}</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno"><a class="line" href="classNOTAM_1_1NotamProvider.html#ad7014a7422ef53bbd0ba7af0cbe7e5e6">  114</a></span>    Q_REQUIRED_RESULT QList&lt;GeoMaps::Waypoint&gt; <a class="code hl_function" href="classNOTAM_1_1NotamProvider.html#ad7014a7422ef53bbd0ba7af0cbe7e5e6">waypoints</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    <span class="comment">//</span></div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno"><a class="line" href="classNOTAM_1_1NotamProvider.html#a73bab769d97b82094d2318a1a765a31b">  136</a></span>    [[nodiscard]] Q_INVOKABLE <a class="code hl_class" href="classNOTAM_1_1NotamList.html">NOTAM::NotamList</a> <a class="code hl_function" href="classNOTAM_1_1NotamProvider.html#a73bab769d97b82094d2318a1a765a31b">notams</a>(<span class="keyword">const</span> <a class="code hl_class" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a>&amp; waypoint);</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno"><a class="line" href="classNOTAM_1_1NotamProvider.html#ad6fe03afb19ed0d894475480ad319aca">  144</a></span>    [[nodiscard]] Q_INVOKABLE <span class="keywordtype">bool</span> <a class="code hl_function" href="classNOTAM_1_1NotamProvider.html#ad6fe03afb19ed0d894475480ad319aca">isRead</a>(<span class="keyword">const</span> QString&amp; number) { <span class="keywordflow">return</span> m_readNotamNumbers.contains(number); }</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno"><a class="line" href="classNOTAM_1_1NotamProvider.html#adbd8026f690b01e55aef950b675f4c76">  152</a></span>    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code hl_function" href="classNOTAM_1_1NotamProvider.html#adbd8026f690b01e55aef950b675f4c76">setRead</a>(<span class="keyword">const</span> QString&amp; number, <span class="keywordtype">bool</span> read);</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>signals:</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno"><a class="line" href="classNOTAM_1_1NotamProvider.html#ad670bd26e0119a071c22fa757af43872">  156</a></span>    <span class="keywordtype">void</span> <a class="code hl_signal" href="classNOTAM_1_1NotamProvider.html#ad670bd26e0119a071c22fa757af43872">dataChanged</a>();</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span><span class="keyword">private</span> slots:   </div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    <span class="comment">// Removes outdated and irrelevant data from the database. This slot is called</span></div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    <span class="comment">// once per hour.</span></div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    <span class="keywordtype">void</span> clean();</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>    <span class="comment">// This slot is connected to signals QNetworkReply::finished and</span></div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>    <span class="comment">// QNetworkReply::errorOccurred of the QNetworkReply contained in the list</span></div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>    <span class="comment">// in m_networkReply. This method reads the incoming data and adds it to the</span></div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>    <span class="comment">// database</span></div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    <span class="keywordtype">void</span> downloadFinished();</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span> </div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    <span class="comment">// Save NOTAM data to file whose name is found in m_stdFileName. There are</span></div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    <span class="comment">// no error checks of any kind.</span></div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    <span class="keywordtype">void</span> save() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> </div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    <span class="comment">// Checks if NOTAM data is available for an area of marginRadius around the</span></div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    <span class="comment">// current position and around the current flight route. If not, requests</span></div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    <span class="comment">// the data.</span></div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    <span class="keywordtype">void</span> updateData();</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span> </div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    <span class="comment">// Checks if NOTAM data is available for an area of marginRadius around the</span></div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    <span class="comment">// current position and around the current flight route. Update status accordingly.</span></div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    <span class="keywordtype">void</span> updateStatus();</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span> </div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    Q_DISABLE_COPY_MOVE(<a class="code hl_class" href="classNOTAM_1_1NotamProvider.html">NotamProvider</a>)</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span> </div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    <span class="comment">// Compute the radius of the circle around the waypoint that is covered by</span></div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    <span class="comment">// existing or requested notam data. Returns Units::Distance::fromM(-1) if</span></div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    <span class="comment">// the waypoint is not covered by data.</span></div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    <a class="code hl_class" href="classUnits_1_1Distance.html">Units::Distance</a> range(<span class="keyword">const</span> QGeoCoordinate&amp; position);</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span> </div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>    <span class="comment">// Request Notam data from the FAA, for a circle of radius requestRadius</span></div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    <span class="comment">// around the coordinate.</span></div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    <span class="keywordtype">void</span> startRequest(<span class="keyword">const</span> QGeoCoordinate&amp; coordinate);</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span> </div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>    <span class="comment">// List with numbers of notams that have been marked as read</span></div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    QList&lt;QString&gt; m_readNotamNumbers;</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span> </div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    <span class="comment">// Set with numbers of notams that have been cancelled</span></div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    QSet&lt;QString&gt; m_cancelledNotamNumbers;</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span> </div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>    <span class="comment">// List of pending network requests</span></div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    QList&lt;QPointer&lt;QNetworkReply&gt;&gt; m_networkReplies;</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span> </div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    <span class="comment">// List of NotamLists, sorted so that newest lists come first</span></div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    QList&lt;NotamList&gt; m_notamLists;</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span> </div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    <span class="comment">// Time of last update to data</span></div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>    QDateTime m_lastUpdate;</div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span> </div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>    <span class="comment">// Filename for loading/saving NOTAM data</span></div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>    QProperty&lt;QString&gt; m_status;</div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span> </div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>    <span class="comment">// Filename for loading/saving NOTAM data</span></div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>    QString m_stdFileName;</div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span> </div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>    <span class="comment">// The method updateDate() ensures that data is requested for marginRadius around</span></div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>    <span class="comment">// own position and current flight route.</span></div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> <a class="code hl_class" href="classUnits_1_1Distance.html">Units::Distance</a> marginRadius = <a class="code hl_function" href="classUnits_1_1Distance.html#a0cf2f43b39c1e90cffccee3b0d7a1970">Units::Distance::fromNM</a>(5.0);</div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span> </div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>    <span class="comment">// Requests for Notam data are requestRadius around given position.</span></div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>    <span class="comment">// This is the maximum that FAA API currently allows (FAA max is 100NM, but</span></div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>    <span class="comment">// the number here is multiplied internally with a factor of 1.2)</span></div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> <a class="code hl_class" href="classUnits_1_1Distance.html">Units::Distance</a> requestRadius = <a class="code hl_function" href="classUnits_1_1Distance.html#a0cf2f43b39c1e90cffccee3b0d7a1970">Units::Distance::fromNM</a>(83.0);</div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>};</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="comment">// Methods</span></div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <span class="comment">//</span></div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno"><a class="line" href="classNOTAM_1_1NotamProvider.html#a73bab769d97b82094d2318a1a765a31b">  138</a></span>    [[nodiscard]] Q_INVOKABLE <a class="code hl_class" href="classNOTAM_1_1NotamList.html">NOTAM::NotamList</a> <a class="code hl_function" href="classNOTAM_1_1NotamProvider.html#a73bab769d97b82094d2318a1a765a31b">notams</a>(<span class="keyword">const</span> <a class="code hl_class" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a>&amp; waypoint);</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span> </div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno"><a class="line" href="classNOTAM_1_1NotamProvider.html#ad6fe03afb19ed0d894475480ad319aca">  146</a></span>    [[nodiscard]] Q_INVOKABLE <span class="keywordtype">bool</span> <a class="code hl_function" href="classNOTAM_1_1NotamProvider.html#ad6fe03afb19ed0d894475480ad319aca">isRead</a>(<span class="keyword">const</span> QString&amp; number) { <span class="keywordflow">return</span> m_readNotamNumbers.contains(number); }</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span> </div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno"><a class="line" href="classNOTAM_1_1NotamProvider.html#adbd8026f690b01e55aef950b675f4c76">  154</a></span>    Q_INVOKABLE <span class="keywordtype">void</span> <a class="code hl_function" href="classNOTAM_1_1NotamProvider.html#adbd8026f690b01e55aef950b675f4c76">setRead</a>(<span class="keyword">const</span> QString&amp; number, <span class="keywordtype">bool</span> read);</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>signals:</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno"><a class="line" href="classNOTAM_1_1NotamProvider.html#ad670bd26e0119a071c22fa757af43872">  158</a></span>    <span class="keywordtype">void</span> <a class="code hl_signal" href="classNOTAM_1_1NotamProvider.html#ad670bd26e0119a071c22fa757af43872">dataChanged</a>();</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span><span class="keyword">private</span> slots:   </div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    <span class="comment">// Removes outdated and irrelevant data from the database. This slot is called</span></div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    <span class="comment">// once per hour.</span></div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>    <span class="keywordtype">void</span> clean();</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span> </div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>    <span class="comment">// This slot is connected to signals QNetworkReply::finished and</span></div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>    <span class="comment">// QNetworkReply::errorOccurred of the QNetworkReply contained in the list</span></div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    <span class="comment">// in m_networkReply. This method reads the incoming data and adds it to the</span></div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    <span class="comment">// database</span></div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    <span class="keywordtype">void</span> downloadFinished();</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    <span class="comment">// Save NOTAM data to file whose name is found in m_stdFileName. There are</span></div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    <span class="comment">// no error checks of any kind.</span></div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    <span class="keywordtype">void</span> save() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span> </div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    <span class="comment">// Checks if NOTAM data is available for an area of marginRadius around the</span></div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    <span class="comment">// current position and around the current flight route. If not, requests</span></div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    <span class="comment">// the data.</span></div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    <span class="keywordtype">void</span> updateData();</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    <span class="comment">// Checks if NOTAM data is available for an area of marginRadius around the</span></div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    <span class="comment">// current position and around the current flight route. Update status accordingly.</span></div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>    <span class="keywordtype">void</span> updateStatus();</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span> </div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    Q_DISABLE_COPY_MOVE(<a class="code hl_class" href="classNOTAM_1_1NotamProvider.html">NotamProvider</a>)</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span> </div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    <span class="comment">// Compute the radius of the circle around the waypoint that is covered by</span></div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    <span class="comment">// existing or requested notam data. Returns Units::Distance::fromM(-1) if</span></div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    <span class="comment">// the waypoint is not covered by data.</span></div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>    <a class="code hl_class" href="classUnits_1_1Distance.html">Units::Distance</a> range(<span class="keyword">const</span> QGeoCoordinate&amp; position);</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    <span class="comment">// Request Notam data from the FAA, for a circle of radius requestRadius</span></div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    <span class="comment">// around the coordinate.</span></div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>    <span class="keywordtype">void</span> startRequest(<span class="keyword">const</span> QGeoCoordinate&amp; coordinate);</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span> </div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>    <span class="comment">// List with numbers of notams that have been marked as read</span></div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    QList&lt;QString&gt; m_readNotamNumbers;</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span> </div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>    <span class="comment">// Set with numbers of notams that have been cancelled</span></div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>    QSet&lt;QString&gt; m_cancelledNotamNumbers;</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span> </div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    <span class="comment">// List of pending network requests</span></div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    QList&lt;QPointer&lt;QNetworkReply&gt;&gt; m_networkReplies;</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span> </div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    <span class="comment">// List of NotamLists, sorted so that newest lists come first</span></div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    QList&lt;NotamList&gt; m_notamLists;</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span> </div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>    <span class="comment">// Time of last update to data</span></div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>    QProperty&lt;QDateTime&gt; m_lastUpdate;</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span> </div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>    <span class="comment">// Filename for loading/saving NOTAM data</span></div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>    QProperty&lt;QString&gt; m_status;</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span> </div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>    <span class="comment">// Filename for loading/saving NOTAM data</span></div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>    QString m_stdFileName { QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+u<span class="stringliteral">&quot;/notam.dat&quot;</span>_qs };</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span> </div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>    <span class="comment">// The method updateDate() ensures that data is requested for marginRadius around</span></div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>    <span class="comment">// own position and current flight route.</span></div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> <a class="code hl_class" href="classUnits_1_1Distance.html">Units::Distance</a> marginRadius = <a class="code hl_function" href="classUnits_1_1Distance.html#a0cf2f43b39c1e90cffccee3b0d7a1970">Units::Distance::fromNM</a>(5.0);</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span> </div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>    <span class="comment">// Requests for Notam data are requestRadius around given position.</span></div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>    <span class="comment">// This is the maximum that FAA API currently allows (FAA max is 100NM, but</span></div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>    <span class="comment">// the number here is multiplied internally with a factor of 1.2)</span></div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> <a class="code hl_class" href="classUnits_1_1Distance.html">Units::Distance</a> requestRadius = <a class="code hl_function" href="classUnits_1_1Distance.html#a0cf2f43b39c1e90cffccee3b0d7a1970">Units::Distance::fromNM</a>(83.0);</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>};</div>
 </div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span> </div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>} <span class="comment">// namespace NOTAM</span></div>
 <div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span> </div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>} <span class="comment">// namespace NOTAM</span></div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span> </div>
 <div class="ttc" id="aclassGeoMaps_1_1Waypoint_html"><div class="ttname"><a href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a></div><div class="ttdoc">Waypoint, such as an airfield, a navaid station or a reporting point.</div><div class="ttdef"><b>Definition</b> <a href="Waypoint_8h_source.html#l00040">Waypoint.h:41</a></div></div>
 <div class="ttc" id="aclassGlobalObject_html"><div class="ttname"><a href="classGlobalObject.html">GlobalObject</a></div><div class="ttdoc">Base class for global singleton objects.</div><div class="ttdef"><b>Definition</b> <a href="GlobalObject_8h_source.html#l00106">GlobalObject.h:107</a></div></div>
 <div class="ttc" id="aclassGlobalObject_html_ac11d38af2df8dcdb78679abf92b6de7a"><div class="ttname"><a href="classGlobalObject.html#ac11d38af2df8dcdb78679abf92b6de7a">GlobalObject::notamProvider</a></div><div class="ttdeci">static Q_INVOKABLE NOTAM::NotamProvider * notamProvider()</div><div class="ttdoc">Pointer to appplication-wide static notification manager instance.</div></div>
 <div class="ttc" id="aclassNOTAM_1_1NotamList_html"><div class="ttname"><a href="classNOTAM_1_1NotamList.html">NOTAM::NotamList</a></div><div class="ttdoc">A list of NOTAMs.</div><div class="ttdef"><b>Definition</b> <a href="NotamList_8h_source.html#l00039">NotamList.h:39</a></div></div>
-<div class="ttc" id="aclassNOTAM_1_1NotamProvider_html"><div class="ttname"><a href="classNOTAM_1_1NotamProvider.html">NOTAM::NotamProvider</a></div><div class="ttdoc">This extremely simple class holds a the data item of a NOTAM.</div><div class="ttdef"><b>Definition</b> <a href="#l00034">NotamProvider.h:34</a></div></div>
-<div class="ttc" id="aclassNOTAM_1_1NotamProvider_html_a00a825ccdbd710fc2fecbb16637930d3"><div class="ttname"><a href="classNOTAM_1_1NotamProvider.html#a00a825ccdbd710fc2fecbb16637930d3">NOTAM::NotamProvider::lastUpdate</a></div><div class="ttdeci">QDateTime lastUpdate</div><div class="ttdoc">Time of last database update.</div><div class="ttdef"><b>Definition</b> <a href="#l00071">NotamProvider.h:71</a></div></div>
-<div class="ttc" id="aclassNOTAM_1_1NotamProvider_html_a01c460cf5424a4b21719c7e77a019876"><div class="ttname"><a href="classNOTAM_1_1NotamProvider.html#a01c460cf5424a4b21719c7e77a019876">NOTAM::NotamProvider::GeoJSON</a></div><div class="ttdeci">QByteArray GeoJSON</div><div class="ttdoc">List of NOTAM points.</div><div class="ttdef"><b>Definition</b> <a href="#l00068">NotamProvider.h:68</a></div></div>
-<div class="ttc" id="aclassNOTAM_1_1NotamProvider_html_a1b616a9148c53cb2f70ef0faa091784a"><div class="ttname"><a href="classNOTAM_1_1NotamProvider.html#a1b616a9148c53cb2f70ef0faa091784a">NOTAM::NotamProvider::waypoints</a></div><div class="ttdeci">QList&lt; GeoMaps::Waypoint &gt; waypoints</div><div class="ttdoc">Waypoints with Notam items, for presentation in a map.</div><div class="ttdef"><b>Definition</b> <a href="#l00074">NotamProvider.h:74</a></div></div>
-<div class="ttc" id="aclassNOTAM_1_1NotamProvider_html_a2d3f272c632ab7f87fd13170ca732013"><div class="ttname"><a href="classNOTAM_1_1NotamProvider.html#a2d3f272c632ab7f87fd13170ca732013">NOTAM::NotamProvider::status</a></div><div class="ttdeci">Q_REQUIRED_RESULT QString status() const</div><div class="ttdoc">Getter function for the property with the same name.</div><div class="ttdef"><b>Definition</b> <a href="#l00105">NotamProvider.h:105</a></div></div>
-<div class="ttc" id="aclassNOTAM_1_1NotamProvider_html_a2fd97019a67daef63329614c7b325dca"><div class="ttname"><a href="classNOTAM_1_1NotamProvider.html#a2fd97019a67daef63329614c7b325dca">NOTAM::NotamProvider::status</a></div><div class="ttdeci">QString status</div><div class="ttdoc">Status.</div><div class="ttdef"><b>Definition</b> <a href="#l00081">NotamProvider.h:81</a></div></div>
+<div class="ttc" id="aclassNOTAM_1_1NotamProvider_html"><div class="ttname"><a href="classNOTAM_1_1NotamProvider.html">NOTAM::NotamProvider</a></div><div class="ttdoc">This extremely simple class holds a the data item of a NOTAM.</div><div class="ttdef"><b>Definition</b> <a href="#l00035">NotamProvider.h:35</a></div></div>
+<div class="ttc" id="aclassNOTAM_1_1NotamProvider_html_a00a825ccdbd710fc2fecbb16637930d3"><div class="ttname"><a href="classNOTAM_1_1NotamProvider.html#a00a825ccdbd710fc2fecbb16637930d3">NOTAM::NotamProvider::lastUpdate</a></div><div class="ttdeci">QDateTime lastUpdate</div><div class="ttdoc">Time of last database update.</div><div class="ttdef"><b>Definition</b> <a href="#l00072">NotamProvider.h:72</a></div></div>
+<div class="ttc" id="aclassNOTAM_1_1NotamProvider_html_a01c460cf5424a4b21719c7e77a019876"><div class="ttname"><a href="classNOTAM_1_1NotamProvider.html#a01c460cf5424a4b21719c7e77a019876">NOTAM::NotamProvider::GeoJSON</a></div><div class="ttdeci">QByteArray GeoJSON</div><div class="ttdoc">List of NOTAM points.</div><div class="ttdef"><b>Definition</b> <a href="#l00069">NotamProvider.h:69</a></div></div>
+<div class="ttc" id="aclassNOTAM_1_1NotamProvider_html_a1b616a9148c53cb2f70ef0faa091784a"><div class="ttname"><a href="classNOTAM_1_1NotamProvider.html#a1b616a9148c53cb2f70ef0faa091784a">NOTAM::NotamProvider::waypoints</a></div><div class="ttdeci">QList&lt; GeoMaps::Waypoint &gt; waypoints</div><div class="ttdoc">Waypoints with Notam items, for presentation in a map.</div><div class="ttdef"><b>Definition</b> <a href="#l00075">NotamProvider.h:75</a></div></div>
+<div class="ttc" id="aclassNOTAM_1_1NotamProvider_html_a2d3f272c632ab7f87fd13170ca732013"><div class="ttname"><a href="classNOTAM_1_1NotamProvider.html#a2d3f272c632ab7f87fd13170ca732013">NOTAM::NotamProvider::status</a></div><div class="ttdeci">Q_REQUIRED_RESULT QString status() const</div><div class="ttdoc">Getter function for the property with the same name.</div><div class="ttdef"><b>Definition</b> <a href="#l00107">NotamProvider.h:107</a></div></div>
+<div class="ttc" id="aclassNOTAM_1_1NotamProvider_html_a2fd97019a67daef63329614c7b325dca"><div class="ttname"><a href="classNOTAM_1_1NotamProvider.html#a2fd97019a67daef63329614c7b325dca">NOTAM::NotamProvider::status</a></div><div class="ttdeci">QString status</div><div class="ttdoc">Status.</div><div class="ttdef"><b>Definition</b> <a href="#l00082">NotamProvider.h:82</a></div></div>
 <div class="ttc" id="aclassNOTAM_1_1NotamProvider_html_a47f4d06a4317122c50578e32722c9c82"><div class="ttname"><a href="classNOTAM_1_1NotamProvider.html#a47f4d06a4317122c50578e32722c9c82">NOTAM::NotamProvider::deferredInitialization</a></div><div class="ttdeci">void deferredInitialization() override</div><div class="ttdoc">Non-constructor initialization.</div></div>
 <div class="ttc" id="aclassNOTAM_1_1NotamProvider_html_a5f81c3ce91c5ab5fd220a900d064d2ff"><div class="ttname"><a href="classNOTAM_1_1NotamProvider.html#a5f81c3ce91c5ab5fd220a900d064d2ff">NOTAM::NotamProvider::~NotamProvider</a></div><div class="ttdeci">~NotamProvider() override</div><div class="ttdoc">Standard destructor.</div></div>
 <div class="ttc" id="aclassNOTAM_1_1NotamProvider_html_a73bab769d97b82094d2318a1a765a31b"><div class="ttname"><a href="classNOTAM_1_1NotamProvider.html#a73bab769d97b82094d2318a1a765a31b">NOTAM::NotamProvider::notams</a></div><div class="ttdeci">Q_INVOKABLE NOTAM::NotamList notams(const GeoMaps::Waypoint &amp;waypoint)</div><div class="ttdoc">Notams for a given waypoint.</div></div>
 <div class="ttc" id="aclassNOTAM_1_1NotamProvider_html_ad670bd26e0119a071c22fa757af43872"><div class="ttname"><a href="classNOTAM_1_1NotamProvider.html#ad670bd26e0119a071c22fa757af43872">NOTAM::NotamProvider::dataChanged</a></div><div class="ttdeci">void dataChanged()</div><div class="ttdoc">Notifier signal.</div></div>
-<div class="ttc" id="aclassNOTAM_1_1NotamProvider_html_ad6fe03afb19ed0d894475480ad319aca"><div class="ttname"><a href="classNOTAM_1_1NotamProvider.html#ad6fe03afb19ed0d894475480ad319aca">NOTAM::NotamProvider::isRead</a></div><div class="ttdeci">Q_INVOKABLE bool isRead(const QString &amp;number)</div><div class="ttdoc">Check is a notam number is registred as read.</div><div class="ttdef"><b>Definition</b> <a href="#l00144">NotamProvider.h:144</a></div></div>
+<div class="ttc" id="aclassNOTAM_1_1NotamProvider_html_ad6fe03afb19ed0d894475480ad319aca"><div class="ttname"><a href="classNOTAM_1_1NotamProvider.html#ad6fe03afb19ed0d894475480ad319aca">NOTAM::NotamProvider::isRead</a></div><div class="ttdeci">Q_INVOKABLE bool isRead(const QString &amp;number)</div><div class="ttdoc">Check is a notam number is registred as read.</div><div class="ttdef"><b>Definition</b> <a href="#l00146">NotamProvider.h:146</a></div></div>
 <div class="ttc" id="aclassNOTAM_1_1NotamProvider_html_ad7014a7422ef53bbd0ba7af0cbe7e5e6"><div class="ttname"><a href="classNOTAM_1_1NotamProvider.html#ad7014a7422ef53bbd0ba7af0cbe7e5e6">NOTAM::NotamProvider::waypoints</a></div><div class="ttdeci">Q_REQUIRED_RESULT QList&lt; GeoMaps::Waypoint &gt; waypoints() const</div><div class="ttdoc">Getter function for the property with the same name.</div></div>
 <div class="ttc" id="aclassNOTAM_1_1NotamProvider_html_adbd8026f690b01e55aef950b675f4c76"><div class="ttname"><a href="classNOTAM_1_1NotamProvider.html#adbd8026f690b01e55aef950b675f4c76">NOTAM::NotamProvider::setRead</a></div><div class="ttdeci">Q_INVOKABLE void setRead(const QString &amp;number, bool read)</div><div class="ttdoc">Register notam number as read or unread.</div></div>
 <div class="ttc" id="aclassUnits_1_1Distance_html"><div class="ttname"><a href="classUnits_1_1Distance.html">Units::Distance</a></div><div class="ttdoc">Convenience class for distance computations.</div><div class="ttdef"><b>Definition</b> <a href="Distance_8h_source.html#l00035">Distance.h:35</a></div></div>

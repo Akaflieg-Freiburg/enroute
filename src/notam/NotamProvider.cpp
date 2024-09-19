@@ -83,8 +83,9 @@ void NOTAM::NotamProvider::deferredInitialization()
     connect(this, &NOTAM::NotamProvider::dataChanged, this, &NOTAM::NotamProvider::updateStatus);
     connect(navigator()->flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, &NOTAM::NotamProvider::updateStatus);
 
-    updateData();
-    updateStatus();
+    // Set variables initially
+    QTimer::singleShot(0, this, &NOTAM::NotamProvider::updateData);
+    QTimer::singleShot(0, this, &NOTAM::NotamProvider::updateStatus);
 }
 
 

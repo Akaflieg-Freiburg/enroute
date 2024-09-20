@@ -77,7 +77,7 @@ CenteringDialog {
                 }
             }
 
-            // On iOS17, the property displayText sees many bounced.
+            // On iOS17, the property displayText sees many bounces.
             onDisplayTextChanged: debounceTimer.restart()
         }
 

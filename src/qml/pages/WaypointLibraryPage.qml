@@ -257,17 +257,13 @@ Page {
         anchors.top: parent.top
         anchors.topMargin: page.font.pixelSize
 
-        Label {
-            Layout.alignment: Qt.AlignBaseline
-
-            text: qsTr("Filter")
-        }
-
         MyTextField {
             id: textInput
 
             Layout.alignment: Qt.AlignBaseline
             Layout.fillWidth: true
+
+            placeholderText: qsTr("Filter by Name")
         }
     }
 
@@ -357,12 +353,18 @@ Page {
 
             clip: true
 
-            model: {
-                // Mention waypoints to ensure that the list gets updated
-                WaypointLibrary.waypoints
+            model:
+            Binding {
+                wpList.model: {
+                    // Mention waypoints to ensure that the list gets updated
+                    WaypointLibrary.waypoints
 
-                return WaypointLibrary.filteredWaypoints(textInput.text)
+                    return WaypointLibrary.filteredWaypoints(textInput.displayText)
+                }
+                delayed: true
             }
+
+
             delegate: waypointDelegate
             ScrollIndicator.vertical: ScrollIndicator {}
         }

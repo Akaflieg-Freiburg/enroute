@@ -67,9 +67,6 @@ TextField {
         icon.width: font.pixelSize
         icon.height: font.pixelSize
 
-        onClicked: {
-            textField.clear()
-            textField.onEditingFinished()
-        }
+        onClicked: textField.clear()
     }
 }

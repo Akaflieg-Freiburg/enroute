@@ -278,7 +278,6 @@ Page {
         anchors.left: parent.left
         anchors.right: parent.right
 
-        bottomPadding: SafeInsets.bottom
         leftPadding: SafeInsets.left
         rightPadding: SafeInsets.right
         topPadding: font.pixelSize
@@ -386,6 +385,27 @@ Page {
     }
 
 
+    footer: Footer {
+        ColumnLayout {
+            width: parent.width
+
+            Button {
+                id: addWPButton
+
+                flat: true
+
+                Layout.alignment: Qt.AlignHCenter
+                text: qsTr("Add Waypoint")
+                icon.source: "/icons/material/ic_add_circle.svg"
+
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    addWP.open()
+                }
+            }
+        }
+    }
+
     // This is the name of the file that openFromLibrary will open
     property string finalFileName;
 
@@ -423,7 +443,6 @@ Page {
             page.reloadWaypointList() // Re-display aircraft that have been swiped out
             close()
         }
-
     }
 
     LongTextDialog {
@@ -453,6 +472,23 @@ Page {
             WaypointLibrary.replace(waypoint, newWP)
             page.reloadWaypointList()
             toast.doToast(qsTr("Waypoint modified"))
+        }
+
+    }
+
+    WaypointEditor {
+        id: addWP
+
+        title: qsTr("Add Waypoint")
+
+        onAccepted: {
+            let newWP = waypoint.copy()
+            newWP.name = newName
+            newWP.notes = newNotes
+            newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
+            WaypointLibrary.add(newWP)
+            page.reloadWaypointList()
+            toast.doToast(qsTr("Waypoint added"))
         }
 
     }

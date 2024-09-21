@@ -46,6 +46,8 @@ TextField {
         return width > 5*font.pixelSize
     }
     rightPadding: hasClearButton ? toolButton.width : undefined
+    implicitWidth: 100 // set arbitrary value to avoid binding loop
+
 
     // Fix problem on iOS
     Component.onCompleted: PlatformAdaptor.setupInputMethodEventFilter(textField)

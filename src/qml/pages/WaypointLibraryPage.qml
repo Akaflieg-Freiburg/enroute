@@ -356,10 +356,6 @@ Page {
 
             anchors.fill: parent
 
-            leftMargin: SafeInsets.left
-            rightMargin: SafeInsets.right
-            bottomMargin: SafeInsets.bottom
-
             clip: true
 
             model: {

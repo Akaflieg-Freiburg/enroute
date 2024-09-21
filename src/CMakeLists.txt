@@ -538,7 +538,6 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/dialogs/AircraftSaveDialog.qml
     qml/dialogs/ErrorDialog.qml
     qml/dialogs/FirstRunDialog.qml
-    qml/dialogs/FlightRouteAddWPDialog.qml
     qml/dialogs/FlightRouteSaveDialog.qml
     qml/dialogs/LongTextDialogMD.qml
     qml/dialogs/NotamListDialog.qml

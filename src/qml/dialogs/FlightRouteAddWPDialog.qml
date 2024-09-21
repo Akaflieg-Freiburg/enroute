@@ -60,10 +60,12 @@ CenteringDialog {
             text: qsTr("Choose a waypoint from the list below or <a href='xx'>enter coordinates manually</a>.")
             wrapMode: Text.Wrap
             textFormat: Text.StyledText
+            visible: textInput.text === ""
         }
 
         Item {
-            Layout.preferredHeight: textInput.font.pixelSize/2.0
+            Layout.preferredHeight: textInput.font.pixelSize
+            visible: textInput.text === ""
         }
 
         MyTextField {
@@ -85,6 +87,18 @@ CenteringDialog {
 
             // On iOS17, the property displayText sees many bounces.
             onDisplayTextChanged: debounceTimer.restart()
+        }
+
+        Label {
+            Layout.fillWidth: true
+            Layout.topMargin: font.pixelSize
+
+            text: qsTr("<h3>Sorry!</h3><p>No waypoints match your filter.</p>")
+            wrapMode: Text.Wrap
+            textFormat: Text.StyledText
+            horizontalAlignment: Text.AlignHCenter
+
+            visible: wpList.model.length === 0
         }
 
         DecoratedListView {

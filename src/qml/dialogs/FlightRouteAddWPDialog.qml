@@ -57,15 +57,21 @@ CenteringDialog {
         Label {
             Layout.fillWidth: true
 
-            text: qsTr("Choose a waypoint from the list below.")
+            text: qsTr("Choose a waypoint from the list below or <a href='xx'>enter coordinates manually</a>.")
             wrapMode: Text.Wrap
             textFormat: Text.StyledText
+        }
+
+        Item {
+            Layout.preferredHeight: textInput.font.pixelSize/2.0
         }
 
         MyTextField {
             id: textInput
 
             Layout.fillWidth: true
+
+            placeholderText: qsTr("Filter by Name")
 
             focus: true
 
@@ -97,6 +103,7 @@ CenteringDialog {
                 onTriggered: wpList.model = GeoMapProvider.filteredWaypoints(textInput.displayText)
             }
 
+            model: GeoMapProvider.filteredWaypoints(textInput.displayText)
             delegate: waypointDelegate
             ScrollIndicator.vertical: ScrollIndicator {}
 

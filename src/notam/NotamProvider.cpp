@@ -71,7 +71,7 @@ void NOTAM::NotamProvider::deferredInitialization()
             inputStream >> newNotamLists;
         }
     }
-    m_notamLists = newNotamLists;
+    m_notamLists.setValue(newNotamLists);
     clean();
 
     // Setup Status
@@ -106,77 +106,6 @@ NOTAM::NotamProvider::~NotamProvider()
 //
 // Getter Methods
 //
-
-QByteArray NOTAM::NotamProvider::GeoJSON() const
-{
-    QList<QJsonObject> result;
-    QSet<QGeoCoordinate> coordinatesSeen;
-    QSet<QGeoCircle> regionsCovered;
-
-    foreach(auto notamList, m_notamLists.value())
-    {
-        foreach(auto notam, notamList.notams())
-        {
-            if (!notam.isValid() || notam.isOutdated())
-            {
-                continue;
-            }
-            auto coordinate = notam.coordinate();
-            if (!coordinate.isValid())
-            {
-                continue;
-            }
-            if (!notamList.region().contains(coordinate))
-            {
-                continue;
-            }
-
-
-            // If we already have a waypoint for that coordinate, then don't add another one.
-            if (coordinatesSeen.contains(coordinate))
-            {
-                continue;
-            }
-
-            // If the coordinate has already been handled by an earlier (=newer) notamList,
-            // then don't add it here.
-            bool hasBeenCovered = false;
-            foreach(auto region, regionsCovered)
-            {
-                if (region.contains(coordinate))
-                {
-                    hasBeenCovered = true;
-                    break;
-                }
-            }
-            if (hasBeenCovered)
-            {
-                continue;
-            }
-
-            coordinatesSeen += coordinate;
-            result.append(notam.GeoJSON());
-        }
-
-        regionsCovered += notamList.region();
-    }
-
-
-    QJsonArray waypointArray;
-    foreach (const auto& jsonObject, result)
-    {
-        waypointArray.append(jsonObject);
-    }
-
-    QJsonObject jsonObj;
-    jsonObj.insert(QStringLiteral("type"), "FeatureCollection");
-    jsonObj.insert(QStringLiteral("features"), waypointArray);
-
-    QJsonDocument doc;
-    doc.setObject(jsonObj);
-    return doc.toJson();
-}
-
 
 QList<GeoMaps::Waypoint> NOTAM::NotamProvider::waypoints() const
 {
@@ -321,7 +250,76 @@ void NOTAM::NotamProvider::setRead(const QString& number, bool read)
 // Private Slots
 //
 
-QDateTime NOTAM::NotamProvider::lastUpdateBinding()
+QByteArray NOTAM::NotamProvider::computeGeoJSON()
+{
+    QList<QJsonObject> result;
+    QSet<QGeoCoordinate> coordinatesSeen;
+    QSet<QGeoCircle> regionsCovered;
+
+#warning can simplify!
+    foreach(auto notamList, m_notamLists.value())
+    {
+        foreach(auto notam, notamList.notams())
+        {
+            if (!notam.isValid() || notam.isOutdated())
+            {
+                continue;
+            }
+            auto coordinate = notam.coordinate();
+            if (!coordinate.isValid())
+            {
+                continue;
+            }
+            if (!notamList.region().contains(coordinate))
+            {
+                continue;
+            }
+
+            // If we already have a waypoint for that coordinate, then don't add another one.
+            if (coordinatesSeen.contains(coordinate))
+            {
+                continue;
+            }
+
+            // If the coordinate has already been handled by an earlier (=newer) notamList,
+            // then don't add it here.
+            bool hasBeenCovered = false;
+            foreach(auto region, regionsCovered)
+            {
+                if (region.contains(coordinate))
+                {
+                    hasBeenCovered = true;
+                    break;
+                }
+            }
+            if (hasBeenCovered)
+            {
+                continue;
+            }
+
+            coordinatesSeen += coordinate;
+            result.append(notam.GeoJSON());
+        }
+
+        regionsCovered += notamList.region();
+    }
+
+    QJsonArray waypointArray;
+    foreach (const auto& jsonObject, result)
+    {
+        waypointArray.append(jsonObject);
+    }
+    QJsonObject jsonObj;
+    jsonObj.insert(QStringLiteral("type"), "FeatureCollection");
+    jsonObj.insert(QStringLiteral("features"), waypointArray);
+
+    QJsonDocument doc;
+    doc.setObject(jsonObj);
+    return doc.toJson();
+}
+
+
+QDateTime NOTAM::NotamProvider::computeLastUpdate()
 {
     auto notamLists = m_notamLists.value();
     if (notamLists.isEmpty())

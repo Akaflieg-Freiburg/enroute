@@ -65,7 +65,7 @@ public:
      *
      *  This property holds GeoJSON, to describe points where NOTAMs are active.
      */
-    Q_PROPERTY(QByteArray GeoJSON READ GeoJSON NOTIFY dataChanged)
+    Q_PROPERTY(QByteArray geoJSON READ geoJSON BINDABLE bindableGeoJSON)
 
     /*! \brief Time of last database update */
     Q_PROPERTY(QDateTime lastUpdate READ lastUpdate BINDABLE bindableLastUpdate)
@@ -89,14 +89,15 @@ public:
      *
      * @returns Property GeoJSON
      */
-    [[nodiscard]] QByteArray GeoJSON() const;
+    Q_REQUIRED_RESULT QByteArray geoJSON() const {return {m_geoJSON};}
+    Q_REQUIRED_RESULT QBindable<QByteArray> bindableGeoJSON() {return &m_geoJSON;}
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property lastUpdate
      */
     Q_REQUIRED_RESULT QDateTime lastUpdate() const {return {m_lastUpdate};}
-    Q_REQUIRED_RESULT QBindable<QDateTime> bindableLastUpdate() { return &m_lastUpdate; }
+    Q_REQUIRED_RESULT QBindable<QDateTime> bindableLastUpdate() {return &m_lastUpdate;}
 
     /*! \brief Getter function for the property with the same name
      *
@@ -156,7 +157,9 @@ signals:
     void dataChanged();
 
 private:
-    QDateTime lastUpdateBinding();
+    // Property bindings
+    QByteArray computeGeoJSON();
+    QDateTime computeLastUpdate();
 
 private slots:   
     // Removes outdated and irrelevant data from the database. This slot is called
@@ -206,8 +209,11 @@ private:
     // List of NotamLists, sorted so that newest lists come first
     QProperty<QList<NotamList>> m_notamLists;
 
+    // GeoJSON, for use in map
+    QProperty<QByteArray> m_geoJSON {[this]() {return this->computeGeoJSON();}};
+
     // Time of last update to data
-    QProperty<QDateTime> m_lastUpdate {[this]() {return this->lastUpdateBinding();}};
+    QProperty<QDateTime> m_lastUpdate {[this]() {return this->computeLastUpdate();}};
 
     // Filename for loading/saving NOTAM data
     QProperty<QString> m_status;

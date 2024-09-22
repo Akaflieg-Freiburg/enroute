@@ -173,7 +173,7 @@ Map {
 
             styleId: "notams"
             type: "geojson"
-            property string data: NotamProvider.GeoJSON
+            property string data: NotamProvider.geoJSON
         }
 
         LayerParameter {

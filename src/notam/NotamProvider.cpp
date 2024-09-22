@@ -58,6 +58,7 @@ void NOTAM::NotamProvider::deferredInitialization()
     connect(this, &NOTAM::NotamProvider::dataChanged, this, &NOTAM::NotamProvider::save, Qt::QueuedConnection);
 
     // Load NOTAM data from file in stdFileName, then clean the data (which potentially triggers save()).
+    QList<NotamList> newNotamLists;
     auto inputFile = QFile(m_stdFileName);
     if (inputFile.open(QIODevice::ReadOnly))
     {
@@ -67,13 +68,10 @@ void NOTAM::NotamProvider::deferredInitialization()
         if (magicString == QStringLiteral(GIT_COMMIT))
         {
             inputStream >> m_readNotamNumbers;
-            inputStream >> m_notamLists;
-        }
-        if (!m_notamLists.isEmpty())
-        {
-            m_lastUpdate = m_notamLists[0].retrieved();
+            inputStream >> newNotamLists;
         }
     }
+    m_notamLists = newNotamLists;
     clean();
 
     // Setup Status
@@ -100,7 +98,6 @@ NOTAM::NotamProvider::~NotamProvider()
         networkReply->abort();
     }
 
-    m_notamLists.clear();
     m_networkReplies.clear();
 }
 
@@ -116,7 +113,7 @@ QByteArray NOTAM::NotamProvider::GeoJSON() const
     QSet<QGeoCoordinate> coordinatesSeen;
     QSet<QGeoCircle> regionsCovered;
 
-    foreach(auto notamList, m_notamLists)
+    foreach(auto notamList, m_notamLists.value())
     {
         foreach(auto notam, notamList.notams())
         {
@@ -187,7 +184,7 @@ QList<GeoMaps::Waypoint> NOTAM::NotamProvider::waypoints() const
     QSet<QGeoCoordinate> coordinatesSeen;
     QSet<QGeoCircle> regionsCovered;
 
-    foreach(auto notamList, m_notamLists)
+    foreach(auto notamList, m_notamLists.value())
     {
         foreach(auto notam, notamList.notams())
         {
@@ -254,7 +251,7 @@ NOTAM::NotamList NOTAM::NotamProvider::notams(const GeoMaps::Waypoint& waypoint)
 
     // Check if notams for the location are present in our database.
     // Go through the database, oldest to newest.
-    foreach (auto notamList, m_notamLists)
+    foreach (auto notamList, m_notamLists.value())
     {
         // Disregard outdated notamLists
         if (notamList.isOutdated())
@@ -324,6 +321,17 @@ void NOTAM::NotamProvider::setRead(const QString& number, bool read)
 // Private Slots
 //
 
+QDateTime NOTAM::NotamProvider::lastUpdateBinding()
+{
+    auto notamLists = m_notamLists.value();
+    if (notamLists.isEmpty())
+    {
+        return {};
+    }
+    return notamLists[0].retrieved();
+}
+
+
 void NOTAM::NotamProvider::clean()
 {
     QList<NotamList> newNotamLists;
@@ -331,7 +339,7 @@ void NOTAM::NotamProvider::clean()
     bool haveChange = false;
 
     // Iterate over notamLists, newest lists first
-    foreach(auto notamList, m_notamLists)
+    foreach(auto notamList, m_notamLists.value())
     {
         // If this notamList is outdated, then so all all further ones. We can thus end here.
         if (notamList.isOutdated())
@@ -369,7 +377,6 @@ void NOTAM::NotamProvider::clean()
 
 void NOTAM::NotamProvider::downloadFinished()
 {
-
     bool newDataAdded = false;
     m_networkReplies.removeAll(nullptr);
     foreach(auto networkReply, m_networkReplies)
@@ -402,15 +409,17 @@ void NOTAM::NotamProvider::downloadFinished()
         {
             continue;
         }
+#warning not optimal, causes too many changes
         NotamList const notamList(jsonDoc, region, &m_cancelledNotamNumbers);
-        m_notamLists.prepend(notamList);
+        auto newNotamList = m_notamLists.value();
+        newNotamList.prepend(notamList);
+        m_notamLists = newNotamList;
         newDataAdded = true;
     }
 
     if (newDataAdded)
     {
         clean();
-        m_lastUpdate = QDateTime::currentDateTimeUtc();
         emit dataChanged();
     }
 }
@@ -424,7 +433,7 @@ void NOTAM::NotamProvider::save() const
         QDataStream outputStream(&outputFile);
         outputStream << QStringLiteral(GIT_COMMIT);
         outputStream << m_readNotamNumbers;
-        outputStream << m_notamLists;
+        outputStream << m_notamLists.value();
     }
 }
 
@@ -479,7 +488,7 @@ Units::Distance NOTAM::NotamProvider::range(const QGeoCoordinate& position)
 
     // If we have a NOTAM list that contains the position
     // within half its radius, then stop.
-    foreach (auto notamList, m_notamLists)
+    foreach (auto notamList, m_notamLists.value())
     {
         if (notamList.isOutdated())
         {
@@ -562,7 +571,7 @@ void NOTAM::NotamProvider::updateStatus()
         }
 
         bool hasNOTAM = false;
-        foreach (auto notamList, m_notamLists)
+        foreach (auto notamList, m_notamLists.value())
         {
             if (notamList.isOutdated())
             {

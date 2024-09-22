@@ -61,7 +61,6 @@ public:
     // Properties
     //
 
-
     /*! \brief List of NOTAM points
      *
      *  This property holds GeoJSON, to describe points where NOTAMs are active.
@@ -85,7 +84,6 @@ public:
     //
     // Getter Methods
     //
-
 
     /*! \brief Getter function for property with the same name
      *
@@ -118,7 +116,7 @@ public:
     // Methods
     //
 
-    /*! \brief Notams for a given waypoint
+    /*! \brief NOTAMs for a given waypoint
      *
      *  The returned list is empty and has a valid property "retrieved" if the
      *  NotamProvider is sure that there are no relevant notams for the given
@@ -137,7 +135,7 @@ public:
      */
     [[nodiscard]] Q_INVOKABLE NOTAM::NotamList notams(const GeoMaps::Waypoint& waypoint);
 
-    /*! \brief Check is a notam number is registred as read
+    /*! \brief Check if a NOTAM number is registred as read
      *
      *  @param number Notam number
      *
@@ -145,7 +143,7 @@ public:
      */
     [[nodiscard]] Q_INVOKABLE bool isRead(const QString& number) { return m_readNotamNumbers.contains(number); }
 
-    /*! \brief Register notam number as read or unread
+    /*! \brief Register NOTAM number as read or unread
      *
      *  @param number Notam number
      *
@@ -156,6 +154,9 @@ public:
 signals:
     /*! \brief Notifier signal */
     void dataChanged();
+
+private:
+    QDateTime lastUpdateBinding();
 
 private slots:   
     // Removes outdated and irrelevant data from the database. This slot is called
@@ -203,10 +204,10 @@ private:
     QList<QPointer<QNetworkReply>> m_networkReplies;
 
     // List of NotamLists, sorted so that newest lists come first
-    QList<NotamList> m_notamLists;
+    QProperty<QList<NotamList>> m_notamLists;
 
     // Time of last update to data
-    QProperty<QDateTime> m_lastUpdate;
+    QProperty<QDateTime> m_lastUpdate {[this]() {return this->lastUpdateBinding();}};
 
     // Filename for loading/saving NOTAM data
     QProperty<QString> m_status;

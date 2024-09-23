@@ -56,7 +56,6 @@ public:
     }
 
 
-
     //
     // Properties
     //
@@ -69,9 +68,6 @@ public:
 
     /*! \brief Time of last database update */
     Q_PROPERTY(QDateTime lastUpdate READ lastUpdate BINDABLE bindableLastUpdate)
-
-    /*! \brief Waypoints with Notam items, for presentation in a map */
-    Q_PROPERTY(QList<GeoMaps::Waypoint> waypoints READ waypoints NOTIFY dataChanged)
 
     /*! \brief Status
      *
@@ -105,12 +101,6 @@ public:
      */
     Q_REQUIRED_RESULT QString status() const {return {m_status};}
     Q_REQUIRED_RESULT QBindable<QString> bindableStatus() {return &m_status;}
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property waypoints
-     */
-    Q_REQUIRED_RESULT QList<GeoMaps::Waypoint> waypoints() const;
 
 
     //
@@ -188,6 +178,8 @@ private slots:
 private:
     Q_DISABLE_COPY_MOVE(NotamProvider)
 
+    QPropertyNotifier m_saveNotifier;
+
     // Compute the radius of the circle around the waypoint that is covered by
     // existing or requested notam data. Returns Units::Distance::fromM(-1) if
     // the waypoint is not covered by data.
@@ -210,10 +202,10 @@ private:
     QProperty<QList<NotamList>> m_notamLists;
 
     // GeoJSON, for use in map
-    QProperty<QByteArray> m_geoJSON {[this]() {return this->computeGeoJSON();}};
+    QProperty<QByteArray> m_geoJSON;
 
     // Time of last update to data
-    QProperty<QDateTime> m_lastUpdate {[this]() {return this->computeLastUpdate();}};
+    QProperty<QDateTime> m_lastUpdate;
 
     // Filename for loading/saving NOTAM data
     QProperty<QString> m_status;

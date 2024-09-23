@@ -54,9 +54,6 @@ void NOTAM::NotamProvider::deferredInitialization()
     timer->start(61min);
     connect(timer, &QTimer::timeout, this, &NOTAM::NotamProvider::clean);
 
-    // Save the NOTAM data every time that the database changes
-    connect(this, &NOTAM::NotamProvider::dataChanged, this, &NOTAM::NotamProvider::save, Qt::QueuedConnection);
-
     // Load NOTAM data from file in stdFileName, then clean the data (which potentially triggers save()).
     QList<NotamList> newNotamLists;
     auto inputFile = QFile(m_stdFileName);
@@ -84,6 +81,15 @@ void NOTAM::NotamProvider::deferredInitialization()
     // Set variables initially
     QTimer::singleShot(0, this, &NOTAM::NotamProvider::updateData);
     QTimer::singleShot(0, this, &NOTAM::NotamProvider::updateStatus);
+
+    // Setup Bindings
+    m_geoJSON.setBinding([this]() {return this->computeGeoJSON();});
+    m_lastUpdate.setBinding([this]() {return this->computeLastUpdate();});
+
+    // Setup Notifiers
+    //
+    // Save the NOTAM data every time that the database changes
+    m_saveNotifier = m_notamLists.addNotifier([this]() {this->save();});
 }
 
 
@@ -100,70 +106,6 @@ NOTAM::NotamProvider::~NotamProvider()
 
     m_networkReplies.clear();
 }
-
-
-
-//
-// Getter Methods
-//
-
-QList<GeoMaps::Waypoint> NOTAM::NotamProvider::waypoints() const
-{
-    QList<GeoMaps::Waypoint> result;
-    QSet<QGeoCoordinate> coordinatesSeen;
-    QSet<QGeoCircle> regionsCovered;
-
-    foreach(auto notamList, m_notamLists.value())
-    {
-        foreach(auto notam, notamList.notams())
-        {
-            if (!notam.isValid() || notam.isOutdated())
-            {
-                continue;
-            }
-            auto coordinate = notam.coordinate();
-            if (!coordinate.isValid())
-            {
-                continue;
-            }
-            if (!notamList.region().contains(coordinate))
-            {
-                continue;
-            }
-
-
-            // If we already have a waypoint for that coordinate, then don't add another one.
-            if (coordinatesSeen.contains(coordinate))
-            {
-                continue;
-            }
-
-            // If the coordinate has already been handled by an earlier (=newer) notamList,
-            // then don't add it here.
-            bool hasBeenCovered = false;
-            foreach(auto region, regionsCovered)
-            {
-                if (region.contains(coordinate))
-                {
-                    hasBeenCovered = true;
-                    break;
-                }
-            }
-            if (hasBeenCovered)
-            {
-                continue;
-            }
-
-            coordinatesSeen += coordinate;
-            result.append(coordinate);
-        }
-
-        regionsCovered += notamList.region();
-    }
-
-    return result;
-}
-
 
 
 //
@@ -425,6 +367,7 @@ void NOTAM::NotamProvider::downloadFinished()
 
 void NOTAM::NotamProvider::save() const
 {
+    qWarning() << "NOTAM::NotamProvider::save()";
     auto outputFile = QFile(m_stdFileName);
     if (outputFile.open(QIODevice::WriteOnly))
     {

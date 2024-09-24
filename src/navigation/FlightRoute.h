@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QBindable>
 #include <QFile>
 #include <QGeoRectangle>
 #include <QJsonDocument>
@@ -94,7 +95,7 @@ namespace Navigation
          * This property holds a list of coordinates of the waypoints, suitable
          * for drawing the flight path on a QML map.
          */
-        Q_PROPERTY(QList<QGeoCoordinate> geoPath READ geoPath NOTIFY waypointsChanged)
+        Q_PROPERTY(QList<QGeoCoordinate> geoPath READ geoPath BINDABLE bindableGeoPath)
 
         /*! \brief List of waypoints in the flight route that are not airfields
          *
@@ -144,7 +145,8 @@ namespace Navigation
          *
          *  @returns Property geoPath
          */
-        [[nodiscard]] auto geoPath() const -> QList<QGeoCoordinate>;
+        [[nodiscard]] QList<QGeoCoordinate> geoPath() const {return {m_geoPath};}
+        [[nodiscard]] QBindable<QList<QGeoCoordinate>> bindableGeoPath() const {return &m_geoPath;}
 
         /*! \brief Getter function for the property with the same name
          *
@@ -162,7 +164,7 @@ namespace Navigation
          *
          * @returns Property size
          */
-        [[nodiscard]] auto size() const -> qsizetype { return m_waypoints.size(); }
+        [[nodiscard]] auto size() const -> qsizetype { return m_waypoints.value().size(); }
 
         /*! \brief Getter function for the property with the same name
          *
@@ -174,7 +176,7 @@ namespace Navigation
          *
          * @returns Property waypoints
          */
-        [[nodiscard]] auto waypoints() const -> QList<GeoMaps::Waypoint> {return m_waypoints;}
+        [[nodiscard]] auto waypoints() const -> QList<GeoMaps::Waypoint> {return {m_waypoints};}
 
 
         //
@@ -353,10 +355,14 @@ namespace Navigation
     private:
         Q_DISABLE_COPY_MOVE(FlightRoute)
 
+        // Computer functions for bindings
+        QList<QGeoCoordinate> computeGeoPath();
+
         // Helper function for method toGPX
         [[nodiscard]] auto gpxElements(const QString& indent, const QString& tag) const -> QString;
 
-        QVector<GeoMaps::Waypoint> m_waypoints;
+        QProperty<QList<QGeoCoordinate>> m_geoPath;
+        QProperty<QVector<GeoMaps::Waypoint>> m_waypoints;
 
         QVector<Leg> m_legs;
 

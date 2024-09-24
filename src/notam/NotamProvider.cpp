@@ -71,24 +71,16 @@ void NOTAM::NotamProvider::deferredInitialization()
     m_notamLists.setValue(newNotamLists);
     clean();
 
-    // Setup Status
-    auto* statusTimer = new QTimer(this);
-    connect(statusTimer, &QTimer::timeout, this, &NOTAM::NotamProvider::updateStatus);
-    statusTimer->start(5min+1s);
-    connect(this, &NOTAM::NotamProvider::dataChanged, this, &NOTAM::NotamProvider::updateStatus);
-    connect(navigator()->flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, &NOTAM::NotamProvider::updateStatus);
-
     // Set variables initially
     QTimer::singleShot(0, this, &NOTAM::NotamProvider::updateData);
-    QTimer::singleShot(0, this, &NOTAM::NotamProvider::updateStatus);
 
     // Setup Bindings
     m_geoJSON.setBinding([this]() {return this->computeGeoJSON();});
     m_lastUpdate.setBinding([this]() {return this->computeLastUpdate();});
+    m_status.setBinding([this]() {return this->computeStatus();});
 
     // Setup Notifiers
-    //
-    // Save the NOTAM data every time that the database changes
+    // -- Save the NOTAM data every time that the database changes
     m_saveNotifier = m_notamLists.addNotifier([this]() {this->save();});
 }
 
@@ -269,6 +261,61 @@ QDateTime NOTAM::NotamProvider::computeLastUpdate()
         return {};
     }
     return notamLists[0].retrieved();
+}
+
+
+QString NOTAM::NotamProvider::computeStatus()
+{
+    qWarning() << "NOTAM::NotamProvider::computeStatus()";
+
+    auto position = GlobalObject::positionProvider()->approximateLastValidCoordinate();
+
+    QList<QGeoCoordinate> positionList;
+    positionList.append(position);
+    auto* route = navigator()->flightRoute();
+    if (route != nullptr)
+    {
+#warning Not bindable yet
+        positionList += route->geoPath();
+    }
+
+    foreach (auto pos, positionList)
+    {
+        if (!pos.isValid())
+        {
+            continue;
+        }
+
+        bool hasNOTAM = false;
+        foreach (auto notamList, m_notamLists.value())
+        {
+            if (notamList.isOutdated())
+            {
+                continue;
+            }
+
+            auto region = notamList.region();
+            if (!region.isValid())
+            {
+                continue;
+            }
+            auto rangeInM = region.radius() - region.center().distanceTo(pos);
+            if (rangeInM >= marginRadius.toM())
+            {
+                hasNOTAM = true;
+                break;
+            }
+        }
+        if (!hasNOTAM)
+        {
+            if (position == pos)
+            {
+                return tr("NOTAMs not current around own position, requesting update");
+            }
+            return tr("NOTAMs not current around route, requesting update");
+        }
+    }
+    return {};
 }
 
 
@@ -491,58 +538,3 @@ void NOTAM::NotamProvider::startRequest(const QGeoCoordinate& coordinate)
     connect(reply, &QNetworkReply::errorOccurred, this, &NOTAM::NotamProvider::downloadFinished);
 }
 
-
-void NOTAM::NotamProvider::updateStatus()
-{
-    auto position = Positioning::PositionProvider::lastValidCoordinate();
-
-    QList<QGeoCoordinate> positionList;
-    positionList.append(position);
-    auto* route = navigator()->flightRoute();
-    if (route != nullptr)
-    {
-        positionList += route->geoPath();
-    }
-
-    foreach (auto pos, positionList)
-    {
-        if (!pos.isValid())
-        {
-            continue;
-        }
-
-        bool hasNOTAM = false;
-        foreach (auto notamList, m_notamLists.value())
-        {
-            if (notamList.isOutdated())
-            {
-                continue;
-            }
-
-            auto region = notamList.region();
-            if (!region.isValid())
-            {
-                continue;
-            }
-            auto rangeInM = region.radius() - region.center().distanceTo(pos);
-            if (rangeInM >= marginRadius.toM())
-            {
-                hasNOTAM = true;
-                break;
-            }
-        }
-        if (!hasNOTAM)
-        {
-            if (position == pos)
-            {
-                m_status = tr("NOTAMs not current around own position, requesting update");
-            }
-            else
-            {
-                m_status = tr("NOTAMs not current around route, requesting update");
-            }
-            return;
-        }
-    }
-    m_status = QString();
-}

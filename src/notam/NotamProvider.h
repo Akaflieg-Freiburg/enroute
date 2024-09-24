@@ -150,6 +150,7 @@ private:
     // Property bindings
     QByteArray computeGeoJSON();
     QDateTime computeLastUpdate();
+    QString computeStatus();
 
 private slots:   
     // Removes outdated and irrelevant data from the database. This slot is called
@@ -170,10 +171,6 @@ private slots:
     // current position and around the current flight route. If not, requests
     // the data.
     void updateData();
-
-    // Checks if NOTAM data is available for an area of marginRadius around the
-    // current position and around the current flight route. Update status accordingly.
-    void updateStatus();
 
 private:
     Q_DISABLE_COPY_MOVE(NotamProvider)

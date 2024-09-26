@@ -31,7 +31,7 @@
 Positioning::PositionProvider::PositionProvider(QObject *parent) : PositionInfoSource_Abstract(parent)
 {
     // Restore the last valid coordiante and track
-    QSettings settings;
+    QSettings const settings;
     QGeoCoordinate tmp;
     tmp.setLatitude(settings.value(QStringLiteral("PositionProvider/lastValidLatitude"), m_lastValidCoordinate.value().latitude()).toDouble());
     tmp.setLongitude(settings.value(QStringLiteral("PositionProvider/lastValidLongitude"), m_lastValidCoordinate.value().longitude()).toDouble());
@@ -62,16 +62,14 @@ Positioning::PositionProvider::PositionProvider(QObject *parent) : PositionInfoS
 
     // Update properties
     updateStatusString();
-    m_approximateLastValidCoordinate.setBinding([this]() {
-        if (!m_approximateLastValidCoordinate.value().isValid())
+    m_approximateLastValidCoordinate = m_lastValidCoordinate.value();
+    connect(this, &Positioning::PositionProvider::lastValidCoordinateChanged, this, [this]() {
+        if (m_approximateLastValidCoordinate.value().isValid()
+            && (m_approximateLastValidCoordinate.value().distanceTo(m_lastValidCoordinate) < 10000))
         {
-            return m_lastValidCoordinate.value();
+            return;
         }
-        if (m_approximateLastValidCoordinate.value().distanceTo(m_lastValidCoordinate) > 10000)
-        {
-            return m_lastValidCoordinate.value();
-        }
-        return m_approximateLastValidCoordinate.value();
+        m_approximateLastValidCoordinate = m_lastValidCoordinate.value();
     });
 }
 
@@ -79,10 +77,8 @@ Positioning::PositionProvider::PositionProvider(QObject *parent) : PositionInfoS
 
 void Positioning::PositionProvider::deferredInitialization() const
 {
-
     connect(GlobalObject::trafficDataProvider(), &Traffic::TrafficDataProvider::positionInfoChanged, this, &PositionProvider::onPositionUpdated);
     connect(GlobalObject::trafficDataProvider(), &Traffic::TrafficDataProvider::pressureAltitudeChanged, this, &PositionProvider::onPressureAltitudeUpdated);
-
 }
 
 

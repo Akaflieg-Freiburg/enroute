@@ -43,17 +43,6 @@ NOTAM::NotamProvider::NotamProvider(QObject* parent) :
 
 void NOTAM::NotamProvider::deferredInitialization()
 {
-    // Wire up updateData. Check NOTAM database every 10 seconds after start, every 11 minutes, and whenever the flight route changes.
-    auto* timer = new QTimer(this);
-    timer->start(11min);
-    connect(timer, &QTimer::timeout, this, &NOTAM::NotamProvider::updateData);
-    connect(navigator()->flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, &NOTAM::NotamProvider::updateData);
-
-    // Wire up clean(). Clean the data every 61 minutes.
-    timer = new QTimer(this);
-    timer->start(61min);
-    connect(timer, &QTimer::timeout, this, &NOTAM::NotamProvider::clean);
-
     // Load NOTAM data from file in stdFileName, then clean the data (which potentially triggers save()).
     QList<NotamList> newNotamLists;
     auto inputFile = QFile(m_stdFileName);
@@ -68,11 +57,20 @@ void NOTAM::NotamProvider::deferredInitialization()
             inputStream >> newNotamLists;
         }
     }
-    m_notamLists.setValue(newNotamLists);
-    clean();
+    m_notamLists = clean(newNotamLists);
 
-    // Set variables initially
+    // Wire up updateData. Check NOTAM database after start, every 11 minutes, and whenever the flight route changes.
     QTimer::singleShot(0, this, &NOTAM::NotamProvider::updateData);
+    auto* timer = new QTimer(this);
+    timer->start(11min);
+    connect(timer, &QTimer::timeout, this, &NOTAM::NotamProvider::updateData);
+    connect(navigator()->flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, &NOTAM::NotamProvider::updateData);
+
+    // Clean the data every hour.
+    timer = new QTimer(this);
+    timer->start(59min);
+    connect(timer, &QTimer::timeout, this, [this]() {m_notamLists = clean(m_notamLists);});
+
 
     // Setup Bindings
     m_geoJSON.setBinding([this]() {return this->computeGeoJSON();});
@@ -267,6 +265,7 @@ QDateTime NOTAM::NotamProvider::computeLastUpdate()
 QString NOTAM::NotamProvider::computeStatus()
 {
     qWarning() << "NOTAM::NotamProvider::computeStatus()";
+    return {};
 
     auto position = GlobalObject::positionProvider()->approximateLastValidCoordinate();
 
@@ -275,7 +274,6 @@ QString NOTAM::NotamProvider::computeStatus()
     auto* route = navigator()->flightRoute();
     if (route != nullptr)
     {
-#warning Not bindable yet
         positionList += route->geoPath();
     }
 
@@ -287,7 +285,7 @@ QString NOTAM::NotamProvider::computeStatus()
         }
 
         bool hasNOTAM = false;
-        foreach (auto notamList, m_notamLists.value())
+        for (const auto& notamList : m_notamLists.value())
         {
             if (notamList.isOutdated())
             {
@@ -319,19 +317,17 @@ QString NOTAM::NotamProvider::computeStatus()
 }
 
 
-void NOTAM::NotamProvider::clean()
+QList<NOTAM::NotamList> NOTAM::NotamProvider::clean(const QList<NOTAM::NotamList>& notamLists)
 {
     QList<NotamList> newNotamLists;
     QSet<QGeoCircle> regionsSeen;
-    bool haveChange = false;
 
     // Iterate over notamLists, newest lists first
-    foreach(auto notamList, m_notamLists.value())
+    foreach(auto notamList, notamLists)
     {
         // If this notamList is outdated, then so all all further ones. We can thus end here.
         if (notamList.isOutdated())
         {
-            haveChange = true;
             break;
         }
 
@@ -339,32 +335,23 @@ void NOTAM::NotamProvider::clean()
         // is irrelevant. Skip over this list.
         if (regionsSeen.contains(notamList.region()))
         {
-            haveChange = true;
             continue;
         }
 
         regionsSeen += notamList.region();
 
         auto cleanedList = notamList.cleaned(m_cancelledNotamNumbers);
-        if (cleanedList.notams().size() != notamList.notams().size())
-        {
-            haveChange = true;
-        }
         newNotamLists.append(cleanedList);
     }
+#warning No good
     m_cancelledNotamNumbers.clear();
 
-    if (haveChange)
-    {
-        m_notamLists = newNotamLists;
-        emit dataChanged();
-    }
+    return newNotamLists;
 }
 
 
 void NOTAM::NotamProvider::downloadFinished()
 {
-    bool newDataAdded = false;
     m_networkReplies.removeAll(nullptr);
     foreach(auto networkReply, m_networkReplies)
     {
@@ -400,14 +387,7 @@ void NOTAM::NotamProvider::downloadFinished()
         NotamList const notamList(jsonDoc, region, &m_cancelledNotamNumbers);
         auto newNotamList = m_notamLists.value();
         newNotamList.prepend(notamList);
-        m_notamLists = newNotamList;
-        newDataAdded = true;
-    }
-
-    if (newDataAdded)
-    {
-        clean();
-        emit dataChanged();
+        m_notamLists = clean(newNotamList);
     }
 }
 
@@ -428,6 +408,7 @@ void NOTAM::NotamProvider::save() const
 
 void NOTAM::NotamProvider::updateData()
 {
+    qWarning() << "NOTAM::NotamProvider::updateData()";
     // Check if Notam data is available for a circle of marginRadius around
     // the current position.
     auto position = Positioning::PositionProvider::lastValidCoordinate();
@@ -456,7 +437,6 @@ void NOTAM::NotamProvider::updateData()
 
         }
     }
-
 }
 
 
@@ -514,6 +494,7 @@ Units::Distance NOTAM::NotamProvider::range(const QGeoCoordinate& position)
 
 void NOTAM::NotamProvider::startRequest(const QGeoCoordinate& coordinate)
 {
+    qWarning() << "NOTAM::NotamProvider::startRequest" << coordinate;
     if (!coordinate.isValid())
     {
         return;

@@ -287,7 +287,6 @@ void Navigation::FlightRoute::insert(const GeoMaps::Waypoint& waypoint)
 
 auto Navigation::FlightRoute::lastIndexOf(const GeoMaps::Waypoint& waypoint) const -> qsizetype
 {
-
     for(auto i=m_waypoints.value().size()-1; i>=0; i--)
     {
         auto _waypoint = m_waypoints.value().at(i);
@@ -301,7 +300,6 @@ auto Navigation::FlightRoute::lastIndexOf(const GeoMaps::Waypoint& waypoint) con
         }
     }
     return -1;
-
 }
 
 auto Navigation::FlightRoute::load(const QString& fileName) -> QString

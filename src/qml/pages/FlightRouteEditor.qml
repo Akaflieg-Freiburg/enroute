@@ -719,7 +719,7 @@ Page {
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
                     Navigator.flightRoute.append(model.modelData)
-                    close()
+                    flightRouteAddWPDialog.close()
                 }
             }
 

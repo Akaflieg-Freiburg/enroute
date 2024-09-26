@@ -142,10 +142,6 @@ public:
      */
     Q_INVOKABLE void setRead(const QString& number, bool read);
 
-signals:
-    /*! \brief Notifier signal */
-    void dataChanged();
-
 private:
     // Property bindings
     QByteArray computeGeoJSON();
@@ -153,19 +149,12 @@ private:
     QString computeStatus();
 
 private slots:   
-    // Removes outdated and irrelevant data from the database. This slot is called
-    // once per hour.
-    void clean();
-
     // This slot is connected to signals QNetworkReply::finished and
     // QNetworkReply::errorOccurred of the QNetworkReply contained in the list
     // in m_networkReply. This method reads the incoming data and adds it to the
     // database
     void downloadFinished();
 
-    // Save NOTAM data to file whose name is found in m_stdFileName. There are
-    // no error checks of any kind.
-    void save() const;
 
     // Checks if NOTAM data is available for an area of marginRadius around the
     // current position and around the current flight route. If not, requests
@@ -175,10 +164,19 @@ private slots:
 private:
     Q_DISABLE_COPY_MOVE(NotamProvider)
 
+    // Removes outdated NOTAMs and outdated NOTAMLists.
+    QList<NOTAM::NotamList> clean(const QList<NOTAM::NotamList>& notamLists);
+
+    // Save NOTAM data to a file, using the filename found in m_stdFileName. There are
+    // no error checks of any kind.
+    void save() const;
+
+    // This propertyNotifier ensures that the method save() is called whenever
+    // m_notamLists changes.
     QPropertyNotifier m_saveNotifier;
 
     // Compute the radius of the circle around the waypoint that is covered by
-    // existing or requested notam data. Returns Units::Distance::fromM(-1) if
+    // existing or requested NOTAM data. Returns Units::Distance::fromM(-1) if
     // the waypoint is not covered by data.
     Units::Distance range(const QGeoCoordinate& position);
 

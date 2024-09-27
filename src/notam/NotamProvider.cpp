@@ -57,7 +57,7 @@ void NOTAM::NotamProvider::deferredInitialization()
             inputStream >> newNotamLists;
         }
     }
-    m_notamLists = clean(newNotamLists);
+    m_notamLists = cleaned(newNotamLists);
 
     // Wire up updateData. Check NOTAM database after start, every 11 minutes, and whenever the flight route changes.
     QTimer::singleShot(0, this, &NOTAM::NotamProvider::updateData);
@@ -69,7 +69,7 @@ void NOTAM::NotamProvider::deferredInitialization()
     // Clean the data every hour.
     timer = new QTimer(this);
     timer->start(59min);
-    connect(timer, &QTimer::timeout, this, [this]() {m_notamLists = clean(m_notamLists);});
+    connect(timer, &QTimer::timeout, this, [this]() {m_notamLists = cleaned(m_notamLists);});
 
 
     // Setup Bindings
@@ -186,23 +186,13 @@ QByteArray NOTAM::NotamProvider::computeGeoJSON()
 {
     QList<QJsonObject> result;
     QSet<QGeoCoordinate> coordinatesSeen;
-    QSet<QGeoCircle> regionsCovered;
 
-#warning can simplify!
     foreach(auto notamList, m_notamLists.value())
     {
-        foreach(auto notam, notamList.notams())
+        for(const auto& notam : notamList.notams())
         {
-            if (!notam.isValid() || notam.isOutdated())
-            {
-                continue;
-            }
             auto coordinate = notam.coordinate();
             if (!coordinate.isValid())
-            {
-                continue;
-            }
-            if (!notamList.region().contains(coordinate))
             {
                 continue;
             }
@@ -212,28 +202,9 @@ QByteArray NOTAM::NotamProvider::computeGeoJSON()
             {
                 continue;
             }
-
-            // If the coordinate has already been handled by an earlier (=newer) notamList,
-            // then don't add it here.
-            bool hasBeenCovered = false;
-            foreach(auto region, regionsCovered)
-            {
-                if (region.contains(coordinate))
-                {
-                    hasBeenCovered = true;
-                    break;
-                }
-            }
-            if (hasBeenCovered)
-            {
-                continue;
-            }
-
             coordinatesSeen += coordinate;
             result.append(notam.GeoJSON());
         }
-
-        regionsCovered += notamList.region();
     }
 
     QJsonArray waypointArray;
@@ -317,7 +288,7 @@ QString NOTAM::NotamProvider::computeStatus()
 }
 
 
-QList<NOTAM::NotamList> NOTAM::NotamProvider::clean(const QList<NOTAM::NotamList>& notamLists)
+QList<NOTAM::NotamList> NOTAM::NotamProvider::cleaned(const QList<NOTAM::NotamList>& notamLists, const QSet<QString>& cancelledNotams)
 {
     QList<NotamList> newNotamLists;
     QSet<QGeoCircle> regionsSeen;
@@ -340,11 +311,9 @@ QList<NOTAM::NotamList> NOTAM::NotamProvider::clean(const QList<NOTAM::NotamList
 
         regionsSeen += notamList.region();
 
-        auto cleanedList = notamList.cleaned(m_cancelledNotamNumbers);
+        auto cleanedList = notamList.cleaned(cancelledNotams);
         newNotamLists.append(cleanedList);
     }
-#warning No good
-    m_cancelledNotamNumbers.clear();
 
     return newNotamLists;
 }
@@ -352,6 +321,9 @@ QList<NOTAM::NotamList> NOTAM::NotamProvider::clean(const QList<NOTAM::NotamList
 
 void NOTAM::NotamProvider::downloadFinished()
 {
+    auto newNotamList = m_notamLists.value();
+    QSet<QString> cancelledNotams;
+
     m_networkReplies.removeAll(nullptr);
     foreach(auto networkReply, m_networkReplies)
     {
@@ -370,6 +342,7 @@ void NOTAM::NotamProvider::downloadFinished()
         }
         if (networkReply->error() != QNetworkReply::NoError)
         {
+#warning Error! Try again in 5 minutes!
             networkReply->deleteLater();
             continue;
         }
@@ -383,12 +356,10 @@ void NOTAM::NotamProvider::downloadFinished()
         {
             continue;
         }
-#warning not optimal, causes too many changes
-        NotamList const notamList(jsonDoc, region, &m_cancelledNotamNumbers);
-        auto newNotamList = m_notamLists.value();
+        NotamList const notamList(jsonDoc, region, &cancelledNotams);
         newNotamList.prepend(notamList);
-        m_notamLists = clean(newNotamList);
     }
+    m_notamLists = cleaned(newNotamList, cancelledNotams);
 }
 
 

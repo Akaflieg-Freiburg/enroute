@@ -165,7 +165,7 @@ private:
     Q_DISABLE_COPY_MOVE(NotamProvider)
 
     // Removes outdated NOTAMs and outdated NOTAMLists.
-    QList<NOTAM::NotamList> clean(const QList<NOTAM::NotamList>& notamLists);
+    static QList<NOTAM::NotamList> cleaned(const QList<NOTAM::NotamList>& notamLists, const QSet<QString>& cancelledNotams = {});
 
     // Save NOTAM data to a file, using the filename found in m_stdFileName. There are
     // no error checks of any kind.
@@ -186,9 +186,6 @@ private:
 
     // List with numbers of notams that have been marked as read
     QList<QString> m_readNotamNumbers;
-
-    // Set with numbers of notams that have been cancelled
-    QSet<QString> m_cancelledNotamNumbers;
 
     // List of pending network requests
     QList<QPointer<QNetworkReply>> m_networkReplies;

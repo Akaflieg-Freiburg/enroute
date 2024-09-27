@@ -146,6 +146,9 @@ public:
 
 signals:
     /*! \brief Notifier signal */
+    void approximateLastValidCoordinateChanged();
+
+    /*! \brief Notifier signal */
     void lastValidTTChanged(Units::Angle);
 
     /*! \brief Notifier signal */
@@ -189,7 +192,7 @@ private:
 
     PositionInfoSource_Satellite satelliteSource;
 
-    QProperty<QGeoCoordinate> m_approximateLastValidCoordinate;
+    Q_OBJECT_BINDABLE_PROPERTY(PositionProvider, QGeoCoordinate, m_approximateLastValidCoordinate, &Positioning::PositionProvider::approximateLastValidCoordinateChanged)
     QProperty<QGeoCoordinate> m_lastValidCoordinate {QGeoCoordinate(EDTF_lat, EDTF_lon, EDTF_ele)};
     Units::Angle m_lastValidTT {};
 };

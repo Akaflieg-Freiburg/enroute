@@ -59,17 +59,18 @@ void NOTAM::NotamProvider::deferredInitialization()
     }
     m_notamLists = cleaned(newNotamLists);
 
-    // Wire up updateData. Check NOTAM database after start, every 11 minutes, and whenever the flight route changes.
+    // Wire up updateData. Check NOTAM database after start, and whenever the flight route changes.
     QTimer::singleShot(0, this, &NOTAM::NotamProvider::updateData);
-    auto* timer = new QTimer(this);
-    timer->start(11min);
-    connect(timer, &QTimer::timeout, this, &NOTAM::NotamProvider::updateData);
     connect(navigator()->flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, &NOTAM::NotamProvider::updateData);
+    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::approximateLastValidCoordinateChanged, this, &NOTAM::NotamProvider::updateData);
 
-    // Clean the data every hour.
-    timer = new QTimer(this);
+    // Clean and check the NOTAM database the data every hour.
+    auto* timer = new QTimer(this);
     timer->start(59min);
-    connect(timer, &QTimer::timeout, this, [this]() {m_notamLists = cleaned(m_notamLists);});
+    connect(timer, &QTimer::timeout, this, [this]() {
+        updateData();
+        m_notamLists = cleaned(m_notamLists);
+    });
 
 
     // Setup Bindings

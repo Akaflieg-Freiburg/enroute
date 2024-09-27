@@ -160,6 +160,7 @@ private slots:
     // current position and around the current flight route. If not, requests
     // the data.
     void updateData();
+    //QPropertyNotifier m_updateDataNotifier;
 
 private:
     Q_DISABLE_COPY_MOVE(NotamProvider)

@@ -22,12 +22,9 @@
 #include "geomaps/GeoMapProvider.h"
 #include "positioning/PositionInfo.h"
 
-
 Positioning::PositionInfo::PositionInfo(const QGeoPositionInfo &info)
-{
-    m_positionInfo = info;
-}
-
+    : m_positionInfo(info)
+{}
 
 auto Positioning::PositionInfo::groundSpeed() const -> Units::Speed
 {

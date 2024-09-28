@@ -192,10 +192,10 @@ private:
     Positioning::PositionInfo m_positionInfo;
     QTimer m_positionInfoTimer;
 
-    QString m_sourceName {};
-    QString m_statusString {};
+    QString m_sourceName;
+    QString m_statusString;
 
-    bool _receivingPositionInfo {false};
+    bool _receivingPositionInfo{false};
 };
 
 } // namespace Positioning

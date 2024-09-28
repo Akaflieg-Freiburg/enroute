@@ -237,7 +237,7 @@ auto Positioning::PositionProvider::lastValidCoordinate() -> QGeoCoordinate
     if (positionProvider == nullptr) {
         return {};
     }
-    return positionProvider->m_lastValidCoordinate;
+    return positionProvider->m_lastValidCoordinate.value();
 }
 
 

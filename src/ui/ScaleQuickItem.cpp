@@ -40,7 +40,7 @@ Ui::ScaleQuickItem::ScaleQuickItem(QQuickItem *parent)
 void Ui::ScaleQuickItem::paint(QPainter* painter)
 {
     // Safety check. Continue only if data provided is sane
-    if (m_pixelPer10km < 20) {
+    if (m_pixelPer10km < 2) {
         return;
     }
 
@@ -112,9 +112,6 @@ void Ui::ScaleQuickItem::paint(QPainter* painter)
     int const baseX = m_vertical ? 8 : qRound((width() - sizeOfScaleInPix) / 2.0);
     int const baseY = m_vertical ? qRound((height() - sizeOfScaleInPix) / 2.0)
                                 : qRound(height()) - 8;
-
-    // Draw underlying white, slightly tranparent rectangle
-    //  painter->fillRect(0, 0, static_cast<int>(width()), static_cast<int>(height()), QColor(0xff, 0xff, 0xff, 0xe0));
 
     // Draw scale
     if (m_vertical)

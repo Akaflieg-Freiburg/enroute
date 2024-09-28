@@ -24,7 +24,7 @@
 #include <QLocale>
 #include <QSettings>
 
-#include "notam/NotamProvider.h"
+#include "notam/NOTAMProvider.h"
 #include "platform/PlatformAdaptor_Abstract.h"
 #include "qimage.h"
 

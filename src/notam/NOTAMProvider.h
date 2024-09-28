@@ -26,34 +26,50 @@
 #include <QStandardPaths>
 
 #include "GlobalObject.h"
-#include "notam/NotamList.h"
+#include "notam/NOTAMList.h"
 
 namespace NOTAM {
 
-/*! \brief This extremely simple class holds a the data item of a NOTAM */
+/*! \brief Manage NOTAM data and download NOTAM data from the FAA if required.
+ *
+ *  This class attempts to ensure that for any given point in time, current NOTAM data
+ *  is provided for circles of radius minimumRadiusPoint around the current position
+ *  and every waypoint in the flightRoute, as well as a region of at least
+ *  minimumRadiusFlightRoute around the flight route.
+ *
+ *  There is API to access the data, and to request NOTAM data for arbitrary coordinates.
+ */
 
-class NotamProvider : public GlobalObject {
+class NOTAMProvider : public GlobalObject {
     Q_OBJECT
     QML_ELEMENT
     QML_SINGLETON
 
 public:
-    explicit NotamProvider(QObject* parent = nullptr);
+    explicit NOTAMProvider(QObject* parent = nullptr);
 
     // deferred initialization
     void deferredInitialization() override;
 
     // No default constructor, important for QML singleton
-    explicit NotamProvider() = delete;
+    explicit NOTAMProvider() = delete;
 
     /*! \brief Standard destructor */
-    ~NotamProvider() override;
+    ~NOTAMProvider() override;
 
     // factory function for QML singleton
-    static NOTAM::NotamProvider* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
+    static NOTAMProvider* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
     {
         return GlobalObject::notamProvider();
     }
+
+    // NOTAM data is considered to cover a given point if the data covers a circle of radius
+    // minimumRadiusPoint around that point.
+    static constexpr Units::Distance minimumRadiusPoint = Units::Distance::fromNM(20.0);
+
+    // NOTAM data is considered to cover the flight route if it covers a region of at least
+    // minimumRadiusFlightRoute around the route
+    static constexpr Units::Distance minimumRadiusFlightRoute = Units::Distance::fromNM(3.0);
 
 
     //
@@ -107,6 +123,7 @@ public:
     // Methods
     //
 
+
     /*! \brief NOTAMs for a given waypoint
      *
      *  The returned list is empty and has a valid property "retrieved" if the
@@ -124,7 +141,7 @@ public:
      *
      *  @returns List of Notams relevant for the waypoint
      */
-    [[nodiscard]] Q_INVOKABLE NOTAM::NotamList notams(const GeoMaps::Waypoint& waypoint);
+    [[nodiscard]] Q_INVOKABLE NOTAMList notams(const GeoMaps::Waypoint& waypoint);
 
     /*! \brief Check if a NOTAM number is registred as read
      *
@@ -142,12 +159,6 @@ public:
      */
     Q_INVOKABLE void setRead(const QString& number, bool read);
 
-private:
-    // Property bindings
-    QByteArray computeGeoJSON() const;
-    QDateTime computeLastUpdate() const;
-    QString computeStatus() const;
-
 private slots:   
     // This slot is connected to signals QNetworkReply::finished and
     // QNetworkReply::errorOccurred of the QNetworkReply contained in the list
@@ -161,26 +172,35 @@ private slots:
     void updateData();
 
 private:
-    Q_DISABLE_COPY_MOVE(NotamProvider)
+    Q_DISABLE_COPY_MOVE(NOTAMProvider)
+
+    // Property computing functions
+    [[nodiscard]] QByteArray computeGeoJSON() const;
+    [[nodiscard]] QDateTime computeLastUpdate() const;
+    [[nodiscard]] QString computeStatus() const;
 
     // Removes outdated NOTAMs and outdated NOTAMLists.
-    static QList<NOTAM::NotamList> cleaned(const QList<NOTAM::NotamList>& notamLists, const QSet<QString>& cancelledNotams = {});
+    [[nodiscard]] static QList<NOTAMList> cleaned(const QList<NOTAMList>& notamLists, const QSet<QString>& cancelledNotams = {});
+
+    // Check if current NOTAM data exists for a circle of radius minimalRadius around
+    // position. This method ignores outdated NOTAM data. An invalid position is always
+    // considered to be covered.
+    //
+    // includeDataThatNeedsUpdate: If true, then also count NOTAM lists that need an update as NOTAM data
+    //
+    // includeRunningDownloads: If true, then also count running downloads as NOTAM data
+    [[nodiscard]] bool covers(const QGeoCoordinate& position, bool includeDataThatNeedsUpdate, bool includeRunningDownloads) const;
 
     // Save NOTAM data to a file, using the filename found in m_stdFileName. There are
     // no error checks of any kind.
-    void save() const;
-
-    // This propertyNotifier ensures that the method save() is called whenever
+    // The propertyNotifier ensures that the method save() is called whenever
     // m_notamLists changes.
+    void save() const;
     QPropertyNotifier m_saveNotifier;
 
-    // Compute the radius of the circle around the waypoint that is covered by
-    // existing or requested NOTAM data. Returns Units::Distance::fromM(-1) if
-    // the waypoint is not covered by data.
-    Units::Distance range(const QGeoCoordinate& position);
-
-    // Request Notam data from the FAA, for a circle of radius requestRadius
-    // around the coordinate.
+    // Request NOTAM data from the FAA, for a circle of radius requestRadius
+    // around the coordinate.  For performance reasons, the request will be ignored
+    // if existing NOTAM data or ongoing download requests cover the position alreads.
     void startRequest(const QGeoCoordinate& coordinate);
 
     // List with numbers of notams that have been marked as read
@@ -190,7 +210,15 @@ private:
     QList<QPointer<QNetworkReply>> m_networkReplies;
 
     // List of NOTAMLists, sorted so that newest lists come first
-    QProperty<QList<NotamList>> m_notamLists;
+    QProperty<QList<NOTAMList>> m_notamLists;
+
+    // This is a list of control points.  The computing function guarantees that
+// the NOTAM data covers a region of at least marginRadiusFlightRoute around the route if
+// the data covers a circle of radius
+    // marginRadius around every control point point. Exeption: For performance reasons, this guarantee
+// is lifted if the flight route contains a leg
+// of size > maximumFlightRouteLegLength.
+    QProperty<QList<QGeoCoordinate>> m_controlPoints4FlightRoute;
 
     // GeoJSON, for use in map
     QProperty<QByteArray> m_geoJSON;
@@ -204,14 +232,13 @@ private:
     // Filename for loading/saving NOTAM data
     QString m_stdFileName { QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+u"/notam.dat"_qs };
 
-    // The method updateDate() ensures that data is requested for marginRadius around
-    // own position and current flight route.
-    static constexpr Units::Distance marginRadius = Units::Distance::fromNM(5.0);
+    // NOTAM data is considered to cover the flight route if it covers a region of at least
+    // marginRadiusFlightRoute around the route
+    static constexpr Units::Distance maximumFlightRouteLegLength = Units::Distance::fromNM(200.0);
 
     // Requests for Notam data are requestRadius around given position.
-    // This is the maximum that FAA API currently allows (FAA max is 100NM, but
-    // the number here is multiplied internally with a factor of 1.2)
-    static constexpr Units::Distance requestRadius = Units::Distance::fromNM(83.0);
+    // This is the maximum that FAA API currently allows (FAA max is 100NM)
+    static constexpr Units::Distance requestRadius = Units::Distance::fromNM(99.0);
 };
 
 } // namespace NOTAM

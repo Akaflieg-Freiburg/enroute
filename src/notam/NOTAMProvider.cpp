@@ -24,7 +24,7 @@
 #include <chrono>
 
 #include "navigation/Navigator.h"
-#include "notam/NotamProvider.h"
+#include "notam/NOTAMProvider.h"
 #include "positioning/PositionProvider.h"
 
 using namespace std::chrono_literals;
@@ -35,16 +35,16 @@ using namespace std::chrono_literals;
 // Constructor/Destructor
 //
 
-NOTAM::NotamProvider::NotamProvider(QObject* parent) :
+NOTAM::NOTAMProvider::NOTAMProvider(QObject* parent) :
     GlobalObject(parent)
 {
 }
 
 
-void NOTAM::NotamProvider::deferredInitialization()
+void NOTAM::NOTAMProvider::deferredInitialization()
 {
     // Load NOTAM data from file in stdFileName, then clean the data (which potentially triggers save()).
-    QList<NotamList> newNotamLists;
+    QList<NOTAMList> newNotamLists;
     auto inputFile = QFile(m_stdFileName);
     if (inputFile.open(QIODevice::ReadOnly))
     {
@@ -60,9 +60,9 @@ void NOTAM::NotamProvider::deferredInitialization()
     m_notamLists = cleaned(newNotamLists);
 
     // Wire up updateData. Check NOTAM database after start, and whenever the flight route changes.
-    QTimer::singleShot(0, this, &NOTAM::NotamProvider::updateData);
-    connect(navigator()->flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, &NOTAM::NotamProvider::updateData);
-    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::approximateLastValidCoordinateChanged, this, &NOTAM::NotamProvider::updateData);
+    QTimer::singleShot(0, this, &NOTAMProvider::updateData);
+    connect(navigator()->flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, &NOTAMProvider::updateData);
+    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::approximateLastValidCoordinateChanged, this, &NOTAMProvider::updateData);
 
     // Clean and check the NOTAM database the data every hour.
     auto* timer = new QTimer(this);
@@ -84,7 +84,7 @@ void NOTAM::NotamProvider::deferredInitialization()
 }
 
 
-NOTAM::NotamProvider::~NotamProvider()
+NOTAM::NOTAMProvider::~NOTAMProvider()
 {
     for(const auto& networkReply : m_networkReplies)
     {
@@ -103,8 +103,9 @@ NOTAM::NotamProvider::~NotamProvider()
 // Methods
 //
 
-NOTAM::NotamList NOTAM::NotamProvider::notams(const GeoMaps::Waypoint& waypoint)
+NOTAM::NOTAMList NOTAM::NOTAMProvider::notams(const GeoMaps::Waypoint& waypoint)
 {
+#warning Simplify!
     // Paranoid safety checks
     if (!waypoint.coordinate().isValid())
     {
@@ -132,7 +133,7 @@ NOTAM::NotamList NOTAM::NotamProvider::notams(const GeoMaps::Waypoint& waypoint)
         }
     }
 
-    // Check if internet requests notams for the location are pending.
+    // Check if internet requests NOTAMs for the location are pending.
     // In that case, return an empty list.
     for(const auto& networkReply : m_networkReplies)
     {
@@ -141,7 +142,10 @@ NOTAM::NotamList NOTAM::NotamProvider::notams(const GeoMaps::Waypoint& waypoint)
         {
             continue;
         }
-#warning What about failed replies?
+        if (!networkReply->isRunning())
+        {
+            continue;
+        }
         auto area = networkReply->property("area").value<QGeoCircle>();
         if (!area.isValid())
         {
@@ -160,7 +164,7 @@ NOTAM::NotamList NOTAM::NotamProvider::notams(const GeoMaps::Waypoint& waypoint)
 }
 
 
-void NOTAM::NotamProvider::setRead(const QString& number, bool read)
+void NOTAM::NOTAMProvider::setRead(const QString& number, bool read)
 {
     if (read)
     {
@@ -183,7 +187,7 @@ void NOTAM::NotamProvider::setRead(const QString& number, bool read)
 // Private Slots
 //
 
-QByteArray NOTAM::NotamProvider::computeGeoJSON() const
+QByteArray NOTAM::NOTAMProvider::computeGeoJSON() const
 {
     QList<QJsonObject> result;
     QSet<QGeoCoordinate> coordinatesSeen;
@@ -223,7 +227,7 @@ QByteArray NOTAM::NotamProvider::computeGeoJSON() const
 }
 
 
-QDateTime NOTAM::NotamProvider::computeLastUpdate() const
+QDateTime NOTAM::NOTAMProvider::computeLastUpdate() const
 {
     auto notamLists = m_notamLists.value();
     if (notamLists.isEmpty())
@@ -234,7 +238,7 @@ QDateTime NOTAM::NotamProvider::computeLastUpdate() const
 }
 
 
-QString NOTAM::NotamProvider::computeStatus() const
+QString NOTAM::NOTAMProvider::computeStatus() const
 {
     auto position = GlobalObject::positionProvider()->approximateLastValidCoordinate();
 
@@ -252,43 +256,23 @@ QString NOTAM::NotamProvider::computeStatus() const
         {
             continue;
         }
-
-        bool hasNOTAM = false;
-        for (const auto& notamList : m_notamLists.value())
+        if (covers(pos, true, false))
         {
-            if (notamList.isOutdated())
-            {
-                continue;
-            }
-
-            auto region = notamList.region();
-            if (!region.isValid())
-            {
-                continue;
-            }
-            auto rangeInM = region.radius() - region.center().distanceTo(pos);
-            if (rangeInM >= marginRadius.toM())
-            {
-                hasNOTAM = true;
-                break;
-            }
+            continue;
         }
-        if (!hasNOTAM)
+        if (position == pos)
         {
-            if (position == pos)
-            {
-                return tr("NOTAMs not current around own position, requesting update");
-            }
-            return tr("NOTAMs not current around route, requesting update");
+            return tr("NOTAMs not current around own position, requesting update");
         }
+        return tr("NOTAMs not current around waypoint, requesting update");
     }
     return {};
 }
 
 
-QList<NOTAM::NotamList> NOTAM::NotamProvider::cleaned(const QList<NOTAM::NotamList>& notamLists, const QSet<QString>& cancelledNotams)
+QList<NOTAM::NOTAMList> NOTAM::NOTAMProvider::cleaned(const QList<NOTAMList>& notamLists, const QSet<QString>& cancelledNotams)
 {
-    QList<NotamList> newNotamLists;
+    QList<NOTAMList> newNotamLists;
     QSet<QGeoCircle> regionsSeen;
 
     // Iterate over notamLists, newest lists first
@@ -317,7 +301,7 @@ QList<NOTAM::NotamList> NOTAM::NotamProvider::cleaned(const QList<NOTAM::NotamLi
 }
 
 
-void NOTAM::NotamProvider::downloadFinished()
+void NOTAM::NOTAMProvider::downloadFinished()
 {
     auto newNotamList = m_notamLists.value();
     QSet<QString> cancelledNotams;
@@ -341,7 +325,7 @@ void NOTAM::NotamProvider::downloadFinished()
         if (networkReply->error() != QNetworkReply::NoError)
         {
             // Network error? Then try again in 5 minutes.
-            QTimer::singleShot(5min, this, &NOTAM::NotamProvider::updateData);
+            QTimer::singleShot(5min, this, &NOTAMProvider::updateData);
             networkReply->deleteLater();
             continue;
         }
@@ -355,14 +339,14 @@ void NOTAM::NotamProvider::downloadFinished()
         {
             continue;
         }
-        NotamList const notamList(jsonDoc, region, &cancelledNotams);
+        NOTAMList const notamList(jsonDoc, region, &cancelledNotams);
         newNotamList.prepend(notamList);
     }
     m_notamLists = cleaned(newNotamList, cancelledNotams);
 }
 
 
-void NOTAM::NotamProvider::save() const
+void NOTAM::NOTAMProvider::save() const
 {
     auto outputFile = QFile(m_stdFileName);
     if (outputFile.open(QIODevice::WriteOnly))
@@ -375,35 +359,17 @@ void NOTAM::NotamProvider::save() const
 }
 
 
-void NOTAM::NotamProvider::updateData()
+void NOTAM::NOTAMProvider::updateData()
 {
-    qWarning() << "NOTAM::NotamProvider::updateData()";
-    // Check if Notam data is available for a circle of marginRadius around
-    // the current position.
     auto position = Positioning::PositionProvider::lastValidCoordinate();
-    if (position.isValid())
-    {
-        auto _range = range(position);
-        if (_range < marginRadius)
-        {
-            startRequest(position);
-        }
-    }
+    startRequest(position);
 
     auto* route = navigator()->flightRoute();
     if (route != nullptr)
     {
         for(const auto& pos : route->geoPath())
         {
-            if (pos.isValid())
-            {
-                auto _range = range(pos);
-                if (_range < marginRadius)
-                {
-                    startRequest(pos);
-                }
-            }
-
+            startRequest(pos);
         }
     }
 }
@@ -414,63 +380,75 @@ void NOTAM::NotamProvider::updateData()
 // Private Methods
 //
 
-Units::Distance NOTAM::NotamProvider::range(const QGeoCoordinate& position)
+bool NOTAM::NOTAMProvider::covers(const QGeoCoordinate& position, bool includeDataThatNeedsUpdate, bool includeRunningDownloads) const
 {
-    auto result = Units::Distance::fromM(-1.0);
-
     if (!position.isValid())
     {
-        return result;
+        return true;
     }
 
-    // If we have a NOTAM list that contains the position
-    // within half its radius, then stop.
     for(const auto& notamList : m_notamLists.value())
     {
         if (notamList.isOutdated())
         {
             continue;
         }
+        if (notamList.needsUpdate() && !includeDataThatNeedsUpdate)
+        {
+            continue;
+        }
 
-        auto region = notamList.region();
+        const auto region = notamList.region();
         if (!region.isValid())
         {
             continue;
         }
-        auto rangeInM = region.radius() - region.center().distanceTo(position);
-        result = qMax(result, Units::Distance::fromM(rangeInM));
+        if (region.radius() - region.center().distanceTo(position) >= minimumRadiusPoint.toM())
+        {
+            return true;
+        }
     }
 
-    for(auto& networkReply : m_networkReplies)
+    if (includeRunningDownloads)
     {
-        // Paranoid safety checks
-        if (networkReply.isNull())
+        for(const auto& networkReply : m_networkReplies)
         {
-            continue;
+            // Paranoid safety checks
+            if (networkReply.isNull())
+            {
+                continue;
+            }
+            if (!networkReply->isRunning())
+            {
+                continue;
+            }
+            auto region = networkReply->property("area").value<QGeoCircle>();
+            if (region.radius() - region.center().distanceTo(position) >= minimumRadiusPoint.toM())
+            {
+                return true;
+            }
         }
-#warning what about failed replies?!
-        auto region = networkReply->property("area").value<QGeoCircle>();
-        if (!region.isValid())
-        {
-            continue;
-        }
-        auto rangeInM = region.radius() - region.center().distanceTo(position);
-        result = qMax(result, Units::Distance::fromM(rangeInM));
     }
 
-    return result;
+    return false;
 }
 
 
-void NOTAM::NotamProvider::startRequest(const QGeoCoordinate& coordinate)
+void NOTAM::NOTAMProvider::startRequest(const QGeoCoordinate& coordinate)
 {
-    qWarning() << "NOTAM::NotamProvider::startRequest" << coordinate;
     if (!coordinate.isValid())
     {
         return;
     }
-    const QGeoCoordinate coordinateRounded( qRound(coordinate.latitude()), qRound(coordinate.longitude()) );
 
+    // If data exists for marginRadius around that coordinate or if that data is already
+    // requested for download, then return immediately.
+    if (covers(coordinate, false, true))
+    {
+        return;
+    }
+
+    const QGeoCoordinate coordinateRounded( qRound(coordinate.latitude()), qRound(coordinate.longitude()) );
     auto urlString = u"https://enroute-data.akaflieg-freiburg.de/enrouteProxy/notam.php?"
                      "locationLongitude=%1&"
                      "locationLatitude=%2&"
@@ -478,14 +456,15 @@ void NOTAM::NotamProvider::startRequest(const QGeoCoordinate& coordinate)
                      "pageSize=1000"_qs
                          .arg(coordinateRounded.longitude())
                          .arg(coordinateRounded.latitude())
-                         .arg( qRound(1.2*requestRadius.toNM()) );
+                         .arg( qRound(requestRadius.toNM()) );
     QNetworkRequest const request(urlString);
 
     auto* reply = GlobalObject::networkAccessManager()->get(request);
     reply->setProperty("area", QVariant::fromValue(QGeoCircle(coordinateRounded, requestRadius.toM())) );
 
+    connect(reply, &QNetworkReply::finished, this, &NOTAMProvider::downloadFinished);
+    connect(reply, &QNetworkReply::errorOccurred, this, &NOTAMProvider::downloadFinished);
+
     m_networkReplies.append(reply);
-    connect(reply, &QNetworkReply::finished, this, &NOTAM::NotamProvider::downloadFinished);
-    connect(reply, &QNetworkReply::errorOccurred, this, &NOTAM::NotamProvider::downloadFinished);
 }
 

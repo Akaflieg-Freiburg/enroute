@@ -30,22 +30,22 @@ namespace NOTAM {
 
 /*! \brief This extremely simple class holds a the data item of a NOTAM */
 
-class Notam {
+class NOTAM {
     Q_GADGET
     QML_VALUE_TYPE(notam)
 
-    friend QDataStream& operator<<(QDataStream& stream, const NOTAM::Notam &notam);
-    friend QDataStream& operator>>(QDataStream& stream, NOTAM::Notam& notam);
+    friend QDataStream& operator<<(QDataStream& stream, const NOTAM& notam);
+    friend QDataStream& operator>>(QDataStream& stream, NOTAM& notam);
 
 public:
-    /*! \brief Constructs an invalid Notam */
-    Notam() = default;
+    /*! \brief Constructs an invalid NOTAM */
+    NOTAM() = default;
 
-    /*! \brief Constructs a Notam from GeoJSON data, as provided by the FAA
+    /*! \brief Constructs a NOTAM from GeoJSON data, as provided by the FAA
      *
      *  @param jsonObject JSON object, as provided by the FAA
      */
-    explicit Notam(const QJsonObject& jsonObject);
+    explicit NOTAM(const QJsonObject& jsonObject);
 
 
     //
@@ -68,7 +68,7 @@ public:
 
     /*! \brief Effective end of the NOTAM, if date is given
      *
-     *  If the effectiveEnd field of the Notam specified a precise date/time,
+     *  If the effectiveEnd field of the NOTAM specified a precise date/time,
      *  then this time is found here. If not, the property contains an invalid
      *  QDateTime.
      */
@@ -76,7 +76,7 @@ public:
 
     /*! \brief Effective start of the NOTAM, if date is given
      *
-     *  If the effectiveStart field of the Notam specified a precise date/time,
+     *  If the effectiveStart field of the NOTAM specified a precise date/time,
      *  then this time is found here. If not, the property contains an invalid
      *  QDateTime.
      */
@@ -191,7 +191,7 @@ public:
      *
      *  @returns True on equality.
      */
-    Q_REQUIRED_RESULT [[nodiscard]] Q_INVOKABLE bool operator==(const NOTAM::Notam& rhs) const = default;
+    Q_REQUIRED_RESULT [[nodiscard]] Q_INVOKABLE bool operator==(const NOTAM& rhs) const = default;
 
     /*! \brief Check if effectiveEnd is valid and earlier than currentTime
      *
@@ -202,10 +202,10 @@ public:
         return m_effectiveEnd.isValid() && (m_effectiveEnd < QDateTime::currentDateTimeUtc());
     }
 
-    /*! \brief Rich text description of the Notam
+    /*! \brief Rich text description of the NOTAM
      *
      *  The description and changes with time (e.g. when passing the effective start
-     *  date of the Notam.
+     *  date of the NOTAM.
      *
      *  @return HTML string
      */
@@ -220,7 +220,7 @@ public:
     void updateSectionTitle();
 
 private:
-    /* Notam members, as described by the FAA */
+    /* NOTAM members, as described by the FAA */
     QString         m_affectedFIR;
     QGeoCoordinate  m_coordinate;
     QString         m_effectiveEndString;
@@ -268,15 +268,15 @@ QGeoCoordinate interpretNOTAMCoordinates(const QString& string);
  *
  *  There is no checks for errors of any kind.
  */
-QDataStream& operator<<(QDataStream& stream, const NOTAM::Notam &notam);
+QDataStream& operator<<(QDataStream& stream, const NOTAM& notam);
 
 /*! \brief Deserialization
  *
  *  There is no checks for errors of any kind.
  */
-QDataStream& operator>>(QDataStream& stream, NOTAM::Notam& notam);
+QDataStream& operator>>(QDataStream& stream, NOTAM& notam);
 
 } // namespace NOTAM
 
 // Declare meta types
-Q_DECLARE_METATYPE(NOTAM::Notam)
+Q_DECLARE_METATYPE(NOTAM::NOTAM)

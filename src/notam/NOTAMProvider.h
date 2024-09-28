@@ -178,29 +178,25 @@ public:
      */
     Q_INVOKABLE void setRead(const QString& number, bool read);
 
-private slots:
-    // This slot is connected to signals QNetworkReply::finished and
-    // QNetworkReply::errorOccurred of the QNetworkReply contained in the list
-    // in m_networkReply. This method reads the incoming data and adds it to the
-    // database. On error, it requests a call to updateData in five minutes.
-    void downloadFinished();
+private:
 
-    // Checks if NOTAM data is available for an area of marginRadius around the
-    // current position and around the current flight route. If not, requests
-    // the data.
-    void updateData();
 
 private:
     Q_DISABLE_COPY_MOVE(NOTAMProvider)
 
-    // Property computing functions
-    Q_REQUIRED_RESULT QList<QGeoCoordinate> computeControlPoints4FlightRoute() const;
-    Q_REQUIRED_RESULT QByteArray computeGeoJSON() const;
-    Q_REQUIRED_RESULT QDateTime computeLastUpdate() const;
-    Q_REQUIRED_RESULT QString computeStatus() const;
+
+    //
+    // Private Methods
+    //
 
     // Removes outdated NOTAMs and outdated NOTAMLists.
     Q_REQUIRED_RESULT static QList<NOTAMList> cleaned(const QList<NOTAMList>& notamLists, const QSet<QString>& cancelledNotams = {});
+
+    // This method reads the incoming data from network replies and adds it to the
+    // database. It cleans up the list of network replies in m_networkReplies. On error, it requests a call to updateData in five minutes. This method is connected to signals QNetworkReply::finished and
+    // QNetworkReply::errorOccurred of the QNetworkReply contained in the list
+    // in m_networkReply.
+    void downloadFinished();
 
     // Check if current NOTAM data exists for a circle of radius minimalRadius around
     // position. This method ignores outdated NOTAM data. An invalid position is always
@@ -223,6 +219,16 @@ private:
     // if existing NOTAM data or ongoing download requests cover the position alreads.
     void startRequest(const QGeoCoordinate& coordinate);
 
+    // Checks if NOTAM data is available for an area of marginRadius around the
+    // current position and around the current flight route. If not, requests
+    // the data.
+    void updateData();
+
+
+    //
+    // Private Members and Member Computing Methods
+    //
+
     // List with numbers of notams that have been marked as read
     QList<QString> m_readNotamNumbers;
 
@@ -233,21 +239,25 @@ private:
     QProperty<QList<NOTAMList>> m_notamLists;
 
     // This is a list of control points.  The computing function guarantees that
-// the NOTAM data covers a region of at least marginRadiusFlightRoute around the route if
-// the data covers a circle of radius
+    // the NOTAM data covers a region of at least marginRadiusFlightRoute around the route if
+    // the data covers a circle of radius
     // marginRadius around every control point point. Exeption: For performance reasons, this guarantee
-// is lifted if the flight route contains a leg
-// of size > maximumFlightRouteLegLength.
+    // is lifted if the flight route contains a leg
+    // of size > maximumFlightRouteLegLength.
     QProperty<QList<QGeoCoordinate>> m_controlPoints4FlightRoute;
+    Q_REQUIRED_RESULT static QList<QGeoCoordinate> computeControlPoints4FlightRoute();
 
     // GeoJSON, for use in map
     QProperty<QByteArray> m_geoJSON;
+    Q_REQUIRED_RESULT QByteArray computeGeoJSON() const;
 
     // Time of last update to data
     QProperty<QDateTime> m_lastUpdate;
+    Q_REQUIRED_RESULT QDateTime computeLastUpdate() const;
 
     // Filename for loading/saving NOTAM data
     QProperty<QString> m_status;
+    Q_REQUIRED_RESULT QString computeStatus() const;
 
     // Filename for loading/saving NOTAM data
     QString m_stdFileName { QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+u"/notam.dat"_qs };

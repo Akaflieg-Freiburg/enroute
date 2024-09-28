@@ -692,8 +692,8 @@ Item {
                     }
                     if (DataManager.items.downloading)
                         resultList.push(qsTr("Downloading Maps and Data"))
-                    if (NotamProvider.status !== "")
-                        resultList.push(NotamProvider.status)
+                    if (NOTAMProvider.status !== "")
+                        resultList.push(NOTAMProvider.status)
                     return resultList.join(" • ")
                 }
 

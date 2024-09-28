@@ -55,7 +55,7 @@ namespace Units {
          *
          *  @returns True is size is zero
          */
-        Q_INVOKABLE bool isNull() const { return value==0; }
+        [[nodiscard]] Q_INVOKABLE bool isNull() const { return value == 0; }
 
         /*! \brief Conversion from Units::ByteSize to size_t
          *

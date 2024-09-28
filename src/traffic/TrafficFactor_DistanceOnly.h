@@ -122,7 +122,7 @@ private:
     //
     // Property values
     //
-    QGeoCoordinate m_coordinate {};
+    QGeoCoordinate m_coordinate;
 };
 
 } // namespace Traffic

@@ -281,16 +281,16 @@ private:
     //
     bool                          m_canConnect { false };
     bool                          m_canonical { false };
-    QString                       m_description {};
-    QString                       m_icon { u"/icons/material/ic_delete.svg"_qs };
+    QString m_description;
+    QString m_icon{u"/icons/material/ic_delete.svg"_qs};
     QString                       m_name { QObject::tr("Invalid Device", "Traffic::ConnectionInfo") };
     Traffic::ConnectionInfo::Type m_type { Traffic::ConnectionInfo::Invalid };
 
     //
     // Private members, depending on m_type
     //
-    QBluetoothDeviceInfo          m_bluetoothDeviceInfo {};
-    quint16                       m_port {0};
+    QBluetoothDeviceInfo m_bluetoothDeviceInfo;
+    quint16 m_port{0};
     QString                       m_host;
 };
 

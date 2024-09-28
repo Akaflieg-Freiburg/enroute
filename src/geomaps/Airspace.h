@@ -156,11 +156,11 @@ private:
     // in meters. If the height string cannot be parsed, returns the original string
     [[nodiscard]] static auto makeMetric(const QString& standard) -> QString;
 
-    QString m_name{};
-    QString m_CAT{};
-    QString m_upperBound{};
-    QString m_lowerBound{};
-    QGeoPolygon m_polygon{};
+    QString m_name;
+    QString m_CAT;
+    QString m_upperBound;
+    QString m_lowerBound;
+    QGeoPolygon m_polygon;
 };
 
 /*! \brief Comparison */

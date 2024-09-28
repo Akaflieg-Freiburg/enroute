@@ -58,11 +58,12 @@ void Ui::ScaleQuickItem::paint(QPainter *painter)
         pixelPerUnit = _pixelPer10km * 0.1852;
         break;
     }
-    qreal scaleSizeInUnit     = _vertical ? (height()-10.0)/pixelPerUnit : (width()-10.0)/pixelPerUnit;
-    qreal ScaleUnitInUnit     = pow(10.0, floor(log10(scaleSizeInUnit)));
-    int   sizeOfUnitInPix     = qRound(ScaleUnitInUnit*pixelPerUnit);
-    qreal sizeOfScaleInUnit   = floor(scaleSizeInUnit/ScaleUnitInUnit)*ScaleUnitInUnit;
-    int   sizeOfScaleInPix    = qRound(sizeOfScaleInUnit*pixelPerUnit);
+    qreal const scaleSizeInUnit = _vertical ? (height() - 10.0) / pixelPerUnit
+                                            : (width() - 10.0) / pixelPerUnit;
+    qreal const ScaleUnitInUnit = pow(10.0, floor(log10(scaleSizeInUnit)));
+    int const sizeOfUnitInPix = qRound(ScaleUnitInUnit * pixelPerUnit);
+    qreal const sizeOfScaleInUnit = floor(scaleSizeInUnit / ScaleUnitInUnit) * ScaleUnitInUnit;
+    int const sizeOfScaleInPix = qRound(sizeOfScaleInUnit * pixelPerUnit);
 
     // Compute size of text. Set font to somewhat smaller than standard size.
     QFont font = painter->font();
@@ -84,8 +85,8 @@ void Ui::ScaleQuickItem::paint(QPainter *painter)
         text = QStringLiteral("%1 nm").arg(sizeOfScaleInUnit);
         break;
     }
-    int textWidth  = painter->fontMetrics().horizontalAdvance(text);
-    int textHeight = painter->fontMetrics().height();
+    int const textWidth = painter->fontMetrics().horizontalAdvance(text);
+    int const textHeight = painter->fontMetrics().height();
 
     // Draw only if width() or height() is large enough
     if (_vertical) {
@@ -99,8 +100,9 @@ void Ui::ScaleQuickItem::paint(QPainter *painter)
     }
 
     // Coordinates for the left/top point of the scale
-    int baseX = _vertical ? 8 : qRound((width()-sizeOfScaleInPix)/2.0);
-    int baseY = _vertical ? qRound((height()-sizeOfScaleInPix)/2.0) : qRound(height()) - 8 ;
+    int const baseX = _vertical ? 8 : qRound((width() - sizeOfScaleInPix) / 2.0);
+    int const baseY = _vertical ? qRound((height() - sizeOfScaleInPix) / 2.0)
+                                : qRound(height()) - 8;
 
     // Draw underlying white, slightly tranparent rectangle
     painter->fillRect(0, 0, static_cast<int>(width()), static_cast<int>(height()), QColor(0xff, 0xff, 0xff, 0xe0));

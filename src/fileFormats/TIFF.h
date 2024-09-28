@@ -119,7 +119,7 @@ private:
     void readRasterSize();
 
     // Size of the raster imags
-    QSize m_rasterSize {};
+    QSize m_rasterSize;
 
     // TIFF tags and associated data
     QMap<quint16, QVariantList> m_TIFFFields;

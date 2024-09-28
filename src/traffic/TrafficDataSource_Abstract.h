@@ -458,10 +458,10 @@ private:
 
     // Property caches
     bool m_canonical {false};
-    QString m_connectivityStatus {};
-    QString m_errorString {};
-    QString m_trafficReceiverRuntimeError {};
-    QString m_trafficReceiverSelfTestError {};
+    QString m_connectivityStatus;
+    QString m_errorString;
+    QString m_trafficReceiverRuntimeError;
+    QString m_trafficReceiverSelfTestError;
 
     // True altitude of own aircraft. We store these values because the
     // necessary information to compile a PositionInfo class does not always

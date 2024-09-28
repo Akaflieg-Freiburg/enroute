@@ -151,9 +151,9 @@ private:
     bool m_empty {true};
 
     // Password database
-    QString passwordDBFileName {};
+    QString passwordDBFileName;
 
-    QHash<QString, QString> m_passwordDB {};
+    QHash<QString, QString> m_passwordDB;
 };
 
 } // namespace Traffic

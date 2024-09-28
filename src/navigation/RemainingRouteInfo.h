@@ -148,18 +148,17 @@ private:
     Status status {NoRoute};
     QString note;
 
-    GeoMaps::Waypoint nextWP {};
-    Units::Distance nextWP_DIST {};
+    GeoMaps::Waypoint nextWP;
+    Units::Distance nextWP_DIST{};
     Units::Timespan nextWP_ETE {};
-    QDateTime nextWP_ETA {};
-    Units::Angle nextWP_TC {};
+    QDateTime nextWP_ETA;
+    Units::Angle nextWP_TC{};
 
-    GeoMaps::Waypoint finalWP {};
-    Units::Distance finalWP_DIST {};
+    GeoMaps::Waypoint finalWP;
+    Units::Distance finalWP_DIST{};
     Units::Timespan finalWP_ETE {};
-    QDateTime finalWP_ETA {};
+    QDateTime finalWP_ETA;
 };
-
 
 /*! \brief Comparison */
 auto operator==(const Navigation::RemainingRouteInfo&, const Navigation::RemainingRouteInfo&) -> bool;

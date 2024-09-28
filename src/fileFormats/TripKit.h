@@ -136,7 +136,7 @@ private:
 
     // Some trip kits contain the content top-level, other trip kits hide the content ina top-level
     // directory. This string is either empty or of the form "topLevelDirName/".
-    QString m_prefix {};
+    QString m_prefix;
 };
 
 } // namespace FileFormats

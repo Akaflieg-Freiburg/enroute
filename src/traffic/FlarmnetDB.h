@@ -78,7 +78,7 @@ private:
 
     QPointer<DataManagement::Downloadable_SingleFile> flarmnetDBDownloadable;
 
-    QCache<QString, QString> m_cache {};
+    QCache<QString, QString> m_cache;
 };
 
 } // namespace Traffic

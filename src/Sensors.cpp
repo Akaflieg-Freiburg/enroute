@@ -101,7 +101,7 @@ void Sensors::updateStatusString()
 {
     QString newStatus;
 
-    QStringList sensorNames;
+    QStringList const sensorNames;
 #if defined(Q_OS_ANDROID) or defined(Q_OS_IOS)
     auto types = QPressureSensor::sensorTypes();
     if (types.contains("QPressureSensor"))

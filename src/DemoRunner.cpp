@@ -89,7 +89,7 @@ void DemoRunner::generateGooglePlayScreenshots()
     generateScreenshotsForDevices({"phone", "sevenInch", "tenInch"}, false);
 }
 
-void DemoRunner::generateScreenshotsForDevices(QStringList devices, bool manual)
+void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool manual)
 {
 #if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
     Q_ASSERT(m_engine != nullptr);

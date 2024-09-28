@@ -170,10 +170,10 @@ private:
     void interpretGeoData();
 
     // Geographic coordinates for corner of raster image
-    QGeoCoordinate m_topLeft {};
-    QGeoCoordinate m_topRight {};
-    QGeoCoordinate m_bottomLeft {};
-    QGeoCoordinate m_bottomRight {};
+    QGeoCoordinate m_topLeft;
+    QGeoCoordinate m_topRight;
+    QGeoCoordinate m_bottomLeft;
+    QGeoCoordinate m_bottomRight;
 
     // Name
     QString m_name;

@@ -254,7 +254,7 @@ QList<Traffic::TrafficDataSource_Abstract*> Traffic::TrafficDataProvider::dataSo
     return result;
 }
 
-void Traffic::TrafficDataProvider::deferredInitialization()
+void Traffic::TrafficDataProvider::deferredInitialization() const
 {
     // Try to (re)connect whenever the network situation changes
     connect(GlobalObject::platformAdaptor(), &Platform::PlatformAdaptor_Abstract::wifiConnected, this, &Traffic::TrafficDataProvider::connectToTrafficReceiver);

@@ -82,7 +82,11 @@ public:
      */
     Q_PROPERTY(QByteArray geoJSON READ geoJSON BINDABLE bindableGeoJSON)
 
-    /*! \brief Time of last database update */
+    /*! \brief Time of last database update
+     *
+     *  This is the time of the last successful data download from the FAA server.
+     *  The property holds an invalid QDateTime if no data is available.
+     */
     Q_PROPERTY(QDateTime lastUpdate READ lastUpdate BINDABLE bindableLastUpdate)
 
     /*! \brief Status
@@ -99,9 +103,14 @@ public:
 
     /*! \brief Getter function for property with the same name
      *
-     * @returns Property GeoJSON
+     * @returns Property geoJSON
      */
     Q_REQUIRED_RESULT QByteArray geoJSON() const {return m_geoJSON.value();}
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property geoJSON
+     */
     Q_REQUIRED_RESULT QBindable<QByteArray> bindableGeoJSON() const {return &m_geoJSON;}
 
     /*! \brief Getter function for the property with the same name
@@ -109,6 +118,11 @@ public:
      *  @returns Property lastUpdate
      */
     Q_REQUIRED_RESULT QDateTime lastUpdate() const {return {m_lastUpdate};}
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property lastUpdate
+     */
     Q_REQUIRED_RESULT QBindable<QDateTime> bindableLastUpdate() const {return &m_lastUpdate;}
 
     /*! \brief Getter function for the property with the same name
@@ -116,6 +130,11 @@ public:
      *  @returns Property status
      */
     Q_REQUIRED_RESULT QString status() const {return {m_status};}
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property status
+     */
     Q_REQUIRED_RESULT QBindable<QString> bindableStatus() const {return &m_status;}
 
 
@@ -127,11 +146,11 @@ public:
     /*! \brief NOTAMs for a given waypoint
      *
      *  The returned list is empty and has a valid property "retrieved" if the
-     *  NotamProvider is sure that there are no relevant notams for the given
+     *  NOTAMProvider is sure that there are no relevant NOTAMs for the given
      *  waypoint.
      *
      *  The returned list is empty and has an invalid property "retrieved" if
-     *  the NotamProvider has no data.
+     *  the NOTAMProvider has no data.
      *
      *  Calling this method might trigger an update of the NOTAM database.
      *  Consumers can watch the property lastUpdate to learn about database
@@ -139,9 +158,9 @@ public:
      *
      *  @param waypoint Waypoint for which the notam list is compiled
      *
-     *  @returns List of Notams relevant for the waypoint
+     *  @returns List of NOTAMS relevant for the waypoint
      */
-    [[nodiscard]] Q_INVOKABLE NOTAMList notams(const GeoMaps::Waypoint& waypoint);
+    Q_REQUIRED_RESULT Q_INVOKABLE NOTAMList notams(const GeoMaps::Waypoint& waypoint);
 
     /*! \brief Check if a NOTAM number is registred as read
      *
@@ -149,7 +168,7 @@ public:
      *
      *  @returns True is notam is known as read
      */
-    [[nodiscard]] Q_INVOKABLE bool isRead(const QString& number) const { return m_readNotamNumbers.contains(number); }
+    Q_REQUIRED_RESULT Q_INVOKABLE bool isRead(const QString& number) const { return m_readNotamNumbers.contains(number); }
 
     /*! \brief Register NOTAM number as read or unread
      *
@@ -159,11 +178,11 @@ public:
      */
     Q_INVOKABLE void setRead(const QString& number, bool read);
 
-private slots:   
+private slots:
     // This slot is connected to signals QNetworkReply::finished and
     // QNetworkReply::errorOccurred of the QNetworkReply contained in the list
     // in m_networkReply. This method reads the incoming data and adds it to the
-    // database
+    // database. On error, it requests a call to updateData in five minutes.
     void downloadFinished();
 
     // Checks if NOTAM data is available for an area of marginRadius around the
@@ -175,12 +194,13 @@ private:
     Q_DISABLE_COPY_MOVE(NOTAMProvider)
 
     // Property computing functions
-    [[nodiscard]] QByteArray computeGeoJSON() const;
-    [[nodiscard]] QDateTime computeLastUpdate() const;
-    [[nodiscard]] QString computeStatus() const;
+    Q_REQUIRED_RESULT QList<QGeoCoordinate> computeControlPoints4FlightRoute() const;
+    Q_REQUIRED_RESULT QByteArray computeGeoJSON() const;
+    Q_REQUIRED_RESULT QDateTime computeLastUpdate() const;
+    Q_REQUIRED_RESULT QString computeStatus() const;
 
     // Removes outdated NOTAMs and outdated NOTAMLists.
-    [[nodiscard]] static QList<NOTAMList> cleaned(const QList<NOTAMList>& notamLists, const QSet<QString>& cancelledNotams = {});
+    Q_REQUIRED_RESULT static QList<NOTAMList> cleaned(const QList<NOTAMList>& notamLists, const QSet<QString>& cancelledNotams = {});
 
     // Check if current NOTAM data exists for a circle of radius minimalRadius around
     // position. This method ignores outdated NOTAM data. An invalid position is always
@@ -189,7 +209,7 @@ private:
     // includeDataThatNeedsUpdate: If true, then also count NOTAM lists that need an update as NOTAM data
     //
     // includeRunningDownloads: If true, then also count running downloads as NOTAM data
-    [[nodiscard]] bool covers(const QGeoCoordinate& position, bool includeDataThatNeedsUpdate, bool includeRunningDownloads) const;
+    Q_REQUIRED_RESULT bool hasDataForPosition(const QGeoCoordinate& position, bool includeDataThatNeedsUpdate, bool includeRunningDownloads) const;
 
     // Save NOTAM data to a file, using the filename found in m_stdFileName. There are
     // no error checks of any kind.

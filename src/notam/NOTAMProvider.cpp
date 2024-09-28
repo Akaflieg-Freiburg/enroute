@@ -74,9 +74,10 @@ void NOTAM::NOTAMProvider::deferredInitialization()
 
 
     // Setup Bindings
-    m_geoJSON.setBinding([this]() {return this->computeGeoJSON();});
-    m_lastUpdate.setBinding([this]() {return this->computeLastUpdate();});
-    m_status.setBinding([this]() {return this->computeStatus();});
+    m_controlPoints4FlightRoute.setBinding([this]() {return computeControlPoints4FlightRoute();});
+    m_geoJSON.setBinding([this]() {return computeGeoJSON();});
+    m_lastUpdate.setBinding([this]() {return computeLastUpdate();});
+    m_status.setBinding([this]() {return computeStatus();});
 
     // Setup Notifiers
     // -- Save the NOTAM data every time that the database changes
@@ -94,7 +95,7 @@ NOTAM::NOTAMProvider::~NOTAMProvider()
         }
         networkReply->abort();
     }
-
+#warning Need to delete!
     m_networkReplies.clear();
 }
 
@@ -187,6 +188,22 @@ void NOTAM::NOTAMProvider::setRead(const QString& number, bool read)
 // Private Slots
 //
 
+QList<QGeoCoordinate> NOTAM::NOTAMProvider::computeControlPoints4FlightRoute() const
+{
+    auto* route = navigator()->flightRoute();
+    if (route != nullptr)
+    {
+        return {};
+    }
+
+    QList<QGeoCoordinate> result;
+    result += route->geoPath();
+
+#warning need to implement
+    return result;
+}
+
+
 QByteArray NOTAM::NOTAMProvider::computeGeoJSON() const
 {
     QList<QJsonObject> result;
@@ -240,31 +257,17 @@ QDateTime NOTAM::NOTAMProvider::computeLastUpdate() const
 
 QString NOTAM::NOTAMProvider::computeStatus() const
 {
-    auto position = GlobalObject::positionProvider()->approximateLastValidCoordinate();
-
-    QList<QGeoCoordinate> positionList;
-    positionList.append(position);
-    auto* route = navigator()->flightRoute();
-    if (route != nullptr)
+    if (!hasDataForPosition(GlobalObject::positionProvider()->approximateLastValidCoordinate(), true, false))
     {
-        positionList += route->geoPath();
+        return tr("NOTAMs not current around own position, requesting update");
     }
 
-    for(const auto& pos : positionList)
+    for(const auto& pos : m_controlPoints4FlightRoute.value())
     {
-        if (!pos.isValid())
+        if (!hasDataForPosition(pos, true, false))
         {
-            continue;
+            return tr("NOTAMs not current around waypoint, requesting update");
         }
-        if (covers(pos, true, false))
-        {
-            continue;
-        }
-        if (position == pos)
-        {
-            return tr("NOTAMs not current around own position, requesting update");
-        }
-        return tr("NOTAMs not current around waypoint, requesting update");
     }
     return {};
 }
@@ -361,16 +364,10 @@ void NOTAM::NOTAMProvider::save() const
 
 void NOTAM::NOTAMProvider::updateData()
 {
-    auto position = Positioning::PositionProvider::lastValidCoordinate();
-    startRequest(position);
-
-    auto* route = navigator()->flightRoute();
-    if (route != nullptr)
+    startRequest(GlobalObject::positionProvider()->approximateLastValidCoordinate());
+    for(const auto& pos : m_controlPoints4FlightRoute.value())
     {
-        for(const auto& pos : route->geoPath())
-        {
-            startRequest(pos);
-        }
+        startRequest(pos);
     }
 }
 
@@ -380,7 +377,7 @@ void NOTAM::NOTAMProvider::updateData()
 // Private Methods
 //
 
-bool NOTAM::NOTAMProvider::covers(const QGeoCoordinate& position, bool includeDataThatNeedsUpdate, bool includeRunningDownloads) const
+bool NOTAM::NOTAMProvider::hasDataForPosition(const QGeoCoordinate& position, bool includeDataThatNeedsUpdate, bool includeRunningDownloads) const
 {
     if (!position.isValid())
     {
@@ -443,7 +440,7 @@ void NOTAM::NOTAMProvider::startRequest(const QGeoCoordinate& coordinate)
 
     // If data exists for marginRadius around that coordinate or if that data is already
     // requested for download, then return immediately.
-    if (covers(coordinate, false, true))
+    if (hasDataForPosition(coordinate, false, true))
     {
         return;
     }

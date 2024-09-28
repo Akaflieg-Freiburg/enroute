@@ -621,15 +621,20 @@ Item {
                 Layout.fillHeight: true
                 Layout.preferredWidth: 24
 
-                Scale {
-                    id: leftScale
-
-                    anchors.fill: parent
+                Pane {
                     opacity: GlobalSettings.nightMode ? 0.3 : 1.0
                     visible: (!Global.currentVAC.isValid) && !scale.visible
+                    anchors.fill: parent
 
-                    pixelPer10km: flightMap.pixelPer10km
-                    vertical: true
+                    contentItem: Scale {
+                        id: leftScale
+
+                        anchors.fill: parent
+                        color: Material.foreground
+
+                        pixelPer10km: flightMap.pixelPer10km
+                        vertical: true
+                    }
                 }
             }
 
@@ -732,9 +737,10 @@ Item {
                 }
             }
 
-            Scale {
+            Pane {
                 id: scale
 
+                Material.elevation: 1
                 Layout.bottomMargin: 14
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignVCenter
@@ -743,8 +749,14 @@ Item {
                 opacity: GlobalSettings.nightMode ? 0.3 : 1.0
                 visible: (!Global.currentVAC.isValid) && (page.height > page.width)
 
-                pixelPer10km: flightMap.pixelPer10km
-                vertical: false
+                contentItem: Scale
+                {
+                    anchors.fill: parent
+
+                    color: Material.foreground
+                    pixelPer10km: flightMap.pixelPer10km
+                    vertical: false
+                }
             }
         }
 

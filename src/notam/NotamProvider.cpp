@@ -80,13 +80,13 @@ void NOTAM::NotamProvider::deferredInitialization()
 
     // Setup Notifiers
     // -- Save the NOTAM data every time that the database changes
-    m_saveNotifier = m_notamLists.addNotifier([this]() {this->save();});
+    m_saveNotifier = m_notamLists.addNotifier([this]() {save();});
 }
 
 
 NOTAM::NotamProvider::~NotamProvider()
 {
-    foreach(auto networkReply, m_networkReplies)
+    for(const auto& networkReply : m_networkReplies)
     {
         if (networkReply.isNull())
         {
@@ -113,7 +113,7 @@ NOTAM::NotamList NOTAM::NotamProvider::notams(const GeoMaps::Waypoint& waypoint)
 
     // Check if notams for the location are present in our database.
     // Go through the database, oldest to newest.
-    foreach (auto notamList, m_notamLists.value())
+    for(const auto& notamList : m_notamLists.value())
     {
         // Disregard outdated notamLists
         if (notamList.isOutdated())
@@ -128,20 +128,20 @@ NOTAM::NotamList NOTAM::NotamProvider::notams(const GeoMaps::Waypoint& waypoint)
             {
                 startRequest(waypoint.coordinate());
             }
-
             return notamList.restricted(waypoint);
         }
     }
 
     // Check if internet requests notams for the location are pending.
     // In that case, return an empty list.
-    foreach(auto networkReply, m_networkReplies)
+    for(const auto& networkReply : m_networkReplies)
     {
         // Paranoid safety checks
         if (networkReply.isNull())
         {
             continue;
         }
+#warning What about failed replies?
         auto area = networkReply->property("area").value<QGeoCircle>();
         if (!area.isValid())
         {
@@ -183,12 +183,12 @@ void NOTAM::NotamProvider::setRead(const QString& number, bool read)
 // Private Slots
 //
 
-QByteArray NOTAM::NotamProvider::computeGeoJSON()
+QByteArray NOTAM::NotamProvider::computeGeoJSON() const
 {
     QList<QJsonObject> result;
     QSet<QGeoCoordinate> coordinatesSeen;
 
-    foreach(auto notamList, m_notamLists.value())
+    for(const auto& notamList : m_notamLists.value())
     {
         for(const auto& notam : notamList.notams())
         {
@@ -209,7 +209,7 @@ QByteArray NOTAM::NotamProvider::computeGeoJSON()
     }
 
     QJsonArray waypointArray;
-    foreach (const auto& jsonObject, result)
+    for(const auto& jsonObject : result)
     {
         waypointArray.append(jsonObject);
     }
@@ -223,7 +223,7 @@ QByteArray NOTAM::NotamProvider::computeGeoJSON()
 }
 
 
-QDateTime NOTAM::NotamProvider::computeLastUpdate()
+QDateTime NOTAM::NotamProvider::computeLastUpdate() const
 {
     auto notamLists = m_notamLists.value();
     if (notamLists.isEmpty())
@@ -234,11 +234,8 @@ QDateTime NOTAM::NotamProvider::computeLastUpdate()
 }
 
 
-QString NOTAM::NotamProvider::computeStatus()
+QString NOTAM::NotamProvider::computeStatus() const
 {
-    qWarning() << "NOTAM::NotamProvider::computeStatus()";
-    return {};
-
     auto position = GlobalObject::positionProvider()->approximateLastValidCoordinate();
 
     QList<QGeoCoordinate> positionList;
@@ -249,7 +246,7 @@ QString NOTAM::NotamProvider::computeStatus()
         positionList += route->geoPath();
     }
 
-    foreach (auto pos, positionList)
+    for(const auto& pos : positionList)
     {
         if (!pos.isValid())
         {
@@ -295,7 +292,7 @@ QList<NOTAM::NotamList> NOTAM::NotamProvider::cleaned(const QList<NOTAM::NotamLi
     QSet<QGeoCircle> regionsSeen;
 
     // Iterate over notamLists, newest lists first
-    foreach(auto notamList, notamLists)
+    for(const auto& notamList : notamLists)
     {
         // If this notamList is outdated, then so all all further ones. We can thus end here.
         if (notamList.isOutdated())
@@ -326,7 +323,7 @@ void NOTAM::NotamProvider::downloadFinished()
     QSet<QString> cancelledNotams;
 
     m_networkReplies.removeAll(nullptr);
-    foreach(auto networkReply, m_networkReplies)
+    for(const auto& networkReply : m_networkReplies)
     {
         // Paranoid safety checks
         if (networkReply.isNull())
@@ -343,7 +340,8 @@ void NOTAM::NotamProvider::downloadFinished()
         }
         if (networkReply->error() != QNetworkReply::NoError)
         {
-#warning Error! Try again in 5 minutes!
+            // Network error? Then try again in 5 minutes.
+            QTimer::singleShot(5min, this, &NOTAM::NotamProvider::updateData);
             networkReply->deleteLater();
             continue;
         }
@@ -366,7 +364,6 @@ void NOTAM::NotamProvider::downloadFinished()
 
 void NOTAM::NotamProvider::save() const
 {
-    qWarning() << "NOTAM::NotamProvider::save()";
     auto outputFile = QFile(m_stdFileName);
     if (outputFile.open(QIODevice::WriteOnly))
     {
@@ -396,7 +393,7 @@ void NOTAM::NotamProvider::updateData()
     auto* route = navigator()->flightRoute();
     if (route != nullptr)
     {
-        foreach(auto pos, route->geoPath())
+        for(const auto& pos : route->geoPath())
         {
             if (pos.isValid())
             {
@@ -428,7 +425,7 @@ Units::Distance NOTAM::NotamProvider::range(const QGeoCoordinate& position)
 
     // If we have a NOTAM list that contains the position
     // within half its radius, then stop.
-    foreach (auto notamList, m_notamLists.value())
+    for(const auto& notamList : m_notamLists.value())
     {
         if (notamList.isOutdated())
         {
@@ -444,13 +441,14 @@ Units::Distance NOTAM::NotamProvider::range(const QGeoCoordinate& position)
         result = qMax(result, Units::Distance::fromM(rangeInM));
     }
 
-    foreach(auto networkReply, m_networkReplies)
+    for(auto& networkReply : m_networkReplies)
     {
         // Paranoid safety checks
         if (networkReply.isNull())
         {
             continue;
         }
+#warning what about failed replies?!
         auto region = networkReply->property("area").value<QGeoCircle>();
         if (!region.isValid())
         {

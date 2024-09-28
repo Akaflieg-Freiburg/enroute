@@ -85,22 +85,22 @@ public:
      *
      * @returns Property GeoJSON
      */
-    Q_REQUIRED_RESULT QByteArray geoJSON() const {return {m_geoJSON};}
-    Q_REQUIRED_RESULT QBindable<QByteArray> bindableGeoJSON() {return &m_geoJSON;}
+    Q_REQUIRED_RESULT QByteArray geoJSON() const {return m_geoJSON.value();}
+    Q_REQUIRED_RESULT QBindable<QByteArray> bindableGeoJSON() const {return &m_geoJSON;}
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property lastUpdate
      */
     Q_REQUIRED_RESULT QDateTime lastUpdate() const {return {m_lastUpdate};}
-    Q_REQUIRED_RESULT QBindable<QDateTime> bindableLastUpdate() {return &m_lastUpdate;}
+    Q_REQUIRED_RESULT QBindable<QDateTime> bindableLastUpdate() const {return &m_lastUpdate;}
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property status
      */
     Q_REQUIRED_RESULT QString status() const {return {m_status};}
-    Q_REQUIRED_RESULT QBindable<QString> bindableStatus() {return &m_status;}
+    Q_REQUIRED_RESULT QBindable<QString> bindableStatus() const {return &m_status;}
 
 
     //
@@ -116,7 +116,7 @@ public:
      *  The returned list is empty and has an invalid property "retrieved" if
      *  the NotamProvider has no data.
      *
-     *  Calling this method might trigger an update of the Notam database.
+     *  Calling this method might trigger an update of the NOTAM database.
      *  Consumers can watch the property lastUpdate to learn about database
      *  updates.
      *
@@ -132,7 +132,7 @@ public:
      *
      *  @returns True is notam is known as read
      */
-    [[nodiscard]] Q_INVOKABLE bool isRead(const QString& number) { return m_readNotamNumbers.contains(number); }
+    [[nodiscard]] Q_INVOKABLE bool isRead(const QString& number) const { return m_readNotamNumbers.contains(number); }
 
     /*! \brief Register NOTAM number as read or unread
      *
@@ -144,9 +144,9 @@ public:
 
 private:
     // Property bindings
-    QByteArray computeGeoJSON();
-    QDateTime computeLastUpdate();
-    QString computeStatus();
+    QByteArray computeGeoJSON() const;
+    QDateTime computeLastUpdate() const;
+    QString computeStatus() const;
 
 private slots:   
     // This slot is connected to signals QNetworkReply::finished and
@@ -155,12 +155,10 @@ private slots:
     // database
     void downloadFinished();
 
-
     // Checks if NOTAM data is available for an area of marginRadius around the
     // current position and around the current flight route. If not, requests
     // the data.
     void updateData();
-    //QPropertyNotifier m_updateDataNotifier;
 
 private:
     Q_DISABLE_COPY_MOVE(NotamProvider)
@@ -191,7 +189,7 @@ private:
     // List of pending network requests
     QList<QPointer<QNetworkReply>> m_networkReplies;
 
-    // List of NotamLists, sorted so that newest lists come first
+    // List of NOTAMLists, sorted so that newest lists come first
     QProperty<QList<NotamList>> m_notamLists;
 
     // GeoJSON, for use in map

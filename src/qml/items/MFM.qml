@@ -142,7 +142,15 @@ Item {
                          if (event.modifiers === Qt.NoModifier)
                          {
                              zoomLevelBehavior.enabled = false
-                             flightMap.zoomLevel += event.angleDelta.y / 240
+                             var newZoom = flightMap.zoomLevel + event.angleDelta.y / 240
+                             if (newZoom < flightMap.minimumZoomLevel) {
+                                 newZoom = flightMap.minimumZoomLevel
+                             }
+                             if (newZoom > flightMap.maximumZoomLevel) {
+                                 newZoom = flightMap.maximumZoomLevel
+                             }
+                             flightMap.zoomLevel = newZoom
+                             //flightMap.zoomLevel += event.angleDelta.y / 240
                              zoomLevelBehavior.enabled = true
                          }
                          else

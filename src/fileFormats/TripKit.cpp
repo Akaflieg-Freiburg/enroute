@@ -109,10 +109,24 @@ GeoMaps::VAC FileFormats::TripKit::extract(const QString& directoryPath, qsizety
     return vac;
 }
 
+
 QString FileFormats::TripKit::readTripKitData()
 {
+
     {
-        auto json = m_zip.extract(u"toc.json"_qs);
+        // Get m_prefix
+        foreach(auto fileName, m_zip.fileNames())
+        {
+            if (fileName.endsWith(u"/toc.json"_qs))
+            {
+                m_prefix = fileName.chopped(8);
+                break;
+            }
+        }
+    }
+
+    {
+       auto json = m_zip.extract(m_prefix + u"toc.json"_qs);
         if (json.isNull())
         {
             return QObject::tr("The zip archive does not contain the required file 'toc.json'.", "FileFormats::TripKit");
@@ -127,7 +141,7 @@ QString FileFormats::TripKit::readTripKitData()
     }
 
     {
-        auto json = m_zip.extract(u"charts/charts_toc.json"_qs);
+        auto json = m_zip.extract(m_prefix + u"charts/charts_toc.json"_qs);
         if (json.isNull())
         {
             return QObject::tr("The zip archive %1 does not contain the required file 'charts/charts_toc.json'.", "FileFormats::TripKit");
@@ -148,7 +162,7 @@ QString FileFormats::TripKit::readTripKitData()
         {
             chartEntry entry;
             entry.name = chart.toObject()[u"name"_qs].toString();
-            entry.path = chart.toObject()[u"filePath"_qs].toString();
+            entry.path = m_prefix + chart.toObject()[u"filePath"_qs].toString();
 
             auto idx = entry.path.lastIndexOf('.');
             if (idx >= 0)
@@ -177,8 +191,10 @@ QString FileFormats::TripKit::readTripKitData()
             m_entries += entry;
         }
     }
+
     return {};
 }
+
 
 void FileFormats::TripKit::readVACs()
 {

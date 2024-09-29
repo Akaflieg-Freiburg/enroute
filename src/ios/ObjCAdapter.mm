@@ -53,17 +53,24 @@ auto ObjCAdapter::shareContent(const QByteArray& contentByteArray, const QString
     NSURL *fileURL = [[tmpDirURL URLByAppendingPathComponent:fileNameTemplate.toNSString()] URLByAppendingPathExtension:fileExtension.toNSString()];
     
     if (fileURL && [content writeToURL: fileURL atomically: YES]) {
-        UIViewController *qtUIViewController = [[UIApplication sharedApplication].keyWindow rootViewController];
+        UIWindow *keyWindow = nil;
+        for (UIWindowScene* windowScene in [UIApplication sharedApplication].connectedScenes) {
+            if (windowScene.activationState == UISceneActivationStateForegroundActive) {
+                keyWindow = windowScene.windows.firstObject;
+                break;
+            }
+        }
+        UIViewController *rootViewController = keyWindow.rootViewController;
         UIActivityViewController *activityController = [[UIActivityViewController alloc]
                                                         initWithActivityItems: @[fileURL]
                                                         applicationActivities: nil];
         
         if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
             CGSize screenSize = [UIScreen mainScreen].bounds.size;
-            activityController.popoverPresentationController.sourceView = qtUIViewController.view;
+            activityController.popoverPresentationController.sourceView = rootViewController.view;
             activityController.popoverPresentationController.sourceRect = CGRectMake(screenSize.width - 30, 30,0,0);
         }
-        [qtUIViewController presentViewController:activityController animated:YES completion:nil];
+        [rootViewController presentViewController:activityController animated:YES completion:nil];
         [activityController release];
         return {};
     }

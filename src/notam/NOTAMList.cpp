@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2023 by Stefan Kebekus                                  *
+ *   Copyright (C) 2023-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -22,18 +22,19 @@
 #include <QJsonDocument>
 #include <QtGlobal>
 
-#include "notam/NotamList.h"
-#include "notam/NotamProvider.h"
+#include "notam/NOTAMList.h"
+#include "notam/NOTAMProvider.h"
 
 
-NOTAM::NotamList::NotamList(const QByteArray& jsonData, const QGeoCircle& region, QSet<QString>* cancelledNotamNumbers)
+NOTAM::NOTAMList::NOTAMList(const QJsonDocument& jsonDoc, const QGeoCircle& region, QSet<QString>* cancelledNotamNumbers)
 {
-    auto doc = QJsonDocument::fromJson(jsonData);
-    auto items = doc[u"items"_qs].toArray();
+    QSet<QString> numbersSeen;
+
+    auto items = jsonDoc[u"items"_qs].toArray();
 
     foreach(auto item, items)
     {
-        Notam const notam(item.toObject());
+        NOTAM const notam(item.toObject());
 
         // Ignore invalid notams
         if (!notam.isValid())
@@ -49,25 +50,27 @@ NOTAM::NotamList::NotamList(const QByteArray& jsonData, const QGeoCircle& region
             continue;
         }
 
-        // Ignore outdated notams
+        // Ignore outdated NOTAMs
         if (notam.isOutdated())
         {
             continue;
         }
 
-        // Ignore IFR notams
-        if (notam.traffic() == u"I"_qs)
+        // Ignore NOTAMs that do not pertain to VFR traffic. This excludes IFR-only NOTAMs and checklist NOTAMs.
+        if (!notam.traffic().contains(u"V"_qs))
         {
             continue;
         }
 
-        // Ignore duplicated entries
-        if (m_notams.contains(notam))
+        // Ignore duplicated entries. It turns out that the FAA duplicates NOTAMS, with multiple
+        // FIR entries, providing one copy for each FIR.
+        if (numbersSeen.contains(notam.number()))
         {
             continue;
         }
 
         m_notams.append(notam);
+        numbersSeen += notam.number();
     }
 
     m_retrieved = QDateTime::currentDateTimeUtc();
@@ -80,7 +83,7 @@ NOTAM::NotamList::NotamList(const QByteArray& jsonData, const QGeoCircle& region
 // Getter Methods
 //
 
-QString NOTAM::NotamList::summary() const
+QString NOTAM::NOTAMList::summary() const
 {
     QStringList results;
 
@@ -107,7 +110,7 @@ QString NOTAM::NotamList::summary() const
 // Methods
 //
 
-Units::Timespan NOTAM::NotamList::age() const
+Units::Timespan NOTAM::NOTAMList::age() const
 {
     if (!m_retrieved.isValid())
     {
@@ -118,9 +121,9 @@ Units::Timespan NOTAM::NotamList::age() const
 }
 
 
-NOTAM::NotamList NOTAM::NotamList::cleaned(const QSet<QString>& cancelledNotamNumbers) const
+NOTAM::NOTAMList NOTAM::NOTAMList::cleaned(const QSet<QString>& cancelledNotamNumbers) const
 {
-    NotamList result;
+    NOTAMList result;
     result.m_region = m_region;
     result.m_retrieved = m_retrieved;
 
@@ -149,11 +152,11 @@ NOTAM::NotamList NOTAM::NotamList::cleaned(const QSet<QString>& cancelledNotamNu
 }
 
 
-NOTAM::NotamList NOTAM::NotamList::restricted(const GeoMaps::Waypoint& waypoint) const
+NOTAM::NOTAMList NOTAM::NOTAMList::restricted(const GeoMaps::Waypoint& waypoint) const
 {
-    NotamList result;
+    NOTAMList result;
     result.m_retrieved = m_retrieved;
-    auto radius = qMax(0.0, m_region.radius() - m_region.center().distanceTo(waypoint.coordinate()));
+    auto radius = qMin(restrictionRadius.toM(), qMax(0.0, m_region.radius() - m_region.center().distanceTo(waypoint.coordinate())));
 
     result.m_region = QGeoCircle(waypoint.coordinate(), radius);
 
@@ -167,6 +170,10 @@ NOTAM::NotamList NOTAM::NotamList::restricted(const GeoMaps::Waypoint& waypoint)
         {
             continue;
         }
+        if (notam.coordinate().distanceTo(waypoint.coordinate()) > restrictionRadius.toM())
+        {
+            continue;
+        }
         if (result.m_notams.contains(notam))
         {
             continue;
@@ -175,11 +182,12 @@ NOTAM::NotamList NOTAM::NotamList::restricted(const GeoMaps::Waypoint& waypoint)
         {
             continue;
         }
+        notam.updateSectionTitle();
         result.m_notams.append(notam);
     }
 
     std::sort(result.m_notams.begin(), result.m_notams.end(),
-              [](const Notam& first, const Notam& second)
+              [](const NOTAM& first, const NOTAM& second)
     {
         auto aRead = GlobalObject::notamProvider()->isRead(first.number());
         auto bRead = GlobalObject::notamProvider()->isRead(second.number());
@@ -208,7 +216,7 @@ NOTAM::NotamList NOTAM::NotamList::restricted(const GeoMaps::Waypoint& waypoint)
 // Non-Member Methods
 //
 
-QDataStream& NOTAM::operator<<(QDataStream& stream, const NOTAM::NotamList& notamList)
+QDataStream& NOTAM::operator<<(QDataStream& stream, const NOTAMList& notamList)
 {
     stream << notamList.m_notams;
     stream << notamList.m_region;
@@ -218,7 +226,7 @@ QDataStream& NOTAM::operator<<(QDataStream& stream, const NOTAM::NotamList& nota
 }
 
 
-QDataStream& NOTAM::operator>>(QDataStream& stream, NOTAM::NotamList& notamList)
+QDataStream& NOTAM::operator>>(QDataStream& stream, NOTAMList& notamList)
 {
     stream >> notamList.m_notams;
     stream >> notamList.m_region;

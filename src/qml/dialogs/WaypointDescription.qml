@@ -67,7 +67,11 @@ CenteringDialog {
     standardButtons: Dialog.Close
     focus: true
 
-    title: waypoint.extendedName
+    title:  {
+        if (waypoint.ICAOCode === "")
+            return waypoint.extendedName
+        return waypoint.ICAOCode + " • " +waypoint.extendedName
+    }
 
     Component {
         id: metarInfo
@@ -116,8 +120,8 @@ CenteringDialog {
 
             property notamList notamList: {
                 // Mention lastUpdate, so we update whenever there is new data
-                NotamProvider.lastUpdate
-                return NotamProvider.notams(waypoint)
+                NOTAMProvider.lastUpdate
+                return NOTAMProvider.notams(waypoint)
             }
 
             visible: text !== ""

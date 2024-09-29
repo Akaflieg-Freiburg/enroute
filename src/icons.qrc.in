@@ -55,7 +55,8 @@
     <file alias="icons/material/ic_remove.svg">${material-design-icons_SOURCE_DIR}/content/svg/production/ic_remove_24px.svg</file>
     <file alias="icons/material/ic_remove_circle.svg">${material-design-icons_SOURCE_DIR}/content/svg/production/ic_remove_circle_24px.svg</file>
     <file alias="icons/material/ic_satellite.svg">${material-design-icons_SOURCE_DIR}/maps/svg/production/ic_satellite_24px.svg</file>
-    <file alias="icons/material/ic_send.svg">${material-design-icons_SOURCE_DIR}/content/svg/design/ic_send_24px.svg</file>
+    <file alias="icons/material/ic_search.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_search_24px.svg</file>
+    <file alias="icons/material/ic_send.svg">${material-design-icons_SOURCE_DIR}/content/svg/production/ic_send_24px.svg</file>
 	<file alias="icons/material/ic_settings.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_settings_24px.svg</file>
 	<file alias="icons/material/ic_settings_ethernet.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_settings_ethernet_24px.svg</file>
 	<file alias="icons/material/ic_speaker_phone.svg">${material-design-icons_SOURCE_DIR}/communication/svg/production/ic_speaker_phone_24px.svg</file>
@@ -65,6 +66,7 @@
     <file alias="icons/material/ic_terrain.svg">${material-design-icons_SOURCE_DIR}/maps/svg/production/ic_terrain_24px.svg</file>
 	<file alias="icons/material/ic_vpn_key.svg">${material-design-icons_SOURCE_DIR}/communication/svg/production/ic_vpn_key_24px.svg</file>
 	<file alias="icons/material/ic_wb_sunny.svg">${material-design-icons_SOURCE_DIR}/image/svg/production/ic_wb_sunny_24px.svg</file>
+	<file alias="icons/material/ic_warning.svg">${material-design-icons_SOURCE_DIR}/alert/svg/production/ic_warning_24px.svg</file>
 	<file alias="icons/material/ic_wifi.svg">${material-design-icons_SOURCE_DIR}/notification/svg/production/ic_wifi_24px.svg</file>
 
 	<!-- GUI icons: General -->

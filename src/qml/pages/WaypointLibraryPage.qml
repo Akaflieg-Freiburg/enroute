@@ -247,148 +247,159 @@ Page {
         }
     }
 
-    RowLayout {
-        id: filterRow
+    Component {
+        id: waypointDelegate
 
-        anchors.left: parent.left
-        anchors.leftMargin: SafeInsets.left+font.pixelSize
-        anchors.right: parent.right
-        anchors.rightMargin: SafeInsets.right+font.pixelSize
-        anchors.top: parent.top
-        anchors.topMargin: page.font.pixelSize
+        RowLayout {
+            width: wpList.width
+            height: iDel.height
 
-        Label {
-            Layout.alignment: Qt.AlignBaseline
+            SwipeToDeleteDelegate {
+                id: iDel
+                Layout.fillWidth: true
 
-            text: qsTr("Filter")
+                text: modelData.name
+                icon.source: modelData.icon
+
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    waypointDescription.waypoint = modelData
+                    waypointDescription.open()
+                }
+
+                swipe.onCompleted: {
+                    PlatformAdaptor.vibrateBrief()
+                    removeDialog.waypoint = modelData
+                    removeDialog.open()
+                }
+            }
+
+            ToolButton {
+                id: editButton
+
+                icon.source: "/icons/material/ic_mode_edit.svg"
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    wpEditor.waypoint = modelData
+                    wpEditor.open()
+                }
+            }
+
+            ToolButton {
+                id: cptMenuButton
+
+                icon.source: "/icons/material/ic_more_horiz.svg"
+
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    cptMenu.open()
+                }
+
+                AutoSizingMenu {
+                    id: cptMenu
+
+                    Action {
+                        id: removeAction
+                        text: qsTr("Remove…")
+                        onTriggered: {
+                            PlatformAdaptor.vibrateBrief()
+                            removeDialog.waypoint = modelData
+                            removeDialog.open()
+                        }
+                    } // removeAction
+                } // AutoSizingMenu
+
+            }
+
         }
+
+    }
+
+
+    ColumnLayout {
+        anchors.fill: parent
+        anchors.leftMargin: SafeInsets.left
+        anchors.rightMargin: SafeInsets.right
+
+        Item {
+            Layout.preferredHeight: textInput.font.pixelSize/4.0
+        }
+
 
         MyTextField {
             id: textInput
 
-            Layout.alignment: Qt.AlignBaseline
             Layout.fillWidth: true
-        }
-    }
+            Layout.leftMargin: font.pixelSize/2.0
+            Layout.rightMargin: font.pixelSize/2.0
 
-    Pane {
-
-        anchors.top: filterRow.bottom
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-
-        bottomPadding: SafeInsets.bottom
-        leftPadding: SafeInsets.left
-        rightPadding: SafeInsets.right
-        topPadding: font.pixelSize
-
-        Component {
-            id: waypointDelegate
-
-            RowLayout {
-                width: wpList.width
-                height: iDel.height
-
-                SwipeToDeleteDelegate {
-                    id: iDel
-                    Layout.fillWidth: true
-
-                    text: modelData.name
-                    icon.source: modelData.icon
-
-                    onClicked: {
-                        PlatformAdaptor.vibrateBrief()
-                        waypointDescription.waypoint = modelData
-                        waypointDescription.open()
-                    }
-
-                    swipe.onCompleted: {
-                        PlatformAdaptor.vibrateBrief()
-                        removeDialog.waypoint = modelData
-                        removeDialog.open()
-                    }
-                }
-
-                ToolButton {
-                    id: editButton
-
-                    icon.source: "/icons/material/ic_mode_edit.svg"
-                    onClicked: {
-                        PlatformAdaptor.vibrateBrief()
-                        wpEditor.waypoint = modelData
-                        wpEditor.open()
-                    }
-                }
-
-                ToolButton {
-                    id: cptMenuButton
-
-                    icon.source: "/icons/material/ic_more_horiz.svg"
-
-                    onClicked: {
-                        PlatformAdaptor.vibrateBrief()
-                        cptMenu.open()
-                    }
-
-                    AutoSizingMenu {
-                        id: cptMenu
-
-                        Action {
-                            id: removeAction
-                            text: qsTr("Remove…")
-                            onTriggered: {
-                                PlatformAdaptor.vibrateBrief()
-                                removeDialog.waypoint = modelData
-                                removeDialog.open()
-                            }
-                        } // removeAction
-                    } // AutoSizingMenu
-
-                }
-
-            }
-
+            placeholderText: qsTr("Filter by Name")
         }
 
         DecoratedListView {
             id: wpList
 
-            anchors.fill: parent
-
-            leftMargin: SafeInsets.left
-            rightMargin: SafeInsets.right
-            bottomMargin: SafeInsets.bottom
+            Layout.fillWidth: true
+            Layout.fillHeight: true
 
             clip: true
 
-            model: {
-                // Mention waypoints to ensure that the list gets updated
-                WaypointLibrary.waypoints
+            model:
+            Binding {
+                wpList.model: {
+                    // Mention waypoints to ensure that the list gets updated
+                    WaypointLibrary.waypoints
 
-                return WaypointLibrary.filteredWaypoints(textInput.text)
+                    return WaypointLibrary.filteredWaypoints(textInput.displayText)
+                }
+                delayed: true
             }
+
             delegate: waypointDelegate
             ScrollIndicator.vertical: ScrollIndicator {}
         }
+
+        Label {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            visible: (wpList.count === 0)
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            leftPadding: font.pixelSize*2
+            rightPadding: font.pixelSize*2
+
+            textFormat: Text.RichText
+            wrapMode: Text.Wrap
+            text: (textInput.text === "")
+                  ? qsTr("<h3>Sorry!</h3><p>No waypoint available. To add a waypoint here, choose 'Add Waypoint' below or double-tap on a point in the moving map.</p>")
+                  : qsTr("<h3>Sorry!</h3><p>No waypoints match your filter.</p>")
+        }
+
     }
 
-    Label {
-        anchors.fill: parent
 
-        visible: (wpList.count === 0)
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-        leftPadding: font.pixelSize*2
-        rightPadding: font.pixelSize*2
 
-        textFormat: Text.RichText
-        wrapMode: Text.Wrap
-        text: (textInput.text === "")
-              ? qsTr("<h3>Sorry!</h3><p>No waypoint available. To add a waypoint here, double-tap on a point in the moving map.</p>")
-              : qsTr("<h3>Sorry!</h3><p>No waypoints match your filter criteria.</p>")
+    footer: Footer {
+        ColumnLayout {
+            width: parent.width
+
+            Button {
+                id: addWPButton
+
+                flat: true
+
+                Layout.alignment: Qt.AlignHCenter
+                text: qsTr("Add Waypoint")
+                icon.source: "/icons/material/ic_add_circle.svg"
+
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    addWP.open()
+                }
+            }
+        }
     }
-
 
     // This is the name of the file that openFromLibrary will open
     property string finalFileName;
@@ -427,7 +438,6 @@ Page {
             page.reloadWaypointList() // Re-display aircraft that have been swiped out
             close()
         }
-
     }
 
     LongTextDialog {
@@ -457,6 +467,23 @@ Page {
             WaypointLibrary.replace(waypoint, newWP)
             page.reloadWaypointList()
             toast.doToast(qsTr("Waypoint modified"))
+        }
+
+    }
+
+    WaypointEditor {
+        id: addWP
+
+        title: qsTr("Add Waypoint")
+
+        onAccepted: {
+            let newWP = waypoint.copy()
+            newWP.name = newName
+            newWP.notes = newNotes
+            newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
+            WaypointLibrary.add(newWP)
+            page.reloadWaypointList()
+            toast.doToast(qsTr("Waypoint added"))
         }
 
     }

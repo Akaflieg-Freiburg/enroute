@@ -16,6 +16,6 @@
 
 * Please have a look at the [wiki pages](https://github.com/Akaflieg-Freiburg/enroute/wiki).
 
-* There is extensive [API documentation](https://akaflieg-freiburg.github.io/enroute/APIdoc) for the C++ classes.
+* There is extensive [API documentation](https://akaflieg-freiburg.github.io/enroute/APIdoc/html) for the C++ classes.
 
 * Developers will find automatically generated experimental builds for a variety of platforms [here](https://github.com/Akaflieg-Freiburg/enroute/releases/tag/developerBuilds).

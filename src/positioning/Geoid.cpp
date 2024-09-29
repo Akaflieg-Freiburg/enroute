@@ -39,7 +39,7 @@ void Positioning::Geoid::readEGM()
 {
     QFile file(QStringLiteral(":/WW15MGH.DAC"));
 
-    qint64 egm96_size_2 = (qint64)egm96_size * (qint64)2;
+    qint64 const egm96_size_2 = (qint64) egm96_size * (qint64) 2;
 
     if (!file.open(QIODevice::ReadOnly) || file.size() != (egm96_size_2))
     {
@@ -49,7 +49,8 @@ void Positioning::Geoid::readEGM()
 
     egm.resize(egm96_size);
 
-    qint64 nread = file.read(static_cast<char*>(static_cast<void*>(egm.data())), egm96_size_2);
+    qint64 const nread = file.read(static_cast<char *>(static_cast<void *>(egm.data())),
+                                   egm96_size_2);
 
     file.close();
 
@@ -104,17 +105,16 @@ auto Positioning::Geoid::separation(const QGeoCoordinate& coord) -> Units::Dista
 
     // integer row north and south of latitude
     //
-    int north = qFloor(row(latitude));
-    int south = (north + 1) < egm96_rows? (north + 1) : north;
+    int const north = qFloor(row(latitude));
+    int const south = (north + 1) < egm96_rows ? (north + 1) : north;
 
     // integer column west and east of latitude
     //
-    int west = qFloor(col(longitude)) % egm96_cols;
-    int east = (west + 1) % egm96_cols;
+    int const west = qFloor(col(longitude)) % egm96_cols;
+    int const east = (west + 1) % egm96_cols;
 
-    auto geoid = [&] (int row, int col) -> qreal
-    {
-        int idx = row * egm96_cols + col;
+    auto geoid = [&](int row, int col) -> qreal {
+        int const idx = row * egm96_cols + col;
         return idx >=0 && idx < egm96_size ? egm.at(idx) * 0.01 : 0.0;
     };
 
@@ -124,10 +124,8 @@ auto Positioning::Geoid::separation(const QGeoCoordinate& coord) -> Units::Dista
     double interpolated = 0;
     double row_dist = row(latitude) - north;
     double col_dist = col(longitude) - qFloor(col(longitude));
-    for (int irow : {north, south})
-    {
-        for (int icol : {west, east})
-        {
+    for (int const irow : {north, south}) {
+        for (int const icol : {west, east}) {
             interpolated += geoid(irow, icol) * (1 - row_dist) * (1 - col_dist);
             col_dist = 1 - col_dist;
         }

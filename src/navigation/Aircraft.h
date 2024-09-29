@@ -386,8 +386,8 @@ private:
     FuelConsumptionUnit m_fuelConsumptionUnit {LiterPerHour};
     HorizontalDistanceUnit m_horizontalDistanceUnit {NauticalMile};
     Units::Speed m_minimumSpeed {};
-    QString m_name {};
-    VerticalDistanceUnit m_verticalDistanceUnit {Feet};
+    QString m_name;
+    VerticalDistanceUnit m_verticalDistanceUnit{Feet};
 };
 
 } // namespace Navigation

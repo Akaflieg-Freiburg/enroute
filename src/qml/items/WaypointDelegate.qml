@@ -38,8 +38,8 @@ Item {
         }
     }
 
-    width: parent ? parent.width : 0
-    height: idel.implicitHeight
+    implicitWidth: parent ? parent.width : 0
+    implicitHeight: idel.implicitHeight
 
     // Background color according to METAR/FAA flight category
     Rectangle {

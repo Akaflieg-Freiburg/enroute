@@ -23,7 +23,8 @@
 
 #include "GlobalObject.h"
 #include "GlobalSettings.h"
-#include "notam/Notam.h"
+#include "notam/NOTAM.h"
+#include "notam/NOTAMProvider.h"
 
 
 // Static objects
@@ -53,6 +54,7 @@ Q_GLOBAL_STATIC(ContractionList,
                     {QRegularExpression(u"\\bASPH\\b"_qs), u"ASPHALT"_qs},
                     {QRegularExpression(u"\\bAVBL\\b"_qs), u"AVAILABLE"_qs},
                     {QRegularExpression(u"\\bBCST\\b"_qs), u"BROADCAST"_qs},
+                    {QRegularExpression(u"\\bBFR\\b"_qs), u"BEFORE"_qs},
                     {QRegularExpression(u"\\bBLW\\b"_qs), u"BELOW"_qs},
                     {QRegularExpression(u"\\bBTN\\b"_qs), u"BETWEEN"_qs},
                     {QRegularExpression(u"\\bCLBR\\b"_qs), u"CALLIBRATION"_qs},
@@ -75,6 +77,7 @@ Q_GLOBAL_STATIC(ContractionList,
                     {QRegularExpression(u"\\bLGTD\\b"_qs), u"LIGHTED"_qs},
                     {QRegularExpression(u"\\bLTD\\b"_qs), u"LIMITED"_qs},
                     {QRegularExpression(u"\\bMAINT\\b"_qs), u"MAINTENANCE"_qs},
+                    {QRegularExpression(u"\\bMIL\\b"_qs), u"MILITARY"_qs},
                     {QRegularExpression(u"\\bN\\b"_qs), u"NORTH"_qs},
                     {QRegularExpression(u"\\bNE\\b"_qs), u"NORTHEAST"_qs},
                     {QRegularExpression(u"\\bNW\\b"_qs), u"NORTHWEST"_qs},
@@ -107,19 +110,21 @@ Q_GLOBAL_STATIC(ContractionList,
 // Constructor/Destructor
 //
 
-NOTAM::Notam::Notam(const QJsonObject& jsonObject)
+NOTAM::NOTAM::NOTAM(const QJsonObject& jsonObject)
 {
     auto notamObject = jsonObject[u"properties"_qs][u"coreNOTAMData"_qs][u"notam"_qs].toObject();
 
+    m_affectedFIR = notamObject[u"affectedFIR"_qs].toString();
     m_coordinate = interpretNOTAMCoordinates(notamObject[u"coordinates"_qs].toString());
     m_effectiveEndString = notamObject[u"effectiveEnd"_qs].toString();
     m_effectiveStartString = notamObject[u"effectiveStart"_qs].toString();
     m_icaoLocation = notamObject[u"icaoLocation"_qs].toString();
+    m_maximumFL = notamObject[u"maximumFL"_qs].toString();
+    m_minimumFL = notamObject[u"minimumFL"_qs].toString();
     m_number = notamObject[u"number"_qs].toString();
     m_text = notamObject[u"text"_qs].toString();
     m_traffic = notamObject[u"traffic"_qs].toString();
-#warning
-    m_radius = qMin( Units::Distance::fromNM(4), Units::Distance::fromNM(notamObject[u"radius"_qs].toString().toDouble()) );
+    m_radius = Units::Distance::fromNM(notamObject[u"radius"_qs].toString().toDouble());
 
     m_effectiveEnd = QDateTime::fromString(m_effectiveEndString, Qt::ISODate);
     m_effectiveStart = QDateTime::fromString(m_effectiveStartString, Qt::ISODate);
@@ -137,7 +142,7 @@ NOTAM::Notam::Notam(const QJsonObject& jsonObject)
 // Getter Methods
 //
 
-QString NOTAM::Notam::cancels() const
+QString NOTAM::NOTAM::cancels() const
 {
     if (!m_text.contains(*cancelNotamStart))
     {
@@ -147,7 +152,7 @@ QString NOTAM::Notam::cancels() const
 }
 
 
-QJsonObject NOTAM::Notam::GeoJSON() const
+QJsonObject NOTAM::NOTAM::GeoJSON() const
 {
     QMap<QString, QVariant> m_properties;
     m_properties[u"CAT"_qs] = u"NOTAM"_qs;
@@ -168,8 +173,7 @@ QJsonObject NOTAM::Notam::GeoJSON() const
 }
 
 
-
-bool NOTAM::Notam::isValid() const
+bool NOTAM::NOTAM::isValid() const
 {
     if (!m_coordinate.isValid())
     {
@@ -192,10 +196,11 @@ bool NOTAM::Notam::isValid() const
 // Methods
 //
 
-QString NOTAM::Notam::richText() const
+QString NOTAM::NOTAM::richText() const
 {
     QStringList result;
 
+    // Generate a string description for the effective start. This might be empty.
     auto effectiveStartString = m_effectiveStartString;
     if (m_effectiveStart.isValid())
     {
@@ -205,23 +210,49 @@ QString NOTAM::Notam::richText() const
         }
         else
         {
-            effectiveStartString = m_effectiveStart.toString(u"ddMMMyy hh:mm"_qs);
+            if (m_effectiveStart.date() == QDateTime::currentDateTimeUtc().date())
+            {
+                effectiveStartString = u"Today %1"_qs.arg(m_effectiveStart.toString(u"hh:mm"_qs));
+            }
+            else
+            {
+                effectiveStartString = m_effectiveStart.toString(u"ddMMMyy hh:mm"_qs);
+            }
         }
     }
+
     auto effectiveEndString = m_effectiveEndString;
     if (m_effectiveEnd.isValid())
     {
-        effectiveEndString = m_effectiveEnd.toString(u"ddMMMyy hh:mm"_qs);
+        if (m_effectiveStart.isValid() && !m_effectiveStartString.isEmpty() && m_effectiveStart.date() == m_effectiveEnd.date() )
+        {
+            effectiveEndString = m_effectiveEnd.toString(u"hh:mm"_qs);
+        }
+        else
+        {
+            effectiveEndString = m_effectiveEnd.toString(u"ddMMMyy hh:mm"_qs);
+        }
     }
 
-    if (m_effectiveEnd.isValid())
+    if (effectiveStartString.isEmpty())
     {
-        result += u"<strong>Effective %1 to %2</strong>"_qs.arg(effectiveStartString, effectiveEndString);
+        if (m_effectiveEnd.isValid())
+        {
+            result += u"<strong>Until %1</strong>"_qs.arg(effectiveEndString);
+        }
+        else
+        {
+            result += u"<strong>%1</strong>"_qs.arg(effectiveEndString);
+        }
     }
     else
     {
-        result += u"<strong>Effective %1</strong>"_qs.arg(effectiveStartString);
-        result += u"<strong>%1</strong>"_qs.arg(effectiveEndString);
+    result += u"<strong>%1 until %2</strong>"_qs.arg(effectiveStartString, effectiveEndString);
+    }
+
+    if ((m_minimumFL.size() == 3) && (m_maximumFL.size() == 3) && !(m_minimumFL == u"000"_qs && m_maximumFL == u"999"_qs))
+    {
+        result += u"<strong>FL%1-FL%2</strong>"_qs.arg(m_minimumFL, m_maximumFL).replace(u"FL000"_qs, u"GND"_qs);
     }
 
     if (!m_schedule.isEmpty())
@@ -243,9 +274,43 @@ QString NOTAM::Notam::richText() const
     {
         result += m_text;
     }
-    return result.join(u" • "_qs).replace(u"  "_qs, u" "_qs);
+    return u"<strong>%1: </strong>"_qs.arg(m_icaoLocation) + result.join(u" • "_qs).replace(u"  "_qs, u" "_qs);
 }
 
+
+void NOTAM::NOTAM::updateSectionTitle()
+{
+    if (GlobalObject::notamProvider()->isRead(m_number))
+    {
+        m_sectionTitle = u"Marked as read"_qs;
+        return;
+    }
+
+    if (m_effectiveStart.isValid())
+    {
+        if (m_effectiveStart < QDateTime::currentDateTimeUtc())
+        {
+            m_sectionTitle = u"Current"_qs;
+            return;
+        }
+        if (m_effectiveStart < QDateTime::currentDateTimeUtc().addDays(1))
+        {
+            m_sectionTitle = u"Next 24h"_qs;
+            return;
+        }
+        if (m_effectiveStart < QDateTime::currentDateTimeUtc().addDays(90))
+        {
+            m_sectionTitle = u"Next 90 days"_qs;
+            return;
+        }
+        if (m_effectiveStart < QDateTime::currentDateTimeUtc().addDays(90))
+        {
+            m_sectionTitle = u"> 90 days"_qs;
+            return;
+        }
+    }
+    m_sectionTitle = u"NOTAM"_qs;
+}
 
 
 //
@@ -297,18 +362,22 @@ QGeoCoordinate NOTAM::interpretNOTAMCoordinates(const QString& string)
 }
 
 
-QDataStream& NOTAM::operator<<(QDataStream& stream, const NOTAM::Notam& notam)
+QDataStream& NOTAM::operator<<(QDataStream& stream, const NOTAM& notam)
 {
+    stream << notam.m_affectedFIR;
     stream << notam.m_coordinate;
     stream << notam.m_effectiveEnd;
     stream << notam.m_effectiveEndString;
     stream << notam.m_effectiveStart;
     stream << notam.m_effectiveStartString;
     stream << notam.m_icaoLocation;
+    stream << notam.m_maximumFL;
+    stream << notam.m_minimumFL;
     stream << notam.m_number;
     stream << notam.m_radius;
     stream << notam.m_region;
     stream << notam.m_schedule;
+    stream << notam.m_sectionTitle;
     stream << notam.m_text;
     stream << notam.m_traffic;
 
@@ -316,18 +385,22 @@ QDataStream& NOTAM::operator<<(QDataStream& stream, const NOTAM::Notam& notam)
 }
 
 
-QDataStream& NOTAM::operator>>(QDataStream& stream, NOTAM::Notam& notam)
+QDataStream& NOTAM::operator>>(QDataStream& stream, NOTAM& notam)
 {
+    stream >> notam.m_affectedFIR;
     stream >> notam.m_coordinate;
     stream >> notam.m_effectiveEnd;
     stream >> notam.m_effectiveEndString;
     stream >> notam.m_effectiveStart;
     stream >> notam.m_effectiveStartString;
     stream >> notam.m_icaoLocation;
+    stream >> notam.m_maximumFL;
+    stream >> notam.m_minimumFL;
     stream >> notam.m_number;
     stream >> notam.m_radius;
     stream >> notam.m_region;
     stream >> notam.m_schedule;
+    stream >> notam.m_sectionTitle;
     stream >> notam.m_text;
     stream >> notam.m_traffic;
 

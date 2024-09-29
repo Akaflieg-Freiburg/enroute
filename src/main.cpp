@@ -186,12 +186,9 @@ auto main(int argc, char *argv[]) -> int
     KDSingleApplication kdsingleapp;
     if (!kdsingleapp.isPrimaryInstance())
     {
-        if (positionalArguments.length() > 0)
-        {
+        if (!positionalArguments.empty()) {
             kdsingleapp.sendMessage(positionalArguments[0].toUtf8());
-        }
-        else
-        {
+        } else {
             kdsingleapp.sendMessage(QByteArray());
         }
         return 0;

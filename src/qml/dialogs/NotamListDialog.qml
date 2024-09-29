@@ -33,7 +33,11 @@ CenteringDialog {
 
     modal: true
     standardButtons: Dialog.Close
-    title: waypoint.extendedName
+    title: {
+        if (waypoint.ICAOCode === "")
+            return waypoint.extendedName
+        return waypoint.ICAOCode + " • " + waypoint.extendedName
+    }
 
     Component {
         id: notamDelegate
@@ -43,7 +47,7 @@ CenteringDialog {
             width: parent ? parent.width : undefined
 
             required property var model
-            property bool read: NotamProvider.isRead(delItem.model.modelData.number)
+            property bool read: NOTAMProvider.isRead(delItem.model.modelData.number)
 
             contentItem: Label {
                 id: lbl
@@ -92,12 +96,30 @@ CenteringDialog {
 
             onClicked: {
                 read = !read
-                NotamProvider.setRead(delItem.model.modelData.number, read)
+                NOTAMProvider.setRead(delItem.model.modelData.number, read)
                 if (read)
                     seqA.start()
             }
         }
 
+    }
+
+    Component {
+        id: sectionHeading
+
+        Control {
+            required property string section
+
+            height: lbl.height
+
+            Label {
+                id: lbl
+
+                text: parent.section
+                font.pixelSize: parent.font.pixelSize*1.2
+                font.bold: true
+            }
+        }
     }
 
     ColumnLayout {
@@ -113,8 +135,26 @@ CenteringDialog {
 
         Label { // Incomplete Data warning
 
-            visible: !notamListDialog.notamList.isValid
-            text: qsTr("Data potentially outdated. Update requested.")
+            visible: text !== ""
+            text: {
+                var txt = ""
+                if (!notamListDialog.notamList.isValid)
+                    txt = qsTr("Data potentially outdated. Update requested.")
+
+                if (Global.warnNOTAMLocation)
+                {
+                    if (txt !== "")
+                        txt += " • "
+                    txt += qsTr("Only showing NOTAMs centered nearby. Other NOTAMs may apply.")
+                    txt += " <a href='xx'>" + qsTr("Dismiss this warning.") + "</a>"
+                }
+                return txt
+            }
+            onLinkActivated: {
+                PlatformAdaptor.vibrateBrief()
+                Global.warnNOTAMLocation = false
+            }
+
             Layout.fillWidth: true
             wrapMode: Text.WordWrap
 
@@ -123,7 +163,6 @@ CenteringDialog {
             leftPadding: 0.2*font.pixelSize
             rightPadding: 0.2*font.pixelSize
 
-            // Background color according to METAR/FAA flight category
             background: Rectangle {
                 border.color: "black"
                 color: "yellow"
@@ -141,15 +180,13 @@ CenteringDialog {
 
             clip: true
 
+            model: notamListDialog.notamList.notams
+
+            section.property: "sectionTitle"
+            section.delegate: sectionHeading
+
             delegate: notamDelegate
 
-            header: Label {
-                text: "NOTAM"
-                font.bold: true
-                font.pixelSize: 1.2*notamListDialog.font.pixelSize
-            }
-
-            model: notamListDialog.notamList.notams
             ScrollIndicator.vertical: ScrollIndicator {}
         }
 

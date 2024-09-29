@@ -147,7 +147,7 @@ private:
     QList<Traffic::ConnectionInfo> m_connectionInfos;
 
     // Property error
-    QString m_error {};
+    QString m_error;
 
     // Property isScanning
     bool m_isScanning {false};

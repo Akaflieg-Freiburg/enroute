@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2023 by Stefan Kebekus                                  *
+ *   Copyright (C) 2023-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -30,50 +30,53 @@ namespace NOTAM {
 
 /*! \brief This extremely simple class holds a the data item of a NOTAM */
 
-class Notam {
+class NOTAM {
     Q_GADGET
     QML_VALUE_TYPE(notam)
 
-    friend QDataStream& operator<<(QDataStream& stream, const NOTAM::Notam &notam);
-    friend QDataStream& operator>>(QDataStream& stream, NOTAM::Notam& notam);
+    friend QDataStream& operator<<(QDataStream& stream, const NOTAM& notam);
+    friend QDataStream& operator>>(QDataStream& stream, NOTAM& notam);
 
 public:
-    /*! \brief Constructs an invalid Notam */
-    Notam() = default;
+    /*! \brief Constructs an invalid NOTAM */
+    NOTAM() = default;
 
-    /*! \brief Constructs a Notam from GeoJSON data, as provided by the FAA
+    /*! \brief Constructs a NOTAM from GeoJSON data, as provided by the FAA
      *
      *  @param jsonObject JSON object, as provided by the FAA
      */
-    explicit Notam(const QJsonObject& jsonObject);
+    explicit NOTAM(const QJsonObject& jsonObject);
 
 
     //
     // Properties
     //
 
-    /*! \brief Cancels other Notam
+    /*! \brief Flight Information Region of this NOTAM */
+    Q_PROPERTY(QString affectedFIR READ affectedFIR CONSTANT)
+
+    /*! \brief Cancels other NOTAM
      *
-     *  If this is a cancel notam, then this property holds the number
-     *  of the notam that is to be cancelled. Otherwise, this property
-     *  holds an empty string.
+     *  If this is a cancel notam, then this property holds the number of the
+     *  notam that is to be cancelled. Otherwise, this property holds an empty
+     *  string.
      */
     Q_PROPERTY(QString cancels READ cancels CONSTANT)
 
-    /*! \brief Coordinates of the Notam */
+    /*! \brief Coordinates of the NOTAM */
     Q_PROPERTY(QGeoCoordinate coordinate READ coordinate CONSTANT)
 
-    /*! \brief Effective end of the Notam, if date is given
+    /*! \brief Effective end of the NOTAM, if date is given
      *
-     *  If the effectiveEnd field of the Notam specified a precise date/time,
+     *  If the effectiveEnd field of the NOTAM specified a precise date/time,
      *  then this time is found here. If not, the property contains an invalid
      *  QDateTime.
      */
     Q_PROPERTY(QDateTime effectiveEnd READ effectiveEnd CONSTANT)
 
-    /*! \brief Effective start of the Notam, if date is given
+    /*! \brief Effective start of the NOTAM, if date is given
      *
-     *  If the effectiveStart field of the Notam specified a precise date/time,
+     *  If the effectiveStart field of the NOTAM specified a precise date/time,
      *  then this time is found here. If not, the property contains an invalid
      *  QDateTime.
      */
@@ -83,22 +86,38 @@ public:
      */
     Q_PROPERTY(QJsonObject GeoJSON READ GeoJSON CONSTANT)
 
-    /*! \brief Validity of this Notam */
+    /*! \brief ICAO location of this NOTAM */
+    Q_PROPERTY(QString icaoLocation READ icaoLocation CONSTANT)
+
+    /*! \brief Validity of this NOTAM */
     Q_PROPERTY(bool isValid READ isValid CONSTANT)
 
-    /*! \brief Number of this Notam */
+    /*! \brief Number of this NOTAM */
     Q_PROPERTY(QString number READ number CONSTANT)
 
-    /*! \brief Rich text description of the Notam */
+    /*! \brief Region where this NOTAM is valid */
     Q_PROPERTY(QGeoCircle region READ region CONSTANT)
 
-    /*! \brief Traffic entry of the Notam */
+    /*! \brief Section title
+     *
+     *  This member can be set as desired, to allow for section titles
+     *  when displaying NOTAMs in a QML ListView.
+     */
+    Q_PROPERTY(QString sectionTitle MEMBER m_sectionTitle)
+
+    /*! \brief Traffic entry of the NOTAM */
     Q_PROPERTY(QString traffic READ traffic CONSTANT)
 
 
     //
     // Getter Methods
     //
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property affectedFIR
+     */
+    Q_REQUIRED_RESULT QString affectedFIR() const { return m_affectedFIR; }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -129,6 +148,12 @@ public:
      *  @returns Property GeoJSON
      */
     Q_REQUIRED_RESULT QJsonObject GeoJSON() const;
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property icaoLocation
+     */
+    Q_REQUIRED_RESULT QString icaoLocation() const { return m_icaoLocation; }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -166,7 +191,7 @@ public:
      *
      *  @returns True on equality.
      */
-    Q_REQUIRED_RESULT [[nodiscard]] Q_INVOKABLE bool operator==(const NOTAM::Notam& rhs) const = default;
+    Q_REQUIRED_RESULT [[nodiscard]] Q_INVOKABLE bool operator==(const NOTAM& rhs) const = default;
 
     /*! \brief Check if effectiveEnd is valid and earlier than currentTime
      *
@@ -177,24 +202,35 @@ public:
         return m_effectiveEnd.isValid() && (m_effectiveEnd < QDateTime::currentDateTimeUtc());
     }
 
-    /*! \brief Rich text description of the Notam
+    /*! \brief Rich text description of the NOTAM
      *
      *  The description and changes with time (e.g. when passing the effective start
-     *  date of the Notam.
+     *  date of the NOTAM.
      *
      *  @return HTML string
      */
     Q_REQUIRED_RESULT Q_INVOKABLE QString richText() const;
 
+    /*! \brief Update section title according to the current time
+     *
+     *  This method uses the current time to set the NOTAM's section title to
+     *  one of "Marked as read", "Current", "Next 24h", "Next 90 days", "> 90
+     *  days" or "NOTAM".
+     */
+    void updateSectionTitle();
 
 private:
-    /* Notam members, as described by the FAA */
+    /* NOTAM members, as described by the FAA */
+    QString         m_affectedFIR;
     QGeoCoordinate  m_coordinate;
     QString         m_effectiveEndString;
     QString         m_effectiveStartString;
     QString         m_icaoLocation;
+    QString         m_maximumFL;
+    QString         m_minimumFL;
     QString         m_number;
     Units::Distance m_radius;
+    QString         m_sectionTitle;
     QString         m_schedule;
     QString         m_text;
     QString         m_traffic;
@@ -232,15 +268,15 @@ QGeoCoordinate interpretNOTAMCoordinates(const QString& string);
  *
  *  There is no checks for errors of any kind.
  */
-QDataStream& operator<<(QDataStream& stream, const NOTAM::Notam &notam);
+QDataStream& operator<<(QDataStream& stream, const NOTAM& notam);
 
 /*! \brief Deserialization
  *
  *  There is no checks for errors of any kind.
  */
-QDataStream& operator>>(QDataStream& stream, NOTAM::Notam& notam);
+QDataStream& operator>>(QDataStream& stream, NOTAM& notam);
 
 } // namespace NOTAM
 
 // Declare meta types
-Q_DECLARE_METATYPE(NOTAM::Notam)
+Q_DECLARE_METATYPE(NOTAM::NOTAM)

@@ -186,8 +186,8 @@ public:
 
 
 private:
-    QGeoPositionInfo m_positionInfo {};
-    Units::Distance m_terrainAMSL {};
+    QGeoPositionInfo m_positionInfo;
+    Units::Distance m_terrainAMSL{};
     Units::Distance m_trueAltitudeAGL {};
 };
 

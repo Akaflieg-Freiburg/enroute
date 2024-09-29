@@ -42,7 +42,7 @@ jobs:
         $QT_ROOT_DIR/bin/qt-cmake \
           -S enrouteDependencies/libzip \
           -B build-libzip \
-          -G Ninja  \
+          -G Ninja \
           -DBUILD_DOC=OFF \
           -DBUILD_EXAMPLES=OFF \
           -DBUILD_REGRESS=OFF \
@@ -78,7 +78,8 @@ jobs:
           -DCMAKE_C_COMPILER_LAUNCHER="ccache" \
           -DCMAKE_CXX_COMPILER_LAUNCHER="ccache" \
           -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" \
-          -DCMAKE_INSTALL_PREFIX=. 
+          -DCMAKE_INSTALL_PREFIX=. \
+          -DQTDEPLOY=ON 
         cmake --build build-enroute
     - name: Package
       run: |

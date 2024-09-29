@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -36,10 +36,23 @@ StackLayout {
                                             dms_d.acceptableInput &&
                                             dms_m.acceptableInput &&
                                             dms_s.acceptableInput &&
+                                            !isNaN(value) &&
                                             (value >= minValue) &&
                                             (value <= maxValue)
 
     function setTexts() {
+        if (isNaN(value)) {
+            d_d.text = ""
+
+            dm_d.text = ""
+            dm_m.text = ""
+
+            dms_d.text = ""
+            dms_m.text = ""
+            dms_s.text = ""
+            return
+        }
+
         var minutes = 60.0*(Math.abs(value) - Math.floor(Math.abs(value)))
         var seconds = 60.0*(minutes - Math.floor(minutes))
 

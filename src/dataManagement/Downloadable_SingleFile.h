@@ -382,13 +382,13 @@ private:
 
     // Temporary file for storing partiall data when downloading the remote
     // file. Set to nullptr when no download is in progress.
-    QPointer<QSaveFile> m_saveFile{};
+    QPointer<QSaveFile> m_saveFile;
 
     // URL of the remote file, as set in the constructor
     QUrl m_url;
 
     // Name of the local file, as set in the constructor
-    QString m_fileName{};
+    QString m_fileName;
 
     // Modification date of the remote file, set directly via a setter method or
     // by calling downloadRemoteFileInfo().

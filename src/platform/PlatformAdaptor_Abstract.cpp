@@ -24,7 +24,7 @@
 #include <QLocale>
 #include <QSettings>
 
-
+#include "notam/NOTAMProvider.h"
 #include "platform/PlatformAdaptor_Abstract.h"
 #include "qimage.h"
 
@@ -71,11 +71,21 @@ QString Platform::PlatformAdaptor_Abstract::systemInfo()
     result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("Locale", language());
     result += u"</table><br>\n"_qs;
 
-    QString updateCheckTimeStamp = QSettings().value(QStringLiteral("DataManager/MapListTimeStamp")).toString();
+    QString const updateCheckTimeStamp
+        = QSettings().value(QStringLiteral("DataManager/MapListTimeStamp")).toString();
     result += u"<h3>Data</h3>\n"_qs;
     result += u"<table>\n"_qs;
     result += u"<tr></tr>\n"_qs;
     result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("Last Map Update Check", updateCheckTimeStamp);
+    auto lastNOTAMUpdate = notamProvider()->lastUpdate();
+    if (lastNOTAMUpdate.isValid())
+    {
+        result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("Last NOTAM download", notamProvider()->lastUpdate().toString());
+    }
+    else
+    {
+        result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("Last NOTAM download", "NONE");
+    }
     result += u"</table><br>\n"_qs;
 
     return result;

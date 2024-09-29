@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -48,6 +48,7 @@ Page {
         TabButton { text: "AD" }
         TabButton { text: "WP" }
         TabButton { text: "NAV" }
+        TabButton { icon.source: "/icons/material/ic_search.svg" }
     }
 
     SwipeView {
@@ -135,6 +136,53 @@ Page {
                 textFormat: Text.StyledText
                 wrapMode: Text.Wrap
                 text: qsTr("<h3>Sorry!</h3><p>No navaid data available.</p>")
+            }
+        }
+
+        ColumnLayout {
+
+            Item {
+                Layout.preferredHeight: textInput.font.pixelSize/4.0
+            }
+
+            MyTextField {
+                id: textInput
+
+                Layout.fillWidth: true
+                Layout.leftMargin: font.pixelSize/2.0
+                Layout.rightMargin: font.pixelSize/2.0
+
+                focus: true
+
+                placeholderText: qsTr("Filter by Name")
+            }
+
+            DecoratedListView {
+                id: naList2
+
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+
+                clip: true
+
+                delegate: waypointDelegate
+
+                Binding {
+                    naList2.model: GeoMapProvider.filteredWaypoints(textInput.displayText)
+                    delayed: true
+                }
+
+                Label {
+                    anchors.fill: parent
+                    anchors.topMargin: font.pixelSize*2
+                    visible: parent.count === 0
+
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    textFormat: Text.StyledText
+                    wrapMode: Text.Wrap
+                    text: qsTr("<h3>Sorry!</h3><p>No waypoints match your filter.</p>")
+                }
             }
         }
     }

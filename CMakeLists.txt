@@ -8,14 +8,14 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include(ExternalProject)
-option(BUILD_DOC "Build developer documentation" OFF)
+option(QTDEPLOY "Generate and run Qt deployment scripts" OFF)
 
 
 #
 # Project data
 #
 
-project(enroute VERSION 2.31.7)
+project(enroute VERSION 2.31.10)
 set(APP_ID de.akaflieg_freiburg.enroute)
 set(DISPLAY_NAME "Enroute")
 math(EXPR PROJECT_VERSION_CODE 10000*${PROJECT_VERSION_MAJOR}+100*${PROJECT_VERSION_MINOR}+${PROJECT_VERSION_PATCH})
@@ -72,7 +72,6 @@ qt_policy(SET QTP0002 NEW)
 # External Packages
 #
 
-find_package(Doxygen)
 find_package(libzip REQUIRED)
 find_package(Git REQUIRED)
 find_package(QMapLibre COMPONENTS Location REQUIRED)
@@ -81,17 +80,6 @@ if(IOS)
     set(PRODUCT_BUNDLE_IDENTIFIER de.akafliegfreiburg.enroute)
     set(CMAKE_XCODE_ATTRIBUTE_ASSETCATALOG_COMPILER_APPICON_NAME AppIcon)
     include(CMakeLists_ios.txt OPTIONAL)
-endif()
-
-
-#
-# Create target collecting all documentation
-#
-
-if ( BUILD_DOC )
-    add_custom_target(fulldoc ALL)
-else()
-    add_custom_target(fulldoc)
 endif()
 
 

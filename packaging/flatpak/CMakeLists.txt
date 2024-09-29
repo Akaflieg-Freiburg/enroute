@@ -7,7 +7,7 @@
 # Configure
 #
 
-configure_file(${APP_ID}.json.in ${APP_ID}.json)
+configure_file(${APP_ID}.json.in ${APP_ID}.json @ONLY)
 
 
 #

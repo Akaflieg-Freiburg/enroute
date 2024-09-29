@@ -37,7 +37,7 @@ CenteringDialog {
 
     modal: true
     standardButtons: Dialog.Close
-    title: weatherStation ? weatherStation.extendedName : ""
+    title: weatherStation ? weatherStation.ICAOCode + " • " + weatherStation.extendedName : ""
 
     ColumnLayout {
         anchors.fill: parent

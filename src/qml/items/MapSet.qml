@@ -32,19 +32,6 @@ Item {
 
     required property var model
 
-    function startFileDownload() {
-        // if the user downloads too many, show them a dialog telling them that
-        // the bandwidth is sponsored and they shouldn't over-consume.
-        var nFilesTotal = DataManager.items.files.length
-        if (nFilesTotal > 15) {
-            Global.dialogLoader.active = false;
-            Global.dialogLoader.setSource("../dialogs/TooManyDownloadsDialog.qml", {onAcceptedCallback: model.modelData.startDownload})
-            Global.dialogLoader.active = true;
-        } else {
-            model.modelData.startDownload();
-        }
-    }
-
     GridLayout {
         id: gridLayout
 
@@ -74,7 +61,7 @@ Item {
                 if (!element.model.modelData.downloading
                         && (!element.model.modelData.hasFile || element.model.modelData.updatable)) {
                     PlatformAdaptor.vibrateBrief()
-                    element.startFileDownload()
+                    model.modelData.startDownload()
                 }
             }
         }

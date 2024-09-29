@@ -69,9 +69,9 @@ set(SOURCES
     navigation/Leg.h
     navigation/Navigator.h
     navigation/RemainingRouteInfo.h
-    notam/Notam.h
-    notam/NotamList.h
-    notam/NotamProvider.h
+    notam/NOTAM.h
+    notam/NOTAMList.h
+    notam/NOTAMProvider.h
     notification/Notification.h
     notification/Notification_DataUpdateAvailable.h
     notification/NotificationManager.h
@@ -163,9 +163,9 @@ set(SOURCES
     navigation/Leg.cpp
     navigation/Navigator.cpp
     navigation/RemainingRouteInfo.cpp
-    notam/Notam.cpp
-    notam/NotamList.cpp
-    notam/NotamProvider.cpp
+    notam/NOTAM.cpp
+    notam/NOTAMList.cpp
+    notam/NOTAMProvider.cpp
     notification/Notification.cpp
     notification/Notification_DataUpdateAvailable.cpp
     notification/NotificationManager.cpp
@@ -538,7 +538,6 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/dialogs/AircraftSaveDialog.qml
     qml/dialogs/ErrorDialog.qml
     qml/dialogs/FirstRunDialog.qml
-    qml/dialogs/FlightRouteAddWPDialog.qml
     qml/dialogs/FlightRouteSaveDialog.qml
     qml/dialogs/LongTextDialogMD.qml
     qml/dialogs/NotamListDialog.qml
@@ -546,7 +545,6 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/dialogs/PasswordStorageDialog.qml
     qml/dialogs/PrivacyWarning.qml
     qml/dialogs/RenameVACDialog.qml
-    qml/dialogs/TooManyDownloadsDialog.qml
     qml/dialogs/WaypointDescription.qml
     qml/dialogs/WaypointEditor.qml
     qml/dialogs/WeatherReport.qml
@@ -651,7 +649,9 @@ else()
 endif()
 
 find_path(Qt6_TRANSLATION_DIR qtbase_de.qm
-    HINTS ${Qt6Core_DIR}/../../../translations
+    HINTS
+    ${Qt6Core_DIR}/../../../translations
+    /usr/translations
     REQUIRED
 )
 qt_add_resources(${PROJECT_NAME} translations_qt
@@ -674,15 +674,6 @@ qt_add_resources(${PROJECT_NAME} translations_qt
 
 
 #
-# Generate documentation
-#
-
-configure_file(Doxyfile.in Doxyfile)
-add_custom_target(enroute_doc COMMAND doxygen)
-add_dependencies(fulldoc enroute_doc)
-
-
-#
 # Install
 #
 
@@ -693,6 +684,10 @@ if ((CMAKE_SYSTEM_NAME STREQUAL "Darwin") OR ((CMAKE_SYSTEM_NAME STREQUAL "Linux
         BUNDLE  DESTINATION .
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     )
+
+endif()
+
+if ( QTDEPLOY )
 
     # Generate the deployment script for the target MyApp.
     qt_generate_deploy_qml_app_script(

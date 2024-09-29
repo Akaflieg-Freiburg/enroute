@@ -48,7 +48,7 @@ class Navigator;
 
 namespace NOTAM
 {
-class NotamProvider;
+class NOTAMProvider;
 } // namespace NOTAM
 
 namespace Notifications
@@ -221,7 +221,7 @@ public:
      *
      * @returns Pointer to appplication-wide static instance.
      */
-    Q_INVOKABLE static NOTAM::NotamProvider* notamProvider();
+    Q_INVOKABLE static NOTAM::NOTAMProvider* notamProvider();
 
     /*! \brief Pointer to appplication-wide static notification manager instance
      *

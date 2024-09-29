@@ -106,7 +106,7 @@ auto Navigation::FlightRoute::gpxElements(const QString& indent, const QString& 
 
     // waypoints
     //
-    for(const auto& _waypoint : m_waypoints) {
+    for(const auto& _waypoint : m_waypoints.value()) {
 
         if (!_waypoint.isValid()) {
             continue; // skip silently

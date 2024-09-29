@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2023 by Stefan Kebekus                                  *
+ *   Copyright (C) 2023-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -23,7 +23,7 @@
 #include <QQmlEngine>
 
 #include "geomaps/Waypoint.h"
-#include "notam/Notam.h"
+#include "notam/NOTAM.h"
 #include "units/Timespan.h"
 
 namespace NOTAM {
@@ -36,35 +36,35 @@ namespace NOTAM {
  *  and the region in the member m_region.
 */
 
-class NotamList {
+class NOTAMList {
     Q_GADGET
     QML_VALUE_TYPE(notamList)
 
-    friend QDataStream& operator<<(QDataStream& stream, const NOTAM::NotamList& notamList);
-    friend QDataStream& operator>>(QDataStream& stream, NOTAM::NotamList& notamList);
+    friend QDataStream& operator<<(QDataStream& stream, const NOTAMList& notamList);
+    friend QDataStream& operator>>(QDataStream& stream, NOTAMList& notamList);
 
 public:
-    /*! \brief Constructs an empty NotamList
+    /*! \brief Constructs an empty NOTAMList
      *
-     *  Constructs an empty NotamList with an invalid region and an invalid
+     *  Constructs an empty NOTAMList with an invalid region and an invalid
      *  QDateTime for the property retrieved.
      */
-    NotamList() = default;
+    NOTAMList() = default;
 
-    /*! \brief Constructs a NotamList from FAA GeoJSON data
+    /*! \brief Constructs a NOTAMList from FAA GeoJSON data
      *
      *  This constructor sets  the member m_retrieved to
-     *  QDateTime::currentDateTimeUtc(). Invalid Notams and Cancel Notams
-     *  will not be added to the list.
+     *  QDateTime::currentDateTimeUtc(). Invalid Notams and Cancel Notams will
+     *  not be added to the list.
      *
-     *  @param jsonData JSON data, as provided by the FAA
+     *  @param jsonDoc JSON dociment, as provided by the FAA
      *
      *  @param region Geographic region covered by this notam list
      *
      *  @param cancelledNotamNumbers Pointer to a set where numbers of cancelled
      *  Notams are added. The nullptr is allowed.
      */
-    NotamList(const QByteArray& jsonData, const QGeoCircle& region, QSet<QString>* cancelledNotamNumbers=nullptr);
+    NOTAMList(const QJsonDocument& jsonDoc, const QGeoCircle& region, QSet<QString>* cancelledNotamNumbers=nullptr);
 
 
 
@@ -79,7 +79,7 @@ public:
     Q_PROPERTY(bool isValid READ isValid)
 
     /*! \brief List of Notams */
-    Q_PROPERTY(QList<NOTAM::Notam> notams READ notams)
+    Q_PROPERTY(QList<NOTAM> notams READ notams)
 
     /*! \brief Region covered by this list */
     Q_PROPERTY(QGeoCircle region READ region)
@@ -98,7 +98,7 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
-     *  @returns Property isValid
+     *  @returns Property isEmpty
      */
     Q_REQUIRED_RESULT bool isEmpty() const { return m_notams.isEmpty(); }
 
@@ -112,7 +112,7 @@ public:
      *
      *  @returns Property notams
      */
-    Q_REQUIRED_RESULT QList<NOTAM::Notam> notams() const { return m_notams; }
+    Q_REQUIRED_RESULT QList<NOTAM> notams() const { return m_notams; }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -140,22 +140,23 @@ public:
 
     /*! \brief Time span between retrieved and now
      *
-     *  @returns Time span between retrieved and now. If retrieved() is invalid, and invalid time is returned.
+     *  @returns Time span between retrieved and now. If retrieved() is invalid,
+     *  and invalid time is returned.
      */
     Q_REQUIRED_RESULT Units::Timespan age() const;
 
     /*! \brief Sublist with expired and duplicated entries removed
      *
-     *  @param cancelledNotamNumbers Set with numbers of notams that are
-     *  known as cancelled
+     *  @param cancelledNotamNumbers Set with numbers of notams that are known
+     *  as cancelled
      *
      *  @returns Sublist with expired and duplicated entries removed.
      */
-    Q_REQUIRED_RESULT NOTAM::NotamList cleaned(const QSet<QString>& cancelledNotamNumbers) const;
+    Q_REQUIRED_RESULT NOTAMList cleaned(const QSet<QString>& cancelledNotamNumbers) const;
 
     /*! \brief Check if outdated
      *
-     *  A NotamList is outdated if its age is invalid or greater than 24h
+     *  A NOTAMList is outdated if its age is invalid or greater than 24h
      *
      *  @returns True if outdated
      */
@@ -163,7 +164,7 @@ public:
 
     /*! \brief Check if list needs update
      *
-     *  A NotamList needs an update if its age is invalid or greater than 12h
+     *  A NOTAMList needs an update if its age is invalid or greater than 12h
      *
      *  @returns True if outdated
      */
@@ -173,15 +174,19 @@ public:
      *
      *  @param waypoint Waypoint
      *
-     *  @returns NotamList with all notams relevant for the given waypoint,
-     *  without expired and duplicated.
+     *  @returns NOTAMList with all notams centered within restrictionRadius of
+     *  the given waypoint, without expired and duplicated NOTAMs. Section
+     *  titles are set depending on the current time, using
+     *  NOTAM::updateSectionTitle().
      */
-    Q_REQUIRED_RESULT NOTAM::NotamList restricted(const GeoMaps::Waypoint& waypoint) const;
+    Q_REQUIRED_RESULT NOTAMList restricted(const GeoMaps::Waypoint& waypoint) const;
 
+    /*! \brief Radius used in the method restricted() */
+    static constexpr Units::Distance restrictionRadius = Units::Distance::fromNM(20.0);
 
 private:
     /* List of Notams */
-    QList<NOTAM::Notam> m_notams;
+    QList<NOTAM> m_notams;
 
     /* Region */
     QGeoCircle m_region;
@@ -194,16 +199,16 @@ private:
  *
  *  There is no checks for errors of any kind.
  */
-QDataStream& operator<<(QDataStream& stream, const NOTAM::NotamList& notamList);
+QDataStream& operator<<(QDataStream& stream, const NOTAMList& notamList);
 
 /*! \brief Deserialization
  *
  *  There is no checks for errors of any kind.
  */
-QDataStream& operator>>(QDataStream& stream, NOTAM::NotamList& notamList);
+QDataStream& operator>>(QDataStream& stream, NOTAMList& notamList);
 
 } // namespace NOTAM
 
 
 // Declare meta types
-Q_DECLARE_METATYPE(NOTAM::NotamList)
+Q_DECLARE_METATYPE(NOTAM::NOTAMList)

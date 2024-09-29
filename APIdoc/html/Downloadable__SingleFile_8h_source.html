@@ -239,13 +239,13 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span> </div>
 <div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>    <span class="comment">// Temporary file for storing partiall data when downloading the remote</span></div>
 <div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>    <span class="comment">// file. Set to nullptr when no download is in progress.</span></div>
-<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>    QPointer&lt;QSaveFile&gt; m_saveFile{};</div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>    QPointer&lt;QSaveFile&gt; m_saveFile;</div>
 <div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span> </div>
 <div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>    <span class="comment">// URL of the remote file, as set in the constructor</span></div>
 <div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>    QUrl m_url;</div>
 <div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span> </div>
 <div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>    <span class="comment">// Name of the local file, as set in the constructor</span></div>
-<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>    QString m_fileName{};</div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>    QString m_fileName;</div>
 <div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span> </div>
 <div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>    <span class="comment">// Modification date of the remote file, set directly via a setter method or</span></div>
 <div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>    <span class="comment">// by calling downloadRemoteFileInfo().</span></div>

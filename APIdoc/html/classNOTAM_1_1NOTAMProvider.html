@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.12.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Enroute Flight Navigation: NOTAM::NotamProvider Class Reference</title>
+<title>Enroute Flight Navigation: NOTAM::NOTAMProvider Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -53,71 +53,69 @@ $(function(){ initResizable(false); });
 </script>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><b>NOTAM</b></li><li class="navelem"><a class="el" href="classNOTAM_1_1NotamProvider.html">NotamProvider</a></li>  </ul>
+<li class="navelem"><b>NOTAM</b></li><li class="navelem"><a class="el" href="classNOTAM_1_1NOTAMProvider.html">NOTAMProvider</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div id="doc-content">
 <div class="header">
   <div class="summary">
-<a href="#signals">Signals</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
-<a href="classNOTAM_1_1NotamProvider-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">NOTAM::NotamProvider Class Reference</div></div>
+<a href="classNOTAM_1_1NOTAMProvider-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">NOTAM::NOTAMProvider Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>This extremely simple class holds a the data item of a NOTAM.  
+<p>Manage <a class="el" href="classNOTAM_1_1NOTAM.html" title="This extremely simple class holds a the data item of a NOTAM.">NOTAM</a> data and download <a class="el" href="classNOTAM_1_1NOTAM.html" title="This extremely simple class holds a the data item of a NOTAM.">NOTAM</a> data from the FAA if required.  
  <a href="#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="NotamProvider_8h_source.html">NotamProvider.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="NOTAMProvider_8h_source.html">NOTAMProvider.h</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for NOTAM::NotamProvider:</div>
+Inheritance diagram for NOTAM::NOTAMProvider:</div>
 <div class="dyncontent">
  <div class="center">
-  <img src="classNOTAM_1_1NotamProvider.png" usemap="#NOTAM::NotamProvider_map" alt=""/>
-  <map id="NOTAM::NotamProvider_map" name="NOTAM::NotamProvider_map">
-<area href="classGlobalObject.html" title="Base class for global singleton objects." alt="GlobalObject" shape="rect" coords="0,0,148,24"/>
+  <img src="classNOTAM_1_1NOTAMProvider.png" usemap="#NOTAM::NOTAMProvider_map" alt=""/>
+  <map id="NOTAM::NOTAMProvider_map" name="NOTAM::NOTAMProvider_map">
+<area href="classGlobalObject.html" title="Base class for global singleton objects." alt="GlobalObject" shape="rect" coords="0,0,159,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="signals" name="signals"></a>
-Signals</h2></td></tr>
-<tr class="memitem:ad670bd26e0119a071c22fa757af43872" id="r_ad670bd26e0119a071c22fa757af43872"><td class="memItemLeft" align="right" valign="top"><a id="ad670bd26e0119a071c22fa757af43872" name="ad670bd26e0119a071c22fa757af43872"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>dataChanged</b> ()</td></tr>
-<tr class="memdesc:ad670bd26e0119a071c22fa757af43872"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
-<tr class="separator:ad670bd26e0119a071c22fa757af43872"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a47f4d06a4317122c50578e32722c9c82" id="r_a47f4d06a4317122c50578e32722c9c82"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a47f4d06a4317122c50578e32722c9c82">deferredInitialization</a> () override</td></tr>
-<tr class="memdesc:a47f4d06a4317122c50578e32722c9c82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non-constructor initialization.  <br /></td></tr>
-<tr class="separator:a47f4d06a4317122c50578e32722c9c82"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f81c3ce91c5ab5fd220a900d064d2ff" id="r_a5f81c3ce91c5ab5fd220a900d064d2ff"><td class="memItemLeft" align="right" valign="top"><a id="a5f81c3ce91c5ab5fd220a900d064d2ff" name="a5f81c3ce91c5ab5fd220a900d064d2ff"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>~NotamProvider</b> () override</td></tr>
-<tr class="memdesc:a5f81c3ce91c5ab5fd220a900d064d2ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard destructor. <br /></td></tr>
-<tr class="separator:a5f81c3ce91c5ab5fd220a900d064d2ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afebb7ef78fd1a7e28bcb151ab5755ac3" id="r_afebb7ef78fd1a7e28bcb151ab5755ac3"><td class="memItemLeft" align="right" valign="top">QByteArray&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afebb7ef78fd1a7e28bcb151ab5755ac3">GeoJSON</a> () const</td></tr>
-<tr class="memdesc:afebb7ef78fd1a7e28bcb151ab5755ac3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <br /></td></tr>
-<tr class="separator:afebb7ef78fd1a7e28bcb151ab5755ac3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a707840e7e509e173d9d4c4656c890e38" id="r_a707840e7e509e173d9d4c4656c890e38"><td class="memItemLeft" align="right" valign="top">Q_REQUIRED_RESULT QDateTime&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a707840e7e509e173d9d4c4656c890e38">lastUpdate</a> () const</td></tr>
-<tr class="memdesc:a707840e7e509e173d9d4c4656c890e38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
-<tr class="separator:a707840e7e509e173d9d4c4656c890e38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d3f272c632ab7f87fd13170ca732013" id="r_a2d3f272c632ab7f87fd13170ca732013"><td class="memItemLeft" align="right" valign="top">Q_REQUIRED_RESULT QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2d3f272c632ab7f87fd13170ca732013">status</a> () const</td></tr>
-<tr class="memdesc:a2d3f272c632ab7f87fd13170ca732013"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
-<tr class="separator:a2d3f272c632ab7f87fd13170ca732013"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7014a7422ef53bbd0ba7af0cbe7e5e6" id="r_ad7014a7422ef53bbd0ba7af0cbe7e5e6"><td class="memItemLeft" align="right" valign="top">Q_REQUIRED_RESULT QList&lt; <a class="el" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad7014a7422ef53bbd0ba7af0cbe7e5e6">waypoints</a> () const</td></tr>
-<tr class="memdesc:ad7014a7422ef53bbd0ba7af0cbe7e5e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
-<tr class="separator:ad7014a7422ef53bbd0ba7af0cbe7e5e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73bab769d97b82094d2318a1a765a31b" id="r_a73bab769d97b82094d2318a1a765a31b"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE <a class="el" href="classNOTAM_1_1NotamList.html">NOTAM::NotamList</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a73bab769d97b82094d2318a1a765a31b">notams</a> (const <a class="el" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a> &amp;waypoint)</td></tr>
-<tr class="memdesc:a73bab769d97b82094d2318a1a765a31b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notams for a given waypoint.  <br /></td></tr>
-<tr class="separator:a73bab769d97b82094d2318a1a765a31b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6fe03afb19ed0d894475480ad319aca" id="r_ad6fe03afb19ed0d894475480ad319aca"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad6fe03afb19ed0d894475480ad319aca">isRead</a> (const QString &amp;number)</td></tr>
-<tr class="memdesc:ad6fe03afb19ed0d894475480ad319aca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check is a notam number is registred as read.  <br /></td></tr>
-<tr class="separator:ad6fe03afb19ed0d894475480ad319aca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adbd8026f690b01e55aef950b675f4c76" id="r_adbd8026f690b01e55aef950b675f4c76"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adbd8026f690b01e55aef950b675f4c76">setRead</a> (const QString &amp;number, bool read)</td></tr>
-<tr class="memdesc:adbd8026f690b01e55aef950b675f4c76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register notam number as read or unread.  <br /></td></tr>
-<tr class="separator:adbd8026f690b01e55aef950b675f4c76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87d1a31e0308d7261ce48e2910638040" id="r_a87d1a31e0308d7261ce48e2910638040"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a87d1a31e0308d7261ce48e2910638040">deferredInitialization</a> () override</td></tr>
+<tr class="memdesc:a87d1a31e0308d7261ce48e2910638040"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non-constructor initialization.  <br /></td></tr>
+<tr class="separator:a87d1a31e0308d7261ce48e2910638040"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a596ae49c137b4f75e9e7fd56d55f95a8" id="r_a596ae49c137b4f75e9e7fd56d55f95a8"><td class="memItemLeft" align="right" valign="top"><a id="a596ae49c137b4f75e9e7fd56d55f95a8" name="a596ae49c137b4f75e9e7fd56d55f95a8"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>~NOTAMProvider</b> () override</td></tr>
+<tr class="memdesc:a596ae49c137b4f75e9e7fd56d55f95a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard destructor. <br /></td></tr>
+<tr class="separator:a596ae49c137b4f75e9e7fd56d55f95a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f62ea63b4ab907742bbaf3ee676067e" id="r_a5f62ea63b4ab907742bbaf3ee676067e"><td class="memItemLeft" align="right" valign="top">Q_REQUIRED_RESULT QByteArray&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5f62ea63b4ab907742bbaf3ee676067e">geoJSON</a> () const</td></tr>
+<tr class="memdesc:a5f62ea63b4ab907742bbaf3ee676067e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <br /></td></tr>
+<tr class="separator:a5f62ea63b4ab907742bbaf3ee676067e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83221224c08bc639284473facb9ec5f5" id="r_a83221224c08bc639284473facb9ec5f5"><td class="memItemLeft" align="right" valign="top">Q_REQUIRED_RESULT QBindable&lt; QByteArray &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a83221224c08bc639284473facb9ec5f5">bindableGeoJSON</a> () const</td></tr>
+<tr class="memdesc:a83221224c08bc639284473facb9ec5f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <br /></td></tr>
+<tr class="separator:a83221224c08bc639284473facb9ec5f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd5481c4016ff9b1949a07c73fb85d64" id="r_abd5481c4016ff9b1949a07c73fb85d64"><td class="memItemLeft" align="right" valign="top">Q_REQUIRED_RESULT QDateTime&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abd5481c4016ff9b1949a07c73fb85d64">lastUpdate</a> () const</td></tr>
+<tr class="memdesc:abd5481c4016ff9b1949a07c73fb85d64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
+<tr class="separator:abd5481c4016ff9b1949a07c73fb85d64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a073177b0c5f81a6bf6cf8c2306facd5b" id="r_a073177b0c5f81a6bf6cf8c2306facd5b"><td class="memItemLeft" align="right" valign="top">Q_REQUIRED_RESULT QBindable&lt; QDateTime &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a073177b0c5f81a6bf6cf8c2306facd5b">bindableLastUpdate</a> () const</td></tr>
+<tr class="memdesc:a073177b0c5f81a6bf6cf8c2306facd5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
+<tr class="separator:a073177b0c5f81a6bf6cf8c2306facd5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae0afbb72f189222da657cbf1fcf7095" id="r_aae0afbb72f189222da657cbf1fcf7095"><td class="memItemLeft" align="right" valign="top">Q_REQUIRED_RESULT QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aae0afbb72f189222da657cbf1fcf7095">status</a> () const</td></tr>
+<tr class="memdesc:aae0afbb72f189222da657cbf1fcf7095"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
+<tr class="separator:aae0afbb72f189222da657cbf1fcf7095"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abee9157341a836ff04046a5114ed4e95" id="r_abee9157341a836ff04046a5114ed4e95"><td class="memItemLeft" align="right" valign="top">Q_REQUIRED_RESULT QBindable&lt; QString &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abee9157341a836ff04046a5114ed4e95">bindableStatus</a> () const</td></tr>
+<tr class="memdesc:abee9157341a836ff04046a5114ed4e95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
+<tr class="separator:abee9157341a836ff04046a5114ed4e95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aadea67efed363ca2147bdd40bf3769e1" id="r_aadea67efed363ca2147bdd40bf3769e1"><td class="memItemLeft" align="right" valign="top">Q_REQUIRED_RESULT Q_INVOKABLE <a class="el" href="classNOTAM_1_1NOTAMList.html">NOTAMList</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aadea67efed363ca2147bdd40bf3769e1">notams</a> (const <a class="el" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a> &amp;waypoint)</td></tr>
+<tr class="memdesc:aadea67efed363ca2147bdd40bf3769e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">NOTAMs for a given waypoint.  <br /></td></tr>
+<tr class="separator:aadea67efed363ca2147bdd40bf3769e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af981c0997cb469ac2ab37c4818b6dafc" id="r_af981c0997cb469ac2ab37c4818b6dafc"><td class="memItemLeft" align="right" valign="top">Q_REQUIRED_RESULT Q_INVOKABLE bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af981c0997cb469ac2ab37c4818b6dafc">isRead</a> (const QString &amp;number) const</td></tr>
+<tr class="memdesc:af981c0997cb469ac2ab37c4818b6dafc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if a <a class="el" href="classNOTAM_1_1NOTAM.html" title="This extremely simple class holds a the data item of a NOTAM.">NOTAM</a> number is registred as read.  <br /></td></tr>
+<tr class="separator:af981c0997cb469ac2ab37c4818b6dafc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3638207a3e0cff7e3818c2f223d3faf8" id="r_a3638207a3e0cff7e3818c2f223d3faf8"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3638207a3e0cff7e3818c2f223d3faf8">setRead</a> (const QString &amp;number, bool read)</td></tr>
+<tr class="memdesc:a3638207a3e0cff7e3818c2f223d3faf8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register <a class="el" href="classNOTAM_1_1NOTAM.html" title="This extremely simple class holds a the data item of a NOTAM.">NOTAM</a> number as read or unread.  <br /></td></tr>
+<tr class="separator:a3638207a3e0cff7e3818c2f223d3faf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classGlobalObject"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classGlobalObject')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classGlobalObject.html">GlobalObject</a></td></tr>
 <tr class="memitem:ac8dfa53c492975de42fa7972e77abbc1 inherit pub_methods_classGlobalObject" id="r_ac8dfa53c492975de42fa7972e77abbc1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalObject.html#ac8dfa53c492975de42fa7972e77abbc1">GlobalObject</a> (QObject *parent=nullptr)</td></tr>
 <tr class="memdesc:ac8dfa53c492975de42fa7972e77abbc1 inherit pub_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard constructor.  <br /></td></tr>
@@ -128,20 +126,15 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:a01c460cf5424a4b21719c7e77a019876" id="r_a01c460cf5424a4b21719c7e77a019876"><td class="memItemLeft" align="right" valign="top">QByteArray&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a01c460cf5424a4b21719c7e77a019876">GeoJSON</a></td></tr>
-<tr class="memdesc:a01c460cf5424a4b21719c7e77a019876"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of NOTAM points.  <br /></td></tr>
-<tr class="separator:a01c460cf5424a4b21719c7e77a019876"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00a825ccdbd710fc2fecbb16637930d3" id="r_a00a825ccdbd710fc2fecbb16637930d3"><td class="memItemLeft" align="right" valign="top"><a id="a00a825ccdbd710fc2fecbb16637930d3" name="a00a825ccdbd710fc2fecbb16637930d3"></a>
-QDateTime&#160;</td><td class="memItemRight" valign="bottom"><b>lastUpdate</b></td></tr>
-<tr class="memdesc:a00a825ccdbd710fc2fecbb16637930d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time of last database update. <br /></td></tr>
-<tr class="separator:a00a825ccdbd710fc2fecbb16637930d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b616a9148c53cb2f70ef0faa091784a" id="r_a1b616a9148c53cb2f70ef0faa091784a"><td class="memItemLeft" align="right" valign="top"><a id="a1b616a9148c53cb2f70ef0faa091784a" name="a1b616a9148c53cb2f70ef0faa091784a"></a>
-QList&lt; <a class="el" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>waypoints</b></td></tr>
-<tr class="memdesc:a1b616a9148c53cb2f70ef0faa091784a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Waypoints with <a class="el" href="classNOTAM_1_1Notam.html" title="This extremely simple class holds a the data item of a NOTAM.">Notam</a> items, for presentation in a map. <br /></td></tr>
-<tr class="separator:a1b616a9148c53cb2f70ef0faa091784a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2fd97019a67daef63329614c7b325dca" id="r_a2fd97019a67daef63329614c7b325dca"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2fd97019a67daef63329614c7b325dca">status</a></td></tr>
-<tr class="memdesc:a2fd97019a67daef63329614c7b325dca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Status.  <br /></td></tr>
-<tr class="separator:a2fd97019a67daef63329614c7b325dca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb91b73d50d18b17724b53ab076e6233" id="r_acb91b73d50d18b17724b53ab076e6233"><td class="memItemLeft" align="right" valign="top">QByteArray&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acb91b73d50d18b17724b53ab076e6233">geoJSON</a></td></tr>
+<tr class="memdesc:acb91b73d50d18b17724b53ab076e6233"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of <a class="el" href="classNOTAM_1_1NOTAM.html" title="This extremely simple class holds a the data item of a NOTAM.">NOTAM</a> points.  <br /></td></tr>
+<tr class="separator:acb91b73d50d18b17724b53ab076e6233"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a498594a733ca9b135ca9f247b0c542a1" id="r_a498594a733ca9b135ca9f247b0c542a1"><td class="memItemLeft" align="right" valign="top">QDateTime&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a498594a733ca9b135ca9f247b0c542a1">lastUpdate</a></td></tr>
+<tr class="memdesc:a498594a733ca9b135ca9f247b0c542a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time of last database update.  <br /></td></tr>
+<tr class="separator:a498594a733ca9b135ca9f247b0c542a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a153000677908f5d39500c82122fb69e3" id="r_a153000677908f5d39500c82122fb69e3"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a153000677908f5d39500c82122fb69e3">status</a></td></tr>
+<tr class="memdesc:a153000677908f5d39500c82122fb69e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Status.  <br /></td></tr>
+<tr class="separator:a153000677908f5d39500c82122fb69e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -191,9 +184,9 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a7837aeb4bcabe6542db1bccdab5ebd59 inherit pub_static_methods_classGlobalObject" id="r_a7837aeb4bcabe6542db1bccdab5ebd59"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE <a class="el" href="classPositioning_1_1PositionProvider.html">Positioning::PositionProvider</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalObject.html#a7837aeb4bcabe6542db1bccdab5ebd59">positionProvider</a> ()</td></tr>
 <tr class="memdesc:a7837aeb4bcabe6542db1bccdab5ebd59 inherit pub_static_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static PositionProvider instance.  <br /></td></tr>
 <tr class="separator:a7837aeb4bcabe6542db1bccdab5ebd59 inherit pub_static_methods_classGlobalObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac11d38af2df8dcdb78679abf92b6de7a inherit pub_static_methods_classGlobalObject" id="r_ac11d38af2df8dcdb78679abf92b6de7a"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE <a class="el" href="classNOTAM_1_1NotamProvider.html">NOTAM::NotamProvider</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalObject.html#ac11d38af2df8dcdb78679abf92b6de7a">notamProvider</a> ()</td></tr>
-<tr class="memdesc:ac11d38af2df8dcdb78679abf92b6de7a inherit pub_static_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static notification manager instance.  <br /></td></tr>
-<tr class="separator:ac11d38af2df8dcdb78679abf92b6de7a inherit pub_static_methods_classGlobalObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae068cf2680dc46a9a8d084ce246055d9 inherit pub_static_methods_classGlobalObject" id="r_ae068cf2680dc46a9a8d084ce246055d9"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE <a class="el" href="classNOTAM_1_1NOTAMProvider.html">NOTAM::NOTAMProvider</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalObject.html#ae068cf2680dc46a9a8d084ce246055d9">notamProvider</a> ()</td></tr>
+<tr class="memdesc:ae068cf2680dc46a9a8d084ce246055d9 inherit pub_static_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static notification manager instance.  <br /></td></tr>
+<tr class="separator:ae068cf2680dc46a9a8d084ce246055d9 inherit pub_static_methods_classGlobalObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa90c2b17a6930dfb2cd258c8349e94cc inherit pub_static_methods_classGlobalObject" id="r_aa90c2b17a6930dfb2cd258c8349e94cc"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE <a class="el" href="classNotifications_1_1NotificationManager.html">Notifications::NotificationManager</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGlobalObject.html#aa90c2b17a6930dfb2cd258c8349e94cc">notificationManager</a> ()</td></tr>
 <tr class="memdesc:aa90c2b17a6930dfb2cd258c8349e94cc inherit pub_static_methods_classGlobalObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to appplication-wide static notification manager instance.  <br /></td></tr>
 <tr class="separator:aa90c2b17a6930dfb2cd258c8349e94cc inherit pub_static_methods_classGlobalObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -215,12 +208,14 @@ Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_methods_classGlobalObject"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_methods_classGlobalObject')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classGlobalObject.html">GlobalObject</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This extremely simple class holds a the data item of a NOTAM. </p>
+<div class="textblock"><p>Manage <a class="el" href="classNOTAM_1_1NOTAM.html" title="This extremely simple class holds a the data item of a NOTAM.">NOTAM</a> data and download <a class="el" href="classNOTAM_1_1NOTAM.html" title="This extremely simple class holds a the data item of a NOTAM.">NOTAM</a> data from the FAA if required. </p>
+<p>This class attempts to ensure that for any given point in time, current <a class="el" href="classNOTAM_1_1NOTAM.html" title="This extremely simple class holds a the data item of a NOTAM.">NOTAM</a> data is provided for circles of radius minimumRadiusPoint around the current position and every waypoint in the flightRoute, as well as a region of at least minimumRadiusFlightRoute around the flight route.</p>
+<p>There is API to access the data, and to request <a class="el" href="classNOTAM_1_1NOTAM.html" title="This extremely simple class holds a the data item of a NOTAM.">NOTAM</a> data for arbitrary coordinates. </p>
 
-<p class="definition">Definition at line <a class="el" href="NotamProvider_8h_source.html#l00035">35</a> of file <a class="el" href="NotamProvider_8h_source.html">NotamProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="NOTAMProvider_8h_source.html#l00044">44</a> of file <a class="el" href="NOTAMProvider_8h_source.html">NOTAMProvider.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a47f4d06a4317122c50578e32722c9c82" name="a47f4d06a4317122c50578e32722c9c82"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a47f4d06a4317122c50578e32722c9c82">&#9670;&#160;</a></span>deferredInitialization()</h2>
+<a id="a83221224c08bc639284473facb9ec5f5" name="a83221224c08bc639284473facb9ec5f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83221224c08bc639284473facb9ec5f5">&#9670;&#160;</a></span>bindableGeoJSON()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -229,7 +224,97 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void NOTAM::NotamProvider::deferredInitialization </td>
+          <td class="memname">Q_REQUIRED_RESULT QBindable&lt; QByteArray &gt; NOTAM::NOTAMProvider::bindableGeoJSON </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter function for property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property geoJSON </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="NOTAMProvider_8h_source.html#l00115">115</a> of file <a class="el" href="NOTAMProvider_8h_source.html">NOTAMProvider.h</a>.</p>
+
+</div>
+</div>
+<a id="a073177b0c5f81a6bf6cf8c2306facd5b" name="a073177b0c5f81a6bf6cf8c2306facd5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a073177b0c5f81a6bf6cf8c2306facd5b">&#9670;&#160;</a></span>bindableLastUpdate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_REQUIRED_RESULT QBindable&lt; QDateTime &gt; NOTAM::NOTAMProvider::bindableLastUpdate </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter function for the property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property lastUpdate </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="NOTAMProvider_8h_source.html#l00127">127</a> of file <a class="el" href="NOTAMProvider_8h_source.html">NOTAMProvider.h</a>.</p>
+
+</div>
+</div>
+<a id="abee9157341a836ff04046a5114ed4e95" name="abee9157341a836ff04046a5114ed4e95"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abee9157341a836ff04046a5114ed4e95">&#9670;&#160;</a></span>bindableStatus()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_REQUIRED_RESULT QBindable&lt; QString &gt; NOTAM::NOTAMProvider::bindableStatus </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter function for the property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property status </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="NOTAMProvider_8h_source.html#l00139">139</a> of file <a class="el" href="NOTAMProvider_8h_source.html">NOTAMProvider.h</a>.</p>
+
+</div>
+</div>
+<a id="a87d1a31e0308d7261ce48e2910638040" name="a87d1a31e0308d7261ce48e2910638040"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87d1a31e0308d7261ce48e2910638040">&#9670;&#160;</a></span>deferredInitialization()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NOTAM::NOTAMProvider::deferredInitialization </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -249,8 +334,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="afebb7ef78fd1a7e28bcb151ab5755ac3" name="afebb7ef78fd1a7e28bcb151ab5755ac3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afebb7ef78fd1a7e28bcb151ab5755ac3">&#9670;&#160;</a></span>GeoJSON()</h2>
+<a id="a5f62ea63b4ab907742bbaf3ee676067e" name="a5f62ea63b4ab907742bbaf3ee676067e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f62ea63b4ab907742bbaf3ee676067e">&#9670;&#160;</a></span>geoJSON()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -259,7 +344,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">QByteArray NOTAM::NotamProvider::GeoJSON </td>
+          <td class="memname">Q_REQUIRED_RESULT QByteArray NOTAM::NOTAMProvider::geoJSON </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -267,18 +352,20 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">nodiscard</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Getter function for property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property GeoJSON </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Property geoJSON </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="NOTAMProvider_8h_source.html#l00109">109</a> of file <a class="el" href="NOTAMProvider_8h_source.html">NOTAMProvider.h</a>.</p>
 
 </div>
 </div>
-<a id="ad6fe03afb19ed0d894475480ad319aca" name="ad6fe03afb19ed0d894475480ad319aca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad6fe03afb19ed0d894475480ad319aca">&#9670;&#160;</a></span>isRead()</h2>
+<a id="af981c0997cb469ac2ab37c4818b6dafc" name="af981c0997cb469ac2ab37c4818b6dafc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af981c0997cb469ac2ab37c4818b6dafc">&#9670;&#160;</a></span>isRead()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -287,34 +374,34 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Q_INVOKABLE bool NOTAM::NotamProvider::isRead </td>
+          <td class="memname">Q_REQUIRED_RESULT Q_INVOKABLE bool NOTAM::NOTAMProvider::isRead </td>
           <td>(</td>
           <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>number</em></span></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">nodiscard</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Check is a notam number is registred as read. </p>
+<p>Check if a <a class="el" href="classNOTAM_1_1NOTAM.html" title="This extremely simple class holds a the data item of a NOTAM.">NOTAM</a> number is registred as read. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">number</td><td><a class="el" href="classNOTAM_1_1Notam.html" title="This extremely simple class holds a the data item of a NOTAM.">Notam</a> number</td></tr>
+    <tr><td class="paramname">number</td><td>Notam number</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True is notam is known as read </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="NotamProvider_8h_source.html#l00146">146</a> of file <a class="el" href="NotamProvider_8h_source.html">NotamProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="NOTAMProvider_8h_source.html#l00172">172</a> of file <a class="el" href="NOTAMProvider_8h_source.html">NOTAMProvider.h</a>.</p>
 
 </div>
 </div>
-<a id="a707840e7e509e173d9d4c4656c890e38" name="a707840e7e509e173d9d4c4656c890e38"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a707840e7e509e173d9d4c4656c890e38">&#9670;&#160;</a></span>lastUpdate()</h2>
+<a id="abd5481c4016ff9b1949a07c73fb85d64" name="abd5481c4016ff9b1949a07c73fb85d64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd5481c4016ff9b1949a07c73fb85d64">&#9670;&#160;</a></span>lastUpdate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -323,7 +410,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Q_REQUIRED_RESULT QDateTime NOTAM::NotamProvider::lastUpdate </td>
+          <td class="memname">Q_REQUIRED_RESULT QDateTime NOTAM::NOTAMProvider::lastUpdate </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -339,55 +426,47 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property lastUpdate </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="NotamProvider_8h_source.html#l00100">100</a> of file <a class="el" href="NotamProvider_8h_source.html">NotamProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="NOTAMProvider_8h_source.html#l00121">121</a> of file <a class="el" href="NOTAMProvider_8h_source.html">NOTAMProvider.h</a>.</p>
 
 </div>
 </div>
-<a id="a73bab769d97b82094d2318a1a765a31b" name="a73bab769d97b82094d2318a1a765a31b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a73bab769d97b82094d2318a1a765a31b">&#9670;&#160;</a></span>notams()</h2>
+<a id="aadea67efed363ca2147bdd40bf3769e1" name="aadea67efed363ca2147bdd40bf3769e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aadea67efed363ca2147bdd40bf3769e1">&#9670;&#160;</a></span>notams()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Q_INVOKABLE <a class="el" href="classNOTAM_1_1NotamList.html">NOTAM::NotamList</a> NOTAM::NotamProvider::notams </td>
+          <td class="memname">Q_REQUIRED_RESULT Q_INVOKABLE <a class="el" href="classNOTAM_1_1NOTAMList.html">NOTAMList</a> NOTAM::NOTAMProvider::notams </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>waypoint</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">nodiscard</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Notams for a given waypoint. </p>
-<p>The returned list is empty and has a valid property "retrieved" if the <a class="el" href="classNOTAM_1_1NotamProvider.html" title="This extremely simple class holds a the data item of a NOTAM.">NotamProvider</a> is sure that there are no relevant notams for the given waypoint.</p>
-<p>The returned list is empty and has an invalid property "retrieved" if the <a class="el" href="classNOTAM_1_1NotamProvider.html" title="This extremely simple class holds a the data item of a NOTAM.">NotamProvider</a> has no data.</p>
-<p>Calling this method might trigger an update of the <a class="el" href="classNOTAM_1_1Notam.html" title="This extremely simple class holds a the data item of a NOTAM.">Notam</a> database. Consumers can watch the property lastUpdate to learn about database updates.</p>
+<p>NOTAMs for a given waypoint. </p>
+<p>The returned list is empty and has a valid property "retrieved" if the <a class="el" href="classNOTAM_1_1NOTAMProvider.html" title="Manage NOTAM data and download NOTAM data from the FAA if required.">NOTAMProvider</a> is sure that there are no relevant NOTAMs for the given waypoint.</p>
+<p>The returned list is empty and has an invalid property "retrieved" if the <a class="el" href="classNOTAM_1_1NOTAMProvider.html" title="Manage NOTAM data and download NOTAM data from the FAA if required.">NOTAMProvider</a> has no data.</p>
+<p>Calling this method might trigger an update of the <a class="el" href="classNOTAM_1_1NOTAM.html" title="This extremely simple class holds a the data item of a NOTAM.">NOTAM</a> database. Consumers can watch the property lastUpdate to learn about database updates.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">waypoint</td><td>Waypoint for which the notam list is compiled</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>List of Notams relevant for the waypoint </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>List of NOTAMS relevant for the waypoint </dd></dl>
 
 </div>
 </div>
-<a id="adbd8026f690b01e55aef950b675f4c76" name="adbd8026f690b01e55aef950b675f4c76"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adbd8026f690b01e55aef950b675f4c76">&#9670;&#160;</a></span>setRead()</h2>
+<a id="a3638207a3e0cff7e3818c2f223d3faf8" name="a3638207a3e0cff7e3818c2f223d3faf8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3638207a3e0cff7e3818c2f223d3faf8">&#9670;&#160;</a></span>setRead()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">Q_INVOKABLE void NOTAM::NotamProvider::setRead </td>
+          <td class="memname">Q_INVOKABLE void NOTAM::NOTAMProvider::setRead </td>
           <td>(</td>
           <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>number</em></span>, </td>
         </tr>
@@ -399,10 +478,10 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Register notam number as read or unread. </p>
+<p>Register <a class="el" href="classNOTAM_1_1NOTAM.html" title="This extremely simple class holds a the data item of a NOTAM.">NOTAM</a> number as read or unread. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">number</td><td><a class="el" href="classNOTAM_1_1Notam.html" title="This extremely simple class holds a the data item of a NOTAM.">Notam</a> number</td></tr>
+    <tr><td class="paramname">number</td><td>Notam number</td></tr>
     <tr><td class="paramname">read</td><td>True if notam is to be registred as read </td></tr>
   </table>
   </dd>
@@ -410,8 +489,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a2d3f272c632ab7f87fd13170ca732013" name="a2d3f272c632ab7f87fd13170ca732013"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2d3f272c632ab7f87fd13170ca732013">&#9670;&#160;</a></span>status()</h2>
+<a id="aae0afbb72f189222da657cbf1fcf7095" name="aae0afbb72f189222da657cbf1fcf7095"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae0afbb72f189222da657cbf1fcf7095">&#9670;&#160;</a></span>status()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -420,7 +499,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Q_REQUIRED_RESULT QString NOTAM::NotamProvider::status </td>
+          <td class="memname">Q_REQUIRED_RESULT QString NOTAM::NOTAMProvider::status </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -436,33 +515,13 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property status </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="NotamProvider_8h_source.html#l00107">107</a> of file <a class="el" href="NotamProvider_8h_source.html">NotamProvider.h</a>.</p>
-
-</div>
-</div>
-<a id="ad7014a7422ef53bbd0ba7af0cbe7e5e6" name="ad7014a7422ef53bbd0ba7af0cbe7e5e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad7014a7422ef53bbd0ba7af0cbe7e5e6">&#9670;&#160;</a></span>waypoints()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Q_REQUIRED_RESULT QList&lt; <a class="el" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a> &gt; NOTAM::NotamProvider::waypoints </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Getter function for the property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property waypoints </dd></dl>
+<p class="definition">Definition at line <a class="el" href="NOTAMProvider_8h_source.html#l00133">133</a> of file <a class="el" href="NOTAMProvider_8h_source.html">NOTAMProvider.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
-<a id="a01c460cf5424a4b21719c7e77a019876" name="a01c460cf5424a4b21719c7e77a019876"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a01c460cf5424a4b21719c7e77a019876">&#9670;&#160;</a></span>GeoJSON</h2>
+<a id="acb91b73d50d18b17724b53ab076e6233" name="acb91b73d50d18b17724b53ab076e6233"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb91b73d50d18b17724b53ab076e6233">&#9670;&#160;</a></span>geoJSON</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -471,7 +530,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">QByteArray NOTAM::NotamProvider::GeoJSON</td>
+          <td class="memname">QByteArray NOTAM::NOTAMProvider::geoJSON</td>
         </tr>
       </table>
   </td>
@@ -481,15 +540,15 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>List of NOTAM points. </p>
+<p>List of <a class="el" href="classNOTAM_1_1NOTAM.html" title="This extremely simple class holds a the data item of a NOTAM.">NOTAM</a> points. </p>
 <p>This property holds GeoJSON, to describe points where NOTAMs are active. </p>
 
-<p class="definition">Definition at line <a class="el" href="NotamProvider_8h_source.html#l00069">69</a> of file <a class="el" href="NotamProvider_8h_source.html">NotamProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="NOTAMProvider_8h_source.html#l00084">84</a> of file <a class="el" href="NOTAMProvider_8h_source.html">NOTAMProvider.h</a>.</p>
 
 </div>
 </div>
-<a id="a2fd97019a67daef63329614c7b325dca" name="a2fd97019a67daef63329614c7b325dca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2fd97019a67daef63329614c7b325dca">&#9670;&#160;</a></span>status</h2>
+<a id="a498594a733ca9b135ca9f247b0c542a1" name="a498594a733ca9b135ca9f247b0c542a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a498594a733ca9b135ca9f247b0c542a1">&#9670;&#160;</a></span>lastUpdate</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -498,7 +557,34 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">QString NOTAM::NotamProvider::status</td>
+          <td class="memname">QDateTime NOTAM::NOTAMProvider::lastUpdate</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">read</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Time of last database update. </p>
+<p>This is the time of the last successful data download from the FAA server. The property holds an invalid QDateTime if no data is available. </p>
+
+<p class="definition">Definition at line <a class="el" href="NOTAMProvider_8h_source.html#l00091">91</a> of file <a class="el" href="NOTAMProvider_8h_source.html">NOTAMProvider.h</a>.</p>
+
+</div>
+</div>
+<a id="a153000677908f5d39500c82122fb69e3" name="a153000677908f5d39500c82122fb69e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a153000677908f5d39500c82122fb69e3">&#9670;&#160;</a></span>status</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QString NOTAM::NOTAMProvider::status</td>
         </tr>
       </table>
   </td>
@@ -509,14 +595,14 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Status. </p>
-<p>This is a translated, human-readable text with warnings about incomplete NOTAM data, or an empty string in case of no warning. </p>
+<p>This is a translated, human-readable text with warnings about incomplete <a class="el" href="classNOTAM_1_1NOTAM.html" title="This extremely simple class holds a the data item of a NOTAM.">NOTAM</a> data, or an empty string in case of no warning. </p>
 
-<p class="definition">Definition at line <a class="el" href="NotamProvider_8h_source.html#l00082">82</a> of file <a class="el" href="NotamProvider_8h_source.html">NotamProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="NOTAMProvider_8h_source.html#l00098">98</a> of file <a class="el" href="NOTAMProvider_8h_source.html">NOTAMProvider.h</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>/home/runner/work/enroute/enroute/src/notam/<a class="el" href="NotamProvider_8h_source.html">NotamProvider.h</a></li>
+<li>/home/runner/work/enroute/enroute/src/notam/<a class="el" href="NOTAMProvider_8h_source.html">NOTAMProvider.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

@@ -91,9 +91,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3ec78330b85fa08c04ed5b0c66fb192e" id="r_a3ec78330b85fa08c04ed5b0c66fb192e"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3ec78330b85fa08c04ed5b0c66fb192e">boundingRectangle</a> () const -&gt; QGeoRectangle</td></tr>
 <tr class="memdesc:a3ec78330b85fa08c04ed5b0c66fb192e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
 <tr class="separator:a3ec78330b85fa08c04ed5b0c66fb192e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c3be0c4467f6ad85daed9bd437c5d04" id="r_a4c3be0c4467f6ad85daed9bd437c5d04"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4c3be0c4467f6ad85daed9bd437c5d04">geoPath</a> () const -&gt; QList&lt; QGeoCoordinate &gt;</td></tr>
-<tr class="memdesc:a4c3be0c4467f6ad85daed9bd437c5d04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
-<tr class="separator:a4c3be0c4467f6ad85daed9bd437c5d04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37f0441d1fd0f1a1f7c36b1ee1c5efd2" id="r_a37f0441d1fd0f1a1f7c36b1ee1c5efd2"><td class="memItemLeft" align="right" valign="top">QList&lt; QGeoCoordinate &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a37f0441d1fd0f1a1f7c36b1ee1c5efd2">geoPath</a> () const</td></tr>
+<tr class="memdesc:a37f0441d1fd0f1a1f7c36b1ee1c5efd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
+<tr class="separator:a37f0441d1fd0f1a1f7c36b1ee1c5efd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c3b0ca3415ba088f1ea226fe5e69a37" id="r_a7c3b0ca3415ba088f1ea226fe5e69a37"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7c3b0ca3415ba088f1ea226fe5e69a37">midFieldWaypoints</a> () const -&gt; QList&lt; <a class="el" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a> &gt;</td></tr>
 <tr class="memdesc:a7c3b0ca3415ba088f1ea226fe5e69a37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
 <tr class="separator:a7c3b0ca3415ba088f1ea226fe5e69a37"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -199,7 +199,7 @@ qsizetype&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></t
 <li>Compute length and true course for the legs in the flight path, as well as a total length and expose this data to QML. </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00058">58</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00059">59</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a88b36228c5cb2e5d34160c41e285b44b" name="a88b36228c5cb2e5d34160c41e285b44b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a88b36228c5cb2e5d34160c41e285b44b">&#9670;&#160;</a></span>FlightRoute()</h2>
@@ -417,8 +417,8 @@ qsizetype&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></t
 
 </div>
 </div>
-<a id="a4c3be0c4467f6ad85daed9bd437c5d04" name="a4c3be0c4467f6ad85daed9bd437c5d04"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4c3be0c4467f6ad85daed9bd437c5d04">&#9670;&#160;</a></span>geoPath()</h2>
+<a id="a37f0441d1fd0f1a1f7c36b1ee1c5efd2" name="a37f0441d1fd0f1a1f7c36b1ee1c5efd2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37f0441d1fd0f1a1f7c36b1ee1c5efd2">&#9670;&#160;</a></span>geoPath()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -427,21 +427,23 @@ qsizetype&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></t
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto Navigation::FlightRoute::geoPath </td>
+          <td class="memname">QList&lt; QGeoCoordinate &gt; Navigation::FlightRoute::geoPath </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const -&gt;  QList&lt; QGeoCoordinate &gt;</td>
+          <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">nodiscard</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">nodiscard</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property geoPath </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00148">148</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
 
 </div>
 </div>
@@ -532,7 +534,7 @@ qsizetype&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></t
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property legs </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00159">159</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00161">161</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
 
 </div>
 </div>
@@ -759,7 +761,7 @@ qsizetype&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></t
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property size </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00165">165</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00167">167</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
 
 </div>
 </div>
@@ -904,7 +906,7 @@ qsizetype&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></t
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property waypoints </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00177">177</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00179">179</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
 
 </div>
 </div>
@@ -932,7 +934,7 @@ qsizetype&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></t
 <p>Bounding rectangle. </p>
 <p>This is a QGeoRectangle that contains the route. The rectangle might be invalid, for instance if the route is empty. </p>
 
-<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00090">90</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00091">91</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
 
 </div>
 </div>
@@ -959,7 +961,7 @@ qsizetype&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></t
 <p>List of coordinates for the waypoints. </p>
 <p>This property holds a list of coordinates of the waypoints, suitable for drawing the flight path on a QML map. </p>
 
-<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00097">97</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00098">98</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
 
 </div>
 </div>
@@ -986,7 +988,7 @@ qsizetype&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></t
 <p>List of legs. </p>
 <p>This property returns a list of all legs in the route. </p>
 
-<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00110">110</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00111">111</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
 
 </div>
 </div>
@@ -1013,7 +1015,7 @@ qsizetype&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></t
 <p>List of waypoints in the flight route that are not airfields. </p>
 <p>This property lists all the waypoints in the route that are not airfields, navaids, reporting points, etc. </p>
 
-<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00104">104</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00105">105</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
 
 </div>
 </div>
@@ -1041,7 +1043,7 @@ qsizetype&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></t
 <p>This is a string of the form "48 nm · 0:28 h · 1,9 gal", potentially with HTML complaints if wind or aircraft data was missing.</p>
 <p>The summary is computed for the aircraft and wind that are presently set in the global <a class="el" href="classNavigation_1_1Navigator.html" title="Main hub for navigation data.">Navigator</a> class. </p>
 
-<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00123">123</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00124">124</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
 
 </div>
 </div>
@@ -1068,7 +1070,7 @@ qsizetype&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></t
 <p>List of waypoints in the flight route that are not airfields. </p>
 <p>This property lists all the waypoints in the route that are not airfields, navaids, reporting points, etc. </p>
 
-<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00130">130</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FlightRoute_8h_source.html#l00131">131</a> of file <a class="el" href="FlightRoute_8h_source.html">FlightRoute.h</a>.</p>
 
 </div>
 </div>

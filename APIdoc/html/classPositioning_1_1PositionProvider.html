@@ -84,6 +84,10 @@ Inheritance diagram for Positioning::PositionProvider:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="signals" name="signals"></a>
 Signals</h2></td></tr>
+<tr class="memitem:a686d0716a59858261b5c055768658f8e" id="r_a686d0716a59858261b5c055768658f8e"><td class="memItemLeft" align="right" valign="top"><a id="a686d0716a59858261b5c055768658f8e" name="a686d0716a59858261b5c055768658f8e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>approximateLastValidCoordinateChanged</b> ()</td></tr>
+<tr class="memdesc:a686d0716a59858261b5c055768658f8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
+<tr class="separator:a686d0716a59858261b5c055768658f8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20bd03348bbc26672070dc7289796713" id="r_a20bd03348bbc26672070dc7289796713"><td class="memItemLeft" align="right" valign="top"><a id="a20bd03348bbc26672070dc7289796713" name="a20bd03348bbc26672070dc7289796713"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>lastValidTTChanged</b> (<a class="el" href="classUnits_1_1Angle.html">Units::Angle</a>)</td></tr>
 <tr class="memdesc:a20bd03348bbc26672070dc7289796713"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
@@ -119,6 +123,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0bbbee546e3454b183f431020e0d0a65" id="r_a0bbbee546e3454b183f431020e0d0a65"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0bbbee546e3454b183f431020e0d0a65">PositionProvider</a> (QObject *parent=nullptr)</td></tr>
 <tr class="memdesc:a0bbbee546e3454b183f431020e0d0a65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard constructor.  <br /></td></tr>
 <tr class="separator:a0bbbee546e3454b183f431020e0d0a65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8a0e534fe4796759450667696412b2f" id="r_aa8a0e534fe4796759450667696412b2f"><td class="memItemLeft" align="right" valign="top"><a id="aa8a0e534fe4796759450667696412b2f" name="aa8a0e534fe4796759450667696412b2f"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>~PositionProvider</b> () override=default</td></tr>
+<tr class="memdesc:aa8a0e534fe4796759450667696412b2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard destructor. <br /></td></tr>
+<tr class="separator:aa8a0e534fe4796759450667696412b2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74012dc06ffe3c2bf4a8b7a89d830e67" id="r_a74012dc06ffe3c2bf4a8b7a89d830e67"><td class="memItemLeft" align="right" valign="top">Q_REQUIRED_RESULT QGeoCoordinate&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a74012dc06ffe3c2bf4a8b7a89d830e67">approximateLastValidCoordinate</a> () const</td></tr>
+<tr class="memdesc:a74012dc06ffe3c2bf4a8b7a89d830e67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
+<tr class="separator:a74012dc06ffe3c2bf4a8b7a89d830e67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3edcc87d04847b13ee547fd0fb16db4" id="r_ad3edcc87d04847b13ee547fd0fb16db4"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad3edcc87d04847b13ee547fd0fb16db4">startUpdates</a> ()</td></tr>
 <tr class="memdesc:ad3edcc87d04847b13ee547fd0fb16db4"><td class="mdescLeft">&#160;</td><td class="mdescRight">startUpdates  <br /></td></tr>
 <tr class="separator:ad3edcc87d04847b13ee547fd0fb16db4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -144,15 +155,18 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a7e3939fa148c69ed23335319e3a06098" id="r_a7e3939fa148c69ed23335319e3a06098"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7e3939fa148c69ed23335319e3a06098">lastValidCoordinate</a> () -&gt; QGeoCoordinate</td></tr>
-<tr class="memdesc:a7e3939fa148c69ed23335319e3a06098"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
-<tr class="separator:a7e3939fa148c69ed23335319e3a06098"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade14098867461e94c1fe700126577209" id="r_ade14098867461e94c1fe700126577209"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ade14098867461e94c1fe700126577209">lastValidTT</a> () -&gt; <a class="el" href="classUnits_1_1Angle.html">Units::Angle</a></td></tr>
-<tr class="memdesc:ade14098867461e94c1fe700126577209"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
-<tr class="separator:ade14098867461e94c1fe700126577209"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c139a25c7e3bd583ac72e117ff9753f" id="r_a6c139a25c7e3bd583ac72e117ff9753f"><td class="memItemLeft" align="right" valign="top">static QGeoCoordinate&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6c139a25c7e3bd583ac72e117ff9753f">lastValidCoordinate</a> ()</td></tr>
+<tr class="memdesc:a6c139a25c7e3bd583ac72e117ff9753f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
+<tr class="separator:a6c139a25c7e3bd583ac72e117ff9753f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa902bd859d4ac8e9af45828f1ab5b948" id="r_aa902bd859d4ac8e9af45828f1ab5b948"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classUnits_1_1Angle.html">Units::Angle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa902bd859d4ac8e9af45828f1ab5b948">lastValidTT</a> ()</td></tr>
+<tr class="memdesc:aa902bd859d4ac8e9af45828f1ab5b948"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
+<tr class="separator:aa902bd859d4ac8e9af45828f1ab5b948"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
+<tr class="memitem:a9425c977fb42e73308592a705f8e3582" id="r_a9425c977fb42e73308592a705f8e3582"><td class="memItemLeft" align="right" valign="top">QGeoCoordinate&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9425c977fb42e73308592a705f8e3582">approximateLastValidCoordinate</a></td></tr>
+<tr class="memdesc:a9425c977fb42e73308592a705f8e3582"><td class="mdescLeft">&#160;</td><td class="mdescRight">Approximate last valid coordinate.  <br /></td></tr>
+<tr class="separator:a9425c977fb42e73308592a705f8e3582"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78215c078c1adea9698b7aed7a88a6cb" id="r_a78215c078c1adea9698b7aed7a88a6cb"><td class="memItemLeft" align="right" valign="top">QGeoCoordinate&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a78215c078c1adea9698b7aed7a88a6cb">lastValidCoordinate</a></td></tr>
 <tr class="memdesc:a78215c078c1adea9698b7aed7a88a6cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Last valid coordinate reading.  <br /></td></tr>
 <tr class="separator:a78215c078c1adea9698b7aed7a88a6cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -183,7 +197,7 @@ Properties</h2></td></tr>
 <p>Data from the standard operating system data source (typically: satnav or wifi) is only provided after <a class="el" href="#ad3edcc87d04847b13ee547fd0fb16db4" title="startUpdates">startUpdates()</a> has been called.</p>
 <p>The methods in this class are reentrant, but not thread safe. </p>
 
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00048">48</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00049">49</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a0bbbee546e3454b183f431020e0d0a65" name="a0bbbee546e3454b183f431020e0d0a65"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0bbbee546e3454b183f431020e0d0a65">&#9670;&#160;</a></span>PositionProvider()</h2>
@@ -219,8 +233,8 @@ Properties</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a7e3939fa148c69ed23335319e3a06098" name="a7e3939fa148c69ed23335319e3a06098"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7e3939fa148c69ed23335319e3a06098">&#9670;&#160;</a></span>lastValidCoordinate()</h2>
+<a id="a74012dc06ffe3c2bf4a8b7a89d830e67" name="a74012dc06ffe3c2bf4a8b7a89d830e67"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a74012dc06ffe3c2bf4a8b7a89d830e67">&#9670;&#160;</a></span>approximateLastValidCoordinate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -229,10 +243,40 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static auto Positioning::PositionProvider::lastValidCoordinate </td>
+          <td class="memname">Q_REQUIRED_RESULT QGeoCoordinate Positioning::PositionProvider::approximateLastValidCoordinate </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> -&gt;  QGeoCoordinate</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter function for the property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property approximateLastValidCoordinate </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00119">119</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
+
+</div>
+</div>
+<a id="a6c139a25c7e3bd583ac72e117ff9753f" name="a6c139a25c7e3bd583ac72e117ff9753f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c139a25c7e3bd583ac72e117ff9753f">&#9670;&#160;</a></span>lastValidCoordinate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static QGeoCoordinate Positioning::PositionProvider::lastValidCoordinate </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
         </tr>
       </table>
   </td>
@@ -247,8 +291,8 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="ade14098867461e94c1fe700126577209" name="ade14098867461e94c1fe700126577209"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ade14098867461e94c1fe700126577209">&#9670;&#160;</a></span>lastValidTT()</h2>
+<a id="aa902bd859d4ac8e9af45828f1ab5b948" name="aa902bd859d4ac8e9af45828f1ab5b948"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa902bd859d4ac8e9af45828f1ab5b948">&#9670;&#160;</a></span>lastValidTT()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -257,10 +301,10 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static auto Positioning::PositionProvider::lastValidTT </td>
+          <td class="memname">static <a class="el" href="classUnits_1_1Angle.html">Units::Angle</a> Positioning::PositionProvider::lastValidTT </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> -&gt;  <a class="el" href="classUnits_1_1Angle.html">Units::Angle</a></td>
+          <td></td>
         </tr>
       </table>
   </td>
@@ -301,11 +345,38 @@ Properties</h2></td></tr>
 <p>startUpdates </p>
 <p>Requests permissions if necessary and starts to provide data from the standard operating system data source (typically SatNav or WiFi) if permissions were granted. </p>
 
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00111">111</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00145">145</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
+<a id="a9425c977fb42e73308592a705f8e3582" name="a9425c977fb42e73308592a705f8e3582"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9425c977fb42e73308592a705f8e3582">&#9670;&#160;</a></span>approximateLastValidCoordinate</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QGeoCoordinate Positioning::PositionProvider::approximateLastValidCoordinate</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">read</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Approximate last valid coordinate. </p>
+<p>This property equals lastValidCoordinate, except that it is updated only every ten minutes. </p>
+
+<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00091">91</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
+
+</div>
+</div>
 <a id="a78215c078c1adea9698b7aed7a88a6cb" name="a78215c078c1adea9698b7aed7a88a6cb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a78215c078c1adea9698b7aed7a88a6cb">&#9670;&#160;</a></span>lastValidCoordinate</h2>
 
@@ -329,7 +400,7 @@ Properties</h2></td></tr>
 <p>Last valid coordinate reading. </p>
 <p>This property holds the last valid coordinate known. At the first start, this property is set to the location Freiburg Airport, EDTF. The value is stored in a QSetting at destruction, and restored in the construction. </p>
 
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00083">83</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00100">100</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
 
 </div>
 </div>
@@ -356,7 +427,7 @@ Properties</h2></td></tr>
 <p>Last valid true track. </p>
 <p>This property holds the last valid true track known. At the first start, this property is set to 0°. The value is stored in a QSetting at destruction, and restored in the construction. </p>
 
-<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00097">97</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PositionProvider_8h_source.html#l00108">108</a> of file <a class="el" href="PositionProvider_8h_source.html">PositionProvider.h</a>.</p>
 
 </div>
 </div>

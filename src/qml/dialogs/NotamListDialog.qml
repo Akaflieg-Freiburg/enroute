@@ -47,7 +47,7 @@ CenteringDialog {
             width: parent ? parent.width : undefined
 
             required property var model
-            property bool read: NotamProvider.isRead(delItem.model.modelData.number)
+            property bool read: NOTAMProvider.isRead(delItem.model.modelData.number)
 
             contentItem: Label {
                 id: lbl
@@ -96,7 +96,7 @@ CenteringDialog {
 
             onClicked: {
                 read = !read
-                NotamProvider.setRead(delItem.model.modelData.number, read)
+                NOTAMProvider.setRead(delItem.model.modelData.number, read)
                 if (read)
                     seqA.start()
             }

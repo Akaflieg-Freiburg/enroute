@@ -48,6 +48,9 @@ public:
      */
     explicit PositionInfoSource_Satellite(QObject *parent = nullptr);
 
+    // Default desctructor
+    ~PositionInfoSource_Satellite() override = default;
+
     /*! \brief startUpdates
      *
      *  Requests permissions if necessary and starts to provide data

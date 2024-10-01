@@ -37,72 +37,89 @@ namespace Ui {
 
 class ScaleQuickItem : public QQuickPaintedItem
 {
-  Q_OBJECT
-  QML_NAMED_ELEMENT(Scale)
+    Q_OBJECT
+    QML_NAMED_ELEMENT(Scale)
 
 public:
-  /*! \brief Standard constructor
-   *
-   *  @param parent The standard QObject parent pointer
-   */
-  explicit ScaleQuickItem(QQuickItem *parent = nullptr);
+    /*! \brief Standard constructor
+     *
+     *  @param parent The standard QObject parent pointer
+     */
+    explicit ScaleQuickItem(QQuickItem *parent = nullptr);
 
-  /*! \brief Number of pixel that represent a distance of 10km on the map */
-  Q_PROPERTY(qreal pixelPer10km READ pixelPer10km WRITE setPixelPer10km NOTIFY pixelPer10kmChanged)
+    // Default destructor
+    ~ScaleQuickItem() override = default;
 
-  /*! \brief Getter function for the property with the same name
+    /*! \brief Foreground color */
+    Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged REQUIRED)
 
-    @returns Property pixelPer10km
-  */
-  [[nodiscard]] auto pixelPer10km() const -> qreal {return _pixelPer10km;}
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property pixelPer10km
+     */
+    [[nodiscard]] QColor color() const {return m_color;}
 
-  /*! \brief Setter function for the property with the same name
+    /*! \brief Setter function for the property with the same name
+     *
+     *  @param _color Property color
+     */
+    void setColor(QColor _color);
 
-    @param _pxp10k  Property pixelPer10km
-  */
-  void setPixelPer10km(qreal _pxp10k);
+    /*! \brief Number of pixel that represent a distance of 10km on the map */
+    Q_PROPERTY(qreal pixelPer10km READ pixelPer10km WRITE setPixelPer10km NOTIFY pixelPer10kmChanged)
 
-  /*! \brief Determines whether the scale should use km or nm */
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property pixelPer10km
+     */
+    [[nodiscard]] auto pixelPer10km() const -> qreal {return m_pixelPer10km;}
 
-  /*! \brief Re-implemented from QQuickPaintedItem to implement painting
-   *
-   *  @param painter Pointer to the QPainter used for painting
-   */
-  void paint(QPainter *painter) override;
+    /*! \brief Setter function for the property with the same name
+     *
+     *  @param _pxp10k  Property pixelPer10km
+     */
+    void setPixelPer10km(qreal _pxp10k);
 
-  /*! \brief Determines whether the scale should be drawn vertically or horizontally
-   *
-   *  This property defaults to 'false'.
-   */
-  Q_PROPERTY(bool vertical READ vertical WRITE setVertical NOTIFY verticalChanged)
+    /*! \brief Re-implemented from QQuickPaintedItem to implement painting
+     *
+     *  @param painter Pointer to the QPainter used for painting
+     */
+    void paint(QPainter* painter) override;
 
-  /*! \brief Getter function for the property with the same name
-   *
-   *  @returns Property vertical
-   */
-  [[nodiscard]] auto vertical() const -> bool {return _vertical;}
+    /*! \brief Determines whether the scale should be drawn vertically or horizontally
+     *
+     *  This property defaults to 'false'.
+     */
+    Q_PROPERTY(bool vertical READ vertical WRITE setVertical NOTIFY verticalChanged)
 
-  /*! \brief Setter function for the property with the same name
-   *
-   *  @param newVertical Property vertical
-   */
-  void setVertical(bool newVertical);
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property vertical
+     */
+    [[nodiscard]] auto vertical() const -> bool {return m_vertical;}
+
+    /*! \brief Setter function for the property with the same name
+     *
+     *  @param newVertical Property vertical
+     */
+    void setVertical(bool newVertical);
 
 signals:
-  /*! \brief Notification signal for property with the same name */
-  void pixelPer10kmChanged();
+    /*! \brief Notification signal for property with the same name */
+    void colorChanged();
 
-  /*! \brief Notification signal for property with the same name */
-  void useMetricUnitsChanged();
+    /*! \brief Notification signal for property with the same name */
+    void pixelPer10kmChanged();
 
-  /*! \brief Notification signal for property with the same name */
-  void verticalChanged();
+    /*! \brief Notification signal for property with the same name */
+    void verticalChanged();
 
 private:
-  Q_DISABLE_COPY_MOVE(ScaleQuickItem)
+    Q_DISABLE_COPY_MOVE(ScaleQuickItem)
 
-  qreal _pixelPer10km {0.0};
-  bool _vertical {false};
+    qreal m_pixelPer10km {0.0};
+    bool m_vertical {false};
+    QColor m_color {Qt::black};
 };
 
 } // namespace Ui

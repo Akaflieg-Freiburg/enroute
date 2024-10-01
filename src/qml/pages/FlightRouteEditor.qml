@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -699,8 +699,126 @@ Page {
         }
     }
 
-    FlightRouteAddWPDialog {
+    CenteringDialog {
         id: flightRouteAddWPDialog
+
+        title: qsTr("Add Waypoint to Route")
+        modal: true
+
+        standardButtons: DialogButtonBox.Cancel
+
+        Component {
+            id: waypointDelegate
+
+            WordWrappingItemDelegate {
+                text: model.modelData.twoLineTitle
+                icon.source: model.modelData.icon
+
+                width: wpList.width
+
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    Navigator.flightRoute.append(model.modelData)
+                    flightRouteAddWPDialog.close()
+                }
+            }
+
+        }
+
+        ColumnLayout {
+            anchors.fill: parent
+
+            Label {
+                Layout.fillWidth: true
+
+                text: qsTr("Choose a waypoint from the list below or <a href='xx'>enter coordinates manually</a>.")
+                wrapMode: Text.Wrap
+                textFormat: Text.StyledText
+                visible: textInput.displayText === ""
+                onLinkActivated: {
+                    PlatformAdaptor.vibrateBrief()
+                    flightRouteAddWPDialog.close()
+                    addbyCoordinates.open()
+                }
+            }
+
+            Item {
+                Layout.preferredHeight: textInput.font.pixelSize
+                visible: textInput.displayText === ""
+            }
+
+            MyTextField {
+                id: textInput
+
+                Layout.fillWidth: true
+
+                placeholderText: qsTr("Filter by Name")
+
+                focus: true
+
+                onAccepted: {
+                    if (wpList.model.length > 0) {
+                        PlatformAdaptor.vibrateBrief()
+                        Navigator.flightRoute.append(wpList.model[0])
+                        close()
+                    }
+                }
+
+                // On iOS17, the property displayText sees many bounces.
+                onDisplayTextChanged: debounceTimer.restart()
+            }
+
+            Label {
+                Layout.fillWidth: true
+                Layout.topMargin: font.pixelSize
+
+                text: qsTr("<h3>Sorry!</h3><p>No waypoints match your filter.</p>")
+                wrapMode: Text.Wrap
+                textFormat: Text.StyledText
+                horizontalAlignment: Text.AlignHCenter
+
+                visible: wpList.model.length === 0
+            }
+
+            DecoratedListView {
+                id: wpList
+
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                Layout.preferredHeight: contentHeight
+
+                clip: true
+
+                // Debounce timer to update the property model only 200ms after the last change of textInput.displayText
+                Timer {
+                    id: debounceTimer
+                    interval: 200 // 200ms
+                    onTriggered: wpList.model = GeoMapProvider.filteredWaypoints(textInput.displayText)
+                }
+
+                model: GeoMapProvider.filteredWaypoints(textInput.displayText)
+                delegate: waypointDelegate
+                ScrollIndicator.vertical: ScrollIndicator {}
+
+                Label {
+                    anchors.fill: wpList
+                    anchors.topMargin: font.pixelSize*2
+
+                    visible: (wpList.count === 0)
+                    horizontalAlignment: Text.AlignHCenter
+                    textFormat: Text.StyledText
+                    wrapMode: Text.Wrap
+                    text: (textInput.text === "")
+                          ? qsTr("<h3>Sorry!</h3><p>No waypoints available. Please make sure that an aviation map is installed.</p>")
+                          : qsTr("<h3>Sorry!</h3><p>No waypoints match your filter criteria.</p>")
+                    onLinkActivated: Qt.openUrlExternally(link)
+                }
+
+            }
+
+        }
+
+        onOpened: textInput.clear()
 
         Connections {
             target: DemoRunner
@@ -708,6 +826,24 @@ Page {
             function onRequestOpenFlightRouteAddWPDialog() {
                 flightRouteAddWPDialog.open()
             }
+        }
+
+    }
+
+    WaypointEditor {
+        id: addbyCoordinates
+
+        title: qsTr("Add Waypoint to Route")
+        modal: true
+
+        onAccepted: {
+            PlatformAdaptor.vibrateBrief()
+            let newWP = waypoint.copy()
+            newWP.name = newName
+            newWP.notes = newNotes
+            newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
+            Navigator.flightRoute.append(newWP)
+            addbyCoordinates.close()
         }
 
     }

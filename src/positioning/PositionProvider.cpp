@@ -31,11 +31,11 @@
 Positioning::PositionProvider::PositionProvider(QObject *parent) : PositionInfoSource_Abstract(parent)
 {
     // Restore the last valid coordiante and track
-    QSettings settings;
+    QSettings const settings;
     QGeoCoordinate tmp;
-    tmp.setLatitude(settings.value(QStringLiteral("PositionProvider/lastValidLatitude"), m_lastValidCoordinate.latitude()).toDouble());
-    tmp.setLongitude(settings.value(QStringLiteral("PositionProvider/lastValidLongitude"), m_lastValidCoordinate.longitude()).toDouble());
-    tmp.setAltitude(settings.value(QStringLiteral("PositionProvider/lastValidAltitude"), m_lastValidCoordinate.altitude()).toDouble());
+    tmp.setLatitude(settings.value(QStringLiteral("PositionProvider/lastValidLatitude"), m_lastValidCoordinate.value().latitude()).toDouble());
+    tmp.setLongitude(settings.value(QStringLiteral("PositionProvider/lastValidLongitude"), m_lastValidCoordinate.value().longitude()).toDouble());
+    tmp.setAltitude(settings.value(QStringLiteral("PositionProvider/lastValidAltitude"), m_lastValidCoordinate.value().altitude()).toDouble());
     if ((tmp.type() == QGeoCoordinate::Coordinate2D) || (tmp.type() == QGeoCoordinate::Coordinate3D)) {
         m_lastValidCoordinate = tmp;
     }
@@ -62,16 +62,23 @@ Positioning::PositionProvider::PositionProvider(QObject *parent) : PositionInfoS
 
     // Update properties
     updateStatusString();
+    m_approximateLastValidCoordinate = m_lastValidCoordinate.value();
+    connect(this, &Positioning::PositionProvider::lastValidCoordinateChanged, this, [this]() {
+        if (m_approximateLastValidCoordinate.value().isValid()
+            && (m_approximateLastValidCoordinate.value().distanceTo(m_lastValidCoordinate) < 10000))
+        {
+            return;
+        }
+        m_approximateLastValidCoordinate = m_lastValidCoordinate.value();
+    });
 }
 
 
 
 void Positioning::PositionProvider::deferredInitialization() const
 {
-
     connect(GlobalObject::trafficDataProvider(), &Traffic::TrafficDataProvider::positionInfoChanged, this, &PositionProvider::onPositionUpdated);
     connect(GlobalObject::trafficDataProvider(), &Traffic::TrafficDataProvider::pressureAltitudeChanged, this, &PositionProvider::onPressureAltitudeUpdated);
-
 }
 
 
@@ -189,9 +196,9 @@ void Positioning::PositionProvider::savePositionAndTrack()
 {
     // Save the last valid coordinate
     QSettings settings;
-    settings.setValue(QStringLiteral("PositionProvider/lastValidLatitude"), m_lastValidCoordinate.latitude());
-    settings.setValue(QStringLiteral("PositionProvider/lastValidLongitude"), m_lastValidCoordinate.longitude());
-    settings.setValue(QStringLiteral("PositionProvider/lastValidAltitude"), m_lastValidCoordinate.altitude());
+    settings.setValue(QStringLiteral("PositionProvider/lastValidLatitude"), m_lastValidCoordinate.value().latitude());
+    settings.setValue(QStringLiteral("PositionProvider/lastValidLongitude"), m_lastValidCoordinate.value().longitude());
+    settings.setValue(QStringLiteral("PositionProvider/lastValidAltitude"), m_lastValidCoordinate.value().altitude());
 
     // Save the last valid track
     settings.setValue(QStringLiteral("PositionProvider/lastValidTrack"), m_lastValidTT.toDEG());
@@ -230,7 +237,7 @@ auto Positioning::PositionProvider::lastValidCoordinate() -> QGeoCoordinate
     if (positionProvider == nullptr) {
         return {};
     }
-    return positionProvider->m_lastValidCoordinate;
+    return positionProvider->m_lastValidCoordinate.value();
 }
 
 

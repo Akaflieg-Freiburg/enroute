@@ -459,7 +459,7 @@ protected:
     // "dispatchUpdateDescription", which whose address is already known to the constructor.
     virtual void updateDescription();
     void dispatchUpdateDescription();
-    QString m_description {};
+    QString m_description;
 
 private:
     Q_DISABLE_COPY_MOVE(TrafficFactor_Abstract)
@@ -469,8 +469,8 @@ private:
     //
     int m_alarmLevel {0};
     bool m_animate {false};
-    QString m_callSign {};
-    QString m_color {QStringLiteral("red")};
+    QString m_callSign;
+    QString m_color{QStringLiteral("red")};
     Units::Distance m_hDist;
     QString m_ID;
     AircraftType m_type {AircraftType::unknown};

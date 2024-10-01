@@ -29,7 +29,7 @@ Rectangle {
     
     color: "#AA000000"
 
-    height: trueAltitude.implicitHeight + SafeInsets.bottom
+    implicitHeight: trueAltitude.implicitHeight + SafeInsets.bottom
     
     // Dummy control. Used to glean the font size.
     Control {

@@ -22,10 +22,8 @@
 
 #include <QObject>
 #include <QQmlEngine>
-#include <QObject>
 
 #include "units/Timespan.h"
-
 
 namespace Notifications {
 

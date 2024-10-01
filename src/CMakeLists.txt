@@ -69,9 +69,9 @@ set(SOURCES
     navigation/Leg.h
     navigation/Navigator.h
     navigation/RemainingRouteInfo.h
-    notam/Notam.h
-    notam/NotamList.h
-    notam/NotamProvider.h
+    notam/NOTAM.h
+    notam/NOTAMList.h
+    notam/NOTAMProvider.h
     notification/Notification.h
     notification/Notification_DataUpdateAvailable.h
     notification/NotificationManager.h
@@ -163,9 +163,9 @@ set(SOURCES
     navigation/Leg.cpp
     navigation/Navigator.cpp
     navigation/RemainingRouteInfo.cpp
-    notam/Notam.cpp
-    notam/NotamList.cpp
-    notam/NotamProvider.cpp
+    notam/NOTAM.cpp
+    notam/NOTAMList.cpp
+    notam/NOTAMProvider.cpp
     notification/Notification.cpp
     notification/Notification_DataUpdateAvailable.cpp
     notification/NotificationManager.cpp
@@ -538,7 +538,6 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/dialogs/AircraftSaveDialog.qml
     qml/dialogs/ErrorDialog.qml
     qml/dialogs/FirstRunDialog.qml
-    qml/dialogs/FlightRouteAddWPDialog.qml
     qml/dialogs/FlightRouteSaveDialog.qml
     qml/dialogs/LongTextDialogMD.qml
     qml/dialogs/NotamListDialog.qml

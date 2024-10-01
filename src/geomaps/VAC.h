@@ -197,22 +197,22 @@ public:
     //
 
     /*! \brief Member variable for property of the same name */
-    QGeoCoordinate bottomLeft {};
+    QGeoCoordinate bottomLeft;
 
     /*! \brief Member variable for property of the same name */
-    QGeoCoordinate bottomRight {};
+    QGeoCoordinate bottomRight;
 
     /*! \brief Member variable for property of the same name */
-    QString fileName {};
+    QString fileName;
 
     /*! \brief Member variable for property of the same name */
-    QString name {};
+    QString name;
 
     /*! \brief Member variable for property of the same name */
-    QGeoCoordinate topLeft {};
+    QGeoCoordinate topLeft;
 
     /*! \brief Member variable for property of the same name */
-    QGeoCoordinate topRight {};
+    QGeoCoordinate topRight;
 
 private:
     // Obtain values for topLeft etc by looking at the file name

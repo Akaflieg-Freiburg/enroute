@@ -50,7 +50,7 @@ Weather::WeatherDataProvider::WeatherDataProvider(QObject *parent) : QObject(par
     // Connect the timer to the update method. This will set backgroundUpdate to the default value,
     // which is true. So these updates happen in the background.
     // Schedule the first update in 1 seconds from now
-    connect(&_updateTimer, &QTimer::timeout, this, [=, this](){ this->update(); });
+    connect(&_updateTimer, &QTimer::timeout, this, [this]() { this->update(); });
     _updateTimer.setInterval(updateIntervalNormal_ms);
     _updateTimer.start();
 
@@ -631,12 +631,13 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate)
     bBox.setWidth( bBox.width() + 2.0/factor );
 
     {
-        QString urlString = u"https://enroute-data.akaflieg-freiburg.de/enrouteProxy/metar.php?format=xml&bbox=%1,%2,%3,%4"_qs
-                                .arg(bBox.bottomLeft().latitude())
-                                .arg(bBox.bottomLeft().longitude())
-                                .arg(bBox.topRight().latitude())
-                                .arg(bBox.topRight().longitude());
-        QUrl url = QUrl(urlString);
+        QString const urlString
+            = u"https://enroute-data.akaflieg-freiburg.de/enrouteProxy/metar.php?format=xml&bbox=%1,%2,%3,%4"_qs
+                  .arg(bBox.bottomLeft().latitude())
+                  .arg(bBox.bottomLeft().longitude())
+                  .arg(bBox.topRight().latitude())
+                  .arg(bBox.topRight().longitude());
+        QUrl const url = QUrl(urlString);
         QNetworkRequest request(url);
         request.setRawHeader("accept", "application/xml");
         QPointer<QNetworkReply> const reply = GlobalObject::networkAccessManager()->get(request);
@@ -646,12 +647,13 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate)
     }
 
     {
-        QString urlString = u"https://enroute-data.akaflieg-freiburg.de/enrouteProxy/taf.php?format=xml&bbox=%1,%2,%3,%4"_qs
-                                .arg(bBox.bottomLeft().latitude())
-                                .arg(bBox.bottomLeft().longitude())
-                                .arg(bBox.topRight().latitude())
-                                .arg(bBox.topRight().longitude());
-        QUrl url = QUrl(urlString);
+        QString const urlString
+            = u"https://enroute-data.akaflieg-freiburg.de/enrouteProxy/taf.php?format=xml&bbox=%1,%2,%3,%4"_qs
+                  .arg(bBox.bottomLeft().latitude())
+                  .arg(bBox.bottomLeft().longitude())
+                  .arg(bBox.topRight().latitude())
+                  .arg(bBox.topRight().longitude());
+        QUrl const url = QUrl(urlString);
         QNetworkRequest request(url);
         request.setRawHeader("accept", "application/xml");
         QPointer<QNetworkReply> const reply = GlobalObject::networkAccessManager()->get(request);

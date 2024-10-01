@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QBindable>
 #include <QQmlEngine>
 
 #include "GlobalObject.h"
@@ -67,11 +68,27 @@ public:
     // No default constructor, important for QML singleton
     explicit PositionProvider() = delete;
 
+    /*! \brief Standard destructor */
+    ~PositionProvider() override = default;
+
+
     // factory function for QML singleton
     static Positioning::PositionProvider* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
     {
         return GlobalObject::positionProvider();
     }
+
+
+    //
+    // PROPERTIES
+    //
+
+    /*! \brief Approximate last valid coordinate
+     *
+     *  This property equals lastValidCoordinate, except that it is updated only every ten
+     *  minutes.
+     */
+    Q_PROPERTY(QGeoCoordinate approximateLastValidCoordinate READ approximateLastValidCoordinate BINDABLE bindableApproximateLastValidCoordinate)
 
     /*! \brief Last valid coordinate reading
      *
@@ -82,12 +99,6 @@ public:
      */
     Q_PROPERTY(QGeoCoordinate lastValidCoordinate READ lastValidCoordinate NOTIFY lastValidCoordinateChanged)
 
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property lastValidCoordinate
-     */
-    static auto lastValidCoordinate() -> QGeoCoordinate;
-
     /*! \brief Last valid true track
      *
      *  This property holds the last valid true track known.  At the first
@@ -96,11 +107,34 @@ public:
      */
     Q_PROPERTY(Units::Angle lastValidTT READ lastValidTT NOTIFY lastValidTTChanged)
 
+
+    //
+    // Getter Methods
+    //
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property approximateLastValidCoordinate
+     */
+    Q_REQUIRED_RESULT QGeoCoordinate approximateLastValidCoordinate() const {return {m_approximateLastValidCoordinate};}
+    Q_REQUIRED_RESULT QBindable<QGeoCoordinate> bindableApproximateLastValidCoordinate() const {return &m_approximateLastValidCoordinate;}
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property lastValidCoordinate
+     */
+    static QGeoCoordinate lastValidCoordinate();
+
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property lastValidTrack
      */
-    static auto lastValidTT() -> Units::Angle;
+    static Units::Angle lastValidTT();
+
+
+    //
+    // Methods
+    //
 
     /*! \brief startUpdates
      *
@@ -111,6 +145,9 @@ public:
     Q_INVOKABLE void startUpdates() { satelliteSource.startUpdates(); }
 
 signals:
+    /*! \brief Notifier signal */
+    void approximateLastValidCoordinateChanged();
+
     /*! \brief Notifier signal */
     void lastValidTTChanged(Units::Angle);
 
@@ -155,7 +192,8 @@ private:
 
     PositionInfoSource_Satellite satelliteSource;
 
-    QGeoCoordinate m_lastValidCoordinate {EDTF_lat, EDTF_lon, EDTF_ele};
+    Q_OBJECT_BINDABLE_PROPERTY(PositionProvider, QGeoCoordinate, m_approximateLastValidCoordinate, &Positioning::PositionProvider::approximateLastValidCoordinateChanged)
+    QProperty<QGeoCoordinate> m_lastValidCoordinate {QGeoCoordinate(EDTF_lat, EDTF_lon, EDTF_ele)};
     Units::Angle m_lastValidTT {};
 };
 

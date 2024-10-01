@@ -23,8 +23,8 @@
 
 #include "GlobalObject.h"
 #include "GlobalSettings.h"
-#include "notam/Notam.h"
-#include "notam/NotamProvider.h"
+#include "notam/NOTAM.h"
+#include "notam/NOTAMProvider.h"
 
 
 // Static objects
@@ -110,7 +110,7 @@ Q_GLOBAL_STATIC(ContractionList,
 // Constructor/Destructor
 //
 
-NOTAM::Notam::Notam(const QJsonObject& jsonObject)
+NOTAM::NOTAM::NOTAM(const QJsonObject& jsonObject)
 {
     auto notamObject = jsonObject[u"properties"_qs][u"coreNOTAMData"_qs][u"notam"_qs].toObject();
 
@@ -142,7 +142,7 @@ NOTAM::Notam::Notam(const QJsonObject& jsonObject)
 // Getter Methods
 //
 
-QString NOTAM::Notam::cancels() const
+QString NOTAM::NOTAM::cancels() const
 {
     if (!m_text.contains(*cancelNotamStart))
     {
@@ -152,7 +152,7 @@ QString NOTAM::Notam::cancels() const
 }
 
 
-QJsonObject NOTAM::Notam::GeoJSON() const
+QJsonObject NOTAM::NOTAM::GeoJSON() const
 {
     QMap<QString, QVariant> m_properties;
     m_properties[u"CAT"_qs] = u"NOTAM"_qs;
@@ -173,7 +173,7 @@ QJsonObject NOTAM::Notam::GeoJSON() const
 }
 
 
-bool NOTAM::Notam::isValid() const
+bool NOTAM::NOTAM::isValid() const
 {
     if (!m_coordinate.isValid())
     {
@@ -196,7 +196,7 @@ bool NOTAM::Notam::isValid() const
 // Methods
 //
 
-QString NOTAM::Notam::richText() const
+QString NOTAM::NOTAM::richText() const
 {
     QStringList result;
 
@@ -278,33 +278,38 @@ QString NOTAM::Notam::richText() const
 }
 
 
-QString NOTAM::Notam::sectionTitle() const
+void NOTAM::NOTAM::updateSectionTitle()
 {
     if (GlobalObject::notamProvider()->isRead(m_number))
     {
-        return u"Marked as read"_qs;
+        m_sectionTitle = u"Marked as read"_qs;
+        return;
     }
 
     if (m_effectiveStart.isValid())
     {
         if (m_effectiveStart < QDateTime::currentDateTimeUtc())
         {
-            return u"Current"_qs;
+            m_sectionTitle = u"Current"_qs;
+            return;
         }
         if (m_effectiveStart < QDateTime::currentDateTimeUtc().addDays(1))
         {
-            return u"Next 24h"_qs;
+            m_sectionTitle = u"Next 24h"_qs;
+            return;
         }
         if (m_effectiveStart < QDateTime::currentDateTimeUtc().addDays(90))
         {
-            return u"Next 90 days"_qs;
+            m_sectionTitle = u"Next 90 days"_qs;
+            return;
         }
         if (m_effectiveStart < QDateTime::currentDateTimeUtc().addDays(90))
         {
-            return u"> 90 days"_qs;
+            m_sectionTitle = u"> 90 days"_qs;
+            return;
         }
     }
-    return u"NOTAM"_qs;
+    m_sectionTitle = u"NOTAM"_qs;
 }
 
 
@@ -357,7 +362,7 @@ QGeoCoordinate NOTAM::interpretNOTAMCoordinates(const QString& string)
 }
 
 
-QDataStream& NOTAM::operator<<(QDataStream& stream, const NOTAM::Notam& notam)
+QDataStream& NOTAM::operator<<(QDataStream& stream, const NOTAM& notam)
 {
     stream << notam.m_affectedFIR;
     stream << notam.m_coordinate;
@@ -372,6 +377,7 @@ QDataStream& NOTAM::operator<<(QDataStream& stream, const NOTAM::Notam& notam)
     stream << notam.m_radius;
     stream << notam.m_region;
     stream << notam.m_schedule;
+    stream << notam.m_sectionTitle;
     stream << notam.m_text;
     stream << notam.m_traffic;
 
@@ -379,7 +385,7 @@ QDataStream& NOTAM::operator<<(QDataStream& stream, const NOTAM::Notam& notam)
 }
 
 
-QDataStream& NOTAM::operator>>(QDataStream& stream, NOTAM::Notam& notam)
+QDataStream& NOTAM::operator>>(QDataStream& stream, NOTAM& notam)
 {
     stream >> notam.m_affectedFIR;
     stream >> notam.m_coordinate;
@@ -394,6 +400,7 @@ QDataStream& NOTAM::operator>>(QDataStream& stream, NOTAM::Notam& notam)
     stream >> notam.m_radius;
     stream >> notam.m_region;
     stream >> notam.m_schedule;
+    stream >> notam.m_sectionTitle;
     stream >> notam.m_text;
     stream >> notam.m_traffic;
 

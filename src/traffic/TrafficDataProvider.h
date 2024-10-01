@@ -365,7 +365,7 @@ private slots:
 
     // Intializations that are moved out of the constructor, in order to avoid
     // nested uses of constructors in Global.
-    void deferredInitialization();
+    void deferredInitialization() const;
 
     // Sends out foreflight broadcast message See
     // https://www.foreflight.com/connect/spec/
@@ -423,8 +423,8 @@ private:
     // Property cache
     Traffic::Warning m_Warning;
     QTimer m_WarningTimer;
-    QString m_trafficReceiverRuntimeError {};
-    QString m_trafficReceiverSelfTestError {};
+    QString m_trafficReceiverRuntimeError;
+    QString m_trafficReceiverSelfTestError;
 
     // Reconnect
     QTimer reconnectionTimer;

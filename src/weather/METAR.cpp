@@ -279,7 +279,7 @@ auto Weather::METAR::summary() const -> QString {
     }
 
     if (resultList.isEmpty()) {
-        return {};
+        return tr("%1 %2").arg(messageType(), Navigation::Clock::describeTimeDifference(_observationTime));
     }
 
     return tr("%1 %2: %3").arg(messageType(), Navigation::Clock::describeTimeDifference(_observationTime), resultList.join(QStringLiteral(" • ")));

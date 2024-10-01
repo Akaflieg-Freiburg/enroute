@@ -21,15 +21,15 @@
 #include "positioning/Geoid.h"
 #include "positioning/PositionInfoSource_Satellite.h"
 
-
-Positioning::PositionInfoSource_Satellite::PositionInfoSource_Satellite(QObject *parent) : PositionInfoSource_Abstract(parent)
+Positioning::PositionInfoSource_Satellite::PositionInfoSource_Satellite(QObject *parent)
+    : PositionInfoSource_Abstract(parent)
+    , source(QGeoPositionInfoSource::createDefaultSource(this))
 {
-    source = QGeoPositionInfoSource::createDefaultSource(this);
     if (source != nullptr) {
         source->setPreferredPositioningMethods(QGeoPositionInfoSource::AllPositioningMethods);
         source->setUpdateInterval(1000);
 
-        QString sName = source->sourceName();
+        QString const sName = source->sourceName();
         if (sName.isEmpty()) {
             setSourceName( tr("Built-in receiver") );
         } else {

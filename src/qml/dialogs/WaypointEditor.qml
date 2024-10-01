@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -47,15 +47,15 @@ CenteringDialog {
     modal: true
     title: qsTr("Edit Waypoint")
 
-    standardButtons: Dialog.Cancel|Dialog.Ok
-
     onAboutToShow: {
         // This is necessary, because the initial binding "latInput.value: waypoint.coordinate.latitude"
         // breaks as soon as the user edits the coordinates manually.
         latInput.value = waypoint.coordinate.latitude
         longInput.value = waypoint.coordinate.longitude
+        eleField.valueMeter = waypoint.coordinate.altitude
         wpNameField.text = waypoint.extendedName
         wpNotesField.text = waypoint.notes
+        wpNameField.focus = true
     }
 
     DecoratedScrollView {
@@ -89,6 +89,7 @@ CenteringDialog {
                 Layout.minimumWidth: font.pixelSize*5
 
                 text: waypoint.extendedName
+
                 focus: true
             }
 
@@ -212,8 +213,6 @@ CenteringDialog {
                 value: waypoint.coordinate.latitude
                 minValue: -90.0
                 maxValue: 90.0
-
-                onAcceptableInputChanged: enableOk()
             }
 
             Label {
@@ -230,8 +229,6 @@ CenteringDialog {
                 value: waypoint.coordinate.longitude
                 minValue: -180.0
                 maxValue: 180.0
-
-                onAcceptableInputChanged: enableOk()
             }
 
 
@@ -361,12 +358,24 @@ CenteringDialog {
                 model: [ qsTr("Feet"), qsTr("Meter") ]
             }
 
-
         }
     }
 
-    function enableOk() {
-        waypointEditorDialog.standardButton(DialogButtonBox.Ok).enabled = latInput.acceptableInput && longInput.acceptableInput
+
+    footer: DialogButtonBox {
+
+        Button {
+            text: qsTr("Cancel")
+            flat: true
+            DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
+        }
+
+        Button {
+            text: qsTr("OK")
+            flat: true
+            DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+            enabled: (wpNameField.displayText !== "") && latInput.acceptableInput && longInput.acceptableInput
+        }
     }
 
 } // Dialog

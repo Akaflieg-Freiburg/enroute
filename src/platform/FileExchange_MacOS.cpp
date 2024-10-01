@@ -54,7 +54,7 @@ auto Platform::FileExchange::shareContent(const QByteArray& content, const QStri
     QMimeDatabase const mimeDataBase;
     QMimeType const mime = mimeDataBase.mimeTypeForName(mimeType);
 
-    auto fileNameX = QFileDialog::getSaveFileName(nullptr, tr("Export flight route"), QDir::homePath()+"/"+fileNameTemplate+"."+mime.preferredSuffix(), tr("%1 (*.%2);;All files (*)").arg(mime.comment(), mime.preferredSuffix()));
+    auto fileNameX = QFileDialog::getSaveFileName(nullptr, tr("Export Data"), QDir::homePath()+"/"+fileNameTemplate+"."+mime.preferredSuffix(), tr("%1 (*.%2);;All files (*)").arg(mime.comment(), mime.preferredSuffix()));
     if (fileNameX.isEmpty())
     {
         return QStringLiteral("abort");

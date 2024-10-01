@@ -20,6 +20,7 @@
 
 #include "units/Distance.h"
 
+#include <cmath>
 
 auto Units::Distance::toString(Units::Distance::DistanceUnit units, bool roundBigNumbers, bool forceSign) const -> QString
 {
@@ -79,7 +80,7 @@ QDataStream& operator<<(QDataStream& stream, const Units::Distance& distance)
 
 QDataStream& operator>>(QDataStream& stream, Units::Distance& distance)
 {
-    double tmp;
+    double tmp = NAN;
     stream >> tmp;
     distance = Units::Distance::fromM(tmp);
     return stream;

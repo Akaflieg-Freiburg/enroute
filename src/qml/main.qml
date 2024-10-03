@@ -473,7 +473,7 @@ AppWindow {
                             text: qsTr("Read manual")
                             icon.source: "/icons/material/ic_book.svg"
                             Layout.fillWidth: true
-                            visible: (Qt.platform.os === "ios")
+                            visible: (Qt.platform.os === "ios") || (Qt.platform.os === "android")
                             height: visible ? undefined : 0
 
                             onClicked: {

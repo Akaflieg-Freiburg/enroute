@@ -1714,24 +1714,6 @@
           } 
       },
       {
-        "id": "WPs",
-        "type": "symbol",
-        "source": "aviation-data",
-        "filter": ["any", ["==", ["get", "CAT"], "AD-GLD"], ["==", ["get", "CAT"], "AD-INOP"], ["==", ["get", "CAT"], "AD-UL"], ["==", ["get", "CAT"], "AD-WATER"]],
-        "layout": {
-          "text-field": ["get", "NAM"],
-          "text-size": 12,
-          "text-anchor": "top",
-          "text-offset": [0, 1],
-          "text-optional": true,
-          "icon-image": ["get", "CAT"]
-          },
-        "paint": {
-          "text-halo-width": 2,
-          "text-halo-color": "white"
-          }
-      },
-      {
         "id": "RPs",
         "type": "symbol",
         "source": "aviation-data",
@@ -1751,26 +1733,6 @@
           }
       },
       {
-        "id": "AD-GRASS",
-        "type": "symbol",
-        "source": "aviation-data",
-        "filter": ["any", ["==", ["get", "CAT"], "AD-GRASS"], ["==", ["get", "CAT"], "AD-MIL-GRASS"]],
-        "layout": {
-          "text-field": ["get", "NAM"],
-          "text-size": 12,
-          "text-anchor": "top",
-          "text-offset": [0, 1],
-          "text-optional": true,
-          "icon-image": ["get", "CAT"],
-          "icon-rotate": ["get", "ORI"],
-          "icon-rotation-alignment": "map"
-          },
-        "paint": {
-          "text-halo-width": 2,
-          "text-halo-color": "white"
-          }
-      },
-      {
           "id": "NavAidIcons",
           "type": "symbol",
           "source": "aviation-data",
@@ -1780,26 +1742,6 @@
             "icon-ignore-placement": true,
             "icon-allow-overlap": true
             }
-      },
-      {
-        "id": "AD-PAVED",
-        "type": "symbol",
-        "source": "aviation-data",
-        "filter": ["any", ["==", ["get", "CAT"], "AD"], ["==", ["get", "CAT"], "AD-PAVED"], ["==", ["get", "CAT"], "AD-MIL"], ["==", ["get", "CAT"], "AD-MIL-PAVED"]],
-        "layout": {
-          "text-field": ["get", "NAM"],
-          "text-size": 12,
-          "text-anchor": "top",
-          "text-offset": [0, 1],
-          "text-optional": true,
-          "icon-image": ["get", "CAT"],
-          "icon-rotate": ["get", "ORI"],
-          "icon-rotation-alignment": "map"
-          },
-        "paint": {
-          "text-halo-width": 2,
-          "text-halo-color": "white"
-          }
       }
     ],
     "id": "osm-liberty"

@@ -95,6 +95,25 @@ Map {
 
         }
 
+        SourceParameter {
+            id: waypointLib
+
+            styleId: "waypointlib"
+            type: "geojson"
+            property string data: WaypointLibrary.GeoJSON
+        }
+
+        SourceParameter {
+            id: notams
+
+            styleId: "notams"
+            type: "geojson"
+            property string data: NOTAMProvider.geoJSON
+        }
+
+
+        // Data, sorted according to importance, from low to high
+
         LayerParameter {
           id:  airspaceLabels
 
@@ -124,6 +143,57 @@ Map {
         }
 
         LayerParameter {
+            id: adWithoutRotation
+
+            styleId: "adwoRotation"
+
+            type: "symbol"
+            property string source: "aviation-data"
+            property var filter: ["any", ["==", ["get", "CAT"], "AD-GLD"], ["==", ["get", "CAT"], "AD-INOP"], ["==", ["get", "CAT"], "AD-UL"], ["==", ["get", "CAT"], "AD-WATER"]]
+
+            layout: {
+                "icon-image": '["get", "CAT"]',
+                "text-field": '["get", "NAM"]',
+                "text-size": 12,
+                "text-anchor": "top",
+                "text-offset": [0, 1],
+                "text-optional": true
+            }
+
+            paint: {
+                "text-color": "black",
+                "text-halo-width": 2,
+                "text-halo-color": "white"
+            }
+        }
+
+        LayerParameter {
+            id: adWithRotation
+
+            styleId: "ad"
+
+            type: "symbol"
+            property string source: "aviation-data"
+            property var filter: ["any", ["==", ["get", "CAT"], "AD"], ["==", ["get", "CAT"], "AD-PAVED"], ["==", ["get", "CAT"], "AD-MIL"], ["==", ["get", "CAT"], "AD-MIL-PAVED"]]
+
+            layout: {
+                "icon-image": '["get", "CAT"]',
+                "icon-rotate": ["get", "ORI"],
+                "text-field": '["get", "NAM"]',
+                "text-size": 12,
+                "text-anchor": "top",
+                "text-offset": [0, 1],
+                "text-optional": true
+            }
+
+            paint: {
+                "text-color": "black",
+                "text-halo-width": 2,
+                "text-halo-color": "white"
+            }
+        }
+
+        LayerParameter {
             id: approachChartLayer
 
             styleId: "vacLayer"
@@ -133,14 +203,6 @@ Map {
             layout: {
                 "visibility": Global.currentVAC.isValid ? 'visible' : 'none'
             }
-        }
-
-        SourceParameter {
-            id: waypointLib
-
-            styleId: "waypointlib"
-            type: "geojson"
-            property string data: WaypointLibrary.GeoJSON
         }
 
         LayerParameter {
@@ -167,13 +229,29 @@ Map {
             }
         }
 
+        LayerParameter {
+            id: notamParam
 
-        SourceParameter {
-            id: notams
+            styleId: "notam-layer"
 
-            styleId: "notams"
-            type: "geojson"
-            property string data: NOTAMProvider.geoJSON
+            type: "symbol"
+            property string source: "notams"
+
+            layout: {
+                "icon-ignore-placement": true,
+                "icon-image": ["get", "CAT"],
+                "text-field": ["get", "NAM"],
+                "text-size": 12,
+                "text-anchor": "top",
+                "text-offset": [0, 1],
+                "text-optional": true,
+            }
+
+            paint: {
+                "text-color": "black",
+                "text-halo-width": 2,
+                "text-halo-color": "white"
+            }
         }
 
 
@@ -985,32 +1063,6 @@ Map {
             }
         }
 */
-
-        LayerParameter {
-            id: notamParam
-
-            styleId: "notam-layer"
-
-            type: "symbol"
-            property string source: "notams"
-
-            layout: {
-                "icon-ignore-placement": true,
-                "icon-image": ["get", "CAT"],
-                "text-field": ["get", "NAM"],
-                "text-size": 12,
-                "text-anchor": "top",
-                "text-offset": [0, 1],
-                "text-optional": true,
-            }
-
-            paint: {
-                "text-color": "black",
-                "text-halo-width": 2,
-                "text-halo-color": "white"
-            }
-        }
-
 
 
     }

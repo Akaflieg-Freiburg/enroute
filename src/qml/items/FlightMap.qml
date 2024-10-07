@@ -95,6 +95,25 @@ Map {
 
         }
 
+        SourceParameter {
+            id: waypointLib
+
+            styleId: "waypointlib"
+            type: "geojson"
+            property string data: WaypointLibrary.GeoJSON
+        }
+
+        SourceParameter {
+            id: notams
+
+            styleId: "notams"
+            type: "geojson"
+            property string data: NOTAMProvider.geoJSON
+        }
+
+
+        // Map layers, sorted according to importance, from low to high
+
         LayerParameter {
           id:  airspaceLabels
 
@@ -102,7 +121,7 @@ Map {
 
           type: "symbol"
           property string source: "aviation-data"
-//        property string filter: '["==", ["GET", "TYP"], "AS"]'
+          property var filter: ["==", ["get", "TYP"], "AS"]
           property string metadata: '{}'
 
           layout: {
@@ -124,6 +143,200 @@ Map {
         }
 
         LayerParameter {
+            id: prcLabels
+
+            styleId: "PRCLabels"
+
+            type: "symbol"
+            property string source: "aviation-data"
+            property var filter: [ "all", ["==", ["get", "CAT"], "PRC"], ["!=", ["get", "USE"], "TFC"] ]
+            property real minzoom: 10
+
+            layout: {
+                "symbol-placement": "line",
+                "text-field": ["get", "NAM"],
+                "text-size": 16,
+                "symbol-spacing": 140
+            }
+
+            paint: {
+                "text-color": "black",
+                "text-halo-width": 10,
+                "text-halo-color": "white"
+            }
+        }
+
+        LayerParameter {
+            id: tfcLabels
+
+            styleId: "TFCLabels"
+
+            type: "symbol"
+            property string source: "aviation-data"
+            property var filter: [ "all", ["==", ["get", "CAT"], "PRC"], ["==", ["get", "USE"], "TFC"] ]
+            property real minzoom: 10
+
+            layout: {
+                "symbol-placement": "line",
+                "text-field": ["get", "NAM"],
+                "text-size": 16,
+                "symbol-spacing": 140
+            }
+
+            paint: {
+                "text-color": "black",
+                "text-halo-width": 10,
+                "text-halo-color": "white"
+            }
+        }
+
+        LayerParameter {
+            id: optionalText
+
+            styleId: "optionalText"
+
+            type: "symbol"
+            property string source: "aviation-data"
+            property var filter: ["==", ["get", "TYP"], "NAV"]
+
+            layout: {
+                "text-field": ["get", "COD"],
+                "text-size": 12,
+                "text-anchor": "top",
+                "text-offset": [0, 1],
+                "text-optional": true
+            }
+
+            paint: {
+                "text-color": "black",
+                "text-halo-width": 2,
+                "text-halo-color": "white"
+            }
+        }
+
+        LayerParameter {
+            id: wps
+
+            styleId: "WPs"
+
+            type: "symbol"
+            property string source: "aviation-data"
+            property var filter: ["any", ["==", ["get", "CAT"], "AD-GLD"], ["==", ["get", "CAT"], "AD-INOP"], ["==", ["get", "CAT"], "AD-UL"], ["==", ["get", "CAT"], "AD-WATER"]]
+
+            layout: {
+                "icon-image": ["get", "CAT"],
+                "icon-rotation-alignment": "map",
+                "text-field": ["get", "NAM"],
+                "text-size": 12,
+                "text-anchor": "top",
+                "text-offset": [0, 1],
+                "text-optional": true
+            }
+
+            paint: {
+                "text-color": "black",
+                "text-halo-width": 2,
+                "text-halo-color": "white"
+            }
+        }
+
+        LayerParameter {
+            id: rps
+
+            styleId: "RPs"
+
+            type: "symbol"
+            property string source: "aviation-data"
+            property var filter: ["any", ["==", ["get", "CAT"], "RP"], ["==", ["get", "CAT"], "MRP"]]
+
+            layout: {
+                "icon-image": ["get", "CAT"],
+                "icon-rotation-alignment": "map",
+                "text-field": ["get", "NAM"],
+                "text-size": 12,
+                "text-anchor": "top",
+                "text-offset": [0, 1],
+                "text-optional": true
+            }
+
+            paint: {
+                "text-color": "black",
+                "text-halo-width": 2,
+                "text-halo-color": "white"
+            }
+        }
+
+        LayerParameter {
+            id: adGrass
+
+            styleId: "AD-GRASS"
+
+            type: "symbol"
+            property string source: "aviation-data"
+            property var filter: ["any", ["==", ["get", "CAT"], "AD-GRASS"], ["==", ["get", "CAT"], "AD-MIL-GRASS"]]
+
+            layout: {
+                "icon-image": ["get", "CAT"],
+                "icon-rotate": ["get", "ORI"],
+                "icon-rotation-alignment": "map",
+                "text-field": ["get", "NAM"],
+                "text-size": 12,
+                "text-anchor": "top",
+                "text-offset": [0, 1],
+                "text-optional": true
+            }
+
+            paint: {
+                "text-color": "black",
+                "text-halo-width": 2,
+                "text-halo-color": "white"
+            }
+        }
+
+        LayerParameter {
+            id: navAidIcons
+
+            styleId: "NavAidIcons"
+
+            type: "symbol"
+            property string source: "aviation-data"
+            property var filter: ["==", ["get", "TYP"], "NAV"]
+
+            layout: {
+                "icon-image": ["get", "CAT"],
+                "icon-ignore-placement": true,
+                "icon-allow-overlap": true
+            }
+        }
+
+        LayerParameter {
+            id: adPaved
+
+            styleId: "AD-PAVED"
+
+            type: "symbol"
+            property string source: "aviation-data"
+            property var filter: ["any", ["==", ["get", "CAT"], "AD"], ["==", ["get", "CAT"], "AD-PAVED"], ["==", ["get", "CAT"], "AD-MIL"], ["==", ["get", "CAT"], "AD-MIL-PAVED"]]
+
+            layout: {
+                "icon-image": ["get", "CAT"],
+                "icon-rotate": ["get", "ORI"],
+                "icon-rotation-alignment": "map",
+                "text-field": ["get", "NAM"],
+                "text-size": 12,
+                "text-anchor": "top",
+                "text-offset": [0, 1],
+                "text-optional": true
+            }
+
+            paint: {
+                "text-color": "black",
+                "text-halo-width": 2,
+                "text-halo-color": "white"
+            }
+        }
+
+        LayerParameter {
             id: approachChartLayer
 
             styleId: "vacLayer"
@@ -133,14 +346,6 @@ Map {
             layout: {
                 "visibility": Global.currentVAC.isValid ? 'visible' : 'none'
             }
-        }
-
-        SourceParameter {
-            id: waypointLib
-
-            styleId: "waypointlib"
-            type: "geojson"
-            property string data: WaypointLibrary.GeoJSON
         }
 
         LayerParameter {
@@ -167,15 +372,6 @@ Map {
             }
         }
 
-
-        SourceParameter {
-            id: notams
-
-            styleId: "notams"
-            type: "geojson"
-            property string data: NOTAMProvider.geoJSON
-        }
-
         LayerParameter {
             id: notamParam
 
@@ -186,8 +382,8 @@ Map {
 
             layout: {
                 "icon-ignore-placement": true,
-                "icon-image": '["get", "CAT"]',
-                "text-field": '["get", "NAM"]',
+                "icon-image": ["get", "CAT"],
+                "text-field": ["get", "NAM"],
                 "text-size": 12,
                 "text-anchor": "top",
                 "text-offset": [0, 1],
@@ -200,9 +396,6 @@ Map {
                 "text-halo-color": "white"
             }
         }
-
-
-
     }
 
 } // End of FlightMap

@@ -30,7 +30,11 @@
 GeoMaps::TileServer::TileServer(QObject* parent)
     : QAbstractHttpServer(parent)
 {
-    listen(QHostAddress(QStringLiteral("127.0.0.1")));
+#warning
+    auto* localServer = new QTcpServer();
+    localServer->listen();
+    bind(localServer);
+//    listen(QHostAddress(QStringLiteral("127.0.0.1")));
 
 #if defined(Q_OS_IOS)
     connect(qGuiApp,
@@ -133,7 +137,7 @@ bool GeoMaps::TileServer::handleRequest(const QHttpServerRequest& request, QHttp
 }
 
 
-void GeoMaps::TileServer::missingHandler(const QHttpServerRequest& request, QHttpServerResponder&& responder)
+void GeoMaps::TileServer::missingHandler(const QHttpServerRequest& request, QHttpServerResponder& responder)
 {
     Q_UNUSED(request)
     responder.write(QHttpServerResponder::StatusCode::NotFound);

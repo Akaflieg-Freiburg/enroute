@@ -153,7 +153,13 @@ bool GeoMaps::TileHandler::process(QHttpServerResponder* responder, const QStrin
 
         if (m_format == u"pbf"_qs)
         {
-            responder->write(tileData, {{"Content-Type", "application/octet-stream"}, {"Content-Encoding", "gzip"}});
+#warning
+            QHttpHeaders headers;
+            headers.append("Content-Type", "application/octet-stream");
+            headers.append("Content-Encoding", "gzip");
+
+            responder->write(tileData, headers);
+            // responder->write(tileData, {{"Content-Type", "application/octet-stream"}, {"Content-Encoding", "gzip"}});
         }
         else
         {

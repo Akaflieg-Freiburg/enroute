@@ -35,24 +35,24 @@ include(GNUInstallDirs)
 #
 
 
-find_package(Qt6 6.6 COMPONENTS Bluetooth Concurrent Core Core5Compat Gui HttpServer LinguistTools Location Positioning Quick QuickControls2 QuickWidgets Sql Svg TextToSpeech Widgets REQUIRED)
+find_package(Qt6 6.8 COMPONENTS Bluetooth Concurrent Core Core5Compat Gui HttpServer LinguistTools Location Positioning Quick QuickControls2 QuickWidgets Sql Svg TextToSpeech Widgets REQUIRED)
 set(QT_VERSION ${Qt6Core_VERSION})
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Android")
-    find_package(Qt6 COMPONENTS Sensors SerialPort WebView REQUIRED)
+    find_package(Qt6 6.8 COMPONENTS Sensors SerialPort WebView REQUIRED)
 endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-    find_package(Qt6 6.7 COMPONENTS SerialPort WebView REQUIRED)
+    find_package(Qt6 6.8 COMPONENTS SerialPort WebView REQUIRED)
 endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "iOS")
-    find_package(Qt6 6.7 COMPONENTS Sensors WebView REQUIRED)
+    find_package(Qt6 6.8 COMPONENTS Sensors WebView REQUIRED)
 endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    find_package(Qt6 6.6 COMPONENTS DBus SerialPort Widgets REQUIRED)
-    find_package(Qt6 6.6 COMPONENTS WebView)
+    find_package(Qt6 6.8 COMPONENTS DBus SerialPort Widgets REQUIRED)
+    find_package(Qt6 6.8 COMPONENTS WebView)
 endif()
 
 if(${QT_VERSION} VERSION_GREATER_EQUAL "6.7.0")

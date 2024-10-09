@@ -3,6 +3,14 @@ name: Compile on Android
 on:
   push:
     branches: [ develop ]
+    paths-ignore:
+      - ".gitignore"
+      - "README.md"
+      # ignore CI for other platforms
+      - ".github/workflows/api.yml"
+      - ".github/workflows/ios.yml"
+      - ".github/workflows/linux.yml"
+      - ".github/workflows/macos.yml"
 
 jobs:
   build:
@@ -15,6 +23,7 @@ jobs:
       with:
         path: enroute
         submodules: recursive
+        fetch-depth: 0
     - name: Checkout enrouteDependencies
       uses: actions/checkout@v4
       with:

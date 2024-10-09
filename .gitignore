@@ -6,7 +6,8 @@ build-android-release/
 build-android-debug/
 build-linux/
 build-macos/
-.project
+.gradle/
+.project/
 
 # Doxygen generated documentation
 doc/APIdoc

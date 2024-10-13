@@ -39,7 +39,8 @@
       android:allowNativeHeapPointerTagging="false"
       android:allowBackup="false"
       android:fullBackupOnly="false"
-      android:icon="@mipmap/ic_launcher">
+      android:icon="@mipmap/ic_launcher"
+      android:localeConfig="@xml/locales_config">
     <activity
 	android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density"
 	android:exported="true"

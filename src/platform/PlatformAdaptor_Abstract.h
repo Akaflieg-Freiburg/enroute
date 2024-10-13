@@ -180,12 +180,6 @@ public slots:
 
 
 signals:
-    /*! \brief Emitted when a new WiFi connections becomes available
-     *
-     *  This signal is emitted when a new WiFi connection becomes available.
-     */
-    void wifiConnected();
-
     /*! \brief Emitted when an error occurs
      *
      *  This signal is emitted when an error occurs. The GUI will show the message
@@ -194,6 +188,19 @@ signals:
      *  @param message Human-readable, translated message
      */
     void error(const QString& message);
+
+    /*! \brief Emitted when the OS requests a language change
+     *
+     *  This signal is emitted when the OS requests a language change. The GUI will show a
+     *  dialog requesting the user to restart the app.
+     */
+    void languageChanged();
+
+    /*! \brief Emitted when a new WiFi connections becomes available
+     *
+     *  This signal is emitted when a new WiFi connection becomes available.
+     */
+    void wifiConnected();
 
 private:
     Q_DISABLE_COPY_MOVE(PlatformAdaptor_Abstract)

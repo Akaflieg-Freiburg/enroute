@@ -96,12 +96,15 @@ Public Slots</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="signals" name="signals"></a>
 Signals</h2></td></tr>
-<tr class="memitem:a5ad6095ebd2bfbbe00c70f8a887d6a20" id="r_a5ad6095ebd2bfbbe00c70f8a887d6a20"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5ad6095ebd2bfbbe00c70f8a887d6a20">wifiConnected</a> ()</td></tr>
-<tr class="memdesc:a5ad6095ebd2bfbbe00c70f8a887d6a20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when a new WiFi connections becomes available.  <br /></td></tr>
-<tr class="separator:a5ad6095ebd2bfbbe00c70f8a887d6a20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5e5b18d291a808d67af87f7442221fe2" id="r_a5e5b18d291a808d67af87f7442221fe2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5e5b18d291a808d67af87f7442221fe2">error</a> (const QString &amp;message)</td></tr>
 <tr class="memdesc:a5e5b18d291a808d67af87f7442221fe2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when an error occurs.  <br /></td></tr>
 <tr class="separator:a5e5b18d291a808d67af87f7442221fe2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb6a8a24a09bad0e3a8571e66c78488a" id="r_aeb6a8a24a09bad0e3a8571e66c78488a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeb6a8a24a09bad0e3a8571e66c78488a">languageChanged</a> ()</td></tr>
+<tr class="memdesc:aeb6a8a24a09bad0e3a8571e66c78488a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when the OS requests a language change.  <br /></td></tr>
+<tr class="separator:aeb6a8a24a09bad0e3a8571e66c78488a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ad6095ebd2bfbbe00c70f8a887d6a20" id="r_a5ad6095ebd2bfbbe00c70f8a887d6a20"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5ad6095ebd2bfbbe00c70f8a887d6a20">wifiConnected</a> ()</td></tr>
+<tr class="memdesc:a5ad6095ebd2bfbbe00c70f8a887d6a20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when a new WiFi connections becomes available.  <br /></td></tr>
+<tr class="separator:a5ad6095ebd2bfbbe00c70f8a887d6a20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -421,6 +424,34 @@ Additional Inherited Members</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>A two-letter language code (such as "en" or "de") that describes the language that is to be used in the GUI. </dd></dl>
 
 <p>Reimplemented in <a class="el" href="classPlatform_1_1PlatformAdaptor.html#a809e840558e2321e6190293e7c8b0ae3">Platform::PlatformAdaptor</a>.</p>
+
+</div>
+</div>
+<a id="aeb6a8a24a09bad0e3a8571e66c78488a" name="aeb6a8a24a09bad0e3a8571e66c78488a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb6a8a24a09bad0e3a8571e66c78488a">&#9670;&#160;</a></span>languageChanged</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Platform::PlatformAdaptor_Abstract::languageChanged </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">signal</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Emitted when the OS requests a language change. </p>
+<p>This signal is emitted when the OS requests a language change. The GUI will show a dialog requesting the user to restart the app. </p>
 
 </div>
 </div>

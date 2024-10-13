@@ -72,7 +72,7 @@ Item {
             visible: !element.model.modelData.hasFile && !element.model.modelData.downloading
             onClicked: {
                 PlatformAdaptor.vibrateBrief()
-                element.startFileDownload()
+                element.model.modelData.startDownload()
             }
         }
 

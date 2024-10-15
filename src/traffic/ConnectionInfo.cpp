@@ -24,6 +24,7 @@
 
 #include "traffic/ConnectionInfo.h"
 
+using namespace Qt::Literals::StringLiterals;
 
 
 //
@@ -96,7 +97,7 @@ Traffic::ConnectionInfo::ConnectionInfo(const QBluetoothDeviceInfo& info, bool c
                 descriptionItems += QObject::tr("Serial Port Service", "Traffic::ConnectionInfo");
             }
         }
-        m_description = u"%1<br><font size='2'>%2</font>"_qs.arg(m_name, descriptionItems.join(u" • "_qs));
+        m_description = u"%1<br><font size='2'>%2</font>"_s.arg(m_name, descriptionItems.join(u" • "_s));
     }
 
     // Set Icon
@@ -105,11 +106,11 @@ Traffic::ConnectionInfo::ConnectionInfo(const QBluetoothDeviceInfo& info, bool c
         {
             if (m_bluetoothDeviceInfo.coreConfigurations() == QBluetoothDeviceInfo::LowEnergyCoreConfiguration)
             {
-                m_icon = u"/icons/material/ic_bluetooth_disabled.svg"_qs;
+                m_icon = u"/icons/material/ic_bluetooth_disabled.svg"_s;
             }
             else
             {
-                m_icon = u"/icons/material/ic_bluetooth.svg"_qs;
+                m_icon = u"/icons/material/ic_bluetooth.svg"_s;
             }
         }
     }
@@ -142,7 +143,7 @@ Traffic::ConnectionInfo::ConnectionInfo(const QSerialPortInfo& info, bool canoni
 {
     m_name = info.portName();
     m_description = QObject::tr("Serial Port Connection to %1", "Traffic::ConnectionInfo").arg(info.portName());
-    m_icon = u"/icons/material/ic_settings_ethernet.svg"_qs;
+    m_icon = u"/icons/material/ic_settings_ethernet.svg"_s;
 }
 #endif
 
@@ -151,7 +152,7 @@ Traffic::ConnectionInfo::ConnectionInfo(quint16 port, bool canonical)
     : m_canConnect(true), m_canonical(canonical), m_port(port), m_type(Traffic::ConnectionInfo::UDP)
 {
     m_name = QObject::tr("UDP Connection to Port %1", "Traffic::ConnectionInfo").arg(m_port);
-    m_icon = u"/icons/material/ic_wifi.svg"_qs;
+    m_icon = u"/icons/material/ic_wifi.svg"_s;
 }
 
 
@@ -159,7 +160,7 @@ Traffic::ConnectionInfo::ConnectionInfo(const QString& host, quint16 port, bool 
     : m_canConnect(true), m_canonical(canonical), m_host(host), m_port(port), m_type(Traffic::ConnectionInfo::UDP)
 {
     m_name = QObject::tr("TCP Connection to %1, Port %1", "Traffic::ConnectionInfo").arg(m_host, m_port);
-    m_icon = u"/icons/material/ic_wifi.svg"_qs;
+    m_icon = u"/icons/material/ic_wifi.svg"_s;
 }
 
 

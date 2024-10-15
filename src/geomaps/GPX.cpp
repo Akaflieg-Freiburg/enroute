@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2022 by Stefan Kebekus                                  *
+ *   Copyright (C) 2022-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -22,6 +22,9 @@
 
 #include "fileFormats/DataFileAbstract.h"
 #include "geomaps/GPX.h"
+
+using namespace Qt::Literals::StringLiterals;
+
 
 //
 // Helper functions
@@ -68,7 +71,7 @@ GeoMaps::Waypoint readWP(QXmlStreamReader& xml) {
 
         if (xml.isStartElement())
         {
-            if (xmlTag == u"ele"_qs)
+            if (xmlTag == u"ele"_s)
             {
                 QString const alt_s = xml.readElementText(QXmlStreamReader::SkipChildElements);
                 double const alt = alt_s.toFloat(&ok);
@@ -78,15 +81,15 @@ GeoMaps::Waypoint readWP(QXmlStreamReader& xml) {
                 }
                 pos.setAltitude(alt);
             }
-            else if (xmlTag == u"name"_qs)
+            else if (xmlTag == u"name"_s)
             {
                 name = xml.readElementText(QXmlStreamReader::SkipChildElements);
             }
-            else if (xmlTag == u"desc"_qs)
+            else if (xmlTag == u"desc"_s)
             {
                 desc = xml.readElementText(QXmlStreamReader::SkipChildElements);
             }
-            else if (xmlTag == u"cmt"_qs)
+            else if (xmlTag == u"cmt"_s)
             {
                 cmt = xml.readElementText(QXmlStreamReader::SkipChildElements);
             }
@@ -158,7 +161,7 @@ auto GeoMaps::GPX::read(const QString& fileName) -> QVector<GeoMaps::Waypoint>
 
         if (xml.isStartElement())
         {
-            if (name == u"rtept"_qs)
+            if (name == u"rtept"_s)
             {
                 auto wpt = readWP(xml);
                 if (!wpt.isValid())
@@ -167,7 +170,7 @@ auto GeoMaps::GPX::read(const QString& fileName) -> QVector<GeoMaps::Waypoint>
                 }
                 rtept << wpt;
             }
-            else if (name == u"trkpt"_qs)
+            else if (name == u"trkpt"_s)
             {
                 auto wpt = readWP(xml);
                 if (!wpt.isValid())
@@ -176,7 +179,7 @@ auto GeoMaps::GPX::read(const QString& fileName) -> QVector<GeoMaps::Waypoint>
                 }
                 trkpt << wpt;
             }
-            else if (name == u"wpt"_qs)
+            else if (name == u"wpt"_s)
             {
                 auto wp = readWP(xml);
                 if (!wp.isValid())

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,9 +21,10 @@
 #include <QCoreApplication>
 
 #include "GlobalObject.h"
-#include "GlobalSettings.h"
 #include "navigation/Navigator.h"
 #include "traffic/Warning.h"
+
+using namespace Qt::Literals::StringLiterals;
 
 
 Traffic::Warning::Warning(
@@ -35,27 +36,27 @@ Traffic::Warning::Warning(
 {  
 
     // Alarm level
-    if (AlarmLevel == u"0"_qs) {
+    if (AlarmLevel == u"0"_s) {
         m_alarmLevel = 0;
     }
-    if (AlarmLevel == u"1"_qs) {
+    if (AlarmLevel == u"1"_s) {
         m_alarmLevel = 1;
     }
-    if (AlarmLevel == u"2"_qs) {
+    if (AlarmLevel == u"2"_s) {
         m_alarmLevel = 2;
     }
-    if (AlarmLevel == u"3"_qs) {
+    if (AlarmLevel == u"3"_s) {
         m_alarmLevel = 3;
     }
 
     // Alarm Type
-    if (AlarmType == u"2"_qs) {
+    if (AlarmType == u"2"_s) {
         m_alarmType = 2;
     }
-    if (AlarmType == u"3"_qs) {
+    if (AlarmType == u"3"_s) {
         m_alarmType = 3;
     }
-    if (AlarmType == u"4"_qs) {
+    if (AlarmType == u"4"_s) {
         m_alarmType = 4;
     }
 

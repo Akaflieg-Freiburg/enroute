@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -23,6 +23,8 @@
 
 #include "GlobalSettings.h"
 #include "dataManagement/SSLErrorHandler.h"
+
+using namespace Qt::Literals::StringLiterals;
 
 
 DataManagement::SSLErrorHandler::SSLErrorHandler(QObject *parent) :
@@ -54,11 +56,11 @@ void DataManagement::SSLErrorHandler::onSSLError(QNetworkReply *reply, const QLi
     result += "<p>" +
               tr("Enroute is unable to establish a secure internet connection to one or several servers.") +
               "</p>";
-    result += u"<ul style='margin-left:-25px;'>"_qs;
+    result += u"<ul style='margin-left:-25px;'>"_s;
     foreach(auto error, errors) {
         result += "<li>" + error.errorString() + "</li>";
     }
-    result += u"</ul>"_qs;
+    result += u"</ul>"_s;
     result += "<p>" +
               tr("You can choose to ignore this warning in the future and to connect anyway. "
                  "This will however leave the data transfer open to tampering and manipulation.") +

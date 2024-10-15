@@ -22,6 +22,8 @@
 
 #include "DataFileAbstract.h"
 
+using namespace Qt::Literals::StringLiterals;
+
 
 namespace FileFormats
 {
@@ -64,7 +66,7 @@ namespace FileFormats
          *
          *  @returns Name of mime type
          */
-        [[nodiscard]] static QStringList mimeTypes() { return {u"text/csv"_qs, u"text/plain"_qs}; }
+        [[nodiscard]] static QStringList mimeTypes() { return {u"text/csv"_s, u"text/plain"_s}; }
 
     private:
         // Private helper functions

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,6 +24,9 @@
 #include "positioning/Geoid.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/TrafficDataSource_Abstract.h"
+
+using namespace Qt::Literals::StringLiterals;
+
 
 const std::array<quint16, 256> Crc16Table =
 { 0, 4129, 8258, 12387, 16516, 20645, 24774, 28903, 33032, 37161,
@@ -409,7 +412,7 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
         auto callSign = QString::fromLatin1(message.mid(18,8)).simplified();
 
         // Expose data
-        if ((callSign.compare(u"MODE S"_qs, Qt::CaseInsensitive) == 0) || (callSign.compare(u"MODE-S"_qs, Qt::CaseInsensitive) == 0)) {
+        if ((callSign.compare(u"MODE S"_s, Qt::CaseInsensitive) == 0) || (callSign.compare(u"MODE-S"_s, Qt::CaseInsensitive) == 0)) {
             m_factorDistanceOnly.setAlarmLevel(alert);
             m_factorDistanceOnly.setCallSign(callSign);
             m_factorDistanceOnly.setCoordinate(Positioning::PositionProvider::lastValidCoordinate());

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -60,8 +60,8 @@
 #include "traffic/TrafficFactor_WithPosition.h"
 #include "weather/Station.h"
 
-
 using namespace std::chrono_literals;
+using namespace Qt::Literals::StringLiterals;
 
 auto main(int argc, char *argv[]) -> int
 {
@@ -100,7 +100,7 @@ auto main(int argc, char *argv[]) -> int
     QCoreApplication::setOrganizationDomain(QStringLiteral("akaflieg_freiburg.de"));
     QCoreApplication::setApplicationName(QStringLiteral("enroute flight navigation"));
     QCoreApplication::setApplicationVersion(QStringLiteral(PROJECT_VERSION));
-    QGuiApplication::setWindowIcon(QIcon(u":/icons/appIcon.png"_qs));
+    QGuiApplication::setWindowIcon(QIcon(u":/icons/appIcon.png"_s));
 
     // Install translators
     auto preferredLanguage = GlobalObject::platformAdaptor()->language();
@@ -212,7 +212,7 @@ auto main(int argc, char *argv[]) -> int
     /*
      * Set up ApplicationEngine for QML
      */
-    QQuickStyle::setStyle(u"Material"_qs);
+    QQuickStyle::setStyle(u"Material"_s);
 
     auto* engine = new QQmlApplicationEngine();
     engine->addImportPath(":/");
@@ -223,7 +223,7 @@ auto main(int argc, char *argv[]) -> int
     engine->rootContext()->setContextProperty(QStringLiteral("manual_location"), MANUAL_LOCATION );
 #endif
     engine->rootContext()->setContextProperty(QStringLiteral("global"), new GlobalObject(engine) );
-    engine->load(u"qrc:/qml/main.qml"_qs);
+    engine->load(u"qrc:/qml/main.qml"_s);
 
     if (parser.isSet(googlePlayScreenshotOption))
     {

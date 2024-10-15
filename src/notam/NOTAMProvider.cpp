@@ -28,7 +28,7 @@
 #include "positioning/PositionProvider.h"
 
 using namespace std::chrono_literals;
-
+using namespace Qt::Literals::StringLiterals;
 
 
 //
@@ -342,7 +342,7 @@ void NOTAM::NOTAMProvider::startRequest(const QGeoCoordinate& coordinate)
                      "locationLongitude=%1&"
                      "locationLatitude=%2&"
                      "locationRadius=%3&"
-                     "pageSize=1000"_qs
+                     "pageSize=1000"_s
                          .arg(coordinateRounded.longitude())
                          .arg(coordinateRounded.latitude())
                          .arg( qRound(requestRadius.toNM()) );

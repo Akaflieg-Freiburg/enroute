@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,6 +24,8 @@
 #include "navigation/Navigator.h"
 #include "weather/METAR.h"
 
+using namespace Qt::Literals::StringLiterals;
+
 
 Weather::METAR::METAR(QObject *parent)
     : Weather::Decoder(parent)
@@ -41,33 +43,33 @@ Weather::METAR::METAR(QXmlStreamReader &xml, QObject *parent)
         QString const name = xml.name().toString();
 
         // Read Station_ID
-        if (xml.isStartElement() && name == u"station_id"_qs) {
+        if (xml.isStartElement() && name == u"station_id"_s) {
             m_ICAOCode = xml.readElementText();
             continue;
         }
 
         // Read location
-        if (xml.isStartElement() && name == u"latitude"_qs) {
+        if (xml.isStartElement() && name == u"latitude"_s) {
             _location.setLatitude(xml.readElementText().toDouble());
             continue;
         }
-        if (xml.isStartElement() && name == u"longitude"_qs) {
+        if (xml.isStartElement() && name == u"longitude"_s) {
             _location.setLongitude(xml.readElementText().toDouble());
             continue;
         }
-        if (xml.isStartElement() && name == u"elevation_m"_qs) {
+        if (xml.isStartElement() && name == u"elevation_m"_s) {
             _location.setAltitude(xml.readElementText().toDouble());
             continue;
         }
 
         // Read raw text
-        if (xml.isStartElement() && name == u"raw_text"_qs) {
+        if (xml.isStartElement() && name == u"raw_text"_s) {
             _raw_text = xml.readElementText();
             continue;
         }
 
         // QNH
-        if (xml.isStartElement() && name == u"altim_in_hg"_qs) {
+        if (xml.isStartElement() && name == u"altim_in_hg"_s) {
             auto content = xml.readElementText();
             m_qnh = Units::Pressure::fromInHg(content.toDouble());
             if ((m_qnh.toHPa() < 800) || (m_qnh.toHPa() > 1200))
@@ -78,45 +80,45 @@ Weather::METAR::METAR(QXmlStreamReader &xml, QObject *parent)
         }
 
         // Wind
-        if (xml.isStartElement() && name == u"wind_speed_kt"_qs) {
+        if (xml.isStartElement() && name == u"wind_speed_kt"_s) {
             auto content = xml.readElementText();
             _wind = Units::Speed::fromKN(content.toDouble());
             continue;
         }
 
         // Gust
-        if (xml.isStartElement() && name == u"wind_gust_kt"_qs) {
+        if (xml.isStartElement() && name == u"wind_gust_kt"_s) {
             auto content = xml.readElementText();
             _gust = Units::Speed::fromKN(content.toDouble());
             continue;
         }
 
         // Observation Time
-        if (xml.isStartElement() && name == u"observation_time"_qs) {
+        if (xml.isStartElement() && name == u"observation_time"_s) {
             auto content = xml.readElementText();
             _observationTime = QDateTime::fromString(content, Qt::ISODate);
             continue;
         }
 
         // Flight category
-        if (xml.isStartElement() && name == u"flight_category"_qs) {
+        if (xml.isStartElement() && name == u"flight_category"_s) {
             auto content = xml.readElementText();
-            if (content == u"VFR"_qs) {
+            if (content == u"VFR"_s) {
                 _flightCategory = VFR;
             }
-            if (content == u"MVFR"_qs) {
+            if (content == u"MVFR"_s) {
                 _flightCategory = MVFR;
             }
-            if (content == u"IFR"_qs) {
+            if (content == u"IFR"_s) {
                 _flightCategory = IFR;
             }
-            if (content == u"LIFR"_qs) {
+            if (content == u"LIFR"_s) {
                 _flightCategory = LIFR;
             }
             continue;
         }
 
-        if (xml.isEndElement() && name == u"METAR"_qs) {
+        if (xml.isEndElement() && name == u"METAR"_s) {
             break;
         }
 
@@ -149,7 +151,7 @@ Weather::METAR::METAR(QDataStream &inputStream, QObject *parent)
 
 auto Weather::METAR::expiration() const -> QDateTime
 {
-    if (_raw_text.contains(u"NOSIG"_qs)) {
+    if (_raw_text.contains(u"NOSIG"_s)) {
         return _observationTime.addSecs(3LL*60LL*60LL);
     }
     return _observationTime.addSecs(1.5*60*60);
@@ -226,7 +228,7 @@ auto Weather::METAR::summary() const -> QString {
 
     switch (_flightCategory) {
     case VFR:
-        if (_raw_text.contains(u"CAVOK"_qs)) {
+        if (_raw_text.contains(u"CAVOK"_s)) {
             resultList << tr("CAVOK");
         } else {
             resultList << tr("VMC");

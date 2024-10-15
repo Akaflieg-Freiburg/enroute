@@ -45,7 +45,7 @@
 #include "DemoRunner.h"
 
 using namespace std::chrono_literals;
-
+using namespace Qt::Literals::StringLiterals;
 
 DemoRunner::DemoRunner(QObject *parent) : QObject(parent)
 {
@@ -144,19 +144,19 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
 
         foreach(auto device, devices)
         {
-            auto language = QLocale::system().name().replace(u"_"_qs,u"-"_qs);
+            auto language = QLocale::system().name().replace(u"_"_s,u"-"_s);
             {
-                if (device == u"phone"_qs)
+                if (device == u"phone"_s)
                 {
                     applicationWindow->setProperty("width", 1080/2.5);
                     applicationWindow->setProperty("height", 1920/2.5);
                 }
-                if (device == u"sevenInch"_qs)
+                if (device == u"sevenInch"_s)
                 {
                     applicationWindow->setProperty("width", 1920/2);
                     applicationWindow->setProperty("height", 1200/2);
                 }
-                if (device == u"tenInch"_qs)
+                if (device == u"tenInch"_s)
                 {
                     applicationWindow->setProperty("width", 1920/2);
                     applicationWindow->setProperty("height", 1200/2);
@@ -540,12 +540,12 @@ void DemoRunner::generateManualScreenshots()
             qCritical() << "VAC does not exist" << VACFileName;
         }
         Q_ASSERT(QFile::exists(VACFileName));
-        emit requestVAC(u"LFGA COLMAR HOUSSEN 2"_qs);
+        emit requestVAC(u"LFGA COLMAR HOUSSEN 2"_s);
         delay(2s);
         GlobalObject::globalSettings()->setMapBearingPolicy(GlobalSettings::NUp);
         delay(2s);
         applicationWindow->grabWindow().save(QStringLiteral("03-03-VAC.png"));
-        emit requestVAC(u""_qs);
+        emit requestVAC(u""_s);
     }
 
     // Done. Terminate the program.

@@ -26,6 +26,8 @@
 #include <QSysInfo>
 #include <QtGlobal>
 
+using namespace Qt::Literals::StringLiterals;
+
 
 Librarian::Librarian(QObject *parent) : QObject(parent)
 {
@@ -49,13 +51,13 @@ Librarian::Librarian(QObject *parent) : QObject(parent)
 
 auto Librarian::getStringFromRessource(const QString &name) -> QString
 {
-    if (name == u"appUpdateRequired"_qs)
+    if (name == u"appUpdateRequired"_s)
     {
         return tr("<p>This version of <strong>Enroute Flight Navigation</strong> is outdated and will no longer receive map updates. "
                   "<strong>Please update this app at your earliest convencience.</strong></p>");
     }
 
-    if (name == u":text/authors.html"_qs)
+    if (name == u":text/authors.html"_s)
     {
         return "<p>"+tr("The app <strong>Enroute Flight Navigation</strong> was written by Stefan Kebekus, flight enthusiast since 1986 and member of the Akaflieg Freiburg flight club. Stefan flies gliders and motor planes.")+"</p>"
                + "<p><strong>"+tr("Address")+"</strong>: Stefan Kebekus, Wintererstraße 77, 79104 Freiburg, Germany · <a href='mailto:stefan.kebekus@gmail.com'>stefan.kebekus@gmail.com</a></p>"
@@ -99,7 +101,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 <p></p>)html");
     }
 
-    if (name == u":text/aviationMapMissing.html"_qs)
+    if (name == u":text/aviationMapMissing.html"_s)
     {
         return tr(R"html(
 <p>We receive our aviation data from <a href="http://openaip.net">openAIP</a>. This is a not-for-profit organisation where volunteers compile aviation data for many countries. If openAIP covers your country, we might be able to generate maps for it. First, however, we need to be reasonably sure that the openAIP data is accurate and complete. Please have a look at the <a href="http://maps.openaip.net">openAIP maps</a> and compare the display with an official aviation map of your country. Are the airfields there? Are runway lengths/orientations and frequencies correct? Are NavAids correctly displayed, with correct codes and frequencies? And what about airspaces?</p>
@@ -109,7 +111,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 <p>Please understand that we program this free app in our spare time, as a service to the community. Sadly, I should point out that sending us impolite demands is not likely to give the result that you desire.</p>)html");
     }
 
-    if (name == u":text/info_enroute.html"_qs)
+    if (name == u":text/info_enroute.html"_s)
     {
         QString version(QStringLiteral(PROJECT_VERSION));
         if (!QStringLiteral(GIT_COMMIT).isEmpty())
@@ -143,7 +145,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 <p>Aeronautical data is kindly provided by the <a href="https://www.openaip.net">openAIP</a> and <a href="https://www.openflightmaps.org">open flightmaps</a> projects. Base maps are kindly provided by <a href="https://openmaptiles.org">OpenMapTiles</a>. Please refer to the documentation for more details.</p>)html").arg(version);
     }
 
-    if (name == u":text/info_license.html"_qs)
+    if (name == u":text/info_license.html"_s)
     {
         QFile file(QStringLiteral(":license_overview.html"));
         file.open(QIODevice::ReadOnly);
@@ -175,7 +177,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 )html").arg(content);
     }
 
-    if (name == u":text/privacy.html"_qs)
+    if (name == u":text/privacy.html"_s)
     {
         return  "<p>" +
                tr("This Privacy Policy outlines the data handling practices for the app <strong>Enroute Flight Navigation</strong>.") + " " +
@@ -288,7 +290,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
                "</p>";
     }
 
-    if (name == u":text/whatsnew.html"_qs)
+    if (name == u":text/whatsnew.html"_s)
     {
         QString result;
         result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> is now able to connected to your traffic data receiver via Bluetooth radio. "
@@ -362,11 +364,11 @@ QString Librarian::import(Librarian::Library library, const QString& fileName)
 {
     if (library != Librarian::Routes)
     {
-        return u"Importing into libraries other than routs is not yet implemented."_qs;
+        return u"Importing into libraries other than routs is not yet implemented."_s;
     }
 
     QString myFileName = fileName;
-    if (fileName.startsWith(u"file://"_qs))
+    if (fileName.startsWith(u"file://"_s))
     {
         myFileName = fileName.mid(7);
     }
@@ -384,7 +386,7 @@ QString Librarian::import(Librarian::Library library, const QString& fileName)
     {
         for(int i=1; ; i++)
         {
-            auto newBaseName = u"%1 (%2)"_qs.arg(baseName).arg(i);
+            auto newBaseName = u"%1 (%2)"_s.arg(baseName).arg(i);
             savePath = fullPath(library, newBaseName);
             if (!QFile::exists(savePath))
             {

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2020 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -22,6 +22,8 @@
 
 #include "Airspace.h"
 #include "units/Distance.h"
+
+using namespace Qt::Literals::StringLiterals;
 
 
 GeoMaps::Airspace::Airspace(const QJsonObject &geoJSONObject) {
@@ -87,7 +89,7 @@ auto GeoMaps::Airspace::estimatedLowerBoundMSL() const -> Units::Distance
 
     QString AL = m_lowerBound.simplified();
 
-    if (AL.startsWith(u"FL"_qs, Qt::CaseInsensitive)) {
+    if (AL.startsWith(u"FL"_s, Qt::CaseInsensitive)) {
         result = AL.remove(0, 2).toDouble(&ok);
         if (ok) {
             return Units::Distance::fromFT(100*result);
@@ -95,15 +97,15 @@ auto GeoMaps::Airspace::estimatedLowerBoundMSL() const -> Units::Distance
         return Units::Distance::fromFT(0.0);
     }
 
-    if (AL.endsWith(u"msl"_qs)) {
+    if (AL.endsWith(u"msl"_s)) {
         AL.chop(3);
         AL = AL.simplified();
     }
-    if (AL.endsWith(u"agl"_qs)) {
+    if (AL.endsWith(u"agl"_s)) {
         AL.chop(3);
         AL = AL.simplified();
     }
-    if (AL.endsWith(u"ft"_qs)) {
+    if (AL.endsWith(u"ft"_s)) {
         AL.chop(2);
         AL = AL.simplified();
     }

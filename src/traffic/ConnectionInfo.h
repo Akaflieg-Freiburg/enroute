@@ -27,6 +27,8 @@
 #include <QSerialPortInfo>
 #endif
 
+using namespace Qt::Literals::StringLiterals;
+
 
 namespace Traffic {
 
@@ -282,7 +284,7 @@ private:
     bool                          m_canConnect { false };
     bool                          m_canonical { false };
     QString m_description;
-    QString m_icon{u"/icons/material/ic_delete.svg"_qs};
+    QString m_icon{u"/icons/material/ic_delete.svg"_s};
     QString                       m_name { QObject::tr("Invalid Device", "Traffic::ConnectionInfo") };
     Traffic::ConnectionInfo::Type m_type { Traffic::ConnectionInfo::Invalid };
 

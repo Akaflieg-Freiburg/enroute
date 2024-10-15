@@ -133,7 +133,7 @@ Map {
               "text-justify": "center",
               "text-offset": '[0,1]',
               "text-optional": true,
-              "text-size": 12
+              "text-size": 0.85*GlobalSettings.fontSize
           }
 
           paint: {
@@ -155,7 +155,7 @@ Map {
             layout: {
                 "symbol-placement": "line",
                 "text-field": ["get", "NAM"],
-                "text-size": 16,
+                "text-size": 1.14*GlobalSettings.fontSize,
                 "symbol-spacing": 140
             }
 
@@ -179,7 +179,7 @@ Map {
             layout: {
                 "symbol-placement": "line",
                 "text-field": ["get", "NAM"],
-                "text-size": 16,
+                "text-size": 1.14*GlobalSettings.fontSize,
                 "symbol-spacing": 140
             }
 
@@ -201,7 +201,7 @@ Map {
 
             layout: {
                 "text-field": ["get", "COD"],
-                "text-size": 12,
+                "text-size": 0.85*GlobalSettings.fontSize,
                 "text-anchor": "top",
                 "text-offset": [0, 1],
                 "text-optional": true
@@ -227,7 +227,7 @@ Map {
                 "icon-image": ["get", "CAT"],
                 "icon-rotation-alignment": "map",
                 "text-field": ["get", "NAM"],
-                "text-size": 12,
+                "text-size": 0.85*GlobalSettings.fontSize,
                 "text-anchor": "top",
                 "text-offset": [0, 1],
                 "text-optional": true
@@ -253,7 +253,7 @@ Map {
                 "icon-image": ["get", "CAT"],
                 "icon-rotation-alignment": "map",
                 "text-field": ["get", "NAM"],
-                "text-size": 12,
+                "text-size": 0.85*GlobalSettings.fontSize,
                 "text-anchor": "top",
                 "text-offset": [0, 1],
                 "text-optional": true
@@ -280,7 +280,7 @@ Map {
                 "icon-rotate": ["get", "ORI"],
                 "icon-rotation-alignment": "map",
                 "text-field": ["get", "NAM"],
-                "text-size": 12,
+                "text-size": 0.85*GlobalSettings.fontSize,
                 "text-anchor": "top",
                 "text-offset": [0, 1],
                 "text-optional": true
@@ -323,7 +323,7 @@ Map {
                 "icon-rotate": ["get", "ORI"],
                 "icon-rotation-alignment": "map",
                 "text-field": ["get", "NAM"],
-                "text-size": 12,
+                "text-size": 0.85*GlobalSettings.fontSize,
                 "text-anchor": "top",
                 "text-offset": [0, 1],
                 "text-optional": true
@@ -359,7 +359,7 @@ Map {
             layout: {
                 "icon-image": '["get", "CAT"]',
                 "text-field": '["get", "NAM"]',
-                "text-size": 12,
+                "text-size": 0.85*GlobalSettings.fontSize,
                 "text-anchor": "top",
                 "text-offset": [0, 1],
                 "text-optional": true,
@@ -384,7 +384,7 @@ Map {
                 "icon-ignore-placement": true,
                 "icon-image": ["get", "CAT"],
                 "text-field": ["get", "NAM"],
-                "text-size": 12,
+                "text-size": 0.85*GlobalSettings.fontSize,
                 "text-anchor": "top",
                 "text-offset": [0, 1],
                 "text-optional": true,

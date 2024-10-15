@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -28,6 +28,8 @@
 #include <QtCore/private/qandroidextras_p.h>
 
 #include "platform/PlatformAdaptor_Android.h"
+
+using namespace Qt::Literals::StringLiterals;
 
 
 Platform::PlatformAdaptor::PlatformAdaptor(QObject *parent)
@@ -116,15 +118,15 @@ QString Platform::PlatformAdaptor::systemInfo()
     QJniObject const stringObject
         = QJniObject::callStaticObjectMethod<jstring>("de/akaflieg_freiburg/enroute/MobileAdaptor",
                                                       "deviceName");
-    result += u"<h3>Device</h3>\n"_qs;
+    result += u"<h3>Device</h3>\n"_s;
     result += stringObject.toString();
 
     // System Log
     QProcess proc;
-    proc.startCommand(u"logcat -t 300"_qs);
+    proc.startCommand(u"logcat -t 300"_s);
     proc.waitForFinished();
-    result += u"<h3>System Log</h3>\n"_qs;
-    result += u"<pre>\n"_qs + proc.readAllStandardOutput() + u"\n</pre>\n"_qs;
+    result += u"<h3>System Log</h3>\n"_s;
+    result += u"<pre>\n"_s + proc.readAllStandardOutput() + u"\n</pre>\n"_s;
 
     return result;
 }

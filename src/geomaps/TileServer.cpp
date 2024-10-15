@@ -26,6 +26,8 @@
 #include "TileServer.h"
 #include "geomaps/GeoMapProvider.h"
 
+using namespace Qt::Literals::StringLiterals;
+
 
 GeoMaps::TileServer::TileServer(QObject* parent)
     : QAbstractHttpServer(parent)
@@ -100,7 +102,7 @@ bool GeoMaps::TileServer::handleRequest(const QHttpServerRequest& request, QHttp
     //
     // GeoJSON with aviation data
     //
-    if (path.endsWith(u"aviationData.geojson"_qs))
+    if (path.endsWith(u"aviationData.geojson"_s))
     {
         responder.write(GlobalObject::geoMapProvider()->geoJSON(), "application/json");
         return true;

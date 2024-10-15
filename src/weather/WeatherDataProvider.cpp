@@ -441,7 +441,7 @@ auto Weather::WeatherDataProvider::sunInfo() -> QString
         sunrise = localTime;
         sunrise.setTime(QTime::fromMSecsSinceStartOfDay(qRound(sunriseTimeInMin*60*1000)));
         sunrise = sunrise.toOffsetFromUtc(0);
-        sunrise.setTimeSpec(Qt::UTC);
+        sunrise.setTimeZone(QTimeZone(Qt::UTC));
     }
 
     auto sunsetTimeInMin = sun.calcSunset();
@@ -450,7 +450,7 @@ auto Weather::WeatherDataProvider::sunInfo() -> QString
         sunset = localTime;
         sunset.setTime(QTime::fromMSecsSinceStartOfDay(qRound(sunsetTimeInMin*60*1000)));
         sunset = sunset.toOffsetFromUtc(0);
-        sunset.setTimeSpec(Qt::UTC);
+        sunset.setTimeZone(QTimeZone(Qt::UTC));
     }
 
     localTime = localTime.addDays(1);
@@ -462,7 +462,7 @@ auto Weather::WeatherDataProvider::sunInfo() -> QString
         sunriseTomorrow = localTime;
         sunriseTomorrow.setTime(QTime::fromMSecsSinceStartOfDay(qRound(sunriseTomorrowTimeInMin*60*1000)));
         sunriseTomorrow = sunriseTomorrow.toOffsetFromUtc(0);
-        sunriseTomorrow.setTimeSpec(Qt::UTC);
+        sunriseTomorrow.setTimeZone(QTimeZone(Qt::UTC));
     }
 
     if (sunrise.isValid() && sunset.isValid() && sunriseTomorrow.isValid())

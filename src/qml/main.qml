@@ -971,17 +971,6 @@ AppWindow {
             dialogLoader.active = true
         }
 
-        function onLanguageChanged() {
-            dialogLoader.active = false
-            dialogLoader.setSource("dialogs/LongTextDialog.qml",
-                                   {
-                                       title: qsTr("Language Change"),
-                                       text: qsTr("The operating system requested a change of the app language. Please restart <strong>Enroute Flight Navigation</strong> for the language change to take effect."),
-                                       standardButtons: Dialog.Ok
-                                   }
-                                   )
-            dialogLoader.active = true
-        }
     }
 
     Connections { // Notifier

@@ -395,6 +395,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         MACOSX_BUNDLE true
         MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/macos/Info.plist"
         MACOSX_BUNDLE_ICON_FILE enroute.icns
+        MACOSX_BUNDLE_BUNDLE_NAME "Enroute Flight Navigation"
     )
     target_link_libraries(${PROJECT_NAME}
         PRIVATE

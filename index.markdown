@@ -29,11 +29,12 @@ feature_row:
     excerpt: "**Enroute Flight Navigation** is 100% open source, and fully non-commercial. [We do not collect your data.](/enroute/privacy)"
 ---
 
-**Enroute Flight Navigation** is a free flight navigation app for Android and
-other devices. Designed to be simple, functional and elegant, it takes the
-stress out of your next flight. The program has been written by flight
-enthusiasts, as a project of [Akaflieg Freiburg](https://akaflieg-freiburg.de),
-a flight club based in Freiburg, Germany.
+**Enroute Flight Navigation** is an award-winning flight navigation app for
+Android and other devices. Designed to be simple, functional and elegant, it
+takes the stress out of your next flight. The program is free.  It has been
+written by flight enthusiasts, as a project of [Akaflieg
+Freiburg](https://akaflieg-freiburg.de), a flight club based in Freiburg,
+Germany.
 
 {% include feature_row %}
 
@@ -82,7 +83,7 @@ with e-mails. We do not even have or want your address!
 
 # … and what's with the name?
 
-Every pilot in the world knows the name "enroute" as the title of the second
+Every pilot in the world knows the name "Enroute" as the title of the second
 chapter of the [Aeronautical Information
 Publication](https://en.wikipedia.org/wiki/Aeronautical_Information_Publication),
 or AIP.  The AIP is a manual published by every state that contains thorough

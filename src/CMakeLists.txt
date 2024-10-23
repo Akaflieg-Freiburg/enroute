@@ -40,9 +40,11 @@ set(SOURCES
     fileFormats/CSV.h
     fileFormats/CUP.h
     fileFormats/DataFileAbstract.h
+    fileFormats/FPL.h
     fileFormats/GeoTIFF.h
     fileFormats/MapURL.h
     fileFormats/MBTILES.h
+    fileFormats/PLN.h
     fileFormats/TIFF.h
     fileFormats/TripKit.h
     fileFormats/ZipFile.h
@@ -133,9 +135,11 @@ set(SOURCES
     fileFormats/CSV.cpp
     fileFormats/CUP.cpp
     fileFormats/DataFileAbstract.cpp
+    fileFormats/FPL.cpp
     fileFormats/GeoTIFF.cpp
     fileFormats/MapURL.cpp
     fileFormats/MBTILES.cpp
+    fileFormats/PLN.cpp
     fileFormats/TIFF.cpp
     fileFormats/TripKit.cpp
     fileFormats/ZipFile.cpp
@@ -343,6 +347,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
         Qt6::Svg
         Qt6::TextToSpeech
         Qt6::Widgets
+        Qt6::Xml
         QMapLibre::Location
         libzip::zip
     )

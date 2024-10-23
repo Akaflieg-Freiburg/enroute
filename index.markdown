@@ -19,7 +19,7 @@ feature_row:
   - image_path: /assets/images/maps.jpg
     alt: "Free maps"
     title: "Maps Included"
-    excerpt: "Our free maps receive near-weekly updates and cover large parts of the world. [More …](https://akaflieg-freiburg.github.io/enrouteManual/08-appendix/01-dataSources.html#map-data)"
+    excerpt: "Our free maps receive daily updates and cover large parts of the world. [More …](https://akaflieg-freiburg.github.io/enrouteManual/08-appendix/01-dataSources.html#map-data)"
   - image_path: /assets/images/simple.jpg
     alt: "placeholder image 2"
     title: "Simple by Design"

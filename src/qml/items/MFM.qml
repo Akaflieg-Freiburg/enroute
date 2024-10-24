@@ -791,6 +791,42 @@ Item {
                 }
             }
 
+            MapButton {
+                id: rasterMapButton
+
+                icon.source: "/icons/material/ic_layers.svg"
+
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    rasterMenu.open()
+
+                }
+
+                AutoSizingMenu {
+                    id: rasterMenu
+                    cascade: true
+
+                    //                    topMargin: SafeInsets.top
+
+                    MenuItem {
+                        text: qsTr("View Library…")
+                        onTriggered: {
+                            PlatformAdaptor.vibrateBrief()
+                            highlighted = false
+                        }
+                    }
+
+                    MenuItem {
+                        text: qsTr("Save to library…")
+                        onTriggered: {
+                            PlatformAdaptor.vibrateBrief()
+                            highlighted = false
+                        }
+                    }
+                }
+
+            }
+
             Item {
                 Layout.fillHeight: true
             }

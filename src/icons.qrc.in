@@ -39,6 +39,7 @@
 	<file alias="icons/material/ic_keyboard_arrow_down.svg">${material-design-icons_SOURCE_DIR}/hardware/svg/production/ic_keyboard_arrow_down_24px.svg</file>
 	<file alias="icons/material/ic_keyboard_arrow_up.svg">${material-design-icons_SOURCE_DIR}/hardware/svg/production/ic_keyboard_arrow_up_24px.svg</file>
 	<file alias="icons/material/ic_keyboard_tab.svg">${material-design-icons_SOURCE_DIR}/hardware/svg/production/ic_keyboard_tab_24px.svg</file>
+	<file alias="icons/material/ic_layers.svg">${material-design-icons_SOURCE_DIR}/maps/svg/production/ic_layers_24px.svg</file>
 	<file alias="icons/material/ic_library_add.svg">${material-design-icons_SOURCE_DIR}/av/svg/production/ic_library_add_24px.svg</file>
 	<file alias="icons/material/ic_library_books.svg">${material-design-icons_SOURCE_DIR}/av/svg/production/ic_library_books_24px.svg</file>
 	<file alias="icons/material/ic_lock.svg">${material-design-icons_SOURCE_DIR}/action/svg/production/ic_lock_24px.svg</file>

@@ -69,7 +69,7 @@ public:
          *  @returns Name of mime type
          */
 #warning Needs to be implemented. The type "text/FPL" does probably not exist.
-    [[nodiscard]] static QStringList mimeTypes() { return {u"text/FPL"_qs, u"text/plain"_qs}; }
+    [[nodiscard]] static QStringList mimeTypes() { return {u"text/xml"_qs, u"text/plain"_qs}; }
 
 private:
     QVector<QGeoCoordinate> m_waypoints;

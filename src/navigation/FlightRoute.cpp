@@ -23,6 +23,8 @@
 
 #include "FlightRoute.h"
 #include "GlobalObject.h"
+#include "fileFormats/FPL.h"
+#include "fileFormats/PLN.h"
 #include "geomaps/GeoJSON.h"
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/GPX.h"
@@ -315,6 +317,26 @@ auto Navigation::FlightRoute::load(const QString& fileName) -> QString
     if (result.isEmpty())
     {
         result = GeoMaps::GeoJSON::read(myFileName);
+    }
+    if (result.isEmpty())
+    {
+#warning need to test
+#warning Should return waypoints
+        auto pln = FileFormats::PLN(myFileName);
+        for(auto coordinate : pln.waypoints())
+        {
+            result += coordinate;
+        }
+    }
+    if (result.isEmpty())
+    {
+#warning need to test
+#warning Should return waypoints
+        auto fpl = FileFormats::FPL(myFileName);
+        for(auto coordinate : fpl.waypoints())
+        {
+            result += coordinate;
+        }
     }
     if (result.isEmpty())
     {

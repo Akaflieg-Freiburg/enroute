@@ -311,6 +311,7 @@ private:
     // the TAF. The signal tafChanged() will be emitted if appropriate.
     void setTAF(Weather::TAF *taf);
 
+    // calculates the density altitude
     void calculateDensityAltitude();
 
     // Coordinate of this weather station

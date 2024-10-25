@@ -72,6 +72,12 @@ Weather::METAR::METAR(QXmlStreamReader &xml, QObject *parent)
             continue;
         }
 
+        // Read dewpoint
+        if (xml.isStartElement() && name == u"dewpoint_c"_qs) {
+            _dewpoint = Units::Temperature::fromDegreeCelsius(xml.readElementText().toDouble());
+            continue;
+        }
+
         // QNH
         if (xml.isStartElement() && name == u"altim_in_hg"_qs) {
             auto content = xml.readElementText();
@@ -147,6 +153,7 @@ Weather::METAR::METAR(QDataStream &inputStream, QObject *parent)
     inputStream >> _wind;
     inputStream >> _gust;
     inputStream >> _temperature;
+    inputStream >> _dewpoint;
 
     // Interpret the METAR message
     setRawText(_raw_text, _observationTime.date());
@@ -304,4 +311,5 @@ void Weather::METAR::write(QDataStream &out)
     out << _wind;
     out << _gust;
     out << _temperature;
+    out << _dewpoint;
 }

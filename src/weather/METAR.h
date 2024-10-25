@@ -235,9 +235,22 @@ public:
      */
     [[nodiscard]] auto summary() const -> QString;
 
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property summary
+     */
     [[nodiscard]] auto temperature() const -> Units::Temperature
     {
         return _temperature;
+    }
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property summary
+     */
+    [[nodiscard]] auto dewPoint() const -> Units::Temperature
+    {
+        return _dewpoint;
     }
 
 signals:
@@ -293,5 +306,8 @@ private:
 
     // Temperature
     Units::Temperature _temperature;
+
+    // Dewpoint
+    Units::Temperature _dewpoint;
 };
 } // namespace Weather

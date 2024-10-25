@@ -197,11 +197,16 @@ void Weather::Station::calculateDensityAltitude()
                    && _metar->coordinate().isValid() 
                    && _metar->QNH().isFinite() 
                    && _metar->temperature().isFinite() ) {
-        using Weather::calculateDensityAltitude;
         double altFeet = Units::Distance::fromM(_coordinate.altitude()).toFeet();
         double qnh = _metar->QNH().toHPa();
         double temp_c = _metar->temperature().toDegreeCelsius();
-        _calculatedDensityAltitude = calculateDensityAltitude(altFeet, qnh, temp_c);
+        if (_metar->dewPoint().isFinite() ) {
+            double dewpoint_c = _metar->dewPoint().toDegreeCelsius();
+            _calculatedDensityAltitude = Weather::DensityAltitude::calculateDensityAltitude(temp_c, qnh, altFeet, dewpoint_c);
+        } 
+        else {
+            _calculatedDensityAltitude = Weather::DensityAltitude::calculateDensityAltitudeDryAirApproximation(temp_c, qnh, altFeet);
+        }
     }
     else {
         _calculatedDensityAltitude.reset();

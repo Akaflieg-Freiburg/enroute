@@ -179,20 +179,18 @@ auto GeoMaps::WaypointLibrary::import(const QString& fileName, bool skip) -> QSt
     }
     if (result.isEmpty())
     {
-#warning need to test
-#warning Should return waypoints
         auto pln = FileFormats::PLN(fileName);
-        for(auto coordinate : pln.waypoints())
+        result.reserve(pln.waypoints().size());
+        for(const auto& coordinate : pln.waypoints())
         {
             result += coordinate;
         }
     }
     if (result.isEmpty())
     {
-#warning need to test
-#warning Should return waypoints
         auto fpl = FileFormats::FPL(fileName);
-        for(auto coordinate : fpl.waypoints())
+        result.reserve(fpl.waypoints().size());
+        for(const auto& coordinate : fpl.waypoints())
         {
             result += coordinate;
         }

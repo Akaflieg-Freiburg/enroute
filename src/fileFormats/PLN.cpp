@@ -21,7 +21,11 @@
 
 #include <QFile>
 #include <QTextStream>
-#include <QDomDocument>
+#include <qxmlstream.h>
+#include <qnamespace.h>
+#include <qglobal.h>
+#include <qgeocoordinate.h>
+#include <qobject.h>
 
 #include "PLN.h"
 
@@ -29,45 +33,49 @@
 
 
 
-double convertPDMSToDecimal(QString pdms)
+auto convertPDMSToDecimal(QString pdms) ->double
 {
-    bool ok;
+    bool ok = false;
     QStringList split = pdms.split(" ");
     if (split.size() != 3)
     {
         throw 1;
     }
-    int d = split[0].chopped(1).remove(0, 1).toInt(&ok);
+    int const degree = split[0].chopped(1).remove(0, 1).toInt(&ok);
     if (!ok)
     {
         throw 2;
     }
-    int m = split[1].chopped(1).toInt(&ok);
+    int const minute = split[1].chopped(1).toInt(&ok);
     if (!ok)
     {
         throw 3;
     }
-    double s = split[2].chopped(1).toDouble(&ok);
+    double const second = split[2].chopped(1).toDouble(&ok);
     if (!ok)
     {
         throw 4;
     }
 
-    double decimal = d + (m / 60.0) + (s / 3600);
+    double const decimal = degree + (minute / 60.0) + (second / 3600);
 
-    QChar p = pdms[0].toUpper();
+    QChar const pol = pdms[0].toUpper();
 
-    if (p == 'S' || p == 'W') return -decimal;
-
+    if ((pol == 'S') || (pol == 'W'))
+    {
+        return -decimal;
+    }
     return decimal;
 }
 
 
 FileFormats::PLN::PLN(const QString& fileName)
 {
-    bool ok;
+    bool ok = false;
+    int count1 = 0;
+    int count2 = 0;
+    int count3 = 0;
     QString pos;
-    QDomNodeList nodeList, posList;
     QGeoCoordinate waypoint;
     QStringList split;
     auto file = FileFormats::DataFileAbstract::openFileURL(fileName);
@@ -78,53 +86,88 @@ FileFormats::PLN::PLN(const QString& fileName)
         return;
     }
 
-    QDomDocument doc;
-    QDomDocument::ParseResult result =
-        doc.setContent(file->readAll(), QDomDocument::ParseOption::Default);
-    if (!result)
+    QXmlStreamReader xmlReader(file.data());
+    if (!xmlReader.readNextStartElement())
     {
-        setError(QObject::tr("Cannot parse PLN file %1 for XML. Reason: %2", "FileFormats::PLN").arg(fileName, result.errorMessage));
+        setError(QObject::tr("Cannot parse PLN file %1 for XML.", "FileFormats::PLN").arg(fileName));
         return;
     }
-
-    QDomElement root = doc.documentElement();
-    nodeList = root.elementsByTagName("FlightPlan.FlightPlan");
-    if ((QString::compare((QString) root.tagName(), u"SimBase.Document"_qs, Qt::CaseInsensitive) != 0) || (nodeList.size() != 1))
+    if (xmlReader.name().compare("SimBase.Document", Qt::CaseInsensitive) != 0)
     {
-            setError(QObject::tr("File %1 does not contain a flight plan", "FileFormats::PLN").arg(fileName));
-            return;
+        setError(QObject::tr("File %1 does not contain a flight plan", "FileFormats::PLN").arg(fileName));
+        return;
     }
-
-    nodeList = nodeList.at(0).toElement().elementsByTagName("ATCWaypoint");
-    for (int i = 0; i < nodeList.size(); i++)
+    count1 = 0;
+    while(xmlReader.readNextStartElement())
     {
-        posList = nodeList.at(i).toElement().elementsByTagName("WorldPosition");
-        if (posList.size() != 1)
+        if(xmlReader.name().compare("FlightPlan.FlightPlan", Qt::CaseInsensitive) != 0)
         {
-            setError(QObject::tr("Waypoint %1 does not have a unique position", "FileFormats::PLN").arg(i + 1));
-            return;
+            xmlReader.skipCurrentElement();
         }
-        pos = posList.at(0).toElement().text();
-        split = pos.split(",");
-        try
+        else
         {
-            if (split.size() != 3)
+            count1++;
+            count2 = 0;
+            while(xmlReader.readNextStartElement())
             {
-                throw 1;
+                if(xmlReader.name().compare("ATCWaypoint", Qt::CaseInsensitive) != 0)
+                {
+                    xmlReader.skipCurrentElement();
+                }
+                else
+                {
+                    count2++;
+                    count3 = 0;
+                    while(xmlReader.readNextStartElement())
+                    {
+                        if(xmlReader.name().compare("WorldPosition", Qt::CaseInsensitive) != 0)
+                        {
+                            xmlReader.skipCurrentElement();
+                        }
+                        else
+                        {
+                            count3++;
+                            pos = xmlReader.readElementText();
+                            split = pos.split(",");
+                            try
+                            {
+                                if (split.size() != 3)
+                                {
+                                    throw 1;
+                                }
+                                waypoint.setLatitude(convertPDMSToDecimal(split[0]));
+                                waypoint.setLongitude(convertPDMSToDecimal(split[1]));
+                                waypoint.setAltitude(split[2].toDouble(&ok));
+                                if (!ok)
+                                {
+                                    throw 5;
+                                }
+                                m_waypoints.append(waypoint);
+                            }
+                            catch (...)
+                            {
+                                addWarning(QObject::tr("Position of waypoint %1 is not a valid position", "FileFormats::PLN").arg(count2));
+                            }
+                        }
+                    }
+                    if (count3 != 1)
+                    {
+                        setError(QObject::tr("Waypoint %1 does not have a unique position", "FileFormats::PLN").arg(count2));
+                        return;
+                    }
+                }
             }
-            waypoint.setLatitude(convertPDMSToDecimal(split[0]));
-            waypoint.setLongitude(convertPDMSToDecimal(split[1]));
-            waypoint.setAltitude(split[2].toDouble(&ok));
-            if (!ok)
+            if (count2 == 0)
             {
-                throw 5;
+                setError(QObject::tr("File %1 does not contain way points", "FileFormats::PLN").arg(fileName));
+                return;
             }
-            m_waypoints.append(waypoint);
         }
-        catch (...)
-        {
-            addWarning(QObject::tr("Position of waypoint %1 is not a valid position", "FileFormats::PLN").arg(i + 1));
-        }
+    }
+    if (count1 != 1)
+    {
+        setError(QObject::tr("File %1 does not contain a unique flight plan", "FileFormats::PLN").arg(fileName));
+        return;
     }
 }
 

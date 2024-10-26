@@ -28,51 +28,50 @@
 namespace FileFormats
 {
 
-    /*! \brief PLN file support class
+/*! \brief PLN file support class
+ *
+ *  The methods of this class read PLN files.
+ */
+
+class PLN : public DataFileAbstract
+{
+
+public:
+    /*! \brief Constructor
      *
-     *  The methods of this class read PLN files.
+     *  This method reads a PLN file.
+     *
+     *  @param fileName Name of a PLN file
      */
-
-    class PLN : public DataFileAbstract
-    {
-
-    public:
-        /*! \brief Constructor
-         *
-         *  This method reads a PLN file.
-         *
-         *  @param fileName Name of a PLN file
-         */
-        PLN(const QString& fileName);
+    PLN(const QString& fileName);
 
 
 
-        //
-        // Getter Methods
-        //
+    //
+    // Getter Methods
+    //
 
-        /*! \brief Waypoints specified in the PLN file
-         *
-         *  The QGeoCoordinates returned here are guaranteed to be valid.
-         *
-         *  @returns Waypoints specified in the PLN file
-         */
-        [[nodiscard]] QVector<QGeoCoordinate> waypoints() const { return m_waypoints; }
+    /*! \brief Waypoints specified in the PLN file
+     *
+     *  The QGeoCoordinates returned here are guaranteed to be valid.
+     *
+     *  @returns Waypoints specified in the PLN file
+     */
+    [[nodiscard]] QVector<QGeoCoordinate> waypoints() const { return m_waypoints; }
 
 
-        //
-        // Static methods
-        //
+    //
+    // Static methods
+    //
 
-        /*! \brief Mime type for files that can be opened by this class
-         *
-         *  @returns Name of mime type
-         */
-#warning Needs to be implemented. The type "text/PLN" does probably not exist.
-        [[nodiscard]] static QStringList mimeTypes() { return {u"text/xml"_qs, u"text/plain"_qs}; }
+    /*! \brief Mime type for files that can be opened by this class
+     *
+     *  @returns Name of mime type
+     */
+    [[nodiscard]] static QStringList mimeTypes() { return {u"text/xml"_qs, u"text/plain"_qs}; }
 
-    private:
-        QVector<QGeoCoordinate> m_waypoints;
-    };
+private:
+    QVector<QGeoCoordinate> m_waypoints;
+};
 
 } // namespace FileFormats

@@ -29,20 +29,20 @@ namespace FileFormats
 {
 
 /*! \brief FPL file support class
-     *
-     *  The methods of this class read FPL files.
-     */
+*
+*  The methods of this class read FPL files.
+*/
 
 class FPL : public DataFileAbstract
 {
 
 public:
     /*! \brief Constructor
-         *
-         *  This method reads a FPL file.
-         *
-         *  @param fileName Name of a FPL file
-         */
+     *
+     *  This method reads a FPL file.
+     *
+     *  @param fileName Name of a FPL file
+     */
     FPL(const QString& fileName);
 
 
@@ -52,11 +52,11 @@ public:
     //
 
     /*! \brief Waypoints specified in the FPL file
-         *
-         *  The QGeoCoordinates returned here are guaranteed to be valid.
-         *
-         *  @returns Waypoints specified in the FPL file
-         */
+     *
+     *  The QGeoCoordinates returned here are guaranteed to be valid.
+     *
+     *  @returns Waypoints specified in the FPL file
+     */
     [[nodiscard]] QVector<QGeoCoordinate> waypoints() const { return m_waypoints; }
 
 
@@ -65,10 +65,9 @@ public:
     //
 
     /*! \brief Mime type for files that can be opened by this class
-         *
-         *  @returns Name of mime type
-         */
-#warning Needs to be implemented. The type "text/FPL" does probably not exist.
+     *
+     *  @returns Name of mime type
+     */
     [[nodiscard]] static QStringList mimeTypes() { return {u"text/xml"_qs, u"text/plain"_qs}; }
 
 private:

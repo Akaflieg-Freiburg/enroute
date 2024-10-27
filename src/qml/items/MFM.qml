@@ -795,6 +795,7 @@ Item {
                 id: rasterMapButton
 
                 icon.source: "/icons/material/ic_layers.svg"
+                visible: DataManager.baseMapsRaster.downloadables.length !== 0
 
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
@@ -806,23 +807,18 @@ Item {
                     id: rasterMenu
                     cascade: true
 
-                    //                    topMargin: SafeInsets.top
-
-                    MenuItem {
-                        text: qsTr("View Library…")
-                        onTriggered: {
-                            PlatformAdaptor.vibrateBrief()
-                            highlighted = false
+                    Instantiator {
+                        id: recentFilesInstantiator
+                        model: DataManager.baseMapsRaster.downloadables
+                        delegate: CheckDelegate {
+                            text: modelData.objectName
+                            //onTriggered: loadFile(modelData)
                         }
+
+                        onObjectAdded: (index, object) => rasterMenu.insertItem(index, object)
+                        onObjectRemoved: (index, object) => rasterMenu.removeItem(object)
                     }
 
-                    MenuItem {
-                        text: qsTr("Save to library…")
-                        onTriggered: {
-                            PlatformAdaptor.vibrateBrief()
-                            highlighted = false
-                        }
-                    }
                 }
 
             }

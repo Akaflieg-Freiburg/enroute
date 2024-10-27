@@ -149,6 +149,11 @@ void Platform::PlatformAdaptor::vibrateLong()
 
 extern "C" {
 
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onLanguageChanged(JNIEnv* /*unused*/, jobject /*unused*/)
+{
+    exit(0);
+}
+
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_onWifiConnected(JNIEnv* /*unused*/, jobject /*unused*/)
 {
     // This method gets called from Java before main() has executed

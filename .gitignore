@@ -7,17 +7,17 @@ build-android-debug/
 build-linux/
 build-macos/
 .gradle/
-.project/
 
 # Doxygen generated documentation
 doc/APIdoc
-
 
 # secrets
 generatedSources/pc-api-8548806115718303828-770-6966308588f6.json
 CMakeLists_ios.txt
 
 # IDE
+.classpath
+.project
 .vscode
 CMakeLists.txt.user
 

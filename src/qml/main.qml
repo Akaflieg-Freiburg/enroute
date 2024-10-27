@@ -970,6 +970,7 @@ AppWindow {
                                    )
             dialogLoader.active = true
         }
+
     }
 
     Connections { // Notifier

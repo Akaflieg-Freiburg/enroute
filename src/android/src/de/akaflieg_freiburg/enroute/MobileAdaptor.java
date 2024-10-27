@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -45,16 +45,17 @@ import android.view.*;
 import androidx.core.view.WindowCompat;
 
 public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
+
+	public static native void onLanguageChanged();
 	public static native void onNotificationClicked(int notifyID, int actionID);
-
 	public static native void onWifiConnected();
-
 	public static native void onWindowSizeChanged();
 
 	private static MobileAdaptor m_instance;
 
 	private static Vibrator m_vibrator;
 
+	private static LocaleChangedReceiver m_localeChangedReceiver;
 	private static WifiLock m_wifiLock;
 	private static WifiManager m_wifiManager;
 	private static MulticastLock m_multicastLock;
@@ -83,6 +84,13 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 		IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction("de.akaflieg_freiburg.enroute.onNotificationClick");
                 m_instance.registerReceiver(m_notifyClickReceiver, intentFilter, RECEIVER_EXPORTED);
+
+		// Be informed when locale changes
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            m_localeChangedReceiver = new LocaleChangedReceiver();
+        	IntentFilter filter = new IntentFilter(Intent.ACTION_LOCALE_CHANGED);
+        	registerReceiver(m_localeChangedReceiver, filter);
+        }
 
 		// Be informed when the window size changes, and call the C++ method
 		// onWindowSizeChanged() whenever it changes. The window size changes
@@ -309,30 +317,33 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 	//
 	// Embedded classes
 	//
-
-	private class WifiStateChangeReceiver extends BroadcastReceiver {
-
+	
+	private
+	 class LocaleChangedReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			onLanguageChanged();
+		}
+	}
 
+	private class WifiStateChangeReceiver extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
 			NetworkInfo info = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
 			if (info.getState() == State.CONNECTED) {
 				onWifiConnected();
 			}
-
 		}
 	}
 
 	private class NotifyClickReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-
 			Intent i = new Intent(context, MobileAdaptor.class);
 			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			context.startActivity(i);
 
 			onNotificationClicked(intent.getIntExtra("NotificationID", -1), intent.getIntExtra("ActionID", 0));
-
 		}
 	}
 

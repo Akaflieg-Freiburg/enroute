@@ -57,9 +57,9 @@ public:
      */
     Q_INVOKABLE static Units::Density density(Units::Distance h);
 
-    /*! \brief Computation of height as a function of pressure
+    /*! \brief Computation of height as a function of density
      *
-     *  @param d Air densitz
+     *  @param d Air density
      *
      *  @returns Barometric height above the 1013.25 hPa level (which equals 0 Meter)
      */
@@ -73,7 +73,7 @@ public:
      */
     Q_INVOKABLE static Units::Distance height(Units::Pressure pressure);
 
-    /*! \brief Computation of pressure as a function of altitude
+    /*! \brief Computation of pressure as a function of height
      *
      *  @param height Barometric height above the 1013.25 hPa level (which equals 0 Meter)
      *

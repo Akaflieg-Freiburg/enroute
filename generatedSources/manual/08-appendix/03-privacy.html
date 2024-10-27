@@ -89,13 +89,13 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#traduction-en-francais">Traduction en français</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id1">1. Data and Anonymization Server (enroute-data)</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id2">1.1. Data Collected</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id3">1.2. Communication: Data Download</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id4">1.3. Communication: NOTAM, METAR and TAF</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#serveur-de-donnees-et-d-anonymisation-enroute-data">1. Serveur de données et d’anonymisation (enroute-data)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#donnees-collectees">1.1. Données collectées</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#communication-telechargement-de-donnees">1.2. Communication: téléchargement de données</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#communication-notam-metar-et-taf">1.3. Communication: NOTAM, METAR et TAF</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#id5">Other Servers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#autres-serveurs">Autres serveurs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#responsable">Responsable</a></li>
 </ul>
 </li>
@@ -129,7 +129,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#otros-servidores">Otros servidores</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id6">Responsable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Responsable</a></li>
 </ul>
 </li>
 </ul>
@@ -358,90 +358,101 @@ nach Berechtigung, bevor sie eine externe Seite oder App öffnet.</p></li>
 </section>
 <section id="traduction-en-francais">
 <h2>Traduction en français<a class="headerlink" href="#traduction-en-francais" title="Link to this heading"></a></h2>
-<p>This Privacy Policy outlines the data handling practices for the app
-<strong>Enroute Flight Navigation</strong>. We prioritize your privacy and do not
-collect or store personally identifiable information. However, for the
-app to function properly, it must communicate with certain servers on
-the Internet. The following sections list the servers that <strong>Enroute
-Flight Navigation</strong> communicates with and explain the communication
-purposes.</p>
-<p>By using Enroute Flight Navigation, you agree to this Privacy Policy. We
-may update this policy periodically, and any changes will be posted
-within the app.</p>
-<section id="id1">
-<h3>1. Data and Anonymization Server (enroute-data)<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
-<p><strong>Enroute Flight Navigation</strong> regularly communicates with the server
-<strong>enroute-data.akaflieg-freiburg.de</strong> (referred to as <strong>enroute-data</strong>),
-operated by Hetzner Online GmbH on behalf of Akaflieg Freiburg. The
-server’s primary role is to facilitate the app’s functionality while
-maintaining user privacy.</p>
-<section id="id2">
-<h4>1.1. Data Collected<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
-<p>In every communication with <strong>enroute-data</strong>, your device’s IP address
-is transmitted to the server. The server needs to know the IP address to
-respond.</p>
-<p>The server stores the following data items in its log files.</p>
+<p>Cette politique de confidentialité décrit les pratiques de traitement
+des données pour l’application <strong>Enroute Flight Navigation</strong>. Nous
+accordons la priorité à votre vie privée et ne collectons ni ne stockons
+d’informations personnelles identifiables. Cependant, pour que
+l’application fonctionne correctement, elle doit communiquer avec
+certains serveurs sur Internet. Les sections suivantes répertorient les
+serveurs avec lesquels <strong>Enroute Flight Navigation</strong> communique et
+expliquent les objectifs de la communication.</p>
+<p>En utilisant Enroute Flight Navigation, vous acceptez cette politique de
+confidentialité. Nous pouvons mettre à jour cette politique
+périodiquement et toute modification sera publiée dans l’application.</p>
+<section id="serveur-de-donnees-et-d-anonymisation-enroute-data">
+<h3>1. Serveur de données et d’anonymisation (enroute-data)<a class="headerlink" href="#serveur-de-donnees-et-d-anonymisation-enroute-data" title="Link to this heading"></a></h3>
+<p><strong>Enroute Flight Navigation</strong> communique régulièrement avec le serveur
+<strong>enroute-data.akaflieg-freiburg.de</strong> (appelé <strong>enroute-data</strong>),
+exploité par Hetzner Online GmbH pour le compte d’Akaflieg Freiburg. Le
+rôle principal du serveur est de faciliter les fonctionnalités de
+l’application tout en préservant la confidentialité des utilisateurs.</p>
+<section id="donnees-collectees">
+<h4>1.1. Données collectées<a class="headerlink" href="#donnees-collectees" title="Link to this heading"></a></h4>
+<p>Dans chaque communication avec <strong>enroute-data</strong>, l’adresse IP de votre
+appareil est transmise au serveur. Le serveur doit connaître l’adresse
+IP pour répondre.</p>
+<p>Le serveur stocke les éléments de données suivants dans ses fichiers
+journaux.</p>
 <ul class="simple">
-<li><p><strong>Pseudonymized IP Address</strong>: The last byte of your IP address is
-replaced with a random number, ensuring it cannot identify you.</p></li>
-<li><p><strong>Access Data</strong>: Date and time of access, error codes, and data sent.</p></li>
-<li><p><strong>Software Information</strong>: The name of the web browser or software in
-use if the visitor’s software provides this information to the
-server. <strong>Enroute Flight Navigation</strong> does not provide this
-information and sends a standard text (‘Mozilla/5.0’) instead.</p></li>
-<li><p><strong>Operating System:</strong> The operating system’s name if the visitor’s
-software provides this information to the server. <strong>Enroute Flight
-Navigation</strong> does not provide this information.</p></li>
+<li><p><strong>Adresse IP pseudonymisée</strong>: le dernier byte de votre adresse IP est
+remplacé par un nombre aléatoire, garantissant ainsi qu’elle ne peut
+pas vous identifier.</p></li>
+<li><p><strong>Données d’accès</strong>: date et heure d’accès, codes d’erreur et données
+envoyées.</p></li>
+<li><p><strong>Informations sur le logiciel</strong>: le nom du navigateur Web ou du
+logiciel utilisé si le logiciel du visiteur fournit ces informations
+au serveur. <strong>Enroute Flight Navigation</strong> ne fournit pas ces
+informations et envoie un texte standard (« Mozilla/5.0 ») à la
+place.</p></li>
+<li><p><strong>Système d’exploitation:</strong> Le nom du système d’exploitation si le
+logiciel du visiteur fournit ces informations au serveur. <strong>Enroute
+Flight Navigation</strong> ne fournit pas ces informations.</p></li>
 </ul>
 </section>
-<section id="id3">
-<h4>1.2. Communication: Data Download<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
-<p>The app checks for updates and downloads data from <strong>enroute-data</strong> to
-provide current maps and aviation data. Your IP address is transmitted
-in the process.</p>
+<section id="communication-telechargement-de-donnees">
+<h4>1.2. Communication: téléchargement de données<a class="headerlink" href="#communication-telechargement-de-donnees" title="Link to this heading"></a></h4>
+<p>L’application vérifie les mises à jour et télécharge les données de
+<strong>enroute-data</strong> pour fournir des cartes et des données aéronautiques
+actuelles. Votre adresse IP est transmise au cours du processus.</p>
 </section>
-<section id="id4">
-<h4>1.3. Communication: NOTAM, METAR and TAF<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
-<p><strong>Enroute Flight Navigation</strong> shows NOTAMs, METARs, and TAFs for
-airfields near your current location and your currently planned route.
-It also shows NOTAMs, METARs, and TAFs for all waypoints you open in the
-app. To provide this functionality, requests are transmitted to the
-server <strong>enroute-data</strong> at regular intervals and whenever new data is
-requested. In addition to your device’s IP address, the following data
-items will be sent.</p>
+<section id="communication-notam-metar-et-taf">
+<h4>1.3. Communication: NOTAM, METAR et TAF<a class="headerlink" href="#communication-notam-metar-et-taf" title="Link to this heading"></a></h4>
+<p><strong>Enroute Flight Navigation</strong> affiche les NOTAM, METAR et TAF pour les
+aérodromes proches de votre position actuelle et votre itinéraire
+actuellement prévu. Il affiche également les NOTAM, METAR et TAF pour
+tous les waypoints que vous ouvrez dans l’application. Pour fournir
+cette fonctionnalité, des requêtes sont transmises au serveur
+<strong>enroute-data</strong> à intervalles réguliers et chaque fois que de nouvelles
+données sont demandées. En plus de l’adresse IP de votre appareil, les
+éléments de données suivants seront envoyés.</p>
 <ul class="simple">
 <li><p>Votre position actuelle</p></li>
 <li><p>L’itinéraire actuellement prévu</p></li>
 <li><p>Coordonnées du point de cheminement</p></li>
 </ul>
-<p>The server forwards requests for METARs and TAFs to a web service at the
-Aviation Weather Center but hides your IP address, so the web service
-will never see it. The web services at the Aviation Weather Center are
-operated by the US government. We do not control the data handling
-practices of these external services. Detailed information can be found
-at <strong>www.aviationweather.gov/dataserver</strong>.</p>
-<p>The server forwards requests for NOTAMs to a Federal Aviation
-Administration web service but hides your IP address, so the service
-will never see it. The Federal Aviation Administration’s web services
-are operated by the US government. We do not control the data handling
-practices of these external services. Detailed information can be found
-at <strong>api.faa.gov</strong>.</p>
+<p>Le serveur transmet les demandes de METAR et de TAF à un service Web du
+centre météorologique de l’aviation, mais masque votre adresse IP afin
+que le service Web ne la voie jamais. Les services Web de l’Aviation
+Weather Center sont gérés par le gouvernement américain. Nous ne
+contrôlons pas les pratiques de traitement des données de ces services
+externes. Des informations détaillées sont disponibles sur
+<strong>www.aviationweather.gov/dataserver</strong>.</p>
+<p>Le serveur transmet les demandes de NOTAM à un service Web de la Federal
+Aviation Administration, mais masque votre adresse IP afin que le
+service ne la voie jamais. Les services Web de la Federal Aviation
+Administration sont gérés par le gouvernement américain. Nous ne
+contrôlons pas les pratiques de traitement des données de ces services
+externes. Des informations détaillées sont disponibles sur
+<strong>api.faa.gov</strong>.</p>
 </section>
 </section>
-<section id="id5">
-<h3>Other Servers<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
-<p>At the user’s request, <strong>Enroute Flight Navigation</strong> may display
-external websites in an embedded browser window or ask the operating
-system to open external apps such as Google Maps. These external sites
-and apps are beyond our control and may collect their own data.</p>
-<p>Users expect web browsers to follow hyperlinks immediately but may not
-expect the same behavior elsewhere in the app. To account for these
-expectations, <strong>Enroute Flight Navigation</strong> operates as follows.</p>
+<section id="autres-serveurs">
+<h3>Autres serveurs<a class="headerlink" href="#autres-serveurs" title="Link to this heading"></a></h3>
+<p>À la demande de l’utilisateur, <strong>Enroute Flight Navigation</strong> peut
+afficher des sites Web externes dans une fenêtre de navigateur intégrée
+ou demander au système d’exploitation d’ouvrir des applications externes
+telles que Google Maps. Ces sites et applications externes échappent à
+notre contrôle et peuvent collecter leurs propres données.</p>
+<p>Les utilisateurs s’attendent à ce que les navigateurs Web suivent
+immédiatement les hyperliens, mais ne s’attendent pas nécessairement au
+même comportement ailleurs dans l’application. Pour répondre à ces
+attentes, la <strong>Enroute Flight Navigation</strong> fonctionne comme suit.</p>
 <ul class="simple">
-<li><p><strong>Embedded Browser Windows</strong>: Clicking a hyperlink is considered
-authorization to open the external site.</p></li>
-<li><p><strong>Outside Embedded Browser Windows</strong>: The app will ask for explicit
-user authorization before opening any external site or app.</p></li>
+<li><p><strong>Navigateur intégré Windows</strong>: cliquer sur un lien hypertexte est
+considéré comme une autorisation d’ouvrir le site externe.</p></li>
+<li><p><strong>En dehors du navigateur intégré de Windows</strong>: l’application
+demandera l’autorisation explicite de l’utilisateur avant d’ouvrir un
+site ou une application externe.</p></li>
 </ul>
 </section>
 <section id="responsable">
@@ -740,8 +751,8 @@ autorización explícita del usuario antes de abrir cualquier sitio o
 aplicación externa.</p></li>
 </ul>
 </section>
-<section id="id6">
-<h3>Responsable<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<section id="id1">
+<h3>Responsable<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
 <p>Stefan Kebekus, Wintererstraße 77, 79104 Freiburg im Breisgau, Germany</p>
 </section>
 </section>

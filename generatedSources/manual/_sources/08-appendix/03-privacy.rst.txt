@@ -214,99 +214,110 @@ Stefan Kebekus, Wintererstraße 77, 79104 Freiburg im Breisgau, Germany
 Traduction en français
 ----------------------
 
-This Privacy Policy outlines the data handling practices for the app
-**Enroute Flight Navigation**. We prioritize your privacy and do not
-collect or store personally identifiable information. However, for the
-app to function properly, it must communicate with certain servers on
-the Internet. The following sections list the servers that **Enroute
-Flight Navigation** communicates with and explain the communication
-purposes.
+Cette politique de confidentialité décrit les pratiques de traitement
+des données pour l'application **Enroute Flight Navigation**. Nous
+accordons la priorité à votre vie privée et ne collectons ni ne stockons
+d’informations personnelles identifiables. Cependant, pour que
+l’application fonctionne correctement, elle doit communiquer avec
+certains serveurs sur Internet. Les sections suivantes répertorient les
+serveurs avec lesquels **Enroute Flight Navigation** communique et
+expliquent les objectifs de la communication.
 
-By using Enroute Flight Navigation, you agree to this Privacy Policy. We
-may update this policy periodically, and any changes will be posted
-within the app.
+En utilisant Enroute Flight Navigation, vous acceptez cette politique de
+confidentialité. Nous pouvons mettre à jour cette politique
+périodiquement et toute modification sera publiée dans l'application.
 
-1. Data and Anonymization Server (enroute-data)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1. Serveur de données et d'anonymisation (enroute-data)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**Enroute Flight Navigation** regularly communicates with the server
-**enroute-data.akaflieg-freiburg.de** (referred to as **enroute-data**),
-operated by Hetzner Online GmbH on behalf of Akaflieg Freiburg. The
-server's primary role is to facilitate the app's functionality while
-maintaining user privacy.
+**Enroute Flight Navigation** communique régulièrement avec le serveur
+**enroute-data.akaflieg-freiburg.de** (appelé **enroute-data**),
+exploité par Hetzner Online GmbH pour le compte d'Akaflieg Freiburg. Le
+rôle principal du serveur est de faciliter les fonctionnalités de
+l'application tout en préservant la confidentialité des utilisateurs.
 
-1.1. Data Collected
-^^^^^^^^^^^^^^^^^^^
+1.1. Données collectées
+^^^^^^^^^^^^^^^^^^^^^^^
 
-In every communication with **enroute-data**, your device's IP address
-is transmitted to the server. The server needs to know the IP address to
-respond.
+Dans chaque communication avec **enroute-data**, l'adresse IP de votre
+appareil est transmise au serveur. Le serveur doit connaître l'adresse
+IP pour répondre.
 
-The server stores the following data items in its log files.
+Le serveur stocke les éléments de données suivants dans ses fichiers
+journaux.
 
--  **Pseudonymized IP Address**: The last byte of your IP address is
-   replaced with a random number, ensuring it cannot identify you.
--  **Access Data**: Date and time of access, error codes, and data sent.
--  **Software Information**: The name of the web browser or software in
-   use if the visitor’s software provides this information to the
-   server. **Enroute Flight Navigation** does not provide this
-   information and sends a standard text ('Mozilla/5.0') instead.
--  **Operating System:** The operating system's name if the visitor’s
-   software provides this information to the server. **Enroute Flight
-   Navigation** does not provide this information.
+-  **Adresse IP pseudonymisée**: le dernier byte de votre adresse IP est
+   remplacé par un nombre aléatoire, garantissant ainsi qu'elle ne peut
+   pas vous identifier.
+-  **Données d'accès**: date et heure d'accès, codes d'erreur et données
+   envoyées.
+-  **Informations sur le logiciel**: le nom du navigateur Web ou du
+   logiciel utilisé si le logiciel du visiteur fournit ces informations
+   au serveur. **Enroute Flight Navigation** ne fournit pas ces
+   informations et envoie un texte standard (« Mozilla/5.0 ») à la
+   place.
+-  **Système d'exploitation:** Le nom du système d'exploitation si le
+   logiciel du visiteur fournit ces informations au serveur. **Enroute
+   Flight Navigation** ne fournit pas ces informations.
 
-1.2. Communication: Data Download
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+1.2. Communication: téléchargement de données
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The app checks for updates and downloads data from **enroute-data** to
-provide current maps and aviation data. Your IP address is transmitted
-in the process.
+L'application vérifie les mises à jour et télécharge les données de
+**enroute-data** pour fournir des cartes et des données aéronautiques
+actuelles. Votre adresse IP est transmise au cours du processus.
 
-1.3. Communication: NOTAM, METAR and TAF
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+1.3. Communication: NOTAM, METAR et TAF
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-**Enroute Flight Navigation** shows NOTAMs, METARs, and TAFs for
-airfields near your current location and your currently planned route.
-It also shows NOTAMs, METARs, and TAFs for all waypoints you open in the
-app. To provide this functionality, requests are transmitted to the
-server **enroute-data** at regular intervals and whenever new data is
-requested. In addition to your device's IP address, the following data
-items will be sent.
+**Enroute Flight Navigation** affiche les NOTAM, METAR et TAF pour les
+aérodromes proches de votre position actuelle et votre itinéraire
+actuellement prévu. Il affiche également les NOTAM, METAR et TAF pour
+tous les waypoints que vous ouvrez dans l'application. Pour fournir
+cette fonctionnalité, des requêtes sont transmises au serveur
+**enroute-data** à intervalles réguliers et chaque fois que de nouvelles
+données sont demandées. En plus de l'adresse IP de votre appareil, les
+éléments de données suivants seront envoyés.
 
 -  Votre position actuelle
 -  L'itinéraire actuellement prévu
 -  Coordonnées du point de cheminement
 
-The server forwards requests for METARs and TAFs to a web service at the
-Aviation Weather Center but hides your IP address, so the web service
-will never see it. The web services at the Aviation Weather Center are
-operated by the US government. We do not control the data handling
-practices of these external services. Detailed information can be found
-at **www.aviationweather.gov/dataserver**.
+Le serveur transmet les demandes de METAR et de TAF à un service Web du
+centre météorologique de l'aviation, mais masque votre adresse IP afin
+que le service Web ne la voie jamais. Les services Web de l'Aviation
+Weather Center sont gérés par le gouvernement américain. Nous ne
+contrôlons pas les pratiques de traitement des données de ces services
+externes. Des informations détaillées sont disponibles sur
+**www.aviationweather.gov/dataserver**.
 
-The server forwards requests for NOTAMs to a Federal Aviation
-Administration web service but hides your IP address, so the service
-will never see it. The Federal Aviation Administration's web services
-are operated by the US government. We do not control the data handling
-practices of these external services. Detailed information can be found
-at **api.faa.gov**.
+Le serveur transmet les demandes de NOTAM à un service Web de la Federal
+Aviation Administration, mais masque votre adresse IP afin que le
+service ne la voie jamais. Les services Web de la Federal Aviation
+Administration sont gérés par le gouvernement américain. Nous ne
+contrôlons pas les pratiques de traitement des données de ces services
+externes. Des informations détaillées sont disponibles sur
+**api.faa.gov**.
 
-Other Servers
-~~~~~~~~~~~~~
+Autres serveurs
+~~~~~~~~~~~~~~~
 
-At the user's request, **Enroute Flight Navigation** may display
-external websites in an embedded browser window or ask the operating
-system to open external apps such as Google Maps. These external sites
-and apps are beyond our control and may collect their own data.
+À la demande de l'utilisateur, **Enroute Flight Navigation** peut
+afficher des sites Web externes dans une fenêtre de navigateur intégrée
+ou demander au système d'exploitation d'ouvrir des applications externes
+telles que Google Maps. Ces sites et applications externes échappent à
+notre contrôle et peuvent collecter leurs propres données.
 
-Users expect web browsers to follow hyperlinks immediately but may not
-expect the same behavior elsewhere in the app. To account for these
-expectations, **Enroute Flight Navigation** operates as follows.
+Les utilisateurs s'attendent à ce que les navigateurs Web suivent
+immédiatement les hyperliens, mais ne s'attendent pas nécessairement au
+même comportement ailleurs dans l'application. Pour répondre à ces
+attentes, la **Enroute Flight Navigation** fonctionne comme suit.
 
--  **Embedded Browser Windows**: Clicking a hyperlink is considered
-   authorization to open the external site.
--  **Outside Embedded Browser Windows**: The app will ask for explicit
-   user authorization before opening any external site or app.
+-  **Navigateur intégré Windows**: cliquer sur un lien hypertexte est
+   considéré comme une autorisation d'ouvrir le site externe.
+-  **En dehors du navigateur intégré de Windows**: l'application
+   demandera l'autorisation explicite de l'utilisateur avant d'ouvrir un
+   site ou une application externe.
 
 Responsable
 ~~~~~~~~~~~

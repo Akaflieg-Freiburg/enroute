@@ -51,6 +51,7 @@ add_custom_target(flatpak-publish
     COMMAND rm -rf de.akaflieg_freiburg.enroute
     COMMAND git clone --depth 1 --branch upstream git@github.com:flathub/de.akaflieg_freiburg.enroute.git
     COMMAND cp de.akaflieg_freiburg.enroute.json de.akaflieg_freiburg.enroute
+    COMMAND cp ${CMAKE_SOURCE_DIR}/CHANGELOG.md de.akaflieg_freiburg.enroute
     COMMAND cd de.akaflieg_freiburg.enroute
     COMMAND git diff-index --quiet HEAD || git commit -am "New upstream release"
     COMMAND git push

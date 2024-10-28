@@ -799,7 +799,7 @@ Item {
 
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    rasterMenu.open()
+                    rasterMenu.popup()
 
                 }
 
@@ -811,7 +811,14 @@ Item {
                         id: recentFilesInstantiator
                         model: DataManager.baseMapsRaster.downloadables
                         delegate: CheckDelegate {
+                            checked: modelData.objectName === Global.currentRasterMap
                             text: modelData.objectName
+
+                            onClicked: {
+                                PlatformAdaptor.vibrateBrief()
+                                rasterMenu.close()
+                            }
+
                             //onTriggered: loadFile(modelData)
                         }
 

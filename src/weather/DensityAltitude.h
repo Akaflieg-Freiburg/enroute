@@ -20,6 +20,11 @@
 
 #pragma once
 
+#include "units/Distance.h"
+#include "units/Density.h"
+#include "units/Pressure.h"
+#include "units/Temperature.h"
+
 namespace Weather {
 
 /*! \brief This class calculates the density altiude according to temperature, QNH,  Altitude (and dewpoint) */
@@ -31,38 +36,39 @@ public:
 
     /*! \brief calculates the density altiude without dewpoint information
      * 
-     * @param oat outside air temperature in degrees Celsius.
-     * @param qnh The atmospheric pressure at sea level in hPa.
-     * @param geometricAltitudeInFt The elevation above sea level in feet.
+     * @param oat outside air temperature
+     * @param qnh The atmospheric pressure at sea level
+     * @param geometricAltitude The elevation above sea level
      * @returns dry air approximation of density altiude according to https://aerotoolbox.com/density-altitude/
      */
-    static double calculateDensityAltitudeDryAirApproximation(double oat, double qnh, double geometricAltitudeInFt);
+    static Units::Distance calculateDensityAltitudeDryAirApproximation(Units::Temperature oat, Units::Pressure qnh, Units::Distance geometricAltitude);
 
     
-    /*! \brief 
+    /*! \brief  calculates the density altiude with dewpoint information
     * 
-    * @param oat outside air temperature in celsius
-    * @param qnh The atmospheric pressure at sea level in hPa.
-    * @param geometricAltitudeInFt The elevation above sea level in feet.
-    * @param dewPoint dew point in degrees Celsius.
+    * @param oat outside air temperature
+    * @param qnh The atmospheric pressure at sea level
+    * @param geometricAltitude The elevation above sea level
+    * @param dewPoint dew point
     * @returns density altiude according to https://aerotoolbox.com/density-altitude/
     */
-    static double calculateDensityAltitude(double oat, double qnh, double geometricAltitudeInFt, double dewPoint);
+    static Units::Distance calculateDensityAltitude(Units::Temperature oat, Units::Pressure qnh, Units::Distance geometricAltitude, Units::Temperature dewPoint);
 private:
     // calculates the actual density altitude either with or without a given dewpoint
-    static double calculateDensityAltitudeInternal(double oat, double qnh, double geometricAltitudeInFt, double dewPoint, bool bWithDewPoint);
-
-    // converts the geometricAltitude into geopotential altitude
-    static double geometricAltitudeToGeopotentialAltitude(double geometricAltitudeInKm);
-
-    // calculates the air density either with or without a given dewpoint
-    static double calculateAirDensity(double temperature, double qnh, double height, double dewPoint, bool bWithDewPoint);
-
-    // calculates the air density
-    static double calculateAbsolutePressure(double qnh, double height);
+    static Units::Distance calculateDensityAltitudeInternal(Units::Temperature oat, Units::Pressure qnh, Units::Distance geometricAltitude, Units::Temperature dewPoint, bool bWithDewPoint);
 
     // calculates the vapour pressure using the Herman Wobus approximation polynominal curve
-    static double calculateVapourPressure(double dewPoint);
+    static Units::Pressure calculateVapourPressure(Units::Temperature dewPoint);
+
+    // calculates the air density
+    static Units::Pressure calculateAbsolutePressure(Units::Pressure qnh, Units::Distance height);
+
+    // calculates the air density either with or without a given dewpoint
+    static Units::Density calculateAirDensity(Units::Temperature temperature, Units::Pressure qnh, Units::Distance height, Units::Temperature dewPoint, bool bWithDewPoint);
+
+
+    // converts the geometricAltitude into geopotential altitude
+    static Units::Distance geometricAltitudeToGeopotentialAltitude(Units::Distance geometricAltitude);
 };
 
 } // namespace Weather

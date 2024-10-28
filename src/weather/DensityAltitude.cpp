@@ -20,26 +20,24 @@
 
 
 #include "weather/DensityAltitude.h"
-#include "units/Distance.h"
-#include "units/Temperature.h"
+
 #include <math.h>
 
-double Weather::DensityAltitude::calculateDensityAltitudeDryAirApproximation(double oat, double qnh, double geometricAltitudeInFt)
+Units::Distance Weather::DensityAltitude::calculateDensityAltitudeDryAirApproximation(Units::Temperature oat, Units::Pressure qnh, Units::Distance geometricAltitude)
 {
-    return calculateDensityAltitudeInternal(oat, qnh, geometricAltitudeInFt, 0, false);
+    return calculateDensityAltitudeInternal(oat, qnh, geometricAltitude, Units::Temperature::fromDegreeCelsius(0), false);
 }
 
-double Weather::DensityAltitude::calculateDensityAltitude(double oat, double qnh, double geometricAltitudeInFt, double dewPoint)
+Units::Distance Weather::DensityAltitude::calculateDensityAltitude(Units::Temperature oat, Units::Pressure qnh, Units::Distance geometricAltitude, Units::Temperature dewPoint)
 {
-    return calculateDensityAltitudeInternal(oat, qnh, geometricAltitudeInFt, dewPoint, true);
+    return calculateDensityAltitudeInternal(oat, qnh, geometricAltitude, dewPoint, true);
 }
 
 
-double Weather::DensityAltitude::calculateDensityAltitudeInternal(double oat, double qnh, double geometricAltitudeInFt, double dewPoint, bool bWithDewPoint)
+Units::Distance Weather::DensityAltitude::calculateDensityAltitudeInternal(Units::Temperature oat, Units::Pressure qnh, Units::Distance geometricAltitude, Units::Temperature dewPoint, bool bWithDewPoint)
 {
-    const double geometricAltitudeInKm = Units::Distance::fromFT(geometricAltitudeInFt).toKM();
-    const double geopotentialAltitude = geometricAltitudeToGeopotentialAltitude(geometricAltitudeInKm);
-    const double pAir = calculateAirDensity(oat, qnh, geopotentialAltitude, dewPoint, bWithDewPoint); // Air density
+    const Units::Distance geopotentialAltitude = geometricAltitudeToGeopotentialAltitude(geometricAltitude);
+    const double pAir = calculateAirDensity(oat, qnh, geopotentialAltitude, dewPoint, bWithDewPoint).toKgPerCubeMeter(); // Air density
 
     const double g = 9.80665; // Acceleration due to gravity
     const double M = 0.028964; // Molar mass of dry air
@@ -56,12 +54,13 @@ double Weather::DensityAltitude::calculateDensityAltitudeInternal(double oat, do
     const double h5 = 1 - (pow(h4, ((Gamma * R) / (g * M - Gamma * R))));
     const double h = h1 * h5;
     
-    return Units::Distance::fromM(h).toFeet();
+    return Units::Distance::fromM(h);
 }
 
-double Weather::DensityAltitude::calculateVapourPressure(double dewPoint)
+Units::Pressure Weather::DensityAltitude::calculateVapourPressure(Units::Temperature dewPoint)
 {
     const double eso = 6.1078; // polynomial constant
+    const double dewPointInCelsius = dewPoint.toDegreeCelsius();
 
     // remark: errors in odd coefficients in https://aerotoolbox.com/density-altitude/
     // refer to https://wahiduddin.net/calc/density_altitude.htm instead
@@ -78,49 +77,50 @@ double Weather::DensityAltitude::calculateVapourPressure(double dewPoint)
         -0.30994571e-19
     };
     
-    const double p = (c[0] + dewPoint * (c[1] + dewPoint * (c[2] + dewPoint * (c[3] + dewPoint * (c[4] + dewPoint * (c[5] + dewPoint * (c[6] + dewPoint * (c[7] + dewPoint * (c[8] + dewPoint * (c[9]))))))))));
+    const double p = (c[0] + dewPointInCelsius * (c[1] + dewPointInCelsius * (c[2] + dewPointInCelsius * (c[3] + dewPointInCelsius * (c[4] + dewPointInCelsius * (c[5] + dewPointInCelsius * (c[6] + dewPointInCelsius * (c[7] + dewPointInCelsius * (c[8] + dewPointInCelsius * (c[9]))))))))));
     const double Es = eso / (pow(p, 8)); // Saturation pressure of water vapour, Herman Wobus approximation
     const double Pv = Es; // partial pressure of water vapour
     
-    return Pv;
+    return Units::Pressure::fromHPa(Pv);
 }
 
-double Weather::DensityAltitude::calculateAbsolutePressure(double qnh, double height)
+Units::Pressure Weather::DensityAltitude::calculateAbsolutePressure(Units::Pressure qnh, Units::Distance height)
 {
-  const double heightInM = Units::Distance::fromKM(height).toM();
+  const double heightInM = height.toM();
   const double k1 = 0.190263; // Constant
   const double k2 = 8.417286e-5; // Constant
 
   // Absolute pressure formula
-  const double Pa1 = pow(qnh, k1);
+  const double Pa1 = pow(qnh.toHPa(), k1);
   const double Pa2 = k2 * heightInM;
   const double Pa3 = (Pa1 - Pa2);
   const double Pa = pow(Pa3, (1 / (k1))); // Absolute pressure
   
-  return Pa;
+  return Units::Pressure::fromHPa(Pa);
 }
 
-double Weather::DensityAltitude::calculateAirDensity(double temperature, double qnh, double height, double dewPoint, bool bWithDewPoint)
+Units::Density Weather::DensityAltitude::calculateAirDensity(Units::Temperature temperature, Units::Pressure qnh, Units::Distance height, Units::Temperature dewPoint, bool bWithDewPoint)
 {
     const double Rd = 287.058; // Gas constant dry air
     const double Rv = 461.495; // Gas constant water vapour
-    const double Pv = bWithDewPoint ? calculateVapourPressure(dewPoint) : 0; // partial pressure of water vapour
-    const double Pa = calculateAbsolutePressure(qnh, height); // Absolute or Station Pressure
+    const double Pv = bWithDewPoint ? calculateVapourPressure(dewPoint).toHPa() : 0; // partial pressure of water vapour
+    const double Pa = calculateAbsolutePressure(qnh, height).toHPa(); // Absolute or Station Pressure
     const double Pd = Pa - Pv; // Partial pressure of dry air
-    const double temperatureInK = Units::Temperature::fromDegreeCelsius(temperature).toDegreeKelvin();
+    const double temperatureInK = temperature.toDegreeKelvin();
 
     // air density formula
     const double pAir1 = ((Pd * 100) / (Rd * temperatureInK));
     const double pAir2 = ((Pv * 100) / (Rv * temperatureInK));
     const double pAir = pAir1 + pAir2; // Calculated Density of Air
-    return pAir;
+
+    return Units::Density::fromKgPerCubeMeter(pAir);
 }
 
-double Weather::DensityAltitude::geometricAltitudeToGeopotentialAltitude(double geometricAltitudeInKm)
+Units::Distance Weather::DensityAltitude::geometricAltitudeToGeopotentialAltitude(Units::Distance geometricAltitude)
 {
     const double E = 6356.766; // ISA radius of the Earth
 
     // Geopotential Altitude formula
-    const double H = (geometricAltitudeInKm * E) / (E + geometricAltitudeInKm); // Geopotential Altitude
-    return H;
+    const double H = (geometricAltitude.toKM() * E) / (E + geometricAltitude.toKM()); // Geopotential Altitude
+    return Units::Distance::fromKM(H);
 }

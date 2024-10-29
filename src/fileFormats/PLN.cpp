@@ -20,47 +20,43 @@
 
 
 #include <QFile>
-#include <QTextStream>
-#include <qxmlstream.h>
-#include <qnamespace.h>
-#include <qglobal.h>
-#include <qgeocoordinate.h>
-#include <qobject.h>
+#include <QGeoCoordinate>
+#include <QXmlStreamReader>
 
 #include "PLN.h"
 
 #include "DataFileAbstract.h"
 
 
-
-auto convertPDMSToDecimal(QString pdms) ->double
+// Converts a string of the form N53° 53' 55.87" or W166° 32' 40.78" to a decimal. Returns NAN on failure.
+double convertPDMSToDecimal(QString pdms)
 {
-    bool ok = false;
-    QStringList split = pdms.split(" ");
+    QStringList split = pdms.split(u" "_qs);
     if (split.size() != 3)
     {
-        throw 1;
-    }
-    int const degree = split[0].chopped(1).remove(0, 1).toInt(&ok);
-    if (!ok)
-    {
-        throw 2;
-    }
-    int const minute = split[1].chopped(1).toInt(&ok);
-    if (!ok)
-    {
-        throw 3;
-    }
-    double const second = split[2].chopped(1).toDouble(&ok);
-    if (!ok)
-    {
-        throw 4;
+        return NAN;
     }
 
-    double const decimal = degree + (minute / 60.0) + (second / 3600);
+    bool ok = false;
+    auto degree = split[0].chopped(1).remove(0, 1).toInt(&ok);
+    if (!ok)
+    {
+        return NAN;
+    }
+    auto minute = split[1].chopped(1).toInt(&ok);
+    if (!ok)
+    {
+        return NAN;
+    }
+    auto second = split[2].chopped(1).toDouble(&ok);
+    if (!ok)
+    {
+        return NAN;
+    }
 
-    QChar const pol = pdms[0].toUpper();
+    auto decimal = degree + (minute / 60.0) + (second / 3600);
 
+    auto pol = pdms[0].toUpper();
     if ((pol == 'S') || (pol == 'W'))
     {
         return -decimal;
@@ -71,13 +67,7 @@ auto convertPDMSToDecimal(QString pdms) ->double
 
 FileFormats::PLN::PLN(const QString& fileName)
 {
-    bool ok = false;
-    int count1 = 0;
-    int count2 = 0;
-    int count3 = 0;
-    QString pos;
-    QGeoCoordinate waypoint;
-    QStringList split;
+    // Open file and open QXmlStreamReader
     auto file = FileFormats::DataFileAbstract::openFileURL(fileName);
     auto success = file->open(QIODevice::ReadOnly);
     if (!success)
@@ -85,7 +75,6 @@ FileFormats::PLN::PLN(const QString& fileName)
         setError(QObject::tr("Cannot open PLN file %1 for reading.", "FileFormats::PLN").arg(fileName));
         return;
     }
-
     QXmlStreamReader xmlReader(file.data());
     if (!xmlReader.readNextStartElement())
     {
@@ -97,74 +86,74 @@ FileFormats::PLN::PLN(const QString& fileName)
         setError(QObject::tr("File %1 does not contain a flight plan", "FileFormats::PLN").arg(fileName));
         return;
     }
-    count1 = 0;
+
+
+    int flightPlanCounter = 0;
     while(xmlReader.readNextStartElement())
     {
         if(xmlReader.name().compare("FlightPlan.FlightPlan", Qt::CaseInsensitive) != 0)
         {
             xmlReader.skipCurrentElement();
+            continue;
         }
-        else
+        flightPlanCounter++;
+
+        int atcWaypointCounter = 0;
+        while(xmlReader.readNextStartElement())
         {
-            count1++;
-            count2 = 0;
+            if(xmlReader.name().compare("ATCWaypoint", Qt::CaseInsensitive) != 0)
+            {
+                xmlReader.skipCurrentElement();
+                continue;
+            }
+            atcWaypointCounter++;
+
+            auto id = xmlReader.attributes().value(u"id"_qs).toString();
+            int worldPositionCounter = 0;
             while(xmlReader.readNextStartElement())
             {
-                if(xmlReader.name().compare("ATCWaypoint", Qt::CaseInsensitive) != 0)
+                if(xmlReader.name().compare("WorldPosition", Qt::CaseInsensitive) != 0)
                 {
                     xmlReader.skipCurrentElement();
+                    continue;
                 }
-                else
+                worldPositionCounter++;
+
+                auto pos = xmlReader.readElementText();
+                auto split = pos.split(u","_qs);
+                if (split.size() != 3)
                 {
-                    count2++;
-                    count3 = 0;
-                    while(xmlReader.readNextStartElement())
-                    {
-                        if(xmlReader.name().compare("WorldPosition", Qt::CaseInsensitive) != 0)
-                        {
-                            xmlReader.skipCurrentElement();
-                        }
-                        else
-                        {
-                            count3++;
-                            pos = xmlReader.readElementText();
-                            split = pos.split(",");
-                            try
-                            {
-                                if (split.size() != 3)
-                                {
-                                    throw 1;
-                                }
-                                waypoint.setLatitude(convertPDMSToDecimal(split[0]));
-                                waypoint.setLongitude(convertPDMSToDecimal(split[1]));
-                                waypoint.setAltitude(split[2].toDouble(&ok));
-                                if (!ok)
-                                {
-                                    throw 5;
-                                }
-                                m_waypoints.append(waypoint);
-                            }
-                            catch (...)
-                            {
-                                addWarning(QObject::tr("Position of waypoint %1 is not a valid position", "FileFormats::PLN").arg(count2));
-                            }
-                        }
-                    }
-                    if (count3 != 1)
-                    {
-                        setError(QObject::tr("Waypoint %1 does not have a unique position", "FileFormats::PLN").arg(count2));
-                        return;
-                    }
+                    setError(QObject::tr("Position of waypoint %1 invalid", "FileFormats::PLN").arg(atcWaypointCounter));
+                    return;
                 }
+                bool ok = false;
+                QGeoCoordinate coord;
+                coord.setLatitude(convertPDMSToDecimal(split[0]));
+                coord.setLongitude(convertPDMSToDecimal(split[1]));
+                coord.setAltitude(split[2].toDouble(&ok));
+                if (!ok || !coord.isValid())
+                {
+                    setError(QObject::tr("Position of waypoint %1 is not a valid position", "FileFormats::PLN").arg(atcWaypointCounter));
+                    return;
+                }
+                m_waypoints.append(GeoMaps::Waypoint(coord, id));
             }
-            if (count2 == 0)
+            if (worldPositionCounter != 1)
             {
-                setError(QObject::tr("File %1 does not contain way points", "FileFormats::PLN").arg(fileName));
+                setError(QObject::tr("Waypoint %1 does not have a unique position", "FileFormats::PLN").arg(atcWaypointCounter));
                 return;
             }
         }
+
+        if (atcWaypointCounter == 0)
+        {
+            setError(QObject::tr("File %1 does not contain way points", "FileFormats::PLN").arg(fileName));
+            return;
+        }
+
+
     }
-    if (count1 != 1)
+    if (flightPlanCounter != 1)
     {
         setError(QObject::tr("File %1 does not contain a unique flight plan", "FileFormats::PLN").arg(fileName));
         return;

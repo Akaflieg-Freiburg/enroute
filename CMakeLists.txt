@@ -56,7 +56,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 endif()
 
 if(${QT_VERSION} VERSION_GREATER_EQUAL "6.7.0")
-    qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES de es fr it pl)
+    qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES cz de es fr it pl)
 else()
     qt_standard_project_setup()
 endif()

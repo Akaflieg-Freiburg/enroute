@@ -18,55 +18,16 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
-#include <QFile>
-#include <QList>
-#include <QTextStream>
-#include <qxmlstream.h>
-#include <qnamespace.h>
-#include <qglobal.h>
-#include <qgeocoordinate.h>
-#include <qobject.h>
+#include <QXmlStreamReader>
 
 #include "FPL.h"
 
 #include "DataFileAbstract.h"
-
-
+#include "Waypoint.h"
 
 
 FileFormats::FPL::FPL(const QString& fileName)
 {
-    struct Wpoint
-    {
-        QString id;
-        double lon {};
-        double lat {};
-        double elev {};
-
-        auto operator==(const Wpoint& wpoint) const
-        {
-            return id == wpoint.id;
-        }
-
-        void init()
-        {
-            id = nullptr;
-            lat = NULL;
-            lon = NULL;
-            elev = NULL;
-        }
-
-        Wpoint() =default;
-    } wpoint;
-    QList<Wpoint> wplist;
-
-    bool ok = false;
-    int count1 = 0;
-    int count2 = 0;
-    int count3 = 0;
-    int count4 = 0;
-    QGeoCoordinate waypoint;
     auto file = FileFormats::DataFileAbstract::openFileURL(fileName);
     auto success = file->open(QIODevice::ReadOnly);
     if (!success)
@@ -86,14 +47,16 @@ FileFormats::FPL::FPL(const QString& fileName)
         setError(QObject::tr("File %1 does not contain a flight plan", "FileFormats::FPL").arg(fileName));
         return;
     }
-    count1 = 0;
-    count2 = 0;
+
+    int waypointTableCounter = 0;
+    int routeCounter = 0;
+    QMap<QString, QGeoCoordinate> waypointTable;
     while(xmlReader.readNextStartElement())
     {
         if(xmlReader.name().compare("waypoint-table", Qt::CaseInsensitive) == 0)
         {
-            count1++;
-            count3 = 0;
+            waypointTableCounter++;
+            int count3 = 0;
             while(xmlReader.readNextStartElement())
             {
                 if(xmlReader.name().compare("waypoint", Qt::CaseInsensitive) != 0)
@@ -103,26 +66,28 @@ FileFormats::FPL::FPL(const QString& fileName)
                 else
                 {
                     count3++;
-                    wpoint.init();
+                    QString m_name;
+                    QGeoCoordinate m_coordinate;
                     while(xmlReader.readNextStartElement())
                     {
                         if(xmlReader.name().compare("identifier", Qt::CaseInsensitive) == 0)
                         {
-                            if (!wpoint.id.isNull())
+                            if (!m_name.isEmpty())
                             {
                                 setError(QObject::tr("Waypoint %1 has more than one identifier", "FileFormats::FPL").arg(count3));
                                 return;
                             }
-                            wpoint.id = xmlReader.readElementText();
+                            m_name = xmlReader.readElementText();
                         }
                         else if(xmlReader.name().compare("lat", Qt::CaseInsensitive) == 0)
                         {
-                            if (wpoint.lat != NULL)
+                            if (!std::isnan(m_coordinate.latitude()))
                             {
                                 setError(QObject::tr("Waypoint %1 has more than one latitude", "FileFormats::FPL").arg(count3));
                                 return;
                             }
-                            wpoint.lat = xmlReader.readElementText().toDouble(&ok);
+                            bool ok = false;
+                            m_coordinate.setLatitude(xmlReader.readElementText().toDouble(&ok));
                             if (!ok)
                             {
                                 setError(QObject::tr("Waypoint %1 does not have a valid latitude", "FileFormats::FPL").arg(count3));
@@ -131,12 +96,13 @@ FileFormats::FPL::FPL(const QString& fileName)
                         }
                         else if(xmlReader.name().compare("lon", Qt::CaseInsensitive) == 0)
                         {
-                            if (wpoint.lon != NULL)
+                            if (!std::isnan(m_coordinate.longitude()))
                             {
                                 setError(QObject::tr("Waypoint %1 has more than one longitude", "FileFormats::FPL").arg(count3));
                                 return;
                             }
-                            wpoint.lon = xmlReader.readElementText().toDouble(&ok);
+                            bool ok = false;
+                            m_coordinate.setLongitude(xmlReader.readElementText().toDouble(&ok));
                             if (!ok)
                             {
                                 setError(QObject::tr("Waypoint %1 does not have a valid longitude", "FileFormats::FPL").arg(count3));
@@ -145,12 +111,13 @@ FileFormats::FPL::FPL(const QString& fileName)
                         }
                         else if(xmlReader.name().compare("elevation", Qt::CaseInsensitive) == 0)
                         {
-                            if (wpoint.elev != NULL)
+                            if (!std::isnan(m_coordinate.altitude()))
                             {
                                 setError(QObject::tr("Waypoint %1 has more than one elevation", "FileFormats::FPL").arg(count3));
                                 return;
                             }
-                            wpoint.elev = xmlReader.readElementText().toDouble(&ok);
+                            bool ok = false;
+                            m_coordinate.setAltitude(xmlReader.readElementText().toDouble(&ok));
                             if (!ok)
                             {
                                 setError(QObject::tr("Waypoint %1 does not have a valid elevation", "FileFormats::FPL").arg(count3));
@@ -162,22 +129,17 @@ FileFormats::FPL::FPL(const QString& fileName)
                             xmlReader.skipCurrentElement();
                         }
                     }
-                    if (wpoint.id.isNull())
+                    if (m_name.isEmpty())
                     {
                         setError(QObject::tr("Waypoint %1 does not have an identifier", "FileFormats::FPL").arg(count3));
                         return;
                     }
-                    if (wpoint.lat == NULL)
+                    if (!m_coordinate.isValid())
                     {
-                        setError(QObject::tr("Waypoint %1 does not have a latitude", "FileFormats::FPL").arg(count3));
+                        setError(QObject::tr("Waypoint %1 does not have valid coordinats", "FileFormats::FPL").arg(count3));
                         return;
                     }
-                    if (wpoint.lon == NULL)
-                    {
-                        setError(QObject::tr("Waypoint %1 does not have a longitude", "FileFormats::FPL").arg(count3));
-                        return;
-                    }
-                    wplist.append(wpoint);
+                    waypointTable[m_name] = m_coordinate;
                 }
             }
             if (count3 == 0)
@@ -188,8 +150,8 @@ FileFormats::FPL::FPL(const QString& fileName)
         }
         else if (xmlReader.name().compare("route", Qt::CaseInsensitive) == 0)
         {
-            count2++;
-            count3 = 0;
+            routeCounter++;
+            int count3 = 0;
             while(xmlReader.readNextStartElement())
             {
                 if(xmlReader.name().compare("route-point", Qt::CaseInsensitive) != 0)
@@ -199,8 +161,8 @@ FileFormats::FPL::FPL(const QString& fileName)
                 else
                 {
                     count3++;
-                    count4 = 0;
-                    wpoint.init();
+                    int count4 = 0;
+                    QString id;
                     while(xmlReader.readNextStartElement())
                     {
                         if(xmlReader.name().compare("waypoint-identifier", Qt::CaseInsensitive) != 0)
@@ -210,12 +172,7 @@ FileFormats::FPL::FPL(const QString& fileName)
                         else
                         {
                             count4++;
-                            if (!wpoint.id.isNull())
-                            {
-                                setError(QObject::tr("Waypoint %1 has more than one identifier", "FileFormats::FPL").arg(count3));
-                                return;
-                            }
-                            wpoint.id = xmlReader.readElementText();
+                            id = xmlReader.readElementText();
                         }
                     }
                     if (count4 != 1)
@@ -223,16 +180,17 @@ FileFormats::FPL::FPL(const QString& fileName)
                         setError(QObject::tr("Route point %1 does not have a unique waypoint identifier", "FileFormats::FPL").arg(count3));
                         return;
                     }
-                    auto index = wplist.indexOf(wpoint, 0);
-                    if (index < 0)
+
+                    if (waypointTable.contains(id))
+                    {
+                        m_waypoints.append(GeoMaps::Waypoint(waypointTable[id], id));
+                    }
+                    else
                     {
                         setError(QObject::tr("Waypoint identifier for route point %1 does not exist", "FileFormats::FPL").arg(count3));
                         return;
                     }
-                    waypoint.setLatitude(wplist.at(index).lat);
-                    waypoint.setLongitude(wplist.at(index).lon);
-                    waypoint.setAltitude(wplist.at(index).elev);
-                    m_waypoints.append(waypoint);
+
                 }
             }
             if (count3 == 0)
@@ -246,12 +204,12 @@ FileFormats::FPL::FPL(const QString& fileName)
             xmlReader.skipCurrentElement();
         }
     }
-    if (count1 != 1)
+    if (waypointTableCounter != 1)
     {
         setError(QObject::tr("File %1 does not contain a waypoint", "FileFormats::FPL").arg(fileName));
         return;
     }
-    if (count2 != 1)
+    if (routeCounter != 1)
     {
         setError(QObject::tr("File %1 does not contain a route", "FileFormats::FPL").arg(fileName));
         return;

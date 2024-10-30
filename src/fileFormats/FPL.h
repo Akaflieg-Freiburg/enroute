@@ -23,15 +23,17 @@
 #include <QGeoCoordinate>
 
 #include "DataFileAbstract.h"
+#include "Waypoint.h"
 
 
 namespace FileFormats
 {
 
 /*! \brief FPL file support class
-*
-*  The methods of this class read FPL files.
-*/
+ *
+ *  The methods of this class read PLN files, as specified here:
+ *  https://docs.flightsimulator.com/html/Content_Configuration/Flights_And_Missions/Flight_Definitions.htm
+ */
 
 class FPL : public DataFileAbstract
 {
@@ -46,7 +48,6 @@ public:
     FPL(const QString& fileName);
 
 
-
     //
     // Getter Methods
     //
@@ -57,7 +58,7 @@ public:
      *
      *  @returns Waypoints specified in the FPL file
      */
-    [[nodiscard]] QVector<QGeoCoordinate> waypoints() const { return m_waypoints; }
+    [[nodiscard]] QVector<GeoMaps::Waypoint> waypoints() const { return m_waypoints; }
 
 
     //
@@ -71,7 +72,7 @@ public:
     [[nodiscard]] static QStringList mimeTypes() { return {u"text/xml"_qs, u"text/plain"_qs}; }
 
 private:
-    QVector<QGeoCoordinate> m_waypoints;
+    QVector<GeoMaps::Waypoint> m_waypoints;
 };
 
 } // namespace FileFormats

@@ -77,9 +77,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a02c5e9ec88d8f38e08d8bf5e54f76180" id="r_a02c5e9ec88d8f38e08d8bf5e54f76180"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a02c5e9ec88d8f38e08d8bf5e54f76180">Waypoint</a> ()</td></tr>
 <tr class="memdesc:a02c5e9ec88d8f38e08d8bf5e54f76180"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an invalid way point.  <br /></td></tr>
 <tr class="separator:a02c5e9ec88d8f38e08d8bf5e54f76180"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a9752f9c31e9f49d3a4c07a1744e2e3" id="r_a3a9752f9c31e9f49d3a4c07a1744e2e3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3a9752f9c31e9f49d3a4c07a1744e2e3">Waypoint</a> (const QGeoCoordinate &amp;<a class="el" href="#ab8c0c80b5e2fbb1b89b07d6796c65ed2">coordinate</a>)</td></tr>
-<tr class="memdesc:a3a9752f9c31e9f49d3a4c07a1744e2e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a waypoint from a coordinate.  <br /></td></tr>
-<tr class="separator:a3a9752f9c31e9f49d3a4c07a1744e2e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad48b74567bb6430208020f9e2ebab5e6" id="r_ad48b74567bb6430208020f9e2ebab5e6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad48b74567bb6430208020f9e2ebab5e6">Waypoint</a> (const QGeoCoordinate &amp;<a class="el" href="#ab8c0c80b5e2fbb1b89b07d6796c65ed2">coordinate</a>, const QString &amp;<a class="el" href="#a0acccec9ad0362211e58a8018f96a608">name</a>={})</td></tr>
+<tr class="memdesc:ad48b74567bb6430208020f9e2ebab5e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a waypoint from a coordinate.  <br /></td></tr>
+<tr class="separator:ad48b74567bb6430208020f9e2ebab5e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9c8a2138f6451f6e855914a6e0751b8" id="r_ab9c8a2138f6451f6e855914a6e0751b8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab9c8a2138f6451f6e855914a6e0751b8">Waypoint</a> (const QJsonObject &amp;geoJSONObject)</td></tr>
 <tr class="memdesc:ab9c8a2138f6451f6e855914a6e0751b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a waypoint from a <a class="el" href="classGeoMaps_1_1GeoJSON.html" title="GeoJSON file support class.">GeoJSON</a> object.  <br /></td></tr>
 <tr class="separator:ab9c8a2138f6451f6e855914a6e0751b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -218,8 +218,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="a3a9752f9c31e9f49d3a4c07a1744e2e3" name="a3a9752f9c31e9f49d3a4c07a1744e2e3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3a9752f9c31e9f49d3a4c07a1744e2e3">&#9670;&#160;</a></span>Waypoint() <span class="overload">[2/3]</span></h2>
+<a id="ad48b74567bb6430208020f9e2ebab5e6" name="ad48b74567bb6430208020f9e2ebab5e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad48b74567bb6430208020f9e2ebab5e6">&#9670;&#160;</a></span>Waypoint() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -227,8 +227,12 @@ Friends</h2></td></tr>
         <tr>
           <td class="memname">GeoMaps::Waypoint::Waypoint </td>
           <td>(</td>
-          <td class="paramtype">const QGeoCoordinate &amp;</td>          <td class="paramname"><span class="paramname"><em>coordinate</em></span></td><td>)</td>
+          <td class="paramtype">const QGeoCoordinate &amp;</td>          <td class="paramname"><span class="paramname"><em>coordinate</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span><span class="paramdefsep"> = </span><span class="paramdefval">{}</span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -236,12 +240,13 @@ Friends</h2></td></tr>
 <p>Constructs a waypoint from a coordinate. </p>
 <ul>
 <li>category is set to "WP"</li>
-<li>name is set to "Waypoint"</li>
+<li>name is set to the "Waypoint" or to the name given in the argument</li>
 <li>type is set to "WP"</li>
 </ul>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">coordinate</td><td>Geographical position of the waypoint </td></tr>
+    <tr><td class="paramname">name</td><td>Name of the waypoint </td></tr>
   </table>
   </dd>
 </dl>
@@ -310,7 +315,7 @@ Friends</h2></td></tr>
 <p>Getter method for property with same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property category </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00186">186</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00187">187</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -341,7 +346,7 @@ Friends</h2></td></tr>
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property coordinate </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00195">195</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00196">196</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -372,7 +377,7 @@ Friends</h2></td></tr>
 <p>This method exists for the benefit of QML, where deep copies are hard to produce.</p>
 <dl class="section return"><dt>Returns</dt><dd>Copy of the present waypoint. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00337">337</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00338">338</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -431,7 +436,7 @@ Friends</h2></td></tr>
 <p>Getter method for property with same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property ICAOCode </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00210">210</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00211">211</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -552,7 +557,7 @@ Friends</h2></td></tr>
 <p>Getter method for property with same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property name </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00231">231</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00232">232</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -583,7 +588,7 @@ Friends</h2></td></tr>
 <p>Getter method for property with same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property notes </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00240">240</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00241">241</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -686,7 +691,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00287">287</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00288">288</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -721,7 +726,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00296">296</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00297">297</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -756,7 +761,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00305">305</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00306">306</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -787,7 +792,7 @@ Friends</h2></td></tr>
 <p>Getter method for property with same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property shortName </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00249">249</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00250">250</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -929,7 +934,7 @@ Friends</h2></td></tr>
 <p>Getter method for property with same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property type </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00273">273</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00274">274</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -992,7 +997,7 @@ Friends</h2></td></tr>
 <p>Category of the waypoint. </p>
 <p>This property holds the category of the waypoint. For a list of possible values and explanations, see the <a class="el" href="classGeoMaps_1_1GeoJSON.html" title="GeoJSON file support class.">GeoJSON</a> file specification <a href="https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation">here</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00092">92</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00093">93</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -1019,7 +1024,7 @@ Friends</h2></td></tr>
 <p>Coordinate of the waypoint. </p>
 <p>This property holds the category of the waypoint. The coordinate might include the elevation. </p>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00099">99</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00100">100</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -1047,7 +1052,7 @@ Friends</h2></td></tr>
 <p>This property holds an extended name string of the form "Karlsruhe
 (DVOR-DME)" </p>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00106">106</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00107">107</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -1074,7 +1079,7 @@ Friends</h2></td></tr>
 <p>ICAO Code of the waypoint. </p>
 <p>This property holds the four-letter ICAO code of the waypoint, or an empty string if no ICAO code exists. </p>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00113">113</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00114">114</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -1101,7 +1106,7 @@ Friends</h2></td></tr>
 <p>Suggested icon for use in GUI. </p>
 <p>This property holds the URL of an icon, suitable for the representation of the waypoint in the GUI. </p>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00120">120</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00121">121</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -1128,7 +1133,7 @@ Friends</h2></td></tr>
 <p>Name of the waypoint. </p>
 <p>This property holds the name of the waypoint. </p>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00134">134</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00135">135</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -1155,7 +1160,7 @@ Friends</h2></td></tr>
 <p>Notes attached to the waypoint. </p>
 <p>This property holds notes attached to the waypoint. </p>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00140">140</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00141">141</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -1182,7 +1187,7 @@ Friends</h2></td></tr>
 <p>Short name of the waypoint. </p>
 <p>This property holds the ICAO code if it exists, or else the name of the waypoint. </p>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00147">147</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00148">148</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -1209,7 +1214,7 @@ Friends</h2></td></tr>
 <p>Two-line description of the waypoint name, for use in GUI. </p>
 <p>This property holds a one-line or two-line description of the waypoint. Depending on available data, this is a string of the form "&lt;strong&gt;LFKA&lt;/strong&gt;&lt;br&gt;&lt;font size='2'&gt;ALBERTVILLE&lt;/font&gt;" or simply "KIRCHZARTEN" </p>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00167">167</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00168">168</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>
@@ -1236,7 +1241,7 @@ Friends</h2></td></tr>
 <p>Type of the waypoint. </p>
 <p>This property holds the type of the waypoint. For a list of possible values and explanations, see the <a class="el" href="classGeoMaps_1_1GeoJSON.html" title="GeoJSON file support class.">GeoJSON</a> file specification <a href="https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation">here</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00175">175</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Waypoint_8h_source.html#l00176">176</a> of file <a class="el" href="Waypoint_8h_source.html">Waypoint.h</a>.</p>
 
 </div>
 </div>

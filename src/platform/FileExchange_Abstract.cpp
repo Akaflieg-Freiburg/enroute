@@ -26,8 +26,10 @@
 #include <QUrl>
 
 #include "fileFormats/CUP.h"
+#include "fileFormats/FPL.h"
 #include "fileFormats/MBTILES.h"
 #include "fileFormats/MapURL.h"
+#include "fileFormats/PLN.h"
 #include "fileFormats/TripKit.h"
 #include "geomaps/GeoJSON.h"
 #include "geomaps/OpenAir.h"
@@ -84,6 +86,18 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     // Flight Route in GPX format
     if ((mimeType.inherits(QStringLiteral("application/xml"))) || (mimeType.name() == u"application/x-gpx+xml"))
     {
+        const FileFormats::PLN pln(path);
+        if (pln.isValid())
+        {
+            emit openFileRequest(path, {}, FlightRoute);
+            return;
+        }
+        const FileFormats::FPL fpl(path);
+        if (fpl.isValid())
+        {
+            emit openFileRequest(path, {}, FlightRoute);
+            return;
+        }
         emit openFileRequest(path, {}, FlightRouteOrWaypointLibrary);
         return;
     }

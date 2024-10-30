@@ -347,7 +347,6 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
         Qt6::Svg
         Qt6::TextToSpeech
         Qt6::Widgets
-        Qt6::Xml
         QMapLibre::Location
         libzip::zip
     )

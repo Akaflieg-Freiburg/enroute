@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.31.15] - 2024-10-27
+
+### Fixed
+- Icons for gliding and microlight sites no longer rotate along with the moving map (#453)
+
+
 ## [2.31.14] - 2024-10-22
 
 ### Added

@@ -10,6 +10,7 @@ cd ../..
 # way, source files that are not compiled (such as iOS files on a linux build
 # host) will still be considered.
 
+lupdate-qt6 src -ts 3rdParty/enrouteText/assets/enroute_cz.ts
 lupdate-qt6 src -ts 3rdParty/enrouteText/assets/enroute_de.ts
 lupdate-qt6 src -ts 3rdParty/enrouteText/assets/enroute_es.ts
 lupdate-qt6 src -ts 3rdParty/enrouteText/assets/enroute_fr.ts

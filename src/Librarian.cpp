@@ -293,7 +293,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     if (name == u":text/whatsnew.html"_s)
     {
         QString result;
-        result += "<p>" + tr("As requested by our users, the setting 'font size' now affects aviation-related text in the moving map display in addition to text in the user interface.") + "</p>";
+        result += "<p>" + tr("As requested by our users, <strong>Enroute Flight Navigation</strong> is now able to import flight routes in FPL and PLN formats.") + "</p>";
 /*
         result += "<p>" + tr("Users with nonstandard hardware can now configure IP adresses for their traffic data receivers. "
                              "Serial port connections are also supported.") + "</p>";

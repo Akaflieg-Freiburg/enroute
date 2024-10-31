@@ -166,6 +166,38 @@
                 </array>
             </dict>
         </dict>
+        <dict>
+            <key>UTTypeConformsTo</key>
+            <array>
+                <string>public.xml</string>
+            </array>
+            <key>UTTypeIdentifier</key>
+            <string>enroute.fpl</string>
+            <key>UTTypeTagSpecification</key>
+            <dict>
+                <key>public.filename-extension</key>
+                <array>
+                    <string>fpl</string>
+                    <string>FPL</string>
+                </array>
+            </dict>
+        </dict>
+        <dict>
+            <key>UTTypeConformsTo</key>
+            <array>
+                <string>public.xml</string>
+            </array>
+            <key>UTTypeIdentifier</key>
+            <string>enroute.pln</string>
+            <key>UTTypeTagSpecification</key>
+            <dict>
+                <key>public.filename-extension</key>
+                <array>
+                    <string>pln</string>
+                    <string>PLN</string>
+                </array>
+            </dict>
+        </dict>
     </array>
     <key>CFBundleDocumentTypes</key>
     <array>

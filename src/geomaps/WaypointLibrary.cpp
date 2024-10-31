@@ -25,6 +25,8 @@
 
 #include "Librarian.h"
 #include "fileFormats/CUP.h"
+#include "fileFormats/FPL.h"
+#include "fileFormats/PLN.h"
 #include "geomaps/GPX.h"
 #include "geomaps/GeoJSON.h"
 #include "geomaps/WaypointLibrary.h"
@@ -174,6 +176,24 @@ auto GeoMaps::WaypointLibrary::import(const QString& fileName, bool skip) -> QSt
     if (result.isEmpty())
     {
         result = GeoMaps::GPX::read(fileName);
+    }
+    if (result.isEmpty())
+    {
+        auto pln = FileFormats::PLN(fileName);
+        result.reserve(pln.waypoints().size());
+        for(const auto& coordinate : pln.waypoints())
+        {
+            result += coordinate;
+        }
+    }
+    if (result.isEmpty())
+    {
+        auto fpl = FileFormats::FPL(fileName);
+        result.reserve(fpl.waypoints().size());
+        for(const auto& coordinate : fpl.waypoints())
+        {
+            result += coordinate;
+        }
     }
     if (result.isEmpty())
     {

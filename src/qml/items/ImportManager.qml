@@ -513,7 +513,7 @@ Item {
                 id: skip
                 Layout.fillWidth: true
 
-                text: qsTr("Skip over waypoint that already exist in the library")
+                text: qsTr("Skip over waypoints that already exist in the library")
             }
 
         }

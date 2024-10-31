@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -61,12 +61,13 @@ public:
     /*! \brief Constructs a waypoint from a coordinate
      *
      * - category is set to "WP"
-     * - name is set to "Waypoint"
+     * - name is set to the "Waypoint" or to the name given in the argument
      * - type is set to "WP"
      *
      * @param coordinate Geographical position of the waypoint
+     * @param name Name of the waypoint
      */
-    Waypoint(const QGeoCoordinate& coordinate);
+    Waypoint(const QGeoCoordinate& coordinate, const QString& name = {});
 
     /*! \brief Constructs a waypoint from a GeoJSON object
      *

@@ -291,7 +291,8 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     if (name == u":text/whatsnew.html"_qs)
     {
         QString result;
-        result += "<p>" + tr("As requested by our users, <strong>Enroute Flight Navigation</strong> is now able to import flight routes in FPL and PLN formats.") + "</p>";
+        result += "<p>" + tr("As requested by our users, <strong>Enroute Flight Navigation</strong> is now able to import flight routes in FPL and PLN formats.") + " "
+                  + tr("We thank Heinz Blöchinger for help with the implementation!") + "</p>";
 /*
         result += "<p>" + tr("Users with nonstandard hardware can now configure IP adresses for their traffic data receivers. "
                              "Serial port connections are also supported.") + "</p>";

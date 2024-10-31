@@ -105,6 +105,11 @@ CenteringDialog {
                     textFormat: Text.RichText // OK
                 }
 
+                Label { // calculated density altitude
+                    visible: (weatherStation != null) && weatherStation.hasCalculatedDensityAltitude
+                    text: (weatherStation != null) && weatherStation.hasCalculatedDensityAltitude ? ( "calculated Density Altitude: " + weatherStation.calculatedDensityAltitude + " ft" ) : ""
+                }
+
                 Label { // title: "TAF"
                     visible: (weatherStation != null) && weatherStation.hasTAF
                     text: "TAF"

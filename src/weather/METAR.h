@@ -26,6 +26,7 @@
 
 #include "units/Pressure.h"
 #include "units/Speed.h"
+#include "units/Temperature.h"
 #include "weather/Decoder.h"
 
 namespace Weather {
@@ -234,6 +235,23 @@ public:
      */
     [[nodiscard]] auto summary() const -> QString;
 
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property summary
+     */
+    [[nodiscard]] auto temperature() const -> Units::Temperature
+    {
+        return _temperature;
+    }
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property summary
+     */
+    [[nodiscard]] auto dewPoint() const -> Units::Temperature
+    {
+        return _dewpoint;
+    }
 
 signals:
     /*! \brief Notifier signal */
@@ -285,5 +303,11 @@ private:
 
     // Wind speed, as returned by the Aviation Weather Center
     Units::Speed _wind;
+
+    // Temperature
+    Units::Temperature _temperature;
+
+    // Dewpoint
+    Units::Temperature _dewpoint;
 };
 } // namespace Weather

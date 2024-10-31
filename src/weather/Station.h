@@ -225,6 +225,38 @@ public:
         return _taf;
     }
 
+    /*! \brief Check if a Calculated Density Altitude is known for this weather station
+     *
+     * This convenience property can be used to check if a Calculated Density Altitude is available
+     * for the weather station.  The actual Calculated Density Altitude can be accessed via the
+     * property calculatedDensityAltitude.
+     */
+    Q_PROPERTY(bool hasCalculatedDensityAltitude READ hasCalculatedDensityAltitude NOTIFY calculatedDensityAltitudeChanged)
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property hasCalculatedDensityAltitude
+     */
+    [[nodiscard]] auto hasCalculatedDensityAltitude() const -> bool
+    {
+        return _calculatedDensityAltitude.has_value();
+    }
+
+    /*! \brief Calculated Density Altitude for this weather station as an integer
+     *
+     * This property holds the calculated density altitude for the weather station as an integer.
+     */
+    Q_PROPERTY(int calculatedDensityAltitude READ calculatedDensityAltitude NOTIFY calculatedDensityAltitudeChanged)
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property calculatedDensityAltitudeInt
+     */
+    [[nodiscard]] auto calculatedDensityAltitude() const -> int
+    {
+        return _calculatedDensityAltitude.value_or(0);
+    }
+
 signals:
     /* \brief Notifier signal */
     void coordinateChanged();
@@ -249,6 +281,9 @@ signals:
 
     /* \brief Notifier signal */
     void twoLineTitleChanged();
+
+    /* \brief Notifier signal */
+    void calculatedDensityAltitudeChanged();
 
 private slots:
     // This method attempts to find a waypoint matchting this weather station,
@@ -276,6 +311,9 @@ private:
     // the TAF. The signal tafChanged() will be emitted if appropriate.
     void setTAF(Weather::TAF *taf);
 
+    // calculates the density altitude
+    void calculateDensityAltitude();
+
     // Coordinate of this weather station
     QGeoCoordinate _coordinate;
 
@@ -296,6 +334,9 @@ private:
 
     // Two-Line-Title
     QString _twoLineTitle;
+
+    // calculated Density Altitude
+    std::optional<int> _calculatedDensityAltitude;
 
     // Pointer to GeoMapProvider, used in order to find matching waypoints
     QPointer<GeoMaps::GeoMapProvider> _geoMapProvider;

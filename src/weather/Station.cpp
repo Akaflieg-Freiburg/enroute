@@ -20,7 +20,7 @@
 
 #include "geomaps/GeoMapProvider.h"
 #include "weather/Station.h"
-
+#include "weather/DensityAltitude.h"
 #include <utility>
 
 
@@ -131,6 +131,8 @@ void Weather::Station::setMETAR(Weather::METAR *metar)
         }
     }
 
+    calculateDensityAltitude();
+
     // Let the world know that the metar changed
     if (cacheHasMETAR != hasMETAR()) {
         emit hasMETARChanged();
@@ -186,4 +188,33 @@ void Weather::Station::setTAF(Weather::TAF *taf)
         emit hasTAFChanged();
     }
     emit tafChanged();
+}
+
+void Weather::Station::calculateDensityAltitude()
+{
+    auto cacheCalculatedDensityAltitude = _calculatedDensityAltitude;
+    if (hasMETAR() && _metar->isValid() 
+                   && _metar->coordinate().isValid() 
+                   && _metar->QNH().isFinite() 
+                   && _metar->temperature().isFinite() ) {
+
+        Units::Distance altitude = Units::Distance::fromM(_coordinate.altitude());
+        Units::Pressure qnh = _metar->QNH();
+        Units::Temperature temperature = _metar->temperature();
+        
+        if (_metar->dewPoint().isFinite() ) {
+            Units::Temperature dewpoint = _metar->dewPoint();
+            _calculatedDensityAltitude = Weather::DensityAltitude::calculateDensityAltitude(temperature, qnh, altitude, dewpoint).toFeet();
+        } 
+        else {
+            _calculatedDensityAltitude = Weather::DensityAltitude::calculateDensityAltitudeDryAirApproximation(temperature, qnh, altitude).toFeet();
+        }
+    }
+    else {
+        _calculatedDensityAltitude.reset();
+    }
+    if(cacheCalculatedDensityAltitude != _calculatedDensityAltitude)
+    {
+        emit calculatedDensityAltitudeChanged();
+    }
 }

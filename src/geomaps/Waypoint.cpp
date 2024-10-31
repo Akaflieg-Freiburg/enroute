@@ -36,11 +36,18 @@ GeoMaps::Waypoint::Waypoint()
 }
 
 
-GeoMaps::Waypoint::Waypoint(const QGeoCoordinate& coordinate)
+GeoMaps::Waypoint::Waypoint(const QGeoCoordinate& coordinate, const QString& name)
     : m_coordinate(coordinate)
 {
     m_properties.insert(QStringLiteral("CAT"), QStringLiteral("WP"));
-    m_properties.insert(QStringLiteral("NAM"), QStringLiteral("Waypoint"));
+    if (name.isEmpty())
+    {
+        m_properties.insert(QStringLiteral("NAM"), QStringLiteral("Waypoint"));
+    }
+    else
+    {
+        m_properties.insert(QStringLiteral("NAM"), name);
+    }
     m_properties.insert(QStringLiteral("TYP"), QStringLiteral("WP"));
     if (coordinate.type() == QGeoCoordinate::Coordinate3D) {
         m_properties.insert(QStringLiteral("ELE"), coordinate.altitude() );

@@ -19,7 +19,7 @@ Google provides machine translations of the manual via its "Google Translate"
 service. While not perfect, the translations are definitively good enough for
 everyday use.
 
-- [German Translation](https://translate.google.com/translate?sl=auto&tl=de_LANG&u=https://akaflieg-freiburg.github.io/enrouteManual)
-- [Italian Translation](https://translate.google.com/translate?sl=auto&tl=it_LANG&u=https://akaflieg-freiburg.github.io/enrouteManual)
-- [Spanish Translation](https://translate.google.com/translate?sl=auto&tl=es_LANG&u=https://akaflieg-freiburg.github.io/enrouteManual)
-- [Polish Translation](https://translate.google.com/translate?sl=auto&tl=pl_LANG&u=https://akaflieg-freiburg.github.io/enrouteManual)
+- [German Translation](https://translate.google.com/translate?sl=auto&tl=de&u=https://akaflieg-freiburg.github.io/enrouteManual)
+- [Italian Translation](https://translate.google.com/translate?sl=auto&tl=it&u=https://akaflieg-freiburg.github.io/enrouteManual)
+- [Spanish Translation](https://translate.google.com/translate?sl=auto&tl=es&u=https://akaflieg-freiburg.github.io/enrouteManual)
+- [Polish Translation](https://translate.google.com/translate?sl=auto&tl=pl&u=https://akaflieg-freiburg.github.io/enrouteManual)

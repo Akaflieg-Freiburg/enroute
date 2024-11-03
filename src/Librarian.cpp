@@ -68,7 +68,10 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
                + "<strong>" + tr("Programming") + ":</strong> " + tr("Heinz Blöchinger has helped us with file import functionality. After 15 years of alpine gliding, Heinz has fulfilled a big dream and now flies helicopters.")
                + "</li>"
                + "<li>"
-               + "<strong>" + tr("Programming") + ":</strong> " + tr("Tom Linz implemented height density calculation. He received his PPL license in late 2024. Tom works as a development engineer for safety systems.")
+               + "<strong>" + tr("Programming") + ":</strong> " + tr("Christian Engelhardt started the implementation of height density calculation. Christian is a PPL pilot in southern germany, studied electrical engineering and working as an Embedded SW Engineer.")
+               + "</li>"
+               + "<li>"
+               + "<strong>" + tr("Programming") + ":</strong> " + tr("Tom Linz completed height density calculation. He received his PPL license in late 2024. Tom works as a development engineer for safety systems.")
                + "</li>"
                + "</ul>"
                + tr(R"html(

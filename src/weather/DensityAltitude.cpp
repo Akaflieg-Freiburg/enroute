@@ -23,10 +23,12 @@
 
 #include <math.h>
 
+
 Units::Distance Weather::DensityAltitude::calculateDensityAltitudeDryAirApproximation(Units::Temperature oat, Units::Pressure qnh, Units::Distance geometricAltitude)
 {
     return calculateDensityAltitudeInternal(oat, qnh, geometricAltitude, Units::Temperature::fromDegreeCelsius(0), false);
 }
+
 
 Units::Distance Weather::DensityAltitude::calculateDensityAltitude(Units::Temperature oat, Units::Pressure qnh, Units::Distance geometricAltitude, Units::Temperature dewPoint)
 {
@@ -84,6 +86,7 @@ Units::Pressure Weather::DensityAltitude::calculateVapourPressure(Units::Tempera
     return Units::Pressure::fromHPa(Pv);
 }
 
+
 Units::Pressure Weather::DensityAltitude::calculateAbsolutePressure(Units::Pressure qnh, Units::Distance height)
 {
   const double heightInM = height.toM();
@@ -98,6 +101,7 @@ Units::Pressure Weather::DensityAltitude::calculateAbsolutePressure(Units::Press
   
   return Units::Pressure::fromHPa(Pa);
 }
+
 
 Units::Density Weather::DensityAltitude::calculateAirDensity(Units::Temperature temperature, Units::Pressure qnh, Units::Distance height, Units::Temperature dewPoint, bool bWithDewPoint)
 {
@@ -115,6 +119,7 @@ Units::Density Weather::DensityAltitude::calculateAirDensity(Units::Temperature 
 
     return Units::Density::fromKgPerCubeMeter(pAir);
 }
+
 
 Units::Distance Weather::DensityAltitude::geometricAltitudeToGeopotentialAltitude(Units::Distance geometricAltitude)
 {

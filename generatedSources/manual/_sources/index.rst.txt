@@ -2,11 +2,11 @@ Enroute Flight Navigation
 =========================
 
 
-**Enroute Flight Navigation** is a free flight navigation app for mobile phones
-and pads.  Designed to be simple, functional and elegant, it takes the stress
-out of your next flight. The program has been written by flight enthusiasts, as
-a project of `Akaflieg Freiburg <https://akaflieg-freiburg.de/>`_, a flight club
-based in Freiburg, Germany.
+**Enroute Flight Navigation** is an :ref:`award-winning <awards>` flight
+navigation app for mobile phones and pads.  Designed to be simple, functional
+and elegant, it takes the stress out of your next flight. The program is free.
+It has been written by flight enthusiasts, as a project of `Akaflieg Freiburg
+<https://akaflieg-freiburg.de/>`_, a flight club based in Freiburg, Germany.
 
 **Enroute Flight Navigation** features a moving map, similar in style to the
 official ICAO maps. Your current position and your flight path for the next five

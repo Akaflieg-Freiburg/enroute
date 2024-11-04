@@ -136,4 +136,4 @@ Go Flying!
 **Enroute Flight Navigation** is designed to be simple.  We think that you are
 now ready to take the app on its first flight.  There are of course many more
 things that you can do.  Play with the app and have a look at the next section
-:ref:`sec-tutorialBasic`.
+:ref:`traffic`.

@@ -108,12 +108,11 @@ Deutsche Übersetzung
 
 Diese Datenschutzrichtlinie beschreibt den Umgang der App **Enroute
 Flight Navigation** mit Daten. Wir legen großen Wert auf Ihre
-Privatsphäre und sammeln und speichern keine persönlich
-identifizierbaren Informationen. Damit die App jedoch ordnungsgemäß
-funktioniert, muss sie mit bestimmten Servern im Internet kommunizieren.
-In den folgenden Abschnitten werden die Server aufgeführt, mit denen
-**Enroute Flight Navigation** kommuniziert, und die Zwecke der
-Kommunikation erläutert.
+Privatsphäre und sammeln und speichern keine personenbezogenen Daten.
+Damit die App jedoch ordnungsgemäß funktioniert, muss sie mit bestimmten
+Servern im Internet kommunizieren. In den folgenden Abschnitten werden
+die Server aufgeführt, mit denen **Enroute Flight Navigation**
+kommuniziert, und die Zwecke der Kommunikation erläutert.
 
 Mit der Verwendung von Enroute Flight Navigation stimmen Sie dieser
 Datenschutzrichtlinie zu. Gelegentliche Änderungen dieser Richtlinie
@@ -273,8 +272,8 @@ actuelles. Votre adresse IP est transmise au cours du processus.
 **Enroute Flight Navigation** affiche les NOTAM, METAR et TAF pour les
 aérodromes proches de votre position actuelle et votre itinéraire
 actuellement prévu. Il affiche également les NOTAM, METAR et TAF pour
-tous les waypoints que vous ouvrez dans l'application. Pour fournir
-cette fonctionnalité, des requêtes sont transmises au serveur
+tous les points de cheminement que vous ouvrez dans l'application. Pour
+fournir cette fonctionnalité, des requêtes sont transmises au serveur
 **enroute-data** à intervalles réguliers et chaque fois que de nouvelles
 données sont demandées. En plus de l'adresse IP de votre appareil, les
 éléments de données suivants seront envoyés.

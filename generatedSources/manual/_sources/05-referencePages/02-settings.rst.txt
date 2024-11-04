@@ -85,6 +85,14 @@ addition to showing them on the screen. Since we expect that not everybody likes
 this feature, this setting item allows switching voice notification on and off.
 
 
+Show All Warnings
+^^^^^^^^^^^^^^^^^
+
+This entry is visible if you have disabled warnings by selecting "Do not ask
+again" or "Dismiss warning" in an appropriate dialog. Tap on this entry to
+re-enable all warnings.
+
+
 System
 ------
 
@@ -137,13 +145,6 @@ This entry is visible if you have connected to a traffic data receiver that
 requires a password in addition to the Wi-Fi password and if you have asked the
 app to remember the password. Tap on this entry to clear the password storage. 
 
-
-Show Privacy Warnings
-^^^^^^^^^^^^^^^^^^^^^
-
-This entry is visible if you have disabled privacy warnings by selecting "Do 
-not ask again" in an appropriate dialog. Tap on this entry to re-enable all 
-warnings.
 
 
 Help

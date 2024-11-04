@@ -3,7 +3,7 @@
 ## [2.31.16] - 2024-11-4
 
 ### Added
-- Enroute can now import PLN and FPL file as flight routes (#443, #342)
+- Enroute can now import PLN and FPL files as flight routes (#443, #342)
 
 
 ## [2.31.15] - 2024-10-27

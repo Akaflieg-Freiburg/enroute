@@ -1,12 +1,12 @@
 - `Adobe Glyph List For New Fonts <https://github.com/adobe-type-tools/agl-aglfn>`_. BSD 3-Clause "New" or "Revised" License.
 - `Anti-aliasing rasterizer from FreeType 2 <http://www.freetype.org>`_. Freetype Project License or GNU General Public License v2.0 only.
-- Bitstream Vera Font. Bitstream Vera Font License.
+- `Apache Tika MimeType Definitions <https://github.com/apache/tika/tree/main/tika-core/src/main/resources/org/apache/tika/mime>`_. Apache License 2.0.
 - `BLAKE2 (reference implementation) <https://blake2.net/>`_. Creative Commons Zero v1.0 Universal or Apache License 2.0.
 - `Catch2 <https://github.com/catchorg/Catch2>`_. Boost Software License 1.0.
 - `Clip2Tri Polygon Triangulation Library <https://github.com/raptor/clip2tri>`_. MIT License.
 - `Clipper Polygon Clipping Library <https://sourceforge.net/projects/polyclipping/>`_. Boost Software License 1.0.
 - Cocoa Platform Plugin. BSD 3-clause "New" or "Revised" License.
-- Cycle. MIT License.
+- `Cycle <http://fftw.org/>`_. MIT License.
 - `D3D12 Memory Allocator <https://github.com/GPUOpen-LibrariesAndSDKs/D3D12MemoryAllocator>`_. MIT License.
 - `Data Compression Library (zlib) <https://zlib.net/>`_. zlib License.
 - `DejaVu Fonts <https://dejavu-fonts.github.io/>`_. Bitstream Vera Font License.
@@ -21,6 +21,7 @@
 - `Freetype 2 - Portable Compiled Format (PCF) support <http://www.freetype.org>`_. MIT License and MIT Open Group variant.
 - `Freetype 2 - zlib <http://www.freetype.org>`_. zlib License.
 - Gear Icon. MIT License.
+- `Georama <https://github.com/productiontype/Georama>`_. SIL Open Font License 1.1.
 - `Google Fonts <https://github.com/google/fonts>`_. Apache 2 License.
 - `Google Material Icon Font <https://fonts.google.com/icons>`_. Apache Licence 2.0.
 - `Gradle wrapper <https://gradle.org>`_. Apache License 2.0.

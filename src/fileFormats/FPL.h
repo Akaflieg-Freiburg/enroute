@@ -31,8 +31,7 @@ namespace FileFormats
 
 /*! \brief FPL file support class
  *
- *  The methods of this class read PLN files, as specified here:
- *  https://docs.flightsimulator.com/html/Content_Configuration/Flights_And_Missions/Flight_Definitions.htm
+ *  The methods of this class read Garmin FPL files.
  */
 
 class FPL : public DataFileAbstract

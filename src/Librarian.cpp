@@ -61,7 +61,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
                + "<p><strong>"+tr("Address")+"</strong>: Stefan Kebekus, Wintererstraße 77, 79104 Freiburg, Germany · <a href='mailto:stefan.kebekus@gmail.com'>stefan.kebekus@gmail.com</a></p>"
                + "<h3>" + tr("Contributions") + "</h3>"
                + "<p><strong>" + tr("iOS Version") + "</strong> " + tr("The app has been ported to iOS by Simon Schneider. Simon is currently student pilot (PPL) and member of the Akaflieg Freiburg flight club, just like Stefan.") + "</p>"
-               + "<p><strong>" + tr("Programming") + "</strong> " + tr("Heinz Blöchinger has helped us with OpenAir support. After 15 years of alpine gliding, Heinz has fulfilled a big dream and now flies helicopters.") + "</p>"
+               + "<p><strong>" + tr("Programming") + "</strong> " + tr("Heinz Blöchinger has helped us with file import functionality. After 15 years of alpine gliding, Heinz has fulfilled a big dream and now flies helicopters.") + "</p>"
                + tr(R"html(
 <h3>Translations</h3>
 )html") + (R"html(
@@ -291,7 +291,8 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     if (name == u":text/whatsnew.html"_qs)
     {
         QString result;
-        result += "<p>" + tr("As requested by our users, <strong>Enroute Flight Navigation</strong> is now able to import flight routes in FPL and PLN formats.") + "</p>";
+        result += "<p>" + tr("As requested by our users, <strong>Enroute Flight Navigation</strong> is now able to import flight routes in FPL and PLN formats.") + " "
+                  + tr("We thank Heinz Blöchinger for help with the implementation!") + "</p>";
 /*
         result += "<p>" + tr("Users with nonstandard hardware can now configure IP adresses for their traffic data receivers. "
                              "Serial port connections are also supported.") + "</p>";

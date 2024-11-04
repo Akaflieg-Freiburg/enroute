@@ -38,9 +38,9 @@ First Start
 -----------
 
 After installation, start the app.  The app will walk you through the first
-setup steps. You will be asked to accept the terms and conditions, Depending on
-the platform, you might need to grant the necessary permissions for the app to
-run.  
+setup steps. You will be asked to accept the privacy policy and terms and
+conditions. Depending on the platform, you might need to grant the necessary
+permissions for the app to run.  
 
 **Enroute Flight Navigation** cannot be used without geographic maps. As the
 last step, the app will suggest downloading maps that are relevant for your
@@ -57,7 +57,7 @@ Set Aircraft Specifics
 We recommend that you tell **Enroute Flight Navigation** a little about your
 aircraft before you fly.
 
-- Open the Menu by touching the menu button in the upper right side of the
+- Open the Menu by touching the menu button in the upper left corner of the
   screen.
 - Choose the menu item *Aircraft*. The aircraft page will then open.
 

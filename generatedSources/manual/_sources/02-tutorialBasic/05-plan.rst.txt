@@ -75,7 +75,7 @@ several ways to specify the waypoints in your route.
 - Enter waypoints by name
 - Select waypoints in the moving map
 - Load a route from the route library
-- Import a GPX file from another program
+- Import a file from another program
 
 Most users will enter the waypoints manually. Still, we explain all four methods
 in some detail.
@@ -149,14 +149,19 @@ the open the main menu and choose the item "Library/Routes." The route library
 page will open. Choose a route by tapping on the respective item in the list.
 
 
-Option 4: Import a GPX File From Another Program
+Option 4: Import a File From Another Program
 ................................................
 
 To prepare your flight, you might want to use full-featured flight preparation
-software or online services.  All programs known to us are able to export flight
-routes in GPX format, which can be read by **Enroute Flight Navigation**. The
-Section :ref:`flightPlanningTools` explains the process in detail.
+software or online services.  The Section :ref:`flightPlanningTools` highlights
+a few tools typically used in our club.  
 
+All programs known to us are able to export flight routes in GPX format, which
+is one of the formats that can be read by **Enroute Flight Navigation**.  A full
+list of supported file formats is found in the Section
+:ref:`supportedFileFormats`.
+
+The Section :ref:`importData` explains the import process in detail.
 
 
 Step 4: Edit the Route if Necessary

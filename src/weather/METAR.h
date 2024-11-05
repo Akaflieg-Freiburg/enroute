@@ -24,6 +24,7 @@
 #include <QGeoCoordinate>
 #include <QXmlStreamReader>
 
+#include "units/Distance.h"
 #include "units/Pressure.h"
 #include "units/Speed.h"
 #include "units/Temperature.h"
@@ -62,7 +63,7 @@ public:
      * Flight category, as defined in
      * https://www.aviationweather.gov/metar/help?page=plot#fltcat
      */
-    enum FlightCategory
+    enum FlightCategory : quint8
     {
         VFR,     /*!< Visual Flight Rules */
         MVFR,    /*!< Marginal Visual Flight Rules */
@@ -75,7 +76,8 @@ public:
     /*! \brief Geographical coordinate of the station reporting this METAR
      *
      * If the station coordinate is unknown, the property contains an invalid
-     * coordinate.
+     * coordinate. Typically, the coordinate will contain the elevation of
+     * the station.
      */
     Q_PROPERTY(QGeoCoordinate coordinate READ coordinate CONSTANT)
 
@@ -85,7 +87,7 @@ public:
      */
     [[nodiscard]] auto coordinate() const -> QGeoCoordinate
     {
-        return _location;
+        return m_location;
     }
 
     /*! \brief Expiration time and date
@@ -130,7 +132,7 @@ public:
      */
     [[nodiscard]] auto flightCategory() const -> FlightCategory
     {
-        return _flightCategory;
+        return m_flightCategory;
     }
 
     /*! \brief ICAO code of the station reporting this METAR
@@ -174,7 +176,7 @@ public:
      */
     [[nodiscard]] auto observationTime() const -> QDateTime
     {
-        return _observationTime;
+        return m_observationTime;
     }
 
     /*! \brief QNH value in this METAR
@@ -206,7 +208,7 @@ public:
      */
     [[nodiscard]] auto rawText() const -> QString
     {
-        return _raw_text;
+        return m_raw_text;
     }
 
     /*! \brief Observation time, relative to now
@@ -241,7 +243,7 @@ public:
      */
     [[nodiscard]] auto temperature() const -> Units::Temperature
     {
-        return _temperature;
+        return m_temperature;
     }
 
     /*! \brief Getter function for property with the same name
@@ -250,7 +252,7 @@ public:
      */
     [[nodiscard]] auto dewPoint() const -> Units::Temperature
     {
-        return _dewpoint;
+        return m_dewpoint;
     }
 
 signals:
@@ -281,33 +283,36 @@ private:
     QString _decoded;
 
     // Flight category, as returned by the Aviation Weather Center
-    FlightCategory _flightCategory {unknown};
+    FlightCategory m_flightCategory {unknown};
 
     // Gust speed, as returned by the Aviation Weather Center
-    Units::Speed _gust;
+    Units::Speed m_gust;
 
     // Station ID, as returned by the Aviation Weather Center
     QString m_ICAOCode;
 
     // Station coordinate, as returned by the Aviation Weather Center
-    QGeoCoordinate _location;
+    QGeoCoordinate m_location;
 
     // Observation time, as returned by the Aviation Weather Center
-    QDateTime _observationTime;
+    QDateTime m_observationTime;
 
     // QNH in hPa, as returned by the Aviation Weather Center
     Units::Pressure m_qnh;
 
     // Raw METAR text, as returned by the Aviation Weather Center
-    QString _raw_text;
+    QString m_raw_text;
 
     // Wind speed, as returned by the Aviation Weather Center
-    Units::Speed _wind;
+    Units::Speed m_wind;
 
-    // Temperature
-    Units::Temperature _temperature;
+    // Temperature, as returned by the Aviation Weather Center
+    Units::Temperature m_temperature;
 
-    // Dewpoint
-    Units::Temperature _dewpoint;
+    // Dewpoint, as returned by the Aviation Weather Center
+    Units::Temperature m_dewpoint;
+
+    // Density altitude, derived data
+    Units::Distance m_densityAltitude;
 };
 } // namespace Weather

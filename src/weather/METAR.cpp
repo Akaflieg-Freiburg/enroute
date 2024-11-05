@@ -22,6 +22,7 @@
 #include "navigation/Aircraft.h"
 #include "navigation/Clock.h"
 #include "navigation/Navigator.h"
+#include "weather/DensityAltitude.h"
 #include "weather/METAR.h"
 
 
@@ -48,33 +49,34 @@ Weather::METAR::METAR(QXmlStreamReader &xml, QObject *parent)
 
         // Read location
         if (xml.isStartElement() && name == u"latitude"_qs) {
-            _location.setLatitude(xml.readElementText().toDouble());
+            m_location.setLatitude(xml.readElementText().toDouble());
             continue;
         }
         if (xml.isStartElement() && name == u"longitude"_qs) {
-            _location.setLongitude(xml.readElementText().toDouble());
+            m_location.setLongitude(xml.readElementText().toDouble());
             continue;
         }
         if (xml.isStartElement() && name == u"elevation_m"_qs) {
-            _location.setAltitude(xml.readElementText().toDouble());
+            m_location.setAltitude(xml.readElementText().toDouble());
             continue;
         }
 
         // Read raw text
         if (xml.isStartElement() && name == u"raw_text"_qs) {
-            _raw_text = xml.readElementText();
+            m_raw_text = xml.readElementText();
             continue;
         }
 
         // Read temperature
         if (xml.isStartElement() && name == u"temp_c"_qs) {
-            _temperature = Units::Temperature::fromDegreeCelsius(xml.readElementText().toDouble());
+#warning use bool* ok
+            m_temperature = Units::Temperature::fromDegreeCelsius(xml.readElementText().toDouble());
             continue;
         }
 
         // Read dewpoint
         if (xml.isStartElement() && name == u"dewpoint_c"_qs) {
-            _dewpoint = Units::Temperature::fromDegreeCelsius(xml.readElementText().toDouble());
+            m_dewpoint = Units::Temperature::fromDegreeCelsius(xml.readElementText().toDouble());
             continue;
         }
 
@@ -92,21 +94,21 @@ Weather::METAR::METAR(QXmlStreamReader &xml, QObject *parent)
         // Wind
         if (xml.isStartElement() && name == u"wind_speed_kt"_qs) {
             auto content = xml.readElementText();
-            _wind = Units::Speed::fromKN(content.toDouble());
+            m_wind = Units::Speed::fromKN(content.toDouble());
             continue;
         }
 
         // Gust
         if (xml.isStartElement() && name == u"wind_gust_kt"_qs) {
             auto content = xml.readElementText();
-            _gust = Units::Speed::fromKN(content.toDouble());
+            m_gust = Units::Speed::fromKN(content.toDouble());
             continue;
         }
 
         // Observation Time
         if (xml.isStartElement() && name == u"observation_time"_qs) {
             auto content = xml.readElementText();
-            _observationTime = QDateTime::fromString(content, Qt::ISODate);
+            m_observationTime = QDateTime::fromString(content, Qt::ISODate);
             continue;
         }
 
@@ -114,16 +116,16 @@ Weather::METAR::METAR(QXmlStreamReader &xml, QObject *parent)
         if (xml.isStartElement() && name == u"flight_category"_qs) {
             auto content = xml.readElementText();
             if (content == u"VFR"_qs) {
-                _flightCategory = VFR;
+                m_flightCategory = VFR;
             }
             if (content == u"MVFR"_qs) {
-                _flightCategory = MVFR;
+                m_flightCategory = MVFR;
             }
             if (content == u"IFR"_qs) {
-                _flightCategory = IFR;
+                m_flightCategory = IFR;
             }
             if (content == u"LIFR"_qs) {
-                _flightCategory = LIFR;
+                m_flightCategory = LIFR;
             }
             continue;
         }
@@ -135,8 +137,15 @@ Weather::METAR::METAR(QXmlStreamReader &xml, QObject *parent)
         xml.skipCurrentElement();
     }
 
+    // Calculate density altitude
+    Units::Distance const altitude = Units::Distance::fromM(m_location.altitude());
+    if (m_temperature.isFinite() && m_qnh.isFinite() && altitude.isFinite() && m_dewpoint.isFinite() )
+    {
+        m_densityAltitude = Weather::DensityAltitude::calculateDensityAltitude(m_temperature, m_qnh, altitude, m_dewpoint);
+    }
+
     // Interpret the METAR message
-    setRawText(_raw_text, _observationTime.date());
+    setRawText(m_raw_text, m_observationTime.date());
     setupSignals();
 }
 
@@ -144,41 +153,42 @@ Weather::METAR::METAR(QXmlStreamReader &xml, QObject *parent)
 Weather::METAR::METAR(QDataStream &inputStream, QObject *parent)
     : Weather::Decoder(parent)
 {
-    inputStream >> _flightCategory;
+    inputStream >> m_flightCategory;
     inputStream >> m_ICAOCode;
-    inputStream >> _location;
-    inputStream >> _observationTime;
+    inputStream >> m_location;
+    inputStream >> m_observationTime;
     inputStream >> m_qnh;
-    inputStream >> _raw_text;
-    inputStream >> _wind;
-    inputStream >> _gust;
-    inputStream >> _temperature;
-    inputStream >> _dewpoint;
+    inputStream >> m_raw_text;
+    inputStream >> m_wind;
+    inputStream >> m_gust;
+    inputStream >> m_temperature;
+    inputStream >> m_dewpoint;
+    inputStream >> m_densityAltitude;
 
     // Interpret the METAR message
-    setRawText(_raw_text, _observationTime.date());
+    setRawText(m_raw_text, m_observationTime.date());
     setupSignals();
 }
 
 
 auto Weather::METAR::expiration() const -> QDateTime
 {
-    if (_raw_text.contains(u"NOSIG"_qs)) {
-        return _observationTime.addSecs(3LL*60LL*60LL);
+    if (m_raw_text.contains(u"NOSIG"_qs)) {
+        return m_observationTime.addSecs(3LL*60LL*60LL);
     }
-    return _observationTime.addSecs(1.5*60*60);
+    return m_observationTime.addSecs(1.5*60*60);
 }
 
 
 auto Weather::METAR::flightCategoryColor() const -> QString
 {
-    if (_flightCategory == VFR) {
+    if (m_flightCategory == VFR) {
         return QStringLiteral("green");
     }
-    if (_flightCategory == MVFR) {
+    if (m_flightCategory == MVFR) {
         return QStringLiteral("yellow");
     }
-    if ((_flightCategory == IFR) || (_flightCategory == LIFR)) {
+    if ((m_flightCategory == IFR) || (m_flightCategory == LIFR)) {
         return QStringLiteral("red");
     }
     return QStringLiteral("transparent");
@@ -197,10 +207,10 @@ auto Weather::METAR::isExpired() const -> bool
 
 auto Weather::METAR::isValid() const -> bool
 {
-    if (!_location.isValid()) {
+    if (!m_location.isValid()) {
         return false;
     }
-    if (!_observationTime.isValid()) {
+    if (!m_observationTime.isValid()) {
         return false;
     }
     if (m_ICAOCode.isEmpty()) {
@@ -216,16 +226,17 @@ auto Weather::METAR::isValid() const -> bool
 
 auto Weather::METAR::relativeObservationTime() const -> QString
 {
-    if (!_observationTime.isValid()) {
+    if (!m_observationTime.isValid()) {
         return {};
     }
 
-    return Navigation::Clock::describeTimeDifference(_observationTime);
+    return Navigation::Clock::describeTimeDifference(m_observationTime);
 }
 
 
 void Weather::METAR::setupSignals() const
 {
+#warning We should take time out of this class
     // Emit notifier signals whenever the time changes
     connect(Navigation::Navigator::clock(), &Navigation::Clock::timeChanged, this, &Weather::METAR::summaryChanged);
     connect(Navigation::Navigator::clock(), &Navigation::Clock::timeChanged, this, &Weather::METAR::relativeObservationTimeChanged);
@@ -238,9 +249,9 @@ auto Weather::METAR::summary() const -> QString {
 
     QStringList resultList;
 
-    switch (_flightCategory) {
+    switch (m_flightCategory) {
     case VFR:
-        if (_raw_text.contains(u"CAVOK"_qs)) {
+        if (m_raw_text.contains(u"CAVOK"_qs)) {
             resultList << tr("CAVOK");
         } else {
             resultList << tr("VMC");
@@ -260,28 +271,28 @@ auto Weather::METAR::summary() const -> QString {
     }
 
     // Wind and Gusts
-    if (_gust.toKN() > 15) {
+    if (m_gust.toKN() > 15) {
         switch (GlobalObject::navigator()->aircraft().horizontalDistanceUnit()) {
         case Navigation::Aircraft::Kilometer:
-            resultList << tr("gusts of %1 km/h").arg( qRound(_gust.toKMH()) );
+            resultList << tr("gusts of %1 km/h").arg( qRound(m_gust.toKMH()) );
             break;
         case Navigation::Aircraft::StatuteMile:
-            resultList << tr("gusts of %1 mph").arg( qRound(_gust.toMPH()) );
+            resultList << tr("gusts of %1 mph").arg( qRound(m_gust.toMPH()) );
             break;
         case Navigation::Aircraft::NauticalMile:
-            resultList << tr("gusts of %1 kn").arg( qRound(_gust.toKN()) );
+            resultList << tr("gusts of %1 kn").arg( qRound(m_gust.toKN()) );
             break;
         }
-    } else if (_wind.toKN() > 10) {
+    } else if (m_wind.toKN() > 10) {
         switch (GlobalObject::navigator()->aircraft().horizontalDistanceUnit()) {
         case Navigation::Aircraft::Kilometer:
-            resultList << tr("wind at %1 km/h").arg( qRound(_wind.toKMH()) );
+            resultList << tr("wind at %1 km/h").arg( qRound(m_wind.toKMH()) );
             break;
         case Navigation::Aircraft::StatuteMile:
-            resultList << tr("wind at %1 mph").arg( qRound(_wind.toMPH()) );
+            resultList << tr("wind at %1 mph").arg( qRound(m_wind.toMPH()) );
             break;
         case Navigation::Aircraft::NauticalMile:
-            resultList << tr("wind at %1 kn").arg( qRound(_wind.toKN()) );
+            resultList << tr("wind at %1 kn").arg( qRound(m_wind.toKN()) );
             break;
         }
     }
@@ -293,23 +304,24 @@ auto Weather::METAR::summary() const -> QString {
     }
 
     if (resultList.isEmpty()) {
-        return tr("%1 %2").arg(messageType(), Navigation::Clock::describeTimeDifference(_observationTime));
+        return tr("%1 %2").arg(messageType(), Navigation::Clock::describeTimeDifference(m_observationTime));
     }
 
-    return tr("%1 %2: %3").arg(messageType(), Navigation::Clock::describeTimeDifference(_observationTime), resultList.join(QStringLiteral(" • ")));
+    return tr("%1 %2: %3").arg(messageType(), Navigation::Clock::describeTimeDifference(m_observationTime), resultList.join(QStringLiteral(" • ")));
 }
 
 
 void Weather::METAR::write(QDataStream &out)
 {
-    out << _flightCategory;
+    out << m_flightCategory;
     out << m_ICAOCode;
-    out << _location;
-    out << _observationTime;
+    out << m_location;
+    out << m_observationTime;
     out << m_qnh;
-    out << _raw_text;
-    out << _wind;
-    out << _gust;
-    out << _temperature;
-    out << _dewpoint;
+    out << m_raw_text;
+    out << m_wind;
+    out << m_gust;
+    out << m_temperature;
+    out << m_dewpoint;
+    out << m_densityAltitude;
 }

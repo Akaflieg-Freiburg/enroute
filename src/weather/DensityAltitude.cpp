@@ -21,8 +21,7 @@
 
 #include "weather/DensityAltitude.h"
 
-#include <math.h>
-
+#include <cmath>
 
 Units::Distance Weather::DensityAltitude::calculateDensityAltitudeDryAirApproximation(Units::Temperature oat, Units::Pressure qnh, Units::Distance geometricAltitude)
 {

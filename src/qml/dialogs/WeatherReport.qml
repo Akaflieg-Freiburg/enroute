@@ -105,9 +105,16 @@ CenteringDialog {
                     textFormat: Text.RichText // OK
                 }
 
+                Label {
+                    visible: (weatherStation != null) && weatherStation.hasCalculatedDensityAltitude
+                    text: qsTr("Derived Data")
+                    font.bold: true
+                    //font.pixelSize: 1.2*weatherReportDialog.font.pixelSize
+                }
+
                 Label { // calculated density altitude
                     visible: (weatherStation != null) && weatherStation.hasCalculatedDensityAltitude
-                    text: (weatherStation != null) && weatherStation.hasCalculatedDensityAltitude ? ( "calculated Density Altitude: " + weatherStation.calculatedDensityAltitude + " ft" ) : ""
+                    text: ((weatherStation != null) && weatherStation.hasCalculatedDensityAltitude) ? ( qsTr("Density Altitude")+": " + weatherStation.calculatedDensityAltitude + " ft" ) : ""
                 }
 
                 Label { // title: "TAF"

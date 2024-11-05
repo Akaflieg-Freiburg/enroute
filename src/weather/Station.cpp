@@ -190,6 +190,7 @@ void Weather::Station::setTAF(Weather::TAF *taf)
     emit tafChanged();
 }
 
+
 void Weather::Station::calculateDensityAltitude()
 {
     auto cacheCalculatedDensityAltitude = _calculatedDensityAltitude;
@@ -197,13 +198,12 @@ void Weather::Station::calculateDensityAltitude()
                    && _metar->coordinate().isValid() 
                    && _metar->QNH().isFinite() 
                    && _metar->temperature().isFinite() ) {
+        Units::Distance const altitude = Units::Distance::fromM(_coordinate.altitude());
+        Units::Pressure const qnh = _metar->QNH();
+        Units::Temperature const temperature = _metar->temperature();
 
-        Units::Distance altitude = Units::Distance::fromM(_coordinate.altitude());
-        Units::Pressure qnh = _metar->QNH();
-        Units::Temperature temperature = _metar->temperature();
-        
         if (_metar->dewPoint().isFinite() ) {
-            Units::Temperature dewpoint = _metar->dewPoint();
+            Units::Temperature const dewpoint = _metar->dewPoint();
             _calculatedDensityAltitude = Weather::DensityAltitude::calculateDensityAltitude(temperature, qnh, altitude, dewpoint).toFeet();
         } 
         else {

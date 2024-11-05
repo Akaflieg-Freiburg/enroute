@@ -278,10 +278,10 @@ signals:
 protected:
     // This constructor reads a XML stream, as provided by the Aviation Weather
     // Center's Text Data Server, https://www.aviationweather.gov/dataserver
-    explicit METAR(QXmlStreamReader &xml, QObject *parent = nullptr);
+    explicit METAR(QXmlStreamReader& xml, QObject* parent = nullptr);
 
     // This constructor reads a serialized METAR from a QDataStream
-    explicit METAR(QDataStream &inputStream, QObject *parent = nullptr);
+    explicit METAR(QDataStream& inputStream, QObject* parent = nullptr);
 
 private:
     // Connects signals; this method is used internally from the constructor(s)

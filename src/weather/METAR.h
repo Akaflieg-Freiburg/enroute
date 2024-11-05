@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -36,7 +36,7 @@ class WeatherDataProvider;
 
 /*! \brief METAR report
  *
- * This class contains the data of a METAR or SPECI report and provided a few
+ * This class contains the data of a METAR report and provides a few
  * methods to access the data. Instances of this class are provided by the
  * WeatherDataProvider class; there is no way to construct valid instances yourself.
  */
@@ -85,7 +85,7 @@ public:
      *
      * @returns Property coordiante
      */
-    [[nodiscard]] auto coordinate() const -> QGeoCoordinate
+    [[nodiscard]] QGeoCoordinate coordinate() const
     {
         return m_location;
     }
@@ -101,7 +101,7 @@ public:
      *
      * @returns Property expiration
      */
-    [[nodiscard]] auto expiration() const -> QDateTime;
+    [[nodiscard]] QDateTime expiration() const;
 
     /*! \brief Suggested color describing the flight category for this METAR
      *
@@ -121,7 +121,7 @@ public:
      *
      * @returns Property color
      */
-    [[nodiscard]] auto flightCategoryColor() const -> QString;
+    [[nodiscard]] QString flightCategoryColor() const;
 
     /*! \brief Flight category for this METAR */
     Q_PROPERTY(FlightCategory flightCategory READ flightCategory CONSTANT)
@@ -130,7 +130,7 @@ public:
      *
      * @returns Property flightCategory
      */
-    [[nodiscard]] auto flightCategory() const -> FlightCategory
+    [[nodiscard]] FlightCategory flightCategory() const
     {
         return m_flightCategory;
     }
@@ -146,7 +146,7 @@ public:
      *
      * @returns Property ICAOCode
      */
-    [[nodiscard]] auto ICAOCode() const -> QString
+    [[nodiscard]] QString ICAOCode() const
     {
         return m_ICAOCode;
     }
@@ -165,7 +165,7 @@ public:
      *
      * @returns Property isValid
      */
-    [[nodiscard]] auto isValid() const -> bool;
+    [[nodiscard]] bool isValid() const;
 
     /*! \brief Observation time of this METAR */
     Q_PROPERTY(QDateTime observationTime READ observationTime CONSTANT)
@@ -174,7 +174,7 @@ public:
      *
      * @returns Property observationTime
      */
-    [[nodiscard]] auto observationTime() const -> QDateTime
+    [[nodiscard]] QDateTime observationTime() const
     {
         return m_observationTime;
     }
@@ -190,7 +190,7 @@ public:
      *
      * @returns Property qnh
      */
-    [[nodiscard]] auto QNH() const -> Units::Pressure
+    [[nodiscard]] Units::Pressure QNH() const
     {
         return m_qnh;
     }
@@ -206,7 +206,7 @@ public:
      *
      * @returns Property extendedName
      */
-    [[nodiscard]] auto rawText() const -> QString
+    [[nodiscard]] QString rawText() const
     {
         return m_raw_text;
     }
@@ -222,7 +222,7 @@ public:
      *
      * @returns Property relativeObservationTime
      */
-    [[nodiscard]] auto relativeObservationTime() const -> QString;
+    [[nodiscard]] QString relativeObservationTime() const;
 
     /*! \brief One-line summary of the METAR
      *
@@ -235,13 +235,13 @@ public:
      *
      * @returns Property summary
      */
-    [[nodiscard]] auto summary() const -> QString;
+    [[nodiscard]] QString summary() const;
 
     /*! \brief Getter function for property with the same name
      *
      * @returns Property summary
      */
-    [[nodiscard]] auto temperature() const -> Units::Temperature
+    [[nodiscard]] Units::Temperature temperature() const
     {
         return m_temperature;
     }
@@ -250,7 +250,7 @@ public:
      *
      * @returns Property summary
      */
-    [[nodiscard]] auto dewPoint() const -> Units::Temperature
+    [[nodiscard]] Units::Temperature dewPoint() const
     {
         return m_dewpoint;
     }

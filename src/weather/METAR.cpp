@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -33,55 +33,64 @@ Weather::METAR::METAR(QObject *parent)
 }
 
 
-Weather::METAR::METAR(QXmlStreamReader &xml, QObject *parent)
+Weather::METAR::METAR(QXmlStreamReader& xml, QObject* parent)
     : Weather::Decoder(parent)
 {
 
-    while (true) {
+    while (true)
+    {
         xml.readNextStartElement();
         QString const name = xml.name().toString();
 
         // Read Station_ID
-        if (xml.isStartElement() && name == u"station_id"_qs) {
+        if (xml.isStartElement() && name == u"station_id"_qs)
+        {
             m_ICAOCode = xml.readElementText();
             continue;
         }
 
         // Read location
-        if (xml.isStartElement() && name == u"latitude"_qs) {
+        if (xml.isStartElement() && name == u"latitude"_qs)
+        {
             m_location.setLatitude(xml.readElementText().toDouble());
             continue;
         }
-        if (xml.isStartElement() && name == u"longitude"_qs) {
+        if (xml.isStartElement() && name == u"longitude"_qs)
+        {
             m_location.setLongitude(xml.readElementText().toDouble());
             continue;
         }
-        if (xml.isStartElement() && name == u"elevation_m"_qs) {
+        if (xml.isStartElement() && name == u"elevation_m"_qs)
+        {
             m_location.setAltitude(xml.readElementText().toDouble());
             continue;
         }
 
         // Read raw text
-        if (xml.isStartElement() && name == u"raw_text"_qs) {
+        if (xml.isStartElement() && name == u"raw_text"_qs)
+        {
             m_raw_text = xml.readElementText();
             continue;
         }
 
         // Read temperature
-        if (xml.isStartElement() && name == u"temp_c"_qs) {
+        if (xml.isStartElement() && name == u"temp_c"_qs)
+        {
 #warning use bool* ok
             m_temperature = Units::Temperature::fromDegreeCelsius(xml.readElementText().toDouble());
             continue;
         }
 
         // Read dewpoint
-        if (xml.isStartElement() && name == u"dewpoint_c"_qs) {
+        if (xml.isStartElement() && name == u"dewpoint_c"_qs)
+        {
             m_dewpoint = Units::Temperature::fromDegreeCelsius(xml.readElementText().toDouble());
             continue;
         }
 
         // QNH
-        if (xml.isStartElement() && name == u"altim_in_hg"_qs) {
+        if (xml.isStartElement() && name == u"altim_in_hg"_qs)
+        {
             auto content = xml.readElementText();
             m_qnh = Units::Pressure::fromInHg(content.toDouble());
             if ((m_qnh.toHPa() < 800) || (m_qnh.toHPa() > 1200))
@@ -92,28 +101,32 @@ Weather::METAR::METAR(QXmlStreamReader &xml, QObject *parent)
         }
 
         // Wind
-        if (xml.isStartElement() && name == u"wind_speed_kt"_qs) {
+        if (xml.isStartElement() && name == u"wind_speed_kt"_qs)
+        {
             auto content = xml.readElementText();
             m_wind = Units::Speed::fromKN(content.toDouble());
             continue;
         }
 
         // Gust
-        if (xml.isStartElement() && name == u"wind_gust_kt"_qs) {
+        if (xml.isStartElement() && name == u"wind_gust_kt"_qs)
+        {
             auto content = xml.readElementText();
             m_gust = Units::Speed::fromKN(content.toDouble());
             continue;
         }
 
         // Observation Time
-        if (xml.isStartElement() && name == u"observation_time"_qs) {
+        if (xml.isStartElement() && name == u"observation_time"_qs)
+        {
             auto content = xml.readElementText();
             m_observationTime = QDateTime::fromString(content, Qt::ISODate);
             continue;
         }
 
         // Flight category
-        if (xml.isStartElement() && name == u"flight_category"_qs) {
+        if (xml.isStartElement() && name == u"flight_category"_qs)
+        {
             auto content = xml.readElementText();
             if (content == u"VFR"_qs) {
                 m_flightCategory = VFR;
@@ -130,7 +143,8 @@ Weather::METAR::METAR(QXmlStreamReader &xml, QObject *parent)
             continue;
         }
 
-        if (xml.isEndElement() && name == u"METAR"_qs) {
+        if (xml.isEndElement() && name == u"METAR"_qs)
+        {
             break;
         }
 
@@ -150,7 +164,7 @@ Weather::METAR::METAR(QXmlStreamReader &xml, QObject *parent)
 }
 
 
-Weather::METAR::METAR(QDataStream &inputStream, QObject *parent)
+Weather::METAR::METAR(QDataStream& inputStream, QObject* parent)
     : Weather::Decoder(parent)
 {
     inputStream >> m_flightCategory;
@@ -165,58 +179,69 @@ Weather::METAR::METAR(QDataStream &inputStream, QObject *parent)
     inputStream >> m_dewpoint;
     inputStream >> m_densityAltitude;
 
+#warning We need some form of error check!
+
     // Interpret the METAR message
     setRawText(m_raw_text, m_observationTime.date());
     setupSignals();
 }
 
 
-auto Weather::METAR::expiration() const -> QDateTime
+QDateTime Weather::METAR::expiration() const
 {
-    if (m_raw_text.contains(u"NOSIG"_qs)) {
+    if (m_raw_text.contains(u"NOSIG"_qs))
+    {
         return m_observationTime.addSecs(3LL*60LL*60LL);
     }
     return m_observationTime.addSecs(1.5*60*60);
 }
 
 
-auto Weather::METAR::flightCategoryColor() const -> QString
+QString Weather::METAR::flightCategoryColor() const
 {
-    if (m_flightCategory == VFR) {
+    if (m_flightCategory == VFR)
+    {
         return QStringLiteral("green");
     }
-    if (m_flightCategory == MVFR) {
+    if (m_flightCategory == MVFR)
+    {
         return QStringLiteral("yellow");
     }
-    if ((m_flightCategory == IFR) || (m_flightCategory == LIFR)) {
+    if ((m_flightCategory == IFR) || (m_flightCategory == LIFR))
+    {
         return QStringLiteral("red");
     }
     return QStringLiteral("transparent");
 }
 
 
-auto Weather::METAR::isExpired() const -> bool
+bool Weather::METAR::isExpired() const
 {
     auto exp = expiration();
-    if (!exp.isValid()) {
+    if (!exp.isValid())
+    {
         return false;
     }
     return QDateTime::currentDateTime() > exp;
 }
 
 
-auto Weather::METAR::isValid() const -> bool
+bool Weather::METAR::isValid() const
 {
-    if (!m_location.isValid()) {
+    if (!m_location.isValid())
+    {
         return false;
     }
-    if (!m_observationTime.isValid()) {
+    if (!m_observationTime.isValid())
+    {
         return false;
     }
-    if (m_ICAOCode.isEmpty()) {
+    if (m_ICAOCode.isEmpty())
+    {
         return false;
     }
-    if (hasParseError()) {
+    if (hasParseError())
+    {
         return false;
     }
 
@@ -224,9 +249,10 @@ auto Weather::METAR::isValid() const -> bool
 }
 
 
-auto Weather::METAR::relativeObservationTime() const -> QString
+QString Weather::METAR::relativeObservationTime() const
 {
-    if (!m_observationTime.isValid()) {
+    if (!m_observationTime.isValid())
+    {
         return {};
     }
 
@@ -245,15 +271,19 @@ void Weather::METAR::setupSignals() const
 }
 
 
-auto Weather::METAR::summary() const -> QString {
-
+QString Weather::METAR::summary() const
+{
     QStringList resultList;
 
-    switch (m_flightCategory) {
+    switch (m_flightCategory)
+    {
     case VFR:
-        if (m_raw_text.contains(u"CAVOK"_qs)) {
+        if (m_raw_text.contains(u"CAVOK"_qs))
+        {
             resultList << tr("CAVOK");
-        } else {
+        }
+        else
+        {
             resultList << tr("VMC");
         }
         break;
@@ -271,8 +301,10 @@ auto Weather::METAR::summary() const -> QString {
     }
 
     // Wind and Gusts
-    if (m_gust.toKN() > 15) {
-        switch (GlobalObject::navigator()->aircraft().horizontalDistanceUnit()) {
+    if (m_gust.toKN() > 15)
+    {
+        switch (GlobalObject::navigator()->aircraft().horizontalDistanceUnit())
+        {
         case Navigation::Aircraft::Kilometer:
             resultList << tr("gusts of %1 km/h").arg( qRound(m_gust.toKMH()) );
             break;
@@ -283,8 +315,11 @@ auto Weather::METAR::summary() const -> QString {
             resultList << tr("gusts of %1 kn").arg( qRound(m_gust.toKN()) );
             break;
         }
-    } else if (m_wind.toKN() > 10) {
-        switch (GlobalObject::navigator()->aircraft().horizontalDistanceUnit()) {
+    }
+    else if (m_wind.toKN() > 10)
+    {
+        switch (GlobalObject::navigator()->aircraft().horizontalDistanceUnit())
+        {
         case Navigation::Aircraft::Kilometer:
             resultList << tr("wind at %1 km/h").arg( qRound(m_wind.toKMH()) );
             break;
@@ -299,11 +334,13 @@ auto Weather::METAR::summary() const -> QString {
 
     // Weather
     auto curWeather = currentWeather();
-    if (!curWeather.isEmpty()) {
+    if (!curWeather.isEmpty())
+    {
         resultList << curWeather;
     }
 
-    if (resultList.isEmpty()) {
+    if (resultList.isEmpty())
+    {
         return tr("%1 %2").arg(messageType(), Navigation::Clock::describeTimeDifference(m_observationTime));
     }
 

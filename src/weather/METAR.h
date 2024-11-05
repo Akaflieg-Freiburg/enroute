@@ -90,6 +90,19 @@ public:
         return m_location;
     }
 
+    /*! \brief Density altitude of the station reporting this METAR
+     */
+    Q_PROPERTY(Units::Distance densityAltitude READ densityAltitude CONSTANT)
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property coordiante
+     */
+    [[nodiscard]] Units::Distance densityAltitude() const
+    {
+        return m_densityAltitude;
+    }
+
     /*! \brief Expiration time and date
      *
      * A METAR message is supposed to expire 1.5 hours after observation time,

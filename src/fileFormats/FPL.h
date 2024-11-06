@@ -25,6 +25,8 @@
 #include "DataFileAbstract.h"
 #include "Waypoint.h"
 
+using namespace Qt::Literals::StringLiterals;
+
 
 namespace FileFormats
 {
@@ -68,7 +70,7 @@ public:
      *
      *  @returns Name of mime type
      */
-    [[nodiscard]] static QStringList mimeTypes() { return {u"text/xml"_qs, u"text/plain"_qs}; }
+    [[nodiscard]] static QStringList mimeTypes() { return {u"text/xml"_s, u"text/plain"_s}; }
 
 private:
     QVector<GeoMaps::Waypoint> m_waypoints;

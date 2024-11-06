@@ -295,7 +295,7 @@ public:
     // Methods
     //
 
-    [[nodiscard]] Q_INVOKABLE QString derivedData(Navigation::Aircraft aircraft) const;
+    [[nodiscard]] Q_INVOKABLE QString derivedData(const Navigation::Aircraft& aircraft) const;
 
 
 signals:

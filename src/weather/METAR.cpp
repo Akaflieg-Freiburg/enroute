@@ -349,7 +349,7 @@ QString Weather::METAR::summary() const
 }
 
 
-QString Weather::METAR::derivedData(Navigation::Aircraft aircraft) const
+QString Weather::METAR::derivedData(const Navigation::Aircraft& aircraft) const
 {
     QStringList items;
     if (m_densityAltitude.isFinite())

@@ -65,7 +65,7 @@ Units::Pressure Weather::DensityAltitude::calculateVapourPressure(Units::Tempera
 
     // remark: errors in odd coefficients in https://aerotoolbox.com/density-altitude/
     // refer to https://wahiduddin.net/calc/density_altitude.htm instead
-    const double c[10] = {
+    const std::array<double, 10> c = {
          0.99999683,         
         -0.90826951e-2, 
          0.78736169e-4,    

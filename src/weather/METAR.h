@@ -47,17 +47,6 @@ class METAR : public Decoder {
     friend WeatherDataProvider;
 
 public:
-    /*! \brief Default constructor
-     *
-     * This constructor creates an invalid METAR instance.
-     *
-     * @param parent The standard QObject parent pointer
-     */
-    explicit METAR(QObject *parent = nullptr);
-
-    // Standard destructor
-    ~METAR() override = default;
-
     /*! \brief Flight category
      *
      * Flight category, as defined in
@@ -73,6 +62,28 @@ public:
     };
     Q_ENUM(FlightCategory)
 
+
+
+    //
+    // Constructors and destructors
+    //
+
+    /*! \brief Default constructor
+     *
+     * This constructor creates an invalid METAR instance.
+     *
+     * @param parent The standard QObject parent pointer
+     */
+    explicit METAR(QObject *parent = nullptr);
+
+    // Standard destructor
+    ~METAR() override = default;
+
+
+    //
+    // PROPERTIES
+    //
+
     /*! \brief Geographical coordinate of the station reporting this METAR
      *
      * If the station coordinate is unknown, the property contains an invalid
@@ -81,27 +92,8 @@ public:
      */
     Q_PROPERTY(QGeoCoordinate coordinate READ coordinate CONSTANT)
 
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property coordiante
-     */
-    [[nodiscard]] QGeoCoordinate coordinate() const
-    {
-        return m_location;
-    }
-
-    /*! \brief Density altitude of the station reporting this METAR
-     */
+    /*! \brief Density altitude of the station reporting this METAR */
     Q_PROPERTY(Units::Distance densityAltitude READ densityAltitude CONSTANT)
-
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property coordiante
-     */
-    [[nodiscard]] Units::Distance densityAltitude() const
-    {
-        return m_densityAltitude;
-    }
 
     /*! \brief Expiration time and date
      *
@@ -110,15 +102,9 @@ public:
      */
     Q_PROPERTY(QDateTime expiration READ expiration CONSTANT)
 
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property expiration
-     */
-    [[nodiscard]] QDateTime expiration() const;
-
     /*! \brief Suggested color describing the flight category for this METAR
      *
-     * The suggested colors are  the following
+     * The suggested colors are the following
      *
      * - "green" for VFR
      *
@@ -130,14 +116,81 @@ public:
      */
     Q_PROPERTY(QString flightCategoryColor READ flightCategoryColor CONSTANT)
 
+    /*! \brief Flight category for this METAR */
+    Q_PROPERTY(FlightCategory flightCategory READ flightCategory CONSTANT)
+
+    /*! \brief ICAO code of the station reporting this METAR
+     *
+     * This is a string such as "LSZB" for Bern/Belp airport. If the station
+     * code is unknown, the property contains an empty string.
+     */
+    Q_PROPERTY(QString ICAOCode READ ICAOCode CONSTANT)
+
+    /*! \brief Indicates if the class represents a valid METAR report */
+    Q_PROPERTY(bool isValid READ isValid CONSTANT)
+
+    /*! \brief Observation time of this METAR */
+    Q_PROPERTY(QDateTime observationTime READ observationTime CONSTANT)
+
+    /*! \brief QNH value in this METAR
+     *
+     * The QNH property is set to NaN if no QNH is known. Otherwise, the values
+     * is guaranteed to lie in the interval [800 … 1200]
+     */
+    Q_PROPERTY(Units::Pressure QNH READ QNH CONSTANT)
+
+    /*! \brief Raw METAR text
+     *
+     * This is a string such as "METAR EICK 092100Z 23007KT 9999 FEW038 BKN180
+     * 11/08 Q1019 NOSIG=".
+     */
+    Q_PROPERTY(QString rawText READ rawText CONSTANT)
+
+    /*! \brief Observation time, relative to now
+     *
+     * This is a translated, human-readable string such as "1h and 43min ago"
+     * that describes the observation time.
+     */
+    Q_PROPERTY(QString relativeObservationTime READ relativeObservationTime NOTIFY relativeObservationTimeChanged)
+
+    /*! \brief One-line summary of the METAR
+     *
+     * This is a translated, human-readable string of the form "METAR 14min ago:
+     * marginal VMC • wind at 15kt • rain"
+     */
+    Q_PROPERTY(QString summary READ summary NOTIFY summaryChanged)
+
+
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property coordiante
+     */
+    [[nodiscard]] QGeoCoordinate coordinate() const
+    {
+        return m_location;
+    }
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property densityAltitude
+     */
+    [[nodiscard]] Units::Distance densityAltitude() const
+    {
+        return m_densityAltitude;
+    }
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property expiration
+     */
+    [[nodiscard]] QDateTime expiration() const;
+
     /*! \brief Getter function for property with the same name
      *
      * @returns Property color
      */
     [[nodiscard]] QString flightCategoryColor() const;
-
-    /*! \brief Flight category for this METAR */
-    Q_PROPERTY(FlightCategory flightCategory READ flightCategory CONSTANT)
 
     /*! \brief Getter function for property with the same name
      *
@@ -147,13 +200,6 @@ public:
     {
         return m_flightCategory;
     }
-
-    /*! \brief ICAO code of the station reporting this METAR
-     *
-     * This is a string such as "LSZB" for Bern/Belp airport. If the station
-     * code is unknown, the property contains an empty string.
-     */
-    Q_PROPERTY(QString ICAOCode READ ICAOCode CONSTANT)
 
     /*! \brief Getter function for property with the same name
      *
@@ -171,17 +217,11 @@ public:
      */
     [[nodiscard]] Q_INVOKABLE bool isExpired() const;
 
-    /*! \brief Indicates if the class represents a valid METAR report */
-    Q_PROPERTY(bool isValid READ isValid CONSTANT)
-
     /*! \brief Getter function for property with the same name
      *
      * @returns Property isValid
      */
     [[nodiscard]] bool isValid() const;
-
-    /*! \brief Observation time of this METAR */
-    Q_PROPERTY(QDateTime observationTime READ observationTime CONSTANT)
 
     /*! \brief Getter function for property with the same name
      *
@@ -192,13 +232,6 @@ public:
         return m_observationTime;
     }
 
-    /*! \brief QNH value in this METAR
-     *
-     * The QNH property is set to NaN if no QNH is known. Otherwise, the values
-     * is guaranteed to lie in the interval [800 … 1200]
-     */
-    Q_PROPERTY(Units::Pressure QNH READ QNH CONSTANT)
-
     /*! \brief Getter function for property with the same name
      *
      * @returns Property qnh
@@ -207,13 +240,6 @@ public:
     {
         return m_qnh;
     }
-
-    /*! \brief Raw METAR text
-     *
-     * This is a string such as "METAR EICK 092100Z 23007KT 9999 FEW038 BKN180
-     * 11/08 Q1019 NOSIG=".
-     */
-    Q_PROPERTY(QString rawText READ rawText CONSTANT)
 
     /*! \brief Getter function for property with the same name
      *
@@ -224,25 +250,11 @@ public:
         return m_raw_text;
     }
 
-    /*! \brief Observation time, relative to now
-     *
-     * This is a translated, human-readable string such as "1h and 43min ago"
-     * that describes the observation time.
-     */
-    Q_PROPERTY(QString relativeObservationTime READ relativeObservationTime NOTIFY relativeObservationTimeChanged)
-
     /*! \brief Getter function for property with the same name
      *
      * @returns Property relativeObservationTime
      */
     [[nodiscard]] QString relativeObservationTime() const;
-
-    /*! \brief One-line summary of the METAR
-     *
-     * This is a translated, human-readable string of the form "METAR 14min ago:
-     * marginal VMC • wind at 15kt • rain"
-     */
-    Q_PROPERTY(QString summary READ summary NOTIFY summaryChanged)
 
     /*! \brief Getter function for property with the same name
      *
@@ -250,18 +262,20 @@ public:
      */
     [[nodiscard]] QString summary() const;
 
+#warning not a property
     /*! \brief Getter function for property with the same name
      *
-     * @returns Property summary
+     * @returns Property temperature
      */
     [[nodiscard]] Units::Temperature temperature() const
     {
         return m_temperature;
     }
 
+#warning not a property
     /*! \brief Getter function for property with the same name
      *
-     * @returns Property summary
+     * @returns Property dewPoint
      */
     [[nodiscard]] Units::Temperature dewPoint() const
     {
@@ -269,9 +283,11 @@ public:
     }
 
 signals:
+#warning want to delete signal
     /*! \brief Notifier signal */
     void summaryChanged();
 
+#warning want to delete signal
     /*! \brief Notifier signal */
     void relativeObservationTimeChanged();
 
@@ -285,8 +301,10 @@ protected:
 
 private:
     // Connects signals; this method is used internally from the constructor(s)
+#warning should not be necessary
     void setupSignals() const;
 
+#warning want to user standard API
     // Writes the METAR report to a data stream
     void write(QDataStream &out);
 

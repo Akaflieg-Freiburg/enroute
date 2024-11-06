@@ -383,7 +383,7 @@ void Weather::WeatherDataProvider::save()
         if (weatherStation->hasMETAR())
         {
             // Save only valid METARs that are not yet expired
-            if (weatherStation->metar()->isValid() && !weatherStation->metar()->isExpired())
+            if (weatherStation->metar()->isValid() && (QDateTime::currentDateTime() <= weatherStation->metar()->expiration()))
             {
                 outputStream << QChar('M');
                 weatherStation->metar()->write(outputStream);

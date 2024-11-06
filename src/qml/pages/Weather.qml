@@ -111,7 +111,7 @@ Page {
                             result = result + "<br>" + wayTo
 
                         if (model.modelData.hasMETAR)
-                            result = result + "<br>" + model.modelData.metar.summary
+                            result = result + "<br>" + model.modelData.metar.summary(Navigator.aircraft, Clock.time)
 
                         return result
                     }

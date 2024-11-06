@@ -185,7 +185,6 @@ Weather::METAR::METAR(QDataStream& inputStream, QObject* parent)
     setRawText(m_raw_text, m_observationTime.date());
 }
 
-
 QDateTime Weather::METAR::expiration() const
 {
     if (m_raw_text.contains(u"NOSIG"_qs))
@@ -194,7 +193,6 @@ QDateTime Weather::METAR::expiration() const
     }
     return m_observationTime.addSecs(1.5*60*60);
 }
-
 
 QString Weather::METAR::flightCategoryColor() const
 {
@@ -212,18 +210,6 @@ QString Weather::METAR::flightCategoryColor() const
     }
     return QStringLiteral("transparent");
 }
-
-
-bool Weather::METAR::isExpired() const
-{
-    auto exp = expiration();
-    if (!exp.isValid())
-    {
-        return false;
-    }
-    return QDateTime::currentDateTime() > exp;
-}
-
 
 bool Weather::METAR::isValid() const
 {

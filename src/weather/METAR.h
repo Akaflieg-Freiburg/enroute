@@ -93,12 +93,6 @@ public:
      */
     Q_PROPERTY(QGeoCoordinate coordinate READ coordinate CONSTANT)
 
-    /*! \brief Density altitude of the station reporting this METAR */
-    Q_PROPERTY(Units::Distance densityAltitude READ densityAltitude CONSTANT)
-
-    /*! \brief Dew point at the station reporting this METAR */
-    Q_PROPERTY(Units::Temperature dewpoint READ dewpoint CONSTANT)
-
     /*! \brief Expiration time and date
      *
      * A METAR message is supposed to expire 1.5 hours after observation time,
@@ -150,9 +144,6 @@ public:
      */
     Q_PROPERTY(QString rawText READ rawText CONSTANT)
 
-    /*! \brief Temperature at the station reporting this METAR */
-    Q_PROPERTY(Units::Temperature temperature READ temperature CONSTANT)
-
 
     //
     // Getter Methods
@@ -165,24 +156,6 @@ public:
     [[nodiscard]] QGeoCoordinate coordinate() const
     {
         return m_location;
-    }
-
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property densityAltitude
-     */
-    [[nodiscard]] Units::Distance densityAltitude() const
-    {
-        return m_densityAltitude;
-    }
-
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property dewPoint
-     */
-    [[nodiscard]] Units::Temperature dewpoint() const
-    {
-        return m_dewpoint;
     }
 
     /*! \brief Getter function for property with the same name
@@ -215,13 +188,6 @@ public:
         return m_ICAOCode;
     }
 
-    /*! \brief Convenience method to check if this METAR is already expired
-     *
-     * @returns true if an expiration date/time is known and if the current time
-     * is larger than the expiration
-     */
-    [[nodiscard]] Q_INVOKABLE bool isExpired() const;
-
     /*! \brief Getter function for property with the same name
      *
      * @returns Property isValid
@@ -253,15 +219,6 @@ public:
     [[nodiscard]] QString rawText() const
     {
         return m_raw_text;
-    }
-
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property temperature
-     */
-    [[nodiscard]] Units::Temperature temperature() const
-    {
-        return m_temperature;
     }
 
 

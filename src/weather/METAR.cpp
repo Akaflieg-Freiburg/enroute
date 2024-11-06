@@ -22,7 +22,6 @@
 #include "navigation/Aircraft.h"
 #include "navigation/Atmosphere.h"
 #include "navigation/Clock.h"
-#include "navigation/Navigator.h"
 #include "weather/DensityAltitude.h"
 #include "weather/METAR.h"
 
@@ -194,6 +193,7 @@ QDateTime Weather::METAR::expiration() const
     return m_observationTime.addSecs(1.5*60*60);
 }
 
+
 QString Weather::METAR::flightCategoryColor() const
 {
     if (m_flightCategory == VFR)
@@ -210,6 +210,7 @@ QString Weather::METAR::flightCategoryColor() const
     }
     return QStringLiteral("transparent");
 }
+
 
 bool Weather::METAR::isValid() const
 {
@@ -266,6 +267,7 @@ QString Weather::METAR::summary(const Navigation::Aircraft& aircraft, const QDat
     // Wind and Gusts
     if (m_gust.toKN() > 15)
     {
+#warning use methods provided by aircraft
         switch (aircraft.horizontalDistanceUnit())
         {
         case Navigation::Aircraft::Kilometer:

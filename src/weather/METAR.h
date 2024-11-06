@@ -254,7 +254,7 @@ protected:
     explicit METAR(QDataStream& inputStream, QObject* parent = nullptr);
 
 private:
-#warning want to user standard API
+#warning want to use standard API
     // Writes the METAR report to a data stream
     void write(QDataStream &out);
 

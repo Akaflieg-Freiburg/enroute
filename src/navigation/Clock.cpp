@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -47,7 +47,7 @@ Navigation::Clock::Clock(QObject *parent) : GlobalObject(parent)
 }
 
 
-auto Navigation::Clock::describeTimeDifference(const QDateTime& pointInTime) -> QString
+QString Navigation::Clock::describeTimeDifference(const QDateTime& pointInTime)
 {
     auto minutes = qRound( ((double)QDateTime::currentDateTime().secsTo(pointInTime))/60.0);
 
@@ -78,7 +78,7 @@ auto Navigation::Clock::describeTimeDifference(const QDateTime& pointInTime) -> 
 }
 
 
-auto Navigation::Clock::describePointInTime(QDateTime pointInTime) -> QString
+QString Navigation::Clock::describePointInTime(QDateTime pointInTime)
 {
     pointInTime = pointInTime.toUTC();
 
@@ -113,7 +113,7 @@ void Navigation::Clock::setSingleShotTimer()
 }
 
 
-auto Navigation::Clock::timeAsUTCString() -> QString
+QString Navigation::Clock::timeAsUTCString()
 {
     return QDateTime::currentDateTimeUtc().toString(QStringLiteral("H:mm"));
 }

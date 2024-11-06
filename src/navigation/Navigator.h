@@ -57,7 +57,7 @@ public:
 
 
     //
-    // Constructors and destructors
+    // Constructors and Destructors
     //
 
     /*! \brief Standard constructor

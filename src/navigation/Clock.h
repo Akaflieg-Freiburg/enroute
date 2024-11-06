@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -42,6 +42,12 @@ class Clock : public GlobalObject {
     QML_SINGLETON
 
 public:
+
+
+    //
+    // Constructors and destructors
+    //
+
     /*! \brief Default constructor
      *
      * @param parent The standard QObject parent pointer
@@ -60,6 +66,11 @@ public:
         return GlobalObject::clock();
     }
 
+
+    //
+    // PROPERTIES
+    //
+
     /*! \brief Current date
      *
      * This property holds the current date for the local time zone. The implementation makes some effort to ensure
@@ -67,14 +78,53 @@ public:
      */
     Q_PROPERTY(QDate date READ date NOTIFY dateChanged)
 
+    /*! \brief Current time in UTC as a string
+     *
+     * This property holds the current time in UTC as a string of the form "8:06" or "13:45". The implementation makes some effort to ensure
+     * that the notifier signal is emitted just after every minute change.
+     */
+    Q_PROPERTY(QString timeAsUTCString READ timeAsUTCString NOTIFY timeChanged)
+
+    /*! \brief Current time
+     *
+     * This property holds the current time. The implementation makes some effort to ensure
+     * that the notifier signal is emitted just after every minute change.
+     */
+    Q_PROPERTY(QDateTime time READ time NOTIFY timeChanged)
+
+
+    //
+    // Getter Methods
+    //
+
     /*! \brief Getter method for property of the same name
      *
      * @returns Property date
      */
-    [[nodiscard]] static auto date() -> QDate
+    [[nodiscard]] static QDate date()
     {
         return QDateTime::currentDateTime().date();
     }
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property time
+     */
+    [[nodiscard]] static QString timeAsUTCString();
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property time
+     */
+    [[nodiscard]] static QDateTime time()
+    {
+        return QDateTime::currentDateTime();
+    }
+
+
+    //
+    // Getter Methods
+    //
 
     /*! Describe time difference in human readable form
      *
@@ -97,35 +147,6 @@ public:
      * \return String with the description
      */
     Q_INVOKABLE static QString describePointInTime(QDateTime pointInTime);
-
-    /*! \brief Current time in UTC as a string
-     *
-     * This property holds the current time in UTC as a string of the form "8:06" or "13:45". The implementation makes some effort to ensure
-     * that the notifier signal is emitted just after every minute change.
-     */
-    Q_PROPERTY(QString timeAsUTCString READ timeAsUTCString NOTIFY timeChanged)
-
-    /*! \brief Getter method for property of the same name
-     *
-     * @returns Property time
-     */
-    static auto timeAsUTCString() -> QString ;
-
-    /*! \brief Current time
-     *
-     * This property holds the current time. The implementation makes some effort to ensure
-     * that the notifier signal is emitted just after every minute change.
-     */
-    Q_PROPERTY(QDateTime time READ time NOTIFY timeChanged)
-
-    /*! \brief Getter method for property of the same name
-     *
-     * @returns Property time
-     */
-    [[nodiscard]] static auto time() -> QDateTime
-    {
-        return QDateTime::currentDateTime();
-    }
 
 signals:
     /*! \brief Notifier signal */

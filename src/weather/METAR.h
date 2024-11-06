@@ -150,20 +150,6 @@ public:
      */
     Q_PROPERTY(QString rawText READ rawText CONSTANT)
 
-    /*! \brief Observation time, relative to now
-     *
-     * This is a translated, human-readable string such as "1h and 43min ago"
-     * that describes the observation time.
-     */
-    Q_PROPERTY(QString relativeObservationTime READ relativeObservationTime NOTIFY relativeObservationTimeChanged)
-
-    /*! \brief One-line summary of the METAR
-     *
-     * This is a translated, human-readable string of the form "METAR 14min ago:
-     * marginal VMC • wind at 15kt • rain"
-     */
-    Q_PROPERTY(QString summary READ summary NOTIFY summaryChanged)
-
     /*! \brief Temperature at the station reporting this METAR */
     Q_PROPERTY(Units::Temperature temperature READ temperature CONSTANT)
 
@@ -271,18 +257,6 @@ public:
 
     /*! \brief Getter function for property with the same name
      *
-     * @returns Property relativeObservationTime
-     */
-    [[nodiscard]] QString relativeObservationTime() const;
-
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property summary
-     */
-    [[nodiscard]] QString summary() const;
-
-    /*! \brief Getter function for property with the same name
-     *
      * @returns Property temperature
      */
     [[nodiscard]] Units::Temperature temperature() const
@@ -295,17 +269,24 @@ public:
     // Methods
     //
 
+    /*! \brief Derived data, such as density height
+     *
+     * @param aircraft Current aircraft, used to determine appropriate units
+     *
+     * @returns Human-readable, translated rich text
+     */
     [[nodiscard]] Q_INVOKABLE QString derivedData(const Navigation::Aircraft& aircraft) const;
 
-
-signals:
-#warning want to delete signal
-    /*! \brief Notifier signal */
-    void summaryChanged();
-
-#warning want to delete signal
-    /*! \brief Notifier signal */
-    void relativeObservationTimeChanged();
+    /*! \brief One-line summary of the METAR
+     *
+     * @param aircraft Current aircraft, used to determine appropriate units
+     *
+     * @param currentTime Current time, used to describe time difference
+     *
+     * @returns A translated, human-readable string of the form "METAR 14min ago:
+     * marginal VMC • wind at 15kt • rain"
+     */
+    [[nodiscard]] Q_INVOKABLE QString summary(const Navigation::Aircraft& aircraft, const QDateTime& currentTime) const;
 
 protected:
     // This constructor reads a XML stream, as provided by the Aviation Weather
@@ -316,10 +297,6 @@ protected:
     explicit METAR(QDataStream& inputStream, QObject* parent = nullptr);
 
 private:
-    // Connects signals; this method is used internally from the constructor(s)
-#warning should not be necessary
-    void setupSignals() const;
-
 #warning want to user standard API
     // Writes the METAR report to a data stream
     void write(QDataStream &out);

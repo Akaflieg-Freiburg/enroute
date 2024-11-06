@@ -161,7 +161,6 @@ Weather::METAR::METAR(QXmlStreamReader& xml, QObject* parent)
 
     // Interpret the METAR message
     setRawText(m_raw_text, m_observationTime.date());
-    setupSignals();
 }
 
 
@@ -184,7 +183,6 @@ Weather::METAR::METAR(QDataStream& inputStream, QObject* parent)
 
     // Interpret the METAR message
     setRawText(m_raw_text, m_observationTime.date());
-    setupSignals();
 }
 
 
@@ -250,29 +248,7 @@ bool Weather::METAR::isValid() const
 }
 
 
-QString Weather::METAR::relativeObservationTime() const
-{
-    if (!m_observationTime.isValid())
-    {
-        return {};
-    }
-
-    return Navigation::Clock::describeTimeDifference(m_observationTime);
-}
-
-
-void Weather::METAR::setupSignals() const
-{
-#warning We should take time out of this class
-    // Emit notifier signals whenever the time changes
-    connect(Navigation::Navigator::clock(), &Navigation::Clock::timeChanged, this, &Weather::METAR::summaryChanged);
-    connect(Navigation::Navigator::clock(), &Navigation::Clock::timeChanged, this, &Weather::METAR::relativeObservationTimeChanged);
-
-    connect(GlobalObject::navigator(), &Navigation::Navigator::aircraftChanged, this, &Weather::METAR::summaryChanged);
-}
-
-
-QString Weather::METAR::summary() const
+QString Weather::METAR::summary(const Navigation::Aircraft& aircraft, const QDateTime& currentTime) const
 {
     QStringList resultList;
 
@@ -304,7 +280,7 @@ QString Weather::METAR::summary() const
     // Wind and Gusts
     if (m_gust.toKN() > 15)
     {
-        switch (GlobalObject::navigator()->aircraft().horizontalDistanceUnit())
+        switch (aircraft.horizontalDistanceUnit())
         {
         case Navigation::Aircraft::Kilometer:
             resultList << tr("gusts of %1 km/h").arg( qRound(m_gust.toKMH()) );
@@ -319,7 +295,7 @@ QString Weather::METAR::summary() const
     }
     else if (m_wind.toKN() > 10)
     {
-        switch (GlobalObject::navigator()->aircraft().horizontalDistanceUnit())
+        switch (aircraft.horizontalDistanceUnit())
         {
         case Navigation::Aircraft::Kilometer:
             resultList << tr("wind at %1 km/h").arg( qRound(m_wind.toKMH()) );
@@ -342,10 +318,10 @@ QString Weather::METAR::summary() const
 
     if (resultList.isEmpty())
     {
-        return tr("%1 %2").arg(messageType(), Navigation::Clock::describeTimeDifference(m_observationTime));
+        return tr("%1 %2").arg(messageType(), Navigation::Clock::describeTimeDifference(m_observationTime, currentTime));
     }
 
-    return tr("%1 %2: %3").arg(messageType(), Navigation::Clock::describeTimeDifference(m_observationTime), resultList.join(QStringLiteral(" • ")));
+    return tr("%1 %2: %3").arg(messageType(), Navigation::Clock::describeTimeDifference(m_observationTime, currentTime), resultList.join(QStringLiteral(" • ")));
 }
 
 

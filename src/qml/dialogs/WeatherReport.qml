@@ -67,7 +67,7 @@ CenteringDialog {
 
                 Label { // title: "METAR"
                     visible: (weatherStation != null) && weatherStation.hasMETAR
-                    text: (weatherStation != null) && weatherStation.hasMETAR ? (weatherStation.metar.messageType + " " + weatherStation.metar.relativeObservationTime) : ""
+                    text: (weatherStation != null) && weatherStation.hasMETAR ? (weatherStation.metar.messageType + " " + Clock.describeTimeDifference(weatherStation.metar.observationTime, Clock.time) ) : ""
                     font.bold: true
                     font.pixelSize: 1.2*weatherReportDialog.font.pixelSize
                 }

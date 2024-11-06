@@ -136,6 +136,18 @@ public:
      */
     Q_INVOKABLE static QString describeTimeDifference(const QDateTime& pointInTime);
 
+    /*! Describe time difference in human readable form
+     *
+     * This method describes the difference between the current time and a given time in human readable form.
+     *
+     * @param pointInTime A point in time that is compared to the current time
+     *
+     * @param currentTime Current time
+     *
+     * @returns A localized string such as "just now" (if the pointInTime is rougly equal to the current time), "3 minutes ago" (if the pointInTime is in the past), or "in 1 hour 5 minutes"  (if the pointInTime is in the future)
+     */
+    Q_INVOKABLE static QString describeTimeDifference(const QDateTime& pointInTime, const QDateTime& currentTime);
+
     /*! Describe a point in time in human-readable form
      *
      * This method describes a point in time in human readable form. The method returns a localized string of the form

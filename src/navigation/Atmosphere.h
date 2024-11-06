@@ -80,6 +80,16 @@ public:
      *  @returns Air pressure
      */
     Q_INVOKABLE static Units::Pressure pressure(Units::Distance height);
+
+    /*! \brief Computation of relative humidity as a function of temperature and dewpoint
+     *
+     *  @param airTemperature Air temperature
+     *
+     *  @param dewpoint Dew point
+
+     *  @returns Relative humidity in the range 0..100, or NAN in case of an error
+     */
+    Q_INVOKABLE static double relativeHumidity(Units::Temperature temperature, Units::Temperature dewpoint);
 };
 
 } // namespace Navigation

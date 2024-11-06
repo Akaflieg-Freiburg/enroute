@@ -20,6 +20,7 @@
 
 #include "GlobalObject.h"
 #include "navigation/Aircraft.h"
+#include "navigation/Atmosphere.h"
 #include "navigation/Clock.h"
 #include "navigation/Navigator.h"
 #include "weather/DensityAltitude.h"
@@ -345,6 +346,38 @@ QString Weather::METAR::summary() const
     }
 
     return tr("%1 %2: %3").arg(messageType(), Navigation::Clock::describeTimeDifference(m_observationTime), resultList.join(QStringLiteral(" • ")));
+}
+
+
+QString Weather::METAR::derivedData(Navigation::Aircraft aircraft) const
+{
+    QStringList items;
+    if (m_densityAltitude.isFinite())
+    {
+        items += tr("Density Altitude: %1").arg(aircraft.verticalDistanceToString(m_densityAltitude));
+    }
+    auto relativeHumidity = Navigation::Atmosphere::relativeHumidity(m_temperature, m_dewpoint);
+    if (!std::isnan(relativeHumidity))
+    {
+        items += tr("Relative Humidity: %1%").arg(qRound(relativeHumidity));
+    }
+
+    if (items.isEmpty())
+    {
+        return {};
+    }
+
+    QString result;
+    result += u"<strong>"_qs + tr("Derived Data") + u"</strong>"_qs;
+    result += QStringLiteral("<ul style=\"margin-left:-25px;\">");
+    for(auto& item : items)
+    {
+        result += u"<li>"_qs;
+        result += item;
+        result += u"</li>"_qs;
+    }
+    result += QStringLiteral("</ul>");
+    return result;
 }
 
 

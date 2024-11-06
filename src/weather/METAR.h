@@ -24,6 +24,7 @@
 #include <QGeoCoordinate>
 #include <QXmlStreamReader>
 
+#include "navigation/Aircraft.h"
 #include "units/Distance.h"
 #include "units/Pressure.h"
 #include "units/Speed.h"
@@ -95,6 +96,9 @@ public:
     /*! \brief Density altitude of the station reporting this METAR */
     Q_PROPERTY(Units::Distance densityAltitude READ densityAltitude CONSTANT)
 
+    /*! \brief Dew point at the station reporting this METAR */
+    Q_PROPERTY(Units::Temperature dewpoint READ dewpoint CONSTANT)
+
     /*! \brief Expiration time and date
      *
      * A METAR message is supposed to expire 1.5 hours after observation time,
@@ -160,7 +164,13 @@ public:
      */
     Q_PROPERTY(QString summary READ summary NOTIFY summaryChanged)
 
+    /*! \brief Temperature at the station reporting this METAR */
+    Q_PROPERTY(Units::Temperature temperature READ temperature CONSTANT)
 
+
+    //
+    // Getter Methods
+    //
 
     /*! \brief Getter function for property with the same name
      *
@@ -182,13 +192,22 @@ public:
 
     /*! \brief Getter function for property with the same name
      *
+     * @returns Property dewPoint
+     */
+    [[nodiscard]] Units::Temperature dewpoint() const
+    {
+        return m_dewpoint;
+    }
+
+    /*! \brief Getter function for property with the same name
+     *
      * @returns Property expiration
      */
     [[nodiscard]] QDateTime expiration() const;
 
     /*! \brief Getter function for property with the same name
      *
-     * @returns Property color
+     * @returns Property flightCategoryColor
      */
     [[nodiscard]] QString flightCategoryColor() const;
 
@@ -262,7 +281,6 @@ public:
      */
     [[nodiscard]] QString summary() const;
 
-#warning not a property
     /*! \brief Getter function for property with the same name
      *
      * @returns Property temperature
@@ -272,15 +290,13 @@ public:
         return m_temperature;
     }
 
-#warning not a property
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property dewPoint
-     */
-    [[nodiscard]] Units::Temperature dewPoint() const
-    {
-        return m_dewpoint;
-    }
+
+    //
+    // Methods
+    //
+
+    [[nodiscard]] Q_INVOKABLE QString derivedData(Navigation::Aircraft aircraft) const;
+
 
 signals:
 #warning want to delete signal

@@ -97,24 +97,21 @@ CenteringDialog {
                     }
                 }
 
-                Label { // decoded METAR text
+                Label { // Decoded METAR text
                     visible: (weatherStation != null) && weatherStation.hasMETAR
                     text: (weatherStation != null) && weatherStation.hasMETAR ? weatherStation.metar.decodedText : ""
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
-                    textFormat: Text.RichText // OK
+                    textFormat: Text.RichText
                 }
 
-                Label {
-                    visible: (weatherStation != null)
-                    text: qsTr("Derived Data")
-                    font.bold: true
-                    //font.pixelSize: 1.2*weatherReportDialog.font.pixelSize
-                }
-
-                Label { // Density altitude
-                    visible: (weatherStation != null) && weatherStation.metar.densityAltitude.isFinite()
-                    text: (weatherStation != null) ? ( qsTr("Density Altitude")+": " + Navigator.aircraft.verticalDistanceToString(weatherStation.metar.densityAltitude) ) : ""
+                Label { // Derived Data
+                    visible: text !== ""
+                    text: (weatherStation != null) ? weatherStation.metar.derivedData(Navigator.aircraft) : ""
+                    wrapMode: Text.WordWrap
+                    textFormat: Text.RichText
+                    bottomPadding: 0.2*font.pixelSize
+                    topPadding: 0.4*font.pixelSize
                 }
 
                 Label { // title: "TAF"
@@ -122,6 +119,7 @@ CenteringDialog {
                     text: "TAF"
                     font.bold: true
                     font.pixelSize: 1.2*weatherReportDialog.font.pixelSize
+                    topPadding: 0.4*font.pixelSize
                 }
 
                 Label { // raw TAF text
@@ -133,7 +131,7 @@ CenteringDialog {
                     wrapMode: Text.WordWrap
 
                     bottomPadding: 0.2*font.pixelSize
-                    topPadding: 0.2*font.pixelSize
+                    topPadding: 0.4*font.pixelSize
                     leftPadding: 0.2*font.pixelSize
                     rightPadding: 0.2*font.pixelSize
 

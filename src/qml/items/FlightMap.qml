@@ -250,7 +250,6 @@ Map {
 
             layout: {
                 "icon-image": ["get", "CAT"],
-                "icon-rotation-alignment": "map",
                 "text-field": ["get", "NAM"],
                 "text-size": 0.85*GlobalSettings.fontSize,
                 "text-anchor": "top",

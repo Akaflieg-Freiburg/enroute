@@ -83,7 +83,7 @@ FileFormats::PLN::PLN(const QString& fileName)
     }
     if (xmlReader.name().compare("SimBase.Document", Qt::CaseInsensitive) != 0)
     {
-        setError(QObject::tr("File %1 does not contain a flight plan", "FileFormats::PLN").arg(fileName));
+        setError(QObject::tr("File %1 does not contain a flight plan.", "FileFormats::PLN").arg(fileName));
         return;
     }
 
@@ -123,7 +123,7 @@ FileFormats::PLN::PLN(const QString& fileName)
                 auto split = pos.split(u","_qs);
                 if (split.size() != 3)
                 {
-                    setError(QObject::tr("Position of waypoint %1 invalid", "FileFormats::PLN").arg(atcWaypointCounter));
+                    setError(QObject::tr("Position of waypoint %1 is invalid.", "FileFormats::PLN").arg(atcWaypointCounter));
                     return;
                 }
                 bool ok = false;
@@ -133,21 +133,21 @@ FileFormats::PLN::PLN(const QString& fileName)
                 coord.setAltitude(split[2].toDouble(&ok));
                 if (!ok || !coord.isValid())
                 {
-                    setError(QObject::tr("Position of waypoint %1 is not a valid position", "FileFormats::PLN").arg(atcWaypointCounter));
+                    setError(QObject::tr("Position of waypoint %1 is invalid.", "FileFormats::PLN").arg(atcWaypointCounter));
                     return;
                 }
                 m_waypoints.append(GeoMaps::Waypoint(coord, id));
             }
             if (worldPositionCounter != 1)
             {
-                setError(QObject::tr("Waypoint %1 does not have a unique position", "FileFormats::PLN").arg(atcWaypointCounter));
+                setError(QObject::tr("More than one position specified for waypoint %1.", "FileFormats::PLN").arg(atcWaypointCounter));
                 return;
             }
         }
 
         if (atcWaypointCounter == 0)
         {
-            setError(QObject::tr("File %1 does not contain way points", "FileFormats::PLN").arg(fileName));
+            setError(QObject::tr("File %1 does not contain waypoints.", "FileFormats::PLN").arg(fileName));
             return;
         }
 
@@ -155,7 +155,7 @@ FileFormats::PLN::PLN(const QString& fileName)
     }
     if (flightPlanCounter != 1)
     {
-        setError(QObject::tr("File %1 does not contain a unique flight plan", "FileFormats::PLN").arg(fileName));
+        setError(QObject::tr("File %1 contains more than one flight plan.", "FileFormats::PLN").arg(fileName));
         return;
     }
 }

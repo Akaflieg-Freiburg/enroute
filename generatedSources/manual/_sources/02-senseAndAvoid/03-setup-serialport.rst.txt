@@ -47,8 +47,8 @@ You will need to know or guess the name of the serial port on your device.
 Step 2: Check Connectivity
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-After the data connection to the Bluetooth Classic device has been configured in
-Step 1, everything else should be automatic.  To check, open the main menu and
+After the data connection to the serial port device has been configured in Step
+1, everything else should be automatic.  To check, open the main menu and
 navigate to the "Information" menu.  If the entry "Traffic Receiver" is
 highlighted in green, then **Enroute Flight Navigation** has already found the
 traffic receiver and has connected to it. Congratulations, you are done!

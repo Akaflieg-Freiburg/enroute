@@ -6,18 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Import Data &mdash; Enroute Flight Navigation  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=330c1f8c" />
 
   
     <link rel="shortcut icon" href="../_static/de.akaflieg_freiburg.enroute.png"/>
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
   
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -81,6 +78,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../08-appendix/02-license.html">Software and Data Licenses</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../08-appendix/03-privacy.html">Privacy Policies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../08-appendix/04-authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../08-appendix/05-awards.html">Awards</a></li>
 </ul>
 
         </div>
@@ -271,7 +269,7 @@ dragging the text into the <strong>Enroute Flight Navigation</strong> window.</p
 possible to pass file names as command line arguments.</p>
 </section>
 <section id="supported-file-formats">
-<h2>Supported File Formats<a class="headerlink" href="#supported-file-formats" title="Link to this heading"></a></h2>
+<span id="supportedfileformats"></span><h2>Supported File Formats<a class="headerlink" href="#supported-file-formats" title="Link to this heading"></a></h2>
 <p><strong>Enroute Flight Navigation</strong> accepts data in the following formats.</p>
 <table class="docutils align-default">
 <thead>
@@ -293,10 +291,16 @@ possible to pass file names as command line arguments.</p>
 <td><p>Text file</p></td>
 </tr>
 <tr class="row-even"><td><p>Flight Routes</p></td>
-<td><p><a class="reference external" href="https://en.wikipedia.org/wiki/GPS_Exchange_Format">GPX</a></p></td>
+<td><p>Garmin FPL</p></td>
 </tr>
 <tr class="row-odd"><td><p>Flight Routes</p></td>
+<td><p><a class="reference external" href="https://en.wikipedia.org/wiki/GPS_Exchange_Format">GPX</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Flight Routes</p></td>
 <td><p><a class="reference external" href="https://en.wikipedia.org/wiki/GeoJSON">GeoJSON</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Flight Routes</p></td>
+<td><p><a class="reference external" href="https://docs.flightsimulator.com/html/Content_Configuration/Flights_And_Missions/Flight_Plan_Definitions.htm">PLN</a></p></td>
 </tr>
 <tr class="row-even"><td><p>Raster Maps</p></td>
 <td><p><a class="reference external" href="https://docs.mapbox.com/help/glossary/mbtiles/">MBTILES</a></p></td>
@@ -315,34 +319,15 @@ possible to pass file names as command line arguments.</p>
 </section>
 <section id="supported-text-data-items">
 <h2>Supported Text Data Items<a class="headerlink" href="#supported-text-data-items" title="Link to this heading"></a></h2>
-<p><strong>Enroute Flight Navigation</strong> accepts data in the following formats.</p>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Functionality</p></th>
-<th class="head"><p>Sample</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Google Map Link</p></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p>Shortened Google Map Link</p></td>
-<td><p>xx</p></td>
-</tr>
-<tr class="row-even"><td><p>OpenStreetMap Link</p></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p>WeGo Link</p></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p>Shortened WeGo Link</p></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p>GEO URLs</p></td>
-<td></td>
-</tr>
-</tbody>
-</table>
+<p><strong>Enroute Flight Navigation</strong> accepts text data items in the following formats.</p>
+<ul class="simple">
+<li><p>Google Map Link</p></li>
+<li><p>Shortened Google Map Link</p></li>
+<li><p>OpenStreetMap Link</p></li>
+<li><p>WeGo Link</p></li>
+<li><p>Shortened WeGo Link</p></li>
+<li><p>GEO URLs</p></li>
+</ul>
 </section>
 </section>
 

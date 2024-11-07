@@ -107,7 +107,7 @@ CenteringDialog {
 
                 Label { // Derived Data
                     visible: text !== ""
-                    text: (weatherStation != null) ? weatherStation.metar.derivedData(Navigator.aircraft) : ""
+                    text: (weatherStation != null) && weatherStation.hasMETAR ? weatherStation.metar.derivedData(Navigator.aircraft) : ""
                     wrapMode: Text.WordWrap
                     textFormat: Text.RichText
                     bottomPadding: 0.2*font.pixelSize

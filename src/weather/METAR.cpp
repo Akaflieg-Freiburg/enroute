@@ -345,17 +345,19 @@ QString Weather::METAR::derivedData(const Navigation::Aircraft& aircraft) const
 }
 
 
-void Weather::METAR::write(QDataStream &out)
+QDataStream& Weather::operator<<(QDataStream& stream, const Weather::METAR& metar)
 {
-    out << m_flightCategory;
-    out << m_ICAOCode;
-    out << m_location;
-    out << m_observationTime;
-    out << m_qnh;
-    out << m_raw_text;
-    out << m_wind;
-    out << m_gust;
-    out << m_temperature;
-    out << m_dewpoint;
-    out << m_densityAltitude;
+    stream << metar.m_flightCategory;
+    stream << metar.m_ICAOCode;
+    stream << metar.m_location;
+    stream << metar.m_observationTime;
+    stream << metar.m_qnh;
+    stream << metar.m_raw_text;
+    stream << metar.m_wind;
+    stream << metar.m_gust;
+    stream << metar.m_temperature;
+    stream << metar.m_dewpoint;
+    stream << metar.m_densityAltitude;
+
+    return stream;
 }

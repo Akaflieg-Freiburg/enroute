@@ -46,6 +46,7 @@ class METAR : public Decoder {
     Q_OBJECT
 
     friend WeatherDataProvider;
+    friend QDataStream& operator<<(QDataStream& stream, const METAR& metar);
 
 public:
     /*! \brief Flight category
@@ -254,10 +255,6 @@ protected:
     explicit METAR(QDataStream& inputStream, QObject* parent = nullptr);
 
 private:
-#warning want to use standard API
-    // Writes the METAR report to a data stream
-    void write(QDataStream &out);
-
     Q_DISABLE_COPY_MOVE(METAR)
 
     // Decoded METAR text
@@ -296,4 +293,11 @@ private:
     // Density altitude, derived data
     Units::Distance m_densityAltitude;
 };
+
+/*! \brief Serialization
+ *
+ *  There is no checks for errors of any kind.
+ */
+QDataStream& operator<<(QDataStream& stream, const METAR& metar);
+
 } // namespace Weather

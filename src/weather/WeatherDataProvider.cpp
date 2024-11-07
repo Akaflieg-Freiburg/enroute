@@ -386,7 +386,7 @@ void Weather::WeatherDataProvider::save()
             if (weatherStation->metar()->isValid() && (QDateTime::currentDateTime() <= weatherStation->metar()->expiration()))
             {
                 outputStream << QChar('M');
-                weatherStation->metar()->write(outputStream);
+                outputStream << *weatherStation->metar();
             }
         }
 

@@ -127,6 +127,8 @@ private:
 };
 } // namespace Units
 
+auto operator<<(QDataStream &out, Units::Temperature t) -> QDataStream &;
+auto operator>>(QDataStream &in, Units::Temperature &t) -> QDataStream &;
 
 // Declare meta types
 Q_DECLARE_METATYPE(Units::Temperature)

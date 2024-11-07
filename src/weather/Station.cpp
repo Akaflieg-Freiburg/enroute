@@ -20,7 +20,6 @@
 
 #include "geomaps/GeoMapProvider.h"
 #include "weather/Station.h"
-
 #include <utility>
 
 
@@ -93,7 +92,7 @@ void Weather::Station::setMETAR(Weather::METAR *metar)
 {
     // Ignore invalid and expired METARs. Also ignore METARs whose ICAO code does not match with this weather station
     if (metar != nullptr) {
-        if (!metar->isValid() || metar->isExpired() || (metar->ICAOCode() != m_ICAOCode)) {
+        if (!metar->isValid() || (QDateTime::currentDateTime() > metar->expiration()) || (metar->ICAOCode() != m_ICAOCode)) {
             metar->deleteLater();
             return;
         }

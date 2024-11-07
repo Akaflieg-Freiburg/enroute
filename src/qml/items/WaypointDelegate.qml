@@ -72,7 +72,7 @@ Item {
                 result = result + "<br>" + wayTo
 
             if ((waypointDelegate.weatherStation !== null) && waypointDelegate.weatherStation.hasMETAR)
-                result = result + "<br>" + waypointDelegate.weatherStation.metar.summary
+                result = result + "<br>" + waypointDelegate.weatherStation.metar.summary(Navigator.aircraft, Clock.time)
             return result
         }
 

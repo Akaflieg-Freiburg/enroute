@@ -76,7 +76,6 @@ Weather::METAR::METAR(QXmlStreamReader& xml, QObject* parent)
         // Read temperature
         if (xml.isStartElement() && name == u"temp_c"_qs)
         {
-#warning use bool* ok
             m_temperature = Units::Temperature::fromDegreeCelsius(xml.readElementText().toDouble());
             continue;
         }
@@ -178,8 +177,6 @@ Weather::METAR::METAR(QDataStream& inputStream, QObject* parent)
     inputStream >> m_dewpoint;
     inputStream >> m_densityAltitude;
 
-#warning We need some form of error check!
-
     // Interpret the METAR message
     setRawText(m_raw_text, m_observationTime.date());
 }
@@ -267,7 +264,6 @@ QString Weather::METAR::summary(const Navigation::Aircraft& aircraft, const QDat
     // Wind and Gusts
     if (m_gust.toKN() > 15)
     {
-#warning use methods provided by aircraft
         switch (aircraft.horizontalDistanceUnit())
         {
         case Navigation::Aircraft::Kilometer:

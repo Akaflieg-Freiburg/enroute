@@ -2844,16 +2844,9 @@ QString Weather::Decoder::visitTemperatureGroup(const TemperatureGroup & group, 
         return tr("Invalid data");
     }
 
-    const auto rh = group.relativeHumidity();
-
     switch (group.type())
     {
     case metaf::TemperatureGroup::Type::TEMPERATURE_AND_DEW_POINT:
-        if (rh.has_value()) {
-            return tr("Temperature %1, Dew point %2, Humidity %3%")
-                    .arg(explainTemperature(group.airTemperature()),
-                         explainTemperature(group.dewPoint())).arg(qRound(*rh));
-        }
         return tr("Temperature %1, Dew point %2")
                 .arg(explainTemperature(group.airTemperature()),
                      explainTemperature(group.dewPoint()));

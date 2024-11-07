@@ -20,3 +20,16 @@
 
 #include "units/Temperature.h"
 
+auto operator<<(QDataStream &out, Units::Temperature t) -> QDataStream &
+{
+    out << t.toDegreeKelvin();
+    return out;
+}
+
+auto operator>>(QDataStream &in, Units::Temperature &t) -> QDataStream &
+{
+    double buffer = NAN;
+    in >> buffer;
+    t = Units::Temperature::fromDegreeKelvin(buffer);
+    return in;
+}

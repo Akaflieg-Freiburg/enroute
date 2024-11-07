@@ -83,7 +83,7 @@ public:
 
     /*! \brief Computation of relative humidity as a function of temperature and dewpoint
      *
-     *  @param airTemperature Air temperature
+     *  @param temperature Air temperature
      *
      *  @param dewpoint Dew point
 

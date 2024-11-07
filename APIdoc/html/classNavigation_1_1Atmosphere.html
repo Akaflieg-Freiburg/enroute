@@ -87,6 +87,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a5b8d68bb466fc51a981a867a6732526a" id="r_a5b8d68bb466fc51a981a867a6732526a"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE <a class="el" href="classUnits_1_1Pressure.html">Units::Pressure</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5b8d68bb466fc51a981a867a6732526a">pressure</a> (<a class="el" href="classUnits_1_1Distance.html">Units::Distance</a> <a class="el" href="#a6c7b84653047ee6b673160ed7adf6090">height</a>)</td></tr>
 <tr class="memdesc:a5b8d68bb466fc51a981a867a6732526a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computation of pressure as a function of height.  <br /></td></tr>
 <tr class="separator:a5b8d68bb466fc51a981a867a6732526a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4f48ef19df12bab4edc88e9de5978d5" id="r_af4f48ef19df12bab4edc88e9de5978d5"><td class="memItemLeft" align="right" valign="top">static Q_INVOKABLE double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af4f48ef19df12bab4edc88e9de5978d5">relativeHumidity</a> (<a class="el" href="classUnits_1_1Temperature.html">Units::Temperature</a> temperature, <a class="el" href="classUnits_1_1Temperature.html">Units::Temperature</a> dewpoint)</td></tr>
+<tr class="memdesc:af4f48ef19df12bab4edc88e9de5978d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computation of relative humidity as a function of temperature and dewpoint.  <br /></td></tr>
+<tr class="separator:af4f48ef19df12bab4edc88e9de5978d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Atmospherical data. </p>
@@ -266,6 +269,45 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Air pressure </dd></dl>
+
+</div>
+</div>
+<a id="af4f48ef19df12bab4edc88e9de5978d5" name="af4f48ef19df12bab4edc88e9de5978d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4f48ef19df12bab4edc88e9de5978d5">&#9670;&#160;</a></span>relativeHumidity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Q_INVOKABLE double Navigation::Atmosphere::relativeHumidity </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classUnits_1_1Temperature.html">Units::Temperature</a></td>          <td class="paramname"><span class="paramname"><em>temperature</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classUnits_1_1Temperature.html">Units::Temperature</a></td>          <td class="paramname"><span class="paramname"><em>dewpoint</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Computation of relative humidity as a function of temperature and dewpoint. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">temperature</td><td>Air temperature</td></tr>
+    <tr><td class="paramname">dewpoint</td><td>Dew point</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Relative humidity in the range 0..100, or NAN in case of an error </dd></dl>
 
 </div>
 </div>

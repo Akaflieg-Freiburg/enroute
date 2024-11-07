@@ -99,3 +99,21 @@ Units::Pressure Navigation::Atmosphere::pressure(Units::Distance height)
 
     return Units::Pressure::fromPa(pressure_in_pascal);
 }
+
+
+double Navigation::Atmosphere::relativeHumidity(Units::Temperature temperature, Units::Temperature dewpoint)
+{
+    if (!temperature.isFinite() || !dewpoint.isFinite() || temperature.toDegreeKelvin() < 0)
+    {
+        return qQNaN();
+    }
+    if (temperature <= dewpoint)
+    {
+        return 100.0;
+    }
+    const auto saturationVapourPressure =
+        6.11 * pow(10, 7.5 * temperature.toDegreeCelsius() / (237.7 + temperature.toDegreeCelsius()));
+    const auto actualVapourPressure =
+        6.11 * pow(10, 7.5 * dewpoint.toDegreeCelsius() / (237.7 + dewpoint.toDegreeCelsius()));
+    return 100.0 * actualVapourPressure / saturationVapourPressure;
+}

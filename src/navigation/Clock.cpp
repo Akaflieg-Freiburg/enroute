@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019 by Stefan Kebekus                                  *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -47,7 +47,7 @@ Navigation::Clock::Clock(QObject *parent) : GlobalObject(parent)
 }
 
 
-auto Navigation::Clock::describeTimeDifference(const QDateTime& pointInTime) -> QString
+QString Navigation::Clock::describeTimeDifference(const QDateTime& pointInTime)
 {
     auto minutes = qRound( ((double)QDateTime::currentDateTime().secsTo(pointInTime))/60.0);
 
@@ -78,7 +78,38 @@ auto Navigation::Clock::describeTimeDifference(const QDateTime& pointInTime) -> 
 }
 
 
-auto Navigation::Clock::describePointInTime(QDateTime pointInTime) -> QString
+QString Navigation::Clock::describeTimeDifference(const QDateTime& pointInTime, const QDateTime& currentTime)
+{
+    auto minutes = qRound( ((double)currentTime.secsTo(pointInTime))/60.0);
+
+    bool const past = minutes < 0;
+    minutes = qAbs(minutes);
+
+    if (minutes == 0) {
+        return tr("just now");
+    }
+
+    auto hours = minutes/60;
+    minutes = minutes%60;
+
+    QString result;
+    if (hours == 0) {
+        result = QStringLiteral("%1 min").arg(minutes);
+    } else {
+        result = QStringLiteral("%1:%2 h").arg(hours).arg(minutes, 2, 10, QChar('0'));
+    }
+
+    if (past) {
+        result = tr("%1 ago").arg(result);
+    } else {
+        result = tr("in %1").arg(result);
+    }
+
+    return result.simplified();
+}
+
+
+QString Navigation::Clock::describePointInTime(QDateTime pointInTime)
 {
     pointInTime = pointInTime.toUTC();
 
@@ -113,7 +144,7 @@ void Navigation::Clock::setSingleShotTimer()
 }
 
 
-auto Navigation::Clock::timeAsUTCString() -> QString
+QString Navigation::Clock::timeAsUTCString()
 {
     return QDateTime::currentDateTimeUtc().toString(QStringLiteral("H:mm"));
 }

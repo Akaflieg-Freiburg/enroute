@@ -46,7 +46,7 @@ class Navigator : public GlobalObject
 
 public:
     /*! \brief FlightStatus */
-    enum FlightStatus
+    enum FlightStatus : quint8
       {
         Ground, /*!< Device is on the ground */
         Flight, /*!< Device is flying */
@@ -54,8 +54,10 @@ public:
       };
     Q_ENUM(FlightStatus)
 
+
+
     //
-    // Constructors and destructors
+    // Constructors and Destructors
     //
 
     /*! \brief Standard constructor

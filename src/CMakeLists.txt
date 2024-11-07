@@ -118,6 +118,7 @@ set(SOURCES
     units/Volume.h
     units/VolumeFlow.h
     weather/Decoder.h
+    weather/DensityAltitude.h
     weather/METAR.h
     weather/Station.h
     weather/TAF.h
@@ -214,6 +215,7 @@ set(SOURCES
     units/Volume.cpp
     units/VolumeFlow.cpp
     weather/Decoder.cpp
+    weather/DensityAltitude.cpp
     weather/METAR.cpp
     weather/Station.cpp
     weather/TAF.cpp

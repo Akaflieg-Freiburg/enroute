@@ -82,7 +82,7 @@ CenteringDialog {
                 if (weatherStation === null)
                     return ""
                 if (weatherStation.hasMETAR)
-                    return weatherStation.metar.summary + " • <a href='xx'>" + qsTr("full report") + "</a>"
+                    return weatherStation.metar.summary(Navigator.aircraft, Clock.time) + " • <a href='xx'>" + qsTr("full report") + "</a>"
                 return "<a href='xx'>" + qsTr("read TAF") + "</a>"
             }
             Layout.fillWidth: true

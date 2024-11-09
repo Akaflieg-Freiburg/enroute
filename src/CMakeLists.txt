@@ -625,7 +625,7 @@ qt_add_qml_module(${PROJECT_NAME}
 if(${QT_VERSION} VERSION_GREATER_EQUAL "6.7.0")
     qt_add_lrelease(
         TS_FILES
-        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_cz.ts
+        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_cs.ts
         ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_de.ts
         ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_es.ts
         ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_fr.ts
@@ -646,7 +646,7 @@ if(${QT_VERSION} VERSION_GREATER_EQUAL "6.7.0")
 else()
     qt_add_translations(${PROJECT_NAME}
         TS_FILES
-        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_cz.ts
+        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_cs.ts
         ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_de.ts
         ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_es.ts
         ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_fr.ts
@@ -667,12 +667,13 @@ qt_add_resources(${PROJECT_NAME} translations_qt
     PREFIX
     i18n
     FILES
-    #${Qt6_TRANSLATION_DIR}/qtbase_cz.qm
+    ${Qt6_TRANSLATION_DIR}/qtbase_cs.qm
     ${Qt6_TRANSLATION_DIR}/qtbase_de.qm
     ${Qt6_TRANSLATION_DIR}/qtbase_es.qm
     ${Qt6_TRANSLATION_DIR}/qtbase_fr.qm
     ${Qt6_TRANSLATION_DIR}/qtbase_it.qm
     ${Qt6_TRANSLATION_DIR}/qtbase_pl.qm
+    #${Qt6_TRANSLATION_DIR}/qtdeclarative_cs.qm
     ${Qt6_TRANSLATION_DIR}/qtdeclarative_de.qm
     ${Qt6_TRANSLATION_DIR}/qtdeclarative_es.qm
     ${Qt6_TRANSLATION_DIR}/qtdeclarative_fr.qm

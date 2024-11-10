@@ -67,8 +67,7 @@ public:
      *
      *  \param fName File name of a georeferenced raster image file
      */
-    VAC(const QString& fName);
-
+    VAC(QString fName);
 
     //
     // Properties
@@ -231,6 +230,6 @@ QDataStream& operator<<(QDataStream& stream, const GeoMaps::VAC& vac);
 /*! \brief Deserialization */
 QDataStream& operator>>(QDataStream& stream, GeoMaps::VAC& vac);
 
-} // namespace FileFormats
+} // namespace GeoMaps
 
 

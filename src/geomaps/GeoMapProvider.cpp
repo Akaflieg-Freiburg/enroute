@@ -47,7 +47,7 @@ GeoMaps::GeoMapProvider::GeoMapProvider(QObject *parent)
     geoJSONCacheFile.close();
 
     // Pass signal through when the tile server changes its URL
-    connect(&_tileServer, &GeoMaps::TileServer::serverUrlChanged, this, [this]() {emit styleFileURLChanged();});
+    connect(&m_tileServer, &GeoMaps::TileServer::serverUrlChanged, this, [this]() {emit styleFileURLChanged();});
 }
 
 void GeoMaps::GeoMapProvider::deferredInitialization()
@@ -128,22 +128,14 @@ auto GeoMaps::GeoMapProvider::geoJSON() -> QByteArray
     return _combinedGeoJSON_;
 }
 
-auto GeoMaps::GeoMapProvider::styleFileURL() -> QString
+QString GeoMaps::GeoMapProvider::styleFileURL()
 {
     if (m_styleFile.isNull())
     {
         QFile file;
         if (GlobalObject::dataManager()->baseMaps()->hasFile())
         {
-            // Serve new tile set under new name
-            if (!m_baseMapRasterTiles.isEmpty())
-            {
-                file.setFileName(QStringLiteral(":/flightMap/mapstyle-raster.json"));
-            }
-            else
-            {
-                file.setFileName(QStringLiteral(":/flightMap/osm-liberty.json"));
-            }
+            file.setFileName(QStringLiteral(":/flightMap/osm-liberty.json"));
         }
         else
         {
@@ -152,16 +144,15 @@ auto GeoMaps::GeoMapProvider::styleFileURL() -> QString
 
         file.open(QIODevice::ReadOnly);
         QByteArray data = file.readAll();
-        data.replace("%URL%", (_tileServer.serverUrl()+"/"+_currentBaseMapPath).toLatin1());
-        data.replace("%URLT%", (_tileServer.serverUrl()+"/"+_currentTerrainMapPath).toLatin1());
-        data.replace("%URL2%", _tileServer.serverUrl().toLatin1());
+        data.replace("%URL%", (m_tileServer.serverUrl()+"/"+_currentBaseMapPath).toLatin1());
+        data.replace("%URLT%", (m_tileServer.serverUrl()+"/"+_currentTerrainMapPath).toLatin1());
+        data.replace("%URL2%", m_tileServer.serverUrl().toLatin1());
 
         m_styleFile = new QTemporaryFile(this);
         m_styleFile->open();
         m_styleFile->write(data);
         m_styleFile->close();
     }
-
     return "file://"+m_styleFile->fileName();
 }
 
@@ -471,9 +462,8 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
     terrainTileCache.clear();
 
     m_baseMapRasterTiles.clear();
-    foreach(auto downloadableX, GlobalObject::dataManager()->baseMapsRaster()->downloadables())
-    {
-        auto *downloadable = qobject_cast<DataManagement::Downloadable_SingleFile*>(downloadableX);
+    for (auto* downloadableX : GlobalObject::dataManager()->baseMapsRaster()->downloadables()) {
+        auto* downloadable = qobject_cast<DataManagement::Downloadable_SingleFile*>(downloadableX);
         if (downloadable == nullptr)
         {
             continue;
@@ -486,9 +476,8 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
         m_baseMapRasterTiles.append(QSharedPointer<FileFormats::MBTILES>(new FileFormats::MBTILES(downloadable->fileName())));
     }
     m_baseMapVectorTiles.clear();
-    foreach(auto downloadableX, GlobalObject::dataManager()->baseMapsVector()->downloadables())
-    {
-        auto *downloadable = qobject_cast<DataManagement::Downloadable_SingleFile*>(downloadableX);
+    for (auto* downloadableX : GlobalObject::dataManager()->baseMapsVector()->downloadables()) {
+        auto* downloadable = qobject_cast<DataManagement::Downloadable_SingleFile*>(downloadableX);
         if (downloadable == nullptr)
         {
             continue;
@@ -503,9 +492,8 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
     emit baseMapTilesChanged();
 
     m_terrainMapTiles.clear();
-    foreach(auto downloadableX, GlobalObject::dataManager()->terrainMaps()->downloadables())
-    {
-        auto *downloadable = qobject_cast<DataManagement::Downloadable_SingleFile*>(downloadableX);
+    for (auto* downloadableX : GlobalObject::dataManager()->terrainMaps()->downloadables()) {
+        auto* downloadable = qobject_cast<DataManagement::Downloadable_SingleFile*>(downloadableX);
         if (downloadable == nullptr)
         {
             continue;
@@ -520,25 +508,21 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
     emit terrainMapTilesChanged();
 
     // Stop serving tiles
-    _tileServer.removeMbtilesFileSet(_currentBaseMapPath);
-    _tileServer.removeMbtilesFileSet(_currentTerrainMapPath);
+    m_tileServer.removeMbtilesFileSets();
     _currentBaseMapPath = QString::number(QRandomGenerator::global()->bounded(static_cast<quint32>(1000000000)));
     _currentTerrainMapPath = QString::number(QRandomGenerator::global()->bounded(static_cast<quint32>(1000000000)));
 
     // Start serving tiles again
-    if (GlobalObject::dataManager()->baseMaps()->hasFile())
+    m_tileServer.addMbtilesFileSet(_currentBaseMapPath, m_baseMapVectorTiles);
+    m_tileServer.addMbtilesFileSet(_currentTerrainMapPath, m_terrainMapTiles);
+    QList<QSharedPointer<FileFormats::MBTILES>> rasterSet;
+    rasterSet.reserve(1);
+    for(const auto& rasterMap : m_baseMapRasterTiles)
     {
-        // Serve new tile set under new name
-        if (!m_baseMapRasterTiles.isEmpty())
-        {
-            _tileServer.addMbtilesFileSet(_currentBaseMapPath, m_baseMapRasterTiles);
-        }
-        else
-        {
-            _tileServer.addMbtilesFileSet(_currentBaseMapPath, m_baseMapVectorTiles);
-        }
+        rasterSet.clear();
+        rasterSet << rasterMap;
+        m_tileServer.addMbtilesFileSet(QFileInfo(rasterMap->fileName()).fileName(), rasterSet);
     }
-    _tileServer.addMbtilesFileSet(_currentTerrainMapPath, m_terrainMapTiles);
 
     // Update style file
     delete m_styleFile;

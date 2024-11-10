@@ -192,6 +192,8 @@ public:
      */
     [[nodiscard]] auto waypoints() -> QList<Waypoint>;
 
+#warning
+    Q_INVOKABLE QString serverUrl() {return m_tileServer.serverUrl();}
 
 
     //
@@ -325,7 +327,7 @@ private:
     QString _currentTerrainMapPath;
 
     // Tile Server
-    TileServer _tileServer;
+    TileServer m_tileServer;
 
     // Temporary file that holds the current style file
     QPointer<QTemporaryFile> m_styleFile;

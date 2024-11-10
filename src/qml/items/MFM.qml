@@ -817,6 +817,7 @@ Item {
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
                                 rasterMenu.close()
+                                Global.currentRasterMap = modelData.objectName
                             }
 
                             //onTriggered: loadFile(modelData)

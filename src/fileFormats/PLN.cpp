@@ -83,7 +83,7 @@ FileFormats::PLN::PLN(const QString& fileName)
     }
     if (xmlReader.name().compare("SimBase.Document", Qt::CaseInsensitive) != 0)
     {
-        setError(QObject::tr("File %1 does not contain a flight plan.", "FileFormats::PLN").arg(fileName));
+        setError(QObject::tr("File %1 does not contain a route.", "FileFormats::PLN").arg(fileName));
         return;
     }
 

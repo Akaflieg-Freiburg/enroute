@@ -490,7 +490,15 @@ Page {
 
                     function createItems() {
                         // Delete old text items
-                        co.children = {}
+                        let childCount = co.children.length;
+                        // Iterate through the children in reverse order
+                        for (let i = childCount - 1; i >= 0; i--) {
+                            // Check if the child is a valid QML item
+                            if (co.children[i] instanceof QtObject) {
+                                    // Destroy the child item
+                                    co.children[i].destroy();
+                                }
+                            }
 
                         if (Navigator.flightRoute.size > 0) {
                             // Create first waypointComponent

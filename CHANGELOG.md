@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.32.0] - 2024-11-?
+## [2.32.0] - 2024-11-11
 
 ### Added
 - Enroute can now calculate density altitudes from METAR data (#408)

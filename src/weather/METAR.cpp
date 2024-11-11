@@ -314,7 +314,11 @@ QString Weather::METAR::derivedData(const Navigation::Aircraft& aircraft) const
     QStringList items;
     if (m_densityAltitude.isFinite())
     {
-        items += tr("Density Altitude: %1").arg(aircraft.verticalDistanceToString(m_densityAltitude));
+        Units::Distance const altitude = Units::Distance::fromM(m_location.altitude());
+        items += tr("Density Altitude: %1 (Δ %2)").arg(
+            aircraft.verticalDistanceToString(m_densityAltitude), 
+            aircraft.verticalDistanceToString(m_densityAltitude - altitude, /*forceSign=*/ true)
+            );
     }
     auto relativeHumidity = Navigation::Atmosphere::relativeHumidity(m_temperature, m_dewpoint);
     if (!std::isnan(relativeHumidity))

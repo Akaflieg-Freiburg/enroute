@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2023 by Heinz Blöchinger                                *
+ *   Copyright (C) 2023-2024 by Heinz Blöchinger                           *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,7 +17,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #include <QFile>
 #include <QGeoCoordinate>
 #include <QJsonArray>
@@ -29,6 +28,8 @@
 #include "fileFormats/DataFileAbstract.h"
 
 #include <cmath>
+
+using namespace Qt::Literals::StringLiterals;
 
 class AirSpace {
 public:
@@ -124,7 +125,7 @@ public:
     {
         QStringList items = qs.split(u',', Qt::SkipEmptyParts);
         QGeoCoordinate const startPoint = toCoord(items[0]);
-        if (items[1].startsWith(u" "_qs))
+        if (items[1].startsWith(u" "_s))
         {
             items[1] = items[1].sliced(1);
         }
@@ -231,24 +232,24 @@ public:
         {
             errorList.append("Upper Limit not set for AirSpace " + an);
         }
-        if ((ac.compare(u"A"_qs)   != 0) &&
-            (ac.compare(u"ATZ"_qs) != 0) &&
-            (ac.compare(u"B"_qs)   != 0) &&
-            (ac.compare(u"CTR"_qs) != 0) &&
-            (ac.compare(u"C"_qs)   != 0) &&
-            (ac.compare(u"D"_qs)   != 0) &&
-            (ac.compare(u"DNG"_qs) != 0) &&
-            (ac.compare(u"FIR"_qs) != 0) &&
-            (ac.compare(u"FIS"_qs) != 0) &&
-            (ac.compare(u"GLD"_qs) != 0) &&
-            (ac.compare(u"NRA"_qs) != 0) &&
-            (ac.compare(u"P"_qs)   != 0) &&
-            (ac.compare(u"PJE"_qs) != 0) &&
-            (ac.compare(u"R"_qs)   != 0) &&
-            (ac.compare(u"TMZ"_qs) != 0) &&
-            (ac.compare(u"SUA"_qs) != 0)   )
+        if ((ac.compare(u"A"_s)   != 0) &&
+            (ac.compare(u"ATZ"_s) != 0) &&
+            (ac.compare(u"B"_s)   != 0) &&
+            (ac.compare(u"CTR"_s) != 0) &&
+            (ac.compare(u"C"_s)   != 0) &&
+            (ac.compare(u"D"_s)   != 0) &&
+            (ac.compare(u"DNG"_s) != 0) &&
+            (ac.compare(u"FIR"_s) != 0) &&
+            (ac.compare(u"FIS"_s) != 0) &&
+            (ac.compare(u"GLD"_s) != 0) &&
+            (ac.compare(u"NRA"_s) != 0) &&
+            (ac.compare(u"P"_s)   != 0) &&
+            (ac.compare(u"PJE"_s) != 0) &&
+            (ac.compare(u"R"_s)   != 0) &&
+            (ac.compare(u"TMZ"_s) != 0) &&
+            (ac.compare(u"SUA"_s) != 0)   )
         {
-            ac = u"SUA"_qs;
+            ac = u"SUA"_s;
         }
     }
 
@@ -259,20 +260,20 @@ public:
 
     void setHeight(QString qs, bool higher)
     {
-        qs.replace(u"FL"_qs, u"FL "_qs);
-        qs.replace(u"ft"_qs, u" ft"_qs);
-        qs.replace(u"SFC"_qs, u"GND"_qs);
-        qs.replace(u"agl"_qs, u"AGL"_qs);
+        qs.replace(u"FL"_s, u"FL "_s);
+        qs.replace(u"ft"_s, u" ft"_s);
+        qs.replace(u"SFC"_s, u"GND"_s);
+        qs.replace(u"agl"_s, u"AGL"_s);
         QStringList items = qs.split(u' ', Qt::SkipEmptyParts);
-        if (items[0].compare(u"0"_qs) == 0)
+        if (items[0].compare(u"0"_s) == 0)
         {
-            items[0] = u"GND"_qs;
+            items[0] = u"GND"_s;
         }
-        if ((items.size() > 1) && (items[1].compare(u"ft"_qs) == 0))
+        if ((items.size() > 1) && (items[1].compare(u"ft"_s) == 0))
         {
             items.removeAt(1);
         }
-        if ((items.size() > 1) && ((items[0].compare(u"FL"_qs) == 0) || (items[1].compare(u"AGL"_qs) == 0)))
+        if ((items.size() > 1) && ((items[0].compare(u"FL"_s) == 0) || (items[1].compare(u"AGL"_s) == 0)))
         {
             items[0] = items[0] + " " + items[1];
         }
@@ -288,11 +289,11 @@ public:
 
     void setVar(const QString& qs)
     {
-        if (qs.startsWith(u"X="_qs))
+        if (qs.startsWith(u"X="_s))
         {
             variableX = toCoord(qs.sliced(2));
         }
-        else if (qs.startsWith(u"D="_qs))
+        else if (qs.startsWith(u"D="_s))
         {
             variableD = qs.at(2);
             if ((variableD != '-') && (variableD != '+'))
@@ -308,7 +309,7 @@ private:
     {
         bool ok = false;
         double ret = NAN;
-        auto i = degree.indexOf(u":"_qs);
+        auto i = degree.indexOf(u":"_s);
         if (i < 0)
         {
             ret = degree.toDouble(&ok);
@@ -359,10 +360,10 @@ private:
             items[0].chop(1);
         }
         latitude = getNumber(items[0]);
-        if (items[1].compare(u"S"_qs) == 0)
+        if (items[1].compare(u"S"_s) == 0)
         {
             latitude *= -1;
-        } else if (items[1].compare(u"N"_qs) != 0)
+        } else if (items[1].compare(u"N"_s) != 0)
         {
             throw QObject::tr("Invalid coordinate found: %1", "OpenAir").arg(qs);
         }
@@ -372,10 +373,10 @@ private:
             items[2].chop(1);
         }
         longitude = getNumber(items[2]);
-        if (items[3].compare(u"W"_qs) == 0)
+        if (items[3].compare(u"W"_s) == 0)
         {
             longitude *= -1;
-        } else if (items[3].compare(u"E"_qs) != 0)
+        } else if (items[3].compare(u"E"_s) != 0)
         {
             throw QObject::tr("Invalid coordinate found: %1", "OpenAir").arg(qs);
         }
@@ -420,23 +421,23 @@ public:
         QJsonArray coord;
         QGeoCoordinate const point;
 
-        recObj.insert(u"type"_qs, QJsonValue::fromVariant("FeatureCollection"));
-        recObj.insert(u"info"_qs, QJsonValue::fromVariant(fileName));
+        recObj.insert(u"type"_s, QJsonValue::fromVariant("FeatureCollection"));
+        recObj.insert(u"info"_s, QJsonValue::fromVariant(fileName));
 
         for (const auto &i : airSpaceVector) {
-            featureObj.insert(u"type"_qs, QJsonValue::fromVariant("Feature"));
+            featureObj.insert(u"type"_s, QJsonValue::fromVariant("Feature"));
             propObj = QJsonObject();
-            propObj.insert(u"NAM"_qs, QJsonValue::fromVariant(i.an));
-            propObj.insert(u"ID"_qs, QJsonValue::fromVariant(i.an));
-            propObj.insert(u"CAT"_qs, QJsonValue::fromVariant(i.ac));
-            propObj.insert(u"TYP"_qs, QJsonValue::fromVariant("AS"));
+            propObj.insert(u"NAM"_s, QJsonValue::fromVariant(i.an));
+            propObj.insert(u"ID"_s, QJsonValue::fromVariant(i.an));
+            propObj.insert(u"CAT"_s, QJsonValue::fromVariant(i.ac));
+            propObj.insert(u"TYP"_s, QJsonValue::fromVariant("AS"));
             if (!i.al.isEmpty()) {
-                propObj.insert(u"BOT"_qs, QJsonValue::fromVariant(i.al));
+                propObj.insert(u"BOT"_s, QJsonValue::fromVariant(i.al));
             }
             if (!i.ah.isEmpty()) {
-                propObj.insert(u"TOP"_qs, QJsonValue::fromVariant(i.ah));
+                propObj.insert(u"TOP"_s, QJsonValue::fromVariant(i.ah));
             }
-            featureObj.insert(u"properties"_qs, propObj);
+            featureObj.insert(u"properties"_s, propObj);
 
             while (coordArray.count() != 0)
             {
@@ -456,9 +457,9 @@ public:
             }
             polygonArray.append(coordArray);
             if (i.polygon.size() > 1) {
-                geomObj.insert(u"type"_qs, QJsonValue::fromVariant("Polygon"));
-                geomObj.insert(u"coordinates"_qs, polygonArray);
-                featureObj.insert(u"geometry"_qs, geomObj);
+                geomObj.insert(u"type"_s, QJsonValue::fromVariant("Polygon"));
+                geomObj.insert(u"coordinates"_s, polygonArray);
+                featureObj.insert(u"geometry"_s, geomObj);
             }
 
             featureArray.append(featureObj);
@@ -469,7 +470,7 @@ public:
             return {};
         }
 
-        recObj.insert(u"features"_qs, featureArray);
+        recObj.insert(u"features"_s, featureArray);
         QJsonDocument json(recObj);
         return json;
     }
@@ -487,13 +488,13 @@ bool GeoMaps::openAir::isValid(const QString& fileName, QString* info)
         *info = {};
         if (!warnings.isEmpty())
         {
-            *info += u"<p>"_qs + QObject::tr("Warnings", "OpenAir") + u"</p>"_qs;
-            *info += u"<ul style='margin-left:-25px;'>"_qs;
+            *info += u"<p>"_s + QObject::tr("Warnings", "OpenAir") + u"</p>"_s;
+            *info += u"<ul style='margin-left:-25px;'>"_s;
             foreach(auto warning, warnings)
             {
-                *info += u"<li>"_qs + warning + u"</li>"_qs;
+                *info += u"<li>"_s + warning + u"</li>"_s;
             }
-            *info += u"</ul>"_qs;
+            *info += u"</ul>"_s;
         }
     }
 
@@ -525,11 +526,11 @@ QJsonDocument GeoMaps::openAir::parse(const QString& fileName, QStringList& erro
         lineNo++;
 
         try {
-            if (line.startsWith(u"*"_qs) || line.length() == 0)
+            if (line.startsWith(u"*"_s) || line.length() == 0)
             {
                 continue;
             }
-            if (line.startsWith(u"AC "_qs))
+            if (line.startsWith(u"AC "_s))
             {
                 //if airSpace is already filled, the existing airSpace must be added to the list and a new airSpace must be initialized
                 if (airSpace.isSet())
@@ -545,7 +546,7 @@ QJsonDocument GeoMaps::openAir::parse(const QString& fileName, QStringList& erro
                 airSpace.ac = line.sliced(3).trimmed();
                 continue;
             }
-            if (line.startsWith(u"AN "_qs))
+            if (line.startsWith(u"AN "_s))
             {
                 airSpace.an = line.sliced(3);
                 if (airSpaceVector.isSameName(airSpace.an))
@@ -554,42 +555,42 @@ QJsonDocument GeoMaps::openAir::parse(const QString& fileName, QStringList& erro
                 }
                 continue;
             }
-            if (line.startsWith(u"AL "_qs))
+            if (line.startsWith(u"AL "_s))
             {
                 airSpace.setHeight(line.sliced(3), false);
                 continue;
             }
-            if (line.startsWith(u"AH "_qs))
+            if (line.startsWith(u"AH "_s))
             {
                 airSpace.setHeight(line.sliced(3), true);
                 continue;
             }
-            if (line.startsWith(u"V "_qs))
+            if (line.startsWith(u"V "_s))
             {
                 airSpace.setVar(line.sliced(2));
                 continue;
             }
-            if (line.startsWith(u"DP "_qs))
+            if (line.startsWith(u"DP "_s))
             {
                 airSpace.addPoint(line.sliced(3));
                 continue;
             }
-            if (line.startsWith(u"DC "_qs))
+            if (line.startsWith(u"DC "_s))
             {
                 airSpace.addCircle(line.sliced(3));
                 continue;
             }
-            if (line.startsWith(u"DA "_qs))
+            if (line.startsWith(u"DA "_s))
             {
                 airSpace.addArc(line.sliced(3));
                 continue;
             }
-            if (line.startsWith(u"DB "_qs))
+            if (line.startsWith(u"DB "_s))
             {
                 airSpace.addArcPoints(line.sliced(3));
                 continue;
             }
-            if (line.startsWith(u"AT "_qs))
+            if (line.startsWith(u"AT "_s))
             {
                 continue;
             }

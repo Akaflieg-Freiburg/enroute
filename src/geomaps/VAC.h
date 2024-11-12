@@ -23,6 +23,8 @@
 #include <QGeoCoordinate>
 #include <QQmlEngine>
 
+using namespace Qt::Literals::StringLiterals;
+
 
 namespace GeoMaps
 {
@@ -182,12 +184,12 @@ public:
      */
     [[nodiscard]] static QStringList mimeTypes()
     {
-        return {u"image/jpg"_qs,
-                u"image/jpeg"_qs,
-                u"image/png"_qs,
-                u"image/tif"_qs,
-                u"image/tiff"_qs,
-                u"image/webp"_qs};
+        return {u"image/jpg"_s,
+                u"image/jpeg"_s,
+                u"image/png"_s,
+                u"image/tif"_s,
+                u"image/tiff"_s,
+                u"image/webp"_s};
     }
 
 

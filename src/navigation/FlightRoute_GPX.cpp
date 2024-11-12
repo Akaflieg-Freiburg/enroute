@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2020 by Johannes Zellner, johannes@zellner.org          *
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -22,8 +22,9 @@
 #include <QQmlEngine>
 
 #include "FlightRoute.h"
-#include "geomaps/GPX.h"
-#include "geomaps/GeoJSON.h"
+
+using namespace Qt::Literals::StringLiterals;
+
 
 auto Navigation::FlightRoute::toGpx() const -> QByteArray
 {
@@ -51,7 +52,7 @@ auto Navigation::FlightRoute::toGpx() const -> QByteArray
                                                                                                                                                                                                                             " maxlon='" + QString::number(bbox.topRight().longitude(), 'f', 8) + "'/>\n";
     }
 
-    gpx += u"  </metadata>\n"_qs;
+    gpx += u"  </metadata>\n"_s;
 
     // 2 spaces additional indent
     //
@@ -69,7 +70,7 @@ auto Navigation::FlightRoute::toGpx() const -> QByteArray
 
     // close gpx
     //
-    gpx += u"  </rte>\n"_qs;
+    gpx += u"  </rte>\n"_s;
 
     // the next few lines export the route as gpx track.
     // We leave this disabled right now. If we discover later
@@ -95,14 +96,14 @@ auto Navigation::FlightRoute::toGpx() const -> QByteArray
            "  </trk>\n";
 #endif
 
-    gpx += u"</gpx>\n"_qs;
+    gpx += u"</gpx>\n"_s;
 
     return gpx.toUtf8();
 }
 
 auto Navigation::FlightRoute::gpxElements(const QString& indent, const QString& tag) const -> QString
 {
-    QString gpx = u""_qs;
+    QString gpx = u""_s;
 
     // waypoints
     //

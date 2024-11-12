@@ -26,6 +26,8 @@
 #include "notam/NOTAM.h"
 #include "notam/NOTAMProvider.h"
 
+using namespace Qt::Literals::StringLiterals;
+
 
 // Static objects
 
@@ -33,74 +35,74 @@ namespace {
 
 
 // In cancel notams the text starts as "A0029/23 NOTAMC A0027/23"
-Q_GLOBAL_STATIC(QRegularExpression, cancelNotamStart, u"^[A-Z]\\d{4}/\\d{2} NOTAMC [A-Z]\\d{4}/\\d{2}"_qs)
+Q_GLOBAL_STATIC(QRegularExpression, cancelNotamStart, u"^[A-Z]\\d{4}/\\d{2} NOTAMC [A-Z]\\d{4}/\\d{2}"_s)
 
 // Necessary because Q_GLOBAL_STATIC does not like templates
 using ContractionList = QList<std::pair<QRegularExpression, QString>>;
 Q_GLOBAL_STATIC(ContractionList,
                 contractions,
                 {
-                    {QRegularExpression(u"\\bU/S\\b"_qs), u"UNSERVICEABLE"_qs}, // MUST COME BEFORE SOUTH
+                    {QRegularExpression(u"\\bU/S\\b"_s), u"UNSERVICEABLE"_s}, // MUST COME BEFORE SOUTH
 
-                    {QRegularExpression(u"\\bACFT\\b"_qs), u"AIRCRAFT"_qs},
-                    {QRegularExpression(u"\\bAD\\b"_qs), u"AERODROME"_qs},
-                    {QRegularExpression(u"\\bAFIS\\b"_qs), u"AERODROME FLIGHT INFORMATION SERVICE"_qs},
-                    {QRegularExpression(u"\\bAFT\\b"_qs), u"AFTER"_qs},
-                    {QRegularExpression(u"\\bAMDT\\b"_qs), u"AMENDMENT"_qs},
-                    {QRegularExpression(u"\\bAPCH\\b"_qs), u"APPROACH"_qs},
-                    {QRegularExpression(u"\\bAPRX\\b"_qs), u"APPROXIMATELY"_qs},
-                    {QRegularExpression(u"\\bARP\\b"_qs), u"AERODROME REFERENCE POINT"_qs},
-                    {QRegularExpression(u"\\bARR\\b"_qs), u"ARRIVAL"_qs},
-                    {QRegularExpression(u"\\bASPH\\b"_qs), u"ASPHALT"_qs},
-                    {QRegularExpression(u"\\bAVBL\\b"_qs), u"AVAILABLE"_qs},
-                    {QRegularExpression(u"\\bBCST\\b"_qs), u"BROADCAST"_qs},
-                    {QRegularExpression(u"\\bBFR\\b"_qs), u"BEFORE"_qs},
-                    {QRegularExpression(u"\\bBLW\\b"_qs), u"BELOW"_qs},
-                    {QRegularExpression(u"\\bBTN\\b"_qs), u"BETWEEN"_qs},
-                    {QRegularExpression(u"\\bCLBR\\b"_qs), u"CALLIBRATION"_qs},
-                    {QRegularExpression(u"\\bCLSD\\b"_qs), u"CLOSED"_qs},
-                    {QRegularExpression(u"\\bCNL\\b"_qs), u"CANCEL"_qs},
-                    {QRegularExpression(u"\\bCTN\\b"_qs), u"CAUTION"_qs},
-                    {QRegularExpression(u"\\bDEP\\b"_qs), u"DEPARTURE"_qs},
-                    {QRegularExpression(u"\\bDRG\\b"_qs), u"DURING"_qs},
-                    {QRegularExpression(u"\\bELEV\\b"_qs), u"ELEVATION"_qs},
-                    {QRegularExpression(u"\\bEQPT\\b"_qs), u"EQUIPMENT"_qs},
-                    {QRegularExpression(u"\\bEXC\\b"_qs), u"EXCEPTED"_qs},
-                    {QRegularExpression(u"\\bEXP\\b"_qs), u"EXPECT"_qs},
-                    {QRegularExpression(u"\\bFATO\\b"_qs), u"FINAL APPROACH AND TAKEOFF AREA"_qs},
-                    {QRegularExpression(u"\\bFST\\b"_qs), u"FIRST"_qs},
-                    {QRegularExpression(u"\\bFLT\\b"_qs), u"FLIGHT"_qs},
-                    {QRegularExpression(u"\\bFLW\\b"_qs), u"FOLLOW"_qs},
-                    {QRegularExpression(u"\\bGLD\\b"_qs), u"GLIDER"_qs},
-                    {QRegularExpression(u"\\bHEL\\b"_qs), u"HELICOPTER"_qs},
-                    {QRegularExpression(u"\\bLGT\\b"_qs), u"LIGHT"_qs},
-                    {QRegularExpression(u"\\bLGTD\\b"_qs), u"LIGHTED"_qs},
-                    {QRegularExpression(u"\\bLTD\\b"_qs), u"LIMITED"_qs},
-                    {QRegularExpression(u"\\bMAINT\\b"_qs), u"MAINTENANCE"_qs},
-                    {QRegularExpression(u"\\bMIL\\b"_qs), u"MILITARY"_qs},
-                    {QRegularExpression(u"\\bN\\b"_qs), u"NORTH"_qs},
-                    {QRegularExpression(u"\\bNE\\b"_qs), u"NORTHEAST"_qs},
-                    {QRegularExpression(u"\\bNW\\b"_qs), u"NORTHWEST"_qs},
-                    {QRegularExpression(u"\\bO/R\\b"_qs), u"AVAILABLE ON REQUEST"_qs},
-                    {QRegularExpression(u"\\bOBST\\b"_qs), u"OBSTACLE"_qs},
-                    {QRegularExpression(u"\\bPOSS\\b"_qs), u"POSSIBLE"_qs},
-                    {QRegularExpression(u"\\bPSN\\b"_qs), u"POSITION"_qs},
-                    {QRegularExpression(u"\\bPRKG\\b"_qs), u"PARKING"_qs},
-                    {QRegularExpression(u"\\bRTE\\b"_qs), u"ROUTE"_qs},
-                    {QRegularExpression(u"\\bRVR\\b"_qs), u"RUNWAY VISUAL RANGE"_qs},
-                    {QRegularExpression(u"\\bRWY\\b"_qs), u"RUNWAY"_qs},
-                    {QRegularExpression(u"\\bS\\b"_qs), u"SOUTH"_qs},
-                    {QRegularExpression(u"\\bSE\\b"_qs), u"SOUTHEAST"_qs},
-                    {QRegularExpression(u"\\bSKED\\b"_qs), u"SCHEDULED"_qs},
-                    {QRegularExpression(u"\\bSW\\b"_qs), u"SOUTHWEST"_qs},
-                    {QRegularExpression(u"\\bTFC\\b"_qs), u"TRAFFIC"_qs},
-                    {QRegularExpression(u"\\bTHR\\b"_qs), u"THRESHOLD"_qs},
-                    {QRegularExpression(u"\\bTWR\\b"_qs), u"TOWER"_qs},
-                    {QRegularExpression(u"\\bTWY\\b"_qs), u"TAXIWAY"_qs},
-                    {QRegularExpression(u"\\bW\\b"_qs), u"WEST"_qs},
-                    {QRegularExpression(u"\\bWDI\\b"_qs), u"WIND DIRECTION INDICATOR"_qs},
-                    {QRegularExpression(u"\\bWI\\b"_qs), u"WITHIN"_qs},
-                    {QRegularExpression(u"\\bWIP\\b"_qs), u"WORK IN PROGRESS"_qs},
+                    {QRegularExpression(u"\\bACFT\\b"_s), u"AIRCRAFT"_s},
+                    {QRegularExpression(u"\\bAD\\b"_s), u"AERODROME"_s},
+                    {QRegularExpression(u"\\bAFIS\\b"_s), u"AERODROME FLIGHT INFORMATION SERVICE"_s},
+                    {QRegularExpression(u"\\bAFT\\b"_s), u"AFTER"_s},
+                    {QRegularExpression(u"\\bAMDT\\b"_s), u"AMENDMENT"_s},
+                    {QRegularExpression(u"\\bAPCH\\b"_s), u"APPROACH"_s},
+                    {QRegularExpression(u"\\bAPRX\\b"_s), u"APPROXIMATELY"_s},
+                    {QRegularExpression(u"\\bARP\\b"_s), u"AERODROME REFERENCE POINT"_s},
+                    {QRegularExpression(u"\\bARR\\b"_s), u"ARRIVAL"_s},
+                    {QRegularExpression(u"\\bASPH\\b"_s), u"ASPHALT"_s},
+                    {QRegularExpression(u"\\bAVBL\\b"_s), u"AVAILABLE"_s},
+                    {QRegularExpression(u"\\bBCST\\b"_s), u"BROADCAST"_s},
+                    {QRegularExpression(u"\\bBFR\\b"_s), u"BEFORE"_s},
+                    {QRegularExpression(u"\\bBLW\\b"_s), u"BELOW"_s},
+                    {QRegularExpression(u"\\bBTN\\b"_s), u"BETWEEN"_s},
+                    {QRegularExpression(u"\\bCLBR\\b"_s), u"CALLIBRATION"_s},
+                    {QRegularExpression(u"\\bCLSD\\b"_s), u"CLOSED"_s},
+                    {QRegularExpression(u"\\bCNL\\b"_s), u"CANCEL"_s},
+                    {QRegularExpression(u"\\bCTN\\b"_s), u"CAUTION"_s},
+                    {QRegularExpression(u"\\bDEP\\b"_s), u"DEPARTURE"_s},
+                    {QRegularExpression(u"\\bDRG\\b"_s), u"DURING"_s},
+                    {QRegularExpression(u"\\bELEV\\b"_s), u"ELEVATION"_s},
+                    {QRegularExpression(u"\\bEQPT\\b"_s), u"EQUIPMENT"_s},
+                    {QRegularExpression(u"\\bEXC\\b"_s), u"EXCEPTED"_s},
+                    {QRegularExpression(u"\\bEXP\\b"_s), u"EXPECT"_s},
+                    {QRegularExpression(u"\\bFATO\\b"_s), u"FINAL APPROACH AND TAKEOFF AREA"_s},
+                    {QRegularExpression(u"\\bFST\\b"_s), u"FIRST"_s},
+                    {QRegularExpression(u"\\bFLT\\b"_s), u"FLIGHT"_s},
+                    {QRegularExpression(u"\\bFLW\\b"_s), u"FOLLOW"_s},
+                    {QRegularExpression(u"\\bGLD\\b"_s), u"GLIDER"_s},
+                    {QRegularExpression(u"\\bHEL\\b"_s), u"HELICOPTER"_s},
+                    {QRegularExpression(u"\\bLGT\\b"_s), u"LIGHT"_s},
+                    {QRegularExpression(u"\\bLGTD\\b"_s), u"LIGHTED"_s},
+                    {QRegularExpression(u"\\bLTD\\b"_s), u"LIMITED"_s},
+                    {QRegularExpression(u"\\bMAINT\\b"_s), u"MAINTENANCE"_s},
+                    {QRegularExpression(u"\\bMIL\\b"_s), u"MILITARY"_s},
+                    {QRegularExpression(u"\\bN\\b"_s), u"NORTH"_s},
+                    {QRegularExpression(u"\\bNE\\b"_s), u"NORTHEAST"_s},
+                    {QRegularExpression(u"\\bNW\\b"_s), u"NORTHWEST"_s},
+                    {QRegularExpression(u"\\bO/R\\b"_s), u"AVAILABLE ON REQUEST"_s},
+                    {QRegularExpression(u"\\bOBST\\b"_s), u"OBSTACLE"_s},
+                    {QRegularExpression(u"\\bPOSS\\b"_s), u"POSSIBLE"_s},
+                    {QRegularExpression(u"\\bPSN\\b"_s), u"POSITION"_s},
+                    {QRegularExpression(u"\\bPRKG\\b"_s), u"PARKING"_s},
+                    {QRegularExpression(u"\\bRTE\\b"_s), u"ROUTE"_s},
+                    {QRegularExpression(u"\\bRVR\\b"_s), u"RUNWAY VISUAL RANGE"_s},
+                    {QRegularExpression(u"\\bRWY\\b"_s), u"RUNWAY"_s},
+                    {QRegularExpression(u"\\bS\\b"_s), u"SOUTH"_s},
+                    {QRegularExpression(u"\\bSE\\b"_s), u"SOUTHEAST"_s},
+                    {QRegularExpression(u"\\bSKED\\b"_s), u"SCHEDULED"_s},
+                    {QRegularExpression(u"\\bSW\\b"_s), u"SOUTHWEST"_s},
+                    {QRegularExpression(u"\\bTFC\\b"_s), u"TRAFFIC"_s},
+                    {QRegularExpression(u"\\bTHR\\b"_s), u"THRESHOLD"_s},
+                    {QRegularExpression(u"\\bTWR\\b"_s), u"TOWER"_s},
+                    {QRegularExpression(u"\\bTWY\\b"_s), u"TAXIWAY"_s},
+                    {QRegularExpression(u"\\bW\\b"_s), u"WEST"_s},
+                    {QRegularExpression(u"\\bWDI\\b"_s), u"WIND DIRECTION INDICATOR"_s},
+                    {QRegularExpression(u"\\bWI\\b"_s), u"WITHIN"_s},
+                    {QRegularExpression(u"\\bWIP\\b"_s), u"WORK IN PROGRESS"_s},
                 })
 } // namespace
 
@@ -112,27 +114,27 @@ Q_GLOBAL_STATIC(ContractionList,
 
 NOTAM::NOTAM::NOTAM(const QJsonObject& jsonObject)
 {
-    auto notamObject = jsonObject[u"properties"_qs][u"coreNOTAMData"_qs][u"notam"_qs].toObject();
+    auto notamObject = jsonObject[u"properties"_s][u"coreNOTAMData"_s][u"notam"_s].toObject();
 
-    m_affectedFIR = notamObject[u"affectedFIR"_qs].toString();
-    m_coordinate = interpretNOTAMCoordinates(notamObject[u"coordinates"_qs].toString());
-    m_effectiveEndString = notamObject[u"effectiveEnd"_qs].toString();
-    m_effectiveStartString = notamObject[u"effectiveStart"_qs].toString();
-    m_icaoLocation = notamObject[u"icaoLocation"_qs].toString();
-    m_maximumFL = notamObject[u"maximumFL"_qs].toString();
-    m_minimumFL = notamObject[u"minimumFL"_qs].toString();
-    m_number = notamObject[u"number"_qs].toString();
-    m_text = notamObject[u"text"_qs].toString();
-    m_traffic = notamObject[u"traffic"_qs].toString();
-    m_radius = Units::Distance::fromNM(notamObject[u"radius"_qs].toString().toDouble());
+    m_affectedFIR = notamObject[u"affectedFIR"_s].toString();
+    m_coordinate = interpretNOTAMCoordinates(notamObject[u"coordinates"_s].toString());
+    m_effectiveEndString = notamObject[u"effectiveEnd"_s].toString();
+    m_effectiveStartString = notamObject[u"effectiveStart"_s].toString();
+    m_icaoLocation = notamObject[u"icaoLocation"_s].toString();
+    m_maximumFL = notamObject[u"maximumFL"_s].toString();
+    m_minimumFL = notamObject[u"minimumFL"_s].toString();
+    m_number = notamObject[u"number"_s].toString();
+    m_text = notamObject[u"text"_s].toString();
+    m_traffic = notamObject[u"traffic"_s].toString();
+    m_radius = Units::Distance::fromNM(notamObject[u"radius"_s].toString().toDouble());
 
     m_effectiveEnd = QDateTime::fromString(m_effectiveEndString, Qt::ISODate);
     m_effectiveStart = QDateTime::fromString(m_effectiveStartString, Qt::ISODate);
     m_region = QGeoCircle(m_coordinate, qMax( Units::Distance::fromNM(1).toM(), m_radius.toM() ));
 
-    if (notamObject.contains(u"schedule"_qs))
+    if (notamObject.contains(u"schedule"_s))
     {
-        m_schedule = notamObject[u"schedule"_qs].toString();
+        m_schedule = notamObject[u"schedule"_s].toString();
     }
 }
 
@@ -155,8 +157,8 @@ QString NOTAM::NOTAM::cancels() const
 QJsonObject NOTAM::NOTAM::GeoJSON() const
 {
     QMap<QString, QVariant> m_properties;
-    m_properties[u"CAT"_qs] = u"NOTAM"_qs;
-    m_properties[u"NAM"_qs] = {};
+    m_properties[u"CAT"_s] = u"NOTAM"_s;
+    m_properties[u"NAM"_s] = {};
 
     QJsonArray coords;
     coords.insert(0, m_coordinate.longitude());
@@ -212,11 +214,11 @@ QString NOTAM::NOTAM::richText() const
         {
             if (m_effectiveStart.date() == QDateTime::currentDateTimeUtc().date())
             {
-                effectiveStartString = u"Today %1"_qs.arg(m_effectiveStart.toString(u"hh:mm"_qs));
+                effectiveStartString = u"Today %1"_s.arg(m_effectiveStart.toString(u"hh:mm"_s));
             }
             else
             {
-                effectiveStartString = m_effectiveStart.toString(u"ddMMMyy hh:mm"_qs);
+                effectiveStartString = m_effectiveStart.toString(u"ddMMMyy hh:mm"_s);
             }
         }
     }
@@ -226,11 +228,11 @@ QString NOTAM::NOTAM::richText() const
     {
         if (m_effectiveStart.isValid() && !m_effectiveStartString.isEmpty() && m_effectiveStart.date() == m_effectiveEnd.date() )
         {
-            effectiveEndString = m_effectiveEnd.toString(u"hh:mm"_qs);
+            effectiveEndString = m_effectiveEnd.toString(u"hh:mm"_s);
         }
         else
         {
-            effectiveEndString = m_effectiveEnd.toString(u"ddMMMyy hh:mm"_qs);
+            effectiveEndString = m_effectiveEnd.toString(u"ddMMMyy hh:mm"_s);
         }
     }
 
@@ -238,26 +240,26 @@ QString NOTAM::NOTAM::richText() const
     {
         if (m_effectiveEnd.isValid())
         {
-            result += u"<strong>Until %1</strong>"_qs.arg(effectiveEndString);
+            result += u"<strong>Until %1</strong>"_s.arg(effectiveEndString);
         }
         else
         {
-            result += u"<strong>%1</strong>"_qs.arg(effectiveEndString);
+            result += u"<strong>%1</strong>"_s.arg(effectiveEndString);
         }
     }
     else
     {
-    result += u"<strong>%1 until %2</strong>"_qs.arg(effectiveStartString, effectiveEndString);
+    result += u"<strong>%1 until %2</strong>"_s.arg(effectiveStartString, effectiveEndString);
     }
 
-    if ((m_minimumFL.size() == 3) && (m_maximumFL.size() == 3) && !(m_minimumFL == u"000"_qs && m_maximumFL == u"999"_qs))
+    if ((m_minimumFL.size() == 3) && (m_maximumFL.size() == 3) && !(m_minimumFL == u"000"_s && m_maximumFL == u"999"_s))
     {
-        result += u"<strong>FL%1-FL%2</strong>"_qs.arg(m_minimumFL, m_maximumFL).replace(u"FL000"_qs, u"GND"_qs);
+        result += u"<strong>FL%1-FL%2</strong>"_s.arg(m_minimumFL, m_maximumFL).replace(u"FL000"_s, u"GND"_s);
     }
 
     if (!m_schedule.isEmpty())
     {
-        result += u"<strong>Schedule %1</strong>"_qs.arg(m_schedule);
+        result += u"<strong>Schedule %1</strong>"_s.arg(m_schedule);
     }
 
     if (GlobalObject::globalSettings()->expandNotamAbbreviations())
@@ -274,7 +276,7 @@ QString NOTAM::NOTAM::richText() const
     {
         result += m_text;
     }
-    return u"<strong>%1: </strong>"_qs.arg(m_icaoLocation) + result.join(u" • "_qs).replace(u"  "_qs, u" "_qs);
+    return u"<strong>%1: </strong>"_s.arg(m_icaoLocation) + result.join(u" • "_s).replace(u"  "_s, u" "_s);
 }
 
 
@@ -282,7 +284,7 @@ void NOTAM::NOTAM::updateSectionTitle()
 {
     if (GlobalObject::notamProvider()->isRead(m_number))
     {
-        m_sectionTitle = u"Marked as read"_qs;
+        m_sectionTitle = u"Marked as read"_s;
         return;
     }
 
@@ -290,26 +292,26 @@ void NOTAM::NOTAM::updateSectionTitle()
     {
         if (m_effectiveStart < QDateTime::currentDateTimeUtc())
         {
-            m_sectionTitle = u"Current"_qs;
+            m_sectionTitle = u"Current"_s;
             return;
         }
         if (m_effectiveStart < QDateTime::currentDateTimeUtc().addDays(1))
         {
-            m_sectionTitle = u"Next 24h"_qs;
+            m_sectionTitle = u"Next 24h"_s;
             return;
         }
         if (m_effectiveStart < QDateTime::currentDateTimeUtc().addDays(90))
         {
-            m_sectionTitle = u"Next 90 days"_qs;
+            m_sectionTitle = u"Next 90 days"_s;
             return;
         }
         if (m_effectiveStart < QDateTime::currentDateTimeUtc().addDays(90))
         {
-            m_sectionTitle = u"> 90 days"_qs;
+            m_sectionTitle = u"> 90 days"_s;
             return;
         }
     }
-    m_sectionTitle = u"NOTAM"_qs;
+    m_sectionTitle = u"NOTAM"_s;
 }
 
 

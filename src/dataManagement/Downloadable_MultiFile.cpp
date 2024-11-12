@@ -22,6 +22,8 @@
 
 #include "Downloadable_MultiFile.h"
 
+using namespace Qt::Literals::StringLiterals;
+
 
 DataManagement::Downloadable_MultiFile::Downloadable_MultiFile(DataManagement::Downloadable_MultiFile::UpdatePolicy updatePolicy, QObject* parent)
     : Downloadable_Abstract(parent), m_updatePolicy(updatePolicy)
@@ -83,7 +85,7 @@ auto DataManagement::Downloadable_MultiFile::infoText() -> QString
     {
         if (!result.isEmpty())
         {
-            result += u"<br>"_qs;
+            result += u"<br>"_s;
         }
         switch(map->contentType())
         {

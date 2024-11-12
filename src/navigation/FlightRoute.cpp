@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -29,6 +29,8 @@
 #include "geomaps/GeoMapProvider.h"
 #include "geomaps/GPX.h"
 #include "navigation/Navigator.h"
+
+using namespace Qt::Literals::StringLiterals;
 
 
 //
@@ -307,7 +309,7 @@ auto Navigation::FlightRoute::lastIndexOf(const GeoMaps::Waypoint& waypoint) con
 auto Navigation::FlightRoute::load(const QString& fileName) -> QString
 {
     QString myFileName = fileName;
-    if (fileName.startsWith(u"file://"_qs))
+    if (fileName.startsWith(u"file://"_s))
     {
         myFileName = fileName.mid(7);
     }
@@ -484,8 +486,8 @@ auto Navigation::FlightRoute::suggestedFilename() const -> QString
     //
     auto start = m_waypoints.value().constFirst().ICAOCode(); // ICAO code of start point
     auto name = m_waypoints.value().constFirst().name(); // Name of start point
-    name.replace(u'(', u""_qs);
-    name.replace(u')', u""_qs);
+    name.replace(u'(', u""_s);
+    name.replace(u')', u""_s);
     if (name.length() > 11)
     {  // Shorten name
         name = name.left(10)+"_";
@@ -507,8 +509,8 @@ auto Navigation::FlightRoute::suggestedFilename() const -> QString
     //
     QString end = m_waypoints.value().constLast().ICAOCode(); // ICAO code of end point
     name = m_waypoints.value().constLast().name(); // Name of end point
-    name.replace(u"("_qs, u""_qs);
-    name.replace(u")"_qs, u""_qs);
+    name.replace(u"("_s, u""_s);
+    name.replace(u")"_s, u""_s);
     if (name.length() > 11)
     {  // Shorten name
         name = name.left(10)+"_";
@@ -526,8 +528,8 @@ auto Navigation::FlightRoute::suggestedFilename() const -> QString
     }
 
     // Remove some problematic characters
-    start.replace(u"/"_qs, u"-"_qs);
-    end.replace(u"/"_qs, u"-"_qs);
+    start.replace(u"/"_s, u"-"_s);
+    end.replace(u"/"_s, u"-"_s);
 
     // Compile final result
 

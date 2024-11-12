@@ -28,6 +28,8 @@
 #include "platform/PlatformAdaptor_Abstract.h"
 #include "qimage.h"
 
+using namespace Qt::Literals::StringLiterals;
+
 
 Platform::PlatformAdaptor_Abstract::PlatformAdaptor_Abstract(QObject *parent)
     : GlobalObject(parent)
@@ -49,44 +51,44 @@ QString Platform::PlatformAdaptor_Abstract::systemInfo()
 {
     QString result;
 
-    result += u"<h3>App</h3>\n"_qs;
-    result += u"<table>\n"_qs;
-    result += u"<tr></tr>\n"_qs;
-    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("Enroute Version", QStringLiteral(PROJECT_VERSION));
-    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("GIT ", QStringLiteral(GIT_COMMIT));
-    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("Qt", QLibraryInfo::version().toString());
-    result += u"</table><br>\n"_qs;
+    result += u"<h3>App</h3>\n"_s;
+    result += u"<table>\n"_s;
+    result += u"<tr></tr>\n"_s;
+    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_s.arg("Enroute Version", QStringLiteral(PROJECT_VERSION));
+    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_s.arg("GIT ", QStringLiteral(GIT_COMMIT));
+    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_s.arg("Qt", QLibraryInfo::version().toString());
+    result += u"</table><br>\n"_s;
 
-    result += u"<h3>System</h3>\n"_qs;
-    result += u"<table>\n"_qs;
-    result += u"<tr></tr>\n"_qs;
-    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("Build ABI", QSysInfo::buildAbi());
-    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("Build CPU", QSysInfo::buildCpuArchitecture());
-    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("Current CPU", QSysInfo::currentCpuArchitecture());
-    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("Kernel Type", QSysInfo::kernelType());
-    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("Kernel Version", QSysInfo::kernelVersion());
-    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("System Name", QSysInfo::prettyProductName());
-    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("System Type", QSysInfo::productType());
-    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("System Version", QSysInfo::productVersion());
-    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("Locale", language());
-    result += u"</table><br>\n"_qs;
+    result += u"<h3>System</h3>\n"_s;
+    result += u"<table>\n"_s;
+    result += u"<tr></tr>\n"_s;
+    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_s.arg("Build ABI", QSysInfo::buildAbi());
+    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_s.arg("Build CPU", QSysInfo::buildCpuArchitecture());
+    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_s.arg("Current CPU", QSysInfo::currentCpuArchitecture());
+    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_s.arg("Kernel Type", QSysInfo::kernelType());
+    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_s.arg("Kernel Version", QSysInfo::kernelVersion());
+    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_s.arg("System Name", QSysInfo::prettyProductName());
+    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_s.arg("System Type", QSysInfo::productType());
+    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_s.arg("System Version", QSysInfo::productVersion());
+    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_s.arg("Locale", language());
+    result += u"</table><br>\n"_s;
 
     QString const updateCheckTimeStamp
         = QSettings().value(QStringLiteral("DataManager/MapListTimeStamp")).toString();
-    result += u"<h3>Data</h3>\n"_qs;
-    result += u"<table>\n"_qs;
-    result += u"<tr></tr>\n"_qs;
-    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("Last Map Update Check", updateCheckTimeStamp);
+    result += u"<h3>Data</h3>\n"_s;
+    result += u"<table>\n"_s;
+    result += u"<tr></tr>\n"_s;
+    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_s.arg("Last Map Update Check", updateCheckTimeStamp);
     auto lastNOTAMUpdate = notamProvider()->lastUpdate();
     if (lastNOTAMUpdate.isValid())
     {
-        result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("Last NOTAM download", notamProvider()->lastUpdate().toString());
+        result += u"<tr><td>%1<td><td>%2<td></tr>\n"_s.arg("Last NOTAM download", notamProvider()->lastUpdate().toString());
     }
     else
     {
-        result += u"<tr><td>%1<td><td>%2<td></tr>\n"_qs.arg("Last NOTAM download", "NONE");
+        result += u"<tr><td>%1<td><td>%2<td></tr>\n"_s.arg("Last NOTAM download", "NONE");
     }
-    result += u"</table><br>\n"_qs;
+    result += u"</table><br>\n"_s;
 
     return result;
 }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019, 2021 by Stefan Kebekus                            *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,7 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #include <QJsonArray>
 
 #include "GlobalObject.h"
@@ -26,6 +25,8 @@
 #include "navigation/Aircraft.h"
 #include "navigation/Navigator.h"
 #include "units/Distance.h"
+
+using namespace Qt::Literals::StringLiterals;
 
 
 GeoMaps::Waypoint::Waypoint()
@@ -313,19 +314,19 @@ auto GeoMaps::Waypoint::tabularDescription() const -> QList<QString>
             result.append("ID  " + m_properties.value(QStringLiteral("COD")).toString());
         }
         if (m_properties.contains(QStringLiteral("INF"))) {
-            result.append("INF " + m_properties.value(QStringLiteral("INF")).toString().replace(u"\n"_qs, u"<br>"_qs));
+            result.append("INF " + m_properties.value(QStringLiteral("INF")).toString().replace(u"\n"_s, u"<br>"_s));
         }
         if (m_properties.contains(QStringLiteral("COM"))) {
-            result.append("COM " + m_properties.value(QStringLiteral("COM")).toString().replace(u"\n"_qs, u"<br>"_qs));
+            result.append("COM " + m_properties.value(QStringLiteral("COM")).toString().replace(u"\n"_s, u"<br>"_s));
         }
         if (m_properties.contains(QStringLiteral("NAV"))) {
-            result.append("NAV " + m_properties.value(QStringLiteral("NAV")).toString().replace(u"\n"_qs, u"<br>"_qs));
+            result.append("NAV " + m_properties.value(QStringLiteral("NAV")).toString().replace(u"\n"_s, u"<br>"_s));
         }
         if (m_properties.contains(QStringLiteral("OTH"))) {
-            result.append("OTH " + m_properties.value(QStringLiteral("OTH")).toString().replace(u"\n"_qs, u"<br>"_qs));
+            result.append("OTH " + m_properties.value(QStringLiteral("OTH")).toString().replace(u"\n"_s, u"<br>"_s));
         }
         if (m_properties.contains(QStringLiteral("RWY"))) {
-            result.append("RWY " + m_properties.value(QStringLiteral("RWY")).toString().replace(u"\n"_qs, u"<br>"_qs));
+            result.append("RWY " + m_properties.value(QStringLiteral("RWY")).toString().replace(u"\n"_s, u"<br>"_s));
         }
     }
 

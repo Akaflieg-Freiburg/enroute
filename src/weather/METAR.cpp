@@ -25,6 +25,8 @@
 #include "weather/DensityAltitude.h"
 #include "weather/METAR.h"
 
+using namespace Qt::Literals::StringLiterals;
+
 
 Weather::METAR::METAR(QObject *parent)
     : Weather::Decoder(parent)
@@ -43,52 +45,51 @@ Weather::METAR::METAR(QXmlStreamReader& xml, QObject* parent)
         QString const name = xml.name().toString();
 
         // Read Station_ID
-        if (xml.isStartElement() && name == u"station_id"_qs)
-        {
+        if (xml.isStartElement() && name == u"station_id"_s) {
             m_ICAOCode = xml.readElementText();
             continue;
         }
 
         // Read location
-        if (xml.isStartElement() && name == u"latitude"_qs)
+        if (xml.isStartElement() && name == u"latitude"_s)
         {
             m_location.setLatitude(xml.readElementText().toDouble());
             continue;
         }
-        if (xml.isStartElement() && name == u"longitude"_qs)
+        if (xml.isStartElement() && name == u"longitude"_s)
         {
             m_location.setLongitude(xml.readElementText().toDouble());
             continue;
         }
-        if (xml.isStartElement() && name == u"elevation_m"_qs)
+        if (xml.isStartElement() && name == u"elevation_m"_s)
         {
             m_location.setAltitude(xml.readElementText().toDouble());
             continue;
         }
 
         // Read raw text
-        if (xml.isStartElement() && name == u"raw_text"_qs)
+        if (xml.isStartElement() && name == u"raw_text"_s)
         {
             m_raw_text = xml.readElementText();
             continue;
         }
 
         // Read temperature
-        if (xml.isStartElement() && name == u"temp_c"_qs)
+        if (xml.isStartElement() && name == u"temp_c"_s)
         {
             m_temperature = Units::Temperature::fromDegreeCelsius(xml.readElementText().toDouble());
             continue;
         }
 
         // Read dewpoint
-        if (xml.isStartElement() && name == u"dewpoint_c"_qs)
+        if (xml.isStartElement() && name == u"dewpoint_c"_s)
         {
             m_dewpoint = Units::Temperature::fromDegreeCelsius(xml.readElementText().toDouble());
             continue;
         }
 
         // QNH
-        if (xml.isStartElement() && name == u"altim_in_hg"_qs)
+        if (xml.isStartElement() && name == u"altim_in_hg"_s)
         {
             auto content = xml.readElementText();
             m_qnh = Units::Pressure::fromInHg(content.toDouble());
@@ -100,7 +101,7 @@ Weather::METAR::METAR(QXmlStreamReader& xml, QObject* parent)
         }
 
         // Wind
-        if (xml.isStartElement() && name == u"wind_speed_kt"_qs)
+        if (xml.isStartElement() && name == u"wind_speed_kt"_s)
         {
             auto content = xml.readElementText();
             m_wind = Units::Speed::fromKN(content.toDouble());
@@ -108,7 +109,7 @@ Weather::METAR::METAR(QXmlStreamReader& xml, QObject* parent)
         }
 
         // Gust
-        if (xml.isStartElement() && name == u"wind_gust_kt"_qs)
+        if (xml.isStartElement() && name == u"wind_gust_kt"_s)
         {
             auto content = xml.readElementText();
             m_gust = Units::Speed::fromKN(content.toDouble());
@@ -116,7 +117,7 @@ Weather::METAR::METAR(QXmlStreamReader& xml, QObject* parent)
         }
 
         // Observation Time
-        if (xml.isStartElement() && name == u"observation_time"_qs)
+        if (xml.isStartElement() && name == u"observation_time"_s)
         {
             auto content = xml.readElementText();
             m_observationTime = QDateTime::fromString(content, Qt::ISODate);
@@ -124,25 +125,25 @@ Weather::METAR::METAR(QXmlStreamReader& xml, QObject* parent)
         }
 
         // Flight category
-        if (xml.isStartElement() && name == u"flight_category"_qs)
+        if (xml.isStartElement() && name == u"flight_category"_s)
         {
             auto content = xml.readElementText();
-            if (content == u"VFR"_qs) {
+            if (content == u"VFR"_s) {
                 m_flightCategory = VFR;
             }
-            if (content == u"MVFR"_qs) {
+            if (content == u"MVFR"_s) {
                 m_flightCategory = MVFR;
             }
-            if (content == u"IFR"_qs) {
+            if (content == u"IFR"_s) {
                 m_flightCategory = IFR;
             }
-            if (content == u"LIFR"_qs) {
+            if (content == u"LIFR"_s) {
                 m_flightCategory = LIFR;
             }
             continue;
         }
 
-        if (xml.isEndElement() && name == u"METAR"_qs)
+        if (xml.isEndElement() && name == u"METAR"_s)
         {
             break;
         }
@@ -183,7 +184,7 @@ Weather::METAR::METAR(QDataStream& inputStream, QObject* parent)
 
 QDateTime Weather::METAR::expiration() const
 {
-    if (m_raw_text.contains(u"NOSIG"_qs))
+    if (m_raw_text.contains(u"NOSIG"_s))
     {
         return m_observationTime.addSecs(3LL*60LL*60LL);
     }
@@ -239,7 +240,7 @@ QString Weather::METAR::summary(const Navigation::Aircraft& aircraft, const QDat
     switch (m_flightCategory)
     {
     case VFR:
-        if (m_raw_text.contains(u"CAVOK"_qs))
+        if (m_raw_text.contains(u"CAVOK"_s))
         {
             resultList << tr("CAVOK");
         }
@@ -314,7 +315,11 @@ QString Weather::METAR::derivedData(const Navigation::Aircraft& aircraft) const
     QStringList items;
     if (m_densityAltitude.isFinite())
     {
-        items += tr("Density Altitude: %1").arg(aircraft.verticalDistanceToString(m_densityAltitude));
+        Units::Distance const altitude = Units::Distance::fromM(m_location.altitude());
+        items += tr("Density Altitude: %1 (Δ %2)").arg(
+            aircraft.verticalDistanceToString(m_densityAltitude), 
+            aircraft.verticalDistanceToString(m_densityAltitude - altitude, /*forceSign=*/ true)
+            );
     }
     auto relativeHumidity = Navigation::Atmosphere::relativeHumidity(m_temperature, m_dewpoint);
     if (!std::isnan(relativeHumidity))
@@ -328,13 +333,13 @@ QString Weather::METAR::derivedData(const Navigation::Aircraft& aircraft) const
     }
 
     QString result;
-    result += u"<strong>"_qs + tr("Derived Data") + u"</strong>"_qs;
+    result += u"<strong>"_s + tr("Derived Data") + u"</strong>"_s;
     result += QStringLiteral("<ul style=\"margin-left:-25px;\">");
     for(auto& item : items)
     {
-        result += u"<li>"_qs;
+        result += u"<li>"_s;
         result += item;
-        result += u"</li>"_qs;
+        result += u"</li>"_s;
     }
     result += QStringLiteral("</ul>");
     return result;

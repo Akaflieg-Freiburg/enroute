@@ -31,7 +31,7 @@
 // Converts a string of the form N53° 53' 55.87" or W166° 32' 40.78" to a decimal. Returns NAN on failure.
 double convertPDMSToDecimal(QString pdms)
 {
-    QStringList split = pdms.split(u" "_qs);
+    QStringList split = pdms.split(u" "_s);
     if (split.size() != 3)
     {
         return NAN;
@@ -83,7 +83,7 @@ FileFormats::PLN::PLN(const QString& fileName)
     }
     if (xmlReader.name().compare("SimBase.Document", Qt::CaseInsensitive) != 0)
     {
-        setError(QObject::tr("File %1 does not contain a flight plan.", "FileFormats::PLN").arg(fileName));
+        setError(QObject::tr("File %1 does not contain a route.", "FileFormats::PLN").arg(fileName));
         return;
     }
 
@@ -108,7 +108,7 @@ FileFormats::PLN::PLN(const QString& fileName)
             }
             atcWaypointCounter++;
 
-            auto id = xmlReader.attributes().value(u"id"_qs).toString();
+            auto id = xmlReader.attributes().value(u"id"_s).toString();
             int worldPositionCounter = 0;
             while(xmlReader.readNextStartElement())
             {
@@ -120,7 +120,7 @@ FileFormats::PLN::PLN(const QString& fileName)
                 worldPositionCounter++;
 
                 auto pos = xmlReader.readElementText();
-                auto split = pos.split(u","_qs);
+                auto split = pos.split(u","_s);
                 if (split.size() != 3)
                 {
                     setError(QObject::tr("Position of waypoint %1 is invalid.", "FileFormats::PLN").arg(atcWaypointCounter));

@@ -44,7 +44,7 @@ FileFormats::FPL::FPL(const QString& fileName)
     }
     if (xmlReader.name().compare("flight-plan") != 0)
     {
-        setError(QObject::tr("File %1 does not contain a flight plan.", "FileFormats::FPL").arg(fileName));
+        setError(QObject::tr("File %1 does not contain a route.", "FileFormats::FPL").arg(fileName));
         return;
     }
 
@@ -144,7 +144,7 @@ FileFormats::FPL::FPL(const QString& fileName)
             }
             if (count3 == 0)
             {
-                setError(QObject::tr("File %1 does not contain a waypoint.", "FileFormats::FPL").arg(fileName));
+                setError(QObject::tr("File %1 does not contain waypoints.", "FileFormats::FPL").arg(fileName));
                 return;
             }
         }
@@ -177,7 +177,7 @@ FileFormats::FPL::FPL(const QString& fileName)
                     }
                     if (count4 != 1)
                     {
-                        setError(QObject::tr("Route point %1 does not have a unique waypoint identifier.", "FileFormats::FPL").arg(count3));
+                        setError(QObject::tr("Waypoint %1 does not have a unique waypoint identifier.", "FileFormats::FPL").arg(count3));
                         return;
                     }
 
@@ -195,7 +195,7 @@ FileFormats::FPL::FPL(const QString& fileName)
             }
             if (count3 == 0)
             {
-                setError(QObject::tr("File %1 does not contain a waypoint.", "FileFormats::FPL").arg(fileName));
+                setError(QObject::tr("File %1 does not contain waypoints.", "FileFormats::FPL").arg(fileName));
                 return;
             }
         }
@@ -206,7 +206,7 @@ FileFormats::FPL::FPL(const QString& fileName)
     }
     if (waypointTableCounter != 1)
     {
-        setError(QObject::tr("File %1 does not contain a waypoint.", "FileFormats::FPL").arg(fileName));
+        setError(QObject::tr("File %1 does not contain waypoints.", "FileFormats::FPL").arg(fileName));
         return;
     }
     if (routeCounter != 1)

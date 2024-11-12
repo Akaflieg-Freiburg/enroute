@@ -22,6 +22,8 @@
 
 #include "fileFormats/DataFileAbstract.h"
 
+using namespace Qt::Literals::StringLiterals;
+
 
 namespace FileFormats
 {
@@ -87,7 +89,7 @@ public:
      *
      *  @returns Name of mime type
      */
-    [[nodiscard]] static QStringList mimeTypes() { return {u"application/zip"_qs}; }
+    [[nodiscard]] static QStringList mimeTypes() { return {u"application/zip"_s}; }
 
 private:
     Q_DISABLE_COPY_MOVE(ZipFile)

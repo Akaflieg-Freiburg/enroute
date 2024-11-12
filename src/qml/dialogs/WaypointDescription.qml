@@ -38,7 +38,16 @@ CenteringDialog {
 
     onWaypointChanged : {
         // Delete old text items
-        co.children = {}
+        let childCount = co.children.length;
+        // Iterate through the children in reverse order
+        for (let i = childCount - 1; i >= 0; i--) {
+            // Check if the child is a valid QML item
+            if (co.children[i] instanceof QtObject) {
+                    // Destroy the child item
+                    co.children[i].destroy();
+                }
+            }
+
 
         // If no waypoint is given, then do nothing
         if (!waypoint.isValid)
@@ -82,7 +91,7 @@ CenteringDialog {
                 if (weatherStation === null)
                     return ""
                 if (weatherStation.hasMETAR)
-                    return weatherStation.metar.summary + " • <a href='xx'>" + qsTr("full report") + "</a>"
+                    return weatherStation.metar.summary(Navigator.aircraft, Clock.time) + " • <a href='xx'>" + qsTr("full report") + "</a>"
                 return "<a href='xx'>" + qsTr("read TAF") + "</a>"
             }
             Layout.fillWidth: true
@@ -440,7 +449,7 @@ CenteringDialog {
             ColumnLayout {
                 id: co
                 width: parent.width
-            } // ColumnLayout
+            }
 
         } // DecoratedScrollView
 

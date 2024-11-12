@@ -35,6 +35,8 @@
 #include "geomaps/WaypointLibrary.h"
 #include "navigation/Navigator.h"
 
+using namespace Qt::Literals::StringLiterals;
+
 
 GeoMaps::GeoMapProvider::GeoMapProvider(QObject *parent)
     : GlobalObject(parent)
@@ -653,7 +655,7 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(QStringList JSONFileNames, U
         // and that are gliding sectors
         if (hideGlidingSectors) {
             Airspace const airspaceTest(object);
-            if (airspaceTest.CAT() == u"GLD"_qs) {
+            if (airspaceTest.CAT() == u"GLD"_s) {
                 continue;
             }
         }

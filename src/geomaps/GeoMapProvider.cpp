@@ -78,7 +78,7 @@ void GeoMaps::GeoMapProvider::deferredInitialization()
 // Getter Methods
 //
 
-auto GeoMaps::GeoMapProvider::copyrightNotice() -> QString
+QString GeoMaps::GeoMapProvider::copyrightNotice()
 {
     QString result;
     if (GlobalObject::dataManager()->aviationMaps()->hasFile())
@@ -124,7 +124,7 @@ auto GeoMaps::GeoMapProvider::copyrightNotice() -> QString
     return result;
 }
 
-auto GeoMaps::GeoMapProvider::geoJSON() -> QByteArray
+QByteArray GeoMaps::GeoMapProvider::geoJSON()
 {
     QMutexLocker const lock(&_aviationDataMutex);
     return _combinedGeoJSON_;
@@ -163,7 +163,7 @@ QString GeoMaps::GeoMapProvider::styleFileURL()
 // Methods
 //
 
-auto GeoMaps::GeoMapProvider::airspaces(const QGeoCoordinate& position) -> QVariantList
+QVariantList GeoMaps::GeoMapProvider::airspaces(const QGeoCoordinate& position)
 {
     // Lock data
     QMutexLocker const lock(&_aviationDataMutex);
@@ -186,7 +186,7 @@ auto GeoMaps::GeoMapProvider::airspaces(const QGeoCoordinate& position) -> QVari
     return final;
 }
 
-auto GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition) -> Waypoint
+GeoMaps::Waypoint GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGeoCoordinate& distPosition)
 {
     position.setAltitude(qQNaN());
 
@@ -234,7 +234,7 @@ auto GeoMaps::GeoMapProvider::closestWaypoint(QGeoCoordinate position, const QGe
     return result;
 }
 
-auto GeoMaps::GeoMapProvider::terrainElevationAMSL(const QGeoCoordinate& coordinate) -> Units::Distance
+Units::Distance GeoMaps::GeoMapProvider::terrainElevationAMSL(const QGeoCoordinate& coordinate)
 {
     int const zoomMin = 6;
     int const zoomMax = 10;
@@ -305,7 +305,7 @@ auto GeoMaps::GeoMapProvider::terrainElevationAMSL(const QGeoCoordinate& coordin
     return {};
 }
 
-auto GeoMaps::GeoMapProvider::emptyGeoJSON() -> QByteArray
+QByteArray GeoMaps::GeoMapProvider::emptyGeoJSON()
 {
     QJsonObject resultObject;
     resultObject.insert(QStringLiteral("type"), "FeatureCollection");
@@ -314,7 +314,7 @@ auto GeoMaps::GeoMapProvider::emptyGeoJSON() -> QByteArray
     return geoDoc.toJson(QJsonDocument::JsonFormat::Compact);
 }
 
-auto GeoMaps::GeoMapProvider::filteredWaypoints(const QString &filter) -> QVector<GeoMaps::Waypoint>
+QVector<GeoMaps::Waypoint> GeoMaps::GeoMapProvider::filteredWaypoints(const QString& filter)
 {
 
     QStringList filterWords;
@@ -347,14 +347,18 @@ auto GeoMaps::GeoMapProvider::filteredWaypoints(const QString &filter) -> QVecto
     }
 
     const auto wpsLib = GlobalObject::waypointLibrary()->waypoints();
-    for(const auto& waypoint : wpsLib) {
-        if (!waypoint.isValid()) {
+    for(const auto& waypoint : wpsLib)
+    {
+        if (!waypoint.isValid())
+        {
             continue;
         }
         bool allWordsFound = true;
-        foreach(auto word, filterWords) {
+        for(auto& word : filterWords)
+        {
             QString const fullName = GlobalObject::librarian()->simplifySpecialChars(waypoint.name());
-            if (!fullName.contains(word, Qt::CaseInsensitive) && !waypoint.ICAOCode().contains(word, Qt::CaseInsensitive)) {
+            if (!fullName.contains(word, Qt::CaseInsensitive) && !waypoint.ICAOCode().contains(word, Qt::CaseInsensitive))
+            {
                 allWordsFound = false;
                 break;
             }
@@ -369,12 +373,14 @@ auto GeoMaps::GeoMapProvider::filteredWaypoints(const QString &filter) -> QVecto
     return result;
 }
 
-auto GeoMaps::GeoMapProvider::findByID(const QString &icaoID) -> Waypoint
+GeoMaps::Waypoint GeoMaps::GeoMapProvider::findByID(const QString& icaoID)
 {
     auto wps = waypoints();
 
-    foreach(auto wayppoint, wps) {
-        if (!wayppoint.isValid()) {
+    for(auto wayppoint : wps)
+    {
+        if (!wayppoint.isValid())
+        {
             continue;
         }
         if (wayppoint.ICAOCode() == icaoID) {
@@ -384,29 +390,33 @@ auto GeoMaps::GeoMapProvider::findByID(const QString &icaoID) -> Waypoint
     return {};
 }
 
-auto GeoMaps::GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, const QString& type) -> QList<GeoMaps::Waypoint>
+QList<GeoMaps::Waypoint> GeoMaps::GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, const QString& type)
 {
-
     QVector<Waypoint> tWps;
 
     auto wps = waypoints();
-    foreach(auto waypoint, wps) {
-        if (!waypoint.isValid()) {
+    for(auto& waypoint : wps)
+    {
+        if (!waypoint.isValid())
+        {
             continue;
         }
-        if (waypoint.type() != type) {
+        if (waypoint.type() != type)
+        {
             continue;
         }
         tWps.append(waypoint);
     }
 
-
     auto wpsLib = GlobalObject::waypointLibrary()->waypoints();
-    foreach(auto waypoint, wpsLib) {
-        if (!waypoint.isValid()) {
+    for(const auto& waypoint : wpsLib)
+    {
+        if (!waypoint.isValid())
+        {
             continue;
         }
-        if (waypoint.type() != type) {
+        if (waypoint.type() != type)
+        {
             continue;
         }
         tWps.append(waypoint);
@@ -417,7 +427,7 @@ auto GeoMaps::GeoMapProvider::nearbyWaypoints(const QGeoCoordinate& position, co
     return tWps.mid(0,20);
 }
 
-auto GeoMaps::GeoMapProvider::waypoints() -> QVector<Waypoint>
+QVector<GeoMaps::Waypoint> GeoMaps::GeoMapProvider::waypoints()
 {
     QMutexLocker const locker(&_aviationDataMutex);
     return _waypoints_;
@@ -440,17 +450,20 @@ void GeoMaps::GeoMapProvider::onAviationMapsChanged()
     // Generate new GeoJSON array and new list of waypoints
     //
     QStringList JSONFileNames;
-    foreach(auto geoMapPtrX, GlobalObject::dataManager()->aviationMaps()->downloadables()) {
+    for(auto* geoMapPtrX : GlobalObject::dataManager()->aviationMaps()->downloadables())
+    {
         auto *geoMapPtr = qobject_cast<DataManagement::Downloadable_SingleFile*>(geoMapPtrX);
         if (geoMapPtr == nullptr)
         {
             continue;
         }
         // Ignore everything but geojson files
-        if (!geoMapPtr->fileName().endsWith(u".geojson", Qt::CaseInsensitive)) {
+        if (!geoMapPtr->fileName().endsWith(u".geojson", Qt::CaseInsensitive))
+        {
             continue;
         }
-        if (!geoMapPtr->hasFile()) {
+        if (!geoMapPtr->hasFile())
+        {
             continue;
         }
         JSONFileNames += geoMapPtr->fileName();
@@ -464,7 +477,8 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
     terrainTileCache.clear();
 
     m_baseMapRasterTiles.clear();
-    for (auto* downloadableX : GlobalObject::dataManager()->baseMapsRaster()->downloadables()) {
+    for (auto* downloadableX : GlobalObject::dataManager()->baseMapsRaster()->downloadables())
+    {
         auto* downloadable = qobject_cast<DataManagement::Downloadable_SingleFile*>(downloadableX);
         if (downloadable == nullptr)
         {
@@ -478,7 +492,8 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
         m_baseMapRasterTiles.append(QSharedPointer<FileFormats::MBTILES>(new FileFormats::MBTILES(downloadable->fileName())));
     }
     m_baseMapVectorTiles.clear();
-    for (auto* downloadableX : GlobalObject::dataManager()->baseMapsVector()->downloadables()) {
+    for (auto* downloadableX : GlobalObject::dataManager()->baseMapsVector()->downloadables())
+    {
         auto* downloadable = qobject_cast<DataManagement::Downloadable_SingleFile*>(downloadableX);
         if (downloadable == nullptr)
         {
@@ -494,7 +509,8 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
     emit baseMapTilesChanged();
 
     m_terrainMapTiles.clear();
-    for (auto* downloadableX : GlobalObject::dataManager()->terrainMaps()->downloadables()) {
+    for (auto* downloadableX : GlobalObject::dataManager()->terrainMaps()->downloadables())
+    {
         auto* downloadable = qobject_cast<DataManagement::Downloadable_SingleFile*>(downloadableX);
         if (downloadable == nullptr)
         {
@@ -550,7 +566,8 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(QStringList JSONFileNames, U
     QVector<QJsonObject> objectVector;
     {
         QSet<QJsonObject> objectSet;
-        foreach(auto JSONFileName, JSONFileNames) {
+        for(const auto& JSONFileName : JSONFileNames)
+        {
             // Read the lock file
             QLockFile lockFile(JSONFileName+".lock");
             lockFile.lock();
@@ -560,7 +577,7 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(QStringList JSONFileNames, U
             file.close();
             lockFile.unlock();
 
-            foreach(auto value, document.object()[QStringLiteral("features")].toArray())
+            for(const auto& value : document.object()[QStringLiteral("features")].toArray())
             {
                 auto object = value.toObject();
                 if (objectSet.contains(object))
@@ -576,17 +593,20 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(QStringList JSONFileNames, U
     // Create vectors of airspaces and waypoints
     QVector<Airspace> newAirspaces;
     QVector<Waypoint> newWaypoints;
-    foreach(auto object, objectVector) {
+    for(const auto& object : objectVector)
+    {
         // Check if the current object is a waypoint. If so, add it to the list of waypoints.
         Waypoint const waypoint(object);
-        if (waypoint.isValid()) {
+        if (waypoint.isValid())
+        {
             newWaypoints.append(waypoint);
             continue;
         }
 
         // Check if the current object is an airspace. If so, add it to the list of airspaces.
         Airspace const airspace(object);
-        if (airspace.isValid()) {
+        if (airspace.isValid())
+        {
             newAirspaces.append(airspace);
             continue;
         }
@@ -594,22 +614,25 @@ void GeoMaps::GeoMapProvider::fillAviationDataCache(QStringList JSONFileNames, U
 
     // Then, create a new JSONArray of features and a new list of waypoints
     QJsonArray newFeatures;
-    foreach(auto object, objectVector) {
+    for(const auto& object : objectVector)
+    {
         // Ignore all objects that are airspaces and that begin above the airspaceAltitudeLimit.
         Airspace const airspaceTest(object);
-        if (airspaceAltitudeLimit.isFinite() && (airspaceTest.estimatedLowerBoundMSL() > airspaceAltitudeLimit)) {
+        if (airspaceAltitudeLimit.isFinite() && (airspaceTest.estimatedLowerBoundMSL() > airspaceAltitudeLimit))
+        {
             continue;
         }
 
         // If 'hideGlidingSector' is set, ignore all objects that are airspaces
         // and that are gliding sectors
-        if (hideGlidingSectors) {
+        if (hideGlidingSectors)
+        {
             Airspace const airspaceTest(object);
-            if (airspaceTest.CAT() == u"GLD"_s) {
+            if (airspaceTest.CAT() == u"GLD"_s)
+            {
                 continue;
             }
         }
-
         newFeatures += object;
     }
 

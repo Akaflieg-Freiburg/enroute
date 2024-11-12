@@ -83,105 +83,106 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &lt;QPointer&gt;</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#include &lt;QUdpSocket&gt;</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#include &quot;traffic/TrafficDataSource_AbstractSocket.h&quot;</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &lt;QPointer&gt;</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &lt;QUdpSocket&gt;</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#include &quot;traffic/TrafficDataSource_AbstractSocket.h&quot;</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keyword">using namespace </span>Qt::Literals::StringLiterals;</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">namespace </span>Traffic {</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="foldopen" id="foldopen00042" data-start="{" data-end="};">
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__Udp.html">   42</a></span><span class="keyword">class </span><a class="code hl_class" href="classTraffic_1_1TrafficDataSource__Udp.html">TrafficDataSource_Udp</a> : <span class="keyword">public</span> <a class="code hl_class" href="classTraffic_1_1TrafficDataSource__AbstractSocket.html">TrafficDataSource_AbstractSocket</a> {</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    Q_OBJECT</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__Udp.html#a6ee801bb51f15e585fd4a5ed977a9b95">   54</a></span>    <a class="code hl_function" href="classTraffic_1_1TrafficDataSource__Udp.html#a6ee801bb51f15e585fd4a5ed977a9b95">TrafficDataSource_Udp</a>(<span class="keywordtype">bool</span> isCanonical, quint16 <a class="code hl_property" href="classTraffic_1_1TrafficDataSource__Udp.html#af1c086ebe88b8fe92c29744d8a26eb20">port</a>, QObject *parent = <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="comment">// Standard destructor</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <a class="code hl_class" href="classTraffic_1_1TrafficDataSource__Udp.html">~TrafficDataSource_Udp</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keyword">namespace </span>Traffic {</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="foldopen" id="foldopen00043" data-start="{" data-end="};">
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__Udp.html">   43</a></span><span class="keyword">class </span><a class="code hl_class" href="classTraffic_1_1TrafficDataSource__Udp.html">TrafficDataSource_Udp</a> : <span class="keyword">public</span> <a class="code hl_class" href="classTraffic_1_1TrafficDataSource__AbstractSocket.html">TrafficDataSource_AbstractSocket</a> {</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    Q_OBJECT</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__Udp.html#a6ee801bb51f15e585fd4a5ed977a9b95">   55</a></span>    <a class="code hl_function" href="classTraffic_1_1TrafficDataSource__Udp.html#a6ee801bb51f15e585fd4a5ed977a9b95">TrafficDataSource_Udp</a>(<span class="keywordtype">bool</span> isCanonical, quint16 <a class="code hl_property" href="classTraffic_1_1TrafficDataSource__Udp.html#af1c086ebe88b8fe92c29744d8a26eb20">port</a>, QObject *parent = <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="comment">// Standard destructor</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <a class="code hl_class" href="classTraffic_1_1TrafficDataSource__Udp.html">~TrafficDataSource_Udp</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="comment">//</span></div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="comment">// Properties</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="comment">//</span></div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__Udp.html#af1c086ebe88b8fe92c29744d8a26eb20">   67</a></span>    Q_PROPERTY(quint16 <a class="code hl_property" href="classTraffic_1_1TrafficDataSource__Udp.html#af1c086ebe88b8fe92c29744d8a26eb20">port</a> READ <a class="code hl_property" href="classTraffic_1_1TrafficDataSource__Udp.html#af1c086ebe88b8fe92c29744d8a26eb20">port</a> CONSTANT)</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="comment">//</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="comment">// Properties</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="comment">//</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__Udp.html#af1c086ebe88b8fe92c29744d8a26eb20">   68</a></span>    Q_PROPERTY(quint16 <a class="code hl_property" href="classTraffic_1_1TrafficDataSource__Udp.html#af1c086ebe88b8fe92c29744d8a26eb20">port</a> READ <a class="code hl_property" href="classTraffic_1_1TrafficDataSource__Udp.html#af1c086ebe88b8fe92c29744d8a26eb20">port</a> CONSTANT)</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="comment">//</span></div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="comment">// Getter Methods</span></div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="comment">//</span></div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    </div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__Udp.html#ae3768401c867a4f79be1eefc96524e60">   79</a></span>    [[nodiscard]] <a class="code hl_class" href="classTraffic_1_1ConnectionInfo.html">Traffic::ConnectionInfo</a> <a class="code hl_function" href="classTraffic_1_1TrafficDataSource__Udp.html#ae3768401c867a4f79be1eefc96524e60">connectionInfo</a>()<span class="keyword"> const override  </span>{ <span class="keywordflow">return</span> <a class="code hl_class" href="classTraffic_1_1ConnectionInfo.html">Traffic::ConnectionInfo</a>(m_port, <a class="code hl_property" href="classTraffic_1_1TrafficDataSource__Abstract.html#a5d7761678f5f74ba2c2d79e30ed61a5e">canonical</a>()); }</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__Udp.html#a8479b7b967521857c06d66b190c77303">   85</a></span>    [[nodiscard]] QString <a class="code hl_function" href="classTraffic_1_1TrafficDataSource__Udp.html#a8479b7b967521857c06d66b190c77303">dataFormat</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> u<span class="stringliteral">&quot;GDL90, XGPS&quot;</span>_qs; }</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__Udp.html#af02aeba1d12a9a7499f05d5684a7323f">   94</a></span>    [[nodiscard]] QString <a class="code hl_function" href="classTraffic_1_1TrafficDataSource__Udp.html#af02aeba1d12a9a7499f05d5684a7323f">icon</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> u<span class="stringliteral">&quot;/icons/material/ic_wifi.svg&quot;</span>_qs; }</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
-<div class="foldopen" id="foldopen00103" data-start="{" data-end="}">
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__Udp.html#a6e9c1e5d7f15fc7e377f3f7abc66ba7b">  103</a></span>    [[nodiscard]] <span class="keyword">auto</span> <a class="code hl_function" href="classTraffic_1_1TrafficDataSource__Udp.html#a6e9c1e5d7f15fc7e377f3f7abc66ba7b">sourceName</a>() const -&gt; QString<span class="keyword"> override</span></div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="keyword">    </span>{</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        <span class="keywordflow">return</span> tr(<span class="stringliteral">&quot;UDP connection to port %1&quot;</span>).arg(m_port);</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    }</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="comment">//</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="comment">// Getter Methods</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="comment">//</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    </div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__Udp.html#ae3768401c867a4f79be1eefc96524e60">   80</a></span>    [[nodiscard]] <a class="code hl_class" href="classTraffic_1_1ConnectionInfo.html">Traffic::ConnectionInfo</a> <a class="code hl_function" href="classTraffic_1_1TrafficDataSource__Udp.html#ae3768401c867a4f79be1eefc96524e60">connectionInfo</a>()<span class="keyword"> const override  </span>{ <span class="keywordflow">return</span> <a class="code hl_class" href="classTraffic_1_1ConnectionInfo.html">Traffic::ConnectionInfo</a>(m_port, <a class="code hl_property" href="classTraffic_1_1TrafficDataSource__Abstract.html#a5d7761678f5f74ba2c2d79e30ed61a5e">canonical</a>()); }</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__Udp.html#a8479b7b967521857c06d66b190c77303">   86</a></span>    [[nodiscard]] QString <a class="code hl_function" href="classTraffic_1_1TrafficDataSource__Udp.html#a8479b7b967521857c06d66b190c77303">dataFormat</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> u<span class="stringliteral">&quot;GDL90, XGPS&quot;</span>_s; }</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__Udp.html#af02aeba1d12a9a7499f05d5684a7323f">   95</a></span>    [[nodiscard]] QString <a class="code hl_function" href="classTraffic_1_1TrafficDataSource__Udp.html#af02aeba1d12a9a7499f05d5684a7323f">icon</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> u<span class="stringliteral">&quot;/icons/material/ic_wifi.svg&quot;</span>_s; }</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
+<div class="foldopen" id="foldopen00104" data-start="{" data-end="}">
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__Udp.html#a6e9c1e5d7f15fc7e377f3f7abc66ba7b">  104</a></span>    [[nodiscard]] <span class="keyword">auto</span> <a class="code hl_function" href="classTraffic_1_1TrafficDataSource__Udp.html#a6e9c1e5d7f15fc7e377f3f7abc66ba7b">sourceName</a>() const -&gt; QString<span class="keyword"> override</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="keyword">    </span>{</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        <span class="keywordflow">return</span> tr(<span class="stringliteral">&quot;UDP connection to port %1&quot;</span>).arg(m_port);</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    }</div>
 </div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
-<div class="foldopen" id="foldopen00112" data-start="{" data-end="}">
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__Udp.html#ac8d56e59d930f20b6baac9402c8a0845">  112</a></span>    [[nodiscard]] quint16 <a class="code hl_function" href="classTraffic_1_1TrafficDataSource__Udp.html#ac8d56e59d930f20b6baac9402c8a0845">port</a>()<span class="keyword"> const</span></div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="keyword">    </span>{</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        <span class="keywordflow">return</span> m_port;</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    }</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
+<div class="foldopen" id="foldopen00113" data-start="{" data-end="}">
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__Udp.html#ac8d56e59d930f20b6baac9402c8a0845">  113</a></span>    [[nodiscard]] quint16 <a class="code hl_function" href="classTraffic_1_1TrafficDataSource__Udp.html#ac8d56e59d930f20b6baac9402c8a0845">port</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><span class="keyword">    </span>{</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>        <span class="keywordflow">return</span> m_port;</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    }</div>
 </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="keyword">public</span> slots:</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__Udp.html#a9d89bccaf317c811c3e5234587ac944c">  124</a></span>    <span class="keywordtype">void</span> <a class="code hl_slot" href="classTraffic_1_1TrafficDataSource__Udp.html#a9d89bccaf317c811c3e5234587ac944c">connectToTrafficReceiver</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__Udp.html#a5d242bfe4cb10fbee153c0248683c308">  131</a></span>    <span class="keywordtype">void</span> <a class="code hl_slot" href="classTraffic_1_1TrafficDataSource__Udp.html#a5d242bfe4cb10fbee153c0248683c308">disconnectFromTrafficReceiver</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="keyword">private</span> slots:</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    <span class="comment">// Read messages from the socket datagrams and passes the messages on to</span></div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    <span class="comment">// processGDLMessage</span></div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    <span class="keywordtype">void</span> onReadyRead();</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    Q_DISABLE_COPY_MOVE(<a class="code hl_class" href="classTraffic_1_1TrafficDataSource__Udp.html">TrafficDataSource_Udp</a>)</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    QPointer&lt;QUdpSocket&gt; m_socket;</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    quint16 m_port;</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    <span class="comment">// We use this vector to store the last 512 datatgram hashes in a circular</span></div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    <span class="comment">// array. This is used to sort out doubly sent datagrams. The nextHashIndex</span></div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    <span class="comment">// points to the next vector entry that will be re-written.</span></div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    QVector&lt;uint&gt; receivedDatagramHashes {512, 0};</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    qsizetype nextHashIndex {0};</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    <span class="comment">// GPS altitude of owncraft</span></div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    <a class="code hl_class" href="classUnits_1_1Distance.html">Units::Distance</a> m_trueAltitude;</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    <a class="code hl_class" href="classUnits_1_1Distance.html">Units::Distance</a> m_trueAltitude_FOM;</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    QTimer m_trueAltitudeTimer;</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>};</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span><span class="keyword">public</span> slots:</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__Udp.html#a9d89bccaf317c811c3e5234587ac944c">  125</a></span>    <span class="keywordtype">void</span> <a class="code hl_slot" href="classTraffic_1_1TrafficDataSource__Udp.html#a9d89bccaf317c811c3e5234587ac944c">connectToTrafficReceiver</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno"><a class="line" href="classTraffic_1_1TrafficDataSource__Udp.html#a5d242bfe4cb10fbee153c0248683c308">  132</a></span>    <span class="keywordtype">void</span> <a class="code hl_slot" href="classTraffic_1_1TrafficDataSource__Udp.html#a5d242bfe4cb10fbee153c0248683c308">disconnectFromTrafficReceiver</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="keyword">private</span> slots:</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    <span class="comment">// Read messages from the socket datagrams and passes the messages on to</span></div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    <span class="comment">// processGDLMessage</span></div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    <span class="keywordtype">void</span> onReadyRead();</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    Q_DISABLE_COPY_MOVE(<a class="code hl_class" href="classTraffic_1_1TrafficDataSource__Udp.html">TrafficDataSource_Udp</a>)</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> </div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    QPointer&lt;QUdpSocket&gt; m_socket;</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    quint16 m_port;</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span> </div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    <span class="comment">// We use this vector to store the last 512 datatgram hashes in a circular</span></div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    <span class="comment">// array. This is used to sort out doubly sent datagrams. The nextHashIndex</span></div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    <span class="comment">// points to the next vector entry that will be re-written.</span></div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    QVector&lt;uint&gt; receivedDatagramHashes {512, 0};</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>    qsizetype nextHashIndex {0};</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    <span class="comment">// GPS altitude of owncraft</span></div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    <a class="code hl_class" href="classUnits_1_1Distance.html">Units::Distance</a> m_trueAltitude;</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    <a class="code hl_class" href="classUnits_1_1Distance.html">Units::Distance</a> m_trueAltitude_FOM;</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    QTimer m_trueAltitudeTimer;</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>};</div>
 </div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>} <span class="comment">// namespace Traffic</span></div>
-<div class="ttc" id="aclassTraffic_1_1ConnectionInfo_html"><div class="ttname"><a href="classTraffic_1_1ConnectionInfo.html">Traffic::ConnectionInfo</a></div><div class="ttdoc">Connection to a traffic data receiver.</div><div class="ttdef"><b>Definition</b> <a href="ConnectionInfo_8h_source.html#l00039">ConnectionInfo.h:39</a></div></div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>} <span class="comment">// namespace Traffic</span></div>
+<div class="ttc" id="aclassTraffic_1_1ConnectionInfo_html"><div class="ttname"><a href="classTraffic_1_1ConnectionInfo.html">Traffic::ConnectionInfo</a></div><div class="ttdoc">Connection to a traffic data receiver.</div><div class="ttdef"><b>Definition</b> <a href="ConnectionInfo_8h_source.html#l00041">ConnectionInfo.h:41</a></div></div>
 <div class="ttc" id="aclassTraffic_1_1TrafficDataSource__AbstractSocket_html"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__AbstractSocket.html">Traffic::TrafficDataSource_AbstractSocket</a></div><div class="ttdoc">Base class for all traffic receiver data sources that receive data via network sockets.</div><div class="ttdef"><b>Definition</b> <a href="TrafficDataSource__AbstractSocket_8h_source.html#l00042">TrafficDataSource_AbstractSocket.h:42</a></div></div>
 <div class="ttc" id="aclassTraffic_1_1TrafficDataSource__Abstract_html_a5d7761678f5f74ba2c2d79e30ed61a5e"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__Abstract.html#a5d7761678f5f74ba2c2d79e30ed61a5e">Traffic::TrafficDataSource_Abstract::canonical</a></div><div class="ttdeci">bool canonical</div><div class="ttdoc">Canonicity.</div><div class="ttdef"><b>Definition</b> <a href="TrafficDataSource__Abstract_8h_source.html#l00066">TrafficDataSource_Abstract.h:66</a></div></div>
-<div class="ttc" id="aclassTraffic_1_1TrafficDataSource__Udp_html"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__Udp.html">Traffic::TrafficDataSource_Udp</a></div><div class="ttdoc">Traffic receiver: UDP connection to GDL90 source.</div><div class="ttdef"><b>Definition</b> <a href="#l00042">TrafficDataSource_Udp.h:42</a></div></div>
+<div class="ttc" id="aclassTraffic_1_1TrafficDataSource__Udp_html"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__Udp.html">Traffic::TrafficDataSource_Udp</a></div><div class="ttdoc">Traffic receiver: UDP connection to GDL90 source.</div><div class="ttdef"><b>Definition</b> <a href="#l00043">TrafficDataSource_Udp.h:43</a></div></div>
 <div class="ttc" id="aclassTraffic_1_1TrafficDataSource__Udp_html_a5d242bfe4cb10fbee153c0248683c308"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__Udp.html#a5d242bfe4cb10fbee153c0248683c308">Traffic::TrafficDataSource_Udp::disconnectFromTrafficReceiver</a></div><div class="ttdeci">void disconnectFromTrafficReceiver() override</div><div class="ttdoc">Disconnect from traffic receiver.</div></div>
-<div class="ttc" id="aclassTraffic_1_1TrafficDataSource__Udp_html_a6e9c1e5d7f15fc7e377f3f7abc66ba7b"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__Udp.html#a6e9c1e5d7f15fc7e377f3f7abc66ba7b">Traffic::TrafficDataSource_Udp::sourceName</a></div><div class="ttdeci">auto sourceName() const -&gt; QString override</div><div class="ttdoc">Getter function for the property with the same name.</div><div class="ttdef"><b>Definition</b> <a href="#l00103">TrafficDataSource_Udp.h:103</a></div></div>
+<div class="ttc" id="aclassTraffic_1_1TrafficDataSource__Udp_html_a6e9c1e5d7f15fc7e377f3f7abc66ba7b"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__Udp.html#a6e9c1e5d7f15fc7e377f3f7abc66ba7b">Traffic::TrafficDataSource_Udp::sourceName</a></div><div class="ttdeci">auto sourceName() const -&gt; QString override</div><div class="ttdoc">Getter function for the property with the same name.</div><div class="ttdef"><b>Definition</b> <a href="#l00104">TrafficDataSource_Udp.h:104</a></div></div>
 <div class="ttc" id="aclassTraffic_1_1TrafficDataSource__Udp_html_a6ee801bb51f15e585fd4a5ed977a9b95"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__Udp.html#a6ee801bb51f15e585fd4a5ed977a9b95">Traffic::TrafficDataSource_Udp::TrafficDataSource_Udp</a></div><div class="ttdeci">TrafficDataSource_Udp(bool isCanonical, quint16 port, QObject *parent=nullptr)</div><div class="ttdoc">Default constructor.</div></div>
-<div class="ttc" id="aclassTraffic_1_1TrafficDataSource__Udp_html_a8479b7b967521857c06d66b190c77303"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__Udp.html#a8479b7b967521857c06d66b190c77303">Traffic::TrafficDataSource_Udp::dataFormat</a></div><div class="ttdeci">QString dataFormat() const override</div><div class="ttdoc">Getter function for the property with the same name.</div><div class="ttdef"><b>Definition</b> <a href="#l00085">TrafficDataSource_Udp.h:85</a></div></div>
+<div class="ttc" id="aclassTraffic_1_1TrafficDataSource__Udp_html_a8479b7b967521857c06d66b190c77303"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__Udp.html#a8479b7b967521857c06d66b190c77303">Traffic::TrafficDataSource_Udp::dataFormat</a></div><div class="ttdeci">QString dataFormat() const override</div><div class="ttdoc">Getter function for the property with the same name.</div><div class="ttdef"><b>Definition</b> <a href="#l00086">TrafficDataSource_Udp.h:86</a></div></div>
 <div class="ttc" id="aclassTraffic_1_1TrafficDataSource__Udp_html_a9d89bccaf317c811c3e5234587ac944c"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__Udp.html#a9d89bccaf317c811c3e5234587ac944c">Traffic::TrafficDataSource_Udp::connectToTrafficReceiver</a></div><div class="ttdeci">void connectToTrafficReceiver() override</div><div class="ttdoc">Start attempt to connect to traffic receiver.</div></div>
-<div class="ttc" id="aclassTraffic_1_1TrafficDataSource__Udp_html_ac8d56e59d930f20b6baac9402c8a0845"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__Udp.html#ac8d56e59d930f20b6baac9402c8a0845">Traffic::TrafficDataSource_Udp::port</a></div><div class="ttdeci">quint16 port() const</div><div class="ttdoc">Getter function for the property with the same name.</div><div class="ttdef"><b>Definition</b> <a href="#l00112">TrafficDataSource_Udp.h:112</a></div></div>
-<div class="ttc" id="aclassTraffic_1_1TrafficDataSource__Udp_html_ae3768401c867a4f79be1eefc96524e60"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__Udp.html#ae3768401c867a4f79be1eefc96524e60">Traffic::TrafficDataSource_Udp::connectionInfo</a></div><div class="ttdeci">Traffic::ConnectionInfo connectionInfo() const override</div><div class="ttdoc">Getter function for the property with the same name.</div><div class="ttdef"><b>Definition</b> <a href="#l00079">TrafficDataSource_Udp.h:79</a></div></div>
-<div class="ttc" id="aclassTraffic_1_1TrafficDataSource__Udp_html_af02aeba1d12a9a7499f05d5684a7323f"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__Udp.html#af02aeba1d12a9a7499f05d5684a7323f">Traffic::TrafficDataSource_Udp::icon</a></div><div class="ttdeci">QString icon() const override</div><div class="ttdoc">Getter function for the property with the same name.</div><div class="ttdef"><b>Definition</b> <a href="#l00094">TrafficDataSource_Udp.h:94</a></div></div>
-<div class="ttc" id="aclassTraffic_1_1TrafficDataSource__Udp_html_af1c086ebe88b8fe92c29744d8a26eb20"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__Udp.html#af1c086ebe88b8fe92c29744d8a26eb20">Traffic::TrafficDataSource_Udp::port</a></div><div class="ttdeci">quint16 port</div><div class="ttdoc">Port.</div><div class="ttdef"><b>Definition</b> <a href="#l00067">TrafficDataSource_Udp.h:67</a></div></div>
+<div class="ttc" id="aclassTraffic_1_1TrafficDataSource__Udp_html_ac8d56e59d930f20b6baac9402c8a0845"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__Udp.html#ac8d56e59d930f20b6baac9402c8a0845">Traffic::TrafficDataSource_Udp::port</a></div><div class="ttdeci">quint16 port() const</div><div class="ttdoc">Getter function for the property with the same name.</div><div class="ttdef"><b>Definition</b> <a href="#l00113">TrafficDataSource_Udp.h:113</a></div></div>
+<div class="ttc" id="aclassTraffic_1_1TrafficDataSource__Udp_html_ae3768401c867a4f79be1eefc96524e60"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__Udp.html#ae3768401c867a4f79be1eefc96524e60">Traffic::TrafficDataSource_Udp::connectionInfo</a></div><div class="ttdeci">Traffic::ConnectionInfo connectionInfo() const override</div><div class="ttdoc">Getter function for the property with the same name.</div><div class="ttdef"><b>Definition</b> <a href="#l00080">TrafficDataSource_Udp.h:80</a></div></div>
+<div class="ttc" id="aclassTraffic_1_1TrafficDataSource__Udp_html_af02aeba1d12a9a7499f05d5684a7323f"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__Udp.html#af02aeba1d12a9a7499f05d5684a7323f">Traffic::TrafficDataSource_Udp::icon</a></div><div class="ttdeci">QString icon() const override</div><div class="ttdoc">Getter function for the property with the same name.</div><div class="ttdef"><b>Definition</b> <a href="#l00095">TrafficDataSource_Udp.h:95</a></div></div>
+<div class="ttc" id="aclassTraffic_1_1TrafficDataSource__Udp_html_af1c086ebe88b8fe92c29744d8a26eb20"><div class="ttname"><a href="classTraffic_1_1TrafficDataSource__Udp.html#af1c086ebe88b8fe92c29744d8a26eb20">Traffic::TrafficDataSource_Udp::port</a></div><div class="ttdeci">quint16 port</div><div class="ttdoc">Port.</div><div class="ttdef"><b>Definition</b> <a href="#l00068">TrafficDataSource_Udp.h:68</a></div></div>
 <div class="ttc" id="aclassUnits_1_1Distance_html"><div class="ttname"><a href="classUnits_1_1Distance.html">Units::Distance</a></div><div class="ttdoc">Convenience class for distance computations.</div><div class="ttdef"><b>Definition</b> <a href="Distance_8h_source.html#l00035">Distance.h:35</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

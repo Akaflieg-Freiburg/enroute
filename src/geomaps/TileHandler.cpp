@@ -155,7 +155,6 @@ bool GeoMaps::TileHandler::process(QHttpServerResponder* responder, const QStrin
 
         if (m_format == u"pbf"_s)
         {
-#warning
             QHttpHeaders headers;
             headers.append("Content-Type", "application/octet-stream");
             headers.append("Content-Encoding", "gzip");

@@ -192,7 +192,7 @@ QString GeoMaps::VACLibrary::importVAC(const QString& fileName, const QString& n
     dir.mkpath(m_vacDirectory);
     QString const newFileName = m_vacDirectory + "/" + vac.name + ".webp";
     QFile::remove(newFileName);
-    if (_fileName.endsWith(u".webp"_qs))
+    if (_fileName.endsWith(u".webp"_s))
     {
         if (!QFile::copy(_fileName, newFileName))
         {

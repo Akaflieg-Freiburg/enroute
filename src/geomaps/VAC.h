@@ -69,7 +69,7 @@ public:
      *
      *  \param fName File name of a georeferenced raster image file
      */
-    VAC(QString fName);
+    VAC(const QString& fName);
 
     //
     // Properties

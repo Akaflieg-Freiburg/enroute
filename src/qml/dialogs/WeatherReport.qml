@@ -106,6 +106,7 @@ CenteringDialog {
                 }
 
                 Label { // Derived Data
+                    Layout.fillWidth: true
                     visible: text !== ""
                     text: (weatherStation != null) && weatherStation.hasMETAR ? weatherStation.metar.derivedData(Navigator.aircraft) : ""
                     wrapMode: Text.WordWrap
@@ -115,6 +116,7 @@ CenteringDialog {
                 }
 
                 Label { // title: "TAF"
+                    Layout.fillWidth: true
                     visible: (weatherStation != null) && weatherStation.hasTAF
                     text: "TAF"
                     font.bold: true

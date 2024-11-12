@@ -55,11 +55,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     find_package(Qt6 6.8 COMPONENTS WebView)
 endif()
 
-if(${QT_VERSION} VERSION_GREATER_EQUAL "6.7.0")
-    qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES de es fr it pl)
-else()
-    qt_standard_project_setup()
-endif()
+qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES de es fr it pl)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)

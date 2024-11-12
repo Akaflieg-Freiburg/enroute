@@ -28,6 +28,8 @@
 #include "fileFormats/TripKit.h"
 #include "geomaps/VAC.h"
 
+using namespace Qt::Literals::StringLiterals;
+
 
 FileFormats::TripKit::TripKit(const QString& fileName)
     : m_zip(fileName)
@@ -72,8 +74,8 @@ GeoMaps::VAC FileFormats::TripKit::extract(const QString& directoryPath, qsizety
         return {};
     }
 
-    auto newFileName = u"%1/%2.webp"_qs.arg(directoryPath, entry.name);
-    if (entry.ending == u"webp"_qs)
+    auto newFileName = u"%1/%2.webp"_s.arg(directoryPath, entry.name);
+    if (entry.ending == u"webp"_s)
     {
         QFile out(newFileName);
         if (!out.open(QIODeviceBase::WriteOnly))
@@ -117,7 +119,7 @@ QString FileFormats::TripKit::readTripKitData()
         // Get m_prefix
         foreach(auto fileName, m_zip.fileNames())
         {
-            if (fileName.endsWith(u"/toc.json"_qs))
+            if (fileName.endsWith(u"/toc.json"_s))
             {
                 m_prefix = fileName.chopped(8);
                 break;
@@ -126,7 +128,7 @@ QString FileFormats::TripKit::readTripKitData()
     }
 
     {
-       auto json = m_zip.extract(m_prefix + u"toc.json"_qs);
+       auto json = m_zip.extract(m_prefix + u"toc.json"_s);
         if (json.isNull())
         {
             return QObject::tr("The zip archive does not contain the required file 'toc.json'.", "FileFormats::TripKit");
@@ -137,11 +139,11 @@ QString FileFormats::TripKit::readTripKitData()
             return QObject::tr("The file 'toc.json' from the zip archive cannot be interpreted.", "FileFormats::TripKit");
         }
         auto rootObject = jDoc.object();
-        m_name = rootObject[u"name"_qs].toString();
+        m_name = rootObject[u"name"_s].toString();
     }
 
     {
-        auto json = m_zip.extract(m_prefix + u"charts/charts_toc.json"_qs);
+        auto json = m_zip.extract(m_prefix + u"charts/charts_toc.json"_s);
         if (json.isNull())
         {
             return QObject::tr("The zip archive %1 does not contain the required file 'charts/charts_toc.json'.", "FileFormats::TripKit");
@@ -152,7 +154,7 @@ QString FileFormats::TripKit::readTripKitData()
             return QObject::tr("The file 'charts/charts_toc.json' from the zip archive %1 cannot be interpreted.", "FileFormats::TripKit");
         }
         auto rootObject = jDoc.object();
-        auto m_charts = rootObject[u"charts"_qs].toArray();
+        auto m_charts = rootObject[u"charts"_s].toArray();
         if (m_charts.isEmpty())
         {
             return QObject::tr("The trip kit does not contain any charts.", "FileFormats::TripKit");
@@ -161,8 +163,8 @@ QString FileFormats::TripKit::readTripKitData()
         foreach (auto chart, m_charts)
         {
             chartEntry entry;
-            entry.name = chart.toObject()[u"name"_qs].toString();
-            entry.path = m_prefix + chart.toObject()[u"filePath"_qs].toString();
+            entry.name = chart.toObject()[u"name"_s].toString();
+            entry.path = m_prefix + chart.toObject()[u"filePath"_s].toString();
 
             auto idx = entry.path.lastIndexOf('.');
             if (idx >= 0)
@@ -170,14 +172,14 @@ QString FileFormats::TripKit::readTripKitData()
                 entry.ending = entry.path.mid(idx+1, -1).toLower();
             }
 
-            entry.topLeft.setLatitude(chart.toObject()[u"geoCorners"_qs].toObject()[u"upperLeft"_qs].toObject()[u"latitude"_qs].toDouble());
-            entry.topLeft.setLongitude(chart.toObject()[u"geoCorners"_qs].toObject()[u"upperLeft"_qs].toObject()[u"longitude"_qs].toDouble());
-            entry.topRight.setLatitude(chart.toObject()[u"geoCorners"_qs].toObject()[u"upperRight"_qs].toObject()[u"latitude"_qs].toDouble());
-            entry.topRight.setLongitude(chart.toObject()[u"geoCorners"_qs].toObject()[u"upperRight"_qs].toObject()[u"longitude"_qs].toDouble());
-            entry.bottomLeft.setLatitude(chart.toObject()[u"geoCorners"_qs].toObject()[u"lowerLeft"_qs].toObject()[u"latitude"_qs].toDouble());
-            entry.bottomLeft.setLongitude(chart.toObject()[u"geoCorners"_qs].toObject()[u"lowerLeft"_qs].toObject()[u"longitude"_qs].toDouble());
-            entry.bottomRight.setLatitude(chart.toObject()[u"geoCorners"_qs].toObject()[u"lowerRight"_qs].toObject()[u"latitude"_qs].toDouble());
-            entry.bottomRight.setLongitude(chart.toObject()[u"geoCorners"_qs].toObject()[u"lowerRight"_qs].toObject()[u"longitude"_qs].toDouble());
+            entry.topLeft.setLatitude(chart.toObject()[u"geoCorners"_s].toObject()[u"upperLeft"_s].toObject()[u"latitude"_s].toDouble());
+            entry.topLeft.setLongitude(chart.toObject()[u"geoCorners"_s].toObject()[u"upperLeft"_s].toObject()[u"longitude"_s].toDouble());
+            entry.topRight.setLatitude(chart.toObject()[u"geoCorners"_s].toObject()[u"upperRight"_s].toObject()[u"latitude"_s].toDouble());
+            entry.topRight.setLongitude(chart.toObject()[u"geoCorners"_s].toObject()[u"upperRight"_s].toObject()[u"longitude"_s].toDouble());
+            entry.bottomLeft.setLatitude(chart.toObject()[u"geoCorners"_s].toObject()[u"lowerLeft"_s].toObject()[u"latitude"_s].toDouble());
+            entry.bottomLeft.setLongitude(chart.toObject()[u"geoCorners"_s].toObject()[u"lowerLeft"_s].toObject()[u"longitude"_s].toDouble());
+            entry.bottomRight.setLatitude(chart.toObject()[u"geoCorners"_s].toObject()[u"lowerRight"_s].toObject()[u"latitude"_s].toDouble());
+            entry.bottomRight.setLongitude(chart.toObject()[u"geoCorners"_s].toObject()[u"lowerRight"_s].toObject()[u"longitude"_s].toDouble());
 
             if (!entry.topLeft.isValid() ||
                 !entry.topRight.isValid() ||

@@ -25,6 +25,9 @@
 
 #include "DataFileAbstract.h"
 
+using namespace Qt::Literals::StringLiterals;
+
+
 namespace FileFormats
 {
 
@@ -84,7 +87,7 @@ public:
      *
      *  @returns Name of mime type
      */
-    [[nodiscard]] static QStringList mimeTypes() { return {u"image/tiff"_qs}; }
+    [[nodiscard]] static QStringList mimeTypes() { return {u"image/tiff"_s}; }
 
 private:
     /* This methods reads the TIFF data from the device. On success, it fills

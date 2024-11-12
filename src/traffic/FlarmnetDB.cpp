@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,6 +24,8 @@
 #include "GlobalObject.h"
 #include "dataManagement/DataManager.h"
 #include "traffic/FlarmnetDB.h"
+
+using namespace Qt::Literals::StringLiterals;
 
 
 Traffic::FlarmnetDB::FlarmnetDB(QObject* parent) : QObject(parent)
@@ -58,7 +60,7 @@ void Traffic::FlarmnetDB::findFlarmnetDBDownloadable()
             {
                 continue;
             }
-            if (downloadable->objectName().contains(u"Flarm"_qs)) {
+            if (downloadable->objectName().contains(u"Flarm"_s)) {
                 newFlarmnetDBDownloadable = downloadable;
                 break;
             }
@@ -97,7 +99,7 @@ void Traffic::FlarmnetDB::findFlarmnetDBDownloadable()
 
 auto Traffic::FlarmnetDB::getRegistration(const QString& key) -> QString
 {
-    if (key.contains(u"!"_qs)) {
+    if (key.contains(u"!"_s)) {
         auto result = key.section('!', -1, -1);
         return result;
     }

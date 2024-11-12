@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -32,6 +32,8 @@
 #include "navigation/Clock.h"
 #include "navigation/Navigator.h"
 #include "weather/Decoder.h"
+
+using namespace Qt::Literals::StringLiterals;
 
 
 Weather::Decoder::Decoder(QObject *parent)
@@ -89,7 +91,7 @@ void Weather::Decoder::parse()
     for (const auto &groupInfo : parseResult.groups)
     {
         auto decodedString = visit(groupInfo);
-        if (decodedString.contains(u"<strong>"_qs))
+        if (decodedString.contains(u"<strong>"_s))
         {
             decodedStrings << listEnd+"<li>"+decodedString+"</li>"+listStart;
         }
@@ -998,7 +1000,7 @@ QString Weather::Decoder::convectiveTypeToString(metaf::CloudGroup::ConvectiveTy
     switch (f)
     {
     case metaf::Distance::MilesFraction::NONE:
-        return u""_qs;
+        return u""_s;
 
     case metaf::Distance::MilesFraction::F_1_16:
         return QStringLiteral("1/16");
@@ -2550,7 +2552,7 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*
     case metaf::MiscGroup::Type::COLOUR_CODE_BLUE:
         if (!result.isEmpty())
         {
-            result += u" "_qs;
+            result += u" "_s;
         }
         result += tr("Colour code BLUE: visibility >8000 m and lowest cloud base height >2500 ft");
         return result;
@@ -2560,7 +2562,7 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*
     case metaf::MiscGroup::Type::COLOUR_CODE_BLUE_PLUS:
         if (!result.isEmpty())
         {
-            result += u" "_qs;
+            result += u" "_s;
         }
         result += tr("Colour code BLUE+: visibility >8000 m or lowest cloud base height >2000 ft");
         return result;
@@ -2570,7 +2572,7 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*
     case metaf::MiscGroup::Type::COLOUR_CODE_YELLOW:
         if (!result.isEmpty())
         {
-            result += u" "_qs;
+            result += u" "_s;
         }
         result += tr("Colour code YELLOW: visibility 1600-3700 m or lowest cloud base height 300-700 ft");
         return result;
@@ -2580,7 +2582,7 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*
     case metaf::MiscGroup::Type::COLOUR_CODE_WHITE:
         if (!result.isEmpty())
         {
-            result += u" "_qs;
+            result += u" "_s;
         }
         result += tr("Colour code WHITE: visibility >5000 m and lowest cloud base height >1500 ft");
         return result;
@@ -2590,7 +2592,7 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*
     case metaf::MiscGroup::Type::COLOUR_CODE_GREEN:
         if (!result.isEmpty())
         {
-            result += u" "_qs;
+            result += u" "_s;
         }
         result += tr("Colour code GREEN: visibility >3700 m and lowest cloud base height >700 ft");
         return result;
@@ -2600,7 +2602,7 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*
     case metaf::MiscGroup::Type::COLOUR_CODE_YELLOW1:
         if (!result.isEmpty())
         {
-            result += u" "_qs;
+            result += u" "_s;
         }
         result += tr("Colour code YELLOW 1: visibility >2500 m and lowest cloud base height >500 ft");
         return result;
@@ -2610,7 +2612,7 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*
     case metaf::MiscGroup::Type::COLOUR_CODE_YELLOW2:
         if (!result.isEmpty())
         {
-            result += u" "_qs;
+            result += u" "_s;
         }
         result += tr("Colour code YELLOW 2: visibility >1600 m and lowest cloud base height >300 ft");
         return result;
@@ -2620,7 +2622,7 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*
     case metaf::MiscGroup::Type::COLOUR_CODE_AMBER:
         if (!result.isEmpty())
         {
-            result += u" "_qs;
+            result += u" "_s;
         }
         result += tr("Colour code AMBER: visibility >800 m and lowest cloud base height >200 ft");
         return result;
@@ -2630,7 +2632,7 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*
     case metaf::MiscGroup::Type::COLOUR_CODE_RED:
         if (!result.isEmpty())
         {
-            result += u" "_qs;
+            result += u" "_s;
         }
         result += tr("Colour code RED: visibility <800 m or lowest cloud base height <200 ft");
         return result;

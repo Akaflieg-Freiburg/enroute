@@ -38,6 +38,8 @@
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficDataSource_File.h"
 
+using namespace Qt::Literals::StringLiterals;
+
 
 Platform::FileExchange_Abstract::FileExchange_Abstract(QObject *parent)
     : GlobalObject(parent)
@@ -167,7 +169,7 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     }
 
     // Image
-    if (mimeType.name().startsWith(u"image"_qs))
+    if (mimeType.name().startsWith(u"image"_s))
     {
         QImage const img(myPath);
         if (!img.isNull())
@@ -219,12 +221,12 @@ void Platform::FileExchange_Abstract::processText(const QString& text)
     }
 
 #if __has_include (<QtWebView/QtWebView>)
-    if (text.contains(u"maps.app.goo.gl"_qs))
+    if (text.contains(u"maps.app.goo.gl"_s))
     {
         emit resolveURL(text, QUrl(text).host());
         return;
     }
-    if (text.contains(u"share.here.com"_qs))
+    if (text.contains(u"share.here.com"_s))
     {
         emit resolveURL(text, QUrl(text).host());
         return;

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2023 by Stefan Kebekus                                  *
+ *   Copyright (C) 2023-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -35,6 +35,7 @@
 #include <chrono>
 
 using namespace std::chrono_literals;
+using namespace Qt::Literals::StringLiterals;
 
 
 //
@@ -106,7 +107,7 @@ Notifications::Notification* Notifications::NotificationManager::currentVisualNo
 void Notifications::NotificationManager::addTestNotification()
 {
     auto* notification = new Notifications::Notification(tr("Test notification"), Notifications::Notification::Warning);
-    notification->setText(u"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."_qs);
+    notification->setText(u"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."_s);
     connect(GlobalObject::dataManager()->mapsAndData(), &DataManagement::Downloadable_MultiFile::downloadingChanged, notification, &QObject::deleteLater);
     addNotification(notification);
 }
@@ -289,7 +290,7 @@ void Notifications::NotificationManager::speakNext()
     }
 
     // Speak!
-    m_speaker->say( textBlocks.join(u" "_qs) );
+    m_speaker->say( textBlocks.join(u" "_s) );
 }
 
 

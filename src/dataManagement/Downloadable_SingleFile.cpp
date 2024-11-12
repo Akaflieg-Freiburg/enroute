@@ -28,6 +28,8 @@
 #include "GlobalSettings.h"
 #include "fileFormats/MBTILES.h"
 
+using namespace Qt::Literals::StringLiterals;
+
 
 DataManagement::Downloadable_SingleFile::Downloadable_SingleFile(QUrl url, const QString& fileName, const QGeoRectangle& bBox, QObject* parent)
     : Downloadable_Abstract(parent), m_url(std::move(url))
@@ -60,25 +62,25 @@ DataManagement::Downloadable_SingleFile::Downloadable_SingleFile(QUrl url, const
             tmpName = m_fileName;
         }
 
-        if (tmpName.endsWith(u"geojson"_qs))
+        if (tmpName.endsWith(u"geojson"_s))
         {
             setContentType(AviationMap);
         }
-        else if (tmpName.endsWith(u"mbtiles"_qs))
+        else if (tmpName.endsWith(u"mbtiles"_s))
         {
             setContentType(BaseMapVector);
         }
-        else if (tmpName.endsWith(u"jpeg"_qs) || tmpName.endsWith(u"jpg"_qs) ||
-                   tmpName.endsWith(u"png"_qs) || tmpName.endsWith(u"tif"_qs) ||
-                   tmpName.endsWith(u"tiff"_qs) || tmpName.endsWith(u"webp"_qs))
+        else if (tmpName.endsWith(u"jpeg"_s) || tmpName.endsWith(u"jpg"_s) ||
+                   tmpName.endsWith(u"png"_s) || tmpName.endsWith(u"tif"_s) ||
+                   tmpName.endsWith(u"tiff"_s) || tmpName.endsWith(u"webp"_s))
         {
             setContentType(VAC);
         }
-        else if (tmpName.endsWith(u"raster"_qs))
+        else if (tmpName.endsWith(u"raster"_s))
         {
             setContentType(BaseMapRaster);
         }
-        else if (tmpName.endsWith(u"terrain"_qs))
+        else if (tmpName.endsWith(u"terrain"_s))
         {
             setContentType(TerrainMap);
         }

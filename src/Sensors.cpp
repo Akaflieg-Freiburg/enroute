@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2023 by Stefan Kebekus                                  *
+ *   Copyright (C) 2023-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -22,6 +22,8 @@
 #include <QTimer>
 
 #include "Sensors.h"
+
+using namespace Qt::Literals::StringLiterals;
 
 
 //
@@ -119,7 +121,7 @@ void Sensors::updateStatusString()
     }
     else
     {
-        newStatus = "<ul style='margin-left:-25px;'>" + sensorNames.join(u""_qs) + "</ul>";
+        newStatus = "<ul style='margin-left:-25px;'>" + sensorNames.join(u""_s) + "</ul>";
     }
 
     if (newStatus != m_statusString)

@@ -22,15 +22,18 @@
 
 #include "fileFormats/DataFileAbstract.h"
 
+using namespace Qt::Literals::StringLiterals;
+
+
 QSharedPointer<QFile> FileFormats::DataFileAbstract::openFileURL(const QString& fileName)
 {
-    if (fileName.startsWith(u"file://"_qs))
+    if (fileName.startsWith(u"file://"_s))
     {
         auto* file = new QFile(fileName.mid(7));
         return QSharedPointer<QFile>(file);
     }
 
-    if (fileName.startsWith(u"content://"_qs))
+    if (fileName.startsWith(u"content://"_s))
     {
         auto* file = new QTemporaryFile();
         file->open();

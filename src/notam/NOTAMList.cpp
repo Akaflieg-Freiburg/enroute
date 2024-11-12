@@ -25,12 +25,14 @@
 #include "notam/NOTAMList.h"
 #include "notam/NOTAMProvider.h"
 
+using namespace Qt::Literals::StringLiterals;
+
 
 NOTAM::NOTAMList::NOTAMList(const QJsonDocument& jsonDoc, const QGeoCircle& region, QSet<QString>* cancelledNotamNumbers)
 {
     QSet<QString> numbersSeen;
 
-    auto items = jsonDoc[u"items"_qs].toArray();
+    auto items = jsonDoc[u"items"_s].toArray();
 
     foreach(auto item, items)
     {
@@ -41,7 +43,7 @@ NOTAM::NOTAMList::NOTAMList(const QJsonDocument& jsonDoc, const QGeoCircle& regi
         {
             continue;
         }
-        if (notam.cancels() != u""_qs)
+        if (notam.cancels() != u""_s)
         {
             if (cancelledNotamNumbers != nullptr)
             {
@@ -57,7 +59,7 @@ NOTAM::NOTAMList::NOTAMList(const QJsonDocument& jsonDoc, const QGeoCircle& regi
         }
 
         // Ignore NOTAMs that do not pertain to VFR traffic. This excludes IFR-only NOTAMs and checklist NOTAMs.
-        if (!notam.traffic().contains(u"V"_qs))
+        if (!notam.traffic().contains(u"V"_s))
         {
             continue;
         }
@@ -101,7 +103,7 @@ QString NOTAM::NOTAMList::summary() const
         results += QObject::tr("Update requested.", "NOTAM::NotamList");
     }
 
-    return results.join(u" • "_qs);
+    return results.join(u" • "_s);
 }
 
 

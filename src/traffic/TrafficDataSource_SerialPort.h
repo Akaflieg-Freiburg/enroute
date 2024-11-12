@@ -26,6 +26,8 @@
 
 #include "traffic/TrafficDataSource_AbstractSocket.h"
 
+using namespace Qt::Literals::StringLiterals;
+
 
 namespace Traffic {
 
@@ -83,7 +85,7 @@ public:
      *
      * @returns Property dataFormat
      */
-    [[nodiscard]] QString dataFormat() const override { return u"FLARM/NMEA"_qs; }
+    [[nodiscard]] QString dataFormat() const override { return u"FLARM/NMEA"_s; }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -92,7 +94,7 @@ public:
      *
      *  @returns Property icon
      */
-    [[nodiscard]] QString icon() const override { return u"/icons/material/ic_settings_ethernet.svg"_qs; }
+    [[nodiscard]] QString icon() const override { return u"/icons/material/ic_settings_ethernet.svg"_s; }
 
     /*! \brief Getter function for the property with the same name
      *

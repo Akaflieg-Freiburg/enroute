@@ -25,6 +25,9 @@
 #include "fileFormats/GeoTIFF.h"
 #include "geomaps/VAC.h"
 
+using namespace Qt::Literals::StringLiterals;
+
+
 GeoMaps::VAC::VAC(const QString& fName)
     : fileName(fName)
 {
@@ -139,12 +142,12 @@ void GeoMaps::VAC::getNameFromFileName()
 {
     QFileInfo const fileInfo(fileName);
     auto baseName = fileInfo.fileName();
-    auto idx = baseName.lastIndexOf(u"."_qs);
+    auto idx = baseName.lastIndexOf(u"."_s);
     if (idx != -1)
     {
         baseName = baseName.left(idx);
     }
-    idx = baseName.lastIndexOf(u"-geo_"_qs);
+    idx = baseName.lastIndexOf(u"-geo_"_s);
     if (idx != -1)
     {
         baseName = baseName.left(idx);

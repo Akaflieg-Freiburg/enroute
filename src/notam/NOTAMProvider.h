@@ -28,6 +28,9 @@
 #include "GlobalObject.h"
 #include "notam/NOTAMList.h"
 
+using namespace Qt::Literals::StringLiterals;
+
+
 namespace NOTAM {
 
 /*! \brief Manage NOTAM data and download NOTAM data from the FAA if required.
@@ -265,7 +268,7 @@ private:
     Q_REQUIRED_RESULT QString computeStatus() const;
 
     // Filename for loading/saving NOTAM data
-    QString m_stdFileName { QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+u"/notam.dat"_qs };
+    QString m_stdFileName { QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+u"/notam.dat"_s };
 
     // NOTAM data is considered to cover the flight route if it covers a region
     // of at least marginRadiusFlightRoute around the route

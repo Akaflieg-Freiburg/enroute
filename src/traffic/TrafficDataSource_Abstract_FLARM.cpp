@@ -23,6 +23,9 @@
 #include "traffic/FlarmnetDB.h"
 #include "traffic/TrafficDataSource_Abstract.h"
 
+using namespace Qt::Literals::StringLiterals;
+
+
 //
 // Static Helper functions
 //
@@ -750,17 +753,17 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessagePFLAU(const QString
 
     // auto RX = arguments[0];
     const auto &TX = arguments[1];
-    if (TX == u"0"_qs)
+    if (TX == u"0"_s)
     {
         results += tr("No FLARM transmission");
     }
     const auto &GPS = arguments[2];
-    if (GPS == u"0"_qs)
+    if (GPS == u"0"_s)
     {
         results += tr("No GPS reception");
     }
     const auto &Power = arguments[3];
-    if (Power == u"0"_qs)
+    if (Power == u"0"_s)
     {
         results += tr("Under- or Overvoltage");
     }

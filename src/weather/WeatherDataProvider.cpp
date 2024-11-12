@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -43,7 +43,7 @@
 #include <chrono>
 
 using namespace std::chrono_literals;
-
+using namespace Qt::Literals::StringLiterals;
 
 Weather::WeatherDataProvider::WeatherDataProvider(QObject *parent) : QObject(parent)
 {
@@ -441,7 +441,7 @@ auto Weather::WeatherDataProvider::sunInfo() -> QString
         sunrise = localTime;
         sunrise.setTime(QTime::fromMSecsSinceStartOfDay(qRound(sunriseTimeInMin*60*1000)));
         sunrise = sunrise.toOffsetFromUtc(0);
-        sunrise.setTimeSpec(Qt::UTC);
+        sunrise.setTimeZone(QTimeZone(Qt::UTC));
     }
 
     auto sunsetTimeInMin = sun.calcSunset();
@@ -450,7 +450,7 @@ auto Weather::WeatherDataProvider::sunInfo() -> QString
         sunset = localTime;
         sunset.setTime(QTime::fromMSecsSinceStartOfDay(qRound(sunsetTimeInMin*60*1000)));
         sunset = sunset.toOffsetFromUtc(0);
-        sunset.setTimeSpec(Qt::UTC);
+        sunset.setTimeZone(QTimeZone(Qt::UTC));
     }
 
     localTime = localTime.addDays(1);
@@ -462,7 +462,7 @@ auto Weather::WeatherDataProvider::sunInfo() -> QString
         sunriseTomorrow = localTime;
         sunriseTomorrow.setTime(QTime::fromMSecsSinceStartOfDay(qRound(sunriseTomorrowTimeInMin*60*1000)));
         sunriseTomorrow = sunriseTomorrow.toOffsetFromUtc(0);
-        sunriseTomorrow.setTimeSpec(Qt::UTC);
+        sunriseTomorrow.setTimeZone(QTimeZone(Qt::UTC));
     }
 
     if (sunrise.isValid() && sunset.isValid() && sunriseTomorrow.isValid())
@@ -632,7 +632,7 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate)
 
     {
         QString const urlString
-            = u"https://enroute-data.akaflieg-freiburg.de/enrouteProxy/metar.php?format=xml&bbox=%1,%2,%3,%4"_qs
+            = u"https://enroute-data.akaflieg-freiburg.de/enrouteProxy/metar.php?format=xml&bbox=%1,%2,%3,%4"_s
                   .arg(bBox.bottomLeft().latitude())
                   .arg(bBox.bottomLeft().longitude())
                   .arg(bBox.topRight().latitude())
@@ -648,7 +648,7 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate)
 
     {
         QString const urlString
-            = u"https://enroute-data.akaflieg-freiburg.de/enrouteProxy/taf.php?format=xml&bbox=%1,%2,%3,%4"_qs
+            = u"https://enroute-data.akaflieg-freiburg.de/enrouteProxy/taf.php?format=xml&bbox=%1,%2,%3,%4"_s
                   .arg(bBox.bottomLeft().latitude())
                   .arg(bBox.bottomLeft().longitude())
                   .arg(bBox.topRight().latitude())

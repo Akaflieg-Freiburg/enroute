@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -26,6 +26,8 @@
 #include "navigation/Navigator.h"
 #include "weather/TAF.h"
 
+using namespace Qt::Literals::StringLiterals;
+
 
 Weather::TAF::TAF(QObject *parent)
     : Weather::Decoder(parent)
@@ -44,51 +46,51 @@ Weather::TAF::TAF(QXmlStreamReader &xml, QObject *parent)
         QString const name = xml.name().toString();
 
         // Read Station_ID
-        if (xml.isStartElement() && name == u"station_id"_qs)
+        if (xml.isStartElement() && name == u"station_id"_s)
         {
             m_ICAOCode = xml.readElementText();
             continue;
         }
 
         // Read location
-        if (xml.isStartElement() && name == u"latitude"_qs)
+        if (xml.isStartElement() && name == u"latitude"_s)
         {
             _location.setLatitude(xml.readElementText().toDouble());
             continue;
         }
-        if (xml.isStartElement() && name == u"longitude"_qs)
+        if (xml.isStartElement() && name == u"longitude"_s)
         {
             _location.setLongitude(xml.readElementText().toDouble());
             continue;
         }
-        if (xml.isStartElement() && name == u"elevation_m"_qs)
+        if (xml.isStartElement() && name == u"elevation_m"_s)
         {
             _location.setAltitude(xml.readElementText().toDouble());
             continue;
         }
 
         // Read raw text
-        if (xml.isStartElement() && name == u"raw_text"_qs)
+        if (xml.isStartElement() && name == u"raw_text"_s)
         {
             _raw_text = xml.readElementText();
             continue;
         }
 
         // Read issue time
-        if (xml.isStartElement() && name == u"issue_time"_qs)
+        if (xml.isStartElement() && name == u"issue_time"_s)
         {
             _issueTime = QDateTime::fromString(xml.readElementText(), Qt::ISODate);
             continue;
         }
 
         // Read expiration date
-        if (xml.isStartElement() && name == u"valid_time_to"_qs)
+        if (xml.isStartElement() && name == u"valid_time_to"_s)
         {
             _expirationTime = QDateTime::fromString(xml.readElementText(), Qt::ISODate);
             continue;
         }
 
-        if (xml.isEndElement() && name == u"TAF"_qs)
+        if (xml.isEndElement() && name == u"TAF"_s)
         {
             break;
         }

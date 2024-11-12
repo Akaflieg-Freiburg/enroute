@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -26,6 +26,8 @@
 #include "positioning/PositionProvider.h"
 #include "traffic/TrafficDataProvider.h"
 #include "units/Units.h"
+
+using namespace Qt::Literals::StringLiterals;
 
 
 Positioning::PositionProvider::PositionProvider(QObject *parent) : PositionInfoSource_Abstract(parent)
@@ -257,7 +259,7 @@ void Positioning::PositionProvider::updateStatusString()
         QString result = QStringLiteral("<ul style='margin-left:-25px;'>");
         result += QStringLiteral("<li>%1: %2</li>").arg(tr("Source"), sourceName());
         result += QStringLiteral("<li>%1</li>").arg(tr("Receiving position information"));
-        result += u"</ul>"_qs;
+        result += u"</ul>"_s;
         setStatusString(result);
         return;
     }
@@ -265,6 +267,6 @@ void Positioning::PositionProvider::updateStatusString()
     QString result = QStringLiteral("<p>%1</p><ul style='margin-left:-25px;'>").arg(tr("Not receiving position information"));
     result += QStringLiteral("<li>%1: %2</li>").arg( satelliteSource.sourceName(), satelliteSource.statusString());
     result += QStringLiteral("<li>%1: %2</li>").arg( tr("Traffic receiver"), tr("Not receiving position information"));
-    result += u"</ul>"_qs;
+    result += u"</ul>"_s;
     setStatusString(result);
 }

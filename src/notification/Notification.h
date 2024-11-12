@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2023 by Stefan Kebekus                                  *
+ *   Copyright (C) 2023-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,6 +24,8 @@
 #include <QQmlEngine>
 
 #include "units/Timespan.h"
+
+using namespace Qt::Literals::StringLiterals;
 
 namespace Notifications {
 
@@ -305,7 +307,7 @@ private:
     Notifications::Notification::Importance m_importance {Info};
     Units::Timespan m_reactionTime;
     QString m_spokenText;
-    QString m_title {u"Placeholder title"_qs};
+    QString m_title {u"Placeholder title"_s};
     QString m_text;
     Notifications::Notification::TextBodyAction m_textBodyAction {None};
 };

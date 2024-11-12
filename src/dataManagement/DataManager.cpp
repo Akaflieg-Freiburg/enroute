@@ -35,6 +35,7 @@
 #include "geomaps/OpenAir.h"
 
 using namespace std::chrono_literals;
+using namespace Qt::Literals::StringLiterals;
 
 
 DataManagement::DataManager::DataManager(QObject* parent) : GlobalObject(parent)
@@ -83,26 +84,26 @@ void DataManagement::DataManager::cleanDataDirectory()
     while (fileIterator.hasNext())
     {
         fileIterator.next();
-        if (fileIterator.filePath().endsWith(u".geojson.geojson"_qs)
-                || fileIterator.filePath().endsWith(u".mbtiles.mbtiles"_qs))
+        if (fileIterator.filePath().endsWith(u".geojson.geojson"_s)
+                || fileIterator.filePath().endsWith(u".mbtiles.mbtiles"_s))
         {
             misnamedFiles += fileIterator.filePath();
         }
-        if (!fileIterator.filePath().endsWith(u".terrain"_qs) &&
-                !fileIterator.filePath().endsWith(u".geojson"_qs) &&
-                !fileIterator.filePath().endsWith(u".mbtiles"_qs) &&
-                !fileIterator.filePath().endsWith(u".raster"_qs) &&
-                !fileIterator.filePath().endsWith(u".txt"_qs))
+        if (!fileIterator.filePath().endsWith(u".terrain"_s) &&
+                !fileIterator.filePath().endsWith(u".geojson"_s) &&
+                !fileIterator.filePath().endsWith(u".mbtiles"_s) &&
+                !fileIterator.filePath().endsWith(u".raster"_s) &&
+                !fileIterator.filePath().endsWith(u".txt"_s))
         {
             unexpectedFiles += fileIterator.filePath();
         }
 
         // Delete aviation map files that are no longer supported, though they existed in earlier versions of this app
-        if (fileIterator.filePath().endsWith(u"Ireland and Northern Ireland.terrain"_qs) ||
-                fileIterator.filePath().endsWith(u"Slowenia.geojson"_qs) ||
-                fileIterator.filePath().endsWith(u"United Kingdom.geojson"_qs) ||
-                fileIterator.filePath().endsWith(u"Canada.geojson"_qs) ||
-                fileIterator.filePath().endsWith(u"United States.geojson"_qs))
+        if (fileIterator.filePath().endsWith(u"Ireland and Northern Ireland.terrain"_s) ||
+                fileIterator.filePath().endsWith(u"Slowenia.geojson"_s) ||
+                fileIterator.filePath().endsWith(u"United Kingdom.geojson"_s) ||
+                fileIterator.filePath().endsWith(u"Canada.geojson"_s) ||
+                fileIterator.filePath().endsWith(u"United States.geojson"_s))
         {
             unexpectedFiles += fileIterator.filePath();
         }
@@ -159,10 +160,10 @@ QString DataManagement::DataManager::import(const QString& fileName, const QStri
     switch(mbtiles.format())
     {
     case FileFormats::MBTILES::Raster:
-        newFileName += u".raster"_qs;
+        newFileName += u".raster"_s;
         break;
     case FileFormats::MBTILES::Vector:
-        newFileName += u".mbtiles"_qs;
+        newFileName += u".mbtiles"_s;
         break;
     case FileFormats::MBTILES::Unknown:
         return tr("Unable to recognize map file format.");
@@ -199,13 +200,13 @@ QString DataManagement::DataManager::importOpenAir(const QString& fileName, cons
     if (!errors.isEmpty())
     {
         QString info;
-        info += u"<p>"_qs + tr("Errors") + u"</p>"_qs;
-        info += u"<ul style='margin-left:-25px;'>"_qs;
+        info += u"<p>"_s + tr("Errors") + u"</p>"_s;
+        info += u"<ul style='margin-left:-25px;'>"_s;
         foreach(auto error, errors)
         {
-            info += u"<li>"_qs + error + u"</li>"_qs;
+            info += u"<li>"_s + error + u"</li>"_s;
         }
-        info += u"</ul>"_qs;
+        info += u"</ul>"_s;
         return info;
     }
 
@@ -213,7 +214,7 @@ QString DataManagement::DataManager::importOpenAir(const QString& fileName, cons
     {
         return tr("Unable to create directory '%1'.").arg(path);
     }
-    newFileName = newFileName+u".geojson"_qs;
+    newFileName = newFileName+u".geojson"_s;
     QFile::remove(newFileName);
     QFile file(newFileName);
     file.open(QIODeviceBase::WriteOnly);
@@ -279,10 +280,10 @@ DataManagement::Downloadable_SingleFile* DataManagement::DataManager::createOrRe
     // Construct a new downloadable object and add to appropriate groups
     auto* downloadable = new DataManagement::Downloadable_SingleFile(url, localFileName, bBox, this);
     downloadable->setObjectName(localFileName.section(QStringLiteral("/"), -1, -1).section(QStringLiteral("."), 0, -2));
-    if (localFileName.endsWith(u"geojson"_qs) ||
-            localFileName.endsWith(u"mbtiles"_qs) ||
-            localFileName.endsWith(u"raster"_qs) ||
-            localFileName.endsWith(u"terrain"_qs))
+    if (localFileName.endsWith(u"geojson"_s) ||
+            localFileName.endsWith(u"mbtiles"_s) ||
+            localFileName.endsWith(u"raster"_s) ||
+            localFileName.endsWith(u"terrain"_s))
     {
         if (url.isValid())
         {
@@ -318,25 +319,25 @@ DataManagement::Downloadable_SingleFile* DataManagement::DataManager::createOrRe
     }
 
     m_items.add(downloadable);
-    if (localFileName.endsWith(u"terrain"_qs))
+    if (localFileName.endsWith(u"terrain"_s))
     {
         m_terrainMaps.add(downloadable);
     }
-    if (localFileName.endsWith(u"geojson"_qs))
+    if (localFileName.endsWith(u"geojson"_s))
     {
         m_aviationMaps.add(downloadable);
     }
-    if (localFileName.endsWith(u"raster"_qs))
+    if (localFileName.endsWith(u"raster"_s))
     {
         m_baseMapsRaster.add(downloadable);
         m_baseMaps.add(downloadable);
     }
-    if (localFileName.endsWith(u"mbtiles"_qs))
+    if (localFileName.endsWith(u"mbtiles"_s))
     {
         m_baseMapsVector.add(downloadable);
         m_baseMaps.add(downloadable);
     }
-    if (localFileName.endsWith(u"txt"_qs))
+    if (localFileName.endsWith(u"txt"_s))
     {
         m_databases.add(downloadable);
     }
@@ -433,9 +434,9 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
             qint64 const fileSize = qRound64(obj.value(QStringLiteral("size")).toDouble());
 
             QGeoRectangle bbox;
-            if (obj.contains(u"bbox"_qs))
+            if (obj.contains(u"bbox"_s))
             {
-                auto bboxData = obj.value(u"bbox"_qs).toArray();
+                auto bboxData = obj.value(u"bbox"_s).toArray();
                 auto left = bboxData.at(0).toDouble();
                 auto bottom = bboxData.at(1).toDouble();
 

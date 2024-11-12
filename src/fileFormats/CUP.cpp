@@ -24,6 +24,8 @@
 #include "fileFormats/CSV.h"
 #include "fileFormats/CUP.h"
 
+using namespace Qt::Literals::StringLiterals;
+
 
 //
 // Private helper functions
@@ -138,7 +140,7 @@ GeoMaps::Waypoint FileFormats::CUP::readWaypoint(const QStringList& fields)
     result.setName(name);
     if (!notes.isEmpty())
     {
-        result.setNotes(notes.join(u" • "_qs));
+        result.setNotes(notes.join(u" • "_s));
     }
     return result;
 }

@@ -21,13 +21,15 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QImage>
-#include <utility>
 
 #include "fileFormats/GeoTIFF.h"
 #include "geomaps/VAC.h"
 
-GeoMaps::VAC::VAC(QString fName)
-    : fileName(std::move(fName))
+using namespace Qt::Literals::StringLiterals;
+
+
+GeoMaps::VAC::VAC(const QString& fName)
+    : fileName(fName)
 {
     // Check if file is a GeoTIFF file. If so, extract information from there.
     FileFormats::GeoTIFF const geoTIFF(fileName);
@@ -140,12 +142,12 @@ void GeoMaps::VAC::getNameFromFileName()
 {
     QFileInfo const fileInfo(fileName);
     auto baseName = fileInfo.fileName();
-    auto idx = baseName.lastIndexOf(u"."_qs);
+    auto idx = baseName.lastIndexOf(u"."_s);
     if (idx != -1)
     {
         baseName = baseName.left(idx);
     }
-    idx = baseName.lastIndexOf(u"-geo_"_qs);
+    idx = baseName.lastIndexOf(u"-geo_"_s);
     if (idx != -1)
     {
         baseName = baseName.left(idx);

@@ -26,6 +26,9 @@
 #include "fileFormats/DataFileAbstract.h"
 #include "fileFormats/MBTILES.h"
 
+using namespace Qt::Literals::StringLiterals;
+
+
 FileFormats::MBTILES::MBTILES(const QString& fileName)
     : m_fileName(fileName)
 {
@@ -55,28 +58,28 @@ FileFormats::MBTILES::MBTILES(const QString& fileName)
 
     // If the metadata does not contain a minzoom entry, then generate one by looking at the
     // lowest zoom_level that exists in the "tiles" table.
-    if (!m_metadata.contains(u"minzoom"_qs))
+    if (!m_metadata.contains(u"minzoom"_s))
     {
         if (query.exec(QStringLiteral("select min(zoom_level) from tiles;")))
         {
             while(query.next())
             {
                 QString const minzoom = query.value(0).toString();
-                m_metadata.insert(u"minzoom"_qs, minzoom);
+                m_metadata.insert(u"minzoom"_s, minzoom);
             }
         }
     }
 
     // If the metadata does not contain a maxzoom entry, then generate one by looking at the
     // highest zoom_level that exists in the "tiles" table.
-    if (!m_metadata.contains(u"maxzoom"_qs))
+    if (!m_metadata.contains(u"maxzoom"_s))
     {
         if (query.exec(QStringLiteral("select max(zoom_level) from tiles;")))
         {
             while(query.next())
             {
                 QString const maxzoom = query.value(0).toString();
-                m_metadata.insert(u"maxzoom"_qs, maxzoom);
+                m_metadata.insert(u"maxzoom"_s, maxzoom);
             }
         }
     }
@@ -111,11 +114,11 @@ auto FileFormats::MBTILES::format() -> FileFormats::MBTILES::Format
         if (query.first())
         {
             auto format = query.value(1).toString();
-            if (format == u"pbf"_qs)
+            if (format == u"pbf"_s)
             {
                 return Vector;
             }
-            if ((format == u"jpg"_qs) || (format == u"png"_qs) || (format == u"webp"_qs))
+            if ((format == u"jpg"_s) || (format == u"png"_s) || (format == u"webp"_s))
             {
                 return Raster;
             }

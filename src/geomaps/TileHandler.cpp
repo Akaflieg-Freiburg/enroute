@@ -25,6 +25,8 @@
 
 #include "TileHandler.h"
 
+using namespace Qt::Literals::StringLiterals;
+
 
 GeoMaps::TileHandler::TileHandler(const QVector<QSharedPointer<FileFormats::MBTILES>>& mbtileFiles, const QString& baseURL) :
     m_mbtiles(mbtileFiles)
@@ -120,7 +122,7 @@ GeoMaps::TileHandler::TileHandler(const QVector<QSharedPointer<FileFormats::MBTI
 bool GeoMaps::TileHandler::process(QHttpServerResponder* responder, const QStringList &pathElements)
 {
     // Serve tileJSON file, if requested
-    if (pathElements.isEmpty() || pathElements[0].endsWith(u"json"_qs, Qt::CaseInsensitive))
+    if (pathElements.isEmpty() || pathElements[0].endsWith(u"json"_s, Qt::CaseInsensitive))
     {
         responder->write(m_tileJSON);
         return true;
@@ -151,9 +153,15 @@ bool GeoMaps::TileHandler::process(QHttpServerResponder* responder, const QStrin
             continue;
         }
 
-        if (m_format == u"pbf"_qs)
+        if (m_format == u"pbf"_s)
         {
-            responder->write(tileData, {{"Content-Type", "application/octet-stream"}, {"Content-Encoding", "gzip"}});
+#warning
+            QHttpHeaders headers;
+            headers.append("Content-Type", "application/octet-stream");
+            headers.append("Content-Encoding", "gzip");
+
+            responder->write(tileData, headers);
+            // responder->write(tileData, {{"Content-Type", "application/octet-stream"}, {"Content-Encoding", "gzip"}});
         }
         else
         {

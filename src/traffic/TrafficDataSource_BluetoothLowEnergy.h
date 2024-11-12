@@ -20,13 +20,15 @@
 
 #pragma once
 
-#include <QBluetoothLocalDevice>
 #include <QBluetoothDeviceInfo>
+#include <QBluetoothLocalDevice>
 #include <QBluetoothServiceInfo>
 #include <QBluetoothSocket>
 #include <QLowEnergyController>
 
 #include "traffic/TrafficDataSource_AbstractSocket.h"
+
+using namespace Qt::Literals::StringLiterals;
 
 
 namespace Traffic {
@@ -80,7 +82,7 @@ public:
      *
      *  @returns Property icon
      */
-    [[nodiscard]] QString icon() const override { return u"/icons/material/ic_bluetooth.svg"_qs; }
+    [[nodiscard]] QString icon() const override { return u"/icons/material/ic_bluetooth.svg"_s; }
 
     /*! \brief Getter function for the property with the same name
      *

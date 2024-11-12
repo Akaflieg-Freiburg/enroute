@@ -147,7 +147,7 @@ private:
     bool handleRequest(const QHttpServerRequest& request, QHttpServerResponder& responder) override;
 
     // Implemented pure virtual method from QAbstractHttpServer
-    void missingHandler(const QHttpServerRequest& request, QHttpServerResponder&& responder) override;
+    void missingHandler(const QHttpServerRequest& request, QHttpServerResponder& responder) override;
 
     /*! \brief Restarts the server
      *

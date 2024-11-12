@@ -30,6 +30,8 @@
 #include "traffic/TrafficDataSource_Tcp.h"
 #include "traffic/TrafficDataSource_Udp.h"
 
+using namespace Qt::Literals::StringLiterals;
+
 
 Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning::PositionInfoSource_Abstract(parent)
 {
@@ -616,7 +618,7 @@ void Traffic::TrafficDataProvider::updateStatusString()
         {
             result += QStringLiteral("<li>%1</li>").arg(tr("Receiving barometric altitude info."));
         }
-        result += u"</ul>"_qs;
+        result += u"</ul>"_s;
         setStatusString(result);
         return;
     }

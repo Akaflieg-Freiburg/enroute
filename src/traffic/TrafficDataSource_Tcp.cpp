@@ -23,6 +23,8 @@
 #include "traffic/PasswordDB.h"
 #include "traffic/TrafficDataSource_Tcp.h"
 
+using namespace Qt::Literals::StringLiterals;
+
 
 Traffic::TrafficDataSource_Tcp::TrafficDataSource_Tcp(bool isCanonical, QString hostName, quint16 port, QObject *parent) :
     Traffic::TrafficDataSource_AbstractSocket(isCanonical, parent),
@@ -95,7 +97,7 @@ void Traffic::TrafficDataSource_Tcp::onReadyRead()
     while( m_textStream.readLineInto(&sentence) ) {
 
         // Check if the TCP connection asks for a password
-        if (sentence.startsWith(u"PASS?"_qs)) {
+        if (sentence.startsWith(u"PASS?"_s)) {
             passwordRequest_Status = waitingForPassword;
             passwordRequest_SSID = GlobalObject::platformAdaptor()->currentSSID();
             auto* passwordDB = GlobalObject::passwordDB();

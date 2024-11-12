@@ -38,7 +38,7 @@ jobs:
         cache-key-prefix: 'install-qt-action-android'
         modules: 'qt5compat qtconnectivity qthttpserver qtimageformats qtlocation qtmultimedia qtpositioning qtsensors qtserialport qtshadertools qtspeech qtwebsockets qtwebview'
         target: 'android'
-        version: '6.8.*'
+        version: '6.8.0'
         arch: 'android_arm64_v8a'
     - name: Set up OpenJDK 17
       uses: actions/setup-java@v4

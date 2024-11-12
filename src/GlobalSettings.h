@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -49,7 +49,7 @@ class GlobalSettings : public QObject
 
 public:
     /*! \brief Possible map bearing policies */
-    enum MapBearingPolicy
+    enum MapBearingPolicy : quint8
     {
         NUp, /*!< North is up. */
         TTUp, /*!< True Track is up.  */
@@ -70,6 +70,9 @@ public:
 
     // No default constructor, important for QML singleton
     explicit GlobalSettings() = delete;
+
+    // Standard Destructor
+    ~GlobalSettings() override = default;
 
     // factory function for QML singleton
     static GlobalSettings* create(QQmlEngine * /*unused*/, QJSEngine * /*unused*/)

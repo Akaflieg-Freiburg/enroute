@@ -43,7 +43,7 @@ namespace FileFormats
 
   public:
     /*! \brief Format of data tiles */
-    enum Format
+    enum Format : quint8
     {
       /*! \brief Unknown format */
       Unknown,

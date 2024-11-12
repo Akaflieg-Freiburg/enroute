@@ -39,7 +39,7 @@ class Downloadable_MultiFile : public Downloadable_Abstract {
 
 public:
     /*! \brief Update Policy */
-    enum UpdatePolicy {
+    enum UpdatePolicy : quint8{
         SingleUpdate, /*!< \brief Update children that are updatable */
         MultiUpdate   /*!< \brief Update children that are updatable. If one local file exist, download all other files on update */
     };

@@ -45,7 +45,7 @@ class FileExchange_Abstract : public GlobalObject
 
 public:
     /*! \brief Functions and types of a file that this app handles */
-    enum FileFunction
+    enum FileFunction : quint8
       {
         UnknownFunction, /*< Unknown file */
         FlightRouteOrWaypointLibrary, /*< File contains a flight route or a waypoint library. */

@@ -46,7 +46,7 @@ class Downloadable_Abstract : public QObject {
 
 public:
     /*! \brief Type of content managed by this instance */
-    enum ContentType {
+    enum ContentType : quint8 {
         VAC,            /*!< \brief Visual Approach Chart */
         AviationMap,    /*!< \brief Aviation Map */
         BaseMapVector,  /*!< \brief Base Map, in vector format */

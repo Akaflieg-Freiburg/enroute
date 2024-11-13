@@ -72,30 +72,6 @@ auto Navigation::FlightRoute::toGpx() const -> QByteArray
     //
     gpx += u"  </rte>\n"_s;
 
-    // the next few lines export the route as gpx track.
-    // We leave this disabled right now. If we discover later
-    // that other apps depend on the route beeing exported
-    // as track rather than as route we can easily enable
-    // it again.
-    //
-#if 0
-    // start gpx trk
-    // trk does contains segments <trkseg>
-    //
-    gpx += "  <trk>\n"
-           "    <name>Enroute " + now + "</name>\n"
-                                        "    <trkseg>\n";
-
-    // 6 spaces additional indent
-    //
-    gpx += gpxElements(QString("      "), "trkpt");
-
-    // close gpx
-    //
-    gpx += "    </trkseg>\n"
-           "  </trk>\n";
-#endif
-
     gpx += u"</gpx>\n"_s;
 
     return gpx.toUtf8();

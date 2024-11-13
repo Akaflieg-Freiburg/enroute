@@ -27,7 +27,7 @@
 // Enums and static helper functions
 //
 
-enum DataType {
+enum DataType : quint8 {
     DT_Byte = 1,
     DT_Ascii,
     DT_Short,

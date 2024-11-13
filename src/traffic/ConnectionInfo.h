@@ -47,7 +47,7 @@ class ConnectionInfo {
 
 public:
     /*! \brief Connection Type */
-    enum Type {
+    enum Type : quint8 {
         Invalid,            /*!< Invalid connection */
         BluetoothClassic,   /*!< Bluetooth Classic */
         BluetoothLowEnergy, /*!< Bluetooth LE */

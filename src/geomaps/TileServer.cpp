@@ -32,7 +32,6 @@ using namespace Qt::Literals::StringLiterals;
 GeoMaps::TileServer::TileServer(QObject* parent)
     : QAbstractHttpServer(parent)
 {
-#warning
     auto* localServer = new QTcpServer();
     localServer->listen();
     bind(localServer);

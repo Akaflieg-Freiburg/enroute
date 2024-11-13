@@ -38,7 +38,7 @@ namespace Units {
 
     public:
         /*! \brief Units of measurement for distances */
-        enum DistanceUnit {
+        enum DistanceUnit : quint8 {
             Feet,
             Meter,
             Kilometer,

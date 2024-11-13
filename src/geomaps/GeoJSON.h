@@ -36,7 +36,7 @@ namespace GeoMaps
 
     public:
         /*! File type */
-        enum fileContent {
+        enum fileContent : quint8 {
             flightRoute, /*< File is valid and contains a flight route */
             invalid, /*< File is invalid */
             valid, /*< File is valid, content unspecified */

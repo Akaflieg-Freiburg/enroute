@@ -225,7 +225,7 @@ private:
      *   idle, and the members passwordRequest_SSID and passwordRequest_password
      *   are cleared.
      */
-    enum {
+    enum : quint8 {
         /*  No password-related activity is pending */
         idle,
 

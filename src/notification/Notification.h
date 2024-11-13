@@ -47,7 +47,7 @@ class Notification : public QObject
 
 public:
     /*! \brief Importance classification */
-    enum Importance {
+    enum Importance : quint8 {
         Info = 1<<1,               /*!< \brief Generic information, "Map updates available" */
         Info_Navigation = 1<<2,    /*!< \brief Information pertaining to navigation, "Top of descent reached" */
         Warning = 1<<3,            /*!< \brief Generic warning, "Traffic data receiver inop" */
@@ -61,7 +61,7 @@ public:
      *  Describes the action that the GUI should take then the text body of
      *  this notification is clicked.
      */
-    enum TextBodyAction {
+    enum TextBodyAction : quint8 {
         None,                   /*!< \brief No action */
         OpenMapsAndDataPage,    /*!< \brief Open the page 'maps and data' */
         OpenTrafficReceiverPage /*!< \brief Open the page 'traffic receiver' */

@@ -33,7 +33,7 @@ QStringList FileFormats::CSV::parseCSV(const QString& string)
 {
     // Thanks to https://stackoverflow.com/questions/27318631/parsing-through-a-csv-file-in-qt
 
-    enum State
+    enum State : quint8
     {
         Normal,
         Quote

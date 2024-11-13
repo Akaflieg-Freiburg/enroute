@@ -52,7 +52,7 @@ public:
      *
      *  This enum defines a few aircraft type. The list is modeled after the FLARM/NMEA specification.
      */
-    enum AircraftType
+    enum AircraftType : quint8
     {
         unknown, /*!< Unknown aircraft type */
         Aircraft, /*!< Fixed wing aircraft */

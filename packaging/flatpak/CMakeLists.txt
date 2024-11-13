@@ -16,8 +16,8 @@ configure_file(${APP_ID}.json.in ${APP_ID}.json @ONLY)
 
 add_custom_target(flatpak-binary
     COMMAND flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-    COMMAND flatpak install --system --assumeyes runtime/org.kde.Sdk/x86_64/6.7
-    COMMAND flatpak install --system --assumeyes app/io.qt.qtwebengine.BaseApp/x86_64/6.7
+    COMMAND flatpak install --system --assumeyes runtime/org.kde.Sdk/x86_64/6.8
+    COMMAND flatpak install --system --assumeyes app/io.qt.qtwebengine.BaseApp/x86_64/6.8
     COMMAND flatpak-builder --force-clean flatpakBuildDirectory ${APP_ID}.json
     COMMAND echo ""
     COMMAND echo ""

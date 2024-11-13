@@ -38,7 +38,7 @@ class Aircraft {
 
 public:
     /*! \brief Units of measurement for volumes */
-    enum FuelConsumptionUnit {
+    enum FuelConsumptionUnit : quint8 {
         /*! \brief Liter per hour */
         LiterPerHour = 0,
 
@@ -48,7 +48,7 @@ public:
     Q_ENUM(FuelConsumptionUnit)
 
     /*! \brief Units of measurement for horizontal distances */
-    enum HorizontalDistanceUnit {
+    enum HorizontalDistanceUnit : quint8 {
         /*! \brief Nautical Mile */
         NauticalMile = 0,
 
@@ -61,7 +61,7 @@ public:
     Q_ENUM(HorizontalDistanceUnit)
 
     /*! \brief Units of measurement for vertical distances */
-    enum VerticalDistanceUnit {
+    enum VerticalDistanceUnit : quint8 {
         /*! \brief Feet */
         Feet = 0,
 

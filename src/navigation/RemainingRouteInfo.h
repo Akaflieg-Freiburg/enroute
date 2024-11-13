@@ -52,7 +52,7 @@ class RemainingRouteInfo {
 
 public:
     /*! \brief Status */
-    enum Status {
+    enum Status : quint8 {
         /*! \brief No valid route has been set */
         NoRoute,
 

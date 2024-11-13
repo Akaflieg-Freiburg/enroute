@@ -61,7 +61,7 @@ public:
     }
 
     /*! \brief Type of library */
-    enum Library {
+    enum Library : quint8 {
         /*! \brief Aircraft library */
         Aircraft,
 

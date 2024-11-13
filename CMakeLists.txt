@@ -62,6 +62,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 qt_policy(SET QTP0002 NEW)
+qt_policy(SET QTP0004 NEW)
 
 
 #

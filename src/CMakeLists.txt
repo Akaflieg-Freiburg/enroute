@@ -305,6 +305,10 @@ if(ANDROID)
         QT_ANDROID_TARGET_SDK_VERSION 34
         QT_ANDROID_MIN_SDK_VERSION 28
     )
+    if(NOT ANDROID_PLATFORM STREQUAL "android-28")
+        message(FATAL_ERROR "ANDROID_PLATFORM must be set to android-28")
+    endif()
+
 
     # Include SSL Libraries
     set(ANDROID_TARGET_ARCH ${CMAKE_ANDROID_ARCH_ABI})

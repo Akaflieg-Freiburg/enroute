@@ -97,12 +97,6 @@ void Platform::FileExchange::processFileOpenRequest(const QString& path)
 
 auto Platform::FileExchange::shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
 {
-    // Avoids warnings on Linux/Desktop
-    Q_UNUSED(content)
-    Q_UNUSED(mimeType)
-    Q_UNUSED(fileNameTemplate)
-    (void)this;
-
     QMimeDatabase const db;
     QMimeType const mime = db.mimeTypeForName(mimeType);
 
@@ -118,10 +112,6 @@ auto Platform::FileExchange::shareContent(const QByteArray& content, const QStri
 
 auto Platform::FileExchange::viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
 {
-    Q_UNUSED(content)
-    Q_UNUSED(mimeType)
-    Q_UNUSED(fileNameTemplate)
-
     QString const tmpPath = contentToTempFile(content, fileNameTemplate);
     bool const success = outgoingIntent(QStringLiteral("viewFile"), tmpPath, mimeType);
     if (success)
@@ -164,7 +154,7 @@ auto Platform::FileExchange::outgoingIntent(const QString& methodName, const QSt
 {
     QJniObject const jsPath = QJniObject::fromString(filePath);
     QJniObject const jsMimeType = QJniObject::fromString(mimeType);
-    auto ok = QJniObject::callStaticMethod<jboolean>("de/akaflieg_freiburg/enroute/IntentLauncher",
+    auto ok = QJniObject::callStaticMethod<jboolean>("de/akaflieg_freiburg/enroute/MobileAdaptor",
                                                      methodName.toStdString().c_str(),
                                                      "(Ljava/lang/String;Ljava/lang/String;)Z",
                                                      jsPath.object<jstring>(),

@@ -284,7 +284,7 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 	public static void vibrateBrief() {
 
 		// Get system settings for haptic feedback
-		int haptic = Settings.System.getInt(QtNative.activity().getContentResolver(),
+                int haptic = Settings.System.getInt(m_instance.getContentResolver(),
 				Settings.System.HAPTIC_FEEDBACK_ENABLED, 1);
 
 		// If systems settings want vibrate, then do vibrate
@@ -301,7 +301,7 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 	public static void vibrateLong() {
 
 		// Get system settings for haptic feedback
-		int haptic = Settings.System.getInt(QtNative.activity().getContentResolver(),
+                int haptic = Settings.System.getInt(m_instance.getContentResolver(),
 				Settings.System.HAPTIC_FEEDBACK_ENABLED, 1);
 
 		// If systems settings want vibrate, then do vibrate

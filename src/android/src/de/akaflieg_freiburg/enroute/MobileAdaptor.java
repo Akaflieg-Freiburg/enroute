@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
- *   stefan.kebekus@gmail.com                                              *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus, stefan.kebekus@gmail.com   *
+ *   Copyright (C) 2020 by Johannes Zellner, johannes@zellner.org          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -60,8 +60,11 @@ import java.util.List;
 public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 
 	public static native void onLanguageChanged();
+
 	public static native void onNotificationClicked(int notifyID, int actionID);
+
 	public static native void onWifiConnected();
+
 	public static native void onWindowSizeChanged();
 
 	private static MobileAdaptor m_instance;
@@ -78,7 +81,6 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 	// reference Authority as defined in AndroidManifest.xml
 	private static String AUTHORITY = "de.akaflieg_freiburg.enroute";
 	private static String TAG = "IntentLauncher";
-
 
 	public MobileAdaptor() {
 		m_instance = this;
@@ -101,14 +103,14 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 		m_notifyClickReceiver = new NotifyClickReceiver();
 		IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction("de.akaflieg_freiburg.enroute.onNotificationClick");
-                m_instance.registerReceiver(m_notifyClickReceiver, intentFilter, RECEIVER_EXPORTED);
+		m_instance.registerReceiver(m_notifyClickReceiver, intentFilter, RECEIVER_EXPORTED);
 
 		// Be informed when locale changes
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            m_localeChangedReceiver = new LocaleChangedReceiver();
-        	IntentFilter filter = new IntentFilter(Intent.ACTION_LOCALE_CHANGED);
-        	registerReceiver(m_localeChangedReceiver, filter);
-        }
+			m_localeChangedReceiver = new LocaleChangedReceiver();
+			IntentFilter filter = new IntentFilter(Intent.ACTION_LOCALE_CHANGED);
+			registerReceiver(m_localeChangedReceiver, filter);
+		}
 
 		// Be informed when the window size changes, and call the C++ method
 		// onWindowSizeChanged() whenever it changes. The window size changes
@@ -126,11 +128,11 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 
 		// Set fullscreen
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) 
-		    {
-			getWindow().getAttributes().layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
-		    }
-		
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+			getWindow()
+					.getAttributes().layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+		}
+
 	}
 
 	@Override
@@ -174,17 +176,17 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 		return android.os.Build.MANUFACTURER + " " + android.os.Build.PRODUCT + " (" + android.os.Build.MODEL + ")";
 	}
 
-    // Returns the height of the screen, taking the Android split view
-    // into account
-    public static double windowHeight() {
-	return m_instance.getWindow().getDecorView().getRootView().getHeight();
-    }
+	// Returns the height of the screen, taking the Android split view
+	// into account
+	public static double windowHeight() {
+		return m_instance.getWindow().getDecorView().getRootView().getHeight();
+	}
 
-    // Returns the width of the screen, taking the Android split view
-    // into account
-    public static double windowWidth() {
-	return m_instance.getWindow().getDecorView().getRootView().getWidth();
-    }
+	// Returns the width of the screen, taking the Android split view
+	// into account
+	public static double windowWidth() {
+		return m_instance.getWindow().getDecorView().getRootView().getWidth();
+	}
 
 	// Returns the bottom inset required to avoid system bars and display cutouts
 	public static double safeInsetBottom() {
@@ -298,11 +300,13 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 
 	}
 
-	/* If the system setting for haptic feedback is "on", then vibrate once briefly */
+	/*
+	 * If the system setting for haptic feedback is "on", then vibrate once briefly
+	 */
 	public static void vibrateBrief() {
 
 		// Get system settings for haptic feedback
-                int haptic = Settings.System.getInt(m_instance.getContentResolver(),
+		int haptic = Settings.System.getInt(m_instance.getContentResolver(),
 				Settings.System.HAPTIC_FEEDBACK_ENABLED, 1);
 
 		// If systems settings want vibrate, then do vibrate
@@ -315,11 +319,14 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 
 	}
 
-	/* If the system setting for haptic feedback is "on", then vibrate once for a longer time */
+	/*
+	 * If the system setting for haptic feedback is "on", then vibrate once for a
+	 * longer time
+	 */
 	public static void vibrateLong() {
 
 		// Get system settings for haptic feedback
-                int haptic = Settings.System.getInt(m_instance.getContentResolver(),
+		int haptic = Settings.System.getInt(m_instance.getContentResolver(),
 				Settings.System.HAPTIC_FEEDBACK_ENABLED, 1);
 
 		// If systems settings want vibrate, then do vibrate
@@ -332,7 +339,7 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 
 	}
 
-/**
+	/**
 	 * SEND (== "share") a file to another application.
 	 *
 	 * The receiving app is _not_ supposed to handle the mime type but
@@ -365,170 +372,169 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 	//
 	// Private Methods
 	//
-		/**
-		 * common implementation for both the sendFile() and viewFile() methods.
-		 *
-		 * Creates an appropriate intent and does the necessary settings.
-		 * Creates a chooser with the intent and calls startActivity() to fire the
-		 * intent.
-		 *
-		 * This method does _not_ block until the content has been share with another
-		 * app but rather returns immediately (if action == 0). Therefore the receiving
-		 * apps can handle the file URL while enroute stays active an is not blocked.
-		 * Effectively this means that both the sending and the receiving app will run
-		 * concurrently.
-		 *
-		 * @param filePath the path of the file to send.
-		 * @param mimeType the mime type of the file to send.
-		 * @param action   either Intent.ACTION_SEND or Intent.ACTION_VIEW
-		 *
-		 * @return true if the intent was launched otherwise false
-		 */
-		private static boolean sendOrViewFile(String filePath, String mimeType, String action) {
-	
-			if (m_instance == null) {
-				return false;
-			}
-	
-			// Intent intent = new Intent();
-			// using v4 support library create the Intent from ShareCompat
-			Intent intent = ShareCompat.IntentBuilder.from(m_instance).getIntent();
-			intent.setAction(action);
-	
-			Uri uri = fileToUri(filePath);
-	
-			if (uri == null) {
-				return false;
-			}
-	
-			if (mimeType == null || mimeType.isEmpty()) {
-				mimeType = m_instance.getContentResolver().getType(uri);
-			}
-	
-			if (action == Intent.ACTION_SEND) {
-				intent.putExtra(Intent.EXTRA_STREAM, uri);
-				intent.setType(mimeType);
-			} else {
-				intent.setDataAndType(uri, mimeType);
-			}
-	
-			intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-	
-			return customStartActivity(intent);
-		}
+	/**
+	 * common implementation for both the sendFile() and viewFile() methods.
+	 *
+	 * Creates an appropriate intent and does the necessary settings.
+	 * Creates a chooser with the intent and calls startActivity() to fire the
+	 * intent.
+	 *
+	 * This method does _not_ block until the content has been share with another
+	 * app but rather returns immediately (if action == 0). Therefore the receiving
+	 * apps can handle the file URL while enroute stays active an is not blocked.
+	 * Effectively this means that both the sending and the receiving app will run
+	 * concurrently.
+	 *
+	 * @param filePath the path of the file to send.
+	 * @param mimeType the mime type of the file to send.
+	 * @param action   either Intent.ACTION_SEND or Intent.ACTION_VIEW
+	 *
+	 * @return true if the intent was launched otherwise false
+	 */
+	private static boolean sendOrViewFile(String filePath, String mimeType, String action) {
 
-			/**
-			 * create uri from file path.
-			 *
-			 * android content provoiders operate with Uri's which represent the
-			 * content scheme (e.g. file:// or content://). This methods converts
-			 * the absolute file path in the sharing directory into a valid Uri.
-			 *
-			 * @param filePath the absolut path of the file in the cache directory.
-			 *
-			 * @return Uri the corresponding uri
-			 */
-
-			private static Uri fileToUri(String filePath) {
-		
-				File fileToShare = new File(filePath);
-		
-				// Using FileProvider you must get the URI from FileProvider using your
-				// AUTHORITY
-				// Uri uri = Uri.fromFile(imageFileToShare);
-				Uri uri;
-				try {
-					return FileProvider.getUriForFile(m_instance, AUTHORITY, fileToShare);
-				} catch (IllegalArgumentException e) {
-					Log.d(TAG, "error" + e.getMessage());
-					return null;
-				}
-			}
-	
-	 /**
-		 * create a custom chooser and start activity.
-		 *
-		 * The custom chooser takes care of not sharing with or sending to the own app.
-		 * This is done by first finding matching apps which can handle the intent
-		 * and then blacklisting the own app by Intent.EXTRA_EXCLUDE_COMPONENTS.
-		 *
-		 * The chooser intent is then started with startActivity() which will return
-		 * immediately and not wait for the chooser result. This way, both enroute and
-		 * the receiving app can run concurrently and enroute is _not_ blocked until
-		 * the receiving app terminates.
-		 *
-		 * @param theIntent intent to be handled
-		 *
-		 * @return true if the intent was launched otherwise false
-		 */
-		private static boolean customStartActivity(Intent theIntent) {
-	
-			final Context context = m_instance;
-			final PackageManager packageManager = context.getPackageManager();
-	
-			// MATCH_DEFAULT_ONLY: Resolution and querying flag. if set, only filters
-			// that support the CATEGORY_DEFAULT will be considered for matching. Check
-			// if there is a default app for this type of content.
-			ResolveInfo defaultAppInfo = packageManager.resolveActivity(theIntent, PackageManager.MATCH_DEFAULT_ONLY);
-			if (defaultAppInfo == null) {
-				Log.d(TAG, "PackageManager cannot resolve Activity");
-				return false;
-			}
-	
-			// Retrieve all apps for our intent. Check if there are any apps returned
-			List<ResolveInfo> appInfoList = packageManager.queryIntentActivities(theIntent,
-					PackageManager.MATCH_DEFAULT_ONLY);
-			if (appInfoList.isEmpty()) {
-				Log.d(TAG, "appInfoList.isEmpty");
-				return false;
-			}
-			// Log.d(TAG, "appInfoList: " + appInfoList.size());
-	
-			// Sort in alphabetical order
-			Collections.sort(appInfoList, new Comparator<ResolveInfo>() {
-				@Override
-				public int compare(ResolveInfo first, ResolveInfo second) {
-					String firstName = first.loadLabel(packageManager).toString();
-					String secondName = second.loadLabel(packageManager).toString();
-					return firstName.compareToIgnoreCase(secondName);
-				}
-			});
-	
-			// find own package and blacklist it
-			//
-			List<ComponentName> blacklistedComponents = new ArrayList<ComponentName>();
-			for (ResolveInfo info : appInfoList) {
-	
-				String pkgName = info.activityInfo.packageName;
-				String clsName = info.activityInfo.name;
-				// we don't want to share with our own app so blacklist it
-				//
-				if (pkgName.equals(context.getPackageName())) {
-					blacklistedComponents.add(new ComponentName(pkgName, clsName));
-				}
-			}
-	
-			Intent chooserIntent = Intent.createChooser(theIntent, null /* title */);
-			chooserIntent.putExtra(Intent.EXTRA_EXCLUDE_COMPONENTS, blacklistedComponents.toArray(new Parcelable[] {}));
-			chooserIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-	
-			// Verify that the intent will resolve to an activity
-			// do NOT use startActivityForResult as it will block
-			// enroute until the receiving app terminates.
-			//
-			if (chooserIntent.resolveActivity(m_instance.getPackageManager()) != null) {
-				m_instance.startActivity(chooserIntent);
-				return true;
-			}
+		if (m_instance == null) {
 			return false;
 		}
+
+		// Intent intent = new Intent();
+		// using v4 support library create the Intent from ShareCompat
+		Intent intent = ShareCompat.IntentBuilder.from(m_instance).getIntent();
+		intent.setAction(action);
+
+		Uri uri = fileToUri(filePath);
+
+		if (uri == null) {
+			return false;
+		}
+
+		if (mimeType == null || mimeType.isEmpty()) {
+			mimeType = m_instance.getContentResolver().getType(uri);
+		}
+
+		if (action == Intent.ACTION_SEND) {
+			intent.putExtra(Intent.EXTRA_STREAM, uri);
+			intent.setType(mimeType);
+		} else {
+			intent.setDataAndType(uri, mimeType);
+		}
+
+		intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+		return customStartActivity(intent);
+	}
+
+	/**
+	 * create uri from file path.
+	 *
+	 * android content provoiders operate with Uri's which represent the
+	 * content scheme (e.g. file:// or content://). This methods converts
+	 * the absolute file path in the sharing directory into a valid Uri.
+	 *
+	 * @param filePath the absolut path of the file in the cache directory.
+	 *
+	 * @return Uri the corresponding uri
+	 */
+
+	private static Uri fileToUri(String filePath) {
+
+		File fileToShare = new File(filePath);
+
+		// Using FileProvider you must get the URI from FileProvider using your
+		// AUTHORITY
+		// Uri uri = Uri.fromFile(imageFileToShare);
+		Uri uri;
+		try {
+			return FileProvider.getUriForFile(m_instance, AUTHORITY, fileToShare);
+		} catch (IllegalArgumentException e) {
+			Log.d(TAG, "error" + e.getMessage());
+			return null;
+		}
+	}
+
+	/**
+	 * create a custom chooser and start activity.
+	 *
+	 * The custom chooser takes care of not sharing with or sending to the own app.
+	 * This is done by first finding matching apps which can handle the intent
+	 * and then blacklisting the own app by Intent.EXTRA_EXCLUDE_COMPONENTS.
+	 *
+	 * The chooser intent is then started with startActivity() which will return
+	 * immediately and not wait for the chooser result. This way, both enroute and
+	 * the receiving app can run concurrently and enroute is _not_ blocked until
+	 * the receiving app terminates.
+	 *
+	 * @param theIntent intent to be handled
+	 *
+	 * @return true if the intent was launched otherwise false
+	 */
+	private static boolean customStartActivity(Intent theIntent) {
+
+		final Context context = m_instance;
+		final PackageManager packageManager = context.getPackageManager();
+
+		// MATCH_DEFAULT_ONLY: Resolution and querying flag. if set, only filters
+		// that support the CATEGORY_DEFAULT will be considered for matching. Check
+		// if there is a default app for this type of content.
+		ResolveInfo defaultAppInfo = packageManager.resolveActivity(theIntent, PackageManager.MATCH_DEFAULT_ONLY);
+		if (defaultAppInfo == null) {
+			Log.d(TAG, "PackageManager cannot resolve Activity");
+			return false;
+		}
+
+		// Retrieve all apps for our intent. Check if there are any apps returned
+		List<ResolveInfo> appInfoList = packageManager.queryIntentActivities(theIntent,
+				PackageManager.MATCH_DEFAULT_ONLY);
+		if (appInfoList.isEmpty()) {
+			Log.d(TAG, "appInfoList.isEmpty");
+			return false;
+		}
+		// Log.d(TAG, "appInfoList: " + appInfoList.size());
+
+		// Sort in alphabetical order
+		Collections.sort(appInfoList, new Comparator<ResolveInfo>() {
+			@Override
+			public int compare(ResolveInfo first, ResolveInfo second) {
+				String firstName = first.loadLabel(packageManager).toString();
+				String secondName = second.loadLabel(packageManager).toString();
+				return firstName.compareToIgnoreCase(secondName);
+			}
+		});
+
+		// find own package and blacklist it
+		//
+		List<ComponentName> blacklistedComponents = new ArrayList<ComponentName>();
+		for (ResolveInfo info : appInfoList) {
+
+			String pkgName = info.activityInfo.packageName;
+			String clsName = info.activityInfo.name;
+			// we don't want to share with our own app so blacklist it
+			//
+			if (pkgName.equals(context.getPackageName())) {
+				blacklistedComponents.add(new ComponentName(pkgName, clsName));
+			}
+		}
+
+		Intent chooserIntent = Intent.createChooser(theIntent, null /* title */);
+		chooserIntent.putExtra(Intent.EXTRA_EXCLUDE_COMPONENTS, blacklistedComponents.toArray(new Parcelable[] {}));
+		chooserIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+		// Verify that the intent will resolve to an activity
+		// do NOT use startActivityForResult as it will block
+		// enroute until the receiving app terminates.
+		//
+		if (chooserIntent.resolveActivity(m_instance.getPackageManager()) != null) {
+			m_instance.startActivity(chooserIntent);
+			return true;
+		}
+		return false;
+	}
 
 	//
 	// Embedded classes
 	//
-	
-	private
-	 class LocaleChangedReceiver extends BroadcastReceiver {
+
+	private class LocaleChangedReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			onLanguageChanged();

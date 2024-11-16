@@ -23,6 +23,7 @@ add_compile_definitions(PROJECT_VERSION="${PROJECT_VERSION}")
 message("CMAKE_OSX_DEPLOYMENT_TARGET: ${CMAKE_OSX_DEPLOYMENT_TARGET}")
 
 
+
 #
 # Installation
 #
@@ -33,7 +34,6 @@ include(GNUInstallDirs)
 #
 # Qt Setup
 #
-
 
 find_package(Qt6 6.8 COMPONENTS Bluetooth Concurrent Core Core5Compat Gui HttpServer LinguistTools Location Positioning Quick QuickControls2 QuickWidgets Sql Svg TextToSpeech Widgets REQUIRED)
 set(QT_VERSION ${Qt6Core_VERSION})
@@ -72,6 +72,7 @@ qt_policy(SET QTP0004 NEW)
 find_package(libzip REQUIRED)
 find_package(Git REQUIRED)
 find_package(QMapLibre COMPONENTS Location REQUIRED)
+
 
 if(IOS)
     set(PRODUCT_BUNDLE_IDENTIFIER de.akafliegfreiburg.enroute)

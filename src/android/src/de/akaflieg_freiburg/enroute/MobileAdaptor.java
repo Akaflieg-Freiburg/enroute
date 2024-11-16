@@ -24,25 +24,38 @@ import org.qtproject.qt.android.QtNative;
 
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
+import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiManager.MulticastLock;
 import android.net.wifi.WifiManager.WifiLock;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.os.Vibrator;
 import android.provider.Settings;
 import android.provider.Settings.System;
 import android.util.Log;
 import android.view.*;
+import androidx.core.app.ShareCompat;
+import androidx.core.content.FileProvider;
 import androidx.core.view.WindowCompat;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 
@@ -61,6 +74,11 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 	private static MulticastLock m_multicastLock;
 	private static BroadcastReceiver m_wifiStateChangeReceiver;
 	private static BroadcastReceiver m_notifyClickReceiver;
+
+	// reference Authority as defined in AndroidManifest.xml
+	private static String AUTHORITY = "de.akaflieg_freiburg.enroute";
+	private static String TAG = "IntentLauncher";
+
 
 	public MobileAdaptor() {
 		m_instance = this;
@@ -313,6 +331,197 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 		}
 
 	}
+
+/**
+	 * SEND (== "share") a file to another application.
+	 *
+	 * The receiving app is _not_ supposed to handle the mime type but
+	 * it is rather supposed to _transport_ the file.
+	 * Examples for receiving apps are email, messenger or file managers.
+	 *
+	 * @param filePath the path of the file to send.
+	 * @param mimeType the mime type of the file to send.
+	 *
+	 * @return true if the intent was launched otherwise false
+	 */
+	public static boolean sendFile(String filePath, String mimeType) {
+		return sendOrViewFile(filePath, mimeType, Intent.ACTION_SEND);
+	}
+
+	/**
+	 * VIEW (== "open") a file in another application.
+	 *
+	 * The receiving app is supposed to handle the mime type.
+	 *
+	 * @param filePath the path of the file to send.
+	 * @param mimeType the mime type of the file to send.
+	 *
+	 * @return true if the intent was launched otherwise false
+	 */
+	public static boolean viewFile(String filePath, String mimeType) {
+		return sendOrViewFile(filePath, mimeType, Intent.ACTION_VIEW);
+	}
+
+	//
+	// Private Methods
+	//
+		/**
+		 * common implementation for both the sendFile() and viewFile() methods.
+		 *
+		 * Creates an appropriate intent and does the necessary settings.
+		 * Creates a chooser with the intent and calls startActivity() to fire the
+		 * intent.
+		 *
+		 * This method does _not_ block until the content has been share with another
+		 * app but rather returns immediately (if action == 0). Therefore the receiving
+		 * apps can handle the file URL while enroute stays active an is not blocked.
+		 * Effectively this means that both the sending and the receiving app will run
+		 * concurrently.
+		 *
+		 * @param filePath the path of the file to send.
+		 * @param mimeType the mime type of the file to send.
+		 * @param action   either Intent.ACTION_SEND or Intent.ACTION_VIEW
+		 *
+		 * @return true if the intent was launched otherwise false
+		 */
+		private static boolean sendOrViewFile(String filePath, String mimeType, String action) {
+	
+			if (m_instance == null) {
+				return false;
+			}
+	
+			// Intent intent = new Intent();
+			// using v4 support library create the Intent from ShareCompat
+			Intent intent = ShareCompat.IntentBuilder.from(m_instance).getIntent();
+			intent.setAction(action);
+	
+			Uri uri = fileToUri(filePath);
+	
+			if (uri == null) {
+				return false;
+			}
+	
+			if (mimeType == null || mimeType.isEmpty()) {
+				mimeType = m_instance.getContentResolver().getType(uri);
+			}
+	
+			if (action == Intent.ACTION_SEND) {
+				intent.putExtra(Intent.EXTRA_STREAM, uri);
+				intent.setType(mimeType);
+			} else {
+				intent.setDataAndType(uri, mimeType);
+			}
+	
+			intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+	
+			return customStartActivity(intent);
+		}
+
+			/**
+			 * create uri from file path.
+			 *
+			 * android content provoiders operate with Uri's which represent the
+			 * content scheme (e.g. file:// or content://). This methods converts
+			 * the absolute file path in the sharing directory into a valid Uri.
+			 *
+			 * @param filePath the absolut path of the file in the cache directory.
+			 *
+			 * @return Uri the corresponding uri
+			 */
+
+			private static Uri fileToUri(String filePath) {
+		
+				File fileToShare = new File(filePath);
+		
+				// Using FileProvider you must get the URI from FileProvider using your
+				// AUTHORITY
+				// Uri uri = Uri.fromFile(imageFileToShare);
+				Uri uri;
+				try {
+					return FileProvider.getUriForFile(m_instance, AUTHORITY, fileToShare);
+				} catch (IllegalArgumentException e) {
+					Log.d(TAG, "error" + e.getMessage());
+					return null;
+				}
+			}
+	
+	 /**
+		 * create a custom chooser and start activity.
+		 *
+		 * The custom chooser takes care of not sharing with or sending to the own app.
+		 * This is done by first finding matching apps which can handle the intent
+		 * and then blacklisting the own app by Intent.EXTRA_EXCLUDE_COMPONENTS.
+		 *
+		 * The chooser intent is then started with startActivity() which will return
+		 * immediately and not wait for the chooser result. This way, both enroute and
+		 * the receiving app can run concurrently and enroute is _not_ blocked until
+		 * the receiving app terminates.
+		 *
+		 * @param theIntent intent to be handled
+		 *
+		 * @return true if the intent was launched otherwise false
+		 */
+		private static boolean customStartActivity(Intent theIntent) {
+	
+			final Context context = m_instance;
+			final PackageManager packageManager = context.getPackageManager();
+	
+			// MATCH_DEFAULT_ONLY: Resolution and querying flag. if set, only filters
+			// that support the CATEGORY_DEFAULT will be considered for matching. Check
+			// if there is a default app for this type of content.
+			ResolveInfo defaultAppInfo = packageManager.resolveActivity(theIntent, PackageManager.MATCH_DEFAULT_ONLY);
+			if (defaultAppInfo == null) {
+				Log.d(TAG, "PackageManager cannot resolve Activity");
+				return false;
+			}
+	
+			// Retrieve all apps for our intent. Check if there are any apps returned
+			List<ResolveInfo> appInfoList = packageManager.queryIntentActivities(theIntent,
+					PackageManager.MATCH_DEFAULT_ONLY);
+			if (appInfoList.isEmpty()) {
+				Log.d(TAG, "appInfoList.isEmpty");
+				return false;
+			}
+			// Log.d(TAG, "appInfoList: " + appInfoList.size());
+	
+			// Sort in alphabetical order
+			Collections.sort(appInfoList, new Comparator<ResolveInfo>() {
+				@Override
+				public int compare(ResolveInfo first, ResolveInfo second) {
+					String firstName = first.loadLabel(packageManager).toString();
+					String secondName = second.loadLabel(packageManager).toString();
+					return firstName.compareToIgnoreCase(secondName);
+				}
+			});
+	
+			// find own package and blacklist it
+			//
+			List<ComponentName> blacklistedComponents = new ArrayList<ComponentName>();
+			for (ResolveInfo info : appInfoList) {
+	
+				String pkgName = info.activityInfo.packageName;
+				String clsName = info.activityInfo.name;
+				// we don't want to share with our own app so blacklist it
+				//
+				if (pkgName.equals(context.getPackageName())) {
+					blacklistedComponents.add(new ComponentName(pkgName, clsName));
+				}
+			}
+	
+			Intent chooserIntent = Intent.createChooser(theIntent, null /* title */);
+			chooserIntent.putExtra(Intent.EXTRA_EXCLUDE_COMPONENTS, blacklistedComponents.toArray(new Parcelable[] {}));
+			chooserIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+	
+			// Verify that the intent will resolve to an activity
+			// do NOT use startActivityForResult as it will block
+			// enroute until the receiving app terminates.
+			//
+			if (chooserIntent.resolveActivity(m_instance.getPackageManager()) != null) {
+				m_instance.startActivity(chooserIntent);
+				return true;
+			}
+			return false;
+		}
 
 	//
 	// Embedded classes

@@ -24,6 +24,7 @@
 #include <QFuture>
 #include <QGeoRectangle>
 #include <QImage>
+#include <QProperty>
 #include <QQmlEngine>
 #include <QStandardPaths>
 #include <QTemporaryFile>
@@ -34,7 +35,6 @@
 #include "TileServer.h"
 #include "Waypoint.h"
 #include "fileFormats/MBTILES.h"
-#include "geomaps/VAC.h"
 
 namespace GeoMaps
 {
@@ -107,6 +107,17 @@ public:
      */
     Q_PROPERTY(QString copyrightNotice READ copyrightNotice CONSTANT)
 
+    /*! \brief Current Raster Map
+     *
+     *  This property holds the name of the current raster map, or an empty string if
+     *  no map has been set. The raster map is exposed via the URL
+     *
+     *  GeoMapProvider.serverUrl() + "/rasterMap/"
+     *
+     *  @see The documentation of the setter for naming conventions.
+     */
+    Q_PROPERTY(QString currentRasterMap READ currentRasterMap WRITE setCurrentRasterMap BINDABLE bindableCurrentRasterMap)
+
     /*! \brief Union of all aviation maps in GeoJSON format
      *
      * This property holds all installed aviation maps in GeoJSON format,
@@ -165,6 +176,11 @@ public:
      */
     [[nodiscard]] static QString copyrightNotice();
 
+#warning
+    [[nodiscard]] QString currentRasterMap() const {return m_currentRasterMap.value();}
+    [[nodiscard]] QBindable<QString> bindableCurrentRasterMap() const {return &m_currentRasterMap;}
+
+
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property geoJSON
@@ -194,6 +210,10 @@ public:
 
 #warning
     Q_INVOKABLE QString serverUrl() {return m_tileServer.serverUrl();}
+
+
+#warning
+    void setCurrentRasterMap(const QString& mapName);
 
 
     //
@@ -344,6 +364,7 @@ private:
     QList<QSharedPointer<FileFormats::MBTILES>> m_baseMapVectorTiles;
     QList<QSharedPointer<FileFormats::MBTILES>> m_baseMapRasterTiles;
     QList<QSharedPointer<FileFormats::MBTILES>> m_terrainMapTiles;
+    QProperty<QString> m_currentRasterMap;
 
     // The data in this group is accessed by several threads. The following
     // classes (whose names ends in an underscore) are therefore protected by

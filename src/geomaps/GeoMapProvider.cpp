@@ -68,6 +68,12 @@ void GeoMaps::GeoMapProvider::deferredInitialization()
     onAviationMapsChanged();
     onMBTILESChanged();
 
+#warning Want to use QSettings
+    QVector<QSharedPointer<FileFormats::MBTILES>> single;
+    single << QSharedPointer<FileFormats::MBTILES>(new FileFormats::MBTILES());
+    m_tileServer.addMbtilesFileSet(u"rasterMap"_s, single);
+
+
     GlobalObject::dataManager()->aviationMaps()->killFileContentChanged_delayed();
     GlobalObject::dataManager()->baseMaps()->killFileContentChanged_delayed();
     GlobalObject::dataManager()->terrainMaps()->killFileContentChanged_delayed();
@@ -433,6 +439,41 @@ QVector<GeoMaps::Waypoint> GeoMaps::GeoMapProvider::waypoints()
     return _waypoints_;
 }
 
+#warning
+void GeoMaps::GeoMapProvider::setCurrentRasterMap(const QString& mapName)
+{
+    if (mapName == m_currentRasterMap)
+    {
+        return;
+    }
+    if (mapName.isEmpty())
+    {
+        qWarning() << "Unsetting current map";
+        m_tileServer.removeMbtilesFileSet(u"rasterMap"_s);
+        m_currentRasterMap = QString();
+        emit styleFileURLChanged();
+        return;
+    }
+
+    QVector<QSharedPointer<FileFormats::MBTILES>> single;
+    single.reserve(1);
+    for(auto& mbt : baseMapRasterTiles())
+    {
+        if (mbt->fileName().endsWith(mapName))
+        {
+            qWarning() << "Setting currentRasterMap to:" << mapName;
+            single << mbt;
+            m_tileServer.removeMbtilesFileSet(u"rasterMap"_s);
+            m_tileServer.addMbtilesFileSet(u"rasterMap"_s, single);
+
+            m_currentRasterMap = mapName;
+            emit styleFileURLChanged();
+            return;
+        }
+    }
+    qWarning() << "Cannot set";
+}
+
 
 //
 // Private Methods and Slots
@@ -526,8 +567,9 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
     emit terrainMapTilesChanged();
 
     // Stop serving tiles
-    m_tileServer.removeMbtilesFileSets();
+    m_tileServer.removeMbtilesFileSet(_currentBaseMapPath);
     _currentBaseMapPath = QString::number(QRandomGenerator::global()->bounded(static_cast<quint32>(1000000000)));
+    m_tileServer.removeMbtilesFileSet(_currentTerrainMapPath);
     _currentTerrainMapPath = QString::number(QRandomGenerator::global()->bounded(static_cast<quint32>(1000000000)));
 
     // Start serving tiles again

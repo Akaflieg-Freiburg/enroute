@@ -811,16 +811,16 @@ Item {
                         id: recentFilesInstantiator
                         model: DataManager.baseMapsRaster.downloadables
                         delegate: CheckDelegate {
-                            checked: modelData.objectName === Global.currentRasterMap
+                            checked: modelData.objectName === GeoMapProvider.currentRasterMap
                             text: modelData.objectName
 
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
                                 rasterMenu.close()
-                                Global.currentRasterMap = modelData.objectName
+                                GeoMapProvider.currentRasterMap = checked ? modelData.objectName : ""
+                                flightMap.clearData()
                             }
 
-                            //onTriggered: loadFile(modelData)
                         }
 
                         onObjectAdded: (index, object) => rasterMenu.insertItem(index, object)

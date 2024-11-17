@@ -34,7 +34,6 @@ Item {
     property var toast
     property vac currentVAC
     property vac defaultVAC
-    property string currentRasterMap
 
     // Warning
     property bool warnNOTAMLocation: true
@@ -52,11 +51,6 @@ Item {
     Settings {
         category: "GUIWarnings"
         property alias warnNOTAMLocation: global.warnNOTAMLocation
-    }
-
-    Settings {
-        category: "MovingMap"
-        property alias currentRasterMap: global.currentRasterMap
     }
 
 

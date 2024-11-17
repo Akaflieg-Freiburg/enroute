@@ -116,7 +116,7 @@ Map {
 
             styleId: "rasterTiles"
             type: "raster"
-            property string url: GeoMapProvider.serverUrl() + "/" + Global.currentRasterMap
+            property string url: GeoMapProvider.serverUrl() + "/rasterMap/"
         }
 
 
@@ -350,7 +350,7 @@ Map {
             property string source: "rasterTiles"
 
             layout: {
-                "visibility": Global.currentRasterMap !== "" ? 'visible' : 'none'
+                "visibility": 'visible' // GeoMapProvider.currentRasterMap !== "" ? 'visible' : 'none'
             }
         }
 

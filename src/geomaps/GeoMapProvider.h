@@ -176,10 +176,17 @@ public:
      */
     [[nodiscard]] static QString copyrightNotice();
 
-#warning
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property currentRasterMap
+     */
     [[nodiscard]] QString currentRasterMap() const {return m_currentRasterMap.value();}
-    [[nodiscard]] QBindable<QString> bindableCurrentRasterMap() const {return &m_currentRasterMap;}
 
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property currentRasterMap
+     */
+    [[nodiscard]] QBindable<QString> bindableCurrentRasterMap() const {return &m_currentRasterMap;}
 
     /*! \brief Getter function for the property with the same name
      *

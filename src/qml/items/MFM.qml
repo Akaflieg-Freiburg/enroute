@@ -795,7 +795,7 @@ Item {
                 id: rasterMapButton
 
                 icon.source: "/icons/material/ic_layers.svg"
-                visible: DataManager.baseMapsRaster.downloadables.length !== 0
+                visible: GeoMapProvider.availableRasterMaps.length !== 0
 
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
@@ -809,15 +809,15 @@ Item {
 
                     Instantiator {
                         id: recentFilesInstantiator
-                        model: DataManager.baseMapsRaster.downloadables
+                        model: GeoMapProvider.availableRasterMaps
                         delegate: CheckDelegate {
-                            checked: modelData.objectName === GeoMapProvider.currentRasterMap
-                            text: modelData.objectName
+                            checked: modelData === GeoMapProvider.currentRasterMap
+                            text: modelData
 
                             onClicked: {
                                 PlatformAdaptor.vibrateBrief()
                                 rasterMenu.close()
-                                GeoMapProvider.currentRasterMap = checked ? modelData.objectName : ""
+                                GeoMapProvider.currentRasterMap = checked ? modelData : ""
                                 flightMap.clearData()
                             }
 

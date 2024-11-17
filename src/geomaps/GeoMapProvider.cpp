@@ -65,6 +65,9 @@ void GeoMaps::GeoMapProvider::deferredInitialization()
     _aviationDataCacheTimer.setInterval(3s);
     connect(&_aviationDataCacheTimer, &QTimer::timeout, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
 
+    // Set Binding
+    m_availableRasterMaps.setBinding([this]() {return computeAvailableRasterMaps();});
+
     onAviationMapsChanged();
     onMBTILESChanged();
 
@@ -438,7 +441,6 @@ QVector<GeoMaps::Waypoint> GeoMaps::GeoMapProvider::waypoints()
     return _waypoints_;
 }
 
-#warning Want to handle mapNames without 'raster'
 void GeoMaps::GeoMapProvider::setCurrentRasterMap(const QString& mapName)
 {
     if (mapName == m_currentRasterMap)
@@ -450,9 +452,9 @@ void GeoMaps::GeoMapProvider::setCurrentRasterMap(const QString& mapName)
     QString newRasterMapName;
     if (!mapName.isEmpty())
     {
-        for(auto& mbt : baseMapRasterTiles())
+        for(const auto& mbt : m_baseMapRasterTiles.value())
         {
-            if (mbt->fileName().endsWith(mapName))
+            if (QFileInfo(mbt->fileName()).baseName() == mapName)
             {
                 newRasterMap = mbt;
                 newRasterMapName = mapName;
@@ -472,6 +474,21 @@ void GeoMaps::GeoMapProvider::setCurrentRasterMap(const QString& mapName)
 //
 // Private Methods and Slots
 //
+
+QStringList GeoMaps::GeoMapProvider::computeAvailableRasterMaps()
+{
+    QStringList result;
+    result.reserve(m_baseMapRasterTiles.value().size());
+    for(const auto& rasterMap : m_baseMapRasterTiles.value())
+    {
+        const QFileInfo info(rasterMap->fileName());
+        if (info.exists())
+        {
+            result << info.baseName();
+        }
+    }
+    return result;
+}
 
 void GeoMaps::GeoMapProvider::onAviationMapsChanged()
 {
@@ -511,7 +528,7 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
 {
     terrainTileCache.clear();
 
-    m_baseMapRasterTiles.clear();
+    QList<QSharedPointer<FileFormats::MBTILES>> newBaseMapRasterTiles;
     for (auto* downloadableX : GlobalObject::dataManager()->baseMapsRaster()->downloadables())
     {
         auto* downloadable = qobject_cast<DataManagement::Downloadable_SingleFile*>(downloadableX);
@@ -524,9 +541,12 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
             continue;
         }
 
-        m_baseMapRasterTiles.append(QSharedPointer<FileFormats::MBTILES>(new FileFormats::MBTILES(downloadable->fileName())));
+        newBaseMapRasterTiles.append(QSharedPointer<FileFormats::MBTILES>(new FileFormats::MBTILES(downloadable->fileName())));
     }
+    m_baseMapRasterTiles = newBaseMapRasterTiles;
+
     m_baseMapVectorTiles.clear();
+
     for (auto* downloadableX : GlobalObject::dataManager()->baseMapsVector()->downloadables())
     {
         auto* downloadable = qobject_cast<DataManagement::Downloadable_SingleFile*>(downloadableX);
@@ -541,7 +561,6 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
 
         m_baseMapVectorTiles.append(QSharedPointer<FileFormats::MBTILES>(new FileFormats::MBTILES(downloadable->fileName())));
     }
-    emit baseMapTilesChanged();
 
     m_terrainMapTiles.clear();
     for (auto* downloadableX : GlobalObject::dataManager()->terrainMaps()->downloadables())
@@ -569,14 +588,6 @@ void GeoMaps::GeoMapProvider::onMBTILESChanged()
     // Start serving tiles again
     m_tileServer.addMbtilesFileSet(_currentBaseMapPath, m_baseMapVectorTiles);
     m_tileServer.addMbtilesFileSet(_currentTerrainMapPath, m_terrainMapTiles);
-    QList<QSharedPointer<FileFormats::MBTILES>> rasterSet;
-    rasterSet.reserve(1);
-    for(const auto& rasterMap : m_baseMapRasterTiles)
-    {
-        rasterSet.clear();
-        rasterSet << rasterMap;
-        m_tileServer.addMbtilesFileSet(QFileInfo(rasterMap->fileName()).fileName(), rasterSet);
-    }
 
     // Update style file
     delete m_styleFile;

@@ -94,11 +94,11 @@ public:
     // Properties
     //
 
-    /*! \brief List of base map MBTILES */
-    Q_PROPERTY(QList<QSharedPointer<FileFormats::MBTILES>> baseMapRasterTiles READ baseMapRasterTiles NOTIFY baseMapTilesChanged)
-
-    /*! \brief List of base map MBTILES */
-    Q_PROPERTY(QList<QSharedPointer<FileFormats::MBTILES>> baseMapVectorTiles READ baseMapVectorTiles NOTIFY baseMapTilesChanged)
+    /*! \brief Available Raster Maps
+     *
+     *  This property holds the names of raster maps that can be set with setCurrentRasterMap.
+     */
+    Q_PROPERTY(QStringList availableRasterMaps READ availableRasterMaps BINDABLE bindableAvailableRasterMaps)
 
     /*! \brief Copyright notice for the map
      *
@@ -154,20 +154,20 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
-     * @returns Property baseMapRasterTiles
+     * @returns Property availableRasterMaps
      */
-    [[nodiscard]] QList<QSharedPointer<FileFormats::MBTILES>> baseMapRasterTiles() const
+    [[nodiscard]] QStringList availableRasterMaps() const
     {
-        return m_baseMapRasterTiles;
+        return m_availableRasterMaps.value();
     }
 
     /*! \brief Getter function for the property with the same name
      *
-     * @returns Property baseMapVectorTiles
+     * @returns Property availableRasterMaps
      */
-    [[nodiscard]] QList<QSharedPointer<FileFormats::MBTILES>> baseMapVectorTiles() const
+    [[nodiscard]] QBindable<QStringList> bindableAvailableRasterMaps() const
     {
-        return m_baseMapVectorTiles;
+        return &m_availableRasterMaps;
     }
 
     /*! \brief Getter function for the property with the same name
@@ -215,12 +215,21 @@ public:
      */
     [[nodiscard]] QList<Waypoint> waypoints();
 
+
+
+    //
+    // Setter Methods
+    //
+
+    /*! \brief Setter function for the property with the same name
+     *
+     * @param Property currentRasterMap
+     */
+    void setCurrentRasterMap(const QString& mapName);
+
+
 #warning
     Q_INVOKABLE QString serverUrl() {return m_tileServer.serverUrl();}
-
-
-#warning
-    void setCurrentRasterMap(const QString& mapName);
 
 
     //
@@ -313,9 +322,6 @@ public:
 
 signals:
     /*! \brief Notification signal for the property with the same name */
-    void baseMapTilesChanged();
-
-    /*! \brief Notification signal for the property with the same name */
     void geoJSONChanged();
 
     /*! \brief Notification signal for the property with the same name */
@@ -369,8 +375,12 @@ private:
     // MBTILES
     //
     QList<QSharedPointer<FileFormats::MBTILES>> m_baseMapVectorTiles;
-    QList<QSharedPointer<FileFormats::MBTILES>> m_baseMapRasterTiles;
+    QProperty<QList<QSharedPointer<FileFormats::MBTILES>>> m_baseMapRasterTiles;
     QList<QSharedPointer<FileFormats::MBTILES>> m_terrainMapTiles;
+
+    QProperty<QStringList> m_availableRasterMaps;
+    QStringList computeAvailableRasterMaps();
+
     QProperty<QString> m_currentRasterMap;
     QPropertyNotifier m_currentRasterMapNotifier; // Used to save the currentRasterMap
 

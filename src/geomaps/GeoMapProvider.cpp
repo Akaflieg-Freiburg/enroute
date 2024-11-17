@@ -68,11 +68,10 @@ void GeoMaps::GeoMapProvider::deferredInitialization()
     onAviationMapsChanged();
     onMBTILESChanged();
 
-#warning Want to use QSettings
-    QVector<QSharedPointer<FileFormats::MBTILES>> single;
-    single << QSharedPointer<FileFormats::MBTILES>(new FileFormats::MBTILES());
-    m_tileServer.addMbtilesFileSet(u"rasterMap"_s, single);
-
+    setCurrentRasterMap(QSettings().value("currentRasterMap", QString()).toString());
+    m_currentRasterMapNotifier = m_currentRasterMap.addNotifier([this]() {
+        QSettings().setValue("currentRasterMap", m_currentRasterMap.value());
+    });
 
     GlobalObject::dataManager()->aviationMaps()->killFileContentChanged_delayed();
     GlobalObject::dataManager()->baseMaps()->killFileContentChanged_delayed();
@@ -439,39 +438,34 @@ QVector<GeoMaps::Waypoint> GeoMaps::GeoMapProvider::waypoints()
     return _waypoints_;
 }
 
-#warning
+#warning Want to handle mapNames without 'raster'
 void GeoMaps::GeoMapProvider::setCurrentRasterMap(const QString& mapName)
 {
     if (mapName == m_currentRasterMap)
     {
         return;
     }
-    if (mapName.isEmpty())
-    {
-        qWarning() << "Unsetting current map";
-        m_tileServer.removeMbtilesFileSet(u"rasterMap"_s);
-        m_currentRasterMap = QString();
-        emit styleFileURLChanged();
-        return;
-    }
 
-    QVector<QSharedPointer<FileFormats::MBTILES>> single;
-    single.reserve(1);
-    for(auto& mbt : baseMapRasterTiles())
+    auto newRasterMap = QSharedPointer<FileFormats::MBTILES>(new FileFormats::MBTILES());
+    QString newRasterMapName;
+    if (!mapName.isEmpty())
     {
-        if (mbt->fileName().endsWith(mapName))
+        for(auto& mbt : baseMapRasterTiles())
         {
-            qWarning() << "Setting currentRasterMap to:" << mapName;
-            single << mbt;
-            m_tileServer.removeMbtilesFileSet(u"rasterMap"_s);
-            m_tileServer.addMbtilesFileSet(u"rasterMap"_s, single);
-
-            m_currentRasterMap = mapName;
-            emit styleFileURLChanged();
-            return;
+            if (mbt->fileName().endsWith(mapName))
+            {
+                newRasterMap = mbt;
+                newRasterMapName = mapName;
+                break;
+            }
         }
     }
-    qWarning() << "Cannot set";
+
+    m_tileServer.removeMbtilesFileSet(u"rasterMap"_s);
+    const QVector<QSharedPointer<FileFormats::MBTILES>> single {newRasterMap};
+    m_tileServer.addMbtilesFileSet(u"rasterMap"_s, single);
+    m_currentRasterMap = newRasterMapName;
+    emit styleFileURLChanged();
 }
 
 

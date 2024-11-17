@@ -365,6 +365,7 @@ private:
     QList<QSharedPointer<FileFormats::MBTILES>> m_baseMapRasterTiles;
     QList<QSharedPointer<FileFormats::MBTILES>> m_terrainMapTiles;
     QProperty<QString> m_currentRasterMap;
+    QPropertyNotifier m_currentRasterMapNotifier; // Used to save the currentRasterMap
 
     // The data in this group is accessed by several threads. The following
     // classes (whose names ends in an underscore) are therefore protected by

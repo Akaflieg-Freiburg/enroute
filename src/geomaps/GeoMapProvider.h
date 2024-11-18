@@ -125,6 +125,14 @@ public:
      */
     Q_PROPERTY(QByteArray geoJSON READ geoJSON NOTIFY geoJSONChanged)
 
+    /*! \brief URL under which this server is presently reachable
+     *
+     *  The property holds returns the Url where the server is listening to incoming
+     *  connections. This is typically string of the form "http://127.0.0.1:3470".
+     *  If the server is not listening to incoming connections, the string is empty.
+     */
+    Q_PROPERTY(QString serverUrl READ serverUrl NOTIFY serverUrlChanged)
+
     /*! \brief URL where a style file for the base map can be retrieved
      *
      * This property holds a URL where a mapbox style file for the base map can
@@ -196,6 +204,12 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
+     * @returns Property serverUrl
+     */
+    [[nodiscard]] QString serverUrl() {return m_tileServer.serverUrl();}
+
+    /*! \brief Getter function for the property with the same name
+     *
      * @returns Property styleFileURL
      */
     [[nodiscard]] QString styleFileURL();
@@ -223,13 +237,10 @@ public:
 
     /*! \brief Setter function for the property with the same name
      *
-     * @param Property currentRasterMap
+     * @param mapName currentRasterMap
      */
     void setCurrentRasterMap(const QString& mapName);
 
-
-#warning
-    Q_INVOKABLE QString serverUrl() {return m_tileServer.serverUrl();}
 
 
     //
@@ -326,6 +337,9 @@ signals:
 
     /*! \brief Notification signal for the property with the same name */
     void styleFileURLChanged();
+
+    /*! \brief Notification signal for the property with the same name */
+    void serverUrlChanged();
 
     /*! \brief Notification signal for the property with the same name */
     void terrainMapTilesChanged();

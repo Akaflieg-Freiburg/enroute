@@ -61,6 +61,8 @@ void GeoMaps::GeoMapProvider::deferredInitialization()
     connect(GlobalObject::globalSettings(), &GlobalSettings::airspaceAltitudeLimitChanged, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
     connect(GlobalObject::globalSettings(), &GlobalSettings::hideGlidingSectorsChanged, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);
 
+    connect(&m_tileServer, &GeoMaps::TileServer::serverUrlChanged, this, &GeoMaps::GeoMapProvider::serverUrlChanged);
+
     _aviationDataCacheTimer.setSingleShot(true);
     _aviationDataCacheTimer.setInterval(3s);
     connect(&_aviationDataCacheTimer, &QTimer::timeout, this, &GeoMaps::GeoMapProvider::onAviationMapsChanged);

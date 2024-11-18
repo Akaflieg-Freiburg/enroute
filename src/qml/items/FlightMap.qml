@@ -116,7 +116,7 @@ Map {
 
             styleId: "rasterTiles"
             type: "raster"
-            property string url: GeoMapProvider.serverUrl() + "/rasterMap/"
+            property string url: GeoMapProvider.serverUrl + "/rasterMap/"
         }
 
 

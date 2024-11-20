@@ -395,7 +395,7 @@ private:
     QProperty<QStringList> m_availableRasterMaps;
     QStringList computeAvailableRasterMaps();
 
-    QProperty<QString> m_currentRasterMap;
+    QProperty<QString> m_currentRasterMap {u"non-empty place holder"_qs};
     QPropertyNotifier m_currentRasterMapNotifier; // Used to save the currentRasterMap
 
     // The data in this group is accessed by several threads. The following

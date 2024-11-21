@@ -1,10 +1,21 @@
 # Changelog
 
+## [2.32.1] - 2024-11-21
+
+### Added
+- Enroute allows installation of several raster maps, which can then be switched
+  on/off on the fly (#390)
+
+- Upgrade underlying library to Qt 6.8
+
+### Fixed
+- Minor problems in the Italian translation
+
+
 ## [2.32.0] - 2024-11-11
 
 ### Added
 - Enroute can now calculate density altitudes from METAR data (#408)
-
 
 ### Fixed
 - Icons for reporting points no longer rotate along with the moving map (#453)

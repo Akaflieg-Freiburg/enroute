@@ -107,13 +107,28 @@ together with the standard gestures to operate the app.
 ========================================================== ========
 Symbol                                                     Function
 ========================================================== ========
-.. image:: ../01-gettingStarted/ic_menu.png                Opens main menu.
-.. image:: ../01-gettingStarted/NorthArrow.png             Switches between modes **north up** and **track up**.
-.. image:: ../01-gettingStarted/ic_my_location.png         Sets autopan mode to "on".
+.. image:: ../01-gettingStarted/ic_menu.png                Open the main menu.
+.. image:: ../01-gettingStarted/NorthArrow.png             Switch between modes **north up** and **track up**.
+.. image:: ../01-gettingStarted/ic_layers.png              Open the raster map menu. Only visible when raster maps are installed.
+.. image:: ../01-gettingStarted/ic_my_location.png         Set autopan mode to "on".
 .. image:: ../01-gettingStarted/ic_add.png                 Zoom in.
 .. image:: ../01-gettingStarted/ic_remove.png              Zoom out.
-.. image:: ../01-gettingStarted/ic_airplanemode_active.png This control is shown when the app is not connected to a traffic data receiver. A click opens the traffic receiver status page.
+.. image:: ../01-gettingStarted/ic_airplanemode_active.png Open the traffic receiver status page. Only visible when the app is not connected to a traffic data receiver. 
 ========================================================== ========
+
+
+Main Menu
+^^^^^^^^^
+
+Use this menu to access all other pages, access settings and exit the app.
+
+
+Raster Map Menu
+^^^^^^^^^^^^^^^
+
+This menu is visible when raster maps are installed. It shows all raster maps
+installed, and allows choosing one of them for display.  See the section
+:ref:`importRaster` for more details.
 
 
 Moving Map

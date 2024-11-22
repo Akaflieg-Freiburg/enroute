@@ -108,11 +108,19 @@ CenteringDialog {
                 Label { // Derived Data
                     Layout.fillWidth: true
                     visible: text !== ""
-                    text: (weatherStation != null) && weatherStation.hasMETAR ? weatherStation.metar.derivedData(Navigator.aircraft) : ""
+                    text: (weatherStation != null) && weatherStation.hasMETAR ? weatherStation.metar.derivedData(Navigator.aircraft, Global.warnMETARPerformance, Global.showMETARPerformanceExplanation) : ""
                     wrapMode: Text.WordWrap
                     textFormat: Text.RichText
                     bottomPadding: 0.2*font.pixelSize
                     topPadding: 0.4*font.pixelSize
+
+                    onLinkActivated: (linkText) =>
+                                     {
+                                         if (linkText === "hideExplanation")
+                                         Global.showMETARPerformanceExplanation = false
+                                         if (linkText === "hidePerformanceWarning")
+                                         Global.warnMETARPerformance = false
+                                     }
                 }
 
                 Label { // title: "TAF"

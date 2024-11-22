@@ -233,7 +233,7 @@ public:
      *
      * @returns Human-readable, translated rich text
      */
-    [[nodiscard]] Q_INVOKABLE QString derivedData(const Navigation::Aircraft& aircraft) const;
+    [[nodiscard]] Q_INVOKABLE QString derivedData(const Navigation::Aircraft& aircraft, bool showPerformanceWarning, bool explainPerformanceWarning) const;
 
     /*! \brief One-line summary of the METAR
      *

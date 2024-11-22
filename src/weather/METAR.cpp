@@ -263,35 +263,13 @@ QString Weather::METAR::summary(const Navigation::Aircraft& aircraft, const QDat
     }
 
     // Wind and Gusts
-    if (m_gust.toKN() > 15)
+    if (m_gust.isFinite() && m_gust.toKN() > 15)
     {
-        switch (aircraft.horizontalDistanceUnit())
-        {
-        case Navigation::Aircraft::Kilometer:
-            resultList << tr("gusts of %1 km/h").arg( qRound(m_gust.toKMH()) );
-            break;
-        case Navigation::Aircraft::StatuteMile:
-            resultList << tr("gusts of %1 mph").arg( qRound(m_gust.toMPH()) );
-            break;
-        case Navigation::Aircraft::NauticalMile:
-            resultList << tr("gusts of %1 kn").arg( qRound(m_gust.toKN()) );
-            break;
-        }
+        resultList << tr("gusts of %1").arg(aircraft.horizontalSpeedToString(m_gust));
     }
-    else if (m_wind.toKN() > 10)
+    else if (m_wind.isFinite() && m_wind.toKN() > 10)
     {
-        switch (aircraft.horizontalDistanceUnit())
-        {
-        case Navigation::Aircraft::Kilometer:
-            resultList << tr("wind at %1 km/h").arg( qRound(m_wind.toKMH()) );
-            break;
-        case Navigation::Aircraft::StatuteMile:
-            resultList << tr("wind at %1 mph").arg( qRound(m_wind.toMPH()) );
-            break;
-        case Navigation::Aircraft::NauticalMile:
-            resultList << tr("wind at %1 kn").arg( qRound(m_wind.toKN()) );
-            break;
-        }
+        resultList << tr("wind at %1").arg(aircraft.horizontalSpeedToString(m_wind));
     }
 
     // Weather
@@ -310,52 +288,69 @@ QString Weather::METAR::summary(const Navigation::Aircraft& aircraft, const QDat
 }
 
 
-QString Weather::METAR::derivedData(const Navigation::Aircraft& aircraft) const
+QString Weather::METAR::derivedData(const Navigation::Aircraft& aircraft, bool showPerformanceWarning, bool explainPerformanceWarning) const
 {
     QStringList items;
+
+    // Density altitude
     if (m_densityAltitude.isFinite())
     {
         Units::Distance const altitude = Units::Distance::fromM(m_location.altitude());
-        items += tr("Density Altitude: %1 (Δ %2)").arg(
-            aircraft.verticalDistanceToString(m_densityAltitude), 
-            aircraft.verticalDistanceToString(m_densityAltitude - altitude, /*forceSign=*/ true)
-            );
-
-        // koch chart approximation formulas based on https://groups.google.com/g/rec.aviation.piloting/c/SDlMioBVqaA/m/8_x9GYsnGwAJ
-        const double densityAltitudeInFt = m_densityAltitude.toFeet();
-        int takeoffDistIncPercentage = 100 * (densityAltitudeInFt / 1000) * .15;
-        takeoffDistIncPercentage = (takeoffDistIncPercentage > 5) ? (((takeoffDistIncPercentage + 9) / 10) * 10) : 0; // round up to next group of ten; less than 6 percent considered as 0
-        int rateOfClimbDecreasePercentage = 100 * (densityAltitudeInFt / 1000) * .075;
-        rateOfClimbDecreasePercentage = (rateOfClimbDecreasePercentage > 5) ? (((rateOfClimbDecreasePercentage + 9) / 10) * 10) : 0;
-        
-        if (takeoffDistIncPercentage > 0)
+        auto result = tr("Density Altitude: %1").arg(aircraft.verticalDistanceToString(m_densityAltitude));
+        if (altitude.isFinite())
         {
-            if (takeoffDistIncPercentage <= 100)
-            {
-                items += tr("Takeoff distance increases by ≈ %1\%").arg(takeoffDistIncPercentage);
-            }
-            else 
-            {
-                items += tr("Takeoff distance increases by > 100\%");
-            }
-        } 
-        
-        if (rateOfClimbDecreasePercentage > 0)
-        {
-            if (rateOfClimbDecreasePercentage <= 100)
-            {
-                items += tr("Rate of climb decreases by ≈ %1\%").arg(rateOfClimbDecreasePercentage);
-            }
-            else
-            {
-                items += tr("Rate of climb decreases by > 100\%");
-            }
+                result += u" (Δ %2)"_s.arg(aircraft.verticalDistanceToString(m_densityAltitude - altitude, /*forceSign=*/ true));
         }
+        items += result;
     }
+
+    // Relative humidity
     auto relativeHumidity = Navigation::Atmosphere::relativeHumidity(m_temperature, m_dewpoint);
     if (!std::isnan(relativeHumidity))
     {
         items += tr("Relative Humidity: %1%").arg(qRound(relativeHumidity));
+    }
+
+    // Performance warnings
+    bool performanceWarningsShown = false;
+    if (m_densityAltitude.isFinite() && showPerformanceWarning)
+    {
+        // Koch chart approximation formulas based on https://groups.google.com/g/rec.aviation.piloting/c/SDlMioBVqaA/m/8_x9GYsnGwAJ
+        const auto densityAltitudeInFt = m_densityAltitude.toFeet();
+
+        // Estimate 15% increase in takeoff distance per 1000ft density height
+        auto takeoffDistIncPercentage = 0.015 * densityAltitudeInFt;
+
+        // Estimate 7.5% decrease in climb rate per 1000ft density height
+        auto rateOfClimbDecreasePercentage = 0.0075 * densityAltitudeInFt;
+
+        if (takeoffDistIncPercentage > 25)
+        {
+            performanceWarningsShown = true;
+            items += "<strong>"
+                     + tr("Performance")
+                     + ":</strong> "
+                     + tr("Expect %1\% increase in takeoff distance").arg(qRound(takeoffDistIncPercentage));
+        }
+
+        if (rateOfClimbDecreasePercentage > 25)
+        {
+            performanceWarningsShown = true;
+            if (rateOfClimbDecreasePercentage <= 90)
+            {
+                items += "<strong>"
+                         + tr("Performance")
+                         + ":</strong> "
+                         + tr("Expect %1\% decrease in climb rate").arg(qRound(rateOfClimbDecreasePercentage));
+            }
+            else
+            {
+                items += "<strong>"
+                         + tr("Performance")
+                         + ":</strong> "
+                         + tr("Expect drastic decrease in climb rate. Flying might be inadvisable.");
+            }
+        }
     }
 
     if (items.isEmpty())
@@ -373,6 +368,23 @@ QString Weather::METAR::derivedData(const Navigation::Aircraft& aircraft) const
         result += u"</li>"_s;
     }
     result += QStringLiteral("</ul>");
+
+    if (performanceWarningsShown)
+    {
+        if (explainPerformanceWarning)
+        {
+            result += u"<p>"_s
+                      + tr("Percentages are rough estimates, comparing performance of typical SEP aircraft at density altitude to standard sea level values. "
+                           "Runway conditions might further degrade performance. "
+                           "Always consult the flight manual for exact values.")
+                      + u" <a href='hideExplanation'>"_s + tr("Hide this explanation.") + u"</a>"_s
+                      + u"</p>"_s;
+        }
+        else
+        {
+            result += u"<p><a href='hidePerformanceWarning'>"_s + tr("Hide performance warnings.") + u"</a></p>"_s;
+        }
+    }
     return result;
 }
 

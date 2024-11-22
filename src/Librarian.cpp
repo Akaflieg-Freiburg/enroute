@@ -305,7 +305,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     if (name == u":text/whatsnew.html"_s)
     {
         QString result;
-        result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> now computes the density altitude from METAR data.") + " "
+        result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> now computes the density altitude from METAR data and shows warnings when density altitude affects aircraft performance.") + " "
                   + tr("We thank Christian Engelhardt and Tom Linz for the implementation!") + "</p>";
 
         result += "<p>" + tr("As requested by our users, <strong>Enroute Flight Navigation</strong> is now able to import flight routes in FPL and PLN formats.") + " "

@@ -320,6 +320,37 @@ QString Weather::METAR::derivedData(const Navigation::Aircraft& aircraft) const
             aircraft.verticalDistanceToString(m_densityAltitude), 
             aircraft.verticalDistanceToString(m_densityAltitude - altitude, /*forceSign=*/ true)
             );
+
+        // koch chart approximation formulas based on https://groups.google.com/g/rec.aviation.piloting/c/SDlMioBVqaA/m/8_x9GYsnGwAJ
+        const double densityAltitudeInFt = m_densityAltitude.toFeet();
+        int takeoffDistIncPercentage = 100 * (densityAltitudeInFt / 1000) * .15;
+        takeoffDistIncPercentage = (takeoffDistIncPercentage > 5) ? (((takeoffDistIncPercentage + 9) / 10) * 10) : 0; // round up to next group of ten; less than 6 percent considered as 0
+        int rateOfClimbDecreasePercentage = 100 * (densityAltitudeInFt / 1000) * .075;
+        rateOfClimbDecreasePercentage = (rateOfClimbDecreasePercentage > 5) ? (((rateOfClimbDecreasePercentage + 9) / 10) * 10) : 0;
+        
+        if (takeoffDistIncPercentage > 0)
+        {
+            if (takeoffDistIncPercentage <= 100)
+            {
+                items += tr("Takeoff distance increases by ≈ %1\%").arg(takeoffDistIncPercentage);
+            }
+            else 
+            {
+                items += tr("Takeoff distance increases by > 100\%");
+            }
+        } 
+        
+        if (rateOfClimbDecreasePercentage > 0)
+        {
+            if (rateOfClimbDecreasePercentage <= 100)
+            {
+                items += tr("Rate of climb decreases by ≈ %1\%").arg(rateOfClimbDecreasePercentage);
+            }
+            else
+            {
+                items += tr("Rate of climb decreases by > 100\%");
+            }
+        }
     }
     auto relativeHumidity = Navigation::Atmosphere::relativeHumidity(m_temperature, m_dewpoint);
     if (!std::isnan(relativeHumidity))

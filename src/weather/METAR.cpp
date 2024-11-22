@@ -299,7 +299,14 @@ QString Weather::METAR::derivedData(const Navigation::Aircraft& aircraft, bool s
         auto result = tr("Density Altitude: %1").arg(aircraft.verticalDistanceToString(m_densityAltitude));
         if (altitude.isFinite())
         {
-                result += u" (Δ %2)"_s.arg(aircraft.verticalDistanceToString(m_densityAltitude - altitude, /*forceSign=*/ true));
+            if (m_densityAltitude > altitude)
+            {
+                result = tr("Density Altitude: %1, %2 above airfield elevation").arg(aircraft.verticalDistanceToString(m_densityAltitude), aircraft.verticalDistanceToString(m_densityAltitude - altitude));
+            }
+            else
+            {
+                result = tr("Density Altitude: %1, %2 below airfield elevation").arg(aircraft.verticalDistanceToString(m_densityAltitude), aircraft.verticalDistanceToString(altitude - m_densityAltitude));
+            }
         }
         items += result;
     }

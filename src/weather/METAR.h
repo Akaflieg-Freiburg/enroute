@@ -231,7 +231,16 @@ public:
      *
      * @param aircraft Current aircraft, used to determine appropriate units
      *
-     * @returns Human-readable, translated rich text
+     * @param showPerformanceWarning If true, then show warning if density altitude
+     * severely affect aircraft performance.
+     *
+     * @param explainPerformanceWarning If true, add text to explain performance
+     * degrade
+     *
+     * @returns Human-readable, translated rich text. The text contains two links,
+     * to 'hidePerformanceWarning' and 'hideExplanation'. When clicked, the
+     * user-facing text should be replaced, if the appropriate parameter set to 'false'.
+     *
      */
     [[nodiscard]] Q_INVOKABLE QString derivedData(const Navigation::Aircraft& aircraft, bool showPerformanceWarning, bool explainPerformanceWarning) const;
 

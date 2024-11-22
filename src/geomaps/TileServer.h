@@ -126,7 +126,13 @@ public slots:
      *
      *  @param baseName Path of tiles to remove
      */
-    void removeMbtilesFileSet(const QString& baseName);
+    void removeMbtilesFileSet(const QString& baseName) {m_tileHandlers.take(baseName);}
+
+    /*! \brief Removes a set of tile files
+     *
+     *  @param baseName Path of tiles to remove
+     */
+    void removeMbtilesFileSets() {m_tileHandlers.clear();}
 
 
 signals:

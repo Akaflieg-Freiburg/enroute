@@ -791,6 +791,46 @@ Item {
                 }
             }
 
+            MapButton {
+                id: rasterMapButton
+
+                icon.source: "/icons/material/ic_layers.svg"
+                visible: GeoMapProvider.availableRasterMaps.length !== 0
+
+                onClicked: {
+                    PlatformAdaptor.vibrateBrief()
+                    rasterMenu.popup()
+
+                }
+
+                AutoSizingMenu {
+                    id: rasterMenu
+                    cascade: true
+
+                    Instantiator {
+                        id: recentFilesInstantiator
+                        model: GeoMapProvider.availableRasterMaps
+                        delegate: CheckDelegate {
+                            checked: modelData === GeoMapProvider.currentRasterMap
+                            text: modelData
+
+                            onClicked: {
+                                PlatformAdaptor.vibrateBrief()
+                                rasterMenu.close()
+                                GeoMapProvider.currentRasterMap = checked ? modelData : ""
+                                flightMap.clearData()
+                            }
+
+                        }
+
+                        onObjectAdded: (index, object) => rasterMenu.insertItem(index, object)
+                        onObjectRemoved: (index, object) => rasterMenu.removeItem(object)
+                    }
+
+                }
+
+            }
+
             Item {
                 Layout.fillHeight: true
             }

@@ -111,6 +111,14 @@ Map {
             property string data: NOTAMProvider.geoJSON
         }
 
+        SourceParameter {
+            id: rasterTiles
+
+            styleId: "rasterTiles"
+            type: "raster"
+            property string url: GeoMapProvider.serverUrl + "/rasterMap/"
+        }
+
 
         // Map layers, sorted according to importance, from low to high
 
@@ -331,6 +339,18 @@ Map {
                 "text-color": "black",
                 "text-halo-width": 2,
                 "text-halo-color": "white"
+            }
+        }
+
+        LayerParameter {
+            id: rasterTileLayer
+
+            styleId: "rasterTileLayer"
+            type: "raster"
+            property string source: "rasterTiles"
+
+            layout: {
+                "visibility": 'visible' // GeoMapProvider.currentRasterMap !== "" ? 'visible' : 'none'
             }
         }
 

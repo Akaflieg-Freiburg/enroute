@@ -66,12 +66,6 @@ void GeoMaps::TileServer::addMbtilesFileSet(const QString& baseName, const QVect
 }
 
 
-void GeoMaps::TileServer::removeMbtilesFileSet(const QString& baseName)
-{
-    m_tileHandlers.take(baseName);
-}
-
-
 QString GeoMaps::TileServer::serverUrl()
 {
     auto ports = serverPorts();

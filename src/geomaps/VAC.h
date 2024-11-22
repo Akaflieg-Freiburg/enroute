@@ -71,7 +71,6 @@ public:
      */
     VAC(const QString& fName);
 
-
     //
     // Properties
     //
@@ -233,6 +232,6 @@ QDataStream& operator<<(QDataStream& stream, const GeoMaps::VAC& vac);
 /*! \brief Deserialization */
 QDataStream& operator>>(QDataStream& stream, GeoMaps::VAC& vac);
 
-} // namespace FileFormats
+} // namespace GeoMaps
 
 

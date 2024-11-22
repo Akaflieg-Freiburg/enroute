@@ -57,6 +57,13 @@ namespace FileFormats
 
     /*! \brief Standard constructor
      *
+     * Constructs an invalid object. The method tile() will return
+     * empty QByteArrays for this object.
+     */
+    MBTILES();
+
+    /*! \brief Standard constructor
+     *
      * Constructs an object from an MBTILES file. The file is supposed to exist
      * and remain intact throughout the existence of this class instance.
      *

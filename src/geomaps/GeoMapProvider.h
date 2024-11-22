@@ -24,6 +24,7 @@
 #include <QFuture>
 #include <QGeoRectangle>
 #include <QImage>
+#include <QProperty>
 #include <QQmlEngine>
 #include <QStandardPaths>
 #include <QTemporaryFile>
@@ -34,7 +35,9 @@
 #include "TileServer.h"
 #include "Waypoint.h"
 #include "fileFormats/MBTILES.h"
-#include "geomaps/VAC.h"
+
+using namespace Qt::Literals::StringLiterals;
+
 
 namespace GeoMaps
 {
@@ -94,11 +97,11 @@ public:
     // Properties
     //
 
-    /*! \brief List of base map MBTILES */
-    Q_PROPERTY(QList<QSharedPointer<FileFormats::MBTILES>> baseMapRasterTiles READ baseMapRasterTiles NOTIFY baseMapTilesChanged)
-
-    /*! \brief List of base map MBTILES */
-    Q_PROPERTY(QList<QSharedPointer<FileFormats::MBTILES>> baseMapVectorTiles READ baseMapVectorTiles NOTIFY baseMapTilesChanged)
+    /*! \brief Available Raster Maps
+     *
+     *  This property holds the names of raster maps that can be set with setCurrentRasterMap.
+     */
+    Q_PROPERTY(QStringList availableRasterMaps READ availableRasterMaps BINDABLE bindableAvailableRasterMaps)
 
     /*! \brief Copyright notice for the map
      *
@@ -107,12 +110,31 @@ public:
      */
     Q_PROPERTY(QString copyrightNotice READ copyrightNotice CONSTANT)
 
+    /*! \brief Current Raster Map
+     *
+     *  This property holds the name of the current raster map, or an empty string if
+     *  no map has been set. The raster map is exposed via the URL
+     *
+     *  GeoMapProvider.serverUrl() + "/rasterMap/"
+     *
+     *  @see The documentation of the setter for naming conventions.
+     */
+    Q_PROPERTY(QString currentRasterMap READ currentRasterMap WRITE setCurrentRasterMap BINDABLE bindableCurrentRasterMap)
+
     /*! \brief Union of all aviation maps in GeoJSON format
      *
      * This property holds all installed aviation maps in GeoJSON format,
      * combined into one GeoJSON document.
      */
     Q_PROPERTY(QByteArray geoJSON READ geoJSON NOTIFY geoJSONChanged)
+
+    /*! \brief URL under which this server is presently reachable
+     *
+     *  The property holds returns the Url where the server is listening to incoming
+     *  connections. This is typically string of the form "http://127.0.0.1:3470".
+     *  If the server is not listening to incoming connections, the string is empty.
+     */
+    Q_PROPERTY(QString serverUrl READ serverUrl NOTIFY serverUrlChanged)
 
     /*! \brief URL where a style file for the base map can be retrieved
      *
@@ -143,45 +165,63 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
-     * @returns Property baseMapRasterTiles
+     * @returns Property availableRasterMaps
      */
-    [[nodiscard]] QList<QSharedPointer<FileFormats::MBTILES>> baseMapRasterTiles() const
+    [[nodiscard]] QStringList availableRasterMaps() const
     {
-        return m_baseMapRasterTiles;
+        return m_availableRasterMaps.value();
     }
 
     /*! \brief Getter function for the property with the same name
      *
-     * @returns Property baseMapVectorTiles
+     * @returns Property availableRasterMaps
      */
-    [[nodiscard]] QList<QSharedPointer<FileFormats::MBTILES>> baseMapVectorTiles() const
+    [[nodiscard]] QBindable<QStringList> bindableAvailableRasterMaps() const
     {
-        return m_baseMapVectorTiles;
+        return &m_availableRasterMaps;
     }
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property copyrightNotice
      */
-    [[nodiscard]] static auto copyrightNotice() -> QString;
+    [[nodiscard]] static QString copyrightNotice();
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property currentRasterMap
+     */
+    [[nodiscard]] QString currentRasterMap() const {return m_currentRasterMap.value();}
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property currentRasterMap
+     */
+    [[nodiscard]] QBindable<QString> bindableCurrentRasterMap() const {return &m_currentRasterMap;}
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property geoJSON
      */
-    [[nodiscard]] auto geoJSON() -> QByteArray;
+    [[nodiscard]] QByteArray geoJSON();
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property serverUrl
+     */
+    [[nodiscard]] QString serverUrl() {return m_tileServer.serverUrl();}
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property styleFileURL
      */
-    [[nodiscard]] auto styleFileURL() -> QString;
+    [[nodiscard]] QString styleFileURL();
 
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property terrainMapTiles
      */
-    [[nodiscard]] auto terrainMapTiles() const -> QList<QSharedPointer<FileFormats::MBTILES>>
+    [[nodiscard]] QList<QSharedPointer<FileFormats::MBTILES>> terrainMapTiles() const
     {
         return m_terrainMapTiles;
     }
@@ -190,7 +230,19 @@ public:
      *
      * @returns Property waypoints
      */
-    [[nodiscard]] auto waypoints() -> QList<Waypoint>;
+    [[nodiscard]] QList<Waypoint> waypoints();
+
+
+
+    //
+    // Setter Methods
+    //
+
+    /*! \brief Setter function for the property with the same name
+     *
+     * @param mapName currentRasterMap
+     */
+    void setCurrentRasterMap(const QString& mapName);
 
 
 
@@ -206,7 +258,7 @@ public:
      * cooperation with QML the list returns contains elements of type QObject*,
      * and not Airspace*.
      */
-    Q_INVOKABLE QVariantList airspaces(const QGeoCoordinate &position);
+    [[nodiscard]] Q_INVOKABLE QVariantList airspaces(const QGeoCoordinate &position);
 
     /*! \brief Find closest waypoint to a given position
      *
@@ -220,7 +272,7 @@ public:
      * appropriate coordinate is returned. The method checks waypoints from the
      * map, and waypoints from the library.
      */
-    Q_INVOKABLE GeoMaps::Waypoint closestWaypoint(QGeoCoordinate position, const QGeoCoordinate &distPosition);
+    [[nodiscard]] Q_INVOKABLE GeoMaps::Waypoint closestWaypoint(QGeoCoordinate position, const QGeoCoordinate &distPosition);
 
     /*! \brief Create invalid waypoint
      *
@@ -229,7 +281,7 @@ public:
      *
      *  @returns An invalid waypoint
      */
-    Q_INVOKABLE static GeoMaps::Waypoint createWaypoint()
+    [[nodiscard]] Q_INVOKABLE static GeoMaps::Waypoint createWaypoint()
     {
         return {};
     }
@@ -247,7 +299,7 @@ public:
      *
      *  @returns Empty, but valid GeoJSON document
      */
-    Q_INVOKABLE static QByteArray emptyGeoJSON();
+    [[nodiscard]] Q_INVOKABLE static QByteArray emptyGeoJSON();
 
     /*! \brief Waypoints containing a given substring
      *
@@ -257,7 +309,7 @@ public:
      * the words in filter. The list contains both waypoints from the map, and
      * waypoints from the library and is sorted alphabetically.
      */
-    Q_INVOKABLE QVector<GeoMaps::Waypoint> filteredWaypoints(const QString& filter);
+    [[nodiscard]] Q_INVOKABLE QVector<GeoMaps::Waypoint> filteredWaypoints(const QString& filter);
 
     /*! Find a waypoint by its ICAO code
      *
@@ -267,7 +319,7 @@ public:
      * to the waypoint. The object is owned by this class
      * and must not be deleted.
      */
-    auto findByID(const QString& icaoID) -> Waypoint;
+    [[nodiscard]] Q_INVOKABLE Waypoint findByID(const QString& icaoID);
 
     /*! List of nearby waypoints
      *
@@ -279,18 +331,18 @@ public:
      * 20 items.  For better cooperation with QML the list does not contain
      * elements of type Waypoint*, but elements of type QObject*
      */
-    Q_INVOKABLE QList<GeoMaps::Waypoint> nearbyWaypoints(const QGeoCoordinate& position, const QString& type);
+    [[nodiscard]] Q_INVOKABLE QList<GeoMaps::Waypoint> nearbyWaypoints(const QGeoCoordinate& position, const QString& type);
 
 
 signals:
-    /*! \brief Notification signal for the property with the same name */
-    void baseMapTilesChanged();
-
     /*! \brief Notification signal for the property with the same name */
     void geoJSONChanged();
 
     /*! \brief Notification signal for the property with the same name */
     void styleFileURLChanged();
+
+    /*! \brief Notification signal for the property with the same name */
+    void serverUrlChanged();
 
     /*! \brief Notification signal for the property with the same name */
     void terrainMapTilesChanged();
@@ -325,7 +377,7 @@ private:
     QString _currentTerrainMapPath;
 
     // Tile Server
-    TileServer _tileServer;
+    TileServer m_tileServer;
 
     // Temporary file that holds the current style file
     QPointer<QTemporaryFile> m_styleFile;
@@ -340,8 +392,14 @@ private:
     // MBTILES
     //
     QList<QSharedPointer<FileFormats::MBTILES>> m_baseMapVectorTiles;
-    QList<QSharedPointer<FileFormats::MBTILES>> m_baseMapRasterTiles;
+    QProperty<QList<QSharedPointer<FileFormats::MBTILES>>> m_baseMapRasterTiles;
     QList<QSharedPointer<FileFormats::MBTILES>> m_terrainMapTiles;
+
+    QProperty<QStringList> m_availableRasterMaps;
+    QStringList computeAvailableRasterMaps();
+
+    QProperty<QString> m_currentRasterMap {u"non-empty place holder"_s};
+    QPropertyNotifier m_currentRasterMapNotifier; // Used to save the currentRasterMap
 
     // The data in this group is accessed by several threads. The following
     // classes (whose names ends in an underscore) are therefore protected by

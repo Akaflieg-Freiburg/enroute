@@ -128,9 +128,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7d59a1b7aacdf394f474efc42b746cde" id="r_a7d59a1b7aacdf394f474efc42b746cde"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7d59a1b7aacdf394f474efc42b746cde">rawText</a> () const</td></tr>
 <tr class="memdesc:a7d59a1b7aacdf394f474efc42b746cde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <br /></td></tr>
 <tr class="separator:a7d59a1b7aacdf394f474efc42b746cde"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aef295c0bf0b161adba1da85aee3a6134" id="r_aef295c0bf0b161adba1da85aee3a6134"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aef295c0bf0b161adba1da85aee3a6134">derivedData</a> (const <a class="el" href="classNavigation_1_1Aircraft.html">Navigation::Aircraft</a> &amp;aircraft) const</td></tr>
-<tr class="memdesc:aef295c0bf0b161adba1da85aee3a6134"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derived data, such as density height.  <br /></td></tr>
-<tr class="separator:aef295c0bf0b161adba1da85aee3a6134"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd600f7931215855efc014331d6c2aac" id="r_afd600f7931215855efc014331d6c2aac"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afd600f7931215855efc014331d6c2aac">derivedData</a> (const <a class="el" href="classNavigation_1_1Aircraft.html">Navigation::Aircraft</a> &amp;aircraft, bool showPerformanceWarning, bool explainPerformanceWarning) const</td></tr>
+<tr class="memdesc:afd600f7931215855efc014331d6c2aac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derived data, such as density height.  <br /></td></tr>
+<tr class="separator:afd600f7931215855efc014331d6c2aac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ea2e8731362d515f5730ba91c7b996c" id="r_a1ea2e8731362d515f5730ba91c7b996c"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1ea2e8731362d515f5730ba91c7b996c">summary</a> (const <a class="el" href="classNavigation_1_1Aircraft.html">Navigation::Aircraft</a> &amp;aircraft, const QDateTime &amp;currentTime) const</td></tr>
 <tr class="memdesc:a1ea2e8731362d515f5730ba91c7b996c"><td class="mdescLeft">&#160;</td><td class="mdescRight">One-line summary of the <a class="el" href="classWeather_1_1METAR.html" title="METAR report.">METAR</a>.  <br /></td></tr>
 <tr class="separator:a1ea2e8731362d515f5730ba91c7b996c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -317,8 +317,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>rawTextChanged</b> ()
 
 </div>
 </div>
-<a id="aef295c0bf0b161adba1da85aee3a6134" name="aef295c0bf0b161adba1da85aee3a6134"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aef295c0bf0b161adba1da85aee3a6134">&#9670;&#160;</a></span>derivedData()</h2>
+<a id="afd600f7931215855efc014331d6c2aac" name="afd600f7931215855efc014331d6c2aac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd600f7931215855efc014331d6c2aac">&#9670;&#160;</a></span>derivedData()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -329,8 +329,17 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>rawTextChanged</b> ()
         <tr>
           <td class="memname">Q_INVOKABLE QString Weather::METAR::derivedData </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classNavigation_1_1Aircraft.html">Navigation::Aircraft</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>aircraft</em></span></td><td>)</td>
-          <td> const</td>
+          <td class="paramtype">const <a class="el" href="classNavigation_1_1Aircraft.html">Navigation::Aircraft</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>aircraft</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>showPerformanceWarning</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>explainPerformanceWarning</em></span>&#160;) const</td>
         </tr>
       </table>
   </td>
@@ -344,10 +353,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>rawTextChanged</b> ()
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">aircraft</td><td>Current aircraft, used to determine appropriate units</td></tr>
+    <tr><td class="paramname">showPerformanceWarning</td><td>If true, then show warning if density altitude severely affect aircraft performance.</td></tr>
+    <tr><td class="paramname">explainPerformanceWarning</td><td>If true, add text to explain performance degrade</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Human-readable, translated rich text </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Human-readable, translated rich text. The text contains two links, to 'hidePerformanceWarning' and 'hideExplanation'. When clicked, the user-facing text should be replaced, if the appropriate parameter set to 'false'. </dd></dl>
 
 </div>
 </div>

@@ -211,62 +211,62 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>    <span class="comment">// Methods</span></div>
 <div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>    <span class="comment">//</span></div>
 <div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span> </div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno"><a class="line" href="classWeather_1_1METAR.html#aef295c0bf0b161adba1da85aee3a6134">  236</a></span>    [[nodiscard]] Q_INVOKABLE QString <a class="code hl_function" href="classWeather_1_1METAR.html#aef295c0bf0b161adba1da85aee3a6134">derivedData</a>(<span class="keyword">const</span> <a class="code hl_class" href="classNavigation_1_1Aircraft.html">Navigation::Aircraft</a>&amp; aircraft) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span> </div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno"><a class="line" href="classWeather_1_1METAR.html#a1ea2e8731362d515f5730ba91c7b996c">  247</a></span>    [[nodiscard]] Q_INVOKABLE QString <a class="code hl_function" href="classWeather_1_1METAR.html#a1ea2e8731362d515f5730ba91c7b996c">summary</a>(<span class="keyword">const</span> <a class="code hl_class" href="classNavigation_1_1Aircraft.html">Navigation::Aircraft</a>&amp; aircraft, <span class="keyword">const</span> QDateTime&amp; currentTime) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span> </div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span><span class="keyword">protected</span>:</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    <span class="comment">// This constructor reads a XML stream, as provided by the Aviation Weather</span></div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>    <span class="comment">// Center&#39;s Text Data Server, https://www.aviationweather.gov/dataserver</span></div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>    <span class="keyword">explicit</span> <a class="code hl_function" href="classWeather_1_1METAR.html#a64afc20634688882da83c6d067480287">METAR</a>(QXmlStreamReader&amp; xml, QObject* parent = <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span> </div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>    <span class="comment">// This constructor reads a serialized METAR from a QDataStream</span></div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>    <span class="keyword">explicit</span> <a class="code hl_function" href="classWeather_1_1METAR.html#a64afc20634688882da83c6d067480287">METAR</a>(QDataStream&amp; inputStream, QObject* parent = <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span> </div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>    Q_DISABLE_COPY_MOVE(<a class="code hl_class" href="classWeather_1_1METAR.html">METAR</a>)</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span> </div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>    <span class="comment">// Decoded METAR text</span></div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>    QString _decoded;</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno"><a class="line" href="classWeather_1_1METAR.html#afd600f7931215855efc014331d6c2aac">  245</a></span>    [[nodiscard]] Q_INVOKABLE QString <a class="code hl_function" href="classWeather_1_1METAR.html#afd600f7931215855efc014331d6c2aac">derivedData</a>(<span class="keyword">const</span> <a class="code hl_class" href="classNavigation_1_1Aircraft.html">Navigation::Aircraft</a>&amp; aircraft, <span class="keywordtype">bool</span> showPerformanceWarning, <span class="keywordtype">bool</span> explainPerformanceWarning) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span> </div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno"><a class="line" href="classWeather_1_1METAR.html#a1ea2e8731362d515f5730ba91c7b996c">  256</a></span>    [[nodiscard]] Q_INVOKABLE QString <a class="code hl_function" href="classWeather_1_1METAR.html#a1ea2e8731362d515f5730ba91c7b996c">summary</a>(<span class="keyword">const</span> <a class="code hl_class" href="classNavigation_1_1Aircraft.html">Navigation::Aircraft</a>&amp; aircraft, <span class="keyword">const</span> QDateTime&amp; currentTime) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span> </div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span><span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    <span class="comment">// This constructor reads a XML stream, as provided by the Aviation Weather</span></div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>    <span class="comment">// Center&#39;s Text Data Server, https://www.aviationweather.gov/dataserver</span></div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>    <span class="keyword">explicit</span> <a class="code hl_function" href="classWeather_1_1METAR.html#a64afc20634688882da83c6d067480287">METAR</a>(QXmlStreamReader&amp; xml, QObject* parent = <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span> </div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>    <span class="comment">// Flight category, as returned by the Aviation Weather Center</span></div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>    <a class="code hl_enumeration" href="classWeather_1_1METAR.html#a2920e2fbe116d87657c2c51da0094c0f">FlightCategory</a> m_flightCategory {<a class="code hl_enumvalue" href="classWeather_1_1METAR.html#a2920e2fbe116d87657c2c51da0094c0fab686b1eb9dd11089f42a9d9290788d13">unknown</a>};</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>    <span class="comment">// This constructor reads a serialized METAR from a QDataStream</span></div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>    <span class="keyword">explicit</span> <a class="code hl_function" href="classWeather_1_1METAR.html#a64afc20634688882da83c6d067480287">METAR</a>(QDataStream&amp; inputStream, QObject* parent = <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span> </div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>    <span class="comment">// Gust speed, as returned by the Aviation Weather Center</span></div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>    <a class="code hl_class" href="classUnits_1_1Speed.html">Units::Speed</a> m_gust;</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>    Q_DISABLE_COPY_MOVE(<a class="code hl_class" href="classWeather_1_1METAR.html">METAR</a>)</div>
 <div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span> </div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>    <span class="comment">// Station ID, as returned by the Aviation Weather Center</span></div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>    QString m_ICAOCode;</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>    <span class="comment">// Decoded METAR text</span></div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>    QString _decoded;</div>
 <div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span> </div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>    <span class="comment">// Station coordinate, as returned by the Aviation Weather Center</span></div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>    QGeoCoordinate m_location;</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>    <span class="comment">// Flight category, as returned by the Aviation Weather Center</span></div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>    <a class="code hl_enumeration" href="classWeather_1_1METAR.html#a2920e2fbe116d87657c2c51da0094c0f">FlightCategory</a> m_flightCategory {<a class="code hl_enumvalue" href="classWeather_1_1METAR.html#a2920e2fbe116d87657c2c51da0094c0fab686b1eb9dd11089f42a9d9290788d13">unknown</a>};</div>
 <div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span> </div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>    <span class="comment">// Observation time, as returned by the Aviation Weather Center</span></div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>    QDateTime m_observationTime;</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>    <span class="comment">// Gust speed, as returned by the Aviation Weather Center</span></div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>    <a class="code hl_class" href="classUnits_1_1Speed.html">Units::Speed</a> m_gust;</div>
 <div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span> </div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>    <span class="comment">// QNH in hPa, as returned by the Aviation Weather Center</span></div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>    <a class="code hl_class" href="classUnits_1_1Pressure.html">Units::Pressure</a> m_qnh;</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>    <span class="comment">// Station ID, as returned by the Aviation Weather Center</span></div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>    QString m_ICAOCode;</div>
 <div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span> </div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    <span class="comment">// Raw METAR text, as returned by the Aviation Weather Center</span></div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>    QString m_raw_text;</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    <span class="comment">// Station coordinate, as returned by the Aviation Weather Center</span></div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>    QGeoCoordinate m_location;</div>
 <div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span> </div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>    <span class="comment">// Wind speed, as returned by the Aviation Weather Center</span></div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>    <a class="code hl_class" href="classUnits_1_1Speed.html">Units::Speed</a> m_wind;</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>    <span class="comment">// Observation time, as returned by the Aviation Weather Center</span></div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>    QDateTime m_observationTime;</div>
 <div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span> </div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>    <span class="comment">// Temperature, as returned by the Aviation Weather Center</span></div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>    <a class="code hl_class" href="classUnits_1_1Temperature.html">Units::Temperature</a> m_temperature;</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>    <span class="comment">// QNH in hPa, as returned by the Aviation Weather Center</span></div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>    <a class="code hl_class" href="classUnits_1_1Pressure.html">Units::Pressure</a> m_qnh;</div>
 <div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span> </div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>    <span class="comment">// Dewpoint, as returned by the Aviation Weather Center</span></div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>    <a class="code hl_class" href="classUnits_1_1Temperature.html">Units::Temperature</a> m_dewpoint;</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>    <span class="comment">// Raw METAR text, as returned by the Aviation Weather Center</span></div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>    QString m_raw_text;</div>
 <div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span> </div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>    <span class="comment">// Density altitude, derived data</span></div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>    <a class="code hl_class" href="classUnits_1_1Distance.html">Units::Distance</a> m_densityAltitude;</div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>};</div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>    <span class="comment">// Wind speed, as returned by the Aviation Weather Center</span></div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>    <a class="code hl_class" href="classUnits_1_1Speed.html">Units::Speed</a> m_wind;</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span> </div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>    <span class="comment">// Temperature, as returned by the Aviation Weather Center</span></div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>    <a class="code hl_class" href="classUnits_1_1Temperature.html">Units::Temperature</a> m_temperature;</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span> </div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>    <span class="comment">// Dewpoint, as returned by the Aviation Weather Center</span></div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>    <a class="code hl_class" href="classUnits_1_1Temperature.html">Units::Temperature</a> m_dewpoint;</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span> </div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>    <span class="comment">// Density altitude, derived data</span></div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>    <a class="code hl_class" href="classUnits_1_1Distance.html">Units::Distance</a> m_densityAltitude;</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>};</div>
 </div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span> </div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>QDataStream&amp; operator&lt;&lt;(QDataStream&amp; stream, <span class="keyword">const</span> METAR&amp; metar);</div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span> </div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>} <span class="comment">// namespace Weather</span></div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span> </div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>QDataStream&amp; operator&lt;&lt;(QDataStream&amp; stream, <span class="keyword">const</span> METAR&amp; metar);</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span> </div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>} <span class="comment">// namespace Weather</span></div>
 <div class="ttc" id="aclassNavigation_1_1Aircraft_html"><div class="ttname"><a href="classNavigation_1_1Aircraft.html">Navigation::Aircraft</a></div><div class="ttdoc">This extremely simple class holds a few numbers that describe an aircraft.</div><div class="ttdef"><b>Definition</b> <a href="Aircraft_8h_source.html#l00035">Aircraft.h:35</a></div></div>
 <div class="ttc" id="aclassUnits_1_1Distance_html"><div class="ttname"><a href="classUnits_1_1Distance.html">Units::Distance</a></div><div class="ttdoc">Convenience class for distance computations.</div><div class="ttdef"><b>Definition</b> <a href="Distance_8h_source.html#l00035">Distance.h:35</a></div></div>
 <div class="ttc" id="aclassUnits_1_1Pressure_html"><div class="ttname"><a href="classUnits_1_1Pressure.html">Units::Pressure</a></div><div class="ttdoc">Convenience class for pressure computations.</div><div class="ttdef"><b>Definition</b> <a href="Pressure_8h_source.html#l00035">Pressure.h:35</a></div></div>
@@ -299,8 +299,8 @@ $(function(){ initResizable(false); });
 <div class="ttc" id="aclassWeather_1_1METAR_html_acd6278e6a3b9d64813e6920258c91910"><div class="ttname"><a href="classWeather_1_1METAR.html#acd6278e6a3b9d64813e6920258c91910">Weather::METAR::coordinate</a></div><div class="ttdeci">QGeoCoordinate coordinate</div><div class="ttdoc">Geographical coordinate of the station reporting this METAR.</div><div class="ttdef"><b>Definition</b> <a href="#l00095">METAR.h:95</a></div></div>
 <div class="ttc" id="aclassWeather_1_1METAR_html_ad41f584c576436f2f636b60534444f9d"><div class="ttname"><a href="classWeather_1_1METAR.html#ad41f584c576436f2f636b60534444f9d">Weather::METAR::flightCategoryColor</a></div><div class="ttdeci">QString flightCategoryColor</div><div class="ttdoc">Suggested color describing the flight category for this METAR.</div><div class="ttdef"><b>Definition</b> <a href="#l00116">METAR.h:116</a></div></div>
 <div class="ttc" id="aclassWeather_1_1METAR_html_ae95f45f5587dd3adeac389a1dcd60d03"><div class="ttname"><a href="classWeather_1_1METAR.html#ae95f45f5587dd3adeac389a1dcd60d03">Weather::METAR::flightCategory</a></div><div class="ttdeci">FlightCategory flightCategory</div><div class="ttdoc">Flight category for this METAR.</div><div class="ttdef"><b>Definition</b> <a href="#l00119">METAR.h:119</a></div></div>
-<div class="ttc" id="aclassWeather_1_1METAR_html_aef295c0bf0b161adba1da85aee3a6134"><div class="ttname"><a href="classWeather_1_1METAR.html#aef295c0bf0b161adba1da85aee3a6134">Weather::METAR::derivedData</a></div><div class="ttdeci">Q_INVOKABLE QString derivedData(const Navigation::Aircraft &amp;aircraft) const</div><div class="ttdoc">Derived data, such as density height.</div></div>
 <div class="ttc" id="aclassWeather_1_1METAR_html_af6225b0e172d3ad0a20f65ae1e42cdad"><div class="ttname"><a href="classWeather_1_1METAR.html#af6225b0e172d3ad0a20f65ae1e42cdad">Weather::METAR::isValid</a></div><div class="ttdeci">bool isValid() const</div><div class="ttdoc">Getter function for property with the same name.</div></div>
+<div class="ttc" id="aclassWeather_1_1METAR_html_afd600f7931215855efc014331d6c2aac"><div class="ttname"><a href="classWeather_1_1METAR.html#afd600f7931215855efc014331d6c2aac">Weather::METAR::derivedData</a></div><div class="ttdeci">Q_INVOKABLE QString derivedData(const Navigation::Aircraft &amp;aircraft, bool showPerformanceWarning, bool explainPerformanceWarning) const</div><div class="ttdoc">Derived data, such as density height.</div></div>
 <div class="ttc" id="aclassWeather_1_1WeatherDataProvider_html"><div class="ttname"><a href="classWeather_1_1WeatherDataProvider.html">Weather::WeatherDataProvider</a></div><div class="ttdoc">WeatherDataProvider, weather service manager.</div><div class="ttdef"><b>Definition</b> <a href="WeatherDataProvider_8h_source.html#l00065">WeatherDataProvider.h:65</a></div></div>
 <div class="ttc" id="anamespaceUnits_html"><div class="ttname"><a href="namespaceUnits.html">Units</a></div><div class="ttdoc">Conversion between units used in aviation.</div><div class="ttdef"><b>Definition</b> <a href="Angle_8h_source.html#l00034">Angle.h:34</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

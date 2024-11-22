@@ -268,7 +268,7 @@ public:
      * cooperation with QML the list returns contains elements of type QObject*,
      * and not Airspace*.
      */
-    Q_INVOKABLE QVector<QVariantList> airspaces(const QVector<QGeoCoordinate>& positions, QSet<QString> relevantCategories);
+    [[nodiscard]] Q_INVOKABLE QVector<QVariantList> airspaces(const QVector<QGeoCoordinate>& positions, const QSet<QString>& relevantCategories);
 
     /*! \brief Find closest waypoint to a given position
      *

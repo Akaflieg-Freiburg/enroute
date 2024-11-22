@@ -29,6 +29,13 @@
 using namespace Qt::Literals::StringLiterals;
 
 
+FileFormats::MBTILES::MBTILES()
+{
+    m_file = QSharedPointer<QFile>(new QFile());
+    m_databaseConnectionName = QStringLiteral("GeoMaps::MBTILES::format invalid %1").arg(QRandomGenerator::global()->generate());
+    setError(u"Called FileFormats::MBTILES::MBTILES(). Constructed invalid MBTILES object via standard constructor."_s);
+}
+
 FileFormats::MBTILES::MBTILES(const QString& fileName)
     : m_fileName(fileName)
 {
@@ -94,6 +101,10 @@ FileFormats::MBTILES::~MBTILES()
 auto FileFormats::MBTILES::attribution() -> QString
 {
     auto m_dataBase = QSqlDatabase::database(m_databaseConnectionName);
+    if (!m_dataBase.open())
+    {
+        return {};
+    }
     QSqlQuery query(m_dataBase);
     if (query.exec(QStringLiteral("select name, value from metadata where name='attribution';")))
     {
@@ -108,6 +119,10 @@ auto FileFormats::MBTILES::attribution() -> QString
 auto FileFormats::MBTILES::format() -> FileFormats::MBTILES::Format
 {
     auto m_dataBase = QSqlDatabase::database(m_databaseConnectionName);
+    if (!m_dataBase.open())
+    {
+        return {};
+    }
     QSqlQuery query(m_dataBase);
     if (query.exec(QStringLiteral("select name, value from metadata where name='format';")))
     {
@@ -154,6 +169,10 @@ auto FileFormats::MBTILES::info() -> QString
 auto FileFormats::MBTILES::tile(int zoom, int x, int y) -> QByteArray
 {
     auto m_dataBase = QSqlDatabase::database(m_databaseConnectionName);
+    if (!m_dataBase.open())
+    {
+        return {};
+    }
     QSqlQuery query(m_dataBase);
     auto yflipped = (1<<zoom)-1-y;
     auto queryString = QStringLiteral("select tile_data from tiles where zoom_level=%1 and tile_row=%3 and tile_column=%2;").arg(zoom).arg(x).arg(yflipped);

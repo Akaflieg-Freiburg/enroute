@@ -88,17 +88,17 @@ Interactive Controls
 In addition to the pan and pinch gestures, you can use the following buttons to
 control the app.
 
-===================================== ========
-Symbol                                Function
-===================================== ========
-.. image:: ic_menu.png                Open main menu
-.. image:: NorthArrow.png             Switch between display modes **north up** and **track up**.
-.. image:: ic_my_location.png         Center map about own position.
-.. image:: ic_add.png                 Zoom in
-.. image:: ic_remove.png              Zoom out
-.. image:: ic_airplanemode_active.png Warning when the app is not connected to a traffic data receiver.
-===================================== ========
-
+========================================================== ========
+Symbol                                                     Function
+========================================================== ========
+.. image:: ../01-gettingStarted/ic_menu.png                Open the main menu.
+.. image:: ../01-gettingStarted/NorthArrow.png             Switch between modes **north up** and **track up**.
+.. image:: ../01-gettingStarted/ic_layers.png              Open the raster map menu. Only visible when raster maps are installed.
+.. image:: ../01-gettingStarted/ic_my_location.png         Set autopan mode to "on".
+.. image:: ../01-gettingStarted/ic_add.png                 Zoom in.
+.. image:: ../01-gettingStarted/ic_remove.png              Zoom out.
+.. image:: ../01-gettingStarted/ic_airplanemode_active.png Open the traffic receiver status page. Only visible when the app is not connected to a traffic data receiver. 
+========================================================== ========
 
 
 .. _firstFlightWaypointInfo:
@@ -128,6 +128,9 @@ DIST          Distance to the waypoint
 QUJ           True track to the waypoint
 E             Minimal gliding ratio required to reach waypoint in 300 m AGL (disregarding terrain)
 ============= ================================
+
+Click on the link 'full report' for a list of NOTAMs relevant for the EDFE
+airfield.
 
 
 Go Flying!

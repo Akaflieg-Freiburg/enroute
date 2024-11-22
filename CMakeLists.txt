@@ -15,12 +15,13 @@ option(QTDEPLOY "Generate and run Qt deployment scripts" OFF)
 # Project data
 #
 
-project(enroute VERSION 2.32.0)
+project(enroute VERSION 2.32.1)
 set(APP_ID de.akaflieg_freiburg.enroute)
 set(DISPLAY_NAME "Enroute")
 math(EXPR PROJECT_VERSION_CODE 10000*${PROJECT_VERSION_MAJOR}+100*${PROJECT_VERSION_MINOR}+${PROJECT_VERSION_PATCH})
 add_compile_definitions(PROJECT_VERSION="${PROJECT_VERSION}")
 message("CMAKE_OSX_DEPLOYMENT_TARGET: ${CMAKE_OSX_DEPLOYMENT_TARGET}")
+
 
 
 #
@@ -33,7 +34,6 @@ include(GNUInstallDirs)
 #
 # Qt Setup
 #
-
 
 find_package(Qt6 6.8 COMPONENTS Bluetooth Concurrent Core Core5Compat Gui HttpServer LinguistTools Location Positioning Quick QuickControls2 QuickWidgets Sql Svg TextToSpeech Widgets REQUIRED)
 set(QT_VERSION ${Qt6Core_VERSION})
@@ -72,6 +72,7 @@ qt_policy(SET QTP0004 NEW)
 find_package(libzip REQUIRED)
 find_package(Git REQUIRED)
 find_package(QMapLibre COMPONENTS Location REQUIRED)
+
 
 if(IOS)
     set(PRODUCT_BUNDLE_IDENTIFIER de.akafliegfreiburg.enroute)

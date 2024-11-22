@@ -64,7 +64,7 @@ public:
      * This property holds the list of all installed VACs, sorted alphabetically
      * by name.
      */
-    Q_PROPERTY(QVector<GeoMaps::VAC> vacs READ vacs NOTIFY dataChanged)
+    Q_PROPERTY(QList<GeoMaps::VAC> vacs READ vacs NOTIFY dataChanged)
 
 
     //
@@ -81,7 +81,7 @@ public:
      *
      * @returns Property vacs
      */
-    [[nodiscard]] QVector<GeoMaps::VAC> vacs();
+    [[nodiscard]] QList<GeoMaps::VAC> vacs();
 
 
 

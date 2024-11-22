@@ -52,11 +52,10 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../03-tutorialAdvanced.html">Advanced Use</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="01-customMapsVector.html">Import Custom Vector Maps</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Import Custom Raster Maps</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#import-maps">Import Maps</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mbtiles-map-data-sources">MBTILES Map Data Sources</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#raster-maps-in-geotiff-format">Raster Maps in GeoTIFF Format</a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="#mbtiles-map-data-sources">MBTILES Map Data Sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#import-raster-maps">Import Raster Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manage-imported-raster-maps">Manage Imported Raster Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#use-imported-raster-maps">Use Imported Raster Maps</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="03-airspace.html">Import Airspace Data</a></li>
@@ -106,7 +105,7 @@
            <div itemprop="articleBody">
              
   <section id="import-custom-raster-maps">
-<h1>Import Custom Raster Maps<a class="headerlink" href="#import-custom-raster-maps" title="Link to this heading"></a></h1>
+<span id="importraster"></span><h1>Import Custom Raster Maps<a class="headerlink" href="#import-custom-raster-maps" title="Link to this heading"></a></h1>
 <p><strong>Enroute Flight Navigation</strong> comes with a set of general-purpose base maps in
 vector format, which are shown together with the aviation data in a style that
 we consider suitable for most aviation purposes.  Still, there might be
@@ -116,89 +115,45 @@ situations where a user would like to use their own base maps.</p>
 countries.</p></li>
 <li><p>Some users might prefer raster maps that follow a different style.</p></li>
 </ul>
-<p><strong>Enroute Flight Navigation</strong> is able to import MBTILES file containing raster
+<p><strong>Enroute Flight Navigation</strong> is able to import MBTILES files containing raster
 data.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>In order to avoid confusion, we decided against mixing raster- and
-vector maps. As soon as a single raster map is installed, the moving map of
-<strong>Enroute Flight Navigation</strong> will <strong>only</strong> display that raster map.  In
-particular, the moving map will no longer display the aviation data layer. Even
-though they become invisible, we still recommend installing our regular maps,
-because <strong>Enroute Flight Navigation</strong> needs the data to provide airspace and
-waypoint information.</p>
+<p>Even if you decide to use raster maps, we still recommend installing our
+regular maps, because <strong>Enroute Flight Navigation</strong> needs the data to provide
+airspace and waypoint information.</p>
 </div>
-<section id="import-maps">
-<h2>Import Maps<a class="headerlink" href="#import-maps" title="Link to this heading"></a></h2>
-<p>Transfer the MBTILES file to your device and open the file on your device.  The
-Section <a class="reference internal" href="../06-referenceWorkflow/01-share.html#importdata"><span class="std std-ref">Import Data</span></a> explains the process in detail.</p>
-<p>To view and manage your maps, open the main menu and go to “Library/Maps and
-Data”.</p>
-</section>
 <section id="mbtiles-map-data-sources">
 <h2>MBTILES Map Data Sources<a class="headerlink" href="#mbtiles-map-data-sources" title="Link to this heading"></a></h2>
 <p>The website <a class="reference external" href="https://www.openflightmaps.org/https://www.openflightmaps.org">open flightmaps</a> provides
 excellent aviation maps in raster format for a variety of European countries, as
-well as South Africa and Namibia.</p>
-<section id="raster-maps-in-geotiff-format">
-<h3>Raster Maps in GeoTIFF Format<a class="headerlink" href="#raster-maps-in-geotiff-format" title="Link to this heading"></a></h3>
-<p>We are aware of websites that offer raster maps in GeoTIFF format. At present,
-<strong>Enroute Flight Navigation</strong> cannot handle GeoTIFF files, but there are tools
-that convert GeoTIFF to MBTILES.</p>
-<ul class="simple">
-<li><p>Official ICAO maps for Denmark are available from the danish <a class="reference external" href="https://aim.naviair.dk/en/charts/">AIM Naviair</a></p></li>
-<li><p>Official ICAO maps for Spain are available from the Spanish <a class="reference external" href="https://aip.enaire.es/AIP/CartasInsigniaImpresas-es.html">Insignia Servicio
-de Información Aeronáutica</a></p></li>
-<li><p>Official ICAO maps for Switzerland are available from the Swiss <a class="reference external" href="https://www.swisstopo.admin.ch/en/geodata/aero/icao.html">Federal
-Office of Topography swisstopo</a></p></li>
-<li><p>Official VFR raster charts are available from the <a class="reference external" href="https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/vfr/">United States Federal
-Aviation Administration</a></p></li>
-</ul>
-<p>Users have successfully used the free tool <a class="reference external" href="https://qgis.org/en/site">QGIS</a> to
-convert GeoTIFF files to MBTILES, which can then be used with <strong>Enroute Flight
-Navigation</strong>.</p>
-<figure class="align-center" id="id1">
-<span id="qgis-img"></span><a class="reference internal image-reference" href="../_images/QGIS-MainWindow.png"><img alt="../_images/QGIS-MainWindow.png" src="../_images/QGIS-MainWindow.png" style="width: 884.0px; height: 485.6px;" /></a>
-<figcaption>
-<p><span class="caption-text">QGIS Main Window</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-<p>Since QGIS is a powerful tool that is not always easy to use, one user has
-kindly provided the following short tutorial.</p>
-<ul class="simple">
-<li><p>Install QGIS on your desktop computer. On Fedora Linux, we found that the
-packages provided by the default software repository were outdated and lacked
-the necessary functionality.  We followed the installations instructions on
-the <a class="reference external" href="https://qgis.org/en/site/forusers/download.html">QGIS website</a> to
-install a current and full-featured version of the program.</p></li>
-<li><p>Open QGIS. Create a new project and open the GeoTIFF file in QGIS by
-dragging-and-dropping the GeoTIFF file into the QGIS window. The content of
-the GeoTIFF file should become visible.</p></li>
-<li><p>Choose the menu item “Project/Properties…” to open the dialog window “Project
-Properties”. There, set the coordinate reference system to EPSG:3857. To
-locate the reference system, use the text field “Filter” and search for
-EPSG:3857.</p></li>
-<li><p>Use the menu items under “View/Panels/…” to ensure that the panels “Layer” and
-“Layer Styling” are visible. Select the layer of your GeoTIFF file and in the
-“Layer” panel.  Then, go to the “Layer Styling” panel and set “Resampling” to
-“Bilinear” for better image render quality.</p></li>
-<li><p>Use the menu items under “View/Panels/…” to ensure that the panel “Processing
-Toolbox” is visible. Inside the “Processing Toolbox”, double-click on “Raster
-Tools→Generate XYZ Tiles (MBTILES)”.  The dialog “Generate XYZ Tiles
-(MBTILES)” will open. Fill the necessary parameters, as seen in the image
-below. We found the function “Draw on Map Canvas” useful to specify the map
-extent. Pay attention to the maximum zoom level, as the time and file size
-increase significantly after zoom level 12. Depending on the size of your
-GeoTIFF and on the number of zoom levels you use, it may take a while to
-generate the MBTILES file.</p></li>
-</ul>
-<figure class="align-center" id="id2">
-<span id="qgis-gen-img"></span><a class="reference internal image-reference" href="../_images/QGIS-GenerateMBTILES.png"><img alt="../_images/QGIS-GenerateMBTILES.png" src="../_images/QGIS-GenerateMBTILES.png" style="width: 518.4px; height: 599.2px;" /></a>
-<figcaption>
-<p><span class="caption-text">QGIS Generate Tiles Dialog</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
-</figcaption>
-</figure>
+well as South Africa and Namibia.  We are aware of aviation authorities that
+offer ICAO raster maps in GeoTIFF format. The Section <a class="reference internal" href="../04-additionalSoftware/03-mapConversion.html#mapconversiontools"><span class="std std-ref">Map Generation and Conversion Tools</span></a>
+explains how these can be converted to the MBTILES format suitable for <strong>Enroute
+Flight Navigation</strong>.</p>
 </section>
+<section id="import-raster-maps">
+<h2>Import Raster Maps<a class="headerlink" href="#import-raster-maps" title="Link to this heading"></a></h2>
+<p>Transfer the MBTILES file to your device and open the file on your device.  The
+Section <a class="reference internal" href="../06-referenceWorkflow/01-share.html#importdata"><span class="std std-ref">Import Data</span></a> explains the process in detail.</p>
+</section>
+<section id="manage-imported-raster-maps">
+<h2>Manage Imported Raster Maps<a class="headerlink" href="#manage-imported-raster-maps" title="Link to this heading"></a></h2>
+<p>To manage the raster maps installed in <strong>Enroute Flight Navigation</strong>, open the
+main menu and go to “Library/Maps and Data”.</p>
+</section>
+<section id="use-imported-raster-maps">
+<h2>Use Imported Raster Maps<a class="headerlink" href="#use-imported-raster-maps" title="Link to this heading"></a></h2>
+<p>As soon as raster maps are installed, a button with the label <img alt="ico1" src="../_images/ic_layers.png" /> will become
+visible on the moving map page.  A tap on the button will open the Raster Map
+Menu, which shows all raster maps installed.  Tap on an entry to show the
+relevant map inside the moving map display.  Tap on the same entry again to hide
+it.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In order to avoid confusion, at most one raster map will be shown at any given
+time.</p>
+</div>
 </section>
 </section>
 

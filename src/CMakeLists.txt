@@ -223,7 +223,7 @@ set(SOURCES
     weather/Wind.cpp
 
     ${HEADERS}
-    )
+)
 
 #
 # We use this macro here to avoid creating extremely large C++ files with binary content
@@ -232,7 +232,7 @@ set(SOURCES
 qt_add_big_resources(SOURCES
     ${CMAKE_CURRENT_BINARY_DIR}/flightMapFonts.qrc
     ${CMAKE_CURRENT_BINARY_DIR}/ressources.qrc
-    )
+)
 
 
 #
@@ -249,66 +249,68 @@ if(ANDROID)
         platform/SafeInsets_Android.cpp
         traffic/TrafficDataSource_SerialPort.h
         traffic/TrafficDataSource_SerialPort.cpp
-        android/src/de/akaflieg_freiburg/enroute/IntentLauncher.java
         android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java
         android/src/de/akaflieg_freiburg/enroute/ShareActivity.java
         android/src/de/akaflieg_freiburg/enroute/ShareUtils.java
-        )
-
-    # Copy manual and other files into the Android directories
-    file(COPY ${CMAKE_SOURCE_DIR}/generatedSources/manual DESTINATION android/assets)
-    file(COPY ${CMAKE_SOURCE_DIR}/generatedSources/src/android DESTINATION .)
-    file(COPY ${CMAKE_SOURCE_DIR}/src/android DESTINATION .)
-
-    # Configure files
-    configure_file(AndroidManifest.xml.in android/AndroidManifest.xml)
-    configure_file(${CMAKE_SOURCE_DIR}/3rdParty/material-design-icons/action/drawable-hdpi/ic_info_black_24dp.png ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable/ic_info.png COPYONLY)
-    configure_file(${CMAKE_SOURCE_DIR}/3rdParty/material-design-icons/file/drawable-hdpi/ic_file_download_black_24dp.png ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable/ic_file_download.png COPYONLY)
-    configure_file(${CMAKE_SOURCE_DIR}/3rdParty/material-design-icons/alert/drawable-hdpi/ic_error_black_24dp.png ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable/ic_error.png COPYONLY)
-    configure_file(${CMAKE_SOURCE_DIR}/3rdParty/material-design-icons/alert/drawable-hdpi/ic_warning_black_24dp.png ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable/ic_warning.png COPYONLY)
-    configure_file(android/src/de/akaflieg_freiburg/enroute/IntentLauncher.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
-    configure_file(android/src/de/akaflieg_freiburg/enroute/ShareActivity.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
-    configure_file(android/src/de/akaflieg_freiburg/enroute/ShareUtils.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
-    configure_file(android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
-
-
-    # The android target require a few additional variables
-    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android" CACHE INTERNAL "")
-
-    # Compile definitions
-    add_compile_definitions(MANUAL_LOCATION="/android_asset/manual")
-
-    qt_add_executable(${PROJECT_NAME} ${SOURCES} ${ANDROID_EXTRA_SOURCES}
-    )
-    target_link_libraries(${PROJECT_NAME}
-        PRIVATE
-        Qt6::Bluetooth
-        Qt6::Concurrent
-        Qt6::Core
-        Qt6::Core5Compat
-        Qt6::HttpServer
-        Qt6::Positioning
-        Qt6::Quick
-        Qt6::QuickControls2
-        Qt6::Sensors
-        Qt6::SerialPort
-        Qt6::Sql
-        Qt6::Svg
-        Qt6::TextToSpeech
-        Qt6::WebView
-        QMapLibre::Location
-        libzip::zip
-    )
-    qmaplibre_location_setup_plugins(${PROJECT_NAME})
-    set_target_properties(${PROJECT_NAME} PROPERTIES
-        QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android"
-        QT_ANDROID_TARGET_SDK_VERSION 34
-        QT_ANDROID_MIN_SDK_VERSION 26
     )
 
-    # Include SSL Libraries
-    set(ANDROID_TARGET_ARCH ${CMAKE_ANDROID_ARCH_ABI})
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/android_openssl dummyBinaryDir)
+# Copy manual and other files into the Android directories
+file(COPY ${CMAKE_SOURCE_DIR}/generatedSources/manual DESTINATION android/assets)
+file(COPY ${CMAKE_SOURCE_DIR}/generatedSources/src/android DESTINATION .)
+file(COPY ${CMAKE_SOURCE_DIR}/src/android DESTINATION .)
+
+# Configure files
+configure_file(AndroidManifest.xml.in android/AndroidManifest.xml)
+configure_file(${CMAKE_SOURCE_DIR}/3rdParty/material-design-icons/action/drawable-hdpi/ic_info_black_24dp.png ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable/ic_info.png COPYONLY)
+configure_file(${CMAKE_SOURCE_DIR}/3rdParty/material-design-icons/file/drawable-hdpi/ic_file_download_black_24dp.png ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable/ic_file_download.png COPYONLY)
+configure_file(${CMAKE_SOURCE_DIR}/3rdParty/material-design-icons/alert/drawable-hdpi/ic_error_black_24dp.png ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable/ic_error.png COPYONLY)
+configure_file(${CMAKE_SOURCE_DIR}/3rdParty/material-design-icons/alert/drawable-hdpi/ic_warning_black_24dp.png ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable/ic_warning.png COPYONLY)
+configure_file(android/src/de/akaflieg_freiburg/enroute/ShareActivity.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
+configure_file(android/src/de/akaflieg_freiburg/enroute/ShareUtils.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
+configure_file(android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
+
+
+# The android target require a few additional variables
+set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android" CACHE INTERNAL "")
+
+# Compile definitions
+add_compile_definitions(MANUAL_LOCATION="/android_asset/manual")
+
+qt_add_executable(${PROJECT_NAME} ${SOURCES} ${ANDROID_EXTRA_SOURCES}
+)
+target_link_libraries(${PROJECT_NAME}
+    PRIVATE
+    Qt6::Bluetooth
+    Qt6::Concurrent
+    Qt6::Core
+    Qt6::Core5Compat
+    Qt6::HttpServer
+    Qt6::Positioning
+    Qt6::Quick
+    Qt6::QuickControls2
+    Qt6::Sensors
+    Qt6::SerialPort
+    Qt6::Sql
+    Qt6::Svg
+    Qt6::TextToSpeech
+    Qt6::WebView
+    QMapLibre::Location
+    libzip::zip
+)
+qmaplibre_location_setup_plugins(${PROJECT_NAME})
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android"
+    QT_ANDROID_TARGET_SDK_VERSION 34
+    QT_ANDROID_MIN_SDK_VERSION 28
+)
+if(NOT ANDROID_PLATFORM STREQUAL "android-28")
+    message(FATAL_ERROR "ANDROID_PLATFORM must be set to android-28, is currently set to " ${ANDROID_PLATFORM})
+endif()
+
+
+# Include SSL Libraries
+set(ANDROID_TARGET_ARCH ${CMAKE_ANDROID_ARCH_ABI})
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/android_openssl dummyBinaryDir)
 endif()
 
 
@@ -328,30 +330,30 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
         traffic/TrafficDataSource_SerialPort.cpp
     )
 
-    # Compile definitions
-    add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
+# Compile definitions
+add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
 
-    # Add executable and libraries
-    qt_add_executable(${PROJECT_NAME} ${SOURCES})
-    target_link_libraries(${PROJECT_NAME}
-        PRIVATE
-        Qt6::Bluetooth
-        Qt6::Concurrent
-        Qt6::Core
-        Qt6::Core5Compat
-        Qt6::DBus
-        Qt6::HttpServer
-        Qt6::Positioning
-        Qt6::Quick
-        Qt6::QuickControls2
-        Qt6::SerialPort
-        Qt6::Sql
-        Qt6::Svg
-        Qt6::TextToSpeech
-        Qt6::Widgets
-        QMapLibre::Location
-        libzip::zip
-    )
+# Add executable and libraries
+qt_add_executable(${PROJECT_NAME} ${SOURCES})
+target_link_libraries(${PROJECT_NAME}
+    PRIVATE
+    Qt6::Bluetooth
+    Qt6::Concurrent
+    Qt6::Core
+    Qt6::Core5Compat
+    Qt6::DBus
+    Qt6::HttpServer
+    Qt6::Positioning
+    Qt6::Quick
+    Qt6::QuickControls2
+    Qt6::SerialPort
+    Qt6::Sql
+    Qt6::Svg
+    Qt6::TextToSpeech
+    Qt6::Widgets
+    QMapLibre::Location
+    libzip::zip
+)
 if (TARGET Qt6::WebView)
     message(STATUS "QtWebView found.")
     target_link_libraries(${PROJECT_NAME}
@@ -359,14 +361,14 @@ if (TARGET Qt6::WebView)
         Qt6::WebView
     )
 endif()
-    target_precompile_headers(${PROJECT_NAME}
-        PUBLIC
-        <QQmlEngine>
-    )
+target_precompile_headers(${PROJECT_NAME}
+    PUBLIC
+    <QQmlEngine>
+)
 
-    # Install
-    install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
-    install(DIRECTORY ${CMAKE_SOURCE_DIR}/generatedSources/manual DESTINATION ${CMAKE_INSTALL_DOCDIR})
+# Install
+install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/generatedSources/manual DESTINATION ${CMAKE_INSTALL_DOCDIR})
 endif()
 
 
@@ -392,36 +394,36 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         traffic/TrafficDataSource_SerialPort.cpp
     )
 
-    # Compile definitions
-    add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
+# Compile definitions
+add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
 
-    # Add executable and libraries
-    qt_add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${SOURCES} ${app_icon_macos})
-    set_target_properties(${PROJECT_NAME} PROPERTIES
-        MACOSX_BUNDLE true
-        MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/macos/Info.plist"
-        MACOSX_BUNDLE_ICON_FILE enroute.icns
-        MACOSX_BUNDLE_BUNDLE_NAME "Enroute Flight Navigation"
-    )
-    target_link_libraries(${PROJECT_NAME}
-        PRIVATE
-        Qt6::Bluetooth
-        Qt6::Concurrent
-        Qt6::Core
-        Qt6::Core5Compat
-        Qt6::HttpServer
-        Qt6::Positioning
-        Qt6::Quick
-        Qt6::QuickControls2
-        Qt6::SerialPort
-        Qt6::Sql
-        Qt6::Svg
-        Qt6::TextToSpeech
-        Qt6::WebView
-        Qt6::Widgets
-        QMapLibre::Location
-        libzip::zip
-    )
+# Add executable and libraries
+qt_add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${SOURCES} ${app_icon_macos})
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    MACOSX_BUNDLE true
+    MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/macos/Info.plist"
+    MACOSX_BUNDLE_ICON_FILE enroute.icns
+    MACOSX_BUNDLE_BUNDLE_NAME "Enroute Flight Navigation"
+)
+target_link_libraries(${PROJECT_NAME}
+    PRIVATE
+    Qt6::Bluetooth
+    Qt6::Concurrent
+    Qt6::Core
+    Qt6::Core5Compat
+    Qt6::HttpServer
+    Qt6::Positioning
+    Qt6::Quick
+    Qt6::QuickControls2
+    Qt6::SerialPort
+    Qt6::Sql
+    Qt6::Svg
+    Qt6::TextToSpeech
+    Qt6::WebView
+    Qt6::Widgets
+    QMapLibre::Location
+    libzip::zip
+)
 endif()
 
 
@@ -445,72 +447,72 @@ if (IOS)
         ios/SafeAreaService.m
     )
 
-    # Compile definitions
-    add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
+# Compile definitions
+add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
 
-    # Add executable and libraries
-    qt_add_executable(${PROJECT_NAME} ${SOURCES})
-    set(CMAKE_MACOSX_RPATH OFF)
-    qt_add_ios_ffmpeg_libraries(${PROJECT_NAME})
-    target_link_libraries(${PROJECT_NAME}
-        PRIVATE
-        Qt6::Bluetooth
-        Qt6::Concurrent
-        Qt6::Core
-        Qt6::Core5Compat
-        Qt6::HttpServer
-        Qt6::Location
-        Qt6::Positioning
-        Qt6::Quick
-        Qt6::QuickControls2
-        Qt6::Sensors
-        Qt6::Sql
-        Qt6::Svg
-        Qt6::TextToSpeech
-        Qt6::WebView
-        QMapLibre::Location
-        libzip::zip
-    )
-    set_target_properties(${PROJECT_NAME} PROPERTIES
-        MACOSX_BUNDLE true
-        MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/ios/Info.plist"
-    )
-    set_source_files_properties(
-        PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
-    qmaplibre_location_setup_plugins(${PROJECT_NAME})
-    target_include_directories(${PROJECT_NAME}
-        PUBLIC
-        ios/mapLibreDependencies
-        ios/mapLibreDependencies/optional
-        ios/mapLibreDependencies/csscolorparser
-        ios/mapLibreDependencies/parsedate
-        ios/mapLibreDependencies/nunicode/include
-    )
+# Add executable and libraries
+qt_add_executable(${PROJECT_NAME} ${SOURCES})
+set(CMAKE_MACOSX_RPATH OFF)
+qt_add_ios_ffmpeg_libraries(${PROJECT_NAME})
+target_link_libraries(${PROJECT_NAME}
+    PRIVATE
+    Qt6::Bluetooth
+    Qt6::Concurrent
+    Qt6::Core
+    Qt6::Core5Compat
+    Qt6::HttpServer
+    Qt6::Location
+    Qt6::Positioning
+    Qt6::Quick
+    Qt6::QuickControls2
+    Qt6::Sensors
+    Qt6::Sql
+    Qt6::Svg
+    Qt6::TextToSpeech
+    Qt6::WebView
+    QMapLibre::Location
+    libzip::zip
+)
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    MACOSX_BUNDLE true
+    MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/ios/Info.plist"
+)
+set_source_files_properties(
+    PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+qmaplibre_location_setup_plugins(${PROJECT_NAME})
+target_include_directories(${PROJECT_NAME}
+    PUBLIC
+    ios/mapLibreDependencies
+    ios/mapLibreDependencies/optional
+    ios/mapLibreDependencies/csscolorparser
+    ios/mapLibreDependencies/parsedate
+    ios/mapLibreDependencies/nunicode/include
+)
 
-    #Resources
-    set(bundle_resources
-        "ios/Assets.xcassets"
-        "ios/de.lproj"
-        "ios/en.lproj"
-        "ios/es.lproj"
-        "ios/fr.lproj"
-        "ios/it.lproj"
-        "ios/pl.lproj"
-        ${CMAKE_SOURCE_DIR}/generatedSources/manual
-    )
-    target_sources(${PROJECT_NAME} PRIVATE ${bundle_resources})
-    set_source_files_properties(${bundle_resources} PROPERTIES
-        MACOSX_PACKAGE_LOCATION "Resources"
-    )
-    source_group("Resources" FILES ${bundle_resources})
+#Resources
+set(bundle_resources
+    "ios/Assets.xcassets"
+    "ios/de.lproj"
+    "ios/en.lproj"
+    "ios/es.lproj"
+    "ios/fr.lproj"
+    "ios/it.lproj"
+    "ios/pl.lproj"
+    ${CMAKE_SOURCE_DIR}/generatedSources/manual
+)
+target_sources(${PROJECT_NAME} PRIVATE ${bundle_resources})
+set_source_files_properties(${bundle_resources} PROPERTIES
+    MACOSX_PACKAGE_LOCATION "Resources"
+)
+source_group("Resources" FILES ${bundle_resources})
 
-    #Launchscreen
-    set_target_properties(${PROJECT_NAME} PROPERTIES QT_IOS_LAUNCH_SCREEN "${CMAKE_CURRENT_SOURCE_DIR}/ios/LaunchScreen.storyboard")
+#Launchscreen
+set_target_properties(${PROJECT_NAME} PROPERTIES QT_IOS_LAUNCH_SCREEN "${CMAKE_CURRENT_SOURCE_DIR}/ios/LaunchScreen.storyboard")
 
-    #Privacy Manifest
-    set(privacy_manifest "${CMAKE_CURRENT_SOURCE_DIR}/ios/PrivacyInfo.xcprivacy")
-    target_sources("${PROJECT_NAME}" PRIVATE "${privacy_manifest}")
-    set_property(TARGET "${PROJECT_NAME}" APPEND PROPERTY RESOURCE "${privacy_manifest}")
+#Privacy Manifest
+set(privacy_manifest "${CMAKE_CURRENT_SOURCE_DIR}/ios/PrivacyInfo.xcprivacy")
+target_sources("${PROJECT_NAME}" PRIVATE "${privacy_manifest}")
+set_property(TARGET "${PROJECT_NAME}" APPEND PROPERTY RESOURCE "${privacy_manifest}")
 endif()
 
 target_include_directories(${PROJECT_NAME}
@@ -635,16 +637,16 @@ if(${QT_VERSION} VERSION_GREATER_EQUAL "6.7.0")
         ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_pl.ts
         QM_FILES_OUTPUT_VARIABLE qmFiles
     )
-    qt_add_resources(
-        ${PROJECT_NAME}
-        translations_enroute
-        BASE
-        ${CMAKE_CURRENT_BINARY_DIR}
-        PREFIX
-        i18n
-        FILES
-        ${qmFiles}
-    )
+qt_add_resources(
+    ${PROJECT_NAME}
+    translations_enroute
+    BASE
+    ${CMAKE_CURRENT_BINARY_DIR}
+    PREFIX
+    i18n
+    FILES
+    ${qmFiles}
+)
 else()
     qt_add_translations(${PROJECT_NAME}
         TS_FILES

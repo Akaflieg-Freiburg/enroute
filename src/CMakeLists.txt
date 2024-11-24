@@ -3,6 +3,7 @@
 # Configure files
 #
 
+configure_file(config.h.in config.h)
 configure_file(flightMap.qrc.in flightMap.qrc)
 configure_file(${CMAKE_SOURCE_DIR}/generatedSources/flightMap/flightMap-fonts.qrc.in flightMapFonts.qrc)
 configure_file(icons.qrc.in icons.qrc)
@@ -20,6 +21,7 @@ set(SOURCES
 
     # Other files
     AndroidManifest.xml.in
+    config.h.in
     flightMap.qrc.in
     icons.qrc.in
     README.md

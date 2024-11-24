@@ -19,7 +19,6 @@ project(enroute VERSION 2.32.1)
 set(APP_ID de.akaflieg_freiburg.enroute)
 set(DISPLAY_NAME "Enroute")
 math(EXPR PROJECT_VERSION_CODE 10000*${PROJECT_VERSION_MAJOR}+100*${PROJECT_VERSION_MINOR}+${PROJECT_VERSION_PATCH})
-add_compile_definitions(PROJECT_VERSION="${PROJECT_VERSION}")
 message("CMAKE_OSX_DEPLOYMENT_TARGET: ${CMAKE_OSX_DEPLOYMENT_TARGET}")
 
 
@@ -118,7 +117,6 @@ else()
     set(GIT_COMMIT "")
     set(GIT_DATE "")
 endif()
-add_compile_definitions(GIT_COMMIT="${GIT_COMMIT}")
 
 
 #

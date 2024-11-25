@@ -55,9 +55,11 @@ endif()
 qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES de es fr it pl)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(QT_QML_GENERATE_QMLLS_INI ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
+
 qt_policy(SET QTP0002 NEW)
 qt_policy(SET QTP0004 NEW)
 

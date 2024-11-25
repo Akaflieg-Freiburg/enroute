@@ -24,6 +24,7 @@
 #include <QLocale>
 #include <QSettings>
 
+#include "config.h"
 #include "notam/NOTAMProvider.h"
 #include "platform/PlatformAdaptor_Abstract.h"
 #include "qimage.h"
@@ -54,7 +55,7 @@ QString Platform::PlatformAdaptor_Abstract::systemInfo()
     result += u"<h3>App</h3>\n"_s;
     result += u"<table>\n"_s;
     result += u"<tr></tr>\n"_s;
-    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_s.arg("Enroute Version", QStringLiteral(PROJECT_VERSION));
+    result += u"<tr><td>%1<td><td>%2<td></tr>\n"_s.arg("Enroute Version", QStringLiteral(ENROUTE_VERSION_STRING));
     result += u"<tr><td>%1<td><td>%2<td></tr>\n"_s.arg("GIT ", QStringLiteral(GIT_COMMIT));
     result += u"<tr><td>%1<td><td>%2<td></tr>\n"_s.arg("Qt", QLibraryInfo::version().toString());
     result += u"</table><br>\n"_s;

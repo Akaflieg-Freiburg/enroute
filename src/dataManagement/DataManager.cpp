@@ -30,6 +30,7 @@
 #include <QStack>
 #include <QTemporaryDir>
 
+#include "config.h"
 #include "dataManagement/DataManager.h"
 #include "fileFormats/MBTILES.h"
 #include "geomaps/OpenAir.h"
@@ -378,7 +379,7 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
 
     // Prepare strings to check if the present version
     auto minVersionString = top.value(QStringLiteral("minAppVersion")).toString();
-    QString currentVersionString(QStringLiteral(PROJECT_VERSION));
+    QString currentVersionString(QStringLiteral(ENROUTE_VERSION_STRING));
     { // Ensure that strings have the format xx.yy.zz
         if ((minVersionString.size() >= 2) && (minVersionString[1] == '.'))
         {

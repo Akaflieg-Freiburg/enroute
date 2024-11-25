@@ -23,6 +23,7 @@
 #include <QTimer>
 #include <chrono>
 
+#include "config.h"
 #include "navigation/Navigator.h"
 #include "notam/NOTAMProvider.h"
 #include "positioning/PositionProvider.h"

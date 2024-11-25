@@ -18,13 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "Librarian.h"
-#include "navigation/FlightRoute.h"
-
 #include <QNetworkAccessManager>
 #include <QStandardPaths>
 #include <QSysInfo>
 #include <QtGlobal>
+
+#include "config.h"
+#include "Librarian.h"
+#include "navigation/FlightRoute.h"
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -125,7 +126,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 
     if (name == u":text/info_enroute.html"_s)
     {
-        QString version(QStringLiteral(PROJECT_VERSION));
+        QString version(QStringLiteral(ENROUTE_VERSION_STRING));
         if (!QStringLiteral(GIT_COMMIT).isEmpty())
         {
             version += QStringLiteral(" • GIT #")+QStringLiteral(GIT_COMMIT);

@@ -2,7 +2,6 @@
 # Set up cmake
 #
 
-set(CMAKE_OSX_DEPLOYMENT_TARGET "14.0")
 cmake_minimum_required(VERSION 3.19)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -15,12 +14,10 @@ option(QTDEPLOY "Generate and run Qt deployment scripts" OFF)
 # Project data
 #
 
-project(enroute VERSION 2.32.1)
+project(enroute VERSION 2.32.2)
 set(APP_ID de.akaflieg_freiburg.enroute)
 set(DISPLAY_NAME "Enroute")
 math(EXPR PROJECT_VERSION_CODE 10000*${PROJECT_VERSION_MAJOR}+100*${PROJECT_VERSION_MINOR}+${PROJECT_VERSION_PATCH})
-add_compile_definitions(PROJECT_VERSION="${PROJECT_VERSION}")
-message("CMAKE_OSX_DEPLOYMENT_TARGET: ${CMAKE_OSX_DEPLOYMENT_TARGET}")
 
 
 
@@ -58,9 +55,11 @@ endif()
 qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES cs de es fr it pl)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(QT_QML_GENERATE_QMLLS_INI ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
+
 qt_policy(SET QTP0002 NEW)
 qt_policy(SET QTP0004 NEW)
 
@@ -118,7 +117,6 @@ else()
     set(GIT_COMMIT "")
     set(GIT_DATE "")
 endif()
-add_compile_definitions(GIT_COMMIT="${GIT_COMMIT}")
 
 
 #

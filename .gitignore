@@ -20,6 +20,7 @@ CMakeLists_ios.txt
 .project
 .vscode
 CMakeLists.txt.user
+**/.qmlls.ini
 
 # Mac
 .DS_Store

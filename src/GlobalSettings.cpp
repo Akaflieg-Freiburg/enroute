@@ -20,6 +20,7 @@
 
 #include <QCoreApplication>
 
+#include "config.h"
 #include "GlobalSettings.h"
 
 
@@ -34,7 +35,7 @@ GlobalSettings::GlobalSettings(QObject *parent)
     QCoreApplication::processEvents();
 
     // Save some values
-    settings.setValue(QStringLiteral("lastVersion"), PROJECT_VERSION);
+    settings.setValue(QStringLiteral("lastVersion"), ENROUTE_VERSION_STRING);
 
     // Convert old setting to new system
     if (settings.contains(QStringLiteral("Map/hideUpperAirspaces"))) {

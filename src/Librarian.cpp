@@ -18,13 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "Librarian.h"
-#include "navigation/FlightRoute.h"
-
 #include <QNetworkAccessManager>
 #include <QStandardPaths>
 #include <QSysInfo>
 #include <QtGlobal>
+
+#include "config.h"
+#include "Librarian.h"
+#include "navigation/FlightRoute.h"
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -125,7 +126,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
 
     if (name == u":text/info_enroute.html"_s)
     {
-        QString version(QStringLiteral(PROJECT_VERSION));
+        QString version(QStringLiteral(ENROUTE_VERSION_STRING));
         if (!QStringLiteral(GIT_COMMIT).isEmpty())
         {
             version += QStringLiteral(" • GIT #")+QStringLiteral(GIT_COMMIT);
@@ -305,7 +306,7 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     if (name == u":text/whatsnew.html"_s)
     {
         QString result;
-        result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> now computes the density altitude from METAR data.") + " "
+        result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> now computes the density altitude from METAR data and shows warnings when density altitude affects aircraft performance.") + " "
                   + tr("We thank Christian Engelhardt and Tom Linz for the implementation!") + "</p>";
 
         result += "<p>" + tr("As requested by our users, <strong>Enroute Flight Navigation</strong> is now able to import flight routes in FPL and PLN formats.") + " "

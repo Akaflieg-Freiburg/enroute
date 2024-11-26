@@ -68,6 +68,8 @@
 <p class="caption" role="heading"><span class="caption-text">Reference Manual</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../05-referencePages.html">User Interface: Pages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05-referenceDialogs.html">User Interface: Dialogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05-referenceItems.html">User Interface: Other Elements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../06-referenceWorkflow.html">User Interface: Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../07-referenceTechnology.html">Technology</a></li>
 </ul>
@@ -128,61 +130,24 @@ this.</p>
 <p><span class="caption-text">Weather Information</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<p>The page body displays a list of stations that are within 85nm around your
+<p>The page body displays a list of stations that are within 85 nm around your
 current position or your intended flight route.  As you can see in the picture,
 the following information is shown.</p>
 <ul class="simple">
 <li><p>ICAO identifier for Station and Airport name</p></li>
-<li><p>Distance and QUJ</p></li>
+<li><p>Distance, QUJ and required gliding ratio for direct flight to the station. See
+the section <a class="reference internal" href="../05-referenceItems/directionItem.html#directionitem"><span class="std std-ref">Direction Summary</span></a> for more detail.</p></li>
 <li><p>METAR summary</p></li>
 </ul>
 <p>The entries are classified and colored according to the “aviation flight
-categories” typically used in the United States. The coding scheme is explained
-in the table below. Note that this color coding might be different from the
-scheme typically used in your country. Green color does certainly <strong>not</strong> imply
-that it is advisable (or legal) to fly.</p>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Category</p></th>
-<th class="head"><p>Color</p></th>
-<th class="head"><p>Ceiling</p></th>
-<th class="head"></th>
-<th class="head"><p>Visibility</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>low IFR</p></td>
-<td><p>Red</p></td>
-<td><p>&lt;500 feet AGL</p></td>
-<td><p>or</p></td>
-<td><p>&lt;1 mile</p></td>
-</tr>
-<tr class="row-odd"><td><p>IFR</p></td>
-<td><p>Red</p></td>
-<td><p>500 – 1,000 feet AGL</p></td>
-<td><p>or</p></td>
-<td><p>1 – 3 miles</p></td>
-</tr>
-<tr class="row-even"><td><p>marginal VFR</p></td>
-<td><p>Yellow</p></td>
-<td><p>1,000 – 3,000 feet AGL</p></td>
-<td><p>or</p></td>
-<td><p>3 – 5 miles</p></td>
-</tr>
-<tr class="row-odd"><td><p>VFR</p></td>
-<td><p>Green</p></td>
-<td><p>&gt;3,000 feet AGL</p></td>
-<td><p>and</p></td>
-<td><p>&gt; 5 miles</p></td>
-</tr>
-<tr class="row-even"><td><p>no data</p></td>
-<td><p>White</p></td>
-<td><p>–</p></td>
-<td><p>–</p></td>
-<td><p>–</p></td>
-</tr>
-</tbody>
-</table>
+categories” typically used in the United States; see the section
+<a class="reference internal" href="../05-referenceDialogs/metar_taf.html#metardialog"><span class="std std-ref">METAR and TAF Dialog</span></a> for precise definitions.</p>
+<ul class="simple">
+<li><p>Red: IFR and low IFR conditions</p></li>
+<li><p>Yellow: Marginal VFR conditions</p></li>
+<li><p>Green: VFR conditions</p></li>
+<li><p>White: No data</p></li>
+</ul>
 <p>Touch any item in the list to open dialog window with more details. The dialog
 window will look like this.</p>
 <figure class="align-center" id="id2">
@@ -191,16 +156,9 @@ window will look like this.</p>
 <p><span class="caption-text">Detailed Weather Dialog</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<p>As you can see in the picture, the weather dialog shows the following information.</p>
-<ol class="arabic simple">
-<li><p>Station data including bearing and distance</p></li>
-<li><p>METAR text (if available)</p></li>
-<li><p>Decoded and translated METAR text</p></li>
-<li><p>TAF text (if available)</p></li>
-<li><p>Decoded and translated TAF text</p></li>
-</ol>
 <p>Depending on screen size, you might have to scroll down in order to read the
-full weather forecast.</p>
+full weather forecast.  The section <a class="reference internal" href="../05-referenceDialogs/metar_taf.html#metardialog"><span class="std std-ref">METAR and TAF Dialog</span></a> describes the dialog in
+full detail.</p>
 <section id="page-footer">
 <h2>Page Footer<a class="headerlink" href="#page-footer" title="Link to this heading"></a></h2>
 <p>The footer of the page shows the following data.</p>

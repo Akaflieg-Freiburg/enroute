@@ -37,6 +37,8 @@ Item {
 
     // Warning
     property bool warnNOTAMLocation: true
+    property bool warnMETARPerformance: true
+    property bool showMETARPerformanceExplanation: true
 
     property LocationPermission locationPermission: LocationPermission {
         id: locationPermission
@@ -51,6 +53,8 @@ Item {
     Settings {
         category: "GUIWarnings"
         property alias warnNOTAMLocation: global.warnNOTAMLocation
+        property alias warnMETARPerformance: global.warnMETARPerformance
+        property alias showMETARPerformanceExplanation: global.showMETARPerformanceExplanation
     }
 
 

@@ -10,9 +10,10 @@ first time, **Enroute Flight Navigation** asks for your permission to access
 that site. 
 
 .. warning::
-    The weather information shown by **Enroute Flight Navigation** might be
-    outdated or otherwise wrong.  Assessment of meteorological flight conditions
-    has to be done via an officially approved source of flight weather.  
+
+   The weather information shown by **Enroute Flight Navigation** might be
+   outdated or otherwise wrong.  Assessment of meteorological flight conditions
+   has to be done via an officially approved source of flight weather.  
 
 As soon as weather information has been downloaded, the page will look like
 this.
@@ -26,34 +27,28 @@ this.
    Weather Information
 
 
-The page body displays a list of stations that are within 85nm around your
+The page body displays a list of stations that are within 85 nm around your
 current position or your intended flight route.  As you can see in the picture,
 the following information is shown.
 
-* ICAO identifier for Station and Airport name
-* Distance and QUJ
-* METAR summary
+- ICAO identifier for Station and Airport name
+
+- Distance, QUJ and required gliding ratio for direct flight to the station. See
+  the section :ref:`directionItem` for more detail.
+
+- METAR summary
 
 The entries are classified and colored according to the "aviation flight
-categories" typically used in the United States. The coding scheme is explained
-in the table below. Note that this color coding might be different from the
-scheme typically used in your country. Green color does certainly **not** imply
-that it is advisable (or legal) to fly.
+categories" typically used in the United States; see the section
+:ref:`metarDialog` for precise definitions.
 
-+--------------+--------+-------------------------+-----+---------------+
-| Category     | Color  | Ceiling                 |     | Visibility    |
-+==============+========+=========================+=====+===============+
-| low IFR      | Red    | <500 feet AGL           | or  | <1 mile       |
-+--------------+--------+-------------------------+-----+---------------+
-| IFR          | Red    | 500 -- 1,000 feet AGL   | or  | 1 -- 3 miles  |
-+--------------+--------+-------------------------+-----+---------------+
-| marginal VFR | Yellow | 1,000 -- 3,000 feet AGL | or  |  3 -- 5 miles |
-+--------------+--------+-------------------------+-----+---------------+
-| VFR          | Green  | >3,000 feet AGL         | and | > 5 miles     |
-+--------------+--------+-------------------------+-----+---------------+
-| no data      | White  | --                      | --  | --            |
-+--------------+--------+-------------------------+-----+---------------+
+- Red: IFR and low IFR conditions
 
+- Yellow: Marginal VFR conditions
+
+- Green: VFR conditions
+
+- White: No data
 
 Touch any item in the list to open dialog window with more details. The dialog
 window will look like this.
@@ -66,16 +61,9 @@ window will look like this.
 
    Detailed Weather Dialog
 
-As you can see in the picture, the weather dialog shows the following information.
-
-1. Station data including bearing and distance
-2. METAR text (if available)
-3. Decoded and translated METAR text
-4. TAF text (if available)
-5. Decoded and translated TAF text
-
 Depending on screen size, you might have to scroll down in order to read the
-full weather forecast.
+full weather forecast.  The section :ref:`metarDialog` describes the dialog in
+full detail.
 
 
 Page Footer 

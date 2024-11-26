@@ -60,6 +60,8 @@ Consult the `homepage <https://akaflieg-freiburg.github.io/enroute>`_ of
    :maxdepth: 1
 
    05-referencePages
+   05-referenceDialogs
+   05-referenceItems
    06-referenceWorkflow
    07-referenceTechnology
 

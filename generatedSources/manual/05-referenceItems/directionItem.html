@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Find Nearby Waypoints &mdash; Enroute Flight Navigation  documentation</title>
+  <title>Direction Summary &mdash; Enroute Flight Navigation  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=330c1f8c" />
 
@@ -19,8 +19,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Check Weather" href="04-weather.html" />
-    <link rel="prev" title="Basic Use" href="../02-tutorialBasic.html" /> 
+    <link rel="next" title="User Interface: Workflows" href="../06-referenceWorkflow.html" />
+    <link rel="prev" title="User Interface: Other Elements" href="../05-referenceItems.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -47,25 +47,19 @@
 <li class="toctree-l1"><a class="reference internal" href="../02-senseAndAvoid.html">Sense and Avoid</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="../02-tutorialBasic.html">Basic Use</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Find Nearby Waypoints</a></li>
-<li class="toctree-l2"><a class="reference internal" href="04-weather.html">Check Weather</a></li>
-<li class="toctree-l2"><a class="reference internal" href="05-plan.html">Plan a Flight</a></li>
-<li class="toctree-l2"><a class="reference internal" href="06-waypointLibrary.html">Manage a Waypoint Library</a></li>
-<li class="toctree-l2"><a class="reference internal" href="07-simulator.html">Connect Your Flight Simulator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="08-report.html">Report Issues or Make a Suggestion</a></li>
-<li class="toctree-l2"><a class="reference internal" href="09-donate.html">Make a Donation</a></li>
-</ul>
-</li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../02-tutorialBasic.html">Basic Use</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../03-tutorialAdvanced.html">Advanced Use</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../04-additionalSoftware.html">Additional software</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Reference Manual</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../05-referencePages.html">User Interface: Pages</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../05-referenceDialogs.html">User Interface: Dialogs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../05-referenceItems.html">User Interface: Other Elements</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../05-referenceItems.html">User Interface: Other Elements</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Direction Summary</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../06-referenceWorkflow.html">User Interface: Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../07-referenceTechnology.html">Technology</a></li>
 </ul>
@@ -92,10 +86,10 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../02-tutorialBasic.html">Basic Use</a></li>
-      <li class="breadcrumb-item active">Find Nearby Waypoints</li>
+          <li class="breadcrumb-item"><a href="../05-referenceItems.html">User Interface: Other Elements</a></li>
+      <li class="breadcrumb-item active">Direction Summary</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/02-tutorialBasic/03-nearby.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/05-referenceItems/directionItem.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -103,31 +97,34 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="find-nearby-waypoints">
-<h1>Find Nearby Waypoints<a class="headerlink" href="#find-nearby-waypoints" title="Link to this heading"></a></h1>
-<p>If the weather turns bad, <strong>Enroute Flight Navigation</strong> can help you find the
-best place to land.  Open the main menu and choose the item “Nearby waypoints”.
-You will be presented with a list of the closest aerodromes, together with
-distances and directions.  Click on any item to open a dialog with detailed
-information, including lists of runways and communications frequencies.  The
-dialog has a button “Direct” the replaces the current route with a route that
-brings you directly to the aerodrome.</p>
-<figure class="align-center" id="id1">
-<span id="nearby"></span><a class="reference internal image-reference" href="../_images/02-02-01-Nearby.png"><img alt="Airfields Close to Freiburg" src="../_images/02-02-01-Nearby.png" style="width: 240.0px; height: 360.0px;" /></a>
-<figcaption>
-<p><span class="caption-text">List of Airfields Close to the Current Position</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-<p>Apart from aerodromes, there are additional tabs that list nearby waypoints,
-navaids and reporting points.</p>
+  <section id="direction-summary">
+<span id="directionitem"></span><h1>Direction Summary<a class="headerlink" href="#direction-summary" title="Link to this heading"></a></h1>
+<p>The user interface of <strong>Enroute Flight Navigation</strong> contains numerous items that
+present information about specific geographic points. Examples of geographic
+points include waypoints in your flight route or METAR/TAF stations.  If
+positioning data is available, every item prominently display a brief direction
+summary with the following data.</p>
+<ul class="simple">
+<li><p><strong>DIST:</strong> Distance from your current position to the geographic point, shown
+in the unit of measurement set in your aircraft preferences.</p></li>
+<li><p><strong>QUJ:</strong> True course from your current position to the geographic point.</p></li>
+<li><p><strong>E:</strong> Gliding ratio required to reach the geographic for your current
+position by straight flight, arriving in 300 m AGL. If the gliding ratio is
+negative or extremely high, the symbol ‘∞’ is shown.</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The gliding ratio is computed without regard for terrain. There might be a
+mountain in your way!</p>
+</div>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../02-tutorialBasic.html" class="btn btn-neutral float-left" title="Basic Use" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="04-weather.html" class="btn btn-neutral float-right" title="Check Weather" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../05-referenceItems.html" class="btn btn-neutral float-left" title="User Interface: Other Elements" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../06-referenceWorkflow.html" class="btn btn-neutral float-right" title="User Interface: Workflows" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

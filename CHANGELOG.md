@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.32.2] - ??
+## [2.32.2] - 2024-11-26
 
 ### Added
 - The METAR dialog shows a warning when density altitude substantially impairs

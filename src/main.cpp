@@ -46,6 +46,7 @@
 #include "ios/ObjCAdapter.h"
 #endif
 
+#include "config.h"
 #include "DemoRunner.h"
 #include "GlobalObject.h"
 #include "Librarian.h"
@@ -99,7 +100,7 @@ auto main(int argc, char *argv[]) -> int
     QCoreApplication::setOrganizationName(QStringLiteral("Akaflieg Freiburg"));
     QCoreApplication::setOrganizationDomain(QStringLiteral("akaflieg_freiburg.de"));
     QCoreApplication::setApplicationName(QStringLiteral("enroute flight navigation"));
-    QCoreApplication::setApplicationVersion(QStringLiteral(PROJECT_VERSION));
+    QCoreApplication::setApplicationVersion(QStringLiteral(ENROUTE_VERSION_STRING));
     QGuiApplication::setWindowIcon(QIcon(u":/icons/appIcon.png"_s));
 
     // Install translators

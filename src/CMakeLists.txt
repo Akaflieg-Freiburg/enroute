@@ -3,6 +3,7 @@
 # Configure files
 #
 
+configure_file(config.h.in config.h)
 configure_file(flightMap.qrc.in flightMap.qrc)
 configure_file(${CMAKE_SOURCE_DIR}/generatedSources/flightMap/flightMap-fonts.qrc.in flightMapFonts.qrc)
 configure_file(icons.qrc.in icons.qrc)
@@ -20,6 +21,7 @@ set(SOURCES
 
     # Other files
     AndroidManifest.xml.in
+    config.h.in
     flightMap.qrc.in
     icons.qrc.in
     README.md
@@ -377,6 +379,8 @@ endif()
 #
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "14.0")
+    message("CMAKE_OSX_DEPLOYMENT_TARGET: ${CMAKE_OSX_DEPLOYMENT_TARGET}")
     set(app_icon_macos "${CMAKE_CURRENT_SOURCE_DIR}/macos/enroute.icns")
     set_source_files_properties(${app_icon_macos} PROPERTIES
         MACOSX_PACKAGE_LOCATION "Resources")
@@ -627,16 +631,15 @@ qt_add_qml_module(${PROJECT_NAME}
 # Translations
 #
 
-if(${QT_VERSION} VERSION_GREATER_EQUAL "6.7.0")
-    qt_add_lrelease(
-        TS_FILES
-        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_de.ts
-        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_es.ts
-        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_fr.ts
-        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_it.ts
-        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_pl.ts
-        QM_FILES_OUTPUT_VARIABLE qmFiles
-    )
+qt_add_lrelease(
+    TS_FILES
+    ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_de.ts
+    ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_es.ts
+    ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_fr.ts
+    ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_it.ts
+    ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_pl.ts
+    QM_FILES_OUTPUT_VARIABLE qmFiles
+)
 qt_add_resources(
     ${PROJECT_NAME}
     translations_enroute
@@ -647,16 +650,6 @@ qt_add_resources(
     FILES
     ${qmFiles}
 )
-else()
-    qt_add_translations(${PROJECT_NAME}
-        TS_FILES
-        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_de.ts
-        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_es.ts
-        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_fr.ts
-        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_it.ts
-        ${CMAKE_SOURCE_DIR}/3rdParty/enrouteText/assets/enroute_pl.ts
-    )
-endif()
 
 find_path(Qt6_TRANSLATION_DIR qtbase_de.qm
     HINTS

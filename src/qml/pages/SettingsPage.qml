@@ -247,6 +247,8 @@ Page {
             }
 
             WordWrappingItemDelegate {
+                id: showAllWarning
+
                 Layout.fillWidth: true
                 icon.source: "/icons/material/ic_warning.svg"
                 text: qsTr("Show All Warnings")
@@ -254,13 +256,18 @@ Page {
                     PlatformAdaptor.vibrateBrief()
                     GlobalSettings.alwaysOpenExternalWebsites = false
                     Global.warnNOTAMLocation = true
+                    Global.warnMETARPerformance = true
+                    Global.showMETARPerformanceExplanation = true
                     Global.toast.doToast(qsTr("Warnings will be shown again."))
                 }
-                visible: GlobalSettings.alwaysOpenExternalWebsites || !Global.warnNOTAMLocation
+                visible: GlobalSettings.alwaysOpenExternalWebsites
+                         || !Global.warnNOTAMLocation
+                         || !Global.warnMETARPerformance
+                         || !Global.showMETARPerformanceExplanation
             }
             ToolButton {
                 icon.source: "/icons/material/ic_info_outline.svg"
-                visible: GlobalSettings.alwaysOpenExternalWebsites || !Global.warnNOTAMLocation
+                visible: showAllWarning.visible
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
                     helpDialog.title = qsTr("Show All Warnings")

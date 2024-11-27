@@ -182,6 +182,7 @@ Weather::METAR::METAR(QDataStream& inputStream, QObject* parent)
     setRawText(m_raw_text, m_observationTime.date());
 }
 
+
 QDateTime Weather::METAR::expiration() const
 {
     if (m_raw_text.contains(u"NOSIG"_s))

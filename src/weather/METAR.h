@@ -83,7 +83,7 @@ public:
 
 
     //
-    // PROPERTIES
+    // Properties
     //
 
     /*! \brief Geographical coordinate of the station reporting this METAR

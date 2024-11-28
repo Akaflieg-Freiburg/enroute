@@ -55,8 +55,8 @@ QString Weather::Decoder::decodedText()
 {
     QStringList decodedStrings;
     decodedStrings.reserve(64);
-    QString const listStart = QStringLiteral("<ul style=\"margin-left:-25px;\">");
-    QString const listEnd = QStringLiteral("</ul>");
+    const QString listStart = QStringLiteral("<ul style=\"margin-left:-25px;\">");
+    const QString listEnd = QStringLiteral("</ul>");
     for (const auto& groupInfo : m_parseResult.groups)
     {
         auto decodedString = visit(groupInfo);

@@ -47,6 +47,8 @@ class Decoder : public QObject, private metaf::Visitor<QString> {
     Q_OBJECT
 
 public:
+    // This constructor creates a Decoder instance.  You need to set the raw text before this class can be useful.
+    explicit Decoder(QObject *parent = nullptr);
 
     //
     // Properties
@@ -115,13 +117,6 @@ public:
 #warning
     [[nodiscard]] Q_INVOKABLE QString decodedText();
 
-signals:
-    /*! \brief  Notifier signal */
-    void rawTextChanged();
-
-protected:
-    // This constructor creates a Decoder instance.  You need to set the raw text before this class can be useful.
-    explicit Decoder(QObject *parent = nullptr);
 
     // Sets the raw METAR/TAF message and starts processing. Since METAR/TAF messages specify points in time only by "day of month" and "time",
     // the decoder needs to know the month and year. Set this reference date to any date between in the interval [issue date, issue date + 28 days]
@@ -133,6 +128,10 @@ protected:
     {
         return (m_parseResult.reportMetadata.error != metaf::ReportError::NONE);
     }
+
+signals:
+    /*! \brief  Notifier signal */
+    void rawTextChanged();
 
 
 private:

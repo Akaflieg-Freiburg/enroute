@@ -29,14 +29,14 @@ using namespace Qt::Literals::StringLiterals;
 
 
 Weather::METAR::METAR(QObject *parent)
-    : Weather::Decoder(parent)
+    : QObject(parent)
 {
 
 }
 
 
 Weather::METAR::METAR(QXmlStreamReader& xml, QObject* parent)
-    : Weather::Decoder(parent)
+    : QObject(parent)
 {
 
     while (true)
@@ -159,12 +159,12 @@ Weather::METAR::METAR(QXmlStreamReader& xml, QObject* parent)
     }
 
     // Interpret the METAR message
-    setRawText(m_raw_text, m_observationTime.date());
+    m_decoder.setRawText(m_raw_text, m_observationTime.date());
 }
 
 
 Weather::METAR::METAR(QDataStream& inputStream, QObject* parent)
-    : Weather::Decoder(parent)
+    : QObject(parent)
 {
     inputStream >> m_flightCategory;
     inputStream >> m_ICAOCode;
@@ -179,7 +179,7 @@ Weather::METAR::METAR(QDataStream& inputStream, QObject* parent)
     inputStream >> m_densityAltitude;
 
     // Interpret the METAR message
-    setRawText(m_raw_text, m_observationTime.date());
+    m_decoder.setRawText(m_raw_text, m_observationTime.date());
 }
 
 QDateTime Weather::METAR::expiration() const
@@ -224,7 +224,7 @@ bool Weather::METAR::isValid() const
     {
         return false;
     }
-    if (hasParseError())
+    if (m_decoder.hasParseError())
     {
         return false;
     }
@@ -273,7 +273,7 @@ QString Weather::METAR::summary(const Navigation::Aircraft& aircraft, const QDat
     }
 
     // Weather
-    auto curWeather = currentWeather();
+    auto curWeather = m_decoder.currentWeather();
     if (!curWeather.isEmpty())
     {
         resultList << curWeather;
@@ -281,10 +281,10 @@ QString Weather::METAR::summary(const Navigation::Aircraft& aircraft, const QDat
 
     if (resultList.isEmpty())
     {
-        return tr("%1 %2").arg(messageType(), Navigation::Clock::describeTimeDifference(m_observationTime, currentTime));
+        return tr("%1 %2").arg(m_decoder.messageType(), Navigation::Clock::describeTimeDifference(m_observationTime, currentTime));
     }
 
-    return tr("%1 %2: %3").arg(messageType(), Navigation::Clock::describeTimeDifference(m_observationTime, currentTime), resultList.join(QStringLiteral(" • ")));
+    return tr("%1 %2: %3").arg(m_decoder.messageType(), Navigation::Clock::describeTimeDifference(m_observationTime, currentTime), resultList.join(QStringLiteral(" • ")));
 }
 
 

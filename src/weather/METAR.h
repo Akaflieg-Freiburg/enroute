@@ -42,7 +42,7 @@ class WeatherDataProvider;
  * WeatherDataProvider class; there is no way to construct valid instances yourself.
  */
 
-class METAR : public Decoder {
+class METAR : public QObject {
     Q_OBJECT
 
     friend WeatherDataProvider;
@@ -227,6 +227,9 @@ public:
     // Methods
     //
 
+#warning
+    [[nodiscard]] Q_INVOKABLE QString decodedText() {return m_decoder.decodedText();}
+
     /*! \brief Derived data, such as density height
      *
      * @param aircraft Current aircraft, used to determine appropriate units
@@ -301,6 +304,9 @@ private:
 
     // Density altitude, derived data
     Units::Distance m_densityAltitude;
+
+#warning
+    Weather::Decoder m_decoder;
 };
 
 /*! \brief Serialization

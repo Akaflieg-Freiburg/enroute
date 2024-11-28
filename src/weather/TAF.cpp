@@ -30,14 +30,14 @@ using namespace Qt::Literals::StringLiterals;
 
 
 Weather::TAF::TAF(QObject *parent)
-    : Weather::Decoder(parent)
+    : QObject(parent)
 {
 
 }
 
 
 Weather::TAF::TAF(QXmlStreamReader &xml, QObject *parent)
-    : Weather::Decoder(parent)
+    : QObject(parent)
 {
 
     while (true)
@@ -98,13 +98,13 @@ Weather::TAF::TAF(QXmlStreamReader &xml, QObject *parent)
         xml.skipCurrentElement();
     }
 
-    setRawText(_raw_text, _issueTime.date().addDays(5));
+    m_decoder.setRawText(_raw_text, _issueTime.date().addDays(5));
     setupSignals();
 }
 
 
 Weather::TAF::TAF(QDataStream &inputStream, QObject *parent)
-    : Weather::Decoder(parent)
+    : QObject(parent)
 {
     inputStream >> _expirationTime;
     inputStream >> m_ICAOCode;
@@ -112,7 +112,7 @@ Weather::TAF::TAF(QDataStream &inputStream, QObject *parent)
     inputStream >> _location;
     inputStream >> _raw_text;
 
-    setRawText(_raw_text, _issueTime.date().addDays(5));
+    m_decoder.setRawText(_raw_text, _issueTime.date().addDays(5));
     setupSignals();
 }
 
@@ -145,7 +145,7 @@ auto Weather::TAF::isValid() const -> bool
     {
         return false;
     }
-    if (hasParseError())
+    if (m_decoder.hasParseError())
     {
         return false;
     }

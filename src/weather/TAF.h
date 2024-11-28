@@ -39,7 +39,7 @@ class WeatherDataProvider;
  * WeatherDataProvider class; there is no way to construct valid instances yourself.
  */
 
-class TAF : public Decoder {
+class TAF : public QObject {
     Q_OBJECT
 
     friend WeatherDataProvider;
@@ -191,6 +191,10 @@ private:
 
     // Raw TAF text, as returned by the Aviation Weather Center
     QString _raw_text;
+
+#warning
+    Weather::Decoder m_decoder;
+
 };
 
 } // namespace Weather

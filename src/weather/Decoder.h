@@ -43,12 +43,11 @@ namespace Weather {
  * This class is not meant to be used directly. Instead, use the classes Weather::METAR or Weather::TAF.
  */
 
-class Decoder : public QObject, private metaf::Visitor<QString> {
-    Q_OBJECT
+class Decoder : private metaf::Visitor<QString> {
 
 public:
     // This constructor creates a Decoder instance.  You need to set the raw text before this class can be useful.
-    explicit Decoder(QObject *parent = nullptr);
+    explicit Decoder();
 
     //
     // Properties
@@ -128,10 +127,6 @@ public:
     {
         return (m_parseResult.reportMetadata.error != metaf::ReportError::NONE);
     }
-
-signals:
-    /*! \brief  Notifier signal */
-    void rawTextChanged();
 
 
 private:

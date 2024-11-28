@@ -36,8 +36,7 @@
 using namespace Qt::Literals::StringLiterals;
 
 
-Weather::Decoder::Decoder(QObject *parent)
-    : QObject(parent)
+Weather::Decoder::Decoder()
 {
     // Re-parse the text whenever the date changes
 #warning
@@ -76,7 +75,8 @@ void Weather::Decoder::setRawText(const QString& rawText, QDate referenceDate)
 
     m_referenceDate = referenceDate;
     m_rawText = rawText;
-    emit rawTextChanged();
+#warning
+    // emit rawTextChanged();
 #warning
     //    parse();
     (void)decodedText();
@@ -114,12 +114,12 @@ QString Weather::Decoder::explainCloudType(const metaf::CloudType &ct)
     const auto h = ct.height();
     if (h.isReported())
     {
-        return tr("Cloud cover %1/8, %2, base height %3")
+        return QObject::tr("Cloud cover %1/8, %2, base height %3")
                 .arg(ct.okta())
                 .arg(cloudTypeToString(ct.type()),
                      explainDistance_FT(ct.height()));
     }
-    return tr("Cloud cover %1/8, %2")
+    return QObject::tr("Cloud cover %1/8, %2")
             .arg(ct.okta())
             .arg(cloudTypeToString(ct.type()));
 }
@@ -129,20 +129,20 @@ QString Weather::Decoder::explainDirection(metaf::Direction direction, bool true
     switch (direction.type())
     {
     case metaf::Direction::Type::NOT_REPORTED:
-        return tr("not reported");
+        return QObject::tr("not reported");
 
     case metaf::Direction::Type::VARIABLE:
-        return tr("variable");
+        return QObject::tr("variable");
 
     case metaf::Direction::Type::NDV:
-        return tr("no directional variation");
+        return QObject::tr("no directional variation");
 
     case metaf::Direction::Type::VALUE_DEGREES:
         if (const auto d = direction.degrees(); d.has_value())
         {
             return QStringLiteral("%1°").arg(*d);
         }
-        return tr("[unable to produce value in °]");
+        return QObject::tr("[unable to produce value in °]");
 
     case metaf::Direction::Type::VALUE_CARDINAL:
         if (auto c = cardinalDirectionToString(direction.cardinal(trueCardinalDirections)); !c.isEmpty())
@@ -156,13 +156,13 @@ QString Weather::Decoder::explainDirection(metaf::Direction direction, bool true
         break;
 
     case metaf::Direction::Type::OVERHEAD:
-        return tr("overhead");
+        return QObject::tr("overhead");
 
     case metaf::Direction::Type::ALQDS:
-        return tr("all quadrants (all directions)");
+        return QObject::tr("all quadrants (all directions)");
 
     case metaf::Direction::Type::UNKNOWN:
-        return tr("unknown direction");
+        return QObject::tr("unknown direction");
     }
 
     return {};
@@ -186,7 +186,7 @@ QString Weather::Decoder::explainDistance(metaf::Distance distance)
 {
     if (!distance.isReported())
     {
-        return tr("not reported");
+        return QObject::tr("not reported");
     }
 
     QStringList results;
@@ -207,13 +207,13 @@ QString Weather::Decoder::explainDistance(metaf::Distance distance)
         switch (GlobalObject::navigator()->aircraft().horizontalDistanceUnit())
         {
         case Navigation::Aircraft::Kilometer:
-            results << tr("19 to 55 km");
+            results << QObject::tr("19 to 55 km");
             break;
         case Navigation::Aircraft::StatuteMile:
-            results << tr("12 to 35 mil");
+            results << QObject::tr("12 to 35 mil");
             break;
         case Navigation::Aircraft::NauticalMile:
-            results << tr("10 to 30 nm");
+            results << QObject::tr("10 to 30 nm");
             break;
         }
         break;
@@ -222,13 +222,13 @@ QString Weather::Decoder::explainDistance(metaf::Distance distance)
         switch (GlobalObject::navigator()->aircraft().horizontalDistanceUnit())
         {
         case Navigation::Aircraft::Kilometer:
-            results << tr("9 to 19 km");
+            results << QObject::tr("9 to 19 km");
             break;
         case Navigation::Aircraft::StatuteMile:
-            results << tr("6 to 12 mil");
+            results << QObject::tr("6 to 12 mil");
             break;
         case Navigation::Aircraft::NauticalMile:
-            results << tr("5 to 10 nm");
+            results << QObject::tr("5 to 10 nm");
             break;
         }
         break;
@@ -244,7 +244,7 @@ QString Weather::Decoder::explainDistance(metaf::Distance distance)
     {
         const auto d = distance.miles();
         if (!d.has_value()) {
-            return tr("[unable to get distance value in miles]");
+            return QObject::tr("[unable to get distance value in miles]");
         }
         const auto integer = std::get<unsigned int>(d.value());
         const auto fraction = std::get<metaf::Distance::MilesFraction>(d.value());
@@ -275,7 +275,7 @@ QString Weather::Decoder::explainDistance(metaf::Distance distance)
             }
             else
             {
-                results << tr("[unable to convert distance to meters]");
+                results << QObject::tr("[unable to convert distance to meters]");
             }
         }
         else
@@ -283,7 +283,7 @@ QString Weather::Decoder::explainDistance(metaf::Distance distance)
             const auto d = distance.toUnit(distance.unit());
             if (!d.has_value())
             {
-                return tr("[unable to get distance's floating-point value]");
+                return QObject::tr("[unable to get distance's floating-point value]");
             }
             results << QString::number(qRound(*d));
             results << distanceUnitToString(distance.unit());
@@ -305,7 +305,7 @@ QString Weather::Decoder::explainDistance(metaf::Distance distance)
         }
         else
         {
-            results << tr("[unable to convert distance to meters]");
+            results << QObject::tr("[unable to convert distance to meters]");
         }
     }
     return results.join(QStringLiteral(" "));
@@ -316,7 +316,7 @@ QString Weather::Decoder::explainDistance_FT(metaf::Distance distance)
 
     if (!distance.isReported())
     {
-        return tr("not reported");
+        return QObject::tr("not reported");
     }
 
     QString modifier;
@@ -336,7 +336,7 @@ QString Weather::Decoder::explainDistance_FT(metaf::Distance distance)
 
     if (!distance.isValue())
     {
-        return tr("no value");
+        return QObject::tr("no value");
     }
 
     const auto d = distance.toUnit(metaf::Distance::Unit::FEET);
@@ -375,7 +375,7 @@ QString Weather::Decoder::explainPrecipitation(metaf::Precipitation precipitatio
 
     if (const auto p = precipitation.amount(); p.has_value() && (*p == 0.0F))
     {
-        return tr("trace amount");
+        return QObject::tr("trace amount");
     }
 
     const auto p = precipitation.toUnit(metaf::Precipitation::Unit::MM);
@@ -383,7 +383,7 @@ QString Weather::Decoder::explainPrecipitation(metaf::Precipitation precipitatio
     {
         return QStringLiteral("%1 mm").arg(QString::number(*p, 'f', 2));
     }
-    return tr("[unable to convert precipitation to mm]");
+    return QObject::tr("[unable to convert precipitation to mm]");
 }
 
 QString Weather::Decoder::explainPressure(metaf::Pressure pressure)
@@ -391,7 +391,7 @@ QString Weather::Decoder::explainPressure(metaf::Pressure pressure)
 
     if (!pressure.pressure().has_value())
     {
-        return tr("not reported");
+        return QObject::tr("not reported");
     }
 
     const auto phpa = pressure.toUnit(metaf::Pressure::Unit::HECTOPASCAL);
@@ -399,32 +399,32 @@ QString Weather::Decoder::explainPressure(metaf::Pressure pressure)
     {
         return QStringLiteral("%1 hPa").arg(qRound(*phpa));
     }
-    return tr("[unable to convert pressure to hPa]");
+    return QObject::tr("[unable to convert pressure to hPa]");
 }
 
 QString Weather::Decoder::explainRunway(metaf::Runway runway)
 {
     if (runway.isAllRunways())
     {
-        return tr("all runways");
+        return QObject::tr("all runways");
     }
     if (runway.isMessageRepetition()) {
-        return tr("same runway (repetition of last message)");
+        return QObject::tr("same runway (repetition of last message)");
     }
 
     switch(runway.designator())
     {
     case metaf::Runway::Designator::NONE:
-        return tr("runway %1").arg(runway.number(), 2, 10, QChar('0'));
+        return QObject::tr("runway %1").arg(runway.number(), 2, 10, QChar('0'));
 
     case metaf::Runway::Designator::LEFT:
-        return tr("runway %1 LEFT").arg(runway.number(), 2, 10, QChar('0'));
+        return QObject::tr("runway %1 LEFT").arg(runway.number(), 2, 10, QChar('0'));
 
     case metaf::Runway::Designator::CENTER:
-        return tr("runway %1 CENTER").arg(runway.number(), 2, 10, QChar('0'));
+        return QObject::tr("runway %1 CENTER").arg(runway.number(), 2, 10, QChar('0'));
 
     case metaf::Runway::Designator::RIGHT:
-        return tr("runway %1 RIGHT").arg(runway.number(), 2, 10, QChar('0'));
+        return QObject::tr("runway %1 RIGHT").arg(runway.number(), 2, 10, QChar('0'));
 
     }
     return {};
@@ -435,7 +435,7 @@ QString Weather::Decoder::explainSpeed(metaf::Speed speed)
 
     if (const auto s = speed.speed(); !s.has_value())
     {
-        return tr("not reported");
+        return QObject::tr("not reported");
     }
 
     if (GlobalObject::navigator()->aircraft().horizontalDistanceUnit() == Navigation::Aircraft::Kilometer)
@@ -445,7 +445,7 @@ QString Weather::Decoder::explainSpeed(metaf::Speed speed)
         {
             return QStringLiteral("%1 km/h").arg(qRound(*s));
         }
-        return tr("[unable to convert speed to km/h]");
+        return QObject::tr("[unable to convert speed to km/h]");
     }
 
     const auto s = speed.toUnit(metaf::Speed::Unit::KNOTS);
@@ -453,7 +453,7 @@ QString Weather::Decoder::explainSpeed(metaf::Speed speed)
     {
         return QStringLiteral("%1 kt").arg(qRound(*s));
     }
-    return tr("[unable to convert speed to knots]");
+    return QObject::tr("[unable to convert speed to knots]");
 }
 
 QString Weather::Decoder::explainSurfaceFriction(metaf::SurfaceFriction surfaceFriction)
@@ -463,20 +463,20 @@ QString Weather::Decoder::explainSurfaceFriction(metaf::SurfaceFriction surfaceF
     switch (surfaceFriction.type())
     {
     case metaf::SurfaceFriction::Type::NOT_REPORTED:
-        return tr("not reported");
+        return QObject::tr("not reported");
 
     case metaf::SurfaceFriction::Type::SURFACE_FRICTION_REPORTED:
         if (c.has_value())
         {
-            return tr("friction coefficient %1").arg(QString::number(*c, 'f', 2));
+            return QObject::tr("friction coefficient %1").arg(QString::number(*c, 'f', 2));
         }
-        return tr("[unable to produce a friction coefficient]");
+        return QObject::tr("[unable to produce a friction coefficient]");
 
     case metaf::SurfaceFriction::Type::BRAKING_ACTION_REPORTED:
-        return tr("braking action %1").arg(brakingActionToString(surfaceFriction.brakingAction()));
+        return QObject::tr("braking action %1").arg(brakingActionToString(surfaceFriction.brakingAction()));
 
     case metaf::SurfaceFriction::Type::UNRELIABLE:
-        return tr("unreliable or unmeasurable");
+        return QObject::tr("unreliable or unmeasurable");
     }
     return {};
 }
@@ -486,10 +486,10 @@ QString Weather::Decoder::explainTemperature(metaf::Temperature temperature)
     const auto temp = temperature.temperature();
     if (!temp.has_value())
     {
-        return tr("not reported");
+        return QObject::tr("not reported");
     }
 
-    QString temperatureString = tr("[unable to convert temperature to °C]");
+    QString temperatureString = QObject::tr("[unable to convert temperature to °C]");
     const auto t = temperature.toUnit(metaf::Temperature::Unit::C);
     if (t.has_value())
     {
@@ -500,10 +500,10 @@ QString Weather::Decoder::explainTemperature(metaf::Temperature temperature)
     {
         if (temperature.isFreezing())
         {
-            return tr("slightly less than %1").arg(temperatureString);
+            return QObject::tr("slightly less than %1").arg(temperatureString);
         }
         if (!temperature.isFreezing()) {
-            return tr("slightly more than %1").arg(temperatureString);
+            return QObject::tr("slightly more than %1").arg(temperatureString);
         }
     }
 
@@ -514,7 +514,7 @@ QString Weather::Decoder::explainWaveHeight(metaf::WaveHeight waveHeight)
 {
     switch (waveHeight.type()) {
     case metaf::WaveHeight::Type::STATE_OF_SURFACE:
-        return tr("state of sea surface: %1").arg(stateOfSeaSurfaceToString(waveHeight.stateOfSurface()));
+        return QObject::tr("state of sea surface: %1").arg(stateOfSeaSurfaceToString(waveHeight.stateOfSurface()));
 
     case metaf::WaveHeight::Type::WAVE_HEIGHT:
         if (waveHeight.isReported())
@@ -522,11 +522,11 @@ QString Weather::Decoder::explainWaveHeight(metaf::WaveHeight waveHeight)
             const auto h = waveHeight.toUnit(metaf::WaveHeight::Unit::METERS);
             if (h.has_value())
             {
-                return tr("wave height: %1 m").arg(qRound(*h));
+                return QObject::tr("wave height: %1 m").arg(qRound(*h));
             }
-            return tr("[unable to convert wave height to meters]");
+            return QObject::tr("[unable to convert wave height to meters]");
         }
-        return tr("wave height not reported");
+        return QObject::tr("wave height not reported");
     }
     return {};
 }
@@ -561,12 +561,12 @@ QString Weather::Decoder::explainWeatherPhenomena(const metaf::WeatherPhenomena 
     // Special case: "shower" is used as a phenomenom
     if (weatherPhenomena.isEmpty() && wp.descriptor() == metaf::WeatherPhenomena::Descriptor::SHOWERS)
     {
-        weatherPhenomena << tr("shower");
+        weatherPhenomena << QObject::tr("shower");
         descriptor = QString();
     }
     if (weatherPhenomena.isEmpty() && wp.descriptor() == metaf::WeatherPhenomena::Descriptor::THUNDERSTORM)
     {
-        weatherPhenomena << tr("thunderstorm");
+        weatherPhenomena << QObject::tr("thunderstorm");
         descriptor = QString();
     }
     result += weatherPhenomena.join(QStringLiteral(", "));
@@ -575,12 +575,12 @@ QString Weather::Decoder::explainWeatherPhenomena(const metaf::WeatherPhenomena 
 
     if (wp.qualifier() == metaf::WeatherPhenomena::Qualifier::RECENT)
     {
-        result = tr("recent %1").arg(result);
+        result = QObject::tr("recent %1").arg(result);
         qualifier = QString();
     }
     if (wp.qualifier() == metaf::WeatherPhenomena::Qualifier::VICINITY)
     {
-        result = tr("%1 in the vicinity").arg(result);
+        result = QObject::tr("%1 in the vicinity").arg(result);
         qualifier = QString();
     }
 
@@ -607,7 +607,7 @@ QString Weather::Decoder::explainWeatherPhenomena(const metaf::WeatherPhenomena 
         {
             break;
         }
-        result += " " + tr("began:") + " " + Weather::Decoder::explainMetafTime(*time);
+        result += " " + QObject::tr("began:") + " " + Weather::Decoder::explainMetafTime(*time);
         break;
 
     case metaf::WeatherPhenomena::Event::ENDING:
@@ -615,7 +615,7 @@ QString Weather::Decoder::explainWeatherPhenomena(const metaf::WeatherPhenomena 
         {
             break;
         }
-        result += " " + tr("ended:") + " " + Weather::Decoder::explainMetafTime(*time);
+        result += " " + QObject::tr("ended:") + " " + Weather::Decoder::explainMetafTime(*time);
         break;
 
     case metaf::WeatherPhenomena::Event::NONE:
@@ -638,22 +638,22 @@ QString Weather::Decoder::brakingActionToString(metaf::SurfaceFriction::BrakingA
     switch(brakingAction)
     {
     case metaf::SurfaceFriction::BrakingAction::NONE:
-        return tr("not reported");
+        return QObject::tr("not reported");
 
     case metaf::SurfaceFriction::BrakingAction::POOR:
-        return tr("poor (friction coefficient 0.0 to 0.25)");
+        return QObject::tr("poor (friction coefficient 0.0 to 0.25)");
 
     case metaf::SurfaceFriction::BrakingAction::MEDIUM_POOR:
-        return tr("medium/poor (friction coefficient 0.26 to 0.29)");
+        return QObject::tr("medium/poor (friction coefficient 0.26 to 0.29)");
 
     case metaf::SurfaceFriction::BrakingAction::MEDIUM:
-        return tr("medium (friction coefficient 0.30 to 0.35)");
+        return QObject::tr("medium (friction coefficient 0.30 to 0.35)");
 
     case metaf::SurfaceFriction::BrakingAction::MEDIUM_GOOD:
-        return tr("medium/good (friction coefficient 0.36 to 0.40)");
+        return QObject::tr("medium/good (friction coefficient 0.36 to 0.40)");
 
     case metaf::SurfaceFriction::BrakingAction::GOOD:
-        return tr("good (friction coefficient 0.40 to 1.00)");
+        return QObject::tr("good (friction coefficient 0.40 to 1.00)");
     }
     return {};
 }
@@ -663,46 +663,46 @@ QString Weather::Decoder::cardinalDirectionToString(metaf::Direction::Cardinal c
     switch(cardinal)
     {
     case metaf::Direction::Cardinal::NOT_REPORTED:
-        return tr("not reported");
+        return QObject::tr("not reported");
 
     case metaf::Direction::Cardinal::N:
-        return tr("north");
+        return QObject::tr("north");
 
     case metaf::Direction::Cardinal::S:
-        return tr("south");
+        return QObject::tr("south");
 
     case metaf::Direction::Cardinal::W:
-        return tr("west");
+        return QObject::tr("west");
 
     case metaf::Direction::Cardinal::E:
-        return tr("east");
+        return QObject::tr("east");
 
     case metaf::Direction::Cardinal::NW:
-        return tr("northwest");
+        return QObject::tr("northwest");
 
     case metaf::Direction::Cardinal::NE:
-        return tr("northeast");
+        return QObject::tr("northeast");
 
     case metaf::Direction::Cardinal::SW:
-        return tr("southwest");
+        return QObject::tr("southwest");
 
     case metaf::Direction::Cardinal::SE:
-        return tr("southeast");
+        return QObject::tr("southeast");
 
     case metaf::Direction::Cardinal::TRUE_N:
-        return tr("true north");
+        return QObject::tr("true north");
 
     case metaf::Direction::Cardinal::TRUE_W:
-        return tr("true west");
+        return QObject::tr("true west");
 
     case metaf::Direction::Cardinal::TRUE_S:
-        return tr("true south");
+        return QObject::tr("true south");
 
     case metaf::Direction::Cardinal::TRUE_E:
-        return tr("true east");
+        return QObject::tr("true east");
 
     case metaf::Direction::Cardinal::NDV:
-        return tr("no directional variations");
+        return QObject::tr("no directional variations");
 
     case metaf::Direction::Cardinal::VRB:
         return QStringLiteral("variable");
@@ -724,41 +724,41 @@ QString Weather::Decoder::cloudAmountToString(metaf::CloudGroup::Amount amount)
     switch (amount)
     {
     case metaf::CloudGroup::Amount::NOT_REPORTED:
-        return tr("Cloud amount not reported");
+        return QObject::tr("Cloud amount not reported");
 
     case metaf::CloudGroup::Amount::NSC:
-        return tr("No significant cloud");
+        return QObject::tr("No significant cloud");
 
     case metaf::CloudGroup::Amount::NCD:
-        return tr("No cloud detected");
+        return QObject::tr("No cloud detected");
 
     case metaf::CloudGroup::Amount::NONE_CLR:
     case metaf::CloudGroup::Amount::NONE_SKC:
-        return tr("Clear sky");
+        return QObject::tr("Clear sky");
 
     case metaf::CloudGroup::Amount::FEW:
-        return tr("Few clouds");
+        return QObject::tr("Few clouds");
 
     case metaf::CloudGroup::Amount::SCATTERED:
-        return tr("Scattered clouds");
+        return QObject::tr("Scattered clouds");
 
     case metaf::CloudGroup::Amount::BROKEN:
-        return tr("Broken clouds");
+        return QObject::tr("Broken clouds");
 
     case metaf::CloudGroup::Amount::OVERCAST:
-        return tr("Overcast clouds");
+        return QObject::tr("Overcast clouds");
 
     case metaf::CloudGroup::Amount::OBSCURED:
-        return tr("Sky obscured");
+        return QObject::tr("Sky obscured");
 
     case metaf::CloudGroup::Amount::VARIABLE_FEW_SCATTERED:
-        return tr("Few -- scattered clouds");
+        return QObject::tr("Few -- scattered clouds");
 
     case metaf::CloudGroup::Amount::VARIABLE_SCATTERED_BROKEN:
-        return tr("Scattered -- broken clouds");
+        return QObject::tr("Scattered -- broken clouds");
 
     case metaf::CloudGroup::Amount::VARIABLE_BROKEN_OVERCAST:
-        return tr("Broken -- overcast clouds");
+        return QObject::tr("Broken -- overcast clouds");
     }
     return {};
 }
@@ -768,37 +768,37 @@ QString Weather::Decoder::cloudHighLayerToString(metaf::LowMidHighCloudGroup::Hi
     switch(highLayer)
     {
     case metaf::LowMidHighCloudGroup::HighLayer::NONE:
-        return tr("No high-layer clouds");
+        return QObject::tr("No high-layer clouds");
 
     case metaf::LowMidHighCloudGroup::HighLayer::CI_FIB_CI_UNC:
-        return tr("Cirrus fibratus or Cirrus uncinus");
+        return QObject::tr("Cirrus fibratus or Cirrus uncinus");
 
     case metaf::LowMidHighCloudGroup::HighLayer::CI_SPI_CI_CAS_CI_FLO:
-        return tr("Cirrus spissatus or Cirrus castellanus or Cirrus floccus");
+        return QObject::tr("Cirrus spissatus or Cirrus castellanus or Cirrus floccus");
 
     case metaf::LowMidHighCloudGroup::HighLayer::CI_SPI_CBGEN:
-        return tr("Cirrus spissatus cumulonimbogenitus");
+        return QObject::tr("Cirrus spissatus cumulonimbogenitus");
 
     case metaf::LowMidHighCloudGroup::HighLayer::CI_FIB_CI_UNC_SPREADING:
-        return tr("Cirrus uncinus or Cirrus fibratus progressively invading the sky");
+        return QObject::tr("Cirrus uncinus or Cirrus fibratus progressively invading the sky");
 
     case metaf::LowMidHighCloudGroup::HighLayer::CI_CS_LOW_ABOVE_HORIZON:
-        return tr("Cirrus or Cirrostratus progressively invading the sky, but the continuous veil does not reach 45° above the horizon");
+        return QObject::tr("Cirrus or Cirrostratus progressively invading the sky, but the continuous veil does not reach 45° above the horizon");
 
     case metaf::LowMidHighCloudGroup::HighLayer::CI_CS_HIGH_ABOVE_HORIZON:
-        return tr("Cirrus or Cirrostratus progressively invading the sky, the continuous veil extends more than 45° above the horizon, without the sky being totally covered");
+        return QObject::tr("Cirrus or Cirrostratus progressively invading the sky, the continuous veil extends more than 45° above the horizon, without the sky being totally covered");
 
     case metaf::LowMidHighCloudGroup::HighLayer::CS_NEB_CS_FIB_COVERING_ENTIRE_SKY:
-        return tr("Cirrostratus nebulosus or Cirrostratus fibratus covering the whole sky");
+        return QObject::tr("Cirrostratus nebulosus or Cirrostratus fibratus covering the whole sky");
 
     case metaf::LowMidHighCloudGroup::HighLayer::CS:
-        return tr("Cirrostratus that is not invading the sky and that does not completely cover the whole sky");
+        return QObject::tr("Cirrostratus that is not invading the sky and that does not completely cover the whole sky");
 
     case metaf::LowMidHighCloudGroup::HighLayer::CC:
-        return tr("Cirrocumulus alone");
+        return QObject::tr("Cirrocumulus alone");
 
     case metaf::LowMidHighCloudGroup::HighLayer::NOT_OBSERVABLE:
-        return tr("Clouds are not observable");
+        return QObject::tr("Clouds are not observable");
     }
     return {};
 }
@@ -808,37 +808,37 @@ QString Weather::Decoder::cloudLowLayerToString(metaf::LowMidHighCloudGroup::Low
     switch(lowLayer)
     {
     case metaf::LowMidHighCloudGroup::LowLayer::NONE:
-        return tr("No low layer clouds");
+        return QObject::tr("No low layer clouds");
 
     case metaf::LowMidHighCloudGroup::LowLayer::CU_HU_CU_FR:
-        return tr("Cumulus humilis or Cumulus fractus");
+        return QObject::tr("Cumulus humilis or Cumulus fractus");
 
     case metaf::LowMidHighCloudGroup::LowLayer::CU_MED_CU_CON:
-        return tr("Cumulus clouds with moderate or significant vertical extent");
+        return QObject::tr("Cumulus clouds with moderate or significant vertical extent");
 
     case metaf::LowMidHighCloudGroup::LowLayer::CB_CAL:
-        return tr("Cumulonimbus calvus");
+        return QObject::tr("Cumulonimbus calvus");
 
     case metaf::LowMidHighCloudGroup::LowLayer::SC_CUGEN:
-        return tr("Stratocumulus cumulogenitus");
+        return QObject::tr("Stratocumulus cumulogenitus");
 
     case metaf::LowMidHighCloudGroup::LowLayer::SC_NON_CUGEN:
-        return tr("Stratocumulus non-cumulogenitus");
+        return QObject::tr("Stratocumulus non-cumulogenitus");
 
     case metaf::LowMidHighCloudGroup::LowLayer::ST_NEB_ST_FR:
-        return tr("Stratus nebulosus or Stratus fractus");
+        return QObject::tr("Stratus nebulosus or Stratus fractus");
 
     case metaf::LowMidHighCloudGroup::LowLayer::ST_FR_CU_FR_PANNUS:
-        return tr("Stratus fractus or Cumulus fractus");
+        return QObject::tr("Stratus fractus or Cumulus fractus");
 
     case metaf::LowMidHighCloudGroup::LowLayer::CU_SC_NON_CUGEN_DIFFERENT_LEVELS:
-        return tr("Cumulus and Stratocumulus with bases at different levels");
+        return QObject::tr("Cumulus and Stratocumulus with bases at different levels");
 
     case metaf::LowMidHighCloudGroup::LowLayer::CB_CAP:
         return QStringLiteral("Cumulonimbus capillatus or Cumulonimbus capillatus incus)");
 
     case metaf::LowMidHighCloudGroup::LowLayer::NOT_OBSERVABLE:
-        return tr("Clouds are not observable due to fog, blowing dust or sand, or other similar phenomena");
+        return QObject::tr("Clouds are not observable due to fog, blowing dust or sand, or other similar phenomena");
     }
     return {};
 }
@@ -848,37 +848,37 @@ QString Weather::Decoder::cloudMidLayerToString(metaf::LowMidHighCloudGroup::Mid
     switch(midLayer)
     {
     case metaf::LowMidHighCloudGroup::MidLayer::NONE:
-        return tr("No mid-layer clouds");
+        return QObject::tr("No mid-layer clouds");
 
     case metaf::LowMidHighCloudGroup::MidLayer::AS_TR:
-        return tr("Altostratus translucidus");
+        return QObject::tr("Altostratus translucidus");
 
     case metaf::LowMidHighCloudGroup::MidLayer::AS_OP_NS:
-        return tr("Altostratus opacus or Nimbostratus");
+        return QObject::tr("Altostratus opacus or Nimbostratus");
 
     case metaf::LowMidHighCloudGroup::MidLayer::AC_TR:
-        return tr("Altocumulus translucidus at a single level");
+        return QObject::tr("Altocumulus translucidus at a single level");
 
     case metaf::LowMidHighCloudGroup::MidLayer::AC_TR_LEN_PATCHES:
-        return tr("Patches of Altocumulus translucidus");
+        return QObject::tr("Patches of Altocumulus translucidus");
 
     case metaf::LowMidHighCloudGroup::MidLayer::AC_TR_AC_OP_SPREADING:
-        return tr("Altocumulus translucidus in bands");
+        return QObject::tr("Altocumulus translucidus in bands");
 
     case metaf::LowMidHighCloudGroup::MidLayer::AC_CUGEN_AC_CBGEN:
-        return tr("Altocumulus cumulogenitus or Altocumulus cumulonimbogenitus");
+        return QObject::tr("Altocumulus cumulogenitus or Altocumulus cumulonimbogenitus");
 
     case metaf::LowMidHighCloudGroup::MidLayer::AC_DU_AC_OP_AC_WITH_AS_OR_NS:
-        return tr("Altocumulus duplicatus, or Altocumulus opacus in a single layer");
+        return QObject::tr("Altocumulus duplicatus, or Altocumulus opacus in a single layer");
 
     case metaf::LowMidHighCloudGroup::MidLayer::AC_CAS_AC_FLO:
-        return tr("Altocumulus castellanus or Altocumulus floccus");
+        return QObject::tr("Altocumulus castellanus or Altocumulus floccus");
 
     case metaf::LowMidHighCloudGroup::MidLayer::AC_OF_CHAOTIC_SKY:
-        return tr("Broken cloud sheets of ill-defined species or varieties");
+        return QObject::tr("Broken cloud sheets of ill-defined species or varieties");
 
     case metaf::LowMidHighCloudGroup::MidLayer::NOT_OBSERVABLE:
-        return tr("Clouds are not observable");
+        return QObject::tr("Clouds are not observable");
     }
     return {};
 }
@@ -888,88 +888,88 @@ QString Weather::Decoder::cloudTypeToString(metaf::CloudType::Type type)
     switch(type)
     {
     case metaf::CloudType::Type::NOT_REPORTED:
-        return tr("unknown cloud type");
+        return QObject::tr("unknown cloud type");
 
     case metaf::CloudType::Type::CUMULONIMBUS:
-        return tr("cumulonimbus");
+        return QObject::tr("cumulonimbus");
 
     case metaf::CloudType::Type::TOWERING_CUMULUS:
-        return tr("towering cumulus");
+        return QObject::tr("towering cumulus");
 
     case metaf::CloudType::Type::CUMULUS:
-        return tr("cumulus");
+        return QObject::tr("cumulus");
 
     case metaf::CloudType::Type::CUMULUS_FRACTUS:
-        return tr("cumulus fractus");
+        return QObject::tr("cumulus fractus");
 
     case metaf::CloudType::Type::STRATOCUMULUS:
-        return tr("stratocumulus");
+        return QObject::tr("stratocumulus");
 
     case metaf::CloudType::Type::NIMBOSTRATUS:
-        return tr("nimbostratus");
+        return QObject::tr("nimbostratus");
 
     case metaf::CloudType::Type::STRATUS:
-        return tr("stratus");
+        return QObject::tr("stratus");
 
     case metaf::CloudType::Type::STRATUS_FRACTUS:
-        return tr("stratus fractus");
+        return QObject::tr("stratus fractus");
 
     case metaf::CloudType::Type::ALTOSTRATUS:
-        return tr("altostratus");
+        return QObject::tr("altostratus");
 
     case metaf::CloudType::Type::ALTOCUMULUS:
-        return tr("altocumulus");
+        return QObject::tr("altocumulus");
 
     case metaf::CloudType::Type::ALTOCUMULUS_CASTELLANUS:
-        return tr("altocumulus castellanus");
+        return QObject::tr("altocumulus castellanus");
 
     case metaf::CloudType::Type::CIRRUS:
-        return tr("cirrus");
+        return QObject::tr("cirrus");
 
     case metaf::CloudType::Type::CIRROSTRATUS:
-        return tr("cirrostratus");
+        return QObject::tr("cirrostratus");
 
     case metaf::CloudType::Type::CIRROCUMULUS:
-        return tr("cirrocumulus");
+        return QObject::tr("cirrocumulus");
 
     case metaf::CloudType::Type::BLOWING_SNOW:
-        return tr("blowing snow");
+        return QObject::tr("blowing snow");
 
     case metaf::CloudType::Type::BLOWING_DUST:
-        return tr("blowing dust");
+        return QObject::tr("blowing dust");
 
     case metaf::CloudType::Type::BLOWING_SAND:
-        return tr("blowing sand");
+        return QObject::tr("blowing sand");
 
     case metaf::CloudType::Type::ICE_CRYSTALS:
-        return tr("ice crystals");
+        return QObject::tr("ice crystals");
 
     case metaf::CloudType::Type::RAIN:
-        return tr("rain");
+        return QObject::tr("rain");
 
     case metaf::CloudType::Type::DRIZZLE:
-        return tr("drizzle");
+        return QObject::tr("drizzle");
 
     case metaf::CloudType::Type::SNOW:
-        return tr("snow");
+        return QObject::tr("snow");
 
     case metaf::CloudType::Type::ICE_PELLETS:
-        return tr("ice pellets");
+        return QObject::tr("ice pellets");
 
     case metaf::CloudType::Type::SMOKE:
-        return tr("smoke");
+        return QObject::tr("smoke");
 
     case metaf::CloudType::Type::FOG:
-        return tr("fog");
+        return QObject::tr("fog");
 
     case metaf::CloudType::Type::MIST:
-        return tr("mist");
+        return QObject::tr("mist");
 
     case metaf::CloudType::Type::HAZE:
-        return tr("haze");
+        return QObject::tr("haze");
 
     case metaf::CloudType::Type::VOLCANIC_ASH:
-        return tr("volcanic ash");
+        return QObject::tr("volcanic ash");
     }
     return {};
 }
@@ -982,13 +982,13 @@ QString Weather::Decoder::convectiveTypeToString(metaf::CloudGroup::ConvectiveTy
         return {};
 
     case metaf::CloudGroup::ConvectiveType::NOT_REPORTED:
-        return tr("not reported");
+        return QObject::tr("not reported");
 
     case metaf::CloudGroup::ConvectiveType::TOWERING_CUMULUS:
-        return tr("towering cumulus");
+        return QObject::tr("towering cumulus");
 
     case metaf::CloudGroup::ConvectiveType::CUMULONIMBUS:
-        return tr("cumulonimbus");
+        return QObject::tr("cumulonimbus");
     }
     return {};
 }
@@ -1041,7 +1041,7 @@ QString Weather::Decoder::distanceUnitToString(metaf::Distance::Unit unit)
         return QStringLiteral("m");
 
     case metaf::Distance::Unit::STATUTE_MILES:
-        return tr("statute miles");
+        return QObject::tr("statute miles");
 
     case metaf::Distance::Unit::FEET:
         return QStringLiteral("ft");
@@ -1054,67 +1054,67 @@ QString Weather::Decoder::layerForecastGroupTypeToString(metaf::LayerForecastGro
     switch(type)
     {
     case metaf::LayerForecastGroup::Type::ICING_TRACE_OR_NONE:
-        return tr("Trace icing or no icing");
+        return QObject::tr("Trace icing or no icing");
 
     case metaf::LayerForecastGroup::Type::ICING_LIGHT_MIXED:
-        return tr("Light mixed icing");
+        return QObject::tr("Light mixed icing");
 
     case metaf::LayerForecastGroup::Type::ICING_LIGHT_RIME_IN_CLOUD:
-        return tr("Light rime icing in cloud");
+        return QObject::tr("Light rime icing in cloud");
 
     case metaf::LayerForecastGroup::Type::ICING_LIGHT_CLEAR_IN_PRECIPITATION:
-        return tr("Light clear icing in precipitation");
+        return QObject::tr("Light clear icing in precipitation");
 
     case metaf::LayerForecastGroup::Type::ICING_MODERATE_MIXED:
-        return tr("Moderate mixed icing");
+        return QObject::tr("Moderate mixed icing");
 
     case metaf::LayerForecastGroup::Type::ICING_MODERATE_RIME_IN_CLOUD:
-        return tr("Moderate rime icing in cloud");
+        return QObject::tr("Moderate rime icing in cloud");
 
     case metaf::LayerForecastGroup::Type::ICING_MODERATE_CLEAR_IN_PRECIPITATION:
-        return tr("Moderate clear icing in precipitation");
+        return QObject::tr("Moderate clear icing in precipitation");
 
     case metaf::LayerForecastGroup::Type::ICING_SEVERE_MIXED:
-        return tr("Severe mixed icing");
+        return QObject::tr("Severe mixed icing");
 
     case metaf::LayerForecastGroup::Type::ICING_SEVERE_RIME_IN_CLOUD:
-        return tr("Severe rime icing in cloud");
+        return QObject::tr("Severe rime icing in cloud");
 
     case metaf::LayerForecastGroup::Type::ICING_SEVERE_CLEAR_IN_PRECIPITATION:
-        return tr("Severe clear icing in precipitation");
+        return QObject::tr("Severe clear icing in precipitation");
 
     case metaf::LayerForecastGroup::Type::TURBULENCE_NONE:
-        return tr("No turbulence");
+        return QObject::tr("No turbulence");
 
     case metaf::LayerForecastGroup::Type::TURBULENCE_LIGHT:
-        return tr("Light turbulence");
+        return QObject::tr("Light turbulence");
 
     case metaf::LayerForecastGroup::Type::TURBULENCE_MODERATE_IN_CLEAR_AIR_OCCASIONAL:
-        return tr("Occasional moderate turbulence in clear air");
+        return QObject::tr("Occasional moderate turbulence in clear air");
 
     case metaf::LayerForecastGroup::Type::TURBULENCE_MODERATE_IN_CLEAR_AIR_FREQUENT:
-        return tr("Frequent moderate turbulence in clear air");
+        return QObject::tr("Frequent moderate turbulence in clear air");
 
     case metaf::LayerForecastGroup::Type::TURBULENCE_MODERATE_IN_CLOUD_OCCASIONAL:
-        return tr("Occasional moderate turbulence in cloud");
+        return QObject::tr("Occasional moderate turbulence in cloud");
 
     case metaf::LayerForecastGroup::Type::TURBULENCE_MODERATE_IN_CLOUD_FREQUENT:
-        return tr("Frequent moderate turbulence in cloud");
+        return QObject::tr("Frequent moderate turbulence in cloud");
 
     case metaf::LayerForecastGroup::Type::TURBULENCE_SEVERE_IN_CLEAR_AIR_OCCASIONAL:
-        return tr("Occasional severe turbulence in clear air");
+        return QObject::tr("Occasional severe turbulence in clear air");
 
     case metaf::LayerForecastGroup::Type::TURBULENCE_SEVERE_IN_CLEAR_AIR_FREQUENT:
-        return tr("Frequent severe turbulence in clear air");
+        return QObject::tr("Frequent severe turbulence in clear air");
 
     case metaf::LayerForecastGroup::Type::TURBULENCE_SEVERE_IN_CLOUD_OCCASIONAL:
-        return tr("Occasional severe turbulence in cloud");
+        return QObject::tr("Occasional severe turbulence in cloud");
 
     case metaf::LayerForecastGroup::Type::TURBULENCE_SEVERE_IN_CLOUD_FREQUENT:
-        return tr("Frequent severe turbulence in cloud");
+        return QObject::tr("Frequent severe turbulence in cloud");
 
     case metaf::LayerForecastGroup::Type::TURBULENCE_EXTREME:
-        return tr("Extreme turbulence");
+        return QObject::tr("Extreme turbulence");
     }
     return {};
 }
@@ -1124,22 +1124,22 @@ QString Weather::Decoder::pressureTendencyTrendToString(metaf::PressureTendencyG
     switch(trend)
     {
     case metaf::PressureTendencyGroup::Trend::NOT_REPORTED:
-        return tr("not reported");
+        return QObject::tr("not reported");
 
     case metaf::PressureTendencyGroup::Trend::HIGHER:
-        return tr("higher than");
+        return QObject::tr("higher than");
 
     case metaf::PressureTendencyGroup::Trend::HIGHER_OR_SAME:
-        return tr("higher or the same as");
+        return QObject::tr("higher or the same as");
 
     case metaf::PressureTendencyGroup::Trend::SAME:
-        return tr("same as");
+        return QObject::tr("same as");
 
     case metaf::PressureTendencyGroup::Trend::LOWER_OR_SAME:
-        return tr("lower or the same as");
+        return QObject::tr("lower or the same as");
 
     case metaf::PressureTendencyGroup::Trend::LOWER:
-        return tr("lower than");
+        return QObject::tr("lower than");
     }
     return {};
 }
@@ -1149,40 +1149,40 @@ QString Weather::Decoder::pressureTendencyTypeToString(metaf::PressureTendencyGr
     switch(type)
     {
     case metaf::PressureTendencyGroup::Type::INCREASING_THEN_DECREASING:
-        return tr("increasing, then decreasing");
+        return QObject::tr("increasing, then decreasing");
 
     case metaf::PressureTendencyGroup::Type::INCREASING_MORE_SLOWLY:
-        return tr("increasing more slowly");
+        return QObject::tr("increasing more slowly");
 
     case metaf::PressureTendencyGroup::Type::INCREASING:
-        return tr("increasing");
+        return QObject::tr("increasing");
 
     case metaf::PressureTendencyGroup::Type::INCREASING_MORE_RAPIDLY:
-        return tr("increasing more rapidly");
+        return QObject::tr("increasing more rapidly");
 
     case metaf::PressureTendencyGroup::Type::STEADY:
-        return tr("steady");
+        return QObject::tr("steady");
 
     case metaf::PressureTendencyGroup::Type::DECREASING_THEN_INCREASING:
-        return tr("decreasing, then increasing");
+        return QObject::tr("decreasing, then increasing");
 
     case metaf::PressureTendencyGroup::Type::DECREASING_MORE_SLOWLY:
-        return tr("decreasing more slowly");
+        return QObject::tr("decreasing more slowly");
 
     case metaf::PressureTendencyGroup::Type::DECREASING:
-        return tr("decreasing");
+        return QObject::tr("decreasing");
 
     case metaf::PressureTendencyGroup::Type::DECREASING_MORE_RAPIDLY:
-        return tr("decreasing more rapidly");
+        return QObject::tr("decreasing more rapidly");
 
     case metaf::PressureTendencyGroup::Type::NOT_REPORTED:
-        return tr("not reported");
+        return QObject::tr("not reported");
 
     case metaf::PressureTendencyGroup::Type::RISING_RAPIDLY:
-        return tr("rising rapidly");
+        return QObject::tr("rising rapidly");
 
     case metaf::PressureTendencyGroup::Type::FALLING_RAPIDLY:
-        return tr("falling rapidly");
+        return QObject::tr("falling rapidly");
     }
     return {};
 }
@@ -1192,10 +1192,10 @@ QString Weather::Decoder::probabilityToString(metaf::TrendGroup::Probability pro
     switch (prob)
     {
     case metaf::TrendGroup::Probability::PROB_30:
-        return tr("Probability 30%");
+        return QObject::tr("Probability 30%");
 
     case metaf::TrendGroup::Probability::PROB_40:
-        return tr("Probability 40%");
+        return QObject::tr("Probability 40%");
 
     case metaf::TrendGroup::Probability::NONE:
         return {};
@@ -1208,37 +1208,37 @@ QString Weather::Decoder::runwayStateDepositsToString(metaf::RunwayStateGroup::D
     switch(deposits)
     {
     case metaf::RunwayStateGroup::Deposits::NOT_REPORTED:
-        return tr("not reported");
+        return QObject::tr("not reported");
 
     case metaf::RunwayStateGroup::Deposits::CLEAR_AND_DRY:
-        return tr("clear and dry");
+        return QObject::tr("clear and dry");
 
     case metaf::RunwayStateGroup::Deposits::DAMP:
-        return tr("damp");
+        return QObject::tr("damp");
 
     case metaf::RunwayStateGroup::Deposits::WET_AND_WATER_PATCHES:
-        return tr("wet and water patches");
+        return QObject::tr("wet and water patches");
 
     case metaf::RunwayStateGroup::Deposits::RIME_AND_FROST_COVERED:
-        return tr("rime and frost covered");
+        return QObject::tr("rime and frost covered");
 
     case metaf::RunwayStateGroup::Deposits::DRY_SNOW:
-        return tr("dry snow");
+        return QObject::tr("dry snow");
 
     case metaf::RunwayStateGroup::Deposits::WET_SNOW:
-        return tr("wet snow");
+        return QObject::tr("wet snow");
 
     case metaf::RunwayStateGroup::Deposits::SLUSH:
-        return tr("slush");
+        return QObject::tr("slush");
 
     case metaf::RunwayStateGroup::Deposits::ICE:
-        return tr("ice");
+        return QObject::tr("ice");
 
     case metaf::RunwayStateGroup::Deposits::COMPACTED_OR_ROLLED_SNOW:
-        return tr("compacted or rolled snow");
+        return QObject::tr("compacted or rolled snow");
 
     case metaf::RunwayStateGroup::Deposits::FROZEN_RUTS_OR_RIDGES:
-        return tr("frozen ruts or ridges");
+        return QObject::tr("frozen ruts or ridges");
     }
     return {};
 }
@@ -1253,10 +1253,10 @@ QString Weather::Decoder::runwayStateExtentToString(metaf::RunwayStateGroup::Ext
     case metaf::RunwayStateGroup::Extent::RESERVED_6:
     case metaf::RunwayStateGroup::Extent::RESERVED_7:
     case metaf::RunwayStateGroup::Extent::RESERVED_8:
-        return tr("not reported");
+        return QObject::tr("not reported");
 
     case metaf::RunwayStateGroup::Extent::NONE:
-        return tr("none");
+        return QObject::tr("none");
 
     case metaf::RunwayStateGroup::Extent::LESS_THAN_10_PERCENT:
         return QStringLiteral("< 10%");
@@ -1284,22 +1284,22 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             switch(wp.qualifier())
             {
             case metaf::WeatherPhenomena::Qualifier::NONE:
-                results << tr("drizzle");
+                results << QObject::tr("drizzle");
                 break;
             case metaf::WeatherPhenomena::Qualifier::RECENT:
-                results << tr("recent drizzle");
+                results << QObject::tr("recent drizzle");
                 break;
             case metaf::WeatherPhenomena::Qualifier::VICINITY:
-                results << tr("drizzle in the vicinity");
+                results << QObject::tr("drizzle in the vicinity");
                 break;
             case metaf::WeatherPhenomena::Qualifier::LIGHT:
-                results << tr("light drizzle");
+                results << QObject::tr("light drizzle");
                 break;
             case metaf::WeatherPhenomena::Qualifier::MODERATE:
-                results << tr("moderate drizzle");
+                results << QObject::tr("moderate drizzle");
                 break;
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
-                results << tr("heavy drizzle");
+                results << QObject::tr("heavy drizzle");
                 break;
             }
             continue;
@@ -1311,22 +1311,22 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             switch(wp.qualifier())
             {
             case metaf::WeatherPhenomena::Qualifier::NONE:
-                results << tr("freezing drizzle");
+                results << QObject::tr("freezing drizzle");
                 break;
             case metaf::WeatherPhenomena::Qualifier::VICINITY:
-                results << tr("freezing drizzle in the vicinity");
+                results << QObject::tr("freezing drizzle in the vicinity");
                 break;
             case metaf::WeatherPhenomena::Qualifier::LIGHT:
-                results << tr("light freezing drizzle");
+                results << QObject::tr("light freezing drizzle");
                 break;
             case metaf::WeatherPhenomena::Qualifier::MODERATE:
-                results << tr("moderate freezing drizzle");
+                results << QObject::tr("moderate freezing drizzle");
                 break;
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
-                results << tr("heavy freezing drizzle");
+                results << QObject::tr("heavy freezing drizzle");
                 break;
             case metaf::WeatherPhenomena::Qualifier::RECENT:
-                results << tr("recent freezing drizzle");
+                results << QObject::tr("recent freezing drizzle");
                 break;
             }
             continue;
@@ -1338,22 +1338,22 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             switch(wp.qualifier())
             {
             case metaf::WeatherPhenomena::Qualifier::NONE:
-                results << tr("blowing dust");
+                results << QObject::tr("blowing dust");
                 break;
             case metaf::WeatherPhenomena::Qualifier::VICINITY:
-                results << tr("blowing dust in the vicinity");
+                results << QObject::tr("blowing dust in the vicinity");
                 break;
             case metaf::WeatherPhenomena::Qualifier::LIGHT:
-                results << tr("light blowing dust");
+                results << QObject::tr("light blowing dust");
                 break;
             case metaf::WeatherPhenomena::Qualifier::MODERATE:
-                results << tr("moderate blowing dust");
+                results << QObject::tr("moderate blowing dust");
                 break;
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
-                results << tr("heavy blowing dust");
+                results << QObject::tr("heavy blowing dust");
                 break;
             case metaf::WeatherPhenomena::Qualifier::RECENT:
-                results << tr("recent blowing dust");
+                results << QObject::tr("recent blowing dust");
                 break;
             }
             continue;
@@ -1365,19 +1365,19 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             switch(wp.descriptor())
             {
             case metaf::WeatherPhenomena::Descriptor::NONE:
-                results << tr("fog");
+                results << QObject::tr("fog");
                 break;
             case metaf::WeatherPhenomena::Descriptor::FREEZING:
-                results << tr("freezing fog");
+                results << QObject::tr("freezing fog");
                 break;
             case metaf::WeatherPhenomena::Descriptor::PARTIAL:
-                results << tr("partial fog");
+                results << QObject::tr("partial fog");
                 break;
             case metaf::WeatherPhenomena::Descriptor::PATCHES:
-                results << tr("patches of fog");
+                results << QObject::tr("patches of fog");
                 break;
             case metaf::WeatherPhenomena::Descriptor::SHALLOW:
-                results << tr("shallow fog");
+                results << QObject::tr("shallow fog");
                 break;
             default:
                 return {};
@@ -1391,22 +1391,22 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             switch(wp.qualifier())
             {
             case metaf::WeatherPhenomena::Qualifier::NONE:
-                results << tr("hail showers");
+                results << QObject::tr("hail showers");
                 break;
             case metaf::WeatherPhenomena::Qualifier::VICINITY:
-                results << tr("hail showers in the vicinity");
+                results << QObject::tr("hail showers in the vicinity");
                 break;
             case metaf::WeatherPhenomena::Qualifier::LIGHT:
-                results << tr("light hail showers");
+                results << QObject::tr("light hail showers");
                 break;
             case metaf::WeatherPhenomena::Qualifier::MODERATE:
-                results << tr("moderate hail showers");
+                results << QObject::tr("moderate hail showers");
                 break;
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
-                results << tr("heavy hail showers");
+                results << QObject::tr("heavy hail showers");
                 break;
             case metaf::WeatherPhenomena::Qualifier::RECENT:
-                results << tr("recent hail showers");
+                results << QObject::tr("recent hail showers");
                 break;
             }
             continue;
@@ -1418,22 +1418,22 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             switch(wp.qualifier())
             {
             case metaf::WeatherPhenomena::Qualifier::NONE:
-                results << tr("thunderstorm with hail");
+                results << QObject::tr("thunderstorm with hail");
                 break;
             case metaf::WeatherPhenomena::Qualifier::VICINITY:
-                results << tr("thunderstorm with hail in the vicinity");
+                results << QObject::tr("thunderstorm with hail in the vicinity");
                 break;
             case metaf::WeatherPhenomena::Qualifier::LIGHT:
-                results << tr("light thunderstorm with hail");
+                results << QObject::tr("light thunderstorm with hail");
                 break;
             case metaf::WeatherPhenomena::Qualifier::MODERATE:
-                results << tr("moderate thunderstorm with hail");
+                results << QObject::tr("moderate thunderstorm with hail");
                 break;
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
-                results << tr("heavy thunderstorm with hail");
+                results << QObject::tr("heavy thunderstorm with hail");
                 break;
             case metaf::WeatherPhenomena::Qualifier::RECENT:
-                results << tr("recent thunderstorm with hail");
+                results << QObject::tr("recent thunderstorm with hail");
                 break;
             }
             continue;
@@ -1445,22 +1445,22 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             switch(wp.qualifier())
             {
             case metaf::WeatherPhenomena::Qualifier::NONE:
-                results << tr("ice pellet precipitation");
+                results << QObject::tr("ice pellet precipitation");
                 break;
             case metaf::WeatherPhenomena::Qualifier::VICINITY:
-                results << tr("ice pellet precipitation in the vicinity");
+                results << QObject::tr("ice pellet precipitation in the vicinity");
                 break;
             case metaf::WeatherPhenomena::Qualifier::LIGHT:
-                results << tr("light ice pellet precipitation");
+                results << QObject::tr("light ice pellet precipitation");
                 break;
             case metaf::WeatherPhenomena::Qualifier::MODERATE:
-                results << tr("moderate ice pellet precipitation");
+                results << QObject::tr("moderate ice pellet precipitation");
                 break;
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
-                results << tr("heavy ice pellet precipitation");
+                results << QObject::tr("heavy ice pellet precipitation");
                 break;
             case metaf::WeatherPhenomena::Qualifier::RECENT:
-                results << tr("recent ice pellet precipitation");
+                results << QObject::tr("recent ice pellet precipitation");
                 break;
             }
             continue;
@@ -1472,22 +1472,22 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             switch(wp.qualifier())
             {
             case metaf::WeatherPhenomena::Qualifier::NONE:
-                results << tr("precipitation");
+                results << QObject::tr("precipitation");
                 break;
             case metaf::WeatherPhenomena::Qualifier::LIGHT:
-                results << tr("light precipitation");
+                results << QObject::tr("light precipitation");
                 break;
             case metaf::WeatherPhenomena::Qualifier::MODERATE:
-                results << tr("moderate precipitation");
+                results << QObject::tr("moderate precipitation");
                 break;
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
-                results << tr("heavy precipitation");
+                results << QObject::tr("heavy precipitation");
                 break;
             case metaf::WeatherPhenomena::Qualifier::RECENT:
-                results << tr("recent precipitation");
+                results << QObject::tr("recent precipitation");
                 break;
             case metaf::WeatherPhenomena::Qualifier::VICINITY:
-                results << tr("precipitation in the vicinity");
+                results << QObject::tr("precipitation in the vicinity");
                 break;
             }
             continue;
@@ -1499,22 +1499,22 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             switch(wp.qualifier())
             {
             case metaf::WeatherPhenomena::Qualifier::NONE:
-                results << tr("showers with undetermined precipitation");
+                results << QObject::tr("showers with undetermined precipitation");
                 break;
             case metaf::WeatherPhenomena::Qualifier::RECENT:
-                results << tr("recent showers with undetermined precipitation");
+                results << QObject::tr("recent showers with undetermined precipitation");
                 break;
             case metaf::WeatherPhenomena::Qualifier::VICINITY:
-                results << tr("showers in the vicinity with undetermined precipitation");
+                results << QObject::tr("showers in the vicinity with undetermined precipitation");
                 break;
             case metaf::WeatherPhenomena::Qualifier::LIGHT:
-                results << tr("light showers with undetermined precipitation");
+                results << QObject::tr("light showers with undetermined precipitation");
                 break;
             case metaf::WeatherPhenomena::Qualifier::MODERATE:
-                results << tr("moderate showers with undetermined precipitation");
+                results << QObject::tr("moderate showers with undetermined precipitation");
                 break;
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
-                results << tr("heavy showers with undetermined precipitation");
+                results << QObject::tr("heavy showers with undetermined precipitation");
                 break;
             }
             continue;
@@ -1526,22 +1526,22 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             switch(wp.qualifier())
             {
             case metaf::WeatherPhenomena::Qualifier::NONE:
-                results << tr("thunderstorm with precipitation");
+                results << QObject::tr("thunderstorm with precipitation");
                 break;
             case metaf::WeatherPhenomena::Qualifier::RECENT:
-                results << tr("recent thunderstorm with precipitation");
+                results << QObject::tr("recent thunderstorm with precipitation");
                 break;
             case metaf::WeatherPhenomena::Qualifier::VICINITY:
-                results << tr("thunderstorm with precipitation in the vicinity");
+                results << QObject::tr("thunderstorm with precipitation in the vicinity");
                 break;
             case metaf::WeatherPhenomena::Qualifier::LIGHT:
-                results << tr("light thunderstorm with precipitation");
+                results << QObject::tr("light thunderstorm with precipitation");
                 break;
             case metaf::WeatherPhenomena::Qualifier::MODERATE:
-                results << tr("moderate thunderstorm with precipitation");
+                results << QObject::tr("moderate thunderstorm with precipitation");
                 break;
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
-                results << tr("heavy thunderstorm with precipitation");
+                results << QObject::tr("heavy thunderstorm with precipitation");
                 break;
             }
             continue;
@@ -1553,22 +1553,22 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             switch(wp.qualifier())
             {
             case metaf::WeatherPhenomena::Qualifier::NONE:
-                results << tr("rain");
+                results << QObject::tr("rain");
                 break;
             case metaf::WeatherPhenomena::Qualifier::VICINITY:
-                results << tr("rain in the vicinity");
+                results << QObject::tr("rain in the vicinity");
                 break;
             case metaf::WeatherPhenomena::Qualifier::LIGHT:
-                results << tr("light rain");
+                results << QObject::tr("light rain");
                 break;
             case metaf::WeatherPhenomena::Qualifier::MODERATE:
-                results << tr("moderate rain");
+                results << QObject::tr("moderate rain");
                 break;
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
-                results << tr("heavy rain");
+                results << QObject::tr("heavy rain");
                 break;
             case metaf::WeatherPhenomena::Qualifier::RECENT:
-                results << tr("recent rain");
+                results << QObject::tr("recent rain");
                 break;
             }
             continue;
@@ -1580,22 +1580,22 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             switch(wp.qualifier())
             {
             case metaf::WeatherPhenomena::Qualifier::NONE:
-                results << tr("freezing rain");
+                results << QObject::tr("freezing rain");
                 break;
             case metaf::WeatherPhenomena::Qualifier::LIGHT:
-                results << tr("light freezing rain");
+                results << QObject::tr("light freezing rain");
                 break;
             case metaf::WeatherPhenomena::Qualifier::MODERATE:
-                results << tr("moderate freezing rain");
+                results << QObject::tr("moderate freezing rain");
                 break;
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
-                results << tr("heavy freezing rain");
+                results << QObject::tr("heavy freezing rain");
                 break;
             case metaf::WeatherPhenomena::Qualifier::RECENT:
-                results << tr("recent freezing rain");
+                results << QObject::tr("recent freezing rain");
                 break;
             case metaf::WeatherPhenomena::Qualifier::VICINITY:
-                results << tr("freezing rain in the vicinity");
+                results << QObject::tr("freezing rain in the vicinity");
                 break;
             }
             continue;
@@ -1607,22 +1607,22 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             switch(wp.qualifier())
             {
             case metaf::WeatherPhenomena::Qualifier::NONE:
-                results << tr("rain showers");
+                results << QObject::tr("rain showers");
                 break;
             case metaf::WeatherPhenomena::Qualifier::VICINITY:
-                results << tr("rain showers in the vicinity");
+                results << QObject::tr("rain showers in the vicinity");
                 break;
             case metaf::WeatherPhenomena::Qualifier::LIGHT:
-                results << tr("light rain showers");
+                results << QObject::tr("light rain showers");
                 break;
             case metaf::WeatherPhenomena::Qualifier::MODERATE:
-                results << tr("moderate rain showers");
+                results << QObject::tr("moderate rain showers");
                 break;
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
-                results << tr("heavy rain showers");
+                results << QObject::tr("heavy rain showers");
                 break;
             case metaf::WeatherPhenomena::Qualifier::RECENT:
-                results << tr("recent rain showers");
+                results << QObject::tr("recent rain showers");
                 break;
             }
             continue;
@@ -1634,22 +1634,22 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             switch(wp.qualifier())
             {
             case metaf::WeatherPhenomena::Qualifier::NONE:
-                results << tr("thunderstorm with rain");
+                results << QObject::tr("thunderstorm with rain");
                 break;
             case metaf::WeatherPhenomena::Qualifier::VICINITY:
-                results << tr("thunderstorm with rain in the vicinity");
+                results << QObject::tr("thunderstorm with rain in the vicinity");
                 break;
             case metaf::WeatherPhenomena::Qualifier::LIGHT:
-                results << tr("light thunderstorm with rain");
+                results << QObject::tr("light thunderstorm with rain");
                 break;
             case metaf::WeatherPhenomena::Qualifier::MODERATE:
-                results << tr("moderate thunderstorm with rain");
+                results << QObject::tr("moderate thunderstorm with rain");
                 break;
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
-                results << tr("heavy thunderstorm with rain");
+                results << QObject::tr("heavy thunderstorm with rain");
                 break;
             case metaf::WeatherPhenomena::Qualifier::RECENT:
-                results << tr("recent thunderstorm with rain");
+                results << QObject::tr("recent thunderstorm with rain");
                 break;
             }
             continue;
@@ -1661,22 +1661,22 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             switch(wp.qualifier())
             {
             case metaf::WeatherPhenomena::Qualifier::NONE:
-                results << tr("blowing sand");
+                results << QObject::tr("blowing sand");
                 break;
             case metaf::WeatherPhenomena::Qualifier::VICINITY:
-                results << tr("blowing sand in the vicinity");
+                results << QObject::tr("blowing sand in the vicinity");
                 break;
             case metaf::WeatherPhenomena::Qualifier::LIGHT:
-                results << tr("light blowing sand");
+                results << QObject::tr("light blowing sand");
                 break;
             case metaf::WeatherPhenomena::Qualifier::MODERATE:
-                results << tr("moderate blowing sand");
+                results << QObject::tr("moderate blowing sand");
                 break;
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
-                results << tr("heavy blowing sand");
+                results << QObject::tr("heavy blowing sand");
                 break;
             case metaf::WeatherPhenomena::Qualifier::RECENT:
-                results << tr("recent blowing sand");
+                results << QObject::tr("recent blowing sand");
                 break;
             }
             continue;
@@ -1688,22 +1688,22 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             switch(wp.qualifier())
             {
             case metaf::WeatherPhenomena::Qualifier::NONE:
-                results << tr("low drifting sand");
+                results << QObject::tr("low drifting sand");
                 break;
             case metaf::WeatherPhenomena::Qualifier::VICINITY:
-                results << tr("low drifting sand in the vicinity");
+                results << QObject::tr("low drifting sand in the vicinity");
                 break;
             case metaf::WeatherPhenomena::Qualifier::LIGHT:
-                results << tr("light low drifting sand");
+                results << QObject::tr("light low drifting sand");
                 break;
             case metaf::WeatherPhenomena::Qualifier::MODERATE:
-                results << tr("moderate low drifting sand");
+                results << QObject::tr("moderate low drifting sand");
                 break;
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
-                results << tr("heavy low drifting sand");
+                results << QObject::tr("heavy low drifting sand");
                 break;
             case metaf::WeatherPhenomena::Qualifier::RECENT:
-                results << tr("recent low drifting sand");
+                results << QObject::tr("recent low drifting sand");
                 break;
             }
             continue;
@@ -1715,22 +1715,22 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             switch(wp.qualifier())
             {
             case metaf::WeatherPhenomena::Qualifier::NONE:
-                results << tr("snowfall");
+                results << QObject::tr("snowfall");
                 break;
             case metaf::WeatherPhenomena::Qualifier::VICINITY:
-                results << tr("snowfall in the vicinity");
+                results << QObject::tr("snowfall in the vicinity");
                 break;
             case metaf::WeatherPhenomena::Qualifier::LIGHT:
-                results << tr("light snowfall");
+                results << QObject::tr("light snowfall");
                 break;
             case metaf::WeatherPhenomena::Qualifier::MODERATE:
-                results << tr("moderate snowfall");
+                results << QObject::tr("moderate snowfall");
                 break;
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
-                results << tr("heavy snowfall");
+                results << QObject::tr("heavy snowfall");
                 break;
             case metaf::WeatherPhenomena::Qualifier::RECENT:
-                results << tr("recent snowfall");
+                results << QObject::tr("recent snowfall");
                 break;
             }
             continue;
@@ -1742,22 +1742,22 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             switch(wp.qualifier())
             {
             case metaf::WeatherPhenomena::Qualifier::NONE:
-                results << tr("blowing snow");
+                results << QObject::tr("blowing snow");
                 break;
             case metaf::WeatherPhenomena::Qualifier::VICINITY:
-                results << tr("blowing snow in the vicinity");
+                results << QObject::tr("blowing snow in the vicinity");
                 break;
             case metaf::WeatherPhenomena::Qualifier::LIGHT:
-                results << tr("light blowing snow");
+                results << QObject::tr("light blowing snow");
                 break;
             case metaf::WeatherPhenomena::Qualifier::MODERATE:
-                results << tr("moderate blowing snow");
+                results << QObject::tr("moderate blowing snow");
                 break;
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
-                results << tr("heavy blowing snow");
+                results << QObject::tr("heavy blowing snow");
                 break;
             case metaf::WeatherPhenomena::Qualifier::RECENT:
-                results << tr("recent blowing snow");
+                results << QObject::tr("recent blowing snow");
                 break;
             }
             continue;
@@ -1769,22 +1769,22 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             switch(wp.qualifier())
             {
             case metaf::WeatherPhenomena::Qualifier::NONE:
-                results << tr("snow grain precipitation");
+                results << QObject::tr("snow grain precipitation");
                 break;
             case metaf::WeatherPhenomena::Qualifier::VICINITY:
-                results << tr("snow grain precipitation in the vicinity");
+                results << QObject::tr("snow grain precipitation in the vicinity");
                 break;
             case metaf::WeatherPhenomena::Qualifier::LIGHT:
-                results << tr("light snow grain precipitation");
+                results << QObject::tr("light snow grain precipitation");
                 break;
             case metaf::WeatherPhenomena::Qualifier::MODERATE:
-                results << tr("moderate snow grain precipitation");
+                results << QObject::tr("moderate snow grain precipitation");
                 break;
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
-                results << tr("heavy snow grain precipitation");
+                results << QObject::tr("heavy snow grain precipitation");
                 break;
             case metaf::WeatherPhenomena::Qualifier::RECENT:
-                results << tr("recent snow grain precipitation");
+                results << QObject::tr("recent snow grain precipitation");
                 break;
             }
             continue;
@@ -1796,22 +1796,22 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             switch(wp.qualifier())
             {
             case metaf::WeatherPhenomena::Qualifier::NONE:
-                results << tr("low drifting snow");
+                results << QObject::tr("low drifting snow");
                 break;
             case metaf::WeatherPhenomena::Qualifier::VICINITY:
-                results << tr("low drifting snow in the vicinity");
+                results << QObject::tr("low drifting snow in the vicinity");
                 break;
             case metaf::WeatherPhenomena::Qualifier::LIGHT:
-                results << tr("light low drifting snow");
+                results << QObject::tr("light low drifting snow");
                 break;
             case metaf::WeatherPhenomena::Qualifier::MODERATE:
-                results << tr("moderate low drifting snow");
+                results << QObject::tr("moderate low drifting snow");
                 break;
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
-                results << tr("heavy low drifting snow");
+                results << QObject::tr("heavy low drifting snow");
                 break;
             case metaf::WeatherPhenomena::Qualifier::RECENT:
-                results << tr("recent low drifting snow");
+                results << QObject::tr("recent low drifting snow");
                 break;
             }
             continue;
@@ -1823,22 +1823,22 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             switch(wp.qualifier())
             {
             case metaf::WeatherPhenomena::Qualifier::NONE:
-                results << tr("freezing snow");
+                results << QObject::tr("freezing snow");
                 break;
             case metaf::WeatherPhenomena::Qualifier::VICINITY:
-                results << tr("freezing snow in the vicinity");
+                results << QObject::tr("freezing snow in the vicinity");
                 break;
             case metaf::WeatherPhenomena::Qualifier::LIGHT:
-                results << tr("light freezing snow");
+                results << QObject::tr("light freezing snow");
                 break;
             case metaf::WeatherPhenomena::Qualifier::MODERATE:
-                results << tr("moderate freezing snow");
+                results << QObject::tr("moderate freezing snow");
                 break;
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
-                results << tr("heavy freezing snow");
+                results << QObject::tr("heavy freezing snow");
                 break;
             case metaf::WeatherPhenomena::Qualifier::RECENT:
-                results << tr("recent freezing snow");
+                results << QObject::tr("recent freezing snow");
                 break;
             }
             continue;
@@ -1850,22 +1850,22 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             switch(wp.qualifier())
             {
             case metaf::WeatherPhenomena::Qualifier::NONE:
-                results << tr("snow showers");
+                results << QObject::tr("snow showers");
                 break;
             case metaf::WeatherPhenomena::Qualifier::VICINITY:
-                results << tr("snow showers in the vicinity");
+                results << QObject::tr("snow showers in the vicinity");
                 break;
             case metaf::WeatherPhenomena::Qualifier::LIGHT:
-                results << tr("light snow showers");
+                results << QObject::tr("light snow showers");
                 break;
             case metaf::WeatherPhenomena::Qualifier::MODERATE:
-                results << tr("moderate snow showers");
+                results << QObject::tr("moderate snow showers");
                 break;
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
-                results << tr("heavy snow showers");
+                results << QObject::tr("heavy snow showers");
                 break;
             case metaf::WeatherPhenomena::Qualifier::RECENT:
-                results << tr("recent snow showers");
+                results << QObject::tr("recent snow showers");
                 break;
             }
             continue;
@@ -1877,22 +1877,22 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             switch(wp.qualifier())
             {
             case metaf::WeatherPhenomena::Qualifier::NONE:
-                results << tr("thunderstorm with snow");
+                results << QObject::tr("thunderstorm with snow");
                 break;
             case metaf::WeatherPhenomena::Qualifier::VICINITY:
-                results << tr("thunderstorm with snow in the vicinity");
+                results << QObject::tr("thunderstorm with snow in the vicinity");
                 break;
             case metaf::WeatherPhenomena::Qualifier::LIGHT:
-                results << tr("light thunderstorm with snow");
+                results << QObject::tr("light thunderstorm with snow");
                 break;
             case metaf::WeatherPhenomena::Qualifier::MODERATE:
-                results << tr("moderate thunderstorm with snow");
+                results << QObject::tr("moderate thunderstorm with snow");
                 break;
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
-                results << tr("heavy thunderstorm with snow");
+                results << QObject::tr("heavy thunderstorm with snow");
                 break;
             case metaf::WeatherPhenomena::Qualifier::RECENT:
-                results << tr("recent thunderstorm with snow");
+                results << QObject::tr("recent thunderstorm with snow");
                 break;
             }
             continue;
@@ -1904,22 +1904,22 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             switch(wp.qualifier())
             {
             case metaf::WeatherPhenomena::Qualifier::NONE:
-                results << tr("shower with small hail");
+                results << QObject::tr("shower with small hail");
                 break;
             case metaf::WeatherPhenomena::Qualifier::VICINITY:
-                results << tr("shower with small hail in the vicinity");
+                results << QObject::tr("shower with small hail in the vicinity");
                 break;
             case metaf::WeatherPhenomena::Qualifier::LIGHT:
-                results << tr("light shower with small hail");
+                results << QObject::tr("light shower with small hail");
                 break;
             case metaf::WeatherPhenomena::Qualifier::MODERATE:
-                results << tr("moderate shower with small hail");
+                results << QObject::tr("moderate shower with small hail");
                 break;
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
-                results << tr("heavy shower with small hail");
+                results << QObject::tr("heavy shower with small hail");
                 break;
             case metaf::WeatherPhenomena::Qualifier::RECENT:
-                results << tr("recent shower with small hail");
+                results << QObject::tr("recent shower with small hail");
                 break;
             }
             continue;
@@ -1931,22 +1931,22 @@ QString Weather::Decoder::specialWeatherPhenomenaToString(const metaf::WeatherPh
             switch(wp.qualifier())
             {
             case metaf::WeatherPhenomena::Qualifier::NONE:
-                results << tr("thunderstorm with small hail");
+                results << QObject::tr("thunderstorm with small hail");
                 break;
             case metaf::WeatherPhenomena::Qualifier::VICINITY:
-                results << tr("thunderstorm with small hail in the vicinity");
+                results << QObject::tr("thunderstorm with small hail in the vicinity");
                 break;
             case metaf::WeatherPhenomena::Qualifier::LIGHT:
-                results << tr("light thunderstorm with small hail");
+                results << QObject::tr("light thunderstorm with small hail");
                 break;
             case metaf::WeatherPhenomena::Qualifier::MODERATE:
-                results << tr("moderate thunderstorm with small hail");
+                results << QObject::tr("moderate thunderstorm with small hail");
                 break;
             case metaf::WeatherPhenomena::Qualifier::HEAVY:
-                results << tr("heavy thunderstorm with small hail");
+                results << QObject::tr("heavy thunderstorm with small hail");
                 break;
             case metaf::WeatherPhenomena::Qualifier::RECENT:
-                results << tr("recent thunderstorm with small hail");
+                results << QObject::tr("recent thunderstorm with small hail");
                 break;
             }
             continue;
@@ -1963,37 +1963,37 @@ QString Weather::Decoder::stateOfSeaSurfaceToString(metaf::WaveHeight::StateOfSu
     switch(stateOfSurface)
     {
     case metaf::WaveHeight::StateOfSurface::NOT_REPORTED:
-        return tr("not reported");
+        return QObject::tr("not reported");
 
     case metaf::WaveHeight::StateOfSurface::CALM_GLASSY:
-        return tr("calm (glassy), no waves");
+        return QObject::tr("calm (glassy), no waves");
 
     case metaf::WaveHeight::StateOfSurface::CALM_RIPPLED:
-        return tr("calm (rippled), wave height <0.1 meters");
+        return QObject::tr("calm (rippled), wave height <0.1 meters");
 
     case metaf::WaveHeight::StateOfSurface::SMOOTH:
-        return tr("smooth, wave height 0.1 to 0.5 meters");
+        return QObject::tr("smooth, wave height 0.1 to 0.5 meters");
 
     case metaf::WaveHeight::StateOfSurface::SLIGHT:
-        return tr("slight, wave height 0.5 to 1.25 meters");
+        return QObject::tr("slight, wave height 0.5 to 1.25 meters");
 
     case metaf::WaveHeight::StateOfSurface::MODERATE:
-        return tr("moderate, wave height 1.25 to 2.5 meters");
+        return QObject::tr("moderate, wave height 1.25 to 2.5 meters");
 
     case metaf::WaveHeight::StateOfSurface::ROUGH:
-        return tr("rough, wave height 2.5 to 4 meters");
+        return QObject::tr("rough, wave height 2.5 to 4 meters");
 
     case metaf::WaveHeight::StateOfSurface::VERY_ROUGH:
-        return tr("very rough, wave height 4 to 6 meters");
+        return QObject::tr("very rough, wave height 4 to 6 meters");
 
     case metaf::WaveHeight::StateOfSurface::HIGH:
-        return tr("high, wave height 6 to 9 meters");
+        return QObject::tr("high, wave height 6 to 9 meters");
 
     case metaf::WaveHeight::StateOfSurface::VERY_HIGH:
-        return tr("very high, wave height 9 to 14 meters");
+        return QObject::tr("very high, wave height 9 to 14 meters");
 
     case metaf::WaveHeight::StateOfSurface::PHENOMENAL:
-        return tr("phenomenal, wave height >14 meters");
+        return QObject::tr("phenomenal, wave height >14 meters");
     }
     return {};
 }
@@ -2006,19 +2006,19 @@ QString Weather::Decoder::visTrendToString(metaf::VisibilityGroup::Trend trend)
         return {};
 
     case metaf::VisibilityGroup::Trend::NOT_REPORTED:
-        return tr("not reported");
+        return QObject::tr("not reported");
 
     case metaf::VisibilityGroup::Trend::UPWARD:
         //: visibility trend
-        return tr("upward");
+        return QObject::tr("upward");
 
     case metaf::VisibilityGroup::Trend::NEUTRAL:
         //: visibility trend
-        return tr("neutral");
+        return QObject::tr("neutral");
 
     case metaf::VisibilityGroup::Trend::DOWNWARD:
         //: visibility trend
-        return tr("downward");
+        return QObject::tr("downward");
     }
     return {};
 }
@@ -2031,28 +2031,28 @@ QString Weather::Decoder::weatherPhenomenaDescriptorToString(metaf::WeatherPheno
         return {};
 
     case metaf::WeatherPhenomena::Descriptor::SHALLOW:
-        return tr("shallow");
+        return QObject::tr("shallow");
 
     case metaf::WeatherPhenomena::Descriptor::PARTIAL:
-        return tr("partial");
+        return QObject::tr("partial");
 
     case metaf::WeatherPhenomena::Descriptor::PATCHES:
-        return tr("patches");
+        return QObject::tr("patches");
 
     case metaf::WeatherPhenomena::Descriptor::LOW_DRIFTING:
-        return tr("low drifting");
+        return QObject::tr("low drifting");
 
     case metaf::WeatherPhenomena::Descriptor::BLOWING:
-        return tr("blowing");
+        return QObject::tr("blowing");
 
     case metaf::WeatherPhenomena::Descriptor::SHOWERS:
-        return tr("showers");
+        return QObject::tr("showers");
 
     case metaf::WeatherPhenomena::Descriptor::THUNDERSTORM:
-        return tr("thunderstorm");
+        return QObject::tr("thunderstorm");
 
     case metaf::WeatherPhenomena::Descriptor::FREEZING:
-        return tr("freezing");
+        return QObject::tr("freezing");
     }
     return {};
 }
@@ -2071,13 +2071,13 @@ QString Weather::Decoder::weatherPhenomenaQualifierToString(metaf::WeatherPhenom
         return QStringLiteral("in vicinity");
 
     case metaf::WeatherPhenomena::Qualifier::LIGHT:
-        return tr("light");
+        return QObject::tr("light");
 
     case metaf::WeatherPhenomena::Qualifier::MODERATE:
-        return tr("moderate");
+        return QObject::tr("moderate");
 
     case metaf::WeatherPhenomena::Qualifier::HEAVY:
-        return tr("heavy");
+        return QObject::tr("heavy");
     }
     return {};
 }
@@ -2090,70 +2090,70 @@ QString Weather::Decoder::weatherPhenomenaWeatherToString(metaf::WeatherPhenomen
         return {};
 
     case metaf::WeatherPhenomena::Weather::DRIZZLE:
-        return tr("drizzle");
+        return QObject::tr("drizzle");
 
     case metaf::WeatherPhenomena::Weather::RAIN:
-        return tr("rain");
+        return QObject::tr("rain");
 
     case metaf::WeatherPhenomena::Weather::SNOW:
-        return tr("snow");
+        return QObject::tr("snow");
 
     case metaf::WeatherPhenomena::Weather::SNOW_GRAINS:
-        return tr("snow grains");
+        return QObject::tr("snow grains");
 
     case metaf::WeatherPhenomena::Weather::ICE_CRYSTALS:
-        return tr("ice crystals");
+        return QObject::tr("ice crystals");
 
     case metaf::WeatherPhenomena::Weather::ICE_PELLETS:
-        return tr("ice pellets");
+        return QObject::tr("ice pellets");
 
     case metaf::WeatherPhenomena::Weather::HAIL:
-        return tr("hail");
+        return QObject::tr("hail");
 
     case metaf::WeatherPhenomena::Weather::SMALL_HAIL:
-        return tr("small hail");
+        return QObject::tr("small hail");
 
     case metaf::WeatherPhenomena::Weather::UNDETERMINED:
-        return tr("undetermined precipitation");
+        return QObject::tr("undetermined precipitation");
 
     case metaf::WeatherPhenomena::Weather::MIST:
-        return tr("mist");
+        return QObject::tr("mist");
 
     case metaf::WeatherPhenomena::Weather::FOG:
-        return tr("fog");
+        return QObject::tr("fog");
 
     case metaf::WeatherPhenomena::Weather::SMOKE:
-        return tr("smoke");
+        return QObject::tr("smoke");
 
     case metaf::WeatherPhenomena::Weather::VOLCANIC_ASH:
-        return tr("volcanic ash");
+        return QObject::tr("volcanic ash");
 
     case metaf::WeatherPhenomena::Weather::DUST:
-        return tr("dust");
+        return QObject::tr("dust");
 
     case metaf::WeatherPhenomena::Weather::SAND:
-        return tr("sand");
+        return QObject::tr("sand");
 
     case metaf::WeatherPhenomena::Weather::HAZE:
-        return tr("haze");
+        return QObject::tr("haze");
 
     case metaf::WeatherPhenomena::Weather::SPRAY:
-        return tr("spray");
+        return QObject::tr("spray");
 
     case metaf::WeatherPhenomena::Weather::DUST_WHIRLS:
-        return tr("dust or sand whirls");
+        return QObject::tr("dust or sand whirls");
 
     case metaf::WeatherPhenomena::Weather::SQUALLS:
-        return tr("squalls");
+        return QObject::tr("squalls");
 
     case metaf::WeatherPhenomena::Weather::FUNNEL_CLOUD:
-        return tr("funnel cloud");
+        return QObject::tr("funnel cloud");
 
     case metaf::WeatherPhenomena::Weather::SANDSTORM:
-        return tr("sand storm");
+        return QObject::tr("sand storm");
 
     case metaf::WeatherPhenomena::Weather::DUSTSTORM:
-        return tr("dust storm");
+        return QObject::tr("dust storm");
     }
     return {};
 }
@@ -2165,7 +2165,7 @@ QString Weather::Decoder::visitCloudGroup(const CloudGroup & group, ReportPart /
 {
     if (!group.isValid())
     {
-        return tr("Invalid data");
+        return QObject::tr("Invalid data");
     }
 
     const auto rw = group.runway();
@@ -2179,46 +2179,46 @@ QString Weather::Decoder::visitCloudGroup(const CloudGroup & group, ReportPart /
     case metaf::CloudGroup::Type::CLOUD_LAYER:
         if (group.convectiveType() != metaf::CloudGroup::ConvectiveType::NONE)
         {
-            return tr("%1 (%2) in %3 AGL")
+            return QObject::tr("%1 (%2) in %3 AGL")
                     .arg(cloudAmountToString(group.amount()),
                          convectiveTypeToString(group.convectiveType()),
                          explainDistance_FT(group.height()));
         }
-        return tr("%1 in %2 AGL")
+        return QObject::tr("%1 in %2 AGL")
                 .arg(cloudAmountToString(group.amount()),
                      explainDistance_FT(group.height()));
 
     case metaf::CloudGroup::Type::VERTICAL_VISIBILITY:
-        return tr("Vertical visibility %1")
+        return QObject::tr("Vertical visibility %1")
                 .arg(explainDistance_FT(group.verticalVisibility()));
 
     case metaf::CloudGroup::Type::CEILING:
         if (rw.has_value() && d.has_value())
         {
-            return tr("Ceiling height %1 AGL at %2 towards %3")
+            return QObject::tr("Ceiling height %1 AGL at %2 towards %3")
                     .arg(explainDistance_FT(group.height()),
                          explainRunway(*rw),
                          explainDirection(*d));
         }
         if (rw.has_value())
         {
-            return tr("Ceiling height %1 AGL at %2")
+            return QObject::tr("Ceiling height %1 AGL at %2")
                     .arg(explainDistance_FT(group.height()),
                          explainRunway(*rw));
         }
         if (d.has_value())
         {
-            return tr("Ceiling height %1 AGL towards %2")
+            return QObject::tr("Ceiling height %1 AGL towards %2")
                     .arg(explainDistance_FT(group.height()),
                          explainDirection(*d));
         }
-        return tr("Ceiling height %1")
+        return QObject::tr("Ceiling height %1")
                 .arg(explainDistance_FT(group.height()));
 
     case metaf::CloudGroup::Type::VARIABLE_CEILING:
         if (rw.has_value() && d.has_value())
         {
-            return tr("Ceiling height %1 -- %2 AGL at %3 towards %4")
+            return QObject::tr("Ceiling height %1 -- %2 AGL at %3 towards %4")
                     .arg(explainDistance_FT(group.minHeight()),
                          explainDistance_FT(group.maxHeight()),
                          explainRunway(*rw),
@@ -2226,45 +2226,45 @@ QString Weather::Decoder::visitCloudGroup(const CloudGroup & group, ReportPart /
         }
         if (rw.has_value())
         {
-            return tr("Ceiling height %1 -- %2 AGL at %3")
+            return QObject::tr("Ceiling height %1 -- %2 AGL at %3")
                     .arg(explainDistance_FT(group.minHeight()),
                          explainDistance_FT(group.maxHeight()),
                          explainRunway(*rw));
         }
         if (d.has_value())
         {
-            return tr("Ceiling height %1 -- %2 AGL towards %3")
+            return QObject::tr("Ceiling height %1 -- %2 AGL towards %3")
                     .arg(explainDistance_FT(group.minHeight()),
                          explainDistance_FT(group.maxHeight()),
                          explainDirection(*d));
         }
-        return tr("Ceiling height %1 -- %2 AGL")
+        return QObject::tr("Ceiling height %1 -- %2 AGL")
                 .arg(explainDistance_FT(group.minHeight()),
                      explainDistance_FT(group.maxHeight()));
 
     case metaf::CloudGroup::Type::CHINO:
-        return tr("Ceiling data not awailable");
+        return QObject::tr("Ceiling data not awailable");
 
     case metaf::CloudGroup::Type::CLD_MISG:
-        return tr("Sky condition data (cloud data) is missing");
+        return QObject::tr("Sky condition data (cloud data) is missing");
 
     case metaf::CloudGroup::Type::OBSCURATION:
         const auto h = group.height().distance();
         const auto ct = group.cloudType();
         if (h.has_value() && (h.value() == 0.0F) && ct.has_value())
         {
-            return tr("Ground-based obscuration, %1").arg(explainCloudType(ct.value()));
+            return QObject::tr("Ground-based obscuration, %1").arg(explainCloudType(ct.value()));
         }
         if (h.has_value() && (h.value() == 0.0F)) {
-            return tr("Ground-based obscuration");
+            return QObject::tr("Ground-based obscuration");
         }
         if (h.has_value() && (h.value() != 0.0F) && ct.has_value())
         {
-            return tr("Aloft obscuration, %1").arg(explainCloudType(ct.value()));
+            return QObject::tr("Aloft obscuration, %1").arg(explainCloudType(ct.value()));
         }
         if (h.has_value() && (h.value() != 0.0F))
         {
-            return tr("Aloft obscuration");
+            return QObject::tr("Aloft obscuration");
         }
         if (!ct.has_value())
         {
@@ -2278,7 +2278,7 @@ QString Weather::Decoder::visitCloudGroup(const CloudGroup & group, ReportPart /
 QString Weather::Decoder::visitCloudTypesGroup(const CloudTypesGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/)
 {
     if (!group.isValid()) {
-        return tr("Invalid data");
+        return QObject::tr("Invalid data");
     }
 
     QStringList layers;
@@ -2288,65 +2288,65 @@ QString Weather::Decoder::visitCloudTypesGroup(const CloudTypesGroup & group, Re
     {
         layers << explainCloudType(cloud);
     }
-    return tr("Cloud layers: %1").arg(layers.join(QStringLiteral(" • ")));
+    return QObject::tr("Cloud layers: %1").arg(layers.join(QStringLiteral(" • ")));
 }
 
 QString Weather::Decoder::visitKeywordGroup(const KeywordGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/)
 {
     if (!group.isValid())
     {
-        return tr("Invalid data");
+        return QObject::tr("Invalid data");
     }
 
     switch (group.type())
     {
     case metaf::KeywordGroup::Type::METAR:
-        return tr("Report type: METAR");
+        return QObject::tr("Report type: METAR");
 
     case metaf::KeywordGroup::Type::SPECI:
-        return tr("Report type: unscheduled METAR");
+        return QObject::tr("Report type: unscheduled METAR");
 
     case metaf::KeywordGroup::Type::TAF:
-        return tr("Report type: TAF");
+        return QObject::tr("Report type: TAF");
 
     case metaf::KeywordGroup::Type::AMD:
-        return tr("Amended report");
+        return QObject::tr("Amended report");
 
     case metaf::KeywordGroup::Type::NIL:
-        return tr("Missing report");
+        return QObject::tr("Missing report");
 
     case metaf::KeywordGroup::Type::CNL:
-        return tr("Cancelled report");
+        return QObject::tr("Cancelled report");
 
     case metaf::KeywordGroup::Type::COR:
-        return tr("Correctional report");
+        return QObject::tr("Correctional report");
 
     case metaf::KeywordGroup::Type::AUTO:
-        return tr("Automated report");
+        return QObject::tr("Automated report");
 
     case metaf::KeywordGroup::Type::CAVOK:
-        return tr("CAVOK");
+        return QObject::tr("CAVOK");
 
     case metaf::KeywordGroup::Type::RMK:
-        return tr("<strong>Remarks</strong>");
+        return QObject::tr("<strong>Remarks</strong>");
 
     case metaf::KeywordGroup::Type::MAINTENANCE_INDICATOR:
-        return tr("Automated station requires maintenance");
+        return QObject::tr("Automated station requires maintenance");
 
     case metaf::KeywordGroup::Type::AO1:
-        return tr("Automated station w/o precipitation discriminator");
+        return QObject::tr("Automated station w/o precipitation discriminator");
 
     case metaf::KeywordGroup::Type::AO2:
-        return tr("Automated station with precipitation discriminator");
+        return QObject::tr("Automated station with precipitation discriminator");
 
     case metaf::KeywordGroup::Type::AO1A:
-        return tr("Automated station w/o precipitation discriminator, report augmented by a human observer");
+        return QObject::tr("Automated station w/o precipitation discriminator, report augmented by a human observer");
 
     case metaf::KeywordGroup::Type::AO2A:
-        return tr("Automated station with precipitation discriminator, report augmented by a human observer");
+        return QObject::tr("Automated station with precipitation discriminator, report augmented by a human observer");
 
     case metaf::KeywordGroup::Type::NOSPECI:
-        return tr("Manual station, does not issue SPECI reports");
+        return QObject::tr("Manual station, does not issue SPECI reports");
     }
     return {};
 }
@@ -2355,16 +2355,16 @@ QString Weather::Decoder::visitLayerForecastGroup(const LayerForecastGroup & gro
 {
     if (!group.isValid())
     {
-        return tr("Invalid data");
+        return QObject::tr("Invalid data");
     }
 
     if (!group.baseHeight().isReported() && !group.topHeight().isReported())
     {
-        return tr("%1 at all heights")
+        return QObject::tr("%1 at all heights")
                 .arg(layerForecastGroupTypeToString(group.type()));
     }
 
-    return tr("%1 at heights from %2 to %3.")
+    return QObject::tr("%1 at heights from %2 to %3.")
             .arg(layerForecastGroupTypeToString(group.type()),
                  explainDistance(group.baseHeight()),
                  explainDistance(group.topHeight()));
@@ -2374,15 +2374,15 @@ QString Weather::Decoder::visitLightningGroup(const LightningGroup & group, Repo
 {
     if (!group.isValid())
     {
-        return tr("Invalid data");
+        return QObject::tr("Invalid data");
     }
 
     QStringList result;
-    result << tr("Lightning strikes observed.");
+    result << QObject::tr("Lightning strikes observed.");
 
     if (group.distance().isReported())
     {
-        result << tr("Distance %1.").arg(explainDistance(group.distance()));
+        result << QObject::tr("Distance %1.").arg(explainDistance(group.distance()));
     }
 
     switch(group.frequency())
@@ -2391,15 +2391,15 @@ QString Weather::Decoder::visitLightningGroup(const LightningGroup & group, Repo
         break;
 
     case metaf::LightningGroup::Frequency::OCCASIONAL:
-        result << tr("Less than 1 strike per minute.");
+        result << QObject::tr("Less than 1 strike per minute.");
         break;
 
     case metaf::LightningGroup::Frequency::FREQUENT:
-        result << tr("1 -- 6 strikes per minute.");
+        result << QObject::tr("1 -- 6 strikes per minute.");
         break;
 
     case metaf::LightningGroup::Frequency::CONSTANT:
-        result << tr("More than 6 strikes per minute.");
+        result << QObject::tr("More than 6 strikes per minute.");
         break;
     }
 
@@ -2407,28 +2407,28 @@ QString Weather::Decoder::visitLightningGroup(const LightningGroup & group, Repo
         QStringList typeList;
         if (group.isCloudGround())
         {
-            typeList << tr("cloud-to-ground");
+            typeList << QObject::tr("cloud-to-ground");
         }
         if (group.isInCloud()) {
-            typeList << tr("in-cloud");
+            typeList << QObject::tr("in-cloud");
         }
         if (group.isCloudCloud())
         {
-            typeList << tr("cloud-to-cloud");
+            typeList << QObject::tr("cloud-to-cloud");
         }
         if (group.isCloudAir())
         {
-            typeList << tr("cloud-to-air without strike to ground");
+            typeList << QObject::tr("cloud-to-air without strike to ground");
         }
         if (!typeList.isEmpty())
         {
-            result << tr("Lightning types: %1.").arg(typeList.join(QStringLiteral(", ")));
+            result << QObject::tr("Lightning types: %1.").arg(typeList.join(QStringLiteral(", ")));
         }
     }
 
     if (group.isUnknownType())
     {
-        result << tr("Lightning strike types not recognised by parser.");
+        result << QObject::tr("Lightning strike types not recognised by parser.");
     }
 
     QStringList directionList;
@@ -2438,7 +2438,7 @@ QString Weather::Decoder::visitLightningGroup(const LightningGroup & group, Repo
     }
     if (!directionList.isEmpty())
     {
-        result << tr("Lightning strikes observed in the following directions: %1").arg(directionList.join(QStringLiteral(", ")));
+        result << QObject::tr("Lightning strikes observed in the following directions: %1").arg(directionList.join(QStringLiteral(", ")));
     }
 
     return result.join(QStringLiteral(" "));
@@ -2448,20 +2448,20 @@ QString Weather::Decoder::visitLocationGroup(const LocationGroup & group, Report
 {
     if (!group.isValid())
     {
-        return tr("Invalid data");
+        return QObject::tr("Invalid data");
     }
 
-    return tr("Report for %1").arg(QString::fromStdString(group.toString()));
+    return QObject::tr("Report for %1").arg(QString::fromStdString(group.toString()));
 }
 
 QString Weather::Decoder::visitLowMidHighCloudGroup(const LowMidHighCloudGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/)
 {
     if (!group.isValid())
     {
-        return tr("Invalid data");
+        return QObject::tr("Invalid data");
     }
 
-    return tr("Low cloud layer: %1 • Mid cloud layer: %2 • High cloud layer: %3")
+    return QObject::tr("Low cloud layer: %1 • Mid cloud layer: %2 • High cloud layer: %3")
             .arg(cloudLowLayerToString(group.lowLayer()),
                  cloudMidLayerToString(group.midLayer()),
                  cloudHighLayerToString(group.highLayer()));
@@ -2470,7 +2470,7 @@ QString Weather::Decoder::visitLowMidHighCloudGroup(const LowMidHighCloudGroup &
 QString Weather::Decoder::visitMinMaxTemperatureGroup(const MinMaxTemperatureGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/)
 {
     if (!group.isValid()) {
-        return tr("Invalid data");
+        return QObject::tr("Invalid data");
     }
 
     QString result;
@@ -2479,23 +2479,23 @@ QString Weather::Decoder::visitMinMaxTemperatureGroup(const MinMaxTemperatureGro
     switch(group.type())
     {
     case metaf::MinMaxTemperatureGroup::Type::OBSERVED_6_HOURLY:
-        return tr("Observed 6-hourly minimum/maximum temperature: %1/%2")
+        return QObject::tr("Observed 6-hourly minimum/maximum temperature: %1/%2")
                 .arg(explainTemperature(group.minimum()),
                      explainTemperature(group.maximum()));
 
     case metaf::MinMaxTemperatureGroup::Type::OBSERVED_24_HOURLY:
-        return tr("Observed 24-hourly minimum/maximum temperature: %1/%2")
+        return QObject::tr("Observed 24-hourly minimum/maximum temperature: %1/%2")
                 .arg(explainTemperature(group.minimum()),
                      explainTemperature(group.maximum()));
 
     case metaf::MinMaxTemperatureGroup::Type::FORECAST:
         if (group.minimum().isReported() && minimumTime.has_value()) {
-            result += tr("Minimum forecast temperature: %1, expected at %2.")
+            result += QObject::tr("Minimum forecast temperature: %1, expected at %2.")
                     .arg(explainTemperature(group.minimum()),
                          explainMetafTime(minimumTime.value()));
         }
         if (group.maximum().isReported() && (maximumTime.has_value())) {
-            result += " " + tr("Maximum forecast temperature: %1, expected at %2.")
+            result += " " + QObject::tr("Maximum forecast temperature: %1, expected at %2.")
                     .arg(explainTemperature(group.maximum()),
                          explainMetafTime(maximumTime.value()));
         }
@@ -2508,10 +2508,10 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*
 {
     if (!group.isValid())
     {
-        return tr("Invalid data");
+        return QObject::tr("Invalid data");
     }
 
-    static const QString colourCodeBlack = tr("Colour code BLACK: aerodrome closed due to snow accumulation or non-weather reasons");
+    static const QString colourCodeBlack = QObject::tr("Colour code BLACK: aerodrome closed due to snow accumulation or non-weather reasons");
     QString result;
     auto data = group.data();
 
@@ -2520,30 +2520,30 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*
     case metaf::MiscGroup::Type::SUNSHINE_DURATION_MINUTES:
         if (const auto duration = data; duration)
         {
-            return tr("Duration of sunshine that occurred the previous calendar day is %1 minutes.").arg(qRound(*duration));
+            return QObject::tr("Duration of sunshine that occurred the previous calendar day is %1 minutes.").arg(qRound(*duration));
         }
-        return tr("No sunshine occurred the previous calendar day");
+        return QObject::tr("No sunshine occurred the previous calendar day");
 
     case metaf::MiscGroup::Type::CORRECTED_WEATHER_OBSERVATION:
         if (!data.has_value())
         {
             return {};
         }
-        return tr("This report is the corrected weather observation, correction number is %1").arg(static_cast<int>(*data));
+        return QObject::tr("This report is the corrected weather observation, correction number is %1").arg(static_cast<int>(*data));
 
     case metaf::MiscGroup::Type::DENSITY_ALTITUDE:
         if (!data.has_value())
         {
             return {};
         }
-        return tr("Density altitude is %1 feet").arg(qRound(*data));
+        return QObject::tr("Density altitude is %1 feet").arg(qRound(*data));
 
     case metaf::MiscGroup::Type::HAILSTONE_SIZE:
         if (!data.has_value())
         {
             return {};
         }
-        return tr("Largest hailstone size is %1 inches").arg(*data);
+        return QObject::tr("Largest hailstone size is %1 inches").arg(*data);
 
     case metaf::MiscGroup::Type::COLOUR_CODE_BLACKBLUE:
         result = colourCodeBlack;
@@ -2552,7 +2552,7 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*
         {
             result += u" "_s;
         }
-        result += tr("Colour code BLUE: visibility >8000 m and lowest cloud base height >2500 ft");
+        result += QObject::tr("Colour code BLUE: visibility >8000 m and lowest cloud base height >2500 ft");
         return result;
 
     case metaf::MiscGroup::Type::COLOUR_CODE_BLACKBLUE_PLUS:
@@ -2562,7 +2562,7 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*
         {
             result += u" "_s;
         }
-        result += tr("Colour code BLUE+: visibility >8000 m or lowest cloud base height >2000 ft");
+        result += QObject::tr("Colour code BLUE+: visibility >8000 m or lowest cloud base height >2000 ft");
         return result;
 
     case metaf::MiscGroup::Type::COLOUR_CODE_BLACKYELLOW:
@@ -2572,7 +2572,7 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*
         {
             result += u" "_s;
         }
-        result += tr("Colour code YELLOW: visibility 1600-3700 m or lowest cloud base height 300-700 ft");
+        result += QObject::tr("Colour code YELLOW: visibility 1600-3700 m or lowest cloud base height 300-700 ft");
         return result;
 
     case metaf::MiscGroup::Type::COLOUR_CODE_BLACKWHITE:
@@ -2582,7 +2582,7 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*
         {
             result += u" "_s;
         }
-        result += tr("Colour code WHITE: visibility >5000 m and lowest cloud base height >1500 ft");
+        result += QObject::tr("Colour code WHITE: visibility >5000 m and lowest cloud base height >1500 ft");
         return result;
 
     case metaf::MiscGroup::Type::COLOUR_CODE_BLACKGREEN:
@@ -2592,7 +2592,7 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*
         {
             result += u" "_s;
         }
-        result += tr("Colour code GREEN: visibility >3700 m and lowest cloud base height >700 ft");
+        result += QObject::tr("Colour code GREEN: visibility >3700 m and lowest cloud base height >700 ft");
         return result;
 
     case metaf::MiscGroup::Type::COLOUR_CODE_BLACKYELLOW1:
@@ -2602,7 +2602,7 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*
         {
             result += u" "_s;
         }
-        result += tr("Colour code YELLOW 1: visibility >2500 m and lowest cloud base height >500 ft");
+        result += QObject::tr("Colour code YELLOW 1: visibility >2500 m and lowest cloud base height >500 ft");
         return result;
 
     case metaf::MiscGroup::Type::COLOUR_CODE_BLACKYELLOW2:
@@ -2612,7 +2612,7 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*
         {
             result += u" "_s;
         }
-        result += tr("Colour code YELLOW 2: visibility >1600 m and lowest cloud base height >300 ft");
+        result += QObject::tr("Colour code YELLOW 2: visibility >1600 m and lowest cloud base height >300 ft");
         return result;
 
     case metaf::MiscGroup::Type::COLOUR_CODE_BLACKAMBER:
@@ -2622,7 +2622,7 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*
         {
             result += u" "_s;
         }
-        result += tr("Colour code AMBER: visibility >800 m and lowest cloud base height >200 ft");
+        result += QObject::tr("Colour code AMBER: visibility >800 m and lowest cloud base height >200 ft");
         return result;
 
     case metaf::MiscGroup::Type::COLOUR_CODE_BLACKRED:
@@ -2632,25 +2632,25 @@ QString Weather::Decoder::visitMiscGroup(const MiscGroup & group,  ReportPart /*
         {
             result += u" "_s;
         }
-        result += tr("Colour code RED: visibility <800 m or lowest cloud base height <200 ft");
+        result += QObject::tr("Colour code RED: visibility <800 m or lowest cloud base height <200 ft");
         return result;
 
     case metaf::MiscGroup::Type::FROIN:
-        return tr("Frost on the instrument (e.g. due to freezing fog depositing rime).");
+        return QObject::tr("Frost on the instrument (e.g. due to freezing fog depositing rime).");
 
     case metaf::MiscGroup::Type::ISSUER_ID_FN:
         if (!data.has_value())
         {
             return {}; 
         }
-        return tr("Report issuer identifier is %1. This forecast is issued at The Fleet Weather Center Norfolk, VA.").arg(static_cast<int>(*data));
+        return QObject::tr("Report issuer identifier is %1. This forecast is issued at The Fleet Weather Center Norfolk, VA.").arg(static_cast<int>(*data));
 
     case metaf::MiscGroup::Type::ISSUER_ID_FS:
         if (!data.has_value())
         {
             return {};
         }
-        return tr("Report issuer identifier is %1. This forecast is issued at The Fleet Weather Center San Diego, CA (FS).").arg(static_cast<int>(*data));
+        return QObject::tr("Report issuer identifier is %1. This forecast is issued at The Fleet Weather Center San Diego, CA (FS).").arg(static_cast<int>(*data));
     }
     return {};
 }
@@ -2659,80 +2659,80 @@ QString Weather::Decoder::visitPrecipitationGroup(const PrecipitationGroup & gro
 {
     if (!group.isValid())
     {
-        return tr("Invalid data");
+        return QObject::tr("Invalid data");
     }
 
     switch(group.type())
     {
     case metaf::PrecipitationGroup::Type::TOTAL_PRECIPITATION_HOURLY:
-        return tr("Total precipitation for the past hour: %1.")
+        return QObject::tr("Total precipitation for the past hour: %1.")
                 .arg(explainPrecipitation(group.total()));
 
     case metaf::PrecipitationGroup::Type::SNOW_DEPTH_ON_GROUND:
-        return tr("Snow depth on ground: %1")
+        return QObject::tr("Snow depth on ground: %1")
                 .arg(explainPrecipitation(group.total()));
 
     case metaf::PrecipitationGroup::Type::FROZEN_PRECIP_3_OR_6_HOURLY:
-        return tr("Water equivalent of frozen precipitation for the last 3 or 6 hours: %1.")
+        return QObject::tr("Water equivalent of frozen precipitation for the last 3 or 6 hours: %1.")
                 .arg(explainPrecipitation(group.total()));
 
     case metaf::PrecipitationGroup::Type::FROZEN_PRECIP_3_HOURLY:
-        return tr("Water equivalent of frozen precipitation for the last 3 hours: %1.")
+        return QObject::tr("Water equivalent of frozen precipitation for the last 3 hours: %1.")
                 .arg(explainPrecipitation(group.total()));
 
     case metaf::PrecipitationGroup::Type::FROZEN_PRECIP_6_HOURLY:
-        return tr("Water equivalent of frozen precipitation for the last 6 hours: %1.")
+        return QObject::tr("Water equivalent of frozen precipitation for the last 6 hours: %1.")
                 .arg(explainPrecipitation(group.total()));
 
     case metaf::PrecipitationGroup::Type::FROZEN_PRECIP_24_HOURLY:
-        return tr("Water equivalent of frozen precipitation for the last 24 hours: %1.")
+        return QObject::tr("Water equivalent of frozen precipitation for the last 24 hours: %1.")
                 .arg(explainPrecipitation(group.total()));
 
     case metaf::PrecipitationGroup::Type::SNOW_6_HOURLY:
-        return tr("Snowfall for the last 6 hours: %1.")
+        return QObject::tr("Snowfall for the last 6 hours: %1.")
                 .arg(explainPrecipitation(group.total()));
 
     case metaf::PrecipitationGroup::Type::WATER_EQUIV_OF_SNOW_ON_GROUND:
-        return tr("Water equivalent of snow on ground: %1.")
+        return QObject::tr("Water equivalent of snow on ground: %1.")
                 .arg(explainPrecipitation(group.total()));
 
     case metaf::PrecipitationGroup::Type::ICE_ACCRETION_FOR_LAST_HOUR:
-        return tr("Ice accretion for the last hour: %1.")
+        return QObject::tr("Ice accretion for the last hour: %1.")
                 .arg(explainPrecipitation(group.total()));
 
     case metaf::PrecipitationGroup::Type::ICE_ACCRETION_FOR_LAST_3_HOURS:
-        return tr("Ice accretion for the last 3 hours: %1.")
+        return QObject::tr("Ice accretion for the last 3 hours: %1.")
                 .arg(explainPrecipitation(group.total()));
 
     case metaf::PrecipitationGroup::Type::ICE_ACCRETION_FOR_LAST_6_HOURS:
-        return tr("Ice accretion for the last 6 hours: %1.")
+        return QObject::tr("Ice accretion for the last 6 hours: %1.")
                 .arg(explainPrecipitation(group.total()));
 
     case metaf::PrecipitationGroup::Type::PRECIPITATION_ACCUMULATION_SINCE_LAST_REPORT:
-        return tr("Precipitation accumulation since last report: %1.")
+        return QObject::tr("Precipitation accumulation since last report: %1.")
                 .arg(explainPrecipitation(group.total()));
 
     case metaf::PrecipitationGroup::Type::SNOW_INCREASING_RAPIDLY:
-        return tr("Snow increasing rapidly. For the last hour snow increased by %1. Total snowfall: %2.")
+        return QObject::tr("Snow increasing rapidly. For the last hour snow increased by %1. Total snowfall: %2.")
                 .arg(explainPrecipitation(group.recent()),
                      explainPrecipitation(group.total()));
 
     case metaf::PrecipitationGroup::Type::RAINFALL_9AM_10MIN:
-        return tr("Rainfall for the last 10 minutes before report release time: %1. Rainfall since 9:00 local time: %2.")
+        return QObject::tr("Rainfall for the last 10 minutes before report release time: %1. Rainfall since 9:00 local time: %2.")
                 .arg(explainPrecipitation(group.recent()),
                      explainPrecipitation(group.total()));
 
     case metaf::PrecipitationGroup::Type::PNO:
-        return tr("Tipping bucket rain gauge INOP.");
+        return QObject::tr("Tipping bucket rain gauge INOP.");
 
     case metaf::PrecipitationGroup::Type::FZRANO:
-        return tr("Freezing rain sensor INOP.");
+        return QObject::tr("Freezing rain sensor INOP.");
 
     case metaf::PrecipitationGroup::Type::ICG_MISG:
-        return tr("Icing data is missing.");
+        return QObject::tr("Icing data is missing.");
 
     case metaf::PrecipitationGroup::Type::PCPN_MISG:
-        return tr("Precipitation data is missing.");
+        return QObject::tr("Precipitation data is missing.");
     }
 
     return {};
@@ -2742,32 +2742,32 @@ QString Weather::Decoder::visitPressureGroup(const PressureGroup & group, Report
 {
     if (!group.isValid())
     {
-        return tr("Invalid data");
+        return QObject::tr("Invalid data");
     }
 
     switch(group.type())
     {
     case metaf::PressureGroup::Type::OBSERVED_QNH:
-        return tr("QNH: %1").arg(explainPressure(group.atmosphericPressure()));
+        return QObject::tr("QNH: %1").arg(explainPressure(group.atmosphericPressure()));
 
     case metaf::PressureGroup::Type::FORECAST_LOWEST_QNH:
-        return tr("Forecast lowest QNH: %1").arg(explainPressure(group.atmosphericPressure()));
+        return QObject::tr("Forecast lowest QNH: %1").arg(explainPressure(group.atmosphericPressure()));
         break;
 
     case metaf::PressureGroup::Type::OBSERVED_QFE:
-        return tr("QFE: %1").arg(explainPressure(group.atmosphericPressure()));
+        return QObject::tr("QFE: %1").arg(explainPressure(group.atmosphericPressure()));
         break;
 
     case metaf::PressureGroup::Type::OBSERVED_SLP:
-        return tr("Standard sea level pressure: %1").arg(explainPressure(group.atmosphericPressure()));
+        return QObject::tr("Standard sea level pressure: %1").arg(explainPressure(group.atmosphericPressure()));
         break;
 
     case metaf::PressureGroup::Type::SLPNO:
-        return tr("QNH is not available");
+        return QObject::tr("QNH is not available");
         break;
 
     case metaf::PressureGroup::Type::PRES_MISG:
-        return tr("Atmospheric pressure data is missing");
+        return QObject::tr("Atmospheric pressure data is missing");
     }
     return {};
 }
@@ -2776,23 +2776,23 @@ QString Weather::Decoder::visitPressureTendencyGroup(const PressureTendencyGroup
 {
     if (!group.isValid())
     {
-        return tr("Invalid data");
+        return QObject::tr("Invalid data");
     }
 
     switch (group.type())
     {
     case metaf::PressureTendencyGroup::Type::NOT_REPORTED:
-        return tr("3-hour pressure tendency is not reported. Absolute pressure change is %1.")
+        return QObject::tr("3-hour pressure tendency is not reported. Absolute pressure change is %1.")
                 .arg(explainPressure(group.difference()));
 
     case metaf::PressureTendencyGroup::Type::RISING_RAPIDLY:
     case metaf::PressureTendencyGroup::Type::FALLING_RAPIDLY:
-        return tr("Atmospheric pressure is %1")
+        return QObject::tr("Atmospheric pressure is %1")
                 .arg(pressureTendencyTypeToString(group.type()));
 
     default:
         //: Note: the string %2 will be replaced by a text such as "less than"
-        return tr("During last 3 hours the atmospheric pressure was %1. Now the atmospheric pressure is %2 3h ago. Absolute pressure change is %3")
+        return QObject::tr("During last 3 hours the atmospheric pressure was %1. Now the atmospheric pressure is %2 3h ago. Absolute pressure change is %3")
                 .arg(pressureTendencyTypeToString(group.type()),
                      pressureTendencyTrendToString(metaf::PressureTendencyGroup::trend(group.type())),explainPressure(group.difference()));
     }
@@ -2803,20 +2803,20 @@ QString Weather::Decoder::visitReportTimeGroup(const ReportTimeGroup & group, Re
 {
     if (!group.isValid())
     {
-        return tr("Invalid data");
+        return QObject::tr("Invalid data");
     }
 
-    return tr("Issued at %1").arg(explainMetafTime(group.time()));
+    return QObject::tr("Issued at %1").arg(explainMetafTime(group.time()));
 }
 
 QString Weather::Decoder::visitRunwayStateGroup(const RunwayStateGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/)
 {
     if (!group.isValid())
     {
-        return tr("Invalid data");
+        return QObject::tr("Invalid data");
     }
 
-    QString result = tr("State of %1:").arg(explainRunway(group.runway()));
+    QString result = QObject::tr("State of %1:").arg(explainRunway(group.runway()));
 
     switch (group.type())
     {
@@ -2824,26 +2824,26 @@ QString Weather::Decoder::visitRunwayStateGroup(const RunwayStateGroup & group, 
         result += runwayStateDepositsToString(group.deposits());
         if (group.deposits() != metaf::RunwayStateGroup::Deposits::CLEAR_AND_DRY)
         {
-            result += ", " + tr("%1 of deposits, %2 of runway contaminated")
+            result += ", " + QObject::tr("%1 of deposits, %2 of runway contaminated")
                     .arg(explainPrecipitation(group.depositDepth()),runwayStateExtentToString(group.contaminationExtent()));
         }
         result += ", " + explainSurfaceFriction(group.surfaceFriction());
         break;
 
     case metaf::RunwayStateGroup::Type::RUNWAY_CLRD:
-        result += tr("deposits on runway were cleared or ceased to exist");
+        result += QObject::tr("deposits on runway were cleared or ceased to exist");
         result += ", " + explainSurfaceFriction(group.surfaceFriction());
         break;
 
     case metaf::RunwayStateGroup::Type::RUNWAY_SNOCLO:
-        result += tr("runway closed due to snow accumulation");
+        result += QObject::tr("runway closed due to snow accumulation");
         break;
 
     case metaf::RunwayStateGroup::Type::AERODROME_SNOCLO:
-        return tr("Aerodrome closed due to snow accumulation");
+        return QObject::tr("Aerodrome closed due to snow accumulation");
 
     case metaf::RunwayStateGroup::Type::RUNWAY_NOT_OPERATIONAL:
-        result += tr("runway is not operational");
+        result += QObject::tr("runway is not operational");
     }
     return result;
 }
@@ -2852,10 +2852,10 @@ QString Weather::Decoder::visitSeaSurfaceGroup(const SeaSurfaceGroup & group, Re
 {
     if (!group.isValid())
     {
-        return tr("Invalid data");
+        return QObject::tr("Invalid data");
     }
 
-    return tr("Sea surface temperature: %1, %2")
+    return QObject::tr("Sea surface temperature: %1, %2")
             .arg(explainTemperature(group.surfaceTemperature()),
                  explainWaveHeight(group.waves()));
 }
@@ -2864,21 +2864,21 @@ QString Weather::Decoder::visitTemperatureGroup(const TemperatureGroup & group, 
 {
     if (!group.isValid())
     {
-        return tr("Invalid data");
+        return QObject::tr("Invalid data");
     }
 
     switch (group.type())
     {
     case metaf::TemperatureGroup::Type::TEMPERATURE_AND_DEW_POINT:
-        return tr("Temperature %1, Dew point %2")
+        return QObject::tr("Temperature %1, Dew point %2")
                 .arg(explainTemperature(group.airTemperature()),
                      explainTemperature(group.dewPoint()));
 
     case metaf::TemperatureGroup::Type::T_MISG:
-        return tr("Temperature data is missing");
+        return QObject::tr("Temperature data is missing");
 
     case metaf::TemperatureGroup::Type::TD_MISG:
-        return tr("Dew point data is missing");
+        return QObject::tr("Dew point data is missing");
     }
     return {};
 }
@@ -2887,7 +2887,7 @@ QString Weather::Decoder::visitTrendGroup(const TrendGroup & group, ReportPart /
 {
     if (!group.isValid())
     {
-        return tr("Invalid data");
+        return QObject::tr("Invalid data");
     }
 
     const auto timeFrom = group.timeFrom();
@@ -2898,38 +2898,38 @@ QString Weather::Decoder::visitTrendGroup(const TrendGroup & group, ReportPart /
     switch (group.type())
     {
     case metaf::TrendGroup::Type::NOSIG:
-        return tr("No significant weather changes expected");
+        return QObject::tr("No significant weather changes expected");
 
     case metaf::TrendGroup::Type::BECMG:
-        result += tr("Gradually changing");
+        result += QObject::tr("Gradually changing");
         if (timeFrom)
         {
-            result += " " + tr("from %1").arg(explainMetafTime(*timeFrom));
+            result += " " + QObject::tr("from %1").arg(explainMetafTime(*timeFrom));
         }
         if (timeUntil)
         {
-            result += " " + tr("until %1").arg(explainMetafTime(*timeUntil));
+            result += " " + QObject::tr("until %1").arg(explainMetafTime(*timeUntil));
         }
         if (timeAt)
         {
-            result += " " + tr("at %1").arg(explainMetafTime(*timeAt));
+            result += " " + QObject::tr("at %1").arg(explainMetafTime(*timeAt));
         }
         return "<strong>" + result + "</strong>";
 
     case metaf::TrendGroup::Type::TEMPO:
     case metaf::TrendGroup::Type::INTER:
-        result += tr("Temporarily");
+        result += QObject::tr("Temporarily");
         if (timeFrom)
         {
-            result += " " + tr("from %1").arg(explainMetafTime(*timeFrom));
+            result += " " + QObject::tr("from %1").arg(explainMetafTime(*timeFrom));
         }
         if (timeUntil)
         {
-            result += " " + tr("until %1").arg(explainMetafTime(*timeUntil));
+            result += " " + QObject::tr("until %1").arg(explainMetafTime(*timeUntil));
         }
         if (timeAt)
         {
-            result += " " + tr("at %1").arg(explainMetafTime(*timeAt));
+            result += " " + QObject::tr("at %1").arg(explainMetafTime(*timeAt));
         }
         if (group.probability() != metaf::TrendGroup::Probability::NONE)
         {
@@ -2942,7 +2942,7 @@ QString Weather::Decoder::visitTrendGroup(const TrendGroup & group, ReportPart /
         {
             return {};
         }
-        result = tr("Forecast: rapid weather change at %1")
+        result = QObject::tr("Forecast: rapid weather change at %1")
                 .arg(explainMetafTime(*timeFrom));
         return "<strong>" + result + "</strong>";
 
@@ -2951,7 +2951,7 @@ QString Weather::Decoder::visitTrendGroup(const TrendGroup & group, ReportPart /
         {
             return {};
         }
-        result = tr("Forecast until %1")
+        result = QObject::tr("Forecast until %1")
                 .arg(explainMetafTime(*timeUntil));
         return "<strong>" + result + "</strong>";
 
@@ -2960,7 +2960,7 @@ QString Weather::Decoder::visitTrendGroup(const TrendGroup & group, ReportPart /
         {
             return {};
         }    
-        result = tr("Forecast for %1")
+        result = QObject::tr("Forecast for %1")
                 .arg(explainMetafTime(*timeAt));
         return "<strong>" + result + "</strong>";
 
@@ -2972,21 +2972,21 @@ QString Weather::Decoder::visitTrendGroup(const TrendGroup & group, ReportPart /
 
         if (group.probability() != metaf::TrendGroup::Probability::NONE)
         {
-            result = tr("Forecast from %1 to %2 (%3)")
+            result = QObject::tr("Forecast from %1 to %2 (%3)")
                     .arg(explainMetafTime(*timeFrom),
                          explainMetafTime(*timeUntil),
                          probabilityToString(group.probability()));
         }
         else
         {
-            result = tr("Forecast from %1 to %2")
+            result = QObject::tr("Forecast from %1 to %2")
                     .arg(explainMetafTime(*timeFrom),
                          explainMetafTime(*timeUntil));
         }
         return "<strong>" + result + "</strong>";
 
     case metaf::TrendGroup::Type::PROB:
-        return tr("Forecast %1")
+        return QObject::tr("Forecast %1")
                 .arg(probabilityToString(group.probability()));
     }
     return {};
@@ -2996,17 +2996,17 @@ QString Weather::Decoder::visitUnknownGroup(const UnknownGroup & group, ReportPa
 {
     if (!group.isValid())
     {
-        return tr("Invalid data");
+        return QObject::tr("Invalid data");
     }
 
-    return tr("Not recognised by parser: %1").arg(QString::fromStdString(rawString));
+    return QObject::tr("Not recognised by parser: %1").arg(QString::fromStdString(rawString));
 }
 
 QString Weather::Decoder::visitVicinityGroup(const VicinityGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/)
 {
     if (!group.isValid())
     {
-        return tr("Invalid data");
+        return QObject::tr("Invalid data");
     }
 
 
@@ -3014,98 +3014,98 @@ QString Weather::Decoder::visitVicinityGroup(const VicinityGroup & group, Report
     switch (group.type())
     {
     case metaf::VicinityGroup::Type::THUNDERSTORM:
-        type = tr("Thunderstorm");
+        type = QObject::tr("Thunderstorm");
         break;
 
     case metaf::VicinityGroup::Type::CUMULONIMBUS:
-        type = tr("Cumulonimbus cloud(s)");
+        type = QObject::tr("Cumulonimbus cloud(s)");
         break;
 
     case metaf::VicinityGroup::Type::CUMULONIMBUS_MAMMATUS:
-        type = tr("Cumulonimbus cloud(s) with mammatus");
+        type = QObject::tr("Cumulonimbus cloud(s) with mammatus");
         break;
 
     case metaf::VicinityGroup::Type::TOWERING_CUMULUS:
-        type = tr("Towering cumulus cloud(s)");
+        type = QObject::tr("Towering cumulus cloud(s)");
         break;
 
     case metaf::VicinityGroup::Type::ALTOCUMULUS_CASTELLANUS:
-        type = tr("Altocumulus cloud(s)");
+        type = QObject::tr("Altocumulus cloud(s)");
         break;
 
     case metaf::VicinityGroup::Type::STRATOCUMULUS_STANDING_LENTICULAR:
-        type = tr("Stratocumulus standing lenticular cloud(s)");
+        type = QObject::tr("Stratocumulus standing lenticular cloud(s)");
         break;
 
     case metaf::VicinityGroup::Type::ALTOCUMULUS_STANDING_LENTICULAR:
-        type = tr("Altocumulus standing lenticular cloud(s)");
+        type = QObject::tr("Altocumulus standing lenticular cloud(s)");
         break;
 
     case metaf::VicinityGroup::Type::CIRROCUMULUS_STANDING_LENTICULAR:
-        type = tr("Cirrocumulus standing lenticular cloud(s)");
+        type = QObject::tr("Cirrocumulus standing lenticular cloud(s)");
         break;
 
     case metaf::VicinityGroup::Type::ROTOR_CLOUD:
-        type = tr("Rotor cloud(s)");
+        type = QObject::tr("Rotor cloud(s)");
         break;
 
     case metaf::VicinityGroup::Type::VIRGA:
-        type = tr("Virga");
+        type = QObject::tr("Virga");
         break;
 
     case metaf::VicinityGroup::Type::PRECIPITATION_IN_VICINITY:
-        type = tr("Precipitation");
+        type = QObject::tr("Precipitation");
         break;
 
     case metaf::VicinityGroup::Type::FOG:
-        type = tr("Fog");
+        type = QObject::tr("Fog");
         break;
 
     case metaf::VicinityGroup::Type::FOG_SHALLOW:
-        type = tr("Shallow fog");
+        type = QObject::tr("Shallow fog");
         break;
 
     case metaf::VicinityGroup::Type::FOG_PATCHES:
-        type = tr("Patches of fog");
+        type = QObject::tr("Patches of fog");
         break;
 
     case metaf::VicinityGroup::Type::HAZE:
-        type = tr("Haze");
+        type = QObject::tr("Haze");
         break;
 
     case metaf::VicinityGroup::Type::SMOKE:
-        type = tr("Smoke");
+        type = QObject::tr("Smoke");
         break;
 
     case metaf::VicinityGroup::Type::BLOWING_SNOW:
-        type = tr("Blowing snow");
+        type = QObject::tr("Blowing snow");
         break;
 
     case metaf::VicinityGroup::Type::BLOWING_SAND:
-        type = tr("Blowing sand");
+        type = QObject::tr("Blowing sand");
         break;
 
     case metaf::VicinityGroup::Type::BLOWING_DUST:
-        type = tr("Blowing dust");
+        type = QObject::tr("Blowing dust");
         break;
     }
 
     // Here %1 is string like 'Smoke'
     QStringList results;
-    results << tr("%1 observed.");
+    results << QObject::tr("%1 observed.");
 
     if (group.distance().isReported())
     {
-        results << tr("Distance %1.").arg(explainDistance(group.distance()));
+        results << QObject::tr("Distance %1.").arg(explainDistance(group.distance()));
     }
     if (const auto directions = group.directions(); !directions.empty())
     {
-        results << tr("Directions: %1").arg(explainDirectionSector(directions));
+        results << QObject::tr("Directions: %1").arg(explainDirectionSector(directions));
     }
     if (group.movingDirection().isReported())
     {
         //: %1 is string like 'west'
-        results << tr("Moving towards %1.").arg(cardinalDirectionToString(group.movingDirection().cardinal()));
+        results << QObject::tr("Moving towards %1.").arg(cardinalDirectionToString(group.movingDirection().cardinal()));
     }
 
     return results.join(QStringLiteral(" "));
@@ -3115,18 +3115,18 @@ QString Weather::Decoder::visitVisibilityGroup(const VisibilityGroup & group, Re
 {
     if (!group.isValid())
     {
-        return tr("Invalid data");
+        return QObject::tr("Invalid data");
     }
     const auto direction = group.direction();
     const auto runway = group.runway();
     switch (group.type())
     {
     case metaf::VisibilityGroup::Type::PREVAILING:
-        return tr("Visibility is %1")
+        return QObject::tr("Visibility is %1")
                 .arg(explainDistance(group.visibility()));
 
     case metaf::VisibilityGroup::Type::PREVAILING_NDV:
-        return tr("Visibility is %1. Station cannot differentiate the directional variation of visibility")
+        return QObject::tr("Visibility is %1. Station cannot differentiate the directional variation of visibility")
                 .arg(explainDistance(group.visibility()));
 
     case metaf::VisibilityGroup::Type::DIRECTIONAL:
@@ -3134,7 +3134,7 @@ QString Weather::Decoder::visitVisibilityGroup(const VisibilityGroup & group, Re
         {
             return {};
         } 
-        return tr("Visibility toward %1 is %2")
+        return QObject::tr("Visibility toward %1 is %2")
                 .arg(explainDirection(direction.value()),
                      explainDistance(group.visibility()));
 
@@ -3143,7 +3143,7 @@ QString Weather::Decoder::visitVisibilityGroup(const VisibilityGroup & group, Re
         {
             return {};
         } 
-        return tr("Visibility for %1 is %2")
+        return QObject::tr("Visibility for %1 is %2")
                 .arg(explainRunway(runway.value()),
                      explainDistance(group.visibility()));
 
@@ -3153,30 +3153,30 @@ QString Weather::Decoder::visitVisibilityGroup(const VisibilityGroup & group, Re
             return {};
         }
         if (group.trend() != metaf::VisibilityGroup::Trend::NONE) {
-            return tr("Runway visual range for %1 is %2 and the trend is %3")
+            return QObject::tr("Runway visual range for %1 is %2 and the trend is %3")
                     .arg(explainRunway(runway.value()),
                          explainDistance(group.visibility()),
                          visTrendToString(group.trend()));
         }
-        return tr("Runway visual range for %1 is %2")
+        return QObject::tr("Runway visual range for %1 is %2")
                 .arg(explainRunway(runway.value()),
                      explainDistance(group.visibility()));
 
     case metaf::VisibilityGroup::Type::SURFACE:
-        return tr("Visibility at surface level is %1")
+        return QObject::tr("Visibility at surface level is %1")
                 .arg(explainDistance(group.visibility()));
 
     case metaf::VisibilityGroup::Type::TOWER:
-        return tr("Visibility from air traffic control tower is %1")
+        return QObject::tr("Visibility from air traffic control tower is %1")
                 .arg(explainDistance(group.visibility()));
 
     case metaf::VisibilityGroup::Type::SECTOR:
-        return tr("Sector visibility is %1 in the following directions %2")
+        return QObject::tr("Sector visibility is %1 in the following directions %2")
                 .arg(explainDistance(group.visibility()),
                      explainDirectionSector(group.sectorDirections()));
 
     case metaf::VisibilityGroup::Type::VARIABLE_PREVAILING:
-        return tr("Visibility is variable from %1 to %2")
+        return QObject::tr("Visibility is variable from %1 to %2")
                 .arg(explainDistance(group.minVisibility()),
                      explainDistance(group.maxVisibility()));
 
@@ -3185,7 +3185,7 @@ QString Weather::Decoder::visitVisibilityGroup(const VisibilityGroup & group, Re
         {
             return {};
         }
-        return tr("Directional visibility toward %1 is variable from %2 to %3")
+        return QObject::tr("Directional visibility toward %1 is variable from %2 to %3")
                 .arg(explainDirection(direction.value()),
                      explainDistance(group.minVisibility()),
                      explainDistance(group.maxVisibility()));
@@ -3195,7 +3195,7 @@ QString Weather::Decoder::visitVisibilityGroup(const VisibilityGroup & group, Re
         {
             return {};
         }
-        return tr("Visibility for %1 is variable from %2 to %3")
+        return QObject::tr("Visibility for %1 is variable from %2 to %3")
                 .arg(explainRunway(runway.value()),
                      explainDistance(group.minVisibility()),
                      explainDistance(group.maxVisibility()));
@@ -3207,52 +3207,52 @@ QString Weather::Decoder::visitVisibilityGroup(const VisibilityGroup & group, Re
         }
         if (group.trend() != metaf::VisibilityGroup::Trend::NONE)
         {
-            return tr("Runway visual range for %1 is variable from %2 to %3 and the trend is %4")
+            return QObject::tr("Runway visual range for %1 is variable from %2 to %3 and the trend is %4")
                     .arg(explainRunway(runway.value()),
                          explainDistance(group.minVisibility()),
                          explainDistance(group.maxVisibility()),
                          visTrendToString(group.trend()));
         }
-        return tr("Runway visual range for %1 is variable from %2 to %3")
+        return QObject::tr("Runway visual range for %1 is variable from %2 to %3")
                 .arg(explainRunway(runway.value()),
                      explainDistance(group.minVisibility()),
                      explainDistance(group.maxVisibility()));
 
     case metaf::VisibilityGroup::Type::VARIABLE_SECTOR:
-        return tr("Sector visibility is variable from %1 to %2 in the following directions: %3")
+        return QObject::tr("Sector visibility is variable from %1 to %2 in the following directions: %3")
                 .arg(explainDistance(group.minVisibility()),
                      explainDistance(group.maxVisibility()),
                      explainDirectionSector(group.sectorDirections()));
 
     case metaf::VisibilityGroup::Type::VIS_MISG:
-        return tr("Visibility data missing");
+        return QObject::tr("Visibility data missing");
 
     case metaf::VisibilityGroup::Type::RVR_MISG:
-        return tr("Runway visual range data is missing");
+        return QObject::tr("Runway visual range data is missing");
 
     case metaf::VisibilityGroup::Type::RVRNO:
-        return tr("Runway visual range should be reported but is missing");
+        return QObject::tr("Runway visual range should be reported but is missing");
 
     case metaf::VisibilityGroup::Type::VISNO:
         const auto r = group.runway();
         const auto d = group.direction();
         if (r.has_value() && d.has_value())
         {
-            return tr("Visibility data not available for %1 in the direction of %2")
+            return QObject::tr("Visibility data not available for %1 in the direction of %2")
                     .arg(explainRunway(*r),
                          explainDirection(*d));
         }
         if (r.has_value())
         {
-            return tr("Visibility data not available for %1")
+            return QObject::tr("Visibility data not available for %1")
                     .arg(explainRunway(*r));
         }
         if (d.has_value())
         {
-            return tr("Visibility data not available in the direction of %1")
+            return QObject::tr("Visibility data not available in the direction of %1")
                     .arg(explainDirection(*d));
         }
-        return tr("Visibility data not awailable");
+        return QObject::tr("Visibility data not awailable");
     }
     return {};
 }
@@ -3261,7 +3261,7 @@ QString Weather::Decoder::visitWeatherGroup(const WeatherGroup & group, ReportPa
 {
     if (!group.isValid())
     {
-        return tr("Invalid data");
+        return QObject::tr("Invalid data");
     }
 
     // Gather string with list of phenomena
@@ -3282,28 +3282,28 @@ QString Weather::Decoder::visitWeatherGroup(const WeatherGroup & group, ReportPa
     switch (group.type())
     {
     case metaf::WeatherGroup::Type::CURRENT:
-        return phenomenaString; // tr("Current weather: %1").arg(phenomenaString);
+        return phenomenaString; // QObject::tr("Current weather: %1").arg(phenomenaString);
 
     case metaf::WeatherGroup::Type::RECENT:
-        return tr("Recent weather: %1").arg(phenomenaString);
+        return QObject::tr("Recent weather: %1").arg(phenomenaString);
 
     case metaf::WeatherGroup::Type::EVENT:
-        return tr("Precipitation beginning/ending time: %1").arg(phenomenaString);
+        return QObject::tr("Precipitation beginning/ending time: %1").arg(phenomenaString);
 
     case metaf::WeatherGroup::Type::NSW:
-        return tr("No significant weather");
+        return QObject::tr("No significant weather");
 
     case metaf::WeatherGroup::Type::PWINO:
-        return tr("Automated weather identifier INOP");
+        return QObject::tr("Automated weather identifier INOP");
 
     case metaf::WeatherGroup::Type::TSNO:
-        return tr("Lightning detector INOP");
+        return QObject::tr("Lightning detector INOP");
 
     case metaf::WeatherGroup::Type::WX_MISG:
-        return tr("Weather phenomena data is missing");
+        return QObject::tr("Weather phenomena data is missing");
 
     case metaf::WeatherGroup::Type::TS_LTNG_TEMPO_UNAVBL:
-        return tr("Thunderstorm / lightning data is missing");
+        return QObject::tr("Thunderstorm / lightning data is missing");
     }
 
     return {};
@@ -3313,43 +3313,43 @@ QString Weather::Decoder::visitWindGroup(const WindGroup & group, ReportPart /*r
 {
     if (!group.isValid())
     {
-        return tr("Invalid data");
+        return QObject::tr("Invalid data");
     }
 
     const auto eventTime = group.eventTime();
     switch (group.type())
     {
     case metaf::WindGroup::Type::SURFACE_WIND_CALM:
-        return tr("No wind");
+        return QObject::tr("No wind");
 
     case metaf::WindGroup::Type::SURFACE_WIND:
         if (group.gustSpeed().isReported())
         {
-            return tr("Wind direction %1, wind speed %2, gusts at %3")
+            return QObject::tr("Wind direction %1, wind speed %2, gusts at %3")
                     .arg(explainDirection(group.direction(), true),
                          explainSpeed(group.windSpeed()),
                          explainSpeed(group.gustSpeed()));
         }
-        return tr("Wind direction %1, wind speed %2")
+        return QObject::tr("Wind direction %1, wind speed %2")
                 .arg(explainDirection(group.direction(), true),
                      explainSpeed(group.windSpeed()));
 
     case metaf::WindGroup::Type::VARIABLE_WIND_SECTOR:
-        return tr("Variable wind direction %1 -- %2")
+        return QObject::tr("Variable wind direction %1 -- %2")
                 .arg(explainDirection(group.varSectorBegin()),
                      explainDirection(group.varSectorEnd()));
 
     case metaf::WindGroup::Type::SURFACE_WIND_WITH_VARIABLE_SECTOR:
         if (group.gustSpeed().isReported())
         {
-            return tr("Wind direction %1 (%2 -- %3), wind speed %4, gusts at %5")
+            return QObject::tr("Wind direction %1 (%2 -- %3), wind speed %4, gusts at %5")
                     .arg(explainDirection(group.direction(), true),
                          explainDirection(group.varSectorBegin()),
                          explainDirection(group.varSectorEnd()),
                          explainSpeed(group.windSpeed()),
                          explainSpeed(group.gustSpeed()));
         }
-        return tr("Wind direction %1 (%2 -- %3), wind speed %4")
+        return QObject::tr("Wind direction %1 (%2 -- %3), wind speed %4")
                 .arg(explainDirection(group.direction(), true),
                      explainDirection(group.varSectorBegin()),
                      explainDirection(group.varSectorEnd()),
@@ -3357,13 +3357,13 @@ QString Weather::Decoder::visitWindGroup(const WindGroup & group, ReportPart /*r
 
     case metaf::WindGroup::Type::WIND_SHEAR:
         if (group.gustSpeed().isReported()) {
-            return tr("Wind shear at %1 AGL, wind direction %2, wind speed %3, gusts at %4")
+            return QObject::tr("Wind shear at %1 AGL, wind direction %2, wind speed %3, gusts at %4")
                     .arg(explainDistance_FT(group.height()),
                          explainDirection(group.direction(), true),
                          explainSpeed(group.windSpeed()),
                          explainSpeed(group.gustSpeed()));
         }
-        return tr("Wind shear at %1 AGL, wind direction %2, wind speed %3")
+        return QObject::tr("Wind shear at %1 AGL, wind direction %2, wind speed %3")
                 .arg(explainDistance_FT(group.height()),
                      explainDirection(group.direction(), true),
                      explainSpeed(group.windSpeed()));
@@ -3372,23 +3372,23 @@ QString Weather::Decoder::visitWindGroup(const WindGroup & group, ReportPart /*r
     case metaf::WindGroup::Type::WIND_SHIFT:
         if (eventTime.has_value())
         {
-            return tr("Wind direction changed at %1").arg(explainMetafTime(*eventTime));
+            return QObject::tr("Wind direction changed at %1").arg(explainMetafTime(*eventTime));
         }
-        return tr("Wind direction changed recently");
+        return QObject::tr("Wind direction changed recently");
 
     case metaf::WindGroup::Type::WIND_SHIFT_FROPA:
         if (eventTime.has_value())
         {
-            return tr("Wind direction changed at %1 because of weather front passage").arg(explainMetafTime(*eventTime));
+            return QObject::tr("Wind direction changed at %1 because of weather front passage").arg(explainMetafTime(*eventTime));
         }
-        return tr("Wind directed changed recently because of weather front passage");
+        return QObject::tr("Wind directed changed recently because of weather front passage");
 
     case metaf::WindGroup::Type::PEAK_WIND:
         if (!eventTime.has_value())
         {
             return {};
         }
-        return tr("Peak wind observed at %1, wind direction %2, wind speed %3")
+        return QObject::tr("Peak wind observed at %1, wind direction %2, wind speed %3")
                 .arg(explainMetafTime(eventTime.value()),
                      explainDirection(group.direction(), true),
                      explainSpeed(group.windSpeed()));
@@ -3396,15 +3396,15 @@ QString Weather::Decoder::visitWindGroup(const WindGroup & group, ReportPart /*r
     case metaf::WindGroup::Type::WIND_SHEAR_IN_LOWER_LAYERS:
         if (const auto rw = group.runway(); rw.has_value())
         {
-            return  tr("Wind shear between runway level and 1.600 ft at runway %1").arg(explainRunway(*rw));
+            return  QObject::tr("Wind shear between runway level and 1.600 ft at runway %1").arg(explainRunway(*rw));
         }
-        return tr("Wind shear between runway level and 1.600 ft");
+        return QObject::tr("Wind shear between runway level and 1.600 ft");
 
     case metaf::WindGroup::Type::WSCONDS:
-        return tr("Potential wind shear");
+        return QObject::tr("Potential wind shear");
 
     case metaf::WindGroup::Type::WND_MISG:
-        return tr("Wind data is missing");
+        return QObject::tr("Wind data is missing");
     }
     return {};
 }

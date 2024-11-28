@@ -157,6 +157,9 @@ public:
      */
     [[nodiscard]] auto relativeIssueTime() const -> QString;
 
+#warning
+    [[nodiscard]] Q_INVOKABLE QString decodedText() {return m_decoder.decodedText();}
+
 signals:
     /*! \brief Notifier signal */
     void relativeIssueTimeChanged();

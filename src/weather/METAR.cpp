@@ -281,10 +281,10 @@ QString Weather::METAR::summary(const Navigation::Aircraft& aircraft, const QDat
 
     if (resultList.isEmpty())
     {
-        return tr("%1 %2").arg(m_decoder.messageType(), Navigation::Clock::describeTimeDifference(m_observationTime, currentTime));
+        return tr("METAR %1").arg(Navigation::Clock::describeTimeDifference(m_observationTime, currentTime));
     }
 
-    return tr("%1 %2: %3").arg(m_decoder.messageType(), Navigation::Clock::describeTimeDifference(m_observationTime, currentTime), resultList.join(QStringLiteral(" • ")));
+    return tr("METAR %1: %2").arg(Navigation::Clock::describeTimeDifference(m_observationTime, currentTime), resultList.join(QStringLiteral(" • ")));
 }
 
 

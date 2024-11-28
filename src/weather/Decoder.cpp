@@ -38,54 +38,21 @@ using namespace Qt::Literals::StringLiterals;
 
 Weather::Decoder::Decoder()
 {
-    // Re-parse the text whenever the date changes
-#warning
-    //    connect(Navigation::Navigator::clock(), &Navigation::Clock::dateChanged, this, &Weather::Decoder::parse);
-
-    // Re-parse whenever the preferred unit system changes
-#warning
-    //    connect(GlobalObject::navigator(), &Navigation::Navigator::aircraftChanged, this, &Weather::Decoder::parse);
-}
-
-
-QString Weather::Decoder::messageType() const
-{
-    switch(m_parseResult.reportMetadata.type)
-    {
-    case ReportType::METAR:
-        if (m_parseResult.reportMetadata.isSpeci)
-        {
-            return QStringLiteral("METAR/SPECI");
-        }
-        return QStringLiteral("METAR");
-    case ReportType::TAF:
-        return QStringLiteral("TAF");
-    default:
-        return QStringLiteral("UNKNOWN");
-    }
 }
 
 
 void Weather::Decoder::setRawText(const QString& rawText, QDate referenceDate)
 {
-    if ((m_rawText == rawText) && (m_referenceDate == referenceDate))
-    {
-        return;
-    }
-
     m_referenceDate = referenceDate;
-    m_rawText = rawText;
-#warning
-    // emit rawTextChanged();
-#warning
-    //    parse();
+    m_parseResult = metaf::Parser::parse(rawText.toStdString());
+
+#warning This use lazy computing here
     (void)decodedText();
 }
 
 
 QString Weather::Decoder::decodedText()
 {
-    m_parseResult = metaf::Parser::parse(m_rawText.toStdString());
     QStringList decodedStrings;
     decodedStrings.reserve(64);
     QString const listStart = QStringLiteral("<ul style=\"margin-left:-25px;\">");

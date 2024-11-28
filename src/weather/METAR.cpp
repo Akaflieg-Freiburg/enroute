@@ -159,7 +159,7 @@ Weather::METAR::METAR(QXmlStreamReader& xml, QObject* parent)
     }
 
     // Interpret the METAR message
-    m_decoder.setRawText(m_raw_text, m_observationTime.date());
+    m_decoder = Weather::Decoder(m_raw_text, m_observationTime.date());
 }
 
 
@@ -179,7 +179,7 @@ Weather::METAR::METAR(QDataStream& inputStream, QObject* parent)
     inputStream >> m_densityAltitude;
 
     // Interpret the METAR message
-    m_decoder.setRawText(m_raw_text, m_observationTime.date());
+    m_decoder = Weather::Decoder(m_raw_text, m_observationTime.date());
 }
 
 QDateTime Weather::METAR::expiration() const

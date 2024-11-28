@@ -41,7 +41,7 @@ Weather::Decoder::Decoder()
 }
 
 
-void Weather::Decoder::setRawText(const QString& rawText, QDate referenceDate)
+Weather::Decoder::Decoder(const QString& rawText, const QDate& referenceDate)
 {
     m_referenceDate = referenceDate;
     m_parseResult = metaf::Parser::parse(rawText.toStdString());

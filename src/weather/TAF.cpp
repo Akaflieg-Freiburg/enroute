@@ -98,7 +98,7 @@ Weather::TAF::TAF(QXmlStreamReader &xml, QObject *parent)
         xml.skipCurrentElement();
     }
 
-    m_decoder.setRawText(_raw_text, _issueTime.date().addDays(5));
+    m_decoder = Weather::Decoder(_raw_text, _issueTime.date().addDays(5));
     setupSignals();
 }
 
@@ -112,7 +112,7 @@ Weather::TAF::TAF(QDataStream &inputStream, QObject *parent)
     inputStream >> _location;
     inputStream >> _raw_text;
 
-    m_decoder.setRawText(_raw_text, _issueTime.date().addDays(5));
+    m_decoder = Weather::Decoder(_raw_text, _issueTime.date().addDays(5));
     setupSignals();
 }
 

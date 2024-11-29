@@ -138,6 +138,7 @@ QString Navigation::Clock::describePointInTime(const QDateTime& pointInTime)
     return describePointInTime(pointInTime, QDateTime::currentDateTime());
 }
 
+
 void Navigation::Clock::setSingleShotTimer()
 {
     QTime const current = QDateTime::currentDateTime().time();

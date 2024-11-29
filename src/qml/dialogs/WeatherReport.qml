@@ -99,7 +99,7 @@ CenteringDialog {
 
                 Label { // Decoded METAR text
                     visible: (weatherStation != null) && weatherStation.hasMETAR
-                    text: (weatherStation != null) && weatherStation.hasMETAR ? weatherStation.metar.decodedText() : ""
+                    text: (weatherStation != null) && weatherStation.hasMETAR ? weatherStation.metar.decodedText(Navigator.aircraft, Clock.time) : ""
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
                     textFormat: Text.RichText
@@ -157,7 +157,7 @@ CenteringDialog {
 
                 Label { // decoded TAF text
                     visible: (weatherStation != null) && weatherStation.hasTAF
-                    text: (weatherStation != null) && weatherStation.hasTAF ? weatherStation.taf.decodedText() : ""
+                    text: (weatherStation != null) && weatherStation.hasTAF ? weatherStation.taf.decodedText(Navigator.aircraft, Clock.time) : ""
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
                     textFormat: Text.RichText // OK

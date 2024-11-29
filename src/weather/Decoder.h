@@ -30,6 +30,7 @@
 
 #include <cstring> // Necessary to work around an issue in metaf
 
+#include "navigation/Aircraft.h"
 #include "../3rdParty/metaf/include/metaf.hpp"
 using namespace metaf;
 
@@ -78,7 +79,7 @@ public:
      * @returns Property decodedText
      */
 #warning Need aircraft and time
-    [[nodiscard]] Q_INVOKABLE QString decodedText();
+    [[nodiscard]] Q_INVOKABLE QString decodedText(const Navigation::Aircraft& act, const QDateTime& time);
 
 
     // Sets the raw METAR/TAF message and starts processing. Since METAR/TAF messages specify points in time only by "day of month" and "time",
@@ -98,13 +99,13 @@ private:
     static QString explainCloudType(const metaf::CloudType &ct);
     static QString explainDirection(metaf::Direction direction, bool trueCardinalDirections=true);
     static QString explainDirectionSector(const std::vector<metaf::Direction>& dir);
-    static QString explainDistance(metaf::Distance distance);
+    QString explainDistance(metaf::Distance distance);
     static QString explainDistance_FT(metaf::Distance distance);
     QString explainMetafTime(metaf::MetafTime metafTime);
     static QString explainPrecipitation(metaf::Precipitation precipitation);
     static QString explainPressure(metaf::Pressure pressure);
     static QString explainRunway(metaf::Runway runway);
-    static QString explainSpeed(metaf::Speed speed);
+    QString explainSpeed(metaf::Speed speed);
     static QString explainSurfaceFriction(metaf::SurfaceFriction surfaceFriction);
     static QString explainTemperature(metaf::Temperature temperature);
     static QString explainWaveHeight(metaf::WaveHeight waveHeight);
@@ -160,6 +161,10 @@ private:
 
 
     // Cached data
+
+#warning
+    Navigation::Aircraft m_aircraft;
+    QDateTime m_currentTime;
 
     // Current weather, as read from METAR
     QString m_currentWeather;

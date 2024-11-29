@@ -109,11 +109,11 @@ QString Navigation::Clock::describeTimeDifference(const QDateTime& pointInTime, 
 }
 
 
-QString Navigation::Clock::describePointInTime(QDateTime pointInTime)
+QString Navigation::Clock::describePointInTime(const QDateTime& _pointInTime, const QDateTime& now)
 {
-    pointInTime = pointInTime.toUTC();
+    auto pointInTime = _pointInTime.toUTC();
 
-    auto currentDateLocal = QDate::currentDate();
+    auto currentDateLocal = now.toLocalTime().date();
     auto pointInTimeDateLocal = pointInTime.toLocalTime().date();
 
     // Obtain current position
@@ -132,6 +132,11 @@ QString Navigation::Clock::describePointInTime(QDateTime pointInTime)
     return pointInTime.toString(QStringLiteral("d. MMM, H:mm"));
 }
 
+
+QString Navigation::Clock::describePointInTime(const QDateTime& pointInTime)
+{
+    return describePointInTime(pointInTime, QDateTime::currentDateTime());
+}
 
 void Navigation::Clock::setSingleShotTimer()
 {

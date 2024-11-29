@@ -228,7 +228,7 @@ public:
     //
 
 #warning
-    [[nodiscard]] Q_INVOKABLE QString decodedText() {return m_decoder.decodedText();}
+    [[nodiscard]] Q_INVOKABLE QString decodedText(const Navigation::Aircraft& act, const QDateTime& time) {return m_decoder.decodedText(act, time);}
 
     /*! \brief Derived data, such as density height
      *

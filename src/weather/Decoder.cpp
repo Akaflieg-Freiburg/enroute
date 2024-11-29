@@ -28,9 +28,7 @@
 #include <QTimeZone>
 #include <gsl/gsl>
 
-#include "GlobalObject.h"
 #include "navigation/Clock.h"
-#include "navigation/Navigator.h"
 #include "weather/Decoder.h"
 
 using namespace Qt::Literals::StringLiterals;
@@ -47,12 +45,15 @@ Weather::Decoder::Decoder(const QString& rawText, const QDate& referenceDate)
     m_parseResult = metaf::Parser::parse(rawText.toStdString());
 
 #warning This use lazy computing here
-    (void)decodedText();
+    (void)decodedText({}, {});
 }
 
 
-QString Weather::Decoder::decodedText()
+QString Weather::Decoder::decodedText(const Navigation::Aircraft& act, const QDateTime& time)
 {
+    m_aircraft = act;
+    m_currentTime = time;
+
     QStringList decodedStrings;
     decodedStrings.reserve(64);
     const QString listStart = QStringLiteral("<ul style=\"margin-left:-25px;\">");
@@ -171,7 +172,7 @@ QString Weather::Decoder::explainDistance(metaf::Distance distance)
         break;
 
     case metaf::Distance::Modifier::DISTANT:
-        switch (GlobalObject::navigator()->aircraft().horizontalDistanceUnit())
+        switch (m_aircraft.horizontalDistanceUnit())
         {
         case Navigation::Aircraft::Kilometer:
             results << QObject::tr("19 to 55 km");
@@ -186,7 +187,7 @@ QString Weather::Decoder::explainDistance(metaf::Distance distance)
         break;
 
     case metaf::Distance::Modifier::VICINITY:
-        switch (GlobalObject::navigator()->aircraft().horizontalDistanceUnit())
+        switch (m_aircraft.horizontalDistanceUnit())
         {
         case Navigation::Aircraft::Kilometer:
             results << QObject::tr("9 to 19 km");
@@ -256,7 +257,7 @@ QString Weather::Decoder::explainDistance(metaf::Distance distance)
             results << distanceUnitToString(distance.unit());
         }
 
-    if ((GlobalObject::navigator()->aircraft().horizontalDistanceUnit() == Navigation::Aircraft::Kilometer) && (distance.unit() != metaf::Distance::Unit::METERS))
+    if ((m_aircraft.horizontalDistanceUnit() == Navigation::Aircraft::Kilometer) && (distance.unit() != metaf::Distance::Unit::METERS))
     {
         const auto d = distance.toUnit(metaf::Distance::Unit::METERS);
         if (d.has_value())
@@ -330,7 +331,7 @@ QString Weather::Decoder::explainMetafTime(metaf::MetafTime metafTime)
     auto metafQDate = QDate(gsl::narrow_cast<int>(metafDate.year), gsl::narrow_cast<int>(metafDate.month), gsl::narrow_cast<int>(metafDate.day) );
 
     auto metafQDateTime = QDateTime(metafQDate, metafQTime, QTimeZone::utc());
-    return Navigation::Clock::describePointInTime(metafQDateTime);
+    return Navigation::Clock::describePointInTime(metafQDateTime, m_currentTime);
 }
 
 QString Weather::Decoder::explainPrecipitation(metaf::Precipitation precipitation)
@@ -405,7 +406,7 @@ QString Weather::Decoder::explainSpeed(metaf::Speed speed)
         return QObject::tr("not reported");
     }
 
-    if (GlobalObject::navigator()->aircraft().horizontalDistanceUnit() == Navigation::Aircraft::Kilometer)
+    if (m_aircraft.horizontalDistanceUnit() == Navigation::Aircraft::Kilometer)
     {
         const auto s = speed.toUnit(metaf::Speed::Unit::KILOMETERS_PER_HOUR);
         if (s.has_value())

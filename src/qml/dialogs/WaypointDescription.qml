@@ -87,6 +87,11 @@ CenteringDialog {
         id: metarInfo
 
         Label { // METAR info
+            Loader {
+                id: secondaryDlgLoader
+                onLoaded: item.open()
+            }
+
             visible: (waypointDescriptionDialog.weatherStation !== null) && (waypointDescriptionDialog.weatherStation.metar.isValid || waypointDescriptionDialog.weatherStation.taf.isValid)
             text: {
                 if (waypointDescriptionDialog.weatherStation === null)
@@ -104,7 +109,7 @@ CenteringDialog {
             rightPadding: 0.2*font.pixelSize
             onLinkActivated: {
                 PlatformAdaptor.vibrateBrief()
-                weatherReport.open()
+                secondaryDlgLoader.setSource("../dialogs/WeatherReport.qml", {"weatherStation": waypointDescriptionDialog.weatherStation})
             }
 
             // Background color according to METAR/FAA flight category
@@ -113,9 +118,7 @@ CenteringDialog {
                 color: ((waypointDescriptionDialog.weatherStation !== null) && waypointDescriptionDialog.weatherStation.metar.isValid) ? waypointDescriptionDialog.weatherStation.metar.flightCategoryColor : "transparent"
                 opacity: 0.2
             }
-
         }
-
     }
 
     Component {
@@ -126,6 +129,7 @@ CenteringDialog {
             Loader {
                 // WARNING This does not really belong here.
                 id: dlgLoader
+                onLoaded: item.open()
             }
 
             property notamList notamList: {
@@ -152,9 +156,7 @@ CenteringDialog {
             rightPadding: 0.2*font.pixelSize
             onLinkActivated: {
                 PlatformAdaptor.vibrateBrief()
-                dlgLoader.setSource("../dialogs/NotamListDialog.qml",
-                                    {"notamList": notamList, "waypoint": waypointDescriptionDialog.waypoint})
-                dlgLoader.item.open()
+                dlgLoader.setSource("../dialogs/NotamListDialog.qml", {"notamList": notamList, "waypoint": waypointDescriptionDialog.waypoint})
             }
 
             // Background color according to METAR/FAA flight category
@@ -460,6 +462,7 @@ CenteringDialog {
         }
     }
 
+
     footer: DialogButtonBox {
 
         Button {
@@ -705,11 +708,6 @@ CenteringDialog {
         }
     }
 
-    WeatherReport {
-        id: weatherReport
-        weatherStation: waypointDescriptionDialog.weatherStation
-    }
-
     WaypointEditor {
         id: wpEdit
 
@@ -759,8 +757,6 @@ CenteringDialog {
             PlatformAdaptor.vibrateBrief()
             close()
         }
-
     }
-
 
 } // Dialog

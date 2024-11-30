@@ -34,20 +34,11 @@
 using namespace Qt::Literals::StringLiterals;
 
 
-Weather::Decoder::Decoder()
+Weather::Decoder::Decoder(const QString &rawText, const QDate &referenceDate)
+    : m_referenceDate(referenceDate)
 {
-}
-
-
-Weather::Decoder::Decoder(const QString& rawText, const QDate& referenceDate)
-{
-    m_referenceDate = referenceDate;
     m_parseResult = metaf::Parser::parse(rawText.toStdString());
-
-#warning This use lazy computing here
-    (void)decodedText({}, {});
 }
-
 
 QString Weather::Decoder::decodedText(const Navigation::Aircraft& act, const QDateTime& time)
 {
@@ -75,7 +66,7 @@ QString Weather::Decoder::decodedText(const Navigation::Aircraft& act, const QDa
 }
 
 
-// explanation Methods
+// Explanation Methods
 
 QString Weather::Decoder::explainCloudType(const metaf::CloudType &ct)
 {

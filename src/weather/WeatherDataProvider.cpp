@@ -210,14 +210,14 @@ void Weather::WeatherDataProvider::downloadFinished()
             // Read METAR
             if (xml.isStartElement() && (xml.name() == QStringLiteral("METAR")))
             {
-                Weather::METAR metar(xml);
+                Weather::METAR const metar(xml);
                 findOrConstructWeatherStation(metar.ICAOCode())->setMETAR(metar);
             }
 
             // Read TAF
             if (xml.isStartElement() && (xml.name() == QStringLiteral("TAF")))
             {
-                Weather::TAF taf(xml);
+                Weather::TAF const taf(xml);
                 findOrConstructWeatherStation(taf.ICAOCode())->setTAF(taf);
             }
 
@@ -318,14 +318,14 @@ auto Weather::WeatherDataProvider::load() -> bool
         if (type == 'M')
         {
             // Read METAR
-            Weather::METAR metar(inputStream);
+            Weather::METAR const metar(inputStream);
             findOrConstructWeatherStation(metar.ICAOCode())->setMETAR(metar);
             continue;
         }
         if (type == 'T')
         {
             // Read TAF
-            Weather::TAF taf(inputStream);
+            Weather::TAF const taf(inputStream);
             findOrConstructWeatherStation(taf.ICAOCode())->setTAF(taf);
             continue;
         }
@@ -393,10 +393,10 @@ void Weather::WeatherDataProvider::save()
         if (weatherStation->hasTAF())
         {
             // Save only valid TAFs that are not yet expired
-            if (weatherStation->taf().isValid() && !weatherStation->taf().isExpired())
+            if (weatherStation->taf().isValid() && (QDateTime::currentDateTime() <= weatherStation->taf().expiration()))
             {
                 outputStream << QChar('T');
-                weatherStation->taf().write(outputStream);
+                outputStream << weatherStation->taf();
             }
         }
     }

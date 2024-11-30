@@ -18,26 +18,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QDataStream>
-#include <QXmlStreamAttribute>
-
-#include "GlobalObject.h"
-#include "navigation/Clock.h"
-#include "navigation/Navigator.h"
 #include "weather/TAF.h"
 
 using namespace Qt::Literals::StringLiterals;
 
 
-Weather::TAF::TAF()
-{
-
-}
-
-
 Weather::TAF::TAF(QXmlStreamReader &xml)
 {
-
     while (true)
     {
         xml.readNextStartElement();
@@ -95,8 +82,7 @@ Weather::TAF::TAF(QXmlStreamReader &xml)
 
         xml.skipCurrentElement();
     }
-
-    m_decoder = Weather::Decoder(m_rawText, m_issueTime.date().addDays(5));
+    m_decoder = QSharedPointer<Weather::Decoder>(new Weather::Decoder(m_rawText, m_issueTime.date().addDays(5)));
 }
 
 
@@ -108,31 +94,13 @@ Weather::TAF::TAF(QDataStream &inputStream)
     inputStream >> m_location;
     inputStream >> m_rawText;
 
-    m_decoder = Weather::Decoder(m_rawText, m_issueTime.date().addDays(5));
+    m_decoder = QSharedPointer<Weather::Decoder>(new Weather::Decoder(m_rawText, m_issueTime.date().addDays(5)));
 }
 
 
-auto Weather::TAF::isExpired() const -> bool
+bool Weather::TAF::isValid() const
 {
     if (!m_expirationTime.isValid())
-    {
-        return true;
-    }
-    return QDateTime::currentDateTime() > m_expirationTime;
-}
-
-
-auto Weather::TAF::isValid() const -> bool
-{
-    if (!m_location.isValid())
-    {
-        return false;
-    }
-    if (!m_expirationTime.isValid())
-    {
-        return false;
-    }
-    if (!m_issueTime.isValid())
     {
         return false;
     }
@@ -140,7 +108,19 @@ auto Weather::TAF::isValid() const -> bool
     {
         return false;
     }
-    if (m_decoder.hasParseError())
+    if (!m_issueTime.isValid())
+    {
+        return false;
+    }
+    if (!m_location.isValid())
+    {
+        return false;
+    }
+    if (m_decoder.isNull())
+    {
+        return false;
+    }
+    if (!m_decoder->isValid())
     {
         return false;
     }
@@ -149,11 +129,14 @@ auto Weather::TAF::isValid() const -> bool
 }
 
 
-void Weather::TAF::write(QDataStream &out)
+QDataStream& Weather::operator<<(QDataStream& stream, const Weather::TAF& taf)
 {
-    out << m_expirationTime;
-    out << m_ICAOCode;
-    out << m_issueTime;
-    out << m_location;
-    out << m_rawText;
+    stream << taf.m_expirationTime;
+    stream << taf.m_ICAOCode;
+    stream << taf.m_issueTime;
+    stream << taf.m_location;
+    stream << taf.m_rawText;
+
+    return stream;
 }
+

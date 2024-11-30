@@ -88,7 +88,7 @@ void Weather::Station::readDataFromWaypoint()
 }
 
 
-void Weather::Station::setMETAR(Weather::METAR metar)
+void Weather::Station::setMETAR(const Weather::METAR& metar)
 {
     // Ignore invalid and expired METARs. Also ignore METARs whose ICAO code does not match with this weather station
     if (!metar.isValid() || (QDateTime::currentDateTime() > metar.expiration()) || (metar.ICAOCode() != m_ICAOCode))
@@ -97,12 +97,11 @@ void Weather::Station::setMETAR(Weather::METAR metar)
     }
 
     // If METAR did not change, then do nothing
-#warning
-/*    if (metar == _metar)
+    if (metar == _metar)
     {
         return;
     }
-*/
+
     // Cache values
     auto cacheHasMETAR = hasMETAR();
 
@@ -122,22 +121,19 @@ void Weather::Station::setMETAR(Weather::METAR metar)
 }
 
 
-void Weather::Station::setTAF(Weather::TAF taf)
+void Weather::Station::setTAF(const Weather::TAF& taf)
 {
     // Ignore invalid and expired TAFs. Also ignore TAFs whose ICAO code does not match with this weather station
-    if (!taf.isValid() || taf.isExpired() || (taf.ICAOCode() != m_ICAOCode))
+    if (!taf.isValid() || (QDateTime::currentDateTime() > taf.expiration()) || (taf.ICAOCode() != m_ICAOCode))
     {
         return;
     }
 
 
     // If TAF did not change, then do nothing
-#warning
-    /*
     if (taf == _taf) {
         return;
     }
-*/
 
     // Cache values
     auto cacheHasTAF = hasTAF();

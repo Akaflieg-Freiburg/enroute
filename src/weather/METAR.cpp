@@ -18,8 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "GlobalObject.h"
-#include "navigation/Aircraft.h"
 #include "navigation/Atmosphere.h"
 #include "navigation/Clock.h"
 #include "weather/DensityAltitude.h"
@@ -31,7 +29,6 @@ using namespace Qt::Literals::StringLiterals;
 
 Weather::METAR::METAR(QXmlStreamReader& xml)
 {
-
     while (true)
     {
         xml.readNextStartElement();
@@ -63,7 +60,7 @@ Weather::METAR::METAR(QXmlStreamReader& xml)
         // Read raw text
         if (xml.isStartElement() && name == u"raw_text"_s)
         {
-            m_raw_text = xml.readElementText();
+            m_rawText = xml.readElementText();
             continue;
         }
 
@@ -152,7 +149,7 @@ Weather::METAR::METAR(QXmlStreamReader& xml)
     }
 
     // Interpret the METAR message
-    m_decoder = Weather::Decoder(m_raw_text, m_observationTime.date());
+    m_decoder = QSharedPointer<Weather::Decoder>(new Weather::Decoder(m_rawText, m_observationTime.date()));
 }
 
 
@@ -163,7 +160,7 @@ Weather::METAR::METAR(QDataStream& inputStream)
     inputStream >> m_location;
     inputStream >> m_observationTime;
     inputStream >> m_qnh;
-    inputStream >> m_raw_text;
+    inputStream >> m_rawText;
     inputStream >> m_wind;
     inputStream >> m_gust;
     inputStream >> m_temperature;
@@ -171,12 +168,13 @@ Weather::METAR::METAR(QDataStream& inputStream)
     inputStream >> m_densityAltitude;
 
     // Interpret the METAR message
-    m_decoder = Weather::Decoder(m_raw_text, m_observationTime.date());
+    m_decoder = QSharedPointer<Weather::Decoder>(new Weather::Decoder(m_rawText, m_observationTime.date()));
 }
+
 
 QDateTime Weather::METAR::expiration() const
 {
-    if (m_raw_text.contains(u"NOSIG"_s))
+    if (m_rawText.contains(u"NOSIG"_s))
     {
         return m_observationTime.addSecs(3LL*60LL*60LL);
     }
@@ -204,6 +202,10 @@ QString Weather::METAR::flightCategoryColor() const
 
 bool Weather::METAR::isValid() const
 {
+    if (m_ICAOCode.isEmpty())
+    {
+        return false;
+    }
     if (!m_location.isValid())
     {
         return false;
@@ -212,11 +214,31 @@ bool Weather::METAR::isValid() const
     {
         return false;
     }
-    if (m_ICAOCode.isEmpty())
+    if (!m_qnh.isFinite())
     {
         return false;
     }
-    if (m_decoder.hasParseError())
+    if (m_rawText.isEmpty())
+    {
+        return false;
+    }
+    if (!m_wind.isFinite())
+    {
+        return false;
+    }
+    if (!m_temperature.isFinite())
+    {
+        return false;
+    }
+    if (!m_dewpoint.isFinite())
+    {
+        return false;
+    }
+    if (m_decoder.isNull())
+    {
+        return false;
+    }
+    if (!m_decoder->isValid())
     {
         return false;
     }
@@ -227,12 +249,18 @@ bool Weather::METAR::isValid() const
 
 QString Weather::METAR::summary(const Navigation::Aircraft& aircraft, const QDateTime& currentTime) const
 {
+    // Paranoid safety checks
+    if (m_decoder.isNull())
+    {
+        return {};
+    }
+
     QStringList resultList;
 
     switch (m_flightCategory)
     {
     case VFR:
-        if (m_raw_text.contains(u"CAVOK"_s))
+        if (m_rawText.contains(u"CAVOK"_s))
         {
             resultList << QObject::tr("CAVOK");
         }
@@ -265,7 +293,7 @@ QString Weather::METAR::summary(const Navigation::Aircraft& aircraft, const QDat
     }
 
     // Weather
-    auto curWeather = m_decoder.currentWeather();
+    auto curWeather = m_decoder->currentWeather();
     if (!curWeather.isEmpty())
     {
         resultList << curWeather;
@@ -282,6 +310,12 @@ QString Weather::METAR::summary(const Navigation::Aircraft& aircraft, const QDat
 
 QString Weather::METAR::derivedData(const Navigation::Aircraft& aircraft, bool showPerformanceWarning, bool explainPerformanceWarning) const
 {
+    // Paranoid safety checks
+    if (m_decoder.isNull())
+    {
+        return {};
+    }
+
     QStringList items;
 
     // Density altitude
@@ -395,7 +429,7 @@ QDataStream& Weather::operator<<(QDataStream& stream, const Weather::METAR& meta
     stream << metar.m_location;
     stream << metar.m_observationTime;
     stream << metar.m_qnh;
-    stream << metar.m_raw_text;
+    stream << metar.m_rawText;
     stream << metar.m_wind;
     stream << metar.m_gust;
     stream << metar.m_temperature;

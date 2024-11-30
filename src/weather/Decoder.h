@@ -44,13 +44,17 @@ namespace Weather {
  * This class is not meant to be used directly. Instead, use the classes Weather::METAR or Weather::TAF.
  */
 
-class Decoder : private metaf::Visitor<QString> {
+class Decoder : private metaf::Visitor<QString>
+{
 
 public:
-    // This constructor creates a Decoder instance.  You need to set the raw text before this class can be useful.
-    explicit Decoder();
+    // This constructor creates an invalid Decoder instance.
+    Decoder() = default;
 
     explicit Decoder(const QString& rawText, const QDate& referenceDate);
+
+    virtual ~Decoder() = default;
+
 
     //
     // Methods
@@ -64,37 +68,40 @@ public:
      *
      * @returns Property currentWeather
      */
-    [[nodiscard]] QString currentWeather() const
+    [[nodiscard]] QString currentWeather()
     {
+        if (m_currentWeather.isEmpty())
+        {
+            (void)decodedText({}, {});
+        }
         return m_currentWeather;
     }
 
-    /*! \brief Decoded text of the METAR/TAF message
+    /*! \brief Decoded text
      *
-     * This property holds the decoded text of the message, as a human-readable,
-     * rich text string.  The text might change in responde to changes in
-     * user settings, and might also change by midnight (the text uses words such
-     * as 'tomorrow' whose meaning changes at the end of the day).
+     * This method is not thread-safe.
      *
-     * @returns Property decodedText
+     * @param act Current aircraft, used to determine appropriate units
+     *
+     * @param time Current time, used to describe points in time
+     *
+     * @returns Human-readable, translated rich text.
      */
-#warning Need aircraft and time
-    [[nodiscard]] Q_INVOKABLE QString decodedText(const Navigation::Aircraft& act, const QDateTime& time);
+    [[nodiscard]] QString decodedText(const Navigation::Aircraft& act, const QDateTime& time);
 
-
-    // Sets the raw METAR/TAF message and starts processing. Since METAR/TAF messages specify points in time only by "day of month" and "time",
-    // the decoder needs to know the month and year. Set this reference date to any date between in the interval [issue date, issue date + 28 days]
-    void setRawText();
-
-    // Indicates if the parser was able to read the text without error. If an error occurs, the decoded will
-    // still be available, but is probably incomplete
-    [[nodiscard]] bool hasParseError() const
+    /*! \brief Indicates if raw text could be parsed correctly
+     *
+     * @returns True if no error
+     */
+    [[nodiscard]] bool isValid() const
     {
-        return (m_parseResult.reportMetadata.error != metaf::ReportError::NONE);
+        return (m_parseResult.reportMetadata.error == metaf::ReportError::NONE);
     }
 
 
 private:
+    Q_DISABLE_COPY_MOVE(Decoder)
+
     // Explanation functions
     static QString explainCloudType(const metaf::CloudType &ct);
     static QString explainDirection(metaf::Direction direction, bool trueCardinalDirections=true);
@@ -160,16 +167,16 @@ private:
     QString visitWindGroup(const WindGroup& group, ReportPart reportPart, const std::string& rawString) override;
 
 
-    // Cached data
-
-#warning
+    // Stored for internal use by the method decodedText()
     Navigation::Aircraft m_aircraft;
+
+    // Stored for internal use by the method decodedText()
     QDateTime m_currentTime;
 
     // Current weather, as read from METAR
     QString m_currentWeather;
 
-    // Reference date, as set with setRawText(…)
+    // Reference date
     QDate m_referenceDate;
 
     // Result of the parser

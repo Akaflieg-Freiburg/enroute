@@ -267,13 +267,13 @@ private:
     // otherwise, the metar is deleted. In any case, this WeatherStation will
     // take ownership of the METAR. The signal metarChanged() will be emitted if
     // appropriate.
-    void setMETAR(Weather::METAR metar);
+    void setMETAR(const Weather::METAR& metar);
 
     // If the taf is valid, not expired and newer than the existing taf, this
     // method sets the TAF message and deletes any existing TAF; otherwise, the
     // taf is deleted. In any case, this WeatherStation will take ownership of
     // the TAF. The signal tafChanged() will be emitted if appropriate.
-    void setTAF(Weather::TAF taf);
+    void setTAF(const Weather::TAF& taf);
 
     // Coordinate of this weather station
     QGeoCoordinate _coordinate;

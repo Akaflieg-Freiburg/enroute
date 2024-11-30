@@ -37,9 +37,10 @@ class WeatherDataProvider;
 
 /*! \brief METAR report
  *
- * This class contains the data of a METAR report and provides a few
- * methods to access the data. Instances of this class are provided by the
- * WeatherDataProvider class; there is no way to construct valid instances yourself.
+ * This class contains the data of a METAR report and provides a few methods to
+ * access the data. Instances of this class are provided by the
+ * WeatherDataProvider class; there is no way to construct valid instances
+ * yourself.
  */
 
 class METAR {
@@ -105,6 +106,8 @@ public:
     /*! \brief Move assignment operator */
     METAR& operator=(METAR&&) = default;
 
+    /*! \brief Equality check */
+    bool operator==(const METAR&) const = default;
 
     //
     // Properties
@@ -113,8 +116,8 @@ public:
     /*! \brief Geographical coordinate of the station reporting this METAR
      *
      * If the station coordinate is unknown, the property contains an invalid
-     * coordinate. Typically, the coordinate will contain the elevation of
-     * the station.
+     * coordinate. Typically, the coordinate will contain the elevation of the
+     * station.
      */
     Q_PROPERTY(QGeoCoordinate coordinate READ coordinate CONSTANT)
 
@@ -243,7 +246,7 @@ public:
      */
     [[nodiscard]] QString rawText() const
     {
-        return m_raw_text;
+        return m_rawText;
     }
 
 
@@ -261,22 +264,29 @@ public:
      */
     [[nodiscard]] Q_INVOKABLE QString decodedText(const Navigation::Aircraft& act, const QDateTime& time)
     {
-        return m_decoder.decodedText(act, time);
+        // Paranoid safety checks
+        if (m_decoder.isNull())
+        {
+            return {};
+        }
+
+        return m_decoder->decodedText(act, time);
     }
 
     /*! \brief Derived data, such as density height
      *
      * @param aircraft Current aircraft, used to determine appropriate units
      *
-     * @param showPerformanceWarning If true, then show warning if density altitude
-     * severely affect aircraft performance.
+     * @param showPerformanceWarning If true, then show warning if density
+     * altitude severely affect aircraft performance.
      *
      * @param explainPerformanceWarning If true, add text to explain performance
      * degrade
      *
-     * @returns Human-readable, translated rich text. The text contains two links,
-     * to 'hidePerformanceWarning' and 'hideExplanation'. When clicked, the
-     * user-facing text should be replaced, if the appropriate parameter set to 'false'.
+     * @returns Human-readable, translated rich text. The text contains two
+     * links, to 'hidePerformanceWarning' and 'hideExplanation'. When clicked,
+     * the user-facing text should be replaced, if the appropriate parameter set
+     * to 'false'.
      */
     [[nodiscard]] Q_INVOKABLE QString derivedData(const Navigation::Aircraft& aircraft, bool showPerformanceWarning, bool explainPerformanceWarning) const;
 
@@ -286,10 +296,11 @@ public:
      *
      * @param currentTime Current time, used to describe time difference
      *
-     * @returns A translated, human-readable string of the form "METAR 14min ago:
-     * marginal VMC • wind at 15kt • rain"
+     * @returns A translated, human-readable string of the form "METAR 14min
+     * ago: marginal VMC • wind at 15kt • rain"
      */
     [[nodiscard]] Q_INVOKABLE QString summary(const Navigation::Aircraft& aircraft, const QDateTime& currentTime) const;
+
 
 private:
     // Flight category, as returned by the Aviation Weather Center
@@ -311,7 +322,7 @@ private:
     Units::Pressure m_qnh;
 
     // Raw METAR text, as returned by the Aviation Weather Center
-    QString m_raw_text;
+    QString m_rawText;
 
     // Wind speed, as returned by the Aviation Weather Center
     Units::Speed m_wind;
@@ -326,7 +337,7 @@ private:
     Units::Distance m_densityAltitude;
 
     // Decoder
-    Weather::Decoder m_decoder;
+    QSharedPointer<Weather::Decoder> m_decoder;
 };
 
 /*! \brief Serialization

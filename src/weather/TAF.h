@@ -32,7 +32,7 @@ namespace Weather {
 class WeatherDataProvider;
 
 
-/*! \brief TAF report
+/*! \brief TAF forecast
  *
  * This class contains the data of a TAF report and provided a few
  * methods to access the data. Instances of this class are provided by the
@@ -43,19 +43,56 @@ class TAF {
     Q_GADGET
     QML_VALUE_TYPE(taf)
 
-    friend WeatherDataProvider;
+    friend QDataStream& operator<<(QDataStream& stream, const TAF& taf);
 
 public:
-    /*! \brief Default constructor
-     *
-     * This constructor creates an invalid TAF instance.
-     *
-     * @param parent The standard QObject parent pointer
-     */
-    explicit TAF();
 
-    // Standard destructor
+    //
+    // Constructors and destructors
+    //
+
+    /*! \brief Default constructor */
+    TAF() = default;
+
+    /*! \brief Deserialization constructor
+     *
+     * This constructor reads a XML stream, as provided by the Aviation Weather
+     * Center's Text Data Server, https://www.aviationweather.gov/dataserver
+     *
+     * @param xml XML Stream reader
+     */
+    explicit TAF(QXmlStreamReader& xml);
+
+    /*! \brief Deserialization constructor
+     *
+     * This constructor reads an input stream.
+     *
+     * @param inputStream Input Stream
+     */
+    explicit TAF(QDataStream& inputStream);
+
+    /*! \brief Destructor */
     ~TAF() = default;
+
+    /*! \brief Copy constructor */
+    TAF(const TAF&) = default;
+
+    /*! \brief Move constructor */
+    TAF(TAF&&) = default;
+
+    /*! \brief Copy assignment operator */
+    TAF& operator=(const TAF&) = default;
+
+    /*! \brief Move assignment operator */
+    TAF& operator=(TAF&&) = default;
+
+    /*! \brief Equality check */
+    bool operator==(const TAF&) const = default;
+
+
+    //
+    // Properties
+    //
 
     /*! \brief Geographical coordinate of the station reporting this TAF
      *
@@ -88,7 +125,10 @@ public:
      */
     Q_PROPERTY(QString rawText READ rawText CONSTANT)
 
-    // ----
+
+    //
+    // Getter Methods
+    //
 
     /*! \brief Getter function for property with the same name
      *
@@ -117,12 +157,6 @@ public:
         return m_ICAOCode;
     }
 
-    /*! \brief Convenience method to check if this TAF is already expired
-     *
-     * @returns true if an expiration date/time is known and if the current time is larger than the expiration
-     */
-    [[nodiscard]] Q_INVOKABLE bool isExpired() const;
-
     /*! \brief Getter function for property with the same name
      *
      * @returns Property isValid
@@ -147,23 +181,31 @@ public:
         return m_rawText;
     }
 
-#warning
+
+    //
+    // Methods
+    //
+
+    /*! \brief Decoded TAF text
+     *
+     * @param aircraft Current aircraft, used to determine appropriate units
+     *
+     * @param time Current time, used to describe points in time
+     *
+     * @returns Human-readable, translated rich text.
+     */
     [[nodiscard]] Q_INVOKABLE QString decodedText(const Navigation::Aircraft& act, const QDateTime& time)
     {
-        return m_decoder.decodedText(act, time);
+        // Paranoid safety checks
+        if (m_decoder.isNull())
+        {
+            return {};
+        }
+
+        return m_decoder->decodedText(act, time);
     }
 
 private:
-    // This constructor reads a XML stream, as provided by the Aviation Weather Center's Text Data Server,
-    // https://www.aviationweather.gov/dataserver
-    explicit TAF(QXmlStreamReader& xml);
-
-    // This constructor reads a serialized TAF from a QDataStream
-    explicit TAF(QDataStream& inputStream);
-
-    // Writes the TAF report to a data stream
-    void write(QDataStream& out);
-
     // Expiration time
     QDateTime m_expirationTime;
 
@@ -179,8 +221,14 @@ private:
     // Raw TAF text, as returned by the Aviation Weather Center
     QString m_rawText;
 
-#warning
-    Weather::Decoder m_decoder;
+    // Decoder
+    QSharedPointer<Weather::Decoder> m_decoder;
 };
+
+/*! \brief Serialization
+ *
+ *  There are no checks for errors of any kind.
+ */
+QDataStream& operator<<(QDataStream& stream, const TAF& taf);
 
 } // namespace Weather

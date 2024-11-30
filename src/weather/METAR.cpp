@@ -26,7 +26,6 @@
 using namespace Qt::Literals::StringLiterals;
 
 
-
 Weather::METAR::METAR(QXmlStreamReader& xml)
 {
     while (true)
@@ -262,21 +261,21 @@ QString Weather::METAR::summary(const Navigation::Aircraft& aircraft, const QDat
     case VFR:
         if (m_rawText.contains(u"CAVOK"_s))
         {
-            resultList << QObject::tr("CAVOK");
+            resultList << tr("CAVOK");
         }
         else
         {
-            resultList << QObject::tr("VMC");
+            resultList << tr("VMC");
         }
         break;
     case MVFR:
-        resultList << QObject::tr("marginal VMC");
+        resultList << tr("marginal VMC");
         break;
     case IFR:
-        resultList << QObject::tr("IMC");
+        resultList << tr("IMC");
         break;
     case LIFR:
-        resultList << QObject::tr("low IMC");
+        resultList << tr("low IMC");
         break;
     default:
         break;
@@ -285,11 +284,11 @@ QString Weather::METAR::summary(const Navigation::Aircraft& aircraft, const QDat
     // Wind and Gusts
     if (m_gust.isFinite() && m_gust.toKN() > 15)
     {
-        resultList << QObject::tr("gusts of %1").arg(aircraft.horizontalSpeedToString(m_gust));
+        resultList << tr("gusts of %1").arg(aircraft.horizontalSpeedToString(m_gust));
     }
     else if (m_wind.isFinite() && m_wind.toKN() > 10)
     {
-        resultList << QObject::tr("wind at %1").arg(aircraft.horizontalSpeedToString(m_wind));
+        resultList << tr("wind at %1").arg(aircraft.horizontalSpeedToString(m_wind));
     }
 
     // Weather
@@ -301,10 +300,10 @@ QString Weather::METAR::summary(const Navigation::Aircraft& aircraft, const QDat
 
     if (resultList.isEmpty())
     {
-        return QObject::tr("METAR %1").arg(Navigation::Clock::describeTimeDifference(m_observationTime, currentTime));
+        return tr("METAR %1").arg(Navigation::Clock::describeTimeDifference(m_observationTime, currentTime));
     }
 
-    return QObject::tr("METAR %1: %2").arg(Navigation::Clock::describeTimeDifference(m_observationTime, currentTime), resultList.join(QStringLiteral(" • ")));
+    return tr("METAR %1: %2").arg(Navigation::Clock::describeTimeDifference(m_observationTime, currentTime), resultList.join(QStringLiteral(" • ")));
 }
 
 
@@ -322,16 +321,16 @@ QString Weather::METAR::derivedData(const Navigation::Aircraft& aircraft, bool s
     if (m_densityAltitude.isFinite())
     {
         Units::Distance const altitude = Units::Distance::fromM(m_location.altitude());
-        auto result = QObject::tr("Density Altitude: %1").arg(aircraft.verticalDistanceToString(m_densityAltitude));
+        auto result = tr("Density Altitude: %1").arg(aircraft.verticalDistanceToString(m_densityAltitude));
         if (altitude.isFinite())
         {
             if (m_densityAltitude > altitude)
             {
-                result = QObject::tr("Density Altitude: %1, %2 above airfield elevation").arg(aircraft.verticalDistanceToString(m_densityAltitude), aircraft.verticalDistanceToString(m_densityAltitude - altitude));
+                result = tr("Density Altitude: %1, %2 above airfield elevation").arg(aircraft.verticalDistanceToString(m_densityAltitude), aircraft.verticalDistanceToString(m_densityAltitude - altitude));
             }
             else
             {
-                result = QObject::tr("Density Altitude: %1, %2 below airfield elevation").arg(aircraft.verticalDistanceToString(m_densityAltitude), aircraft.verticalDistanceToString(altitude - m_densityAltitude));
+                result = tr("Density Altitude: %1, %2 below airfield elevation").arg(aircraft.verticalDistanceToString(m_densityAltitude), aircraft.verticalDistanceToString(altitude - m_densityAltitude));
             }
         }
         items += result;
@@ -341,7 +340,7 @@ QString Weather::METAR::derivedData(const Navigation::Aircraft& aircraft, bool s
     auto relativeHumidity = Navigation::Atmosphere::relativeHumidity(m_temperature, m_dewpoint);
     if (!std::isnan(relativeHumidity))
     {
-        items += QObject::tr("Relative Humidity: %1%").arg(qRound(relativeHumidity));
+        items += tr("Relative Humidity: %1%").arg(qRound(relativeHumidity));
     }
 
     // Performance warnings
@@ -361,9 +360,9 @@ QString Weather::METAR::derivedData(const Navigation::Aircraft& aircraft, bool s
         {
             performanceWarningsShown = true;
             items += "<strong>"
-                     + QObject::tr("Performance")
+                     + tr("Performance")
                      + ":</strong> "
-                     + QObject::tr("Expect %1\% increase in takeoff distance").arg(qRound(takeoffDistIncPercentage));
+                     + tr("Expect %1\% increase in takeoff distance").arg(qRound(takeoffDistIncPercentage));
         }
 
         if (rateOfClimbDecreasePercentage > 25)
@@ -372,16 +371,16 @@ QString Weather::METAR::derivedData(const Navigation::Aircraft& aircraft, bool s
             if (rateOfClimbDecreasePercentage <= 90)
             {
                 items += "<strong>"
-                         + QObject::tr("Performance")
+                         + tr("Performance")
                          + ":</strong> "
-                         + QObject::tr("Expect %1\% decrease in climb rate").arg(qRound(rateOfClimbDecreasePercentage));
+                         + tr("Expect %1\% decrease in climb rate").arg(qRound(rateOfClimbDecreasePercentage));
             }
             else
             {
                 items += "<strong>"
-                         + QObject::tr("Performance")
+                         + tr("Performance")
                          + ":</strong> "
-                         + QObject::tr("Expect drastic decrease in climb rate. Flying might be inadvisable.");
+                         + tr("Expect drastic decrease in climb rate. Flying might be inadvisable.");
             }
         }
     }
@@ -392,7 +391,7 @@ QString Weather::METAR::derivedData(const Navigation::Aircraft& aircraft, bool s
     }
 
     QString result;
-    result += u"<strong>"_s + QObject::tr("Derived Data") + u"</strong>"_s;
+    result += u"<strong>"_s + tr("Derived Data") + u"</strong>"_s;
     result += QStringLiteral("<ul style=\"margin-left:-25px;\">");
     for(auto& item : items)
     {
@@ -407,15 +406,15 @@ QString Weather::METAR::derivedData(const Navigation::Aircraft& aircraft, bool s
         if (explainPerformanceWarning)
         {
             result += u"<p>"_s
-                      + QObject::tr("Percentages are rough estimates, comparing performance of typical SEP aircraft at density altitude to standard sea level values. "
+                      + tr("Percentages are rough estimates, comparing performance of typical SEP aircraft at density altitude to standard sea level values. "
                            "Runway conditions might further degrade performance. "
                            "Always consult the flight manual for exact values.")
-                      + u" <a href='hideExplanation'>"_s + QObject::tr("Hide this explanation.") + u"</a>"_s
+                      + u" <a href='hideExplanation'>"_s + tr("Hide this explanation.") + u"</a>"_s
                       + u"</p>"_s;
         }
         else
         {
-            result += u"<p><a href='hidePerformanceWarning'>"_s + QObject::tr("Hide performance warnings.") + u"</a></p>"_s;
+            result += u"<p><a href='hidePerformanceWarning'>"_s + tr("Hide performance warnings.") + u"</a></p>"_s;
         }
     }
     return result;

@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QCoreApplication>
 #include <QDataStream>
 #include <QGeoCoordinate>
 #include <QXmlStreamReader>
@@ -44,6 +45,7 @@ class WeatherDataProvider;
  */
 
 class METAR {
+    Q_DECLARE_TR_FUNCTIONS(Weather::METAR)
     Q_GADGET
     QML_VALUE_TYPE(metar)
 

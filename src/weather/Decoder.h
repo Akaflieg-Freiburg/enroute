@@ -25,6 +25,7 @@
 
 #pragma once
 
+#include <QCoreApplication>
 #include <QDate>
 #include <QObject>
 
@@ -47,6 +48,7 @@ namespace Weather {
 
 class Decoder : private metaf::Visitor<QString>
 {
+    Q_DECLARE_TR_FUNCTIONS(Weather::Decoder)
 
 public:
     // This constructor creates an invalid Decoder instance.

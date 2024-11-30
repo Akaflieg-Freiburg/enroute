@@ -105,7 +105,7 @@ public:
      */
     [[nodiscard]] auto hasMETAR() const -> bool
     {
-        return !_metar.isNull();
+        return _metar.isValid();
     }
 
     /*! \brief Check if a TAF weather forecast is known for this weather station
@@ -122,7 +122,7 @@ public:
      */
     [[nodiscard]] auto hasTAF() const -> bool
     {
-        return !_taf.isNull();
+        return _taf.isValid();
     }
 
     /*! \brief ICAO code of the weather station
@@ -176,14 +176,13 @@ public:
      * METAR instance is owned by an instance of WeatherDataProvider, and can be
      * deleted or updated by the WeatherDataProvider anytime.
      */
-    Q_PROPERTY(Weather::METAR *metar READ metar NOTIFY metarChanged)
+    Q_PROPERTY(Weather::METAR metar READ metar NOTIFY metarChanged)
 
     /*! \brief Getter method for property of the same name
      *
      * @returns Property metar
      */
-    [[nodiscard]] auto metar() const -> Weather::METAR *
-    {
+    [[nodiscard]] auto metar() const -> Weather::METAR     {
         return _metar;
     }
 
@@ -214,13 +213,13 @@ public:
      * instance is owned by an instance of WeatherDataProvider, and can be deleted or
      * updated by the WeatherDataProvider anytime.
      */
-    Q_PROPERTY(Weather::TAF *taf READ taf NOTIFY tafChanged)
+    Q_PROPERTY(Weather::TAF taf READ taf NOTIFY tafChanged)
 
     /*! \brief Getter method for property of the same name
      *
      * @returns Property taf
      */
-    [[nodiscard]] auto taf() const -> Weather::TAF *
+    [[nodiscard]] auto taf() const -> Weather::TAF
     {
         return _taf;
     }
@@ -268,13 +267,13 @@ private:
     // otherwise, the metar is deleted. In any case, this WeatherStation will
     // take ownership of the METAR. The signal metarChanged() will be emitted if
     // appropriate.
-    void setMETAR(Weather::METAR *metar);
+    void setMETAR(Weather::METAR metar);
 
     // If the taf is valid, not expired and newer than the existing taf, this
     // method sets the TAF message and deletes any existing TAF; otherwise, the
     // taf is deleted. In any case, this WeatherStation will take ownership of
     // the TAF. The signal tafChanged() will be emitted if appropriate.
-    void setTAF(Weather::TAF *taf);
+    void setTAF(Weather::TAF taf);
 
     // Coordinate of this weather station
     QGeoCoordinate _coordinate;
@@ -289,10 +288,10 @@ private:
     QString _icon {QStringLiteral("/icons/waypoints/WP.svg")};
 
     // METAR
-    QPointer<Weather::METAR> _metar;
+    Weather::METAR _metar;
 
     // TAF
-    QPointer<Weather::TAF> _taf;
+    Weather::TAF _taf;
 
     // Two-Line-Title
     QString _twoLineTitle;

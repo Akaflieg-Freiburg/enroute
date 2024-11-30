@@ -42,10 +42,10 @@ class WeatherDataProvider;
  * WeatherDataProvider class; there is no way to construct valid instances yourself.
  */
 
-class METAR : public QObject {
-    Q_OBJECT
+class METAR {
+    Q_GADGET
+    QML_VALUE_TYPE(metar)
 
-    friend WeatherDataProvider;
     friend QDataStream& operator<<(QDataStream& stream, const METAR& metar);
 
 public:
@@ -70,16 +70,40 @@ public:
     // Constructors and destructors
     //
 
-    /*! \brief Default constructor
-     *
-     * This constructor creates an invalid METAR instance.
-     *
-     * @param parent The standard QObject parent pointer
-     */
-    explicit METAR(QObject *parent = nullptr);
+    /*! \brief Default constructor */
+    METAR() = default;
 
-    // Standard destructor
-    ~METAR() override = default;
+    /*! \brief Deserialization constructor
+     *
+     * This constructor reads a XML stream, as provided by the Aviation Weather
+     * Center's Text Data Server, https://www.aviationweather.gov/dataserver
+     *
+     * @param xml XML Stream reader
+     */
+    explicit METAR(QXmlStreamReader& xml);
+
+    /*! \brief Deserialization constructor
+     *
+     * This constructor reads an input stream.
+     *
+     * @param inputStream Input Stream
+     */
+    explicit METAR(QDataStream& inputStream);
+
+    /*! \brief Destructor */
+    ~METAR() = default;
+
+    /*! \brief Copy constructor */
+    METAR(const METAR&) = default;
+
+    /*! \brief Move constructor */
+    METAR(METAR&&) = default;
+
+    /*! \brief Copy assignment operator */
+    METAR& operator=(const METAR&) = default;
+
+    /*! \brief Move assignment operator */
+    METAR& operator=(METAR&&) = default;
 
 
     //
@@ -227,8 +251,18 @@ public:
     // Methods
     //
 
-#warning
-    [[nodiscard]] Q_INVOKABLE QString decodedText(const Navigation::Aircraft& act, const QDateTime& time) {return m_decoder.decodedText(act, time);}
+    /*! \brief Decoded METAR text
+     *
+     * @param aircraft Current aircraft, used to determine appropriate units
+     *
+     * @param time Current time, used to describe points in time
+     *
+     * @returns Human-readable, translated rich text.
+     */
+    [[nodiscard]] Q_INVOKABLE QString decodedText(const Navigation::Aircraft& act, const QDateTime& time)
+    {
+        return m_decoder.decodedText(act, time);
+    }
 
     /*! \brief Derived data, such as density height
      *
@@ -243,7 +277,6 @@ public:
      * @returns Human-readable, translated rich text. The text contains two links,
      * to 'hidePerformanceWarning' and 'hideExplanation'. When clicked, the
      * user-facing text should be replaced, if the appropriate parameter set to 'false'.
-     *
      */
     [[nodiscard]] Q_INVOKABLE QString derivedData(const Navigation::Aircraft& aircraft, bool showPerformanceWarning, bool explainPerformanceWarning) const;
 
@@ -258,20 +291,7 @@ public:
      */
     [[nodiscard]] Q_INVOKABLE QString summary(const Navigation::Aircraft& aircraft, const QDateTime& currentTime) const;
 
-protected:
-    // This constructor reads a XML stream, as provided by the Aviation Weather
-    // Center's Text Data Server, https://www.aviationweather.gov/dataserver
-    explicit METAR(QXmlStreamReader& xml, QObject* parent = nullptr);
-
-    // This constructor reads a serialized METAR from a QDataStream
-    explicit METAR(QDataStream& inputStream, QObject* parent = nullptr);
-
 private:
-    Q_DISABLE_COPY_MOVE(METAR)
-
-    // Decoded METAR text
-    QString _decoded;
-
     // Flight category, as returned by the Aviation Weather Center
     FlightCategory m_flightCategory {unknown};
 
@@ -305,13 +325,13 @@ private:
     // Density altitude, derived data
     Units::Distance m_densityAltitude;
 
-#warning
+    // Decoder
     Weather::Decoder m_decoder;
 };
 
 /*! \brief Serialization
  *
- *  There is no checks for errors of any kind.
+ *  There are no checks for errors of any kind.
  */
 QDataStream& operator<<(QDataStream& stream, const METAR& metar);
 

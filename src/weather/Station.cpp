@@ -88,46 +88,30 @@ void Weather::Station::readDataFromWaypoint()
 }
 
 
-void Weather::Station::setMETAR(Weather::METAR *metar)
+void Weather::Station::setMETAR(Weather::METAR metar)
 {
     // Ignore invalid and expired METARs. Also ignore METARs whose ICAO code does not match with this weather station
-    if (metar != nullptr) {
-        if (!metar->isValid() || (QDateTime::currentDateTime() > metar->expiration()) || (metar->ICAOCode() != m_ICAOCode)) {
-            metar->deleteLater();
-            return;
-        }
-    }
-
-    // If METAR did not change, then do nothing
-    if (metar == _metar) {
+    if (!metar.isValid() || (QDateTime::currentDateTime() > metar.expiration()) || (metar.ICAOCode() != m_ICAOCode))
+    {
         return;
     }
 
+    // If METAR did not change, then do nothing
+#warning
+/*    if (metar == _metar)
+    {
+        return;
+    }
+*/
     // Cache values
     auto cacheHasMETAR = hasMETAR();
-
-    // Take ownership. This will guarantee that the METAR gets deleted along with this weather station.
-    if (metar != nullptr) {
-        metar->setParent(this);
-    }
-
-    // Clear and delete old METAR, if one exists.
-    if (!_metar.isNull()) {
-        disconnect(_metar, nullptr, this, nullptr);
-        _metar->deleteLater();
-    }
 
     // Overwrite metar pointer
     _metar = metar;
 
-    if (_metar != nullptr) {
-        // Connect new METAR, update the coordinate if necessary.
-        connect(_metar, &QObject::destroyed, this, &Weather::Station::metarChanged);
-
-        // Update coordinate
-        if (!_coordinate.isValid()) {
-            _coordinate = _metar->coordinate();
-        }
+    // Update coordinate
+    if (!_coordinate.isValid()) {
+        _coordinate = _metar.coordinate();
     }
 
     // Let the world know that the metar changed
@@ -138,46 +122,33 @@ void Weather::Station::setMETAR(Weather::METAR *metar)
 }
 
 
-void Weather::Station::setTAF(Weather::TAF *taf)
+void Weather::Station::setTAF(Weather::TAF taf)
 {
     // Ignore invalid and expired TAFs. Also ignore TAFs whose ICAO code does not match with this weather station
-    if (taf != nullptr) {
-        if (!taf->isValid() || taf->isExpired() || (taf->ICAOCode() != m_ICAOCode)) {
-            taf->deleteLater();
-            return;
-        }
+    if (!taf.isValid() || taf.isExpired() || (taf.ICAOCode() != m_ICAOCode))
+    {
+        return;
     }
 
+
     // If TAF did not change, then do nothing
+#warning
+    /*
     if (taf == _taf) {
         return;
     }
+*/
 
     // Cache values
     auto cacheHasTAF = hasTAF();
 
-    // Take ownership. This will guarantee that the METAR gets deleted along with this weather station.
-    if (taf != nullptr) {
-        taf->setParent(this);
-    }
-
-    // Clear and delete old TAF, if one exists.
-    if (!_taf.isNull()) {
-        disconnect(_taf, nullptr, this, nullptr);
-        _taf->deleteLater();
-    }
-
     // Overwrite TAF pointer
     _taf = taf;
 
-    if (_taf != nullptr) {
-        // Connect new TAF, update the coordinate if necessary.
-        connect(_taf, &QObject::destroyed, this, &Weather::Station::tafChanged);
-
-        // Update coordinate
-        if (!_coordinate.isValid()) {
-            _coordinate = _taf->coordinate();
-        }
+    // Update coordinate
+    if (!_coordinate.isValid())
+    {
+        _coordinate = _taf.coordinate();
     }
 
     // Let the world know that the taf changed

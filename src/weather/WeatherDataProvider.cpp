@@ -113,16 +113,16 @@ void Weather::WeatherDataProvider::deleteExpiredMesages()
     {
         if (weatherStation->hasMETAR())
         {
-            if (weatherStation->metar()->expiration() < QDateTime::currentDateTime())
+            if (weatherStation->metar().expiration() < QDateTime::currentDateTime())
             {
-                weatherStation->setMETAR(nullptr);
+                weatherStation->setMETAR(Weather::METAR());
             }
         }
         if (weatherStation->hasTAF())
         {
-            if (weatherStation->taf()->expiration() < QDateTime::currentDateTime())
+            if (weatherStation->taf().expiration() < QDateTime::currentDateTime())
             {
-                weatherStation->setTAF(nullptr);
+                weatherStation->setTAF(Weather::TAF());
             }
         }
 
@@ -210,15 +210,15 @@ void Weather::WeatherDataProvider::downloadFinished()
             // Read METAR
             if (xml.isStartElement() && (xml.name() == QStringLiteral("METAR")))
             {
-                auto *metar = new Weather::METAR(xml, this);
-                findOrConstructWeatherStation(metar->ICAOCode())->setMETAR(metar);
+                Weather::METAR metar(xml);
+                findOrConstructWeatherStation(metar.ICAOCode())->setMETAR(metar);
             }
 
             // Read TAF
             if (xml.isStartElement() && (xml.name() == QStringLiteral("TAF")))
             {
-                auto *taf = new Weather::TAF(xml, this);
-                findOrConstructWeatherStation(taf->ICAOCode())->setTAF(taf);
+                Weather::TAF taf(xml);
+                findOrConstructWeatherStation(taf.ICAOCode())->setTAF(taf);
             }
 
         }
@@ -318,15 +318,15 @@ auto Weather::WeatherDataProvider::load() -> bool
         if (type == 'M')
         {
             // Read METAR
-            auto *metar = new Weather::METAR(inputStream, this);
-            findOrConstructWeatherStation(metar->ICAOCode())->setMETAR(metar);
+            Weather::METAR metar(inputStream);
+            findOrConstructWeatherStation(metar.ICAOCode())->setMETAR(metar);
             continue;
         }
         if (type == 'T')
         {
             // Read TAF
-            auto *taf = new Weather::TAF(inputStream, this);
-            findOrConstructWeatherStation(taf->ICAOCode())->setTAF(taf);
+            Weather::TAF taf(inputStream);
+            findOrConstructWeatherStation(taf.ICAOCode())->setTAF(taf);
             continue;
         }
 
@@ -383,20 +383,20 @@ void Weather::WeatherDataProvider::save()
         if (weatherStation->hasMETAR())
         {
             // Save only valid METARs that are not yet expired
-            if (weatherStation->metar()->isValid() && (QDateTime::currentDateTime() <= weatherStation->metar()->expiration()))
+            if (weatherStation->metar().isValid() && (QDateTime::currentDateTime() <= weatherStation->metar().expiration()))
             {
                 outputStream << QChar('M');
-                outputStream << *weatherStation->metar();
+                outputStream << weatherStation->metar();
             }
         }
 
         if (weatherStation->hasTAF())
         {
             // Save only valid TAFs that are not yet expired
-            if (weatherStation->taf()->isValid() && !weatherStation->taf()->isExpired())
+            if (weatherStation->taf().isValid() && !weatherStation->taf().isExpired())
             {
                 outputStream << QChar('T');
-                weatherStation->taf()->write(outputStream);
+                weatherStation->taf().write(outputStream);
             }
         }
     }
@@ -498,11 +498,11 @@ auto Weather::WeatherDataProvider::QNH() const -> Units::Pressure
         {
             continue;
         }
-        if (weatherStationPtr->metar() == nullptr)
+        if (!weatherStationPtr->metar().isValid())
         {
             continue;
         }
-        QNH = weatherStationPtr->metar()->QNH();
+        QNH = weatherStationPtr->metar().QNH();
         if (!QNH.isFinite())
         {
             continue;
@@ -524,7 +524,7 @@ auto Weather::WeatherDataProvider::QNH() const -> Units::Pressure
     }
     if (closestReportWithQNH != nullptr)
     {
-        return closestReportWithQNH->metar()->QNH();
+        return closestReportWithQNH->metar().QNH();
     }
     return {};
 }
@@ -547,11 +547,11 @@ auto Weather::WeatherDataProvider::QNHInfo() const -> QString
         {
             continue;
         }
-        if (weatherStationPtr->metar() == nullptr)
+        if (!weatherStationPtr->metar().isValid())
         {
             continue;
         }
-        QNH = weatherStationPtr->metar()->QNH();
+        QNH = weatherStationPtr->metar().QNH();
         if (!QNH.isFinite())
         {
             continue;
@@ -573,9 +573,9 @@ auto Weather::WeatherDataProvider::QNHInfo() const -> QString
     }
     if (closestReportWithQNH != nullptr)
     {
-        return tr("%1 hPa in %2, %3").arg(qRound(closestReportWithQNH->metar()->QNH().toHPa()))
+        return tr("%1 hPa in %2, %3").arg(qRound(closestReportWithQNH->metar().QNH().toHPa()))
             .arg(closestReportWithQNH->ICAOCode(),
-                 Navigation::Clock::describeTimeDifference(closestReportWithQNH->metar()->observationTime()));
+                 Navigation::Clock::describeTimeDifference(closestReportWithQNH->metar().observationTime()));
     }
     return {};
 }

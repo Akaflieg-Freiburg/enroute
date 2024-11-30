@@ -39,8 +39,9 @@ class WeatherDataProvider;
  * WeatherDataProvider class; there is no way to construct valid instances yourself.
  */
 
-class TAF : public QObject {
-    Q_OBJECT
+class TAF {
+    Q_GADGET
+    QML_VALUE_TYPE(taf)
 
     friend WeatherDataProvider;
 
@@ -51,10 +52,10 @@ public:
      *
      * @param parent The standard QObject parent pointer
      */
-    explicit TAF(QObject *parent = nullptr);
+    explicit TAF();
 
     // Standard destructor
-    ~TAF() override = default;
+    ~TAF() = default;
 
     /*! \brief Geographical coordinate of the station reporting this TAF
      *
@@ -62,29 +63,11 @@ public:
      */
     Q_PROPERTY(QGeoCoordinate coordinate READ coordinate CONSTANT)
 
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property coordiante
-     */
-    [[nodiscard]] auto coordinate() const -> QGeoCoordinate
-    {
-        return _location;
-    }
-
     /*! \brief Expiration time and date
      *
      * A TAF message is supposed to expire once the last forecast period ends.
      */
     Q_PROPERTY(QDateTime expiration READ expiration CONSTANT)
-
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property expiration
-     */
-    [[nodiscard]] auto expiration() const -> QDateTime
-    {
-        return _expirationTime;
-    }
 
     /*! \brief ICAO code of the station reporting this TAF
      *
@@ -93,11 +76,43 @@ public:
      */
     Q_PROPERTY(QString ICAOCode READ ICAOCode CONSTANT)
 
+    /*! Indicates if the class represents a valid TAF report */
+    Q_PROPERTY(bool isValid READ isValid CONSTANT)
+
+    /*! \brief Issue time of this TAF */
+    Q_PROPERTY(QDateTime issueTime READ issueTime CONSTANT)
+
+    /*! \brief  Raw TAF text
+     *
+     * This is a string such as "TAF EICK 092100Z 23007KT 9999 FEW038 BKN180 11/08 Q1019 NOSIG=".
+     */
+    Q_PROPERTY(QString rawText READ rawText CONSTANT)
+
+    // ----
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property coordiante
+     */
+    [[nodiscard]] QGeoCoordinate coordinate() const
+    {
+        return m_location;
+    }
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property expiration
+     */
+    [[nodiscard]] QDateTime expiration() const
+    {
+        return m_expirationTime;
+    }
+
     /*! \brief Getter function for property with the same name
      *
      * @returns Property ICAOCode
      */
-    [[nodiscard]] auto ICAOCode() const -> QString
+    [[nodiscard]] QString ICAOCode() const
     {
         return m_ICAOCode;
     }
@@ -108,96 +123,64 @@ public:
      */
     [[nodiscard]] Q_INVOKABLE bool isExpired() const;
 
-    /*! Indicates if the class represents a valid TAF report */
-    Q_PROPERTY(bool isValid READ isValid CONSTANT)
-
     /*! \brief Getter function for property with the same name
      *
      * @returns Property isValid
      */
-    [[nodiscard]] auto isValid() const -> bool;
-
-    /*! \brief Issue time of this TAF */
-    Q_PROPERTY(QDateTime issueTime READ issueTime CONSTANT)
+    [[nodiscard]] bool isValid() const;
 
     /*! \brief Getter function for property with the same name
      *
      * @returns Property observationTime
      */
-    [[nodiscard]] auto issueTime() const -> QDateTime
+    [[nodiscard]] QDateTime issueTime() const
     {
-        return _issueTime;
+        return m_issueTime;
     }
-
-    /*! \brief  Raw TAF text
-     *
-     * This is a string such as "TAF EICK 092100Z 23007KT 9999 FEW038 BKN180 11/08 Q1019 NOSIG=".
-     */
-    Q_PROPERTY(QString rawText READ rawText CONSTANT)
 
     /*! \brief Getter function for property with the same name
      *
      * @returns Property extendedName
      */
-    [[nodiscard]] auto rawText() const -> QString
+    [[nodiscard]] QString rawText() const
     {
-        return _raw_text;
+        return m_rawText;
     }
 
-    /*! \brief Issue time, relative to now
-     *
-     * This is a translated, human-readable string such as "1h and 43min ago" that describes
-     * the observation time.
-     */
-    Q_PROPERTY(QString relativeIssueTime READ relativeIssueTime NOTIFY relativeIssueTimeChanged)
-
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property relativeObservationTime
-     */
-    [[nodiscard]] auto relativeIssueTime() const -> QString;
-
 #warning
-    [[nodiscard]] Q_INVOKABLE QString decodedText(const Navigation::Aircraft& act, const QDateTime& time) {return m_decoder.decodedText(act, time);}
-
-signals:
-    /*! \brief Notifier signal */
-    void relativeIssueTimeChanged();
+    [[nodiscard]] Q_INVOKABLE QString decodedText(const Navigation::Aircraft& act, const QDateTime& time)
+    {
+        return m_decoder.decodedText(act, time);
+    }
 
 private:
     // This constructor reads a XML stream, as provided by the Aviation Weather Center's Text Data Server,
     // https://www.aviationweather.gov/dataserver
-    explicit TAF(QXmlStreamReader &xml, QObject *parent = nullptr);
+    explicit TAF(QXmlStreamReader& xml);
 
     // This constructor reads a serialized TAF from a QDataStream
-    explicit TAF(QDataStream &inputStream, QObject *parent = nullptr);
-
-    // Connects signals; this method is used internally from the constructor(s)
-    void setupSignals() const;
+    explicit TAF(QDataStream& inputStream);
 
     // Writes the TAF report to a data stream
-    void write(QDataStream &out);
-
-    Q_DISABLE_COPY_MOVE(TAF)
+    void write(QDataStream& out);
 
     // Expiration time
-    QDateTime _expirationTime;
+    QDateTime m_expirationTime;
 
     // Station ID, as returned by the Aviation Weather Center
     QString m_ICAOCode;
 
     // Issue time, as returned by the Aviation Weather Center
-    QDateTime _issueTime;
+    QDateTime m_issueTime;
 
     // Station coordinate, as returned by the Aviation Weather Center
-    QGeoCoordinate _location;
+    QGeoCoordinate m_location;
 
     // Raw TAF text, as returned by the Aviation Weather Center
-    QString _raw_text;
+    QString m_rawText;
 
 #warning
     Weather::Decoder m_decoder;
-
 };
 
 } // namespace Weather

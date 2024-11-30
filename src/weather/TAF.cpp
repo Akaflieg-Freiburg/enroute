@@ -29,15 +29,13 @@
 using namespace Qt::Literals::StringLiterals;
 
 
-Weather::TAF::TAF(QObject *parent)
-    : QObject(parent)
+Weather::TAF::TAF()
 {
 
 }
 
 
-Weather::TAF::TAF(QXmlStreamReader &xml, QObject *parent)
-    : QObject(parent)
+Weather::TAF::TAF(QXmlStreamReader &xml)
 {
 
     while (true)
@@ -55,38 +53,38 @@ Weather::TAF::TAF(QXmlStreamReader &xml, QObject *parent)
         // Read location
         if (xml.isStartElement() && name == u"latitude"_s)
         {
-            _location.setLatitude(xml.readElementText().toDouble());
+            m_location.setLatitude(xml.readElementText().toDouble());
             continue;
         }
         if (xml.isStartElement() && name == u"longitude"_s)
         {
-            _location.setLongitude(xml.readElementText().toDouble());
+            m_location.setLongitude(xml.readElementText().toDouble());
             continue;
         }
         if (xml.isStartElement() && name == u"elevation_m"_s)
         {
-            _location.setAltitude(xml.readElementText().toDouble());
+            m_location.setAltitude(xml.readElementText().toDouble());
             continue;
         }
 
         // Read raw text
         if (xml.isStartElement() && name == u"raw_text"_s)
         {
-            _raw_text = xml.readElementText();
+            m_rawText = xml.readElementText();
             continue;
         }
 
         // Read issue time
         if (xml.isStartElement() && name == u"issue_time"_s)
         {
-            _issueTime = QDateTime::fromString(xml.readElementText(), Qt::ISODate);
+            m_issueTime = QDateTime::fromString(xml.readElementText(), Qt::ISODate);
             continue;
         }
 
         // Read expiration date
         if (xml.isStartElement() && name == u"valid_time_to"_s)
         {
-            _expirationTime = QDateTime::fromString(xml.readElementText(), Qt::ISODate);
+            m_expirationTime = QDateTime::fromString(xml.readElementText(), Qt::ISODate);
             continue;
         }
 
@@ -98,46 +96,43 @@ Weather::TAF::TAF(QXmlStreamReader &xml, QObject *parent)
         xml.skipCurrentElement();
     }
 
-    m_decoder = Weather::Decoder(_raw_text, _issueTime.date().addDays(5));
-    setupSignals();
+    m_decoder = Weather::Decoder(m_rawText, m_issueTime.date().addDays(5));
 }
 
 
-Weather::TAF::TAF(QDataStream &inputStream, QObject *parent)
-    : QObject(parent)
+Weather::TAF::TAF(QDataStream &inputStream)
 {
-    inputStream >> _expirationTime;
+    inputStream >> m_expirationTime;
     inputStream >> m_ICAOCode;
-    inputStream >> _issueTime;
-    inputStream >> _location;
-    inputStream >> _raw_text;
+    inputStream >> m_issueTime;
+    inputStream >> m_location;
+    inputStream >> m_rawText;
 
-    m_decoder = Weather::Decoder(_raw_text, _issueTime.date().addDays(5));
-    setupSignals();
+    m_decoder = Weather::Decoder(m_rawText, m_issueTime.date().addDays(5));
 }
 
 
 auto Weather::TAF::isExpired() const -> bool
 {
-    if (!_expirationTime.isValid())
+    if (!m_expirationTime.isValid())
     {
         return true;
     }
-    return QDateTime::currentDateTime() > _expirationTime;
+    return QDateTime::currentDateTime() > m_expirationTime;
 }
 
 
 auto Weather::TAF::isValid() const -> bool
 {
-    if (!_location.isValid())
+    if (!m_location.isValid())
     {
         return false;
     }
-    if (!_expirationTime.isValid())
+    if (!m_expirationTime.isValid())
     {
         return false;
     }
-    if (!_issueTime.isValid())
+    if (!m_issueTime.isValid())
     {
         return false;
     }
@@ -154,29 +149,11 @@ auto Weather::TAF::isValid() const -> bool
 }
 
 
-auto Weather::TAF::relativeIssueTime() const -> QString
-{
-    if (!_issueTime.isValid())
-    {
-        return {};
-    }
-
-    return Navigation::Clock::describeTimeDifference(_issueTime);
-}
-
-
-void Weather::TAF::setupSignals() const
-{
-    // Emit notifier signals whenever the time changes
-    connect(Navigation::Navigator::clock(), &Navigation::Clock::timeChanged, this, &Weather::TAF::relativeIssueTimeChanged);
-}
-
-
 void Weather::TAF::write(QDataStream &out)
 {
-    out << _expirationTime;
+    out << m_expirationTime;
     out << m_ICAOCode;
-    out << _issueTime;
-    out << _location;
-    out << _raw_text;
+    out << m_issueTime;
+    out << m_location;
+    out << m_rawText;
 }

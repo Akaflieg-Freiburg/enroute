@@ -47,7 +47,7 @@ Item {
         color: {
             if (waypointDelegate.weatherStation === null)
                 return "transparent"
-            if (waypointDelegate.weatherStation.hasMETAR)
+            if (waypointDelegate.weatherStation.metar.isValid)
                 return waypointDelegate.weatherStation.metar.flightCategoryColor
             return "transparent"
         }
@@ -71,7 +71,7 @@ Item {
             if (wayTo !== "")
                 result = result + "<br>" + wayTo
 
-            if ((waypointDelegate.weatherStation !== null) && waypointDelegate.weatherStation.hasMETAR)
+            if ((waypointDelegate.weatherStation !== null) && waypointDelegate.weatherStation.metar.isValid)
                 result = result + "<br>" + waypointDelegate.weatherStation.metar.summary(Navigator.aircraft, Clock.time)
             return result
         }

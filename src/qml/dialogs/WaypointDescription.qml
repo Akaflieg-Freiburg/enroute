@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -25,8 +25,9 @@ import QtQuick.Layouts
 import QtQuick.Shapes
 
 import akaflieg_freiburg.enroute
-import "../dialogs"
-import "../items"
+
+pragma ComponentBehavior: Bound
+
 
 /* This is a dialog with detailed information about a waypoint. To use this dialog, all you have to do is to set a Waypoint in the property "waypoint" and call open(). */
 
@@ -34,7 +35,7 @@ CenteringDialog {
     id: waypointDescriptionDialog
 
     property waypoint waypoint: GeoMapProvider.createWaypoint()
-    property var weatherStation: WeatherDataProvider.findWeatherStation( waypoint.ICAOCode )
+    property WeatherStation weatherStation: WeatherDataProvider.findWeatherStation( waypoint.ICAOCode )
 
     onWaypointChanged : {
         // Delete old text items
@@ -86,12 +87,12 @@ CenteringDialog {
         id: metarInfo
 
         Label { // METAR info
-            visible: (weatherStation !== null) && (weatherStation.hasMETAR || weatherStation.hasTAF)
+            visible: (waypointDescriptionDialog.weatherStation !== null) && (waypointDescriptionDialog.weatherStation.metar.isValid || waypointDescriptionDialog.weatherStation.taf.isValid)
             text: {
-                if (weatherStation === null)
+                if (waypointDescriptionDialog.weatherStation === null)
                     return ""
-                if (weatherStation.hasMETAR)
-                    return weatherStation.metar.summary(Navigator.aircraft, Clock.time) + " • <a href='xx'>" + qsTr("full report") + "</a>"
+                if (waypointDescriptionDialog.weatherStation.metar.isValid)
+                    return waypointDescriptionDialog.weatherStation.metar.summary(Navigator.aircraft, Clock.time) + " • <a href='xx'>" + qsTr("full report") + "</a>"
                 return "<a href='xx'>" + qsTr("read TAF") + "</a>"
             }
             Layout.fillWidth: true
@@ -109,7 +110,7 @@ CenteringDialog {
             // Background color according to METAR/FAA flight category
             background: Rectangle {
                 border.color: "black"
-                color: ((weatherStation !== null) && weatherStation.hasMETAR) ? weatherStation.metar.flightCategoryColor : "transparent"
+                color: ((waypointDescriptionDialog.weatherStation !== null) && waypointDescriptionDialog.weatherStation.metar.isValid) ? waypointDescriptionDialog.weatherStation.metar.flightCategoryColor : "transparent"
                 opacity: 0.2
             }
 
@@ -130,7 +131,7 @@ CenteringDialog {
             property notamList notamList: {
                 // Mention lastUpdate, so we update whenever there is new data
                 NOTAMProvider.lastUpdate
-                return NOTAMProvider.notams(waypoint)
+                return NOTAMProvider.notams(waypointDescriptionDialog.waypoint)
             }
 
             visible: text !== ""
@@ -403,9 +404,9 @@ CenteringDialog {
                 onPressed:  {
                     PlatformAdaptor.vibrateBrief()
                     var url = "https://www.google.com/maps/@?api=1&map_action=map&center="
-                            + waypoint.coordinate.latitude
+                            + waypointDescriptionDialog.waypoint.coordinate.latitude
                             + "%2C"
-                            + waypoint.coordinate.longitude
+                            + waypointDescriptionDialog.waypoint.coordinate.longitude
                             + "&zoom=15&basemap=satellite"
                     if (GlobalSettings.alwaysOpenExternalWebsites === true)
                     {
@@ -453,7 +454,7 @@ CenteringDialog {
 
         } // DecoratedScrollView
 
-        Keys.onBackPressed: {
+        Keys.onBackPressed: (event) => {
             event.accepted = true;
             waypointDescriptionDialog.close()
         }
@@ -505,12 +506,12 @@ CenteringDialog {
                         // when flight route changes
                         Navigator.flightRoute.size
 
-                        return Navigator.flightRoute.canAppend(waypoint)
+                        return Navigator.flightRoute.canAppend(waypointDescriptionDialog.waypoint)
                     }
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
-                        Navigator.flightRoute.append(waypoint)
+                        Navigator.flightRoute.append(waypointDescriptionDialog.waypoint)
                         close()
                         toast.doToast(qsTr("Added %1 to route.").arg(waypoint.extendedName))
                     }
@@ -523,12 +524,12 @@ CenteringDialog {
                         // when flight route changes
                         Navigator.flightRoute.size
 
-                        return Navigator.flightRoute.canInsert(waypoint)
+                        return Navigator.flightRoute.canInsert(waypointDescriptionDialog.waypoint)
                     }
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
-                        Navigator.flightRoute.insert(waypoint)
+                        Navigator.flightRoute.insert(waypointDescriptionDialog.waypoint)
                         close()
                         toast.doToast(qsTr("Inserted %1 into route.").arg(waypoint.extendedName))
                     }
@@ -542,7 +543,7 @@ CenteringDialog {
                         // when flight route changes
                         Navigator.flightRoute.size
 
-                        return Navigator.flightRoute.contains(waypoint)
+                        return Navigator.flightRoute.contains(waypointDescriptionDialog.waypoint)
                     }
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
@@ -559,7 +560,7 @@ CenteringDialog {
 
         Button {
             text: qsTr("Library")
-            enabled: waypoint.category === "WP" //TODO: Warum kann ich keine nearby waypoints speichern?
+            enabled: waypointDescriptionDialog.waypoint.category === "WP" //TODO: Warum kann ich keine nearby waypoints speichern?
             flat: true
 
             onClicked: {
@@ -572,11 +573,11 @@ CenteringDialog {
 
                 Action {
                     text: qsTr("Add…")
-                    enabled: !WaypointLibrary.hasNearbyEntry(waypoint)
+                    enabled: !WaypointLibrary.hasNearbyEntry(waypointDescriptionDialog.waypoint)
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
-                        wpAdd.waypoint = waypoint
+                        wpAdd.waypoint = waypointDescriptionDialog.waypoint
                         wpAdd.open()
                         close()
                     }
@@ -584,11 +585,11 @@ CenteringDialog {
 
                 Action {
                     text: qsTr("Remove…")
-                    enabled: WaypointLibrary.contains(waypoint)
+                    enabled: WaypointLibrary.contains(waypointDescriptionDialog.waypoint)
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
-                        removeDialog.waypoint = waypoint
+                        removeDialog.waypoint = waypointDescriptionDialog.waypoint
                         removeDialog.open()
                         close()
                     }
@@ -602,11 +603,11 @@ CenteringDialog {
 
                 Action {
                     text: qsTr("Edit…")
-                    enabled: WaypointLibrary.contains(waypoint)
+                    enabled: WaypointLibrary.contains(waypointDescriptionDialog.waypoint)
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
-                        wpEdit.waypoint = waypoint
+                        wpEdit.waypoint = waypointDescriptionDialog.waypoint
                         wpEdit.open()
                         close()
                     }
@@ -693,7 +694,7 @@ CenteringDialog {
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
             Navigator.flightRoute.clear()
-            Navigator.flightRoute.append(waypoint)
+            Navigator.flightRoute.append(waypointDescriptionDialog.waypoint)
             close()
             toast.doToast(qsTr("New flight route: direct to %1.").arg(waypoint.extendedName))
         }

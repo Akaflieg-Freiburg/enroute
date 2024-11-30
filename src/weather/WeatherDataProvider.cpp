@@ -111,14 +111,14 @@ void Weather::WeatherDataProvider::deleteExpiredMesages()
 
     foreach(auto weatherStation, _weatherStationsByICAOCode)
     {
-        if (weatherStation->hasMETAR())
+        if (weatherStation->metar().isValid())
         {
             if (weatherStation->metar().expiration() < QDateTime::currentDateTime())
             {
                 weatherStation->setMETAR(Weather::METAR());
             }
         }
-        if (weatherStation->hasTAF())
+        if (weatherStation->taf().isValid())
         {
             if (weatherStation->taf().expiration() < QDateTime::currentDateTime())
             {
@@ -126,7 +126,7 @@ void Weather::WeatherDataProvider::deleteExpiredMesages()
             }
         }
 
-        if (!weatherStation->hasMETAR() && !weatherStation->hasTAF())
+        if (!weatherStation->metar().isValid() && !weatherStation->taf().isValid())
         {
             ICAOCodesToDelete << weatherStation->ICAOCode();
             weatherStation->deleteLater();
@@ -380,24 +380,18 @@ void Weather::WeatherDataProvider::save()
             continue;
         }
 
-        if (weatherStation->hasMETAR())
+        // Save only valid METARs that are not yet expired
+        if (weatherStation->metar().isValid() && (QDateTime::currentDateTime() <= weatherStation->metar().expiration()))
         {
-            // Save only valid METARs that are not yet expired
-            if (weatherStation->metar().isValid() && (QDateTime::currentDateTime() <= weatherStation->metar().expiration()))
-            {
-                outputStream << QChar('M');
-                outputStream << weatherStation->metar();
-            }
+            outputStream << QChar('M');
+            outputStream << weatherStation->metar();
         }
 
-        if (weatherStation->hasTAF())
+        // Save only valid TAFs that are not yet expired
+        if (weatherStation->taf().isValid() && (QDateTime::currentDateTime() <= weatherStation->taf().expiration()))
         {
-            // Save only valid TAFs that are not yet expired
-            if (weatherStation->taf().isValid() && (QDateTime::currentDateTime() <= weatherStation->taf().expiration()))
-            {
-                outputStream << QChar('T');
-                outputStream << weatherStation->taf();
-            }
+            outputStream << QChar('T');
+            outputStream << weatherStation->taf();
         }
     }
 

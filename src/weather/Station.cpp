@@ -28,16 +28,17 @@ Weather::Station::Station(QObject *parent)
 {
 }
 
+
 Weather::Station::Station(QString id, GeoMaps::GeoMapProvider *geoMapProvider, QObject *parent)
-    : QObject(parent)
-    , m_ICAOCode(std::move(id))
-    , _twoLineTitle(m_ICAOCode)
-    , _geoMapProvider(geoMapProvider)
+    : QObject(parent),
+    m_ICAOCode(std::move(id)),
+    m_twoLineTitle(m_ICAOCode),
+    m_geoMapProvider(geoMapProvider)
 {
-    _extendedName = m_ICAOCode;
+    m_extendedName = m_ICAOCode;
 
     // Wire up with GeoMapProvider, in order to learn about future changes in waypoints
-    connect(_geoMapProvider, &GeoMaps::GeoMapProvider::waypointsChanged, this, &Weather::Station::readDataFromWaypoint);
+    connect(m_geoMapProvider, &GeoMaps::GeoMapProvider::waypointsChanged, this, &Weather::Station::readDataFromWaypoint);
     readDataFromWaypoint();
 }
 
@@ -45,46 +46,22 @@ Weather::Station::Station(QString id, GeoMaps::GeoMapProvider *geoMapProvider, Q
 void Weather::Station::readDataFromWaypoint()
 {
     // Paranoid safety checks
-    if (_geoMapProvider.isNull()) {
+    if (m_geoMapProvider.isNull()) {
         return;
     }
-    // Immediately quit if we already have the necessary data
-    if (hasWaypointData) {
+    auto waypoint = m_geoMapProvider->findByID(m_ICAOCode);
+    if (!waypoint.isValid())
+    {
         return;
     }
-
-    auto waypoint = _geoMapProvider->findByID(m_ICAOCode);
-    if (!waypoint.isValid()) {
-        return;
-    }
-    hasWaypointData = true;
 
     // Update data
-    auto cacheCoordiante = _coordinate;
-    _coordinate = waypoint.coordinate();
-    if (_coordinate != cacheCoordiante) {
-        emit coordinateChanged();
-    }
+    m_coordinate = waypoint.coordinate();
+    m_extendedName = waypoint.extendedName();
+    m_icon = waypoint.icon();
+    m_twoLineTitle = waypoint.twoLineTitle();
 
-    auto cacheExtendedName = _extendedName;
-    _extendedName = waypoint.extendedName();
-    if (_extendedName != cacheExtendedName) {
-        emit extendedNameChanged();
-    }
-
-    auto cacheIcon = _icon;
-    _icon = waypoint.icon();
-    if (_icon != cacheIcon) {
-        emit iconChanged();
-    }
-
-    auto cacheTwoLineTitle = _twoLineTitle;
-    _twoLineTitle = waypoint.twoLineTitle();
-    if (_twoLineTitle != cacheTwoLineTitle) {
-        emit twoLineTitleChanged();
-    }
-
-    disconnect(_geoMapProvider, nullptr, this, nullptr);
+    disconnect(m_geoMapProvider, nullptr, this, nullptr);
 }
 
 
@@ -96,28 +73,14 @@ void Weather::Station::setMETAR(const Weather::METAR& metar)
         return;
     }
 
-    // If METAR did not change, then do nothing
-    if (metar == _metar)
-    {
-        return;
-    }
-
-    // Cache values
-    auto cacheHasMETAR = hasMETAR();
-
     // Overwrite metar pointer
-    _metar = metar;
+    m_metar = metar;
 
     // Update coordinate
-    if (!_coordinate.isValid()) {
-        _coordinate = _metar.coordinate();
+    if (!m_coordinate.value().isValid())
+    {
+        m_coordinate = m_metar.value().coordinate();
     }
-
-    // Let the world know that the metar changed
-    if (cacheHasMETAR != hasMETAR()) {
-        emit hasMETARChanged();
-    }
-    emit metarChanged();
 }
 
 
@@ -129,27 +92,12 @@ void Weather::Station::setTAF(const Weather::TAF& taf)
         return;
     }
 
-
-    // If TAF did not change, then do nothing
-    if (taf == _taf) {
-        return;
-    }
-
-    // Cache values
-    auto cacheHasTAF = hasTAF();
-
     // Overwrite TAF pointer
-    _taf = taf;
+    m_taf = taf;
 
     // Update coordinate
-    if (!_coordinate.isValid())
+    if (!m_coordinate.value().isValid())
     {
-        _coordinate = _taf.coordinate();
+        m_coordinate = m_taf.value().coordinate();
     }
-
-    // Let the world know that the taf changed
-    if (cacheHasTAF != hasTAF()) {
-        emit hasTAFChanged();
-    }
-    emit tafChanged();
 }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -23,8 +23,6 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
-import "../items"
-import enroute 1.0
 
 /* This is a dialog with detailed information about a weather station. To use this dialog, all you have to do is to set a WeatherStation in the property "weatherStation" and call open(). */
 
@@ -43,7 +41,7 @@ CenteringDialog {
         anchors.fill: parent
 
         Label { // Second header line with distance and QUJ
-            text: (weatherStation != null) ? Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), weatherStation.coordinate) : ""
+            text: (weatherReportDialog.weatherStation != null) ? Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), weatherReportDialog.weatherStation.coordinate) : ""
             visible: PositionProvider.receivingPositionInfo
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignRight
@@ -66,15 +64,17 @@ CenteringDialog {
                 width: parent.width
 
                 Label { // title: "METAR"
-                    visible: (weatherStation != null) && weatherStation.hasMETAR
-                    text: (weatherStation != null) && weatherStation.hasMETAR ? ("METAR " + Clock.describeTimeDifference(weatherStation.metar.observationTime, Clock.time) ) : ""
+                    id: metarTitleLine
+
+                    visible: (weatherReportDialog.weatherStation != null) && weatherReportDialog.weatherStation.metar.isValid
+                    text: !visible ? "" : "METAR " + Clock.describeTimeDifference(weatherReportDialog.weatherStation.metar.observationTime, Clock.time)
                     font.bold: true
                     font.pixelSize: 1.2*weatherReportDialog.font.pixelSize
                 }
 
                 Label { // raw METAR text
-                    visible: (weatherStation != null) && weatherStation.hasMETAR
-                    text: (weatherStation != null) && weatherStation.hasMETAR ? weatherStation.metar.rawText : ""
+                    visible: metarTitleLine.visible
+                    text: !visible ? "" : weatherReportDialog.weatherStation.metar.rawText
                     Layout.fillWidth: true
                     Layout.leftMargin: 4
                     Layout.rightMargin: 4
@@ -91,15 +91,15 @@ CenteringDialog {
                     // Background color according to METAR/FAA flight category
                     background: Rectangle {
                         border.color: "black"
-                        color: (weatherStation != null) && weatherStation.hasMETAR ? weatherStation.metar.flightCategoryColor : "transparent"
+                        color: !visible ? "transparent" : weatherReportDialog.weatherStation.metar.flightCategoryColor
                         opacity: 0.2
                         radius: 4
                     }
                 }
 
                 Label { // Decoded METAR text
-                    visible: (weatherStation != null) && weatherStation.hasMETAR
-                    text: (weatherStation != null) && weatherStation.hasMETAR ? weatherStation.metar.decodedText(Navigator.aircraft, Clock.time) : ""
+                    visible: metarTitleLine.visible
+                    text: !visible ? "" : weatherReportDialog.weatherStation.metar.decodedText(Navigator.aircraft, Clock.time)
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
                     textFormat: Text.RichText
@@ -107,8 +107,8 @@ CenteringDialog {
 
                 Label { // Derived Data
                     Layout.fillWidth: true
-                    visible: text !== ""
-                    text: (weatherStation != null) && weatherStation.hasMETAR ? weatherStation.metar.derivedData(Navigator.aircraft, Global.warnMETARPerformance, Global.showMETARPerformanceExplanation) : ""
+                    visible: metarTitleLine.visible && text !== ""
+                    text: !metarTitleLine.visible ? "" : weatherReportDialog.weatherStation.metar.derivedData(Navigator.aircraft, Global.warnMETARPerformance, Global.showMETARPerformanceExplanation)
                     wrapMode: Text.WordWrap
                     textFormat: Text.RichText
                     bottomPadding: 0.2*font.pixelSize
@@ -124,8 +124,10 @@ CenteringDialog {
                 }
 
                 Label { // title: "TAF"
+                    id: tafTitleLine
+
                     Layout.fillWidth: true
-                    visible: (weatherStation != null) && weatherStation.hasTAF
+                    visible: (weatherReportDialog.weatherStation != null) && weatherReportDialog.weatherStation.taf.isValid
                     text: "TAF"
                     font.bold: true
                     font.pixelSize: 1.2*weatherReportDialog.font.pixelSize
@@ -133,8 +135,8 @@ CenteringDialog {
                 }
 
                 Label { // raw TAF text
-                    visible: (weatherStation != null) && weatherStation.hasTAF
-                    text: (weatherStation != null) && weatherStation.hasTAF ? weatherStation.taf.rawText : ""
+                    visible: tafTitleLine.visible
+                    text: !visible ? "" : weatherReportDialog.weatherStation.taf.rawText
                     Layout.fillWidth: true
                     Layout.leftMargin: 4
                     Layout.rightMargin: 4
@@ -156,18 +158,16 @@ CenteringDialog {
                 }
 
                 Label { // decoded TAF text
-                    visible: (weatherStation != null) && weatherStation.hasTAF
-                    text: (weatherStation != null) && weatherStation.hasTAF ? weatherStation.taf.decodedText(Navigator.aircraft, Clock.time) : ""
+                    visible: tafTitleLine
+                    text: !visible ? "" : weatherReportDialog.weatherStation.taf.decodedText(Navigator.aircraft, Clock.time)
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
                     textFormat: Text.RichText // OK
                 }
-
             }
-
         }
 
-        Keys.onBackPressed: {
+        Keys.onBackPressed: (event) => {
             event.accepted = true;
             weatherReportDialog.close()
         }

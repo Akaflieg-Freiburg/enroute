@@ -109,6 +109,7 @@ public:
     /*! \brief Equality check */
     bool operator==(const METAR&) const = default;
 
+
     //
     // Properties
     //

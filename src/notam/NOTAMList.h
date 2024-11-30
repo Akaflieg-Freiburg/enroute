@@ -67,28 +67,27 @@ public:
     NOTAMList(const QJsonDocument& jsonDoc, const QGeoCircle& region, QSet<QString>* cancelledNotamNumbers=nullptr);
 
 
-
     //
     // Properties
     //
 
     /*! \brief Emptyness */
-    Q_PROPERTY(bool isEmpty READ isEmpty)
+    Q_PROPERTY(bool isEmpty READ isEmpty CONSTANT)
 
     /*! \brief Validity */
-    Q_PROPERTY(bool isValid READ isValid)
+    Q_PROPERTY(bool isValid READ isValid CONSTANT)
 
     /*! \brief List of Notams */
-    Q_PROPERTY(QList<NOTAM> notams READ notams)
+    Q_PROPERTY(QList<NOTAM> notams READ notams CONSTANT)
 
     /*! \brief Region covered by this list */
-    Q_PROPERTY(QGeoCircle region READ region)
+    Q_PROPERTY(QGeoCircle region READ region CONSTANT)
 
     /*! \brief Date of retrieval */
-    Q_PROPERTY(QDateTime retrieved READ retrieved)
+    Q_PROPERTY(QDateTime retrieved READ retrieved CONSTANT)
 
     /*! \brief One-line summary */
-    Q_PROPERTY(QString summary READ summary)
+    Q_PROPERTY(QString summary READ summary CONSTANT)
 
 
 

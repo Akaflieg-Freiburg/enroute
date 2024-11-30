@@ -40,8 +40,9 @@ namespace Weather {
 
 /*! \brief METAR/TAF decoder
  *
- * This class takes METAR or TAF messages in raw form and converts them to human-readable, translated text.
- * This class is not meant to be used directly. Instead, use the classes Weather::METAR or Weather::TAF.
+ * This class takes METAR or TAF messages in raw form and converts them to
+ * human-readable, translated text. This class is not meant to be used directly.
+ * Instead, use the classes Weather::METAR or Weather::TAF.
  */
 
 class Decoder : private metaf::Visitor<QString>
@@ -62,9 +63,10 @@ public:
 
     /*! \brief Description of the current weather
      *
-     * For METAR messages, this property holds a description of the current weather
-     * in translated, human-readable form, such as "low drifting snow" or "light rain".
-     * The property can contain an empty string if there is nothing to report.
+     * For METAR messages, this property holds a description of the current
+     * weather in translated, human-readable form, such as "low drifting snow"
+     * or "light rain". The property can contain an empty string if there is
+     * nothing to report.
      *
      * @returns Property currentWeather
      */

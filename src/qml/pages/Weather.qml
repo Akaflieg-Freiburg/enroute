@@ -121,10 +121,14 @@ Page {
                     width: parent.width
 
                     onClicked: {
+                        // WARNING!
                         PlatformAdaptor.vibrateBrief()
-                        dlgLoader.active = false
-                        weatherReport.weatherStation = model.modelData
-                        weatherReport.open()
+
+                        dlgLoader.setSource("../dialogs/WeatherReport.qml",
+                                            {"weatherStation": model.modelData})
+                        dlgLoader.item.open()
+                        //weatherReport.weatherStation =
+                        //weatherReport.open()
                     }
                 }
             }
@@ -293,11 +297,6 @@ Page {
             }
 
         }
-    }
-
-    WeatherReport {
-        id: weatherReport
-        objectName: "weatherReport"
     }
 
     Loader {

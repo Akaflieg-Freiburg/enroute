@@ -18,28 +18,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QDataStream>
-#include <QXmlStreamAttribute>
-
-#include "GlobalObject.h"
-#include "navigation/Clock.h"
-#include "navigation/Navigator.h"
 #include "weather/TAF.h"
 
 using namespace Qt::Literals::StringLiterals;
 
 
-Weather::TAF::TAF(QObject *parent)
-    : Weather::Decoder(parent)
+Weather::TAF::TAF(QXmlStreamReader &xml)
 {
-
-}
-
-
-Weather::TAF::TAF(QXmlStreamReader &xml, QObject *parent)
-    : Weather::Decoder(parent)
-{
-
     while (true)
     {
         xml.readNextStartElement();
@@ -55,38 +40,38 @@ Weather::TAF::TAF(QXmlStreamReader &xml, QObject *parent)
         // Read location
         if (xml.isStartElement() && name == u"latitude"_s)
         {
-            _location.setLatitude(xml.readElementText().toDouble());
+            m_location.setLatitude(xml.readElementText().toDouble());
             continue;
         }
         if (xml.isStartElement() && name == u"longitude"_s)
         {
-            _location.setLongitude(xml.readElementText().toDouble());
+            m_location.setLongitude(xml.readElementText().toDouble());
             continue;
         }
         if (xml.isStartElement() && name == u"elevation_m"_s)
         {
-            _location.setAltitude(xml.readElementText().toDouble());
+            m_location.setAltitude(xml.readElementText().toDouble());
             continue;
         }
 
         // Read raw text
         if (xml.isStartElement() && name == u"raw_text"_s)
         {
-            _raw_text = xml.readElementText();
+            m_rawText = xml.readElementText();
             continue;
         }
 
         // Read issue time
         if (xml.isStartElement() && name == u"issue_time"_s)
         {
-            _issueTime = QDateTime::fromString(xml.readElementText(), Qt::ISODate);
+            m_issueTime = QDateTime::fromString(xml.readElementText(), Qt::ISODate);
             continue;
         }
 
         // Read expiration date
         if (xml.isStartElement() && name == u"valid_time_to"_s)
         {
-            _expirationTime = QDateTime::fromString(xml.readElementText(), Qt::ISODate);
+            m_expirationTime = QDateTime::fromString(xml.readElementText(), Qt::ISODate);
             continue;
         }
 
@@ -97,47 +82,25 @@ Weather::TAF::TAF(QXmlStreamReader &xml, QObject *parent)
 
         xml.skipCurrentElement();
     }
-
-    setRawText(_raw_text, _issueTime.date().addDays(5));
-    setupSignals();
+    m_decoder = QSharedPointer<Weather::Decoder>(new Weather::Decoder(m_rawText, m_issueTime.date().addDays(5)));
 }
 
 
-Weather::TAF::TAF(QDataStream &inputStream, QObject *parent)
-    : Weather::Decoder(parent)
+Weather::TAF::TAF(QDataStream &inputStream)
 {
-    inputStream >> _expirationTime;
+    inputStream >> m_expirationTime;
     inputStream >> m_ICAOCode;
-    inputStream >> _issueTime;
-    inputStream >> _location;
-    inputStream >> _raw_text;
+    inputStream >> m_issueTime;
+    inputStream >> m_location;
+    inputStream >> m_rawText;
 
-    setRawText(_raw_text, _issueTime.date().addDays(5));
-    setupSignals();
+    m_decoder = QSharedPointer<Weather::Decoder>(new Weather::Decoder(m_rawText, m_issueTime.date().addDays(5)));
 }
 
 
-auto Weather::TAF::isExpired() const -> bool
+bool Weather::TAF::isValid() const
 {
-    if (!_expirationTime.isValid())
-    {
-        return true;
-    }
-    return QDateTime::currentDateTime() > _expirationTime;
-}
-
-
-auto Weather::TAF::isValid() const -> bool
-{
-    if (!_location.isValid())
-    {
-        return false;
-    }
-    if (!_expirationTime.isValid())
-    {
-        return false;
-    }
-    if (!_issueTime.isValid())
+    if (!m_expirationTime.isValid())
     {
         return false;
     }
@@ -145,7 +108,19 @@ auto Weather::TAF::isValid() const -> bool
     {
         return false;
     }
-    if (hasParseError())
+    if (!m_issueTime.isValid())
+    {
+        return false;
+    }
+    if (!m_location.isValid())
+    {
+        return false;
+    }
+    if (m_decoder.isNull())
+    {
+        return false;
+    }
+    if (!m_decoder->isValid())
     {
         return false;
     }
@@ -154,29 +129,14 @@ auto Weather::TAF::isValid() const -> bool
 }
 
 
-auto Weather::TAF::relativeIssueTime() const -> QString
+QDataStream& Weather::operator<<(QDataStream& stream, const Weather::TAF& taf)
 {
-    if (!_issueTime.isValid())
-    {
-        return {};
-    }
+    stream << taf.m_expirationTime;
+    stream << taf.m_ICAOCode;
+    stream << taf.m_issueTime;
+    stream << taf.m_location;
+    stream << taf.m_rawText;
 
-    return Navigation::Clock::describeTimeDifference(_issueTime);
+    return stream;
 }
 
-
-void Weather::TAF::setupSignals() const
-{
-    // Emit notifier signals whenever the time changes
-    connect(Navigation::Navigator::clock(), &Navigation::Clock::timeChanged, this, &Weather::TAF::relativeIssueTimeChanged);
-}
-
-
-void Weather::TAF::write(QDataStream &out)
-{
-    out << _expirationTime;
-    out << m_ICAOCode;
-    out << _issueTime;
-    out << _location;
-    out << _raw_text;
-}

@@ -82,8 +82,7 @@ public:
      */
     Q_PROPERTY(QDateTime effectiveStart READ effectiveStart CONSTANT)
 
-    /*! \brief Waypoint in GeoJSON format
-     */
+    /*! \brief Waypoint in GeoJSON format */
     Q_PROPERTY(QJsonObject GeoJSON READ GeoJSON CONSTANT)
 
     /*! \brief ICAO location of this NOTAM */

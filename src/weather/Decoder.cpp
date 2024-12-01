@@ -28,67 +28,28 @@
 #include <QTimeZone>
 #include <gsl/gsl>
 
-#include "GlobalObject.h"
 #include "navigation/Clock.h"
-#include "navigation/Navigator.h"
 #include "weather/Decoder.h"
 
 using namespace Qt::Literals::StringLiterals;
 
 
-Weather::Decoder::Decoder(QObject *parent)
-    : QObject(parent)
+Weather::Decoder::Decoder(const QString &rawText, const QDate &referenceDate)
+    : m_referenceDate(referenceDate)
 {
-    // Re-parse the text whenever the date changes
-    connect(Navigation::Navigator::clock(), &Navigation::Clock::dateChanged, this, &Weather::Decoder::parse);
-
-    // Re-parse whenever the preferred unit system changes
-    connect(GlobalObject::navigator(), &Navigation::Navigator::aircraftChanged, this, &Weather::Decoder::parse);
+    m_parseResult = metaf::Parser::parse(rawText.toStdString());
 }
 
-
-QString Weather::Decoder::messageType() const
+QString Weather::Decoder::decodedText(const Navigation::Aircraft& act, const QDateTime& time)
 {
-    switch(parseResult.reportMetadata.type)
-    {
-    case ReportType::METAR:
-        if (parseResult.reportMetadata.isSpeci)
-        {
-            return QStringLiteral("METAR/SPECI");
-        }
-        return QStringLiteral("METAR");
-    case ReportType::TAF:
-        return QStringLiteral("TAF");
-    default:
-        return QStringLiteral("UNKNOWN");
-    }
-}
+    m_aircraft = act;
+    m_currentTime = time;
 
-
-void Weather::Decoder::setRawText(const QString& rawText, QDate referenceDate)
-{
-    if ((_rawText == rawText) && (_referenceDate == referenceDate))
-    {
-        return;
-    }
-
-    _referenceDate = referenceDate;
-    _rawText = rawText;
-    emit rawTextChanged();
-    parse();
-}
-
-
-void Weather::Decoder::parse()
-{
-    auto oldDecodedText = _decodedText;
-
-    parseResult = metaf::Parser::parse(_rawText.toStdString());
     QStringList decodedStrings;
     decodedStrings.reserve(64);
-    QString const listStart = QStringLiteral("<ul style=\"margin-left:-25px;\">");
-    QString const listEnd = QStringLiteral("</ul>");
-    for (const auto &groupInfo : parseResult.groups)
+    const QString listStart = QStringLiteral("<ul style=\"margin-left:-25px;\">");
+    const QString listEnd = QStringLiteral("</ul>");
+    for (const auto& groupInfo : m_parseResult.groups)
     {
         auto decodedString = visit(groupInfo);
         if (decodedString.contains(u"<strong>"_s))
@@ -100,16 +61,12 @@ void Weather::Decoder::parse()
             decodedStrings << "<li>"+decodedString+"</li>";
         }
     }
-    _decodedText = listStart+decodedStrings.join(QStringLiteral("\n"))+listEnd;
 
-    if (_decodedText != oldDecodedText)
-    {
-        emit decodedTextChanged();
-    }
+    return listStart+decodedStrings.join(QStringLiteral("\n"))+listEnd;
 }
 
 
-// explanation Methods
+// Explanation Methods
 
 QString Weather::Decoder::explainCloudType(const metaf::CloudType &ct)
 {
@@ -206,7 +163,7 @@ QString Weather::Decoder::explainDistance(metaf::Distance distance)
         break;
 
     case metaf::Distance::Modifier::DISTANT:
-        switch (GlobalObject::navigator()->aircraft().horizontalDistanceUnit())
+        switch (m_aircraft.horizontalDistanceUnit())
         {
         case Navigation::Aircraft::Kilometer:
             results << tr("19 to 55 km");
@@ -221,7 +178,7 @@ QString Weather::Decoder::explainDistance(metaf::Distance distance)
         break;
 
     case metaf::Distance::Modifier::VICINITY:
-        switch (GlobalObject::navigator()->aircraft().horizontalDistanceUnit())
+        switch (m_aircraft.horizontalDistanceUnit())
         {
         case Navigation::Aircraft::Kilometer:
             results << tr("9 to 19 km");
@@ -291,7 +248,7 @@ QString Weather::Decoder::explainDistance(metaf::Distance distance)
             results << distanceUnitToString(distance.unit());
         }
 
-    if ((GlobalObject::navigator()->aircraft().horizontalDistanceUnit() == Navigation::Aircraft::Kilometer) && (distance.unit() != metaf::Distance::Unit::METERS))
+    if ((m_aircraft.horizontalDistanceUnit() == Navigation::Aircraft::Kilometer) && (distance.unit() != metaf::Distance::Unit::METERS))
     {
         const auto d = distance.toUnit(metaf::Distance::Unit::METERS);
         if (d.has_value())
@@ -357,15 +314,15 @@ QString Weather::Decoder::explainMetafTime(metaf::MetafTime metafTime)
 
     auto currentQDate = QDate::currentDate().addDays(5);
     auto currentDate = metaf::MetafTime::Date(currentQDate.year(), currentQDate.month(), currentQDate.day());
-    if (_referenceDate.isValid())
+    if (m_referenceDate.isValid())
     {
-        currentDate = metaf::MetafTime::Date(_referenceDate.year(), _referenceDate.month(), _referenceDate.day());
+        currentDate = metaf::MetafTime::Date(m_referenceDate.year(), m_referenceDate.month(), m_referenceDate.day());
     }
     auto metafDate = metafTime.dateBeforeRef(currentDate);
     auto metafQDate = QDate(gsl::narrow_cast<int>(metafDate.year), gsl::narrow_cast<int>(metafDate.month), gsl::narrow_cast<int>(metafDate.day) );
 
     auto metafQDateTime = QDateTime(metafQDate, metafQTime, QTimeZone::utc());
-    return Navigation::Clock::describePointInTime(metafQDateTime);
+    return Navigation::Clock::describePointInTime(metafQDateTime, m_currentTime);
 }
 
 QString Weather::Decoder::explainPrecipitation(metaf::Precipitation precipitation)
@@ -440,7 +397,7 @@ QString Weather::Decoder::explainSpeed(metaf::Speed speed)
         return tr("not reported");
     }
 
-    if (GlobalObject::navigator()->aircraft().horizontalDistanceUnit() == Navigation::Aircraft::Kilometer)
+    if (m_aircraft.horizontalDistanceUnit() == Navigation::Aircraft::Kilometer)
     {
         const auto s = speed.toUnit(metaf::Speed::Unit::KILOMETERS_PER_HOUR);
         if (s.has_value())
@@ -635,7 +592,7 @@ QString Weather::Decoder::explainWeatherPhenomena(const metaf::WeatherPhenomena 
 
 // …toString Methods
 
- QString Weather::Decoder::brakingActionToString(metaf::SurfaceFriction::BrakingAction brakingAction)
+QString Weather::Decoder::brakingActionToString(metaf::SurfaceFriction::BrakingAction brakingAction)
 {
     switch(brakingAction)
     {
@@ -765,7 +722,7 @@ QString Weather::Decoder::cloudAmountToString(metaf::CloudGroup::Amount amount)
     return {};
 }
 
- QString Weather::Decoder::cloudHighLayerToString(metaf::LowMidHighCloudGroup::HighLayer highLayer)
+QString Weather::Decoder::cloudHighLayerToString(metaf::LowMidHighCloudGroup::HighLayer highLayer)
 {
     switch(highLayer)
     {
@@ -995,7 +952,7 @@ QString Weather::Decoder::convectiveTypeToString(metaf::CloudGroup::ConvectiveTy
     return {};
 }
 
- QString Weather::Decoder::distanceMilesFractionToString(metaf::Distance::MilesFraction f)
+QString Weather::Decoder::distanceMilesFractionToString(metaf::Distance::MilesFraction f)
 {
     switch (f)
     {
@@ -1035,7 +992,7 @@ QString Weather::Decoder::convectiveTypeToString(metaf::CloudGroup::ConvectiveTy
     return {};
 }
 
- QString Weather::Decoder::distanceUnitToString(metaf::Distance::Unit unit)
+QString Weather::Decoder::distanceUnitToString(metaf::Distance::Unit unit)
 {
     switch (unit)
     {
@@ -2059,7 +2016,7 @@ QString Weather::Decoder::weatherPhenomenaDescriptorToString(metaf::WeatherPheno
     return {};
 }
 
- QString Weather::Decoder::weatherPhenomenaQualifierToString(metaf::WeatherPhenomena::Qualifier qualifier)
+QString Weather::Decoder::weatherPhenomenaQualifierToString(metaf::WeatherPhenomena::Qualifier qualifier)
 {
     switch (qualifier)
     {
@@ -2372,7 +2329,7 @@ QString Weather::Decoder::visitLayerForecastGroup(const LayerForecastGroup & gro
                  explainDistance(group.topHeight()));
 }
 
- QString Weather::Decoder::visitLightningGroup(const LightningGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/)
+QString Weather::Decoder::visitLightningGroup(const LightningGroup & group, ReportPart /*reportPart*/, const std::string & /*rawString*/)
 {
     if (!group.isValid())
     {
@@ -3278,7 +3235,7 @@ QString Weather::Decoder::visitWeatherGroup(const WeatherGroup & group, ReportPa
     // If this is a METAR, then save the current weather
     if (part == ReportPart::METAR)
     {
-        _currentWeather = phenomenaString;
+        m_currentWeather = phenomenaString;
     }
 
     switch (group.type())

@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QPointer>
+#include <QProperty>
 
 #include "weather/METAR.h"
 #include "weather/TAF.h"
@@ -38,15 +39,18 @@ class WeatherDataProvider;
  *
  * This is a very simple class that represents a weather station. Weather stations
  * are uniquely identified by their ICAO code. Depending on available data, they
- * hold pointers to the latest METAR and TAF reports.
+ * hold latest METAR and TAF reports.
  */
 class Station : public QObject {
     Q_OBJECT
+    QML_NAMED_ELEMENT(WeatherStation)
 
     friend WeatherDataProvider;
-    friend METAR;
-    friend TAF;
 public:
+    //
+    // Constructors and destructors
+    //
+
     /*! \brief Standard constructor
      *
      * This standard constructor creates an weather WeatherStation invalid.
@@ -57,135 +61,56 @@ public:
      */
     explicit Station(QObject *parent = nullptr);
 
+    // This constructor is only meant to be called by instances of the
+    // WeatherDataProvider class
+    explicit Station(QString id, GeoMaps::GeoMapProvider *geoMapProvider, QObject *parent);
+
     // Standard destructor
     ~Station() override = default;
+
+
+    //
+    // Properties
+    //
 
     /*! \brief Geographical coordinate of the WeatherStation reporting this METAR
      *
      * If the WeatherStation coordinate is unknown, the property contains an
      * invalid coordinate.
      */
-    Q_PROPERTY(QGeoCoordinate coordinate READ coordinate NOTIFY coordinateChanged)
-
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property coordiante
-     */
-    [[nodiscard]] auto coordinate() const -> QGeoCoordinate
-    {
-        return _coordinate;
-    }
+    Q_PROPERTY(QGeoCoordinate coordinate READ coordinate BINDABLE bindableCoordinate)
 
     /*! \brief Extended name of the waypoint
      *
      * This property holds a string of the form "Karlsruhe (DVOR-DME)"
      */
-    Q_PROPERTY(QString extendedName READ extendedName NOTIFY extendedNameChanged)
-
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property extendedName
-    */
-    [[nodiscard]] auto extendedName() const -> QString
-    {
-        return _extendedName;
-    }
-
-    /*! \brief Check if a METAR weather report is known for this weather station
-     *
-     * This convenience property can be used to check if a METAR report is
-     * available for the weather station.  The actual METAR report can be
-     * accessed via the property metar.
-     */
-    Q_PROPERTY(bool hasMETAR READ hasMETAR NOTIFY hasMETARChanged)
-
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property hasMetar
-     */
-    [[nodiscard]] auto hasMETAR() const -> bool
-    {
-        return !_metar.isNull();
-    }
-
-    /*! \brief Check if a TAF weather forecast is known for this weather station
-     *
-     * This convenience property can be used to check if a TAF forecast is available
-     * for the weather station.  The actual TAF can be accessed via the
-     * property taf.
-     */
-    Q_PROPERTY(bool hasTAF READ hasTAF NOTIFY hasTAFChanged)
-
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property isValid
-     */
-    [[nodiscard]] auto hasTAF() const -> bool
-    {
-        return !_taf.isNull();
-    }
+    Q_PROPERTY(QString extendedName READ extendedName BINDABLE bindableExtendedName)
 
     /*! \brief ICAO code of the weather station
-     * 
+     *
      * This property holds the ICAO designator of the aerodrome on which the
      * weather station is located.
      */
     Q_PROPERTY(QString ICAOCode READ ICAOCode CONSTANT)
-
-    /*! \brief Getter method for property of the same name
-     *
-     * @returns Property ICAOCode
-     */
-    [[nodiscard]] auto ICAOCode() const -> QString
-    {
-        return m_ICAOCode;
-    }
 
     /*! \brief Suggested icon for this weather station
      *
      * This property holds the name of an icon file in SVG format that best
      * describes the weather station.
      */
-    Q_PROPERTY(QString icon READ icon NOTIFY iconChanged)
-
-    /*! \brief Getter method for property of the same name
-     *
-     * @returns Property id
-     */
-    [[nodiscard]] auto icon() const -> QString
-    {
-        return _icon;
-    }
+    Q_PROPERTY(QString icon READ icon BINDABLE bindableIcon)
 
     /*! \brief Indicates if the WeatherStation is valid */
     Q_PROPERTY(bool isValid READ isValid CONSTANT)
 
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property isValid
-     */
-    [[nodiscard]] auto isValid() const -> bool
-    {
-        return (m_ICAOCode.length() == 4);
-    }
-
     /*! \brief Last METAR provided by this WeatherStation
-     * 
+     *
      * This property holds a pointer to the last METAR provided by this
      * WeatherStation, which can be a nullptr if no data is available.  The
      * METAR instance is owned by an instance of WeatherDataProvider, and can be
      * deleted or updated by the WeatherDataProvider anytime.
      */
-    Q_PROPERTY(Weather::METAR *metar READ metar NOTIFY metarChanged)
-
-    /*! \brief Getter method for property of the same name
-     *
-     * @returns Property metar
-     */
-    [[nodiscard]] auto metar() const -> Weather::METAR *
-    {
-        return _metar;
-    }
+    Q_PROPERTY(Weather::METAR metar READ metar BINDABLE bindableMetar)
 
     /*! \brief Two-line description of the waypoint name
      *
@@ -196,59 +121,112 @@ public:
      *
      * @see threeLineTitle
      */
-    Q_PROPERTY(QString twoLineTitle READ twoLineTitle NOTIFY twoLineTitleChanged)
-
-    /*! \brief Getter function for property with the same name
-     *
-     * @returns Property twoLineTitle
-     */
-    [[nodiscard]] auto twoLineTitle() const -> QString
-    {
-        return _twoLineTitle;
-    }
+    Q_PROPERTY(QString twoLineTitle READ twoLineTitle BINDABLE bindableTwoLineTitle)
 
     /*! \brief Last TAF provided by this WeatherStation
-     * 
+     *
      * This property holds a pointer to the last TAF provided by this
      * WeatherStation, which can be a nullptr if no data is available.  The TAF
      * instance is owned by an instance of WeatherDataProvider, and can be deleted or
      * updated by the WeatherDataProvider anytime.
      */
-    Q_PROPERTY(Weather::TAF *taf READ taf NOTIFY tafChanged)
+    Q_PROPERTY(Weather::TAF taf READ taf BINDABLE bindableTaf)
+
+
+    //
+    // Getter Methods
+    //
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property coordiante
+     */
+    [[nodiscard]] QGeoCoordinate coordinate() const {return m_coordinate.value();}
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property coordiante
+     */
+    [[nodiscard]] QBindable<QGeoCoordinate> bindableCoordinate() const {return &m_coordinate;}
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property extendedName
+    */
+    [[nodiscard]] QString extendedName() const {return m_extendedName.value();}
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property extendedName
+    */
+    [[nodiscard]] QBindable<QString> bindableExtendedName() const {return &m_extendedName;}
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property ICAOCode
+     */
+    [[nodiscard]] QString ICAOCode() const
+    {
+        return m_ICAOCode;
+    }
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property id
+     */
+    [[nodiscard]] QString icon() const {return m_icon.value();}
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property id
+     */
+    [[nodiscard]] QBindable<QString> bindableIcon() const {return &m_icon;}
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property isValid
+     */
+    [[nodiscard]] bool isValid() const
+    {
+        return (m_ICAOCode.length() == 4);
+    }
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property metar
+     */
+    [[nodiscard]] Weather::METAR metar() const {return m_metar.value();}
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property metar
+     */
+    [[nodiscard]] QBindable<Weather::METAR> bindableMetar() const {return &m_metar;}
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property twoLineTitle
+     */
+    [[nodiscard]] QString twoLineTitle() const {return m_twoLineTitle.value();}
+
+    /*! \brief Getter function for property with the same name
+     *
+     * @returns Property twoLineTitle
+     */
+    [[nodiscard]] QBindable<QString> bindableTwoLineTitle() const {return &m_twoLineTitle;}
 
     /*! \brief Getter method for property of the same name
      *
      * @returns Property taf
      */
-    [[nodiscard]] auto taf() const -> Weather::TAF *
-    {
-        return _taf;
-    }
+    [[nodiscard]] Weather::TAF taf() const {return m_taf.value();}
 
-signals:
-    /* \brief Notifier signal */
-    void coordinateChanged();
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property taf
+     */
+    [[nodiscard]] QBindable<Weather::TAF> bindableTaf() const {return &m_taf;}
 
-    /* \brief Notifier signal */
-    void extendedNameChanged();
-
-    /* \brief Notifier signal */
-    void hasMETARChanged();
-
-    /* \brief Notifier signal */
-    void hasTAFChanged();
-
-    /* \brief Notifier signal */
-    void iconChanged();
-
-    /* \brief Notifier signal */
-    void metarChanged();
-
-    /* \brief Notifier signal */
-    void tafChanged();
-
-    /* \brief Notifier signal */
-    void twoLineTitleChanged();
 
 private slots:
     // This method attempts to find a waypoint matchting this weather station,
@@ -259,50 +237,43 @@ private slots:
 private:
     Q_DISABLE_COPY_MOVE(Station)
 
-    // This constructor is only meant to be called by instances of the
-    // WeatherDataProvider class
-    explicit Station(QString id, GeoMaps::GeoMapProvider *geoMapProvider, QObject *parent);
 
     // If the metar is valid, not expired and newer than the existing metar,
     // this method sets the METAR message and deletes any existing METAR;
     // otherwise, the metar is deleted. In any case, this WeatherStation will
     // take ownership of the METAR. The signal metarChanged() will be emitted if
     // appropriate.
-    void setMETAR(Weather::METAR *metar);
+    void setMETAR(const Weather::METAR& metar);
 
     // If the taf is valid, not expired and newer than the existing taf, this
     // method sets the TAF message and deletes any existing TAF; otherwise, the
     // taf is deleted. In any case, this WeatherStation will take ownership of
     // the TAF. The signal tafChanged() will be emitted if appropriate.
-    void setTAF(Weather::TAF *taf);
+    void setTAF(const Weather::TAF& taf);
 
     // Coordinate of this weather station
-    QGeoCoordinate _coordinate;
+    QProperty<QGeoCoordinate> m_coordinate;
 
     // The weather station extended name
-    QString _extendedName;
+    QProperty<QString> m_extendedName;
 
     // ICAO code of this weather station
     QString m_ICAOCode;
 
     // Icon for this weather station
-    QString _icon {QStringLiteral("/icons/waypoints/WP.svg")};
+    QProperty<QString> m_icon {QStringLiteral("/icons/waypoints/WP.svg")};
 
     // METAR
-    QPointer<Weather::METAR> _metar;
+    QProperty<Weather::METAR> m_metar;
 
     // TAF
-    QPointer<Weather::TAF> _taf;
+    QProperty<Weather::TAF> m_taf;
 
     // Two-Line-Title
-    QString _twoLineTitle;
+    QProperty<QString> m_twoLineTitle;
 
     // Pointer to GeoMapProvider, used in order to find matching waypoints
-    QPointer<GeoMaps::GeoMapProvider> _geoMapProvider;
-
-    // Internal flag to indicate if data has been read from a matching waypoint
-    // already
-    bool hasWaypointData {false};
+    QPointer<GeoMaps::GeoMapProvider> m_geoMapProvider;
 };
 
 } // namespace Weather

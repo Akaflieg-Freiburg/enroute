@@ -52,7 +52,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     find_package(Qt6 6.8 COMPONENTS WebView)
 endif()
 
-qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES de es fr it pl)
+qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES cs de es fr it pl)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(QT_QML_GENERATE_QMLLS_INI ON)

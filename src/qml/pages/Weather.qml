@@ -94,7 +94,7 @@ Page {
                 // Background color according to METAR/FAA flight category
                 Rectangle {
                     anchors.fill: parent
-                    color: model.modelData.hasMETAR ? model.modelData.metar.flightCategoryColor : "transparent"
+                    color: model.modelData.metar.isValid ? model.modelData.metar.flightCategoryColor : "transparent"
                     opacity: 0.2
                 }
 
@@ -110,7 +110,7 @@ Page {
                         if (wayTo !== "")
                             result = result + "<br>" + wayTo
 
-                        if (model.modelData.hasMETAR)
+                        if (model.modelData.metar.isValid)
                             result = result + "<br>" + model.modelData.metar.summary(Navigator.aircraft, Clock.time)
 
                         return result
@@ -121,10 +121,14 @@ Page {
                     width: parent.width
 
                     onClicked: {
+                        // WARNING!
                         PlatformAdaptor.vibrateBrief()
-                        dlgLoader.active = false
-                        weatherReport.weatherStation = model.modelData
-                        weatherReport.open()
+
+                        dlgLoader.setSource("../dialogs/WeatherReport.qml",
+                                            {"weatherStation": model.modelData})
+                        dlgLoader.item.open()
+                        //weatherReport.weatherStation =
+                        //weatherReport.open()
                     }
                 }
             }
@@ -293,11 +297,6 @@ Page {
             }
 
         }
-    }
-
-    WeatherReport {
-        id: weatherReport
-        objectName: "weatherReport"
     }
 
     Loader {

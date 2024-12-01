@@ -156,9 +156,23 @@ public:
      *
      * \param pointInTime The point in time that is to be described.
      *
+     * \param now Current point in time.
+     *
      * \return String with the description
      */
-    Q_INVOKABLE static QString describePointInTime(QDateTime pointInTime);
+    Q_INVOKABLE static QString describePointInTime(const QDateTime& pointInTime, const QDateTime& now);
+
+    /*! Describe a point in time in human-readable form
+     *
+     * This method describes a point in time in human readable form. The method returns a localized string of the form
+     * "12. Sept., 17:51", "tomorrow 17:51", "yesterday 17:51" or "17:51". The words "tomorrow" and "yesterday" refer midnight
+     * at the current position, the numbers "17:51" refer to time in UTC.
+     *
+     * \param pointInTime The point in time that is to be described.
+     *
+     * \return String with the description
+     */
+    Q_INVOKABLE static QString describePointInTime(const QDateTime& pointInTime);
 
 signals:
     /*! \brief Notifier signal */

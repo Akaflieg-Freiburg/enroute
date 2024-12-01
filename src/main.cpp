@@ -81,7 +81,6 @@ auto main(int argc, char *argv[]) -> int
     qmlRegisterUncreatableType<DataManagement::DataManager>("enroute", 1, 0, "DataManager", QStringLiteral("DataManager objects cannot be created in QML"));
     qmlRegisterUncreatableType<Traffic::TrafficDataProvider>("enroute", 1, 0, "TrafficDataProvider", QStringLiteral("TrafficDataProvider objects cannot be created in QML"));
     qmlRegisterUncreatableType<Traffic::TrafficFactor_WithPosition>("enroute", 1, 0, "TrafficFactor_WithPosition", QStringLiteral("TrafficFactor_WithPosition objects cannot be created in QML"));
-    qmlRegisterType<Weather::Station>("enroute", 1, 0, "WeatherStation");
 
 
     // Required by the maplibre plugin to QtLocation

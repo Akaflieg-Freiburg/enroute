@@ -102,14 +102,25 @@ public:
     /*! \brief Move constructor */
     METAR(METAR&&) = default;
 
-    /*! \brief Copy assignment operator */
+    /*! \brief Copy assignment operator
+     *
+     *  @returns Reference to self
+     */
     METAR& operator=(const METAR&) = default;
 
-    /*! \brief Move assignment operator */
+    /*! \brief Move assignment operator
+     *
+     *  @returns Reference to self
+     */
     METAR& operator=(METAR&&) = default;
 
-    /*! \brief Equality check */
-    bool operator==(const METAR&) const = default;
+    /*! \brief Equality check
+     *
+     *  @param other Other METAR to compare with
+     *
+     *  @returns True on equality
+     */
+    bool operator==(const METAR& other) const = default;
 
 
     //
@@ -259,7 +270,7 @@ public:
 
     /*! \brief Decoded METAR text
      *
-     * @param aircraft Current aircraft, used to determine appropriate units
+     * @param act Current aircraft, used to determine appropriate units
      *
      * @param time Current time, used to describe points in time
      *

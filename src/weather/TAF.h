@@ -80,14 +80,27 @@ public:
     /*! \brief Move constructor */
     TAF(TAF&&) = default;
 
-    /*! \brief Copy assignment operator */
+    /*! \brief Copy assignment operator
+     *
+     *  @returns Reference to self
+     */
+
     TAF& operator=(const TAF&) = default;
 
-    /*! \brief Move assignment operator */
+    /*! \brief Move assignment operator
+     *
+     *  @returns Reference to self
+     */
+
     TAF& operator=(TAF&&) = default;
 
-    /*! \brief Equality check */
-    bool operator==(const TAF&) const = default;
+    /*! \brief Equality check
+     *
+     *  @param other Other TAF to compare with
+     *
+     *  @returns True on equality
+     */
+    bool operator==(const TAF& other) const = default;
 
 
     //
@@ -188,7 +201,7 @@ public:
 
     /*! \brief Decoded TAF text
      *
-     * @param aircraft Current aircraft, used to determine appropriate units
+     * @param act Current aircraft, used to determine appropriate units
      *
      * @param time Current time, used to describe points in time
      *

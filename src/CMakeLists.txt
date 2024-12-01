@@ -554,6 +554,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/dialogs/FirstRunDialog.qml
     qml/dialogs/FlightRouteSaveDialog.qml
     qml/dialogs/LongTextDialogMD.qml
+    qml/dialogs/MetarTafDialog.qml
     qml/dialogs/NotamListDialog.qml
     qml/dialogs/PasswordDialog.qml
     qml/dialogs/PasswordStorageDialog.qml
@@ -561,7 +562,6 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/dialogs/RenameVACDialog.qml
     qml/dialogs/WaypointDescription.qml
     qml/dialogs/WaypointEditor.qml
-    qml/dialogs/WeatherReport.qml
 #    qml/items/AppWindow.qml
     qml/items/+Material/AppWindow.qml
     qml/items/AutoSizingMenu.qml

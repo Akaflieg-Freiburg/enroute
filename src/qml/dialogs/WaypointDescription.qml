@@ -109,7 +109,7 @@ CenteringDialog {
             rightPadding: 0.2*font.pixelSize
             onLinkActivated: {
                 PlatformAdaptor.vibrateBrief()
-                secondaryDlgLoader.setSource("../dialogs/WeatherReport.qml", {"weatherStation": waypointDescriptionDialog.weatherStation})
+                secondaryDlgLoader.setSource("../dialogs/MetarTafDialog.qml", {"weatherStation": waypointDescriptionDialog.weatherStation})
             }
 
             // Background color according to METAR/FAA flight category

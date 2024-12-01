@@ -124,11 +124,11 @@ Page {
                         // WARNING!
                         PlatformAdaptor.vibrateBrief()
 
-                        dlgLoader.setSource("../dialogs/WeatherReport.qml",
+                        dlgLoader.setSource("../dialogs/MetarTafDialog.qml",
                                             {"weatherStation": model.modelData})
                         dlgLoader.item.open()
-                        //weatherReport.weatherStation =
-                        //weatherReport.open()
+                        //MetarTafDialog.weatherStation =
+                        //MetarTafDialog.open()
                     }
                 }
             }

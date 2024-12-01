@@ -96,134 +96,151 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
 <div class="foldopen" id="foldopen00042" data-start="{" data-end="};">
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html">   42</a></span><span class="keyword">class </span><a class="code hl_class" href="classWeather_1_1TAF.html">TAF</a> : <span class="keyword">public</span> <a class="code hl_class" href="classWeather_1_1Decoder.html">Decoder</a> {</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    Q_OBJECT</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keyword">friend</span> <a class="code hl_class" href="classWeather_1_1WeatherDataProvider.html">WeatherDataProvider</a>;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#a95bc84d821007dcba0c2de88a3d79571">   54</a></span>    <span class="keyword">explicit</span> <a class="code hl_function" href="classWeather_1_1TAF.html#a95bc84d821007dcba0c2de88a3d79571">TAF</a>(QObject *parent = <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="comment">// Standard destructor</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <a class="code hl_class" href="classWeather_1_1TAF.html">~TAF</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#aefd062dc010deb83aebeeb0b43ce8000">   63</a></span>    Q_PROPERTY(QGeoCoordinate <a class="code hl_property" href="classWeather_1_1TAF.html#aefd062dc010deb83aebeeb0b43ce8000">coordinate</a> READ <a class="code hl_property" href="classWeather_1_1TAF.html#aefd062dc010deb83aebeeb0b43ce8000">coordinate</a> CONSTANT)</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    </div>
-<div class="foldopen" id="foldopen00069" data-start="{" data-end="}">
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#adf1c25caa20f4cd9ca51a30dc93cba11">   69</a></span>    [[nodiscard]] <span class="keyword">auto</span> <a class="code hl_function" href="classWeather_1_1TAF.html#adf1c25caa20f4cd9ca51a30dc93cba11">coordinate</a>() const -&gt; QGeoCoordinate</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    {</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        <span class="keywordflow">return</span> _location;</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    }</div>
-</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html">   42</a></span><span class="keyword">class </span><a class="code hl_class" href="classWeather_1_1TAF.html">TAF</a> {</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    Q_GADGET</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    QML_VALUE_TYPE(taf)</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#af4bf9a847d47348ad1136fde221ec512">   46</a></span>    friend QDataStream&amp; operator&lt;&lt;(QDataStream&amp; stream, const <a class="code hl_class" href="classWeather_1_1TAF.html">TAF</a>&amp; taf);</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>public:</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="comment">//</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="comment">// Constructors and destructors</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="comment">//</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#a7b702bb529d1819ffde55cc845b8ad83">   55</a></span>    <a class="code hl_class" href="classWeather_1_1TAF.html">TAF</a>() = default;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#a8f73860c43b16f32bc70e60680cae09b">   64</a></span>    explicit <a class="code hl_class" href="classWeather_1_1TAF.html">TAF</a>(QXmlStreamReader&amp; xml);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#a6f4d0d0d326457d413280f6d3c9660ba">   72</a></span>    explicit <a class="code hl_class" href="classWeather_1_1TAF.html">TAF</a>(QDataStream&amp; inputStream);</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#abbd80f34ee9273c92ccd4af41d5f832c">   78</a></span>    Q_PROPERTY(QDateTime <a class="code hl_property" href="classWeather_1_1TAF.html#abbd80f34ee9273c92ccd4af41d5f832c">expiration</a> READ <a class="code hl_property" href="classWeather_1_1TAF.html#abbd80f34ee9273c92ccd4af41d5f832c">expiration</a> CONSTANT)</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#a001af335cd5a8114f8b8c91a8d995dd1">   75</a></span>    ~<a class="code hl_class" href="classWeather_1_1TAF.html">TAF</a>() = default;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#a9b0dee5766ac113c0dbf5cb0fd79d9de">   78</a></span>    <a class="code hl_class" href="classWeather_1_1TAF.html">TAF</a>(const <a class="code hl_class" href="classWeather_1_1TAF.html">TAF</a>&amp;) = default;</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    </div>
-<div class="foldopen" id="foldopen00084" data-start="{" data-end="}">
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#a0b66f0def80f7ea0d56ca66ad7aea8d9">   84</a></span>    [[nodiscard]] <span class="keyword">auto</span> <a class="code hl_function" href="classWeather_1_1TAF.html#a0b66f0def80f7ea0d56ca66ad7aea8d9">expiration</a>() const -&gt; QDateTime</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    {</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        <span class="keywordflow">return</span> _expirationTime;</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    }</div>
-</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#ae4c29f20d08697a37d0fff693ebea360">   94</a></span>    Q_PROPERTY(QString <a class="code hl_property" href="classWeather_1_1TAF.html#ae4c29f20d08697a37d0fff693ebea360">ICAOCode</a> READ <a class="code hl_property" href="classWeather_1_1TAF.html#ae4c29f20d08697a37d0fff693ebea360">ICAOCode</a> CONSTANT)</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    </div>
-<div class="foldopen" id="foldopen00100" data-start="{" data-end="}">
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#acced0b8619bd61e9f15a6c341daa3a9b">  100</a></span>    [[nodiscard]] <span class="keyword">auto</span> <a class="code hl_function" href="classWeather_1_1TAF.html#acced0b8619bd61e9f15a6c341daa3a9b">ICAOCode</a>() const -&gt; QString</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    {</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        <span class="keywordflow">return</span> m_ICAOCode;</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    }</div>
-</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#ac5e962762fa0a142edd99d12b1ce08b0">   81</a></span>    <a class="code hl_class" href="classWeather_1_1TAF.html">TAF</a>(<a class="code hl_class" href="classWeather_1_1TAF.html">TAF</a>&amp;&amp;) = default;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#a1069c1db57dd81afad3d337badbb6f0f">   88</a></span>    <a class="code hl_class" href="classWeather_1_1TAF.html">TAF</a>&amp; operator=(const <a class="code hl_class" href="classWeather_1_1TAF.html">TAF</a>&amp;) = default;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#a057b5075922447a71ccff60ebfa7c10d">   95</a></span>    <a class="code hl_class" href="classWeather_1_1TAF.html">TAF</a>&amp; operator=(<a class="code hl_class" href="classWeather_1_1TAF.html">TAF</a>&amp;&amp;) = default;</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#a17b8a5a5b4e6e1254f550efdd98fcd7b">  103</a></span>    <span class="keywordtype">bool</span> operator==(const <a class="code hl_class" href="classWeather_1_1TAF.html">TAF</a>&amp; other) const = default;</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#a155986b42f5ff978f794e7ecb8f35b8c">  109</a></span>    [[nodiscard]] Q_INVOKABLE <span class="keywordtype">bool</span> <a class="code hl_function" href="classWeather_1_1TAF.html#a155986b42f5ff978f794e7ecb8f35b8c">isExpired</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#a90983bc41febd79676a5a393e85d6bc1">  112</a></span>    Q_PROPERTY(<span class="keywordtype">bool</span> <a class="code hl_property" href="classWeather_1_1TAF.html#a90983bc41febd79676a5a393e85d6bc1">isValid</a> READ <a class="code hl_property" href="classWeather_1_1TAF.html#a90983bc41febd79676a5a393e85d6bc1">isValid</a> CONSTANT)</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    </div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#a9181d7bc920fce1df4715cf3491d05e6">  118</a></span>    [[nodiscard]] <span class="keyword">auto</span> <a class="code hl_function" href="classWeather_1_1TAF.html#a9181d7bc920fce1df4715cf3491d05e6">isValid</a>() const -&gt; <span class="keywordtype">bool</span>;</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#a0718a9e696ebeee028506338b49b9703">  121</a></span>    Q_PROPERTY(QDateTime <a class="code hl_property" href="classWeather_1_1TAF.html#a0718a9e696ebeee028506338b49b9703">issueTime</a> READ <a class="code hl_property" href="classWeather_1_1TAF.html#a0718a9e696ebeee028506338b49b9703">issueTime</a> CONSTANT)</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
-<div class="foldopen" id="foldopen00127" data-start="{" data-end="}">
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#a43b78c153903902f3043a22cf3fd3d69">  127</a></span>    [[nodiscard]] auto <a class="code hl_property" href="classWeather_1_1TAF.html#a0718a9e696ebeee028506338b49b9703">issueTime</a>() const -&gt; QDateTime</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    {</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        <span class="keywordflow">return</span> _issueTime;</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    }</div>
-</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <span class="comment">//</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="comment">// Properties</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="comment">//</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#aefd062dc010deb83aebeeb0b43ce8000">  114</a></span>    Q_PROPERTY(QGeoCoordinate <a class="code hl_property" href="classWeather_1_1TAF.html#aefd062dc010deb83aebeeb0b43ce8000">coordinate</a> READ <a class="code hl_property" href="classWeather_1_1TAF.html#aefd062dc010deb83aebeeb0b43ce8000">coordinate</a> CONSTANT)</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#abbd80f34ee9273c92ccd4af41d5f832c">  120</a></span>    Q_PROPERTY(QDateTime <a class="code hl_property" href="classWeather_1_1TAF.html#abbd80f34ee9273c92ccd4af41d5f832c">expiration</a> READ <a class="code hl_property" href="classWeather_1_1TAF.html#abbd80f34ee9273c92ccd4af41d5f832c">expiration</a> CONSTANT)</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#ae4c29f20d08697a37d0fff693ebea360">  127</a></span>    Q_PROPERTY(QString <a class="code hl_property" href="classWeather_1_1TAF.html#ae4c29f20d08697a37d0fff693ebea360">ICAOCode</a> READ <a class="code hl_property" href="classWeather_1_1TAF.html#ae4c29f20d08697a37d0fff693ebea360">ICAOCode</a> CONSTANT)</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#a90983bc41febd79676a5a393e85d6bc1">  130</a></span>    Q_PROPERTY(<span class="keywordtype">bool</span> <a class="code hl_property" href="classWeather_1_1TAF.html#a90983bc41febd79676a5a393e85d6bc1">isValid</a> READ <a class="code hl_property" href="classWeather_1_1TAF.html#a90983bc41febd79676a5a393e85d6bc1">isValid</a> CONSTANT)</div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#a576e23c91d6934d2fb58a9075eb63f27">  136</a></span>    Q_PROPERTY(QString <a class="code hl_property" href="classWeather_1_1TAF.html#a576e23c91d6934d2fb58a9075eb63f27">rawText</a> READ <a class="code hl_property" href="classWeather_1_1TAF.html#a576e23c91d6934d2fb58a9075eb63f27">rawText</a> CONSTANT)</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    </div>
-<div class="foldopen" id="foldopen00142" data-start="{" data-end="}">
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#aab6b87da5632346cecc7ae2a01e5ca0c">  142</a></span>    [[nodiscard]] <span class="keyword">auto</span> <a class="code hl_function" href="classWeather_1_1TAF.html#aab6b87da5632346cecc7ae2a01e5ca0c">rawText</a>() const -&gt; QString</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    {</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>        <span class="keywordflow">return</span> _raw_text;</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    }</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#a0718a9e696ebeee028506338b49b9703">  133</a></span>    Q_PROPERTY(QDateTime <a class="code hl_property" href="classWeather_1_1TAF.html#a0718a9e696ebeee028506338b49b9703">issueTime</a> READ <a class="code hl_property" href="classWeather_1_1TAF.html#a0718a9e696ebeee028506338b49b9703">issueTime</a> CONSTANT)</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#a576e23c91d6934d2fb58a9075eb63f27">  139</a></span>    Q_PROPERTY(QString <a class="code hl_property" href="classWeather_1_1TAF.html#a576e23c91d6934d2fb58a9075eb63f27">rawText</a> READ <a class="code hl_property" href="classWeather_1_1TAF.html#a576e23c91d6934d2fb58a9075eb63f27">rawText</a> CONSTANT)</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> </div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    <span class="comment">//</span></div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    <span class="comment">// Getter Methods</span></div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    <span class="comment">//</span></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
+<div class="foldopen" id="foldopen00150" data-start="{" data-end="}">
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#ae819f699af6aeecebad715c50a3c1196">  150</a></span>    [[nodiscard]] QGeoCoordinate <a class="code hl_property" href="classWeather_1_1TAF.html#aefd062dc010deb83aebeeb0b43ce8000">coordinate</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="keyword">    </span>{</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>        <span class="keywordflow">return</span> m_location;</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    }</div>
 </div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#a4d780241e4890fecf6fcbb155266cc1e">  152</a></span>    Q_PROPERTY(QString <a class="code hl_property" href="classWeather_1_1TAF.html#a4d780241e4890fecf6fcbb155266cc1e">relativeIssueTime</a> READ <a class="code hl_property" href="classWeather_1_1TAF.html#a4d780241e4890fecf6fcbb155266cc1e">relativeIssueTime</a> NOTIFY <a class="code hl_signal" href="classWeather_1_1TAF.html#a5a563ecc3240ebdfcaa1f26e6cea63df">relativeIssueTimeChanged</a>)</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    </div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#a68e9add437ce845fdce63c463cd20b46">  158</a></span>    [[nodiscard]] <span class="keyword">auto</span> <a class="code hl_function" href="classWeather_1_1TAF.html#a68e9add437ce845fdce63c463cd20b46">relativeIssueTime</a>() const -&gt; QString;</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>signals:</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#a5a563ecc3240ebdfcaa1f26e6cea63df">  162</a></span>    <span class="keywordtype">void</span> <a class="code hl_signal" href="classWeather_1_1TAF.html#a5a563ecc3240ebdfcaa1f26e6cea63df">relativeIssueTimeChanged</a>();</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
+<div class="foldopen" id="foldopen00159" data-start="{" data-end="}">
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#a57149c4720f06cc39fb892a53c5e309e">  159</a></span>    [[nodiscard]] QDateTime <a class="code hl_function" href="classWeather_1_1TAF.html#a57149c4720f06cc39fb892a53c5e309e">expiration</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span><span class="keyword">    </span>{</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>        <span class="keywordflow">return</span> m_expirationTime;</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    }</div>
+</div>
 <div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span> </div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>private:</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>    <span class="comment">// This constructor reads a XML stream, as provided by the Aviation Weather Center&#39;s Text Data Server,</span></div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>    <span class="comment">// https://www.aviationweather.gov/dataserver</span></div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    explicit <a class="code hl_class" href="classWeather_1_1TAF.html">TAF</a>(QXmlStreamReader &amp;xml, QObject *parent = <span class="keywordtype">nullptr</span>);</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span> </div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    <span class="comment">// This constructor reads a serialized TAF from a QDataStream</span></div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    explicit <a class="code hl_class" href="classWeather_1_1TAF.html">TAF</a>(QDataStream &amp;inputStream, QObject *parent = <span class="keywordtype">nullptr</span>);</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span> </div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    <span class="comment">// Connects signals; this method is used internally from the constructor(s)</span></div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    <span class="keywordtype">void</span> setupSignals() const;</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span> </div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    <span class="comment">// Writes the TAF report to a data stream</span></div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    <span class="keywordtype">void</span> write(QDataStream &amp;out);</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span> </div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    Q_DISABLE_COPY_MOVE(<a class="code hl_class" href="classWeather_1_1TAF.html">TAF</a>)</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    <span class="comment">// Expiration time</span></div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    QDateTime _expirationTime;</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span> </div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    <span class="comment">// Station ID, as returned by the Aviation Weather Center</span></div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    QString m_ICAOCode;</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span> </div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    <span class="comment">// Issue time, as returned by the Aviation Weather Center</span></div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    QDateTime _issueTime;</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    <span class="comment">// Station coordinate, as returned by the Aviation Weather Center</span></div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>    QGeoCoordinate _location;</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    <span class="comment">// Raw TAF text, as returned by the Aviation Weather Center</span></div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    QString _raw_text;</div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>};</div>
+<div class="foldopen" id="foldopen00168" data-start="{" data-end="}">
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#a08430b20a84f3653992a0c3d16c2fff0">  168</a></span>    [[nodiscard]] QString <a class="code hl_function" href="classWeather_1_1TAF.html#a08430b20a84f3653992a0c3d16c2fff0">ICAOCode</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span><span class="keyword">    </span>{</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>        <span class="keywordflow">return</span> m_ICAOCode;</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    }</div>
 </div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span> </div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>} <span class="comment">// namespace Weather</span></div>
-<div class="ttc" id="aclassWeather_1_1Decoder_html"><div class="ttname"><a href="classWeather_1_1Decoder.html">Weather::Decoder</a></div><div class="ttdoc">METAR/TAF decoder.</div><div class="ttdef"><b>Definition</b> <a href="Decoder_8h_source.html#l00046">Decoder.h:46</a></div></div>
-<div class="ttc" id="aclassWeather_1_1TAF_html"><div class="ttname"><a href="classWeather_1_1TAF.html">Weather::TAF</a></div><div class="ttdoc">TAF report.</div><div class="ttdef"><b>Definition</b> <a href="#l00042">TAF.h:42</a></div></div>
-<div class="ttc" id="aclassWeather_1_1TAF_html_a0718a9e696ebeee028506338b49b9703"><div class="ttname"><a href="classWeather_1_1TAF.html#a0718a9e696ebeee028506338b49b9703">Weather::TAF::issueTime</a></div><div class="ttdeci">QDateTime issueTime</div><div class="ttdoc">Issue time of this TAF.</div><div class="ttdef"><b>Definition</b> <a href="#l00121">TAF.h:121</a></div></div>
-<div class="ttc" id="aclassWeather_1_1TAF_html_a0b66f0def80f7ea0d56ca66ad7aea8d9"><div class="ttname"><a href="classWeather_1_1TAF.html#a0b66f0def80f7ea0d56ca66ad7aea8d9">Weather::TAF::expiration</a></div><div class="ttdeci">auto expiration() const -&gt; QDateTime</div><div class="ttdoc">Getter function for property with the same name.</div><div class="ttdef"><b>Definition</b> <a href="#l00084">TAF.h:84</a></div></div>
-<div class="ttc" id="aclassWeather_1_1TAF_html_a155986b42f5ff978f794e7ecb8f35b8c"><div class="ttname"><a href="classWeather_1_1TAF.html#a155986b42f5ff978f794e7ecb8f35b8c">Weather::TAF::isExpired</a></div><div class="ttdeci">Q_INVOKABLE bool isExpired() const</div><div class="ttdoc">Convenience method to check if this TAF is already expired.</div></div>
-<div class="ttc" id="aclassWeather_1_1TAF_html_a4d780241e4890fecf6fcbb155266cc1e"><div class="ttname"><a href="classWeather_1_1TAF.html#a4d780241e4890fecf6fcbb155266cc1e">Weather::TAF::relativeIssueTime</a></div><div class="ttdeci">QString relativeIssueTime</div><div class="ttdoc">Issue time, relative to now.</div><div class="ttdef"><b>Definition</b> <a href="#l00152">TAF.h:152</a></div></div>
-<div class="ttc" id="aclassWeather_1_1TAF_html_a576e23c91d6934d2fb58a9075eb63f27"><div class="ttname"><a href="classWeather_1_1TAF.html#a576e23c91d6934d2fb58a9075eb63f27">Weather::TAF::rawText</a></div><div class="ttdeci">QString rawText</div><div class="ttdoc">Raw TAF text.</div><div class="ttdef"><b>Definition</b> <a href="#l00136">TAF.h:136</a></div></div>
-<div class="ttc" id="aclassWeather_1_1TAF_html_a5a563ecc3240ebdfcaa1f26e6cea63df"><div class="ttname"><a href="classWeather_1_1TAF.html#a5a563ecc3240ebdfcaa1f26e6cea63df">Weather::TAF::relativeIssueTimeChanged</a></div><div class="ttdeci">void relativeIssueTimeChanged()</div><div class="ttdoc">Notifier signal.</div></div>
-<div class="ttc" id="aclassWeather_1_1TAF_html_a68e9add437ce845fdce63c463cd20b46"><div class="ttname"><a href="classWeather_1_1TAF.html#a68e9add437ce845fdce63c463cd20b46">Weather::TAF::relativeIssueTime</a></div><div class="ttdeci">auto relativeIssueTime() const -&gt; QString</div><div class="ttdoc">Getter function for property with the same name.</div></div>
-<div class="ttc" id="aclassWeather_1_1TAF_html_a90983bc41febd79676a5a393e85d6bc1"><div class="ttname"><a href="classWeather_1_1TAF.html#a90983bc41febd79676a5a393e85d6bc1">Weather::TAF::isValid</a></div><div class="ttdeci">bool isValid</div><div class="ttdef"><b>Definition</b> <a href="#l00112">TAF.h:112</a></div></div>
-<div class="ttc" id="aclassWeather_1_1TAF_html_a9181d7bc920fce1df4715cf3491d05e6"><div class="ttname"><a href="classWeather_1_1TAF.html#a9181d7bc920fce1df4715cf3491d05e6">Weather::TAF::isValid</a></div><div class="ttdeci">auto isValid() const -&gt; bool</div><div class="ttdoc">Getter function for property with the same name.</div></div>
-<div class="ttc" id="aclassWeather_1_1TAF_html_a95bc84d821007dcba0c2de88a3d79571"><div class="ttname"><a href="classWeather_1_1TAF.html#a95bc84d821007dcba0c2de88a3d79571">Weather::TAF::TAF</a></div><div class="ttdeci">TAF(QObject *parent=nullptr)</div><div class="ttdoc">Default constructor.</div></div>
-<div class="ttc" id="aclassWeather_1_1TAF_html_aab6b87da5632346cecc7ae2a01e5ca0c"><div class="ttname"><a href="classWeather_1_1TAF.html#aab6b87da5632346cecc7ae2a01e5ca0c">Weather::TAF::rawText</a></div><div class="ttdeci">auto rawText() const -&gt; QString</div><div class="ttdoc">Getter function for property with the same name.</div><div class="ttdef"><b>Definition</b> <a href="#l00142">TAF.h:142</a></div></div>
-<div class="ttc" id="aclassWeather_1_1TAF_html_abbd80f34ee9273c92ccd4af41d5f832c"><div class="ttname"><a href="classWeather_1_1TAF.html#abbd80f34ee9273c92ccd4af41d5f832c">Weather::TAF::expiration</a></div><div class="ttdeci">QDateTime expiration</div><div class="ttdoc">Expiration time and date.</div><div class="ttdef"><b>Definition</b> <a href="#l00078">TAF.h:78</a></div></div>
-<div class="ttc" id="aclassWeather_1_1TAF_html_acced0b8619bd61e9f15a6c341daa3a9b"><div class="ttname"><a href="classWeather_1_1TAF.html#acced0b8619bd61e9f15a6c341daa3a9b">Weather::TAF::ICAOCode</a></div><div class="ttdeci">auto ICAOCode() const -&gt; QString</div><div class="ttdoc">Getter function for property with the same name.</div><div class="ttdef"><b>Definition</b> <a href="#l00100">TAF.h:100</a></div></div>
-<div class="ttc" id="aclassWeather_1_1TAF_html_adf1c25caa20f4cd9ca51a30dc93cba11"><div class="ttname"><a href="classWeather_1_1TAF.html#adf1c25caa20f4cd9ca51a30dc93cba11">Weather::TAF::coordinate</a></div><div class="ttdeci">auto coordinate() const -&gt; QGeoCoordinate</div><div class="ttdoc">Getter function for property with the same name.</div><div class="ttdef"><b>Definition</b> <a href="#l00069">TAF.h:69</a></div></div>
-<div class="ttc" id="aclassWeather_1_1TAF_html_ae4c29f20d08697a37d0fff693ebea360"><div class="ttname"><a href="classWeather_1_1TAF.html#ae4c29f20d08697a37d0fff693ebea360">Weather::TAF::ICAOCode</a></div><div class="ttdeci">QString ICAOCode</div><div class="ttdoc">ICAO code of the station reporting this TAF.</div><div class="ttdef"><b>Definition</b> <a href="#l00094">TAF.h:94</a></div></div>
-<div class="ttc" id="aclassWeather_1_1TAF_html_aefd062dc010deb83aebeeb0b43ce8000"><div class="ttname"><a href="classWeather_1_1TAF.html#aefd062dc010deb83aebeeb0b43ce8000">Weather::TAF::coordinate</a></div><div class="ttdeci">QGeoCoordinate coordinate</div><div class="ttdoc">Geographical coordinate of the station reporting this TAF.</div><div class="ttdef"><b>Definition</b> <a href="#l00063">TAF.h:63</a></div></div>
-<div class="ttc" id="aclassWeather_1_1WeatherDataProvider_html"><div class="ttname"><a href="classWeather_1_1WeatherDataProvider.html">Weather::WeatherDataProvider</a></div><div class="ttdoc">WeatherDataProvider, weather service manager.</div><div class="ttdef"><b>Definition</b> <a href="WeatherDataProvider_8h_source.html#l00065">WeatherDataProvider.h:65</a></div></div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> </div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#a7eaaee166cda28cacce75a4184e5fc80">  177</a></span>    [[nodiscard]] <span class="keywordtype">bool</span> <a class="code hl_function" href="classWeather_1_1TAF.html#a7eaaee166cda28cacce75a4184e5fc80">isValid</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span> </div>
+<div class="foldopen" id="foldopen00183" data-start="{" data-end="}">
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#af858256c1953388a20cc383421864f00">  183</a></span>    [[nodiscard]] QDateTime <a class="code hl_function" href="classWeather_1_1TAF.html#af858256c1953388a20cc383421864f00">issueTime</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span><span class="keyword">    </span>{</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>        <span class="keywordflow">return</span> m_issueTime;</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    }</div>
+</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span> </div>
+<div class="foldopen" id="foldopen00192" data-start="{" data-end="}">
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#a235358b2f216e662bc55101d3ee25a60">  192</a></span>    [[nodiscard]] QString <a class="code hl_function" href="classWeather_1_1TAF.html#a235358b2f216e662bc55101d3ee25a60">rawText</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span><span class="keyword">    </span>{</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>        <span class="keywordflow">return</span> m_rawText;</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    }</div>
+</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span> </div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span> </div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    <span class="comment">//</span></div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>    <span class="comment">// Methods</span></div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>    <span class="comment">//</span></div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span> </div>
+<div class="foldopen" id="foldopen00210" data-start="{" data-end="}">
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno"><a class="line" href="classWeather_1_1TAF.html#af8fbd6d97613362f34e782fda2d29f3a">  210</a></span>    [[nodiscard]] Q_INVOKABLE QString <a class="code hl_function" href="classWeather_1_1TAF.html#af8fbd6d97613362f34e782fda2d29f3a">decodedText</a>(<span class="keyword">const</span> <a class="code hl_class" href="classNavigation_1_1Aircraft.html">Navigation::Aircraft</a>&amp; act, <span class="keyword">const</span> QDateTime&amp; time)</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>    {</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>        <span class="comment">// Paranoid safety checks</span></div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>        <span class="keywordflow">if</span> (m_decoder.isNull())</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>        {</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>            <span class="keywordflow">return</span> {};</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>        }</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span> </div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>        <span class="keywordflow">return</span> m_decoder-&gt;decodedText(act, time);</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>    }</div>
+</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span> </div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>    <span class="comment">// Expiration time</span></div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>    QDateTime m_expirationTime;</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span> </div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>    <span class="comment">// Station ID, as returned by the Aviation Weather Center</span></div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>    QString m_ICAOCode;</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span> </div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>    <span class="comment">// Issue time, as returned by the Aviation Weather Center</span></div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>    QDateTime m_issueTime;</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>    <span class="comment">// Station coordinate, as returned by the Aviation Weather Center</span></div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    QGeoCoordinate m_location;</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span> </div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>    <span class="comment">// Raw TAF text, as returned by the Aviation Weather Center</span></div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    QString m_rawText;</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span> </div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>    <span class="comment">// Decoder</span></div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>    QSharedPointer&lt;Weather::Decoder&gt; m_decoder;</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>};</div>
+</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span> </div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>QDataStream&amp; operator&lt;&lt;(QDataStream&amp; stream, <span class="keyword">const</span> TAF&amp; taf);</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span> </div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>} <span class="comment">// namespace Weather</span></div>
+<div class="ttc" id="aclassNavigation_1_1Aircraft_html"><div class="ttname"><a href="classNavigation_1_1Aircraft.html">Navigation::Aircraft</a></div><div class="ttdoc">This extremely simple class holds a few numbers that describe an aircraft.</div><div class="ttdef"><b>Definition</b> <a href="Aircraft_8h_source.html#l00035">Aircraft.h:35</a></div></div>
+<div class="ttc" id="aclassWeather_1_1TAF_html"><div class="ttname"><a href="classWeather_1_1TAF.html">Weather::TAF</a></div><div class="ttdoc">TAF forecast.</div><div class="ttdef"><b>Definition</b> <a href="#l00042">TAF.h:42</a></div></div>
+<div class="ttc" id="aclassWeather_1_1TAF_html_a0718a9e696ebeee028506338b49b9703"><div class="ttname"><a href="classWeather_1_1TAF.html#a0718a9e696ebeee028506338b49b9703">Weather::TAF::issueTime</a></div><div class="ttdeci">QDateTime issueTime</div><div class="ttdoc">Issue time of this TAF.</div><div class="ttdef"><b>Definition</b> <a href="#l00133">TAF.h:133</a></div></div>
+<div class="ttc" id="aclassWeather_1_1TAF_html_a08430b20a84f3653992a0c3d16c2fff0"><div class="ttname"><a href="classWeather_1_1TAF.html#a08430b20a84f3653992a0c3d16c2fff0">Weather::TAF::ICAOCode</a></div><div class="ttdeci">QString ICAOCode() const</div><div class="ttdoc">Getter function for property with the same name.</div><div class="ttdef"><b>Definition</b> <a href="#l00168">TAF.h:168</a></div></div>
+<div class="ttc" id="aclassWeather_1_1TAF_html_a235358b2f216e662bc55101d3ee25a60"><div class="ttname"><a href="classWeather_1_1TAF.html#a235358b2f216e662bc55101d3ee25a60">Weather::TAF::rawText</a></div><div class="ttdeci">QString rawText() const</div><div class="ttdoc">Getter function for property with the same name.</div><div class="ttdef"><b>Definition</b> <a href="#l00192">TAF.h:192</a></div></div>
+<div class="ttc" id="aclassWeather_1_1TAF_html_a57149c4720f06cc39fb892a53c5e309e"><div class="ttname"><a href="classWeather_1_1TAF.html#a57149c4720f06cc39fb892a53c5e309e">Weather::TAF::expiration</a></div><div class="ttdeci">QDateTime expiration() const</div><div class="ttdoc">Getter function for property with the same name.</div><div class="ttdef"><b>Definition</b> <a href="#l00159">TAF.h:159</a></div></div>
+<div class="ttc" id="aclassWeather_1_1TAF_html_a576e23c91d6934d2fb58a9075eb63f27"><div class="ttname"><a href="classWeather_1_1TAF.html#a576e23c91d6934d2fb58a9075eb63f27">Weather::TAF::rawText</a></div><div class="ttdeci">QString rawText</div><div class="ttdoc">Raw TAF text.</div><div class="ttdef"><b>Definition</b> <a href="#l00139">TAF.h:139</a></div></div>
+<div class="ttc" id="aclassWeather_1_1TAF_html_a7eaaee166cda28cacce75a4184e5fc80"><div class="ttname"><a href="classWeather_1_1TAF.html#a7eaaee166cda28cacce75a4184e5fc80">Weather::TAF::isValid</a></div><div class="ttdeci">bool isValid() const</div><div class="ttdoc">Getter function for property with the same name.</div></div>
+<div class="ttc" id="aclassWeather_1_1TAF_html_a90983bc41febd79676a5a393e85d6bc1"><div class="ttname"><a href="classWeather_1_1TAF.html#a90983bc41febd79676a5a393e85d6bc1">Weather::TAF::isValid</a></div><div class="ttdeci">bool isValid</div><div class="ttdef"><b>Definition</b> <a href="#l00130">TAF.h:130</a></div></div>
+<div class="ttc" id="aclassWeather_1_1TAF_html_abbd80f34ee9273c92ccd4af41d5f832c"><div class="ttname"><a href="classWeather_1_1TAF.html#abbd80f34ee9273c92ccd4af41d5f832c">Weather::TAF::expiration</a></div><div class="ttdeci">QDateTime expiration</div><div class="ttdoc">Expiration time and date.</div><div class="ttdef"><b>Definition</b> <a href="#l00120">TAF.h:120</a></div></div>
+<div class="ttc" id="aclassWeather_1_1TAF_html_ae4c29f20d08697a37d0fff693ebea360"><div class="ttname"><a href="classWeather_1_1TAF.html#ae4c29f20d08697a37d0fff693ebea360">Weather::TAF::ICAOCode</a></div><div class="ttdeci">QString ICAOCode</div><div class="ttdoc">ICAO code of the station reporting this TAF.</div><div class="ttdef"><b>Definition</b> <a href="#l00127">TAF.h:127</a></div></div>
+<div class="ttc" id="aclassWeather_1_1TAF_html_aefd062dc010deb83aebeeb0b43ce8000"><div class="ttname"><a href="classWeather_1_1TAF.html#aefd062dc010deb83aebeeb0b43ce8000">Weather::TAF::coordinate</a></div><div class="ttdeci">QGeoCoordinate coordinate</div><div class="ttdoc">Geographical coordinate of the station reporting this TAF.</div><div class="ttdef"><b>Definition</b> <a href="#l00114">TAF.h:114</a></div></div>
+<div class="ttc" id="aclassWeather_1_1TAF_html_af858256c1953388a20cc383421864f00"><div class="ttname"><a href="classWeather_1_1TAF.html#af858256c1953388a20cc383421864f00">Weather::TAF::issueTime</a></div><div class="ttdeci">QDateTime issueTime() const</div><div class="ttdoc">Getter function for property with the same name.</div><div class="ttdef"><b>Definition</b> <a href="#l00183">TAF.h:183</a></div></div>
+<div class="ttc" id="aclassWeather_1_1TAF_html_af8fbd6d97613362f34e782fda2d29f3a"><div class="ttname"><a href="classWeather_1_1TAF.html#af8fbd6d97613362f34e782fda2d29f3a">Weather::TAF::decodedText</a></div><div class="ttdeci">Q_INVOKABLE QString decodedText(const Navigation::Aircraft &amp;act, const QDateTime &amp;time)</div><div class="ttdoc">Decoded TAF text.</div><div class="ttdef"><b>Definition</b> <a href="#l00210">TAF.h:210</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

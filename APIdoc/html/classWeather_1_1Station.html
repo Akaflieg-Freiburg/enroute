@@ -66,7 +66,7 @@ $(function(){ initResizable(false); });
 </div><!--header-->
 <div class="contents">
 
-<p>This class represents a weather station that issues <a class="el" href="classWeather_1_1METAR.html" title="METAR report.">METAR</a> or <a class="el" href="classWeather_1_1TAF.html" title="TAF report.">TAF</a> report.  
+<p>This class represents a weather station that issues <a class="el" href="classWeather_1_1METAR.html" title="METAR report.">METAR</a> or <a class="el" href="classWeather_1_1TAF.html" title="TAF forecast.">TAF</a> report.  
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="Station_8h_source.html">Station.h</a>&gt;</code></p>
@@ -76,36 +76,48 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a63ccdb9be16c434b7389b3eb105a7f3c" id="r_a63ccdb9be16c434b7389b3eb105a7f3c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a63ccdb9be16c434b7389b3eb105a7f3c">Station</a> (QObject *parent=nullptr)</td></tr>
 <tr class="memdesc:a63ccdb9be16c434b7389b3eb105a7f3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard constructor.  <br /></td></tr>
 <tr class="separator:a63ccdb9be16c434b7389b3eb105a7f3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac525db954177d4e4df3b92cc1ce565f2" id="r_ac525db954177d4e4df3b92cc1ce565f2"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac525db954177d4e4df3b92cc1ce565f2">coordinate</a> () const -&gt; QGeoCoordinate</td></tr>
-<tr class="memdesc:ac525db954177d4e4df3b92cc1ce565f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <br /></td></tr>
-<tr class="separator:ac525db954177d4e4df3b92cc1ce565f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a302a8de707123474a4767f6e43dbb018" id="r_a302a8de707123474a4767f6e43dbb018"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a302a8de707123474a4767f6e43dbb018">extendedName</a> () const -&gt; QString</td></tr>
-<tr class="memdesc:a302a8de707123474a4767f6e43dbb018"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <br /></td></tr>
-<tr class="separator:a302a8de707123474a4767f6e43dbb018"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abea781b7520cc4e17e9e1adb87a7c18d" id="r_abea781b7520cc4e17e9e1adb87a7c18d"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abea781b7520cc4e17e9e1adb87a7c18d">hasMETAR</a> () const -&gt; bool</td></tr>
-<tr class="memdesc:abea781b7520cc4e17e9e1adb87a7c18d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <br /></td></tr>
-<tr class="separator:abea781b7520cc4e17e9e1adb87a7c18d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43053c73128fc4fa7899a0b4b309cdf4" id="r_a43053c73128fc4fa7899a0b4b309cdf4"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a43053c73128fc4fa7899a0b4b309cdf4">hasTAF</a> () const -&gt; bool</td></tr>
-<tr class="memdesc:a43053c73128fc4fa7899a0b4b309cdf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <br /></td></tr>
-<tr class="separator:a43053c73128fc4fa7899a0b4b309cdf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e2f184071e80b88d4b8d3b6971fb192" id="r_a2e2f184071e80b88d4b8d3b6971fb192"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2e2f184071e80b88d4b8d3b6971fb192">ICAOCode</a> () const -&gt; QString</td></tr>
-<tr class="memdesc:a2e2f184071e80b88d4b8d3b6971fb192"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <br /></td></tr>
-<tr class="separator:a2e2f184071e80b88d4b8d3b6971fb192"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af95c9f4a97b64a23dcfe79bd34dab233" id="r_af95c9f4a97b64a23dcfe79bd34dab233"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af95c9f4a97b64a23dcfe79bd34dab233">icon</a> () const -&gt; QString</td></tr>
-<tr class="memdesc:af95c9f4a97b64a23dcfe79bd34dab233"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <br /></td></tr>
-<tr class="separator:af95c9f4a97b64a23dcfe79bd34dab233"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a658466a9fda9c9658012439db94aea6b" id="r_a658466a9fda9c9658012439db94aea6b"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a658466a9fda9c9658012439db94aea6b">isValid</a> () const -&gt; bool</td></tr>
-<tr class="memdesc:a658466a9fda9c9658012439db94aea6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <br /></td></tr>
-<tr class="separator:a658466a9fda9c9658012439db94aea6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4a69ff3eca62e45da5a76a007694d19" id="r_ac4a69ff3eca62e45da5a76a007694d19"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac4a69ff3eca62e45da5a76a007694d19">metar</a> () const -&gt; <a class="el" href="classWeather_1_1METAR.html">Weather::METAR</a> *</td></tr>
-<tr class="memdesc:ac4a69ff3eca62e45da5a76a007694d19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <br /></td></tr>
-<tr class="separator:ac4a69ff3eca62e45da5a76a007694d19"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa5bf0deae617b1da218d943dba9d9bef" id="r_aa5bf0deae617b1da218d943dba9d9bef"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa5bf0deae617b1da218d943dba9d9bef">twoLineTitle</a> () const -&gt; QString</td></tr>
-<tr class="memdesc:aa5bf0deae617b1da218d943dba9d9bef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <br /></td></tr>
-<tr class="separator:aa5bf0deae617b1da218d943dba9d9bef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa842c730bd158357fb357010f8588bf7" id="r_aa842c730bd158357fb357010f8588bf7"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa842c730bd158357fb357010f8588bf7">taf</a> () const -&gt; <a class="el" href="classWeather_1_1TAF.html">Weather::TAF</a> *</td></tr>
-<tr class="memdesc:aa842c730bd158357fb357010f8588bf7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <br /></td></tr>
-<tr class="separator:aa842c730bd158357fb357010f8588bf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2df3f72c2a096926900de82522710f84" id="r_a2df3f72c2a096926900de82522710f84"><td class="memItemLeft" align="right" valign="top">QGeoCoordinate&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2df3f72c2a096926900de82522710f84">coordinate</a> () const</td></tr>
+<tr class="memdesc:a2df3f72c2a096926900de82522710f84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <br /></td></tr>
+<tr class="separator:a2df3f72c2a096926900de82522710f84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3d9e7cdd6c9a4a063a6ebfd47fd9360" id="r_ac3d9e7cdd6c9a4a063a6ebfd47fd9360"><td class="memItemLeft" align="right" valign="top">QBindable&lt; QGeoCoordinate &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac3d9e7cdd6c9a4a063a6ebfd47fd9360">bindableCoordinate</a> () const</td></tr>
+<tr class="memdesc:ac3d9e7cdd6c9a4a063a6ebfd47fd9360"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <br /></td></tr>
+<tr class="separator:ac3d9e7cdd6c9a4a063a6ebfd47fd9360"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a328099be1e936394ab331de4794b541e" id="r_a328099be1e936394ab331de4794b541e"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a328099be1e936394ab331de4794b541e">extendedName</a> () const</td></tr>
+<tr class="memdesc:a328099be1e936394ab331de4794b541e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <br /></td></tr>
+<tr class="separator:a328099be1e936394ab331de4794b541e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a235957098698bbdcf9666d840be35d97" id="r_a235957098698bbdcf9666d840be35d97"><td class="memItemLeft" align="right" valign="top">QBindable&lt; QString &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a235957098698bbdcf9666d840be35d97">bindableExtendedName</a> () const</td></tr>
+<tr class="memdesc:a235957098698bbdcf9666d840be35d97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <br /></td></tr>
+<tr class="separator:a235957098698bbdcf9666d840be35d97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8353a979ad13dc05001e16f6dfb7e431" id="r_a8353a979ad13dc05001e16f6dfb7e431"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8353a979ad13dc05001e16f6dfb7e431">ICAOCode</a> () const</td></tr>
+<tr class="memdesc:a8353a979ad13dc05001e16f6dfb7e431"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <br /></td></tr>
+<tr class="separator:a8353a979ad13dc05001e16f6dfb7e431"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accba674e30117ce8f9512b1d1efeb276" id="r_accba674e30117ce8f9512b1d1efeb276"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#accba674e30117ce8f9512b1d1efeb276">icon</a> () const</td></tr>
+<tr class="memdesc:accba674e30117ce8f9512b1d1efeb276"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <br /></td></tr>
+<tr class="separator:accba674e30117ce8f9512b1d1efeb276"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5500aa80a776ad3b16aeb066735d0351" id="r_a5500aa80a776ad3b16aeb066735d0351"><td class="memItemLeft" align="right" valign="top">QBindable&lt; QString &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5500aa80a776ad3b16aeb066735d0351">bindableIcon</a> () const</td></tr>
+<tr class="memdesc:a5500aa80a776ad3b16aeb066735d0351"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <br /></td></tr>
+<tr class="separator:a5500aa80a776ad3b16aeb066735d0351"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3bd2891a285b018e9eb32953710acac" id="r_ac3bd2891a285b018e9eb32953710acac"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac3bd2891a285b018e9eb32953710acac">isValid</a> () const</td></tr>
+<tr class="memdesc:ac3bd2891a285b018e9eb32953710acac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <br /></td></tr>
+<tr class="separator:ac3bd2891a285b018e9eb32953710acac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ba136eed31aaac3466a19fdc12a5ac4" id="r_a4ba136eed31aaac3466a19fdc12a5ac4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWeather_1_1METAR.html">Weather::METAR</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4ba136eed31aaac3466a19fdc12a5ac4">metar</a> () const</td></tr>
+<tr class="memdesc:a4ba136eed31aaac3466a19fdc12a5ac4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <br /></td></tr>
+<tr class="separator:a4ba136eed31aaac3466a19fdc12a5ac4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affb45974b2ac28b14e2d2b4dcee1aeb8" id="r_affb45974b2ac28b14e2d2b4dcee1aeb8"><td class="memItemLeft" align="right" valign="top">QBindable&lt; <a class="el" href="classWeather_1_1METAR.html">Weather::METAR</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#affb45974b2ac28b14e2d2b4dcee1aeb8">bindableMetar</a> () const</td></tr>
+<tr class="memdesc:affb45974b2ac28b14e2d2b4dcee1aeb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <br /></td></tr>
+<tr class="separator:affb45974b2ac28b14e2d2b4dcee1aeb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9b29267b97f2dcbfa308ddafa5b5dc3" id="r_aa9b29267b97f2dcbfa308ddafa5b5dc3"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa9b29267b97f2dcbfa308ddafa5b5dc3">twoLineTitle</a> () const</td></tr>
+<tr class="memdesc:aa9b29267b97f2dcbfa308ddafa5b5dc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <br /></td></tr>
+<tr class="separator:aa9b29267b97f2dcbfa308ddafa5b5dc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ee75a8a20acdd867cbc47997f408442" id="r_a5ee75a8a20acdd867cbc47997f408442"><td class="memItemLeft" align="right" valign="top">QBindable&lt; QString &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5ee75a8a20acdd867cbc47997f408442">bindableTwoLineTitle</a> () const</td></tr>
+<tr class="memdesc:a5ee75a8a20acdd867cbc47997f408442"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property with the same name.  <br /></td></tr>
+<tr class="separator:a5ee75a8a20acdd867cbc47997f408442"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a7e439e685443ca8c48fc29024bcd7d" id="r_a0a7e439e685443ca8c48fc29024bcd7d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWeather_1_1TAF.html">Weather::TAF</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0a7e439e685443ca8c48fc29024bcd7d">taf</a> () const</td></tr>
+<tr class="memdesc:a0a7e439e685443ca8c48fc29024bcd7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <br /></td></tr>
+<tr class="separator:a0a7e439e685443ca8c48fc29024bcd7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a336bbd496b482ea937c5baa5d19b64" id="r_a9a336bbd496b482ea937c5baa5d19b64"><td class="memItemLeft" align="right" valign="top">QBindable&lt; <a class="el" href="classWeather_1_1TAF.html">Weather::TAF</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9a336bbd496b482ea937c5baa5d19b64">bindableTaf</a> () const</td></tr>
+<tr class="memdesc:a9a336bbd496b482ea937c5baa5d19b64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <br /></td></tr>
+<tr class="separator:a9a336bbd496b482ea937c5baa5d19b64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -115,12 +127,6 @@ Properties</h2></td></tr>
 <tr class="memitem:a5eaebdca9c5639b84bcaa8f7011bdf35" id="r_a5eaebdca9c5639b84bcaa8f7011bdf35"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5eaebdca9c5639b84bcaa8f7011bdf35">extendedName</a></td></tr>
 <tr class="memdesc:a5eaebdca9c5639b84bcaa8f7011bdf35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extended name of the waypoint.  <br /></td></tr>
 <tr class="separator:a5eaebdca9c5639b84bcaa8f7011bdf35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac07dbbf24723923c7a66af3a60c2fab5" id="r_ac07dbbf24723923c7a66af3a60c2fab5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac07dbbf24723923c7a66af3a60c2fab5">hasMETAR</a></td></tr>
-<tr class="memdesc:ac07dbbf24723923c7a66af3a60c2fab5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if a <a class="el" href="classWeather_1_1METAR.html" title="METAR report.">METAR</a> weather report is known for this weather station.  <br /></td></tr>
-<tr class="separator:ac07dbbf24723923c7a66af3a60c2fab5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d92b6fcefc4ed5cef7bafa125ff16f0" id="r_a4d92b6fcefc4ed5cef7bafa125ff16f0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4d92b6fcefc4ed5cef7bafa125ff16f0">hasTAF</a></td></tr>
-<tr class="memdesc:a4d92b6fcefc4ed5cef7bafa125ff16f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if a <a class="el" href="classWeather_1_1TAF.html" title="TAF report.">TAF</a> weather forecast is known for this weather station.  <br /></td></tr>
-<tr class="separator:a4d92b6fcefc4ed5cef7bafa125ff16f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a392e19cf9968604ae20c4c54c58175cf" id="r_a392e19cf9968604ae20c4c54c58175cf"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a392e19cf9968604ae20c4c54c58175cf">ICAOCode</a></td></tr>
 <tr class="memdesc:a392e19cf9968604ae20c4c54c58175cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">ICAO code of the weather station.  <br /></td></tr>
 <tr class="separator:a392e19cf9968604ae20c4c54c58175cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -131,21 +137,21 @@ Properties</h2></td></tr>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>isValid</b></td></tr>
 <tr class="memdesc:ac8c46eaccf99aa3dcfae8d762c3263f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates if the WeatherStation is valid. <br /></td></tr>
 <tr class="separator:ac8c46eaccf99aa3dcfae8d762c3263f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac999a22760fe31a188e612c73e5bcf5b" id="r_ac999a22760fe31a188e612c73e5bcf5b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWeather_1_1METAR.html">Weather::METAR</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac999a22760fe31a188e612c73e5bcf5b">metar</a></td></tr>
-<tr class="memdesc:ac999a22760fe31a188e612c73e5bcf5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Last <a class="el" href="classWeather_1_1METAR.html" title="METAR report.">METAR</a> provided by this WeatherStation.  <br /></td></tr>
-<tr class="separator:ac999a22760fe31a188e612c73e5bcf5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54425914d664d5a8fe6d2b7d3eb42f31" id="r_a54425914d664d5a8fe6d2b7d3eb42f31"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWeather_1_1METAR.html">Weather::METAR</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a54425914d664d5a8fe6d2b7d3eb42f31">metar</a></td></tr>
+<tr class="memdesc:a54425914d664d5a8fe6d2b7d3eb42f31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Last <a class="el" href="classWeather_1_1METAR.html" title="METAR report.">METAR</a> provided by this WeatherStation.  <br /></td></tr>
+<tr class="separator:a54425914d664d5a8fe6d2b7d3eb42f31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba720eb9ddf734227ee0a1e7704e20d1" id="r_aba720eb9ddf734227ee0a1e7704e20d1"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aba720eb9ddf734227ee0a1e7704e20d1">twoLineTitle</a></td></tr>
 <tr class="memdesc:aba720eb9ddf734227ee0a1e7704e20d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Two-line description of the waypoint name.  <br /></td></tr>
 <tr class="separator:aba720eb9ddf734227ee0a1e7704e20d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4dce131da9b7594122859a99afb14688" id="r_a4dce131da9b7594122859a99afb14688"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWeather_1_1TAF.html">Weather::TAF</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4dce131da9b7594122859a99afb14688">taf</a></td></tr>
-<tr class="memdesc:a4dce131da9b7594122859a99afb14688"><td class="mdescLeft">&#160;</td><td class="mdescRight">Last <a class="el" href="classWeather_1_1TAF.html" title="TAF report.">TAF</a> provided by this WeatherStation.  <br /></td></tr>
-<tr class="separator:a4dce131da9b7594122859a99afb14688"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6492818caa179029863c6919e44c919" id="r_aa6492818caa179029863c6919e44c919"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classWeather_1_1TAF.html">Weather::TAF</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa6492818caa179029863c6919e44c919">taf</a></td></tr>
+<tr class="memdesc:aa6492818caa179029863c6919e44c919"><td class="mdescLeft">&#160;</td><td class="mdescRight">Last <a class="el" href="classWeather_1_1TAF.html" title="TAF forecast.">TAF</a> provided by this WeatherStation.  <br /></td></tr>
+<tr class="separator:aa6492818caa179029863c6919e44c919"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This class represents a weather station that issues <a class="el" href="classWeather_1_1METAR.html" title="METAR report.">METAR</a> or <a class="el" href="classWeather_1_1TAF.html" title="TAF report.">TAF</a> report. </p>
-<p>This is a very simple class that represents a weather station. Weather stations are uniquely identified by their ICAO code. Depending on available data, they hold pointers to the latest <a class="el" href="classWeather_1_1METAR.html" title="METAR report.">METAR</a> and <a class="el" href="classWeather_1_1TAF.html" title="TAF report.">TAF</a> reports. </p>
+<div class="textblock"><p>This class represents a weather station that issues <a class="el" href="classWeather_1_1METAR.html" title="METAR report.">METAR</a> or <a class="el" href="classWeather_1_1TAF.html" title="TAF forecast.">TAF</a> report. </p>
+<p>This is a very simple class that represents a weather station. Weather stations are uniquely identified by their ICAO code. Depending on available data, they hold latest <a class="el" href="classWeather_1_1METAR.html" title="METAR report.">METAR</a> and <a class="el" href="classWeather_1_1TAF.html" title="TAF forecast.">TAF</a> reports. </p>
 
-<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00043">43</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00044">44</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a63ccdb9be16c434b7389b3eb105a7f3c" name="a63ccdb9be16c434b7389b3eb105a7f3c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a63ccdb9be16c434b7389b3eb105a7f3c">&#9670;&#160;</a></span>Station()</h2>
@@ -182,8 +188,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isValid</b></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ac525db954177d4e4df3b92cc1ce565f2" name="ac525db954177d4e4df3b92cc1ce565f2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac525db954177d4e4df3b92cc1ce565f2">&#9670;&#160;</a></span>coordinate()</h2>
+<a id="ac3d9e7cdd6c9a4a063a6ebfd47fd9360" name="ac3d9e7cdd6c9a4a063a6ebfd47fd9360"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3d9e7cdd6c9a4a063a6ebfd47fd9360">&#9670;&#160;</a></span>bindableCoordinate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -192,11 +198,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isValid</b></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto Weather::Station::coordinate </td>
+          <td class="memname">QBindable&lt; QGeoCoordinate &gt; Weather::Station::bindableCoordinate </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const -&gt; QGeoCoordinate
-    </td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -209,12 +214,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isValid</b></td></tr>
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property coordiante </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00074">74</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00150">150</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
 
 </div>
 </div>
-<a id="a302a8de707123474a4767f6e43dbb018" name="a302a8de707123474a4767f6e43dbb018"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a302a8de707123474a4767f6e43dbb018">&#9670;&#160;</a></span>extendedName()</h2>
+<a id="a235957098698bbdcf9666d840be35d97" name="a235957098698bbdcf9666d840be35d97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a235957098698bbdcf9666d840be35d97">&#9670;&#160;</a></span>bindableExtendedName()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -223,11 +228,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isValid</b></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto Weather::Station::extendedName </td>
+          <td class="memname">QBindable&lt; QString &gt; Weather::Station::bindableExtendedName </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const -&gt; QString
-    </td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -240,12 +244,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isValid</b></td></tr>
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property extendedName </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00089">89</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00162">162</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
 
 </div>
 </div>
-<a id="abea781b7520cc4e17e9e1adb87a7c18d" name="abea781b7520cc4e17e9e1adb87a7c18d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abea781b7520cc4e17e9e1adb87a7c18d">&#9670;&#160;</a></span>hasMETAR()</h2>
+<a id="a5500aa80a776ad3b16aeb066735d0351" name="a5500aa80a776ad3b16aeb066735d0351"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5500aa80a776ad3b16aeb066735d0351">&#9670;&#160;</a></span>bindableIcon()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -254,104 +258,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isValid</b></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto Weather::Station::hasMETAR </td>
+          <td class="memname">QBindable&lt; QString &gt; Weather::Station::bindableIcon </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const -&gt; bool
-    </td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">nodiscard</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Getter function for property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property hasMetar </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00106">106</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
-
-</div>
-</div>
-<a id="a43053c73128fc4fa7899a0b4b309cdf4" name="a43053c73128fc4fa7899a0b4b309cdf4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a43053c73128fc4fa7899a0b4b309cdf4">&#9670;&#160;</a></span>hasTAF()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto Weather::Station::hasTAF </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const -&gt; bool
-    </td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">nodiscard</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Getter function for property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property isValid </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00123">123</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
-
-</div>
-</div>
-<a id="a2e2f184071e80b88d4b8d3b6971fb192" name="a2e2f184071e80b88d4b8d3b6971fb192"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e2f184071e80b88d4b8d3b6971fb192">&#9670;&#160;</a></span>ICAOCode()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto Weather::Station::ICAOCode </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const -&gt; QString
-    </td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">nodiscard</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Getter method for property of the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property ICAOCode </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00139">139</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
-
-</div>
-</div>
-<a id="af95c9f4a97b64a23dcfe79bd34dab233" name="af95c9f4a97b64a23dcfe79bd34dab233"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af95c9f4a97b64a23dcfe79bd34dab233">&#9670;&#160;</a></span>icon()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto Weather::Station::icon </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const -&gt; QString
-    </td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -364,12 +274,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isValid</b></td></tr>
 <p>Getter method for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property id </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00155">155</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00183">183</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
 
 </div>
 </div>
-<a id="a658466a9fda9c9658012439db94aea6b" name="a658466a9fda9c9658012439db94aea6b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a658466a9fda9c9658012439db94aea6b">&#9670;&#160;</a></span>isValid()</h2>
+<a id="affb45974b2ac28b14e2d2b4dcee1aeb8" name="affb45974b2ac28b14e2d2b4dcee1aeb8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affb45974b2ac28b14e2d2b4dcee1aeb8">&#9670;&#160;</a></span>bindableMetar()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -378,42 +288,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isValid</b></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto Weather::Station::isValid </td>
+          <td class="memname">QBindable&lt; <a class="el" href="classWeather_1_1METAR.html">Weather::METAR</a> &gt; Weather::Station::bindableMetar </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const -&gt; bool
-    </td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">nodiscard</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Getter function for property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property isValid </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00167">167</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
-
-</div>
-</div>
-<a id="ac4a69ff3eca62e45da5a76a007694d19" name="ac4a69ff3eca62e45da5a76a007694d19"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac4a69ff3eca62e45da5a76a007694d19">&#9670;&#160;</a></span>metar()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto Weather::Station::metar </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const -&gt; <a class="el" href="classWeather_1_1METAR.html">Weather::METAR</a> *
-    </td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -426,12 +304,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isValid</b></td></tr>
 <p>Getter method for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property metar </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00185">185</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00204">204</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
 
 </div>
 </div>
-<a id="aa842c730bd158357fb357010f8588bf7" name="aa842c730bd158357fb357010f8588bf7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa842c730bd158357fb357010f8588bf7">&#9670;&#160;</a></span>taf()</h2>
+<a id="a9a336bbd496b482ea937c5baa5d19b64" name="a9a336bbd496b482ea937c5baa5d19b64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a336bbd496b482ea937c5baa5d19b64">&#9670;&#160;</a></span>bindableTaf()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -440,11 +318,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isValid</b></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto Weather::Station::taf </td>
+          <td class="memname">QBindable&lt; <a class="el" href="classWeather_1_1TAF.html">Weather::TAF</a> &gt; Weather::Station::bindableTaf </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const -&gt; <a class="el" href="classWeather_1_1TAF.html">Weather::TAF</a> *
-    </td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -457,12 +334,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isValid</b></td></tr>
 <p>Getter method for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property taf </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00223">223</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00228">228</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
 
 </div>
 </div>
-<a id="aa5bf0deae617b1da218d943dba9d9bef" name="aa5bf0deae617b1da218d943dba9d9bef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa5bf0deae617b1da218d943dba9d9bef">&#9670;&#160;</a></span>twoLineTitle()</h2>
+<a id="a5ee75a8a20acdd867cbc47997f408442" name="a5ee75a8a20acdd867cbc47997f408442"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ee75a8a20acdd867cbc47997f408442">&#9670;&#160;</a></span>bindableTwoLineTitle()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -471,11 +348,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isValid</b></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto Weather::Station::twoLineTitle </td>
+          <td class="memname">QBindable&lt; QString &gt; Weather::Station::bindableTwoLineTitle </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const -&gt; QString
-    </td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -488,7 +364,247 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isValid</b></td></tr>
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property twoLineTitle </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00205">205</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00216">216</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
+
+</div>
+</div>
+<a id="a2df3f72c2a096926900de82522710f84" name="a2df3f72c2a096926900de82522710f84"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2df3f72c2a096926900de82522710f84">&#9670;&#160;</a></span>coordinate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QGeoCoordinate Weather::Station::coordinate </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter function for property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property coordiante </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00144">144</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
+
+</div>
+</div>
+<a id="a328099be1e936394ab331de4794b541e" name="a328099be1e936394ab331de4794b541e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a328099be1e936394ab331de4794b541e">&#9670;&#160;</a></span>extendedName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QString Weather::Station::extendedName </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter function for property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property extendedName </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00156">156</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
+
+</div>
+</div>
+<a id="a8353a979ad13dc05001e16f6dfb7e431" name="a8353a979ad13dc05001e16f6dfb7e431"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8353a979ad13dc05001e16f6dfb7e431">&#9670;&#160;</a></span>ICAOCode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QString Weather::Station::ICAOCode </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter method for property of the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property ICAOCode </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00168">168</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
+
+</div>
+</div>
+<a id="accba674e30117ce8f9512b1d1efeb276" name="accba674e30117ce8f9512b1d1efeb276"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#accba674e30117ce8f9512b1d1efeb276">&#9670;&#160;</a></span>icon()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QString Weather::Station::icon </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter method for property of the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property id </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00177">177</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
+
+</div>
+</div>
+<a id="ac3bd2891a285b018e9eb32953710acac" name="ac3bd2891a285b018e9eb32953710acac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3bd2891a285b018e9eb32953710acac">&#9670;&#160;</a></span>isValid()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Weather::Station::isValid </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter function for property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property isValid </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00189">189</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
+
+</div>
+</div>
+<a id="a4ba136eed31aaac3466a19fdc12a5ac4" name="a4ba136eed31aaac3466a19fdc12a5ac4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ba136eed31aaac3466a19fdc12a5ac4">&#9670;&#160;</a></span>metar()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classWeather_1_1METAR.html">Weather::METAR</a> Weather::Station::metar </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter method for property of the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property metar </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00198">198</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
+
+</div>
+</div>
+<a id="a0a7e439e685443ca8c48fc29024bcd7d" name="a0a7e439e685443ca8c48fc29024bcd7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a7e439e685443ca8c48fc29024bcd7d">&#9670;&#160;</a></span>taf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classWeather_1_1TAF.html">Weather::TAF</a> Weather::Station::taf </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter method for property of the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property taf </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00222">222</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
+
+</div>
+</div>
+<a id="aa9b29267b97f2dcbfa308ddafa5b5dc3" name="aa9b29267b97f2dcbfa308ddafa5b5dc3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9b29267b97f2dcbfa308ddafa5b5dc3">&#9670;&#160;</a></span>twoLineTitle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QString Weather::Station::twoLineTitle </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter function for property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property twoLineTitle </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00210">210</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
 
 </div>
 </div>
@@ -516,7 +632,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isValid</b></td></tr>
 <p>Geographical coordinate of the WeatherStation reporting this <a class="el" href="classWeather_1_1METAR.html" title="METAR report.">METAR</a>. </p>
 <p>If the WeatherStation coordinate is unknown, the property contains an invalid coordinate. </p>
 
-<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00068">68</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00081">81</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
 
 </div>
 </div>
@@ -543,61 +659,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isValid</b></td></tr>
 <p>Extended name of the waypoint. </p>
 <p>This property holds a string of the form "Karlsruhe (DVOR-DME)" </p>
 
-<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00083">83</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
-
-</div>
-</div>
-<a id="ac07dbbf24723923c7a66af3a60c2fab5" name="ac07dbbf24723923c7a66af3a60c2fab5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac07dbbf24723923c7a66af3a60c2fab5">&#9670;&#160;</a></span>hasMETAR</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Weather::Station::hasMETAR</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">read</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Check if a <a class="el" href="classWeather_1_1METAR.html" title="METAR report.">METAR</a> weather report is known for this weather station. </p>
-<p>This convenience property can be used to check if a <a class="el" href="classWeather_1_1METAR.html" title="METAR report.">METAR</a> report is available for the weather station. The actual <a class="el" href="classWeather_1_1METAR.html" title="METAR report.">METAR</a> report can be accessed via the property metar. </p>
-
-<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00100">100</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
-
-</div>
-</div>
-<a id="a4d92b6fcefc4ed5cef7bafa125ff16f0" name="a4d92b6fcefc4ed5cef7bafa125ff16f0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4d92b6fcefc4ed5cef7bafa125ff16f0">&#9670;&#160;</a></span>hasTAF</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Weather::Station::hasTAF</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">read</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Check if a <a class="el" href="classWeather_1_1TAF.html" title="TAF report.">TAF</a> weather forecast is known for this weather station. </p>
-<p>This convenience property can be used to check if a <a class="el" href="classWeather_1_1TAF.html" title="TAF report.">TAF</a> forecast is available for the weather station. The actual <a class="el" href="classWeather_1_1TAF.html" title="TAF report.">TAF</a> can be accessed via the property taf. </p>
-
-<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00117">117</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00087">87</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
 
 </div>
 </div>
@@ -624,7 +686,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isValid</b></td></tr>
 <p>ICAO code of the weather station. </p>
 <p>This property holds the ICAO designator of the aerodrome on which the weather station is located. </p>
 
-<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00133">133</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00094">94</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
 
 </div>
 </div>
@@ -651,12 +713,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isValid</b></td></tr>
 <p>Suggested icon for this weather station. </p>
 <p>This property holds the name of an icon file in SVG format that best describes the weather station. </p>
 
-<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00149">149</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00101">101</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
 
 </div>
 </div>
-<a id="ac999a22760fe31a188e612c73e5bcf5b" name="ac999a22760fe31a188e612c73e5bcf5b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac999a22760fe31a188e612c73e5bcf5b">&#9670;&#160;</a></span>metar</h2>
+<a id="a54425914d664d5a8fe6d2b7d3eb42f31" name="a54425914d664d5a8fe6d2b7d3eb42f31"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54425914d664d5a8fe6d2b7d3eb42f31">&#9670;&#160;</a></span>metar</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -665,7 +727,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isValid</b></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classWeather_1_1METAR.html">Weather::METAR</a> * Weather::Station::metar</td>
+          <td class="memname"><a class="el" href="classWeather_1_1METAR.html">Weather::METAR</a> Weather::Station::metar</td>
         </tr>
       </table>
   </td>
@@ -678,12 +740,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isValid</b></td></tr>
 <p>Last <a class="el" href="classWeather_1_1METAR.html" title="METAR report.">METAR</a> provided by this WeatherStation. </p>
 <p>This property holds a pointer to the last <a class="el" href="classWeather_1_1METAR.html" title="METAR report.">METAR</a> provided by this WeatherStation, which can be a nullptr if no data is available. The <a class="el" href="classWeather_1_1METAR.html" title="METAR report.">METAR</a> instance is owned by an instance of <a class="el" href="classWeather_1_1WeatherDataProvider.html" title="WeatherDataProvider, weather service manager.">WeatherDataProvider</a>, and can be deleted or updated by the <a class="el" href="classWeather_1_1WeatherDataProvider.html" title="WeatherDataProvider, weather service manager.">WeatherDataProvider</a> anytime. </p>
 
-<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00179">179</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00113">113</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
 
 </div>
 </div>
-<a id="a4dce131da9b7594122859a99afb14688" name="a4dce131da9b7594122859a99afb14688"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4dce131da9b7594122859a99afb14688">&#9670;&#160;</a></span>taf</h2>
+<a id="aa6492818caa179029863c6919e44c919" name="aa6492818caa179029863c6919e44c919"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6492818caa179029863c6919e44c919">&#9670;&#160;</a></span>taf</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -692,7 +754,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isValid</b></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classWeather_1_1TAF.html">Weather::TAF</a> * Weather::Station::taf</td>
+          <td class="memname"><a class="el" href="classWeather_1_1TAF.html">Weather::TAF</a> Weather::Station::taf</td>
         </tr>
       </table>
   </td>
@@ -702,10 +764,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isValid</b></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Last <a class="el" href="classWeather_1_1TAF.html" title="TAF report.">TAF</a> provided by this WeatherStation. </p>
-<p>This property holds a pointer to the last <a class="el" href="classWeather_1_1TAF.html" title="TAF report.">TAF</a> provided by this WeatherStation, which can be a nullptr if no data is available. The <a class="el" href="classWeather_1_1TAF.html" title="TAF report.">TAF</a> instance is owned by an instance of <a class="el" href="classWeather_1_1WeatherDataProvider.html" title="WeatherDataProvider, weather service manager.">WeatherDataProvider</a>, and can be deleted or updated by the <a class="el" href="classWeather_1_1WeatherDataProvider.html" title="WeatherDataProvider, weather service manager.">WeatherDataProvider</a> anytime. </p>
+<p>Last <a class="el" href="classWeather_1_1TAF.html" title="TAF forecast.">TAF</a> provided by this WeatherStation. </p>
+<p>This property holds a pointer to the last <a class="el" href="classWeather_1_1TAF.html" title="TAF forecast.">TAF</a> provided by this WeatherStation, which can be a nullptr if no data is available. The <a class="el" href="classWeather_1_1TAF.html" title="TAF forecast.">TAF</a> instance is owned by an instance of <a class="el" href="classWeather_1_1WeatherDataProvider.html" title="WeatherDataProvider, weather service manager.">WeatherDataProvider</a>, and can be deleted or updated by the <a class="el" href="classWeather_1_1WeatherDataProvider.html" title="WeatherDataProvider, weather service manager.">WeatherDataProvider</a> anytime. </p>
 
-<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00217">217</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00133">133</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
 
 </div>
 </div>
@@ -733,7 +795,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isValid</b></td></tr>
 <p>This property holds a one-line or two-line description of the waypoint. Depending on available data, this is a string of the form "&lt;strong&gt;LFKA&lt;/strong&gt;&lt;br&gt;&lt;font size='2'&gt;ALBERTVILLE&lt;/font&gt;" or simply "KIRCHZARTEN"</p>
 <dl class="section see"><dt>See also</dt><dd>threeLineTitle </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00199">199</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Station_8h_source.html#l00124">124</a> of file <a class="el" href="Station_8h_source.html">Station.h</a>.</p>
 
 </div>
 </div>

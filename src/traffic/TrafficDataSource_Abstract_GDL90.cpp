@@ -289,7 +289,7 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
             m_pressureAltitude = Units::Distance::fromM( qQNaN() );
             m_pressureAltitudeTimer.stop();
         }
-        emit pressureAltitudeUpdated(m_pressureAltitude);
+        setPressureAltitude(m_pressureAltitude);
 
         // Update position information and continue
         emit positionUpdated( Positioning::PositionInfo(pInfo) );

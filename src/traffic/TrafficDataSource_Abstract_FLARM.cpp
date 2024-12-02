@@ -818,5 +818,5 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessagePGRMZ(const QString
     {
         return;
     }
-    emit pressureAltitudeUpdated(barometricAlt);
+    setPressureAltitude(barometricAlt);
 }

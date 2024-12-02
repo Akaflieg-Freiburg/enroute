@@ -54,7 +54,8 @@ class PositionProvider : public PositionInfoSource_Abstract
 
     // Repeat properties from PositionInfoSource_Abstract so qmllint knows about them
     Q_PROPERTY(Positioning::PositionInfo positionInfo READ positionInfo NOTIFY positionInfoChanged)
-    Q_PROPERTY(Units::Distance pressureAltitude READ pressureAltitude NOTIFY pressureAltitudeChanged)
+#warning
+    //Q_PROPERTY(Units::Distance pressureAltitude READ pressureAltitude BINDABLE bindablePressureAltitude)
     Q_PROPERTY(bool receivingPositionInfo READ receivingPositionInfo NOTIFY receivingPositionInfoChanged)
 
 
@@ -117,6 +118,11 @@ public:
      *  @returns Property approximateLastValidCoordinate
      */
     Q_REQUIRED_RESULT QGeoCoordinate approximateLastValidCoordinate() const {return {m_approximateLastValidCoordinate};}
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property approximateLastValidCoordinate
+     */
     Q_REQUIRED_RESULT QBindable<QGeoCoordinate> bindableApproximateLastValidCoordinate() const {return &m_approximateLastValidCoordinate;}
 
     /*! \brief Getter function for the property with the same name
@@ -163,7 +169,8 @@ private slots:
     void onPositionUpdated();
 
     // Connected to sources, in order to receive new data
-    void onPressureAltitudeUpdated();
+#warning
+//    void onPressureAltitudeUpdated();
 
     // Saves last valid position and track
     void savePositionAndTrack();

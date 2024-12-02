@@ -45,7 +45,8 @@ Positioning::PositionProvider::PositionProvider(QObject *parent) : PositionInfoS
 
     // Wire up satellite source
     connect(&satelliteSource, &Positioning::PositionInfoSource_Satellite::positionInfoChanged, this, &PositionProvider::onPositionUpdated);
-    connect(&satelliteSource, &Positioning::PositionInfoSource_Satellite::pressureAltitudeChanged, this, &PositionProvider::onPressureAltitudeUpdated);
+#warning
+    //    connect(&satelliteSource, &Positioning::PositionInfoSource_Satellite::pressureAltitudeChanged, this, &PositionProvider::onPressureAltitudeUpdated);
 
     // Binding for updateStatusString
     connect(this, &Positioning::PositionProvider::receivingPositionInfoChanged, this, &Positioning::PositionProvider::updateStatusString);
@@ -80,7 +81,8 @@ Positioning::PositionProvider::PositionProvider(QObject *parent) : PositionInfoS
 void Positioning::PositionProvider::deferredInitialization() const
 {
     connect(GlobalObject::trafficDataProvider(), &Traffic::TrafficDataProvider::positionInfoChanged, this, &PositionProvider::onPositionUpdated);
-    connect(GlobalObject::trafficDataProvider(), &Traffic::TrafficDataProvider::pressureAltitudeChanged, this, &PositionProvider::onPressureAltitudeUpdated);
+#warning
+//    connect(GlobalObject::trafficDataProvider(), &Traffic::TrafficDataProvider::pressureAltitudeChanged, this, &PositionProvider::onPressureAltitudeUpdated);
 }
 
 
@@ -169,7 +171,8 @@ void Positioning::PositionProvider::onPositionUpdated()
     updateStatusString();
 }
 
-
+#warning
+/*
 void Positioning::PositionProvider::onPressureAltitudeUpdated()
 {
     // This method is called if one of our providers has a new pressure altitude.
@@ -192,7 +195,7 @@ void Positioning::PositionProvider::onPressureAltitudeUpdated()
     setPressureAltitude(pAlt);
 
 }
-
+*/
 
 void Positioning::PositionProvider::savePositionAndTrack()
 {

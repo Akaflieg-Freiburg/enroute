@@ -27,11 +27,6 @@ Positioning::PositionInfoSource_Abstract::PositionInfoSource_Abstract(QObject *p
     m_positionInfoTimer.setInterval( PositionInfo::lifetime );
     m_positionInfoTimer.setSingleShot(true);
     connect(&m_positionInfoTimer, &QTimer::timeout, this, &Positioning::PositionInfoSource_Abstract::resetPositionInfo);
-
-    // Setup timer
-    m_pressureAltitudeTimer.setInterval( PositionInfo::lifetime );
-    m_pressureAltitudeTimer.setSingleShot(true);
-    connect(&m_pressureAltitudeTimer, &QTimer::timeout, this, &Positioning::PositionInfoSource_Abstract::resetPressureAltitude);
 }
 
 
@@ -57,7 +52,7 @@ void Positioning::PositionInfoSource_Abstract::setPositionInfo(const Positioning
 }
 
 
-void Positioning::PositionInfoSource_Abstract::setSourceName(const QString &name)
+void Positioning::PositionInfoSource_Abstract::setSourceName(const QString& name)
 {
     if (m_sourceName == name) {
         return;
@@ -68,7 +63,7 @@ void Positioning::PositionInfoSource_Abstract::setSourceName(const QString &name
 }
 
 
-void Positioning::PositionInfoSource_Abstract::setStatusString(const QString &status)
+void Positioning::PositionInfoSource_Abstract::setStatusString(const QString& status)
 {
     if (m_statusString == status) {
         return;
@@ -76,26 +71,6 @@ void Positioning::PositionInfoSource_Abstract::setStatusString(const QString &st
 
     m_statusString = status;
     emit statusStringChanged(m_statusString);
-}
-
-
-void Positioning::PositionInfoSource_Abstract::setPressureAltitude(Units::Distance newPressureAltitude)
-{
-    if (newPressureAltitude.isFinite()) {
-        m_pressureAltitudeTimer.start();
-    }
-    if (newPressureAltitude == m_pressureAltitude) {
-        return;
-    }
-
-    m_pressureAltitude = newPressureAltitude;
-    emit pressureAltitudeChanged();
-}
-
-
-void Positioning::PositionInfoSource_Abstract::resetPressureAltitude()
-{
-    setPressureAltitude( {} );
 }
 
 

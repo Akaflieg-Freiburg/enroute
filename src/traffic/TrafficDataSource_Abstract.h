@@ -505,8 +505,8 @@ private:
     Units::Distance m_trueAltitudeFOM; // Fig. of Merit
     QTimer m_trueAltitudeTimer;
 
-    // Pressure altitude of own aircraft. See the member m_trueAltitude for a
-    // description how the timer should be used.
+    // Pressure altitude of own aircraft. The timer will reset the pressureAltitude
+    // to an invalid value if no data is received for a while.
     QProperty<Units::Distance> m_pressureAltitude;
     QTimer m_pressureAltitudeTimer;
 

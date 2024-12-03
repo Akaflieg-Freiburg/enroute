@@ -84,6 +84,16 @@ public:
      */
     Q_PROPERTY(QList<Traffic::TrafficDataSource_Abstract*> dataSources READ dataSources NOTIFY dataSourcesChanged)
 
+    /*! \brief Pressure altitude
+     *
+     *  This property holds information about the pressure altitude, that is,
+     *  the altitude that you would read off your altimeter if the altimeter is
+     *  set to 1013.2 hPa. To ensure that the data is up-to-date, the position
+     *  information will be set to "invalid" when no data has arrived for more
+     *  than the time specified in PositionInfo::lifetime.
+     */
+    Q_PROPERTY(Units::Distance pressureAltitude READ pressureAltitude BINDABLE bindablePressureAltitude)
+
     /*! \brief Heartbeat indicator
      *
      *  When active, traffic receivers send regular heartbeat messages. These
@@ -148,6 +158,18 @@ public:
      *  @returns Property dataSources
      */
     [[nodiscard]] QList<Traffic::TrafficDataSource_Abstract*> dataSources() const;
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property pressureAltitude
+     */
+    [[nodiscard]] Units::Distance pressureAltitude() const {return m_pressureAltitude.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property pressureAltitude
+     */
+    [[nodiscard]] QBindable<Units::Distance> bindablePressureAltitude() const {return &m_pressureAltitude;}
 
     /*! \brief Getter method for property with the same name
      *
@@ -417,7 +439,7 @@ private:
     QPointer<Traffic::TrafficFactor_DistanceOnly> m_trafficObjectWithoutPosition;
 
     // TrafficData Sources
-    QList<QPointer<Traffic::TrafficDataSource_Abstract>> m_dataSources;
+    QProperty<QList<QPointer<Traffic::TrafficDataSource_Abstract>>> m_dataSources;
     QPointer<Traffic::TrafficDataSource_Abstract> m_currentSource;
 
     // Property cache
@@ -425,6 +447,9 @@ private:
     QTimer m_WarningTimer;
     QString m_trafficReceiverRuntimeError;
     QString m_trafficReceiverSelfTestError;
+
+    QProperty<Units::Distance> m_pressureAltitude;
+    Units::Distance computePressureAltitude();
 
     // Reconnect
     QTimer reconnectionTimer;

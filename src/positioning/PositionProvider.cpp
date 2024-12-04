@@ -49,8 +49,10 @@ Positioning::PositionProvider::PositionProvider(QObject *parent) : PositionInfoS
     //    connect(&satelliteSource, &Positioning::PositionInfoSource_Satellite::pressureAltitudeChanged, this, &PositionProvider::onPressureAltitudeUpdated);
 
     // Binding for updateStatusString
-    connect(this, &Positioning::PositionProvider::receivingPositionInfoChanged, this, &Positioning::PositionProvider::updateStatusString);
-    connect(&satelliteSource, &Positioning::PositionInfoSource_Satellite::statusStringChanged, this, &Positioning::PositionProvider::updateStatusString);
+#warning This is presently incorrect
+//    connect(this, &Positioning::PositionProvider::receivingPositionInfoChanged, this, &Positioning::PositionProvider::updateStatusString);
+#warning This is presently incorrect
+    //    connect(&satelliteSource, &Positioning::PositionInfoSource_Satellite::statusStringChanged, this, &Positioning::PositionProvider::updateStatusString);
 
     // Wire up traffic data provider source
     QTimer::singleShot(0, this, &Positioning::PositionProvider::deferredInitialization);
@@ -255,9 +257,10 @@ auto Positioning::PositionProvider::lastValidTT() -> Units::Angle
     return positionProvider->m_lastValidTT;
 }
 
-
+#warning Turn this into a binding
 void Positioning::PositionProvider::updateStatusString()
 {
+#warning make bindable: receivingPositionInfo, sourceName, statusString
     if (receivingPositionInfo()) {
         QString result = QStringLiteral("<ul style='margin-left:-25px;'>");
         result += QStringLiteral("<li>%1: %2</li>").arg(tr("Source"), sourceName());

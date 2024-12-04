@@ -32,11 +32,7 @@ namespace Positioning {
 /*! \brief Abstract base class for all classes that provide geographic position information
  *
  *  This is the base class for all classes that provide geographic position
- *  information.  The information is exposed via two properties, positionInfo
- *  and pressureAltitude.
- *
- *  The property statusString gives more information about the status of the
- *  source
+ *  information.
  */
 
 
@@ -72,7 +68,7 @@ public:
      *
      *  Use this property to tell if position information is being received.
      */
-    Q_PROPERTY(bool receivingPositionInfo READ receivingPositionInfo NOTIFY receivingPositionInfoChanged)
+    Q_PROPERTY(bool receivingPositionInfo READ receivingPositionInfo BINDABLE bindableReceivingPositionInfo)
 
     /*! \brief Source name
      *
@@ -80,7 +76,7 @@ public:
      *  the source. This could typically be a string of the form "Traffic
      *  Receiver" or "Built-in satellite receiver".
      */
-    Q_PROPERTY(QString sourceName READ sourceName NOTIFY sourceNameChanged)
+    Q_PROPERTY(QString sourceName READ sourceName BINDABLE bindableSourceName)
 
     /*! \brief Source status
      *
@@ -88,7 +84,7 @@ public:
      *  the status of the positionInfo source. This could typically be a string
      *  of the form "OK" or "Insufficient permission to access position info"
      */
-    Q_PROPERTY(QString statusString READ statusString NOTIFY statusStringChanged)
+    Q_PROPERTY(QString statusString READ statusString BINDABLE bindableStatusString)
 
 
     //
@@ -101,7 +97,7 @@ public:
      */
     [[nodiscard]] Positioning::PositionInfo positionInfo() const
     {
-        return m_positionInfo;
+        return m_positionInfo.value();
     }
 
     /*! \brief Getter method for property with the same name
@@ -110,7 +106,16 @@ public:
      */
     [[nodiscard]] bool receivingPositionInfo() const
     {
-        return _receivingPositionInfo;
+        return m_positionInfoTimer.isActive();
+    }
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property receivingPositionInfo
+     */
+    [[nodiscard]] QBindable<bool> bindableReceivingPositionInfo()
+    {
+        return m_positionInfoTimer.bindableActive();
     }
 
     /*! \brief Getter method for property with the same name
@@ -119,7 +124,16 @@ public:
      */
     [[nodiscard]] QString sourceName() const
     {
-        return m_sourceName;
+        return m_sourceName.value();
+    }
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property sourceName
+     */
+    [[nodiscard]] QBindable<QString> bindableSourceName() const
+    {
+        return &m_sourceName;
     }
 
     /*! \brief Getter method for property with the same name
@@ -128,21 +142,21 @@ public:
      */
     [[nodiscard]] QString statusString() const
     {
-        return m_statusString;
+        return m_statusString.value();
+    }
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property statusString
+     */
+    [[nodiscard]] QBindable<QString> bindableStatusString() const
+    {
+        return &m_statusString;
     }
 
 signals:
     /*! \brief Notifier signal */
     void positionInfoChanged();
-
-    /*! \brief Notifier signal */
-    void receivingPositionInfoChanged();
-
-    /*! \brief Notifier signal */
-    void sourceNameChanged(const QString &name);
-
-    /*! \brief Notifier signal */
-    void statusStringChanged(const QString &status);
 
 protected:
     // This method must be used by child classes to update the position info.
@@ -152,22 +166,17 @@ protected:
     void setPositionInfo(const Positioning::PositionInfo& info);
 
     // This method must be used by child classes to update the source name
-    void setSourceName(const QString& name);
+    void setSourceName(const QString& name) {m_sourceName = name;}
 
     // This method must be used by child classes to update the status string
-    void setStatusString(const QString& status);
+    void setStatusString(const QString& status)  {m_statusString = status;}
 
 private:
-    // Resets the position info to "invalid"
-    void resetPositionInfo();
-
     QProperty<Positioning::PositionInfo> m_positionInfo;
     QTimer m_positionInfoTimer;
 
-    QString m_sourceName;
-    QString m_statusString;
-
-    bool _receivingPositionInfo{false};
+    QProperty<QString> m_sourceName;
+    QProperty<QString> m_statusString;
 };
 
 } // namespace Positioning

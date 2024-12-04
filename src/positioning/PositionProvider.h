@@ -56,7 +56,7 @@ class PositionProvider : public PositionInfoSource_Abstract
     Q_PROPERTY(Positioning::PositionInfo positionInfo READ positionInfo NOTIFY positionInfoChanged)
 #warning
     //Q_PROPERTY(Units::Distance pressureAltitude READ pressureAltitude BINDABLE bindablePressureAltitude)
-    Q_PROPERTY(bool receivingPositionInfo READ receivingPositionInfo NOTIFY receivingPositionInfoChanged)
+    Q_PROPERTY(bool receivingPositionInfo READ receivingPositionInfo BINDABLE bindableReceivingPositionInfo)
 
 
 public:
@@ -199,6 +199,7 @@ private:
 
     PositionInfoSource_Satellite satelliteSource;
 
+#warning avoid this crap
     Q_OBJECT_BINDABLE_PROPERTY(PositionProvider, QGeoCoordinate, m_approximateLastValidCoordinate, &Positioning::PositionProvider::approximateLastValidCoordinateChanged)
     QProperty<QGeoCoordinate> m_lastValidCoordinate {QGeoCoordinate(EDTF_lat, EDTF_lon, EDTF_ele)};
     Units::Angle m_lastValidTT {};

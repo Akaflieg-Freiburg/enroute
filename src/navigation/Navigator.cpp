@@ -43,9 +43,12 @@ Navigation::Navigator::Navigator(QObject *parent) : GlobalObject(parent)
 
     // Restore aircraft
     QFile file(m_aircraftFileName);
-    if (file.open(QIODevice::ReadOnly)) {
+    if (file.open(QIODevice::ReadOnly))
+    {
         (void)m_aircraft.loadFromJSON(file.readAll());
-    } else {
+    }
+    else
+    {
         auto cruiseSpeed = Units::Speed::fromKN(settings.value(QStringLiteral("Aircraft/cruiseSpeedInKTS"), 0.0).toDouble());
         auto descentSpeed = Units::Speed::fromKN(settings.value(QStringLiteral("Aircraft/descentSpeedInKTS"), 0.0).toDouble());
         auto fuelConsumption = Units::VolumeFlow::fromLPH(settings.value(QStringLiteral("Aircraft/fuelConsumptionInLPH"), 0.0).toDouble());
@@ -58,9 +61,12 @@ Navigation::Navigator::Navigator(QObject *parent) : GlobalObject(parent)
 
 void Navigation::Navigator::deferredInitialization()
 {
-    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateAltitudeLimit);
-    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateFlightStatus);
-    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateRemainingRouteInfo);
+#warning Fix that!
+//    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateAltitudeLimit);
+#warning Fix that!
+//    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateFlightStatus);
+#warning Fix that!
+//    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::positionInfoChanged, this, &Navigation::Navigator::updateRemainingRouteInfo);
     connect(this, &Navigation::Navigator::aircraftChanged, this, [this](){ updateRemainingRouteInfo(); });
     connect(this, &Navigation::Navigator::windChanged, this, [this](){ updateRemainingRouteInfo(); });
     connect(flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, [this](){ updateRemainingRouteInfo(); });
@@ -73,7 +79,8 @@ void Navigation::Navigator::deferredInitialization()
 
 auto Navigation::Navigator::flightRoute() -> FlightRoute*
 {
-    if (m_flightRoute.isNull()) {
+    if (m_flightRoute.isNull())
+    {
         m_flightRoute = new FlightRoute(this);
         m_flightRoute->load(m_flightRouteFileName);
         connect(m_flightRoute, &Navigation::FlightRoute::waypointsChanged, this, [this]() {if (m_flightRoute != nullptr) {(void)m_flightRoute->save(m_flightRouteFileName);}});
@@ -89,7 +96,8 @@ auto Navigation::Navigator::flightRoute() -> FlightRoute*
 
 void Navigation::Navigator::setAircraft(const Navigation::Aircraft& newAircraft)
 {
-    if (newAircraft == m_aircraft) {
+    if (newAircraft == m_aircraft)
+    {
         return;
     }
 
@@ -106,7 +114,8 @@ void Navigation::Navigator::setAircraft(const Navigation::Aircraft& newAircraft)
 
 void Navigation::Navigator::setFlightStatus(FlightStatus newFlightStatus)
 {
-    if (m_flightStatus == newFlightStatus) {
+    if (m_flightStatus == newFlightStatus)
+    {
         return;
     }
 
@@ -117,7 +126,8 @@ void Navigation::Navigator::setFlightStatus(FlightStatus newFlightStatus)
 
 void Navigation::Navigator::setWind(Weather::Wind newWind)
 {
-    if (newWind == m_wind) {
+    if (newWind == m_wind)
+    {
         return;
     }
 

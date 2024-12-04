@@ -53,9 +53,7 @@ class PositionProvider : public PositionInfoSource_Abstract
     QML_SINGLETON
 
     // Repeat properties from PositionInfoSource_Abstract so qmllint knows about them
-    Q_PROPERTY(Positioning::PositionInfo positionInfo READ positionInfo NOTIFY positionInfoChanged)
-#warning
-    //Q_PROPERTY(Units::Distance pressureAltitude READ pressureAltitude BINDABLE bindablePressureAltitude)
+    Q_PROPERTY(Positioning::PositionInfo positionInfo READ positionInfo BINDABLE bindablePositionInfo)
     Q_PROPERTY(bool receivingPositionInfo READ receivingPositionInfo BINDABLE bindableReceivingPositionInfo)
 
 
@@ -152,12 +150,11 @@ public:
 
 signals:
     /*! \brief Notifier signal */
-    void approximateLastValidCoordinateChanged();
-
-    /*! \brief Notifier signal */
+#warning remove
     void lastValidTTChanged(Units::Angle);
 
     /*! \brief Notifier signal */
+#warning remove
     void lastValidCoordinateChanged(QGeoCoordinate);
 
 private slots:   
@@ -167,10 +164,6 @@ private slots:
 
     // Connected to sources, in order to receive new data
     void onPositionUpdated();
-
-    // Connected to sources, in order to receive new data
-#warning
-//    void onPressureAltitudeUpdated();
 
     // Saves last valid position and track
     void savePositionAndTrack();
@@ -199,8 +192,7 @@ private:
 
     PositionInfoSource_Satellite satelliteSource;
 
-#warning avoid this crap
-    Q_OBJECT_BINDABLE_PROPERTY(PositionProvider, QGeoCoordinate, m_approximateLastValidCoordinate, &Positioning::PositionProvider::approximateLastValidCoordinateChanged)
+    QProperty<QGeoCoordinate> m_approximateLastValidCoordinate;
     QProperty<QGeoCoordinate> m_lastValidCoordinate {QGeoCoordinate(EDTF_lat, EDTF_lon, EDTF_ele)};
     Units::Angle m_lastValidTT {};
 };

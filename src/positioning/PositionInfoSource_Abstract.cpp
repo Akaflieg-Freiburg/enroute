@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -36,11 +36,9 @@ void Positioning::PositionInfoSource_Abstract::setPositionInfo(const Positioning
     {
         m_positionInfoTimer.start();
     }
-    if (info == m_positionInfo)
-    {
-        return;
-    }
 
+    Qt::beginPropertyUpdateGroup();
     m_positionInfo = info;
-    emit positionInfoChanged();
+    m_receivingPositionInfo = info.isValid();
+    Qt::endPropertyUpdateGroup();
 }

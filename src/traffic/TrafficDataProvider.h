@@ -439,8 +439,9 @@ private:
     QPointer<Traffic::TrafficFactor_DistanceOnly> m_trafficObjectWithoutPosition;
 
     // TrafficData Sources
+#warning make these bindable
     QProperty<QList<QPointer<Traffic::TrafficDataSource_Abstract>>> m_dataSources;
-    QPointer<Traffic::TrafficDataSource_Abstract> m_currentSource;
+    QProperty<QPointer<Traffic::TrafficDataSource_Abstract>> m_currentSource;
 
     // Property cache
     Traffic::Warning m_Warning;
@@ -455,7 +456,8 @@ private:
     QTimer reconnectionTimer;
 
     // Property Cache
-    bool m_receivingHeartbeat {false};
+#warning Make this bindable
+    QProperty<bool> m_receivingHeartbeat {false};
 
     // Standard file name for saveConnectionInfos()
     QString stdFileName{QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/connectionInfos.data"};

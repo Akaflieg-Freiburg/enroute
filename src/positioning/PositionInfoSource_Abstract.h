@@ -25,7 +25,6 @@
 #include <QTimer>
 
 #include "positioning/PositionInfo.h"
-#include "units/Distance.h"
 
 
 namespace Positioning {
@@ -66,6 +65,7 @@ public:
      *  Consumers of the class can use positionInfo().isValid() property to
      *  check if position data is continually arriving.
      */
+#warning Make this bindable
     Q_PROPERTY(Positioning::PositionInfo positionInfo READ positionInfo NOTIFY positionInfoChanged)
 
     /*! \brief Indicator that position information is being received
@@ -161,7 +161,7 @@ private:
     // Resets the position info to "invalid"
     void resetPositionInfo();
 
-    Positioning::PositionInfo m_positionInfo;
+    QProperty<Positioning::PositionInfo> m_positionInfo;
     QTimer m_positionInfoTimer;
 
     QString m_sourceName;

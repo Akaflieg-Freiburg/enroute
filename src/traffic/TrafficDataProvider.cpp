@@ -308,7 +308,7 @@ void Traffic::TrafficDataProvider::loadConnectionInfos()
 void Traffic::TrafficDataProvider::onSourceHeartbeatChanged()
 {
     // If we have a current source, if the current source has a heartbeat and if the current source is a TCP source, then we simply stick with it.
-    if ((qobject_cast<Traffic::TrafficDataSource_Tcp*>(m_currentSource) != nullptr)
+    if ((qobject_cast<Traffic::TrafficDataSource_Tcp*>(m_currentSource.value()) != nullptr)
         && m_currentSource->receivingHeartbeat() )
     {
         setReceivingHeartbeat(true);
@@ -336,29 +336,25 @@ void Traffic::TrafficDataProvider::onSourceHeartbeatChanged()
 
 
         // Disconnect old m_currentSource
-        if (!m_currentSource.isNull())
+        if (!m_currentSource.value().isNull())
         {
-#warning
-            //            disconnect(m_currentSource, &Traffic::TrafficDataSource_Abstract::pressureAltitudeUpdated, this, &Traffic::TrafficDataProvider::setPressureAltitude);
-            disconnect(m_currentSource, &Traffic::TrafficDataSource_Abstract::factorWithoutPosition, this, &Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition);
-            disconnect(m_currentSource, &Traffic::TrafficDataSource_Abstract::factorWithPosition, this, &Traffic::TrafficDataProvider::onTrafficFactorWithPosition);
-            disconnect(m_currentSource, &Traffic::TrafficDataSource_Abstract::positionUpdated, this, &Traffic::TrafficDataProvider::setPositionInfo);
-            disconnect(m_currentSource, &Traffic::TrafficDataSource_Abstract::warning, this, &Traffic::TrafficDataProvider::setWarning);
+            disconnect(m_currentSource.value(), &Traffic::TrafficDataSource_Abstract::factorWithoutPosition, this, &Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition);
+            disconnect(m_currentSource.value(), &Traffic::TrafficDataSource_Abstract::factorWithPosition, this, &Traffic::TrafficDataProvider::onTrafficFactorWithPosition);
+            disconnect(m_currentSource.value(), &Traffic::TrafficDataSource_Abstract::positionUpdated, this, &Traffic::TrafficDataProvider::setPositionInfo);
+            disconnect(m_currentSource.value(), &Traffic::TrafficDataSource_Abstract::warning, this, &Traffic::TrafficDataProvider::setWarning);
         }
 
         // Update m_currentsource
         m_currentSource = heartbeatDataSource;
 
-        if (!m_currentSource.isNull())
+        if (!m_currentSource.value().isNull())
         {
             // If there is a new m_currentSource, then setup Qt connections and
             // disconnect all sources of lower priority from the traffic receivers.
-#warning
-            // connect(m_currentSource, &Traffic::TrafficDataSource_Abstract::pressureAltitudeUpdated, this, &Traffic::TrafficDataProvider::setPressureAltitude);
-            connect(m_currentSource, &Traffic::TrafficDataSource_Abstract::factorWithoutPosition, this, &Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition);
-            connect(m_currentSource, &Traffic::TrafficDataSource_Abstract::factorWithPosition, this, &Traffic::TrafficDataProvider::onTrafficFactorWithPosition);
-            connect(m_currentSource, &Traffic::TrafficDataSource_Abstract::positionUpdated, this, &Traffic::TrafficDataProvider::setPositionInfo);
-            connect(m_currentSource, &Traffic::TrafficDataSource_Abstract::warning, this, &Traffic::TrafficDataProvider::setWarning);
+            connect(m_currentSource.value(), &Traffic::TrafficDataSource_Abstract::factorWithoutPosition, this, &Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition);
+            connect(m_currentSource.value(), &Traffic::TrafficDataSource_Abstract::factorWithPosition, this, &Traffic::TrafficDataProvider::onTrafficFactorWithPosition);
+            connect(m_currentSource.value(), &Traffic::TrafficDataSource_Abstract::positionUpdated, this, &Traffic::TrafficDataProvider::setPositionInfo);
+            connect(m_currentSource.value(), &Traffic::TrafficDataSource_Abstract::warning, this, &Traffic::TrafficDataProvider::setWarning);
 
             // Disconnect from traffic receiver
             bool doDisconnect = false;
@@ -388,7 +384,7 @@ void Traffic::TrafficDataProvider::onSourceHeartbeatChanged()
     }
 
     // Update heartbeat status
-    if (m_currentSource.isNull())
+    if (m_currentSource.value().isNull())
     {
         setReceivingHeartbeat(false);
     }
@@ -617,10 +613,12 @@ void Traffic::TrafficDataProvider::setWarning(const Traffic::Warning& warning)
 
 void Traffic::TrafficDataProvider::updateStatusString()
 {
+#warning Turn this into a binding!
+
     if (receivingHeartbeat())
     {
         QString result;
-        if (!m_currentSource.isNull())
+        if (!m_currentSource.value().isNull())
         {
             result += QStringLiteral("<p>%1</p><ul style='margin-left:-25px;'>").arg(m_currentSource->sourceName());
         }

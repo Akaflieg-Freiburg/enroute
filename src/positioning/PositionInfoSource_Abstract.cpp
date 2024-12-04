@@ -42,7 +42,7 @@ void Positioning::PositionInfoSource_Abstract::setPositionInfo(const Positioning
     m_positionInfo = info;
     emit positionInfoChanged();
 
-    auto newReceiving = m_positionInfo.isValid();
+    auto newReceiving = m_positionInfo.value().isValid();
     if (_receivingPositionInfo == newReceiving) {
         return;
     }

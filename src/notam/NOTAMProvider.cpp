@@ -62,7 +62,8 @@ void NOTAM::NOTAMProvider::deferredInitialization()
     // Wire up updateData. Check NOTAM database after start, and whenever the flight route changes.
     QTimer::singleShot(0, this, &NOTAMProvider::updateData);
     connect(navigator()->flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, &NOTAMProvider::updateData);
-    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::approximateLastValidCoordinateChanged, this, &NOTAMProvider::updateData);
+#warning FIXME!
+    //    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::approximateLastValidCoordinateChanged, this, &NOTAMProvider::updateData);
 
     // Clean and check the NOTAM database the data every hour.
     auto* timer = new QTimer(this);

@@ -46,8 +46,6 @@ Positioning::PositionProvider::PositionProvider(QObject *parent) : PositionInfoS
     // Wire up satellite source
 #warning Fix that
 //    connect(&satelliteSource, &Positioning::PositionInfoSource_Satellite::positionInfoChanged, this, &PositionProvider::onPositionUpdated);
-#warning
-    //    connect(&satelliteSource, &Positioning::PositionInfoSource_Satellite::pressureAltitudeChanged, this, &PositionProvider::onPressureAltitudeUpdated);
 
     // Binding for updateStatusString
 #warning This is presently incorrect
@@ -69,6 +67,8 @@ Positioning::PositionProvider::PositionProvider(QObject *parent) : PositionInfoS
     // Update properties
     updateStatusString();
     m_approximateLastValidCoordinate = m_lastValidCoordinate.value();
+#warning REPLACE ME
+    /*
     connect(this, &Positioning::PositionProvider::lastValidCoordinateChanged, this, [this]() {
         if (m_approximateLastValidCoordinate.value().isValid()
             && (m_approximateLastValidCoordinate.value().distanceTo(m_lastValidCoordinate) < 10000))
@@ -77,6 +77,7 @@ Positioning::PositionProvider::PositionProvider(QObject *parent) : PositionInfoS
         }
         m_approximateLastValidCoordinate = m_lastValidCoordinate.value();
     });
+    */
 }
 
 
@@ -175,31 +176,6 @@ void Positioning::PositionProvider::onPositionUpdated()
     updateStatusString();
 }
 
-#warning
-/*
-void Positioning::PositionProvider::onPressureAltitudeUpdated()
-{
-    // This method is called if one of our providers has a new pressure altitude.
-    // We go through the list of providers in order of preference, to find the first one
-    // that has valid data for us.
-    Units::Distance pAlt;
-
-    // Priority #1: Traffic data provider
-    auto* trafficDataProvider = GlobalObject::trafficDataProvider();
-    if (trafficDataProvider != nullptr) {
-        pAlt = trafficDataProvider->pressureAltitude();
-    }
-
-    // Priority #2: Built-in sat receiver
-    if (!pAlt.isFinite()) {
-        pAlt = satelliteSource.pressureAltitude();
-    }
-
-    // Set new info
-    setPressureAltitude(pAlt);
-
-}
-*/
 
 void Positioning::PositionProvider::savePositionAndTrack()
 {
@@ -210,37 +186,35 @@ void Positioning::PositionProvider::savePositionAndTrack()
     settings.setValue(QStringLiteral("PositionProvider/lastValidAltitude"), m_lastValidCoordinate.value().altitude());
 
     // Save the last valid track
-    settings.setValue(QStringLiteral("PositionProvider/lastValidTrack"), m_lastValidTT.toDEG());
+    settings.setValue(QStringLiteral("PositionProvider/lastValidTrack"), m_lastValidTT.value().toDEG());
 }
 
 
 void Positioning::PositionProvider::setLastValidCoordinate(const QGeoCoordinate &newCoordinate)
 {
-    if (!newCoordinate.isValid()) {
-        return;
-    }
-    if (newCoordinate == m_lastValidCoordinate) {
+    if (!newCoordinate.isValid())
+    {
         return;
     }
     m_lastValidCoordinate = newCoordinate;
-    emit lastValidCoordinateChanged(m_lastValidCoordinate);
 }
 
 
 void Positioning::PositionProvider::setLastValidTT(Units::Angle newTT)
 {
-    if (!newTT.isFinite()) {
+    if (!newTT.isFinite())
+    {
         return;
     }
-    if (newTT == m_lastValidTT) {
+    if (newTT == m_lastValidTT)
+    {
         return;
     }
     m_lastValidTT = newTT;
-    emit lastValidTTChanged(m_lastValidTT);
 }
 
 
-auto Positioning::PositionProvider::lastValidCoordinate() -> QGeoCoordinate
+QGeoCoordinate Positioning::PositionProvider::lastValidCoordinate()
 {
     auto *positionProvider = GlobalObject::positionProvider();
     if (positionProvider == nullptr) {
@@ -250,7 +224,7 @@ auto Positioning::PositionProvider::lastValidCoordinate() -> QGeoCoordinate
 }
 
 
-auto Positioning::PositionProvider::lastValidTT() -> Units::Angle
+Units::Angle Positioning::PositionProvider::lastValidTT()
 {
     auto *positionProvider = GlobalObject::positionProvider();
     if (positionProvider == nullptr) {

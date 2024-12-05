@@ -96,7 +96,7 @@ public:
      *  value is stored in a QSetting at destruction, and restored in the
      *  construction.
      */
-    Q_PROPERTY(QGeoCoordinate lastValidCoordinate READ lastValidCoordinate NOTIFY lastValidCoordinateChanged)
+    Q_PROPERTY(QGeoCoordinate lastValidCoordinate READ lastValidCoordinate BINDABLE bindableLastValidCoordinate)
 
     /*! \brief Last valid true track
      *
@@ -104,7 +104,7 @@ public:
      *  start, this property is set to 0°.  The value is stored in a QSetting at
      *  destruction, and restored in the construction.
      */
-    Q_PROPERTY(Units::Angle lastValidTT READ lastValidTT NOTIFY lastValidTTChanged)
+    Q_PROPERTY(Units::Angle lastValidTT READ lastValidTT BINDABLE bindableLastValidTT)
 
 
     //
@@ -131,9 +131,21 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
+     *  @returns Property lastValidCoordinate
+     */
+    QBindable<QGeoCoordinate> bindableLastValidCoordinate() {return &m_lastValidCoordinate;}
+
+    /*! \brief Getter function for the property with the same name
+     *
      *  @returns Property lastValidTrack
      */
     static Units::Angle lastValidTT();
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property lastValidTrack
+     */
+    QBindable<Units::Angle> bindableLastValidTT() {return &m_lastValidTT;}
 
 
     //
@@ -147,15 +159,6 @@ public:
      *  WiFi) if permissions were granted.
      */
     Q_INVOKABLE void startUpdates() { satelliteSource.startUpdates(); }
-
-signals:
-    /*! \brief Notifier signal */
-#warning remove
-    void lastValidTTChanged(Units::Angle);
-
-    /*! \brief Notifier signal */
-#warning remove
-    void lastValidCoordinateChanged(QGeoCoordinate);
 
 private slots:   
     // Intializations that are moved out of the constructor, in order to avoid
@@ -194,7 +197,7 @@ private:
 
     QProperty<QGeoCoordinate> m_approximateLastValidCoordinate;
     QProperty<QGeoCoordinate> m_lastValidCoordinate {QGeoCoordinate(EDTF_lat, EDTF_lon, EDTF_ele)};
-    Units::Angle m_lastValidTT {};
+    QProperty<Units::Angle> m_lastValidTT;
 };
 
 } // namespace Positioning

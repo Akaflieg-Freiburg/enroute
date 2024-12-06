@@ -441,6 +441,7 @@ private:
     // TrafficData Sources
 #warning make these bindable
     QProperty<QList<QPointer<Traffic::TrafficDataSource_Abstract>>> m_dataSources;
+#warning make these bindable
     QProperty<QPointer<Traffic::TrafficDataSource_Abstract>> m_currentSource;
 
     // Property cache

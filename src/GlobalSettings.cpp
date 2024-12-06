@@ -35,17 +35,20 @@ GlobalSettings::GlobalSettings(QObject *parent)
     QCoreApplication::processEvents();
 
     // Save some values
-    settings.setValue(QStringLiteral("lastVersion"), ENROUTE_VERSION_STRING);
+    m_settings.setValue(QStringLiteral("lastVersion"), ENROUTE_VERSION_STRING);
+
+    // Read values
+    m_positioningByTrafficDataReceiver = m_settings.value(QStringLiteral("positioningByTrafficDataReceiver"), false).toBool();
 
     // Convert old setting to new system
-    if (settings.contains(QStringLiteral("Map/hideUpperAirspaces"))) {
-        auto hide = settings.value(QStringLiteral("Map/hideUpperAirspaces"), false).toBool();
+    if (m_settings.contains(QStringLiteral("Map/hideUpperAirspaces"))) {
+        auto hide = m_settings.value(QStringLiteral("Map/hideUpperAirspaces"), false).toBool();
         if (hide) {
             setAirspaceAltitudeLimit( Units::Distance::fromFT(10000) );
         } else {
             setAirspaceAltitudeLimit( Units::Distance::fromFT(qInf()) );
         }
-        settings.remove(QStringLiteral("Map/hideUpperAirspaces"));
+        m_settings.remove(QStringLiteral("Map/hideUpperAirspaces"));
     }
 }
 
@@ -56,7 +59,7 @@ GlobalSettings::GlobalSettings(QObject *parent)
 
 auto GlobalSettings::airspaceAltitudeLimit() const -> Units::Distance
 {
-    auto aspAlttLimit = Units::Distance::fromFT( settings.value(QStringLiteral("Map/airspaceAltitudeLimit_ft"), qQNaN()).toDouble() );
+    auto aspAlttLimit = Units::Distance::fromFT( m_settings.value(QStringLiteral("Map/airspaceAltitudeLimit_ft"), qQNaN()).toDouble() );
     if (aspAlttLimit < airspaceAltitudeLimit_min) {
         aspAlttLimit = airspaceAltitudeLimit_min;
     }
@@ -69,21 +72,21 @@ auto GlobalSettings::airspaceAltitudeLimit() const -> Units::Distance
 
 auto GlobalSettings::fontSize() const -> int
 {
-    auto fontSize = settings.value(QStringLiteral("fontSize"), 14).toInt();
+    auto fontSize = m_settings.value(QStringLiteral("fontSize"), 14).toInt();
     return qBound(14, fontSize, 20);
 }
 
 
 auto GlobalSettings::lastValidAirspaceAltitudeLimit() const -> Units::Distance
 {
-    auto result = Units::Distance::fromFT(settings.value(QStringLiteral("Map/lastValidAirspaceAltitudeLimit_ft"), 99999).toInt() );
+    auto result = Units::Distance::fromFT(m_settings.value(QStringLiteral("Map/lastValidAirspaceAltitudeLimit_ft"), 99999).toInt() );
     return qBound(airspaceAltitudeLimit_min, result, airspaceAltitudeLimit_max);
 }
 
 
 auto GlobalSettings::mapBearingPolicy() const -> GlobalSettings::MapBearingPolicy
 {
-    auto intVal = settings.value(QStringLiteral("Map/bearingPolicy"), 0).toInt();
+    auto intVal = m_settings.value(QStringLiteral("Map/bearingPolicy"), 0).toInt();
     if (intVal == 0) {
         return NUp;
     }
@@ -103,7 +106,7 @@ void GlobalSettings::setAcceptedTerms(int terms)
     if (terms == acceptedTerms()) {
         return;
     }
-    settings.setValue(QStringLiteral("acceptedTerms"), terms);
+    m_settings.setValue(QStringLiteral("acceptedTerms"), terms);
     emit acceptedTermsChanged();
 }
 
@@ -113,7 +116,7 @@ void GlobalSettings::setAlwaysOpenExternalWebsites(bool alwaysOpen)
     if (alwaysOpen == alwaysOpenExternalWebsites()) {
         return;
     }
-    settings.setValue(QStringLiteral("alwaysOpenExternalWebsites"), alwaysOpen);
+    m_settings.setValue(QStringLiteral("alwaysOpenExternalWebsites"), alwaysOpen);
     emit alwaysOpenExternalWebsitesChanged();
 }
 
@@ -128,13 +131,13 @@ void GlobalSettings::setAirspaceAltitudeLimit(Units::Distance newAirspaceAltitud
     }
 
     if (newAirspaceAltitudeLimit != airspaceAltitudeLimit()) {
-        settings.setValue(QStringLiteral("Map/airspaceAltitudeLimit_ft"), newAirspaceAltitudeLimit.toFeet());
+        m_settings.setValue(QStringLiteral("Map/airspaceAltitudeLimit_ft"), newAirspaceAltitudeLimit.toFeet());
         emit airspaceAltitudeLimitChanged();
     }
 
     if (newAirspaceAltitudeLimit.isFinite() &&
             (newAirspaceAltitudeLimit != lastValidAirspaceAltitudeLimit())) {
-        settings.setValue(QStringLiteral("Map/lastValidAirspaceAltitudeLimit_ft"), newAirspaceAltitudeLimit.toFeet());
+        m_settings.setValue(QStringLiteral("Map/lastValidAirspaceAltitudeLimit_ft"), newAirspaceAltitudeLimit.toFeet());
         emit lastValidAirspaceAltitudeLimitChanged();
     }
 }
@@ -146,7 +149,7 @@ void GlobalSettings::setExpandNotamAbbreviations(bool newExpandNotamAbbreviation
     {
         return;
     }
-    settings.setValue(QStringLiteral("expandNotamAbbreviations"), newExpandNotamAbbreviations);
+    m_settings.setValue(QStringLiteral("expandNotamAbbreviations"), newExpandNotamAbbreviations);
     emit expandNotamAbbreviationsChanged();
 }
 
@@ -160,7 +163,7 @@ void GlobalSettings::setFontSize(int newFontSize)
     {
         return;
     }
-    settings.setValue(QStringLiteral("fontSize"), newFontSize);
+    m_settings.setValue(QStringLiteral("fontSize"), newFontSize);
     emit fontSizeChanged();
 }
 
@@ -171,7 +174,7 @@ void GlobalSettings::setHideGlidingSectors(bool hide)
     {
         return;
     }
-    settings.setValue(QStringLiteral("Map/hideGlidingSectors"), hide);
+    m_settings.setValue(QStringLiteral("Map/hideGlidingSectors"), hide);
     emit hideGlidingSectorsChanged();
 }
 
@@ -182,7 +185,7 @@ void GlobalSettings::setIgnoreSSLProblems(bool ignore)
     {
         return;
     }
-    settings.setValue(QStringLiteral("ignoreSSLProblems"), ignore);
+    m_settings.setValue(QStringLiteral("ignoreSSLProblems"), ignore);
     emit ignoreSSLProblemsChanged();
 }
 
@@ -193,7 +196,7 @@ void GlobalSettings::setLastWhatsNewHash(Units::ByteSize lwnh)
     {
         return;
     }
-    settings.setValue(QStringLiteral("lastWhatsNewHash"), QVariant::fromValue((size_t)lwnh));
+    m_settings.setValue(QStringLiteral("lastWhatsNewHash"), QVariant::fromValue((size_t)lwnh));
     emit lastWhatsNewHashChanged();
 }
 
@@ -204,7 +207,7 @@ void GlobalSettings::setLastWhatsNewInMapsHash(Units::ByteSize lwnh)
     {
         return;
     }
-    settings.setValue(QStringLiteral("lastWhatsNewInMapsHash"), QVariant::fromValue((size_t)lwnh));
+    m_settings.setValue(QStringLiteral("lastWhatsNewInMapsHash"), QVariant::fromValue((size_t)lwnh));
     emit lastWhatsNewInMapsHashChanged();
 }
 
@@ -215,7 +218,7 @@ void GlobalSettings::setPrivacyHash(Units::ByteSize newHash)
     {
         return;
     }
-    settings.setValue(QStringLiteral("privacyHash"), QVariant::fromValue((size_t)newHash));
+    m_settings.setValue(QStringLiteral("privacyHash"), QVariant::fromValue((size_t)newHash));
     emit privacyHashChanged();
 }
 
@@ -229,13 +232,13 @@ void GlobalSettings::setMapBearingPolicy(MapBearingPolicy policy)
 
     switch(policy){
     case NUp:
-        settings.setValue(QStringLiteral("Map/bearingPolicy"), 0);
+        m_settings.setValue(QStringLiteral("Map/bearingPolicy"), 0);
         break;
     case TTUp:
-        settings.setValue(QStringLiteral("Map/bearingPolicy"), 1);
+        m_settings.setValue(QStringLiteral("Map/bearingPolicy"), 1);
         break;
     default:
-        settings.setValue(QStringLiteral("Map/bearingPolicy"), 2);
+        m_settings.setValue(QStringLiteral("Map/bearingPolicy"), 2);
         break;
     }
     emit mapBearingPolicyChanged();
@@ -249,20 +252,15 @@ void GlobalSettings::setNightMode(bool newNightMode)
         return;
     }
 
-    settings.setValue(QStringLiteral("Map/nightMode"), newNightMode);
+    m_settings.setValue(QStringLiteral("Map/nightMode"), newNightMode);
     emit nightModeChanged();
 }
 
 
 void GlobalSettings::setPositioningByTrafficDataReceiver(bool newPositioningByTrafficDataReceiver)
 {
-    if (newPositioningByTrafficDataReceiver == positioningByTrafficDataReceiver())
-    {
-        return;
-    }
-
-    settings.setValue(QStringLiteral("positioningByTrafficDataReceiver"), newPositioningByTrafficDataReceiver);
-    emit positioningByTrafficDataReceiverChanged();
+    m_settings.setValue(QStringLiteral("positioningByTrafficDataReceiver"), newPositioningByTrafficDataReceiver);
+    m_positioningByTrafficDataReceiver = newPositioningByTrafficDataReceiver;
 }
 
 
@@ -272,7 +270,7 @@ void GlobalSettings::setShowAltitudeAGL(bool newShowAltitudeAGL)
     {
         return;
     }
-    settings.setValue(QStringLiteral("showAltitudeAGL"), newShowAltitudeAGL);
+    m_settings.setValue(QStringLiteral("showAltitudeAGL"), newShowAltitudeAGL);
     emit showAltitudeAGLChanged();
 }
 
@@ -283,6 +281,6 @@ void GlobalSettings::setVoiceNotifications(uint newVoiceNotifications)
     {
         return;
     }
-    settings.setValue(QStringLiteral("voiceNotifications"), newVoiceNotifications);
+    m_settings.setValue(QStringLiteral("voiceNotifications"), newVoiceNotifications);
     emit voiceNotificationsChanged();
 }

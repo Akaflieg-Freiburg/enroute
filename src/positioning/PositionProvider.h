@@ -115,37 +115,37 @@ public:
      *
      *  @returns Property approximateLastValidCoordinate
      */
-    Q_REQUIRED_RESULT QGeoCoordinate approximateLastValidCoordinate() const {return {m_approximateLastValidCoordinate};}
+    [[nodiscard]] QGeoCoordinate approximateLastValidCoordinate() const {return m_approximateLastValidCoordinate.value();}
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property approximateLastValidCoordinate
      */
-    Q_REQUIRED_RESULT QBindable<QGeoCoordinate> bindableApproximateLastValidCoordinate() const {return &m_approximateLastValidCoordinate;}
+    [[nodiscard]] QBindable<QGeoCoordinate> bindableApproximateLastValidCoordinate() const {return &m_approximateLastValidCoordinate;}
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property lastValidCoordinate
      */
-    static QGeoCoordinate lastValidCoordinate();
+    [[nodiscard]] static QGeoCoordinate lastValidCoordinate();
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property lastValidCoordinate
      */
-    QBindable<QGeoCoordinate> bindableLastValidCoordinate() {return &m_lastValidCoordinate;}
+    [[nodiscard]] QBindable<QGeoCoordinate> bindableLastValidCoordinate() {return &m_lastValidCoordinate;}
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property lastValidTrack
      */
-    static Units::Angle lastValidTT();
+    [[nodiscard]] static Units::Angle lastValidTT();
 
     /*! \brief Getter function for the property with the same name
      *
      *  @returns Property lastValidTrack
      */
-    QBindable<Units::Angle> bindableLastValidTT() {return &m_lastValidTT;}
+    [[nodiscard]] QBindable<Units::Angle> bindableLastValidTT() {return &m_lastValidTT;}
 
 
     //
@@ -177,11 +177,11 @@ private slots:
     // Setter method for property with the same name
     void setLastValidTT(Units::Angle newTT);
 
-    // Setter method for property with the same name
-    void updateStatusString();
-
 private:
     Q_DISABLE_COPY_MOVE(PositionProvider)
+
+    // Computation method for property with the same name
+    QString computeStatusString();
 
     // Aircraft is considered flying if speed is at least this high
     static constexpr double minFlightSpeedInKT = 30.0;

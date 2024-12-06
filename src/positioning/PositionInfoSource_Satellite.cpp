@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021 by Stefan Kebekus                                  *
+ *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -54,29 +54,33 @@ void Positioning::PositionInfoSource_Satellite::startUpdates()
 
 void Positioning::PositionInfoSource_Satellite::updateStatusString()
 {
-    if (source == nullptr) {
-        setStatusString( tr("Not installed or access denied") );
+    if (source == nullptr)
+    {
+        m_statusString = tr("Not installed or access denied");
         return;
     }
 
     auto sourceStatus = source->error();
 
-    if (sourceStatus == QGeoPositionInfoSource::AccessError) {
-        setStatusString( tr("Access denied") );
+    if (sourceStatus == QGeoPositionInfoSource::AccessError)
+    {
+        m_statusString = tr("Access denied");
         return;
     }
 
-    if (sourceStatus == QGeoPositionInfoSource::ClosedError) {
-        setStatusString( tr("Connection to satellite system lost") );
+    if (sourceStatus == QGeoPositionInfoSource::ClosedError)
+    {
+        m_statusString = tr("Connection to satellite system lost");
         return;
     }
 
-    if (!receivingPositionInfo()) {
-        setStatusString( tr("Waiting for signal") );
+    if (!receivingPositionInfo())
+    {
+        m_statusString = tr("Waiting for signal");
         return;
     }
 
-    setStatusString( tr("Receiving data") );
+    m_statusString = tr("Receiving data");
 }
 
 

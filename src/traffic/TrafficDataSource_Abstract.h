@@ -292,16 +292,6 @@ signals:
      */
     void passwordStorageRequest(const QString& SSID, const QString& password);
 
-    /*! \brief Pressure altitude
-     *
-     *  If this class received pressure altitude information from a connected
-     *  traffic receiver, this information is emitted here. Pressure altitude is
-     *  the altitude shown by your altimeter if the altimeter is set to 1013.2
-     *  hPa.
-     */
-#warning
-//    void pressureAltitudeUpdated(Units::Distance);
-
     /*! \brief Position info
      *
      *  If this class received position information from a connected traffic
@@ -440,10 +430,14 @@ protected:
      */
     void setErrorString(const QString& newErrorString = QString());
 
-    // This method must be used by child classes to update the pressure altitude
-    // The class uses a timer internally to reset the position info to "invalid"
-    // after the time specified in PositionInfo::lifetime seconds.
-#warning
+    /*! \brief Setter function for the property with the same name
+     *
+     *  This method must be used by child classes to update the pressure altitude
+     *  The class uses a timer internally to reset the position info to "invalid"
+     *  after the time specified in PositionInfo::lifetime seconds.
+     *
+     *  @param newErrorString Property errorString
+     */
     void setPressureAltitude(Units::Distance newPressureAltitude);
 
     /*! \brief Setter method for the property with the same name

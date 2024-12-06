@@ -48,10 +48,7 @@ Positioning::PositionProvider::PositionProvider(QObject *parent) : PositionInfoS
 //    connect(&satelliteSource, &Positioning::PositionInfoSource_Satellite::positionInfoChanged, this, &PositionProvider::onPositionUpdated);
 
     // Binding for updateStatusString
-#warning This is presently incorrect
-//    connect(this, &Positioning::PositionProvider::receivingPositionInfoChanged, this, &Positioning::PositionProvider::updateStatusString);
-#warning This is presently incorrect
-    //    connect(&satelliteSource, &Positioning::PositionInfoSource_Satellite::statusStringChanged, this, &Positioning::PositionProvider::updateStatusString);
+    m_statusString.setBinding([this]() {return computeStatusString();});
 
     // Wire up traffic data provider source
     QTimer::singleShot(0, this, &Positioning::PositionProvider::deferredInitialization);
@@ -65,7 +62,6 @@ Positioning::PositionProvider::PositionProvider(QObject *parent) : PositionInfoS
     saveTimer->start();
 
     // Update properties
-    updateStatusString();
     m_approximateLastValidCoordinate = m_lastValidCoordinate.value();
 #warning REPLACE ME
     /*
@@ -80,14 +76,10 @@ Positioning::PositionProvider::PositionProvider(QObject *parent) : PositionInfoS
     */
 }
 
-
-
 void Positioning::PositionProvider::deferredInitialization() const
 {
 #warning Fix that
 //    connect(GlobalObject::trafficDataProvider(), &Traffic::TrafficDataProvider::positionInfoChanged, this, &PositionProvider::onPositionUpdated);
-#warning
-//    connect(GlobalObject::trafficDataProvider(), &Traffic::TrafficDataProvider::pressureAltitudeChanged, this, &PositionProvider::onPressureAltitudeUpdated);
 }
 
 
@@ -173,9 +165,7 @@ void Positioning::PositionProvider::onPositionUpdated()
     setLastValidCoordinate(newInfo.coordinate());
     setLastValidTT(newInfo.trueTrack());
     setSourceName(source);
-    updateStatusString();
 }
-
 
 void Positioning::PositionProvider::savePositionAndTrack()
 {
@@ -189,7 +179,6 @@ void Positioning::PositionProvider::savePositionAndTrack()
     settings.setValue(QStringLiteral("PositionProvider/lastValidTrack"), m_lastValidTT.value().toDEG());
 }
 
-
 void Positioning::PositionProvider::setLastValidCoordinate(const QGeoCoordinate &newCoordinate)
 {
     if (!newCoordinate.isValid())
@@ -198,7 +187,6 @@ void Positioning::PositionProvider::setLastValidCoordinate(const QGeoCoordinate 
     }
     m_lastValidCoordinate = newCoordinate;
 }
-
 
 void Positioning::PositionProvider::setLastValidTT(Units::Angle newTT)
 {
@@ -213,7 +201,6 @@ void Positioning::PositionProvider::setLastValidTT(Units::Angle newTT)
     m_lastValidTT = newTT;
 }
 
-
 QGeoCoordinate Positioning::PositionProvider::lastValidCoordinate()
 {
     auto *positionProvider = GlobalObject::positionProvider();
@@ -222,7 +209,6 @@ QGeoCoordinate Positioning::PositionProvider::lastValidCoordinate()
     }
     return positionProvider->m_lastValidCoordinate.value();
 }
-
 
 Units::Angle Positioning::PositionProvider::lastValidTT()
 {
@@ -233,22 +219,24 @@ Units::Angle Positioning::PositionProvider::lastValidTT()
     return positionProvider->m_lastValidTT;
 }
 
-#warning Turn this into a binding
-void Positioning::PositionProvider::updateStatusString()
+
+//
+// Computing Functions/Bindings
+//
+
+QString Positioning::PositionProvider::computeStatusString()
 {
-#warning make bindable: receivingPositionInfo, sourceName, statusString
     if (receivingPositionInfo()) {
         QString result = QStringLiteral("<ul style='margin-left:-25px;'>");
         result += QStringLiteral("<li>%1: %2</li>").arg(tr("Source"), sourceName());
         result += QStringLiteral("<li>%1</li>").arg(tr("Receiving position information"));
         result += u"</ul>"_s;
-        setStatusString(result);
-        return;
+        return result;
     }
 
     QString result = QStringLiteral("<p>%1</p><ul style='margin-left:-25px;'>").arg(tr("Not receiving position information"));
     result += QStringLiteral("<li>%1: %2</li>").arg( satelliteSource.sourceName(), satelliteSource.statusString());
     result += QStringLiteral("<li>%1: %2</li>").arg( tr("Traffic receiver"), tr("Not receiving position information"));
     result += u"</ul>"_s;
-    setStatusString(result);
+    return result;
 }

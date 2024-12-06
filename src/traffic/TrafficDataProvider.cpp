@@ -108,10 +108,6 @@ void Traffic::TrafficDataProvider::addDataSource(Traffic::TrafficDataSource_Abst
     source->setParent(this);
     QQmlEngine::setObjectOwnership(source, QQmlEngine::CppOwnership);
 
-    auto tmp = m_dataSources.value();
-    tmp  << source;
-    m_dataSources = tmp;
-
     connect(source, &Traffic::TrafficDataSource_Abstract::connectivityStatusChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
     connect(source, &Traffic::TrafficDataSource_Abstract::errorStringChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
     connect(source, &Traffic::TrafficDataSource_Abstract::passwordRequest, this, &Traffic::TrafficDataProvider::passwordRequest);
@@ -120,6 +116,15 @@ void Traffic::TrafficDataProvider::addDataSource(Traffic::TrafficDataSource_Abst
     connect(source, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged, this, &Traffic::TrafficDataProvider::onSourceHeartbeatChanged);
     connect(source, &Traffic::TrafficDataSource_Abstract::trafficReceiverRuntimeErrorChanged, this, &Traffic::TrafficDataProvider::onTrafficReceiverRuntimeError);
     connect(source, &Traffic::TrafficDataSource_Abstract::trafficReceiverSelfTestErrorChanged, this, &Traffic::TrafficDataProvider::onTrafficReceiverSelfTestError);
+
+    auto tmp = m_dataSources.value();
+    tmp.append(source);
+    tmp.removeAll(nullptr);
+    std::sort(tmp.begin(),
+              tmp.end(),
+              [](const Traffic::TrafficDataSource_Abstract* first, const Traffic::TrafficDataSource_Abstract* second)
+              { return first->sourceName() < second->sourceName(); });
+    m_dataSources = tmp;
 
     emit dataSourcesChanged();
     updateStatusString();
@@ -633,12 +638,12 @@ void Traffic::TrafficDataProvider::updateStatusString()
             result += QStringLiteral("<li>%1</li>").arg(tr("Receiving barometric altitude info."));
         }
         result += u"</ul>"_s;
-        setStatusString(result);
+        m_statusString = result;
         return;
     }
 
     const QString result = tr("Not receiving traffic receiver heartbeat through any of the configured data connections.");
-    setStatusString(result);
+    m_statusString = result;
 }
 
 

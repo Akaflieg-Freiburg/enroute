@@ -166,8 +166,7 @@ protected:
     // This method must be used by child classes to update the source name
     void setSourceName(const QString& name) {m_sourceName = name;}
 
-    // This method must be used by child classes to update the status string
-    void setStatusString(const QString& status)  {m_statusString = status;}
+    QProperty<QString> m_statusString;
 
 private:
     QProperty<Positioning::PositionInfo> m_positionInfo;
@@ -175,7 +174,6 @@ private:
 
     QProperty<bool> m_receivingPositionInfo {false};
     QProperty<QString> m_sourceName;
-    QProperty<QString> m_statusString;
 };
 
 } // namespace Positioning

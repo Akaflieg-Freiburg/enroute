@@ -436,7 +436,7 @@ protected:
      *  The class uses a timer internally to reset the position info to "invalid"
      *  after the time specified in PositionInfo::lifetime seconds.
      *
-     *  @param newErrorString Property errorString
+     *  @param newPressureAltitude Pressure Altitude
      */
     void setPressureAltitude(Units::Distance newPressureAltitude);
 

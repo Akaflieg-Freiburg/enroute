@@ -53,6 +53,8 @@ public:
     /*! \brief Constructor
      *
      * @param info QGeoPositionInfo this is copied into this class
+     *
+     * @param source Name of the source that generated with instance
      */
     explicit PositionInfo(const QGeoPositionInfo& info, const QString& source);
 

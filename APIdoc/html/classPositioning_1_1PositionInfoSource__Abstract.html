@@ -59,7 +59,6 @@ $(function(){ initResizable(false); });
 <div id="doc-content">
 <div class="header">
   <div class="summary">
-<a href="#signals">Signals</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="classPositioning_1_1PositionInfoSource__Abstract-members.html">List of all members</a>  </div>
@@ -78,63 +77,45 @@ Inheritance diagram for Positioning::PositionInfoSource_Abstract:</div>
   <img src="classPositioning_1_1PositionInfoSource__Abstract.png" usemap="#Positioning::PositionInfoSource_5FAbstract_map" alt=""/>
   <map id="Positioning::PositionInfoSource_5FAbstract_map" name="Positioning::PositionInfoSource_5FAbstract_map">
 <area href="classPositioning_1_1PositionInfoSource__Satellite.html" title="Satellite Navigator." alt="Positioning::PositionInfoSource_Satellite" shape="rect" coords="0,56,239,80"/>
-<area href="classPositioning_1_1PositionProvider.html" title="Central Position Provider." alt="Positioning::PositionProvider" shape="rect" coords="249,56,488,80"/>
-<area href="classTraffic_1_1TrafficDataProvider.html" title="Traffic receiver." alt="Traffic::TrafficDataProvider" shape="rect" coords="498,56,737,80"/>
+<area href="classTraffic_1_1TrafficDataProvider.html" title="Traffic receiver." alt="Traffic::TrafficDataProvider" shape="rect" coords="249,56,488,80"/>
   </map>
 </div></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="signals" name="signals"></a>
-Signals</h2></td></tr>
-<tr class="memitem:afba61ffceeda3df91d2b3fa22fd10972" id="r_afba61ffceeda3df91d2b3fa22fd10972"><td class="memItemLeft" align="right" valign="top"><a id="afba61ffceeda3df91d2b3fa22fd10972" name="afba61ffceeda3df91d2b3fa22fd10972"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>positionInfoChanged</b> ()</td></tr>
-<tr class="memdesc:afba61ffceeda3df91d2b3fa22fd10972"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
-<tr class="separator:afba61ffceeda3df91d2b3fa22fd10972"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6583bf8733633a3370d671670bfb3cb" id="r_ad6583bf8733633a3370d671670bfb3cb"><td class="memItemLeft" align="right" valign="top"><a id="ad6583bf8733633a3370d671670bfb3cb" name="ad6583bf8733633a3370d671670bfb3cb"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>pressureAltitudeChanged</b> ()</td></tr>
-<tr class="memdesc:ad6583bf8733633a3370d671670bfb3cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
-<tr class="separator:ad6583bf8733633a3370d671670bfb3cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbd47d44f8dd4f95590152fc7af57eae" id="r_afbd47d44f8dd4f95590152fc7af57eae"><td class="memItemLeft" align="right" valign="top"><a id="afbd47d44f8dd4f95590152fc7af57eae" name="afbd47d44f8dd4f95590152fc7af57eae"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>receivingPositionInfoChanged</b> ()</td></tr>
-<tr class="memdesc:afbd47d44f8dd4f95590152fc7af57eae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
-<tr class="separator:afbd47d44f8dd4f95590152fc7af57eae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afdcbd66052a6ab8c35cd16ab238716c9" id="r_afdcbd66052a6ab8c35cd16ab238716c9"><td class="memItemLeft" align="right" valign="top"><a id="afdcbd66052a6ab8c35cd16ab238716c9" name="afdcbd66052a6ab8c35cd16ab238716c9"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>sourceNameChanged</b> (const QString &amp;name)</td></tr>
-<tr class="memdesc:afdcbd66052a6ab8c35cd16ab238716c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
-<tr class="separator:afdcbd66052a6ab8c35cd16ab238716c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a67c3b0c193e0daea9e843401d0a4f059" id="r_a67c3b0c193e0daea9e843401d0a4f059"><td class="memItemLeft" align="right" valign="top"><a id="a67c3b0c193e0daea9e843401d0a4f059" name="a67c3b0c193e0daea9e843401d0a4f059"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>statusStringChanged</b> (const QString &amp;status)</td></tr>
-<tr class="memdesc:a67c3b0c193e0daea9e843401d0a4f059"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
-<tr class="separator:a67c3b0c193e0daea9e843401d0a4f059"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a22f11fe8e1e439022f3771c3e9154b21" id="r_a22f11fe8e1e439022f3771c3e9154b21"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a22f11fe8e1e439022f3771c3e9154b21">PositionInfoSource_Abstract</a> (QObject *parent=nullptr)</td></tr>
 <tr class="memdesc:a22f11fe8e1e439022f3771c3e9154b21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
 <tr class="separator:a22f11fe8e1e439022f3771c3e9154b21"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a800a36ad5efc8a8ce16a27d6b4d21737" id="r_a800a36ad5efc8a8ce16a27d6b4d21737"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a800a36ad5efc8a8ce16a27d6b4d21737">positionInfo</a> () const -&gt; <a class="el" href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a></td></tr>
-<tr class="memdesc:a800a36ad5efc8a8ce16a27d6b4d21737"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
-<tr class="separator:a800a36ad5efc8a8ce16a27d6b4d21737"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a481315ca2d2dc1e76fff4fbac8d3b31f" id="r_a481315ca2d2dc1e76fff4fbac8d3b31f"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a481315ca2d2dc1e76fff4fbac8d3b31f">pressureAltitude</a> () const -&gt; <a class="el" href="classUnits_1_1Distance.html">Units::Distance</a></td></tr>
-<tr class="memdesc:a481315ca2d2dc1e76fff4fbac8d3b31f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
-<tr class="separator:a481315ca2d2dc1e76fff4fbac8d3b31f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6871594483ab71728d50c79bcf6b4555" id="r_a6871594483ab71728d50c79bcf6b4555"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6871594483ab71728d50c79bcf6b4555">receivingPositionInfo</a> () const -&gt; bool</td></tr>
-<tr class="memdesc:a6871594483ab71728d50c79bcf6b4555"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
-<tr class="separator:a6871594483ab71728d50c79bcf6b4555"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9722a9897f0512275f093d7eb4dad06" id="r_af9722a9897f0512275f093d7eb4dad06"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af9722a9897f0512275f093d7eb4dad06">sourceName</a> () const -&gt; QString</td></tr>
-<tr class="memdesc:af9722a9897f0512275f093d7eb4dad06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
-<tr class="separator:af9722a9897f0512275f093d7eb4dad06"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb4291e1ac42b33ae816aefb36982ec8" id="r_afb4291e1ac42b33ae816aefb36982ec8"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afb4291e1ac42b33ae816aefb36982ec8">statusString</a> () const -&gt; QString</td></tr>
-<tr class="memdesc:afb4291e1ac42b33ae816aefb36982ec8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
-<tr class="separator:afb4291e1ac42b33ae816aefb36982ec8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44339b6ab11a1baf23bfe6696ba4ae82" id="r_a44339b6ab11a1baf23bfe6696ba4ae82"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a44339b6ab11a1baf23bfe6696ba4ae82">positionInfo</a> () const</td></tr>
+<tr class="memdesc:a44339b6ab11a1baf23bfe6696ba4ae82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
+<tr class="separator:a44339b6ab11a1baf23bfe6696ba4ae82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68421f247ea0708257cfd4263f56cf8d" id="r_a68421f247ea0708257cfd4263f56cf8d"><td class="memItemLeft" align="right" valign="top">QBindable&lt; <a class="el" href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a68421f247ea0708257cfd4263f56cf8d">bindablePositionInfo</a> () const</td></tr>
+<tr class="memdesc:a68421f247ea0708257cfd4263f56cf8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
+<tr class="separator:a68421f247ea0708257cfd4263f56cf8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c6f1e783eaf737138be177fcf6b8c8b" id="r_a8c6f1e783eaf737138be177fcf6b8c8b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8c6f1e783eaf737138be177fcf6b8c8b">receivingPositionInfo</a> () const</td></tr>
+<tr class="memdesc:a8c6f1e783eaf737138be177fcf6b8c8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
+<tr class="separator:a8c6f1e783eaf737138be177fcf6b8c8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a111e878f78a1f8ae6d756424481f60bf" id="r_a111e878f78a1f8ae6d756424481f60bf"><td class="memItemLeft" align="right" valign="top">QBindable&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a111e878f78a1f8ae6d756424481f60bf">bindableReceivingPositionInfo</a> ()</td></tr>
+<tr class="memdesc:a111e878f78a1f8ae6d756424481f60bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
+<tr class="separator:a111e878f78a1f8ae6d756424481f60bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a562530b32e8cdc4bb390fad13bb654a6" id="r_a562530b32e8cdc4bb390fad13bb654a6"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a562530b32e8cdc4bb390fad13bb654a6">sourceName</a> () const</td></tr>
+<tr class="memdesc:a562530b32e8cdc4bb390fad13bb654a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
+<tr class="separator:a562530b32e8cdc4bb390fad13bb654a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08cd651159af14f9d91f0187af98525c" id="r_a08cd651159af14f9d91f0187af98525c"><td class="memItemLeft" align="right" valign="top">QBindable&lt; QString &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a08cd651159af14f9d91f0187af98525c">bindableSourceName</a> () const</td></tr>
+<tr class="memdesc:a08cd651159af14f9d91f0187af98525c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
+<tr class="separator:a08cd651159af14f9d91f0187af98525c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab47094963629bd1b65dbe7d30b2d22e5" id="r_ab47094963629bd1b65dbe7d30b2d22e5"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab47094963629bd1b65dbe7d30b2d22e5">statusString</a> () const</td></tr>
+<tr class="memdesc:ab47094963629bd1b65dbe7d30b2d22e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
+<tr class="separator:ab47094963629bd1b65dbe7d30b2d22e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae04aab005e40c446168278ac7a84abb1" id="r_ae04aab005e40c446168278ac7a84abb1"><td class="memItemLeft" align="right" valign="top">QBindable&lt; QString &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae04aab005e40c446168278ac7a84abb1">bindableStatusString</a> () const</td></tr>
+<tr class="memdesc:ae04aab005e40c446168278ac7a84abb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
+<tr class="separator:ae04aab005e40c446168278ac7a84abb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a0645ccfe2da4a9dfeeaa390cfdd985c2" id="r_a0645ccfe2da4a9dfeeaa390cfdd985c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0645ccfe2da4a9dfeeaa390cfdd985c2">positionInfo</a></td></tr>
 <tr class="memdesc:a0645ccfe2da4a9dfeeaa390cfdd985c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Position information.  <br /></td></tr>
 <tr class="separator:a0645ccfe2da4a9dfeeaa390cfdd985c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2ecfedb836495670657d696ea5aec08" id="r_ad2ecfedb836495670657d696ea5aec08"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classUnits_1_1Distance.html">Units::Distance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad2ecfedb836495670657d696ea5aec08">pressureAltitude</a></td></tr>
-<tr class="memdesc:ad2ecfedb836495670657d696ea5aec08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pressure altitude.  <br /></td></tr>
-<tr class="separator:ad2ecfedb836495670657d696ea5aec08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a126dedddd4ca8d55a2f8ac6107f38de9" id="r_a126dedddd4ca8d55a2f8ac6107f38de9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a126dedddd4ca8d55a2f8ac6107f38de9">receivingPositionInfo</a></td></tr>
 <tr class="memdesc:a126dedddd4ca8d55a2f8ac6107f38de9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicator that position information is being received.  <br /></td></tr>
 <tr class="separator:a126dedddd4ca8d55a2f8ac6107f38de9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -147,10 +128,9 @@ Properties</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Abstract base class for all classes that provide geographic position information. </p>
-<p>This is the base class for all classes that provide geographic position information. The information is exposed via two properties, positionInfo and pressureAltitude.</p>
-<p>The property statusString gives more information about the status of the source </p>
+<p>This is the base class for all classes that provide geographic position information. </p>
 
-<p class="definition">Definition at line <a class="el" href="PositionInfoSource__Abstract_8h_source.html#l00043">43</a> of file <a class="el" href="PositionInfoSource__Abstract_8h_source.html">PositionInfoSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PositionInfoSource__Abstract_8h_source.html#l00040">40</a> of file <a class="el" href="PositionInfoSource__Abstract_8h_source.html">PositionInfoSource_Abstract.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a22f11fe8e1e439022f3771c3e9154b21" name="a22f11fe8e1e439022f3771c3e9154b21"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a22f11fe8e1e439022f3771c3e9154b21">&#9670;&#160;</a></span>PositionInfoSource_Abstract()</h2>
@@ -186,8 +166,8 @@ Properties</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a800a36ad5efc8a8ce16a27d6b4d21737" name="a800a36ad5efc8a8ce16a27d6b4d21737"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a800a36ad5efc8a8ce16a27d6b4d21737">&#9670;&#160;</a></span>positionInfo()</h2>
+<a id="a68421f247ea0708257cfd4263f56cf8d" name="a68421f247ea0708257cfd4263f56cf8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68421f247ea0708257cfd4263f56cf8d">&#9670;&#160;</a></span>bindablePositionInfo()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -196,11 +176,10 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto Positioning::PositionInfoSource_Abstract::positionInfo </td>
+          <td class="memname">QBindable&lt; <a class="el" href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a> &gt; Positioning::PositionInfoSource_Abstract::bindablePositionInfo </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const -&gt; <a class="el" href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a>
-    </td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -213,12 +192,12 @@ Properties</h2></td></tr>
 <p>Getter method for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property positionInfo </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="PositionInfoSource__Abstract_8h_source.html#l00075">75</a> of file <a class="el" href="PositionInfoSource__Abstract_8h_source.html">PositionInfoSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PositionInfoSource__Abstract_8h_source.html#l00106">106</a> of file <a class="el" href="PositionInfoSource__Abstract_8h_source.html">PositionInfoSource_Abstract.h</a>.</p>
 
 </div>
 </div>
-<a id="a481315ca2d2dc1e76fff4fbac8d3b31f" name="a481315ca2d2dc1e76fff4fbac8d3b31f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a481315ca2d2dc1e76fff4fbac8d3b31f">&#9670;&#160;</a></span>pressureAltitude()</h2>
+<a id="a111e878f78a1f8ae6d756424481f60bf" name="a111e878f78a1f8ae6d756424481f60bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a111e878f78a1f8ae6d756424481f60bf">&#9670;&#160;</a></span>bindableReceivingPositionInfo()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -227,42 +206,10 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto Positioning::PositionInfoSource_Abstract::pressureAltitude </td>
+          <td class="memname">QBindable&lt; bool &gt; Positioning::PositionInfoSource_Abstract::bindableReceivingPositionInfo </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const -&gt; <a class="el" href="classUnits_1_1Distance.html">Units::Distance</a>
-    </td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">nodiscard</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Getter method for property with the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property pressureAltitude </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="PositionInfoSource__Abstract_8h_source.html#l00094">94</a> of file <a class="el" href="PositionInfoSource__Abstract_8h_source.html">PositionInfoSource_Abstract.h</a>.</p>
-
-</div>
-</div>
-<a id="a6871594483ab71728d50c79bcf6b4555" name="a6871594483ab71728d50c79bcf6b4555"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6871594483ab71728d50c79bcf6b4555">&#9670;&#160;</a></span>receivingPositionInfo()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto Positioning::PositionInfoSource_Abstract::receivingPositionInfo </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const -&gt; bool
-    </td>
+          <td></td>
         </tr>
       </table>
   </td>
@@ -275,12 +222,12 @@ Properties</h2></td></tr>
 <p>Getter method for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property receivingPositionInfo </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="PositionInfoSource__Abstract_8h_source.html#l00109">109</a> of file <a class="el" href="PositionInfoSource__Abstract_8h_source.html">PositionInfoSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PositionInfoSource__Abstract_8h_source.html#l00121">121</a> of file <a class="el" href="PositionInfoSource__Abstract_8h_source.html">PositionInfoSource_Abstract.h</a>.</p>
 
 </div>
 </div>
-<a id="af9722a9897f0512275f093d7eb4dad06" name="af9722a9897f0512275f093d7eb4dad06"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af9722a9897f0512275f093d7eb4dad06">&#9670;&#160;</a></span>sourceName()</h2>
+<a id="a08cd651159af14f9d91f0187af98525c" name="a08cd651159af14f9d91f0187af98525c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08cd651159af14f9d91f0187af98525c">&#9670;&#160;</a></span>bindableSourceName()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -289,11 +236,10 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto Positioning::PositionInfoSource_Abstract::sourceName </td>
+          <td class="memname">QBindable&lt; QString &gt; Positioning::PositionInfoSource_Abstract::bindableSourceName </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const -&gt; QString
-    </td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -306,12 +252,12 @@ Properties</h2></td></tr>
 <p>Getter method for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property sourceName </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="PositionInfoSource__Abstract_8h_source.html#l00126">126</a> of file <a class="el" href="PositionInfoSource__Abstract_8h_source.html">PositionInfoSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PositionInfoSource__Abstract_8h_source.html#l00136">136</a> of file <a class="el" href="PositionInfoSource__Abstract_8h_source.html">PositionInfoSource_Abstract.h</a>.</p>
 
 </div>
 </div>
-<a id="afb4291e1ac42b33ae816aefb36982ec8" name="afb4291e1ac42b33ae816aefb36982ec8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afb4291e1ac42b33ae816aefb36982ec8">&#9670;&#160;</a></span>statusString()</h2>
+<a id="ae04aab005e40c446168278ac7a84abb1" name="ae04aab005e40c446168278ac7a84abb1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae04aab005e40c446168278ac7a84abb1">&#9670;&#160;</a></span>bindableStatusString()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -320,11 +266,10 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto Positioning::PositionInfoSource_Abstract::statusString </td>
+          <td class="memname">QBindable&lt; QString &gt; Positioning::PositionInfoSource_Abstract::bindableStatusString </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const -&gt; QString
-    </td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -337,7 +282,127 @@ Properties</h2></td></tr>
 <p>Getter method for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property statusString </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="PositionInfoSource__Abstract_8h_source.html#l00143">143</a> of file <a class="el" href="PositionInfoSource__Abstract_8h_source.html">PositionInfoSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PositionInfoSource__Abstract_8h_source.html#l00154">154</a> of file <a class="el" href="PositionInfoSource__Abstract_8h_source.html">PositionInfoSource_Abstract.h</a>.</p>
+
+</div>
+</div>
+<a id="a44339b6ab11a1baf23bfe6696ba4ae82" name="a44339b6ab11a1baf23bfe6696ba4ae82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44339b6ab11a1baf23bfe6696ba4ae82">&#9670;&#160;</a></span>positionInfo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classPositioning_1_1PositionInfo.html">Positioning::PositionInfo</a> Positioning::PositionInfoSource_Abstract::positionInfo </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter method for property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property positionInfo </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="PositionInfoSource__Abstract_8h_source.html#l00097">97</a> of file <a class="el" href="PositionInfoSource__Abstract_8h_source.html">PositionInfoSource_Abstract.h</a>.</p>
+
+</div>
+</div>
+<a id="a8c6f1e783eaf737138be177fcf6b8c8b" name="a8c6f1e783eaf737138be177fcf6b8c8b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c6f1e783eaf737138be177fcf6b8c8b">&#9670;&#160;</a></span>receivingPositionInfo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Positioning::PositionInfoSource_Abstract::receivingPositionInfo </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter method for property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property receivingPositionInfo </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="PositionInfoSource__Abstract_8h_source.html#l00115">115</a> of file <a class="el" href="PositionInfoSource__Abstract_8h_source.html">PositionInfoSource_Abstract.h</a>.</p>
+
+</div>
+</div>
+<a id="a562530b32e8cdc4bb390fad13bb654a6" name="a562530b32e8cdc4bb390fad13bb654a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a562530b32e8cdc4bb390fad13bb654a6">&#9670;&#160;</a></span>sourceName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QString Positioning::PositionInfoSource_Abstract::sourceName </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter method for property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property sourceName </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="PositionInfoSource__Abstract_8h_source.html#l00127">127</a> of file <a class="el" href="PositionInfoSource__Abstract_8h_source.html">PositionInfoSource_Abstract.h</a>.</p>
+
+</div>
+</div>
+<a id="ab47094963629bd1b65dbe7d30b2d22e5" name="ab47094963629bd1b65dbe7d30b2d22e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab47094963629bd1b65dbe7d30b2d22e5">&#9670;&#160;</a></span>statusString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QString Positioning::PositionInfoSource_Abstract::statusString </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter method for property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property statusString </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="PositionInfoSource__Abstract_8h_source.html#l00145">145</a> of file <a class="el" href="PositionInfoSource__Abstract_8h_source.html">PositionInfoSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -363,37 +428,9 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Position information. </p>
-<p>This property holds information about the device position. To ensure that the data is up-to-date, the position information will be set to an invalid positionInfo when no data has arrived for more than the time specified in <a class="el" href="classPositioning_1_1PositionInfo.html#a39cdf5ebe3689e532be2e2ffeb40dbb2" title="Liftetime of geographic positioning information.">PositionInfo::lifetime</a>.</p>
-<p>Consumers of the class can use <a class="el" href="#a0645ccfe2da4a9dfeeaa390cfdd985c2" title="Position information.">positionInfo()</a>.isValid() property to check if position data is continually arriving. </p>
+<p>This property holds information about the device position. To ensure that the data is up-to-date, the position information will be set to an invalid positionInfo when no data has arrived for more than the time specified in <a class="el" href="classPositioning_1_1PositionInfo.html#a39cdf5ebe3689e532be2e2ffeb40dbb2" title="Liftetime of geographic positioning information.">PositionInfo::lifetime</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="PositionInfoSource__Abstract_8h_source.html#l00069">69</a> of file <a class="el" href="PositionInfoSource__Abstract_8h_source.html">PositionInfoSource_Abstract.h</a>.</p>
-
-</div>
-</div>
-<a id="ad2ecfedb836495670657d696ea5aec08" name="ad2ecfedb836495670657d696ea5aec08"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad2ecfedb836495670657d696ea5aec08">&#9670;&#160;</a></span>pressureAltitude</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classUnits_1_1Distance.html">Units::Distance</a> Positioning::PositionInfoSource_Abstract::pressureAltitude</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">read</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Pressure altitude. </p>
-<p>This property holds information about the pressure altitude, that is, the altitude that you would read off your altimeter if the altimeter is set to 1013.2 hPa. To ensure that the data is up-to-date, the position information will be set to "invalid" when no data has arrived for more than the time specified in <a class="el" href="classPositioning_1_1PositionInfo.html#a39cdf5ebe3689e532be2e2ffeb40dbb2" title="Liftetime of geographic positioning information.">PositionInfo::lifetime</a>. </p>
-
-<p class="definition">Definition at line <a class="el" href="PositionInfoSource__Abstract_8h_source.html#l00088">88</a> of file <a class="el" href="PositionInfoSource__Abstract_8h_source.html">PositionInfoSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PositionInfoSource__Abstract_8h_source.html#l00062">62</a> of file <a class="el" href="PositionInfoSource__Abstract_8h_source.html">PositionInfoSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -418,9 +455,9 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Indicator that position information is being received. </p>
-<p>Use this property to tell if position information is being received. </p>
+<p>This is a shortcut for <a class="el" href="#a0645ccfe2da4a9dfeeaa390cfdd985c2" title="Position information.">positionInfo()</a>.isValid. This property exists because it does not change so often, and can thus be more efficient to use. </p>
 
-<p class="definition">Definition at line <a class="el" href="PositionInfoSource__Abstract_8h_source.html#l00103">103</a> of file <a class="el" href="PositionInfoSource__Abstract_8h_source.html">PositionInfoSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PositionInfoSource__Abstract_8h_source.html#l00070">70</a> of file <a class="el" href="PositionInfoSource__Abstract_8h_source.html">PositionInfoSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -448,7 +485,7 @@ Properties</h2></td></tr>
 <p>This property holds a translated, human-readable string that describes the source. This could typically be a string of the form "Traffic
 Receiver" or "Built-in satellite receiver". </p>
 
-<p class="definition">Definition at line <a class="el" href="PositionInfoSource__Abstract_8h_source.html#l00120">120</a> of file <a class="el" href="PositionInfoSource__Abstract_8h_source.html">PositionInfoSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PositionInfoSource__Abstract_8h_source.html#l00078">78</a> of file <a class="el" href="PositionInfoSource__Abstract_8h_source.html">PositionInfoSource_Abstract.h</a>.</p>
 
 </div>
 </div>
@@ -475,7 +512,7 @@ Receiver" or "Built-in satellite receiver". </p>
 <p>Source status. </p>
 <p>This property holds a translated, human-readable string that describes the status of the positionInfo source. This could typically be a string of the form "OK" or "Insufficient permission to access position info" </p>
 
-<p class="definition">Definition at line <a class="el" href="PositionInfoSource__Abstract_8h_source.html#l00137">137</a> of file <a class="el" href="PositionInfoSource__Abstract_8h_source.html">PositionInfoSource_Abstract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PositionInfoSource__Abstract_8h_source.html#l00086">86</a> of file <a class="el" href="PositionInfoSource__Abstract_8h_source.html">PositionInfoSource_Abstract.h</a>.</p>
 
 </div>
 </div>

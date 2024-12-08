@@ -128,10 +128,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>mapBearingPolicyChang
 void&#160;</td><td class="memItemRight" valign="bottom"><b>nightModeChanged</b> ()</td></tr>
 <tr class="memdesc:adee559f9cc4d03e3756f62ac33149344"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
 <tr class="separator:adee559f9cc4d03e3756f62ac33149344"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab40c1f2f57ff49e253eeeeaf39a89bf4" id="r_ab40c1f2f57ff49e253eeeeaf39a89bf4"><td class="memItemLeft" align="right" valign="top"><a id="ab40c1f2f57ff49e253eeeeaf39a89bf4" name="ab40c1f2f57ff49e253eeeeaf39a89bf4"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>positioningByTrafficDataReceiverChanged</b> ()</td></tr>
-<tr class="memdesc:ab40c1f2f57ff49e253eeeeaf39a89bf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
-<tr class="separator:ab40c1f2f57ff49e253eeeeaf39a89bf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d5821813aa414c62b0fa9b90b12bf44" id="r_a5d5821813aa414c62b0fa9b90b12bf44"><td class="memItemLeft" align="right" valign="top"><a id="a5d5821813aa414c62b0fa9b90b12bf44" name="a5d5821813aa414c62b0fa9b90b12bf44"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>privacyHashChanged</b> ()</td></tr>
 <tr class="memdesc:a5d5821813aa414c62b0fa9b90b12bf44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
@@ -186,9 +182,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab10a41b5ad196dd3b6cf488f3cf8d798" id="r_ab10a41b5ad196dd3b6cf488f3cf8d798"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab10a41b5ad196dd3b6cf488f3cf8d798">nightMode</a> () const -&gt; bool</td></tr>
 <tr class="memdesc:ab10a41b5ad196dd3b6cf488f3cf8d798"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <br /></td></tr>
 <tr class="separator:ab10a41b5ad196dd3b6cf488f3cf8d798"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab04f316ce49a140cc409d59e75165539" id="r_ab04f316ce49a140cc409d59e75165539"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab04f316ce49a140cc409d59e75165539">positioningByTrafficDataReceiver</a> () const -&gt; bool</td></tr>
-<tr class="memdesc:ab04f316ce49a140cc409d59e75165539"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <br /></td></tr>
-<tr class="separator:ab04f316ce49a140cc409d59e75165539"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c5ea8092ad65913c6d7b68be6bae0fe" id="r_a2c5ea8092ad65913c6d7b68be6bae0fe"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2c5ea8092ad65913c6d7b68be6bae0fe">positioningByTrafficDataReceiver</a> () const</td></tr>
+<tr class="memdesc:a2c5ea8092ad65913c6d7b68be6bae0fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <br /></td></tr>
+<tr class="separator:a2c5ea8092ad65913c6d7b68be6bae0fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4aed2b489518ace92d8a392ef905d53e" id="r_a4aed2b489518ace92d8a392ef905d53e"><td class="memItemLeft" align="right" valign="top">QBindable&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4aed2b489518ace92d8a392ef905d53e">bindablePositioningByTrafficDataReceiver</a> () const</td></tr>
+<tr class="memdesc:a4aed2b489518ace92d8a392ef905d53e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <br /></td></tr>
+<tr class="separator:a4aed2b489518ace92d8a392ef905d53e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8bed66d87a6b5c4067e90c71ec2dcee3" id="r_a8bed66d87a6b5c4067e90c71ec2dcee3"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8bed66d87a6b5c4067e90c71ec2dcee3">privacyHash</a> () const -&gt; <a class="el" href="classUnits_1_1ByteSize.html">Units::ByteSize</a></td></tr>
 <tr class="memdesc:a8bed66d87a6b5c4067e90c71ec2dcee3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for property of the same name.  <br /></td></tr>
 <tr class="separator:a8bed66d87a6b5c4067e90c71ec2dcee3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -298,6 +297,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>ignoreSSLProblems</b>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>nightMode</b></td></tr>
 <tr class="memdesc:a2543839bc9eb4fedb1ac6d2b210c6a3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Night mode. <br /></td></tr>
 <tr class="separator:a2543839bc9eb4fedb1ac6d2b210c6a3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a293c71160da7fd051840a467c1f91b31" id="r_a293c71160da7fd051840a467c1f91b31"><td class="memItemLeft" align="right" valign="top"><a id="a293c71160da7fd051840a467c1f91b31" name="a293c71160da7fd051840a467c1f91b31"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>positioningByTrafficDataReceiver</b></td></tr>
+<tr class="memdesc:a293c71160da7fd051840a467c1f91b31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use traffic data receiver for positioning. <br /></td></tr>
+<tr class="separator:a293c71160da7fd051840a467c1f91b31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8149d665d89e28f426a2188f3a322e9a" id="r_a8149d665d89e28f426a2188f3a322e9a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classUnits_1_1ByteSize.html">Units::ByteSize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8149d665d89e28f426a2188f3a322e9a">privacyHash</a></td></tr>
 <tr class="memdesc:a8149d665d89e28f426a2188f3a322e9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hash of the last "privacy" message that was accepted by the user.  <br /></td></tr>
 <tr class="separator:a8149d665d89e28f426a2188f3a322e9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -305,10 +308,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>nightMode</b></td></t
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>showAltitudeAGL</b></td></tr>
 <tr class="memdesc:aecf1e6c2f2172d583d1a3e718d684b99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Show Altitude AGL. <br /></td></tr>
 <tr class="separator:aecf1e6c2f2172d583d1a3e718d684b99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a293c71160da7fd051840a467c1f91b31" id="r_a293c71160da7fd051840a467c1f91b31"><td class="memItemLeft" align="right" valign="top"><a id="a293c71160da7fd051840a467c1f91b31" name="a293c71160da7fd051840a467c1f91b31"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>positioningByTrafficDataReceiver</b></td></tr>
-<tr class="memdesc:a293c71160da7fd051840a467c1f91b31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use traffic data receiver for positioning. <br /></td></tr>
-<tr class="separator:a293c71160da7fd051840a467c1f91b31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1aec30579e8b90cc5abb4130da23e213" id="r_a1aec30579e8b90cc5abb4130da23e213"><td class="memItemLeft" align="right" valign="top">uint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1aec30579e8b90cc5abb4130da23e213">voiceNotifications</a></td></tr>
 <tr class="memdesc:a1aec30579e8b90cc5abb4130da23e213"><td class="mdescLeft">&#160;</td><td class="mdescRight">Voice notifications that should be played.  <br /></td></tr>
 <tr class="separator:a1aec30579e8b90cc5abb4130da23e213"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -319,7 +318,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>positioningByTrafficD
 <p>There exists one static instance of this class, which can be accessed via the Global functions. No other instance of this class should be used.</p>
 <p>The methods in this class are reentrant, but not thread safe. </p>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00044">44</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00045">45</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="a7388e036c26921b3c3e367285a8c127c" name="a7388e036c26921b3c3e367285a8c127c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7388e036c26921b3c3e367285a8c127c">&#9670;&#160;</a></span>MapBearingPolicy</h2>
@@ -344,7 +343,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>positioningByTrafficD
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00052">52</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00053">53</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>
@@ -409,7 +408,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>positioningByTrafficD
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property acceptedTerms </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00187">187</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00188">188</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>
@@ -467,7 +466,37 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>positioningByTrafficD
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property alwaysOpenExternalWebsites </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00193">193</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00194">194</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+
+</div>
+</div>
+<a id="a4aed2b489518ace92d8a392ef905d53e" name="a4aed2b489518ace92d8a392ef905d53e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4aed2b489518ace92d8a392ef905d53e">&#9670;&#160;</a></span>bindablePositioningByTrafficDataReceiver()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QBindable&lt; bool &gt; GlobalSettings::bindablePositioningByTrafficDataReceiver </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter function for property of the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property positioningByTrafficDataReceiver </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00272">272</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>
@@ -497,7 +526,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>positioningByTrafficD
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property expandNotamAbbreviations </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00205">205</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00206">206</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>
@@ -555,7 +584,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>positioningByTrafficD
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property hideGlidingSectors </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00217">217</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00218">218</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>
@@ -585,7 +614,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>positioningByTrafficD
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property ignoreSSLProblems </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00223">223</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00224">224</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>
@@ -644,7 +673,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>positioningByTrafficD
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property lastWhatsNewHash </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00235">235</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00236">236</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>
@@ -675,7 +704,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>positioningByTrafficD
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property lastWhatsNewInMapsHash </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00244">244</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00245">245</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>
@@ -733,12 +762,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>positioningByTrafficD
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property night mode </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00259">259</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00260">260</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>
-<a id="ab04f316ce49a140cc409d59e75165539" name="ab04f316ce49a140cc409d59e75165539"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab04f316ce49a140cc409d59e75165539">&#9670;&#160;</a></span>positioningByTrafficDataReceiver()</h2>
+<a id="a2c5ea8092ad65913c6d7b68be6bae0fe" name="a2c5ea8092ad65913c6d7b68be6bae0fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c5ea8092ad65913c6d7b68be6bae0fe">&#9670;&#160;</a></span>positioningByTrafficDataReceiver()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -747,10 +776,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>positioningByTrafficD
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto GlobalSettings::positioningByTrafficDataReceiver </td>
+          <td class="memname">bool GlobalSettings::positioningByTrafficDataReceiver </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const -&gt; bool </td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -763,7 +792,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>positioningByTrafficD
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property positioningByTrafficDataReceiver </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00265">265</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00266">266</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>
@@ -793,7 +822,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>positioningByTrafficD
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property privacyHash </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00271">271</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00278">278</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>
@@ -1224,7 +1253,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>positioningByTrafficD
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property positioningByTrafficDataReceiver </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00277">277</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00284">284</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>
@@ -1255,7 +1284,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>positioningByTrafficD
 <p>Getter function for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property voiceNotifications </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00283">283</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00290">290</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>
@@ -1283,7 +1312,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>positioningByTrafficD
 <p>Find out if Terms &amp; Conditions have been accepted. </p>
 <p>This property says which version of our "terms and conditions" have been accepted by the user; this is used to determine whether the first-use-dialog should be shown. If nothing has been accepted yet, 0 is returned. </p>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00098">98</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00099">99</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>
@@ -1310,7 +1339,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>positioningByTrafficD
 <p>Airspace altitude limit for map display. </p>
 <p>This property holds an altitude. The moving map will ony display airspaces whose lower boundary is lower than this altitude. The altitude value lies in the range [airspaceHeightLimit_min, airspaceHeightLimit_max] or takes a non-finite value to indicate that all airspaces shall be shown. </p>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00106">106</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00107">107</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>
@@ -1329,7 +1358,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>positioningByTrafficD
 <p>Maximum acceptable value for property airspaceAltitudeLimit. </p>
 <p>This is currently set to 15.000 ft </p>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00118">118</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00119">119</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>
@@ -1348,7 +1377,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>positioningByTrafficD
 <p>Minimum acceptable value for property airspaceAltitudeLimit. </p>
 <p>This is currently set to 3.000 ft </p>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00112">112</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00113">113</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>
@@ -1375,7 +1404,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>positioningByTrafficD
 <p>Font size. </p>
 <p>This is a value between 14 (normal font size) and 20 (giant fonts) </p>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00127">127</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00128">128</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>
@@ -1402,7 +1431,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>positioningByTrafficD
 <p>Hash of the last "what's new" message that was shown to the user. </p>
 <p>This property is used in the app to determine if the message has been shown or not. </p>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00143">143</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00144">144</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>
@@ -1429,7 +1458,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>positioningByTrafficD
 <p>Hash of the last "what's new in maps" message that was shown to the user. </p>
 <p>This property is used in the app to determine if the message has been shown or not. </p>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00150">150</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00151">151</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>
@@ -1456,7 +1485,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>positioningByTrafficD
 <p>Hash of the last "privacy" message that was accepted by the user. </p>
 <p>This property is used in the app to determine if the message has been shown or not. </p>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00163">163</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00167">167</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>
@@ -1483,7 +1512,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>positioningByTrafficD
 <p>Voice notifications that should be played. </p>
 <p>This property is an "or" of the entries of <a class="el" href="classNotifications_1_1Notification.html#a5191dd90185d75397902fa154361cc7d" title="Importance classification.">Notifications::Notification::Importance</a>. It determines which notifications should be spoken. </p>
 
-<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00176">176</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="GlobalSettings_8h_source.html#l00177">177</a> of file <a class="el" href="GlobalSettings_8h_source.html">GlobalSettings.h</a>.</p>
 
 </div>
 </div>

@@ -76,12 +76,6 @@ public:
     // PROPERTIES
     //
 
-    /*! \brief Ambient air density
-     *
-     *  This property holds the ambient air density in kg/m³, computed from pressure and temperature.
-     */
-    Q_PROPERTY(Units::Density ambientDensity READ ambientDensity NOTIFY ambientDensityChanged)
-
     /*! \brief Ambient pressure
      *
      *  This property holds the ambient pressure recorded by the device sensor (if any).
@@ -93,12 +87,6 @@ public:
      *  This property holds the ambient temperature recorded by the device sensor (if any).
      */
     Q_PROPERTY(Units::Temperature ambientTemperature READ ambientTemperature NOTIFY ambientTemperatureChanged)
-
-    /*! \brief Density altitude
-     *
-     *  This property holds the density altitude, computed from ambientDensity and ambientTemperature.
-     */
-    Q_PROPERTY(Units::Distance densityAltitude READ densityAltitude NOTIFY ambientDensityChanged)
 
     /*! \brief Pressure altitude
      *
@@ -117,12 +105,6 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
-     *  @returns Property ambientDensity
-     */
-    [[nodiscard]] Units::Density ambientDensity() const { return m_ambientDensity; }
-
-    /*! \brief Getter function for the property with the same name
-     *
      *  @returns Property ambientPressure
      */
     [[nodiscard]] Units::Pressure ambientPressure() const { return m_ambientPressure; }
@@ -138,12 +120,6 @@ public:
      *  @returns Property pressureAltitude
      */
     [[nodiscard]] Units::Distance pressureAltitude() const { return Navigation::Atmosphere::height(m_ambientPressure); }
-
-    /*! \brief Getter function for the property with the same name
-     *
-     *  @returns Property densityAltitude
-     */
-    [[nodiscard]] Units::Distance densityAltitude() const { return Navigation::Atmosphere::height(Navigation::Atmosphere::density(m_ambientPressure, m_ambientTemperature)); }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -182,7 +158,6 @@ private:
     QPressureSensor m_pressureSensor;
 #endif
 
-    Units::Density m_ambientDensity;
     Units::Pressure m_ambientPressure;
     Units::Temperature m_ambientTemperature;
     QString m_statusString;

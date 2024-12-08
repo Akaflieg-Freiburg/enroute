@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,22 +21,19 @@
 #pragma once
 
 #include <QGeoPositionInfo>
+#include <QProperty>
 #include <QTimer>
 
 #include "positioning/PositionInfo.h"
-#include "units/Distance.h"
 
 
 namespace Positioning {
 
-/*! \brief Abstract base class for all classes that provide geographic position information
+/*! \brief Abstract base class for all classes that provide geographic position
+ *  information
  *
  *  This is the base class for all classes that provide geographic position
- *  information.  The information is exposed via two properties, positionInfo
- *  and pressureAltitude.
- *
- *  The property statusString gives more information about the status of the
- *  source
+ *  information.
  */
 
 
@@ -51,7 +48,6 @@ public:
     explicit PositionInfoSource_Abstract(QObject *parent = nullptr);
 
 
-
     //
     // Properties
     //
@@ -62,54 +58,16 @@ public:
      *  that the data is up-to-date, the position information will be set to an
      *  invalid positionInfo when no data has arrived for more than the time
      *  specified in PositionInfo::lifetime.
-     *
-     *  Consumers of the class can use positionInfo().isValid() property to
-     *  check if position data is continually arriving.
      */
-    Q_PROPERTY(Positioning::PositionInfo positionInfo READ positionInfo NOTIFY positionInfoChanged)
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property positionInfo
-     */
-    [[nodiscard]] auto positionInfo() const -> Positioning::PositionInfo
-    {
-        return m_positionInfo;
-    }
-
-    /*! \brief Pressure altitude
-     *
-     *  This property holds information about the pressure altitude, that is,
-     *  the altitude that you would read off your altimeter if the altimeter is
-     *  set to 1013.2 hPa. To ensure that the data is up-to-date, the position
-     *  information will be set to "invalid" when no data has arrived for more
-     *  than the time specified in PositionInfo::lifetime.
-     */
-    Q_PROPERTY(Units::Distance pressureAltitude READ pressureAltitude NOTIFY pressureAltitudeChanged)
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property pressureAltitude
-     */
-    [[nodiscard]] auto pressureAltitude() const -> Units::Distance
-    {
-        return m_pressureAltitude;
-    }
+    Q_PROPERTY(Positioning::PositionInfo positionInfo READ positionInfo BINDABLE bindablePositionInfo)
 
     /*! \brief Indicator that position information is being received
      *
-     *  Use this property to tell if position information is being received.
+     *  This is a shortcut for positionInfo().isValid. This property exists
+     *  because it does not change so often, and can thus be more efficient to
+     *  use.
      */
-    Q_PROPERTY(bool receivingPositionInfo READ receivingPositionInfo NOTIFY receivingPositionInfoChanged)
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property receivingPositionInfo
-     */
-    [[nodiscard]] auto receivingPositionInfo() const -> bool
-    {
-        return _receivingPositionInfo;
-    }
+    Q_PROPERTY(bool receivingPositionInfo READ receivingPositionInfo BINDABLE bindableReceivingPositionInfo)
 
     /*! \brief Source name
      *
@@ -117,16 +75,7 @@ public:
      *  the source. This could typically be a string of the form "Traffic
      *  Receiver" or "Built-in satellite receiver".
      */
-    Q_PROPERTY(QString sourceName READ sourceName NOTIFY sourceNameChanged)
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property sourceName
-     */
-    [[nodiscard]] auto sourceName() const -> QString
-    {
-        return m_sourceName;
-    }
+    Q_PROPERTY(QString sourceName READ sourceName BINDABLE bindableSourceName)
 
     /*! \brief Source status
      *
@@ -134,68 +83,97 @@ public:
      *  the status of the positionInfo source. This could typically be a string
      *  of the form "OK" or "Insufficient permission to access position info"
      */
-    Q_PROPERTY(QString statusString READ statusString NOTIFY statusStringChanged)
+    Q_PROPERTY(QString statusString READ statusString BINDABLE bindableStatusString)
+
+
+    //
+    // Getter Methods
+    //
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property positionInfo
+     */
+    [[nodiscard]] Positioning::PositionInfo positionInfo() const
+    {
+        return m_positionInfo.value();
+    }
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property positionInfo
+     */
+    [[nodiscard]] QBindable<Positioning::PositionInfo> bindablePositionInfo() const
+    {
+        return &m_positionInfo;
+    }
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property receivingPositionInfo
+     */
+    [[nodiscard]] bool receivingPositionInfo() const {return m_receivingPositionInfo.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property receivingPositionInfo
+     */
+    [[nodiscard]] QBindable<bool> bindableReceivingPositionInfo() {return &m_receivingPositionInfo;}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property sourceName
+     */
+    [[nodiscard]] QString sourceName() const
+    {
+        return m_sourceName.value();
+    }
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property sourceName
+     */
+    [[nodiscard]] QBindable<QString> bindableSourceName() const
+    {
+        return &m_sourceName;
+    }
 
     /*! \brief Getter method for property with the same name
      *
      *  @returns Property statusString
      */
-    [[nodiscard]] auto statusString() const -> QString
+    [[nodiscard]] QString statusString() const
     {
-        return m_statusString;
+        return m_statusString.value();
     }
 
-signals:
-    /*! \brief Notifier signal */
-    void positionInfoChanged();
-
-    /*! \brief Notifier signal */
-    void pressureAltitudeChanged();
-
-    /*! \brief Notifier signal */
-    void receivingPositionInfoChanged();
-
-    /*! \brief Notifier signal */
-    void sourceNameChanged(const QString &name);
-
-    /*! \brief Notifier signal */
-    void statusStringChanged(const QString &status);
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property statusString
+     */
+    [[nodiscard]] QBindable<QString> bindableStatusString() const
+    {
+        return &m_statusString;
+    }
 
 protected:
     // This method must be used by child classes to update the position info.
     // The class uses a timer internally to reset the position info to "invalid"
     // after the time specified in PositionInfo::lifetime seconds. It also
     // updates the property receivingPositionInfo.
-    void setPositionInfo(const Positioning::PositionInfo &info);
-
-    // This method must be used by child classes to update the pressure altitude
-    // The class uses a timer internally to reset the position info to "invalid"
-    // after the time specified in PositionInfo::lifetime seconds.
-    void setPressureAltitude(Units::Distance newPressureAltitude);
+    void setPositionInfo(const Positioning::PositionInfo& info);
 
     // This method must be used by child classes to update the source name
-    void setSourceName(const QString &name);
+    void setSourceName(const QString& name) {m_sourceName = name;}
 
-    // This method must be used by child classes to update the status string
-    void setStatusString(const QString &status);
+    QProperty<QString> m_statusString;
 
 private:
-    // Resets the position info to "invalid"
-    void resetPositionInfo();
-
-    // Resets the pressure altitude to "invalid"
-    void resetPressureAltitude();
-
-    Units::Distance m_pressureAltitude {};
-    QTimer m_pressureAltitudeTimer;
-
-    Positioning::PositionInfo m_positionInfo;
+    QProperty<Positioning::PositionInfo> m_positionInfo;
     QTimer m_positionInfoTimer;
 
-    QString m_sourceName;
-    QString m_statusString;
-
-    bool _receivingPositionInfo{false};
+    QProperty<bool> m_receivingPositionInfo {false};
+    QProperty<QString> m_sourceName;
 };
 
 } // namespace Positioning

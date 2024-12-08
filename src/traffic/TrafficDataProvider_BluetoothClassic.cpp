@@ -36,7 +36,7 @@ QString Traffic::TrafficDataProvider::addDataSource_BluetoothClassic(const Traff
     }
 
     // Ignore new device if data source already exists.
-    foreach(auto _dataSource, m_dataSources)
+    foreach(auto _dataSource, m_dataSources.value())
     {
         auto* dataSourceBTClassic = qobject_cast<TrafficDataSource_BluetoothClassic*>(_dataSource);
         if (dataSourceBTClassic != nullptr)

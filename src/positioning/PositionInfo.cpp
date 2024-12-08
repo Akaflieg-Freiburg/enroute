@@ -22,8 +22,8 @@
 #include "geomaps/GeoMapProvider.h"
 #include "positioning/PositionInfo.h"
 
-Positioning::PositionInfo::PositionInfo(const QGeoPositionInfo &info)
-    : m_positionInfo(info)
+Positioning::PositionInfo::PositionInfo(const QGeoPositionInfo& info, const QString& source)
+    : m_positionInfo(info), m_source(source)
 {}
 
 auto Positioning::PositionInfo::groundSpeed() const -> Units::Speed
@@ -38,7 +38,6 @@ auto Positioning::PositionInfo::groundSpeed() const -> Units::Speed
     return Units::Speed::fromMPS(m_positionInfo.attribute(QGeoPositionInfo::GroundSpeed));
 }
 
-
 auto Positioning::PositionInfo::isValid() const -> bool
 {
     if (!m_positionInfo.isValid()) {
@@ -48,7 +47,6 @@ auto Positioning::PositionInfo::isValid() const -> bool
     auto expiry = m_positionInfo.timestamp().addMSecs( std::chrono::milliseconds(lifetime).count() );
     return expiry >= QDateTime::currentDateTime();
 }
-
 
 auto Positioning::PositionInfo::positionErrorEstimate() const -> Units::Distance
 {
@@ -62,7 +60,6 @@ auto Positioning::PositionInfo::positionErrorEstimate() const -> Units::Distance
     return Units::Distance::fromM(m_positionInfo.attribute(QGeoPositionInfo::HorizontalAccuracy));
 }
 
-
 auto Positioning::PositionInfo::terrainElevationAMSL() -> Units::Distance
 {
     if (m_terrainAMSL.isFinite())
@@ -73,7 +70,6 @@ auto Positioning::PositionInfo::terrainElevationAMSL() -> Units::Distance
     m_terrainAMSL = GlobalObject::geoMapProvider()->terrainElevationAMSL(m_positionInfo.coordinate());
     return m_terrainAMSL;
 }
-
 
 auto Positioning::PositionInfo::trueAltitudeAMSL() const -> Units::Distance
 {
@@ -127,7 +123,6 @@ auto Positioning::PositionInfo::trueAltitudeErrorEstimate() const -> Units::Dist
     return Units::Distance::fromM(m_positionInfo.attribute(QGeoPositionInfo::VerticalAccuracy));
 }
 
-
 auto Positioning::PositionInfo::trueTrack() const -> Units::Angle
 {
     if (!m_positionInfo.isValid())
@@ -150,7 +145,6 @@ auto Positioning::PositionInfo::trueTrack() const -> Units::Angle
     return Units::Angle::fromDEG(m_positionInfo.attribute(QGeoPositionInfo::Direction));
 }
 
-
 auto Positioning::PositionInfo::trueTrackErrorEstimate() const -> Units::Angle
 {
     if (!trueTrack().isFinite())
@@ -165,7 +159,6 @@ auto Positioning::PositionInfo::trueTrackErrorEstimate() const -> Units::Angle
     return Units::Angle::fromDEG(m_positionInfo.attribute(QGeoPositionInfo::DirectionAccuracy));
 }
 
-
 auto Positioning::PositionInfo::variation() const -> Units::Angle
 {
     if (!m_positionInfo.isValid()) {
@@ -177,7 +170,6 @@ auto Positioning::PositionInfo::variation() const -> Units::Angle
 
     return Units::Angle::fromDEG(m_positionInfo.attribute(QGeoPositionInfo::MagneticVariation));
 }
-
 
 auto Positioning::PositionInfo::verticalSpeed() const -> Units::Speed
 {

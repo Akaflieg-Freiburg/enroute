@@ -38,6 +38,7 @@ namespace Traffic {
 
 class TrafficFactor_DistanceOnly : public Traffic::TrafficFactor_Abstract {
     Q_OBJECT
+    QML_ELEMENT
 
 public:
     /*! \brief Default constructor

@@ -62,7 +62,7 @@ QList<double> FileFormats::GeoTIFF::getTransformation(const QMap<quint16, QVaria
     {
         return {};
     }
-    auto tiepoint = tiepoints[0];
+    const auto &tiepoint = tiepoints[0];
 
     auto pixelSize = readPixelSize(TIFFFields);
     if (!pixelSize.isValid())

@@ -156,7 +156,7 @@
       <meta-data android:name="android.app.lib_name" android:value="enroute"/>
       
       <!--  Messages maps -->
-      <meta-data android:value="@string/unsupported_android_version" android:name="android.app.unsupported_android_version"/>
+      <!-- meta-data android:value="@string/unsupported_android_version" android:name="android.app.unsupported_android_version"/ -->
       <!--  Messages maps -->
       
       <!-- Splash screen -->

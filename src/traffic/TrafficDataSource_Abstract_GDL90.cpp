@@ -289,10 +289,10 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
             m_pressureAltitude = Units::Distance::fromM( qQNaN() );
             m_pressureAltitudeTimer.stop();
         }
-        emit pressureAltitudeUpdated(m_pressureAltitude);
+        setPressureAltitude(m_pressureAltitude);
 
         // Update position information and continue
-        emit positionUpdated( Positioning::PositionInfo(pInfo) );
+        emit positionUpdated( Positioning::PositionInfo(pInfo, sourceName()) );
         return;
     }
 
@@ -427,7 +427,7 @@ void Traffic::TrafficDataSource_Abstract::processGDLMessage(const QByteArray& ra
             m_factor.setCallSign(callSign);
             m_factor.setHDist(hDist);
             m_factor.setID(id);
-            m_factor.setPositionInfo( Positioning::PositionInfo(pInfo) );
+            m_factor.setPositionInfo( Positioning::PositionInfo(pInfo, sourceName()) );
             m_factor.setType(type);
             m_factor.setVDist(vDist);
             m_factor.startLiveTime();

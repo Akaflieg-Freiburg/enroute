@@ -98,7 +98,7 @@ public:
      */
     [[nodiscard]] auto positionInfo() const -> Positioning::PositionInfo
     {
-        return Positioning::PositionInfo(m_positionInfo);
+        return m_positionInfo;
     }
 
     /*! \brief Setter function for property with the same name
@@ -136,7 +136,7 @@ private:
     // Property values
     //
     QString m_icon;
-    QGeoPositionInfo m_positionInfo;
+    Positioning::PositionInfo m_positionInfo;
     Units::Distance m_vDist;
     Units::Distance m_hDist;
 

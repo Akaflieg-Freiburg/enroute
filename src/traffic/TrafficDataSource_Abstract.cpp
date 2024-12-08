@@ -20,6 +20,7 @@
 
 #include <QQmlEngine>
 
+#include "positioning/PositionInfo.h"
 #include "traffic/TrafficDataSource_Abstract.h"
 
 
@@ -35,8 +36,12 @@ Traffic::TrafficDataSource_Abstract::TrafficDataSource_Abstract(bool isCanonical
     m_heartbeatTimer.setInterval(5s);
     connect(&m_heartbeatTimer, &QTimer::timeout, this, &Traffic::TrafficDataSource_Abstract::resetReceivingHeartbeat);
 
+    // Setup timer for pressure altitude
+    m_pressureAltitudeTimer.setInterval(Positioning::PositionInfo::lifetime);
+    m_pressureAltitudeTimer.setSingleShot(true);
+    connect(&m_pressureAltitudeTimer, &QTimer::timeout, this, [this]() {m_pressureAltitude = Units::Distance();});
+
     // Setup other times
-    m_pressureAltitudeTimer.setInterval(5s);
     m_pressureAltitudeTimer.setSingleShot(true);
     m_trueAltitudeTimer.setInterval(5s);
     m_trueAltitudeTimer.setSingleShot(true);
@@ -64,6 +69,11 @@ void Traffic::TrafficDataSource_Abstract::setErrorString(const QString& newError
     emit errorStringChanged(m_errorString);
 }
 
+void Traffic::TrafficDataSource_Abstract::setPressureAltitude(Units::Distance newPressureAltitude)
+{
+    m_pressureAltitudeTimer.start();
+    m_pressureAltitude = newPressureAltitude;
+}
 
 void Traffic::TrafficDataSource_Abstract::setReceivingHeartbeat(bool newReceivingHeartbeat)
 {

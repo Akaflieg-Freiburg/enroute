@@ -346,7 +346,7 @@ AppWindow {
                         ItemDelegate { // PressureAltitude
                             text: qsTr("Barometric Data")
                                   +`<br><font color="#606060" size="2">`
-                                  + (PositionProvider.pressureAltitude.isFinite() ? qsTr("Receiving pressure altitude.") : qsTr("Not receiving pressure altitude."))
+                                  + (TrafficDataProvider.pressureAltitude.isFinite() ? qsTr("Receiving pressure altitude.") : qsTr("Not receiving pressure altitude."))
                                   + `</font>`
                             icon.source: "/icons/material/ic_speed.svg"
                             Layout.fillWidth: true
@@ -359,7 +359,7 @@ AppWindow {
                             }
                             background: Rectangle {
                                 anchors.fill: parent
-                                color: PositionProvider.pressureAltitude.isFinite() ? "green" : "red"
+                                color: TrafficDataProvider.pressureAltitude.isFinite() ? "green" : "red"
                                 opacity: 0.2
                             }
                         }

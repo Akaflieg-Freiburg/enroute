@@ -119,7 +119,7 @@ Rectangle {
 
                 Layout.alignment: Qt.AlignHCenter
 
-                text: PositionProvider.pressureAltitude.isFinite() ? "FL" + ("000" + Math.round(PositionProvider.pressureAltitude.toFeet()/100.0)).slice(-3) : "-"
+                text: TrafficDataProvider.pressureAltitude.isFinite() ? "FL" + ("000" + Math.round(TrafficDataProvider.pressureAltitude.toFeet()/100.0)).slice(-3) : "-"
                 font.weight: Font.Bold
                 font.pixelSize: dummy.font.pixelSize*1.3
                 color: "white"

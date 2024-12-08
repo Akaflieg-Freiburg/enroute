@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,85 +21,24 @@
 #include "positioning/PositionInfoSource_Abstract.h"
 
 
-Positioning::PositionInfoSource_Abstract::PositionInfoSource_Abstract(QObject *parent) : QObject(parent)
+Positioning::PositionInfoSource_Abstract::PositionInfoSource_Abstract(QObject* parent) : QObject(parent)
 {
     // Setup timer
     m_positionInfoTimer.setInterval( PositionInfo::lifetime );
     m_positionInfoTimer.setSingleShot(true);
-    connect(&m_positionInfoTimer, &QTimer::timeout, this, &Positioning::PositionInfoSource_Abstract::resetPositionInfo);
-
-    // Setup timer
-    m_pressureAltitudeTimer.setInterval( PositionInfo::lifetime );
-    m_pressureAltitudeTimer.setSingleShot(true);
-    connect(&m_pressureAltitudeTimer, &QTimer::timeout, this, &Positioning::PositionInfoSource_Abstract::resetPressureAltitude);
+    connect(&m_positionInfoTimer, &QTimer::timeout, this, [this]() {setPositionInfo({});});
 }
 
 
-void Positioning::PositionInfoSource_Abstract::setPositionInfo(const Positioning::PositionInfo &info)
+void Positioning::PositionInfoSource_Abstract::setPositionInfo(const Positioning::PositionInfo& info)
 {
-    if (info.isValid()) {
+    if (info.isValid())
+    {
         m_positionInfoTimer.start();
     }
-    if (info == m_positionInfo) {
-        return;
-    }
 
+    Qt::beginPropertyUpdateGroup();
     m_positionInfo = info;
-    emit positionInfoChanged();
-
-    auto newReceiving = m_positionInfo.isValid();
-    if (_receivingPositionInfo == newReceiving) {
-        return;
-    }
-
-    _receivingPositionInfo = newReceiving;
-    emit receivingPositionInfoChanged();
-}
-
-
-void Positioning::PositionInfoSource_Abstract::setSourceName(const QString &name)
-{
-    if (m_sourceName == name) {
-        return;
-    }
-
-    m_sourceName = name;
-    emit sourceNameChanged(m_sourceName);
-}
-
-
-void Positioning::PositionInfoSource_Abstract::setStatusString(const QString &status)
-{
-    if (m_statusString == status) {
-        return;
-    }
-
-    m_statusString = status;
-    emit statusStringChanged(m_statusString);
-}
-
-
-void Positioning::PositionInfoSource_Abstract::setPressureAltitude(Units::Distance newPressureAltitude)
-{
-    if (newPressureAltitude.isFinite()) {
-        m_pressureAltitudeTimer.start();
-    }
-    if (newPressureAltitude == m_pressureAltitude) {
-        return;
-    }
-
-    m_pressureAltitude = newPressureAltitude;
-    emit pressureAltitudeChanged();
-}
-
-
-void Positioning::PositionInfoSource_Abstract::resetPressureAltitude()
-{
-    setPressureAltitude( {} );
-}
-
-
-void Positioning::PositionInfoSource_Abstract::resetPositionInfo()
-{
-    setPositionInfo( {} );
+    m_receivingPositionInfo = info.isValid();
+    Qt::endPropertyUpdateGroup();
 }

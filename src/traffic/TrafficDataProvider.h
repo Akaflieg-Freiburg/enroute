@@ -84,6 +84,16 @@ public:
      */
     Q_PROPERTY(QList<Traffic::TrafficDataSource_Abstract*> dataSources READ dataSources NOTIFY dataSourcesChanged)
 
+    /*! \brief Pressure altitude
+     *
+     *  This property holds information about the pressure altitude, that is,
+     *  the altitude that you would read off your altimeter if the altimeter is
+     *  set to 1013.2 hPa. To ensure that the data is up-to-date, the position
+     *  information will be set to "invalid" when no data has arrived for more
+     *  than the time specified in PositionInfo::lifetime.
+     */
+    Q_PROPERTY(Units::Distance pressureAltitude READ pressureAltitude BINDABLE bindablePressureAltitude)
+
     /*! \brief Heartbeat indicator
      *
      *  When active, traffic receivers send regular heartbeat messages. These
@@ -91,7 +101,7 @@ public:
      *  times when no traffic is reported. This property indicates if the class
      *  receives heartbeat messages from at least one of the known receivers.
      */
-    Q_PROPERTY(bool receivingHeartbeat READ receivingHeartbeat WRITE setReceivingHeartbeat NOTIFY receivingHeartbeatChanged)
+    Q_PROPERTY(bool receivingHeartbeat READ receivingHeartbeat BINDABLE bindableReceivingHeartbeat NOTIFY receivingHeartbeatChanged)
 
     /*! \brief Traffic objects whose position is known
      *
@@ -151,11 +161,32 @@ public:
 
     /*! \brief Getter method for property with the same name
      *
+     *  @returns Property pressureAltitude
+     */
+    [[nodiscard]] Units::Distance pressureAltitude() const {return m_pressureAltitude.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property pressureAltitude
+     */
+    [[nodiscard]] QBindable<Units::Distance> bindablePressureAltitude() const {return &m_pressureAltitude;}
+
+    /*! \brief Getter method for property with the same name
+     *
      *  @returns Property receiving
      */
     [[nodiscard]] bool receivingHeartbeat() const
     {
-        return m_receivingHeartbeat;
+        return m_receivingHeartbeat.value();
+    }
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property receiving
+     */
+    [[nodiscard]] QBindable<bool> bindableReceivingHeartbeat() const
+    {
+        return &m_receivingHeartbeat;
     }
 
     /*! \brief Getter method for property with the same name
@@ -292,6 +323,7 @@ public:
      */
     static constexpr Units::Distance maxHorizontalDistance = Units::Distance::fromNM(20.0);
 
+
 signals:
     /*! \brief Notifier signal */
     void dataSourcesChanged();
@@ -314,7 +346,7 @@ signals:
     void passwordStorageRequest(const QString& SSID, const QString& password);
 
     /*! \brief Notifier signal */
-    void receivingHeartbeatChanged(bool);
+    void receivingHeartbeatChanged();
 
     /*! \brief Notifier signal */
     void trafficReceiverRuntimeErrorChanged();
@@ -396,16 +428,15 @@ private slots:
     void saveConnectionInfos();
 
     // Setter method
-    void setReceivingHeartbeat(bool newReceivingHeartbeat);
-
-    // Setter method
     void setWarning(const Traffic::Warning& warning);
 
-    // Updates the property statusString that is inherited from
-    // Positioning::PositionInfoSource_Abstract
-    void updateStatusString();
-
 private:
+    //
+    // Compute Methods
+    //
+
+    QString computeStatusString();
+
     // UDP Socket for ForeFlight Broadcast messages.
     // See https://www.foreflight.com/connect/spec/
     QNetworkDatagram foreFlightBroadcastDatagram {R"({"App":"Enroute Flight Navigation","GDL90":{"port":4000}})", QHostAddress::Broadcast, 63093};
@@ -417,8 +448,8 @@ private:
     QPointer<Traffic::TrafficFactor_DistanceOnly> m_trafficObjectWithoutPosition;
 
     // TrafficData Sources
-    QList<QPointer<Traffic::TrafficDataSource_Abstract>> m_dataSources;
-    QPointer<Traffic::TrafficDataSource_Abstract> m_currentSource;
+    QProperty<QList<QPointer<Traffic::TrafficDataSource_Abstract>>> m_dataSources;
+    QProperty<QPointer<Traffic::TrafficDataSource_Abstract>> m_currentSource;
 
     // Property cache
     Traffic::Warning m_Warning;
@@ -426,11 +457,13 @@ private:
     QString m_trafficReceiverRuntimeError;
     QString m_trafficReceiverSelfTestError;
 
+    QProperty<Units::Distance> m_pressureAltitude;
+    Units::Distance computePressureAltitude();
+
     // Reconnect
     QTimer reconnectionTimer;
 
-    // Property Cache
-    bool m_receivingHeartbeat {false};
+    Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficDataProvider, bool, m_receivingHeartbeat, &Traffic::TrafficDataProvider::receivingHeartbeatChanged);
 
     // Standard file name for saveConnectionInfos()
     QString stdFileName{QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/connectionInfos.data"};

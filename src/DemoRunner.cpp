@@ -30,7 +30,7 @@
 
 #include "platform/PlatformAdaptor_Abstract.h"
 
-#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
+#if defined(Q_OS_LINUX) || defined(Q_OS_MACOS) || defined(Q_OS_IOS)
 #include "GlobalObject.h"
 #include "GlobalSettings.h"
 #include "geomaps/GeoMapProvider.h"
@@ -91,7 +91,7 @@ void DemoRunner::generateGooglePlayScreenshots()
 
 void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool manual)
 {
-#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
+#if defined(Q_OS_LINUX) || defined(Q_OS_MACOS) || defined(Q_OS_IOS)
     Q_ASSERT(m_engine != nullptr);
 
     emit requestClosePages();
@@ -226,7 +226,7 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
                     trafficFactor1->setAlarmLevel(0);
                     trafficFactor1->setID(QStringLiteral("newID"));
                     trafficFactor1->setType(Traffic::TrafficFactor_Abstract::Aircraft);
-                    trafficFactor1->setPositionInfo( Positioning::PositionInfo(trafficInfo) );
+                    trafficFactor1->setPositionInfo( Positioning::PositionInfo(trafficInfo, u"DemoRunner"_s) );
                     trafficFactor1->setHDist( Units::Distance::fromM(1000) );
                     trafficFactor1->setVDist( Units::Distance::fromM(17) );
                     trafficSimulator->addTraffic(trafficFactor1);
@@ -503,7 +503,7 @@ void DemoRunner::generateManualScreenshots()
         trafficFactor1->setAlarmLevel(0);
         trafficFactor1->setID(QStringLiteral("newID"));
         trafficFactor1->setType(Traffic::TrafficFactor_Abstract::Aircraft);
-        trafficFactor1->setPositionInfo( Positioning::PositionInfo(trafficInfo) );
+        trafficFactor1->setPositionInfo( Positioning::PositionInfo(trafficInfo, u"DemoRunner"_s) );
         trafficFactor1->setHDist( Units::Distance::fromM(1000) );
         trafficFactor1->setVDist( Units::Distance::fromM(17) );
         trafficSimulator->addTraffic(trafficFactor1);

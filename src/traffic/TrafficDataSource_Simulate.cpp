@@ -61,7 +61,7 @@ void Traffic::TrafficDataSource_Simulate::sendSimulatorData()
 
     geoInfo.setTimestamp( QDateTime::currentDateTimeUtc() );
     if (geoInfo.isValid()) {
-        emit positionUpdated( Positioning::PositionInfo(geoInfo) );
+        emit positionUpdated( Positioning::PositionInfo(geoInfo, sourceName()) );
         setReceivingHeartbeat(true);
     } else {
         setReceivingHeartbeat(false);
@@ -82,5 +82,5 @@ void Traffic::TrafficDataSource_Simulate::sendSimulatorData()
         emit factorWithoutPosition(*trafficFactor_DistanceOnly);
     }
 
-    emit pressureAltitudeUpdated(barometricHeight);
+    setPressureAltitude(barometricHeight);
 }

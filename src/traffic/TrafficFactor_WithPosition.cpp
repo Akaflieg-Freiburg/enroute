@@ -19,10 +19,8 @@
  ***************************************************************************/
 
 #include "GlobalObject.h"
-#include "GlobalSettings.h"
 #include "navigation/Aircraft.h"
 #include "navigation/Navigator.h"
-#include "positioning/PositionProvider.h"
 #include "traffic/TrafficFactor_WithPosition.h"
 
 
@@ -110,7 +108,7 @@ void Traffic::TrafficFactor_WithPosition::updateDescription()
 
     if (vDist().isFinite()) {       
         QString result = GlobalObject::navigator()->aircraft().verticalDistanceToString(vDist(), true);
-        auto climbRateMPS = m_positionInfo.attribute(QGeoPositionInfo::VerticalSpeed);
+        auto climbRateMPS = m_positionInfo.verticalSpeed().toMPS();
         if ( qIsFinite(climbRateMPS) ) {
             if (climbRateMPS < -1.0) {
                 result += QStringLiteral(" ↘");
@@ -132,7 +130,6 @@ void Traffic::TrafficFactor_WithPosition::updateDescription()
     }
     m_description = newDescription;
     emit descriptionChanged();
-
 }
 
 
@@ -140,9 +137,11 @@ void Traffic::TrafficFactor_WithPosition::updateIcon()
 {
     // BaseType
     QString baseType = QStringLiteral("noDirection");
-    if (m_positionInfo.hasAttribute(QGeoPositionInfo::GroundSpeed) && m_positionInfo.hasAttribute(QGeoPositionInfo::Direction)) {
-        auto GS = Units::Speed::fromMPS( m_positionInfo.attribute(QGeoPositionInfo::GroundSpeed) );
-        if (GS.isFinite() && (GS.toKN() > 4)) {
+    if (m_positionInfo.groundSpeed().isFinite() && m_positionInfo.trueTrack().isFinite())
+    {
+        auto GS = m_positionInfo.groundSpeed();
+        if (GS.isFinite() && (GS.toKN() > 4))
+        {
             baseType = QStringLiteral("withDirection");
         }
     }
@@ -168,5 +167,4 @@ void Traffic::TrafficFactor_WithPosition::updateValid()
     }
 
     TrafficFactor_Abstract::updateValid();
-
 }

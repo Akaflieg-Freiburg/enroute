@@ -328,7 +328,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessageGPRMC(const QString
         pInfo.setAttribute(QGeoPositionInfo::Direction, TT );
     }
 
-    emit positionUpdated( Positioning::PositionInfo(pInfo));
+    emit positionUpdated( Positioning::PositionInfo(pInfo, sourceName()) );
 }
 
 
@@ -523,7 +523,7 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessagePFLAA(const QString
     m_factor.setCallSign( GlobalObject::flarmnetDB()->getRegistration(targetID) );
     m_factor.setHDist(hDist);
     m_factor.setID(targetID);
-    m_factor.setPositionInfo( Positioning::PositionInfo(pInfo) );
+    m_factor.setPositionInfo( Positioning::PositionInfo(pInfo, sourceName()) );
     m_factor.setType(type);
     m_factor.setVDist(vDist);
     m_factor.startLiveTime();
@@ -818,5 +818,5 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessagePGRMZ(const QString
     {
         return;
     }
-    emit pressureAltitudeUpdated(barometricAlt);
+    setPressureAltitude(barometricAlt);
 }

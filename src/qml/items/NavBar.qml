@@ -114,9 +114,87 @@ ColumnLayout {
 
                     Layout.alignment: Qt.AlignHCenter
 
-                    color: "white"
-                    text: GlobalSettings.showAltitudeAGL ? "T.ALT AGL" : "T.ALT AMSL"
-                    font.pixelSize: dummy.font.pixelSize*0.9
+                color: "white"
+                text: GlobalSettings.showAltitudeAGL ? "T.ALT AGL" : "T.ALT AMSL"
+                font.pixelSize: dummy.font.pixelSize*0.9
+            }
+        }
+
+        Item { Layout.fillWidth: true }
+
+        ColumnLayout {
+            id: flightLevel
+
+            visible: grid.numVisibleItems() >= 5
+            Layout.preferredWidth: visible ? m_implicitWidth : 0
+            property real m_implicitWidth: Math.max(flightLevel_1.contentWidth, flightLevel_2.contentWidth)
+
+            Label {
+                id: flightLevel_1
+
+                Layout.alignment: Qt.AlignHCenter
+
+                text: TrafficDataProvider.pressureAltitude.isFinite() ? "FL" + ("000" + Math.round(TrafficDataProvider.pressureAltitude.toFeet()/100.0)).slice(-3) : "-"
+                font.weight: Font.Bold
+                font.pixelSize: dummy.font.pixelSize*1.3
+                color: "white"
+            }
+            Label {
+                id: flightLevel_2
+
+                Layout.alignment: Qt.AlignHCenter
+
+                color: "white"
+                text: "FL"
+                font.pixelSize: dummy.font.pixelSize*0.9
+
+            }
+        }
+
+        Item { Layout.fillWidth: flightLevel.visible }
+
+        ColumnLayout {
+            id: groundSpeed
+
+            Layout.preferredWidth: m_implicitWidth
+            property real m_implicitWidth: Math.max(groundSpeed_1.contentWidth, groundSpeed_2.contentWidth)
+
+            Label {
+                id: groundSpeed_1
+
+                Layout.alignment: Qt.AlignHCenter
+
+                text: Navigator.aircraft.horizontalSpeedToString( PositionProvider.positionInfo.groundSpeed() )
+                font.weight: Font.Bold
+                font.pixelSize: dummy.font.pixelSize*1.3
+                color: "white"
+            }
+            Label {
+                id: groundSpeed_2
+                Layout.alignment: Qt.AlignHCenter
+
+                text: "GS"
+                color: "white"
+                font.pixelSize: dummy.font.pixelSize*0.9
+            }
+        }
+
+        Item { Layout.fillWidth: true }
+
+        ColumnLayout {
+            id: trueTrack
+
+            Layout.preferredWidth: m_implicitWidth
+            property real m_implicitWidth: Math.max(trueTrack_1.contentWidth, trueTrack_2.contentWidth)
+
+            Label {
+                id: trueTrack_1
+
+                Layout.alignment: Qt.AlignHCenter
+
+                text: {
+                    var tt = PositionProvider.positionInfo.trueTrack();
+                    return tt.isFinite() ? Math.round(tt.toDEG()) + "°" : "-"
                 }
             }
 

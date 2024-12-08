@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QProperty>
 #include <QQmlEngine>
 #include <QSettings>
 
@@ -155,6 +156,9 @@ public:
     /*! \brief Night mode */
     Q_PROPERTY(bool nightMode READ nightMode WRITE setNightMode NOTIFY nightModeChanged)
 
+    /*! \brief Use traffic data receiver for positioning */
+    Q_PROPERTY(bool positioningByTrafficDataReceiver READ positioningByTrafficDataReceiver WRITE setPositioningByTrafficDataReceiver BINDABLE bindablePositioningByTrafficDataReceiver)
+
     /*! \brief Hash of the last "privacy" message that was accepted by the user
      *
      * This property is used in the app to determine if the message has been
@@ -164,9 +168,6 @@ public:
 
     /*! \brief Show Altitude AGL */
     Q_PROPERTY(bool showAltitudeAGL READ showAltitudeAGL WRITE setShowAltitudeAGL NOTIFY showAltitudeAGLChanged)
-
-    /*! \brief Use traffic data receiver for positioning */
-    Q_PROPERTY(bool positioningByTrafficDataReceiver READ positioningByTrafficDataReceiver WRITE setPositioningByTrafficDataReceiver NOTIFY positioningByTrafficDataReceiverChanged)
 
     /*! \brief Voice notifications that should be played
      *
@@ -184,13 +185,13 @@ public:
      *
      * @returns Property acceptedTerms
      */
-    [[nodiscard]] auto acceptedTerms() const -> int { return settings.value(QStringLiteral("acceptedTerms"), 0).toInt(); }
+    [[nodiscard]] auto acceptedTerms() const -> int { return m_settings.value(QStringLiteral("acceptedTerms"), 0).toInt(); }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property alwaysOpenExternalWebsites
      */
-    [[nodiscard]] bool alwaysOpenExternalWebsites() const { return settings.value(QStringLiteral("alwaysOpenExternalWebsites"), false).toBool(); }
+    [[nodiscard]] bool alwaysOpenExternalWebsites() const { return m_settings.value(QStringLiteral("alwaysOpenExternalWebsites"), false).toBool(); }
 
     /*! \brief Getter function for property of the same name
      *
@@ -202,7 +203,7 @@ public:
      *
      * @returns Property expandNotamAbbreviations
      */
-    [[nodiscard]] bool expandNotamAbbreviations() const { return settings.value(QStringLiteral("expandNotamAbbreviations"), false).toBool(); }
+    [[nodiscard]] bool expandNotamAbbreviations() const { return m_settings.value(QStringLiteral("expandNotamAbbreviations"), false).toBool(); }
 
     /*! \brief Getter function for property with the same name
      *
@@ -214,13 +215,13 @@ public:
      *
      * @returns Property hideGlidingSectors
      */
-    [[nodiscard]] auto hideGlidingSectors() const -> bool { return settings.value(QStringLiteral("Map/hideGlidingSectors"), true).toBool(); }
+    [[nodiscard]] auto hideGlidingSectors() const -> bool { return m_settings.value(QStringLiteral("Map/hideGlidingSectors"), true).toBool(); }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property ignoreSSLProblems
      */
-    [[nodiscard]] auto ignoreSSLProblems() const -> bool { return settings.value(QStringLiteral("ignoreSSLProblems"), false).toBool(); }
+    [[nodiscard]] auto ignoreSSLProblems() const -> bool { return m_settings.value(QStringLiteral("ignoreSSLProblems"), false).toBool(); }
 
     /*! \brief Getter function for property with the same name
      *
@@ -234,7 +235,7 @@ public:
      */
     [[nodiscard]] auto lastWhatsNewHash() const -> Units::ByteSize
     {
-        return settings.value(QStringLiteral("lastWhatsNewHash"), 0).value<size_t>();
+        return m_settings.value(QStringLiteral("lastWhatsNewHash"), 0).value<size_t>();
     }
 
     /*! \brief Getter function for property of the same name
@@ -243,7 +244,7 @@ public:
      */
     [[nodiscard]] auto lastWhatsNewInMapsHash() const -> Units::ByteSize
     {
-        return settings.value(QStringLiteral("lastWhatsNewInMapsHash"), 0).value<size_t>();
+        return m_settings.value(QStringLiteral("lastWhatsNewInMapsHash"), 0).value<size_t>();
     }
 
     /*! \brief Getter function for property of the same name
@@ -256,25 +257,31 @@ public:
      *
      * @returns Property night mode
      */
-    [[nodiscard]] auto nightMode() const -> bool { return settings.value(QStringLiteral("Map/nightMode"), false).toBool(); }
+    [[nodiscard]] auto nightMode() const -> bool { return m_settings.value(QStringLiteral("Map/nightMode"), false).toBool(); }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property positioningByTrafficDataReceiver
      */
-    [[nodiscard]] auto positioningByTrafficDataReceiver() const -> bool { return settings.value(QStringLiteral("positioningByTrafficDataReceiver"), false).toBool(); }
+    [[nodiscard]] bool positioningByTrafficDataReceiver() const { return m_positioningByTrafficDataReceiver.value(); }
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property positioningByTrafficDataReceiver
+     */
+    [[nodiscard]] QBindable<bool> bindablePositioningByTrafficDataReceiver() const { return &m_positioningByTrafficDataReceiver; }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property privacyHash
      */
-    [[nodiscard]] auto privacyHash() const -> Units::ByteSize  { return settings.value(QStringLiteral("privacyHash"), 0).value<size_t>(); }
+    [[nodiscard]] auto privacyHash() const -> Units::ByteSize  { return m_settings.value(QStringLiteral("privacyHash"), 0).value<size_t>(); }
 
     /*! \brief Getter function for property of the same name
      *
      * @returns Property positioningByTrafficDataReceiver
      */
-    [[nodiscard]] auto showAltitudeAGL() const -> bool { return settings.value(QStringLiteral("showAltitudeAGL"), false).toBool(); }
+    [[nodiscard]] auto showAltitudeAGL() const -> bool { return m_settings.value(QStringLiteral("showAltitudeAGL"), false).toBool(); }
 
     /*! \brief Getter function for property of the same name
      *
@@ -282,7 +289,7 @@ public:
      */
     [[nodiscard]] auto voiceNotifications() const -> uint
     {
-        return settings.value(QStringLiteral("voiceNotifications"),
+        return m_settings.value(QStringLiteral("voiceNotifications"),
                               Notifications::Notification::Info_Navigation |
                                   Notifications::Notification::Warning |
                                   Notifications::Notification::Warning_Navigation |
@@ -440,9 +447,6 @@ signals:
     void nightModeChanged();
 
     /*! \brief Notifier signal */
-    void positioningByTrafficDataReceiverChanged();
-
-    /*! \brief Notifier signal */
     void privacyHashChanged();
 
     /*! \brief Notifier signal */
@@ -454,5 +458,7 @@ signals:
 private:
     Q_DISABLE_COPY_MOVE(GlobalSettings)
 
-    QSettings settings;
+    QSettings m_settings;
+
+    QProperty<bool> m_positioningByTrafficDataReceiver;
 };

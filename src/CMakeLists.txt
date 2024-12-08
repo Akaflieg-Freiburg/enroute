@@ -544,6 +544,8 @@ qt_add_qml_module(${PROJECT_NAME}
     URI akaflieg_freiburg.enroute
     VERSION 1.0
     NO_RESOURCE_TARGET_PATH
+    DEPENDENCIES
+    QtQuick
     QML_FILES
     qml/main.qml
     qml/dialogs/AddBTDeviceDialog.qml
@@ -625,7 +627,6 @@ qt_add_qml_module(${PROJECT_NAME}
     ui/SideViewQuickItem.cpp
     traffic/TrafficDataProvider_BluetoothLowEnergy.cpp
 )
-
 
 #
 # Translations

@@ -103,6 +103,6 @@ void Positioning::PositionInfoSource_Satellite::onPositionUpdated(const QGeoPosi
     // Therefore, set the current time as a timestamp.
     correctedInfo.setTimestamp( QDateTime::currentDateTimeUtc() );
 
-    setPositionInfo( Positioning::PositionInfo(correctedInfo) );
+    setPositionInfo( Positioning::PositionInfo(correctedInfo, sourceName()) );
     updateStatusString();
 }

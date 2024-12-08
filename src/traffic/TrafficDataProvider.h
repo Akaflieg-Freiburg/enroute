@@ -101,7 +101,7 @@ public:
      *  times when no traffic is reported. This property indicates if the class
      *  receives heartbeat messages from at least one of the known receivers.
      */
-    Q_PROPERTY(bool receivingHeartbeat READ receivingHeartbeat WRITE setReceivingHeartbeat NOTIFY receivingHeartbeatChanged)
+    Q_PROPERTY(bool receivingHeartbeat READ receivingHeartbeat BINDABLE bindableReceivingHeartbeat NOTIFY receivingHeartbeatChanged)
 
     /*! \brief Traffic objects whose position is known
      *
@@ -177,7 +177,16 @@ public:
      */
     [[nodiscard]] bool receivingHeartbeat() const
     {
-        return m_receivingHeartbeat;
+        return m_receivingHeartbeat.value();
+    }
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property receiving
+     */
+    [[nodiscard]] QBindable<bool> bindableReceivingHeartbeat() const
+    {
+        return &m_receivingHeartbeat;
     }
 
     /*! \brief Getter method for property with the same name
@@ -314,6 +323,7 @@ public:
      */
     static constexpr Units::Distance maxHorizontalDistance = Units::Distance::fromNM(20.0);
 
+
 signals:
     /*! \brief Notifier signal */
     void dataSourcesChanged();
@@ -336,7 +346,7 @@ signals:
     void passwordStorageRequest(const QString& SSID, const QString& password);
 
     /*! \brief Notifier signal */
-    void receivingHeartbeatChanged(bool);
+    void receivingHeartbeatChanged();
 
     /*! \brief Notifier signal */
     void trafficReceiverRuntimeErrorChanged();
@@ -418,16 +428,15 @@ private slots:
     void saveConnectionInfos();
 
     // Setter method
-    void setReceivingHeartbeat(bool newReceivingHeartbeat);
-
-    // Setter method
     void setWarning(const Traffic::Warning& warning);
 
-    // Updates the property statusString that is inherited from
-    // Positioning::PositionInfoSource_Abstract
-    void updateStatusString();
-
 private:
+    //
+    // Compute Methods
+    //
+
+    QString computeStatusString();
+
     // UDP Socket for ForeFlight Broadcast messages.
     // See https://www.foreflight.com/connect/spec/
     QNetworkDatagram foreFlightBroadcastDatagram {R"({"App":"Enroute Flight Navigation","GDL90":{"port":4000}})", QHostAddress::Broadcast, 63093};
@@ -439,9 +448,7 @@ private:
     QPointer<Traffic::TrafficFactor_DistanceOnly> m_trafficObjectWithoutPosition;
 
     // TrafficData Sources
-#warning make these bindable
     QProperty<QList<QPointer<Traffic::TrafficDataSource_Abstract>>> m_dataSources;
-#warning make these bindable
     QProperty<QPointer<Traffic::TrafficDataSource_Abstract>> m_currentSource;
 
     // Property cache
@@ -456,9 +463,7 @@ private:
     // Reconnect
     QTimer reconnectionTimer;
 
-    // Property Cache
-#warning Make this bindable
-    QProperty<bool> m_receivingHeartbeat {false};
+    Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficDataProvider, bool, m_receivingHeartbeat, &Traffic::TrafficDataProvider::receivingHeartbeatChanged);
 
     // Standard file name for saveConnectionInfos()
     QString stdFileName{QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/connectionInfos.data"};

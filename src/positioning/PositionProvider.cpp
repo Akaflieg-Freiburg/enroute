@@ -25,12 +25,15 @@
 #include "GlobalSettings.h"
 #include "positioning/PositionProvider.h"
 #include "traffic/TrafficDataProvider.h"
-#include "units/Units.h"
+#include "Units.h"
+
 
 using namespace Qt::Literals::StringLiterals;
 
 
-Positioning::PositionProvider::PositionProvider(QObject *parent) : PositionInfoSource_Abstract(parent)
+Positioning::PositionProvider::PositionProvider(QObject* parent)
+    : QObject(parent),
+    m_receivingPositionInfo(false)
 {
     // Restore the last valid coordiante and track
     QSettings const settings;
@@ -42,15 +45,9 @@ Positioning::PositionProvider::PositionProvider(QObject *parent) : PositionInfoS
         m_lastValidCoordinate = tmp;
     }
     m_lastValidTT = Units::Angle::fromDEG( qBound(0, settings.value(QStringLiteral("PositionProvider/lastValidTrack"), 0).toInt(), 359) );
+    m_approximateLastValidCoordinate = m_lastValidCoordinate.value();
 
-    // Wire up satellite source
-#warning Fix that
-//    connect(&satelliteSource, &Positioning::PositionInfoSource_Satellite::positionInfoChanged, this, &PositionProvider::onPositionUpdated);
-
-    // Binding for updateStatusString
-    m_statusString.setBinding([this]() {return computeStatusString();});
-
-    // Wire up traffic data provider source
+    // Start deferred initialization
     QTimer::singleShot(0, this, &Positioning::PositionProvider::deferredInitialization);
 
     // Save position at regular intervals
@@ -60,90 +57,35 @@ Positioning::PositionProvider::PositionProvider(QObject *parent) : PositionInfoS
     connect(saveTimer, &QTimer::timeout, this, &Positioning::PositionProvider::savePositionAndTrack);
     connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, this, &Positioning::PositionProvider::savePositionAndTrack);
     saveTimer->start();
-
-    // Update properties
-    m_approximateLastValidCoordinate = m_lastValidCoordinate.value();
-#warning REPLACE ME
-    /*
-    connect(this, &Positioning::PositionProvider::lastValidCoordinateChanged, this, [this]() {
-        if (m_approximateLastValidCoordinate.value().isValid()
-            && (m_approximateLastValidCoordinate.value().distanceTo(m_lastValidCoordinate) < 10000))
-        {
-            return;
-        }
-        m_approximateLastValidCoordinate = m_lastValidCoordinate.value();
-    });
-    */
 }
 
-void Positioning::PositionProvider::deferredInitialization() const
+void Positioning::PositionProvider::deferredInitialization()
 {
-#warning Fix that
-//    connect(GlobalObject::trafficDataProvider(), &Traffic::TrafficDataProvider::positionInfoChanged, this, &PositionProvider::onPositionUpdated);
+    // Binding for updateStatusString
+    m_statusString.setBinding([this]() {return computeStatusString();});
+    m_incomingPositionInfo.setBinding([this]() {return computeIncomingPositionInfo();});
+    m_incomingPositionInfoNotifier = m_incomingPositionInfo.addNotifier([this]() {return onIncomingPositionInfoUpdated();});
+    onIncomingPositionInfoUpdated();
 }
 
-
-void Positioning::PositionProvider::onPositionUpdated()
+void Positioning::PositionProvider::onIncomingPositionInfoUpdated()
 {
-    // This method is called if one of our providers has a new position info.
-    // We go through the list of providers in order of preference, to find the first one
-    // that has a valid position info available for us.
-    PositionInfo newInfo;
-    QString source;
-
-
-    if (GlobalObject::globalSettings()->positioningByTrafficDataReceiver())
+    auto newInfo = m_incomingPositionInfo.value();
+    if (!newInfo.isValid())
     {
-
-        // Priority #1: Traffic data provider
-        auto* trafficDataProvider = GlobalObject::trafficDataProvider();
-        if (trafficDataProvider != nullptr)
-        {
-            newInfo = trafficDataProvider->positionInfo();
-            source = trafficDataProvider->sourceName();
-        }
-
-        // Priority #2: Built-in sat receiver
-        if (!newInfo.isValid())
-        {
-            newInfo = satelliteSource.positionInfo();
-            source = satelliteSource.sourceName();
-        }
-
-    }
-    else
-    {
-
-        // Priority #1: Built-in sat receiver
-        newInfo = satelliteSource.positionInfo();
-        source = satelliteSource.sourceName();
-
-        // Priority #2: Traffic data provider
-        if (!newInfo.isValid())
-        {
-            auto* trafficDataProvider = GlobalObject::trafficDataProvider();
-            if (trafficDataProvider != nullptr)
-            {
-                newInfo = trafficDataProvider->positionInfo();
-                source = trafficDataProvider->sourceName();
-            }
-
-        }
-
-    }
-
-    auto oldInfo = positionInfo();
-    auto oldTimeStamp = oldInfo.timestamp();
-    auto newTimeStamp = newInfo.timestamp();
-    if (newTimeStamp == oldTimeStamp)
-    {
+        m_receivingPositionInfo = false;
+        m_positionInfo = newInfo;
         return;
     }
 
     // If no vertical speed has been provided by the system, we compute our own.
+    auto oldInfo = positionInfo();
+    auto oldTimeStamp = oldInfo.timestamp();
+    auto newTimeStamp = newInfo.timestamp();
     if (!newInfo.verticalSpeed().isFinite()
-            && newInfo.trueAltitudeAMSL().isFinite()
-            && oldInfo.trueAltitudeAMSL().isFinite())
+        && newInfo.trueAltitudeAMSL().isFinite()
+        && oldInfo.trueAltitudeAMSL().isFinite()
+        && (newTimeStamp != oldTimeStamp))
     {
         auto deltaV = (newInfo.trueAltitudeAMSL() - oldInfo.trueAltitudeAMSL());
         auto deltaT = Units::Timespan::fromMS( static_cast<double>(oldTimeStamp.msecsTo(newTimeStamp)) );
@@ -152,19 +94,34 @@ void Positioning::PositionProvider::onPositionUpdated()
         {
             if (oldInfo.verticalSpeed().isFinite())
             {
-                vSpeed = 0.8*vSpeed + 0.2*positionInfo().verticalSpeed();
+                vSpeed = 0.8*vSpeed + 0.2*oldInfo.verticalSpeed();
             }
             QGeoPositionInfo tmp = newInfo;
+            QString const src = newInfo.source();
             tmp.setAttribute(QGeoPositionInfo::VerticalSpeed, vSpeed.toMPS());
-            newInfo = PositionInfo(tmp);
+            newInfo = PositionInfo(tmp, src);
         }
     }
 
     // Set new info
-    setPositionInfo(newInfo);
-    setLastValidCoordinate(newInfo.coordinate());
-    setLastValidTT(newInfo.trueTrack());
-    setSourceName(source);
+    m_positionInfo = newInfo;
+    m_receivingPositionInfo = true;
+
+    m_lastValidCoordinate = newInfo.coordinate();
+    auto TT = newInfo.trueTrack();
+    if (TT.isFinite())
+    {
+        m_lastValidTT = TT;
+    }
+    if (!m_approximateLastValidCoordinate.value().isValid())
+    {
+        m_approximateLastValidCoordinate = m_lastValidCoordinate.value();
+    }
+    if (m_approximateLastValidCoordinate.value().isValid()
+        && (m_approximateLastValidCoordinate.value().distanceTo(m_lastValidCoordinate) > 10000))
+    {
+        m_approximateLastValidCoordinate = m_lastValidCoordinate.value();
+    }
 }
 
 void Positioning::PositionProvider::savePositionAndTrack()
@@ -177,28 +134,6 @@ void Positioning::PositionProvider::savePositionAndTrack()
 
     // Save the last valid track
     settings.setValue(QStringLiteral("PositionProvider/lastValidTrack"), m_lastValidTT.value().toDEG());
-}
-
-void Positioning::PositionProvider::setLastValidCoordinate(const QGeoCoordinate &newCoordinate)
-{
-    if (!newCoordinate.isValid())
-    {
-        return;
-    }
-    m_lastValidCoordinate = newCoordinate;
-}
-
-void Positioning::PositionProvider::setLastValidTT(Units::Angle newTT)
-{
-    if (!newTT.isFinite())
-    {
-        return;
-    }
-    if (newTT == m_lastValidTT)
-    {
-        return;
-    }
-    m_lastValidTT = newTT;
 }
 
 QGeoCoordinate Positioning::PositionProvider::lastValidCoordinate()
@@ -216,7 +151,7 @@ Units::Angle Positioning::PositionProvider::lastValidTT()
     if (positionProvider == nullptr) {
         return {};
     }
-    return positionProvider->m_lastValidTT;
+    return positionProvider->m_lastValidTT.value();
 }
 
 
@@ -226,9 +161,10 @@ Units::Angle Positioning::PositionProvider::lastValidTT()
 
 QString Positioning::PositionProvider::computeStatusString()
 {
-    if (receivingPositionInfo()) {
+    if (m_positionInfo.value().isValid())
+    {
         QString result = QStringLiteral("<ul style='margin-left:-25px;'>");
-        result += QStringLiteral("<li>%1: %2</li>").arg(tr("Source"), sourceName());
+        result += QStringLiteral("<li>%1: %2</li>").arg(tr("Source"), m_positionInfo.value().source());
         result += QStringLiteral("<li>%1</li>").arg(tr("Receiving position information"));
         result += u"</ul>"_s;
         return result;
@@ -239,4 +175,44 @@ QString Positioning::PositionProvider::computeStatusString()
     result += QStringLiteral("<li>%1: %2</li>").arg( tr("Traffic receiver"), tr("Not receiving position information"));
     result += u"</ul>"_s;
     return result;
+}
+
+Positioning::PositionInfo Positioning::PositionProvider::computeIncomingPositionInfo()
+{
+    // This method is called if one of our providers has a new position info.
+    // We go through the list of providers in order of preference, to find the first one
+    // that has a valid position info available for us.
+    PositionInfo newInfo;
+
+    if (GlobalObject::globalSettings()->positioningByTrafficDataReceiver())
+    {
+        // Priority #1: Traffic data provider
+        auto* trafficDataProvider = GlobalObject::trafficDataProvider();
+        if (trafficDataProvider != nullptr)
+        {
+            newInfo = trafficDataProvider->positionInfo();
+        }
+
+        // Priority #2: Built-in sat receiver
+        if (!newInfo.isValid())
+        {
+            newInfo = satelliteSource.positionInfo();
+        }
+    }
+    else
+    {
+        // Priority #1: Built-in sat receiver
+        newInfo = satelliteSource.positionInfo();
+
+        // Priority #2: Traffic data provider
+        if (!newInfo.isValid())
+        {
+            auto* trafficDataProvider = GlobalObject::trafficDataProvider();
+            if (trafficDataProvider != nullptr)
+            {
+                newInfo = trafficDataProvider->positionInfo();
+            }
+        }
+    }
+    return newInfo;
 }

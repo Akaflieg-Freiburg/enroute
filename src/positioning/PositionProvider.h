@@ -24,7 +24,6 @@
 #include <QQmlEngine>
 
 #include "GlobalObject.h"
-#include "positioning/PositionInfoSource_Abstract.h"
 #include "positioning/PositionInfoSource_Satellite.h"
 
 
@@ -46,15 +45,11 @@ namespace Positioning {
  *  The methods in this class are reentrant, but not thread safe.
  */
 
-class PositionProvider : public PositionInfoSource_Abstract
+class PositionProvider : public QObject
 {
     Q_OBJECT
     QML_ELEMENT
     QML_SINGLETON
-
-    // Repeat properties from PositionInfoSource_Abstract so qmllint knows about them
-    Q_PROPERTY(Positioning::PositionInfo positionInfo READ positionInfo BINDABLE bindablePositionInfo)
-    Q_PROPERTY(bool receivingPositionInfo READ receivingPositionInfo BINDABLE bindableReceivingPositionInfo)
 
 
 public:
@@ -106,6 +101,31 @@ public:
      */
     Q_PROPERTY(Units::Angle lastValidTT READ lastValidTT BINDABLE bindableLastValidTT)
 
+    /*! \brief Position information
+     *
+     *  This property holds information about the device position. To ensure
+     *  that the data is up-to-date, the position information will be set to an
+     *  invalid positionInfo when no data has arrived for more than the time
+     *  specified in PositionInfo::lifetime.
+     */
+    Q_PROPERTY(Positioning::PositionInfo positionInfo READ positionInfo BINDABLE bindablePositionInfo NOTIFY positionInfoChanged)
+
+    /*! \brief Indicator that position information is being received
+     *
+     *  This is a shortcut for positionInfo().isValid. This property exists
+     *  because it does not change so often, and can thus be more efficient to
+     *  use.
+     */
+    Q_PROPERTY(bool receivingPositionInfo READ receivingPositionInfo BINDABLE bindableReceivingPositionInfo)
+
+    /*! \brief Source status
+     *
+     *  This property holds a translated, human-readable string that describes
+     *  the status of the positionInfo source. This could typically be a string
+     *  of the form "OK" or "Insufficient permission to access position info"
+     */
+    Q_PROPERTY(QString statusString READ statusString BINDABLE bindableStatusString)
+
 
     //
     // Getter Methods
@@ -147,6 +167,49 @@ public:
      */
     [[nodiscard]] QBindable<Units::Angle> bindableLastValidTT() {return &m_lastValidTT;}
 
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property positionInfo
+     */
+    [[nodiscard]] Positioning::PositionInfo positionInfo() const {return m_positionInfo.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property positionInfo
+     */
+    [[nodiscard]] QBindable<Positioning::PositionInfo> bindablePositionInfo() const {return &m_positionInfo;}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property receivingPositionInfo
+     */
+    [[nodiscard]] bool receivingPositionInfo() const {return m_receivingPositionInfo.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property receivingPositionInfo
+     */
+    [[nodiscard]] QBindable<bool> bindableReceivingPositionInfo() {return &m_receivingPositionInfo;}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property statusString
+     */
+    [[nodiscard]] QString statusString() const
+    {
+        return m_statusString.value();
+    }
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property statusString
+     */
+    [[nodiscard]] QBindable<QString> bindableStatusString() const
+    {
+        return &m_statusString;
+    }
+
+
 
     //
     // Methods
@@ -160,22 +223,23 @@ public:
      */
     Q_INVOKABLE void startUpdates() { satelliteSource.startUpdates(); }
 
+signals:
+    // Notifier signal
+    void approximateLastValidCoordinateChanged();
+
+    // Notifier signal
+    void positionInfoChanged();
+
+    // Notifier signal
+    void receivingPositionInfoChanged();
+
 private slots:   
     // Intializations that are moved out of the constructor, in order to avoid
     // nested uses of constructors in Global.
-    void deferredInitialization() const;
-
-    // Connected to sources, in order to receive new data
-    void onPositionUpdated();
+    void deferredInitialization();
 
     // Saves last valid position and track
     void savePositionAndTrack();
-
-    // Setter method for property with the same name
-    void setLastValidCoordinate(const QGeoCoordinate &newCoordinate);
-
-    // Setter method for property with the same name
-    void setLastValidTT(Units::Angle newTT);
 
 private:
     Q_DISABLE_COPY_MOVE(PositionProvider)
@@ -195,9 +259,24 @@ private:
 
     PositionInfoSource_Satellite satelliteSource;
 
-    QProperty<QGeoCoordinate> m_approximateLastValidCoordinate;
+    // The incoming position info is set by a binding that monitors
+    // the satelliteSource and the TrafficDataSource
+    QProperty<Positioning::PositionInfo> m_incomingPositionInfo;
+    Positioning::PositionInfo computeIncomingPositionInfo();
+
+    // This method updates m_approximateLastValidCoordinate, m_lastValidCoordinate and m_lastValidTT
+    // whenever m_incomingPositionInfo changes.
+    void onIncomingPositionInfoUpdated();
+    QPropertyNotifier m_incomingPositionInfoNotifier;
+
+    Q_OBJECT_BINDABLE_PROPERTY(Positioning::PositionProvider, Positioning::PositionInfo, m_positionInfo, &Positioning::PositionProvider::positionInfoChanged);
+    Q_OBJECT_BINDABLE_PROPERTY(Positioning::PositionProvider, QGeoCoordinate, m_approximateLastValidCoordinate, &Positioning::PositionProvider::approximateLastValidCoordinateChanged);
     QProperty<QGeoCoordinate> m_lastValidCoordinate {QGeoCoordinate(EDTF_lat, EDTF_lon, EDTF_ele)};
     QProperty<Units::Angle> m_lastValidTT;
+
+    Q_OBJECT_BINDABLE_PROPERTY(Positioning::PositionProvider, bool, m_receivingPositionInfo, &Positioning::PositionProvider::receivingPositionInfoChanged);
+    QProperty<QString> m_statusString;
+
 };
 
 } // namespace Positioning

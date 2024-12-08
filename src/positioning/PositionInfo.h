@@ -22,7 +22,7 @@
 
 #include <QGeoPositionInfo>
 #include <QQmlEngine>
-#include <chrono>
+//#include <chrono>
 
 #include "units/Angle.h"
 #include "units/Distance.h"
@@ -54,7 +54,7 @@ public:
      *
      * @param info QGeoPositionInfo this is copied into this class
      */
-    explicit PositionInfo(const QGeoPositionInfo &info);
+    explicit PositionInfo(const QGeoPositionInfo& info, const QString& source);
 
     /*! \brief Coordinate
      *
@@ -86,6 +86,12 @@ public:
      *  @returns Position error estimate or NaN if unknown.
      */
     [[nodiscard]] Q_INVOKABLE Units::Distance positionErrorEstimate() const;
+
+    /*! \brief Name of source, as set in the constructor
+     *
+     *  @returns Name of source
+     */
+    [[nodiscard]] Q_INVOKABLE QString source() const {return m_source;}
 
     /*! \brief Elevation of terrain at a given coordinate, above sea level
      *
@@ -187,8 +193,9 @@ public:
 
 private:
     QGeoPositionInfo m_positionInfo;
-    Units::Distance m_terrainAMSL{};
-    Units::Distance m_trueAltitudeAGL {};
+    QString m_source;
+    Units::Distance m_terrainAMSL;
+    Units::Distance m_trueAltitudeAGL;
 };
 
 } // namespace Positioning

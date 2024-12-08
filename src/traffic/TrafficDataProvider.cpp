@@ -33,7 +33,9 @@
 using namespace Qt::Literals::StringLiterals;
 
 
-Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning::PositionInfoSource_Abstract(parent)
+Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent)
+    : Positioning::PositionInfoSource_Abstract(parent),
+    m_receivingHeartbeat(false)
 {
     // Create traffic objects
     const int numTrafficObjects = 20;
@@ -76,11 +78,7 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent) : Positioning
     connect(this, &Traffic::TrafficDataProvider::dataSourcesChanged, this, &Traffic::TrafficDataProvider::saveConnectionInfos);
 
     // Bindings for status string
-#warning Fix that!
-//    connect(this, &Traffic::TrafficDataProvider::positionInfoChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
-#warning
-    //    connect(this, &Traffic::TrafficDataProvider::pressureAltitudeChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
-    connect(this, &Traffic::TrafficDataProvider::receivingHeartbeatChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
+    m_statusString.setBinding([this]() {return computeStatusString();});
 
     // Connect timer. Try to (re)connect after 2s, and then again every five minutes.
     QTimer::singleShot(2s, this, &Traffic::TrafficDataProvider::connectToTrafficReceiver);
@@ -108,11 +106,8 @@ void Traffic::TrafficDataProvider::addDataSource(Traffic::TrafficDataSource_Abst
     source->setParent(this);
     QQmlEngine::setObjectOwnership(source, QQmlEngine::CppOwnership);
 
-    connect(source, &Traffic::TrafficDataSource_Abstract::connectivityStatusChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
-    connect(source, &Traffic::TrafficDataSource_Abstract::errorStringChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
     connect(source, &Traffic::TrafficDataSource_Abstract::passwordRequest, this, &Traffic::TrafficDataProvider::passwordRequest);
     connect(source, &Traffic::TrafficDataSource_Abstract::passwordStorageRequest, this, &Traffic::TrafficDataProvider::passwordStorageRequest);
-    connect(source, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged, this, &Traffic::TrafficDataProvider::updateStatusString);
     connect(source, &Traffic::TrafficDataSource_Abstract::receivingHeartbeatChanged, this, &Traffic::TrafficDataProvider::onSourceHeartbeatChanged);
     connect(source, &Traffic::TrafficDataSource_Abstract::trafficReceiverRuntimeErrorChanged, this, &Traffic::TrafficDataProvider::onTrafficReceiverRuntimeError);
     connect(source, &Traffic::TrafficDataSource_Abstract::trafficReceiverSelfTestErrorChanged, this, &Traffic::TrafficDataProvider::onTrafficReceiverSelfTestError);
@@ -127,7 +122,6 @@ void Traffic::TrafficDataProvider::addDataSource(Traffic::TrafficDataSource_Abst
     m_dataSources = tmp;
 
     emit dataSourcesChanged();
-    updateStatusString();
 }
 
 QString Traffic::TrafficDataProvider::addDataSource(const Traffic::ConnectionInfo &connectionInfo)
@@ -248,8 +242,6 @@ void Traffic::TrafficDataProvider::connectToTrafficReceiver()
         }
         dataSource->connectToTrafficReceiver();
     }
-
-    updateStatusString();
 }
 
 QList<Traffic::TrafficDataSource_Abstract*> Traffic::TrafficDataProvider::dataSources() const
@@ -317,7 +309,7 @@ void Traffic::TrafficDataProvider::onSourceHeartbeatChanged()
     if ((qobject_cast<Traffic::TrafficDataSource_Tcp*>(m_currentSource.value()) != nullptr)
         && m_currentSource->receivingHeartbeat() )
     {
-        setReceivingHeartbeat(true);
+        m_receivingHeartbeat = true;
         return;
     }
 
@@ -392,11 +384,11 @@ void Traffic::TrafficDataProvider::onSourceHeartbeatChanged()
     // Update heartbeat status
     if (m_currentSource.value().isNull())
     {
-        setReceivingHeartbeat(false);
+        m_receivingHeartbeat = false;
     }
     else
     {
-        setReceivingHeartbeat(m_currentSource->receivingHeartbeat());
+        m_receivingHeartbeat = m_currentSource->receivingHeartbeat();
     }
 }
 
@@ -591,16 +583,6 @@ void Traffic::TrafficDataProvider::setPassword(const QString& SSID, const QStrin
     }
 }
 
-void Traffic::TrafficDataProvider::setReceivingHeartbeat(bool newReceivingHeartbeat)
-{
-    if (m_receivingHeartbeat == newReceivingHeartbeat)
-    {
-        return;
-    }
-    m_receivingHeartbeat = newReceivingHeartbeat;
-    emit receivingHeartbeatChanged(m_receivingHeartbeat);
-}
-
 void Traffic::TrafficDataProvider::setWarning(const Traffic::Warning& warning)
 {
     if (warning.alarmLevel() > -1)
@@ -617,10 +599,29 @@ void Traffic::TrafficDataProvider::setWarning(const Traffic::Warning& warning)
     emit warningChanged(m_Warning);
 }
 
-void Traffic::TrafficDataProvider::updateStatusString()
-{
-#warning Turn this into a binding!
 
+//
+// Private Methods
+//
+
+Units::Distance Traffic::TrafficDataProvider::computePressureAltitude()
+{
+    for (const auto &dataSource : m_dataSources.value()) {
+        if (dataSource.isNull())
+        {
+            continue;
+        }
+        auto pAlt = dataSource->pressureAltitude();
+        if (pAlt.isFinite())
+        {
+            return pAlt;
+        }
+    }
+    return {};
+}
+
+QString Traffic::TrafficDataProvider::computeStatusString()
+{
     if (receivingHeartbeat())
     {
         QString result;
@@ -638,32 +639,8 @@ void Traffic::TrafficDataProvider::updateStatusString()
             result += QStringLiteral("<li>%1</li>").arg(tr("Receiving barometric altitude info."));
         }
         result += u"</ul>"_s;
-        m_statusString = result;
-        return;
+        return result;
     }
 
-    const QString result = tr("Not receiving traffic receiver heartbeat through any of the configured data connections.");
-    m_statusString = result;
-}
-
-
-//
-// Private Methods
-//
-
-Units::Distance Traffic::TrafficDataProvider::computePressureAltitude()
-{
-    for(auto dataSource : m_dataSources.value())
-    {
-        if (dataSource.isNull())
-        {
-            continue;
-        }
-        auto pAlt = dataSource->pressureAltitude();
-        if (pAlt.isFinite())
-        {
-            return pAlt;
-        }
-    }
-    return {};
+    return tr("Not receiving traffic receiver heartbeat through any of the configured data connections.");
 }

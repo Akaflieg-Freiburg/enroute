@@ -109,7 +109,6 @@ Rectangle {
 
         DialogButtonBox {
             Layout.leftMargin: 0.2*font.pixelSize
-            Layout.preferredHeight: 1.2*font.pixelSize
             Layout.rightMargin: 0.2*font.pixelSize
             Layout.fillWidth: true
 
@@ -117,27 +116,31 @@ Rectangle {
 
             background: Item {}
 
-            Button {
-                text: NotificationManager.currentVisualNotification ? NotificationManager.currentVisualNotification.button1Text : ""
-                flat: true
+            NotificationButton {
+                text: NotificationManager.currentVisualNotification ? NotificationManager.currentVisualNotification.button2Text : ""
                 visible: text !== ""
+                flat: true
+
+                onClicked:  {
+                    PlatformAdaptor.vibrateBrief()
+                    if (NotificationManager.currentVisualNotification)
+                        NotificationManager.currentVisualNotification.onButton2Clicked()
+                }
+            }
+
+            NotificationButton {
+                text: NotificationManager.currentVisualNotification ? NotificationManager.currentVisualNotification.button1Text : ""
+                visible: text !== ""
+                flat: true
 
                 onClicked: {
+                    PlatformAdaptor.vibrateBrief()
                     if (NotificationManager.currentVisualNotification)
                         NotificationManager.currentVisualNotification.onButton1Clicked()
                 }
             }
 
-            Button {
-                text: NotificationManager.currentVisualNotification ? NotificationManager.currentVisualNotification.button2Text : ""
-                flat: true
-                visible: text !== ""
-
-                onClicked:  {
-                    if (NotificationManager.currentVisualNotification)
-                        NotificationManager.currentVisualNotification.onButton2Clicked()
-                }
-            }
         }
+
     }
 }

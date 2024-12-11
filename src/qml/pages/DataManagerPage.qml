@@ -202,7 +202,7 @@ Page {
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         highlighted = false
-                        DataManager.updateRemoteDataItemList()
+                        DataManager.mapList.startDownload()
                     }
                 }
 

@@ -98,7 +98,7 @@ public:
 
     // Repeated from Downloadable_Abstract to keep QML happy
     Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
-    Q_PROPERTY(bool hasFile READ hasFile NOTIFY hasFileChanged)
+    Q_PROPERTY(bool hasFile READ hasFile BINDABLE bindableHasFile NOTIFY hasFileChanged)
 
     /*! \brief Download progress
      *

@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QGeoRectangle>
+#include <QProperty>
 #include <QQmlEngine>
 #include <QTimer>
 
@@ -95,7 +96,7 @@ public:
     Q_PROPERTY(QStringList files READ files NOTIFY filesChanged)
 
     /*! \brief Indicates if (at least one) local file exists */
-    Q_PROPERTY(bool hasFile READ hasFile NOTIFY hasFileChanged)
+    Q_PROPERTY(bool hasFile READ hasFile BINDABLE bindableHasFile NOTIFY hasFileChanged)
 
     /*! \brief Short info text describing the state of the downloadable(s)
      *
@@ -123,7 +124,7 @@ public:
      * Dowloadable that represents a geographic map.  The GUI then generate
      * section headings in the list of downloadable aviation maps.
      */
-    Q_PROPERTY(QString section READ section WRITE setSection NOTIFY sectionChanged)
+    Q_PROPERTY(QString section READ section WRITE setSection BINDABLE bindableSection NOTIFY sectionChanged)
 
     /*! \brief Update size
      *
@@ -175,7 +176,13 @@ public:
      *
      * @returns Property hasFile
      */
-    [[nodiscard]] virtual auto hasFile() -> bool = 0;
+    [[nodiscard]] bool hasFile() const {return m_hasFile.value();}
+
+    /*! \brief Getter method for the property with the same name
+     *
+     * @returns Property hasFile
+     */
+    [[nodiscard]] QBindable<bool> bindableHasFile() const {return &m_hasFile;}
 
     /*! \brief Getter method for the property with the same name
      *
@@ -193,7 +200,13 @@ public:
      *
      * @returns Property section
      */
-    [[nodiscard]] auto section() const -> QString { return m_section; }
+    [[nodiscard]] QString section() const { return m_section; }
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property section
+     */
+    [[nodiscard]] QBindable<QString> bindableSection() const { return &m_section; }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -229,7 +242,7 @@ public:
      *
      * @param sectionName Property section
      */
-    void setSection(const QString& sectionName);
+    void setSection(const QString& sectionName) {m_sectionBuffer = sectionName;}
 
 
 
@@ -311,6 +324,10 @@ signals:
     /*! \brief Notifier signal */
     void updateSizeChanged();
 
+protected:
+    Q_OBJECT_BINDABLE_PROPERTY(DataManagement::Downloadable_Abstract, bool, m_hasFile, &DataManagement::Downloadable_Abstract::hasFileChanged);
+
+
 private:
     Q_DISABLE_COPY_MOVE(Downloadable_Abstract)
 
@@ -321,7 +338,8 @@ private:
     ContentType m_contentType {Data};
 
     // Property section
-    QString m_section;
+    Q_OBJECT_BINDABLE_PROPERTY(DataManagement::Downloadable_Abstract, QString, m_section, &DataManagement::Downloadable_Abstract::sectionChanged);
+    QProperty<QString> m_sectionBuffer;
 
     // Provisions to provide the signal localFileContentChanged_delayed
     void emitFileContentChanged_delayed();

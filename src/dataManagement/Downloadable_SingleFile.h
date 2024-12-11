@@ -180,12 +180,6 @@ public:
 
     /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
      *
-     * @returns Property hasFile
-     */
-    [[nodiscard]] auto hasFile() -> bool override { return QFile::exists(m_fileName); }
-
-    /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
-     *
      * @returns Property infoText
      */
     [[nodiscard]] auto infoText() -> QString override;

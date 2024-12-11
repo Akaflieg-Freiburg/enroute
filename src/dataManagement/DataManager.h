@@ -223,7 +223,7 @@ public:
 
     /*! \brief Getter function for the property with the same name
      *
-     *  @returns Property mapsAndData
+     *  @returns Property mapsList
      */
     [[nodiscard]] DataManagement::Downloadable_SingleFile* mapList() { return &m_mapList; }
 

@@ -24,8 +24,6 @@ import QtQuick.Dialogs
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
-import "../dialogs"
-import "../items"
 
 Page {
     id: pg
@@ -344,7 +342,7 @@ Page {
             onFlickEnded: {
                 if ( atYBeginning && refreshFlick ) {
                     PlatformAdaptor.vibrateBrief()
-                    DataManager.updateRemoteDataItemList()
+                    DataManager.mapList.startDownload()
                 }
             }
         }
@@ -375,7 +373,7 @@ Page {
             onFlickEnded: {
                 if ( atYBeginning && refreshFlick ) {
                     PlatformAdaptor.vibrateBrief()
-                    DataManager.updateRemoteDataItemList()
+                    DataManager.mapList.startDownload()
                 }
             }
 
@@ -419,7 +417,7 @@ Page {
             onFlickEnded: {
                 if ( atYBeginning && refreshFlick ) {
                     PlatformAdaptor.vibrateBrief()
-                    DataManager.updateRemoteDataItemList()
+                    DataManager.mapList.startDownload()
                 }
             }
         }

@@ -200,7 +200,7 @@ void DataManagement::Downloadable_MultiFile::deleteFiles()
 }
 
 
-auto DataManagement::Downloadable_MultiFile::downloadables() -> QVector<DataManagement::Downloadable_Abstract*>
+QVector<DataManagement::Downloadable_Abstract*> DataManagement::Downloadable_MultiFile::downloadables()
 {
     QVector<DataManagement::Downloadable_Abstract*> result;
     foreach(auto downloadable, m_downloadables.value())

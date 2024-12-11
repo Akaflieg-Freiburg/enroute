@@ -304,6 +304,7 @@ public:
     /*! \brief Implementation of pure virtual method from Downloadable_Abstract */
     Q_INVOKABLE void update() override;
 
+
 signals:
     /*! \brief Warning that local file is about to change
      *

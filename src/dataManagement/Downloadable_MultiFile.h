@@ -61,6 +61,7 @@ public:
     // Repeated from Downloadable_Abstract to keep QML happy
     Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
     Q_PROPERTY(QStringList files READ files NOTIFY filesChanged)
+    Q_PROPERTY(bool hasFile READ hasFile NOTIFY hasFileChanged)
     Q_PROPERTY(Units::ByteSize updateSize READ updateSize NOTIFY updateSizeChanged)
 
     /*! \brief List of Downloadables in this group
@@ -68,9 +69,6 @@ public:
      *  This property holds a list of direct children of the instance.  The list is sorted by section and object name, and never contains a zero pointer.
      */
     Q_PROPERTY(QList<DataManagement::Downloadable_Abstract*> downloadables READ downloadables NOTIFY downloadablesChanged)
-
-    // Repeated from Downloadable_Abstract, to avoid QML warning
-    Q_PROPERTY(bool hasFile READ hasFile NOTIFY hasFileChanged)
 
 
     //

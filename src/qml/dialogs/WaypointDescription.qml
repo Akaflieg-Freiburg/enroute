@@ -405,18 +405,12 @@ CenteringDialog {
                 Layout.alignment: Qt.AlignVCenter
                 onPressed:  {
                     PlatformAdaptor.vibrateBrief()
-                    var url = "https://www.google.com/maps/@?api=1&map_action=map&center="
-                            + waypointDescriptionDialog.waypoint.coordinate.latitude
-                            + "%2C"
-                            + waypointDescriptionDialog.waypoint.coordinate.longitude
-                            + "&zoom=15&basemap=satellite"
                     if (GlobalSettings.alwaysOpenExternalWebsites === true)
                     {
-                        Qt.openUrlExternally(url)
+                        PlatformAdaptor.openSatView(waypointDescriptionDialog.waypoint.coordinate)
                         return
                     }
-                    privacyWarning.url = url
-                    privacyWarning.site = "Google Maps"
+                    privacyWarning.coordinate = waypointDescriptionDialog.waypoint.coordinate
                     privacyWarning.open()
                 }
             }
@@ -626,8 +620,7 @@ CenteringDialog {
     CenteringDialog {
         id: privacyWarning
 
-        property string url
-        property string site
+        property var coordinate
 
         modal: true
 
@@ -647,12 +640,12 @@ CenteringDialog {
                 Label {
                     id: lbl
                     text: "<p>"
-                          + qsTr("In order to show a satellite view, <strong>Enroute Flight Navigation</strong> will ask your system to open Google Maps in an external web browser or a dedicated app.")
-                          + " " + qsTr("The authors of <strong>Enroute Flight Navigation</strong> do not control Google Maps.")
+                          + qsTr("In order to show a satellite view, <strong>Enroute Flight Navigation</strong> will ask your system to open Google Earth or Google Maps in an external web browser or a dedicated app.")
+                          + " " + qsTr("The authors of <strong>Enroute Flight Navigation</strong> do not control Google Earth or Google Maps.")
                           + " " + qsTr("They do not know what data it collects or how that data is processed.")
                           + "</p>"
                           + "<p>"
-                          + " " + qsTr("With the click on OK, you consent to opening Google Maps on your device.")
+                          + " " + qsTr("With the click on OK, you consent to opening Google Earth or Google Maps on your device.")
                           + " " + qsTr("Click OK only if you agree with the terms and privacy policies of that site.")
                           + "</p>"
 
@@ -671,7 +664,7 @@ CenteringDialog {
 
                 Layout.fillWidth: true
 
-                text: qsTr("Always open external web sites, do not ask again")
+                text: qsTr("Always open external web sites and apps, do not ask again")
                 checked: GlobalSettings.alwaysOpenExternalWebsites
             }
         }
@@ -681,7 +674,7 @@ CenteringDialog {
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
             GlobalSettings.alwaysOpenExternalWebsites = alwaysOpen.checked
-            Qt.openUrlExternally(url)
+            PlatformAdaptor.openSatView(coordinate)
         }
     }
 

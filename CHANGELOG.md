@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.32.3] - ??
+
+### Added
+- When opening a satellite view from the waypoint description dialog, the
+  Android version of this app will use Google Earth if available. Otherwise,
+  Google Maps is used as a fallback. (#448)
+
+- In the Library "Maps and Data", show installed maps first (#323)
+
+
+### Chores
+- Substantial cleanup in the C++ code.
+
+
 ## [2.32.2] - 2024-11-26
 
 ### Added

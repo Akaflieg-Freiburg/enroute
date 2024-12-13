@@ -120,7 +120,10 @@ public:
     /*! \brief Headline name for the Downloadable
      *
      * This property is a convenience storing one string along with the
-     * Downloadable. The enroute app uses this to store the continent name for a
+     * Downloadable. This property holds the string stored in the downloadable, or
+     * a translated version of 'Installed' when hasFile is true.
+     *
+     * The enroute app uses this to store the continent name for a
      * Dowloadable that represents a geographic map.  The GUI then generate
      * section headings in the list of downloadable aviation maps.
      */

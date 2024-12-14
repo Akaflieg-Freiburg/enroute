@@ -430,7 +430,7 @@ CenteringDialog {
         anchors.fill: parent
 
         Label { // Second header line with distance and QUJ
-            text: Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), waypoint.coordinate)
+            text: Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), waypointDescriptionDialog.waypoint.coordinate)
             visible: (text !== "")
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignRight
@@ -487,10 +487,10 @@ CenteringDialog {
                         else {
                             Navigator.flightRoute.clear()
                             Navigator.flightRoute.append(PositionProvider.lastValidCoordinate)
-                            Navigator.flightRoute.append(waypoint)
-                            toast.doToast(qsTr("New flight route: direct to %1.").arg(waypoint.extendedName))
+                            Navigator.flightRoute.append(waypointDescriptionDialog.waypoint)
+                            Global.toast.doToast(qsTr("New flight route: direct to %1.").arg(waypointDescriptionDialog.waypoint.extendedName))
                         }
-                        close()
+                        addMenu.close()
                     }
 
                 }
@@ -711,12 +711,12 @@ CenteringDialog {
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
-            var newWP = waypoint.copy()
+            var newWP = waypointDescriptionDialog.waypoint.copy()
             newWP.name = newName
             newWP.notes = newNotes
             newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
-            WaypointLibrary.replace(waypoint, newWP)
-            toast.doToast(qsTr("Modified entry %1 in library.").arg(newWP.extendedName))
+            WaypointLibrary.replace(waypointDescriptionDialog.waypoint, newWP)
+            Global.toast.doToast(qsTr("Modified entry %1 in library.").arg(newWP.extendedName))
         }
     }
 
@@ -727,12 +727,12 @@ CenteringDialog {
 
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
-            var newWP = waypoint.copy()
+            var newWP = waypointDescriptionDialog.waypoint.copy()
             newWP.name = newName
             newWP.notes = newNotes
             newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
             WaypointLibrary.add(newWP)
-            toast.doToast(qsTr("Added %1 to waypoint library.").arg(newWP.extendedName))
+            Global.toast.doToast(qsTr("Added %1 to waypoint library.").arg(newWP.extendedName))
         }
     }
 

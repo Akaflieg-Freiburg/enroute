@@ -83,6 +83,7 @@ CenteringDialog {
         return waypoint.ICAOCode + " • " +waypoint.extendedName
     }
 
+
     Component {
         id: metarInfo
 
@@ -214,8 +215,8 @@ CenteringDialog {
             Item {
                 id: box
 
-                Layout.preferredWidth: font.pixelSize*3
-                Layout.preferredHeight: font.pixelSize*2.5
+                Layout.preferredWidth: colorGlean.font.pixelSize*3
+                Layout.preferredHeight: colorGlean.font.pixelSize*2.5
                 Layout.rowSpan: 3
                 Layout.alignment: Qt.AlignLeft
 
@@ -226,7 +227,7 @@ CenteringDialog {
                         strokeWidth: 2
                         fillColor: "transparent"
                         strokeColor:  {
-                            switch(airspace.CAT) {
+                            switch(gridLYO.airspace.CAT) {
                             case "A":
                             case "B":
                             case "C":
@@ -261,7 +262,7 @@ CenteringDialog {
                             return "transparent"
                         }
                         strokeStyle:  {
-                            switch(airspace.CAT) {
+                            switch(gridLYO.airspace.CAT) {
                             case "A":
                             case "B":
                             case "C":
@@ -276,7 +277,7 @@ CenteringDialog {
                             return ShapePath.DashLine
                         }
                         dashPattern:  {
-                            switch(airspace.CAT) {
+                            switch(gridLYO.airspace.CAT) {
                             case "TMZ":
                                 return [4, 2, 1, 2];
                             case "FIR":
@@ -299,7 +300,7 @@ CenteringDialog {
                     height: box.height
 
                     border.color: {
-                        switch(airspace.CAT) {
+                        switch(gridLYO.airspace.CAT) {
                         case "A":
                         case "B":
                         case "C":
@@ -322,7 +323,7 @@ CenteringDialog {
                     border.width: 6
 
                     color: {
-                        switch(airspace.CAT) {
+                        switch(gridLYO.airspace.CAT) {
                         case "CTR":
                             return "#40ff0000";
                         case "GLD":
@@ -338,7 +339,7 @@ CenteringDialog {
 
                     Label {
                         anchors.centerIn: parent
-                        text: airspace.CAT
+                        text: gridLYO.airspace.CAT
                     }
 
                 }
@@ -366,12 +367,14 @@ CenteringDialog {
                 }
                 wrapMode: Text.WordWrap
             }
+
             Rectangle {
                 Layout.alignment: Qt.AlignHCenter
                 color:  colorGlean.color
                 Layout.preferredHeight: 1
-                Layout.preferredWidth: font.pixelSize*5
+                Layout.preferredWidth: colorGlean.font.pixelSize*5
             }
+
             Label {
                 Layout.alignment: Qt.AlignHCenter|Qt.AlignTop
                 text: {
@@ -394,12 +397,13 @@ CenteringDialog {
             Layout.preferredWidth: sv.width
 
             Icon {
-                Layout.preferredWidth: font.pixelSize*3
+                Layout.preferredWidth: button.font.pixelSize*3
                 Layout.alignment: Qt.AlignVCenter
                 source: "/icons/material/ic_open_in_browser.svg"
             }
 
             Button {
+                id: button
                 text: "<a href='xx'>" + qsTr("Satellite View") + "</a>"
                 flat: true
                 Layout.alignment: Qt.AlignVCenter
@@ -420,6 +424,7 @@ CenteringDialog {
             }
         }
     }
+
 
     ColumnLayout {
         anchors.fill: parent
@@ -509,8 +514,8 @@ CenteringDialog {
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         Navigator.flightRoute.append(waypointDescriptionDialog.waypoint)
-                        close()
-                        toast.doToast(qsTr("Added %1 to route.").arg(waypoint.extendedName))
+                        addMenu.close()
+                        Global.toast.doToast(qsTr("Added %1 to route.").arg(waypointDescriptionDialog.waypoint.extendedName))
                     }
                 }
 
@@ -527,8 +532,8 @@ CenteringDialog {
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
                         Navigator.flightRoute.insert(waypointDescriptionDialog.waypoint)
-                        close()
-                        toast.doToast(qsTr("Inserted %1 into route.").arg(waypoint.extendedName))
+                        addMenu.close()
+                        Global.toast.doToast(qsTr("Inserted %1 into route.").arg(waypointDescriptionDialog.waypoint.extendedName))
                     }
                 }
 
@@ -544,12 +549,12 @@ CenteringDialog {
                     }
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
-                        close()
-                        var index = Navigator.flightRoute.lastIndexOf(waypoint)
+                        addMenu.close()
+                        var index = Navigator.flightRoute.lastIndexOf(waypointDescriptionDialog.waypoint)
                         if (index < 0)
                             return
                         Navigator.flightRoute.removeWaypoint(index)
-                        toast.doToast(qsTr("Removed %1 from route.").arg(waypoint.extendedName))
+                        Global.toast.doToast(qsTr("Removed %1 from route.").arg(waypointDescriptionDialog.waypoint.extendedName))
                     }
                 }
             }
@@ -576,7 +581,7 @@ CenteringDialog {
                         PlatformAdaptor.vibrateBrief()
                         wpAdd.waypoint = waypointDescriptionDialog.waypoint
                         wpAdd.open()
-                        close()
+                        libraryMenu.close()
                     }
                 }
 
@@ -588,7 +593,7 @@ CenteringDialog {
                         PlatformAdaptor.vibrateBrief()
                         removeDialog.waypoint = waypointDescriptionDialog.waypoint
                         removeDialog.open()
-                        close()
+                        libraryMenu.close()
                     }
                 }                
 
@@ -606,14 +611,14 @@ CenteringDialog {
                         PlatformAdaptor.vibrateBrief()
                         wpEdit.waypoint = waypointDescriptionDialog.waypoint
                         wpEdit.open()
-                        close()
+                        libraryMenu.close()
                     }
                 }
 
             }
         }
 
-        onRejected: close()
+        onRejected: waypointDescriptionDialog.close()
     }
 
 
@@ -692,7 +697,7 @@ CenteringDialog {
             Navigator.flightRoute.clear()
             Navigator.flightRoute.append(waypointDescriptionDialog.waypoint)
             close()
-            toast.doToast(qsTr("New flight route: direct to %1.").arg(waypoint.extendedName))
+            Global.toast.doToast(qsTr("New flight route: direct to %1.").arg(waypointDescriptionDialog.waypoint.extendedName))
         }
         onRejected: {
             PlatformAdaptor.vibrateBrief()
@@ -744,7 +749,7 @@ CenteringDialog {
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
             WaypointLibrary.remove(removeDialog.waypoint)
-            toast.doToast(qsTr("Waypoint removed from device"))
+            Global.toast.doToast(qsTr("Waypoint removed from device"))
         }
         onRejected: {
             PlatformAdaptor.vibrateBrief()

@@ -649,6 +649,7 @@ Item {
                 icon.source: "/icons/material/ic_my_location.svg"
 
                 enabled: !flightMap.followGPS
+                visible: enabled
 
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
@@ -662,7 +663,9 @@ Item {
 
                 icon.source: "/icons/material/ic_airplanemode_active.svg"
                 icon.color: "red"
+
                 enabled: !TrafficDataProvider.receivingHeartbeat
+                visible: enabled
 
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()

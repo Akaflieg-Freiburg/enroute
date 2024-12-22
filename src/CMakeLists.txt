@@ -545,6 +545,7 @@ qt_add_qml_module(${PROJECT_NAME}
     VERSION 1.0
     NO_RESOURCE_TARGET_PATH
     DEPENDENCIES
+    QtPositioning
     QtQuick
     QML_FILES
     qml/main.qml

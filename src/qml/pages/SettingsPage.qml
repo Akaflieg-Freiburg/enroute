@@ -621,7 +621,7 @@ Page {
 
             WordWrappingRadioDelegate {
                 id: a
-                text: qsTr("Built-in satnav receiver")
+                text: qsTr("Built-in Satnav Receiver")
                 Layout.fillWidth: true
                 checked: !GlobalSettings.positioningByTrafficDataReceiver
                 onCheckedChanged: b.checked = !checked
@@ -629,7 +629,7 @@ Page {
 
             WordWrappingRadioDelegate {
                 id: b
-                text: qsTr("Traffic data reveiver (when available)")
+                text: qsTr("Traffic Data Receiver (when available)")
                 Layout.fillWidth: true
                 onCheckedChanged: a.checked = !checked
             }

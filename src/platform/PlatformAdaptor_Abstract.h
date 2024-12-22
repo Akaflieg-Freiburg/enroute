@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QGeoCoordinate>
 #include <QQmlEngine>
 #include <QQuickItem>
 
@@ -114,6 +115,17 @@ public:
      */
     Q_INVOKABLE virtual void lockWifi(bool lock) { Q_UNUSED(lock) }
 
+    /*! \brief Open an external app or web site showing a satellite view
+     *
+     *  This implementation uses QDesktopServices::openUrl() to open the
+     *  location in Google Maps, either in a native app or in an external web
+     *  browser winde. The Android implementation tries Google Earth first and
+     *  falls back to Google Maps if Google Earth is not installed.
+     *
+     * @param coordinate Location whose sat view should be shown.
+     */
+    Q_INVOKABLE virtual void openSatView(const QGeoCoordinate& coordinate);
+
     /*! \brief Workaround for QTBUG-80790
      *
      *  This method is empty except on iOS, where it installs a special event
@@ -182,8 +194,8 @@ public slots:
 signals:
     /*! \brief Emitted when an error occurs
      *
-     *  This signal is emitted when an error occurs. The GUI will show the message
-     *  in an appropriate dialog.
+     *  This signal is emitted when an error occurs. The GUI will show the
+     *  message in an appropriate dialog.
      *
      *  @param message Human-readable, translated message
      */
@@ -191,8 +203,8 @@ signals:
 
     /*! \brief Emitted when the OS requests a language change
      *
-     *  This signal is emitted when the OS requests a language change. The GUI will show a
-     *  dialog requesting the user to restart the app.
+     *  This signal is emitted when the OS requests a language change. The GUI
+     *  will show a dialog requesting the user to restart the app.
      */
     void languageChanged();
 

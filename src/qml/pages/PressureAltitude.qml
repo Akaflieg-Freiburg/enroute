@@ -163,14 +163,6 @@ Page {
             }
             Item { }
 
-            Label { text: qsTr("Density Altitude") }
-            Label {
-                Layout.fillWidth: true
-                text: Sensors.densityAltitude.isFinite() ? Navigator.aircraft.verticalDistanceToString(Sensors.densityAltitude) : "-"
-                wrapMode: Text.Wrap
-            }
-            Item { }
-
             Label { text: qsTr("Cabin Altitude") }
             Label {
                 Layout.fillWidth: true

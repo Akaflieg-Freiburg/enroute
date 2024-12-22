@@ -424,6 +424,23 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 		return customStartActivity(intent);
 	}
 
+	private static boolean openInGoogleEarth(String geoUrl) {
+		if (m_instance == null) {
+			return false;
+		}
+		Uri gmmIntentUri = Uri.parse(geoUrl);
+		Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+		mapIntent.setPackage("com.google.earth");
+
+		try {
+    		m_instance.startActivity(mapIntent);
+		} catch (Exception e) {
+		    // Google Earth is not installed
+			return false;
+		}
+		return true;
+	}
+
 	/**
 	 * create uri from file path.
 	 *
@@ -522,7 +539,6 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 		// Verify that the intent will resolve to an activity
 		// do NOT use startActivityForResult as it will block
 		// enroute until the receiving app terminates.
-		//
 		if (chooserIntent.resolveActivity(m_instance.getPackageManager()) != null) {
 			m_instance.startActivity(chooserIntent);
 			return true;

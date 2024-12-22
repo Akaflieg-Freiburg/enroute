@@ -22,6 +22,7 @@
 #include <QLocale>
 #include <chrono>
 
+using namespace Qt::Literals::StringLiterals;
 using namespace std::chrono_literals;
 
 
@@ -31,6 +32,8 @@ DataManagement::Downloadable_Abstract::Downloadable_Abstract(QObject *parent)
     emitFileContentChanged_delayedTimer.setInterval(2s);
     connect(this, &Downloadable_Abstract::fileContentChanged, &emitFileContentChanged_delayedTimer, qOverload<>(&QTimer::start));
     connect(&emitFileContentChanged_delayedTimer, &QTimer::timeout, this, &Downloadable_Abstract::emitFileContentChanged_delayed);
+
+    m_section.setBinding([this]() {return m_hasFile.value() ? u"<a name>"_s + tr("Installed") : m_sectionBuffer.value();});
 }
 
 
@@ -71,16 +74,6 @@ void DataManagement::Downloadable_Abstract::setContentType(DataManagement::Downl
     }
     m_contentType = contentType;
     emit contentTypeChanged();
-}
-
-
-void DataManagement::Downloadable_Abstract::setSection(const QString& sectionName)
-{
-    if (sectionName == m_section) {
-        return;
-    }
-    m_section = sectionName;
-    emit sectionChanged();
 }
 
 

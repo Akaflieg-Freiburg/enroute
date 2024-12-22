@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -49,20 +49,26 @@ public:
     // Methods
     //
 
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract
+    /*! \brief Implements a pure virtual method from PlatformAdaptor_Abstract
      *
      *  @returns see PlatformAdaptor_Abstract
      */
     QString currentSSID() override;
 
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
+    /*! \brief Implements a pure virtual method from PlatformAdaptor_Abstract */
     void disableScreenSaver() override;
 
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract
+    /*! \brief Implements s pure virtual method from PlatformAdaptor_Abstract
      *
      *  @param lock see PlatformAdaptor_Abstract
      */
     void lockWifi(bool lock) override;
+
+    /*! \brief Re-implements a virtual method from PlatformAdaptor_Abstract
+     *
+     * @param coordinate Location whose sat view should be shown.
+     */
+    void openSatView(const QGeoCoordinate& coordinate) override;
 
     /*! \brief Information about the system, in HTML format
      *
@@ -70,18 +76,18 @@ public:
      */
     QString systemInfo() override;
 
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
+    /*! \brief Implements a pure virtual method from PlatformAdaptor_Abstract */
     void vibrateBrief() override;
 
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
+    /*! \brief Implements a pure virtual method from PlatformAdaptor_Abstract */
     void vibrateLong() override;
 
-    /*! \brief Implements pure virtual method from PlatformAdaptor_Abstract */
+    /*! \brief Implements a pure virtual method from PlatformAdaptor_Abstract */
     void onGUISetupCompleted() override;
 
 
 protected:
-    /*! \brief Implements virtual method from PlatformAdaptor_Abstract */
+    /*! \brief Re-implements a virtual method from PlatformAdaptor_Abstract */
     void deferredInitialization() override;
 
 private:

@@ -61,16 +61,14 @@ public:
     // Repeated from Downloadable_Abstract to keep QML happy
     Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
     Q_PROPERTY(QStringList files READ files NOTIFY filesChanged)
+    Q_PROPERTY(bool hasFile READ hasFile BINDABLE bindableHasFile NOTIFY hasFileChanged)
     Q_PROPERTY(Units::ByteSize updateSize READ updateSize NOTIFY updateSizeChanged)
 
     /*! \brief List of Downloadables in this group
      *
      *  This property holds a list of direct children of the instance.  The list is sorted by section and object name, and never contains a zero pointer.
      */
-    Q_PROPERTY(QList<DataManagement::Downloadable_Abstract*> downloadables READ downloadables NOTIFY downloadablesChanged)
-
-    // Repeated from Downloadable_Abstract, to avoid QML warning
-    Q_PROPERTY(bool hasFile READ hasFile NOTIFY hasFileChanged)
+    Q_PROPERTY(QVector<DataManagement::Downloadable_Abstract*> downloadables READ downloadables NOTIFY downloadablesChanged)
 
 
     //
@@ -87,7 +85,7 @@ public:
      *
      *   @returns Property downloadables
      */
-    [[nodiscard]] auto downloadables() -> QList<DataManagement::Downloadable_Abstract*>;
+    [[nodiscard]] QVector<DataManagement::Downloadable_Abstract*> downloadables();
 
     /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
      *
@@ -100,12 +98,6 @@ public:
      * @returns Property files
      */
     [[nodiscard]] auto files() -> QStringList override { return m_files; }
-
-    /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
-     *
-     * @returns Property hasFile
-     */
-    [[nodiscard]] auto hasFile() -> bool override { return m_hasFile; }
 
     /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
      *
@@ -195,9 +187,9 @@ signals:
 
 private:
     // Re-evaluate members when the properties of a member changes
+    bool computeHasFile();
     void evaluateDownloading();
     void evaluateFiles();
-    void evaluateHasFile();
     void evaluateRemoteFileSize();
     void evaluateUpdateSize();
 
@@ -207,11 +199,10 @@ private:
 
     bool m_downloading {false};
     QStringList m_files;
-    bool m_hasFile {false};
     qint64 m_remoteFileSize {-1};
     qint64 m_updateSize {0};
 
-    QVector<QPointer<DataManagement::Downloadable_Abstract>> m_downloadables;
+    QProperty<QVector<QPointer<DataManagement::Downloadable_Abstract>>> m_downloadables;
     DataManagement::Downloadable_MultiFile::UpdatePolicy m_updatePolicy;
 };
 

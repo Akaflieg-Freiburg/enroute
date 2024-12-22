@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -95,7 +95,7 @@ void Platform::FileExchange::processFileOpenRequest(const QString& path)
 }
 
 
-auto Platform::FileExchange::shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
+QString Platform::FileExchange::shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate)
 {
     QMimeDatabase const db;
     QMimeType const mime = db.mimeTypeForName(mimeType);
@@ -110,7 +110,7 @@ auto Platform::FileExchange::shareContent(const QByteArray& content, const QStri
 }
 
 
-auto Platform::FileExchange::viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
+QString Platform::FileExchange::viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate)
 {
     QString const tmpPath = contentToTempFile(content, fileNameTemplate);
     bool const success = outgoingIntent(QStringLiteral("viewFile"), tmpPath, mimeType);
@@ -126,7 +126,7 @@ auto Platform::FileExchange::viewContent(const QByteArray& content, const QStrin
 // Private Methods
 //
 
-auto Platform::FileExchange::contentToTempFile(const QByteArray& content, const QString& fileNameTemplate) -> QString
+QString Platform::FileExchange::contentToTempFile(const QByteArray& content, const QString& fileNameTemplate)
 {
     QDateTime const now = QDateTime::currentDateTimeUtc();
     QString const fname = fileNameTemplate.arg(now.toString(QStringLiteral("yyyy-MM-dd_hh.mm.ss")));
@@ -150,7 +150,7 @@ auto Platform::FileExchange::contentToTempFile(const QByteArray& content, const 
 }
 
 
-auto Platform::FileExchange::outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType) -> bool
+bool Platform::FileExchange::outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType)
 {
     QJniObject const jsPath = QJniObject::fromString(filePath);
     QJniObject const jsMimeType = QJniObject::fromString(mimeType);

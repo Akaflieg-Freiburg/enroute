@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <QClipboard>
+#include <QDesktopServices>
 #include <QGuiApplication>
 #include <QLibraryInfo>
 #include <QLocale>
@@ -45,6 +46,17 @@ QString Platform::PlatformAdaptor_Abstract::clipboardText()
         return {};
     }
     return qGuiApp->clipboard()->text();
+}
+
+
+void Platform::PlatformAdaptor_Abstract::openSatView(const QGeoCoordinate& coordinate)
+{
+    auto url = u"https://www.google.com/maps/@?api=1&map_action=map&center="_s
+               + QString::number(coordinate.latitude())
+               + u"%2C"_s
+               + QString::number(coordinate.longitude())
+               + u"&zoom=15&basemap=satellite"_s;
+    QDesktopServices::openUrl(url);
 }
 
 

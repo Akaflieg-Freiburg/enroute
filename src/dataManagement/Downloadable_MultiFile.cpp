@@ -31,6 +31,8 @@ DataManagement::Downloadable_MultiFile::Downloadable_MultiFile(DataManagement::D
     setContentType(MapSet);
 
     connect(this, &DataManagement::Downloadable_MultiFile::downloadingChanged, this, &DataManagement::Downloadable_MultiFile::evaluateUpdateSize, Qt::QueuedConnection);
+
+    m_hasFile.setBinding([this]() {return computeHasFile();});
 }
 
 
@@ -42,10 +44,12 @@ DataManagement::Downloadable_MultiFile::Downloadable_MultiFile(DataManagement::D
 auto DataManagement::Downloadable_MultiFile::description() -> QString
 {
     QString result;
-
-    m_downloadables.removeAll(nullptr);
-    foreach(auto map, m_downloadables)
+    foreach(auto map, m_downloadables.value())
     {
+        if (map.isNull())
+        {
+            continue;
+        }
         switch(map->contentType())
         {
         case Downloadable_Abstract::VAC:
@@ -80,9 +84,12 @@ auto DataManagement::Downloadable_MultiFile::infoText() -> QString
 {
     QString result;
 
-    m_downloadables.removeAll(nullptr);
-    foreach(auto map, m_downloadables)
+    foreach(auto map, m_downloadables.value())
     {
+        if (map.isNull())
+        {
+            continue;
+        }
         if (!result.isEmpty())
         {
             result += u"<br>"_s;
@@ -127,7 +134,6 @@ void DataManagement::Downloadable_MultiFile::add(DataManagement::Downloadable_Ab
     {
         evaluateDownloading();
         evaluateFiles();
-        evaluateHasFile();
         evaluateRemoteFileSize();
         evaluateUpdateSize();
 
@@ -139,17 +145,16 @@ void DataManagement::Downloadable_MultiFile::add(DataManagement::Downloadable_Ab
 
 void DataManagement::Downloadable_MultiFile::add(const QVector<DataManagement::Downloadable_Abstract*>& maps)
 {
-    auto cache = m_downloadables.size();
+    auto cache = m_downloadables.value().size();
     foreach(auto map, maps)
     {
         rawAdd(map);
     }
 
-    if (cache != m_downloadables.size())
+    if (cache != m_downloadables.value().size())
     {
         evaluateDownloading();
         evaluateFiles();
-        evaluateHasFile();
         evaluateRemoteFileSize();
         evaluateUpdateSize();
 
@@ -161,22 +166,22 @@ void DataManagement::Downloadable_MultiFile::add(const QVector<DataManagement::D
 
 void DataManagement::Downloadable_MultiFile::clear()
 {
-    if (m_downloadables.isEmpty())
+    if (m_downloadables.value().isEmpty())
     {
         return;
     }
 
-    foreach (auto map, m_downloadables) {
+    foreach (auto map, m_downloadables.value())
+    {
         disconnect(map, nullptr, this, nullptr);
     }
-    m_downloadables.clear();
+    m_downloadables = QVector<QPointer<DataManagement::Downloadable_Abstract>>();
 
     emit descriptionChanged();
     emit downloadablesChanged();
     emit infoTextChanged();
     evaluateDownloading();
     evaluateFiles();
-    evaluateHasFile();
     evaluateRemoteFileSize();
     evaluateUpdateSize();
 }
@@ -184,20 +189,27 @@ void DataManagement::Downloadable_MultiFile::clear()
 
 void DataManagement::Downloadable_MultiFile::deleteFiles()
 {
-    m_downloadables.removeAll(nullptr);
-    foreach(auto map, m_downloadables)
+    foreach(auto map, m_downloadables.value())
     {
+        if (map.isNull())
+        {
+            continue;
+        }
         map->deleteFiles();
     }
 }
 
 
-auto DataManagement::Downloadable_MultiFile::downloadables() -> QVector<DataManagement::Downloadable_Abstract*>
+QVector<DataManagement::Downloadable_Abstract*> DataManagement::Downloadable_MultiFile::downloadables()
 {
     QVector<DataManagement::Downloadable_Abstract*> result;
-    m_downloadables.removeAll(nullptr);
-    foreach(auto downloadable, m_downloadables)
+    foreach(auto downloadable, m_downloadables.value())
     {
+        if (downloadable.isNull())
+        {
+            continue;
+        }
+
         result += downloadable;
     }
 
@@ -227,9 +239,12 @@ auto DataManagement::Downloadable_MultiFile::downloadables4Location(const QGeoCo
     }
 
     QVector<DataManagement::Downloadable_Abstract*> result;
-    m_downloadables.removeAll(nullptr);
-    foreach(auto downloadable, m_downloadables)
+    foreach(auto downloadable, m_downloadables.value())
     {
+        if (downloadable.isNull())
+        {
+            continue;
+        }
         auto bbox = downloadable->boundingBox();
         if (bbox.isValid() && bbox.contains(location))
         {
@@ -260,9 +275,12 @@ auto DataManagement::Downloadable_MultiFile::downloadablesByDistance(const QGeoC
     }
 
     QVector<DataManagement::Downloadable_Abstract*> result;
-    m_downloadables.removeAll(nullptr);
-    foreach(auto downloadable, m_downloadables)
+    foreach(auto downloadable, m_downloadables.value())
     {
+        if (downloadable.isNull())
+        {
+            continue;
+        }
         result += downloadable;
     }
 
@@ -277,9 +295,12 @@ auto DataManagement::Downloadable_MultiFile::downloadablesByDistance(const QGeoC
 
 void DataManagement::Downloadable_MultiFile::startDownload()
 {
-    m_downloadables.removeAll(nullptr);
-    foreach(auto map, m_downloadables)
+    foreach(auto map, m_downloadables.value())
     {
+        if (map.isNull())
+        {
+            continue;
+        }
         map->startDownload();
     }
 }
@@ -287,9 +308,12 @@ void DataManagement::Downloadable_MultiFile::startDownload()
 
 void DataManagement::Downloadable_MultiFile::stopDownload()
 {
-    m_downloadables.removeAll(nullptr);
-    foreach(auto map, m_downloadables)
+    foreach(auto map, m_downloadables.value())
     {
+        if (map.isNull())
+        {
+            continue;
+        }
         map->stopDownload();
     }
 }
@@ -302,9 +326,13 @@ void DataManagement::Downloadable_MultiFile::update()
         return;
     }
 
-    m_downloadables.removeAll(nullptr);
-    foreach(auto map, m_downloadables)
+    foreach(auto map, m_downloadables.value())
     {
+        if (map.isNull())
+        {
+            continue;
+        }
+
         if (map->hasFile())
         {
             map->update();
@@ -322,20 +350,21 @@ void DataManagement::Downloadable_MultiFile::update()
 
 void DataManagement::Downloadable_MultiFile::remove(DataManagement::Downloadable_Abstract* map)
 {
-    if (!m_downloadables.contains(map))
+    if (!m_downloadables.value().contains(map))
     {
         return;
     }
 
     disconnect(map, nullptr, this, nullptr);
-    m_downloadables.removeAll(map);
+    auto tmp = m_downloadables.value();
+    tmp.removeAll(map);
+    m_downloadables = tmp;
 
     emit descriptionChanged();
     emit downloadablesChanged();
     emit infoTextChanged();
     evaluateDownloading();
     evaluateFiles();
-    evaluateHasFile();
     evaluateRemoteFileSize();
     evaluateUpdateSize();
 }
@@ -349,9 +378,13 @@ void DataManagement::Downloadable_MultiFile::remove(DataManagement::Downloadable
 void DataManagement::Downloadable_MultiFile::evaluateDownloading()
 {
     bool newDownloading = false;
-    m_downloadables.removeAll(nullptr);
-    foreach(auto map, m_downloadables)
+    foreach(auto map, m_downloadables.value())
     {
+        if (map.isNull())
+        {
+            continue;
+        }
+
         if (map->downloading())
         {
             newDownloading = true;
@@ -369,9 +402,12 @@ void DataManagement::Downloadable_MultiFile::evaluateDownloading()
 void DataManagement::Downloadable_MultiFile::evaluateFiles()
 {
     QStringList newFiles;
-    m_downloadables.removeAll(nullptr);
-    foreach(auto map, m_downloadables)
+    foreach(auto map, m_downloadables.value())
     {
+        if (map.isNull())
+        {
+            continue;
+        }
         newFiles << map->files();
     }
     if (newFiles != m_files)
@@ -382,32 +418,33 @@ void DataManagement::Downloadable_MultiFile::evaluateFiles()
 }
 
 
-void DataManagement::Downloadable_MultiFile::evaluateHasFile()
+bool DataManagement::Downloadable_MultiFile::computeHasFile()
 {
-    bool newHasFile = false;
-    m_downloadables.removeAll(nullptr);
-    foreach(auto map, m_downloadables)
+    foreach(auto map, m_downloadables.value())
     {
+        if (map.isNull())
+        {
+            continue;
+        }
         if (map->hasFile())
         {
-            newHasFile = true;
-            break;
+            return true;
         }
     }
-    if (newHasFile != m_hasFile)
-    {
-        m_hasFile = newHasFile;
-        emit hasFileChanged();
-    }
+    return false;
 }
 
 
 void DataManagement::Downloadable_MultiFile::evaluateRemoteFileSize()
 {
     qint64 newRemoteFileSize = -1;
-    m_downloadables.removeAll(nullptr);
-    foreach(auto map, m_downloadables)
+    foreach(auto map, m_downloadables.value())
     {
+        if (map.isNull())
+        {
+            continue;
+        }
+
         auto intermediate = map->remoteFileSize();
         if (intermediate == -1)
         {
@@ -429,9 +466,13 @@ void DataManagement::Downloadable_MultiFile::evaluateUpdateSize()
     qint64 newUpdateSize = 0;
     if (!downloading() && hasFile())
     {
-        m_downloadables.removeAll(nullptr);
-        foreach(auto map, m_downloadables)
+        foreach(auto map, m_downloadables.value())
         {
+            if (map.isNull())
+            {
+                continue;
+            }
+
             if (map->hasFile())
             {
                 newUpdateSize += qint64(map->updateSize());
@@ -462,7 +503,7 @@ bool DataManagement::Downloadable_MultiFile::rawAdd(DataManagement::Downloadable
     {
         return false;
     }
-    if (m_downloadables.contains(map))
+    if (m_downloadables.value().contains(map))
     {
         return false;
     }
@@ -477,7 +518,6 @@ bool DataManagement::Downloadable_MultiFile::rawAdd(DataManagement::Downloadable
     // properties and emits notifier signals when appropriate.
     connect(map, &DataManagement::Downloadable_Abstract::downloadingChanged, this, &DataManagement::Downloadable_MultiFile::evaluateDownloading, Qt::QueuedConnection);
     connect(map, &DataManagement::Downloadable_Abstract::filesChanged, this, &DataManagement::Downloadable_MultiFile::evaluateFiles, Qt::QueuedConnection);
-    connect(map, &DataManagement::Downloadable_Abstract::hasFileChanged, this, &DataManagement::Downloadable_MultiFile::evaluateHasFile, Qt::QueuedConnection);
     connect(map, &DataManagement::Downloadable_Abstract::remoteFileSizeChanged, this, &DataManagement::Downloadable_MultiFile::evaluateRemoteFileSize, Qt::QueuedConnection);
     connect(map, &DataManagement::Downloadable_Abstract::hasFileChanged, this, &DataManagement::Downloadable_MultiFile::evaluateUpdateSize, Qt::QueuedConnection);
     connect(map, &DataManagement::Downloadable_Abstract::remoteFileSizeChanged, this, &DataManagement::Downloadable_MultiFile::evaluateUpdateSize, Qt::QueuedConnection);
@@ -489,7 +529,6 @@ bool DataManagement::Downloadable_MultiFile::rawAdd(DataManagement::Downloadable
     connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::infoTextChanged);
     connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::evaluateDownloading);
     connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::evaluateFiles);
-    connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::evaluateHasFile);
     connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::evaluateRemoteFileSize);
     connect(map, &QObject::destroyed, this, &DataManagement::Downloadable_MultiFile::evaluateUpdateSize);
 
@@ -503,7 +542,9 @@ bool DataManagement::Downloadable_MultiFile::rawAdd(DataManagement::Downloadable
     setBoundingBox(map->boundingBox());
 
     // Add downloadable
-    m_downloadables.append(map);
+    auto tmp = m_downloadables.value();
+    tmp.append(map);
+    m_downloadables = tmp;
 
     return true;
 }

@@ -98,7 +98,7 @@ public:
 
     // Repeated from Downloadable_Abstract to keep QML happy
     Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
-    Q_PROPERTY(bool hasFile READ hasFile NOTIFY hasFileChanged)
+    Q_PROPERTY(bool hasFile READ hasFile BINDABLE bindableHasFile NOTIFY hasFileChanged)
 
     /*! \brief Download progress
      *
@@ -177,12 +177,6 @@ public:
      * @returns Property files
      */
     [[nodiscard]] auto files() -> QStringList override;
-
-    /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
-     *
-     * @returns Property hasFile
-     */
-    [[nodiscard]] auto hasFile() -> bool override { return QFile::exists(m_fileName); }
 
     /*! \brief Implementation of pure virtual getter method from Downloadable_Abstract
      *
@@ -303,6 +297,7 @@ public:
 
     /*! \brief Implementation of pure virtual method from Downloadable_Abstract */
     Q_INVOKABLE void update() override;
+
 
 signals:
     /*! \brief Warning that local file is about to change

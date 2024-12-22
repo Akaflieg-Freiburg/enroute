@@ -87,13 +87,6 @@ void Sensors::updateSensorReadings()
         m_ambientTemperature = new_ambientTemperature;
         emit ambientTemperatureChanged();
     }
-
-    auto new_ambientDensity = Navigation::Atmosphere::density(m_ambientPressure, m_ambientTemperature);
-    if (new_ambientDensity != m_ambientDensity)
-    {
-        m_ambientDensity = new_ambientDensity;
-        emit ambientDensityChanged();
-    }
 #endif
 
 }

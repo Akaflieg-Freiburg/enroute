@@ -27,8 +27,6 @@ RoundButton {
     height: 4*font.pixelSize
     width: 4*font.pixelSize
 
-    visible: enabled
-
     icon.height: 2*font.pixelSize
     icon.width: 2*font.pixelSize
 

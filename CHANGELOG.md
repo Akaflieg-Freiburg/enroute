@@ -3,6 +3,9 @@
 ## [2.32.3] - ??
 
 ### Added
+- Zoom buttons no longer change places at max/min zoom level, one typo fixed in
+  the GUI (#480)
+
 - When opening a satellite view from the waypoint description dialog, the
   Android version of this app will use Google Earth if available. Otherwise,
   Google Maps is used as a fallback. (#448)

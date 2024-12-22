@@ -698,6 +698,9 @@ if ( QTDEPLOY )
         TARGET ${PROJECT_NAME}
         OUTPUT_SCRIPT deploy_script
         NO_UNSUPPORTED_PLATFORM_ERROR
+        MACOS_BUNDLE_POST_BUILD
+        DEPLOY_TOOL_OPTIONS
+        "-sign-for-notarization=Stefan Kebekus"
     )
 
     # Call the deployment script on "cmake --install".

@@ -1,0 +1,134 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+
+
+default_platform(:android)
+
+platform :android do
+  desc "Build Android Binary"
+  lane :build do
+    # Clean up previous builds
+    FileUtils.rm_rf('../build/build-android-release')
+    FileUtils.rm_rf('../build/enroute.apk')
+    FileUtils.rm_rf('../build/enroute.aab')
+
+    # Configure CMake build
+    UI.message('Configuring CMake build...')
+    qt6_android_dir = ENV['Qt6_DIR_ANDROID']
+    cmake_config_cmd = [
+      "#{qt6_android_dir}_x86_64/bin/qt-cmake",
+      '-DCMAKE_BUILD_TYPE:STRING=Release',
+      '-DQT_ANDROID_BUILD_ALL_ABIS=ON',
+      '-DQT_ANDROID_SIGN_APK=ON',
+      '-DQT_ANDROID_SIGN_AAB=ON',
+      '-S ..',
+      '-B ../build/build-android-release'
+    ].join(' ')
+    sh(cmake_config_cmd)
+
+    # Build APK
+    UI.message('Building and Signing Android Package...')
+    sh('cmake --build ../build/build-android-release --target apk')
+    apk_source = '../build/build-android-release/src/android-build/build/outputs/apk/release/android-build-release-signed.apk'
+    apk_dest = '../build/enroute.apk'
+    FileUtils.mv(apk_source, apk_dest)
+
+    # Build AAB
+    UI.message('Building and Signing Android App Bundle...')
+    sh('cmake --build ../build/build-android-release --target aab')
+    aab_source = '../build/build-android-release/src/android-build/build/outputs/bundle/release/android-build-release.aab'
+    aab_dest = '../build/enroute.aab'
+    FileUtils.mv(aab_source, aab_dest)
+
+    # Verify and provide output path
+    UI.success("Signed APK file is available at #{File.expand_path(apk_dest)}")
+    UI.success("Signed AAB file is available at #{File.expand_path(aab_dest)}")
+  end
+
+  desc "Updata Meta Data for Google Play"
+  lane :metadata do
+    # Update Changelog files
+    matches = File.read("../CHANGELOG.md").scan(/^## \s*\[?(.*?)\]?\s*-\s*.*?\n(.*?)(?=^## |\z)/m)
+    latest_version, changelog_text = matches.first
+    major, minor, patch = latest_version.split('.').map(&:to_i)
+    version_code = 100000 * major + 1000 * minor + patch
+    File.write("metadata/android/en-US/#{version_code}.txt", changelog_text.strip)      
+  end
+
+  desc "Validate a new version with Google Play"
+  lane :validate do
+    build
+    metadata
+    upload_to_play_store(aab: 'build/enroute.aab', track: 'beta', validate_only: true)
+  end
+
+  desc "Deploy a new version to Google Play - Beta"
+  lane :deployBeta do
+    build
+    metadata
+    upload_to_play_store(aab: 'build/enroute.aab', track: 'beta')
+  end
+
+  desc "Promote Beta to Release"
+  lane :promoteBetaToRelease do
+    matches = File.read("../CHANGELOG.md").scan(/^## \s*\[?(.*?)\]?\s*-\s*.*?\n(.*?)(?=^## |\z)/m)
+    latest_version, changelog_text = matches.first
+    major, minor, patch = latest_version.split('.').map(&:to_i)
+    version_code = 100000 * major + 1000 * minor + patch
+    upload_to_play_store(track: 'beta', track_promote_to: 'production', version_code: version_code)
+  end
+end
+
+platform :linux do
+  desc "Build Linux Binary"
+  lane :build do
+    # Clean up previous builds
+    FileUtils.rm_rf('../build/build-linux-release')
+
+    # Configure CMake build
+    qt6_linux_dir = ENV['Qt6_DIR_LINUX']
+    cmake_config_cmd = [
+      "#{qt6_linux_dir}/bin/qt-cmake",
+      '-G Ninja',
+      '-DCMAKE_BUILD_TYPE:STRING=Release',
+      '-S ..',
+      '-B ../build/build-linux-release'
+    ].join(' ')
+
+    UI.message('Configuring CMake build...')
+    sh(cmake_config_cmd)
+
+    # Build linux binary
+    UI.message('Building Linux Binary...')
+    sh('cmake --build ../build/build-linux-release')
+  end
+end
+
+
+platform :mac do
+  desc "Build macOS Bundle"
+  lane :build do
+    # Clean up previous builds
+    FileUtils.rm_rf('../build/build-macos-release')
+    FileUtils.rm_rf('../build/enroute.app')
+
+    UI.message('Configuring CMake build...')
+    qt6_macos_dir = ENV['Qt6_DIR_MACOS']
+    sh("#{qt6_macos_dir}/bin/qt-cmake",
+      '-G Ninja',
+      '-DCMAKE_BUILD_TYPE:STRING=Release',
+      '-DCMAKE_OSX_ARCHITECTURES=x86_64;arm64',
+      '-DCMAKE_INSTALL_PREFIX=../build/',
+      '-DQTDEPLOY=ON',
+      '-S ..',
+      '-B ../build/build-macos-release'
+    )
+
+    UI.message('Building macOS Binary...')
+    sh('cmake --build ../build/build-macos-release')
+
+    UI.message('Compile MacOS Bundle and Sign ...')
+    sh('cmake --build ../build/build-macos-release --target install')
+  end
+
+end

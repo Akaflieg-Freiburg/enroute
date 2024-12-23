@@ -42,6 +42,7 @@ add_custom_target(flightMapSprites
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-PAVED.svg -o AD-PAVED.png -h 30 -w 30
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-UL.svg -o AD-UL.png -h 20 -w 20
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-WATER.svg -o AD-WATER.png -h 30 -w 30
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/DME.svg -o DME.png -w 15
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/MRP.svg -o MRP.png -h 25 -w 25
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/NDB.svg -o NDB.png -h 25 -w 25
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/RP.svg -o RP.png -h 25 -w 25
@@ -78,6 +79,7 @@ add_custom_target(flightMapSprites
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-PAVED.svg -o AD-PAVED.png -h 60 -w 60
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-UL.svg -o AD-UL.png -h 40 -w 40
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/AD-WATER.svg -o AD-WATER.png -h 60 -w 60
+  COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/DME.svg -o DME.png -w 30
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/MRP.svg -o MRP.png -h 50 -w 50
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/NDB.svg -o NDB.png -h 50 -w 50
   COMMAND rsvg-convert ${CMAKE_SOURCE_DIR}/src/flightMap/sprites/RP.svg -o RP.png -h 50 -w 50

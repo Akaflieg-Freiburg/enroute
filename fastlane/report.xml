@@ -5,22 +5,17 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000207">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000183">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: /Users/kebekus/Software/buildsystems/Qt/6.8.1/macos/bin/qt-cmake -G\ Ninja -DCMAKE_BUILD_TYPE:STRING\=Release -DCMAKE_OSX_ARCHITECTURES\=x86_64\;arm64 -DCMAKE_INSTALL_PREFIX\=../build/ -DQTDEPLOY\=ON -S\ .. -B\ ../build/build-macos-release" time="2.281092">
+      <testcase classname="fastlane.lanes" name="1: Switch to android metadata lane" time="0.000226">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="2: cmake --build ../build/build-macos-release" time="94.171374">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="3: cmake --build ../build/build-macos-release --target install" time="148.285611">
+      <testcase classname="fastlane.lanes" name="2: upload_to_play_store" time="257.054414">
         
       </testcase>
     

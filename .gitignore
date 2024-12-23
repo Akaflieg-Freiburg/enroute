@@ -12,7 +12,7 @@ build-macos/
 doc/APIdoc
 
 # secrets
-generatedSources/pc-api-8548806115718303828-770-6966308588f6.json
+fastlane/api-key-googlePlay.json
 CMakeLists_ios.txt
 
 # IDE
@@ -23,7 +23,7 @@ CMakeLists.txt.user
 **/.qmlls.ini
 
 # Mac
-.DS_Store
+**/.DS_Store
 
 # fastlane
 generatedSources/.bundle

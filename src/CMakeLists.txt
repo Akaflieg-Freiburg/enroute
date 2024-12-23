@@ -242,6 +242,10 @@ qt_add_big_resources(SOURCES
 #
 
 if(ANDROID)
+    if (Qt6Core_VERSION VERSION_EQUAL "6.8.1")
+        message(FATAL_ERROR "Qt version 6.8.1 is known to have critical errors with multi-architecture Android. Please use a different version.")
+    endif()
+
     list(APPEND SOURCES
         platform/FileExchange_Android.h
         platform/FileExchange_Android.cpp
@@ -700,6 +704,9 @@ if ( QTDEPLOY )
         TARGET ${PROJECT_NAME}
         OUTPUT_SCRIPT deploy_script
         NO_UNSUPPORTED_PLATFORM_ERROR
+        MACOS_BUNDLE_POST_BUILD
+        DEPLOY_TOOL_OPTIONS
+        "-sign-for-notarization=Stefan Kebekus"
     )
 
     # Call the deployment script on "cmake --install".

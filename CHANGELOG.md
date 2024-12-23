@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.32.3] - ??
+## [2.32.3] - 2024-12-23
 
 ### Added
 - Zoom buttons no longer change places at max/min zoom level, one typo fixed in

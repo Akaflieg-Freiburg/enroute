@@ -69,89 +69,96 @@
         "x": 160,
         "y": 60
     },
+    "DME": {
+        "height": 27,
+        "pixelRatio": 2,
+        "width": 30,
+        "x": 333,
+        "y": 120
+    },
     "DVOR": {
         "height": 39,
         "pixelRatio": 2,
         "width": 44,
-        "x": 0,
-        "y": 159
+        "x": 44,
+        "y": 156
     },
     "DVOR-DME": {
         "height": 39,
         "pixelRatio": 2,
         "width": 44,
-        "x": 351,
-        "y": 120
+        "x": 0,
+        "y": 156
     },
     "DVORTAC": {
         "height": 44,
         "pixelRatio": 2,
         "width": 52,
-        "x": 44,
-        "y": 159
+        "x": 88,
+        "y": 156
     },
     "MRP": {
         "height": 50,
         "pixelRatio": 2,
         "width": 50,
-        "x": 96,
-        "y": 159
+        "x": 140,
+        "y": 156
     },
     "NDB": {
         "height": 50,
         "pixelRatio": 2,
         "width": 50,
-        "x": 146,
-        "y": 159
+        "x": 190,
+        "y": 156
     },
     "NOTAM": {
         "height": 30,
         "pixelRatio": 2,
         "width": 30,
-        "x": 196,
-        "y": 159
+        "x": 240,
+        "y": 156
     },
     "RP": {
         "height": 50,
         "pixelRatio": 2,
         "width": 50,
-        "x": 226,
-        "y": 159
+        "x": 0,
+        "y": 206
     },
     "VOR": {
         "height": 39,
         "pixelRatio": 2,
         "width": 44,
-        "x": 74,
-        "y": 209
+        "x": 124,
+        "y": 206
     },
     "VOR-DME": {
         "height": 39,
         "pixelRatio": 2,
         "width": 44,
-        "x": 30,
-        "y": 209
+        "x": 80,
+        "y": 206
     },
     "VORTAC": {
         "height": 44,
         "pixelRatio": 2,
         "width": 52,
-        "x": 118,
-        "y": 209
+        "x": 168,
+        "y": 206
     },
     "WP": {
         "height": 40,
         "pixelRatio": 2,
         "width": 40,
-        "x": 210,
-        "y": 209
+        "x": 0,
+        "y": 256
     },
     "WP-map": {
         "height": 40,
         "pixelRatio": 2,
         "width": 40,
-        "x": 170,
-        "y": 209
+        "x": 220,
+        "y": 206
     },
     "default_1": {
         "height": 36,
@@ -199,14 +206,14 @@
         "height": 18,
         "pixelRatio": 2,
         "width": 18,
-        "x": 333,
+        "x": 363,
         "y": 120
     },
     "triangle_11": {
         "height": 30,
         "pixelRatio": 2,
         "width": 30,
-        "x": 0,
-        "y": 209
+        "x": 50,
+        "y": 206
     }
 }

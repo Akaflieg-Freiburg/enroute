@@ -424,7 +424,7 @@ void DataManagement::DataManager::updateDataItemListAndWhatsNew()
         }
 
         auto baseURL = top.value(QStringLiteral("url")).toString();
-        foreach (auto map, top.value(QStringLiteral("maps")).toArray())
+        for (const auto &map : top.value(QStringLiteral("maps")).toArray())
         {
             auto obj = map.toObject();
             auto mapFileName = obj.value(QStringLiteral("path")).toString();

@@ -96,6 +96,7 @@
 	<file alias="icons/waypoints/AD-PAVED.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/AD-PAVED.svg</file>
 	<file alias="icons/waypoints/AD-UL.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/AD-UL.svg</file>
 	<file alias="icons/waypoints/AD-WATER.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/AD-WATER.svg</file>
+	<file alias="icons/waypoints/DME.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/DME.svg</file>
 	<file alias="icons/waypoints/WP.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/WP.svg</file>
 	<file alias="icons/waypoints/WP-map.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/WP-map.svg</file>
 	<file alias="icons/waypoints/MRP.svg">${CMAKE_CURRENT_SOURCE_DIR}/icons/waypoints/MRP.svg</file>

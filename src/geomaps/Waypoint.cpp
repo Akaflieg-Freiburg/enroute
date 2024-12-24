@@ -145,9 +145,9 @@ auto GeoMaps::Waypoint::isValid() const -> bool
             return false;
         }
         auto CAT = m_properties.value(QStringLiteral("CAT")).toString();
-        if ((CAT != u"NDB") && (CAT != u"VOR") && (CAT != u"VOR-DME") &&
-                (CAT != u"VORTAC") && (CAT != u"DVOR") && (CAT != u"DVOR-DME") &&
-                (CAT != u"DVORTAC")) {
+        if ((CAT != u"DME") && (CAT != u"NDB") && (CAT != u"VOR") && (CAT != u"VOR-DME") &&
+            (CAT != u"VORTAC") && (CAT != u"DVOR") && (CAT != u"DVOR-DME") &&
+            (CAT != u"DVORTAC")) {
             return false;
         }
 

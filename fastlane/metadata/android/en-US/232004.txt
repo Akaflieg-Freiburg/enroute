@@ -1,0 +1,2 @@
+### Added
+- The moving map and waypoint dialogs now show DMEs.

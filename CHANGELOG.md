@@ -1,6 +1,12 @@
 # Changelog
 
-## [2.32.3] - ??
+## [2.32.4] - 2024-12-24
+
+### Added
+- The moving map and waypoint dialogs now show DMEs.
+
+
+## [2.32.3] - 2024-12-23
 
 ### Added
 - Zoom buttons no longer change places at max/min zoom level, one typo fixed in

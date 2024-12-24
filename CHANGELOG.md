@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.32.4] - ??
+## [2.32.4] - 2024-12-24
 
 ### Added
 - The moving map and waypoint dialogs now show DMEs.

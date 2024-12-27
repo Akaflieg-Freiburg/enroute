@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.32.5] - ??
+
+### Changed
+- Updated the privacy statement. The server 'enroute-data' now maintains its own
+  METAR/TAF database and no longer forwards requests to the aviation weather
+  center.
+
+
 ## [2.32.4] - 2024-12-24
 
 ### Added

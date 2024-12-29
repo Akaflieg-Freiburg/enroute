@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QGeoRectangle>
 #include <QMap>
 #include <QPointer>
 #include <QQmlEngine>
@@ -99,12 +100,6 @@ public:
      */
     Q_PROPERTY(bool backgroundUpdate READ backgroundUpdate NOTIFY backgroundUpdateChanged)
 
-    /*! \brief Getter method for property of the same name
-     *
-     * @returns Property backgroundUpdate
-     */
-    [[nodiscard]] auto backgroundUpdate() const -> bool { return _backgroundUpdate; };
-
     /*! \brief Downloading flag
      *
      * Indicates that the WeatherDataProvider is currently downloading METAR/TAF
@@ -112,11 +107,102 @@ public:
      */
     Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
 
+    /*! \brief QNH
+     *
+     * This property holds the QNH of the next airfield, if known. If no QNH is known,
+     * this property holds QNaN.
+     */
+    Q_PROPERTY(Units::Pressure QNH READ QNH NOTIFY QNHInfoChanged)
+
+    /*! \brief QNHPressureAltitude
+     *
+     *  This property holds the altitude in the standard atmosphere which corresponds
+     *  to the current QNH value
+     */
+    Q_PROPERTY(Units::Distance QNHPressureAltitude READ QNHPressureAltitude NOTIFY QNHInfoChanged)
+
+    /*! \brief QNHInfo
+     *
+     * This property holds a human-readable, translated, rich-text string with
+     * information about the QNH of the nearest weather station.  This could
+     * typically read like "QNH: 1019 hPa in LFGA, 4min ago".  If no information
+     * is available, the property holds an empty string.
+     */
+    Q_PROPERTY(QString QNHInfo READ QNHInfo NOTIFY QNHInfoChanged)
+
+    /*! \brief sunInfo
+     *
+     * This property holds a human-readable, translated, rich-text string with
+     * information about the next sunset or sunrise at the current position. This
+     * could typically read like "SS 17:01, in 3h and 5min" or "Waiting for exact
+     * position …"
+     */
+    Q_PROPERTY(QString sunInfo READ sunInfo NOTIFY sunInfoChanged)
+
+    /*! \brief List of weather stations
+     *
+     * This property holds a list of all weather stations that are currently
+     * known to this instance of the WeatherDataProvider class, sorted according to
+     * the distance to the last known position.  The list can change at any
+     * time.
+     *
+     * @warning The WeatherStation objects are owned by the WeatherDataProvider and
+     * can be deleted anytime. Store it in a QPointer to avoid dangling
+     * pointers.
+     */
+    Q_PROPERTY(QList<Weather::Station*> weatherStations READ weatherStations NOTIFY weatherStationsChanged)
+
+
+    //
+    // Getter Methods
+    //
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property backgroundUpdate
+     */
+    [[nodiscard]] bool backgroundUpdate() const { return m_backgroundUpdate; };
+
     /*! \brief Getter method for property of the same name
      *
      * @returns Property downloading
      */
-    [[nodiscard]] auto downloading() const -> bool;
+    [[nodiscard]] bool downloading() const;
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property QNH
+     */
+    [[nodiscard]] Units::Pressure QNH() const;
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property QNHPressureAltitude
+     */
+    [[nodiscard]] Units::Distance QNHPressureAltitude() const { return Navigation::Atmosphere::height(QNH()); }
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property QNHInfo
+     */
+    [[nodiscard]] QString QNHInfo() const;
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property infoString
+     */
+    static QString sunInfo();
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property weatherStations
+     */
+    [[nodiscard]] QList<Weather::Station*> weatherStations() const;
+
+
+    //
+    // Methods
+    //
 
     /*! \brief Find WeatherStation by ICAO code
      *
@@ -132,66 +218,7 @@ public:
      *
      * @returns Pointer to WeatherStation
      */
-    [[nodiscard]] Q_INVOKABLE Weather::Station* findWeatherStation(const QString &ICAOCode) const
-    {
-        return _weatherStationsByICAOCode.value(ICAOCode, nullptr);
-    }
-
-    /*! \brief QNH
-     *
-     * This property holds the QNH of the next airfield, if known. If no QNH is known,
-     * this property holds QNaN.
-     */
-    Q_PROPERTY(Units::Pressure QNH READ QNH NOTIFY QNHInfoChanged)
-
-    /*! \brief Getter method for property of the same name
-     *
-     * @returns Property QNH
-     */
-    [[nodiscard]] auto QNH() const -> Units::Pressure;
-
-    /*! \brief QNHPressureAltitude
-     *
-     *  This property holds the altitude in the standard atmosphere which corresponds
-     *  to the current QNH value
-     */
-    Q_PROPERTY(Units::Distance QNHPressureAltitude READ QNHPressureAltitude NOTIFY QNHInfoChanged)
-
-    /*! \brief Getter method for property of the same name
-     *
-     * @returns Property QNHPressureAltitude
-     */
-    [[nodiscard]] auto QNHPressureAltitude() const -> Units::Distance { return Navigation::Atmosphere::height(QNH()); }
-
-    /*! \brief QNHInfo
-     *
-     * This property holds a human-readable, translated, rich-text string with
-     * information about the QNH of the nearest weather station.  This could
-     * typically read like "QNH: 1019 hPa in LFGA, 4min ago".  If no information
-     * is available, the property holds an empty string.
-     */
-    Q_PROPERTY(QString QNHInfo READ QNHInfo NOTIFY QNHInfoChanged)
-
-    /*! \brief Getter method for property of the same name
-     *
-     * @returns Property QNHInfo
-     */
-    [[nodiscard]] auto QNHInfo() const -> QString;
-
-    /*! \brief sunInfo
-     *
-     * This property holds a human-readable, translated, rich-text string with 
-     * information about the next sunset or sunrise at the current position. This
-     * could typically read like "SS 17:01, in 3h and 5min" or "Waiting for exact
-     * position …"
-     */
-    Q_PROPERTY(QString sunInfo READ sunInfo NOTIFY sunInfoChanged)
-
-    /*! \brief Getter method for property of the same name
-     *
-     * @returns Property infoString
-     */
-    static auto sunInfo() -> QString ;
+    [[nodiscard]] Q_INVOKABLE Weather::Station* findWeatherStation(const QString &ICAOCode) const;
 
     /*! \brief Update method
      *
@@ -213,25 +240,6 @@ public:
      * the user) and those that are explicitly started by the user.
      */
     Q_INVOKABLE void update(bool isBackgroundUpdate=true);
-
-    /*! \brief List of weather stations
-     *
-     * This property holds a list of all weather stations that are currently
-     * known to this instance of the WeatherDataProvider class, sorted according to
-     * the distance to the last known position.  The list can change at any
-     * time.
-     *
-     * @warning The WeatherStation objects are owned by the WeatherDataProvider and
-     * can be deleted anytime. Store it in a QPointer to avoid dangling
-     * pointers.
-     */
-    Q_PROPERTY(QList<Weather::Station*> weatherStations READ weatherStations NOTIFY weatherStationsChanged)
-
-    /*! \brief Getter method for property of the same name
-     *
-     * @returns Property weatherStations
-     */
-    [[nodiscard]] auto weatherStations() const -> QList<Weather::Station*>;
 
 signals:
     /*! \brief Notifier signal */
@@ -271,6 +279,9 @@ private slots:
     // static objects.
     void deferredInitialization();
 
+#warning
+    void startDownload(const QGeoRectangle& bBox);
+
 private:
     Q_DISABLE_COPY_MOVE(WeatherDataProvider)
 
@@ -286,7 +297,7 @@ private:
     // QStandardPaths::AppDataLocation.  There is locking to ensure that no two
     // processes access the file. The method will fail silently on error.
     // Returns true on success and false on failure.
-    auto load() -> bool;
+    bool load();
 
     // This method saves all METAR/TAFs that are valid and not yet expired to a
     // file "weather.dat" in QStandardPaths::AppDataLocation.  There is locking
@@ -295,22 +306,22 @@ private:
     void save();
 
     // List of replies from aviationweather.com
-    QList<QPointer<QNetworkReply>> _networkReplies;
+    QList<QPointer<QNetworkReply>> m_networkReplies;
 
     // A timer used for auto-updating the weather reports every 30 minutes
-    QTimer _updateTimer;
+    QTimer m_updateTimer;
 
     // A timer used for deleting expired weather reports ever 11 minutes
-    QTimer _deleteExiredMessagesTimer;
+    QTimer m_deleteExiredMessagesTimer;
 
     // Flag, as set by the update() method
-    bool _backgroundUpdate {true};
+    bool m_backgroundUpdate {true};
 
     // List of weather stations, accessible by ICAO code
-    QMap<QString, QPointer<Weather::Station>> _weatherStationsByICAOCode;
+    QMap<QString, QPointer<Weather::Station>> m_weatherStationsByICAOCode;
 
     // Date and Time of last update
-    QDateTime _lastUpdate;
+    QDateTime m_lastUpdate;
 };
 
 

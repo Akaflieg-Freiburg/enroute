@@ -50,14 +50,14 @@ Weather::WeatherDataProvider::WeatherDataProvider(QObject *parent) : QObject(par
     // Connect the timer to the update method. This will set backgroundUpdate to the default value,
     // which is true. So these updates happen in the background.
     // Schedule the first update in 1 seconds from now
-    connect(&_updateTimer, &QTimer::timeout, this, [this]() { this->update(); });
-    _updateTimer.setInterval(updateIntervalNormal_ms);
-    _updateTimer.start();
+    connect(&m_updateTimer, &QTimer::timeout, this, [this]() { this->update(); });
+    m_updateTimer.setInterval(updateIntervalNormal_ms);
+    m_updateTimer.start();
 
     // Connect the timer to check for expired messages
-    connect(&_deleteExiredMessagesTimer, &QTimer::timeout, this, &Weather::WeatherDataProvider::deleteExpiredMesages);
-    _deleteExiredMessagesTimer.setInterval(10min);
-    _deleteExiredMessagesTimer.start();
+    connect(&m_deleteExiredMessagesTimer, &QTimer::timeout, this, &Weather::WeatherDataProvider::deleteExpiredMesages);
+    m_deleteExiredMessagesTimer.setInterval(10min);
+    m_deleteExiredMessagesTimer.start();
 
     // Update the description text when needed
     connect(this, &Weather::WeatherDataProvider::weatherStationsChanged, this, &Weather::WeatherDataProvider::QNHInfoChanged);
@@ -79,21 +79,21 @@ void Weather::WeatherDataProvider::deferredInitialization()
     bool const success = load();
 
     // Compute time for next update
-    auto remainingTime = QDateTime::currentDateTimeUtc().msecsTo( _lastUpdate.addMSecs(updateIntervalNormal_ms) );
-    if (!success || !_lastUpdate.isValid() || (remainingTime < 0))
+    auto remainingTime = QDateTime::currentDateTimeUtc().msecsTo( m_lastUpdate.addMSecs(updateIntervalNormal_ms) );
+    if (!success || !m_lastUpdate.isValid() || (remainingTime < 0))
     {
         update();
     }
     else
     {
-        _updateTimer.setInterval( gsl::narrow_cast<int>(remainingTime) );
+        m_updateTimer.setInterval( gsl::narrow_cast<int>(remainingTime) );
     }
 }
 
 
 Weather::WeatherDataProvider::~WeatherDataProvider()
 {
-    foreach (auto networkReply, _networkReplies)
+    foreach (auto networkReply, m_networkReplies)
     {
         if (networkReply.isNull())
         {
@@ -109,7 +109,7 @@ void Weather::WeatherDataProvider::deleteExpiredMesages()
 {
     QVector<QString> ICAOCodesToDelete;
 
-    foreach(auto weatherStation, _weatherStationsByICAOCode)
+    foreach(auto weatherStation, m_weatherStationsByICAOCode)
     {
         if (weatherStation->metar().isValid())
         {
@@ -141,7 +141,7 @@ void Weather::WeatherDataProvider::deleteExpiredMesages()
 
     // Otherwiese, remove the weather stations from the list, and let the world know
     foreach(auto ICAOCodeToDelete, ICAOCodesToDelete)
-        _weatherStationsByICAOCode.remove(ICAOCodeToDelete);
+        m_weatherStationsByICAOCode.remove(ICAOCodeToDelete);
     emit weatherStationsChanged();
     save();
 }
@@ -149,7 +149,7 @@ void Weather::WeatherDataProvider::deleteExpiredMesages()
 
 auto Weather::WeatherDataProvider::downloading() const -> bool
 {
-    foreach(auto networkReply, _networkReplies)
+    foreach(auto networkReply, m_networkReplies)
     {
         if (networkReply.isNull())
         {
@@ -180,7 +180,7 @@ void Weather::WeatherDataProvider::downloadFinished()
 
     // Read all replies and store the data in respective maps
     bool hasError = false;
-    foreach(auto networkReply, _networkReplies)
+    foreach(auto networkReply, m_networkReplies)
     {
         // Paranoid safety checks
         if (networkReply.isNull())
@@ -225,7 +225,7 @@ void Weather::WeatherDataProvider::downloadFinished()
     }
 
     // Clear replies container
-    foreach(auto networkReply, _networkReplies)
+    foreach(auto networkReply, m_networkReplies)
     {
         // Paranoid safety checks
         if (!networkReply.isNull())
@@ -233,7 +233,7 @@ void Weather::WeatherDataProvider::downloadFinished()
             networkReply->deleteLater();
         }
     }
-    _networkReplies.clear();
+    m_networkReplies.clear();
 
     // Update flag and signals
     emit weatherStationsChanged();
@@ -241,12 +241,12 @@ void Weather::WeatherDataProvider::downloadFinished()
 
     if (hasError)
     {
-        _updateTimer.setInterval(updateIntervalOnError_ms);
+        m_updateTimer.setInterval(updateIntervalOnError_ms);
     }
     else
     {
-        _lastUpdate = QDateTime::currentDateTimeUtc();
-        _updateTimer.setInterval(updateIntervalNormal_ms);
+        m_lastUpdate = QDateTime::currentDateTimeUtc();
+        m_updateTimer.setInterval(updateIntervalNormal_ms);
         save();
     }
 }
@@ -254,7 +254,7 @@ void Weather::WeatherDataProvider::downloadFinished()
 
 auto Weather::WeatherDataProvider::findOrConstructWeatherStation(const QString &ICAOCode) -> Weather::Station*
 {
-    auto weatherStationPtr = _weatherStationsByICAOCode.value(ICAOCode, nullptr);
+    auto weatherStationPtr = m_weatherStationsByICAOCode.value(ICAOCode, nullptr);
 
     if (!weatherStationPtr.isNull())
     {
@@ -262,7 +262,7 @@ auto Weather::WeatherDataProvider::findOrConstructWeatherStation(const QString &
     }
 
     auto *newWeatherStation = new Weather::Station(ICAOCode, GlobalObject::geoMapProvider(), this);
-    _weatherStationsByICAOCode.insert(ICAOCode, newWeatherStation);
+    m_weatherStationsByICAOCode.insert(ICAOCode, newWeatherStation);
     return newWeatherStation;
 }
 
@@ -306,7 +306,7 @@ auto Weather::WeatherDataProvider::load() -> bool
     }
 
     // Read time of last update
-    inputStream >> _lastUpdate;
+    inputStream >> m_lastUpdate;
 
     // Read file
     bool hasError = false;
@@ -370,10 +370,10 @@ void Weather::WeatherDataProvider::save()
     // Write magic number and version
     outputStream << static_cast<quint32>(0x31415);
     outputStream << static_cast<quint32>(1);
-    outputStream << _lastUpdate;
+    outputStream << m_lastUpdate;
 
     // Write data
-    foreach(auto weatherStation, _weatherStationsByICAOCode)
+    foreach(auto weatherStation, m_weatherStationsByICAOCode)
     {
         if (weatherStation.isNull())
         {
@@ -487,7 +487,7 @@ auto Weather::WeatherDataProvider::QNH() const -> Units::Pressure
     // Find QNH of nearest airfield
     Weather::Station *closestReportWithQNH = nullptr;
     Units::Pressure QNH;
-    foreach(auto weatherStationPtr, _weatherStationsByICAOCode) {
+    foreach(auto weatherStationPtr, m_weatherStationsByICAOCode) {
         if (weatherStationPtr.isNull())
         {
             continue;
@@ -536,7 +536,7 @@ auto Weather::WeatherDataProvider::QNHInfo() const -> QString
     // Find QNH of nearest airfield
     Weather::Station *closestReportWithQNH = nullptr;
     Units::Pressure QNH;
-    foreach(auto weatherStationPtr, _weatherStationsByICAOCode) {
+    foreach(auto weatherStationPtr, m_weatherStationsByICAOCode) {
         if (weatherStationPtr.isNull())
         {
             continue;
@@ -568,8 +568,8 @@ auto Weather::WeatherDataProvider::QNHInfo() const -> QString
     if (closestReportWithQNH != nullptr)
     {
         return tr("%1 hPa in %2, %3").arg(qRound(closestReportWithQNH->metar().QNH().toHPa()))
-            .arg(closestReportWithQNH->ICAOCode(),
-                 Navigation::Clock::describeTimeDifference(closestReportWithQNH->metar().observationTime()));
+        .arg(closestReportWithQNH->ICAOCode(),
+             Navigation::Clock::describeTimeDifference(closestReportWithQNH->metar().observationTime()));
     }
     return {};
 }
@@ -581,24 +581,24 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate)
     // If a request is currently running, then do not update
     if (downloading())
     {
-        if (_backgroundUpdate && !isBackgroundUpdate)
+        if (m_backgroundUpdate && !isBackgroundUpdate)
         {
-            _backgroundUpdate = false;
+            m_backgroundUpdate = false;
             emit backgroundUpdateChanged();
         }
         return;
     }
 
     // Set _backgroundUpdate and emit signal if appropriate
-    if (_backgroundUpdate != isBackgroundUpdate)
+    if (m_backgroundUpdate != isBackgroundUpdate)
     {
-        _backgroundUpdate = isBackgroundUpdate;
+        m_backgroundUpdate = isBackgroundUpdate;
         emit backgroundUpdateChanged();
     }
 
     // Clear old replies, if any
-    qDeleteAll(_networkReplies);
-    _networkReplies.clear();
+    qDeleteAll(m_networkReplies);
+    m_networkReplies.clear();
 
     // Generate queries
     const QGeoCoordinate& position = Positioning::PositionProvider::lastValidCoordinate();
@@ -624,6 +624,17 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate)
     auto factor =  cos(qDegreesToRadians( qMin(80.0, qAbs(bBox.center().latitude())) ));
     bBox.setWidth( bBox.width() + 2.0/factor );
 
+    startDownload(bBox);
+}
+
+
+void Weather::WeatherDataProvider::startDownload(const QGeoRectangle& bBox)
+{
+    if (!bBox.isValid())
+    {
+        return;
+    }
+
     {
         QString const urlString
             = u"https://enroute-data.akaflieg-freiburg.de/enrouteProxy/metar.php?format=xml&bbox=%1,%2,%3,%4"_s
@@ -635,7 +646,7 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate)
         QNetworkRequest request(url);
         request.setRawHeader("accept", "application/xml");
         QPointer<QNetworkReply> const reply = GlobalObject::networkAccessManager()->get(request);
-        _networkReplies.push_back(reply);
+        m_networkReplies.push_back(reply);
         connect(reply, &QNetworkReply::finished, this, &Weather::WeatherDataProvider::downloadFinished);
         connect(reply, &QNetworkReply::errorOccurred, this, &Weather::WeatherDataProvider::downloadFinished);
     }
@@ -651,11 +662,10 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate)
         QNetworkRequest request(url);
         request.setRawHeader("accept", "application/xml");
         QPointer<QNetworkReply> const reply = GlobalObject::networkAccessManager()->get(request);
-        _networkReplies.push_back(reply);
+        m_networkReplies.push_back(reply);
         connect(reply, &QNetworkReply::finished, this, &Weather::WeatherDataProvider::downloadFinished);
         connect(reply, &QNetworkReply::errorOccurred, this, &Weather::WeatherDataProvider::downloadFinished);
     }
-
 
     // Emit "downloading"
     emit downloadingChanged();
@@ -670,7 +680,7 @@ auto Weather::WeatherDataProvider::weatherStations() const -> QList<Weather::Sta
 {
     // Produce a list of reports, without nullpointers
     QList<Weather::Station *> sortedReports;
-    foreach(auto stations, _weatherStationsByICAOCode)
+    foreach(auto stations, m_weatherStationsByICAOCode)
         if (!stations.isNull())
         {
             sortedReports += stations;
@@ -684,5 +694,11 @@ auto Weather::WeatherDataProvider::weatherStations() const -> QList<Weather::Sta
     std::sort(sortedReports.begin(), sortedReports.end(), compare);
 
     return sortedReports;
+}
+
+
+Weather::Station* Weather::WeatherDataProvider::findWeatherStation(const QString& ICAOCode) const
+{
+    return m_weatherStationsByICAOCode.value(ICAOCode, nullptr);
 }
 

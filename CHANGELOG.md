@@ -4,7 +4,7 @@
 
 ### Added
 - For better user experience on desktop-platforms, several list views now
-  support key navigation. This feature is only available on Linux and MacOS.
+  support key navigation. This feature is only available on Linux and macOS.
 
 
 ### Changed

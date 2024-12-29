@@ -78,7 +78,7 @@ ListView {
     }
 
     highlight: Rectangle {
-        visible: listView.activeFocus
+        visible: listView.activeFocus && (Qt.platform.os !== "ios") && (Qt.platform.os !== "android")
         border.color: "black"
         color: "#10000000"
         radius: 5

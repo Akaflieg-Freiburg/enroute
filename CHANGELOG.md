@@ -2,10 +2,19 @@
 
 ## [2.32.5] - ??
 
+### Added
+- For better user experience on desktop-platforms, several list views now
+  support key navigation. This feature is only available on Linux and MacOS.
+
+
 ### Changed
 - Updated the privacy statement. The server 'enroute-data' now maintains its own
   METAR/TAF database and no longer forwards requests to the aviation weather
   center.
+
+
+### Fixed
+- Fixed minor typo in the manual.
 
 
 ## [2.32.4] - 2024-12-24

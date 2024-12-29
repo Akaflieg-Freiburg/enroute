@@ -23,6 +23,8 @@ import QtQuick.Controls
 
 import akaflieg_freiburg.enroute
 
+pragma ComponentBehavior: Bound
+
 
 // This is a version of ListView that indicates if more elemenent can be seen through scrolling
 
@@ -73,6 +75,33 @@ ListView {
 
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignBottom
+    }
+
+    highlight: Rectangle {
+        visible: listView.activeFocus
+        border.color: "black"
+        color: "#10000000"
+        radius: 5
+    }
+    highlightMoveDuration: 200
+
+    focus: true
+
+    Shortcut {
+        sequences: [StandardKey.MoveToEndOfDocument]
+        onActivated: listView.currentIndex = listView.count-1
+    }
+    Shortcut {
+        sequences: [StandardKey.MoveToStartOfDocument]
+        onActivated: listView.currentIndex = 0
+    }
+    Shortcut {
+        sequences: [StandardKey.MoveToNextPage]
+        onActivated: listView.currentIndex = Math.min(listView.count-1, listView.currentIndex + 5)
+    }
+    Shortcut {
+        sequences: [StandardKey.MoveToPreviousPage]
+        onActivated: listView.currentIndex = Math.max(0, listView.currentIndex - 5)
     }
 
     ScrollIndicator.vertical: ScrollIndicator {}

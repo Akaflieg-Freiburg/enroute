@@ -35,7 +35,7 @@ CenteringDialog {
     id: waypointDescriptionDialog
 
     property waypoint waypoint: GeoMapProvider.createWaypoint()
-    property weatherStation weatherStation: WeatherDataProvider.findWeatherStation( waypoint.ICAOCode, waypoint.coordinate )
+    property weatherStation weatherStation: WeatherDataProvider.findWeatherStation(waypoint)
 
     onWaypointChanged : {
 
@@ -78,7 +78,7 @@ CenteringDialog {
     standardButtons: Dialog.Close
     focus: true
 
-    title:  {
+    title: {
         if (waypoint.ICAOCode === "")
             return waypoint.extendedName
         return waypoint.ICAOCode + " • " +waypoint.extendedName

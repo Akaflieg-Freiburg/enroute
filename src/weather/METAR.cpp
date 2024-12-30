@@ -152,25 +152,6 @@ Weather::METAR::METAR(QXmlStreamReader& xml)
 }
 
 
-Weather::METAR::METAR(QDataStream& inputStream)
-{
-    inputStream >> m_flightCategory;
-    inputStream >> m_ICAOCode;
-    inputStream >> m_location;
-    inputStream >> m_observationTime;
-    inputStream >> m_qnh;
-    inputStream >> m_rawText;
-    inputStream >> m_wind;
-    inputStream >> m_gust;
-    inputStream >> m_temperature;
-    inputStream >> m_dewpoint;
-    inputStream >> m_densityAltitude;
-
-    // Interpret the METAR message
-    m_decoder = QSharedPointer<Weather::Decoder>(new Weather::Decoder(m_rawText, m_observationTime.date()));
-}
-
-
 QDateTime Weather::METAR::expiration() const
 {
     if (m_rawText.contains(u"NOSIG"_s))
@@ -421,19 +402,40 @@ QString Weather::METAR::derivedData(const Navigation::Aircraft& aircraft, bool s
 }
 
 
-QDataStream& Weather::operator<<(QDataStream& stream, const Weather::METAR& metar)
+QDataStream& Weather::operator<<(QDataStream& outstream, const Weather::METAR& metar)
 {
-    stream << metar.m_flightCategory;
-    stream << metar.m_ICAOCode;
-    stream << metar.m_location;
-    stream << metar.m_observationTime;
-    stream << metar.m_qnh;
-    stream << metar.m_rawText;
-    stream << metar.m_wind;
-    stream << metar.m_gust;
-    stream << metar.m_temperature;
-    stream << metar.m_dewpoint;
-    stream << metar.m_densityAltitude;
+    outstream << metar.m_flightCategory;
+    outstream << metar.m_ICAOCode;
+    outstream << metar.m_location;
+    outstream << metar.m_observationTime;
+    outstream << metar.m_qnh;
+    outstream << metar.m_rawText;
+    outstream << metar.m_wind;
+    outstream << metar.m_gust;
+    outstream << metar.m_temperature;
+    outstream << metar.m_dewpoint;
+    outstream << metar.m_densityAltitude;
 
-    return stream;
+    return outstream;
+}
+
+
+QDataStream& Weather::operator>>(QDataStream& instream, Weather::METAR& metar)
+{
+    instream >> metar.m_flightCategory;
+    instream >> metar.m_ICAOCode;
+    instream >> metar.m_location;
+    instream >> metar.m_observationTime;
+    instream >> metar.m_qnh;
+    instream >> metar.m_rawText;
+    instream >> metar.m_wind;
+    instream >> metar.m_gust;
+    instream >> metar.m_temperature;
+    instream >> metar.m_dewpoint;
+    instream >> metar.m_densityAltitude;
+
+    // Interpret the METAR message
+    metar.m_decoder = QSharedPointer<Weather::Decoder>(new Weather::Decoder(metar.m_rawText, metar.m_observationTime.date()));
+
+    return instream;
 }

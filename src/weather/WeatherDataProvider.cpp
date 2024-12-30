@@ -324,51 +324,13 @@ bool Weather::WeatherDataProvider::load()
     inputStream >> m_lastUpdate;
 
     // Read file
-    QList<Weather::METAR> newMETARs;
-    QList<Weather::TAF> newTAFs;
-    while (!inputStream.atEnd() && (inputStream.status() == QDataStream::Ok))
-    {
-        QChar type;
-        inputStream >> type;
+    QMap<QString, Weather::METAR> newMETARs;
+    inputStream >> newMETARs;
+    m_METARs = newMETARs;
 
-        if (type == 'M')
-        {
-            // Read METAR
-            Weather::METAR const metar(inputStream);
-            if (metar.isValid())
-            {
-                newMETARs << metar;
-            }
-            continue;
-        }
-        if (type == 'T')
-        {
-            // Read TAF
-            Weather::TAF const taf(inputStream);
-            if (taf.isValid())
-            {
-                newTAFs << taf;
-            }
-            continue;
-        }
-
-        // Other type? That's bad! Quit immediately!
-        return false;
-    }
-
-    auto tmpMETARs = m_METARs.value();
-    for(const auto& newMETAR : newMETARs)
-    {
-        tmpMETARs[newMETAR.ICAOCode()] = newMETAR;
-    }
-    m_METARs = tmpMETARs;
-
-    auto tmpTAFs = m_TAFs.value();
-    for(const auto& newTAF : newTAFs)
-    {
-        tmpTAFs[newTAF.ICAOCode()] = newTAF;
-    }
-    m_TAFs = tmpTAFs;
+    QMap<QString, Weather::TAF> newTAFs;
+    inputStream >> newTAFs;
+    m_TAFs = newTAFs;
 
 
     // Ok, done
@@ -408,26 +370,8 @@ void Weather::WeatherDataProvider::save()
     outputStream << static_cast<quint32>(1);
     outputStream << m_lastUpdate;
 
-    // Write data
-#warning
-    /*
-    for(const auto& weatherStation : m_weatherStationsByICAOCode)
-    {
-        // Save only valid METARs that are not yet expired
-        if (weatherStation.metar().isValid() && (QDateTime::currentDateTime() <= weatherStation.metar().expiration()))
-        {
-            outputStream << QChar('M');
-            outputStream << weatherStation.metar();
-        }
-
-        // Save only valid TAFs that are not yet expired
-        if (weatherStation.taf().isValid() && (QDateTime::currentDateTime() <= weatherStation.taf().expiration()))
-        {
-            outputStream << QChar('T');
-            outputStream << weatherStation.taf();
-        }
-    }
-*/
+    outputStream << m_METARs.value();
+    outputStream << m_TAFs.value();
 
     outputFile.commit();
     lockFile.unlock();
@@ -521,6 +465,7 @@ auto Weather::WeatherDataProvider::QNH() const -> Units::Pressure
     // Find QNH of nearest airfield
     Weather::Station closestReportWithQNH;
     Units::Pressure QNH;
+    /*
     for(const auto& weatherStation : m_weatherStationsByICAOCode) {
         if (!weatherStation.metar().isValid())
         {
@@ -536,7 +481,7 @@ auto Weather::WeatherDataProvider::QNH() const -> Units::Pressure
             continue;
         }
 #warning
-        /*        if (closestReportWithQNH == nullptr) {
+                if (closestReportWithQNH == nullptr) {
             closestReportWithQNH = weatherStation;
             continue;
         }
@@ -550,8 +495,8 @@ auto Weather::WeatherDataProvider::QNH() const -> Units::Pressure
     {
         return closestReportWithQNH->metar().QNH();
     }
-*/
     }
+*/
     return {};
 }
 
@@ -568,9 +513,9 @@ auto Weather::WeatherDataProvider::QNHInfo() const -> QString
     // Find QNH of nearest airfield
     Weather::Station *closestReportWithQNH = nullptr;
     Units::Pressure QNH;
-    for(const auto& weatherStationPtr : m_weatherStationsByICAOCode) {
 #warning
-/*
+    /*
+    for(const auto& weatherStationPtr : m_weatherStationsByICAOCode) {
         if (!weatherStationPtr->metar().isValid())
         {
             continue;
@@ -594,12 +539,12 @@ auto Weather::WeatherDataProvider::QNHInfo() const -> QString
         {
             closestReportWithQNH = weatherStationPtr;
         }
-*/
     }
+*/
     if (closestReportWithQNH != nullptr)
     {
         return tr("%1 hPa in %2, %3").arg(qRound(closestReportWithQNH->metar().QNH().toHPa()))
-        .arg(closestReportWithQNH->ICAOCode(),
+        .arg(closestReportWithQNH->waypoint().ICAOCode(),
              Navigation::Clock::describeTimeDifference(closestReportWithQNH->metar().observationTime()));
     }
     return {};
@@ -716,13 +661,13 @@ QList<Weather::Station> Weather::WeatherDataProvider::weatherStations() const
     QList<Weather::Station> sortedReports;
     for (auto i = m_METARs.value().cbegin(), end = m_METARs.value().cend(); i != end; ++i)
     {
-        sortedReports << Weather::Station(i.value().ICAOCode(), GlobalObject::geoMapProvider());
+        sortedReports << Weather::Station(GlobalObject::geoMapProvider()->findByID(i.value().ICAOCode()));
     }
 
     // Sort list
     auto compare = [&](const Weather::Station& a, const Weather::Station& b) {
         QGeoCoordinate const here = Positioning::PositionProvider::lastValidCoordinate();
-        return here.distanceTo(a.coordinate()) < here.distanceTo(b.coordinate());
+        return here.distanceTo(a.waypoint().coordinate()) < here.distanceTo(b.waypoint().coordinate());
     };
     std::sort(sortedReports.begin(), sortedReports.end(), compare);
 
@@ -730,7 +675,8 @@ QList<Weather::Station> Weather::WeatherDataProvider::weatherStations() const
 }
 
 
-Weather::Station Weather::WeatherDataProvider::findWeatherStation(const QString& ICAOCode, const QGeoCoordinate& coordinate)
+Weather::Station Weather::WeatherDataProvider::findWeatherStation(const GeoMaps::Waypoint& wp)
 {
-    return Weather::Station(ICAOCode, GlobalObject::geoMapProvider());
+#warning Start lookup
+    return Weather::Station(wp);
 }

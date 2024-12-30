@@ -18,83 +18,44 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "geomaps/GeoMapProvider.h"
 #include "weather/Station.h"
 #include "weather/WeatherDataProvider.h"
-#include <utility>
 
 
 Weather::Station::Station()
 {
+    // Setup Bindings
+    m_metar.setBinding([this]() {return GlobalObject::weatherDataProvider()->METARs()[m_waypoint.ICAOCode()];});
+    m_taf.setBinding([this]() {return GlobalObject::weatherDataProvider()->TAFs()[m_waypoint.ICAOCode()];});
 }
 
 
-Weather::Station::Station(QString id, GeoMaps::GeoMapProvider *geoMapProvider)
-    : m_ICAOCode(std::move(id)),
-    m_twoLineTitle(m_ICAOCode),
-    m_geoMapProvider(geoMapProvider)
+Weather::Station::Station(const GeoMaps::Waypoint& wp)
+    : m_waypoint(wp)
 {
-    m_extendedName = m_ICAOCode;
-
     // Setup Bindings
-    m_metar.setBinding([this]() {return GlobalObject::weatherDataProvider()->METARs()[m_ICAOCode];});
-    m_taf.setBinding([this]() {return GlobalObject::weatherDataProvider()->TAFs()[m_ICAOCode];});
-
-    // Wire up with GeoMapProvider, in order to learn about future changes in waypoints
-    //connect(m_geoMapProvider, &GeoMaps::GeoMapProvider::waypointsChanged, this, &Weather::Station::readDataFromWaypoint);
-    readDataFromWaypoint();
+    m_metar.setBinding([this]() {return GlobalObject::weatherDataProvider()->METARs()[m_waypoint.ICAOCode()];});
+    m_taf.setBinding([this]() {return GlobalObject::weatherDataProvider()->TAFs()[m_waypoint.ICAOCode()];});
 }
 
 
 Weather::Station::Station(const Weather::Station& other)
 {
-    m_coordinate = other.m_coordinate.value();
-    m_extendedName = other.m_extendedName.value();
-    m_ICAOCode = other.m_ICAOCode;
-    m_icon = other.m_icon.value();
-    m_twoLineTitle = other.m_twoLineTitle.value();
-    m_geoMapProvider = other.m_geoMapProvider;
+    m_waypoint = other.m_waypoint;
 
     // Setup Bindings
-    m_metar.setBinding([this]() {return GlobalObject::weatherDataProvider()->METARs()[m_ICAOCode];});
-    m_taf.setBinding([this]() {return GlobalObject::weatherDataProvider()->TAFs()[m_ICAOCode];});
+    m_metar.setBinding([this]() {return GlobalObject::weatherDataProvider()->METARs()[m_waypoint.ICAOCode()];});
+    m_taf.setBinding([this]() {return GlobalObject::weatherDataProvider()->TAFs()[m_waypoint.ICAOCode()];});
 }
 
 
 Weather::Station& Weather::Station::operator=(const Weather::Station& other)
 {
-    m_coordinate = other.m_coordinate.value();
-    m_extendedName = other.m_extendedName.value();
-    m_ICAOCode = other.m_ICAOCode;
-    m_icon = other.m_icon.value();
-    m_twoLineTitle = other.m_twoLineTitle.value();
-    m_geoMapProvider = other.m_geoMapProvider;
+    m_waypoint = other.m_waypoint;
 
     // Setup Bindings
-    m_metar.setBinding([this]() {return GlobalObject::weatherDataProvider()->METARs()[m_ICAOCode];});
-    m_taf.setBinding([this]() {return GlobalObject::weatherDataProvider()->TAFs()[m_ICAOCode];});
+    m_metar.setBinding([this]() {return GlobalObject::weatherDataProvider()->METARs()[m_waypoint.ICAOCode()];});
+    m_taf.setBinding([this]() {return GlobalObject::weatherDataProvider()->TAFs()[m_waypoint.ICAOCode()];});
 
     return *this;
-}
-
-
-void Weather::Station::readDataFromWaypoint()
-{
-    // Paranoid safety checks
-    if (m_geoMapProvider.isNull()) {
-        return;
-    }
-    auto waypoint = m_geoMapProvider->findByID(m_ICAOCode);
-    if (!waypoint.isValid())
-    {
-        return;
-    }
-
-    // Update data
-    m_coordinate = waypoint.coordinate();
-    m_extendedName = waypoint.extendedName();
-    m_icon = waypoint.icon();
-    m_twoLineTitle = waypoint.twoLineTitle();
-
-    //disconnect(m_geoMapProvider, nullptr, this, nullptr);
 }

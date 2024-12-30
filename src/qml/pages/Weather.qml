@@ -104,9 +104,9 @@ Page {
 
                     id: idel
                     text: {
-                        var result = model.modelData.twoLineTitle
+                        var result = model.modelData.waypoint.twoLineTitle
 
-                        var wayTo = Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), model.modelData.coordinate)
+                        var wayTo = Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), model.modelData.waypoint.coordinate)
                         if (wayTo !== "")
                             result = result + "<br>" + wayTo
 
@@ -115,7 +115,7 @@ Page {
 
                         return result
                     }
-                    icon.source: model.modelData.icon
+                    icon.source: model.modelData.waypoint.icon
                     icon.color: "transparent"
 
                     width: parent.width
@@ -127,8 +127,6 @@ Page {
                         dlgLoader.setSource("../dialogs/MetarTafDialog.qml",
                                             {"weatherStation": model.modelData})
                         dlgLoader.item.open()
-                        //MetarTafDialog.weatherStation =
-                        //MetarTafDialog.open()
                     }
                 }
             }

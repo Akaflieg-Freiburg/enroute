@@ -35,13 +35,13 @@ CenteringDialog {
 
     modal: true
     standardButtons: Dialog.Close
-    title: weatherStation.ICAOCode + " • " + weatherStation.extendedName
+    title: weatherStation.waypoint.ICAOCode + " • " + weatherStation.waypoint.extendedName
 
     ColumnLayout {
         anchors.fill: parent
 
         Label { // Second header line with distance and QUJ
-            text: Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), weatherReportDialog.weatherStation.coordinate)
+            text: Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), weatherReportDialog.weatherStation.waypoint.coordinate)
             visible: PositionProvider.receivingPositionInfo
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignRight

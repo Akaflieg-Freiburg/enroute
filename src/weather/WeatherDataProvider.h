@@ -227,7 +227,7 @@ public:
      *
      * @returns Pointer to WeatherStation
      */
-    [[nodiscard]] Q_INVOKABLE Weather::Station findWeatherStation(const QString &ICAOCode, const QGeoCoordinate& coordinate={});
+    [[nodiscard]] Q_INVOKABLE Weather::Station findWeatherStation(const GeoMaps::Waypoint& wp);
 
     /*! \brief Update method
      *
@@ -321,9 +321,6 @@ private:
 
     // Flag, as set by the update() method
     bool m_backgroundUpdate {true};
-
-    // List of weather stations, accessible by ICAO code
-    QMap<QString, Weather::Station> m_weatherStationsByICAOCode;
 
     // METARs and TAFs be ICAO Code
     QProperty<QMap<QString, Weather::METAR>> m_METARs;

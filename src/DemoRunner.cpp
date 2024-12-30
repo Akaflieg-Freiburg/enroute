@@ -266,7 +266,7 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
                     emit requestOpenWeatherPage();
                     auto *weatherReport = findQQuickItem(QStringLiteral("weatherReport"), m_engine);
                     Q_ASSERT(weatherReport != nullptr);
-                    auto station = GlobalObject::weatherDataProvider()->findWeatherStation(QStringLiteral("LFSB"));
+                    auto station = GlobalObject::weatherDataProvider()->findWeatherStation(GlobalObject::geoMapProvider()->findByID(u"LFSB"_s));
 
                     weatherReport->setProperty("weatherStation", QVariant::fromValue(station));
                     QMetaObject::invokeMethod(weatherReport, "open", Qt::QueuedConnection);

@@ -36,10 +36,11 @@ namespace Weather {
 class WeatherDataProvider;
 
 
-/*! \brief This class represents a weather station that issues METAR or TAF report
+/*! \brief This class represents a weather station that issues METAR or TAF
+ * report
  *
- * This is a very simple value-base class that holds a waypoint and queries the WeatherDataProvider
- * for METAR and TAF for this waypoint.
+ * This is a very simple value-base class that holds a waypoint and queries the
+ * WeatherDataProvider for METAR and TAF for this waypoint.
  */
 
 class Station {
@@ -85,21 +86,17 @@ public:
     // Properties
     //
 
-    /*! \brief Last METAR provided by this WeatherStation
+    /*! \brief Last METAR for this WeatherStation
      *
-     * This property holds a pointer to the last METAR provided by this
-     * WeatherStation, which can be a nullptr if no data is available.  The
-     * METAR instance is owned by an instance of WeatherDataProvider, and can be
-     * deleted or updated by the WeatherDataProvider anytime.
+     * This property holds the last METAR for this WeatherStation, as reported
+     * by WeatherDataProvider.
      */
     Q_PROPERTY(Weather::METAR metar READ metar BINDABLE bindableMetar)
 
-    /*! \brief Last TAF provided by this WeatherStation
+    /*! \brief Last TAF for this WeatherStation
      *
-     * This property holds a pointer to the last TAF provided by this
-     * WeatherStation, which can be a nullptr if no data is available.  The TAF
-     * instance is owned by an instance of WeatherDataProvider, and can be deleted or
-     * updated by the WeatherDataProvider anytime.
+     * This property holds the last TAF for this WeatherStation, as reported by
+     * WeatherDataProvider.
      */
     Q_PROPERTY(Weather::TAF taf READ taf BINDABLE bindableTaf)
 

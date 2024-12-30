@@ -41,11 +41,10 @@ class WeatherDataProvider;
  * are uniquely identified by their ICAO code. Depending on available data, they
  * hold latest METAR and TAF reports.
  */
-class Station : public QObject {
-    Q_OBJECT
-    QML_NAMED_ELEMENT(WeatherStation)
+class Station {
+    Q_GADGET
+    QML_VALUE_TYPE(weatherStation)
 
-    friend WeatherDataProvider;
 public:
     //
     // Constructors and destructors
@@ -59,14 +58,20 @@ public:
      *
      * @param parent The standard QObject parent pointer
      */
-    explicit Station(QObject *parent = nullptr);
+    explicit Station();
 
     // This constructor is only meant to be called by instances of the
     // WeatherDataProvider class
-    explicit Station(QString id, GeoMaps::GeoMapProvider *geoMapProvider, QObject *parent);
+    explicit Station(QString id, GeoMaps::GeoMapProvider *geoMapProvider);
+
+    // Copy constructor
+    Station(const Station&);
 
     // Standard destructor
-    ~Station() override = default;
+    ~Station() = default;
+
+    // Copy Assignment
+    Station& operator=(const Station&);
 
 
     //
@@ -235,22 +240,6 @@ private slots:
     void readDataFromWaypoint();
 
 private:
-    Q_DISABLE_COPY_MOVE(Station)
-
-
-    // If the metar is valid, not expired and newer than the existing metar,
-    // this method sets the METAR message and deletes any existing METAR;
-    // otherwise, the metar is deleted. In any case, this WeatherStation will
-    // take ownership of the METAR. The signal metarChanged() will be emitted if
-    // appropriate.
-    void setMETAR(const Weather::METAR& metar);
-
-    // If the taf is valid, not expired and newer than the existing taf, this
-    // method sets the TAF message and deletes any existing TAF; otherwise, the
-    // taf is deleted. In any case, this WeatherStation will take ownership of
-    // the TAF. The signal tafChanged() will be emitted if appropriate.
-    void setTAF(const Weather::TAF& taf);
-
     // Coordinate of this weather station
     QProperty<QGeoCoordinate> m_coordinate;
 

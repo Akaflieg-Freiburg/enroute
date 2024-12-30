@@ -20,26 +20,61 @@
 
 #include "geomaps/GeoMapProvider.h"
 #include "weather/Station.h"
+#include "weather/WeatherDataProvider.h"
 #include <utility>
 
 
-Weather::Station::Station(QObject *parent)
-    : QObject(parent)
+Weather::Station::Station()
 {
 }
 
 
-Weather::Station::Station(QString id, GeoMaps::GeoMapProvider *geoMapProvider, QObject *parent)
-    : QObject(parent),
-    m_ICAOCode(std::move(id)),
+Weather::Station::Station(QString id, GeoMaps::GeoMapProvider *geoMapProvider)
+    : m_ICAOCode(std::move(id)),
     m_twoLineTitle(m_ICAOCode),
     m_geoMapProvider(geoMapProvider)
 {
     m_extendedName = m_ICAOCode;
 
+    // Setup Bindings
+    m_metar.setBinding([this]() {return GlobalObject::weatherDataProvider()->METARs()[m_ICAOCode];});
+    m_taf.setBinding([this]() {return GlobalObject::weatherDataProvider()->TAFs()[m_ICAOCode];});
+
     // Wire up with GeoMapProvider, in order to learn about future changes in waypoints
-    connect(m_geoMapProvider, &GeoMaps::GeoMapProvider::waypointsChanged, this, &Weather::Station::readDataFromWaypoint);
+    //connect(m_geoMapProvider, &GeoMaps::GeoMapProvider::waypointsChanged, this, &Weather::Station::readDataFromWaypoint);
     readDataFromWaypoint();
+}
+
+
+Weather::Station::Station(const Weather::Station& other)
+{
+    m_coordinate = other.m_coordinate.value();
+    m_extendedName = other.m_extendedName.value();
+    m_ICAOCode = other.m_ICAOCode;
+    m_icon = other.m_icon.value();
+    m_twoLineTitle = other.m_twoLineTitle.value();
+    m_geoMapProvider = other.m_geoMapProvider;
+
+    // Setup Bindings
+    m_metar.setBinding([this]() {return GlobalObject::weatherDataProvider()->METARs()[m_ICAOCode];});
+    m_taf.setBinding([this]() {return GlobalObject::weatherDataProvider()->TAFs()[m_ICAOCode];});
+}
+
+
+Weather::Station& Weather::Station::operator=(const Weather::Station& other)
+{
+    m_coordinate = other.m_coordinate.value();
+    m_extendedName = other.m_extendedName.value();
+    m_ICAOCode = other.m_ICAOCode;
+    m_icon = other.m_icon.value();
+    m_twoLineTitle = other.m_twoLineTitle.value();
+    m_geoMapProvider = other.m_geoMapProvider;
+
+    // Setup Bindings
+    m_metar.setBinding([this]() {return GlobalObject::weatherDataProvider()->METARs()[m_ICAOCode];});
+    m_taf.setBinding([this]() {return GlobalObject::weatherDataProvider()->TAFs()[m_ICAOCode];});
+
+    return *this;
 }
 
 
@@ -61,43 +96,5 @@ void Weather::Station::readDataFromWaypoint()
     m_icon = waypoint.icon();
     m_twoLineTitle = waypoint.twoLineTitle();
 
-    disconnect(m_geoMapProvider, nullptr, this, nullptr);
-}
-
-
-void Weather::Station::setMETAR(const Weather::METAR& metar)
-{
-    // Ignore invalid and expired METARs. Also ignore METARs whose ICAO code does not match with this weather station
-    if (!metar.isValid() || (QDateTime::currentDateTime() > metar.expiration()) || (metar.ICAOCode() != m_ICAOCode))
-    {
-        return;
-    }
-
-    // Overwrite metar pointer
-    m_metar = metar;
-
-    // Update coordinate
-    if (!m_coordinate.value().isValid())
-    {
-        m_coordinate = m_metar.value().coordinate();
-    }
-}
-
-
-void Weather::Station::setTAF(const Weather::TAF& taf)
-{
-    // Ignore invalid and expired TAFs. Also ignore TAFs whose ICAO code does not match with this weather station
-    if (!taf.isValid() || (QDateTime::currentDateTime() > taf.expiration()) || (taf.ICAOCode() != m_ICAOCode))
-    {
-        return;
-    }
-
-    // Overwrite TAF pointer
-    m_taf = taf;
-
-    // Update coordinate
-    if (!m_coordinate.value().isValid())
-    {
-        m_coordinate = m_taf.value().coordinate();
-    }
+    //disconnect(m_geoMapProvider, nullptr, this, nullptr);
 }

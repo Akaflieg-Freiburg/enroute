@@ -150,7 +150,16 @@ public:
      * can be deleted anytime. Store it in a QPointer to avoid dangling
      * pointers.
      */
-    Q_PROPERTY(QList<Weather::Station*> weatherStations READ weatherStations NOTIFY weatherStationsChanged)
+//    Q_PROPERTY(QList<Weather::Station*> weatherStations READ weatherStations NOTIFY weatherStationsChanged)
+
+#warning
+    Q_PROPERTY(QMap<QString, Weather::METAR> METARs READ METARs BINDABLE bindableMETARs)
+    QMap<QString, Weather::METAR> METARs() {return m_METARs.value();}
+    QBindable<QMap<QString, Weather::METAR>> bindableMETARs() {return &m_METARs;}
+
+    Q_PROPERTY(QMap<QString, Weather::TAF> TAFs READ TAFs BINDABLE bindableTAFs)
+    QMap<QString, Weather::TAF> TAFs() {return m_TAFs.value();}
+    QBindable<QMap<QString, Weather::TAF>> bindableTAFs() {return &m_TAFs;}
 
 
     //
@@ -193,16 +202,16 @@ public:
      */
     static QString sunInfo();
 
-    /*! \brief Getter method for property of the same name
-     *
-     * @returns Property weatherStations
-     */
-    [[nodiscard]] QList<Weather::Station*> weatherStations() const;
-
 
     //
     // Methods
     //
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property weatherStations
+     */
+    [[nodiscard]] Q_INVOKABLE QList<Weather::Station> weatherStations() const;
 
     /*! \brief Find WeatherStation by ICAO code
      *
@@ -218,7 +227,7 @@ public:
      *
      * @returns Pointer to WeatherStation
      */
-    [[nodiscard]] Q_INVOKABLE Weather::Station* findWeatherStation(const QString &ICAOCode) const;
+    [[nodiscard]] Q_INVOKABLE Weather::Station findWeatherStation(const QString &ICAOCode, const QGeoCoordinate& coordinate={});
 
     /*! \brief Update method
      *
@@ -289,10 +298,6 @@ private:
     static const int updateIntervalNormal_ms  = 30*60*1000;
     static const int updateIntervalOnError_ms =  5*60*1000;
 
-    // Similar to findWeatherStation, but will create a weather station if no
-    // station with the given code is known
-    auto findOrConstructWeatherStation(const QString &ICAOCode) -> Weather::Station *;
-
     // This method loads METAR/TAFs from a file "weather.dat" in
     // QStandardPaths::AppDataLocation.  There is locking to ensure that no two
     // processes access the file. The method will fail silently on error.
@@ -318,7 +323,11 @@ private:
     bool m_backgroundUpdate {true};
 
     // List of weather stations, accessible by ICAO code
-    QMap<QString, QPointer<Weather::Station>> m_weatherStationsByICAOCode;
+    QMap<QString, Weather::Station> m_weatherStationsByICAOCode;
+
+    // METARs and TAFs be ICAO Code
+    QProperty<QMap<QString, Weather::METAR>> m_METARs;
+    QProperty<QMap<QString, Weather::TAF>> m_TAFs;
 
     // Date and Time of last update
     QDateTime m_lastUpdate;

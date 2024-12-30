@@ -143,7 +143,7 @@ Page {
 
             clip: true
 
-            model: WeatherDataProvider.weatherStations
+            model: WeatherDataProvider.weatherStations()
             delegate: stationDelegate
             ScrollIndicator.vertical: ScrollIndicator {}
 

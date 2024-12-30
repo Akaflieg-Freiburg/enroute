@@ -35,9 +35,10 @@ CenteringDialog {
     id: waypointDescriptionDialog
 
     property waypoint waypoint: GeoMapProvider.createWaypoint()
-    property WeatherStation weatherStation: WeatherDataProvider.findWeatherStation( waypoint.ICAOCode )
+    property weatherStation weatherStation: WeatherDataProvider.findWeatherStation( waypoint.ICAOCode, waypoint.coordinate )
 
     onWaypointChanged : {
+
         // Delete old text items
         let childCount = co.children.length;
         // Iterate through the children in reverse order

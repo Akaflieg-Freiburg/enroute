@@ -94,10 +94,8 @@ CenteringDialog {
                 onLoaded: item.open()
             }
 
-            visible: (waypointDescriptionDialog.weatherStation !== null) && (waypointDescriptionDialog.weatherStation.metar.isValid || waypointDescriptionDialog.weatherStation.taf.isValid)
+            visible: (waypointDescriptionDialog.weatherStation.metar.isValid || waypointDescriptionDialog.weatherStation.taf.isValid)
             text: {
-                if (waypointDescriptionDialog.weatherStation === null)
-                    return ""
                 if (waypointDescriptionDialog.weatherStation.metar.isValid)
                     return waypointDescriptionDialog.weatherStation.metar.summary(Navigator.aircraft, Clock.time) + " • <a href='xx'>" + qsTr("full report") + "</a>"
                 return "<a href='xx'>" + qsTr("read TAF") + "</a>"

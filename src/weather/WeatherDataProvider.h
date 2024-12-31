@@ -139,27 +139,11 @@ public:
      */
     Q_PROPERTY(QString sunInfo READ sunInfo NOTIFY sunInfoChanged)
 
-    /*! \brief List of weather stations
-     *
-     * This property holds a list of all weather stations that are currently
-     * known to this instance of the WeatherDataProvider class, sorted according to
-     * the distance to the last known position.  The list can change at any
-     * time.
-     *
-     * @warning The WeatherStation objects are owned by the WeatherDataProvider and
-     * can be deleted anytime. Store it in a QPointer to avoid dangling
-     * pointers.
-     */
-//    Q_PROPERTY(QList<Weather::Station*> weatherStations READ weatherStations NOTIFY weatherStationsChanged)
-
-#warning
+    /*! \brief List of METARs */
     Q_PROPERTY(QMap<QString, Weather::METAR> METARs READ METARs BINDABLE bindableMETARs)
-    QMap<QString, Weather::METAR> METARs() {return m_METARs.value();}
-    QBindable<QMap<QString, Weather::METAR>> bindableMETARs() {return &m_METARs;}
 
+    /*! \brief List of TAFs */
     Q_PROPERTY(QMap<QString, Weather::TAF> TAFs READ TAFs BINDABLE bindableTAFs)
-    QMap<QString, Weather::TAF> TAFs() {return m_TAFs.value();}
-    QBindable<QMap<QString, Weather::TAF>> bindableTAFs() {return &m_TAFs;}
 
 
     //
@@ -177,6 +161,18 @@ public:
      * @returns Property downloading
      */
     [[nodiscard]] bool downloading() const;
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property METARs
+     */
+    QMap<QString, Weather::METAR> METARs() {return m_METARs.value();}
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property METARs
+     */
+    QBindable<QMap<QString, Weather::METAR>> bindableMETARs() {return &m_METARs;}
 
     /*! \brief Getter method for property of the same name
      *
@@ -201,6 +197,18 @@ public:
      * @returns Property infoString
      */
     static QString sunInfo();
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property TAFs
+     */
+    QMap<QString, Weather::TAF> TAFs() {return m_TAFs.value();}
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property TAFs
+     */
+    QBindable<QMap<QString, Weather::TAF>> bindableTAFs() {return &m_TAFs;}
 
 
     //
@@ -272,9 +280,6 @@ signals:
     /*! \brief Notifier signal */
     void sunInfoChanged();
 
-    /*! \brief Signal emitted when the list of weather reports changes */
-    void weatherStationsChanged();
-
 private slots:
     // Called when a download is finished
     void downloadFinished();
@@ -311,6 +316,7 @@ private:
     void save();
 
     // List of replies from aviationweather.com
+#warning might want to use shared pointers here
     QList<QPointer<QNetworkReply>> m_networkReplies;
 
     // A timer used for auto-updating the weather reports every 30 minutes

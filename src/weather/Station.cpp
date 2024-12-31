@@ -34,7 +34,7 @@ Weather::Station::Station(const GeoMaps::Waypoint& wp)
     : m_waypoint(wp)
 {
     // Setup Bindings
-    m_metar.setBinding([this]() {return GlobalObject::weatherDataProvider()->METARs()[m_waypoint.ICAOCode()];});
+    m_metar.setBinding([this]() {qWarning() << "UPDATE" << m_waypoint.ICAOCode(); return GlobalObject::weatherDataProvider()->METARs()[m_waypoint.ICAOCode()];});
     m_taf.setBinding([this]() {return GlobalObject::weatherDataProvider()->TAFs()[m_waypoint.ICAOCode()];});
 }
 

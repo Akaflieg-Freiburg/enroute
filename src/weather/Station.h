@@ -112,25 +112,25 @@ public:
      *
      * @returns Property metar
      */
-    [[nodiscard]] Weather::METAR metar() const {return m_metar.value();}
+    [[nodiscard]] Weather::METAR metar() {return m_metar.value();}
 
     /*! \brief Getter method for property of the same name
      *
      * @returns Property metar
      */
-    [[nodiscard]] QBindable<Weather::METAR> bindableMetar() const {return &m_metar;}
+    [[nodiscard]] QBindable<Weather::METAR> bindableMetar() {return &m_metar;}
 
     /*! \brief Getter method for property of the same name
      *
      * @returns Property taf
      */
-    [[nodiscard]] Weather::TAF taf() const {return m_taf.value();}
+    [[nodiscard]] Weather::TAF taf() {return m_taf.value();}
 
     /*! \brief Getter method for property of the same name
      *
      * @returns Property taf
      */
-    [[nodiscard]] QBindable<Weather::TAF> bindableTaf() const {return &m_taf;}
+    [[nodiscard]] QBindable<Weather::TAF> bindableTaf() {return &m_taf;}
 
     /*! \brief Getter method for property of the same name
      *

@@ -266,11 +266,13 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
                     emit requestOpenWeatherPage();
                     auto *weatherReport = findQQuickItem(QStringLiteral("weatherReport"), m_engine);
                     Q_ASSERT(weatherReport != nullptr);
+#warning
+                    /*
                     auto station = GlobalObject::weatherDataProvider()->findWeatherStation(GlobalObject::geoMapProvider()->findByID(u"LFSB"_s));
 
                     weatherReport->setProperty("weatherStation", QVariant::fromValue(station));
                     QMetaObject::invokeMethod(weatherReport, "open", Qt::QueuedConnection);
-
+*/
                     delay(4s);
                     saveScreenshot(manual, applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     emit requestClosePages();

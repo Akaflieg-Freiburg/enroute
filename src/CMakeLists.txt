@@ -122,6 +122,7 @@ set(SOURCES
     weather/Decoder.h
     weather/DensityAltitude.h
     weather/METAR.h
+    weather/Observer.h
     weather/Station.h
     weather/TAF.h
     weather/WeatherDataProvider.h
@@ -219,6 +220,7 @@ set(SOURCES
     weather/Decoder.cpp
     weather/DensityAltitude.cpp
     weather/METAR.cpp
+    weather/Observer.cpp
     weather/Station.cpp
     weather/TAF.cpp
     weather/WeatherDataProvider.cpp

@@ -59,6 +59,9 @@ Weather::WeatherDataProvider::WeatherDataProvider(QObject *parent) : QObject(par
     m_deleteExiredMessagesTimer.setInterval(10min);
     m_deleteExiredMessagesTimer.start();
 
+    m_notifier_dataID_METAR = m_METARs.addNotifier([this]() {m_dataID = m_dataID.value()+1;});
+    m_notifier_dataID_TAF = m_TAFs.addNotifier([this]() {m_dataID = m_dataID.value()+1;});
+
     // Update the description text when needed
 #warning
     //connect(this, &Weather::WeatherDataProvider::weatherStationsChanged, this, &Weather::WeatherDataProvider::QNHInfoChanged);
@@ -572,6 +575,17 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate)
 }
 
 
+void Weather::WeatherDataProvider::requestData(const QGeoCoordinate& coord)
+{
+    if (!coord.isValid())
+    {
+        return;
+    }
+    startDownload(QGeoRectangle(coord, 2, 2));
+
+}
+
+
 void Weather::WeatherDataProvider::startDownload(const QGeoRectangle& bBox)
 {
     if (!bBox.isValid())
@@ -620,7 +634,7 @@ void Weather::WeatherDataProvider::startDownload(const QGeoRectangle& bBox)
 }
 
 
-QList<Weather::Station> Weather::WeatherDataProvider::weatherStations() const
+QList<Weather::Station> Weather::WeatherDataProvider::weatherStations(int dataId) const
 {
     QList<Weather::Station> sortedReports;
     for (auto i = m_METARs.value().cbegin(), end = m_METARs.value().cend(); i != end; ++i)
@@ -636,18 +650,4 @@ QList<Weather::Station> Weather::WeatherDataProvider::weatherStations() const
     std::sort(sortedReports.begin(), sortedReports.end(), compare);
 
     return sortedReports;
-}
-
-
-Weather::Station Weather::WeatherDataProvider::findWeatherStation(const GeoMaps::Waypoint& wp)
-{
-    if (!m_METARs.value().contains(wp.ICAOCode())
-        && !m_TAFs.value().contains(wp.ICAOCode())
-        && (wp.ICAOCode().length() > 3))
-    {
-        qWarning() << "Start" << wp.ICAOCode();
-        QGeoRectangle bBox(wp.coordinate(), 2, 2);
-        startDownload(bBox);
-    }
-    return Weather::Station(wp);
 }

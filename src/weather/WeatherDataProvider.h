@@ -69,8 +69,6 @@ class WeatherDataProvider : public QObject {
     QML_SINGLETON
 
 public:
-    class WeatherStation;
-
     /*! \brief Standard constructor
      *
      * @param parent The standard QObject parent pointer
@@ -106,6 +104,11 @@ public:
      * information from the internet.
      */
     Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
+
+#warning
+    Q_PROPERTY(int dataID READ dataID BINDABLE bindabledataID)
+    int dataID() {return m_dataID.value();}
+    QBindable<int> bindabledataID() {return &m_dataID;}
 
     /*! \brief QNH
      *
@@ -219,24 +222,9 @@ public:
      *
      * @returns Property weatherStations
      */
-    [[nodiscard]] Q_INVOKABLE QList<Weather::Station> weatherStations() const;
+    [[nodiscard]] Q_INVOKABLE QList<Weather::Station> weatherStations(int dataId=0) const;
 
-    /*! \brief Find WeatherStation by ICAO code
-     *
-     * This method returns a pointer to the WeatherStation with the given ICAO
-     * code, or a nullptr if no WeatherStation with the given code is known to
-     * the WeatherDataProvider.
-     *
-     * @warning The WeatherStation objects are owned by the WeatherDataProvider and
-     * can be deleted anytime.  Store it in a QPointer to avoid dangling
-     * pointers.
-     *
-     * @param ICAOCode ICAO code name of the WeatherStation, such as "EDDF"
-     *
-     * @returns Pointer to WeatherStation
-     */
-    [[nodiscard]] Q_INVOKABLE Weather::Station findWeatherStation(const GeoMaps::Waypoint& wp);
-
+#warning docu
     /*! \brief Update method
      *
      * If the global settings indicate that connections to aviationweather.com
@@ -258,9 +246,15 @@ public:
      */
     Q_INVOKABLE void update(bool isBackgroundUpdate=true);
 
+#warning
+    Q_INVOKABLE void requestData(const QGeoCoordinate& coord);
+
 signals:
     /*! \brief Notifier signal */
     void backgroundUpdateChanged();
+
+    /*! \brief Notifier signal */
+    void dataChanged();
 
     /*! \brief Notifier signal */
     void downloadingChanged();
@@ -328,9 +322,13 @@ private:
     // Flag, as set by the update() method
     bool m_backgroundUpdate {true};
 
-    // METARs and TAFs be ICAO Code
+    // METARs and TAFs by ICAO Code
     QProperty<QMap<QString, Weather::METAR>> m_METARs;
     QProperty<QMap<QString, Weather::TAF>> m_TAFs;
+
+    QProperty<int> m_dataID {0};
+    QPropertyNotifier m_notifier_dataID_METAR; // Increases dataID on METAR update
+    QPropertyNotifier m_notifier_dataID_TAF; // Increases dataID on TAF update
 
     // Date and Time of last update
     QDateTime m_lastUpdate;

@@ -30,7 +30,7 @@ import akaflieg_freiburg.enroute
 CenteringDialog {
     id: weatherReportDialog
 
-    required property weatherStation weatherStation
+    required property Observer weatherStation
     onWeatherStationChanged: sv.ScrollBar.vertical.position = 0.0 // Reset scroll bar if station changes
 
     modal: true

@@ -141,7 +141,7 @@ Page {
 
             clip: true
 
-            model: WeatherDataProvider.weatherStations()
+            model: WeatherDataProvider.weatherStations(WeatherDataProvider.dataID)
             delegate: stationDelegate
             ScrollIndicator.vertical: ScrollIndicator {}
 

@@ -23,6 +23,7 @@
 #include <QGeoRectangle>
 #include <QMap>
 #include <QPointer>
+#include <QProperty>
 #include <QQmlEngine>
 #include <QTimer>
 
@@ -32,7 +33,8 @@ class QNetworkReply;
 #include "GlobalObject.h"
 #include "navigation/Atmosphere.h"
 #include "units/Distance.h"
-#include "weather/Station.h"
+#include "weather/METAR.h"
+#include "weather/TAF.h"
 
 class FlightRoute;
 class GlobalSettings;
@@ -217,12 +219,6 @@ public:
     //
     // Methods
     //
-
-    /*! \brief Getter method for property of the same name
-     *
-     * @returns Property weatherStations
-     */
-    [[nodiscard]] Q_INVOKABLE QList<Weather::Station> weatherStations(int dataId=0) const;
 
 #warning docu
     /*! \brief Update method

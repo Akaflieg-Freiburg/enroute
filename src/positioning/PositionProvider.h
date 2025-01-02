@@ -80,7 +80,7 @@ public:
     /*! \brief Approximate last valid coordinate
      *
      *  This property equals lastValidCoordinate, except that it is updated only every ten
-     *  minutes.
+     *  kilometers.
      */
     Q_PROPERTY(QGeoCoordinate approximateLastValidCoordinate READ approximateLastValidCoordinate BINDABLE bindableApproximateLastValidCoordinate)
 

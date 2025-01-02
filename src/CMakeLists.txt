@@ -123,7 +123,7 @@ set(SOURCES
     weather/DensityAltitude.h
     weather/METAR.h
     weather/Observer.h
-    weather/Station.h
+    weather/ObserverList.h
     weather/TAF.h
     weather/WeatherDataProvider.h
     weather/Wind.h
@@ -221,7 +221,7 @@ set(SOURCES
     weather/DensityAltitude.cpp
     weather/METAR.cpp
     weather/Observer.cpp
-    weather/Station.cpp
+    weather/ObserverList.cpp
     weather/TAF.cpp
     weather/WeatherDataProvider.cpp
     weather/Wind.cpp

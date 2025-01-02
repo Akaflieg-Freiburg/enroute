@@ -632,22 +632,3 @@ void Weather::WeatherDataProvider::startDownload(const QGeoRectangle& bBox)
     // no internet is available at all)
     downloadFinished();
 }
-
-
-QList<Weather::Station> Weather::WeatherDataProvider::weatherStations(int dataId) const
-{
-    QList<Weather::Station> sortedReports;
-    for (auto i = m_METARs.value().cbegin(), end = m_METARs.value().cend(); i != end; ++i)
-    {
-        sortedReports << Weather::Station(GlobalObject::geoMapProvider()->findByID(i.value().ICAOCode()));
-    }
-
-    // Sort list
-    auto compare = [&](const Weather::Station& a, const Weather::Station& b) {
-        QGeoCoordinate const here = Positioning::PositionProvider::lastValidCoordinate();
-        return here.distanceTo(a.waypoint().coordinate()) < here.distanceTo(b.waypoint().coordinate());
-    };
-    std::sort(sortedReports.begin(), sortedReports.end(), compare);
-
-    return sortedReports;
-}

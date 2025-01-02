@@ -18,13 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-import QtPositioning
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
-import "../dialogs"
 import "../items"
 
 Page {
@@ -132,6 +130,10 @@ Page {
             }
         }
 
+    ObserverList {
+        id: obsList
+    }
+
     DecoratedListView {
             id: stationList
 
@@ -141,7 +143,7 @@ Page {
 
             clip: true
 
-            model: WeatherDataProvider.weatherStations(WeatherDataProvider.dataID)
+            model: obsList.observers
             delegate: stationDelegate
             ScrollIndicator.vertical: ScrollIndicator {}
 

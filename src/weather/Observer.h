@@ -26,22 +26,13 @@
 #include "weather/METAR.h"
 #include "weather/TAF.h"
 
-namespace GeoMaps {
-class GeoMapProvider;
-} // namespace GeoMaps
-
 
 namespace Weather {
 
 class WeatherDataProvider;
 
 
-/*! \brief This class represents a weather Observer that issues METAR or TAF
- * report
- *
- * This is a very simple value-base class that holds a waypoint and queries the
- * WeatherDataProvider for METAR and TAF for this waypoint.
- */
+/*! \brief Holds and updates METAR and TAF for a given waypoint */
 
 class Observer : public QObject {
     Q_OBJECT
@@ -54,7 +45,7 @@ public:
 
     /*! \brief Standard constructor
      *
-     * This standard constructor creates a WeatherObserver with an invalid waypoint.
+     * This standard constructor creates an observer with an invalid waypoint.
      */
     explicit Observer(QObject* parent=nullptr);
 
@@ -66,21 +57,25 @@ public:
     // Properties
     //
 
-    /*! \brief Last METAR for this WeatherObserver
+    /*! \brief Current METAR
      *
-     * This property holds the last METAR for this WeatherObserver, as reported
-     * by WeatherDataProvider.
+     * This property holds the last METAR for the waypoint, as reported by
+     * WeatherDataProvider. If no METAR is known, the property will be invalid.
      */
     Q_PROPERTY(Weather::METAR metar READ metar BINDABLE bindableMetar)
 
-    /*! \brief Last TAF for this WeatherObserver
+    /*! \brief Current TAF
      *
-     * This property holds the last TAF for this WeatherObserver, as reported by
-     * WeatherDataProvider.
+     * This property holds the last TAF for the waypoint, as reported by
+     * WeatherDataProvider. If no TAF is known, the property will be invalid.
      */
     Q_PROPERTY(Weather::TAF taf READ taf BINDABLE bindableTaf)
 
-    /*! \brief Waypoint, as set in the constructor */
+    /*! \brief Waypoint for which METAR/TAF data is retrieved
+     *
+     *  The class uses the waypoint's ICAOcode to retrieve METAR/TAF data from
+     *  the global WeatherDataProvider instance.
+     */
     Q_PROPERTY(GeoMaps::Waypoint waypoint READ waypoint WRITE setWaypoint BINDABLE bindableWaypoint REQUIRED)
 
 
@@ -117,7 +112,23 @@ public:
      * @returns Property waypoint
      */
     [[nodiscard]] GeoMaps::Waypoint waypoint() const {return m_waypoint.value();}
+
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property waypoint
+     */
     [[nodiscard]] QBindable<QString> bindableWaypoint() {return &m_waypoint;}
+
+
+    //
+    // Setter Methods
+    //
+
+    /*! \brief Setter method for property of the same name
+     *
+     * @param wp Property waypoint
+     */
     void setWaypoint(const GeoMaps::Waypoint& wp) {m_waypoint = wp;}
 
 
@@ -135,4 +146,3 @@ private:
 };
 
 } // namespace Weather
-

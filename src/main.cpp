@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -50,16 +50,15 @@
 #include "DemoRunner.h"
 #include "GlobalObject.h"
 #include "Librarian.h"
-#include "dataManagement/DataManager.h"
-#include "dataManagement/SSLErrorHandler.h"
+//#include "dataManagement/DataManager.h"
+//#include "dataManagement/SSLErrorHandler.h"
 #include "geomaps/Airspace.h"
-#include "geomaps/GeoMapProvider.h"
-#include "geomaps/WaypointLibrary.h"
+//#include "geomaps/GeoMapProvider.h"
+//#include "geomaps/WaypointLibrary.h"
 #include "platform/FileExchange_Abstract.h"
 #include "platform/PlatformAdaptor_Abstract.h"
-#include "traffic/TrafficDataProvider.h"
-#include "traffic/TrafficFactor_WithPosition.h"
-#include "weather/Station.h"
+//#include "traffic/TrafficDataProvider.h"
+#include "traffic/Warning.h"
 
 using namespace std::chrono_literals;
 using namespace Qt::Literals::StringLiterals;

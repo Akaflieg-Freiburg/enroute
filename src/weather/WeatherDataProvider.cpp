@@ -263,8 +263,6 @@ void Weather::WeatherDataProvider::downloadFinished()
 
 bool Weather::WeatherDataProvider::load()
 {
-#warning
-    return true;
     auto stdFileName = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/weather.dat";
 
     // Use LockFile. If lock could not be obtained, do nothing.

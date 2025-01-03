@@ -59,9 +59,6 @@ Weather::WeatherDataProvider::WeatherDataProvider(QObject *parent) : QObject(par
     m_deleteExiredMessagesTimer.setInterval(10min);
     m_deleteExiredMessagesTimer.start();
 
-    m_notifier_dataID_METAR = m_METARs.addNotifier([this]() {m_dataID = m_dataID.value()+1;});
-    m_notifier_dataID_TAF = m_TAFs.addNotifier([this]() {m_dataID = m_dataID.value()+1;});
-
     // Update the description text when needed
 #warning
     //connect(this, &Weather::WeatherDataProvider::weatherStationsChanged, this, &Weather::WeatherDataProvider::QNHInfoChanged);

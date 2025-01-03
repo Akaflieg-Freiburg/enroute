@@ -107,11 +107,6 @@ public:
      */
     Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
 
-#warning
-    Q_PROPERTY(int dataID READ dataID BINDABLE bindabledataID)
-    int dataID() {return m_dataID.value();}
-    QBindable<int> bindabledataID() {return &m_dataID;}
-
     /*! \brief QNH
      *
      * This property holds the QNH of the next airfield, if known. If no QNH is known,
@@ -321,10 +316,6 @@ private:
     // METARs and TAFs by ICAO Code
     QProperty<QMap<QString, Weather::METAR>> m_METARs;
     QProperty<QMap<QString, Weather::TAF>> m_TAFs;
-
-    QProperty<int> m_dataID {0};
-    QPropertyNotifier m_notifier_dataID_METAR; // Increases dataID on METAR update
-    QPropertyNotifier m_notifier_dataID_TAF; // Increases dataID on TAF update
 
     // Date and Time of last update
     QDateTime m_lastUpdate;

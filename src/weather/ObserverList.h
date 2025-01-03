@@ -24,11 +24,13 @@
 
 namespace Weather {
 
-/*! \brief This class represents a weather Observer that issues METAR or TAF
- * report
+/*! \brief Up-to-date list of all METAR/TAF stations
  *
- * This is a very simple value-base class that holds a waypoint and queries the
- * WeatherDataProvider for METAR and TAF for this waypoint.
+ *  This class holds an up-to-date list of all METAR/TAF stations, frequently
+ *  updated and sorted by distance to the current position. The class is
+ *  relatively expensive, as the constant updates will take some computation
+ *  time. It makes sense to hold instances only when required and to delete them
+ *  as soon as possible.
  */
 
 class ObserverList : public QObject {
@@ -40,10 +42,7 @@ public:
     // Constructors and destructors
     //
 
-    /*! \brief Standard constructor
-     *
-     * This standard constructor creates a WeatherObserver with an invalid waypoint.
-     */
+    /*! \brief Standard constructor */
     explicit ObserverList(QObject* parent=nullptr);
 
     /*! \brief Standard destructor */
@@ -54,17 +53,44 @@ public:
     // Properties
     //
 
+    /*! \brief List of METAR/TAF stations
+     *
+     *  This property holds the last METAR for the waypoint, sorted by distance
+     *  to the current positionq.
+     */
     Q_PROPERTY(QList<Weather::Observer*> observers READ observers BINDABLE bindableObservers)
+
+
+    //
+    // Getter Methods
+    //
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property observers
+     */
     [[nodiscard]] QList<Weather::Observer*> observers() {return m_observers.value();}
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property observers
+     */
     [[nodiscard]] QBindable<QList<Weather::Observer*>> bindableObservers() const {return &m_observers;}
 
 
 private:
     Q_DISABLE_COPY_MOVE(ObserverList)
 
+    // Observers by ICAO-Id. This map is used to store Observer instances.
     QMap<QString,Weather::Observer*> m_observersByID;
 
+    // Currently active observers. This list is updated by a binding that
+    // watches GlobalObject::weatherDataProvider, creates observer instances if
+    // needed and stores them in m_observersByID.
     QProperty<QList<Weather::Observer*>> m_unsortedObservers;
+
+    // Currently active observers, sorted by distance. This list is updated by a
+    // binding that watches m_unsortedObservers and the current position.
     QProperty<QList<Weather::Observer*>> m_observers;
 };
 

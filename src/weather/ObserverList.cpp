@@ -38,7 +38,6 @@ Weather::ObserverList::ObserverList(QObject* parent)
                 continue;
             }
             ids << key;
-
             if (m_observersByID.contains(key))
             {
                 result << m_observersByID[key];

@@ -429,6 +429,8 @@ void DemoRunner::generateManualScreenshots()
     }
 
     // Weather Dialog
+#warning
+    /*
     {
         qWarning() << "… Weather Dialog";
         auto *weatherReport = findQQuickItem(QStringLiteral("weatherReport"), m_engine);
@@ -441,6 +443,7 @@ void DemoRunner::generateManualScreenshots()
         applicationWindow->grabWindow().save(QStringLiteral("02-03-02-WeatherDialog.png"));
         emit requestClosePages();
     }
+*/
 
     // EDTF Taxiway
     {

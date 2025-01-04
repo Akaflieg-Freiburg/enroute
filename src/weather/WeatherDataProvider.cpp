@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,77 +18,62 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <gsl/util>
-
-#include <QDataStream>
+#include <QGuiApplication>
 #include <QLockFile>
-#include <QNetworkReply>
-#include <QNetworkRequest>
-#include <QQmlEngine>
 #include <QSaveFile>
-#include <QStandardPaths>
-#include <QXmlStreamReader>
-#include <QtGlobal>
+#include <QNetworkReply>
 
 #include "sunset.h"
 
-#include "GlobalObject.h"
-#include "geomaps/GeoMapProvider.h"
 #include "navigation/Clock.h"
-#include "navigation/FlightRoute.h"
 #include "navigation/Navigator.h"
 #include "positioning/PositionProvider.h"
-#include "weather/METAR.h"
 #include "weather/WeatherDataProvider.h"
-#include <chrono>
 
 using namespace std::chrono_literals;
 using namespace Qt::Literals::StringLiterals;
 
+
 Weather::WeatherDataProvider::WeatherDataProvider(QObject *parent) : QObject(parent)
 {
-    // Connect the timer to the update method. This will set backgroundUpdate to the default value,
-    // which is true. So these updates happen in the background.
-    // Schedule the first update in 1 seconds from now
-    connect(&m_updateTimer, &QTimer::timeout, this, [this]() { this->update(); });
-    m_updateTimer.setInterval(updateIntervalNormal_ms);
-    m_updateTimer.start();
-
-    // Connect the timer to check for expired messages
-    connect(&m_deleteExiredMessagesTimer, &QTimer::timeout, this, &Weather::WeatherDataProvider::deleteExpiredMesages);
-    m_deleteExiredMessagesTimer.setInterval(10min);
-    m_deleteExiredMessagesTimer.start();
-
-    // Update the description text when needed
-#warning
-    //connect(this, &Weather::WeatherDataProvider::weatherStationsChanged, this, &Weather::WeatherDataProvider::QNHInfoChanged);
-
-    // Set up connections to other static objects, but do so with a little lag to avoid conflicts in the initialisation
     QTimer::singleShot(0, this, &Weather::WeatherDataProvider::deferredInitialization);
 }
 
 
 void Weather::WeatherDataProvider::deferredInitialization()
 {
-    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::receivingPositionInfoChanged, this, &Weather::WeatherDataProvider::QNHInfoChanged);
-    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::receivingPositionInfoChanged, this, &Weather::WeatherDataProvider::sunInfoChanged);
-
-    connect(Navigation::Navigator::clock(), &Navigation::Clock::timeChanged, this, &Weather::WeatherDataProvider::QNHInfoChanged);
-    connect(Navigation::Navigator::clock(), &Navigation::Clock::timeChanged, this, &Weather::WeatherDataProvider::sunInfoChanged);
-
-    // Read METAR/TAF from "weather.dat"
+    // Read METAR/TAF from "weather.dat".
     bool const success = load();
 
-    // Compute time for next update
-    auto remainingTime = QDateTime::currentDateTimeUtc().msecsTo( m_lastUpdate.addMSecs(updateIntervalNormal_ms) );
-    if (!success || !m_lastUpdate.isValid() || (remainingTime < 0))
-    {
-        update();
-    }
-    else
-    {
-        m_updateTimer.setInterval( gsl::narrow_cast<int>(remainingTime) );
-    }
+    // Request METAR/TAF data every updateIntervalNormal_ms
+    connect(&m_updateTimer, &QTimer::timeout, this, [this]() { this->update(true); });
+    m_updateTimer.setInterval(updateIntervalNormal_ms);
+    m_updateTimer.start();
+
+    // Check for METAR/TAF updates in 15s, when the app becomes active, and when the PositionProvider starts
+    // receiving data.
+    QTimer::singleShot(15s, this, [this]() { this->update(true); });
+    connect(qGuiApp, &QGuiApplication::applicationStateChanged, [this](Qt::ApplicationState state) {
+        if ((state | Qt::ApplicationActive) != 0)
+        {
+            QTimer::singleShot(0, this, [this]() { this->update(true); });
+        }
+    });
+    connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::receivingPositionInfoChanged, [this](bool rcv) {
+        if (rcv)
+        {
+            QTimer::singleShot(0, this, [this]() { this->update(true); });
+        }
+    });
+
+    // Check every 10min for expired messages
+    connect(&m_deleteExiredMessagesTimer, &QTimer::timeout, this, &Weather::WeatherDataProvider::deleteExpiredMesages);
+    m_deleteExiredMessagesTimer.setInterval(10min);
+    m_deleteExiredMessagesTimer.start();
+
+    // Announce updates in QNHInfo and SunInfo once per minute.
+    connect(Navigation::Navigator::clock(), &Navigation::Clock::timeChanged, this, &Weather::WeatherDataProvider::QNHInfoChanged);
+    connect(Navigation::Navigator::clock(), &Navigation::Clock::timeChanged, this, &Weather::WeatherDataProvider::sunInfoChanged);
 }
 
 
@@ -520,6 +505,7 @@ QString Weather::WeatherDataProvider::QNHInfo() const
 
 void Weather::WeatherDataProvider::update(bool isBackgroundUpdate)
 {
+#warning Want to refuse background updates if last successful update is less than 5 mins old
     // If a request is currently running, then do not update
     if (downloading())
     {
@@ -570,14 +556,14 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate)
 }
 
 
-void Weather::WeatherDataProvider::requestData(const QGeoCoordinate& coord)
+void Weather::WeatherDataProvider::requestData(const GeoMaps::Waypoint& wp)
 {
-    if (!coord.isValid())
+#warning Want to check if current data is available. Want to check of data download even makes sense.
+    if (!wp.coordinate().isValid())
     {
         return;
     }
-    startDownload(QGeoRectangle(coord, 2, 2));
-
+    startDownload(QGeoRectangle(wp.coordinate(), 2, 2));
 }
 
 

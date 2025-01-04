@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,23 +21,17 @@
 #pragma once
 
 #include <QGeoRectangle>
-#include <QMap>
-#include <QPointer>
 #include <QProperty>
-#include <QQmlEngine>
 #include <QTimer>
 
-class QNetworkAccessManager;
-class QNetworkReply;
-
 #include "GlobalObject.h"
+#include "geomaps/Waypoint.h"
 #include "navigation/Atmosphere.h"
-#include "units/Distance.h"
 #include "weather/METAR.h"
 #include "weather/TAF.h"
 
-class FlightRoute;
-class GlobalSettings;
+class QNetworkReply;
+
 
 namespace Weather {
 
@@ -238,7 +232,7 @@ public:
     Q_INVOKABLE void update(bool isBackgroundUpdate=true);
 
 #warning
-    Q_INVOKABLE void requestData(const QGeoCoordinate& coord);
+    Q_INVOKABLE void requestData(const GeoMaps::Waypoint& wp);
 
 signals:
     /*! \brief Notifier signal */
@@ -301,7 +295,6 @@ private:
     void save();
 
     // List of replies from aviationweather.com
-#warning might want to use shared pointers here
     QList<QPointer<QNetworkReply>> m_networkReplies;
 
     // A timer used for auto-updating the weather reports every 30 minutes

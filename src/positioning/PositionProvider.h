@@ -231,7 +231,7 @@ signals:
     void positionInfoChanged();
 
     // Notifier signal
-    void receivingPositionInfoChanged();
+    void receivingPositionInfoChanged(bool);
 
 private slots:   
     // Intializations that are moved out of the constructor, in order to avoid

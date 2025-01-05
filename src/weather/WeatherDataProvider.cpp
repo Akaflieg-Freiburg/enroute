@@ -52,6 +52,7 @@ void Weather::WeatherDataProvider::deferredInitialization()
 
     // Check for METAR/TAF updates in 15s, when the app becomes active, and when the PositionProvider starts
     // receiving data.
+#warning Need to update when the flight route changes!
     QTimer::singleShot(15s, this, [this]() { this->update(true); });
     connect(qGuiApp, &QGuiApplication::applicationStateChanged, [this](Qt::ApplicationState state) {
         if ((state | Qt::ApplicationActive) != 0)
@@ -214,6 +215,10 @@ void Weather::WeatherDataProvider::downloadFinished()
             tmpTAFs[newTAF.ICAOCode()] = newTAF;
         }
         m_TAFs = tmpTAFs;
+
+        updateLogEntry le = {QDateTime::currentDateTimeUtc(), networkReply->property("area").value<QGeoRectangle>()};
+        updateLog << le;
+        m_updateTimer.setInterval(updateIntervalNormal_ms);
     }
 
     // Clear replies container
@@ -236,8 +241,6 @@ void Weather::WeatherDataProvider::downloadFinished()
     }
     else
     {
-        m_lastUpdate = QDateTime::currentDateTimeUtc();
-        m_updateTimer.setInterval(updateIntervalNormal_ms);
         save();
     }
 }
@@ -585,6 +588,7 @@ void Weather::WeatherDataProvider::startDownload(const QGeoRectangle& bBox)
         QNetworkRequest request(url);
         request.setRawHeader("accept", "application/xml");
         QPointer<QNetworkReply> const reply = GlobalObject::networkAccessManager()->get(request);
+        reply->setProperty("bBox", QVariant::fromValue(bBox));
         m_networkReplies.push_back(reply);
         connect(reply, &QNetworkReply::finished, this, &Weather::WeatherDataProvider::downloadFinished);
         connect(reply, &QNetworkReply::errorOccurred, this, &Weather::WeatherDataProvider::downloadFinished);
@@ -601,6 +605,7 @@ void Weather::WeatherDataProvider::startDownload(const QGeoRectangle& bBox)
         QNetworkRequest request(url);
         request.setRawHeader("accept", "application/xml");
         QPointer<QNetworkReply> const reply = GlobalObject::networkAccessManager()->get(request);
+        reply->setProperty("bBox", QVariant::fromValue(bBox));
         m_networkReplies.push_back(reply);
         connect(reply, &QNetworkReply::finished, this, &Weather::WeatherDataProvider::downloadFinished);
         connect(reply, &QNetworkReply::errorOccurred, this, &Weather::WeatherDataProvider::downloadFinished);

@@ -310,8 +310,16 @@ private:
     QProperty<QMap<QString, Weather::METAR>> m_METARs;
     QProperty<QMap<QString, Weather::TAF>> m_TAFs;
 
-    // Date and Time of last update
-    QDateTime m_lastUpdate;
+    // Time and BBox of the last succesful METAR update for the current region and flight route
+    struct updateLogEntry
+    {
+        QDateTime m_time;
+        QGeoRectangle m_bBox;
+    };
+    QList<updateLogEntry> updateLog;
+
+    QDateTime m_lastUpdateTime;
+    QGeoRectangle m_lastUpdateBBox;
 };
 
 

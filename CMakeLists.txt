@@ -32,24 +32,24 @@ include(GNUInstallDirs)
 # Qt Setup
 #
 
-find_package(Qt6 6.8 COMPONENTS Bluetooth Concurrent Core Core5Compat Gui HttpServer LinguistTools Location Positioning Quick QuickControls2 QuickWidgets Sql Svg TextToSpeech Widgets REQUIRED)
+find_package(Qt6 6.7 COMPONENTS Bluetooth Concurrent Core Core5Compat Gui HttpServer LinguistTools Location Positioning Quick QuickControls2 QuickWidgets Sql Svg TextToSpeech Widgets REQUIRED)
 set(QT_VERSION ${Qt6Core_VERSION})
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Android")
-    find_package(Qt6 6.8 COMPONENTS Sensors SerialPort WebView REQUIRED)
+    find_package(Qt6 6.7 COMPONENTS Sensors SerialPort WebView REQUIRED)
 endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-    find_package(Qt6 6.8 COMPONENTS SerialPort WebView REQUIRED)
+    find_package(Qt6 6.7 COMPONENTS SerialPort WebView REQUIRED)
 endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "iOS")
-    find_package(Qt6 6.8 COMPONENTS Sensors WebView REQUIRED)
+    find_package(Qt6 6.7 COMPONENTS Sensors WebView REQUIRED)
 endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    find_package(Qt6 6.8 COMPONENTS DBus SerialPort Widgets REQUIRED)
-    find_package(Qt6 6.8 COMPONENTS WebView)
+    find_package(Qt6 6.7 COMPONENTS DBus SerialPort Widgets REQUIRED)
+    find_package(Qt6 6.7 COMPONENTS WebView)
 endif()
 
 qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES de es fr it pl)
@@ -61,7 +61,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 qt_policy(SET QTP0002 NEW)
-qt_policy(SET QTP0004 NEW)
+#qt_policy(SET QTP0004 NEW)
 
 
 #

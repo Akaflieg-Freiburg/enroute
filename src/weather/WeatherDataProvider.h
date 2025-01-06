@@ -37,27 +37,20 @@ namespace Weather {
 
 /*! \brief WeatherDataProvider, weather service manager
  *
- * This class retrieves METAR/TAF weather reports from the "Aviation Weather
- * Center" at aviationweather.com, for all weather stations that are within 75nm
- * from the last-known user position or current route.  The reports can then be
- * accessed via the property "weatherStations" and the method
- * findWeatherStation.  The WeatherDataProvider class honors
- * GlobalSettings::acceptedWeatherTerms() and will initiate a download only if
- * the user agreed to the privacy warning.
+ * This class retrieves METAR/TAF weather reports from the server enroute-data.
  *
  * Once constructed, the WeatherDataProvider class will regularly perform background
- * updates to retrieve up-to-date information. It will update the list of known
- * weather stations and also the METAR/TAF reports for the weather stations.
- * The class checks regularly for outdated METAR and TAF reports and deletes
- * them automatically, along with those WeatherStations that no longer contain
- * any report.
+ * updates to retrieve up-to-date information for a region around the current position and around the
+ * intended flight route.
+ * The class checks regularly for outdated METAR and TAF and deletes
+ * them automatically.
  *
  * In order to avoid loss of data when the app is accidently closed in-flight,
  * the class stores all weather data at destruction and at regular intervals,
  * and reads the data back in on construction.
  *
  * This class also contains a number or convenience methods and properties
- * pertaining to sunrise/sunset
+ * pertaining to sunrise and sunset
  */
 class WeatherDataProvider : public QObject {
     Q_OBJECT
@@ -79,7 +72,7 @@ public:
     explicit WeatherDataProvider() = delete;
 
     /*! \brief Standard destructor */
-    ~WeatherDataProvider() override;
+//    ~WeatherDataProvider() = override;
 
     // factory function for QML singleton
     static Weather::WeatherDataProvider* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
@@ -91,12 +84,6 @@ public:
     //
     // Properties
     //
-
-    /*! \brief Background update flag
-     *
-     * Indicates if the last download process was started as a background update.
-     */
-    Q_PROPERTY(bool backgroundUpdate READ backgroundUpdate NOTIFY backgroundUpdateChanged)
 
     /*! \brief Downloading flag
      *
@@ -147,12 +134,6 @@ public:
     //
     // Getter Methods
     //
-
-    /*! \brief Getter method for property of the same name
-     *
-     * @returns Property backgroundUpdate
-     */
-    [[nodiscard]] bool backgroundUpdate() const { return m_backgroundUpdate; };
 
     /*! \brief Getter method for property of the same name
      *
@@ -233,18 +214,12 @@ public:
      * automatically triggered background updates (which should not be shown to
      * the user) and those that are explicitly started by the user.
      */
-    Q_INVOKABLE void update(bool isBackgroundUpdate=true);
+    Q_INVOKABLE void update();
 
 #warning
     Q_INVOKABLE void requestData(const GeoMaps::Waypoint& wp);
 
 signals:
-    /*! \brief Notifier signal */
-    void backgroundUpdateChanged();
-
-    /*! \brief Notifier signal */
-    void dataChanged();
-
     /*! \brief Notifier signal */
     void downloadingChanged();
 
@@ -306,9 +281,6 @@ private:
 
     // A timer used for deleting expired weather reports ever 11 minutes
     QTimer m_deleteExiredMessagesTimer;
-
-    // Flag, as set by the update() method
-    bool m_backgroundUpdate {true};
 
     // METARs and TAFs by ICAO Code
     QProperty<QMap<QString, Weather::METAR>> m_METARs;

@@ -46,24 +46,24 @@ void Weather::WeatherDataProvider::deferredInitialization()
     bool const success = load();
 
     // Request METAR/TAF data every updateIntervalNormal_ms
-    connect(&m_updateTimer, &QTimer::timeout, this, [this]() { this->update(true); });
+    connect(&m_updateTimer, &QTimer::timeout, this, &Weather::WeatherDataProvider::update);
     m_updateTimer.setInterval(updateIntervalNormal_ms);
     m_updateTimer.start();
 
     // Check for METAR/TAF updates in 15s, when the flight route changes, the app becomes active, and when the PositionProvider starts
     // receiving data.
-    QTimer::singleShot(15s, this, [this]() { this->update(true); });
-    connect(GlobalObject::navigator()->flightRoute(), &Navigation::FlightRoute::waypointsChanged, [this]() {this->update(true);});
+    QTimer::singleShot(15s, this, &Weather::WeatherDataProvider::update);
+    connect(GlobalObject::navigator()->flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, &Weather::WeatherDataProvider::update);
     connect(qGuiApp, &QGuiApplication::applicationStateChanged, [this](Qt::ApplicationState state) {
         if ((state | Qt::ApplicationActive) != 0)
         {
-            QTimer::singleShot(0, this, [this]() { this->update(true); });
+            QTimer::singleShot(0, this, &Weather::WeatherDataProvider::update);
         }
     });
     connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::receivingPositionInfoChanged, [this](bool rcv) {
         if (rcv)
         {
-            QTimer::singleShot(0, this, [this]() { this->update(true); });
+            QTimer::singleShot(0, this, &Weather::WeatherDataProvider::update);
         }
     });
 
@@ -77,7 +77,7 @@ void Weather::WeatherDataProvider::deferredInitialization()
     connect(Navigation::Navigator::clock(), &Navigation::Clock::timeChanged, this, &Weather::WeatherDataProvider::sunInfoChanged);
 }
 
-
+/*
 Weather::WeatherDataProvider::~WeatherDataProvider()
 {
     for(const auto& networkReply : m_networkReplies)
@@ -90,6 +90,7 @@ Weather::WeatherDataProvider::~WeatherDataProvider()
         delete networkReply;
     }
 }
+*/
 
 
 void Weather::WeatherDataProvider::deleteExpiredMesages()
@@ -505,15 +506,8 @@ QString Weather::WeatherDataProvider::QNHInfo() const
 }
 
 
-void Weather::WeatherDataProvider::update(bool isBackgroundUpdate)
+void Weather::WeatherDataProvider::update()
 {
-    // Set m_backgroundUpdate and emit signal if appropriate
-    if (m_backgroundUpdate != isBackgroundUpdate)
-    {
-        m_backgroundUpdate = isBackgroundUpdate;
-        emit backgroundUpdateChanged();
-    }
-
     // Generate queries
     const QGeoCoordinate& position = Positioning::PositionProvider::lastValidCoordinate();
     auto steerpts = GlobalObject::navigator()->flightRoute()->geoPath();

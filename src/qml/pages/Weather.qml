@@ -25,10 +25,15 @@ import QtQuick.Layouts
 import akaflieg_freiburg.enroute
 import "../items"
 
+//pragma ComponentBehavior: Bound
+
 Page {
     id: page
     title: qsTr("Weather")
     focus: true
+
+    Component.onCompleted: WeatherDataProvider.update()
+
 
     header: PageHeader {
 
@@ -58,27 +63,12 @@ Page {
 
             anchors.left: parent.left
             anchors.leftMargin: 72
-            anchors.right: headerMenuToolButton.left
+            anchors.right: parent.right
 
             text: stackView.currentItem.title
             elide: Label.ElideRight
             font.pixelSize: 20
             verticalAlignment: Qt.AlignVCenter
-        }
-
-        ToolButton {
-            id: headerMenuToolButton
-
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.right: parent.right
-
-            icon.source: "/icons/material/ic_refresh.svg"
-
-            onClicked: {
-                PlatformAdaptor.vibrateBrief()
-                if (!WeatherDataProvider.downloading)
-                    WeatherDataProvider.update(false)
-            }
         }
     }
 
@@ -89,7 +79,7 @@ Page {
                 width: stationList.width
                 height: idel.height
 
-                // Background color according to METAR/FAA flight category
+                // Color according to METAR/FAA flight category
                 Rectangle {
                     anchors.fill: parent
                     color: model.modelData.metar.isValid ? model.modelData.metar.flightCategoryColor : "transparent"
@@ -163,63 +153,9 @@ Page {
                     verticalAlignment: Text.AlignVCenter
                     textFormat: Text.StyledText
                     wrapMode: Text.Wrap
-                    text: qsTr("<h3>Sorry!</h3><p>No METAR/TAF data available. You can restart the download manually using the refresh button at the top right corner of the screen.</p>")
+                    text: qsTr("<h3>Sorry!</h3><p>No METAR/TAF data available. Updates will be requested automatically.</p>")
                 }
             }
-
-            Rectangle {  // Download in progress label
-                id: downloadIndicator
-
-                anchors.fill: parent
-
-                color: "white"
-                visible: WeatherDataProvider.downloading && !WeatherDataProvider.backgroundUpdate
-
-                ColumnLayout {
-                    anchors.fill: parent
-
-                    Item { Layout.fillHeight: true }
-
-                    Text {
-                        Layout.fillWidth: true
-
-                        leftPadding: font.pixelSize
-                        rightPadding: font.pixelSize
-
-                        horizontalAlignment: Text.AlignHCenter
-                        textFormat: Text.StyledText
-                        wrapMode: Text.Wrap
-                        text: qsTr("<h3>Download in progress…</h3><p>Please stand by while we download METAR/TAF data from the Aviation Weather Center…</p>")
-                    }
-
-                    BusyIndicator {
-                        Layout.fillWidth: true
-                    }
-
-                    Item { Layout.fillHeight: true }
-                }
-
-                // The Connections and the SequentialAnimation here provide a fade-out animation for the downloadindicator.
-                // Without this, the downaloadIndication would not be visible on very quick downloads, leaving the user
-                // without any feedback if the download did actually take place.
-                Connections {
-                    target: WeatherDataProvider
-                    function onDownloadingChanged () {
-                        if (WeatherDataProvider.downloading && !WeatherDataProvider.backgroundUpdate) {
-                            downloadIndicator.visible = true
-                            downloadIndicator.opacity = 1.0
-                        } else
-                            fadeOut.start()
-                    }
-                }
-                SequentialAnimation {
-                    id: fadeOut
-                    NumberAnimation { target: downloadIndicator; property: "opacity"; to:1.0; duration: 400 }
-                    NumberAnimation { target: downloadIndicator; property: "opacity"; to:0.0; duration: 400 }
-                    NumberAnimation { target: downloadIndicator; property: "visible"; to:1.0; duration: 20}
-                }
-            }
-
 
             // Refresh METAR/TAF data on overscroll
             property int refreshFlick: 0
@@ -230,25 +166,13 @@ Page {
             onFlickEnded: {
                 if ( atYBeginning && refreshFlick ) {
                     PlatformAdaptor.vibrateBrief()
-                    WeatherDataProvider.update(false)
+                    WeatherDataProvider.update()
                 }
             }
 
-            // Try and update METAR/TAF as soon as someone opens this page if the current list of stations
-            // is empty. This is not a background update, we want user interaction.
-            Component.onCompleted: {
-                if (stationList.count === 0)
-                    WeatherDataProvider.update(false)
-                else
-                    WeatherDataProvider.update(true)
-            }
-
-            // Show error when weather cannot be updated -- but not if we are running a background upate
             Connections {
                 target: WeatherDataProvider
                 function onError (message) {
-                    if (WeatherDataProvider.backgroundUpdate)
-                        return
                     dlgLoader.active = false
                     dlgLoader.setSource("../dialogs/LongTextDialog.qml",
                                         {
@@ -296,6 +220,15 @@ Page {
                 text: WeatherDataProvider.sunInfo
             }
 
+            Icon {
+                visible: WeatherDataProvider.downloading
+                source: "/icons/material/ic_refresh.svg"
+            }
+            Label {
+                visible: WeatherDataProvider.downloading
+                Layout.fillWidth: true
+                text: qsTr("Downloading data...")
+            }
         }
     }
 

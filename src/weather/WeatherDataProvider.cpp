@@ -50,10 +50,10 @@ void Weather::WeatherDataProvider::deferredInitialization()
     m_updateTimer.setInterval(updateIntervalNormal_ms);
     m_updateTimer.start();
 
-    // Check for METAR/TAF updates in 15s, when the app becomes active, and when the PositionProvider starts
+    // Check for METAR/TAF updates in 15s, when the flight route changes, the app becomes active, and when the PositionProvider starts
     // receiving data.
-#warning Need to update when the flight route changes!
     QTimer::singleShot(15s, this, [this]() { this->update(true); });
+    connect(GlobalObject::navigator()->flightRoute(), &Navigation::FlightRoute::waypointsChanged, [this]() {this->update(true);});
     connect(qGuiApp, &QGuiApplication::applicationStateChanged, [this](Qt::ApplicationState state) {
         if ((state | Qt::ApplicationActive) != 0)
         {
@@ -138,7 +138,6 @@ bool Weather::WeatherDataProvider::downloading() const
 
 void Weather::WeatherDataProvider::downloadFinished()
 {
-    qWarning() << "finished";
     // Start to process the data only once ALL replies have been received. So, we check here if there are any running
     // download processes and abort if indeed there are some.
     if (downloading())
@@ -161,7 +160,6 @@ void Weather::WeatherDataProvider::downloadFinished()
         if (networkReply->error() != QNetworkReply::NoError)
         {
             hasError = true;
-            qWarning() << "Weather download error: " << networkReply->errorString();
             emit error(networkReply->errorString());
             continue;
         }
@@ -176,7 +174,6 @@ void Weather::WeatherDataProvider::downloadFinished()
             if(xml.hasError())
             {
                 hasError = true;
-                qWarning() << "Weather XML decoding error: " << xml.errorString();
                 break;
             }
 
@@ -186,7 +183,6 @@ void Weather::WeatherDataProvider::downloadFinished()
                 Weather::METAR const metar(xml);
                 if (metar.isValid())
                 {
-                    qWarning() << "new" << metar.ICAOCode();
                     newMETARs << metar;
                 }
             }
@@ -216,8 +212,11 @@ void Weather::WeatherDataProvider::downloadFinished()
         }
         m_TAFs = tmpTAFs;
 
-        updateLogEntry le = {QDateTime::currentDateTimeUtc(), networkReply->property("area").value<QGeoRectangle>()};
-        updateLog << le;
+        updateLogEntry le = {QDateTime::currentDateTimeUtc(), networkReply->property("bBox").value<QGeoRectangle>()};
+        if (le.m_bBox.isValid() && le.m_time.isValid())
+        {
+            updateLog << le;
+        }
         m_updateTimer.setInterval(updateIntervalNormal_ms);
     }
 
@@ -508,28 +507,12 @@ QString Weather::WeatherDataProvider::QNHInfo() const
 
 void Weather::WeatherDataProvider::update(bool isBackgroundUpdate)
 {
-#warning Want to refuse background updates if last successful update is less than 5 mins old
-    // If a request is currently running, then do not update
-    if (downloading())
-    {
-        if (m_backgroundUpdate && !isBackgroundUpdate)
-        {
-            m_backgroundUpdate = false;
-            emit backgroundUpdateChanged();
-        }
-        return;
-    }
-
-    // Set _backgroundUpdate and emit signal if appropriate
+    // Set m_backgroundUpdate and emit signal if appropriate
     if (m_backgroundUpdate != isBackgroundUpdate)
     {
         m_backgroundUpdate = isBackgroundUpdate;
         emit backgroundUpdateChanged();
     }
-
-    // Clear old replies, if any
-    qDeleteAll(m_networkReplies);
-    m_networkReplies.clear();
 
     // Generate queries
     const QGeoCoordinate& position = Positioning::PositionProvider::lastValidCoordinate();
@@ -561,8 +544,8 @@ void Weather::WeatherDataProvider::update(bool isBackgroundUpdate)
 
 void Weather::WeatherDataProvider::requestData(const GeoMaps::Waypoint& wp)
 {
-#warning Want to check if current data is available. Want to check of data download even makes sense.
-    if (!wp.coordinate().isValid())
+#warning Want to check if current data is available. Want to check if data download even makes sense.
+    if (!wp.coordinate().isValid() || (wp.ICAOCode().length() < 4))
     {
         return;
     }
@@ -570,11 +553,39 @@ void Weather::WeatherDataProvider::requestData(const GeoMaps::Waypoint& wp)
 }
 
 
-void Weather::WeatherDataProvider::startDownload(const QGeoRectangle& bBox)
+void Weather::WeatherDataProvider::startDownload(const QGeoRectangle& _bBox)
 {
-    if (!bBox.isValid())
+    if (!_bBox.isValid())
     {
         return;
+    }
+
+    // Round bounding box, so coordinates become integers
+    QGeoRectangle bBox;
+    bBox.setBottomLeft({std::floor(_bBox.bottomLeft().latitude()), std::floor(_bBox.bottomLeft().longitude())});
+    bBox.setTopRight({std::ceil(_bBox.topRight().latitude()), std::ceil(_bBox.topRight().longitude())});
+
+    // Check if bounding box is already covered
+    updateLog.removeIf([](const updateLogEntry& ule) {return !ule.m_bBox.isValid() || !ule.m_time.isValid();});
+    updateLog.removeIf([](const updateLogEntry& ule) {return ule.m_time.addSecs(5*60) < QDateTime::currentDateTimeUtc();});
+    for(const auto& ule : updateLog)
+    {
+        if (ule.m_bBox.contains(bBox))
+        {
+            return;
+        }
+    }
+    m_networkReplies.removeAll(nullptr);
+    for(const auto& nwr : m_networkReplies)
+    {
+        if (!nwr->isRunning())
+        {
+            continue;
+        }
+        if (nwr->property("area").value<QGeoRectangle>().contains(bBox))
+        {
+            return;
+        }
     }
 
     {
@@ -605,7 +616,7 @@ void Weather::WeatherDataProvider::startDownload(const QGeoRectangle& bBox)
         QNetworkRequest request(url);
         request.setRawHeader("accept", "application/xml");
         QPointer<QNetworkReply> const reply = GlobalObject::networkAccessManager()->get(request);
-        reply->setProperty("bBox", QVariant::fromValue(bBox));
+
         m_networkReplies.push_back(reply);
         connect(reply, &QNetworkReply::finished, this, &Weather::WeatherDataProvider::downloadFinished);
         connect(reply, &QNetworkReply::errorOccurred, this, &Weather::WeatherDataProvider::downloadFinished);

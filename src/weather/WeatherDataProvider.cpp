@@ -285,7 +285,7 @@ bool Weather::WeatherDataProvider::load()
     }
 
     // Read time of last update
-    inputStream >> m_lastUpdate;
+    inputStream >> updateLog;
 
     // Read file
     QMap<QString, Weather::METAR> newMETARs;
@@ -330,7 +330,7 @@ void Weather::WeatherDataProvider::save()
     // Write magic number and version
     outputStream << static_cast<quint32>(0x31415);
     outputStream << static_cast<quint32>(1);
-    outputStream << m_lastUpdate;
+    outputStream << updateLog;
 
     outputStream << m_METARs.value();
     outputStream << m_TAFs.value();
@@ -617,4 +617,20 @@ void Weather::WeatherDataProvider::startDownload(const QGeoRectangle& bBox)
     // Handle the case if none of the requests have started (e.g. because
     // no internet is available at all)
     downloadFinished();
+}
+
+
+QDataStream& Weather::operator<<(QDataStream& stream, const WeatherDataProvider::updateLogEntry& ule)
+{
+    stream << ule.m_time;
+    stream << ule.m_bBox;
+    return stream;
+}
+
+
+QDataStream& Weather::operator>>(QDataStream& stream, WeatherDataProvider::updateLogEntry& ule)
+{
+    stream >> ule.m_time;
+    stream >> ule.m_bBox;
+    return stream;
 }

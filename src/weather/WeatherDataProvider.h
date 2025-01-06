@@ -64,6 +64,10 @@ class WeatherDataProvider : public QObject {
     QML_ELEMENT
     QML_SINGLETON
 
+    class updateLogEntry;
+    friend QDataStream& operator<<(QDataStream& stream, const updateLogEntry& ule);
+    friend QDataStream& operator>>(QDataStream& stream, updateLogEntry& ule);
+
 public:
     /*! \brief Standard constructor
      *
@@ -322,5 +326,8 @@ private:
     QGeoRectangle m_lastUpdateBBox;
 };
 
+QDataStream& operator<<(QDataStream& stream, const WeatherDataProvider::updateLogEntry& ule);
+
+QDataStream& operator>>(QDataStream& stream, WeatherDataProvider::updateLogEntry& ule);
 
 } // namespace Weather

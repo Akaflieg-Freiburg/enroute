@@ -39,18 +39,17 @@ namespace Weather {
  *
  * This class retrieves METAR/TAF weather reports from the server enroute-data.
  *
- * Once constructed, the WeatherDataProvider class will regularly perform background
- * updates to retrieve up-to-date information for a region around the current position and around the
- * intended flight route.
- * The class checks regularly for outdated METAR and TAF and deletes
- * them automatically.
+ * Once constructed, the WeatherDataProvider class will regularly perform
+ * background updates to retrieve up-to-date information for a region around the
+ * current position and around the intended flight route. The class checks
+ * regularly for outdated METAR and TAF and deletes them automatically.
  *
  * In order to avoid loss of data when the app is accidently closed in-flight,
  * the class stores all weather data at destruction and at regular intervals,
  * and reads the data back in on construction.
  *
  * This class also contains a number or convenience methods and properties
- * pertaining to sunrise and sunset
+ * pertaining to sunrise and sunset.
  */
 class WeatherDataProvider : public QObject {
     Q_OBJECT
@@ -70,9 +69,6 @@ public:
 
     // No default constructor, important for QML singleton
     explicit WeatherDataProvider() = delete;
-
-    /*! \brief Standard destructor */
-//    ~WeatherDataProvider() = override;
 
     // factory function for QML singleton
     static Weather::WeatherDataProvider* create(QQmlEngine* /*unused*/, QJSEngine* /*unused*/)
@@ -94,15 +90,15 @@ public:
 
     /*! \brief QNH
      *
-     * This property holds the QNH of the next airfield, if known. If no QNH is known,
-     * this property holds QNaN.
+     * This property holds the QNH of the next airfield, if known. If no QNH is
+     * known, this property holds QNaN.
      */
     Q_PROPERTY(Units::Pressure QNH READ QNH NOTIFY QNHInfoChanged)
 
     /*! \brief QNHPressureAltitude
      *
-     *  This property holds the altitude in the standard atmosphere which corresponds
-     *  to the current QNH value
+     *  This property holds the altitude in the standard atmosphere which
+     *  corresponds to the current QNH value
      */
     Q_PROPERTY(Units::Distance QNHPressureAltitude READ QNHPressureAltitude NOTIFY QNHInfoChanged)
 
@@ -118,9 +114,9 @@ public:
     /*! \brief sunInfo
      *
      * This property holds a human-readable, translated, rich-text string with
-     * information about the next sunset or sunrise at the current position. This
-     * could typically read like "SS 17:01, in 3h and 5min" or "Waiting for exact
-     * position …"
+     * information about the next sunset or sunrise at the current position.
+     * This could typically read like "SS 17:01, in 3h and 5min" or "Waiting for
+     * exact position …"
      */
     Q_PROPERTY(QString sunInfo READ sunInfo NOTIFY sunInfoChanged)
 
@@ -173,7 +169,7 @@ public:
 
     /*! \brief Getter method for property of the same name
      *
-     * @returns Property infoString
+     * @returns Property sunInfo
      */
     static QString sunInfo();
 
@@ -194,30 +190,31 @@ public:
     // Methods
     //
 
-#warning docu
-    /*! \brief Update method
+    /*! \brief Request update
      *
-     * If the global settings indicate that connections to aviationweather.com
-     * are not allowed, this method does nothing and returns immediately.
-     * Otherwise, this method initiates the asynchronous download of weather
-     * information from the internet. It generates the necessary network queries
-     * and sends them to aviationweather.com.
+     * This method initiates the asynchronous download of weather information
+     * from the internet, for a region around the current position and around
+     * the current flight route.  This method quits immediately if data for that
+     * region has been downloaded successfully less than five minutes ago.
      *
-     * - If an error occurred while downloading, the signal "error" will be emitted.
-     *
-     * - If the download completes successfully, the notifier signal for the
-     *   property weatherStations will be emitted.
-     *
-     * @param isBackgroundUpdate This is a simple flag that can be set and later
-     * retrieved in the "backgroundUpdate" property. This is a little helper for
-     * the GUI that might want to wish to make a distinction between
-     * automatically triggered background updates (which should not be shown to
-     * the user) and those that are explicitly started by the user.
+     * If an error occurred while downloading, the signal "error" will be
+     * emitted.
      */
-    Q_INVOKABLE void update();
+    Q_INVOKABLE void requestUpdate();
 
-#warning
-    Q_INVOKABLE void requestData(const GeoMaps::Waypoint& wp);
+    /*! \brief Request update
+     *
+     * This method initiates the asynchronous download of weather information
+     * from the internet, for a region around the waypoint.  This method quits
+     * immediately if data for that region is available or if the waypoint does
+     * not describe an airfield with METAR/TAF station.
+     *
+     * If an error occurred while downloading, the signal "error" will be
+     * emitted.
+     *
+     * @param wp Waypoint
+     */
+    Q_INVOKABLE void requestUpdate4Waypoint(const GeoMaps::Waypoint& wp);
 
 signals:
     /*! \brief Notifier signal */
@@ -242,16 +239,16 @@ private slots:
     // Called when a download is finished
     void downloadFinished();
 
-    // Check for expired METARs and TAFs and delete them.
-    // This also deletes weather stations if they are no longer in use.
+    // Check for expired METARs and TAFs and delete them. This also deletes
+    // weather stations if they are no longer in use.
     void deleteExpiredMesages();
 
-    // Name says it all. This method is called from the constructor,
-    // but with a little lag to avoid conflicts in the initialisation of
-    // static objects.
+    // Name says it all. This method is called from the constructor, but with a
+    // little lag to avoid conflicts in the initialisation of static objects.
     void deferredInitialization();
 
-#warning
+    // This method is called by requestUpdate and requestUpdate4Waypoint. It
+    // does the actual network request.
     void startDownload(const QGeoRectangle& bBox);
 
 private:
@@ -293,9 +290,6 @@ private:
         QGeoRectangle m_bBox;
     };
     QList<updateLogEntry> updateLog;
-
-    QDateTime m_lastUpdateTime;
-    QGeoRectangle m_lastUpdateBBox;
 };
 
 QDataStream& operator<<(QDataStream& stream, const WeatherDataProvider::updateLogEntry& ule);

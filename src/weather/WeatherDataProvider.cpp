@@ -46,24 +46,24 @@ void Weather::WeatherDataProvider::deferredInitialization()
     bool const success = load();
 
     // Request METAR/TAF data every updateIntervalNormal_ms
-    connect(&m_updateTimer, &QTimer::timeout, this, &Weather::WeatherDataProvider::update);
+    connect(&m_updateTimer, &QTimer::timeout, this, &Weather::WeatherDataProvider::requestUpdate);
     m_updateTimer.setInterval(updateIntervalNormal_ms);
     m_updateTimer.start();
 
     // Check for METAR/TAF updates in 15s, when the flight route changes, the app becomes active, and when the PositionProvider starts
     // receiving data.
-    QTimer::singleShot(15s, this, &Weather::WeatherDataProvider::update);
-    connect(GlobalObject::navigator()->flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, &Weather::WeatherDataProvider::update);
+    QTimer::singleShot(15s, this, &Weather::WeatherDataProvider::requestUpdate);
+    connect(GlobalObject::navigator()->flightRoute(), &Navigation::FlightRoute::waypointsChanged, this, &Weather::WeatherDataProvider::requestUpdate);
     connect(qGuiApp, &QGuiApplication::applicationStateChanged, [this](Qt::ApplicationState state) {
         if ((state | Qt::ApplicationActive) != 0)
         {
-            QTimer::singleShot(0, this, &Weather::WeatherDataProvider::update);
+            QTimer::singleShot(0, this, &Weather::WeatherDataProvider::requestUpdate);
         }
     });
     connect(GlobalObject::positionProvider(), &Positioning::PositionProvider::receivingPositionInfoChanged, [this](bool rcv) {
         if (rcv)
         {
-            QTimer::singleShot(0, this, &Weather::WeatherDataProvider::update);
+            QTimer::singleShot(0, this, &Weather::WeatherDataProvider::requestUpdate);
         }
     });
 
@@ -506,7 +506,7 @@ QString Weather::WeatherDataProvider::QNHInfo() const
 }
 
 
-void Weather::WeatherDataProvider::update()
+void Weather::WeatherDataProvider::requestUpdate()
 {
     // Generate queries
     const QGeoCoordinate& position = Positioning::PositionProvider::lastValidCoordinate();
@@ -536,7 +536,7 @@ void Weather::WeatherDataProvider::update()
 }
 
 
-void Weather::WeatherDataProvider::requestData(const GeoMaps::Waypoint& wp)
+void Weather::WeatherDataProvider::requestUpdate4Waypoint(const GeoMaps::Waypoint& wp)
 {
 #warning Want to check if current data is available. Want to check if data download even makes sense.
     if (!wp.coordinate().isValid() || (wp.ICAOCode().length() < 4))

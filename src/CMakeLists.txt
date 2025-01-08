@@ -461,7 +461,7 @@ add_compile_definitions(MANUAL_LOCATION="${CMAKE_INSTALL_FULL_DOCDIR}/manual")
 # Add executable and libraries
 qt_add_executable(${PROJECT_NAME} ${SOURCES})
 set(CMAKE_MACOSX_RPATH OFF)
-qt_add_ios_ffmpeg_libraries(${PROJECT_NAME})
+#qt_add_ios_ffmpeg_libraries(${PROJECT_NAME})
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
     Qt6::Bluetooth

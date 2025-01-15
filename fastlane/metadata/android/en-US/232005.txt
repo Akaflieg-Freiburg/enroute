@@ -1,0 +1,4 @@
+### Fixed
+- The app no longer hangs on startup.
+
+- Fixed typo in the manual.

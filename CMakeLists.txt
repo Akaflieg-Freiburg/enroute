@@ -5,6 +5,7 @@
 cmake_minimum_required(VERSION 3.19)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(ANDROID_PLATFORM android-26)
 
 include(ExternalProject)
 option(QTDEPLOY "Generate and run Qt deployment scripts" OFF)

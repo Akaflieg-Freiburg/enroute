@@ -245,8 +245,8 @@ if(ANDROID)
     if (Qt6Core_VERSION VERSION_EQUAL "6.8.1")
         message(FATAL_ERROR "Qt version 6.8.1 is known to have critical errors with multi-architecture Android. Please use a different version.")
     endif()
-    if(NOT ANDROID_PLATFORM STREQUAL "android-28")
-        message(FATAL_ERROR "ANDROID_PLATFORM must be set to android-28, is currently set to " ${ANDROID_PLATFORM})
+    if(NOT ANDROID_PLATFORM STREQUAL "android-26")
+        message(FATAL_ERROR "ANDROID_PLATFORM must be set to android-26, is currently set to " ${ANDROID_PLATFORM})
     endif()
 
     list(APPEND SOURCES
@@ -313,7 +313,7 @@ if(ANDROID)
     set_target_properties(${PROJECT_NAME} PROPERTIES
         QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android"
         QT_ANDROID_TARGET_SDK_VERSION 34
-        QT_ANDROID_MIN_SDK_VERSION 28
+        QT_ANDROID_MIN_SDK_VERSION 26
     )
 
     # Include SSL Libraries

@@ -191,7 +191,7 @@ Symbol                            Function
 ================================= ========
 .. image:: self-noPosition.png    SatNav is not working. The symbol shows the last known position.
 .. image:: self-noDirection.png   SatNav is working, and the aircraft is not moving. The symbol shows the current position.
-.. image:: self-withDirection.png SatNav is working, and the aircraft is not moving. The symbol shows the current position. The arrow shows the direction of movement.
+.. image:: self-withDirection.png SatNav is working, and the aircraft is moving. The symbol shows the current position. The arrow shows the direction of movement.
 ================================= ========
 
 As soon as you are flying, the app shows the projected flight path for the next

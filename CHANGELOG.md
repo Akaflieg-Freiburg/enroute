@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.32.5] - 2025-01-15
+
+### Fixed
+- The app no longer hangs on startup.
+
+- Fixed typo in the manual.
+
+
 ## [2.32.4] - 2024-12-24
 
 ### Added

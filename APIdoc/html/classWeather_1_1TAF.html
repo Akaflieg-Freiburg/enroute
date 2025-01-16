@@ -81,9 +81,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8f73860c43b16f32bc70e60680cae09b" id="r_a8f73860c43b16f32bc70e60680cae09b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8f73860c43b16f32bc70e60680cae09b">TAF</a> (QXmlStreamReader &amp;xml)</td></tr>
 <tr class="memdesc:a8f73860c43b16f32bc70e60680cae09b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deserialization constructor.  <br /></td></tr>
 <tr class="separator:a8f73860c43b16f32bc70e60680cae09b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f4d0d0d326457d413280f6d3c9660ba" id="r_a6f4d0d0d326457d413280f6d3c9660ba"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6f4d0d0d326457d413280f6d3c9660ba">TAF</a> (QDataStream &amp;inputStream)</td></tr>
-<tr class="memdesc:a6f4d0d0d326457d413280f6d3c9660ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deserialization constructor.  <br /></td></tr>
-<tr class="separator:a6f4d0d0d326457d413280f6d3c9660ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a001af335cd5a8114f8b8c91a8d995dd1" id="r_a001af335cd5a8114f8b8c91a8d995dd1"><td class="memItemLeft" align="right" valign="top"><a id="a001af335cd5a8114f8b8c91a8d995dd1" name="a001af335cd5a8114f8b8c91a8d995dd1"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>~TAF</b> ()=default</td></tr>
 <tr class="memdesc:a001af335cd5a8114f8b8c91a8d995dd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
@@ -153,6 +150,9 @@ Friends</h2></td></tr>
 <tr class="memitem:af4bf9a847d47348ad1136fde221ec512" id="r_af4bf9a847d47348ad1136fde221ec512"><td class="memItemLeft" align="right" valign="top">QDataStream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af4bf9a847d47348ad1136fde221ec512">operator&lt;&lt;</a> (QDataStream &amp;stream, const <a class="el" href="classWeather_1_1TAF.html">TAF</a> &amp;taf)</td></tr>
 <tr class="memdesc:af4bf9a847d47348ad1136fde221ec512"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serialization.  <br /></td></tr>
 <tr class="separator:af4bf9a847d47348ad1136fde221ec512"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4269cd7f6579eed775f8614da0eb60a" id="r_ae4269cd7f6579eed775f8614da0eb60a"><td class="memItemLeft" align="right" valign="top">QDataStream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae4269cd7f6579eed775f8614da0eb60a">operator&gt;&gt;</a> (QDataStream &amp;stream, <a class="el" href="classWeather_1_1TAF.html">Weather::TAF</a> &amp;taf)</td></tr>
+<tr class="memdesc:ae4269cd7f6579eed775f8614da0eb60a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deserialization.  <br /></td></tr>
+<tr class="separator:ae4269cd7f6579eed775f8614da0eb60a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classWeather_1_1TAF.html" title="TAF forecast.">TAF</a> forecast. </p>
@@ -161,7 +161,7 @@ Friends</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="TAF_8h_source.html#l00042">42</a> of file <a class="el" href="TAF_8h_source.html">TAF.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a8f73860c43b16f32bc70e60680cae09b" name="a8f73860c43b16f32bc70e60680cae09b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8f73860c43b16f32bc70e60680cae09b">&#9670;&#160;</a></span>TAF() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f73860c43b16f32bc70e60680cae09b">&#9670;&#160;</a></span>TAF()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -188,40 +188,6 @@ Friends</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">xml</td><td>XML Stream reader </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a6f4d0d0d326457d413280f6d3c9660ba" name="a6f4d0d0d326457d413280f6d3c9660ba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6f4d0d0d326457d413280f6d3c9660ba">&#9670;&#160;</a></span>TAF() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Weather::TAF::TAF </td>
-          <td>(</td>
-          <td class="paramtype">QDataStream &amp;</td>          <td class="paramname"><span class="paramname"><em>inputStream</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel explicit">explicit</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Deserialization constructor. </p>
-<p>This constructor reads an input stream.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">inputStream</td><td>Input Stream </td></tr>
   </table>
   </dd>
 </dl>
@@ -255,7 +221,7 @@ Friends</h2></td></tr>
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property coordiante </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TAF_8h_source.html#l00150">150</a> of file <a class="el" href="TAF_8h_source.html">TAF.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TAF_8h_source.html#l00143">143</a> of file <a class="el" href="TAF_8h_source.html">TAF.h</a>.</p>
 
 </div>
 </div>
@@ -296,7 +262,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Human-readable, translated rich text. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TAF_8h_source.html#l00210">210</a> of file <a class="el" href="TAF_8h_source.html">TAF.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TAF_8h_source.html#l00203">203</a> of file <a class="el" href="TAF_8h_source.html">TAF.h</a>.</p>
 
 </div>
 </div>
@@ -326,7 +292,7 @@ Friends</h2></td></tr>
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property expiration </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TAF_8h_source.html#l00159">159</a> of file <a class="el" href="TAF_8h_source.html">TAF.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TAF_8h_source.html#l00152">152</a> of file <a class="el" href="TAF_8h_source.html">TAF.h</a>.</p>
 
 </div>
 </div>
@@ -356,7 +322,7 @@ Friends</h2></td></tr>
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property ICAOCode </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TAF_8h_source.html#l00168">168</a> of file <a class="el" href="TAF_8h_source.html">TAF.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TAF_8h_source.html#l00161">161</a> of file <a class="el" href="TAF_8h_source.html">TAF.h</a>.</p>
 
 </div>
 </div>
@@ -386,7 +352,7 @@ Friends</h2></td></tr>
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property observationTime </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TAF_8h_source.html#l00183">183</a> of file <a class="el" href="TAF_8h_source.html">TAF.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TAF_8h_source.html#l00176">176</a> of file <a class="el" href="TAF_8h_source.html">TAF.h</a>.</p>
 
 </div>
 </div>
@@ -534,7 +500,7 @@ Friends</h2></td></tr>
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property extendedName </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TAF_8h_source.html#l00192">192</a> of file <a class="el" href="TAF_8h_source.html">TAF.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TAF_8h_source.html#l00185">185</a> of file <a class="el" href="TAF_8h_source.html">TAF.h</a>.</p>
 
 </div>
 </div>
@@ -571,6 +537,38 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a id="ae4269cd7f6579eed775f8614da0eb60a" name="ae4269cd7f6579eed775f8614da0eb60a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4269cd7f6579eed775f8614da0eb60a">&#9670;&#160;</a></span>operator&gt;&gt;</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QDataStream &amp; operator&gt;&gt; </td>
+          <td>(</td>
+          <td class="paramtype">QDataStream &amp;</td>          <td class="paramname"><span class="paramname"><em>stream</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classWeather_1_1TAF.html">Weather::TAF</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>taf</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel friend">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Deserialization. </p>
+<p>There are no checks for errors of any kind. </p>
+
+</div>
+</div>
 <h2 class="groupheader">Property Documentation</h2>
 <a id="aefd062dc010deb83aebeeb0b43ce8000" name="aefd062dc010deb83aebeeb0b43ce8000"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aefd062dc010deb83aebeeb0b43ce8000">&#9670;&#160;</a></span>coordinate</h2>
@@ -595,7 +593,7 @@ Friends</h2></td></tr>
 <p>Geographical coordinate of the station reporting this <a class="el" href="classWeather_1_1TAF.html" title="TAF forecast.">TAF</a>. </p>
 <p>If the station coordinate is unknown, the property contains an invalid coordinate. </p>
 
-<p class="definition">Definition at line <a class="el" href="TAF_8h_source.html#l00114">114</a> of file <a class="el" href="TAF_8h_source.html">TAF.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TAF_8h_source.html#l00107">107</a> of file <a class="el" href="TAF_8h_source.html">TAF.h</a>.</p>
 
 </div>
 </div>
@@ -622,7 +620,7 @@ Friends</h2></td></tr>
 <p>Expiration time and date. </p>
 <p>A <a class="el" href="classWeather_1_1TAF.html" title="TAF forecast.">TAF</a> message is supposed to expire once the last forecast period ends. </p>
 
-<p class="definition">Definition at line <a class="el" href="TAF_8h_source.html#l00120">120</a> of file <a class="el" href="TAF_8h_source.html">TAF.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TAF_8h_source.html#l00113">113</a> of file <a class="el" href="TAF_8h_source.html">TAF.h</a>.</p>
 
 </div>
 </div>
@@ -649,7 +647,7 @@ Friends</h2></td></tr>
 <p>ICAO code of the station reporting this <a class="el" href="classWeather_1_1TAF.html" title="TAF forecast.">TAF</a>. </p>
 <p>This is a string such as "LSZB" for Bern/Belp airport. If the station code is unknown, the property contains an empty string. </p>
 
-<p class="definition">Definition at line <a class="el" href="TAF_8h_source.html#l00127">127</a> of file <a class="el" href="TAF_8h_source.html">TAF.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TAF_8h_source.html#l00120">120</a> of file <a class="el" href="TAF_8h_source.html">TAF.h</a>.</p>
 
 </div>
 </div>
@@ -674,7 +672,7 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 <p>Indicates if the class represents a valid <a class="el" href="classWeather_1_1TAF.html" title="TAF forecast.">TAF</a> report </p>
 
-<p class="definition">Definition at line <a class="el" href="TAF_8h_source.html#l00130">130</a> of file <a class="el" href="TAF_8h_source.html">TAF.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TAF_8h_source.html#l00123">123</a> of file <a class="el" href="TAF_8h_source.html">TAF.h</a>.</p>
 
 </div>
 </div>
@@ -701,7 +699,7 @@ Friends</h2></td></tr>
 <p>Raw <a class="el" href="classWeather_1_1TAF.html" title="TAF forecast.">TAF</a> text. </p>
 <p>This is a string such as "TAF EICK 092100Z 23007KT 9999 FEW038 BKN180 11/08 Q1019 NOSIG=". </p>
 
-<p class="definition">Definition at line <a class="el" href="TAF_8h_source.html#l00139">139</a> of file <a class="el" href="TAF_8h_source.html">TAF.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TAF_8h_source.html#l00132">132</a> of file <a class="el" href="TAF_8h_source.html">TAF.h</a>.</p>
 
 </div>
 </div>

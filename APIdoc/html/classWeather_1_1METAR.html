@@ -96,9 +96,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a18a8208eface9ff7a89b7e6386e0e8db" id="r_a18a8208eface9ff7a89b7e6386e0e8db"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a18a8208eface9ff7a89b7e6386e0e8db">METAR</a> (QXmlStreamReader &amp;xml)</td></tr>
 <tr class="memdesc:a18a8208eface9ff7a89b7e6386e0e8db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deserialization constructor.  <br /></td></tr>
 <tr class="separator:a18a8208eface9ff7a89b7e6386e0e8db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac768a40c63340d3eab69d4dcbc6a0251" id="r_ac768a40c63340d3eab69d4dcbc6a0251"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac768a40c63340d3eab69d4dcbc6a0251">METAR</a> (QDataStream &amp;inputStream)</td></tr>
-<tr class="memdesc:ac768a40c63340d3eab69d4dcbc6a0251"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deserialization constructor.  <br /></td></tr>
-<tr class="separator:ac768a40c63340d3eab69d4dcbc6a0251"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e5ba0f790e4ce9518f459b8ccc41578" id="r_a3e5ba0f790e4ce9518f459b8ccc41578"><td class="memItemLeft" align="right" valign="top"><a id="a3e5ba0f790e4ce9518f459b8ccc41578" name="a3e5ba0f790e4ce9518f459b8ccc41578"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>~METAR</b> ()=default</td></tr>
 <tr class="memdesc:a3e5ba0f790e4ce9518f459b8ccc41578"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
@@ -195,6 +192,9 @@ Friends</h2></td></tr>
 <tr class="memitem:a55e1017c8af60978b3fcbdfedc5d12e2" id="r_a55e1017c8af60978b3fcbdfedc5d12e2"><td class="memItemLeft" align="right" valign="top">QDataStream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a55e1017c8af60978b3fcbdfedc5d12e2">operator&lt;&lt;</a> (QDataStream &amp;stream, const <a class="el" href="classWeather_1_1METAR.html">METAR</a> &amp;metar)</td></tr>
 <tr class="memdesc:a55e1017c8af60978b3fcbdfedc5d12e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serialization.  <br /></td></tr>
 <tr class="separator:a55e1017c8af60978b3fcbdfedc5d12e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9611fd2b5530fbd92688e2118f1d8d4" id="r_aa9611fd2b5530fbd92688e2118f1d8d4"><td class="memItemLeft" align="right" valign="top">QDataStream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa9611fd2b5530fbd92688e2118f1d8d4">operator&gt;&gt;</a> (QDataStream &amp;stream, <a class="el" href="classWeather_1_1METAR.html">METAR</a> &amp;metar)</td></tr>
+<tr class="memdesc:aa9611fd2b5530fbd92688e2118f1d8d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deserialization.  <br /></td></tr>
+<tr class="separator:aa9611fd2b5530fbd92688e2118f1d8d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classWeather_1_1METAR.html" title="METAR report.">METAR</a> report. </p>
@@ -229,13 +229,13 @@ Friends</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="METAR_8h_source.html#l00060">60</a> of file <a class="el" href="METAR_8h_source.html">METAR.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="METAR_8h_source.html#l00061">61</a> of file <a class="el" href="METAR_8h_source.html">METAR.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a18a8208eface9ff7a89b7e6386e0e8db" name="a18a8208eface9ff7a89b7e6386e0e8db"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a18a8208eface9ff7a89b7e6386e0e8db">&#9670;&#160;</a></span>METAR() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a18a8208eface9ff7a89b7e6386e0e8db">&#9670;&#160;</a></span>METAR()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -262,40 +262,6 @@ Friends</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">xml</td><td>XML Stream reader </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ac768a40c63340d3eab69d4dcbc6a0251" name="ac768a40c63340d3eab69d4dcbc6a0251"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac768a40c63340d3eab69d4dcbc6a0251">&#9670;&#160;</a></span>METAR() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Weather::METAR::METAR </td>
-          <td>(</td>
-          <td class="paramtype">QDataStream &amp;</td>          <td class="paramname"><span class="paramname"><em>inputStream</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel explicit">explicit</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Deserialization constructor. </p>
-<p>This constructor reads an input stream.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">inputStream</td><td>Input Stream </td></tr>
   </table>
   </dd>
 </dl>
@@ -329,7 +295,7 @@ Friends</h2></td></tr>
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property coordiante </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="METAR_8h_source.html#l00198">198</a> of file <a class="el" href="METAR_8h_source.html">METAR.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="METAR_8h_source.html#l00191">191</a> of file <a class="el" href="METAR_8h_source.html">METAR.h</a>.</p>
 
 </div>
 </div>
@@ -370,7 +336,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Human-readable, translated rich text. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="METAR_8h_source.html#l00279">279</a> of file <a class="el" href="METAR_8h_source.html">METAR.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="METAR_8h_source.html#l00272">272</a> of file <a class="el" href="METAR_8h_source.html">METAR.h</a>.</p>
 
 </div>
 </div>
@@ -473,7 +439,7 @@ Friends</h2></td></tr>
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property flightCategory </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="METAR_8h_source.html#l00219">219</a> of file <a class="el" href="METAR_8h_source.html">METAR.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="METAR_8h_source.html#l00212">212</a> of file <a class="el" href="METAR_8h_source.html">METAR.h</a>.</p>
 
 </div>
 </div>
@@ -531,7 +497,7 @@ Friends</h2></td></tr>
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property ICAOCode </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="METAR_8h_source.html#l00228">228</a> of file <a class="el" href="METAR_8h_source.html">METAR.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="METAR_8h_source.html#l00221">221</a> of file <a class="el" href="METAR_8h_source.html">METAR.h</a>.</p>
 
 </div>
 </div>
@@ -589,7 +555,7 @@ Friends</h2></td></tr>
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property observationTime </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="METAR_8h_source.html#l00243">243</a> of file <a class="el" href="METAR_8h_source.html">METAR.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="METAR_8h_source.html#l00236">236</a> of file <a class="el" href="METAR_8h_source.html">METAR.h</a>.</p>
 
 </div>
 </div>
@@ -709,7 +675,7 @@ Friends</h2></td></tr>
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property qnh </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="METAR_8h_source.html#l00252">252</a> of file <a class="el" href="METAR_8h_source.html">METAR.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="METAR_8h_source.html#l00245">245</a> of file <a class="el" href="METAR_8h_source.html">METAR.h</a>.</p>
 
 </div>
 </div>
@@ -739,7 +705,7 @@ Friends</h2></td></tr>
 <p>Getter function for property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property extendedName </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="METAR_8h_source.html#l00261">261</a> of file <a class="el" href="METAR_8h_source.html">METAR.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="METAR_8h_source.html#l00254">254</a> of file <a class="el" href="METAR_8h_source.html">METAR.h</a>.</p>
 
 </div>
 </div>
@@ -816,6 +782,38 @@ ago: marginal VMC • wind at 15kt • rain" </dd></dl>
 
 </div>
 </div>
+<a id="aa9611fd2b5530fbd92688e2118f1d8d4" name="aa9611fd2b5530fbd92688e2118f1d8d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9611fd2b5530fbd92688e2118f1d8d4">&#9670;&#160;</a></span>operator&gt;&gt;</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QDataStream &amp; operator&gt;&gt; </td>
+          <td>(</td>
+          <td class="paramtype">QDataStream &amp;</td>          <td class="paramname"><span class="paramname"><em>stream</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classWeather_1_1METAR.html">METAR</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>metar</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel friend">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Deserialization. </p>
+<p>There are no checks for errors of any kind. </p>
+
+</div>
+</div>
 <h2 class="groupheader">Property Documentation</h2>
 <a id="acd6278e6a3b9d64813e6920258c91910" name="acd6278e6a3b9d64813e6920258c91910"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acd6278e6a3b9d64813e6920258c91910">&#9670;&#160;</a></span>coordinate</h2>
@@ -840,7 +838,7 @@ ago: marginal VMC • wind at 15kt • rain" </dd></dl>
 <p>Geographical coordinate of the station reporting this <a class="el" href="classWeather_1_1METAR.html" title="METAR report.">METAR</a>. </p>
 <p>If the station coordinate is unknown, the property contains an invalid coordinate. Typically, the coordinate will contain the elevation of the station. </p>
 
-<p class="definition">Definition at line <a class="el" href="METAR_8h_source.html#l00136">136</a> of file <a class="el" href="METAR_8h_source.html">METAR.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="METAR_8h_source.html#l00129">129</a> of file <a class="el" href="METAR_8h_source.html">METAR.h</a>.</p>
 
 </div>
 </div>
@@ -867,7 +865,7 @@ ago: marginal VMC • wind at 15kt • rain" </dd></dl>
 <p>Expiration time and date. </p>
 <p>A <a class="el" href="classWeather_1_1METAR.html" title="METAR report.">METAR</a> message is supposed to expire 1.5 hours after observation time, unless raw text contains "NOSIG", then it is 3 hours. </p>
 
-<p class="definition">Definition at line <a class="el" href="METAR_8h_source.html#l00143">143</a> of file <a class="el" href="METAR_8h_source.html">METAR.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="METAR_8h_source.html#l00136">136</a> of file <a class="el" href="METAR_8h_source.html">METAR.h</a>.</p>
 
 </div>
 </div>
@@ -900,7 +898,7 @@ ago: marginal VMC • wind at 15kt • rain" </dd></dl>
 <li>"transparant" for "unknown" </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="METAR_8h_source.html#l00157">157</a> of file <a class="el" href="METAR_8h_source.html">METAR.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="METAR_8h_source.html#l00150">150</a> of file <a class="el" href="METAR_8h_source.html">METAR.h</a>.</p>
 
 </div>
 </div>
@@ -927,7 +925,7 @@ ago: marginal VMC • wind at 15kt • rain" </dd></dl>
 <p>ICAO code of the station reporting this <a class="el" href="classWeather_1_1METAR.html" title="METAR report.">METAR</a>. </p>
 <p>This is a string such as "LSZB" for Bern/Belp airport. If the station code is unknown, the property contains an empty string. </p>
 
-<p class="definition">Definition at line <a class="el" href="METAR_8h_source.html#l00167">167</a> of file <a class="el" href="METAR_8h_source.html">METAR.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="METAR_8h_source.html#l00160">160</a> of file <a class="el" href="METAR_8h_source.html">METAR.h</a>.</p>
 
 </div>
 </div>
@@ -954,7 +952,7 @@ ago: marginal VMC • wind at 15kt • rain" </dd></dl>
 <p>QNH value in this <a class="el" href="classWeather_1_1METAR.html" title="METAR report.">METAR</a>. </p>
 <p>The QNH property is set to NaN if no QNH is known. Otherwise, the values is guaranteed to lie in the interval [800 … 1200] </p>
 
-<p class="definition">Definition at line <a class="el" href="METAR_8h_source.html#l00180">180</a> of file <a class="el" href="METAR_8h_source.html">METAR.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="METAR_8h_source.html#l00173">173</a> of file <a class="el" href="METAR_8h_source.html">METAR.h</a>.</p>
 
 </div>
 </div>
@@ -982,7 +980,7 @@ ago: marginal VMC • wind at 15kt • rain" </dd></dl>
 <p>This is a string such as "METAR EICK 092100Z 23007KT 9999 FEW038 BKN180
 11/08 Q1019 NOSIG=". </p>
 
-<p class="definition">Definition at line <a class="el" href="METAR_8h_source.html#l00187">187</a> of file <a class="el" href="METAR_8h_source.html">METAR.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="METAR_8h_source.html#l00180">180</a> of file <a class="el" href="METAR_8h_source.html">METAR.h</a>.</p>
 
 </div>
 </div>

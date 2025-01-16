@@ -75,10 +75,6 @@ $(function(){ initResizable(false); });
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="signals" name="signals"></a>
 Signals</h2></td></tr>
-<tr class="memitem:a1f5c01f8cda0c5d745238b4e54fbd501" id="r_a1f5c01f8cda0c5d745238b4e54fbd501"><td class="memItemLeft" align="right" valign="top"><a id="a1f5c01f8cda0c5d745238b4e54fbd501" name="a1f5c01f8cda0c5d745238b4e54fbd501"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>backgroundUpdateChanged</b> ()</td></tr>
-<tr class="memdesc:a1f5c01f8cda0c5d745238b4e54fbd501"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
-<tr class="separator:a1f5c01f8cda0c5d745238b4e54fbd501"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39abdd9eb031cdab206478ee04f2ed8a" id="r_a39abdd9eb031cdab206478ee04f2ed8a"><td class="memItemLeft" align="right" valign="top"><a id="a39abdd9eb031cdab206478ee04f2ed8a" name="a39abdd9eb031cdab206478ee04f2ed8a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>downloadingChanged</b> ()</td></tr>
 <tr class="memdesc:a39abdd9eb031cdab206478ee04f2ed8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
@@ -94,56 +90,51 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QNHInfoChanged</b> ()
 void&#160;</td><td class="memItemRight" valign="bottom"><b>sunInfoChanged</b> ()</td></tr>
 <tr class="memdesc:a8c707fa8e25ec16286dc6928a7503129"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifier signal. <br /></td></tr>
 <tr class="separator:a8c707fa8e25ec16286dc6928a7503129"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad74174b2df0e872e225cdf1c22f27a1a" id="r_ad74174b2df0e872e225cdf1c22f27a1a"><td class="memItemLeft" align="right" valign="top"><a id="ad74174b2df0e872e225cdf1c22f27a1a" name="ad74174b2df0e872e225cdf1c22f27a1a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>weatherStationsChanged</b> ()</td></tr>
-<tr class="memdesc:ad74174b2df0e872e225cdf1c22f27a1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal emitted when the list of weather reports changes. <br /></td></tr>
-<tr class="separator:ad74174b2df0e872e225cdf1c22f27a1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a2dd0260bb1c01b72103652a2e96b35d3" id="r_a2dd0260bb1c01b72103652a2e96b35d3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2dd0260bb1c01b72103652a2e96b35d3">WeatherDataProvider</a> (QObject *parent=nullptr)</td></tr>
 <tr class="memdesc:a2dd0260bb1c01b72103652a2e96b35d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard constructor.  <br /></td></tr>
 <tr class="separator:a2dd0260bb1c01b72103652a2e96b35d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9f20f5c6fe86fddf7aeed9438bba139" id="r_aa9f20f5c6fe86fddf7aeed9438bba139"><td class="memItemLeft" align="right" valign="top"><a id="aa9f20f5c6fe86fddf7aeed9438bba139" name="aa9f20f5c6fe86fddf7aeed9438bba139"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>~WeatherDataProvider</b> () override</td></tr>
-<tr class="memdesc:aa9f20f5c6fe86fddf7aeed9438bba139"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard destructor. <br /></td></tr>
-<tr class="separator:aa9f20f5c6fe86fddf7aeed9438bba139"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f76b69baa886737363afe6d7d7d41fe" id="r_a0f76b69baa886737363afe6d7d7d41fe"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0f76b69baa886737363afe6d7d7d41fe">backgroundUpdate</a> () const -&gt; bool</td></tr>
-<tr class="memdesc:a0f76b69baa886737363afe6d7d7d41fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <br /></td></tr>
-<tr class="separator:a0f76b69baa886737363afe6d7d7d41fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a95493a3a3038b276b90e7e23dda97f90" id="r_a95493a3a3038b276b90e7e23dda97f90"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a95493a3a3038b276b90e7e23dda97f90">downloading</a> () const -&gt; bool</td></tr>
-<tr class="memdesc:a95493a3a3038b276b90e7e23dda97f90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <br /></td></tr>
-<tr class="separator:a95493a3a3038b276b90e7e23dda97f90"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a22412b04623604100a8e55c14294113c" id="r_a22412b04623604100a8e55c14294113c"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE <a class="el" href="classWeather_1_1Station.html">Weather::Station</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a22412b04623604100a8e55c14294113c">findWeatherStation</a> (const QString &amp;ICAOCode) const</td></tr>
-<tr class="memdesc:a22412b04623604100a8e55c14294113c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find WeatherStation by ICAO code.  <br /></td></tr>
-<tr class="separator:a22412b04623604100a8e55c14294113c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa5f0de5c69063bf1bd12ecc6ebc72dce" id="r_aa5f0de5c69063bf1bd12ecc6ebc72dce"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa5f0de5c69063bf1bd12ecc6ebc72dce">QNH</a> () const -&gt; <a class="el" href="classUnits_1_1Pressure.html">Units::Pressure</a></td></tr>
-<tr class="memdesc:aa5f0de5c69063bf1bd12ecc6ebc72dce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <br /></td></tr>
-<tr class="separator:aa5f0de5c69063bf1bd12ecc6ebc72dce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c9ce6d3c34e076f4e773da03124eabd" id="r_a3c9ce6d3c34e076f4e773da03124eabd"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3c9ce6d3c34e076f4e773da03124eabd">QNHPressureAltitude</a> () const -&gt; <a class="el" href="classUnits_1_1Distance.html">Units::Distance</a></td></tr>
-<tr class="memdesc:a3c9ce6d3c34e076f4e773da03124eabd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <br /></td></tr>
-<tr class="separator:a3c9ce6d3c34e076f4e773da03124eabd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e784ce2c231044eec32989c1ae03869" id="r_a3e784ce2c231044eec32989c1ae03869"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3e784ce2c231044eec32989c1ae03869">QNHInfo</a> () const -&gt; QString</td></tr>
-<tr class="memdesc:a3e784ce2c231044eec32989c1ae03869"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <br /></td></tr>
-<tr class="separator:a3e784ce2c231044eec32989c1ae03869"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed52eaaa5a67a913ef7647fc4c7edf4e" id="r_aed52eaaa5a67a913ef7647fc4c7edf4e"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aed52eaaa5a67a913ef7647fc4c7edf4e">update</a> (bool isBackgroundUpdate=true)</td></tr>
-<tr class="memdesc:aed52eaaa5a67a913ef7647fc4c7edf4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update method.  <br /></td></tr>
-<tr class="separator:aed52eaaa5a67a913ef7647fc4c7edf4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab95abd73a3fcd9c411c04cddb51b72db" id="r_ab95abd73a3fcd9c411c04cddb51b72db"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab95abd73a3fcd9c411c04cddb51b72db">weatherStations</a> () const -&gt; QList&lt; <a class="el" href="classWeather_1_1Station.html">Weather::Station</a> * &gt;</td></tr>
-<tr class="memdesc:ab95abd73a3fcd9c411c04cddb51b72db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <br /></td></tr>
-<tr class="separator:ab95abd73a3fcd9c411c04cddb51b72db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6988afd8b6acfd331887ed0f0c6baa26" id="r_a6988afd8b6acfd331887ed0f0c6baa26"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6988afd8b6acfd331887ed0f0c6baa26">downloading</a> () const</td></tr>
+<tr class="memdesc:a6988afd8b6acfd331887ed0f0c6baa26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <br /></td></tr>
+<tr class="separator:a6988afd8b6acfd331887ed0f0c6baa26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b9638dd22e25863b3dd11c34e823a69" id="r_a2b9638dd22e25863b3dd11c34e823a69"><td class="memItemLeft" align="right" valign="top">QMap&lt; QString, <a class="el" href="classWeather_1_1METAR.html">Weather::METAR</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2b9638dd22e25863b3dd11c34e823a69">METARs</a> ()</td></tr>
+<tr class="memdesc:a2b9638dd22e25863b3dd11c34e823a69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <br /></td></tr>
+<tr class="separator:a2b9638dd22e25863b3dd11c34e823a69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1feb1b7629dafa7517c93b91628f6e6" id="r_ad1feb1b7629dafa7517c93b91628f6e6"><td class="memItemLeft" align="right" valign="top">QBindable&lt; QMap&lt; QString, <a class="el" href="classWeather_1_1METAR.html">Weather::METAR</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad1feb1b7629dafa7517c93b91628f6e6">bindableMETARs</a> ()</td></tr>
+<tr class="memdesc:ad1feb1b7629dafa7517c93b91628f6e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <br /></td></tr>
+<tr class="separator:ad1feb1b7629dafa7517c93b91628f6e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5e2e564dbf887ebb473533c95b0760a" id="r_ac5e2e564dbf887ebb473533c95b0760a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classUnits_1_1Pressure.html">Units::Pressure</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac5e2e564dbf887ebb473533c95b0760a">QNH</a> () const</td></tr>
+<tr class="memdesc:ac5e2e564dbf887ebb473533c95b0760a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <br /></td></tr>
+<tr class="separator:ac5e2e564dbf887ebb473533c95b0760a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6b46f177a3f12229038c5482ae0c6d7" id="r_ae6b46f177a3f12229038c5482ae0c6d7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classUnits_1_1Distance.html">Units::Distance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae6b46f177a3f12229038c5482ae0c6d7">QNHPressureAltitude</a> () const</td></tr>
+<tr class="memdesc:ae6b46f177a3f12229038c5482ae0c6d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <br /></td></tr>
+<tr class="separator:ae6b46f177a3f12229038c5482ae0c6d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d7754a09c320af9e35080cb5bacba54" id="r_a7d7754a09c320af9e35080cb5bacba54"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7d7754a09c320af9e35080cb5bacba54">QNHInfo</a> () const</td></tr>
+<tr class="memdesc:a7d7754a09c320af9e35080cb5bacba54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <br /></td></tr>
+<tr class="separator:a7d7754a09c320af9e35080cb5bacba54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a332e4f194f2de852d0539e662f1f6238" id="r_a332e4f194f2de852d0539e662f1f6238"><td class="memItemLeft" align="right" valign="top">QMap&lt; QString, <a class="el" href="classWeather_1_1TAF.html">Weather::TAF</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a332e4f194f2de852d0539e662f1f6238">TAFs</a> ()</td></tr>
+<tr class="memdesc:a332e4f194f2de852d0539e662f1f6238"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <br /></td></tr>
+<tr class="separator:a332e4f194f2de852d0539e662f1f6238"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b034ae529a8eae12d6f6061b029d102" id="r_a0b034ae529a8eae12d6f6061b029d102"><td class="memItemLeft" align="right" valign="top">QBindable&lt; QMap&lt; QString, <a class="el" href="classWeather_1_1TAF.html">Weather::TAF</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0b034ae529a8eae12d6f6061b029d102">bindableTAFs</a> ()</td></tr>
+<tr class="memdesc:a0b034ae529a8eae12d6f6061b029d102"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <br /></td></tr>
+<tr class="separator:a0b034ae529a8eae12d6f6061b029d102"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca1e55b06a41669d2bc84a1b8f76717f" id="r_aca1e55b06a41669d2bc84a1b8f76717f"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aca1e55b06a41669d2bc84a1b8f76717f">requestUpdate</a> ()</td></tr>
+<tr class="memdesc:aca1e55b06a41669d2bc84a1b8f76717f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request update.  <br /></td></tr>
+<tr class="separator:aca1e55b06a41669d2bc84a1b8f76717f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34bb6566c2291ce2e9c3e6a46d50f37f" id="r_a34bb6566c2291ce2e9c3e6a46d50f37f"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a34bb6566c2291ce2e9c3e6a46d50f37f">requestUpdate4Waypoint</a> (const <a class="el" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a> &amp;wp)</td></tr>
+<tr class="memdesc:a34bb6566c2291ce2e9c3e6a46d50f37f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request update.  <br /></td></tr>
+<tr class="separator:a34bb6566c2291ce2e9c3e6a46d50f37f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a26994c0221faace14d3cd97a7db46098" id="r_a26994c0221faace14d3cd97a7db46098"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a26994c0221faace14d3cd97a7db46098">sunInfo</a> () -&gt; QString</td></tr>
-<tr class="memdesc:a26994c0221faace14d3cd97a7db46098"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <br /></td></tr>
-<tr class="separator:a26994c0221faace14d3cd97a7db46098"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60c7c439c7d1ae7b2320fdea780e8083" id="r_a60c7c439c7d1ae7b2320fdea780e8083"><td class="memItemLeft" align="right" valign="top">static QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a60c7c439c7d1ae7b2320fdea780e8083">sunInfo</a> ()</td></tr>
+<tr class="memdesc:a60c7c439c7d1ae7b2320fdea780e8083"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property of the same name.  <br /></td></tr>
+<tr class="separator:a60c7c439c7d1ae7b2320fdea780e8083"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:a56bf601a83772e02d316b5f01da3975e" id="r_a56bf601a83772e02d316b5f01da3975e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a56bf601a83772e02d316b5f01da3975e">backgroundUpdate</a></td></tr>
-<tr class="memdesc:a56bf601a83772e02d316b5f01da3975e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Background update flag.  <br /></td></tr>
-<tr class="separator:a56bf601a83772e02d316b5f01da3975e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ec5dc5d952f6e91c2cac03d52005be6" id="r_a6ec5dc5d952f6e91c2cac03d52005be6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6ec5dc5d952f6e91c2cac03d52005be6">downloading</a></td></tr>
 <tr class="memdesc:a6ec5dc5d952f6e91c2cac03d52005be6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Downloading flag.  <br /></td></tr>
 <tr class="separator:a6ec5dc5d952f6e91c2cac03d52005be6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -159,19 +150,23 @@ Properties</h2></td></tr>
 <tr class="memitem:a3e86b97258a906b0e0692007be230d58" id="r_a3e86b97258a906b0e0692007be230d58"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3e86b97258a906b0e0692007be230d58">sunInfo</a></td></tr>
 <tr class="memdesc:a3e86b97258a906b0e0692007be230d58"><td class="mdescLeft">&#160;</td><td class="mdescRight">sunInfo  <br /></td></tr>
 <tr class="separator:a3e86b97258a906b0e0692007be230d58"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02fc9711982f7cca1ea2cf0c15eb84c9" id="r_a02fc9711982f7cca1ea2cf0c15eb84c9"><td class="memItemLeft" align="right" valign="top">QList&lt; <a class="el" href="classWeather_1_1Station.html">Weather::Station</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a02fc9711982f7cca1ea2cf0c15eb84c9">weatherStations</a></td></tr>
-<tr class="memdesc:a02fc9711982f7cca1ea2cf0c15eb84c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of weather stations.  <br /></td></tr>
-<tr class="separator:a02fc9711982f7cca1ea2cf0c15eb84c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b46fc577d9d19880fbaf558183d619b" id="r_a3b46fc577d9d19880fbaf558183d619b"><td class="memItemLeft" align="right" valign="top"><a id="a3b46fc577d9d19880fbaf558183d619b" name="a3b46fc577d9d19880fbaf558183d619b"></a>
+QMap&lt; QString, <a class="el" href="classWeather_1_1METAR.html">Weather::METAR</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>METARs</b></td></tr>
+<tr class="memdesc:a3b46fc577d9d19880fbaf558183d619b"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of METARs. <br /></td></tr>
+<tr class="separator:a3b46fc577d9d19880fbaf558183d619b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a6eab73382e319f2be06c464f82230c" id="r_a9a6eab73382e319f2be06c464f82230c"><td class="memItemLeft" align="right" valign="top"><a id="a9a6eab73382e319f2be06c464f82230c" name="a9a6eab73382e319f2be06c464f82230c"></a>
+QMap&lt; QString, <a class="el" href="classWeather_1_1TAF.html">Weather::TAF</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>TAFs</b></td></tr>
+<tr class="memdesc:a9a6eab73382e319f2be06c464f82230c"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of TAFs. <br /></td></tr>
+<tr class="separator:a9a6eab73382e319f2be06c464f82230c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classWeather_1_1WeatherDataProvider.html" title="WeatherDataProvider, weather service manager.">WeatherDataProvider</a>, weather service manager. </p>
-<p>This class retrieves METAR/TAF weather reports from the "Aviation Weather
-Center" at aviationweather.com, for all weather stations that are within 75nm from the last-known user position or current route. The reports can then be accessed via the property "weatherStations" and the method findWeatherStation. The <a class="el" href="classWeather_1_1WeatherDataProvider.html" title="WeatherDataProvider, weather service manager.">WeatherDataProvider</a> class honors GlobalSettings::acceptedWeatherTerms() and will initiate a download only if the user agreed to the privacy warning.</p>
-<p>Once constructed, the <a class="el" href="classWeather_1_1WeatherDataProvider.html" title="WeatherDataProvider, weather service manager.">WeatherDataProvider</a> class will regularly perform background updates to retrieve up-to-date information. It will update the list of known weather stations and also the METAR/TAF reports for the weather stations. The class checks regularly for outdated <a class="el" href="classWeather_1_1METAR.html" title="METAR report.">METAR</a> and <a class="el" href="classWeather_1_1TAF.html" title="TAF forecast.">TAF</a> reports and deletes them automatically, along with those WeatherStations that no longer contain any report.</p>
+<p>This class retrieves METAR/TAF weather reports from the server enroute-data.</p>
+<p>Once constructed, the <a class="el" href="classWeather_1_1WeatherDataProvider.html" title="WeatherDataProvider, weather service manager.">WeatherDataProvider</a> class will regularly perform background updates to retrieve up-to-date information for a region around the current position and around the intended flight route. The class checks regularly for outdated <a class="el" href="classWeather_1_1METAR.html" title="METAR report.">METAR</a> and <a class="el" href="classWeather_1_1TAF.html" title="TAF forecast.">TAF</a> and deletes them automatically.</p>
 <p>In order to avoid loss of data when the app is accidently closed in-flight, the class stores all weather data at destruction and at regular intervals, and reads the data back in on construction.</p>
-<p>This class also contains a number or convenience methods and properties pertaining to sunrise/sunset </p>
+<p>This class also contains a number or convenience methods and properties pertaining to sunrise and sunset. </p>
 
-<p class="definition">Definition at line <a class="el" href="WeatherDataProvider_8h_source.html#l00065">65</a> of file <a class="el" href="WeatherDataProvider_8h_source.html">WeatherDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WeatherDataProvider_8h_source.html#l00054">54</a> of file <a class="el" href="WeatherDataProvider_8h_source.html">WeatherDataProvider.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a2dd0260bb1c01b72103652a2e96b35d3" name="a2dd0260bb1c01b72103652a2e96b35d3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2dd0260bb1c01b72103652a2e96b35d3">&#9670;&#160;</a></span>WeatherDataProvider()</h2>
@@ -207,8 +202,8 @@ Center" at aviationweather.com, for all weather stations that are within 75nm fr
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a0f76b69baa886737363afe6d7d7d41fe" name="a0f76b69baa886737363afe6d7d7d41fe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0f76b69baa886737363afe6d7d7d41fe">&#9670;&#160;</a></span>backgroundUpdate()</h2>
+<a id="ad1feb1b7629dafa7517c93b91628f6e6" name="ad1feb1b7629dafa7517c93b91628f6e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1feb1b7629dafa7517c93b91628f6e6">&#9670;&#160;</a></span>bindableMETARs()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -217,28 +212,28 @@ Center" at aviationweather.com, for all weather stations that are within 75nm fr
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto Weather::WeatherDataProvider::backgroundUpdate </td>
+          <td class="memname">QBindable&lt; QMap&lt; QString, <a class="el" href="classWeather_1_1METAR.html">Weather::METAR</a> &gt; &gt; Weather::WeatherDataProvider::bindableMETARs </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const -&gt; bool </td>
+          <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Getter method for property of the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property backgroundUpdate </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Property METARs </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="WeatherDataProvider_8h_source.html#l00106">106</a> of file <a class="el" href="WeatherDataProvider_8h_source.html">WeatherDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WeatherDataProvider_8h_source.html#l00150">150</a> of file <a class="el" href="WeatherDataProvider_8h_source.html">WeatherDataProvider.h</a>.</p>
 
 </div>
 </div>
-<a id="a95493a3a3038b276b90e7e23dda97f90" name="a95493a3a3038b276b90e7e23dda97f90"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a95493a3a3038b276b90e7e23dda97f90">&#9670;&#160;</a></span>downloading()</h2>
+<a id="a0b034ae529a8eae12d6f6061b029d102" name="a0b034ae529a8eae12d6f6061b029d102"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b034ae529a8eae12d6f6061b029d102">&#9670;&#160;</a></span>bindableTAFs()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -247,10 +242,40 @@ Center" at aviationweather.com, for all weather stations that are within 75nm fr
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto Weather::WeatherDataProvider::downloading </td>
+          <td class="memname">QBindable&lt; QMap&lt; QString, <a class="el" href="classWeather_1_1TAF.html">Weather::TAF</a> &gt; &gt; Weather::WeatherDataProvider::bindableTAFs </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const -&gt;  bool</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter method for property of the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property TAFs </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="WeatherDataProvider_8h_source.html#l00186">186</a> of file <a class="el" href="WeatherDataProvider_8h_source.html">WeatherDataProvider.h</a>.</p>
+
+</div>
+</div>
+<a id="a6988afd8b6acfd331887ed0f0c6baa26" name="a6988afd8b6acfd331887ed0f0c6baa26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6988afd8b6acfd331887ed0f0c6baa26">&#9670;&#160;</a></span>downloading()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Weather::WeatherDataProvider::downloading </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -299,8 +324,8 @@ Center" at aviationweather.com, for all weather stations that are within 75nm fr
 
 </div>
 </div>
-<a id="a22412b04623604100a8e55c14294113c" name="a22412b04623604100a8e55c14294113c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a22412b04623604100a8e55c14294113c">&#9670;&#160;</a></span>findWeatherStation()</h2>
+<a id="a2b9638dd22e25863b3dd11c34e823a69" name="a2b9638dd22e25863b3dd11c34e823a69"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b9638dd22e25863b3dd11c34e823a69">&#9670;&#160;</a></span>METARs()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -309,36 +334,28 @@ Center" at aviationweather.com, for all weather stations that are within 75nm fr
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Q_INVOKABLE <a class="el" href="classWeather_1_1Station.html">Weather::Station</a> * Weather::WeatherDataProvider::findWeatherStation </td>
+          <td class="memname">QMap&lt; QString, <a class="el" href="classWeather_1_1METAR.html">Weather::METAR</a> &gt; Weather::WeatherDataProvider::METARs </td>
           <td>(</td>
-          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>ICAOCode</em></span></td><td>)</td>
-          <td> const</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Find WeatherStation by ICAO code. </p>
-<p>This method returns a pointer to the WeatherStation with the given ICAO code, or a nullptr if no WeatherStation with the given code is known to the <a class="el" href="classWeather_1_1WeatherDataProvider.html" title="WeatherDataProvider, weather service manager.">WeatherDataProvider</a>.</p>
-<dl class="section warning"><dt>Warning</dt><dd>The WeatherStation objects are owned by the <a class="el" href="classWeather_1_1WeatherDataProvider.html" title="WeatherDataProvider, weather service manager.">WeatherDataProvider</a> and can be deleted anytime. Store it in a QPointer to avoid dangling pointers.</dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">ICAOCode</td><td>ICAO code name of the WeatherStation, such as "EDDF"</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Pointer to WeatherStation </dd></dl>
+<p>Getter method for property of the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property METARs </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="WeatherDataProvider_8h_source.html#l00135">135</a> of file <a class="el" href="WeatherDataProvider_8h_source.html">WeatherDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WeatherDataProvider_8h_source.html#l00144">144</a> of file <a class="el" href="WeatherDataProvider_8h_source.html">WeatherDataProvider.h</a>.</p>
 
 </div>
 </div>
-<a id="aa5f0de5c69063bf1bd12ecc6ebc72dce" name="aa5f0de5c69063bf1bd12ecc6ebc72dce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa5f0de5c69063bf1bd12ecc6ebc72dce">&#9670;&#160;</a></span>QNH()</h2>
+<a id="ac5e2e564dbf887ebb473533c95b0760a" name="ac5e2e564dbf887ebb473533c95b0760a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac5e2e564dbf887ebb473533c95b0760a">&#9670;&#160;</a></span>QNH()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -347,10 +364,10 @@ Center" at aviationweather.com, for all weather stations that are within 75nm fr
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto Weather::WeatherDataProvider::QNH </td>
+          <td class="memname"><a class="el" href="classUnits_1_1Pressure.html">Units::Pressure</a> Weather::WeatherDataProvider::QNH </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const -&gt;  <a class="el" href="classUnits_1_1Pressure.html">Units::Pressure</a></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -365,8 +382,8 @@ Center" at aviationweather.com, for all weather stations that are within 75nm fr
 
 </div>
 </div>
-<a id="a3e784ce2c231044eec32989c1ae03869" name="a3e784ce2c231044eec32989c1ae03869"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3e784ce2c231044eec32989c1ae03869">&#9670;&#160;</a></span>QNHInfo()</h2>
+<a id="a7d7754a09c320af9e35080cb5bacba54" name="a7d7754a09c320af9e35080cb5bacba54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d7754a09c320af9e35080cb5bacba54">&#9670;&#160;</a></span>QNHInfo()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -375,10 +392,10 @@ Center" at aviationweather.com, for all weather stations that are within 75nm fr
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto Weather::WeatherDataProvider::QNHInfo </td>
+          <td class="memname">QString Weather::WeatherDataProvider::QNHInfo </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const -&gt;  QString</td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -393,8 +410,8 @@ Center" at aviationweather.com, for all weather stations that are within 75nm fr
 
 </div>
 </div>
-<a id="a3c9ce6d3c34e076f4e773da03124eabd" name="a3c9ce6d3c34e076f4e773da03124eabd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3c9ce6d3c34e076f4e773da03124eabd">&#9670;&#160;</a></span>QNHPressureAltitude()</h2>
+<a id="ae6b46f177a3f12229038c5482ae0c6d7" name="ae6b46f177a3f12229038c5482ae0c6d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6b46f177a3f12229038c5482ae0c6d7">&#9670;&#160;</a></span>QNHPressureAltitude()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -403,10 +420,10 @@ Center" at aviationweather.com, for all weather stations that are within 75nm fr
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto Weather::WeatherDataProvider::QNHPressureAltitude </td>
+          <td class="memname"><a class="el" href="classUnits_1_1Distance.html">Units::Distance</a> Weather::WeatherDataProvider::QNHPressureAltitude </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const -&gt; <a class="el" href="classUnits_1_1Distance.html">Units::Distance</a> </td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -419,12 +436,60 @@ Center" at aviationweather.com, for all weather stations that are within 75nm fr
 <p>Getter method for property of the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property QNHPressureAltitude </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="WeatherDataProvider_8h_source.html#l00164">164</a> of file <a class="el" href="WeatherDataProvider_8h_source.html">WeatherDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WeatherDataProvider_8h_source.html#l00162">162</a> of file <a class="el" href="WeatherDataProvider_8h_source.html">WeatherDataProvider.h</a>.</p>
 
 </div>
 </div>
-<a id="a26994c0221faace14d3cd97a7db46098" name="a26994c0221faace14d3cd97a7db46098"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a26994c0221faace14d3cd97a7db46098">&#9670;&#160;</a></span>sunInfo()</h2>
+<a id="aca1e55b06a41669d2bc84a1b8f76717f" name="aca1e55b06a41669d2bc84a1b8f76717f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca1e55b06a41669d2bc84a1b8f76717f">&#9670;&#160;</a></span>requestUpdate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE void Weather::WeatherDataProvider::requestUpdate </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Request update. </p>
+<p>This method initiates the asynchronous download of weather information from the internet, for a region around the current position and around the current flight route. This method quits immediately if data for that region has been downloaded successfully less than five minutes ago.</p>
+<p>If an error occurred while downloading, the signal "error" will be emitted. </p>
+
+</div>
+</div>
+<a id="a34bb6566c2291ce2e9c3e6a46d50f37f" name="a34bb6566c2291ce2e9c3e6a46d50f37f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34bb6566c2291ce2e9c3e6a46d50f37f">&#9670;&#160;</a></span>requestUpdate4Waypoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE void Weather::WeatherDataProvider::requestUpdate4Waypoint </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classGeoMaps_1_1Waypoint.html">GeoMaps::Waypoint</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>wp</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Request update. </p>
+<p>This method initiates the asynchronous download of weather information from the internet, for a region around the waypoint. This method quits immediately if data for that region is available or if the waypoint does not describe an airfield with METAR/TAF station.</p>
+<p>If an error occurred while downloading, the signal "error" will be emitted.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">wp</td><td>Waypoint </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a60c7c439c7d1ae7b2320fdea780e8083" name="a60c7c439c7d1ae7b2320fdea780e8083"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60c7c439c7d1ae7b2320fdea780e8083">&#9670;&#160;</a></span>sunInfo()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -433,10 +498,10 @@ Center" at aviationweather.com, for all weather stations that are within 75nm fr
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static auto Weather::WeatherDataProvider::sunInfo </td>
+          <td class="memname">static QString Weather::WeatherDataProvider::sunInfo </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> -&gt;  QString</td>
+          <td></td>
         </tr>
       </table>
   </td>
@@ -447,42 +512,12 @@ Center" at aviationweather.com, for all weather stations that are within 75nm fr
 </div><div class="memdoc">
 
 <p>Getter method for property of the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property infoString </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Property sunInfo </dd></dl>
 
 </div>
 </div>
-<a id="aed52eaaa5a67a913ef7647fc4c7edf4e" name="aed52eaaa5a67a913ef7647fc4c7edf4e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aed52eaaa5a67a913ef7647fc4c7edf4e">&#9670;&#160;</a></span>update()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Q_INVOKABLE void Weather::WeatherDataProvider::update </td>
-          <td>(</td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>isBackgroundUpdate</em></span><span class="paramdefsep"> = </span><span class="paramdefval">true</span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Update method. </p>
-<p>If the global settings indicate that connections to aviationweather.com are not allowed, this method does nothing and returns immediately. Otherwise, this method initiates the asynchronous download of weather information from the internet. It generates the necessary network queries and sends them to aviationweather.com.</p>
-<ul>
-<li>If an error occurred while downloading, the signal "error" will be emitted.</li>
-<li>If the download completes successfully, the notifier signal for the property weatherStations will be emitted.</li>
-</ul>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">isBackgroundUpdate</td><td>This is a simple flag that can be set and later retrieved in the "backgroundUpdate" property. This is a little helper for the GUI that might want to wish to make a distinction between automatically triggered background updates (which should not be shown to the user) and those that are explicitly started by the user. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ab95abd73a3fcd9c411c04cddb51b72db" name="ab95abd73a3fcd9c411c04cddb51b72db"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab95abd73a3fcd9c411c04cddb51b72db">&#9670;&#160;</a></span>weatherStations()</h2>
+<a id="a332e4f194f2de852d0539e662f1f6238" name="a332e4f194f2de852d0539e662f1f6238"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a332e4f194f2de852d0539e662f1f6238">&#9670;&#160;</a></span>TAFs()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -491,52 +526,27 @@ Center" at aviationweather.com, for all weather stations that are within 75nm fr
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto Weather::WeatherDataProvider::weatherStations </td>
+          <td class="memname">QMap&lt; QString, <a class="el" href="classWeather_1_1TAF.html">Weather::TAF</a> &gt; Weather::WeatherDataProvider::TAFs </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const -&gt;  QList&lt; <a class="el" href="classWeather_1_1Station.html">Weather::Station</a> * &gt;</td>
+          <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Getter method for property of the same name. </p>
-<dl class="section return"><dt>Returns</dt><dd>Property weatherStations </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Property TAFs </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="WeatherDataProvider_8h_source.html#l00180">180</a> of file <a class="el" href="WeatherDataProvider_8h_source.html">WeatherDataProvider.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
-<a id="a56bf601a83772e02d316b5f01da3975e" name="a56bf601a83772e02d316b5f01da3975e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a56bf601a83772e02d316b5f01da3975e">&#9670;&#160;</a></span>backgroundUpdate</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Weather::WeatherDataProvider::backgroundUpdate</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel read">read</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Background update flag. </p>
-<p>Indicates if the last download process was started as a background update. </p>
-
-<p class="definition">Definition at line <a class="el" href="WeatherDataProvider_8h_source.html#l00100">100</a> of file <a class="el" href="WeatherDataProvider_8h_source.html">WeatherDataProvider.h</a>.</p>
-
-</div>
-</div>
 <a id="a6ec5dc5d952f6e91c2cac03d52005be6" name="a6ec5dc5d952f6e91c2cac03d52005be6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6ec5dc5d952f6e91c2cac03d52005be6">&#9670;&#160;</a></span>downloading</h2>
 
@@ -560,7 +570,7 @@ Center" at aviationweather.com, for all weather stations that are within 75nm fr
 <p>Downloading flag. </p>
 <p>Indicates that the <a class="el" href="classWeather_1_1WeatherDataProvider.html" title="WeatherDataProvider, weather service manager.">WeatherDataProvider</a> is currently downloading METAR/TAF information from the internet. </p>
 
-<p class="definition">Definition at line <a class="el" href="WeatherDataProvider_8h_source.html#l00113">113</a> of file <a class="el" href="WeatherDataProvider_8h_source.html">WeatherDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WeatherDataProvider_8h_source.html#l00089">89</a> of file <a class="el" href="WeatherDataProvider_8h_source.html">WeatherDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -587,7 +597,7 @@ Center" at aviationweather.com, for all weather stations that are within 75nm fr
 <p>QNH. </p>
 <p>This property holds the QNH of the next airfield, if known. If no QNH is known, this property holds QNaN. </p>
 
-<p class="definition">Definition at line <a class="el" href="WeatherDataProvider_8h_source.html#l00145">145</a> of file <a class="el" href="WeatherDataProvider_8h_source.html">WeatherDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WeatherDataProvider_8h_source.html#l00096">96</a> of file <a class="el" href="WeatherDataProvider_8h_source.html">WeatherDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -614,7 +624,7 @@ Center" at aviationweather.com, for all weather stations that are within 75nm fr
 <p>QNHInfo. </p>
 <p>This property holds a human-readable, translated, rich-text string with information about the QNH of the nearest weather station. This could typically read like "QNH: 1019 hPa in LFGA, 4min ago". If no information is available, the property holds an empty string. </p>
 
-<p class="definition">Definition at line <a class="el" href="WeatherDataProvider_8h_source.html#l00173">173</a> of file <a class="el" href="WeatherDataProvider_8h_source.html">WeatherDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WeatherDataProvider_8h_source.html#l00112">112</a> of file <a class="el" href="WeatherDataProvider_8h_source.html">WeatherDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -641,7 +651,7 @@ Center" at aviationweather.com, for all weather stations that are within 75nm fr
 <p>QNHPressureAltitude. </p>
 <p>This property holds the altitude in the standard atmosphere which corresponds to the current QNH value </p>
 
-<p class="definition">Definition at line <a class="el" href="WeatherDataProvider_8h_source.html#l00158">158</a> of file <a class="el" href="WeatherDataProvider_8h_source.html">WeatherDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WeatherDataProvider_8h_source.html#l00103">103</a> of file <a class="el" href="WeatherDataProvider_8h_source.html">WeatherDataProvider.h</a>.</p>
 
 </div>
 </div>
@@ -666,38 +676,10 @@ Center" at aviationweather.com, for all weather stations that are within 75nm fr
 </div><div class="memdoc">
 
 <p>sunInfo </p>
-<p>This property holds a human-readable, translated, rich-text string with information about the next sunset or sunrise at the current position. This could typically read like "SS 17:01, in 3h and 5min" or "Waiting for exact
-position …" </p>
+<p>This property holds a human-readable, translated, rich-text string with information about the next sunset or sunrise at the current position. This could typically read like "SS 17:01, in 3h and 5min" or "Waiting for
+exact position …" </p>
 
-<p class="definition">Definition at line <a class="el" href="WeatherDataProvider_8h_source.html#l00188">188</a> of file <a class="el" href="WeatherDataProvider_8h_source.html">WeatherDataProvider.h</a>.</p>
-
-</div>
-</div>
-<a id="a02fc9711982f7cca1ea2cf0c15eb84c9" name="a02fc9711982f7cca1ea2cf0c15eb84c9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a02fc9711982f7cca1ea2cf0c15eb84c9">&#9670;&#160;</a></span>weatherStations</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">QList&lt;<a class="el" href="classWeather_1_1Station.html">Weather::Station</a>*&gt; Weather::WeatherDataProvider::weatherStations</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel read">read</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>List of weather stations. </p>
-<p>This property holds a list of all weather stations that are currently known to this instance of the <a class="el" href="classWeather_1_1WeatherDataProvider.html" title="WeatherDataProvider, weather service manager.">WeatherDataProvider</a> class, sorted according to the distance to the last known position. The list can change at any time.</p>
-<dl class="section warning"><dt>Warning</dt><dd>The WeatherStation objects are owned by the <a class="el" href="classWeather_1_1WeatherDataProvider.html" title="WeatherDataProvider, weather service manager.">WeatherDataProvider</a> and can be deleted anytime. Store it in a QPointer to avoid dangling pointers. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="WeatherDataProvider_8h_source.html#l00228">228</a> of file <a class="el" href="WeatherDataProvider_8h_source.html">WeatherDataProvider.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WeatherDataProvider_8h_source.html#l00121">121</a> of file <a class="el" href="WeatherDataProvider_8h_source.html">WeatherDataProvider.h</a>.</p>
 
 </div>
 </div>

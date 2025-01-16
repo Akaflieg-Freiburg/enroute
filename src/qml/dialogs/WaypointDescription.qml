@@ -37,7 +37,7 @@ CenteringDialog {
     property waypoint waypoint
 
     onWaypointChanged : {
-        WeatherDataProvider.requestData(waypoint)
+        WeatherDataProvider.requestUpdate4Waypoint(waypoint)
 
         // Delete old text items
         let childCount = co.children.length;

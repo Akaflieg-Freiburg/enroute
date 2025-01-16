@@ -538,7 +538,6 @@ void Weather::WeatherDataProvider::requestUpdate()
 
 void Weather::WeatherDataProvider::requestUpdate4Waypoint(const GeoMaps::Waypoint& wp)
 {
-#warning Want to check if current data is available. Want to check if data download even makes sense.
     if (!wp.coordinate().isValid() || (wp.ICAOCode().length() < 4))
     {
         return;
@@ -592,6 +591,7 @@ void Weather::WeatherDataProvider::startDownload(const QGeoRectangle& _bBox)
         QUrl const url = QUrl(urlString);
         QNetworkRequest request(url);
         request.setRawHeader("accept", "application/xml");
+        request.setTransferTimeout(2min);
         QPointer<QNetworkReply> const reply = GlobalObject::networkAccessManager()->get(request);
         reply->setProperty("bBox", QVariant::fromValue(bBox));
         m_networkReplies.push_back(reply);
@@ -609,6 +609,7 @@ void Weather::WeatherDataProvider::startDownload(const QGeoRectangle& _bBox)
         QUrl const url = QUrl(urlString);
         QNetworkRequest request(url);
         request.setRawHeader("accept", "application/xml");
+        request.setTransferTimeout(2min);
         QPointer<QNetworkReply> const reply = GlobalObject::networkAccessManager()->get(request);
 
         m_networkReplies.push_back(reply);

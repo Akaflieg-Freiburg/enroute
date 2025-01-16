@@ -32,7 +32,7 @@ Page {
     title: qsTr("Weather")
     focus: true
 
-    Component.onCompleted: WeatherDataProvider.update()
+    Component.onCompleted: WeatherDataProvider.requestUpdate()
 
 
     header: PageHeader {

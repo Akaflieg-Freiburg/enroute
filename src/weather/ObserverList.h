@@ -42,7 +42,10 @@ public:
     // Constructors and destructors
     //
 
-    /*! \brief Standard constructor */
+    /*! \brief Standard constructor
+     *
+     * @param parent Standard QObject parent
+     */
     explicit ObserverList(QObject* parent=nullptr);
 
     /*! \brief Standard destructor */

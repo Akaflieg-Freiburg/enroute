@@ -50,6 +50,7 @@ class METAR {
     QML_VALUE_TYPE(metar)
 
     friend QDataStream& operator<<(QDataStream& stream, const METAR& metar);
+    friend QDataStream& operator>>(QDataStream& stream, METAR& metar);
 
 public:
     /*! \brief Flight category
@@ -84,14 +85,6 @@ public:
      * @param xml XML Stream reader
      */
     explicit METAR(QXmlStreamReader& xml);
-
-    /*! \brief Deserialization constructor
-     *
-     * This constructor reads an input stream.
-     *
-     * @param inputStream Input Stream
-     */
-    explicit METAR(QDataStream& inputStream);
 
     /*! \brief Destructor */
     ~METAR() = default;
@@ -358,6 +351,12 @@ private:
  *
  *  There are no checks for errors of any kind.
  */
-QDataStream& operator<<(QDataStream& stream, const METAR& metar);
+QDataStream& operator<<(QDataStream& outstream, const METAR& metar);
+
+/*! \brief Deserialization
+ *
+ *  There are no checks for errors of any kind.
+ */
+QDataStream& operator>>(QDataStream& instream, METAR& metar);
 
 } // namespace Weather

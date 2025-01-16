@@ -266,12 +266,13 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
                     emit requestOpenWeatherPage();
                     auto *weatherReport = findQQuickItem(QStringLiteral("weatherReport"), m_engine);
                     Q_ASSERT(weatherReport != nullptr);
-                    auto *station = GlobalObject::weatherDataProvider()->findWeatherStation(QStringLiteral("LFSB"));
-                    Q_ASSERT(station != nullptr);
+#warning
+                    /*
+                    auto station = GlobalObject::weatherDataProvider()->findWeatherStation(GlobalObject::geoMapProvider()->findByID(u"LFSB"_s));
 
                     weatherReport->setProperty("weatherStation", QVariant::fromValue(station));
                     QMetaObject::invokeMethod(weatherReport, "open", Qt::QueuedConnection);
-
+*/
                     delay(4s);
                     saveScreenshot(manual, applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     emit requestClosePages();
@@ -428,6 +429,8 @@ void DemoRunner::generateManualScreenshots()
     }
 
     // Weather Dialog
+#warning
+    /*
     {
         qWarning() << "… Weather Dialog";
         auto *weatherReport = findQQuickItem(QStringLiteral("weatherReport"), m_engine);
@@ -440,6 +443,7 @@ void DemoRunner::generateManualScreenshots()
         applicationWindow->grabWindow().save(QStringLiteral("02-03-02-WeatherDialog.png"));
         emit requestClosePages();
     }
+*/
 
     // EDTF Taxiway
     {

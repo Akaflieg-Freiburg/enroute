@@ -46,6 +46,8 @@ public:
     /*! \brief Standard constructor
      *
      * This standard constructor creates an observer with an invalid waypoint.
+     *
+     * @param parent Standard QObject parent
      */
     explicit Observer(QObject* parent=nullptr);
 

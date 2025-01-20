@@ -1,11 +1,14 @@
 # Changelog
 
-## [2.32.6] - ??
+## [2.32.6] - 2025-01-20
+
+### Fixed
+- METAR report is are now showing for airfields not close to current position or
+  flight route. (#473)
 
 ### Added
 - For better user experience on desktop-platforms, several list views now
   support key navigation. This feature is only available on Linux and macOS.
-
 
 ### Changed
 - Updated the privacy statement. The server 'enroute-data' now maintains its own

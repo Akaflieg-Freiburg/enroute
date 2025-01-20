@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -39,7 +39,7 @@
 #include "traffic/TrafficDataProvider.h"
 #include "traffic/TrafficDataSource_Simulate.h"
 #include "traffic/TrafficFactor_WithPosition.h"
-#include "weather/WeatherDataProvider.h"
+
 #endif
 
 #include "DemoRunner.h"
@@ -263,15 +263,9 @@ void DemoRunner::generateScreenshotsForDevices(const QStringList &devices, bool 
                 {
 
                     qWarning() << "… LFSB Weather Dialog";
-                    emit requestOpenWeatherPage();
-                    auto *weatherReport = findQQuickItem(QStringLiteral("weatherReport"), m_engine);
-                    Q_ASSERT(weatherReport != nullptr);
-                    auto *station = GlobalObject::weatherDataProvider()->findWeatherStation(QStringLiteral("LFSB"));
-                    Q_ASSERT(station != nullptr);
-
-                    weatherReport->setProperty("weatherStation", QVariant::fromValue(station));
-                    QMetaObject::invokeMethod(weatherReport, "open", Qt::QueuedConnection);
-
+                    auto *obs = new Weather::Observer(this);
+                    obs->setWaypoint( GlobalObject::geoMapProvider()->findByID("LFSB"));
+                    emit requestOpenWeatherDialog(obs);
                     delay(4s);
                     saveScreenshot(manual, applicationWindow, QStringLiteral("fastlane/metadata/android/%1/images/%2Screenshots/%3_%1.png").arg(language, device).arg(count++));
                     emit requestClosePages();
@@ -430,12 +424,9 @@ void DemoRunner::generateManualScreenshots()
     // Weather Dialog
     {
         qWarning() << "… Weather Dialog";
-        auto *weatherReport = findQQuickItem(QStringLiteral("weatherReport"), m_engine);
-        Q_ASSERT(weatherReport != nullptr);
-        auto *station = GlobalObject::weatherDataProvider()->findWeatherStation(QStringLiteral("EDSB"));
-        Q_ASSERT(station != nullptr);
-        weatherReport->setProperty("weatherStation", QVariant::fromValue(station));
-        QMetaObject::invokeMethod(weatherReport, "open", Qt::QueuedConnection);
+        auto *obs = new Weather::Observer(this);
+        obs->setWaypoint( GlobalObject::geoMapProvider()->findByID("EDSB"));
+        emit requestOpenWeatherDialog(obs);
         delay(4s);
         applicationWindow->grabWindow().save(QStringLiteral("02-03-02-WeatherDialog.png"));
         emit requestClosePages();

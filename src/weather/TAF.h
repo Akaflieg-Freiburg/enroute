@@ -44,6 +44,7 @@ class TAF {
     QML_VALUE_TYPE(taf)
 
     friend QDataStream& operator<<(QDataStream& stream, const TAF& taf);
+    friend QDataStream& operator>>(QDataStream& stream, Weather::TAF& taf);
 
 public:
 
@@ -62,14 +63,6 @@ public:
      * @param xml XML Stream reader
      */
     explicit TAF(QXmlStreamReader& xml);
-
-    /*! \brief Deserialization constructor
-     *
-     * This constructor reads an input stream.
-     *
-     * @param inputStream Input Stream
-     */
-    explicit TAF(QDataStream& inputStream);
 
     /*! \brief Destructor */
     ~TAF() = default;
@@ -243,5 +236,12 @@ private:
  *  There are no checks for errors of any kind.
  */
 QDataStream& operator<<(QDataStream& stream, const TAF& taf);
+
+
+/*! \brief Deserialization
+ *
+ *  There are no checks for errors of any kind.
+ */
+QDataStream& operator>>(QDataStream& stream, Weather::TAF& taf);
 
 } // namespace Weather

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -725,7 +725,8 @@ AppWindow {
 
             function onRequestClosePages() {
                 stackView.pop()
-                Global.dialogLoader.item.close()
+                if (Global.dialogLoader.item)
+                    Global.dialogLoader.item.close()
             }
 
             function onRequestOpenAircraftPage() {
@@ -746,6 +747,12 @@ AppWindow {
             function onRequestOpenWeatherPage() {
                 stackView.pop()
                 stackView.push("pages/Weather.qml")
+            }
+
+            function onRequestOpenWeatherDialog(station) {
+                Global.dialogLoader.setSource("dialogs/MetarTafDialog.qml",
+                                              {"weatherStation": station})
+                Global.dialogLoader.item.open()
             }
 
             function onRequestVAC(vacName) {

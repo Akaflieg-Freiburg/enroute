@@ -86,18 +86,6 @@ Weather::TAF::TAF(QXmlStreamReader &xml)
 }
 
 
-Weather::TAF::TAF(QDataStream &inputStream)
-{
-    inputStream >> m_expirationTime;
-    inputStream >> m_ICAOCode;
-    inputStream >> m_issueTime;
-    inputStream >> m_location;
-    inputStream >> m_rawText;
-
-    m_decoder = QSharedPointer<Weather::Decoder>(new Weather::Decoder(m_rawText, m_issueTime.date().addDays(5)));
-}
-
-
 bool Weather::TAF::isValid() const
 {
     if (!m_expirationTime.isValid())
@@ -140,3 +128,16 @@ QDataStream& Weather::operator<<(QDataStream& stream, const Weather::TAF& taf)
     return stream;
 }
 
+
+QDataStream& Weather::operator>>(QDataStream& stream, Weather::TAF& taf)
+{
+    stream >> taf.m_expirationTime;
+    stream >> taf.m_ICAOCode;
+    stream >> taf.m_issueTime;
+    stream >> taf.m_location;
+    stream >> taf.m_rawText;
+
+    taf.m_decoder = QSharedPointer<Weather::Decoder>(new Weather::Decoder(taf.m_rawText, taf.m_issueTime.date().addDays(5)));
+
+    return stream;
+}

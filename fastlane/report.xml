@@ -5,37 +5,37 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000175">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000182">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: Switch to android build lane" time="0.000298">
+      <testcase classname="fastlane.lanes" name="1: Switch to android build lane" time="0.000304">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="2: /Users/kebekus/Software/buildsystems/Qt/6.7.3/android_x86_64/bin/qt-cmake -DCMAKE_BUILD_TYPE:STRING=Release -DQT_ANDROID_BUILD_ALL_ABIS=ON -DQT_ANDROID_SIGN_APK=ON -DQT_ANDROID_SIGN_AAB=ON -S .. -B ../build/build-android-release" time="2.765769">
+      <testcase classname="fastlane.lanes" name="2: /Users/kebekus/Software/buildsystems/Qt/6.7.3/android_x86_64/bin/qt-cmake -DCMAKE_BUILD_TYPE:STRING=Release -DQT_ANDROID_BUILD_ALL_ABIS=ON -DQT_ANDROID_SIGN_APK=ON -DQT_ANDROID_SIGN_AAB=ON -S .. -B ../build/build-android-release" time="2.373249">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="3: cmake --build ../build/build-android-release --target apk" time="841.355373">
+      <testcase classname="fastlane.lanes" name="3: cmake --build ../build/build-android-release --target apk" time="739.633825">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="4: cmake --build ../build/build-android-release --target aab" time="60.067726">
+      <testcase classname="fastlane.lanes" name="4: cmake --build ../build/build-android-release --target aab" time="61.202392">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="5: Switch to android metadata lane" time="9.8e-05">
+      <testcase classname="fastlane.lanes" name="5: Switch to android metadata lane" time="9.3e-05">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="6: upload_to_play_store" time="135.416745">
+      <testcase classname="fastlane.lanes" name="6: upload_to_play_store" time="131.710288">
         
       </testcase>
     

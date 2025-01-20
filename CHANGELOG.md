@@ -1,5 +1,33 @@
 # Changelog
 
+## [2.32.6] - 2025-01-20
+
+### Fixed
+- METAR report is are now showing for airfields not close to current position or
+  flight route. (#473)
+
+### Added
+- For better user experience on desktop-platforms, several list views now
+  support key navigation. This feature is only available on Linux and macOS.
+
+### Changed
+- Updated the privacy statement. The server 'enroute-data' now maintains its own
+  METAR/TAF database and no longer forwards requests to the aviation weather
+  center.
+
+
+## [2.32.5] - 2025-01-15
+
+### Fixed
+- The app no longer hangs on startup.
+
+- Fixed typo in the manual.
+
+
+### Fixed
+- Fixed minor typo in the manual.
+
+
 ## [2.32.4] - 2024-12-24
 
 ### Added

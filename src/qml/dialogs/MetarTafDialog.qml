@@ -30,18 +30,18 @@ import akaflieg_freiburg.enroute
 CenteringDialog {
     id: weatherReportDialog
 
-    required property WeatherStation weatherStation
+    required property Observer weatherStation
     onWeatherStationChanged: sv.ScrollBar.vertical.position = 0.0 // Reset scroll bar if station changes
 
     modal: true
     standardButtons: Dialog.Close
-    title: weatherStation.ICAOCode + " • " + weatherStation.extendedName
+    title: weatherStation.waypoint.ICAOCode + " • " + weatherStation.waypoint.extendedName
 
     ColumnLayout {
         anchors.fill: parent
 
         Label { // Second header line with distance and QUJ
-            text: Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), weatherReportDialog.weatherStation.coordinate)
+            text: Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), weatherReportDialog.weatherStation.waypoint.coordinate)
             visible: PositionProvider.receivingPositionInfo
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignRight

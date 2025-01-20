@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -25,6 +25,7 @@
 #include <QQuickWindow>
 
 #include "GlobalObject.h"
+#include "weather/Observer.h"
 
 
 /*! \brief Remote controls the app and takes screenshot images
@@ -90,6 +91,9 @@ signals:
 
     /*! \brief Emitted to indicate that the GUI should open the "Nearby" page */
     void requestOpenNearbyPage();
+
+    /*! \brief Emitted to indicate that the GUI should open the "Weather" page */
+    void requestOpenWeatherDialog(Weather::Observer* obs);
 
     /*! \brief Emitted to indicate that the GUI should open the "Weather" page */
     void requestOpenWeatherPage();

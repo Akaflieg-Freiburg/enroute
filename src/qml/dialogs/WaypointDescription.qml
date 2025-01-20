@@ -34,10 +34,11 @@ pragma ComponentBehavior: Bound
 CenteringDialog {
     id: waypointDescriptionDialog
 
-    property waypoint waypoint: GeoMapProvider.createWaypoint()
-    property WeatherStation weatherStation: WeatherDataProvider.findWeatherStation( waypoint.ICAOCode )
+    property waypoint waypoint
 
     onWaypointChanged : {
+        WeatherDataProvider.requestUpdate4Waypoint(waypoint)
+
         // Delete old text items
         let childCount = co.children.length;
         // Iterate through the children in reverse order
@@ -48,7 +49,6 @@ CenteringDialog {
                     co.children[i].destroy();
                 }
             }
-
 
         // If no waypoint is given, then do nothing
         if (!waypoint.isValid)
@@ -77,7 +77,7 @@ CenteringDialog {
     standardButtons: Dialog.Close
     focus: true
 
-    title:  {
+    title: {
         if (waypoint.ICAOCode === "")
             return waypoint.extendedName
         return waypoint.ICAOCode + " • " +waypoint.extendedName
@@ -92,13 +92,15 @@ CenteringDialog {
                 id: secondaryDlgLoader
                 onLoaded: item.open()
             }
+            Observer {
+                id: obs
+                waypoint: waypointDescriptionDialog.waypoint
+            }
 
-            visible: (waypointDescriptionDialog.weatherStation !== null) && (waypointDescriptionDialog.weatherStation.metar.isValid || waypointDescriptionDialog.weatherStation.taf.isValid)
+            visible:  obs.metar.isValid || obs.taf.isValid
             text: {
-                if (waypointDescriptionDialog.weatherStation === null)
-                    return ""
-                if (waypointDescriptionDialog.weatherStation.metar.isValid)
-                    return waypointDescriptionDialog.weatherStation.metar.summary(Navigator.aircraft, Clock.time) + " • <a href='xx'>" + qsTr("full report") + "</a>"
+                if (obs.metar.isValid)
+                    return obs.metar.summary(Navigator.aircraft, Clock.time) + " • <a href='xx'>" + qsTr("full report") + "</a>"
                 return "<a href='xx'>" + qsTr("read TAF") + "</a>"
             }
             Layout.fillWidth: true
@@ -110,13 +112,13 @@ CenteringDialog {
             rightPadding: 0.2*font.pixelSize
             onLinkActivated: {
                 PlatformAdaptor.vibrateBrief()
-                secondaryDlgLoader.setSource("../dialogs/MetarTafDialog.qml", {"weatherStation": waypointDescriptionDialog.weatherStation})
+                secondaryDlgLoader.setSource("../dialogs/MetarTafDialog.qml", {"weatherStation": obs})
             }
 
             // Background color according to METAR/FAA flight category
             background: Rectangle {
                 border.color: "black"
-                color: ((waypointDescriptionDialog.weatherStation !== null) && waypointDescriptionDialog.weatherStation.metar.isValid) ? waypointDescriptionDialog.weatherStation.metar.flightCategoryColor : "transparent"
+                color: obs.metar.flightCategoryColor
                 opacity: 0.2
             }
         }

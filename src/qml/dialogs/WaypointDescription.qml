@@ -485,17 +485,19 @@ CenteringDialog {
 
                     onTriggered: {
                         PlatformAdaptor.vibrateBrief()
-                        if (Navigator.flightRoute.size > 0)
+                        if (Navigator.flightRoute.size > 0) {
+                            addMenu.close()
                             overwriteDialog.open()
+                        }
                         else {
                             Navigator.flightRoute.clear()
                             Navigator.flightRoute.append(PositionProvider.lastValidCoordinate)
                             Navigator.flightRoute.append(waypointDescriptionDialog.waypoint)
                             Global.toast.doToast(qsTr("New flight route: direct to %1.").arg(waypointDescriptionDialog.waypoint.extendedName))
+                            addMenu.close()
+                            waypointDescriptionDialog.close()
                         }
-                        addMenu.close()
                     }
-
                 }
 
                 Rectangle {
@@ -699,12 +701,13 @@ CenteringDialog {
             PlatformAdaptor.vibrateBrief()
             Navigator.flightRoute.clear()
             Navigator.flightRoute.append(waypointDescriptionDialog.waypoint)
-            close()
+            overwriteDialog.close()
+            waypointDescriptionDialog.close()
             Global.toast.doToast(qsTr("New flight route: direct to %1.").arg(waypointDescriptionDialog.waypoint.extendedName))
         }
         onRejected: {
             PlatformAdaptor.vibrateBrief()
-            close()
+            overwriteDialog.close()
             waypointDescriptionDialog.open()
         }
     }

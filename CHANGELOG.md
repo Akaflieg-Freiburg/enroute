@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.32.8] - 2025-02-05
+
+### Changed
+- Close waypoint description dialog once waypoint has been (added to|edited
+  in|removed from) route or library. (#487)
+
+
+## [2.32.7] - 2025-01-28
+
+### Fixed
+- Fixed problem where Route/Waypoint/Aircraft library pages do not open. (#488, #490)
+
+
 ## [2.32.6] - 2025-01-20
 
 ### Fixed

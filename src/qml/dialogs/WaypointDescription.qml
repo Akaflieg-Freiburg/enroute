@@ -512,7 +512,6 @@ CenteringDialog {
                         // Mention Object to ensure that property gets updated
                         // when flight route changes
                         Navigator.flightRoute.size
-
                         return Navigator.flightRoute.canAppend(waypointDescriptionDialog.waypoint)
                     }
 
@@ -520,6 +519,7 @@ CenteringDialog {
                         PlatformAdaptor.vibrateBrief()
                         Navigator.flightRoute.append(waypointDescriptionDialog.waypoint)
                         addMenu.close()
+                        waypointDescriptionDialog.close()
                         Global.toast.doToast(qsTr("Added %1 to route.").arg(waypointDescriptionDialog.waypoint.extendedName))
                     }
                 }
@@ -538,6 +538,7 @@ CenteringDialog {
                         PlatformAdaptor.vibrateBrief()
                         Navigator.flightRoute.insert(waypointDescriptionDialog.waypoint)
                         addMenu.close()
+                        waypointDescriptionDialog.close()
                         Global.toast.doToast(qsTr("Inserted %1 into route.").arg(waypointDescriptionDialog.waypoint.extendedName))
                     }
                 }
@@ -553,12 +554,13 @@ CenteringDialog {
                         return Navigator.flightRoute.contains(waypointDescriptionDialog.waypoint)
                     }
                     onTriggered: {
-                        PlatformAdaptor.vibrateBrief()
-                        addMenu.close()
+                        PlatformAdaptor.vibrateBrief()                        
                         var index = Navigator.flightRoute.lastIndexOf(waypointDescriptionDialog.waypoint)
                         if (index < 0)
                             return
                         Navigator.flightRoute.removeWaypoint(index)
+                        addMenu.close()
+                        waypointDescriptionDialog.close()
                         Global.toast.doToast(qsTr("Removed %1 from route.").arg(waypointDescriptionDialog.waypoint.extendedName))
                     }
                 }
@@ -722,6 +724,7 @@ CenteringDialog {
             newWP.notes = newNotes
             newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
             WaypointLibrary.replace(waypointDescriptionDialog.waypoint, newWP)
+            waypointDescriptionDialog.close()
             Global.toast.doToast(qsTr("Modified entry %1 in library.").arg(newWP.extendedName))
         }
     }
@@ -738,6 +741,7 @@ CenteringDialog {
             newWP.notes = newNotes
             newWP.coordinate = QtPositioning.coordinate(newLatitude, newLongitude, newAltitudeMeter)
             WaypointLibrary.add(newWP)
+            waypointDescriptionDialog.close()
             Global.toast.doToast(qsTr("Added %1 to waypoint library.").arg(newWP.extendedName))
         }
     }
@@ -755,6 +759,7 @@ CenteringDialog {
         onAccepted: {
             PlatformAdaptor.vibrateBrief()
             WaypointLibrary.remove(removeDialog.waypoint)
+            waypointDescriptionDialog.close()
             Global.toast.doToast(qsTr("Waypoint removed from device"))
         }
         onRejected: {

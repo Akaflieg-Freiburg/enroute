@@ -42,7 +42,8 @@ CenteringDialog {
         // Delete old text items
         let childCount = co.children.length;
         // Iterate through the children in reverse order
-        for (let i = childCount - 1; i >= 0; i--) {
+        var i
+        for (i = childCount - 1; i >= 0; i--) {
             // Check if the child is a valid QML item
             if (co.children[i] instanceof QtObject) {
                     // Destroy the child item
@@ -67,7 +68,7 @@ CenteringDialog {
 
         // Create airspace description items
         var asl = GeoMapProvider.airspaces(waypoint.coordinate)
-        for (var i in asl)
+        for (i in asl)
             airspaceDelegate.createObject(co, {airspace: asl[i]});
 
         satButtonDelegate.createObject(co, {});

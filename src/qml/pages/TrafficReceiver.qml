@@ -37,6 +37,20 @@ Page {
 
     header: StandardHeader {}
 
+    Component {
+        id: trafficDelegate
+
+        Label {
+            width: sView.width
+            height: implicitHeight
+
+            text: {
+                console.log(model.modelData.description)
+                return model.modelData.description
+            }
+        }
+    }
+
     DecoratedScrollView {
         id: sView
 
@@ -136,6 +150,16 @@ Page {
             Item {
                 Layout.preferredHeight: sView.font.pixelSize*0.5
                 Layout.columnSpan: 2
+            }
+
+            ListView {
+                Layout.fillWidth: true
+                Layout.preferredHeight: contentHeight
+                clip: true
+
+                model: TrafficDataProvider.trafficObjects
+                delegate: trafficDelegate
+                ScrollIndicator.vertical: ScrollIndicator {}
             }
 
             Label {

@@ -40,15 +40,36 @@ Page {
     Component {
         id: trafficDelegate
 
-        Label {
+        Item {
             width: sView.width
-            height: implicitHeight
+            height: idel.height
 
-            text: {
-                console.log(model.modelData.description)
-                return model.modelData.description
+            Rectangle {
+                anchors.fill: parent
+                color: model.modelData.color
+                opacity: 0.2
+            }
+
+            WordWrappingItemDelegate {
+                leftPadding: SafeInsets.left+16
+                rightPadding: SafeInsets.right+16
+
+                id: idel
+                text: {
+                    var result = []
+                    if (model.modelData.callSign !== "")
+                        result.push(model.modelData.callSign)
+                    result.push("Aircraft")
+                    result.push(model.modelData.description)
+                    return result.join(" • ")
+                }
+                //icon.source: model.modelData.waypoint.icon
+                //icon.color: "transparent"
+
+                width: parent.width
             }
         }
+
     }
 
     DecoratedScrollView {
@@ -150,6 +171,15 @@ Page {
             Item {
                 Layout.preferredHeight: sView.font.pixelSize*0.5
                 Layout.columnSpan: 2
+            }
+
+            Label {
+                Layout.fillWidth: true
+                visible: TrafficDataProvider.receivingHeartbeat
+
+                text: qsTr("Traffic")
+                font.pixelSize: sView.font.pixelSize*1.2
+                font.bold: true
             }
 
             ListView {

@@ -197,7 +197,6 @@ void Traffic::TrafficFactor_Abstract::updateDescription()
 
 void Traffic::TrafficFactor_Abstract::updateValid()
 {
-
     bool newValid = true;
     if (m_alarmLevel < 0) {
         newValid = false;
@@ -213,10 +212,5 @@ void Traffic::TrafficFactor_Abstract::updateValid()
     }
 
     // Update property
-    if (m_valid == newValid) {
-        return;
-    }
     m_valid = newValid;
-    emit validChanged();
-
 }

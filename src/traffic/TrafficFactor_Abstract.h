@@ -217,7 +217,7 @@ public:
      *  A traffic object is considered valid if the data is meaningful and if the
      *  lifetime is not expired.  Only valid traffic objects should be shown in the GUI.
      */
-    Q_PROPERTY(bool valid READ valid NOTIFY validChanged)
+    Q_PROPERTY(bool valid READ valid NOTIFY validChanged BINDABLE bindableValid)
 
     /*! \brief Vertical distance from own position to the traffic, at the time of report
      *
@@ -329,10 +329,13 @@ public:
      *
      *  @returns Property valid
      */
-    [[nodiscard]] auto valid() const -> bool
-    {
-        return m_valid;
-    }
+    [[nodiscard]] bool valid() const {return m_valid.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property valid
+     */
+    [[nodiscard]] QBindable<bool> bindableValid() {return &m_valid;}
 
     /*! \brief Getter method for property with the same name
      *
@@ -478,7 +481,7 @@ protected:
     // "dispatchUpdateValid", which whose address is already known to the constructor.
     virtual void updateValid();
     void dispatchUpdateValid();
-    bool m_valid {false};
+    Q_OBJECT_BINDABLE_PROPERTY_WITH_ARGS(Traffic::TrafficFactor_Abstract, bool, m_valid, false, &Traffic::TrafficFactor_Abstract::validChanged);
 
     // Setter function for the property "description". This function is virtual and must not be
     // called or accessed from the constructor. For this reason, we have a special function

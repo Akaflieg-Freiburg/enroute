@@ -72,7 +72,10 @@ Page {
                 icon.source: "/icons/material/ic_airplanemode_active.svg"
             }
         }
+    }
 
+    TrafficObserver {
+        id: trafficObserver
     }
 
     DecoratedScrollView {
@@ -190,7 +193,7 @@ Page {
                 Layout.preferredHeight: contentHeight
                 clip: true
 
-                model: TrafficDataProvider.trafficObjects
+                model: trafficObserver.traffic
                 delegate: trafficDelegate
                 ScrollIndicator.vertical: ScrollIndicator {}
             }

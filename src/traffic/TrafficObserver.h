@@ -27,7 +27,7 @@
 
 namespace Traffic {
 
-
+#warning doku
 /*! \brief Holds and updates METAR and TAF for a given waypoint */
 
 class TrafficObserver : public QObject {

@@ -99,6 +99,8 @@ auto Traffic::TrafficFactor_Abstract::hasHigherPriorityThan(const TrafficFactor_
     if (!valid()) {
         return false;
     }
+
+#warning need to see who is on the ground and who is not
     // At this point, both instances are valid.
 
     // Criterion 2: Alarm level
@@ -111,6 +113,7 @@ auto Traffic::TrafficFactor_Abstract::hasHigherPriorityThan(const TrafficFactor_
     // At this point, both instances have equal alarm levels
 
     // Final criterion: distance to current position
+#warning need to take vertical distance into account look at all distances!
     return (hDist() < rhs.hDist());
 
 }

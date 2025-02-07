@@ -43,8 +43,13 @@ Traffic::TrafficObserver::TrafficObserver(QObject* parent)
         if ((factor != nullptr) && factor->valid())
         {
             result << (Traffic::TrafficFactor_Abstract*)factor;
-
         }
+
+        std::sort(result.begin(), result.end(),
+                  [](const Traffic::TrafficFactor_Abstract* first, const Traffic::TrafficFactor_Abstract* second)
+                  { return first->hasHigherPriorityThan(*second); });
+
+#warning Need to sort list
 
         return result;
     });

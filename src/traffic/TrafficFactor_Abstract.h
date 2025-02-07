@@ -152,7 +152,7 @@ public:
      *  - 0 = no alarm
      *  - 1 = alarm
      */
-    Q_PROPERTY(int alarmLevel READ alarmLevel WRITE setAlarmLevel NOTIFY alarmLevelChanged)   
+    Q_PROPERTY(int alarmLevel READ alarmLevel WRITE setAlarmLevel NOTIFY alarmLevelChanged BINDABLE bindableAlarmLevel)
 
     /*! \brief Indicates if changes in properties should be animated in the GUI
      *
@@ -193,7 +193,7 @@ public:
      *  position to the traffic, at the time of report.  Otherwise, it contains
      *  an invalid distance.
      */
-    Q_PROPERTY(Units::Distance hDist READ hDist WRITE setHDist NOTIFY hDistChanged)
+    Q_PROPERTY(Units::Distance hDist READ hDist WRITE setHDist NOTIFY hDistChanged BINDABLE bindableHDist)
 
     /*! \brief Identifier string of the traffic
      *
@@ -225,7 +225,7 @@ public:
      *  position to the traffic, at the time of report.  Otherwise, it contains
      *  NaN.
      */
-    Q_PROPERTY(Units::Distance vDist READ vDist WRITE setVDist NOTIFY vDistChanged)
+    Q_PROPERTY(Units::Distance vDist READ vDist WRITE setVDist NOTIFY vDistChanged BINDABLE bindableVDist)
 
 
     //
@@ -236,10 +236,13 @@ public:
      *
      *  @returns Property alarmLevel
      */
-    [[nodiscard]] auto alarmLevel() const -> int
-    {
-        return m_alarmLevel;
-    }
+    [[nodiscard]] int alarmLevel() const {return m_alarmLevel.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property alarmLevel
+     */
+    [[nodiscard]] QBindable<int> bindableAlarmLevel() {return &m_alarmLevel;}
 
     /*! \brief Getter method for property with the same name
      *
@@ -287,10 +290,13 @@ public:
      *
      *  @returns Property hDist
      */
-    [[nodiscard]] auto hDist() const -> Units::Distance
-    {
-        return m_hDist;
-    }
+    [[nodiscard]] Units::Distance hDist() const {return m_hDist.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property hDist
+     */
+    [[nodiscard]] QBindable<Units::Distance> bindableHDist() {return &m_hDist;}
 
     /*! \brief Getter method for property with the same name
      *
@@ -341,10 +347,13 @@ public:
      *
      *  @returns Property vDist
      */
-    [[nodiscard]] auto vDist() const -> Units::Distance
-    {
-        return m_vDist;
-    }
+    [[nodiscard]] Units::Distance vDist() const {return m_vDist.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property vDist
+     */
+    [[nodiscard]] QBindable<Units::Distance> bindableVDist() {return &m_vDist;}
 
 
     //
@@ -357,22 +366,12 @@ public:
      */
     void setAlarmLevel(int newAlarmLevel)
     {
-
         // Safety checks
         if ((newAlarmLevel < 0) || (newAlarmLevel > 3)) {
             return;
         }
-
         startLiveTime();
-        if (m_alarmLevel == newAlarmLevel) {
-            return;
-        }
-        if ((newAlarmLevel < 0) || (newAlarmLevel > 3)) {
-            return;
-        }
         m_alarmLevel = newAlarmLevel;
-        emit alarmLevelChanged();
-
     }
 
     /*! \brief Setter function for property with the same name
@@ -403,15 +402,7 @@ public:
      *
      *  @param newHDist Property hDist
      */
-    void setHDist(Units::Distance newHDist)
-    {
-
-        if (m_hDist == newHDist) {
-            return;
-        }
-        m_hDist = newHDist;
-        emit hDistChanged();
-    }
+    void setHDist(Units::Distance newHDist) {m_hDist = newHDist;}
 
     /*! \brief Setter function for property with the same name
      *
@@ -435,13 +426,7 @@ public:
      *
      *  @param newVDist Property vDist
      */
-    void setVDist(Units::Distance newVDist) {
-        if (m_vDist == newVDist) {
-            return;
-        }
-        m_vDist = newVDist;
-        emit vDistChanged();
-    }
+    void setVDist(Units::Distance newVDist) {m_vDist = newVDist;}
 
 signals:
     /*! \brief Notifier signal */
@@ -496,15 +481,15 @@ private:
     //
     // Property values
     //
-    int m_alarmLevel {0};
+    Q_OBJECT_BINDABLE_PROPERTY_WITH_ARGS(Traffic::TrafficFactor_Abstract, int, m_alarmLevel, 0, &Traffic::TrafficFactor_Abstract::alarmLevelChanged);
     bool m_animate {false};
     QString m_callSign;
     QString m_color{QStringLiteral("red")};
-    Units::Distance m_hDist;
+    Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficFactor_Abstract, Units::Distance, m_hDist, &Traffic::TrafficFactor_Abstract::hDistChanged);
     QString m_ID;
     Q_OBJECT_BINDABLE_PROPERTY_WITH_ARGS(Traffic::TrafficFactor_Abstract, Traffic::TrafficFactor_Abstract::AircraftType, m_type, unknown, &Traffic::TrafficFactor_Abstract::typeChanged);
     QProperty<QString> m_typeString;
-    Units::Distance m_vDist;
+    Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficFactor_Abstract, Units::Distance, m_vDist, &Traffic::TrafficFactor_Abstract::vDistChanged);
 
     // Timer for timeout. Traffic objects become invalid if their data has not been
     // refreshed for longer than timeout.

@@ -26,16 +26,13 @@
 
 Traffic::TrafficFactor_DistanceOnly::TrafficFactor_DistanceOnly(QObject *parent) : Traffic::TrafficFactor_Abstract(parent)
 {  
-
     // Bindings for property valid
     connect(this, &Traffic::TrafficFactor_DistanceOnly::coordinateChanged, this, &Traffic::TrafficFactor_DistanceOnly::dispatchUpdateValid);
-
 }
 
 
 void Traffic::TrafficFactor_DistanceOnly::updateValid()
 {
-
     if (!coordinate().isValid()) {
         if (m_valid) {
             m_valid = false;
@@ -45,5 +42,4 @@ void Traffic::TrafficFactor_DistanceOnly::updateValid()
     }
 
     TrafficFactor_Abstract::updateValid();
-
 }

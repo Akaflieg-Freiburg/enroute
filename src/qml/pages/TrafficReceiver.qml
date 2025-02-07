@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -51,22 +51,25 @@ Page {
             }
 
             WordWrappingItemDelegate {
+                width: parent.width
                 leftPadding: SafeInsets.left+16
                 rightPadding: SafeInsets.right+16
 
                 id: idel
                 text: {
-                    var result = []
+                    var line1 = []
                     if (model.modelData.callSign !== "")
-                        result.push(model.modelData.callSign)
-                    result.push("Aircraft")
-                    result.push(model.modelData.description)
-                    return result.join(" • ")
-                }
-                //icon.source: model.modelData.waypoint.icon
-                //icon.color: "transparent"
+                        line1.push(model.modelData.callSign)
+                    line1.push(model.modelData.typeString)
 
-                width: parent.width
+                    var line2 = []
+                    if (model.modelData.hDist.isFinite())
+                        line2.push(qsTr("hDist") + ": " + Navigator.aircraft.horizontalDistanceToString(model.modelData.hDist))
+                    if (model.modelData.vDist.isFinite())
+                        line2.push(qsTr("vDist") + ": " + Navigator.aircraft.verticalDistanceToString(model.modelData.vDist))
+                    return "<strong>" + line1.join(" • ") + "</strong><br><font size='2'>" + line2.join(" • ") + "</font>"
+                }
+                icon.source: "/icons/material/ic_airplanemode_active.svg"
             }
         }
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2020-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -25,7 +25,6 @@
 
 Traffic::TrafficFactor_Abstract::TrafficFactor_Abstract(QObject* parent) : QObject(parent)
 {  
-
     lifeTimeCounter.setSingleShot(true);
     lifeTimeCounter.setInterval(lifeTime);
 
@@ -41,6 +40,39 @@ Traffic::TrafficFactor_Abstract::TrafficFactor_Abstract(QObject* parent) : QObje
     connect(&lifeTimeCounter, &QTimer::timeout, this, &Traffic::TrafficFactor_Abstract::dispatchUpdateValid);
     connect(this, &Traffic::TrafficFactor_Abstract::alarmLevelChanged, this, &Traffic::TrafficFactor_Abstract::dispatchUpdateValid);
     connect(this, &Traffic::TrafficFactor_Abstract::hDistChanged, this, &Traffic::TrafficFactor_Abstract::dispatchUpdateValid);
+
+    // Bindings for property typeString
+    m_typeString.setBinding([this]() {
+        switch(type()) {
+        case Aircraft:
+            return tr("Aircraft");
+        case Airship:
+            return tr("Airship");
+        case Balloon:
+            return tr("Balloon");
+        case Copter:
+            return tr("Copter");
+        case Drone:
+            return tr("Drone");
+        case Glider:
+            return tr("Glider");
+        case HangGlider:
+            return tr("Hang glider");
+        case Jet:
+            return tr("Jet");
+        case Paraglider:
+            return tr("Paraglider");
+        case Skydiver:
+            return tr("Skydiver");
+        case StaticObstacle:
+            return tr("Static Obstacle");
+        case TowPlane:
+            return tr("Tow Plane");
+        default:
+            return tr("Traffic");
+        }
+        return QString();
+    });
 
 }
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QObjectBindableProperty>
 #include <QTimer>
 
 #include "units/Distance.h"
@@ -151,7 +152,85 @@ public:
      *  - 0 = no alarm
      *  - 1 = alarm
      */
-    Q_PROPERTY(int alarmLevel READ alarmLevel WRITE setAlarmLevel NOTIFY alarmLevelChanged)
+    Q_PROPERTY(int alarmLevel READ alarmLevel WRITE setAlarmLevel NOTIFY alarmLevelChanged)   
+
+    /*! \brief Indicates if changes in properties should be animated in the GUI
+     *
+     *  This boolen properts is used to indicate if changes in properties should be animated in the
+     *  GUI.  This property is typically set to "true" before gradual changes are applied, such as
+     *  the position change of an aircraft.  It is typically set to "false" before data of a new
+     *  aircraft set.
+     */
+    Q_PROPERTY(bool animate READ animate WRITE setAnimate NOTIFY animateChanged)
+
+    /*! \brief Call sign
+     *
+     *  If known, this property holds the call sign of the traffic.  Otherwise, it contains an empty string
+     */
+    Q_PROPERTY(QString callSign READ callSign WRITE setCallSign NOTIFY callSignChanged)
+
+    /*! \brief Suggested color for GUI representation of the traffic
+     *
+     *  This propery suggests a color, depending on the alarmLevel.
+     *
+     *  - alarmLevel == 0: green
+     *  - alarmLevel == 1: yellow
+     *  - alarmLevel >= 2: red
+     */
+    Q_PROPERTY(QString color READ color NOTIFY colorChanged)
+
+    /*! \brief Description of the traffic, for use in GUI
+     *
+     *  This method holds a human-readable, translated description of the
+     *  traffic. This is a rich-text string of the form "Glider<br>+15 0m" or
+     *  "Airship<br>Position unknown<br>-45 ft".
+     */
+    Q_PROPERTY(QString description READ description NOTIFY descriptionChanged)
+
+    /*! \brief Horizontal distance from own position to the traffic, at the time of report
+     *
+     *  If known, this property holds the horizontal distance from the own
+     *  position to the traffic, at the time of report.  Otherwise, it contains
+     *  an invalid distance.
+     */
+    Q_PROPERTY(Units::Distance hDist READ hDist WRITE setHDist NOTIFY hDistChanged)
+
+    /*! \brief Identifier string of the traffic
+     *
+     *  This property holds an identifier string for the traffic, as assigned by
+     *  the FLARM device that reported the traffic. This can be the FLARM ID, or
+     *  an empty string if no meaningful ID can be assigned.
+     */
+    Q_PROPERTY(QString ID READ ID WRITE setID NOTIFY IDChanged)
+
+    /*! \brief Type of aircraft, as reported by the traffic receiver */
+    Q_PROPERTY(AircraftType type READ type WRITE setType NOTIFY typeChanged BINDABLE bindableType)
+
+    /*! \brief Type of aircraft, as reported by the traffic receiver
+     *
+     *  This property holds a translated, human-readable string.
+     */
+    Q_PROPERTY(QString typeString READ typeString BINDABLE bindableTypeString)
+
+    /*! \brief Validity
+     *
+     *  A traffic object is considered valid if the data is meaningful and if the
+     *  lifetime is not expired.  Only valid traffic objects should be shown in the GUI.
+     */
+    Q_PROPERTY(bool valid READ valid NOTIFY validChanged)
+
+    /*! \brief Vertical distance from own position to the traffic, at the time of report
+     *
+     *  If known, this property holds the vertical distance from the own
+     *  position to the traffic, at the time of report.  Otherwise, it contains
+     *  NaN.
+     */
+    Q_PROPERTY(Units::Distance vDist READ vDist WRITE setVDist NOTIFY vDistChanged)
+
+
+    //
+    // Getter/Setter Methods
+    //
 
     /*! \brief Getter method for property with the same name
      *
@@ -161,6 +240,113 @@ public:
     {
         return m_alarmLevel;
     }
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property animate
+     */
+    [[nodiscard]] auto animate() const -> bool
+    {
+        return m_animate;
+    }
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property callSign
+     */
+    [[nodiscard]] auto callSign() const -> QString
+    {
+        return m_callSign;
+    }
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property color
+     */
+    [[nodiscard]] auto color() const -> QString
+    {
+        if (m_alarmLevel == 0) {
+            return QStringLiteral("green");
+        }
+        if (m_alarmLevel == 1) {
+            return QStringLiteral("yellow");
+        }
+        return QStringLiteral("red");
+    }
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property description
+     */
+    [[nodiscard]] auto description() const -> QString
+    {
+        return m_description;
+    }
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property hDist
+     */
+    [[nodiscard]] auto hDist() const -> Units::Distance
+    {
+        return m_hDist;
+    }
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property ID
+     */
+    [[nodiscard]] auto ID() const -> QString
+    {
+        return m_ID;
+    }
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property type
+     */
+    [[nodiscard]] Traffic::TrafficFactor_Abstract::AircraftType type() const {return m_type.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property type
+     */
+    [[nodiscard]] QBindable<Traffic::TrafficFactor_Abstract::AircraftType> bindableType() {return &m_type;}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property typeString
+     */
+    [[nodiscard]] QString typeString() const {return m_typeString.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property typeString
+     */
+    [[nodiscard]] QBindable<QString> bindableTypeString() {return &m_typeString;}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property valid
+     */
+    [[nodiscard]] auto valid() const -> bool
+    {
+        return m_valid;
+    }
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property vDist
+     */
+    [[nodiscard]] auto vDist() const -> Units::Distance
+    {
+        return m_vDist;
+    }
+
+
+    //
+    // Setter Methods
+    //
 
     /*! \brief Setter function for property with the same name
      *
@@ -186,24 +372,6 @@ public:
 
     }
 
-    /*! \brief Indicates if changes in properties should be animated in the GUI
-     *
-     *  This boolen properts is used to indicate if changes in properties should be animated in the
-     *  GUI.  This property is typically set to "true" before gradual changes are applied, such as
-     *  the position change of an aircraft.  It is typically set to "false" before data of a new
-     *  aircraft set.
-     */
-    Q_PROPERTY(bool animate READ animate WRITE setAnimate NOTIFY animateChanged)
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property animate
-     */
-    [[nodiscard]] auto animate() const -> bool
-    {
-        return m_animate;
-    }
-
     /*! \brief Setter function for property with the same name
      *
      *  @param newAnimate Property animate
@@ -216,21 +384,6 @@ public:
         emit animateChanged();
     }
 
-    /*! \brief Call sign
-     *
-     *  If known, this property holds the call sign of the traffic.  Otherwise, it contains an empty string
-     */
-    Q_PROPERTY(QString callSign READ callSign WRITE setCallSign NOTIFY callSignChanged)
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property callSign
-     */
-    [[nodiscard]] auto callSign() const -> QString
-    {
-        return m_callSign;
-    }
-
     /*! \brief Setter function for property with the same name
      *
      *  @param newCallSign Property callSign
@@ -241,65 +394,6 @@ public:
         }
         m_callSign = newCallSign;
         emit callSignChanged();
-    }
-
-    /*! \brief Suggested color for GUI representation of the traffic
-     *
-     *  This propery suggests a color, depending on the alarmLevel.
-     *
-     *  - alarmLevel == 0: green
-     *  - alarmLevel == 1: yellow
-     *  - alarmLevel >= 2: red
-     */
-    Q_PROPERTY(QString color READ color NOTIFY colorChanged)
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property color
-     */
-    [[nodiscard]] auto color() const -> QString
-    {
-        if (m_alarmLevel == 0) {
-            return QStringLiteral("green");
-        }
-        if (m_alarmLevel == 1) {
-            return QStringLiteral("yellow");
-        }
-        return QStringLiteral("red");
-    }
-
-    /*! \brief Description of the traffic, for use in GUI
-     *
-     *  This method holds a human-readable, translated description of the
-     *  traffic. This is a rich-text string of the form "Glider<br>+15 0m" or
-     *  "Airship<br>Position unknown<br>-45 ft".
-     */
-    Q_PROPERTY(QString description READ description NOTIFY descriptionChanged)
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property description
-     */
-    [[nodiscard]] auto description() const -> QString
-    {
-        return m_description;
-    }
-
-    /*! \brief Horizontal distance from own position to the traffic, at the time of report
-     *
-     *  If known, this property holds the horizontal distance from the own
-     *  position to the traffic, at the time of report.  Otherwise, it contains
-     *  an invalid distance.
-     */
-    Q_PROPERTY(Units::Distance hDist READ hDist WRITE setHDist NOTIFY hDistChanged)
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property hDist
-     */
-    [[nodiscard]] auto hDist() const -> Units::Distance
-    {
-        return m_hDist;
     }
 
     /*! \brief Setter function for property with the same name
@@ -316,23 +410,6 @@ public:
         emit hDistChanged();
     }
 
-    /*! \brief Identifier string of the traffic
-     *
-     *  This property holds an identifier string for the traffic, as assigned by
-     *  the FLARM device that reported the traffic. This can be the FLARM ID, or
-     *  an empty string if no meaningful ID can be assigned.
-     */
-    Q_PROPERTY(QString ID READ ID WRITE setID NOTIFY IDChanged)
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property ID
-     */
-    [[nodiscard]] auto ID() const -> QString
-    {
-        return m_ID;
-    }
-
     /*! \brief Setter function for property with the same name
      *
      *  @param newID Property ID
@@ -345,62 +422,11 @@ public:
         emit IDChanged();
     }
 
-    /*! \brief Type of aircraft, as reported by the traffic receiver */
-    Q_PROPERTY(AircraftType type READ type WRITE setType NOTIFY typeChanged)
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property type
-     */
-    [[nodiscard]] auto type() const -> AircraftType
-    {
-        return m_type;
-    }
-
     /*! \brief Setter function for property with the same name
      *
      *  @param newType Property type
      */
-    void setType(AircraftType newType) {
-        if (m_type == newType) {
-            return;
-        }
-        m_type = newType;
-        emit typeChanged();
-    }
-
-    /*! \brief Validity
-     *
-     *  A traffic object is considered valid if the data is meaningful and if the
-     *  lifetime is not expired.  Only valid traffic objects should be shown in the GUI.
-     */
-    Q_PROPERTY(bool valid READ valid NOTIFY validChanged)
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property valid
-     */
-    [[nodiscard]] auto valid() const -> bool
-    {
-        return m_valid;
-    }
-
-    /*! \brief Vertical distance from own position to the traffic, at the time of report
-     *
-     *  If known, this property holds the vertical distance from the own
-     *  position to the traffic, at the time of report.  Otherwise, it contains
-     *  NaN.
-     */
-    Q_PROPERTY(Units::Distance vDist READ vDist WRITE setVDist NOTIFY vDistChanged)
-
-    /*! \brief Getter method for property with the same name
-     *
-     *  @returns Property vDist
-     */
-    [[nodiscard]] auto vDist() const -> Units::Distance
-    {
-        return m_vDist;
-    }
+    void setType(Traffic::TrafficFactor_Abstract::AircraftType newType) {m_type = newType;}
 
     /*! \brief Setter function for property with the same name
      *
@@ -473,7 +499,8 @@ private:
     QString m_color{QStringLiteral("red")};
     Units::Distance m_hDist;
     QString m_ID;
-    AircraftType m_type {AircraftType::unknown};
+    Q_OBJECT_BINDABLE_PROPERTY_WITH_ARGS(Traffic::TrafficFactor_Abstract, Traffic::TrafficFactor_Abstract::AircraftType, m_type, unknown, &Traffic::TrafficFactor_Abstract::typeChanged);
+    QProperty<QString> m_typeString;
     Units::Distance m_vDist;
 
     // Timer for timeout. Traffic objects become invalid if their data has not been

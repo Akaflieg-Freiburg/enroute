@@ -59,13 +59,28 @@ public:
     // Properties
     //
 
-    /*! List of current traffic, sorted by relevance */
+    /*! \brief Indicates that the traffic property is not empty */
+    Q_PROPERTY(bool hasTraffic READ hasTraffic BINDABLE bindableHasTraffic)
+
+    /*! \brief List of current traffic, sorted by relevance */
     Q_PROPERTY(QList<Traffic::TrafficFactor_Abstract*> traffic READ traffic BINDABLE bindableTraffic)
 
 
     //
     // Getter Methods
     //
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property hasTraffic
+     */
+    [[nodiscard]] bool hasTraffic() {return m_hasTraffic.value();}
+
+    /*! \brief Getter method for property of the same name
+     *
+     * @returns Property hasTraffic
+     */
+    [[nodiscard]] QBindable<bool> bindableHasTraffic() {return &m_hasTraffic;}
 
     /*! \brief Getter method for property of the same name
      *
@@ -82,6 +97,7 @@ public:
 private:
     Q_DISABLE_COPY_MOVE(TrafficObserver)
 
+    QProperty<bool> m_hasTraffic;
     QProperty<QList<Traffic::TrafficFactor_Abstract*>> m_traffic;
 };
 

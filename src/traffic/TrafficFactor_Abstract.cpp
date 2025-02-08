@@ -93,11 +93,11 @@ Traffic::TrafficFactor_Abstract::TrafficFactor_Abstract(QObject* parent) : QObje
 
     // Binding for property relevantString
     m_relevantString.setBinding([this]() {
-        if (m_relevant.value() == false)
+        if (m_relevant.value())
         {
-            return tr("Irrelevant Traffic");
+            return tr("Relevant Traffic");
         }
-        return tr("Relevant Traffic");
+        return tr("Irrelevant Traffic");
     });
 }
 

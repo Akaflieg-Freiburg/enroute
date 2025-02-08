@@ -202,10 +202,14 @@ public:
      */
     Q_PROPERTY(QString ID READ ID WRITE setID NOTIFY IDChanged)
 
-#warning docu
+    /*! \brief Indicates relevant traffic
+     *
+     *  This property holds 'true' if the traffic is valid, and closer than maxVerticalDistance and maxHorizontalDistance
+     *  specified below.
+     */
     Q_PROPERTY(bool relevant READ relevant BINDABLE bindableRelevant)
 
-#warning docu
+    /*! \brief Translated string containing the 'relevant' property */
     Q_PROPERTY(QString relevantString READ relevantString BINDABLE bindableRelevantString)
 
     /*! \brief Type of aircraft, as reported by the traffic receiver */

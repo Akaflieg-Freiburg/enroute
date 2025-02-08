@@ -176,16 +176,11 @@ Page {
 
             }
 
-            Item {
-                Layout.preferredHeight: sView.font.pixelSize*0.5
-                Layout.columnSpan: 2
-            }
-
             Label {
                 Layout.fillWidth: true
                 visible: TrafficDataProvider.receivingHeartbeat
 
-                text: qsTr("Traffic")
+                text: trafficObserver.hasTraffic ? qsTr("Traffic") : qsTr("Currently No Traffic")
                 font.pixelSize: sView.font.pixelSize*1.2
                 font.bold: true
             }
@@ -216,8 +211,6 @@ Page {
                         }
                     }
                 }
-
-
             }
 
             Label {

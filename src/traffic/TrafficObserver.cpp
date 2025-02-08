@@ -25,6 +25,10 @@
 Traffic::TrafficObserver::TrafficObserver(QObject* parent)
     : QObject(parent)
 {
+    m_hasTraffic.setBinding([this]() {
+        return !m_traffic.value().isEmpty();
+    });
+
     m_traffic.setBinding([this]() {
         QList<Traffic::TrafficFactor_Abstract*> result;
         const auto list = GlobalObject::trafficDataProvider()->trafficObjects();

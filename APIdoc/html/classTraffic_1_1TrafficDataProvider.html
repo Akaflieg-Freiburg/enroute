@@ -62,7 +62,6 @@ $(function(){ initResizable(false); });
 <a href="#pub-slots">Public Slots</a> &#124;
 <a href="#signals">Signals</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="classTraffic_1_1TrafficDataProvider-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Traffic::TrafficDataProvider Class Reference</div></div>
@@ -205,15 +204,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae04aab005e40c446168278ac7a84abb1 inherit pub_methods_classPositioning_1_1PositionInfoSource__Abstract" id="r_ae04aab005e40c446168278ac7a84abb1"><td class="memItemLeft" align="right" valign="top">QBindable&lt; QString &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPositioning_1_1PositionInfoSource__Abstract.html#ae04aab005e40c446168278ac7a84abb1">bindableStatusString</a> () const</td></tr>
 <tr class="memdesc:ae04aab005e40c446168278ac7a84abb1 inherit pub_methods_classPositioning_1_1PositionInfoSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for property with the same name.  <br /></td></tr>
 <tr class="separator:ae04aab005e40c446168278ac7a84abb1 inherit pub_methods_classPositioning_1_1PositionInfoSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
-Static Public Attributes</h2></td></tr>
-<tr class="memitem:a7193102bd6d117badcbd3a0142ad0d66" id="r_a7193102bd6d117badcbd3a0142ad0d66"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="classUnits_1_1Distance.html">Units::Distance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7193102bd6d117badcbd3a0142ad0d66">maxVerticalDistance</a> = <a class="el" href="classUnits_1_1Distance.html#a50ed9d5c1f61c8ea2b650390d68a43d4">Units::Distance::fromM</a>(1500.0)</td></tr>
-<tr class="memdesc:a7193102bd6d117badcbd3a0142ad0d66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximal vertical distance for relevant traffic.  <br /></td></tr>
-<tr class="separator:a7193102bd6d117badcbd3a0142ad0d66"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae8b3e0322ceab2ae650052af735dfc76" id="r_ae8b3e0322ceab2ae650052af735dfc76"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="classUnits_1_1Distance.html">Units::Distance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae8b3e0322ceab2ae650052af735dfc76">maxHorizontalDistance</a> = <a class="el" href="classUnits_1_1Distance.html#a0cf2f43b39c1e90cffccee3b0d7a1970">Units::Distance::fromNM</a>(20.0)</td></tr>
-<tr class="memdesc:ae8b3e0322ceab2ae650052af735dfc76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximal horizontal distance for relevant traffic.  <br /></td></tr>
-<tr class="separator:ae8b3e0322ceab2ae650052af735dfc76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -923,61 +913,6 @@ Properties</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Property <a class="el" href="classTraffic_1_1Warning.html" title="Traffic warning.">Warning</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00232">232</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="ae8b3e0322ceab2ae650052af735dfc76" name="ae8b3e0322ceab2ae650052af735dfc76"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae8b3e0322ceab2ae650052af735dfc76">&#9670;&#160;</a></span>maxHorizontalDistance</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classUnits_1_1Distance.html">Units::Distance</a> Traffic::TrafficDataProvider::maxHorizontalDistance = <a class="el" href="classUnits_1_1Distance.html#a0cf2f43b39c1e90cffccee3b0d7a1970">Units::Distance::fromNM</a>(20.0)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Maximal horizontal distance for relevant traffic. </p>
-<p>Traffic whose horizontal distance to the own aircraft is larger than this number will be ignored. </p>
-
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00324">324</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
-
-</div>
-</div>
-<a id="a7193102bd6d117badcbd3a0142ad0d66" name="a7193102bd6d117badcbd3a0142ad0d66"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7193102bd6d117badcbd3a0142ad0d66">&#9670;&#160;</a></span>maxVerticalDistance</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classUnits_1_1Distance.html">Units::Distance</a> Traffic::TrafficDataProvider::maxVerticalDistance = <a class="el" href="classUnits_1_1Distance.html#a50ed9d5c1f61c8ea2b650390d68a43d4">Units::Distance::fromM</a>(1500.0)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Maximal vertical distance for relevant traffic. </p>
-<p>Traffic whose vertical distance to the own aircraft is larger than this number will be ignored. </p>
-
-<p class="definition">Definition at line <a class="el" href="TrafficDataProvider_8h_source.html#l00317">317</a> of file <a class="el" href="TrafficDataProvider_8h_source.html">TrafficDataProvider.h</a>.</p>
 
 </div>
 </div>

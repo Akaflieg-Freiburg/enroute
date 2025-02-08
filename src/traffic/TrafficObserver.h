@@ -28,7 +28,11 @@
 namespace Traffic {
 
 #warning doku
-/*! \brief Holds and updates METAR and TAF for a given waypoint */
+/*! \brief Provides list of traffic, sorted by relevance
+ *
+ *  This class monitors the global TrafficDataProvider to produce list of all traffic factors, sorted by relevance. Holding an instance of this class is relatively
+ *  expensive; it should therefore be deleted as soon as it is no longer used.
+ */
 
 class TrafficObserver : public QObject {
     Q_OBJECT
@@ -46,7 +50,7 @@ public:
     explicit TrafficObserver(QObject* parent=nullptr);
 
     /*! \brief Standard destructor */
-    ~TrafficObserver() = default;
+    ~TrafficObserver() override = default;
 
 
     //
@@ -72,8 +76,6 @@ public:
      * @returns Property traffic
      */
     [[nodiscard]] QBindable<QList<Traffic::TrafficFactor_Abstract*>> bindableTraffic() {return &m_traffic;}
-
-
 
 private:
     Q_DISABLE_COPY_MOVE(TrafficObserver)

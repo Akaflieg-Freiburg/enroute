@@ -419,19 +419,6 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessagePFLAA(const QString
         }
     }
 
-    // Ground speed it optimal. If ground speed is zero that means:
-    // target is on the ground. Ignore these targets, unless they are known static obstacles!
-    auto groundSpeedInMPS = arguments[8].toDouble(&ok);
-    if (!ok)
-    {
-        groundSpeedInMPS = qQNaN();
-    }
-    if ((groundSpeedInMPS == 0.0) && (type != Traffic::TrafficFactor_Abstract::StaticObstacle))
-    {
-        return;
-    }
-
-
     // Target ID is optional
     const auto &targetID = arguments[5];
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2025 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,28 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
-#include <GlobalSettings.h>
-
-#include "traffic/TrafficFactor_DistanceOnly.h"
+#include "weather/Observer.h"
+#include "weather/WeatherDataProvider.h"
 
 
-Traffic::TrafficFactor_DistanceOnly::TrafficFactor_DistanceOnly(QObject *parent) : Traffic::TrafficFactor_Abstract(parent)
-{  
-    // Bindings for property valid
-    connect(this, &Traffic::TrafficFactor_DistanceOnly::coordinateChanged, this, &Traffic::TrafficFactor_DistanceOnly::dispatchUpdateValid);
-}
-
-
-void Traffic::TrafficFactor_DistanceOnly::updateValid()
+Weather::Observer::Observer(QObject* parent)
+    : QObject(parent)
 {
-    if (!coordinate().isValid()) {
-        if (m_valid) {
-            m_valid = false;
-            emit validChanged();
-        }
-        return;
-    }
-
-    TrafficFactor_Abstract::updateValid();
+    // Setup Bindings
+    m_metar.setBinding([this]() {
+        auto id = m_waypoint.value().ICAOCode();
+        return GlobalObject::weatherDataProvider()->METARs().value(id);
+    });
+    m_taf.setBinding([this]() {
+        auto id = m_waypoint.value().ICAOCode();
+        return GlobalObject::weatherDataProvider()->TAFs().value(id);
+    });
 }
+

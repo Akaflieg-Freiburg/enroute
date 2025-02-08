@@ -160,7 +160,6 @@ bool GeoMaps::TileHandler::process(QHttpServerResponder* responder, const QStrin
             headers.append("Content-Encoding", "gzip");
 
             responder->write(tileData, headers);
-            // responder->write(tileData, {{"Content-Type", "application/octet-stream"}, {"Content-Encoding", "gzip"}});
         }
         else
         {

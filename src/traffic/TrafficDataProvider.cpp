@@ -413,47 +413,21 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition(const Traffic:
 
 void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::TrafficFactor_WithPosition &factor)
 {
-
-    // Check if traffic is too far away to be shown
-    bool farAway = false;
-    if (factor.vDist().isFinite() && (factor.vDist() > maxVerticalDistance))
-    {
-        farAway = true;
-    }
-    if (factor.hDist().isFinite() && (factor.hDist() > maxHorizontalDistance))
-    {
-        farAway = true;
-    }
-
-
     // Check if the traffic is one of the known factors.
-    foreach(auto target, m_trafficObjects)
+    for(auto* target : m_trafficObjects)
     {
         if (factor.ID() == target->ID())
         {
-            // If traffic is too far away, delete the entry. Otherwise, replace the entry by the factor.
-            if (farAway)
-            {
-                target->setAnimate(false);
-                target->copyFrom(TrafficFactor_WithPosition());
-            }
-            else
-            {
-                target->setAnimate(true);
-                target->copyFrom(factor);
-                target->startLiveTime();
-            }
+            // Replace the entry by the factor.
+            target->setAnimate(true);
+            target->copyFrom(factor);
+            target->startLiveTime();
             return;
         }
     }
 
-    // If traffic is too far away, ignore the factor.
-    if (farAway) {
-        return;
-    }
-
-    auto *lowestPriObject = m_trafficObjects.at(0);
-    foreach(auto target, m_trafficObjects)
+    auto* lowestPriObject = m_trafficObjects.at(0);
+    for(auto* target : m_trafficObjects)
     {
         if (lowestPriObject->hasHigherPriorityThan(*target))
         {
@@ -466,7 +440,6 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::Tr
         lowestPriObject->copyFrom(factor);
         lowestPriObject->startLiveTime();
     }
-
 }
 
 void Traffic::TrafficDataProvider::onTrafficReceiverRuntimeError()

@@ -27,11 +27,13 @@
 
 namespace Traffic {
 
-#warning doku
 /*! \brief Provides list of traffic, sorted by relevance
  *
- *  This class monitors the global TrafficDataProvider to produce list of all traffic factors, sorted by relevance. Holding an instance of this class is relatively
- *  expensive; it should therefore be deleted as soon as it is no longer used.
+ *  This class monitors the global TrafficDataProvider to produce list of all
+ *  traffic factors, sorted by relevance. Holding an instance of this class is
+ *  relatively expensive because it needs to update and sort whenever any data
+ *  in the TrafficDataProvider changes. Instances should therefore be deleted as
+ *  soon as they are no longer used.
  */
 
 class TrafficObserver : public QObject {
@@ -57,7 +59,7 @@ public:
     // Properties
     //
 
-#warning docu
+    /*! List of current traffic, sorted by relevance */
     Q_PROPERTY(QList<Traffic::TrafficFactor_Abstract*> traffic READ traffic BINDABLE bindableTraffic)
 
 

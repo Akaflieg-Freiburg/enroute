@@ -27,7 +27,8 @@ Traffic::TrafficObserver::TrafficObserver(QObject* parent)
 {
     m_traffic.setBinding([this]() {
         QList<Traffic::TrafficFactor_Abstract*> result;
-        for(const auto* factor : GlobalObject::trafficDataProvider()->trafficObjects())
+        const auto list = GlobalObject::trafficDataProvider()->trafficObjects();
+        for(const auto* factor : list)
         {
             if (factor == nullptr)
             {
@@ -48,9 +49,6 @@ Traffic::TrafficObserver::TrafficObserver(QObject* parent)
         std::sort(result.begin(), result.end(),
                   [](const Traffic::TrafficFactor_Abstract* first, const Traffic::TrafficFactor_Abstract* second)
                   { return first->hasHigherPriorityThan(*second); });
-
-#warning Need to sort list
-
         return result;
     });
 }

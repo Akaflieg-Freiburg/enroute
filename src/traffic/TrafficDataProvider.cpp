@@ -413,7 +413,6 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithoutPosition(const Traffic:
 
 void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::TrafficFactor_WithPosition &factor)
 {
-
     // Check if traffic is too far away to be shown
     bool farAway = false;
     if (factor.vDist().isFinite() && (factor.vDist() > maxVerticalDistance))
@@ -424,7 +423,6 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::Tr
     {
         farAway = true;
     }
-
 
     // Check if the traffic is one of the known factors.
     foreach(auto target, m_trafficObjects)
@@ -466,7 +464,6 @@ void Traffic::TrafficDataProvider::onTrafficFactorWithPosition(const Traffic::Tr
         lowestPriObject->copyFrom(factor);
         lowestPriObject->startLiveTime();
     }
-
 }
 
 void Traffic::TrafficDataProvider::onTrafficReceiverRuntimeError()

@@ -61,6 +61,8 @@ Page {
                     if (model.modelData.callSign !== "")
                         line1.push(model.modelData.callSign)
                     line1.push(model.modelData.typeString)
+                    if (model.modelData.ID !== "")
+                        line1.push("ID: " + model.modelData.ID)
 
                     var line2 = []
                     if (model.modelData.hDist.isFinite())
@@ -196,6 +198,26 @@ Page {
                 model: trafficObserver.traffic
                 delegate: trafficDelegate
                 ScrollIndicator.vertical: ScrollIndicator {}
+
+                section.property: "modelData.relevantString"
+                section.delegate: Component {
+                    Control {
+                        required property string section
+
+                        height: lbl.height
+
+                        Label {
+                            id: lbl
+
+                            //x: font.pixelSize
+                            text: parent.section
+                            //font.pixelSize: parent.font.pixelSize*1.2
+                            //font.bold: true
+                        }
+                    }
+                }
+
+
             }
 
             Label {

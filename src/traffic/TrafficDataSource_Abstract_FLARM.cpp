@@ -426,10 +426,6 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessagePFLAA(const QString
     {
         groundSpeedInMPS = qQNaN();
     }
-    if ((groundSpeedInMPS == 0.0) && (type != Traffic::TrafficFactor_Abstract::StaticObstacle))
-    {
-        return;
-    }
 
 
     // Target ID is optional

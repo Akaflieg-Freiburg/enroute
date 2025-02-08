@@ -30,7 +30,6 @@ using namespace std::chrono_literals;
 
 namespace Traffic {
 
-
 /*! \brief Abstract base class for traffic factors
  *
  *  This is an abstract base class for traffic factors, as reported by traffic
@@ -203,6 +202,12 @@ public:
      */
     Q_PROPERTY(QString ID READ ID WRITE setID NOTIFY IDChanged)
 
+#warning docu
+    Q_PROPERTY(bool relevant READ relevant BINDABLE bindableRelevant)
+
+#warning docu
+    Q_PROPERTY(QString relevantString READ relevantString BINDABLE bindableRelevantString)
+
     /*! \brief Type of aircraft, as reported by the traffic receiver */
     Q_PROPERTY(AircraftType type READ type WRITE setType NOTIFY typeChanged BINDABLE bindableType)
 
@@ -306,6 +311,30 @@ public:
     {
         return m_ID;
     }
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property relevant
+     */
+    [[nodiscard]] bool relevant() const {return m_relevant.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property relevant
+     */
+    [[nodiscard]] QBindable<bool> bindableRelevant() {return &m_relevant;}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property relevant
+     */
+    [[nodiscard]] QString relevantString() const {return m_relevantString.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property relevantString
+     */
+    [[nodiscard]] QBindable<bool> bindableRelevantString() {return &m_relevantString;}
 
     /*! \brief Getter method for property with the same name
      *
@@ -428,6 +457,25 @@ public:
      */
     void setVDist(Units::Distance newVDist) {m_vDist = newVDist;}
 
+
+    //
+    // Constants
+    //
+
+    /*! \brief Maximal vertical distance for relevant traffic
+     *
+     *  Traffic whose vertical distance to the own aircraft is larger than this
+     *  number will be considered irrelevant.
+     */
+    static constexpr Units::Distance maxVerticalDistance = Units::Distance::fromM(1500.0);
+
+    /*! \brief Maximal horizontal distance for relevant traffic
+     *
+     *  Traffic whose horizontal distance to the own aircraft is larger than
+     *  this number will be considered irrelevant.
+     */
+    static constexpr Units::Distance maxHorizontalDistance = Units::Distance::fromNM(20.0);
+
 signals:
     /*! \brief Notifier signal */
     void alarmLevelChanged();
@@ -488,6 +536,8 @@ private:
     Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficFactor_Abstract, Units::Distance, m_hDist, &Traffic::TrafficFactor_Abstract::hDistChanged);
     QString m_ID;
     Q_OBJECT_BINDABLE_PROPERTY_WITH_ARGS(Traffic::TrafficFactor_Abstract, Traffic::TrafficFactor_Abstract::AircraftType, m_type, unknown, &Traffic::TrafficFactor_Abstract::typeChanged);
+    QProperty<bool> m_relevant {false};
+    QProperty<QString> m_relevantString;
     QProperty<QString> m_typeString;
     Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficFactor_Abstract, Units::Distance, m_vDist, &Traffic::TrafficFactor_Abstract::vDistChanged);
 

@@ -28,10 +28,10 @@ Traffic::TrafficFactor_Abstract::TrafficFactor_Abstract(QObject* parent) : QObje
     lifeTimeCounter.setSingleShot(true);
     lifeTimeCounter.setInterval(lifeTime);
 
-    // Bindings for property color
+    // Binding for property color
     connect(this, &Traffic::TrafficFactor_Abstract::alarmLevelChanged, this, &Traffic::TrafficFactor_Abstract::colorChanged);
 
-    // Bindings for property description
+    // Binding for property description
     connect(this, &Traffic::TrafficFactor_Abstract::callSignChanged, this, &Traffic::TrafficFactor_Abstract::dispatchUpdateDescription);
     connect(this, &Traffic::TrafficFactor_Abstract::typeChanged, this, &Traffic::TrafficFactor_Abstract::dispatchUpdateDescription);
     connect(this, &Traffic::TrafficFactor_Abstract::vDistChanged, this, &Traffic::TrafficFactor_Abstract::dispatchUpdateDescription);
@@ -41,7 +41,7 @@ Traffic::TrafficFactor_Abstract::TrafficFactor_Abstract(QObject* parent) : QObje
     connect(this, &Traffic::TrafficFactor_Abstract::alarmLevelChanged, this, &Traffic::TrafficFactor_Abstract::dispatchUpdateValid);
     connect(this, &Traffic::TrafficFactor_Abstract::hDistChanged, this, &Traffic::TrafficFactor_Abstract::dispatchUpdateValid);
 
-    // Bindings for property typeString
+    // Binding for property typeString
     m_typeString.setBinding([this]() {
         switch(type()) {
         case Aircraft:
@@ -74,6 +74,31 @@ Traffic::TrafficFactor_Abstract::TrafficFactor_Abstract(QObject* parent) : QObje
         return QString();
     });
 
+    // Binding for property relevant
+    m_relevant.setBinding([this]() {
+        if (!m_valid.value())
+        {
+            return false;
+        }
+        if (m_vDist.value().isFinite() && (m_vDist.value() > maxVerticalDistance))
+        {
+            return false;
+        }
+        if (m_hDist.value().isFinite() && (m_hDist.value() > maxHorizontalDistance))
+        {
+            return false;
+        }
+        return true;
+    });
+
+    // Binding for property relevantString
+    m_relevantString.setBinding([this]() {
+        if (m_relevant.value() == false)
+        {
+            return tr("Irrelevant Traffic");
+        }
+        return tr("Relevant Traffic");
+    });
 }
 
 
@@ -89,33 +114,49 @@ void Traffic::TrafficFactor_Abstract::dispatchUpdateValid()
 }
 
 
-auto Traffic::TrafficFactor_Abstract::hasHigherPriorityThan(const TrafficFactor_Abstract& rhs) const -> bool
+bool Traffic::TrafficFactor_Abstract::hasHigherPriorityThan(const TrafficFactor_Abstract& rhs) const
 {
-
-    // Criterion 1: Valid instances have higher priority than invalid ones
-    if (!rhs.valid()) {
+    // Criterion: Valid instances have higher priority than invalid ones
+    if (valid() && !rhs.valid())
+    {
         return true;
     }
-    if (!valid()) {
+    if (!valid() && rhs.valid())
+    {
         return false;
     }
 
-#warning need to see who is on the ground and who is not
-    // At this point, both instances are valid.
-
-    // Criterion 2: Alarm level
-    if (alarmLevel() > rhs.alarmLevel()) {
+    // Criterion: Alarm level
+    if (alarmLevel() > rhs.alarmLevel())
+    {
         return true;
     }
-    if (alarmLevel() < rhs.alarmLevel()) {
+    if (alarmLevel() < rhs.alarmLevel())
+    {
         return false;
     }
-    // At this point, both instances have equal alarm levels
 
-    // Final criterion: distance to current position
-#warning need to take vertical distance into account look at all distances!
-    return (hDist() < rhs.hDist());
+    // Criterion: Relevant instances have higher priority than irrelevant ones
+    if (relevant() && !rhs.relevant())
+    {
+        return true;
+    }
+    if (!relevant() && rhs.relevant())
+    {
+        return false;
+    }
 
+    if (hDist().isFinite() && vDist().isFinite() && rhs.hDist().isFinite() && rhs.vDist().isFinite())
+    {
+        return (hDist().toM()*hDist().toM() < rhs.hDist().toM()*rhs.hDist().toM());
+    }
+
+    if (hDist().isFinite() && rhs.hDist().isFinite())
+    {
+        return (hDist() < rhs.hDist());
+    }
+
+    return false;
 }
 
 

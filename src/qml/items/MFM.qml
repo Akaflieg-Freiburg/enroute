@@ -301,7 +301,7 @@ Item {
                 enabled: TrafficDataProvider.trafficObjectWithoutPosition.animate
             }
             opacity: 0.1
-            visible: TrafficDataProvider.trafficObjectWithoutPosition.valid
+            visible: TrafficDataProvider.trafficObjectWithoutPosition.relevant
         }
 
         MapQuickItem {
@@ -315,7 +315,7 @@ Item {
                 enabled: TrafficDataProvider.trafficObjectWithoutPosition.animate
             }
 
-            visible: TrafficDataProvider.trafficObjectWithoutPosition.valid
+            visible: TrafficDataProvider.trafficObjectWithoutPosition.relevant
 
             Connections {
                 // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem

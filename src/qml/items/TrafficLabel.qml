@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2021-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2021-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -39,7 +39,7 @@ MapQuickItem {
         enabled: trafficInfo.animate
     }
 
-    visible: trafficInfo.valid
+    visible: trafficInfo.relevant
 
     Connections {
         // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem

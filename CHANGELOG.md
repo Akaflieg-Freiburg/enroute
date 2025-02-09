@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.32.9] - 2025-
+
+### Changed
+- Show list of all traffic on the page "Information/Traffic Data Receiver".
+  Adjust the manual accordingly.
+
+
 ## [2.32.8] - 2025-02-05
 
 ### Changed

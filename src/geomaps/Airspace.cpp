@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -47,11 +47,11 @@ GeoMaps::Airspace::Airspace(const QJsonObject &geoJSONObject) {
     if (polygonArray.size() != 1) {
         return;
     }
-    auto polygonCoordinates = polygonArray[0].toArray();
-    foreach (auto coordinate, polygonCoordinates) {
+    const auto polygonCoordinates = polygonArray[0].toArray();
+    for (const auto coordinate : polygonCoordinates)
+    {
         auto coordinateArray = coordinate.toArray();
-        auto geoCoordinate =
-                QGeoCoordinate(coordinateArray[1].toDouble(), coordinateArray[0].toDouble());
+        auto geoCoordinate = QGeoCoordinate(coordinateArray[1].toDouble(), coordinateArray[0].toDouble());
         m_polygon.addCoordinate(geoCoordinate);
     }
 

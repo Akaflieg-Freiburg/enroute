@@ -67,6 +67,8 @@ auto main(int argc, char *argv[]) -> int
 {
     // It seems that MapBoxGL does not work well with threaded rendering, so we disallow that.
     qputenv("QSG_RENDER_LOOP", "basic");
+    // Might help with ANRs under Android
+    qputenv("QT_ANDROID_DISABLE_ACCESSIBILITY", "1");
 
     // Register types
     qRegisterMetaType<GeoMaps::Airspace>();

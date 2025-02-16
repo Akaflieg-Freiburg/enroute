@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.32.9] - 2025-
+## [2.32.9] - 2025-02-16
 
 ### Changed
 - Show list of all traffic on the page "Information/Traffic Data Receiver".

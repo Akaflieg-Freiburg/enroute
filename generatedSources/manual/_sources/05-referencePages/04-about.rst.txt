@@ -1,5 +1,5 @@
-About
-=====
+Information/About
+=================
 
 The page **About Enroute Flight Navigation** shows basic information about the
 app and the system. To access the page, open the main menu and choose

@@ -26,7 +26,6 @@
 
 Traffic::TrafficFactor_WithPosition::TrafficFactor_WithPosition(QObject *parent) : TrafficFactor_Abstract(parent)
 {  
-
     // Bindings for property description
     connect(this, &Traffic::TrafficFactor_WithPosition::positionInfoChanged, this, &Traffic::TrafficFactor_WithPosition::dispatchUpdateDescription);
 
@@ -36,19 +35,16 @@ Traffic::TrafficFactor_WithPosition::TrafficFactor_WithPosition(QObject *parent)
 
     // Bindings for property valid
     connect(this, &Traffic::TrafficFactor_WithPosition::positionInfoChanged, this, &Traffic::TrafficFactor_WithPosition::dispatchUpdateValid);
-
 }
 
 
 void Traffic::TrafficFactor_WithPosition::setPositionInfo(const Positioning::PositionInfo& newPositionInfo)
 {
-
     if (m_positionInfo == newPositionInfo) {
         return;
     }
     m_positionInfo = newPositionInfo;
     emit positionInfoChanged();
-
 }
 
 
@@ -157,7 +153,6 @@ void Traffic::TrafficFactor_WithPosition::updateIcon()
 
 void Traffic::TrafficFactor_WithPosition::updateValid()
 {
-
     if (!positionInfo().isValid()) {
         if (m_valid) {
             m_valid = false;

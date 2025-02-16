@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2023-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2023-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -160,7 +160,8 @@ QString FileFormats::TripKit::readTripKitData()
             return QObject::tr("The trip kit does not contain any charts.", "FileFormats::TripKit");
         }
 
-        foreach (auto chart, m_charts)
+        const auto const_m_charts = m_charts;
+        for (const auto chart : const_m_charts)
         {
             chartEntry entry;
             entry.name = chart.toObject()[u"name"_s].toString();

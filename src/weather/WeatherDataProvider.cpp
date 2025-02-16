@@ -77,21 +77,6 @@ void Weather::WeatherDataProvider::deferredInitialization()
     connect(Navigation::Navigator::clock(), &Navigation::Clock::timeChanged, this, &Weather::WeatherDataProvider::sunInfoChanged);
 }
 
-/*
-Weather::WeatherDataProvider::~WeatherDataProvider()
-{
-    for(const auto& networkReply : m_networkReplies)
-    {
-        if (networkReply.isNull())
-        {
-            continue;
-        }
-        networkReply->abort();
-        delete networkReply;
-    }
-}
-*/
-
 
 void Weather::WeatherDataProvider::deleteExpiredMesages()
 {

@@ -364,7 +364,6 @@ AppWindow {
                             }
                         }
 
-
                         ItemDelegate { // FLARM Status
                             Layout.fillWidth: true
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2023-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2023-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -32,9 +32,8 @@ NOTAM::NOTAMList::NOTAMList(const QJsonDocument& jsonDoc, const QGeoCircle& regi
 {
     QSet<QString> numbersSeen;
 
-    auto items = jsonDoc[u"items"_s].toArray();
-
-    foreach(auto item, items)
+    const auto items = jsonDoc[u"items"_s].toArray();
+    for(const auto item : items)
     {
         NOTAM const notam(item.toObject());
 

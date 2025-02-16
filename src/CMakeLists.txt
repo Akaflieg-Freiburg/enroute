@@ -107,6 +107,7 @@ set(SOURCES
     traffic/TrafficFactor_Abstract.h
     traffic/TrafficFactor_DistanceOnly.h
     traffic/TrafficFactor_WithPosition.h
+    traffic/TrafficObserver.h
     traffic/Warning.h
     units/Angle.h
     units/ByteSize.h
@@ -207,6 +208,7 @@ set(SOURCES
     traffic/TrafficFactor_Abstract.cpp
     traffic/TrafficFactor_DistanceOnly.cpp
     traffic/TrafficFactor_WithPosition.cpp
+    traffic/TrafficObserver.cpp
     traffic/Warning.cpp
     units/Angle.cpp
     units/Density.cpp

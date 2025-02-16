@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2020-2021 by Stefan Kebekus                             *
+ *   Copyright (C) 2025 by Stefan Kebekus                                  *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,28 +18,41 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
-#include <GlobalSettings.h>
-
-#include "traffic/TrafficFactor_DistanceOnly.h"
+#include "traffic/TrafficDataProvider.h"
+#include "traffic/TrafficObserver.h"
 
 
-Traffic::TrafficFactor_DistanceOnly::TrafficFactor_DistanceOnly(QObject *parent) : Traffic::TrafficFactor_Abstract(parent)
-{  
-    // Bindings for property valid
-    connect(this, &Traffic::TrafficFactor_DistanceOnly::coordinateChanged, this, &Traffic::TrafficFactor_DistanceOnly::dispatchUpdateValid);
-}
-
-
-void Traffic::TrafficFactor_DistanceOnly::updateValid()
+Traffic::TrafficObserver::TrafficObserver(QObject* parent)
+    : QObject(parent)
 {
-    if (!coordinate().isValid()) {
-        if (m_valid) {
-            m_valid = false;
-            emit validChanged();
-        }
-        return;
-    }
+    m_hasTraffic.setBinding([this]() {
+        return !m_traffic.value().isEmpty();
+    });
 
-    TrafficFactor_Abstract::updateValid();
+    m_traffic.setBinding([this]() {
+        QList<Traffic::TrafficFactor_Abstract*> result;
+        const auto list = GlobalObject::trafficDataProvider()->trafficObjects();
+        for(const auto* factor : list)
+        {
+            if (factor == nullptr)
+            {
+                continue;
+            }
+            if (!factor->valid())
+            {
+                continue;
+            }
+            result << (Traffic::TrafficFactor_Abstract*)factor;
+        }
+        const auto* factor = GlobalObject::trafficDataProvider()->trafficObjectWithoutPosition();
+        if ((factor != nullptr) && factor->valid())
+        {
+            result << (Traffic::TrafficFactor_Abstract*)factor;
+        }
+
+        std::sort(result.begin(), result.end(),
+                  [](const Traffic::TrafficFactor_Abstract* first, const Traffic::TrafficFactor_Abstract* second)
+                  { return first->hasHigherPriorityThan(*second); });
+        return result;
+    });
 }

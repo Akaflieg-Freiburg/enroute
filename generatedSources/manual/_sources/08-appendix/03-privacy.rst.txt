@@ -67,13 +67,6 @@ items will be sent.
 -  The currently planned route
 -  Waypoint coordinates
 
-The server forwards requests for METARs and TAFs to a web service at the
-Aviation Weather Center but hides your IP address, so the web service
-will never see it. The web services at the Aviation Weather Center are
-operated by the US government. We do not control the data handling
-practices of these external services. Detailed information can be found
-at **www.aviationweather.gov/dataserver**.
-
 The server forwards requests for NOTAMs to a Federal Aviation
 Administration web service but hides your IP address, so the service
 will never see it. The Federal Aviation Administration's web services
@@ -171,13 +164,6 @@ werden noch folgende Daten gesendet.
 -  Ihre aktuelle Position
 -  Die aktuell geplante Route
 -  Wegpunktkoordinaten
-
-Der Server leitet METAR- und TAF-Anfragen zu einem Dienst des Aviation
-Weather Center weiter, verbirgt aber Ihre IP-Adresse, sodass dieser
-Dienst sie niemals sehen kann. Die Dienste des Aviation Weather Center
-werden von der US-Regierung betrieben. Auf die Datenverarbeitung dieser
-externen Dienste haben wir keinen Einfluss. Genaue Informationen finden
-Sie beim **www.aviationweather.gov/dataserver**.
 
 Der Server leitet NOTAM-Anfragen zu einem Dienst der Federal Aviation
 Administration weiter, verbirgt aber Ihre IP-Adresse, sodass dieser
@@ -282,14 +268,6 @@ données sont demandées. En plus de l'adresse IP de votre appareil, les
 -  L'itinéraire actuellement prévu
 -  Coordonnées du point de cheminement
 
-Le serveur transmet les demandes de METAR et de TAF à un service Web du
-centre météorologique de l'aviation, mais masque votre adresse IP afin
-que le service Web ne la voie jamais. Les services Web de l'Aviation
-Weather Center sont gérés par le gouvernement américain. Nous ne
-contrôlons pas les pratiques de traitement des données de ces services
-externes. Des informations détaillées sont disponibles sur
-**www.aviationweather.gov/dataserver**.
-
 Le serveur transmet les demandes de NOTAM à un service Web de la Federal
 Aviation Administration, mais masque votre adresse IP afin que le
 service ne la voie jamais. Les services Web de la Federal Aviation
@@ -388,13 +366,6 @@ trasmessi i seguenti dati.
 -  La tua posizione corrente
 -  Il piano di volo corrente
 -  Coordinate dei waypoints
-
-Il server inoltra la richiesta di METAR e TAF a un servizio web presso
-l'Aviation Weather Center ma nasconde il tuo IP, in questo modo il
-servizio web non lo vedrà. Il servizio web presso l'Aviation Weather
-Center è operato dal governo USA. Noi non controlliamo la gestione dei
-dati di questi server esterni. Informazioni più dettagliate possono
-essere trovate su **www.aviationweather.gov/dataserver**.
 
 il server inoltra la richiesta di NOTAM ai servizi web della Federal
 Aviation Administration ma nasconde il tuo IP,così il servizio non può
@@ -497,13 +468,6 @@ urządzenia przesłane zostaną następujące dane.
 -  Aktualnie planowana trasa
 -  Współrzędne punktu trasy
 
-Serwer przekazuje żądania METAR i TAF do usługi internetowej w Aviation
-Weather Center, ale ukrywa Twój adres IP, więc usługa internetowa nigdy
-go nie zobaczy. Usługi internetowe Aviation Weather Center są
-obsługiwane przez rząd USA. Nie kontrolujemy praktyk przetwarzania
-danych w tych usługach zewnętrznych. Szczegółowe informacje można
-znaleźć na stronie **www.aviationweather.gov/dataserver**.
-
 Serwer przekazuje żądania NOTAM do usługi internetowej Federalnej
 Administracji Lotniczej, ale ukrywa Twój adres IP, więc usługa nigdy go
 nie zobaczy. Usługi internetowe Federalnej Administracji Lotniczej są
@@ -605,14 +569,6 @@ los siguientes elementos de datos.
 -  Su ubicación actual
 -  La ruta actualmente planificada
 -  Coordenadas del punto de ruta
-
-El servidor reenvía solicitudes de METAR y TAF a un servicio web en el
-Aviation Weather Center, pero oculta su dirección IP, por lo que el
-servicio web nunca la verá. Los servicios web del Aviation Weather
-Center son operados por el gobierno de EE. UU. No controlamos las
-prácticas de manejo de datos de estos servicios externos. Puede
-encontrar información detallada en
-**www.aviationweather.gov/dataserver**.
 
 El servidor reenvía solicitudes de NOTAM a un servicio web de la
 Administración Federal de Aviación, pero oculta su dirección IP, por lo

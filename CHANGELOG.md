@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.32.9] - 2025-02-16
+
+### Fixed
+- The list of available maps was downloaded, but not processed on first startup.
+  As a result, new users were shown a message that maps are not available for
+  their location. (#485)
+
+- Android users experienced very infrequent, but annoying ANRs.
+
+### Changed
+- Show list of all traffic on the page "Information/Traffic Data Receiver".
+  Adjust the manual accordingly.
+
+
 ## [2.32.8] - 2025-02-05
 
 ### Changed

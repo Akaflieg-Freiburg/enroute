@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2022 by Stefan Kebekus                                  *
+ *   Copyright (C) 2022-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -97,7 +97,9 @@ auto GeoMaps::GeoJSON::read(const QString &fileName) -> QVector<GeoMaps::Waypoin
     }
 
     QVector<GeoMaps::Waypoint> result;
-    foreach(auto value, document.object()[QStringLiteral("features")].toArray()) {
+    const auto features = document.object()[QStringLiteral("features")].toArray();
+    for(const auto value : features)
+    {
         auto wp = GeoMaps::Waypoint(value.toObject());
         if (!wp.isValid())
         {

@@ -673,6 +673,7 @@ void DataManagement::Downloadable_SingleFile::downloadFileFinished()
     lockFile.lock();
     m_saveFile->commit();
     lockFile.unlock();
+    m_hasFile = QFile::exists(m_fileName);
     emit fileContentChanged();
 
     // Delete the data structures for the download
@@ -685,7 +686,6 @@ void DataManagement::Downloadable_SingleFile::downloadFileFinished()
     {
         emit updateSizeChanged();
     }
-    m_hasFile = QFile::exists(m_fileName);
     emit downloadingChanged();
 }
 

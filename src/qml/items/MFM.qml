@@ -285,6 +285,24 @@ Item {
         }
 
 
+        //
+        // Connections
+        //
+
+        Connections {
+            target: Global
+
+            function onCurrentVACChanged()
+            {
+                if (!Global.currentVAC.isValid)
+                    return;
+                flightMap.followGPS = false
+                flightMap.alignCoordinateToPoint(Global.currentVAC.center, flightMap.centerPoint)
+                flightMap.zoomLevel = 11
+            }
+        }
+
+
         // ADDITINAL MAP ITEMS
         MapCircle { // Circle for nondirectional traffic warning
             center: PositionProvider.lastValidCoordinate

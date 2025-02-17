@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.32.10] - 2025-0
+
+### Added
+- Added search bar to VAC page. (#493)
+
+
 ## [2.32.9] - 2025-02-16
 
 ### Fixed

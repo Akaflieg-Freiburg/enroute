@@ -24,6 +24,7 @@
 #include <QTemporaryDir>
 #include <QTimer>
 
+#include "Librarian.h"
 #include "VACLibrary.h"
 #include "fileFormats/TripKit.h"
 
@@ -266,10 +267,42 @@ QString GeoMaps::VACLibrary::rename(const QString& oldName, const QString& newNa
     return {};
 }
 
-QVector<GeoMaps::VAC> GeoMaps::VACLibrary::vacsByDistance(const QGeoCoordinate& position)
+QVector<GeoMaps::VAC> GeoMaps::VACLibrary::vacsByDistance(const QGeoCoordinate& position, const QString& filter)
 {
-    std::sort(m_vacs.begin(), m_vacs.end(), [position](const GeoMaps::VAC& first, const GeoMaps::VAC& second) {return position.distanceTo(first.center()) < position.distanceTo(second.center()); });
-    return m_vacs;
+    QStringList filterWords;
+    foreach(auto word, filter.simplified().split(' ', Qt::SkipEmptyParts)) {
+        QString const simplifiedWord = GlobalObject::librarian()->simplifySpecialChars(word);
+        if (simplifiedWord.isEmpty()) {
+            continue;
+        }
+        filterWords.append(simplifiedWord);
+    }
+
+    QVector<GeoMaps::VAC> result;
+    const auto constvacs = m_vacs;
+    for(const auto& vac : constvacs) {
+        if (!vac.isValid())
+        {
+            continue;
+        }
+        bool allWordsFound = true;
+        for(const auto& word : filterWords)
+        {
+            QString const fullName = GlobalObject::librarian()->simplifySpecialChars(vac.name);
+            if (!fullName.contains(word, Qt::CaseInsensitive))
+            {
+                allWordsFound = false;
+                break;
+            }
+        }
+        if (allWordsFound)
+        {
+            result.append(vac);
+        }
+    }
+
+    std::sort(result.begin(), result.end(), [position](const GeoMaps::VAC& first, const GeoMaps::VAC& second) {return position.distanceTo(first.center()) < position.distanceTo(second.center()); });
+    return result;
 }
 
 

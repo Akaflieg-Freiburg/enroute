@@ -104,19 +104,41 @@ Page {
         }
     }
 
-    DecoratedListView {
+    ColumnLayout {
         anchors.fill: parent
-        anchors.bottomMargin: SafeInsets.bottom
 
-        clip: true
-        model: {
-            // Mention downloadable in order to get updates
-            VACLibrary.vacs
-
-            return VACLibrary.vacsByDistance(PositionProvider.lastValidCoordinate)
+        Item {
+            Layout.preferredHeight: textInput.font.pixelSize/4.0
         }
-        delegate: approachChartItem
-        ScrollIndicator.vertical: ScrollIndicator {}
+
+        MyTextField {
+            id: textInput
+
+            Layout.fillWidth: true
+            Layout.leftMargin: font.pixelSize/2.0
+            Layout.rightMargin: font.pixelSize/2.0
+
+            focus: true
+
+            placeholderText: qsTr("Filter by Name")
+        }
+
+        DecoratedListView {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.bottomMargin: SafeInsets.bottom
+
+            clip: true
+            model: {
+                // Mention downloadable in order to get updates
+                VACLibrary.vacs
+
+                return VACLibrary.vacsByDistance(PositionProvider.lastValidCoordinate, textInput.text)
+            }
+            delegate: approachChartItem
+            ScrollIndicator.vertical: ScrollIndicator {}
+        }
+
     }
 
     Label {

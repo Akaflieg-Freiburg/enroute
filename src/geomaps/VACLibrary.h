@@ -151,9 +151,11 @@ public:
      *
      * @param position Geographic position used for sorting
      *
+     * @param filter List of words
+     *
      * @returns List of all VACs installed
      */
-    [[nodiscard]] Q_INVOKABLE QVector<GeoMaps::VAC> vacsByDistance(const QGeoCoordinate& position);
+    [[nodiscard]] Q_INVOKABLE QVector<GeoMaps::VAC> vacsByDistance(const QGeoCoordinate& position, const QString& filter);
 
 signals:
     /*! \brief Notifier signal */

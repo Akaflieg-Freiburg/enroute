@@ -20,6 +20,7 @@
 
 #include <QCoreApplication>
 #include <QDirIterator>
+#include <QGeoRectangle>
 #include <QImage>
 #include <QTemporaryDir>
 #include <QTimer>
@@ -302,6 +303,25 @@ QVector<GeoMaps::VAC> GeoMaps::VACLibrary::vacsByDistance(const QGeoCoordinate& 
     }
 
     std::sort(result.begin(), result.end(), [position](const GeoMaps::VAC& first, const GeoMaps::VAC& second) {return position.distanceTo(first.center()) < position.distanceTo(second.center()); });
+    return result;
+}
+
+QVector<GeoMaps::VAC> GeoMaps::VACLibrary::vacs4Point(const QGeoCoordinate& position)
+{
+    QVector<GeoMaps::VAC> result;
+    const auto constvacs = m_vacs;
+    for(const auto& vac : constvacs) {
+        if (!vac.isValid())
+        {
+            continue;
+        }
+        const QGeoRectangle rc(vac.topLeft, vac.bottomRight);
+        if (rc.contains(position))
+        {
+            result.append(vac);
+        }
+    }
+    std::sort(result.begin(), result.end(), [](const GeoMaps::VAC& first, const GeoMaps::VAC& second) {return first.name < second.name; });
     return result;
 }
 

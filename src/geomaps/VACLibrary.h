@@ -157,6 +157,16 @@ public:
      */
     [[nodiscard]] Q_INVOKABLE QVector<GeoMaps::VAC> vacsByDistance(const QGeoCoordinate& position, const QString& filter);
 
+    /*! \brief List of all VACs installed
+     *
+     * This method returns the list of all installed VACs that contain the given point.
+     *
+     * @param position Geographic position
+     *
+     * @returns List of all VACs installed
+     */
+    [[nodiscard]] Q_INVOKABLE QVector<GeoMaps::VAC> vacs4Point(const QGeoCoordinate& position);
+
 signals:
     /*! \brief Notifier signal */
     void dataChanged();

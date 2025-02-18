@@ -133,7 +133,7 @@ Page {
                 // Mention downloadable in order to get updates
                 VACLibrary.vacs
 
-                return VACLibrary.vacsByDistance(PositionProvider.lastValidCoordinate, textInput.text)
+                return VACLibrary.vacsByDistance(PositionProvider.lastValidCoordinate, textInput.displayText)
             }
             delegate: approachChartItem
             ScrollIndicator.vertical: ScrollIndicator {}

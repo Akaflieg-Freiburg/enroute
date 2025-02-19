@@ -3,6 +3,8 @@
 ## [2.32.10] - 2025-0
 
 ### Added
+- VACs can now be opened directly from the waypoint info dialog. (#492)
+
 - Added search bar to VAC page. (#493)
 
 

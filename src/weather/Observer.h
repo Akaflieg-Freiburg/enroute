@@ -52,7 +52,7 @@ public:
     explicit Observer(QObject* parent=nullptr);
 
     /*! \brief Standard destructor */
-    ~Observer() = default;
+    ~Observer() override = default;
 
 
     //
@@ -114,7 +114,6 @@ public:
      * @returns Property waypoint
      */
     [[nodiscard]] GeoMaps::Waypoint waypoint() const {return m_waypoint.value();}
-
 
     /*! \brief Getter method for property of the same name
      *

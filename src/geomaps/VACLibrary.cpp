@@ -315,9 +315,7 @@ QVector<GeoMaps::VAC> GeoMaps::VACLibrary::vacs4Point(const QGeoCoordinate& posi
         {
             continue;
         }
-#warning WRONG. Rectangle need not be coordinate-aligned
-        const QGeoRectangle rc(vac.topLeft, vac.bottomRight);
-        if (rc.contains(position))
+        if (vac.boundingBox().contains(position))
         {
             result.append(vac);
         }

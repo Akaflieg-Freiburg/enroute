@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.32.10] - 2025-0
+## [2.32.10] - 2025-02-21
 
 ### Added
 - VACs can now be opened directly from the waypoint info dialog. (#492)

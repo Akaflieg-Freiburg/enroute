@@ -115,9 +115,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae228d118883c75c7af215060d784b709" id="r_ae228d118883c75c7af215060d784b709"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae228d118883c75c7af215060d784b709">rename</a> (const QString &amp;oldName, const QString &amp;newName)</td></tr>
 <tr class="memdesc:ae228d118883c75c7af215060d784b709"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rename a VACs.  <br /></td></tr>
 <tr class="separator:ae228d118883c75c7af215060d784b709"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1979631773e60076ac81469608e992f" id="r_ae1979631773e60076ac81469608e992f"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QVector&lt; <a class="el" href="classGeoMaps_1_1VAC.html">GeoMaps::VAC</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae1979631773e60076ac81469608e992f">vacsByDistance</a> (const QGeoCoordinate &amp;position)</td></tr>
-<tr class="memdesc:ae1979631773e60076ac81469608e992f"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of all VACs installed.  <br /></td></tr>
-<tr class="separator:ae1979631773e60076ac81469608e992f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0393e90282b284d398fd13fef0009885" id="r_a0393e90282b284d398fd13fef0009885"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QVector&lt; <a class="el" href="classGeoMaps_1_1VAC.html">GeoMaps::VAC</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0393e90282b284d398fd13fef0009885">vacsByDistance</a> (const QGeoCoordinate &amp;position, const QString &amp;filter)</td></tr>
+<tr class="memdesc:a0393e90282b284d398fd13fef0009885"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of all VACs installed.  <br /></td></tr>
+<tr class="separator:a0393e90282b284d398fd13fef0009885"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aceb02f2d34da71b0a54ed4cf01432ce5" id="r_aceb02f2d34da71b0a54ed4cf01432ce5"><td class="memItemLeft" align="right" valign="top">Q_INVOKABLE QVector&lt; <a class="el" href="classGeoMaps_1_1VAC.html">GeoMaps::VAC</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aceb02f2d34da71b0a54ed4cf01432ce5">vacs4Point</a> (const QGeoCoordinate &amp;position)</td></tr>
+<tr class="memdesc:aceb02f2d34da71b0a54ed4cf01432ce5"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of all VACs that contain a given point.  <br /></td></tr>
+<tr class="separator:aceb02f2d34da71b0a54ed4cf01432ce5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -446,8 +449,43 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isEmpty</b></td></tr>
 
 </div>
 </div>
-<a id="ae1979631773e60076ac81469608e992f" name="ae1979631773e60076ac81469608e992f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1979631773e60076ac81469608e992f">&#9670;&#160;</a></span>vacsByDistance()</h2>
+<a id="aceb02f2d34da71b0a54ed4cf01432ce5" name="aceb02f2d34da71b0a54ed4cf01432ce5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aceb02f2d34da71b0a54ed4cf01432ce5">&#9670;&#160;</a></span>vacs4Point()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Q_INVOKABLE QVector&lt; <a class="el" href="classGeoMaps_1_1VAC.html">GeoMaps::VAC</a> &gt; GeoMaps::VACLibrary::vacs4Point </td>
+          <td>(</td>
+          <td class="paramtype">const QGeoCoordinate &amp;</td>          <td class="paramname"><span class="paramname"><em>position</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>List of all VACs that contain a given point. </p>
+<p>This method returns the list of all installed VACs that contain the given point.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">position</td><td>Geographic position</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>List of all VACs containing the given point. </dd></dl>
+
+</div>
+</div>
+<a id="a0393e90282b284d398fd13fef0009885" name="a0393e90282b284d398fd13fef0009885"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0393e90282b284d398fd13fef0009885">&#9670;&#160;</a></span>vacsByDistance()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -458,8 +496,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isEmpty</b></td></tr>
         <tr>
           <td class="memname">Q_INVOKABLE QVector&lt; <a class="el" href="classGeoMaps_1_1VAC.html">GeoMaps::VAC</a> &gt; GeoMaps::VACLibrary::vacsByDistance </td>
           <td>(</td>
-          <td class="paramtype">const QGeoCoordinate &amp;</td>          <td class="paramname"><span class="paramname"><em>position</em></span></td><td>)</td>
+          <td class="paramtype">const QGeoCoordinate &amp;</td>          <td class="paramname"><span class="paramname"><em>position</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>filter</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -474,6 +516,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isEmpty</b></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">position</td><td>Geographic position used for sorting</td></tr>
+    <tr><td class="paramname">filter</td><td>List of words</td></tr>
   </table>
   </dd>
 </dl>

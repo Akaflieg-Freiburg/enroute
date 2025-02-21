@@ -297,8 +297,10 @@ Item {
                 if (!Global.currentVAC.isValid)
                     return;
                 flightMap.followGPS = false
-                flightMap.alignCoordinateToPoint(Global.currentVAC.center, flightMap.centerPoint)
+                zoomLevelBehavior.enabled = false
                 flightMap.zoomLevel = 11
+                flightMap.alignCoordinateToPoint(Global.currentVAC.center, flightMap.centerPoint)
+                zoomLevelBehavior.enabled = true
             }
         }
 

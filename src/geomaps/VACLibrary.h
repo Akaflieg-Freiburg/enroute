@@ -151,9 +151,21 @@ public:
      *
      * @param position Geographic position used for sorting
      *
+     * @param filter List of words
+     *
      * @returns List of all VACs installed
      */
-    [[nodiscard]] Q_INVOKABLE QVector<GeoMaps::VAC> vacsByDistance(const QGeoCoordinate& position);
+    [[nodiscard]] Q_INVOKABLE QVector<GeoMaps::VAC> vacsByDistance(const QGeoCoordinate& position, const QString& filter);
+
+    /*! \brief List of all VACs that contain a given point.
+     *
+     * This method returns the list of all installed VACs that contain the given point.
+     *
+     * @param position Geographic position
+     *
+     * @returns List of all VACs containing the given point.
+     */
+    [[nodiscard]] Q_INVOKABLE QVector<GeoMaps::VAC> vacs4Point(const QGeoCoordinate& position);
 
 signals:
     /*! \brief Notifier signal */

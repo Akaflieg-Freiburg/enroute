@@ -71,6 +71,11 @@ CenteringDialog {
         for (i in asl)
             airspaceDelegate.createObject(co, {airspace: asl[i]});
 
+        // Create airspace description items
+        var vac = VACLibrary.vacs4Point(waypoint.coordinate)
+        for (i in vac)
+            vacButtonDelegate.createObject(co, {vac: vac[i]});
+
         satButtonDelegate.createObject(co, {});
     }
 
@@ -197,7 +202,6 @@ CenteringDialog {
                 wrapMode: Text.WordWrap
                 textFormat: Text.StyledText
             }
-
         }
     }
 
@@ -394,6 +398,40 @@ CenteringDialog {
     }
 
     Component {
+        id: vacButtonDelegate
+
+        RowLayout {
+            id: vb
+
+            Layout.preferredWidth: sv.width
+
+            property vac vac
+
+            Icon {
+                Layout.preferredWidth: button.font.pixelSize*3
+                Layout.alignment: Qt.AlignVCenter
+                source: "/icons/material/ic_map.svg"
+            }
+
+            Button {
+                id: button
+                text: "<a href='xx'>" + vb.vac.name + "</a>"
+                flat: true
+                Layout.alignment: Qt.AlignVCenter
+                onPressed:  {
+                    PlatformAdaptor.vibrateBrief()
+                    Global.currentVAC = vb.vac
+                    waypointDescriptionDialog.close()
+                }
+            }
+
+            Item {
+                Layout.fillWidth: true
+            }
+        }
+    }
+
+    Component {
         id: satButtonDelegate
 
         RowLayout {
@@ -427,7 +465,6 @@ CenteringDialog {
             }
         }
     }
-
 
     ColumnLayout {
         anchors.fill: parent

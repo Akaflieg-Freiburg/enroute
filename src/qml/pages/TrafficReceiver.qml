@@ -35,7 +35,57 @@ Page {
 
     required property var appWindow
 
-    header: StandardHeader {}
+
+    header: PageHeader {
+
+        height: 60 + SafeInsets.top
+        leftPadding: SafeInsets.left
+        rightPadding: SafeInsets.right
+        topPadding: SafeInsets.top
+
+        ToolButton {
+            id: backButton
+
+            anchors.left: parent.left
+            anchors.verticalCenter: parent.verticalCenter
+
+            icon.source: "/icons/material/ic_arrow_back.svg"
+
+            onClicked: {
+                PlatformAdaptor.vibrateBrief()
+                stackView.pop()
+            }
+        }
+
+        Label {
+            id: lbl
+
+            anchors.verticalCenter: parent.verticalCenter
+
+            anchors.left: parent.left
+            anchors.leftMargin: 72
+            anchors.right: headerMenuToolButton.left
+
+            text: stackView.currentItem.title
+            elide: Label.ElideRight
+            font.pixelSize: 20
+            verticalAlignment: Qt.AlignVCenter
+        }
+
+        ToolButton {
+            id: headerMenuToolButton
+
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+
+            icon.source: "/icons/material/ic_info_outline.svg"
+            onClicked: {
+                PlatformAdaptor.vibrateBrief()
+                openManual("05-referencePages/04-infoTraffic.html")
+            }
+        }
+    }
+
 
     Component {
         id: trafficDelegate

@@ -13,6 +13,7 @@ doc/APIdoc
 
 # secrets
 fastlane/api-key-googlePlay.json
+fastlane/report.xml
 CMakeLists_ios.txt
 
 # IDE

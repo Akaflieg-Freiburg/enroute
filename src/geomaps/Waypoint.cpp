@@ -64,12 +64,13 @@ GeoMaps::Waypoint::Waypoint(const QJsonObject &geoJSONObject)
     }
 
     // Get properties
-    if (!geoJSONObject.contains(QStringLiteral("properties"))) {
-        return;
+    QJsonObject properties;
+    if (geoJSONObject.contains(QStringLiteral("properties")))
+    {
+        properties = geoJSONObject[QStringLiteral("properties")].toObject();
+        foreach(auto propertyName, properties.keys())
+            m_properties.insert(propertyName, properties[propertyName].toVariant());
     }
-    auto properties = geoJSONObject[QStringLiteral("properties")].toObject();
-    foreach(auto propertyName, properties.keys())
-        m_properties.insert(propertyName, properties[propertyName].toVariant());
 
     // Get geometry
     if (!geoJSONObject.contains(QStringLiteral("geometry"))) {
@@ -86,9 +87,28 @@ GeoMaps::Waypoint::Waypoint(const QJsonObject &geoJSONObject)
     if (coordinateArray.size() != 2) {
         return;
     }
+
     m_coordinate = QGeoCoordinate(coordinateArray[1].toDouble(), coordinateArray[0].toDouble() );
     if (m_properties.contains(QStringLiteral("ELE"))) {
         m_coordinate.setAltitude(properties[QStringLiteral("ELE")].toDouble());
+    }
+
+    // If the file was not created by Enroute, then the property array will not conform to the specification here: https://github.com/Akaflieg-Freiburg/enrouteServer/wiki/GeoJSON-files-used-in-enroute-flight-navigation
+    // We create a fake entry instead.
+    if (!m_properties.contains(QStringLiteral("TYP")))
+    {
+        m_properties[u"TYP"_s] = "WP";
+        m_properties[u"CAT"_s] = "WP";
+        m_properties[u"NAM"_s] = "";
+
+        if (m_properties.contains(u"name"_s))
+        {
+            m_properties[u"NAM"_s] = m_properties[u"name"_s];
+        }
+        if (m_properties[u"NAM"_s] == "")
+        {
+            m_properties[u"NAM"_s] = "Waypoint";
+        }
     }
 }
 

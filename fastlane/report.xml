@@ -5,37 +5,22 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.00017">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000187">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: Switch to android build lane" time="0.000295">
+      <testcase classname="fastlane.lanes" name="1: /Users/kebekus/Software/buildsystems/Qt/6.8.2/android_x86_64/bin/qt-cmake -DCMAKE_BUILD_TYPE:STRING=Release -DQT_ANDROID_BUILD_ALL_ABIS=ON -DQT_ANDROID_SIGN_APK=ON -DQT_ANDROID_SIGN_AAB=ON -S .. -B ../build/build-android-release" time="3.629969">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="2: /Users/kebekus/Software/buildsystems/Qt/6.8.0/android_x86_64/bin/qt-cmake -DCMAKE_BUILD_TYPE:STRING=Release -DQT_ANDROID_BUILD_ALL_ABIS=ON -DQT_ANDROID_SIGN_APK=ON -DQT_ANDROID_SIGN_AAB=ON -S .. -B ../build/build-android-release" time="2.866764">
+      <testcase classname="fastlane.lanes" name="2: cmake --build ../build/build-android-release --target apk" time="849.309375">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="3: cmake --build ../build/build-android-release --target apk" time="795.716028">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="4: cmake --build ../build/build-android-release --target aab" time="176.503359">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="5: Switch to android metadata lane" time="0.000117">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="6: upload_to_play_store" time="200.351924">
+      <testcase classname="fastlane.lanes" name="3: cmake --build ../build/build-android-release --target aab" time="67.130655">
         
       </testcase>
     

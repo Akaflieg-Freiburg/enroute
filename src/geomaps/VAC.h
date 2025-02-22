@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QGeoCoordinate>
+#include <QGeoRectangle>
 #include <QQmlEngine>
 
 using namespace Qt::Literals::StringLiterals;
@@ -87,6 +88,12 @@ public:
      */
     Q_PROPERTY(QGeoCoordinate bottomRight MEMBER bottomRight)
 
+    /*! \brief Bounding box
+     *
+     * The bounding box will be invalid if the coordinates are invalid.
+     */
+    Q_PROPERTY(QGeoRectangle boundingBox READ boundingBox)
+
     /*! \brief Center coordinate
      *
      * This property holds the geographic coordinate of the raster image center,
@@ -138,6 +145,13 @@ public:
     //
     // Getter Methods
     //
+
+    /*! \brief Getter function for property of the same name
+     *
+     * @returns Property boundingBox
+     */
+    [[nodiscard]] QGeoRectangle boundingBox() const {return QGeoRectangle({topLeft, topRight, bottomLeft, bottomRight});}
+
 
     /*! \brief Getter function for property of the same name
      *

@@ -51,7 +51,7 @@ platform :android do
     matches = File.read("../CHANGELOG.md").scan(/^## \s*\[?(.*?)\]?\s*-\s*.*?\n(.*?)(?=^## |\z)/m)
     latest_version, changelog_text = matches.first
     major, minor, patch = latest_version.split('.').map(&:to_i)
-    version_code = 100000 * major + 1000 * minor + patch
+    version_code = 100000 * major + 1000 * minor + 10 * patch
     File.write("metadata/android/en-US/#{version_code}.txt", changelog_text.strip)      
   end
 
@@ -74,8 +74,8 @@ platform :android do
     matches = File.read("../CHANGELOG.md").scan(/^## \s*\[?(.*?)\]?\s*-\s*.*?\n(.*?)(?=^## |\z)/m)
     latest_version, changelog_text = matches.first
     major, minor, patch = latest_version.split('.').map(&:to_i)
-    version_code = 100000 * major + 1000 * minor + patch
-    upload_to_play_store(track: 'beta', track_promote_to: 'production', version_code: version_code)
+    version_code = 100000 * major + 1000 * minor + 10 * patch
+    upload_to_play_store(track: 'beta', track_promote_to: 'production', version_code: "#{version_code}")
   end
 end
 

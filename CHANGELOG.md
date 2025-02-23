@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.32.12] - 2025-02-23
+
+### Fixed
+- Fix problem where irrelevant traffic is shown in the moving map. (#497)
+
+
 ## [2.32.11] - 2025-02-22
 
 ### Fixed

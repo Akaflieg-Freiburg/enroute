@@ -1,0 +1,2 @@
+### Fixed
+- Fix problem where irrelevant traffic is shown in the moving map. (#497)

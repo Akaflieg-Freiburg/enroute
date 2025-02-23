@@ -37,7 +37,7 @@ MapQuickItem {
         enabled: trafficInfo.animate
     }
 
-    visible: trafficInfo.valid
+    visible: trafficInfo.relevant
 
     Connections {
         // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem

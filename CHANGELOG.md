@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.32.12] - 2025-02-23
+
+### Fixed
+- Fix problem where irrelevant traffic is shown in the moving map. (#497)
+
+
+## [2.32.11] - 2025-02-22
+
+### Fixed
+- Fix problems importing GeoJSON files produced by third-party software. (#496)
+
+
 ## [2.32.10] - 2025-02-21
 
 ### Added
@@ -32,7 +44,7 @@
 ## [2.32.7] - 2025-01-28
 
 ### Fixed
-- Fixed problem where Route/Waypoint/Aircraft library pages do not open. (#488, #490)
+- Fix problem where Route/Waypoint/Aircraft library pages do not open. (#488, #490)
 
 
 ## [2.32.6] - 2025-01-20

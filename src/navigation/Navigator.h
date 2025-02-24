@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -108,7 +108,7 @@ public:
     Q_PROPERTY(FlightStatus flightStatus READ flightStatus NOTIFY flightStatusChanged)
 
     /*! \brief Up-to-date information about the remaining route */
-    Q_PROPERTY(Navigation::RemainingRouteInfo remainingRouteInfo READ remainingRouteInfo NOTIFY remainingRouteInfoChanged)
+    Q_PROPERTY(Navigation::RemainingRouteInfo remainingRouteInfo READ remainingRouteInfo BINDABLE bindableRemainingRouteInfo)
 
     /*! \brief Current wind */
     Q_PROPERTY(Weather::Wind wind READ wind WRITE setWind NOTIFY windChanged)
@@ -140,7 +140,13 @@ public:
      *
      *  @returns Property remaining route info
      */
-    [[nodiscard]] auto remainingRouteInfo() const -> Navigation::RemainingRouteInfo { return m_remainingRouteInfo; }
+    [[nodiscard]] Navigation::RemainingRouteInfo remainingRouteInfo() const {return m_remainingRouteInfo.value();}
+
+    /*! \brief Getter function for the property with the same name
+     *
+     *  @returns Property remaining route info
+     */
+    [[nodiscard]] QBindable<Navigation::RemainingRouteInfo> bindableRemainingRouteInfo() const {return &m_remainingRouteInfo;}
 
     /*! \brief Getter function for the property with the same name
      *
@@ -184,9 +190,6 @@ signals:
     void flightStatusChanged();
 
     /*! \brief Notifier signal */
-    void remainingRouteInfoChanged();
-
-    /*! \brief Notifier signal */
     void windChanged();
 
 private slots:
@@ -195,9 +198,6 @@ private slots:
 
     // Update flight status. Connected to positioning source.
     void updateFlightStatus();
-
-    // Setter method. Only use this method to write to m_remainingRouteInfo
-    void setRemainingRouteInfo(const Navigation::RemainingRouteInfo& rrInfo);
 
     // Re-computes the Remaining Route Info. The argument must be the current position info of the own aircraft.
     void updateRemainingRouteInfo();
@@ -222,8 +222,7 @@ private:
 
     QString m_aircraftFileName;
 
-    // RemainingRouteInfo only use the setter method to write to m_remainingRouteInfo
-    RemainingRouteInfo m_remainingRouteInfo;
+    QProperty<RemainingRouteInfo> m_remainingRouteInfo;
 };
 
 } // namespace Navigation

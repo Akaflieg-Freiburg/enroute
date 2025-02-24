@@ -145,7 +145,12 @@ namespace Navigation
          *
          *  @returns Property geoPath
          */
-        [[nodiscard]] QList<QGeoCoordinate> geoPath() const {return {m_geoPath};}
+        [[nodiscard]] QList<QGeoCoordinate> geoPath() const {return m_geoPath.value();}
+
+        /*! \brief Getter function for the property with the same name
+         *
+         *  @returns Property geoPath
+         */
         [[nodiscard]] QBindable<QList<QGeoCoordinate>> bindableGeoPath() const {return &m_geoPath;}
 
         /*! \brief Getter function for the property with the same name

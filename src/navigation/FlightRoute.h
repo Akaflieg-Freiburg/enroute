@@ -232,6 +232,17 @@ namespace Navigation
          */
         [[nodiscard]] Q_INVOKABLE bool contains(const GeoMaps::Waypoint& waypoint) const;
 
+        /*! \brief Determines current leg
+         *
+         * @param pInfo Position Info
+         *
+         * This method determines the current leg of the flight route by analyzing a position info. The current leg is the last leg in
+         * the flight route that we are following, or (failing that) the last leg that we are near to.
+         *
+         * @returns Index of the current leg in legs(), or -1 if no current leg can be determined.
+         */
+        [[nodiscard]] Q_INVOKABLE qsizetype currentLeg(const Positioning::PositionInfo& pInfo) const;
+
         /*! \brief Inserts a waypoint into the route
          *
          *  Inserts the waypoint into the route, at the place that minimizes the

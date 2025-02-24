@@ -249,6 +249,29 @@ auto Navigation::FlightRoute::contains(const GeoMaps::Waypoint& waypoint) const 
     return false;
 }
 
+qsizetype Navigation::FlightRoute::currentLeg(const Positioning::PositionInfo& pInfo) const
+{
+    // Take the last leg that we are following (if there is one)
+    for(auto i=m_legs.size()-1; i>=0; i--)
+    {
+        if (m_legs[i].isFollowing(pInfo))
+        {
+            return i;
+        }
+    }
+
+    // Take the last leg that we are near to (if there is one)
+    for(auto i=m_legs.size()-1; i>=0; i--)
+    {
+        if (m_legs[i].isNear(pInfo))
+        {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
 void Navigation::FlightRoute::insert(const GeoMaps::Waypoint& waypoint)
 {
     if (!canInsert(waypoint))

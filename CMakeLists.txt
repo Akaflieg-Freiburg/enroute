@@ -5,7 +5,7 @@
 cmake_minimum_required(VERSION 3.19)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(ANDROID_PLATFORM android-26)
+#
 
 include(ExternalProject)
 option(QTDEPLOY "Generate and run Qt deployment scripts" OFF)
@@ -38,6 +38,7 @@ set(QT_VERSION ${Qt6Core_VERSION})
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Android")
     find_package(Qt6 6.7 COMPONENTS Sensors SerialPort WebView REQUIRED)
+    set(ANDROID_PLATFORM android-26)
 endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
@@ -75,6 +76,7 @@ find_package(QMapLibre COMPONENTS Location REQUIRED)
 
 
 if(IOS)
+    set(QT_USE_RISKY_DSYM_ARCHIVING_WORKAROUND ON)
     set(PRODUCT_BUNDLE_IDENTIFIER de.akafliegfreiburg.enroute)
     set(CMAKE_XCODE_ATTRIBUTE_ASSETCATALOG_COMPILER_APPICON_NAME AppIcon)
     include(CMakeLists_ios.txt OPTIONAL)

@@ -299,12 +299,10 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     if (name == u":text/whatsnew.html"_s)
     {
         QString result;
-        result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> now computes the density altitude from METAR data and shows warnings when density altitude affects aircraft performance.") + " "
-                  + tr("We thank Christian Engelhardt and Tom Linz for the implementation!") + "</p>";
+        result += "<p>" + tr("<strong>Technology Preview:</strong> Enroute Flight Navigation is now able to connect to traffic data receivers via Bluetooth Low Energy. Please try the new feature and send us your feedback!") + " "
+                  + "</p>";
 
-        result += "<p>" + tr("As requested by our users, <strong>Enroute Flight Navigation</strong> is now able to import flight routes in FPL and PLN formats.") + " "
-                  + tr("We thank Heinz Blöchinger for help with the implementation!") + "</p>";
-/*
+        /*
         result += "<p>" + tr("Users with nonstandard hardware can now configure IP adresses for their traffic data receivers. "
                              "Serial port connections are also supported.") + "</p>";
 */
@@ -317,11 +315,10 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     file.open(QIODevice::ReadOnly);
     auto content = file.readAll();
     return QString::fromUtf8(content);
-
 }
 
 
-auto Librarian::getStringHashFromRessource(const QString &name) -> Units::ByteSize
+Units::ByteSize Librarian::getStringHashFromRessource(const QString &name)
 {
     return qHash(getStringFromRessource(name), (size_t)0);
 }

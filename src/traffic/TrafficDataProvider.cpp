@@ -130,8 +130,9 @@ QString Traffic::TrafficDataProvider::addDataSource(const Traffic::ConnectionInf
     case Traffic::ConnectionInfo::Invalid:
         return tr("Invalid connection.");
     case Traffic::ConnectionInfo::BluetoothClassic:
-    case Traffic::ConnectionInfo::BluetoothLowEnergy:
         return addDataSource_BluetoothClassic(connectionInfo);
+    case Traffic::ConnectionInfo::BluetoothLowEnergy:
+        return addDataSource_BluetoothLowEnergy(connectionInfo);
     case Traffic::ConnectionInfo::TCP:
         return tr("Unable to add TCP connection. This is not implemented at the moment.");
     case Traffic::ConnectionInfo::UDP:

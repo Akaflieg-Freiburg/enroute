@@ -47,10 +47,10 @@ public:
      *
      * @param isCanonical Intializer for property canonical
      *
-     *  @param info Description of a Bluetooth LE device offering
-     *  serial port service.
+     * @param info Description of a Bluetooth LE device offering
+     * serial port service.
      *
-     *  @param parent The standard QObject parent pointer
+     * @param parent The standard QObject parent pointer
      */
     TrafficDataSource_BluetoothLowEnergy(bool isCanonical, const QBluetoothDeviceInfo& info, QObject* parent);
 
@@ -74,6 +74,12 @@ public:
     //
     // Getter Methods
     //
+
+    /*! \brief Getter function for the property with the same name
+     *
+     * @returns Property dataFormat
+     */
+    [[nodiscard]] QString dataFormat() const override { return u"FLARM/NMEA"_s; }
 
     /*! \brief Getter function for the property with the same name
      *
@@ -129,13 +135,16 @@ private slots:
     // Read and process received NMEA sentences
     void onConnected();
 
-
     // Read and process received NMEA sentences
     void onReadyRead();
 
     void onServiceDiscovered(const QBluetoothUuid &newService);
 
+    void onDiscoveryFinished();
 
+    void onCharChanged(const QLowEnergyCharacteristic &characteristic, const QByteArray &newValue);
+
+    void onServiceStateChanged(QLowEnergyService::ServiceState newState);
 private:
     Q_DISABLE_COPY_MOVE(TrafficDataSource_BluetoothLowEnergy)
 
@@ -149,7 +158,7 @@ private:
     QTextStream m_textStream {&socket};
 
     QLowEnergyController* m_control {nullptr};
-
+    QLowEnergyService* m_flarmService {nullptr};
 };
 
 } // namespace Traffic

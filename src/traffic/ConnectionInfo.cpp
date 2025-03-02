@@ -35,6 +35,7 @@ Traffic::ConnectionInfo::ConnectionInfo(const QBluetoothDeviceInfo& info, bool c
     : m_bluetoothDeviceInfo(info),
     m_canonical(canonical)
 {
+    qWarning() << m_bluetoothDeviceInfo.name();
     // Set Name
     {
         if (m_bluetoothDeviceInfo.isValid())
@@ -50,7 +51,7 @@ Traffic::ConnectionInfo::ConnectionInfo(const QBluetoothDeviceInfo& info, bool c
     // Set Description (must come after name)
     {
         QStringList descriptionItems;
-        if (m_bluetoothDeviceInfo.coreConfigurations() == QBluetoothDeviceInfo::LowEnergyCoreConfiguration)
+        if (m_bluetoothDeviceInfo.coreConfigurations() & QBluetoothDeviceInfo::LowEnergyCoreConfiguration)
         {
             descriptionItems += QObject::tr("Bluetooth Low Energy Device (unsupported)", "Traffic::ConnectionInfo");
         }
@@ -104,7 +105,7 @@ Traffic::ConnectionInfo::ConnectionInfo(const QBluetoothDeviceInfo& info, bool c
     {
         if (m_bluetoothDeviceInfo.isValid())
         {
-            if (m_bluetoothDeviceInfo.coreConfigurations() == QBluetoothDeviceInfo::LowEnergyCoreConfiguration)
+            if ((m_bluetoothDeviceInfo.coreConfigurations() & QBluetoothDeviceInfo::LowEnergyCoreConfiguration) != 0)
             {
                 m_icon = u"/icons/material/ic_bluetooth_disabled.svg"_s;
             }
@@ -117,7 +118,8 @@ Traffic::ConnectionInfo::ConnectionInfo(const QBluetoothDeviceInfo& info, bool c
 
     // Set canConnect
     {
-        if (m_bluetoothDeviceInfo.isValid() && (m_bluetoothDeviceInfo.coreConfigurations() != QBluetoothDeviceInfo::LowEnergyCoreConfiguration))
+#warning
+        if (m_bluetoothDeviceInfo.isValid() /*&& (m_bluetoothDeviceInfo.coreConfigurations() != QBluetoothDeviceInfo::LowEnergyCoreConfiguration)*/)
         {
             m_canConnect = true;
         }
@@ -125,7 +127,7 @@ Traffic::ConnectionInfo::ConnectionInfo(const QBluetoothDeviceInfo& info, bool c
 
     // Set type
     {
-        if (m_bluetoothDeviceInfo.coreConfigurations() == QBluetoothDeviceInfo::LowEnergyCoreConfiguration)
+        if ((m_bluetoothDeviceInfo.coreConfigurations() & QBluetoothDeviceInfo::LowEnergyCoreConfiguration) != 0)
         {
             m_type = Traffic::ConnectionInfo::BluetoothLowEnergy;
         }

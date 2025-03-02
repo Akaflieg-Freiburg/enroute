@@ -35,13 +35,15 @@ Traffic::TrafficDataSource_BluetoothLowEnergy::TrafficDataSource_BluetoothLowEne
     connect(m_control, &QLowEnergyController::stateChanged, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onStateChanged);
     connect(m_control, &QLowEnergyController::errorOccurred, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onErrorOccurred);
     connect(m_control, &QLowEnergyController::connected, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onConnected);
+    connect(m_control, &QLowEnergyController::discoveryFinished, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onDiscoveryFinished);
     /*
-    connect(m_control, &QLowEnergyController::discoveryFinished, this, &DeviceHandler::serviceScanDone);
     connect(m_control, &QLowEnergyController::disconnected, this, [this]() {
         setError("LowEnergy controller disconnected");
         setIcon(IconError);
     });
     */
+
+    m_control->discoverServices();
 }
 
 void Traffic::TrafficDataSource_BluetoothLowEnergy::onConnected()
@@ -53,6 +55,89 @@ void Traffic::TrafficDataSource_BluetoothLowEnergy::onConnected()
 void Traffic::TrafficDataSource_BluetoothLowEnergy::onServiceDiscovered(const QBluetoothUuid& newService)
 {
     qWarning() << "Traffic::TrafficDataSource_BTLE::onServiceDiscovered" << m_info.name() << newService;
+
+    // 6e400001-b5a3-f393-e0a9-e50e24dcca9e
+
+    /*
+     * The Bluetooth Service ID 6e400001-b5a3-f393-e0a9-e50e24dcca9e corresponds to the Nordic UART Service (NUS). This is a custom service developed by Nordic Semiconductor for Bluetooth Low Energy (BLE) devices18.
+
+Key features of the Nordic UART Service:
+
+    It acts as a bridge between BLE and UART (Universal Asynchronous Receiver/Transmitter) interfaces.
+
+    It allows for bidirectional communication between devices using a simple serial protocol over BLE.
+
+    The service typically includes two main characteristics:
+
+        TX Characteristic (6e400002-b5a3-f393-e0a9-e50e24dcca9e): Used for transmitting data from the peripheral to the central device1.
+
+        RX Characteristic (6e400003-b5a3-f393-e0a9-e50e24dcca9e): Used for receiving data on the peripheral from the
+     */
+}
+
+
+void Traffic::TrafficDataSource_BluetoothLowEnergy::onDiscoveryFinished()
+{
+    qWarning() << "Traffic::TrafficDataSource_BTLE::onDiscoveryFinished" << m_info.name();
+
+    // Look for the FLARM service among discovered services
+    QBluetoothUuid flarmServiceUuid("6e400001-b5a3-f393-e0a9-e50e24dcca9e");
+
+    if (m_control->services().contains(flarmServiceUuid)) {
+        m_flarmService = m_control->createServiceObject(flarmServiceUuid, this);
+        qWarning() << "AA";
+        if (m_flarmService != nullptr) {
+            qWarning() << "FLARM Service created";
+            connect(m_flarmService, &QLowEnergyService::stateChanged, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onServiceStateChanged);
+            connect(m_flarmService, &QLowEnergyService::characteristicChanged, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onCharChanged);
+            m_flarmService->discoverDetails();
+            /*
+            connect(m_flarmService, &QLowEnergyService::descriptorWritten,
+                    this, &FlarmBleDevice::descriptorWritten);
+  */
+        }
+    } else {
+        qWarning() << "FLARM service not found on the device";
+    }
+}
+
+void Traffic::TrafficDataSource_BluetoothLowEnergy::onServiceStateChanged(QLowEnergyService::ServiceState newState)
+{
+    qWarning() << "BTLE Service State Changed" << newState;
+    if (newState == QLowEnergyService::RemoteServiceDiscovered)
+    {
+        qWarning() << "Characteristics Discovered";
+        for (auto charact : m_flarmService->characteristics())
+        {
+            // https://docs.ruuvi.com/communication/bluetooth-connection/nordic-uart-service-nus
+            qWarning() << charact.name() << charact.uuid();
+            auto m_notificationDesc = charact.descriptor(QBluetoothUuid::DescriptorType::ClientCharacteristicConfiguration);
+            if (m_notificationDesc.isValid())
+            {
+                // Enable Notifications
+                m_flarmService->writeDescriptor(m_notificationDesc, QByteArray::fromHex("0100"));
+            }
+        }
+
+/*        qWarning() << m_flarmService->characteristics();
+        const QLowEnergyCharacteristic hrChar =
+            m_service->characteristic(QBluetoothUuid(QBluetoothUuid::CharacteristicType::HeartRateMeasurement));
+        if (!hrChar.isValid())
+        {
+            qWarning() << "BTLE: FLARM Data not found.";
+            return;
+        }
+
+        auto m_notificationDesc = hrChar.descriptor(QBluetoothUuid::DescriptorType::ClientCharacteristicConfiguration);
+        if (m_notificationDesc.isValid())
+            m_service->writeDescriptor(m_notificationDesc, QByteArray::fromHex("0100"));
+*/
+    }
+}
+
+void Traffic::TrafficDataSource_BluetoothLowEnergy::onCharChanged(const QLowEnergyCharacteristic &characteristic, const QByteArray &newValue)
+{
+    qWarning() << "BTLE Char updated" << characteristic.name() << QString(newValue);
 }
 
 

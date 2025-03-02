@@ -227,7 +227,7 @@ Page {
                     id: addMenu
 
                     Action {
-                        text: qsTr("Bluetooth Classic")
+                        text: qsTr("Bluetooth")
                         enabled: (Qt.platform.os !== "ios")
                         onTriggered: {
                             PlatformAdaptor.vibrateBrief()

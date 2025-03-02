@@ -77,6 +77,11 @@ void Traffic::ConnectionScanner_Bluetooth::onCanceled()
 
 void Traffic::ConnectionScanner_Bluetooth::onDeviceDiscovered(const QBluetoothDeviceInfo& info)
 {
+    // Ignore unnamed devices
+    if (info.name().isEmpty())
+    {
+        return;
+    }
     // Ignore devices that we cannot connect to
     ConnectionInfo const connectionInfo(info);
     if (!connectionInfo.canConnect())
@@ -91,7 +96,7 @@ void Traffic::ConnectionScanner_Bluetooth::onDeviceDiscovered(const QBluetoothDe
 void Traffic::ConnectionScanner_Bluetooth::onDeviceUpdated(const QBluetoothDeviceInfo& info, QBluetoothDeviceInfo::Fields updatedFields)
 {
     // Ignore if only irrelevant fields are updated
-    if ((updatedFields & QBluetoothDeviceInfo::Field::ServiceData) != 0)
+    if ((updatedFields & (QBluetoothDeviceInfo::Field::ServiceData)) != 0)
     {
         onDeviceDiscovered(info);
     }

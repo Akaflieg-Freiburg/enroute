@@ -363,7 +363,8 @@ private:
         if (items[1].compare(u"S"_s) == 0)
         {
             latitude *= -1;
-        } else if (items[1].compare(u"N"_s) != 0)
+        }
+        else if (items[1].compare(u"N"_s) != 0)
         {
             throw QObject::tr("Invalid coordinate found: %1", "OpenAir").arg(qs);
         }
@@ -376,11 +377,12 @@ private:
         if (items[3].compare(u"W"_s) == 0)
         {
             longitude *= -1;
-        } else if (items[3].compare(u"E"_s) != 0)
+        }
+        else if (items[3].compare(u"E"_s) != 0)
         {
             throw QObject::tr("Invalid coordinate found: %1", "OpenAir").arg(qs);
         }
-        if ((latitude > 180) || (latitude < -180) || (longitude > 90) || (longitude < -90))
+        if ((latitude > 90) || (latitude < -90) || (longitude > 180) || (longitude < -180))
         {
             throw QObject::tr("Invalid coordinate found: %1", "OpenAir").arg(qs);
         }

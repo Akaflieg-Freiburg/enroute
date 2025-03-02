@@ -300,6 +300,7 @@ void Traffic::TrafficDataProvider::loadConnectionInfos()
     outStream >> connectionInfos;
     foreach (auto connectionInfo, connectionInfos)
     {
+        qWarning() << "CI " << connectionInfo.name();
         addDataSource(connectionInfo);
     }
 }
@@ -530,6 +531,7 @@ void Traffic::TrafficDataProvider::saveConnectionInfos()
         auto connectionInfo = dataSource->connectionInfo();
         if (connectionInfo.type() == Traffic::ConnectionInfo::Invalid)
         {
+            qWarning() << "CX" << connectionInfo.name();
             continue;
         }
         connectionInfos << connectionInfo;

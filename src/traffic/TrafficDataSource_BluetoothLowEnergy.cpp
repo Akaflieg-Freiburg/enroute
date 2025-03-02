@@ -81,56 +81,61 @@ void Traffic::TrafficDataSource_BluetoothLowEnergy::onDiscoveryFinished()
     qWarning() << "Traffic::TrafficDataSource_BTLE::onDiscoveryFinished" << m_info.name();
 
     // Look for the FLARM service among discovered services
-    QBluetoothUuid flarmServiceUuid("6e400001-b5a3-f393-e0a9-e50e24dcca9e");
-
-    if (m_control->services().contains(flarmServiceUuid)) {
+    const QBluetoothUuid flarmServiceUuid("6e400001-b5a3-f393-e0a9-e50e24dcca9e");
+    if (m_control->services().contains(flarmServiceUuid))
+    {
         m_flarmService = m_control->createServiceObject(flarmServiceUuid, this);
-        qWarning() << "AA";
-        if (m_flarmService != nullptr) {
+        if (m_flarmService != nullptr)
+        {
             qWarning() << "FLARM Service created";
             connect(m_flarmService, &QLowEnergyService::stateChanged, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onServiceStateChanged);
             connect(m_flarmService, &QLowEnergyService::characteristicChanged, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onCharChanged);
-            m_flarmService->discoverDetails();
-            /*
-            connect(m_flarmService, &QLowEnergyService::descriptorWritten,
-                    this, &FlarmBleDevice::descriptorWritten);
-  */
+            m_flarmService->discoverDetails();            
+            setConnectivityStatus( tr("UART service found. Requestiong service characteristics.") );
         }
-    } else {
-        qWarning() << "FLARM service not found on the device";
+    }
+    else
+    {
+        setErrorString( tr("No UART service found.") );
     }
 }
 
 void Traffic::TrafficDataSource_BluetoothLowEnergy::onServiceStateChanged(QLowEnergyService::ServiceState newState)
 {
-    qWarning() << "BTLE Service State Changed" << newState;
     if (newState == QLowEnergyService::RemoteServiceDiscovered)
     {
-        qWarning() << "Characteristics Discovered";
-        for (auto charact : m_flarmService->characteristics())
+        auto charact = m_flarmService->characteristic(QBluetoothUuid("6e400003-b5a3-f393-e0a9-e50e24dcca9e"));
+        if (charact.isValid())
         {
-            // https://docs.ruuvi.com/communication/bluetooth-connection/nordic-uart-service-nus
-            qWarning() << charact.name() << charact.uuid();
             auto m_notificationDesc = charact.descriptor(QBluetoothUuid::DescriptorType::ClientCharacteristicConfiguration);
             if (m_notificationDesc.isValid())
             {
                 // Enable Notifications
                 m_flarmService->writeDescriptor(m_notificationDesc, QByteArray::fromHex("0100"));
+                setConnectivityStatus(tr("Notification enabled"));
+            }
+            else
+            {
+                setErrorString(tr("Cannot open descriptor."));
             }
         }
-
-/*        qWarning() << m_flarmService->characteristics();
-        const QLowEnergyCharacteristic hrChar =
-            m_service->characteristic(QBluetoothUuid(QBluetoothUuid::CharacteristicType::HeartRateMeasurement));
-        if (!hrChar.isValid())
+        else
         {
-            qWarning() << "BTLE: FLARM Data not found.";
-            return;
+            setErrorString(tr("No TX characteristc"));
         }
-
-        auto m_notificationDesc = hrChar.descriptor(QBluetoothUuid::DescriptorType::ClientCharacteristicConfiguration);
-        if (m_notificationDesc.isValid())
-            m_service->writeDescriptor(m_notificationDesc, QByteArray::fromHex("0100"));
+/*
+        for (auto charact : m_flarmService->characteristics())
+        {
+            // https://docs.ruuvi.com/communication/bluetooth-connection/nordic-uart-service-nus
+            qWarning() << "BTLE Char Discovered" << charact.name() << charact.uuid();
+            auto m_notificationDesc = charact.descriptor(QBluetoothUuid::DescriptorType::ClientCharacteristicConfiguration);
+            if (m_notificationDesc.isValid())
+            {
+                qWarning() << "Descriptor valid, enable notifications";
+                // Enable Notifications
+                m_flarmService->writeDescriptor(m_notificationDesc, QByteArray::fromHex("0100"));
+            }
+        }
 */
     }
 }
@@ -152,6 +157,8 @@ void Traffic::TrafficDataSource_BluetoothLowEnergy::connectToTrafficReceiver()
 void Traffic::TrafficDataSource_BluetoothLowEnergy::disconnectFromTrafficReceiver()
 {
     qWarning() << "Traffic::TrafficDataSource_BTLE::disconnectFromTrafficReceiver()";
+    m_control->disconnectFromDevice();
+    setErrorString();
 }
 
 
@@ -237,5 +244,5 @@ QString Traffic::TrafficDataSource_BluetoothLowEnergy::sourceName() const
     {
         name = tr("Unnamed Device");
     }
-    return tr("Bluetooth LE connection to %1 (not implemented yet, please ignore)").arg(name);
+    return tr("Bluetooth LE connection to %1").arg(name);
 }

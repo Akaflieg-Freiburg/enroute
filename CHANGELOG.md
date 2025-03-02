@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.32.13] - 2025-03-02
+
+### Fixed
+- Fix problem with openAIR import. (#501)
+
+
 ## [2.32.12] - 2025-02-23
 
 ### Fixed

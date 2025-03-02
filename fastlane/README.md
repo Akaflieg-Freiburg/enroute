@@ -68,6 +68,14 @@ Promote Beta to Release
 
 Build Linux Binary
 
+### linux flathub
+
+```sh
+[bundle exec] fastlane linux flathub
+```
+
+Build on Flathub
+
 ----
 
 

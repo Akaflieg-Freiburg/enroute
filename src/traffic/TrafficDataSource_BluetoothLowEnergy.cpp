@@ -138,6 +138,7 @@ void Traffic::TrafficDataSource_BluetoothLowEnergy::onServiceStateChanged(QLowEn
 void Traffic::TrafficDataSource_BluetoothLowEnergy::onCharChanged(const QLowEnergyCharacteristic &characteristic, const QByteArray &newValue)
 {
     qWarning() << "BTLE Char updated" << characteristic.name() << QString(newValue);
+    processFLARMData(QString(newValue));
 }
 
 

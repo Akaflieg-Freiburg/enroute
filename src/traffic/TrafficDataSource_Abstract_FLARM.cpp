@@ -840,7 +840,6 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessagePXCV(const QStringL
         return;
     }
 
-    qWarning() << "OAT";
     const double vSpeed_ms = arguments[0].toDouble();
     const double OAT_degC = arguments[5].toDouble();
     const double staticPressure_hPa = arguments[7].toDouble();

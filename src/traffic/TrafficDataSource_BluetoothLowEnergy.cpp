@@ -30,7 +30,6 @@ Traffic::TrafficDataSource_BluetoothLowEnergy::TrafficDataSource_BluetoothLowEne
     // Rectify Permissions
     m_bluetoothPermission.setCommunicationModes(QBluetoothPermission::Access);
 
-    //    connect(m_control, &QLowEnergyController::connected, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onConnected);
     connect(m_control, &QLowEnergyController::connected, m_control, &QLowEnergyController::discoverServices);
     connect(m_control, &QLowEnergyController::errorOccurred, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onErrorOccurred);
     connect(m_control, &QLowEnergyController::discoveryFinished, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onServiceDiscoveryFinished);

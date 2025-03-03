@@ -267,6 +267,9 @@ Page {
                                                               text: qsTr("Locate your file in the browser, then select 'Open with' from the share menu, and choose Enroute"),
                                                               standardButtons: Dialog.Ok})
                             Global.dialogLoader.active = true
+                        } else if (isAndroid) {
+                            console.log("AA")
+                            FileExchange.openFilePicker("")
                         } else {
                             importFileDialog.open()
                         }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2024 by Stefan Kebekus, stefan.kebekus@gmail.com   *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus, stefan.kebekus@gmail.com   *
  *   Copyright (C) 2020 by Johannes Zellner, johannes@zellner.org          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -81,6 +81,8 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 	// reference Authority as defined in AndroidManifest.xml
 	private static String AUTHORITY = "de.akaflieg_freiburg.enroute";
 	private static String TAG = "IntentLauncher";
+
+	private static final int PICK_FILE_REQUEST = 1;
 
 	public MobileAdaptor() {
 		m_instance = this;
@@ -440,6 +442,44 @@ public class MobileAdaptor extends de.akaflieg_freiburg.enroute.ShareActivity {
 		}
 		return true;
 	}
+
+	/**
+	 * Open a file picker to select a file.
+	 * 
+	 * This method opens a file picker to select a file of a given mime type. This is necessary
+	 * to work around a bug in Qt which does not allow to select files with a specific extension
+	 * and does not support remote files.
+	 * 
+	 * https://bugreports.qt.io/browse/QTBUG-118154
+	 * 
+	 * @param mimeType the mime type of the file to select.
+	 * 
+	 */
+    public void openFilePicker(String mimeType) {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        if (!mimeType.isEmpty()) {
+            intent.setType(mimeType);
+        } else {
+            intent.setType("*/*");
+        }
+        startActivityForResult(intent, PICK_FILE_REQUEST);
+    }
+
+	/** Result of file picking
+	 */ 
+	public static native void setFileReceived(String fileName);
+
+	@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PICK_FILE_REQUEST && resultCode == RESULT_OK) {
+            Uri uri = data.getData();
+            if (uri != null) {
+                setFileReceived(uri.toString());
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
 	/**
 	 * create uri from file path.

@@ -72,6 +72,8 @@ public:
      */
     QString viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) override;
 
+#warning
+    Q_INVOKABLE static void openFilePicker(const QString& mime);
 
 public slots:
     /*! \brief Implements pure virtual method from FileExchange_Abstract */
@@ -101,7 +103,7 @@ private:
     static bool outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType);
 
     bool receiveOpenFileRequestsStarted {false};
-    QString pendingReceiveOpenFileRequest {};
+    QString pendingReceiveOpenFileRequest;
 };
 
 } // namespace Platform

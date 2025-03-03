@@ -201,6 +201,11 @@ void Traffic::TrafficDataSource_BluetoothLowEnergy::onServiceStateChanged(QLowEn
     }
 
     // Enable Notifications
+    if (m_nusService == nullptr)
+    {
+        setErrorString(tr("The NUS service is not available."));
+        return;
+    }
     m_nusService->writeDescriptor(m_notificationDescriptor, QByteArray::fromHex("0100"));
     setConnectivityStatus(tr("Data transfer enabled."));
 }

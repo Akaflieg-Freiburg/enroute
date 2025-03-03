@@ -53,7 +53,8 @@ namespace Traffic {
  * - Someone calls connectToTrafficReceiver(). The implementation calls
  *   m_control->connectToDevice().
  *
- * - Once a connection is established, signal/slots are connected, so that m_control->discoverServices() is called.
+ * - Once a connection is established, signal/slots ensure that
+ *   m_control->discoverServices() is called.
  *
  * - Once all services are found, the slot onDiscoveryFinished() is called. The
  *   implementation checks if the device offers the "Nordic UART Service" (NUS).
@@ -66,7 +67,6 @@ namespace Traffic {
  *   it switched notifications on.
  *
  * - Data will now flow in via the slot onCharacteristcChanged()
- *
  */
 
 class TrafficDataSource_BluetoothLowEnergy : public TrafficDataSource_AbstractSocket {

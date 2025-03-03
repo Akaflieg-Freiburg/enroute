@@ -30,13 +30,11 @@ Traffic::TrafficDataSource_BluetoothLowEnergy::TrafficDataSource_BluetoothLowEne
     // Rectify Permissions
     m_bluetoothPermission.setCommunicationModes(QBluetoothPermission::Access);
 
-    connect(m_control, &QLowEnergyController::connected, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onConnected);
+    //    connect(m_control, &QLowEnergyController::connected, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onConnected);
+    connect(m_control, &QLowEnergyController::connected, m_control, &QLowEnergyController::discoverServices);
     connect(m_control, &QLowEnergyController::errorOccurred, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onErrorOccurred);
     connect(m_control, &QLowEnergyController::discoveryFinished, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onServiceDiscoveryFinished);
     connect(m_control, &QLowEnergyController::stateChanged, this, &Traffic::TrafficDataSource_BluetoothLowEnergy::onStateChanged);
-
-#warning Unclear if I need or even want this here.
-    m_control->discoverServices();
 }
 
 
@@ -104,15 +102,11 @@ void Traffic::TrafficDataSource_BluetoothLowEnergy::disconnectFromTrafficReceive
 
 void Traffic::TrafficDataSource_BluetoothLowEnergy::onCharacteristicChanged(const QLowEnergyCharacteristic &characteristic, const QByteArray &newValue)
 {
-#warning Might want to check if characteristic is indeed NUS TX
-    qWarning() << "BTLE Char updated" << characteristic.name() << QString(newValue);
+    if (characteristic.uuid() != txCharacteristicID)
+    {
+        return;
+    }
     processFLARMData(QString(newValue));
-}
-
-void Traffic::TrafficDataSource_BluetoothLowEnergy::onConnected()
-{
-#warning might want to avoid this method by connecting directly
-    m_control->discoverServices();
 }
 
 void Traffic::TrafficDataSource_BluetoothLowEnergy::onErrorOccurred(QLowEnergyController::Error error)
@@ -183,10 +177,10 @@ void Traffic::TrafficDataSource_BluetoothLowEnergy::onServiceStateChanged(QLowEn
         setErrorString(tr("Invalid Service."));
         return;
     case QLowEnergyService::RemoteService:
-        setErrorString(tr("Service details unknown."));
+        setConnectivityStatus(tr("Service details unknown."));
         return;
     case QLowEnergyService::RemoteServiceDiscovering:
-        setErrorString(tr("Requesting service details."));
+        setConnectivityStatus(tr("Requesting service details."));
         return;
     case QLowEnergyService::RemoteServiceDiscovered:
         break;

@@ -53,9 +53,7 @@ namespace Traffic {
  * - Someone calls connectToTrafficReceiver(). The implementation calls
  *   m_control->connectToDevice().
  *
- * - Once a connection is established, the slot onConnected() is called. Now we
- *   need to find the list of services offered by the device. To start the
- *   search, the implementation calls m_control->discoverServices()
+ * - Once a connection is established, signal/slots are connected, so that m_control->discoverServices() is called.
  *
  * - Once all services are found, the slot onDiscoveryFinished() is called. The
  *   implementation checks if the device offers the "Nordic UART Service" (NUS).
@@ -167,9 +165,6 @@ public slots:
 private slots:
     // Read and process NMEA sentences
     void onCharacteristicChanged(const QLowEnergyCharacteristic &characteristic, const QByteArray &newValue);
-
-    // Start service discovery
-    void onConnected();
 
     // Handle errors
     void onErrorOccurred(QLowEnergyController::Error error);

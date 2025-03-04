@@ -1,0 +1,7 @@
+### Fixed
+- Fix problem with the file picker dialog on Android, where files from external
+  sources were not opened. (#491)
+
+### Changed
+- Increase distance threshold where aircraft is considered to be on-route from 3
+  to 5 NM. (#503)

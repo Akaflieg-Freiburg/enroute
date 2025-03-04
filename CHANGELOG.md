@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.32.14] - 2025-03-xx
+
+### Fixed
+- Fix problem with the file picker dialog on Android, where files from external
+  sources were not opened. (#491)
+
+
 ## [2.32.13] - 2025-03-02
 
 ### Fixed

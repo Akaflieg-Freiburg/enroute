@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.32.14] - 2025-03-04
+
+### Fixed
+- Fix problem with the file picker dialog on Android, where files from external
+  sources were not opened. (#491)
+
+### Changed
+- Increase distance threshold where aircraft is considered to be on-route from 3
+  to 5 NM. (#503)
+
+
+## [2.32.13] - 2025-03-02
+
+### Fixed
+- Fix problem with openAIR import. (#501)
+
+
 ## [2.32.12] - 2025-02-23
 
 ### Fixed

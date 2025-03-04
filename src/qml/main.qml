@@ -1003,7 +1003,7 @@ AppWindow {
     // solution from
     // see https://stackoverflow.com/questions/25968661/android-back-button-press-doesnt-trigger-keys-onreleased-qml
     //
-    onClosing: {
+    function onClosing (close) {
         // Use this hack only on the Android platform
         if (Qt.platform.os !== "android")
             return

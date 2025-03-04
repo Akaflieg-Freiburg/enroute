@@ -209,6 +209,13 @@ void Traffic::TrafficDataSource_Abstract::processFLARMSentence(const QString& se
         processFLARMMessagePGRMZ(arguments);
         return;
     }
+
+    // XCVario
+    if (messageType == u"PXCV")
+    {
+        processFLARMMessagePXCV(arguments);
+        return;
+    }
 }
 
 
@@ -806,4 +813,47 @@ void Traffic::TrafficDataSource_Abstract::processFLARMMessagePGRMZ(const QString
         return;
     }
     setPressureAltitude(barometricAlt);
+}
+
+
+// XCVario
+void Traffic::TrafficDataSource_Abstract::processFLARMMessagePXCV(const QStringList& arguments)
+{
+    // 0. BBB.B -- Vario, -30 to +30 m/s, negative sign for sink
+    // 1. C.C -- MacCready 0 to 10 m/s
+    // 2. EE -- Bugs degradation, 0 = clean to 30 %
+    // 3. F.FF -- Ballast 1.00 to 1.60
+    // 4. G -- 1 in climb, 0 in cruise, Note: Original Borgelt docu shows vice versa
+    // 5. HH.H -- Outside airtemp in degrees celcius ( may have leading negative sign )
+    // 6. QQQQ.Q -- QNH e.g. 1013.2
+    // 7. PPPP.P -- Static pressure in hPa
+    // 8. QQQQ.Q -- Dynamic pressure in Pa
+    // 9. RRR.R -- Roll angle
+    // 10. III.I -- Pitch angle
+    // 11. X.XX -- Acceleration in X-Axis
+    // 12. Y.YY -- Acceleration in Y-Axis
+    // 13. Z.ZZ -- Acceleration in Z-Axis
+
+    qWarning() << "PXCV with #args=" << arguments.length();
+    if (arguments.length() < 14)
+    {
+        return;
+    }
+
+    const double vSpeed_ms = arguments[0].toDouble();
+    const double OAT_degC = arguments[5].toDouble();
+    const double staticPressure_hPa = arguments[7].toDouble();
+    const double dynamicPressure_Pa = arguments[8].toDouble();
+    const double rollAngle_deg = arguments[9].toDouble();
+    const double pitchAgle_deg = arguments[10].toDouble();
+    const double accel_x = arguments[11].toDouble();
+    const double accel_y = arguments[12].toDouble();
+    const double accel_z = arguments[13].toDouble();
+    qWarning() << "vSpeed (total energy compensated?)" << vSpeed_ms << "m/s";
+    qWarning() << "OAT" << OAT_degC << "°C";
+    qWarning() << "static pressure" << staticPressure_hPa << "hPa";
+    qWarning() << "dynamic pressure" << dynamicPressure_Pa << "Pa";
+    qWarning() << "roll angle" << rollAngle_deg << "°";
+    qWarning() << "pitch angle" << pitchAgle_deg << "°";
+    qWarning() << "accel x / y / z" << accel_x << accel_y << accel_z;
 }

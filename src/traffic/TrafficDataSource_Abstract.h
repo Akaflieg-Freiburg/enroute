@@ -480,6 +480,7 @@ private:
     void processFLARMMessagePFLAU(const QStringList& arguments); // FLARM Heartbeat
     void processFLARMMessagePFLAV(const QStringList& arguments); // Version information
     void processFLARMMessagePGRMZ(const QStringList& arguments); // Garmin's barometric altitude
+    static void processFLARMMessagePXCV(const QStringList& arguments); // XCVario
     QString m_FLARMDataBuffer;
 
     // Property caches

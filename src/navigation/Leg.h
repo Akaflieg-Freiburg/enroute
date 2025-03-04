@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2022 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -219,7 +219,7 @@ public:
     //
 
     // Width of the leg. A position is considered near the leg if the distance is less.
-    static constexpr Units::Distance nearThreshold = Units::Distance::fromNM(3.0);
+    static constexpr Units::Distance nearThreshold = Units::Distance::fromNM(5.0);
 
 private:
     // Necessary data for computation of wind triangle?

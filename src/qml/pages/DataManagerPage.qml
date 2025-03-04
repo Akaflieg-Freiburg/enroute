@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -32,6 +32,7 @@ Page {
     required property var dialogLoader
     required property var stackView
     property bool isIos: Qt.platform.os === "ios"
+    property bool isAndroid: Qt.platform.os === "android"
 
     title: qsTr("Map and Data Library")
 
@@ -234,6 +235,8 @@ Page {
                                                               text: qsTr("Locate your file in the browser, then select 'Open with' from the share menu, and choose Enroute"),
                                                               standardButtons: Dialog.Ok})
                             Global.dialogLoader.active = true
+                        } else if (isAndroid) {
+                            FileExchange.openFilePicker("")
                         } else {
                             importFileDialog.open()
                         }

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="fastlane.lanes">
+    
+    
+    
+      
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000312629">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="1: /home/kebekus/Software/buildsystems/Qt/6.8.2/gcc_64/bin/qt-cmake -G Ninja -DCMAKE_BUILD_TYPE:STRING=Release -S .. -B ../build/build-linux-release" time="2.594155297">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="2: git rev-parse --short HEAD" time="0.003542499">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="3: git clone git@github.com:flathub/de.akaflieg_freiburg.enroute.git ../flathub-repo" time="6.905744398">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="4: git checkout -b update-fe6a7c16e" time="0.014483503">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="5: git add de.akaflieg_freiburg.enroute.json" time="0.011169273">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="6: git commit -m &apos;Update manifest to commit fe6a7c16e&apos;" time="0.023444978">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="7: git push --set-upstream origin update-fe6a7c16e" time="1.43053117">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="8: git log -1 --pretty=%B" time="0.004314598">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="9: gh pr create --title &apos;Update manifest to fe6a7c16e&apos; --body &apos;Updates the Flatpak manifest to latest commit fe6a7c16e
+
+Source commit message: Translations&apos; --base master --head update-fe6a7c16e" time="1.72142443">
+        
+      </testcase>
+    
+  </testsuite>
+</testsuites>

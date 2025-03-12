@@ -262,13 +262,6 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
                "</ul>" +
 
                "<p>" +
-               tr("The server forwards requests for METARs and TAFs to a web service at the Aviation Weather Center but hides your IP address, so the web service will never see it.") + " " +
-               tr("The web services at the Aviation Weather Center are operated by the US government.") + " " +
-               tr("We do not control the data handling practices of these external services.") + " " +
-               tr("Detailed information can be found at <strong>www.aviationweather.gov/dataserver</strong>.") +
-               "</p>" +
-
-               "<p>" +
                tr("The server forwards requests for NOTAMs to a Federal Aviation Administration web service but hides your IP address, so the service will never see it.") + " " +
                tr("The Federal Aviation Administration's web services are operated by the US government.") + " " +
                tr("We do not control the data handling practices of these external services.") + " " +

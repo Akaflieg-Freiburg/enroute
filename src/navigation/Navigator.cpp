@@ -43,9 +43,12 @@ Navigation::Navigator::Navigator(QObject *parent) : GlobalObject(parent)
 
     // Restore aircraft
     QFile file(m_aircraftFileName);
-    if (file.open(QIODevice::ReadOnly)) {
+    if (file.open(QIODevice::ReadOnly))
+    {
         (void)m_aircraft.loadFromJSON(file.readAll());
-    } else {
+    }
+    else
+    {
         auto cruiseSpeed = Units::Speed::fromKN(settings.value(QStringLiteral("Aircraft/cruiseSpeedInKTS"), 0.0).toDouble());
         auto descentSpeed = Units::Speed::fromKN(settings.value(QStringLiteral("Aircraft/descentSpeedInKTS"), 0.0).toDouble());
         auto fuelConsumption = Units::VolumeFlow::fromLPH(settings.value(QStringLiteral("Aircraft/fuelConsumptionInLPH"), 0.0).toDouble());
@@ -73,7 +76,8 @@ void Navigation::Navigator::deferredInitialization()
 
 auto Navigation::Navigator::flightRoute() -> FlightRoute*
 {
-    if (m_flightRoute.isNull()) {
+    if (m_flightRoute.isNull())
+    {
         m_flightRoute = new FlightRoute(this);
         m_flightRoute->load(m_flightRouteFileName);
         connect(m_flightRoute, &Navigation::FlightRoute::waypointsChanged, this, [this]() {if (m_flightRoute != nullptr) {(void)m_flightRoute->save(m_flightRouteFileName);}});
@@ -89,7 +93,8 @@ auto Navigation::Navigator::flightRoute() -> FlightRoute*
 
 void Navigation::Navigator::setAircraft(const Navigation::Aircraft& newAircraft)
 {
-    if (newAircraft == m_aircraft) {
+    if (newAircraft == m_aircraft)
+    {
         return;
     }
 
@@ -106,7 +111,8 @@ void Navigation::Navigator::setAircraft(const Navigation::Aircraft& newAircraft)
 
 void Navigation::Navigator::setFlightStatus(FlightStatus newFlightStatus)
 {
-    if (m_flightStatus == newFlightStatus) {
+    if (m_flightStatus == newFlightStatus)
+    {
         return;
     }
 
@@ -117,7 +123,8 @@ void Navigation::Navigator::setFlightStatus(FlightStatus newFlightStatus)
 
 void Navigation::Navigator::setWind(Weather::Wind newWind)
 {
-    if (newWind == m_wind) {
+    if (newWind == m_wind)
+    {
         return;
     }
 
@@ -139,16 +146,17 @@ void Navigation::Navigator::setWind(Weather::Wind newWind)
 void Navigation::Navigator::updateAltitudeLimit()
 {  
     auto info = GlobalObject::positionProvider()->positionInfo();
-    if (!info.isValid()) {
+    if (!info.isValid())
+    {
         return;
     }
 
     auto altLimit = GlobalObject::globalSettings()->airspaceAltitudeLimit();
     auto trueAltitude = info.trueAltitudeAMSL();
     if (altLimit.isFinite() &&
-            trueAltitude.isFinite() &&
-            (trueAltitude + Units::Distance::fromFT(1000) > altLimit)) {
-
+        trueAltitude.isFinite() &&
+        (trueAltitude + Units::Distance::fromFT(1000) > altLimit))
+    {
         // Round trueAltitude+1000ft up to nearest 500ft and set that as a new limit
         auto newAltLimit = Units::Distance::fromFT(500.0*qCeil(trueAltitude.toFeet()/500.0+2.0));
         GlobalObject::globalSettings()->setAirspaceAltitudeLimit(newAltLimit);
@@ -160,7 +168,8 @@ void Navigation::Navigator::updateAltitudeLimit()
 void Navigation::Navigator::updateFlightStatus()
 {
     auto info = GlobalObject::positionProvider()->positionInfo();
-    if (!info.isValid()) {
+    if (!info.isValid())
+    {
         setFlightStatus(Unknown);
         return;
     }
@@ -168,22 +177,26 @@ void Navigation::Navigator::updateFlightStatus()
     // Get ground speed and aircraft minimum speed
     auto GS = info.groundSpeed();
     auto aircraftMinSpeed = m_aircraft.minimumSpeed();
-    if (!GS.isFinite() || !aircraftMinSpeed.isFinite()) {
+    if (!GS.isFinite() || !aircraftMinSpeed.isFinite())
+    {
         setFlightStatus(Unknown);
         return;
     }
 
     // Go to ground mode if ground speed is less then aircraftMinSpeed-flightSpeedHysteresis
-    if (m_flightStatus == Flight) {
+    if (m_flightStatus == Flight)
+    {
         // If we are in flight at present, go back to ground mode only if the ground speed is less than minFlightSpeedInKT-flightSpeedHysteresis
-        if ( GS < aircraftMinSpeed-flightSpeedHysteresis) {
+        if ( GS < aircraftMinSpeed-flightSpeedHysteresis)
+        {
             setFlightStatus(Ground);
         }
         return;
     }
 
     // Go to flight mode if ground speed is more than aircraftMinSpeed
-    if ( GS > aircraftMinSpeed ) {
+    if ( GS > aircraftMinSpeed )
+    {
         setFlightStatus(Flight);
     }
 }
@@ -223,7 +236,7 @@ void Navigation::Navigator::updateRemainingRouteInfo()
     }
 
     // If we are closer than 3 nm from endpoint, then we do not give a remaining route info
-    auto finalCoordinate = geoPath[geoPath.size()-1];
+    const auto &finalCoordinate = geoPath[geoPath.size() - 1];
     if (Units::Distance::fromM(finalCoordinate.distanceTo(info.coordinate())) < Leg::nearThreshold)
     {
         RemainingRouteInfo rrInfo;

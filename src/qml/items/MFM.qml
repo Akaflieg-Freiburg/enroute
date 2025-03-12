@@ -27,11 +27,8 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 import akaflieg_freiburg.enroute
-import enroute 1.0
-
 
 import "."
-import ".."
 import "../dialogs"
 
 Item {
@@ -288,6 +285,26 @@ Item {
         }
 
 
+        //
+        // Connections
+        //
+
+        Connections {
+            target: Global
+
+            function onCurrentVACChanged()
+            {
+                if (!Global.currentVAC.isValid)
+                    return;
+                flightMap.followGPS = false
+                zoomLevelBehavior.enabled = false
+                flightMap.zoomLevel = 11
+                flightMap.alignCoordinateToPoint(Global.currentVAC.center, flightMap.centerPoint)
+                zoomLevelBehavior.enabled = true
+            }
+        }
+
+
         // ADDITINAL MAP ITEMS
         MapCircle { // Circle for nondirectional traffic warning
             center: PositionProvider.lastValidCoordinate
@@ -304,7 +321,7 @@ Item {
                 enabled: TrafficDataProvider.trafficObjectWithoutPosition.animate
             }
             opacity: 0.1
-            visible: TrafficDataProvider.trafficObjectWithoutPosition.valid
+            visible: TrafficDataProvider.trafficObjectWithoutPosition.relevant
         }
 
         MapQuickItem {
@@ -318,7 +335,7 @@ Item {
                 enabled: TrafficDataProvider.trafficObjectWithoutPosition.animate
             }
 
-            visible: TrafficDataProvider.trafficObjectWithoutPosition.valid
+            visible: TrafficDataProvider.trafficObjectWithoutPosition.relevant
 
             Connections {
                 // This is a workaround against a bug in Qt 5.15.2.  The position of the MapQuickItem
@@ -652,6 +669,7 @@ Item {
                 icon.source: "/icons/material/ic_my_location.svg"
 
                 enabled: !flightMap.followGPS
+                visible: enabled
 
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
@@ -665,7 +683,9 @@ Item {
 
                 icon.source: "/icons/material/ic_airplanemode_active.svg"
                 icon.color: "red"
+
                 enabled: !TrafficDataProvider.receivingHeartbeat
+                visible: enabled
 
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()

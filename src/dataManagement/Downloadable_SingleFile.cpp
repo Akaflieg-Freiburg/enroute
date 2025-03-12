@@ -85,6 +85,9 @@ DataManagement::Downloadable_SingleFile::Downloadable_SingleFile(QUrl url, const
             setContentType(TerrainMap);
         }
     }
+
+    m_hasFile = QFile::exists(m_fileName);
+
 }
 
 
@@ -335,7 +338,7 @@ void DataManagement::Downloadable_SingleFile::deleteFiles()
     lockFile.lock();
     QFile::remove(m_fileName);
     lockFile.unlock();
-    emit hasFileChanged();
+    m_hasFile = QFile::exists(m_fileName);
     emit fileContentChanged();
 
     // Emit signals as appropriate
@@ -663,7 +666,6 @@ void DataManagement::Downloadable_SingleFile::downloadFileFinished()
 
     // Save old value to see if anything changed
     auto oldUpdateSize = updateSize();
-    bool const oldHasLocalFile = hasFile();
 
     // Copy the temporary file to the local file
     emit aboutToChangeFile(m_fileName);
@@ -671,6 +673,7 @@ void DataManagement::Downloadable_SingleFile::downloadFileFinished()
     lockFile.lock();
     m_saveFile->commit();
     lockFile.unlock();
+    m_hasFile = QFile::exists(m_fileName);
     emit fileContentChanged();
 
     // Delete the data structures for the download
@@ -682,10 +685,6 @@ void DataManagement::Downloadable_SingleFile::downloadFileFinished()
     if (oldUpdateSize != updateSize())
     {
         emit updateSizeChanged();
-    }
-    if (oldHasLocalFile != hasFile())
-    {
-        emit hasFileChanged();
     }
     emit downloadingChanged();
 }

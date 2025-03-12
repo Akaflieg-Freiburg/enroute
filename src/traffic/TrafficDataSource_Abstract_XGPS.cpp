@@ -68,7 +68,7 @@ void Traffic::TrafficDataSource_Abstract::processXGPSString(const QByteArray& da
 
         // Update position information and continue
         if (_geoPos.isValid()) {
-            emit positionUpdated( Positioning::PositionInfo(_geoPos) );
+            emit positionUpdated( Positioning::PositionInfo(_geoPos, sourceName()) );
             setReceivingHeartbeat(true);
         }
 
@@ -85,7 +85,7 @@ void Traffic::TrafficDataSource_Abstract::processXGPSString(const QByteArray& da
         }
 
         bool ok = false;
-        QString const targetID = list[1];
+        QString const &targetID = list[1];
         double const lat = list[2].toDouble(&ok);
         if (!ok) {
             return;
@@ -141,7 +141,7 @@ void Traffic::TrafficDataSource_Abstract::processXGPSString(const QByteArray& da
         m_factor.setCallSign(callsign);
         m_factor.setHDist(hDist);
         m_factor.setID(targetID);
-        m_factor.setPositionInfo( Positioning::PositionInfo(geoPositionInfo) );
+        m_factor.setPositionInfo( Positioning::PositionInfo(geoPositionInfo, sourceName()) );
         m_factor.setType(Traffic::TrafficFactor_Abstract::unknown);
         m_factor.setVDist(vDist);
         m_factor.startLiveTime();

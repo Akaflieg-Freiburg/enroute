@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -346,7 +346,7 @@ AppWindow {
                         ItemDelegate { // PressureAltitude
                             text: qsTr("Barometric Data")
                                   +`<br><font color="#606060" size="2">`
-                                  + (PositionProvider.pressureAltitude.isFinite() ? qsTr("Receiving pressure altitude.") : qsTr("Not receiving pressure altitude."))
+                                  + (TrafficDataProvider.pressureAltitude.isFinite() ? qsTr("Receiving pressure altitude.") : qsTr("Not receiving pressure altitude."))
                                   + `</font>`
                             icon.source: "/icons/material/ic_speed.svg"
                             Layout.fillWidth: true
@@ -359,11 +359,10 @@ AppWindow {
                             }
                             background: Rectangle {
                                 anchors.fill: parent
-                                color: PositionProvider.pressureAltitude.isFinite() ? "green" : "red"
+                                color: TrafficDataProvider.pressureAltitude.isFinite() ? "green" : "red"
                                 opacity: 0.2
                             }
                         }
-
 
                         ItemDelegate { // FLARM Status
                             Layout.fillWidth: true
@@ -725,7 +724,8 @@ AppWindow {
 
             function onRequestClosePages() {
                 stackView.pop()
-                Global.dialogLoader.item.close()
+                if (Global.dialogLoader.item)
+                    Global.dialogLoader.item.close()
             }
 
             function onRequestOpenAircraftPage() {
@@ -746,6 +746,12 @@ AppWindow {
             function onRequestOpenWeatherPage() {
                 stackView.pop()
                 stackView.push("pages/Weather.qml")
+            }
+
+            function onRequestOpenWeatherDialog(station) {
+                Global.dialogLoader.setSource("dialogs/MetarTafDialog.qml",
+                                              {"weatherStation": station})
+                Global.dialogLoader.item.open()
             }
 
             function onRequestVAC(vacName) {
@@ -997,7 +1003,7 @@ AppWindow {
     // solution from
     // see https://stackoverflow.com/questions/25968661/android-back-button-press-doesnt-trigger-keys-onreleased-qml
     //
-    onClosing: {
+    function onClosing (close) {
         // Use this hack only on the Android platform
         if (Qt.platform.os !== "android")
             return

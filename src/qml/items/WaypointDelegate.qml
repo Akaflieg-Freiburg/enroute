@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2023-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2023-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -23,19 +23,14 @@ import QtQuick
 import akaflieg_freiburg.enroute
 
 
-
 Item {
     id: waypointDelegate
 
     required property waypoint waypoint
 
-    property var weatherStation: WeatherDataProvider.findWeatherStation(waypoint.ICAOCode)
-    Connections {
-        target: WeatherDataProvider
-
-        function onWeatherStationsChanged() {
-            waypointDelegate.weatherStation = WeatherDataProvider.findWeatherStation(waypointDelegate.waypoint.ICAOCode)
-        }
+    Observer {
+        id: weatherStation
+        waypoint: waypointDelegate.waypoint
     }
 
     implicitWidth: parent ? parent.width : 0
@@ -44,13 +39,7 @@ Item {
     // Background color according to METAR/FAA flight category
     Rectangle {
         anchors.fill: parent
-        color: {
-            if (waypointDelegate.weatherStation === null)
-                return "transparent"
-            if (waypointDelegate.weatherStation.metar.isValid)
-                return waypointDelegate.weatherStation.metar.flightCategoryColor
-            return "transparent"
-        }
+        color: weatherStation.metar.flightCategoryColor
         opacity: 0.2
     }
 
@@ -67,12 +56,12 @@ Item {
 
             var result = waypointDelegate.waypoint.twoLineTitle
 
-            var wayTo  = Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), waypoint.coordinate)
+            var wayTo  = Navigator.aircraft.describeWay(PositionProvider.positionInfo.coordinate(), waypointDelegate.waypoint.coordinate)
             if (wayTo !== "")
                 result = result + "<br>" + wayTo
 
-            if ((waypointDelegate.weatherStation !== null) && waypointDelegate.weatherStation.metar.isValid)
-                result = result + "<br>" + waypointDelegate.weatherStation.metar.summary(Navigator.aircraft, Clock.time)
+            if (weatherStation.metar.isValid)
+                result = result + "<br>" + weatherStation.metar.summary(Navigator.aircraft, Clock.time)
             return result
         }
 

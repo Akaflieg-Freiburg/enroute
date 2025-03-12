@@ -107,6 +107,7 @@ set(SOURCES
     traffic/TrafficFactor_Abstract.h
     traffic/TrafficFactor_DistanceOnly.h
     traffic/TrafficFactor_WithPosition.h
+    traffic/TrafficObserver.h
     traffic/Warning.h
     units/Angle.h
     units/ByteSize.h
@@ -122,7 +123,8 @@ set(SOURCES
     weather/Decoder.h
     weather/DensityAltitude.h
     weather/METAR.h
-    weather/Station.h
+    weather/Observer.h
+    weather/ObserverList.h
     weather/TAF.h
     weather/WeatherDataProvider.h
     weather/Wind.h
@@ -206,6 +208,7 @@ set(SOURCES
     traffic/TrafficFactor_Abstract.cpp
     traffic/TrafficFactor_DistanceOnly.cpp
     traffic/TrafficFactor_WithPosition.cpp
+    traffic/TrafficObserver.cpp
     traffic/Warning.cpp
     units/Angle.cpp
     units/Density.cpp
@@ -219,7 +222,8 @@ set(SOURCES
     weather/Decoder.cpp
     weather/DensityAltitude.cpp
     weather/METAR.cpp
-    weather/Station.cpp
+    weather/Observer.cpp
+    weather/ObserverList.cpp
     weather/TAF.cpp
     weather/WeatherDataProvider.cpp
     weather/Wind.cpp
@@ -242,6 +246,13 @@ qt_add_big_resources(SOURCES
 #
 
 if(ANDROID)
+    if (Qt6Core_VERSION VERSION_EQUAL "6.8.1")
+        message(FATAL_ERROR "Qt version 6.8.1 is known to have critical errors with multi-architecture Android. Please use a different version.")
+    endif()
+    if(NOT ANDROID_PLATFORM STREQUAL "android-28")
+        message(FATAL_ERROR "ANDROID_PLATFORM must be set to android-28, is currently set to " ${ANDROID_PLATFORM})
+    endif()
+
     list(APPEND SOURCES
         platform/FileExchange_Android.h
         platform/FileExchange_Android.cpp
@@ -256,63 +267,62 @@ if(ANDROID)
         android/src/de/akaflieg_freiburg/enroute/ShareUtils.java
     )
 
-# Copy manual and other files into the Android directories
-file(COPY ${CMAKE_SOURCE_DIR}/generatedSources/manual DESTINATION android/assets)
-file(COPY ${CMAKE_SOURCE_DIR}/generatedSources/src/android DESTINATION .)
-file(COPY ${CMAKE_SOURCE_DIR}/src/android DESTINATION .)
+    # Copy manual and other files into the Android directories
+    file(COPY ${CMAKE_SOURCE_DIR}/generatedSources/manual DESTINATION android/assets)
+    file(COPY ${CMAKE_SOURCE_DIR}/generatedSources/src/android DESTINATION .)
+    file(COPY ${CMAKE_SOURCE_DIR}/src/android DESTINATION .)
 
-# Configure files
-configure_file(AndroidManifest.xml.in android/AndroidManifest.xml)
-configure_file(${CMAKE_SOURCE_DIR}/3rdParty/material-design-icons/action/drawable-hdpi/ic_info_black_24dp.png ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable/ic_info.png COPYONLY)
-configure_file(${CMAKE_SOURCE_DIR}/3rdParty/material-design-icons/file/drawable-hdpi/ic_file_download_black_24dp.png ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable/ic_file_download.png COPYONLY)
-configure_file(${CMAKE_SOURCE_DIR}/3rdParty/material-design-icons/alert/drawable-hdpi/ic_error_black_24dp.png ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable/ic_error.png COPYONLY)
-configure_file(${CMAKE_SOURCE_DIR}/3rdParty/material-design-icons/alert/drawable-hdpi/ic_warning_black_24dp.png ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable/ic_warning.png COPYONLY)
-configure_file(android/src/de/akaflieg_freiburg/enroute/ShareActivity.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
-configure_file(android/src/de/akaflieg_freiburg/enroute/ShareUtils.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
-configure_file(android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
+    # Configure files
+    configure_file(AndroidManifest.xml.in android/AndroidManifest.xml)
+    configure_file(${CMAKE_SOURCE_DIR}/3rdParty/material-design-icons/action/drawable-hdpi/ic_info_black_24dp.png ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable/ic_info.png COPYONLY)
+    configure_file(${CMAKE_SOURCE_DIR}/3rdParty/material-design-icons/file/drawable-hdpi/ic_file_download_black_24dp.png ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable/ic_file_download.png COPYONLY)
+    configure_file(${CMAKE_SOURCE_DIR}/3rdParty/material-design-icons/alert/drawable-hdpi/ic_error_black_24dp.png ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable/ic_error.png COPYONLY)
+    configure_file(${CMAKE_SOURCE_DIR}/3rdParty/material-design-icons/alert/drawable-hdpi/ic_warning_black_24dp.png ${CMAKE_CURRENT_BINARY_DIR}/android/res/drawable/ic_warning.png COPYONLY)
+    configure_file(android/src/de/akaflieg_freiburg/enroute/ShareActivity.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
+    configure_file(android/src/de/akaflieg_freiburg/enroute/ShareUtils.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
+    configure_file(android/src/de/akaflieg_freiburg/enroute/MobileAdaptor.java android/src/de/akaflieg_freiburg/enroute COPYONLY)
 
+    # The android target require a few additional variables
+    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android" CACHE INTERNAL "")
 
-# The android target require a few additional variables
-set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android" CACHE INTERNAL "")
+    # Compile definitions
+    add_compile_definitions(MANUAL_LOCATION="/android_asset/manual")
 
-# Compile definitions
-add_compile_definitions(MANUAL_LOCATION="/android_asset/manual")
+    qt_add_executable(${PROJECT_NAME} ${SOURCES} ${ANDROID_EXTRA_SOURCES})
+    qt_import_plugins(${PROJECT_NAME}
+        INCLUDE_BY_TYPE imageformats Qt::QSvgPlugin Qt::QJpegPlugin Qt::QWebpPlugin  Qt::QTiffPlugin Qt::QPngPlugin
+        INCLUDE_BY_TYPE geoservices QMapLibre::PluginGeoServices
+        EXCLUDE_BY_TYPE platforminputcontexts qmltooling
+    )
+    target_link_libraries(${PROJECT_NAME}
+        PRIVATE
+        Qt6::Bluetooth
+        Qt6::Concurrent
+        Qt6::Core
+        Qt6::Core5Compat
+        Qt6::HttpServer
+        Qt6::Positioning
+        Qt6::Quick
+        Qt6::QuickControls2
+        Qt6::Sensors
+        Qt6::SerialPort
+        Qt6::Sql
+        Qt6::Svg
+        Qt6::TextToSpeech
+        Qt6::WebView
+        QMapLibre::Location
+        libzip::zip
+    )
+    qmaplibre_location_setup_plugins(${PROJECT_NAME})
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android"
+        QT_ANDROID_TARGET_SDK_VERSION 34
+        QT_ANDROID_MIN_SDK_VERSION 28
+    )
 
-qt_add_executable(${PROJECT_NAME} ${SOURCES} ${ANDROID_EXTRA_SOURCES}
-)
-target_link_libraries(${PROJECT_NAME}
-    PRIVATE
-    Qt6::Bluetooth
-    Qt6::Concurrent
-    Qt6::Core
-    Qt6::Core5Compat
-    Qt6::HttpServer
-    Qt6::Positioning
-    Qt6::Quick
-    Qt6::QuickControls2
-    Qt6::Sensors
-    Qt6::SerialPort
-    Qt6::Sql
-    Qt6::Svg
-    Qt6::TextToSpeech
-    Qt6::WebView
-    QMapLibre::Location
-    libzip::zip
-)
-qmaplibre_location_setup_plugins(${PROJECT_NAME})
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/android"
-    QT_ANDROID_TARGET_SDK_VERSION 34
-    QT_ANDROID_MIN_SDK_VERSION 28
-)
-if(NOT ANDROID_PLATFORM STREQUAL "android-28")
-    message(FATAL_ERROR "ANDROID_PLATFORM must be set to android-28, is currently set to " ${ANDROID_PLATFORM})
-endif()
-
-
-# Include SSL Libraries
-set(ANDROID_TARGET_ARCH ${CMAKE_ANDROID_ARCH_ABI})
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/android_openssl dummyBinaryDir)
+    # Include SSL Libraries
+    set(ANDROID_TARGET_ARCH ${CMAKE_ANDROID_ARCH_ABI})
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/android_openssl dummyBinaryDir)
 endif()
 
 
@@ -544,6 +554,9 @@ qt_add_qml_module(${PROJECT_NAME}
     URI akaflieg_freiburg.enroute
     VERSION 1.0
     NO_RESOURCE_TARGET_PATH
+    DEPENDENCIES
+    QtPositioning
+    QtQuick
     QML_FILES
     qml/main.qml
     qml/dialogs/AddBTDeviceDialog.qml
@@ -562,7 +575,7 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/dialogs/RenameVACDialog.qml
     qml/dialogs/WaypointDescription.qml
     qml/dialogs/WaypointEditor.qml
-#    qml/items/AppWindow.qml
+    qml/items/AppWindow.qml
     qml/items/+Material/AppWindow.qml
     qml/items/AutoSizingMenu.qml
     qml/items/DecoratedListView.qml
@@ -571,20 +584,21 @@ qt_add_qml_module(${PROJECT_NAME}
     qml/items/ElevationInput.qml
     qml/items/FlightMap.qml
     qml/items/FlightVector.qml
-#    qml/items/Footer.qml
+    qml/items/Footer.qml
     qml/items/+Material/Footer.qml
     qml/items/Global.qml
-#    qml/items/Icon.qml
+    qml/items/Icon.qml
     qml/items/+Material/Icon.qml
     qml/items/ImportManager.qml
-#    qml/items/MapButton.qml
+    qml/items/MapButton.qml
     qml/items/+Material/MapButton.qml
     qml/items/MapSet.qml
     qml/items/MFM.qml
     qml/items/MyTextField.qml
     qml/items/NavBar.qml
     qml/items/NotificationArea.qml
-#    qml/items/PageHeader.qml
+    qml/items/NotificationButton.qml
+    qml/items/PageHeader.qml
     qml/items/+Material/PageHeader.qml
     qml/items/RemainingRouteBar.qml
     qml/items/StandardHeader.qml
@@ -625,7 +639,6 @@ qt_add_qml_module(${PROJECT_NAME}
     ui/SideViewQuickItem.cpp
     traffic/TrafficDataProvider_BluetoothLowEnergy.cpp
 )
-
 
 #
 # Translations
@@ -700,6 +713,9 @@ if ( QTDEPLOY )
         TARGET ${PROJECT_NAME}
         OUTPUT_SCRIPT deploy_script
         NO_UNSUPPORTED_PLATFORM_ERROR
+        MACOS_BUNDLE_POST_BUILD
+        DEPLOY_TOOL_OPTIONS
+        "-sign-for-notarization=Stefan Kebekus"
     )
 
     # Call the deployment script on "cmake --install".

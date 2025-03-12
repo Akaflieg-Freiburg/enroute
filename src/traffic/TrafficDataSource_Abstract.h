@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include <QProperty>
+
 #include "positioning/PositionInfo.h"
 #include "traffic/ConnectionInfo.h"
 #include "traffic/TrafficFactor_DistanceOnly.h"
@@ -101,6 +103,16 @@ public:
 
     /*! \brief Icon that can be used to represent the connection in a GUI */
     Q_PROPERTY(QString icon READ icon CONSTANT)
+
+    /*! \brief Pressure altitude
+     *
+     *  This property holds information about the pressure altitude, that is,
+     *  the altitude that you would read off your altimeter if the altimeter is
+     *  set to 1013.2 hPa. To ensure that the data is up-to-date, the position
+     *  information will be set to "invalid" when no data has arrived for more
+     *  than the time specified in PositionInfo::lifetime.
+     */
+    Q_PROPERTY(Units::Distance pressureAltitude READ pressureAltitude BINDABLE bindablePressureAltitude)
 
     /*! \brief Heartbeat indicator
      *
@@ -191,6 +203,18 @@ public:
      */
     [[nodiscard]] virtual QString icon() const = 0;
 
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property pressureAltitude
+     */
+    [[nodiscard]] Units::Distance pressureAltitude() const {return m_pressureAltitude.value();}
+
+    /*! \brief Getter method for property with the same name
+     *
+     *  @returns Property pressureAltitude
+     */
+    [[nodiscard]] QBindable<Units::Distance> bindablePressureAltitude() const {return &m_pressureAltitude;}
+
     /*! \brief Getter function for the property with the same name
      *
      * @returns Property receivingHeartbeat
@@ -223,6 +247,7 @@ public:
     {
         return m_trafficReceiverSelfTestError;
     }
+
 
 signals:
     /*! \brief Notifier signal */
@@ -266,15 +291,6 @@ signals:
      *  @param SSID Name of the WiFi network that is was used in use.
      */
     void passwordStorageRequest(const QString& SSID, const QString& password);
-
-    /*! \brief Pressure altitude
-     *
-     *  If this class received pressure altitude information from a connected
-     *  traffic receiver, this information is emitted here. Pressure altitude is
-     *  the altitude shown by your altimeter if the altimeter is set to 1013.2
-     *  hPa.
-     */
-    void pressureAltitudeUpdated(Units::Distance);
 
     /*! \brief Position info
      *
@@ -414,6 +430,16 @@ protected:
      */
     void setErrorString(const QString& newErrorString = QString());
 
+    /*! \brief Setter function for the property with the same name
+     *
+     *  This method must be used by child classes to update the pressure altitude
+     *  The class uses a timer internally to reset the position info to "invalid"
+     *  after the time specified in PositionInfo::lifetime seconds.
+     *
+     *  @param newPressureAltitude Pressure Altitude
+     */
+    void setPressureAltitude(Units::Distance newPressureAltitude);
+
     /*! \brief Setter method for the property with the same name
      *
      *  When set to 'true' a timer is stated that will automatically reset the
@@ -454,6 +480,7 @@ private:
     void processFLARMMessagePFLAU(const QStringList& arguments); // FLARM Heartbeat
     void processFLARMMessagePFLAV(const QStringList& arguments); // Version information
     void processFLARMMessagePGRMZ(const QStringList& arguments); // Garmin's barometric altitude
+    static void processFLARMMessagePXCV(const QStringList& arguments); // XCVario
     QString m_FLARMDataBuffer;
 
     // Property caches
@@ -473,9 +500,9 @@ private:
     Units::Distance m_trueAltitudeFOM; // Fig. of Merit
     QTimer m_trueAltitudeTimer;
 
-    // Pressure altitude of own aircraft. See the member m_trueAltitude for a
-    // description how the timer should be used.
-    Units::Distance m_pressureAltitude;
+    // Pressure altitude of own aircraft. The timer will reset the pressureAltitude
+    // to an invalid value if no data is received for a while.
+    QProperty<Units::Distance> m_pressureAltitude;
     QTimer m_pressureAltitudeTimer;
 
     // Heartbeat timer

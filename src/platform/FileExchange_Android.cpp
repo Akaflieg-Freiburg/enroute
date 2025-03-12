@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2023 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -95,7 +95,7 @@ void Platform::FileExchange::processFileOpenRequest(const QString& path)
 }
 
 
-auto Platform::FileExchange::shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
+QString Platform::FileExchange::shareContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate)
 {
     QMimeDatabase const db;
     QMimeType const mime = db.mimeTypeForName(mimeType);
@@ -110,7 +110,7 @@ auto Platform::FileExchange::shareContent(const QByteArray& content, const QStri
 }
 
 
-auto Platform::FileExchange::viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate) -> QString
+QString Platform::FileExchange::viewContent(const QByteArray& content, const QString& mimeType, const QString& fileNameTemplate)
 {
     QString const tmpPath = contentToTempFile(content, fileNameTemplate);
     bool const success = outgoingIntent(QStringLiteral("viewFile"), tmpPath, mimeType);
@@ -122,11 +122,21 @@ auto Platform::FileExchange::viewContent(const QByteArray& content, const QStrin
 }
 
 
+void Platform::FileExchange::openFilePicker(const QString& mime)
+{
+    const QJniObject activity = QNativeInterface::QAndroidApplication::context();
+    if (activity.isValid()) {
+        const QJniObject mimeTypeStr = QJniObject::fromString(mime);
+        activity.callMethod<void>("openFilePicker", "(Ljava/lang/String;)V", mimeTypeStr.object<jstring>());
+    }
+}
+
+
 //
 // Private Methods
 //
 
-auto Platform::FileExchange::contentToTempFile(const QByteArray& content, const QString& fileNameTemplate) -> QString
+QString Platform::FileExchange::contentToTempFile(const QByteArray& content, const QString& fileNameTemplate)
 {
     QDateTime const now = QDateTime::currentDateTimeUtc();
     QString const fname = fileNameTemplate.arg(now.toString(QStringLiteral("yyyy-MM-dd_hh.mm.ss")));
@@ -150,7 +160,7 @@ auto Platform::FileExchange::contentToTempFile(const QByteArray& content, const 
 }
 
 
-auto Platform::FileExchange::outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType) -> bool
+bool Platform::FileExchange::outgoingIntent(const QString& methodName, const QString& filePath, const QString& mimeType)
 {
     QJniObject const jsPath = QJniObject::fromString(filePath);
     QJniObject const jsMimeType = QJniObject::fromString(mimeType);
@@ -169,7 +179,7 @@ auto Platform::FileExchange::outgoingIntent(const QString& methodName, const QSt
 
 extern "C" {
 
-JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setFileReceived(JNIEnv* env, jobject /*unused*/, jstring jfname)
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_MobileAdaptor_setFileReceived(JNIEnv* env, jobject /*unused*/, jstring jfname)
 {
     const char* fname = env->GetStringUTFChars(jfname, nullptr);
 
@@ -181,6 +191,17 @@ JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setFileR
     env->ReleaseStringUTFChars(jfname, fname);
 }
 
+JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setFileReceived(JNIEnv* env, jobject /*unused*/, jstring jfname)
+{
+    const char* fname = env->GetStringUTFChars(jfname, nullptr);
+
+    // A little complicated because GlobalObject::fileExchange() lives in a different thread
+    QMetaObject::invokeMethod( GlobalObject::fileExchange(),
+                              "processFileOpenRequest",
+                              Qt::QueuedConnection,
+                              Q_ARG( QString, QString::fromUtf8(fname)) );
+    env->ReleaseStringUTFChars(jfname, fname);
+}
 
 JNIEXPORT void JNICALL Java_de_akaflieg_1freiburg_enroute_ShareActivity_setTextReceived(JNIEnv* env, jobject /*unused*/, jstring jfname)
 {

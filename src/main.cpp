@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2019-2024 by Stefan Kebekus                             *
+ *   Copyright (C) 2019-2025 by Stefan Kebekus                             *
  *   stefan.kebekus@gmail.com                                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -50,16 +50,15 @@
 #include "DemoRunner.h"
 #include "GlobalObject.h"
 #include "Librarian.h"
-#include "dataManagement/DataManager.h"
-#include "dataManagement/SSLErrorHandler.h"
+//#include "dataManagement/DataManager.h"
+//#include "dataManagement/SSLErrorHandler.h"
 #include "geomaps/Airspace.h"
-#include "geomaps/GeoMapProvider.h"
-#include "geomaps/WaypointLibrary.h"
+//#include "geomaps/GeoMapProvider.h"
+//#include "geomaps/WaypointLibrary.h"
 #include "platform/FileExchange_Abstract.h"
 #include "platform/PlatformAdaptor_Abstract.h"
-#include "traffic/TrafficDataProvider.h"
-#include "traffic/TrafficFactor_WithPosition.h"
-#include "weather/Station.h"
+//#include "traffic/TrafficDataProvider.h"
+#include "traffic/Warning.h"
 
 using namespace std::chrono_literals;
 using namespace Qt::Literals::StringLiterals;
@@ -68,20 +67,13 @@ auto main(int argc, char *argv[]) -> int
 {
     // It seems that MapBoxGL does not work well with threaded rendering, so we disallow that.
     qputenv("QSG_RENDER_LOOP", "basic");
+    // Might help with ANRs under Android
+    qputenv("QT_ANDROID_DISABLE_ACCESSIBILITY", "1");
 
     // Register types
     qRegisterMetaType<GeoMaps::Airspace>();
     qRegisterMetaType<Platform::FileExchange_Abstract::FileFunction>();
     qRegisterMetaType<Traffic::Warning>();
-
-    qmlRegisterUncreatableType<DemoRunner>("enroute", 1, 0, "DemoRunner", QStringLiteral("DemoRunner objects cannot be created in QML"));
-    qmlRegisterUncreatableType<DataManagement::SSLErrorHandler>("enroute", 1, 0, "SSLErrorHandler", QStringLiteral("SSLErrorHandler objects cannot be created in QML"));
-    qmlRegisterUncreatableType<GeoMaps::GeoMapProvider>("enroute", 1, 0, "GeoMapProvider", QStringLiteral("GeoMapProvider objects cannot be created in QML"));
-    qmlRegisterUncreatableType<GeoMaps::WaypointLibrary>("enroute", 1, 0, "WaypointLibrary", QStringLiteral("WaypointLibrary objects cannot be created in QML"));
-    qmlRegisterUncreatableType<DataManagement::DataManager>("enroute", 1, 0, "DataManager", QStringLiteral("DataManager objects cannot be created in QML"));
-    qmlRegisterUncreatableType<Traffic::TrafficDataProvider>("enroute", 1, 0, "TrafficDataProvider", QStringLiteral("TrafficDataProvider objects cannot be created in QML"));
-    qmlRegisterUncreatableType<Traffic::TrafficFactor_WithPosition>("enroute", 1, 0, "TrafficFactor_WithPosition", QStringLiteral("TrafficFactor_WithPosition objects cannot be created in QML"));
-
 
     // Required by the maplibre plugin to QtLocation
     QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGL);

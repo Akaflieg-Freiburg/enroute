@@ -109,6 +109,18 @@ void Platform::PlatformAdaptor::onGUISetupCompleted()
     QNativeInterface::QAndroidApplication::hideSplashScreen(200);
 }
 
+void Platform::PlatformAdaptor::openSatView(const QGeoCoordinate& coordinate)
+{
+    auto st = u"geo:%1,%2?z=10"_s.arg(coordinate.latitude()).arg(coordinate.longitude());
+    QJniObject const c = QJniObject::fromString(st);
+    auto ok = QJniObject::callStaticMethod<jboolean>("de/akaflieg_freiburg/enroute/MobileAdaptor",
+                                                     "openInGoogleEarth",
+                                                     "(Ljava/lang/String;)Z",
+                                                     c.object<jstring>());
+    if (!ok)
+        PlatformAdaptor_Abstract::openSatView(coordinate);
+}
+
 
 QString Platform::PlatformAdaptor::systemInfo()
 {

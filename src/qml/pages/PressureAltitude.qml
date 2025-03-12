@@ -68,7 +68,7 @@ Page {
                 Layout.rightMargin: 4
                 Layout.columnSpan: 3
 
-                text: PositionProvider.pressureAltitude.isFinite() ? qsTr("Receiving static pressure data from traffic receiver") : qsTr("Not connected to a traffic receiver that provides static pressure data")
+                text: TrafficDataProvider.pressureAltitude.isFinite() ? qsTr("Receiving static pressure data from traffic receiver") : qsTr("Not connected to a traffic receiver that provides static pressure data")
 
                 wrapMode: Text.WordWrap
                 textFormat: Text.RichText
@@ -83,7 +83,7 @@ Page {
 
                 background: Rectangle {
                     border.color: "black"
-                    color: PositionProvider.pressureAltitude.isFinite() ? "green" : "red"
+                    color: TrafficDataProvider.pressureAltitude.isFinite() ? "green" : "red"
                     opacity: 0.2
                     radius: 4
                 }
@@ -140,7 +140,7 @@ Page {
                 text: qsTr("Pressure Altitude") }
             Label {
                 Layout.fillWidth: true
-                text: PositionProvider.pressureAltitude.isFinite() ? "FL" + ("000" + Math.round(PositionProvider.pressureAltitude.toFeet()/100.0)).slice(-3) : "-"
+                text: TrafficDataProvider.pressureAltitude.isFinite() ? "FL" + ("000" + Math.round(TrafficDataProvider.pressureAltitude.toFeet()/100.0)).slice(-3) : "-"
                 wrapMode: Text.Wrap
             }
             Item { }
@@ -149,7 +149,7 @@ Page {
             Label {
                 Layout.fillWidth: true
                 text: {
-                    var pAlt = PositionProvider.pressureAltitude
+                    var pAlt = TrafficDataProvider.pressureAltitude
                     if (!pAlt.isFinite())
                         return "-"
                     var qnhpAlt = WeatherDataProvider.QNHPressureAltitude
@@ -159,14 +159,6 @@ Page {
                     var a = pAlt.subtract(qnhpAlt)
                     return Navigator.aircraft.verticalDistanceToString(a)
                 }
-                wrapMode: Text.Wrap
-            }
-            Item { }
-
-            Label { text: qsTr("Density Altitude") }
-            Label {
-                Layout.fillWidth: true
-                text: Sensors.densityAltitude.isFinite() ? Navigator.aircraft.verticalDistanceToString(Sensors.densityAltitude) : "-"
                 wrapMode: Text.Wrap
             }
             Item { }

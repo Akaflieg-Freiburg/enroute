@@ -86,16 +86,18 @@ QString Platform::PlatformAdaptor_Abstract::systemInfo()
     result += u"<tr><td>%1<td><td>%2<td></tr>\n"_s.arg("Locale", language());
     result += u"</table><br>\n"_s;
 
-    QString const updateCheckTimeStamp
-        = QSettings().value(QStringLiteral("DataManager/MapListTimeStamp")).toString();
+    QString const updateCheckTimeStamp = QSettings()
+        .value(QStringLiteral("DataManager/MapListTimeStamp"))
+        .toDateTime()
+        .toString("dd-MM-yyyy hh:mm:ss t");
     result += u"<h3>Data</h3>\n"_s;
     result += u"<table>\n"_s;
     result += u"<tr></tr>\n"_s;
     result += u"<tr><td>%1<td><td>%2<td></tr>\n"_s.arg("Last Map Update Check", updateCheckTimeStamp);
-    auto lastNOTAMUpdate = notamProvider()->lastUpdate();
-    if (lastNOTAMUpdate.isValid())
+    auto lastNotamUpdate = notamProvider()->lastUpdate();
+    if (lastNotamUpdate.isValid())
     {
-        result += u"<tr><td>%1<td><td>%2<td></tr>\n"_s.arg("Last NOTAM download", notamProvider()->lastUpdate().toString());
+        result += u"<tr><td>%1<td><td>%2<td></tr>\n"_s.arg("Last NOTAM download", lastNotamUpdate.toString("dd-MM-yyyy hh:mm:ss t"));
     }
     else
     {

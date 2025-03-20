@@ -67,7 +67,10 @@ Rectangle {
             Layout.bottomMargin: 0.2*dummyControl.font.pixelSize
         }
 
-        Item { Layout.preferredWidth: 1 }
+        Item {
+            Layout.preferredWidth: 1
+            Layout.minimumWidth: dummyControl.font.pixelSize * 4
+        }
         Item {
             Layout.fillWidth: true
             visible: baseRect.tcVisible

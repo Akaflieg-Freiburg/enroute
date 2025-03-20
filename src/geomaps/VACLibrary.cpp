@@ -192,7 +192,7 @@ QString GeoMaps::VACLibrary::importVAC(const QString& fileName, const QString& n
     // Copy file to VAC directory
     QDir const dir;
     dir.mkpath(m_vacDirectory);
-    QString const newFileName = m_vacDirectory + "/" + vac.name + ".webp";
+    QString const newFileName = absolutePathForVac(vac);
     QFile::remove(newFileName);
     if (_fileName.endsWith(u".webp"_s))
     {
@@ -252,7 +252,7 @@ QString GeoMaps::VACLibrary::rename(const QString& oldName, const QString& newNa
     }
 
     // Rename raster image file
-    auto newFileName = m_vacDirectory+"/"+newName+".webp";
+    auto newFileName = absolutePathForVac(vac);
     if (!QFile::rename(vac.fileName, newFileName))
     {
         return tr("VAC file renaming failed.");
@@ -344,7 +344,17 @@ void GeoMaps::VACLibrary::janitor()
         }
         else
         {
-            vacsWithoutImageFile.append(vac);
+            auto newFileName = absolutePathForVac(vac);
+            if (QFile::exists(newFileName))
+            {
+                //Root Directory changed, we have to update the path
+                m_vacs.removeAll(vac);
+                vac.fileName = newFileName;
+                m_vacs.append(vac);
+                imageFilesWithVAC.append(QFileInfo(vac.fileName));
+            } else {
+                vacsWithoutImageFile.append(vac);
+            }
         }
     }
 
@@ -394,4 +404,8 @@ void GeoMaps::VACLibrary::save()
         dataStream << m_vacs;
     }
     m_dataFile.close();
+}
+
+QString GeoMaps::VACLibrary::absolutePathForVac(GeoMaps::VAC vac) {
+    return m_vacDirectory + "/" + vac.name + ".webp";
 }

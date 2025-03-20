@@ -190,6 +190,8 @@ private:
 
     // This method saves m_vacs to m_dataFile.
     void save();
+    
+    QString absolutePathForVac(GeoMaps::VAC);
 
     QVector<GeoMaps::VAC> m_vacs;
     QString m_vacDirectory {QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/VAC"};

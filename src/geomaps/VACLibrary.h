@@ -191,6 +191,9 @@ private:
     // This method saves m_vacs to m_dataFile.
     void save();
     
+    
+    // This method returns the absolute path of a given VAC
+    // Needed for iOS after App Update. See GeoMaps::VACLibrary::janitor
     QString absolutePathForVac(GeoMaps::VAC);
 
     QVector<GeoMaps::VAC> m_vacs;

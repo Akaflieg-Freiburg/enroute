@@ -347,7 +347,9 @@ void GeoMaps::VACLibrary::janitor()
             auto newFileName = absolutePathForVac(vac);
             if (QFile::exists(newFileName))
             {
-                //Root Directory changed, we have to update the path
+                // This mechanism is necessary after an app update on iOS devices.
+                // After an update, the path of the app container is changed, and therefore the location of the vac files
+                // => we have to set the path to the current location
                 m_vacs.removeAll(vac);
                 vac.fileName = newFileName;
                 m_vacs.append(vac);

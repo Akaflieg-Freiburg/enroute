@@ -186,6 +186,10 @@ void Traffic::ConnectionScanner_Bluetooth::updateConnectionInfos()
     auto deviceInfos = m_discoveryAgent.discoveredDevices();
     foreach (auto deviceInfo, deviceInfos)
     {
+        if (deviceInfo.name().isEmpty())
+        {
+            continue;
+        }
         result += ConnectionInfo(deviceInfo);
     }
 

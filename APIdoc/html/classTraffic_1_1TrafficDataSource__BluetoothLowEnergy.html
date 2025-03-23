@@ -67,7 +67,7 @@ $(function(){ initResizable(false); });
 </div><!--header-->
 <div class="contents">
 
-<p>Traffic receiver: Bluetooth LE connection to FLARM/NMEA source.  
+<p>Traffic receiver: Bluetooth LE connection to a FLARM/NMEA source via the "Nordic UART Service".  
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="TrafficDataSource__BluetoothLowEnergy_8h_source.html">TrafficDataSource_BluetoothLowEnergy.h</a>&gt;</code></p>
@@ -106,6 +106,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a41e276e5815087bf6570bb591f1c03cb" id="r_a41e276e5815087bf6570bb591f1c03cb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a41e276e5815087bf6570bb591f1c03cb">TrafficDataSource_BluetoothLowEnergy</a> (bool isCanonical, const QBluetoothDeviceInfo &amp;info, QObject *parent)</td></tr>
 <tr class="memdesc:a41e276e5815087bf6570bb591f1c03cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
 <tr class="separator:a41e276e5815087bf6570bb591f1c03cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefbd248424e9d68144025b7118797ed9" id="r_aefbd248424e9d68144025b7118797ed9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTraffic_1_1ConnectionInfo.html">Traffic::ConnectionInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aefbd248424e9d68144025b7118797ed9">connectionInfo</a> () const override</td></tr>
+<tr class="memdesc:aefbd248424e9d68144025b7118797ed9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
+<tr class="separator:aefbd248424e9d68144025b7118797ed9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ac7f53ce2f349f22d4e52d62d7b802f" id="r_a7ac7f53ce2f349f22d4e52d62d7b802f"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7ac7f53ce2f349f22d4e52d62d7b802f">dataFormat</a> () const override</td></tr>
+<tr class="memdesc:a7ac7f53ce2f349f22d4e52d62d7b802f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
+<tr class="separator:a7ac7f53ce2f349f22d4e52d62d7b802f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a407987ef3211562f1ff5343ba4690ba0" id="r_a407987ef3211562f1ff5343ba4690ba0"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a407987ef3211562f1ff5343ba4690ba0">icon</a> () const override</td></tr>
 <tr class="memdesc:a407987ef3211562f1ff5343ba4690ba0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
 <tr class="separator:a407987ef3211562f1ff5343ba4690ba0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -126,15 +132,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0c0b7de2782d5bb64dbdac690ed0a4fd inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract" id="r_a0c0b7de2782d5bb64dbdac690ed0a4fd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a0c0b7de2782d5bb64dbdac690ed0a4fd">canonical</a> () const</td></tr>
 <tr class="memdesc:a0c0b7de2782d5bb64dbdac690ed0a4fd inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
 <tr class="separator:a0c0b7de2782d5bb64dbdac690ed0a4fd inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a49ff830aa2f9c946aae844521b517dfb inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract" id="r_a49ff830aa2f9c946aae844521b517dfb"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classTraffic_1_1ConnectionInfo.html">Traffic::ConnectionInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a49ff830aa2f9c946aae844521b517dfb">connectionInfo</a> () const</td></tr>
-<tr class="memdesc:a49ff830aa2f9c946aae844521b517dfb inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
-<tr class="separator:a49ff830aa2f9c946aae844521b517dfb inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3eb47fb6ebab35c8931547027d1eadf2 inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract" id="r_a3eb47fb6ebab35c8931547027d1eadf2"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a3eb47fb6ebab35c8931547027d1eadf2">connectivityStatus</a> () const</td></tr>
 <tr class="memdesc:a3eb47fb6ebab35c8931547027d1eadf2 inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
 <tr class="separator:a3eb47fb6ebab35c8931547027d1eadf2 inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a064eeeaacd5886aa73678ddef8a00c7f inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract" id="r_a064eeeaacd5886aa73678ddef8a00c7f"><td class="memItemLeft" align="right" valign="top">virtual QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a064eeeaacd5886aa73678ddef8a00c7f">dataFormat</a> () const =0</td></tr>
-<tr class="memdesc:a064eeeaacd5886aa73678ddef8a00c7f inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
-<tr class="separator:a064eeeaacd5886aa73678ddef8a00c7f inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae42e5eae8707539f939a7ea7aeec8017 inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract" id="r_ae42e5eae8707539f939a7ea7aeec8017"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#ae42e5eae8707539f939a7ea7aeec8017">errorString</a> () const</td></tr>
 <tr class="memdesc:ae42e5eae8707539f939a7ea7aeec8017 inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the property with the same name.  <br /></td></tr>
 <tr class="separator:ae42e5eae8707539f939a7ea7aeec8017 inherit pub_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -272,10 +272,20 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>trafficReceiverSelfTe
 <tr class="separator:a8361236d0d61cbb169b348ca726ba404 inherit pro_methods_classTraffic_1_1TrafficDataSource__Abstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Traffic receiver: Bluetooth LE connection to FLARM/NMEA source. </p>
-<p>This class connects to a traffic receiver via a Bluetooth LE serial port service. </p>
+<div class="textblock"><p>Traffic receiver: Bluetooth LE connection to a FLARM/NMEA source via the "Nordic UART Service". </p>
+<p>This class connects to a traffic receiver via Bluetooth LE via the "Nordic
+UART Service" (NUS). This is a custom service developed by Nordic Semiconductor for Bluetooth Low Energy (BLE) devices. It acts as a bridge between BLE and UART (Universal Asynchronous Receiver/Transmitter) interfaces and allows for bidirectional communication between devices using a simple serial protocol over BLE.</p>
+<p>Details are described here: <a href="https://docs.ruuvi.com/communication/bluetooth-connection/nordic-uart-service-nus">https://docs.ruuvi.com/communication/bluetooth-connection/nordic-uart-service-nus</a></p>
+<p>At the time of writing (early Mar 25), the implementation is not well-tested. The connection procedure is rather complicated.</p>
+<ul>
+<li>Someone calls <a class="el" href="#a85c9d70073812506c4370f3ee7f1902c" title="Start attempt to connect to traffic receiver.">connectToTrafficReceiver()</a>. The implementation calls m_control-&gt;connectToDevice().</li>
+<li>Once a connection is established, signal/slots ensure that m_control-&gt;discoverServices() is called.</li>
+<li>Once all services are found, the slot onDiscoveryFinished() is called. The implementation checks if the device offers the "Nordic UART Service" (NUS). If so, we need to find the service details. To start the search, the implementation calls m_NUSService-&gt;discoverDetails().</li>
+<li>Once the service details are found, the slot onServiceStateChanged() is called with argument QLowEnergyService::RemoteServiceDiscovered. The implementation checks if the service offers the "TX" characteristic. If so, it switched notifications on.</li>
+<li>Data will now flow in via the slot onCharacteristcChanged() </li>
+</ul>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__BluetoothLowEnergy_8h_source.html#l00042">42</a> of file <a class="el" href="TrafficDataSource__BluetoothLowEnergy_8h_source.html">TrafficDataSource_BluetoothLowEnergy.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__BluetoothLowEnergy_8h_source.html#l00072">72</a> of file <a class="el" href="TrafficDataSource__BluetoothLowEnergy_8h_source.html">TrafficDataSource_BluetoothLowEnergy.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a41e276e5815087bf6570bb591f1c03cb" name="a41e276e5815087bf6570bb591f1c03cb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a41e276e5815087bf6570bb591f1c03cb">&#9670;&#160;</a></span>TrafficDataSource_BluetoothLowEnergy()</h2>
@@ -305,7 +315,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>trafficReceiverSelfTe
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">isCanonical</td><td>Intializer for property canonical</td></tr>
-    <tr><td class="paramname">info</td><td>Description of a Bluetooth LE device offering serial port service.</td></tr>
+    <tr><td class="paramname">info</td><td>Description of a Bluetooth LE device</td></tr>
     <tr><td class="paramname">parent</td><td>The standard QObject parent pointer </td></tr>
   </table>
   </dd>
@@ -314,6 +324,38 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>trafficReceiverSelfTe
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="aefbd248424e9d68144025b7118797ed9" name="aefbd248424e9d68144025b7118797ed9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aefbd248424e9d68144025b7118797ed9">&#9670;&#160;</a></span>connectionInfo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classTraffic_1_1ConnectionInfo.html">Traffic::ConnectionInfo</a> Traffic::TrafficDataSource_BluetoothLowEnergy::connectionInfo </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter function for the property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property connectionInfo </dd></dl>
+
+<p>Reimplemented from <a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a49ff830aa2f9c946aae844521b517dfb">Traffic::TrafficDataSource_Abstract</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__BluetoothLowEnergy_8h_source.html#l00111">111</a> of file <a class="el" href="TrafficDataSource__BluetoothLowEnergy_8h_source.html">TrafficDataSource_BluetoothLowEnergy.h</a>.</p>
+
+</div>
+</div>
 <a id="a85c9d70073812506c4370f3ee7f1902c" name="a85c9d70073812506c4370f3ee7f1902c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a85c9d70073812506c4370f3ee7f1902c">&#9670;&#160;</a></span>connectToTrafficReceiver</h2>
 
@@ -339,6 +381,38 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>trafficReceiverSelfTe
 
 <p>Start attempt to connect to traffic receiver. </p>
 <p>This method implements the pure virtual method declared by its superclass. </p>
+
+</div>
+</div>
+<a id="a7ac7f53ce2f349f22d4e52d62d7b802f" name="a7ac7f53ce2f349f22d4e52d62d7b802f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ac7f53ce2f349f22d4e52d62d7b802f">&#9670;&#160;</a></span>dataFormat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QString Traffic::TrafficDataSource_BluetoothLowEnergy::dataFormat </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter function for the property with the same name. </p>
+<dl class="section return"><dt>Returns</dt><dd>Property dataFormat </dd></dl>
+
+<p>Implements <a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#a064eeeaacd5886aa73678ddef8a00c7f">Traffic::TrafficDataSource_Abstract</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__BluetoothLowEnergy_8h_source.html#l00120">120</a> of file <a class="el" href="TrafficDataSource__BluetoothLowEnergy_8h_source.html">TrafficDataSource_BluetoothLowEnergy.h</a>.</p>
 
 </div>
 </div>
@@ -399,7 +473,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>trafficReceiverSelfTe
 
 <p>Implements <a class="el" href="classTraffic_1_1TrafficDataSource__Abstract.html#aacc1922346405a538496b212b6d05a16">Traffic::TrafficDataSource_Abstract</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__BluetoothLowEnergy_8h_source.html#l00085">85</a> of file <a class="el" href="TrafficDataSource__BluetoothLowEnergy_8h_source.html">TrafficDataSource_BluetoothLowEnergy.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__BluetoothLowEnergy_8h_source.html#l00129">129</a> of file <a class="el" href="TrafficDataSource__BluetoothLowEnergy_8h_source.html">TrafficDataSource_BluetoothLowEnergy.h</a>.</p>
 
 </div>
 </div>
@@ -429,7 +503,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>trafficReceiverSelfTe
 <p>Getter function for the property with the same name. </p>
 <dl class="section return"><dt>Returns</dt><dd>Property sourceInfo </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__BluetoothLowEnergy_8h_source.html#l00101">101</a> of file <a class="el" href="TrafficDataSource__BluetoothLowEnergy_8h_source.html">TrafficDataSource_BluetoothLowEnergy.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__BluetoothLowEnergy_8h_source.html#l00144">144</a> of file <a class="el" href="TrafficDataSource__BluetoothLowEnergy_8h_source.html">TrafficDataSource_BluetoothLowEnergy.h</a>.</p>
 
 </div>
 </div>
@@ -488,7 +562,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>trafficReceiverSelfTe
 <p>Source info. </p>
 <p>Device info, as set in the constructor of this class. </p>
 
-<p class="definition">Definition at line <a class="el" href="TrafficDataSource__BluetoothLowEnergy_8h_source.html#l00070">70</a> of file <a class="el" href="TrafficDataSource__BluetoothLowEnergy_8h_source.html">TrafficDataSource_BluetoothLowEnergy.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrafficDataSource__BluetoothLowEnergy_8h_source.html#l00099">99</a> of file <a class="el" href="TrafficDataSource__BluetoothLowEnergy_8h_source.html">TrafficDataSource_BluetoothLowEnergy.h</a>.</p>
 
 </div>
 </div>

@@ -305,14 +305,12 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
                        "We thank the swiss Federal Office of Topography and the Federal Office of Civil Aviation for making the maps publicly available. "
                        "Use these maps for information only. The <a href='https://www.geo.admin.ch/en/general-terms-of-use-fsdi'>license conditions</a> do not allow operational use.")
                   + "</p>";
+#if !defined(Q_OS_IOS)
         result += "<p>"
                   + tr("<strong>Technology Preview:</strong> Enroute Flight Navigation is now able to connect to traffic data receivers via Bluetooth Low Energy. "
                        "Please try the new feature and send us your feedback!") +
                   + "</p>";
-        /*
-        result += "<p>" + tr("Users with nonstandard hardware can now configure IP adresses for their traffic data receivers. "
-                             "Serial port connections are also supported.") + "</p>";
-        */
+#endif
         result += "<p>"
                   + tr("We need help with promotional graphics for the app stores and with explainer videos. "
                        "If you are a graphic/video artist and would like to help, then please be in touch.")

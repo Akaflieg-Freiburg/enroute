@@ -819,7 +819,7 @@ Item {
 
                 onClicked: {
                     PlatformAdaptor.vibrateBrief()
-                    rasterMenu.popup()
+                    rasterMenu.open()
 
                 }
 

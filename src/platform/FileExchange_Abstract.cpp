@@ -221,11 +221,6 @@ void Platform::FileExchange_Abstract::processText(const QString& text)
     }
 
 #if __has_include (<QtWebView/QtWebView>)
-    if (text.contains(u"maps.app.goo.gl"_s))
-    {
-        emit resolveURL(text, QUrl(text).host());
-        return;
-    }
     if (text.contains(u"share.here.com"_s))
     {
         emit resolveURL(text, QUrl(text).host());

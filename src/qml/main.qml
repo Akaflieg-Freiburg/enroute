@@ -763,12 +763,7 @@ AppWindow {
 
     DropArea {
         anchors.fill: stackView
-        onDropped: (drop) => {
-                       if (!FileExchange.processTextQuiet(drop.text))
-                       {
-                           FileExchange.processFileOpenRequest(drop.text)
-                       }
-        }
+        onDropped: (drop) => FileExchange.processFileOpenRequest(drop.text)
     }
 
     Label {

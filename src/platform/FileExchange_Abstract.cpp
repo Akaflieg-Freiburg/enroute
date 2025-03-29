@@ -63,14 +63,16 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
     /*
      * Check for location MapURLs
      */
-
-    if (FileExchange_Abstract::processTextQuiet(path))
+    FileFormats::MapURL const mapURL(path);
+    if (mapURL.isValid())
     {
+        emit openWaypointRequest(mapURL.waypoint());
         return;
     }
+
+
     auto file = FileFormats::DataFileAbstract::openFileURL(path);
     const QString myPath = file->fileName();
-
 
     /*
      * Get MIME Type
@@ -215,30 +217,11 @@ void Platform::FileExchange_Abstract::processFileOpenRequest(const QString& path
 
 void Platform::FileExchange_Abstract::processText(const QString& text)
 {
-    if (processTextQuiet(text))
-    {
-        return;
-    }
-
-#if __has_include (<QtWebView/QtWebView>)
-    if (text.contains(u"share.here.com"_s))
-    {
-        emit resolveURL(text, QUrl(text).host());
-        return;
-    }
-#endif
-
-    emit unableToProcessText(text);
-}
-
-
-bool Platform::FileExchange_Abstract::processTextQuiet(const QString& text)
-{
     FileFormats::MapURL const mapURL(text);
     if (mapURL.isValid())
     {
         emit openWaypointRequest(mapURL.waypoint());
-        return true;
+        return;
     }
-    return false;
+    emit unableToProcessText(text);
 }

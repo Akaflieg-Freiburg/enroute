@@ -112,23 +112,6 @@ Item {
             Global.dialogLoader.active = true
         }
 
-        function onResolveURL(url, site) {
-            PlatformAdaptor.vibrateBrief()
-            if (GlobalSettings.alwaysOpenExternalWebsites === true) {
-                stackView.push("../pages/URLResolver.qml", {mapURL: url})
-                return
-            }
-            Global.dialogLoader.active = false
-            Global.dialogLoader.setSource("dialogs/PrivacyWarning.qml",
-                                          {
-                                              openExternally: false,
-                                              text: qsTr("You have shared a location with <strong>Enroute Flight Navigation</strong>.")
-                                                    + " " + qsTr("In order to find the relevant geographic coordinate, the website <strong>Google Maps</strong> must briefly be opened in an embedded web browser window."),
-                                              url: url
-                                          })
-            Global.dialogLoader.active = true
-        }
-
         function onUnableToProcessText(txt) {
             Global.dialogLoader.active = false
             Global.dialogLoader.setSource("../dialogs/LongTextDialog.qml", {

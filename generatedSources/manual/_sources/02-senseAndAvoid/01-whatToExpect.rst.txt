@@ -59,26 +59,6 @@ no collision avoidance algorithms.  Color coding of traffic according to
 relevance works best with FLARM devices.
 
 
-Bluetooth Support
-^^^^^^^^^^^^^^^^^
-
-Quite confusingly, Bluetooth is an umbrella term for `two unrelated and
-completely incompatible radio communication protocols
-<https://www.bluetooth.com/learn-about-bluetooth/tech-overview/>`_ that operate
-in the same frequency range.
-
-- Bluetooth Classic, marketed under the names "Bluetooth", "Bluetooth Basic
-  Rate" and "Bluetooth Enhanced Data Rate" is the standard radio protocol
-  powering headphones and in-car entertainment systems.
-- Bluetooth Low Energy, marketed under the names "Bluetooth", "Bluetooth LE" and
-  "Bluetooth Smart" is a slower radio protocol designed for very low power
-  operation and flexible network topologies.
-
-At present, **Enroute Flight Navigation** supports only Bluetooth Classic
-communication. Bluetooth Low Energy may be supported in the future if there is
-sufficient demand from the user community.
-
-
 Platform Support
 ^^^^^^^^^^^^^^^^
 

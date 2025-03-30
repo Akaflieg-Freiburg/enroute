@@ -47,6 +47,16 @@ class TrafficDataSource_OgnParser {
     friend class TrafficDataSource_OgnTest;
 public:
     static OgnMessage parseAprsisMessage(const QString& message);
+
+    // New static helper functions for formatting
+    static QString formatPositionReport(const QString& callSign, const QGeoCoordinate& coordinate, double course, double speed, double altitude);
+    static QString formatLatitude(double latitude);
+    static QString formatLongitude(double longitude);
+
+    // New helper functions for decoding
+    static double decodeLatitude(const QStringView& nmeaLatitude, QChar latitudeDirection);
+    static double decodeLongitude(const QStringView& nmeaLongitude, QChar longitudeDirection);
+
 private:
     static OgnMessage parseTrafficReport(const QStringView& header, const QStringView& body);
     static OgnMessage parseCommentMessage(const QString& message);
@@ -59,6 +69,7 @@ enum class OgnMessageType
     TRAFFIC_REPORT,
     COMMENT,
     STATUS,
+    WEATHER,
 };
 Q_ENUM_NS(OgnMessageType);
 
@@ -72,29 +83,50 @@ enum class OgnAddressType
 };
 Q_ENUM_NS(OgnAddressType);
 
+enum class OgnSymbol
+{ 
+    UNKNOWN,
+    GLIDER,
+    HELICOPTER,
+    PARACHUTE,
+    AIRCRAFT,
+    JET,
+    BALLOON,
+    STATIC_OBJECT,
+    UAV,
+    WEATHERSTATION,
+};
+Q_ENUM_NS(OgnSymbol);
+
 struct OgnMessage
 {
     QString sentence;
-    OgnMessageType type;
+    OgnMessageType type = OgnMessageType::UNKNOWN;
 
     QStringView sourceId;
     QStringView timestamp;
     QGeoCoordinate coordinate;
-    double latitude = {};
-    double longitude = {};
+    OgnSymbol symbol = OgnSymbol::UNKNOWN;
+
     QStringView course;
     QStringView speed;
-    double altitude = {}; // in m
     QStringView aircraftID;
     QStringView verticalSpeed;
     QStringView rotationRate;
     QStringView signalStrength;
     QStringView errorCount;
     QStringView frequencyOffset;
-    Traffic::AircraftType aircraftType = {};
-    QString addressType;
+    Traffic::AircraftType aircraftType = Traffic::AircraftType::unknown;
+    OgnAddressType addressType = OgnAddressType::UNKNOWN;
     uint32_t address = {};
     bool stealthMode = false;
     bool noTrackingFlag = false;
+
+    uint32_t wind_direction = {};
+    uint32_t wind_speed = {};
+    uint32_t wind_gust_speed = {};
+    uint32_t temperature = {};
+    uint32_t humidity = {};
+    double pressure = {};
 };
 }

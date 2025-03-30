@@ -18,6 +18,7 @@ private slots:
     void testParseAprsisMessage_receiverStatusMessage();
     void testParseAprsisMessage_Docu();
     void testParseAprsisMessage_ReceivedDataFile();
+    void testParseAprsisMessage_weatherReport();
 };
 
 void TrafficDataSource_OgnTest::testParseAprsisMessage_ReceivedDataFile() {
@@ -39,7 +40,6 @@ void TrafficDataSource_OgnTest::testParseAprsisMessage_ReceivedDataFile() {
 }
 
 void TrafficDataSource_OgnTest::testParseAprsisMessage_Docu() {
-    QSKIP("This test is disabled because there are still some issues");
     QString sentences = 
         "FLRDDE626>APRS,qAS,EGHL:/074548h5111.32N/00102.04W'086/007/A=000607 id0ADDE626 -019fpm +0.0rot 5.5dB 3e -4.3kHz \n"
         "LFNW>APRS,TCPIP*,qAC,GLIDERN5:/183804h4254.53NI00203.90E&/A=001000\n"
@@ -63,11 +63,11 @@ void TrafficDataSource_OgnTest::testParseAprsisMessage_validTrafficReport1() {
 
     QCOMPARE(message.sentence, sentence);
     QCOMPARE(message.type, OgnMessageType::TRAFFIC_REPORT);
-    QCOMPARE(message.latitude, +51.1886666667);
-    QCOMPARE(message.longitude, -1.034);
+    QCOMPARE(message.coordinate.latitude(), +51.1886666667);
+    QCOMPARE(message.coordinate.longitude(), -1.034);
+    QCOMPARE(message.coordinate.altitude(), 185.0136);
     QCOMPARE(message.course, "086");
     QCOMPARE(message.speed, "007");
-    QCOMPARE(message.altitude, 185.0136);
     QCOMPARE(message.aircraftID, "0ADDE626");
     QCOMPARE(message.verticalSpeed, "-019fpm");
     QCOMPARE(message.rotationRate, "+0.0rot");
@@ -75,24 +75,24 @@ void TrafficDataSource_OgnTest::testParseAprsisMessage_validTrafficReport1() {
     QCOMPARE(message.errorCount, "3e");
     QCOMPARE(message.frequencyOffset, "-4.3kHz");
     QCOMPARE(message.aircraftType, Traffic::AircraftType::TowPlane);
-    QCOMPARE(message.addressType, "FLARM");
+    QCOMPARE(message.addressType, OgnAddressType::FLARM);
     QCOMPARE(message.address, 0xDDE626);
     QCOMPARE(message.stealthMode, false);
     QCOMPARE(message.noTrackingFlag, false);
 }
 
 void TrafficDataSource_OgnTest::testParseAprsisMessage_validTrafficReport2() {
-    QSKIP("This test is disabled because there are still some issues");
+    //QSKIP("This test is disabled because there are still some issues");
     QString sentence = "ICA4D21C2>OGADSB,qAS,HLST:/001140h4741.90N/01104.20E^124/460/A=034868 !W91! id254D21C2 +128fpm FL350.00 A3:AXY547M Sq2244";
     OgnMessage message = TrafficDataSource_OgnParser::parseAprsisMessage(sentence);
 
     QCOMPARE(message.sentence, sentence);
     QCOMPARE(message.type, OgnMessageType::TRAFFIC_REPORT);
-    QCOMPARE(message.latitude, +47.6983333333);
-    QCOMPARE(message.longitude, +11.07);
+    QCOMPARE(message.coordinate.latitude(), +47.6983333333);
+    QCOMPARE(message.coordinate.longitude(), +11.07);
+    QCOMPARE(message.coordinate.altitude(), 10627.7664);
     QCOMPARE(message.course, "124");
     QCOMPARE(message.speed, "460");
-    QCOMPARE(message.altitude, 10627.7664);
     QCOMPARE(message.aircraftID, "254D21C2");
     QCOMPARE(message.verticalSpeed, "+128fpm");
     QCOMPARE(message.rotationRate, "");
@@ -100,7 +100,7 @@ void TrafficDataSource_OgnTest::testParseAprsisMessage_validTrafficReport2() {
     QCOMPARE(message.errorCount, "");
     QCOMPARE(message.frequencyOffset, "");
     QCOMPARE(message.aircraftType, Traffic::AircraftType::Jet);
-    QCOMPARE(message.addressType, "ICAO");
+    QCOMPARE(message.addressType, OgnAddressType::ICAO);
     QCOMPARE(message.address, 0x4D21C2);
     QCOMPARE(message.stealthMode, false);
     QCOMPARE(message.noTrackingFlag, false);
@@ -112,11 +112,11 @@ void TrafficDataSource_OgnTest::testParseAprsisMessage_invalidMessage() {
 
     QCOMPARE(message.sentence, sentence);
     QCOMPARE(message.type, OgnMessageType::UNKNOWN);
-    QCOMPARE(message.latitude, 0.0);
-    QCOMPARE(message.longitude, 0.0);
+    QVERIFY(qIsNaN(message.coordinate.latitude()));
+    QVERIFY(qIsNaN(message.coordinate.longitude()));
+    QVERIFY(qIsNaN(message.coordinate.altitude()));
     QCOMPARE(message.course, "");
     QCOMPARE(message.speed, "");
-    QCOMPARE(message.altitude, 0.0);
     QCOMPARE(message.aircraftID, "");
     QCOMPARE(message.verticalSpeed, "");
     QCOMPARE(message.rotationRate, "");
@@ -124,7 +124,7 @@ void TrafficDataSource_OgnTest::testParseAprsisMessage_invalidMessage() {
     QCOMPARE(message.errorCount, "");
     QCOMPARE(message.frequencyOffset, "");
     QCOMPARE(message.aircraftType, Traffic::AircraftType::unknown);
-    QCOMPARE(message.addressType, "");
+    QCOMPARE(message.addressType, OgnAddressType::UNKNOWN);
     QCOMPARE(message.address, 0);
     QCOMPARE(message.stealthMode, false);
     QCOMPARE(message.noTrackingFlag, false);
@@ -136,11 +136,11 @@ void TrafficDataSource_OgnTest::testParseAprsisMessage_commentMessage() {
 
     QCOMPARE(message.sentence, sentence);
     QCOMPARE(message.type, OgnMessageType::COMMENT);
-    QCOMPARE(message.latitude, 0.0);
-    QCOMPARE(message.longitude, 0.0);
+    QVERIFY(qIsNaN(message.coordinate.latitude()));
+    QVERIFY(qIsNaN(message.coordinate.longitude()));
+    QVERIFY(qIsNaN(message.coordinate.altitude()));
     QCOMPARE(message.course, "");
     QCOMPARE(message.speed, "");
-    QCOMPARE(message.altitude, 0.0);
     QCOMPARE(message.aircraftID, "");
     QCOMPARE(message.verticalSpeed, "");
     QCOMPARE(message.rotationRate, "");
@@ -148,7 +148,7 @@ void TrafficDataSource_OgnTest::testParseAprsisMessage_commentMessage() {
     QCOMPARE(message.errorCount, "");
     QCOMPARE(message.frequencyOffset, "");
     QCOMPARE(message.aircraftType, Traffic::AircraftType::unknown);
-    QCOMPARE(message.addressType, "");
+    QCOMPARE(message.addressType, OgnAddressType::UNKNOWN);
     QCOMPARE(message.address, 0);
     QCOMPARE(message.stealthMode, false);
     QCOMPARE(message.noTrackingFlag, false);
@@ -160,11 +160,11 @@ void TrafficDataSource_OgnTest::testParseAprsisMessage_receiverStatusMessage() {
 
     QCOMPARE(message.sentence, sentence);
     QCOMPARE(message.type, OgnMessageType::STATUS);
-    QCOMPARE(message.latitude, 0.0);
-    QCOMPARE(message.longitude, 0.0);
+    QVERIFY(qIsNaN(message.coordinate.latitude()));
+    QVERIFY(qIsNaN(message.coordinate.longitude()));
+    QVERIFY(qIsNaN(message.coordinate.altitude()));
     QCOMPARE(message.course, "");
     QCOMPARE(message.speed, "");
-    QCOMPARE(message.altitude, 0.0);
     QCOMPARE(message.aircraftID, "");
     QCOMPARE(message.verticalSpeed, "");
     QCOMPARE(message.rotationRate, "");
@@ -172,7 +172,38 @@ void TrafficDataSource_OgnTest::testParseAprsisMessage_receiverStatusMessage() {
     QCOMPARE(message.errorCount, "");
     QCOMPARE(message.frequencyOffset, "");
     QCOMPARE(message.aircraftType, Traffic::AircraftType::unknown);
-    QCOMPARE(message.addressType, "");
+    QCOMPARE(message.addressType, OgnAddressType::UNKNOWN);
+    QCOMPARE(message.address, 0);
+    QCOMPARE(message.stealthMode, false);
+    QCOMPARE(message.noTrackingFlag, false);
+}
+
+void TrafficDataSource_OgnTest::testParseAprsisMessage_weatherReport() {
+    QString sentence = "FNT08075C>OGNFNT,qAS,Hoernle2:/222245h4803.92N/00800.93E_292/005g010t030h00b65526 5.2dB";
+    OgnMessage message = TrafficDataSource_OgnParser::parseAprsisMessage(sentence);
+
+    QCOMPARE(message.sentence, sentence);
+    QCOMPARE(message.type, OgnMessageType::WEATHER);
+    QCOMPARE(message.coordinate.latitude(), 48.0653333333);
+    QCOMPARE(message.coordinate.longitude(), 8.0155);
+    QCOMPARE(message.wind_direction, 292);
+    QCOMPARE(message.wind_speed, 5);
+    QCOMPARE(message.wind_gust_speed, 10);
+    QCOMPARE(message.temperature, 30);
+    QCOMPARE(message.humidity, 0);
+    QCOMPARE(message.pressure, 6552.6);
+
+    QCOMPARE(message.course, "");
+    QCOMPARE(message.speed, "");
+    QVERIFY(qIsNaN(message.coordinate.altitude()));
+    QCOMPARE(message.aircraftID, "");
+    QCOMPARE(message.verticalSpeed, "");
+    QCOMPARE(message.rotationRate, "");
+    QCOMPARE(message.signalStrength, "5.2dB");
+    QCOMPARE(message.errorCount, "");
+    QCOMPARE(message.frequencyOffset, "");
+    QCOMPARE(message.aircraftType, Traffic::AircraftType::unknown);
+    QCOMPARE(message.addressType, OgnAddressType::UNKNOWN);
     QCOMPARE(message.address, 0);
     QCOMPARE(message.stealthMode, false);
     QCOMPARE(message.noTrackingFlag, false);

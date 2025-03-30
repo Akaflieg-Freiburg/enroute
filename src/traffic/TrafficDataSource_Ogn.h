@@ -138,6 +138,7 @@ public slots:
      */
     void connectToTrafficReceiver() override;
 
+
     /*! \brief Disconnect from traffic receiver
      *
      *  This method implements the pure virtual method declared by its
@@ -145,7 +146,25 @@ public slots:
      */
     void disconnectFromTrafficReceiver() override;
 
+    /*! \brief Send position report to APRS-IS server
+     *
+     *  This method sends a position report with the given parameters to the APRS-IS server.
+     *
+     *  @param coordinate The geographic coordinate (latitude, longitude, altitude).
+     *  @param course The course in degrees.
+     *  @param speed The speed in knots.
+     *  @param altitude The altitude in meters.
+     */
+    void sendPosition(const QGeoCoordinate& coordinate, double course, double speed, double altitude);
+
 private slots:
+    /*! \brief Called when the socket successfully connects to the server
+     *
+     *  This function handles post-connection tasks such as sending the login string
+     *  and an initial position report.
+     */
+    void onConnected();
+
     // Read lines from the socket's text stream and passes the string on to
     // processAprsisMessage.
     void onReadyRead();

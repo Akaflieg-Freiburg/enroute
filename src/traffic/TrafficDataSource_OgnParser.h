@@ -118,7 +118,7 @@ struct OgnMessage
     QStringView frequencyOffset;
     Traffic::AircraftType aircraftType = Traffic::AircraftType::unknown;
     OgnAddressType addressType = OgnAddressType::UNKNOWN;
-    uint32_t address = {};
+    QStringView address;
     bool stealthMode = false;
     bool noTrackingFlag = false;
 

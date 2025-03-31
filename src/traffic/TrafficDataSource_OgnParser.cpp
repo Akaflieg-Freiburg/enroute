@@ -250,7 +250,7 @@ OgnMessage TrafficDataSource_OgnParser::parseTrafficReport(const QStringView& he
             uint32_t addressTypeValue = (hexcode >> 24) & 0x3;
             ognMessage.addressType = static_cast<OgnAddressType>(addressTypeValue);
 
-            ognMessage.address = hexcode & 0x00FFFFFF;
+            ognMessage.address = QStringView(ognMessage.aircraftID.cbegin()+2, 6);
         }
     }
 
@@ -259,7 +259,7 @@ OgnMessage TrafficDataSource_OgnParser::parseTrafficReport(const QStringView& he
              << " verticalspeed:" << ognMessage.verticalSpeed << " rotationrate:" << ognMessage.rotationRate
              << " signalstrength:" << ognMessage.signalStrength << " errorCount:" << ognMessage.errorCount
              << " frequencyOffset:" << ognMessage.frequencyOffset << " aircraftType:" << ognMessage.aircraftType 
-             << " addressType:" << ognMessage.addressType << " address:" << QString::number(ognMessage.address,16) 
+             << " addressType:" << ognMessage.addressType << " address:" << ognMessage.address 
              << " stealthMode:" << ognMessage.stealthMode << " NoTrackingFlag:" << ognMessage.noTrackingFlag
              << " sourceId:" << ognMessage.sourceId;
 

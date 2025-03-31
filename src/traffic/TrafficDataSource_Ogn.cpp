@@ -32,6 +32,7 @@
 #include "TrafficFactor_WithPosition.h"
 #include "TrafficFactorAircraftType.h"
 #include "positioning/PositionInfo.h"
+#include "traffic/FlarmnetDB.h"
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -200,6 +201,11 @@ void Traffic::TrafficDataSource_Ogn::onReadyRead()
         {
             case Traffic::Ogn::OgnMessageType::TRAFFIC_REPORT:
             {
+                if (ognMessage.aircraftType == Traffic::AircraftType::unknown || 
+                    ognMessage.aircraftType == Traffic::AircraftType::StaticObstacle) {
+                    qDebug() << "Not an Aircraft.";
+                    return;
+                }
                 if (!ognMessage.coordinate.isValid()) {
                     qDebug() << "Invalid coordinate for traffic report:" << sentence;
                     return;
@@ -224,9 +230,15 @@ void Traffic::TrafficDataSource_Ogn::onReadyRead()
                     qDebug() << "hDist:" << hDist.toM() << "vDist:" << vDist.toM();
                 }
 
+                // decode FlarmId
+                QString callsign;
+                if(ognMessage.addressType == Traffic::Ogn::OgnAddressType::FLARM) {
+                    callsign = GlobalObject::flarmnetDB()->getRegistration(QString(ognMessage.address));
+                }
+
                 // Prepare the m_factor object
                 m_factor.setAlarmLevel(0);
-                m_factor.setCallSign(ognMessage.sourceId.toString());
+                m_factor.setCallSign(callsign);
                 m_factor.setID(ognMessage.sourceId.toString());
                 m_factor.setType(ognMessage.aircraftType);
                 m_factor.setPositionInfo(Positioning::PositionInfo(pInfo, sourceName()));

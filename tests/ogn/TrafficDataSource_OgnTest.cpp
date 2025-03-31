@@ -76,7 +76,7 @@ void TrafficDataSource_OgnTest::testParseAprsisMessage_validTrafficReport1() {
     QCOMPARE(message.frequencyOffset, "-4.3kHz");
     QCOMPARE(message.aircraftType, Traffic::AircraftType::TowPlane);
     QCOMPARE(message.addressType, OgnAddressType::FLARM);
-    QCOMPARE(message.address, 0xDDE626);
+    QCOMPARE(message.address, "DDE626");
     QCOMPARE(message.stealthMode, false);
     QCOMPARE(message.noTrackingFlag, false);
 }
@@ -101,7 +101,7 @@ void TrafficDataSource_OgnTest::testParseAprsisMessage_validTrafficReport2() {
     QCOMPARE(message.frequencyOffset, "");
     QCOMPARE(message.aircraftType, Traffic::AircraftType::Jet);
     QCOMPARE(message.addressType, OgnAddressType::ICAO);
-    QCOMPARE(message.address, 0x4D21C2);
+    QCOMPARE(message.address, "4D21C2");
     QCOMPARE(message.stealthMode, false);
     QCOMPARE(message.noTrackingFlag, false);
 }
@@ -125,7 +125,7 @@ void TrafficDataSource_OgnTest::testParseAprsisMessage_invalidMessage() {
     QCOMPARE(message.frequencyOffset, "");
     QCOMPARE(message.aircraftType, Traffic::AircraftType::unknown);
     QCOMPARE(message.addressType, OgnAddressType::UNKNOWN);
-    QCOMPARE(message.address, 0);
+    QCOMPARE(message.address, "");
     QCOMPARE(message.stealthMode, false);
     QCOMPARE(message.noTrackingFlag, false);
 }
@@ -149,7 +149,7 @@ void TrafficDataSource_OgnTest::testParseAprsisMessage_commentMessage() {
     QCOMPARE(message.frequencyOffset, "");
     QCOMPARE(message.aircraftType, Traffic::AircraftType::unknown);
     QCOMPARE(message.addressType, OgnAddressType::UNKNOWN);
-    QCOMPARE(message.address, 0);
+    QCOMPARE(message.address, "");
     QCOMPARE(message.stealthMode, false);
     QCOMPARE(message.noTrackingFlag, false);
 }
@@ -173,7 +173,7 @@ void TrafficDataSource_OgnTest::testParseAprsisMessage_receiverStatusMessage() {
     QCOMPARE(message.frequencyOffset, "");
     QCOMPARE(message.aircraftType, Traffic::AircraftType::unknown);
     QCOMPARE(message.addressType, OgnAddressType::UNKNOWN);
-    QCOMPARE(message.address, 0);
+    QCOMPARE(message.address, "");
     QCOMPARE(message.stealthMode, false);
     QCOMPARE(message.noTrackingFlag, false);
 }
@@ -204,7 +204,7 @@ void TrafficDataSource_OgnTest::testParseAprsisMessage_weatherReport() {
     QCOMPARE(message.frequencyOffset, "");
     QCOMPARE(message.aircraftType, Traffic::AircraftType::unknown);
     QCOMPARE(message.addressType, OgnAddressType::UNKNOWN);
-    QCOMPARE(message.address, 0);
+    QCOMPARE(message.address, "");
     QCOMPARE(message.stealthMode, false);
     QCOMPARE(message.noTrackingFlag, false);
 }

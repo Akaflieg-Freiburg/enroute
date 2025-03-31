@@ -23,6 +23,9 @@
 #include <QMap>
 #include <QRegularExpression>
 #include <QCoreApplication>
+#include <QProcessEnvironment>
+#include <QUrl>
+#include <QNetworkProxy>
 #include "GlobalObject.h"
 #include "positioning/PositionProvider.h"
 #include "TrafficDataSource_OgnParser.h"
@@ -91,6 +94,23 @@ void Traffic::TrafficDataSource_Ogn::connectToTrafficReceiver()
         return;
     }
 
+    // set Proxy
+    #if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    QString proxyUrl = env.value("HTTP_PROXY");
+    if (!proxyUrl.isEmpty()) {
+        QUrl url(proxyUrl);
+        QNetworkProxy proxy;
+        proxy.setType(QNetworkProxy::HttpProxy);
+        proxy.setHostName(url.host());
+        proxy.setPort(url.port(8080)); // Default to port 8080 if not specified
+        proxy.setUser(url.userName());
+        proxy.setPassword(url.password());
+        // Apply the proxy to the socket
+        m_socket.setProxy(proxy);
+    }
+    #endif
+    
     // Start new connection
     m_socket.abort();
     setErrorString();

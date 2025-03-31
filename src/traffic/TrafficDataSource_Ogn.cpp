@@ -22,6 +22,7 @@
 #include <QRandomGenerator>
 #include <QMap>
 #include <QRegularExpression>
+#include <QCoreApplication>
 #include "GlobalObject.h"
 #include "positioning/PositionProvider.h"
 #include "TrafficDataSource_OgnParser.h"
@@ -69,21 +70,15 @@ void Traffic::TrafficDataSource_Ogn::onConnected()
     // Send login string
     sendLoginString();
 
-    #if 0
+    #if SEND_OWN_POSITION
     // Send an initial position report
-    auto* positionProviderPtr = GlobalObject::positionProvider();
-    if (positionProviderPtr) {
-        Positioning::PositionInfo positionInfo = positionProviderPtr->positionInfo();
-        if (positionInfo.coordinate().isValid()) {
-            sendPosition(positionInfo.coordinate(),
-                         positionInfo.trueTrack().toDEG(),
-                         positionInfo.groundSpeed().toKN(),
-                         positionInfo.coordinate().altitude());
-        } else {
-            qDebug() << "Position is invalid, skipping initial position report.";
-        }
+    if (getOwnShipCoordinate(/*useLastValidPosition*/false).coordinate().isValid()) {
+        sendPosition(positionInfo.coordinate(),
+                     positionInfo.trueTrack().toDEG(),
+                     positionInfo.groundSpeed().toKN(),
+                     positionInfo.coordinate().altitude());
     } else {
-        qDebug() << "Position provider is null, skipping initial position report.";
+        qDebug() << "Position is invalid, skipping initial position report.";
     }
     #endif
 }
@@ -133,24 +128,42 @@ void Traffic::TrafficDataSource_Ogn::sendLoginString()
     QString passcode = calculatePassword(m_callSign);
 
     // prepare the filter
-    QString filter;
     //filter = "r/47.9/12.3/100"; // radius filter with coordiates and radius 100 km
     //filter = "t/o"  // receive only object messages
     //filter = "m/10" // receive devices within 10km from the position I am going to report for myself
-    filter = "r/47.9/12.3/100 t/o";
+    QString filter;
+    QGeoCoordinate coordinate = getOwnShipCoordinate(/*useLastValidPosition*/true);
+    if (coordinate.isValid()) {
+        filter = QString("r/%1/%2/100").arg(coordinate.latitude(), 0, 'f', 4).arg(coordinate.longitude(), 0, 'f', 4);
+    } else {
+        filter = "r/47.9/12.3/100";
+    }
 
     // Login string
     QString loginString = QString("user %1 pass %2 vers %3 %4 filter %5\n")
-                              .arg(m_callSign)          // Use stored call sign
-                              .arg(passcode)            // Calculated passcode
-                              .arg("enroute")           // Software name
-                              .arg("1.0")               // Software version
-                              .arg(filter);             // Filter string
+                              .arg(m_callSign)           // Use stored call sign
+                              .arg(passcode)             // Calculated passcode
+                              .arg("enroute")            // Software name
+                              .arg(QCoreApplication::applicationVersion()) // Software version
+                              .arg(filter);              // Filter string
 
     m_textStream << loginString;
     m_textStream.flush();
 
     qDebug() << "Sent login string:" << loginString;
+}
+
+QGeoCoordinate Traffic::TrafficDataSource_Ogn::getOwnShipCoordinate(bool useLastValidPosition) const
+{
+    QGeoCoordinate ownShipCoordinate;
+    auto* positionProviderPtr = GlobalObject::positionProvider();
+    if (positionProviderPtr) {
+        ownShipCoordinate = positionProviderPtr->positionInfo().coordinate();
+        if (!ownShipCoordinate.isValid() && useLastValidPosition) {
+            ownShipCoordinate = positionProviderPtr->lastValidCoordinate();
+        }
+    }
+    return ownShipCoordinate;
 }
 
 void Traffic::TrafficDataSource_Ogn::onReadyRead()
@@ -181,17 +194,8 @@ void Traffic::TrafficDataSource_Ogn::onReadyRead()
                     return;
                 }
 
-                // Get own ship coordinate
-                QGeoCoordinate ownShipCoordinate;
-                auto* positionProviderPtr = GlobalObject::positionProvider();
-                if (positionProviderPtr) {
-                    ownShipCoordinate = positionProviderPtr->positionInfo().coordinate();
-                    if (!ownShipCoordinate.isValid()) {
-                        ownShipCoordinate = positionProviderPtr->lastValidCoordinate();
-                    }
-                }
-
                 // Compute horizontal and vertical distance to traffic if our own position is known.
+                QGeoCoordinate ownShipCoordinate = getOwnShipCoordinate(/*useLastValidPosition*/true);
                 Units::Distance hDist {};
                 Units::Distance vDist {};
                 if (ownShipCoordinate.isValid()) {

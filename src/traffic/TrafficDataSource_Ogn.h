@@ -197,6 +197,10 @@ private:
 
     // Calculate the APRS-IS password based on the call sign
     QString calculatePassword(const QString& callSign) const;
+
+    // Get own coordinates. 
+    // @param useLastValidPosition If true, use the last valid position if the current position is invalid.
+    QGeoCoordinate getOwnShipCoordinate(bool useLastValidPosition) const;
 };
 
 } // namespace Traffic

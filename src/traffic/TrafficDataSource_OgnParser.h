@@ -119,6 +119,7 @@ struct OgnMessage
     QStringView squawk;
     QStringView flightlevel;
     QStringView flightnumber; // Flight number, e.g., "DLH2AV" or "SRR6119"
+    QStringView gpsInfo;
     Traffic::AircraftType aircraftType = Traffic::AircraftType::unknown;
     OgnAddressType addressType = OgnAddressType::UNKNOWN;
     QStringView address;

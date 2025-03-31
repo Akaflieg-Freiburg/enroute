@@ -141,13 +141,17 @@ OgnMessage TrafficDataSource_OgnParser::parseTrafficReport(const QStringView& he
     if (blankIndex == -1) {
         aprsPart = body;
     }
-    else{
+    else {
         aprsPart = QStringView(body.constData(), blankIndex); // APRS Part before the first blank
         ognPart = QStringView(body.constData() + blankIndex + 1, body.size() - blankIndex - 1); // OGN Part after the first blank
     }
 
     // Parse aprsPart
     // Example: "/074548h5111.32N/00102.04W'086/007/A=000607"
+    QStringView latstring1 = {};
+    QChar latstring2 = {};
+    QStringView lonstring1 = {};
+    QChar lonstring2 = {};
     QRegularExpression regex(R"(^[/\\](\d{6})h(\d{4}\.\d{2})([NS])([/\\I])(\d{5}\.\d{2})([EW])(.)(\d{3})[/\\](\d{3})[/\\]A=(\d{6})$)");
     QRegularExpressionMatch match = regex.match(aprsPart.toString());
     if (match.hasMatch()) {
@@ -158,9 +162,13 @@ OgnMessage TrafficDataSource_OgnParser::parseTrafficReport(const QStringView& he
         ognMessage.speed = match.capturedView(9);     // Speed
         auto altitude = Units::Distance::fromFT(match.capturedView(10).toDouble()).toM();  // Altitude in m
         ognMessage.coordinate.setAltitude(altitude);
-        auto latitude = decodeLatitude(match.capturedView(2), match.capturedView(3).at(0));
+        latstring1 = match.capturedView(2);
+        latstring2 = match.capturedView(3).at(0);
+        auto latitude = decodeLatitude(latstring1, latstring2);
         ognMessage.coordinate.setLatitude(latitude);
-        auto longitude = decodeLongitude(match.capturedView(5), match.capturedView(6).at(0));
+        lonstring1 = match.capturedView(5);
+        lonstring2 = match.capturedView(6).at(0);
+        auto longitude = decodeLongitude(lonstring1, lonstring2);
         ognMessage.coordinate.setLongitude(longitude);
     }
     else {
@@ -172,9 +180,13 @@ OgnMessage TrafficDataSource_OgnParser::parseTrafficReport(const QStringView& he
             QChar symbolselection = match.capturedView(7).at(0); // Symbol
             auto altitude = Units::Distance::fromFT(match.capturedView(8).toDouble()).toM();  // Altitude in m
             ognMessage.coordinate.setAltitude(altitude);
-            auto latitude = decodeLatitude(match.capturedView(2), match.capturedView(3).at(0));
+            latstring1 = match.capturedView(2);
+            latstring2 = match.capturedView(3).at(0);
+            auto latitude = decodeLatitude(latstring1, latstring2);
             ognMessage.coordinate.setLatitude(latitude);
-            auto longitude = decodeLongitude(match.capturedView(5), match.capturedView(6).at(0));
+            lonstring1 = match.capturedView(5);
+            lonstring2 = match.capturedView(6).at(0);
+            auto longitude = decodeLongitude(lonstring1, lonstring2);
             ognMessage.coordinate.setLongitude(longitude);
         }
         else{
@@ -214,6 +226,15 @@ OgnMessage TrafficDataSource_OgnParser::parseTrafficReport(const QStringView& he
 
             if (item.startsWith(u"id")) {
                 ognMessage.aircraftID = item.mid(2); // Remove "id" prefix
+            } else if (item.startsWith(u"!W") && item.endsWith(u"!") && item.length() >= 5) {
+                if(!latstring1.isEmpty() && !lonstring1.isEmpty()) {
+                    QString lastring1 = QString(latstring1) + item[2];
+                    QString lostring1 = QString(lonstring1) + item[3]; 
+                    ognMessage.coordinate.setLatitude(decodeLatitude(lastring1, latstring2));
+                    ognMessage.coordinate.setLongitude(decodeLongitude(lostring1, lonstring2));
+                }
+            } else if (item.startsWith(u"gps")) {
+                ognMessage.gpsInfo = item;
             } else if (item.endsWith(u"fpm")) {
                 ognMessage.verticalSpeed = item;
             } else if (item.endsWith(u"rot")) {
@@ -225,10 +246,10 @@ OgnMessage TrafficDataSource_OgnParser::parseTrafficReport(const QStringView& he
             } else if (item.endsWith(u"kHz")) {
                 ognMessage.frequencyOffset = item;
             } else if (item.startsWith(u"Sq")) {
-                ognMessage.squawk = item.mid(2);
+                ognMessage.squawk = item;
             } else if (item.startsWith(u"FL")) {
-                ognMessage.flightlevel = item.mid(2);
-            } else if (item.startsWith(u"A") && item[2]==u':' ) {
+                ognMessage.flightlevel = item;
+            } else if (item.startsWith(u"A") && item[2] == u':') {
                 ognMessage.flightnumber = item.mid(item.indexOf(u':') + 1); // Extract flight number after "A3:" or "A5:"
             } else {
                 qDebug() << "Unrecognized item in ognPart:" << item;

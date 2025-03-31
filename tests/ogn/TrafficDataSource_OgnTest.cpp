@@ -13,6 +13,7 @@ class TrafficDataSource_OgnTest : public QObject {
 private slots:
     void testParseAprsisMessage_validTrafficReport1();
     void testParseAprsisMessage_validTrafficReport2();
+    void testParseAprsisMessage_validTrafficReport3();
     void testParseAprsisMessage_invalidMessage();
     void testParseAprsisMessage_commentMessage();
     void testParseAprsisMessage_receiverStatusMessage();
@@ -88,11 +89,38 @@ void TrafficDataSource_OgnTest::testParseAprsisMessage_validTrafficReport2() {
 
     QCOMPARE(message.sentence, sentence);
     QCOMPARE(message.type, OgnMessageType::TRAFFIC_REPORT);
-    QCOMPARE(message.coordinate.latitude(), +47.6983333333);
-    QCOMPARE(message.coordinate.longitude(), +11.07);
+    QCOMPARE(message.coordinate.latitude(), +47.6984833333);
+    QCOMPARE_GE(message.coordinate.longitude(), +11.0700166667-0.0001);
+    QCOMPARE_LE(message.coordinate.longitude(), +11.0700166667+0.0001);
     QCOMPARE(message.coordinate.altitude(), 10627.7664);
     QCOMPARE(message.course, "124");
     QCOMPARE(message.speed, "460");
+    QCOMPARE(message.aircraftID, "254D21C2");
+    QCOMPARE(message.verticalSpeed, "+128fpm");
+    QCOMPARE(message.rotationRate, "");
+    QCOMPARE(message.signalStrength, "");
+    QCOMPARE(message.errorCount, "");
+    QCOMPARE(message.frequencyOffset, "");
+    QCOMPARE(message.aircraftType, Traffic::AircraftType::Jet);
+    QCOMPARE(message.addressType, OgnAddressType::ICAO);
+    QCOMPARE(message.address, "4D21C2");
+    QCOMPARE(message.stealthMode, false);
+    QCOMPARE(message.noTrackingFlag, false);
+}
+
+void TrafficDataSource_OgnTest::testParseAprsisMessage_validTrafficReport3() {
+    //QSKIP("This test is disabled because there are still some issues");
+    QString sentence = "ICA4D21C2>OGADSB,qAS,HLST:/001140h4741.90N/01104.20E^/A=034868 !W91! id254D21C2 +128fpm FL350.00 A3:AXY547M Sq2244";
+    OgnMessage message = TrafficDataSource_OgnParser::parseAprsisMessage(sentence);
+
+    QCOMPARE(message.sentence, sentence);
+    QCOMPARE(message.type, OgnMessageType::TRAFFIC_REPORT);
+    QCOMPARE(message.coordinate.latitude(), +47.6984833333);
+    QCOMPARE_GE(message.coordinate.longitude(), +11.0700166667-0.0001);
+    QCOMPARE_LE(message.coordinate.longitude(), +11.0700166667+0.0001);
+    QCOMPARE(message.coordinate.altitude(), 10627.7664);
+    QCOMPARE(message.course, "");
+    QCOMPARE(message.speed, "");
     QCOMPARE(message.aircraftID, "254D21C2");
     QCOMPARE(message.verticalSpeed, "+128fpm");
     QCOMPARE(message.rotationRate, "");

@@ -224,6 +224,12 @@ OgnMessage TrafficDataSource_OgnParser::parseTrafficReport(const QStringView& he
                 ognMessage.errorCount = item;
             } else if (item.endsWith(u"kHz")) {
                 ognMessage.frequencyOffset = item;
+            } else if (item.startsWith(u"Sq")) {
+                ognMessage.squawk = item.mid(2);
+            } else if (item.startsWith(u"FL")) {
+                ognMessage.flightlevel = item.mid(2);
+            } else if (item.startsWith(u"A") && item[2]==u':' ) {
+                ognMessage.flightnumber = item.mid(item.indexOf(u':') + 1); // Extract flight number after "A3:" or "A5:"
             } else {
                 qDebug() << "Unrecognized item in ognPart:" << item;
             }

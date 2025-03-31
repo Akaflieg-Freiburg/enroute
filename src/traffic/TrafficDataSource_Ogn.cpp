@@ -202,8 +202,9 @@ void Traffic::TrafficDataSource_Ogn::onReadyRead()
         {
             case Traffic::Ogn::OgnMessageType::TRAFFIC_REPORT:
             {
-                if (ognMessage.aircraftType == Traffic::AircraftType::unknown || 
-                    ognMessage.aircraftType == Traffic::AircraftType::StaticObstacle) {
+                if ((ognMessage.aircraftType == Traffic::AircraftType::unknown || 
+                     ognMessage.aircraftType == Traffic::AircraftType::StaticObstacle)
+                   && ognMessage.speed == 0) {
                     qDebug() << "Not an Aircraft.";
                     return;
                 }
@@ -231,10 +232,12 @@ void Traffic::TrafficDataSource_Ogn::onReadyRead()
                     qDebug() << "hDist:" << hDist.toM() << "vDist:" << vDist.toM();
                 }
 
-                // decode FlarmId
+                // Decode callsign
                 QString callsign;
-                if(ognMessage.addressType == Traffic::Ogn::OgnAddressType::FLARM) {
+                if (ognMessage.addressType == Traffic::Ogn::OgnAddressType::FLARM) {
                     callsign = GlobalObject::flarmnetDB()->getRegistration(QString(ognMessage.address));
+                } else {
+                    callsign = QString(ognMessage.flightnumber);
                 }
 
                 // Compute Alarm Level 0-3
@@ -246,7 +249,7 @@ void Traffic::TrafficDataSource_Ogn::onReadyRead()
                 } else if(hDist.toM() < 5000 && vDist.toFeet() < 800) {
                     alarmLevel = 1; // Low alert
                 }
-
+                
                 // Prepare the m_factor object
                 m_factor.setAlarmLevel(alarmLevel);
                 m_factor.setCallSign(callsign);

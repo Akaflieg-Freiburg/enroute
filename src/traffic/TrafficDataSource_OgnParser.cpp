@@ -281,6 +281,7 @@ OgnMessage TrafficDataSource_OgnParser::parseTrafficReport(const QStringView& he
         }
     }
 
+    #if 0
     qDebug() << "Parsed Traffic Report: " << ognMessage.coordinate.latitude() << " " << ognMessage.coordinate.longitude() << " course:" << ognMessage.course
              << "° speed:" << ognMessage.speed << " altitude:" << ognMessage.coordinate.altitude() 
              << " verticalspeed:" << ognMessage.verticalSpeed << " rotationrate:" << ognMessage.rotationRate
@@ -289,6 +290,7 @@ OgnMessage TrafficDataSource_OgnParser::parseTrafficReport(const QStringView& he
              << " addressType:" << ognMessage.addressType << " address:" << ognMessage.address 
              << " stealthMode:" << ognMessage.stealthMode << " NoTrackingFlag:" << ognMessage.noTrackingFlag
              << " sourceId:" << ognMessage.sourceId;
+    #endif
 
     return ognMessage;
 }

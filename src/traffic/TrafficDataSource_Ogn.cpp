@@ -34,6 +34,7 @@
 #include "TrafficFactorAircraftType.h"
 #include "positioning/PositionInfo.h"
 #include "traffic/FlarmnetDB.h"
+#include "TransponderDB.h"
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -190,6 +191,8 @@ QGeoCoordinate Traffic::TrafficDataSource_Ogn::getOwnShipCoordinate(bool useLast
 
 void Traffic::TrafficDataSource_Ogn::onReadyRead()
 {
+    static TransponderDB transponderDB; // Initialize the database
+
     QString sentence;
     while (m_textStream.readLineInto(&sentence)) {
         // notify that we are receiving data
@@ -236,6 +239,10 @@ void Traffic::TrafficDataSource_Ogn::onReadyRead()
                 QString callsign;
                 if (ognMessage.addressType == Traffic::Ogn::OgnAddressType::FLARM) {
                     callsign = GlobalObject::flarmnetDB()->getRegistration(QString(ognMessage.address));
+                } else if (ognMessage.addressType == Traffic::Ogn::OgnAddressType::ICAO) {
+                    callsign = transponderDB.getRegistration(QString(ognMessage.address));
+                    if(!callsign.isEmpty())
+                        qDebug() << "ICAO Callsign:" << ognMessage.address << callsign;
                 } else {
                     callsign = QString(ognMessage.flightnumber);
                 }

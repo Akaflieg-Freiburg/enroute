@@ -26,6 +26,7 @@
 #include <QProcessEnvironment>
 #include <QUrl>
 #include <QNetworkProxy>
+#include <QtMath>
 #include "GlobalObject.h"
 #include "positioning/PositionProvider.h"
 #include "TrafficDataSource_OgnParser.h"
@@ -226,7 +227,7 @@ void Traffic::TrafficDataSource_Ogn::onReadyRead()
                 Units::Distance vDist {};
                 if (ownShipCoordinate.isValid()) {
                     hDist = Units::Distance::fromM( ownShipCoordinate.distanceTo(ognMessage.coordinate) / 10.0 );  // TODO REMOVE /10
-                    vDist = Units::Distance::fromM( ognMessage.coordinate.altitude() - ownShipCoordinate.altitude() );
+                    vDist = Units::Distance::fromM( qFabs( ognMessage.coordinate.altitude() - ownShipCoordinate.altitude() ) );
                     qDebug() << "hDist:" << hDist.toM() << "vDist:" << vDist.toM();
                 }
 
@@ -236,8 +237,18 @@ void Traffic::TrafficDataSource_Ogn::onReadyRead()
                     callsign = GlobalObject::flarmnetDB()->getRegistration(QString(ognMessage.address));
                 }
 
+                // Compute Alarm Level 0-3
+                int alarmLevel = 0;
+                if(hDist.toM() < 1000 && vDist.toFeet() < 400) {
+                    alarmLevel = 3; // High alert
+                } else if(hDist.toM() < 2000 && vDist.toFeet() < 600) {
+                    alarmLevel = 2; // Medium alert
+                } else if(hDist.toM() < 5000 && vDist.toFeet() < 800) {
+                    alarmLevel = 1; // Low alert
+                }
+
                 // Prepare the m_factor object
-                m_factor.setAlarmLevel(0);
+                m_factor.setAlarmLevel(alarmLevel);
                 m_factor.setCallSign(callsign);
                 m_factor.setID(ognMessage.sourceId.toString());
                 m_factor.setType(ognMessage.aircraftType);

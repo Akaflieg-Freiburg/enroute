@@ -236,7 +236,7 @@ OgnMessage TrafficDataSource_OgnParser::parseTrafficReport(const QStringView& he
             } else if (item.startsWith(u"gps")) {
                 ognMessage.gpsInfo = item;
             } else if (item.endsWith(u"fpm")) {
-                ognMessage.verticalSpeed = item;
+                ognMessage.verticalSpeed = Units::Speed::fromFPM(item.mid(0, item.indexOf(u'f')).toDouble()).toMPS();
             } else if (item.endsWith(u"rot")) {
                 ognMessage.rotationRate = item;
             } else if (item.endsWith(u"dB")) {

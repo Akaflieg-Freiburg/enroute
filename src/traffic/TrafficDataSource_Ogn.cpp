@@ -216,15 +216,6 @@ void Traffic::TrafficDataSource_Ogn::onReadyRead()
                     return;
                 }
 
-                QGeoPositionInfo pInfo(ognMessage.coordinate, QDateTime::currentDateTimeUtc());
-                pInfo.setAttribute(QGeoPositionInfo::Direction, ognMessage.course.toDouble());
-                pInfo.setAttribute(QGeoPositionInfo::GroundSpeed, ognMessage.speed.toDouble());
-                pInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, ognMessage.verticalSpeed.toDouble());
-                if (!pInfo.isValid()) {
-                    qDebug() << "Invalid position-info for traffic report:" << sentence;
-                    return;
-                }
-
                 // Compute horizontal and vertical distance to traffic if our own position is known.
                 QGeoCoordinate ownShipCoordinate = getOwnShipCoordinate(/*useLastValidPosition*/true);
                 Units::Distance hDist {};
@@ -255,6 +246,16 @@ void Traffic::TrafficDataSource_Ogn::onReadyRead()
                     alarmLevel = 2; // Medium alert
                 } else if(hDist.toM() < 5000 && vDist.toFeet() < 800) {
                     alarmLevel = 1; // Low alert
+                }
+                
+                // PositionInfo
+                QGeoPositionInfo pInfo(ognMessage.coordinate, QDateTime::currentDateTimeUtc());
+                pInfo.setAttribute(QGeoPositionInfo::Direction, ognMessage.course.toDouble());
+                pInfo.setAttribute(QGeoPositionInfo::GroundSpeed, ognMessage.speed.toDouble());
+                pInfo.setAttribute(QGeoPositionInfo::VerticalSpeed, ognMessage.verticalSpeed);
+                if (!pInfo.isValid()) {
+                    qDebug() << "Invalid position-info for traffic report:" << sentence;
+                    return;
                 }
                 
                 // Prepare the m_factor object

@@ -70,7 +70,7 @@ void TrafficDataSource_OgnTest::testParseAprsisMessage_validTrafficReport1() {
     QCOMPARE(message.course, "086");
     QCOMPARE(message.speed, "007");
     QCOMPARE(message.aircraftID, "0ADDE626");
-    QCOMPARE(message.verticalSpeed, "-019fpm");
+    QCOMPARE(message.verticalSpeed, -0.09652);
     QCOMPARE(message.rotationRate, "+0.0rot");
     QCOMPARE(message.signalStrength, "5.5dB");
     QCOMPARE(message.errorCount, "3e");
@@ -96,7 +96,7 @@ void TrafficDataSource_OgnTest::testParseAprsisMessage_validTrafficReport2() {
     QCOMPARE(message.course, "124");
     QCOMPARE(message.speed, "460");
     QCOMPARE(message.aircraftID, "254D21C2");
-    QCOMPARE(message.verticalSpeed, "+128fpm");
+    QCOMPARE(message.verticalSpeed, +0.65024);
     QCOMPARE(message.rotationRate, "");
     QCOMPARE(message.signalStrength, "");
     QCOMPARE(message.errorCount, "");
@@ -122,7 +122,7 @@ void TrafficDataSource_OgnTest::testParseAprsisMessage_validTrafficReport3() {
     QCOMPARE(message.course, "");
     QCOMPARE(message.speed, "");
     QCOMPARE(message.aircraftID, "254D21C2");
-    QCOMPARE(message.verticalSpeed, "+128fpm");
+    QCOMPARE(message.verticalSpeed, +0.65024);
     QCOMPARE(message.rotationRate, "");
     QCOMPARE(message.signalStrength, "");
     QCOMPARE(message.errorCount, "");
@@ -146,7 +146,7 @@ void TrafficDataSource_OgnTest::testParseAprsisMessage_invalidMessage() {
     QCOMPARE(message.course, "");
     QCOMPARE(message.speed, "");
     QCOMPARE(message.aircraftID, "");
-    QCOMPARE(message.verticalSpeed, "");
+    QCOMPARE(message.verticalSpeed, 0.0);
     QCOMPARE(message.rotationRate, "");
     QCOMPARE(message.signalStrength, "");
     QCOMPARE(message.errorCount, "");
@@ -170,7 +170,7 @@ void TrafficDataSource_OgnTest::testParseAprsisMessage_commentMessage() {
     QCOMPARE(message.course, "");
     QCOMPARE(message.speed, "");
     QCOMPARE(message.aircraftID, "");
-    QCOMPARE(message.verticalSpeed, "");
+    QCOMPARE(message.verticalSpeed, 0.0);
     QCOMPARE(message.rotationRate, "");
     QCOMPARE(message.signalStrength, "");
     QCOMPARE(message.errorCount, "");
@@ -194,7 +194,7 @@ void TrafficDataSource_OgnTest::testParseAprsisMessage_receiverStatusMessage() {
     QCOMPARE(message.course, "");
     QCOMPARE(message.speed, "");
     QCOMPARE(message.aircraftID, "");
-    QCOMPARE(message.verticalSpeed, "");
+    QCOMPARE(message.verticalSpeed, 0.0);
     QCOMPARE(message.rotationRate, "");
     QCOMPARE(message.signalStrength, "");
     QCOMPARE(message.errorCount, "");
@@ -225,7 +225,7 @@ void TrafficDataSource_OgnTest::testParseAprsisMessage_weatherReport() {
     QCOMPARE(message.speed, "");
     QVERIFY(qIsNaN(message.coordinate.altitude()));
     QCOMPARE(message.aircraftID, "");
-    QCOMPARE(message.verticalSpeed, "");
+    QCOMPARE(message.verticalSpeed, 0.0);
     QCOMPARE(message.rotationRate, "");
     QCOMPARE(message.signalStrength, "5.2dB");
     QCOMPARE(message.errorCount, "");

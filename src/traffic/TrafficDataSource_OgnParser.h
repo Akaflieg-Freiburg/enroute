@@ -111,7 +111,7 @@ struct OgnMessage
     QStringView course;
     QStringView speed;
     QStringView aircraftID;
-    QStringView verticalSpeed;
+    double verticalSpeed = {}; // m/s
     QStringView rotationRate;
     QStringView signalStrength;
     QStringView errorCount;
@@ -126,11 +126,11 @@ struct OgnMessage
     bool stealthMode = false;
     bool noTrackingFlag = false;
 
-    uint32_t wind_direction = {};
+    uint32_t wind_direction = {};  // degree 0..359
     uint32_t wind_speed = {};
-    uint32_t wind_gust_speed = {};
-    uint32_t temperature = {};
-    uint32_t humidity = {};
+    uint32_t wind_gust_speed = {}; 
+    uint32_t temperature = {};     // degree C
+    uint32_t humidity = {};        // percent
     double pressure = {};
 };
 }

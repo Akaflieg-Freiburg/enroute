@@ -159,7 +159,7 @@ void Traffic::TrafficDataSource_Ogn::sendLoginString()
     if (coordinate.isValid()) {
         filter = QString("r/%1/%2/100").arg(coordinate.latitude(), 0, 'f', 4).arg(coordinate.longitude(), 0, 'f', 4);
     } else {
-        filter = "r/47.9/12.3/100";
+        filter = "r/47.9/12.3/100 t/o";
     }
 
     // Login string

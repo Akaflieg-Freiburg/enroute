@@ -210,8 +210,9 @@ void Traffic::TrafficDataSource_Ogn::onReadyRead()
                 Units::Distance hDist {};
                 Units::Distance vDist {};
                 if (ownShipCoordinate.isValid()) {
+// TODO REMOVE /10                    
                     hDist = Units::Distance::fromM( ownShipCoordinate.distanceTo(ognMessage.coordinate) / 10.0 );  // TODO REMOVE /10
-                    vDist = Units::Distance::fromM( qFabs( ognMessage.coordinate.altitude() - ownShipCoordinate.altitude() ) );
+                    vDist = Units::Distance::fromM( qFabs( ognMessage.coordinate.altitude() - ownShipCoordinate.altitude() ) / 10.0); // TODO REMOVE /10
                 }
 
                 // Decode callsign
@@ -260,6 +261,18 @@ void Traffic::TrafficDataSource_Ogn::onReadyRead()
             
                 // Emit the factorWithPosition signal
                 emit factorWithPosition(m_factor);
+
+                // simulate movement
+                #define OGN_SIMULATE_MOVEMENT 0
+                #if OGN_SIMULATE_MOVEMENT
+                static double fakeLat = centerLat;
+                static double fakeLon = centerLon;
+                fakeLon -= 0.01;
+                QGeoCoordinate fakecoordinate(fakeLat, fakeLon, 500.0);
+                QGeoPositionInfo fakegInfo(fakecoordinate, QDateTime::currentDateTimeUtc());
+                Positioning::PositionInfo fakepInfo(fakegInfo, sourceName());
+                emit positionUpdated(fakepInfo);
+                #endif
                 break;
             }
             default:
@@ -302,7 +315,7 @@ void Traffic::TrafficDataSource_Ogn::updateReceivePosition(QGeoCoordinate positi
 {
     double distance = position.distanceTo(m_receiveLocation);
     if (distance > 10000) { // More than 10 km
-        qDebug() << "Current position is more than 10 km away from receiver position. Updating receiver position.";
+        qDebug() << "Current position is more than 10 km away from OGN receive position. Updating receive position.";
         m_receiveLocation = position;
         // I found no other way to change the filter than to reconnect.
         // We disconnect and it will automatically reconnect. 

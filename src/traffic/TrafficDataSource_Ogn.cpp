@@ -35,6 +35,7 @@
 #include "positioning/PositionInfo.h"
 #include "traffic/FlarmnetDB.h"
 #include "TransponderDB.h"
+#include <QMetaEnum>
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -149,7 +150,9 @@ void Traffic::TrafficDataSource_Ogn::sendLoginString()
     m_textStream << loginString;
     m_textStream.flush();
 
+    #if OGN_DEBUG
     qDebug() << "Sent login string:" << loginString;
+    #endif
 }
 
 QGeoCoordinate Traffic::TrafficDataSource_Ogn::getOwnShipCoordinate(bool useLastValidPosition) const
@@ -184,11 +187,15 @@ void Traffic::TrafficDataSource_Ogn::onReadyRead()
                 if ((ognMessage.aircraftType == Traffic::AircraftType::unknown || 
                      ognMessage.aircraftType == Traffic::AircraftType::StaticObstacle)
                    && ognMessage.speed == 0) {
+                    #if OGN_DEBUG
                     qDebug() << "Not an Aircraft.";
+                    #endif
                     return;
                 }
                 if (!ognMessage.coordinate.isValid()) {
+                    #if OGN_DEBUG
                     qDebug() << "Invalid coordinate for traffic report:" << sentence;
+                    #endif
                     return;
                 }
 
@@ -204,12 +211,16 @@ void Traffic::TrafficDataSource_Ogn::onReadyRead()
                 // Decode callsign
                 QString callsign;
                 if (ognMessage.addressType == Traffic::Ogn::OgnAddressType::FLARM) {
-                    callsign = GlobalObject::flarmnetDB()->getRegistration(QString(ognMessage.address)) + "(F)";
+                    callsign = GlobalObject::flarmnetDB()->getRegistration(QString(ognMessage.address));
                 } else if (ognMessage.flightnumber.length()) {
-                    callsign = QString(ognMessage.flightnumber) + "(FN)";
+                    callsign = QString(ognMessage.flightnumber);
                 } else if (ognMessage.addressType == Traffic::Ogn::OgnAddressType::ICAO) {
-                    callsign = transponderDB.getRegistration(QString(ognMessage.address)) + "(I)";
+                    callsign = transponderDB.getRegistration(QString(ognMessage.address));
                 }
+                #if OGN_SHOW_ADDRESSTYPE
+                const QMetaEnum metaEnum = QMetaEnum::fromType<Traffic::Ogn::OgnAddressType>();
+                callsign += QString(" (%1)").arg(metaEnum.valueToKey(static_cast<int>(ognMessage.addressType)));
+                #endif
 
                 // Compute Alarm Level 0-3
                 int alarmLevel = 0;

@@ -156,18 +156,14 @@ QString lookupNumeric(uint32_t hexid) {
 
 // Constructor
 TransponderDB::TransponderDB(QObject* parent) : QObject(parent) {
-    loadDatabase();
     initStrideMappings();
     initNumericMappings();
 }
 
 // Get registration
 QString TransponderDB::getRegistration(const QString& address) const {
-    QString registration = m_database.value(address.toUpper(), QString());
-    if (!registration.isEmpty()) {
-        return registration;
-    }
-
+    QString registration;
+    
     bool ok;
     uint32_t hexid = address.toUInt(&ok, 16);
     if (!ok) {
@@ -187,32 +183,6 @@ QString TransponderDB::getRegistration(const QString& address) const {
     }
 
     return QString(); // No match found
-}
-
-// Load database
-void TransponderDB::loadDatabase() {
-    QFile file(":/data/transponder_codes.txt"); // Replace with your data source
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qWarning() << "Failed to load transponder database.";
-        return;
-    }
-
-    QTextStream in(&file);
-    while (!in.atEnd()) {
-        QString line = in.readLine();
-        if (line.isEmpty() || line.startsWith('#')) {
-            continue; // Skip empty lines and comments
-        }
-
-        QStringList parts = line.split(',');
-        if (parts.size() == 2) {
-            QString address = parts[0].trimmed().toUpper();
-            QString registration = parts[1].trimmed();
-            m_database.insert(address, registration);
-        }
-    }
-
-    qDebug() << "Loaded" << m_database.size() << "transponder codes.";
 }
 
 } // namespace Traffic

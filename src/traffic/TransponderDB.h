@@ -33,11 +33,6 @@ public:
     Q_INVOKABLE QString getRegistration(const QString& address) const;
 
 private:
-    QHash<QString, QString> m_database; // Mapping of ICAO addresses to registrations
-
-    /*! \brief Load the database from an embedded resource or file */
-    void loadDatabase();
-
     /*! \brief Decode fallback registration based on ICAO address ranges
      *
      *  @param address The ICAO 24-bit transponder address (hexadecimal string).

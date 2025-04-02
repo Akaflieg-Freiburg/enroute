@@ -41,6 +41,7 @@ struct OgnMessage;
 * 
 * \see http://wiki.glidernet.org/wiki:subscribe-to-ogn-data
 * \see http://wiki.glidernet.org/wiki:ogn-flavoured-aprs
+* \see http://wiki.glidernet.org/aprs-interaction-examples
 * \see https://github.com/svoop/ogn_client-ruby/wiki/SenderBeacon
 */
 class TrafficDataSource_OgnParser {

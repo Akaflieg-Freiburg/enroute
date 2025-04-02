@@ -58,7 +58,7 @@ OgnMessage TrafficDataSource_OgnParser::parseAprsisMessage(const QString& senten
     ognMessage.sentence = sentence;
 
     if (sentence.startsWith(u"#"_s)) {
-        // Comment message
+        // Comment message  
         ognMessage = parseCommentMessage(sentence);
     } else {
         // Split the sentence into header and body at the first colon
@@ -212,7 +212,9 @@ OgnMessage TrafficDataSource_OgnParser::parseTrafficReport(const QStringView hea
                 ognMessage.pressure = match.capturedView(13).toDouble() / 10.0;
             }
             else {
+                #if OGN_DEBUG
                 qDebug() << "Invalid APRS format:" << aprsPart;
+                #endif
                 ognMessage.type = OgnMessageType::UNKNOWN;
                 return ognMessage;
             }
@@ -257,7 +259,9 @@ OgnMessage TrafficDataSource_OgnParser::parseTrafficReport(const QStringView hea
             } else if (item.startsWith(u"A") && item[2] == u':') {
                 ognMessage.flightnumber = item.mid(item.indexOf(u':') + 1); // Extract flight number after "A3:" or "A5:"
             } else {
+                #if OGN_DEBUG
                 qDebug() << "Unrecognized item in ognPart:" << item;
+                #endif
             }
 
             // Move the iterator to the next item

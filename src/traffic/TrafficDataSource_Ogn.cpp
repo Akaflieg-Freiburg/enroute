@@ -35,6 +35,7 @@
 #include "positioning/PositionInfo.h"
 #include "traffic/FlarmnetDB.h"
 #include "TransponderDB.h"
+#include <QTimer>
 #include <QMetaEnum>
 
 using namespace Qt::Literals::StringLiterals;
@@ -61,6 +62,11 @@ Traffic::TrafficDataSource_Ogn::TrafficDataSource_Ogn(bool isCanonical, QString 
 
     // Initialize properties
     onStateChanged(m_socket.state());
+
+    // Set up periodic update timer
+    auto* periodicUpdateTimer = new QTimer(this);
+    connect(periodicUpdateTimer, &QTimer::timeout, this, &Traffic::TrafficDataSource_Ogn::periodicUpdate);
+    periodicUpdateTimer->start(60 * 1000); // 1 minute interval
 }
 
 Traffic::TrafficDataSource_Ogn::~TrafficDataSource_Ogn()
@@ -149,7 +155,7 @@ void Traffic::TrafficDataSource_Ogn::sendLoginString()
 
     m_textStream << loginString;
     m_textStream.flush();
-
+    
     #if OGN_DEBUG
     qDebug() << "Sent login string:" << loginString;
     #endif
@@ -277,4 +283,49 @@ void Traffic::TrafficDataSource_Ogn::sendPosition(const QGeoCoordinate& coordina
     m_textStream.flush();
 
     qDebug() << "Sent position report:" << positionReport;
+}
+
+// called once per minute
+void Traffic::TrafficDataSource_Ogn::periodicUpdate()
+{
+    sendKeepAlive();
+    verifyConnection();
+
+    // update receive position
+    QGeoCoordinate position = getOwnShipCoordinate(/*useLastValidPosition*/true);
+    if (position.isValid()) {
+        updateReceivePosition(position);
+    }
+}
+
+void Traffic::TrafficDataSource_Ogn::updateReceivePosition(QGeoCoordinate position)
+{
+    double distance = position.distanceTo(m_receiveLocation);
+    if (distance > 10000) { // More than 10 km
+        qDebug() << "Current position is more than 10 km away from receiver position. Updating receiver position.";
+        m_receiveLocation = position;
+        // I found no other way to change the filter than to reconnect.
+        // We disconnect and it will automatically reconnect. 
+        disconnectFromTrafficReceiver();
+        connectToTrafficReceiver();
+    }
+}
+
+void Traffic::TrafficDataSource_Ogn::sendKeepAlive()
+{
+    // Send a keep-alive message (newline character as per APRS-IS protocol)
+    m_textStream << "# " << QCoreApplication::organizationName() << QCoreApplication::applicationName() << QCoreApplication::applicationVersion() << "\n";
+    m_textStream.flush();
+    #if OGN_DEBUG
+    qDebug() << "Sent keep-alive message to APRS-IS server.";
+    #endif
+}
+
+void Traffic::TrafficDataSource_Ogn::verifyConnection()
+{
+    if (!m_socket.isOpen() || m_socket.state() != QAbstractSocket::ConnectedState) {
+        qWarning() << "Connection to OGN APRS-IS server lost. Reconnecting...";
+        disconnectFromTrafficReceiver();
+        connectToTrafficReceiver();
+    }
 }

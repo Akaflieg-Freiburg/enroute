@@ -47,20 +47,18 @@ class TrafficDataSource_OgnParser {
     friend class TrafficDataSource_OgnTest;
 public:
     static OgnMessage parseAprsisMessage(const QString& message);
-
-    // New static helper functions for formatting
-    static QString formatPositionReport(const QString& callSign, const QGeoCoordinate& coordinate, double course, double speed, double altitude);
-    static QString formatLatitude(double latitude);
-    static QString formatLongitude(double longitude);
-
-    // New helper functions for decoding
-    static double decodeLatitude(const QStringView& nmeaLatitude, QChar latitudeDirection);
-    static double decodeLongitude(const QStringView& nmeaLongitude, QChar longitudeDirection);
+    static QString formatLoginString(const QStringView callSign, const QGeoCoordinate& receiveLocation, const unsigned int receiveRadius, const QStringView appName, const QStringView appVersion);
+    static QString formatPositionReport(const QStringView callSign, const QGeoCoordinate& coordinate, double course, double speed, double altitude, Traffic::AircraftType aircraftType);
 
 private:
-    static OgnMessage parseTrafficReport(const QStringView& header, const QStringView& body);
-    static OgnMessage parseCommentMessage(const QString& message);
-    static OgnMessage parseStatusMessage(const QStringView& header, const QStringView& body);
+    static QString formatLatitude(double latitude);
+    static QString formatLongitude(double longitude);
+    static QString calculatePassword(const QStringView callSign);
+    static double decodeLatitude(const QStringView nmeaLatitude, QChar latitudeDirection);
+    static double decodeLongitude(const QStringView nmeaLongitude, QChar longitudeDirection);
+    static OgnMessage parseTrafficReport(const QStringView header, const QStringView body);
+    static OgnMessage parseCommentMessage(const QStringView message);
+    static OgnMessage parseStatusMessage(const QStringView header, const QStringView body);
 };
 
 enum class OgnMessageType

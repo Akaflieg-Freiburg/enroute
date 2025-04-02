@@ -76,7 +76,7 @@ void Traffic::TrafficDataSource_Ogn::onConnected()
     // Send login string
     sendLoginString();
 
-    #if SEND_OWN_POSITION
+    #if OGN_SEND_OWN_POSITION
     // Send an initial position report
     if (getOwnShipCoordinate(/*useLastValidPosition*/false).coordinate().isValid()) {
         sendPosition(positionInfo.coordinate(),
@@ -135,40 +135,16 @@ void Traffic::TrafficDataSource_Ogn::disconnectFromTrafficReceiver()
     onStateChanged(m_socket.state());
 }
 
-QString Traffic::TrafficDataSource_Ogn::calculatePassword(const QString& callSign) const
-{
-    // APRS-IS passcode calculation: Sum of ASCII values of the first 6 characters of the call sign
-    int sum = 0;
-    for (int i = 0; i < callSign.length() && i < 6; ++i) {
-        sum += callSign.at(i).unicode();
-    }
-    return QString::number(sum % 10000); // Modulo 10000 to get a 4-digit passcode
-}
-
 void Traffic::TrafficDataSource_Ogn::sendLoginString()
 {
-    // Calculate the password based on the call sign
-    QString passcode = calculatePassword(m_callSign);
-
-    // prepare the filter
-    //filter = "r/47.9/12.3/100"; // radius filter with coordiates and radius 100 km
-    //filter = "t/o"  // receive only object messages
-    //filter = "m/10" // receive devices within 10km from the position I am going to report for myself
-    QString filter;
+    // update own location
     QGeoCoordinate coordinate = getOwnShipCoordinate(/*useLastValidPosition*/true);
     if (coordinate.isValid()) {
-        filter = QString("r/%1/%2/100").arg(coordinate.latitude(), 0, 'f', 4).arg(coordinate.longitude(), 0, 'f', 4);
-    } else {
-        filter = "r/47.9/12.3/100 t/o";
+        m_receiveLocation = coordinate;
     }
 
-    // Login string
-    QString loginString = QString("user %1 pass %2 vers %3 %4 filter %5\n")
-                              .arg(m_callSign)           // Use stored call sign
-                              .arg(passcode)             // Calculated passcode
-                              .arg("enroute")            // Software name
-                              .arg(QCoreApplication::applicationVersion()) // Software version
-                              .arg(filter);              // Filter string
+    QString loginString = Ogn::TrafficDataSource_OgnParser::formatLoginString(
+        m_callSign, m_receiveLocation, m_receiveRadius, u"enroute", QCoreApplication::applicationVersion());
 
     m_textStream << loginString;
     m_textStream.flush();
@@ -223,19 +199,16 @@ void Traffic::TrafficDataSource_Ogn::onReadyRead()
                 if (ownShipCoordinate.isValid()) {
                     hDist = Units::Distance::fromM( ownShipCoordinate.distanceTo(ognMessage.coordinate) / 10.0 );  // TODO REMOVE /10
                     vDist = Units::Distance::fromM( qFabs( ognMessage.coordinate.altitude() - ownShipCoordinate.altitude() ) );
-                    qDebug() << "hDist:" << hDist.toM() << "vDist:" << vDist.toM();
                 }
 
                 // Decode callsign
                 QString callsign;
                 if (ognMessage.addressType == Traffic::Ogn::OgnAddressType::FLARM) {
-                    callsign = GlobalObject::flarmnetDB()->getRegistration(QString(ognMessage.address));
+                    callsign = GlobalObject::flarmnetDB()->getRegistration(QString(ognMessage.address)) + "(F)";
+                } else if (ognMessage.flightnumber.length()) {
+                    callsign = QString(ognMessage.flightnumber) + "(FN)";
                 } else if (ognMessage.addressType == Traffic::Ogn::OgnAddressType::ICAO) {
-                    callsign = transponderDB.getRegistration(QString(ognMessage.address));
-                    if(!callsign.isEmpty())
-                        qDebug() << "ICAO Callsign:" << ognMessage.address << callsign;
-                } else {
-                    callsign = QString(ognMessage.flightnumber);
+                    callsign = transponderDB.getRegistration(QString(ognMessage.address)) + "(I)";
                 }
 
                 // Compute Alarm Level 0-3
@@ -257,7 +230,7 @@ void Traffic::TrafficDataSource_Ogn::onReadyRead()
                     qDebug() << "Invalid position-info for traffic report:" << sentence;
                     return;
                 }
-                
+
                 // Prepare the m_factor object
                 m_factor.setAlarmLevel(alarmLevel);
                 m_factor.setCallSign(callsign);
@@ -286,7 +259,7 @@ void Traffic::TrafficDataSource_Ogn::sendPosition(const QGeoCoordinate& coordina
     }
 
     // Use the OgnParser class to format the position report
-    QString positionReport = Traffic::Ogn::TrafficDataSource_OgnParser::formatPositionReport(m_callSign, coordinate, course, speed, altitude);
+    QString positionReport = Traffic::Ogn::TrafficDataSource_OgnParser::formatPositionReport(m_callSign, coordinate, course, speed, altitude, m_aircraftType);
 
     // Send the position report
     m_textStream << positionReport;

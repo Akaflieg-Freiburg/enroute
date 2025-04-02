@@ -179,6 +179,11 @@ private:
 
     // Member variable to store the call sign
     QString m_callSign;
+    Traffic::AircraftType m_aircraftType = {Traffic::AircraftType::Aircraft};
+
+    // ReceiveSettings
+    QGeoCoordinate m_receiveLocation = {48.0, 7.85, 250};
+    unsigned int m_receiveRadius = {100};
 
     // Parse and process APRS-IS messages
     void processAprsisMessage(const QString& message);
@@ -194,9 +199,6 @@ private:
 
     // Send login string to APRS-IS server
     void sendLoginString();
-
-    // Calculate the APRS-IS password based on the call sign
-    QString calculatePassword(const QString& callSign) const;
 
     // Get own coordinates. 
     // @param useLastValidPosition If true, use the last valid position if the current position is invalid.

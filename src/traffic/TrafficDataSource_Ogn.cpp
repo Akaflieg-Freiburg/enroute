@@ -265,9 +265,16 @@ void Traffic::TrafficDataSource_Ogn::onReadyRead()
                 // simulate movement
                 #define OGN_SIMULATE_MOVEMENT 0
                 #if OGN_SIMULATE_MOVEMENT
+                const double centerLat = 48.353889;
+                const double centerLon = 11.786111;
                 static double fakeLat = centerLat;
                 static double fakeLon = centerLon;
-                fakeLon -= 0.01;
+                static QDateTime lastTimeStamp = QDateTime::currentDateTimeUtc();
+                QDateTime currentTime = QDateTime::currentDateTimeUtc();
+                if (lastTimeStamp.secsTo(currentTime) > 1) {
+                    fakeLat += 0.01;
+                    lastTimeStamp = currentTime;
+                }
                 QGeoCoordinate fakecoordinate(fakeLat, fakeLon, 500.0);
                 QGeoPositionInfo fakegInfo(fakecoordinate, QDateTime::currentDateTimeUtc());
                 Positioning::PositionInfo fakepInfo(fakegInfo, sourceName());
@@ -275,7 +282,15 @@ void Traffic::TrafficDataSource_Ogn::onReadyRead()
                 #endif
                 break;
             }
+            case Traffic::Ogn::OgnMessageType::COMMENT:
+                #if OGN_DEBUG
+                qDebug() << sentence;
+                #endif
+                break;
             default:
+                #if OGN_DEBUG
+                qDebug() << sentence;
+                #endif
                 break;
         }
     }
@@ -319,8 +334,12 @@ void Traffic::TrafficDataSource_Ogn::updateReceivePosition(QGeoCoordinate positi
         m_receiveLocation = position;
         // I found no other way to change the filter than to reconnect.
         // We disconnect and it will automatically reconnect. 
-        disconnectFromTrafficReceiver();
-        connectToTrafficReceiver();
+        //disconnectFromTrafficReceiver();
+        //connectToTrafficReceiver();
+        QString filterCommand = Traffic::Ogn::TrafficDataSource_OgnParser::formatFilterCommand(m_receiveLocation, m_receiveRadius);
+        qDebug() << filterCommand; 
+        m_textStream << filterCommand;
+        m_textStream.flush();    
     }
 }
 

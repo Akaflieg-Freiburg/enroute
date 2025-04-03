@@ -87,7 +87,9 @@ OgnMessage TrafficDataSource_OgnParser::parseAprsisMessage(const QString& senten
             ognMessage = parseStatusMessage(header, body);
         } else {
             ognMessage.type = OgnMessageType::UNKNOWN;
+            #if OGN_DEBUG
             qDebug() << "Unknown message type:" << sentence;
+            #endif
         }
     }
     return ognMessage;
@@ -377,17 +379,24 @@ QString TrafficDataSource_OgnParser::formatLongitude(double longitude)
     return QString("%1%2%3").arg(degrees, 3, 10, QChar('0')).arg(QString::number(minutes, 'f', 2).rightJustified(5, '0')).arg(direction);
 }
 
+QString TrafficDataSource_OgnParser::formatFilterCommand(const QGeoCoordinate& receiveLocation, const unsigned int receiveRadius)
+{
+    return QString("# filter %1\n").arg(formatFilter(receiveLocation, receiveRadius));
+}
+
+QString TrafficDataSource_OgnParser::formatFilter(const QGeoCoordinate& receiveLocation, const unsigned int receiveRadius)
+{
+    return QString("r/%1/%2/%3 t/o")
+        .arg(receiveLocation.latitude(), 1, 'f', 4)
+        .arg(receiveLocation.longitude(), 1, 'f', 4)
+        .arg(receiveRadius);
+}
+
 QString TrafficDataSource_OgnParser::formatLoginString(
     const QStringView callSign, const QGeoCoordinate& receiveLocation, const unsigned int receiveRadius, const QStringView appName, const QStringView appVersion)
 {
-    // Prepare the filter for what data we want to receive. 
-    //  filter = "r/47.9/12.3/100"; // radius filter with coordiates and radius 100 km
-    //  filter = "t/o"  // receive only object messages
-    //  filter = "m/10" // receive devices within 10km from the position I am going to report for myself
-    auto filter = QString("r/%1/%2/%3 t/o")
-                         .arg(receiveLocation.latitude(), 1, 'f', 4)
-                         .arg(receiveLocation.longitude(), 1, 'f', 4)
-                         .arg(receiveRadius);
+    // Prepare the filter for what data we want to receive
+    QString filter = formatFilter(receiveLocation, receiveRadius);
 
     // Calculate the password based on the call sign
     QString passcode = calculatePassword(callSign);

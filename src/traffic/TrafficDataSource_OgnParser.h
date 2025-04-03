@@ -50,8 +50,10 @@ public:
     static OgnMessage parseAprsisMessage(const QString& message);
     static QString formatLoginString(const QStringView callSign, const QGeoCoordinate& receiveLocation, const unsigned int receiveRadius, const QStringView appName, const QStringView appVersion);
     static QString formatPositionReport(const QStringView callSign, const QGeoCoordinate& coordinate, double course, double speed, double altitude, Traffic::AircraftType aircraftType);
+    static QString formatFilterCommand(const QGeoCoordinate& receiveLocation, const unsigned int receiveRadius);
 
 private:
+    static QString formatFilter(const QGeoCoordinate& receiveLocation, const unsigned int receiveRadius);
     static QString formatLatitude(double latitude);
     static QString formatLongitude(double longitude);
     static QString calculatePassword(const QStringView callSign);

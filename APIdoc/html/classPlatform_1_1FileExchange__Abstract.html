@@ -108,9 +108,6 @@ Public Slots</h2></td></tr>
 <tr class="memitem:a6b9fac2ca1c369812a302324d7b92a96" id="r_a6b9fac2ca1c369812a302324d7b92a96"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6b9fac2ca1c369812a302324d7b92a96">processText</a> (const QString &amp;text)</td></tr>
 <tr class="memdesc:a6b9fac2ca1c369812a302324d7b92a96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process text.  <br /></td></tr>
 <tr class="separator:a6b9fac2ca1c369812a302324d7b92a96"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1fd02aef2f50f7233b9e8a053351f471" id="r_a1fd02aef2f50f7233b9e8a053351f471"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1fd02aef2f50f7233b9e8a053351f471">processTextQuiet</a> (const QString &amp;text)</td></tr>
-<tr class="memdesc:a1fd02aef2f50f7233b9e8a053351f471"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process text.  <br /></td></tr>
-<tr class="separator:a1fd02aef2f50f7233b9e8a053351f471"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="signals" name="signals"></a>
 Signals</h2></td></tr>
@@ -501,41 +498,6 @@ Additional Inherited Members</h2></td></tr>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="a1fd02aef2f50f7233b9e8a053351f471" name="a1fd02aef2f50f7233b9e8a053351f471"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1fd02aef2f50f7233b9e8a053351f471">&#9670;&#160;</a></span>processTextQuiet</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Platform::FileExchange_Abstract::processTextQuiet </td>
-          <td>(</td>
-          <td class="paramtype">const QString &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel slot">slot</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Process text. </p>
-<p>This helper function analyses the text and checks if it can be interpreted as containing geographic coordinates. If so, it emits the signal <a class="el" href="#a43fe09eaac43a11140d6104a756fcae6" title="Emitted when platform asks this app to show a waypoint.">openWaypointRequest()</a> and returns true. Otherwise, it returns false.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>Text</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>True if the text can be interpreted as containing geographic coordinates </dd></dl>
 
 </div>
 </div>

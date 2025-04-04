@@ -181,9 +181,9 @@ private:
     QString m_callSign;
     Traffic::AircraftType m_aircraftType = {Traffic::AircraftType::Aircraft};
 
-    // ReceiveSettings
+    // Receive Filter
     QGeoCoordinate m_receiveLocation = {48.0, 7.85, 250};
-    unsigned int m_receiveRadius = {100};
+    unsigned int m_receiveRadius = {50};
 
     // Parse and process APRS-IS messages
     void processAprsisMessage(const QString& message);

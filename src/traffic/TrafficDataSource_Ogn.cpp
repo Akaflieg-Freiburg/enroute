@@ -210,9 +210,8 @@ void Traffic::TrafficDataSource_Ogn::onReadyRead()
                 Units::Distance hDist {};
                 Units::Distance vDist {};
                 if (ownShipCoordinate.isValid()) {
-// TODO REMOVE /10                    
-                    hDist = Units::Distance::fromM( ownShipCoordinate.distanceTo(ognMessage.coordinate) / 10.0 );  // TODO REMOVE /10
-                    vDist = Units::Distance::fromM( qFabs( ognMessage.coordinate.altitude() - ownShipCoordinate.altitude() ) / 10.0); // TODO REMOVE /10
+                    hDist = Units::Distance::fromM(ownShipCoordinate.distanceTo(m_ognMessage.coordinate));
+                    vDist = Units::Distance::fromM(qFabs(m_ognMessage.coordinate.altitude() - ownShipCoordinate.altitude()));
                 }
 
                 // Decode callsign

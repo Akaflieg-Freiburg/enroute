@@ -54,7 +54,8 @@ public:
         TCP,                /*!< TCP Connection */
         UDP,                /*!< UDP Connection */
         Serial,             /*!< Serial Port Connection */
-        FLARMFile           /*!< FLARM Simulator File */
+        FLARMFile,          /*!< FLARM Simulator File */
+        OGN                 /*!< OGN glidernet.org internet connection */
     };
     Q_ENUM(Type)
 
@@ -114,7 +115,8 @@ public:
      */
     explicit ConnectionInfo(const QString& host, quint16 port, bool canonical=false);
 
-
+    struct OgnInfo{};
+    explicit ConnectionInfo(const OgnInfo& info);
 
     //
     // Properties

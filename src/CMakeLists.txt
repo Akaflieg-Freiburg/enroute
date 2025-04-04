@@ -203,11 +203,14 @@ set(SOURCES
     traffic/TrafficDataSource_Simulate.cpp
     traffic/TrafficDataSource_Tcp.cpp
     traffic/TrafficDataSource_Udp.cpp
+    traffic/TrafficDataSource_Ogn.cpp
+    traffic/TrafficDataSource_OgnParser.cpp
     traffic/TrafficDataProvider.cpp
     traffic/TrafficDataProvider_BluetoothClassic.cpp
     traffic/TrafficFactor_Abstract.cpp
     traffic/TrafficFactor_DistanceOnly.cpp
     traffic/TrafficFactor_WithPosition.cpp
+    traffic/TrafficFactorAircraftType.cpp
     traffic/TrafficObserver.cpp
     traffic/Warning.cpp
     units/Angle.cpp

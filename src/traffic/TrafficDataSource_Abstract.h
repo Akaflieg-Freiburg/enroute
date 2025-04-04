@@ -508,7 +508,7 @@ private:
     // Heartbeat timer
     QTimer m_heartbeatTimer;
     bool m_hasHeartbeat {false};
-
+protected:
     // Targets
     Traffic::TrafficFactor_WithPosition m_factor;
     Traffic::TrafficFactor_DistanceOnly m_factorDistanceOnly;

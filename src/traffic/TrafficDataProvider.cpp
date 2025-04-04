@@ -29,6 +29,7 @@
 #endif
 #include "traffic/TrafficDataSource_Tcp.h"
 #include "traffic/TrafficDataSource_Udp.h"
+#include "traffic/TrafficDataSource_Ogn.h"
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -69,6 +70,7 @@ Traffic::TrafficDataProvider::TrafficDataProvider(QObject *parent)
     addDataSource( new Traffic::TrafficDataSource_Tcp(true, QStringLiteral("192.168.42.1"), 2000, this) );
     addDataSource( new Traffic::TrafficDataSource_Udp(true, 4000, this) );
     addDataSource( new Traffic::TrafficDataSource_Udp(true, 49002, this));
+    addDataSource( new Traffic::TrafficDataSource_Ogn(true, "", 0, this));
 
     // Setup Bindings
     m_pressureAltitude.setBinding([this]() {return computePressureAltitude();});
@@ -141,6 +143,8 @@ QString Traffic::TrafficDataProvider::addDataSource(const Traffic::ConnectionInf
         return addDataSource_SerialPort(connectionInfo.name());
     case Traffic::ConnectionInfo::FLARMFile:
         return tr("Unable to add FLARM simulator file connection. This is not implemented at the moment.");
+    case Traffic::ConnectionInfo::OGN:
+        return addDataSource_OGN();
     }
     return {};
 }
@@ -207,6 +211,24 @@ QString Traffic::TrafficDataProvider::addDataSource_TCP(const QString& host, qui
     }
 
     auto* source = new TrafficDataSource_Tcp(false, host, port, this);
+    source->connectToTrafficReceiver();
+    addDataSource(source);
+    return {};
+}
+
+QString Traffic::TrafficDataProvider::addDataSource_OGN()
+{
+    // Ignore new device if data source already exists.
+    foreach(auto _dataSource, m_dataSources.value())
+    {
+        auto* dataSource = qobject_cast<TrafficDataSource_Ogn*>(_dataSource);
+        if (dataSource != nullptr)
+        {
+            return tr("A connection to this device already exists.");
+        }
+    }
+
+    auto* source = new TrafficDataSource_Ogn(false, "", 0, this);
     source->connectToTrafficReceiver();
     addDataSource(source);
     return {};

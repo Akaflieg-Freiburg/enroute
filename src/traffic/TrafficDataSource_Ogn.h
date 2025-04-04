@@ -22,8 +22,8 @@
 
 #include <QPointer>
 #include <QTcpSocket>
-
 #include "traffic/TrafficDataSource_AbstractSocket.h"
+#include "traffic/TrafficDataSource_OgnParser.h"
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -177,8 +177,12 @@ private:
     QString m_hostName;
     quint16 m_port;
 
-    // Member variable to store the call sign
+    Traffic::Ogn::OgnMessage m_ognMessage;
+
+    // our own CallSign
     QString m_callSign;
+
+    // our own AircraftType
     Traffic::AircraftType m_aircraftType = {Traffic::AircraftType::Aircraft};
 
     // Receive Filter

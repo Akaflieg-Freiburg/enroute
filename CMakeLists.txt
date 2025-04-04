@@ -9,6 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 include(ExternalProject)
 option(QTDEPLOY "Generate and run Qt deployment scripts" OFF)
 
+
 #
 # Project data
 #
@@ -128,4 +129,3 @@ add_subdirectory(metadata)
 add_subdirectory(packaging)
 add_subdirectory(src)
 add_subdirectory(tests/ogn)
-add_subdirectory(tests/ogn-network)

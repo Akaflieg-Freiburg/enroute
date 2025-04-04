@@ -1,3 +1,10 @@
+/* 
+* This class implements an algorithm to decode the 24-bit transponder address to a callsign for some countries.
+* It is based on code from dump1090 at 
+* https://github.com/mutability/dump1090/blob/unmaintained/public_html/registrations.js
+* under GPLv2 license. 
+*/
+
 #pragma once
 
 #include <QObject>

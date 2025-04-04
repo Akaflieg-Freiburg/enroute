@@ -1,4 +1,24 @@
-#include "TrafficDataSource_OgnParser.h"
+/***************************************************************************
+ *   Copyright (C) 2021-2025 by Stefan Kebekus                             *
+ *   stefan.kebekus@gmail.com                                              *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 3 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
+ #include "TrafficDataSource_OgnParser.h"
 #include "TrafficFactorAircraftType.h"
 #include "Units.h"
 #include <QRegularExpression>
@@ -8,6 +28,10 @@
 using namespace Qt::Literals::StringLiterals;
 
 namespace Traffic::Ogn {
+
+const QRegularExpression TrafficDataSource_OgnParser::s_regex1(R"(^[/\\](\d{6})h(\d{4}\.\d{2})([NS])([/\\I])(\d{5}\.\d{2})([EW])(.)(\d{3})[/\\](\d{3})[/\\]A=(\d{6})$)");
+const QRegularExpression TrafficDataSource_OgnParser::s_regex2(R"(^[/\\](\d{6})h(\d{4}\.\d{2})([NS])([/\\I])(\d{5}\.\d{2})([EW])(.)[/\\]A=(\d{6})$)");
+const QRegularExpression TrafficDataSource_OgnParser::s_regex_weatherreport(R"(^[/\\](\d{6})h(\d{4}\.\d{2})([NS])([/\\I])(\d{5}\.\d{2})([EW])(_)(\d{3})[/](\d{3})g(\d{3})t(\d{3})h(\d{2})b(\d{5})$)");
 
 // see http://wiki.glidernet.org/wiki:ogn-flavoured-aprs
 static const QMap<QString, Traffic::AircraftType> AircraftTypeMap = {
@@ -52,51 +76,58 @@ static const QMap<uint32_t, Traffic::AircraftType> AircraftCategoryMap = {
     {0xF, Traffic::AircraftType::StaticObstacle}   // Static Obstacle
 };
 
-OgnMessage TrafficDataSource_OgnParser::parseAprsisMessage(const QString& sentence)
+void TrafficDataSource_OgnParser::parseAprsisMessage(OgnMessage& ognMessage)
 {
-    OgnMessage ognMessage;
-    ognMessage.sentence = sentence;
+    const QString& sentence = ognMessage.sentence;
 
     if (sentence.startsWith(u"#"_s)) {
         // Comment message  
-        ognMessage = parseCommentMessage(sentence);
+        parseCommentMessage(ognMessage);
+        return;
     } else {
         // Split the sentence into header and body at the first colon
         int colonIndex = sentence.indexOf(u':');
         if (colonIndex == -1) {
+            #if OGN_DEBUG
             qDebug() << "Invalid message format:" << sentence;
+            #endif
             ognMessage.type = OgnMessageType::UNKNOWN;
-            return ognMessage;
+            return;
         }
+        // This function runs all the time, so it is performance critical. 
+        // I try to avoid heap allocations and use a lot of QStringView.
         QStringView header(sentence.constData(), colonIndex);
         QStringView body(sentence.constData() + colonIndex + 1, sentence.size() - colonIndex - 1);
 
         // Check if header and body are valid
         if (header.size() < 5 || body.size() < 5) {
+            #if OGN_DEBUG
             qDebug() << "Invalid message header or body:" << sentence;
+            #endif
             ognMessage.type = OgnMessageType::UNKNOWN;
-            return ognMessage;
+            return;
         }
 
         // Determine the type of message based on the first character in the body
         if (body.startsWith(u"/"_s)) {
             // "/" indicates a Traffic Report
-            ognMessage = parseTrafficReport(header, body);
+            parseTrafficReport(ognMessage, header, body);
         } else if (body.startsWith(u">"_s)) {
             // ">" indicates a Receiver Status
-            ognMessage = parseStatusMessage(header, body);
+            parseStatusMessage(ognMessage, header, body);
         } else {
             ognMessage.type = OgnMessageType::UNKNOWN;
             #if OGN_DEBUG
             qDebug() << "Unknown message type:" << sentence;
             #endif
+            return;
         }
     }
-    return ognMessage;
 }
 
 double TrafficDataSource_OgnParser::decodeLatitude(const QStringView nmeaLatitude, QChar latitudeDirection)
 {
+    // e.g. "5111.32N"
     double latitudeDegrees = nmeaLatitude.left(2).toDouble();
     double latitudeMinutes = nmeaLatitude.mid(2).toDouble();
     double latitude = latitudeDegrees + (latitudeMinutes / 60.0);
@@ -108,6 +139,7 @@ double TrafficDataSource_OgnParser::decodeLatitude(const QStringView nmeaLatitud
 
 double TrafficDataSource_OgnParser::decodeLongitude(const QStringView nmeaLongitude, QChar longitudeDirection)
 {
+    // e.g. "00102.04W"
     double longitudeDegrees = nmeaLongitude.left(3).toDouble();
     double longitudeMinutes = nmeaLongitude.mid(3).toDouble();
     double longitude = longitudeDegrees + (longitudeMinutes / 60.0);
@@ -117,10 +149,10 @@ double TrafficDataSource_OgnParser::decodeLongitude(const QStringView nmeaLongit
     return longitude;
 }
 
-OgnMessage TrafficDataSource_OgnParser::parseTrafficReport(const QStringView header, const QStringView body)
+void TrafficDataSource_OgnParser::parseTrafficReport(OgnMessage& ognMessage, const QStringView header, const QStringView body)
 {
-    OgnMessage ognMessage;
-    ognMessage.sentence = QString(header) + ":" + QString(body);
+    // e.g. header = "FLRDDE626>APRS,qAS,EGHL:"
+    // e.g. body = "/074548h5111.32N/00102.04W'086/007/A=000607 id0ADDE626 -019fpm +0.0rot 5.5dB 3e -4.3kHz"
     ognMessage.type = OgnMessageType::TRAFFIC_REPORT;
 
     #ifdef OGN_DEBUG
@@ -130,9 +162,11 @@ OgnMessage TrafficDataSource_OgnParser::parseTrafficReport(const QStringView hea
     // Parse the Header
     int index = header.indexOf(u'>');
     if (index == -1) {
+        #if OGN_DEBUG
         qDebug() << "Invalid header format in Traffic Report: " << header << ":" << body;
+        #endif
         ognMessage.type = OgnMessageType::UNKNOWN;
-        return ognMessage;
+        return;
     }
     ognMessage.sourceId = header.left(index);
 
@@ -154,8 +188,7 @@ OgnMessage TrafficDataSource_OgnParser::parseTrafficReport(const QStringView hea
     QChar latstring2 = {};
     QStringView lonstring1 = {};
     QChar lonstring2 = {};
-    QRegularExpression regex(R"(^[/\\](\d{6})h(\d{4}\.\d{2})([NS])([/\\I])(\d{5}\.\d{2})([EW])(.)(\d{3})[/\\](\d{3})[/\\]A=(\d{6})$)");
-    QRegularExpressionMatch match = regex.match(aprsPart.toString());
+    QRegularExpressionMatch match = s_regex1.match(aprsPart.toString());
     if (match.hasMatch()) {
         ognMessage.timestamp = match.capturedView(1); // timestamp
         QChar symboltable = match.capturedView(4).at(0); // Symbol table
@@ -175,8 +208,7 @@ OgnMessage TrafficDataSource_OgnParser::parseTrafficReport(const QStringView hea
         ognMessage.coordinate.setLongitude(longitude);
     }
     else {
-        QRegularExpression regex(R"(^[/\\](\d{6})h(\d{4}\.\d{2})([NS])([/\\I])(\d{5}\.\d{2})([EW])(.)[/\\]A=(\d{6})$)");
-        QRegularExpressionMatch match = regex.match(aprsPart.toString());
+        QRegularExpressionMatch match = s_regex2.match(aprsPart.toString());
         if (match.hasMatch()) {
             ognMessage.timestamp = match.capturedView(1); // timestamp
             QChar symboltable = match.capturedView(4).at(0); // Symbol table
@@ -194,8 +226,7 @@ OgnMessage TrafficDataSource_OgnParser::parseTrafficReport(const QStringView hea
             ognMessage.coordinate.setLongitude(longitude);
         }
         else{
-            QRegularExpression regex(R"(^[/\\](\d{6})h(\d{4}\.\d{2})([NS])([/\\I])(\d{5}\.\d{2})([EW])(_)(\d{3})[/](\d{3})g(\d{3})t(\d{3})h(\d{2})b(\d{5})$)");
-            QRegularExpressionMatch match = regex.match(aprsPart.toString());
+            QRegularExpressionMatch match = s_regex_weatherreport.match(aprsPart.toString());
             if (match.hasMatch()) {
                 ognMessage.type = OgnMessageType::WEATHER;
                 ognMessage.timestamp = match.capturedView(1); // timestamp
@@ -218,7 +249,7 @@ OgnMessage TrafficDataSource_OgnParser::parseTrafficReport(const QStringView hea
                 qDebug() << "Invalid APRS format:" << aprsPart;
                 #endif
                 ognMessage.type = OgnMessageType::UNKNOWN;
-                return ognMessage;
+                return;
             }
         }
     }
@@ -276,7 +307,9 @@ OgnMessage TrafficDataSource_OgnParser::parseTrafficReport(const QStringView hea
         bool ok = false;
         uint32_t hexcode = ognMessage.aircraftID.toUInt(&ok, 16);
         if (!ok) {
+            #if OGN_DEBUG
             qDebug() << "Failed to parse aircraft ID as hex:" << ognMessage.aircraftID;
+            #endif
         } else {
             ognMessage.stealthMode = hexcode & 0x80000000;
             ognMessage.noTrackingFlag = hexcode & 0x40000000;
@@ -302,29 +335,26 @@ OgnMessage TrafficDataSource_OgnParser::parseTrafficReport(const QStringView hea
              << " stealthMode:" << ognMessage.stealthMode << " NoTrackingFlag:" << ognMessage.noTrackingFlag
              << " sourceId:" << ognMessage.sourceId;
     #endif
-
-    return ognMessage;
 }
 
-OgnMessage TrafficDataSource_OgnParser::parseCommentMessage(const QStringView message)
+void TrafficDataSource_OgnParser::parseCommentMessage(OgnMessage& ognMessage)
 {
-    OgnMessage ognMessage;
-    ognMessage.sentence = message.toString();
     ognMessage.type = OgnMessageType::COMMENT;
-    return ognMessage;
+    return;
 }
 
-OgnMessage TrafficDataSource_OgnParser::parseStatusMessage(const QStringView header, const QStringView body)
+void TrafficDataSource_OgnParser::parseStatusMessage(
+    OgnMessage& ognMessage, const QStringView header, const QStringView body)
 {
-    OgnMessage ognMessage;
-    ognMessage.sentence = QString(header) + ":" + QString(body);
     ognMessage.type = OgnMessageType::STATUS;
-    return ognMessage;
+    return;
 }
 
 QString TrafficDataSource_OgnParser::formatPositionReport(
     const QStringView callSign, const QGeoCoordinate& coordinate, double course, double speed, double altitude, Traffic::AircraftType aircraftType)
 {
+    // e.g. "ENR12345>APRS,TCPIP*: /074548h5111.32N/00102.04W'086/007/A=000607"
+
     // Static cache for the last lookup
     static Traffic::AircraftType lastAircraftType = Traffic::AircraftType::unknown;
     static QString lastSymbol = "/z"; // Default to unknown symbol
@@ -363,6 +393,7 @@ QString TrafficDataSource_OgnParser::formatPositionReport(
 
 QString TrafficDataSource_OgnParser::formatLatitude(double latitude)
 {
+    // e.g. "5111.32N"
     QString direction = latitude >= 0 ? "N" : "S";
     latitude = qAbs(latitude);
     int degrees = static_cast<int>(latitude);
@@ -372,6 +403,7 @@ QString TrafficDataSource_OgnParser::formatLatitude(double latitude)
 
 QString TrafficDataSource_OgnParser::formatLongitude(double longitude)
 {
+    // e.g. "00102.04W"
     QString direction = longitude >= 0 ? "E" : "W";
     longitude = qAbs(longitude);
     int degrees = static_cast<int>(longitude);
@@ -381,11 +413,14 @@ QString TrafficDataSource_OgnParser::formatLongitude(double longitude)
 
 QString TrafficDataSource_OgnParser::formatFilterCommand(const QGeoCoordinate& receiveLocation, const unsigned int receiveRadius)
 {
+    // e.g. "# filter r/-48.0000/7.8512/99 t/o"
     return QString("# filter %1\n").arg(formatFilter(receiveLocation, receiveRadius));
 }
 
+// see https://www.aprs-is.net/javAPRSFilter.aspx
 QString TrafficDataSource_OgnParser::formatFilter(const QGeoCoordinate& receiveLocation, const unsigned int receiveRadius)
 {
+    // e.g. "r/-48.0000/7.8512/99 t/o"
     return QString("r/%1/%2/%3 t/o")
         .arg(receiveLocation.latitude(), 1, 'f', 4)
         .arg(receiveLocation.longitude(), 1, 'f', 4)
@@ -395,6 +430,8 @@ QString TrafficDataSource_OgnParser::formatFilter(const QGeoCoordinate& receiveL
 QString TrafficDataSource_OgnParser::formatLoginString(
     const QStringView callSign, const QGeoCoordinate& receiveLocation, const unsigned int receiveRadius, const QStringView appName, const QStringView appVersion)
 {
+    // e.g. "user ENR12345 pass 1234 vers 1.0.0 1.0 filter r/-48.0000/7.8512/99 t/o"
+
     // Prepare the filter for what data we want to receive
     QString filter = formatFilter(receiveLocation, receiveRadius);
 
@@ -414,6 +451,7 @@ QString TrafficDataSource_OgnParser::formatLoginString(
 QString TrafficDataSource_OgnParser::calculatePassword(const QStringView callSign)
 {
     // APRS-IS passcode calculation: Sum of ASCII values of the first 6 characters of the call sign
+    // e.g. "1234"
     int sum = 0;
     for (int i = 0; i < callSign.length() && i < 6; ++i) {
         sum += callSign.at(i).unicode();

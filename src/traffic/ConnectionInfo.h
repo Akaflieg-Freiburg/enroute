@@ -115,7 +115,16 @@ public:
      */
     explicit ConnectionInfo(const QString& host, quint16 port, bool canonical=false);
 
+    /*!
+     * \brief Constructor parameter for OGN connections.
+     */
     struct OgnInfo{};
+
+    /*!
+     * \brief Constructor for OGN Connections
+     *
+     * This method constructs a ConnectionInfo for a OGN connection.
+     */
     explicit ConnectionInfo(const OgnInfo& info);
 
     //

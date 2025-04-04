@@ -109,7 +109,7 @@ set(SOURCES
     traffic/TrafficFactor_Abstract.h
     traffic/TrafficFactor_DistanceOnly.h
     traffic/TrafficFactor_WithPosition.h
-    traffic/TrafficFactorAircraftType.cpp
+    traffic/TrafficFactorAircraftType.h
     traffic/TrafficObserver.h
     traffic/TransponderDB.h
     traffic/Warning.h

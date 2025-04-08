@@ -22,7 +22,6 @@
 #include <cmath>
 
 #include "GlobalObject.h"
-//#include "GlobalSettings.h"
 #include "ScaleQuickItem.h"
 #include "navigation/Aircraft.h"
 #include "navigation/Navigator.h"
@@ -32,8 +31,6 @@ Ui::ScaleQuickItem::ScaleQuickItem(QQuickItem *parent)
     : QQuickPaintedItem(parent)
 {
     connect(GlobalObject::navigator(), &Navigation::Navigator::aircraftChanged, this, &QQuickItem::update);
-    setRenderTarget(QQuickPaintedItem::FramebufferObject);
-
 }
 
 

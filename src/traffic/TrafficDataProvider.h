@@ -368,7 +368,7 @@ private slots:
     QString addDataSource_BluetoothClassic(const Traffic::ConnectionInfo &connectionInfo);
 
     // Identical to addDataSource, but handles Bluetooth Low Energy connections only.
-    static QString addDataSource_BluetoothLowEnergy(const Traffic::ConnectionInfo &connectionInfo);
+    QString addDataSource_BluetoothLowEnergy(const Traffic::ConnectionInfo &connectionInfo);
 
     // Clear all data sources
     void clearDataSources();

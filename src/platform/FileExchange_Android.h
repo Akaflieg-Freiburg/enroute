@@ -30,6 +30,8 @@ namespace Platform {
 class FileExchange : public Platform::FileExchange_Abstract
 {
     Q_OBJECT
+    QML_ELEMENT
+    QML_SINGLETON
 
 public:
     /*! \brief Standard constructor

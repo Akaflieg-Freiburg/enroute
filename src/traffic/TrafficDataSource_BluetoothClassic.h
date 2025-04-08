@@ -31,7 +31,7 @@ using namespace Qt::Literals::StringLiterals;
 
 namespace Traffic {
 
-/*! \brief Traffic receiver: Bluetooth Classic connection to FLARM/NMEA source
+/*! \brief Traffic receiver: Bluetooth Classic connection to a FLARM/NMEA source
  *
  *  This class connects to a traffic receiver via a Bluetooth Classic serial port
  *  service.

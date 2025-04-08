@@ -52,8 +52,6 @@ namespace Platform {
 class PlatformAdaptor_Abstract : public GlobalObject
 {
     Q_OBJECT
-    QML_NAMED_ELEMENT(PlatformAdaptor)
-    QML_SINGLETON
 
 public:
     /*! \brief Standard constructor

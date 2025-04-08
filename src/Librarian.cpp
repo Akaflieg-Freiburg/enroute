@@ -299,17 +299,25 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     if (name == u":text/whatsnew.html"_s)
     {
         QString result;
-        result += "<p>" + tr("<strong>Enroute Flight Navigation</strong> now computes the density altitude from METAR data and shows warnings when density altitude affects aircraft performance.") + " "
-                  + tr("We thank Christian Engelhardt and Tom Linz for the implementation!") + "</p>";
-
-        result += "<p>" + tr("As requested by our users, <strong>Enroute Flight Navigation</strong> is now able to import flight routes in FPL and PLN formats.") + " "
-                  + tr("We thank Heinz Blöchinger for help with the implementation!") + "</p>";
-/*
-        result += "<p>" + tr("Users with nonstandard hardware can now configure IP adresses for their traffic data receivers. "
-                             "Serial port connections are also supported.") + "</p>";
-*/
-        result += "<p>" + tr("We need help with promotional graphics for the app stores and with explainer videos. "
-                             "If you are a graphic/video artist and would like to help, then please be in touch.") + "</p>";
+        result += "<p>"
+                  + tr("Enroute Flight Navigation now offers ICAO and Glider Charts for Switzerland. "
+                       "To download these maps, open the main menu and go to Library/Maps and Data. "
+                       "We thank the swiss Federal Office of Topography and the Federal Office of Civil Aviation for making the maps publicly available. "
+                       "Use these maps for information only. The <a href='https://www.geo.admin.ch/en/general-terms-of-use-fsdi'>license conditions</a> do not allow operational use.")
+                  + "</p>";
+#if !defined(Q_OS_IOS)
+        result += "<p>"
+                  + tr("Due to a change in Google's policies, it is no longer possible to share locations from the apps 'Google Maps' and 'Google Maps Go' with Enroute Flight Navigation.") +
+                  + "</p>";
+        result += "<p>"
+                  + tr("<strong>Technology Preview:</strong> Enroute Flight Navigation is now able to connect to traffic data receivers via Bluetooth Low Energy. "
+                       "Please try the new feature and send us your feedback!") +
+                  + "</p>";
+#endif
+        result += "<p>"
+                  + tr("We need help with promotional graphics for the app stores and with explainer videos. "
+                       "If you are a graphic/video artist and would like to help, then please be in touch.")
+                  + "</p>";
         return result;
     }
 
@@ -317,11 +325,10 @@ auto Librarian::getStringFromRessource(const QString &name) -> QString
     file.open(QIODevice::ReadOnly);
     auto content = file.readAll();
     return QString::fromUtf8(content);
-
 }
 
 
-auto Librarian::getStringHashFromRessource(const QString &name) -> Units::ByteSize
+Units::ByteSize Librarian::getStringHashFromRessource(const QString &name)
 {
     return qHash(getStringFromRessource(name), (size_t)0);
 }

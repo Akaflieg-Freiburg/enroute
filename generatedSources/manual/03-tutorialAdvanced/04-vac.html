@@ -58,7 +58,6 @@
 <li class="toctree-l3"><a class="reference internal" href="#import-approach-chart-files">Import Approach Chart Files</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#manage-your-approach-chart-library">Manage Your Approach Chart Library</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#use-approach-charts">Use Approach Charts</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#appendix-create-approach-charts-with-gdal">Appendix: Create Approach Charts with GDAL</a></li>
 </ul>
 </li>
 </ul>
@@ -137,14 +136,20 @@ We will be glad to help!</p>
 </div>
 <section id="obtain-approach-chart-files">
 <h2>Obtain Approach Chart Files<a class="headerlink" href="#obtain-approach-chart-files" title="Link to this heading"></a></h2>
-<ul class="simple">
+<ul>
 <li><p>Michael Paus’ free software <a class="reference external" href="https://mpmediasoft.de/products/AIPBrowserDE/help/AIPBrowserDE.html">AIP Browser DE</a> can
 generate GeoTIFF images and TripKits for all German airfields. The data comes
 from Germany’s official <a class="reference external" href="https://aip.dfs.de/basicAIP">AIP</a>, as provided by
 <a class="reference external" href="https://www.dfs.de/homepage">DFS Deutsche Flugsicherung GmbH</a>.</p></li>
-<li><p>Advanced users can use the GDAL command line utilities to convert raster
-graphic files into georeferenced GeoTIFF files.  The section <a class="reference internal" href="#gdal"><span class="std std-ref">Appendix: Create Approach Charts with GDAL</span></a>
-explains how to do this.</p></li>
+<li><p><a class="reference external" href="https://georefsite.onrender.com/">GeoRef Tool</a> is a free, web-based
+application that allows users to upload an image (e.g., aerodrome charts,
+approach plates) and manually georeference it by assigning reference points.
+The tool then generates a GeoTIFF file that can be imported into Enroute or
+other flight navigation software. This enables pilots and navigators to
+integrate custom maps with accurate geographic positioning, enhancing
+situational awareness during flight planning and navigation.</p>
+<p>For more details, visit the <a class="reference external" href="https://georefsite.onrender.com/">GeoRef Tool Website</a></p>
+</li>
 </ul>
 <p>Please get in touch with us if you are aware of other data sources. We will be
 glad to list them here.</p>
@@ -192,58 +197,6 @@ open the approach chart page automatically.</p>
 charts are installed on your device. If you cannot find the menu entry,
 install some approach charts first.</p>
 </div>
-</section>
-<section id="appendix-create-approach-charts-with-gdal">
-<span id="gdal"></span><h2>Appendix: Create Approach Charts with GDAL<a class="headerlink" href="#appendix-create-approach-charts-with-gdal" title="Link to this heading"></a></h2>
-<p>Advanced users might wish to create their own approach chart files in GeoTIFF
-format, perhaps from a PDF of their official AIP.  One user has kindly provided
-the following tutorial, which explains how to accomplish this task on a Windows
-computer, using command line utilities.</p>
-<p><strong>Preparation</strong></p>
-<ol class="arabic simple">
-<li><p>Download and install <a class="reference external" href="https://maps.google.com/intl/en/earth/versions/#download-pro">Google Earth for Windows</a>.</p></li>
-<li><p>Download and install <a class="reference external" href="https://gdal.org/download.html">GDAL for Windows</a>.
-GDAL is a translator for raster and vector geospatial data formats.</p></li>
-</ol>
-<p><strong>Georeferencing and conversion to GeoTIFF</strong></p>
-<ol class="arabic">
-<li><p>Download the relevant chart from the AIP. The chart will typically come as a
-PDF file.</p></li>
-<li><p>Convert the relevant page of the AIP to PNG format. Most PDF viewer programs
-allow exporting a page to PNG.</p></li>
-<li><p>Use any image viewer program (for instance: Windows Photos) to crop the PNG,
-removing margins and legends and leaving only the parts that you would like
-to see in <strong>Enroute Flight Navigation</strong>. Copy the obtained file to the folder
-where you installed GDAL.</p></li>
-<li><p>Open Google Earth.</p></li>
-<li><p>In the top menu, go to “Add” → “Image overlay.”</p></li>
-<li><p>Click on “Browse” and select PNG file created in step 3.</p></li>
-<li><p>Set the “Transparency” to 50% between “Clear” and “Opaque.”</p></li>
-<li><p>Before pressing OK, adjust the image size, as it will be quite large, and
-move it to the airport area you’re interested in. Since it is transparent,
-you can adjust the size and position until roads and rivers align with the
-Google Earth image underneath. It’s not a very fast method, but you can
-change the transparency to check alignment.</p></li>
-<li><p>When the graphic is aligned with the map, press OK.</p></li>
-<li><p>Move the mouse to the upper-left corner of the VAC and note the coordinates
-at the bottom of the screen. Move the mouse to the lower-left corner of the
-VAC and note the coordinates.</p></li>
-<li><p>Open a console by typing “CMD” in the command line. Navigate to the
-directory where you installed GDAL.</p></li>
-<li><p>Type “SDKShell” and press Enter, this sets the paths</p></li>
-<li><p>Convert the PNG file to GeoTIFF format using a GDAL command as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gdal_translate</span> <span class="o">-</span><span class="n">a_srs</span> <span class="n">EPSG</span><span class="p">:</span><span class="mi">4326</span> <span class="o">-</span><span class="n">a_ullr</span> <span class="o">&lt;</span><span class="n">upper_left_longitude</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">upper_left_latitude</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">lower_right_longitude</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">lower_right_latitude</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">mo</span> <span class="s2">&quot;TIFFTAG_IMAGEDESCRIPTION=Chart Name&quot;</span> <span class="o">-</span><span class="n">co</span> <span class="n">COMPRESS</span><span class="o">=</span><span class="n">LZW</span> <span class="nb">input</span><span class="o">.</span><span class="n">png</span> <span class="n">output</span><span class="o">.</span><span class="n">tif</span>
-</pre></div>
-</div>
-<p>In the coordinates, north is positive, south is negative, east is positive,
-west is negative.  A call for a map in norther Spain could read as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gdal_translate</span> <span class="o">-</span><span class="n">a_srs</span> <span class="n">EPSG</span><span class="p">:</span><span class="mi">4326</span> <span class="o">-</span><span class="n">a_ullr</span> <span class="o">-</span><span class="mf">6.620555</span> <span class="mf">43.982777</span> <span class="o">-</span><span class="mf">5.736666</span> <span class="mf">43.387222</span> <span class="o">-</span><span class="n">mo</span> <span class="s2">&quot;TIFFTAG_IMAGEDESCRIPTION=Asturias&quot;</span> <span class="o">-</span><span class="n">co</span> <span class="n">COMPRESS</span><span class="o">=</span><span class="n">LZW</span> <span class="nb">input</span><span class="o">.</span><span class="n">png</span> <span class="n">output</span><span class="o">.</span><span class="n">tif</span>
-</pre></div>
-</div>
-</li>
-<li><p>Copy the output.tif file to your mobile device and import it into <strong>Enroute
-Flight Navigation</strong> as described above.</p></li>
-</ol>
 </section>
 </section>
 

@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.33.0] - xx
+
+### Fixed
+- Fix problem where VACs were deleted on every app update on iOS.
+
+### Changed
+- Even on very small screens, always show at least four characters of the
+  destination waypoint in the remaining route bar. (#446)
+
 ## [2.32.14] - 2025-03-04
 
 ### Fixed

@@ -7,13 +7,31 @@ connections are less reliable and require manual configuration. We found that
 many Bluetooth adaptors are build with cheap and unreliable hardware and
 implement industry standards only partially, if at all.
 
-Bluetooth Classic supports only point-to-point connections, so that only one single app
-can access traffic data at any given time.  Pilots and co-pilots must 
-therefore decide who gets to see traffic data and configure their devices appropriately.
+
+Bluetooth Protocols
+-------------------
+
+Quite confusingly, Bluetooth is an umbrella term for `two unrelated and
+completely incompatible radio communication protocols
+<https://www.bluetooth.com/learn-about-bluetooth/tech-overview/>`_ that operate
+in the same frequency range.
+
+- Bluetooth Classic, marketed under the names "Bluetooth", "Bluetooth Basic
+  Rate" and "Bluetooth Enhanced Data Rate" is the standard radio protocol
+  powering headphones and in-car entertainment systems.
+
+  Bluetooth Classic supports only point-to-point connections, so that only one
+  single app can access traffic data at any given time.  Pilots and co-pilots
+  must therefore decide who gets to see traffic data and configure their devices
+  appropriately.
+
+- Bluetooth Low Energy, marketed under the names "Bluetooth", "Bluetooth LE" and
+  "Bluetooth Smart" is a slower radio protocol designed for very low power
+  operation and flexible network topologies.
 
 .. note:: At present, **Enroute Flight Navigation** supports only Bluetooth Classic
-    communication. Bluetooth Low Energy may be supported in the future if there is
-    sufficient demand from the user community.
+    communication. Bluetooth Low Energy is supported as a technology preview and
+    should not be used in production environments.
 
 .. note:: Access to Bluetooth radio is severely limited on iOS platforms. For that reason,
     Bluetooth communication is not supported at all on iPhone or iPad devices. 
@@ -36,6 +54,10 @@ following conditions are met.
 - If possible, configure your traffic data receiver to always be in
   'discoverable mode'.
 
+.. note:: The steps described here might also work if your device uses the 
+    Bluetooth Low Energy radio standard, which is only supported as a technology
+    preview.  If you use Bluetooth Low Energy, please let us know how it worked 
+    for you.  Our development team is very interested in your feedback.
 
 
 Step 1: Configure a Data Connection to the Bluetooth Classic Device

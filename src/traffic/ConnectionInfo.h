@@ -54,7 +54,8 @@ public:
         TCP,                /*!< TCP Connection */
         UDP,                /*!< UDP Connection */
         Serial,             /*!< Serial Port Connection */
-        FLARMFile           /*!< FLARM Simulator File */
+        FLARMFile,          /*!< FLARM Simulator File */
+        OGN                 /*!< OGN glidernet.org internet connection */
     };
     Q_ENUM(Type)
 
@@ -114,7 +115,17 @@ public:
      */
     explicit ConnectionInfo(const QString& host, quint16 port, bool canonical=false);
 
+    /*!
+     * \brief Constructor parameter for OGN connections.
+     */
+    struct OgnInfo{};
 
+    /*!
+     * \brief Constructor for OGN Connections
+     *
+     * This method constructs a ConnectionInfo for a OGN connection.
+     */
+    explicit ConnectionInfo(const OgnInfo& info);
 
     //
     // Properties

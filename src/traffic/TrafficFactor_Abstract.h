@@ -24,6 +24,7 @@
 #include <QTimer>
 
 #include "units/Distance.h"
+#include "TrafficFactorAircraftType.h"
 
 using namespace std::chrono_literals;
 
@@ -48,28 +49,6 @@ public:
     /*! \brief Length of lifetime for objects of this class */
     static constexpr auto lifeTime = 10s;
 
-    /*! \brief Aircraft type
-     *
-     *  This enum defines a few aircraft type. The list is modeled after the FLARM/NMEA specification.
-     */
-    enum AircraftType : quint8
-    {
-        unknown, /*!< Unknown aircraft type */
-        Aircraft, /*!< Fixed wing aircraft */
-        Airship, /*!< Airship, such as a zeppelin or a blimp */
-        Balloon, /*!< Balloon */
-        Copter, /*!< Helicopter, gyrocopter or rotorcraft */
-        Drone, /*!< Drone */
-        Glider, /*!< Glider, including powered gliders and touring motor gliders */
-        HangGlider, /*!< Hang glider */
-        Jet, /*!< Jet aircraft */
-        Paraglider, /*!< Paraglider */
-        Skydiver, /*!< Skydiver */
-        StaticObstacle, /*!< Static obstacle */
-        TowPlane /*!< Tow plane */
-    };
-    Q_ENUM(AircraftType)
-
     /*! \brief Default constructor
      *
      * @param parent The standard QObject parent pointer
@@ -78,7 +57,6 @@ public:
 
     // Standard destructor
     ~TrafficFactor_Abstract() override = default;
-
 
     //
     // Methods
@@ -344,13 +322,13 @@ public:
      *
      *  @returns Property type
      */
-    [[nodiscard]] Traffic::TrafficFactor_Abstract::AircraftType type() const {return m_type.value();}
+    [[nodiscard]] Traffic::AircraftType type() const {return m_type.value();}
 
     /*! \brief Getter method for property with the same name
      *
      *  @returns Property type
      */
-    [[nodiscard]] QBindable<Traffic::TrafficFactor_Abstract::AircraftType> bindableType() {return &m_type;}
+    [[nodiscard]] QBindable<Traffic::AircraftType> bindableType() {return &m_type;}
 
     /*! \brief Getter method for property with the same name
      *
@@ -453,7 +431,7 @@ public:
      *
      *  @param newType Property type
      */
-    void setType(Traffic::TrafficFactor_Abstract::AircraftType newType) {m_type = newType;}
+    void setType(Traffic::AircraftType newType) {m_type = newType;}
 
     /*! \brief Setter function for property with the same name
      *
@@ -539,7 +517,7 @@ private:
     QString m_color{QStringLiteral("red")};
     Q_OBJECT_BINDABLE_PROPERTY(Traffic::TrafficFactor_Abstract, Units::Distance, m_hDist, &Traffic::TrafficFactor_Abstract::hDistChanged);
     QString m_ID;
-    Q_OBJECT_BINDABLE_PROPERTY_WITH_ARGS(Traffic::TrafficFactor_Abstract, Traffic::TrafficFactor_Abstract::AircraftType, m_type, unknown, &Traffic::TrafficFactor_Abstract::typeChanged);
+    Q_OBJECT_BINDABLE_PROPERTY_WITH_ARGS(Traffic::TrafficFactor_Abstract, Traffic::AircraftType, m_type, unknown, &Traffic::TrafficFactor_Abstract::typeChanged);
     QProperty<bool> m_relevant {false};
     QProperty<QString> m_relevantString;
     QProperty<QString> m_typeString;
